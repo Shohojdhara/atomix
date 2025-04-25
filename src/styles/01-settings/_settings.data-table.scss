@@ -1,0 +1,32 @@
+@use "settings.typography" as typography;
+@use "settings.config" as config;
+
+$data-table-width:                  100% !default; 
+$data-table-label-font-size:        typography.$font-size-sm !default;
+$data-table-label-font-size-sm:     $data-table-label-font-size !default;
+$data-table-label-font-size-lg:     $data-table-label-font-size !default;
+$data-table-label-font-weight:      typography.$font-weight-medium !default;
+$data-table-label-color:            var(--#{config.$prefix}body-color) !default;
+
+$data-table-data-font-size:         typography.$font-size-sm !default;
+$data-table-data-font-size-sm:      $data-table-data-font-size !default;
+$data-table-data-font-size-lg:      $data-table-data-font-size !default;
+$data-table-data-font-weight:       typography.$font-weight-normal !default;
+$data-table-data-color:             var(--#{config.$prefix}body-color) !default;
+
+$data-table-head-bg:                var(--#{config.$prefix}secondary-bg-subtle) !default;
+$data-table-row-bg:                 var(--#{config.$prefix}body-bg) !default;
+$data-table-row-hover-bg:           var(--#{config.$prefix}body-bg) !default;
+$data-table-row-border-color:       var(--#{config.$prefix}primary-border-subtle) !default;
+$data-table-head-sm-height:         16px !default;
+$data-table-row-sm-height:          16px !default;
+$data-table-head-md-height:         32px !default;
+$data-table-row-md-height:          32px !default;
+$data-table-head-lg-height:         48px !default;
+$data-table-row-lg-height:          48px !default;
+
+$data-table-row-padding-sm-x:       8px !default;
+$data-table-row-padding-sm-y:       2px !default;
+
+$data-table-row-padding-x:          16px !default;
+$data-table-row-padding-y:          8px !default;

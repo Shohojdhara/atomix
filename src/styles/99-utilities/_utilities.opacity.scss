@@ -1,0 +1,18 @@
+@use 'sass:map';
+@use 'utilities.utils' as *;
+
+$utilities: map.merge(
+  $utilities, (
+    "opacity": (
+        property: opacity,
+        class: u-opacity,
+        values: (
+          0: 0,
+          25: .25,
+          50: .5,
+          75: .75,
+          100: 1,
+        )
+      ),
+  )
+);

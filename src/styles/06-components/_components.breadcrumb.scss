@@ -1,0 +1,67 @@
+.c-breadcrumb {
+    --#{$prefix}breadcrumb-font-size: #{$breadcrumb-font-size};
+
+    --#{$prefix}breadcrumb-link-padding-y: #{rem($breadcrumb-link-padding-y)};
+    --#{$prefix}breadcrumb-link-padding-x: #{rem($breadcrumb-link-padding-x)};
+    --#{$prefix}breadcrumb-link-border-width: #{rem($breadcrumb-link-border-width)};
+    --#{$prefix}breadcrumb-items-gap: #{rem($breadcrumb-items-gap)};
+    --#{$prefix}breadcrumb-margin-bottom: #{rem($breadcrumb-margin-bottom)};
+    --#{$prefix}breadcrumb-color: #{$breadcrumb-color};
+    --#{$prefix}breadcrumb-hover-color: #{$breadcrumb-hover-color};
+    --#{$prefix}breadcrumb-active-color: #{$breadcrumb-active-color};
+    --#{$prefix}breadcrumb-bg: #{$breadcrumb-bg};
+    --#{$prefix}breadcrumb-divider-color: #{$breadcrumb-divider-color};
+    --#{$prefix}breadcrumb-divider-active-color: #{$breadcrumb-divider-active-color};
+    --#{$prefix}breadcrumb-divider: #{$breadcrumb-divider};
+    --#{$prefix}breadcrumb-divider-size: #{rem($breadcrumb-divider-size)};
+    --#{$prefix}breadcrumb-divider-gap: #{rem($breadcrumb-divider-gap)};
+
+    $root: &;
+
+    display: flex;
+    gap: var(--#{$prefix}breadcrumb-items-gap);
+    list-style: none;
+    padding-left: 0px;
+    margin-bottom: var(--#{$prefix}breadcrumb-margin-bottom);
+    background-color: var(--#{$prefix}breadcrumb-bg);
+    
+
+    &__item {
+        &+& {
+            &::before {
+                content: var(--#{$prefix}breadcrumb-divider);
+                color: var(--#{$prefix}breadcrumb-divider-color);
+                font-size: var(--#{$prefix}--#{$prefix}breadcrumb-divider-size);
+                margin-right: var(--#{$prefix}breadcrumb-divider-gap);
+            }
+        }
+
+        &.is-active {
+            &::before {
+                color: var(--#{$prefix}breadcrumb-divider-active-color);
+            }
+
+            #{$root}__link{
+                color: var(--#{$prefix}breadcrumb-active-color);
+                font-weight: $font-weight-medium;
+            }
+        }
+    }
+
+    &__link {
+        color: var(--#{$prefix}breadcrumb-color);
+        padding: var(--#{$prefix}breadcrumb-link-padding-y) var(--#{$prefix}breadcrumb-link-padding-x);
+        border: var(--#{$prefix}breadcrumb-link-border-width) solid transparent;
+
+        @include basic-transition();
+
+        &:focus-visible {
+            outline: none;
+            border-color:  var(--#{$prefix}focus-border-color);
+        }
+
+        &:hover{
+            color: var(--#{$prefix}breadcrumb-hover-color);
+        }
+    }
+}

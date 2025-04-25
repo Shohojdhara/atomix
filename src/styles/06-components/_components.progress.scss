@@ -1,0 +1,40 @@
+.c-progress{
+
+    --#{$prefix}progress-width: #{$progress-width};
+    --#{$prefix}progress-percentage: 0%; 
+    --#{$prefix}progress-height: #{rem($progress-height)};
+    --#{$prefix}progress-font-size: #{$progress-font-size};
+    --#{$prefix}progress-bg: #{$progress-bg};
+    --#{$prefix}progress-border-radius: #{$progress-border-radius};
+    --#{$prefix}progress-bar-width: var(--#{$prefix}progress-percentage);
+    --#{$prefix}progress-bar-height: #{$progress-bar-height};
+    --#{$prefix}progress-bar-color:  #{$progress-bar-color};
+    --#{$prefix}progress-bar-bg: #{$progress-bar-bg};
+    --#{$prefix}progress-bar-transition: #{$progress-bar-transition};
+    --#{$prefix}progress-bar-easing: #{$progress-bar-easing};
+
+    width: 100%;
+    max-width: var(--#{$prefix}progress-width);
+    height: var(--#{$prefix}progress-bar-height);
+    background-color: var(--#{$prefix}progress-bg);
+    border-radius: var(--#{$prefix}progress-border-radius);
+    overflow: hidden;
+
+    &__bar{
+        width: var(--#{$prefix}progress-bar-width);
+        height: var(--#{$prefix}progress-bar-height);
+        color: var(--#{$prefix}progress-bar-color);
+        background-color: var(--#{$prefix}progress-bar-bg);
+        border-radius: var(--#{$prefix}progress-border-radius);
+        transition: var(--#{$prefix}progress-bar-transition) var(--#{$prefix}progress-bar-easing);
+    }
+
+    @each $color, $value in $theme-colors{
+        &--#{$color} {
+            --#{$prefix}progress-bar-bg: var(--#{$prefix}#{$color});
+        }
+    }
+}
+
+
+

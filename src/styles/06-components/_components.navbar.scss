@@ -1,0 +1,61 @@
+.c-navbar {
+    $root: &;
+
+    --#{$prefix}navbar-padding-x: #{rem($navbar-padding-x)};
+    --#{$prefix}navbar-padding-y: #{rem($navbar-padding-y)};
+    --#{$prefix}navbar-bg: #{$navbar-bg};
+    --#{$prefix}navbar-border-width: #{$navbar-border-width};
+    --#{$prefix}navbar-border-color: #{$navbar-border-color};
+    --#{$prefix}navbar-brand-margin-end: #{rem($navbar-brand-margin-end)};
+    --#{$prefix}navbar-toggler-size: #{$navbar-toggler-size};
+    --#{$prefix}navbar-toggler-color: #{$navbar-toggler-color};
+    --#{$prefix}navbar-container-max-width: #{$navbar-container-max-width};
+
+    position: relative; 
+    padding: var(--#{$prefix}navbar-padding-y) 0;
+    border-bottom: 1px solid var(--#{$prefix}navbar-border-color);
+    background-color: var(--#{$prefix}navbar-bg);
+
+    &__container {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        width: 100%;
+        max-width: var(--#{$prefix}navbar-container-max-width);
+        padding: 0 var(--#{$prefix}navbar-padding-x);
+        margin: 0 auto;
+    }
+
+    &__brand {
+        margin-right: var(--#{$prefix}navbar-brand-margin-end);
+    }
+
+    // &__nav {
+       
+    // }
+
+    &--fixed, &--fixed-bottom {
+        position: fixed;
+        left: 0;
+        right: 0;
+        width: 100%;
+    }
+
+    &--fixed {
+        top: 0;
+    }
+
+    &--fixed-bottom {
+        bottom: 0;
+
+        .c-nav__dropdown-menu {
+            top: auto;
+            bottom: 100%;
+        }
+
+        .c-nav--end .c-nav__dropdown-menu {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+}

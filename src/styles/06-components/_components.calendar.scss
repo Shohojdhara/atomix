@@ -1,0 +1,224 @@
+.c-calendar {
+  --#{$prefix}calendar-width: #{rem($calendar-width)};
+  --#{$prefix}calendar-padding-x: #{rem($calendar-padding-x)};
+  --#{$prefix}calendar-padding-y: #{rem($calendar-padding-y)};
+  --#{$prefix}calendar-bg: #{$calendar-bg};
+  --#{$prefix}calendar-color: #{$calendar-color};
+  --#{$prefix}calendar-deactive-color: #{$calendar-deactive-color};
+  --#{$prefix}calendar-border-radius: #{$calendar-border-radius};
+  --#{$prefix}calendar-border-width: #{$calendar-border-width};
+  --#{$prefix}calendar-border-color: #{$calendar-border-color};
+  --#{$prefix}calendar-box-shadow: #{$calendar-box-shadow};
+  --#{$prefix}calendar-month-font-size: #{$calendar-month-font-size};
+  --#{$prefix}calendar-month-font-weight: #{$calendar-month-font-weight};
+  --#{$prefix}calendar-year-font-size: #{$calendar-year-font-size};
+  --#{$prefix}calendar-year-font-weight: #{$calendar-year-font-weight};
+  --#{$prefix}calendar-week-font-szie: #{$calendar-week-font-size};
+  --#{$prefix}calendar-week-font-weight: #{$calendar-week-font-weight};
+  --#{$prefix}calendar-day-font-size: #{$calendar-day-font-size};
+  --#{$prefix}calendar-day-font-weight: #{$calendar-day-font-weight};
+  --#{$prefix}calendar-week-height: #{rem($calendar-week-height)};
+  --#{$prefix}calendar-week-width: #{rem($calendar-week-width)};
+  --#{$prefix}calendar-day-height: #{rem($calendar-day-height)};
+  --#{$prefix}calendar-day-width: #{rem($calendar-day-width)};
+  --#{$prefix}calendar-day-hover-bg: #{$calendar-day-hover-bg};
+  --#{$prefix}calendar-day-border-radius: #{$calendar-day-border-radius};
+  --#{$prefix}calendar-today-color: #{$calendar-today-color};
+  --#{$prefix}calendar-day-selected-color: #{$calendar-day-selected-color};
+  --#{$prefix}calendar-day-selected-bg: #{$calendar-day-selected-bg};
+  --#{$prefix}calendar-day-in-range-bg: #{$calendar-day-in-range-bg};
+
+  position: absolute;
+  padding: var(--#{$prefix}calendar-padding-y) var(--#{$prefix}calendar-padding-x);
+  width: var(--#{$prefix}calendar-width);
+  border-radius: var(--#{$prefix}calendar-border-radius);
+  background-color: var(--#{$prefix}calendar-bg);
+  box-shadow: var(--#{$prefix}calendar-box-shadow);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  touch-action: manipulation;
+  @include basic-transition();
+
+  &::before {
+    content: none;
+  }
+
+  &__months {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__next-month, &__prev-month  {
+    padding: 14px;
+    cursor: pointer;
+  }
+
+  &__month {
+    display: flex;
+    
+  }
+
+  &__current-month {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: rem(12px);
+  }
+
+  &__monthDropdown-months {
+    appearance: none;
+    border: none;
+    background: none;
+    text-align: right;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+
+  .numInputWrapper {
+    width: rem(56px);
+  }
+
+  .numInput {
+    width: 100%;
+    border: none;
+    appearance: none;
+    background: none;
+  }
+
+  &__innerContainer {
+    display: flex;
+    overflow: hidden;
+  }
+
+  &__rContainer {
+    display: inline-block;
+    padding: 0;
+  }
+
+  &__weekdays {
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: rem(28px);
+  }
+
+  &__weekdaycontainer {
+    display: flex;
+    flex: 1;
+  }
+
+  &__weekday {
+    display: grid;
+    place-items: center;
+    color: var(--#{$prefix}calendar-color);
+    font-size: var(--#{$prefix}calendar-week-font-szie);
+    font-weight: var(--#{$prefix}calendar-week-font-weight);
+    width: var(--#{$prefix}calendar-week-width);
+    height: var(--#{$prefix}calendar-week-height);
+    user-select: none;
+  }
+
+  &__days {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  &__dayContainer {
+    padding: 0;
+    outline: 0;
+    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+    opacity: 1;
+    width: 100%;
+  }
+
+  &__day {
+    display: grid;
+    place-items: center;
+    color: var(--#{$prefix}calendar-color);
+    font-size: var(--#{$prefix}calendar-day-font-size);
+    font-weight: var(--#{$prefix}calendar-day-font-weight);
+    width: var(--#{$prefix}calendar-day-width);
+    height: var(--#{$prefix}calendar-day-height);
+    border-radius: var(--#{$prefix}calendar-day-border-radius);
+    user-select: none;
+
+    &.prevMonthDay {
+      --#{$prefix}calendar-color: #{$calendar-deactive-color};
+    }
+
+    &.nextMonthDay {
+      --#{$prefix}calendar-color: #{$calendar-deactive-color};
+    }
+
+    &.today {
+      --#{$prefix}calendar-color: var(
+        --#{$prefix}calendar-today-color
+      );
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        bottom: 7px;
+        left: 18px;
+        background-color: var(--#{$prefix}calendar-today-color);
+        border-radius: rem(4px);
+      }
+    }
+
+    &.inRange {
+      border-radius: 0px;
+      background-color: var(--#{$prefix}calendar-day-in-range-bg);
+    }
+
+    &.startRange {
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+
+    &.endRange {
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+    }
+
+    &.selected {
+      --#{$prefix}calendar-color: var(
+        --#{$prefix}calendar-day-selected-color
+      );
+      background-color: var(--#{$prefix}calendar-day-selected-bg);
+      cursor: pointer;
+    }
+
+    &:not(.is-deactive):not(.selected):not(.c-calendar__disabled) {
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--#{$prefix}calendar-day-hover-bg);
+      }
+    }
+  }
+
+  &__disabled {
+    --#{$prefix}calendar-color: var(--#{$prefix}disabled-text-emphasis);
+  }
+
+  &.open {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+}

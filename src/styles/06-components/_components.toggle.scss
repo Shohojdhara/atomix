@@ -1,0 +1,93 @@
+.c-toggle {
+  $root: &;
+
+  --#{$prefix}toggle-gap: #{rem($toggle-gap)};
+  --#{$prefix}toggle-switch-bg: #{$toggle-switch-off-bg};
+  --#{$prefix}toggle-switch-disabled-bg: #{$toggle-switch-disabled-bg};
+  --#{$prefix}toggle-switch-border-radius: #{$toggle-switch-border-radius};
+  --#{$prefix}toggle-switch-box-shadow: #{$toggle-switch-box-shadow};
+  --#{$prefix}toggle-switch-handle-bg: #{$toggle-switch-handle-bg};
+  --#{$prefix}toggle-switch-handle-border-radius: #{$toggle-switch-handle-border-radius};
+  --#{$prefix}toggle-switch-width: #{rem($toggle-switch-width)};
+  --#{$prefix}toggle-switch-height: #{rem($toggle-switch-height)};
+  --#{$prefix}toggle-switch-handle-width: #{rem($toggle-switch-handle-width)};
+  --#{$prefix}toggle-switch-handle-height: #{rem($toggle-switch-handle-height)};
+  --#{$prefix}toggle-switch-handle-margin: #{rem($toggle-switch-handle-margin)};
+  --#{$prefix}toggle-label-font-size: #{$toggle-label-font-size};
+  --#{$prefix}toggle-label-color: #{$toggle-label-color};
+
+  display: flex;
+  align-items: center;
+  gap: var(--#{$prefix}toggle-gap);
+
+  &__switch {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 0 0 var(--#{$prefix}toggle-switch-width);
+    width: var(--#{$prefix}toggle-switch-width);
+    height: var(--#{$prefix}toggle-switch-height);
+    background-color: var(--#{$prefix}toggle-switch-bg);
+    border-radius: var(--#{$prefix}toggle-switch-border-radius);
+    user-select: none;
+    cursor: pointer;
+
+    @include basic-transition();
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: var(--#{$prefix}toggle-switch-handle-width);
+      height: var(--#{$prefix}toggle-switch-handle-height);
+      margin: var(--#{$prefix}toggle-switch-handle-margin);
+      background: var(--#{$prefix}toggle-switch-handle-bg);
+      border-radius: var(--#{$prefix}toggle-switch-handle-border-radius);
+
+      @include basic-transition();
+    }
+  }
+
+  &__label {
+    font-size: var(--#{$prefix}toggle-label-font-size);
+    color: var(--#{$prefix}toggle-label-color);
+  }
+
+  &.is-on {
+    --#{$prefix}toggle-switch-bg: #{$toggle-switch-on-bg};
+    #{$root}__switch {
+      &::before {
+        transform: translate(
+          calc(
+            var(--#{$prefix}toggle-switch-width) -
+              (
+                var(--#{$prefix}toggle-switch-handle-width) +
+                  var(--#{$prefix}toggle-switch-handle-margin) * 2
+              )
+          )
+        );
+      }
+    }
+  }
+
+  &.is-disabled:not(.is-on) {
+    pointer-events: none;
+
+    #{$root}__switch {
+      background: var(--#{$prefix}toggle-switch-disabled-bg);
+    }
+  }
+
+  &.is-disabled.is-on {
+    pointer-events: none;
+
+    #{$root}__switch {
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: $overlay-2;
+        border-radius: var(--#{$prefix}toggle-switch-handle-border-radius);
+      }
+    }
+  }
+}

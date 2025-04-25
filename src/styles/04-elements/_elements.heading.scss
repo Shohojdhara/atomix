@@ -1,0 +1,25 @@
+@use '../01-settings/settings.typography' as typography;
+
+h1 {
+    letter-spacing: typography.$h1-letter-spaceing;
+}
+
+h2 {
+    letter-spacing: typography.$h2-letter-spaceing;
+}
+
+h3 {
+    letter-spacing: typography.$h3-letter-spaceing;
+}
+
+h4 {
+    letter-spacing: typography.$h4-letter-spaceing;
+}
+
+h5 { 
+    letter-spacing: typography.$h5-letter-spaceing;
+}
+
+h6 {
+    letter-spacing: typography.$h6-letter-spaceing;
+}

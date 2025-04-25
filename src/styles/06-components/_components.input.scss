@@ -1,0 +1,83 @@
+.c-input {
+  $root: &;
+
+  --#{$prefix}input-width: #{$input-width};
+  --#{$prefix}input-color: #{$input-color};
+  --#{$prefix}input-placeholder-color: #{$input-placeholder-color};
+  --#{$prefix}input-font-size: #{$input-font-size};
+  --#{$prefix}input-line-height: #{$input-line-height-md};
+  --#{$prefix}input-padding-x: #{rem($input-padding-x)};
+  --#{$prefix}input-padding-y: #{rem($input-padding-y)};
+  --#{$prefix}input-border-color: #{$input-border-color};
+  --#{$prefix}input-border-width: #{$input-border-width};
+  --#{$prefix}input-border-radius: #{$input-border-radius};
+  --#{$prefix}input-bg: #{$input-bg};
+  --#{$prefix}input-textarea-height: #{$input-textarea-height};
+
+  width: 100%;
+  max-width: var(--#{$prefix}input-width);
+  color: var(--#{$prefix}input-color);
+  font-size: var(--#{$prefix}input-font-size);
+  line-height: var(--#{$prefix}input-line-height);
+  padding: var(--#{$prefix}input-padding-y) var(--#{$prefix}input-padding-x);
+  border: var(--#{$prefix}input-border-width) solid
+    var(--#{$prefix}input-border-color);
+  border-radius: var(--#{$prefix}input-border-radius);
+  outline: none;
+  background-color: var(--#{$prefix}input-bg);
+  @include basic-transition();
+
+  &:focus, &:hover {
+    --#{$prefix}input-border-color: #{$input-focus-border-color};
+  }
+
+  @include placeholder-color(var(--#{$prefix}input-placeholder-color));
+
+  &--textarea{
+    height: var(--#{$prefix}input-textarea-height);
+  }
+
+  &--sm {
+    --#{$prefix}input-font-size: #{$input-font-size-sm};
+    --#{$prefix}input-line-height: #{$input-line-height-sm};
+    --#{$prefix}input-padding-x: #{rem($input-padding-x-sm)};
+    --#{$prefix}input-padding-y: #{rem($input-padding-y-sm)};
+    
+    &#{$root}--textarea{
+      --#{$prefix}input-textarea-height: #{$input-textarea-height-sm};
+    }
+  }
+
+  &--lg {
+    --#{$prefix}input-font-size: #{$input-font-size-lg};
+    --#{$prefix}input-line-height: #{$input-line-height-lg};
+    --#{$prefix}input-padding-x: #{rem($input-padding-x-lg)};
+    --#{$prefix}input-padding-y: #{rem($input-padding-y-lg)};
+
+    &#{$root}--textarea{
+      --#{$prefix}input-textarea-height: #{$input-textarea-height-lg};
+    }
+  }
+
+  @each $color, $value in $theme-colors {
+    &--#{$color} {
+      --#{$prefix}input-border-color: var(--#{$prefix}#{$color}-border-subtle);
+    }
+  }
+
+  &.is-invalid, &.has-danger &:invalid {
+    --#{$prefix}input-border-color: #{$input-invalid-border-color};
+  }
+
+  &.is-success, &.has-success &:valid {
+    --#{$prefix}input-border-color: #{$input-success-border-color};
+  }
+
+  &:disabled, &.is-disabled{
+    --#{$prefix}input-color: #{$input-disabled-color};
+    --#{$prefix}input-bg: #{$input-disabled-bg};
+    pointer-events: none;
+  }
+
+
+}

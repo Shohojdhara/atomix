@@ -1,0 +1,77 @@
+@use "./settings.border-radius" as *;
+@use "./settings.config" as *;
+@use "./settings.typography" as *;
+@use "./settings.colors" as *;
+
+$messages-width:                            100%;
+
+$messages-padding-x:                        32px !default;
+$messages-padding-y:                        $messages-padding-x !default;
+$messages-border-radius:                    $border-radius-xl !default;
+$messages-border-width:                     0px !default;
+$messages-border-color:                     null !default;
+$messages-bg:                               var(--#{$prefix}body-bg) !default;
+
+$messages-content-margin-top:               32px !default;
+
+$messages-avatar-margin:                    12px !default;
+
+$messages-items-padding-x:                  0px !default;
+$messages-items-padding-y:                  0px !default;
+$messages-items-width:                    479px !default;
+$messages-items-border-width:               0px !default;
+$messages-items-border-color:               transparent !default;
+$messages-items-border-radius:              null!default;
+$messages-items-gap:                        4px !default;
+
+
+$messages-text-padding-x:                   12px !default;
+$messages-text-padding-y:                   12px !default;
+$messages-text-font-size:                   $font-size-sm !default;
+$messages-text-primary-color:               var(--#{$prefix}body-color) !default;
+$messages-text-secondary-color:             var(--#{$prefix}body-color) !default;
+$messages-text-primary-bg:                  var(--#{$prefix}brand-bg-subtle) !default;
+$messages-text-secondary-bg:                var(--#{$prefix}secondary-bg-subtle) !default;
+$messages-text-border-radius:               $border-radius-xxl !default;
+
+$messages-file-padding-x:                   $messages-text-padding-x !default;
+$messages-file-padding-y:                   $messages-text-padding-y !default;
+$messages-file-text-font-size:              $messages-text-font-size !default;
+$messages-file-text-primary-color:          $messages-text-primary-color !default;
+$messages-file-text-secondary-color:        $messages-text-secondary-color !default;
+$messages-file-icon-size:                   40px !default;
+$messages-file-icon-bg:                     $primary-2 !default;
+$messages-file-icon-bg-dark:                $primary-7 !default;
+$messages-file-icon-margin-right:           8px !default;
+$messages-file-info-font-size:              $font-size-xs !default;
+$messages-file-info-color:                  var(--#{$prefix}tertiary-text-emphasis) !default;
+$messages-file-primary-bg:                  $messages-text-primary-bg !default;
+$messages-file-secondary-bg:                $messages-text-secondary-bg !default;
+$messages-file-border-radius:               $border-radius-xxl !default;
+
+$messages-image-width:                      400px !default;
+$messages-image-height:                     260px !default;
+$messages-image-border-radius:              $border-radius-xxl !default;
+
+$messages-form-margin-top:                   32px !default;
+$messages-form-row-gap:                      8px !default;
+$messages-form-submit-icon-size:             24px !default; 
+
+$messages-input-padding-x:                   12px !default;
+$messages-input-padding-y:                   12px !default;  
+$messages-input-font-size:                   $font-size-base !default;
+$messages-input-color:                       var(--#{$prefix}body-color) !default;
+$messages-input-placeholder-color:           var(--#{$prefix}tertiary-text-emphasis) !default;
+$messages-input-border-width:                1px !default;            
+$messages-input-border-color:                var(--#{$prefix}primary-border-subtle) !default;
+$messages-input-border-radius:               $border-radius-xl !default;
+
+$messages-input-options-icons-size:          24px !default;
+$messages-input-options-row-gap:             8px !default;
+
+
+$messages-body-height:                      calc(100vh - 600px) !default;
+
+
+
+

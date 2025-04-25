@@ -1,0 +1,51 @@
+.c-list {
+    $root: &;
+
+  --#{$prefix}list-color: #{$list-color};
+  --#{$prefix}list-font-size: #{$list-font-size};
+  --#{$prefix}list-font-weight: #{$list-font-weight};
+  --#{$prefix}list-item-gap: #{rem($list-item-gap)};
+  --#{$prefix}list-padding-left: #{rem($list-padding-left)};
+  --#{$prefix}list-item-dash-width: #{rem($list-item-dash-width)};
+  --#{$prefix}list-item-dash-height: #{rem($list-item-dash-height)};
+
+  padding-left: var(--#{$prefix}list-padding-left);
+
+  &__item {
+    color: var(--#{$prefix}list-color);
+    font-size: var(--#{$prefix}list-font-size);
+    font-weight: var(--#{$prefix}list-font-weight);
+    & + & {
+      margin-top: var(--#{$prefix}list-item-gap);
+    }
+  }
+
+  &--dash{
+    padding-left: 0;
+    list-style: none;
+
+    #{$root}__item {
+        position: relative;
+        padding-left: var(--#{$prefix}list-padding-left);
+        
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: var(--#{$prefix}list-item-dash-width);
+            height: var(--#{$prefix}list-item-dash-height);
+            background: var(--#{$prefix}list-color);
+            transform: translateY(-50%);
+        }
+    }
+  }
+
+  &--number {
+    list-style-type: decimal;
+  }
+
+  &--text {
+    list-style-type: lower-alpha;
+  }
+}

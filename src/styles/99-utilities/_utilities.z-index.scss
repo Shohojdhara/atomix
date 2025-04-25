@@ -1,0 +1,14 @@
+@use 'sass:map';
+@use 'utilities.utils' as *;
+@use '../01-settings/settings.z-layers' as *;
+
+$utilities: map.merge(
+  $utilities,
+  (
+    'z-index': (
+      property: z-index,
+      class: u-z,
+      values: $z-layers
+    )
+  )
+);

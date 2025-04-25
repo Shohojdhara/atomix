@@ -1,0 +1,264 @@
+@use "sass:map";
+@use 'settings.colors' as *;
+@use 'settings.typography' as *;
+@use 'settings.config' as config;
+
+// Color maps
+
+$theme-colors-text: (
+  'primary':        $primary-text,
+  'secondary':      $secondary-text,
+  'tertiary':       $tertiary-text,
+  'disabled':       $disabled-text,
+  'invert':         $invert-text,
+  'brand':          $brand-text,
+  'error':          $error-text,
+  'success':        $success-text,
+  'warning':        $warning-text,
+  'info':           $info-text,
+  'light':          $light-text,
+  'dark':           $dark-text
+) !default;
+
+$theme-colors-text-dark: (
+  'primary':        $primary-text-dark,
+  'secondary':      $secondary-text-dark,
+  'tertiary':       $tertiary-text-dark,
+  'disabled':       $disabled-text-dark,
+  'invert':         $invert-text-dark,
+  'brand':          $brand-text-dark,
+  'error':          $error-text-dark,
+  'success':        $success-text-dark,
+  'warning':        $warning-text-dark,
+  'info':           $info-text-dark,
+  'light':          $light-text-dark,
+  'dark':           $dark-text-dark
+) !default;
+
+$theme-colors-bg-subtle: (
+  'primary':        $primary-bg,
+  'secondary':      $secondary-bg,
+  'tertiary':       $tertiary-bg,
+  'invert':         $invert-bg,
+  'brand':          $brand-bg,
+  'error':          $error-bg,
+  'success':        $success-bg,
+  'warning':        $warning-bg,
+  'info':           $info-bg,
+  'light':          $light-bg,
+  'dark':           $dark-bg
+) !default;
+
+$theme-colors-bg-subtle-dark: (
+  'primary':        $primary-bg-dark,
+  'secondary':      $secondary-bg-dark,
+  'tertiary':       $tertiary-bg-dark,
+  'invert':         $invert-bg-dark,
+  'brand':          $brand-bg-dark,
+  'error':          $error-bg-dark,
+  'success':        $success-bg-dark,
+  'warning':        $warning-bg-dark,
+  'info':           $info-bg-dark,
+  'light':          $light-bg-dark,
+  'dark':           $dark-bg-dark
+) !default;
+
+$theme-colors-border-subtle: (
+  'primary':        $primary-border,
+  'secondary':      $secondary-border,
+  'success':        $success-border,
+  'error':          $error-border,
+  'warning':        $warning-border,
+  'info':           $info-border,
+  'brand':          $brand-border,
+  'light':          $light-border,
+  'dark':           $dark-border
+) !default;
+
+$theme-colors-border-subtle-dark: (
+  'primary':        $primary-border-dark,
+  'secondary':      $secondary-border-dark,
+  'success':        $success-border-dark,
+  'error':          $error-border-dark,
+  'warning':        $warning-border-dark,
+  'info':           $info-border-dark,
+  'brand':          $brand-border-dark,
+  'light':          $light-border-dark,
+  'dark':           $dark-border-dark
+) !default;
+
+
+$theme-colors: (
+  "primary":        $primary,
+  'secondary':      $secondary,
+  'error':          $error,
+  'success':        $success,
+  'warning':        $warning,
+  'info':           $info,
+  'light':          $light,
+  'dark':           $dark
+) !default;
+
+$theme-colors-dark: (
+  'primary':        $primary-dark,
+  'secondary':      $secondary-dark,
+  'light':          $light-dark,
+  'dark':           $dark-dark,
+  'error':          $error-dark,
+  'success':        $success-dark,
+  'warning':        $warning-dark,
+  'info':           $info-dark
+) !default;
+
+$theme-colors-hover: (
+  'primary':        $primary-hover,
+  'secondary':      $secondary-hover,
+  'light':          $light-hover,
+  'dark':           $dark-hover,
+  'error':          $error-hover,
+  'success':        $success-hover,
+  'warning':        $warning-hover,
+  'info':           $info-hover,
+) !default;
+
+$theme-colors-hover-dark: (
+  'primary':        $primary-hover-dark,
+  'secondary':      $secondary-hover-dark,
+  'light':          $light-hover-dark,
+  'dark':           $dark-hover-dark,
+  'error':          $error-hover-dark,
+  'success':        $success-hover-dark,
+  'warning':        $warning-hover-dark,
+  'info':           $info-hover-dark,
+) !default;
+
+$grays: (
+  '1':              $gray-1,
+  '2':              $gray-2,
+  '3':              $gray-3,
+  '4':              $gray-4,
+  '5':              $gray-5,
+  '6':              $gray-6,
+  '7':              $gray-7,
+  '8':              $gray-8,
+  '9':              $gray-9,
+  '10':             $gray-10
+) !default;
+
+
+// Typography Maps
+
+$theme-font-size: (
+  'base':           $font-size-base,
+  'xs':             $font-size-xs,
+  'sm':             $font-size-sm,
+  'md':             $font-size-md,
+  'lg':             $font-size-lg,
+  'h1':             $h1-font-size,
+  'h2':             $h2-font-size,
+  'h3':             $h3-font-size,
+  'h4':             $h4-font-size,
+  'h5':             $h5-font-size,
+  'h6':             $h6-font-size
+) !default;
+
+$theme-font-weight: (
+  'light':          $font-weight-light,
+  'normal':         $font-weight-normal,
+  'medium':         $font-weight-medium,
+  'semibold':       $font-weight-semibold,
+  'bold':           $font-weight-bold,
+  'heavy':          $font-weight-heavy,
+  'black':          $font-weight-black
+) !default;
+
+
+// Utilities maps
+//
+// Extends the default `$theme-colors` maps to help create our utilities.
+
+// scss-docs-start utilities-colors
+
+// @TODO: Replace $theme-colors with css var
+
+$utilities-colors: $theme-colors !default;
+
+   $utilities-text-colors: map.merge(
+  $utilities-colors,
+  (
+    "black": $black,
+    "white": $white,
+    "body": $body-color
+  )
+) !default;
+
+$utilities-text-emphasis-colors: (
+  "primary-emphasis": var(--#{config.$prefix}primary-text-emphasis),
+  "secondary-emphasis": var(--#{config.$prefix}secondary-text-emphasis),
+  "tertiary-emphasis": var(--#{config.$prefix}tertiary-text-emphasis),
+  "disabled-emphasis": var(--#{config.$prefix}disabled-text-emphasis),
+  "invert-emphasis": var(--#{config.$prefix}invert-text-emphasis),
+  "brand-emphasis": var(--#{config.$prefix}brand-text-emphasis),
+  "success-emphasis": var(--#{config.$prefix}success-text-emphasis),
+  "info-emphasis": var(--#{config.$prefix}info-text-emphasis),
+  "warning-emphasis": var(--#{config.$prefix}warning-text-emphasis),
+  "error-emphasis": var(--#{config.$prefix}error-text-emphasis),
+  "light-emphasis": var(--#{config.$prefix}light-text-emphasis),
+  "dark-emphasis": var(--#{config.$prefix}dark-text-emphasis)
+) !default;
+
+
+// scss-docs-start utilities-bg-colors
+   $utilities-bg-colors: map.merge(
+  $utilities-colors,
+  (
+    "black": $black,
+    "white": $white,
+    "body": var(--#{config.$prefix}body-bg)
+  )
+) !default;
+
+$utilities-bg-subtle: (
+  "primary-subtle": var(--#{config.$prefix}primary-bg-subtle),
+  "secondary-subtle": var(--#{config.$prefix}secondary-bg-subtle),
+  "tertiary-subtle": var(--#{config.$prefix}tertiary-bg-subtle),
+  "invert-subtle": var(--#{config.$prefix}invert-bg-subtle),
+  "brand-subtle": var(--#{config.$prefix}brand-bg-subtle),
+  "success-subtle": var(--#{config.$prefix}success-bg-subtle),
+  "info-subtle": var(--#{config.$prefix}info-bg-subtle),
+  "warning-subtle": var(--#{config.$prefix}warning-bg-subtle),
+  "error-subtle": var(--#{config.$prefix}error-bg-subtle),
+  "light-subtle": var(--#{config.$prefix}light-bg-subtle),
+  "dark-subtle": var(--#{config.$prefix}dark-bg-subtle)
+) !default;
+
+
+// scss-docs-start utilities-border-colors
+   $utilities-border-colors: map.merge(
+  $utilities-colors,
+  (
+    "black": $black,
+    "white": $white
+  )
+) !default;
+
+$utilities-border-subtle: (
+  "primary-subtle": var(--#{config.$prefix}primary-border-subtle),
+  "secondary-subtle": var(--#{config.$prefix}secondary-border-subtle),
+  "success-subtle": var(--#{config.$prefix}success-border-subtle),
+  "info-subtle": var(--#{config.$prefix}info-border-subtle),
+  "warning-subtle": var(--#{config.$prefix}warning-border-subtle),
+  "error-subtle": var(--#{config.$prefix}error-border-subtle),
+  "brand-subtle": var(--#{config.$prefix}brand-border-subtle),
+  "light-subtle": var(--#{config.$prefix}light-border-subtle),
+  "dark-subtle": var(--#{config.$prefix}dark-border-subtle)
+) !default;
+
+// scss-docs-start utilities-links-underline
+$utilities-links-underline: map.merge(
+  $utilities-colors,
+  (
+    "black": $black,
+    "white": $white
+  )
+) !default;

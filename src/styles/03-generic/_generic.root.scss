@@ -1,0 +1,181 @@
+@use '../02-tools' as *;
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.border-radius' as border-radius;
+@use '../01-settings/settings.border' as border;
+@use '../01-settings/settings.colors' as colors;
+@use '../01-settings/settings.maps' as color-maps;
+@use '../01-settings/settings.box-shadow' as box-shadow;
+@use '../01-settings/settings.typography' as typography;
+@use 'sass:meta';
+
+$gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)) !default;
+
+:root,
+[data-#{config.$prefix}theme="light"] {
+  // Note: Custom variable values only support SassScript inside `#{}`.
+
+  // Colors
+  //
+  // Generate palettes for full colors, grays, and theme colors.
+
+  @each $color, $value in color-maps.$theme-colors {
+    --#{config.$prefix}#{$color}: #{$value};
+  }
+
+  $theme-colors-rgb: map-loop(color-maps.$theme-colors, to-rgb) !default;
+
+  @each $color, $value in color-maps.$theme-colors {
+    --#{config.$prefix}#{$color}-rgb: #{to-rgb($value)};
+  }
+
+  @each $color, $value in color-maps.$grays {
+    --#{config.$prefix}gray-#{$color}: #{$value};
+  }
+
+  @each $color, $value in color-maps.$theme-colors-text {
+    --#{config.$prefix}#{$color}-text-emphasis: #{$value};
+  }
+
+  @each $color, $value in color-maps.$theme-colors-bg-subtle {
+    --#{config.$prefix}#{$color}-bg-subtle: #{$value};
+  }
+
+  @each $color, $value in color-maps.$theme-colors-border-subtle {
+    --#{config.$prefix}#{$color}-border-subtle: #{$value};
+  }
+
+  @each $color, $value in color-maps.$theme-colors-hover {
+    --#{config.$prefix}#{$color}-hover: #{$value};
+  }
+
+  // Fonts
+
+  // Note: Use meta.inspect for lists so that quoted items keep the quotes.
+  // See https://github.com/sass/sass/issues/2383#issuecomment-336349172
+  --#{config.$prefix}font-sans-serif: #{meta.inspect(typography.$font-family-sans-serif)};
+  --#{config.$prefix}font-monospace: #{meta.inspect(typography.$font-family-monospace)};
+  --#{config.$prefix}gradient: #{$gradient};
+
+  // Root and body
+  // scss-docs-start root-body-variables
+  @if typography.$font-size-root != null {
+    --#{config.$prefix}root-font-size: #{typography.$font-size-root};
+  }
+  --#{config.$prefix}body-font-family: #{meta.inspect(typography.$font-family-base)};
+  --#{config.$prefix}body-font-size: #{typography.$font-size-base};
+  --#{config.$prefix}body-font-weight: #{typography.$font-weight-base};
+  --#{config.$prefix}body-line-height: #{typography.$line-height-base};
+  @if typography.$body-text-align != null {
+    --#{config.$prefix}body-text-align: #{typography.$body-text-align};
+  }
+
+  --#{config.$prefix}body-color: #{colors.$body-color};
+  --#{config.$prefix}body-bg: #{colors.$body-bg};
+
+  // scss-docs-end root-body-variables
+
+  --#{config.$prefix}heading-color: #{colors.$headings-color};
+
+  --#{config.$prefix}link-color: #{colors.$link-color};
+  --#{config.$prefix}link-color-rgb: #{to-rgb(colors.$link-color)};
+  --#{config.$prefix}link-decoration: #{colors.$link-decoration};
+
+  --#{config.$prefix}link-hover-color: #{colors.$link-hover-color};
+  --#{config.$prefix}link-hover-color-rgb: #{to-rgb(colors.$link-hover-color)};
+
+  @if colors.$link-hover-decoration != null {
+    --#{config.$prefix}link-hover-decoration: #{colors.$link-hover-decoration};
+  }
+
+  --#{config.$prefix}code-color: #{colors.$code-color};
+  --#{config.$prefix}highlight-bg: #{colors.$mark-bg};
+
+  // scss-docs-start root-border-var
+  --#{config.$prefix}border-width: #{border.$border-width};
+  --#{config.$prefix}border-style: #{border.$border-style};
+  --#{config.$prefix}border-color: #{border.$border-color};
+  --#{config.$prefix}border-color-translucent: rgba(#{to-rgb(border.$border-color)}, 0.175);
+
+  --#{config.$prefix}border-radius: #{border-radius.$border-radius};
+  --#{config.$prefix}border-radius-sm: #{border-radius.$border-radius-sm};
+  --#{config.$prefix}border-radius-lg: #{border-radius.$border-radius-lg};
+  --#{config.$prefix}border-radius-xl: #{border-radius.$border-radius-xl};
+  --#{config.$prefix}border-radius-xxl: #{border-radius.$border-radius-xxl};
+  --#{config.$prefix}border-radius-2xl: var(--#{config.$prefix}border-radius-xxl); // Deprecated in v5.3.0 for consistency
+  --#{config.$prefix}border-radius-3xl: #{border-radius.$border-radius-3xl};
+  --#{config.$prefix}border-radius-4xl: #{border-radius.$border-radius-4xl};
+  --#{config.$prefix}border-radius-pill: #{border-radius.$border-radius-pill};
+  // scss-docs-end root-border-var
+
+  --#{config.$prefix}box-shadow: #{box-shadow.$box-shadow};
+  --#{config.$prefix}box-shadow-sm: #{box-shadow.$box-shadow-sm};
+  --#{config.$prefix}box-shadow-lg: #{box-shadow.$box-shadow-lg};
+  --#{config.$prefix}box-shadow-xl: #{box-shadow.$box-shadow-xl};
+  --#{config.$prefix}box-shadow-inset: #{box-shadow.$box-shadow-inset};
+
+  // Focus styles
+  // scss-docs-start root-focus-variables
+  --#{config.$prefix}focus-border-color: #{colors.$focus-border-color};
+  // scss-docs-end root-focus-variables
+
+  // scss-docs-start root-form-validation-variables
+  --#{config.$prefix}form-valid-color: #{colors.$form-valid-color};
+  --#{config.$prefix}form-valid-border-color: #{colors.$form-valid-border-color};
+  --#{config.$prefix}form-invalid-color: #{colors.$form-invalid-color};
+  --#{config.$prefix}form-invalid-border-color: #{colors.$form-invalid-border-color};
+  // scss-docs-end root-form-validation-variables
+}
+
+@if config.$enable-dark-mode {
+  @include lux-color-mode(dark, true) {
+    color-scheme: dark;
+
+    --#{config.$prefix}body-color: #{colors.$body-color-dark};
+    --#{config.$prefix}body-bg: #{colors.$body-bg-dark};
+
+    @each $color, $value in color-maps.$theme-colors-dark {
+      --#{config.$prefix}#{$color}: #{$value};
+    }
+
+    @each $color, $value in color-maps.$theme-colors-text-dark {
+      --#{config.$prefix}#{$color}-text-emphasis: #{$value};
+    }
+
+    @each $color, $value in color-maps.$theme-colors-bg-subtle-dark {
+      --#{config.$prefix}#{$color}-bg-subtle: #{$value};
+    }
+
+    @each $color, $value in color-maps.$theme-colors-border-subtle-dark {
+      --#{config.$prefix}#{$color}-border-subtle: #{$value};
+    }
+
+    @each $color, $value in color-maps.$theme-colors-hover-dark {
+      --#{config.$prefix}#{$color}-hover: #{$value};
+    }
+
+    --#{config.$prefix}box-shadow: #{box-shadow.$box-shadow-dark};
+    --#{config.$prefix}box-shadow-sm: #{box-shadow.$box-shadow-sm-dark};
+    --#{config.$prefix}box-shadow-lg: #{box-shadow.$box-shadow-lg-dark};
+    --#{config.$prefix}box-shadow-xl: #{box-shadow.$box-shadow-xl-dark};
+
+    --#{config.$prefix}heading-color: #{colors.$headings-color-dark};
+
+    --#{config.$prefix}link-color: #{colors.$link-color-dark};
+    --#{config.$prefix}link-color-rgb: #{to-rgb(colors.$link-color-dark)};
+    --#{config.$prefix}link-hover-color: #{colors.$link-hover-color-dark};
+
+
+    --#{config.$prefix}code-color: #{colors.$code-color-dark};
+    
+    --#{config.$prefix}border-color: #{border.$border-color-dark};
+    --#{config.$prefix}border-color-translucent: #{colors.$border-color-translucent-dark};
+
+    --#{config.$prefix}focus-border-color: #{colors.$focus-border-color-dark};
+
+
+    --#{config.$prefix}form-valid-color: #{colors.$form-valid-color-dark};
+    --#{config.$prefix}form-valid-border-color: #{colors.$form-valid-border-color-dark};
+    --#{config.$prefix}form-invalid-color: #{colors.$form-invalid-color-dark};
+    --#{config.$prefix}form-invalid-border-color: #{colors.$form-invalid-border-color-dark};
+  }
+}

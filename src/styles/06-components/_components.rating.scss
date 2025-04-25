@@ -1,0 +1,62 @@
+.c-rating {
+  $root: &;
+
+  --#{$prefix}rating-star-size: #{$rating-star-size};
+  --#{$prefix}rating-star-bg: #{$rating-star-bg};
+  --#{$prefix}rating-star-half-bg: #{$rating-star-half-bg};
+  --#{$prefix}rating-stars-gap: #{rem($rating-stars-gap)};
+
+  display: flex;
+  gap: var(--#{$prefix}rating-stars-gap);
+
+  &__star {
+
+    svg {
+      @include square(var(--#{$prefix}rating-star-size));
+    }
+
+    &--full {
+      #{$root}__star-full {
+        fill: var(--#{$prefix}rating-star-bg);
+      }
+    }
+
+    &--half {
+      #{$root}__star-half {
+        display: block;
+      }
+    }
+
+    @each $color, $value in $theme-colors {
+      &--#{$color} {
+        --#{$prefix}rating-star-bg: #{$value};
+      }
+    }
+  }
+
+  &__star-half {
+    display: none;
+
+    rect {
+      fill: var(--#{$prefix}rating-star-bg);
+    }
+  }
+
+  &__star-full {
+    stroke: var(--#{$prefix}rating-star-bg);
+  }
+
+  &--sm {
+    --#{$prefix}rating-star-size: #{$rating-star-size-sm};
+  }
+
+  &--lg {
+    --#{$prefix}rating-star-size: #{$rating-star-size-lg};
+  }
+
+  @each $color, $value in $theme-colors {
+    &--#{$color} {
+      --#{$prefix}rating-star-bg: #{$value};
+    }
+  }
+}

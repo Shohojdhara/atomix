@@ -13,23 +13,28 @@ export interface ButtonProps {
    * Button variant
    */
   variant?: 'primary' | 'secondary';
+  /**
+   * Button size
+   */
+  size?: 'sm' | 'md' | 'lg';
+  /**
+   * Button disabled state
+   */
+  disabled?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
   label,
   onClick,
   variant = 'primary',
+  size = 'md',
+  disabled = false,
 }) => {
-  const baseStyles = 'px-4 py-2 rounded-md font-medium';
-  const variantStyles = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700',
-    secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300',
-  };
-
   return (
     <button
-      className={`${baseStyles} ${variantStyles[variant]}`}
+      className={`c-btn c-btn--${variant} c-btn--${size} ${disabled ? 'c-btn--disabled' : ''}`}
       onClick={onClick}
+      disabled={disabled}
     >
       {label}
     </button>

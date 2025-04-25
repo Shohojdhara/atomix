@@ -1,0 +1,19 @@
+@use 'sass:map';
+@use 'utilities.utils' as *;
+
+$utilities: map.merge(
+  $utilities, (
+    "object-fit": (
+        responsive: true,
+        property: object-fit,
+        class:  u-object-fit,
+        values: (
+          contain: contain,
+          cover: cover,
+          fill: fill,
+          scale: scale-down,
+          none: none,
+        )
+      ),
+  )
+);

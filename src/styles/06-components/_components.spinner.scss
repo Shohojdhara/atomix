@@ -1,0 +1,39 @@
+@keyframes spinner {
+  to {
+    transform: rotate(360deg) #{'/* rtl:ignore */'};
+  }
+}
+
+.c-spinner {
+  --#{$prefix}spinner-size: #{map-get($spinner-sizes, md)};
+  --#{$prefix}spinner-background-color: #{$spinner-background-color};
+  --#{$prefix}spinner-color: #{$spinner-color};
+  --#{$prefix}spinner-border-width: #{$spinner-border-width};
+  --#{$prefix}spinner-animation-speed: #{$spinner-animation-speed};
+
+  color: var(--#{$prefix}spinner-background-color);
+  position: relative;
+  @include square(var(--#{$prefix}spinner-size));
+  border: var(--#{$prefix}spinner-border-width) solid
+    var(--#{$prefix}spinner-color);
+  border-right-color: currentcolor;
+  border-radius: 50%;
+  animation: var(--#{$prefix}spinner-animation-speed) ease-in-out infinite
+    spinner;
+
+  @each $size, $value in $spinner-sizes {
+    &--#{$size} {
+      --#{$prefix}spinner-size: #{$value};
+    }
+  }
+
+  @each $color, $value in $theme-colors {
+    &--#{$color} {
+      @if ($color == 'secondary') {
+        --#{$prefix}spinner-background-color: var(--#{$prefix}body-bg);
+      }
+
+      --#{$prefix}spinner-color: var(--#{$prefix}#{$color});
+    }
+  }
+}

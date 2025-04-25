@@ -1,0 +1,34 @@
+@use '../01-settings/settings.animations' as animations;
+@use 'sass:list';
+
+@mixin basic-transition($properties: (all), $duration: animations.$transition-duration, $delay: null, $easing: animations.$easing) {
+  $transitions: ();
+
+  @each $prop in $properties {
+    $prop-value: #{$prop} #{$duration};
+
+    @if $delay != null {
+      $prop-value: #{$prop} #{$duration} #{$delay};
+    }
+
+    $prop-value: #{$prop-value} #{$easing};
+    
+    @if list.length($transitions) == 0 {
+      $transitions: $prop-value;
+    } @else {
+      $transitions: #{$transitions}, #{$prop-value};
+    }
+  }
+
+  transition: $transitions;
+}
+
+@keyframes atomix-skeleton-loading {
+  0% {
+      background-position: 100% 50%;
+  }
+  
+  100% {
+      background-position: 0 50%;
+  }
+}

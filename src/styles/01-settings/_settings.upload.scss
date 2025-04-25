@@ -1,0 +1,77 @@
+@use "settings.config" as config;
+@use "settings.typography" as typography;
+@use "settings.border-radius" as borderRadius;
+
+$upload-width:                              500px !default;
+$upload-width-sm:                           400px !default;
+$upload-width-large:                        700px !default;
+
+$upload-padding-x:                          0px !default;
+$upload-padding-y:                          0px !default;
+
+$upload-inner-padding-x:                    12px !default;
+$upload-inner-padding-y:                    12px !default;
+
+$upload-large-inner-padding-x:              20px !default;
+$upload-large-inner-padding-y:              22px !default;
+
+$upload-border-radius:                      borderRadius.$border-radius !default;
+$upload-border-width:                       1px !default;
+$upload-border-color:                       var(--#{config.$prefix}primary-border-subtle) !default;
+$upload-bg:                                 var(--#{config.$prefix}body-bg) !default;
+$upload-hover-bg:                           null !default;
+
+
+$upload-icon-size:                          32px !default;
+$upload-icon-padding:                       0px !default;
+$upload-icon-bg:                            var(--#{config.$prefix}body-bg) !default;
+
+
+$upload-title-font-size:                    typography.$font-size-lg !default;
+$upload-title-font-weight:                  typography.$headings-font-weight !default;
+$upload-title-color:                        var(--#{config.$prefix}body-color) !default;
+$upload-title-margin-top:                   8px !default;
+
+
+$upload-text-font-size:                     typography.$font-size-sm !default;
+$upload-text-font-weight:                   typography.$font-weight-normal !default;
+$upload-text-color:                         var(--#{config.$prefix}body-color) !default;
+$upload-text-margin-top:                    4px !default;
+
+
+$upload-btn-margin-top:                     20px !default;
+$upload-btn-margin-left:                    16px !default;
+
+$upload-content-margin-left:                16px !default;
+
+
+$upload-helper-text-font-size:              typography.$font-size-sm !default;
+$upload-helper-text-font-weight:            typography.$font-weight-normal !default;
+$upload-helper-text-color:                  var(--#{config.$prefix}body-color) !default;
+$upload-helper-text-margin-top:             8px !default;
+
+
+$upload-disabled-opacity:                   0.5 !default;
+
+
+$upload-loader-padding-x:                   12px !default;
+$upload-loader-padding-y:                   12px !default;
+$upload-loader-bg-opacity:                  1 !default;
+$upload-loader-border-radius:               $upload-border-radius !default;
+$upload-loader-border-width:                $upload-border-width !default;
+$upload-loader-border-color:                $upload-border-color !default;
+$upload-loader-margin-top:                  20px !default;
+$upload-loader-title-color:                 var(--#{config.$prefix}body-color) !default;
+$upload-loader-title-font-size:             typography.$font-size-sm !default;
+$upload-loader-title-font-weight:           typography.$font-weight-normal !default;
+$upload-loader-text-color:                  var(--#{config.$prefix}tertiary-text-emphasis) !default;
+$upload-loader-text-font-size:              typography.$font-size-sm !default;
+$upload-loader-text-margin-top:             5px !default;
+$upload-loader-bar-height:                  10px !default;
+$upload-loader-bar-margin-top:              10px !default;
+$upload-loader-control-icon-size:           20px !default;
+$upload-loader-contorl-color:               var(--#{config.$prefix}body-color) !default;
+ 
+$upload-loader-progress-color:              var(--#{config.$prefix}primary) !default; 
+$upload-loader-success-color:               var(--#{config.$prefix}success) !default; 
+$upload-loader-error-color:                 var(--#{config.$prefix}error) !default;

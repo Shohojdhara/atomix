@@ -1,0 +1,100 @@
+.c-side-menu {
+  $root: &;
+
+  --#{$prefix}side-menu-padding-x: #{rem($side-menu-padding-x)};
+  --#{$prefix}side-menu-padding-y: #{rem($side-menu-padding-y)};
+  --#{$prefix}side-menu-bg: #{$side-menu-bg};
+  --#{$prefix}side-menu-border-radius: #{$side-menu-border-radius};
+  --#{$prefix}side-menu-title-font-size: #{$side-menu-title-font-size};
+  --#{$prefix}side-menu-title-font-weight: #{$side-menu-title-font-weight};
+  --#{$prefix}side-menu-tilte-color: #{$side-menu-title-color};
+  --#{$prefix}side-menu-title-spacer-y: #{rem($side-menu-title-spacer-y)};
+  --#{$prefix}side-menu-item-padding-x: #{rem($side-menu-item-padding-x)};
+  --#{$prefix}side-menu-item-padding-y: #{rem($side-menu-item-padding-y)};
+  --#{$prefix}side-menu-item-font-size: #{$side-menu-item-font-size};
+  --#{$prefix}side-menu-item-color: #{$side-menu-item-color};
+
+  width: 100%;
+  padding: var(--#{$prefix}side-menu-padding-y)
+    var(--#{$prefix}side-menu-padding-x);
+  background: var(--#{$prefix}side-menu-bg);
+  border-radius: var(--#{$prefix}side-menu-border-radius);
+
+  @include media-breakpoint-down(md) {
+    padding: rem(12px) rem(16px);
+  }
+
+  &__wrapper {
+    @include media-breakpoint-down(md) {
+      height: 0px;
+      overflow: hidden;
+      user-select: none;
+
+      @include basic-transition();
+    }
+  }
+
+  &__inner {
+    @include media-breakpoint-down(md) {
+      padding-top: rem(20px);
+    }
+  }
+
+  &__title {
+    color: var(--#{$prefix}side-menu-tilte-color);
+    font-size: var(--#{$prefix}side-menu-title-font-size);
+    font-weight: var(--#{$prefix}side-menu-title-font-weight);
+    margin-bottom: var(--#{$prefix}side-menu-title-spacer-y);
+  }
+
+  &__list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+  }
+
+  &__link {
+    display: inline-block;
+    color: var(--#{$prefix}side-menu-item-color);
+    font-size: var(--#{$prefix}side-menu-item-font-size);
+    padding: var(--#{$prefix}side-menu-item-padding-y)
+      var(--#{$prefix}side-menu-item-padding-y);
+
+    &.is-active {
+      color: var(--#{$prefix}brand-text-emphasis);
+      font-weight: $font-weight-medium;
+    }
+  }
+
+  &__toggler {
+    display: none;
+    justify-content: space-between;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    user-select: none;
+
+    @include media-breakpoint-down(md) {
+      display: flex;
+    }
+  }
+
+  &__toggler-icon {
+    @include basic-transition();
+  }
+
+  &.is-open  {
+    #{$root}__toggler-icon {
+      transform: rotate(90deg);
+    }
+  }
+}

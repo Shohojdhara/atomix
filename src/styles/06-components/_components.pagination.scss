@@ -1,0 +1,84 @@
+.c-pagination {
+  $root: &;
+
+  --#{$prefix}pagination-padding-x: #{rem($pagination-padding-x)};
+  --#{$prefix}pagination-padding-y: #{rem($pagination-padding-y)};
+  --#{$prefix}pagination-size: #{rem($pagination-size)};
+  --#{$prefix}pagination-font-size: #{$pagination-font-size};
+  --#{$prefix}pagination-color: #{$pagination-color};
+  --#{$prefix}pagination-bg: #{$pagination-bg};
+  --#{$prefix}pagination-focus-border-color: #{$pagination-focus-border-color};
+  --#{$prefix}pagination-focus-border-width: #{$pagination-focus-border-width};
+  --#{$prefix}pagination-hover-color: #{$pagination-hover-color};
+  --#{$prefix}pagination-hover-bg: #{$pagination-hover-bg};
+  --#{$prefix}pagination-active-color: #{$pagination-active-color};
+  --#{$prefix}pagination-active-bg: #{$pagination-active-bg};
+  --#{$prefix}pagination-disabled-color: #{$pagination-disabled-color};
+  --#{$prefix}pagination-disabled-bg: #{$pagination-disabled-bg};
+  --#{$prefix}pagination-border-color: #{$pagination-border-color};
+  --#{$prefix}pagination-border-radius: #{$pagination-border-radius};
+
+  display: flex;
+  align-items: center;
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    @include square(var(--#{$prefix}pagination-size));
+
+    overflow: hidden;
+  }
+
+  &__link {
+    @include square(100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--#{$prefix}pagination-color);
+    font-size: var(--#{$prefix}pagination-font-size);
+    padding: var(--#{$prefix}pagination-padding-y)
+      var(--#{$prefix}pagination-padding-x);
+    background-color: var(--#{$prefix}pagination-bg);
+    border-radius: var(--#{$prefix}pagination-border-radius);
+
+
+    &:hover {
+      --#{$prefix}pagination-color: var(--#{$prefix}pagination-hover-color);
+      --#{$prefix}pagination-bg: var(--#{$prefix}pagination-hover-bg);
+    }
+
+
+    &:active,
+    &.is-active {
+      --#{$prefix}pagination-color: var(--#{$prefix}pagination-active-color);
+      --#{$prefix}pagination-bg: var(--#{$prefix}pagination-active-bg);
+    }
+
+    &.is-active {
+      pointer-events: none;
+    }
+
+    &.is-disabled {
+      --#{$prefix}pagination-color: var(--#{$prefix}pagination-disabled-color);
+      --#{$prefix}pagination-bg: var(--#{$prefix}pagination-disabled-bg);
+      pointer-events: none;
+    }
+
+    &:focus-visible {
+      outline: none;
+      border-radius: 0;
+      border: var(--#{$prefix}pagination-focus-border-width) solid var(--#{$prefix}pagination-focus-border-color);
+    }
+  }
+
+  &--sm {
+    --#{$prefix}pagination-size: #{$pagination-size-sm};
+  }
+
+  &--lg {
+    --#{$prefix}pagination-size: #{$pagination-size-lg};
+  }
+}

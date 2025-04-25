@@ -1,0 +1,18 @@
+@use "./settings.config" as *;
+@use "./settings.typography" as *;
+@use "./settings.border-radius" as *;
+@use "./settings.colors" as *;
+
+$lux-nav-item-gap-x:             8px !default;
+
+$lux-nav-link-padding-x:         12px !default;
+$lux-nav-link-padding-y:         8px !default;
+$lux-nav-link-font-size:         $font-size-base !default;
+$lux-nav-link-font-weight:       $font-weight-medium !default;
+$lux-nav-link-color:             var(--#{$prefix}body-color) !default;
+$lux-nav-link-hover-color:       $lux-nav-link-color !default;
+$lux-nav-link-bg:                var(--#{$prefix}body-bg) !default;
+$lux-nav-link-hover-bg:          var(--#{$prefix}secondary-bg-subtle) !default;
+$lux-nav-link-inner-gap:         8px !default;
+
+$lux-nav-icon-size:              20px !default;
