@@ -1,3 +1,10 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.avatar' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.border-radius' as *;
+@use '../02-tools/tools.object-fit' as *;
+@use '../02-tools/tools.size' as *;
+
 .c-avatar {
     --#{$prefix}avatar-fit: #{$avatar-fit};
     --#{$prefix}avatar-size: #{rem(map-get($avatar-size, md))};
