@@ -1,3 +1,9 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.edge-panel' as *;
+@use '../01-settings/settings.z-layers' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.animations' as *;
+
 // EdgePanel SCSS Styling
 .c-edge-panel {
   $root: &;

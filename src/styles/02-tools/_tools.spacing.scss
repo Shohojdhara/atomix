@@ -1,3 +1,9 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.spacing' as *;
+
+$spacing-important: false !default;
+
 @mixin m($t: 1, $r: null, $b: null, $l: null) {
   @if ($t and $r and $b and $l) {
     @include mt($t);

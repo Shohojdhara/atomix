@@ -1,3 +1,9 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.countdown' as *;
+@use '../01-settings/settings.typography' as *;
+@use '../02-tools/tools.rem' as *;
+
 .c-countdown {
     $root: &; 
 
@@ -55,4 +61,3 @@
     }
 
 }
-

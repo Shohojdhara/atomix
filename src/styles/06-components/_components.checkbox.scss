@@ -1,3 +1,10 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.checkbox' as *;
+@use '../01-settings/settings.border-radius' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.animations' as *;
+
 .c-checkbox {
   $root: &;
 
@@ -31,7 +38,7 @@
     color: currentColor;
     border: var(--#{$prefix}checkbox-border-width) solid
       var(--#{$prefix}checkbox-border-color);
-    border-radius: 1.5px;
+    border-radius: var(--#{$prefix}checkbox-border-radius);
     overflow: hidden;
     @include basic-transition();
 

@@ -1,3 +1,4 @@
+@use "sass:string";
 @use "settings.config" as config;
 @use "settings.typography" as fonts;
 
@@ -13,6 +14,6 @@ $breadcrumb-active-color:               var(--#{config.$prefix}body-color) !defa
 $breadcrumb-bg:                         null !default;
 $breadcrumb-divider-color:              var(--#{config.$prefix}tertiary-text-emphasis) !default;
 $breadcrumb-divider-active-color:       var(--#{config.$prefix}tertiary-text-emphasis) !default;
-$breadcrumb-divider:                    quote("'>'") !default;
+$breadcrumb-divider:                    string.quote("'>") !default;
 $breadcrumb-divider-size:               20px !default;
 $breadcrumb-divider-gap:                12px !default;

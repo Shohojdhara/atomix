@@ -1,3 +1,9 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.calendar' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.animations' as *;
+
 .c-calendar {
   --#{$prefix}calendar-width: #{rem($calendar-width)};
   --#{$prefix}calendar-padding-x: #{rem($calendar-padding-x)};

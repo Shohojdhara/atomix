@@ -1,3 +1,8 @@
+@use '../01-settings/_settings.data-table' as *;
+@use '../01-settings/_settings.config' as *;
+@use '../02-tools/_tools.rem' as *;
+@use '../02-tools/_tools.animations' as *;
+
 .c-data-table {
   --#{$prefix}data-table-width: #{$data-table-width};
   --#{$prefix}data-table-label-font-size: #{$data-table-label-font-size};

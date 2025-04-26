@@ -1,3 +1,10 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.badge' as *;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../02-tools/tools.rem' as *;
+
 .c-badge {
     --#{$prefix}tag-font-size: #{$tag-font-size};
     --#{$prefix}tag-font-weight: #{$tag-font-weight};
@@ -35,7 +42,7 @@
         --#{$prefix}tag-padding-y: #{$tag-padding-y-lg};
     }
 
-    @each $color, $value in $theme-colors  {
+    @each $color, $value in maps.$theme-colors  {
         &--#{$color} {
             @if($color == 'primary') {
                 --#{$prefix}tag-bg-color: var(--#{$prefix}brand-bg-subtle);

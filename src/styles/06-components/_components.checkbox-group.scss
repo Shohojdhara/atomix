@@ -1,3 +1,7 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.checkbox-group' as *;
+@use '../02-tools/tools.rem' as *;
 
 .c-checkbox-group {
     --#{$prefix}checkbox-group-items-spacer-y: #{rem($checkbox-group-items-spacer-y)};

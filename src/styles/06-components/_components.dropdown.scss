@@ -1,8 +1,14 @@
+@use '../01-settings/_settings.config' as *;
+@use '../01-settings/_settings.dropdown' as *;
+@use '../02-tools/_tools.rem' as *;
+@use '../02-tools/_tools.animations' as *;
+@use '../02-tools/_tools.spacing' as *;
+
 .c-dropdown {
   $root: &;
 
   --#{$prefix}dropdown-min-width: #{rem($dropdown-min-width)};
-  --#{$prefix}dropdown-padding-x: #{rem($dropdown-padding-x)};
+  --#{$prefix}dropdown-padding-x: #{if($dropdown-padding-x == 0, 0, rem($dropdown-padding-x))};
   --#{$prefix}dropdown-padding-y: #{rem($dropdown-padding-y)};
   --#{$prefix}dropdown-spacer: #{rem($dropdown-spacer)};
   --#{$prefix}dropdown-font-size: #{$dropdown-font-size};

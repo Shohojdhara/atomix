@@ -1,3 +1,11 @@
+@use 'sass:map';
+@use 'sass:string';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.breadcrumb' as *;
+@use '../01-settings/settings.typography' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.animations' as *;
+
 .c-breadcrumb {
     --#{$prefix}breadcrumb-font-size: #{$breadcrumb-font-size};
 

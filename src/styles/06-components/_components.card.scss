@@ -1,3 +1,12 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.card' as *;
+@use '../01-settings/settings.border-radius' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.animations' as *;
+@use '../02-tools/tools.object-fit' as *;
+@use '../02-tools/tools.size' as *;
+
 .c-card {
   $root: &;
   --#{$prefix}card-spacer-y: #{rem($card-spacer-y)};
@@ -15,7 +24,7 @@
   --#{$prefix}card-border-width: #{$card-border-width};
   --#{$prefix}card-border-radius: #{$card-border-radius};
   --#{$prefix}card-image-border-radius: #{$card-image-border-radius};
-  --#{$prefix}card-boxshadow: #{$card-box-shadow};
+  --#{$prefix}card-boxshadow: #{$card-boxshadow};
   --#{$prefix}card-height: #{$card-height};
   --#{$prefix}card-bg: #{$card-bg};
   --#{$prefix}card-bg-hover: #{$card-bg-hover};
