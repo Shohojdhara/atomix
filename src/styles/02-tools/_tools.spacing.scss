@@ -81,7 +81,7 @@ $spacing-important: false !default;
 }
 
 @mixin mb($size: 1) {
-  margin-bottom: map-get($spacing-sizes, $size) #{if(
+  margin-bottom: map.get($spacing-sizes, $size) #{if(
       $spacing-important,
       '!important',
       ''

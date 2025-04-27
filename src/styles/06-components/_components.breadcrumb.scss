@@ -20,7 +20,6 @@
     --#{$prefix}breadcrumb-bg: #{$breadcrumb-bg};
     --#{$prefix}breadcrumb-divider-color: #{$breadcrumb-divider-color};
     --#{$prefix}breadcrumb-divider-active-color: #{$breadcrumb-divider-active-color};
-    // Use content property with the divider value instead of a CSS variable
     --#{$prefix}breadcrumb-divider-size: #{rem($breadcrumb-divider-size)};
     --#{$prefix}breadcrumb-divider-gap: #{rem($breadcrumb-divider-gap)};
 

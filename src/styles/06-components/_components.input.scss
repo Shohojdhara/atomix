@@ -1,3 +1,9 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.input' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.animations' as *;
+@use '../02-tools/tools.placeholder' as *;
+
 .c-input {
   $root: &;
 
@@ -59,10 +65,25 @@
     }
   }
 
-  @each $color, $value in $theme-colors {
-    &--#{$color} {
-      --#{$prefix}input-border-color: var(--#{$prefix}#{$color}-border-subtle);
-    }
+  // Theme variants
+  &--primary {
+    --#{$prefix}input-border-color: var(--#{$prefix}primary-border-subtle, #{$primary-6});
+  }
+  
+  &--success {
+    --#{$prefix}input-border-color: var(--#{$prefix}success-border-subtle, #{$green-6});
+  }
+  
+  &--danger {
+    --#{$prefix}input-border-color: var(--#{$prefix}danger-border-subtle, #{$red-6});
+  }
+  
+  &--warning {
+    --#{$prefix}input-border-color: var(--#{$prefix}warning-border-subtle, #{$yellow-6});
+  }
+  
+  &--info {
+    --#{$prefix}input-border-color: var(--#{$prefix}info-border-subtle, #{$blue-6});
   }
 
   &.is-invalid, &.has-danger &:invalid {

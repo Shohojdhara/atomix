@@ -1,6 +1,6 @@
-const path = require('path');
+import path from 'path';
 
-module.exports = {
+export default {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
     '@storybook/addon-links',
@@ -28,7 +28,7 @@ module.exports = {
     // Handle TypeScript files
     config.module.rules.push({
       test: /\.(ts|tsx)$/,
-      loader: require.resolve('babel-loader'),
+      loader: 'babel-loader',
       options: {
         presets: [
           ['@babel/preset-env', { targets: { node: 'current' } }],
