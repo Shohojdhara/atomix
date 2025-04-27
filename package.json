@@ -21,11 +21,12 @@
     "@storybook/test": "^8.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "autoprefixer": "^10.4.14",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            "autoprefixer": "^10.4.21",
     "babel-loader": "^10.0.0",
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^5.0.1",
-    "cssnano": "^6.0.1",
+    "cssnano": "^6.1.2",
+    "mini-css-extract-plugin": "^2.9.2",
     "postcss": "^8.4.24",
     "postcss-loader": "^8.1.1",
     "sass-embedded": "^1.87.0",
@@ -33,13 +34,16 @@
     "storybook": "^8.0.0",
     "style-loader": "^4.0.0",
     "terser": "^5.24.0",
+    "terser-webpack-plugin": "^5.3.14",
     "typescript": "^5.0.4",
     "webpack": "^5.99.7",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.1"
   },
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "npx webpack --mode production",
+    "dev": "npx webpack --mode development",
+    "serve": "npx webpack serve --mode development",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   }
