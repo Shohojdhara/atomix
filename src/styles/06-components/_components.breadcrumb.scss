@@ -20,7 +20,7 @@
     --#{$prefix}breadcrumb-bg: #{$breadcrumb-bg};
     --#{$prefix}breadcrumb-divider-color: #{$breadcrumb-divider-color};
     --#{$prefix}breadcrumb-divider-active-color: #{$breadcrumb-divider-active-color};
-    --#{$prefix}breadcrumb-divider: #{$breadcrumb-divider};
+    // Use content property with the divider value instead of a CSS variable
     --#{$prefix}breadcrumb-divider-size: #{rem($breadcrumb-divider-size)};
     --#{$prefix}breadcrumb-divider-gap: #{rem($breadcrumb-divider-gap)};
 
@@ -37,9 +37,9 @@
     &__item {
         &+& {
             &::before {
-                content: var(--#{$prefix}breadcrumb-divider);
+                content: $breadcrumb-divider;
                 color: var(--#{$prefix}breadcrumb-divider-color);
-                font-size: var(--#{$prefix}--#{$prefix}breadcrumb-divider-size);
+                font-size: var(--#{$prefix}breadcrumb-divider-size);
                 margin-right: var(--#{$prefix}breadcrumb-divider-gap);
             }
         }

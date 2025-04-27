@@ -14,6 +14,6 @@ $breadcrumb-active-color:               var(--#{config.$prefix}body-color) !defa
 $breadcrumb-bg:                         null !default;
 $breadcrumb-divider-color:              var(--#{config.$prefix}tertiary-text-emphasis) !default;
 $breadcrumb-divider-active-color:       var(--#{config.$prefix}tertiary-text-emphasis) !default;
-$breadcrumb-divider:                    string.quote("'>") !default;
+$breadcrumb-divider:                    "\203A" !default; // Unicode character for '›'
 $breadcrumb-divider-size:               20px !default;
 $breadcrumb-divider-gap:                12px !default;

@@ -1,0 +1,12 @@
+feat(utilities): implement Bootstrap-inspired utility generator
+
+- Add utility API for generating utility classes based on utility maps
+- Create utility generator system in 02-tools folder
+- Implement utility classes for display, flex, margin, padding, text alignment, font weight, and opacity
+- Fix breadcrumb component string interpolation issue
+- Enable all component imports in _index.scss
+
+This commit adds a comprehensive utility generator system inspired by Bootstrap 5.
+The system processes utility maps from the 99-utilities folder and generates
+responsive utility classes. It also fixes a build error related to the breadcrumb
+component divider string interpolation.

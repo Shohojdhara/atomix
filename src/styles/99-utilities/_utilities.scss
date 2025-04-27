@@ -1,0 +1,7 @@
+// Main Utilities Generator
+// This file generates all utility classes
+
+@use '../02-tools/tools.utilities' as *;
+
+// Generate all utility classes
+@include generate-all-utilities();

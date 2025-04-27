@@ -16,3 +16,6 @@
 @forward "utilities.utils";
 @forward "utilities.visibility";
 @forward "utilities.z-index";
+
+// Include the main utilities generator
+@forward "utilities";
