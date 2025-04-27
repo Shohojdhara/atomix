@@ -43,4 +43,4 @@ jobs:
           branch: gh-pages
           folder: storybook-static
           clean: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
