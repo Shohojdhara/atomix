@@ -3,12 +3,32 @@
 @use '../01-settings/settings.breakpoints' as breakpoints;
 @use 'sass:math';
 @use 'sass:map';
+@use 'sass:list';
 
 // Breakpoint viewport sizes and media queries.
 @mixin media-breakpoint-up($name, $breakpoints: breakpoints.$grid-breakpoints) {
   $min: map.get($breakpoints, $name);
   @if $min {
     @media (min-width: $min) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+// Media of at most the maximum breakpoint width
+@mixin media-breakpoint-down($name, $breakpoints: breakpoints.$grid-breakpoints) {
+  // Get the next breakpoint
+  $breakpoint-names: map.keys($breakpoints);
+  $breakpoint-index: list.index($breakpoint-names, $name);
+  
+  // If not the largest breakpoint
+  @if $breakpoint-index < list.length($breakpoint-names) {
+    $next-breakpoint: list.nth($breakpoint-names, $breakpoint-index + 1);
+    $next-value: map.get($breakpoints, $next-breakpoint);
+    
+    @media (max-width: ($next-value - 0.02)) {
       @content;
     }
   } @else {

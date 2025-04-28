@@ -1,7 +1,42 @@
 // Main Utilities Generator
 // This file generates all utility classes
 
-@use '../02-tools/tools.utilities' as *;
+@use 'sass:map';
+@use '../02-tools/_tools.utility-api' as util-api;
+@use '../01-settings/settings.breakpoints' as breakpoints;
+@use 'utilities.background' as bg;
+@use 'utilities.border' as border;
+@use 'utilities.display' as display;
+@use 'utilities.flex' as flex;
+@use 'utilities.link' as link;
+@use 'utilities.object-fit' as obj-fit;
+@use 'utilities.opacity' as opacity;
+@use 'utilities.overflow' as overflow;
+@use 'utilities.position' as position;
+@use 'utilities.shadow' as shadow;
+@use 'utilities.sizes' as sizes;
+@use 'utilities.spacing' as spacing;
+@use 'utilities.text' as text;
+@use 'utilities.visibility' as visibility;
+@use 'utilities.z-index' as z-index;
+
+// Merge all utility maps
+$utilities: ();
+$utilities: map.merge($utilities, bg.$utilities-bg);
+$utilities: map.merge($utilities, border.$utilities-border);
+$utilities: map.merge($utilities, display.$utilities-display);
+$utilities: map.merge($utilities, flex.$utilities-flex);
+$utilities: map.merge($utilities, link.$utilities-link);
+$utilities: map.merge($utilities, obj-fit.$utilities-object-fit);
+$utilities: map.merge($utilities, opacity.$utilities-opacity);
+$utilities: map.merge($utilities, overflow.$utilities-overflow);
+$utilities: map.merge($utilities, position.$utilities-position);
+$utilities: map.merge($utilities, shadow.$utilities-shadow);
+$utilities: map.merge($utilities, sizes.$utilities-sizes);
+$utilities: map.merge($utilities, spacing.$utilities-spacing);
+$utilities: map.merge($utilities, text.$utilities-text);
+$utilities: map.merge($utilities, visibility.$utilities-visibility);
+$utilities: map.merge($utilities, z-index.$utilities-z-index);
 
 // Generate all utility classes
-@include generate-all-utilities();
+@include util-api.generate-utilities($utilities, breakpoints.$grid-breakpoints);

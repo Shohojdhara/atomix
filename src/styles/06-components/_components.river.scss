@@ -1,48 +1,55 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.river' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.size' as *;
+@use '../02-tools/tools.object-fit' as *;
+@use '../02-tools/tools.grid' as grid;
+
 .c-river {
   $root: &;
 
-  --#{$prefix}river-width: #{$river-width};
-  --#{$prefix}river-padding-x: #{rem($river-padding-x)};
-  --#{$prefix}river-padding-y: #{rem($river-padding-y)};
-  --#{$prefix}river-border-radius: #{$river-border-radius};
-  --#{$prefix}river-bg: #{$river-bg};
-  --#{$prefix}river-title-font-size: #{$river-title-font-size};
-  --#{$prefix}river-text-font-size: #{$river-text-font-size};
-  --#{$prefix}river-title-font-weight: #{$river-title-font-weight};
-  --#{$prefix}river-text-font-weight: #{$river-text-font-weight};
-  --#{$prefix}river-title-color: #{$river-title-color};
-  --#{$prefix}river-text-color: #{$river-text-color};
-  --#{$prefix}river-text-margin-top: #{rem($river-text-margin-top)};
-  --#{$prefix}river-actions-margin-top: #{rem($river-actions-margin-top)};
-  --#{$prefix}river-actions-spacing-x: #{rem($river-actions-spacing-x)};
-  --#{$prefix}river-image-border-radius: #{$river-image-border-radius};
-  --#{$prefix}river-image-box-shadow: #{$river-image-box-shadow};
-  --#{$prefix}river-spacig-inner: #{rem($river-spacing-inner)};
-  --#{$prefix}river-content-max-width: #{rem($river-content-max-width)};
-  --#{$prefix}river-breakout-title-width: #{rem($river-breakout-title-width)};
-  --#{$prefix}river-breakout-text-width: #{rem($river-breakout-text-width)};
+  --#{config.$prefix}river-width: #{$river-width};
+  --#{config.$prefix}river-padding-x: #{rem($river-padding-x)};
+  --#{config.$prefix}river-padding-y: #{rem($river-padding-y)};
+  --#{config.$prefix}river-border-radius: #{$river-border-radius};
+  --#{config.$prefix}river-bg: #{$river-bg};
+  --#{config.$prefix}river-title-font-size: #{$river-title-font-size};
+  --#{config.$prefix}river-text-font-size: #{$river-text-font-size};
+  --#{config.$prefix}river-title-font-weight: #{$river-title-font-weight};
+  --#{config.$prefix}river-text-font-weight: #{$river-text-font-weight};
+  --#{config.$prefix}river-title-color: #{$river-title-color};
+  --#{config.$prefix}river-text-color: #{$river-text-color};
+  --#{config.$prefix}river-text-margin-top: #{rem($river-text-margin-top)};
+  --#{config.$prefix}river-actions-margin-top: #{rem($river-actions-margin-top)};
+  --#{config.$prefix}river-actions-spacing-x: #{rem($river-actions-spacing-x)};
+  --#{config.$prefix}river-image-border-radius: #{$river-image-border-radius};
+  --#{config.$prefix}river-image-box-shadow: #{$river-image-box-shadow};
+  --#{config.$prefix}river-spacing-inner: #{rem($river-spacing-inner)};
+  --#{config.$prefix}river-content-max-width: #{rem($river-content-max-width)};
+  --#{config.$prefix}river-breakout-title-width: #{rem($river-breakout-title-width)};
+  --#{config.$prefix}river-breakout-text-width: #{rem($river-breakout-text-width)};
 
   width: 100%;
-  max-width: var(--#{$prefix}river-width);
-  padding: var(--#{$prefix}river-padding-y) var(--#{$prefix}river-padding-x);
-  border-radius: var(--#{$prefix}river-border-radius);
-  background-color: var(--#{$prefix}river-bg);
+  max-width: var(--#{config.$prefix}river-width);
+  padding: var(--#{config.$prefix}river-padding-y) var(--#{config.$prefix}river-padding-x);
+  border-radius: var(--#{config.$prefix}river-border-radius);
+  background-color: var(--#{config.$prefix}river-bg);
 
   &__row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--#{$prefix}river-spacig-inner);
+    gap: var(--#{config.$prefix}river-spacing-inner);
 
-    @include media-breakpoint-down(md) {
-      gap: calc(var(--#{$prefix}river-spacig-inner) / 2.6);
+    @include grid.media-breakpoint-down(md) {
+      gap: calc(var(--#{config.$prefix}river-spacing-inner) / 2.6);
     }
   }
 
   &__content {
     flex: 1;
 
-    @include media-breakpoint-down(md) {
+    @include grid.media-breakpoint-down(md) {
       width: 100%;
       flex: auto;
     }
@@ -52,52 +59,52 @@
     width: 100%;
 
     &--title {
-      max-width: var(--#{$prefix}river-breakout-title-width);
+      max-width: var(--#{config.$prefix}river-breakout-title-width);
     }
 
     &--text {
-      max-width: var(--#{$prefix}river-breakout-text-width);
+      max-width: var(--#{config.$prefix}river-breakout-text-width);
     }
   }
 
   &__visual {
     flex: 1;
 
-    @include media-breakpoint-down(md) {
+    @include grid.media-breakpoint-down(md) {
       width: 100%;
       flex: auto;
     }
   }
 
   &__title {
-    color: var(--#{$prefix}river-title-color);
+    color: var(--#{config.$prefix}river-title-color);
     font-size: calc(2.15625rem + 1.5vw);
-    font-weight: var(--#{$prefix}river-title-font-weight);
+    font-weight: var(--#{config.$prefix}river-title-font-weight);
     letter-spacing: -1px;
 
-    @include media-breakpoint-up(md) {
-      font-size: var(--#{$prefix}river-title-font-size);
+    @include grid.media-breakpoint-up(md) {
+      font-size: var(--#{config.$prefix}river-title-font-size);
 
     }
   }
 
   &__text {
-    color: var(--#{$prefix}river-text-color);
-    font-size: var(--#{$prefix}river-text-font-size);
-    font-weight: var(--#{$prefix}river-text-font-weight);
-    margin-top: var(--#{$prefix}river-text-margin-top);
+    color: var(--#{config.$prefix}river-text-color);
+    font-size: var(--#{config.$prefix}river-text-font-size);
+    font-weight: var(--#{config.$prefix}river-text-font-weight);
+    margin-top: var(--#{config.$prefix}river-text-margin-top);
   }
 
   &__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--#{$prefix}river-actions-spacing-x);
-    margin-top: var(--#{$prefix}river-actions-margin-top);
+    gap: var(--#{config.$prefix}river-actions-spacing-x);
+    margin-top: var(--#{config.$prefix}river-actions-margin-top);
   }
 
   &__image-wrapper {
-    border-radius: var(--#{$prefix}river-image-border-radius);
-    box-shadow: var(--#{$prefix}river-image-box-shadow);
+    border-radius: var(--#{config.$prefix}river-image-border-radius);
+    box-shadow: var(--#{config.$prefix}river-image-box-shadow);
     overflow: hidden;
   }
 
@@ -112,12 +119,12 @@
     #{$root} {
       &__row {
         flex-direction: column;
-        gap: calc(var(--#{$prefix}river-spacig-inner) / 2);
+        gap: calc(var(--#{config.$prefix}river-spacing-inner) / 2);
       }
 
       &__content {
         text-align: center;
-        max-width: var(--#{$prefix}river-content-max-width);
+        max-width: var(--#{config.$prefix}river-content-max-width);
       }
 
       &__actions {
@@ -137,7 +144,7 @@
         justify-content: space-between;
         width: 100%;
 
-        @include media-breakpoint-down(md) {
+        @include grid.media-breakpoint-down(md) {
           flex-wrap: wrap;
         }
       }

@@ -1,3 +1,8 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.tooltip' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.size' as *;
+
 .c-tooltip {
     $root: &;
 
@@ -106,7 +111,7 @@
         top: calc(100% + var(--#{$prefix}tooltip-arrow-size));
         
         #{$root}__arrow {
-            top: calc(var(--lux-tooltip-arrow-size) / -2);
+            top: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
             bottom: auto;
         }
     }

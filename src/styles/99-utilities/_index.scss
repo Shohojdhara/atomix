@@ -13,9 +13,8 @@
 @forward "utilities.sizes";
 @forward "utilities.spacing";
 @forward "utilities.text";
-@forward "utilities.utils";
 @forward "utilities.visibility";
 @forward "utilities.z-index";
 
-// Include the main utilities generator
+// Forward the main utilities generator
 @forward "utilities";

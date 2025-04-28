@@ -1,22 +1,28 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.list' as list;
+@use '../02-tools/tools.rem' as rem;
+
 .c-list {
     $root: &;
 
-  --#{$prefix}list-color: #{$list-color};
-  --#{$prefix}list-font-size: #{$list-font-size};
-  --#{$prefix}list-font-weight: #{$list-font-weight};
-  --#{$prefix}list-item-gap: #{rem($list-item-gap)};
-  --#{$prefix}list-padding-left: #{rem($list-padding-left)};
-  --#{$prefix}list-item-dash-width: #{rem($list-item-dash-width)};
-  --#{$prefix}list-item-dash-height: #{rem($list-item-dash-height)};
+  --#{config.$prefix}list-color: #{list.$list-color};
+  --#{config.$prefix}list-font-size: #{list.$list-font-size};
+  --#{config.$prefix}list-font-weight: #{list.$list-font-weight};
+  --#{config.$prefix}list-item-gap: #{rem.rem(list.$list-item-gap)};
+  --#{config.$prefix}list-padding-left: #{rem.rem(list.$list-padding-left)};
+  --#{config.$prefix}list-item-dash-width: #{rem.rem(list.$list-item-dash-width)};
+  --#{config.$prefix}list-item-dash-height: #{rem.rem(list.$list-item-dash-height)};
 
-  padding-left: var(--#{$prefix}list-padding-left);
+  padding-left: var(--#{config.$prefix}list-padding-left);
 
   &__item {
-    color: var(--#{$prefix}list-color);
-    font-size: var(--#{$prefix}list-font-size);
-    font-weight: var(--#{$prefix}list-font-weight);
+    color: var(--#{config.$prefix}list-color);
+    font-size: var(--#{config.$prefix}list-font-size);
+    font-weight: var(--#{config.$prefix}list-font-weight);
     & + & {
-      margin-top: var(--#{$prefix}list-item-gap);
+      margin-top: var(--#{config.$prefix}list-item-gap);
     }
   }
 
@@ -26,16 +32,16 @@
 
     #{$root}__item {
         position: relative;
-        padding-left: var(--#{$prefix}list-padding-left);
+        padding-left: var(--#{config.$prefix}list-padding-left);
         
         &::before {
             content: '';
             position: absolute;
             top: 50%;
             left: 0;
-            width: var(--#{$prefix}list-item-dash-width);
-            height: var(--#{$prefix}list-item-dash-height);
-            background: var(--#{$prefix}list-color);
+            width: var(--#{config.$prefix}list-item-dash-width);
+            height: var(--#{config.$prefix}list-item-dash-height);
+            background: var(--#{config.$prefix}list-color);
             transform: translateY(-50%);
         }
     }

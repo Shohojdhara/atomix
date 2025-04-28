@@ -1,23 +1,30 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.rating' as rating;
+@use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.size' as size;
+
 .c-rating {
   $root: &;
 
-  --#{$prefix}rating-star-size: #{$rating-star-size};
-  --#{$prefix}rating-star-bg: #{$rating-star-bg};
-  --#{$prefix}rating-star-half-bg: #{$rating-star-half-bg};
-  --#{$prefix}rating-stars-gap: #{rem($rating-stars-gap)};
+  --#{config.$prefix}rating-star-size: #{rating.$rating-star-size};
+  --#{config.$prefix}rating-star-bg: #{rating.$rating-star-bg};
+  --#{config.$prefix}rating-star-half-bg: #{rating.$rating-star-half-bg};
+  --#{config.$prefix}rating-stars-gap: #{rem.rem(rating.$rating-stars-gap)};
 
   display: flex;
-  gap: var(--#{$prefix}rating-stars-gap);
+  gap: var(--#{config.$prefix}rating-stars-gap);
 
   &__star {
 
     svg {
-      @include square(var(--#{$prefix}rating-star-size));
+      @include size.square(var(--#{config.$prefix}rating-star-size));
     }
 
     &--full {
       #{$root}__star-full {
-        fill: var(--#{$prefix}rating-star-bg);
+        fill: var(--#{config.$prefix}rating-star-bg);
       }
     }
 
@@ -27,9 +34,9 @@
       }
     }
 
-    @each $color, $value in $theme-colors {
+    @each $color, $value in maps.$theme-colors {
       &--#{$color} {
-        --#{$prefix}rating-star-bg: #{$value};
+        --#{config.$prefix}rating-star-bg: #{$value};
       }
     }
   }
@@ -38,25 +45,25 @@
     display: none;
 
     rect {
-      fill: var(--#{$prefix}rating-star-bg);
+      fill: var(--#{config.$prefix}rating-star-bg);
     }
   }
 
   &__star-full {
-    stroke: var(--#{$prefix}rating-star-bg);
+    stroke: var(--#{config.$prefix}rating-star-bg);
   }
 
   &--sm {
-    --#{$prefix}rating-star-size: #{$rating-star-size-sm};
+    --#{config.$prefix}rating-star-size: #{rating.$rating-star-size-sm};
   }
 
   &--lg {
-    --#{$prefix}rating-star-size: #{$rating-star-size-lg};
+    --#{config.$prefix}rating-star-size: #{rating.$rating-star-size-lg};
   }
 
-  @each $color, $value in $theme-colors {
+  @each $color, $value in maps.$theme-colors {
     &--#{$color} {
-      --#{$prefix}rating-star-bg: #{$value};
+      --#{config.$prefix}rating-star-bg: #{$value};
     }
   }
 }

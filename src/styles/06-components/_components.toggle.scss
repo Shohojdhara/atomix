@@ -1,3 +1,10 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.toggle' as *;
+@use '../01-settings/settings.colors' as colors;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.hidden' as *;
+@use '../02-tools/tools.transition' as transition;
+
 .c-toggle {
   $root: &;
 
@@ -32,7 +39,7 @@
     user-select: none;
     cursor: pointer;
 
-    @include basic-transition();
+    @include transition.basic-transition();
 
     &::before {
       content: '';
@@ -43,7 +50,7 @@
       background: var(--#{$prefix}toggle-switch-handle-bg);
       border-radius: var(--#{$prefix}toggle-switch-handle-border-radius);
 
-      @include basic-transition();
+      @include transition.basic-transition();
     }
   }
 
@@ -85,7 +92,7 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: $overlay-2;
+        background: colors.$overlay-2;
         border-radius: var(--#{$prefix}toggle-switch-handle-border-radius);
       }
     }

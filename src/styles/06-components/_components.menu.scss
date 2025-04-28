@@ -1,51 +1,58 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.menu' as menu;
+@use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.animations' as animations;
+@use '../02-tools/tools.color-mode' as *;
 
 .c-menu {
     $root : &;
 
-    --#{$prefix}menu-min-width: #{rem($menu-min-width)};
-    --#{$prefix}menu-container-width: #{rem($menu-container-width)};
-    --#{$prefix}menu-padding-x: #{rem($menu-padding-x)};
-    --#{$prefix}menu-padding-y: #{rem($menu-padding-y)};
-    --#{$prefix}menu-bg: #{$menu-bg};
-    --#{$prefix}menu-border-radius: #{$menu-border-radius};
-    --#{$prefix}menu-box-shadow: #{$menu-box-shadow};
-    --#{$prefix}menu-items-gap: #{$menu-items-gap};
-    --#{$prefix}menu-item-padding-x: #{$menu-item-padding-x};
-    --#{$prefix}menu-item-padding-y: #{$menu-item-padding-y};
-    --#{$prefix}menu-item-inner-gap: #{$menu-item-inner-gap};
-    --#{$prefix}menu-item-color: #{$menu-item-color};
-    --#{$prefix}menu-item-font-size: #{$menu-item-font-size};
-    --#{$prefix}menu-item-font-weight: #{$menu-item-font-weight};
-    --#{$prefix}menu-item-bg: #{$menu-item-bg};
-    --#{$prefix}menu-item-bg-hover: #{$menu-item-bg-hover};
-    --#{$prefix}menu-item-bg-active: #{$menu-item-bg-active};
-    --#{$prefix}menu-item-icon-size: #{$menu-item-icon-size};
-    --#{$prefix}menu-subitem-color: #{$menu-subitem-color};
-    --#{$prefix}menu-subitem-color-active: #{$menu-subitem-color-active};
-    --#{$prefix}menu-subitem-font-weight: #{$menu-subitem-font-weight};
-    --#{$prefix}menu-subitem-font-weight-active: #{$menu-subitem-font-weight-active};
-    --#{$prefix}menu-mega-padding-x: #{rem($menu-mega-padding-x)};
-    --#{$prefix}menu-mega-padding-y: #{rem($menu-mega-padding-y)};
-    --#{$prefix}menu-mega-grid-gap:  #{rem($menu-mega-grid-gap)};
-    --#{$prefix}menu-mega-header-title-font-size: #{$menu-mega-header-title-font-size};
-    --#{$prefix}menu-mega-header-title-font-weight: #{$menu-mega-header-title-font-weight};
+    --#{config.$prefix}menu-min-width: #{rem.rem(menu.$menu-min-width)};
+    --#{config.$prefix}menu-container-width: #{rem.rem(menu.$menu-container-width)};
+    --#{config.$prefix}menu-padding-x: #{rem.rem(menu.$menu-padding-x)};
+    --#{config.$prefix}menu-padding-y: #{rem.rem(menu.$menu-padding-y)};
+    --#{config.$prefix}menu-bg: #{menu.$menu-bg};
+    --#{config.$prefix}menu-border-radius: #{menu.$menu-border-radius};
+    --#{config.$prefix}menu-box-shadow: #{menu.$menu-box-shadow};
+    --#{config.$prefix}menu-items-gap: #{menu.$menu-items-gap};
+    --#{config.$prefix}menu-item-padding-x: #{menu.$menu-item-padding-x};
+    --#{config.$prefix}menu-item-padding-y: #{menu.$menu-item-padding-y};
+    --#{config.$prefix}menu-item-inner-gap: #{menu.$menu-item-inner-gap};
+    --#{config.$prefix}menu-item-color: #{menu.$menu-item-color};
+    --#{config.$prefix}menu-item-font-size: #{menu.$menu-item-font-size};
+    --#{config.$prefix}menu-item-font-weight: #{menu.$menu-item-font-weight};
+    --#{config.$prefix}menu-item-bg: #{menu.$menu-item-bg};
+    --#{config.$prefix}menu-item-bg-hover: #{menu.$menu-item-bg-hover};
+    --#{config.$prefix}menu-item-bg-active: #{menu.$menu-item-bg-active};
+    --#{config.$prefix}menu-item-icon-size: #{menu.$menu-item-icon-size};
+    --#{config.$prefix}menu-subitem-color: #{menu.$menu-subitem-color};
+    --#{config.$prefix}menu-subitem-color-active: #{menu.$menu-subitem-color-active};
+    --#{config.$prefix}menu-subitem-font-weight: #{menu.$menu-subitem-font-weight};
+    --#{config.$prefix}menu-subitem-font-weight-active: #{menu.$menu-subitem-font-weight-active};
+    --#{config.$prefix}menu-mega-padding-x: #{rem.rem(menu.$menu-mega-padding-x)};
+    --#{config.$prefix}menu-mega-padding-y: #{rem.rem(menu.$menu-mega-padding-y)};
+    --#{config.$prefix}menu-mega-grid-gap: #{rem.rem(menu.$menu-mega-grid-gap)};
+    --#{config.$prefix}menu-mega-header-title-font-size: #{menu.$menu-mega-header-title-font-size};
+    --#{config.$prefix}menu-mega-header-title-font-weight: #{menu.$menu-mega-header-title-font-weight};
 
     display: inline-block;
-    min-width: var(--#{$prefix}menu-min-width);
-    padding: var(--#{$prefix}menu-item-padding-y) var(--#{$prefix}menu-item-padding-x);
-    background-color: var(--#{$prefix}menu-bg);
-    border-radius: var(--#{$prefix}menu-border-radius);
-    box-shadow: var(--#{$prefix}menu-box-shadow);
+    min-width: var(--#{config.$prefix}menu-min-width);
+    padding: var(--#{config.$prefix}menu-item-padding-y) var(--#{config.$prefix}menu-item-padding-x);
+    background-color: var(--#{config.$prefix}menu-bg);
+    border-radius: var(--#{config.$prefix}menu-border-radius);
+    box-shadow: var(--#{config.$prefix}menu-box-shadow);
     z-index: 5;
 
     &__container {
         width: 100%;
-        max-width: var(--#{$prefix}menu-container-width);
+        max-width: var(--#{config.$prefix}menu-container-width);
         margin: {
             left: auto;
             right: auto;
         };
-        padding: 0 var(--#{$prefix}menu-mega-padding-x);
+        padding: 0 var(--#{config.$prefix}menu-mega-padding-x);
     }
     
     &__list {
@@ -55,9 +62,8 @@
     }
 
     &__item {
-
         &+& {
-            margin-top: var(--#{$prefix}menu-items-gap);
+            margin-top: var(--#{config.$prefix}menu-items-gap);
         }
 
         &--haschildren {
@@ -69,7 +75,7 @@
                 left: 100%;
                 visibility: hidden;
                 opacity: 0;
-                @include basic-transition();
+                @include animations.basic-transition();
             }
 
             &:hover {
@@ -84,28 +90,28 @@
     &__link {
         display: flex;
         align-items: center;
-        gap: var(--#{$prefix}menu-item-inner-gap);
-        padding: var(--#{$prefix}menu-item-padding-y) var(--#{$prefix}menu-item-padding-x);
-        color: var(--#{$prefix}menu-item-color);
-        font-size: var(--#{$prefix}menu-item-font-size);
-        font-weight: var(--#{$prefix}menu-item-font-weight);
-        background-color: var(--#{$prefix}menu-item-bg);
-        border-radius: $border-radius-xl;
+        gap: var(--#{config.$prefix}menu-item-inner-gap);
+        padding: var(--#{config.$prefix}menu-item-padding-y) var(--#{config.$prefix}menu-item-padding-x);
+        color: var(--#{config.$prefix}menu-item-color);
+        font-size: var(--#{config.$prefix}menu-item-font-size);
+        font-weight: var(--#{config.$prefix}menu-item-font-weight);
+        background-color: var(--#{config.$prefix}menu-item-bg);
+        border-radius: var(--#{config.$prefix}menu-border-radius);
         cursor: pointer;
-        @include basic-transition();
+        @include animations.basic-transition();
 
         &:hover {
-            color: var(--#{$prefix}menu-item-color);
-            background-color: var(--#{$prefix}menu-item-bg-hover);
+            color: var(--#{config.$prefix}menu-item-color);
+            background-color: var(--#{config.$prefix}menu-item-bg-hover);
         }
 
         &:focus, &:active, &.is-active {
-            background-color: var(--#{$prefix}menu-item-bg-active);
+            background-color: var(--#{config.$prefix}menu-item-bg-active);
         }
     }
 
     &__icon {
-        font-size: var(--#{$prefix}menu-item-font-size);
+        font-size: var(--#{config.$prefix}menu-item-icon-size);
     }
 
     &__toggle {
@@ -115,8 +121,7 @@
     
     &__toggle-icon {
         margin-left: auto;
-
-        @include basic-transition();
+        @include animations.basic-transition();
     }
 
     &__subitems {
@@ -126,84 +131,79 @@
     &__subitems-wrapper {
         height: 0px;
         overflow: hidden;
-
-        @include basic-transition();
+        @include animations.basic-transition();
     }
 
     &__subitems-list {
         list-style: none;
         margin-bottom: 0;
-        padding-left: rem(23px);
+        padding-left: rem.rem(23px);
     }
-
-    // &__subitem {
-
-    // }
 
     &__subitem-link {
         display: flex;
         align-items: center;
-        gap: var(--#{$prefix}menu-item-inner-gap);
-        padding: var(--#{$prefix}menu-item-padding-y) var(--#{$prefix}menu-item-padding-x);
-        color: var(--#{$prefix}menu-subitem-color);
-        font-size: var(--#{$prefix}menu-item-font-size);
-        font-weight: var(--#{$prefix}menu-subitem-font-weight);
-        @include basic-transition();
+        gap: var(--#{config.$prefix}menu-item-inner-gap);
+        padding: var(--#{config.$prefix}menu-item-padding-y) var(--#{config.$prefix}menu-item-padding-x);
+        color: var(--#{config.$prefix}menu-subitem-color);
+        font-size: var(--#{config.$prefix}menu-item-font-size);
+        font-weight: var(--#{config.$prefix}menu-subitem-font-weight);
+        @include animations.basic-transition();
 
         &:hover {
-            color: var(--#{$prefix}primary);
+            color: var(--#{config.$prefix}primary);
         }
 
         &:focus, &:active, &.is-active {
-            color: var(--#{$prefix}menu-subitem-color-active);
-            font-weight: var(--#{$prefix}menu-subitem-font-weight-active);
+            color: var(--#{config.$prefix}menu-subitem-color-active);
+            font-weight: var(--#{config.$prefix}menu-subitem-font-weight-active);
         }
     }
 
     &__grid {
-        --#{$prefix}gutter-x: var(--#{$prefix}menu-mega-grid-gap);
+        --#{config.$prefix}gutter-x: var(--#{config.$prefix}menu-mega-grid-gap);
     }
 
     &__header {
         display: flex;
         align-items: center;
-        gap: var(--#{$prefix}menu-item-inner-gap);
-        padding:  0 var(--#{$prefix}menu-item-padding-y) var(--#{$prefix}menu-item-padding-x) var(--#{$prefix}menu-item-padding-x);
-        margin-bottom: var(--#{$prefix}menu-item-padding-y);
-        border-bottom: 1px solid var(--#{$prefix}primary-border-subtle);
+        gap: var(--#{config.$prefix}menu-item-inner-gap);
+        padding:  0 var(--#{config.$prefix}menu-item-padding-y) var(--#{config.$prefix}menu-item-padding-x) var(--#{config.$prefix}menu-item-padding-x);
+        margin-bottom: var(--#{config.$prefix}menu-item-padding-y);
+        border-bottom: 1px solid var(--#{config.$prefix}primary-border-subtle);
     }
 
     &__header-title {
-        color: var(--#{$prefix}menu-item-color);
-        font-size: var(--#{$prefix}menu-mega-header-title-font-size);
-        font-weight: var(--#{$prefix}menu-mega-header-title-font-weight);
+        color: var(--#{config.$prefix}menu-item-color);
+        font-size: var(--#{config.$prefix}menu-mega-header-title-font-size);
+        font-weight: var(--#{config.$prefix}menu-mega-header-title-font-weight);
     }
 
     &__header-icon {
-        font-size: rem(24px);
+        font-size: rem.rem(24px);
     }
 
     &__content-title {
-        color: var(--#{$prefix}menu-item-color);
-        font-size: var(--#{$prefix}menu-item-font-size);
-        font-weight: var(--#{$prefix}menu-item-font-weight);
+        color: var(--#{config.$prefix}menu-item-color);
+        font-size: var(--#{config.$prefix}menu-item-font-size);
+        font-weight: var(--#{config.$prefix}menu-item-font-weight);
     }
 
     &__content-text {
-        color: var(--#{$prefix}menu-subitem-color);
-        font-size: $font-size-base;
-        margin-top: var(--#{$prefix}menu-items-gap);
+        color: var(--#{config.$prefix}menu-subitem-color);
+        font-size: var(--#{config.$prefix}menu-item-font-size);
+        margin-top: var(--#{config.$prefix}menu-items-gap);
     }
 
     &__content-menu {
         height: 100%;
-        padding-left: var(--#{$prefix}menu-mega-grid-gap);
-        border-left: 1px solid var(--#{$prefix}primary-border-subtle);
+        padding-left: var(--#{config.$prefix}menu-mega-grid-gap);
+        border-left: 1px solid var(--#{config.$prefix}primary-border-subtle);
     }
 
     &__content-menu-title {
-        color: var(--#{$prefix}menu-subitem-color);
-        font-size: $font-size-base;
+        color: var(--#{config.$prefix}menu-subitem-color);
+        font-size: var(--#{config.$prefix}menu-item-font-size);
     }
 
     &__content-menu-list {
@@ -212,25 +212,23 @@
     }
 
     &__content-menu-item {
-        margin-top: rem(12px);
+        margin-top: rem.rem(12px);
     }
 
     &__content-menu-link {
-        color: var(--#{$prefix}menu-item-color);
-        font-size: var(--#{$prefix}menu-item-font-size);
-        font-weight: var(--#{$prefix}menu-item-font-weight);
+        color: var(--#{config.$prefix}menu-item-color);
+        font-size: var(--#{config.$prefix}menu-item-font-size);
+        font-weight: var(--#{config.$prefix}menu-item-font-weight);
 
         &:hover {
-            color: var(--#{$prefix}menu-item-color);
+            color: var(--#{config.$prefix}menu-item-color);
         }
     }
 
     &--mega {
         width: 100%;
         min-height: auto;
-        padding: var(--#{$prefix}menu-mega-padding-y) 0;
+        padding: var(--#{config.$prefix}menu-mega-padding-y) 0;
         border-radius: 0px;
     }
-   
-
 }

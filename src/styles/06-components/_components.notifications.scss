@@ -1,103 +1,109 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.notifications' as notifications;
+@use '../02-tools/tools.rem' as rem;
+
 .c-notification {
   $root: &;
 
-  --#{$prefix}notification-width: #{$notification-width};
-  --#{$prefix}notification-padding-x: #{rem($notification-padding-x)};
-  --#{$prefix}notification-padding-y: #{rem($notification-padding-y)};
-  --#{$prefix}notification-tost-padding-x: #{rem($notification-tost-padding-x)};
-  --#{$prefix}notification-tost-padding-y: #{rem($notification-tost-padding-y)};
-  --#{$prefix}notification-bg: #{$notification-bg};
-  --#{$prefix}notification-border-radius: #{$notification-border-radius};
-  --#{$prefix}notification-border-color: #{$notification-border-color};
-  --#{$prefix}notification-border-witdh: #{$notification-border-width};
-  --#{$prefix}notification-title-font-size: #{$notification-title-font-size};
-  --#{$prefix}notification-title-font-weight: #{$notification-title-font-weight};
-  --#{$prefix}notification-title-color: #{$notification-title-color};
-  --#{$prefix}notification-text-font-size: #{$notification-text-font-size};
-  --#{$prefix}notification-text-font-weight: #{$notification-text-font-weight};
-  --#{$prefix}notification-text-color: #{$notification-text-color};
-  --#{$prefix}notification-message-spacer: #{rem($notification-message-spacer)};
-  --#{$prefix}notification-icon-size: #{$notification-icon-size};
-  --#{$prefix}notification-icon-color: #{$notification-icon-color};
-  --#{$prefix}notification-close-btn-size: #{$notification-close-btn-size};
-  --#{$prefix}notification-actions-spacer: #{rem($notification-actions-spacer)};
-  --#{$prefix}notification-actions-spacer-y: #{rem($notification-actions-spacer-y)};
-  --#{$prefix}notification-toast-bg: #{$notification-toast-bg};
-  --#{$prefix}notification-box-shadow: #{$notification-box-shadow};
+  --#{config.$prefix}notification-width: #{notifications.$notification-width};
+  --#{config.$prefix}notification-padding-x: #{rem.rem(notifications.$notification-padding-x)};
+  --#{config.$prefix}notification-padding-y: #{rem.rem(notifications.$notification-padding-y)};
+  --#{config.$prefix}notification-tost-padding-x: #{rem.rem(notifications.$notification-tost-padding-x)};
+  --#{config.$prefix}notification-tost-padding-y: #{rem.rem(notifications.$notification-tost-padding-y)};
+  --#{config.$prefix}notification-bg: #{notifications.$notification-bg};
+  --#{config.$prefix}notification-border-radius: #{notifications.$notification-border-radius};
+  --#{config.$prefix}notification-border-color: #{notifications.$notification-border-color};
+  --#{config.$prefix}notification-border-witdh: #{notifications.$notification-border-width};
+  --#{config.$prefix}notification-title-font-size: #{notifications.$notification-title-font-size};
+  --#{config.$prefix}notification-title-font-weight: #{notifications.$notification-title-font-weight};
+  --#{config.$prefix}notification-title-color: #{notifications.$notification-title-color};
+  --#{config.$prefix}notification-text-font-size: #{notifications.$notification-text-font-size};
+  --#{config.$prefix}notification-text-font-weight: #{notifications.$notification-text-font-weight};
+  --#{config.$prefix}notification-text-color: #{notifications.$notification-text-color};
+  --#{config.$prefix}notification-message-spacer: #{rem.rem(notifications.$notification-message-spacer)};
+  --#{config.$prefix}notification-icon-size: #{notifications.$notification-icon-size};
+  --#{config.$prefix}notification-icon-color: #{notifications.$notification-icon-color};
+  --#{config.$prefix}notification-close-btn-size: #{notifications.$notification-close-btn-size};
+  --#{config.$prefix}notification-actions-spacer: #{rem.rem(notifications.$notification-actions-spacer)};
+  --#{config.$prefix}notification-actions-spacer-y: #{rem.rem(notifications.$notification-actions-spacer-y)};
+  --#{config.$prefix}notification-toast-bg: #{notifications.$notification-toast-bg};
+  --#{config.$prefix}notification-box-shadow: #{notifications.$notification-box-shadow};
 
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   width: 100%;
-  max-width: var(--#{$prefix}notification-width);
-  gap: var(--#{$prefix}notification-actions-spacer);
-  padding: var(--#{$prefix}notification-padding-y)
-    var(--#{$prefix}notification-padding-x);
-  background: var(--#{$prefix}notification-bg);
-  border-radius: var(--#{$prefix}notification-border-radius);
-  border: var(--#{$prefix}notification-border-witdh) solid
-    var(--#{$prefix}notification-border-color);
+  max-width: var(--#{config.$prefix}notification-width);
+  gap: var(--#{config.$prefix}notification-actions-spacer);
+  padding: var(--#{config.$prefix}notification-padding-y)
+    var(--#{config.$prefix}notification-padding-x);
+  background: var(--#{config.$prefix}notification-bg);
+  border-radius: var(--#{config.$prefix}notification-border-radius);
+  border: var(--#{config.$prefix}notification-border-witdh) solid
+    var(--#{config.$prefix}notification-border-color);
   transition: .3s cubic-bezier(0.075, 0.82, 0.165, 1);
 
   &__content {
     display: flex;
-    gap: var(--#{$prefix}notification-message-spacer);
+    gap: var(--#{config.$prefix}notification-message-spacer);
   }
 
   &__icon {
-    color: var(--#{$prefix}notification-icon-color);
-    font-size: var(--#{$prefix}notification-icon-size);
+    color: var(--#{config.$prefix}notification-icon-color);
+    font-size: var(--#{config.$prefix}notification-icon-size);
   }
 
   &__title {
-    color: var(--#{$prefix}notification-title-color);
-    font-size: var(--#{$prefix}notification-title-font-size);
-    font-weight: var(--#{$prefix}notification-title-font-weight);
+    color: var(--#{config.$prefix}notification-title-color);
+    font-size: var(--#{config.$prefix}notification-title-font-size);
+    font-weight: var(--#{config.$prefix}notification-title-font-weight);
   }
 
   &__text {
-    color: var(--#{$prefix}notification-text-color);
-    font-size: var(--#{$prefix}notification-text-font-size);
-    font-weight: var(--#{$prefix}notification-text-font-weight);
+    color: var(--#{config.$prefix}notification-text-color);
+    font-size: var(--#{config.$prefix}notification-text-font-size);
+    font-weight: var(--#{config.$prefix}notification-text-font-weight);
   }
 
   &__actions {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--#{$prefix}notification-actions-spacer);
+    gap: var(--#{config.$prefix}notification-actions-spacer);
   }
 
   &__close-btn {
     display: inline-flex;
-    color: var(--#{$prefix}notification-title-color);
+    color: var(--#{config.$prefix}notification-title-color);
     border: none;
     outline: none;
     background: none;
-    padding: rem(4px);
-    font-size: var(--#{$prefix}notification-close-btn-size);
+    padding: rem.rem(4px);
+    font-size: var(--#{config.$prefix}notification-close-btn-size);
   }
 
   &--oneline {
     #{$root} {
       &__message {
         display: flex;
-        gap: var(--#{$prefix}notification-message-spacer);
+        gap: var(--#{config.$prefix}notification-message-spacer);
       }
     }
   }
 
   &--toast {
     position: relative;
-    max-width: rem(300px);
-    padding: var(--#{$prefix}notification-tost-padding-y) var(--#{$prefix}notification-tost-padding-x);
+    max-width: rem.rem(300px);
+    padding: var(--#{config.$prefix}notification-tost-padding-y) var(--#{config.$prefix}notification-tost-padding-x);
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
     border: none;
-    background-color: var(--#{$prefix}notification-toast-bg);
-    box-shadow: var(--#{$prefix}notification-box-shadow);
+    background-color: var(--#{config.$prefix}notification-toast-bg);
+    box-shadow: var(--#{config.$prefix}notification-box-shadow);
 
     #{$root} {
       &__content {
@@ -105,40 +111,40 @@
       }
 
       &__actions {
-        padding-left: calc(var(--#{$prefix}notification-icon-size) + var(--#{$prefix}notification-message-spacer));
-        margin-top: var(--#{$prefix}notification-actions-spacer-y);
+        padding-left: calc(var(--#{config.$prefix}notification-icon-size) + var(--#{config.$prefix}notification-message-spacer));
+        margin-top: var(--#{config.$prefix}notification-actions-spacer-y);
       }
 
       &__close-btn {
         position: absolute;
-        top: var(--#{$prefix}notification-tost-padding-y);
-        right: var(--#{$prefix}notification-tost-padding-x);
+        top: var(--#{config.$prefix}notification-tost-padding-y);
+        right: var(--#{config.$prefix}notification-tost-padding-x);
       }
     }
   }
 
-  @each $color, $value in $theme-colors {
+  @each $color, $value in maps.$theme-colors {
     &--#{$color} {
       @if($color == 'primary') {
-        --#{$prefix}notification-bg: var(--#{$prefix}brand-bg-subtle);
-        --#{$prefix}notification-border-color: var(--#{$prefix}brand-border-subtle);
-        --#{$prefix}notification-icon-color: var(--#{$prefix}brand-text-emphasis);
+        --#{config.$prefix}notification-bg: var(--#{config.$prefix}brand-bg-subtle);
+        --#{config.$prefix}notification-border-color: var(--#{config.$prefix}brand-border-subtle);
+        --#{config.$prefix}notification-icon-color: var(--#{config.$prefix}brand-text-emphasis);
       } @else if($color == 'light') {
-        --#{$prefix}notification-title-color: var(--#{$prefix}dark);
-        --#{$prefix}notification-text-color: var(--#{$prefix}dark);
-        --#{$prefix}notification-bg: var(--#{$prefix}light);
-        --#{$prefix}notification-border-color: var(--#{$prefix}primary-border-subtle);
-        --#{$prefix}notification-icon-color: var(--#{$prefix}tertiary-text-emphasis);
+        --#{config.$prefix}notification-title-color: var(--#{config.$prefix}dark);
+        --#{config.$prefix}notification-text-color: var(--#{config.$prefix}dark);
+        --#{config.$prefix}notification-bg: var(--#{config.$prefix}light);
+        --#{config.$prefix}notification-border-color: var(--#{config.$prefix}primary-border-subtle);
+        --#{config.$prefix}notification-icon-color: var(--#{config.$prefix}tertiary-text-emphasis);
       }@else if($color == 'dark') {
-        --#{$prefix}notification-title-color: var(--#{$prefix}light);
-        --#{$prefix}notification-text-color: #{$gray-4};
-        --#{$prefix}notification-bg: var(--#{$prefix}dark);
-        --#{$prefix}notification-border-color: var(--#{$prefix}primary-border-subtle);
-        --#{$prefix}notification-icon-color: var(--#{$prefix}light);
+        --#{config.$prefix}notification-title-color: var(--#{config.$prefix}light);
+        --#{config.$prefix}notification-text-color: #{$gray-4};
+        --#{config.$prefix}notification-bg: var(--#{config.$prefix}dark);
+        --#{config.$prefix}notification-border-color: var(--#{config.$prefix}primary-border-subtle);
+        --#{config.$prefix}notification-icon-color: var(--#{config.$prefix}light);
       } @else {
-        --#{$prefix}notification-bg: var(--#{$prefix}#{$color}-bg-subtle);
-        --#{$prefix}notification-border-color: var(--#{$prefix}#{$color}-border-subtle);
-        --#{$prefix}notification-icon-color: var(--#{$prefix}#{$color}-text-emphasis);
+        --#{config.$prefix}notification-bg: var(--#{config.$prefix}#{$color}-bg-subtle);
+        --#{config.$prefix}notification-border-color: var(--#{config.$prefix}#{$color}-border-subtle);
+        --#{config.$prefix}notification-icon-color: var(--#{config.$prefix}#{$color}-text-emphasis);
       }      
     }
   }

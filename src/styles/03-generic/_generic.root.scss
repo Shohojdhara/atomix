@@ -127,7 +127,7 @@ $gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255
 }
 
 @if config.$enable-dark-mode {
-  @include lux-color-mode(dark, true) {
+  @include color-mode(dark, true) {
     color-scheme: dark;
 
     --#{config.$prefix}body-color: #{colors.$body-color-dark};

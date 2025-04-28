@@ -1,20 +1,17 @@
 @use 'sass:map';
-@use "utilities.utils" as *;
 @use "../01-settings/settings.config" as config;
 
-$utilities: map.merge(
-  $utilities,
-  (
-    "shadow": (
-        property: box-shadow,
-        class: u-shadow,
-        values: (
-          null: var(--#{config.$prefix}box-shadow),
-          sm: var(--#{config.$prefix}box-shadow-sm),
-          lg: var(--#{config.$prefix}box-shadow-lg),
-          xl: var(--#{config.$prefix}box-shadow-xl),
-          none: none
-        )
-      ),
-  )
+// Define utilities for shadows
+$utilities-shadow: (
+  "shadow": (
+      property: box-shadow,
+      class: u-shadow,
+      values: (
+        null: var(--#{config.$prefix}box-shadow),
+        sm: var(--#{config.$prefix}box-shadow-sm),
+        lg: var(--#{config.$prefix}box-shadow-lg),
+        xl: var(--#{config.$prefix}box-shadow-xl),
+        none: none
+      )
+    ),
 );

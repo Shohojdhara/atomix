@@ -1,3 +1,7 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.skeleton' as *;
+@use '../01-settings/settings.border-radius' as *;
+
 .c-skeleton {
   $root: &;
 

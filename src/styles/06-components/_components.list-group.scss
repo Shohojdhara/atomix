@@ -1,16 +1,22 @@
+@use 'sass:map';
+@use '../01-settings/_settings.list-group' as *;
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../02-tools/tools.rem' as *; 
 
 .c-list-group {
 
-    --#{$prefix}list-group-width: #{$list-group-width};
-    --#{$prefix}list-group-bg: #{$list-group-bg};
-    --#{$prefix}list-group-item-padding-y: #{rem($list-group-item-padding-y)};
-    --#{$prefix}list-group-item-padding-x: #{rem($list-group-item-padding-x)};
-    --#{$prefix}list-group-item-font-size: #{$list-group-item-font-size};
-    --#{$prefix}list-group-item-color: #{$list-group-item-color};
-    --#{$prefix}list-group-item-disabled-color: #{$list-group-item-disabled-color};
-    --#{$prefix}list-group-item-border-color: #{$list-group-item-border-color};
-    --#{$prefix}list-group-item-border-width: #{$list-group-item-border-width};
-    --#{$prefix}list-group-item-bg: #{$list-group-item-bg};
+    --#{config.$prefix}list-group-width: #{$list-group-width};
+    --#{config.$prefix}list-group-bg: #{$list-group-bg};
+    --#{config.$prefix}list-group-item-padding-y: #{rem($list-group-item-padding-y)};
+    --#{config.$prefix}list-group-item-padding-x: #{rem($list-group-item-padding-x)};
+    --#{config.$prefix}list-group-item-font-size: #{$list-group-item-font-size};
+    --#{config.$prefix}list-group-item-color: #{$list-group-item-color};
+    --#{config.$prefix}list-group-item-disabled-color: #{$list-group-item-disabled-color};
+    --#{config.$prefix}list-group-item-border-color: #{$list-group-item-border-color};
+    --#{config.$prefix}list-group-item-border-width: #{$list-group-item-border-width};
+    --#{config.$prefix}list-group-item-bg: #{$list-group-item-bg};
 
 
     display: flex;
@@ -19,38 +25,38 @@
     margin-bottom: 0;
     list-style: none;
     width: 100%;
-    max-width: var(--#{$prefix}list-group-width);
-    background: var(--#{$prefix}list-group-bg);
+    max-width: var(--#{config.$prefix}list-group-width);
+    background: var(--#{config.$prefix}list-group-bg);
 
     &__item {
-        padding: var(--#{$prefix}list-group-item-padding-y) var(--#{$prefix}list-group-item-padding-x);
-        font-size: var(--#{$prefix}list-group-item-font-size);
-        color: var(--#{$prefix}list-group-item-color);
-        border-bottom: var(--#{$prefix}list-group-item-border-width) solid var(--#{$prefix}list-group-item-border-color);
-        background: var(--#{$prefix}list-group-item-bg);
+        padding: var(--#{config.$prefix}list-group-item-padding-y) var(--#{config.$prefix}list-group-item-padding-x);
+        font-size: var(--#{config.$prefix}list-group-item-font-size);
+        color: var(--#{config.$prefix}list-group-item-color);
+        border-bottom: var(--#{config.$prefix}list-group-item-border-width) solid var(--#{config.$prefix}list-group-item-border-color);
+        background: var(--#{config.$prefix}list-group-item-bg);
 
-        @each $state in map-keys($theme-colors) {
+        @each $state in map.keys(maps.$theme-colors) {
             &--#{$state} {
                 @if($state == 'light') {
-                    --#{$prefix}list-group-item-bg: var(--#{$prefix}#{$state});
+                    --#{config.$prefix}list-group-item-bg: var(--#{config.$prefix}#{$state});
                 }@else if ($state == 'dark'){
-                    --#{$prefix}list-group-item-color: var(--#{$prefix}invert-text-emphasis);
-                    --#{$prefix}list-group-item-bg: var(--#{$prefix}#{$state});
+                    --#{config.$prefix}list-group-item-color: var(--#{config.$prefix}invert-text-emphasis);
+                    --#{config.$prefix}list-group-item-bg: var(--#{config.$prefix}#{$state});
 
                     // @include color-mode('dark') {
                     //     --#{$prefix}list-group-item-color: var(--#{$prefix}body-color);
                     // }
                 }@else if($state == 'primary'){
-                    --#{$prefix}list-group-item-bg: var(--#{$prefix}brand-bg-subtle);
+                    --#{config.$prefix}list-group-item-bg: var(--#{config.$prefix}brand-bg-subtle);
                 }@else {
-                    --#{$prefix}list-group-item-bg: var(--#{$prefix}#{$state}-bg-subtle);
+                    --#{config.$prefix}list-group-item-bg: var(--#{config.$prefix}#{$state}-bg-subtle);
                 }
             }
         }
 
 
         &--disabled {
-            --#{$prefix}list-group-item-color: var(--#{$prefix}list-group-item-disabled-color);
+            --#{config.$prefix}list-group-item-color: var(--#{config.$prefix}list-group-item-disabled-color);
         }
     }
 }

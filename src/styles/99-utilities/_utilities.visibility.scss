@@ -1,15 +1,13 @@
 @use 'sass:map';
-@use 'utilities.utils' as *;
 
-$utilities: map.merge(
-  $utilities, (
-    "visibility": (
-        property: visibility,
-        class: null,
-        values: (
-          u-visible: visible,
-          u-invisible: hidden,
-        )
-      ),
-  )
+// Define utilities for visibility
+$utilities-visibility: (
+  "visibility": (
+      property: visibility,
+      class: null,
+      values: (
+        u-visible: visible,
+        u-invisible: hidden,
+      )
+    ),
 );

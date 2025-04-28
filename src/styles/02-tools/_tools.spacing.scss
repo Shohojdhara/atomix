@@ -58,13 +58,13 @@ $spacing-important: false !default;
   @if ($size == 'auto') {
     margin-left: auto #{if($spacing-important, '!important', '')};
   } @else {
-    margin-left: map-get($spacing-sizes, $size)
+    margin-left: map.get($spacing-sizes, $size)
       #{if($spacing-important, '!important', '')};
   }
 }
 
 @mixin mt($size: 1) {
-  margin-top: map-get($spacing-sizes, $size) #{if(
+  margin-top: map.get($spacing-sizes, $size) #{if(
       $spacing-important,
       '!important',
       ''
@@ -75,7 +75,7 @@ $spacing-important: false !default;
   @if ($size == 'auto') {
     margin-right: auto #{if($spacing-important, '!important', '')};
   } @else {
-    margin-right: map-get($spacing-sizes, $size)
+    margin-right: map.get($spacing-sizes, $size)
       #{if($spacing-important, '!important', '')};
   }
 }
@@ -134,7 +134,7 @@ $spacing-important: false !default;
 }
 
 @mixin pl($size: 1) {
-  padding-left: map-get($spacing-sizes, $size) #{if(
+  padding-left: map.get($spacing-sizes, $size) #{if(
       $spacing-important,
       '!important',
       ''
@@ -142,7 +142,7 @@ $spacing-important: false !default;
 }
 
 @mixin pt($size: 1) {
-  padding-top: map-get($spacing-sizes, $size) #{if(
+  padding-top: map.get($spacing-sizes, $size) #{if(
       $spacing-important,
       '!important',
       ''
@@ -150,7 +150,7 @@ $spacing-important: false !default;
 }
 
 @mixin pr($size: 1) {
-  padding-right: map-get($spacing-sizes, $size) #{if(
+  padding-right: map.get($spacing-sizes, $size) #{if(
       $spacing-important,
       '!important',
       ''
@@ -158,7 +158,7 @@ $spacing-important: false !default;
 }
 
 @mixin pb($size: 1) {
-  padding-bottom: map-get($spacing-sizes, $size) #{if(
+  padding-bottom: map.get($spacing-sizes, $size) #{if(
       $spacing-important,
       '!important',
       ''

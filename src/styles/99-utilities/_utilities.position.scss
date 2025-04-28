@@ -1,43 +1,40 @@
 @use 'sass:map';
-@use 'utilities.utils' as *;
 @use '../01-settings/settings.position' as *;
 
-$utilities: map.merge(
-  $utilities,
-  (
-    'position': (
-      property: position,
-      class: u-position,
-      values: static relative absolute fixed sticky
-    ),
-    'top': (
-      property: top,
-      class: u-top,
-      values: $position-values
-    ),
-    'bottom': (
-      property: bottom,
-      class: u-bottom,
-      values: $position-values
-    ),
-    'start': (
-      property: left,
-      class: u-start,
-      values: $position-values
-    ),
-    'end': (
-      property: right,
-      class: u-end,
-      values: $position-values
-    ),
-    'translate-middle': (
-      property: transform,
-      class: u-translate-middle,
-      values: (
-        null: translate(-50%, -50%),
-        x: translateX(-50%),
-        y: translateY(-50%)
-      )
+// Define utilities for position
+$utilities-position: (
+  'position': (
+    property: position,
+    class: u-position,
+    values: static relative absolute fixed sticky
+  ),
+  'top': (
+    property: top,
+    class: u-top,
+    values: $position-values
+  ),
+  'bottom': (
+    property: bottom,
+    class: u-bottom,
+    values: $position-values
+  ),
+  'start': (
+    property: left,
+    class: u-start,
+    values: $position-values
+  ),
+  'end': (
+    property: right,
+    class: u-end,
+    values: $position-values
+  ),
+  'translate-middle': (
+    property: transform,
+    class: u-translate-middle,
+    values: (
+      null: translate(-50%, -50%),
+      x: translateX(-50%),
+      y: translateY(-50%)
     )
   )
 );

@@ -1,4 +1,6 @@
-
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.testimonials' as *;
+@use '../02-tools/tools.rem' as *;
 
 .c-testimonial {
 

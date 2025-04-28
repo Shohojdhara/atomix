@@ -1,26 +1,10 @@
 @use '../01-settings/settings.animations' as animations;
 @use 'sass:list';
+@use 'tools.transition' as transition;
 
-@mixin basic-transition($properties: (all), $duration: animations.$transition-duration, $delay: null, $easing: animations.$easing) {
-  $transitions: ();
-
-  @each $prop in $properties {
-    $prop-value: #{$prop} #{$duration};
-
-    @if $delay != null {
-      $prop-value: #{$prop} #{$duration} #{$delay};
-    }
-
-    $prop-value: #{$prop-value} #{$easing};
-    
-    @if list.length($transitions) == 0 {
-      $transitions: $prop-value;
-    } @else {
-      $transitions: #{$transitions}, #{$prop-value};
-    }
-  }
-
-  transition: $transitions;
+// Forward basic-transition mixin for backwards compatibility
+@mixin basic-transition($property: all, $duration: 0.2s, $timing: ease-in-out, $delay: 0s) {
+  @include transition.basic-transition($property, $duration, $timing, $delay);
 }
 
 @keyframes atomix-skeleton-loading {

@@ -36,7 +36,7 @@
 
   &--lg {
      #{$root}__field {
-      @extend .c-input--lg;
+      @extend .c-input--lg !optional;
      }
   }
 
@@ -44,7 +44,7 @@
     --#{$prefix}input-group-label-font-size: #{$input-group-label-font-size-sm};
 
     #{$root}__field {
-      @extend .c-input--sm;
+      @extend .c-input--sm !optional;
     }
   }
 
@@ -52,7 +52,7 @@
     --#{$prefix}input-group-helper-text-color: var(--#{$prefix}success-text-emphasis);
 
     #{$root}__field {
-      @extend .is-success;
+      @extend .is-success !optional;
     }
   }
 
@@ -60,7 +60,7 @@
     --#{$prefix}input-group-helper-text-color: var(--#{$prefix}error-text-emphasis);
 
     #{$root}__field {
-      @extend .is-invalid;
+      @extend .is-invalid !optional;
     }
   }
 
@@ -70,7 +70,7 @@
     }
 
     #{$root}__field {
-      @extend .is-disabled;
+      @extend .is-disabled !optional;
     }
   }
 }

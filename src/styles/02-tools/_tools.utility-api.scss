@@ -28,21 +28,21 @@ $utility-defaults: (
   $values: map.get($utility, values);
 
   // If the values are a list or string, convert it to a map
-  @if type-of($values) == 'string' or type-of($values) == 'list' {
+  @if meta.type-of($values) == 'string' or meta.type-of($values) == 'list' {
     $values: zip($values, $values);
   }
 
   @each $key, $value in $values {
     $properties: map.get($utility, property);
     $property-class: map.get($utility, class);
-    $property-class: if($property-class, $property-class, nth($properties, 1));
+    $property-class: if($property-class, $property-class, list.nth($properties, 1));
 
     // Multiple properties are possible, like with borders or shadows
-    $property-class: if(type-of($property-class) == 'list', nth($property-class, 1), $property-class);
+    $property-class: if(meta.type-of($property-class) == 'list', list.nth($property-class, 1), $property-class);
 
     // State variants (hover, focus, active, etc.)
     $state: map.get($utility, state);
-    $infix: if($state, if(type-of($state) == 'string', '#{$state}#{$infix}', $infix), $infix);
+    $infix: if($state, if(meta.type-of($state) == 'string', '#{$state}#{$infix}', $infix), $infix);
 
     // Don't prefix if value key is null (e.g. with shadow-none utility)
     $class-name: if($key, '#{$property-class}-#{$key}#{$infix}', '#{$property-class}#{$infix}');
@@ -54,7 +54,7 @@ $utility-defaults: (
         }
       }
     } @else {
-      .#{map.get($utility, class)}#{$infix}-#{$key} {
+      .#{map.get($utility, class)}#{$infix}-#{"" + $key} {
         @each $property in $properties {
           #{$property}: $value if(map.get($utility, rtl), null, !important);
         }
@@ -120,7 +120,7 @@ $utility-defaults: (
   
   @each $key in $keys {
     $result: map.merge($result, (
-      $key: if($index <= length($values), nth($values, $index), null)
+      $key: if($index <= list.length($values), list.nth($values, $index), null)
     ));
     $index: $index + 1;
   }

@@ -1,3 +1,11 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.spinner' as spinner;
+@use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.size' as size;
+@use 'sass:map';
+
 @keyframes spinner {
   to {
     transform: rotate(360deg) #{'/* rtl:ignore */'};
@@ -5,35 +13,35 @@
 }
 
 .c-spinner {
-  --#{$prefix}spinner-size: #{map-get($spinner-sizes, md)};
-  --#{$prefix}spinner-background-color: #{$spinner-background-color};
-  --#{$prefix}spinner-color: #{$spinner-color};
-  --#{$prefix}spinner-border-width: #{$spinner-border-width};
-  --#{$prefix}spinner-animation-speed: #{$spinner-animation-speed};
+  --#{config.$prefix}spinner-size: #{map.get(spinner.$spinner-sizes, md)};
+  --#{config.$prefix}spinner-background-color: #{spinner.$spinner-background-color};
+  --#{config.$prefix}spinner-color: #{spinner.$spinner-color};
+  --#{config.$prefix}spinner-border-width: #{spinner.$spinner-border-width};
+  --#{config.$prefix}spinner-animation-speed: #{spinner.$spinner-animation-speed};
 
-  color: var(--#{$prefix}spinner-background-color);
+  color: var(--#{config.$prefix}spinner-background-color);
   position: relative;
-  @include square(var(--#{$prefix}spinner-size));
-  border: var(--#{$prefix}spinner-border-width) solid
-    var(--#{$prefix}spinner-color);
+  @include size.square(var(--#{config.$prefix}spinner-size));
+  border: var(--#{config.$prefix}spinner-border-width) solid
+    var(--#{config.$prefix}spinner-color);
   border-right-color: currentcolor;
   border-radius: 50%;
-  animation: var(--#{$prefix}spinner-animation-speed) ease-in-out infinite
+  animation: var(--#{config.$prefix}spinner-animation-speed) ease-in-out infinite
     spinner;
 
-  @each $size, $value in $spinner-sizes {
+  @each $size, $value in spinner.$spinner-sizes {
     &--#{$size} {
-      --#{$prefix}spinner-size: #{$value};
+      --#{config.$prefix}spinner-size: #{$value};
     }
   }
 
-  @each $color, $value in $theme-colors {
+  @each $color, $value in maps.$theme-colors {
     &--#{$color} {
       @if ($color == 'secondary') {
-        --#{$prefix}spinner-background-color: var(--#{$prefix}body-bg);
+        --#{config.$prefix}spinner-background-color: var(--#{config.$prefix}body-bg);
       }
 
-      --#{$prefix}spinner-color: var(--#{$prefix}#{$color});
+      --#{config.$prefix}spinner-color: var(--#{config.$prefix}#{$color});
     }
   }
 }

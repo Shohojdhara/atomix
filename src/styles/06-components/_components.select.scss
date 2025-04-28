@@ -1,3 +1,9 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.select' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.transition' as transition;
+@use '../02-tools/tools.hidden-visually' as *;
+
 .c-select {
   $root: &;
 
@@ -31,7 +37,7 @@
   --#{$prefix}select-item-bg-hover: #{$select-item-bg-hover};
 
   select {
-    @include  hidden-visually();
+    @include visually-hidden();
   }
 
   position: relative;
@@ -48,7 +54,7 @@
     border-radius: var(--#{$prefix}select-border-radius);
     cursor: pointer;
     
-    @include basic-transition();
+    @include transition.basic-transition();
 
     &:hover {
         border-color: var(--#{$prefix}select-border-color-hover);
@@ -63,7 +69,7 @@
     right: var(--#{$prefix}select-padding-x);
     transform-origin: center center;
 
-    @include basic-transition();
+    @include transition.basic-transition();
   }
 
   &__body {
@@ -76,7 +82,7 @@
     border-radius: var(--#{$prefix}select-panel-border-radius);
     box-shadow: var(--#{$prefix}select-panel-box-shadow);
     overflow: hidden;
-    @include basic-transition;
+    @include transition.basic-transition;
     z-index: 99;
   }
 
@@ -97,7 +103,7 @@
     color: var(--#{$prefix}select-item-color);
     background-color: var(--#{$prefix}select-item-bg);
     border-radius: var(--#{$prefix}select-item-border-radius);
-    @include basic-transition;
+    @include transition.basic-transition;
 
     &,&>* {
         cursor: pointer;

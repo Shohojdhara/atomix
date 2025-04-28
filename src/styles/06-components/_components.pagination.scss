@@ -1,22 +1,26 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.pagination' as pagination;
+@use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.size' as size;
+
 .c-pagination {
   $root: &;
 
-  --#{$prefix}pagination-padding-x: #{rem($pagination-padding-x)};
-  --#{$prefix}pagination-padding-y: #{rem($pagination-padding-y)};
-  --#{$prefix}pagination-size: #{rem($pagination-size)};
-  --#{$prefix}pagination-font-size: #{$pagination-font-size};
-  --#{$prefix}pagination-color: #{$pagination-color};
-  --#{$prefix}pagination-bg: #{$pagination-bg};
-  --#{$prefix}pagination-focus-border-color: #{$pagination-focus-border-color};
-  --#{$prefix}pagination-focus-border-width: #{$pagination-focus-border-width};
-  --#{$prefix}pagination-hover-color: #{$pagination-hover-color};
-  --#{$prefix}pagination-hover-bg: #{$pagination-hover-bg};
-  --#{$prefix}pagination-active-color: #{$pagination-active-color};
-  --#{$prefix}pagination-active-bg: #{$pagination-active-bg};
-  --#{$prefix}pagination-disabled-color: #{$pagination-disabled-color};
-  --#{$prefix}pagination-disabled-bg: #{$pagination-disabled-bg};
-  --#{$prefix}pagination-border-color: #{$pagination-border-color};
-  --#{$prefix}pagination-border-radius: #{$pagination-border-radius};
+  --#{config.$prefix}pagination-padding-x: #{rem.rem(pagination.$pagination-padding-x)};
+  --#{config.$prefix}pagination-padding-y: #{rem.rem(pagination.$pagination-padding-y)};
+  --#{config.$prefix}pagination-size: #{rem.rem(pagination.$pagination-size)};
+  --#{config.$prefix}pagination-font-size: #{pagination.$pagination-font-size};
+  --#{config.$prefix}pagination-color: #{pagination.$pagination-color};
+  --#{config.$prefix}pagination-bg: #{pagination.$pagination-bg};
+  --#{config.$prefix}pagination-focus-border-color: #{pagination.$pagination-focus-border-color};
+  --#{config.$prefix}pagination-focus-border-width: #{pagination.$pagination-focus-border-width};
+  --#{config.$prefix}pagination-hover-color: #{pagination.$pagination-hover-color};
+  --#{config.$prefix}pagination-hover-bg: #{pagination.$pagination-hover-bg};
+  --#{config.$prefix}pagination-active-color: #{pagination.$pagination-active-color};
+  --#{config.$prefix}pagination-active-bg: #{pagination.$pagination-active-bg};
+  --#{config.$prefix}pagination-disabled-color: #{pagination.$pagination-disabled-color};
+  --#{config.$prefix}pagination-disabled-bg: #{pagination.$pagination-disabled-bg};
+  --#{config.$prefix}pagination-border-radius: #{pagination.$pagination-border-radius};
 
   display: flex;
   align-items: center;
@@ -27,34 +31,34 @@
   &__item {
     display: flex;
     align-items: center;
-    @include square(var(--#{$prefix}pagination-size));
+    @include size.square(var(--#{config.$prefix}pagination-size));
 
     overflow: hidden;
   }
 
   &__link {
-    @include square(100%);
+    @include size.square(100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--#{$prefix}pagination-color);
-    font-size: var(--#{$prefix}pagination-font-size);
-    padding: var(--#{$prefix}pagination-padding-y)
-      var(--#{$prefix}pagination-padding-x);
-    background-color: var(--#{$prefix}pagination-bg);
-    border-radius: var(--#{$prefix}pagination-border-radius);
+    color: var(--#{config.$prefix}pagination-color);
+    font-size: var(--#{config.$prefix}pagination-font-size);
+    padding: var(--#{config.$prefix}pagination-padding-y)
+      var(--#{config.$prefix}pagination-padding-x);
+    background-color: var(--#{config.$prefix}pagination-bg);
+    border-radius: var(--#{config.$prefix}pagination-border-radius);
 
 
     &:hover {
-      --#{$prefix}pagination-color: var(--#{$prefix}pagination-hover-color);
-      --#{$prefix}pagination-bg: var(--#{$prefix}pagination-hover-bg);
+      --#{config.$prefix}pagination-color: var(--#{config.$prefix}pagination-hover-color);
+      --#{config.$prefix}pagination-bg: var(--#{config.$prefix}pagination-hover-bg);
     }
 
 
     &:active,
     &.is-active {
-      --#{$prefix}pagination-color: var(--#{$prefix}pagination-active-color);
-      --#{$prefix}pagination-bg: var(--#{$prefix}pagination-active-bg);
+      --#{config.$prefix}pagination-color: var(--#{config.$prefix}pagination-active-color);
+      --#{config.$prefix}pagination-bg: var(--#{config.$prefix}pagination-active-bg);
     }
 
     &.is-active {
@@ -62,23 +66,23 @@
     }
 
     &.is-disabled {
-      --#{$prefix}pagination-color: var(--#{$prefix}pagination-disabled-color);
-      --#{$prefix}pagination-bg: var(--#{$prefix}pagination-disabled-bg);
+      --#{config.$prefix}pagination-color: var(--#{config.$prefix}pagination-disabled-color);
+      --#{config.$prefix}pagination-bg: var(--#{config.$prefix}pagination-disabled-bg);
       pointer-events: none;
     }
 
     &:focus-visible {
       outline: none;
       border-radius: 0;
-      border: var(--#{$prefix}pagination-focus-border-width) solid var(--#{$prefix}pagination-focus-border-color);
+      border: var(--#{config.$prefix}pagination-focus-border-width) solid var(--#{config.$prefix}pagination-focus-border-color);
     }
   }
 
   &--sm {
-    --#{$prefix}pagination-size: #{$pagination-size-sm};
+    --#{config.$prefix}pagination-size: #{pagination.$pagination-size-sm};
   }
 
   &--lg {
-    --#{$prefix}pagination-size: #{$pagination-size-lg};
+    --#{config.$prefix}pagination-size: #{pagination.$pagination-size-lg};
   }
 }

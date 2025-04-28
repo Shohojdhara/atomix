@@ -1,17 +1,24 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.nav' as *;
+@use '../01-settings/settings.border-radius' as *;
+@use '../02-tools/tools.transition' as transition;
+@use '../02-tools/tools.event' as *;
+@use '../02-tools/tools.rem' as *;
+
 .c-nav {
   $root: &;
 
-  --#{$prefix}nav-item-gap-x: #{rem($lux-nav-item-gap-x)};
-  --#{$prefix}nav-link-padding-x: #{rem($lux-nav-link-padding-x)};
-  --#{$prefix}nav-link-padding-y: #{rem($lux-nav-link-padding-y)};
-  --#{$prefix}nav-link-font-size: #{$lux-nav-link-font-size};
-  --#{$prefix}nav-link-font-weight: #{$lux-nav-link-font-weight};
-  --#{$prefix}nav-link-color: #{$lux-nav-link-color};
-  --#{$prefix}nav-link-hover-color: #{$lux-nav-link-hover-color};
-  --#{$prefix}nav-link-bg: #{$lux-nav-link-bg};
-  --#{$prefix}nav-link-hover-bg: #{$lux-nav-link-hover-bg};
-  --#{$prefix}nav-link-inner-gap: #{rem($lux-nav-link-inner-gap)};
-  --#{$prefix}nav-icon-size: #{$lux-nav-icon-size};
+  --#{$prefix}nav-item-gap-x: #{rem($nav-item-gap-x)};
+  --#{$prefix}nav-link-padding-x: #{rem($nav-link-padding-x)};
+  --#{$prefix}nav-link-padding-y: #{rem($nav-link-padding-y)};
+  --#{$prefix}nav-link-font-size: #{$nav-link-font-size};
+  --#{$prefix}nav-link-font-weight: #{$nav-link-font-weight};
+  --#{$prefix}nav-link-color: #{$nav-link-color};
+  --#{$prefix}nav-link-hover-color: #{$nav-link-hover-color};
+  --#{$prefix}nav-link-bg: #{$nav-link-bg};
+  --#{$prefix}nav-link-hover-bg: #{$nav-link-hover-bg};
+  --#{$prefix}nav-link-inner-gap: #{rem($nav-link-inner-gap)};
+  --#{$prefix}nav-icon-size: #{$nav-icon-size};
 
   display: flex;
   align-items: center;
@@ -50,7 +57,7 @@
       var(--#{$prefix}nav-link-padding-x);
     border-radius: $border-radius-lg;
 
-    @include basic-transition();
+    @include transition.basic-transition();
 
     @include on-event(true) {
       color: var(--#{$prefix}nav-link-color);
@@ -74,7 +81,7 @@
 
   &__icon {
     font-size: var(--#{$prefix}nav-icon-size);
-    @include basic-transition();
+    @include transition.basic-transition();
   }
 
   &__dropdown-menu {
@@ -84,7 +91,7 @@
     visibility: hidden;
     opacity: 0;
     white-space: nowrap;
-    @include basic-transition();
+    @include transition.basic-transition();
 
     &--center {
       left: 50%;
@@ -103,7 +110,7 @@
     left: 0;
     visibility: hidden;
     opacity: 0;
-    @include basic-transition();
+    @include transition.basic-transition();
   }
 
 

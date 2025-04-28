@@ -1,6 +1,6 @@
 @use '../01-settings/settings.config' as config;
 
-@mixin lux-color-mode($mode: light, $root: false) {
+@mixin color-mode($mode: light, $root: false) {
     @if config.$color-mode-type == "media-query" {
       @if $root == true {
         @media (prefers-color-scheme: $mode) {

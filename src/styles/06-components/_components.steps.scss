@@ -1,7 +1,13 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.steps' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.size' as *;
+@use '../02-tools/tools.hidden' as *;
+
 .c-steps {
     $root: &;
 
-    --#{$prefix}steps-padding-x: #{rem($steps-padding-x )};
+    --#{$prefix}steps-padding-x: #{rem($steps-padding-x)};
     --#{$prefix}steps-padding-y: #{rem($steps-padding-y)};
     --#{$prefix}steps-item-color: #{$steps-item-color};
     --#{$prefix}steps-item-bg:    #{$steps-item-bg};
@@ -14,7 +20,7 @@
     --#{$prefix}steps-item-number-font-size: #{$steps-item-number-font-size};
     --#{$prefix}steps-item-number-border-radius: #{$steps-item-number-border-radius};
     --#{$prefix}steps-item-font-size: #{$steps-item-font-size};
-    --#{$prefix}steps-item-contnet-gap: #{rem($steps-item-contnet-gap)};
+    --#{$prefix}steps-item-content-gap: #{rem($steps-item-content-gap)};
     --#{$prefix}steps-line-height: #{rem($steps-line-height)};
     --#{$prefix}steps-line-width: #{rem($steps-line-width)};
     --#{$prefix}steps-gap: #{rem($steps-gap)};
@@ -54,7 +60,7 @@
     &__content {
         display: flex;
         align-items: center;
-        gap: var(--#{$prefix}steps-item-contnet-gap);
+        gap: var(--#{$prefix}steps-item-content-gap);
     }
 
     &__number{
