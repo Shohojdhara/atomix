@@ -39,6 +39,7 @@
     border-radius: var(--#{config.$prefix}accordion-border-radius);
     border: none;
     cursor: pointer;
+    width: 100%;
 
     &--icon-left {
       flex-direction: row-reverse;
