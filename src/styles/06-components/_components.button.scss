@@ -2,6 +2,7 @@
 @use '../01-settings/settings.button' as button;
 @use '../01-settings/settings.colors' as colors;
 @use '../01-settings/settings.maps' as color-maps;
+@use '../01-settings/settings.border-radius' as border-radius;
 @use '../02-tools/tools.border-radius' as *;
 @use '../02-tools/tools.button' as *;
 @use '../02-tools/tools.rem' as *;
@@ -46,7 +47,7 @@
     user-select: none;
     border: var(--#{config.$prefix}btn-border-width) solid
       var(--#{config.$prefix}btn-border-color);
-    @include border-radius(var(--#{config.$prefix}btn-border-radius));
+    border-radius: var(--#{config.$prefix}btn-border-radius);
     transition: button.$btn-transition;
   
     &__icon {
@@ -89,6 +90,9 @@
       }
     }
   
+    &--rounded {
+      --#{config.$prefix}btn-border-radius: #{border-radius.$border-radius-pill};
+    }
   
     &--link {
       --#{config.$prefix}btn-color: #{button.$btn-link-color};

@@ -39,18 +39,47 @@
   $active-background: $color,
   $active-border: $color
 ) {
-  --#{config.$prefix}btn-color: #{$color};
+  @if ($hover-background == "primary") {
+    $hover-background: 'secondary';
+  }
+
+  @if ($hover-background == "light") {
+    $hover-background: 'secondary';
+  }
+
+  @if ($hover-background == "dark") {
+    $hover-background: 'secondary';
+  }
+
+  $btn-color: $color;
+
+  @if($color == "secondary") {
+    $btn-color: "invert";
+    $color-hover: 'invert';
+  }
+
+  @if($color == "dark") {
+    $btn-color: "invert";
+    $color-hover: 'invert';
+  }
+
+  @if($color == "light") {
+    $btn-color: "invert";
+    $color-hover: 'invert';
+  }
+  
+  --#{config.$prefix}btn-color: var(--#{config.$prefix}#{$btn-color});
   --#{config.$prefix}btn-bg: transparent;
-  --#{config.$prefix}btn-border-color: #{$color};
-  --#{config.$prefix}btn-hover-color: #{$color-hover};
-  --#{config.$prefix}btn-hover-bg: #{$hover-background};
-  --#{config.$prefix}btn-hover-border-color: #{$hover-border};
-  --#{config.$prefix}btn-active-color: #{$color-hover};
-  --#{config.$prefix}btn-active-bg: #{$active-background};
-  --#{config.$prefix}btn-active-border-color: #{$active-border};
-  --#{config.$prefix}btn-disabled-color: #{$color};
+  --#{config.$prefix}btn-border-color: var(--#{config.$prefix}#{$color});
+  --#{config.$prefix}btn-hover-color: var(--#{config.$prefix}#{$color-hover});
+  --#{config.$prefix}btn-hover-bg: var(--#{config.$prefix}#{$hover-background});
+  --#{config.$prefix}btn-hover-border-color: var(--#{config.$prefix}#{$hover-border});
+  --#{config.$prefix}btn-active-color: var(--#{config.$prefix}#{$color-hover});
+  --#{config.$prefix}btn-active-bg: var(--#{config.$prefix}#{$active-background});
+  --#{config.$prefix}btn-active-border-color: var(--#{config.$prefix}#{$active-border});
+  --#{config.$prefix}btn-disabled-color: var(--#{config.$prefix}#{$color});
   --#{config.$prefix}btn-disabled-bg: transparent;
-  --#{config.$prefix}btn-disabled-border-color: #{$color};
+  --#{config.$prefix}btn-disabled-border-color: var(--#{config.$prefix}#{$color});
 }
 
 // Button size mixin
