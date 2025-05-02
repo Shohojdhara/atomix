@@ -1,4 +1,4 @@
-import { ButtonProps } from '../../lib/types/components';
+import { ButtonProps } from '../types/components';
 
 /**
  * Button state and functionality

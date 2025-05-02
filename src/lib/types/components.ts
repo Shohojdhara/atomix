@@ -100,6 +100,31 @@ export interface ButtonProps extends BaseComponentProps {
 }
 
 /**
+ * Badge component properties
+ */
+export interface BadgeProps extends BaseComponentProps {
+  /**
+   * Badge text content
+   */
+  label: string;
+  
+  /**
+   * Badge color variant
+   */
+  variant?: ThemeColor;
+  
+  /**
+   * Badge size
+   */
+  size?: Size;
+  
+  /**
+   * Optional icon
+   */
+  icon?: ReactNode;
+}
+
+/**
  * Accordion component properties
  */
 export interface AccordionProps extends BaseComponentProps {
