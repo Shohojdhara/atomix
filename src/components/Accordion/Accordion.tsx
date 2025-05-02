@@ -1,35 +1,7 @@
-import React, { useState, useRef, useEffect, ReactNode } from 'react';
-
-export interface AccordionProps {
-  /**
-   * Title of the accordion
-   */
-  title: string;
-  /**
-   * Content to be shown when accordion is expanded
-   */
-  children: ReactNode;
-  /**
-   * Whether the accordion is initially open
-   */
-  defaultOpen?: boolean;
-  /**
-   * Whether the accordion is disabled
-   */
-  disabled?: boolean;
-  /**
-   * Position of the icon (right or left)
-   */
-  iconPosition?: 'right' | 'left';
-  /**
-   * Custom icon for the accordion
-   */
-  icon?: ReactNode;
-  /**
-   * Additional CSS class names
-   */
-  className?: string;
-}
+import React, { ReactNode, useEffect } from 'react';
+import { ACCORDION } from '../../lib/constants/components';
+import { useAccordion } from '../../lib/composables/useAccordion';
+import { AccordionProps } from '../../lib/types/components';
 
 export const Accordion: React.FC<AccordionProps> = ({
   title,
@@ -40,37 +12,27 @@ export const Accordion: React.FC<AccordionProps> = ({
   icon,
   className = '',
 }) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (panelRef.current && contentRef.current) {
-      if (isOpen) {
-        panelRef.current.style.setProperty('--panel-height', `${contentRef.current.clientHeight}px`);
-      } else {
-        panelRef.current.style.setProperty('--panel-height', '0px');
-      }
-    }
-  }, [isOpen]);
+  const {
+    state,
+    toggle,
+    updatePanelHeight,
+    panelRef,
+    contentRef,
+    generateClassNames,
+    generateHeaderClassNames
+  } = useAccordion({ defaultOpen, disabled, iconPosition });
 
   // Handle window resize to adjust panel height
   useEffect(() => {
     const handleResize = () => {
-      if (isOpen && panelRef.current && contentRef.current) {
-        panelRef.current.style.setProperty('--panel-height', `${contentRef.current.clientHeight}px`);
+      if (state.isOpen) {
+        updatePanelHeight();
       }
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [isOpen]);
-
-  const toggleAccordion = () => {
-    if (!disabled) {
-      setIsOpen(!isOpen);
-    }
-  };
+  }, [state.isOpen, updatePanelHeight]);
 
   const defaultIcon = (
     <i className="c-accordion__icon">
@@ -80,24 +42,19 @@ export const Accordion: React.FC<AccordionProps> = ({
     </i>
   );
 
-  const headerIconPositionClass = iconPosition === 'left' ? 'c-accordion__header--icon-left' : '';
-  const openClass = isOpen ? 'is-open' : '';
-  const disabledClass = disabled ? 'is-disabled' : '';
-  const baseClass = `c-accordion ${openClass} ${disabledClass} ${className}`;
-
   return (
-    <div className={baseClass}>
+    <div className={generateClassNames(className)}>
       <button
-        className={`c-accordion__header ${headerIconPositionClass}`}
-        onClick={toggleAccordion}
-        aria-expanded={isOpen}
+        className={generateHeaderClassNames()}
+        onClick={toggle}
+        aria-expanded={state.isOpen}
         disabled={disabled}
       >
         <span className="c-accordion__title">{title}</span>
         {icon || defaultIcon}
       </button>
-      <div className="c-accordion__panel" ref={panelRef}>
-        <div className="c-accordion__body" ref={contentRef}>
+      <div className={ACCORDION.SELECTORS.PANEL.replace('.', '')} ref={panelRef}>
+        <div className={ACCORDION.SELECTORS.BODY.replace('.', '')} ref={contentRef}>
           {children}
         </div>
       </div>
