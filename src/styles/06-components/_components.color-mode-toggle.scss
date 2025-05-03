@@ -1,0 +1,36 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.colors' as colors;
+@use '../02-tools/tools.rem' as *;
+
+.c-color-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: rem(8px);
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  color: var(--#{$prefix}body-color);
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--#{$prefix}primary);
+  }
+  
+  svg {
+    width: rem(24px);
+    height: rem(24px);
+  }
+  
+  [data-#{$prefix}theme="dark"] & {
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+} 

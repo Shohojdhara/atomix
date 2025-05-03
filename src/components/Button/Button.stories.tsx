@@ -189,7 +189,7 @@ export const AllVariants: Story = {
     variant: "success",
   },
   render: () => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+    <div className="u-d-flex u-flex-wrap u-gap-2">
       <Button label="Primary" variant="primary" />
       <Button label="Secondary" variant="secondary" />
       <Button label="Success" variant="success" />
@@ -209,7 +209,7 @@ export const AllOutlineVariants: Story = {
     variant: 'outline-primary',
   },
   render: () => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+    <div className="u-d-flex u-flex-wrap u-gap-2">
       <Button label="Outline Primary" variant="outline-primary" />
       <Button label="Outline Secondary" variant="outline-secondary" />
       <Button label="Outline Success" variant="outline-success" />
@@ -229,7 +229,7 @@ export const AllSizes: Story = {
     variant: 'primary',
   },
   render: () => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <div className="u-d-flex u-align-items-center u-gap-2">
       <Button label="Small" variant="primary" size="sm" />
       <Button label="Medium" variant="primary" size="md" />
       <Button label="Large" variant="primary" size="lg" />
@@ -246,7 +246,7 @@ export const IconButtonVariants: Story = {
     iconOnly: true
   },
   render: () => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+    <div className="u-d-flex u-flex-wrap u-gap-2">
       <Button label="Add" variant="primary" icon={<Icon />} />
       <Button label="Add" variant="secondary" icon={<Icon />} />
       <Button label="Add" variant="success" icon={<Icon />} />
@@ -275,7 +275,7 @@ export const RoundedVariants: Story = {
     rounded: true,
   },
   render: () => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+    <div className="u-d-flex u-flex-wrap u-gap-2">
       <Button label="Primary" variant="primary" rounded />
       <Button label="Secondary" variant="secondary" rounded />
       <Button label="Success" variant="success" rounded />

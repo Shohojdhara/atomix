@@ -108,7 +108,7 @@ export const AccordionGroup: Story = {
   render: () => (
     <div>
       <h2>Accordion Group</h2>
-      <div style={{ width: "500px", display: "flex", flexDirection: "column", gap: "10px" }}>
+      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: "500px" }}>
         <Accordion 
           title="First Accordion" 
           defaultOpen={true}
@@ -147,7 +147,7 @@ export const AllVariants: Story = {
   render: () => (
     <div>
       <h2>All Accordion Variants</h2>
-      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      <div className="u-d-flex u-flex-column u-gap-5">
         <div>
           <h3>Default</h3>
           <Accordion title="Default Accordion">
@@ -206,7 +206,7 @@ export const AllVariants: Story = {
                 <li>List item with <strong>bold text</strong></li>
                 <li>List item with <em>italic text</em></li>
               </ul>
-              <div style={{ padding: '10px', background: '#f5f5f5', borderRadius: '4px', marginTop: '10px' }}>
+              <div className="u-p-3 u-mt-3 u-bg-light u-border-radius-1">
                 <code>This is a code block inside the accordion</code>
               </div>
             </div>

@@ -1,5 +1,6 @@
 @use '../02-tools' as *;
 @use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.color-mode' as color-mode;
 @use '../01-settings/settings.border-radius' as border-radius;
 @use '../01-settings/settings.border' as border;
 @use '../01-settings/settings.colors' as colors;
@@ -126,7 +127,7 @@ $gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255
   // scss-docs-end root-form-validation-variables
 }
 
-@if config.$enable-dark-mode {
+@if color-mode.$enable-dark-mode {
   @include color-mode(dark, true) {
     color-scheme: dark;
 

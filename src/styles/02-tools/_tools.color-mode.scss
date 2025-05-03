@@ -1,7 +1,8 @@
+@use '../01-settings/settings.color-mode' as color-mode;
 @use '../01-settings/settings.config' as config;
 
 @mixin color-mode($mode: light, $root: false) {
-    @if config.$color-mode-type == "media-query" {
+    @if color-mode.$color-mode-type == "media-query" {
       @if $root == true {
         @media (prefers-color-scheme: $mode) {
           :root {

@@ -165,7 +165,7 @@ export const AllVariants: Story = {
     variant: 'primary',
   },
   render: () => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+    <div className="u-d-flex u-flex-wrap u-gap-2">
       {THEME_COLORS.map((color) => (
         <Badge key={color} label={color} variant={color} />
       ))}
@@ -180,7 +180,7 @@ export const AllSizes: Story = {
     variant: 'primary',
   },
   render: () => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <div className="u-d-flex u-align-items-center u-gap-2">
       <Badge label="Small" variant="primary" size="sm" />
       <Badge label="Medium" variant="primary" size="md" />
       <Badge label="Large" variant="primary" size="lg" />
@@ -194,10 +194,10 @@ export const WithDifferentContent: Story = {
     label: 'Badge with different content',
   },
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div className="u-d-flex u-flex-column u-gap-4">
       <div>
-        <h3>Numeric Badges</h3>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <h3 className="u-mt-0 u-mb-2">Numeric Badges</h3>
+        <div className="u-d-flex u-gap-2">
           <Badge label="1" variant="primary" />
           <Badge label="2" variant="secondary" />
           <Badge label="3" variant="success" />
@@ -207,8 +207,8 @@ export const WithDifferentContent: Story = {
         </div>
       </div>
       <div>
-        <h3>Status Badges</h3>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <h3 className="u-mt-0 u-mb-2">Status Badges</h3>
+        <div className="u-d-flex u-gap-2">
           <Badge label="New" variant="primary" />
           <Badge label="Active" variant="success" />
           <Badge label="Pending" variant="warning" />
@@ -217,8 +217,8 @@ export const WithDifferentContent: Story = {
         </div>
       </div>
       <div>
-        <h3>Badges with Icons</h3>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <h3 className="u-mt-0 u-mb-2">Badges with Icons</h3>
+        <div className="u-d-flex u-gap-2">
           <Badge label="Info" variant="info" icon={<Icon />} />
           <Badge label="Warning" variant="warning" icon={<Icon />} />
           <Badge label="Success" variant="success" icon={<Icon />} />
@@ -235,19 +235,19 @@ export const UsageExamples: Story = {
     label: 'Usage examples',
   },
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', maxWidth: '500px' }}>
+    <div className="u-d-flex u-flex-column u-gap-6 u-max-width-80">
       <div>
-        <h3>In navigation</h3>
-        <div style={{ display: 'flex', gap: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <h3 className="u-mt-0 u-mb-2">In navigation</h3>
+        <div className="u-d-flex u-gap-4">
+          <div className="u-d-flex u-align-items-center u-gap-2">
             <span>Inbox</span>
             <Badge label="24" variant="danger" size="sm" />
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="u-d-flex u-align-items-center u-gap-2">
             <span>Notifications</span>
             <Badge label="3" variant="primary" size="sm" />
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="u-d-flex u-align-items-center u-gap-2">
             <span>Messages</span>
             <Badge label="New" variant="success" size="sm" />
           </div>
@@ -255,21 +255,14 @@ export const UsageExamples: Story = {
       </div>
       
       <div>
-        <h3>In cards</h3>
-        <div style={{ 
-          padding: '16px', 
-          border: '1px solid #e0e0e0', 
-          borderRadius: '4px', 
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: '8px' 
-        }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <h4 style={{ margin: 0 }}>Product Title</h4>
+        <h3 className="u-mt-0 u-mb-2">In cards</h3>
+        <div className="u-p-4 u-shadow u-d-flex u-flex-column u-gap-2">
+          <div className="u-d-flex u-justify-content-between">
+            <h4 className="u-m-0">Product Title</h4>
             <Badge label="Sale" variant="danger" />
           </div>
-          <p style={{ margin: '8px 0' }}>This is a sample product description.</p>
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <p className="u-my-2">This is a sample product description.</p>
+          <div className="u-d-flex u-gap-2">
             <Badge label="In Stock" variant="success" size="sm" />
             <Badge label="Free Shipping" variant="info" size="sm" />
           </div>
@@ -277,35 +270,74 @@ export const UsageExamples: Story = {
       </div>
       
       <div>
-        <h3>In lists</h3>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-          <li style={{ 
-            padding: '8px 0', 
-            borderBottom: '1px solid #e0e0e0', 
-            display: 'flex', 
-            justifyContent: 'space-between' 
-          }}>
+        <h3 className="u-mt-0 u-mb-2">In lists</h3>
+        <ul className="u-p-0 u-m-0" style={{ listStyle: 'none' }}>
+          <li className="u-py-2 u-d-flex u-justify-content-between" style={{ borderBottom: '1px solid #e0e0e0' }}>
             <span>Task 1</span>
             <Badge label="Completed" variant="success" size="sm" />
           </li>
-          <li style={{ 
-            padding: '8px 0', 
-            borderBottom: '1px solid #e0e0e0', 
-            display: 'flex', 
-            justifyContent: 'space-between' 
-          }}>
+          <li className="u-py-2 u-d-flex u-justify-content-between" style={{ borderBottom: '1px solid #e0e0e0' }}>
             <span>Task 2</span>
             <Badge label="In Progress" variant="warning" size="sm" />
           </li>
-          <li style={{ 
-            padding: '8px 0', 
-            display: 'flex', 
-            justifyContent: 'space-between' 
-          }}>
+          <li className="u-py-2 u-d-flex u-justify-content-between">
             <span>Task 3</span>
             <Badge label="Not Started" variant="secondary" size="sm" />
           </li>
         </ul>
+      </div>
+    </div>
+  ),
+};
+
+// Theme-aware demo showing badges in both light and dark mode side by side
+export const ThemeAwareBadges: Story = {
+  args: {
+    label: 'Badge',
+    variant: 'primary',
+  },
+  render: () => (
+    <div className="u-d-flex u-flex-column u-gap-6">
+      <div>
+        <h3 className="u-mt-0 u-mb-2">Theme Aware Badges</h3>
+        <p className="u-mb-4">The badges below demonstrate how they adapt to different theme modes.</p>
+        <div className="u-d-flex u-gap-5 u-mt-4">
+          <div className="u-p-5 u-shadow u-flex-1">
+            <h4 className="u-mt-0">Current Theme</h4>
+            <div className="u-d-flex u-flex-wrap u-gap-2">
+              {THEME_COLORS.map((color) => (
+                <Badge key={color} label={color} variant={color} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <h3 className="u-mt-2 u-mb-2">Accessibility Considerations</h3>
+        <p className="u-mb-2">Our badges are designed to maintain proper contrast in both light and dark modes.</p>
+        <div className="u-d-flex u-flex-column u-gap-2 u-mt-2">
+          <div className="u-d-flex u-align-items-center u-gap-2">
+            <span className="u-d-inline-block" style={{ width: '120px' }}>Primary:</span>
+            <Badge label="New Feature" variant="primary" />
+          </div>
+          <div className="u-d-flex u-align-items-center u-gap-2">
+            <span className="u-d-inline-block" style={{ width: '120px' }}>Success:</span>
+            <Badge label="Completed" variant="success" />
+          </div>
+          <div className="u-d-flex u-align-items-center u-gap-2">
+            <span className="u-d-inline-block" style={{ width: '120px' }}>Warning:</span>
+            <Badge label="In Progress" variant="warning" />
+          </div>
+          <div className="u-d-flex u-align-items-center u-gap-2">
+            <span className="u-d-inline-block" style={{ width: '120px' }}>Danger:</span>
+            <Badge label="Failed" variant="danger" />
+          </div>
+        </div>
+      </div>
+      
+      <div className="u-mt-4">
+        <p>Use the Color Mode toggle in the Storybook toolbar to switch between light and dark mode!</p>
       </div>
     </div>
   ),
