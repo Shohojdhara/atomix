@@ -1,7 +1,9 @@
 import React, { ReactNode, useEffect } from 'react';
 import { ACCORDION } from '../../lib/constants/components';
 import { useAccordion } from '../../lib/composables/useAccordion';
-import { AccordionProps } from '../../lib/types/components';
+import { AccordionProps as AccordionPropsType } from '../../lib/types/components';
+
+export type AccordionProps = AccordionPropsType;
 
 export const Accordion: React.FC<AccordionProps> = ({
   title,
