@@ -71,6 +71,8 @@ npm run build-storybook
 
 ### Deploying to GitHub Pages
 
+#### Automatic Deployment
+
 The project supports a combined deployment approach that includes both:
 - The documentation site at `/docs`
 - Storybook at `/storybook`
@@ -86,6 +88,41 @@ This command:
 2. Builds Storybook
 3. Prepares a unified deployment directory
 4. Deploys to GitHub Pages
+
+#### Manual Deployment
+
+If you encounter permission issues with GitHub, follow these steps:
+
+1. Prepare the deployment files:
+   ```bash
+   npm run predeploy
+   ```
+
+2. Switch to the gh-pages branch:
+   ```bash
+   git checkout gh-pages
+   ```
+
+3. Copy files from the deploy directory:
+   ```bash
+   # Remove existing files (be careful!)
+   rm -rf docs storybook index.html
+   
+   # Copy new files
+   cp -r deploy/* .
+   ```
+
+4. Commit and push:
+   ```bash
+   git add .
+   git commit -m "Update GitHub Pages"
+   git push origin gh-pages
+   ```
+
+5. Switch back to the main branch:
+   ```bash
+   git checkout main
+   ```
 
 After deployment, the site will be available at:
 - Documentation: https://liimonx.github.io/atomix/docs/
