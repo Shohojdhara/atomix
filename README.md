@@ -15,7 +15,25 @@ cd atomix
 npm install
 ```
 
-### Development
+## Development
+
+### Components Library
+
+Build the components library (vanilla JS):
+
+```bash
+npm run build:components
+```
+
+Watch for changes during development:
+
+```bash
+npm run dev:components
+```
+
+The built files will be available in the `dist/lib` folder.
+
+### Documentation Site
 
 Start the development server to preview the documentation site:
 
@@ -25,23 +43,13 @@ npm run dev
 
 This will start a development server at http://localhost:3000 with hot reloading enabled.
 
-### Building for Production
-
-Build the documentation site for production:
+Build the documentation site:
 
 ```bash
-npm run build
+npm run build:docs
 ```
 
-The built files will be available in the `dist` folder.
-
-### Deploying to GitHub Pages
-
-To deploy the documentation site to GitHub Pages:
-
-```bash
-npm run deploy
-```
+The built files will be available in the `dist/docs` folder.
 
 ### Storybook
 
@@ -52,6 +60,36 @@ npm run storybook
 ```
 
 This will start Storybook at http://localhost:6006.
+
+Build Storybook:
+
+```bash
+npm run build-storybook
+```
+
+## Deployment
+
+### Deploying to GitHub Pages
+
+The project supports a combined deployment approach that includes both:
+- The documentation site at `/docs`
+- Storybook at `/storybook`
+
+To build and deploy everything to GitHub Pages:
+
+```bash
+npm run deploy
+```
+
+This command:
+1. Builds the documentation site
+2. Builds Storybook
+3. Prepares a unified deployment directory
+4. Deploys to GitHub Pages
+
+After deployment, the site will be available at:
+- Documentation: https://liimonx.github.io/atomix/docs/
+- Storybook: https://liimonx.github.io/atomix/storybook/
 
 ## License
 
