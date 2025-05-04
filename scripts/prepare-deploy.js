@@ -1,8 +1,7 @@
 /**
  * Script to prepare a unified GitHub Pages deployment
- * - Copies Documentation site build to the root directory
  * - Copies Storybook build to the /storybook directory
- * - Creates an index.html in the root that points to the documentation
+ * - Creates an index.html in the root that points to the storybook
  */
 
 const fs = require('fs');
@@ -13,7 +12,7 @@ const config = {
   // Source directories
   sources: {
     storybook: path.resolve(__dirname, '../storybook-static'),
-    docs: path.resolve(__dirname, '../dist/docs'),
+    docs: path.resolve(__dirname, '../deploy/docs'),
   },
   // Target directories
   targets: {
@@ -50,14 +49,12 @@ function copyDirectory(source, target) {
   }
 }
 
-// Create or enhance the main index.html file if needed
-function enhanceIndexHtml() {
+// Create the main index.html file that redirects to Storybook
+function createIndexHtml() {
   const indexPath = path.join(config.targets.root, 'index.html');
   
-  // Check if index.html exists from the docs build
-  if (!fs.existsSync(indexPath)) {
-    // If no index.html exists, create a basic one
-    const indexContent = `
+  // Create a basic index.html that redirects to Storybook
+  const indexContent = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,31 +96,12 @@ function enhanceIndexHtml() {
   <h1>Atomix Design System</h1>
   <p>Welcome to the Atomix Design System documentation</p>
   <div class="links">
-    <a href="index.html">Documentation</a>
     <a href="storybook/index.html">Storybook</a>
   </div>
 </body>
 </html>
-    `;
-    fs.writeFileSync(indexPath, indexContent);
-  } else {
-    // If index.html exists, read it and ensure it has a link to Storybook
-    let content = fs.readFileSync(indexPath, 'utf8');
-    
-    // Only modify if there's no link to Storybook already
-    if (!content.includes('storybook/index.html')) {
-      // Add a link to Storybook in a basic way - more sophisticated modification would require HTML parsing
-      content = content.replace('</body>', `
-  <div style="margin-top: 30px; text-align: center;">
-    <a href="storybook/index.html" style="display: inline-block; background-color: #3b82f6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: 600;">
-      View in Storybook
-    </a>
-  </div>
-</body>`);
-      
-      fs.writeFileSync(indexPath, content);
-    }
-  }
+  `;
+  fs.writeFileSync(indexPath, indexContent);
 }
 
 // Main process
@@ -134,9 +112,12 @@ function main() {
   if (!fs.existsSync(config.targets.root)) {
     fs.mkdirSync(config.targets.root, { recursive: true });
   } else {
-    // Clean up any existing files if the directory exists
+    // Clean up any existing files except the docs directory
     const items = fs.readdirSync(config.targets.root);
     for (const item of items) {
+      // Skip docs directory as it's built directly there
+      if (item === 'docs') continue;
+      
       const itemPath = path.join(config.targets.root, item);
       if (fs.lstatSync(itemPath).isDirectory()) {
         fs.rmSync(itemPath, { recursive: true, force: true });
@@ -146,12 +127,13 @@ function main() {
     }
   }
 
-  // Copy the documentation site build to the root if it exists
-  if (fs.existsSync(config.sources.docs)) {
-    console.log('Copying Documentation site build to root...');
-    copyDirectory(config.sources.docs, config.targets.root);
-  } else {
-    console.warn('Documentation site build not found. Run "npm run build:docs" first.');
+  // Check if docs have been built
+  const docsExist = fs.existsSync(config.sources.docs);
+  
+  // Create index.html if docs don't exist
+  if (!docsExist) {
+    console.log('Documentation site build not found, creating basic index.html...');
+    createIndexHtml();
   }
 
   // Copy the Storybook build to the storybook directory if it exists
@@ -161,10 +143,6 @@ function main() {
   } else {
     console.warn('Storybook build not found. Run "npm run build-storybook" first.');
   }
-
-  // Enhance or create index.html if needed
-  console.log('Ensuring index.html is properly configured...');
-  enhanceIndexHtml();
 
   console.log('Deployment preparation complete!');
   console.log(`Files ready in: ${config.targets.root}`);

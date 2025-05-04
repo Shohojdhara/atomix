@@ -43,10 +43,11 @@
     "webpack-dev-server": "^5.2.1"
   },
   "scripts": {
-    "build": "npm run build:components && npm run build:docs",
+    "build": "npm run build:components",
     "build:components": "npx webpack --mode production --env target=components",
     "build:docs": "npx webpack --mode production --env target=docs",
-    "dev": "npx webpack serve --mode development --env target=docs",
+    "dev": "npm run storybook",
+    "dev:docs": "npx webpack serve --mode development --env target=docs",
     "dev:components": "npx webpack --mode development --env target=components --watch",
     "serve": "npx webpack serve --mode development --env target=docs --open",
     "storybook": "storybook dev -p 6006",

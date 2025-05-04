@@ -144,7 +144,7 @@ const getComponentConfig = (env, argv) => {
     },
     devtool: isProduction ? 'source-map' : 'eval-source-map',
     output: {
-      path: path.resolve(__dirname, 'dist/lib'),
+      path: path.resolve(__dirname, 'dist/'),
       filename: `js/${name}-${version}.[name].js`,
       assetModuleFilename: 'assets/[hash][ext][query]',
       clean: true,
@@ -305,7 +305,7 @@ const getDocsConfig = (env, argv) => {
     },
     devtool: isProduction ? 'source-map' : 'eval-source-map',
     output: {
-      path: path.resolve(__dirname, 'dist/docs'),
+      path: path.resolve(__dirname, 'deploy/docs'),
       filename: `js/[name].js`,
       assetModuleFilename: 'assets/[hash][ext][query]',
       clean: true,
@@ -443,7 +443,7 @@ const getDocsConfig = (env, argv) => {
     // Development server configuration
     devServer: {
       static: {
-        directory: path.join(__dirname, 'dist/docs'),
+        directory: path.join(__dirname, 'deploy/docs'),
       },
       compress: true,
       port: 3000,

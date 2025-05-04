@@ -8,6 +8,8 @@ node_modules/
 # Build output
 build/
 dist/
+deploy/
+storybook-static/
 
 # Environment files
 .env
