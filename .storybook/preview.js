@@ -2,7 +2,7 @@
 import '../src/styles/index.scss';
 
 // Set up the decorator for theme switching
-const decorators = [
+export const decorators = [
   (Story, context) => {
     const { globals } = context;
     const colorMode = globals.colorMode || 'light';
@@ -15,7 +15,7 @@ const decorators = [
 ];
 
 // Parameters configuration
-const parameters = {
+export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
     matchers: {
@@ -26,7 +26,7 @@ const parameters = {
 };
 
 // Define global values that can be controlled in the toolbar
-const globalTypes = {
+export const globalTypes = {
   colorMode: {
     name: 'Color Mode',
     description: 'Global color mode for components',
@@ -40,11 +40,4 @@ const globalTypes = {
       showName: true,
     },
   },
-};
-
-// Export using CommonJS module.exports
-module.exports = {
-  decorators,
-  parameters,
-  globalTypes,
 };
