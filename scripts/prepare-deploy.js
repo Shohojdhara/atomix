@@ -50,10 +50,13 @@ function copyDirectory(source, target) {
 }
 
 // Create the main index.html file that redirects to Storybook
-function createIndexHtml() {
+function createIndexHtml(docsExist = false) {
   const indexPath = path.join(config.targets.root, 'index.html');
   
-  // Create a basic index.html that redirects to Storybook
+  // Create a basic index.html that redirects to Storybook and optionally to docs
+  const docsLink = docsExist ? 
+    `<a href="docs/index.html">Documentation</a>` : '';
+  
   const indexContent = `
 <!DOCTYPE html>
 <html lang="en">
@@ -96,6 +99,7 @@ function createIndexHtml() {
   <h1>Atomix Design System</h1>
   <p>Welcome to the Atomix Design System documentation</p>
   <div class="links">
+    ${docsExist ? docsLink : ''}
     <a href="storybook/index.html">Storybook</a>
   </div>
 </body>
@@ -130,11 +134,9 @@ function main() {
   // Check if docs have been built
   const docsExist = fs.existsSync(config.sources.docs);
   
-  // Create index.html if docs don't exist
-  if (!docsExist) {
-    console.log('Documentation site build not found, creating basic index.html...');
-    createIndexHtml();
-  }
+  // Create index.html with appropriate links based on docs existence
+  console.log(`Documentation site ${docsExist ? 'found' : 'not found'}, creating index.html...`);
+  createIndexHtml(docsExist);
 
   // Copy the Storybook build to the storybook directory if it exists
   if (fs.existsSync(config.sources.storybook)) {
