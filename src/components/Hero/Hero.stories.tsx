@@ -74,6 +74,13 @@ const meta = {
     contentColSize: {
       control: { type: 'range', min: 1, max: 12, step: 1 },
       description: 'Content column size (1-12)'
+    },
+    contentWidth: {
+      control: 'text',
+      description: 'Custom width for the hero content (e.g., "800px", "50%")',
+      table: {
+        defaultValue: { summary: '536px' },
+      }
     }
   },
 } satisfies Meta<typeof Hero>;
@@ -166,7 +173,8 @@ export const BackgroundImageOnly: Story = {
     backgroundImageSrc: 'https://picsum.photos/id/1067/1920/1080',
     showOverlay: true,
     alignment: 'center',
-    actions: showcaseActionButtons
+    actions: showcaseActionButtons,
+    contentWidth: '800px'
   }
 };
 
@@ -204,5 +212,17 @@ export const CenterAlignedWithImageBackground: Story = {
     text: 'Built with the latest technologies like React, TypeScript, and SCSS. Follows BEM, ITCSS, and OOCSS methodologies for clean, maintainable CSS.',
     alignment: 'center',
     imageSrc: 'https://picsum.photos/id/160/1312/280'
+  }
+};
+
+/**
+ * Center-aligned content with custom content width
+ */
+export const CustomContentWidth: Story = {
+  args: {
+    ...CenterAligned.args,
+    title: 'Hero with Custom Content Width',
+    text: 'This hero component has a custom content width set through the contentWidth prop, which sets the --atomix-hero-content-width CSS variable.',
+    contentWidth: '800px'
   }
 }; 

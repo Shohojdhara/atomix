@@ -246,4 +246,9 @@ export interface HeroProps extends BaseComponentProps {
    * Custom grid column size for content (default is 5)
    */
   contentColSize?: number;
+
+  /**
+   * Custom width for the hero content (overrides the default CSS variable)
+   */
+  contentWidth?: string;
 } 

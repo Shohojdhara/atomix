@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { HeroProps, HeroAlignment } from '../../lib/types/components';
 import { useHero } from '../../lib/composables/useHero';
 import { HERO } from '../../lib/constants/components';
@@ -18,6 +18,7 @@ export const Hero: React.FC<HeroComponentProps> = ({
   actions,
   imageColSize = 7,
   contentColSize = 5,
+  contentWidth,
   className = '',
 }) => {
   const { 
@@ -34,8 +35,14 @@ export const Hero: React.FC<HeroComponentProps> = ({
     imageSrc,
     backgroundImageSrc,
     showOverlay,
-    fullViewportHeight
+    fullViewportHeight,
+    contentWidth
   });
+
+  // Create custom style for hero element with content width if provided
+  const heroStyle: React.CSSProperties | undefined = contentWidth ? {
+    '--atomix-hero-content-width': contentWidth
+  } as React.CSSProperties : undefined;
 
   const renderBackground = () => {
     if (!hasBackgroundImage) return null;
@@ -112,7 +119,7 @@ export const Hero: React.FC<HeroComponentProps> = ({
   };
 
   return (
-    <div className={generateHeroClassNames(className)}>
+    <div className={generateHeroClassNames(className)} style={heroStyle}>
       {renderBackground()}
       <div className={`${HERO.SELECTORS.CONTAINER.replace('.', '')} o-container`}>
         {useGridLayout ? (

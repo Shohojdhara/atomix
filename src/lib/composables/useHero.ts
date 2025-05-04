@@ -49,6 +49,7 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
     imageAlt: 'Hero image',
     showOverlay: true,
     fullViewportHeight: false,
+    contentWidth: undefined,
     ...initialProps
   };
 
