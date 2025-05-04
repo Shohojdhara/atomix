@@ -21,5 +21,6 @@ export type {
   ButtonProps,
   AccordionProps,
   AccordionState,
-  ElementRefs
+  ElementRefs,
+  HeroProps
 } from './types/components'; 
