@@ -23,6 +23,20 @@ export const parameters = {
       date: /Date$/,
     },
   },
+  backgrounds: {
+    default: 'light',
+    values: [
+      {
+        name: 'light',
+        value: '#f8f9fa',
+      },
+      {
+        name: 'dark',
+        value: '#212529',
+      },
+    ],
+  },
+  layout: 'padded',
 };
 
 // Define global values that can be controlled in the toolbar

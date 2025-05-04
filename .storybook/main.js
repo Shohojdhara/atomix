@@ -9,11 +9,17 @@ module.exports = {
   ],
   framework: {
     name: '@storybook/react-webpack5',
-    options: {},
+    options: {
+      builder: {
+        useSWC: true,
+      },
+    },
   },
   docs: {
     autodocs: 'tag',
   },
+  // Serve the entire source directory as static files
+  staticDirs: ['../src'],
   webpackFinal: async (config) => {
     if (!config.resolve) config.resolve = {};
     if (!config.resolve.alias) config.resolve.alias = {};
@@ -43,6 +49,12 @@ module.exports = {
       test: /\.scss$/,
       use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
       include: path.resolve(__dirname, '../'),
+    });
+    
+    // Handle image files
+    config.module.rules.push({
+      test: /\.(png|svg|jpg|jpeg|gif)$/i,
+      type: 'asset/resource',
     });
     
     // Ensure TypeScript file extensions are handled
