@@ -1,0 +1,10 @@
+@use "./settings.config" as *;
+@use "./settings.typography" as *;
+
+$list-color: var(--#{$prefix}body-color) !default;
+$list-font-size: $font-size-base !default;
+$list-font-weight: $font-weight-normal !default;
+$list-item-gap: 4px !default;
+$list-padding-left: 20px !default;
+$list-item-dash-width: 12px !default;
+$list-item-dash-height: 2px !default;

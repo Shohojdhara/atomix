@@ -1,0 +1,101 @@
+@use '../01-settings/_settings.data-table' as *;
+@use '../01-settings/_settings.config' as *;
+@use '../02-tools/_tools.rem' as *;
+@use '../02-tools/_tools.animations' as *;
+
+.c-data-table {
+  --#{$prefix}data-table-width: #{$data-table-width};
+  --#{$prefix}data-table-label-font-size: #{$data-table-label-font-size};
+  --#{$prefix}data-table-label-font-weight: #{$data-table-label-font-weight};
+  --#{$prefix}data-table-label-color: #{$data-table-label-color};
+
+  --#{$prefix}data-table-data-font-size: #{$data-table-data-font-size};
+  --#{$prefix}data-table-data-font-weight: #{$data-table-data-font-weight};
+  --#{$prefix}data-table-data-color: #{$data-table-data-color};
+
+  --#{$prefix}data-table-head-height: #{rem($data-table-head-md-height)};
+  --#{$prefix}data-table-row-height: #{rem($data-table-row-md-height)};
+  --#{$prefix}data-table-row-padding-y: #{rem($data-table-row-padding-y)};
+  --#{$prefix}data-table-row-padding-x: #{rem($data-table-row-padding-x)};
+  --#{$prefix}data-table-head-bg: #{$data-table-head-bg};
+  --#{$prefix}data-table-row-bg: #{$data-table-row-bg};
+  --#{$prefix}data-table-row-hover-bg: #{$data-table-row-hover-bg};
+  --#{$prefix}data-table-row-border-color: #{$data-table-row-border-color};
+
+  width: 100%;
+  max-width: var(--#{$prefix}data-table-width);
+  border-collapse: collapse;
+  border-spacing: 0;
+  overflow: hidden;
+
+  thead {
+    background-color: var(--#{$prefix}data-table-head-bg);
+
+    tr {
+      height: var(--#{$prefix}data-table-head-height);
+
+      & > th {
+        color: var(--#{$prefix}data-table-label-color);
+        font-size: var(--#{$prefix}data-table-label-font-size);
+        font-weight: var(--#{$prefix}data-table-label-font-weight);
+        text-align: left;
+        vertical-align: middle;
+        padding: var(--#{$prefix}data-table-row-padding-y)
+          var(--#{$prefix}data-table-row-padding-x);
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      height: var(--#{$prefix}data-table-row-height);
+
+      & > td {
+        color: var(--#{$prefix}data-table-data-color);
+        font-size: var(--#{$prefix}data-table-data-font-size);
+        font-weight: var(--#{$prefix}data-table-data-font-weight);
+        padding: var(--#{$prefix}data-table-row-padding-y)
+          var(--#{$prefix}data-table-row-padding-x);
+        background-color: var(--#{$prefix}data-table-row-bg);
+        border-top: 1px solid var(--#{$prefix}data-table-row-border-color);
+        border-bottom: 1px solid var(--#{$prefix}data-table-row-border-color);
+
+        @include basic-transition();
+      }
+    }
+
+    tr:hover {
+      & > td {
+        background-color: var(--#{$prefix}data-table-row-hover-bg);
+      }
+    }
+  }
+
+  &--sm {
+    --#{$prefix}data-table-label-font-size: #{$data-table-label-font-size-sm};
+    --#{$prefix}data-table-data-font-size: #{$data-table-data-font-size-sm};
+    --#{$prefix}data-table-row-height: #{$data-table-row-sm-height};
+    --#{$prefix}data-table-row-padding-x: #{$data-table-row-padding-sm-x};
+    --#{$prefix}data-table-row-padding-y: #{$data-table-row-padding-sm-y};
+  }
+
+  &--lg {
+    --#{$prefix}data-table-label-font-size: #{$data-table-data-font-size-lg};
+    --#{$prefix}data-table-label-font-size: #{$data-table-data-font-size-lg};
+    --#{$prefix}data-table-row-height: #{$data-table-row-lg-height};
+  }
+
+  &--zebra {
+    tbody > tr:nth-child(even) {
+      & > td {
+        background-color: var(--#{$prefix}light);
+      }
+
+      &:hover {
+        & > td {
+          background-color: var(--#{$prefix}data-table-row-hover-bg);
+        }
+      }
+    }
+  }
+}

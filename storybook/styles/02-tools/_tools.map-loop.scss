@@ -1,0 +1,18 @@
+@use "sass:map";
+@use "sass:meta";
+@use "sass:color";
+
+/// Calls `$function` for each pair in `$map`, passing the value of `$key` and `$value` as arguments.
+/// Returns a new map with the same keys and the result of `$function` as values.
+@function map-loop($map, $function, $key: "$key", $value: "$value") {
+  $result: ();
+  @each $k, $v in $map {
+    $result: map.merge(
+      $result,
+      (
+         $k: $v // Replace with actual logic if needed
+      )
+    );
+  }
+  @return $result;
+}

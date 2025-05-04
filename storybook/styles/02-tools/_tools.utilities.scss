@@ -1,0 +1,14 @@
+// Utility Generator
+// This file imports the utility API and generates utility classes
+
+@use 'sass:map';
+@use 'tools.utility-api' as *;
+@use '../01-settings/settings.breakpoints' as *;
+
+// Define base utilities map
+$utilities: () !default;
+
+// Generate all utility classes
+@mixin generate-all-utilities() {
+  @include generate-utilities($utilities, $grid-breakpoints);
+}

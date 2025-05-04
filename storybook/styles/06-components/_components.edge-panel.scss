@@ -1,0 +1,133 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.edge-panel' as *;
+@use '../01-settings/settings.z-layers' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.animations' as *;
+
+// EdgePanel SCSS Styling
+.c-edge-panel {
+  $root: &;
+
+  // CSS Custom Properties for Easy Theming
+  --#{$prefix}edge-panel-zindex: #{$edge-panel-zindex};
+  --#{$prefix}edge-panel-width: #{rem($edge-panel-width)};
+  --#{$prefix}edge-panel-height: #{$edge-panel-height};
+  --#{$prefix}edge-panel-padding-x: #{rem($edge-panel-padding-x)};
+  --#{$prefix}edge-panel-padding-y: #{rem($edge-panel-padding-y)};
+  --#{$prefix}edge-panel-bg: #{$edge-panel-bg};
+  --#{$prefix}edge-panel-color: #{$edge-panel-color};
+  --#{$prefix}edge-panel-shadow: #{$edge-panel-shadow};
+  --#{$prefix}edge-panel-backdrop-bg: #{$edge-panel-backdrop-bg};
+  --#{$prefix}edge-panel-backdrop-opacity: #{$edge-panel-backdrop-opacity};
+  --#{$prefix}edge-panel-backdrop-blur: #{$edge-panel-backdrop-blur};
+
+  position: fixed;
+  inset: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  z-index: var(--#{$prefix}edge-panel-zindex);
+
+  // Backdrop Styling
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--#{$prefix}edge-panel-backdrop-bg);
+    filter: blur(var(--#{$prefix}edge-panel-backdrop-blur));
+    opacity: 0;
+    z-index: map.get($z-layers, 1);
+
+    @include basic-transition(500ms, ease);
+  }
+
+  // Panel Container
+  &__container {
+    position: absolute;
+    color: var(--#{$prefix}edge-panel-color);
+    width: var(--#{$prefix}edge-panel-width);
+    height: 100%;
+    background-color: var(--#{$prefix}edge-panel-bg);
+    box-shadow: var(--#{$prefix}edge-panel-shadow);
+    z-index: map.get($z-layers, 2);
+    transition: transform 0.4s ease-in-out;
+  }
+
+  // Panel Header
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--#{$prefix}edge-panel-padding-y) var(--#{$prefix}edge-panel-padding-x);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  // Close Button
+  &__close {
+    user-select: none;
+    cursor: pointer;
+    padding: 0.5rem;
+  }
+
+  // Panel Body
+  &__body {
+    padding: var(--#{$prefix}edge-panel-padding-y) var(--#{$prefix}edge-panel-padding-x);
+    overflow-y: auto;
+    max-height: calc(100% - 3rem);
+  }
+
+  // Variants for Panel Positioning
+  &--start {
+    #{$root}__container {
+      left: 0;
+    }
+  }
+
+  &--end {
+    #{$root}__container {
+      right: 0;
+      left: auto;
+    }
+  }
+
+  &--top {
+    --#{$prefix}edge-panel-height: var(--#{$prefix}edge-panel-width);
+
+    #{$root}__container {
+      left: 0;
+      right: 0;
+      top: 0;
+      width: 100%;
+      height: var(--#{$prefix}edge-panel-height);
+    }
+  }
+
+  &--bottom {
+    --#{$prefix}edge-panel-height: var(--#{$prefix}edge-panel-width);
+
+    #{$root}__container {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: var(--#{$prefix}edge-panel-height);
+    }
+  }
+
+  // Active State (When Open)
+  &.is-open {
+    #{$root}__backdrop {
+      opacity: var(--#{$prefix}edge-panel-backdrop-opacity);
+    }
+
+    #{$root}__container {
+      transform: translateX(0%) translateY(0%);
+    }
+  }
+}
+
+// Body Modifier When Panel is Open
+.is-edgepanel-open {
+  overflow: hidden;
+  transition: padding-left 0.4s ease-in-out;
+}

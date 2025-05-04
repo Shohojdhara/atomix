@@ -1,0 +1,269 @@
+@use "sass:color";
+
+@use '../02-tools/tools.to-rgb' as *;
+@use '../02-tools/tools.color-functions' as *;
+
+// Basic Colors 
+$white:                         #ffffff !default;
+$black:                         #000000 !default;
+
+// Color contrast variables
+$color-contrast-dark:          #000000 !default;
+$color-contrast-light:         #ffffff !default;
+
+// Primitives Primary Colors
+$primary-1:                     #F2E8FD !default;
+$primary-2:                     #E4D0FA !default;
+$primary-3:                     #D0B2F5 !default;
+$primary-4:                     #B88CEF !default;
+$primary-5:                     #9C63E9 !default;
+$primary-6:                     #7C3AED !default; // Balanced primary purple
+$primary-7:                     #6425CA !default;
+$primary-8:                     #501BA6 !default;
+$primary-9:                     #3C1583 !default;
+$primary-10:                    #2A0E60 !default;
+
+// Primitives Red Colors
+$red-1:                         #FEF2F2 !default;
+$red-2:                         #FEE2E2 !default;
+$red-3:                         #FECACA !default;
+$red-4:                         #FCA5A5 !default;
+$red-5:                         #F87171 !default;
+$red-6:                         #EF4444 !default; // Vibrant, accessible red
+$red-7:                         #DC2626 !default;
+$red-8:                         #B91C1C !default;
+$red-9:                         #991B1B !default;
+$red-10:                        #7F1D1D !default;
+
+// Primitives Green Colors
+$green-1:                       #F0FDF4 !default;
+$green-2:                       #DCFCE7 !default;
+$green-3:                       #BBF7D0 !default;
+$green-4:                       #86EFAC !default;
+$green-5:                       #4ADE80 !default;
+$green-6:                       #22C55E !default; // Balanced, accessible green
+$green-7:                       #16A34A !default;
+$green-8:                       #15803D !default;
+$green-9:                       #166534 !default;
+$green-10:                      #14532D !default;
+
+// Primitives Yellow Colors
+$yellow-1:                      #FEFCE8 !default;
+$yellow-2:                      #FEF9C3 !default;
+$yellow-3:                      #FEF08A !default;
+$yellow-4:                      #FDE047 !default;
+$yellow-5:                      #FACC15 !default;
+$yellow-6:                      #EAB308 !default; // Accessible, high-visibility yellow
+$yellow-7:                      #CA8A04 !default;
+$yellow-8:                      #A16207 !default;
+$yellow-9:                      #854D0E !default;
+$yellow-10:                     #713F12 !default;
+
+// Primitives Blue Colors
+$blue-1:                        #EFF6FF !default;
+$blue-2:                        #DBEAFE !default;
+$blue-3:                        #BFDBFE !default;
+$blue-4:                        #93C5FD !default;
+$blue-5:                        #60A5FA !default;
+$blue-6:                        #3B82F6 !default; // Balanced, accessible blue
+$blue-7:                        #2563EB !default;
+$blue-8:                        #1D4ED8 !default;
+$blue-9:                        #1E40AF !default;
+$blue-10:                       #1E3A8A !default;
+
+// Primitives Gray Colors
+$gray-1:                        #F9FAFB !default;
+$gray-2:                        #F3F4F6 !default;
+$gray-3:                        #E5E7EB !default;
+$gray-4:                        #D1D5DB !default;
+$gray-5:                        #9CA3AF !default;
+$gray-6:                        #6B7280 !default;
+$gray-7:                        #4B5563 !default;
+$gray-8:                        #374151 !default;
+$gray-9:                        #1F2937 !default;
+$gray-10:                       #111827 !default;
+
+// Primitives Overlay
+$overlay-1:                      rgba(20, 20, 20, 0.302) !default;
+$overlay-2:                      rgba($gray-6, .6) !default;
+
+
+
+
+
+
+//Text colors emphasis
+$primary-text:                  $gray-10 !default;
+$secondary-text:                $gray-8 !default;
+$tertiary-text:                 $gray-6 !default;
+$disabled-text:                 $gray-5 !default;
+$invert-text:                   $white !default;
+$brand-text:                    $primary-6 !default;
+$error-text:                    $red-6 !default;
+$success-text:                  $green-6 !default;
+$warning-text:                  $yellow-6 !default;
+$info-text:                     $blue-6 !default;
+$light-text:                    $gray-1 !default;
+$dark-text:                     $gray-9 !default;
+
+// Text colors dark emphasis
+$primary-text-dark:             $white !default;
+$secondary-text-dark:           $gray-3 !default;
+$tertiary-text-dark:            $gray-4 !default;
+$disabled-text-dark:            $gray-5 !default;
+$invert-text-dark:              $gray-10 !default;
+$brand-text-dark:               $primary-2 !default;
+$error-text-dark:               $red-3 !default;
+$success-text-dark:             $green-3 !default;
+$warning-text-dark:             $yellow-3 !default;
+$info-text-dark:                $blue-3 !default;
+$light-text-dark:               $gray-1 !default;
+$dark-text-dark:                $gray-8 !default;
+
+
+
+// Background colors subtle
+$primary-bg:                    $white !default;
+$secondary-bg:                  $gray-2 !default;
+$tertiary-bg:                   $gray-3 !default;
+$invert-bg:                     $gray-10 !default;
+$brand-bg:                      $primary-1 !default;
+$error-bg:                      $red-1 !default;
+$success-bg:                    $green-1 !default;
+$warning-bg:                    $yellow-2 !default;
+$info-bg:                       $blue-1 !default;
+$light-bg:                      $gray-1 !default;
+$dark-bg:                       $gray-9 !default;
+
+// Background colors dark subtle
+$primary-bg-dark:               $gray-9 !default;
+$secondary-bg-dark:             $gray-7 !default;
+$tertiary-bg-dark:              $gray-6 !default;
+$invert-bg-dark:                $white !default;
+$brand-bg-dark:                 $primary-8 !default;
+$error-bg-dark:                 $red-10 !default;
+$success-bg-dark:               $green-9 !default;
+$warning-bg-dark:               $yellow-10 !default;
+$info-bg-dark:                  $blue-10   !default;
+$light-bg-dark:                 $gray-1 !default;
+$dark-bg-dark:                  $gray-8 !default;
+
+
+
+// Border color
+$primary-border:                $gray-3 !default;
+$secondary-border:              $gray-10 !default;
+$brand-border:                  $primary-6 !default;
+$error-border:                  $red-6 !default;
+$success-border:                $green-6 !default;
+$warning-border:                $yellow-6 !default;
+$info-border:                   $blue-6 !default;
+$light-border:                  $gray-1 !default;
+$dark-border:                   $gray-9 !default;
+
+// Border color dark
+$primary-border-dark:           $gray-8 !default;
+$secondary-border-dark:         $white !default;
+$brand-border-dark:             $primary-6 !default;
+$error-border-dark:             $red-6 !default;
+$success-border-dark:           $green-6 !default;
+$warning-border-dark:           $yellow-6 !default;
+$info-border-dark:              $blue-6 !default;
+$light-border-dark:             $gray-1 !default;
+$dark-border-dark:              $gray-8 !default;
+
+
+
+// theme colors
+$primary:                       $primary-6 !default;
+$secondary:                     $gray-2 !default;
+$light:                         $gray-1 !default;
+$dark:                          $gray-9 !default;
+$success:                       $green-6 !default;
+$info:                          $blue-6 !default;
+$warning:                       $yellow-6 !default;
+$error:                         $red-6 !default;
+
+// Theme colors Dark
+$primary-dark:                  $primary-6 !default;
+$secondary-dark:                $gray-7 !default;
+$light-dark:                    $gray-1 !default;
+$dark-dark:                     $gray-8 !default;
+$success-dark:                  $green-6 !default;
+$info-dark:                     $blue-6 !default;
+$warning-dark:                  $yellow-6 !default; 
+$error-dark:                    $red-6 !default;        
+
+
+
+
+// Theme hover background
+$primary-hover:                 $primary-6 !default;
+$secondary-hover:               $gray-3 !default;
+$light-hover:                   $gray-2 !default;
+$dark-hover:                    $gray-7 !default;
+$success-hover:                 $green-8 !default;
+$info-hover:                    $blue-8 !default;
+$warning-hover:                 $yellow-8 !default;
+$error-hover:                   $red-8 !default;
+
+ // Theme hover background for dark theme
+$primary-hover-dark:            $primary-6 !default;
+$secondary-hover-dark:          $gray-6 !default;
+$light-hover-dark:              $gray-5 !default; 
+$dark-hover-dark:               $gray-7 !default;
+$info-hover-dark:               $blue-4 !default;
+$success-hover-dark:            $green-4 !default;
+$warning-hover-dark:            $yellow-5 !default;
+$error-hover-dark:              $red-4 !default;
+
+
+
+
+//  Mischelleneous Colors
+$color-contrast-dark:           $black !default;
+$color-contrast-light:          $white !default;
+
+$body-color:                    $primary-text !default;
+$body-bg:                       $primary-bg !default;
+$headings-color:                $primary-text !default;
+$link-color:                    $primary !default;
+$link-decoration:              none !default;
+$link-hover-color:             color.adjust($link-color, $lightness: -15%) !default;
+$link-hover-decoration:        null !default;
+$code-color:                   $red-6 !default;
+$mark-bg:                      $yellow-3 !default;
+
+// Form validation colors
+$form-valid-color:             $green-6 !default;
+$form-valid-border-color:      $green-6 !default;
+$form-invalid-color:           $red-6 !default;
+$form-invalid-border-color:    $red-6 !default;
+
+$body-color-dark:               $primary-text-dark !default;
+$body-bg-dark:                  $primary-bg-dark !default;
+
+// Border colors for use with components
+$primary-border:                $gray-6 !default;
+$primary-border-dark:           $gray-7 !default;
+
+// Dark mode colors
+$headings-color-dark:           $gray-3 !default;
+$link-color-dark:               $primary-4 !default;
+$link-hover-color-dark:         color.adjust($link-color-dark, $lightness: -15%) !default;
+$code-color-dark:               $red-5 !default;
+$border-color-translucent-dark: rgba($white, 0.15) !default;
+
+// Form validation dark mode colors
+$form-valid-color-dark:         $green-5 !default;
+$form-valid-border-color-dark:  $green-5 !default;
+$form-invalid-color-dark:       $red-5 !default;
+$form-invalid-border-color-dark: $red-5 !default;
+
+$focus-border-color:            $primary-5 !default;
+$focus-border-color-dark:       $primary-4 !default;
+
+$component-active-color:        $white !default;
+$component-active-bg:           $primary !default;
+
+// All variables are automatically exported when using @use

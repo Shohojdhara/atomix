@@ -1,0 +1,98 @@
+@use '../02-tools/tools.rem' as *;
+@use '../01-settings/settings.accordion' as accordion;
+@use '../01-settings/settings.config' as config;
+@use '../02-tools/tools.animations' as *;
+
+.c-accordion {
+  $root: &;
+
+  --#{config.$prefix}accordion-width: #{accordion.$accordion-width};
+  --#{config.$prefix}accordion-border-width: #{accordion.$accordion-border-width};
+  --#{config.$prefix}accordion-border-color: #{accordion.$accordion-border-color};
+  --#{config.$prefix}accordion-border-radius: #{accordion.$accordion-border-radius};
+  --#{config.$prefix}accordion-body-padding-x: #{rem(accordion.$accordion-body-padding-x)};
+  --#{config.$prefix}accordion-body-padding-y: #{rem(accordion.$accordion-body-padding-y)};
+  --#{config.$prefix}accordion-body-color: #{accordion.$accordion-body-color};
+  --#{config.$prefix}accordion-body-bg: #{accordion.$accordion-body-bg};
+  --#{config.$prefix}accordion-header-padding-x: #{rem(accordion.$accordion-header-padding-x)};
+  --#{config.$prefix}accordion-header-padding-y: #{rem(accordion.$accordion-header-padding-y)};
+  --#{config.$prefix}accordion-header-color: #{accordion.$accordion-header-color};
+  --#{config.$prefix}accordion-header-bg: #{accordion.$accordion-header-bg};
+  --#{config.$prefix}accordion-header-bg-hover: #{accordion.$accordion-header-bg-hover};
+  --#{config.$prefix}accordion-icon-size: #{rem(accordion.$accordion-icon-size)};
+  --#{config.$prefix}accordion-icon-color: #{accordion.$accordion-icon-color};
+  --#{config.$prefix}accordion-icon-transform: #{accordion.$accordion-icon-transform};
+  --#{config.$prefix}accordion-disable-color: #{accordion.$accordion-disable-color};
+  --panel-height: 0px;
+
+  width: 100%;
+  max-width: var(--#{config.$prefix}accordion-width);
+  border: var(--#{config.$prefix}accordion-border-width) solid var(--#{config.$prefix}accordion-border-color);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--#{config.$prefix}accordion-header-color);
+    padding: var(--#{config.$prefix}accordion-header-padding-y) var(--#{config.$prefix}accordion-header-padding-x);
+    background-color: var(--#{config.$prefix}accordion-header-bg);
+    border-radius: var(--#{config.$prefix}accordion-border-radius);
+    border: none;
+    cursor: pointer;
+    width: 100%;
+
+    &--icon-left {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+      gap: var(--#{config.$prefix}accordion-header-padding-x);
+    }
+
+    &:hover {
+      --#{config.$prefix}accordion-header-bg: var(--#{config.$prefix}accordion-header-bg-hover);
+    }
+  }
+
+  &__title {
+    margin-right: rem(20px);
+  }
+
+  &__icon {
+    color: var(--#{config.$prefix}accordion-icon-color);
+    font-size: var(--#{config.$prefix}accordion-icon-size);
+    will-change: transform;
+
+    @include basic-transition();
+  }
+
+  &__panel {
+    height: var(--panel-height);
+    overflow: hidden;
+    will-change: height;
+
+    @include basic-transition();
+  }
+
+  &__body {
+    color: var(--#{config.$prefix}accordion-body-color);
+    padding: var(--#{config.$prefix}accordion-body-padding-y) var(--#{config.$prefix}accordion-body-padding-x);
+    background-color: var(--#{config.$prefix}accordion-body-bg);
+  }
+
+  &:focus, &.is-focused {
+    --#{config.$prefix}accordion-border-color: var(--#{config.$prefix}focus-border-color);
+  }
+
+  &.is-open {
+    #{$root}__icon {
+      transform: rotate(var(--#{config.$prefix}accordion-icon-transform));
+    }
+  }
+
+  &.is-disabled {
+    pointer-events: none;
+
+    --#{config.$prefix}accordion-header-color: var(--#{config.$prefix}accordion-disable-color);
+    --#{config.$prefix}accordion-body-color: var(--#{config.$prefix}accordion-disable-color);
+    --#{config.$prefix}accordion-icon-color: var(--#{config.$prefix}accordion-disable-color);
+  }
+}

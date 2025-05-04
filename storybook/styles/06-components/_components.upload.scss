@@ -1,0 +1,260 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.upload' as *;
+@use '../01-settings/settings.border-radius' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.transition' as *;
+@use '../02-tools/tools.hidden-visually' as *;
+@use '../02-tools/tools.border-radius' as *;
+
+.c-upload {
+  $root: &;
+
+  --#{$prefix}upload-width: #{rem($upload-width)};
+  --#{$prefix}upload-padding-x: #{rem($upload-padding-x)};
+  --#{$prefix}upload-padding-y: #{rem($upload-padding-y)};
+  --#{$prefix}upload-inner-padding-x: #{rem($upload-inner-padding-x)};
+  --#{$prefix}upload-inner-padding-y: #{rem($upload-inner-padding-y)};
+  --#{$prefix}upload-border-radius: #{$upload-border-radius};
+  --#{$prefix}upload-border-width: #{rem($upload-border-width)};
+  --#{$prefix}upload-border-color: #{$upload-border-color};
+  --#{$prefix}upload-bg: #{$upload-bg};
+  --#{$prefix}upload-hover-bg: #{$upload-hover-bg};
+  --#{$prefix}upload-icon-size: #{$upload-icon-size};
+  --#{$prefix}upload-icon-padding: #{$upload-icon-padding};
+  --#{$prefix}upload-icon-bg: #{$upload-icon-bg};
+  --#{$prefix}upload-title-font-size: #{$upload-title-font-size};
+  --#{$prefix}upload-title-font-weight: #{$upload-title-font-weight};
+  --#{$prefix}upload-title-color: #{$upload-title-color};
+  --#{$prefix}upload-title-margin-top: #{rem($upload-title-margin-top)};
+  --#{$prefix}upload-text-font-size: #{$upload-text-font-size};
+  --#{$prefix}upload-text-font-weight: #{$upload-text-font-weight};
+  --#{$prefix}upload-text-color: #{$upload-text-color};
+  --#{$prefix}upload-text-margin-top: #{rem($upload-text-margin-top)};
+  --#{$prefix}upload-btn-margin-top: #{rem($upload-btn-margin-top)};
+  --#{$prefix}upload-btn-margin-left: #{rem($upload-btn-margin-left)};
+  --#{$prefix}upload-helper-text-font-size: #{$upload-helper-text-font-size};
+  --#{$prefix}upload-helper-text-font-weight: #{$upload-helper-text-font-weight};
+  --#{$prefix}upload-helper-text-color: #{$upload-helper-text-color};
+  --#{$prefix}upload-helper-text-margin-top: #{rem(
+      $upload-helper-text-margin-top
+    )};
+  --#{$prefix}upload-loader-padding-x: #{rem($upload-loader-padding-x)};
+  --#{$prefix}upload-loader-padding-y: #{rem($upload-loader-padding-y)};
+  --#{$prefix}upload-loader-border-radius: #{$upload-loader-border-radius};
+  --#{$prefix}upload-loader-border-width: #{$upload-loader-border-width};
+  --#{$prefix}upload-loader-border-color: #{$upload-loader-border-color};
+  --#{$prefix}upload-loader-margin-top: #{$upload-loader-margin-top};
+  --#{$prefix}upload-loader-title-color: #{$upload-loader-title-color};
+  --#{$prefix}upload-loader-title-font-size: #{$upload-loader-title-font-size};
+  --#{$prefix}upload-loader-title-font-weight: #{$upload-loader-title-font-weight};
+  --#{$prefix}upload-loader-text-color: #{$upload-loader-text-color};
+  --#{$prefix}upload-loader-text-font-size: #{$upload-loader-text-font-size};
+  --#{$prefix}upload-loader-text-margin-top: #{rem(
+      $upload-loader-text-margin-top
+    )};
+  --#{$prefix}upload-loader-color: #{$upload-loader-progress-color};
+  --#{$prefix}upload-loader-bar-height: #{rem($upload-loader-bar-height)};
+  --#{$prefix}upload-loader-bar-margin-top: #{rem($upload-loader-bar-margin-top)};
+  --#{$prefix}upload-loader-bg-opacity: #{$upload-loader-bg-opacity};
+  --#{$prefix}upload-loader-progress: 39%;
+  --#{$prefix}upload-content-margin-left: #{rem($upload-content-margin-left)};
+  --#{$prefix}upload-disabled-opacity: #{$upload-disabled-opacity};
+  --#{$prefix}upload-loader-control-icon-size: #{$upload-loader-control-icon-size};
+  --#{$prefix}upload-loader-contorl-color: #{$upload-loader-contorl-color};
+
+  width: 100%;
+  max-width: var(--#{$prefix}upload-width);
+  padding: var(--#{$prefix}upload-padding-y) var(--#{$prefix}upload-padding-x);
+  background-color: var(--#{$prefix}upload-bg);
+  border-radius: var(--#{$prefix}upload-border-radius);
+
+  @include basic-transition();
+
+  &:hover {
+    background-color: var(--#{$prefix}upload-hover-bg);
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--#{$prefix}upload-inner-padding-y)
+      var(--#{$prefix}upload-inner-padding-x);
+    border-radius: var(--#{$prefix}upload-border-radius);
+    border: var(--#{$prefix}upload-border-width) dashed
+      var(--#{$prefix}upload-border-color);
+  }
+
+  &__icon {
+    font-size: var(--#{$prefix}upload-icon-size);
+    padding: var(--#{$prefix}upload-icon-padding);
+    background-color: var(--#{$prefix}upload-icon-bg);
+
+    @include border-radius($border-radius-pill);
+  }
+
+  &__title {
+    color: var(--#{$prefix}upload-title-color);
+    font-size: var(--#{$prefix}upload-title-font-size);
+    font-weight: var(--#{$prefix}upload-title-font-weight);
+    margin-top: var(--#{$prefix}upload-title-margin-top);
+  }
+
+  &__text {
+    color: var(--#{$prefix}upload-text-color);
+    font-size: var(--#{$prefix}upload-text-font-size);
+    font-weight: var(--#{$prefix}upload-text-font-weight);
+    margin-top: var(--#{$prefix}upload-text-margin-top);
+  }
+
+  &__btn {
+    margin-top: var(--#{$prefix}upload-btn-margin-top);
+  }
+
+  &__helper-text {
+    color: var(--#{$prefix}upload-helper-text-color);
+    font-size: var(--#{$prefix}upload-helper-text-font-size);
+    font-weight: var(--#{$prefix}upload-helper-text-font-weight);
+    margin-top: var(--#{$prefix}upload-helper-text-margin-top);
+  }
+
+  &__row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__col {
+    display: flex;
+    align-items: center;
+  }
+
+  &__content {
+    margin-left: var(--#{$prefix}upload-content-margin-left);
+  }
+
+  &__loader {
+    --upload-loader-percentage: 0;
+
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    max-width: rem($upload-width);
+    padding: var(--#{$prefix}upload-loader-padding-y)
+      var(--#{$prefix}upload-loader-padding-x);
+    border: var(--#{$prefix}upload-loader-border-width) solid
+      var(--#{$prefix}upload-loader-border-color);
+    border-radius: var(--#{$prefix}upload-loader-border-radius);
+    margin-top: var(--#{$prefix}upload-loader-margin-top);
+    overflow: hidden;
+  }
+
+  &__loader-title {
+    color: var(--#{$prefix}upload-loader-title-color);
+    font-size: var(--#{$prefix}upload-loader-title-font-size);
+    font-weight: var(--#{$prefix}upload-loader-title-font-weight);
+    line-height: 1.715;
+  }
+
+  &__loader-progress {
+    display: flex;
+    gap: 10px;
+    color: var(--#{$prefix}upload-loader-text-color);
+    font-size: var(--#{$prefix}upload-loader-text-font-size);
+    line-height: 1.43;
+    margin-top: var(--#{$prefix}upload-loader-text-margin-top);
+  }
+
+  &__loader-control {
+    display: flex;
+    align-items: center;
+    gap: rem(4px);
+  }
+
+  &__loader-close {
+    color: var(--#{$prefix}upload-loader-contorl-color);
+    font-size: var(--#{$prefix}upload-loader-control-icon-size);
+  }
+
+  &__loader-bar {
+    width: 22px;
+    height: 22px;
+
+
+    svg {
+      width: 100%;
+      height: 100%;
+
+      circle {
+        width: 100%;
+        height: 100%;
+        fill: none;
+        stroke: var(--#{$prefix}secondary-bg-subtle);
+        stroke-width: 2px;
+        stroke-linecap: round;
+        transform: translate(1px, 1px);
+
+        &:nth-child(2)
+        {
+          stroke-dasharray: 63;
+          stroke-dashoffset: 63;
+        }
+
+        &:nth-child(2)
+        {
+          stroke-dashoffset: calc(63 - (63 * var(--upload-loader-percentage) ) / 100);
+          stroke: var(--#{$prefix}upload-loader-color);
+        }
+      }
+    }
+  }
+
+  &--large {
+    --#{$prefix}upload-width: #{rem($upload-width-large)};
+    --#{$prefix}upload-inner-padding-x: #{rem($upload-large-inner-padding-x)};
+    --#{$prefix}upload-inner-padding-y: #{rem($upload-large-inner-padding-y)};
+    --#{$prefix}upload-title-margin-top: 0;
+    --#{$prefix}upload-btn-margin-top: 0;
+    --#{$prefix}upload-helper-text-margin-top: 0;
+
+    #{$root} {
+      &__loader {
+        max-width: rem(360px);
+      }
+
+      &__btn {
+        margin-left: var(--#{$prefix}upload-btn-margin-left);
+      }
+    }
+  }
+
+  &--sm {
+    --#{$prefix}upload-width: #{rem($upload-width-sm)};
+  }
+
+  &--success {
+    --#{$prefix}upload-loader-progress: 100%;
+    --#{$prefix}upload-loader-text-color: #{$upload-loader-success-color};
+    --#{$prefix}upload-loader-color: #{$upload-loader-success-color};
+    --#{$prefix}upload-loader-contorl-color: #{$upload-loader-success-color};
+  }
+
+  &--error {
+    --#{$prefix}upload-loader-text-color: #{$upload-loader-error-color};
+    --#{$prefix}upload-loader-color: #{$upload-loader-error-color};
+    --#{$prefix}upload-loader-contorl-color: #{$upload-loader-error-color};
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    user-select: none;
+    opacity: var(--#{$prefix}upload-disabled-opacity);
+
+    #{$root}__btn {
+      pointer-events: none;
+    }
+  }
+}

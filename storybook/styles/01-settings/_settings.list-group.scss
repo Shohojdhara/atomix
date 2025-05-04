@@ -1,0 +1,14 @@
+@use "./settings.typography" as *;
+@use "./settings.config" as *;
+
+$list-group-width:                      100% !default; 
+$list-group-bg:                         null !default;
+
+$list-group-item-padding-y:             12px !default;
+$list-group-item-padding-x:             $list-group-item-padding-y !default;
+$list-group-item-font-size:             $font-size-base !default; 
+$list-group-item-color:                 var(--#{$prefix}body-color) !default; 
+$list-group-item-disabled-color:        var(--#{$prefix}disabled-text-emphasis) !default;
+$list-group-item-border-color:          var(--#{$prefix}primary-border-subtle) !default; 
+$list-group-item-border-width:          1px !default;
+$list-group-item-bg:                    var(--#{$prefix}body-bg) !default;

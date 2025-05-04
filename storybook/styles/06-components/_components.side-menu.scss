@@ -1,0 +1,107 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.side-menu' as *;
+@use '../01-settings/settings.typography' as typography;
+@use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.grid' as grid;
+@use '../02-tools/tools.transition' as transition;
+
+.c-side-menu {
+  $root: &;
+
+  --#{config.$prefix}side-menu-padding-x: #{rem.rem($side-menu-padding-x)};
+  --#{config.$prefix}side-menu-padding-y: #{rem.rem($side-menu-padding-y)};
+  --#{config.$prefix}side-menu-bg: #{$side-menu-bg};
+  --#{config.$prefix}side-menu-border-radius: #{$side-menu-border-radius};
+  --#{config.$prefix}side-menu-title-font-size: #{$side-menu-title-font-size};
+  --#{config.$prefix}side-menu-title-font-weight: #{$side-menu-title-font-weight};
+  --#{config.$prefix}side-menu-title-color: #{$side-menu-title-color};
+  --#{config.$prefix}side-menu-title-spacer-y: #{rem.rem($side-menu-title-spacer-y)};
+  --#{config.$prefix}side-menu-item-padding-x: #{rem.rem($side-menu-item-padding-x)};
+  --#{config.$prefix}side-menu-item-padding-y: #{rem.rem($side-menu-item-padding-y)};
+  --#{config.$prefix}side-menu-item-font-size: #{$side-menu-item-font-size};
+  --#{config.$prefix}side-menu-item-color: #{$side-menu-item-color};
+
+  width: 100%;
+  padding: var(--#{config.$prefix}side-menu-padding-y)
+    var(--#{config.$prefix}side-menu-padding-x);
+  background: var(--#{config.$prefix}side-menu-bg);
+  border-radius: var(--#{config.$prefix}side-menu-border-radius);
+
+  @include grid.media-breakpoint-down(md) {
+    padding: rem.rem(12px) rem.rem(16px);
+  }
+
+  &__wrapper {
+    @include grid.media-breakpoint-down(md) {
+      height: 0px;
+      overflow: hidden;
+      user-select: none;
+
+      @include transition.basic-transition();
+    }
+  }
+
+  &__inner {
+    @include grid.media-breakpoint-down(md) {
+      padding-top: rem.rem(20px);
+    }
+  }
+
+  &__title {
+    color: var(--#{config.$prefix}side-menu-title-color);
+    font-size: var(--#{config.$prefix}side-menu-title-font-size);
+    font-weight: var(--#{config.$prefix}side-menu-title-font-weight);
+    margin-bottom: var(--#{config.$prefix}side-menu-title-spacer-y);
+  }
+
+  &__list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+  }
+
+  &__link {
+    display: inline-block;
+    color: var(--#{config.$prefix}side-menu-item-color);
+    font-size: var(--#{config.$prefix}side-menu-item-font-size);
+    padding: var(--#{config.$prefix}side-menu-item-padding-y)
+      var(--#{config.$prefix}side-menu-item-padding-y);
+
+    &.is-active {
+      color: var(--#{config.$prefix}brand-text-emphasis);
+      font-weight: typography.$font-weight-medium;
+    }
+  }
+
+  &__toggler {
+    display: none;
+    justify-content: space-between;
+    font-size: typography.$font-size-lg;
+    font-weight: typography.$font-weight-medium;
+    cursor: pointer;
+    user-select: none;
+
+    @include grid.media-breakpoint-down(md) {
+      display: flex;
+    }
+  }
+
+  &__toggler-icon {
+    @include transition.basic-transition();
+  }
+
+  &.is-open  {
+    #{$root}__toggler-icon {
+      transform: rotate(90deg);
+    }
+  }
+}

@@ -1,0 +1,33 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.avatar' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.border-radius' as *;
+@use '../02-tools/tools.object-fit' as *;
+@use '../02-tools/tools.size' as *;
+
+.c-avatar {
+    --#{$prefix}avatar-fit: #{$avatar-fit};
+    --#{$prefix}avatar-size: #{rem(map.get($avatar-size, md))};
+    --#{$prefix}avatar-border-radius: #{map.get($avatar-border-radius, md)};
+    --#{$prefix}avatar-border-circle-radius: #{map.get($avatar-border-radius, 'circle')};
+
+
+    @include square(var(--#{$prefix}avatar-size));
+    @include border-radius(var(--#{$prefix}avatar-border-radius));
+    @include object-fit(var(--#{$prefix}avatar-fit));
+    overflow: hidden;
+    user-select: none;
+
+    @each $size, $value in $avatar-size {
+        &--#{$size} {
+            --#{$prefix}avatar-size: #{rem($value)};
+            --#{$prefix}avatar-border-radius: #{map.get($avatar-border-radius, $size)};
+        }
+    }
+
+
+    &--circle {
+        --#{$prefix}avatar-border-radius:  var(--#{$prefix}avatar-border-circle-radius);
+    }
+}

@@ -1,0 +1,34 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.grid' as grid;
+@use '../01-settings/settings.breakpoints' as breakpoints;
+@use '../02-tools/tools.grid' as *;
+
+.o-container,  .o-container-fluid {
+  @include make-container(); 
+}
+
+@each $breakpoint, $container-max-width in grid.$container-max-widths {
+  .o-container-#{$breakpoint} {
+    @extend .o-container-fluid;
+  }
+  
+  @include media-breakpoint-up($breakpoint, breakpoints.$grid-breakpoints) {
+    %responsive-container-#{$breakpoint} {
+      max-width: $container-max-width;
+    }
+
+    $extend-breakpoint: true;
+
+    @each $name, $width in breakpoints.$grid-breakpoints {
+      @if ($extend-breakpoint) {
+         .o-container#{breakpoint-infix($name, breakpoints.$grid-breakpoints)} {
+          @extend %responsive-container-#{$breakpoint};
+        }
+
+        @if ($breakpoint == $name) {
+          $extend-breakpoint: false;
+        }
+      }
+    }
+  }
+}

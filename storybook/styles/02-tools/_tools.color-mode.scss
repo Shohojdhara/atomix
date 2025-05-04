@@ -1,0 +1,22 @@
+@use '../01-settings/settings.color-mode' as color-mode;
+@use '../01-settings/settings.config' as config;
+
+@mixin color-mode($mode: light, $root: false) {
+    @if color-mode.$color-mode-type == "media-query" {
+      @if $root == true {
+        @media (prefers-color-scheme: $mode) {
+          :root {
+            @content;
+          }
+        }
+      } @else {
+        @media (prefers-color-scheme: $mode) {
+          @content;
+        }
+      }
+    } @else {
+      [data-#{config.$prefix}theme="#{$mode}"] {
+        @content;
+      }
+    }
+  }

@@ -1,0 +1,43 @@
+@use 'settings.config' as config;
+@use 'settings.border-radius' as border-radius;
+@use 'settings.typography' as typography;
+
+$calendar-padding-x:                    4px !default;
+$calendar-padding-y:                    4px !default;
+
+$calendar-bg:                           var(--#{config.$prefix}body-bg);
+$calendar-color:                        var(--#{config.$prefix}body-color);
+$calendar-deactive-color:               var(--#{config.$prefix}tertiary-text-emphasis);
+$calendar-border-radius:                border-radius.$border-radius-xl !default;
+$calendar-border-width:                 null !default;
+$calendar-border-color:                 null !default;
+$calendar-box-shadow:                   var(--#{config.$prefix}box-shadow);
+
+$calendar-month-font-size:               typography.$font-size-sm !default;
+$calendar-month-font-weight:             typography.$font-weight-bold !default;
+
+$calendar-year-font-size:                $calendar-month-font-size !default;
+$calendar-year-font-weight:              typography.$font-weight-bold !default;
+
+$calendar-week-font-size:                typography.$font-size-sm !default;
+$calendar-week-font-weight:              typography.$font-weight-normal !default;
+$calendar-week-width:                    40px !default;
+$calendar-week-height:                   40px !default;   
+
+$calendar-day-font-size:                 typography.$font-size-sm !default;
+$calendar-day-font-weight:               typography.$font-weight-normal !default;
+$calendar-day-width:                     $calendar-week-width !default;
+$calendar-day-height:                    $calendar-week-height !default;    
+$calendar-day-hover-bg:                  var(--#{config.$prefix}secondary-bg-subtle) !default;
+$calendar-day-border-radius:             border-radius.$border-radius-pill !default;
+
+$calendar-today-color:                   var(--#{config.$prefix}brand-text-emphasis);
+
+$calendar-day-in-range-bg:               var(--#{config.$prefix}brand-bg-subtle);
+$calendar-day-selected-color:            var(--#{config.$prefix}gray-1);
+$calendar-day-selected-bg:               var(--#{config.$prefix}primary);
+
+
+$calendar-width:                         $calendar-week-width * 7 + $calendar-padding-x * 2 !default;
+
+

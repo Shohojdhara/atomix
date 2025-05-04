@@ -1,0 +1,11 @@
+@use "./settings.config" as *;
+@use "./settings.typography" as *;
+
+$input-group-width:                      100% !default;
+$input-group-label-color:                var(--#{$prefix}secondary-text-emphasis) !default;
+$input-group-label-font-size:            $font-size-sm !default;
+$input-group-label-font-size-sm:         $font-size-xs !default;
+$input-group-label-margin-bottom:        8px !default;
+$input-group-helper-text-color:          var(--#{$prefix}tertiary-text-emphasis) !default;
+$input-group-helper-text-font-size:      $font-size-xs !default;
+$input-group-helper-text-margin-top:     $input-group-label-margin-bottom !default;

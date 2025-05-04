@@ -1,0 +1,57 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.list' as list;
+@use '../02-tools/tools.rem' as rem;
+
+.c-list {
+    $root: &;
+
+  --#{config.$prefix}list-color: #{list.$list-color};
+  --#{config.$prefix}list-font-size: #{list.$list-font-size};
+  --#{config.$prefix}list-font-weight: #{list.$list-font-weight};
+  --#{config.$prefix}list-item-gap: #{rem.rem(list.$list-item-gap)};
+  --#{config.$prefix}list-padding-left: #{rem.rem(list.$list-padding-left)};
+  --#{config.$prefix}list-item-dash-width: #{rem.rem(list.$list-item-dash-width)};
+  --#{config.$prefix}list-item-dash-height: #{rem.rem(list.$list-item-dash-height)};
+
+  padding-left: var(--#{config.$prefix}list-padding-left);
+
+  &__item {
+    color: var(--#{config.$prefix}list-color);
+    font-size: var(--#{config.$prefix}list-font-size);
+    font-weight: var(--#{config.$prefix}list-font-weight);
+    & + & {
+      margin-top: var(--#{config.$prefix}list-item-gap);
+    }
+  }
+
+  &--dash{
+    padding-left: 0;
+    list-style: none;
+
+    #{$root}__item {
+        position: relative;
+        padding-left: var(--#{config.$prefix}list-padding-left);
+        
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: var(--#{config.$prefix}list-item-dash-width);
+            height: var(--#{config.$prefix}list-item-dash-height);
+            background: var(--#{config.$prefix}list-color);
+            transform: translateY(-50%);
+        }
+    }
+  }
+
+  &--number {
+    list-style-type: decimal;
+  }
+
+  &--text {
+    list-style-type: lower-alpha;
+  }
+}

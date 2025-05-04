@@ -1,0 +1,16 @@
+@use "settings.config" as config;
+@use "settings.border-radius" as border-radius;
+@use "settings.typography" as typography;
+
+$side-menu-padding-x:               20px !default;
+$side-menu-padding-y:               24px !default;
+$side-menu-bg:                      var(--#{config.$prefix}body-bg) !default;
+$side-menu-border-radius:           border-radius.$border-radius-xl !default;
+$side-menu-title-font-size:         typography.$font-size-base !default;
+$side-menu-title-font-weight:       typography.$font-weight-medium !default;
+$side-menu-title-color:             var(--#{config.$prefix}body-color) !default;
+$side-menu-title-spacer-y:          8px !default;
+$side-menu-item-padding-x:          12px !default;
+$side-menu-item-padding-y:          8px !default;
+$side-menu-item-font-size:          typography.$font-size-sm !default;
+$side-menu-item-color:              var(--#{config.$prefix}secondary-text-emphasis) !default;

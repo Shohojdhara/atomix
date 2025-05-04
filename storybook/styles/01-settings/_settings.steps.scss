@@ -1,0 +1,26 @@
+@use "settings.config" as config;
+@use "settings.typography" as typography;
+@use "settings.border-radius" as border-radius;
+
+$steps-padding-x:                       0px !default;
+$steps-padding-y:                       0px !default;
+
+$steps-item-color:                      var(--#{config.$prefix}tertiary-text-emphasis) !default;
+$steps-item-bg:                         var(--#{config.$prefix}secondary-bg-subtle) !default;
+$steps-item-active-color:               var(--#{config.$prefix}brand-text-emphasis) !default;
+$steps-item-active-bg:                  var(--#{config.$prefix}primary) !default;
+$steps-item-number-bg:                  $steps-item-bg !default;
+$steps-item-number-color:               $steps-item-color !default;
+$steps-item-number-active-color:        var(--#{config.$prefix}gray-1) !default;
+$steps-item-number-size:                28px !default;
+$steps-item-number-font-size:           typography.$font-size-sm !default;
+$steps-item-number-border-radius:       border-radius.$border-radius-pill;
+$steps-item-font-size:                  typography.$font-size-sm !default;
+$steps-item-content-gap:                8px !default;
+
+$steps-line-height:                     1px !default;
+$steps-line-width:                      40px !default;
+$steps-gap:                             12px !default;
+
+$steps-line-height-vertical:            40px !default;
+$steps-line-width-vertical:             1px !default;

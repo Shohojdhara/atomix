@@ -1,0 +1,46 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.progress' as progress;
+@use '../02-tools/tools.rem' as rem;
+
+.c-progress{
+
+    --#{config.$prefix}progress-width: #{progress.$progress-width};
+    --#{config.$prefix}progress-percentage: 0%; 
+    --#{config.$prefix}progress-height: #{rem.rem(progress.$progress-height)};
+    --#{config.$prefix}progress-font-size: #{progress.$progress-font-size};
+    --#{config.$prefix}progress-bg: #{progress.$progress-bg};
+    --#{config.$prefix}progress-border-radius: #{progress.$progress-border-radius};
+    --#{config.$prefix}progress-bar-width: var(--#{config.$prefix}progress-percentage);
+    --#{config.$prefix}progress-bar-height: #{progress.$progress-bar-height};
+    --#{config.$prefix}progress-bar-color: #{progress.$progress-bar-color};
+    --#{config.$prefix}progress-bar-bg: #{progress.$progress-bar-bg};
+    --#{config.$prefix}progress-bar-transition: #{progress.$progress-bar-transition};
+    --#{config.$prefix}progress-bar-easing: #{progress.$progress-bar-easing};
+
+    width: 100%;
+    max-width: var(--#{config.$prefix}progress-width);
+    height: var(--#{config.$prefix}progress-bar-height);
+    background-color: var(--#{config.$prefix}progress-bg);
+    border-radius: var(--#{config.$prefix}progress-border-radius);
+    overflow: hidden;
+
+    &__bar{
+        width: var(--#{config.$prefix}progress-bar-width);
+        height: var(--#{config.$prefix}progress-bar-height);
+        color: var(--#{config.$prefix}progress-bar-color);
+        background-color: var(--#{config.$prefix}progress-bar-bg);
+        border-radius: var(--#{config.$prefix}progress-border-radius);
+        transition: var(--#{config.$prefix}progress-bar-transition) var(--#{config.$prefix}progress-bar-easing);
+    }
+
+    @each $color, $value in maps.$theme-colors {
+        &--#{$color} {
+            --#{config.$prefix}progress-bar-bg: var(--#{config.$prefix}#{$color});
+        }
+    }
+}
+
+
+

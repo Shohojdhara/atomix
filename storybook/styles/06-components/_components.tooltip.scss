@@ -1,0 +1,137 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.tooltip' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.size' as *;
+
+.c-tooltip {
+    $root: &;
+
+    --#{$prefix}tooltip-max-width: #{rem($tooltip-max-width)};
+    --#{$prefix}tooltip-padding-x: #{rem($tooltip-padding-x)};
+    --#{$prefix}tooltip-padding-y: #{rem($tooltip-padding-y)};
+    --#{$prefix}tooltip-bg: #{$tooltip-bg};
+    --#{$prefix}tooltip-font-size: #{$tooltip-font-size};
+    --#{$prefix}tooltip-font-weight: #{$tooltip-font-weight};
+    --#{$prefix}tooltip-color: #{$tooltip-color};
+    --#{$prefix}tooltip-border-radius: #{$tooltip-border-radius};
+    --#{$prefix}tooltip-border-width: #{$tooltip-border-width};
+    --#{$prefix}tooltip-border-color: #{$tooltip-border-color};
+    --#{$prefix}tooltip-box-shadow: #{$tooltip-box-shadow};
+    --#{$prefix}tooltip-arrow-size: #{rem($tooltip-arrow-size)};
+
+
+    position: absolute;
+    bottom: calc(100% + var(--#{$prefix}tooltip-arrow-size));
+    left: 50%;
+    width: max-content;
+    height: max-content;
+    max-width: var(--#{$prefix}tooltip-max-width);
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 1000;
+
+    &__content {
+        position: relative;
+        color: var(--#{$prefix}tooltip-color);
+        font-size: var(--#{$prefix}tooltip-font-size);
+        font-weight: var(--#{$prefix}tooltip-font-weight);
+        padding: var(--#{$prefix}tooltip-padding-y) var(--#{$prefix}tooltip-padding-x);
+        background-color: var(--#{$prefix}tooltip-bg);
+        border-radius: var(--#{$prefix}tooltip-border-radius);
+        z-index: 2;
+        opacity: 0;
+        transform: scale(0.95);
+        transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+    }
+
+    &__arrow {
+        position: absolute;
+        bottom: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        @include square(var(--#{$prefix}tooltip-arrow-size));
+        background-color: var(--#{$prefix}tooltip-bg);
+        z-index: 1;
+    }
+
+
+    &--top-left {
+        left: auto;
+        right: calc(100% - var( --#{$prefix}tooltip-arrow-size) * 2);
+        transform: translateX(0);
+
+        #{$root}__arrow {
+            left: auto;
+            right: var(--#{$prefix}tooltip-arrow-size);
+            transform: rotate(45deg);
+        }
+    }
+
+    &--top-right {
+        left: calc(100% - var( --#{$prefix}tooltip-arrow-size) * 2);
+        transform: translateX(0);
+
+        #{$root}__arrow {
+            left: var(--#{$prefix}tooltip-arrow-size);
+            transform: rotate(45deg);
+        }
+    }
+
+    &--right {
+        left: calc(100% + var(--#{$prefix}tooltip-arrow-size));
+        top: 50%;
+        transform: translateY(-50%);
+
+        #{$root}__arrow {
+            left: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
+            top: 50%;
+            bottom: auto;
+            transform: rotate(45deg) translateY(-50%);
+            transform-origin: top;
+        }
+    }
+
+
+    &--left {
+        left: auto;
+        right: calc(100% + var(--#{$prefix}tooltip-arrow-size));
+        top: 50%;
+        transform: translateY(-50%);
+
+        #{$root}__arrow {
+            left: auto;
+            top: 50%;
+            bottom: auto;
+            right: calc(var(--#{$prefix}tooltip-arrow-size) / -5);
+            transform: rotate(45deg) translateY(-50%);
+        }
+    }
+
+    &--bottom {
+        top: calc(100% + var(--#{$prefix}tooltip-arrow-size));
+        
+        #{$root}__arrow {
+            top: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
+            bottom: auto;
+        }
+    }
+
+    &--bottom-left {
+        top: calc(100% + var(--#{$prefix}tooltip-arrow-size));
+        left: 0;
+    }
+
+    &--bottom-right {
+        top: calc(100% + var(--#{$prefix}tooltip-arrow-size));
+        right: 0;
+    }
+
+    &.is-active {
+        pointer-events: auto;
+
+        .c-tooltip__content {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}
