@@ -14,6 +14,7 @@ A modern, lightweight, and customizable design system for building beautiful use
 - 🎯 BIO (BEM, ITCSS, OOCSS) architecture for robust CSS
 - 🌓 Built-in dark/light theme support
 - 🔄 Consistent component behavior and styling
+- 🖼️ Centralized assets management
 
 ## Architecture
 
@@ -41,6 +42,21 @@ The design system implements BIO (BEM, ITCSS, OOCSS) for robust CSS architecture
 - **OOCSS**: Object-Oriented CSS for reusable components
   - Multiple classes for flexible styling
   - Example: `class="c-accordion c-accordion--dark c-accordion--single"`
+
+### Assets Structure
+
+The design system uses a centralized assets management approach:
+
+- **Directory Structure**:
+  - `src/assets/`: Root folder for all assets
+  - `src/assets/images/`: Images used throughout the design system
+  - `src/assets/icons/`: Icon assets (when applicable)
+  - `src/assets/fonts/`: Font files (when applicable)
+
+- **Usage in Components**:
+  - Assets are referenced relative to their location
+  - Storybook is configured to serve assets from this directory
+  - Components access assets via consistent paths
 
 ## Getting Started
 
