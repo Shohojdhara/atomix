@@ -1,6 +1,46 @@
 # Atomix Design System
 
-A modern, lightweight, and customizable design system for building beautiful user interfaces.
+A modern, lightweight, and customizable design system for building beautiful user interfaces. Built with a focus on scalability, extensibility, and maintainability.
+
+## Features
+
+- 🎨 Modern and clean design
+- 🚀 Lightweight and performant
+- 🛠️ Highly customizable components
+- 📚 Comprehensive documentation
+- 🧪 Built-in Storybook for component development
+- 📱 Responsive and accessible
+- 🏗️ Built on SEM (Scalable, Extensible, Maintainable) principles
+- 🎯 BIO (BEM, ITCSS, OOCSS) architecture for robust CSS
+- 🌓 Built-in dark/light theme support
+- 🔄 Consistent component behavior and styling
+
+## Architecture
+
+### SEM Principles
+
+The design system is built on three core principles:
+
+- **Scalable**: Components can be added anywhere in the page without requiring code changes
+- **Extensible**: Core functionality remains unchanged while supporting different use cases
+- **Maintainable**: Organized structure that follows logical patterns
+
+### BIO Architecture
+
+The design system implements BIO (BEM, ITCSS, OOCSS) for robust CSS architecture:
+
+- **BEM**: Block Element Modifier methodology for clear class naming
+  - Blocks: `.c-accordion`
+  - Elements: `.c-accordion__trigger`
+  - Modifiers: `.c-accordion--light`, `.c-accordion--dark`
+
+- **ITCSS**: Inverted Triangle CSS for managing specificity
+  - Handles CSS specificity through ordered layers
+  - Enables pattern overrides without conflicts
+
+- **OOCSS**: Object-Oriented CSS for reusable components
+  - Multiple classes for flexible styling
+  - Example: `class="c-accordion c-accordion--dark c-accordion--single"`
 
 ## Getting Started
 
@@ -19,7 +59,7 @@ npm install
 
 ### Components Library
 
-Build the components library (vanilla JS):
+Build the components library:
 
 ```bash
 npm run build:components
@@ -31,7 +71,7 @@ Watch for changes during development:
 npm run dev:components
 ```
 
-The built files will be available in the `dist/lib` folder.
+The built files will be available in the `dist` folder.
 
 ### Documentation Site
 
@@ -49,11 +89,9 @@ Build the documentation site:
 npm run build:docs
 ```
 
-The built files will be available in the `dist/docs` folder.
-
 ### Storybook
 
-The design system also includes Storybook for component development and testing:
+The design system includes Storybook for component development and testing:
 
 ```bash
 npm run storybook
@@ -67,82 +105,28 @@ Build Storybook:
 npm run build-storybook
 ```
 
-## Deployment
+## Available Components
 
-### Deploying to GitHub Pages
+The design system includes the following components:
 
-#### Automatic Deployment
+- **Button**: A versatile button component with primary and secondary variants
+- **Accordion**: A collapsible content component with:
+  - Light and dark theme support
+  - Single/multiple panel modes
+  - Customizable triggers and panels
+  - Accessible keyboard navigation
+- More components coming soon...
 
-The project supports a combined deployment approach that includes both:
-- The documentation site at `/docs`
-- Storybook at `/storybook`
-
-To build and deploy everything to GitHub Pages:
-
-```bash
-npm run deploy
-```
-
-This command:
-1. Builds the documentation site
-2. Builds Storybook
-3. Prepares a unified deployment directory
-4. Deploys to GitHub Pages
-
-#### Manual Deployment
-
-If you encounter permission issues with GitHub, follow these steps:
-
-1. Prepare the deployment files:
-   ```bash
-   npm run predeploy
-   ```
-
-2. Switch to the gh-pages branch:
-   ```bash
-   git checkout gh-pages
-   ```
-
-3. Copy files from the deploy directory:
-   ```bash
-   # Remove existing files (be careful!)
-   rm -rf docs storybook index.html
-   
-   # Copy new files
-   cp -r deploy/* .
-   ```
-
-4. Commit and push:
-   ```bash
-   git add .
-   git commit -m "Update GitHub Pages"
-   git push origin gh-pages
-   ```
-
-5. Switch back to the main branch:
-   ```bash
-   git checkout main
-   ```
-
-After deployment, the site will be available at:
-- Documentation: https://liimonx.github.io/atomix/docs/
-- Storybook: https://liimonx.github.io/atomix/storybook/
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Development
+## Development Scripts
 
 - `npm run storybook`: Start Storybook development server
 - `npm run build-storybook`: Build Storybook for production
 - `npm run dev`: Start development server
 - `npm run build`: Build the project for production
+- `npm run dev:components`: Watch for component changes
+- `npm run build:components`: Build components library
+- `npm run build:docs`: Build documentation site
 
-## Components
+## License
 
-The design system includes the following components:
-
-- Button: A versatile button component with primary and secondary variants
-
-More components will be added as the design system grows.
+This project is licensed under the MIT License - see the LICENSE file for details.
