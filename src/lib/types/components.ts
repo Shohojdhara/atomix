@@ -176,4 +176,74 @@ export interface ElementRefs {
   panelRef?: React.RefObject<HTMLDivElement>;
   contentRef?: React.RefObject<HTMLDivElement>;
   buttonRef?: React.RefObject<HTMLButtonElement>;
+}
+
+/**
+ * Hero alignment options
+ */
+export type HeroAlignment = 'left' | 'center' | 'right';
+
+/**
+ * Hero component properties
+ */
+export interface HeroProps extends BaseComponentProps {
+  /**
+   * Hero title
+   */
+  title: string;
+  
+  /**
+   * Hero subtitle
+   */
+  subtitle?: string;
+  
+  /**
+   * Hero text content
+   */
+  text?: string;
+  
+  /**
+   * Image source for the hero
+   */
+  imageSrc?: string;
+  
+  /**
+   * Image alt text
+   */
+  imageAlt?: string;
+  
+  /**
+   * Content alignment
+   */
+  alignment?: HeroAlignment;
+  
+  /**
+   * Background image source
+   */
+  backgroundImageSrc?: string;
+  
+  /**
+   * Whether to show the background overlay
+   */
+  showOverlay?: boolean;
+  
+  /**
+   * Whether the hero should take full viewport height
+   */
+  fullViewportHeight?: boolean;
+  
+  /**
+   * Actions to display in the hero
+   */
+  actions?: ReactNode;
+  
+  /**
+   * Custom grid column size for image (default is 7)
+   */
+  imageColSize?: number;
+  
+  /**
+   * Custom grid column size for content (default is 5)
+   */
+  contentColSize?: number;
 } 
