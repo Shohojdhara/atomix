@@ -1,11 +1,14 @@
 @use "settings.config" as config;
 @use "settings.typography" as typography;
+@use "settings.colors" as colors;
 
 $river-width:                   100% !default;
 $river-padding-x:               0px !default;
 $river-padding-y:               40px  !default;
 $river-border-radius:           0px;
 $river-bg:                      var(--#{config.$prefix}body-bg) !default;
+$river-overlay:                 colors.$dark !default;
+$river-overlay-opacity:         0.6 !default;
 
 $river-title-font-size:         typography.$h1-font-size !default;
 $river-text-font-size:          typography.$font-size-base !default;
