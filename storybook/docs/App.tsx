@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Hero } from '../components/Hero/Hero';
 import { Button } from '../components/Button/Button';
+// Import the video file
+import videoBackground from '../assets/videos/video_2025-05-05 06_40_27.webm';
 
 // Component categories for better organization
 const componentCategories = [
@@ -71,6 +73,48 @@ const MoonIcon = () => (
   </svg>
 );
 
+// Custom Hero with Video Background component
+const HeroWithVideo: React.FC = () => {
+  return (
+    <div className="u-position-relative">
+      {/* Video Background */}
+      <div className="u-position-absolute u-top-0 u-start-0 u-w-100 u-h-100 u-overflow-hidden u-z-0">
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          className="u-w-100 u-h-100 u-object-fit-cover"
+          style={{ filter: 'brightness(0.6)' }} // Darken the video a bit for better text readability
+        >
+          <source src={videoBackground} type="video/webm" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+      {/* Hero Component */}
+      <div className="u-position-relative u-z-1">
+        <Hero
+          title="Atomix Design System"
+          subtitle="Modern UI Component Library"
+          text="A lightweight, highly customizable React component library for building beautiful interfaces with a focus on scalability, extensibility, and maintainability."
+          showOverlay={false} // No need for overlay since we're using video with filter
+          fullViewportHeight={false}
+          alignment="center"
+          contentWidth="650px"
+          actions={
+            <div className="u-d-flex u-gap-3 u-justify-content-center">
+              <Button label="Get Started" variant="primary" />
+              <a href='https://liimonx.github.io/atomix/storybook/' target='_blank' rel='noopener noreferrer' className='c-btn c-btn--outline-secondary'>
+                View on Storybook
+              </a>
+            </div>
+          }
+        />
+      </div>
+    </div>
+  );
+};
+
 const App: React.FC = () => {
   // State for color mode
   const [colorMode, setColorMode] = useState<'light' | 'dark'>('light');
@@ -106,24 +150,7 @@ const App: React.FC = () => {
       </div>
       
       {/* Main Hero Section */}
-      <Hero
-        title="Atomix Design System"
-        subtitle="Modern UI Component Library"
-        text="A lightweight, highly customizable React component library for building beautiful interfaces with a focus on scalability, extensibility, and maintainability."
-        backgroundImageSrc="https://picsum.photos/id/180/1920/600"
-        showOverlay={true}
-        fullViewportHeight={false}
-        alignment="center"
-        contentWidth="650px"
-        actions={
-          <div className="u-d-flex u-gap-3 u-justify-content-center">
-            <Button label="Get Started" variant="primary" />
-            <a href='https://liimonx.github.io/atomix/storybook/' target='_blank' rel='noopener noreferrer' className='c-btn c-btn--outline-secondary'>
-              View on Storybook
-            </a>
-          </div>
-        }
-      />
+      <HeroWithVideo />
       
       <main className="u-flex-grow-1 u-py-5">
         <div className="o-container">
@@ -204,7 +231,7 @@ const App: React.FC = () => {
               </p>
             </div>
             
-            <div className="u-bg-secondary-subtle u-p-4 u-border-2 u-border-secondary u-border-radius u-mb-5 u-mt-5">
+            <div className="u-bg-secondary-subtle u-p-4 u-border- u-border-2 u-border-primary-subtle u-rounded-2 u-mb-5 u-mt-5">
               {componentCategories.map((category, index) => (
                 <div key={index} className={index > 0 ? 'u-mt-4 u-pt-4 u-border-top' : ''}>
                   <h3 className="u-fs-4 u-fw-semibold u-mb-3">{category.name}</h3>
@@ -219,7 +246,7 @@ const App: React.FC = () => {
               ))}
             </div>
             
-            <div className="u-bg-secondary-subtle u-p-4 u-border-2 u-border-secondary u-border-radius">
+            <div className="u-bg-secondary-subtle u-p-4 u-border- u-border-2 u-border-primary-subtle u-rounded-2">
               <h3 className="u-fs-4 u-fw-semibold u-mb-3">Consistent Design Language</h3>
               <p className="u-mb-4">
                 All components follow the same BEM naming convention and share a consistent API structure. Each component:
@@ -267,7 +294,7 @@ const App: React.FC = () => {
                   </p>
                 </div>
                 
-                <div className="u-bg-secondary-subtle u-p-4 u-border-2 u-border-secondary u-border-radius u-mb-4 u-mt-4">
+                <div className="u-bg-secondary-subtle u-p-4 u-border- u-border-2 u-border-primary-subtle u-rounded-2 u-mb-4 u-mt-4">
                   <h4 className="u-fs-5 u-fw-semibold u-mb-2">BEM</h4>
                   <p className="u-mb-2">Block Element Modifier methodology for clear class naming</p>
                   <ul className="u-ps-4 u-mb-0">
@@ -277,7 +304,7 @@ const App: React.FC = () => {
                   </ul>
                 </div>
                 
-                <div className="u-bg-secondary-subtle u-p-4 u-border-2 u-border-secondary u-border-radius u-mb-4">
+                <div className="u-bg-secondary-subtle u-p-4 u-border- u-border-2 u-border-primary-subtle u-rounded-2 u-mb-4">
                   <h4 className="u-fs-5 u-fw-semibold u-mb-2">ITCSS</h4>
                   <p className="u-mb-2">Inverted Triangle CSS for managing specificity</p>
                   <ul className="u-ps-4 u-mb-0">
@@ -286,7 +313,7 @@ const App: React.FC = () => {
                   </ul>
                 </div>
                 
-                <div className="u-bg-secondary-subtle u-p-4 u-border-2 u-border-secondary u-border-radius">
+                <div className="u-bg-secondary-subtle u-p-4 u-border- u-border-2 u-border-primary-subtle u-rounded-2">
                   <h4 className="u-fs-5 u-fw-semibold u-mb-2">OOCSS</h4>
                   <p className="u-mb-2">Object-Oriented CSS for reusable components</p>
                   <ul className="u-ps-4 u-mb-0">

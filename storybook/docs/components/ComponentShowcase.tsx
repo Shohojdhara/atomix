@@ -112,7 +112,7 @@ export const ComponentShowcase: React.FC<ComponentShowcaseProps> = ({
       <div className="c-card__body">
         <p className="c-card__text u-mb-4">{description}</p>
         
-        <div className="u-bg-secondary-subtle u-p-4 u-border-2 u-border-secondary u-border-radius">
+        <div className="u-bg-secondary-subtle u-p-4 u-border- u-border-2 u-border-primary-subtle u-rounded-2">
           {renderComponent()}
         </div>
       </div>
