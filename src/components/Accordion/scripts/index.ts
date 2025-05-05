@@ -1,6 +1,6 @@
 import { ACCORDION } from '../../../lib/constants/components';
 // For backward compatibility, using local constants
-import { SELECTORS, CLASSES, ATTRIBUTES, CSS_VARS } from './constants';
+// import { SELECTORS, CLASSES, ATTRIBUTES, CSS_VARS } from './constants';
 
 /**
  * Interface for Accordion instance
@@ -201,7 +201,10 @@ export function initializeAccordions(): AccordionInstance[] {
 }
 
 // Export constants for backward compatibility
-export { SELECTORS, CLASSES, ATTRIBUTES, CSS_VARS } from './constants';
+export const SELECTORS = ACCORDION.SELECTORS;
+export const CLASSES = ACCORDION.CLASSES;
+export const ATTRIBUTES = ACCORDION.ATTRIBUTES;
+export const CSS_VARS = ACCORDION.CSS_VARS;
 
 // Export component interactions
 export * from './accordionInteractions';

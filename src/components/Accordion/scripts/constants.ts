@@ -8,4 +8,4 @@ import { ACCORDION } from '../../../lib/constants/components';
 export const SELECTORS = ACCORDION.SELECTORS;
 export const CLASSES = ACCORDION.CLASSES;
 export const ATTRIBUTES = ACCORDION.ATTRIBUTES;
-export const CSS_VARS = ACCORDION.CSS_VARS; 
+export const CSS_VARS = ACCORDION.CSS_VARS;
