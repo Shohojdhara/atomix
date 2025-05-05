@@ -5,9 +5,7 @@ import { initializeTooltips as initTooltips } from './components/Tooltip/scripts
 import { initializeToggles } from './components/Toggle/scripts';
 import { initializeTabs } from './components/Tab/scripts';
 import { initializeSteps } from './components/Steps/scripts';
-import { initializeSpinners } from './components/Spinner/scripts';
 import { initializeTestimonials } from './components/Testimonial/scripts';
-import { initializeSectionIntros } from './components/SectionIntro/scripts';
 import { initializeRivers } from './components/River/scripts';
 import { initializeUploads } from './components/Upload/scripts';
 
@@ -65,27 +63,11 @@ function initializeStepComponents(): void {
 }
 
 /**
- * Initialize all Spinner components in the document
- */
-function initializeSpinnerComponents(): void {
-  // Initialize spinners with default settings
-  initializeSpinners();
-}
-
-/**
  * Initialize all Testimonial components in the document
  */
 function initializeTestimonialComponents(): void {
   // Initialize testimonials with default settings
   initializeTestimonials();
-}
-
-/**
- * Initialize all SectionIntro components in the document
- */
-function initializeSectionIntroComponents(): void {
-  // Initialize section intros with default settings
-  initializeSectionIntros();
 }
 
 /**
@@ -114,9 +96,7 @@ function initializeComponents(): void {
   initializeToggleComponents();
   initializeTabComponents();
   initializeStepComponents();
-  initializeSpinnerComponents();
   initializeTestimonialComponents();
-  initializeSectionIntroComponents();
   initializeRiverComponents();
   initializeUploadComponents();
   // Add other component initializations as needed
