@@ -251,4 +251,24 @@ export interface HeroProps extends BaseComponentProps {
    * Custom width for the hero content (overrides the default CSS variable)
    */
   contentWidth?: string;
+}
+
+/**
+ * Spinner component properties
+ */
+export interface SpinnerProps extends BaseComponentProps {
+  /**
+   * Spinner color variant
+   */
+  variant?: ThemeColor;
+  
+  /**
+   * Spinner size
+   */
+  size?: Size;
+  
+  /**
+   * Whether the spinner should be displayed fullscreen
+   */
+  fullscreen?: boolean;
 } 

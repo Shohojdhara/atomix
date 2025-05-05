@@ -222,7 +222,8 @@ export const SPINNER = {
     DARK: 'c-spinner--dark',
     SMALL: 'c-spinner--sm',
     LARGE: 'c-spinner--lg'
-  }
+  },
+  VISUALLY_HIDDEN: 'u-visually-hidden'
 };
 
 /**

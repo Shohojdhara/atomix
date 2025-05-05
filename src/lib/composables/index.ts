@@ -13,4 +13,7 @@ export * from './useHero';
 // River composables
 export * from './useRiver';
 
+// Spinner composables
+export * from './useSpinner';
+
 // Export other composables as needed 
