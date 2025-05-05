@@ -217,6 +217,14 @@ const getComponentConfig = (env, argv) => {
           generator: {
             filename: 'fonts/[name]-[hash][ext]'
           }
+        },
+        // Video files handling
+        {
+          test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+          type: 'asset/resource',
+          generator: {
+            filename: 'videos/[name]-[hash][ext]'
+          }
         }
       ]
     },
@@ -377,6 +385,14 @@ const getDocsConfig = (env, argv) => {
           type: 'asset/resource',
           generator: {
             filename: 'fonts/[name]-[hash][ext]'
+          }
+        },
+        // Video files handling
+        {
+          test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+          type: 'asset/resource',
+          generator: {
+            filename: 'videos/[name]-[hash][ext]'
           }
         }
       ]

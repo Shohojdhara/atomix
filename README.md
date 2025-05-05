@@ -2,62 +2,6 @@
 
 A modern, lightweight, and customizable design system for building beautiful user interfaces. Built with a focus on scalability, extensibility, and maintainability.
 
-## Features
-
-- 🎨 Modern and clean design
-- 🚀 Lightweight and performant
-- 🛠️ Highly customizable components
-- 📚 Comprehensive documentation
-- 🧪 Built-in Storybook for component development
-- 📱 Responsive and accessible
-- 🏗️ Built on SEM (Scalable, Extensible, Maintainable) principles
-- 🎯 BIO (BEM, ITCSS, OOCSS) architecture for robust CSS
-- 🌓 Built-in dark/light theme support
-- 🔄 Consistent component behavior and styling
-- 🖼️ Centralized assets management
-
-## Architecture
-
-### SEM Principles
-
-The design system is built on three core principles:
-
-- **Scalable**: Components can be added anywhere in the page without requiring code changes
-- **Extensible**: Core functionality remains unchanged while supporting different use cases
-- **Maintainable**: Organized structure that follows logical patterns
-
-### BIO Architecture
-
-The design system implements BIO (BEM, ITCSS, OOCSS) for robust CSS architecture:
-
-- **BEM**: Block Element Modifier methodology for clear class naming
-  - Blocks: `.c-accordion`
-  - Elements: `.c-accordion__trigger`
-  - Modifiers: `.c-accordion--light`, `.c-accordion--dark`
-
-- **ITCSS**: Inverted Triangle CSS for managing specificity
-  - Handles CSS specificity through ordered layers
-  - Enables pattern overrides without conflicts
-
-- **OOCSS**: Object-Oriented CSS for reusable components
-  - Multiple classes for flexible styling
-  - Example: `class="c-accordion c-accordion--dark c-accordion--single"`
-
-### Assets Structure
-
-The design system uses a centralized assets management approach:
-
-- **Directory Structure**:
-  - `src/assets/`: Root folder for all assets
-  - `src/assets/images/`: Images used throughout the design system
-  - `src/assets/icons/`: Icon assets (when applicable)
-  - `src/assets/fonts/`: Font files (when applicable)
-
-- **Usage in Components**:
-  - Assets are referenced relative to their location
-  - Storybook is configured to serve assets from this directory
-  - Components access assets via consistent paths
-
 ## Getting Started
 
 ### Installation
@@ -131,7 +75,12 @@ The design system includes the following components:
   - Single/multiple panel modes
   - Customizable triggers and panels
   - Accessible keyboard navigation
-- More components coming soon...
+- **Hero**: A flexible hero component with:
+  - Left/right/center alignment options
+  - Foreground and background image support
+  - Overlay options for background images
+  - Custom content width control
+  - Full viewport height option
 
 ## Development Scripts
 
