@@ -24,7 +24,7 @@
   );
   background-size: 400% 100%;
   border-radius: var(--#{$prefix}skeleton-border-radius);
-  animation-name: lux-skeleton-loading;
+  animation-name: #{$prefix}-skeleton-loading;
   animation-duration: 1.4s;
   animation-timing-function: ease;
   animation-iteration-count: infinite;

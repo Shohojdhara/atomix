@@ -1,13 +1,14 @@
 @use '../01-settings/settings.animations' as animations;
 @use 'sass:list';
 @use 'tools.transition' as transition;
+@use '../01-settings/settings.config' as config;
 
 // Forward basic-transition mixin for backwards compatibility
 @mixin basic-transition($property: all, $duration: 0.2s, $timing: ease-in-out, $delay: 0s) {
   @include transition.basic-transition($property, $duration, $timing, $delay);
 }
 
-@keyframes atomix-skeleton-loading {
+@keyframes #{config.$prefix}-skeleton-loading {
   0% {
       background-position: 100% 50%;
   }
