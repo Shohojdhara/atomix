@@ -16,4 +16,7 @@ export * from './useRiver';
 // Spinner composables
 export * from './useSpinner';
 
+// Navbar composables
+export * from './useNavbar';
+
 // Export other composables as needed 

@@ -7,10 +7,13 @@
 @function map-loop($map, $function, $key: "$key", $value: "$value") {
   $result: ();
   @each $k, $v in $map {
+    // Call the function by name and pass the value to it
+    $function-result: meta.call($function, $v);
+    
     $result: map.merge(
       $result,
       (
-         $k: $v // Replace with actual logic if needed
+         $k: $function-result
       )
     );
   }

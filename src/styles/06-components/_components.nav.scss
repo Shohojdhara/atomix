@@ -108,6 +108,7 @@
     position: absolute;
     top: calc(100% - var(--#{$prefix}navbar-padding-y));
     left: 0;
+    width: 100%;
     visibility: hidden;
     opacity: 0;
     @include transition.basic-transition();

@@ -1,13 +1,14 @@
-
 // Typography
 //
 // Font, line-height, and color for body text, headings, and more.
 
-$helvetica-neue:                'Helvetica Neue', sans-serif !default;
+// Font stacks with appropriate fallbacks
+$helvetica-neue:                'Helvetica Neue', 'Helvetica', 'Arial', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !default;
+$system-font-stack:             system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif !default;
 
 $font-family-base:              $helvetica-neue !default;
 $font-family-sans-serif:        $helvetica-neue !default;
-$font-family-monospace:         monospace !default;
+$font-family-monospace:         SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !default;
 $headings-font-family:          $helvetica-neue !default;
 
 $font-weight-light:             300 !default;
@@ -57,7 +58,6 @@ $line-height-sm:                1.43 !default;
 $line-height-lg:                1.56 !default;
 
 $headings-margin-bottom:        0 !default;
-$headings-font-family:          $helvetica-neue !default;
 $headings-font-weight:          $font-weight-bold !default;
 $headings-line-height:          1.3 !default;
 

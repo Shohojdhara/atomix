@@ -11,10 +11,13 @@ export type Size = 'sm' | 'md' | 'lg';
 export type ThemeColor = 
   | 'primary'
   | 'secondary'
+  | 'tertiary'
+  | 'invert'
+  | 'brand'
+  | 'error'
   | 'success'
-  | 'info'
   | 'warning'
-  | 'danger'
+  | 'info'
   | 'light'
   | 'dark';
 
@@ -271,4 +274,234 @@ export interface SpinnerProps extends BaseComponentProps {
    * Whether the spinner should be displayed fullscreen
    */
   fullscreen?: boolean;
+}
+
+/**
+ * Navbar position options
+ */
+export type NavbarPosition = 'static' | 'fixed' | 'fixed-bottom';
+
+/**
+ * Nav item alignment options
+ */
+export type NavAlignment = 'start' | 'center' | 'end';
+
+/**
+ * Navbar component properties
+ */
+export interface NavbarProps extends BaseComponentProps {
+  /**
+   * Brand/logo component or text
+   */
+  brand?: ReactNode;
+  
+  /**
+   * Navbar navigation items
+   */
+  children?: ReactNode;
+  
+  /**
+   * Optional variant/color scheme
+   */
+  variant?: ThemeColor;
+  
+  /**
+   * Navbar position
+   */
+  position?: NavbarPosition;
+  
+  /**
+   * Container max width (default is from settings)
+   */
+  containerWidth?: string;
+  
+  /**
+   * Whether to collapse navbar on mobile
+   */
+  collapsible?: boolean;
+  
+  /**
+   * Whether navbar is expanded (for controlled component)
+   */
+  expanded?: boolean;
+  
+  /**
+   * Callback when expansion state changes
+   */
+  onToggle?: (expanded: boolean) => void;
+}
+
+/**
+ * Nav component properties
+ */
+export interface NavProps extends BaseComponentProps {
+  /**
+   * Navigation items
+   */
+  children: ReactNode;
+  
+  /**
+   * Alignment of nav items
+   */
+  alignment?: NavAlignment;
+}
+
+/**
+ * Nav item properties
+ */
+export interface NavItemProps extends BaseComponentProps {
+  /**
+   * Item content
+   */
+  children: ReactNode;
+  
+  /**
+   * Whether this item has a dropdown
+   */
+  dropdown?: boolean;
+  
+  /**
+   * Whether this item has a mega menu
+   */
+  megaMenu?: boolean;
+  
+  /**
+   * Whether this item is active
+   */
+  active?: boolean;
+  
+  /**
+   * Optional href for link items
+   */
+  href?: string;
+  
+  /**
+   * Optional click handler
+   */
+  onClick?: () => void;
+  
+  /**
+   * Whether dropdown/mega menu is expanded
+   */
+  'aria-expanded'?: boolean;
+}
+
+/**
+ * Nav dropdown properties
+ */
+export interface NavDropdownProps extends BaseComponentProps {
+  /**
+   * Dropdown title/trigger content
+   */
+  title: ReactNode;
+  
+  /**
+   * Dropdown menu items
+   */
+  children: ReactNode;
+  
+  /**
+   * Dropdown alignment
+   */
+  alignment?: 'start' | 'center' | 'end';
+  
+  /**
+   * Whether it's a mega menu (full width)
+   */
+  megaMenu?: boolean;
+}
+
+/**
+ * Menu component properties
+ */
+export interface MenuProps extends BaseComponentProps {
+  /**
+   * Menu content
+   */
+  children: ReactNode;
+}
+
+/**
+ * Menu item properties
+ */
+export interface MenuItemProps extends BaseComponentProps {
+  /**
+   * Item content
+   */
+  children: ReactNode;
+  
+  /**
+   * Item href
+   */
+  href?: string;
+  
+  /**
+   * Item icon
+   */
+  icon?: ReactNode;
+  
+  /**
+   * Whether item is active
+   */
+  active?: boolean;
+  
+  /**
+   * Item click handler
+   */
+  onClick?: () => void;
+}
+
+/**
+ * MegaMenu component properties
+ */
+export interface MegaMenuProps extends BaseComponentProps {
+  /**
+   * MegaMenu content
+   */
+  children: ReactNode;
+}
+
+/**
+ * MegaMenu column properties
+ */
+export interface MegaMenuColumnProps extends BaseComponentProps {
+  /**
+   * Column title
+   */
+  title?: ReactNode;
+  
+  /**
+   * Column icon
+   */
+  icon?: ReactNode;
+  
+  /**
+   * Column content
+   */
+  children: ReactNode;
+  
+  /**
+   * Column width (auto by default)
+   */
+  width?: 'auto' | number;
+}
+
+/**
+ * MegaMenu link properties
+ */
+export interface MegaMenuLinkProps extends BaseComponentProps {
+  /**
+   * Link href
+   */
+  href: string;
+  
+  /**
+   * Link content
+   */
+  children: ReactNode;
+  
+  /**
+   * Link click handler
+   */
+  onClick?: () => void;
 } 

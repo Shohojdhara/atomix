@@ -308,4 +308,43 @@ export const UPLOAD = {
   ATTRIBUTES: {
     PERCENTAGE: '--upload-loader-percentage'
   }
+};
+
+/**
+ * Navbar-specific constants
+ */
+export const NAVBAR = {
+  SELECTORS: {
+    NAVBAR: '.c-navbar',
+    CONTAINER: '.c-navbar__container',
+    BRAND: '.c-navbar__brand',
+    COLLAPSE: '.c-navbar__collapse',
+    TOGGLER: '.c-navbar__toggler'
+  },
+  CLASSES: {
+    FIXED: 'c-navbar--fixed',
+    FIXED_BOTTOM: 'c-navbar--fixed-bottom',
+    EXPANDED: 'is-expanded'
+  }
+};
+
+/**
+ * Nav-specific constants
+ */
+export const NAV = {
+  SELECTORS: {
+    NAV: '.c-nav',
+    ITEM: '.c-nav__item',
+    LINK: '.c-nav__link',
+    DROPDOWN: '.c-nav__item--dropdown',
+    DROPDOWN_MENU: '.c-nav__dropdown-menu',
+    MEGA_MENU: '.c-nav__mega-menu',
+    ICON: '.c-nav__icon'
+  },
+  CLASSES: {
+    END: 'c-nav--end',
+    CENTER: 'c-nav--center',
+    ACTIVE: 'is-active',
+    DISABLED: 'is-disabled'
+  }
 }; 

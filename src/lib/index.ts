@@ -22,5 +22,10 @@ export type {
   AccordionProps,
   AccordionState,
   ElementRefs,
-  HeroProps
+  HeroProps,
+  SpinnerProps,
+  NavbarProps,
+  NavProps,
+  NavItemProps,
+  NavDropdownProps
 } from './types/components'; 
