@@ -17,6 +17,16 @@ npm install
 
 ## Development
 
+### Quick Start
+
+The fastest way to start development is using Storybook:
+
+```bash
+npm run storybook
+```
+
+This will start Storybook at http://localhost:6006, where you can browse and develop components interactively.
+
 ### Components Library
 
 Build the components library:
@@ -35,10 +45,16 @@ The built files will be available in the `dist` folder.
 
 ### Documentation Site
 
-Start the development server to preview the documentation site:
+Start the documentation site development server:
 
 ```bash
-npm run dev
+npm run dev:docs
+```
+
+Or with automatic browser opening:
+
+```bash
+npm run serve
 ```
 
 This will start a development server at http://localhost:3000 with hot reloading enabled.
@@ -49,48 +65,29 @@ Build the documentation site:
 npm run build:docs
 ```
 
-### Storybook
+### Deployment
 
-The design system includes Storybook for component development and testing:
-
-```bash
-npm run storybook
-```
-
-This will start Storybook at http://localhost:6006.
-
-Build Storybook:
+Deploy the documentation and Storybook to GitHub Pages:
 
 ```bash
-npm run build-storybook
+npm run deploy
 ```
 
-## Available Components
+This will run the predeploy script to build both the documentation site and Storybook before deploying to GitHub Pages.
 
-The design system includes the following components:
-
-- **Button**: A versatile button component with primary and secondary variants
-- **Accordion**: A collapsible content component with:
-  - Light and dark theme support
-  - Single/multiple panel modes
-  - Customizable triggers and panels
-  - Accessible keyboard navigation
-- **Hero**: A flexible hero component with:
-  - Left/right/center alignment options
-  - Foreground and background image support
-  - Overlay options for background images
-  - Custom content width control
-  - Full viewport height option
-
-## Development Scripts
+## Available Scripts
 
 - `npm run storybook`: Start Storybook development server
 - `npm run build-storybook`: Build Storybook for production
-- `npm run dev`: Start development server
-- `npm run build`: Build the project for production
-- `npm run dev:components`: Watch for component changes
+- `npm run dev`: Alias for `npm run storybook`
+- `npm run build`: Alias for `npm run build:components`
 - `npm run build:components`: Build components library
+- `npm run dev:components`: Watch for component changes
 - `npm run build:docs`: Build documentation site
+- `npm run dev:docs`: Start documentation development server
+- `npm run serve`: Start documentation server with browser opening
+- `npm run predeploy`: Prepare files for deployment
+- `npm run deploy`: Deploy to GitHub Pages
 
 ## License
 
