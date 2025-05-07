@@ -1,6 +1,9 @@
 @use '../01-settings/settings.config' as *;
 @use '../01-settings/settings.navbar' as *;
+@use '../01-settings/settings.breakpoints' as breakpoints;
 @use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.media-queries' as media;
+@use '../01-settings/settings.maps' as maps;
 
 .c-navbar {
     $root: &;
@@ -32,17 +35,151 @@
 
     &__brand {
         margin-right: var(--#{$prefix}navbar-brand-margin-end);
+        display: flex;
+        align-items: center;
+        
+        svg {
+            color: inherit;
+        }
     }
 
-    // &__nav {
-       
-    // }
+    &__toggler {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: var(--#{$prefix}navbar-toggler-size);
+        height: var(--#{$prefix}navbar-toggler-size);
+        padding: 0;
+        background-color: transparent;
+        border: 0;
+        border-radius: 4px;
+        cursor: pointer;
+        
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        
+        &-icon {
+            position: relative;
+            display: inline-block;
+            width: 1.5em;
+            height: 1.5em;
+            vertical-align: middle;
+            
+            &::before,
+            &::after,
+            & {
+                position: absolute;
+                height: 2px;
+                width: 100%;
+                background-color: var(--#{$prefix}navbar-toggler-color);
+                border-radius: 1px;
+                transition: transform 0.15s ease;
+            }
+            
+            &::before,
+            &::after {
+                content: "";
+                display: block;
+            }
+            
+            &::before {
+                top: -0.5em;
+            }
+            
+            &::after {
+                bottom: -0.5em;
+            }
+        }
+    }
+    
+    &__collapse {
+        flex-grow: 1;
+        align-items: center;
+        display: flex;
+    }
+    
+    // Responsive behavior for collapsible navbars
+    &--collapsible {
+        @include media.media-down('md') {
+            #{$root}__toggler {
+                display: flex;
+                margin-left: auto;
+            }
+            
+            #{$root}__collapse {
+                display: none;
+                width: 100%;
+                
+                &.is-expanded {
+                    display: block;
+                    padding-top: 0.5rem;
+                }
+                
+                .c-nav {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    
+                    &__item {
+                        width: 100%;
+                        margin-left: 0 !important;
+                        
+                        & + & {
+                            margin-top: 0.25rem;
+                        }
+                    }
+                    
+                    &__link {
+                        display: block;
+                        width: 100%;
+                    }
+                    
+                    &__dropdown-menu,
+                    &__mega-menu {
+                        position: static;
+                        width: 100%;
+                        margin-top: 0.25rem;
+                        margin-bottom: 0.25rem;
+                        border: none;
+                        box-shadow: none;
+                        background-color: transparent;
+                        visibility: hidden;
+                        opacity: 0;
+                        height: 0;
+                        overflow: hidden;
+                        transform: none !important;
+                    }
+                    
+                    &__item--dropdown.is-active {
+                        > .c-nav__dropdown-menu,
+                        > .c-nav__mega-menu {
+                            visibility: visible;
+                            opacity: 1;
+                            height: auto;
+                        }
+                        
+                        > .c-nav__link .c-nav__icon {
+                            transform: rotate(-180deg);
+                        }
+                    }
+                }
+            }
+        }
+        
+        @include media.media-up('md') {
+            #{$root}__collapse {
+                display: flex !important;
+            }
+        }
+    }
 
     &--fixed, &--fixed-bottom {
         position: fixed;
         left: 0;
         right: 0;
         width: 100%;
+        z-index: 1030;
     }
 
     &--fixed {
@@ -60,6 +197,38 @@
         .c-nav--end .c-nav__dropdown-menu {
             left: 50%;
             transform: translateX(-50%);
+        }
+        
+        // For fixed-bottom, the caret should point upward
+        .c-nav__icon {
+            transform: rotate(180deg);
+            
+            &:hover {
+                transform: rotate(0deg);
+            }
+        }
+    }
+    
+    // Theme/variant styles
+    @each $color, $value in maps.$theme-colors-bg-subtle{
+        &--#{$color} {
+            --#{$prefix}navbar-bg: var(--#{$prefix}#{$color}-bg-subtle);
+            --#{$prefix}navbar-border-color: var(--#{$prefix}#{$color}-border-subtle);
+            --#{$prefix}navbar-toggler-color: var(--#{$prefix}#{$color}-text);
+            
+            .c-nav__link {
+                color: var(--#{$prefix}#{$color}-text);
+                
+                &:hover,
+                &:focus,
+                &.is-active {
+                    background-color: var(--#{$prefix}#{$color}-subtle);
+                }
+            }
+            
+            .c-navbar__brand {
+                color: var(--#{$prefix}#{$color}-text-emphasis);
+            }
         }
     }
 }
