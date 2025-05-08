@@ -65,9 +65,9 @@ export const MenuItem: React.FC<MenuItemProps> = ({
       >
         {icon && (
           typeof icon === 'string' ? (
-            icon.startsWith('icon-lux-') ? (
+            icon.startsWith('c-icon-') ? (
               <Icon 
-                name={mapIconName(icon.replace('icon-lux-', ''))} 
+                name={mapIconName(icon.replace('c-icon-', ''))} 
                 size="sm"
                 className="c-menu__icon"
               />
