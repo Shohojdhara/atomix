@@ -65,6 +65,10 @@ Build the documentation site:
 npm run build:docs
 ```
 
+### Component Development
+
+When creating new components for the Atomix design system, please follow our [Component Development Guidelines](./atomix-component-guidelines.md) to ensure consistency and quality.
+
 ### Deployment
 
 Deploy the documentation and Storybook to GitHub Pages:
@@ -91,4 +95,4 @@ This will run the predeploy script to build both the documentation site and Stor
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the Apache License - see the LICENSE file for details.

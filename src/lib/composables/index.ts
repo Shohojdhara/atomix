@@ -19,4 +19,7 @@ export * from './useSpinner';
 // Navbar composables
 export * from './useNavbar';
 
+// EdgePanel composables
+export * from './useEdgePanel';
+
 // Export other composables as needed 

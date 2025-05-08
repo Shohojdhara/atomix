@@ -13,3 +13,5 @@ $edge-panel-shadow:                 var(--#{config.$prefix}box-shadow) !default;
 $edge-panel-backdrop-bg:            var(--#{config.$prefix}invert-bg-subtle) !default;
 $edge-panel-backdrop-opacity:       .5 !default;
 $edge-panel-backdrop-blur:          10px !default;
+$edge-panel-animation-duration:     300 !default;
+$edge-panel-border-color:           var(--#{config.$prefix}border-color) !default;

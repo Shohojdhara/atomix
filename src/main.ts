@@ -8,6 +8,7 @@ import { initializeSteps } from './components/Steps/scripts';
 import { initializeTestimonials } from './components/Testimonial/scripts';
 import { initializeRivers } from './components/River/scripts';
 import { initializeUploads } from './components/Upload/scripts';
+import { initializeEdgePanelsWithCustomBehavior } from './components/EdgePanel/scripts/main';
 
 /**
  * Initialize all Button components in the document
@@ -87,6 +88,14 @@ function initializeUploadComponents(): void {
 }
 
 /**
+ * Initialize all EdgePanel components in the document
+ */
+function initializeEdgePanels(): void {
+  // Initialize edge panels with custom animations and behavior
+  initializeEdgePanelsWithCustomBehavior();
+}
+
+/**
  * Initialize all components
  */
 function initializeComponents(): void {
@@ -99,6 +108,7 @@ function initializeComponents(): void {
   initializeTestimonialComponents();
   initializeRiverComponents();
   initializeUploadComponents();
+  initializeEdgePanels();
   // Add other component initializations as needed
 }
 

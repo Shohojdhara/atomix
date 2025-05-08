@@ -504,4 +504,64 @@ export interface MegaMenuLinkProps extends BaseComponentProps {
    * Link click handler
    */
   onClick?: () => void;
+}
+
+/**
+ * EdgePanel position options
+ */
+export type EdgePanelPosition = 'start' | 'end' | 'top' | 'bottom';
+
+/**
+ * EdgePanel animation mode options
+ */
+export type EdgePanelMode = 'slide' | 'push' | 'none';
+
+/**
+ * EdgePanel component properties
+ */
+export interface EdgePanelProps extends BaseComponentProps {
+  /**
+   * Panel title
+   */
+  title?: ReactNode;
+  
+  /**
+   * Panel content
+   */
+  children: ReactNode;
+  
+  /**
+   * Panel position
+   */
+  position?: EdgePanelPosition;
+  
+  /**
+   * Animation mode
+   */
+  mode?: EdgePanelMode;
+  
+  /**
+   * Whether the panel is open
+   */
+  isOpen?: boolean;
+  
+  /**
+   * Open/close callback
+   */
+  onOpenChange?: (open: boolean) => void;
+  
+  /**
+   * Show backdrop
+   */
+  backdrop?: boolean;
+  
+  /**
+   * Close when clicking backdrop
+   */
+  closeOnBackdropClick?: boolean;
+  
+  /**
+   * Close when pressing escape key
+   */
+  closeOnEscape?: boolean;
 } 
