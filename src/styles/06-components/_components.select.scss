@@ -41,8 +41,7 @@
   }
 
   position: relative;
-  width: 100%;
-  max-width: var(--#{$prefix}select-width);
+  width: var(--#{$prefix}select-width);
 
   &__selected {
     width: 100%;

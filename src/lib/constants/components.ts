@@ -458,3 +458,131 @@ export const TODO = {
     LARGE: 'c-todo--lg'
   }
 };
+
+/**
+ * Form-specific constants
+ */
+export const FORM = {
+  SELECTORS: {
+    FORM: '.c-form',
+    GROUP: '.c-form-group',
+    LABEL: '.c-form-group__label',
+    HELPER: '.c-form-group__helper',
+    FIELD: '.c-form-group__field',
+    REQUIRED: '.c-form-group__required'
+  },
+  CLASSES: {
+    BASE: 'c-form',
+    DISABLED: 'c-form--disabled'
+  }
+};
+
+/**
+ * Form Group-specific constants
+ */
+export const FORM_GROUP = {
+  SELECTORS: {
+    GROUP: '.c-form-group',
+    LABEL: '.c-form-group__label',
+    FIELD: '.c-form-group__field',
+    HELPER: '.c-form-group__helper',
+    REQUIRED: '.c-form-group__required'
+  },
+  CLASSES: {
+    BASE: 'c-form-group',
+    SMALL: 'c-form-group--sm',
+    LARGE: 'c-form-group--lg',
+    INVALID: 'c-form-group--invalid',
+    VALID: 'c-form-group--valid',
+    DISABLED: 'c-form-group--disabled'
+  }
+};
+
+/**
+ * Input-specific constants
+ */
+export const INPUT = {
+  SELECTORS: {
+    INPUT: '.c-input'
+  },
+  CLASSES: {
+    BASE: 'c-input',
+    SMALL: 'c-input--sm',
+    LARGE: 'c-input--lg',
+    INVALID: 'is-invalid',
+    VALID: 'is-valid',
+    DISABLED: 'is-disabled'
+  }
+};
+
+/**
+ * Radio-specific constants
+ */
+export const RADIO = {
+  SELECTORS: {
+    RADIO: '.c-radio',
+    INPUT: '.c-radio__input',
+    LABEL: '.c-radio__label'
+  },
+  CLASSES: {
+    BASE: 'c-radio',
+    INVALID: 'is-error',
+    VALID: 'is-valid',
+    DISABLED: 'is-disabled'
+  }
+};
+
+/**
+ * Checkbox-specific constants - extend existing checkbox constants
+ */
+// Update existing CHECKBOX constants if needed
+
+/**
+ * Select-specific constants
+ */
+export const SELECT = {
+  SELECTORS: {
+    SELECT: '.c-select',
+    SELECTED: '.c-select__selected',
+    SELECT_BODY: '.c-select__body',
+    SELECT_PANEL: '.c-select__panel',
+    SELECT_ITEMS: '.c-select__items',
+    SELECT_ITEM: '.c-select__item',
+    ITEM_LABEL: '.c-select__item-label',
+    ITEM_INPUT: '.c-select__item-input',
+    OPTION: 'option'
+  },
+  CLASSES: {
+    BASE: 'c-select',
+    SELECTED: 'c-select__selected',
+    SELECT_BODY: 'c-select__body',
+    SELECT_PANEL: 'c-select__panel',
+    SELECT_ITEMS: 'c-select__items',
+    SELECT_ITEM: 'c-select__item',
+    TOGGLE_ICON: 'c-select__toggle-icon',
+    ICON_CARET: 'icon-lux-caret-down',
+    SMALL: 'c-select--sm',
+    LARGE: 'c-select--lg',
+    INVALID: 'is-invalid',
+    VALID: 'is-valid',
+    DISABLED: 'is-disabled',
+    IS_OPEN: 'is-open'
+  }
+};
+
+/**
+ * Textarea-specific constants
+ */
+export const TEXTAREA = {
+  SELECTORS: {
+    TEXTAREA: '.c-textarea'
+  },
+  CLASSES: {
+    BASE: 'c-input c-input--textarea',
+    SMALL: 'c-input--sm',
+    LARGE: 'c-input--lg',
+    INVALID: 'is-invalid',
+    VALID: 'is-valid',
+    DISABLED: 'is-disabled'
+  }
+};

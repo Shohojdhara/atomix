@@ -75,8 +75,8 @@
     --#{$prefix}input-border-color: var(--#{$prefix}success-border-subtle, #{$green-6});
   }
   
-  &--danger {
-    --#{$prefix}input-border-color: var(--#{$prefix}danger-border-subtle, #{$red-6});
+  &--error {
+    --#{$prefix}input-border-color: var(--#{$prefix}error-border-subtle, #{$red-6});
   }
   
   &--warning {
@@ -91,7 +91,7 @@
     --#{$prefix}input-border-color: #{$input-invalid-border-color};
   }
 
-  &.is-success, &.has-success &:valid {
+  &.is-success, &.has-success &:valid, .is-valid {
     --#{$prefix}input-border-color: #{$input-success-border-color};
   }
 
