@@ -1,0 +1,163 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.todo' as todo;
+@use '../01-settings/settings.colors' as colors;
+@use '../02-tools/tools.color-functions' as *;
+@use '../02-tools/tools.to-rgb' as *;
+
+// Component: Todo
+// Description: Styles for the Todo component
+
+// Base todo component
+.c-todo {
+  --#{config.$prefix}todo-border-color: #{todo.$todo-border-color};
+  --#{config.$prefix}todo-border-radius: #{todo.$todo-border-radius};
+  --#{config.$prefix}todo-bg: #{todo.$todo-bg};
+  --#{config.$prefix}todo-color: #{todo.$todo-color};
+  --#{config.$prefix}todo-title-margin-bottom: #{todo.$todo-title-margin-bottom};
+  --#{config.$prefix}todo-item-padding: #{todo.$todo-item-padding};
+  --#{config.$prefix}todo-item-border-color: #{todo.$todo-item-border-color};
+  --#{config.$prefix}todo-item-hover-bg: #{todo.$todo-item-hover-bg};
+  --#{config.$prefix}todo-form-margin-bottom: #{todo.$todo-form-margin-bottom};
+  --#{config.$prefix}todo-form-gap: #{todo.$todo-form-gap};
+  --#{config.$prefix}todo-completed-color: #{todo.$todo-completed-color};
+  --#{config.$prefix}todo-completed-text-decoration: #{todo.$todo-completed-text-decoration};
+  
+  width: 100%;
+  margin-bottom: todo.$todo-margin-bottom;
+  border: 1px solid var(--#{config.$prefix}todo-border-color);
+  border-radius: var(--#{config.$prefix}todo-border-radius);
+  background-color: var(--#{config.$prefix}todo-bg);
+  color: var(--#{config.$prefix}todo-color);
+  padding: todo.$todo-padding;
+  
+  // Title
+  &__title {
+    font-size: todo.$todo-title-font-size;
+    font-weight: todo.$todo-title-font-weight;
+    margin-top: 0;
+    margin-bottom: var(--#{config.$prefix}todo-title-margin-bottom);
+  }
+  
+  // Form
+  &__form {
+    margin-bottom: var(--#{config.$prefix}todo-form-margin-bottom);
+  }
+  
+  &__form-group {
+    display: flex;
+    gap: var(--#{config.$prefix}todo-form-gap);
+  }
+  
+  &__input {
+    flex: 1;
+    min-width: 0; // Prevent flex items from overflowing
+  }
+  
+  &__add-btn {
+    flex-shrink: 0;
+  }
+  
+  // List
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--#{config.$prefix}todo-item-border-color);
+  }
+  
+  &__empty {
+    padding: var(--#{config.$prefix}todo-item-padding);
+    text-align: center;
+    color: todo.$todo-empty-color;
+    font-style: italic;
+  }
+  
+  // Items
+  &__item {
+    padding: var(--#{config.$prefix}todo-item-padding);
+    border-bottom: 1px solid var(--#{config.$prefix}todo-item-border-color);
+    transition: background-color 0.2s ease;
+    
+    &:hover {
+      background-color: var(--#{config.$prefix}todo-item-hover-bg);
+    }
+    
+    &--completed {
+      .c-todo__item-text {
+        color: var(--#{config.$prefix}todo-completed-color);
+        text-decoration: var(--#{config.$prefix}todo-completed-text-decoration);
+      }
+    }
+  }
+  
+  &__item-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  
+  &__checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    cursor: pointer;
+  }
+  
+  &__checkbox {
+    flex-shrink: 0;
+  }
+  
+  &__item-text {
+    word-break: break-word;
+  }
+  
+  &__delete-btn {
+    flex-shrink: 0;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+  
+  // Size variants
+  &--sm {
+    padding: todo.$todo-padding-sm;
+    font-size: todo.$todo-font-size-sm;
+    
+    .c-todo__title {
+      font-size: todo.$todo-title-font-size-sm;
+      margin-bottom: todo.$todo-title-margin-bottom-sm;
+    }
+    
+    .c-todo__item {
+      padding: todo.$todo-item-padding-sm;
+    }
+  }
+  
+  &--lg {
+    padding: todo.$todo-padding-lg;
+    
+    .c-todo__title {
+      font-size: todo.$todo-title-font-size-lg;
+      margin-bottom: todo.$todo-title-margin-bottom-lg;
+    }
+    
+    .c-todo__item {
+      padding: todo.$todo-item-padding-lg;
+    }
+  }
+  
+  // Disabled state
+  &--disabled {
+    opacity: todo.$todo-disabled-opacity;
+    cursor: not-allowed;
+    
+    .c-todo__checkbox-label {
+      cursor: not-allowed;
+    }
+  }
+} 

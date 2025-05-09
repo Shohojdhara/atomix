@@ -684,4 +684,119 @@ export interface DataTableProps extends BaseComponentProps {
    * Callback when sorting changes
    */
   onSort?: (sortConfig: SortConfig) => void;
-} 
+}
+
+/**
+ * Pagination component properties
+ */
+export interface PaginationProps extends BaseComponentProps {
+  /**
+   * Current active page
+   */
+  currentPage: number;
+  
+  /**
+   * Total number of pages
+   */
+  totalPages: number;
+  
+  /**
+   * Callback function when page changes
+   */
+  onPageChange: (page: number) => void;
+  
+  /**
+   * Number of page links to show before and after current page
+   */
+  siblingCount?: number;
+  
+  /**
+   * Whether to show first/last page buttons
+   */
+  showFirstLastButtons?: boolean;
+  
+  /**
+   * Whether to show previous/next page buttons
+   */
+  showPrevNextButtons?: boolean;
+  
+  /**
+   * Custom class for the pagination container
+   */
+  className?: string;
+
+  /**
+   * Size variant for the pagination component
+   */
+  size?: Size;
+
+  /**
+   * Accessible label for the navigation element
+   */
+  ariaLabel?: string;
+}
+
+/**
+ * Todo item data structure
+ */
+export interface TodoItem {
+  /**
+   * Unique identifier for the todo
+   */
+  id: string;
+  
+  /**
+   * Todo item text
+   */
+  text: string;
+  
+  /**
+   * Whether the todo is completed
+   */
+  completed: boolean;
+}
+
+/**
+ * Todo component properties
+ */
+export interface TodoProps extends BaseComponentProps {
+  /**
+   * List of todo items
+   */
+  items: TodoItem[];
+  
+  /**
+   * Callback when a todo item is added
+   */
+  onAddTodo?: (text: string) => void;
+  
+  /**
+   * Callback when a todo item is toggled
+   */
+  onToggleTodo?: (id: string) => void;
+  
+  /**
+   * Callback when a todo item is deleted
+   */
+  onDeleteTodo?: (id: string) => void;
+  
+  /**
+   * Title of the todo list
+   */
+  title?: string;
+  
+  /**
+   * Size variant for the todo component
+   */
+  size?: Size;
+  
+  /**
+   * Placeholder text for the new todo input
+   */
+  placeholder?: string;
+  
+  /**
+   * Whether to show the completed todos
+   */
+  showCompleted?: boolean;
+}

@@ -398,6 +398,7 @@ export const DATA_TABLE_CLASSES = {
   toolbar: 'c-data-table-toolbar',
   search: 'c-data-table-search',
   searchInput: 'c-data-table-search__input',
+  pagination: 'c-data-table__pagination-container',
   striped: 'c-data-table--striped',
   bordered: 'c-data-table--bordered',
   dense: 'c-data-table--dense',
@@ -417,4 +418,43 @@ export const DATA_TABLE_SELECTORS = {
   PAGINATION: '.c-data-table__pagination',
   PAGINATION_BUTTON: '.c-data-table__pagination-button',
   SEARCH_INPUT: '.c-data-table__search-input',
-}; 
+};
+
+/**
+ * Pagination-specific constants
+ */
+export const PAGINATION_DEFAULTS = {
+  currentPage: 1,
+  totalPages: 1,
+  siblingCount: 1,
+  showFirstLastButtons: true,
+  showPrevNextButtons: true,
+  size: 'md' as Size,
+};
+
+/**
+ * Todo-specific constants
+ */
+export const TODO = {
+  SELECTORS: {
+    TODO: '.c-todo',
+    TITLE: '.c-todo__title',
+    LIST: '.c-todo__list',
+    ITEM: '.c-todo__item',
+    ITEM_CONTENT: '.c-todo__item-content',
+    ITEM_TEXT: '.c-todo__item-text',
+    ITEM_ACTIONS: '.c-todo__item-actions',
+    CHECKBOX: '.c-todo__checkbox',
+    DELETE_BUTTON: '.c-todo__delete-btn',
+    FORM: '.c-todo__form',
+    INPUT: '.c-todo__input',
+    ADD_BUTTON: '.c-todo__add-btn'
+  },
+  CLASSES: {
+    BASE: 'c-todo',
+    ITEM: 'c-todo__item',
+    COMPLETED: 'c-todo__item--completed',
+    SMALL: 'c-todo--sm',
+    LARGE: 'c-todo--lg'
+  }
+};
