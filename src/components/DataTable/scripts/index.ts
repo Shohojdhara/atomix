@@ -1,5 +1,6 @@
 import { DATA_TABLE_SELECTORS } from '../../../lib/constants/components';
 import { useDataTable } from '../../../lib/composables/useDataTable';
+import Pagination from '../../Pagination/scripts';
 
 export { useDataTable };
 
@@ -40,6 +41,13 @@ interface SortConfig {
 }
 
 /**
+ * Interface for HTMLElement with attached pagination instance
+ */
+interface PaginationElement extends HTMLElement {
+  paginationInstance?: Pagination;
+}
+
+/**
  * DataTable Class
  * Vanilla JS implementation of the DataTable component
  */
@@ -60,7 +68,7 @@ export class DataTable {
   private element: HTMLElement;
   private tableElement: HTMLTableElement | null = null;
   private searchInput: HTMLInputElement | null = null;
-  private paginationElement: HTMLElement | null = null;
+  private paginationElement: PaginationElement | null = null;
   
   // State
   private data: any[] = [];
@@ -164,12 +172,22 @@ export class DataTable {
     tableWrapper.appendChild(this.tableElement);
     this.element.appendChild(tableWrapper);
     
-    // Create pagination if needed
+    // Create pagination container if needed
     if (this.options.paginated) {
-      this.paginationElement = document.createElement('nav');
-      this.paginationElement.className = 'c-pagination';
+      const paginationContainer = document.createElement('div');
+      paginationContainer.className = 'c-data-table__pagination-container';
+      
+      this.paginationElement = document.createElement('nav') as PaginationElement;
+      this.paginationElement.className = 'c-pagination c-pagination--sm';
       this.paginationElement.setAttribute('aria-label', 'Data table pagination');
-      this.element.appendChild(this.paginationElement);
+      this.paginationElement.setAttribute('data-component', 'pagination');
+      this.paginationElement.setAttribute('data-current-page', '1');
+      this.paginationElement.setAttribute('data-total-pages', '1');
+      this.paginationElement.setAttribute('data-show-first-last-buttons', 'true');
+      this.paginationElement.setAttribute('data-show-prev-next-buttons', 'true');
+      
+      paginationContainer.appendChild(this.paginationElement);
+      this.element.appendChild(paginationContainer);
     }
   }
   
@@ -571,164 +589,45 @@ export class DataTable {
   private _renderPagination(): void {
     if (!this.paginationElement) return;
     
-    // Clear pagination
-    this.paginationElement.innerHTML = '';
-    
     const totalPages = this._getTotalPages();
     
-    if (totalPages <= 1) return;
-    
-    // Create ul element
-    const ul = document.createElement('ul');
-    ul.className = 'c-pagination__items';
-    
-    // Previous button
-    const prevItem = document.createElement('li');
-    prevItem.className = 'c-pagination__item';
-    
-    const prevButton = document.createElement('button');
-    prevButton.className = `c-pagination__link ${this.currentPage === 1 ? 'is-disabled' : ''}`;
-    prevButton.setAttribute('aria-label', 'Previous page');
-    prevButton.innerHTML = '<svg width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="m168 200l-80-72l80-72"/></svg>';
-    
-    if (this.currentPage === 1) {
-      prevButton.disabled = true;
+    if (totalPages <= 1) {
+      this.paginationElement.style.display = 'none';
+      return;
     } else {
-      prevButton.addEventListener('click', () => this._handlePageChange(this.currentPage - 1));
+      this.paginationElement.style.display = '';
     }
     
-    prevItem.appendChild(prevButton);
-    ul.appendChild(prevItem);
+    // Update pagination data attributes
+    this.paginationElement.setAttribute('data-current-page', String(this.currentPage));
+    this.paginationElement.setAttribute('data-total-pages', String(totalPages));
     
-    // First page
-    const firstItem = document.createElement('li');
-    firstItem.className = 'c-pagination__item';
-    
-    const firstButton = document.createElement('button');
-    firstButton.className = `c-pagination__link ${this.currentPage === 1 ? 'is-active' : ''}`;
-    firstButton.textContent = '1';
-    firstButton.setAttribute('aria-label', 'Page 1');
-    
-    if (this.currentPage === 1) {
-      firstButton.setAttribute('aria-current', 'page');
+    // Initialize or update Pagination component
+    if (!this.paginationElement.paginationInstance) {
+      // Create a new instance if it doesn't exist
+      const paginationInstance = new Pagination(this.paginationElement, {
+        currentPage: this.currentPage,
+        totalPages: totalPages,
+        siblingCount: 1,
+        showFirstLastButtons: true,
+        showPrevNextButtons: true,
+        size: 'sm',
+        onPageChange: (page: number) => this._handlePageChange(page)
+      });
+      
+      // Store the instance in a property on the element
+      Object.defineProperty(this.paginationElement, 'paginationInstance', {
+        value: paginationInstance,
+        writable: true,
+        configurable: true
+      });
     } else {
-      firstButton.addEventListener('click', () => this._handlePageChange(1));
+      // Update existing instance
+      this.paginationElement.paginationInstance.update({
+        currentPage: this.currentPage,
+        totalPages: totalPages
+      });
     }
-    
-    firstItem.appendChild(firstButton);
-    ul.appendChild(firstItem);
-    
-    // Ellipsis if needed
-    if (this.currentPage > 3) {
-      const ellipsisItem = document.createElement('li');
-      ellipsisItem.className = 'c-pagination__item';
-      
-      const ellipsisSpan = document.createElement('span');
-      ellipsisSpan.className = 'c-pagination__link';
-      ellipsisSpan.textContent = '...';
-      
-      ellipsisItem.appendChild(ellipsisSpan);
-      ul.appendChild(ellipsisItem);
-    }
-    
-    // Previous page if not first or second
-    if (this.currentPage > 2) {
-      const prevPageItem = document.createElement('li');
-      prevPageItem.className = 'c-pagination__item';
-      
-      const prevPageButton = document.createElement('button');
-      prevPageButton.className = 'c-pagination__link';
-      prevPageButton.textContent = String(this.currentPage - 1);
-      prevPageButton.setAttribute('aria-label', `Page ${this.currentPage - 1}`);
-      prevPageButton.addEventListener('click', () => this._handlePageChange(this.currentPage - 1));
-      
-      prevPageItem.appendChild(prevPageButton);
-      ul.appendChild(prevPageItem);
-    }
-    
-    // Current page if not first
-    if (this.currentPage !== 1 && this.currentPage !== totalPages) {
-      const currentItem = document.createElement('li');
-      currentItem.className = 'c-pagination__item';
-      
-      const currentButton = document.createElement('button');
-      currentButton.className = 'c-pagination__link is-active';
-      currentButton.textContent = String(this.currentPage);
-      currentButton.setAttribute('aria-label', `Page ${this.currentPage}`);
-      currentButton.setAttribute('aria-current', 'page');
-      
-      currentItem.appendChild(currentButton);
-      ul.appendChild(currentItem);
-    }
-    
-    // Next page if not last or second-to-last
-    if (this.currentPage < totalPages - 1) {
-      const nextPageItem = document.createElement('li');
-      nextPageItem.className = 'c-pagination__item';
-      
-      const nextPageButton = document.createElement('button');
-      nextPageButton.className = 'c-pagination__link';
-      nextPageButton.textContent = String(this.currentPage + 1);
-      nextPageButton.setAttribute('aria-label', `Page ${this.currentPage + 1}`);
-      nextPageButton.addEventListener('click', () => this._handlePageChange(this.currentPage + 1));
-      
-      nextPageItem.appendChild(nextPageButton);
-      ul.appendChild(nextPageItem);
-    }
-    
-    // Ellipsis if needed
-    if (this.currentPage < totalPages - 2) {
-      const ellipsisItem = document.createElement('li');
-      ellipsisItem.className = 'c-pagination__item';
-      
-      const ellipsisSpan = document.createElement('span');
-      ellipsisSpan.className = 'c-pagination__link';
-      ellipsisSpan.textContent = '...';
-      
-      ellipsisItem.appendChild(ellipsisSpan);
-      ul.appendChild(ellipsisItem);
-    }
-    
-    // Last page if not first page
-    if (totalPages > 1) {
-      const lastItem = document.createElement('li');
-      lastItem.className = 'c-pagination__item';
-      
-      const lastButton = document.createElement('button');
-      lastButton.className = `c-pagination__link ${this.currentPage === totalPages ? 'is-active' : ''}`;
-      lastButton.textContent = String(totalPages);
-      lastButton.setAttribute('aria-label', `Page ${totalPages}`);
-      
-      if (this.currentPage === totalPages) {
-        lastButton.setAttribute('aria-current', 'page');
-      } else {
-        lastButton.addEventListener('click', () => this._handlePageChange(totalPages));
-      }
-      
-      lastItem.appendChild(lastButton);
-      ul.appendChild(lastItem);
-    }
-    
-    // Next button
-    const nextItem = document.createElement('li');
-    nextItem.className = 'c-pagination__item';
-    
-    const nextButton = document.createElement('button');
-    nextButton.className = `c-pagination__link ${this.currentPage === totalPages ? 'is-disabled' : ''}`;
-    nextButton.setAttribute('aria-label', 'Next page');
-    nextButton.innerHTML = '<svg width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="m96 200l80-72l-80-72"/></svg>';
-    
-    if (this.currentPage === totalPages) {
-      nextButton.disabled = true;
-    } else {
-      nextButton.addEventListener('click', () => this._handlePageChange(this.currentPage + 1));
-    }
-    
-    nextItem.appendChild(nextButton);
-    ul.appendChild(nextItem);
-    
-    // Append ul to pagination element
-    this.paginationElement.appendChild(ul);
   }
   
   /**
@@ -818,16 +717,22 @@ export class DataTable {
       this.searchInput.removeEventListener('input', this._handleSearch.bind(this));
     }
     
-    // Remove all elements
-    this.element.innerHTML = '';
+    // Clean up pagination instance if it exists
+    if (this.paginationElement && this.paginationElement.paginationInstance) {
+      this.paginationElement.paginationInstance.destroy();
+    }
     
-    // Remove classes
+    // Clear element
+    this.element.innerHTML = '';
     this.element.classList.remove('c-data-table-container');
     
-    // Reset state
+    // Clear references
     this.tableElement = null;
     this.searchInput = null;
     this.paginationElement = null;
+    
+    // Dispatch event
+    this.element.dispatchEvent(new CustomEvent('data-table:destroy', { bubbles: true }));
   }
   
   /**

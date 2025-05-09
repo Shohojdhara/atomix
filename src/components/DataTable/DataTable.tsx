@@ -4,6 +4,7 @@ import { useDataTable } from './scripts';
 import { DATA_TABLE_CLASSES } from '../../lib/constants/components';
 import { Spinner } from '../Spinner';
 import { Icon } from '../Icon';
+import { Pagination } from '../Pagination';
 
 /**
  * DataTable - A flexible and accessible data table component
@@ -155,111 +156,18 @@ export const DataTable: React.FC<DataTableProps> = ({
     if (!paginated || totalPages <= 1) return null;
     
     return (
-      <nav className="c-pagination" aria-label="Data table pagination">
-        <ul className="c-pagination__items">
-          <li className="c-pagination__item">
-            <button 
-              className={`c-pagination__link ${currentPage === 1 ? 'is-disabled' : ''}`}
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              aria-label="Previous page"
-            >
-              <Icon name="CaretLeft" size="sm" />
-            </button>
-          </li>
-          
-          {/* First page */}
-          <li className="c-pagination__item">
-            <button 
-              className={`c-pagination__link ${currentPage === 1 ? 'is-active' : ''}`}
-              onClick={() => handlePageChange(1)}
-              aria-label="Page 1"
-              aria-current={currentPage === 1 ? 'page' : undefined}
-            >
-              1
-            </button>
-          </li>
-          
-          {/* Ellipsis if needed */}
-          {currentPage > 3 && (
-            <li className="c-pagination__item">
-              <span className="c-pagination__link">...</span>
-            </li>
-          )}
-          
-          {/* Previous page if not first or second */}
-          {currentPage > 2 && (
-            <li className="c-pagination__item">
-              <button 
-                className="c-pagination__link"
-                onClick={() => handlePageChange(currentPage - 1)}
-                aria-label={`Page ${currentPage - 1}`}
-              >
-                {currentPage - 1}
-              </button>
-            </li>
-          )}
-          
-          {/* Current page if not first */}
-          {currentPage !== 1 && currentPage !== totalPages && (
-            <li className="c-pagination__item">
-              <button 
-                className="c-pagination__link is-active"
-                onClick={() => handlePageChange(currentPage)}
-                aria-label={`Page ${currentPage}`}
-                aria-current="page"
-              >
-                {currentPage}
-              </button>
-            </li>
-          )}
-          
-          {/* Next page if not last or second-to-last */}
-          {currentPage < totalPages - 1 && (
-            <li className="c-pagination__item">
-              <button 
-                className="c-pagination__link"
-                onClick={() => handlePageChange(currentPage + 1)}
-                aria-label={`Page ${currentPage + 1}`}
-              >
-                {currentPage + 1}
-              </button>
-            </li>
-          )}
-          
-          {/* Ellipsis if needed */}
-          {currentPage < totalPages - 2 && (
-            <li className="c-pagination__item">
-              <span className="c-pagination__link">...</span>
-            </li>
-          )}
-          
-          {/* Last page if not first page */}
-          {totalPages > 1 && (
-            <li className="c-pagination__item">
-              <button 
-                className={`c-pagination__link ${currentPage === totalPages ? 'is-active' : ''}`}
-                onClick={() => handlePageChange(totalPages)}
-                aria-label={`Page ${totalPages}`}
-                aria-current={currentPage === totalPages ? 'page' : undefined}
-              >
-                {totalPages}
-              </button>
-            </li>
-          )}
-          
-          <li className="c-pagination__item">
-            <button 
-              className={`c-pagination__link ${currentPage === totalPages ? 'is-disabled' : ''}`}
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              aria-label="Next page"
-            >
-              <Icon name="CaretRight" size="sm" />
-            </button>
-          </li>
-        </ul>
-      </nav>
+      <div className={DATA_TABLE_CLASSES.pagination}>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          showFirstLastButtons={true}
+          showPrevNextButtons={true}
+          size="sm"
+          ariaLabel="Data table pagination"
+          className="c-data-table__pagination"
+        />
+      </div>
     );
   };
   

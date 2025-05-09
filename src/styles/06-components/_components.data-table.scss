@@ -139,26 +139,41 @@
 }
 
 
-  // Toolbar
-  .c-data-table-toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
+// Toolbar
+.c-data-table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+// Search
+.c-data-table-search {
+  flex: 0 0 auto;
+  
+  &__input {
+    // Styles are now inherited from c-input class
+    width: 240px;
+  }
+}
+
+// Pagination container
+.c-data-table__pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+// Override small pagination in data tables
+.c-data-table__pagination {
+  margin: 0;
+  
+  .c-pagination__items {
+    gap: 0.125rem;
   }
   
-  // Search
-  .c-data-table-search {
-    flex: 0 0 auto;
-    
-    &__input {
-      // Styles are now inherited from c-input class
-      width: 240px;
-    }
+  .c-pagination__link {
+    font-size: 0.75rem;
   }
-  
-  // Add spacing between table and pagination
-  .c-data-table-container .c-pagination {
-    margin-top: 1rem;
-  }
+}
   

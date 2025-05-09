@@ -28,6 +28,20 @@ const meta: Meta<typeof DataTable> = {
 export default meta;
 type Story = StoryObj<typeof DataTable>;
 
+// Generate more sample data for better pagination testing
+const generateUsers = (count: number) => {
+  const roles = ['Admin', 'User', 'Editor', 'Manager', 'Guest'];
+  const statuses = ['Active', 'Inactive', 'Pending', 'Suspended'];
+  
+  return Array.from({ length: count }, (_, i) => ({
+    id: i + 1,
+    name: `User ${i + 1}`,
+    email: `user${i + 1}@example.com`,
+    role: roles[Math.floor(Math.random() * roles.length)],
+    status: statuses[Math.floor(Math.random() * statuses.length)]
+  }));
+};
+
 // Sample data
 const users = [
   { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin', status: 'Active' },
@@ -43,6 +57,9 @@ const users = [
   { id: 11, name: 'Jack Wilson', email: 'jack@example.com', role: 'User', status: 'Inactive' },
   { id: 12, name: 'Karen Brown', email: 'karen@example.com', role: 'Editor', status: 'Active' },
 ];
+
+// Large data set for pagination examples
+const largeDataSet = generateUsers(100);
 
 // Column definitions
 const columns: DataTableColumn[] = [
@@ -65,6 +82,9 @@ const columns: DataTableColumn[] = [
           break;
         case 'Pending':
           color = 'orange';
+          break;
+        case 'Suspended':
+          color = 'gray';
           break;
       }
       return <span style={{ color }}>{value}</span>;
@@ -105,6 +125,51 @@ export const Paginated: Story = {
     columns,
     paginated: true,
     pageSize: 5,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'A paginated table with standard pagination controls below the table.'
+      },
+    },
+  },
+};
+
+// Paginated with larger dataset
+export const PaginatedLargeDataset: Story = {
+  args: {
+    data: largeDataSet,
+    columns,
+    paginated: true,
+    pageSize: 10,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pagination with a large dataset (100 items) demonstrating first/last buttons and ellipsis.'
+      },
+    },
+  },
+};
+
+// Complete example with all features
+export const CompleteFeatures: Story = {
+  args: {
+    data: largeDataSet,
+    columns,
+    sortable: true,
+    filterable: true,
+    paginated: true,
+    pageSize: 10,
+    striped: true,
+    bordered: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'A complete data table with sorting, filtering, and pagination enabled.'
+      },
+    },
   },
 };
 
