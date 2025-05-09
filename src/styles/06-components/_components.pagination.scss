@@ -21,6 +21,7 @@
   --#{config.$prefix}pagination-disabled-color: #{pagination.$pagination-disabled-color};
   --#{config.$prefix}pagination-disabled-bg: #{pagination.$pagination-disabled-bg};
   --#{config.$prefix}pagination-border-radius: #{pagination.$pagination-border-radius};
+  --#{config.$prefix}pagination-icon-size: var(--#{config.$prefix}pagination-font-size);
 
   width: 100%;
   display: flex;
@@ -33,14 +34,42 @@
     list-style: none;
     padding-left: 0;
     margin-bottom: 0;
+    gap: 0.25rem;
   }
 
   &__item {
     display: flex;
     align-items: center;
     @include size.square(var(--#{config.$prefix}pagination-size));
-
     overflow: hidden;
+
+    &--dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @include size.square(var(--#{config.$prefix}pagination-size));
+      color: var(--#{config.$prefix}pagination-color);
+      font-size: var(--#{config.$prefix}pagination-font-size);
+      user-select: none;
+    }
+
+    &.is-active {
+      font-weight: bold;
+      
+      .c-pagination__link {
+        --#{config.$prefix}pagination-color: var(--#{config.$prefix}pagination-active-color);
+        --#{config.$prefix}pagination-bg: var(--#{config.$prefix}pagination-active-bg);
+        pointer-events: none;
+      }
+    }
+
+    &.is-disabled {
+      .c-pagination__link {
+        --#{config.$prefix}pagination-color: var(--#{config.$prefix}pagination-disabled-color);
+        --#{config.$prefix}pagination-bg: var(--#{config.$prefix}pagination-disabled-bg);
+        pointer-events: none;
+      }
+    }
   }
 
   &__link {
@@ -55,28 +84,12 @@
     background-color: var(--#{config.$prefix}pagination-bg);
     border-radius: var(--#{config.$prefix}pagination-border-radius);
     border: none;
-
+    cursor: pointer;
+    user-select: none;
 
     &:hover {
       --#{config.$prefix}pagination-color: var(--#{config.$prefix}pagination-hover-color);
       --#{config.$prefix}pagination-bg: var(--#{config.$prefix}pagination-hover-bg);
-    }
-
-
-    &:active,
-    &.is-active {
-      --#{config.$prefix}pagination-color: var(--#{config.$prefix}pagination-active-color);
-      --#{config.$prefix}pagination-bg: var(--#{config.$prefix}pagination-active-bg);
-    }
-
-    &.is-active {
-      pointer-events: none;
-    }
-
-    &.is-disabled {
-      --#{config.$prefix}pagination-color: var(--#{config.$prefix}pagination-disabled-color);
-      --#{config.$prefix}pagination-bg: var(--#{config.$prefix}pagination-disabled-bg);
-      pointer-events: none;
     }
 
     &:focus-visible {
@@ -84,13 +97,58 @@
       border-radius: 0;
       border: var(--#{config.$prefix}pagination-focus-border-width) solid var(--#{config.$prefix}pagination-focus-border-color);
     }
+
+    .c-icon {
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   &--sm {
-    --#{config.$prefix}pagination-size: #{pagination.$pagination-size-sm};
+    --#{config.$prefix}pagination-size: #{rem.rem(pagination.$pagination-size-sm)};
+    --#{config.$prefix}pagination-font-size: 0.75rem;
+    --#{config.$prefix}pagination-padding-y: 4px;
+    --#{config.$prefix}pagination-padding-x: 4px;
+  }
+
+  &--md {
+    // Default size, no need to override
   }
 
   &--lg {
-    --#{config.$prefix}pagination-size: #{pagination.$pagination-size-lg};
+    --#{config.$prefix}pagination-size: #{rem.rem(pagination.$pagination-size-lg)};
+    --#{config.$prefix}pagination-font-size: 1rem;
+    --#{config.$prefix}pagination-padding-y: 12px;
+    --#{config.$prefix}pagination-padding-x: 12px;
+  }
+
+  &__icon-skip-back,
+  &__icon-caret-left,
+  &__icon-caret-right,
+  &__icon-skip-forward {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 1em;
+    width: 1em;
+    line-height: 1;
+  }
+
+  &__icon-skip-back::before {
+    content: "⏮";
+  }
+
+  &__icon-caret-left::before {
+    content: "◀";
+  }
+
+  &__icon-caret-right::before {
+    content: "▶";
+  }
+
+  &__icon-skip-forward::before {
+    content: "⏭";
   }
 }
