@@ -22,11 +22,18 @@
   --#{config.$prefix}pagination-disabled-bg: #{pagination.$pagination-disabled-bg};
   --#{config.$prefix}pagination-border-radius: #{pagination.$pagination-border-radius};
 
+  width: 100%;
   display: flex;
   align-items: center;
-  list-style: none;
-  padding-left: 0;
-  margin-bottom: 0;
+  justify-content: center;
+
+  &__items {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+  }
 
   &__item {
     display: flex;
@@ -47,6 +54,7 @@
       var(--#{config.$prefix}pagination-padding-x);
     background-color: var(--#{config.$prefix}pagination-bg);
     border-radius: var(--#{config.$prefix}pagination-border-radius);
+    border: none;
 
 
     &:hover {

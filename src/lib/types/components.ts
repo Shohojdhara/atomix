@@ -564,4 +564,124 @@ export interface EdgePanelProps extends BaseComponentProps {
    * Close when pressing escape key
    */
   closeOnEscape?: boolean;
+}
+
+/**
+ * DataTable column definition
+ */
+export interface DataTableColumn {
+  /**
+   * Unique identifier for the column
+   */
+  key: string;
+  
+  /**
+   * Display title for the column
+   */
+  title: string;
+  
+  /**
+   * Whether the column is sortable
+   */
+  sortable?: boolean;
+  
+  /**
+   * Whether the column is filterable
+   */
+  filterable?: boolean;
+  
+  /**
+   * Custom render function for the cell
+   */
+  render?: (value: any, row: any) => React.ReactNode;
+  
+  /**
+   * Width of the column (CSS value)
+   */
+  width?: string;
+}
+
+/**
+ * Sort configuration
+ */
+export interface SortConfig {
+  /**
+   * Column key to sort by
+   */
+  key: string;
+  
+  /**
+   * Sort direction
+   */
+  direction: 'asc' | 'desc';
+}
+
+/**
+ * DataTable component properties
+ */
+export interface DataTableProps extends BaseComponentProps {
+  /**
+   * Data array to display in the table
+   */
+  data: any[];
+  
+  /**
+   * Column definitions
+   */
+  columns: DataTableColumn[];
+  
+  /**
+   * Whether the table is sortable
+   */
+  sortable?: boolean;
+  
+  /**
+   * Whether the table is filterable
+   */
+  filterable?: boolean;
+  
+  /**
+   * Whether the table is paginated
+   */
+  paginated?: boolean;
+  
+  /**
+   * Number of rows per page
+   */
+  pageSize?: number;
+  
+  /**
+   * Whether to show alternating row colors
+   */
+  striped?: boolean;
+  
+  /**
+   * Whether to show borders around cells
+   */
+  bordered?: boolean;
+  
+  /**
+   * Whether to use compact styling
+   */
+  dense?: boolean;
+  
+  /**
+   * Whether the table is in loading state
+   */
+  loading?: boolean;
+  
+  /**
+   * Message to display when there is no data
+   */
+  emptyMessage?: string;
+  
+  /**
+   * Callback when a row is clicked
+   */
+  onRowClick?: (row: any) => void;
+  
+  /**
+   * Callback when sorting changes
+   */
+  onSort?: (sortConfig: SortConfig) => void;
 } 

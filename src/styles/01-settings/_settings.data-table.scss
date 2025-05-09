@@ -1,32 +1,52 @@
-@use "settings.typography" as typography;
 @use "settings.config" as config;
+@use "settings.colors" as colors;
+@use "settings.border" as border;
+@use "settings.border-radius" as border-radius;
+@use "settings.typography" as typography;
+@use "settings.spacing" as spacing;
 
-$data-table-width:                  100% !default; 
-$data-table-label-font-size:        typography.$font-size-sm !default;
-$data-table-label-font-size-sm:     $data-table-label-font-size !default;
-$data-table-label-font-size-lg:     $data-table-label-font-size !default;
-$data-table-label-font-weight:      typography.$font-weight-medium !default;
-$data-table-label-color:            var(--#{config.$prefix}body-color) !default;
+// DataTable Variables
+$data-table-bg: var(--#{config.$prefix}white) !default;
+$data-table-color: var(--#{config.$prefix}body-color) !default;
+$data-table-border-color: var(--#{config.$prefix}border-color) !default;
+$data-table-border-width: var(--#{config.$prefix}border-width) !default;
+$data-table-border-style: var(--#{config.$prefix}border-style) !default;
+$data-table-border-radius: var(--#{config.$prefix}border-radius) !default;
 
-$data-table-data-font-size:         typography.$font-size-sm !default;
-$data-table-data-font-size-sm:      $data-table-data-font-size !default;
-$data-table-data-font-size-lg:      $data-table-data-font-size !default;
-$data-table-data-font-weight:       typography.$font-weight-normal !default;
-$data-table-data-color:             var(--#{config.$prefix}body-color) !default;
+// Header
+$data-table-header-bg: var(--#{config.$prefix}gray-100) !default;
+$data-table-header-color: var(--#{config.$prefix}body-color) !default;
+$data-table-header-font-weight: typography.$font-weight-medium !default;
 
-$data-table-head-bg:                var(--#{config.$prefix}secondary-bg-subtle) !default;
-$data-table-row-bg:                 var(--#{config.$prefix}body-bg) !default;
-$data-table-row-hover-bg:           var(--#{config.$prefix}body-bg) !default;
-$data-table-row-border-color:       var(--#{config.$prefix}primary-border-subtle) !default;
-$data-table-head-sm-height:         16px !default;
-$data-table-row-sm-height:          16px !default;
-$data-table-head-md-height:         32px !default;
-$data-table-row-md-height:          32px !default;
-$data-table-head-lg-height:         48px !default;
-$data-table-row-lg-height:          48px !default;
+// Cell padding
+$data-table-cell-padding-y: 0.75rem !default;
+$data-table-cell-padding-x: 1rem !default;
+$data-table-cell-padding-y-sm: 0.5rem !default;
+$data-table-cell-padding-x-sm: 0.75rem !default;
 
-$data-table-row-padding-sm-x:       8px !default;
-$data-table-row-padding-sm-y:       2px !default;
+// Striped rows
+$data-table-striped-bg: rgba(0, 0, 0, 0.03) !default;
+$data-table-hover-bg: rgba(0, 0, 0, 0.06) !default;
 
-$data-table-row-padding-x:          16px !default;
-$data-table-row-padding-y:          8px !default;
+// Pagination
+$data-table-pagination-padding-y: 0.5rem !default;
+$data-table-pagination-padding-x: 0.75rem !default;
+$data-table-pagination-bg: var(--#{config.$prefix}white) !default;
+$data-table-pagination-border-color: var(--#{config.$prefix}border-color) !default;
+$data-table-pagination-hover-bg: var(--#{config.$prefix}gray-100) !default;
+$data-table-pagination-active-bg: var(--#{config.$prefix}primary) !default;
+$data-table-pagination-active-color: var(--#{config.$prefix}white) !default;
+$data-table-pagination-disabled-color: var(--#{config.$prefix}gray-400) !default;
+
+// Search input
+$data-table-search-bg: var(--#{config.$prefix}white) !default;
+$data-table-search-border-color: var(--#{config.$prefix}border-color) !default;
+$data-table-search-focus-border-color: var(--#{config.$prefix}primary) !default;
+$data-table-search-padding-y: 0.5rem !default;
+$data-table-search-padding-x: 0.75rem !default;
+$data-table-search-border-radius: var(--#{config.$prefix}border-radius) !default;
+
+// Sort icon
+$data-table-sort-icon-size: 0.75rem !default;
+$data-table-sort-icon-color: var(--#{config.$prefix}gray-500) !default;
+$data-table-sort-icon-active-color: var(--#{config.$prefix}primary) !default;

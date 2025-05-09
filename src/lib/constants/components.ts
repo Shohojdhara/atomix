@@ -376,4 +376,45 @@ export const EDGE_PANEL = {
     bottom: 'translateY(100%)'
   },
   ANIMATION_DURATION: 300
+};
+
+/**
+ * DataTable-specific constants
+ */
+export const DATA_TABLE_CLASSES = {
+  base: 'c-data-table',
+  container: 'c-data-table-container',
+  tableWrapper: 'c-data-table-wrapper',
+  header: 'c-data-table__header',
+  headerCell: 'c-data-table__header-cell',
+  headerContent: 'c-data-table__header-content',
+  sortable: 'c-data-table__header-cell--sortable',
+  sortIcon: 'c-data-table__sort-icon',
+  row: 'c-data-table__row',
+  cell: 'c-data-table__cell',
+  loadingCell: 'c-data-table__loading-cell',
+  loadingIndicator: 'c-data-table__loading-indicator',
+  emptyCell: 'c-data-table__empty-cell',
+  toolbar: 'c-data-table-toolbar',
+  search: 'c-data-table-search',
+  searchInput: 'c-data-table-search__input',
+  striped: 'c-data-table--striped',
+  bordered: 'c-data-table--bordered',
+  dense: 'c-data-table--dense',
+  loading: 'c-data-table--loading',
+  open: 'is-open',
+};
+
+/**
+ * DataTable-specific selectors
+ */
+export const DATA_TABLE_SELECTORS = {
+  TABLE: '.c-data-table',
+  HEADER: '.c-data-table__header',
+  HEADER_CELL: '.c-data-table__header-cell',
+  ROW: '.c-data-table__row',
+  CELL: '.c-data-table__cell',
+  PAGINATION: '.c-data-table__pagination',
+  PAGINATION_BUTTON: '.c-data-table__pagination-button',
+  SEARCH_INPUT: '.c-data-table__search-input',
 }; 

@@ -1,101 +1,164 @@
-@use '../01-settings/_settings.data-table' as *;
-@use '../01-settings/_settings.config' as *;
-@use '../02-tools/_tools.rem' as *;
-@use '../02-tools/_tools.animations' as *;
+@use "../01-settings/settings.config" as config;
+@use "../01-settings/settings.data-table" as data-table;
+@use "../02-tools/tools.color-functions" as *;
+@use "../02-tools/tools.to-rgb" as *;
 
-.c-data-table {
-  --#{$prefix}data-table-width: #{$data-table-width};
-  --#{$prefix}data-table-label-font-size: #{$data-table-label-font-size};
-  --#{$prefix}data-table-label-font-weight: #{$data-table-label-font-weight};
-  --#{$prefix}data-table-label-color: #{$data-table-label-color};
+// Component: DataTable
+// Description: Styles for the DataTable component
 
-  --#{$prefix}data-table-data-font-size: #{$data-table-data-font-size};
-  --#{$prefix}data-table-data-font-weight: #{$data-table-data-font-weight};
-  --#{$prefix}data-table-data-color: #{$data-table-data-color};
-
-  --#{$prefix}data-table-head-height: #{rem($data-table-head-md-height)};
-  --#{$prefix}data-table-row-height: #{rem($data-table-row-md-height)};
-  --#{$prefix}data-table-row-padding-y: #{rem($data-table-row-padding-y)};
-  --#{$prefix}data-table-row-padding-x: #{rem($data-table-row-padding-x)};
-  --#{$prefix}data-table-head-bg: #{$data-table-head-bg};
-  --#{$prefix}data-table-row-bg: #{$data-table-row-bg};
-  --#{$prefix}data-table-row-hover-bg: #{$data-table-row-hover-bg};
-  --#{$prefix}data-table-row-border-color: #{$data-table-row-border-color};
-
+.c-data-table-container {
   width: 100%;
-  max-width: var(--#{$prefix}data-table-width);
+  margin-bottom: 1rem;
+}
+
+// Table wrapper (for overflow)
+.c-data-table-wrapper {
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+// Base table
+.c-data-table {
+  --#{config.$prefix}data-table-bg: #{data-table.$data-table-bg};
+  --#{config.$prefix}data-table-color: #{data-table.$data-table-color};
+  --#{config.$prefix}data-table-border-color: #{data-table.$data-table-border-color};
+  --#{config.$prefix}data-table-header-bg: #{data-table.$data-table-header-bg};
+  --#{config.$prefix}data-table-header-color: #{data-table.$data-table-header-color};
+  --#{config.$prefix}data-table-striped-bg: #{data-table.$data-table-striped-bg};
+  --#{config.$prefix}data-table-hover-bg: #{data-table.$data-table-hover-bg};
+  
+  width: 100%;
+  margin-bottom: 0;
+  color: var(--#{config.$prefix}data-table-color);
+  background-color: var(--#{config.$prefix}data-table-bg);
   border-collapse: collapse;
-  border-spacing: 0;
-  overflow: hidden;
-
-  thead {
-    background-color: var(--#{$prefix}data-table-head-bg);
-
-    tr {
-      height: var(--#{$prefix}data-table-head-height);
-
-      & > th {
-        color: var(--#{$prefix}data-table-label-color);
-        font-size: var(--#{$prefix}data-table-label-font-size);
-        font-weight: var(--#{$prefix}data-table-label-font-weight);
-        text-align: left;
-        vertical-align: middle;
-        padding: var(--#{$prefix}data-table-row-padding-y)
-          var(--#{$prefix}data-table-row-padding-x);
-      }
-    }
+  
+  // Header
+  &__header {
+    background-color: var(--#{config.$prefix}data-table-header-bg);
   }
-
-  tbody {
-    tr {
-      height: var(--#{$prefix}data-table-row-height);
-
-      & > td {
-        color: var(--#{$prefix}data-table-data-color);
-        font-size: var(--#{$prefix}data-table-data-font-size);
-        font-weight: var(--#{$prefix}data-table-data-font-weight);
-        padding: var(--#{$prefix}data-table-row-padding-y)
-          var(--#{$prefix}data-table-row-padding-x);
-        background-color: var(--#{$prefix}data-table-row-bg);
-        border-top: 1px solid var(--#{$prefix}data-table-row-border-color);
-        border-bottom: 1px solid var(--#{$prefix}data-table-row-border-color);
-
-        @include basic-transition();
-      }
-    }
-
-    tr:hover {
-      & > td {
-        background-color: var(--#{$prefix}data-table-row-hover-bg);
-      }
-    }
-  }
-
-  &--sm {
-    --#{$prefix}data-table-label-font-size: #{$data-table-label-font-size-sm};
-    --#{$prefix}data-table-data-font-size: #{$data-table-data-font-size-sm};
-    --#{$prefix}data-table-row-height: #{$data-table-row-sm-height};
-    --#{$prefix}data-table-row-padding-x: #{$data-table-row-padding-sm-x};
-    --#{$prefix}data-table-row-padding-y: #{$data-table-row-padding-sm-y};
-  }
-
-  &--lg {
-    --#{$prefix}data-table-label-font-size: #{$data-table-data-font-size-lg};
-    --#{$prefix}data-table-label-font-size: #{$data-table-data-font-size-lg};
-    --#{$prefix}data-table-row-height: #{$data-table-row-lg-height};
-  }
-
-  &--zebra {
-    tbody > tr:nth-child(even) {
-      & > td {
-        background-color: var(--#{$prefix}light);
-      }
-
+  
+  &__header-cell {
+    padding: data-table.$data-table-cell-padding-y data-table.$data-table-cell-padding-x;
+    font-weight: data-table.$data-table-header-font-weight;
+    color: var(--#{config.$prefix}data-table-header-color);
+    border-bottom: data-table.$data-table-border-width data-table.$data-table-border-style var(--#{config.$prefix}data-table-border-color);
+    text-align: left;
+    white-space: nowrap;
+    
+    &--sortable {
+      cursor: pointer;
+      user-select: none;
+      
       &:hover {
-        & > td {
-          background-color: var(--#{$prefix}data-table-row-hover-bg);
-        }
+        background-color: rgba(0, 0, 0, 0.05);
       }
     }
+  }
+  
+  &__header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  &__sort-icon {
+    margin-left: 0.5rem;
+    font-size: data-table.$data-table-sort-icon-size;
+    color: data-table.$data-table-sort-icon-color;
+    
+    .c-data-table__header-cell[aria-sort] & {
+      color: data-table.$data-table-sort-icon-active-color;
+    }
+  }
+  
+  // Body cells
+  &__cell {
+    padding: data-table.$data-table-cell-padding-y data-table.$data-table-cell-padding-x;
+    border-bottom: data-table.$data-table-border-width data-table.$data-table-border-style var(--#{config.$prefix}data-table-border-color);
+    vertical-align: middle;
+  }
+  
+  // Rows
+  &__row {
+    background-color: var(--#{config.$prefix}data-table-bg);
+    
+    &:hover {
+      background-color: var(--#{config.$prefix}data-table-hover-bg);
+    }
+    
+    &[role="button"] {
+      cursor: pointer;
+    }
+  }
+  
+  // Loading state
+  &__loading-cell {
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  &__loading-indicator {
+    display: inline-block;
+  }
+  
+  // Empty state
+  &__empty-cell {
+    padding: 2rem;
+    text-align: center;
+    color: var(--#{config.$prefix}gray-500);
+  }
+  
+  // Variants
+  &--striped {
+    tbody tr:nth-of-type(odd) {
+      background-color: var(--#{config.$prefix}data-table-striped-bg);
+    }
+  }
+  
+  &--bordered {
+    border: data-table.$data-table-border-width data-table.$data-table-border-style var(--#{config.$prefix}data-table-border-color);
+    border-radius: data-table.$data-table-border-radius;
+    
+    th, td {
+      border: data-table.$data-table-border-width data-table.$data-table-border-style var(--#{config.$prefix}data-table-border-color);
+    }
+  }
+  
+  &--dense {
+    th, td {
+      padding: data-table.$data-table-cell-padding-y-sm data-table.$data-table-cell-padding-x-sm;
+    }
+  }
+  
+  &--loading {
+    opacity: 0.7;
   }
 }
+
+
+  // Toolbar
+  .c-data-table-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  // Search
+  .c-data-table-search {
+    flex: 0 0 auto;
+    
+    &__input {
+      // Styles are now inherited from c-input class
+      width: 240px;
+    }
+  }
+  
+  // Add spacing between table and pagination
+  .c-data-table-container .c-pagination {
+    margin-top: 1rem;
+  }
+  
