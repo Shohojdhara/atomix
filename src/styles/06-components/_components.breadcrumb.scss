@@ -34,6 +34,10 @@
     
 
     &__item {
+        display: flex;
+        align-items: center;
+        gap: var(--#{$prefix}breadcrumb-items-gap);
+
         &+& {
             &::before {
                 content: $breadcrumb-divider;
@@ -56,6 +60,9 @@
     }
 
     &__link {
+        display: flex;
+        align-items: center;
+        gap: calc(var(--#{$prefix}breadcrumb-items-gap) / 2);
         color: var(--#{$prefix}breadcrumb-color);
         padding: var(--#{$prefix}breadcrumb-link-padding-y) var(--#{$prefix}breadcrumb-link-padding-x);
         border: var(--#{$prefix}breadcrumb-link-border-width) solid transparent;
