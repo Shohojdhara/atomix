@@ -20,6 +20,7 @@
     --#{$prefix}countdown-focused-items-gap: #{rem($countdown-focused-items-gap)};
 
     display: flex;
+    align-items: center;
     gap: var(--#{$prefix}countdown-items-gap);
 
     &__time {
