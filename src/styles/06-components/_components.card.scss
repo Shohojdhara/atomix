@@ -57,6 +57,7 @@
 
   &__body {
     position: relative;
+    padding-top: var(--#{$prefix}card-row-spacer-y);
   }
 
   &__title {
@@ -110,9 +111,11 @@
       &__body {
         flex: 1;
         padding-left: var(--#{$prefix}card-row-spacer-x);
+        padding-top: 0;
       }
 
       &__image {
+        flex: 1;
         @include square(100%);
         max-width: none;
         @include object-fit(cover);

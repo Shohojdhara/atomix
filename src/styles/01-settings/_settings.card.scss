@@ -24,8 +24,8 @@ $card-image-border-radius:          $card-border-radius !default;
 $card-boxshadow:                    null !default;
 $card-height:                       null !default;
 
-$card-bg:                           var(--#{config.$prefix}body-bg) !default;
-$card-bg-hover:                     var(--#{config.$prefix}secondary-bg-subtle) !default;
+$card-bg:                           var(--#{config.$prefix}secondary-bg-subtle) !default;
+$card-bg-hover:                     var(--#{config.$prefix}tertiary-bg-subtle) !default;
 
 
 $card-icon-size:                    20px !default;

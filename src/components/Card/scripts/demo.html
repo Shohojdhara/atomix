@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Component Demo</title>
+  <link rel="stylesheet" href="../../../styles/atomix.css">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+
+    .demo-btn {
+      display: inline-block;
+      background-color: #0066cc;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 4px;
+      text-decoration: none;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      border: none;
+      font-size: 14px;
+    }
+
+    .demo-btn.secondary {
+      background-color: #555555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Card Component Demo</h1>
+
+  <h2>Basic Cards</h2>
+  <div class="demo-grid">
+    <!-- Simple Card with Title and Text -->
+    <div id="card1"></div>
+
+    <!-- Card with Image -->
+    <div id="card2"></div>
+
+    <!-- Card with Icon -->
+    <div id="card3"></div>
+
+    <!-- Card with Actions -->
+    <div id="card4"></div>
+  </div>
+
+  <h2>Card Variants</h2>
+  <div class="demo-grid">
+    <!-- Row Card -->
+    <div id="card-row"></div>
+
+    <!-- Flat Card -->
+    <div id="card-flat"></div>
+
+    <!-- Clickable Card -->
+    <div id="card-clickable"></div>
+  </div>
+
+  <h2>Cards from Data Attributes</h2>
+  <div class="demo-grid">
+    <div data-component="card" data-title="Card from Data Attributes" data-text="This card is created using data attributes instead of JavaScript."></div>
+
+    <div data-component="card" data-title="Card with Image" data-text="This card includes an image loaded from data attributes." data-image="https://placehold.co/600x400" data-image-alt="Placeholder"></div>
+
+    <div data-component="card" data-title="Row Style Card" data-text="This card uses the row layout applied via data attributes." data-row="true" data-image="https://placehold.co/300x300" data-image-alt="Placeholder"></div>
+  </div>
+
+  <script type="module">
+    import Card from './index.js';
+    
+    // Simple Card
+    new Card('#card1', {
+      title: 'Simple Card',
+      text: 'This is a basic card with just a title and some text content.'
+    });
+
+    // Card with Image
+    new Card('#card2', {
+      title: 'Card with Image',
+      text: 'This card includes an image above the content.',
+      image: 'https://placehold.co/600x400',
+      imageAlt: 'Placeholder image'
+    });
+
+    // Card with Icon
+    new Card('#card3', {
+      title: 'Card with Icon',
+      text: 'This card includes an icon to represent the content.',
+      icon: '🚀'
+    });
+
+    // Card with Actions
+    const card4 = document.getElementById('card4');
+    const button1 = document.createElement('button');
+    button1.className = 'demo-btn';
+    button1.textContent = 'Learn More';
+    
+    const button2 = document.createElement('button');
+    button2.className = 'demo-btn secondary';
+    button2.textContent = 'Cancel';
+    
+    new Card(card4, {
+      title: 'Card with Actions',
+      text: 'This card includes buttons at the bottom.',
+      actions: [button1, button2]
+    });
+
+    // Row Card
+    new Card('#card-row', {
+      title: 'Row Layout Card',
+      text: 'This card uses a horizontal layout with the image on the left.',
+      image: 'https://placehold.co/300x300',
+      imageAlt: 'Placeholder',
+      row: true
+    });
+
+    // Flat Card
+    new Card('#card-flat', {
+      title: 'Flat Style Card',
+      text: 'This card uses the flat style with the image extending to the edges.',
+      image: 'https://placehold.co/600x400',
+      imageAlt: 'Placeholder',
+      flat: true
+    });
+
+    // Clickable Card
+    new Card('#card-clickable', {
+      title: 'Clickable Card',
+      text: 'Click me! This card has an onClick handler attached.',
+      onClick: () => {
+        alert('Card clicked!');
+      }
+    });
+
+    // Initialize all cards with data attributes
+    Card.initializeAll();
+  </script>
+</body>
+</html> 

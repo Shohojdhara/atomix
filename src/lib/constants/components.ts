@@ -559,6 +559,32 @@ export const RADIO = {
 // Update existing CHECKBOX constants if needed
 
 /**
+ * Card-specific constants
+ */
+export const CARD = {
+  SELECTORS: {
+    CARD: '.c-card',
+    HEADER: '.c-card__header',
+    BODY: '.c-card__body',
+    IMAGE: '.c-card__image',
+    TITLE: '.c-card__title',
+    TEXT: '.c-card__text',
+    ACTIONS: '.c-card__actions',
+    ICON: '.c-card__icon',
+    FOOTER: '.c-card__footer'
+  },
+  CLASSES: {
+    BASE: 'c-card',
+    ROW: 'c-card--row',
+    FLAT: 'c-card--flat',
+    ACTIVE: 'is-active'
+  },
+  DEFAULTS: {
+    HOVER: true
+  }
+};
+
+/**
  * Select-specific constants
  */
 export const SELECT = {
