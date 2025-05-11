@@ -18,7 +18,7 @@ This document outlines the approach and best practices for creating components i
   - `index.ts`: Main component class
   - `componentInteractions.ts`: Event handlers and utilities
   - `bundle.ts`: Exports for global use
-  - `main.ts`: Entry point for initializing components
+  - `./src/main.ts`: Entry point for initializing components
 
 ### 3. Type Definitions
 

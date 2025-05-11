@@ -9,6 +9,7 @@ import { initializeTestimonials } from './components/Testimonial/scripts';
 import { initializeRivers } from './components/River/scripts';
 import { initializeUploads } from './components/Upload/scripts';
 import { initializeEdgePanelsWithCustomBehavior } from './components/EdgePanel/scripts/main';
+import { initializeModalsWithCustomBehavior } from './components/Modal/scripts/main';
 
 /**
  * Initialize all Button components in the document
@@ -96,6 +97,14 @@ function initializeEdgePanels(): void {
 }
 
 /**
+ * Initialize all Modal components in the document
+ */
+function initializeModalComponents(): void {
+  // Initialize modals with custom animations and behavior
+  initializeModalsWithCustomBehavior();
+}
+
+/**
  * Initialize all components
  */
 function initializeComponents(): void {
@@ -109,6 +118,7 @@ function initializeComponents(): void {
   initializeRiverComponents();
   initializeUploadComponents();
   initializeEdgePanels();
+  initializeModalComponents();
   // Add other component initializations as needed
 }
 

@@ -71,6 +71,7 @@
   &__content {
     display: flex;
     flex-direction: column;
+    width: 100%;
     max-height: 100%;
     padding: var(--#{config.$prefix}modal-inner-padding);
     background-color: var(--#{config.$prefix}modal-content-bg);
