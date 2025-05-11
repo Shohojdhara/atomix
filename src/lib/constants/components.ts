@@ -653,3 +653,39 @@ export const TEXTAREA = {
     DISABLED: 'is-disabled'
   }
 };
+
+/**
+ * Avatar-specific constants
+ */
+export const AVATAR = {
+  SELECTORS: {
+    AVATAR: '.c-avatar',
+    IMAGE: '.c-avatar__image',
+    INITIALS: '.c-avatar__initials',
+    ICON: '.c-avatar__icon'
+  },
+  CLASSES: {
+    BASE: 'c-avatar',
+    XS: 'c-avatar--xs',
+    SM: 'c-avatar--sm',
+    MD: 'c-avatar--md',
+    LG: 'c-avatar--lg',
+    XL: 'c-avatar--xl',
+    CIRCLE: 'c-avatar--circle'
+  }
+};
+
+/**
+ * Avatar Group-specific constants
+ */
+export const AVATAR_GROUP = {
+  SELECTORS: {
+    GROUP: '.c-avatar-group',
+    MORE: '.c-avatar-group__more'
+  },
+  CLASSES: {
+    BASE: 'c-avatar-group',
+    STACKED: 'c-avatar-group--stacked',
+    MORE: 'c-avatar-group__more'
+  }
+};

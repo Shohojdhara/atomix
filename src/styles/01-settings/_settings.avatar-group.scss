@@ -2,9 +2,19 @@
 @use "./settings.config" as config;
 @use "./settings.typography" as fonts;
 
+// Avatar group spacing
 $avatar-group-gap:                      8px !default;
+$avatar-group-stacked-overlap:          50% !default;
+$avatar-group-stacked-hover-gap:        8px !default;
+
+// Avatar group "more" indicator
 $avatar-group-more-color:               var(--#{config.$prefix}tertiary-text-emphasis) !default;
-$avatar-group-more-bg:                  var(--#{config.$prefix}secondary-bg) !default;
+$avatar-group-more-bg:                  var(--#{config.$prefix}body-bg) !default;
 $avatar-group-more-font-size:           fonts.$font-size-sm !default;
+$avatar-group-more-font-weight:         fonts.$font-weight-medium !default;
 $avatar-group-more-border-width:        1px !default;
 $avatar-group-more-border-color:        var(--#{config.$prefix}primary-border-subtle) !default;
+
+// Avatar group transitions
+$avatar-group-transition-duration:      0.2s !default;
+$avatar-group-transition-timing:        ease-in-out !default;
