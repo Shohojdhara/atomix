@@ -69,6 +69,18 @@ npm run build:docs
 
 When creating new components for the Atomix design system, please follow our [Component Development Guidelines](./atomix-component-guidelines.md) to ensure consistency and quality.
 
+## Implementation Guide
+
+For a comprehensive guide on how to use Atomix in your projects, please refer to our beginner-friendly [Implementation Guide](./implementation-guide.md). This guide covers:
+
+- Setting up Atomix in your project
+- Using components with React or vanilla HTML/CSS/JS
+- Layout and structure systems
+- Customization options
+- Utility classes
+- Best practices
+- Troubleshooting
+
 ### Deployment
 
 Deploy the documentation and Storybook to GitHub Pages:
