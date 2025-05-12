@@ -1,5 +1,5 @@
 import { useBreadcrumb } from '../../../lib/composables/useBreadcrumb';
-import { BreadcrumbItem, BreadcrumbOptions, BreadcrumbInstance } from '../../../lib/types/components';
+import { BreadcrumbItem, BreadcrumbOptions, BreadcrumbInstance } from './types';
 import { BREADCRUMB } from '../../../lib/constants/components';
 import { createIconElement } from '../../../lib/utils/icons';
 

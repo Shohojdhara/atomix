@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { TodoItem, TodoProps, Size } from '../types/components';
+import { TodoProps, Size } from '../types/components';
+import { TodoItem } from '../../components/Todo/scripts/types';
 import { v4 as uuidv4 } from 'uuid';
 import { TODO, SIZES } from '../constants/components';
 

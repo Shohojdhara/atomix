@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
-import { TodoItem } from '../../../lib/types/components';
 import { TODO } from '../../../lib/constants/components';
+import type { TodoItem } from './types';
 
+export type { TodoItem };
 export { useTodo } from '../../../lib/composables/useTodo';
-export { TodoItem };
 
 /**
  * TodoOptions interface for the vanilla JS implementation
@@ -499,6 +499,16 @@ export class Todo {
     // Clear element
     this.element.innerHTML = '';
     this.element.classList.remove(TODO.CLASSES.BASE);
+  }
+
+  /**
+   * Initialize all Todo components in the document
+   */
+  public static initializeAll(): void {
+    const todoElements = document.querySelectorAll<HTMLElement>('.c-todo');
+    todoElements.forEach(element => {
+      new Todo(element);
+    });
   }
 }
 

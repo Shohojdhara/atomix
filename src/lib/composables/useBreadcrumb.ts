@@ -1,4 +1,4 @@
-import { BreadcrumbItem, BreadcrumbOptions } from '../types/components';
+import { BreadcrumbItem, BreadcrumbOptions } from '../../components/Breadcrumb/scripts/types';
 import { BREADCRUMB } from '../constants/components';
 
 /**

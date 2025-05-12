@@ -1,4 +1,5 @@
-import { Todo, TodoEvents, TodoItem } from './index';
+import { Todo, TodoEvents } from './index';
+import { TodoItem } from './types';
 import { TODO } from '../../../lib/constants/components';
 
 /**

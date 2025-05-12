@@ -420,7 +420,9 @@ const getDocsConfig = (env, argv) => {
       new HtmlWebpackPlugin({
         template: './index.html',
         filename: 'index.html',
+        chunks: ['docs', 'runtime'],
         inject: true,
+        scriptLoading: 'module',
       }),
     ],
     optimization: {
