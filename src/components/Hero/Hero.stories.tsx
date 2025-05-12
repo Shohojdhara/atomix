@@ -81,6 +81,22 @@ const meta = {
       table: {
         defaultValue: { summary: '536px' },
       }
+    },
+    parallax: {
+      control: 'boolean',
+      description: 'Enable parallax effect on background image'
+    },
+    parallaxIntensity: {
+      control: { type: 'range', min: 0, max: 1, step: 0.1 },
+      description: 'Parallax effect intensity (0-1)'
+    },
+    videoBackground: {
+      control: 'text',
+      description: 'Video background URL'
+    },
+    videoOptions: {
+      control: 'object',
+      description: 'Video background options'
     }
   },
 } satisfies Meta<typeof Hero>;
@@ -224,5 +240,56 @@ export const CustomContentWidth: Story = {
     title: 'Hero with Custom Content Width',
     text: 'This hero component has a custom content width set through the contentWidth prop, which sets the --atomix-hero-content-width CSS variable.',
     contentWidth: '800px'
+  }
+};
+
+/**
+ * Hero with parallax background effect
+ */
+export const WithParallaxEffect: Story = {
+  args: {
+    ...BackgroundImageOnly.args,
+    title: 'Parallax Background Effect',
+    text: 'This hero features a parallax scrolling effect on the background image, creating depth and visual interest as the user scrolls.',
+    backgroundImageSrc: 'https://picsum.photos/id/1015/1920/1080',
+    parallax: true,
+    parallaxIntensity: 0.5,
+    fullViewportHeight: true
+  }
+};
+
+/**
+ * Hero with video background
+ */
+export const WithVideoBackground: Story = {
+  args: {
+    title: 'Video Background Hero',
+    subtitle: 'Dynamic & Engaging',
+    text: 'Add motion and visual interest to your hero sections with video backgrounds. Perfect for creating immersive landing pages.',
+    alignment: 'center',
+    videoBackground: 'https://storage.googleapis.com/coverr-main/mp4/Mt_Baker.mp4',
+    videoOptions: {
+      autoplay: true,
+      loop: true,
+      muted: true,
+      posterUrl: 'https://picsum.photos/id/1018/1920/1080'
+    },
+    showOverlay: true,
+    actions: showcaseActionButtons,
+    contentWidth: '800px'
+  }
+};
+
+/**
+ * Hero with video background and foreground image
+ */
+export const VideoBackgroundWithImage: Story = {
+  args: {
+    ...WithVideoBackground.args,
+    title: 'Complete Media Support',
+    text: 'Combine video backgrounds with foreground images for rich, layered visual presentations.',
+    alignment: 'left',
+    imageSrc: 'https://picsum.photos/id/180/712/500',
+    imageAlt: 'Product showcase'
   }
 }; 

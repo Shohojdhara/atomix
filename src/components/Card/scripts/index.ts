@@ -17,6 +17,7 @@ export interface CardOptions {
   active?: boolean;
   className?: string;
   onClick?: (event: MouseEvent) => void;
+  children?: HTMLElement | HTMLElement[] | string;
 }
 
 /**
@@ -42,7 +43,8 @@ const DEFAULT_OPTIONS: CardOptions = {
   flat: false,
   active: false,
   className: '',
-  onClick: undefined
+  onClick: undefined,
+  children: undefined
 };
 
 /**
@@ -173,6 +175,26 @@ export default class Card implements CardInstance {
       this.textElement.className = CARD.SELECTORS.TEXT.substring(1);
       this.textElement.innerHTML = this.options.text;
       this.bodyElement.appendChild(this.textElement);
+    }
+    
+    // Add children content if provided
+    if (this.options.children && this.bodyElement) {
+      if (typeof this.options.children === 'string') {
+        // If children is a string, add it as innerHTML
+        const childrenContainer = document.createElement('div');
+        childrenContainer.innerHTML = this.options.children;
+        this.bodyElement.appendChild(childrenContainer);
+      } else if (this.options.children instanceof HTMLElement) {
+        // If children is a single HTMLElement
+        this.bodyElement.appendChild(this.options.children);
+      } else if (Array.isArray(this.options.children)) {
+        // If children is an array of HTMLElements
+        this.options.children.forEach(child => {
+          if (child instanceof HTMLElement && this.bodyElement) {
+            this.bodyElement.appendChild(child);
+          }
+        });
+      }
     }
 
     // Create actions if provided

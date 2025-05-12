@@ -78,6 +78,24 @@
     <div id="card-clickable"></div>
   </div>
 
+  <h2>Card with Children Content</h2>
+  <div class="demo-grid">
+    <!-- Card with HTML Children -->
+    <div id="card-with-children"></div>
+    
+    <!-- Card with HTML Element Children -->
+    <div id="card-with-element-children"></div>
+  </div>
+
+  <h2>Interactive Cards</h2>
+  <div class="demo-grid">
+    <!-- Card with Elevation Effect -->
+    <div id="card-elevation"></div>
+    
+    <!-- Flip Card -->
+    <div id="card-flip" style="height: 300px;"></div>
+  </div>
+
   <h2>Cards from Data Attributes</h2>
   <div class="demo-grid">
     <div data-component="card" data-title="Card from Data Attributes" data-text="This card is created using data attributes instead of JavaScript."></div>
@@ -89,6 +107,7 @@
 
   <script type="module">
     import Card from './index.js';
+    import { applyElevationEffect, applyFlipEffect } from './cardInteractions.js';
     
     // Simple Card
     new Card('#card1', {
@@ -153,6 +172,148 @@
         alert('Card clicked!');
       }
     });
+
+    // Card with HTML string children
+    new Card('#card-with-children', {
+      title: 'Card with Children Content',
+      children: `
+        <div style="padding: 10px; background-color: #f5f5f5; border-radius: 4px; margin-bottom: 15px;">
+          <h4 style="margin-top: 0;">Custom HTML Content</h4>
+          <p>This card demonstrates the ability to add custom HTML content as children.</p>
+          <ul>
+            <li>List item 1</li>
+            <li>List item 2</li>
+            <li>List item 3</li>
+          </ul>
+        </div>
+      `
+    });
+
+    // Card with HTML Element children
+    const cardWithElementChildren = document.getElementById('card-with-element-children');
+    const customContent = document.createElement('div');
+    customContent.style.padding = '15px';
+    customContent.style.backgroundColor = '#e6f7ff';
+    customContent.style.borderRadius = '4px';
+    
+    const heading = document.createElement('h4');
+    heading.textContent = 'Element Children';
+    heading.style.marginTop = '0';
+    
+    const paragraph = document.createElement('p');
+    paragraph.textContent = 'This card demonstrates adding DOM elements as children.';
+    
+    const progressContainer = document.createElement('div');
+    progressContainer.style.marginTop = '10px';
+    
+    const progressLabel = document.createElement('div');
+    progressLabel.textContent = 'Progress: 75%';
+    progressLabel.style.marginBottom = '5px';
+    
+    const progressBar = document.createElement('div');
+    progressBar.style.height = '8px';
+    progressBar.style.width = '75%';
+    progressBar.style.backgroundColor = '#0066cc';
+    progressBar.style.borderRadius = '4px';
+    
+    progressContainer.appendChild(progressLabel);
+    progressContainer.appendChild(progressBar);
+    
+    customContent.appendChild(heading);
+    customContent.appendChild(paragraph);
+    customContent.appendChild(progressContainer);
+    
+    new Card(cardWithElementChildren, {
+      title: 'Card with Element Children',
+      children: customContent
+    });
+
+    // Card with elevation effect
+    const cardElevation = document.getElementById('card-elevation');
+    const elevationCard = new Card(cardElevation, {
+      title: 'Elevation Effect',
+      text: 'Hover over this card to see an elevation effect.',
+      image: 'https://placehold.co/600x400',
+      imageAlt: 'Placeholder'
+    });
+    
+    // Apply elevation effect
+    applyElevationEffect(cardElevation);
+    
+    // Add some CSS for the elevation effect
+    const style = document.createElement('style');
+    style.textContent = `
+      .is-elevated {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+      }
+      
+      .card {
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+      
+      .card-front, .card-back {
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+      
+      .is-flipped {
+        transform: rotateY(180deg);
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Flip Card
+    const cardFlip = document.getElementById('card-flip');
+    
+    // Create front side
+    const frontSide = document.createElement('div');
+    frontSide.className = 'card-front';
+    frontSide.style.padding = '20px';
+    frontSide.style.display = 'flex';
+    frontSide.style.flexDirection = 'column';
+    frontSide.style.alignItems = 'center';
+    frontSide.style.justifyContent = 'center';
+    
+    const frontTitle = document.createElement('h3');
+    frontTitle.textContent = 'Flip Card - Front Side';
+    frontTitle.style.marginBottom = '15px';
+    
+    const frontText = document.createElement('p');
+    frontText.textContent = 'Click this card to see the back side.';
+    
+    frontSide.appendChild(frontTitle);
+    frontSide.appendChild(frontText);
+    
+    // Create back side
+    const backSide = document.createElement('div');
+    backSide.className = 'card-back';
+    backSide.style.padding = '20px';
+    backSide.style.backgroundColor = '#f0f8ff';
+    backSide.style.display = 'flex';
+    backSide.style.flexDirection = 'column';
+    backSide.style.alignItems = 'center';
+    backSide.style.justifyContent = 'center';
+    
+    const backTitle = document.createElement('h3');
+    backTitle.textContent = 'Flip Card - Back Side';
+    backTitle.style.marginBottom = '15px';
+    
+    const backText = document.createElement('p');
+    backText.textContent = 'Click again to flip back to the front.';
+    
+    backSide.appendChild(backTitle);
+    backSide.appendChild(backText);
+    
+    // Add both sides to the card
+    cardFlip.appendChild(frontSide);
+    cardFlip.appendChild(backSide);
+    
+    // Apply flip effect
+    applyFlipEffect(cardFlip);
 
     // Initialize all cards with data attributes
     Card.initializeAll();

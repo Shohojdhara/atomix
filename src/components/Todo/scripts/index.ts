@@ -3,6 +3,7 @@ import { TodoItem } from '../../../lib/types/components';
 import { TODO } from '../../../lib/constants/components';
 
 export { useTodo } from '../../../lib/composables/useTodo';
+export { TodoItem };
 
 /**
  * TodoOptions interface for the vanilla JS implementation
@@ -178,7 +179,18 @@ export class Todo {
       this.formElement.addEventListener('submit', this._handleSubmit.bind(this));
     }
     
-    // Item interaction events will be delegated and bound when rendering items
+          // Apply focus effect to input if available
+      if (this.inputElement) {
+        this.inputElement.addEventListener('focus', () => {
+          const formGroup = this.inputElement ? this.inputElement.closest('.c-todo__form-group') : null;
+          formGroup?.classList.add('is-focused');
+        });
+        
+        this.inputElement.addEventListener('blur', () => {
+          const formGroup = this.inputElement ? this.inputElement.closest('.c-todo__form-group') : null;
+          formGroup?.classList.remove('is-focused');
+        });
+      }
   }
 
   /**
@@ -264,98 +276,83 @@ export class Todo {
     this.listElement.innerHTML = '';
     
     // Filter items if needed
-    const filteredItems = this.options.showCompleted === false
-      ? this.items.filter(item => !item.completed)
-      : this.items;
+    const itemsToRender = this.options.showCompleted
+      ? this.items
+      : this.items.filter(item => !item.completed);
     
-    // Check if empty
-    if (filteredItems.length === 0) {
-      const emptyItem = document.createElement('li');
-      emptyItem.className = 'c-todo__empty';
-      emptyItem.textContent = 'No items to display';
-      this.listElement.appendChild(emptyItem);
-      return;
-    }
-    
-    // Create items
-    filteredItems.forEach(item => {
-      const li = document.createElement('li');
-      li.className = TODO.CLASSES.ITEM;
+    // Render each item
+    itemsToRender.forEach(item => {
+      const listItem = document.createElement('li');
+      listItem.className = 'c-todo__item';
+      listItem.dataset.id = item.id;
+      
       if (item.completed) {
-        li.classList.add(TODO.CLASSES.COMPLETED);
+        listItem.classList.add('c-todo__item--completed');
       }
-      
-      const itemContent = document.createElement('div');
-      itemContent.className = 'c-todo__item-content';
-      
-      // Checkbox label
-      const label = document.createElement('label');
-      label.className = 'c-todo__checkbox-label';
       
       // Checkbox
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
-      checkbox.className = 'c-todo__checkbox c-checkbox';
+      checkbox.className = 'c-todo__checkbox';
       checkbox.checked = item.completed;
-      checkbox.disabled = Boolean(this.options.disabled);
+      checkbox.disabled = this.options.disabled || false;
       checkbox.setAttribute('aria-label', `Mark "${item.text}" as ${item.completed ? 'incomplete' : 'complete'}`);
-      checkbox.dataset.id = item.id;
-      checkbox.addEventListener('change', () => this._handleToggle(item.id));
       
-      // Text
-      const text = document.createElement('span');
-      text.className = 'c-todo__item-text';
-      text.textContent = item.text;
+      // Label
+      const label = document.createElement('span');
+      label.className = 'c-todo__text';
+      label.textContent = item.text;
       
       // Delete button
-      const deleteBtn = document.createElement('button');
-      deleteBtn.type = 'button';
-      deleteBtn.className = 'c-todo__delete-btn c-btn c-btn--error c-btn--sm';
-      deleteBtn.disabled = Boolean(this.options.disabled);
-      deleteBtn.setAttribute('aria-label', `Delete "${item.text}"`);
-      deleteBtn.dataset.id = item.id;
-      deleteBtn.addEventListener('click', () => this._handleDelete(item.id));
-
+      const deleteButton = document.createElement('button');
+      deleteButton.type = 'button';
+      deleteButton.className = 'c-todo__delete-btn';
+      deleteButton.disabled = this.options.disabled || false;
+      deleteButton.setAttribute('aria-label', `Delete "${item.text}"`);
+      
       // Trash icon (SVG)
       const svgNS = 'http://www.w3.org/2000/svg';
       const iconSvg = document.createElementNS(svgNS, 'svg');
       iconSvg.setAttribute('width', '16');
       iconSvg.setAttribute('height', '16');
       iconSvg.setAttribute('viewBox', '0 0 256 256');
+      iconSvg.setAttribute('fill', 'none');
       iconSvg.setAttribute('xmlns', svgNS);
-
+      
       // Create the trash icon path
       const iconPath = document.createElementNS(svgNS, 'path');
       iconPath.setAttribute('d', 'M216 48h-40v-8a24 24 0 0 0-24-24h-48a24 24 0 0 0-24 24v8H40a8 8 0 0 0 0 16h8v144a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16V64h8a8 8 0 0 0 0-16ZM96 40a8 8 0 0 1 8-8h48a8 8 0 0 1 8 8v8H96Zm96 168H64V64h128Zm-80-104v64a8 8 0 0 1-16 0v-64a8 8 0 0 1 16 0Zm48 0v64a8 8 0 0 1-16 0v-64a8 8 0 0 1 16 0Z');
       iconPath.setAttribute('fill', 'currentColor');
       
       iconSvg.appendChild(iconPath);
-      deleteBtn.appendChild(iconSvg);
+      deleteButton.appendChild(iconSvg);
       
-      // Build component
-      label.appendChild(checkbox);
-      label.appendChild(text);
+      // Add elements to list item
+      listItem.appendChild(checkbox);
+      listItem.appendChild(label);
+      listItem.appendChild(deleteButton);
       
-      itemContent.appendChild(label);
-      itemContent.appendChild(deleteBtn);
-      
-      li.appendChild(itemContent);
-      
-      // Make sure listElement is still present before appending
+      // Add list item to list
       if (this.listElement) {
-        this.listElement.appendChild(li);
+        this.listElement.appendChild(listItem);
       }
+      
+      // Add event listeners
+      checkbox.addEventListener('change', () => this._handleToggle(item.id));
+      deleteButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        this._handleDelete(item.id);
+      });
     });
   }
 
   /**
    * Add a new todo item
-   * @public
    * @param text - Todo text
-   * @returns The new todo item
+   * @returns The new todo item or null if failed
    */
   public addTodo(text: string): TodoItem | null {
-    if (!text.trim()) return null;
+    if (!text.trim() || this.options.disabled) return null;
     
     const newItem: TodoItem = {
       id: uuidv4(),
@@ -376,14 +373,13 @@ export class Todo {
   }
 
   /**
-   * Toggle a todo item
-   * @public
-   * @param id - Item ID
-   * @returns Updated item or null if not found
+   * Toggle a todo item's completed state
+   * @param id - Todo item ID
+   * @returns The toggled todo item or null if not found
    */
   public toggleTodo(id: string): TodoItem | null {
     const item = this.items.find(item => item.id === id);
-    if (!item) return null;
+    if (!item || this.options.disabled) return null;
     
     item.completed = !item.completed;
     this._renderItems();
@@ -393,15 +389,14 @@ export class Todo {
 
   /**
    * Delete a todo item
-   * @public
-   * @param id - Item ID
-   * @returns Whether the item was successfully deleted
+   * @param id - Todo item ID
+   * @returns Whether the item was deleted
    */
   public deleteTodo(id: string): boolean {
     const initialLength = this.items.length;
     this.items = this.items.filter(item => item.id !== id);
     
-    if (initialLength !== this.items.length) {
+    if (this.items.length !== initialLength) {
       this._renderItems();
       return true;
     }
@@ -410,139 +405,102 @@ export class Todo {
   }
 
   /**
-   * Update items
-   * @public
-   * @param items - New items array
+   * Update todo items
+   * @param items - New todo items
    */
   public updateItems(items: TodoItem[]): void {
-    this.items = [...items];
+    this.items = items;
     this._renderItems();
   }
 
   /**
    * Update component options
-   * @public
    * @param options - New options
    */
   public update(options: Partial<TodoOptions>): void {
     this.options = { ...this.options, ...options };
     
-    // Update DOM based on new options
-    if (options.title && this.element.querySelector('.c-todo__title')) {
-      const titleEl = this.element.querySelector('.c-todo__title') as HTMLElement;
-      titleEl.textContent = options.title;
-    }
-    
-    if (options.placeholder && this.inputElement) {
-      this.inputElement.placeholder = options.placeholder;
-    }
-    
+    // Update disabled state
     if (options.disabled !== undefined) {
-      if (this.inputElement) {
-        this.inputElement.disabled = Boolean(options.disabled);
-      }
-      
-      const addButton = this.element.querySelector('.c-todo__add-btn') as HTMLButtonElement | null;
-      if (addButton) {
-        addButton.disabled = Boolean(options.disabled);
-      }
-      
-      const checkboxes = this.element.querySelectorAll('.c-todo__checkbox') as NodeListOf<HTMLInputElement>;
-      checkboxes.forEach(checkbox => {
-        checkbox.disabled = Boolean(options.disabled);
-      });
-      
-      const deleteButtons = this.element.querySelectorAll('.c-todo__delete-btn') as NodeListOf<HTMLButtonElement>;
-      deleteButtons.forEach(button => {
-        button.disabled = Boolean(options.disabled);
-      });
-      
       if (options.disabled) {
         this.element.classList.add('c-todo--disabled');
       } else {
         this.element.classList.remove('c-todo--disabled');
       }
+      
+      if (this.inputElement) {
+        this.inputElement.disabled = options.disabled;
+      }
+      
+      const addButton = this.formElement?.querySelector('.c-todo__add-btn') as HTMLButtonElement;
+      if (addButton) {
+        addButton.disabled = options.disabled;
+      }
     }
     
+    // Update size
     if (options.size) {
-      this.element.classList.remove('c-todo--sm', 'c-todo--md', 'c-todo--lg');
+      // Remove existing size classes
+      ['sm', 'md', 'lg'].forEach(size => {
+        this.element.classList.remove(`c-todo--${size}`);
+      });
+      
+      // Add new size class if not default
       if (options.size !== 'md') {
         this.element.classList.add(`c-todo--${options.size}`);
       }
     }
     
-    // Update items if provided
-    if (options.items) {
-      this.updateItems(options.items);
+    // Update title
+    if (options.title !== undefined) {
+      let titleElement = this.element.querySelector('.c-todo__title') as HTMLHeadingElement;
+      
+      if (options.title) {
+        if (!titleElement) {
+          titleElement = document.createElement('h2');
+          titleElement.className = 'c-todo__title';
+          this.element.insertBefore(titleElement, this.element.firstChild);
+        }
+        titleElement.textContent = options.title;
+      } else if (titleElement) {
+        titleElement.remove();
+      }
     }
-    // Or re-render if showCompleted changed
-    else if (options.showCompleted !== undefined) {
+    
+    // Update placeholder
+    if (options.placeholder && this.inputElement) {
+      this.inputElement.placeholder = options.placeholder;
+    }
+    
+    // Update items or showCompleted flag
+    if (options.items || options.showCompleted !== undefined) {
+      if (options.items) {
+        this.items = options.items;
+      }
       this._renderItems();
     }
   }
 
   /**
-   * Destroy the component
-   * @public
+   * Clean up event listeners
    */
   public destroy(): void {
-    // Remove event listeners
+    // Remove form event listener
     if (this.formElement) {
-      this.formElement.removeEventListener('submit', this._handleSubmit.bind(this));
+      this.formElement.removeEventListener('submit', this._handleSubmit);
     }
     
-    // Clean up DOM
-    this.element.innerHTML = '';
-    this.element.classList.remove('c-todo', 'c-todo--sm', 'c-todo--md', 'c-todo--lg', 'c-todo--disabled');
+    // Remove input event listeners
+    if (this.inputElement) {
+      this.inputElement.removeEventListener('focus', () => {});
+      this.inputElement.removeEventListener('blur', () => {});
+    }
     
-    // Clear references
-    this.listElement = null;
-    this.formElement = null;
-    this.inputElement = null;
+    // Clear element
+    this.element.innerHTML = '';
+    this.element.classList.remove(TODO.CLASSES.BASE);
   }
+}
 
-  /**
-   * Initialize all Todo components on the page
-   * @public
-   * @static
-   */
-  public static initializeAll(selector = '[data-component="todo"]'): Todo[] {
-    const elements = document.querySelectorAll(selector);
-    return Array.from(elements).map(element => {
-      // Try to get options from data attributes
-      const options: TodoOptions = {};
-      
-      // Get title
-      const title = element.getAttribute('data-title');
-      if (title) options.title = title;
-      
-      // Get placeholder
-      const placeholder = element.getAttribute('data-placeholder');
-      if (placeholder) options.placeholder = placeholder;
-      
-      // Get size
-      const size = element.getAttribute('data-size') as 'sm' | 'md' | 'lg' | null;
-      if (size && ['sm', 'md', 'lg'].includes(size)) options.size = size;
-      
-      // Get disabled state
-      const disabled = element.getAttribute('data-disabled');
-      options.disabled = disabled === 'true';
-      
-      // Get showCompleted state
-      const showCompleted = element.getAttribute('data-show-completed');
-      options.showCompleted = showCompleted !== 'false';
-      
-      // Get items from data attribute
-      const itemsAttr = element.getAttribute('data-items');
-      if (itemsAttr) {
-        try {
-          options.items = JSON.parse(itemsAttr);
-        } catch (e) {
-          console.error('Todo: Error parsing items data attribute', e);
-        }
-      }
-      
-      return new Todo(element as HTMLElement, options);
-    });
-  }
-} 
+// Export todoInteractions
+export * from './todoInteractions'; 

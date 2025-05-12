@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { HeroProps, HeroAlignment } from '../types/components';
 import { HERO } from '../constants/components';
 
@@ -34,6 +35,26 @@ interface UseHeroResult {
    * Determine if content should be displayed in a grid
    */
   useGridLayout: boolean;
+  
+  /**
+   * Reference to the hero element
+   */
+  heroRef: React.RefObject<HTMLDivElement>;
+  
+  /**
+   * Reference to the video element
+   */
+  videoRef: React.RefObject<HTMLVideoElement>;
+  
+  /**
+   * Apply parallax effect
+   */
+  applyParallaxEffect: (element: HTMLElement, intensity: number) => void;
+  
+  /**
+   * Remove parallax effect
+   */
+  removeParallaxEffect: (element: HTMLElement) => void;
 }
 
 /**
@@ -42,6 +63,10 @@ interface UseHeroResult {
  * @returns Hero methods
  */
 export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const parallaxHandlerRef = useRef<((event: Event) => void) | null>(null);
+  
   const defaultProps: Partial<HeroProps> = {
     alignment: 'left',
     imageColSize: 7,
@@ -50,6 +75,8 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
     showOverlay: true,
     fullViewportHeight: false,
     contentWidth: undefined,
+    parallax: false,
+    parallaxIntensity: 0.5,
     ...initialProps
   };
 
@@ -67,6 +94,77 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
    * Check if content should be displayed in a grid
    */
   const useGridLayout = hasForegroundImage && defaultProps.alignment !== 'center';
+  
+  /**
+   * Apply parallax effect to hero background
+   */
+  const applyParallaxEffect = (element: HTMLElement, intensity: number = 0.5): void => {
+    if (!element) return;
+    
+    // Ensure intensity is between 0 and 1
+    const safeIntensity = Math.max(0, Math.min(1, intensity));
+    
+    // Add parallax class
+    element.classList.add('c-hero--parallax');
+    
+    // Handle scroll event
+    const handleScroll = (): void => {
+      const scrollPosition = window.pageYOffset;
+      const offset = scrollPosition * safeIntensity;
+      
+      // Apply transform to background
+      const bgElement = element.querySelector(HERO.SELECTORS.BG);
+      if (bgElement) {
+        (bgElement as HTMLElement).style.transform = `translateY(${offset}px)`;
+      }
+    };
+    
+    // Store the handler for cleanup
+    parallaxHandlerRef.current = handleScroll;
+    
+    // Add event listener
+    window.addEventListener('scroll', handleScroll);
+    
+    // Initial call
+    handleScroll();
+  };
+  
+  /**
+   * Remove parallax effect from hero
+   */
+  const removeParallaxEffect = (element: HTMLElement): void => {
+    if (!element) return;
+    
+    // Remove class
+    element.classList.remove('c-hero--parallax');
+    
+    // Remove transform
+    const bgElement = element.querySelector(HERO.SELECTORS.BG);
+    if (bgElement) {
+      (bgElement as HTMLElement).style.transform = '';
+    }
+    
+    // Remove event listener
+    if (parallaxHandlerRef.current) {
+      window.removeEventListener('scroll', parallaxHandlerRef.current);
+      parallaxHandlerRef.current = null;
+    }
+  };
+  
+  // Apply parallax effect if enabled
+  useEffect(() => {
+    const heroElement = heroRef.current;
+    
+    if (heroElement && defaultProps.parallax && hasBackgroundImage) {
+      applyParallaxEffect(heroElement, defaultProps.parallaxIntensity);
+    }
+    
+    return () => {
+      if (heroElement && parallaxHandlerRef.current) {
+        removeParallaxEffect(heroElement);
+      }
+    };
+  }, [defaultProps.parallax, defaultProps.parallaxIntensity, hasBackgroundImage]);
 
   /**
    * Generate hero class names based on props
@@ -90,6 +188,16 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
     // Add full viewport height class if needed
     if (defaultProps.fullViewportHeight) {
       classes.push(HERO.CLASSES.FULL_VH);
+    }
+    
+    // Add parallax class if enabled
+    if (defaultProps.parallax) {
+      classes.push('c-hero--parallax');
+    }
+    
+    // Add video background class if provided
+    if (defaultProps.videoBackground) {
+      classes.push('c-hero--video');
     }
 
     if (baseClassName) {
@@ -135,6 +243,10 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
     generateContentColClass,
     hasBackgroundImage,
     hasForegroundImage,
-    useGridLayout
+    useGridLayout,
+    heroRef,
+    videoRef,
+    applyParallaxEffect,
+    removeParallaxEffect
   };
 } 

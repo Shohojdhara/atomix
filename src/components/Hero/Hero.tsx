@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useEffect } from 'react';
 import { HeroProps, HeroAlignment } from '../../lib/types/components';
 import { useHero } from '../../lib/composables/useHero';
 import { HERO } from '../../lib/constants/components';
@@ -20,6 +20,14 @@ export const Hero: React.FC<HeroComponentProps> = ({
   contentColSize = 5,
   contentWidth,
   className = '',
+  parallax = false,
+  parallaxIntensity = 0.5,
+  videoBackground,
+  videoOptions = {
+    autoplay: true,
+    loop: true,
+    muted: true
+  }
 }) => {
   const { 
     generateHeroClassNames, 
@@ -27,7 +35,9 @@ export const Hero: React.FC<HeroComponentProps> = ({
     generateContentColClass,
     hasBackgroundImage,
     hasForegroundImage,
-    useGridLayout
+    useGridLayout,
+    heroRef,
+    videoRef
   } = useHero({
     alignment,
     imageColSize,
@@ -36,7 +46,10 @@ export const Hero: React.FC<HeroComponentProps> = ({
     backgroundImageSrc,
     showOverlay,
     fullViewportHeight,
-    contentWidth
+    contentWidth,
+    parallax,
+    parallaxIntensity,
+    videoBackground
   });
 
   // Create custom style for hero element with content width if provided
@@ -44,16 +57,40 @@ export const Hero: React.FC<HeroComponentProps> = ({
     '--atomix-hero-content-width': contentWidth
   } as React.CSSProperties : undefined;
 
+  const renderVideoBackground = () => {
+    if (!videoBackground) return null;
+    
+    const { autoplay, loop, muted, posterUrl } = videoOptions;
+    
+    return (
+      <video 
+        ref={videoRef}
+        className="c-hero__video"
+        autoPlay={autoplay}
+        loop={loop}
+        muted={muted}
+        playsInline
+        poster={posterUrl}
+      >
+        <source src={videoBackground} type={`video/${videoBackground.split('.').pop() || 'mp4'}`} />
+        Your browser does not support the video tag.
+      </video>
+    );
+  };
+
   const renderBackground = () => {
-    if (!hasBackgroundImage) return null;
+    if (!hasBackgroundImage && !videoBackground) return null;
     
     return (
       <div className={HERO.SELECTORS.BG.replace('.', '')}>
-        <img
-          src={backgroundImageSrc}
-          alt="Background"
-          className={HERO.SELECTORS.BG_IMAGE.replace('.', '')}
-        />
+        {backgroundImageSrc && (
+          <img
+            src={backgroundImageSrc}
+            alt="Background"
+            className={HERO.SELECTORS.BG_IMAGE.replace('.', '')}
+          />
+        )}
+        {renderVideoBackground()}
         {showOverlay && <div className={HERO.SELECTORS.OVERLAY.replace('.', '')}></div>}
       </div>
     );
@@ -119,7 +156,13 @@ export const Hero: React.FC<HeroComponentProps> = ({
   };
 
   return (
-    <div className={generateHeroClassNames(className)} style={heroStyle}>
+    <div 
+      ref={heroRef}
+      className={generateHeroClassNames(className)} 
+      style={heroStyle}
+      data-parallax={parallax ? 'true' : undefined}
+      data-parallax-intensity={parallax ? parallaxIntensity : undefined}
+    >
       {renderBackground()}
       <div className={`${HERO.SELECTORS.CONTAINER.replace('.', '')} o-container`}>
         {useGridLayout ? (

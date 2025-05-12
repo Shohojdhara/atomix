@@ -1,15 +1,24 @@
 // Import component functionality
 import { initializeButton } from './components/Button/scripts';
 import { initializeAccordionsWithCustomBehavior } from './components/Accordion/scripts';
-import { initializeTooltips as initTooltips } from './components/Tooltip/scripts';
+import { initializeTooltipsWithCustomBehavior } from './components/Tooltip/scripts/tooltipInteractions';
 import { initializeToggles } from './components/Toggle/scripts';
 import { initializeTabs } from './components/Tab/scripts';
 import { initializeSteps } from './components/Steps/scripts';
 import { initializeTestimonials } from './components/Testimonial/scripts';
 import { initializeRivers } from './components/River/scripts';
 import { initializeUploads } from './components/Upload/scripts';
-import { initializeEdgePanelsWithCustomBehavior } from './components/EdgePanel/scripts/main';
-import { initializeModalsWithCustomBehavior } from './components/Modal/scripts/main';
+import { initializeEdgePanelsWithCustomBehavior } from './components/EdgePanel/scripts/edgePanelInteractions';
+import { initializeModals } from './components/Modal/scripts/index';
+import { setupModalEventDelegation } from './components/Modal/scripts/modalInteractions';
+import { initializeHeroesWithCustomBehavior } from './components/Hero/scripts/heroInteractions';
+import { Avatar } from './components/Avatar/scripts';
+import Breadcrumb from './components/Breadcrumb/scripts';
+import Card from './components/Card/scripts';
+import Countdown from './components/Countdown/scripts';
+import { Todo } from './components/Todo/scripts';
+import Pagination from './components/Pagination/scripts';
+import { DataTable } from './components/DataTable/scripts';
 
 /**
  * Initialize all Button components in the document
@@ -36,8 +45,8 @@ function initializeAccordions(): void {
  * Initialize all Tooltip components in the document
  */
 function initializeTooltips(): void {
-  // Initialize tooltips with default settings
-  initTooltips();
+  // Initialize tooltips with custom behavior
+  initializeTooltipsWithCustomBehavior();
 }
 
 /**
@@ -100,8 +109,73 @@ function initializeEdgePanels(): void {
  * Initialize all Modal components in the document
  */
 function initializeModalComponents(): void {
-  // Initialize modals with custom animations and behavior
-  initializeModalsWithCustomBehavior();
+  // Initialize modals with default behavior
+  initializeModals();
+  setupModalEventDelegation();
+}
+
+/**
+ * Initialize all Hero components in the document
+ */
+function initializeHeroComponents(): void {
+  // Initialize heroes with custom behavior
+  initializeHeroesWithCustomBehavior();
+}
+
+/**
+ * Initialize all Avatar components in the document
+ */
+function initializeAvatarComponents(): void {
+  // Initialize avatars with default settings
+  Avatar.initializeAll();
+}
+
+/**
+ * Initialize all Breadcrumb components in the document
+ */
+function initializeBreadcrumbComponents(): void {
+  // Initialize breadcrumbs with default settings
+  Breadcrumb.initializeAll();
+}
+
+/**
+ * Initialize all Card components in the document
+ */
+function initializeCardComponents(): void {
+  // Initialize cards with default settings
+  Card.initializeAll();
+}
+
+/**
+ * Initialize all Countdown components in the document
+ */
+function initializeCountdownComponents(): void {
+  // Initialize countdowns with default settings
+  Countdown.initializeAll();
+}
+
+/**
+ * Initialize all Todo components in the document
+ */
+function initializeTodoComponents(): void {
+  // Initialize todos with default settings
+  Todo.initializeAll();
+}
+
+/**
+ * Initialize all Pagination components in the document
+ */
+function initializePaginationComponents(): void {
+  // Initialize pagination with default settings
+  Pagination.initializeAll();
+}
+
+/**
+ * Initialize all DataTable components in the document
+ */
+function initializeDataTableComponents(): void {
+  // Initialize data tables with default settings
+  DataTable.initializeAll();
 }
 
 /**
@@ -119,7 +193,14 @@ function initializeComponents(): void {
   initializeUploadComponents();
   initializeEdgePanels();
   initializeModalComponents();
-  // Add other component initializations as needed
+  initializeHeroComponents();
+  initializeAvatarComponents();
+  initializeBreadcrumbComponents();
+  initializeCardComponents();
+  initializeCountdownComponents();
+  initializeTodoComponents();
+  initializePaginationComponents();
+  initializeDataTableComponents();
 }
 
 /**

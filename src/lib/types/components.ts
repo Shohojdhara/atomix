@@ -254,6 +254,46 @@ export interface HeroProps extends BaseComponentProps {
    * Custom width for the hero content (overrides the default CSS variable)
    */
   contentWidth?: string;
+  
+  /**
+   * Enable parallax effect on background image
+   */
+  parallax?: boolean;
+  
+  /**
+   * Parallax effect intensity (0-1)
+   */
+  parallaxIntensity?: number;
+  
+  /**
+   * Video background URL
+   */
+  videoBackground?: string;
+  
+  /**
+   * Video background options
+   */
+  videoOptions?: {
+    /**
+     * Whether the video should autoplay
+     */
+    autoplay?: boolean;
+    
+    /**
+     * Whether the video should loop
+     */
+    loop?: boolean;
+    
+    /**
+     * Whether the video should be muted
+     */
+    muted?: boolean;
+    
+    /**
+     * Poster image URL for the video
+     */
+    posterUrl?: string;
+  };
 }
 
 /**
