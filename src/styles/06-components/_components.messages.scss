@@ -66,6 +66,7 @@
 
   width: 100%;
   max-width: var(--#{config.$prefix}messages-width);
+  min-width: var(--#{config.$prefix}messages-width);
   padding: var(--#{config.$prefix}messages-padding-y)
     var(--#{config.$prefix}messages-padding-x);
   border-radius: var(--#{config.$prefix}messages-border-radius);
@@ -75,6 +76,7 @@
   
   &__body {
     max-height: var(--#{config.$prefix}messages-body-height);
+    min-height: var(--#{config.$prefix}messages-body-height);
     overflow: auto;
   }
 
@@ -245,7 +247,6 @@
   &__input-group {
     width: 100%;
     position: relative;
-    margin-top: var(--#{config.$prefix}message-input-group-margin-top);
   }
 
   &__options {
@@ -258,8 +259,16 @@
     transform: translateY(-50%);
   }
 
+  &__option {
+    appearance: none;
+    border: 0;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
   &__option-icon {
-    font-size: rem.rem(24px);
     color: var(--#{config.$prefix}tertiary-text-emphasis);
     cursor: pointer;
   }
@@ -289,11 +298,22 @@
     display: grid;
     place-items: center;
     align-self: flex-end;
-    font-size: var(--#{config.$prefix}messages-form-submit-icon-size);
     padding: rem.rem(10px);
-    background-color: var(--#{config.$prefix}primary);
+    background-color: var(--#{config.$prefix}brand-bg-subtle);
     color: var(--#{config.$prefix}invert-text-emphasis);
     border-radius: border.$border-radius-pill;
     cursor: pointer;
+    appearance: none;
+    border: 0;
+
+    .c-icon {
+      width: var(--#{config.$prefix}messages-form-submit-icon-size);
+      height: var(--#{config.$prefix}messages-form-submit-icon-size);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 }

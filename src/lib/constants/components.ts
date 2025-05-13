@@ -713,3 +713,45 @@ export const MODAL = {
     keyboard: true
   }
 };
+
+/**
+ * Messages-specific constants
+ */
+export const MESSAGES = {
+  SELECTORS: {
+    MESSAGES: '.c-messages',
+    BODY: '.c-messages__body',
+    CONTENT: '.c-messages__content',
+    AVATAR: '.c-messages__avatar',
+    ITEMS: '.c-messages__items',
+    TEXT: '.c-messages__text',
+    FILE: '.c-messages__file',
+    IMAGE: '.c-messages__image',
+    FORM: '.c-messages__form',
+    INPUT: '.c-messages__input',
+  },
+  CLASSES: {
+    BASE: 'c-messages',
+    BODY: 'c-messages__body',
+    CONTENT: 'c-messages__content',
+    CONTENT_SELF: 'c-messages__content--self',
+    AVATAR: 'c-messages__avatar',
+    ITEMS: 'c-messages__items',
+    NAME: 'c-messages__name',
+    TEXT: 'c-messages__text',
+    TIME: 'c-messages__time',
+    FILE: 'c-messages__file',
+    FILE_ICON: 'c-messages__file-icon',
+    FILE_DETAILS: 'c-messages__file-details',
+    FILE_NAME: 'c-messages__file-name',
+    FILE_SIZE: 'c-messages__file-size',
+    IMAGE: 'c-messages__image',
+    FORM: 'c-messages__form',
+    INPUT_GROUP: 'c-messages__input-group',
+    INPUT: 'c-messages__input',
+    OPTIONS: 'c-messages__options',
+    OPTION: 'c-messages__option c-btn',
+    OPTION_ICON: 'c-messages__option-icon',
+    SUBMIT: 'c-messages__submit',
+  },
+};

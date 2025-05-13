@@ -10,7 +10,7 @@ $messages-padding-y:                        $messages-padding-x !default;
 $messages-border-radius:                    $border-radius-xl !default;
 $messages-border-width:                     0px !default;
 $messages-border-color:                     null !default;
-$messages-bg:                               var(--#{$prefix}body-bg) !default;
+$messages-bg:                               var(--#{$prefix}secondary-bg-subtle) !default;
 
 $messages-content-margin-top:               32px !default;
 
@@ -31,7 +31,7 @@ $messages-text-font-size:                   $font-size-sm !default;
 $messages-text-primary-color:               var(--#{$prefix}body-color) !default;
 $messages-text-secondary-color:             var(--#{$prefix}body-color) !default;
 $messages-text-primary-bg:                  var(--#{$prefix}brand-bg-subtle) !default;
-$messages-text-secondary-bg:                var(--#{$prefix}secondary-bg-subtle) !default;
+$messages-text-secondary-bg:                var(--#{$prefix}tertiary-bg-subtle) !default;
 $messages-text-border-radius:               $border-radius-xxl !default;
 
 $messages-file-padding-x:                   $messages-text-padding-x !default;
@@ -63,7 +63,7 @@ $messages-input-font-size:                   $font-size-base !default;
 $messages-input-color:                       var(--#{$prefix}body-color) !default;
 $messages-input-placeholder-color:           var(--#{$prefix}tertiary-text-emphasis) !default;
 $messages-input-border-width:                1px !default;            
-$messages-input-border-color:                var(--#{$prefix}primary-border-subtle) !default;
+$messages-input-border-color:                var(--#{$prefix}secondary-border-subtle) !default;
 $messages-input-border-radius:               $border-radius-xl !default;
 
 $messages-input-options-icons-size:          24px !default;
