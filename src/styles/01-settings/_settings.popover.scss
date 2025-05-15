@@ -9,3 +9,5 @@ $popover-inner-gap-y: 16px !default;
 $popover-bg: var(--#{config.$prefix}body-bg) !default;
 $popover-border-radius: border-radius.$border-radius-xl !default;
 $popover-box-shadow: var(--#{config.$prefix}box-shadow) !default;
+$popover-arrow-size: 12px !default;
+$popover-arrow-offset: 6px !default;

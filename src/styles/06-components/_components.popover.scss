@@ -5,7 +5,7 @@
 .c-popover {
   $root: &;
 
-  --#{$prefix}popover-max-width: #{rem($popover-max-width)};
+  --#{$prefix}popover-width: #{rem($popover-max-width)};
   --#{$prefix}popover-padding-x: #{rem($popover-padding-x)};
   --#{$prefix}popover-padding-y: #{rem($popover-padding-y)};
   --#{$prefix}popover-inner-gap-x: #{rem($popover-inner-gap-x)};
@@ -13,13 +13,20 @@
   --#{$prefix}popover-bg: #{$popover-bg};
   --#{$prefix}popover-border-radius: #{$popover-border-radius};
   --#{$prefix}popover-box-shadow: #{$popover-box-shadow};
+  --#{$prefix}popover-arrow-size: #{rem($popover-arrow-size)};
+  --#{$prefix}popover-arrow-offset: #{rem($popover-arrow-offset)};
 
-  position: relative;
-  width: 100%;
-  max-width: var(--#{$prefix}popover-max-width);
+  position: fixed;
+  width: var(--#{$prefix}popover-width);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  z-index: 1000;
 
   &__content {
     position: relative;
+    z-index: 2;
   }
 
   &__content-inner {
@@ -28,8 +35,8 @@
     flex-direction: column;
     gap: var(--#{$prefix}popover-inner-gap-y)
       var(--#{$prefix}popover-inner-gap-x);
-    padding: var(--#{$prefix}popover-padding-x)
-      var(--#{$prefix}popover-padding-y);
+    padding: var(--#{$prefix}popover-padding-y)
+      var(--#{$prefix}popover-padding-x);
     background: var(--#{$prefix}popover-bg);
     border-radius: var(--#{$prefix}popover-border-radius);
     box-shadow: var(--#{$prefix}popover-box-shadow);
@@ -37,43 +44,56 @@
 
   &__arrow {
     position: absolute;
-    width: 12px;
-    height: 12px;
+    width: var(--#{$prefix}popover-arrow-size);
+    height: var(--#{$prefix}popover-arrow-size);
     background: var(--#{$prefix}popover-bg);
     box-shadow: var(--#{$prefix}popover-box-shadow);
-    clip-path: polygon(100% 0, 0 0, 0 100%);
     z-index: 1;
+    transform-origin: center;
   }
 
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  
+  // Position variants
   &--top {
-    #{$root}__arrow {
-      top: 0;
-      left: 12px;
-      transform: translateY(-50%) translateX(0) rotate(45deg);
+    .c-popover__arrow {
+      bottom: calc(var(--#{$prefix}popover-arrow-offset) * -1);
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
     }
   }
-
-  &--right {
-    #{$root}__arrow {
-      right: 0;
-      top: 12px;
-      transform: translateY(0%) translateX(50%) rotate(135deg);
-    }
-  }
-
+  
   &--bottom {
-    #{$root}__arrow {
-      bottom: 0;
-      left: 12px;
-      transform: translateY(50%) translateX(0) rotate(-135deg);
+    .c-popover__arrow {
+      top: calc(var(--#{$prefix}popover-arrow-offset) * -1);
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
     }
   }
-
+  
   &--left {
-    #{$root}__arrow {
-      left: 0;
-      top: 12px;
-      transform: translateY(-0%) translateX(-50%) rotate(-45deg);
+    .c-popover__arrow {
+      top: 50%;
+      right: calc(var(--#{$prefix}popover-arrow-offset) * -1);
+      transform: translateY(-50%) rotate(45deg);
     }
+  }
+  
+  &--right {
+    .c-popover__arrow {
+      top: 50%;
+      left: calc(var(--#{$prefix}popover-arrow-offset) * -1);
+      transform: translateY(-50%) rotate(45deg);
+    }
+  }
+  
+  // Auto position automatically selects the best position
+  // and will dynamically apply one of the position classes above
+  &--auto {
+    // The actual position class will be added dynamically based on available space
   }
 }
