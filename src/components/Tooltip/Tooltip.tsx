@@ -1,6 +1,6 @@
 import React, { ReactNode, useRef, useEffect } from 'react';
 import { TOOLTIP } from '../../lib/constants/components';
-import TooltipClass from './scripts';
+import { Tooltip as TooltipClass } from './scripts';
 
 export interface TooltipProps {
   /**

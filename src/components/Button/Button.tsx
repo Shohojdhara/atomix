@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { ButtonProps } from '../../lib/types/components';
 import { useButton } from '../../lib/composables/useButton';
 import { BUTTON } from '../../lib/constants/components';
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   label,
   onClick,
   variant = 'primary',
@@ -13,7 +13,7 @@ export const Button: React.FC<ButtonProps> = ({
   iconOnly = false,
   rounded = false,
   className = '',
-}) => {
+}, ref) => {
   const { generateButtonClass, handleClick } = useButton({ 
     variant, size, disabled, rounded 
   });
@@ -24,6 +24,7 @@ export const Button: React.FC<ButtonProps> = ({
   
   return (
     <button
+      ref={ref}
       className={buttonClass}
       onClick={handleClick(onClick)}
       disabled={disabled}
@@ -33,4 +34,7 @@ export const Button: React.FC<ButtonProps> = ({
       {(!iconOnly || !icon) && <span>{label}</span>}
     </button>
   );
-};
+});
+
+// Add displayName for better debugging
+Button.displayName = 'Button';
