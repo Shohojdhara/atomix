@@ -19,6 +19,7 @@ import Countdown from './components/Countdown/scripts';
 import { Todo } from './components/Todo/scripts';
 import Pagination from './components/Pagination/scripts';
 import { DataTable } from './components/DataTable/scripts';
+import { initFromDataAttributes as initializeDatePickers } from './components/DatePicker/scripts/componentInteractions';
 
 /**
  * Initialize all Button components in the document
@@ -179,6 +180,14 @@ function initializeDataTableComponents(): void {
 }
 
 /**
+ * Initialize all DatePicker components in the document
+ */
+function initializeDatePickerComponents(): void {
+  // Initialize date pickers with default settings
+  initializeDatePickers();
+}
+
+/**
  * Initialize all components
  */
 function initializeComponents(): void {
@@ -201,6 +210,7 @@ function initializeComponents(): void {
   initializeTodoComponents();
   initializePaginationComponents();
   initializeDataTableComponents();
+  initializeDatePickerComponents();
 }
 
 /**

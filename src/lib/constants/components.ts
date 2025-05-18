@@ -816,3 +816,51 @@ export const DROPDOWN = {
     ANIMATION_TIMING: 'cubic-bezier(0.16, 1, 0.3, 1)'
   }
 };
+
+/**
+ * DatePicker-specific constants
+ */
+export const DATEPICKER = {
+  SELECTORS: {
+    DATEPICKER: '.c-datepicker',
+    INPUT: '.c-datepicker__input',
+    CALENDAR: '.c-datepicker__calendar',
+    DAY: '.c-datepicker__day',
+    MONTH: '.c-datepicker__month',
+    YEAR: '.c-datepicker__year',
+    HEADER: '.c-datepicker__header',
+    BODY: '.c-datepicker__body',
+    FOOTER: '.c-datepicker__footer',
+    WEEKDAYS: '.c-datepicker__weekdays',
+    TODAY_BUTTON: '.c-datepicker__today-button',
+    CLEAR_BUTTON: '.c-datepicker__clear-button',
+    CLOSE_BUTTON: '.c-datepicker__close-button',
+    NAV_BUTTON: '.c-datepicker__nav-button',
+    VIEW_SWITCH: '.c-datepicker__view-switch'
+  },
+  CLASSES: {
+    IS_OPEN: 'is-open',
+    IS_DISABLED: 'is-disabled',
+    IS_SELECTED: 'is-selected',
+    IS_TODAY: 'is-today',
+    INLINE: 'c-datepicker--inline'
+  },
+  ATTRIBUTES: {
+    FORMAT: 'data-format',
+    MIN_DATE: 'data-min-date',
+    MAX_DATE: 'data-max-date',
+    INLINE: 'data-inline',
+    PLACEMENT: 'data-placement',
+    CLEARABLE: 'data-clearable',
+    SHOW_TODAY: 'data-show-today-button',
+    SHOW_WEEK_NUMBERS: 'data-show-week-numbers'
+  },
+  DEFAULTS: {
+    FORMAT: 'MM/dd/yyyy',
+    PLACEMENT: 'bottom-start',
+    CLEARABLE: true,
+    SHOW_TODAY_BUTTON: true,
+    SHOW_WEEK_NUMBERS: false,
+    INLINE: false
+  }
+};

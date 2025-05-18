@@ -1,0 +1,524 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/_settings.datepicker' as *;
+@use '../01-settings/settings.typography' as typography;
+@use '../01-settings/settings.border-radius' as radius;
+@use '../02-tools/_tools.rem' as *;
+@use '../02-tools/_tools.animations' as *;
+@use '../01-settings/_settings.z-layers' as *;
+
+// DatePicker base component
+// --------------------------------------------------
+.c-datepicker {
+  // Custom properties
+  --#{$prefix}datepicker-width: #{rem($datepicker-width)};
+  --#{$prefix}datepicker-padding-x: #{rem($datepicker-padding-x)};
+  --#{$prefix}datepicker-padding-y: #{rem($datepicker-padding-y)};
+  --#{$prefix}datepicker-bg: #{$datepicker-bg};
+  --#{$prefix}datepicker-color: #{$datepicker-color};
+  --#{$prefix}datepicker-deactivate-color: #{$datepicker-deactivate-color};
+  --#{$prefix}datepicker-border-radius: #{$datepicker-border-radius};
+  --#{$prefix}datepicker-border-width: #{$datepicker-border-width};
+  --#{$prefix}datepicker-border-color: #{$datepicker-border-color};
+  --#{$prefix}datepicker-box-shadow: #{$datepicker-box-shadow};
+  --#{$prefix}datepicker-body-padding-x: #{$datepicker-body-padding-x};
+  --#{$prefix}datepicker-body-padding-y: #{$datepicker-body-padding-y};
+  --#{$prefix}datepicker-month-font-size: #{$datepicker-month-font-size};
+  --#{$prefix}datepicker-month-font-weight: #{$datepicker-month-font-weight};
+  --#{$prefix}datepicker-year-font-size: #{$datepicker-year-font-size};
+  --#{$prefix}datepicker-year-font-weight: #{$datepicker-year-font-weight};
+  --#{$prefix}datepicker-week-font-size: #{$datepicker-week-font-size};
+  --#{$prefix}datepicker-week-font-weight: #{$datepicker-week-font-weight};
+  --#{$prefix}datepicker-day-font-size: #{$datepicker-day-font-size};
+  --#{$prefix}datepicker-day-font-weight: #{$datepicker-day-font-weight};
+  --#{$prefix}datepicker-week-height: #{rem($datepicker-week-height)};
+  --#{$prefix}datepicker-week-width: #{rem($datepicker-week-width)};
+  --#{$prefix}datepicker-day-height: #{rem($datepicker-day-height)};
+  --#{$prefix}datepicker-day-width: #{rem($datepicker-day-width)};
+  --#{$prefix}datepicker-day-hover-bg: #{$datepicker-day-hover-bg};
+  --#{$prefix}datepicker-day-border-radius: #{$datepicker-day-border-radius};
+  --#{$prefix}datepicker-today-color: #{$datepicker-today-color};
+  --#{$prefix}datepicker-day-selected-color: #{$datepicker-day-selected-color};
+  --#{$prefix}datepicker-day-selected-bg: #{$datepicker-day-selected-bg};
+  --#{$prefix}datepicker-day-in-range-bg: #{$datepicker-day-in-range-bg};
+  --#{$prefix}datepicker-active-hover-bg: var(--#{$prefix}brand-bg-subtle);
+  
+  // Base component styles
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  font-family: var(--#{$prefix}font-family-base);
+  font-size: var(--#{$prefix}font-size-base);
+  color: var(--#{$prefix}datepicker-color);
+
+  // Input wrapper
+  // --------------------------------------------------
+  &__input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  // Input field
+  // --------------------------------------------------
+  &__input {
+    flex: 1;
+    width: 100%;
+    padding-right: rem(40px);
+  }
+  
+  // Calendar icon
+  // --------------------------------------------------
+  &__calendar-icon {
+    position: absolute;
+    right: rem(12px);
+    color: var(--#{$prefix}secondary-text-emphasis);
+    pointer-events: none;
+  }
+  
+  // Clear button
+  // --------------------------------------------------
+  &__clear-button {
+    position: absolute;
+    right: rem(32px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--#{$prefix}secondary-text-emphasis);
+    cursor: pointer;
+    padding: rem(4px);
+    font-size: rem(12px);
+    border-radius: var(--#{$prefix}border-radius-sm);
+    
+    &:hover {
+      color: var(--#{$prefix}body-color);
+      background-color: var(--#{$prefix}secondary-bg-subtle);
+    }
+  }
+  
+  // Calendar popup
+  // --------------------------------------------------
+  &__calendar {
+    position: absolute;
+    z-index: map.get($z-layers, 5);
+    width: var(--#{$prefix}datepicker-width);
+    padding: var(--#{$prefix}datepicker-padding-y) var(--#{$prefix}datepicker-padding-x);
+    background-color: var(--#{$prefix}datepicker-bg);
+    border-radius: var(--#{$prefix}datepicker-border-radius);
+    box-shadow: var(--#{$prefix}datepicker-box-shadow);
+    margin-top: rem(4px);
+    
+    // Calendar placements
+    &--top-start,
+    &--top-end {
+      bottom: 100%;
+      margin-bottom: rem(4px);
+      margin-top: 0;
+    }
+    
+    &--top-start { left: 0; }
+    &--top-end { right: 0; }
+    
+    &--bottom-start {
+      top: 100%;
+      left: 0;
+    }
+    
+    &--bottom-end {
+      top: 100%;
+      right: 0;
+    }
+    
+    &--left-start,
+    &--left-end {
+      right: 100%;
+      margin-right: rem(4px);
+    }
+    
+    &--left-start { top: 0; }
+    &--left-end { bottom: 0; }
+    
+    &--right-start,
+    &--right-end {
+      left: 100%;
+      margin-left: rem(4px);
+    }
+    
+    &--right-start { top: 0; }
+    &--right-end { bottom: 0; }
+  }
+  
+  // Inline mode
+  // --------------------------------------------------
+  &--inline {
+    --#{$prefix}datepicker-width: calc(var(--#{$prefix}datepicker-width) + var(--#{$prefix}datepicker-week-width));
+    
+    .c-datepicker__calendar {
+      position: static;
+      margin-top: 0;
+    }
+
+    .c-datepicker__weekdays {
+      grid-template-columns: repeat(8, 1fr);
+    }
+
+    .c-datepicker__days {
+      grid-template-columns: repeat(8, 1fr);
+    }
+  }
+  
+  // Range selection status
+  // --------------------------------------------------
+  &__range-status {
+    justify-content: center;
+    // width: 100%;
+    margin-bottom: rem(8px);
+    border-radius: var(--#{$prefix}datepicker-border-radius);
+  }
+  
+  // Calendar header
+  // --------------------------------------------------
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--#{$prefix}datepicker-body-padding-y) var(--#{$prefix}datepicker-body-padding-x);
+    border-bottom: 1px solid var(--#{$prefix}primary-border-subtle);
+  }
+  
+  // Navigation buttons
+  // --------------------------------------------------
+  &__nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(32px);
+    height: rem(32px);
+    background: none;
+    border: none;
+    color: var(--#{$prefix}body-color);
+    cursor: pointer;
+    border-radius: var(--#{$prefix}border-radius-sm);
+    padding: 0;
+    
+    &:hover {
+      background-color: var(--#{$prefix}secondary-bg-subtle);
+    }
+    
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--#{$prefix}focus-ring);
+    }
+  }
+  
+  // View switch button
+  // --------------------------------------------------
+  &__view-switch {
+    flex: 1;
+    margin: 0 rem(8px);
+    background: none;
+    border: none;
+    text-align: center;
+    font-weight: var(--#{$prefix}datepicker-month-font-weight);
+    padding: rem(8px);
+    border-radius: var(--#{$prefix}border-radius-sm);
+    cursor: pointer;
+    font-size: var(--#{$prefix}datepicker-month-font-size);
+    
+    &:hover {
+      background-color: var(--#{$prefix}secondary-bg-subtle);
+    }
+    
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--#{$prefix}focus-ring);
+    }
+  }
+  
+  // Calendar body
+  // --------------------------------------------------
+  &__body {
+    padding: var(--#{$prefix}datepicker-body-padding-y) var(--#{$prefix}datepicker-body-padding-x);
+  }
+  
+  // Weekdays header
+  // --------------------------------------------------
+  &__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    overflow: hidden;
+    
+    &--has-weeknumber {
+      grid-template-columns: auto repeat(7, 1fr);
+    }
+  }
+  
+  &__weekday {
+    text-align: center;
+    display: grid;
+    place-items: center;
+    font-size: var(--#{$prefix}datepicker-week-font-size);
+    font-weight: var(--#{$prefix}datepicker-week-font-weight);
+    color: var(--#{$prefix}secondary-text-emphasis);
+    text-transform: uppercase;
+    padding: rem(8px) 0;
+    width: var(--#{$prefix}datepicker-week-width);
+    height: var(--#{$prefix}datepicker-week-height);
+    user-select: none;
+  }
+  
+  // Week numbers column
+  // --------------------------------------------------
+  &__weeknumber {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--#{$prefix}datepicker-week-font-size);
+    color: var(--#{$prefix}secondary-text-emphasis);
+    background-color: var(--#{$prefix}secondary-bg-subtle);
+    border-radius: var(--#{$prefix}datepicker-day-border-radius);
+    width: var(--#{$prefix}datepicker-week-width);
+    height: var(--#{$prefix}datepicker-week-height);
+  }
+  
+  // Days grid
+  // --------------------------------------------------
+  &__days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    
+    &--has-weeknumber {
+      grid-template-columns: auto repeat(7, 1fr);
+    }
+  }
+  
+  // Day cells
+  // --------------------------------------------------
+  &__day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--#{$prefix}datepicker-color);
+    font-size: var(--#{$prefix}datepicker-day-font-size);
+    font-weight: var(--#{$prefix}datepicker-day-font-weight);
+    width: var(--#{$prefix}datepicker-day-width);
+    height: var(--#{$prefix}datepicker-day-height);
+    background: none;
+    border: none;
+    border-radius: var(--#{$prefix}datepicker-day-border-radius);
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    
+    &:hover:not(&--disabled):not(&--selected):not(&--in-range) {
+      background-color: var(--#{$prefix}datepicker-day-hover-bg);
+    }
+    
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--#{$prefix}focus-ring);
+    }
+    
+    // Days from adjacent months
+    &--outside {
+      color: var(--#{$prefix}datepicker-deactivate-color);
+      opacity: 0.6;
+    }
+    
+    // Current day
+    &--today {
+      position: relative;
+      font-weight: 600;
+      color: var(--#{$prefix}datepicker-today-color);
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: rem(4px);
+        left: 50%;
+        transform: translateX(-50%);
+        width: rem(4px);
+        height: rem(4px);
+        background-color: currentColor;
+        border-radius: 50%;
+      }
+    }
+
+
+    
+    // Range selection
+    &--in-range {
+      border-radius: 0;
+      background-color: var(--#{$prefix}datepicker-day-in-range-bg);
+      
+      &:hover {
+        background-color: var(--#{$prefix}datepicker-active-hover-bg);
+      }
+    }
+
+    // Selected day
+    &--selected {
+      background-color: var(--#{$prefix}datepicker-day-selected-bg);
+      color: var(--#{$prefix}datepicker-day-selected-color);
+      border-radius: var(--#{$prefix}datepicker-day-border-radius);
+      z-index: 1;
+      
+      &:hover {
+        background-color: var(--#{$prefix}datepicker-active-hover-bg);
+      }
+      
+      // Range endpoints styling
+      &:first-of-type {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      
+      &:last-of-type {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+
+    &--start-range {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &--end-range {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    
+    // Disabled days
+    &--disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      color: var(--#{$prefix}disabled-text-emphasis);
+      
+      &:hover {
+        background: none;
+      }
+    }
+  }
+  
+  // Months view
+  // --------------------------------------------------
+  &__months {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: rem(8px);
+  }
+  
+  &__month {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: rem(48px);
+    background: none;
+    border: none;
+    border-radius: var(--#{$prefix}border-radius-sm);
+    font-size: var(--#{$prefix}datepicker-month-font-size);
+    font-weight: var(--#{$prefix}datepicker-month-font-weight);
+    cursor: pointer;
+    color: var(--#{$prefix}datepicker-color);
+    
+    &:hover:not(&--selected) {
+      background-color: var(--#{$prefix}datepicker-day-hover-bg);
+    }
+    
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--#{$prefix}focus-ring);
+    }
+    
+    &--selected {
+      background-color: var(--#{$prefix}datepicker-day-selected-bg);
+      color: var(--#{$prefix}datepicker-day-selected-color);
+      
+      &:hover {
+        background-color: var(--#{$prefix}datepicker-active-hover-bg);
+      }
+    }
+  }
+  
+  // Years view
+  // --------------------------------------------------
+  &__years {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: rem(8px);
+  }
+  
+  &__year {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: rem(48px);
+    background: none;
+    border: none;
+    border-radius: var(--#{$prefix}border-radius-sm);
+    font-size: var(--#{$prefix}datepicker-year-font-size);
+    font-weight: var(--#{$prefix}datepicker-year-font-weight);
+    cursor: pointer;
+    color: var(--#{$prefix}datepicker-color);
+    
+    &:hover:not(&--selected) {
+      background-color: var(--#{$prefix}datepicker-day-hover-bg);
+    }
+    
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--#{$prefix}focus-ring);
+    }
+    
+    &--selected {
+      background-color: var(--#{$prefix}datepicker-day-selected-bg);
+      color: var(--#{$prefix}datepicker-day-selected-color);
+      
+      &:hover {
+        background-color: var(--#{$prefix}datepicker-active-hover-bg);
+      }
+    }
+  }
+  
+  // Footer
+  // --------------------------------------------------
+  &__footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: rem(12px) rem(8px) 0 rem(8px);
+    border-top: 1px solid var(--#{$prefix}primary-border-subtle);
+  }
+
+  &__close-button {
+    margin-left: auto;
+  }
+  
+  
+  
+  // Size variants
+  // --------------------------------------------------
+  @each $size, $values in (
+    sm: (padding: rem(4px) rem(8px), font-size: rem(14px)),
+    md: (padding: rem(6px) rem(12px), font-size: rem(16px)),
+    lg: (padding: rem(8px) rem(16px), font-size: rem(18px))
+  ) {
+    &__input.c-input--#{$size} {
+      padding: map.get($values, padding);
+      font-size: map.get($values, font-size);
+    }
+  }
+}
+
+// JavaScript implementation
+// --------------------------------------------------
+.js-atomix-datepicker {
+  // Styles for JavaScript implementation will mirror the combined styles
+}
