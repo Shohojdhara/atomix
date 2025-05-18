@@ -4,6 +4,39 @@
 @use '../02-tools/_tools.animations' as *;
 @use '../02-tools/_tools.spacing' as *;
 
+// Add keyframe animations for dropdown
+@keyframes #{$prefix}dropdown-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes #{$prefix}dropdown-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.95);
+  }
+}
+
+// Add keyframe for toggle icon rotation
+@keyframes #{$prefix}dropdown-icon-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-180deg);
+  }
+}
+
 .c-dropdown {
   $root: &;
 
@@ -26,6 +59,9 @@
   --#{$prefix}dropdown-active-bg: #{$dropdown-link-active-bg};
   --#{$prefix}dropdown-item-padding-x: #{rem($dropdown-item-padding-x)};
   --#{$prefix}dropdown-item-padding-y: #{rem($dropdown-item-padding-y)};
+  // Use animation variables from settings
+  --#{$prefix}dropdown-animation-duration: #{$dropdown-animation-duration};
+  --#{$prefix}dropdown-animation-timing: #{$dropdown-animation-timing};
 
   display: inline-block;
   position: relative;
@@ -39,7 +75,7 @@
   }
 
   &__toggle-icon {
-    @include basic-transition();
+    transition: transform var(--#{$prefix}dropdown-animation-duration) var(--#{$prefix}dropdown-animation-timing);
     margin-left: 0.25rem;
   }
 
@@ -47,17 +83,29 @@
     position: absolute;
     left: 0;
     z-index: 99;
-    max-height: 0;
+    display: flex;
     opacity: 0;
-    transform: translateY(-10px);
-    @include basic-transition(max-height, 0.2s, ease);
-    @include basic-transition( opacity, 0.2s, ease);
-    @include basic-transition(transform, 0.2s, ease);
+    visibility: hidden;
+    transform-origin: top center;
+    // Improved transitions - shorter and with better easing
+    transition: 
+      opacity var(--#{$prefix}dropdown-animation-duration) var(--#{$prefix}dropdown-animation-timing),
+      visibility var(--#{$prefix}dropdown-animation-duration) var(--#{$prefix}dropdown-animation-timing),
+      transform var(--#{$prefix}dropdown-animation-duration) var(--#{$prefix}dropdown-animation-timing);
+    transform: translateY(-15px) scale(0.95);
+    pointer-events: none;
+    will-change: transform, opacity, visibility;
 
     &.is-open {
-      max-height: 1000px; // Large enough to accommodate any dropdown content
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
+      visibility: visible;
+      animation: #{$prefix}dropdown-fade-in var(--#{$prefix}dropdown-animation-duration) var(--#{$prefix}dropdown-animation-timing) forwards;
+      pointer-events: auto;
+    }
+
+    &:not(.is-open) {
+      animation: #{$prefix}dropdown-fade-out var(--#{$prefix}dropdown-animation-duration) var(--#{$prefix}dropdown-animation-timing) forwards;
     }
 
     // Placement variations - using a mixin to reduce duplication
@@ -66,15 +114,19 @@
         @if $position == 'bottom' {
           top: 100%;
           margin-top: var(--#{$prefix}dropdown-spacer);
+          transform-origin: top center;
         } @else if $position == 'top' {
           bottom: 100%;
           margin-bottom: var(--#{$prefix}dropdown-spacer);
+          transform-origin: bottom center;
         } @else if $position == 'left' {
           right: 100%;
           margin-right: var(--#{$prefix}dropdown-spacer);
+          transform-origin: right center;
         } @else if $position == 'right' {
           left: 100%;
           margin-left: var(--#{$prefix}dropdown-spacer);
+          transform-origin: left center;
         }
 
         @if $alignment == 'start' {
@@ -136,12 +188,13 @@
     text-align: left;
     text-decoration: none;
     cursor: pointer;
-    @include basic-transition();
+    transition: all 0.2s ease;
 
     &:hover, &:focus {
       color: var(--#{$prefix}dropdown-link-hover-color);
       background-color: var(--#{$prefix}dropdown-link-hover-bg);
       outline: none;
+      padding-left: calc(var(--#{$prefix}dropdown-item-padding-x) + 3px);
     }
 
     &.is-active {
@@ -179,53 +232,17 @@
   }
 
   // Color variants
-  @each $color in (primary, secondary, tertiary, success, info, warning, error, light, dark) {
+  @each $color in (brand, secondary, tertiary, success, info, warning, error, light, dark) {
     &--#{$color} {
-      #{$root}__menu-item {
-        &.is-active {
-          background-color: var(--#{$prefix}#{$color});
-          color: var(--#{$prefix}#{$color}-contrast);
-        }
-      }
+      --#{$prefix}dropdown-link-color: var(--#{$prefix}#{$color}-text-emphasis);
+      --#{$prefix}dropdown-link-hover-color: var(--#{$prefix}#{$color}-text-emphasis);
+      --#{$prefix}dropdown-link-hover-bg: var(--#{$prefix}#{$color}-bg-subtle);
     }
   }
 
-  // Click-based open animation
-  &--onclick {
-    #{$root}__toggle {
-      &:focus-within ~ #{$root}__menu-wrapper {
-        max-height: 1000px;
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      &:focus-within #{$root}__toggle-icon {
-        transform: rotate(-180deg);
-      }
-    }
-  }
-
-  // Hover-based open animation
-  &:not(#{$root}--onclick) {
-    &:hover {
-      #{$root}__menu-wrapper {
-        max-height: 1000px;
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      #{$root}__toggle-icon {
-        transform: rotate(-180deg);
-      }
-    }
-  }
-
-  // Open state (controlled by JavaScript)
-  #{$root}__menu-wrapper.is-open {
-    // Open state styles are now handled in the menu-wrapper class
-
-    ~ #{$root}__toggle-icon,
-    + #{$root}__toggle #{$root}__toggle-icon {
+  
+  &.is-open {
+    #{$root}__toggle-icon {
       transform: rotate(-180deg);
     }
   }

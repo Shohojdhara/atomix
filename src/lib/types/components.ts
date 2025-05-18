@@ -1840,7 +1840,7 @@ export interface DropdownProps extends BaseComponentProps {
   /**
    * Min width for the dropdown menu
    */
-  minWidth?: string;
+  minWidth?: string | number;
 
   /**
    * Color variant for the dropdown trigger

@@ -793,31 +793,26 @@ export const MESSAGES = {
  */
 export const DROPDOWN = {
   SELECTORS: {
-    DROPDOWN: '.js-atomix-dropdown',
-    TRIGGER: '.js-atomix-dropdown-trigger',
+    DROPDOWN: '.c-dropdown',
+    TOGGLE: '.c-dropdown__toggle',
     MENU: '.c-dropdown__menu',
-    MENU_INNER: '.c-dropdown__menu-inner',
     MENU_WRAPPER: '.c-dropdown__menu-wrapper',
+    MENU_INNER: '.c-dropdown__menu-inner',
     MENU_ITEM: '.c-dropdown__menu-item',
-    MENU_LINK: '.c-dropdown__menu-link',
-    MENU_DIVIDER: '.c-dropdown__divider',
-    MENU_HEADER: '.c-dropdown__header',
-    TOGGLE_ICON: '.c-dropdown__toggle-icon'
+    DIVIDER: '.c-dropdown__divider',
+    HEADER: '.c-dropdown__header'
   },
   CLASSES: {
     IS_OPEN: 'is-open',
     IS_ACTIVE: 'is-active',
     IS_DISABLED: 'is-disabled'
   },
-  ATTRIBUTES: {
-    PLACEMENT: 'data-dropdown-placement',
-    TRIGGER: 'data-dropdown-trigger',
-    MENU_ID: 'data-dropdown-id'
-  },
   DEFAULTS: {
-    TRIGGER: 'click',
     PLACEMENT: 'bottom-start',
+    TRIGGER: 'click',
     OFFSET: 4,
-    MIN_WIDTH: '10rem'
+    MIN_WIDTH: 180,
+    ANIMATION_DURATION: '0.25s',
+    ANIMATION_TIMING: 'cubic-bezier(0.16, 1, 0.3, 1)'
   }
 };

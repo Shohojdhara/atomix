@@ -6,7 +6,7 @@ $dropdown-min-width:                180px !default;
 $dropdown-font-size:                typography.$font-size-base !default;
 $dropdown-color:                    var(--#{config.$prefix}body-color) !default;
 $dropdown-bg:                       var(--#{config.$prefix}body-bg) !default;
-$dropdown-border-color:             var(--#{config.$prefix}border-primary-subtle) !default;
+$dropdown-border-color:             var(--#{config.$prefix}primary-border-subtle) !default;
 $dropdown-border-radius:            border-radius.$border-radius !default;
 $dropdown-border-width:             1px !default;
 $dropdown-padding-x:                0 !default;
@@ -18,6 +18,10 @@ $dropdown-item-padding-x:           16px !default;
 $dropdown-item-padding-y:           8px !default;
 $dropdown-item-hover-color:         var(--#{config.$prefix}secondary-text-emphasis) !default;
 $dropdown-item-hover-bg:            var(--#{config.$prefix}brand-bg-subtle) !default;
+
+// Animation settings
+$dropdown-animation-duration:       0.25s !default;
+$dropdown-animation-timing:         cubic-bezier(0.16, 1, 0.3, 1) !default;
 
 // Link variables
 $dropdown-link-color:               var(--#{config.$prefix}body-color) !default;
@@ -31,4 +35,4 @@ $dropdown-header-color:             var(--#{config.$prefix}tertiary-text-emphasi
 $dropdown-header-padding:           $dropdown-item-padding-y $dropdown-item-padding-x !default;
 
 $dropdown-divider-margin-y:         8px !default;
-$dropdown-divider-bg:               var(--#{config.$prefix}border-primary-subtle) !default;
+$dropdown-divider-bg:               var(--#{config.$prefix}primary-border-subtle) !default;

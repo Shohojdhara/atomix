@@ -1,8 +1,5 @@
-import React, { ReactNode } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useRef, useState, useCallback, createContext, useContext, useEffect } from 'react';
 import { DROPDOWN } from '../../lib/constants/components';
-import { useDropdown } from '../../lib/composables/useDropdown';
-import { Icon } from '../Icon';
 import type { 
   DropdownProps, 
   DropdownItemProps, 
@@ -10,85 +7,21 @@ import type {
   DropdownHeaderProps 
 } from '../../lib/types/components';
 
-// Create context to share dropdown state
-const DropdownContext = React.createContext<{
+// Context type definition
+type DropdownContextType = {
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  triggerRef: React.RefObject<HTMLElement>;
-  dropdownId: string;
-  triggerType: 'click' | 'hover';
-}>({
-  isOpen: false,
-  setIsOpen: () => {},
-  triggerRef: { current: null },
-  dropdownId: '',
-  triggerType: 'click'
-});
-
-/**
- * DropdownTrigger component to wrap the element that triggers the dropdown
- */
-const DropdownTrigger: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { isOpen, setIsOpen, triggerRef, dropdownId, triggerType } = React.useContext(DropdownContext);
-
-  // Handle trigger events
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsOpen(!isOpen);
-  };
-
-  const handleMouseEnter = () => {
-    setIsOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsOpen(false);
-  };
-
-  // Create trigger props with proper typing for event handlers
-  type TriggerProps = {
-    ref: React.RefObject<HTMLElement>;
-    'aria-haspopup': 'true';
-    'aria-expanded': boolean;
-    'aria-controls': string;
-    className: string;
-    onClick?: (e: React.MouseEvent) => void;
-    onMouseEnter?: () => void;
-    onMouseLeave?: () => void;
-  };
-
-  const triggerProps: TriggerProps = {
-    ref: triggerRef,
-    'aria-haspopup': 'true',
-    'aria-expanded': isOpen,
-    'aria-controls': dropdownId,
-    className: 'c-dropdown__toggle',
-  };
-
-  if (triggerType === 'click') {
-    triggerProps.onClick = handleClick;
-  } else if (triggerType === 'hover') {
-    triggerProps.onMouseEnter = handleMouseEnter;
-    triggerProps.onMouseLeave = handleMouseLeave;
-  }
-
-  // Handle different types of children
-  if (React.isValidElement(children)) {
-    // If it's a valid React element, clone it with additional props
-    return React.cloneElement(children, {
-      ...children.props,
-      ...triggerProps,
-      className: `${children.props.className || ''} ${triggerProps.className}`.trim()
-    });
-  } else {
-    // If it's not a valid React element, wrap it in a button
-    return (
-      <button type="button" {...triggerProps}>
-        {children}
-      </button>
-    );
-  }
+  close: () => void;
+  id: string;
+  trigger: string;
 };
+
+// Create context for dropdown state management
+const DropdownContext = createContext<DropdownContextType>({
+  isOpen: false,
+  close: () => {},
+  id: '',
+  trigger: 'click'
+});
 
 /**
  * DropdownItem component for menu items
@@ -103,7 +36,7 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
   className = '',
   ...props
 }) => {
-  const { setIsOpen } = React.useContext(DropdownContext);
+  const { close } = useContext(DropdownContext);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
     if (disabled) {
@@ -115,19 +48,26 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
       onClick(e);
     }
 
-    setIsOpen(false);
+    // Always close the dropdown when an item is clicked
+    close();
   };
 
-  const classes = `c-dropdown__menu-item ${active ? 'is-active' : ''} ${disabled ? 'is-disabled' : ''} ${className}`;
+  const itemClasses = [
+    'c-dropdown__menu-item',
+    active ? 'is-active' : '',
+    disabled ? 'is-disabled' : '',
+    className
+  ].filter(Boolean).join(' ');
 
   if (href && !disabled) {
     return (
       <li>
         <a 
           href={href} 
-          className={classes}
-          onClick={(e) => handleClick(e as React.MouseEvent<HTMLAnchorElement>)}
+          className={itemClasses}
+          onClick={handleClick}
           role="menuitem"
+          tabIndex={0}
           {...props}
         >
           {icon && <span className="c-dropdown__menu-item-icon">{icon}</span>}
@@ -141,10 +81,11 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
     <li>
       <button 
         type="button"
-        className={classes}
+        className={itemClasses}
         onClick={handleClick}
         disabled={disabled}
         role="menuitem"
+        tabIndex={0}
         {...props}
       >
         {icon && <span className="c-dropdown__menu-item-icon">{icon}</span>}
@@ -158,7 +99,7 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
  * DropdownDivider component for separating groups of items
  */
 export const DropdownDivider: React.FC<DropdownDividerProps> = ({ className = '' }) => {
-  return <li className={`c-dropdown__divider ${className}`} />;
+  return <li className={`c-dropdown__divider ${className}`} role="separator" />;
 };
 
 /**
@@ -173,16 +114,14 @@ export const DropdownHeader: React.FC<DropdownHeaderProps> = ({ children, classN
 };
 
 /**
- * Dropdown component for displaying floating dropdown menus
+ * Dropdown component for creating dropdown menus
  */
 export const Dropdown: React.FC<DropdownProps> = ({
-  children,
+  children, 
   menu,
   placement = 'bottom-start',
-  trigger = 'click',
-  className = '',
+  trigger = 'click', 
   offset = DROPDOWN.DEFAULTS.OFFSET,
-  defaultOpen = false,
   isOpen: controlledIsOpen,
   onOpenChange,
   closeOnClickOutside = true,
@@ -190,134 +129,197 @@ export const Dropdown: React.FC<DropdownProps> = ({
   maxHeight,
   minWidth = DROPDOWN.DEFAULTS.MIN_WIDTH,
   variant,
-  id,
+  className = '',
   ...props
 }) => {
-  const {
-    isOpen,
-    setIsOpen,
-    triggerRef,
-    menuRef,
-    dropdownId,
-    currentPlacement,
-    updatePosition
-  } = useDropdown({
-    placement,
-    trigger,
-    offset,
-    defaultOpen,
-    isOpen: controlledIsOpen,
-    onOpenChange,
-    closeOnClickOutside,
-    closeOnEscape,
-    id
-  });
-
-  // Add variant class if provided
-  const variantClass = variant ? `c-dropdown--${variant}` : '';
-  const triggerClass = trigger === 'click' ? 'c-dropdown--onclick' : '';
-
-  // Handle hover events for the dropdown menu
-  const handleMouseEnter = () => {
+  // Set up controlled vs uncontrolled state
+  const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(false);
+  const isControlled = controlledIsOpen !== undefined;
+  const isOpen = isControlled ? controlledIsOpen : uncontrolledIsOpen;
+  
+  // Create refs
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  
+  // Generate unique ID
+  const dropdownId = useRef(`dropdown-${Math.random().toString(36).substring(2, 9)}`).current;
+  
+  // State change handlers
+  const setIsOpen = useCallback((nextIsOpen: boolean) => {
+    if (!isControlled) {
+      setUncontrolledIsOpen(nextIsOpen);
+    }
+    if (onOpenChange) {
+      onOpenChange(nextIsOpen);
+    }
+  }, [isControlled, onOpenChange]);
+  
+  const toggle = useCallback(() => setIsOpen(!isOpen), [isOpen, setIsOpen]);
+  
+  const close = useCallback(() => {
+    setIsOpen(false);
+    // Return focus to the toggle button after closing
+    setTimeout(() => {
+      toggleRef.current?.focus();
+    }, 0);
+  }, [setIsOpen]);
+  
+  // Click outside handler
+  useEffect(() => {
+    if (!isOpen || !closeOnClickOutside) return;
+    
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        close();
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen, closeOnClickOutside, close]);
+  
+  // Escape key handler
+  useEffect(() => {
+    if (!isOpen || !closeOnEscape) return;
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        close();
+      }
+    };
+    
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, closeOnEscape, close]);
+  
+  // Keyboard navigation
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (!menuRef.current) return;
+    
+    const focusableItems = menuRef.current.querySelectorAll<HTMLElement>('[role="menuitem"]:not([disabled])');
+    if (!focusableItems.length) return;
+    
+    const currentIndex = Array.from(focusableItems).findIndex(item => item === document.activeElement);
+    
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        if (currentIndex < focusableItems.length - 1) {
+          focusableItems[currentIndex + 1].focus();
+        } else {
+          focusableItems[0].focus();
+        }
+        break;
+        
+      case 'ArrowUp':
+        e.preventDefault();
+        if (currentIndex > 0) {
+          focusableItems[currentIndex - 1].focus();
+        } else {
+          focusableItems[focusableItems.length - 1].focus();
+        }
+        break;
+        
+      case 'Home':
+        e.preventDefault();
+        focusableItems[0].focus();
+        break;
+        
+      case 'End':
+        e.preventDefault();
+        focusableItems[focusableItems.length - 1].focus();
+        break;
+    }
+  }, []);
+  
+  // Event handlers
+  const handleToggleClick = useCallback((e: React.MouseEvent) => {
+    if (trigger === 'click') {
+      e.preventDefault();
+      e.stopPropagation();
+      toggle();
+    }
+  }, [trigger, toggle]);
+  
+  const handleToggleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if ((e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') && !isOpen) {
+      e.preventDefault();
+      setIsOpen(true);
+      
+      // Only focus the first menu item when using keyboard navigation
+      if (e.key === 'ArrowDown' && menuRef.current) {
+        setTimeout(() => {
+          const firstItem = menuRef.current?.querySelector<HTMLElement>('[role="menuitem"]');
+          firstItem?.focus();
+        }, 100);
+      }
+    } else if (e.key === 'Escape' && isOpen) {
+      e.preventDefault();
+      close();
+    }
+  }, [isOpen, setIsOpen, close]);
+  
+  // Hover handlers for trigger="hover"
+  const handleHoverOpen = useCallback(() => {
     if (trigger === 'hover') {
       setIsOpen(true);
     }
-  };
-
-  const handleMouseLeave = () => {
-    if (trigger === 'hover') {
-      setIsOpen(false);
-    }
-  };
-
-  // Helper function to extract numeric value from CSS size
-  const extractSizeValue = (size: string): string => {
-    return size.toString().replace('px', '').replace('rem', '');
-  };
-
-  // Apply utility classes for maxHeight and minWidth
-  const menuClasses = [
-    'c-dropdown__menu-inner',
-    maxHeight ? `u-mh-${extractSizeValue(maxHeight)}` : '',
-    minWidth !== DROPDOWN.DEFAULTS.MIN_WIDTH ? `u-mw-${extractSizeValue(minWidth)}` : '',
+  }, [trigger, setIsOpen]);
+  
+  // Build class names
+  const dropdownClasses = [
+    'c-dropdown',
+    trigger === 'click' ? 'c-dropdown--onclick' : '',
+    variant ? `c-dropdown--${variant}` : '',
+    isOpen ? 'is-open' : '',
+    className
   ].filter(Boolean).join(' ');
-
-  // Check if children already have a toggle icon; if not, add the CaretDown icon
-  const hasToggleIcon = React.isValidElement(children) && 
-    React.Children.toArray(children.props.children).some(child => {
-      if (!React.isValidElement(child)) return false;
-
-      // Check if it's an Icon component
-      if (child.type === Icon) {
-        return child.props.className?.includes('c-dropdown__toggle-icon');
-      }
-
-      // Check if it's any element with the toggle icon class
-      return child.props.className?.includes('c-dropdown__toggle-icon');
-    });
-
-  const childrenWithIcon = React.isValidElement(children) 
-    ? (hasToggleIcon 
-        ? children 
-        : React.cloneElement(children, {
-            ...children.props,
-            children: (
-              <>
-                {children.props.children}
-                <Icon 
-                  name="CaretDown" 
-                  size="sm" 
-                  className="c-dropdown__toggle-icon" 
-                  alt="Toggle dropdown"
-                />
-              </>
-            )
-          })
-      ) 
-    : (
-      // If children is not a valid React element, wrap it with a button
-      <button className="c-btn c-btn--primary">
-        {children}
-        <Icon 
-          name="CaretDown" 
-          size="sm" 
-          className="c-dropdown__toggle-icon" 
-          alt="Toggle dropdown"
-        />
-      </button>
-    );
+  
+  // Menu styles
+  const menuStyleProps: React.CSSProperties = {};
+  if (maxHeight) menuStyleProps.maxHeight = maxHeight;
+  if (minWidth !== undefined) {
+    menuStyleProps.minWidth = typeof minWidth === 'number' ? `${minWidth}px` : minWidth;
+  }
 
   return (
-    <DropdownContext.Provider
-      value={{ isOpen, setIsOpen, triggerRef, dropdownId, triggerType: trigger }}
+    <div 
+      ref={dropdownRef} 
+      className={dropdownClasses}
+      onMouseEnter={trigger === 'hover' ? handleHoverOpen : undefined}
+      {...props}
     >
       <div 
-        className={`c-dropdown ${variantClass} ${triggerClass} ${className}`}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        {...props}
+        ref={toggleRef}
+        className="c-dropdown__toggle"
+        onClick={handleToggleClick}
+        onKeyDown={handleToggleKeyDown}
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        aria-controls={dropdownId}
+        tabIndex={0}
       >
-        <DropdownTrigger>
-          {childrenWithIcon}
-        </DropdownTrigger>
-
-        {typeof document !== 'undefined' && (
-          <div
-            ref={menuRef as React.RefObject<HTMLDivElement>}
-            className={`c-dropdown__menu-wrapper c-dropdown__menu-wrapper--${currentPlacement} ${isOpen ? DROPDOWN.CLASSES.IS_OPEN : ''}`}
-            id={dropdownId}
-            role="menu"
-            aria-orientation="vertical"
-            aria-hidden={!isOpen}
-          >
-            <div className={menuClasses}>
-              <ul className="c-dropdown__menu">
-                {menu}
-              </ul>
-            </div>
-          </div>
-        )}
+        {children}
       </div>
-    </DropdownContext.Provider>
+      
+      <div 
+        ref={menuRef}
+        id={dropdownId}
+        className={`c-dropdown__menu-wrapper c-dropdown__menu-wrapper--${placement} ${isOpen ? 'is-open' : ''}`}
+        role="menu"
+        aria-orientation="vertical"
+        aria-hidden={!isOpen}
+        onKeyDown={handleKeyDown}
+      >
+        <div className="c-dropdown__menu-inner" style={menuStyleProps}>
+          <DropdownContext.Provider value={{ isOpen, close, id: dropdownId, trigger }}>
+            <ul className="c-dropdown__menu">
+              {menu}
+            </ul>
+          </DropdownContext.Provider>
+        </div>
+      </div>
+    </div>
   );
 }; 

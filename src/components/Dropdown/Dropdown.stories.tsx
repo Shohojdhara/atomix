@@ -4,22 +4,6 @@ import { Dropdown, DropdownItem, DropdownDivider, DropdownHeader } from './index
 import { Icon } from '../Icon';
 import { ThemeColor } from '../../lib/types/components';
 
-/**
- * Helper component to display the dropdown menu in a static way for Storybook
- */
-const MenuPreview = ({ menu, minWidth }: { menu: React.ReactNode, minWidth?: string }) => (
-  <div className="u-mt-4 u-border-top u-pt-4">
-    <h6 className="u-text-secondary u-mb-2">Menu Preview:</h6>
-    <div className="c-dropdown__menu-wrapper is-open u-position-static u-d-block">
-      <div className={`c-dropdown__menu-inner ${minWidth !== '10rem' ? `u-mw-${minWidth?.toString().replace('px', '').replace('rem', '')}` : ''}`}>
-        <ul className="c-dropdown__menu">
-          {menu}
-        </ul>
-      </div>
-    </div>
-  </div>
-);
-
 const meta: Meta<typeof Dropdown> = {
   title: 'Components/Dropdown',
   component: Dropdown,
@@ -61,10 +45,6 @@ const meta: Meta<typeof Dropdown> = {
       control: 'text',
       description: 'Maximum height of the dropdown menu'
     },
-    defaultOpen: {
-      control: 'boolean',
-      description: 'Whether the dropdown is initially open'
-    },
     closeOnClickOutside: {
       control: 'boolean',
       description: 'Whether to close the dropdown when clicking outside'
@@ -78,6 +58,23 @@ const meta: Meta<typeof Dropdown> = {
 
 export default meta;
 type Story = StoryObj<typeof Dropdown>;
+
+/**
+ * Interactive dropdown component that can be used in Storybook
+ */
+const InteractiveDropdown = (args: React.ComponentProps<typeof Dropdown>) => {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  return (
+    <div className="u-p-4" style={{ minHeight: '300px', display: 'flex', alignItems: 'flex-start' }}>
+      <Dropdown 
+        {...args} 
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+      />
+    </div>
+  );
+};
 
 /**
  * Basic dropdown example with default settings
@@ -95,12 +92,7 @@ export const Default: Story = {
       </>
     ),
   },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
+  render: (args) => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -111,12 +103,7 @@ export const ClickTrigger: Story = {
     ...Default.args,
     trigger: 'click',
   },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
+  render: (args) => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -127,12 +114,7 @@ export const HoverTrigger: Story = {
     ...Default.args,
     trigger: 'hover',
   },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
+  render: (args) => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -150,12 +132,7 @@ export const WithIcons: Story = {
       </>
     ),
   },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
+  render: (args) => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -173,12 +150,7 @@ export const WithLinks: Story = {
       </>
     ),
   },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
+  render: (args) => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -199,12 +171,7 @@ export const WithHeader: Story = {
       </>
     ),
   },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
+  render: (args) => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -221,12 +188,7 @@ export const ActiveItem: Story = {
       </>
     ),
   },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
+  render: (args) => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -243,154 +205,13 @@ export const DisabledItem: Story = {
       </>
     ),
   },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
+  render: (args) => <InteractiveDropdown {...args} />,
 };
 
 /**
- * Dropdown with bottom-start placement (default)
+ * Shows all possible dropdown placement options
  */
-export const PlacementBottomStart: Story = {
-  args: {
-    ...Default.args,
-    placement: 'bottom-start',
-    children: <button className="c-btn c-btn--primary">Bottom Start <Icon name="CaretDown" className="c-dropdown__toggle-icon" size="sm" /></button>,
-  },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
-};
-
-/**
- * Dropdown with bottom-end placement
- */
-export const PlacementBottomEnd: Story = {
-  args: {
-    ...Default.args,
-    placement: 'bottom-end',
-    children: <button className="c-btn c-btn--primary">Bottom End <Icon name="CaretDown" className="c-dropdown__toggle-icon" size="sm" /></button>,
-  },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
-};
-
-/**
- * Dropdown with top-start placement
- */
-export const PlacementTopStart: Story = {
-  args: {
-    ...Default.args,
-    placement: 'top-start',
-    children: <button className="c-btn c-btn--primary">Top Start <Icon name="CaretUp" className="c-dropdown__toggle-icon" size="sm" /></button>,
-  },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
-};
-
-/**
- * Dropdown with top-end placement
- */
-export const PlacementTopEnd: Story = {
-  args: {
-    ...Default.args,
-    placement: 'top-end',
-    children: <button className="c-btn c-btn--primary">Top End <Icon name="CaretUp" className="c-dropdown__toggle-icon" size="sm" /></button>,
-  },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
-};
-
-/**
- * Dropdown with left-start placement
- */
-export const PlacementLeftStart: Story = {
-  args: {
-    ...Default.args,
-    placement: 'left-start',
-    children: <button className="c-btn c-btn--primary">Left Start <Icon name="CaretLeft" className="c-dropdown__toggle-icon" size="sm" /></button>,
-  },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
-};
-
-/**
- * Dropdown with left-end placement
- */
-export const PlacementLeftEnd: Story = {
-  args: {
-    ...Default.args,
-    placement: 'left-end',
-    children: <button className="c-btn c-btn--primary">Left End <Icon name="CaretLeft" className="c-dropdown__toggle-icon" size="sm" /></button>,
-  },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
-};
-
-/**
- * Dropdown with right-start placement
- */
-export const PlacementRightStart: Story = {
-  args: {
-    ...Default.args,
-    placement: 'right-start',
-    children: <button className="c-btn c-btn--primary">Right Start <Icon name="CaretRight" className="c-dropdown__toggle-icon" size="sm" /></button>,
-  },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
-};
-
-/**
- * Dropdown with right-end placement
- */
-export const PlacementRightEnd: Story = {
-  args: {
-    ...Default.args,
-    placement: 'right-end',
-    children: <button className="c-btn c-btn--primary">Right End <Icon name="CaretRight" className="c-dropdown__toggle-icon" size="sm" /></button>,
-  },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
-};
-
-/**
- * Placement information
- */
-export const PlacementInfo: Story = {
+export const AllPlacements: Story = {
   parameters: {
     docs: {
       description: {
@@ -398,83 +219,60 @@ export const PlacementInfo: Story = {
       }
     }
   },
-  render: () => (
-    <div className="u-p-4 u-bg-light u-border-radius">
-      <h4 className="u-mb-2">Placement Notation</h4>
-      <p className="u-mb-2">The placement value consists of two parts:</p>
-      <ul className="u-mb-3">
-        <li><strong>Direction</strong> (top, bottom, left, right): Where the dropdown appears relative to the trigger.</li>
-        <li><strong>Alignment</strong> (start, end): How the dropdown aligns with the trigger element.</li>
-      </ul>
-
-      <div className="u-p-3 u-bg-dark u-text-light u-border-radius u-mb-0">
-        <pre className="u-mb-0">
-          <code>
-            {`// Example usage in code
-<Dropdown
-  placement="bottom-start"  // Direction-Alignment
-  trigger="click"
-  menu={...}
->
-  <button>Dropdown Trigger</button>
-</Dropdown>`}
-          </code>
-        </pre>
+  render: () => {
+    // All possible placement options with properly typed icon names
+    const placements = [
+      { value: 'bottom-start', label: 'Bottom Start', icon: 'CaretDown' as const },
+      { value: 'bottom-end', label: 'Bottom End', icon: 'CaretDown' as const },
+      { value: 'top-start', label: 'Top Start', icon: 'CaretUp' as const },
+      { value: 'top-end', label: 'Top End', icon: 'CaretUp' as const },
+      { value: 'left-start', label: 'Left Start', icon: 'CaretLeft' as const },
+      { value: 'left-end', label: 'Left End', icon: 'CaretLeft' as const },
+      { value: 'right-start', label: 'Right Start', icon: 'CaretRight' as const },
+      { value: 'right-end', label: 'Right End', icon: 'CaretRight' as const },
+    ];
+    
+    // Create a grid layout with plenty of space for dropdowns to display correctly
+    return (
+      <div className="u-p-5" style={{ height: '650px' }}>
+        <div className="u-d-grid" style={{ 
+          gridTemplateColumns: 'repeat(4, 1fr)', 
+          gridTemplateRows: 'repeat(2, 1fr)', 
+          gap: '1.5rem',
+          height: '100%'
+        }}>
+          {placements.map((placement) => (
+            <div 
+              key={placement.value} 
+              className="u-d-flex u-align-items-center u-justify-content-center"
+            >
+              <Dropdown
+                trigger="click"
+                placement={placement.value as any}
+                defaultOpen={true}
+                closeOnClickOutside={false}
+                closeOnEscape={false}
+                children={
+                  <button className="c-btn c-btn--primary">
+                    {placement.label} <Icon name={placement.icon} className="c-dropdown__toggle-icon" size="sm" />
+                  </button>
+                }
+                menu={
+                  <>
+                    <DropdownItem>Menu item 1</DropdownItem>
+                    <DropdownItem>Menu item 2</DropdownItem>
+                    <DropdownItem>Menu item 3</DropdownItem>
+                  </>
+                }
+              />
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  ),
+    );
+  },
 };
 
-/**
- * Dropdown with primary color variant
- */
-export const VariantPrimary: Story = {
-  args: {
-    ...Default.args,
-    variant: 'primary',
-    children: <button className="c-btn c-btn--primary">Primary <Icon name="CaretDown" className="c-dropdown__toggle-icon" size="sm" /></button>,
-  },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
-};
-
-/**
- * Dropdown with secondary color variant
- */
-export const VariantSecondary: Story = {
-  args: {
-    ...Default.args,
-    variant: 'secondary',
-    children: <button className="c-btn c-btn--secondary">Secondary <Icon name="CaretDown" className="c-dropdown__toggle-icon" size="sm" /></button>,
-  },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
-};
-
-/**
- * Dropdown with success color variant
- */
-export const VariantSuccess: Story = {
-  args: {
-    ...Default.args,
-    variant: 'success',
-    children: <button className="c-btn c-btn--success">Success <Icon name="CaretDown" className="c-dropdown__toggle-icon" size="sm" /></button>,
-  },
-  render: (args) => (
-    <div className="u-p-4">
-      <Dropdown {...args} />
-      <MenuPreview menu={args.menu} minWidth={args.minWidth} />
-    </div>
-  ),
-};
 
 /**
  * Dropdown with all color variants
@@ -487,43 +285,45 @@ export const AllVariants: Story = {
       }
     }
   },
-  render: () => (
-    <div className="u-p-4">
-      <div className="u-d-flex u-flex-wrap u-gap-3">
-        {[
-          'primary', 'secondary', 'tertiary', 'success', 
-          'info', 'warning', 'error', 'light', 'dark'
-        ].map((color) => (
-          <Dropdown
-            key={color}
-            variant={color as ThemeColor}
-            trigger="click"
-            children={
-              <button className={`c-btn c-btn--${color}`}>
-                {color} <Icon name="CaretDown" className="c-dropdown__toggle-icon" size="sm" />
-              </button>
-            }
-            menu={
-              <>
-                <DropdownItem>Menu item 1</DropdownItem>
-                <DropdownItem>Menu item 2</DropdownItem>
-              </>
-            }
-          />
-        ))}
-      </div>
-
-      <div className="u-mt-4 u-border-top u-pt-4">
-        <h6 className="u-text-secondary u-mb-2">Menu Preview:</h6>
-        <div className="c-dropdown__menu-wrapper is-open u-position-static u-d-block">
-          <div className="c-dropdown__menu-inner">
-            <ul className="c-dropdown__menu">
-              <DropdownItem>Menu item 1</DropdownItem>
-              <DropdownItem>Menu item 2</DropdownItem>
-            </ul>
-          </div>
+  render: () => {
+    const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+    
+    const handleOpenChange = (variant: string, isOpen: boolean) => {
+      if (isOpen) {
+        setOpenDropdown(variant);
+      } else if (openDropdown === variant) {
+        setOpenDropdown(null);
+      }
+    };
+    
+    return (
+      <div className="u-p-4" style={{ minHeight: '300px' }}>
+        <div className="u-d-flex u-flex-wrap u-gap-3">
+          {[
+            'primary', 'secondary', 'tertiary', 'success', 
+            'info', 'warning', 'error', 'light', 'dark'
+          ].map((color) => (
+            <Dropdown
+              key={color}
+              variant={color as ThemeColor}
+              trigger="click"
+              isOpen={openDropdown === color}
+              onOpenChange={(isOpen) => handleOpenChange(color, isOpen)}
+              children={
+                <button className={`c-btn c-btn--${color}`}>
+                  {color} <Icon name="CaretDown" className="c-dropdown__toggle-icon" size="sm" />
+                </button>
+              }
+              menu={
+                <>
+                  <DropdownItem>Menu item 1</DropdownItem>
+                  <DropdownItem>Menu item 2</DropdownItem>
+                </>
+              }
+            />
+          ))}
         </div>
       </div>
-    </div>
-  ),
+    );
+  },
 };

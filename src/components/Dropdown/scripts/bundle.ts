@@ -1,12 +1,24 @@
-import Dropdown, { initDropdowns } from './index';
-import { DropdownPosition, DropdownTrigger, DropdownOptions } from './componentInteractions';
+import { Dropdown, createDropdown, initializeDropdowns } from './index';
+import type { DropdownOptions, DropdownPosition, DropdownTrigger } from './componentInteractions';
 
-// Export for global use
+// Setup global namespace for Atomix components
 if (typeof window !== 'undefined') {
-  (window as any).Atomix = (window as any).Atomix || {};
-  (window as any).Atomix.Dropdown = Dropdown;
-  (window as any).Atomix.initDropdowns = initDropdowns;
+  // Initialize Atomix namespace if it doesn't exist
+  window.Atomix = window.Atomix || {};
+  
+  // Add Dropdown component to global Atomix namespace
+  window.Atomix.Dropdown = {
+    create: createDropdown,
+    initialize: initializeDropdowns,
+    Dropdown
+  };
 }
 
-export { Dropdown, initDropdowns };
-export type { DropdownPosition, DropdownTrigger, DropdownOptions }; 
+export { 
+  Dropdown, 
+  createDropdown, 
+  initializeDropdowns, 
+  DropdownOptions, 
+  DropdownPosition, 
+  DropdownTrigger 
+}; 
