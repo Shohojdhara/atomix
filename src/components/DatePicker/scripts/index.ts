@@ -6,7 +6,7 @@ import {
   parseDate,
   isDateInRange 
 } from '../utils';
-import { createPhosphorIcon } from '../../lib/utils/icons';
+import { createPhosphorIcon } from '../../../lib/utils/icons';
 
 // Define default options
 const DEFAULTS = {
