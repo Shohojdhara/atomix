@@ -35,5 +35,6 @@ Thumbs.db
 # IDE rules
 .windsurfrules
 .cursor/
+.junie/
 
 old/

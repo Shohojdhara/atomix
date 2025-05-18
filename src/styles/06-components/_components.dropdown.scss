@@ -30,23 +30,79 @@
   display: inline-block;
   position: relative;
 
-
   &__toggle {
     width: 100%;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   &__toggle-icon {
     @include basic-transition();
+    margin-left: 0.25rem;
   }
 
   &__menu-wrapper {
     position: absolute;
     left: 0;
-    display: grid;
-    grid-template-rows: 0fr;
     z-index: 99;
-    @include basic-transition();
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    @include basic-transition(max-height, 0.2s, ease);
+    @include basic-transition( opacity, 0.2s, ease);
+    @include basic-transition(transform, 0.2s, ease);
+
+    &.is-open {
+      max-height: 1000px; // Large enough to accommodate any dropdown content
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    // Placement variations - using a mixin to reduce duplication
+    @mixin dropdown-placement($position, $alignment, $property, $value) {
+      &--#{$position}-#{$alignment} {
+        @if $position == 'bottom' {
+          top: 100%;
+          margin-top: var(--#{$prefix}dropdown-spacer);
+        } @else if $position == 'top' {
+          bottom: 100%;
+          margin-bottom: var(--#{$prefix}dropdown-spacer);
+        } @else if $position == 'left' {
+          right: 100%;
+          margin-right: var(--#{$prefix}dropdown-spacer);
+        } @else if $position == 'right' {
+          left: 100%;
+          margin-left: var(--#{$prefix}dropdown-spacer);
+        }
+
+        @if $alignment == 'start' {
+          @if $position == 'top' or $position == 'bottom' {
+            left: 0;
+          } @else {
+            top: 0;
+          }
+        } @else if $alignment == 'end' {
+          @if $position == 'top' or $position == 'bottom' {
+            right: 0;
+            left: auto;
+          } @else {
+            bottom: 0;
+          }
+        }
+      }
+    }
+
+    // Apply the mixin for all placement variations
+    @include dropdown-placement('bottom', 'start', 'top', '100%');
+    @include dropdown-placement('bottom', 'end', 'top', '100%');
+    @include dropdown-placement('top', 'start', 'bottom', '100%');
+    @include dropdown-placement('top', 'end', 'bottom', '100%');
+    @include dropdown-placement('left', 'start', 'right', '100%');
+    @include dropdown-placement('left', 'end', 'right', '100%');
+    @include dropdown-placement('right', 'start', 'left', '100%');
+    @include dropdown-placement('right', 'end', 'left', '100%');
   }
 
   &__menu-inner {
@@ -69,44 +125,108 @@
   }
 
   &__menu-item {
-    border-radius: var(--#{$prefix}dropdown-link-border-radius);
-    overflow: hidden;
-  }
-
-  &__menu-link {
     display: block;
+    width: 100%;
+    padding: var(--#{$prefix}dropdown-item-padding-y) var(--#{$prefix}dropdown-item-padding-x);
+    border: 0;
+    border-radius: var(--#{$prefix}dropdown-link-border-radius);
+    background: transparent;
     color: var(--#{$prefix}dropdown-link-color);
     font-size: var(--#{$prefix}dropdown-font-size);
-    padding: var(--#{$prefix}dropdown-item-padding-y) var(--#{$prefix}dropdown-item-padding-x);
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
     @include basic-transition();
 
-    &:hover {
+    &:hover, &:focus {
       color: var(--#{$prefix}dropdown-link-hover-color);
       background-color: var(--#{$prefix}dropdown-link-hover-bg);
+      outline: none;
+    }
+
+    &.is-active {
+      color: var(--#{$prefix}dropdown-active-color);
+      background-color: var(--#{$prefix}dropdown-active-bg);
+    }
+
+    &.is-disabled {
+      color: var(--#{$prefix}dropdown-color);
+      opacity: 0.5;
+      pointer-events: none;
     }
   }
 
-  &--onclick {
-    #{$root}__toggle {
-        &:focus-within ~ #{$root}__menu-wrapper {
-            grid-template-rows: 1fr;
-        }
-
-        &:focus-within #{$root}__toggle-icon {
-          transform: rotate(-180deg);
-        }
-      }
+  &__menu-item-icon {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 0.5rem;
   }
 
+  &__divider {
+    height: 1px;
+    margin: 0.5rem 0;
+    background-color: var(--#{$prefix}dropdown-border-color);
+  }
+
+  &__header {
+    display: block;
+    padding: var(--#{$prefix}dropdown-item-padding-y) var(--#{$prefix}dropdown-item-padding-x);
+    margin-bottom: 0;
+    font-size: 0.875em;
+    color: var(--#{$prefix}dropdown-color);
+    white-space: nowrap;
+    opacity: 0.8;
+  }
+
+  // Color variants
+  @each $color in (primary, secondary, tertiary, success, info, warning, error, light, dark) {
+    &--#{$color} {
+      #{$root}__menu-item {
+        &.is-active {
+          background-color: var(--#{$prefix}#{$color});
+          color: var(--#{$prefix}#{$color}-contrast);
+        }
+      }
+    }
+  }
+
+  // Click-based open animation
+  &--onclick {
+    #{$root}__toggle {
+      &:focus-within ~ #{$root}__menu-wrapper {
+        max-height: 1000px;
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      &:focus-within #{$root}__toggle-icon {
+        transform: rotate(-180deg);
+      }
+    }
+  }
+
+  // Hover-based open animation
   &:not(#{$root}--onclick) {
     &:hover {
-        #{$root}__menu-wrapper {
-            grid-template-rows: 1fr;
-        }
+      #{$root}__menu-wrapper {
+        max-height: 1000px;
+        opacity: 1;
+        transform: translateY(0);
+      }
 
-        #{$root}__toggle-icon {
-          transform: rotate(-180deg);
-        }
+      #{$root}__toggle-icon {
+        transform: rotate(-180deg);
+      }
+    }
+  }
+
+  // Open state (controlled by JavaScript)
+  #{$root}__menu-wrapper.is-open {
+    // Open state styles are now handled in the menu-wrapper class
+
+    ~ #{$root}__toggle-icon,
+    + #{$root}__toggle #{$root}__toggle-icon {
+      transform: rotate(-180deg);
     }
   }
 }

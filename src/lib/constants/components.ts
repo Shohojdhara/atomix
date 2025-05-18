@@ -787,3 +787,37 @@ export const MESSAGES = {
     SUBMIT: 'c-messages__submit',
   },
 };
+
+/**
+ * Dropdown-specific constants
+ */
+export const DROPDOWN = {
+  SELECTORS: {
+    DROPDOWN: '.js-atomix-dropdown',
+    TRIGGER: '.js-atomix-dropdown-trigger',
+    MENU: '.c-dropdown__menu',
+    MENU_INNER: '.c-dropdown__menu-inner',
+    MENU_WRAPPER: '.c-dropdown__menu-wrapper',
+    MENU_ITEM: '.c-dropdown__menu-item',
+    MENU_LINK: '.c-dropdown__menu-link',
+    MENU_DIVIDER: '.c-dropdown__divider',
+    MENU_HEADER: '.c-dropdown__header',
+    TOGGLE_ICON: '.c-dropdown__toggle-icon'
+  },
+  CLASSES: {
+    IS_OPEN: 'is-open',
+    IS_ACTIVE: 'is-active',
+    IS_DISABLED: 'is-disabled'
+  },
+  ATTRIBUTES: {
+    PLACEMENT: 'data-dropdown-placement',
+    TRIGGER: 'data-dropdown-trigger',
+    MENU_ID: 'data-dropdown-id'
+  },
+  DEFAULTS: {
+    TRIGGER: 'click',
+    PLACEMENT: 'bottom-start',
+    OFFSET: 4,
+    MIN_WIDTH: '10rem'
+  }
+};
