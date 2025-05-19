@@ -1912,3 +1912,28 @@ export interface DropdownHeaderProps {
    */
   className?: string;
 }
+
+/**
+ * Progress component properties
+ */
+export interface ProgressProps extends BaseComponentProps {
+  /**
+   * Progress value from 0 to 100
+   */
+  value: number;
+  
+  /**
+   * Optional color variant
+   */
+  variant?: ThemeColor;
+  
+  /**
+   * Optional size
+   */
+  size?: Size;
+  
+  /**
+   * Optional aria-label for accessibility
+   */
+  ariaLabel?: string;
+}
