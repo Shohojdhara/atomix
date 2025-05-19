@@ -93,10 +93,10 @@ export const Warning: Story = {
   },
 };
 
-export const Danger: Story = {
+export const Error: Story = {
   args: {
-    label: 'Danger Button',
-    variant: 'danger',
+    label: 'Error Button',
+    variant: 'error',
     size: 'md',
   },
 };
@@ -195,7 +195,7 @@ export const AllVariants: Story = {
       <Button label="Success" variant="success" />
       <Button label="Info" variant="info" />
       <Button label="Warning" variant="warning" />
-      <Button label="Danger" variant="danger" />
+      <Button label="Error" variant="error" />
       <Button label="Light" variant="light" />
       <Button label="Dark" variant="dark" />
     </div>
@@ -215,7 +215,7 @@ export const AllOutlineVariants: Story = {
       <Button label="Outline Success" variant="outline-success" />
       <Button label="Outline Info" variant="outline-info" />
       <Button label="Outline Warning" variant="outline-warning" />
-      <Button label="Outline Danger" variant="outline-danger" />
+      <Button label="Outline Error" variant="outline-error" />
       <Button label="Outline Light" variant="outline-light" />
       <Button label="Outline Dark" variant="outline-dark" />
     </div>
@@ -281,7 +281,7 @@ export const RoundedVariants: Story = {
       <Button label="Success" variant="success" rounded />
       <Button label="Info" variant="info" rounded />
       <Button label="Warning" variant="warning" rounded />
-      <Button label="Danger" variant="danger" rounded />
+      <Button label="Error" variant="error" rounded />
       <Button label="Light" variant="light" rounded />
       <Button label="Dark" variant="dark" rounded />
     </div>
