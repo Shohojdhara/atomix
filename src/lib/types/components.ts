@@ -1918,22 +1918,82 @@ export interface DropdownHeaderProps {
  */
 export interface ProgressProps extends BaseComponentProps {
   /**
-   * Progress value from 0 to 100
+   * Progress value (0-100)
    */
   value: number;
   
   /**
-   * Optional color variant
+   * Progress bar color variant
    */
   variant?: ThemeColor;
   
   /**
-   * Optional size
+   * Progress bar size
    */
   size?: Size;
   
   /**
-   * Optional aria-label for accessibility
+   * Accessible label for screen readers
    */
   ariaLabel?: string;
+}
+
+/**
+ * Rating component properties
+ */
+export interface RatingProps extends BaseComponentProps {
+  /**
+   * The rating value (0-5)
+   */
+  value?: number;
+  
+  /**
+   * Default value for uncontrolled mode
+   */
+  defaultValue?: number;
+  
+  /**
+   * Maximum possible rating value
+   */
+  maxValue?: number;
+  
+  /**
+   * Whether to allow half-star ratings
+   */
+  allowHalf?: boolean;
+  
+  /**
+   * Whether the rating is read-only
+   */
+  readOnly?: boolean;
+  
+  /**
+   * Size variant
+   */
+  size?: Size;
+  
+  /**
+   * Color theme
+   */
+  color?: ThemeColor;
+  
+  /**
+   * Optional callback when rating changes
+   */
+  onChange?: (value: number) => void;
+  
+  /**
+   * Optional label for the rating component (for accessibility)
+   */
+  label?: string;
+  
+  /**
+   * ID for the rating component (for accessibility)
+   */
+  id?: string;
+  
+  /**
+   * Whether to use the vanilla JS implementation
+   */
+  useVanillaJS?: boolean;
 }

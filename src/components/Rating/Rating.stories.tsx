@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StoryFn, Meta } from '@storybook/react';
-import { Rating, RatingProps } from './Rating';
+import { Rating } from './Rating';
+import type { RatingProps } from '../../lib/types/components';
 
 export default {
   title: 'Components/Rating',

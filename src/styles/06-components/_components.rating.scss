@@ -35,8 +35,14 @@
     #{$root}__star {
       transition: var(--#{config.$prefix}rating-star-transition);
 
-      &:hover {
+      &:hover, &:focus {
         transform: scale(var(--#{config.$prefix}rating-star-hover-scale));
+      }
+      
+      &:focus-visible {
+        outline: 2px solid var(--#{config.$prefix}primary);
+        outline-offset: 2px;
+        border-radius: 2px;
       }
     }
   }
@@ -70,24 +76,39 @@
         --#{config.$prefix}rating-star-bg: #{$value};
       }
     }
-  }
-
-  // Half-star styles
-  &__star-half {
-    display: none;
-
-    rect {
-      fill: var(--#{config.$prefix}rating-star-bg);
+    
+    // Focused state
+    &--focused {
+      outline: 2px solid var(--#{config.$prefix}primary);
+      outline-offset: 2px;
+      border-radius: 2px;
     }
   }
 
-  // Full star styles
-  &__star-full {
+  // Star outline styles (empty star)
+  &__star-outline {
     stroke: var(--#{config.$prefix}rating-star-bg);
     fill: var(--#{config.$prefix}rating-star-empty-color);
-
+    stroke-width: 1px;
+  }
+  
+  // Full star styles
+  &__star-full {
+    fill: var(--#{config.$prefix}rating-star-bg);
+    display: none;
+    
     #{$root}__star--full & {
-      fill: var(--#{config.$prefix}rating-star-bg);
+      display: block;
+    }
+  }
+  
+  // Half-star styles
+  &__star-half {
+    fill: var(--#{config.$prefix}rating-star-bg);
+    display: none;
+    
+    #{$root}__star--half & {
+      display: block;
     }
   }
 

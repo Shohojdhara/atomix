@@ -8,28 +8,114 @@ This document outlines the approach and best practices for creating components i
 
 - Create a dedicated directory under `src/components/[ComponentName]/`
 - Implement these core files:
-  - `ComponentName.tsx`: The React component with JSDoc comments
+  - `[ComponentName].tsx`: The React component with JSDoc comments
   - `index.ts`: Export file that re-exports the component and its types
-  - `ComponentName.stories.tsx`: Storybook examples showcasing all variants
+  - `[ComponentName].stories.tsx`: Storybook examples showcasing all variants
 
 ```typescript
 // index.ts example
-export { default, ComponentName } from './ComponentName';
-export type { ComponentNameProps } from './ComponentName';
+export { default, [ComponentName] } from "./[ComponentName]";
+export type { [ComponentName]Props } from "./[ComponentName]";
 ```
 
 ### 2. Vanilla JS Implementation
 
 - Create a `scripts` subdirectory with these files:
-  - `componentInteractions.ts`: Core class with event handlers and utilities
-  - `bundle.ts`: Simple re-export of the component class
-  - `index.ts`: Entry point that exports the bundle
-  - `index.d.ts`: TypeScript declarations for the component class (if needed)
+  - `index.ts`: Main component class with core functionality
+  - `[ComponentName]Interactions.ts`: Event handlers, utility functions, and initialization helpers
+  - `bundle.ts`: Module bundling and global registration
 
 ```typescript
-// scripts/index.ts example
-import ComponentName from './bundle';
-export default ComponentName;
+// scripts/index.ts example (main component class)
+export default class ComponentName {
+  private element: HTMLElement;
+  private options: any;
+
+  constructor(element: string | HTMLElement, options: any = {}) {
+    this.element = typeof element === 'string' ? document.querySelector(element) as HTMLElement : element;
+    this.options = { ...DEFAULTS, ...options };
+    this._init();
+  }
+
+  private _init(): void {
+    // Initialize component
+  }
+
+  // Public methods for external API
+  public open(): void {}
+  public close(): void {}
+  public destroy(): void {}
+}
+```
+
+```typescript
+// scripts/[ComponentName]Interactions.ts example
+import ComponentName from './index';
+
+/**
+ * Initialize components with data attributes
+ */
+export function initFromDataAttributes(): ComponentName[] {
+  const instances: ComponentName[] = [];
+  
+  document.querySelectorAll('[data-component-name]').forEach(element => {
+    const options = parseDataAttributes(element);
+    const instance = new ComponentName(element as HTMLElement, options);
+    instances.push(instance);
+  });
+  
+  return instances;
+}
+
+/**
+ * Get a component instance from an element
+ */
+export function getInstance(element: string | HTMLElement): ComponentName | null {
+  // Implementation
+}
+
+/**
+ * Dispose all component instances
+ */
+export function disposeAll(): void {
+  // Implementation
+}
+```
+
+```typescript
+// scripts/bundle.ts example
+import ComponentName from './index';
+import { initFromDataAttributes, getInstance, disposeAll } from './[ComponentName]Interactions';
+
+if (typeof window !== 'undefined') {
+  // Initialize the Atomix global object if it doesn't exist
+  (window as any).Atomix = (window as any).Atomix || {};
+  
+  // Add component to the global Atomix object
+  (window as any).Atomix.ComponentName = {
+    create: ComponentName,
+    init: initFromDataAttributes,
+    get: getInstance,
+    disposeAll: disposeAll
+  };
+  
+  // Auto-initialize components when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initFromDataAttributes();
+    });
+  } else {
+    initFromDataAttributes();
+  }
+}
+
+// Export everything for module bundling
+export { 
+  ComponentName as default,
+  initFromDataAttributes,
+  getInstance,
+  disposeAll
+};
 ```
 
 ### 3. Type Definitions
@@ -55,21 +141,21 @@ export default ComponentName;
 
 ```scss
 // settings.[component-name].scss example
-$component-size:         32px !default;
-$component-size-sm:      16px !default;
-$component-size-lg:      48px !default;
-$component-color:        var(--#{$prefix}primary) !default;
-$component-spacing:      8px !default;
+$component-size: 32px !default;
+$component-size-sm: 16px !default;
+$component-size-lg: 48px !default;
+$component-color: var(--#{$prefix}primary) !default;
+$component-spacing: 8px !default;
 
 // components.[component-name].scss example
 .c-component {
   $root: &;
-  
+
   // CSS Variables
   --#{config.$prefix}component-size: #{$component-size};
   --#{config.$prefix}component-color: #{$component-color};
   --#{config.$prefix}component-spacing: #{rem($component-spacing)};
-  
+
   // Component styles
   display: flex;
   gap: var(--#{config.$prefix}component-spacing);
@@ -78,9 +164,137 @@ $component-spacing:      8px !default;
 
 ## Implementation Guidelines
 
+## Constants & Configuration
+
+1. **Component Constants**
+
+   - Add component-specific constants in `src/lib/constants/components.ts`
+   - Define selectors, classes, and default values
+
+2. **Component Configuration in src/lib**
+
+   - **Types Definition**
+
+     - Add component props interface in `src/lib/types/components.ts`
+     - Define all possible component variants, states, and event handlers
+     - Use descriptive JSDoc comments for each prop
+     - Example:
+
+     ```typescript
+     export interface RatingProps {
+       /**
+        * The rating value (0-5)
+        */
+       value: number;
+
+       /**
+        * Maximum possible rating value
+        */
+       maxValue?: number;
+
+       /**
+        * Whether to allow half-star ratings
+        */
+       allowHalf?: boolean;
+
+       /**
+        * Callback when rating changes
+        */
+       onChange?: (value: number) => void;
+     }
+     ```
+
+   - **Composable Hooks**
+
+     - Create a dedicated hook in `src/lib/composables/use[ComponentName].ts`
+     - Extract component logic for reusability and state management
+     - Implement both controlled and uncontrolled state handling
+     - Return all necessary state variables and handlers
+     - Example:
+
+     ```typescript
+     export function useRating({
+       value: initialValue = 0,
+       maxValue = 5,
+       allowHalf = false,
+       onChange,
+       readOnly = false,
+     }: RatingProps) {
+       const [internalValue, setInternalValue] = useState(initialValue);
+
+       // Determine if component is controlled or uncontrolled
+       const isControlled = typeof onChange !== "undefined";
+       const value = isControlled ? initialValue : internalValue;
+
+       const handleRatingChange = (newValue: number) => {
+         if (readOnly) return;
+
+         if (!isControlled) {
+           setInternalValue(newValue);
+         }
+
+         if (onChange) {
+           onChange(newValue);
+         }
+       };
+
+       return {
+         value,
+         handleRatingChange,
+         maxValue,
+         allowHalf,
+         readOnly,
+       };
+     }
+     ```
+
+   - **Constants Definition**
+
+     - Define component-specific constants in `src/lib/constants/components.ts`
+     - Group related constants in a named export object
+     - Include selectors, class names, attributes, and default values
+     - Example:
+
+     ```typescript
+     export const RATING = {
+       SELECTORS: {
+         RATING: ".c-rating",
+         STAR: ".c-rating__star",
+         STAR_FULL: ".c-rating__star-full",
+         STAR_HALF: ".c-rating__star-half",
+       },
+       CLASSES: {
+         FULL: "c-rating__star--full",
+         HALF: "c-rating__star--half",
+         SMALL: "c-rating--sm",
+         LARGE: "c-rating--lg",
+       },
+       ATTRIBUTES: {
+         READONLY: "data-readonly",
+         VALUE: "data-value",
+       },
+     };
+     ```
+
+   - **Utility Functions**
+     - Create component-specific utility functions in `src/lib/utils/` when needed
+     - Keep functions pure and focused on a single responsibility
+     - Export functions individually for better tree-shaking
+     - Example:
+     ```typescript
+     // src/lib/utils/rating.ts
+     export function calculateRoundedRating(
+       value: number,
+       allowHalf: boolean
+     ): number {
+       return allowHalf ? Math.floor(value * 2) / 2 : Math.round(value);
+     }
+     ```
+
 ### React Component
 
 1. **Props Interface**
+
    - Define a clear props interface with JSDoc comments for each prop
    - Use sensible defaults for optional props in component destructuring
    - Include callback props for state changes (e.g., `onOpenChange`, `onChange`)
@@ -92,29 +306,30 @@ $component-spacing:      8px !default;
       * Button label text
       */
      label: string;
-     
+
      /**
       * Click handler function
       */
      onClick?: () => void;
-     
+
      /**
       * Button visual style variant
       */
      variant?: Variant;
-     
+
      // Additional props...
    }
    ```
 
 2. **Component Structure**
+
    - Use `forwardRef` for components that need ref forwarding
    - Destructure props with default values
    - Use composable hooks for logic and state management
    - Implement clear return statements with proper JSX structure
 
    ```typescript
-   export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ 
+   export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
      label,
      onClick,
      variant = 'primary',
@@ -122,12 +337,12 @@ $component-spacing:      8px !default;
      disabled = false,
      // Additional props with defaults...
    }, ref) => {
-     const { generateButtonClass, handleClick } = useButton({ 
-       variant, size, disabled 
+     const { generateButtonClass, handleClick } = useButton({
+       variant, size, disabled
      });
-     
+
      // Component implementation...
-     
+
      return (
        <button
          ref={ref}
@@ -143,6 +358,7 @@ $component-spacing:      8px !default;
    ```
 
 3. **Controlled & Uncontrolled Modes**
+
    - Support both controlled mode (parent manages state) and uncontrolled mode
    - For controlled mode: Use props for state and callbacks for changes
    - For uncontrolled mode: Manage state internally with useState
@@ -150,14 +366,14 @@ $component-spacing:      8px !default;
 
    ```typescript
    // In hook implementation
-   const isControlled = typeof onChange !== 'undefined';
+   const isControlled = typeof onChange !== "undefined";
    const value = isControlled ? externalValue : internalValue;
-   
+
    const handleChange = (newValue) => {
      if (!isControlled) {
        setInternalValue(newValue);
      }
-     
+
      if (onChange) {
        onChange(newValue);
      }
@@ -165,6 +381,7 @@ $component-spacing:      8px !default;
    ```
 
 4. **Accessibility**
+
    - Include proper ARIA attributes (roles, states, properties)
    - Ensure keyboard navigation works (tab order, key handlers)
    - Support screen readers with descriptive labels and announcements
@@ -186,6 +403,7 @@ $component-spacing:      8px !default;
 ### Vanilla JS Implementation
 
 1. **Class Structure**
+
    - Create a main class with clear constructor, private methods, and public API
    - Accept both element reference and configuration options
    - Use TypeScript for better type safety and documentation
@@ -196,20 +414,20 @@ $component-spacing:      8px !default;
      element: HTMLElement;
      options: any;
      private _state: any;
-     
+
      constructor(element: HTMLElement, options: any = {}) {
        this.element = element;
        this.options = { ...defaults, ...options };
        this._state = {};
-       
+
        this._initialize();
      }
-     
+
      private _initialize(): void {
        // Setup logic
        this._bindEvents();
      }
-     
+
      // Public API methods
      public open(): void {}
      public close(): void {}
@@ -218,6 +436,7 @@ $component-spacing:      8px !default;
    ```
 
 2. **Event Handling**
+
    - Use proper event delegation for better performance
    - Bind event handlers to class instance with proper context
    - Clean up all event listeners in destroy method
@@ -228,11 +447,11 @@ $component-spacing:      8px !default;
      this._handleClick = this._handleClick.bind(this);
      this.element.addEventListener('click', this._handleClick);
    }
-   
+
    private _handleClick(event: MouseEvent): void {
      // Event handling logic
    }
-   
+
    public destroy(): void {
      this.element.removeEventListener('click', this._handleClick);
      // Clean up other resources
@@ -240,6 +459,7 @@ $component-spacing:      8px !default;
    ```
 
 3. **State Management**
+
    - Maintain internal state with proper getters and setters
    - Implement state change methods that update DOM accordingly
    - Support external state updates through public API
@@ -249,7 +469,7 @@ $component-spacing:      8px !default;
    private _setState(newState: Partial<State>): void {
      this._state = { ...this._state, ...newState };
      this._render();
-     
+
      // Dispatch custom event
      const event = new CustomEvent('componentname:change', {
        detail: { state: this._state }
@@ -282,19 +502,19 @@ Each component should have its own settings file in `01-settings/` that defines 
 @use "settings.config" as config;
 
 // Define all component variables with !default flag for overriding
-$component-size:          32px !default;
-$component-size-sm:       16px !default;
-$component-size-lg:       48px !default;
-$component-color:         var(--#{config.$prefix}primary) !default;
-$component-bg:            transparent !default;
-$component-border-width:  1px !default;
+$component-size: 32px !default;
+$component-size-sm: 16px !default;
+$component-size-lg: 48px !default;
+$component-color: var(--#{config.$prefix}primary) !default;
+$component-bg: transparent !default;
+$component-border-width: 1px !default;
 $component-border-radius: var(--#{config.$prefix}border-radius) !default;
-$component-spacing:       8px !default;
-$component-transition:    all 0.2s ease-in-out !default;
+$component-spacing: 8px !default;
+$component-transition: all 0.2s ease-in-out !default;
 
 // Define dark mode variables if needed
-$component-color-dark:    var(--#{config.$prefix}primary-dark) !default;
-$component-bg-dark:       var(--#{config.$prefix}gray-9) !default;
+$component-color-dark: var(--#{config.$prefix}primary-dark) !default;
+$component-bg-dark: var(--#{config.$prefix}gray-9) !default;
 ```
 
 ### 2. Component Styling
@@ -303,15 +523,15 @@ Component styles should be defined in `06-components/` following these guideline
 
 ```scss
 // _components.component-name.scss
-@use '../01-settings/settings.config' as config;
-@use '../01-settings/settings.component-name' as component;
-@use '../01-settings/settings.colors' as *;
-@use '../02-tools/tools.rem' as rem;
-@use '../02-tools/tools.grid' as *;
+@use "../01-settings/settings.config" as config;
+@use "../01-settings/settings.component-name" as component;
+@use "../01-settings/settings.colors" as *;
+@use "../02-tools/tools.rem" as rem;
+@use "../02-tools/tools.grid" as *;
 
 .c-component {
   $root: &; // Store reference to component root for nesting
-  
+
   // 1. CSS Custom Properties
   // Define all component-specific CSS variables
   --#{config.$prefix}component-size: #{component.$component-size};
@@ -320,7 +540,7 @@ Component styles should be defined in `06-components/` following these guideline
   --#{config.$prefix}component-border-width: #{component.$component-border-width};
   --#{config.$prefix}component-border-radius: #{component.$component-border-radius};
   --#{config.$prefix}component-spacing: #{rem.rem(component.$component-spacing)};
-  
+
   // 2. Base Component Styles
   display: flex;
   align-items: center;
@@ -330,57 +550,57 @@ Component styles should be defined in `06-components/` following these guideline
   border: var(--#{config.$prefix}component-border-width) solid;
   border-radius: var(--#{config.$prefix}component-border-radius);
   transition: component.$component-transition;
-  
+
   // 3. Element Styles (BEM Elements)
   &__element {
     // Element-specific styles
   }
-  
+
   // 4. Modifier Styles (BEM Modifiers)
   &--modifier {
     // Modifier-specific styles
   }
-  
+
   // 5. State Classes
   &.is-active {
     // Active state styles
   }
-  
+
   &.has-icon {
     // Styles when component has an icon
   }
-  
+
   // 6. Theme Variants
   @each $color, $value in $theme-colors {
     &--#{$color} {
       --#{config.$prefix}component-color: #{$value};
     }
   }
-  
+
   // 7. Size Variants
   &--sm {
     --#{config.$prefix}component-size: #{component.$component-size-sm};
   }
-  
+
   &--lg {
     --#{config.$prefix}component-size: #{component.$component-size-lg};
   }
-  
+
   // 8. Responsive Styles
   @include media-breakpoint-up(md) {
     // Medium screen adjustments
   }
-  
+
   @include media-breakpoint-up(lg) {
     // Large screen adjustments
   }
-  
+
   // 9. Dark Mode Support
   .dark-mode & {
     --#{config.$prefix}component-color: #{component.$component-color-dark};
     --#{config.$prefix}component-bg: #{component.$component-bg-dark};
   }
-  
+
   // 10. Accessibility Considerations
   @media (prefers-reduced-motion: reduce) {
     transition: none;
@@ -395,16 +615,21 @@ Component styles should be defined in `06-components/` following these guideline
 Follow Block-Element-Modifier naming convention for component classes:
 
 ```scss
-.c-component { } // Block (with 'c-' prefix for component)
-.c-component__element { } // Element (double underscore)
-.c-component--modifier { } // Modifier (double dash)
+.c-component {
+} // Block (with 'c-' prefix for component)
+.c-component__element {
+} // Element (double underscore)
+.c-component--modifier {
+} // Modifier (double dash)
 ```
 
 Use state classes with appropriate prefixes:
 
 ```scss
-.c-component.is-active { } // State class for active state
-.c-component.has-icon { } // Feature class for components with icons
+.c-component.is-active {
+} // State class for active state
+.c-component.has-icon {
+} // Feature class for components with icons
 ```
 
 ### 2. CSS Custom Properties
@@ -419,11 +644,11 @@ Use state classes with appropriate prefixes:
   // Primary variables
   --#{config.$prefix}component-color: #{$component-color};
   --#{config.$prefix}component-bg: #{$component-bg};
-  
+
   // Size variables
   --#{config.$prefix}component-padding-x: #{rem.rem($component-padding-x)};
   --#{config.$prefix}component-padding-y: #{rem.rem($component-padding-y)};
-  
+
   // Animation variables
   --#{config.$prefix}component-transition-duration: 0.2s;
   --#{config.$prefix}component-transition-easing: ease-in-out;
@@ -440,7 +665,7 @@ Use state classes with appropriate prefixes:
 .c-component {
   padding: rem.rem(16px);
   font-size: rem.rem(14px);
-  
+
   @include media-breakpoint-up(md) {
     padding: rem.rem(24px);
     font-size: rem.rem(16px);
@@ -456,14 +681,14 @@ Use state classes with appropriate prefixes:
 
 ```scss
 // In settings file
-$component-bg:       $white !default;
-$component-bg-dark:  $gray-900 !default;
+$component-bg: $white !default;
+$component-bg-dark: $gray-900 !default;
 
 // In component file
 .c-component {
   --#{config.$prefix}component-bg: #{$component-bg};
   background-color: var(--#{config.$prefix}component-bg);
-  
+
   .dark-mode & {
     --#{config.$prefix}component-bg: #{$component-bg-dark};
   }
@@ -478,13 +703,15 @@ $component-bg-dark:  $gray-900 !default;
 
 ```scss
 .c-component {
-  transition: transform 0.2s ease, opacity 0.2s ease;
-  
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+
   &.is-entering {
     opacity: 0;
     transform: translateY(10px);
   }
-  
+
   @media (prefers-reduced-motion: reduce) {
     transition: none;
   }
@@ -497,13 +724,15 @@ Leverage the tools provided in the `02-tools/` directory:
 
 ```scss
 // Using rem function for consistent sizing
- padding: rem.rem(16px);
+padding: rem.rem(16px);
 
 // Using media query mixins for responsive design
-@include media-breakpoint-up(md) { }
+@include media-breakpoint-up(md) {
+}
 
 // Using color functions
-@include color-mode-dark { }
+@include color-mode-dark {
+}
 
 // Using spacing utilities
 @include margin-x(auto);
@@ -518,46 +747,48 @@ The Atomix design system includes a comprehensive color system defined in `src/s
 The color system is organized into several categories:
 
 1. **Primary Colors**: The main brand colors used throughout the interface
+
    ```scss
-   $primary-1: #F2E8FD !default;  // Lightest
-   $primary-2: #E4D0FA !default;
-   $primary-3: #D0B2F5 !default;
-   $primary-4: #B88CEF !default;
-   $primary-5: #9C63E9 !default;
-   $primary-6: #7C3AED !default;  // Base primary purple
-   $primary-7: #6425CA !default;
-   $primary-8: #501BA6 !default;
-   $primary-9: #3C1583 !default;
-   $primary-10: #2A0E60 !default; // Darkest
+   $primary-1: #f2e8fd !default; // Lightest
+   $primary-2: #e4d0fa !default;
+   $primary-3: #d0b2f5 !default;
+   $primary-4: #b88cef !default;
+   $primary-5: #9c63e9 !default;
+   $primary-6: #7c3aed !default; // Base primary purple
+   $primary-7: #6425ca !default;
+   $primary-8: #501ba6 !default;
+   $primary-9: #3c1583 !default;
+   $primary-10: #2a0e60 !default; // Darkest
    ```
 
 2. **Semantic Colors**: Colors that convey specific meanings
+
    ```scss
    // Success (Green)
    $success: $green-6 !default;
-   
+
    // Warning (Yellow)
    $warning: $yellow-6 !default;
-   
+
    // Danger (Red)
    $danger: $red-6 !default;
-   
+
    // Info (Blue)
    $info: $blue-6 !default;
    ```
 
 3. **Neutral Colors**: Grayscale colors for text, backgrounds, and borders
    ```scss
-   $gray-1: #F9FAFB !default;   // Lightest
-   $gray-2: #F3F4F6 !default;
-   $gray-3: #E5E7EB !default;
-   $gray-4: #D1D5DB !default;
-   $gray-5: #9CA3AF !default;
-   $gray-6: #6B7280 !default;
-   $gray-7: #4B5563 !default;
+   $gray-1: #f9fafb !default; // Lightest
+   $gray-2: #f3f4f6 !default;
+   $gray-3: #e5e7eb !default;
+   $gray-4: #d1d5db !default;
+   $gray-5: #9ca3af !default;
+   $gray-6: #6b7280 !default;
+   $gray-7: #4b5563 !default;
    $gray-8: #374151 !default;
-   $gray-9: #1F2937 !default;
-   $gray-10: #111827 !default;  // Darkest
+   $gray-9: #1f2937 !default;
+   $gray-10: #111827 !default; // Darkest
    ```
 
 ### Using Colors in Components
@@ -570,12 +801,12 @@ When creating components, reference the color system using CSS custom properties
   color: var(--#{config.$prefix}primary);
   background-color: var(--#{config.$prefix}gray-1);
   border-color: var(--#{config.$prefix}gray-3);
-  
+
   // Use semantic colors
   &--success {
     color: var(--#{config.$prefix}success);
   }
-  
+
   &--danger {
     color: var(--#{config.$prefix}danger);
   }
@@ -591,7 +822,7 @@ The color system includes dark mode variants for all colors. Use these variables
   color: var(--#{config.$prefix}body-color);
   background-color: var(--#{config.$prefix}body-bg);
   border-color: var(--#{config.$prefix}border-color);
-  
+
   // These variables automatically switch in dark mode
   // when the .dark-mode class is applied to the body
 }
@@ -603,134 +834,19 @@ The Atomix system provides several utility functions for working with colors:
 
 ```scss
 // Convert color to RGB format for use in rgba() functions
-@use '../02-tools/tools.to-rgb' as *;
+@use "../02-tools/tools.to-rgb" as *;
 background-color: rgba(to-rgb($primary), 0.5);
 
 // Lighten or darken colors
-@use '../02-tools/tools.color-functions' as *;
+@use "../02-tools/tools.color-functions" as *;
 $lighter-color: tint-color($primary, 20%);
 $darker-color: shade-color($primary, 20%);
 ```
 
-## Constants & Configuration
-
-1. **Component Constants**
-   - Add component-specific constants in `src/lib/constants/components.ts`
-   - Define selectors, classes, and default values
-
-2. **Component Configuration in src/lib**
-   - **Types Definition**
-     - Add component props interface in `src/lib/types/components.ts`
-     - Define all possible component variants, states, and event handlers
-     - Use descriptive JSDoc comments for each prop
-     - Example:
-     ```typescript
-     export interface RatingProps {
-       /**
-        * The rating value (0-5)
-        */
-       value: number;
-       
-       /**
-        * Maximum possible rating value
-        */
-       maxValue?: number;
-       
-       /**
-        * Whether to allow half-star ratings
-        */
-       allowHalf?: boolean;
-       
-       /**
-        * Callback when rating changes
-        */
-       onChange?: (value: number) => void;
-     }
-     ```
-
-   - **Composable Hooks**
-     - Create a dedicated hook in `src/lib/composables/use[ComponentName].ts`
-     - Extract component logic for reusability and state management
-     - Implement both controlled and uncontrolled state handling
-     - Return all necessary state variables and handlers
-     - Example:
-     ```typescript
-     export function useRating({
-       value: initialValue = 0,
-       maxValue = 5,
-       allowHalf = false,
-       onChange,
-       readOnly = false
-     }: RatingProps) {
-       const [internalValue, setInternalValue] = useState(initialValue);
-       
-       // Determine if component is controlled or uncontrolled
-       const isControlled = typeof onChange !== 'undefined';
-       const value = isControlled ? initialValue : internalValue;
-       
-       const handleRatingChange = (newValue: number) => {
-         if (readOnly) return;
-         
-         if (!isControlled) {
-           setInternalValue(newValue);
-         }
-         
-         if (onChange) {
-           onChange(newValue);
-         }
-       };
-       
-       return {
-         value,
-         handleRatingChange,
-         maxValue,
-         allowHalf,
-         readOnly
-       };
-     }
-     ```
-
-   - **Constants Definition**
-     - Define component-specific constants in `src/lib/constants/components.ts`
-     - Group related constants in a named export object
-     - Include selectors, class names, attributes, and default values
-     - Example:
-     ```typescript
-     export const RATING = {
-       SELECTORS: {
-         RATING: '.c-rating',
-         STAR: '.c-rating__star',
-         STAR_FULL: '.c-rating__star-full',
-         STAR_HALF: '.c-rating__star-half'
-       },
-       CLASSES: {
-         FULL: 'c-rating__star--full',
-         HALF: 'c-rating__star--half',
-         SMALL: 'c-rating--sm',
-         LARGE: 'c-rating--lg'
-       },
-       ATTRIBUTES: {
-         READONLY: 'data-readonly',
-         VALUE: 'data-value'
-       }
-     };
-     ```
-
-   - **Utility Functions**
-     - Create component-specific utility functions in `src/lib/utils/` when needed
-     - Keep functions pure and focused on a single responsibility
-     - Export functions individually for better tree-shaking
-     - Example:
-     ```typescript
-     // src/lib/utils/rating.ts
-     export function calculateRoundedRating(value: number, allowHalf: boolean): number {
-       return allowHalf ? Math.floor(value * 2) / 2 : Math.round(value);
-     }
-     ```
-
 ## Testing & Documentation
 
 1. **Storybook Stories**
+
    - Create comprehensive stories for all variants
    - Add proper documentation with usage examples
    - Test edge cases and different prop combinations
@@ -749,8 +865,8 @@ $darker-color: shade-color($primary, 20%);
 export const EdgePanel: React.FC<EdgePanelProps> = ({
   title,
   children,
-  position = 'start',
-  mode = 'slide',
+  position = "start",
+  mode = "slide",
   isOpen = false,
   onOpenChange,
   backdrop = true,
@@ -782,7 +898,8 @@ export const EdgePanel: React.FC<EdgePanelProps> = ({
 // Basic structure of vanilla JS class
 class ComponentName {
   constructor(element, options = {}) {
-    this.$element = typeof element === 'string' ? document.querySelector(element) : element;
+    this.$element =
+      typeof element === "string" ? document.querySelector(element) : element;
     this.options = { ...defaults, ...options };
     this._initialize();
   }
@@ -818,4 +935,4 @@ class ComponentName {
 - Clean up resources when components are destroyed
 - Implement lazy initialization where appropriate
 
-By following these guidelines, you'll create components that integrate seamlessly with the Atomix design system and provide a consistent, high-quality user experience. 
+By following these guidelines, you'll create components that integrate seamlessly with the Atomix design system and provide a consistent, high-quality user experience.
