@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Hero } from '../components/Hero';
-import { Button } from '../components/Button';
+import { Hero } from '../src/components/Hero/Hero';
+import { Button } from '../src/components/Button/Button';
 
 // Component categories for better organization
 const componentCategories = [
