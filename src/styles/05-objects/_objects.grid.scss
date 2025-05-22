@@ -3,11 +3,21 @@
 @use '../02-tools/tools.grid' as *;
 
 .o-grid {
-    @include make-row();
     --#{config.$prefix}gutter-y: #{grid.$grid-gutter-width};
+    @include make-row();
 
     &__col {
         @include make-col-ready();
+    }
+
+    &--no-gutters {
+       margin-right: 0;
+       margin-left: 0;
+
+       .o-grid__col {
+           padding-right: 0;
+           padding-left: 0;
+       }
     }
 }
 
