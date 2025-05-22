@@ -19,9 +19,9 @@ import useForkRef from '../../lib/utils/useForkRef';
  * // With half-star support
  * <Rating value={3.5} allowHalf maxValue={5} />
  */
-export const Rating = forwardRef<HTMLDivElement, RatingProps>(({ 
-  value,
-  defaultValue = 0,
+const Rating = forwardRef<HTMLDivElement, RatingProps>(({
+  value: valueProp = 0,
+  defaultValue,
   maxValue = 5,
   allowHalf = false,
   readOnly = false,
@@ -46,7 +46,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(({
     setFocused,
     handleKeyDown
   } = useRating({
-    value: value !== undefined ? value : defaultValue,
+    value: valueProp !== undefined ? valueProp : defaultValue,
     maxValue,
     allowHalf,
     readOnly,
@@ -119,7 +119,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(({
     import('./scripts/bundle').then(({ default: RatingClass }) => {
       if (internalRef.current) {
         ratingInstance.current = new RatingClass(internalRef.current, {
-          value: value !== undefined ? value : defaultValue,
+          value: valueProp !== undefined ? valueProp : defaultValue,
           maxValue,
           allowHalf,
           readOnly,
@@ -136,21 +136,21 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(({
         ratingInstance.current.destroy();
       }
     };
-  }, [useVanillaJS, value, defaultValue, maxValue, allowHalf, readOnly, size, color, onChange]);
+  }, [useVanillaJS, valueProp, defaultValue, maxValue, allowHalf, readOnly, size, color, onChange]);
   
   // Update vanilla JS implementation when props change
   useEffect(() => {
     if (!useVanillaJS || !ratingInstance.current) return;
     
     ratingInstance.current.updateOptions({
-      value: value !== undefined ? value : defaultValue,
+      value: valueProp !== undefined ? valueProp : defaultValue,
       maxValue,
       allowHalf,
       readOnly,
       size,
       color
     });
-  }, [useVanillaJS, value, defaultValue, maxValue, allowHalf, readOnly, size, color]);
+  }, [useVanillaJS, valueProp, defaultValue, maxValue, allowHalf, readOnly, size, color]);
   
   // Determine CSS classes
   const ratingClasses = [
@@ -277,4 +277,6 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(({
 
 Rating.displayName = 'Rating';
 
+export type { RatingProps };
+export { Rating };
 export default Rating;

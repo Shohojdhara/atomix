@@ -1,2 +1,6 @@
-export { default, Rating } from './Rating';
-export type { RatingProps } from './Rating';
+import Rating, { RatingProps } from './Rating';
+
+export { Rating };
+export type { RatingProps };
+
+export default Rating;

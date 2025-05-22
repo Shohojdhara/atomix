@@ -49,13 +49,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Basic form group with text input
-export const WithInput: Story = {
+// Basic form group with text
+export const Basic: Story = {
   args: {
-    label: 'Name',
-    htmlFor: 'name',
-    helperText: 'Enter your full name',
-    children: <Input id="name" placeholder="John Doe" />,
+    label: 'Username',
+    htmlFor: 'username',
+    helperText: 'Enter your username',
+    required: true,
+    children: <Input id="username" placeholder="Enter username" />,
   },
 };
 
@@ -72,7 +73,14 @@ export const Required: Story = {
 
 // With validation states
 export const ValidationStates: Story = {
-  render: () => (
+  args: {
+    children: <Input id="username" placeholder="Enter username" />,
+    label: 'Validation States',
+    htmlFor: 'username',
+    helperText: 'This is a helper text',
+    required: true
+  },
+  render: (args) => (
     <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <FormGroup
         label="Username"
@@ -97,61 +105,38 @@ export const ValidationStates: Story = {
 
 // Different form control types
 export const FormControls: Story = {
-  render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
-      <FormGroup label="Name" htmlFor="demo-name">
-        <Input id="demo-name" placeholder="Enter your name" />
+  args: {
+    children: <Input id="text-input" placeholder="Type something..." />,
+    label: 'Form Controls',
+    htmlFor: 'text-input'
+  },
+  render: (args) => (
+    <div style={{ display: 'grid', gap: '1rem', width: '100%', maxWidth: '400px' }}>
+      <FormGroup label="Text Input" htmlFor="text-input">
+        <Input id="text-input" placeholder="Type something..." />
       </FormGroup>
       
-      <FormGroup label="Country" htmlFor="demo-country">
-        <Select
-          id="demo-country"
+      <FormGroup label="Select" htmlFor="select">
+        <Select 
+          id="select" 
           options={[
-            { value: 'us', label: 'United States' },
-            { value: 'ca', label: 'Canada' },
-            { value: 'mx', label: 'Mexico' },
-          ]}
-          placeholder="Select a country"
+            { value: '', label: 'Select an option' },
+            { value: '1', label: 'Option 1' },
+            { value: '2', label: 'Option 2' },
+          ]} 
         />
       </FormGroup>
       
-      <FormGroup label="Message" htmlFor="demo-message">
-        <Textarea
-          id="demo-message"
-          rows={3}
-          placeholder="Enter your message"
-        />
+      <FormGroup label="Checkbox" htmlFor="checkbox">
+        <Checkbox id="checkbox" label="Check me" />
       </FormGroup>
       
-      <FormGroup>
-        <Checkbox
-          id="demo-agree"
-          label="I agree to the terms and conditions"
-        />
+      <FormGroup label="Radio" htmlFor="radio">
+        <Radio id="radio" name="radio-group" label="Select me" />
       </FormGroup>
       
-      <FormGroup label="Notification preference">
-        <div className="u-d-flex u-flex-column u-gap-2">
-          <Radio
-            id="notify-email"
-            name="notification"
-            value="email"
-            label="Email"
-            checked
-          />
-          <Radio
-            id="notify-sms"
-            name="notification"
-            value="sms"
-            label="SMS"
-          />
-          <Radio
-            id="notify-push"
-            name="notification"
-            value="push"
-            label="Push Notification"
-          />
-        </div>
+      <FormGroup label="Textarea" htmlFor="textarea">
+        <Textarea id="textarea" placeholder="Enter your message..." rows={3} />
       </FormGroup>
     </div>
   ),
@@ -159,33 +144,37 @@ export const FormControls: Story = {
 
 // Different sizes
 export const Sizes: Story = {
-  render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
-      <FormGroup
-        label="Small"
+  args: {
+    children: <Input id="small-input" size="sm" placeholder="Small input..." />,
+    label: 'Input Sizes',
+    htmlFor: 'small-input',
+    size: 'sm'
+  },
+  render: (args) => (
+    <div style={{ display: 'grid', gap: '1rem', width: '100%', maxWidth: '400px' }}>
+      <FormGroup 
+        label="Small Input" 
         htmlFor="small-input"
         size="sm"
-        helperText="This is a small form group"
       >
-        <Input id="small-input" size="sm" placeholder="Small input" />
+        <Input id="small-input" size="sm" placeholder="Small input..." />
       </FormGroup>
       
-      <FormGroup
-        label="Medium (Default)"
+      <FormGroup 
+        label="Medium Input (default)" 
         htmlFor="medium-input"
-        helperText="This is a medium form group"
+        size="md"
       >
-        <Input id="medium-input" placeholder="Medium input" />
+        <Input id="medium-input" size="md" placeholder="Medium input..." />
       </FormGroup>
       
-      <FormGroup
-        label="Large"
+      <FormGroup 
+        label="Large Input" 
         htmlFor="large-input"
         size="lg"
-        helperText="This is a large form group"
       >
-        <Input id="large-input" size="lg" placeholder="Large input" />
+        <Input id="large-input" size="lg" placeholder="Large input..." />
       </FormGroup>
     </div>
   ),
-}; 
+};

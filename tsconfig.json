@@ -5,7 +5,9 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@atomix-ux/react": ["./src/components/index.ts"],
+      "@atomix-ux/react/*": ["src/components/*"]
     },
     "strict": true,
     "esModuleInterop": true,
@@ -13,8 +15,12 @@
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/types/**/*"],
   "exclude": ["node_modules"]
 }

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Rating } from '../Rating';
 import { Button } from '../Button';
+import type { ThemeColor } from '../../lib/types/components';
 
 export interface ProductReviewProps {
   /**
@@ -31,7 +32,7 @@ export interface ProductReviewProps {
   /**
    * Color theme for the rating stars
    */
-  ratingColor?: string;
+  ratingColor?: ThemeColor;
   
   /**
    * Callback when review is submitted
@@ -53,7 +54,7 @@ export const ProductReview: React.FC<ProductReviewProps> = ({
   initialRating = 0,
   maxRating = 5,
   allowHalf = true,
-  ratingColor = 'warning',
+  ratingColor = 'warning' as ThemeColor,
   onSubmit,
   className = '',
 }) => {
