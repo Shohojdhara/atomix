@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './docs/App';
+import App from './App';
 import './styles/index.scss';
 
 // Add error handling
@@ -31,7 +31,7 @@ if (rootElement) {
 // Also initialize any vanilla JS components
 try {
   console.log("Importing main.ts");
-  import('./main.ts')
+  import('../src/main.ts')
     .then(() => console.log("main.ts imported successfully"))
     .catch(err => console.error("Error importing main.ts:", err));
 } catch (error) {

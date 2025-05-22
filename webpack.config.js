@@ -309,7 +309,7 @@ const getDocsConfig = (env, argv) => {
     mode: isProduction ? 'production' : 'development',
     entry: {
       // Documentation app
-      'docs': './src/main.tsx',
+      'docs': './docs/main.tsx',
     },
     devtool: isProduction ? 'source-map' : 'eval-source-map',
     output: {
