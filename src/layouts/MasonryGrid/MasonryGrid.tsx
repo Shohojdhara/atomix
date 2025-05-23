@@ -1,4 +1,5 @@
-import React, { forwardRef, HTMLAttributes, ReactNode, useEffect, useImperativeHandle, useRef, useState, useCallback, Children, cloneElement, isValidElement } from 'react';
+import React, { forwardRef, HTMLAttributes, ReactNode, useEffect, useImperativeHandle, useRef, useState, useCallback, useMemo, Children, cloneElement, isValidElement } from 'react';
+// Import styles for scoped CSS modules
 
 export interface MasonryGridProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -86,172 +87,162 @@ interface MasonryItemData {
  * ```
  */
 export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
-  ({ 
-    children, 
-    className = '', 
-    xs = 1,
-    sm,
-    md,
-    lg,
-    xl,
-    xxl,
-    gap = 16,
-    animate = true,
-    imagesLoaded = true,
-    onLayoutComplete,
-    onImageLoad,
-    ...props 
-  }, ref) => {
+  (
+    {
+      children,
+      className = '',
+      xs = 1,
+      sm,
+      md,
+      lg,
+      xl,
+      xxl,
+      gap = 16,
+      animate = true,
+      imagesLoaded = true,
+      onLayoutComplete,
+      onImageLoad,
+      ...props
+    },
+    ref
+  ) => {
+    // === REFS & STATE ===
     const [columns, setColumns] = useState(xs);
-    const [containerWidth, setContainerWidth] = useState(0);
-    const [items, setItems] = useState<MasonryItemData[]>([]);
     const [positions, setPositions] = useState<ItemPosition[]>([]);
     const [layoutComplete, setLayoutComplete] = useState(false);
+    const [loadingImages, setLoadingImages] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-    const resizeObserver = useRef<ResizeObserver | null>(null);
-    const animationFrame = useRef<number | null>(null);
     const columnHeights = useRef<number[]>([]);
-    const imagesLoadedCount = useRef<number>(0);
-    const totalImagesCount = useRef<number>(0);
+    const imagesLoadedCount = useRef(0);
+    const totalImagesCount = useRef(0);
     const imageElements = useRef<Map<HTMLImageElement, boolean>>(new Map());
-    
-    // Define a custom type for HTMLImageElement with our added property
+
+    useEffect(() => {
+      if (imagesLoaded) setLoadingImages(true);
+      else setLoadingImages(false);
+    }, [columns, imagesLoaded]);
+
+
+    // Types
     type MasonryImageElement = HTMLImageElement & {
       _masonryLoadHandler?: EventListener;
     };
-    
-    // Forward the ref to parent components
+
+    // Forward ref for parent components
     useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
-    
-    // Update column count based on breakpoints
-    const updateColumns = useCallback(() => {
+
+    // === HANDLE RESPONSIVE COLUMNS ===
+    const getResponsiveColumns = useCallback(() => {
       const width = window.innerWidth;
-      
-      // Use the same breakpoints as defined in the grid system
-      if (width >= 1400 && xxl !== undefined) {
-        setColumns(xxl);
-      } else if (width >= 1200 && xl !== undefined) {
-        setColumns(xl);
-      } else if (width >= 992 && lg !== undefined) {
-        setColumns(lg);
-      } else if (width >= 768 && md !== undefined) {
-        setColumns(md);
-      } else if (width >= 576 && sm !== undefined) {
-        setColumns(sm);
-      } else {
-        setColumns(xs);
-      }
+      if (width >= 1400 && xxl !== undefined) return xxl;
+      if (width >= 1200 && xl !== undefined) return xl;
+      if (width >= 992 && lg !== undefined) return lg;
+      if (width >= 768 && md !== undefined) return md;
+      if (width >= 576 && sm !== undefined) return sm;
+      return xs;
     }, [xs, sm, md, lg, xl, xxl]);
-    
-    // Process children into items with refs
+
+    useEffect(() => {
+      const handleResize = () => setColumns(getResponsiveColumns());
+      handleResize(); // Set on mount
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, [getResponsiveColumns]);
+
+    // === PREPARE ITEMS WITH REFS ===
+    const [items, setItems] = useState<MasonryItemData[]>([]);
+
     useEffect(() => {
       const newItems: MasonryItemData[] = [];
-      
-      // Process children to extract item data
-      React.Children.forEach(children, (child, index) => {
-        if (!React.isValidElement(child)) return;
-        
+      Children.forEach(children, (child, index) => {
+        if (!isValidElement(child)) return;
         newItems.push({
           id: child.key?.toString() || `masonry-item-${index}`,
           element: child,
           position: null,
-          ref: React.createRef<HTMLDivElement>()
+          ref: React.createRef<HTMLDivElement>(),
         });
       });
-      
       setItems(newItems);
-      
-      // Reset layout completion state when items change
-      if (imagesLoaded && newItems.length > 0) {
-        setLayoutComplete(false);
-      }
-    }, [children, imagesLoaded]);
-    
-    // Handle individual image loading
-    const handleImageLoad = useCallback((img: HTMLImageElement) => {
-      // Skip if this image was already processed
-      if (imageElements.current.get(img)) return;
-      
-      // Mark this image as loaded
-      imageElements.current.set(img, true);
-      imagesLoadedCount.current += 1;
-      
-      // Find the item containing this image and mark it as loaded
-      if (containerRef.current && imagesLoaded) {
-        // Find the closest parent item (direct child of masonry grid)
-        let itemElement = img.closest('.o-masonry-grid > div');
-        if (itemElement) {
-          // Add a class to the item to show it's loaded
-          itemElement.classList.add('o-masonry-grid__item-loaded');
-          itemElement.classList.remove('o-masonry-grid__item-loading');
+    }, [children]);
+
+    // === TRACK & MANAGE IMAGES ===
+
+    const handleImageLoad = useCallback(
+      (img: HTMLImageElement) => {
+        if (imageElements.current.get(img)) return;
+        imageElements.current.set(img, true);
+        imagesLoadedCount.current += 1;
+        // Add loaded class for animation
+        if (containerRef.current && imagesLoaded) {
+          const itemElement = img.closest('.o-masonry-grid > div');
+          if (itemElement) {
+            // FORCE a sync browser reflow so offsetHeight reflects the new image size before measuring Masonry
+            void (itemElement as HTMLElement).offsetHeight;
+            itemElement.classList.add('o-masonry-grid__item-loaded');
+            itemElement.classList.remove('o-masonry-grid__item-loading');
+          }
         }
-      }
-      
-      // Recalculate layout immediately when an image loads
-      calculateLayout();
-      
-      // Notify about progress
-      if (onImageLoad) {
-        onImageLoad(imagesLoadedCount.current, totalImagesCount.current);
-      }
-      
-      // Check if all images are loaded
-      if (imagesLoadedCount.current >= totalImagesCount.current && !layoutComplete) {
-        setLayoutComplete(true);
-        if (onLayoutComplete) {
-          onLayoutComplete();
-        }
-      }
-    }, [onImageLoad, onLayoutComplete, layoutComplete, imagesLoaded]);
+        // Ensure layout is recalculated after DOM paints the item image (prevents overlap on slow/late image loads)
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            calculateLayout();
+          });
+        });
+        onImageLoad?.(imagesLoadedCount.current, totalImagesCount.current);
     
-    // Find and track all images within the grid items
+        // If all images have loaded, update loading state and complete layout
+        if (
+          imagesLoadedCount.current >= totalImagesCount.current &&
+          totalImagesCount.current > 0
+        ) {
+          setLayoutComplete(true);
+          setLoadingImages(false); // This ensures the loading class is removed *immediately* after images load
+          // Force a double requestAnimationFrame for final layout calculation after all images are loaded (guarantees DOM paint)
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              calculateLayout();
+              // As a failsafe, if still present for some render lag, force another setLoadingImages(false)
+              setLoadingImages(false);
+            });
+          });
+          onLayoutComplete?.();
+        }
+      },
+      [onImageLoad, onLayoutComplete, imagesLoaded]
+    );
+
     const trackImages = useCallback(() => {
       if (!imagesLoaded || !containerRef.current) return;
-      
-      // Reset tracking
       imageElements.current.clear();
       imagesLoadedCount.current = 0;
-      
-      // Find all images in the container
       const images = containerRef.current.querySelectorAll('img');
       totalImagesCount.current = images.length;
-      
       if (images.length === 0) {
-        // No images to load, calculate layout immediately
         setLayoutComplete(true);
-        if (onLayoutComplete) {
-          onLayoutComplete();
-        }
+        setLoadingImages(false);
+        onLayoutComplete?.();
         return;
       }
-      
-      // Track load events for all images
-      images.forEach(img => {
+      setLoadingImages(true);
+      images.forEach((img) => {
         const masonryImg = img as MasonryImageElement;
-        
-        // Find the parent item and add loading class
         const itemElement = img.closest('.o-masonry-grid > div');
         if (itemElement) {
           itemElement.classList.add('o-masonry-grid__item-loading');
         }
-        
         if (img.complete) {
-          // Image already loaded
           handleImageLoad(img);
         } else {
-          // Add load event listener
           const loadHandler = () => handleImageLoad(img);
           img.addEventListener('load', loadHandler);
-          img.addEventListener('error', loadHandler); // Count errors as loaded to prevent hanging
-          
-          // Store event handlers for cleanup
+          img.addEventListener('error', loadHandler);
           masonryImg._masonryLoadHandler = loadHandler;
         }
       });
-      
-      // Cleanup function to remove event listeners
+      // Cleanup
       return () => {
-        images.forEach(img => {
+        images.forEach((img) => {
           const masonryImg = img as MasonryImageElement;
           if (masonryImg._masonryLoadHandler) {
             img.removeEventListener('load', masonryImg._masonryLoadHandler);
@@ -261,150 +252,138 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
         });
       };
     }, [imagesLoaded, handleImageLoad, onLayoutComplete]);
-    
-    // Calculate positions of items
+
+    // === MANAGE ITEM LAYOUT ===
     const calculateLayout = useCallback(() => {
       if (!containerRef.current || items.length === 0) return;
-      
       const containerWidth = containerRef.current.offsetWidth;
-      const colWidth = (containerWidth - (gap * (columns - 1))) / columns;
-      
-      // Initialize column heights
+      const colWidth = (containerWidth - gap * (columns - 1)) / columns;
       columnHeights.current = Array(columns).fill(0);
-      
       const newPositions: ItemPosition[] = [];
-      
-      // Position each item
       items.forEach((item, index) => {
         if (item.ref.current) {
           // Find the shortest column
-          const shortestColIndex = columnHeights.current.indexOf(
+          const shortestCol = columnHeights.current.indexOf(
             Math.min(...columnHeights.current)
           );
-          
-          const left = shortestColIndex * (colWidth + gap);
-          const top = columnHeights.current[shortestColIndex];
-          
-          // Get the height of the current item
+          const left = shortestCol * (colWidth + gap);
+          const top = columnHeights.current[shortestCol];
           const height = item.ref.current.offsetHeight;
-          
-          // Update the height of the shortest column
-          columnHeights.current[shortestColIndex] = top + height + gap;
-          
-          // Store the position
+          columnHeights.current[shortestCol] = top + height + gap;
           newPositions[index] = {
             left,
             top,
             width: colWidth,
-            height
+            height,
           };
         }
       });
-      
       setPositions(newPositions);
-      setContainerWidth(containerWidth);
     }, [items, columns, gap]);
-    
-    // Set up resize observer and event listeners
+
+    // === OBSERVE CONTAINER RESIZE ===
     useEffect(() => {
-      updateColumns();
-      
-      // Create ResizeObserver to watch container size changes
-      resizeObserver.current = new ResizeObserver(() => {
-        if (animationFrame.current) {
-          cancelAnimationFrame(animationFrame.current);
-        }
-        
-        animationFrame.current = requestAnimationFrame(() => {
-          calculateLayout();
-        });
+      if (!containerRef.current) return;
+      let animationFrame: number | null = null;
+      const observer = new ResizeObserver(() => {
+        if (animationFrame) cancelAnimationFrame(animationFrame);
+        animationFrame = requestAnimationFrame(() => calculateLayout());
       });
-      
-      if (containerRef.current) {
-        resizeObserver.current.observe(containerRef.current);
-      }
-      
-      // Update on window resize
-      window.addEventListener('resize', updateColumns);
-      
+      observer.observe(containerRef.current);
       return () => {
-        if (resizeObserver.current) {
-          resizeObserver.current.disconnect();
-        }
-        
-        if (animationFrame.current) {
-          cancelAnimationFrame(animationFrame.current);
-        }
-        
-        window.removeEventListener('resize', updateColumns);
+        observer.disconnect();
+        if (animationFrame) cancelAnimationFrame(animationFrame);
       };
-    }, [updateColumns, calculateLayout]);
-    
-    // Recalculate layout when items or columns change
-    useEffect(() => {
-      // Wait for the next frame to ensure refs are populated
-      setTimeout(() => {
-        if (imagesLoaded) {
-          // If waiting for images, trackImages will trigger layout when ready
-          trackImages();
-        } else {
-          // Otherwise calculate layout immediately
-          calculateLayout();
-        }
-      }, 0);
+    }, [calculateLayout]);
+
+    // === LAYOUT EFFECT (REPLACES setTimeout) ===
+    React.useLayoutEffect(() => {
+      if (imagesLoaded) {
+        const cleanup = trackImages();
+        return cleanup;
+      } else {
+        calculateLayout();
+        setLayoutComplete(true);
+        setLoadingImages(false);
+      }
+      // Only reset layoutComplete when items or columns change
+      // eslint-disable-next-line
     }, [items, columns, calculateLayout, imagesLoaded, trackImages]);
-    
-    // Calculate container height based on the tallest column
-    const containerHeight = columnHeights.current.length > 0 
-      ? Math.max(...columnHeights.current) 
-      : 0;
-    
-    const classes = ['o-masonry-grid'];
-    
-    if (className) {
-      classes.push(className);
-    }
-    
-    if (animate) {
-      classes.push('o-masonry-grid--animate');
-    }
-    
-    // Add a class to indicate images are still loading
-    if (imagesLoaded && totalImagesCount.current > 0 && !layoutComplete) {
-      classes.push('o-masonry-grid--loading-images');
-    }
-    
+
+    // === NEW: Add ResizeObservers to all grid items for bulletproof image+content measurement ===
+    React.useEffect(() => {
+      // Clean up old observers if items ever change
+      const observers: ResizeObserver[] = [];
+      items.forEach((item) => {
+        if (item.ref.current) {
+          const obs = new ResizeObserver(() => {
+            // Double rAF: ensures layout only runs after DOM/paint/async renders
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                calculateLayout();
+              });
+            });
+          });
+          obs.observe(item.ref.current);
+          observers.push(obs);
+        }
+      });
+      return () => {
+        observers.forEach((obs) => obs.disconnect());
+      };
+    }, [items, calculateLayout]);
+
+    // Ensure loadingImages state resets when items/columns/imagesLoaded change
+
+    // === DETERMINE CONTAINER HEIGHT ===
+    const containerHeight =
+      columnHeights.current.length > 0
+        ? Math.max(...columnHeights.current)
+        : 0;
+
+    // === DETERMINE CLASSES ===
+    const classes = [
+      'o-masonry-grid',
+      className,
+      animate ? 'o-masonry-grid--animate' : '',
+      loadingImages ? 'o-masonry-grid--loading-images' : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
+
+    // === RENDER ===
+
+
+
     return (
-      <div 
+      <div
         ref={containerRef}
-        className={classes.join(' ')} 
-        style={{ 
+        className={classes}
+        style={{
           position: 'relative',
           width: '100%',
           height: `${containerHeight}px`,
-          ...props.style 
+          ...props.style,
         }}
         {...props}
       >
         {items.map((item, index) => {
           const position = positions[index];
-          
           if (!position) {
             return (
-              <div 
-                key={index} 
-                ref={item.ref} 
+              <div
+                key={item.id}
+                ref={item.ref}
                 style={{ opacity: 0, position: 'absolute' }}
               >
                 {item.element}
               </div>
             );
           }
-          
           return (
-            <div 
-              key={index} 
-              ref={item.ref} 
+            <div
+              key={item.id}
+              ref={item.ref}
               className="o-masonry-grid__item"
               style={{
                 position: 'absolute',
@@ -424,3 +403,5 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
 );
 
 MasonryGrid.displayName = 'MasonryGrid';
+
+// Ensure loadingImages state resets when items/columns/imagesLoaded change
