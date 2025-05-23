@@ -27,19 +27,21 @@ interface UseAccordionResult {
  * @param initialProps - Initial accordion properties
  * @returns Accordion state and methods
  */
-export function useAccordion(initialProps?: Partial<AccordionProps>): UseAccordionResult {
+export function useAccordion(initialProps?: Partial<AccordionProps> & { isOpen?: boolean; onOpenChange?: (open: boolean) => void }): UseAccordionResult {
   // Default accordion properties
-  const defaultProps: Partial<AccordionProps> = {
+  const defaultProps: Partial<AccordionProps> & { isOpen?: boolean; onOpenChange?: (open: boolean) => void } = {
     defaultOpen: false,
     disabled: false,
     iconPosition: 'right' as IconPosition,
     ...initialProps
   };
 
-  const [state, setState] = useState<AccordionState>({
-    isOpen: defaultProps.defaultOpen || false,
-    panelHeight: defaultProps.defaultOpen ? 'auto' : '0px'
-  });
+  // Controlled/uncontrolled open state
+  const isControlled = typeof defaultProps.isOpen === 'boolean';
+  const [internalOpen, setInternalOpen] = useState(defaultProps.defaultOpen || false);
+  const isOpen = isControlled ? defaultProps.isOpen! : internalOpen;
+
+  const [panelHeight, setPanelHeight] = useState<string>(isOpen ? 'auto' : '0px');
 
   const panelRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -49,10 +51,11 @@ export function useAccordion(initialProps?: Partial<AccordionProps>): UseAccordi
    */
   const toggle = (): void => {
     if (!defaultProps.disabled) {
-      setState(prevState => ({
-        ...prevState,
-        isOpen: !prevState.isOpen
-      }));
+      if (isControlled) {
+        defaultProps.onOpenChange && defaultProps.onOpenChange(!isOpen);
+      } else {
+        setInternalOpen(prev => !prev);
+      }
     }
   };
 
@@ -61,12 +64,9 @@ export function useAccordion(initialProps?: Partial<AccordionProps>): UseAccordi
    */
   const updatePanelHeight = (): void => {
     if (contentRef.current && panelRef.current) {
-      const height = state.isOpen ? `${contentRef.current.clientHeight}px` : '0px';
+      const height = isOpen ? `${contentRef.current.clientHeight}px` : '0px';
       panelRef.current.style.setProperty(ACCORDION.CSS_VARS.PANEL_HEIGHT, height);
-      setState(prevState => ({
-        ...prevState,
-        panelHeight: height
-      }));
+      setPanelHeight(height);
     }
   };
 
@@ -75,27 +75,27 @@ export function useAccordion(initialProps?: Partial<AccordionProps>): UseAccordi
    */
   useEffect(() => {
     updatePanelHeight();
-  }, [state.isOpen]);
+  }, [isOpen]);
 
   /**
    * Effect to handle window resize and update panel height
    */
   useEffect(() => {
     const handleResize = (): void => {
-      if (state.isOpen) {
+      if (isOpen) {
         updatePanelHeight();
       }
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [state.isOpen]);
+  }, [isOpen]);
 
   /**
    * Generate accordion class names based on state
    */
   const generateClassNames = (baseClassName: string = ''): string => {
-    const openClass = state.isOpen ? ACCORDION.CLASSES.IS_OPEN : '';
+    const openClass = isOpen ? ACCORDION.CLASSES.IS_OPEN : '';
     const disabledClass = defaultProps.disabled ? ACCORDION.CLASSES.IS_DISABLED : '';
     return `c-accordion ${openClass} ${disabledClass} ${baseClassName}`.trim();
   };
@@ -109,7 +109,7 @@ export function useAccordion(initialProps?: Partial<AccordionProps>): UseAccordi
   };
 
   return {
-    state,
+    state: { isOpen, panelHeight },
     toggle,
     updatePanelHeight,
     panelRef,

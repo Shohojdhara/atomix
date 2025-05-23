@@ -76,6 +76,7 @@
     color: var(--#{config.$prefix}accordion-body-color);
     padding: var(--#{config.$prefix}accordion-body-padding-y) var(--#{config.$prefix}accordion-body-padding-x);
     background-color: var(--#{config.$prefix}accordion-body-bg);
+    border-radius: 0 0 var(--#{config.$prefix}accordion-border-radius) var(--#{config.$prefix}accordion-border-radius);
   }
 
   &:focus, &.is-focused {
@@ -85,6 +86,10 @@
   &.is-open {
     #{$root}__icon {
       transform: rotate(var(--#{config.$prefix}accordion-icon-transform));
+    }
+
+    #{$root}__header {
+      border-radius: var(--#{config.$prefix}accordion-border-radius)  var(--#{config.$prefix}accordion-border-radius) 0 0;
     }
   }
 

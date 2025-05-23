@@ -16,8 +16,13 @@ const meta = {
   component: Accordion,
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'The Accordion component follows Atomix guidelines for accessibility, styling, and state. It supports both controlled and uncontrolled modes, custom icons, and full keyboard navigation.',
+      },
+    },
   },
-  tags: ['autodocs'],
   argTypes: {
     iconPosition: {
       control: { type: 'radio' },
@@ -215,4 +220,39 @@ export const AllVariants: Story = {
       </div>
     </div>
   )
+};
+
+// Controlled Accordion
+export const Controlled: Story = {
+  args: {
+    title: 'Controlled Accordion',
+    children: <p>This accordion is controlled by external state.</p>,
+  },
+  render: () => {
+    const [open, setOpen] = React.useState(false);
+    return (
+      <div>
+        <button
+          className="c-btn c-btn--primary u-mb-3"
+          onClick={() => setOpen((prev) => !prev)}
+        >
+          Toggle Accordion (Controlled)
+        </button>
+        <Accordion
+          title="Controlled Accordion"
+          isOpen={open}
+          onOpenChange={setOpen}
+        >
+          <p>This accordion is controlled by external state.</p>
+        </Accordion>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'This story demonstrates a controlled Accordion using the `isOpen` and `onOpenChange` props.',
+      },
+    },
+  },
 }; 

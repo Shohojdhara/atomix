@@ -12,14 +12,14 @@ $accordion-border-radius:           radius.$border-radius-sm !default;
 $accordion-body-padding-x:          $accordion-padding-x !default;
 $accordion-body-padding-y:          8px !default;
 $accordion-body-color:              var(--#{config.$prefix}body-color) !default;
-$accordion-body-bg:                 var(--#{config.$prefix}body-bg) !default;
+$accordion-body-bg:                 var(--#{config.$prefix}secondary-bg-subtle) !default;
 
 $accordion-header-padding-x:        $accordion-padding-x !default;
 $accordion-header-padding-y:        $accordion-padding-y !default;
 $accordion-header-color:            var(--#{config.$prefix}body-color) !default;
-$accordion-header-bg:               var(--#{config.$prefix}body-bg) !default;
+$accordion-header-bg:               var(--#{config.$prefix}secondary-bg-subtle) !default;
 
-$accordion-header-bg-hover:         var(--#{config.$prefix}secondary-bg-subtle) !default;
+$accordion-header-bg-hover:         var(--#{config.$prefix}tertiary-bg-subtle) !default;
 
 $accordion-icon-size:               20px !default;
 $accordion-icon-color:              var(--#{config.$prefix}body-color) !default;
