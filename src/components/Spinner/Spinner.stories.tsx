@@ -12,7 +12,7 @@ const meta = {
     variant: {
       control: { type: 'select' },
       options: [
-        'primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark'
+        'primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'
       ],
       description: 'The color variant of the spinner'
     },
@@ -60,7 +60,7 @@ export const ColorVariants: Story = {
       <Spinner variant="success" />
       <Spinner variant="info" />
       <Spinner variant="warning" />
-      <Spinner variant="danger" />
+      <Spinner variant="error" />
       <Spinner variant="light" />
       <Spinner variant="dark" />
     </div>
