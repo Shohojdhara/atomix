@@ -16,7 +16,7 @@ $card-text-color:                   var(--#{config.$prefix}secondary-text-emphas
 $card-text-font-size:               fonts.$font-size-sm !default;
 
 $card-border-width:                 1px !default;
-$card-border-color:                 var(--#{config.$prefix}border-primary-subtle) !default;
+$card-border-color:                 var(--#{config.$prefix}primary-border-subtle) !default;
 
 $card-border-radius:                var(--#{config.$prefix}border-radius-lg) !default;
 $card-image-border-radius:          $card-border-radius !default;
@@ -24,8 +24,8 @@ $card-image-border-radius:          $card-border-radius !default;
 $card-boxshadow:                    null !default;
 $card-height:                       null !default;
 
-$card-bg:                           var(--#{config.$prefix}secondary-bg-subtle) !default;
-$card-bg-hover:                     var(--#{config.$prefix}tertiary-bg-subtle) !default;
+$card-bg:                           var(--#{config.$prefix}primary-bg-subtle) !default;
+$card-bg-hover:                     var(--#{config.$prefix}secondary-bg-subtle) !default;
 
 
 $card-icon-size:                    20px !default;

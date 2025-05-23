@@ -57,7 +57,6 @@
 
   &__body {
     position: relative;
-    padding-top: var(--#{$prefix}card-row-spacer-y);
   }
 
   &__title {
@@ -77,7 +76,7 @@
     gap: var(--#{$prefix}card-action-spacer-y);
     margin-top: var(--#{$prefix}card-action-spacer-y);
   }
-  // @TODO Have to create color varient;
+
   &__icon {
     display: inline-flex;
     font-size: var(--#{$prefix}card-icon-size);
@@ -140,5 +139,14 @@
         var(--#{$prefix}card-row-spacer-x);
       padding-top: 0;
     }
+  }
+}
+
+// Elevation effect for ElevationCard
+.is-elevated {
+  .c-card {
+    box-shadow: var(--#{$prefix}box-shadow-lg, 0 16px 48px rgba(0,0,0,0.175));
+    z-index: 1;
+    transition: box-shadow 0.2s cubic-bezier(0.4,0,0.2,1);
   }
 }

@@ -104,28 +104,27 @@ export const Card: React.FC<CardProps> = ({
       onClick={onClick}
       {...rest}
     >
-      {header && (
+      {(image || icon || header) && (
         <div className={CARD.SELECTORS.HEADER.substring(1)}>
-          {header}
-        </div>
-      )}
-      
-      {image && (
-        <img 
-          src={image} 
-          alt={imageAlt} 
-          className={CARD.SELECTORS.IMAGE.substring(1)} 
-        />
-      )}
-      
-      {icon && (
-        <div className={CARD.SELECTORS.ICON.substring(1)}>
-          {icon}
+            {header}
+            {image && (
+              <img 
+                src={image} 
+                alt={imageAlt} 
+                className={CARD.SELECTORS.IMAGE.substring(1)} 
+              />
+            )}
+            
+            {icon && (
+              <div className={CARD.SELECTORS.ICON.substring(1)}>
+                {icon}
+              </div>
+            )}
         </div>
       )}
       
       <div className={CARD.SELECTORS.BODY.substring(1)}>
-        {title && (
+        {(title ) && (
           <h3 className={CARD.SELECTORS.TITLE.substring(1)}>
             {title}
           </h3>
@@ -138,13 +137,13 @@ export const Card: React.FC<CardProps> = ({
         )}
         
         {children}
-        
-        {actions && (
-          <div className={CARD.SELECTORS.ACTIONS.substring(1)}>
-            {actions}
-          </div>
-        )}
       </div>
+        
+      {actions && (
+        <div className={CARD.SELECTORS.ACTIONS.substring(1)}>
+          {actions}
+        </div>
+      )}
       
       {footer && (
         <div className={CARD.SELECTORS.FOOTER.substring(1)}>
