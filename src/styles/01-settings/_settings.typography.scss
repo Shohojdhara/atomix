@@ -71,16 +71,3 @@ $h6-letter-spaceing:            -0.5px !default;
 
 $paragraph-margin-bottom:       0 !default;
 $body-text-align:              null !default;
-
-
-$font-sizes: (
-	base: $font-size-base,
-	sm: $font-size-sm,
-	lg: $font-size-lg,
-  1: $h1-font-size,
-  2: $h2-font-size,
-  3: $h3-font-size,
-  4: $h4-font-size,
-  5: $h5-font-size,
-  6: $h6-font-size
-) !default;

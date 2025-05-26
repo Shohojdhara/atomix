@@ -262,3 +262,22 @@ $utilities-links-underline: map.merge(
     "white": $white
   )
 ) !default;
+
+
+$shadows: (
+  "shadow": var(--#{config.$prefix}box-shadow),
+  "shadow-xs": var(--#{config.$prefix}box-shadow-xs),
+  "shadow-sm": var(--#{config.$prefix}box-shadow-sm),
+  "shadow-lg": var(--#{config.$prefix}box-shadow-lg),
+  "shadow-xl": var(--#{config.$prefix}box-shadow-xl),
+  "shadow-inset": var(--#{config.$prefix}box-shadow-inset)
+) !default;
+
+$shadows-dark: (
+  "shadow": var(--#{config.$prefix}box-shadow-dark),
+  "shadow-xs": var(--#{config.$prefix}box-shadow-xs-dark),
+  "shadow-sm": var(--#{config.$prefix}box-shadow-sm-dark),
+  "shadow-lg": var(--#{config.$prefix}box-shadow-lg-dark),
+  "shadow-xl": var(--#{config.$prefix}box-shadow-xl-dark),
+  "shadow-inset": var(--#{config.$prefix}box-shadow-inset-dark)
+) !default;

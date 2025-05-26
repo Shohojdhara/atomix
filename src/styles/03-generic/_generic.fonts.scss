@@ -20,26 +20,3 @@
 // Condensed versions
 @include fonts.font-face('Helvetica Neue Condensed', 'HelveticaNeue', 'HelveticaNeue-CondensedBold', $font-weight-bold, normal);
 @include fonts.font-face('Helvetica Neue Condensed', 'HelveticaNeue', 'HelveticaNeue-CondensedBlack', $font-weight-black, normal);
-
-// Font smoothing for better rendering on modern browsers
-html {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-
-// Base font setup
-body {
-  font-family: $font-family-base;
-  font-weight: $font-weight-base;
-  font-size: $font-size-base;
-  line-height: $line-height-base;
-}
-
-// Heading font setup
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: $headings-font-family;
-  font-weight: $headings-font-weight;
-  line-height: $headings-line-height;
-} 

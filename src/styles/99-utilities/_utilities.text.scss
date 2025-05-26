@@ -15,7 +15,10 @@ $utilities-text: (
   'font-style': (
     property: font-style,
     class: u-fst,
-    values: italic normal
+    values: (
+      italic: italic,
+      normal: normal,
+    )
   ),
   'font-weight': (
     property: font-weight,

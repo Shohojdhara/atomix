@@ -54,7 +54,7 @@ $utility-defaults: (
         }
       }
     } @else {
-      .#{map.get($utility, class)}#{$infix}-#{"" + $key} {
+      .#{map.get($utility, class)}#{$infix}#{if($key, '-#{$key}', '')} {
         @each $property in $properties {
           #{$property}: $value if(map.get($utility, rtl), null, !important);
         }
