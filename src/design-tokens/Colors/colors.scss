@@ -45,11 +45,20 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(.4,2,.6,1);
+  transition: all 0.1s ease-out ;
+
 
   &:hover {
     transform: translateY(-20px);
-    border-radius: 0 var(--atomix-border-radius) var(--atomix-border-radius)  0;
+    border-radius: var(--atomix-border-radius) var(--atomix-border-radius)  0 0;
+  }
+
+  &.is-right-hover {
+    border-radius: 4px 0 4px 0px;
+  }
+
+  &.is-left-hover {
+    border-radius: 0 4px 0 4px ;
   }
 
   .color-box {
@@ -64,7 +73,6 @@
   .color-info {
     padding: 0.75rem;
     background-color: var(--atomix-primary-bg);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
   .color-name {
@@ -95,7 +103,7 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .color-palette .color-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
 }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import './colors.scss';
 
@@ -6,17 +6,11 @@ interface ColorSwatchProps {
   name: string;
   value: string;
   isDark?: boolean;
-  isPrevHover?: boolean;
-  isNextHover?: boolean;
-  onHover?: () => void;
-  onUnhover?: () => void;
 }
 
-const ColorSwatch = ({ name, value, isDark = false, isPrevHover, isNextHover, onHover, onUnhover }: ColorSwatchProps) => (
+const ColorSwatch = ({ name, value, isDark = false }: ColorSwatchProps) => (
   <div
-    className={`color-swatch${isPrevHover ? ' is-hover-prev' : ''}${isNextHover ? ' is-hover-next' : ''}`}
-    onMouseEnter={onHover}
-    onMouseLeave={onUnhover}
+    className={`color-swatch`}
   >
     <div 
       className="color-box" 
@@ -37,45 +31,131 @@ interface ColorPaletteProps {
   isDark?: boolean;
 }
 
+function useWindowWidth() {
+  const [width, setWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  return width;
+}
+
 const ColorPalette = ({ title, colors, isDark = false }: ColorPaletteProps) => {
-  const [hoveredIdx, setHoveredIdx] = React.useState<number | null>(null);
   const colorEntries = Object.entries(colors);
+  const width = useWindowWidth();
+  const paletteRef = useRef<HTMLDivElement>(null);
+  const [mousePosX, setMousePosX] = useState<number | null>(null);
+  const [closestSwatchIdx, setClosestSwatchIdx] = useState<number | null>(null);
+
+  let maxLift = -20;
+  if (width < 480) {
+    maxLift = -10;
+  } else if (width < 768) {
+    maxLift = -15;
+  }
+
+  useEffect(() => {
+    const paletteElement = paletteRef.current;
+    if (!paletteElement) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = paletteElement.getBoundingClientRect();
+      const currentMouseX = e.clientX - rect.left;
+      setMousePosX(currentMouseX);
+
+      let minDistance = Infinity;
+      let closestIndex: number | null = null;
+
+      const colorGridElement = paletteElement.children[1] as HTMLDivElement;
+      if (!colorGridElement) return;
+
+      for (let i = 0; i < colorGridElement.children.length; i++) {
+          const swatchElement = colorGridElement.children[i] as HTMLDivElement;
+          if (swatchElement) {
+              const swatchRect = swatchElement.getBoundingClientRect();
+              const swatchCenterX = (swatchRect.left + swatchRect.right) / 2 - rect.left;
+              const distance = Math.abs(currentMouseX - swatchCenterX);
+
+              if (distance < minDistance) {
+                  minDistance = distance;
+                  closestIndex = i;
+              }
+          }
+      }
+      setClosestSwatchIdx(closestIndex);
+    };
+
+    const handleMouseLeave = () => {
+      setMousePosX(null);
+      setClosestSwatchIdx(null);
+    };
+
+    paletteElement.addEventListener('mousemove', handleMouseMove);
+    paletteElement.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      paletteElement.removeEventListener('mousemove', handleMouseMove);
+      paletteElement.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [paletteRef]);
 
   return (
-    <div className="color-palette">
+    <div className="color-palette" ref={paletteRef}>
       <h3>{title}</h3>
       <div className="color-grid">
         {colorEntries.map(([name, value], idx) => {
           let translateY = 0;
-          if (hoveredIdx !== null) {
-            const maxLift = -20;
-            const minLift = 0;
-            const distance = Math.abs(idx - hoveredIdx);
-            const maxDistance = Math.max(hoveredIdx, colorEntries.length - 1 - hoveredIdx);
-            if (idx === hoveredIdx) {
-              translateY = maxLift;
-            } else {
-              // Linear interpolation: farther = closer to 0
-              translateY = Math.round(maxLift * (1 - distance / maxDistance));
-              if (translateY > 0) translateY = 0;
+          let isLeftHover = false;
+          let isRightHover = false;
+
+          if (mousePosX !== null && paletteRef.current) {
+            const swatchElement = paletteRef.current.children[1].children[idx] as HTMLDivElement;
+            if (swatchElement) {
+                const swatchRect = swatchElement.getBoundingClientRect();
+                const paletteRect = paletteRef.current.getBoundingClientRect();
+                const swatchCenterX = (swatchRect.left + swatchRect.right) / 2 - paletteRect.left;
+                const distance = Math.abs(mousePosX - swatchCenterX);
+
+                const currentSwatchWidth = swatchRect.width;
+                const maxEffectDistance = currentSwatchWidth * 3;
+
+                if (distance < maxEffectDistance) {
+                    const normalizedDistance = distance / maxEffectDistance;
+                    const animationProgress = 1 - Math.pow(normalizedDistance, 2);
+                    translateY = Math.round(maxLift * animationProgress);
+                    if (maxLift < 0) {
+                        translateY = Math.max(maxLift, translateY);
+                    } else {
+                        translateY = Math.min(maxLift, translateY);
+                    }
+                }
             }
+
+            if (closestSwatchIdx !== null) {
+                if (idx < closestSwatchIdx) {
+                    isRightHover = true; // All elements to the left of the closest
+                } else if (idx > closestSwatchIdx) {
+                    isLeftHover = true; // All elements to the right of the closest
+                }
+            }
+          } else {
+              translateY = 0;
+              isLeftHover = false;
+              isRightHover = false;
           }
+
           return (
             <div
               key={name}
-              className="color-swatch"
+              className={`color-swatch${isLeftHover ? ' is-left-hover' : ''}${isRightHover ? ' is-right-hover' : ''}`}
               style={{
                 transform: `translateY(${translateY}px)`,
-                zIndex: hoveredIdx === idx ? 2 : 1,
               }}
-              onMouseEnter={() => setHoveredIdx(idx)}
-              onMouseLeave={() => setHoveredIdx(null)}
             >
-              <div 
-                className="color-box" 
-                style={{ 
-                  backgroundColor: value,
-                }}
+              <div
+                className="color-box"
+                style={{ backgroundColor: value }}
               />
               <div className="color-info">
                 <div className="color-name">{name}</div>
@@ -92,7 +172,6 @@ const ColorPalette = ({ title, colors, isDark = false }: ColorPaletteProps) => {
 const DesignTokens = () => {
   const isDark = false;
 
-  // Color scales with direct color values
   const colorScales = {
     primary: {
       'primary-1': '#F2E8FD',
@@ -168,30 +247,28 @@ const DesignTokens = () => {
     },
   };
 
-  // Theme colors with direct values
   const themeColors = {
-    primary: '#7C3AED',    // primary-6
-    secondary: '#E5E7EB',  // gray-3
-    success: '#22C55E',    // green-6
-    info: '#3B82F6',      // blue-6
-    warning: '#EAB308',    // yellow-6
-    error: '#EF4444',     // red-6
-    light: '#F9FAFB',     // gray-1
-    dark: '#1F2937',      // gray-9
+    primary: '#7C3AED',
+    secondary: '#E5E7EB',
+    success: '#22C55E',
+    info: '#3B82F6',
+    warning: '#EAB308',
+    error: '#EF4444',
+    light: '#F9FAFB',
+    dark: '#1F2937',
   };
 
-  // Text colors with direct values
   const textColors = {
-    'primary-text': '#1F2937',     // gray-9
-    'secondary-text': '#374151',   // gray-8
-    'tertiary-text': '#6B7280',   // gray-6
-    'disabled-text': '#9CA3AF',   // gray-5
-    'invert-text': '#1F2937',     // gray-9 (will be inverted in dark mode)
-    'brand-text': '#7C3AED',     // primary-6
-    'error-text': '#EF4444',      // red-6
-    'success-text': '#22C55E',    // green-6
-    'warning-text': '#EAB308',    // yellow-6
-    'info-text': '#3B82F6',       // blue-6
+    'primary-text': '#1F2937',
+    'secondary-text': '#374151',
+    'tertiary-text': '#6B7280',
+    'disabled-text': '#9CA3AF',
+    'invert-text': '#1F2937',
+    'brand-text': '#7C3AED',
+    'error-text': '#EF4444',
+    'success-text': '#22C55E',
+    'warning-text': '#EAB308',
+    'info-text': '#3B82F6',
   };
 
   return (
