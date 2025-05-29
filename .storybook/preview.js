@@ -39,7 +39,7 @@ export const parameters = {
 
   options: {
     storySort: {
-      order: ['Design Tokens', 'Layouts', 'Components'],
+      order: ['Introduction', 'Design Tokens', 'Layouts', 'Components'],
     },
   },
 };
