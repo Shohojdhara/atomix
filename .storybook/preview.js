@@ -36,6 +36,12 @@ export const parameters = {
     ],
   },
   layout: 'padded',
+
+  options: {
+    storySort: {
+      order: ['Design Tokens', 'Layouts', 'Components'],
+    },
+  },
 };
 
 // Define global values that can be controlled in the toolbar
