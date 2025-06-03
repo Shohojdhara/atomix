@@ -1,0 +1,35 @@
+// src/styles/01-settings/_settings.photoviewer.scss
+
+@use "settings.config" as config;
+
+// Spacing variables
+$component-spacing: 1.25rem !default;
+$component-border-color: var(--#{config.$prefix}gray-3) !default;
+$component-background-color: transparent !default;
+
+// Modal specific variables
+$modal-background-color: var(--#{config.$prefix}gradient) !default;
+$modal-close-button-color: #fff !default;
+
+// Panel variables
+$info-panel-width: 320px !default;
+$info-panel-background: var(--#{config.$prefix}gray-1) !default;
+
+// Thumbnail variables
+$thumbnail-active-border-color: var(--#{config.$prefix}brand-border-subtle) !default;
+$thumbnail-size: 56px !default;
+$thumbnail-size-large: 72px !default;
+$thumbnail-gap: 0.5rem !default;
+
+// Animation variables
+$photoviewer-transition-duration: 0.3s !default;
+$photoviewer-transition-timing: cubic-bezier(0.4, 0, 0.2, 1) !default;
+
+// Control variables
+$control-size: 2.75rem !default;
+$control-size-small: 2.25rem !default;
+$control-border-radius: 50% !default;
+$control-background: rgba(255, 255, 255, 0.7) !default;
+$control-background-hover: var(--#{config.$prefix}primary-2) !default;
+$control-color: var(--#{config.$prefix}brand-text-emphasis) !default;
+$control-color-hover: var(--#{config.$prefix}link-hover-color) !default;
