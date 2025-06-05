@@ -128,6 +128,51 @@ export interface BadgeProps extends BaseComponentProps {
 }
 
 /**
+ * Callout component properties
+ */
+export interface CalloutProps extends BaseComponentProps {
+  /**
+   * Callout title
+   */
+  title?: ReactNode;
+  
+  /**
+   * Callout content
+   */
+  children?: ReactNode;
+  
+  /**
+   * Optional icon
+   */
+  icon?: ReactNode;
+  
+  /**
+   * Callout variant
+   */
+  variant?: ThemeColor;
+  
+  /**
+   * Optional close handler
+   */
+  onClose?: () => void;
+  
+  /**
+   * Optional action buttons
+   */
+  actions?: ReactNode;
+  
+  /**
+   * Display in one line mode
+   */
+  oneLine?: boolean;
+  
+  /**
+   * Display as toast notification
+   */
+  toast?: boolean;
+}
+
+/**
  * Accordion component properties
  */
 export interface AccordionProps extends BaseComponentProps {
