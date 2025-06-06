@@ -2,6 +2,7 @@
 @use '../01-settings/settings.side-menu' as *;
 @use '../01-settings/settings.typography' as typography;
 @use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.breakpoints' as *;
 @use '../02-tools/tools.grid' as grid;
 @use '../02-tools/tools.transition' as transition;
 
@@ -27,12 +28,12 @@
   background: var(--#{config.$prefix}side-menu-bg);
   border-radius: var(--#{config.$prefix}side-menu-border-radius);
 
-  @include grid.media-breakpoint-down(md) {
+  @include media-breakpoint-down(md) {
     padding: rem.rem(12px) rem.rem(16px);
   }
 
   &__wrapper {
-    @include grid.media-breakpoint-down(md) {
+    @include media-breakpoint-down(md) {
       height: 0px;
       overflow: hidden;
       user-select: none;
@@ -42,7 +43,7 @@
   }
 
   &__inner {
-    @include grid.media-breakpoint-down(md) {
+    @include media-breakpoint-down(md) {
       padding-top: rem.rem(20px);
     }
   }
@@ -90,7 +91,7 @@
     cursor: pointer;
     user-select: none;
 
-    @include grid.media-breakpoint-down(md) {
+    @include media-breakpoint-down(md) {
       display: flex;
     }
   }

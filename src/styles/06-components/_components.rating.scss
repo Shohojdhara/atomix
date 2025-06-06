@@ -4,6 +4,7 @@
 @use '../01-settings/settings.rating' as rating;
 @use '../02-tools/tools.rem' as rem;
 @use '../02-tools/tools.size' as size;
+@use '../02-tools/tools.breakpoints' as *;
 @use '../02-tools/tools.grid' as *;
 
 .c-rating {

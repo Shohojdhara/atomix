@@ -3,7 +3,9 @@
 @use '../02-tools/tools.rem' as *;
 @use '../02-tools/tools.size' as *;
 @use '../02-tools/tools.object-fit' as *;
+@use '../02-tools/tools.breakpoints' as *;
 @use '../02-tools/tools.grid' as grid;
+
 
 .c-river {
   $root: &;
@@ -71,7 +73,7 @@
     align-items: center;
     gap: var(--#{config.$prefix}river-spacing-inner);
 
-    @include grid.media-breakpoint-down(md) {
+    @include media-breakpoint-down(md) {
       gap: calc(var(--#{config.$prefix}river-spacing-inner) / 2.6);
     }
   }
@@ -81,7 +83,7 @@
     width: 100%;
     max-width: var(--#{config.$prefix}river-content-width);
 
-    @include grid.media-breakpoint-down(md) {
+    @include media-breakpoint-down(md) {
       width: 100%;
       flex: auto;
     }
@@ -102,7 +104,7 @@
   &__visual {
     flex: 1;
 
-    @include grid.media-breakpoint-down(md) {
+    @include media-breakpoint-down(md) {
       width: 100%;
       flex: auto;
     }
@@ -114,7 +116,7 @@
     font-weight: var(--#{config.$prefix}river-title-font-weight);
     letter-spacing: -1px;
 
-    @include grid.media-breakpoint-up(md) {
+    @include media-breakpoint-up(md) {
       font-size: var(--#{config.$prefix}river-title-font-size);
       line-height: 1.2;
     }
@@ -177,7 +179,7 @@
   &--reverse {
     #{$root} {
       &__row {
-        @include grid.media-breakpoint-up(md) {
+        @include media-breakpoint-up(md) {
           flex-direction: row-reverse;
         }
       }
@@ -203,7 +205,7 @@
         justify-content: space-between;
         width: 100%;
 
-        @include grid.media-breakpoint-down(md) {
+        @include media-breakpoint-down(md) {
           flex-wrap: wrap;
         }
       }

@@ -1,6 +1,7 @@
 @use '../01-settings/settings.config' as config;
 @use '../01-settings/settings.grid' as grid;
 @use '../01-settings/settings.breakpoints' as breakpoints;
+@use '../02-tools/tools.breakpoints' as *;
 @use '../02-tools/tools.grid' as *;
 
 .o-container,  .o-container-fluid {

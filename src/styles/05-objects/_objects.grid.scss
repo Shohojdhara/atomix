@@ -1,6 +1,7 @@
 @use '../01-settings/settings.config' as config;
 @use '../01-settings/settings.grid' as grid;
 @use '../02-tools/tools.grid' as *;
+@use '../02-tools/tools.breakpoints' as *;
 
 .o-grid {
     --#{config.$prefix}gutter-y: #{grid.$grid-gutter-width};

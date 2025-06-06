@@ -2,6 +2,7 @@
 @use '../01-settings/settings.tabs' as *;
 @use '../02-tools/tools.rem' as *;
 @use '../02-tools/tools.transition' as *;
+@use '../02-tools/tools.breakpoints' as *;
 @use '../02-tools/tools.grid' as *;
 
 .c-tabs {
