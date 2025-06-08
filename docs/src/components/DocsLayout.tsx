@@ -1,8 +1,40 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { MagnifyingGlass, GithubLogo, List } from "phosphor-react";
+import { ColorModeToggle } from "./ColorModeToggle";
+import { SidebarMenu } from "./SidebarMenu";
+
+// Add search functionality
+const useSearch = (items: any[]) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    const flattenedItems = items.flatMap(section =>
+      section.items.map(item => ({
+        ...item,
+        section: section.title
+      }))
+    );
+
+    const results = flattenedItems.filter(item =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.section.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    setSearchResults(results);
+  }, [searchQuery, items]);
+
+  return { searchQuery, setSearchQuery, searchResults };
+};
 
 interface DocsLayoutProps {
   children: React.ReactNode;
@@ -76,6 +108,7 @@ const navigationItems = [
 export function DocsLayout({ children }: DocsLayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const { searchQuery, setSearchQuery, searchResults } = useSearch(navigationItems);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -84,12 +117,13 @@ export function DocsLayout({ children }: DocsLayoutProps) {
   return (
     <div className="u-d-flex u-flex-column u-min-vh-100">
       {/* Header */}
-      <header className="c-navbar c-navbar--collapsible">
+      <header className="c-navbar c-navbar--collapsible u-backdrop-blur">
         <div className="c-navbar__container">
           <div className="c-navbar__brand">
             <Link
               href="/"
               className="u-d-flex u-align-items-center u-gap-2 u-text-decoration-none"
+              aria-label="Atomix Home"
             >
               <svg
                 width="32"
@@ -97,6 +131,8 @@ export function DocsLayout({ children }: DocsLayoutProps) {
                 viewBox="0 0 32 32"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                role="img"
+                aria-label="Atomix Logo"
               >
                 <circle cx="16" cy="16" r="16" fill="currentColor" />
                 <circle cx="16" cy="16" r="8" fill="white" />
@@ -105,18 +141,41 @@ export function DocsLayout({ children }: DocsLayoutProps) {
             </Link>
           </div>
 
-          <div className="u-d-flex u-align-items-center u-gap-3">
-            <button
-              className="c-navbar__toggler"
-              onClick={toggleSidebar}
-              aria-label="Toggle navigation menu"
-            >
-              <span className="c-navbar__toggler-icon"></span>
-            </button>
+          {/* Search Bar */}
+          <div className="c-navbar__search">
+            <div className="c-search">
+              <MagnifyingGlass className="c-search__icon" size={20} weight="bold" />
+              <input
+                type="text"
+                placeholder="Search documentation..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="c-search__input"
+                aria-label="Search documentation"
+                aria-expanded={searchResults.length > 0}
+                aria-controls="search-results"
+              />
+            </div>
+            {searchResults.length > 0 && (
+              <div className="c-search-results" id="search-results" role="listbox">
+                {searchResults.map((result, index) => (
+                  <Link
+                    key={index}
+                    href={result.href}
+                    className="c-search-results__item"
+                    onClick={() => setSearchQuery("")}
+                    role="option"
+                  >
+                    <span className="c-search-results__section">{result.section}</span>
+                    <span className="c-search-results__title">{result.title}</span>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
 
-            <button className="c-btn c-btn--outline-secondary c-btn--icon">
-              <span className="c-btn__icon">🌙</span>
-            </button>
+          <div className="u-d-flex u-align-items-center u-gap-3">
+            <ColorModeToggle className="c-btn--outline-secondary" />
 
             <a
               href="https://github.com/atomixdesign/atomix"
@@ -125,29 +184,41 @@ export function DocsLayout({ children }: DocsLayoutProps) {
               className="c-btn c-btn--outline-secondary c-btn--icon"
               aria-label="View on GitHub"
             >
-              <span className="c-btn__icon">📖</span>
+              <GithubLogo size={20} weight="bold" />
             </a>
+
+            <button
+              className="c-navbar__toggler c-btn c-btn--outline-secondary c-btn--icon"
+              onClick={toggleSidebar}
+              aria-label="Toggle navigation menu"
+              aria-expanded={isSidebarOpen}
+              aria-controls="sidebar-menu"
+            >
+              <List size={20} weight="bold" />
+            </button>
           </div>
         </div>
       </header>
 
       <div className="u-d-flex u-flex-1">
-        {/* Sidebar */}
-        <aside
-          className={`c-side-menu ${isSidebarOpen ? "is-open" : ""}`}
-        >
-          <div className="c-side-menu__wrapper">
-            <div className="c-side-menu__inner">
-              {navigationItems.map((group) => (
-                <div key={group.title} className="u-mb-6">
-                  <h3 className="c-side-menu__title">{group.title}</h3>
-                  <ul className="c-side-menu__list">
-                    {group.items.map((item) => (
-                      <li key={item.href} className="c-side-menu__item">
+        {/* Desktop Sidebar - visible on larger screens */}
+        <div className="c-desktop-sidebar">
+          <div className="c-docs-sidebar__content">
+            {navigationItems.map((section, sectionIndex) => (
+              <div key={sectionIndex} className="c-docs-sidebar__section">
+                <h3 className="c-docs-sidebar__section-title">{section.title}</h3>
+                <div className="c-menu">
+                  <ul className="c-menu__list" role="menu">
+                    {section.items.map((item, itemIndex) => (
+                      <li 
+                        key={itemIndex} 
+                        className={`c-menu__item ${pathname === item.href ? 'is-active' : ''}`}
+                        role="menuitem"
+                      >
                         <Link
                           href={item.href}
-                          className={`c-side-menu__link ${pathname === item.href ? "is-active" : ""}`}
-                          onClick={() => setIsSidebarOpen(false)}
+                          className="c-menu__link"
+                          aria-current={pathname === item.href ? "page" : undefined}
                         >
                           {item.title}
                         </Link>
@@ -155,25 +226,26 @@ export function DocsLayout({ children }: DocsLayoutProps) {
                     ))}
                   </ul>
                 </div>
-              ))}
-            </div>
+                {sectionIndex < navigationItems.length - 1 && (
+                  <div className="c-menu__divider" role="separator"></div>
+                )}
+              </div>
+            ))}
           </div>
-        </aside>
+        </div>
+
+        {/* Mobile Sidebar - using EdgePanel */}
+        <SidebarMenu 
+          isOpen={isSidebarOpen} 
+          onClose={() => setIsSidebarOpen(false)} 
+          navigationItems={navigationItems} 
+        />
 
         {/* Main Content */}
         <main className="u-flex-1 u-p-6">
           <div className="o-container">{children}</div>
         </main>
       </div>
-
-      {/* Mobile overlay */}
-      {isSidebarOpen && (
-        <div
-          className="u-position-fixed u-top-0 u-start-0 u-w-100 u-h-100 u-bg-dark u-opacity-50"
-          style={{ zIndex: 1000 }}
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
     </div>
   );
 }

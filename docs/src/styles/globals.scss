@@ -3,6 +3,108 @@
 // Documentation-specific styles for Atomix Design System
 // The main Atomix CSS is loaded via CDN in the HTML head
 
+/* Search Component */
+.c-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  transition: all 0.2s ease;
+}
+
+.c-search__icon {
+  position: absolute;
+  left: 12px;
+  color: var(--atomix-secondary-text);
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.c-search__input {
+  width: 100%;
+  padding: 10px 12px 10px 40px;
+  border: 1px solid var(--atomix-border-subtle);
+  border-radius: 8px;
+  background-color: var(--atomix-bg-subtle);
+  color: var(--atomix-text);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.c-search__input:focus {
+  outline: none;
+  border-color: var(--atomix-brand-border-emphasis);
+  box-shadow: 0 0 0 3px var(--atomix-brand-bg-subtle);
+}
+
+.c-search__input:focus + .c-search__icon {
+  color: var(--atomix-brand-text-emphasis);
+}
+
+.c-search__input::placeholder {
+  color: var(--atomix-secondary-text);
+  opacity: 0.8;
+}
+
+/* Search Results */
+.c-search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: var(--atomix-bg);
+  border: 1px solid var(--atomix-border-subtle);
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.c-search-results__item {
+  display: block;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--atomix-border-subtle);
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.c-search-results__item:last-child {
+  border-bottom: none;
+}
+
+.c-search-results__item:hover {
+  background-color: var(--atomix-bg-subtle);
+}
+
+.c-search-results__item:focus {
+  outline: none;
+  background-color: var(--atomix-brand-bg-subtle);
+}
+
+.c-search-results__section {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--atomix-brand-text);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.c-search-results__title {
+  display: block;
+  font-weight: 500;
+  color: var(--atomix-text);
+}
+
 // Documentation layout styles
 .docs {
   &__container {
