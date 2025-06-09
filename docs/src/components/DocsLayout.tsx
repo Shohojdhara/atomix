@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 import { MagnifyingGlass, GithubLogo, List } from "phosphor-react";
 import { ColorModeToggle } from "./ColorModeToggle";
 import { SidebarMenu } from "./SidebarMenu";
-import { Button } from '@shohojdhara/atomix/react';
+import { Search } from "./Search";
+import { Button, Navbar} from '@/atomix/components';
 import '@shohojdhara/atomix/css';
 
 // Add search functionality
@@ -155,17 +156,16 @@ export function DocsLayout({ children }: DocsLayoutProps) {
               leftIcon={<MagnifyingGlass size={20} weight="bold" />}
             />
             {searchResults.length > 0 && (
-              <Search.Results id="search-results" role="listbox">
+              <Search.Results id="search-results">
                 {searchResults.map((result, index) => (
                   <Search.ResultItem
                     key={index}
                     as={Link}
                     href={result.href}
                     onClick={() => setSearchQuery("")}
-                    role="option"
                   >
-                    <span className="u-text-muted u-fs-sm">{result.section}</span>
-                    <span className="u-fw-medium">{result.title}</span>
+                    <span className="c-search-results__section">{result.section}</span>
+                    <span className="c-search-results__title">{result.title}</span>
                   </Search.ResultItem>
                 ))}
               </Search.Results>
