@@ -79,3 +79,5 @@ export const ColorModeToggle: React.FC<ColorModeToggleProps> = ({ className = ''
     </button>
   );
 }; 
+
+export default ColorModeToggle;

@@ -1,7 +1,43 @@
 {
-  "name": "atomix",
+  "name": "@shohojdhara/atomix",
   "version": "0.1.0",
-  "private": true,
+  "description": "Atomix Design System - A modern component library for web applications",
+  "main": "dist/js/atomix-0.1.0.react.cjs.js",
+  "module": "dist/js/atomix-0.1.0.react.esm.js",
+  "unpkg": "dist/js/atomix-0.1.0.react.js",
+  "jsdelivr": "dist/js/atomix-0.1.0.react.js",
+  "browser": "dist/js/atomix-0.1.0.react.js",
+  "types": "dist/types/index.d.ts",
+  "style": "dist/css/atomix-0.1.0.styles.css",
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "./dist/css/**/*"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/js/atomix-0.1.0.react.esm.js",
+      "require": "./dist/js/atomix-0.1.0.react.cjs.js",
+      "default": "./dist/js/atomix-0.1.0.react.esm.js"
+    },
+    "./vanilla": {
+      "types": "./dist/types/vanilla.d.ts",
+      "import": "./dist/js/atomix-0.1.0.vanilla.esm.js",
+      "require": "./dist/js/atomix-0.1.0.vanilla.cjs.js",
+      "default": "./dist/js/atomix-0.1.0.vanilla.esm.js"
+    },
+    "./react": {
+      "types": "./dist/types/react.d.ts",
+      "import": "./dist/js/atomix-0.1.0.react.esm.js",
+      "require": "./dist/js/atomix-0.1.0.react.cjs.js",
+      "default": "./dist/js/atomix-0.1.0.react.esm.js"
+    },
+    "./css": "./dist/css/atomix-0.1.0.styles.css",
+    "./css/styles": "./dist/css/atomix-0.1.0.styles.css",
+    "./css/react": "./dist/css/atomix-0.1.0.react.css",
+    "./package.json": "./package.json"
+  },
   "dependencies": {
     "@types/classnames": "^2.3.0",
     "@types/node": "^20.0.0",
@@ -9,8 +45,8 @@
     "classnames": "^2.5.1",
     "phosphor-react": "^1.4.1",
     "prism-react-renderer": "^2.4.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
@@ -30,6 +66,7 @@
     "@types/react-dom": "^18.2.0",
     "autoprefixer": "^10.4.21",
     "babel-loader": "^10.0.0",
+    "caniuse-lite": "^1.0.30001721",
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^5.0.1",
     "cssnano": "^6.1.2",
@@ -47,20 +84,75 @@
     "terser-webpack-plugin": "^5.3.14",
     "typescript": "^5.0.4",
     "webpack": "^5.99.7",
+    "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.1"
+    "webpack-dev-server": "^5.2.1",
+    "webpack-node-externals": "^3.0.0"
   },
   "scripts": {
     "build": "npm run build:components",
-    "build:components": "npx webpack --mode production --env target=components",
+    "build:components": "npm run build:all && node scripts/generate-types.js",
+    "build:all": "npx webpack --mode production --env target=components --env format=all",
+    "build:umd": "npx webpack --mode production --env target=components --env format=umd",
+    "build:cjs": "npx webpack --mode production --env target=components --env format=cjs",
+    "build:esm": "npx webpack --mode production --env target=components --env format=esm",
+    "build:vanilla": "npx webpack --mode production --env target=vanilla --env format=umd",
+    "build:vanilla:cjs": "npx webpack --mode production --env target=vanilla --env format=cjs",
+    "build:vanilla:esm": "npx webpack --mode production --env target=vanilla --env format=esm",
+    "build:react": "npx webpack --mode production --env target=react --env format=umd",
+    "build:react:cjs": "npx webpack --mode production --env target=react --env format=cjs",
+    "build:react:esm": "npx webpack --mode production --env target=react --env format=esm",
     "build:docs": "npx webpack --mode production --env target=docs",
+    "analyze": "npx webpack --mode production --env target=components --env format=all --env analyze=true",
     "dev": "npm run storybook",
     "dev:docs": "npx webpack serve --mode development --env target=docs",
-    "dev:components": "npx webpack --mode development --env target=components --watch",
+    "dev:vanilla": "npx webpack --mode development --env target=vanilla --env format=umd --watch",
+    "dev:react": "npx webpack --mode development --env target=react --env format=umd --watch",
     "serve": "npx webpack serve --mode development --env target=docs --open",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "predeploy": "npm run build:docs && npm run build-storybook && node scripts/prepare-deploy.js",
-    "deploy": "gh-pages -d deploy"
+    "deploy": "gh-pages -d deploy",
+    "prepublishOnly": "npm run build:components",
+    "test:publish": "npm pack --dry-run"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "NPM_PUBLISHING.md"
+  ],
+  "keywords": [
+    "ui",
+    "components",
+    "design-system",
+    "react",
+    "javascript",
+    "typescript",
+    "css",
+    "scss"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liimonx/atomix.git"
+  },
+  "author": "liimonx <liimonx@shohojdhara.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/liimonx/atomix/issues"
+  },
+  "homepage": "https://github.com/liimonx/atomix#readme",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "scope": "@shohojdhara"
   }
 }

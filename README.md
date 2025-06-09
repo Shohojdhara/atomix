@@ -1,110 +1,131 @@
 # Atomix Design System
 
-A modern, lightweight, and customizable design system for building beautiful user interfaces. Built with a focus on scalability, extensibility, and maintainability.
+Atomix is a modern, flexible design system that provides both React components and vanilla JavaScript functionality for building beautiful web applications.
 
-## Getting Started
-
-### Installation
+## Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/liimonx/atomix.git
-cd atomix
-
-# Install dependencies
-npm install
+npm install atomix
+# or
+yarn add atomix
 ```
 
-## Development
+## Usage
 
-### Quick Start
+### React Components
 
-The fastest way to start development is using Storybook:
+```jsx
+import React from 'react';
+import { Button, Modal, Tooltip } from 'atomix';
+// or import from the React-specific entry point
+import { Button, Modal, Tooltip } from 'atomix/react';
 
-```bash
-npm run storybook
+// Import the CSS
+import 'atomix/css';
+
+function App() {
+  return (
+    <div>
+      <Button variant="primary" size="md">Click Me</Button>
+      <Tooltip content="This is a tooltip">Hover me</Tooltip>
+    </div>
+  );
+}
 ```
 
-This will start Storybook at http://localhost:6006, where you can browse and develop components interactively.
+### Vanilla JavaScript
 
-### Components Library
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Atomix Example</title>
+  <!-- Include the CSS -->
+  <link rel="stylesheet" href="node_modules/atomix/dist/css/atomix-0.1.0.styles.css">
+</head>
+<body>
+  <!-- Button component -->
+  <button class="c-btn c-btn--primary c-btn--md">Click Me</button>
+  
+  <!-- Tooltip component -->
+  <div class="c-tooltip" data-tooltip="This is a tooltip">
+    <span class="c-tooltip__trigger">Hover me</span>
+  </div>
 
-Build the components library:
-
-```bash
-npm run build:components
+  <!-- Include the JavaScript -->
+  <script src="node_modules/atomix/dist/js/atomix-0.1.0.vanilla.js"></script>
+  <script>
+    // Initialize all components
+    document.addEventListener('DOMContentLoaded', function() {
+      // Atomix is available as a global variable
+      Atomix.initializeAll();
+      
+      // Or initialize specific components
+      // Atomix.Button.initializeAll();
+      // Atomix.Tooltip.initializeAll();
+    });
+  </script>
+</body>
+</html>
 ```
 
-Watch for changes during development:
+Alternatively, you can import the vanilla JS version in your JavaScript files:
 
-```bash
-npm run dev:components
+```js
+// Import the vanilla JS version
+import Atomix from 'atomix/vanilla';
+
+// Initialize all components
+document.addEventListener('DOMContentLoaded', function() {
+  Atomix.initializeAll();
+});
 ```
 
-The built files will be available in the `dist` folder.
+## Available Components
 
-### Documentation Site
+Atomix includes the following components:
 
-Start the documentation site development server:
+- Accordion
+- Avatar
+- Badge
+- Breadcrumb
+- Button
+- Callout
+- Card
+- ColorModeToggle
+- Countdown
+- DataTable
+- DatePicker
+- Dropdown
+- EdgePanel
+- Form components
+- Hero
+- Icon
+- List
+- Messages
+- Modal
+- Navbar
+- Pagination
+- PhotoViewer
+- Popover
+- ProductReview
+- Progress
+- Rating
+- River
+- SectionIntro
+- Spinner
+- Steps
+- Tab
+- Testimonial
+- Todo
+- Toggle
+- Tooltip
+- Upload
 
-```bash
-npm run dev:docs
-```
+## Documentation
 
-Or with automatic browser opening:
-
-```bash
-npm run serve
-```
-
-This will start a development server at http://localhost:3000 with hot reloading enabled.
-
-Build the documentation site:
-
-```bash
-npm run build:docs
-```
-
-### Component Development
-
-When creating new components for the Atomix design system, please follow our [Component Development Guidelines](./atomix-component-guidelines.md) to ensure consistency and quality.
-
-## Implementation Guide
-
-For a comprehensive guide on how to use Atomix in your projects, please refer to our beginner-friendly [Implementation Guide](./implementation-guide.md). This guide covers:
-
-- Setting up Atomix in your project
-- Using components with React or vanilla HTML/CSS/JS
-- Layout and structure systems
-- Customization options
-- Utility classes
-- Best practices
-- Troubleshooting
-
-### Deployment
-
-Deploy the documentation and Storybook to GitHub Pages:
-
-```bash
-npm run deploy
-```
-
-This will run the predeploy script to build both the documentation site and Storybook before deploying to GitHub Pages.
-
-## Available Scripts
-
-- `npm run storybook`: Start Storybook development server
-- `npm run build-storybook`: Build Storybook for production
-- `npm run dev`: Alias for `npm run storybook`
-- `npm run build`: Alias for `npm run build:components`
-- `npm run build:components`: Build components library
-- `npm run dev:components`: Watch for component changes
-- `npm run build:docs`: Build documentation site
-- `npm run dev:docs`: Start documentation development server
-- `npm run serve`: Start documentation server with browser opening
-- `npm run predeploy`: Prepare files for deployment
-- `npm run deploy`: Deploy to GitHub Pages
+For detailed documentation and examples, visit our [documentation site](https://github.com/liimonx/atomix).
 
 ## License
 
-This project is licensed under the Apache License - see the LICENSE file for details.
+MIT
