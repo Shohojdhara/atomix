@@ -10,20 +10,21 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "^14.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "@shohojdhara/atomix": "^0.1.0",
     "classnames": "^2.5.1",
-    "phosphor-react": "^1.4.1"
+    "next": "^14.0.0",
+    "phosphor-react": "^1.4.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "typescript": "^5.0.0",
     "eslint": "^8.0.0",
     "eslint-config-next": "^14.0.0",
-    "sass": "^1.69.0"
+    "sass": "^1.69.0",
+    "typescript": "^5.0.0"
   },
   "engines": {
     "node": ">=18.0.0",

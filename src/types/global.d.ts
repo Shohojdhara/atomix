@@ -1,7 +1,7 @@
 // This file is used to declare global types for the project
 
-// Declare module for @atomix-ux/react
-declare module '@atomix-ux/react' {
+// Declare module for @shohojdhara/atomix
+declare module '@shohojdhara/atomix' {
   import { ButtonProps } from '../lib/types/components';
   import { FC } from 'react';
 

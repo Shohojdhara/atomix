@@ -18,7 +18,7 @@ The Dropdown component provides a toggleable menu that displays a list of action
 ### React Component
 
 ```jsx
-import { Dropdown, DropdownItem, DropdownDivider, DropdownHeader } from '@atomix/components';
+import { Dropdown, DropdownItem, DropdownDivider, DropdownHeader } from '@shohojdhara/atomix';
 
 function App() {
   return (

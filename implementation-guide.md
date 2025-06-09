@@ -56,10 +56,10 @@ For React projects, import the main styles in your entry file:
 
 ```jsx
 // In your index.js or App.js
-import 'atomix/dist/css/atomix-0.1.0.styles.min.css';
+import '@shohojdhara/atomix/css';
 
 // Then import components as needed
-import { Button, Card, Avatar } from 'atomix/react';
+import { Button, Card, Avatar } from '@shohojdhara/atomix';
 ```
 
 ### HTML/CSS/JS Projects
@@ -502,4 +502,4 @@ You can also customize dark mode colors:
 
 ---
 
-This implementation guide provides a foundation for using Atomix in your projects. For more detailed information on specific components, refer to Storybook documentation or the component source code. 
+This implementation guide provides a foundation for using Atomix in your projects. For more detailed information on specific components, refer to Storybook documentation or the component source code.

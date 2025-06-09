@@ -113,7 +113,7 @@ html[data-theme="dark"] {
 
         <pre className="u-bg-secondary-subtle u-p-4 u-rounded u-fs-sm">
           <code>{`// In your app entry file
-import '@atomix/react/dist/atomix.css';
+import '@shohojdhara/atomix/css';
 import './custom-theme.css'; // Your theme overrides`}</code>
         </pre>
 
@@ -143,7 +143,7 @@ $border-radius-md: 0.25rem;
 $border-radius-lg: 0.5rem;
 
 // Import Atomix SCSS
-@import "~@atomix/react/scss/atomix";
+@import "~@shohojdhara/atomix/scss/atomix";
 
 // Additional custom styles
 .c-btn {
@@ -166,7 +166,7 @@ $border-radius-lg: 0.5rem;
 
         <pre className="u-bg-secondary-subtle u-p-4 u-rounded u-fs-sm">
           <code>{`import React from 'react';
-import { ThemeProvider } from '@atomix/react';
+import { ThemeProvider } from '@shohojdhara/atomix';
 
 function App() {
   return (
@@ -230,7 +230,7 @@ html[data-theme="fun"] {
 
         <pre className="u-bg-secondary-subtle u-p-4 u-rounded u-fs-sm">
           <code>{`import React from 'react';
-import { useTheme } from '@atomix/react';
+import { useTheme } from '@shohojdhara/atomix';
 
 function ThemeSwitcher() {
   const { setTheme } = useTheme();

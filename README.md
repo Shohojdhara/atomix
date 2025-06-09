@@ -16,12 +16,12 @@ yarn add atomix
 
 ```jsx
 import React from 'react';
-import { Button, Modal, Tooltip } from 'atomix';
-// or import from the React-specific entry point
-import { Button, Modal, Tooltip } from 'atomix/react';
+import { Button, Modal, Tooltip } from '@shohojdhara/atomix';
+// or import directly
+import { Button, Modal, Tooltip } from '@shohojdhara/atomix';
 
 // Import the CSS
-import 'atomix/css';
+import '@shohojdhara/atomix/css';
 
 function App() {
   return (
@@ -81,46 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 ```
 
-## Available Components
-
-Atomix includes the following components:
-
-- Accordion
-- Avatar
-- Badge
-- Breadcrumb
-- Button
-- Callout
-- Card
-- ColorModeToggle
-- Countdown
-- DataTable
-- DatePicker
-- Dropdown
-- EdgePanel
-- Form components
-- Hero
-- Icon
-- List
-- Messages
-- Modal
-- Navbar
-- Pagination
-- PhotoViewer
-- Popover
-- ProductReview
-- Progress
-- Rating
-- River
-- SectionIntro
-- Spinner
-- Steps
-- Tab
-- Testimonial
-- Todo
-- Toggle
-- Tooltip
-- Upload
 
 ## Documentation
 

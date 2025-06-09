@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-declare module '@atomix-ux/react' {
+declare module '@shohojdhara/atomix' {
   // Atomix Logo Component
   interface AtomixLogoProps extends React.SVGProps<SVGSVGElement> {
     height?: number | string;

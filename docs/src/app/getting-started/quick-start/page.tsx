@@ -36,10 +36,10 @@ export default function QuickStartPage() {
 
         <pre className="u-bg-secondary-subtle u-p-4 u-rounded u-fs-sm">
           <code>{`import React from 'react';
-import { Button, Card } from '@atomix/react';
+import { Button, Card } from '@shohojdhara/atomix';
 
 // Import the Atomix CSS
-import '@atomix/react/dist/atomix.css';
+import '@shohojdhara/atomix/css';
 
 function App() {
   return (
@@ -67,7 +67,7 @@ export default App;`}</code>
 
         <pre className="u-bg-secondary-subtle u-p-4 u-rounded u-fs-sm">
           <code>{`import React from 'react';
-import { ThemeProvider } from '@atomix/react';
+import { ThemeProvider } from '@shohojdhara/atomix';
 
 function App() {
   return (
@@ -86,7 +86,7 @@ export default App;`}</code>
 
         <pre className="u-bg-secondary-subtle u-p-4 u-rounded u-fs-sm">
           <code>{`import React from 'react';
-import { ThemeProvider, ColorModeToggle } from '@atomix/react';
+import { ThemeProvider, ColorModeToggle } from '@shohojdhara/atomix';
 
 function App() {
   return (
@@ -145,7 +145,7 @@ export default App;`}</code>
         <h3>Form with Validation</h3>
         <pre className="u-bg-secondary-subtle u-p-4 u-rounded u-fs-sm">
           <code>{`import React, { useState } from 'react';
-import { Form, Button } from '@atomix/react';
+import { Form, Button } from '@shohojdhara/atomix';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -206,7 +206,7 @@ function LoginForm() {
         <h3>Data Table with Pagination</h3>
         <pre className="u-bg-secondary-subtle u-p-4 u-rounded u-fs-sm">
           <code>{`import React, { useState } from 'react';
-import { DataTable, Pagination, Badge } from '@atomix/react';
+import { DataTable, Pagination, Badge } from '@shohojdhara/atomix';
 
 function ProductsTable({ products }) {
   const [currentPage, setCurrentPage] = useState(1);

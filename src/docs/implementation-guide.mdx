@@ -44,8 +44,8 @@ yarn add atomix
 Alternatively, you can download and include the CSS and JavaScript files directly:
 
 ```html
-<link rel="stylesheet" href="path/to/atomix/dist/css/atomix-0.1.0.styles.min.css">
-<script src="path/to/atomix/dist/js/atomix-0.1.0.main.js"></script>
+<link rel="stylesheet" href="path/to/@shohojdhara/atomix/css/atomix.min.css">
+<script src="path/to/@shohojdhara/atomix/js/atomix.js"></script>
 ```
 
 ## Basic Setup
@@ -56,10 +56,10 @@ For React projects, import the main styles in your entry file:
 
 ```jsx
 // In your index.js or App.js
-import 'atomix/dist/css/atomix-0.1.0.styles.min.css';
+import '@shohojdhara/atomix/css';
 
 // Then import components as needed
-import { Button, Card, Avatar } from 'atomix/react';
+import { Button, Card, Avatar } from '@shohojdhara/atomix';
 ```
 
 ### HTML/CSS/JS Projects
@@ -75,13 +75,13 @@ For projects without a module bundler, include the CSS and JS files in your HTML
   <title>My Atomix Project</title>
   
   <!-- Atomix CSS -->
-  <link rel="stylesheet" href="path/to/atomix/dist/css/atomix-0.1.0.styles.min.css">
+  <link rel="stylesheet" href="path/to/@shohojdhara/atomix/css/atomix.min.css">
 </head>
 <body>
   <!-- Your content here -->
   
   <!-- Atomix JS (optional, only if using JS components) -->
-  <script src="path/to/atomix/dist/js/atomix-0.1.0.main.js"></script>
+  <script src="path/to/@shohojdhara/atomix/js/atomix.js"></script>
   
   <!-- Your scripts -->
   <script src="path/to/your-script.js"></script>

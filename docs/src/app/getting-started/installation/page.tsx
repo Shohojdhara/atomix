@@ -33,17 +33,17 @@ export default function InstallationPage() {
 
           <h3>Install via npm</h3>
           <pre className="u-bg-secondary u-p-md u-rounded">
-            <code>{`npm install @atomix/react @atomix/styles`}</code>
+            <code>{`npm install @shohojdhara/atomix`}</code>
           </pre>
 
           <h3>Install via yarn</h3>
           <pre className="u-bg-secondary u-p-md u-rounded">
-            <code>{`yarn add @atomix/react @atomix/styles`}</code>
+            <code>{`yarn add @shohojdhara/atomix`}</code>
           </pre>
 
           <h3>Install via pnpm</h3>
           <pre className="u-bg-secondary u-p-md u-rounded">
-            <code>{`pnpm add @atomix/react @atomix/styles`}</code>
+            <code>{`pnpm add @shohojdhara/atomix`}</code>
           </pre>
         </section>
 
@@ -73,10 +73,10 @@ export default function InstallationPage() {
 
           <pre className="u-bg-secondary u-p-md u-rounded">
             <code>{`// In your main CSS file or app entry point
-import '@atomix/styles/index.scss'
+import '@shohojdhara/atomix/css/styles'
 
 // Or if using CSS imports
-import '@atomix/styles/index.css'`}</code>
+import '@shohojdhara/atomix/css'`}</code>
           </pre>
 
           <h3>Next.js Setup</h3>
@@ -87,7 +87,7 @@ import '@atomix/styles/index.css'`}</code>
 
           <pre className="u-bg-secondary u-p-md u-rounded">
             <code>{`// pages/_app.tsx (Pages Router)
-import '@atomix/styles/index.scss'
+import '@shohojdhara/atomix/css/styles'
 import type { AppProps } from 'next/app'
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -95,7 +95,7 @@ export default function App({ Component, pageProps }: AppProps) {
 }
 
 // app/layout.tsx (App Router)
-import '@atomix/styles/index.scss'
+import '@shohojdhara/atomix/css/styles'
 
 export default function RootLayout({
   children,
@@ -119,7 +119,7 @@ export default function RootLayout({
             <code>{`// src/main.tsx
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import '@atomix/styles/index.scss'
+import '@shohojdhara/atomix/css/styles'
 import App from './App'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -138,7 +138,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             <code>{`// src/index.tsx
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import '@atomix/styles/index.scss'
+import '@shohojdhara/atomix/css/styles'
 import App from './App'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
@@ -157,7 +157,7 @@ root.render(
           <ComponentDemo
             title="First Component"
             description="Import and use your first Atomix component"
-            code={`import { Button, Card } from '@atomix/react'
+            code={`import { Button, Card } from '@shohojdhara/atomix'
 
 function App() {
   return (
@@ -200,7 +200,7 @@ function App() {
           </p>
 
           <pre className="u-bg-secondary u-p-md u-rounded">
-            <code>{`import { Button, ButtonProps } from '@atomix/react'
+            <code>{`import { Button, ButtonProps } from '@shohojdhara/atomix'
 
 // All component props are fully typed
 const MyButton: React.FC<ButtonProps> = (props) => {
@@ -267,7 +267,7 @@ export default defineConfig({
             <div className="u-bg-error u-p-md u-rounded">
               <h4 className="u-mt-0 u-text-error">Styles not loading</h4>
               <p className="u-mb-0">
-                Make sure you've imported <code>@atomix/styles/index.scss</code>{" "}
+                Make sure you've imported <code>@shohojdhara/atomix/css/styles</code>{" "}
                 in your main application file. Check that your build system
                 supports SCSS processing.
               </p>
@@ -276,9 +276,9 @@ export default defineConfig({
             <div className="u-bg-error u-p-md u-rounded">
               <h4 className="u-mt-0 u-text-error">Component not found</h4>
               <p className="u-mb-0">
-                Ensure you've installed <code>@atomix/react</code> and are
+                Ensure you've installed <code>@shohojdhara/atomix</code> and are
                 importing components correctly:
-                <code>import {`{ Button }`} from '@atomix/react'</code>
+                <code>import {`{ Button }`} from '@shohojdhara/atomix'</code>
               </p>
             </div>
 
