@@ -1,6 +1,6 @@
 {
   "name": "@shohojdhara/atomix",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Atomix Design System - A modern component library for web applications",
   "main": "dist/js/atomix-0.1.0.react.cjs.js",
   "module": "dist/js/atomix-0.1.0.react.esm.js",
@@ -37,7 +37,6 @@
     "./css/styles": "./dist/css/atomix-0.1.0.styles.css",
     "./css/react": "./dist/css/atomix-0.1.0.react.css",
     "./package.json": "./package.json",
-    
     "./Button": {
       "types": "./dist/types/components/Button/index.d.ts",
       "import": "./dist/js/atomix-0.1.0.react.esm.js",
@@ -137,19 +136,14 @@
     "deploy": "gh-pages -d deploy",
     "prepublishOnly": "npm run build:components",
     "test:publish": "npm pack --dry-run",
-    
     "version:patch": "npm version patch",
     "version:minor": "npm version minor",
     "version:major": "npm version major",
-    
     "analyze:size": "npx size-limit",
     "analyze:bundle": "npm run analyze",
-    
     "build:parallel": "npm-run-all --parallel build:cjs build:esm build:umd",
-    
     "link:local": "npm link && echo 'Package linked locally. Use npm link @shohojdhara/atomix in your project to test it.'",
     "unlink:local": "npm unlink",
-    
     "publish:rc": "npm publish --tag next",
     "publish:latest": "npm publish"
   },
