@@ -4,10 +4,6 @@
 export * from './components';
 
 // Export utilities and hooks
-export {
-  useMediaQuery,
-  useBreakpoint,
-} from './lib';
 
 // Export type definitions
 export type {
@@ -21,7 +17,7 @@ import * as components from './components';
 import * as utilities from './lib';
 
 // Create a default export combining all features
-const AtomixReact = {
+const AtomixReact: Record<string, unknown> = {
   ...components,
   ...utilities,
 };

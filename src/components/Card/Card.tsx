@@ -1,77 +1,6 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { CARD } from '../../lib/constants/components';
-
-export interface CardProps {
-  /**
-   * Card header content
-   */
-  header?: ReactNode;
-  
-  /**
-   * Card image source URL
-   */
-  image?: string;
-  
-  /**
-   * Alternative text for the image
-   */
-  imageAlt?: string;
-  
-  /**
-   * Card title
-   */
-  title?: ReactNode;
-  
-  /**
-   * Card text content
-   */
-  text?: ReactNode;
-  
-  /**
-   * Card actions (buttons, links, etc.)
-   */
-  actions?: ReactNode;
-  
-  /**
-   * Card icon
-   */
-  icon?: ReactNode;
-  
-  /**
-   * Card footer content
-   */
-  footer?: ReactNode;
-  
-  /**
-   * Row layout (horizontal card)
-   */
-  row?: boolean;
-  
-  /**
-   * Flat style (no padding on image container)
-   */
-  flat?: boolean;
-  
-  /**
-   * Active state
-   */
-  active?: boolean;
-  
-  /**
-   * Additional className
-   */
-  className?: string;
-  
-  /**
-   * Card content (body)
-   */
-  children?: ReactNode;
-  
-  /**
-   * Optional click handler
-   */
-  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
-}
+import { CardProps } from '../../lib/types/components';
 
 export const Card: React.FC<CardProps> = ({
   header,
@@ -154,4 +83,4 @@ export const Card: React.FC<CardProps> = ({
   );
 };
 
-export default Card; 
+export default Card;

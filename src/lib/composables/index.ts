@@ -41,3 +41,4 @@ export * from './useDataTable';
 export * from './usePagination';
 export * from './useModal';
 export * from './useBreadcrumb'; 
+export * from './useCard';

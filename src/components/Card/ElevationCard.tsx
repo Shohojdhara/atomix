@@ -1,13 +1,7 @@
-import React, { ReactNode, forwardRef } from 'react';
-import Card, { CardProps } from './Card';
-import useCard from './useCard';
-
-export interface ElevationCardProps extends CardProps {
-  /**
-   * CSS class for elevation effect
-   */
-  elevationClass?: string;
-}
+import React from 'react';
+import Card from './Card';
+import { useCard } from '../../lib/composables/useCard';
+import { ElevationCardProps } from '../../lib/types/components';
 
 export const ElevationCard: React.FC<ElevationCardProps> = ({
   elevationClass = 'is-elevated',
@@ -27,7 +21,8 @@ export const ElevationCard: React.FC<ElevationCardProps> = ({
   const cardProps = getCardProps();
   
   return (
-    <div
+    <Card 
+      {...props}
       className={`${className} ${cardProps.className}`}
       ref={cardProps.ref}
       tabIndex={cardProps.tabIndex}
@@ -39,15 +34,9 @@ export const ElevationCard: React.FC<ElevationCardProps> = ({
       onClick={cardProps.onClick as unknown as React.MouseEventHandler<HTMLDivElement>}
       onKeyDown={cardProps.onKeyDown as unknown as React.KeyboardEventHandler<HTMLDivElement>}
     >
-      <Card 
-        {...props}
-        className=""
-        onClick={undefined}
-      >
-        {children}
-      </Card>
-    </div>
+      {children}
+    </Card>
   );
 };
 
-export default ElevationCard; 
+export default ElevationCard;
