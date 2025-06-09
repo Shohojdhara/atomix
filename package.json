@@ -36,7 +36,28 @@
     "./css": "./dist/css/atomix-0.1.0.styles.css",
     "./css/styles": "./dist/css/atomix-0.1.0.styles.css",
     "./css/react": "./dist/css/atomix-0.1.0.react.css",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    
+    "./Button": {
+      "types": "./dist/types/components/Button/index.d.ts",
+      "import": "./dist/js/atomix-0.1.0.react.esm.js",
+      "require": "./dist/js/atomix-0.1.0.react.cjs.js"
+    },
+    "./Card": {
+      "types": "./dist/types/components/Card/index.d.ts",
+      "import": "./dist/js/atomix-0.1.0.react.esm.js",
+      "require": "./dist/js/atomix-0.1.0.react.cjs.js"
+    },
+    "./Modal": {
+      "types": "./dist/types/components/Modal/index.d.ts",
+      "import": "./dist/js/atomix-0.1.0.react.esm.js",
+      "require": "./dist/js/atomix-0.1.0.react.cjs.js"
+    },
+    "./Tooltip": {
+      "types": "./dist/types/components/Tooltip/index.d.ts",
+      "import": "./dist/js/atomix-0.1.0.react.esm.js",
+      "require": "./dist/js/atomix-0.1.0.react.cjs.js"
+    }
   },
   "dependencies": {
     "@types/classnames": "^2.3.0",
@@ -45,8 +66,6 @@
     "classnames": "^2.5.1",
     "phosphor-react": "^1.4.1",
     "prism-react-renderer": "^2.4.1",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
     "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
@@ -87,7 +106,10 @@
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.1",
-    "webpack-node-externals": "^3.0.0"
+    "webpack-node-externals": "^3.0.0",
+    "@size-limit/preset-app": "^11.0.0",
+    "npm-run-all": "^4.1.5",
+    "size-limit": "^11.0.0"
   },
   "scripts": {
     "build": "npm run build:components",
@@ -114,7 +136,22 @@
     "predeploy": "npm run build:docs && npm run build-storybook && node scripts/prepare-deploy.js",
     "deploy": "gh-pages -d deploy",
     "prepublishOnly": "npm run build:components",
-    "test:publish": "npm pack --dry-run"
+    "test:publish": "npm pack --dry-run",
+    
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major",
+    
+    "analyze:size": "npx size-limit",
+    "analyze:bundle": "npm run analyze",
+    
+    "build:parallel": "npm-run-all --parallel build:cjs build:esm build:umd",
+    
+    "link:local": "npm link && echo 'Package linked locally. Use npm link @shohojdhara/atomix in your project to test it.'",
+    "unlink:local": "npm unlink",
+    
+    "publish:rc": "npm publish --tag next",
+    "publish:latest": "npm publish"
   },
   "files": [
     "dist",

@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 import { MagnifyingGlass, GithubLogo, List } from "phosphor-react";
 import { ColorModeToggle } from "./ColorModeToggle";
 import { SidebarMenu } from "./SidebarMenu";
-import { Navbar, Button, Search } from "@shohojdhara/atomix";
+import { Button } from '@shohojdhara/atomix/react';
+import '@shohojdhara/atomix/css';
 
 // Add search functionality
 const useSearch = (items: any[]) => {

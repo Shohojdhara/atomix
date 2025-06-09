@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@shohojdhara/atomix": "^0.1.0",
+    "@shohojdhara/atomix": "file:..",
     "classnames": "^2.5.1",
     "next": "^14.0.0",
     "phosphor-react": "^1.4.1",

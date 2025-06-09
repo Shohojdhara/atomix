@@ -10,6 +10,9 @@ const fs = require('fs');
 const nodeExternals = require('webpack-node-externals');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+// Use dynamic version from environment or package.json
+const version = process.env.VERSION || packageJson.version;
+
 /**
  * Custom plugin to create unminified CSS files
  */
@@ -281,7 +284,6 @@ const getBaseConfig = (isProduction, name, version, options = {}) => ({
  */
 const getVanillaComponentConfig = (env, argv) => {
   const isProduction = argv.mode === 'production';
-  const version = packageJson.version;
   const name = packageJson.name;
   const format = env.format || 'umd'; // 'umd', 'cjs', or 'esm'
   
@@ -294,7 +296,7 @@ const getVanillaComponentConfig = (env, argv) => {
 
   const vanillaConfig = {
     entry: {
-      vanilla: './src/vanilla.ts',
+      vanilla: './src/htmlComponentsEntry.ts',
       styles: './src/styles/index.scss',
     },
     output: {
@@ -366,7 +368,6 @@ const getVanillaComponentConfig = (env, argv) => {
  */
 const getReactComponentConfig = (env, argv) => {
   const isProduction = argv.mode === 'production';
-  const version = packageJson.version;
   const name = packageJson.name;
   const format = env.format || 'umd'; // 'umd', 'cjs', or 'esm'
   
@@ -380,7 +381,7 @@ const getReactComponentConfig = (env, argv) => {
 
   const reactConfig = {
     entry: {
-      react: './src/react.ts',
+      react: './src/index.ts',
     },
     output: {
       path: path.resolve(__dirname, 'dist/'),

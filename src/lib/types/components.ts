@@ -2287,17 +2287,17 @@ export interface UseCardReturn {
   /**
    * Reference to the card element
    */
-  cardRef: RefObject<HTMLDivElement>;
+  cardRef: React.RefObject<HTMLDivElement>;
   
   /**
    * Reference to the front side of a flip card
    */
-  frontRef: RefObject<HTMLDivElement>;
+  frontRef: React.RefObject<HTMLDivElement>;
   
   /**
    * Reference to the back side of a flip card
    */
-  backRef: RefObject<HTMLDivElement>;
+  backRef: React.RefObject<HTMLDivElement>;
   
   /**
    * Whether the card is flipped
@@ -2354,7 +2354,7 @@ export interface UseCardReturn {
    */
   getCardProps: () => {
     className: string;
-    ref: RefObject<HTMLDivElement>;
+    ref: React.RefObject<HTMLDivElement>;
     tabIndex?: number;
     role?: string;
     onMouseEnter: () => void;

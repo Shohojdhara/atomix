@@ -204,19 +204,73 @@ function App() {
         <section>
           <h2>TypeScript Support</h2>
           <p>
-            Atomix is built with TypeScript and provides full type definitions
+            Atomix is built with TypeScript and provides comprehensive type definitions
             out of the box. No additional setup is required for TypeScript
-            projects.
+            projects. All component props, hooks, and utility functions are fully typed.
           </p>
 
+          <h3>Component Props</h3>
           <pre className="u-bg-secondary u-p-md u-rounded">
-            <code>{`import { Button, ButtonProps } from '@shohojdhara/atomix'
+            <code>{`import { Button, ButtonProps, Card, CardProps } from '@shohojdhara/atomix'
 
 // All component props are fully typed
 const MyButton: React.FC<ButtonProps> = (props) => {
+  // TypeScript will validate all props according to ButtonProps interface
   return <Button {...props} />
+}
+
+// Example with typed props
+function MyComponent() {
+  return (
+    <Card 
+      title="TypeScript Support" 
+      // TypeScript will show available props and their types
+      variant="outlined"
+    >
+      <Button 
+        variant="primary" 
+        size="md"
+        // TypeScript will validate event handlers
+        onClick={(e) => console.log('Button clicked', e)}
+      >
+        Click Me
+      </Button>
+    </Card>
+  )
 }`}</code>
           </pre>
+
+          <h3>Hooks and Utilities</h3>
+          <pre className="u-bg-secondary u-p-md u-rounded">
+            <code>{`import { useColorMode, useMediaQuery } from '@shohojdhara/atomix'
+
+function ThemeAwareComponent() {
+  // TypeScript provides type safety for hook return values
+  const { colorMode, setColorMode } = useColorMode()
+  
+  // TypeScript validates arguments to utility functions
+  const isLargeScreen = useMediaQuery('(min-width: 992px)')
+  
+  return (
+    <div>
+      <p>Current theme: {colorMode}</p>
+      <button onClick={() => setColorMode(colorMode === 'light' ? 'dark' : 'light')}>
+        Toggle Theme
+      </button>
+      {isLargeScreen && <p>This is a large screen</p>}
+    </div>
+  )
+}`}</code>
+          </pre>
+
+          <div className="u-bg-info u-p-md u-rounded u-mt-md">
+            <h4 className="u-mt-0 u-d-flex u-items-center u-gap-xs">ℹ️ Type Definitions</h4>
+            <p className="u-mb-0">
+              Atomix exports all component interfaces (like <code>ButtonProps</code>, <code>CardProps</code>, etc.)
+              so you can extend them or use them in your own components. The type system helps catch errors
+              during development and provides better IDE autocompletion.
+            </p>
+          </div>
         </section>
 
         <section>

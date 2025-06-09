@@ -3,7 +3,6 @@ import { PaginationProps } from '../../lib/types/components';
 import { usePagination, DOTS } from '../../lib/composables/usePagination';
 import { PAGINATION_DEFAULTS } from '../../lib/constants/components';
 import { Icon, IconProps } from '../Icon';
-import '../../styles/06-components/_components.pagination.scss';
 
 // @TODO: Add Search functionality for pagination
 

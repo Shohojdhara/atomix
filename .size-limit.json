@@ -1,0 +1,27 @@
+[
+  {
+    "path": "dist/js/atomix-*.react.js",
+    "limit": "100 KB",
+    "name": "React UMD Bundle"
+  },
+  {
+    "path": "dist/js/atomix-*.react.esm.js",
+    "limit": "80 KB",
+    "name": "React ESM Bundle"
+  },
+  {
+    "path": "dist/js/atomix-*.react.cjs.js",
+    "limit": "80 KB",
+    "name": "React CJS Bundle"
+  },
+  {
+    "path": "dist/js/atomix-*.vanilla.js",
+    "limit": "90 KB",
+    "name": "Vanilla UMD Bundle"
+  },
+  {
+    "path": "dist/css/atomix-*.styles.min.css",
+    "limit": "50 KB",
+    "name": "CSS Bundle"
+  }
+]

@@ -1,23 +1,15 @@
-# Source files
-src/
-
 # Development files
 .storybook/
 .github/
 docs/
-scripts/
 storybook-static/
 deploy/
 public/
 
-# Configuration files
+# Configuration files that should be excluded
 .eslintrc*
 .prettierrc*
 .babelrc*
-tsconfig*.json
-webpack.config.js
-babel.config.js
-postcss.config.js
 .editorconfig
 
 # IDE files
@@ -56,6 +48,9 @@ node_modules/
 *.md
 !README.md
 !LICENSE.md
+implementation-guide.md
+atomix-component-guidelines.md
+atomix-roadmap.md
 
 # Misc
 .gitignore

@@ -1,7 +1,18 @@
-// Export React components
+// Entry point for React components
+
+// Export all components
 export * from './components';
 
-// Export vanilla JS functionality
+// Export utilities and hooks
 
-// Export utilities and types
-export * from './lib'; 
+// Import components and utilities for default export
+import * as components from './components';
+import * as utilities from './lib';
+
+// Create a default export combining all features
+const AtomixReact: Record<string, unknown> = {
+  ...components,
+  ...utilities,
+};
+
+export default AtomixReact;

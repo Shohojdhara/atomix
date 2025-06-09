@@ -1,4 +1,4 @@
-// Entry point for vanilla JS components
+// Entry point for HTML components
 import { initializeButton } from './components/Button/scripts';
 import { initializeAccordionsWithCustomBehavior } from './components/Accordion/scripts';
 import { initializeTooltipsWithCustomBehavior } from './components/Tooltip/scripts/tooltipInteractions';
