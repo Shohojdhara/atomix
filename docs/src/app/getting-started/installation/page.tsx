@@ -10,9 +10,19 @@ export default function InstallationPage() {
       <div className="prose">
         <h1>Installation</h1>
         <p>
-          Get started with Atomix in your React project. Follow these steps to
+          Get started with Shohojdhara Atomix in your React project. Follow these steps to
           install and configure the design system components and styles.
         </p>
+        
+        <div className="u-bg-success-100 u-p-md u-rounded u-mb-lg">
+          <h4 className="u-mt-0 u-d-flex u-items-center u-gap-xs">
+            🎉 Welcome to Shohojdhara Atomix
+          </h4>
+          <p className="u-mb-0">
+            Shohojdhara Atomix is a modern, accessible design system that provides beautiful React components
+            with consistent styling and behavior. It's designed to help you build high-quality user interfaces faster.
+          </p>
+        </div>
 
         <section>
           <h2>Requirements</h2>

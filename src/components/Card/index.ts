@@ -1,10 +1,19 @@
-import Card from './Card';
-import { CardProps } from './Card';
-import ElevationCard from './ElevationCard';
-import { ElevationCardProps } from './ElevationCard';  
-import useCard from './useCard';
+/**
+ * Card component module
+ * 
+ * This module exports the Card component and its variants, along with their types and hooks.
+ */
 
-export { Card, ElevationCard, useCard };
-export type { CardProps, ElevationCardProps };
+// Export the main Card component
+export { default as Card } from './Card';
+export type { CardProps } from './Card';
 
-export default Card; 
+// Export the ElevationCard variant
+export { default as ElevationCard } from './ElevationCard';
+export type { ElevationCardProps } from './ElevationCard';  
+
+// Export the useCard hook
+export { default as useCard } from './useCard';
+
+// Default export for the main Card component
+export { default } from './Card';

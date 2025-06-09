@@ -9,32 +9,41 @@ export default function HomePage() {
     <DocsLayout>
       <div className="u-d-block">
         {/* Hero Section */}
-        <section className="c-hero">
-          <div className="c-hero__content">
-            <h1 className="c-hero__title">Atomix Design System</h1>
-            <p className="c-hero__subtitle">
-              Modern, accessible, and beautiful React components built with design tokens
-            </p>
-            <p className="c-hero__text">
-              Build consistent user interfaces faster with our comprehensive design system. 
-              Components, utilities, and guidelines to help you create amazing products.
-            </p>
-            <div className="c-hero__actions">
-              <Link href="/getting-started/installation" className="c-btn c-btn--primary c-btn--lg">
-                Get Started
-              </Link>
-              <a 
-                href="https://github.com/atomixdesign/atomix"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="c-btn c-btn--secondary c-btn--lg"
-              >
-                <span className="c-btn__icon">📖</span>
-                View on GitHub
-              </a>
+        <div className="c-hero c-hero--center u-bg-transparent" style={{ "--atomix-hero-content-width": "650px" }}>
+          <div className="c-hero__bg">
+            <img 
+              src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=3174&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+              alt="Background" 
+              className="c-hero__bg-image"
+            />
+            <div className="c-hero__overlay"></div>
+          </div>
+          <div className="c-hero__container o-container">
+            <div className="c-hero__content">
+              <p className="c-hero__subtitle">Modern UI Component Library</p>
+              <h1 className="c-hero__title">Atomix Design System</h1>
+              <p className="c-hero__text">
+                A lightweight, highly customizable React component library for building beautiful interfaces with a focus on scalability, extensibility, and maintainability.
+              </p>
+              <div className="c-hero__actions">
+                <div className="u-d-flex u-gap-3 u-justify-content-center">
+                  <button className="c-btn c-btn--primary" aria-disabled="false">
+                    <span className="button__label">Get Started</span>
+                  </button>
+                  <a 
+                    href="https://liimonx.github.io/atomix/storybook/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="c-btn c-btn--outline-secondary"
+                  >
+                    View on Storybook
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-        </section>
+          <div className="c-hero__overlay" style={{ opacity: 0.5 }}></div>
+        </div>
 
         {/* Features Grid */}
         <section className="u-mt-20">

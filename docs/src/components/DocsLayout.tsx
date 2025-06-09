@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { MagnifyingGlass, GithubLogo, List } from "phosphor-react";
 import { ColorModeToggle } from "./ColorModeToggle";
 import { SidebarMenu } from "./SidebarMenu";
+import { Navbar, Button, Search } from "@shohojdhara/atomix";
 
 // Add search functionality
 const useSearch = (items: any[]) => {
@@ -115,94 +116,94 @@ export function DocsLayout({ children }: DocsLayoutProps) {
   };
 
   return (
-    <div className="u-d-flex u-flex-column u-min-vh-100">
+    <div className="u-d-flex u-flex-column">
       {/* Header */}
-      <header className="c-navbar c-navbar--collapsible u-backdrop-blur">
-        <div className="c-navbar__container">
-          <div className="c-navbar__brand">
-            <Link
-              href="/"
-              className="u-d-flex u-align-items-center u-gap-2 u-text-decoration-none"
-              aria-label="Atomix Home"
+      <Navbar collapsible className="u-backdrop-blur">
+        <Navbar.Brand>
+          <Link
+            href="/"
+            className="u-d-flex u-align-items-center u-gap-2 u-text-decoration-none"
+            aria-label="Atomix Home"
+          >
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+              aria-label="Atomix Logo"
             >
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                role="img"
-                aria-label="Atomix Logo"
-              >
-                <circle cx="16" cy="16" r="16" fill="currentColor" />
-                <circle cx="16" cy="16" r="8" fill="white" />
-              </svg>
-              <span className="u-fw-bold u-text-dark">Atomix</span>
-            </Link>
-          </div>
+              <circle cx="16" cy="16" r="16" fill="currentColor" />
+              <circle cx="16" cy="16" r="8" fill="white" />
+            </svg>
+            <span className="u-fw-bold u-text-dark">Shohojdhara Atomix</span>
+          </Link>
+        </Navbar.Brand>
 
-          {/* Search Bar */}
-          <div className="c-navbar__search">
-            <div className="c-search">
-              <MagnifyingGlass className="c-search__icon" size={20} weight="bold" />
-              <input
-                type="text"
-                placeholder="Search documentation..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="c-search__input"
-                aria-label="Search documentation"
-                aria-expanded={searchResults.length > 0}
-                aria-controls="search-results"
-              />
-            </div>
+        {/* Search Bar */}
+        <Navbar.Search>
+          <Search>
+            <Search.Input
+              placeholder="Search documentation..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Search documentation"
+              aria-expanded={searchResults.length > 0}
+              aria-controls="search-results"
+              leftIcon={<MagnifyingGlass size={20} weight="bold" />}
+            />
             {searchResults.length > 0 && (
-              <div className="c-search-results" id="search-results" role="listbox">
+              <Search.Results id="search-results" role="listbox">
                 {searchResults.map((result, index) => (
-                  <Link
+                  <Search.ResultItem
                     key={index}
+                    as={Link}
                     href={result.href}
-                    className="c-search-results__item"
                     onClick={() => setSearchQuery("")}
                     role="option"
                   >
-                    <span className="c-search-results__section">{result.section}</span>
-                    <span className="c-search-results__title">{result.title}</span>
-                  </Link>
+                    <span className="u-text-muted u-fs-sm">{result.section}</span>
+                    <span className="u-fw-medium">{result.title}</span>
+                  </Search.ResultItem>
                 ))}
-              </div>
+              </Search.Results>
             )}
-          </div>
+          </Search>
+        </Navbar.Search>
 
-          <div className="u-d-flex u-align-items-center u-gap-3">
-            <ColorModeToggle className="c-btn--outline-secondary" />
+        <Navbar.Actions>
+          <ColorModeToggle className="c-btn--outline-secondary" />
 
-            <a
-              href="https://github.com/atomixdesign/atomix"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="c-btn c-btn--outline-secondary c-btn--icon"
-              aria-label="View on GitHub"
-            >
-              <GithubLogo size={20} weight="bold" />
-            </a>
+          <Button
+            as="a"
+            href="https://github.com/atomixdesign/atomix"
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="outline-secondary"
+            iconOnly
+            aria-label="View on GitHub"
+          >
+            <GithubLogo size={20} weight="bold" />
+          </Button>
 
-            <button
-              className="c-navbar__toggler c-btn c-btn--outline-secondary c-btn--icon"
-              onClick={toggleSidebar}
-              aria-label="Toggle navigation menu"
-              aria-expanded={isSidebarOpen}
-              aria-controls="sidebar-menu"
-            >
-              <List size={20} weight="bold" />
-            </button>
-          </div>
-        </div>
-      </header>
+          <Button
+            variant="outline-secondary"
+            iconOnly
+            onClick={toggleSidebar}
+            aria-label="Toggle navigation menu"
+            aria-expanded={isSidebarOpen}
+            aria-controls="sidebar-menu"
+          >
+            <List size={20} weight="bold" />
+          </Button>
+        </Navbar.Actions>
+      </Navbar>
 
-      <div className="u-d-flex u-flex-1">
-        {/* Desktop Sidebar - visible on larger screens */}
-        <div className="c-desktop-sidebar">
+      <div className="o-container">
+        <div className="o-grid">
+          <div className="o-grid__col o-grid__col--2">
+          <div className="c-desktop-sidebar">
           <div className="c-docs-sidebar__content">
             {navigationItems.map((section, sectionIndex) => (
               <div key={sectionIndex} className="c-docs-sidebar__section">
@@ -232,20 +233,50 @@ export function DocsLayout({ children }: DocsLayoutProps) {
               </div>
             ))}
           </div>
-        </div>
+            </div>
 
-        {/* Mobile Sidebar - using EdgePanel */}
-        <SidebarMenu 
-          isOpen={isSidebarOpen} 
-          onClose={() => setIsSidebarOpen(false)} 
-          navigationItems={navigationItems} 
-        />
+            <SidebarMenu 
+              isOpen={isSidebarOpen} 
+              onClose={() => setIsSidebarOpen(false)} 
+              navigationItems={navigationItems} 
+            />
+            
+            </div>
+            <main className="o-grid__col o-grid__col--10">
+              {children}
+            </main>
+         </div>
 
-        {/* Main Content */}
-        <main className="u-flex-1 u-p-6">
-          <div className="o-container">{children}</div>
-        </main>
+     
       </div>
+
+      {/* Footer */}
+      <footer className="u-bg-light-100 u-p-6 u-border-top">
+        <div className="o-container">
+          <div className="u-d-flex u-flex-column u-flex-md-row u-justify-content-between u-align-items-center">
+            <div className="u-mb-4 u-mb-md-0">
+              <p className="u-mb-2">
+                <span className="u-fw-bold">Shohojdhara Atomix</span> - A modern design system for React applications
+              </p>
+              <p className="u-text-muted u-fs-sm">
+                &copy; {new Date().getFullYear()} Shohojdhara Atomix. All rights reserved.
+              </p>
+            </div>
+            <div className="u-d-flex u-gap-4">
+              <Button
+                as="a"
+                href="https://github.com/liimonx/atomix" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                variant="link"
+                leftIcon={<GithubLogo size={20} />}
+              >
+                GitHub
+              </Button>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

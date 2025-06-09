@@ -1,17 +1,29 @@
 // Entry point for React components
 
-// Export all React components
+// Export all components
 export * from './components';
 
-// Export utilities and types
-export * from './lib';
+// Export utilities and hooks
+export {
+  useMediaQuery,
+  useBreakpoint,
+} from './lib';
 
-// Create a default export for UMD build
+// Export type definitions
+export type {
+  ButtonProps,
+  CardProps,
+  // Add all component prop types here for better TypeScript support
+} from './lib';
+
+// Import components and utilities for default export
+import * as components from './components';
+import * as utilities from './lib';
+
+// Create a default export combining all features
 const AtomixReact = {
-  // Re-export all components
-  ...require('./components'),
-  // Re-export utilities and types
-  ...require('./lib')
+  ...components,
+  ...utilities,
 };
 
 export default AtomixReact;
