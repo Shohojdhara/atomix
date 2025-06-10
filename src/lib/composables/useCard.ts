@@ -103,7 +103,7 @@ export const useCard = (options: UseCardOptions = {}): UseCardReturn => {
     return {
       className,
       ref: cardRef,
-      tabIndex: clickable || flipEffect ? 0 : undefined,
+      tabxwIndex: clickable || flipEffect ? 0 : -1,
       role: clickable ? 'button' : undefined,
       onMouseEnter: handleMouseEnter,
       onMouseLeave: handleMouseLeave,

@@ -18,7 +18,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(({
   children,
   onClick,
   ...rest
-}) => {
+}, ref) => {
   const cardClasses = [
     CARD.CLASSES.BASE,
     row ? CARD.CLASSES.ROW : '',
@@ -26,9 +26,9 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(({
     active ? CARD.CLASSES.ACTIVE : '',
     className
   ].filter(Boolean).join(' ');
-  
+
   return (
-    <div 
+    <div
       ref={ref}
       className={cardClasses}
       onClick={onClick}
@@ -38,13 +38,13 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(({
         <div className={CARD.SELECTORS.HEADER.substring(1)}>
             {header}
             {image && (
-              <img 
-                src={image} 
-                alt={imageAlt} 
-                className={CARD.SELECTORS.IMAGE.substring(1)} 
+              <img
+                src={image}
+                alt={imageAlt}
+                className={CARD.SELECTORS.IMAGE.substring(1)}
               />
             )}
-            
+
             {icon && (
               <div className={CARD.SELECTORS.ICON.substring(1)}>
                 {icon}
@@ -52,29 +52,29 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(({
             )}
         </div>
       )}
-      
+
       <div className={CARD.SELECTORS.BODY.substring(1)}>
-        {(title ) && (
+        {title && (
           <h3 className={CARD.SELECTORS.TITLE.substring(1)}>
             {title}
           </h3>
         )}
-        
+
         {text && (
           <p className={CARD.SELECTORS.TEXT.substring(1)}>
             {text}
           </p>
         )}
-        
+
         {children}
       </div>
-        
+
       {actions && (
         <div className={CARD.SELECTORS.ACTIONS.substring(1)}>
           {actions}
         </div>
       )}
-      
+
       {footer && (
         <div className={CARD.SELECTORS.FOOTER.substring(1)}>
           {footer}

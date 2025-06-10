@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import Card from './Card';
 import { useCard } from '../../lib/composables/useCard';
 import { ElevationCardProps } from '../../lib/types/components';
@@ -13,16 +13,15 @@ export const ElevationCard: React.FC<ElevationCardProps> = ({
   const { getCardProps } = useCard({
     elevationEffect: true,
     elevationClass,
-    clickable: !!onClick,
+    clickable: Boolean(onClick),
     onClick: onClick as (event: React.MouseEvent) => void,
     focusEffect: true
   });
-  
+
   const cardProps = getCardProps();
-  
+
   return (
-    <Card 
-      {...props}
+    <div
       className={`${className} ${cardProps.className}`}
       ref={cardProps.ref}
       tabIndex={cardProps.tabIndex}
@@ -34,8 +33,14 @@ export const ElevationCard: React.FC<ElevationCardProps> = ({
       onClick={cardProps.onClick as unknown as React.MouseEventHandler<HTMLDivElement>}
       onKeyDown={cardProps.onKeyDown as unknown as React.KeyboardEventHandler<HTMLDivElement>}
     >
-      {children}
-    </Card>
+      <Card 
+        {...props}
+        className=""
+        onClick={undefined}
+      >
+        {children}
+      </Card>
+    </div>
   );
 };
 
