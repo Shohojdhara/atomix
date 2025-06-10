@@ -62,7 +62,8 @@ export type StateModifier =
  */
 export type IconPosition = 'left' | 'right';
 
-/**
+export type listvariant = 'dash' | 'number' | 'text';
+/**;
  * List component properties
  */
 export interface ListProps extends BaseComponentProps {
@@ -75,7 +76,7 @@ export interface ListProps extends BaseComponentProps {
   /**
    * List variant
    */
-  variant?: Variant;
+  variant?: listvariant;
   
   /**
    * List size
@@ -2163,7 +2164,7 @@ export interface PhotoViewerProps extends BaseComponentProps {
 /**
  * Card component props
  */
-export interface CardProps extends BaseComponentProps {
+export interface CardProps extends BaseComponentProps{
   /**
    * Card header content
    */

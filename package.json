@@ -2,13 +2,12 @@
   "name": "@shohojdhara/atomix",
   "version": "0.1.2",
   "description": "Atomix Design System - A modern component library for web applications",
-  "main": "dist/js/atomix-0.1.0.react.cjs.js",
-  "module": "dist/js/atomix-0.1.0.react.esm.js",
-  "unpkg": "dist/js/atomix-0.1.0.react.js",
-  "jsdelivr": "dist/js/atomix-0.1.0.react.js",
-  "browser": "dist/js/atomix-0.1.0.react.js",
-  "types": "dist/types/index.d.ts",
-  "style": "dist/css/atomix-0.1.0.styles.css",
+  "main": "dist/js/atomix-${version}.react.cjs.js",
+  "module": "dist/js/atomix-${version}.react.esm.js",
+  "unpkg": "dist/js/atomix-${version}.react.js",
+  "jsdelivr": "dist/js/atomix-${version}.react.js",
+  "browser": "dist/js/atomix-${version}.react.js",
+  "typings": "dist/types/react.d.ts",
   "sideEffects": [
     "*.css",
     "*.scss",
@@ -17,46 +16,20 @@
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "import": "./dist/js/atomix-0.1.0.react.esm.js",
-      "require": "./dist/js/atomix-0.1.0.react.cjs.js",
-      "default": "./dist/js/atomix-0.1.0.react.esm.js"
+      "import": "./dist/js/atomix-${version}.react.esm.js",
+      "require": "./dist/js/atomix-${version}.react.cjs.js",
+      "default": "./dist/js/atomix-${version}.react.esm.js"
     },
-    "./vanilla": {
-      "types": "./dist/types/vanilla.d.ts",
-      "import": "./dist/js/atomix-0.1.0.vanilla.esm.js",
-      "require": "./dist/js/atomix-0.1.0.vanilla.cjs.js",
-      "default": "./dist/js/atomix-0.1.0.vanilla.esm.js"
-    },
-    "./react": {
-      "types": "./dist/types/react.d.ts",
-      "import": "./dist/js/atomix-0.1.0.react.esm.js",
-      "require": "./dist/js/atomix-0.1.0.react.cjs.js",
-      "default": "./dist/js/atomix-0.1.0.react.esm.js"
-    },
-    "./css": "./dist/css/atomix-0.1.0.styles.css",
-    "./css/styles": "./dist/css/atomix-0.1.0.styles.css",
-    "./css/react": "./dist/css/atomix-0.1.0.react.css",
     "./package.json": "./package.json",
-    "./Button": {
-      "types": "./dist/types/components/Button/index.d.ts",
-      "import": "./dist/js/atomix-0.1.0.react.esm.js",
-      "require": "./dist/js/atomix-0.1.0.react.cjs.js"
+    "./css": {
+      "types": "./dist/types/css.d.ts",
+      "default": "./dist/css/atomix-${version}.css"
     },
-    "./Card": {
-      "types": "./dist/types/components/Card/index.d.ts",
-      "import": "./dist/js/atomix-0.1.0.react.esm.js",
-      "require": "./dist/js/atomix-0.1.0.react.cjs.js"
+    "./css/min": {
+      "types": "./dist/types/css.d.ts",
+      "default": "./dist/css/atomix-${version}.min.css"
     },
-    "./Modal": {
-      "types": "./dist/types/components/Modal/index.d.ts",
-      "import": "./dist/js/atomix-0.1.0.react.esm.js",
-      "require": "./dist/js/atomix-0.1.0.react.cjs.js"
-    },
-    "./Tooltip": {
-      "types": "./dist/types/components/Tooltip/index.d.ts",
-      "import": "./dist/js/atomix-0.1.0.react.esm.js",
-      "require": "./dist/js/atomix-0.1.0.react.cjs.js"
-    }
+    "./scss": "./src/styles/index.scss"
   },
   "dependencies": {
     "@types/classnames": "^2.3.0",
@@ -111,28 +84,11 @@
     "size-limit": "^11.0.0"
   },
   "scripts": {
-    "build": "npm run build:components",
-    "build:components": "npm run build:all && node scripts/generate-types.js",
-    "build:all": "npx webpack --mode production --env target=components --env format=all",
-    "build:umd": "npx webpack --mode production --env target=components --env format=umd",
-    "build:cjs": "npx webpack --mode production --env target=components --env format=cjs",
-    "build:esm": "npx webpack --mode production --env target=components --env format=esm",
-    "build:vanilla": "npx webpack --mode production --env target=vanilla --env format=umd",
-    "build:vanilla:cjs": "npx webpack --mode production --env target=vanilla --env format=cjs",
-    "build:vanilla:esm": "npx webpack --mode production --env target=vanilla --env format=esm",
-    "build:react": "npx webpack --mode production --env target=react --env format=umd",
-    "build:react:cjs": "npx webpack --mode production --env target=react --env format=cjs",
-    "build:react:esm": "npx webpack --mode production --env target=react --env format=esm",
-    "build:docs": "npx webpack --mode production --env target=docs",
     "analyze": "npx webpack --mode production --env target=components --env format=all --env analyze=true",
     "dev": "npm run storybook",
-    "dev:docs": "npx webpack serve --mode development --env target=docs",
-    "dev:vanilla": "npx webpack --mode development --env target=vanilla --env format=umd --watch",
-    "dev:react": "npx webpack --mode development --env target=react --env format=umd --watch",
-    "serve": "npx webpack serve --mode development --env target=docs --open",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "predeploy": "npm run build:docs && npm run build-storybook && node scripts/prepare-deploy.js",
+    "predeploy": "npm run build-storybook && node scripts/prepare-deploy.js",
     "deploy": "gh-pages -d deploy",
     "prepublishOnly": "npm run build:components",
     "test:publish": "npm pack --dry-run",
@@ -142,12 +98,21 @@
     "analyze:size": "npx size-limit",
     "analyze:bundle": "npm run analyze",
     "build:parallel": "npm-run-all --parallel build:cjs build:esm build:umd",
+    "clean:dist": "rm -rf dist",
+    "build:components": "npm-run-all clean:dist --parallel build:react build:styles build:types",
+    "build:react": "npm run clean:dist && npx webpack --mode production --env target=components",
+    "build:styles": "npm run clean:dist && npx webpack --mode production --env target=styles",
+    "build:cjs": "npx webpack --mode production --env target=components --env format=cjs",
+    "build:esm": "npx webpack --mode production --env target=components --env format=esm",
+    "build:umd": "npx webpack --mode production --env target=components --env format=umd",
+    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir dist/types",
     "link:local": "npm link && echo 'Package linked locally. Use npm link @shohojdhara/atomix in your project to test it.'",
     "unlink:local": "npm unlink",
     "publish:rc": "npm publish --tag next",
     "publish:latest": "npm publish"
   },
   "files": [
+    "src",
     "dist",
     "README.md",
     "LICENSE",

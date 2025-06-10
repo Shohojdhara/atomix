@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { forwardRef, Ref } from 'react';
 import { CARD } from '../../lib/constants/components';
 import { CardProps } from '../../lib/types/components';
 
-export const Card: React.FC<CardProps> = ({
+export const Card = forwardRef<HTMLDivElement, CardProps>(({
   header,
   image,
   imageAlt = '',
@@ -29,6 +29,7 @@ export const Card: React.FC<CardProps> = ({
   
   return (
     <div 
+      ref={ref}
       className={cardClasses}
       onClick={onClick}
       {...rest}
@@ -81,6 +82,6 @@ export const Card: React.FC<CardProps> = ({
       )}
     </div>
   );
-};
+});
 
 export default Card;

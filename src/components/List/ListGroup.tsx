@@ -1,5 +1,6 @@
-import React, { Children, cloneElement, isValidElement } from 'react';
-import { ListGroupProps, ListProps } from '../../lib/types/components';
+import React from 'react';
+import classNames from 'classnames';
+import { ListGroupProps } from '../../lib/types/components';
 import { LIST_GROUP } from '../../lib/constants/components';
 import { List } from './List';
 
@@ -7,34 +8,27 @@ export const ListGroup: React.FC<ListGroupProps> = ({
   children,
   className = '',
   variant = 'default',
-  
 }) => {
   // Generate CSS classes
-  const listGroupClasses = [
-    LIST_GROUP.BASE_CLASS,
-    className,
-  ].filter(Boolean).join(' ');
+  const listGroupClasses = classNames(LIST_GROUP.BASE_CLASS, className);
 
   // Get valid List children
-  const listChildren = Children.toArray(children).filter(
-    child => isValidElement(child) && child.type === List
-  );
+  const validLists = React.Children.toArray(children).filter(
+    (child) => React.isValidElement(child) && child.type === List
+  ) as React.ReactElement[];
 
   return (
     <div className={listGroupClasses}>
-      {listChildren.map((child, index) => {
-        if (isValidElement<ListProps>(child)) {
-          // Clone the List element to ensure proper styling
-          return cloneElement(child, {
-            key: index,
-            variant: (child.props.variant || variant) as ListProps['variant'],
-            ...child.props,
-          });
-        }
-        return null;
+      {validLists.map((child, index) => {
+        return React.cloneElement(child, {
+          key: index,
+          variant: (child.props as any).variant ?? variant,
+        });
       })}
     </div>
   );
 };
+
+ListGroup.displayName = 'ListGroup';
 
 export default ListGroup;

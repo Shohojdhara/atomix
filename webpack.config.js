@@ -1,491 +1,224 @@
 const path = require('path');
-const { merge } = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const packageJson = require('./package.json');
-const autoprefixer = require('autoprefixer');
-const cssnano = require('cssnano');
-const fs = require('fs');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-// Use dynamic version from environment or package.json
-const version = process.env.VERSION || packageJson.version;
+// Version for output filenames
+const version = require('./package.json').version;
 
-/**
- * Custom plugin to create unminified CSS files
- */
-class UnminifiedCssPlugin {
-  constructor(options = {}) {
-    this.options = Object.assign({
-      minFilePattern: /\.min\.css$/,
-      removeMinSuffix: true,
-    }, options);
-  }
-
-  beautifyCss(css) {
-    css = css.replace(/}/g, '}\n');
-    css = css.replace(/;/g, ';\n  ');
-    css = css.replace(/{/g, '{\n  ');
-    css = css.replace(/\n\s*\n/g, '\n');
-    css = css.replace(/@media[^{]+{/g, match => match.replace(/\n\s*/g, ' '));
-    return css;
-  }
-
-  apply(compiler) {
-    compiler.hooks.afterEmit.tapAsync('UnminifiedCssPlugin', (compilation, callback) => {
-      const outputPath = compilation.outputOptions.path;
-      const cssFiles = Object.keys(compilation.assets).filter(asset => 
-        asset.endsWith('.min.css') && this.options.minFilePattern.test(asset)
-      );
-      
-      for (const cssFile of cssFiles) {
-        const filePath = path.join(outputPath, cssFile);
-        if (!fs.existsSync(filePath)) continue;
-        
-        try {
-          const content = fs.readFileSync(filePath, 'utf8');
-          const beautifiedContent = this.beautifyCss(content);
-          let unminifiedName = cssFile;
-          if (this.options.removeMinSuffix) {
-            unminifiedName = cssFile.replace('.min.css', '.css');
-          }
-          fs.writeFileSync(path.join(outputPath, unminifiedName), beautifiedContent);
-          console.log(`Created unminified version: ${unminifiedName}`);
-        } catch (err) {
-          console.error(`Error processing ${cssFile}:`, err);
-        }
-      }
-      callback();
-    });
-  }
-}
-
-/**
- * Custom plugin to remove JS files created for CSS-only entries
- */
-class RemoveCssJsPlugin {
-  constructor(options = {}) {
-    this.options = Object.assign({
-      cssEntries: ['styles'],
-    }, options);
-  }
-
-  apply(compiler) {
-    compiler.hooks.afterEmit.tapAsync('RemoveCssJsPlugin', (compilation, callback) => {
-      const outputPath = compilation.outputOptions.path;
-      const name = this.options.name || '';
-      const version = this.options.version || '';
-      
-      for (const cssEntry of this.options.cssEntries) {
-        const jsFilePath = path.join(outputPath, `js/${name}-${version}.${cssEntry}.js`);
-        const mapFilePath = path.join(outputPath, `js/${name}-${version}.${cssEntry}.js.map`);
-        
-        if (fs.existsSync(jsFilePath)) {
-          fs.unlinkSync(jsFilePath);
-          console.log(`Removed unnecessary JS file: js/${name}-${version}.${cssEntry}.js`);
-        }
-        if (fs.existsSync(mapFilePath)) {
-          fs.unlinkSync(mapFilePath);
-          console.log(`Removed map file: js/${name}-${version}.${cssEntry}.js.map`);
-        }
-      }
-      callback();
-    });
-  }
-}
-
-/**
- * Get base webpack configuration
- * @param {boolean} isProduction - Whether to build for production
- * @param {string} name - Package name
- * @param {string} version - Package version
- * @param {Object} options - Additional options
- * @returns {Object} Webpack configuration object
- */
-const getBaseConfig = (isProduction, name, version, options = {}) => ({
-  mode: isProduction ? 'production' : 'development',
-  devtool: isProduction ? 'source-map' : 'eval-source-map',
-  stats: {
-    assets: true,
-    colors: true,
-    errors: true,
-    errorDetails: true,
-    modules: false,
-    performance: true,
-    hash: false,
-    version: false,
-    timings: true,
-    warnings: true,
-    children: false,
+// Shared rules for all builds
+const sharedRules = [
+  {
+    test: /\.(ts|tsx)$/,
+    exclude: /node_modules/,
+    use: 'babel-loader',
   },
+  {
+    test: /\.(woff|woff2|eot|ttf|otf)$/i,
+    type: 'asset/resource',
+    generator: {
+      filename: 'fonts/[hash][ext][query]'
+    }
+  },
+  {
+    test: /\.(png|jpg|jpeg|gif|svg)$/i,
+    type: 'asset/resource',
+    generator: {
+      filename: 'images/[hash][ext][query]'
+    }
+  }
+];
+
+// Base webpack configuration
+const baseConfig = {
+  mode: 'production',
+  devtool: 'source-map',
   module: {
-    rules: [
-      {
-        test: /\.(js|jsx|ts|tsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: { 
-            cacheDirectory: true,
-            // Use the project's babel config
-            configFile: path.resolve(__dirname, 'babel.config.js'),
-            // Apply different settings based on the target environment
-            presets: [
-              ['@babel/preset-env', {
-                modules: options.outputFormat === 'esm' ? false : 'auto',
-                targets: options.targets || (isProduction ? { browsers: '> 0.25%, not dead' } : { node: 'current' }),
-                useBuiltIns: options.useBuiltIns || false,
-                corejs: options.useBuiltIns ? { version: 3, proposals: true } : undefined,
-              }],
-            ],
-          },
-        },
-      },
-      {
-        test: /\.s?css$/,
-        use: [
-          { 
-            loader: MiniCssExtractPlugin.loader,
-            options: { 
-              publicPath: '../',
-              esModule: options.outputFormat === 'esm',
-            },
-          },
-          {
-            loader: 'css-loader',
-            options: { 
-              sourceMap: true, 
-              importLoaders: 2,
-              modules: {
-                auto: true,
-                localIdentName: isProduction ? '[hash:base64:8]' : '[name]__[local]--[hash:base64:5]',
-              },
-              esModule: options.outputFormat === 'esm',
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              sourceMap: true,
-              postcssOptions: {
-                plugins: [
-                  autoprefixer(),
-                  ...(isProduction ? [cssnano({ 
-                    preset: ['default', { 
-                      discardComments: { removeAll: true },
-                      normalizeWhitespace: true,
-                    }] 
-                  })] : []),
-                ],
-              },
-            },
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-              sassOptions: {
-                outputStyle: 'expanded',
-                includePaths: [path.resolve(__dirname, 'src/styles')],
-                precision: 8,
-              },
-            },
-          },
-        ],
-      },
-      {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
-        generator: { filename: 'images/[name]-[hash][ext]' },
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: 'asset/resource',
-        generator: { filename: 'fonts/[name]-[hash][ext]' },
-      },
-      {
-        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-        type: 'asset/resource',
-        generator: { filename: 'videos/[name]-[hash][ext]' },
-      },
-    ],
+    rules: sharedRules,
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.scss', '.css', '.json'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      '@styles': path.resolve(__dirname, 'src/styles'),
-      '@components': path.resolve(__dirname, 'src/components'),
-      '@icons': path.resolve(__dirname, 'src/icons'),
-      '@lib': path.resolve(__dirname, 'src/lib'),
     },
-    // Prefer ESM modules when available
-    mainFields: options.outputFormat === 'esm' 
-      ? ['module', 'browser', 'main']
-      : ['browser', 'module', 'main'],
-    // Ensure we're resolving package.json for proper tree-shaking
-    conditionNames: ['import', 'require', 'node', 'default'],
   },
   optimization: {
-    minimize: isProduction,
+    minimize: true,
     minimizer: [
       new TerserPlugin({
         extractComments: false,
-        parallel: true,
         terserOptions: {
-          ecma: 2020,
-          format: { comments: false },
-          compress: { 
-            drop_console: isProduction, 
-            drop_debugger: isProduction,
-            pure_getters: isProduction,
-            unsafe: isProduction,
-            unsafe_comps: isProduction,
-            passes: 2,
+          format: {
+            comments: false,
           },
-          mangle: isProduction,
-        },
-      }),
-      new CssMinimizerPlugin({
-        minimizerOptions: {
-          preset: ['default', { discardComments: { removeAll: true } }],
-        },
-        parallel: true,
-      }),
-    ],
-    // Enable tree-shaking for npm package
-    usedExports: true,
-    sideEffects: true,
-    // Ensure proper code splitting
-    splitChunks: options.splitChunks || false,
-  },
-  performance: {
-    hints: isProduction ? 'warning' : false,
-    maxAssetSize: 512000,
-    maxEntrypointSize: 512000,
-  },
-  // Add bundle analyzer in analyze mode
-  plugins: [
-    ...(options.analyze ? [new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      reportFilename: `report-${name}-${version}.html`,
-      openAnalyzer: false,
-    })] : []),
-  ],
-});
-
-/**
- * Get vanilla JS component build configuration
- * @param {Object} env - Environment variables
- * @param {Object} argv - CLI arguments
- * @returns {Object} Webpack configuration for vanilla JS build
- */
-const getVanillaComponentConfig = (env, argv) => {
-  const isProduction = argv.mode === 'production';
-  const name = packageJson.name;
-  const format = env.format || 'umd'; // 'umd', 'cjs', or 'esm'
-  
-  // Get base config with appropriate options
-  const baseConfig = getBaseConfig(isProduction, name, version, {
-    outputFormat: format,
-    analyze: env.analyze,
-    splitChunks: format === 'umd', // Only use code splitting for UMD builds
-  });
-
-  const vanillaConfig = {
-    entry: {
-      vanilla: './src/htmlComponentsEntry.ts',
-      styles: './src/styles/index.scss',
-    },
-    output: {
-      path: path.resolve(__dirname, 'dist/'),
-      filename: `js/${name}-${version}.[name]${format !== 'umd' ? `.${format}` : ''}.js`,
-      assetModuleFilename: 'assets/[hash][ext][query]',
-      clean: isProduction && env.target === 'vanilla-only',
-      publicPath: isProduction ? './' : '/',
-      library: format === 'esm' ? undefined : {
-        name: 'Atomix',
-        type: format === 'cjs' ? 'commonjs' : format, // Fix for CJS format
-        export: 'default',
-      },
-      // Set module type for ESM output
-      ...(format === 'esm' ? { module: true, chunkFormat: 'module' } : {}),
-      // Ensure global variable doesn't conflict
-      globalObject: format === 'umd' ? 'this' : undefined,
-    },
-    experiments: {
-      // Enable outputModule for ESM
-      outputModule: format === 'esm',
-    },
-    externals: format !== 'umd' ? [
-      // Don't bundle dependencies for CJS/ESM builds
-      nodeExternals({
-        // Except CSS files which should be processed
-        allowlist: [/\.css$/, /\.scss$/],
-      }),
-    ] : undefined,
-    plugins: [
-      new MiniCssExtractPlugin({
-        filename: isProduction 
-          ? `css/${name}-${version}.[name].min.css`
-          : `css/${name}-${version}.[name].css`,
-        chunkFilename: isProduction 
-          ? 'css/[id].[contenthash].min.css'
-          : 'css/[id].[contenthash].css',
-      }),
-      ...(isProduction ? [
-        new UnminifiedCssPlugin(),
-        new RemoveCssJsPlugin({ cssEntries: ['styles'], name, version }),
-      ] : []),
-    ],
-    optimization: {
-      // Only use code splitting for UMD builds
-      ...(format === 'umd' ? {
-        splitChunks: {
-          cacheGroups: {
-            styles: {
-              name: 'styles',
-              test: /\.css$/,
-              chunks: 'all',
-              enforce: true,
-            },
+          compress: {
+            drop_console: true,
           },
         },
-        runtimeChunk: 'single',
-      } : {}),
-    },
-  };
-  return merge(baseConfig, vanillaConfig);
+      }),
+      new CssMinimizerPlugin(),
+    ],
+  },
 };
 
-/**
- * Get React component build configuration
- * @param {Object} env - Environment variables
- * @param {Object} argv - CLI arguments
- * @returns {Object} Webpack configuration for React build
- */
-const getReactComponentConfig = (env, argv) => {
-  const isProduction = argv.mode === 'production';
-  const name = packageJson.name;
-  const format = env.format || 'umd'; // 'umd', 'cjs', or 'esm'
+// Create configuration based on environment variables
+module.exports = (env = {}) => {
+  const target = env.target || 'components';
+  const format = env.format || 'all';
+  const analyze = env.analyze === 'true' || env.analyze === true;
   
-  // Get base config with appropriate options
-  const baseConfig = getBaseConfig(isProduction, name, version, {
-    outputFormat: format,
-    analyze: env.analyze,
-    // React-specific settings
-    targets: { browsers: ['last 2 versions', 'not dead', '> 0.5%'] },
-  });
-
-  const reactConfig = {
-    entry: {
-      react: './src/index.ts',
-    },
-    output: {
-      path: path.resolve(__dirname, 'dist/'),
-      filename: `js/${name}-${version}.[name]${format !== 'umd' ? `.${format}` : ''}.js`,
-      assetModuleFilename: 'assets/[hash][ext][query]',
-      clean: isProduction && env.target === 'react-only',
-      publicPath: isProduction ? './' : '/',
-      library: format === 'esm' ? undefined : {
-        name: 'AtomixReact',
-        type: format === 'cjs' ? 'commonjs' : format, // Fix for CJS format
-        export: 'default',
+  // CSS/Styles build configuration
+  if (target === 'styles') {
+    return {
+      ...baseConfig,
+      name: 'styles',
+      entry: {
+        'main': './src/styles/index.scss',
+        'minified': './src/styles/index.scss',
       },
-      // Set module type for ESM output
-      ...(format === 'esm' ? { module: true, chunkFormat: 'module' } : {}),
-      // Ensure global variable doesn't conflict
-      globalObject: format === 'umd' ? 'this' : undefined,
-    },
-    experiments: {
-      // Enable outputModule for ESM
-      outputModule: format === 'esm',
-    },
-    plugins: [
-      new MiniCssExtractPlugin({
-        filename: isProduction 
-          ? `css/${name}-${version}.react.min.css`
-          : `css/${name}-${version}.react.css`,
-        chunkFilename: isProduction 
-          ? 'css/[id].[contenthash].min.css'
-          : 'css/[id].[contenthash].css',
-      }),
-      ...(isProduction ? [new UnminifiedCssPlugin()] : []),
-    ],
-    externals: format === 'umd' 
-      ? {
-          // For UMD builds, only mark React and ReactDOM as external
-          react: 'React',
-          'react-dom': 'ReactDOM',
-        }
-      : [
-          // For CJS/ESM builds, don't bundle any dependencies
-          nodeExternals({
-            // Except CSS files which should be processed
-            allowlist: [/\.css$/, /\.scss$/],
-          }),
+      output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'js/[name].js', // Not used but required
+        assetModuleFilename: 'assets/[hash][ext][query]', // Default for other assets
+      },
+      module: {
+        rules: [
+          {
+            test: /\.(scss|css)$/,
+            use: [
+              MiniCssExtractPlugin.loader,
+              {
+                loader: 'css-loader',
+                options: {
+                  sourceMap: true,
+                  importLoaders: 2,
+                },
+              },
+              'postcss-loader',
+              {
+                loader: 'sass-loader',
+                options: {
+                  sourceMap: true,
+                  implementation: require('sass-embedded'),
+                },
+              },
+            ],
+          },
+          ...sharedRules,
         ],
-    // Ensure React components are properly tree-shakable
-    optimization: {
-      usedExports: true,
-      sideEffects: true,
-    },
-  };
-  return merge(baseConfig, reactConfig);
-};
-
-/**
- * Export webpack configuration based on the target and format
- * @param {Object} env - Environment variables
- * @param {Object} argv - CLI arguments
- * @returns {Object|Array} Webpack configuration(s)
- */
-module.exports = (env = {}, argv = {}) => {
-  const target = env.target || 'docs'; // Default to 'docs' if not specified
-  const format = env.format || 'umd'; // Default to 'umd' if not specified
-  const analyze = Boolean(env.analyze); // Enable bundle analysis if requested
-  
-  // Validate format
-  if (format && !['umd', 'cjs', 'esm', 'all'].includes(format)) {
-    console.error(`Invalid format '${format}'. Must be one of: umd, cjs, esm, all`);
-    process.exit(1);
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: (pathData) => {
+            return pathData.chunk.name === 'minified'
+              ? `css/atomix-${version}.min.css`
+              : `css/atomix-${version}.css`;
+          },
+        }),
+        ...(analyze ? [new BundleAnalyzerPlugin()] : []),
+      ],
+    };
   }
   
-  // Build configurations based on target
-  if (target === 'vanilla') {
-    return getVanillaComponentConfig({ ...env, format, analyze }, argv);
+  // Component builds (React only)
+  const configs = [];
+  
+  // React components
+  if (format === 'all' || format === 'esm') {
+    configs.push({
+      ...baseConfig,
+      name: 'react-esm',
+      entry: './src/index.ts',
+      output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: `js/atomix-${version}.react.esm.js`,
+        library: {
+          type: 'module',
+        },
+        environment: { module: true },
+        assetModuleFilename: 'assets/[hash][ext][query]', // Default for other assets
+      },
+      experiments: {
+        outputModule: true,
+      },
+      externals: [
+        nodeExternals(),
+        /\.scss$/,
+        /\.css$/,
+      ],
+      plugins: analyze ? [new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        reportFilename: 'reports/react-esm.html',
+        openAnalyzer: false,
+      })] : [],
+    });
   }
   
-  if (target === 'react') {
-    return getReactComponentConfig({ ...env, format, analyze }, argv);
+  if (format === 'all' || format === 'cjs') {
+    configs.push({
+      ...baseConfig,
+      name: 'react-cjs',
+      entry: './src/index.ts',
+      output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: `js/atomix-${version}.react.cjs.js`,
+        library: {
+          type: 'commonjs2',
+        },
+        assetModuleFilename: 'assets/[hash][ext][query]', // Default for other assets
+      },
+      externals: [
+        nodeExternals(),
+        /\.scss$/,
+        /\.css$/,
+      ],
+      plugins: analyze ? [new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        reportFilename: 'reports/react-cjs.html',
+        openAnalyzer: false,
+      })] : [],
+    });
   }
   
-  if (target === 'components') {
-    // For 'all' format, build all format types
-    if (format === 'all') {
-      return [
-        // UMD builds
-        getVanillaComponentConfig({ ...env, format: 'umd', analyze }, argv),
-        getReactComponentConfig({ ...env, format: 'umd', analyze }, argv),
-        // CommonJS builds
-        getVanillaComponentConfig({ ...env, format: 'cjs', analyze }, argv),
-        getReactComponentConfig({ ...env, format: 'cjs', analyze }, argv),
-        // ESM builds
-        getVanillaComponentConfig({ ...env, format: 'esm', analyze }, argv),
-        getReactComponentConfig({ ...env, format: 'esm', analyze }, argv),
-      ];
-    }
-    
-    // Build both vanilla and react with the specified format
-    return [
-      getVanillaComponentConfig({ ...env, format, analyze }, argv),
-      getReactComponentConfig({ ...env, format, analyze }, argv),
-    ];
+  if (format === 'all' || format === 'umd') {
+    configs.push({
+      ...baseConfig,
+      name: 'react-umd',
+      entry: './src/index.ts',
+      output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: `js/atomix-${version}.react.js`,
+        library: {
+          name: 'Atomix',
+          type: 'umd',
+          umdNamedDefine: true,
+        },
+        globalObject: 'this',
+        assetModuleFilename: 'assets/[hash][ext][query]', // Default for other assets
+      },
+      externals: {
+        react: {
+          root: 'React',
+          commonjs2: 'react',
+          commonjs: 'react',
+          amd: 'react',
+        },
+        'react-dom': {
+          root: 'ReactDOM',
+          commonjs2: 'react-dom',
+          commonjs: 'react-dom',
+          amd: 'react-dom',
+        },
+      },
+      plugins: analyze ? [new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        reportFilename: 'reports/react-umd.html',
+        openAnalyzer: false,
+      })] : [],
+    });
   }
   
-  // If target is 'docs' or any other unspecified target
-  console.warn(`Webpack target '${target}' not explicitly handled. No configuration returned.`);
-  return undefined; 
+  return configs.length === 1 ? configs[0] : configs;
 };

@@ -695,7 +695,10 @@ export const CARD = {
     BASE: 'c-card',
     ROW: 'c-card--row',
     FLAT: 'c-card--flat',
-    ACTIVE: 'is-active'
+    ACTIVE: 'is-active',
+    FLIPPED: 'is-flipped',
+    FOCUSED: 'is-focused',
+    CLICKABLE: 'is-clickable'
   },
   DEFAULTS: {
     HOVER: true

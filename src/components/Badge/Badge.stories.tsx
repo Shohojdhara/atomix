@@ -89,10 +89,10 @@ export const Warning: Story = {
   },
 };
 
-export const Danger: Story = {
+export const error: Story = {
   args: {
-    label: 'Danger',
-    variant: 'danger',
+    label: 'Error',
+    variant: 'error',
     size: 'md',
   },
 };
@@ -201,7 +201,7 @@ export const WithDifferentContent: Story = {
           <Badge label="1" variant="primary" />
           <Badge label="2" variant="secondary" />
           <Badge label="3" variant="success" />
-          <Badge label="4" variant="danger" />
+          <Badge label="4" variant="error" />
           <Badge label="5" variant="warning" />
           <Badge label="6" variant="info" />
         </div>
@@ -212,7 +212,7 @@ export const WithDifferentContent: Story = {
           <Badge label="New" variant="primary" />
           <Badge label="Active" variant="success" />
           <Badge label="Pending" variant="warning" />
-          <Badge label="Failed" variant="danger" />
+          <Badge label="Failed" variant="error" />
           <Badge label="Blocked" variant="secondary" />
         </div>
       </div>
@@ -222,7 +222,7 @@ export const WithDifferentContent: Story = {
           <Badge label="Info" variant="info" icon={<Icon />} />
           <Badge label="Warning" variant="warning" icon={<Icon />} />
           <Badge label="Success" variant="success" icon={<Icon />} />
-          <Badge label="Error" variant="danger" icon={<Icon />} />
+          <Badge label="Error" variant="error" icon={<Icon />} />
         </div>
       </div>
     </div>
@@ -241,7 +241,7 @@ export const UsageExamples: Story = {
         <div className="u-d-flex u-gap-4">
           <div className="u-d-flex u-align-items-center u-gap-2">
             <span>Inbox</span>
-            <Badge label="24" variant="danger" size="sm" />
+            <Badge label="24" variant="error" size="sm" />
           </div>
           <div className="u-d-flex u-align-items-center u-gap-2">
             <span>Notifications</span>
@@ -259,7 +259,7 @@ export const UsageExamples: Story = {
         <div className="u-p-4 u-shadow u-d-flex u-flex-column u-gap-2">
           <div className="u-d-flex u-justify-content-between">
             <h4 className="u-m-0">Product Title</h4>
-            <Badge label="Sale" variant="danger" />
+            <Badge label="Sale" variant="error" />
           </div>
           <p className="u-my-2">This is a sample product description.</p>
           <div className="u-d-flex u-gap-2">
@@ -330,8 +330,8 @@ export const ThemeAwareBadges: Story = {
             <Badge label="In Progress" variant="warning" />
           </div>
           <div className="u-d-flex u-align-items-center u-gap-2">
-            <span className="u-d-inline-block" style={{ width: '120px' }}>Danger:</span>
-            <Badge label="Failed" variant="danger" />
+            <span className="u-d-inline-block" style={{ width: '120px' }}>error:</span>
+            <Badge label="Failed" variant="error" />
           </div>
         </div>
       </div>

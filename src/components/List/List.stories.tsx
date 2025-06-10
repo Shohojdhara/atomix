@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { List } from './List';
 import { ListGroup } from './ListGroup';
@@ -29,15 +30,36 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Basic List
+// Basic list items for reuse
+const ITEMS = ['item 1', 'item 2', 'item 3'];
+
+const sectionStyle = { marginBottom: '16px' };
+const titleStyle = { fontWeight: 'normal', marginBottom: '8px' };
+
+const ListItem = ({ children }: { children: React.ReactNode }) => <span>{children}</span>;
+const ListItems = ({ variant }: { variant: string }) => (
+  <>
+    {ITEMS.map((item, index) => (
+      <ListItem key={index}>
+        {variant === 'number' ? `${index + 1}. ${item}` : item}
+      </ListItem>
+    ))}
+  </>
+);
+
+const createListSection = (title: string, variant: string) => (
+  <div style={sectionStyle}>
+    <h3 style={titleStyle}>{title}</h3>
+    <List variant={variant as any}>
+      <ListItems variant={variant} />
+    </List>
+  </div>
+);
+
+// Basic List example
 export const Basic: Story = {
   args: {
-    children: [
-      'First list item',
-      'Second list item',
-      'Third list item',
-    ],
-    variant: 'default',
+    children: ITEMS,
   },
 };
 
@@ -46,45 +68,10 @@ export const VariantsShowcase: Story = {
   render: () => {
     return (
       <div className="u-d-flex u-flex-column u-gap-8">
-        {/* Default List */}
-        <div>
-          <h3 className="u-mb-4 u-fw-normal">Default List</h3>
-          <List>
-            <span>First list item</span>
-            <span>Second list item</span>
-            <span>Third list item</span>
-          </List>
-        </div>
-        
-        {/* Dash List */}
-        <div>
-          <h3 className="u-mb-4 u-fw-normal">Dash List</h3>
-          <List variant="dash">
-            <span>First list item</span>
-            <span>Second list item</span>
-            <span>Third list item</span>
-          </List>
-        </div>
-        
-        {/* Number List */}
-        <div>
-          <h3 className="u-mb-4 u-fw-normal">Number List</h3>
-          <List variant="number">
-            <span>First list item</span>
-            <span>Second list item</span>
-            <span>Third list item</span>
-          </List>
-        </div>
-        
-        {/* Text List */}
-        <div>
-          <h3 className="u-mb-4 u-fw-normal">Text List</h3>
-          <List variant="text">
-            <span>First list item</span>
-            <span>Second list item</span>
-            <span>Third list item</span>
-          </List>
-        </div>
+        {['Default', 'Dash', 'Number', 'Text'].map((title, index) => {
+          const variant = index === 0 ? 'default' : title.toLowerCase();
+          return createListSection(`${title} List`, variant);
+        })}
       </div>
     );
   },
@@ -93,80 +80,45 @@ export const VariantsShowcase: Story = {
 // ListGroup Showcase
 export const ListGroupShowcase: Story = {
   render: () => {
+    const listGroupConfig = [
+      { title: 'Standard', compact: false, divided: false },
+      { title: 'Compact', compact: true, divided: false },
+      { title: 'Divided', compact: false, divided: true },
+    ];
+
     return (
       <div className="u-d-flex u-flex-column u-gap-8">
-        {/* Standard ListGroup */}
         <div>
-          <h3 className="u-mb-4 u-fw-normal">Standard ListGroup</h3>
-          <ListGroup>
-            <List>
-              <span>First list - item 1</span>
-              <span>First list - item 2</span>
-              <span>First list - item 3</span>
-            </List>
-            <List>
-              <span>Second list - item 1</span>
-              <span>Second list - item 2</span>
-              <span>Second list - item 3</span>
-            </List>
-          </ListGroup>
-        </div>
-        
-        {/* Compact ListGroup */}
-        <div>
-          <h3 className="u-mb-4 u-fw-normal">Compact ListGroup</h3>
-          <ListGroup compact>
-            <List>
-              <span>First list - item 1</span>
-              <span>First list - item 2</span>
-              <span>First list - item 3</span>
-            </List>
-            <List>
-              <span>Second list - item 1</span>
-              <span>Second list - item 2</span>
-              <span>Second list - item 3</span>
-            </List>
-          </ListGroup>
-        </div>
-        
-        {/* Divided ListGroup */}
-        <div>
-          <h3 className="u-mb-4 u-fw-normal">Divided ListGroup</h3>
-          <ListGroup divided>
-            <List>
-              <span>First list - item 1</span>
-              <span>First list - item 2</span>
-              <span>First list - item 3</span>
-            </List>
-            <List>
-              <span>Second list - item 1</span>
-              <span>Second list - item 2</span>
-              <span>Second list - item 3</span>
-            </List>
-          </ListGroup>
-        </div>
-        
-        {/* Mixed Variants ListGroup */}
-        <div>
-          <h3 className="u-mb-4 u-fw-normal">Mixed Variants ListGroup</h3>
+          <h3 style={titleStyle}>Mixed Variants ListGroup</h3>
           <ListGroup>
             <List variant="dash">
-              <span>Dash list - item 1</span>
-              <span>Dash list - item 2</span>
-              <span>Dash list - item 3</span>
+              <ListItems variant="dash" />
             </List>
             <List variant="number">
-              <span>Number list - item 1</span>
-              <span>Number list - item 2</span>
-              <span>Number list - item 3</span>
+              <ListItems variant="number" />
             </List>
             <List variant="text">
-              <span>Text list - item 1</span>
-              <span>Text list - item 2</span>
-              <span>Text list - item 3</span>
+              <ListItems variant="text" />
             </List>
           </ListGroup>
         </div>
+
+        {listGroupConfig.map(({ title, compact, divided }) => (
+          <div key={title}>
+            <h3 style={titleStyle}>{title} ListGroup</h3>
+            <ListGroup>
+              {ITEMS.map((section, idx) => (
+                <List key={idx}>
+                  {[1, 2].map(item => (
+                    <ListItem key={item}>
+                      {`${section.charAt(0).toUpperCase() + section.slice(1)} - item ${item}`}
+                    </ListItem>
+                  ))}
+                </List>
+              ))}
+            </ListGroup>
+          </div>
+        ))}
       </div>
     );
   },
