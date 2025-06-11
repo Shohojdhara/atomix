@@ -51,7 +51,7 @@ const PaginationNavButton: React.FC<PaginationNavButtonProps> = ({
 /**
  * Pagination component
  */
-export const Pagination: React.FC<PaginationProps> = ({
+const Pagination: React.FC<PaginationProps> = ({
   currentPage = PAGINATION_DEFAULTS.currentPage,
   totalPages = PAGINATION_DEFAULTS.totalPages,
   onPageChange,
@@ -164,3 +164,15 @@ export const Pagination: React.FC<PaginationProps> = ({
     </nav>
   );
 };
+
+
+export type { PaginationProps  };
+
+// Set display name for debugging
+Pagination.displayName = 'Pagination';
+
+// Default export (primary)
+export default Pagination;
+
+// Named export for compatibility
+export { Pagination };

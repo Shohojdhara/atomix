@@ -2,7 +2,7 @@ import React, { forwardRef, Ref } from 'react';
 import { CARD } from '../../lib/constants/components';
 import { CardProps } from '../../lib/types/components';
 
-export const Card = forwardRef<HTMLDivElement, CardProps>(({
+ const Card = forwardRef<HTMLDivElement, CardProps>(({
   header,
   image,
   imageAlt = '',
@@ -84,4 +84,14 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(({
   );
 });
 
+
+export type { CardProps  };
+
+// Set display name for debugging
+Card.displayName = 'Badge';
+
+// Default export (primary)
 export default Card;
+
+// Named export for compatibility
+export { Card };

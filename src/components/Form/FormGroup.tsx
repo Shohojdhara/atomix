@@ -5,7 +5,7 @@ import { useFormGroup } from '../../lib/composables/useFormGroup';
 /**
  * FormGroup - A component for grouping form controls with labels and help text
  */
-export const FormGroup: React.FC<FormGroupProps> = ({
+const FormGroup: React.FC<FormGroupProps> = ({
   children,
   label,
   helperText,
@@ -48,4 +48,13 @@ export const FormGroup: React.FC<FormGroupProps> = ({
   );
 };
 
-export default FormGroup; 
+export type { FormGroupProps  };
+
+// Set display name for debugging
+FormGroup.displayName = 'FormGroup';
+
+// Default export (primary)
+export default FormGroup;
+
+// Named export for compatibility
+export { FormGroup };

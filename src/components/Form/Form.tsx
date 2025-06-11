@@ -5,7 +5,7 @@ import { useForm } from '../../lib/composables/useForm';
 /**
  * Form - A component for creating form layouts
  */
-export const Form: React.FC<FormProps> = ({
+const Form: React.FC<FormProps> = ({
   children,
   onSubmit,
   onReset,
@@ -39,4 +39,13 @@ export const Form: React.FC<FormProps> = ({
   );
 };
 
-export default Form; 
+export type { FormProps  };
+
+// Set display name for debugging
+Form.displayName = 'Form';
+
+// Default export (primary)
+export default Form;
+
+// Named export for compatibility
+export { Form };

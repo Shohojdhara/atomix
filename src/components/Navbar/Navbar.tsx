@@ -3,7 +3,7 @@ import { NavbarProps } from '../../lib/types/components';
 import { useNavbar } from '../../lib/composables/useNavbar';
 import { NAVBAR } from '../../lib/constants/components';
 
-export const Navbar: React.FC<NavbarProps> = ({
+const Navbar: React.FC<NavbarProps> = ({
   brand,
   children,
   variant,
@@ -115,3 +115,15 @@ export const Navbar: React.FC<NavbarProps> = ({
     </nav>
   );
 }; 
+
+
+export type { NavbarProps };
+
+// Set display name for debugging
+Navbar.displayName = 'Navbar';
+
+// Default export (primary)
+export default Navbar;
+
+// Named export for compatibility
+export { Navbar };

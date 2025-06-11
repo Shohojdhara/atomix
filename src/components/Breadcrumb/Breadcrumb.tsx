@@ -49,8 +49,7 @@ export interface BreadcrumbProps {
    */
   ariaLabel?: string;
 }
-
-export const Breadcrumb: React.FC<BreadcrumbProps> = ({
+const Breadcrumb: React.FC<BreadcrumbProps> = ({
   items,
   divider,
   className = '',
@@ -101,4 +100,11 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   );
 };
 
-export default Breadcrumb; 
+// Set display name for debugging
+Breadcrumb.displayName = 'Breadcrumb';
+
+// Default export (primary)
+export default Breadcrumb;
+
+// Named export for compatibility
+export { Breadcrumb };

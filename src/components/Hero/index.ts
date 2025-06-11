@@ -1,6 +1,6 @@
 import { Hero } from './Hero';
-import type { HeroComponentProps } from './Hero';
+import type { HeroProps } from './Hero';
 
 export { Hero };
-export type { HeroComponentProps };
+export type { HeroProps };
 export default Hero; 

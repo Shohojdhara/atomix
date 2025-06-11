@@ -13,7 +13,21 @@ const sharedRules = [
   {
     test: /\.(ts|tsx)$/,
     exclude: /node_modules/,
-    use: 'babel-loader',
+    use: {
+      loader: 'babel-loader',
+      options: {
+        presets: [
+          ['@babel/preset-env', { 
+            modules: false, // Let webpack handle modules
+            targets: '> 0.25%, not dead'
+          }],
+          ['@babel/preset-react', { 
+            runtime: 'automatic' // Use new JSX transform
+          }],
+          '@babel/preset-typescript'
+        ],
+      },
+    },
   },
   {
     test: /\.(woff|woff2|eot|ttf|otf)$/i,
@@ -55,11 +69,21 @@ const baseConfig = {
           },
           compress: {
             drop_console: true,
+            pure_getters: true,
+            unsafe: true,
+            unsafe_comps: true,
+            warnings: false,
+          },
+          mangle: {
+            safari10: true,
           },
         },
       }),
       new CssMinimizerPlugin(),
     ],
+    // Enable better tree shaking
+    usedExports: true,
+    sideEffects: false,
   },
 };
 
@@ -81,7 +105,8 @@ module.exports = (env = {}) => {
       output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'js/[name].js', // Not used but required
-        assetModuleFilename: 'assets/[hash][ext][query]', // Default for other assets
+        assetModuleFilename: 'assets/[hash][ext][query]',
+        clean: true, // Clean dist folder
       },
       module: {
         rules: [
@@ -125,7 +150,7 @@ module.exports = (env = {}) => {
   // Component builds (React only)
   const configs = [];
   
-  // React components
+  // ESM build - Modern bundlers and tree-shaking
   if (format === 'all' || format === 'esm') {
     configs.push({
       ...baseConfig,
@@ -137,16 +162,30 @@ module.exports = (env = {}) => {
         library: {
           type: 'module',
         },
-        environment: { module: true },
-        assetModuleFilename: 'assets/[hash][ext][query]', // Default for other assets
+        environment: { 
+          module: true,
+          arrowFunction: true,
+          const: true,
+          destructuring: true,
+        },
+        assetModuleFilename: 'assets/[hash][ext][query]',
+        clean: false, // Don't clean on individual builds
       },
       experiments: {
         outputModule: true,
       },
       externals: [
-        nodeExternals(),
-        /\.scss$/,
-        /\.css$/,
+        // More specific externals for better control
+        {
+          'react': 'react',
+          'react-dom': 'react-dom',
+          'react-router-dom': 'react-router-dom',
+          'classnames': 'classnames',
+          'phosphor-react': 'phosphor-react',
+          'prism-react-renderer': 'prism-react-renderer',
+        },
+        // Exclude CSS/SCSS files
+        /\.(scss|css)$/,
       ],
       plugins: analyze ? [new BundleAnalyzerPlugin({
         analyzerMode: 'static',
@@ -156,6 +195,7 @@ module.exports = (env = {}) => {
     });
   }
   
+  // CommonJS build - Node.js compatibility
   if (format === 'all' || format === 'cjs') {
     configs.push({
       ...baseConfig,
@@ -167,12 +207,19 @@ module.exports = (env = {}) => {
         library: {
           type: 'commonjs2',
         },
-        assetModuleFilename: 'assets/[hash][ext][query]', // Default for other assets
+        assetModuleFilename: 'assets/[hash][ext][query]',
+        clean: false,
       },
       externals: [
-        nodeExternals(),
-        /\.scss$/,
-        /\.css$/,
+        {
+          'react': 'react',
+          'react-dom': 'react-dom',
+          'react-router-dom': 'react-router-dom',
+          'classnames': 'classnames',
+          'phosphor-react': 'phosphor-react',
+          'prism-react-renderer': 'prism-react-renderer',
+        },
+        /\.(scss|css)$/,
       ],
       plugins: analyze ? [new BundleAnalyzerPlugin({
         analyzerMode: 'static',
@@ -182,6 +229,7 @@ module.exports = (env = {}) => {
     });
   }
   
+  // UMD build - Browser compatibility
   if (format === 'all' || format === 'umd') {
     configs.push({
       ...baseConfig,
@@ -196,7 +244,8 @@ module.exports = (env = {}) => {
           umdNamedDefine: true,
         },
         globalObject: 'this',
-        assetModuleFilename: 'assets/[hash][ext][query]', // Default for other assets
+        assetModuleFilename: 'assets/[hash][ext][query]',
+        clean: false,
       },
       externals: {
         react: {
@@ -210,6 +259,24 @@ module.exports = (env = {}) => {
           commonjs2: 'react-dom',
           commonjs: 'react-dom',
           amd: 'react-dom',
+        },
+        'react-router-dom': {
+          root: 'ReactRouterDOM',
+          commonjs2: 'react-router-dom',
+          commonjs: 'react-router-dom',
+          amd: 'react-router-dom',
+        },
+        'classnames': {
+          root: 'classNames',
+          commonjs2: 'classnames',
+          commonjs: 'classnames',
+          amd: 'classnames',
+        },
+        'phosphor-react': {
+          root: 'PhosphorReact',
+          commonjs2: 'phosphor-react',
+          commonjs: 'phosphor-react',
+          amd: 'phosphor-react',
         },
       },
       plugins: analyze ? [new BundleAnalyzerPlugin({

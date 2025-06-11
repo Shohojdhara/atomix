@@ -2,7 +2,7 @@ import React from 'react';
 import { ListProps } from '../../lib/types/components';
 import { LIST } from '../../lib/constants/components';
 
-export const List: React.FC<ListProps> = ({
+const List: React.FC<ListProps> = ({
   children,
   variant = 'default',
   className = '',
@@ -30,4 +30,15 @@ export const List: React.FC<ListProps> = ({
   );
 };
 
+
+
+export type { ListProps  };
+
+// Set display name for debugging
+List.displayName = 'List';
+
+// Default export (primary)
 export default List;
+
+// Named export for compatibility
+export { List };

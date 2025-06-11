@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { UPLOAD } from '../../lib/constants/components';
 
-export interface UploadProps {
+interface UploadProps {
   /**
    * Whether the upload component is disabled
    */
@@ -81,7 +81,7 @@ type UploadStatus = 'idle' | 'loading' | 'success' | 'error';
 /**
  * Upload component for file uploads with drag and drop
  */
-export const Upload: React.FC<UploadProps> = ({
+const Upload: React.FC<UploadProps> = ({
   disabled = false,
   maxSizeInMB = 5,
   acceptedFileTypes = ['application/pdf', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png'],
@@ -401,4 +401,13 @@ export const Upload: React.FC<UploadProps> = ({
   );
 };
 
-export default Upload; 
+export type { UploadProps  };
+
+// Set display name for debugging
+Upload.displayName = 'Upload';
+
+// Default export (primary)
+export default Upload;
+
+// Named export for compatibility
+export { Upload };

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, ReactNode } from 'react';
 import { SECTION_INTRO } from '../../lib/constants/components';
 
-export interface SectionIntroProps {
+interface SectionIntroProps {
   /**
    * The section title
    */
@@ -72,7 +72,7 @@ export interface SectionIntroProps {
 /**
  * SectionIntro component for introducing content sections with titles, descriptions, and optional imagery
  */
-export const SectionIntro: React.FC<SectionIntroProps> = ({
+const SectionIntro: React.FC<SectionIntroProps> = ({
   title,
   label,
   text,
@@ -198,4 +198,13 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
   );
 };
 
+export type { SectionIntroProps  };
+
+// Set display name for debugging
+SectionIntro.displayName = 'SectionIntro';
+
+// Default export (primary)
 export default SectionIntro;
+
+// Named export for compatibility
+export { SectionIntro };

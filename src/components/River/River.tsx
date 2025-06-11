@@ -2,12 +2,10 @@ import React, { useRef, useEffect, ReactNode } from 'react';
 import { RIVER } from '../../lib/constants/components';
 import { useRiver, RiverProps, RiverContentColumn } from '../../lib/composables/useRiver';
 
-export type { RiverProps, RiverContentColumn };
-
 /**
  * River component for displaying content with image sections
  */
-export const River: React.FC<RiverProps> = ({
+const River: React.FC<RiverProps> = ({
   title,
   text,
   actions,
@@ -167,4 +165,13 @@ export const River: React.FC<RiverProps> = ({
   );
 };
 
-export default River; 
+export type { RiverProps  };
+
+// Set display name for debugging
+River.displayName = 'River';
+
+// Default export (primary)
+export default River;
+
+// Named export for compatibility
+export { River };

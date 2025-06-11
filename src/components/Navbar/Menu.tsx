@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { MenuProps, MenuItemProps } from '../../lib/types/components';
 import { Icon } from '../Icon';
 
-export const Menu: React.FC<MenuProps> = ({
+const Menu: React.FC<MenuProps> = ({
   children,
   className = '',
   disabled = false
@@ -24,6 +24,17 @@ export const Menu: React.FC<MenuProps> = ({
     </div>
   );
 };
+
+export type { MenuProps, MenuItemProps, MenuDividerProps };
+
+// Set display name for debugging
+Menu.displayName = 'Menu';
+
+// Default export (primary)
+export default Menu;
+
+// Named export for compatibility
+export { Menu };
 
 interface MenuDividerProps {
   /**

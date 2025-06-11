@@ -3,7 +3,7 @@ import { EdgePanelProps } from '../../lib/types/components';
 import { useEdgePanel } from '../../lib/composables/useEdgePanel';
 import { EDGE_PANEL } from '../../lib/constants/components';
 import { Icon } from '../Icon/Icon';
-export const EdgePanel: React.FC<EdgePanelProps> = ({
+const EdgePanel: React.FC<EdgePanelProps> = ({
   title,
   children,
   position = 'start',
@@ -70,3 +70,16 @@ export const EdgePanel: React.FC<EdgePanelProps> = ({
     </div>
   );
 }; 
+
+
+
+export type { EdgePanelProps } from '../../lib/types/components';
+
+// Set display name for debugging
+EdgePanel.displayName = 'EdgePanel';
+
+// Default export (primary)
+export default EdgePanel;
+
+// Named export for compatibility
+export { EdgePanel };

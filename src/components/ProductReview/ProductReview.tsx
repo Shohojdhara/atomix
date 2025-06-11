@@ -3,7 +3,7 @@ import { Rating } from '../Rating';
 import { Button } from '../Button';
 import type { ThemeColor } from '../../lib/types/components';
 
-export interface ProductReviewProps {
+interface ProductReviewProps {
   /**
    * Product name
    */
@@ -48,7 +48,7 @@ export interface ProductReviewProps {
 /**
  * ProductReview component for collecting user ratings and feedback
  */
-export const ProductReview: React.FC<ProductReviewProps> = ({
+const ProductReview: React.FC<ProductReviewProps> = ({
   productName,
   productImage,
   initialRating = 0,
@@ -185,4 +185,13 @@ export const ProductReview: React.FC<ProductReviewProps> = ({
   );
 };
 
+export type { ProductReviewProps  };
+
+// Set display name for debugging
+ProductReview.displayName = 'ProductReview';
+
+// Default export (primary)
 export default ProductReview;
+
+// Named export for compatibility
+export { ProductReview };

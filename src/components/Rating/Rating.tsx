@@ -277,6 +277,13 @@ const Rating = forwardRef<HTMLDivElement, RatingProps>(({
 
 Rating.displayName = 'Rating';
 
-export type { RatingProps };
-export { Rating };
+export type { RatingProps  };
+
+// Set display name for debugging
+Rating.displayName = 'Rating';
+
+// Default export (primary)
 export default Rating;
+
+// Named export for compatibility
+export { Rating };

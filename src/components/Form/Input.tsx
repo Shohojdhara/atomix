@@ -5,7 +5,7 @@ import { useInput } from '../../lib/composables/useInput';
 /**
  * Input - A component for text input fields
  */
-export const Input: React.FC<InputProps> = ({
+ const Input: React.FC<InputProps> = ({
   type = 'text',
   value,
   onChange,
@@ -70,4 +70,13 @@ export const Input: React.FC<InputProps> = ({
   );
 };
 
-export default Input; 
+export type { InputProps  };
+
+// Set display name for debugging
+Input.displayName = 'Input';
+
+// Default export (primary)
+export default Input;
+
+// Named export for compatibility
+export { Input };

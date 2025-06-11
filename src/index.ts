@@ -1,18 +1,14 @@
-// Entry point for React components
-
-// Export all components
+// Export all components explicitly
 export * from './components';
 
-// Export utilities and hooks
 
-// Import components and utilities for default export
+// Default export for backward compatibility
 import * as components from './components';
 import * as utilities from './lib';
 
-// Create a default export combining all features
-const AtomixReact: Record<string, unknown> = {
+const Atomix = {
   ...components,
   ...utilities,
-};
+} as any;
 
-export default AtomixReact;
+export default Atomix;

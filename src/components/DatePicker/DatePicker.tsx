@@ -457,4 +457,9 @@ const DatePicker = forwardRef<DatePickerRef, DatePickerProps>(({
 
 DatePicker.displayName = 'DatePicker';
 
+
+export  {DatePicker};
+
+export type { DatePickerProps, DatePickerRef } from './types';
+
 export default DatePicker;

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, ReactNode } from 'react';
 import { STEPS } from '../../lib/constants/components';
 
-export interface StepItem {
+interface StepItem {
   /**
    * The number for the step
    */
@@ -18,7 +18,7 @@ export interface StepItem {
   content?: React.ReactNode;
 }
 
-export interface StepsProps {
+interface StepsProps {
   /**
    * Array of step items
    */
@@ -48,7 +48,7 @@ export interface StepsProps {
 /**
  * Steps component for displaying a sequence of steps
  */
-export const Steps: React.FC<StepsProps> = ({
+ const Steps: React.FC<StepsProps> = ({
   items,
   activeIndex = 0,
   vertical = false,
@@ -149,4 +149,13 @@ export const Steps: React.FC<StepsProps> = ({
   );
 };
 
-export default Steps; 
+export type { StepsProps, StepItem };
+
+// Set display name for debugging
+Steps.displayName = 'Steps';
+
+// Default export (primary)
+export default Steps;
+
+// Named export for compatibility
+export { Steps };

@@ -5,7 +5,7 @@ import { Icon } from '../Icon';
 import { TODO } from '../../lib/constants/components';
 import { v4 as uuidv4 } from 'uuid';
 
-export const Todo: React.FC<TodoProps> = ({
+const Todo: React.FC<TodoProps> = ({
   items = [],
   title = 'Todo List',
   onAddTodo,
@@ -162,4 +162,13 @@ export const Todo: React.FC<TodoProps> = ({
   );
 };
 
-export default Todo; 
+export type { TodoProps  };
+
+// Set display name for debugging
+Todo.displayName = 'Todo';
+
+// Default export (primary)
+export default Todo;
+
+// Named export for compatibility
+export { Todo };

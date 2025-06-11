@@ -2,7 +2,7 @@ import React from 'react';
 import { NavProps } from '../../lib/types/components';
 import { useNav } from '../../lib/composables/useNavbar';
 
-export const Nav: React.FC<NavProps> = ({
+const Nav: React.FC<NavProps> = ({
   children,
   alignment = 'start',
   className = '',
@@ -27,3 +27,13 @@ export const Nav: React.FC<NavProps> = ({
     </ul>
   );
 }; 
+
+export type { NavProps  };
+
+// Set display name for debugging
+Nav.displayName = 'Nav';
+
+// Default export (primary)
+export { Nav };
+
+export default Nav;

@@ -22,7 +22,7 @@ const PopoverContext = React.createContext<{
 /**
  * Popover component for displaying floating content
  */
-export const Popover: React.FC<PopoverProps> = ({
+ const Popover: React.FC<PopoverProps> = ({
   content,
   position = 'top',
   trigger = 'click',
@@ -129,3 +129,14 @@ export const PopoverTrigger: React.FC<PopoverTriggerProps> = ({
   
   return React.cloneElement(child, triggerProps);
 }; 
+
+export type { PopoverProps, PopoverTriggerProps };
+
+// Set display name for debugging
+Popover.displayName = 'Popover';
+
+// Default export (primary)
+export default Popover;
+
+// Named export for compatibility
+export { Popover };

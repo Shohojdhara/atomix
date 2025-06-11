@@ -2,7 +2,7 @@ import React, { ReactNode, useRef, useEffect } from 'react';
 import { TOOLTIP } from '../../lib/constants/components';
 import { Tooltip as TooltipClass } from './scripts';
 
-export interface TooltipProps {
+interface TooltipProps {
   /**
    * Content to be displayed in the tooltip
    */
@@ -39,7 +39,7 @@ export interface TooltipProps {
   offset?: number;
 }
 
-export const Tooltip: React.FC<TooltipProps> = ({
+const Tooltip: React.FC<TooltipProps> = ({
   content,
   children,
   position = TOOLTIP.DEFAULTS.POSITION,
@@ -89,3 +89,14 @@ export const Tooltip: React.FC<TooltipProps> = ({
     </div>
   );
 }; 
+
+export type { TooltipProps  };
+
+// Set display name for debugging
+Tooltip.displayName = 'Tooltip';
+
+// Default export (primary)
+export default Tooltip;
+
+// Named export for compatibility
+export { Tooltip };

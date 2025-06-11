@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export interface CountdownProps {
+interface CountdownProps {
   /** Target date/time as a Date or ISO string */
   target: Date | string;
   /** Show days, hours, minutes, seconds */
@@ -24,7 +24,7 @@ function getTimeParts(diff: number) {
   return { days, hours, minutes, seconds };
 }
 
-export const Countdown: React.FC<CountdownProps> = ({
+const Countdown: React.FC<CountdownProps> = ({
   target,
   show = ['days', 'hours', 'minutes', 'seconds'],
   separator = ':',
@@ -77,4 +77,14 @@ export const Countdown: React.FC<CountdownProps> = ({
   );
 };
 
-export default Countdown; 
+
+export type { CountdownProps  };
+
+// Set display name for debugging
+Countdown.displayName = 'Badge';
+
+// Default export (primary)
+export default Countdown;
+
+// Named export for compatibility
+export { Countdown };

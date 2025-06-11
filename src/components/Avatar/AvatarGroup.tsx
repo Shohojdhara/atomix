@@ -3,7 +3,7 @@ import { AvatarGroupProps, AvatarProps } from '../../lib/types/components';
 import { AVATAR_GROUP, AVATAR } from '../../lib/constants/components';
 import { Avatar } from './Avatar';
 
-export const AvatarGroup: React.FC<AvatarGroupProps> = ({
+const AvatarGroup: React.FC<AvatarGroupProps> = ({
   children,
   max,
   stacked = false,
@@ -66,4 +66,13 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
   );
 };
 
-export default AvatarGroup; 
+export type { AvatarGroupProps, AvatarProps }
+
+// Set display name for debugging
+AvatarGroup.displayName = 'Accordion';
+
+// Default export (primary)
+export default AvatarGroup;
+
+// Named export for compatibility
+export { AvatarGroup };

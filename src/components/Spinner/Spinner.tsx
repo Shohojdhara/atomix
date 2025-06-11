@@ -3,7 +3,7 @@ import { SpinnerProps } from '../../lib/types/components';
 import { useSpinner } from '../../lib/composables/useSpinner';
 import { SPINNER } from '../../lib/constants/components';
 
-export const Spinner: React.FC<SpinnerProps> = ({
+const Spinner: React.FC<SpinnerProps> = ({
   size = 'md',
   variant = 'primary',
   fullscreen = false,
@@ -22,4 +22,12 @@ export const Spinner: React.FC<SpinnerProps> = ({
       <span className={SPINNER.VISUALLY_HIDDEN}>Loading...</span>
     </div>
   );
-}; 
+};
+
+export type { SpinnerProps  };
+
+// Set display name for debugging
+Spinner.displayName = 'Spinner';
+
+// Default export (primary)
+export default Spinner;

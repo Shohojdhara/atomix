@@ -72,7 +72,7 @@ function useModal({
 /**
  * Modal component for displaying overlay content
  */
-export const Modal: React.FC<ModalProps> = ({
+const Modal: React.FC<ModalProps> = ({
   children,
   isOpen = false,
   onOpenChange,
@@ -192,4 +192,13 @@ export const Modal: React.FC<ModalProps> = ({
 
 Modal.displayName = 'Modal';
 
-export default Modal; 
+export type { ModalProps  };
+
+// Set display name for debugging
+Modal.displayName = 'Modal';
+
+// Default export (primary)
+export default Modal;
+
+// Named export for compatibility
+export { Modal };

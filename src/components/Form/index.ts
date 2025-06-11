@@ -1,7 +1,7 @@
-export { Form } from './Form';
-export { FormGroup } from './FormGroup';
-export { Input } from './Input';
-export { Select } from './Select';
-export { Checkbox } from './Checkbox';
-export { Radio } from './Radio';
-export { Textarea } from './Textarea'; 
+export { default as Form } from './Form';
+export { default as FormGroup } from './FormGroup';
+export { default as Input } from './Input';
+export { default as Select } from './Select';
+export { default as Checkbox } from './Checkbox';
+export { default as Radio } from './Radio';
+export { default as Textarea } from './Textarea'; 

@@ -18,7 +18,7 @@ export type AccordionProps = AccordionPropsType & {
   onOpenChange?: (open: boolean) => void;
 };
 
-export const Accordion: React.FC<AccordionProps> = ({
+const Accordion: React.FC<AccordionProps> = ({
   title,
   children,
   defaultOpen = false,
@@ -87,4 +87,13 @@ export const Accordion: React.FC<AccordionProps> = ({
       </div>
     </div>
   );
-}; 
+};
+
+// Set display name for debugging
+Accordion.displayName = 'Accordion';
+
+// Default export (primary)
+export default Accordion;
+
+// Named export for compatibility
+export { Accordion };

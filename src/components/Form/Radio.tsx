@@ -5,7 +5,7 @@ import { useRadio } from '../../lib/composables/useRadio';
 /**
  * Radio - A component for radio button inputs
  */
-export const Radio: React.FC<RadioProps> = ({
+const Radio: React.FC<RadioProps> = ({
   label,
   checked = false,
   onChange,
@@ -53,4 +53,13 @@ export const Radio: React.FC<RadioProps> = ({
   );
 };
 
-export default Radio; 
+export type { RadioProps  };
+
+// Set display name for debugging
+Radio.displayName = 'Radio';
+
+// Default export (primary)
+export default Radio;
+
+// Named export for compatibility
+export { Radio };

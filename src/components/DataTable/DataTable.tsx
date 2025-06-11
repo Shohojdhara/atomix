@@ -19,7 +19,7 @@ import { Pagination } from '../Pagination';
  * />
  * ```
  */
-export const DataTable: React.FC<DataTableProps> = ({
+const DataTable: React.FC<DataTableProps> = ({
   data = [],
   columns = [],
   className,
@@ -206,4 +206,13 @@ export const DataTable: React.FC<DataTableProps> = ({
   );
 };
 
-export default DataTable; 
+export type { DataTableProps  };
+
+// Set display name for debugging
+DataTable.displayName = 'DataTable';
+
+// Default export (primary)
+export default DataTable;
+
+// Named export for compatibility
+export { DataTable };

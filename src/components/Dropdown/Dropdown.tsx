@@ -116,7 +116,7 @@ export const DropdownHeader: React.FC<DropdownHeaderProps> = ({ children, classN
 /**
  * Dropdown component for creating dropdown menus
  */
-export const Dropdown: React.FC<DropdownProps> = ({
+const Dropdown: React.FC<DropdownProps> = ({
   children, 
   menu,
   placement = 'bottom-start',
@@ -323,3 +323,16 @@ export const Dropdown: React.FC<DropdownProps> = ({
     </div>
   );
 }; 
+
+
+
+export type { DropdownProps, DropdownItemProps, DropdownDividerProps, DropdownHeaderProps };
+
+// Set display name for debugging
+Dropdown.displayName = 'Dropdown';
+
+// Default export (primary)
+export default Dropdown;
+
+// Named export for compatibility
+export { Dropdown };
