@@ -31,3 +31,5 @@ Spinner.displayName = 'Spinner';
 
 // Default export (primary)
 export default Spinner;
+
+export { Spinner };
