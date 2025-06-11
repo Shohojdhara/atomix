@@ -99,7 +99,7 @@
     "analyze:bundle": "npm run analyze",
     "build:parallel": "npm-run-all --parallel build:cjs build:esm build:umd",
     "clean:dist": "rm -rf dist",
-    "build:components": "npm-run-all clean:dist build:types --parallel build:react build:styles",
+    "build:components": "npm-run-all clean:dist build:types --parallel build:react build:styles build:types",
     "build:react": "npx webpack --mode production --env target=components --env format=all",
     "build:styles": "npm run clean:dist && npx webpack --mode production --env target=styles",
     "build:cjs": "npx webpack --mode production --env target=components --env format=cjs",
