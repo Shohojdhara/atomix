@@ -138,8 +138,8 @@ module.exports = (env = {}) => {
         new MiniCssExtractPlugin({
           filename: (pathData) => {
             return pathData.chunk.name === 'minified'
-              ? `css/atomix-${version}.min.css`
-              : `css/atomix-${version}.css`;
+              ? `css/atomix.min.css`
+              : `css/atomix.css`;
           },
         }),
         ...(analyze ? [new BundleAnalyzerPlugin()] : []),
@@ -158,7 +158,7 @@ module.exports = (env = {}) => {
       entry: './src/index.ts',
       output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: `js/atomix-${version}.react.esm.js`,
+        filename: `js/atomix.react.esm.js`,
         library: {
           type: 'module',
         },
@@ -203,7 +203,7 @@ module.exports = (env = {}) => {
       entry: './src/index.ts',
       output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: `js/atomix-${version}.react.cjs.js`,
+        filename: `js/atomix.react.cjs.js`,
         library: {
           type: 'commonjs2',
         },
@@ -237,7 +237,7 @@ module.exports = (env = {}) => {
       entry: './src/index.ts',
       output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: `js/atomix-${version}.react.js`,
+        filename: `js/atomix.react.js`,
         library: {
           name: 'Atomix',
           type: 'umd',

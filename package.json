@@ -2,12 +2,12 @@
   "name": "@shohojdhara/atomix",
   "version": "0.1.6",
   "description": "Atomix Design System - A modern component library for web applications",
-  "main": "dist/js/atomix-${version}.react.cjs.js",
-  "module": "dist/js/atomix-${version}.react.esm.js",
-  "unpkg": "dist/js/atomix-${version}.react.js",
-  "jsdelivr": "dist/js/atomix-${version}.react.js",
-  "browser": "dist/js/atomix-${version}.react.js",
-  "typings": "dist/types/react.d.ts",
+  "main": "dist/js/atomix.react.cjs.js",
+  "module": "dist/js/atomix.react.esm.js",
+  "unpkg": "dist/js/atomix.react.js",
+  "jsdelivr": "dist/js/atomix.react.js",
+  "browser": "dist/js/atomix.react.js",
+  "typings": "dist/types/index.d.ts",
   "sideEffects": [
     "*.css",
     "*.scss",
@@ -16,18 +16,18 @@
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "import": "./dist/js/atomix-${version}.react.esm.js",
-      "require": "./dist/js/atomix-${version}.react.cjs.js",
-      "default": "./dist/js/atomix-${version}.react.esm.js"
+      "import": "./dist/js/atomix.react.esm.js",
+      "require": "./dist/js/atomix.react.cjs.js",
+      "default": "./dist/js/atomix.react.esm.js"
     },
     "./package.json": "./package.json",
     "./css": {
       "types": "./dist/types/css.d.ts",
-      "default": "./dist/css/atomix-${version}.css"
+      "default": "./dist/css/atomix.css"
     },
     "./css/min": {
       "types": "./dist/types/css.d.ts",
-      "default": "./dist/css/atomix-${version}.min.css"
+      "default": "./dist/css/atomix.min.css"
     },
     "./scss": "./src/styles/index.scss"
   },
