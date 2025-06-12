@@ -7,7 +7,7 @@ import { AccordionProps as AccordionPropsType } from '../../lib/types/components
  * Accordion component for showing/hiding content panels
  * @see AccordionProps in types/components.ts
  */
-export type AccordionProps = AccordionPropsType & {
+export type AccordionProps = AccordionPropsType & { 
   /**
    * Controlled open state (overrides defaultOpen)
    */

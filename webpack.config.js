@@ -12,7 +12,7 @@ const version = require('./package.json').version;
 const sharedRules = [
   {
     test: /\.(ts|tsx)$/,
-    exclude: /node_modules/,
+    exclude: [/node_modules/, /\.d\.ts$/],
     use: {
       loader: 'babel-loader',
       options: {
@@ -184,8 +184,8 @@ module.exports = (env = {}) => {
           'phosphor-react': 'phosphor-react',
           'prism-react-renderer': 'prism-react-renderer',
         },
-        // Exclude CSS/SCSS files
-        /\.(scss|css)$/,
+        // Exclude CSS/SCSS/TypeScript declaration files
+        /\.(scss|css|d\.ts)$/,
       ],
       plugins: analyze ? [new BundleAnalyzerPlugin({
         analyzerMode: 'static',
@@ -219,7 +219,7 @@ module.exports = (env = {}) => {
           'phosphor-react': 'phosphor-react',
           'prism-react-renderer': 'prism-react-renderer',
         },
-        /\.(scss|css)$/,
+        /\.(scss|css|d\.ts)$/,
       ],
       plugins: analyze ? [new BundleAnalyzerPlugin({
         analyzerMode: 'static',
