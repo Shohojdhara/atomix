@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Navbar } from '@shohojdhara/atomix';
+import { Navbar } from '@shohojdhara/atomix/dist/js/atomix.react.esm.js';
 import '@shohojdhara/atomix/css';
 import { navigationItems, type NavigationItem, type NavigationSection } from '../config/navigation';
 import { Sidebar } from './Sidebar'; // Import the new Sidebar component

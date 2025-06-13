@@ -31,6 +31,6 @@
       "@/atomix/design-tokens/*": ["../src/design-tokens/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/types/atomix.d.ts"],
   "exclude": ["node_modules"]
 }

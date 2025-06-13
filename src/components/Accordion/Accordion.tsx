@@ -1,17 +1,42 @@
 import React, { ReactNode, useId } from 'react';
 import { ACCORDION } from '../../lib/constants/components';
 import { useAccordion } from '../../lib/composables/useAccordion';
-import { AccordionProps as AccordionPropsType } from '../../lib/types/components';
+import { BaseComponentProps, IconPosition } from '../../lib/types/components';
 
 /**
  * Accordion component for showing/hiding content panels
- * @see AccordionProps in types/components.ts
  */
-export type AccordionProps = AccordionPropsType & { 
+export interface AccordionProps extends BaseComponentProps {
+  /**
+   * Title of the accordion
+   */
+  title: string;
+
+  /**
+   * Content to be shown when accordion is expanded
+   */
+  children: ReactNode;
+
+  /**
+   * Whether the accordion is initially open
+   */
+  defaultOpen?: boolean;
+
+  /**
+   * Position of the icon (right or left)
+   */
+  iconPosition?: IconPosition;
+
+  /**
+   * Custom icon for the accordion
+   */
+  icon?: ReactNode;
+
   /**
    * Controlled open state (overrides defaultOpen)
    */
   isOpen?: boolean;
+
   /**
    * Callback when open state changes (for controlled mode)
    */
