@@ -7,7 +7,7 @@
   "unpkg": "dist/js/atomix.react.js",
   "jsdelivr": "dist/js/atomix.react.js",
   "browser": "dist/js/atomix.react.js",
-  "typings": "dist/types/index.d.ts",
+  "typings": "index.d.ts",
   "sideEffects": [
     "*.css",
     "*.scss",
@@ -15,18 +15,18 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
+      "types": "./index.d.ts",
       "import": "./dist/js/atomix.react.esm.js",
       "require": "./dist/js/atomix.react.cjs.js",
       "default": "./dist/js/atomix.react.esm.js"
     },
     "./package.json": "./package.json",
     "./css": {
-      "types": "./dist/types/css.d.ts",
+      "types": "./css.d.ts",
       "default": "./dist/css/atomix.css"
     },
     "./css/min": {
-      "types": "./dist/types/css.d.ts",
+      "types": "./css.d.ts",
       "default": "./dist/css/atomix.min.css"
     },
     "./scss": "./src/styles/index.scss"
@@ -114,6 +114,8 @@
   "files": [
     "src",
     "dist",
+    "index.d.ts",
+    "css.d.ts",
     "README.md",
     "LICENSE",
     "CHANGELOG.md",
