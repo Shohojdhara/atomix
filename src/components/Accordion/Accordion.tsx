@@ -117,8 +117,6 @@ const Accordion: React.FC<AccordionProps> = ({
 // Set display name for debugging
 Accordion.displayName = 'Accordion';
 
-// Default export (primary)
-export default Accordion;
-
-// Named export for compatibility
+// Export as both default and named export
 export { Accordion };
+export default Accordion;
