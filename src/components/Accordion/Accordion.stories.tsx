@@ -120,13 +120,13 @@ export const AccordionGroup: Story = {
         >
           <p>Content of the first accordion.</p>
         </Accordion>
-        
+
         <Accordion 
           title="Second Accordion"
         >
           <p>Content of the second accordion.</p>
         </Accordion>
-        
+
         <Accordion 
           title="Third Accordion"
         >
@@ -159,28 +159,28 @@ export const AllVariants: Story = {
             <p>This is the default accordion.</p>
           </Accordion>
         </div>
-        
+
         <div>
           <h3>Initially Open</h3>
           <Accordion title="Initially Open Accordion" defaultOpen={true}>
             <p>This accordion starts in the open state.</p>
           </Accordion>
         </div>
-        
+
         <div>
           <h3>Disabled</h3>
           <Accordion title="Disabled Accordion" disabled={true}>
             <p>This accordion is disabled and cannot be interacted with.</p>
           </Accordion>
         </div>
-        
+
         <div>
           <h3>Icon on Left</h3>
           <Accordion title="Icon on Left" iconPosition="left">
             <p>This accordion has its icon positioned on the left.</p>
           </Accordion>
         </div>
-        
+
         <div>
           <h3>Custom Icon</h3>
           <Accordion 
@@ -199,7 +199,7 @@ export const AllVariants: Story = {
             <p>This accordion uses a custom plus icon.</p>
           </Accordion>
         </div>
-        
+
         <div>
           <h3>With Rich Content</h3>
           <Accordion title="Rich Content">
