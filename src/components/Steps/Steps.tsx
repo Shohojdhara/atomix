@@ -61,7 +61,7 @@ export const Steps: React.FC<StepsProps> = ({
   
   useEffect(() => {
     // Only run on client-side
-    if (typeof window === 'undefined' || !stepsRef.current) return;
+    if (typeof window === 'undefined' || !stepsRef.current) return undefined;
 
     // Dynamically import the steps script to avoid server-side rendering issues
     import('./scripts').then(({ default: StepsClass }) => {
@@ -151,4 +151,4 @@ export const Steps: React.FC<StepsProps> = ({
 
 Steps.displayName = 'Steps';
 
-export default Steps; 
+export default Steps;

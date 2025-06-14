@@ -105,7 +105,7 @@ export const Modal: React.FC<ModalProps> = ({
 
   // Handle keyboard events for Escape key
   useEffect(() => {
-    if (!keyboard) return;
+    if (!keyboard) return undefined;
     
     const handleKeydown = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isOpenState) {

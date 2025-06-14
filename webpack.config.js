@@ -4,6 +4,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 // Version for output filenames
 const version = require('./package.json').version;
@@ -16,31 +17,61 @@ const sharedRules = [
     use: {
       loader: 'babel-loader',
       options: {
+        cacheDirectory: true, // Enable caching for faster builds
         presets: [
           ['@babel/preset-env', { 
             modules: false, // Let webpack handle modules
-            targets: '> 0.25%, not dead'
+            targets: '> 0.25%, not dead',
+            bugfixes: true, // Apply bugfixes for smaller output
+            useBuiltIns: 'usage', // Only include polyfills that are used
+            corejs: 3 // Use core-js v3
           }],
           ['@babel/preset-react', { 
             runtime: 'automatic' // Use new JSX transform
           }],
-          '@babel/preset-typescript'
+          ['@babel/preset-typescript', {
+            isTSX: true, // Handle TSX files
+            allExtensions: true, // Process all extensions
+            allowDeclareFields: true // Allow declare fields
+          }]
         ],
       },
     },
   },
   {
     test: /\.(woff|woff2|eot|ttf|otf)$/i,
-    type: 'asset/resource',
+    type: 'asset',
+    parser: {
+      dataUrlCondition: {
+        maxSize: 8 * 1024 // 8kb - inline if smaller than this
+      }
+    },
     generator: {
-      filename: 'fonts/[hash][ext][query]'
+      filename: 'fonts/[name].[contenthash][ext]'
     }
   },
   {
-    test: /\.(png|jpg|jpeg|gif|svg)$/i,
-    type: 'asset/resource',
+    test: /\.(png|jpg|jpeg|gif)$/i,
+    type: 'asset',
+    parser: {
+      dataUrlCondition: {
+        maxSize: 4 * 1024 // 4kb - inline if smaller than this
+      }
+    },
     generator: {
-      filename: 'images/[hash][ext][query]'
+      filename: 'images/[name].[contenthash][ext]'
+    }
+  },
+  {
+    test: /\.svg$/i,
+    type: 'asset',
+    parser: {
+      dataUrlCondition: {
+        maxSize: 4 * 1024 // 4kb - inline if smaller than this
+      }
+    },
+    generator: {
+      filename: 'images/[name].[contenthash][ext]'
     }
   }
 ];
@@ -57,13 +88,17 @@ const baseConfig = {
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
+    // Prefer ESM modules when available
+    mainFields: ['module', 'main'],
   },
   optimization: {
     minimize: true,
     minimizer: [
       new TerserPlugin({
         extractComments: false,
+        parallel: true, // Use multi-process parallel running
         terserOptions: {
+          ecma: 2020, // Use ES2020 syntax
           format: {
             comments: false,
           },
@@ -72,6 +107,7 @@ const baseConfig = {
             pure_getters: true,
             unsafe: true,
             unsafe_comps: true,
+            passes: 2, // Run optimization passes twice
             warnings: false,
           },
           mangle: {
@@ -79,11 +115,52 @@ const baseConfig = {
           },
         },
       }),
-      new CssMinimizerPlugin(),
+      new CssMinimizerPlugin({
+        minimizerOptions: {
+          preset: [
+            'default',
+            {
+              discardComments: { removeAll: true },
+              normalizeWhitespace: true,
+            },
+          ],
+        },
+        parallel: true, // Use multi-process parallel running
+      }),
     ],
     // Enable better tree shaking
     usedExports: true,
     sideEffects: false,
+    // Split chunks for better caching
+    splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        vendors: {
+          test: /[\\]node_modules[\\]/,
+          name(module) {
+            // Get the name of the npm package
+            const packageName = module.context.match(/[\\]node_modules[\\](.+?)([\\]|$)/)[1];
+            return `npm.${packageName.replace('@', '')}`;
+          },
+        },
+      },
+    },
+  },
+  performance: {
+    hints: 'warning',
+    maxAssetSize: 100000, // 100kb
+    maxEntrypointSize: 250000, // 250kb
+  },
+  stats: {
+    assets: true,
+    colors: true,
+    errors: true,
+    errorDetails: true,
+    modules: false,
+    performance: true,
+    hash: false,
   },
 };
 
@@ -105,8 +182,9 @@ module.exports = (env = {}) => {
       output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'js/[name].js', // Not used but required
-        assetModuleFilename: 'assets/[hash][ext][query]',
+        assetModuleFilename: 'assets/[name].[contenthash][ext]',
         clean: true, // Clean dist folder
+        chunkFormat: 'array-push', // Specify chunk format to fix the error
       },
       module: {
         rules: [
@@ -119,14 +197,35 @@ module.exports = (env = {}) => {
                 options: {
                   sourceMap: true,
                   importLoaders: 2,
+                  modules: {
+                    auto: true, // Enable CSS modules for .module.scss files
+                    localIdentName: '[local]--[hash:base64:5]', // Format for CSS module class names
+                  },
                 },
               },
-              'postcss-loader',
+              {
+                loader: 'postcss-loader',
+                options: {
+                  sourceMap: true,
+                  postcssOptions: {
+                    plugins: [
+                      'autoprefixer',
+                      ['cssnano', {
+                        preset: ['default', { discardComments: { removeAll: true } }]
+                      }],
+                    ],
+                  },
+                },
+              },
               {
                 loader: 'sass-loader',
                 options: {
                   sourceMap: true,
                   implementation: require('sass-embedded'),
+                  sassOptions: {
+                    outputStyle: 'expanded', // Let cssnano handle minification
+                    precision: 8, // Precision for calculations
+                  },
                 },
               },
             ],
@@ -135,6 +234,7 @@ module.exports = (env = {}) => {
         ],
       },
       plugins: [
+        new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
           filename: (pathData) => {
             return pathData.chunk.name === 'minified'
@@ -142,7 +242,11 @@ module.exports = (env = {}) => {
               : `css/atomix.css`;
           },
         }),
-        ...(analyze ? [new BundleAnalyzerPlugin()] : []),
+        ...(analyze ? [new BundleAnalyzerPlugin({
+          analyzerMode: 'static',
+          reportFilename: 'reports/styles.html',
+          openAnalyzer: false,
+        })] : []),
       ],
     };
   }
@@ -155,10 +259,12 @@ module.exports = (env = {}) => {
     configs.push({
       ...baseConfig,
       name: 'react-esm',
-      entry: './src/index.ts',
+      entry: {
+        'atomix.react.esm': './src/index.ts'
+      },
       output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: `js/atomix.react.esm.js`,
+        filename: `js/[name].js`,
         library: {
           type: 'module',
         },
@@ -167,9 +273,11 @@ module.exports = (env = {}) => {
           arrowFunction: true,
           const: true,
           destructuring: true,
+          dynamicImport: true, // Support dynamic imports
         },
-        assetModuleFilename: 'assets/[hash][ext][query]',
+        assetModuleFilename: 'assets/[name].[contenthash][ext]',
         clean: false, // Don't clean on individual builds
+        chunkFilename: 'js/chunks/esm/[name].[contenthash].js', // Named chunks for better caching with unique path
       },
       experiments: {
         outputModule: true,
@@ -187,11 +295,17 @@ module.exports = (env = {}) => {
         // Exclude CSS/SCSS/TypeScript declaration files
         /\.(scss|css|d\.ts)$/,
       ],
-      plugins: analyze ? [new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        reportFilename: 'reports/react-esm.html',
-        openAnalyzer: false,
-      })] : [],
+      plugins: [
+        // Clean the dist directory only on the first build, but preserve CSS files
+        format === 'all' ? new CleanWebpackPlugin({
+          cleanOnceBeforeBuildPatterns: ['**/*', '!css/**', '!fonts/**']
+        }) : null,
+        ...(analyze ? [new BundleAnalyzerPlugin({
+          analyzerMode: 'static',
+          reportFilename: 'reports/react-esm.html',
+          openAnalyzer: false,
+        })] : []),
+      ].filter(Boolean), // Filter out null values
     });
   }
   
@@ -200,15 +314,18 @@ module.exports = (env = {}) => {
     configs.push({
       ...baseConfig,
       name: 'react-cjs',
-      entry: './src/index.ts',
+      entry: {
+        'atomix.react.cjs': './src/index.ts'
+      },
       output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: `js/atomix.react.cjs.js`,
+        filename: `js/[name].js`,
         library: {
           type: 'commonjs2',
         },
-        assetModuleFilename: 'assets/[hash][ext][query]',
+        assetModuleFilename: 'assets/[name].[contenthash][ext]',
         clean: false,
+        chunkFilename: 'js/chunks/cjs/[name].[contenthash].js', // Named chunks for better caching with unique path
       },
       externals: [
         {
@@ -226,6 +343,12 @@ module.exports = (env = {}) => {
         reportFilename: 'reports/react-cjs.html',
         openAnalyzer: false,
       })] : [],
+      // Optimize for Node.js environment
+      target: 'node',
+      node: {
+        __dirname: false,
+        __filename: false,
+      },
     });
   }
   
@@ -234,19 +357,24 @@ module.exports = (env = {}) => {
     configs.push({
       ...baseConfig,
       name: 'react-umd',
-      entry: './src/index.ts',
+      entry: {
+        'atomix.react.umd': './src/index.ts'
+      },
       output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: `js/atomix.react.js`,
+        filename: `js/[name].js`,
         library: {
           name: 'Atomix',
           type: 'umd',
           umdNamedDefine: true,
         },
         globalObject: 'this',
-        assetModuleFilename: 'assets/[hash][ext][query]',
+        assetModuleFilename: 'assets/[name].[contenthash][ext]',
         clean: false,
+        chunkFilename: 'js/chunks/umd/[name].[contenthash].js', // Named chunks for better caching with unique path
       },
+      // Optimize for browser environment
+      target: 'web',
       externals: {
         react: {
           root: 'React',

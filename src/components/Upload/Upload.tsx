@@ -112,7 +112,7 @@ export const Upload: React.FC<UploadProps> = ({
   
   useEffect(() => {
     // Only run on client-side
-    if (typeof window === 'undefined' || !uploadRef.current) return;
+    if (typeof window === 'undefined' || !uploadRef.current) return undefined;
 
     // Dynamically import the upload script to avoid server-side rendering issues
     import('./scripts').then(({ default: UploadClass }) => {
@@ -223,13 +223,15 @@ export const Upload: React.FC<UploadProps> = ({
     
     // Notify about file selection
     if (validFiles.length && onFileSelect) {
-      onFileSelect(validFiles);
+      onFileSelect(validFiles as File[]);
     }
     
     // Process the first valid file
     if (validFiles.length) {
-      setCurrentFile(validFiles[0]);
-      simulateUpload(validFiles[0]);
+        setCurrentFile(validFiles[0] || null);
+      if (validFiles[0]) {
+        simulateUpload(validFiles[0]);
+      }
     }
   };
   

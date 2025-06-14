@@ -44,7 +44,7 @@ export const Toggle: React.FC<ToggleProps> = ({
   
   useEffect(() => {
     // Only run on client-side
-    if (typeof window === 'undefined' || !toggleRef.current) return;
+    if (typeof window === 'undefined' || !toggleRef.current) return undefined;
 
     // Initialize toggle instance
     import('./scripts').then(({ default: ToggleClass }) => {

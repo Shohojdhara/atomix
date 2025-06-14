@@ -91,7 +91,7 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
   
   useEffect(() => {
     // Only run on client-side
-    if (typeof window === 'undefined' || !sectionIntroRef.current) return;
+    if (typeof window === 'undefined' || !sectionIntroRef.current) return undefined;
 
     // Dynamically import the section intro script to avoid server-side rendering issues
     import('./scripts').then(({ default: SectionIntroClass }) => {

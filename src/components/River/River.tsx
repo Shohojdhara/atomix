@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, ReactNode } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { RIVER } from '../../lib/constants/components';
-import { useRiver, RiverProps, RiverContentColumn } from '../../lib/composables/useRiver';
+import { useRiver, RiverProps } from '../../lib/composables/useRiver';
 
 /**
  * River component for displaying content with image sections
@@ -45,7 +45,7 @@ export const River: React.FC<RiverProps> = ({
   
   useEffect(() => {
     // Only run on client-side
-    if (typeof window === 'undefined' || !riverRef.current) return;
+    if (typeof window === 'undefined' || !riverRef.current) return undefined;
 
     // Dynamically import the river script to avoid server-side rendering issues
     import('./scripts').then(({ default: RiverClass }) => {

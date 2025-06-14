@@ -47,7 +47,7 @@ export const usePopover = ({
   const triggerRef = useRef<HTMLElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const arrowRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<number | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const popoverId = id || `popover-${Math.random().toString(36).slice(2, 11)}`;
 
   // Use controlled state if provided
@@ -66,16 +66,16 @@ export const usePopover = ({
 
   // Handle hover events if trigger is hover
   useEffect(() => {
-    if (trigger !== 'hover' || !triggerRef.current || !popoverRef.current) return;
+    if (trigger !== 'hover' || !triggerRef.current || !popoverRef.current) return undefined;
 
     const handleTriggerMouseEnter = () => {
       if (timeoutRef.current !== null) {
-        window.clearTimeout(timeoutRef.current);
+        clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
       }
 
       if (delay > 0) {
-        timeoutRef.current = window.setTimeout(() => {
+        timeoutRef.current = setTimeout(() => {
           setIsOpen(true);
         }, delay);
       } else {
@@ -85,11 +85,11 @@ export const usePopover = ({
 
     const handleTriggerMouseLeave = () => {
       if (timeoutRef.current !== null) {
-        window.clearTimeout(timeoutRef.current);
+        clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
       }
 
-      timeoutRef.current = window.setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         if (!popoverRef.current?.matches(':hover')) {
           setIsOpen(false);
         }
@@ -98,7 +98,7 @@ export const usePopover = ({
 
     const handlePopoverMouseEnter = () => {
       if (timeoutRef.current !== null) {
-        window.clearTimeout(timeoutRef.current);
+        clearTimeout(timeoutRef.current);
         timeoutRef.current = null;
       }
     };
@@ -247,7 +247,7 @@ export const usePopover = ({
 
   // Position the popover
   useEffect(() => {
-    if (!isOpenState || !triggerRef.current || !popoverRef.current) return;
+    if (!isOpenState || !triggerRef.current || !popoverRef.current) return undefined;
     
     // Initial positioning
     updatePosition();
@@ -256,13 +256,13 @@ export const usePopover = ({
     window.addEventListener('resize', updatePosition);
     
     // Update position on scroll, but throttled for performance
-    let scrollTimeout: number | null = null;
+    let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
     const handleScroll = (e: Event) => {
       if (scrollTimeout) {
         return;
       }
       
-      scrollTimeout = window.setTimeout(() => {
+      scrollTimeout = setTimeout(() => {
         updatePosition(e);
         scrollTimeout = null;
       }, 100);
@@ -271,7 +271,7 @@ export const usePopover = ({
     window.addEventListener('scroll', handleScroll, { passive: true });
     
     // Update position less frequently to handle content changes
-    const intervalId = setInterval(() => {
+    const intervalId: ReturnType<typeof setInterval> = setInterval(() => {
       updatePosition();
     }, 500);
     
@@ -279,7 +279,7 @@ export const usePopover = ({
       window.removeEventListener('resize', updatePosition);
       window.removeEventListener('scroll', handleScroll);
       if (scrollTimeout) {
-        window.clearTimeout(scrollTimeout);
+        clearTimeout(scrollTimeout);
       }
       clearInterval(intervalId);
     };
@@ -287,7 +287,7 @@ export const usePopover = ({
   
   // Handle click outside to close popover
   useEffect(() => {
-    if (!isOpenState || !closeOnClickOutside) return;
+    if (!isOpenState || !closeOnClickOutside) return undefined;
     
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -309,7 +309,7 @@ export const usePopover = ({
   
   // Handle escape key to close popover
   useEffect(() => {
-    if (!isOpenState || !closeOnEscape) return;
+    if (!isOpenState || !closeOnEscape) return undefined;
     
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -345,4 +345,4 @@ export const usePopover = ({
   };
 };
 
-export default usePopover; 
+export default usePopover;

@@ -1,0 +1,19 @@
+# Ignore artifacts:
+dist
+node_modules
+coverage
+build
+.next
+out
+
+# Ignore all HTML files:
+*.html
+
+# Ignore all markdown files:
+*.md
+
+# Ignore specific files
+.DS_Store
+.env
+.env.*
+*.log

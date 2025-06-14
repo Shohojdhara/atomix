@@ -66,7 +66,7 @@ export const ProductReview: React.FC<ProductReviewProps> = ({
   
   useEffect(() => {
     // Only run on client-side
-    if (typeof window === 'undefined' || !reviewRef.current) return;
+    if (typeof window === 'undefined' || !reviewRef.current) return undefined;
     
     // Cleanup on unmount
     return () => {

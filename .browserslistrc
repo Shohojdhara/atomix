@@ -1,0 +1,17 @@
+# Browsers that we support
+
+# Modern browsers
+last 2 versions
+not dead
+not IE 11
+> 1%
+
+# Mobile browsers
+ios_saf >= 14
+safari >= 14
+chrome >= 80
+firefox >= 78
+edge >= 80
+
+# Node.js
+node 16

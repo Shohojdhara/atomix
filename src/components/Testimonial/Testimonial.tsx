@@ -65,7 +65,7 @@ export const Testimonial: React.FC<TestimonialProps> = ({
   
   useEffect(() => {
     // Only run on client-side
-    if (typeof window === 'undefined' || !testimonialRef.current) return;
+    if (typeof window === 'undefined' || !testimonialRef.current) return undefined;
 
     // Dynamically import the testimonial script to avoid server-side rendering issues
     import('./scripts').then(({ default: TestimonialClass }) => {

@@ -67,7 +67,7 @@ export const useDropdown = ({
 
   // Handle click outside
   useEffect(() => {
-    if (!isOpen || !closeOnClickOutside) return;
+    if (!isOpen || !closeOnClickOutside) return undefined;
 
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -89,7 +89,7 @@ export const useDropdown = ({
 
   // Handle escape key
   useEffect(() => {
-    if (!isOpen || !closeOnEscape) return;
+    if (!isOpen || !closeOnEscape) return undefined;
 
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -204,7 +204,7 @@ export const useDropdown = ({
 
   // Update position when menu is opened
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) return undefined;
 
     // Initial position update
     updatePosition();

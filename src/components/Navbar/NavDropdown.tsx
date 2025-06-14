@@ -34,7 +34,7 @@ export const NavDropdown: React.FC<NavDropdownProps> = forwardRef<HTMLLIElement,
   
   // Handle click outside to close dropdown (desktop only)
   useEffect(() => {
-    if (!isActive) return;
+    if (!isActive) return undefined;
     
     const handleClickOutside = (e: MouseEvent) => {
       const isMobile = window.innerWidth < 768; // MD breakpoint
@@ -52,7 +52,7 @@ export const NavDropdown: React.FC<NavDropdownProps> = forwardRef<HTMLLIElement,
   
   // Handle Escape key to close dropdown
   useEffect(() => {
-    if (!isActive) return;
+    if (!isActive) return undefined;
     
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {

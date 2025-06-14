@@ -39,7 +39,7 @@ export const PhotoViewerNavigation: React.FC<PhotoViewerNavigationProps> = ({
 }) => {
   // Add keyboard navigation
   useEffect(() => {
-    if (!enableKeyboardNav) return;
+    if (!enableKeyboardNav) return undefined;
     
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') onPrev();

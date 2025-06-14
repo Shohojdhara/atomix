@@ -167,7 +167,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   
   // Click outside handler
   useEffect(() => {
-    if (!isOpen || !closeOnClickOutside) return;
+    if (!isOpen || !closeOnClickOutside) return undefined;
     
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -181,7 +181,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   
   // Escape key handler
   useEffect(() => {
-    if (!isOpen || !closeOnEscape) return;
+    if (!isOpen || !closeOnEscape) return undefined;
     
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {

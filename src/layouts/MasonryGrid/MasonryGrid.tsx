@@ -213,7 +213,7 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
     );
 
     const trackImages = useCallback(() => {
-      if (!imagesLoaded || !containerRef.current) return;
+      if (!imagesLoaded || !containerRef.current) return undefined;
       imageElements.current.clear();
       imagesLoadedCount.current = 0;
       const images = containerRef.current.querySelectorAll('img');
@@ -222,7 +222,7 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
         setLayoutComplete(true);
         setLoadingImages(false);
         onLayoutComplete?.();
-        return;
+        return undefined;
       }
       setLoadingImages(true);
       images.forEach((img) => {
@@ -283,8 +283,8 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
 
     // === OBSERVE CONTAINER RESIZE ===
     useEffect(() => {
-      if (!containerRef.current) return;
-      let animationFrame: number | null = null;
+      if (!containerRef.current) return undefined;
+      let animationFrame: ReturnType<typeof requestAnimationFrame> | null = null;
       const observer = new ResizeObserver(() => {
         if (animationFrame) cancelAnimationFrame(animationFrame);
         animationFrame = requestAnimationFrame(() => calculateLayout());
@@ -305,6 +305,7 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
         calculateLayout();
         setLayoutComplete(true);
         setLoadingImages(false);
+        return undefined;
       }
       // Only reset layoutComplete when items or columns change
       // eslint-disable-next-line

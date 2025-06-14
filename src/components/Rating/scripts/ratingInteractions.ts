@@ -1,5 +1,5 @@
 import Rating from './index';
-import type { RatingOptions } from './index';
+// RatingOptions is used in other functions in this file
 
 /**
  * Event handlers and utility functions for Rating component
@@ -45,13 +45,13 @@ export function handleKeyboardNavigation(event: KeyboardEvent, container: HTMLEl
     case ' ':
     case 'Enter':
       event.preventDefault();
-      if (currentIndex >= 0) {
+      if (currentIndex >= 0 && stars[currentIndex]) {
         stars[currentIndex].click();
       }
       break;
   }
   
-  if (nextIndex >= 0) {
+  if (nextIndex >= 0 && stars[nextIndex]) {
     stars[nextIndex].focus();
   }
 }

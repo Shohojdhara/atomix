@@ -46,7 +46,7 @@ if (typeof window !== 'undefined') {
 
 export {
   Messages,
-  MessagesOptions,
-  MessageItem,
+  type MessagesOptions,
+  type MessageItem,
   MessagesInteractions
 }; 

@@ -37,7 +37,7 @@ export const Countdown: React.FC<CountdownProps> = forwardRef<HTMLDivElement, Co
   const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
-    if (completed) return;
+    if (completed) return undefined;
     const interval = setInterval(() => {
       setNow(new Date());
     }, 1000);

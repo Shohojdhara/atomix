@@ -47,7 +47,7 @@ export const usePhotoViewer = ({
   const lastDistanceRef = useRef<number | null>(null);
   const lastMidpointRef = useRef<{ x: number; y: number } | null>(null);
   const lastWheelTime = useRef<number>(0);
-  const momentumTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const momentumTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Calculate dragging bounds based on zoom level and image dimensions
   const calculateBounds = useCallback((zoomLevel: number, rotation: number) => {
@@ -177,8 +177,8 @@ export const usePhotoViewer = ({
     const image = imageRef.current;
     const container = containerRef.current;
     
-    const updateImageBounds = () => {
-      if (!isMounted || !image || !container) return;
+    const updateImageBounds = (): void => {
+      if (!isMounted || !image || !container) return undefined;
       
       setImageStates(prev => {
         const currentState = prev[currentIndex] || {
@@ -204,16 +204,18 @@ export const usePhotoViewer = ({
     
     if (image && container && image.complete && isMounted) {
       updateImageBounds();
+      return undefined;
     } else if (image && container && isMounted) {
       image.addEventListener('load', updateImageBounds);
       return () => image.removeEventListener('load', updateImageBounds);
     }
+    return undefined;
   }, [currentIndex, calculateBounds, constrainPosition, isMounted]);
 
   // Handle window resize
   useEffect(() => {
-    const handleResize = () => {
-      if (!isMounted || !imageRef.current || !containerRef.current) return;
+    const handleResize = (): void => {
+      if (!isMounted || !imageRef.current || !containerRef.current) return undefined;
       
       setImageStates(prev => {
         const currentState = prev[currentIndex] || {

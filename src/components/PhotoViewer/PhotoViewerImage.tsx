@@ -83,7 +83,7 @@ export const PhotoViewerImage: React.FC<PhotoViewerImageProps> = ({
   // Add non-passive event listeners to prevent page scrolling/zooming
   useEffect(() => {
     const container = effectiveContainerRef.current;
-    if (!container) return;
+    if (!container) return undefined;
     
     const handleWheelEvent = (e: WheelEvent) => {
       // Only call if mounted and handler exists

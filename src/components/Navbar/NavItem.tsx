@@ -36,7 +36,7 @@ export const NavItem: React.FC<NavItemProps> = forwardRef<HTMLLIElement, NavItem
   
   // Close dropdown on outside click (desktop only)
   useEffect(() => {
-    if ((!dropdown && !megaMenu) || !isActive) return;
+    if ((!dropdown && !megaMenu) || !isActive) return undefined;
     
     const handleOutsideClick = (e: MouseEvent) => {
       if (itemRef.current && !itemRef.current.contains(e.target as Node)) {
@@ -56,7 +56,7 @@ export const NavItem: React.FC<NavItemProps> = forwardRef<HTMLLIElement, NavItem
   
   // Close dropdown on resize to desktop
   useEffect(() => {
-    if (!dropdown && !megaMenu) return;
+    if (!dropdown && !megaMenu) return undefined;
     
     const handleResize = () => {
       const isMobile = window.innerWidth < 768; // MD breakpoint

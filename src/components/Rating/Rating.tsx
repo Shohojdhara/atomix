@@ -113,7 +113,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(({
   
   // Use vanilla JS implementation if specified
   useEffect(() => {
-    if (!useVanillaJS || typeof window === 'undefined' || !internalRef.current) return;
+    if (!useVanillaJS || typeof window === 'undefined' || !internalRef.current) return undefined;
     
     // Cleanup on unmount
     return () => {
@@ -125,7 +125,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(({
   
   // Update vanilla JS implementation when props change
   useEffect(() => {
-    if (!useVanillaJS || !ratingInstance.current) return;
+    if (!useVanillaJS || !ratingInstance.current) return undefined;
     
     ratingInstance.current.updateOptions({
       value: valueProp !== undefined ? valueProp : defaultValue,

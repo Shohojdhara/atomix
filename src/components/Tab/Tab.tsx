@@ -61,7 +61,7 @@ export const Tab: React.FC<TabProps> = ({
   // Handle tab instance initialization and cleanup
   useEffect(() => {
     // Only run on client-side
-    if (typeof window === 'undefined' || !tabRef.current) return;
+    if (typeof window === 'undefined' || !tabRef.current) return undefined;
 
     // Dynamically import the tab script to avoid server-side rendering issues
     import('./scripts').then(({ default: TabClass }) => {

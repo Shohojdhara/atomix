@@ -309,7 +309,12 @@ const initPopovers = (): void => {
     const delay = parseInt(popover.getAttribute('data-popover-delay') || String(POPOVER.DEFAULTS.DELAY), 10);
     
     // Initialize popover
-    new Popover(popover, { position, trigger, offset, delay });
+    new Popover(popover, { 
+      position: position as PopoverPosition | 'auto',
+      trigger: trigger as 'hover' | 'click',
+      offset, 
+      delay 
+    });
   });
 };
 
