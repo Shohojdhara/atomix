@@ -1,4 +1,5 @@
-export { default, PhotoViewer } from './PhotoViewer';
+export { PhotoViewer } from './PhotoViewer';
+export { default } from './PhotoViewer';
 export { PhotoViewerHeader } from './PhotoViewerHeader';
 export { PhotoViewerNavigation } from './PhotoViewerNavigation';
 export { PhotoViewerImage } from './PhotoViewerImage';

@@ -1,2 +1,3 @@
-export { default, Accordion } from './Accordion';
+export { Accordion } from './Accordion';
+export { default } from './Accordion';
 export type { AccordionProps } from './Accordion';

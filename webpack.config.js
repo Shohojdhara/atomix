@@ -84,6 +84,7 @@ const baseConfig = {
     rules: sharedRules,
   },
   resolve: {
+     symlinks: true,
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
     alias: {
       '@': path.resolve(__dirname, 'src'),

@@ -126,42 +126,12 @@ function fixComponentFiles() {
     const componentDirs = fs.readdirSync(COMPONENTS_DIR)
       .filter(file => fs.statSync(path.join(COMPONENTS_DIR, file)).isDirectory());
     
-    // Special handling for components with known issues
-    const specialComponents = {
-      'Accordion': `export { default, Accordion } from './scripts/index';
-export type { AccordionProps } from './scripts/index';
-`,
-      'Breadcrumb': `export { default, Breadcrumb } from './Breadcrumb';
-export type { BreadcrumbProps } from './Breadcrumb';
-`,
-      'River': `export { default, River } from './River';
-export type { RiverProps } from './River';
-`,
-      'Tab': `export { default, Tab } from './Tab';
-export type { TabProps } from './Tab';
-`,
-      'Toggle': `export { default, Toggle } from './Toggle';
-export type { ToggleProps } from './Toggle';
-`,
-      'Tooltip': `export { default, Tooltip } from './Tooltip';
-export type { TooltipProps } from './Tooltip';
-`
-    };
-    
-    // Apply special handling for components that need it
-    Object.keys(specialComponents).forEach(componentName => {
-      if (fs.existsSync(path.join(COMPONENTS_DIR, componentName, 'index.d.ts'))) {
-        const indexPath = path.join(COMPONENTS_DIR, componentName, 'index.d.ts');
-        fs.writeFileSync(indexPath, specialComponents[componentName]);
-        console.log(`✅ Applied special handling for ${componentName} component`);
-      }
-    });
-    
     // Process all component directories
     componentDirs.forEach(dir => {
-      // Fix main component file
       const componentPath = path.join(COMPONENTS_DIR, dir, `${dir}.d.ts`);
+      const indexPath = path.join(COMPONENTS_DIR, dir, 'index.d.ts');
       
+      // Fix main component file if it exists
       if (fs.existsSync(componentPath)) {
         let content = fs.readFileSync(componentPath, 'utf8');
         
@@ -187,51 +157,46 @@ export type { TooltipProps } from './Tooltip';
         fs.writeFileSync(componentPath, content);
       }
       
-      // Fix component index files
-      const indexPath = path.join(COMPONENTS_DIR, dir, 'index.d.ts');
-      
-      // Skip if this is a special component we already handled
-      if (specialComponents[dir] && fs.existsSync(indexPath)) {
-        return;
-      }
-      
+      // Fix component index files - this is the main issue causing the error
       if (fs.existsSync(indexPath)) {
-        // Check if the index file has the correct exports
         let content = fs.readFileSync(indexPath, 'utf8');
         
-        // If the file is trying to import from './ComponentName' but that file doesn't exist
-        // Update it to import from './scripts/index' instead
-        if (content.includes(`from './${dir}'`) && !fs.existsSync(path.join(COMPONENTS_DIR, dir, `${dir}.d.ts`))) {
-          // Check if scripts/index.d.ts exists as an alternative
-          if (fs.existsSync(path.join(COMPONENTS_DIR, dir, 'scripts', 'index.d.ts'))) {
-            content = content.replace(
-              new RegExp(`from '\.\/\${dir}'`, 'g'),
-              `from './scripts/index'`
-            );
-          } else {
-            // If no scripts/index.d.ts, create a simple re-export of the component
-            const componentFiles = fs.readdirSync(path.join(COMPONENTS_DIR, dir))
-              .filter(file => file.endsWith('.d.ts') && file !== 'index.d.ts');
+        // Check if the index file is trying to import from a file that doesn't exist
+        const importPattern = /from '\.\/([^']+)'/g;
+        let match;
+        let hasChanges = false;
+        
+        while ((match = importPattern.exec(content)) !== null) {
+          const importPath = match[1];
+          const fullPath = path.join(COMPONENTS_DIR, dir, `${importPath}.d.ts`);
+          
+          // If the imported file doesn't exist, try to find an alternative
+          if (!fs.existsSync(fullPath)) {
+            console.log(`⚠️ Missing import target: ${fullPath}`);
             
-            if (componentFiles.length > 0) {
-              // Use the first available .d.ts file
-              const firstComponent = componentFiles[0].replace(/\.d\.ts$/, '');
+            // Check if the main component file exists
+            const mainComponentPath = path.join(COMPONENTS_DIR, dir, `${dir}.d.ts`);
+            if (fs.existsSync(mainComponentPath)) {
               content = content.replace(
-                new RegExp(`from '\.\/\${dir}'`, 'g'),
-                `from './${firstComponent}'`
+                new RegExp(`from '\./${importPath}'`, 'g'),
+                `from './${dir}'`
               );
+              hasChanges = true;
+              console.log(`✅ Fixed import in ${dir}/index.d.ts: './${importPath}' -> './${dir}'`);
             }
           }
+        }
+        
+        if (hasChanges) {
           fs.writeFileSync(indexPath, content);
         }
-      } else {
+      } else if (fs.existsSync(componentPath)) {
         // If index.d.ts doesn't exist but the component file does, create an index file
-        if (fs.existsSync(componentPath)) {
-          const newIndexContent = `export * from './${dir}';
+        const newIndexContent = `export * from './${dir}';
 export { default } from './${dir}';
 `;
-          fs.writeFileSync(indexPath, newIndexContent);
-        }
+        fs.writeFileSync(indexPath, newIndexContent);
+        console.log(`✅ Created missing index.d.ts for ${dir}`);
       }
     });
     

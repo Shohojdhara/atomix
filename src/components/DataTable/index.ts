@@ -1,2 +1,3 @@
-export { default, DataTable } from './DataTable';
+export { DataTable } from './DataTable';
+export { default } from './DataTable';
 export type { DataTableProps } from './DataTable'; 

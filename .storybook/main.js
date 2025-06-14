@@ -31,13 +31,21 @@ module.exports = {
     if (!config.module) config.module = { rules: [] };
     if (!config.module.rules) config.module.rules = [];
     
+    // Set target and output configuration to fix chunk format error
+    config.target = 'web';
+    if (!config.output) config.output = {};
+    config.output.chunkFormat = 'array-push';
+    
     // Handle TypeScript files
     config.module.rules.push({
       test: /\.(ts|tsx)$/,
       loader: 'babel-loader',
       options: {
         presets: [
-          ['@babel/preset-env', { targets: { node: 'current' } }],
+          ['@babel/preset-env', { 
+            targets: '> 0.5%, last 2 versions, not dead',
+            modules: false
+          }],
           '@babel/preset-typescript',
           ['@babel/preset-react', { runtime: 'automatic' }]
         ],

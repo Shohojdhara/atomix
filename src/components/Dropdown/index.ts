@@ -8,6 +8,7 @@ import type {
 
 // Export React components
 export { Dropdown, DropdownItem, DropdownDivider, DropdownHeader };
+export { default } from './Dropdown';
 
 // Export types for React components
 export type { 
@@ -16,6 +17,3 @@ export type {
   DropdownDividerProps,
   DropdownHeaderProps
 }; 
-
-// Re-export Vanilla JS implementation
-export * from './scripts'; 

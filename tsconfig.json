@@ -4,7 +4,7 @@
     "target": "ES2020",
     "module": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
@@ -34,8 +34,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
-    "forceConsistentCasingInFileNames": true,
+        "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     
     // JSX and React
@@ -55,14 +54,21 @@
     ]
   },
   "include": [
-    "src/**/*.tsx"
+    "src/components/**/*.tsx",
+    "src/components/**/index.ts",
+    "src/layouts/**/*.tsx",
+    "src/layouts/**/index.ts",
+    "src/lib/**/*.ts",
+    "src/index.ts"
   ],
   "exclude": [
     "node_modules",
     "dist",
     "**/*.stories.tsx",
+    "**/*.stories.ts",
     "**/*.test.ts",
     "**/*.test.tsx",
-    "**/*.ts"
+    "**/scripts/**",
+    "src/htmlComponentsEntry.ts"
   ]
 }
