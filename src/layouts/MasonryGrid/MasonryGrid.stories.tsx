@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { MasonryGrid } from './MasonryGrid';
 import { MasonryGridItem } from './MasonryGridItem';
-import Card  from '../../components/Card/Card';
+import Card from '../../components/Card/Card';
 import ElevationCard from '../../components/Card/Card';
 
 const meta: Meta<typeof MasonryGrid> = {
@@ -12,7 +12,7 @@ const meta: Meta<typeof MasonryGrid> = {
     layout: 'fullscreen',
   },
   decorators: [
-    (Story) => (
+    Story => (
       <div style={{ padding: '1rem' }}>
         <Story />
       </div>
@@ -28,10 +28,10 @@ const getPlaceholderImage = (index: number, width = 600, height?: number) => {
   // Create different heights for variety if not specified
   const heights = [300, 400, 500, 350, 450, 550, 320, 420];
   const imgHeight = height || heights[index % heights.length];
-  
+
   // Use different image IDs for variety
   const imageId = (index % 30) + 10; // Use IDs between 10-40 for variety
-  
+
   // Use Picsum Photos which is more reliable
   return `https://picsum.photos/id/${imageId}/${width}/${imgHeight}`;
 };
@@ -47,13 +47,15 @@ const CardWithImage: React.FC<{
 }> = ({ index, title, text, useElevation = false, width, height }) => {
   const CardComponent = useElevation ? ElevationCard : Card;
   const imageUrl = getPlaceholderImage(index, width, height);
-  
+
   // Generate random content if not provided
   const cardTitle = title || `Card Title ${index + 1}`;
-  const cardText = text || (index % 2 === 0 ? 
-    'This is a short description for this card item.' : 
-    'This is a longer description that takes up more space to demonstrate how the masonry layout handles different content heights effectively.');
-  
+  const cardText =
+    text ||
+    (index % 2 === 0
+      ? 'This is a short description for this card item.'
+      : 'This is a longer description that takes up more space to demonstrate how the masonry layout handles different content heights effectively.');
+
   return (
     <CardComponent
       image={imageUrl}
@@ -78,8 +80,11 @@ export const BasicMasonryGrid: Story = {
   render: () => (
     <div>
       <h3 className="u-mb-4">Basic Masonry Grid</h3>
-      <p className="u-mb-4">Items are automatically positioned in the optimal location based on available vertical space.</p>
-      
+      <p className="u-mb-4">
+        Items are automatically positioned in the optimal location based on available vertical
+        space.
+      </p>
+
       <MasonryGrid xs={1} sm={2} md={3} lg={4}>
         {Array.from({ length: 8 }).map((_, index) => (
           <MasonryGridItem key={index}>
@@ -99,14 +104,11 @@ export const CustomGap: Story = {
     <div>
       <h3 className="u-mb-4">Custom Gap (24px)</h3>
       <p className="u-mb-4">The gap between items can be customized.</p>
-      
+
       <MasonryGrid xs={1} sm={2} md={3} lg={4} gap={24}>
         {Array.from({ length: 6 }).map((_, index) => (
           <MasonryGridItem key={index}>
-            <CardWithImage 
-              index={index + 10} 
-              title={`Card with Gap ${index + 1}`}
-            />
+            <CardWithImage index={index + 10} title={`Card with Gap ${index + 1}`} />
           </MasonryGridItem>
         ))}
       </MasonryGrid>
@@ -123,44 +125,44 @@ export const DynamicLoading: Story = {
     const DynamicLoadingExample = () => {
       const [items, setItems] = useState<number[]>([]);
       const [loading, setLoading] = useState(true);
-      
+
       useEffect(() => {
         // Simulate loading items in batches
         const loadItems = () => {
           setLoading(true);
-          
+
           // Initial set of items
           setTimeout(() => {
             setItems([0, 1, 2, 3, 4, 5]);
             setLoading(false);
           }, 1000);
-          
+
           // Add more items after a delay
           setTimeout(() => {
             setItems(prev => [...prev, 6, 7, 8, 9, 10, 11]);
           }, 3000);
         };
-        
+
         loadItems();
       }, []);
-      
+
       return (
         <div>
           <h3 className="u-mb-4">Dynamic Loading</h3>
           <p className="u-mb-4">The masonry grid recalculates positions as new items are added.</p>
-          
+
           {loading && (
             <div className="u-p-4 u-mb-4 u-bg-light u-border u-rounded u-text-center">
               <div className="u-spinner u-spinner-primary u-mb-3"></div>
               <p className="u-m-0">Loading initial items...</p>
             </div>
           )}
-          
+
           <MasonryGrid xs={1} sm={2} md={3} lg={4}>
-            {items.map((index) => (
+            {items.map(index => (
               <MasonryGridItem key={index}>
-                <CardWithImage 
-                  index={index + 20} 
+                <CardWithImage
+                  index={index + 20}
                   useElevation={true}
                   title={`Dynamic Card ${index + 1}`}
                 />
@@ -170,7 +172,7 @@ export const DynamicLoading: Story = {
         </div>
       );
     };
-    
+
     return <DynamicLoadingExample />;
   },
 };
@@ -183,14 +185,18 @@ export const CustomColumns: Story = {
     <div>
       <h3 className="u-mb-4">Custom Column Configuration</h3>
       <p className="u-mb-4">Different column counts can be specified for each breakpoint.</p>
-      
+
       <MasonryGrid xs={1} sm={2} md={2} lg={3} xl={4} xxl={5}>
         {Array.from({ length: 10 }).map((_, index) => (
           <MasonryGridItem key={index}>
-            <CardWithImage 
-              index={index + 30} 
+            <CardWithImage
+              index={index + 30}
               title={`Column Config ${index + 1}`}
-              text={index % 2 === 0 ? undefined : 'This card demonstrates the custom column configuration across different breakpoints.'}
+              text={
+                index % 2 === 0
+                  ? undefined
+                  : 'This card demonstrates the custom column configuration across different breakpoints.'
+              }
             />
           </MasonryGridItem>
         ))}
@@ -206,18 +212,22 @@ export const WithElevationCards: Story = {
   render: () => (
     <div>
       <h3 className="u-mb-4">Elevation Cards in Masonry Layout</h3>
-      <p className="u-mb-4">The masonry grid works well with elevation card components that have hover effects.</p>
-      
+      <p className="u-mb-4">
+        The masonry grid works well with elevation card components that have hover effects.
+      </p>
+
       <MasonryGrid xs={1} sm={2} md={3} lg={4}>
         {Array.from({ length: 8 }).map((_, index) => (
           <MasonryGridItem key={index}>
-            <CardWithImage 
-              index={index + 40} 
+            <CardWithImage
+              index={index + 40}
               useElevation={true}
               title={`Elevation Card ${index + 1}`}
-              text={index % 2 === 0 ? 
-                'Hover over this card to see the elevation effect.' : 
-                'This card demonstrates the elevation effect when hovered. The masonry layout handles different content heights automatically.'}
+              text={
+                index % 2 === 0
+                  ? 'Hover over this card to see the elevation effect.'
+                  : 'This card demonstrates the elevation effect when hovered. The masonry layout handles different content heights automatically.'
+              }
             />
           </MasonryGridItem>
         ))}
@@ -234,14 +244,11 @@ export const NoAnimation: Story = {
     <div>
       <h3 className="u-mb-4">No Animation</h3>
       <p className="u-mb-4">The animation can be disabled for immediate positioning.</p>
-      
+
       <MasonryGrid xs={1} sm={2} md={3} lg={4} animate={false}>
         {Array.from({ length: 6 }).map((_, index) => (
           <MasonryGridItem key={index}>
-            <CardWithImage 
-              index={index + 50} 
-              title={`No Animation ${index + 1}`}
-            />
+            <CardWithImage index={index + 50} title={`No Animation ${index + 1}`} />
           </MasonryGridItem>
         ))}
       </MasonryGrid>
@@ -257,23 +264,27 @@ export const ProgressiveImageLoading: Story = {
     const [loadedCount, setLoadedCount] = useState(0);
     const [totalCount, setTotalCount] = useState(0);
     const [layoutComplete, setLayoutComplete] = useState(false);
-    
+
     return (
       <div>
         <h3 className="u-mb-4">Progressive Image Loading</h3>
-        <p className="u-mb-4">The grid shows items immediately and updates positions as each image loads.</p>
-        
+        <p className="u-mb-4">
+          The grid shows items immediately and updates positions as each image loads.
+        </p>
+
         <div className="u-bg-light u-p-3 u-rounded u-mb-4">
           <h4 className="u-mb-2">Loading Progress</h4>
           {totalCount > 0 && (
             <div className="u-mb-2">
               <div className="u-d-flex u-justify-content-between u-mb-1">
-                <span>Loading images: {loadedCount} of {totalCount}</span>
+                <span>
+                  Loading images: {loadedCount} of {totalCount}
+                </span>
                 <span>{Math.round((loadedCount / totalCount) * 100)}%</span>
               </div>
               <div className="u-progress u-mb-2" style={{ height: '8px' }}>
-                <div 
-                  className="u-progress-bar u-bg-primary" 
+                <div
+                  className="u-progress-bar u-bg-primary"
                   style={{ width: `${(loadedCount / totalCount) * 100}%` }}
                 ></div>
               </div>
@@ -285,13 +296,13 @@ export const ProgressiveImageLoading: Story = {
             </div>
           )}
         </div>
-        
-        <MasonryGrid 
-          xs={1} 
-          sm={2} 
-          md={3} 
+
+        <MasonryGrid
+          xs={1}
+          sm={2}
+          md={3}
           lg={4}
-          gap={16} 
+          gap={16}
           imagesLoaded={true}
           onLayoutComplete={() => setLayoutComplete(true)}
           onImageLoad={(loaded, total) => {
@@ -301,8 +312,8 @@ export const ProgressiveImageLoading: Story = {
         >
           {Array.from({ length: 8 }).map((_, index) => (
             <MasonryGridItem key={index}>
-              <CardWithImage 
-                index={index + 70} 
+              <CardWithImage
+                index={index + 70}
                 title={`Progressive Loading ${index + 1}`}
                 text="This card's image loads independently and updates the layout as it loads."
                 // Use different sized images to demonstrate the progressive loading
@@ -324,24 +335,24 @@ export const MixedContent: Story = {
   render: () => (
     <div>
       <h3 className="u-mb-4">Mixed Content Types</h3>
-      <p className="u-mb-4">The masonry grid can handle various content types with different heights.</p>
-      
+      <p className="u-mb-4">
+        The masonry grid can handle various content types with different heights.
+      </p>
+
       <MasonryGrid xs={1} sm={2} md={3} lg={4}>
         <MasonryGridItem>
           <Card
             title="Text Only Card"
             text="This card contains only text content with no image."
             className="u-h-100"
-            actions={
-              <button className="u-btn u-btn-primary u-btn-sm u-mt-3">Action</button>
-            }
+            actions={<button className="u-btn u-btn-primary u-btn-sm u-mt-3">Action</button>}
           />
         </MasonryGridItem>
-        
+
         <MasonryGridItem>
           <CardWithImage index={60} useElevation={true} />
         </MasonryGridItem>
-        
+
         <MasonryGridItem>
           <div className="u-p-4 u-border u-rounded u-bg-light u-h-100">
             <h4 className="u-mb-3">Custom Content</h4>
@@ -352,21 +363,17 @@ export const MixedContent: Story = {
             </div>
           </div>
         </MasonryGridItem>
-        
+
         <MasonryGridItem>
           <CardWithImage index={61} />
         </MasonryGridItem>
-        
+
         <MasonryGridItem>
           <div className="u-p-0 u-border u-rounded u-overflow-hidden u-shadow-sm">
-            <img 
-              src="https://picsum.photos/id/15/600/400" 
-              alt="Nature"
-              className="u-w-100"
-            />
+            <img src="https://picsum.photos/id/15/600/400" alt="Nature" className="u-w-100" />
           </div>
         </MasonryGridItem>
-        
+
         <MasonryGridItem>
           <Card
             title="Card with Icon"

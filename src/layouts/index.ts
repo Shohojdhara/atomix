@@ -1,10 +1,9 @@
-import * as Grid  from './Grid';
+import * as Grid from './Grid';
 import * as MasonryGrid from './MasonryGrid';
-
 
 const layouts = {
   ...Grid,
-  ...MasonryGrid
-}
+  ...MasonryGrid,
+};
 
 export default layouts;

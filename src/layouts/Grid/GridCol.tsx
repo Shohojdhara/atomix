@@ -64,27 +64,30 @@ export interface GridColProps extends HTMLAttributes<HTMLDivElement> {
  * Uses the CSS grid column classes defined in _objects.grid.scss.
  */
 export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
-  ({ 
-    children, 
-    className = '', 
-    xs, 
-    sm, 
-    md, 
-    lg, 
-    xl, 
-    xxl,
-    offsetXs,
-    offsetSm,
-    offsetMd,
-    offsetLg,
-    offsetXl,
-    offsetXxl,
-    ...props 
-  }, ref) => {
+  (
+    {
+      children,
+      className = '',
+      xs,
+      sm,
+      md,
+      lg,
+      xl,
+      xxl,
+      offsetXs,
+      offsetSm,
+      offsetMd,
+      offsetLg,
+      offsetXl,
+      offsetXxl,
+      ...props
+    },
+    ref
+  ) => {
     // If no specific size is provided, use auto class
     const isDefaultAuto = !xs && !sm && !md && !lg && !xl && !xxl;
     const classes = isDefaultAuto ? ['o-grid__col', 'o-grid__col--auto'] : ['o-grid__col'];
-    
+
     // Add column size classes based on the exact SCSS pattern
     // For xs (default breakpoint), the infix is empty
     if (xs) {
@@ -94,7 +97,7 @@ export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
         classes.push(`o-grid__col--${xs}`);
       }
     }
-    
+
     // For other breakpoints, the infix includes the dash
     if (sm) {
       if (sm === 'auto') {
@@ -103,7 +106,7 @@ export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
         classes.push(`o-grid__col--sm-${sm}`);
       }
     }
-    
+
     if (md) {
       if (md === 'auto') {
         classes.push('o-grid__col--md-auto');
@@ -111,7 +114,7 @@ export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
         classes.push(`o-grid__col--md-${md}`);
       }
     }
-    
+
     if (lg) {
       if (lg === 'auto') {
         classes.push('o-grid__col--lg-auto');
@@ -119,7 +122,7 @@ export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
         classes.push(`o-grid__col--lg-${lg}`);
       }
     }
-    
+
     if (xl) {
       if (xl === 'auto') {
         classes.push('o-grid__col--xl-auto');
@@ -127,7 +130,7 @@ export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
         classes.push(`o-grid__col--xl-${xl}`);
       }
     }
-    
+
     if (xxl) {
       if (xxl === 'auto') {
         classes.push('o-grid__col--xxl-auto');
@@ -135,7 +138,7 @@ export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
         classes.push(`o-grid__col--xxl-${xxl}`);
       }
     }
-    
+
     // Add offset classes based on the exact SCSS pattern
     if (offsetXs) classes.push(`o-grid__offset--${offsetXs}`);
     if (offsetSm) classes.push(`o-grid__offset--sm-${offsetSm}`);
@@ -143,9 +146,9 @@ export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
     if (offsetLg) classes.push(`o-grid__offset--lg-${offsetLg}`);
     if (offsetXl) classes.push(`o-grid__offset--xl-${offsetXl}`);
     if (offsetXxl) classes.push(`o-grid__offset--xxl-${offsetXxl}`);
-    
+
     if (className) classes.push(className);
-    
+
     return (
       <div ref={ref} className={classes.join(' ')} {...props}>
         {children}

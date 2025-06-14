@@ -24,23 +24,15 @@ export interface MasonryGridItemProps extends HTMLAttributes<HTMLDivElement> {
  * ```
  */
 export const MasonryGridItem = forwardRef<HTMLDivElement, MasonryGridItemProps>(
-  ({ 
-    children, 
-    className = '', 
-    ...props 
-  }, ref) => {
+  ({ children, className = '', ...props }, ref) => {
     const classes = ['o-masonry-grid__item-inner'];
-    
+
     if (className) {
       classes.push(className);
     }
-    
+
     return (
-      <div 
-        ref={ref} 
-        className={classes.join(' ')} 
-        {...props}
-      >
+      <div ref={ref} className={classes.join(' ')} {...props}>
         {children}
       </div>
     );

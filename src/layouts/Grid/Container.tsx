@@ -10,7 +10,7 @@ export interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
    */
   className?: string;
   /**
-   * Container type: 
+   * Container type:
    * - undefined: responsive container with max-width at each breakpoint
    * - 'fluid': full width container
    * - 'sm', 'md', 'lg', 'xl', 'xxl': responsive container with max-width at specified breakpoint
@@ -27,11 +27,11 @@ export interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
  * <Container>
  *   Content with responsive max-width
  * </Container>
- * 
+ *
  * <Container type="fluid">
  *   Full width content
  * </Container>
- * 
+ *
  * <Container type="md">
  *   Content with max-width at md breakpoint
  * </Container>
@@ -40,17 +40,13 @@ export interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
 export const Container = forwardRef<HTMLDivElement, ContainerProps>(
   ({ children, className = '', type, ...props }, ref) => {
     let containerClass = 'o-container';
-    
+
     if (type) {
       containerClass = `o-container-${type}`;
     }
-    
+
     return (
-      <div 
-        ref={ref} 
-        className={`${containerClass} ${className}`.trim()} 
-        {...props}
-      >
+      <div ref={ref} className={`${containerClass} ${className}`.trim()} {...props}>
         {children}
       </div>
     );

@@ -12,7 +12,7 @@ const meta: Meta<typeof Grid> = {
     layout: 'fullscreen',
   },
   decorators: [
-    (Story) => (
+    Story => (
       <div style={{ padding: '1rem' }}>
         <Story />
       </div>
@@ -24,10 +24,8 @@ export default meta;
 type Story = StoryObj<typeof Grid>;
 
 // Demo box component that uses utility classes instead of inline styles
-const DemoBox: React.FC<{children: React.ReactNode}> = ({ children }) => (
-  <div className="u-p-4 u-mb-2 u-border u-text-center u-bg-primary">
-    {children}
-  </div>
+const DemoBox: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="u-p-4 u-mb-2 u-border u-text-center u-bg-primary">{children}</div>
 );
 
 /**
@@ -116,7 +114,7 @@ export const ColumnOffsets: Story = {
           </DemoBox>
         </GridCol>
       </Grid>
-      
+
       <h3 className="u-mb-4">Multiple Offsets</h3>
       <Grid>
         <GridCol xs={12} md={3} offsetMd={3}>
@@ -134,7 +132,7 @@ export const ColumnOffsets: Story = {
           </DemoBox>
         </GridCol>
       </Grid>
-      
+
       <h3 className="u-mb-4">Responsive Offsets</h3>
       <Grid>
         <GridCol xs={6} offsetXs={6} md={4} offsetMd={2} lg={3} offsetLg={3}>
@@ -170,7 +168,7 @@ export const AutoWidthColumns: Story = {
           <DemoBox>o-grid__col-auto</DemoBox>
         </GridCol>
       </Grid>
-      
+
       <h3 className="u-mb-4">Mixed Auto and Fixed Columns</h3>
       <Grid>
         <GridCol xs={4}>
@@ -183,7 +181,7 @@ export const AutoWidthColumns: Story = {
           <DemoBox>o-grid__col-auto</DemoBox>
         </GridCol>
       </Grid>
-      
+
       <h3 className="u-mb-4">Responsive Auto Columns</h3>
       <Grid>
         <GridCol xs={12} sm={6} md={4} lg="auto">
@@ -259,29 +257,29 @@ export const Containers: Story = {
         <h3 className="u-mb-4">Default Container</h3>
         Default responsive container with max-width at each breakpoint
       </Container>
-      
+
       <Container type="fluid" className="u-p-4 u-mb-8 u-border u-text-center u-bg-brand-subtle">
         <h3 className="u-mb-4">Fluid Container</h3>
         Full width fluid container
       </Container>
-      
+
       <Container type="sm" className="u-p-4 u-mb-4 u-border u-text-center u-bg-brand-subtle">
         <h3 className="u-mb-4">Breakpoint Containers</h3>
         Container with max-width at SM breakpoint
       </Container>
-      
+
       <Container type="md" className="u-p-4 u-mb-4 u-border u-text-center u-bg-brand-subtle">
         Container with max-width at MD breakpoint
       </Container>
-      
+
       <Container type="lg" className="u-p-4 u-mb-4 u-border u-text-center u-bg-brand-subtle">
         Container with max-width at LG breakpoint
       </Container>
-      
+
       <Container type="xl" className="u-p-4 u-mb-4 u-border u-text-center u-bg-brand-subtle">
         Container with max-width at XL breakpoint
       </Container>
-      
+
       <Container type="xxl" className="u-p-4 u-mb-4 u-border u-text-center u-bg-brand-subtle">
         Container with max-width at XXL breakpoint
       </Container>
@@ -309,7 +307,7 @@ export const GridWithContainer: Story = {
           </GridCol>
         </Grid>
       </Container>
-      
+
       <h3>Fluid Container with Grid</h3>
       <Container type="fluid" className="u-mb-8">
         <Grid>
@@ -408,7 +406,7 @@ export const RowAlignments: Story = {
             <DemoBox>Column</DemoBox>
           </GridCol>
         </Row>
-        
+
         <Row justifyContent="center" className="u-mb-4">
           <GridCol xs={4}>
             <DemoBox>u-justify-content-center</DemoBox>
@@ -417,7 +415,7 @@ export const RowAlignments: Story = {
             <DemoBox>Column</DemoBox>
           </GridCol>
         </Row>
-        
+
         <Row justifyContent="end" className="u-mb-4">
           <GridCol xs={4}>
             <DemoBox>u-justify-content-end</DemoBox>
@@ -426,7 +424,7 @@ export const RowAlignments: Story = {
             <DemoBox>Column</DemoBox>
           </GridCol>
         </Row>
-        
+
         <Row justifyContent="between" className="u-mb-4">
           <GridCol xs={4}>
             <DemoBox>u-justify-content-between</DemoBox>
@@ -435,7 +433,7 @@ export const RowAlignments: Story = {
             <DemoBox>Column</DemoBox>
           </GridCol>
         </Row>
-        
+
         <Row justifyContent="around" className="u-mb-4">
           <GridCol xs={4}>
             <DemoBox>u-justify-content-around</DemoBox>
@@ -445,7 +443,7 @@ export const RowAlignments: Story = {
           </GridCol>
         </Row>
       </Container>
-      
+
       <Container className="u-mb-8">
         <h3 className="u-mb-4">Align Items</h3>
         <Row className="u-mb-4 u-bg-info-subtle" style={{ height: '150px' }}>
@@ -453,50 +451,90 @@ export const RowAlignments: Story = {
             <DemoBox>Default (stretch)</DemoBox>
           </GridCol>
           <GridCol xs={4}>
-            <div className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle" style={{ height: '50px' }}>Short column</div>
+            <div
+              className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle"
+              style={{ height: '50px' }}
+            >
+              Short column
+            </div>
           </GridCol>
           <GridCol xs={4}>
-            <div className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle" style={{ height: '100px' }}>Taller column</div>
+            <div
+              className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle"
+              style={{ height: '100px' }}
+            >
+              Taller column
+            </div>
           </GridCol>
         </Row>
-        
+
         <Row alignItems="start" className="u-mb-4 u-bg-info-subtle" style={{ height: '150px' }}>
           <GridCol xs={4}>
             <DemoBox>u-align-items-start</DemoBox>
           </GridCol>
           <GridCol xs={4}>
-            <div className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle" style={{ height: '50px' }}>Short column</div>
+            <div
+              className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle"
+              style={{ height: '50px' }}
+            >
+              Short column
+            </div>
           </GridCol>
           <GridCol xs={4}>
-            <div className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle" style={{ height: '100px' }}>Taller column</div>
+            <div
+              className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle"
+              style={{ height: '100px' }}
+            >
+              Taller column
+            </div>
           </GridCol>
         </Row>
-        
+
         <Row alignItems="center" className="u-mb-4 u-bg-info-subtle" style={{ height: '150px' }}>
           <GridCol xs={4}>
             <DemoBox>u-align-items-center</DemoBox>
           </GridCol>
           <GridCol xs={4}>
-            <div className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle" style={{ height: '50px' }}>Short column</div>
+            <div
+              className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle"
+              style={{ height: '50px' }}
+            >
+              Short column
+            </div>
           </GridCol>
           <GridCol xs={4}>
-            <div className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle" style={{ height: '100px' }}>Taller column</div>
+            <div
+              className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle"
+              style={{ height: '100px' }}
+            >
+              Taller column
+            </div>
           </GridCol>
         </Row>
-        
+
         <Row alignItems="end" className="u-mb-4 u-bg-info-subtle" style={{ height: '150px' }}>
           <GridCol xs={4}>
             <DemoBox>u-align-items-end</DemoBox>
           </GridCol>
           <GridCol xs={4}>
-            <div className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle" style={{ height: '50px' }}>Short column</div>
+            <div
+              className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle"
+              style={{ height: '50px' }}
+            >
+              Short column
+            </div>
           </GridCol>
           <GridCol xs={4}>
-            <div className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle" style={{ height: '100px' }}>Taller column</div>
+            <div
+              className="u-p-4 u-mb-2 u-border u-text-center u-bg-brand-subtle"
+              style={{ height: '100px' }}
+            >
+              Taller column
+            </div>
           </GridCol>
         </Row>
       </Container>
-      
+
       <Container className="u-mb-8">
         <h3 className="u-mb-4">No Gutters</h3>
         <Row className="u-mb-4">
@@ -507,7 +545,7 @@ export const RowAlignments: Story = {
             <DemoBox>With gutters (default)</DemoBox>
           </GridCol>
         </Row>
-        
+
         <Row noGutters className="u-mb-4">
           <GridCol xs={6}>
             <DemoBox>o-grid--no-gutters</DemoBox>
