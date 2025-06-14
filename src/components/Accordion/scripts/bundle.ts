@@ -21,4 +21,4 @@ if (typeof window !== 'undefined') {
 }
 
 // Export for module bundling
-export { Accordion as default, initializeAccordions, openAllAccordions, closeAllAccordions }; 
+export { Accordion as default, initializeAccordions, openAllAccordions, closeAllAccordions };

@@ -8,10 +8,10 @@ import { Pagination } from '../Pagination/Pagination';
 
 /**
  * DataTable - A flexible and accessible data table component
- * 
+ *
  * @example
  * ```tsx
- * <DataTable 
+ * <DataTable
  *   data={users}
  *   columns={columns}
  *   sortable={true}
@@ -37,7 +37,7 @@ export const DataTable: React.FC<DataTableProps> = ({
   ...props
 }) => {
   const tableRef = useRef<HTMLTableElement>(null);
-  
+
   const {
     displayData,
     sortConfig,
@@ -54,7 +54,7 @@ export const DataTable: React.FC<DataTableProps> = ({
     pageSize,
     onSort,
   });
-  
+
   // Generate component classes
   const tableClass = [
     DATA_TABLE_CLASSES.base,
@@ -62,28 +62,40 @@ export const DataTable: React.FC<DataTableProps> = ({
     bordered && DATA_TABLE_CLASSES.bordered,
     dense && DATA_TABLE_CLASSES.dense,
     loading && DATA_TABLE_CLASSES.loading,
-    className
-  ].filter(Boolean).join(' ');
-  
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   const renderHeader = () => {
     return (
       <thead className={DATA_TABLE_CLASSES.header}>
         <tr>
           {columns.map((column, index) => (
-            <th 
+            <th
               key={`header-${index}`}
               className={`${DATA_TABLE_CLASSES.headerCell} ${column.sortable !== false && sortable ? DATA_TABLE_CLASSES.sortable : ''}`}
-              onClick={() => column.sortable !== false && sortable ? handleSort(column.key) : null}
-              aria-sort={sortConfig?.key === column.key ? (sortConfig.direction === 'asc' ? 'ascending' : 'descending') : undefined}
+              onClick={() =>
+                column.sortable !== false && sortable ? handleSort(column.key) : null
+              }
+              aria-sort={
+                sortConfig?.key === column.key
+                  ? sortConfig.direction === 'asc'
+                    ? 'ascending'
+                    : 'descending'
+                  : undefined
+              }
             >
               <div className={DATA_TABLE_CLASSES.headerContent}>
                 <span>{column.title}</span>
                 {column.sortable !== false && sortable && (
                   <span className={DATA_TABLE_CLASSES.sortIcon}>
                     {sortConfig?.key === column.key ? (
-                      sortConfig.direction === 'asc' ? 
-                        <Icon name="CaretUp" size="sm" /> : 
+                      sortConfig.direction === 'asc' ? (
+                        <Icon name="CaretUp" size="sm" />
+                      ) : (
                         <Icon name="CaretDown" size="sm" />
+                      )
                     ) : null}
                   </span>
                 )}
@@ -94,16 +106,13 @@ export const DataTable: React.FC<DataTableProps> = ({
       </thead>
     );
   };
-  
+
   const renderBody = () => {
     if (loading) {
       return (
         <tbody>
           <tr>
-            <td 
-              colSpan={columns.length} 
-              className={DATA_TABLE_CLASSES.loadingCell}
-            >
+            <td colSpan={columns.length} className={DATA_TABLE_CLASSES.loadingCell}>
               <div className={DATA_TABLE_CLASSES.loadingIndicator}>
                 <Spinner size="md" variant="primary" />
               </div>
@@ -112,26 +121,23 @@ export const DataTable: React.FC<DataTableProps> = ({
         </tbody>
       );
     }
-    
+
     if (displayData.length === 0) {
       return (
         <tbody>
           <tr>
-            <td 
-              colSpan={columns.length} 
-              className={DATA_TABLE_CLASSES.emptyCell}
-            >
+            <td colSpan={columns.length} className={DATA_TABLE_CLASSES.emptyCell}>
               {emptyMessage}
             </td>
           </tr>
         </tbody>
       );
     }
-    
+
     return (
       <tbody>
         {displayData.map((row: any, rowIndex: number) => (
-          <tr 
+          <tr
             key={`row-${rowIndex}`}
             className={DATA_TABLE_CLASSES.row}
             onClick={onRowClick ? () => onRowClick(row) : undefined}
@@ -139,10 +145,7 @@ export const DataTable: React.FC<DataTableProps> = ({
             role={onRowClick ? 'button' : undefined}
           >
             {columns.map((column, colIndex) => (
-              <td 
-                key={`cell-${rowIndex}-${colIndex}`}
-                className={DATA_TABLE_CLASSES.cell}
-              >
+              <td key={`cell-${rowIndex}-${colIndex}`} className={DATA_TABLE_CLASSES.cell}>
                 {column.render ? column.render(row[column.key], row) : row[column.key]}
               </td>
             ))}
@@ -151,10 +154,10 @@ export const DataTable: React.FC<DataTableProps> = ({
       </tbody>
     );
   };
-  
+
   const renderPagination = () => {
     if (!paginated || totalPages <= 1) return null;
-    
+
     return (
       <div className={DATA_TABLE_CLASSES.pagination}>
         <Pagination
@@ -170,10 +173,10 @@ export const DataTable: React.FC<DataTableProps> = ({
       </div>
     );
   };
-  
+
   const renderToolbar = () => {
     if (!filterable) return null;
-    
+
     return (
       <div className={DATA_TABLE_CLASSES.toolbar}>
         <div className={DATA_TABLE_CLASSES.search}>
@@ -181,22 +184,19 @@ export const DataTable: React.FC<DataTableProps> = ({
             type="text"
             placeholder="Search..."
             className={`${DATA_TABLE_CLASSES.searchInput} c-input`}
-            onChange={(e) => handleSearch(e.target.value)}
+            onChange={e => handleSearch(e.target.value)}
             aria-label="Search table"
           />
         </div>
       </div>
     );
   };
-  
+
   return (
     <div className={DATA_TABLE_CLASSES.container} {...props}>
       {renderToolbar()}
       <div className={DATA_TABLE_CLASSES.tableWrapper}>
-        <table 
-          ref={tableRef}
-          className={tableClass}
-        >
+        <table ref={tableRef} className={tableClass}>
           {renderHeader()}
           {renderBody()}
         </table>

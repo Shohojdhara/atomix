@@ -56,41 +56,28 @@ export const Checked: Story = {
 
 // Radio button group
 export const RadioGroup: Story = {
-  render: (args) => (
+  render: args => (
     <div className="u-d-flex u-flex-column u-gap-2">
-      <Radio 
-        label="Option 1" 
-        name="radioGroup" 
-        value="option1" 
-        checked 
-      />
-      <Radio 
-        label="Option 2" 
-        name="radioGroup" 
-        value="option2" 
-      />
-      <Radio 
-        label="Option 3" 
-        name="radioGroup" 
-        value="option3" 
-      />
+      <Radio label="Option 1" name="radioGroup" value="option1" checked />
+      <Radio label="Option 2" name="radioGroup" value="option2" />
+      <Radio label="Option 3" name="radioGroup" value="option3" />
     </div>
   ),
 };
 
 // Radio button states
 export const States: Story = {
-  render: (args) => (
+  render: args => (
     <div className="u-d-flex u-flex-column u-gap-2">
       <Radio label="Default radio" name="states" value="default" />
       <Radio label="Checked radio" name="states" value="checked" checked />
       <Radio label="Disabled radio" name="states" value="disabled" disabled />
-      <Radio 
-        label="Disabled and checked radio" 
-        name="states" 
-        value="disabledChecked" 
-        disabled 
-        checked 
+      <Radio
+        label="Disabled and checked radio"
+        name="states"
+        value="disabledChecked"
+        disabled
+        checked
       />
       <Radio label="Valid radio" name="states" value="valid" valid checked />
       <Radio label="Invalid radio" name="states" value="invalid" invalid />
@@ -105,4 +92,4 @@ export const WithoutLabel: Story = {
     value: 'noLabel',
     ariaLabel: 'Radio button without visible label',
   },
-}; 
+};

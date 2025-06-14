@@ -7,32 +7,40 @@ export interface TooltipProps {
    * Content to be displayed in the tooltip
    */
   content: ReactNode;
-  
+
   /**
    * The element that will trigger the tooltip
    */
   children: ReactNode;
-  
+
   /**
    * The position of the tooltip relative to the trigger
    */
-  position?: 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
-  
+  position?:
+    | 'top'
+    | 'bottom'
+    | 'left'
+    | 'right'
+    | 'top-left'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-right';
+
   /**
    * How the tooltip is triggered
    */
   trigger?: 'hover' | 'click';
-  
+
   /**
    * Additional CSS class for the tooltip
    */
   className?: string;
-  
+
   /**
    * Delay before showing the tooltip (in milliseconds)
    */
   delay?: number;
-  
+
   /**
    * Offset from the trigger element (in pixels)
    */
@@ -50,7 +58,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
 }) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const tooltipInstance = useRef<any>(null);
-  
+
   useEffect(() => {
     if (tooltipRef.current) {
       // Initialize tooltip
@@ -61,7 +69,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
         offset,
       });
     }
-    
+
     // Cleanup on unmount
     return () => {
       if (tooltipInstance.current) {
@@ -69,14 +77,16 @@ export const Tooltip: React.FC<TooltipProps> = ({
       }
     };
   }, [position, trigger, delay, offset]);
-  
+
   return (
     <div className="u-position-relative u-d-inline-block">
-      <div className={`${TOOLTIP.SELECTORS.TRIGGER.substring(1)}${className ? ` ${className}` : ''}`}>
+      <div
+        className={`${TOOLTIP.SELECTORS.TRIGGER.substring(1)}${className ? ` ${className}` : ''}`}
+      >
         {children}
       </div>
-      <div 
-        className={`c-tooltip ${TOOLTIP.SELECTORS.TOOLTIP.substring(1)}`} 
+      <div
+        className={`c-tooltip ${TOOLTIP.SELECTORS.TOOLTIP.substring(1)}`}
         ref={tooltipRef}
         data-tooltip-position={position}
         data-tooltip-trigger={trigger}
@@ -88,7 +98,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       </div>
     </div>
   );
-}; 
+};
 
 Tooltip.displayName = 'Tooltip';
 

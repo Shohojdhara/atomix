@@ -113,7 +113,12 @@ export const States: Story = {
       <Textarea placeholder="Disabled textarea" disabled rows={2} />
       <Textarea placeholder="Valid textarea" valid rows={2} />
       <Textarea placeholder="Invalid textarea" invalid rows={2} />
-      <Textarea placeholder="Read-only textarea" readOnly value="This content cannot be edited" rows={2} />
+      <Textarea
+        placeholder="Read-only textarea"
+        readOnly
+        value="This content cannot be edited"
+        rows={2}
+      />
     </div>
   ),
-}; 
+};

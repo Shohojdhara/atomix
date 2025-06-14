@@ -72,7 +72,7 @@ export const VariantsShowcase: Story = {
       icon: null,
       fallback: 'invalid-url.jpg',
     };
-    
+
     return (
       <div className="u-d-grid u-gap-6" style={{ gridTemplateColumns: 'auto 1fr 1fr 1fr 1fr 1fr' }}>
         {/* Header Row */}
@@ -82,7 +82,7 @@ export const VariantsShowcase: Story = {
             {size.toUpperCase()}
           </div>
         ))}
-        
+
         {/* Square Avatars */}
         <div>Square</div>
         {sizeOptions.map(size => (
@@ -90,7 +90,7 @@ export const VariantsShowcase: Story = {
             <Avatar src={variantImages.square} size={size} />
           </div>
         ))}
-        
+
         {/* Circle Avatars */}
         <div>Circle</div>
         {sizeOptions.map(size => (
@@ -98,7 +98,7 @@ export const VariantsShowcase: Story = {
             <Avatar src={variantImages.circle} size={size} circle={true} />
           </div>
         ))}
-        
+
         {/* Initials Avatars */}
         <div>Initials</div>
         {sizeOptions.map(size => (
@@ -106,15 +106,18 @@ export const VariantsShowcase: Story = {
             <Avatar initials="JD" size={size} />
           </div>
         ))}
-        
+
         {/* Icon Avatars */}
         <div>Icon</div>
         {sizeOptions.map(size => (
           <div key={size} className="u-d-flex u-justify-content-center">
-            <Avatar icon={<Icon name="User" size={size === 'xs' ? 'xs' : size === 'sm' ? 'sm' : 'md'} />} size={size} />
+            <Avatar
+              icon={<Icon name="User" size={size === 'xs' ? 'xs' : size === 'sm' ? 'sm' : 'md'} />}
+              size={size}
+            />
           </div>
         ))}
-        
+
         {/* Fallback Avatars */}
         <div>Fallback</div>
         {sizeOptions.map(size => (
@@ -122,27 +125,27 @@ export const VariantsShowcase: Story = {
             <Avatar src={variantImages.fallback} size={size} />
           </div>
         ))}
-        
+
         {/* Interactive Avatars */}
         <div>Interactive</div>
         {sizeOptions.map(size => (
           <div key={size} className="u-d-flex u-justify-content-center">
-            <Avatar 
-              src={`https://i.pravatar.cc/150?img=${size === 'xs' ? 4 : size === 'sm' ? 5 : size === 'md' ? 6 : size === 'lg' ? 7 : 8}`} 
-              size={size} 
+            <Avatar
+              src={`https://i.pravatar.cc/150?img=${size === 'xs' ? 4 : size === 'sm' ? 5 : size === 'md' ? 6 : size === 'lg' ? 7 : 8}`}
+              size={size}
               circle={true}
               onClick={() => alert(`${size.toUpperCase()} Avatar clicked!`)}
             />
           </div>
         ))}
-        
+
         {/* Disabled Avatars */}
         <div>Disabled</div>
         {sizeOptions.map(size => (
           <div key={size} className="u-d-flex u-justify-content-center">
-            <Avatar 
-              src={`https://i.pravatar.cc/150?img=${size === 'xs' ? 9 : size === 'sm' ? 10 : size === 'md' ? 11 : size === 'lg' ? 12 : 13}`} 
-              size={size} 
+            <Avatar
+              src={`https://i.pravatar.cc/150?img=${size === 'xs' ? 9 : size === 'sm' ? 10 : size === 'md' ? 11 : size === 'lg' ? 12 : 13}`}
+              size={size}
               circle={true}
               disabled={true}
               onClick={() => alert('This will not be triggered')}
@@ -158,7 +161,7 @@ export const VariantsShowcase: Story = {
 export const AvatarGroupShowcase: Story = {
   render: () => {
     const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
-    
+
     return (
       <div className="u-d-flex u-flex-column u-gap-8">
         {/* First row: Standard and Stacked side by side */}
@@ -181,7 +184,7 @@ export const AvatarGroupShowcase: Story = {
               ))}
             </div>
           </div>
-          
+
           {/* Stacked Avatar Groups */}
           <div className="u-flex-grow-1">
             <h3 className="u-mb-4 u-fw-normal">Stacked Avatar Groups</h3>
@@ -201,7 +204,7 @@ export const AvatarGroupShowcase: Story = {
             </div>
           </div>
         </div>
-        
+
         {/* Second row: Max and Stacked+Max side by side */}
         <div className="u-d-flex u-gap-12">
           {/* Avatar Groups with Max Limit */}
@@ -222,7 +225,7 @@ export const AvatarGroupShowcase: Story = {
               ))}
             </div>
           </div>
-          
+
           {/* Stacked Avatar Groups with Max Limit */}
           <div className="u-flex-grow-1">
             <h3 className="u-mb-4 u-fw-normal">Stacked Groups with Max Limit</h3>
@@ -242,7 +245,7 @@ export const AvatarGroupShowcase: Story = {
             </div>
           </div>
         </div>
-        
+
         {/* Mixed Content Avatar Groups */}
         <div>
           <h3 className="u-mb-4 u-fw-normal">Mixed Content Avatar Groups</h3>
@@ -257,4 +260,4 @@ export const AvatarGroupShowcase: Story = {
       </div>
     );
   },
-}; 
+};

@@ -1,16 +1,16 @@
-import React from "react";
-import { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
-import { PhotoViewer } from "./PhotoViewer";
-import { ImageType } from "../../lib/types/components";
-import { ImageGallery } from "./examples/ImageGallery";
-import { SimpleGallery } from "./examples/SimpleGallery";
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
+import { PhotoViewer } from './PhotoViewer';
+import { ImageType } from '../../lib/types/components';
+import { ImageGallery } from './examples/ImageGallery';
+import { SimpleGallery } from './examples/SimpleGallery';
 
 const meta: Meta<typeof PhotoViewer> = {
-  title: "Components/PhotoViewer",
+  title: 'Components/PhotoViewer',
   component: PhotoViewer,
   parameters: {
-    layout: "fullscreen",
+    layout: 'fullscreen',
   },
 };
 
@@ -23,10 +23,10 @@ type Story = StoryObj<typeof PhotoViewer>;
 export const Default: Story = {
   args: {
     images: [
-      "https://picsum.photos/id/10/800/600",
-      "https://picsum.photos/id/11/800/1000",
-      "https://picsum.photos/id/12/800/500",
-      "https://picsum.photos/id/13/800/800",
+      'https://picsum.photos/id/10/800/600',
+      'https://picsum.photos/id/11/800/1000',
+      'https://picsum.photos/id/12/800/500',
+      'https://picsum.photos/id/13/800/800',
     ],
     startIndex: 0,
     onImageChange: fn(),
@@ -39,10 +39,10 @@ export const Default: Story = {
 export const StartAtSecond: Story = {
   args: {
     images: [
-      "https://picsum.photos/id/10/800/600",
-      "https://picsum.photos/id/11/800/1000",
-      "https://picsum.photos/id/12/800/500",
-      "https://picsum.photos/id/13/800/800",
+      'https://picsum.photos/id/10/800/600',
+      'https://picsum.photos/id/11/800/1000',
+      'https://picsum.photos/id/12/800/500',
+      'https://picsum.photos/id/13/800/800',
     ],
     startIndex: 1,
     onImageChange: fn(),
@@ -55,10 +55,10 @@ export const StartAtSecond: Story = {
 export const Disabled: Story = {
   args: {
     images: [
-      "https://picsum.photos/id/10/800/600",
-      "https://picsum.photos/id/11/800/1000",
-      "https://picsum.photos/id/12/800/500",
-      "https://picsum.photos/id/13/800/800",
+      'https://picsum.photos/id/10/800/600',
+      'https://picsum.photos/id/11/800/1000',
+      'https://picsum.photos/id/12/800/500',
+      'https://picsum.photos/id/13/800/800',
     ],
     disabled: true,
     onImageChange: fn(),
@@ -71,12 +71,12 @@ export const Disabled: Story = {
 export const WithCustomClass: Story = {
   args: {
     images: [
-      "https://picsum.photos/id/10/800/600",
-      "https://picsum.photos/id/11/800/1000",
-      "https://picsum.photos/id/12/800/500",
-      "https://picsum.photos/id/13/800/800",
+      'https://picsum.photos/id/10/800/600',
+      'https://picsum.photos/id/11/800/1000',
+      'https://picsum.photos/id/12/800/500',
+      'https://picsum.photos/id/13/800/800',
     ],
-    className: "custom-photo-viewer",
+    className: 'custom-photo-viewer',
     onImageChange: fn(),
   },
 };
@@ -88,25 +88,25 @@ export const WithEnhancedImages: Story = {
   args: {
     images: [
       {
-        src: "https://picsum.photos/id/10/800/600",
-        alt: "Mountain Landscape",
-        title: "Mountain Landscape",
-        description: "Beautiful mountain landscape with a lake view",
-        tags: ["nature", "mountains", "landscape"],
+        src: 'https://picsum.photos/id/10/800/600',
+        alt: 'Mountain Landscape',
+        title: 'Mountain Landscape',
+        description: 'Beautiful mountain landscape with a lake view',
+        tags: ['nature', 'mountains', 'landscape'],
       } as ImageType, // Cast to ImageType
       {
-        src: "https://picsum.photos/id/11/800/1000",
-        alt: "Beach Sunset",
-        title: "Beach Sunset",
-        description: "Stunning sunset over the ocean",
-        tags: ["beach", "sunset", "ocean"],
+        src: 'https://picsum.photos/id/11/800/1000',
+        alt: 'Beach Sunset',
+        title: 'Beach Sunset',
+        description: 'Stunning sunset over the ocean',
+        tags: ['beach', 'sunset', 'ocean'],
       } as ImageType, // Cast to ImageType
       {
-        src: "https://picsum.photos/id/12/800/500",
-        alt: "Forest Path",
-        title: "Forest Path",
-        description: "A serene path through a dense forest",
-        tags: ["forest", "nature", "path"],
+        src: 'https://picsum.photos/id/12/800/500',
+        alt: 'Forest Path',
+        title: 'Forest Path',
+        description: 'A serene path through a dense forest',
+        tags: ['forest', 'nature', 'path'],
       } as ImageType, // Cast to ImageType
     ],
     onImageChange: fn(),
@@ -119,12 +119,12 @@ export const WithEnhancedImages: Story = {
 export const LeftThumbnails: Story = {
   args: {
     images: [
-      "https://picsum.photos/id/10/800/600",
-      "https://picsum.photos/id/11/800/1000",
-      "https://picsum.photos/id/12/800/500",
-      "https://picsum.photos/id/13/800/800",
+      'https://picsum.photos/id/10/800/600',
+      'https://picsum.photos/id/11/800/1000',
+      'https://picsum.photos/id/12/800/500',
+      'https://picsum.photos/id/13/800/800',
     ],
-    thumbnailPosition: "left",
+    thumbnailPosition: 'left',
     onImageChange: fn(),
   },
 };
@@ -138,7 +138,7 @@ export const ImageGalleryExample: Story = {
     docs: {
       description: {
         story:
-          "This example demonstrates how to integrate the PhotoViewer with a MasonryGrid to create an image gallery with smooth transitions. Click on any image to open the PhotoViewer.",
+          'This example demonstrates how to integrate the PhotoViewer with a MasonryGrid to create an image gallery with smooth transitions. Click on any image to open the PhotoViewer.',
       },
     },
   },
@@ -153,7 +153,7 @@ export const SimpleGalleryExample: Story = {
     docs: {
       description: {
         story:
-          "This example demonstrates a basic image gallery using the SimpleGallery component, which integrates the PhotoViewer. Click on any image to open the PhotoViewer.",
+          'This example demonstrates a basic image gallery using the SimpleGallery component, which integrates the PhotoViewer. Click on any image to open the PhotoViewer.',
       },
     },
   },

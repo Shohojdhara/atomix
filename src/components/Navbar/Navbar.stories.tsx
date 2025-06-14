@@ -19,23 +19,32 @@ const meta = {
     position: {
       control: { type: 'select' },
       options: ['static', 'fixed', 'fixed-bottom'],
-      description: 'Position of the navbar'
+      description: 'Position of the navbar',
     },
     variant: {
       control: { type: 'select' },
       options: [
-        'primary', 'secondary', 'tertiary', 'invert', 'brand', 
-        'success', 'error', 'warning', 'info', 'light', 'dark'
+        'primary',
+        'secondary',
+        'tertiary',
+        'invert',
+        'brand',
+        'success',
+        'error',
+        'warning',
+        'info',
+        'light',
+        'dark',
       ],
-      description: 'The color variant of the navbar'
+      description: 'The color variant of the navbar',
     },
     collapsible: {
       control: 'boolean',
-      description: 'Whether the navbar should collapse on small screens'
+      description: 'Whether the navbar should collapse on small screens',
     },
     containerWidth: {
       control: 'text',
-      description: 'Custom width for the navbar container'
+      description: 'Custom width for the navbar container',
     },
   },
 } satisfies Meta<typeof Navbar>;
@@ -44,9 +53,7 @@ export default meta;
 type Story = StoryObj<typeof Navbar>;
 
 // Brand logo component
-const LogoBrand = () => (
-  <AtomixLogo height={40} />
-);
+const LogoBrand = () => <AtomixLogo height={40} />;
 
 // Default Navbar
 export const Default: Story = {
@@ -60,12 +67,22 @@ export const Default: Story = {
         <NavItem>Contact</NavItem>
         <NavDropdown title="Dropdown">
           <Menu>
-            <MenuItem href="#" icon="icon-lux-circle">Menu Item 1</MenuItem>
-            <MenuItem href="#" icon="icon-lux-circle">Menu Item 2</MenuItem>
-            <MenuItem href="#" icon="icon-lux-circle">Menu Item 3</MenuItem>
+            <MenuItem href="#" icon="icon-lux-circle">
+              Menu Item 1
+            </MenuItem>
+            <MenuItem href="#" icon="icon-lux-circle">
+              Menu Item 2
+            </MenuItem>
+            <MenuItem href="#" icon="icon-lux-circle">
+              Menu Item 3
+            </MenuItem>
             <MenuDivider />
-            <MenuItem href="#" icon="icon-lux-circle">Menu Item 4</MenuItem>
-            <MenuItem href="#" icon="icon-lux-circle">Menu Item 5</MenuItem>
+            <MenuItem href="#" icon="icon-lux-circle">
+              Menu Item 4
+            </MenuItem>
+            <MenuItem href="#" icon="icon-lux-circle">
+              Menu Item 5
+            </MenuItem>
           </Menu>
         </NavDropdown>
       </Nav>
@@ -96,110 +113,77 @@ export const FixedBottom: Story = {
 export const Variants: Story = {
   render: () => (
     <div className="u-d-flex u-flex-column u-gap-3">
-      <Navbar 
-        brand={<LogoBrand />} 
-        variant="primary"
-      >
+      <Navbar brand={<LogoBrand />} variant="primary">
         <Nav alignment="end">
           <NavItem>Link 1</NavItem>
           <NavItem>Link 2</NavItem>
         </Nav>
       </Navbar>
-      
-      <Navbar 
-        brand={<LogoBrand />} 
-        variant="secondary"
-      >
+
+      <Navbar brand={<LogoBrand />} variant="secondary">
         <Nav alignment="end">
           <NavItem>Link 1</NavItem>
           <NavItem>Link 2</NavItem>
         </Nav>
       </Navbar>
-      
-      <Navbar 
-        brand={<LogoBrand />} 
-        variant="tertiary"
-      >
+
+      <Navbar brand={<LogoBrand />} variant="tertiary">
         <Nav alignment="end">
           <NavItem>Link 1</NavItem>
           <NavItem>Link 2</NavItem>
         </Nav>
       </Navbar>
-      
-      <Navbar 
-        brand={<LogoBrand />} 
-        variant="invert"
-      >
+
+      <Navbar brand={<LogoBrand />} variant="invert">
         <Nav alignment="end">
           <NavItem>Link 1</NavItem>
           <NavItem>Link 2</NavItem>
         </Nav>
       </Navbar>
-      
-      <Navbar 
-        brand={<LogoBrand />} 
-        variant="brand"
-      >
+
+      <Navbar brand={<LogoBrand />} variant="brand">
         <Nav alignment="end">
           <NavItem>Link 1</NavItem>
           <NavItem>Link 2</NavItem>
         </Nav>
       </Navbar>
-      
-      <Navbar 
-        brand={<LogoBrand />} 
-        variant="success"
-      >
+
+      <Navbar brand={<LogoBrand />} variant="success">
         <Nav alignment="end">
           <NavItem>Link 1</NavItem>
           <NavItem>Link 2</NavItem>
         </Nav>
       </Navbar>
-      
-      <Navbar 
-        brand={<LogoBrand />} 
-        variant="error"
-      >
+
+      <Navbar brand={<LogoBrand />} variant="error">
         <Nav alignment="end">
           <NavItem>Link 1</NavItem>
           <NavItem>Link 2</NavItem>
         </Nav>
       </Navbar>
-      
-      <Navbar 
-        brand={<LogoBrand />} 
-        variant="warning"
-      >
+
+      <Navbar brand={<LogoBrand />} variant="warning">
         <Nav alignment="end">
           <NavItem>Link 1</NavItem>
           <NavItem>Link 2</NavItem>
         </Nav>
       </Navbar>
-      
-      <Navbar 
-        brand={<LogoBrand />} 
-        variant="info"
-      >
+
+      <Navbar brand={<LogoBrand />} variant="info">
         <Nav alignment="end">
           <NavItem>Link 1</NavItem>
           <NavItem>Link 2</NavItem>
         </Nav>
       </Navbar>
-      
-      <Navbar 
-        brand={<LogoBrand />} 
-        variant="light"
-      >
+
+      <Navbar brand={<LogoBrand />} variant="light">
         <Nav alignment="end">
           <NavItem>Link 1</NavItem>
           <NavItem>Link 2</NavItem>
         </Nav>
       </Navbar>
-      
-      <Navbar 
-        brand={<LogoBrand />} 
-        variant="dark"
-      >
+
+      <Navbar brand={<LogoBrand />} variant="dark">
         <Nav alignment="end">
           <NavItem>Link 1</NavItem>
           <NavItem>Link 2</NavItem>
@@ -220,7 +204,7 @@ export const NavAlignments: Story = {
           <NavItem>Link 3</NavItem>
         </Nav>
       </Navbar>
-      
+
       <Navbar brand={<LogoBrand />}>
         <Nav alignment="center">
           <NavItem>Link 1</NavItem>
@@ -228,7 +212,7 @@ export const NavAlignments: Story = {
           <NavItem>Link 3</NavItem>
         </Nav>
       </Navbar>
-      
+
       <Navbar brand={<LogoBrand />}>
         <Nav alignment="end">
           <NavItem>Link 1</NavItem>
@@ -254,13 +238,13 @@ export const WithMegaMenu: Story = {
               <MegaMenuLink href="#">Sub Menu 2</MegaMenuLink>
               <MegaMenuLink href="#">Sub Menu 3</MegaMenuLink>
             </MegaMenuColumn>
-            
+
             <MegaMenuColumn title="Column 2" icon="icon-lux-circle">
               <MegaMenuLink href="#">Sub Menu 1</MegaMenuLink>
               <MegaMenuLink href="#">Sub Menu 2</MegaMenuLink>
               <MegaMenuLink href="#">Sub Menu 3</MegaMenuLink>
             </MegaMenuColumn>
-            
+
             <MegaMenuColumn title="Column 3" icon="icon-lux-circle">
               <MegaMenuLink href="#">Sub Menu 1</MegaMenuLink>
               <MegaMenuLink href="#">Sub Menu 2</MegaMenuLink>
@@ -282,8 +266,12 @@ export const WithStateModifiers: Story = {
         <NavItem disabled>Disabled Link</NavItem>
         <NavDropdown title="Dropdown">
           <Menu>
-            <MenuItem href="#" active>Active Item</MenuItem>
-            <MenuItem href="#" disabled>Disabled Item</MenuItem>
+            <MenuItem href="#" active>
+              Active Item
+            </MenuItem>
+            <MenuItem href="#" disabled>
+              Disabled Item
+            </MenuItem>
             <MenuItem href="#">Regular Item</MenuItem>
           </Menu>
         </NavDropdown>
@@ -323,23 +311,29 @@ export const WithAvatarDropdown: Story = {
         <NavItem>Link 3</NavItem>
       </Nav>
       <Nav alignment="end">
-        <NavDropdown 
+        <NavDropdown
           title={
             <>
-              <img 
-                src="/assets/images/avatar.jpg" 
-                alt="User" 
-                className="c-avatar c-avatar--sm c-avatar--circle" 
+              <img
+                src="/assets/images/avatar.jpg"
+                alt="User"
+                className="c-avatar c-avatar--sm c-avatar--circle"
               />
               <span className="u-ms-2">User Name</span>
             </>
           }
         >
           <Menu>
-            <MenuItem href="#" icon="icon-lux-user">Profile</MenuItem>
-            <MenuItem href="#" icon="icon-lux-settings">Settings</MenuItem>
+            <MenuItem href="#" icon="icon-lux-user">
+              Profile
+            </MenuItem>
+            <MenuItem href="#" icon="icon-lux-settings">
+              Settings
+            </MenuItem>
             <MenuDivider />
-            <MenuItem href="#" icon="icon-lux-sign-out">Logout</MenuItem>
+            <MenuItem href="#" icon="icon-lux-sign-out">
+              Logout
+            </MenuItem>
           </Menu>
         </NavDropdown>
       </Nav>
@@ -350,10 +344,7 @@ export const WithAvatarDropdown: Story = {
 // Responsive Navbar
 export const ResponsiveNavbar: Story = {
   render: () => (
-    <Navbar 
-      brand={<LogoBrand />} 
-      collapsible={true}
-    >
+    <Navbar brand={<LogoBrand />} collapsible={true}>
       <Nav alignment="start">
         <NavItem>Home</NavItem>
         <NavItem>Products</NavItem>
@@ -390,22 +381,28 @@ export const ResponsiveNavbar: Story = {
           <Icon name="Bell" size="sm" className="u-me-2" />
           Notifications
         </NavItem>
-        <NavDropdown 
+        <NavDropdown
           title={
             <>
-              <img 
-                src="/assets/images/avatar.jpg" 
-                alt="User" 
-                className="c-avatar c-avatar--sm c-avatar--circle" 
+              <img
+                src="/assets/images/avatar.jpg"
+                alt="User"
+                className="c-avatar c-avatar--sm c-avatar--circle"
               />
             </>
           }
         >
           <Menu>
-            <MenuItem href="#" icon="icon-lux-user">Profile</MenuItem>
-            <MenuItem href="#" icon="icon-lux-settings">Settings</MenuItem>
+            <MenuItem href="#" icon="icon-lux-user">
+              Profile
+            </MenuItem>
+            <MenuItem href="#" icon="icon-lux-settings">
+              Settings
+            </MenuItem>
             <MenuDivider />
-            <MenuItem href="#" icon="icon-lux-sign-out">Logout</MenuItem>
+            <MenuItem href="#" icon="icon-lux-sign-out">
+              Logout
+            </MenuItem>
           </Menu>
         </NavDropdown>
       </Nav>
@@ -432,7 +429,7 @@ export const MegaMenuVsDropdown: Story = {
           </Nav>
         </Navbar>
       </div>
-      
+
       <div>
         <h4 className="u-mb-3">Mega Menu</h4>
         <Navbar brand={<LogoBrand />}>
@@ -455,4 +452,4 @@ export const MegaMenuVsDropdown: Story = {
       </div>
     </div>
   ),
-}; 
+};

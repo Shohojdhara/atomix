@@ -11,7 +11,7 @@ export function useSpinner(initialProps?: Partial<SpinnerProps>) {
     variant: 'primary',
     size: 'md',
     fullscreen: false,
-    ...initialProps
+    ...initialProps,
   };
 
   /**
@@ -31,7 +31,7 @@ export function useSpinner(initialProps?: Partial<SpinnerProps>) {
     const variantClass = variant ? `${baseClass}--${variant}` : '';
     const sizeClass = size !== 'md' ? `${baseClass}--${size}` : '';
     const fullscreenClass = fullscreen ? `${baseClass}--fullscreen` : '';
-    
+
     return `${baseClass} ${variantClass} ${sizeClass} ${fullscreenClass} ${className}`.trim();
   };
 
@@ -39,4 +39,4 @@ export function useSpinner(initialProps?: Partial<SpinnerProps>) {
     defaultProps,
     generateSpinnerClass,
   };
-} 
+}

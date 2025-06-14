@@ -7,11 +7,11 @@ import { CARD } from '../../../lib/constants/components';
  */
 export function applyHoverEffect(card: HTMLElement): void {
   const hoverClass = 'is-hovered';
-  
+
   card.addEventListener('mouseenter', () => {
     card.classList.add(hoverClass);
   });
-  
+
   card.addEventListener('mouseleave', () => {
     card.classList.remove(hoverClass);
   });
@@ -23,16 +23,16 @@ export function applyHoverEffect(card: HTMLElement): void {
  */
 export function applyFocusEffect(card: HTMLElement): void {
   const focusClass = 'is-focused';
-  
+
   // Make card focusable if it isn't already
   if (!card.getAttribute('tabindex')) {
     card.setAttribute('tabindex', '0');
   }
-  
+
   card.addEventListener('focus', () => {
     card.classList.add(focusClass);
   });
-  
+
   card.addEventListener('blur', () => {
     card.classList.remove(focusClass);
   });
@@ -48,21 +48,21 @@ export function makeCardClickable(card: HTMLElement, onClick: () => void): void 
   if (!card.getAttribute('tabindex')) {
     card.setAttribute('tabindex', '0');
   }
-  
+
   // Add role for accessibility
   card.setAttribute('role', 'button');
-  
+
   // Add click handler
   card.addEventListener('click', onClick);
-  
+
   // Add keyboard handler for accessibility
-  card.addEventListener('keydown', (event) => {
+  card.addEventListener('keydown', event => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       onClick();
     }
   });
-  
+
   // Add visual feedback
   applyHoverEffect(card);
   applyFocusEffect(card);
@@ -77,7 +77,7 @@ export function applyElevationEffect(card: HTMLElement, elevationClass = 'is-ele
   card.addEventListener('mouseenter', () => {
     card.classList.add(elevationClass);
   });
-  
+
   card.addEventListener('mouseleave', () => {
     card.classList.remove(elevationClass);
   });
@@ -91,24 +91,24 @@ export function applyElevationEffect(card: HTMLElement, elevationClass = 'is-ele
  * @param trigger - Trigger type: 'click' or 'hover'
  */
 export function applyFlipEffect(
-  card: HTMLElement, 
-  frontSelector = '.c-card--front', 
-  backSelector = '.c-card--back', 
+  card: HTMLElement,
+  frontSelector = '.c-card--front',
+  backSelector = '.c-card--back',
   trigger = 'click'
 ): void {
   const flipClass = 'is-flipped';
   const frontElement = card.querySelector(frontSelector);
   const backElement = card.querySelector(backSelector);
-  
+
   if (!frontElement || !backElement) {
     console.error('Card flip effect requires both front and back elements');
     return;
   }
-  
+
   // Add necessary styling for flip effect
   card.style.perspective = '1000px';
   card.style.transformStyle = 'preserve-3d';
-  
+
   [frontElement, backElement].forEach(el => {
     if (el) {
       (el as HTMLElement).style.backfaceVisibility = 'hidden';
@@ -120,9 +120,9 @@ export function applyFlipEffect(
       (el as HTMLElement).style.transition = 'transform 0.6s';
     }
   });
-  
+
   (backElement as HTMLElement).style.transform = 'rotateY(180deg)';
-  
+
   if (trigger === 'click') {
     card.addEventListener('click', () => {
       card.classList.toggle(flipClass);
@@ -140,7 +140,7 @@ export function applyFlipEffect(
       (frontElement as HTMLElement).style.transform = 'rotateY(180deg)';
       (backElement as HTMLElement).style.transform = 'rotateY(0)';
     });
-    
+
     card.addEventListener('mouseleave', () => {
       card.classList.remove(flipClass);
       (frontElement as HTMLElement).style.transform = 'rotateY(0)';
@@ -157,8 +157,8 @@ export function applyFlipEffect(
 export function initializeAllCards(selector = '[data-component="card"]'): Card[] {
   const cardInstances: Card[] = [];
   const cardElements = document.querySelectorAll<HTMLElement>(selector);
-  
-  cardElements.forEach((element) => {
+
+  cardElements.forEach(element => {
     try {
       const instance = new Card(element);
       cardInstances.push(instance);
@@ -166,6 +166,6 @@ export function initializeAllCards(selector = '[data-component="card"]'): Card[]
       console.error('Error initializing card:', error);
     }
   });
-  
+
   return cardInstances;
-} 
+}

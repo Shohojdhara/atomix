@@ -13,7 +13,7 @@ export function useBreadcrumb(initialOptions?: Partial<BreadcrumbOptions>) {
     divider: BREADCRUMB.DEFAULTS.DIVIDER,
     className: '',
     ariaLabel: 'Breadcrumb',
-    ...initialOptions
+    ...initialOptions,
   };
 
   /**
@@ -23,11 +23,8 @@ export function useBreadcrumb(initialOptions?: Partial<BreadcrumbOptions>) {
    */
   const generateBreadcrumbClass = (options: Partial<BreadcrumbOptions>): string => {
     const { className = '' } = options;
-    
-    return [BREADCRUMB.CLASSES.BASE, className]
-      .filter(Boolean)
-      .join(' ')
-      .trim();
+
+    return [BREADCRUMB.CLASSES.BASE, className].filter(Boolean).join(' ').trim();
   };
 
   /**
@@ -37,10 +34,7 @@ export function useBreadcrumb(initialOptions?: Partial<BreadcrumbOptions>) {
    * @returns Class string
    */
   const generateItemClass = (item: BreadcrumbItem, isLast: boolean): string => {
-    return [
-      BREADCRUMB.CLASSES.ITEM,
-      (item.active || isLast) ? BREADCRUMB.CLASSES.ACTIVE : ''
-    ]
+    return [BREADCRUMB.CLASSES.ITEM, item.active || isLast ? BREADCRUMB.CLASSES.ACTIVE : '']
       .filter(Boolean)
       .join(' ')
       .trim();
@@ -75,6 +69,6 @@ export function useBreadcrumb(initialOptions?: Partial<BreadcrumbOptions>) {
     generateBreadcrumbClass,
     generateItemClass,
     isItemLink,
-    parseItemsFromJson
+    parseItemsFromJson,
   };
-} 
+}

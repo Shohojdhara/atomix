@@ -7,11 +7,11 @@ import { TOGGLE } from '../../../lib/constants/components';
  */
 export function applyHoverEffect(toggle: HTMLElement): void {
   const hoverClass = 'is-hovered';
-  
+
   toggle.addEventListener('mouseenter', () => {
     toggle.classList.add(hoverClass);
   });
-  
+
   toggle.addEventListener('mouseleave', () => {
     toggle.classList.remove(hoverClass);
   });
@@ -24,12 +24,12 @@ export function applyHoverEffect(toggle: HTMLElement): void {
 export function applyFocusEffect(toggle: HTMLElement): void {
   const focusClass = 'is-focused';
   const input = toggle.querySelector('input');
-  
+
   if (input) {
     input.addEventListener('focus', () => {
       toggle.classList.add(focusClass);
     });
-    
+
     input.addEventListener('blur', () => {
       toggle.classList.remove(focusClass);
     });
@@ -41,17 +41,14 @@ export function applyFocusEffect(toggle: HTMLElement): void {
  * @param toggle - Toggle element
  * @param onChange - Change callback
  */
-export function initializeToggle(
-  toggle: HTMLElement,
-  onChange?: (checked: boolean) => void
-): void {
+export function initializeToggle(toggle: HTMLElement, onChange?: (checked: boolean) => void): void {
   const input = toggle.querySelector('input[type="checkbox"]') as HTMLInputElement;
-  
+
   if (input) {
     input.addEventListener('change', () => {
       if (onChange) onChange(input.checked);
     });
-    
+
     // Apply effects
     applyHoverEffect(toggle);
     applyFocusEffect(toggle);
@@ -66,8 +63,8 @@ export function initializeToggle(
 export function initializeAllToggles(selector = '[data-component="toggle"]'): Toggle[] {
   const toggleInstances: Toggle[] = [];
   const toggleElements = document.querySelectorAll<HTMLElement>(selector);
-  
-  toggleElements.forEach((element) => {
+
+  toggleElements.forEach(element => {
     try {
       const instance = new Toggle(element);
       toggleInstances.push(instance);
@@ -75,6 +72,6 @@ export function initializeAllToggles(selector = '[data-component="toggle"]'): To
       console.error('Error initializing toggle:', error);
     }
   });
-  
+
   return toggleInstances;
-} 
+}

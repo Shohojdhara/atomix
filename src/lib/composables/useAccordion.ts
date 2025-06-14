@@ -27,13 +27,21 @@ interface UseAccordionResult {
  * @param initialProps - Initial accordion properties
  * @returns Accordion state and methods
  */
-export function useAccordion(initialProps?: Partial<AccordionProps> & { isOpen?: boolean; onOpenChange?: (open: boolean) => void }): UseAccordionResult {
+export function useAccordion(
+  initialProps?: Partial<AccordionProps> & {
+    isOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
+  }
+): UseAccordionResult {
   // Default accordion properties
-  const defaultProps: Partial<AccordionProps> & { isOpen?: boolean; onOpenChange?: (open: boolean) => void } = {
+  const defaultProps: Partial<AccordionProps> & {
+    isOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
+  } = {
     defaultOpen: false,
     disabled: false,
     iconPosition: 'right' as IconPosition,
-    ...initialProps
+    ...initialProps,
   };
 
   // Controlled/uncontrolled open state
@@ -104,7 +112,8 @@ export function useAccordion(initialProps?: Partial<AccordionProps> & { isOpen?:
    * Generate header class names
    */
   const generateHeaderClassNames = (): string => {
-    const iconPositionClass = defaultProps.iconPosition === 'left' ? 'c-accordion__header--icon-left' : '';
+    const iconPositionClass =
+      defaultProps.iconPosition === 'left' ? 'c-accordion__header--icon-left' : '';
     return `c-accordion__header ${iconPositionClass}`.trim();
   };
 
@@ -115,6 +124,6 @@ export function useAccordion(initialProps?: Partial<AccordionProps> & { isOpen?:
     panelRef,
     contentRef,
     generateClassNames,
-    generateHeaderClassNames
+    generateHeaderClassNames,
   };
-} 
+}

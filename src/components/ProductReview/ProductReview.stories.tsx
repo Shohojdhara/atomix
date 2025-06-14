@@ -18,17 +18,19 @@ export default {
     initialRating: { control: { type: 'number', min: 0, max: 5, step: 0.5 } },
     maxRating: { control: { type: 'number', min: 1, max: 10 } },
     allowHalf: { control: 'boolean' },
-    ratingColor: { 
-      control: { 
-        type: 'select', 
-        options: ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'] 
-      } 
+    ratingColor: {
+      control: {
+        type: 'select',
+        options: ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'],
+      },
     },
-    onSubmit: { action: 'submitted' }
-  }
+    onSubmit: { action: 'submitted' },
+  },
 } as Meta<typeof ProductReview>;
 
-const Template: StoryFn<ProductReviewProps> = (args: ProductReviewProps) => <ProductReview {...args} />;
+const Template: StoryFn<ProductReviewProps> = (args: ProductReviewProps) => (
+  <ProductReview {...args} />
+);
 
 export const Default = Template.bind({});
 Default.args = {

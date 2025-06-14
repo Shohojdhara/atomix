@@ -1,10 +1,10 @@
-import { 
-  getMonthName, 
-  getDaysInMonth, 
-  getFirstDayOfMonth, 
-  formatDate, 
+import {
+  getMonthName,
+  getDaysInMonth,
+  getFirstDayOfMonth,
+  formatDate,
   parseDate,
-  isDateInRange 
+  isDateInRange,
 } from '../utils';
 import { createPhosphorIcon } from '../../../lib/utils/icons';
 
@@ -38,7 +38,8 @@ export default class DatePicker {
    * @param options - Configuration options
    */
   constructor(element: string | HTMLElement, options: any = {}) {
-    this.element = typeof element === 'string' ? document.querySelector(element) as HTMLElement : element;
+    this.element =
+      typeof element === 'string' ? (document.querySelector(element) as HTMLElement) : element;
     if (!this.element) {
       throw new Error('DatePicker: Element not found');
     }
@@ -67,10 +68,12 @@ export default class DatePicker {
     }
 
     // Dispatch init event
-    this.element.dispatchEvent(new CustomEvent('datepicker:init', {
-      bubbles: true,
-      detail: { instance: this }
-    }));
+    this.element.dispatchEvent(
+      new CustomEvent('datepicker:init', {
+        bubbles: true,
+        detail: { instance: this },
+      })
+    );
   }
 
   /**
@@ -87,7 +90,7 @@ export default class DatePicker {
   private _bindEvents(): void {
     if (this.input && !this.options.inline) {
       // Input focus
-      this.eventListeners.inputFocus = (e) => {
+      this.eventListeners.inputFocus = e => {
         if (!this.options.disabled && !this.options.readOnly) {
           this._showCalendar();
         }
@@ -95,7 +98,7 @@ export default class DatePicker {
       this.input.addEventListener('focus', this.eventListeners.inputFocus);
 
       // Input change
-      this.eventListeners.inputChange = (e) => {
+      this.eventListeners.inputChange = e => {
         const value = (e.target as HTMLInputElement).value;
         const date = parseDate(value, this.options.format);
         if (date) {
@@ -104,10 +107,12 @@ export default class DatePicker {
           this._updateCalendar();
 
           // Dispatch change event
-          this.element.dispatchEvent(new CustomEvent('datepicker:change', {
-            bubbles: true,
-            detail: { date: this.selectedDate }
-          }));
+          this.element.dispatchEvent(
+            new CustomEvent('datepicker:change', {
+              bubbles: true,
+              detail: { date: this.selectedDate },
+            })
+          );
         }
       };
       this.input.addEventListener('input', this.eventListeners.inputChange);
@@ -115,14 +120,10 @@ export default class DatePicker {
 
     // Document click (for click outside)
     if (!this.options.inline) {
-      this.eventListeners.documentClick = (e) => {
+      this.eventListeners.documentClick = e => {
         if (this.isOpen) {
           const target = e.target as Node;
-          if (
-            !this.element.contains(target) && 
-            this.calendar && 
-            !this.calendar.contains(target)
-          ) {
+          if (!this.element.contains(target) && this.calendar && !this.calendar.contains(target)) {
             this._hideCalendar();
           }
         }
@@ -143,7 +144,7 @@ export default class DatePicker {
       this.calendar.className = `c-datepicker__calendar c-datepicker__calendar--${this.options.placement}`;
       this.calendar.setAttribute('role', 'dialog');
       this.calendar.setAttribute('aria-label', 'Date picker');
-      
+
       if (this.options.inline) {
         this.element.appendChild(this.calendar);
       } else {
@@ -151,15 +152,15 @@ export default class DatePicker {
       }
 
       // Add event delegation for calendar interactions
-      this.eventListeners.calendarClick = (e) => {
+      this.eventListeners.calendarClick = e => {
         const target = e.target as HTMLElement;
-        
+
         // Day selection
         if (target.matches('.c-datepicker__day') && !(target as HTMLButtonElement).disabled) {
           const day = parseInt(target.textContent || '0', 10);
           this._selectDate(day);
         }
-        
+
         // Navigation buttons
         if (target.closest('.c-datepicker__nav-button--prev-month')) {
           this._prevMonth();
@@ -173,7 +174,7 @@ export default class DatePicker {
         if (target.closest('.c-datepicker__nav-button--next-year')) {
           this._nextYear();
         }
-        
+
         // View mode switches
         if (target.closest('.c-datepicker__view-switch')) {
           if (this.viewMode === 'days') {
@@ -182,7 +183,7 @@ export default class DatePicker {
             this._switchToYearView();
           }
         }
-        
+
         // Month selection
         if (target.matches('.c-datepicker__month')) {
           const monthIndex = Array.from(target.parentElement?.children || []).indexOf(target);
@@ -190,32 +191,32 @@ export default class DatePicker {
             this._selectMonth(monthIndex);
           }
         }
-        
+
         // Year selection
         if (target.matches('.c-datepicker__year')) {
           const year = parseInt(target.textContent || '0', 10);
           this._selectYear(year);
         }
-        
+
         // Today button
         if (target.closest('.c-datepicker__today-button')) {
           this._goToToday();
         }
-        
+
         // Close button
         if (target.closest('.c-datepicker__close-button')) {
           this._hideCalendar();
         }
-        
+
         // Clear button
         if (target.closest('.c-datepicker__clear-button')) {
           this._clearDate();
         }
       };
-      
+
       this.calendar.addEventListener('click', this.eventListeners.calendarClick);
     }
-    
+
     this._updateCalendar();
   }
 
@@ -224,15 +225,15 @@ export default class DatePicker {
    */
   private _updateCalendar(): void {
     if (!this.calendar) return;
-    
+
     const currentMonth = this.viewDate.getMonth();
     const currentYear = this.viewDate.getFullYear();
-    
+
     let content = '';
-    
+
     // Calendar header
     content += `<div class="c-datepicker__header">`;
-    
+
     if (this.viewMode === 'days') {
       content += `
         <button type="button" class="c-datepicker__nav-button c-datepicker__nav-button--prev-year" aria-label="Previous year">
@@ -266,7 +267,7 @@ export default class DatePicker {
     } else if (this.viewMode === 'years') {
       const startYear = currentYear - 6;
       const endYear = currentYear + 5;
-      
+
       content += `
         <button type="button" class="c-datepicker__nav-button c-datepicker__nav-button--prev-year" aria-label="Previous year range">
           ${createPhosphorIcon('CaretLeft', 16)}
@@ -279,58 +280,60 @@ export default class DatePicker {
         </button>
       `;
     }
-    
+
     content += `</div>`;
-    
+
     // Calendar body
     content += `<div class="c-datepicker__body">`;
-    
+
     if (this.viewMode === 'days') {
       // Weekday headers
       content += `<div class="c-datepicker__weekdays" role="row">`;
-      
+
       if (this.options.showWeekNumbers) {
         content += `<div class="c-datepicker__weekday c-datepicker__weeknumber" role="columnheader">#</div>`;
       }
-      
+
       const weekdays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
       weekdays.forEach(day => {
         content += `<div class="c-datepicker__weekday" role="columnheader">${day}</div>`;
       });
-      
+
       content += `</div>`;
-      
+
       // Days grid
       content += `<div class="c-datepicker__days" role="grid">`;
-      
+
       const days = this._generateDays();
       const today = new Date();
-      
+
       days.forEach((dateObj, index) => {
         const isSelectable = this._isDateSelectable(dateObj.year, dateObj.month, dateObj.day);
         const isSelected = this._isDateSelected(dateObj.year, dateObj.month, dateObj.day);
         const isTodayDate = this._isToday(dateObj.year, dateObj.month, dateObj.day, today);
         const dateValue = new Date(dateObj.year, dateObj.month, dateObj.day);
-        
+
         // Add week number if enabled
         if (this.options.showWeekNumbers && index % 7 === 0) {
           const weekNum = this._getWeekNumber(dateValue);
-          
+
           content += `
             <div class="c-datepicker__weeknumber" aria-label="Week ${weekNum}">
               ${weekNum}
             </div>
           `;
         }
-        
+
         const dayClasses = [
           'c-datepicker__day',
           !dateObj.isCurrentMonth ? 'c-datepicker__day--outside' : '',
           isSelected ? 'c-datepicker__day--selected' : '',
           isTodayDate ? 'c-datepicker__day--today' : '',
-          !isSelectable ? 'c-datepicker__day--disabled' : ''
-        ].filter(Boolean).join(' ');
-        
+          !isSelectable ? 'c-datepicker__day--disabled' : '',
+        ]
+          .filter(Boolean)
+          .join(' ');
+
         content += `
           <button
             type="button"
@@ -345,18 +348,19 @@ export default class DatePicker {
           </button>
         `;
       });
-      
+
       content += `</div>`;
     } else if (this.viewMode === 'months') {
       // Months grid
       content += `<div class="c-datepicker__months" role="grid">`;
-      
+
       for (let i = 0; i < 12; i++) {
         const monthName = getMonthName(i).substring(0, 3);
-        const isSelected = this.selectedDate && 
-                           this.selectedDate.getMonth() === i && 
-                           this.selectedDate.getFullYear() === currentYear;
-        
+        const isSelected =
+          this.selectedDate &&
+          this.selectedDate.getMonth() === i &&
+          this.selectedDate.getFullYear() === currentYear;
+
         content += `
           <button
             type="button"
@@ -368,17 +372,17 @@ export default class DatePicker {
           </button>
         `;
       }
-      
+
       content += `</div>`;
     } else if (this.viewMode === 'years') {
       // Years grid
       content += `<div class="c-datepicker__years" role="grid">`;
-      
+
       const startYear = currentYear - 6;
       for (let i = 0; i < 12; i++) {
         const year = startYear + i;
         const isSelected = this.selectedDate && this.selectedDate.getFullYear() === year;
-        
+
         content += `
           <button
             type="button"
@@ -390,16 +394,16 @@ export default class DatePicker {
           </button>
         `;
       }
-      
+
       content += `</div>`;
     }
-    
+
     content += `</div>`;
-    
+
     // Calendar footer (only for days view)
     if (this.viewMode === 'days') {
       content += `<div class="c-datepicker__footer">`;
-      
+
       if (this.options.showTodayButton) {
         content += `
           <button
@@ -411,7 +415,7 @@ export default class DatePicker {
           </button>
         `;
       }
-      
+
       if (!this.options.inline) {
         content += `
           <button
@@ -423,12 +427,12 @@ export default class DatePicker {
           </button>
         `;
       }
-      
+
       content += `</div>`;
     }
-    
+
     this.calendar.innerHTML = content;
-    
+
     if (!this.options.inline) {
       this._positionCalendar();
     }
@@ -437,39 +441,44 @@ export default class DatePicker {
   /**
    * Generate an array of date objects for the current month view
    */
-  private _generateDays(): Array<{ day: number, month: number, year: number, isCurrentMonth: boolean }> {
+  private _generateDays(): Array<{
+    day: number;
+    month: number;
+    year: number;
+    isCurrentMonth: boolean;
+  }> {
     const currentMonth = this.viewDate.getMonth();
     const currentYear = this.viewDate.getFullYear();
     const daysInMonth = getDaysInMonth(currentYear, currentMonth);
     const firstDayOfMonth = getFirstDayOfMonth(currentYear, currentMonth);
-    
+
     const days = [];
-    
+
     // Previous month days
     const prevMonthDays = getDaysInMonth(
       currentMonth === 0 ? currentYear - 1 : currentYear,
       currentMonth === 0 ? 11 : currentMonth - 1
     );
-    
+
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       days.push({
         day: prevMonthDays - i,
         month: currentMonth === 0 ? 11 : currentMonth - 1,
         year: currentMonth === 0 ? currentYear - 1 : currentYear,
-        isCurrentMonth: false
+        isCurrentMonth: false,
       });
     }
-    
+
     // Current month days
     for (let i = 1; i <= daysInMonth; i++) {
       days.push({
         day: i,
         month: currentMonth,
         year: currentYear,
-        isCurrentMonth: true
+        isCurrentMonth: true,
       });
     }
-    
+
     // Next month days
     const remainingDays = 42 - days.length;
     for (let i = 1; i <= remainingDays; i++) {
@@ -477,10 +486,10 @@ export default class DatePicker {
         day: i,
         month: currentMonth === 11 ? 0 : currentMonth + 1,
         year: currentMonth === 11 ? currentYear + 1 : currentYear,
-        isCurrentMonth: false
+        isCurrentMonth: false,
       });
     }
-    
+
     return days;
   }
 
@@ -489,22 +498,24 @@ export default class DatePicker {
    */
   private _showCalendar(): void {
     if (this.isOpen) return;
-    
+
     this.isOpen = true;
-    
+
     if (this.calendar) {
       if (!this.options.inline) {
         document.body.appendChild(this.calendar);
         this._positionCalendar();
       }
-      
+
       this.calendar.classList.add('is-open');
-      
+
       // Dispatch open event
-      this.element.dispatchEvent(new CustomEvent('datepicker:open', {
-        bubbles: true,
-        detail: { instance: this }
-      }));
+      this.element.dispatchEvent(
+        new CustomEvent('datepicker:open', {
+          bubbles: true,
+          detail: { instance: this },
+        })
+      );
     }
   }
 
@@ -513,21 +524,23 @@ export default class DatePicker {
    */
   private _hideCalendar(): void {
     if (!this.isOpen || this.options.inline) return;
-    
+
     this.isOpen = false;
-    
+
     if (this.calendar) {
       this.calendar.classList.remove('is-open');
-      
+
       if (!this.options.inline && this.calendar.parentNode) {
         document.body.removeChild(this.calendar);
       }
-      
+
       // Dispatch close event
-      this.element.dispatchEvent(new CustomEvent('datepicker:close', {
-        bubbles: true,
-        detail: { instance: this }
-      }));
+      this.element.dispatchEvent(
+        new CustomEvent('datepicker:close', {
+          bubbles: true,
+          detail: { instance: this },
+        })
+      );
     }
   }
 
@@ -536,14 +549,14 @@ export default class DatePicker {
    */
   private _positionCalendar(): void {
     if (!this.calendar || !this.input) return;
-    
+
     const inputRect = this.input.getBoundingClientRect();
     const calendarRect = this.calendar.getBoundingClientRect();
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
-    
+
     let top, left;
-    
+
     // Base position calculation on placement option
     switch (this.options.placement) {
       case 'top-start':
@@ -564,29 +577,29 @@ export default class DatePicker {
         left = inputRect.left + scrollLeft;
         break;
     }
-    
+
     // Ensure the calendar stays within viewport
     const viewport = {
       width: window.innerWidth,
-      height: window.innerHeight
+      height: window.innerHeight,
     };
-    
+
     if (left + calendarRect.width > viewport.width) {
       left = viewport.width - calendarRect.width;
     }
-    
+
     if (left < 0) {
       left = 0;
     }
-    
+
     if (top + calendarRect.height > viewport.height) {
       top = inputRect.top - calendarRect.height + scrollTop;
     }
-    
+
     if (top < 0) {
       top = inputRect.bottom + scrollTop;
     }
-    
+
     this.calendar.style.top = `${top}px`;
     this.calendar.style.left = `${left}px`;
   }
@@ -599,30 +612,32 @@ export default class DatePicker {
     const month = this.viewDate.getMonth();
     const year = this.viewDate.getFullYear();
     const newDate = new Date(year, month, day);
-    
+
     if (this.options.minDate && newDate < this.options.minDate) return;
     if (this.options.maxDate && newDate > this.options.maxDate) return;
-    
+
     this.selectedDate = newDate;
-    
+
     // Update input value
     if (this.input) {
       this.input.value = formatDate(newDate, this.options.format);
     }
-    
+
     // Update calendar UI
     this._updateCalendar();
-    
+
     // Close calendar if not inline
     if (!this.options.inline) {
       this._hideCalendar();
     }
-    
+
     // Dispatch change event
-    this.element.dispatchEvent(new CustomEvent('datepicker:change', {
-      bubbles: true,
-      detail: { date: this.selectedDate }
-    }));
+    this.element.dispatchEvent(
+      new CustomEvent('datepicker:change', {
+        bubbles: true,
+        detail: { date: this.selectedDate },
+      })
+    );
   }
 
   /**
@@ -631,7 +646,7 @@ export default class DatePicker {
   private _prevMonth(): void {
     const month = this.viewDate.getMonth();
     const year = this.viewDate.getFullYear();
-    
+
     this.viewDate = new Date(year, month - 1, 1);
     this._updateCalendar();
   }
@@ -642,7 +657,7 @@ export default class DatePicker {
   private _nextMonth(): void {
     const month = this.viewDate.getMonth();
     const year = this.viewDate.getFullYear();
-    
+
     this.viewDate = new Date(year, month + 1, 1);
     this._updateCalendar();
   }
@@ -653,7 +668,7 @@ export default class DatePicker {
   private _prevYear(): void {
     const month = this.viewDate.getMonth();
     const year = this.viewDate.getFullYear();
-    
+
     this.viewDate = new Date(year - 1, month, 1);
     this._updateCalendar();
   }
@@ -664,7 +679,7 @@ export default class DatePicker {
   private _nextYear(): void {
     const month = this.viewDate.getMonth();
     const year = this.viewDate.getFullYear();
-    
+
     this.viewDate = new Date(year + 1, month, 1);
     this._updateCalendar();
   }
@@ -691,7 +706,7 @@ export default class DatePicker {
    */
   private _selectMonth(month: number): void {
     const year = this.viewDate.getFullYear();
-    
+
     this.viewDate = new Date(year, month, 1);
     this.viewMode = 'days';
     this._updateCalendar();
@@ -703,7 +718,7 @@ export default class DatePicker {
    */
   private _selectYear(year: number): void {
     const month = this.viewDate.getMonth();
-    
+
     this.viewDate = new Date(year, month, 1);
     this.viewMode = 'months';
     this._updateCalendar();
@@ -723,18 +738,20 @@ export default class DatePicker {
    */
   private _clearDate(): void {
     this.selectedDate = null;
-    
+
     if (this.input) {
       this.input.value = '';
     }
-    
+
     this._updateCalendar();
-    
+
     // Dispatch change event
-    this.element.dispatchEvent(new CustomEvent('datepicker:change', {
-      bubbles: true,
-      detail: { date: null }
-    }));
+    this.element.dispatchEvent(
+      new CustomEvent('datepicker:change', {
+        bubbles: true,
+        detail: { date: null },
+      })
+    );
   }
 
   /**
@@ -750,7 +767,7 @@ export default class DatePicker {
    */
   private _isDateSelected(year: number, month: number, day: number): boolean {
     if (!this.selectedDate) return false;
-    
+
     return (
       this.selectedDate.getFullYear() === year &&
       this.selectedDate.getMonth() === month &&
@@ -762,11 +779,7 @@ export default class DatePicker {
    * Check if a date is today
    */
   private _isToday(year: number, month: number, day: number, today: Date): boolean {
-    return (
-      today.getFullYear() === year &&
-      today.getMonth() === month &&
-      today.getDate() === day
-    );
+    return today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
   }
 
   /**
@@ -779,7 +792,7 @@ export default class DatePicker {
     const firstThursday = target.valueOf();
     target.setMonth(0, 1);
     if (target.getDay() !== 4) {
-      target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+      target.setMonth(0, 1 + ((4 - target.getDay() + 7) % 7));
     }
     return 1 + Math.ceil((firstThursday - target.valueOf()) / 604800000);
   }
@@ -795,21 +808,23 @@ export default class DatePicker {
       this._clearDate();
       return;
     }
-    
+
     this.selectedDate = date;
     this.viewDate = new Date(date.getFullYear(), date.getMonth(), 1);
-    
+
     if (this.input) {
       this.input.value = formatDate(date, this.options.format);
     }
-    
+
     this._updateCalendar();
-    
+
     // Dispatch change event
-    this.element.dispatchEvent(new CustomEvent('datepicker:change', {
-      bubbles: true,
-      detail: { date }
-    }));
+    this.element.dispatchEvent(
+      new CustomEvent('datepicker:change', {
+        bubbles: true,
+        detail: { date },
+      })
+    );
   }
 
   /**
@@ -858,30 +873,35 @@ export default class DatePicker {
       this.input.removeEventListener('focus', this.eventListeners.inputFocus);
       this.input.removeEventListener('input', this.eventListeners.inputChange);
     }
-    
+
     document.removeEventListener('click', this.eventListeners.documentClick);
-    
+
     if (this.calendar) {
       this.calendar.removeEventListener('click', this.eventListeners.calendarClick);
-      
+
       // Remove calendar from DOM
       if (this.calendar.parentNode) {
         this.calendar.parentNode.removeChild(this.calendar);
       }
     }
-    
+
     // Dispatch destroy event
-    this.element.dispatchEvent(new CustomEvent('datepicker:destroy', {
-      bubbles: true,
-      detail: { instance: this }
-    }));
+    this.element.dispatchEvent(
+      new CustomEvent('datepicker:destroy', {
+        bubbles: true,
+        detail: { instance: this },
+      })
+    );
   }
 
   /**
    * Initialize all datepickers in the document
    */
-  public static initializeAll(selector: string = '[data-datepicker]', options: any = {}): DatePicker[] {
+  public static initializeAll(
+    selector: string = '[data-datepicker]',
+    options: any = {}
+  ): DatePicker[] {
     const elements = document.querySelectorAll(selector);
     return Array.from(elements).map(element => new DatePicker(element as HTMLElement, options));
   }
-} 
+}

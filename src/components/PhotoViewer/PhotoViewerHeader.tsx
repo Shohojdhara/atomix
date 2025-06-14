@@ -1,8 +1,8 @@
-import React from "react";
-import { ImageType } from "../../lib/types/components";
-import { Button } from "../Button/Button";
-import { Badge } from "../Badge/Badge";
-import { Icon } from "../Icon/Icon";
+import React from 'react';
+import { ImageType } from '../../lib/types/components';
+import { Button } from '../Button/Button';
+import { Badge } from '../Badge/Badge';
+import { Icon } from '../Icon/Icon';
 
 /**
  * Props for the PhotoViewerHeader component
@@ -126,27 +126,25 @@ export const PhotoViewerHeader: React.FC<PhotoViewerHeaderProps> = ({
           className="c-photo-viewer__action-button"
         />
       )}
-      {currentImage?.src &&
-        typeof navigator !== "undefined" &&
-        "share" in navigator && (
-          <Button
-            iconOnly
-            size="sm"
-            variant="light"
-            rounded
-            onClick={onShare}
-            aria-label="Share image"
-            icon={<Icon name="ShareNetwork" size="sm" />}
-            className="c-photo-viewer__action-button"
-          />
-        )}
+      {currentImage?.src && typeof navigator !== 'undefined' && 'share' in navigator && (
+        <Button
+          iconOnly
+          size="sm"
+          variant="light"
+          rounded
+          onClick={onShare}
+          aria-label="Share image"
+          icon={<Icon name="ShareNetwork" size="sm" />}
+          className="c-photo-viewer__action-button"
+        />
+      )}
       <Button
         iconOnly
         size="sm"
         variant="light"
         rounded
         onClick={onToggleInfo}
-        aria-label={showInfo ? "Hide info" : "Show info"}
+        aria-label={showInfo ? 'Hide info' : 'Show info'}
         icon={<Icon name="Info" size="sm" />}
         className="c-photo-viewer__action-button"
       />
@@ -156,13 +154,9 @@ export const PhotoViewerHeader: React.FC<PhotoViewerHeaderProps> = ({
         variant="light"
         rounded
         onClick={onToggleFullscreen}
-        aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+        aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
         icon={
-          isFullscreen ? (
-            <Icon name="ArrowsIn" size="sm" />
-          ) : (
-            <Icon name="ArrowsOut" size="sm" />
-          )
+          isFullscreen ? <Icon name="ArrowsIn" size="sm" /> : <Icon name="ArrowsOut" size="sm" />
         }
         className="c-photo-viewer__action-button"
       />

@@ -12,46 +12,61 @@ const meta: Meta<typeof Dropdown> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Dropdown component with a toggleable menu. The dropdown menu appears on click or hover, depending on the trigger prop.'
-      }
-    }
+        component:
+          'Dropdown component with a toggleable menu. The dropdown menu appears on click or hover, depending on the trigger prop.',
+      },
+    },
   },
   argTypes: {
     placement: {
       control: 'select',
       options: [
-        'bottom-start', 'bottom-end',
-        'top-start', 'top-end',
-        'left-start', 'left-end',
-        'right-start', 'right-end'
+        'bottom-start',
+        'bottom-end',
+        'top-start',
+        'top-end',
+        'left-start',
+        'left-end',
+        'right-start',
+        'right-end',
       ],
-      description: 'The placement of the dropdown menu relative to the trigger element'
+      description: 'The placement of the dropdown menu relative to the trigger element',
     },
     trigger: {
       control: 'radio',
       options: ['click', 'hover'],
-      description: 'How the dropdown is triggered - by click or hover'
+      description: 'How the dropdown is triggered - by click or hover',
     },
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'tertiary', 'success', 'info', 'warning', 'error', 'light', 'dark'],
-      description: 'The color variant of the dropdown'
+      options: [
+        'primary',
+        'secondary',
+        'tertiary',
+        'success',
+        'info',
+        'warning',
+        'error',
+        'light',
+        'dark',
+      ],
+      description: 'The color variant of the dropdown',
     },
     minWidth: {
       control: 'text',
-      description: 'Minimum width of the dropdown menu'
+      description: 'Minimum width of the dropdown menu',
     },
     maxHeight: {
       control: 'text',
-      description: 'Maximum height of the dropdown menu'
+      description: 'Maximum height of the dropdown menu',
     },
     closeOnClickOutside: {
       control: 'boolean',
-      description: 'Whether to close the dropdown when clicking outside'
+      description: 'Whether to close the dropdown when clicking outside',
     },
     closeOnEscape: {
       control: 'boolean',
-      description: 'Whether to close the dropdown when pressing the Escape key'
+      description: 'Whether to close the dropdown when pressing the Escape key',
     },
   },
 };
@@ -64,14 +79,13 @@ type Story = StoryObj<typeof Dropdown>;
  */
 const InteractiveDropdown = (args: React.ComponentProps<typeof Dropdown>) => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   return (
-    <div className="u-p-4" style={{ minHeight: '300px', display: 'flex', alignItems: 'flex-start' }}>
-      <Dropdown 
-        {...args} 
-        isOpen={isOpen}
-        onOpenChange={setIsOpen}
-      />
+    <div
+      className="u-p-4"
+      style={{ minHeight: '300px', display: 'flex', alignItems: 'flex-start' }}
+    >
+      <Dropdown {...args} isOpen={isOpen} onOpenChange={setIsOpen} />
     </div>
   );
 };
@@ -83,7 +97,11 @@ export const Default: Story = {
   args: {
     trigger: 'click',
     placement: 'bottom-start',
-    children: <button className="c-btn c-btn--primary">Dropdown <Icon name="CaretDown" className="c-dropdown__toggle-icon" size="sm" /></button>,
+    children: (
+      <button className="c-btn c-btn--primary">
+        Dropdown <Icon name="CaretDown" className="c-dropdown__toggle-icon" size="sm" />
+      </button>
+    ),
     menu: (
       <>
         <DropdownItem>Menu item 1</DropdownItem>
@@ -92,7 +110,7 @@ export const Default: Story = {
       </>
     ),
   },
-  render: (args) => <InteractiveDropdown {...args} />,
+  render: args => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -103,7 +121,7 @@ export const ClickTrigger: Story = {
     ...Default.args,
     trigger: 'click',
   },
-  render: (args) => <InteractiveDropdown {...args} />,
+  render: args => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -114,7 +132,7 @@ export const HoverTrigger: Story = {
     ...Default.args,
     trigger: 'hover',
   },
-  render: (args) => <InteractiveDropdown {...args} />,
+  render: args => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -132,7 +150,7 @@ export const WithIcons: Story = {
       </>
     ),
   },
-  render: (args) => <InteractiveDropdown {...args} />,
+  render: args => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -150,7 +168,7 @@ export const WithLinks: Story = {
       </>
     ),
   },
-  render: (args) => <InteractiveDropdown {...args} />,
+  render: args => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -171,7 +189,7 @@ export const WithHeader: Story = {
       </>
     ),
   },
-  render: (args) => <InteractiveDropdown {...args} />,
+  render: args => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -188,7 +206,7 @@ export const ActiveItem: Story = {
       </>
     ),
   },
-  render: (args) => <InteractiveDropdown {...args} />,
+  render: args => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -205,7 +223,7 @@ export const DisabledItem: Story = {
       </>
     ),
   },
-  render: (args) => <InteractiveDropdown {...args} />,
+  render: args => <InteractiveDropdown {...args} />,
 };
 
 /**
@@ -215,9 +233,10 @@ export const AllPlacements: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'The Dropdown component supports various placement options to position the menu relative to the trigger element.'
-      }
-    }
+        story:
+          'The Dropdown component supports various placement options to position the menu relative to the trigger element.',
+      },
+    },
   },
   render: () => {
     // All possible placement options with properly typed icon names
@@ -231,19 +250,22 @@ export const AllPlacements: Story = {
       { value: 'right-start', label: 'Right Start', icon: 'CaretRight' as const },
       { value: 'right-end', label: 'Right End', icon: 'CaretRight' as const },
     ];
-    
+
     // Create a grid layout with plenty of space for dropdowns to display correctly
     return (
       <div className="u-p-5" style={{ height: '650px' }}>
-        <div className="u-d-grid" style={{ 
-          gridTemplateColumns: 'repeat(4, 1fr)', 
-          gridTemplateRows: 'repeat(2, 1fr)', 
-          gap: '1.5rem',
-          height: '100%'
-        }}>
-          {placements.map((placement) => (
-            <div 
-              key={placement.value} 
+        <div
+          className="u-d-grid"
+          style={{
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gridTemplateRows: 'repeat(2, 1fr)',
+            gap: '1.5rem',
+            height: '100%',
+          }}
+        >
+          {placements.map(placement => (
+            <div
+              key={placement.value}
               className="u-d-flex u-align-items-center u-justify-content-center"
             >
               <Dropdown
@@ -254,7 +276,8 @@ export const AllPlacements: Story = {
                 closeOnEscape={false}
                 children={
                   <button className="c-btn c-btn--primary">
-                    {placement.label} <Icon name={placement.icon} className="c-dropdown__toggle-icon" size="sm" />
+                    {placement.label}{' '}
+                    <Icon name={placement.icon} className="c-dropdown__toggle-icon" size="sm" />
                   </button>
                 }
                 menu={
@@ -273,7 +296,6 @@ export const AllPlacements: Story = {
   },
 };
 
-
 /**
  * Dropdown with all color variants
  */
@@ -281,13 +303,14 @@ export const AllVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'The Dropdown component supports various color variants to match your design system.'
-      }
-    }
+        story:
+          'The Dropdown component supports various color variants to match your design system.',
+      },
+    },
   },
   render: () => {
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-    
+
     const handleOpenChange = (variant: string, isOpen: boolean) => {
       if (isOpen) {
         setOpenDropdown(variant);
@@ -295,20 +318,27 @@ export const AllVariants: Story = {
         setOpenDropdown(null);
       }
     };
-    
+
     return (
       <div className="u-p-4" style={{ minHeight: '300px' }}>
         <div className="u-d-flex u-flex-wrap u-gap-3">
           {[
-            'primary', 'secondary', 'tertiary', 'success', 
-            'info', 'warning', 'error', 'light', 'dark'
-          ].map((color) => (
+            'primary',
+            'secondary',
+            'tertiary',
+            'success',
+            'info',
+            'warning',
+            'error',
+            'light',
+            'dark',
+          ].map(color => (
             <Dropdown
               key={color}
               variant={color as ThemeColor}
               trigger="click"
               isOpen={openDropdown === color}
-              onOpenChange={(isOpen) => handleOpenChange(color, isOpen)}
+              onOpenChange={isOpen => handleOpenChange(color, isOpen)}
               children={
                 <button className={`c-btn c-btn--${color}`}>
                   {color} <Icon name="CaretDown" className="c-dropdown__toggle-icon" size="sm" />

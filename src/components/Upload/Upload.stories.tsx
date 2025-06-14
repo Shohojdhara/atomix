@@ -30,7 +30,7 @@ export default {
   },
 } as Meta<typeof Upload>;
 
-const Template: StoryFn<typeof Upload> = (args) => (
+const Template: StoryFn<typeof Upload> = args => (
   <div style={{ padding: '30px', maxWidth: '600px' }}>
     <Upload {...args} />
   </div>
@@ -54,66 +54,59 @@ Disabled.args = {
 
 // Manual state controls
 const WithStateControls: React.FC = () => {
-  const [currentState, setCurrentState] = useState<'default' | 'uploading' | 'success' | 'error'>('default');
+  const [currentState, setCurrentState] = useState<'default' | 'uploading' | 'success' | 'error'>(
+    'default'
+  );
   const [progress, setProgress] = useState(75);
-  
+
   const resetState = () => {
     setCurrentState('default');
   };
-  
+
   const simulateUpload = () => {
     setCurrentState('uploading');
     setProgress(0);
-    
+
     let currentProgress = 0;
     const interval = setInterval(() => {
       currentProgress += 5;
       setProgress(currentProgress);
-      
+
       if (currentProgress >= 100) {
         clearInterval(interval);
         setCurrentState('success');
       }
     }, 500);
   };
-  
+
   const showError = () => {
     setCurrentState('error');
   };
-  
+
   return (
     <div>
       <div style={{ marginBottom: '20px' }}>
-        <button 
-          style={{ marginRight: '10px', padding: '8px 16px' }} 
-          onClick={resetState}
-        >
+        <button style={{ marginRight: '10px', padding: '8px 16px' }} onClick={resetState}>
           Reset
         </button>
-        <button 
-          style={{ marginRight: '10px', padding: '8px 16px' }} 
-          onClick={simulateUpload}
-        >
+        <button style={{ marginRight: '10px', padding: '8px 16px' }} onClick={simulateUpload}>
           Simulate Upload
         </button>
-        <button 
-          style={{ padding: '8px 16px' }} 
-          onClick={showError}
-        >
+        <button style={{ padding: '8px 16px' }} onClick={showError}>
           Show Error
         </button>
       </div>
-      
+
       <div style={{ padding: '30px', maxWidth: '600px' }}>
         {currentState === 'default' && (
           <Upload
-            onFileSelect={(files) => {
+            onFileSelect={files => {
               console.log('Files selected:', files);
               simulateUpload();
             }}
           />
         )}
-        
+
         {currentState === 'uploading' && (
           <div className="c-upload">
             <div className="c-upload__inner">
@@ -125,12 +118,17 @@ const WithStateControls: React.FC = () => {
               <button className="c-upload__btn c-btn c-btn--primary">Choose File</button>
               <p className="c-upload__helper-text">Maximum size: 5MB</p>
             </div>
-            <div className="c-upload__loader" style={{ '--upload-loader-percentage': progress } as React.CSSProperties}>
+            <div
+              className="c-upload__loader"
+              style={{ '--upload-loader-percentage': progress } as React.CSSProperties}
+            >
               <div className="c-upload__loader-status">
                 <h5 className="c-upload__loader-title">File name.pdf</h5>
                 <div className="c-upload__loader-progress">
                   <div className="c-upload__loader-par">{progress}%</div>
-                  <div className="c-upload__loader-time">{Math.ceil((100 - progress) / 5)} seconds left</div>
+                  <div className="c-upload__loader-time">
+                    {Math.ceil((100 - progress) / 5)} seconds left
+                  </div>
                 </div>
               </div>
 
@@ -148,7 +146,7 @@ const WithStateControls: React.FC = () => {
             </div>
           </div>
         )}
-        
+
         {currentState === 'success' && (
           <div className="c-upload c-upload--success">
             <div className="c-upload__inner">
@@ -163,9 +161,7 @@ const WithStateControls: React.FC = () => {
             <div className="c-upload__loader">
               <div className="c-upload__loader-status">
                 <h5 className="c-upload__loader-title">File name.pdf</h5>
-                <div className="c-upload__loader-progress">
-                  Upload successful
-                </div>
+                <div className="c-upload__loader-progress">Upload successful</div>
               </div>
 
               <div className="c-upload__loader-control">
@@ -176,7 +172,7 @@ const WithStateControls: React.FC = () => {
             </div>
           </div>
         )}
-        
+
         {currentState === 'error' && (
           <div className="c-upload c-upload--error">
             <div className="c-upload__inner">
@@ -191,9 +187,7 @@ const WithStateControls: React.FC = () => {
             <div className="c-upload__loader">
               <div className="c-upload__loader-status">
                 <h5 className="c-upload__loader-title">File name.pdf</h5>
-                <div className="c-upload__loader-progress">
-                  Error message
-                </div>
+                <div className="c-upload__loader-progress">Error message</div>
               </div>
 
               <div className="c-upload__loader-control">
@@ -224,4 +218,4 @@ MultipleFiles.args = {
   ...Default.args,
   multiple: true,
   buttonText: 'Choose Files',
-}; 
+};

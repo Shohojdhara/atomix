@@ -1,5 +1,10 @@
 import { Progress } from './index';
-import { setProgressValue, setProgressVariant, setProgressSize, createProgressElement } from './componentInteractions';
+import {
+  setProgressValue,
+  setProgressVariant,
+  setProgressSize,
+  createProgressElement,
+} from './componentInteractions';
 
 // Export for global use
 export default {
@@ -8,5 +13,5 @@ export default {
   setProgressVariant,
   setProgressSize,
   createProgressElement,
-  initializeAll: Progress.initializeAll
+  initializeAll: Progress.initializeAll,
 };

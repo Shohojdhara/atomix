@@ -14,7 +14,7 @@ const atomix = {
   composables: require('./lib').composables,
   utils: require('./lib').utils,
   constants: require('./lib').constants,
-  layouts: require('./layouts')
+  layouts: require('./layouts'),
 };
 
 // Default export

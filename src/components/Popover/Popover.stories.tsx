@@ -46,34 +46,31 @@ export default {
 } as Meta<typeof Popover>;
 
 // Default template
-const Template: StoryFn<typeof Popover> = (args) => {
+const Template: StoryFn<typeof Popover> = args => {
   const selectOptions = [
     { value: '1', label: 'Option 1' },
     { value: '2', label: 'Option 2' },
     { value: '3', label: 'Option 3' },
     { value: '4', label: 'Option 4' },
   ];
-  
+
   const [selectedOption, setSelectedOption] = React.useState('1');
   const [showInternalOnly, setShowInternalOnly] = React.useState(false);
-  
+
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(e.target.value);
   };
-  
+
   const handleToggleChange = () => {
     setShowInternalOnly(!showInternalOnly);
   };
-  
+
   const content = (
     <>
       <div className="u-d-flex u-align-items-center u-gap-7">
         <span className="u-text-nowrap">Sort by</span>
         <div className="c-select">
-          <select 
-            value={selectedOption} 
-            onChange={handleSelectChange}
-          >
+          <select value={selectedOption} onChange={handleSelectChange}>
             {selectOptions.map(option => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -88,9 +85,11 @@ const Template: StoryFn<typeof Popover> = (args) => {
       </div>
     </>
   );
-  
+
   return (
-    <div style={{ padding: '80px', display: 'flex', justifyContent: 'center', background: '#f5f5f5' }}>
+    <div
+      style={{ padding: '80px', display: 'flex', justifyContent: 'center', background: '#f5f5f5' }}
+    >
       <Popover {...args} content={content}>
         <PopoverTrigger trigger={args.trigger}>
           <Button variant="primary" label="Open Popover" />
@@ -141,4 +140,4 @@ AutoPosition.args = {
   ...Default.args,
   position: 'auto',
   defaultOpen: true, // Open by default to showcase auto-positioning
-}; 
+};

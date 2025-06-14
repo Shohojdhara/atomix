@@ -16,16 +16,16 @@ interface EdgePanelInstance {
  */
 function getTransformValue(position: string): string {
   const validPositions = ['start', 'end', 'top', 'bottom'] as const;
-  type Position = typeof validPositions[number];
-  
+  type Position = (typeof validPositions)[number];
+
   // Type guard to check if position is valid
-  const isValidPosition = (pos: string): pos is Position => 
+  const isValidPosition = (pos: string): pos is Position =>
     validPositions.includes(pos as Position);
-  
+
   if (isValidPosition(position)) {
     return EDGE_PANEL.TRANSFORM_VALUES[position];
   }
-  
+
   // Default to start if position is invalid
   return EDGE_PANEL.TRANSFORM_VALUES.start;
 }
@@ -53,20 +53,19 @@ class EdgePanel implements EdgePanelInstance {
    * @param element - The panel container element
    */
   constructor(element: HTMLElement | string) {
-    this.$panel = typeof element === 'string' 
-      ? document.querySelector(element) as HTMLElement 
-      : element;
-      
+    this.$panel =
+      typeof element === 'string' ? (document.querySelector(element) as HTMLElement) : element;
+
     if (!this.$panel) {
       throw new Error('EdgePanel: Panel element not found');
     }
-    
+
     this.position = this.$panel.dataset.position || 'start';
     this.mode = this.$panel.dataset.mode || 'slide';
     this.closeOnBackdropClick = this.$panel.dataset.closeOnBackdropClick !== 'false';
     this.closeOnEscape = this.$panel.dataset.closeOnEscape !== 'false';
     this.hasBackdrop = this.$panel.dataset.backdrop !== 'false';
-    
+
     this._initialize();
   }
 
@@ -87,7 +86,7 @@ class EdgePanel implements EdgePanelInstance {
     this.$container = this.$panel.querySelector(EDGE_PANEL.SELECTORS.CONTAINER);
     this.$backdrop = this.$panel.querySelector(EDGE_PANEL.SELECTORS.BACKDROP);
     this.$closeButton = this.$panel.querySelector(EDGE_PANEL.SELECTORS.CLOSE);
-    
+
     // Find potential external trigger button(s)
     const panelId = this.$panel.id;
     if (panelId) {
@@ -112,14 +111,14 @@ class EdgePanel implements EdgePanelInstance {
    */
   private _setInitialStyles(): void {
     if (!this.$container) return;
-    
+
     this.$panel.style.display = 'none';
-    
+
     if (this.mode === 'slide' || this.mode === 'push') {
       const transform = getTransformValue(this.position);
       this.$container.style.transform = transform;
     }
-    
+
     if (!this.hasBackdrop && this.$backdrop) {
       this.$backdrop.style.display = 'none';
     }
@@ -132,19 +131,19 @@ class EdgePanel implements EdgePanelInstance {
     if (this.$trigger) {
       this.$trigger.addEventListener('click', this._handleTriggerClick.bind(this));
     }
-    
+
     if (this.$closeButton) {
       this.$closeButton.addEventListener('click', this._handleCloseClick.bind(this));
     }
-    
+
     if (this.$backdrop && this.closeOnBackdropClick) {
       this.$backdrop.addEventListener('click', this._handleBackdropClick.bind(this));
     }
-    
+
     if (this.closeOnEscape) {
       document.addEventListener('keydown', this._handleEscapeKey.bind(this));
     }
-    
+
     if (this.mode === 'push') {
       this.resizeHandler = this._handleResize.bind(this);
       window.addEventListener('resize', this.resizeHandler);
@@ -199,11 +198,12 @@ class EdgePanel implements EdgePanelInstance {
    */
   private _adjustBodyPadding(): void {
     if (!this.$container) return;
-    
-    const size = this.position === 'top' || this.position === 'bottom'
-      ? this.$container.clientHeight
-      : this.$container.clientWidth;
-    
+
+    const size =
+      this.position === 'top' || this.position === 'bottom'
+        ? this.$container.clientHeight
+        : this.$container.clientWidth;
+
     // Map position to CSS padding property
     let paddingProperty: string;
     switch (this.position) {
@@ -217,7 +217,7 @@ class EdgePanel implements EdgePanelInstance {
         // For top/bottom, capitalize first letter
         paddingProperty = `padding${this.position.charAt(0).toUpperCase() + this.position.slice(1)}`;
     }
-    
+
     document.body.style[paddingProperty as any] = `${size}px`;
     document.body.classList.add('is-pushed');
   }
@@ -239,7 +239,7 @@ class EdgePanel implements EdgePanelInstance {
         // For top/bottom, capitalize first letter
         paddingProperty = `padding${this.position.charAt(0).toUpperCase() + this.position.slice(1)}`;
     }
-    
+
     document.body.style[paddingProperty as any] = '';
     document.body.classList.remove('is-pushed');
   }
@@ -249,26 +249,26 @@ class EdgePanel implements EdgePanelInstance {
    */
   public openPanel(): void {
     if (this.isOpen) return;
-    
+
     // First display the panel
     this.$panel.style.display = 'block';
-    
+
     // Force a reflow before animations (skip for 'none' mode)
     if (this.mode !== 'none') {
       void this.$panel.offsetHeight;
     }
-    
+
     // Add the open class to the panel
     this.$panel.classList.add(EDGE_PANEL.CLASSES.IS_OPEN);
     document.body.classList.add('is-edgepanel-open');
-    
+
     // Add animation class to container
     if (this.$container) {
       // Only add animation if not in 'none' mode
       if (this.mode !== 'none') {
         // Add animation class first
         this.$container.classList.add('is-animating');
-        
+
         // Remove animation class after animation completes
         const container = this.$container; // Capture for use in setTimeout
         setTimeout(() => {
@@ -277,17 +277,17 @@ class EdgePanel implements EdgePanelInstance {
           }
         }, this.animationDuration);
       }
-      
+
       // Set transform immediately
       this.$container.style.transform = 'translate(0)';
     }
-    
+
     if (this.mode === 'push') {
       this._adjustBodyPadding();
     }
-    
+
     this.isOpen = true;
-    
+
     // Fire a custom event
     this.$panel.dispatchEvent(new CustomEvent('edgepanel:open', { bubbles: true }));
   }
@@ -297,13 +297,13 @@ class EdgePanel implements EdgePanelInstance {
    */
   public closePanel(): void {
     if (!this.isOpen) return;
-    
+
     if (this.$container) {
       // Only add animation class if not in 'none' mode
       if (this.mode !== 'none' && (this.mode === 'slide' || this.mode === 'push')) {
         // Add the animation out class first
         this.$container.classList.add('is-animating-out');
-        
+
         // Remove animation class after animation completes
         const container = this.$container;
         setTimeout(() => {
@@ -312,23 +312,23 @@ class EdgePanel implements EdgePanelInstance {
           }
         }, this.animationDuration);
       }
-      
+
       // Set transform
       this.$container.style.transform = getTransformValue(this.position);
     }
-    
+
     this.$panel.classList.remove(EDGE_PANEL.CLASSES.IS_OPEN);
-    
+
     if (this.mode === 'push') {
       this._resetBodyPadding();
     }
-    
+
     // Fire a custom event
     this.$panel.dispatchEvent(new CustomEvent('edgepanel:close', { bubbles: true }));
-    
+
     // Wait for animation to complete before hiding
     const hideDelay = this.mode === 'none' ? 0 : this.animationDuration;
-    
+
     setTimeout(() => {
       document.body.classList.remove('is-edgepanel-open');
       this.$panel.style.display = 'none';
@@ -343,21 +343,21 @@ class EdgePanel implements EdgePanelInstance {
     if (this.$trigger) {
       this.$trigger.removeEventListener('click', this._handleTriggerClick.bind(this));
     }
-    
+
     if (this.$closeButton) {
       this.$closeButton.removeEventListener('click', this._handleCloseClick.bind(this));
     }
-    
+
     if (this.$backdrop && this.closeOnBackdropClick) {
       this.$backdrop.removeEventListener('click', this._handleBackdropClick.bind(this));
     }
-    
+
     document.removeEventListener('keydown', this._handleEscapeKey.bind(this));
-    
+
     if (this.resizeHandler) {
       window.removeEventListener('resize', this.resizeHandler);
     }
-    
+
     if (this.isOpen) {
       document.body.classList.remove('is-edgepanel-open');
       if (this.mode === 'push') {
@@ -377,11 +377,11 @@ export function initializeEdgePanels(): EdgePanelInstance[] {
 
   if (!$panels.length) return panelInstances;
 
-  $panels.forEach(($panel) => {
+  $panels.forEach($panel => {
     try {
       // Skip if already initialized
       if (($panel as any).edgePanelInstance) return;
-      
+
       const instance = new EdgePanel($panel);
       // Store instance on DOM element for reference
       ($panel as any).edgePanelInstance = instance;
@@ -401,15 +401,15 @@ export const POSITIONS = {
   START: 'start',
   END: 'end',
   TOP: 'top',
-  BOTTOM: 'bottom'
+  BOTTOM: 'bottom',
 };
 export const MODES = {
   SLIDE: 'slide',
   PUSH: 'push',
-  NONE: 'none'
+  NONE: 'none',
 };
 
 // Export component interactions
 export * from './edgePanelInteractions';
 
-export default EdgePanel; 
+export default EdgePanel;

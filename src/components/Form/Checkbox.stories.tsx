@@ -56,7 +56,7 @@ export const Checked: Story = {
 
 // Checkbox states
 export const States: Story = {
-  render: (args) => (
+  render: args => (
     <div className="u-d-flex u-flex-column u-gap-3">
       <Checkbox label="Default checkbox" />
       <Checkbox label="Checked checkbox" checked />
@@ -74,4 +74,4 @@ export const WithoutLabel: Story = {
   args: {
     ariaLabel: 'Checkbox without visible label',
   },
-}; 
+};

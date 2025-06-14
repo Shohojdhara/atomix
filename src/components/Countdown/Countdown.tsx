@@ -24,58 +24,66 @@ function getTimeParts(diff: number) {
   return { days, hours, minutes, seconds };
 }
 
-export const Countdown: React.FC<CountdownProps> = forwardRef<HTMLDivElement, CountdownProps>(({
-  target,
-  show = ['days', 'hours', 'minutes', 'seconds'],
-  separator = ':',
-  focused = false,
-  className = '',
-  onComplete,
-}, ref) => {
-  const targetDate = typeof target === 'string' ? new Date(target) : target;
-  const [now, setNow] = useState(() => new Date());
-  const [completed, setCompleted] = useState(false);
+export const Countdown: React.FC<CountdownProps> = forwardRef<HTMLDivElement, CountdownProps>(
+  (
+    {
+      target,
+      show = ['days', 'hours', 'minutes', 'seconds'],
+      separator = ':',
+      focused = false,
+      className = '',
+      onComplete,
+    },
+    ref
+  ) => {
+    const targetDate = typeof target === 'string' ? new Date(target) : target;
+    const [now, setNow] = useState(() => new Date());
+    const [completed, setCompleted] = useState(false);
 
-  useEffect(() => {
-    if (completed) return undefined;
-    const interval = setInterval(() => {
-      setNow(new Date());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [completed]);
+    useEffect(() => {
+      if (completed) return undefined;
+      const interval = setInterval(() => {
+        setNow(new Date());
+      }, 1000);
+      return () => clearInterval(interval);
+    }, [completed]);
 
-  const diff = targetDate.getTime() - now.getTime();
-  const { days, hours, minutes, seconds } = getTimeParts(diff);
+    const diff = targetDate.getTime() - now.getTime();
+    const { days, hours, minutes, seconds } = getTimeParts(diff);
 
-  useEffect(() => {
-    if (diff <= 0 && !completed) {
-      setCompleted(true);
-      if (onComplete) onComplete();
-    }
-  }, [diff, completed, onComplete]);
+    useEffect(() => {
+      if (diff <= 0 && !completed) {
+        setCompleted(true);
+        if (onComplete) onComplete();
+      }
+    }, [diff, completed, onComplete]);
 
-  const timeParts = [];
-  if (show.includes('days')) timeParts.push({ label: 'Days', value: days });
-  if (show.includes('hours')) timeParts.push({ label: 'Hours', value: hours });
-  if (show.includes('minutes')) timeParts.push({ label: 'Minutes', value: minutes });
-  if (show.includes('seconds')) timeParts.push({ label: 'Seconds', value: seconds });
+    const timeParts = [];
+    if (show.includes('days')) timeParts.push({ label: 'Days', value: days });
+    if (show.includes('hours')) timeParts.push({ label: 'Hours', value: hours });
+    if (show.includes('minutes')) timeParts.push({ label: 'Minutes', value: minutes });
+    if (show.includes('seconds')) timeParts.push({ label: 'Seconds', value: seconds });
 
-  return (
-    <div ref={ref} className={`c-countdown${focused ? ' c-countdown--focused' : ''} ${className}`.trim()}>
-      {timeParts.map((part, idx) => (
-        <React.Fragment key={part.label}>
-          <div className="c-countdown__time">
-            <span className="c-countdown__time-count">{String(part.value).padStart(2, '0')}</span>
-            <span className="c-countdown__time-label">{part.label}</span>
-          </div>
-          {idx < timeParts.length - 1 && (
-            <span className="c-countdown__separator">{separator}</span>
-          )}
-        </React.Fragment>
-      ))}
-    </div>
-  );
-});
+    return (
+      <div
+        ref={ref}
+        className={`c-countdown${focused ? ' c-countdown--focused' : ''} ${className}`.trim()}
+      >
+        {timeParts.map((part, idx) => (
+          <React.Fragment key={part.label}>
+            <div className="c-countdown__time">
+              <span className="c-countdown__time-count">{String(part.value).padStart(2, '0')}</span>
+              <span className="c-countdown__time-label">{part.label}</span>
+            </div>
+            {idx < timeParts.length - 1 && (
+              <span className="c-countdown__separator">{separator}</span>
+            )}
+          </React.Fragment>
+        ))}
+      </div>
+    );
+  }
+);
 
 Countdown.displayName = 'Countdown';
 

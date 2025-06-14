@@ -6,17 +6,17 @@ export interface TestimonialAuthor {
    * The author's name
    */
   name: string;
-  
+
   /**
    * The author's role or title
    */
   role: string;
-  
+
   /**
    * The URL to the author's avatar image
    */
   avatarSrc?: string;
-  
+
   /**
    * Alternative text for the avatar image
    */
@@ -28,22 +28,22 @@ export interface TestimonialProps {
    * The testimonial quote text or content
    */
   quote: ReactNode;
-  
+
   /**
    * Author information
    */
   author?: TestimonialAuthor;
-  
+
   /**
    * Size variant
    */
   size?: 'sm' | 'lg' | '';
-  
+
   /**
    * Whether to show a skeleton loading state
    */
   skeleton?: boolean;
-  
+
   /**
    * Additional CSS class
    */
@@ -62,7 +62,7 @@ export const Testimonial: React.FC<TestimonialProps> = ({
 }) => {
   const testimonialRef = useRef<HTMLDivElement>(null);
   const testimonialInstance = useRef<any>(null);
-  
+
   useEffect(() => {
     // Only run on client-side
     if (typeof window === 'undefined' || !testimonialRef.current) return undefined;
@@ -72,11 +72,11 @@ export const Testimonial: React.FC<TestimonialProps> = ({
       if (testimonialRef.current) {
         testimonialInstance.current = new TestimonialClass(testimonialRef.current, {
           size,
-          skeleton
+          skeleton,
         });
       }
     });
-    
+
     // Cleanup on unmount
     return () => {
       if (testimonialInstance.current) {
@@ -84,15 +84,17 @@ export const Testimonial: React.FC<TestimonialProps> = ({
       }
     };
   }, [size, skeleton]);
-  
+
   // Determine CSS classes
   const testimonialClasses = [
     'c-testimonial',
     size === 'sm' ? TESTIMONIAL.CLASSES.SMALL : '',
     size === 'lg' ? TESTIMONIAL.CLASSES.LARGE : '',
-    className
-  ].filter(Boolean).join(' ');
-  
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   // Render skeleton version
   if (skeleton) {
     return (
@@ -117,13 +119,11 @@ export const Testimonial: React.FC<TestimonialProps> = ({
       </div>
     );
   }
-  
+
   // Render normal version
   return (
     <div className={testimonialClasses} ref={testimonialRef}>
-      <blockquote className="c-testimonial__quote">
-        {quote}
-      </blockquote>
+      <blockquote className="c-testimonial__quote">{quote}</blockquote>
       {author && (
         <div className="c-testimonial__author">
           {author.avatarSrc && (
@@ -142,7 +142,6 @@ export const Testimonial: React.FC<TestimonialProps> = ({
     </div>
   );
 };
-
 
 Testimonial.displayName = 'Testimonial';
 

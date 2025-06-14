@@ -1,6 +1,6 @@
 /**
  * Card component module
- * 
+ *
  * This module exports the Card component and its variants.
  * Types and hooks are defined in the lib directory.
  */

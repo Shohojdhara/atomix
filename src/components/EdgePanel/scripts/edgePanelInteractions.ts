@@ -9,43 +9,43 @@ import { addClass, removeClass } from '../../../lib/utils/dom';
 export function applyCustomAnimations(panel: HTMLElement): void {
   const container = panel.querySelector(EDGE_PANEL.SELECTORS.CONTAINER) as HTMLElement;
   const backdrop = panel.querySelector(EDGE_PANEL.SELECTORS.BACKDROP) as HTMLElement;
-  
+
   if (!container) return;
-  
+
   // Custom panel opening animation
   panel.addEventListener('edgepanel:open', () => {
     // Force a reflow before adding animation classes
     container.offsetHeight;
-    
+
     addClass(container, 'is-animating');
-    
+
     if (backdrop) {
       addClass(backdrop, 'is-animating');
     }
-    
+
     setTimeout(() => {
       removeClass(container, 'is-animating');
-      
+
       if (backdrop) {
         removeClass(backdrop, 'is-animating');
       }
     }, EDGE_PANEL.ANIMATION_DURATION);
   });
-  
+
   // Custom panel closing animation
   panel.addEventListener('edgepanel:close', () => {
     // Force a reflow before adding animation classes
     container.offsetHeight;
-    
+
     addClass(container, 'is-animating-out');
-    
+
     if (backdrop) {
       addClass(backdrop, 'is-animating-out');
     }
-    
+
     setTimeout(() => {
       removeClass(container, 'is-animating-out');
-      
+
       if (backdrop) {
         removeClass(backdrop, 'is-animating-out');
       }
@@ -59,16 +59,16 @@ export function applyCustomAnimations(panel: HTMLElement): void {
  */
 export function initializeEdgePanelsWithCustomBehavior(): EdgePanel[] {
   const instances = initializeEdgePanels() as EdgePanel[];
-  
+
   // Get all panel elements
   const panels = document.querySelectorAll<HTMLElement>(EDGE_PANEL.SELECTORS.PANEL);
-  
+
   // Apply custom animations to each panel
   panels.forEach(panel => {
     applyCustomAnimations(panel);
     applyResponsiveHandling(panel);
   });
-  
+
   return instances;
 }
 
@@ -79,18 +79,18 @@ export function initializeEdgePanelsWithCustomBehavior(): EdgePanel[] {
 export function applyResponsiveHandling(panel: HTMLElement): void {
   // Check for responsive data attribute
   const responsiveBreakpoint = panel.dataset.responsiveBreakpoint;
-  
+
   if (!responsiveBreakpoint) return;
-  
+
   // Function to check if the breakpoint is triggered
   const checkBreakpoint = () => {
     // Get the panel instance
     const instance = (panel as any).edgePanelInstance as EdgePanel;
     if (!instance) return;
-    
+
     // Check appropriate breakpoint based on the value
     let breakpointTriggered = false;
-    
+
     switch (responsiveBreakpoint) {
       case 'sm':
         breakpointTriggered = window.innerWidth <= 576;
@@ -110,7 +110,7 @@ export function applyResponsiveHandling(panel: HTMLElement): void {
           breakpointTriggered = window.innerWidth <= Number(responsiveBreakpoint);
         }
     }
-    
+
     // Apply the appropriately class based on breakpoint
     if (breakpointTriggered) {
       panel.classList.add('is-responsive-active');
@@ -118,10 +118,10 @@ export function applyResponsiveHandling(panel: HTMLElement): void {
       panel.classList.remove('is-responsive-active');
     }
   };
-  
+
   // Initial check
   checkBreakpoint();
-  
+
   // Check on resize
   window.addEventListener('resize', checkBreakpoint);
 }
@@ -133,7 +133,7 @@ export function applyResponsiveHandling(panel: HTMLElement): void {
 export function openEdgePanel(selector: string): void {
   const isIdSelector = selector.startsWith('#');
   const panel = document.querySelector<HTMLElement>(isIdSelector ? selector : `#${selector}`);
-  
+
   if (panel) {
     const instance = (panel as any).edgePanelInstance as EdgePanel;
     if (instance) {
@@ -156,7 +156,7 @@ export function openEdgePanel(selector: string): void {
 export function closeEdgePanel(selector: string): void {
   const isIdSelector = selector.startsWith('#');
   const panel = document.querySelector<HTMLElement>(isIdSelector ? selector : `#${selector}`);
-  
+
   if (panel) {
     const instance = (panel as any).edgePanelInstance as EdgePanel;
     if (instance) {
@@ -170,7 +170,7 @@ export function closeEdgePanel(selector: string): void {
  */
 export function closeAllEdgePanels(): void {
   const panels = document.querySelectorAll<HTMLElement>(EDGE_PANEL.SELECTORS.PANEL);
-  
+
   panels.forEach(panel => {
     const instance = (panel as any).edgePanelInstance as EdgePanel;
     if (instance) {
@@ -186,7 +186,7 @@ export function closeAllEdgePanels(): void {
 export function toggleEdgePanel(selector: string): void {
   const isIdSelector = selector.startsWith('#');
   const panel = document.querySelector<HTMLElement>(isIdSelector ? selector : `#${selector}`);
-  
+
   if (panel) {
     const instance = (panel as any).edgePanelInstance as EdgePanel;
     if (instance) {
@@ -203,4 +203,4 @@ export function toggleEdgePanel(selector: string): void {
       newInstance.openPanel();
     }
   }
-} 
+}

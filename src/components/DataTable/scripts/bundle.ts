@@ -7,9 +7,14 @@ window.Atomix = window.Atomix || {};
 window.Atomix.DataTable = {
   DataTable,
   initializeAll: DataTable.initializeAll,
-  create: (element: string | HTMLElement, data: any[] = [], columns: DataTableColumn[] = [], options: DataTableOptions = {}) => {
+  create: (
+    element: string | HTMLElement,
+    data: any[] = [],
+    columns: DataTableColumn[] = [],
+    options: DataTableOptions = {}
+  ) => {
     return new DataTable(element, data, columns, options);
-  }
+  },
 };
 
-export default DataTable; 
+export default DataTable;

@@ -2,8 +2,8 @@
  * EdgePanel Component Bundle
  * This file bundles all EdgePanel exports for use in a global namespace
  */
-import EdgePanel, { 
-  initializeEdgePanels, 
+import EdgePanel, {
+  initializeEdgePanels,
   openEdgePanel,
   closeEdgePanel,
   closeAllEdgePanels,
@@ -11,7 +11,7 @@ import EdgePanel, {
   POSITIONS,
   MODES,
   SELECTORS,
-  CLASSES 
+  CLASSES,
 } from './index';
 
 // Export for bundling into global namespace
@@ -26,5 +26,5 @@ export {
   POSITIONS,
   MODES,
   SELECTORS,
-  CLASSES
-}; 
+  CLASSES,
+};

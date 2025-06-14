@@ -44,9 +44,4 @@ if (typeof window !== 'undefined') {
   });
 }
 
-export {
-  Messages,
-  type MessagesOptions,
-  type MessageItem,
-  MessagesInteractions
-}; 
+export { Messages, type MessagesOptions, type MessageItem, MessagesInteractions };

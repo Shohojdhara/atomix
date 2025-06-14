@@ -28,8 +28,8 @@ export const Default: Story = {
       { label: 'Home', href: '/' },
       { label: 'Products', href: '/products' },
       { label: 'Category', href: '/products/category' },
-      { label: 'Product Name', active: true }
-    ]
+      { label: 'Product Name', active: true },
+    ],
   },
 };
 
@@ -37,27 +37,27 @@ export const Default: Story = {
 export const WithIcons: Story = {
   args: {
     items: [
-      { 
-        label: 'Home', 
-        href: '/', 
-        icon: <Icon name="House" size="sm" /> 
+      {
+        label: 'Home',
+        href: '/',
+        icon: <Icon name="House" size="sm" />,
       },
-      { 
-        label: 'Products', 
-        href: '/products', 
-        icon: <Icon name="Package" size="sm" /> 
+      {
+        label: 'Products',
+        href: '/products',
+        icon: <Icon name="Package" size="sm" />,
       },
-      { 
-        label: 'Category', 
-        href: '/products/category', 
-        icon: <Icon name="Folder" size="sm" /> 
+      {
+        label: 'Category',
+        href: '/products/category',
+        icon: <Icon name="Folder" size="sm" />,
       },
-      { 
-        label: 'Product Name', 
-        active: true, 
-        icon: <Icon name="Tag" size="sm" /> 
-      }
-    ]
+      {
+        label: 'Product Name',
+        active: true,
+        icon: <Icon name="Tag" size="sm" />,
+      },
+    ],
   },
 };
 
@@ -68,9 +68,9 @@ export const CustomDivider: Story = {
       { label: 'Home', href: '/' },
       { label: 'Products', href: '/products' },
       { label: 'Category', href: '/products/category' },
-      { label: 'Product Name', active: true }
+      { label: 'Product Name', active: true },
     ],
-    divider: '/'
+    divider: '/',
   },
 };
 
@@ -78,31 +78,31 @@ export const CustomDivider: Story = {
 export const WithClickHandlers: Story = {
   args: {
     items: [
-      { 
-        label: 'Home', 
-        href: '/', 
-        onClick: (e) => {
+      {
+        label: 'Home',
+        href: '/',
+        onClick: e => {
           e.preventDefault();
           alert('Home clicked');
-        }
+        },
       },
-      { 
-        label: 'Products', 
-        href: '/products', 
-        onClick: (e) => {
+      {
+        label: 'Products',
+        href: '/products',
+        onClick: e => {
           e.preventDefault();
           alert('Products clicked');
-        }
+        },
       },
-      { 
-        label: 'Category', 
-        href: '/products/category', 
-        onClick: (e) => {
+      {
+        label: 'Category',
+        href: '/products/category',
+        onClick: e => {
           e.preventDefault();
           alert('Category clicked');
-        }
+        },
       },
-      { label: 'Product Name', active: true }
-    ]
+      { label: 'Product Name', active: true },
+    ],
   },
-}; 
+};

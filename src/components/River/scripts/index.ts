@@ -28,7 +28,7 @@ const DEFAULT_OPTIONS: RiverOptions = {
   center: false,
   breakout: false,
   reverse: false,
-  showOverlay: true
+  showOverlay: true,
 };
 
 /**
@@ -54,10 +54,7 @@ class River implements RiverInstance {
    */
   init(): void {
     if (this.options.contentWidth) {
-      this.$element.style.setProperty(
-        RIVER.ATTRIBUTES.CONTENT_WIDTH,
-        this.options.contentWidth
-      );
+      this.$element.style.setProperty(RIVER.ATTRIBUTES.CONTENT_WIDTH, this.options.contentWidth);
     }
 
     // Add background image if provided
@@ -74,26 +71,26 @@ class River implements RiverInstance {
 
     // Check if background already exists
     let $bg = this.$element.querySelector(RIVER.SELECTORS.BG);
-    
+
     if (!$bg) {
       // Create background container
       $bg = document.createElement('div');
       $bg.className = RIVER.SELECTORS.BG.replace('.', '');
-      
+
       // Create background image
       const $bgImage = document.createElement('img');
       $bgImage.src = this.options.backgroundImageSrc;
       $bgImage.alt = 'Background';
       $bgImage.className = RIVER.SELECTORS.BG_IMAGE.replace('.', '');
       $bg.appendChild($bgImage);
-      
+
       // Create overlay if needed
       if (this.options.showOverlay) {
         const $overlay = document.createElement('div');
         $overlay.className = RIVER.SELECTORS.OVERLAY.replace('.', '');
         $bg.appendChild($overlay);
       }
-      
+
       // Add background to the element (as first child)
       if (this.$element.firstChild) {
         this.$element.insertBefore($bg, this.$element.firstChild);
@@ -119,11 +116,13 @@ class River implements RiverInstance {
  */
 export function initializeRivers(selector = RIVER.SELECTORS.RIVER, options = {}): RiverInstance[] {
   const riverInstances: RiverInstance[] = [];
-  const riverElements = document.querySelectorAll<HTMLElement>(typeof selector === 'string' ? selector : RIVER.SELECTORS.RIVER);
+  const riverElements = document.querySelectorAll<HTMLElement>(
+    typeof selector === 'string' ? selector : RIVER.SELECTORS.RIVER
+  );
 
   if (!riverElements.length) return riverInstances;
 
-  riverElements.forEach((element) => {
+  riverElements.forEach(element => {
     try {
       const instance = new River(element, options);
       riverInstances.push(instance);
@@ -135,4 +134,4 @@ export function initializeRivers(selector = RIVER.SELECTORS.RIVER, options = {})
   return riverInstances;
 }
 
-export default River; 
+export default River;

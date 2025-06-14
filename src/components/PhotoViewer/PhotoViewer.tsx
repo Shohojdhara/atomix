@@ -1,11 +1,11 @@
-import React, { useMemo, useEffect } from "react";
-import { PhotoViewerProps, ImageType } from "../../lib/types/components";
-import { usePhotoViewer } from "../../lib/composables/usePhotoViewer";
-import { PhotoViewerHeader } from "./PhotoViewerHeader";
-import { PhotoViewerNavigation } from "./PhotoViewerNavigation";
-import { PhotoViewerImage } from "./PhotoViewerImage";
-import { PhotoViewerThumbnails } from "./PhotoViewerThumbnails";
-import { PhotoViewerInfo } from "./PhotoViewerInfo";
+import React, { useMemo, useEffect } from 'react';
+import { PhotoViewerProps, ImageType } from '../../lib/types/components';
+import { usePhotoViewer } from '../../lib/composables/usePhotoViewer';
+import { PhotoViewerHeader } from './PhotoViewerHeader';
+import { PhotoViewerNavigation } from './PhotoViewerNavigation';
+import { PhotoViewerImage } from './PhotoViewerImage';
+import { PhotoViewerThumbnails } from './PhotoViewerThumbnails';
+import { PhotoViewerInfo } from './PhotoViewerInfo';
 
 /**
  * PhotoViewer component - A comprehensive image viewer with zoom, pan, navigation, and metadata display
@@ -27,12 +27,12 @@ import { PhotoViewerInfo } from "./PhotoViewerInfo";
 export const PhotoViewer: React.FC<PhotoViewerProps> = ({
   images,
   startIndex = 0,
-  className = "",
+  className = '',
   disabled = false,
   enableKeyboardNavigation = true,
   enableGestures = true,
   enableFullscreen = true,
-  thumbnailPosition = "bottom",
+  thumbnailPosition = 'bottom',
   onImageChange,
   onClose,
 }) => {
@@ -77,7 +77,7 @@ export const PhotoViewer: React.FC<PhotoViewerProps> = ({
 
   // Process images to handle both string arrays and object arrays, ensuring ImageType structure
   const processedImages: ImageType[] = useMemo(() => {
-    return images.map((img) => (typeof img === "string" ? { src: img } : img));
+    return images.map(img => (typeof img === 'string' ? { src: img } : img));
   }, [images]);
 
   // Current image object
@@ -109,7 +109,7 @@ export const PhotoViewer: React.FC<PhotoViewerProps> = ({
   const handleDownload = () => {
     if (!currentImage?.src) return;
 
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = currentImage.src;
     link.download = currentImage.title || `image-${currentIndex + 1}`;
     document.body.appendChild(link);
@@ -123,12 +123,12 @@ export const PhotoViewer: React.FC<PhotoViewerProps> = ({
 
     try {
       await navigator.share({
-        title: currentImage.title || "Shared Image",
-        text: currentImage.description || "Check out this image",
+        title: currentImage.title || 'Shared Image',
+        text: currentImage.description || 'Check out this image',
         url: currentImage.src,
       });
     } catch (error) {
-      console.error("Error sharing:", error);
+      console.error('Error sharing:', error);
     }
   };
 
@@ -136,24 +136,17 @@ export const PhotoViewer: React.FC<PhotoViewerProps> = ({
   const photoViewerClasses = useMemo(
     () =>
       [
-        "c-photo-viewer",
+        'c-photo-viewer',
         `c-photo-viewer--thumbnails-${thumbnailPosition}`,
-        isDragging ? "c-photo-viewer--dragging" : "",
-        isFullscreen ? "c-photo-viewer--fullscreen" : "",
-        showInfo ? "c-photo-viewer--info-open" : "",
-        disabled ? "is-disabled" : "",
+        isDragging ? 'c-photo-viewer--dragging' : '',
+        isFullscreen ? 'c-photo-viewer--fullscreen' : '',
+        showInfo ? 'c-photo-viewer--info-open' : '',
+        disabled ? 'is-disabled' : '',
         className,
       ]
         .filter(Boolean)
-        .join(" "),
-    [
-      isDragging,
-      isFullscreen,
-      showInfo,
-      disabled,
-      thumbnailPosition,
-      className,
-    ],
+        .join(' '),
+    [isDragging, isFullscreen, showInfo, disabled, thumbnailPosition, className]
   );
 
   // Listen for fullscreen changes
@@ -162,17 +155,16 @@ export const PhotoViewer: React.FC<PhotoViewerProps> = ({
       setIsFullscreen(!!document.fullscreenElement);
     };
 
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
-    return () =>
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, [setIsFullscreen]);
 
   // Add/remove is-open-photoviewer class on body
   useEffect(() => {
-    document.body.classList.add("is-open-photoviewer");
+    document.body.classList.add('is-open-photoviewer');
 
     return () => {
-      document.body.classList.remove("is-open-photoviewer");
+      document.body.classList.remove('is-open-photoviewer');
     };
   }, []);
 
@@ -180,12 +172,7 @@ export const PhotoViewer: React.FC<PhotoViewerProps> = ({
   if (!images.length) return null;
 
   return (
-    <div
-      className={photoViewerClasses}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Photo viewer"
-    >
+    <div className={photoViewerClasses} role="dialog" aria-modal="true" aria-label="Photo viewer">
       <div className="c-photo-viewer__backdrop" onClick={closeModal} />
       <div className="c-photo-viewer__container">
         <PhotoViewerHeader
@@ -239,18 +226,14 @@ export const PhotoViewer: React.FC<PhotoViewerProps> = ({
             />
           )}
         </div>
-        {thumbnailPosition !== "none" && (
+        {thumbnailPosition !== 'none' && (
           <PhotoViewerThumbnails
             images={processedImages}
             currentIndex={currentIndex}
             goToImage={goToImage}
           />
         )}
-        <PhotoViewerInfo
-          show={showInfo}
-          image={currentImage}
-          onClose={() => setShowInfo(false)}
-        />
+        <PhotoViewerInfo show={showInfo} image={currentImage} onClose={() => setShowInfo(false)} />
       </div>
     </div>
   );

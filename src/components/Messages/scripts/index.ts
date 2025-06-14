@@ -8,22 +8,22 @@ export interface MessagesOptions {
    * Custom width for the messages container
    */
   width?: string;
-  
+
   /**
    * Maximum height for the messages body
    */
   bodyHeight?: string;
-  
+
   /**
    * Placeholder text for the input field
    */
   placeholder?: string;
-  
+
   /**
    * Callback when a new message is sent
    */
   onSendMessage?: (text: string) => void;
-  
+
   /**
    * Whether the component is disabled
    */
@@ -52,7 +52,7 @@ const DEFAULT_OPTIONS: MessagesOptions = {
   width: '100%',
   bodyHeight: 'calc(100vh - 600px)',
   placeholder: 'Type a message',
-  disabled: false
+  disabled: false,
 };
 
 /**
@@ -80,22 +80,21 @@ export class Messages {
    * @param options - Component options
    */
   constructor(element: string | HTMLElement, options: MessagesOptions = {}) {
-    this._element = typeof element === 'string' 
-      ? document.querySelector(element) as HTMLElement 
-      : element;
-    
+    this._element =
+      typeof element === 'string' ? (document.querySelector(element) as HTMLElement) : element;
+
     if (!this._element) {
       throw new Error('Messages element not found');
     }
-    
+
     this.options = { ...DEFAULT_OPTIONS, ...options };
-    
+
     // Cache DOM elements
     this.$form = this._element.querySelector(MESSAGES.SELECTORS.FORM);
     this.$input = this._element.querySelector(MESSAGES.SELECTORS.INPUT);
     this.$submitButton = this._element.querySelector('.c-messages__submit');
     this.$body = this._element.querySelector(MESSAGES.SELECTORS.BODY);
-    
+
     this._initialize();
   }
 
@@ -107,24 +106,24 @@ export class Messages {
     if (this.options.width) {
       this._element.style.setProperty('--atomix-messages-width', this.options.width);
     }
-    
+
     if (this.options.bodyHeight && this.$body) {
       this.$body.style.setProperty('--atomix-messages-body-height', this.options.bodyHeight);
     }
-    
+
     if (this.options.placeholder && this.$input) {
       this.$input.placeholder = this.options.placeholder;
     }
-    
+
     if (this.options.disabled) {
       this._element.classList.add('is-disabled');
       if (this.$input) this.$input.disabled = true;
       if (this.$submitButton) this.$submitButton.disabled = true;
     }
-    
+
     // Set up event handlers
     this._setupEventListeners();
-    
+
     // Scroll to bottom of messages
     this._scrollToBottom();
   }
@@ -137,14 +136,14 @@ export class Messages {
       this.eventHandlers.submit = this._handleSubmit.bind(this);
       this.$form.addEventListener('submit', this.eventHandlers.submit);
     }
-    
+
     if (this.$input) {
       this.eventHandlers.keydown = ((event: Event) => {
         if (event instanceof KeyboardEvent) {
           this._handleKeyDown(event);
         }
       }) as EventListener;
-      
+
       this.$input.addEventListener('keydown', this.eventHandlers.keydown);
     }
   }
@@ -154,26 +153,26 @@ export class Messages {
    */
   private _handleSubmit(event: Event): void {
     event.preventDefault();
-    
+
     if (!this.$input || this.options.disabled) return;
-    
+
     const text = this.$input.value.trim();
     if (!text) return;
-    
+
     if (this.options.onSendMessage) {
       this.options.onSendMessage(text);
     }
-    
+
     // Dispatch custom event
     const customEvent = new CustomEvent('messages:send', {
       bubbles: true,
-      detail: { text }
+      detail: { text },
     });
     this._element.dispatchEvent(customEvent);
-    
+
     // Clear input
     this.$input.value = '';
-    
+
     // Scroll to bottom
     this._scrollToBottom();
   }
@@ -197,17 +196,17 @@ export class Messages {
    */
   public addMessage(message: MessageItem): void {
     if (!this.$body) return;
-    
+
     const messageEl = this._createMessageElement(message);
     this.$body.appendChild(messageEl);
-    
+
     // Scroll to bottom
     this._scrollToBottom();
-    
+
     // Dispatch custom event
     const customEvent = new CustomEvent('messages:new', {
       bubbles: true,
-      detail: { message }
+      detail: { message },
     });
     this._element.dispatchEvent(customEvent);
   }
@@ -218,31 +217,34 @@ export class Messages {
   private _createMessageElement(message: MessageItem): HTMLElement {
     const contentEl = document.createElement('div');
     contentEl.className = `${MESSAGES.CLASSES.CONTENT} ${message.isSelf ? MESSAGES.CLASSES.CONTENT_SELF : ''}`;
-    contentEl.setAttribute('aria-label', `${message.isSelf ? 'You' : 'Other person'} sent a message at ${message.time}`);
-    
+    contentEl.setAttribute(
+      'aria-label',
+      `${message.isSelf ? 'You' : 'Other person'} sent a message at ${message.time}`
+    );
+
     // Create avatar
     const avatarEl = document.createElement('div');
     avatarEl.className = `${MESSAGES.CLASSES.AVATAR} c-avatar c-avatar--xl c-avatar--circle`;
-    
+
     // Create items container
     const itemsEl = document.createElement('div');
     itemsEl.className = MESSAGES.CLASSES.ITEMS;
-    
+
     // Add text message if present
     if (message.text) {
       const textEl = document.createElement('div');
       textEl.className = MESSAGES.CLASSES.TEXT;
       textEl.textContent = message.text;
-      
+
       const timeEl = document.createElement('span');
       timeEl.className = MESSAGES.CLASSES.TIME;
       timeEl.textContent = message.time;
       timeEl.setAttribute('aria-label', `Sent at ${message.time}`);
-      
+
       textEl.appendChild(timeEl);
       itemsEl.appendChild(textEl);
     }
-    
+
     // Add image if present
     if (message.image) {
       const imageEl = document.createElement('img');
@@ -250,43 +252,47 @@ export class Messages {
       imageEl.src = message.image;
       imageEl.alt = 'Message attachment';
       imageEl.setAttribute('loading', 'lazy');
-      
+
       itemsEl.appendChild(imageEl);
     }
-    
+
     // Add file if present
     if (message.file) {
       const fileEl = document.createElement('div');
       fileEl.className = MESSAGES.CLASSES.FILE;
-      fileEl.setAttribute('aria-label', `File attachment: ${message.file.name}, size: ${message.file.size}`);
-      
+      fileEl.setAttribute(
+        'aria-label',
+        `File attachment: ${message.file.name}, size: ${message.file.size}`
+      );
+
       const iconEl = document.createElement('span');
       iconEl.className = MESSAGES.CLASSES.FILE_ICON;
-      iconEl.innerHTML = '<span class="c-icon c-icon--md " aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M200,224H56a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h96l56,56V216A8,8,0,0,1,200,224Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><polyline points="152 32 152 88 208 88" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline></svg></span>';
-      
+      iconEl.innerHTML =
+        '<span class="c-icon c-icon--md " aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><path d="M200,224H56a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h96l56,56V216A8,8,0,0,1,200,224Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></path><polyline points="152 32 152 88 208 88" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"></polyline></svg></span>';
+
       const detailsEl = document.createElement('div');
       detailsEl.className = MESSAGES.CLASSES.FILE_DETAILS;
-      
+
       const nameEl = document.createElement('div');
       nameEl.className = MESSAGES.CLASSES.FILE_NAME;
       nameEl.textContent = message.file.name;
-      
+
       const sizeEl = document.createElement('div');
       sizeEl.className = MESSAGES.CLASSES.FILE_SIZE;
       sizeEl.textContent = message.file.size;
-      
+
       detailsEl.appendChild(nameEl);
       detailsEl.appendChild(sizeEl);
-      
+
       fileEl.appendChild(iconEl);
       fileEl.appendChild(detailsEl);
-      
+
       itemsEl.appendChild(fileEl);
     }
-    
+
     contentEl.appendChild(avatarEl);
     contentEl.appendChild(itemsEl);
-    
+
     return contentEl;
   }
 
@@ -307,7 +313,7 @@ export class Messages {
     this._element.classList.remove('is-disabled');
     if (this.$input) this.$input.disabled = false;
     if (this.$submitButton) this.$submitButton.disabled = false;
-    
+
     const optionButtons = this._element.querySelectorAll('.c-messages__option-icon');
     optionButtons.forEach(button => {
       if (button instanceof HTMLButtonElement) {
@@ -324,7 +330,7 @@ export class Messages {
     this._element.classList.add('is-disabled');
     if (this.$input) this.$input.disabled = true;
     if (this.$submitButton) this.$submitButton.disabled = true;
-    
+
     const optionButtons = this._element.querySelectorAll('.c-messages__option-icon');
     optionButtons.forEach(button => {
       if (button instanceof HTMLButtonElement) {
@@ -351,11 +357,11 @@ export class Messages {
     if (this.$form && this.eventHandlers.submit) {
       this.$form.removeEventListener('submit', this.eventHandlers.submit);
     }
-    
+
     if (this.$input && this.eventHandlers.keydown) {
       this.$input.removeEventListener('keydown', this.eventHandlers.keydown);
     }
-    
+
     // Clear event handlers
     this.eventHandlers = {};
   }
@@ -369,4 +375,4 @@ export class Messages {
   }
 }
 
-export default Messages; 
+export default Messages;

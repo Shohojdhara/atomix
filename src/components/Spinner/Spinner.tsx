@@ -9,14 +9,19 @@ export const Spinner: React.FC<SpinnerProps> = ({
   fullscreen = false,
   className = '',
 }) => {
-  const { generateSpinnerClass } = useSpinner({ 
-    size, variant, fullscreen 
+  const { generateSpinnerClass } = useSpinner({
+    size,
+    variant,
+    fullscreen,
   });
-  
-  const spinnerClass = generateSpinnerClass({ 
-    size, variant, fullscreen, className 
+
+  const spinnerClass = generateSpinnerClass({
+    size,
+    variant,
+    fullscreen,
+    className,
   });
-  
+
   return (
     <div className={spinnerClass} role="status">
       <span className={SPINNER.VISUALLY_HIDDEN}>Loading...</span>

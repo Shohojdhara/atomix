@@ -4,11 +4,11 @@
  */
 
 import { Hero, initHeroes } from './index';
-import { 
-  applyParallaxEffect, 
-  removeParallaxEffect, 
+import {
+  applyParallaxEffect,
+  removeParallaxEffect,
   applyVideoBackground,
-  initializeHeroesWithCustomBehavior
+  initializeHeroesWithCustomBehavior,
 } from './heroInteractions';
 
 // Export for global use
@@ -18,7 +18,7 @@ export {
   applyParallaxEffect,
   removeParallaxEffect,
   applyVideoBackground,
-  initializeHeroesWithCustomBehavior
+  initializeHeroesWithCustomBehavior,
 };
 
 // Add to global namespace for direct browser usage
@@ -30,4 +30,4 @@ if (typeof window !== 'undefined') {
   (window as any).Atomix.removeParallaxEffect = removeParallaxEffect;
   (window as any).Atomix.applyVideoBackground = applyVideoBackground;
   (window as any).Atomix.initializeHeroesWithCustomBehavior = initializeHeroesWithCustomBehavior;
-} 
+}

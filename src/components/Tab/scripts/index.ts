@@ -29,7 +29,7 @@ const DEFAULT_OPTIONS = {
   panels: TAB.SELECTORS.PANELS,
   panelBodys: TAB.SELECTORS.PANEL_BODIES,
   activeClass: TAB.CLASSES.ACTIVE,
-  activeIndex: TAB.DEFAULTS.ACTIVE_INDEX
+  activeIndex: TAB.DEFAULTS.ACTIVE_INDEX,
 };
 
 /**
@@ -53,7 +53,7 @@ class Tab implements TabInstance {
     this.$element =
       typeof selector === 'string'
         ? document.querySelector<HTMLElement>(selector)
-        : selector as HTMLElement;
+        : (selector as HTMLElement);
     this.options = { ...DEFAULT_OPTIONS, ...options } as TabOptions;
     this.$navItems = null;
     this.$panels = null;
@@ -77,7 +77,7 @@ class Tab implements TabInstance {
    */
   private _initializeElements(): void {
     if (!this.$element) return;
-    
+
     this.$navItems = this.$element.querySelectorAll<HTMLElement>(this.options.navItems);
     this.$panels = this.$element.querySelectorAll<HTMLElement>(this.options.panels);
     this.$panelBodys = this.$element.querySelectorAll<HTMLElement>(this.options.panelBodys);
@@ -88,8 +88,8 @@ class Tab implements TabInstance {
    */
   private _bindEvents(): void {
     if (!this.$navItems) return;
-    
-    this.$navItems.forEach((item) => {
+
+    this.$navItems.forEach(item => {
       const btn = item.querySelector<HTMLElement>(this.options.navBtn);
       if (btn) {
         btn.addEventListener('click', () => this._handleTabClick(btn));
@@ -104,7 +104,7 @@ class Tab implements TabInstance {
   private _handleTabClick(btn: HTMLElement): void {
     const tabIndex = btn.dataset.tabindex;
     if (tabIndex === undefined) return;
-    
+
     this._hideAllTabs();
     this._showTab(tabIndex);
   }
@@ -114,14 +114,14 @@ class Tab implements TabInstance {
    */
   private _hideAllTabs(): void {
     if (!this.$panels || !this.$navItems) return;
-    
-    this.$panels.forEach((panel) => {
+
+    this.$panels.forEach(panel => {
       panel.style.height = '0px';
       panel.classList.remove(this.options.activeClass);
       panel.style.opacity = '0';
     });
 
-    this.$navItems.forEach((item) => {
+    this.$navItems.forEach(item => {
       const btn = item.querySelector<HTMLElement>(this.options.navBtn);
       if (btn) {
         btn.classList.remove(this.options.activeClass);
@@ -135,7 +135,7 @@ class Tab implements TabInstance {
    */
   private _showTab(index: number | string): void {
     if (!this.$panels || !this.$navItems || !this.$panelBodys) return;
-    
+
     this.$panels.forEach((panel, pIndex) => {
       if (panel.dataset.tabindex == index.toString()) {
         const panelBody = this.$panelBodys?.[pIndex];
@@ -163,7 +163,7 @@ class Tab implements TabInstance {
   public destroy(): void {
     if (!this.$element || !this.$navItems) return;
 
-    this.$navItems.forEach((item) => {
+    this.$navItems.forEach(item => {
       const btn = item.querySelector<HTMLElement>(this.options.navBtn);
       if (btn) {
         // Need to recreate the bound function to remove it correctly
@@ -185,7 +185,7 @@ export function initializeTabs(selector = TAB.SELECTORS.TAB, options = {}): TabI
 
   if (!tabElements.length) return tabInstances;
 
-  tabElements.forEach((element) => {
+  tabElements.forEach(element => {
     try {
       const instance = new Tab(element, options);
       tabInstances.push(instance);
@@ -197,4 +197,4 @@ export function initializeTabs(selector = TAB.SELECTORS.TAB, options = {}): TabI
   return tabInstances;
 }
 
-export default Tab; 
+export default Tab;

@@ -54,7 +54,7 @@ interface TimeParts {
 export default class Countdown implements CountdownInstance {
   // DOM element
   private element: HTMLElement;
-  
+
   // Options and state
   private options: CountdownOptions;
   private completed: boolean = false;
@@ -67,17 +67,16 @@ export default class Countdown implements CountdownInstance {
    */
   constructor(element: string | HTMLElement, options: Partial<CountdownOptions> = {}) {
     // Get element reference
-    this.element = typeof element === 'string'
-      ? document.querySelector(element) as HTMLElement
-      : element;
-    
+    this.element =
+      typeof element === 'string' ? (document.querySelector(element) as HTMLElement) : element;
+
     if (!this.element) {
       throw new Error('Countdown: element not found');
     }
-    
+
     // Merge default options with provided options
     this.options = { ...DEFAULT_OPTIONS, ...options };
-    
+
     // Initialize the component
     this._initialize();
   }
@@ -103,14 +102,17 @@ export default class Countdown implements CountdownInstance {
    */
   private _render(): void {
     const now = new Date();
-    const targetDate = this.options.target !== undefined 
-      ? (typeof this.options.target === 'string' ? new Date(this.options.target) : this.options.target)
-      : DEFAULT_OPTIONS.target as Date;
-    
+    const targetDate =
+      this.options.target !== undefined
+        ? typeof this.options.target === 'string'
+          ? new Date(this.options.target)
+          : this.options.target
+        : (DEFAULT_OPTIONS.target as Date);
+
     const diff = targetDate.getTime() - now.getTime();
     const { days, hours, minutes, seconds } = this._getTimeParts(diff);
     const show = this.options.show || DEFAULT_OPTIONS.show!;
-    
+
     const timeParts: { label: string; value: number }[] = [];
     if (show.includes('days')) timeParts.push({ label: 'Days', value: days });
     if (show.includes('hours')) timeParts.push({ label: 'Hours', value: hours });
@@ -121,7 +123,7 @@ export default class Countdown implements CountdownInstance {
     const rootClass = `${COUNTDOWN.CLASSES.BASE}${
       this.options.focused ? ' ' + COUNTDOWN.CLASSES.FOCUSED : ''
     }${this.options.className ? ' ' + this.options.className : ''}`;
-    
+
     // Build HTML
     let html = `<div class="${rootClass.trim()}">`;
     timeParts.forEach((part, idx) => {
@@ -136,7 +138,7 @@ export default class Countdown implements CountdownInstance {
       }
     });
     html += '</div>';
-    
+
     this.element.innerHTML = html;
   }
 
@@ -157,12 +159,15 @@ export default class Countdown implements CountdownInstance {
   private _start(): void {
     this.interval = window.setInterval(() => {
       const now = new Date();
-      const targetDate = this.options.target !== undefined 
-        ? (typeof this.options.target === 'string' ? new Date(this.options.target) : this.options.target)
-        : DEFAULT_OPTIONS.target as Date;
-      
+      const targetDate =
+        this.options.target !== undefined
+          ? typeof this.options.target === 'string'
+            ? new Date(this.options.target)
+            : this.options.target
+          : (DEFAULT_OPTIONS.target as Date);
+
       const diff = targetDate.getTime() - now.getTime();
-      
+
       if (diff <= 0 && !this.completed) {
         this.completed = true;
         if (this.interval !== null) clearInterval(this.interval);
@@ -172,7 +177,7 @@ export default class Countdown implements CountdownInstance {
         this._render();
       }
     }, 1000);
-    
+
     this._render();
   }
 
@@ -185,7 +190,7 @@ export default class Countdown implements CountdownInstance {
       clearInterval(this.interval);
       this.interval = null;
     }
-    
+
     this.element.innerHTML = '';
   }
 
@@ -200,11 +205,11 @@ export default class Countdown implements CountdownInstance {
     return Array.from(elements).map(element => {
       // Try to get options from data attributes
       const options: CountdownOptions = {};
-      
+
       // Get target date/time
       const target = element.getAttribute('data-target');
       if (target) options.target = target;
-      
+
       // Get show parts
       const showAttr = element.getAttribute('data-show');
       if (showAttr) {
@@ -214,20 +219,20 @@ export default class Countdown implements CountdownInstance {
           console.error('Countdown: Error parsing show data attribute', e);
         }
       }
-      
+
       // Get separator
       const separator = element.getAttribute('data-separator');
       if (separator) options.separator = separator;
-      
+
       // Get focused state
       const focused = element.getAttribute('data-focused');
       options.focused = focused === 'true';
-      
+
       // Get className
       const className = element.getAttribute('data-class-name');
       if (className) options.className = className;
-      
+
       return new Countdown(element as HTMLElement, options);
     });
   }
-} 
+}

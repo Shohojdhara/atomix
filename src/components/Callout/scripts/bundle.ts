@@ -7,7 +7,7 @@ import { Callout, CalloutInteractions } from './index';
 if (typeof window !== 'undefined') {
   // Create Atomix namespace if it doesn't exist
   window.Atomix = window.Atomix || {};
-  
+
   // Add Callout to Atomix namespace
   // @ts-ignore - Ignore type mismatch between React component and vanilla JS class
   window.Atomix.Callout = Callout;

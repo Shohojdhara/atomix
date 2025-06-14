@@ -11,7 +11,7 @@ export function useCallout(initialProps?: Partial<CalloutProps>) {
     variant: 'primary',
     oneLine: false,
     toast: false,
-    ...initialProps
+    ...initialProps,
   };
 
   /**
@@ -30,7 +30,7 @@ export function useCallout(initialProps?: Partial<CalloutProps>) {
     const oneLineClass = oneLine ? 'c-callout--oneline' : '';
     const toastClass = toast ? 'c-callout--toast' : '';
     const variantClass = variant ? `c-callout--${variant}` : '';
-    
+
     return `c-callout ${variantClass} ${oneLineClass} ${toastClass} ${className}`.trim();
   };
 

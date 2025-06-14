@@ -11,7 +11,6 @@ export function setRef<T>(
     ref(value);
   } else if (ref) {
     // This is safe because we're checking that ref exists first
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (ref as any).current = value;
   }
 }
@@ -28,7 +27,7 @@ export default function useForkRef<T>(
     if (refA == null && refB == null) {
       return null;
     }
-    
+
     return (refValue: T | null) => {
       setRef(refA, refValue);
       setRef(refB, refValue);

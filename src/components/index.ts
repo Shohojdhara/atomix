@@ -3,7 +3,7 @@
 // Accordion
 export { Accordion, type AccordionProps } from './Accordion/Accordion';
 
-// Avatar  
+// Avatar
 export { Avatar, type AvatarProps } from './Avatar/Avatar';
 
 // AvatarGroup
@@ -37,7 +37,7 @@ export { DataTable, type DataTableProps } from './DataTable/DataTable';
 export { DatePicker, type DatePickerProps } from './DatePicker/DatePicker';
 
 // Dropdown
-export { Dropdown, type DropdownProps } from './Dropdown/Dropdown';          
+export { Dropdown, type DropdownProps } from './Dropdown/Dropdown';
 
 // EdgePanel
 export { EdgePanel, type EdgePanelProps } from './EdgePanel/EdgePanel';
@@ -78,7 +78,7 @@ export { PhotoViewer, type PhotoViewerProps } from './PhotoViewer/PhotoViewer';
 export { Popover, type PopoverProps } from './Popover/Popover';
 
 // ProductReview
-export { ProductReview, type ProductReviewProps } from './ProductReview/ProductReview';       
+export { ProductReview, type ProductReviewProps } from './ProductReview/ProductReview';
 
 // Progress
 export { Progress, type ProgressProps } from './Progress/Progress';
@@ -111,8 +111,7 @@ export { Todo, type TodoProps } from './Todo/Todo';
 export { Toggle, type ToggleProps } from './Toggle/Toggle';
 
 // Tooltip
-export { Tooltip, type TooltipProps } from './Tooltip/Tooltip'; 
+export { Tooltip, type TooltipProps } from './Tooltip/Tooltip';
 
 // Upload
 export { Upload, type UploadProps } from './Upload/Upload';
-

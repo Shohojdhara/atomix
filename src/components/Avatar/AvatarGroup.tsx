@@ -15,7 +15,9 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
     AVATAR_GROUP.CLASSES.BASE,
     stacked && AVATAR_GROUP.CLASSES.STACKED,
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   // Get valid Avatar children
   const avatarChildren = Children.toArray(children).filter(
@@ -24,14 +26,12 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
 
   // Determine if we need to show the "more" indicator
   const showMoreIndicator = max !== undefined && avatarChildren.length > max;
-  const visibleAvatars = showMoreIndicator 
-    ? avatarChildren.slice(0, max) 
-    : avatarChildren;
+  const visibleAvatars = showMoreIndicator ? avatarChildren.slice(0, max) : avatarChildren;
   const hiddenAvatarCount = avatarChildren.length - (max || 0);
 
   // Extract size and shape from first avatar to ensure consistent styling
-  const firstAvatar = isValidElement<AvatarProps>(avatarChildren[0]) 
-    ? avatarChildren[0].props 
+  const firstAvatar = isValidElement<AvatarProps>(avatarChildren[0])
+    ? avatarChildren[0].props
     : null;
   const avatarSize = firstAvatar?.size || 'md';
   const isCircle = firstAvatar?.circle || false;
@@ -42,7 +42,9 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
     AVATAR_GROUP.CLASSES.MORE,
     avatarSize !== 'md' && `c-avatar--${avatarSize}`,
     isCircle && 'c-avatar--circle',
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div className={avatarGroupClasses}>
@@ -58,15 +60,13 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
       })}
 
       {showMoreIndicator && (
-        <div className={moreClasses}>
-          {moreText || `+${hiddenAvatarCount}`}
-        </div>
+        <div className={moreClasses}>{moreText || `+${hiddenAvatarCount}`}</div>
       )}
     </div>
   );
 };
 
-export type { AvatarGroupProps }
+export type { AvatarGroupProps };
 
 AvatarGroup.displayName = 'AvatarGroup';
 

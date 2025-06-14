@@ -14,21 +14,21 @@ export function calculateBestPosition(
   preferredPosition: string = 'top'
 ): string {
   if (!triggerElement || !tooltipElement) return preferredPosition;
-  
+
   // Get element dimensions and positions
   const triggerRect = triggerElement.getBoundingClientRect();
   const tooltipRect = tooltipElement.getBoundingClientRect();
-  
+
   // Get viewport dimensions
   const viewportHeight = window.innerHeight;
   const viewportWidth = window.innerWidth;
-  
+
   // Calculate available space in each direction
   const spaceAbove = triggerRect.top;
   const spaceBelow = viewportHeight - triggerRect.bottom;
   const spaceLeft = triggerRect.left;
   const spaceRight = viewportWidth - triggerRect.right;
-  
+
   // Check if preferred position has enough space
   switch (preferredPosition) {
     case 'top':
@@ -46,18 +46,18 @@ export function calculateBestPosition(
     default:
       break;
   }
-  
+
   // Find the best alternative position
   const spaces = [
     { position: 'top', space: spaceAbove },
     { position: 'bottom', space: spaceBelow },
     { position: 'left', space: spaceLeft },
-    { position: 'right', space: spaceRight }
+    { position: 'right', space: spaceRight },
   ];
-  
+
   // Sort by available space (descending)
   spaces.sort((a, b) => b.space - a.space);
-  
+
   // Return the position with the most space
   return spaces[0].position;
 }
@@ -76,30 +76,30 @@ export function positionTooltip(
   offset: number = 8
 ): void {
   if (!tooltipElement || !triggerElement) return;
-  
+
   // Get element dimensions
   const triggerRect = triggerElement.getBoundingClientRect();
   const tooltipRect = tooltipElement.getBoundingClientRect();
-  
+
   // Calculate position based on the trigger and tooltip dimensions
   let top = 0;
   let left = 0;
-  
+
   switch (position) {
     case 'top':
       top = triggerRect.top - tooltipRect.height - offset;
-      left = triggerRect.left + (triggerRect.width / 2) - (tooltipRect.width / 2);
+      left = triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2;
       break;
     case 'bottom':
       top = triggerRect.bottom + offset;
-      left = triggerRect.left + (triggerRect.width / 2) - (tooltipRect.width / 2);
+      left = triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2;
       break;
     case 'left':
-      top = triggerRect.top + (triggerRect.height / 2) - (tooltipRect.height / 2);
+      top = triggerRect.top + triggerRect.height / 2 - tooltipRect.height / 2;
       left = triggerRect.left - tooltipRect.width - offset;
       break;
     case 'right':
-      top = triggerRect.top + (triggerRect.height / 2) - (tooltipRect.height / 2);
+      top = triggerRect.top + triggerRect.height / 2 - tooltipRect.height / 2;
       left = triggerRect.right + offset;
       break;
     case 'top-left':
@@ -121,9 +121,9 @@ export function positionTooltip(
     default:
       // Default to top
       top = triggerRect.top - tooltipRect.height - offset;
-      left = triggerRect.left + (triggerRect.width / 2) - (tooltipRect.width / 2);
+      left = triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2;
   }
-  
+
   // Apply position
   tooltipElement.style.top = `${top}px`;
   tooltipElement.style.left = `${left}px`;
@@ -139,12 +139,12 @@ export function initializeTooltipsWithCustomBehavior(
   options = {}
 ): Tooltip[] {
   const tooltips = Tooltip.initializeAll(selector, options);
-  
+
   // Apply smart positioning to each tooltip
   tooltips.forEach((tooltip: Tooltip) => {
     const triggerElement = tooltip.getTriggerElement();
     const tooltipElement = tooltip.getElement();
-    
+
     if (triggerElement && tooltipElement) {
       // Update position on window resize
       window.addEventListener('resize', () => {
@@ -154,12 +154,12 @@ export function initializeTooltipsWithCustomBehavior(
             tooltipElement,
             tooltip.getPosition()
           );
-          
+
           tooltip.setPosition(bestPosition);
         }
       });
     }
   });
-  
+
   return tooltips;
-} 
+}

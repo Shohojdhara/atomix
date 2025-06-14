@@ -9,4 +9,4 @@ if (typeof window !== 'undefined') {
 }
 
 export { Popover, initPopovers };
-export type { PopoverPosition, PopoverOptions }; 
+export type { PopoverPosition, PopoverOptions };

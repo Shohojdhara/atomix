@@ -12,7 +12,7 @@ export function useBadge(initialProps?: Partial<BadgeProps>) {
     variant: 'primary',
     size: 'md',
     disabled: false,
-    ...initialProps
+    ...initialProps,
   };
 
   /**
@@ -31,7 +31,7 @@ export function useBadge(initialProps?: Partial<BadgeProps>) {
     const sizeClass = size === 'md' ? '' : `${BADGE.SIZE_PREFIX}${size}`;
     const variantClass = variant ? `${BADGE.VARIANT_PREFIX}${variant}` : '';
     const disabledClass = disabled ? 'c-badge--disabled' : '';
-    
+
     return `${BADGE.BASE_CLASS} ${variantClass} ${sizeClass} ${disabledClass} ${className}`.trim();
   };
 
@@ -39,4 +39,4 @@ export function useBadge(initialProps?: Partial<BadgeProps>) {
     defaultProps,
     generateBadgeClass,
   };
-} 
+}

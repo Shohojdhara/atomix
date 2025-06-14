@@ -4,7 +4,7 @@ import { CARD } from '../constants/components';
 
 /**
  * Hook for managing Card component state and behaviors
- * 
+ *
  * @param options - Configuration options for the card
  * @returns Card state and handlers
  */
@@ -16,7 +16,7 @@ export const useCard = (options: UseCardOptions = {}): UseCardReturn => {
     flipTrigger = 'click',
     focusEffect = false,
     clickable = false,
-    onClick
+    onClick,
   } = options;
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -29,35 +29,41 @@ export const useCard = (options: UseCardOptions = {}): UseCardReturn => {
   const [isHovered, setIsHovered] = useState(false);
 
   // Handle click events
-  const handleClick = useCallback((event: React.MouseEvent) => {
-    if (flipEffect && flipTrigger === 'click') {
-      setIsFlipped(prev => !prev);
-    }
-
-    if (onClick) {
-      onClick(event);
-    }
-  }, [flipEffect, flipTrigger, onClick]);
-
-  // Handle keyboard events for accessibility
-  const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      
+  const handleClick = useCallback(
+    (event: React.MouseEvent) => {
       if (flipEffect && flipTrigger === 'click') {
         setIsFlipped(prev => !prev);
       }
 
       if (onClick) {
-        onClick(event as unknown as React.MouseEvent);
+        onClick(event);
       }
-    }
-  }, [flipEffect, flipTrigger, onClick]);
+    },
+    [flipEffect, flipTrigger, onClick]
+  );
+
+  // Handle keyboard events for accessibility
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+
+        if (flipEffect && flipTrigger === 'click') {
+          setIsFlipped(prev => !prev);
+        }
+
+        if (onClick) {
+          onClick(event as unknown as React.MouseEvent);
+        }
+      }
+    },
+    [flipEffect, flipTrigger, onClick]
+  );
 
   // Handle mouse enter events
   const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
-    
+
     if (elevationEffect) {
       setIsElevated(true);
     }
@@ -70,7 +76,7 @@ export const useCard = (options: UseCardOptions = {}): UseCardReturn => {
   // Handle mouse leave events
   const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
-    
+
     if (elevationEffect) {
       setIsElevated(false);
     }
@@ -97,8 +103,10 @@ export const useCard = (options: UseCardOptions = {}): UseCardReturn => {
       isElevated ? elevationClass : '',
       isFlipped ? CARD.CLASSES.FLIPPED : '',
       isFocused && focusEffect ? CARD.CLASSES.FOCUSED : '',
-      clickable ? CARD.CLASSES.CLICKABLE : ''
-    ].filter(Boolean).join(' ');
+      clickable ? CARD.CLASSES.CLICKABLE : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
 
     return {
       className,
@@ -110,9 +118,23 @@ export const useCard = (options: UseCardOptions = {}): UseCardReturn => {
       onFocus: handleFocus,
       onBlur: handleBlur,
       onClick: handleClick,
-      onKeyDown: handleKeyDown
+      onKeyDown: handleKeyDown,
     };
-  }, [isElevated, isFlipped, isFocused, elevationClass, focusEffect, clickable, handleMouseEnter, handleMouseLeave, handleFocus, handleBlur, handleClick, handleKeyDown, flipEffect]);
+  }, [
+    isElevated,
+    isFlipped,
+    isFocused,
+    elevationClass,
+    focusEffect,
+    clickable,
+    handleMouseEnter,
+    handleMouseLeave,
+    handleFocus,
+    handleBlur,
+    handleClick,
+    handleKeyDown,
+    flipEffect,
+  ]);
 
   return {
     cardRef,
@@ -128,6 +150,6 @@ export const useCard = (options: UseCardOptions = {}): UseCardReturn => {
     handleMouseLeave,
     handleFocus,
     handleBlur,
-    getCardProps
+    getCardProps,
   };
 };

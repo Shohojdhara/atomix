@@ -10,7 +10,11 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     target: { control: 'date', description: 'Target date/time' },
-    show: { control: 'check', options: ['days', 'hours', 'minutes', 'seconds'], description: 'Fields to show' },
+    show: {
+      control: 'check',
+      options: ['days', 'hours', 'minutes', 'seconds'],
+      description: 'Fields to show',
+    },
     separator: { control: 'text', description: 'Separator string' },
     focused: { control: 'boolean', description: 'Focused style' },
   },
@@ -40,4 +44,4 @@ export const CustomSeparator: Story = {
     separator: ' | ',
     show: ['hours', 'minutes', 'seconds'],
   },
-}; 
+};

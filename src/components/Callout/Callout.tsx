@@ -22,7 +22,7 @@ export const Callout: React.FC<CalloutProps> = ({
     variant,
     oneLine,
     toast,
-    className
+    className,
   });
 
   // Determine appropriate ARIA attributes based on variant
@@ -30,7 +30,7 @@ export const Callout: React.FC<CalloutProps> = ({
     const baseAttributes: Record<string, string> = {
       role: 'region',
     };
-    
+
     // For toast notifications or alerts, use appropriate role and live region
     if (toast) {
       baseAttributes.role = 'alert';
@@ -42,12 +42,16 @@ export const Callout: React.FC<CalloutProps> = ({
       baseAttributes.role = 'status';
       baseAttributes['aria-live'] = 'polite';
     }
-    
+
     return baseAttributes;
   };
 
   return (
-    <div className={generateCalloutClass({ variant, oneLine, toast, className })} {...getAriaAttributes()} {...props}>
+    <div
+      className={generateCalloutClass({ variant, oneLine, toast, className })}
+      {...getAriaAttributes()}
+      {...props}
+    >
       <div className="c-callout__content">
         {icon && <div className="c-callout__icon">{icon}</div>}
         <div className="c-callout__message">
@@ -55,15 +59,11 @@ export const Callout: React.FC<CalloutProps> = ({
           {children && <div className="c-callout__text">{children}</div>}
         </div>
       </div>
-      
+
       {actions && <div className="c-callout__actions">{actions}</div>}
-      
+
       {onClose && (
-        <button 
-          className="c-callout__close-btn" 
-          onClick={handleClose(onClose)}
-          aria-label="Close"
-        >
+        <button className="c-callout__close-btn" onClick={handleClose(onClose)} aria-label="Close">
           <Icon name="X" size="md" />
         </button>
       )}

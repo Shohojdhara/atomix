@@ -3,4 +3,4 @@ import type { HeroProps } from './Hero';
 
 export { Hero };
 export type { HeroProps };
-export default Hero; 
+export default Hero;

@@ -11,19 +11,17 @@ const meta = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: [
-        'primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'
-      ],
-      description: 'The color variant of the spinner'
+      options: ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'],
+      description: 'The color variant of the spinner',
     },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
-      description: 'The size of the spinner'
+      description: 'The size of the spinner',
     },
     fullscreen: {
       control: 'boolean',
-      description: 'Whether the spinner should be centered and fixed in the viewport'
+      description: 'Whether the spinner should be centered and fixed in the viewport',
     },
   },
 } satisfies Meta<typeof Spinner>;
@@ -65,4 +63,4 @@ export const ColorVariants: Story = {
       <Spinner variant="dark" />
     </div>
   ),
-}; 
+};

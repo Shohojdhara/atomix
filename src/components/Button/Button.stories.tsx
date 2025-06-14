@@ -12,32 +12,46 @@ const meta = {
     variant: {
       control: { type: 'select' },
       options: [
-        'primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark',
-        'outline-primary', 'outline-secondary', 'outline-success', 'outline-info', 
-        'outline-warning', 'outline-danger', 'outline-light', 'outline-dark', 'link'
+        'primary',
+        'secondary',
+        'success',
+        'info',
+        'warning',
+        'danger',
+        'light',
+        'dark',
+        'outline-primary',
+        'outline-secondary',
+        'outline-success',
+        'outline-info',
+        'outline-warning',
+        'outline-danger',
+        'outline-light',
+        'outline-dark',
+        'link',
       ],
-      description: 'The visual style of the button'
+      description: 'The visual style of the button',
     },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
-      description: 'The size of the button'
+      description: 'The size of the button',
     },
     disabled: {
       control: 'boolean',
-      description: 'Whether the button is disabled'
+      description: 'Whether the button is disabled',
     },
     icon: {
       control: 'text',
-      description: 'Optional icon element to display in the button'
+      description: 'Optional icon element to display in the button',
     },
     iconOnly: {
       control: 'boolean',
-      description: 'Whether the button should only display an icon'
+      description: 'Whether the button should only display an icon',
     },
     rounded: {
       control: 'boolean',
-      description: 'Whether the button should have a fully rounded (pill) shape'
+      description: 'Whether the button should have a fully rounded (pill) shape',
     },
   },
 } satisfies Meta<typeof Button>;
@@ -47,7 +61,17 @@ type Story = StoryObj<typeof meta>;
 
 // Mock icon component for stories
 const Icon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M12 5v14M5 12h14" />
   </svg>
 );
@@ -186,7 +210,7 @@ export const IconOnly: Story = {
 export const AllVariants: Story = {
   args: {
     label: 'Button',
-    variant: "success",
+    variant: 'success',
   },
   render: () => (
     <div className="u-d-flex u-flex-wrap u-gap-2">
@@ -243,7 +267,7 @@ export const IconButtonVariants: Story = {
     label: 'Button',
     variant: 'primary',
     icon: <Icon />,
-    iconOnly: true
+    iconOnly: true,
   },
   render: () => (
     <div className="u-d-flex u-flex-wrap u-gap-2">

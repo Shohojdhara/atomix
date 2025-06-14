@@ -3,7 +3,15 @@ import { DROPDOWN } from '../../../lib/constants/components';
 /**
  * Dropdown position types
  */
-export type DropdownPosition = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'left-start' | 'left-end' | 'right-start' | 'right-end';
+export type DropdownPosition =
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'top-start'
+  | 'top-end'
+  | 'left-start'
+  | 'left-end'
+  | 'right-start'
+  | 'right-end';
 
 /**
  * Dropdown trigger types
@@ -28,4 +36,4 @@ export interface DropdownOptions {
  */
 export interface TimerRef {
   current: number | null;
-} 
+}

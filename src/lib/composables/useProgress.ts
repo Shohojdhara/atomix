@@ -5,17 +5,17 @@ interface UseProgressProps {
    * Progress value from 0 to 100
    */
   value: number;
-  
+
   /**
    * Optional color variant
    */
   variant?: ThemeColor;
-  
+
   /**
    * Optional size
    */
   size?: 'sm' | 'md' | 'lg';
-  
+
   /**
    * Optional className for custom styling
    */
@@ -27,12 +27,12 @@ interface UseProgressReturn {
    * Computed progress value clamped between 0 and 100
    */
   progressValue: number;
-  
+
   /**
    * CSS properties for the progress component
    */
   progressStyle: React.CSSProperties;
-  
+
   /**
    * CSS classes for the progress component
    */
@@ -61,13 +61,10 @@ export const useProgress = ({
   const variantClass = variant ? `${baseClass}--${variant}` : '';
   const sizeClass = size ? `${baseClass}--${size}` : '';
   const customClass = className || '';
-  
-  const progressClasses = [
-    baseClass,
-    variantClass,
-    sizeClass,
-    customClass
-  ].filter(Boolean).join(' ');
+
+  const progressClasses = [baseClass, variantClass, sizeClass, customClass]
+    .filter(Boolean)
+    .join(' ');
 
   return {
     progressValue,

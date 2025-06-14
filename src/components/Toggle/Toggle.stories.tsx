@@ -19,7 +19,7 @@ export default {
   },
 } as Meta<typeof Toggle>;
 
-const Template: StoryFn<typeof Toggle> = (args) => (
+const Template: StoryFn<typeof Toggle> = args => (
   <div style={{ display: 'flex', justifyContent: 'center', padding: '30px' }}>
     <Toggle {...args} />
   </div>
@@ -47,4 +47,4 @@ export const DisabledOn = Template.bind({});
 DisabledOn.args = {
   initialOn: true,
   disabled: true,
-}; 
+};

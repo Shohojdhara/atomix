@@ -7,7 +7,7 @@ const CHECKBOX_CLASSES = {
   INVALID: 'is-error',
   VALID: 'is-valid',
   DISABLED: 'is-disabled',
-  MIXED: 'c-checkbox--mixed'
+  MIXED: 'c-checkbox--mixed',
 };
 
 /**
@@ -22,12 +22,12 @@ export function useCheckbox(initialProps?: Partial<CheckboxProps>) {
     invalid: false,
     valid: false,
     indeterminate: false,
-    ...initialProps
+    ...initialProps,
   };
-  
+
   // Ref for the checkbox input element
   const checkboxRef = useRef<HTMLInputElement>(null);
-  
+
   // Handle indeterminate state
   useEffect(() => {
     if (checkboxRef.current) {
@@ -55,10 +55,10 @@ export function useCheckbox(initialProps?: Partial<CheckboxProps>) {
     } else if (valid) {
       validationClass = CHECKBOX_CLASSES.VALID;
     }
-    
+
     const disabledClass = disabled ? CHECKBOX_CLASSES.DISABLED : '';
     const indeterminateClass = indeterminate ? CHECKBOX_CLASSES.MIXED : '';
-    
+
     return `${CHECKBOX_CLASSES.BASE} ${validationClass} ${disabledClass} ${indeterminateClass} ${className}`.trim();
   };
 
@@ -67,4 +67,4 @@ export function useCheckbox(initialProps?: Partial<CheckboxProps>) {
     generateCheckboxClass,
     checkboxRef,
   };
-} 
+}

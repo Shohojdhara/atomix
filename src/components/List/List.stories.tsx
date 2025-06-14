@@ -40,9 +40,7 @@ const ListItem = ({ children }: { children: React.ReactNode }) => <span>{childre
 const ListItems = ({ variant }: { variant: string }) => (
   <>
     {ITEMS.map((item, index) => (
-      <ListItem key={index}>
-        {variant === 'number' ? `${index + 1}. ${item}` : item}
-      </ListItem>
+      <ListItem key={index}>{variant === 'number' ? `${index + 1}. ${item}` : item}</ListItem>
     ))}
   </>
 );

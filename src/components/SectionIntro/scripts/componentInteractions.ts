@@ -19,7 +19,7 @@ export function enhanceSectionIntro(element: HTMLElement): void {
  */
 export function initializeSectionIntroInteractions(): void {
   const sectionIntros = document.querySelectorAll(SECTION_INTRO.SELECTORS.SECTION_INTRO);
-  
+
   sectionIntros.forEach(element => {
     if (element instanceof HTMLElement) {
       enhanceSectionIntro(element);

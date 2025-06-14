@@ -11,10 +11,10 @@ import { getModalInstance } from './index';
  */
 export function handleModalOpenClick(event: MouseEvent, modalSelector: string): void {
   event.preventDefault();
-  
+
   const modalElement = document.querySelector(modalSelector) as HTMLElement;
   if (!modalElement) return;
-  
+
   // Get modal instance or apply basic open logic
   const instance = getModalInstance(modalElement);
   if (instance) {
@@ -34,13 +34,13 @@ export function handleModalOpenClick(event: MouseEvent, modalSelector: string): 
  */
 export function handleModalCloseClick(event: MouseEvent, modal: HTMLElement): void {
   event.preventDefault();
-  
+
   const instance = getModalInstance(modal);
   if (instance) {
     instance.close();
   } else {
     modal.classList.remove(MODAL.CLASSES.IS_OPEN);
-    
+
     // Listen for transition end to hide the modal
     const backdrop = modal.querySelector(MODAL.SELECTORS.BACKDROP);
     if (backdrop) {
@@ -48,7 +48,7 @@ export function handleModalCloseClick(event: MouseEvent, modal: HTMLElement): vo
         modal.style.display = 'none';
         backdrop.removeEventListener('transitionend', transitionEndHandler);
       };
-      
+
       backdrop.addEventListener('transitionend', transitionEndHandler);
     } else {
       setTimeout(() => {
@@ -64,8 +64,10 @@ export function handleModalCloseClick(event: MouseEvent, modal: HTMLElement): vo
  */
 export function handleModalKeydown(event: KeyboardEvent): void {
   if (event.key === 'Escape') {
-    const openModals = document.querySelectorAll(`${MODAL.SELECTORS.MODAL}.${MODAL.CLASSES.IS_OPEN}`);
-    
+    const openModals = document.querySelectorAll(
+      `${MODAL.SELECTORS.MODAL}.${MODAL.CLASSES.IS_OPEN}`
+    );
+
     openModals.forEach(modal => {
       const instance = getModalInstance(modal as HTMLElement);
       if (instance) {
@@ -84,7 +86,7 @@ export function handleModalKeydown(event: KeyboardEvent): void {
  */
 export function handleBackdropClick(event: MouseEvent, modal: HTMLElement): void {
   const backdrop = modal.querySelector(MODAL.SELECTORS.BACKDROP);
-  
+
   if (backdrop && event.target === backdrop) {
     const instance = getModalInstance(modal);
     if (instance) {
@@ -101,9 +103,9 @@ export function handleBackdropClick(event: MouseEvent, modal: HTMLElement): void
  */
 export function setupModalEventDelegation(): void {
   // Document click handler for delegation
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', event => {
     const target = event.target as HTMLElement;
-    
+
     // Handle open button clicks
     const openButton = target.closest('[data-modal-open]');
     if (openButton) {
@@ -113,7 +115,7 @@ export function setupModalEventDelegation(): void {
       }
       return;
     }
-    
+
     // Handle close button clicks
     const closeButton = target.closest('[data-modal-close]');
     if (closeButton) {
@@ -123,7 +125,7 @@ export function setupModalEventDelegation(): void {
       }
       return;
     }
-    
+
     // Handle backdrop clicks
     const backdrop = target.closest(MODAL.SELECTORS.BACKDROP);
     if (backdrop) {
@@ -133,7 +135,7 @@ export function setupModalEventDelegation(): void {
       }
     }
   });
-  
+
   // Global escape key handler
   document.addEventListener('keydown', handleModalKeydown);
-} 
+}

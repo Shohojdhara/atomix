@@ -17,16 +17,7 @@ export default {
     color: {
       control: {
         type: 'select',
-        options: [
-          'primary',
-          'secondary',
-          'success',
-          'info',
-          'warning',
-          'error',
-          'light',
-          'dark',
-        ],
+        options: ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'],
       },
     },
     onChange: { action: 'onChange' },
@@ -99,15 +90,11 @@ CustomColor.args = {
 
 export const Interactive: StoryFn<RatingProps> = () => {
   const [rating, setRating] = useState(3);
-  
+
   return (
     <div>
       <p>Selected rating: {rating}</p>
-      <Rating 
-        value={rating} 
-        onChange={setRating} 
-        allowHalf={true}
-      />
+      <Rating value={rating} onChange={setRating} allowHalf={true} />
     </div>
   );
 };

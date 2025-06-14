@@ -1,1 +1,1 @@
-export * from './EdgePanel'; 
+export * from './EdgePanel';

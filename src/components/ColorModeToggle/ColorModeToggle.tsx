@@ -6,12 +6,12 @@ export interface ColorModeToggleProps {
 
 export const ColorModeToggle: React.FC<ColorModeToggleProps> = ({ className = '' }) => {
   const [colorMode, setColorMode] = useState<'light' | 'dark'>('light');
-  
+
   // Initialize color mode from localStorage or system preference
   useEffect(() => {
     // Check if color mode is already set in localStorage
     const storedColorMode = localStorage.getItem('atomix-color-mode');
-    
+
     if (storedColorMode === 'light' || storedColorMode === 'dark') {
       setColorMode(storedColorMode);
     } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -19,24 +19,24 @@ export const ColorModeToggle: React.FC<ColorModeToggleProps> = ({ className = ''
       setColorMode('dark');
     }
   }, []);
-  
+
   // Update the document theme attribute when colorMode changes
   useEffect(() => {
     document.documentElement.setAttribute('data-atomix-theme', colorMode);
     localStorage.setItem('atomix-color-mode', colorMode);
   }, [colorMode]);
-  
+
   // Listen for system color scheme changes
   useEffect(() => {
     const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
+
     const handleSystemThemeChange = (event: MediaQueryListEvent) => {
       // Only update if user hasn't explicitly set a preference
       if (!localStorage.getItem('atomix-color-mode')) {
         setColorMode(event.matches ? 'dark' : 'light');
       }
     };
-    
+
     // Add event listener for system theme changes
     if (darkModeMediaQuery.addEventListener) {
       darkModeMediaQuery.addEventListener('change', handleSystemThemeChange);
@@ -44,7 +44,7 @@ export const ColorModeToggle: React.FC<ColorModeToggleProps> = ({ className = ''
       // Fallback for older browsers
       darkModeMediaQuery.addListener(handleSystemThemeChange);
     }
-    
+
     // Clean up event listener
     return () => {
       if (darkModeMediaQuery.removeEventListener) {
@@ -55,13 +55,13 @@ export const ColorModeToggle: React.FC<ColorModeToggleProps> = ({ className = ''
       }
     };
   }, []);
-  
+
   const toggleColorMode = () => {
-    setColorMode(prevMode => prevMode === 'light' ? 'dark' : 'light');
+    setColorMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
   };
-  
+
   return (
-    <button 
+    <button
       className={`c-color-mode-toggle ${className}`}
       onClick={toggleColorMode}
       aria-label={`Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`}
@@ -78,11 +78,8 @@ export const ColorModeToggle: React.FC<ColorModeToggleProps> = ({ className = ''
       )}
     </button>
   );
-}; 
-
+};
 
 ColorModeToggle.displayName = 'ColorModeToggle';
 
 export default ColorModeToggle;
-
-

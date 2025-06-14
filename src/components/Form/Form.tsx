@@ -17,12 +17,12 @@ export const Form: React.FC<FormProps> = ({
   noValidate = false,
   autoComplete = 'on',
 }) => {
-  const { generateFormClass, handleSubmit, handleReset } = useForm({ 
-    disabled 
+  const { generateFormClass, handleSubmit, handleReset } = useForm({
+    disabled,
   });
-  
+
   const formClass = generateFormClass({ className, disabled });
-  
+
   return (
     <form
       id={id}
@@ -39,7 +39,7 @@ export const Form: React.FC<FormProps> = ({
   );
 };
 
-export type { FormProps  };
+export type { FormProps };
 
 Form.displayName = 'Form';
 

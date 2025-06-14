@@ -8,11 +8,11 @@ import { TODO } from '../../../lib/constants/components';
  */
 export function applyHoverEffect(todoItem: HTMLElement): void {
   const hoverClass = 'is-hovered';
-  
+
   todoItem.addEventListener('mouseenter', () => {
     todoItem.classList.add(hoverClass);
   });
-  
+
   todoItem.addEventListener('mouseleave', () => {
     todoItem.classList.remove(hoverClass);
   });
@@ -25,11 +25,11 @@ export function applyHoverEffect(todoItem: HTMLElement): void {
 export function applyFocusEffect(input: HTMLInputElement): void {
   const focusClass = 'is-focused';
   const formGroup = input.closest('.c-todo__form-group');
-  
+
   input.addEventListener('focus', () => {
     formGroup?.classList.add(focusClass);
   });
-  
+
   input.addEventListener('blur', () => {
     formGroup?.classList.remove(focusClass);
   });
@@ -50,20 +50,20 @@ export function initializeTodoItem(
 ): void {
   const checkbox = item.querySelector('.c-todo__checkbox') as HTMLInputElement;
   const deleteButton = item.querySelector('.c-todo__delete-btn') as HTMLButtonElement;
-  
+
   if (checkbox) {
     checkbox.addEventListener('change', () => {
       if (onToggle) onToggle(id);
     });
   }
-  
+
   if (deleteButton) {
-    deleteButton.addEventListener('click', (e) => {
+    deleteButton.addEventListener('click', e => {
       e.preventDefault();
       if (onDelete) onDelete(id);
     });
   }
-  
+
   // Apply hover effect
   applyHoverEffect(item);
 }
@@ -75,8 +75,8 @@ export function initializeTodoItem(
 export function initializeAllTodos(selector = '[data-component="todo"]'): Todo[] {
   const todoInstances: Todo[] = [];
   const todoElements = document.querySelectorAll<HTMLElement>(selector);
-  
-  todoElements.forEach((element) => {
+
+  todoElements.forEach(element => {
     try {
       const instance = new Todo(element);
       todoInstances.push(instance);
@@ -84,7 +84,7 @@ export function initializeAllTodos(selector = '[data-component="todo"]'): Todo[]
       console.error('Error initializing todo:', error);
     }
   });
-  
+
   return todoInstances;
 }
 
@@ -115,4 +115,4 @@ export function sortTodoItems(items: TodoItem[]): TodoItem[] {
     // Then by creation time (assuming newer items have higher IDs)
     return a.id.localeCompare(b.id);
   });
-} 
+}

@@ -14,13 +14,13 @@ const meta: Meta<typeof SectionIntro> = {
     title: { control: 'text' },
     label: { control: 'text' },
     text: { control: 'text' },
-    alignment: { 
-      control: { type: 'select' }, 
-      options: ['left', 'center', 'right'] 
+    alignment: {
+      control: { type: 'select' },
+      options: ['left', 'center', 'right'],
     },
-    size: { 
-      control: { type: 'select' }, 
-      options: ['sm', 'md', 'lg'] 
+    size: {
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg'],
     },
     skeleton: { control: 'boolean' },
     showOverlay: { control: 'boolean' },
@@ -80,7 +80,8 @@ export const RightAligned: Story = {
 export const WithBackground: Story = {
   args: {
     ...Default.args,
-    backgroundImageSrc: 'https://images.unsplash.com/photo-1557682250-33bd709cbe85?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    backgroundImageSrc:
+      'https://images.unsplash.com/photo-1557682250-33bd709cbe85?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
     showOverlay: true,
     alignment: 'center',
     title: 'Discover Our Vision',
@@ -93,7 +94,8 @@ export const WithBackground: Story = {
 export const WithImage: Story = {
   args: {
     ...Default.args,
-    imageSrc: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    imageSrc:
+      'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
     imageAlt: 'Team collaboration',
   },
 };
@@ -130,7 +132,8 @@ export const FullExample: Story = {
     text: 'We believe in creating technology that empowers people to achieve more. Our components are designed with accessibility, performance, and developer experience in mind.',
     alignment: 'center',
     size: 'lg',
-    backgroundImageSrc: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    backgroundImageSrc:
+      'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
     showOverlay: true,
     actions: (
       <div className="u-flex u-gap-md u-justify-center">

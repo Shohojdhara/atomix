@@ -25,12 +25,19 @@ export const Select: React.FC<SelectProps> = ({
   ariaLabel,
   ariaDescribedBy,
 }) => {
-  const { generateSelectClass } = useSelect({ 
-    size, disabled, invalid, valid
+  const { generateSelectClass } = useSelect({
+    size,
+    disabled,
+    invalid,
+    valid,
   });
-  
-  const selectClass = generateSelectClass({ 
-    className, size, disabled, invalid, valid
+
+  const selectClass = generateSelectClass({
+    className,
+    size,
+    disabled,
+    invalid,
+    valid,
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -82,32 +89,32 @@ export const Select: React.FC<SelectProps> = ({
   };
 
   // Handle item selection
-  const handleItemClick = (option: { value: string, label: string }) => {
+  const handleItemClick = (option: { value: string; label: string }) => {
     setSelectedLabel(option.label);
     setIsOpen(false);
     if (bodyRef.current) {
       bodyRef.current.style.height = '0px';
     }
-    
+
     if (nativeSelectRef.current) {
       nativeSelectRef.current.value = option.value;
     }
-    
+
     if (onChange) {
       // Create a synthetic event
       const event = {
         target: {
           name,
-          value: option.value
-        }
+          value: option.value,
+        },
       } as React.ChangeEvent<HTMLSelectElement>;
       onChange(event);
     }
   };
 
   return (
-    <div 
-      className={`${selectClass} ${isOpen ? SELECT.CLASSES.IS_OPEN : ''}`} 
+    <div
+      className={`${selectClass} ${isOpen ? SELECT.CLASSES.IS_OPEN : ''}`}
       ref={dropdownRef}
       aria-expanded={isOpen}
     >
@@ -133,43 +140,35 @@ export const Select: React.FC<SelectProps> = ({
             {placeholder}
           </option>
         )}
-        {options.map((option) => (
-          <option 
-            key={option.value} 
-            value={option.value} 
-            disabled={option.disabled}
-          >
+        {options.map(option => (
+          <option key={option.value} value={option.value} disabled={option.disabled}>
             {option.label}
           </option>
         ))}
       </select>
-      
+
       {/* Custom Select UI */}
-      <div 
-        className={SELECT.CLASSES.SELECTED}
-        onClick={handleToggle}
-        aria-disabled={disabled}
-      >
+      <div className={SELECT.CLASSES.SELECTED} onClick={handleToggle} aria-disabled={disabled}>
         {selectedLabel}
       </div>
-      
+
       <i className={`${SELECT.CLASSES.ICON_CARET} ${SELECT.CLASSES.TOGGLE_ICON}`} />
-      
+
       <div className={SELECT.CLASSES.SELECT_BODY} ref={bodyRef} style={{ height: 0 }}>
         <div className={SELECT.CLASSES.SELECT_PANEL} ref={panelRef}>
           <ul className={SELECT.CLASSES.SELECT_ITEMS}>
             {options.map((option, index) => (
-              <li 
+              <li
                 key={option.value}
                 className={SELECT.CLASSES.SELECT_ITEM}
                 data-value={option.value}
                 onClick={() => !option.disabled && handleItemClick(option)}
               >
                 <label htmlFor={`SelectItem${index}`} className="c-checkbox">
-                  <input 
-                    type="checkbox" 
-                    id={`SelectItem${index}`} 
-                    className="c-checkbox__input c-select__item-input" 
+                  <input
+                    type="checkbox"
+                    id={`SelectItem${index}`}
+                    className="c-checkbox__input c-select__item-input"
                     checked={value === option.value}
                     readOnly
                     disabled={option.disabled}
@@ -185,9 +184,8 @@ export const Select: React.FC<SelectProps> = ({
   );
 };
 
-export type { SelectProps  };
+export type { SelectProps };
 
 Select.displayName = 'Select';
 
 export default Select;
-  

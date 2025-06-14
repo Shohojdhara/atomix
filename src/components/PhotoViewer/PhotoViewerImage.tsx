@@ -42,7 +42,7 @@ export interface PhotoViewerImageProps {
 
 /**
  * PhotoViewerImage component - displays the main image with zoom and pan capabilities
- * 
+ *
  * @param props - PhotoViewerImageProps
  * @returns JSX.Element
  */
@@ -68,7 +68,7 @@ export const PhotoViewerImage: React.FC<PhotoViewerImageProps> = ({
   const internalContainerRef = useRef<HTMLDivElement>(null);
   const effectiveContainerRef = containerRef || internalContainerRef;
   const [isMounted, setIsMounted] = useState(false);
-  
+
   // Track mounting state
   useEffect(() => {
     setIsMounted(true);
@@ -76,43 +76,45 @@ export const PhotoViewerImage: React.FC<PhotoViewerImageProps> = ({
   }, []);
 
   // Add double-click to zoom
-  const handleDoubleClick = (e: React.MouseEvent<HTMLDivElement | HTMLImageElement, MouseEvent>) => {
+  const handleDoubleClick = (
+    e: React.MouseEvent<HTMLDivElement | HTMLImageElement, MouseEvent>
+  ) => {
     if (isMounted && onDoubleClick) onDoubleClick(e);
   };
-  
+
   // Add non-passive event listeners to prevent page scrolling/zooming
   useEffect(() => {
     const container = effectiveContainerRef.current;
     if (!container) return undefined;
-    
+
     const handleWheelEvent = (e: WheelEvent) => {
       // Only call if mounted and handler exists
       if (isMounted && container && onWheel) {
         onWheel(e as unknown as React.WheelEvent<HTMLDivElement>);
       }
     };
-    
+
     const handleTouchStartEvent = (e: TouchEvent) => {
       // Only call if mounted and handler exists
       if (isMounted && container && onTouchStart) {
         onTouchStart(e as unknown as React.TouchEvent<HTMLDivElement>);
       }
     };
-    
+
     const handleTouchMoveEvent = (e: TouchEvent) => {
       // Only call if mounted and handler exists
       if (isMounted && container && onTouchMove) {
         onTouchMove(e as unknown as React.TouchEvent<HTMLDivElement>);
       }
     };
-    
+
     const handleTouchEndEvent = (e: TouchEvent) => {
       // Only call if mounted and handler exists
       if (isMounted && container && onTouchEnd) {
         onTouchEnd(e as unknown as React.TouchEvent<HTMLDivElement>);
       }
     };
-    
+
     // Only add event listeners if mounted
     if (isMounted) {
       container.addEventListener('wheel', handleWheelEvent, { passive: false });
@@ -120,7 +122,7 @@ export const PhotoViewerImage: React.FC<PhotoViewerImageProps> = ({
       container.addEventListener('touchmove', handleTouchMoveEvent, { passive: false });
       container.addEventListener('touchend', handleTouchEndEvent, { passive: false });
     }
-    
+
     // Clean up
     return () => {
       container.removeEventListener('wheel', handleWheelEvent);
@@ -129,7 +131,7 @@ export const PhotoViewerImage: React.FC<PhotoViewerImageProps> = ({
       container.removeEventListener('touchend', handleTouchEndEvent);
     };
   }, [isMounted, onWheel, onTouchStart, onTouchMove, onTouchEnd, effectiveContainerRef]);
-  
+
   return (
     <div
       ref={effectiveContainerRef}
@@ -152,17 +154,17 @@ export const PhotoViewerImage: React.FC<PhotoViewerImageProps> = ({
         className="c-photo-viewer__image"
         style={{
           transform: `scale(${zoomLevel}) translate(${dragPosition.x}px, ${dragPosition.y}px) rotate(${rotationAngle}deg)`,
-          transition: isDragging 
-            ? 'none' 
-            : isTransitioning 
-              ? 'opacity 0.15s ease-out' 
+          transition: isDragging
+            ? 'none'
+            : isTransitioning
+              ? 'opacity 0.15s ease-out'
               : 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
           transformOrigin: 'center center',
           willChange: isDragging ? 'transform' : 'auto',
           touchAction: 'none', // Prevent image-specific touch behaviors
         }}
         draggable={false}
-        onContextMenu={(e) => e.preventDefault()} // Prevent context menu on long press
+        onContextMenu={e => e.preventDefault()} // Prevent context menu on long press
       />
     </div>
   );

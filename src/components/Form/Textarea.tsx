@@ -29,14 +29,23 @@ export const Textarea: React.FC<TextareaProps> = ({
   ariaLabel,
   ariaDescribedBy,
 }) => {
-  const { generateTextareaClass } = useTextarea({ 
-    size, variant, disabled, invalid, valid
+  const { generateTextareaClass } = useTextarea({
+    size,
+    variant,
+    disabled,
+    invalid,
+    valid,
   });
-  
-  const textareaClass = generateTextareaClass({ 
-    className, size, variant, disabled, invalid, valid
+
+  const textareaClass = generateTextareaClass({
+    className,
+    size,
+    variant,
+    disabled,
+    invalid,
+    valid,
   });
-  
+
   return (
     <textarea
       className={textareaClass}
@@ -62,7 +71,7 @@ export const Textarea: React.FC<TextareaProps> = ({
   );
 };
 
-export type { TextareaProps  };
+export type { TextareaProps };
 
 Textarea.displayName = 'Textarea';
 

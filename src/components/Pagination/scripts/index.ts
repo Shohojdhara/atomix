@@ -63,33 +63,33 @@ const navButtons: NavButtonConfig[] = [
     iconHtml: '&laquo;',
     iconClass: 'c-icon c-icon--sm c-pagination__icon-skip-back',
     label: 'Go to first page',
-    action: (pagination) => pagination.goToPage(1),
-    isDisabled: (pagination) => pagination.currentPage === 1
+    action: pagination => pagination.goToPage(1),
+    isDisabled: pagination => pagination.currentPage === 1,
   },
   {
     type: 'prev',
     iconHtml: '&lsaquo;',
     iconClass: 'c-icon c-icon--sm c-pagination__icon-caret-left',
     label: 'Go to previous page',
-    action: (pagination) => pagination.goToPage(pagination.currentPage - 1),
-    isDisabled: (pagination) => pagination.currentPage === 1
+    action: pagination => pagination.goToPage(pagination.currentPage - 1),
+    isDisabled: pagination => pagination.currentPage === 1,
   },
   {
     type: 'next',
     iconHtml: '&rsaquo;',
     iconClass: 'c-icon c-icon--sm c-pagination__icon-caret-right',
     label: 'Go to next page',
-    action: (pagination) => pagination.goToPage(pagination.currentPage + 1),
-    isDisabled: (pagination) => pagination.currentPage === pagination.totalPages
+    action: pagination => pagination.goToPage(pagination.currentPage + 1),
+    isDisabled: pagination => pagination.currentPage === pagination.totalPages,
   },
   {
     type: 'last',
     iconHtml: '&raquo;',
     iconClass: 'c-icon c-icon--sm c-pagination__icon-skip-forward',
     label: 'Go to last page',
-    action: (pagination) => pagination.goToPage(pagination.totalPages),
-    isDisabled: (pagination) => pagination.currentPage === pagination.totalPages
-  }
+    action: pagination => pagination.goToPage(pagination.totalPages),
+    isDisabled: pagination => pagination.currentPage === pagination.totalPages,
+  },
 ];
 
 class Pagination {
@@ -105,7 +105,7 @@ class Pagination {
       throw new Error('Pagination element not found');
     }
     this.$element = el;
-    this.options = { ...defaults, ...this._parseDataAttributes(), ...options }; 
+    this.options = { ...defaults, ...this._parseDataAttributes(), ...options };
     this.currentPage = Number(this.options.currentPage) || 1;
     this.totalPages = Number(this.options.totalPages) || 1;
 
@@ -118,16 +118,18 @@ class Pagination {
   private _parseDataAttributes(): Partial<PaginationOptions> {
     const dataset = this.$element.dataset;
     const result: Partial<PaginationOptions> = {};
-    
+
     if (dataset.currentPage) result.currentPage = Number(dataset.currentPage);
     if (dataset.totalPages) result.totalPages = Number(dataset.totalPages);
     if (dataset.siblingCount) result.siblingCount = Number(dataset.siblingCount);
-    if (dataset.showFirstLastButtons) result.showFirstLastButtons = dataset.showFirstLastButtons === 'true';
-    if (dataset.showPrevNextButtons) result.showPrevNextButtons = dataset.showPrevNextButtons === 'true';
+    if (dataset.showFirstLastButtons)
+      result.showFirstLastButtons = dataset.showFirstLastButtons === 'true';
+    if (dataset.showPrevNextButtons)
+      result.showPrevNextButtons = dataset.showPrevNextButtons === 'true';
     if (dataset.size) result.size = dataset.size as 'sm' | 'md' | 'lg';
     if (dataset.ariaLabel) result.ariaLabel = dataset.ariaLabel;
     if (dataset.useIcons) result.useIcons = dataset.useIcons === 'true';
-    
+
     return result;
   }
 
@@ -141,12 +143,12 @@ class Pagination {
    */
   private _createNavButtonHtml(config: NavButtonConfig | undefined): string {
     if (!config) return '';
-    
+
     const isDisabled = config.isDisabled(this);
-    const buttonContent = this.options.useIcons 
-      ? `<span class="${config.iconClass}" aria-hidden="true"></span>` 
+    const buttonContent = this.options.useIcons
+      ? `<span class="${config.iconClass}" aria-hidden="true"></span>`
       : config.iconHtml;
-      
+
     return `
       <li class="${this.options.pageItemSelector?.substring(1) || 'c-pagination__item'} c-pagination__item--${config.type}${isDisabled ? ' ' + this.options.disabledClass : ''}" 
           aria-disabled="${isDisabled}">
@@ -163,11 +165,11 @@ class Pagination {
 
   private _render(): void {
     // Get pagination range using the same logic as React component
-    const { paginationRange } = usePagination({ 
-      currentPage: this.currentPage, 
-      totalPages: this.totalPages, 
+    const { paginationRange } = usePagination({
+      currentPage: this.currentPage,
+      totalPages: this.totalPages,
       siblingCount: this.options.siblingCount,
-      onPageChange: this.options.onPageChange || (() => {})
+      onPageChange: this.options.onPageChange || (() => {}),
     });
 
     // Create container with appropriate attributes
@@ -183,7 +185,7 @@ class Pagination {
       const firstButton = navButtons.find(btn => btn.type === 'first');
       html += this._createNavButtonHtml(firstButton);
     }
-    
+
     if (this.options.showPrevNextButtons) {
       const prevButton = navButtons.find(btn => btn.type === 'prev');
       html += this._createNavButtonHtml(prevButton);
@@ -215,7 +217,7 @@ class Pagination {
       const nextButton = navButtons.find(btn => btn.type === 'next');
       html += this._createNavButtonHtml(nextButton);
     }
-    
+
     if (this.options.showFirstLastButtons) {
       const lastButton = navButtons.find(btn => btn.type === 'last');
       html += this._createNavButtonHtml(lastButton);
@@ -226,20 +228,20 @@ class Pagination {
   }
 
   private _attachEventListeners(): void {
-    this.$element.addEventListener('click', (event) => {
+    this.$element.addEventListener('click', event => {
       const target = event.target as HTMLElement;
       const pageButton = target.closest('[data-page]') as HTMLElement;
 
       if (pageButton && !pageButton.hasAttribute('disabled')) {
         const pageAction = pageButton.dataset.page;
-        
+
         // Handle navigation button actions
-        const navButton = navButtons.find(btn => btn.type === pageAction as NavButtonType);
+        const navButton = navButtons.find(btn => btn.type === (pageAction as NavButtonType));
         if (navButton) {
           navButton.action(this);
           return;
         }
-        
+
         // Handle page number clicks
         if (pageAction && !isNaN(Number(pageAction))) {
           this.goToPage(Number(pageAction));
@@ -258,13 +260,13 @@ class Pagination {
         this.options.onPageChange(this.currentPage);
       }
       this._render();
-      
+
       // Dispatch a custom event
-      const event = new CustomEvent('pagechange', { 
-        detail: { 
+      const event = new CustomEvent('pagechange', {
+        detail: {
           currentPage: this.currentPage,
-          totalPages: this.totalPages
-        } 
+          totalPages: this.totalPages,
+        },
       });
       this.$element.dispatchEvent(event);
     }
@@ -275,15 +277,15 @@ class Pagination {
    */
   public update(options: Partial<PaginationOptions>): void {
     this.options = { ...this.options, ...options };
-    
+
     if (options.currentPage !== undefined) {
       this.currentPage = Number(options.currentPage);
     }
-    
+
     if (options.totalPages !== undefined) {
       this.totalPages = Number(options.totalPages);
     }
-    
+
     this._render();
   }
 
@@ -301,7 +303,10 @@ class Pagination {
   /**
    * Static initialization method
    */
-  static initializeAll(selector: string = '[data-component="pagination"]', options: PaginationOptions = {}): Pagination[] {
+  static initializeAll(
+    selector: string = '[data-component="pagination"]',
+    options: PaginationOptions = {}
+  ): Pagination[] {
     const elements = document.querySelectorAll<HTMLElement>(selector);
     return Array.from(elements).map(element => new Pagination(element, options));
   }

@@ -13,7 +13,7 @@ export function useTextarea(initialProps?: Partial<TextareaProps>) {
     disabled: false,
     invalid: false,
     valid: false,
-    ...initialProps
+    ...initialProps,
   };
 
   /**
@@ -31,21 +31,20 @@ export function useTextarea(initialProps?: Partial<TextareaProps>) {
       className = '',
     } = props;
 
-    const sizeClass = size === 'md' ? '' : (
-      size === 'sm' ? TEXTAREA.CLASSES.SMALL : TEXTAREA.CLASSES.LARGE
-    );
-    
+    const sizeClass =
+      size === 'md' ? '' : size === 'sm' ? TEXTAREA.CLASSES.SMALL : TEXTAREA.CLASSES.LARGE;
+
     const variantClass = variant ? `c-input--${variant}` : '';
-    
+
     let validationClass = '';
     if (invalid) {
       validationClass = TEXTAREA.CLASSES.INVALID;
     } else if (valid) {
       validationClass = TEXTAREA.CLASSES.VALID;
     }
-    
+
     const disabledClass = disabled ? TEXTAREA.CLASSES.DISABLED : '';
-    
+
     return `${TEXTAREA.CLASSES.BASE} ${sizeClass} ${variantClass} ${validationClass} ${disabledClass} ${className}`.trim();
   };
 
@@ -53,4 +52,4 @@ export function useTextarea(initialProps?: Partial<TextareaProps>) {
     defaultProps,
     generateTextareaClass,
   };
-} 
+}

@@ -6,7 +6,7 @@ export interface SectionIntroProps {
    * The section title
    */
   title: ReactNode;
-  
+
   /**
    * Optional subtitle or overline text
    */
@@ -14,7 +14,7 @@ export interface SectionIntroProps {
    * Optional label text (equivalent to subtitle in the UI)
    */
   label?: ReactNode;
-  
+
   /**
    * Optional description text
    */
@@ -22,47 +22,47 @@ export interface SectionIntroProps {
    * Optional text content
    */
   text?: ReactNode;
-  
+
   /**
    * Optional call to action elements
    */
   actions?: ReactNode;
-  
+
   /**
    * Alignment of the content
    */
   alignment?: 'left' | 'center' | 'right';
-  
+
   /**
    * Optional background image URL
    */
   backgroundImageSrc?: string;
-  
+
   /**
    * Whether to show an overlay on the background
    */
   showOverlay?: boolean;
-  
+
   /**
    * Optional foreground image URL
    */
   imageSrc?: string;
-  
+
   /**
    * Alternative text for the image
    */
   imageAlt?: string;
-  
+
   /**
    * Size variant
    */
   size?: 'sm' | 'md' | 'lg';
-  
+
   /**
    * Whether to show a skeleton loading state
    */
   skeleton?: boolean;
-  
+
   /**
    * Additional CSS class
    */
@@ -88,7 +88,7 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
 }) => {
   const sectionIntroRef = useRef<HTMLDivElement>(null);
   const sectionIntroInstance = useRef<any>(null);
-  
+
   useEffect(() => {
     // Only run on client-side
     if (typeof window === 'undefined' || !sectionIntroRef.current) return undefined;
@@ -101,11 +101,11 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
           backgroundImageSrc,
           showOverlay,
           size,
-          skeleton
+          skeleton,
         });
       }
     });
-    
+
     // Cleanup on unmount
     return () => {
       if (sectionIntroInstance.current) {
@@ -113,7 +113,7 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
       }
     };
   }, [alignment, backgroundImageSrc, showOverlay, size, skeleton]);
-  
+
   // Determine CSS classes
   const sectionIntroClasses = [
     'c-sectionintro',
@@ -121,9 +121,11 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
     size === 'sm' ? SECTION_INTRO.CLASSES.SMALL : '',
     size === 'lg' ? SECTION_INTRO.CLASSES.LARGE : '',
     backgroundImageSrc ? 'c-sectionintro--has-bg' : '',
-    className
-  ].filter(Boolean).join(' ');
-  
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   // Render skeleton version
   if (skeleton) {
     return (
@@ -158,23 +160,19 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
       </div>
     );
   }
-  
+
   // Render background if provided
   const renderBackground = () => {
     if (!backgroundImageSrc) return null;
-    
+
     return (
       <div className="c-sectionintro__bg">
-        <img
-          src={backgroundImageSrc}
-          alt="Background"
-          className="c-sectionintro__bg-image"
-        />
+        <img src={backgroundImageSrc} alt="Background" className="c-sectionintro__bg-image" />
         {showOverlay && <div className="c-sectionintro__overlay"></div>}
       </div>
     );
   };
-  
+
   // Render normal version
   return (
     <div className={sectionIntroClasses} ref={sectionIntroRef}>
@@ -186,11 +184,7 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
         {actions && <div className="c-sectionintro__actions">{actions}</div>}
         {imageSrc && (
           <div className="c-sectionintro__image-wrapper">
-            <img
-              src={imageSrc}
-              alt={imageAlt}
-              className="c-sectionintro__image"
-            />
+            <img src={imageSrc} alt={imageAlt} className="c-sectionintro__image" />
           </div>
         )}
       </div>

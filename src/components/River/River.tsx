@@ -22,14 +22,14 @@ export const River: React.FC<RiverProps> = ({
 }) => {
   const riverRef = useRef<HTMLDivElement>(null);
   const riverInstance = useRef<any>(null);
-  
-  const { 
+
+  const {
     generateRiverClassNames,
     generateContentClass,
     generateVisualClass,
     hasBackgroundImage,
     hasForegroundImage,
-    textContent
+    textContent,
   } = useRiver({
     title,
     text,
@@ -40,9 +40,9 @@ export const River: React.FC<RiverProps> = ({
     reverse,
     backgroundImageSrc,
     showOverlay,
-    contentWidth
+    contentWidth,
   });
-  
+
   useEffect(() => {
     // Only run on client-side
     if (typeof window === 'undefined' || !riverRef.current) return undefined;
@@ -55,11 +55,11 @@ export const River: React.FC<RiverProps> = ({
           breakout,
           reverse,
           backgroundImageSrc,
-          showOverlay
+          showOverlay,
         });
       }
     });
-    
+
     // Cleanup on unmount
     return () => {
       if (riverInstance.current) {
@@ -67,15 +67,17 @@ export const River: React.FC<RiverProps> = ({
       }
     };
   }, [center, breakout, reverse, backgroundImageSrc, showOverlay]);
-  
+
   // Create custom style for river element with content width if provided
-  const riverStyle: React.CSSProperties | undefined = contentWidth ? {
-    [RIVER.ATTRIBUTES.CONTENT_WIDTH]: contentWidth
-  } as React.CSSProperties : undefined;
-  
+  const riverStyle: React.CSSProperties | undefined = contentWidth
+    ? ({
+        [RIVER.ATTRIBUTES.CONTENT_WIDTH]: contentWidth,
+      } as React.CSSProperties)
+    : undefined;
+
   const renderBackground = () => {
     if (!hasBackgroundImage) return null;
-    
+
     return (
       <div className={RIVER.SELECTORS.BG.replace('.', '')}>
         <img
@@ -87,39 +89,31 @@ export const River: React.FC<RiverProps> = ({
       </div>
     );
   };
-  
+
   const renderContent = () => (
     <div className={generateContentClass()}>
-      {title && (
-        <h2 className={RIVER.SELECTORS.TITLE.replace('.', '')}>{title}</h2>
-      )}
+      {title && <h2 className={RIVER.SELECTORS.TITLE.replace('.', '')}>{title}</h2>}
       {textContent.map((paragraph, index) => (
-        <p key={index} className={RIVER.SELECTORS.TEXT.replace('.', '')}>{paragraph}</p>
+        <p key={index} className={RIVER.SELECTORS.TEXT.replace('.', '')}>
+          {paragraph}
+        </p>
       ))}
-      {actions && (
-        <div className={RIVER.SELECTORS.ACTIONS.replace('.', '')}>
-          {actions}
-        </div>
-      )}
+      {actions && <div className={RIVER.SELECTORS.ACTIONS.replace('.', '')}>{actions}</div>}
     </div>
   );
 
   const renderImage = () => {
     if (!hasForegroundImage) return null;
-    
+
     return (
       <div className={generateVisualClass()}>
         <div className={RIVER.SELECTORS.IMAGE_WRAPPER.replace('.', '')}>
-          <img 
-            src={imageSrc} 
-            alt={imageAlt} 
-            className={RIVER.SELECTORS.IMAGE.replace('.', '')} 
-          />
+          <img src={imageSrc} alt={imageAlt} className={RIVER.SELECTORS.IMAGE.replace('.', '')} />
         </div>
       </div>
     );
   };
-  
+
   // Render with content columns (advanced layout)
   if (contentColumns && contentColumns.length > 0) {
     return (
@@ -130,18 +124,14 @@ export const River: React.FC<RiverProps> = ({
             {!reverse && renderImage()}
             <div className={generateContentClass()}>
               {contentColumns.map((column, index) => (
-                <div 
+                <div
                   key={index}
                   className={`${RIVER.SELECTORS.CONTENT_COL.replace('.', '')} ${RIVER.SELECTORS[`CONTENT_COL_${column.type.toUpperCase()}` as keyof typeof RIVER.SELECTORS].replace('.', '')}`}
                 >
                   {column.content}
                 </div>
               ))}
-              {actions && (
-                <div className={RIVER.SELECTORS.ACTIONS.replace('.', '')}>
-                  {actions}
-                </div>
-              )}
+              {actions && <div className={RIVER.SELECTORS.ACTIONS.replace('.', '')}>{actions}</div>}
             </div>
             {reverse && renderImage()}
           </div>
@@ -149,7 +139,7 @@ export const River: React.FC<RiverProps> = ({
       </div>
     );
   }
-  
+
   // Render with standard layout
   return (
     <div className={generateRiverClassNames(className)} ref={riverRef} style={riverStyle}>
@@ -165,7 +155,7 @@ export const River: React.FC<RiverProps> = ({
   );
 };
 
-export type { RiverProps  };
+export type { RiverProps };
 
 River.displayName = 'River';
 

@@ -21,19 +21,16 @@ export const Messages: React.FC<MessagesProps> = ({
   disabled = false,
   id,
 }) => {
-  const {
-    inputValue,
-    handleInputChange,
-    handleSubmit,
-    handleKeyDown
-  } = useMessages({ onSendMessage });
-  
+  const { inputValue, handleInputChange, handleSubmit, handleKeyDown } = useMessages({
+    onSendMessage,
+  });
+
   // Generate unique ID for accessibility
   const messagesId = id || `messages-${Math.random().toString(36).substr(2, 9)}`;
   const inputId = `${messagesId}-input`;
-  
+
   return (
-    <div 
+    <div
       className={`${MESSAGES.CLASSES.BASE} ${disabled ? 'is-disabled' : ''} ${className}`}
       style={{ '--atomix-messages-width': width } as React.CSSProperties}
       id={messagesId}
@@ -41,17 +38,21 @@ export const Messages: React.FC<MessagesProps> = ({
       role="log"
       aria-live="polite"
     >
-      <div 
+      <div
         className={MESSAGES.CLASSES.BODY}
-        style={bodyHeight ? { '--atomix-messages-body-height': bodyHeight } as React.CSSProperties : undefined}
+        style={
+          bodyHeight
+            ? ({ '--atomix-messages-body-height': bodyHeight } as React.CSSProperties)
+            : undefined
+        }
       >
-        {messages.map((message) => (
-          <div 
-            key={message.id} 
+        {messages.map(message => (
+          <div
+            key={message.id}
             className={`${MESSAGES.CLASSES.CONTENT} ${message.isSelf ? MESSAGES.CLASSES.CONTENT_SELF : ''}`}
             aria-label={`${message.isSelf ? 'You' : otherName || 'Other person'} sent a message at ${message.time}`}
           >
-            <Avatar 
+            <Avatar
               src={message.isSelf ? selfAvatar : otherAvatar}
               size="xl"
               circle
@@ -62,7 +63,7 @@ export const Messages: React.FC<MessagesProps> = ({
               {!message.isSelf && otherName && (
                 <div className={MESSAGES.CLASSES.NAME}>{otherName}</div>
               )}
-              
+
               {message.text && (
                 <div className={MESSAGES.CLASSES.TEXT}>
                   {message.text}
@@ -71,18 +72,18 @@ export const Messages: React.FC<MessagesProps> = ({
                   </span>
                 </div>
               )}
-              
+
               {message.image && (
-                <img 
-                  className={MESSAGES.CLASSES.IMAGE} 
-                  src={message.image} 
-                  alt="Message attachment" 
+                <img
+                  className={MESSAGES.CLASSES.IMAGE}
+                  src={message.image}
+                  alt="Message attachment"
                   loading="lazy"
                 />
               )}
-              
+
               {message.file && (
-                <div 
+                <div
                   className={MESSAGES.CLASSES.FILE}
                   aria-label={`File attachment: ${message.file.name}, size: ${message.file.size}`}
                 >
@@ -99,9 +100,9 @@ export const Messages: React.FC<MessagesProps> = ({
           </div>
         ))}
       </div>
-      
-      <form 
-        className={MESSAGES.CLASSES.FORM} 
+
+      <form
+        className={MESSAGES.CLASSES.FORM}
         onSubmit={handleSubmit}
         aria-label="Message input form"
       >
@@ -121,46 +122,50 @@ export const Messages: React.FC<MessagesProps> = ({
             aria-label="Message input"
           />
           <div className={MESSAGES.CLASSES.OPTIONS} aria-label="Message options">
-              <button 
-                type="button"
-                className={MESSAGES.CLASSES.OPTION}
-                aria-label="Attach file"
-                disabled={disabled}
-              >
-                <Icon name="PaperclipHorizontal" aria-hidden="true" className={MESSAGES.CLASSES.OPTION_ICON}/>
-              </button>
-              <button 
-                type="button"
-                className={MESSAGES.CLASSES.OPTION}
-                aria-label="Attach image"
-                disabled={disabled}
-              >
-                <Icon name="Image" aria-hidden="true" className={MESSAGES.CLASSES.OPTION_ICON}/>
-              </button>
-              <button 
-                type="button"
-                className={MESSAGES.CLASSES.OPTION}
-                aria-label="Insert link"
-                disabled={disabled}
-              >
-                <Icon name="Link" aria-hidden="true" className={MESSAGES.CLASSES.OPTION_ICON}/>
-              </button>
+            <button
+              type="button"
+              className={MESSAGES.CLASSES.OPTION}
+              aria-label="Attach file"
+              disabled={disabled}
+            >
+              <Icon
+                name="PaperclipHorizontal"
+                aria-hidden="true"
+                className={MESSAGES.CLASSES.OPTION_ICON}
+              />
+            </button>
+            <button
+              type="button"
+              className={MESSAGES.CLASSES.OPTION}
+              aria-label="Attach image"
+              disabled={disabled}
+            >
+              <Icon name="Image" aria-hidden="true" className={MESSAGES.CLASSES.OPTION_ICON} />
+            </button>
+            <button
+              type="button"
+              className={MESSAGES.CLASSES.OPTION}
+              aria-label="Insert link"
+              disabled={disabled}
+            >
+              <Icon name="Link" aria-hidden="true" className={MESSAGES.CLASSES.OPTION_ICON} />
+            </button>
           </div>
         </div>
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           className={MESSAGES.CLASSES.SUBMIT}
           aria-label="Send message"
           disabled={disabled}
         >
-          <Icon name="PaperPlaneTilt" aria-hidden="true" size={24}/>
+          <Icon name="PaperPlaneTilt" aria-hidden="true" size={24} />
         </button>
       </form>
     </div>
   );
 };
 
-export type { MessagesProps  };
+export type { MessagesProps };
 
 Messages.displayName = 'Messages';
 

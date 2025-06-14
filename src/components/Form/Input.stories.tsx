@@ -104,4 +104,4 @@ export const States: Story = {
       <Input placeholder="Invalid input" invalid />
     </div>
   ),
-}; 
+};

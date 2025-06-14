@@ -11,16 +11,19 @@ interface PhotoViewerOptions {
   thumbnailPosition?: 'bottom' | 'top' | 'left' | 'right' | 'none';
   onImageChange?: (index: number) => void;
   onClose?: () => void;
-  images?: Array<string | {
-    src: string;
-    alt?: string;
-    thumbnail?: string;
-    title?: string;
-    description?: string;
-    date?: string;
-    author?: string;
-    tags?: string[];
-  }>;
+  images?: Array<
+    | string
+    | {
+        src: string;
+        alt?: string;
+        thumbnail?: string;
+        title?: string;
+        description?: string;
+        date?: string;
+        author?: string;
+        tags?: string[];
+      }
+  >;
 }
 
 interface ImageType {
@@ -79,13 +82,14 @@ class PhotoViewer {
     enableGestures: true,
     enableFullscreen: true,
     thumbnailPosition: 'bottom',
-    images: []
+    images: [],
   };
 
   constructor(element: string | HTMLElement, options: PhotoViewerOptions = {}) {
-    this.element = typeof element === 'string' ? document.querySelector(element) as HTMLElement : element;
+    this.element =
+      typeof element === 'string' ? (document.querySelector(element) as HTMLElement) : element;
     this.options = { ...PhotoViewer.DEFAULTS, ...options };
-    
+
     if (!this.element) {
       throw new Error('PhotoViewer: Element not found');
     }
@@ -93,7 +97,7 @@ class PhotoViewer {
     this.currentIndex = this.options.startIndex || 0;
     this.images = this.processImages(this.options.images || []);
     this.initializeImageStates();
-    
+
     this.init();
   }
 
@@ -115,7 +119,7 @@ class PhotoViewer {
       zoomLevel: 1,
       position: { x: 0, y: 0 },
       rotation: 0,
-      bounds: { minX: 0, maxX: 0, minY: 0, maxY: 0 }
+      bounds: { minX: 0, maxX: 0, minY: 0, maxY: 0 },
     };
   }
 
@@ -126,7 +130,7 @@ class PhotoViewer {
   private updateCurrentImageState(updates: Partial<ImageState>): void {
     this.imageStates[this.currentIndex] = {
       ...this.getCurrentImageState(),
-      ...updates
+      ...updates,
     };
     this.updateImageTransform();
   }
@@ -142,21 +146,21 @@ class PhotoViewer {
 
     const image = this.imageElement;
     const container = this.imageContainer;
-    
+
     const imageWidth = image.naturalWidth || image.width;
     const imageHeight = image.naturalHeight || image.height;
-    
+
     const containerRect = container.getBoundingClientRect();
     const containerWidth = containerRect.width;
     const containerHeight = containerRect.height;
-    
+
     const rotationRad = (rotation * Math.PI) / 180;
     const cos = Math.abs(Math.cos(rotationRad));
     const sin = Math.abs(Math.sin(rotationRad));
-    
+
     const aspectRatio = imageWidth / imageHeight;
     let displayWidth, displayHeight;
-    
+
     if (containerWidth / containerHeight > aspectRatio) {
       displayHeight = Math.min(containerHeight * 0.9, imageHeight);
       displayWidth = displayHeight * aspectRatio;
@@ -164,28 +168,31 @@ class PhotoViewer {
       displayWidth = Math.min(containerWidth * 0.9, imageWidth);
       displayHeight = displayWidth / aspectRatio;
     }
-    
+
     const rotatedWidth = displayWidth * cos + displayHeight * sin;
     const rotatedHeight = displayWidth * sin + displayHeight * cos;
-    
+
     const scaledWidth = rotatedWidth * zoomLevel;
     const scaledHeight = rotatedHeight * zoomLevel;
-    
+
     const maxX = Math.max(0, (scaledWidth - containerWidth) / 2);
     const maxY = Math.max(0, (scaledHeight - containerHeight) / 2);
-    
+
     return {
       minX: -maxX,
       maxX: maxX,
       minY: -maxY,
-      maxY: maxY
+      maxY: maxY,
     };
   }
 
-  private constrainPosition(position: { x: number; y: number }, bounds: ImageState['bounds']): { x: number; y: number } {
+  private constrainPosition(
+    position: { x: number; y: number },
+    bounds: ImageState['bounds']
+  ): { x: number; y: number } {
     return {
       x: Math.max(bounds.minX, Math.min(bounds.maxX, position.x)),
-      y: Math.max(bounds.minY, Math.min(bounds.maxY, position.y))
+      y: Math.max(bounds.minY, Math.min(bounds.maxY, position.y)),
     };
   }
 
@@ -193,10 +200,10 @@ class PhotoViewer {
     const currentState = this.getCurrentImageState();
     const newBounds = this.calculateBounds(currentState.zoomLevel, currentState.rotation);
     const constrainedPosition = this.constrainPosition(currentState.position, newBounds);
-    
+
     this.updateCurrentImageState({
       bounds: newBounds,
-      position: constrainedPosition
+      position: constrainedPosition,
     });
   }
 
@@ -264,7 +271,9 @@ class PhotoViewer {
     this.container = this.element.querySelector('.c-photo-viewer__container') as HTMLElement;
     this.header = this.element.querySelector('.c-photo-viewer__header') as HTMLElement;
     this.content = this.element.querySelector('.c-photo-viewer__content') as HTMLElement;
-    this.imageContainer = this.element.querySelector('.c-photo-viewer__image-container') as HTMLElement;
+    this.imageContainer = this.element.querySelector(
+      '.c-photo-viewer__image-container'
+    ) as HTMLElement;
     this.imageElement = this.element.querySelector('.c-photo-viewer__image') as HTMLImageElement;
     this.thumbnails = this.element.querySelector('.c-photo-viewer__thumbnails') as HTMLElement;
     this.infoPanel = this.element.querySelector('.c-photo-viewer__info-panel') as HTMLElement;
@@ -275,33 +284,41 @@ class PhotoViewer {
   private bindEvents(): void {
     // Action buttons
     this.element.addEventListener('click', this.handleActionClick.bind(this));
-    
+
     // Backdrop click to close
     this.backdrop?.addEventListener('click', () => this.close());
-    
+
     // Image interactions
     if (this.imageContainer) {
       this.imageContainer.addEventListener('mousedown', this.handleMouseDown.bind(this));
       this.imageContainer.addEventListener('mousemove', this.handleMouseMove.bind(this));
       this.imageContainer.addEventListener('mouseup', this.handleMouseUp.bind(this));
       this.imageContainer.addEventListener('mouseleave', this.handleMouseUp.bind(this));
-      this.imageContainer.addEventListener('wheel', this.handleWheel.bind(this), { passive: false });
+      this.imageContainer.addEventListener('wheel', this.handleWheel.bind(this), {
+        passive: false,
+      });
       this.imageContainer.addEventListener('dblclick', this.handleDoubleClick.bind(this));
-      
+
       // Touch events
-      this.imageContainer.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: false });
-      this.imageContainer.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
-      this.imageContainer.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: false });
+      this.imageContainer.addEventListener('touchstart', this.handleTouchStart.bind(this), {
+        passive: false,
+      });
+      this.imageContainer.addEventListener('touchmove', this.handleTouchMove.bind(this), {
+        passive: false,
+      });
+      this.imageContainer.addEventListener('touchend', this.handleTouchEnd.bind(this), {
+        passive: false,
+      });
     }
-    
+
     // Keyboard events
     if (this.options.enableKeyboardNavigation) {
       document.addEventListener('keydown', this.handleKeyDown.bind(this));
     }
-    
+
     // Fullscreen change
     document.addEventListener('fullscreenchange', this.handleFullscreenChange.bind(this));
-    
+
     // Window resize
     window.addEventListener('resize', this.handleResize.bind(this));
   }
@@ -310,9 +327,9 @@ class PhotoViewer {
     const target = event.target as HTMLElement;
     const button = target.closest('[data-action]') as HTMLElement;
     if (!button) return;
-    
+
     const action = button.getAttribute('data-action');
-    
+
     switch (action) {
       case 'zoom-out':
         this.zoomOut();
@@ -372,18 +389,18 @@ class PhotoViewer {
       this.isDragging = true;
       this.startDragPosition = {
         x: event.clientX - currentState.position.x,
-        y: event.clientY - currentState.position.y
+        y: event.clientY - currentState.position.y,
       };
     }
   }
 
   private handleMouseMove(event: MouseEvent): void {
     if (!this.isDragging) return;
-    
+
     const currentState = this.getCurrentImageState();
     const newPosition = {
       x: event.clientX - this.startDragPosition.x,
-      y: event.clientY - this.startDragPosition.y
+      y: event.clientY - this.startDragPosition.y,
     };
     const constrainedPosition = this.constrainPosition(newPosition, currentState.bounds);
     this.updateCurrentImageState({ position: constrainedPosition });
@@ -395,15 +412,15 @@ class PhotoViewer {
 
   private handleWheel(event: WheelEvent): void {
     const currentState = this.getCurrentImageState();
-    
+
     // Detect platform and gesture type for proper handling
     const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
     const isTrackpadPinch = event.ctrlKey && isMac;
     const isTrackpadScroll = !event.ctrlKey && Math.abs(event.deltaX) > 0;
-    
+
     // Handle different zoom gesture types
     let zoomAmount: number;
-    
+
     if (isTrackpadPinch) {
       // MacBook trackpad pinch zoom - high sensitivity, smooth scaling
       zoomAmount = event.deltaY * -0.02;
@@ -425,9 +442,9 @@ class PhotoViewer {
       event.preventDefault();
       event.stopPropagation();
     }
-    
+
     if (!this.imageContainer) return;
-    
+
     let rect;
     try {
       rect = this.imageContainer.getBoundingClientRect();
@@ -435,14 +452,14 @@ class PhotoViewer {
       console.warn('PhotoViewer: Error getting bounding rect', error);
       return;
     }
-    
+
     if (!rect || rect.width === 0 || rect.height === 0) return;
-    
+
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     const cursorX = event.clientX - rect.left - centerX;
     const cursorY = event.clientY - rect.top - centerY;
-    
+
     this.zoom(currentState.zoomLevel + zoomAmount, cursorX, cursorY);
   }
 
@@ -453,10 +470,10 @@ class PhotoViewer {
     const centerY = rect.height / 2;
     const cursorX = event.clientX - rect.left - centerX;
     const cursorY = event.clientY - rect.top - centerY;
-    
+
     let newZoom: number;
     let newPosition = { x: 0, y: 0 };
-    
+
     if (currentState.zoomLevel < 1.5) {
       newZoom = 2;
       newPosition = { x: -cursorX * 0.5, y: -cursorY * 0.5 };
@@ -467,67 +484,67 @@ class PhotoViewer {
       newZoom = 1;
       newPosition = { x: 0, y: 0 };
     }
-    
+
     this.zoom(newZoom, 0, 0, newPosition);
   }
 
   private handleTouchStart(event: TouchEvent): void {
     if (!this.options.enableGestures) return;
-    
+
     const touches = event.touches;
-    
+
     // Always prevent default for multi-touch to stop page zoom
     if (touches.length > 1) {
       event.preventDefault();
       event.stopPropagation();
     }
-    
+
     this.touchPoints = Array.from(touches).map(touch => ({
       x: touch.clientX,
-      y: touch.clientY
+      y: touch.clientY,
     }));
-    
+
     const currentState = this.getCurrentImageState();
-    
+
     if (touches.length === 1 && currentState.zoomLevel > 1) {
       this.isDragging = true;
       this.startDragPosition = {
         x: touches[0].clientX - currentState.position.x,
-        y: touches[0].clientY - currentState.position.y
+        y: touches[0].clientY - currentState.position.y,
       };
     } else if (touches.length === 2) {
       const dx = touches[0].clientX - touches[1].clientX;
       const dy = touches[0].clientY - touches[1].clientY;
       this.lastDistance = Math.sqrt(dx * dx + dy * dy);
-      
+
       this.lastMidpoint = {
         x: (touches[0].clientX + touches[1].clientX) / 2,
-        y: (touches[0].clientY + touches[1].clientY) / 2
+        y: (touches[0].clientY + touches[1].clientY) / 2,
       };
     }
   }
 
   private handleTouchMove(event: TouchEvent): void {
     if (!this.options.enableGestures) return;
-    
+
     const touches = event.touches;
     const currentState = this.getCurrentImageState();
-    
+
     // Always prevent default for multi-touch gestures to stop page zoom
     if (touches.length > 1) {
       event.preventDefault();
       event.stopPropagation();
     }
-    
+
     // Prevent default for single touch when zoomed in to avoid conflicts
     if (currentState.zoomLevel > 1 && touches.length === 1) {
       event.preventDefault();
     }
-    
+
     if (touches.length === 1 && this.isDragging && currentState.zoomLevel > 1) {
       const newPosition = {
         x: touches[0].clientX - this.startDragPosition.x,
-        y: touches[0].clientY - this.startDragPosition.y
+        y: touches[0].clientY - this.startDragPosition.y,
       };
       const constrainedPosition = this.constrainPosition(newPosition, currentState.bounds);
       this.updateCurrentImageState({ position: constrainedPosition });
@@ -535,15 +552,15 @@ class PhotoViewer {
       const dx = touches[0].clientX - touches[1].clientX;
       const dy = touches[0].clientY - touches[1].clientY;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      
+
       const zoomDelta = (distance - this.lastDistance) * 0.005;
       this.lastDistance = distance;
-      
+
       const currentMidpoint = {
         x: (touches[0].clientX + touches[1].clientX) / 2,
-        y: (touches[0].clientY + touches[1].clientY) / 2
+        y: (touches[0].clientY + touches[1].clientY) / 2,
       };
-      
+
       if (this.lastMidpoint && this.imageContainer) {
         let rect;
         try {
@@ -552,17 +569,17 @@ class PhotoViewer {
           console.warn('PhotoViewer: Error getting bounding rect in touch move', error);
           return;
         }
-        
+
         if (!rect || rect.width === 0 || rect.height === 0) return;
-        
+
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
         const midpointX = currentMidpoint.x - rect.left - centerX;
         const midpointY = currentMidpoint.y - rect.top - centerY;
-        
+
         this.zoom(currentState.zoomLevel + zoomDelta, midpointX, midpointY);
       }
-      
+
       this.lastMidpoint = currentMidpoint;
     }
   }
@@ -583,43 +600,48 @@ class PhotoViewer {
     this.updateBounds();
   }
 
-  private zoom(newZoomLevel: number, centerX: number = 0, centerY: number = 0, forcePosition?: { x: number; y: number }): void {
+  private zoom(
+    newZoomLevel: number,
+    centerX: number = 0,
+    centerY: number = 0,
+    forcePosition?: { x: number; y: number }
+  ): void {
     const currentState = this.getCurrentImageState();
     const oldZoom = currentState.zoomLevel;
     const clampedZoom = Math.max(0.1, Math.min(5, newZoomLevel));
-    
+
     if (clampedZoom !== oldZoom) {
       const newBounds = this.calculateBounds(clampedZoom, currentState.rotation);
       let newPosition: { x: number; y: number };
-      
+
       if (forcePosition) {
         newPosition = forcePosition;
       } else {
         const zoomFactor = clampedZoom / oldZoom;
         newPosition = {
           x: currentState.position.x + centerX * (1 - zoomFactor) * 0.5,
-          y: currentState.position.y + centerY * (1 - zoomFactor) * 0.5
+          y: currentState.position.y + centerY * (1 - zoomFactor) * 0.5,
         };
       }
-      
+
       const constrainedPosition = this.constrainPosition(newPosition, newBounds);
-      
+
       this.updateCurrentImageState({
         zoomLevel: clampedZoom,
         bounds: newBounds,
-        position: constrainedPosition
+        position: constrainedPosition,
       });
-      
+
       this.updateControls();
     }
   }
 
   private updateImageTransform(): void {
     if (!this.imageElement) return;
-    
+
     const currentState = this.getCurrentImageState();
     const cursor = this.isDragging ? 'grabbing' : currentState.zoomLevel > 1 ? 'grab' : 'default';
-    
+
     if (this.imageContainer) {
       this.imageContainer.style.cursor = cursor;
       this.imageContainer.style.opacity = this.isTransitioning ? '0.7' : '1';
@@ -629,12 +651,12 @@ class PhotoViewer {
         this.imageContainer.classList.remove('is-transitioning');
       }
     }
-    
+
     this.imageElement.style.transform = `scale(${currentState.zoomLevel}) translate(${currentState.position.x}px, ${currentState.position.y}px) rotate(${currentState.rotation}deg)`;
-    this.imageElement.style.transition = this.isDragging 
-      ? 'none' 
-      : this.isTransitioning 
-        ? 'opacity 0.15s ease-out' 
+    this.imageElement.style.transition = this.isDragging
+      ? 'none'
+      : this.isTransitioning
+        ? 'opacity 0.15s ease-out'
         : 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
     this.imageElement.style.transformOrigin = 'center center';
     this.imageElement.style.willChange = this.isDragging ? 'transform' : 'auto';
@@ -647,8 +669,10 @@ class PhotoViewer {
       this.isDragging ? 'c-photo-viewer--dragging' : '',
       this.isFullscreen ? 'c-photo-viewer--fullscreen' : '',
       this.showInfo ? 'c-photo-viewer--info-open' : '',
-      this.isTransitioning ? 'is-transitioning' : ''
-    ].filter(Boolean).join(' ');
+      this.isTransitioning ? 'is-transitioning' : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
   }
 
   private render(): void {
@@ -670,10 +694,10 @@ class PhotoViewer {
   private updateImage(): void {
     const currentImage = this.images[this.currentIndex];
     if (!currentImage || !this.imageElement) return;
-    
+
     this.imageElement.src = currentImage.src;
     this.imageElement.alt = currentImage.alt || `Image ${this.currentIndex + 1}`;
-    
+
     // Update bounds when image loads
     if (this.imageElement.complete) {
       this.updateBounds();
@@ -684,14 +708,16 @@ class PhotoViewer {
 
   private updateThumbnails(): void {
     if (!this.thumbnails || this.options.thumbnailPosition === 'none') return;
-    
+
     if (this.images.length <= 1) {
       this.thumbnails.style.display = 'none';
       return;
     }
-    
+
     this.thumbnails.style.display = 'flex';
-    this.thumbnails.innerHTML = this.images.map((image, index) => `
+    this.thumbnails.innerHTML = this.images
+      .map(
+        (image, index) => `
       <button class="c-photo-viewer__thumbnail ${index === this.currentIndex ? 'is-active' : ''}" 
               data-index="${index}" 
               aria-label="View image ${index + 1}"
@@ -701,10 +727,12 @@ class PhotoViewer {
              class="c-photo-viewer__thumbnail-img" 
              loading="lazy">
       </button>
-    `).join('');
-    
+    `
+      )
+      .join('');
+
     // Bind thumbnail clicks
-    this.thumbnails.addEventListener('click', (event) => {
+    this.thumbnails.addEventListener('click', event => {
       const button = (event.target as HTMLElement).closest('[data-index]') as HTMLElement;
       if (button) {
         const index = parseInt(button.getAttribute('data-index') || '0');
@@ -717,15 +745,22 @@ class PhotoViewer {
     const currentState = this.getCurrentImageState();
     const zoomOutBtn = this.element.querySelector('[data-action="zoom-out"]') as HTMLButtonElement;
     const zoomInBtn = this.element.querySelector('[data-action="zoom-in"]') as HTMLButtonElement;
-    const resetZoomBtn = this.element.querySelector('[data-action="reset-zoom"]') as HTMLButtonElement;
-    
+    const resetZoomBtn = this.element.querySelector(
+      '[data-action="reset-zoom"]'
+    ) as HTMLButtonElement;
+
     if (zoomOutBtn) zoomOutBtn.disabled = currentState.zoomLevel <= 0.1;
     if (zoomInBtn) zoomInBtn.disabled = currentState.zoomLevel >= 5;
-    if (resetZoomBtn) resetZoomBtn.disabled = currentState.zoomLevel === 1 && currentState.position.x === 0 && currentState.position.y === 0 && currentState.rotation === 0;
-    
+    if (resetZoomBtn)
+      resetZoomBtn.disabled =
+        currentState.zoomLevel === 1 &&
+        currentState.position.x === 0 &&
+        currentState.position.y === 0 &&
+        currentState.rotation === 0;
+
     if (this.navPrev) this.navPrev.style.display = this.images.length > 1 ? 'flex' : 'none';
     if (this.navNext) this.navNext.style.display = this.images.length > 1 ? 'flex' : 'none';
-    
+
     const prevBtn = this.navPrev as HTMLButtonElement;
     const nextBtn = this.navNext as HTMLButtonElement;
     if (prevBtn) prevBtn.disabled = this.currentIndex === 0;
@@ -734,26 +769,35 @@ class PhotoViewer {
 
   private updateInfoPanel(): void {
     if (!this.infoPanel) return;
-    
+
     this.infoPanel.style.display = this.showInfo ? 'block' : 'none';
-    
+
     if (!this.showInfo) return;
-    
+
     const currentImage = this.images[this.currentIndex];
     const content = this.infoPanel.querySelector('.c-photo-viewer__info-content');
-    
+
     if (!content || !currentImage) return;
-    
+
     content.innerHTML = [
       currentImage.title ? `<h3 class="c-photo-viewer__info-title">${currentImage.title}</h3>` : '',
-      currentImage.description ? `<p class="c-photo-viewer__info-description">${currentImage.description}</p>` : '',
-      currentImage.date ? `<p class="c-photo-viewer__info-meta">Date: ${currentImage.date}</p>` : '',
-      currentImage.author ? `<p class="c-photo-viewer__info-meta">By: ${currentImage.author}</p>` : '',
-      currentImage.tags && currentImage.tags.length > 0 ? 
-        `<div class="c-photo-viewer__info-tags">
+      currentImage.description
+        ? `<p class="c-photo-viewer__info-description">${currentImage.description}</p>`
+        : '',
+      currentImage.date
+        ? `<p class="c-photo-viewer__info-meta">Date: ${currentImage.date}</p>`
+        : '',
+      currentImage.author
+        ? `<p class="c-photo-viewer__info-meta">By: ${currentImage.author}</p>`
+        : '',
+      currentImage.tags && currentImage.tags.length > 0
+        ? `<div class="c-photo-viewer__info-tags">
           ${currentImage.tags.map(tag => `<span class="c-photo-viewer__info-tag">${tag}</span>`).join('')}
-         </div>` : ''
-    ].filter(Boolean).join('');
+         </div>`
+        : '',
+    ]
+      .filter(Boolean)
+      .join('');
   }
 
   // Public API methods
@@ -778,7 +822,7 @@ class PhotoViewer {
     if (index >= 0 && index < this.images.length && index !== this.currentIndex) {
       this.isTransitioning = true;
       this.updateImageTransform();
-      
+
       setTimeout(() => {
         this.currentIndex = index;
         this.isTransitioning = false;
@@ -824,18 +868,18 @@ class PhotoViewer {
     const newRotation = (currentState.rotation + 90) % 360;
     const newBounds = this.calculateBounds(currentState.zoomLevel, newRotation);
     const constrainedPosition = this.constrainPosition(currentState.position, newBounds);
-    
+
     this.updateCurrentImageState({
       rotation: newRotation,
       bounds: newBounds,
-      position: constrainedPosition
+      position: constrainedPosition,
     });
   }
 
   public download(): void {
     const currentImage = this.images[this.currentIndex];
     if (!currentImage?.src) return;
-    
+
     const link = document.createElement('a');
     link.href = currentImage.src;
     link.download = currentImage.title || `image-${this.currentIndex + 1}`;
@@ -852,7 +896,7 @@ class PhotoViewer {
 
   public toggleFullscreen(): void {
     if (!this.options.enableFullscreen) return;
-    
+
     if (!this.isFullscreen) {
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen();
@@ -884,11 +928,11 @@ class PhotoViewer {
     document.removeEventListener('keydown', this.handleKeyDown.bind(this));
     document.removeEventListener('fullscreenchange', this.handleFullscreenChange.bind(this));
     window.removeEventListener('resize', this.handleResize.bind(this));
-    
+
     // Restore body overflow and remove class
     document.body.style.overflow = '';
     document.body.classList.remove('is-open-photoviewer');
-    
+
     // Clear element
     this.element.innerHTML = '';
     this.element.className = '';

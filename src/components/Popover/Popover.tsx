@@ -16,7 +16,7 @@ export const PopoverContext = createContext<{
   setIsOpen: () => {},
   triggerRef: { current: null },
   popoverId: '',
-  triggerType: 'click'
+  triggerType: 'click',
 });
 
 /**
@@ -45,7 +45,7 @@ export const Popover: React.FC<PopoverProps> = ({
     arrowRef,
     popoverId,
     currentPosition,
-    updatePosition
+    updatePosition,
   } = usePopover({
     position,
     trigger,
@@ -56,32 +56,31 @@ export const Popover: React.FC<PopoverProps> = ({
     onOpenChange,
     closeOnClickOutside,
     closeOnEscape,
-    id
+    id,
   });
-  
+
   return (
     <PopoverContext.Provider
       value={{ isOpen, setIsOpen, triggerRef, popoverId, triggerType: trigger }}
     >
       {children}
-      
-      {typeof document !== 'undefined' && createPortal(
-        <div
-          ref={popoverRef}
-          className={`c-popover c-popover--${currentPosition} ${isOpen ? POPOVER.CLASSES.IS_OPEN : ''} ${className}`}
-          id={popoverId}
-          role="tooltip"
-          aria-hidden={!isOpen}
-        >
-          <div className="c-popover__content">
-            <div className="c-popover__content-inner">
-              {content}
+
+      {typeof document !== 'undefined' &&
+        createPortal(
+          <div
+            ref={popoverRef}
+            className={`c-popover c-popover--${currentPosition} ${isOpen ? POPOVER.CLASSES.IS_OPEN : ''} ${className}`}
+            id={popoverId}
+            role="tooltip"
+            aria-hidden={!isOpen}
+          >
+            <div className="c-popover__content">
+              <div className="c-popover__content-inner">{content}</div>
             </div>
-          </div>
-          <div ref={arrowRef} className="c-popover__arrow"></div>
-        </div>,
-        document.body
-      )}
+            <div ref={arrowRef} className="c-popover__arrow"></div>
+          </div>,
+          document.body
+        )}
     </PopoverContext.Provider>
   );
 };
@@ -89,46 +88,47 @@ export const Popover: React.FC<PopoverProps> = ({
 /**
  * PopoverTrigger component to wrap the element that triggers the popover
  */
-export const PopoverTrigger: React.FC<PopoverTriggerProps> = forwardRef<HTMLElement, PopoverTriggerProps>(({
-  children,
-  trigger: triggerProp,
-}, ref) => {
-  const { isOpen, setIsOpen, triggerRef, popoverId, triggerType } = React.useContext(PopoverContext);
-  
+export const PopoverTrigger: React.FC<PopoverTriggerProps> = forwardRef<
+  HTMLElement,
+  PopoverTriggerProps
+>(({ children, trigger: triggerProp }, ref) => {
+  const { isOpen, setIsOpen, triggerRef, popoverId, triggerType } =
+    React.useContext(PopoverContext);
+
   // Determine which trigger type to use - prop from PopoverTrigger or from context
   const effectiveTrigger = triggerProp || triggerType;
-  
+
   // Handle trigger events
   const handleClick = () => {
     setIsOpen(!isOpen);
   };
-  
+
   const handleMouseEnter = () => {
     setIsOpen(true);
   };
-  
+
   const handleMouseLeave = () => {
     setIsOpen(false);
   };
-  
+
   // Clone the children element with additional props
   const child = React.Children.only(children) as React.ReactElement;
-  
+
   const triggerProps: any = {
     ref: ref || triggerRef,
     'aria-describedby': popoverId,
     'aria-expanded': isOpen,
   };
-  
+
   if (effectiveTrigger === 'click') {
     triggerProps.onClick = handleClick;
   } else if (effectiveTrigger === 'hover') {
     triggerProps.onMouseEnter = handleMouseEnter;
     triggerProps.onMouseLeave = handleMouseLeave;
   }
-  
+
   return React.cloneElement(child, triggerProps);
-}); 
+});
 
 export type { PopoverProps, PopoverTriggerProps };
 

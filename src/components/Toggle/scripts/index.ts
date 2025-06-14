@@ -61,11 +61,13 @@ class Toggle implements ToggleInstance {
   public turnOn(): void {
     this.element.classList.add(TOGGLE.CLASSES.IS_ON);
     this.isOn = true;
-    
+
     // Dispatch custom event
-    this.element.dispatchEvent(new CustomEvent('toggle:on', { 
-      bubbles: true 
-    }));
+    this.element.dispatchEvent(
+      new CustomEvent('toggle:on', {
+        bubbles: true,
+      })
+    );
   }
 
   /**
@@ -74,11 +76,13 @@ class Toggle implements ToggleInstance {
   public turnOff(): void {
     this.element.classList.remove(TOGGLE.CLASSES.IS_ON);
     this.isOn = false;
-    
+
     // Dispatch custom event
-    this.element.dispatchEvent(new CustomEvent('toggle:off', { 
-      bubbles: true 
-    }));
+    this.element.dispatchEvent(
+      new CustomEvent('toggle:off', {
+        bubbles: true,
+      })
+    );
   }
 
   /**
@@ -99,7 +103,7 @@ export function initializeToggles(): ToggleInstance[] {
 
   if (!toggleElements.length) return toggleInstances;
 
-  toggleElements.forEach((element) => {
+  toggleElements.forEach(element => {
     try {
       const instance = new Toggle(element);
       toggleInstances.push(instance);
@@ -111,4 +115,4 @@ export function initializeToggles(): ToggleInstance[] {
   return toggleInstances;
 }
 
-export default Toggle; 
+export default Toggle;

@@ -14,7 +14,7 @@ export default {
   },
 } as Meta<typeof Tab>;
 
-const Template: StoryFn<typeof Tab> = (args) => (
+const Template: StoryFn<typeof Tab> = args => (
   <div style={{ maxWidth: '600px', margin: '0 auto', padding: '30px' }}>
     <Tab {...args} />
   </div>
@@ -82,8 +82,12 @@ WithRichContent.args = {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
-                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Property</th>
-                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Value</th>
+                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>
+                  Property
+                </th>
+                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>
+                  Value
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -106,11 +110,15 @@ WithRichContent.args = {
         <div>
           <h3>Customer Reviews</h3>
           <div style={{ padding: '10px', marginBottom: '10px', backgroundColor: '#f9f9f9' }}>
-            <p style={{ marginBottom: '5px' }}><strong>John D.</strong> ★★★★★</p>
+            <p style={{ marginBottom: '5px' }}>
+              <strong>John D.</strong> ★★★★★
+            </p>
             <p>Great product, highly recommended!</p>
           </div>
           <div style={{ padding: '10px', backgroundColor: '#f9f9f9' }}>
-            <p style={{ marginBottom: '5px' }}><strong>Sarah T.</strong> ★★★★☆</p>
+            <p style={{ marginBottom: '5px' }}>
+              <strong>Sarah T.</strong> ★★★★☆
+            </p>
             <p>Very good quality and fast shipping.</p>
           </div>
         </div>
@@ -118,4 +126,4 @@ WithRichContent.args = {
     },
   ],
   activeIndex: 0,
-}; 
+};

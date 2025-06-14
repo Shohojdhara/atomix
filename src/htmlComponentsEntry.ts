@@ -27,7 +27,7 @@ import { initFromDataAttributes as initializeDatePickers } from './components/Da
 function initializeButtons(): void {
   // Select all button elements with the c-btn class
   const buttons = document.querySelectorAll<HTMLButtonElement>('.c-btn');
-  
+
   // Initialize each button with default functionality
   buttons.forEach(button => {
     initializeButton(button);
@@ -233,86 +233,86 @@ const Atomix = {
   // Component initializers
   Button: {
     init: initializeButton,
-    initializeAll: initializeButtons
+    initializeAll: initializeButtons,
   },
   Accordion: {
     init: initializeAccordionsWithCustomBehavior,
-    initializeAll: initializeAccordions
+    initializeAll: initializeAccordions,
   },
   Tooltip: {
     init: initializeTooltipsWithCustomBehavior,
-    initializeAll: initializeTooltips
+    initializeAll: initializeTooltips,
   },
   Toggle: {
     init: initializeToggles,
-    initializeAll: initializeToggleComponents
+    initializeAll: initializeToggleComponents,
   },
   Tab: {
     init: initializeTabs,
-    initializeAll: initializeTabComponents
+    initializeAll: initializeTabComponents,
   },
   Steps: {
     init: initializeSteps,
-    initializeAll: initializeStepComponents
+    initializeAll: initializeStepComponents,
   },
   Testimonial: {
     init: initializeTestimonials,
-    initializeAll: initializeTestimonialComponents
+    initializeAll: initializeTestimonialComponents,
   },
   River: {
     init: initializeRivers,
-    initializeAll: initializeRiverComponents
+    initializeAll: initializeRiverComponents,
   },
   Upload: {
     init: initializeUploads,
-    initializeAll: initializeUploadComponents
+    initializeAll: initializeUploadComponents,
   },
   EdgePanel: {
     init: initializeEdgePanelsWithCustomBehavior,
-    initializeAll: initializeEdgePanels
+    initializeAll: initializeEdgePanels,
   },
   Modal: {
     init: initializeModals,
-    initializeAll: initializeModalComponents
+    initializeAll: initializeModalComponents,
   },
   Hero: {
     init: initializeHeroesWithCustomBehavior,
-    initializeAll: initializeHeroComponents
+    initializeAll: initializeHeroComponents,
   },
   Avatar: {
     init: Avatar.initializeAll,
-    initializeAll: Avatar.initializeAll
+    initializeAll: Avatar.initializeAll,
   },
   Breadcrumb: {
     init: Breadcrumb.initializeAll,
-    initializeAll: Breadcrumb.initializeAll
+    initializeAll: Breadcrumb.initializeAll,
   },
   Card: {
     init: Card.initializeAll,
-    initializeAll: Card.initializeAll
+    initializeAll: Card.initializeAll,
   },
   Countdown: {
     init: Countdown.initializeAll,
-    initializeAll: Countdown.initializeAll
+    initializeAll: Countdown.initializeAll,
   },
   Todo: {
     init: Todo.initializeAll,
-    initializeAll: Todo.initializeAll
+    initializeAll: Todo.initializeAll,
   },
   Pagination: {
     init: Pagination.initializeAll,
-    initializeAll: Pagination.initializeAll
+    initializeAll: Pagination.initializeAll,
   },
   DataTable: {
     init: DataTable.initializeAll,
-    initializeAll: DataTable.initializeAll
+    initializeAll: DataTable.initializeAll,
   },
   DatePicker: {
     init: initializeDatePickers,
-    initializeAll: initializeDatePickerComponents
+    initializeAll: initializeDatePickerComponents,
   },
   // Global initialization
-  initializeAll: initializeComponents
+  initializeAll: initializeComponents,
 };
 
 export default Atomix;

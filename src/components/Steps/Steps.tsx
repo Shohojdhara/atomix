@@ -6,12 +6,12 @@ export interface StepItem {
    * The number for the step
    */
   number: number | string | ReactNode;
-  
+
   /**
    * The text label for the step
    */
   text: string;
-  
+
   /**
    * Optional custom content for the step
    */
@@ -23,22 +23,22 @@ export interface StepsProps {
    * Array of step items
    */
   items: StepItem[];
-  
+
   /**
    * Current active step index (0-based)
    */
   activeIndex?: number;
-  
+
   /**
    * Whether to display steps vertically
    */
   vertical?: boolean;
-  
+
   /**
    * Called when active step changes
    */
   onStepChange?: (index: number) => void;
-  
+
   /**
    * Additional CSS class
    */
@@ -58,7 +58,7 @@ export const Steps: React.FC<StepsProps> = ({
   const [currentStep, setCurrentStep] = useState(activeIndex);
   const stepsRef = useRef<HTMLDivElement>(null);
   const stepsInstance = useRef<any>(null);
-  
+
   useEffect(() => {
     // Only run on client-side
     if (typeof window === 'undefined' || !stepsRef.current) return undefined;
@@ -68,11 +68,11 @@ export const Steps: React.FC<StepsProps> = ({
       if (stepsRef.current) {
         stepsInstance.current = new StepsClass(stepsRef.current, {
           activeIndex: currentStep,
-          vertical
+          vertical,
         });
       }
     });
-    
+
     // Cleanup on unmount
     return () => {
       if (stepsInstance.current) {
@@ -85,54 +85,54 @@ export const Steps: React.FC<StepsProps> = ({
   useEffect(() => {
     if (currentStep !== activeIndex) {
       setCurrentStep(activeIndex);
-      
+
       if (stepsInstance.current) {
         stepsInstance.current.setActive(activeIndex);
       }
     }
   }, [activeIndex]);
-  
+
   // Method to go to next step
   const goToNextStep = () => {
     const nextIndex = currentStep + 1;
     if (nextIndex < items.length) {
       setCurrentStep(nextIndex);
-      
+
       if (stepsInstance.current) {
         stepsInstance.current.next();
       }
-      
+
       if (onStepChange) {
         onStepChange(nextIndex);
       }
     }
   };
-  
+
   // Method to go to previous step
   const goToPreviousStep = () => {
     const prevIndex = currentStep - 1;
     if (prevIndex >= 0) {
       setCurrentStep(prevIndex);
-      
+
       if (stepsInstance.current) {
         stepsInstance.current.previous();
       }
-      
+
       if (onStepChange) {
         onStepChange(prevIndex);
       }
     }
   };
-  
+
   return (
-    <div 
+    <div
       className={`c-steps ${vertical ? STEPS.CLASSES.VERTICAL : ''} ${className}`}
       ref={stepsRef}
       role="navigation"
       aria-label="Steps"
     >
       {items.map((item, index) => (
-        <div 
+        <div
           key={`step-${index}`}
           className={`c-steps__item ${index <= currentStep ? STEPS.CLASSES.ACTIVE : ''} ${index < currentStep ? STEPS.CLASSES.COMPLETED : ''}`}
           aria-current={index === currentStep ? 'step' : undefined}

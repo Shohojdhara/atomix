@@ -12,7 +12,7 @@ export function useRadio(initialProps?: Partial<RadioProps>) {
     disabled: false,
     invalid: false,
     valid: false,
-    ...initialProps
+    ...initialProps,
   };
 
   /**
@@ -34,9 +34,9 @@ export function useRadio(initialProps?: Partial<RadioProps>) {
     } else if (valid) {
       validationClass = RADIO.CLASSES.VALID;
     }
-    
+
     const disabledClass = disabled ? RADIO.CLASSES.DISABLED : '';
-    
+
     return `${RADIO.CLASSES.BASE} ${validationClass} ${disabledClass} ${className}`.trim();
   };
 
@@ -44,4 +44,4 @@ export function useRadio(initialProps?: Partial<RadioProps>) {
     defaultProps,
     generateRadioClass,
   };
-} 
+}

@@ -27,7 +27,7 @@ const DEFAULT_OPTIONS: HeroOptions = {
   overlay: true,
   overlayOpacity: 0.5,
   fullHeight: false,
-  centered: false
+  centered: false,
 };
 
 /**
@@ -44,17 +44,16 @@ export class Hero implements HeroInstance {
    */
   constructor(element: string | HTMLElement, options: HeroOptions = {}) {
     // Get element reference
-    this.element = typeof element === 'string'
-      ? document.querySelector(element) as HTMLElement
-      : element;
-    
+    this.element =
+      typeof element === 'string' ? (document.querySelector(element) as HTMLElement) : element;
+
     if (!this.element) {
       throw new Error('Hero: Element not found');
     }
-    
+
     // Merge default options with provided options
     this.options = { ...DEFAULT_OPTIONS, ...options };
-    
+
     // Initialize the component
     this.init();
   }
@@ -67,28 +66,28 @@ export class Hero implements HeroInstance {
     if (this.options.fullHeight) {
       this.element.classList.add('c-hero--full-height');
     }
-    
+
     if (this.options.centered) {
       this.element.classList.add('c-hero--centered');
     }
-    
+
     if (this.options.className) {
       this.element.classList.add(this.options.className);
     }
-    
+
     if (this.options.backgroundImage) {
       this.element.style.backgroundImage = `url(${this.options.backgroundImage})`;
     }
-    
+
     // Set up overlay if needed
     if (this.options.overlay) {
       const overlay = document.createElement('div');
       overlay.className = 'c-hero__overlay';
-      
+
       if (this.options.overlayOpacity !== undefined) {
         overlay.style.opacity = this.options.overlayOpacity.toString();
       }
-      
+
       this.element.appendChild(overlay);
     }
   }
@@ -100,16 +99,16 @@ export class Hero implements HeroInstance {
     // Remove added classes
     this.element.classList.remove('c-hero--full-height');
     this.element.classList.remove('c-hero--centered');
-    
+
     if (this.options.className) {
       this.element.classList.remove(this.options.className);
     }
-    
+
     // Remove background image
     if (this.options.backgroundImage) {
       this.element.style.backgroundImage = '';
     }
-    
+
     // Remove overlay
     const overlay = this.element.querySelector('.c-hero__overlay');
     if (overlay) {
@@ -142,4 +141,4 @@ if (typeof document !== 'undefined') {
   } else {
     initHeroes();
   }
-} 
+}

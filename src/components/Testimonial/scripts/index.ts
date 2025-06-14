@@ -21,7 +21,7 @@ interface TestimonialInstance {
  */
 const DEFAULT_OPTIONS: TestimonialOptions = {
   size: '',
-  skeleton: false
+  skeleton: false,
 };
 
 /**
@@ -42,7 +42,7 @@ class Testimonial implements TestimonialInstance {
     this.$element =
       typeof selector === 'string'
         ? document.querySelector<HTMLElement>(selector)
-        : selector as HTMLElement;
+        : (selector as HTMLElement);
     this.options = { ...DEFAULT_OPTIONS, ...options } as TestimonialOptions;
     this._initialize();
   }
@@ -54,9 +54,15 @@ class Testimonial implements TestimonialInstance {
     if (!this.$element) return;
 
     // Apply size classes if specified
-    if (this.options.size === 'sm' && !this.$element.classList.contains(TESTIMONIAL.CLASSES.SMALL)) {
+    if (
+      this.options.size === 'sm' &&
+      !this.$element.classList.contains(TESTIMONIAL.CLASSES.SMALL)
+    ) {
       this.$element.classList.add(TESTIMONIAL.CLASSES.SMALL);
-    } else if (this.options.size === 'lg' && !this.$element.classList.contains(TESTIMONIAL.CLASSES.LARGE)) {
+    } else if (
+      this.options.size === 'lg' &&
+      !this.$element.classList.contains(TESTIMONIAL.CLASSES.LARGE)
+    ) {
       this.$element.classList.add(TESTIMONIAL.CLASSES.LARGE);
     }
   }
@@ -75,13 +81,18 @@ class Testimonial implements TestimonialInstance {
  * @param {Object} options - Custom options to override defaults
  * @returns {TestimonialInstance[]} Array of Testimonial instances
  */
-export function initializeTestimonials(selector = TESTIMONIAL.SELECTORS.TESTIMONIAL, options = {}): TestimonialInstance[] {
+export function initializeTestimonials(
+  selector = TESTIMONIAL.SELECTORS.TESTIMONIAL,
+  options = {}
+): TestimonialInstance[] {
   const testimonialInstances: TestimonialInstance[] = [];
-  const testimonialElements = document.querySelectorAll<HTMLElement>(typeof selector === 'string' ? selector : TESTIMONIAL.SELECTORS.TESTIMONIAL);
+  const testimonialElements = document.querySelectorAll<HTMLElement>(
+    typeof selector === 'string' ? selector : TESTIMONIAL.SELECTORS.TESTIMONIAL
+  );
 
   if (!testimonialElements.length) return testimonialInstances;
 
-  testimonialElements.forEach((element) => {
+  testimonialElements.forEach(element => {
     try {
       const instance = new Testimonial(element, options);
       testimonialInstances.push(instance);
@@ -93,4 +104,4 @@ export function initializeTestimonials(selector = TESTIMONIAL.SELECTORS.TESTIMON
   return testimonialInstances;
 }
 
-export default Testimonial; 
+export default Testimonial;

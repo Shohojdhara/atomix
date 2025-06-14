@@ -11,7 +11,7 @@ const DEFAULT_OPTIONS = {
   activeClass: TOOLTIP.CLASSES.IS_ACTIVE,
   contentIdAttr: TOOLTIP.ATTRIBUTES.CONTENT_ID,
   positionAttr: TOOLTIP.ATTRIBUTES.POSITION,
-  triggerAttr: TOOLTIP.ATTRIBUTES.TRIGGER
+  triggerAttr: TOOLTIP.ATTRIBUTES.TRIGGER,
 };
 
 /**
@@ -64,10 +64,10 @@ export class Tooltip implements TooltipInstance {
    */
   constructor(selector: string | Element, options = {}) {
     this.selector = selector || TOOLTIP.SELECTORS.TOOLTIP;
-    this.$element = 
-      typeof selector === 'string' 
+    this.$element =
+      typeof selector === 'string'
         ? document.querySelector<HTMLElement>(selector)
-        : selector as HTMLElement;
+        : (selector as HTMLElement);
     this.options = { ...DEFAULT_OPTIONS, ...options } as TooltipOptions;
     this.timeout = null;
     this.hideTimeout = null;
@@ -92,21 +92,21 @@ export class Tooltip implements TooltipInstance {
    */
   private _initializeElements(): void {
     if (!this.$element) return;
-    
+
     // Find the parent container that wraps both trigger and tooltip
     const parentContainer = this.$element.parentElement;
     if (!parentContainer) return;
-    
+
     // Find the trigger as a sibling or within the same parent container
     this.$trigger = parentContainer.querySelector<HTMLElement>(TOOLTIP.SELECTORS.TRIGGER);
     this.$content = this.$element.querySelector<HTMLElement>(TOOLTIP.SELECTORS.CONTENT);
-    
+
     // Check for custom position from data attribute
     const customPosition = this.$element.getAttribute(this.options.positionAttr);
     if (customPosition) {
       this.options.position = customPosition;
     }
-    
+
     // Check for custom trigger from data attribute
     const customTrigger = this.$element.getAttribute(this.options.triggerAttr);
     if (customTrigger) {
@@ -119,19 +119,19 @@ export class Tooltip implements TooltipInstance {
    */
   private _setPosition(): void {
     if (!this.$content || !this.$element) return;
-    
+
     // Reset any existing position classes
     this.$element.classList.remove(
-      TOOLTIP.CLASSES.TOP, 
-      TOOLTIP.CLASSES.BOTTOM, 
-      TOOLTIP.CLASSES.LEFT, 
-      TOOLTIP.CLASSES.RIGHT, 
-      TOOLTIP.CLASSES.TOP_LEFT, 
-      TOOLTIP.CLASSES.TOP_RIGHT, 
-      TOOLTIP.CLASSES.BOTTOM_LEFT, 
+      TOOLTIP.CLASSES.TOP,
+      TOOLTIP.CLASSES.BOTTOM,
+      TOOLTIP.CLASSES.LEFT,
+      TOOLTIP.CLASSES.RIGHT,
+      TOOLTIP.CLASSES.TOP_LEFT,
+      TOOLTIP.CLASSES.TOP_RIGHT,
+      TOOLTIP.CLASSES.BOTTOM_LEFT,
       TOOLTIP.CLASSES.BOTTOM_RIGHT
     );
-    
+
     // Add the appropriate position class
     switch (this.options.position) {
       case 'top':
@@ -161,10 +161,10 @@ export class Tooltip implements TooltipInstance {
       default:
         this.$element.classList.add(TOOLTIP.CLASSES.TOP);
     }
-    
+
     // Calculate offset based on position
     const offset = this.options.offset;
-    
+
     switch (this.options.position) {
       case 'top':
       case 'top-left':
@@ -192,14 +192,14 @@ export class Tooltip implements TooltipInstance {
    */
   private _bindEvents(): void {
     if (!this.$trigger) return;
-    
+
     if (this.options.trigger === 'hover') {
       this.$trigger.addEventListener('mouseenter', this._handleTriggerEnter.bind(this));
       this.$trigger.addEventListener('mouseleave', this._handleTriggerLeave.bind(this));
     } else if (this.options.trigger === 'click') {
       this.$trigger.addEventListener('click', this._handleTriggerClick.bind(this));
     }
-    
+
     // Handle focus for accessibility
     this.$trigger.addEventListener('focus', this._handleTriggerEnter.bind(this));
     this.$trigger.addEventListener('blur', this._handleTriggerLeave.bind(this));
@@ -213,9 +213,9 @@ export class Tooltip implements TooltipInstance {
       clearTimeout(this.hideTimeout);
       this.hideTimeout = null;
     }
-    
+
     if (this.timeout) return;
-    
+
     this.timeout = window.setTimeout(() => {
       this.show();
       this.timeout = null;
@@ -230,7 +230,7 @@ export class Tooltip implements TooltipInstance {
       clearTimeout(this.timeout);
       this.timeout = null;
     }
-    
+
     this.hideTimeout = window.setTimeout(() => {
       this.hide();
       this.hideTimeout = null;
@@ -298,19 +298,19 @@ export class Tooltip implements TooltipInstance {
    */
   public show(): void {
     if (!this.$element) return;
-    
+
     // Dispatch custom event before showing
     const showEvent = new CustomEvent('tooltip:show', {
       bubbles: true,
       cancelable: true,
-      detail: { tooltip: this }
+      detail: { tooltip: this },
     });
-    
+
     this.$element.dispatchEvent(showEvent);
-    
+
     // If event was canceled, don't show
     if (showEvent.defaultPrevented) return;
-    
+
     this.$element.classList.add(this.options.activeClass);
     this.isActive = true;
   }
@@ -320,19 +320,19 @@ export class Tooltip implements TooltipInstance {
    */
   public hide(): void {
     if (!this.$element) return;
-    
+
     // Dispatch custom event before hiding
     const hideEvent = new CustomEvent('tooltip:hide', {
       bubbles: true,
       cancelable: true,
-      detail: { tooltip: this }
+      detail: { tooltip: this },
     });
-    
+
     this.$element.dispatchEvent(hideEvent);
-    
+
     // If event was canceled, don't hide
     if (hideEvent.defaultPrevented) return;
-    
+
     this.$element.classList.remove(this.options.activeClass);
     this.isActive = false;
   }
@@ -342,7 +342,7 @@ export class Tooltip implements TooltipInstance {
    */
   public destroy(): void {
     if (!this.$trigger) return;
-    
+
     // Remove event listeners
     if (this.options.trigger === 'hover') {
       this.$trigger.removeEventListener('mouseenter', this._handleTriggerEnter.bind(this));
@@ -350,21 +350,21 @@ export class Tooltip implements TooltipInstance {
     } else if (this.options.trigger === 'click') {
       this.$trigger.removeEventListener('click', this._handleTriggerClick.bind(this));
     }
-    
+
     this.$trigger.removeEventListener('focus', this._handleTriggerEnter.bind(this));
     this.$trigger.removeEventListener('blur', this._handleTriggerLeave.bind(this));
-    
+
     // Clear timeouts
     if (this.timeout) {
       clearTimeout(this.timeout);
       this.timeout = null;
     }
-    
+
     if (this.hideTimeout) {
       clearTimeout(this.hideTimeout);
       this.hideTimeout = null;
     }
-    
+
     // Hide tooltip
     if (this.$element) {
       this.$element.classList.remove(this.options.activeClass);
@@ -387,6 +387,9 @@ export class Tooltip implements TooltipInstance {
  * @param selector - CSS selector for tooltip elements
  * @param options - Custom options
  */
-export function initializeTooltips(selector = TOOLTIP.SELECTORS.TOOLTIP, options = {}): TooltipInstance[] {
+export function initializeTooltips(
+  selector = TOOLTIP.SELECTORS.TOOLTIP,
+  options = {}
+): TooltipInstance[] {
   return Tooltip.initializeAll(selector, options);
-} 
+}

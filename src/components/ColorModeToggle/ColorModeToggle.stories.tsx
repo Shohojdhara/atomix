@@ -12,7 +12,7 @@ const meta = {
   argTypes: {
     className: {
       control: 'text',
-      description: 'Additional CSS class names'
+      description: 'Additional CSS class names',
     },
   },
 } satisfies Meta<typeof ColorModeToggle>;
@@ -35,9 +35,12 @@ export const WithCustomClass: Story = {
 // Example Usage
 export const ExampleUsage: Story = {
   render: () => (
-    <div className="u-p-5 u-shadow u-d-flex u-justify-content-between u-align-items-center" style={{ width: '300px', borderRadius: '8px' }}>
+    <div
+      className="u-p-5 u-shadow u-d-flex u-justify-content-between u-align-items-center"
+      style={{ width: '300px', borderRadius: '8px' }}
+    >
       <span>Toggle Theme</span>
       <ColorModeToggle />
     </div>
   ),
-}; 
+};

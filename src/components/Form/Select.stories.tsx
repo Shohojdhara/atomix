@@ -76,15 +76,15 @@ export const Interactive: Story = {
   },
   render: () => {
     const [selectedValue, setSelectedValue] = useState('');
-    
+
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       setSelectedValue(e.target.value);
     };
-    
+
     return (
       <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
-        <Select 
-          options={countries} 
+        <Select
+          options={countries}
           placeholder="Select a country"
           value={selectedValue}
           onChange={handleChange}
@@ -96,7 +96,7 @@ export const Interactive: Story = {
         )}
       </div>
     );
-  }
+  },
 };
 
 // Select sizes
@@ -149,4 +149,4 @@ export const DisabledOptions: Story = {
     ],
     placeholder: 'Select a country',
   },
-}; 
+};

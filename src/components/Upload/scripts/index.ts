@@ -33,8 +33,14 @@ interface UploadInstance {
 const DEFAULT_OPTIONS: UploadOptions = {
   disabled: false,
   maxSizeInMB: 5,
-  acceptedFileTypes: ['application/pdf', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/jpeg', 'image/png'],
-  multiple: false
+  acceptedFileTypes: [
+    'application/pdf',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'image/jpeg',
+    'image/png',
+  ],
+  multiple: false,
 };
 
 /**
@@ -63,7 +69,7 @@ class Upload implements UploadInstance {
     this.$element =
       typeof selector === 'string'
         ? document.querySelector<HTMLElement>(selector)
-        : selector as HTMLElement;
+        : (selector as HTMLElement);
     this.options = { ...DEFAULT_OPTIONS, ...options } as UploadOptions;
     this.$input = null;
     this.$button = null;
@@ -89,8 +95,12 @@ class Upload implements UploadInstance {
     this.$button = this.$element.querySelector<HTMLButtonElement>(UPLOAD.SELECTORS.BUTTON);
     this.$loader = this.$element.querySelector<HTMLElement>(UPLOAD.SELECTORS.LOADER);
     this.$loaderTitle = this.$element?.querySelector<HTMLElement>(UPLOAD.SELECTORS.LOADER_TITLE);
-    this.$loaderProgress = this.$element?.querySelector<HTMLElement>(UPLOAD.SELECTORS.LOADER_PROGRESS);
-    this.$loaderClose = this.$element?.querySelector<HTMLButtonElement>(UPLOAD.SELECTORS.LOADER_CLOSE);
+    this.$loaderProgress = this.$element?.querySelector<HTMLElement>(
+      UPLOAD.SELECTORS.LOADER_PROGRESS
+    );
+    this.$loaderClose = this.$element?.querySelector<HTMLButtonElement>(
+      UPLOAD.SELECTORS.LOADER_CLOSE
+    );
 
     // Apply disabled state if specified
     if (this.options.disabled) {
@@ -113,7 +123,7 @@ class Upload implements UploadInstance {
     input.style.display = 'none';
     input.accept = this.options.acceptedFileTypes?.join(',') || '';
     input.multiple = !!this.options.multiple;
-    
+
     // Append to element
     this.$element.appendChild(input);
     this.$input = input;
@@ -158,7 +168,7 @@ class Upload implements UploadInstance {
    */
   private _handleFileSelect(event: Event): void {
     if (!this.$input?.files?.length) return;
-    
+
     const files = Array.from(this.$input.files);
     this._processFiles(files);
   }
@@ -169,7 +179,7 @@ class Upload implements UploadInstance {
   private _handleDragEnter(event: DragEvent): void {
     event.preventDefault();
     if (this.options.disabled) return;
-    
+
     this.dragCounter++;
     if (this.dragCounter === 1) {
       this.$element?.classList.add(UPLOAD.CLASSES.DRAGGING);
@@ -182,7 +192,7 @@ class Upload implements UploadInstance {
   private _handleDragLeave(event: DragEvent): void {
     event.preventDefault();
     if (this.options.disabled) return;
-    
+
     this.dragCounter--;
     if (this.dragCounter === 0) {
       this.$element?.classList.remove(UPLOAD.CLASSES.DRAGGING);
@@ -203,12 +213,12 @@ class Upload implements UploadInstance {
   private _handleDrop(event: DragEvent): void {
     event.preventDefault();
     if (this.options.disabled) return;
-    
+
     this.dragCounter = 0;
     this.$element?.classList.remove(UPLOAD.CLASSES.DRAGGING);
-    
+
     if (!event.dataTransfer?.files.length) return;
-    
+
     const files = Array.from(event.dataTransfer.files);
     this._processFiles(files);
   }
@@ -218,11 +228,11 @@ class Upload implements UploadInstance {
    */
   private _handleClose(event: MouseEvent): void {
     event.preventDefault();
-    
+
     // Reset state
     this.setStatus('idle');
     this.setFile(null);
-    
+
     // Reset input
     if (this.$input) {
       this.$input.value = '';
@@ -234,18 +244,18 @@ class Upload implements UploadInstance {
    */
   private _processFiles(files: File[]): void {
     if (!files.length) return;
-    
+
     // If multiple is not allowed, take only the first file
     const filesToProcess = this.options.multiple ? files : [files[0]];
-    
+
     // Validate files
     const validFiles = filesToProcess.filter(file => this._validateFile(file));
-    
+
     // Notify about file selection
     if (validFiles.length && this.options.onFileSelect) {
       this.options.onFileSelect(validFiles);
     }
-    
+
     // Process the first valid file
     if (validFiles.length) {
       this.setFile(validFiles[0]);
@@ -258,13 +268,13 @@ class Upload implements UploadInstance {
    */
   private _validateFile(file: File): boolean {
     const maxSizeInBytes = (this.options.maxSizeInMB || 5) * 1024 * 1024;
-    
+
     // Check file size
     if (file.size > maxSizeInBytes) {
       this.setStatus('error', `File too large. Maximum size is ${this.options.maxSizeInMB}MB.`);
       return false;
     }
-    
+
     // Check file type if acceptedFileTypes is provided
     if (this.options.acceptedFileTypes?.length) {
       const isAcceptedType = this.options.acceptedFileTypes.some(type => {
@@ -275,13 +285,13 @@ class Upload implements UploadInstance {
         }
         return file.type === type;
       });
-      
+
       if (!isAcceptedType) {
         this.setStatus('error', 'File type not supported.');
         return false;
       }
     }
-    
+
     return true;
   }
 
@@ -292,20 +302,20 @@ class Upload implements UploadInstance {
   private _simulateUpload(file: File): void {
     this.setStatus('loading');
     let progress = 0;
-    
+
     const interval = setInterval(() => {
       progress += 5;
-      
+
       if (progress < 100) {
         this.setProgress(progress, `${Math.ceil((100 - progress) / 5)} seconds left`);
-        
+
         if (this.options.onFileUpload) {
           this.options.onFileUpload(file, progress);
         }
       } else {
         clearInterval(interval);
         this.setStatus('success', 'Upload successful');
-        
+
         if (this.options.onFileUploadComplete) {
           this.options.onFileUploadComplete(file);
         }
@@ -318,7 +328,7 @@ class Upload implements UploadInstance {
    */
   public setFile(file: File | null): void {
     this.currentFile = file;
-    
+
     if (file && this.$loaderTitle) {
       this.$loaderTitle.textContent = file.name;
     }
@@ -329,18 +339,18 @@ class Upload implements UploadInstance {
    */
   public setProgress(percentage: number, timeLeft?: string): void {
     if (!this.$element || !this.$loaderProgress) return;
-    
+
     // Set percentage as CSS variable
     this.$element.style.setProperty(UPLOAD.ATTRIBUTES.PERCENTAGE, percentage.toString());
-    
+
     // Update the loader elements if they exist
     const $par = this.$element.querySelector<HTMLElement>(UPLOAD.SELECTORS.LOADER_PAR);
     const $time = this.$element.querySelector<HTMLElement>(UPLOAD.SELECTORS.LOADER_TIME);
-    
+
     if ($par) {
       $par.textContent = `${percentage}%`;
     }
-    
+
     if ($time && timeLeft) {
       $time.textContent = timeLeft;
     }
@@ -351,14 +361,14 @@ class Upload implements UploadInstance {
    */
   public setStatus(status: 'idle' | 'loading' | 'success' | 'error', message?: string): void {
     if (!this.$element) return;
-    
+
     // Remove all status classes
     this.$element.classList.remove(
       UPLOAD.CLASSES.LOADING,
       UPLOAD.CLASSES.SUCCESS,
       UPLOAD.CLASSES.ERROR
     );
-    
+
     // Add appropriate class based on status
     switch (status) {
       case 'loading':
@@ -371,7 +381,7 @@ class Upload implements UploadInstance {
         this.$element.classList.add(UPLOAD.CLASSES.ERROR);
         break;
     }
-    
+
     // Update message if provided and loader exists
     if (message && this.$loaderProgress) {
       this.$loaderProgress.textContent = message;
@@ -383,7 +393,7 @@ class Upload implements UploadInstance {
    */
   public disable(): void {
     if (!this.$element || !this.$button) return;
-    
+
     this.$element.classList.add(UPLOAD.CLASSES.DISABLED);
     this.$button.disabled = true;
     this.options.disabled = true;
@@ -394,7 +404,7 @@ class Upload implements UploadInstance {
    */
   public enable(): void {
     if (!this.$element || !this.$button) return;
-    
+
     this.$element.classList.remove(UPLOAD.CLASSES.DISABLED);
     this.$button.disabled = false;
     this.options.disabled = false;
@@ -405,7 +415,7 @@ class Upload implements UploadInstance {
    */
   public destroy(): void {
     if (!this.$element || !this.$input || !this.$button) return;
-    
+
     // Remove event listeners
     this.$button.removeEventListener('click', this._handleButtonClick.bind(this));
     this.$input.removeEventListener('change', this._handleFileSelect.bind(this));
@@ -413,11 +423,11 @@ class Upload implements UploadInstance {
     this.$element.removeEventListener('dragleave', this._handleDragLeave.bind(this));
     this.$element.removeEventListener('dragover', this._handleDragOver.bind(this));
     this.$element.removeEventListener('drop', this._handleDrop.bind(this));
-    
+
     if (this.$loaderClose) {
       this.$loaderClose.removeEventListener('click', this._handleClose.bind(this));
     }
-    
+
     // Remove input element
     if (this.$input.parentNode) {
       this.$input.parentNode.removeChild(this.$input);
@@ -431,13 +441,18 @@ class Upload implements UploadInstance {
  * @param {Object} options - Custom options to override defaults
  * @returns {UploadInstance[]} Array of Upload instances
  */
-export function initializeUploads(selector = UPLOAD.SELECTORS.UPLOAD, options = {}): UploadInstance[] {
+export function initializeUploads(
+  selector = UPLOAD.SELECTORS.UPLOAD,
+  options = {}
+): UploadInstance[] {
   const uploadInstances: UploadInstance[] = [];
-  const uploadElements = document.querySelectorAll<HTMLElement>(typeof selector === 'string' ? selector : UPLOAD.SELECTORS.UPLOAD);
+  const uploadElements = document.querySelectorAll<HTMLElement>(
+    typeof selector === 'string' ? selector : UPLOAD.SELECTORS.UPLOAD
+  );
 
   if (!uploadElements.length) return uploadInstances;
 
-  uploadElements.forEach((element) => {
+  uploadElements.forEach(element => {
     try {
       const instance = new Upload(element, options);
       uploadInstances.push(instance);
@@ -449,4 +464,4 @@ export function initializeUploads(selector = UPLOAD.SELECTORS.UPLOAD, options = 
   return uploadInstances;
 }
 
-export default Upload; 
+export default Upload;

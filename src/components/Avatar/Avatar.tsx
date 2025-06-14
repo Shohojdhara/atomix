@@ -27,7 +27,9 @@ export const Avatar: React.FC<AvatarProps> = ({
     circle && AVATAR.CLASSES.CIRCLE,
     disabled && 'is-disabled',
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   // Handle click event
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -37,7 +39,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   };
 
   return (
-    <div 
+    <div
       className={avatarClasses}
       onClick={onClick ? handleClick : undefined}
       role={onClick ? 'button' : undefined}
@@ -45,12 +47,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       aria-disabled={disabled || undefined}
     >
       {src && !imageError ? (
-        <img 
-          src={src} 
-          alt={alt} 
-          className="c-avatar__image" 
-          onError={handleImageError}
-        />
+        <img src={src} alt={alt} className="c-avatar__image" onError={handleImageError} />
       ) : initials ? (
         <span className="c-avatar__initials">{initials}</span>
       ) : icon ? (

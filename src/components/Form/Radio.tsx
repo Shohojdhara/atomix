@@ -21,13 +21,18 @@ export const Radio: React.FC<RadioProps> = ({
   ariaDescribedBy,
 }) => {
   const { generateRadioClass } = useRadio({
-    disabled, invalid, valid
+    disabled,
+    invalid,
+    valid,
   });
-  
+
   const radioClass = generateRadioClass({
-    className, disabled, invalid, valid
+    className,
+    disabled,
+    invalid,
+    valid,
   });
-  
+
   return (
     <div className={radioClass}>
       <input
@@ -53,7 +58,7 @@ export const Radio: React.FC<RadioProps> = ({
   );
 };
 
-export type { RadioProps  };
+export type { RadioProps };
 
 Radio.displayName = 'Radio';
 

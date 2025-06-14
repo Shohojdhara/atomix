@@ -17,38 +17,36 @@ export const FormGroup: React.FC<FormGroupProps> = ({
   valid = false,
   size = 'md',
 }) => {
-  const { generateFormGroupClass } = useFormGroup({ 
-    size, disabled, invalid, valid 
+  const { generateFormGroupClass } = useFormGroup({
+    size,
+    disabled,
+    invalid,
+    valid,
   });
-  
-  const formGroupClass = generateFormGroupClass({ 
-    className, disabled, invalid, valid, size 
+
+  const formGroupClass = generateFormGroupClass({
+    className,
+    disabled,
+    invalid,
+    valid,
+    size,
   });
-  
+
   return (
     <div className={formGroupClass}>
       {label && (
-        <label 
-          className="c-form-group__label" 
-          htmlFor={htmlFor}
-        >
+        <label className="c-form-group__label" htmlFor={htmlFor}>
           {label}
           {required && <span className="c-form-group__required">*</span>}
         </label>
       )}
-      <div className="c-form-group__field">
-        {children}
-      </div>
-      {helperText && (
-        <div className="c-form-group__helper">
-          {helperText}
-        </div>
-      )}
+      <div className="c-form-group__field">{children}</div>
+      {helperText && <div className="c-form-group__helper">{helperText}</div>}
     </div>
   );
 };
 
-export type { FormGroupProps  };
+export type { FormGroupProps };
 
 FormGroup.displayName = 'FormGroup';
 

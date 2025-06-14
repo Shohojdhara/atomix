@@ -1,18 +1,18 @@
 /**
  * Card Component Bundle
- * 
+ *
  * This module bundles the Card component and its interactions for use in vanilla JS projects.
  * It exposes the Card class and utility functions to the global Atomix namespace.
  */
 
 import Card from './index';
-import { 
-  applyHoverEffect, 
-  applyFocusEffect, 
-  makeCardClickable, 
+import {
+  applyHoverEffect,
+  applyFocusEffect,
+  makeCardClickable,
   initializeAllCards,
   applyElevationEffect,
-  applyFlipEffect
+  applyFlipEffect,
 } from './cardInteractions';
 
 // Initialize global namespace if not exists

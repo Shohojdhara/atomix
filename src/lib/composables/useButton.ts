@@ -12,7 +12,7 @@ export function useButton(initialProps?: Partial<ButtonProps>) {
     size: 'md',
     disabled: false,
     rounded: false,
-    ...initialProps
+    ...initialProps,
   };
 
   /**
@@ -34,7 +34,7 @@ export function useButton(initialProps?: Partial<ButtonProps>) {
     const iconOnlyClass = iconOnly ? 'c-btn--icon' : '';
     const roundedClass = rounded ? 'c-btn--rounded' : '';
     const disabledClass = disabled ? 'c-btn--disabled' : '';
-    
+
     return `c-btn c-btn--${variant} ${sizeClass} ${iconOnlyClass} ${roundedClass} ${disabledClass} ${className}`.trim();
   };
 
@@ -56,4 +56,4 @@ export function useButton(initialProps?: Partial<ButtonProps>) {
     generateButtonClass,
     handleClick,
   };
-} 
+}

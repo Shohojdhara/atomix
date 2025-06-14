@@ -108,7 +108,7 @@ class Accordion implements AccordionInstance {
    */
   private _observeResizing(): void {
     if (!this.$body) return;
-    
+
     this._resizeObserver = new ResizeObserver(() => {
       if (this.$accordion.classList.contains(ACCORDION.CLASSES.IS_OPEN)) {
         this._updatePanelHeight();
@@ -188,7 +188,7 @@ export function initializeAccordions(): AccordionInstance[] {
 
   if (!$accordions.length) return accordionInstances;
 
-  $accordions.forEach(($accordion) => {
+  $accordions.forEach($accordion => {
     try {
       const instance = new Accordion($accordion);
       accordionInstances.push(instance);
@@ -209,4 +209,4 @@ export const CSS_VARS = ACCORDION.CSS_VARS;
 // Export component interactions
 export * from './accordionInteractions';
 
-export default Accordion; 
+export default Accordion;

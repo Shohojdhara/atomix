@@ -44,51 +44,56 @@ type Story = StoryObj<typeof Modal>;
  * Basic modal example with a button to trigger opening.
  */
 export const Basic: Story = {
-  render: (args) => {
+  render: args => {
     const [isOpen, setIsOpen] = useState(false);
-    
+
     return (
       <>
-        <div 
-          className="c-btn c-btn--primary" 
+        <div
+          className="c-btn c-btn--primary"
           onClick={() => setIsOpen(true)}
           style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
         >
           Open Modal
         </div>
-        
-        <Modal 
+
+        <Modal
           {...args}
           isOpen={isOpen}
           onOpenChange={setIsOpen}
           title="Title"
           subtitle="This is some description text. This text is only a placeholder and should be replaced with the actual content of the modal."
         >
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, odio vitae faucibus luctus, elit nisi tincidunt justo, in malesuada enim nisl eget nisl. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, odio vitae
+            faucibus luctus, elit nisi tincidunt justo, in malesuada enim nisl eget nisl.
+            Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis
+            egestas.
+          </p>
         </Modal>
       </>
     );
-  }
+  },
 };
 
 /**
  * Modal with a title, subtitle, and footer actions.
  */
 export const WithFooter: Story = {
-  render: (args) => {
+  render: args => {
     const [isOpen, setIsOpen] = useState(false);
-    
+
     return (
       <>
-        <div 
-          className="c-btn c-btn--primary" 
+        <div
+          className="c-btn c-btn--primary"
           onClick={() => setIsOpen(true)}
           style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
         >
           Open Modal with Footer
         </div>
-        
-        <Modal 
+
+        <Modal
           {...args}
           isOpen={isOpen}
           onOpenChange={setIsOpen}
@@ -96,15 +101,20 @@ export const WithFooter: Story = {
           subtitle="This is some description text. This text is only a placeholder and should be replaced with the actual content of the modal."
           footer={
             <>
-              <div 
-                className="c-btn c-btn--outline-secondary" 
+              <div
+                className="c-btn c-btn--outline-secondary"
                 onClick={() => setIsOpen(false)}
-                style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block', marginRight: '8px' }}
+                style={{
+                  cursor: 'pointer',
+                  padding: '8px 16px',
+                  display: 'inline-block',
+                  marginRight: '8px',
+                }}
               >
                 Cancel
               </div>
-              <div 
-                className="c-btn c-btn--primary" 
+              <div
+                className="c-btn c-btn--primary"
                 onClick={() => {
                   alert('Action confirmed!');
                   setIsOpen(false);
@@ -121,27 +131,27 @@ export const WithFooter: Story = {
         </Modal>
       </>
     );
-  }
+  },
 };
 
 /**
  * Small size modal variant.
  */
 export const Small: Story = {
-  render: (args) => {
+  render: args => {
     const [isOpen, setIsOpen] = useState(false);
-    
+
     return (
       <>
-        <div 
-          className="c-btn c-btn--primary" 
+        <div
+          className="c-btn c-btn--primary"
           onClick={() => setIsOpen(true)}
           style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
         >
           Open Small Modal
         </div>
-        
-        <Modal 
+
+        <Modal
           {...args}
           isOpen={isOpen}
           onOpenChange={setIsOpen}
@@ -150,15 +160,20 @@ export const Small: Story = {
           size="sm"
           footer={
             <>
-              <div 
-                className="c-btn c-btn--outline-secondary" 
+              <div
+                className="c-btn c-btn--outline-secondary"
                 onClick={() => setIsOpen(false)}
-                style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block', marginRight: '8px' }}
+                style={{
+                  cursor: 'pointer',
+                  padding: '8px 16px',
+                  display: 'inline-block',
+                  marginRight: '8px',
+                }}
               >
                 Cancel
               </div>
-              <div 
-                className="c-btn c-btn--primary" 
+              <div
+                className="c-btn c-btn--primary"
                 onClick={() => setIsOpen(false)}
                 style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
               >
@@ -167,11 +182,15 @@ export const Small: Story = {
             </>
           }
         >
-          <img src="https://unsplash.it/g/400/200" alt="Example image" style={{ maxWidth: '100%' }} />
+          <img
+            src="https://unsplash.it/g/400/200"
+            alt="Example image"
+            style={{ maxWidth: '100%' }}
+          />
         </Modal>
       </>
     );
-  }
+  },
 };
 
 /**
@@ -181,13 +200,13 @@ export const Sizes: Story = {
   render: () => {
     const [size, setSize] = useState<'sm' | 'md' | 'lg' | 'xl'>('md');
     const [isOpen, setIsOpen] = useState(false);
-    
+
     return (
       <div className="u-d-flex u-flex-column u-gap-4">
         <div className="u-d-flex u-gap-4">
-          <div 
+          <div
             className={`c-btn ${size === 'sm' ? 'c-btn--primary' : 'c-btn--secondary'}`}
-            onClick={() => { 
+            onClick={() => {
               setSize('sm');
               setIsOpen(true);
             }}
@@ -195,10 +214,10 @@ export const Sizes: Story = {
           >
             Small Modal
           </div>
-          
-          <div 
+
+          <div
             className={`c-btn ${size === 'md' ? 'c-btn--primary' : 'c-btn--secondary'}`}
-            onClick={() => { 
+            onClick={() => {
               setSize('md');
               setIsOpen(true);
             }}
@@ -206,10 +225,10 @@ export const Sizes: Story = {
           >
             Medium Modal
           </div>
-          
-          <div 
+
+          <div
             className={`c-btn ${size === 'lg' ? 'c-btn--primary' : 'c-btn--secondary'}`}
-            onClick={() => { 
+            onClick={() => {
               setSize('lg');
               setIsOpen(true);
             }}
@@ -217,10 +236,10 @@ export const Sizes: Story = {
           >
             Large Modal
           </div>
-          
-          <div 
+
+          <div
             className={`c-btn ${size === 'xl' ? 'c-btn--primary' : 'c-btn--secondary'}`}
-            onClick={() => { 
+            onClick={() => {
               setSize('xl');
               setIsOpen(true);
             }}
@@ -229,7 +248,7 @@ export const Sizes: Story = {
             Extra Large Modal
           </div>
         </div>
-        
+
         <Modal
           isOpen={isOpen}
           onOpenChange={setIsOpen}
@@ -238,15 +257,20 @@ export const Sizes: Story = {
           size={size}
           footer={
             <>
-              <div 
-                className="c-btn c-btn--outline-secondary" 
+              <div
+                className="c-btn c-btn--outline-secondary"
                 onClick={() => setIsOpen(false)}
-                style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block', marginRight: '8px' }}
+                style={{
+                  cursor: 'pointer',
+                  padding: '8px 16px',
+                  display: 'inline-block',
+                  marginRight: '8px',
+                }}
               >
                 Button
               </div>
-              <div 
-                className="c-btn c-btn--primary" 
+              <div
+                className="c-btn c-btn--primary"
                 onClick={() => setIsOpen(false)}
                 style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
               >
@@ -260,5 +284,5 @@ export const Sizes: Story = {
         </Modal>
       </div>
     );
-  }
-}; 
+  },
+};

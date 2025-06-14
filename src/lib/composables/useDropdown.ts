@@ -36,7 +36,7 @@ export const useDropdown = ({
   onOpenChange,
   closeOnClickOutside = true,
   closeOnEscape = true,
-  id
+  id,
 }: UseDropdownProps): UseDropdownReturn => {
   // Generate unique ID for the dropdown menu
   const uniqueId = useRef(`dropdown-${id || Math.random().toString(36).substring(2, 9)}`);
@@ -48,15 +48,18 @@ export const useDropdown = ({
   const isOpen = controlledIsOpen !== undefined ? controlledIsOpen : uncontrolledIsOpen;
 
   // Callback to update open state with notification to parent
-  const setIsOpen = useCallback((nextIsOpen: boolean) => {
-    if (controlledIsOpen === undefined) {
-      setUncontrolledIsOpen(nextIsOpen);
-    }
+  const setIsOpen = useCallback(
+    (nextIsOpen: boolean) => {
+      if (controlledIsOpen === undefined) {
+        setUncontrolledIsOpen(nextIsOpen);
+      }
 
-    if (onOpenChange) {
-      onOpenChange(nextIsOpen);
-    }
-  }, [controlledIsOpen, onOpenChange]);
+      if (onOpenChange) {
+        onOpenChange(nextIsOpen);
+      }
+    },
+    [controlledIsOpen, onOpenChange]
+  );
 
   // Refs for trigger and dropdown menu elements
   const triggerRef = useRef<HTMLElement>(null);
@@ -105,78 +108,90 @@ export const useDropdown = ({
   }, [isOpen, closeOnEscape, setIsOpen]);
 
   // Helper function to get the flipped placement if needed
-  const getFlippedPlacement = useCallback((
-    placement: DropdownPlacement, 
-    triggerRect: DOMRect, 
-    menuRect: DOMRect, 
-    offset: number
-  ): DropdownPlacement => {
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+  const getFlippedPlacement = useCallback(
+    (
+      placement: DropdownPlacement,
+      triggerRect: DOMRect,
+      menuRect: DOMRect,
+      offset: number
+    ): DropdownPlacement => {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
 
-    // Start with the requested placement
-    let newPlacement = placement;
+      // Start with the requested placement
+      let newPlacement = placement;
 
-    // Flip vertical placement if needed
-    if (placement.startsWith('bottom') && triggerRect.bottom + menuRect.height + offset > viewportHeight) {
-      newPlacement = placement.replace('bottom', 'top') as DropdownPlacement;
-    } else if (placement.startsWith('top') && triggerRect.top - menuRect.height - offset < 0) {
-      newPlacement = placement.replace('top', 'bottom') as DropdownPlacement;
-    }
-
-    // Flip horizontal placement if needed
-    if (placement.startsWith('left') && triggerRect.left - menuRect.width - offset < 0) {
-      newPlacement = placement.replace('left', 'right') as DropdownPlacement;
-    } else if (placement.startsWith('right') && triggerRect.right + menuRect.width + offset > viewportWidth) {
-      newPlacement = placement.replace('right', 'left') as DropdownPlacement;
-    }
-
-    // Adjust alignment for top/bottom placements
-    if ((newPlacement.startsWith('top') || newPlacement.startsWith('bottom'))) {
-      if (newPlacement.endsWith('start') && triggerRect.left + menuRect.width > viewportWidth) {
-        newPlacement = newPlacement.replace('start', 'end') as DropdownPlacement;
-      } else if (newPlacement.endsWith('end') && triggerRect.right - menuRect.width < 0) {
-        newPlacement = newPlacement.replace('end', 'start') as DropdownPlacement;
+      // Flip vertical placement if needed
+      if (
+        placement.startsWith('bottom') &&
+        triggerRect.bottom + menuRect.height + offset > viewportHeight
+      ) {
+        newPlacement = placement.replace('bottom', 'top') as DropdownPlacement;
+      } else if (placement.startsWith('top') && triggerRect.top - menuRect.height - offset < 0) {
+        newPlacement = placement.replace('top', 'bottom') as DropdownPlacement;
       }
-    }
 
-    return newPlacement;
-  }, []);
+      // Flip horizontal placement if needed
+      if (placement.startsWith('left') && triggerRect.left - menuRect.width - offset < 0) {
+        newPlacement = placement.replace('left', 'right') as DropdownPlacement;
+      } else if (
+        placement.startsWith('right') &&
+        triggerRect.right + menuRect.width + offset > viewportWidth
+      ) {
+        newPlacement = placement.replace('right', 'left') as DropdownPlacement;
+      }
+
+      // Adjust alignment for top/bottom placements
+      if (newPlacement.startsWith('top') || newPlacement.startsWith('bottom')) {
+        if (newPlacement.endsWith('start') && triggerRect.left + menuRect.width > viewportWidth) {
+          newPlacement = newPlacement.replace('start', 'end') as DropdownPlacement;
+        } else if (newPlacement.endsWith('end') && triggerRect.right - menuRect.width < 0) {
+          newPlacement = newPlacement.replace('end', 'start') as DropdownPlacement;
+        }
+      }
+
+      return newPlacement;
+    },
+    []
+  );
 
   // Helper function to calculate position based on placement
-  const calculatePosition = useCallback((
-    placement: DropdownPlacement, 
-    triggerRect: DOMRect, 
-    menuRect: DOMRect, 
-    offset: number
-  ): { top: number; left: number } => {
-    let top = 0;
-    let left = 0;
+  const calculatePosition = useCallback(
+    (
+      placement: DropdownPlacement,
+      triggerRect: DOMRect,
+      menuRect: DOMRect,
+      offset: number
+    ): { top: number; left: number } => {
+      let top = 0;
+      let left = 0;
 
-    // Vertical positioning
-    if (placement.startsWith('bottom')) {
-      top = triggerRect.height + offset;
-    } else if (placement.startsWith('top')) {
-      top = -menuRect.height - offset;
-    } else if (placement.startsWith('left') || placement.startsWith('right')) {
-      top = (triggerRect.height / 2) - (menuRect.height / 2);
-    }
+      // Vertical positioning
+      if (placement.startsWith('bottom')) {
+        top = triggerRect.height + offset;
+      } else if (placement.startsWith('top')) {
+        top = -menuRect.height - offset;
+      } else if (placement.startsWith('left') || placement.startsWith('right')) {
+        top = triggerRect.height / 2 - menuRect.height / 2;
+      }
 
-    // Horizontal positioning
-    if (placement.startsWith('left')) {
-      left = -menuRect.width - offset;
-    } else if (placement.startsWith('right')) {
-      left = triggerRect.width + offset;
-    } else if (placement.endsWith('start')) {
-      left = 0;
-    } else if (placement.endsWith('end')) {
-      left = triggerRect.width - menuRect.width;
-    } else {
-      left = (triggerRect.width / 2) - (menuRect.width / 2);
-    }
+      // Horizontal positioning
+      if (placement.startsWith('left')) {
+        left = -menuRect.width - offset;
+      } else if (placement.startsWith('right')) {
+        left = triggerRect.width + offset;
+      } else if (placement.endsWith('start')) {
+        left = 0;
+      } else if (placement.endsWith('end')) {
+        left = triggerRect.width - menuRect.width;
+      } else {
+        left = triggerRect.width / 2 - menuRect.width / 2;
+      }
 
-    return { top, left };
-  }, []);
+      return { top, left };
+    },
+    []
+  );
 
   // Calculate and update dropdown position
   const updatePosition = useCallback(() => {
@@ -252,6 +267,6 @@ export const useDropdown = ({
     menuRef,
     dropdownId: uniqueId.current,
     currentPlacement,
-    updatePosition
+    updatePosition,
   };
-}; 
+};

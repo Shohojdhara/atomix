@@ -9,18 +9,16 @@ export const List: React.FC<ListProps> = ({
   ...props
 }) => {
   // Generate CSS classes
-  const listClasses = [
-    LIST.BASE_CLASS,
-    variant !== 'default' && `c-list--${variant}`,
-    className,
-  ].filter(Boolean).join(' ');
+  const listClasses = [LIST.BASE_CLASS, variant !== 'default' && `c-list--${variant}`, className]
+    .filter(Boolean)
+    .join(' ');
 
   // Determine the HTML element based on variant
   const ListElement = ['number', 'text'].includes(variant) ? 'ol' : 'ul';
 
   return (
     <ListElement className={listClasses} {...props}>
-      {React.Children.map(children, (child) => {
+      {React.Children.map(children, child => {
         if (React.isValidElement(child)) {
           return <li className="c-list__item">{child}</li>;
         }
@@ -30,9 +28,7 @@ export const List: React.FC<ListProps> = ({
   );
 };
 
-
-
-export type { ListProps  };
+export type { ListProps };
 
 List.displayName = 'List';
 

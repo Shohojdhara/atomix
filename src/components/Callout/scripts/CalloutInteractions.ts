@@ -22,7 +22,7 @@ export class CalloutInteractions {
     TOP_CENTER: 'top-center',
     BOTTOM_RIGHT: 'bottom-right',
     BOTTOM_LEFT: 'bottom-left',
-    BOTTOM_CENTER: 'bottom-center'
+    BOTTOM_CENTER: 'bottom-center',
   } as const;
 
   /**
@@ -30,26 +30,29 @@ export class CalloutInteractions {
    * @param element - The callout element
    * @param options - Configuration options
    */
-  constructor(element: HTMLElement, options: {
-    autoHide?: boolean;
-    autoHideDelay?: number;
-    onClose?: () => void;
-    position?: ToastPosition;
-  } = {}) {
+  constructor(
+    element: HTMLElement,
+    options: {
+      autoHide?: boolean;
+      autoHideDelay?: number;
+      onClose?: () => void;
+      position?: ToastPosition;
+    } = {}
+  ) {
     this.element = element;
     this.id = element.id || `callout-${Math.random().toString(36).substring(2, 9)}`;
-    
+
     if (!element.id) {
       element.id = this.id;
     }
-    
+
     this.config = {
       autoHide: options.autoHide ?? false,
       autoHideDelay: options.autoHideDelay ?? 5000, // Default 5 seconds
       onClose: options.onClose,
-      position: options.position ?? CalloutInteractions.ToastPositions.TOP_RIGHT
+      position: options.position ?? CalloutInteractions.ToastPositions.TOP_RIGHT,
     };
-    
+
     this._initialize();
     CalloutInteractions.instances.set(this.id, this);
   }
@@ -62,16 +65,16 @@ export class CalloutInteractions {
     if (this.element.classList.contains('c-callout--toast')) {
       this.element.addEventListener('mouseenter', this._pauseAutoHide.bind(this));
       this.element.addEventListener('mouseleave', this._resumeAutoHide.bind(this));
-      
+
       // Add keyboard support for toast callouts
       this.element.addEventListener('keydown', this._handleKeyDown.bind(this));
-      
+
       // Make sure toast is focusable
       if (this.element.tabIndex < 0) {
         this.element.tabIndex = 0;
       }
     }
-    
+
     // Set up auto-hide if configured
     if (this.config.autoHide) {
       this._startAutoHideTimer();
@@ -96,7 +99,7 @@ export class CalloutInteractions {
     if (this.autoHideTimeout) {
       clearTimeout(this.autoHideTimeout);
     }
-    
+
     this.autoHideTimeout = window.setTimeout(() => {
       this.close();
     }, this.config.autoHideDelay);
@@ -126,21 +129,23 @@ export class CalloutInteractions {
    */
   public close(): void {
     this.element.classList.add('is-hide');
-    
+
     // Remove from DOM after animation completes
     setTimeout(() => {
       if (this.element.parentNode) {
         this.element.parentNode.removeChild(this.element);
         CalloutInteractions.instances.delete(this.id);
-        
+
         if (this.config.onClose) {
           this.config.onClose();
         }
-        
+
         // Dispatch custom event
-        document.dispatchEvent(new CustomEvent('atomix:callout:closed', {
-          detail: { id: this.id }
-        }));
+        document.dispatchEvent(
+          new CustomEvent('atomix:callout:closed', {
+            detail: { id: this.id },
+          })
+        );
       }
     }, 300); // Match the transition duration in CSS
   }
@@ -152,21 +157,23 @@ export class CalloutInteractions {
     if (this.autoHideTimeout) {
       clearTimeout(this.autoHideTimeout);
     }
-    
+
     this.element.removeEventListener('mouseenter', this._pauseAutoHide.bind(this));
     this.element.removeEventListener('mouseleave', this._resumeAutoHide.bind(this));
     this.element.removeEventListener('keydown', this._handleKeyDown.bind(this));
-    
+
     CalloutInteractions.instances.delete(this.id);
   }
 
   /**
    * Get the toast container for a specific position
    */
-  private static _getToastContainer(position: ToastPosition = CalloutInteractions.ToastPositions.TOP_RIGHT): HTMLElement {
+  private static _getToastContainer(
+    position: ToastPosition = CalloutInteractions.ToastPositions.TOP_RIGHT
+  ): HTMLElement {
     const containerId = `atomix-toast-container-${position}`;
     let container = document.getElementById(containerId);
-    
+
     if (!container) {
       container = document.createElement('div');
       container.id = containerId;
@@ -174,14 +181,14 @@ export class CalloutInteractions {
       container.setAttribute('aria-live', 'polite');
       container.setAttribute('role', 'status');
       document.body.appendChild(container);
-      
+
       // Apply positioning styles
       container.style.position = 'fixed';
       container.style.zIndex = '9999';
       container.style.display = 'flex';
       container.style.flexDirection = 'column';
       container.style.gap = '8px';
-      
+
       // Position the container based on position value
       switch (position) {
         case CalloutInteractions.ToastPositions.TOP_RIGHT:
@@ -218,7 +225,7 @@ export class CalloutInteractions {
           break;
       }
     }
-    
+
     return container;
   }
 
@@ -239,7 +246,7 @@ export class CalloutInteractions {
     // Get the appropriate toast container
     const position = options.position || CalloutInteractions.ToastPositions.TOP_RIGHT;
     const toastContainer = this._getToastContainer(position);
-    
+
     // Create toast element
     const toast = document.createElement('div');
     toast.className = `c-callout c-callout--toast ${options.variant ? `c-callout--${options.variant}` : 'c-callout--primary'}`;
@@ -247,13 +254,13 @@ export class CalloutInteractions {
     toast.setAttribute('role', 'alert');
     toast.setAttribute('aria-live', 'assertive');
     toast.tabIndex = 0; // Make focusable
-    
+
     // Create toast content
     let iconHtml = '';
     if (options.icon) {
       iconHtml = `<div class="c-callout__icon">${options.icon}</div>`;
     }
-    
+
     toast.innerHTML = `
       <div class="c-callout__content">
         ${iconHtml}
@@ -268,63 +275,65 @@ export class CalloutInteractions {
         </svg>
       </button>
     `;
-    
+
     // Add to container
     toastContainer.appendChild(toast);
-    
+
     // Initialize interactions
     const interaction = new CalloutInteractions(toast, {
       autoHide: options.autoHide ?? true,
       autoHideDelay: options.autoHideDelay ?? 5000,
       onClose: options.onClose,
-      position
+      position,
     });
-    
+
     // Add close button event listener
     const closeButton = toast.querySelector('.c-callout__close-btn');
     if (closeButton) {
       closeButton.addEventListener('click', () => interaction.close());
     }
-    
+
     // Focus the toast for accessibility
     setTimeout(() => toast.focus(), 100);
-    
+
     return interaction;
   }
 
   /**
    * Initialize all callout elements on the page
    */
-  public static initializeAll(options: {
-    autoHide?: boolean;
-    autoHideDelay?: number;
-    onClose?: () => void;
-  } = {}): CalloutInteractions[] {
+  public static initializeAll(
+    options: {
+      autoHide?: boolean;
+      autoHideDelay?: number;
+      onClose?: () => void;
+    } = {}
+  ): CalloutInteractions[] {
     const interactions: CalloutInteractions[] = [];
     const elements = document.querySelectorAll('.c-callout');
-    
+
     elements.forEach(element => {
       if (!CalloutInteractions.instances.has((element as HTMLElement).id)) {
         interactions.push(new CalloutInteractions(element as HTMLElement, options));
       }
     });
-    
+
     return interactions;
   }
-  
+
   /**
    * Clear all toast notifications
    */
   public static clearAllToasts(): void {
     // Get all toast containers
     const containers = document.querySelectorAll('[id^="atomix-toast-container-"]');
-    
+
     containers.forEach(container => {
       const toasts = container.querySelectorAll('.c-callout--toast');
       toasts.forEach(toast => {
         const id = (toast as HTMLElement).id;
         const instance = CalloutInteractions.instances.get(id);
-        
+
         if (instance) {
           instance.close();
         } else {
@@ -337,4 +346,5 @@ export class CalloutInteractions {
 }
 
 // Type for toast positions
-type ToastPosition = typeof CalloutInteractions.ToastPositions[keyof typeof CalloutInteractions.ToastPositions];
+type ToastPosition =
+  (typeof CalloutInteractions.ToastPositions)[keyof typeof CalloutInteractions.ToastPositions];

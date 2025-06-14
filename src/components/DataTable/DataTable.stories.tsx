@@ -32,13 +32,13 @@ type Story = StoryObj<typeof DataTable>;
 const generateUsers = (count: number) => {
   const roles = ['Admin', 'User', 'Editor', 'Manager', 'Guest'];
   const statuses = ['Active', 'Inactive', 'Pending', 'Suspended'];
-  
+
   return Array.from({ length: count }, (_, i) => ({
     id: i + 1,
     name: `User ${i + 1}`,
     email: `user${i + 1}@example.com`,
     role: roles[Math.floor(Math.random() * roles.length)],
-    status: statuses[Math.floor(Math.random() * statuses.length)]
+    status: statuses[Math.floor(Math.random() * statuses.length)],
   }));
 };
 
@@ -67,9 +67,9 @@ const columns: DataTableColumn[] = [
   { key: 'name', title: 'Name', sortable: true },
   { key: 'email', title: 'Email', sortable: true },
   { key: 'role', title: 'Role', sortable: true },
-  { 
-    key: 'status', 
-    title: 'Status', 
+  {
+    key: 'status',
+    title: 'Status',
     sortable: true,
     render: (value, row) => {
       let color = '';
@@ -88,7 +88,7 @@ const columns: DataTableColumn[] = [
           break;
       }
       return <span style={{ color }}>{value}</span>;
-    }
+    },
   },
 ];
 
@@ -129,7 +129,7 @@ export const Paginated: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'A paginated table with standard pagination controls below the table.'
+        story: 'A paginated table with standard pagination controls below the table.',
       },
     },
   },
@@ -146,7 +146,8 @@ export const PaginatedLargeDataset: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Pagination with a large dataset (100 items) demonstrating first/last buttons and ellipsis.'
+        story:
+          'Pagination with a large dataset (100 items) demonstrating first/last buttons and ellipsis.',
       },
     },
   },
@@ -167,7 +168,7 @@ export const CompleteFeatures: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'A complete data table with sorting, filtering, and pagination enabled.'
+        story: 'A complete data table with sorting, filtering, and pagination enabled.',
       },
     },
   },
@@ -214,21 +215,25 @@ export const Loading: Story = {
 
 // Interactive example with row click handler
 export const Interactive: Story = {
-  render: (args) => {
+  render: args => {
     const [selectedUser, setSelectedUser] = useState<any>(null);
-    
+
     const handleRowClick = (row: any) => {
       setSelectedUser(row);
     };
-    
+
     return (
       <div>
-        <DataTable
-          {...args}
-          onRowClick={handleRowClick}
-        />
+        <DataTable {...args} onRowClick={handleRowClick} />
         {selectedUser && (
-          <div style={{ marginTop: '1rem', padding: '1rem', border: '1px solid #ccc', borderRadius: '4px' }}>
+          <div
+            style={{
+              marginTop: '1rem',
+              padding: '1rem',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+            }}
+          >
             <h3>Selected User:</h3>
             <pre>{JSON.stringify(selectedUser, null, 2)}</pre>
           </div>

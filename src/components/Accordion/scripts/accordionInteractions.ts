@@ -8,12 +8,12 @@ import { addClass, removeClass } from '../../../lib/utils/dom';
  */
 export function applyEnterAnimation(accordion: HTMLElement): void {
   const header = accordion.querySelector(ACCORDION.SELECTORS.HEADER) as HTMLElement;
-  
+
   if (!header) return;
-  
+
   header.addEventListener('click', () => {
     const isOpen = accordion.classList.contains(ACCORDION.CLASSES.IS_OPEN);
-    
+
     if (isOpen) {
       addClass(accordion, ACCORDION.CLASSES.IS_ANIMATING);
       setTimeout(() => {
@@ -29,15 +29,15 @@ export function applyEnterAnimation(accordion: HTMLElement): void {
  */
 export function initializeAccordionsWithCustomBehavior(): Accordion[] {
   const instances = initializeAccordions() as Accordion[];
-  
+
   // Get all accordion elements
   const accordions = document.querySelectorAll<HTMLElement>(ACCORDION.SELECTORS.ACCORDION);
-  
+
   // Apply custom animations to each accordion
   accordions.forEach(accordion => {
     applyEnterAnimation(accordion);
   });
-  
+
   return instances;
 }
 
@@ -46,7 +46,7 @@ export function initializeAccordionsWithCustomBehavior(): Accordion[] {
  */
 export function openAllAccordions(): void {
   const accordions = document.querySelectorAll<HTMLElement>(ACCORDION.SELECTORS.ACCORDION);
-  
+
   accordions.forEach(accordion => {
     const header = accordion.querySelector(ACCORDION.SELECTORS.HEADER) as HTMLButtonElement;
     if (header && !accordion.classList.contains(ACCORDION.CLASSES.IS_OPEN)) {
@@ -60,11 +60,11 @@ export function openAllAccordions(): void {
  */
 export function closeAllAccordions(): void {
   const accordions = document.querySelectorAll<HTMLElement>(ACCORDION.SELECTORS.ACCORDION);
-  
+
   accordions.forEach(accordion => {
     const header = accordion.querySelector(ACCORDION.SELECTORS.HEADER) as HTMLButtonElement;
     if (header && accordion.classList.contains(ACCORDION.CLASSES.IS_OPEN)) {
       header.click();
     }
   });
-} 
+}

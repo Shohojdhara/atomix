@@ -10,7 +10,7 @@ export function useForm(initialProps?: Partial<FormProps>) {
   // Default form properties
   const defaultProps: Partial<FormProps> = {
     disabled: false,
-    ...initialProps
+    ...initialProps,
   };
 
   /**
@@ -19,13 +19,10 @@ export function useForm(initialProps?: Partial<FormProps>) {
    * @returns Class string
    */
   const generateFormClass = (props: Partial<FormProps>): string => {
-    const {
-      disabled = defaultProps.disabled,
-      className = '',
-    } = props;
+    const { disabled = defaultProps.disabled, className = '' } = props;
 
     const disabledClass = disabled ? FORM.CLASSES.DISABLED : '';
-    
+
     return `${FORM.CLASSES.BASE} ${disabledClass} ${className}`.trim();
   };
 
@@ -62,4 +59,4 @@ export function useForm(initialProps?: Partial<FormProps>) {
     handleSubmit,
     handleReset,
   };
-} 
+}

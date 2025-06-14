@@ -17,97 +17,89 @@ export const Todo: React.FC<TodoProps> = ({
   className = '',
   disabled = false,
 }) => {
-  const {
-    inputText,
-    setInputText,
-    addTodo,
-    generateTodoClasses,
-    generateItemClasses,
-  } = useTodo({ items, title, size, placeholder, showCompleted, disabled });
+  const { inputText, setInputText, addTodo, generateTodoClasses, generateItemClasses } = useTodo({
+    items,
+    title,
+    size,
+    placeholder,
+    showCompleted,
+    disabled,
+  });
 
   // State to manage local items
   const [localItems, setLocalItems] = useState(items);
-  
+
   // Update local items when props change
   useEffect(() => {
     setLocalItems(items);
   }, [items]);
-  
+
   // Handle item toggle
   const handleToggle = (id: string) => {
     if (disabled) return;
-    
-    setLocalItems(prevItems => 
-      prevItems.map(item => 
-        item.id === id 
-          ? { ...item, completed: !item.completed } 
-          : item
-      )
+
+    setLocalItems(prevItems =>
+      prevItems.map(item => (item.id === id ? { ...item, completed: !item.completed } : item))
     );
-    
+
     if (onToggleTodo) {
       onToggleTodo(id);
     }
   };
-  
+
   // Handle item delete
   const handleDelete = (id: string) => {
     if (disabled) return;
-    
+
     setLocalItems(prevItems => prevItems.filter(item => item.id !== id));
-    
+
     if (onDeleteTodo) {
       onDeleteTodo(id);
     }
   };
-  
+
   // Handle form submission
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (disabled || !inputText.trim()) return;
-    
+
     // Create a new todo item with a unique ID
     const newTodo = {
       id: uuidv4(),
       text: inputText.trim(),
-      completed: false
+      completed: false,
     };
-    
+
     // Update local state
     setLocalItems(prevItems => [...prevItems, newTodo]);
-    
+
     // Call parent callback if provided
     if (onAddTodo) {
       onAddTodo(inputText);
     }
-    
+
     // Clear the input field
     setInputText('');
   };
-  
+
   // Filter items based on showCompleted prop
-  const filteredItems = showCompleted 
-    ? localItems 
-    : localItems.filter(item => !item.completed);
-  
+  const filteredItems = showCompleted ? localItems : localItems.filter(item => !item.completed);
+
   // Generate component classes
   const todoClass = generateTodoClasses({ size, className, disabled });
-  
+
   return (
     <div className={todoClass}>
       {title && <h2 className="c-todo__title">{title}</h2>}
-      
-      <form 
-        className="c-todo__form"
-        onSubmit={handleFormSubmit}
-      >
+
+      <form className="c-todo__form" onSubmit={handleFormSubmit}>
         <div className="c-todo__form-group">
           <input
             type="text"
             className="c-todo__input c-input"
             placeholder={placeholder}
             value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
+            onChange={e => setInputText(e.target.value)}
             disabled={disabled}
             aria-label="Add a new todo"
           />
@@ -121,16 +113,13 @@ export const Todo: React.FC<TodoProps> = ({
           </button>
         </div>
       </form>
-      
+
       <ul className="c-todo__list">
         {filteredItems.length === 0 ? (
           <li className="c-todo__empty">No items to display</li>
         ) : (
           filteredItems.map(item => (
-            <li 
-              key={item.id} 
-              className={generateItemClasses(item)}
-            >
+            <li key={item.id} className={generateItemClasses(item)}>
               <div className="c-todo__item-content">
                 <label className="c-todo__checkbox-label">
                   <input
@@ -143,7 +132,7 @@ export const Todo: React.FC<TodoProps> = ({
                   />
                   <span className="c-todo__item-text">{item.text}</span>
                 </label>
-                
+
                 <button
                   type="button"
                   className="c-todo__delete-btn c-btn c-btn--error c-btn--sm"
@@ -164,6 +153,6 @@ export const Todo: React.FC<TodoProps> = ({
 
 Todo.displayName = 'Todo';
 
-export type { TodoProps  };
+export type { TodoProps };
 
 export default Todo;

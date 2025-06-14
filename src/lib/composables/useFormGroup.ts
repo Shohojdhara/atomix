@@ -13,7 +13,7 @@ export function useFormGroup(initialProps?: Partial<FormGroupProps>) {
     disabled: false,
     invalid: false,
     valid: false,
-    ...initialProps
+    ...initialProps,
   };
 
   /**
@@ -30,18 +30,17 @@ export function useFormGroup(initialProps?: Partial<FormGroupProps>) {
       className = '',
     } = props;
 
-    const sizeClass = size === 'md' ? '' : (
-      size === 'sm' ? FORM_GROUP.CLASSES.SMALL : FORM_GROUP.CLASSES.LARGE
-    );
-    
-    const validationClass = invalid 
-      ? FORM_GROUP.CLASSES.INVALID 
-      : valid 
-        ? FORM_GROUP.CLASSES.VALID 
+    const sizeClass =
+      size === 'md' ? '' : size === 'sm' ? FORM_GROUP.CLASSES.SMALL : FORM_GROUP.CLASSES.LARGE;
+
+    const validationClass = invalid
+      ? FORM_GROUP.CLASSES.INVALID
+      : valid
+        ? FORM_GROUP.CLASSES.VALID
         : '';
-    
+
     const disabledClass = disabled ? FORM_GROUP.CLASSES.DISABLED : '';
-    
+
     return `${FORM_GROUP.CLASSES.BASE} ${sizeClass} ${validationClass} ${disabledClass} ${className}`.trim();
   };
 
@@ -49,4 +48,4 @@ export function useFormGroup(initialProps?: Partial<FormGroupProps>) {
     defaultProps,
     generateFormGroupClass,
   };
-} 
+}

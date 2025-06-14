@@ -11,7 +11,7 @@ import {
   checkAndFlipPosition,
   calculatePopoverPosition,
   positionArrow,
-  setPositionClass
+  setPositionClass,
 } from './componentInteractions';
 
 /**
@@ -46,16 +46,17 @@ class Popover {
     this.updateInterval = null;
     this.timeoutRef = { current: null };
     this.options = {
-      position: options.position || POPOVER.DEFAULTS.POSITION as PopoverPosition | 'auto',
-      trigger: options.trigger || POPOVER.DEFAULTS.TRIGGER as 'hover' | 'click',
+      position: options.position || (POPOVER.DEFAULTS.POSITION as PopoverPosition | 'auto'),
+      trigger: options.trigger || (POPOVER.DEFAULTS.TRIGGER as 'hover' | 'click'),
       offset: options.offset !== undefined ? options.offset : POPOVER.DEFAULTS.OFFSET,
-      delay: options.delay !== undefined ? options.delay : POPOVER.DEFAULTS.DELAY
+      delay: options.delay !== undefined ? options.delay : POPOVER.DEFAULTS.DELAY,
     };
-    
+
     // Initialize current position from options (will be recalculated if auto)
-    this.currentPosition = this.options.position === 'auto' 
-      ? 'top' // default fallback
-      : this.options.position as PopoverPosition;
+    this.currentPosition =
+      this.options.position === 'auto'
+        ? 'top' // default fallback
+        : (this.options.position as PopoverPosition);
 
     this._initialize();
   }
@@ -68,28 +69,24 @@ class Popover {
     this.trigger = document.querySelector(`[data-popover-id="${this.element.id}"]`);
     this.content = this.element.querySelector(POPOVER.SELECTORS.CONTENT);
     this.contentInner = this.element.querySelector(POPOVER.SELECTORS.CONTENT_INNER);
-    
+
     // Create arrow element if needed
     this.arrow = document.createElement('div');
     this.arrow.className = POPOVER.SELECTORS.ARROW.slice(1); // Remove leading dot
     this.content?.appendChild(this.arrow);
-    
+
     // Set initial position class
     this._setPositionClass();
-    
+
     // Bind events
     this._bindEvents();
   }
-  
+
   /**
    * Set the position class on the element
    */
   private _setPositionClass(): void {
-    setPositionClass(
-      this.element,
-      this.currentPosition,
-      this.options.position === 'auto'
-    );
+    setPositionClass(this.element, this.currentPosition, this.options.position === 'auto');
   }
 
   /**
@@ -97,7 +94,7 @@ class Popover {
    */
   private _bindEvents(): void {
     if (!this.trigger) return;
-    
+
     if (this.options.trigger === 'click') {
       this.trigger.addEventListener('click', this._handleTriggerClick.bind(this));
       document.addEventListener('click', this._handleDocumentClick.bind(this));
@@ -108,10 +105,10 @@ class Popover {
       this.element.addEventListener('mouseenter', this._handlePopoverMouseEnter.bind(this));
       this.element.addEventListener('mouseleave', this._handlePopoverMouseLeave.bind(this));
     }
-    
+
     window.addEventListener('resize', this._updatePosition.bind(this));
     window.addEventListener('scroll', this._updatePosition.bind(this), { passive: true });
-    
+
     // Also update position periodically to handle any dynamic content changes
     this.updateInterval = window.setInterval(this._updatePosition.bind(this), 200);
   }
@@ -173,11 +170,11 @@ class Popover {
    */
   private _updatePosition(): void {
     if (!this.isOpen || !this.trigger) return;
-    
+
     const triggerRect = this.trigger.getBoundingClientRect();
     const popoverRect = this.element.getBoundingClientRect();
     const offset = this.options.offset || 0;
-    
+
     // If auto positioning is enabled, determine best position
     if (this.options.position === 'auto') {
       this.currentPosition = determineBestPosition(triggerRect);
@@ -191,7 +188,7 @@ class Popover {
         offset
       );
     }
-    
+
     // Calculate position
     const { top, left } = calculatePopoverPosition(
       triggerRect,
@@ -199,15 +196,15 @@ class Popover {
       this.currentPosition,
       offset
     );
-    
+
     // Apply position using absolute positioning to follow when scrolling
     this.element.style.position = 'absolute';
     this.element.style.top = `${top}px`;
     this.element.style.left = `${left}px`;
-    
+
     // Update position class and arrow
     this._setPositionClass();
-    
+
     // Position arrow
     if (this.arrow) {
       positionArrow(this.arrow, this.currentPosition);
@@ -219,17 +216,19 @@ class Popover {
    */
   public open(): void {
     if (this.isOpen) return;
-    
+
     this.element.classList.add(POPOVER.CLASSES.IS_OPEN);
     this.isOpen = true;
-    
+
     // Update position right away
     this._updatePosition();
-    
+
     // Dispatch custom event
-    this.element.dispatchEvent(new CustomEvent('popover:open', { 
-      bubbles: true 
-    }));
+    this.element.dispatchEvent(
+      new CustomEvent('popover:open', {
+        bubbles: true,
+      })
+    );
   }
 
   /**
@@ -237,14 +236,16 @@ class Popover {
    */
   public close(): void {
     if (!this.isOpen) return;
-    
+
     this.element.classList.remove(POPOVER.CLASSES.IS_OPEN);
     this.isOpen = false;
-    
+
     // Dispatch custom event
-    this.element.dispatchEvent(new CustomEvent('popover:close', { 
-      bubbles: true 
-    }));
+    this.element.dispatchEvent(
+      new CustomEvent('popover:close', {
+        bubbles: true,
+      })
+    );
   }
 
   /**
@@ -270,24 +271,24 @@ class Popover {
         this.trigger.removeEventListener('mouseleave', this._handleTriggerMouseLeave);
       }
     }
-    
+
     document.removeEventListener('click', this._handleDocumentClick);
     document.removeEventListener('keydown', this._handleEscapeKey);
-    
+
     this.element.removeEventListener('mouseenter', this._handlePopoverMouseEnter);
     this.element.removeEventListener('mouseleave', this._handlePopoverMouseLeave);
-    
+
     window.removeEventListener('resize', this._updatePosition);
     window.removeEventListener('scroll', this._updatePosition);
-    
+
     if (this.timeout !== null) {
       window.clearTimeout(this.timeout);
     }
-    
+
     if (this.timeoutRef.current !== null) {
       window.clearTimeout(this.timeoutRef.current);
     }
-    
+
     if (this.updateInterval !== null) {
       window.clearInterval(this.updateInterval);
     }
@@ -299,21 +300,31 @@ class Popover {
  */
 const initPopovers = (): void => {
   const popovers = document.querySelectorAll(POPOVER.SELECTORS.POPOVER);
-  
+
   popovers.forEach((element: Element) => {
     const popover = element as HTMLElement;
     // Get configuration from data attributes
-    const position = popover.getAttribute(POPOVER.ATTRIBUTES.POSITION) as PopoverPosition | 'auto' || POPOVER.DEFAULTS.POSITION;
-    const trigger = popover.getAttribute(POPOVER.ATTRIBUTES.TRIGGER) as 'hover' | 'click' || POPOVER.DEFAULTS.TRIGGER;
-    const offset = parseInt(popover.getAttribute('data-popover-offset') || String(POPOVER.DEFAULTS.OFFSET), 10);
-    const delay = parseInt(popover.getAttribute('data-popover-delay') || String(POPOVER.DEFAULTS.DELAY), 10);
-    
+    const position =
+      (popover.getAttribute(POPOVER.ATTRIBUTES.POSITION) as PopoverPosition | 'auto') ||
+      POPOVER.DEFAULTS.POSITION;
+    const trigger =
+      (popover.getAttribute(POPOVER.ATTRIBUTES.TRIGGER) as 'hover' | 'click') ||
+      POPOVER.DEFAULTS.TRIGGER;
+    const offset = parseInt(
+      popover.getAttribute('data-popover-offset') || String(POPOVER.DEFAULTS.OFFSET),
+      10
+    );
+    const delay = parseInt(
+      popover.getAttribute('data-popover-delay') || String(POPOVER.DEFAULTS.DELAY),
+      10
+    );
+
     // Initialize popover
-    new Popover(popover, { 
+    new Popover(popover, {
       position: position as PopoverPosition | 'auto',
       trigger: trigger as 'hover' | 'click',
-      offset, 
-      delay 
+      offset,
+      delay,
     });
   });
 };
@@ -328,4 +339,4 @@ if (typeof document !== 'undefined') {
 }
 
 export default Popover;
-export { initPopovers }; 
+export { initPopovers };

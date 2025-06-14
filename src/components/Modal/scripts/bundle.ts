@@ -10,8 +10,8 @@ if (typeof window !== 'undefined') {
   (window as any).Atomix.initializeModals = initializeModals;
   (window as any).Atomix.getModalInstance = getModalInstance;
   (window as any).Atomix.setupModalEventDelegation = setupModalEventDelegation;
-  
-  // Auto-initialize on DOMContentLoaded 
+
+  // Auto-initialize on DOMContentLoaded
   document.addEventListener('DOMContentLoaded', () => {
     if ((window as any).Atomix.autoInitModals !== false) {
       initializeModals();
@@ -20,4 +20,4 @@ if (typeof window !== 'undefined') {
   });
 }
 
-export { Modal, initializeModals, getModalInstance, setupModalEventDelegation }; 
+export { Modal, initializeModals, getModalInstance, setupModalEventDelegation };

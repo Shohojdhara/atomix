@@ -44,7 +44,7 @@ const DEFAULT_OPTIONS: CardOptions = {
   active: false,
   className: '',
   onClick: undefined,
-  children: undefined
+  children: undefined,
 };
 
 /**
@@ -53,7 +53,7 @@ const DEFAULT_OPTIONS: CardOptions = {
 export default class Card implements CardInstance {
   // DOM element
   private element: HTMLElement;
-  
+
   // Options
   private options: CardOptions;
 
@@ -74,17 +74,16 @@ export default class Card implements CardInstance {
    */
   constructor(element: string | HTMLElement, options: Partial<CardOptions> = {}) {
     // Get element reference
-    this.element = typeof element === 'string'
-      ? document.querySelector(element) as HTMLElement
-      : element;
-    
+    this.element =
+      typeof element === 'string' ? (document.querySelector(element) as HTMLElement) : element;
+
     if (!this.element) {
       throw new Error('Card: element not found');
     }
-    
+
     // Merge default options with provided options
     this.options = { ...DEFAULT_OPTIONS, ...options };
-    
+
     // Initialize the component
     this._initialize();
   }
@@ -121,7 +120,7 @@ export default class Card implements CardInstance {
 
     // Create the structure
     this._createStructure();
-    
+
     // Bind events
     this._bindEvents();
   }
@@ -147,7 +146,7 @@ export default class Card implements CardInstance {
       this.imageElement.alt = this.options.imageAlt || '';
       this.element.appendChild(this.imageElement);
     }
-    
+
     // Create icon if provided
     if (this.options.icon) {
       this.iconElement = document.createElement('div');
@@ -176,7 +175,7 @@ export default class Card implements CardInstance {
       this.textElement.innerHTML = this.options.text;
       this.bodyElement.appendChild(this.textElement);
     }
-    
+
     // Add children content if provided
     if (this.options.children && this.bodyElement) {
       if (typeof this.options.children === 'string') {
@@ -201,13 +200,13 @@ export default class Card implements CardInstance {
     if (this.options.actions && this.options.actions.length > 0) {
       this.actionsElement = document.createElement('div');
       this.actionsElement.className = CARD.SELECTORS.ACTIONS.substring(1);
-      
+
       this.options.actions.forEach(action => {
         if (this.actionsElement && action) {
           this.actionsElement.appendChild(action);
         }
       });
-      
+
       this.bodyElement.appendChild(this.actionsElement);
     }
 
@@ -249,7 +248,7 @@ export default class Card implements CardInstance {
     if (typeof this.options.onClick === 'function') {
       this.element.removeEventListener('click', this.options.onClick);
     }
-    
+
     this.element.innerHTML = '';
     this.element.classList.remove(
       CARD.CLASSES.BASE,
@@ -257,7 +256,7 @@ export default class Card implements CardInstance {
       CARD.CLASSES.FLAT,
       CARD.CLASSES.ACTIVE
     );
-    
+
     if (this.options.className) {
       this.options.className.split(' ').forEach(cls => {
         if (cls) this.element.classList.remove(cls);
@@ -276,44 +275,44 @@ export default class Card implements CardInstance {
     return Array.from(elements).map(element => {
       // Try to get options from data attributes
       const options: CardOptions = {};
-      
+
       // Get title
       const title = element.getAttribute('data-title');
       if (title) options.title = title;
-      
+
       // Get text
       const text = element.getAttribute('data-text');
       if (text) options.text = text;
-      
+
       // Get image
       const image = element.getAttribute('data-image');
       if (image) options.image = image;
-      
+
       // Get imageAlt
       const imageAlt = element.getAttribute('data-image-alt');
       if (imageAlt) options.imageAlt = imageAlt;
-      
+
       // Get icon
       const icon = element.getAttribute('data-icon');
       if (icon) options.icon = icon;
-      
+
       // Get row
       const row = element.getAttribute('data-row');
       options.row = row === 'true';
-      
+
       // Get flat
       const flat = element.getAttribute('data-flat');
       options.flat = flat === 'true';
-      
+
       // Get active
       const active = element.getAttribute('data-active');
       options.active = active === 'true';
-      
+
       // Get className
       const className = element.getAttribute('data-class-name');
       if (className) options.className = className;
-      
+
       return new Card(element as HTMLElement, options);
     });
   }
-} 
+}

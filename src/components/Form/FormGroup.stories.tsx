@@ -78,19 +78,14 @@ export const ValidationStates: Story = {
     label: 'Validation States',
     htmlFor: 'username',
     helperText: 'This is a helper text',
-    required: true
+    required: true,
   },
-  render: (args) => (
+  render: args => (
     <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
-      <FormGroup
-        label="Username"
-        htmlFor="username"
-        helperText="Username is available"
-        valid
-      >
+      <FormGroup label="Username" htmlFor="username" helperText="Username is available" valid>
         <Input id="username" value="johndoe" valid />
       </FormGroup>
-      
+
       <FormGroup
         label="Password"
         htmlFor="password"
@@ -108,33 +103,33 @@ export const FormControls: Story = {
   args: {
     children: <Input id="text-input" placeholder="Type something..." />,
     label: 'Form Controls',
-    htmlFor: 'text-input'
+    htmlFor: 'text-input',
   },
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'grid', gap: '1rem', width: '100%', maxWidth: '400px' }}>
       <FormGroup label="Text Input" htmlFor="text-input">
         <Input id="text-input" placeholder="Type something..." />
       </FormGroup>
-      
+
       <FormGroup label="Select" htmlFor="select">
-        <Select 
-          id="select" 
+        <Select
+          id="select"
           options={[
             { value: '', label: 'Select an option' },
             { value: '1', label: 'Option 1' },
             { value: '2', label: 'Option 2' },
-          ]} 
+          ]}
         />
       </FormGroup>
-      
+
       <FormGroup label="Checkbox" htmlFor="checkbox">
         <Checkbox id="checkbox" label="Check me" />
       </FormGroup>
-      
+
       <FormGroup label="Radio" htmlFor="radio">
         <Radio id="radio" name="radio-group" label="Select me" />
       </FormGroup>
-      
+
       <FormGroup label="Textarea" htmlFor="textarea">
         <Textarea id="textarea" placeholder="Enter your message..." rows={3} />
       </FormGroup>
@@ -148,31 +143,19 @@ export const Sizes: Story = {
     children: <Input id="small-input" size="sm" placeholder="Small input..." />,
     label: 'Input Sizes',
     htmlFor: 'small-input',
-    size: 'sm'
+    size: 'sm',
   },
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'grid', gap: '1rem', width: '100%', maxWidth: '400px' }}>
-      <FormGroup 
-        label="Small Input" 
-        htmlFor="small-input"
-        size="sm"
-      >
+      <FormGroup label="Small Input" htmlFor="small-input" size="sm">
         <Input id="small-input" size="sm" placeholder="Small input..." />
       </FormGroup>
-      
-      <FormGroup 
-        label="Medium Input (default)" 
-        htmlFor="medium-input"
-        size="md"
-      >
+
+      <FormGroup label="Medium Input (default)" htmlFor="medium-input" size="md">
         <Input id="medium-input" size="md" placeholder="Medium input..." />
       </FormGroup>
-      
-      <FormGroup 
-        label="Large Input" 
-        htmlFor="large-input"
-        size="lg"
-      >
+
+      <FormGroup label="Large Input" htmlFor="large-input" size="lg">
         <Input id="large-input" size="lg" placeholder="Large input..." />
       </FormGroup>
     </div>

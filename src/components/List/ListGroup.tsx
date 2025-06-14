@@ -14,7 +14,7 @@ export const ListGroup: React.FC<ListGroupProps> = ({
 
   // Get valid List children
   const validLists = React.Children.toArray(children).filter(
-    (child) => React.isValidElement(child) && child.type === List
+    child => React.isValidElement(child) && child.type === List
   ) as React.ReactElement[];
 
   return (

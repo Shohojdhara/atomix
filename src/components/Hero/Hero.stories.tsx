@@ -33,71 +33,71 @@ const meta = {
   argTypes: {
     title: {
       control: 'text',
-      description: 'Hero title'
+      description: 'Hero title',
     },
     subtitle: {
       control: 'text',
-      description: 'Hero subtitle'
+      description: 'Hero subtitle',
     },
     text: {
       control: 'text',
-      description: 'Hero text content'
+      description: 'Hero text content',
     },
     imageSrc: {
       control: 'text',
-      description: 'Image source URL'
+      description: 'Image source URL',
     },
     imageAlt: {
       control: 'text',
-      description: 'Image alt text'
+      description: 'Image alt text',
     },
     alignment: {
       control: { type: 'select', options: ['left', 'center', 'right'] },
-      description: 'Content alignment'
+      description: 'Content alignment',
     },
     backgroundImageSrc: {
       control: 'text',
-      description: 'Background image source URL'
+      description: 'Background image source URL',
     },
     showOverlay: {
       control: 'boolean',
-      description: 'Show background overlay'
+      description: 'Show background overlay',
     },
     fullViewportHeight: {
       control: 'boolean',
-      description: 'Make hero full viewport height'
+      description: 'Make hero full viewport height',
     },
     imageColSize: {
       control: { type: 'range', min: 1, max: 12, step: 1 },
-      description: 'Image column size (1-12)'
+      description: 'Image column size (1-12)',
     },
     contentColSize: {
       control: { type: 'range', min: 1, max: 12, step: 1 },
-      description: 'Content column size (1-12)'
+      description: 'Content column size (1-12)',
     },
     contentWidth: {
       control: 'text',
       description: 'Custom width for the hero content (e.g., "800px", "50%")',
       table: {
         defaultValue: { summary: '536px' },
-      }
+      },
     },
     parallax: {
       control: 'boolean',
-      description: 'Enable parallax effect on background image'
+      description: 'Enable parallax effect on background image',
     },
     parallaxIntensity: {
       control: { type: 'range', min: 0, max: 1, step: 0.1 },
-      description: 'Parallax effect intensity (0-1)'
+      description: 'Parallax effect intensity (0-1)',
     },
     videoBackground: {
       control: 'text',
-      description: 'Video background URL'
+      description: 'Video background URL',
     },
     videoOptions: {
       control: 'object',
-      description: 'Video background options'
-    }
+      description: 'Video background options',
+    },
   },
 } satisfies Meta<typeof Hero>;
 
@@ -119,9 +119,11 @@ const showcaseActionButtons = (
   </>
 );
 
-const demoText = 'Build modern, responsive interfaces with a clean, consistent design language. Our component library helps you create beautiful user experiences with minimal effort.';
+const demoText =
+  'Build modern, responsive interfaces with a clean, consistent design language. Our component library helps you create beautiful user experiences with minimal effort.';
 
-const showcaseText = 'Atomix provides a complete design system with powerful, flexible components that follow best practices for accessibility, performance, and user experience.';
+const showcaseText =
+  'Atomix provides a complete design system with powerful, flexible components that follow best practices for accessibility, performance, and user experience.';
 
 /**
  * Default Hero component with right-aligned content and image
@@ -134,7 +136,7 @@ export const Default: Story = {
     imageSrc: 'https://picsum.photos/id/0/712/500',
     imageAlt: 'Developer working with code',
     alignment: 'right',
-    actions: primaryActionButtons
+    actions: primaryActionButtons,
   },
 };
 
@@ -147,7 +149,7 @@ export const LeftAligned: Story = {
     title: 'Crafted for Developer Experience',
     alignment: 'left',
     imageSrc: 'https://picsum.photos/id/3/712/500',
-  }
+  },
 };
 
 /**
@@ -160,7 +162,7 @@ export const CenterAligned: Story = {
     text: 'Our components follow best practices for accessibility, performance, and responsive design. Start building beautiful interfaces in minutes.',
     alignment: 'center',
     imageSrc: 'https://picsum.photos/id/1/1024/300',
-  }
+  },
 };
 
 /**
@@ -173,8 +175,8 @@ export const WithBackgroundImage: Story = {
     text: showcaseText,
     actions: showcaseActionButtons,
     backgroundImageSrc: 'https://picsum.photos/id/24/1920/1080',
-    showOverlay: true
-  }
+    showOverlay: true,
+  },
 };
 
 /**
@@ -190,8 +192,8 @@ export const BackgroundImageOnly: Story = {
     showOverlay: true,
     alignment: 'center',
     actions: showcaseActionButtons,
-    contentWidth: '800px'
-  }
+    contentWidth: '800px',
+  },
 };
 
 /**
@@ -202,8 +204,8 @@ export const FullViewportHeight: Story = {
     ...BackgroundImageOnly.args,
     title: 'Atomix. Build Once. Use Everywhere.',
     text: 'A flexible, scalable design system that works seamlessly across all devices and platforms.',
-    fullViewportHeight: true
-  }
+    fullViewportHeight: true,
+  },
 };
 
 /**
@@ -214,8 +216,8 @@ export const LeftAlignedWithBackground: Story = {
     ...WithBackgroundImage.args,
     title: 'Customizable & Extensible',
     text: 'Easily customize components to match your brand. Built with a flexible architecture that allows for easy extension and adaptation.',
-    alignment: 'left'
-  }
+    alignment: 'left',
+  },
 };
 
 /**
@@ -227,8 +229,8 @@ export const CenterAlignedWithImageBackground: Story = {
     title: 'Based on Modern Standards',
     text: 'Built with the latest technologies like React, TypeScript, and SCSS. Follows BEM, ITCSS, and OOCSS methodologies for clean, maintainable CSS.',
     alignment: 'center',
-    imageSrc: 'https://picsum.photos/id/160/1312/280'
-  }
+    imageSrc: 'https://picsum.photos/id/160/1312/280',
+  },
 };
 
 /**
@@ -239,8 +241,8 @@ export const CustomContentWidth: Story = {
     ...CenterAligned.args,
     title: 'Hero with Custom Content Width',
     text: 'This hero component has a custom content width set through the contentWidth prop, which sets the --atomix-hero-content-width CSS variable.',
-    contentWidth: '800px'
-  }
+    contentWidth: '800px',
+  },
 };
 
 /**
@@ -254,8 +256,8 @@ export const WithParallaxEffect: Story = {
     backgroundImageSrc: 'https://picsum.photos/id/1015/1920/1080',
     parallax: true,
     parallaxIntensity: 0.5,
-    fullViewportHeight: true
-  }
+    fullViewportHeight: true,
+  },
 };
 
 /**
@@ -272,12 +274,12 @@ export const WithVideoBackground: Story = {
       autoplay: true,
       loop: true,
       muted: true,
-      posterUrl: 'https://picsum.photos/id/1018/1920/1080'
+      posterUrl: 'https://picsum.photos/id/1018/1920/1080',
     },
     showOverlay: true,
     actions: showcaseActionButtons,
-    contentWidth: '800px'
-  }
+    contentWidth: '800px',
+  },
 };
 
 /**
@@ -290,6 +292,6 @@ export const VideoBackgroundWithImage: Story = {
     text: 'Combine video backgrounds with foreground images for rich, layered visual presentations.',
     alignment: 'left',
     imageSrc: 'https://picsum.photos/id/180/712/500',
-    imageAlt: 'Product showcase'
-  }
-}; 
+    imageAlt: 'Product showcase',
+  },
+};

@@ -25,21 +25,21 @@ interface PaginationNavButtonProps {
 /**
  * PaginationNavButton component for rendering first, previous, next, and last buttons
  */
-export const PaginationNavButton: React.FC<PaginationNavButtonProps> = ({ 
-  type, 
-  onClick, 
-  disabled, 
+export const PaginationNavButton: React.FC<PaginationNavButtonProps> = ({
+  type,
+  onClick,
+  disabled,
   label,
-  iconName
+  iconName,
 }) => (
-  <li 
+  <li
     className={`c-pagination__item c-pagination__item--${type} ${disabled ? 'is-disabled' : ''}`}
     aria-disabled={disabled}
   >
-    <button 
+    <button
       type="button"
       className="c-pagination__link"
-      onClick={onClick} 
+      onClick={onClick}
       disabled={disabled}
       aria-label={label}
     >
@@ -62,14 +62,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   className = '',
   ariaLabel = 'Pagination',
 }) => {
-  const {
-    paginationRange,
-    goToPage,
-    nextPage,
-    prevPage,
-    firstPage,
-    lastPage,
-  } = usePagination({
+  const { paginationRange, goToPage, nextPage, prevPage, firstPage, lastPage } = usePagination({
     currentPage,
     totalPages,
     siblingCount,
@@ -82,13 +75,10 @@ export const Pagination: React.FC<PaginationProps> = ({
   }
 
   return (
-    <nav 
-      className={`c-pagination c-pagination--${size} ${className}`} 
-      aria-label={ariaLabel}
-    >
+    <nav className={`c-pagination c-pagination--${size} ${className}`} aria-label={ariaLabel}>
       <ul className="c-pagination__items">
         {showFirstLastButtons && (
-          <PaginationNavButton 
+          <PaginationNavButton
             type="first"
             onClick={firstPage}
             disabled={currentPage === 1}
@@ -96,9 +86,9 @@ export const Pagination: React.FC<PaginationProps> = ({
             iconName="SkipBack"
           />
         )}
-        
+
         {showPrevNextButtons && (
-          <PaginationNavButton 
+          <PaginationNavButton
             type="prev"
             onClick={prevPage}
             disabled={currentPage === 1}
@@ -106,12 +96,12 @@ export const Pagination: React.FC<PaginationProps> = ({
             iconName="CaretLeft"
           />
         )}
-        
+
         {paginationRange.map((pageNumber, index) => {
           if (pageNumber === DOTS) {
             return (
-              <li 
-                key={`dots-${index}`} 
+              <li
+                key={`dots-${index}`}
                 className="c-pagination__item c-pagination__item--dots"
                 aria-hidden="true"
               >
@@ -121,14 +111,14 @@ export const Pagination: React.FC<PaginationProps> = ({
           }
 
           const isActive = pageNumber === currentPage;
-          
+
           return (
-            <li 
+            <li
               key={pageNumber}
               className={`c-pagination__item ${isActive ? 'is-active' : ''}`}
               aria-current={isActive ? 'page' : undefined}
             >
-              <button 
+              <button
                 type="button"
                 className="c-pagination__link"
                 onClick={() => goToPage(pageNumber as number)}
@@ -140,9 +130,9 @@ export const Pagination: React.FC<PaginationProps> = ({
             </li>
           );
         })}
-        
+
         {showPrevNextButtons && (
-          <PaginationNavButton 
+          <PaginationNavButton
             type="next"
             onClick={nextPage}
             disabled={currentPage === totalPages}
@@ -150,9 +140,9 @@ export const Pagination: React.FC<PaginationProps> = ({
             iconName="CaretRight"
           />
         )}
-        
+
         {showFirstLastButtons && (
-          <PaginationNavButton 
+          <PaginationNavButton
             type="last"
             onClick={lastPage}
             disabled={currentPage === totalPages}
@@ -165,7 +155,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
-export type { PaginationProps  };
+export type { PaginationProps };
 
 Pagination.displayName = 'Pagination';
 

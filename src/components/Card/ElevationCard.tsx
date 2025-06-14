@@ -15,7 +15,7 @@ export const ElevationCard: React.FC<ElevationCardProps> = ({
     elevationClass,
     clickable: Boolean(onClick),
     onClick: onClick as (event: React.MouseEvent) => void,
-    focusEffect: true
+    focusEffect: true,
   });
 
   const cardProps = getCardProps();
@@ -33,11 +33,7 @@ export const ElevationCard: React.FC<ElevationCardProps> = ({
       onClick={cardProps.onClick as unknown as React.MouseEventHandler<HTMLDivElement>}
       onKeyDown={cardProps.onKeyDown as unknown as React.KeyboardEventHandler<HTMLDivElement>}
     >
-      <Card 
-        {...props}
-        className=""
-        onClick={undefined}
-      >
+      <Card {...props} className="" onClick={undefined}>
         {children}
       </Card>
     </div>
@@ -46,6 +42,6 @@ export const ElevationCard: React.FC<ElevationCardProps> = ({
 
 export type { ElevationCardProps };
 
-ElevationCard.displayName = 'ElevationCard';  
+ElevationCard.displayName = 'ElevationCard';
 
 export default ElevationCard;

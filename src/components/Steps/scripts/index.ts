@@ -24,7 +24,7 @@ interface StepsInstance {
  */
 const DEFAULT_OPTIONS: StepsOptions = {
   activeIndex: 0,
-  vertical: false
+  vertical: false,
 };
 
 /**
@@ -47,7 +47,7 @@ class Steps implements StepsInstance {
     this.$element =
       typeof selector === 'string'
         ? document.querySelector<HTMLElement>(selector)
-        : selector as HTMLElement;
+        : (selector as HTMLElement);
     this.options = { ...DEFAULT_OPTIONS, ...options } as StepsOptions;
     this.$items = null;
     this.activeIndex = this.options.activeIndex || 0;
@@ -61,12 +61,12 @@ class Steps implements StepsInstance {
     if (!this.$element) return;
 
     this._initializeElements();
-    
+
     // Set vertical mode if specified
     if (this.options.vertical && !this.$element.classList.contains(STEPS.CLASSES.VERTICAL)) {
       this.$element.classList.add(STEPS.CLASSES.VERTICAL);
     }
-    
+
     this.setActive(this.activeIndex);
   }
 
@@ -75,7 +75,7 @@ class Steps implements StepsInstance {
    */
   private _initializeElements(): void {
     if (!this.$element) return;
-    
+
     this.$items = this.$element.querySelectorAll<HTMLElement>(STEPS.SELECTORS.ITEM);
   }
 
@@ -85,7 +85,7 @@ class Steps implements StepsInstance {
    */
   public setActive(index: number): void {
     if (!this.$items || index < 0 || index >= this.$items.length) return;
-    
+
     // Update all items
     this.$items.forEach((item, i) => {
       if (i < index) {
@@ -102,7 +102,7 @@ class Steps implements StepsInstance {
         item.classList.remove(STEPS.CLASSES.COMPLETED);
       }
     });
-    
+
     this.activeIndex = index;
   }
 
@@ -144,7 +144,7 @@ export function initializeSteps(selector = STEPS.SELECTORS.STEPS, options = {}):
 
   if (!stepsElements.length) return stepsInstances;
 
-  stepsElements.forEach((element) => {
+  stepsElements.forEach(element => {
     try {
       const instance = new Steps(element, options);
       stepsInstances.push(instance);
@@ -156,4 +156,4 @@ export function initializeSteps(selector = STEPS.SELECTORS.STEPS, options = {}):
   return stepsInstances;
 }
 
-export default Steps; 
+export default Steps;

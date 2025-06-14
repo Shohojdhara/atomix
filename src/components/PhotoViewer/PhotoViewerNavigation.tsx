@@ -24,7 +24,7 @@ export interface PhotoViewerNavigationProps {
 
 /**
  * PhotoViewerNavigation component - handles navigation between images
- * 
+ *
  * @param props - PhotoViewerNavigationProps
  * @returns JSX.Element
  */
@@ -40,17 +40,17 @@ export const PhotoViewerNavigation: React.FC<PhotoViewerNavigationProps> = ({
   // Add keyboard navigation
   useEffect(() => {
     if (!enableKeyboardNav) return undefined;
-    
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') onPrev();
       if (e.key === 'ArrowRight') onNext();
       if (e.key === 'Escape') onClose();
     };
-    
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [enableKeyboardNav, onPrev, onNext, onClose]);
-  
+
   return show ? (
     <>
       <Button

@@ -56,7 +56,7 @@ export const WithActions: Story = {
         <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
         <button className="c-btn c-btn--secondary c-btn--sm">Cancel</button>
       </React.Fragment>
-    )
+    ),
   },
 };
 
@@ -93,7 +93,7 @@ export const Clickable: Story = {
 
 // Elevation Card
 export const WithElevation: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ padding: '20px', width: '300px' }}>
       <ElevationCard {...args} />
     </div>

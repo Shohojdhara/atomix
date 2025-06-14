@@ -4,7 +4,7 @@
 export function getMonthName(month: number): string {
   const date = new Date();
   date.setMonth(month);
-  
+
   return date.toLocaleString('default', { month: 'long' });
 }
 
@@ -27,11 +27,11 @@ export function getFirstDayOfMonth(year: number, month: number): number {
  */
 export function formatDate(date: Date, format: string): string {
   if (!date) return '';
-  
+
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
-  
+
   // Simple formatting for the most common patterns
   return format
     .replace('yyyy', year.toString())
@@ -44,13 +44,17 @@ export function formatDate(date: Date, format: string): string {
 /**
  * Format a date range for display
  */
-export function formatDateRange(startDate: Date | null, endDate: Date | null, format: string): string {
+export function formatDateRange(
+  startDate: Date | null,
+  endDate: Date | null,
+  format: string
+): string {
   if (!startDate) return '';
-  
+
   if (!endDate) {
     return `${formatDate(startDate, format)} - Select end date`;
   }
-  
+
   return `${formatDate(startDate, format)} - ${formatDate(endDate, format)}`;
 }
 
@@ -59,49 +63,49 @@ export function formatDateRange(startDate: Date | null, endDate: Date | null, fo
  */
 export function parseDate(dateStr: string, format: string): Date | null {
   if (!dateStr) return null;
-  
+
   // Simple parsing for common formats
   const normalized = format.toLowerCase();
-  
+
   if (normalized === 'mm/dd/yyyy') {
     const parts = dateStr.split('/');
     if (parts.length !== 3) return null;
-    
+
     const month = parseInt(parts[0], 10) - 1;
     const day = parseInt(parts[1], 10);
     const year = parseInt(parts[2], 10);
-    
+
     if (isNaN(month) || isNaN(day) || isNaN(year)) return null;
-    
+
     return new Date(year, month, day);
   }
-  
+
   if (normalized === 'dd/mm/yyyy') {
     const parts = dateStr.split('/');
     if (parts.length !== 3) return null;
-    
+
     const day = parseInt(parts[0], 10);
     const month = parseInt(parts[1], 10) - 1;
     const year = parseInt(parts[2], 10);
-    
+
     if (isNaN(month) || isNaN(day) || isNaN(year)) return null;
-    
+
     return new Date(year, month, day);
   }
-  
+
   if (normalized === 'yyyy-mm-dd') {
     const parts = dateStr.split('-');
     if (parts.length !== 3) return null;
-    
+
     const year = parseInt(parts[0], 10);
     const month = parseInt(parts[1], 10) - 1;
     const day = parseInt(parts[2], 10);
-    
+
     if (isNaN(month) || isNaN(day) || isNaN(year)) return null;
-    
+
     return new Date(year, month, day);
   }
-  
+
   // Fallback to native parsing
   const parsedDate = new Date(dateStr);
   return isNaN(parsedDate.getTime()) ? null : parsedDate;
@@ -110,18 +114,21 @@ export function parseDate(dateStr: string, format: string): Date | null {
 /**
  * Try to parse a date range string (e.g. "01/01/2023 - 01/15/2023")
  */
-export function parseDateRange(rangeStr: string, format: string): { startDate: Date | null, endDate: Date | null } {
+export function parseDateRange(
+  rangeStr: string,
+  format: string
+): { startDate: Date | null; endDate: Date | null } {
   if (!rangeStr) return { startDate: null, endDate: null };
-  
+
   const parts = rangeStr.split('-');
   if (parts.length !== 2) return { startDate: null, endDate: null };
-  
+
   const startDateStr = parts[0].trim();
   const endDateStr = parts[1].trim();
-  
+
   const startDate = parseDate(startDateStr, format);
   const endDate = parseDate(endDateStr, format);
-  
+
   return { startDate, endDate };
 }
 
@@ -130,23 +137,27 @@ export function parseDateRange(rangeStr: string, format: string): { startDate: D
  */
 export function isDateInRange(date: Date, minDate?: Date, maxDate?: Date): boolean {
   if (!date) return false;
-  
+
   if (minDate && date < minDate) return false;
   if (maxDate && date > maxDate) return false;
-  
+
   return true;
 }
 
 /**
  * Check if a date is between startDate and endDate (inclusive)
  */
-export function isDateInSelectedRange(date: Date, startDate: Date | null, endDate: Date | null): boolean {
+export function isDateInSelectedRange(
+  date: Date,
+  startDate: Date | null,
+  endDate: Date | null
+): boolean {
   if (!date || !startDate || !endDate) return false;
-  
+
   // Handle case where end date is before start date
   if (endDate < startDate) {
     return date >= endDate && date <= startDate;
   }
-  
+
   return date >= startDate && date <= endDate;
 }

@@ -11,4 +11,4 @@ window.Atomix.initializeAllTodos = initializeAllTodos;
 window.Atomix.filterTodoItems = filterTodoItems;
 window.Atomix.sortTodoItems = sortTodoItems;
 
-export default Todo; 
+export default Todo;

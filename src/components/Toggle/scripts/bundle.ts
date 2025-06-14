@@ -1,5 +1,10 @@
 import Toggle from './index';
-import { applyHoverEffect, applyFocusEffect, initializeToggle, initializeAllToggles } from './toggleInteractions';
+import {
+  applyHoverEffect,
+  applyFocusEffect,
+  initializeToggle,
+  initializeAllToggles,
+} from './toggleInteractions';
 
 // Initialize global namespace if not exists
 window.Atomix = window.Atomix || {};
@@ -11,4 +16,4 @@ window.Atomix.applyToggleFocusEffect = applyFocusEffect;
 window.Atomix.initializeToggle = initializeToggle;
 window.Atomix.initializeAllToggles = initializeAllToggles;
 
-export default Toggle; 
+export default Toggle;

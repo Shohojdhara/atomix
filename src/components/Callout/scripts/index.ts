@@ -39,15 +39,17 @@ export class Callout {
    */
   private _handleClose(): void {
     this.close();
-    
+
     if (this.config.onClose) {
       this.config.onClose();
     }
 
     // Dispatch custom event
-    this.element.dispatchEvent(new CustomEvent('atomix:callout:close', {
-      bubbles: true,
-    }));
+    this.element.dispatchEvent(
+      new CustomEvent('atomix:callout:close', {
+        bubbles: true,
+      })
+    );
   }
 
   /**
@@ -55,7 +57,7 @@ export class Callout {
    */
   public close(): void {
     this.element.classList.add('is-hide');
-    
+
     // Remove from DOM after animation completes
     setTimeout(() => {
       if (this.element.parentNode) {
@@ -78,22 +80,24 @@ export class Callout {
   public update(options: { title?: string; content?: string; variant?: string }): void {
     const titleElement = this.element.querySelector('.c-callout__title');
     const contentElement = this.element.querySelector('.c-callout__text');
-    
+
     if (options.title && titleElement) {
       titleElement.textContent = options.title;
     }
-    
+
     if (options.content && contentElement) {
       contentElement.textContent = options.content;
     }
-    
+
     if (options.variant) {
       // Remove existing variant classes
-      const variantClasses = Array.from(this.element.classList)
-        .filter(cls => cls.startsWith('c-callout--') && !['c-callout--oneline', 'c-callout--toast'].includes(cls));
-      
+      const variantClasses = Array.from(this.element.classList).filter(
+        cls =>
+          cls.startsWith('c-callout--') && !['c-callout--oneline', 'c-callout--toast'].includes(cls)
+      );
+
       variantClasses.forEach(cls => this.element.classList.remove(cls));
-      
+
       // Add new variant class
       this.element.classList.add(`c-callout--${options.variant}`);
     }
@@ -114,11 +118,11 @@ export class Callout {
   public static initializeAll(options: { onClose?: () => void } = {}): Callout[] {
     const callouts: Callout[] = [];
     const elements = document.querySelectorAll('.c-callout');
-    
+
     elements.forEach(element => {
       callouts.push(new Callout(element as HTMLElement, options));
     });
-    
+
     return callouts;
   }
 }

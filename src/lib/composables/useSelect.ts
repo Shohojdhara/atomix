@@ -13,7 +13,7 @@ export function useSelect(initialProps?: Partial<SelectProps>) {
     disabled: false,
     invalid: false,
     valid: false,
-    ...initialProps
+    ...initialProps,
   };
 
   /**
@@ -30,19 +30,18 @@ export function useSelect(initialProps?: Partial<SelectProps>) {
       className = '',
     } = props;
 
-    const sizeClass = size === 'md' ? '' : (
-      size === 'sm' ? SELECT.CLASSES.SMALL : SELECT.CLASSES.LARGE
-    );
-    
+    const sizeClass =
+      size === 'md' ? '' : size === 'sm' ? SELECT.CLASSES.SMALL : SELECT.CLASSES.LARGE;
+
     let validationClass = '';
     if (invalid) {
       validationClass = SELECT.CLASSES.INVALID;
     } else if (valid) {
       validationClass = SELECT.CLASSES.VALID;
     }
-    
+
     const disabledClass = disabled ? SELECT.CLASSES.DISABLED : '';
-    
+
     return `${SELECT.CLASSES.BASE} ${sizeClass} ${validationClass} ${disabledClass} ${className}`.trim();
   };
 
@@ -50,4 +49,4 @@ export function useSelect(initialProps?: Partial<SelectProps>) {
     defaultProps,
     generateSelectClass,
   };
-} 
+}

@@ -22,13 +22,20 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   ariaDescribedBy,
 }) => {
   const { generateCheckboxClass, checkboxRef } = useCheckbox({
-    indeterminate, disabled, invalid, valid
+    indeterminate,
+    disabled,
+    invalid,
+    valid,
   });
-  
+
   const checkboxClass = generateCheckboxClass({
-    className, disabled, invalid, valid, indeterminate
+    className,
+    disabled,
+    invalid,
+    valid,
+    indeterminate,
   });
-  
+
   return (
     <div className={checkboxClass}>
       <input
@@ -55,8 +62,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   );
 };
 
-
-export type { CheckboxProps  };
+export type { CheckboxProps };
 
 Checkbox.displayName = 'Checkbox';
 

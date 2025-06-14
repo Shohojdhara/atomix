@@ -8,7 +8,16 @@ export default {
   argTypes: {
     position: {
       control: { type: 'select' },
-      options: ['top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'],
+      options: [
+        'top',
+        'bottom',
+        'left',
+        'right',
+        'top-left',
+        'top-right',
+        'bottom-left',
+        'bottom-right',
+      ],
       defaultValue: 'top',
     },
     trigger: {
@@ -27,7 +36,7 @@ export default {
   },
 } as Meta<typeof Tooltip>;
 
-const Template: StoryFn<typeof Tooltip> = (args) => (
+const Template: StoryFn<typeof Tooltip> = args => (
   <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
     <Tooltip {...args}>
       <button className="c-btn c-btn--primary">Hover me</button>
@@ -71,9 +80,7 @@ export const WithIcon = Template.bind({});
 WithIcon.args = {
   content: <p className="u-mb-0">Tooltips work great with icons</p>,
   position: 'top',
-  children: (
-    <i className="icon-lux-info" style={{ fontSize: '24px', cursor: 'pointer' }}></i>
-  ),
+  children: <i className="icon-lux-info" style={{ fontSize: '24px', cursor: 'pointer' }}></i>,
 };
 
 export const CustomDelay = Template.bind({});
@@ -105,4 +112,4 @@ RichContent.args = {
   position: 'bottom',
   trigger: 'click',
   offset: 15,
-}; 
+};

@@ -72,7 +72,7 @@ export const Interactive: Story = {
     placeholder: 'Add a new todo',
     showCompleted: true,
   },
-  render: (args) => {
+  render: args => {
     const [items, setItems] = useState<TodoItem[]>([
       { id: uuidv4(), text: 'Learn React', completed: true },
       { id: uuidv4(), text: 'Build a todo app', completed: false },
@@ -90,9 +90,7 @@ export const Interactive: Story = {
 
     const handleToggleTodo = (id: string) => {
       setItems(
-        items.map(item =>
-          item.id === id ? { ...item, completed: !item.completed } : item
-        )
+        items.map(item => (item.id === id ? { ...item, completed: !item.completed } : item))
       );
     };
 
@@ -121,26 +119,11 @@ export const Sizes: Story = {
     items: sampleItems.slice(0, 3),
     showCompleted: true,
   },
-  render: (args) => (
+  render: args => (
     <div className="u-d-flex u-flex-column u-gap-4">
-      <Todo
-        {...args}
-        title="Small Todo List"
-        items={args.items}
-        size="sm"
-      />
-      <Todo
-        {...args}
-        title="Medium Todo List"
-        items={args.items}
-        size="md"
-      />
-      <Todo
-        {...args}
-        title="Large Todo List"
-        items={args.items}
-        size="lg"
-      />
+      <Todo {...args} title="Small Todo List" items={args.items} size="sm" />
+      <Todo {...args} title="Medium Todo List" items={args.items} size="md" />
+      <Todo {...args} title="Large Todo List" items={args.items} size="lg" />
     </div>
   ),
 };
@@ -169,4 +152,4 @@ export const Disabled: Story = {
     items: sampleItems,
     disabled: true,
   },
-}; 
+};

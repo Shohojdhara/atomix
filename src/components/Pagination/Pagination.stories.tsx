@@ -35,7 +35,7 @@ export default {
     size: {
       control: 'select',
       options: ['sm', 'md', 'lg'],
-      description: 'Size variant for pagination'
+      description: 'Size variant for pagination',
     },
     ariaLabel: {
       control: 'text',
@@ -52,21 +52,22 @@ export default {
     },
     docs: {
       description: {
-        component: 'A Pagination component for navigating through pages of content with enhanced accessibility, configurable sizes, and icons for navigation buttons.'
-      }
-    }
-  }
+        component:
+          'A Pagination component for navigating through pages of content with enhanced accessibility, configurable sizes, and icons for navigation buttons.',
+      },
+    },
+  },
 } as Meta<typeof Pagination>;
 
 // Template with controlled state
-const ControlledTemplate: StoryFn<PaginationProps> = (args) => {
+const ControlledTemplate: StoryFn<PaginationProps> = args => {
   const [currentPage, setCurrentPage] = useState(args.currentPage);
-  
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     args.onPageChange?.(page);
   };
-  
+
   return <Pagination {...args} currentPage={currentPage} onPageChange={handlePageChange} />;
 };
 
@@ -78,14 +79,14 @@ Default.args = {
   showFirstLastButtons: true,
   showPrevNextButtons: true,
   size: 'md',
-  ariaLabel: 'Pagination'
+  ariaLabel: 'Pagination',
 };
 Default.parameters = {
   docs: {
     description: {
-      story: 'Default pagination with first/last and previous/next navigation buttons using icons.'
-    }
-  }
+      story: 'Default pagination with first/last and previous/next navigation buttons using icons.',
+    },
+  },
 };
 
 export const WithMorePages = ControlledTemplate.bind({});
@@ -98,9 +99,9 @@ WithMorePages.args = {
 WithMorePages.parameters = {
   docs: {
     description: {
-      story: 'Pagination with many pages, showing the ellipsis (dots) for page ranges.'
-    }
-  }
+      story: 'Pagination with many pages, showing the ellipsis (dots) for page ranges.',
+    },
+  },
 };
 
 export const SmallSize = ControlledTemplate.bind({});
@@ -113,9 +114,9 @@ SmallSize.args = {
 SmallSize.parameters = {
   docs: {
     description: {
-      story: 'Small-sized pagination component with smaller icons and buttons.'
-    }
-  }
+      story: 'Small-sized pagination component with smaller icons and buttons.',
+    },
+  },
 };
 
 export const LargeSize = ControlledTemplate.bind({});
@@ -128,9 +129,9 @@ LargeSize.args = {
 LargeSize.parameters = {
   docs: {
     description: {
-      story: 'Large-sized pagination component with larger icons and buttons.'
-    }
-  }
+      story: 'Large-sized pagination component with larger icons and buttons.',
+    },
+  },
 };
 
 export const FewPages = ControlledTemplate.bind({});
@@ -142,9 +143,9 @@ FewPages.args = {
 FewPages.parameters = {
   docs: {
     description: {
-      story: 'Pagination with only a few pages, showing all page numbers without ellipsis.'
-    }
-  }
+      story: 'Pagination with only a few pages, showing all page numbers without ellipsis.',
+    },
+  },
 };
 
 export const NoFirstLastButtons = ControlledTemplate.bind({});
@@ -157,9 +158,9 @@ NoFirstLastButtons.args = {
 NoFirstLastButtons.parameters = {
   docs: {
     description: {
-      story: 'Pagination with only previous/next navigation buttons (no skip to first/last).'
-    }
-  }
+      story: 'Pagination with only previous/next navigation buttons (no skip to first/last).',
+    },
+  },
 };
 
 export const OnlyPageNumbers = ControlledTemplate.bind({});
@@ -172,9 +173,9 @@ OnlyPageNumbers.args = {
 OnlyPageNumbers.parameters = {
   docs: {
     description: {
-      story: 'Pagination with only page numbers, no navigation buttons.'
-    }
-  }
+      story: 'Pagination with only page numbers, no navigation buttons.',
+    },
+  },
 };
 
 export const CustomStyling = ControlledTemplate.bind({});
@@ -187,7 +188,7 @@ CustomStyling.args = {
 CustomStyling.parameters = {
   docs: {
     description: {
-      story: 'Pagination with custom CSS class for additional styling.'
-    }
-  }
+      story: 'Pagination with custom CSS class for additional styling.',
+    },
+  },
 };

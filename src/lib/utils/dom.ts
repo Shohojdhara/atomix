@@ -36,10 +36,6 @@ export function removeClass(element: HTMLElement, className: string): void {
  * @param className - Class name to toggle
  * @param force - If true, adds class; if false, removes class
  */
-export function toggleClass(
-  element: HTMLElement, 
-  className: string, 
-  force?: boolean
-): void {
+export function toggleClass(element: HTMLElement, className: string, force?: boolean): void {
   element.classList.toggle(className, force);
-} 
+}
