@@ -1,28 +1,42 @@
-# Development files
+# Source files (only ship built files)
+src/
+!src/styles/index.scss
+
+# Development and build configuration
 .storybook/
 .github/
 docs/
 storybook-static/
 deploy/
 public/
+scripts/
+webpack.config.js
+babel.config.js
+postcss.config.js
+tsconfig.json
+tsconfig.node.json
 
-# Configuration files that should be excluded
+# Configuration files
 .eslintrc*
 .prettierrc*
 .babelrc*
 .editorconfig
+.npmrc
 
-# IDE files
+# IDE and editor files
 .idea/
 .vscode/
 *.swp
 *.swo
+*.sublime-*
 
 # System files
 .DS_Store
 Thumbs.db
+*.tmp
+*.temp
 
-# Logs
+# Logs and debugging
 logs/
 *.log
 npm-debug.log*
@@ -31,8 +45,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Test files
+# Test files and coverage
 __tests__/
+test/
+tests/
 *.test.js
 *.test.ts
 *.test.tsx
@@ -40,22 +56,49 @@ __tests__/
 *.spec.ts
 *.spec.tsx
 coverage/
+.nyc_output/
+jest.config.*
 
-# Build artifacts
+# Build artifacts and dependencies
 node_modules/
+.next/
+.cache/
+.parcel-cache/
 
-# Documentation
+# Source maps (exclude from npm package)
+**/*.map
+*.map
+dist/**/*.map
+
+# Documentation (except README and LICENSE)
 *.md
 !README.md
 !LICENSE.md
+!CHANGELOG.md
 implementation-guide.md
 atomix-component-guidelines.md
 atomix-roadmap.md
+NPM_PUBLISHING.md
 
-# Misc
-.gitignore
-.npmignore
-index.html
-*.tgz
+# Environment and secrets
 .env*
 !.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Package files
+*.tgz
+*.tar.gz
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# Misc
+.npmignore
+index.html
+.eslintcache
+.stylelintcache
