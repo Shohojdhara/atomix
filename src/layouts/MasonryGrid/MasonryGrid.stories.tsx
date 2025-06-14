@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import { MasonryGrid } from './MasonryGrid';
 import { MasonryGridItem } from './MasonryGridItem';
-import { Card, ElevationCard } from '../../components/Card';
+import Card  from '../../components/Card/Card';
+import ElevationCard from '../../components/Card/Card';
 
 const meta: Meta<typeof MasonryGrid> = {
   title: 'Layouts/MasonryGrid',

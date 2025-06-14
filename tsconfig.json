@@ -55,16 +55,14 @@
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.js",
-    "src/**/*.jsx"
+    "src/**/*.tsx"
   ],
   "exclude": [
     "node_modules",
     "dist",
     "**/*.stories.tsx",
     "**/*.test.ts",
-    "**/*.test.tsx"
+    "**/*.test.tsx",
+    "**/*.ts"
   ]
 }

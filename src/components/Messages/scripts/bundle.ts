@@ -19,7 +19,7 @@ interface MessagesNamespace {
 
 // Initialize global namespace
 if (typeof window !== 'undefined') {
-  if (!window.Atomix) {
+  if (!(window as any).Atomix) {
     (window as any).Atomix = {};
   }
 

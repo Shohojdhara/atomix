@@ -1,6 +1,6 @@
 import React, { forwardRef, ReactNode } from 'react';
 import { MenuProps, MenuItemProps } from '../../lib/types/components';
-import { Icon } from '../Icon';
+import { Icon } from '../Icon/Icon';
 
 export const Menu: React.FC<MenuProps> = forwardRef<HTMLDivElement, MenuProps>(({
   children,

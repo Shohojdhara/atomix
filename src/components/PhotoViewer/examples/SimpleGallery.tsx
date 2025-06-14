@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { fn } from '@storybook/test';
-import { PhotoViewer } from '..';
+import { PhotoViewer } from '../PhotoViewer';
 
 const images = [
   'https://picsum.photos/id/10/800/600',

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { fn } from '@storybook/test';
-import { MasonryGrid, MasonryGridItem } from '../../../layouts/MasonryGrid';
-import { PhotoViewer } from '..';
-import { Card } from '../../Card';
+import { MasonryGridItem } from '../../../layouts/MasonryGrid/MasonryGridItem';
+import { MasonryGrid } from '../../../layouts/MasonryGrid/MasonryGrid';
+import { PhotoViewer } from '../PhotoViewer';
+import { Card } from '../../Card/Card';
 
 // Define the image gallery item type
 export interface GalleryImage {

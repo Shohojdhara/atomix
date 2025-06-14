@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, forwardRef} from 'react';
 import { NavDropdownProps } from '../../lib/types/components';
 import { useNavDropdown } from '../../lib/composables/useNavbar';
 import { NavItem } from './NavItem';
-import { Icon } from '../Icon';
+import { Icon } from '../Icon/Icon';
 
 export const NavDropdown: React.FC<NavDropdownProps> = forwardRef<HTMLLIElement, NavDropdownProps>(({
   title,

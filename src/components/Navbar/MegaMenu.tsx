@@ -1,6 +1,6 @@
 import React, { forwardRef, ReactNode } from 'react';
 import { MegaMenuProps, MegaMenuColumnProps, MegaMenuLinkProps } from '../../lib/types/components';
-import { Icon } from '../Icon';
+import { Icon } from '../Icon/Icon';
 import { mapIconName } from './Menu'; // Import the mapping function
 
 export const MegaMenu: React.FC<MegaMenuProps> = forwardRef<HTMLDivElement, MegaMenuProps>(({
