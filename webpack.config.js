@@ -79,7 +79,7 @@ const sharedRules = [
 // Base webpack configuration
 const baseConfig = {
   mode: 'production',
-  devtool: 'source-map',
+  devtool: false, // Disable source maps for production builds
   module: {
     rules: sharedRules,
   },
@@ -196,7 +196,7 @@ module.exports = (env = {}) => {
               {
                 loader: 'css-loader',
                 options: {
-                  sourceMap: true,
+                  sourceMap: false, // Disable source maps for production
                   importLoaders: 2,
                   modules: {
                     auto: true, // Enable CSS modules for .module.scss files
@@ -207,7 +207,7 @@ module.exports = (env = {}) => {
               {
                 loader: 'postcss-loader',
                 options: {
-                  sourceMap: true,
+                  sourceMap: false, // Disable source maps for production
                   postcssOptions: {
                     plugins: [
                       'autoprefixer',
@@ -221,7 +221,7 @@ module.exports = (env = {}) => {
               {
                 loader: 'sass-loader',
                 options: {
-                  sourceMap: true,
+                  sourceMap: false, // Disable source maps for production
                   implementation: require('sass-embedded'),
                   sassOptions: {
                     outputStyle: 'expanded', // Let cssnano handle minification
