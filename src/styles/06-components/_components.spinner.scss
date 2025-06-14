@@ -22,12 +22,10 @@
   color: var(--#{config.$prefix}spinner-background-color);
   position: relative;
   @include size.square(var(--#{config.$prefix}spinner-size));
-  border: var(--#{config.$prefix}spinner-border-width) solid
-    var(--#{config.$prefix}spinner-color);
+  border: var(--#{config.$prefix}spinner-border-width) solid var(--#{config.$prefix}spinner-color);
   border-right-color: currentcolor;
   border-radius: 50%;
-  animation: var(--#{config.$prefix}spinner-animation-speed) ease-in-out infinite
-    spinner;
+  animation: var(--#{config.$prefix}spinner-animation-speed) ease-in-out infinite spinner;
 
   @each $size, $value in spinner.$spinner-sizes {
     &--#{$size} {

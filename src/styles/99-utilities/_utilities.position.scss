@@ -6,27 +6,27 @@ $utilities-position: (
   'position': (
     property: position,
     class: u-position,
-    values: static relative absolute fixed sticky
+    values: static relative absolute fixed sticky,
   ),
   'top': (
     property: top,
     class: u-top,
-    values: $position-values
+    values: $position-values,
   ),
   'bottom': (
     property: bottom,
     class: u-bottom,
-    values: $position-values
+    values: $position-values,
   ),
   'start': (
     property: left,
     class: u-start,
-    values: $position-values
+    values: $position-values,
   ),
   'end': (
     property: right,
     class: u-end,
-    values: $position-values
+    values: $position-values,
   ),
   'translate-middle': (
     property: transform,
@@ -34,7 +34,7 @@ $utilities-position: (
     values: (
       null: translate(-50%, -50%),
       x: translateX(-50%),
-      y: translateY(-50%)
-    )
-  )
+      y: translateY(-50%),
+    ),
+  ),
 );

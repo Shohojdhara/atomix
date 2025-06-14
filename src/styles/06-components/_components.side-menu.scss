@@ -23,8 +23,7 @@
   --#{config.$prefix}side-menu-item-color: #{$side-menu-item-color};
 
   width: 100%;
-  padding: var(--#{config.$prefix}side-menu-padding-y)
-    var(--#{config.$prefix}side-menu-padding-x);
+  padding: var(--#{config.$prefix}side-menu-padding-y) var(--#{config.$prefix}side-menu-padding-x);
   background: var(--#{config.$prefix}side-menu-bg);
   border-radius: var(--#{config.$prefix}side-menu-border-radius);
 
@@ -100,7 +99,7 @@
     @include transition.basic-transition();
   }
 
-  &.is-open  {
+  &.is-open {
     #{$root}__toggler-icon {
       transform: rotate(90deg);
     }

@@ -40,11 +40,11 @@
     z-index: map.get($z-layers, 1);
     transition: opacity var(--#{$prefix}edge-panel-animation-duration) ease;
     will-change: opacity;
-    
+
     &.is-animating {
       animation: fadeIn 0.3s ease forwards;
     }
-    
+
     &.is-animating-out {
       animation: fadeOut 0.3s ease forwards;
     }
@@ -63,13 +63,15 @@
     display: flex;
     flex-direction: column;
     will-change: transform, opacity;
-    
+
     &.is-animating {
-      animation: slideIn var(--#{$prefix}edge-panel-animation-duration) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: slideIn var(--#{$prefix}edge-panel-animation-duration)
+        cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    
+
     &.is-animating-out {
-      animation: slideOut var(--#{$prefix}edge-panel-animation-duration) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: slideOut var(--#{$prefix}edge-panel-animation-duration)
+        cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
   }
 
@@ -93,11 +95,11 @@
     justify-content: center;
     border-radius: 50%;
     transition: background-color 0.2s ease;
-    
+
     &:hover {
       background-color: rgba(0, 0, 0, 0.05);
     }
-    
+
     &:focus-visible {
       outline: 2px solid var(--#{$prefix}primary);
       outline-offset: 2px;
@@ -120,11 +122,11 @@
       bottom: 0;
       border-right: 1px solid var(--#{$prefix}edge-panel-border-color);
       transform: translateX(-100%);
-      
+
       &.is-animating {
         animation-name: slideInStart;
       }
-      
+
       &.is-animating-out {
         animation-name: slideOutStart;
       }
@@ -139,11 +141,11 @@
       left: auto;
       border-left: 1px solid var(--#{$prefix}edge-panel-border-color);
       transform: translateX(100%);
-      
+
       &.is-animating {
         animation-name: slideInEnd;
       }
-      
+
       &.is-animating-out {
         animation-name: slideOutEnd;
       }
@@ -160,11 +162,11 @@
       height: var(--#{$prefix}edge-panel-height);
       transform: translateY(-100%);
       border-bottom: 1px solid var(--#{$prefix}edge-panel-border-color);
-      
+
       &.is-animating {
         animation-name: slideInTop;
       }
-      
+
       &.is-animating-out {
         animation-name: slideOutTop;
       }
@@ -181,11 +183,11 @@
       height: var(--#{$prefix}edge-panel-height);
       transform: translateY(100%);
       border-top: 1px solid var(--#{$prefix}edge-panel-border-color);
-      
+
       &.is-animating {
         animation-name: slideInBottom;
       }
-      
+
       &.is-animating-out {
         animation-name: slideOutBottom;
       }
@@ -202,24 +204,24 @@
       transform: translateX(0) translateY(0);
     }
   }
-  
+
   // No animation mode
-  &[data-mode="none"] {
+  &[data-mode='none'] {
     #{$root}__container {
       // Disable all transitions
       transition: none !important;
       animation: none !important;
-      
+
       &.is-animating,
       &.is-animating-out {
         animation: none !important;
       }
     }
-    
+
     #{$root}__backdrop {
       transition: none !important;
       animation: none !important;
-      
+
       &.is-animating,
       &.is-animating-out {
         animation: none !important;
@@ -232,20 +234,20 @@
 .is-edgepanel-open {
   --#{$prefix}edge-panel-animation-duration: #{$edge-panel-animation-duration}ms;
   overflow: hidden;
-  
+
   &.is-pushed {
-    transition: 
+    transition:
       padding-left var(--#{$prefix}edge-panel-animation-duration) cubic-bezier(0.16, 1, 0.3, 1),
       padding-right var(--#{$prefix}edge-panel-animation-duration) cubic-bezier(0.16, 1, 0.3, 1),
       padding-top var(--#{$prefix}edge-panel-animation-duration) cubic-bezier(0.16, 1, 0.3, 1),
       padding-bottom var(--#{$prefix}edge-panel-animation-duration) cubic-bezier(0.16, 1, 0.3, 1);
-    
+
     // Disable scrolling on iOS
     position: fixed;
     width: 100%;
     height: 100%;
   }
-  
+
   &:not(.is-pushed) {
     // Disable scrolling on iOS
     position: fixed;
@@ -254,56 +256,95 @@
   }
 }
 
-
 // Simple fade in animation
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: var(--#{$prefix}edge-panel-backdrop-opacity); }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: var(--#{$prefix}edge-panel-backdrop-opacity);
+  }
 }
 
 // Simple fade out animation
 @keyframes fadeOut {
-  from { opacity: var(--#{$prefix}edge-panel-backdrop-opacity); }
-  to { opacity: 0; }
+  from {
+    opacity: var(--#{$prefix}edge-panel-backdrop-opacity);
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 // Position-specific animations
 @keyframes slideInStart {
-  from { transform: translateX(-100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 @keyframes slideOutStart {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
 
 @keyframes slideInEnd {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 @keyframes slideOutEnd {
-  from { transform: translateX(0); }
-  to { transform: translateX(100%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
 }
 
 @keyframes slideInTop {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(0); }
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideOutTop {
-  from { transform: translateY(0); }
-  to { transform: translateY(-100%); }
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
 }
 
 @keyframes slideInBottom {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideOutBottom {
-  from { transform: translateY(0); }
-  to { transform: translateY(100%); }
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
 }

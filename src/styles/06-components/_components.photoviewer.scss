@@ -1,12 +1,12 @@
-@use "../01-settings/settings.photoviewer" as photoviewer;
-@use "../01-settings/settings.config" as config;
-@use "../01-settings/settings.colors" as *;
-@use "../01-settings/settings.border-radius" as *;
-@use "../01-settings/settings.box-shadow" as *;
-@use "../01-settings/settings.spacing" as *;
-@use "../01-settings/settings.typography" as *;
-@use "../02-tools/tools.rem" as rem;
-@use "../02-tools/tools.spacing" as *;
+@use '../01-settings/settings.photoviewer' as photoviewer;
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.border-radius' as *;
+@use '../01-settings/settings.box-shadow' as *;
+@use '../01-settings/settings.spacing' as *;
+@use '../01-settings/settings.typography' as *;
+@use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.spacing' as *;
 
 // Common mixins
 %flex-center {
@@ -16,11 +16,13 @@
 }
 
 %standard-transition {
-  transition: all var(--#{config.$prefix}photoviewer-transition-duration) var(--#{config.$prefix}photoviewer-transition-timing);
+  transition: all var(--#{config.$prefix}photoviewer-transition-duration)
+    var(--#{config.$prefix}photoviewer-transition-timing);
 }
 
 %standard-transition {
-  transition: all var(--#{config.$prefix}photoviewer-transition-duration) var(--#{config.$prefix}photoviewer-transition-timing);
+  transition: all var(--#{config.$prefix}photoviewer-transition-duration)
+    var(--#{config.$prefix}photoviewer-transition-timing);
 }
 
 %svg-icon {
@@ -40,16 +42,16 @@
   &::-webkit-scrollbar {
     width: 6px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: $gray-4;
     border-radius: 3px;
   }
-  
+
   &::-webkit-scrollbar-thumb:hover {
     background: $gray-5;
   }
@@ -61,7 +63,7 @@
     transform: translateY(-2px);
     box-shadow: $box-shadow-sm;
   }
-  
+
   &:active:not(:disabled) {
     transform: translateY(0);
     box-shadow: $box-shadow-xs;
@@ -75,16 +77,16 @@
   object-fit: contain;
   transform-origin: center center;
   will-change: auto;
-  
+
   // Enhanced image quality
   image-rendering: auto;
   image-rendering: -webkit-optimize-contrast;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  
+
   // Smooth hardware-accelerated transforms
   transform: translateZ(0);
-  
+
   // Prevent any touch actions on the image itself
   touch-action: none;
   -webkit-touch-callout: none;
@@ -103,26 +105,27 @@
   cursor: pointer;
   overflow: hidden;
   position: relative;
-  
+
   &::after {
     content: '';
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.2);
     opacity: 1;
-    transition: opacity var(--#{config.$prefix}photoviewer-transition-duration) var(--#{config.$prefix}photoviewer-transition-timing);
+    transition: opacity var(--#{config.$prefix}photoviewer-transition-duration)
+      var(--#{config.$prefix}photoviewer-transition-timing);
   }
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: $box-shadow-sm;
     border-color: rgba(255, 255, 255, 0.3);
-    
+
     &::after {
       opacity: 0;
     }
   }
-  
+
   &.is-active {
     border-color: var(--#{config.$prefix}photoviewer-thumbnail-border);
     box-shadow: var(--#{config.$prefix}box-shadow-md);
@@ -137,7 +140,7 @@
   margin-bottom: 0.75rem;
   padding-left: 1.5rem;
   position: relative;
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -160,7 +163,7 @@
   font-size: $font-size-xs;
   font-weight: 500;
   transition: all 0.2s ease;
-  
+
   &:hover {
     background: var(--#{config.$prefix}primary-lighter);
     color: var(--#{config.$prefix}primary-darker);
@@ -173,24 +176,24 @@
   &__action-button {
     width: calc(var(--#{config.$prefix}photoviewer-control-size-small) * #{$size-multiplier});
     height: calc(var(--#{config.$prefix}photoviewer-control-size-small) * #{$size-multiplier});
-    
+
     svg {
       width: calc(20px * #{$size-multiplier});
       height: calc(20px * #{$size-multiplier});
     }
   }
-  
+
   &__nav-btn,
   &__nav-button {
     width: calc(var(--#{config.$prefix}photoviewer-control-size) * #{$size-multiplier});
     height: calc(var(--#{config.$prefix}photoviewer-control-size) * #{$size-multiplier});
-    
+
     svg {
       width: calc(24px * #{$size-multiplier});
       height: calc(24px * #{$size-multiplier});
     }
   }
-  
+
   &__thumbnail {
     width: calc(var(--#{config.$prefix}photoviewer-thumbnail-size) * #{$size-multiplier});
     height: calc(var(--#{config.$prefix}photoviewer-thumbnail-size) * #{$size-multiplier});
@@ -201,7 +204,7 @@
 // This can be used to apply additional styling to the page when the PhotoViewer is active
 body.is-open-photoviewer {
   overflow: hidden;
-  
+
   // Prevent iOS bounce scrolling
   position: fixed;
   width: 100%;
@@ -214,7 +217,7 @@ body.is-open-photoviewer {
   // Optimize for trackpad gestures on macOS
   -webkit-transform: translateZ(0);
   -webkit-backface-visibility: hidden;
-  
+
   @supports (overflow: clip) {
     overflow: clip;
   }
@@ -225,7 +228,7 @@ body.is-open-photoviewer {
   body.is-open-photoviewer {
     // Additional mobile-specific styles
     -webkit-overflow-scrolling: touch;
-    
+
     // Prevent address bar from showing/hiding
     height: 100vh;
     height: 100dvh; // Dynamic viewport height
@@ -301,11 +304,11 @@ body.is-open-photoviewer {
     transform: scale(1);
     transition-property: transform;
     overflow: hidden;
-    
+
     .is-entering & {
       transform: scale(0.95);
     }
-    
+
     .is-exiting & {
       transform: scale(0.95);
     }
@@ -320,7 +323,7 @@ body.is-open-photoviewer {
     z-index: 5;
   }
 
-  &__counter, 
+  &__counter,
   &__counter-badge {
     font-size: $font-size-sm;
     color: $gray-7;
@@ -337,7 +340,7 @@ body.is-open-photoviewer {
     gap: 0.75rem;
     align-items: center;
   }
-  
+
   // Common button styles mixin
   %button-base {
     @extend %flex-center;
@@ -349,29 +352,29 @@ body.is-open-photoviewer {
     border-radius: var(--#{config.$prefix}photoviewer-control-border-radius);
     cursor: pointer;
     box-shadow: $box-shadow-xs;
-    
+
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
-    
+
     svg {
       @extend %svg-icon;
       transition: transform 0.2s ease;
     }
   }
-  
+
   &__action-btn,
   &__action-button {
     @extend %button-base;
     width: var(--#{config.$prefix}photoviewer-control-size-small);
     height: var(--#{config.$prefix}photoviewer-control-size-small);
-    
+
     &:hover:not(:disabled) {
       background: var(--#{config.$prefix}photoviewer-action-hover-bg);
       color: var(--#{config.$prefix}photoviewer-action-hover-color);
     }
-    
+
     svg {
       width: 20px;
       height: 20px;
@@ -382,7 +385,7 @@ body.is-open-photoviewer {
     color: var(--#{config.$prefix}photoviewer-close-color);
     background: rgba(0, 0, 0, 0.3);
     margin-left: 0.5rem;
-    
+
     &:hover {
       background: rgba(0, 0, 0, 0.5);
     }
@@ -394,7 +397,7 @@ body.is-open-photoviewer {
     flex: 1 1 auto;
     overflow: hidden;
     min-height: 0;
-    
+
     &.is-transitioning {
       .c-photo-viewer__image-container {
         opacity: 0.7;
@@ -413,27 +416,27 @@ body.is-open-photoviewer {
     -webkit-user-select: none;
     -webkit-touch-callout: none;
     -webkit-overflow-scrolling: touch;
-    
+
     // Control touch interactions - allow pan and zoom only within the container
     touch-action: pan-x pan-y pinch-zoom;
-    
+
     // Optimize for smooth trackpad gestures
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    
+
     // Enable smooth scaling animations for trackpad gestures
     transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    
+
     &.is-transitioning {
       transition: opacity 0.15s ease-out;
-      
+
       .c-photo-viewer__image {
         transition: opacity 0.15s ease-out !important;
       }
     }
-    
+
     // Prevent image selection and dragging
     img {
       pointer-events: none;
@@ -442,26 +445,28 @@ body.is-open-photoviewer {
       -moz-user-drag: none;
       -o-user-drag: none;
       user-drag: none;
-      
+
       // Ensure touch actions are controlled
       touch-action: none;
     }
-    
+
     // Loading state
     &::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, 
-        transparent 0%, 
-        rgba(255, 255, 255, 0.1) 50%, 
-        transparent 100%);
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 100%
+      );
       animation: loading-shimmer 1.5s infinite;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
     }
-    
+
     &.is-loading::before {
       opacity: 1;
     }
@@ -469,45 +474,45 @@ body.is-open-photoviewer {
 
   &__image {
     @extend %image-base;
-    
+
     // Dynamic transitions based on state - optimized for trackpad
-    transition: 
+    transition:
       transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
       opacity 0.2s ease-out,
       filter 0.2s ease-out;
-    
+
     // Dragging state - disable transitions for direct manipulation
     .c-photo-viewer--dragging & {
       transition: none !important;
       will-change: transform;
     }
-    
+
     // Trackpad gesture state - smoother transitions for pinch zoom
-    &[style*="scale("]:not(.c-photo-viewer--dragging) {
+    &[style*='scale(']:not(.c-photo-viewer--dragging) {
       transition: transform 0.1s cubic-bezier(0.23, 1, 0.32, 1);
     }
-    
+
     // Loading state
     &.is-loading {
       opacity: 0.3;
       filter: blur(1px);
     }
-    
+
     // Zoom state optimizations
-    &[style*="scale(1)"] {
+    &[style*='scale(1)'] {
       will-change: auto;
     }
-    
-    &[style*="scale("]:not([style*="scale(1)"]) {
+
+    &[style*='scale(']:not([style*='scale(1)']) {
       will-change: transform;
     }
-    
+
     @media (prefers-reduced-motion: reduce) {
       transition: none !important;
       animation: none !important;
     }
   }
-  
+
   // Loading animation
   @keyframes loading-shimmer {
     0% {
@@ -527,25 +532,25 @@ body.is-open-photoviewer {
     width: var(--#{config.$prefix}photoviewer-control-size);
     height: var(--#{config.$prefix}photoviewer-control-size);
     z-index: 5;
-    
+
     &:hover:not(:disabled) {
       background: var(--#{config.$prefix}photoviewer-action-hover-bg);
       color: var(--#{config.$prefix}photoviewer-action-hover-color);
       transform: translateY(-50%) scale(1.05);
     }
-    
+
     &:active:not(:disabled) {
       transform: translateY(-50%) scale(1);
     }
-    
+
     &--prev {
       left: 1rem;
     }
-    
+
     &--next {
       right: 1rem;
     }
-    
+
     svg {
       width: 24px;
       height: 24px;
@@ -585,7 +590,7 @@ body.is-open-photoviewer {
     object-position: center;
     border-radius: calc($border-radius-sm - 2px);
     transition-property: transform;
-    
+
     .c-photo-viewer__thumbnail:hover & {
       transform: scale(1.05);
     }
@@ -615,25 +620,25 @@ body.is-open-photoviewer {
       flex-direction: row;
       gap: var(--#{config.$prefix}photoviewer-spacing);
     }
-    
+
     .c-photo-viewer__thumbnails {
       flex-direction: column;
       margin-top: 0;
       max-height: 80vh;
       overflow-y: auto;
     }
-    
+
     .c-photo-viewer__content {
       flex: 1;
     }
   }
-  
+
   &--thumbnails-left {
     .c-photo-viewer__thumbnails {
       order: -1;
     }
   }
-  
+
   &--thumbnails-right {
     .c-photo-viewer__thumbnails {
       order: 1;
@@ -657,17 +662,17 @@ body.is-open-photoviewer {
     transform: translateX(100%);
     transition-property: transform;
   }
-  
+
   &--info-open {
     .c-photo-viewer__container {
       padding-right: var(--#{config.$prefix}photoviewer-info-panel-width);
     }
-    
+
     .c-photo-viewer__info-panel {
       transform: translateX(0);
     }
   }
-  
+
   &__info-close {
     @extend %button-base;
     position: absolute;
@@ -677,23 +682,23 @@ body.is-open-photoviewer {
     height: var(--#{config.$prefix}photoviewer-control-size-small);
     box-shadow: $box-shadow-xs;
     z-index: 2;
-    
+
     &:hover {
       background: var(--#{config.$prefix}photoviewer-action-hover-bg);
       transform: translateY(-2px);
     }
-    
+
     svg {
       width: 16px;
       height: 16px;
     }
   }
-  
+
   &__info-content {
     margin-top: 2rem;
     padding-bottom: 2rem;
   }
-  
+
   &__info-title {
     font-size: $font-size-lg;
     font-weight: 600;
@@ -701,7 +706,7 @@ body.is-open-photoviewer {
     padding-bottom: 1rem;
     color: $gray-9;
     position: relative;
-    
+
     &::after {
       content: '';
       position: absolute;
@@ -713,18 +718,18 @@ body.is-open-photoviewer {
       border-radius: 2px;
     }
   }
-  
+
   &__info-description {
     font-size: $font-size-base;
     line-height: 1.6;
     margin-bottom: 1.5rem;
     color: $gray-8;
   }
-  
+
   &__info-meta {
     @extend %info-meta-item;
   }
-  
+
   &__info-tags {
     display: flex;
     flex-wrap: wrap;
@@ -732,29 +737,29 @@ body.is-open-photoviewer {
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
   }
-  
+
   &__info-tag {
     @extend %info-tag;
   }
-  
+
   // Responsive styles
   @media (max-width: 992px) {
     @include responsive-control-sizes(0.9);
-    
+
     &__container {
       max-width: 95vw;
       max-height: 90vh;
     }
-    
+
     &__image-container {
       max-width: 90vw;
       max-height: 70vh;
     }
   }
-  
+
   @media (max-width: 768px) {
     @include responsive-control-sizes(0.8);
-    
+
     &__container {
       max-width: 100vw;
       max-height: 100vh;
@@ -762,40 +767,40 @@ body.is-open-photoviewer {
       padding: 0.75rem;
       border-radius: 0;
     }
-    
+
     &__header {
       margin-bottom: 0.75rem;
     }
-    
+
     &__actions {
       gap: 0.5rem;
     }
-    
+
     &__image-container {
       max-height: 75vh;
     }
-    
+
     &__nav-btn,
     &__nav-button {
       &--prev {
         left: 0.25rem;
       }
-      
+
       &--next {
         right: 0.25rem;
       }
     }
-    
+
     &__thumbnails {
       max-width: 100%;
     }
-    
+
     &--thumbnails-left,
     &--thumbnails-right {
       .c-photo-viewer__container {
         flex-direction: column;
       }
-      
+
       .c-photo-viewer__thumbnails {
         flex-direction: row;
         order: 1;
@@ -805,12 +810,12 @@ body.is-open-photoviewer {
         overflow-x: auto;
       }
     }
-    
+
     &--info-open {
       .c-photo-viewer__container {
         padding-right: 0;
       }
-      
+
       .c-photo-viewer__info-panel {
         width: 100%;
         height: 100%;
@@ -820,38 +825,38 @@ body.is-open-photoviewer {
         right: 0;
         transform: translateX(0);
       }
-      
+
       .c-photo-viewer__info-panel {
         overflow-y: auto;
       }
     }
   }
-  
+
   @media (max-width: 480px) {
     @include responsive-control-sizes(0.7);
-    
+
     &__container {
       padding: 0.5rem;
     }
-    
+
     &__header {
       margin-bottom: 0.5rem;
     }
-    
+
     &__counter,
     &__counter-badge {
       font-size: $font-size-xs;
       padding: 0.2rem 0.5rem;
     }
-    
+
     &__actions {
       gap: 0.3rem;
     }
-    
+
     &__image-container {
       max-height: 65vh;
     }
-    
+
     &__info-panel {
       width: 100%;
       height: 70%;
@@ -860,12 +865,12 @@ body.is-open-photoviewer {
       transform: translateY(100%);
       border-left: none;
       border-top: 1px solid $gray-3;
-      
+
       &.is-open {
         transform: translateY(0);
       }
     }
-    
+
     &--info-open &__info-panel {
       padding: 1rem;
     }

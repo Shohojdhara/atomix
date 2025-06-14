@@ -5,24 +5,24 @@
 
 // Define utilities for background
 $utilities-bg: (
-  "background-color": (
+  'background-color': (
     property: background-color,
     class: u-bg,
     values: map.merge(
-      color-maps.$utilities-bg-colors,
-      (
-        "transparent": transparent,
-      )
-    )
+        color-maps.$utilities-bg-colors,
+        (
+          'transparent': transparent,
+        )
+      ),
   ),
-  "subtle-background-color": (
+  'subtle-background-color': (
     property: background-color,
     class: u-bg,
     values: map.merge(
-      color-maps.$utilities-bg-subtle,
-      (
-        "transparent": transparent,
-      )
-    )
+        color-maps.$utilities-bg-subtle,
+        (
+          'transparent': transparent,
+        )
+      ),
   ),
 );

@@ -1,5 +1,5 @@
-@use "./settings.config" as *;
-@use "./settings.typography" as *;
+@use './settings.config' as *;
+@use './settings.typography' as *;
 
 $list-color: var(--#{$prefix}body-color) !default;
 $list-font-size: $font-size-base !default;

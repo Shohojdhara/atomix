@@ -38,7 +38,7 @@
     background-color: var(--#{$prefix}avatar-group-more-bg);
     border: var(--#{$prefix}avatar-group-more-border-width) solid
       var(--#{$prefix}avatar-group-more-border-color);
-    
+
     // Inherit size and shape from avatars
     width: var(--#{$prefix}avatar-size);
     height: var(--#{$prefix}avatar-size);
@@ -50,16 +50,15 @@
     gap: 0;
 
     > * {
-      transition: transform var(--#{$prefix}avatar-group-transition-duration) var(--#{$prefix}avatar-group-transition-timing);
+      transition: transform var(--#{$prefix}avatar-group-transition-duration)
+        var(--#{$prefix}avatar-group-transition-timing);
       border: 2px solid var(--#{$prefix}avatar-group-more-bg);
     }
 
     // Position each avatar with negative margin
     @for $i from 1 through 10 {
       > *:nth-child(#{$i + 1}) {
-        transform: translateX(
-          calc((var(--#{$prefix}avatar-size) / -2) * #{$i})
-        );
+        transform: translateX(calc((var(--#{$prefix}avatar-size) / -2) * #{$i}));
       }
     }
 
@@ -68,16 +67,18 @@
       > * {
         transform: translateX(0);
       }
-      
+
       & {
         gap: var(--#{$prefix}avatar-group-stacked-hover-gap);
       }
     }
-    
+
     // More indicator in stacked layout
     .c-avatar-group__more {
       font-size: var(--#{$prefix}avatar-group-more-font-size);
-      margin-left: calc(var(--#{$prefix}avatar-size) * -1 * var(--#{$prefix}avatar-group-stacked-overlap) / 100);
+      margin-left: calc(
+        var(--#{$prefix}avatar-size) * -1 * var(--#{$prefix}avatar-group-stacked-overlap) / 100
+      );
       z-index: 1;
     }
   }

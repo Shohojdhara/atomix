@@ -27,7 +27,9 @@
 
 // Media Between - Min-width and Max-width
 @mixin media-between($lower, $upper) {
-  @if map.has-key(breakpoints.$grid-breakpoints, $lower) and map.has-key(breakpoints.$grid-breakpoints, $upper) {
+  @if map.has-key(breakpoints.$grid-breakpoints, $lower) and
+    map.has-key(breakpoints.$grid-breakpoints, $upper)
+  {
     $min: map.get(breakpoints.$grid-breakpoints, $lower);
     $max: map.get(breakpoints.$grid-breakpoints, $upper);
     @media (min-width: $min) and (max-width: ($max - 0.02px)) {
@@ -43,7 +45,7 @@
   @if map.has-key(breakpoints.$grid-breakpoints, $breakpoint) {
     $lower: $breakpoint;
     $upper: 'xl';
-    
+
     @if $breakpoint == 'xs' {
       $upper: 'sm';
     } @else if $breakpoint == 'sm' {
@@ -64,4 +66,4 @@
   } @else {
     @warn "Unknown breakpoint `#{$breakpoint}` in $breakpoints";
   }
-} 
+}

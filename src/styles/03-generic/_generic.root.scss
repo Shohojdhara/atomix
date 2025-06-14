@@ -12,7 +12,7 @@
 $gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)) !default;
 
 :root,
-[data-#{config.$prefix}theme="light"] {
+[data-#{config.$prefix}theme='light'] {
   // Note: Custom variable values only support SassScript inside `#{}`.
 
   // Colors
@@ -102,7 +102,9 @@ $gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255
   --#{config.$prefix}border-radius-lg: #{border-radius.$border-radius-lg};
   --#{config.$prefix}border-radius-xl: #{border-radius.$border-radius-xl};
   --#{config.$prefix}border-radius-xxl: #{border-radius.$border-radius-xxl};
-  --#{config.$prefix}border-radius-2xl: var(--#{config.$prefix}border-radius-xxl); // Deprecated in v5.3.0 for consistency
+  --#{config.$prefix}border-radius-2xl: var(
+    --#{config.$prefix}border-radius-xxl
+  ); // Deprecated in v5.3.0 for consistency
   --#{config.$prefix}border-radius-3xl: #{border-radius.$border-radius-3xl};
   --#{config.$prefix}border-radius-4xl: #{border-radius.$border-radius-4xl};
   --#{config.$prefix}border-radius-pill: #{border-radius.$border-radius-pill};
@@ -167,14 +169,12 @@ $gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255
     --#{config.$prefix}link-color-rgb: #{to-rgb(colors.$link-color-dark)};
     --#{config.$prefix}link-hover-color: #{colors.$link-hover-color-dark};
 
-
     --#{config.$prefix}code-color: #{colors.$code-color-dark};
-    
+
     --#{config.$prefix}border-color: #{border.$border-color-dark};
     --#{config.$prefix}border-color-translucent: #{colors.$border-color-translucent-dark};
 
     --#{config.$prefix}focus-border-color: #{colors.$focus-border-color-dark};
-
 
     --#{config.$prefix}form-valid-color: #{colors.$form-valid-color-dark};
     --#{config.$prefix}form-valid-border-color: #{colors.$form-valid-border-color-dark};

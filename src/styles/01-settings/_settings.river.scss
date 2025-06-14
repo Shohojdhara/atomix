@@ -1,34 +1,34 @@
-@use "settings.config" as config;
-@use "settings.typography" as typography;
-@use "settings.colors" as colors;
+@use 'settings.config' as config;
+@use 'settings.typography' as typography;
+@use 'settings.colors' as colors;
 
-$river-width:                   100% !default;
-$river-padding-x:               0px !default;
-$river-padding-y:               40px  !default;
-$river-border-radius:           0px;
-$river-bg:                      var(--#{config.$prefix}body-bg) !default;
-$river-overlay:                 colors.$dark !default;
-$river-overlay-opacity:         0.6 !default;
+$river-width: 100% !default;
+$river-padding-x: 0px !default;
+$river-padding-y: 40px !default;
+$river-border-radius: 0px;
+$river-bg: var(--#{config.$prefix}body-bg) !default;
+$river-overlay: colors.$dark !default;
+$river-overlay-opacity: 0.6 !default;
 
-$river-title-font-size:         typography.$h1-font-size !default;
-$river-text-font-size:          typography.$font-size-base !default;
+$river-title-font-size: typography.$h1-font-size !default;
+$river-text-font-size: typography.$font-size-base !default;
 
-$river-title-font-weight:       typography.$font-weight-medium !default;
-$river-text-font-weight:        typography.$font-weight-normal !default;
+$river-title-font-weight: typography.$font-weight-medium !default;
+$river-text-font-weight: typography.$font-weight-normal !default;
 
-$river-title-color:             var(--#{config.$prefix}body-color) !default;
-$river-text-color:              var(--#{config.$prefix}secondary-text-emphasis) !default;
+$river-title-color: var(--#{config.$prefix}body-color) !default;
+$river-text-color: var(--#{config.$prefix}secondary-text-emphasis) !default;
 
-$river-text-margin-top:         12px !default;
-$river-actions-margin-top:      12px !default;
-$river-actions-spacing-x:       12px !default;
+$river-text-margin-top: 12px !default;
+$river-actions-margin-top: 12px !default;
+$river-actions-spacing-x: 12px !default;
 
-$river-image-border-radius:     0px !default;
-$river-image-box-shadow:        null !default;
+$river-image-border-radius: 0px !default;
+$river-image-box-shadow: null !default;
 
-$river-spacing-inner:           64px !default;
+$river-spacing-inner: 64px !default;
 
-$river-content-max-width:       536px !default;
+$river-content-max-width: 536px !default;
 
-$river-breakout-title-width:   $river-content-max-width !default;
-$river-breakout-text-width:    427px !default;
+$river-breakout-title-width: $river-content-max-width !default;
+$river-breakout-text-width: 427px !default;

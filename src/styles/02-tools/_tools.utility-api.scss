@@ -20,7 +20,7 @@ $utility-defaults: (
   class: null,
   state: null,
   local-vars: (),
-  rtl: true
+  rtl: true,
 ) !default;
 
 // Core function to generate utility classes
@@ -38,7 +38,11 @@ $utility-defaults: (
     $property-class: if($property-class, $property-class, list.nth($properties, 1));
 
     // Multiple properties are possible, like with borders or shadows
-    $property-class: if(meta.type-of($property-class) == 'list', list.nth($property-class, 1), $property-class);
+    $property-class: if(
+      meta.type-of($property-class) == 'list',
+      list.nth($property-class, 1),
+      $property-class
+    );
 
     // State variants (hover, focus, active, etc.)
     $state: map.get($utility, state);
@@ -70,7 +74,7 @@ $utility-defaults: (
   @if $responsive {
     @each $breakpoint in map.keys($breakpoints) {
       $infix: call($breakpoint-infix-generator, $breakpoint);
-      
+
       @include media-breakpoint-up($breakpoint) {
         @include generate-utility($utility, $infix);
       }
@@ -81,7 +85,11 @@ $utility-defaults: (
 }
 
 // Main mixin to generate all utilities
-@mixin generate-utilities($utilities, $breakpoints: $grid-breakpoints, $breakpoint-infix-generator: null) {
+@mixin generate-utilities(
+  $utilities,
+  $breakpoints: $grid-breakpoints,
+  $breakpoint-infix-generator: null
+) {
   // Set default breakpoint infix generator if not provided
   $breakpoint-infix-generator: if(
     $breakpoint-infix-generator,
@@ -92,38 +100,45 @@ $utility-defaults: (
   @each $utility, $config in $utilities {
     // Merge default config
     $config: map.merge($utility-defaults, $config);
-    
+
     // Only process if the utility is not explicitly set to false
-    @if map.get($config, generated) != false {      
+    @if map.get($config, generated) != false {
       $utility-map: (
         property: map.get($config, property),
         values: map.get($config, values),
         class: map.get($config, class),
         state: map.get($config, state),
-        rtl: map.get($config, rtl)
+        rtl: map.get($config, rtl),
       );
 
-      @include generate-responsive-utilities($utility-map, $breakpoints, $breakpoint-infix-generator);
+      @include generate-responsive-utilities(
+        $utility-map,
+        $breakpoints,
+        $breakpoint-infix-generator
+      );
     }
   }
 }
 
 // Helper function to get breakpoint infix
 @function get-breakpoint-infix($breakpoint) {
-  @return if($breakpoint == null, "", "-#{$breakpoint}");
+  @return if($breakpoint == null, '', '-#{$breakpoint}');
 }
 
 // Helper function to create value lists
 @function zip($keys, $values) {
   $result: ();
   $index: 1;
-  
+
   @each $key in $keys {
-    $result: map.merge($result, (
-      $key: if($index <= list.length($values), list.nth($values, $index), null)
-    ));
+    $result: map.merge(
+      $result,
+      (
+        $key: if($index <= list.length($values), list.nth($values, $index), null),
+      )
+    );
     $index: $index + 1;
   }
-  
+
   @return $result;
 }

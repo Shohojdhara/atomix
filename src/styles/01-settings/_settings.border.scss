@@ -1,14 +1,14 @@
-@use "./settings.colors" as colors;
+@use './settings.colors' as colors;
 
-$border-color:              colors.$primary-border !default;
-$border-color-dark:         colors.$primary-border-dark !default;
-$border-width:              1px !default;
-$border-style:              solid !default;
+$border-color: colors.$primary-border !default;
+$border-color-dark: colors.$primary-border-dark !default;
+$border-width: 1px !default;
+$border-style: solid !default;
 
 $border-widths: (
   1: 1px,
   2: 2px,
   3: 3px,
   4: 4px,
-  5: 5px
+  5: 5px,
 ) !default;

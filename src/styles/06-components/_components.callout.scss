@@ -40,15 +40,16 @@
   width: 100%;
   max-width: var(--#{config.$prefix}callout-width);
   gap: var(--#{config.$prefix}callout-actions-spacer);
-  padding: var(--#{config.$prefix}callout-padding-y)
-    var(--#{config.$prefix}callout-padding-x);
+  padding: var(--#{config.$prefix}callout-padding-y) var(--#{config.$prefix}callout-padding-x);
   background: var(--#{config.$prefix}callout-bg);
   border-radius: var(--#{config.$prefix}callout-border-radius);
   border: var(--#{config.$prefix}callout-border-witdh) solid
     var(--#{config.$prefix}callout-border-color);
-  transition: 
-    opacity var(--#{config.$prefix}callout-transition-duration) var(--#{config.$prefix}callout-transition-timing),
-    transform var(--#{config.$prefix}callout-transition-duration) var(--#{config.$prefix}callout-transition-timing);
+  transition:
+    opacity var(--#{config.$prefix}callout-transition-duration)
+      var(--#{config.$prefix}callout-transition-timing),
+    transform var(--#{config.$prefix}callout-transition-duration)
+      var(--#{config.$prefix}callout-transition-timing);
 
   &__content {
     display: flex;
@@ -104,7 +105,9 @@
     font-size: var(--#{config.$prefix}callout-close-btn-size);
     cursor: pointer;
     border-radius: rem.rem(4px);
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.05);
@@ -134,7 +137,8 @@
     position: relative;
     max-width: rem.rem(350px);
     width: 100%;
-    padding: var(--#{config.$prefix}callout-tost-padding-y) var(--#{config.$prefix}callout-tost-padding-x);
+    padding: var(--#{config.$prefix}callout-tost-padding-y)
+      var(--#{config.$prefix}callout-tost-padding-x);
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
@@ -150,7 +154,9 @@
       }
 
       &__actions {
-        padding-left: calc(var(--#{config.$prefix}callout-icon-size) + var(--#{config.$prefix}callout-message-spacer));
+        padding-left: calc(
+          var(--#{config.$prefix}callout-icon-size) + var(--#{config.$prefix}callout-message-spacer)
+        );
         margin-top: var(--#{config.$prefix}callout-actions-spacer-y);
       }
 
@@ -169,7 +175,7 @@
 
   @each $color, $value in maps.$theme-colors {
     &--#{$color} {
-      @if($color == 'primary') {
+      @if ($color == 'primary') {
         --#{config.$prefix}callout-bg: var(--#{config.$prefix}brand-bg-subtle);
         --#{config.$prefix}callout-border-color: var(--#{config.$prefix}brand-border-subtle);
         --#{config.$prefix}callout-icon-color: var(--#{config.$prefix}brand-text-emphasis);
@@ -179,7 +185,7 @@
         --#{config.$prefix}callout-bg: var(--#{config.$prefix}light);
         --#{config.$prefix}callout-border-color: var(--#{config.$prefix}primary-border-subtle);
         --#{config.$prefix}callout-icon-color: var(--#{config.$prefix}tertiary-text-emphasis);
-      }@else if($color == 'dark') {
+      } @else if($color == 'dark') {
         --#{config.$prefix}callout-title-color: var(--#{config.$prefix}light);
         --#{config.$prefix}callout-text-color: #{$gray-4};
         --#{config.$prefix}callout-bg: var(--#{config.$prefix}dark);
@@ -189,7 +195,7 @@
         --#{config.$prefix}callout-bg: var(--#{config.$prefix}#{$color}-bg-subtle);
         --#{config.$prefix}callout-border-color: var(--#{config.$prefix}#{$color}-border-subtle);
         --#{config.$prefix}callout-icon-color: var(--#{config.$prefix}#{$color}-text-emphasis);
-      }      
+      }
     }
   }
 
@@ -209,12 +215,12 @@
   gap: rem.rem(8px);
   max-width: 100%;
   pointer-events: none; // Allow clicking through the container
-  
+
   // Make toasts clickable
   .c-callout--toast {
     pointer-events: auto;
   }
-  
+
   // Position variants
   @each $position, $props in callout.$callout-toast-positions {
     &--#{$position} {
@@ -223,7 +229,7 @@
       }
     }
   }
-  
+
   // Animation variants by position
   &--top-right,
   &--top-left,
@@ -232,7 +238,7 @@
       animation-name: calloutToastInTop;
     }
   }
-  
+
   &--bottom-right,
   &--bottom-left,
   &--bottom-center {

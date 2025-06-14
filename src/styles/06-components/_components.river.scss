@@ -6,7 +6,6 @@
 @use '../02-tools/tools.breakpoints' as *;
 @use '../02-tools/tools.grid' as grid;
 
-
 .c-river {
   $root: &;
 
@@ -32,7 +31,10 @@
   --#{config.$prefix}river-content-max-width: #{rem($river-content-max-width)};
   --#{config.$prefix}river-breakout-title-width: #{rem($river-breakout-title-width)};
   --#{config.$prefix}river-breakout-text-width: #{rem($river-breakout-text-width)};
-  --#{config.$prefix}river-content-width: var(--river-content-width, #{rem($river-content-max-width)});
+  --#{config.$prefix}river-content-width: var(
+    --river-content-width,
+    #{rem($river-content-max-width)}
+  );
 
   position: relative;
   width: 100%;

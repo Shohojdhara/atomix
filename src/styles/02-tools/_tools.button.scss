@@ -1,10 +1,10 @@
-@use "sass:color";
-@use "../01-settings/settings.config" as config;
-@use "../01-settings/settings.button" as button;
-@use "../01-settings/settings.colors" as colors;
-@use "../01-settings/settings.border-radius" as *;
-@use "tools.to-rgb" as *;
-@use "tools.border-radius" as *;
+@use 'sass:color';
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.button' as button;
+@use '../01-settings/settings.colors' as colors;
+@use '../01-settings/settings.border-radius' as *;
+@use 'tools.to-rgb' as *;
+@use 'tools.border-radius' as *;
 
 // Button variant mixin
 @mixin btn-variant(
@@ -20,11 +20,27 @@
   --#{config.$prefix}btn-bg: #{$background};
   --#{config.$prefix}btn-border-color: #{$border};
   --#{config.$prefix}btn-hover-color: #{colors.$white};
-  --#{config.$prefix}btn-hover-bg: #{if($hover-background, $hover-background, color.scale($background, $lightness: -15%))};
-  --#{config.$prefix}btn-hover-border-color: #{if($hover-border, $hover-border, color.scale($border, $lightness: -10%))};
+  --#{config.$prefix}btn-hover-bg: #{if(
+      $hover-background,
+      $hover-background,
+      color.scale($background, $lightness: -15%)
+    )};
+  --#{config.$prefix}btn-hover-border-color: #{if(
+      $hover-border,
+      $hover-border,
+      color.scale($border, $lightness: -10%)
+    )};
   --#{config.$prefix}btn-active-color: #{colors.$white};
-  --#{config.$prefix}btn-active-bg: #{if($active-background, $active-background, color.scale($background, $lightness: -20%))};
-  --#{config.$prefix}btn-active-border-color: #{if($active-border, $active-border, color.scale($border, $lightness: -25%))};
+  --#{config.$prefix}btn-active-bg: #{if(
+      $active-background,
+      $active-background,
+      color.scale($background, $lightness: -20%)
+    )};
+  --#{config.$prefix}btn-active-border-color: #{if(
+      $active-border,
+      $active-border,
+      color.scale($border, $lightness: -25%)
+    )};
   --#{config.$prefix}btn-disabled-color: #{colors.$white};
   --#{config.$prefix}btn-disabled-bg: #{$background};
   --#{config.$prefix}btn-disabled-border-color: #{$background};
@@ -39,35 +55,35 @@
   $active-background: $color,
   $active-border: $color
 ) {
-  @if ($hover-background == "primary") {
+  @if ($hover-background == 'primary') {
     $hover-background: 'secondary';
   }
 
-  @if ($hover-background == "light") {
+  @if ($hover-background == 'light') {
     $hover-background: 'secondary';
   }
 
-  @if ($hover-background == "dark") {
+  @if ($hover-background == 'dark') {
     $hover-background: 'secondary';
   }
 
   $btn-color: $color;
 
-  @if($color == "secondary") {
-    $btn-color: "invert";
+  @if ($color == 'secondary') {
+    $btn-color: 'invert';
     $color-hover: 'invert';
   }
 
-  @if($color == "dark") {
-    $btn-color: "invert";
+  @if ($color == 'dark') {
+    $btn-color: 'invert';
     $color-hover: 'invert';
   }
 
-  @if($color == "light") {
-    $btn-color: "invert";
+  @if ($color == 'light') {
+    $btn-color: 'invert';
     $color-hover: 'invert';
   }
-  
+
   --#{config.$prefix}btn-color: var(--#{config.$prefix}#{$btn-color});
   --#{config.$prefix}btn-bg: transparent;
   --#{config.$prefix}btn-border-color: var(--#{config.$prefix}#{$color});

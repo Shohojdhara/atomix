@@ -21,7 +21,9 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  transition:
+    opacity 0.3s ease-in-out,
+    visibility 0.3s ease-in-out;
   z-index: 1000;
 
   &__content {
@@ -33,10 +35,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: var(--#{$prefix}popover-inner-gap-y)
-      var(--#{$prefix}popover-inner-gap-x);
-    padding: var(--#{$prefix}popover-padding-y)
-      var(--#{$prefix}popover-padding-x);
+    gap: var(--#{$prefix}popover-inner-gap-y) var(--#{$prefix}popover-inner-gap-x);
+    padding: var(--#{$prefix}popover-padding-y) var(--#{$prefix}popover-padding-x);
     background: var(--#{$prefix}popover-bg);
     border-radius: var(--#{$prefix}popover-border-radius);
     box-shadow: var(--#{$prefix}popover-box-shadow);
@@ -57,7 +57,7 @@
     visibility: visible;
     pointer-events: auto;
   }
-  
+
   // Position variants
   &--top {
     .c-popover__arrow {
@@ -66,7 +66,7 @@
       transform: translateX(-50%) rotate(45deg);
     }
   }
-  
+
   &--bottom {
     .c-popover__arrow {
       top: calc(var(--#{$prefix}popover-arrow-offset) * -1);
@@ -74,7 +74,7 @@
       transform: translateX(-50%) rotate(45deg);
     }
   }
-  
+
   &--left {
     .c-popover__arrow {
       top: 50%;
@@ -82,7 +82,7 @@
       transform: translateY(-50%) rotate(45deg);
     }
   }
-  
+
   &--right {
     .c-popover__arrow {
       top: 50%;
@@ -90,7 +90,7 @@
       transform: translateY(-50%) rotate(45deg);
     }
   }
-  
+
   // Auto position automatically selects the best position
   // and will dynamically apply one of the position classes above
   &--auto {

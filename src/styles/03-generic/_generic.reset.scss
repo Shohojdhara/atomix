@@ -35,7 +35,12 @@ body {
 
 // Typography
 // Headings
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-top: 0;
   margin-bottom: var(--#{config.$prefix}headings-margin-bottom);
   font-family: var(--#{config.$prefix}headings-font-family);
@@ -110,7 +115,7 @@ dt {
 }
 
 dd {
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   margin-left: 0;
 }
 
@@ -283,7 +288,7 @@ select {
 }
 
 // Set the cursor for non-`<button>` buttons
-[role="button"] {
+[role='button'] {
   cursor: pointer;
 }
 
@@ -303,12 +308,12 @@ progress {
 }
 
 // Correct styling of number inputs in Safari
-[type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
+[type='number']::-webkit-inner-spin-button,
+[type='number']::-webkit-outer-spin-button {
   height: auto;
 }
 
-[type="search"] {
+[type='search'] {
   outline-offset: -2px; // Safari
 }
 
@@ -353,7 +358,7 @@ summary {
   }
 
   abbr[title]::after {
-    content: " (" attr(title) ")";
+    content: ' (' attr(title) ')';
   }
 
   pre {
@@ -394,4 +399,4 @@ summary {
   .container {
     min-width: 992px !important;
   }
-} 
+}

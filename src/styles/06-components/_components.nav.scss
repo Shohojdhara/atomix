@@ -36,15 +36,16 @@
     }
 
     &:hover {
-        #{$root}__icon {
-          transform: rotate(-180deg);
-        }
-  
-        #{$root}__dropdown-menu, #{$root}__mega-menu  {
-          visibility: visible;
-          opacity: 1;
-        }
+      #{$root}__icon {
+        transform: rotate(-180deg);
       }
+
+      #{$root}__dropdown-menu,
+      #{$root}__mega-menu {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
   }
 
   &__link {
@@ -53,8 +54,7 @@
     gap: var(--#{$prefix}nav-link-inner-gap);
     font-size: var(--#{$prefix}nav-link-font-size);
     font-weight: var(--#{$prefix}nav-link-font-weight);
-    padding: var(--#{$prefix}nav-link-padding-y)
-      var(--#{$prefix}nav-link-padding-x);
+    padding: var(--#{$prefix}nav-link-padding-y) var(--#{$prefix}nav-link-padding-x);
     border-radius: $border-radius-lg;
 
     @include transition.basic-transition();
@@ -113,7 +113,6 @@
     opacity: 0;
     @include transition.basic-transition();
   }
-
 
   &--end {
     margin-left: auto;

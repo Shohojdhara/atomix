@@ -28,14 +28,16 @@
 
 .c-image-gallery__item {
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   border-radius: $border-radius-lg;
   overflow: hidden;
-  
+
   &:hover {
     transform: translateY(-5px);
     box-shadow: $box-shadow-lg;
-    
+
     .c-image-gallery__card {
       border-color: $primary-5;
     }
@@ -45,14 +47,14 @@
 .c-image-gallery__card {
   height: 100%;
   transition: border-color 0.3s ease;
-  
+
   img {
     transition: transform 0.5s ease;
     width: 100%;
     height: auto;
     object-fit: cover;
   }
-  
+
   &:hover img {
     transform: scale(1.05);
   }
@@ -63,7 +65,7 @@
   .c-image-gallery__title {
     font-size: $h3-font-size;
   }
-  
+
   .c-image-gallery__description {
     font-size: $font-size-sm;
   }

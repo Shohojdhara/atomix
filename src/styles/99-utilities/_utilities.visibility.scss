@@ -2,12 +2,12 @@
 
 // Define utilities for visibility
 $utilities-visibility: (
-  "visibility": (
-      property: visibility,
-      class: null,
-      values: (
-        u-visible: visible,
-        u-invisible: hidden,
-      )
+  'visibility': (
+    property: visibility,
+    class: null,
+    values: (
+      u-visible: visible,
+      u-invisible: hidden,
     ),
+  ),
 );

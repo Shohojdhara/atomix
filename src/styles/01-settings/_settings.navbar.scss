@@ -1,19 +1,16 @@
-@use "./settings.config" as *;
-@use "./settings.typography" as *;
-@use "./settings.colors" as *;
+@use './settings.config' as *;
+@use './settings.typography' as *;
+@use './settings.colors' as *;
 
-$navbar-padding-x:              64px !default;
-$navbar-padding-y:              8px !default;
-$navbar-bg:                     var(--#{$prefix}body-bg) !default;
-$navbar-border-width:           1px !default;
-$navbar-border-color:           var(--#{$prefix}primary-border-subtle) !default;
+$navbar-padding-x: 64px !default;
+$navbar-padding-y: 8px !default;
+$navbar-bg: var(--#{$prefix}body-bg) !default;
+$navbar-border-width: 1px !default;
+$navbar-border-color: var(--#{$prefix}primary-border-subtle) !default;
 
+$navbar-brand-margin-end: 30px !default;
 
-$navbar-brand-margin-end:       30px !default;
+$navbar-toggler-size: 30px !default;
+$navbar-toggler-color: $black !default;
 
-
-
-$navbar-toggler-size:           30px !default;
-$navbar-toggler-color:          $black !default;
-
-$navbar-container-max-width:    1600px !default;
+$navbar-container-max-width: 1600px !default;

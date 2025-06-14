@@ -3,66 +3,63 @@
 @use '../02-tools/tools.rem' as *;
 
 .c-testimonial {
+  --#{$prefix}testimonial-width: #{$testimonial-width};
+  --#{$prefix}testimonial-padding-x: #{rem($testimonial-padding-x)};
+  --#{$prefix}testimonial-padding-y: #{rem($testimonial-padding-y)};
+  --#{$prefix}testimonial-inner-spacer: #{rem($testimonial-inner-spacer)};
+  --#{$prefix}testimonial-bg: #{$testimonial-bg};
+  --#{$prefix}testimonial-quote-font-size: #{$testimonial-quote-font-size};
+  --#{$prefix}testimonial-quote-font-size-sm: #{$testimonial-quote-font-size-sm};
+  --#{$prefix}testimonial-quote-font-size-lg: #{$testimonial-quote-font-size-lg};
+  --#{$prefix}testimonial-quote-font-weight: #{$testimonial-quote-font-weight};
+  --#{$prefix}testimonial-quote-color: #{$testimonial-quote-color};
+  --#{$prefix}testimonial-author-font-size: #{$testimonial-author-font-size};
+  --#{$prefix}testimonial-author-color: #{$testimonial-author-color};
+  --#{$prefix}testimonial-author-role-font-size: #{$testimonial-author-role-font-size};
+  --#{$prefix}testimonial-author-role-color: #{$testimonial-author-role-color};
+  --#{$prefix}testimonial-author-inner-spacer: #{$testimonial-author-inner-spacer};
 
-   --#{$prefix}testimonial-width: #{$testimonial-width};
-   --#{$prefix}testimonial-padding-x: #{rem($testimonial-padding-x)};
-   --#{$prefix}testimonial-padding-y: #{rem($testimonial-padding-y)};
-   --#{$prefix}testimonial-inner-spacer: #{rem($testimonial-inner-spacer)};
-   --#{$prefix}testimonial-bg: #{$testimonial-bg};
-   --#{$prefix}testimonial-quote-font-size: #{$testimonial-quote-font-size};
-   --#{$prefix}testimonial-quote-font-size-sm: #{$testimonial-quote-font-size-sm};
-   --#{$prefix}testimonial-quote-font-size-lg: #{$testimonial-quote-font-size-lg};
-   --#{$prefix}testimonial-quote-font-weight: #{$testimonial-quote-font-weight};
-   --#{$prefix}testimonial-quote-color: #{$testimonial-quote-color}; 
-   --#{$prefix}testimonial-author-font-size: #{$testimonial-author-font-size};
-   --#{$prefix}testimonial-author-color: #{$testimonial-author-color};
-   --#{$prefix}testimonial-author-role-font-size: #{$testimonial-author-role-font-size};
-   --#{$prefix}testimonial-author-role-color: #{$testimonial-author-role-color};
-   --#{$prefix}testimonial-author-inner-spacer: #{$testimonial-author-inner-spacer};
+  width: 100%;
+  max-width: var(--#{$prefix}testimonial-width);
+  padding: var(--#{$prefix}testimonial-padding-y) var(--#{$prefix}testimonial-padding-x);
+  background: var(--#{$prefix}testimonial-bg);
 
-   
-   width: 100%;
-   max-width: var(--#{$prefix}testimonial-width);
-   padding: var(--#{$prefix}testimonial-padding-y) var(--#{$prefix}testimonial-padding-x);
-   background: var(--#{$prefix}testimonial-bg);
+  &__quote {
+    color: var(--#{$prefix}testimonial-quote-color);
+    font-size: var(--#{$prefix}testimonial-quote-font-size);
+    font-weight: var(--#{$prefix}testimonial-quote-font-weight);
+    margin-bottom: 0px;
+  }
 
+  &__author {
+    display: flex;
+    gap: var(--#{$prefix}testimonial-author-inner-spacer);
+    margin-top: var(--#{$prefix}testimonial-inner-spacer);
+  }
 
-   &__quote {
-      color: var(--#{$prefix}testimonial-quote-color);
-      font-size: var(--#{$prefix}testimonial-quote-font-size);
-      font-weight: var(--#{$prefix}testimonial-quote-font-weight);
-      margin-bottom: 0px;
-   }
+  // &__author-avatar {
 
-   &__author {
-      display: flex;
-      gap: var(--#{$prefix}testimonial-author-inner-spacer);
-      margin-top: var(--#{$prefix}testimonial-inner-spacer);
-   }
+  // }
 
-   // &__author-avatar {
+  // &__author-info {
 
-   // }
+  // }
 
-   // &__author-info {
+  &__author-name {
+    color: var(--#{$prefix}testimonial-author-color);
+    font-size: var(--#{$prefix}testimonial-author-font-size);
+  }
 
-   // }
+  &__author-role {
+    color: var(--#{$prefix}testimonial-author-role-color);
+    font-size: var(--#{$prefix}testimonial-author-role-font-size);
+  }
 
-   &__author-name {
-      color: var(--#{$prefix}testimonial-author-color);
-      font-size: var(--#{$prefix}testimonial-author-font-size);
-   }
+  &--sm {
+    --#{$prefix}testimonial-quote-font-size: var(--#{$prefix}testimonial-quote-font-size-sm);
+  }
 
-   &__author-role {
-      color: var(--#{$prefix}testimonial-author-role-color);
-      font-size: var(--#{$prefix}testimonial-author-role-font-size);
-   }
-
-   &--sm {
-      --#{$prefix}testimonial-quote-font-size: var(--#{$prefix}testimonial-quote-font-size-sm);
-   }
-
-   &--lg {
-      --#{$prefix}testimonial-quote-font-size: var(--#{$prefix}testimonial-quote-font-size-lg);
-   }
+  &--lg {
+    --#{$prefix}testimonial-quote-font-size: var(--#{$prefix}testimonial-quote-font-size-lg);
+  }
 }

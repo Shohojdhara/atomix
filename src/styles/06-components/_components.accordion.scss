@@ -27,14 +27,16 @@
 
   width: 100%;
   max-width: var(--#{config.$prefix}accordion-width);
-  border: var(--#{config.$prefix}accordion-border-width) solid var(--#{config.$prefix}accordion-border-color);
+  border: var(--#{config.$prefix}accordion-border-width) solid
+    var(--#{config.$prefix}accordion-border-color);
 
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     color: var(--#{config.$prefix}accordion-header-color);
-    padding: var(--#{config.$prefix}accordion-header-padding-y) var(--#{config.$prefix}accordion-header-padding-x);
+    padding: var(--#{config.$prefix}accordion-header-padding-y)
+      var(--#{config.$prefix}accordion-header-padding-x);
     background-color: var(--#{config.$prefix}accordion-header-bg);
     border-radius: var(--#{config.$prefix}accordion-border-radius);
     border: none;
@@ -74,12 +76,15 @@
 
   &__body {
     color: var(--#{config.$prefix}accordion-body-color);
-    padding: var(--#{config.$prefix}accordion-body-padding-y) var(--#{config.$prefix}accordion-body-padding-x);
+    padding: var(--#{config.$prefix}accordion-body-padding-y)
+      var(--#{config.$prefix}accordion-body-padding-x);
     background-color: var(--#{config.$prefix}accordion-body-bg);
-    border-radius: 0 0 var(--#{config.$prefix}accordion-border-radius) var(--#{config.$prefix}accordion-border-radius);
+    border-radius: 0 0 var(--#{config.$prefix}accordion-border-radius)
+      var(--#{config.$prefix}accordion-border-radius);
   }
 
-  &:focus, &.is-focused {
+  &:focus,
+  &.is-focused {
     --#{config.$prefix}accordion-border-color: var(--#{config.$prefix}focus-border-color);
   }
 
@@ -89,7 +94,8 @@
     }
 
     #{$root}__header {
-      border-radius: var(--#{config.$prefix}accordion-border-radius)  var(--#{config.$prefix}accordion-border-radius) 0 0;
+      border-radius: var(--#{config.$prefix}accordion-border-radius)
+        var(--#{config.$prefix}accordion-border-radius) 0 0;
     }
   }
 

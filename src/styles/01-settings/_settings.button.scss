@@ -1,64 +1,67 @@
-@use "settings.config" as *;
-@use "settings.border-radius" as *;
-@use "settings.typography" as *;
+@use 'settings.config' as *;
+@use 'settings.border-radius' as *;
+@use 'settings.typography' as *;
 
-$btn-color:                             var(--#{$prefix}body-color) !default;
-$btn-padding-y:                         10px !default;
-$btn-padding-x:                         16px!default;
-$btn-font-family:                       $font-family-base !default;
-$btn-font-size:                         $font-size-base !default;
-$btn-line-height:                       1 !default;
-$btn-white-space:                       null !default; // Set to 
-$btn-icon-size:                         22px !default;
-$btn-icon-size-sm:                      20px !default;
-$btn-icon-size-lg:                      24px !default;
+$btn-color: var(--#{$prefix}body-color) !default;
+$btn-padding-y: 10px !default;
+$btn-padding-x: 16px !default;
+$btn-font-family: $font-family-base !default;
+$btn-font-size: $font-size-base !default;
+$btn-line-height: 1 !default;
+$btn-white-space: null !default; // Set to
+$btn-icon-size: 22px !default;
+$btn-icon-size-sm: 20px !default;
+$btn-icon-size-lg: 24px !default;
 
-$btn-padding-y-sm:                      8px !default;
-$btn-padding-x-sm:                      16px !default;
-$btn-font-size-sm:                      $font-size-sm !default;
+$btn-padding-y-sm: 8px !default;
+$btn-padding-x-sm: 16px !default;
+$btn-font-size-sm: $font-size-sm !default;
 
-$btn-padding-y-lg:                      14px !default;
-$btn-padding-x-lg:                      16px !default;
-$btn-font-size-lg:                      $font-size-base !default;
+$btn-padding-y-lg: 14px !default;
+$btn-padding-x-lg: 16px !default;
+$btn-font-size-lg: $font-size-base !default;
 
-$btn-border-width:                      1px !default;
+$btn-border-width: 1px !default;
 
-$btn-font-weight:                       $font-weight-normal !default;
-$btn-focus-width:                       1px !default;
-$btn-box-shadow:                        none !default;
+$btn-font-weight: $font-weight-normal !default;
+$btn-focus-width: 1px !default;
+$btn-box-shadow: none !default;
 
+$btn-disabled-color: var(--#{$prefix}disabled-text-emphasis) !default;
+$btn-disabled-bg: var(--#{$prefix}secondary-bg-subtle) !default;
+$btn-disabled-border-color: var(--#{$prefix}primary-border-subtle) !default;
+$btn-disabled-opacity: 0.65 !default;
 
-$btn-disabled-color:                    var(--#{$prefix}disabled-text-emphasis) !default;
-$btn-disabled-bg:                       var(--#{$prefix}secondary-bg-subtle) !default;
-$btn-disabled-border-color:             var(--#{$prefix}primary-border-subtle) !default;
-$btn-disabled-opacity:                  0.65 !default;
+$btn-link-color: var(--#{$prefix}link-color) !default;
+$btn-link-hover-color: var(--#{$prefix}link-hover-color) !default;
+$btn-link-disabled-color: var(--#{$prefix}disabled-text-emphasis) !default;
 
-$btn-link-color:                        var(--#{$prefix}link-color) !default;
-$btn-link-hover-color:                  var(--#{$prefix}link-hover-color) !default;
-$btn-link-disabled-color:               var(--#{$prefix}disabled-text-emphasis) !default;
+$btn-border-radius: $border-radius-xl !default;
+$btn-border-radius-sm: $border-radius !default;
+$btn-border-radius-lg: $border-radius-xl !default;
 
-$btn-border-radius:                     $border-radius-xl !default;
-$btn-border-radius-sm:                  $border-radius !default;
-$btn-border-radius-lg:                  $border-radius-xl !default;
+$btn-link-color: var(--#{$prefix}brand-text-emphasis) !default;
+$btn-link-color-hover: var(--#{$prefix}invert-text-emphasis) !default;
+$btn-link-font-weight: $font-weight-medium;
+$btn-link-border-color: var(--#{$prefix}brand-border-subtle) !default;
+$btn-link-border-color-hover: var(--#{$prefix}secondary-border-subtle) !default;
 
-$btn-link-color:                        var(--#{$prefix}brand-text-emphasis) !default; 
-$btn-link-color-hover:                  var(--#{$prefix}invert-text-emphasis) !default;
-$btn-link-font-weight:                  $font-weight-medium;
-$btn-link-border-color:                 var(--#{$prefix}brand-border-subtle)  !default; 
-$btn-link-border-color-hover:           var(--#{$prefix}secondary-border-subtle)  !default; 
+$btn-inner-gap: 8px !default;
 
-$btn-inner-gap:                         8px !default;
+$btn-transition:
+  color 0.15s ease-in-out,
+  background-color 0.15s ease-in-out,
+  border-color 0.15s ease-in-out,
+  box-shadow 0.15s ease-in-out !default;
 
-$btn-transition:                        color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out !default;
-
-$btn-hover-bg-shade-amount:             71.5% !default;
-$btn-hover-bg-tint-amount:              82% !default;
-$btn-hover-border-shade-amount:         20% !default;
-$btn-hover-border-tint-amount:          10% !default; 
-$btn-active-bg-shade-amount:            20% !default;
-$btn-active-bg-tint-amount:             20% !default;
-$btn-active-border-shade-amount:        25% !default;
-$btn-active-border-tint-amount:         10% !default;
+$btn-hover-bg-shade-amount: 71.5% !default;
+$btn-hover-bg-tint-amount: 82% !default;
+$btn-hover-border-shade-amount: 20% !default;
+$btn-hover-border-tint-amount: 10% !default;
+$btn-active-bg-shade-amount: 20% !default;
+$btn-active-bg-tint-amount: 20% !default;
+$btn-active-border-shade-amount: 25% !default;
+$btn-active-border-tint-amount: 10% !default;
 
 // Enable pointer cursor on buttons
 $enable-button-pointers: true !default;

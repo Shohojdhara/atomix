@@ -5,7 +5,7 @@
 @use '../02-tools/tools.rem' as rem;
 
 .c-list {
-    $root: &;
+  $root: &;
 
   --#{config.$prefix}list-color: #{list.$list-color};
   --#{config.$prefix}list-font-size: #{list.$list-font-size};
@@ -26,24 +26,24 @@
     }
   }
 
-  &--dash{
+  &--dash {
     padding-left: 0;
     list-style: none;
 
     #{$root}__item {
-        position: relative;
-        padding-left: var(--#{config.$prefix}list-padding-left);
-        
-        &::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: var(--#{config.$prefix}list-item-dash-width);
-            height: var(--#{config.$prefix}list-item-dash-height);
-            background: var(--#{config.$prefix}list-color);
-            transform: translateY(-50%);
-        }
+      position: relative;
+      padding-left: var(--#{config.$prefix}list-padding-left);
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: var(--#{config.$prefix}list-item-dash-width);
+        height: var(--#{config.$prefix}list-item-dash-height);
+        background: var(--#{config.$prefix}list-color);
+        transform: translateY(-50%);
+      }
     }
   }
 

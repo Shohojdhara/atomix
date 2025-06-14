@@ -52,11 +52,11 @@
     border: 1px solid var(--#{$prefix}select-border-color);
     border-radius: var(--#{$prefix}select-border-radius);
     cursor: pointer;
-    
+
     @include transition.basic-transition();
 
     &:hover {
-        border-color: var(--#{$prefix}select-border-color-hover);
+      border-color: var(--#{$prefix}select-border-color-hover);
     }
   }
 
@@ -86,8 +86,7 @@
   }
 
   &__panel {
-    padding: var(--#{$prefix}select-panel-padding-x)
-      var(--#{$prefix}select-panel-padding-y);
+    padding: var(--#{$prefix}select-panel-padding-x) var(--#{$prefix}select-panel-padding-y);
   }
 
   &__items {
@@ -97,15 +96,15 @@
   }
 
   &__item {
-    padding: var(--#{$prefix}select-item-padding-x)
-      var(--#{$prefix}select-item-padding-y);
+    padding: var(--#{$prefix}select-item-padding-x) var(--#{$prefix}select-item-padding-y);
     color: var(--#{$prefix}select-item-color);
     background-color: var(--#{$prefix}select-item-bg);
     border-radius: var(--#{$prefix}select-item-border-radius);
     @include transition.basic-transition;
 
-    &,&>* {
-        cursor: pointer;
+    &,
+    & > * {
+      cursor: pointer;
     }
 
     &:hover {

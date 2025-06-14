@@ -37,8 +37,7 @@
   width: 100%;
   max-width: var(--#{$prefix}card-width);
   padding: var(--#{$prefix}card-spacer-y) var(--#{$prefix}card-spacer-x);
-  border: var(--#{$prefix}card-border-width) solid
-    var(--#{$prefix}card-border-color);
+  border: var(--#{$prefix}card-border-width) solid var(--#{$prefix}card-border-color);
   border-radius: var(--#{$prefix}card-border-radius);
   background-color: var(--#{$prefix}card-bg);
   overflow: hidden;
@@ -99,8 +98,7 @@
 
   &--row {
     display: flex;
-    padding: var(--#{$prefix}card-row-spacer-y)
-      var(--#{$prefix}card-row-spacer-x);
+    padding: var(--#{$prefix}card-row-spacer-y) var(--#{$prefix}card-row-spacer-x);
 
     #{$root} {
       &__header {
@@ -126,8 +124,7 @@
     padding: 0;
 
     #{$root}__body {
-      padding: var(--#{$prefix}card-row-spacer-y)
-        var(--#{$prefix}card-row-spacer-x);
+      padding: var(--#{$prefix}card-row-spacer-y) var(--#{$prefix}card-row-spacer-x);
     }
 
     #{$root}__image {
@@ -135,8 +132,7 @@
     }
 
     #{$root}__footer {
-      padding: var(--#{$prefix}card-row-spacer-y)
-        var(--#{$prefix}card-row-spacer-x);
+      padding: var(--#{$prefix}card-row-spacer-y) var(--#{$prefix}card-row-spacer-x);
       padding-top: 0;
     }
   }
@@ -145,8 +141,8 @@
 // Elevation effect for ElevationCard
 .is-elevated {
   .c-card {
-    box-shadow: var(--#{$prefix}box-shadow-lg, 0 16px 48px rgba(0,0,0,0.175));
+    box-shadow: var(--#{$prefix}box-shadow-lg, 0 16px 48px rgba(0, 0, 0, 0.175));
     z-index: 1;
-    transition: box-shadow 0.2s cubic-bezier(0.4,0,0.2,1);
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }

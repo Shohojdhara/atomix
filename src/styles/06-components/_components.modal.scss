@@ -140,7 +140,6 @@
   }
 
   &.is-open {
-    
     #{$root} {
       &__backdrop {
         opacity: var(--#{config.$prefix}modal-backdrop-opacity);

@@ -47,7 +47,6 @@
     width: var(--#{$prefix}skeleton-height);
   }
 
-
   @each $size, $value in $skeleton-sizes {
     &--#{$size} {
       --#{$prefix}skeleton-height: #{$value};

@@ -51,7 +51,9 @@
   --#{config.$prefix}messages-image-border-radius: #{messages.$messages-image-border-radius};
   --#{config.$prefix}messages-form-margin-top: #{rem.rem(messages.$messages-form-margin-top)};
   --#{config.$prefix}messages-form-row-gap: #{rem.rem(messages.$messages-form-row-gap)};
-  --#{config.$prefix}messages-form-submit-icon-size: #{rem.rem(messages.$messages-form-submit-icon-size)};
+  --#{config.$prefix}messages-form-submit-icon-size: #{rem.rem(
+      messages.$messages-form-submit-icon-size
+    )};
   --#{config.$prefix}messages-input-padding-x: #{rem.rem(messages.$messages-input-padding-x)};
   --#{config.$prefix}messages-input-padding-y: #{rem.rem(messages.$messages-input-padding-y)};
   --#{config.$prefix}messages-input-font-size: #{messages.$messages-input-font-size};
@@ -61,19 +63,20 @@
   --#{config.$prefix}messages-input-border-color: #{messages.$messages-input-border-color};
   --#{config.$prefix}messages-input-border-radius: #{messages.$messages-input-border-radius};
   --#{config.$prefix}messages-input-options-icons-size: #{messages.$messages-input-options-icons-size};
-  --#{config.$prefix}messages-input-options-row-gap: #{rem.rem(messages.$messages-input-options-row-gap)};
+  --#{config.$prefix}messages-input-options-row-gap: #{rem.rem(
+      messages.$messages-input-options-row-gap
+    )};
   --#{config.$prefix}messages-body-height: #{messages.$messages-body-height};
 
   width: 100%;
   max-width: var(--#{config.$prefix}messages-width);
   min-width: var(--#{config.$prefix}messages-width);
-  padding: var(--#{config.$prefix}messages-padding-y)
-    var(--#{config.$prefix}messages-padding-x);
+  padding: var(--#{config.$prefix}messages-padding-y) var(--#{config.$prefix}messages-padding-x);
   border-radius: var(--#{config.$prefix}messages-border-radius);
   border: var(--#{config.$prefix}messages-border-width) solid
     var(--#{config.$prefix}messages-border-color);
   background-color: var(--#{config.$prefix}messages-bg);
-  
+
   &__body {
     max-height: var(--#{config.$prefix}messages-body-height);
     min-height: var(--#{config.$prefix}messages-body-height);
@@ -83,7 +86,7 @@
   &__content {
     display: flex;
     align-items: flex-end;
-    
+
     margin-top: var(--#{config.$prefix}messages-content-margin-top);
   }
 
@@ -98,17 +101,16 @@
     border: var(--#{config.$prefix}messages-items-border-width) solid
       var(--#{config.$prefix}messages-items-border-color);
 
-
-    >*:first-child {
+    > *:first-child {
       border-radius: var(--#{config.$prefix}messages-text-border-radius)
-      var(--#{config.$prefix}messages-text-border-radius)
-      var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm;
+        var(--#{config.$prefix}messages-text-border-radius)
+        var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm;
     }
 
-    >*:last-child {
+    > *:last-child {
       border-radius: border.$border-radius-sm var(--#{config.$prefix}messages-text-border-radius)
-      var(--#{config.$prefix}messages-text-border-radius)
-      var(--#{config.$prefix}messages-text-border-radius);
+        var(--#{config.$prefix}messages-text-border-radius)
+        var(--#{config.$prefix}messages-text-border-radius);
     }
   }
 
@@ -139,14 +141,17 @@
     padding: var(--#{config.$prefix}messages-text-padding-y)
       var(--#{config.$prefix}messages-text-padding-x);
     background-color: var(--#{config.$prefix}messages-text-bg);
-    border-radius: border.$border-radius-sm var(--#{config.$prefix}messages-text-border-radius)  var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm;
+    border-radius: border.$border-radius-sm var(--#{config.$prefix}messages-text-border-radius)
+      var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm;
   }
 
   &__file {
     display: flex;
     flex-wrap: wrap;
-    padding: var(--#{config.$prefix}messages-file-padding-y) var(--#{config.$prefix}messages-file-padding-x);
-    border-radius: border.$border-radius-sm  var(--#{config.$prefix}messages-file-border-radius) var(--#{config.$prefix}messages-file-border-radius) border.$border-radius-sm;
+    padding: var(--#{config.$prefix}messages-file-padding-y)
+      var(--#{config.$prefix}messages-file-padding-x);
+    border-radius: border.$border-radius-sm var(--#{config.$prefix}messages-file-border-radius)
+      var(--#{config.$prefix}messages-file-border-radius) border.$border-radius-sm;
     background: var(--#{config.$prefix}messages-file-bg);
   }
 
@@ -159,7 +164,6 @@
     margin-right: var(--#{config.$prefix}messages-file-icon-margin-right);
     background-color: var(--#{config.$prefix}body-bg);
     border-radius: border.$border-radius-pill;
-   
   }
 
   &__file-name {
@@ -173,8 +177,12 @@
   }
 
   &__image {
-    @include size(var(--#{config.$prefix}messages-image-width), var(--#{config.$prefix}messages-image-height));
-    border-radius: border.$border-radius-sm var(--#{config.$prefix}messages-image-border-radius) var(--#{config.$prefix}messages-image-border-radius) border.$border-radius-sm;
+    @include size(
+      var(--#{config.$prefix}messages-image-width),
+      var(--#{config.$prefix}messages-image-height)
+    );
+    border-radius: border.$border-radius-sm var(--#{config.$prefix}messages-image-border-radius)
+      var(--#{config.$prefix}messages-image-border-radius) border.$border-radius-sm;
     @include object-fit(cover);
   }
 
@@ -194,29 +202,31 @@
           var(--#{config.$prefix}messages-items-border-radius) 0
           var(--#{config.$prefix}messages-items-border-radius);
 
-          >*:first-child {
-            border-radius: var(--#{config.$prefix}messages-text-border-radius)
+        > *:first-child {
+          border-radius: var(--#{config.$prefix}messages-text-border-radius)
             var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm
             var(--#{config.$prefix}messages-text-border-radius);
-          }
-      
-          >*:last-child {
-            border-radius: var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm 
-            var(--#{config.$prefix}messages-text-border-radius)
+        }
+
+        > *:last-child {
+          border-radius: var(--#{config.$prefix}messages-text-border-radius)
+            border.$border-radius-sm var(--#{config.$prefix}messages-text-border-radius)
             var(--#{config.$prefix}messages-text-border-radius);
-          }
+        }
       }
 
       &__text {
         --#{config.$prefix}messages-text-color: #{messages.$messages-text-primary-color};
         --#{config.$prefix}messages-text-bg: #{messages.$messages-text-primary-bg};
-        border-radius: var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm border.$border-radius-sm var(--#{config.$prefix}messages-text-border-radius);
+        border-radius: var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm
+          border.$border-radius-sm var(--#{config.$prefix}messages-text-border-radius);
       }
 
       &__file {
         --#{config.$prefix}messages-file-text-color: #{messages.$messages-file-text-primary-color};
         --#{config.$prefix}messages-file-bg: #{messages.$messages-file-primary-bg};
-        border-radius: var(--#{config.$prefix}messages-file-border-radius) border.$border-radius-sm border.$border-radius-sm var(--#{config.$prefix}messages-file-border-radius);
+        border-radius: var(--#{config.$prefix}messages-file-border-radius) border.$border-radius-sm
+          border.$border-radius-sm var(--#{config.$prefix}messages-file-border-radius);
 
         @include color-mode('dark') {
           --#{config.$prefix}messages-file-icon-bg: #{messages.$messages-file-icon-bg-dark};
@@ -224,7 +234,8 @@
       }
 
       &__image {
-        border-radius: var(--#{config.$prefix}messages-image-border-radius) border.$border-radius-sm border.$border-radius-sm var(--#{config.$prefix}messages-image-border-radius);
+        border-radius: var(--#{config.$prefix}messages-image-border-radius) border.$border-radius-sm
+          border.$border-radius-sm var(--#{config.$prefix}messages-image-border-radius);
       }
 
       &__file-icon {
@@ -275,10 +286,12 @@
 
   &__input {
     width: 100%;
-    padding: var(--#{config.$prefix}messages-input-padding-y) var(--#{config.$prefix}messages-input-padding-x);
+    padding: var(--#{config.$prefix}messages-input-padding-y)
+      var(--#{config.$prefix}messages-input-padding-x);
     color: var(--#{config.$prefix}messages-input-color);
     font-size: var(--#{config.$prefix}messages-input-font-size);
-    border: var(--#{config.$prefix}messages-input-border-width) solid var(--#{config.$prefix}messages-input-border-color);
+    border: var(--#{config.$prefix}messages-input-border-width) solid
+      var(--#{config.$prefix}messages-input-border-color);
     border-radius: var(--#{config.$prefix}messages-input-border-radius);
     background-color: var(--#{config.$prefix}messages-bg);
     resize: none;

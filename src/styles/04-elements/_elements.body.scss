@@ -9,8 +9,7 @@ body {
   line-height: typography.$line-height-base;
 
   &.is-blocked,
-  &.is-modal-open{
+  &.is-modal-open {
     overflow: hidden;
   }
-
 }

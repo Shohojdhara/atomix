@@ -55,7 +55,7 @@
 
     &.is-active {
       font-weight: bold;
-      
+
       .c-pagination__link {
         --#{config.$prefix}pagination-color: var(--#{config.$prefix}pagination-active-color);
         --#{config.$prefix}pagination-bg: var(--#{config.$prefix}pagination-active-bg);
@@ -95,7 +95,8 @@
     &:focus-visible {
       outline: none;
       border-radius: 0;
-      border: var(--#{config.$prefix}pagination-focus-border-width) solid var(--#{config.$prefix}pagination-focus-border-color);
+      border: var(--#{config.$prefix}pagination-focus-border-width) solid
+        var(--#{config.$prefix}pagination-focus-border-color);
     }
 
     .c-icon {
@@ -137,18 +138,18 @@
   }
 
   &__icon-skip-back::before {
-    content: "⏮";
+    content: '⏮';
   }
 
   &__icon-caret-left::before {
-    content: "◀";
+    content: '◀';
   }
 
   &__icon-caret-right::before {
-    content: "▶";
+    content: '▶';
   }
 
   &__icon-skip-forward::before {
-    content: "⏭";
+    content: '⏭';
   }
 }

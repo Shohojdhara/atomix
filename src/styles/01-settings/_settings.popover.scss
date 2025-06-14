@@ -1,10 +1,10 @@
-@use "settings.config" as config;
-@use "settings.border-radius" as border-radius;
+@use 'settings.config' as config;
+@use 'settings.border-radius' as border-radius;
 
 $popover-max-width: 300px !default;
 $popover-padding-x: 16px !default;
 $popover-padding-y: $popover-padding-x !default;
-$popover-inner-gap-x: 12px !default; 
+$popover-inner-gap-x: 12px !default;
 $popover-inner-gap-y: 16px !default;
 $popover-bg: var(--#{config.$prefix}body-bg) !default;
 $popover-border-radius: border-radius.$border-radius-xl !default;

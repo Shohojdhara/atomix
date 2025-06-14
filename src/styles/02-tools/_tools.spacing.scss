@@ -58,34 +58,24 @@ $spacing-important: false !default;
   @if ($size == 'auto') {
     margin-left: auto #{if($spacing-important, '!important', '')};
   } @else {
-    margin-left: map.get($spacing-sizes, $size)
-      #{if($spacing-important, '!important', '')};
+    margin-left: map.get($spacing-sizes, $size) #{if($spacing-important, '!important', '')};
   }
 }
 
 @mixin mt($size: 1) {
-  margin-top: map.get($spacing-sizes, $size) #{if(
-      $spacing-important,
-      '!important',
-      ''
-    )};
+  margin-top: map.get($spacing-sizes, $size) #{if($spacing-important, '!important', '')};
 }
 
 @mixin mr($size: 1) {
   @if ($size == 'auto') {
     margin-right: auto #{if($spacing-important, '!important', '')};
   } @else {
-    margin-right: map.get($spacing-sizes, $size)
-      #{if($spacing-important, '!important', '')};
+    margin-right: map.get($spacing-sizes, $size) #{if($spacing-important, '!important', '')};
   }
 }
 
 @mixin mb($size: 1) {
-  margin-bottom: map.get($spacing-sizes, $size) #{if(
-      $spacing-important,
-      '!important',
-      ''
-    )};
+  margin-bottom: map.get($spacing-sizes, $size) #{if($spacing-important, '!important', '')};
 }
 
 @mixin p($t: 1, $r: null, $b: null, $l: null) {
@@ -134,33 +124,17 @@ $spacing-important: false !default;
 }
 
 @mixin pl($size: 1) {
-  padding-left: map.get($spacing-sizes, $size) #{if(
-      $spacing-important,
-      '!important',
-      ''
-    )};
+  padding-left: map.get($spacing-sizes, $size) #{if($spacing-important, '!important', '')};
 }
 
 @mixin pt($size: 1) {
-  padding-top: map.get($spacing-sizes, $size) #{if(
-      $spacing-important,
-      '!important',
-      ''
-    )};
+  padding-top: map.get($spacing-sizes, $size) #{if($spacing-important, '!important', '')};
 }
 
 @mixin pr($size: 1) {
-  padding-right: map.get($spacing-sizes, $size) #{if(
-      $spacing-important,
-      '!important',
-      ''
-    )};
+  padding-right: map.get($spacing-sizes, $size) #{if($spacing-important, '!important', '')};
 }
 
 @mixin pb($size: 1) {
-  padding-bottom: map.get($spacing-sizes, $size) #{if(
-      $spacing-important,
-      '!important',
-      ''
-    )};
+  padding-bottom: map.get($spacing-sizes, $size) #{if($spacing-important, '!important', '')};
 }

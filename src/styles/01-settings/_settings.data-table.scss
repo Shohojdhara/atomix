@@ -1,9 +1,9 @@
-@use "settings.config" as config;
-@use "settings.colors" as colors;
-@use "settings.border" as border;
-@use "settings.border-radius" as border-radius;
-@use "settings.typography" as typography;
-@use "settings.spacing" as spacing;
+@use 'settings.config' as config;
+@use 'settings.colors' as colors;
+@use 'settings.border' as border;
+@use 'settings.border-radius' as border-radius;
+@use 'settings.typography' as typography;
+@use 'settings.spacing' as spacing;
 
 // DataTable Variables
 $data-table-bg: var(--#{config.$prefix}white) !default;

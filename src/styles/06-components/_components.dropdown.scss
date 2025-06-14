@@ -75,7 +75,8 @@
   }
 
   &__toggle-icon {
-    transition: transform var(--#{$prefix}dropdown-animation-duration) var(--#{$prefix}dropdown-animation-timing);
+    transition: transform var(--#{$prefix}dropdown-animation-duration)
+      var(--#{$prefix}dropdown-animation-timing);
     margin-left: 0.25rem;
   }
 
@@ -88,10 +89,13 @@
     visibility: hidden;
     transform-origin: top center;
     // Improved transitions - shorter and with better easing
-    transition: 
-      opacity var(--#{$prefix}dropdown-animation-duration) var(--#{$prefix}dropdown-animation-timing),
-      visibility var(--#{$prefix}dropdown-animation-duration) var(--#{$prefix}dropdown-animation-timing),
-      transform var(--#{$prefix}dropdown-animation-duration) var(--#{$prefix}dropdown-animation-timing);
+    transition:
+      opacity var(--#{$prefix}dropdown-animation-duration)
+        var(--#{$prefix}dropdown-animation-timing),
+      visibility var(--#{$prefix}dropdown-animation-duration)
+        var(--#{$prefix}dropdown-animation-timing),
+      transform var(--#{$prefix}dropdown-animation-duration)
+        var(--#{$prefix}dropdown-animation-timing);
     transform: translateY(-15px) scale(0.95);
     pointer-events: none;
     will-change: transform, opacity, visibility;
@@ -100,12 +104,14 @@
       opacity: 1;
       transform: translateY(0) scale(1);
       visibility: visible;
-      animation: #{$prefix}dropdown-fade-in var(--#{$prefix}dropdown-animation-duration) var(--#{$prefix}dropdown-animation-timing) forwards;
+      animation: #{$prefix}dropdown-fade-in var(--#{$prefix}dropdown-animation-duration)
+        var(--#{$prefix}dropdown-animation-timing) forwards;
       pointer-events: auto;
     }
 
     &:not(.is-open) {
-      animation: #{$prefix}dropdown-fade-out var(--#{$prefix}dropdown-animation-duration) var(--#{$prefix}dropdown-animation-timing) forwards;
+      animation: #{$prefix}dropdown-fade-out var(--#{$prefix}dropdown-animation-duration)
+        var(--#{$prefix}dropdown-animation-timing) forwards;
     }
 
     // Placement variations - using a mixin to reduce duplication
@@ -190,7 +196,8 @@
     cursor: pointer;
     transition: all 0.2s ease;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       color: var(--#{$prefix}dropdown-link-hover-color);
       background-color: var(--#{$prefix}dropdown-link-hover-bg);
       outline: none;
@@ -240,7 +247,6 @@
     }
   }
 
-  
   &.is-open {
     #{$root}__toggle-icon {
       transform: rotate(-180deg);

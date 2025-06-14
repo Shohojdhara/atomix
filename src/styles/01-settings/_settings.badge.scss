@@ -1,12 +1,12 @@
-@use  "settings.border-radius" as radius;
-@use  "settings.typography" as fonts;
+@use 'settings.border-radius' as radius;
+@use 'settings.typography' as fonts;
 
-$tag-font-size:             fonts.$font-size-xs !default;
-$tag-font-weight:           fonts.$font-weight-normal !default;
-$tag-padding-x:             10px !default;
-$tag-padding-y:             6px !default;
-$tag-padding-y-sm:          4px !default;
-$tag-padding-y-lg:          8px !default;
-$tag-border-radius:         radius.$border-radius-pill !default;
-$tag-icon-size:             16px !default;
-$tag-inner-items-gap:       6px !default;
+$tag-font-size: fonts.$font-size-xs !default;
+$tag-font-weight: fonts.$font-weight-normal !default;
+$tag-padding-x: 10px !default;
+$tag-padding-y: 6px !default;
+$tag-padding-y-sm: 4px !default;
+$tag-padding-y-lg: 8px !default;
+$tag-border-radius: radius.$border-radius-pill !default;
+$tag-icon-size: 16px !default;
+$tag-inner-items-gap: 6px !default;

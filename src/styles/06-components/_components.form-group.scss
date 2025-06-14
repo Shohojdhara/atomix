@@ -36,9 +36,9 @@
   }
 
   &--lg {
-     #{$root}__field {
+    #{$root}__field {
       @extend .c-input--lg !optional;
-     }
+    }
   }
 
   &--sm {
@@ -65,8 +65,9 @@
     }
   }
 
-  &:disabled,&.is-disabled {
-    >* {
+  &:disabled,
+  &.is-disabled {
+    > * {
       pointer-events: none;
     }
 

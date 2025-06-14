@@ -13,32 +13,32 @@ $utilities-sizes: (
       50: 50%,
       75: 75%,
       100: 100%,
-      auto: auto
-    )
+      auto: auto,
+    ),
   ),
   'max-width': (
     responsive: true,
     property: max-width,
     class: u-mw,
     values: (
-      100: 100%
-    )
+      100: 100%,
+    ),
   ),
   'viewport-width': (
     responsive: true,
     property: width,
     class: u-vw,
     values: (
-      100: 100vw
-    )
+      100: 100vw,
+    ),
   ),
   'min-viewport-width': (
     responsive: true,
     property: min-width,
     class: u-min-vw,
     values: (
-      100: 100vw
-    )
+      100: 100vw,
+    ),
   ),
   'height': (
     responsive: true,
@@ -51,31 +51,31 @@ $utilities-sizes: (
       50: 50%,
       75: 75%,
       100: 100%,
-      auto: auto
-    )
+      auto: auto,
+    ),
   ),
   'max-height': (
     responsive: true,
     property: max-height,
     class: u-mh,
     values: (
-      100: 100%
-    )
+      100: 100%,
+    ),
   ),
   'viewport-height': (
     responsive: true,
     property: height,
     class: u-vh,
     values: (
-      100: 100vh
-    )
+      100: 100vh,
+    ),
   ),
   'min-viewport-height': (
     responsive: true,
     property: min-height,
     class: u-min-vh,
     values: (
-      100: 100vh
-    )
-  )
+      100: 100vh,
+    ),
+  ),
 );

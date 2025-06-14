@@ -1,5 +1,5 @@
-@use "settings.config" as config;
-@use "settings.breakpoints" as breakpoints;
+@use 'settings.config' as config;
+@use 'settings.breakpoints' as breakpoints;
 
 // Define all masonry grid variables with !default flag for overriding
 $masonry-grid-gap: 16px !default;

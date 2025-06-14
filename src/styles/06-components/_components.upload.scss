@@ -35,9 +35,7 @@
   --#{$prefix}upload-helper-text-font-size: #{$upload-helper-text-font-size};
   --#{$prefix}upload-helper-text-font-weight: #{$upload-helper-text-font-weight};
   --#{$prefix}upload-helper-text-color: #{$upload-helper-text-color};
-  --#{$prefix}upload-helper-text-margin-top: #{rem(
-      $upload-helper-text-margin-top
-    )};
+  --#{$prefix}upload-helper-text-margin-top: #{rem($upload-helper-text-margin-top)};
   --#{$prefix}upload-loader-padding-x: #{rem($upload-loader-padding-x)};
   --#{$prefix}upload-loader-padding-y: #{rem($upload-loader-padding-y)};
   --#{$prefix}upload-loader-border-radius: #{$upload-loader-border-radius};
@@ -49,9 +47,7 @@
   --#{$prefix}upload-loader-title-font-weight: #{$upload-loader-title-font-weight};
   --#{$prefix}upload-loader-text-color: #{$upload-loader-text-color};
   --#{$prefix}upload-loader-text-font-size: #{$upload-loader-text-font-size};
-  --#{$prefix}upload-loader-text-margin-top: #{rem(
-      $upload-loader-text-margin-top
-    )};
+  --#{$prefix}upload-loader-text-margin-top: #{rem($upload-loader-text-margin-top)};
   --#{$prefix}upload-loader-color: #{$upload-loader-progress-color};
   --#{$prefix}upload-loader-bar-height: #{rem($upload-loader-bar-height)};
   --#{$prefix}upload-loader-bar-margin-top: #{rem($upload-loader-bar-margin-top)};
@@ -78,11 +74,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: var(--#{$prefix}upload-inner-padding-y)
-      var(--#{$prefix}upload-inner-padding-x);
+    padding: var(--#{$prefix}upload-inner-padding-y) var(--#{$prefix}upload-inner-padding-x);
     border-radius: var(--#{$prefix}upload-border-radius);
-    border: var(--#{$prefix}upload-border-width) dashed
-      var(--#{$prefix}upload-border-color);
+    border: var(--#{$prefix}upload-border-width) dashed var(--#{$prefix}upload-border-color);
   }
 
   &__icon {
@@ -143,8 +137,7 @@
     position: relative;
     width: 100%;
     max-width: rem($upload-width);
-    padding: var(--#{$prefix}upload-loader-padding-y)
-      var(--#{$prefix}upload-loader-padding-x);
+    padding: var(--#{$prefix}upload-loader-padding-y) var(--#{$prefix}upload-loader-padding-x);
     border: var(--#{$prefix}upload-loader-border-width) solid
       var(--#{$prefix}upload-loader-border-color);
     border-radius: var(--#{$prefix}upload-loader-border-radius);
@@ -183,7 +176,6 @@
     width: 22px;
     height: 22px;
 
-
     svg {
       width: 100%;
       height: 100%;
@@ -197,15 +189,13 @@
         stroke-linecap: round;
         transform: translate(1px, 1px);
 
-        &:nth-child(2)
-        {
+        &:nth-child(2) {
           stroke-dasharray: 63;
           stroke-dashoffset: 63;
         }
 
-        &:nth-child(2)
-        {
-          stroke-dashoffset: calc(63 - (63 * var(--upload-loader-percentage) ) / 100);
+        &:nth-child(2) {
+          stroke-dashoffset: calc(63 - (63 * var(--upload-loader-percentage)) / 100);
           stroke: var(--#{$prefix}upload-loader-color);
         }
       }

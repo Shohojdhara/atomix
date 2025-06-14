@@ -2,15 +2,15 @@
 
 // Define utilities for opacity
 $utilities-opacity: (
-  "opacity": (
+  'opacity': (
     property: opacity,
     class: u-opacity,
     values: (
       0: 0,
-      25: .25,
-      50: .5,
-      75: .75,
+      25: 0.25,
+      50: 0.5,
+      75: 0.75,
       100: 1,
-    )
+    ),
   ),
 );

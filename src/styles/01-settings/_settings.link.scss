@@ -1,8 +1,8 @@
-@use "sass:color";
-@use "sass:map";
-@use "./settings.colors" as *;
-@use "./settings.typography" as *;
-@use "./settings.spacing" as *;
+@use 'sass:color';
+@use 'sass:map';
+@use './settings.colors' as *;
+@use './settings.typography' as *;
+@use './settings.spacing' as *;
 
 $link-color: $primary !default;
 $link-color-dark: $primary-dark !default;
