@@ -15,13 +15,6 @@ import {
   applyFlipEffect
 } from './cardInteractions';
 
-// Expose to global scope
-declare global {
-  interface Window {
-    Atomix: Record<string, any>;
-  }
-}
-
 // Initialize global namespace if not exists
 window.Atomix = window.Atomix || {};
 

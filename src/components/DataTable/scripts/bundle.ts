@@ -1,21 +1,13 @@
 import { DataTable, DataTableColumn, DataTableOptions } from './index';
 
-// Export for global usage
-declare global {
-  interface Window {
-    AtomixDataTable: {
-      DataTable: typeof DataTable;
-      initializeAll: typeof DataTable.initializeAll;
-      create: (element: string | HTMLElement, data?: any[], columns?: DataTableColumn[], options?: DataTableOptions) => DataTable;
-    };
-  }
-}
+// Initialize global namespace if not exists
+window.Atomix = window.Atomix || {};
 
-// Create global API
-window.AtomixDataTable = {
+// Add DataTable to global namespace
+window.Atomix.DataTable = {
   DataTable,
   initializeAll: DataTable.initializeAll,
-  create: (element, data = [], columns = [], options = {}) => {
+  create: (element: string | HTMLElement, data: any[] = [], columns: DataTableColumn[] = [], options: DataTableOptions = {}) => {
     return new DataTable(element, data, columns, options);
   }
 };

@@ -12,19 +12,12 @@ import {
   updateInstance
 } from './PhotoViewerInteractions';
 
-// Global namespace for PhotoViewer
-declare global {
-  interface Window {
-    Atomix: Record<string, any>;
-  }
-}
-
 if (typeof window !== 'undefined') {
   // Initialize the Atomix global object if it doesn't exist
-  (window as any).Atomix = (window as any).Atomix || {};
+  window.Atomix = window.Atomix || {};
   
   // Add PhotoViewer to the global Atomix object with comprehensive API
-  (window as any).Atomix.PhotoViewer = {
+  window.Atomix.PhotoViewer = {
     // Core class
     create: PhotoViewer,
     

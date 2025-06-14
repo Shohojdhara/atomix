@@ -9,20 +9,10 @@ if (typeof window !== 'undefined') {
   window.Atomix = window.Atomix || {};
   
   // Add Callout to Atomix namespace
+  // @ts-ignore - Ignore type mismatch between React component and vanilla JS class
   window.Atomix.Callout = Callout;
   window.Atomix.CalloutInteractions = CalloutInteractions;
 }
 
 // Export for module usage
 export { Callout, CalloutInteractions };
-
-// Add type definitions for global namespace
-declare global {
-  interface Window {
-    Atomix: {
-      Callout: typeof Callout;
-      CalloutInteractions: typeof CalloutInteractions;
-      [key: string]: any;
-    };
-  }
-}

@@ -7,7 +7,7 @@
   "unpkg": "dist/js/atomix.react.js",
   "jsdelivr": "dist/js/atomix.react.js",
   "browser": "dist/js/atomix.react.js",
-  "typings": "index.d.ts",
+  "types": "dist/types/index.d.ts",
   "sideEffects": [
     "*.css",
     "*.scss",
@@ -21,12 +21,6 @@
       "default": "./dist/js/atomix.react.esm.js"
     },
     "./package.json": "./package.json",
-    "./types": {
-      "types": "./dist/types/index.d.ts"
-    },
-    "./types/components": {
-      "types": "./dist/types/components.d.ts"
-    },
     "./css": {
       "types": "./css.d.ts",
       "default": "./dist/css/atomix.css"
@@ -39,12 +33,7 @@
   },
   "typesVersions": {
     "*": {
-      "types": [
-        "./dist/types/index.d.ts"
-      ],
-      "types/components": [
-        "./dist/types/components.d.ts"
-      ]
+      "*": ["./dist/types/index.d.ts"]
     }
   },
   "dependencies": {
@@ -115,13 +104,14 @@
     "analyze:bundle": "npm run analyze",
     "build:parallel": "npm-run-all --parallel build:cjs build:esm build:umd",
     "clean:dist": "rm -rf dist",
+    "clean:types": "rm -rf dist/types",
     "build:components": "npm-run-all clean:dist --parallel build:react build:styles build:types",
     "build:react": "npx webpack --mode production --env target=components --env format=all",
     "build:styles": "npm run clean:dist && npx webpack --mode production --env target=styles",
     "build:cjs": "npx webpack --mode production --env target=components --env format=cjs",
     "build:esm": "npx webpack --mode production --env target=components --env format=esm",
     "build:umd": "npx webpack --mode production --env target=components --env format=umd",
-    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir dist/types",
+    "build:types": "npm run clean:types && tsc --emitDeclarationOnly --declaration --declarationDir dist/types && node scripts/fix-types.js",
     "link:local": "npm link && echo 'Package linked locally. Use npm link @shohojdhara/atomix in your project to test it.'",
     "unlink:local": "npm unlink",
     "publish:rc": "npm publish --tag next",

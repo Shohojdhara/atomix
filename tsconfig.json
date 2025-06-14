@@ -5,10 +5,7 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@shohojdhara/atomix": ["./src/index.ts"],
-      "@shohojdhara/atomix/components": ["./src/components/index.ts"],
-      "@shohojdhara/atomix/lib": ["./src/lib/index.ts"],
-      "@shohojdhara/atomix/layouts": ["./src/layouts/index.ts"]
+      "@shohojdhara/atomix": ["./src/index.ts"]
     },
     "strict": true,
     "esModuleInterop": true,
@@ -19,7 +16,7 @@
     "resolveJsonModule": true,
     "declaration": true,
     "declarationDir": "./dist/types",
-    "emitDeclarationOnly": false,
+    "emitDeclarationOnly": true,
     "sourceMap": true,
     "outDir": "./dist",
     "typeRoots": [
@@ -27,6 +24,6 @@
       "./src/types"
     ]
   },
-  "include": ["src/**/*", "src/types/**/*"],
-  "exclude": ["node_modules", "src/components/**/scripts/*", "**/*.stories.tsx"]
+  "include": ["src/index.ts"],
+  "exclude": ["node_modules", "dist", "**/*.stories.tsx"]
 }

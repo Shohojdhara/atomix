@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-interface ColorModeToggleProps {
+export interface ColorModeToggleProps {
   className?: string;
 }
 
-const ColorModeToggle: React.FC<ColorModeToggleProps> = ({ className = '' }) => {
+export const ColorModeToggle: React.FC<ColorModeToggleProps> = ({ className = '' }) => {
   const [colorMode, setColorMode] = useState<'light' | 'dark'>('light');
   
   // Initialize color mode from localStorage or system preference
@@ -80,13 +80,9 @@ const ColorModeToggle: React.FC<ColorModeToggleProps> = ({ className = '' }) => 
   );
 }; 
 
-export type { ColorModeToggleProps  };
 
-// Set display name for debugging
 ColorModeToggle.displayName = 'ColorModeToggle';
 
-// Default export (primary)
 export default ColorModeToggle;
 
-// Named export for compatibility
-export { ColorModeToggle };
+

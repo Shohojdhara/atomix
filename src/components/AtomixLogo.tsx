@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface AtomixLogoProps {
+export interface AtomixLogoProps {
   height?: number;
   width?: number;
   className?: string;
@@ -40,5 +40,7 @@ export const AtomixLogo: React.FC<AtomixLogoProps> = ({
     </svg>
   );
 };
+
+AtomixLogo.displayName = 'AtomixLogo';
 
 export default AtomixLogo; 

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 
-interface CountdownProps {
+export interface CountdownProps {
   /** Target date/time as a Date or ISO string */
   target: Date | string;
   /** Show days, hours, minutes, seconds */
@@ -24,14 +24,14 @@ function getTimeParts(diff: number) {
   return { days, hours, minutes, seconds };
 }
 
-const Countdown: React.FC<CountdownProps> = ({
+export const Countdown: React.FC<CountdownProps> = forwardRef<HTMLDivElement, CountdownProps>(({
   target,
   show = ['days', 'hours', 'minutes', 'seconds'],
   separator = ':',
   focused = false,
   className = '',
   onComplete,
-}) => {
+}, ref) => {
   const targetDate = typeof target === 'string' ? new Date(target) : target;
   const [now, setNow] = useState(() => new Date());
   const [completed, setCompleted] = useState(false);
@@ -61,7 +61,7 @@ const Countdown: React.FC<CountdownProps> = ({
   if (show.includes('seconds')) timeParts.push({ label: 'Seconds', value: seconds });
 
   return (
-    <div className={`c-countdown${focused ? ' c-countdown--focused' : ''} ${className}`.trim()}>
+    <div ref={ref} className={`c-countdown${focused ? ' c-countdown--focused' : ''} ${className}`.trim()}>
       {timeParts.map((part, idx) => (
         <React.Fragment key={part.label}>
           <div className="c-countdown__time">
@@ -75,16 +75,8 @@ const Countdown: React.FC<CountdownProps> = ({
       ))}
     </div>
   );
-};
+});
 
+Countdown.displayName = 'Countdown';
 
-export type { CountdownProps  };
-
-// Set display name for debugging
-Countdown.displayName = 'Badge';
-
-// Default export (primary)
 export default Countdown;
-
-// Named export for compatibility
-export { Countdown };

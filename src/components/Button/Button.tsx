@@ -3,7 +3,7 @@ import { ButtonProps } from '../../lib/types/components';
 import { useButton } from '../../lib/composables/useButton';
 import { BUTTON } from '../../lib/constants/components';
 
-type ButtonAsProp = {
+export type ButtonAsProp = {
   as?: ElementType;
   to?: string;
   href?: string;
@@ -50,5 +50,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps & ButtonAsProp>(
   );
 });
 
-// Add displayName for better debugging
 Button.displayName = 'Button';
+
+export type { ButtonProps };
+
+export default Button;

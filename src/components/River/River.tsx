@@ -5,7 +5,7 @@ import { useRiver, RiverProps, RiverContentColumn } from '../../lib/composables/
 /**
  * River component for displaying content with image sections
  */
-const River: React.FC<RiverProps> = ({
+export const River: React.FC<RiverProps> = ({
   title,
   text,
   actions,
@@ -167,11 +167,6 @@ const River: React.FC<RiverProps> = ({
 
 export type { RiverProps  };
 
-// Set display name for debugging
 River.displayName = 'River';
 
-// Default export (primary)
 export default River;
-
-// Named export for compatibility
-export { River };

@@ -6,7 +6,7 @@ import { Icon } from '../Icon/Icon';
 /**
  * Callout component for displaying important messages, notifications, or alerts
  */
- const Callout: React.FC<CalloutProps> = ({
+export const Callout: React.FC<CalloutProps> = ({
   title,
   children,
   icon,
@@ -71,13 +71,8 @@ import { Icon } from '../Icon/Icon';
   );
 };
 
-export type { CalloutProps };
-
-// Set display name for debugging
 Callout.displayName = 'Callout';
 
-// Default export (primary)
-export default Callout;
+export type { CalloutProps };
 
-// Named export for compatibility
-export { Callout };
+export default Callout;

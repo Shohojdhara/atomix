@@ -43,7 +43,7 @@ export interface AccordionProps extends BaseComponentProps {
   onOpenChange?: (open: boolean) => void;
 };
 
-const Accordion: React.FC<AccordionProps> = ({
+export const Accordion: React.FC<AccordionProps> = ({
   title,
   children,
   defaultOpen = false,
@@ -117,6 +117,5 @@ const Accordion: React.FC<AccordionProps> = ({
 // Set display name for debugging
 Accordion.displayName = 'Accordion';
 
-// Export as both default and named export
-export { Accordion };
+// Export as default
 export default Accordion;

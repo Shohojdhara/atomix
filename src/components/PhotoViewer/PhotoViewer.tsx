@@ -24,7 +24,7 @@ import { PhotoViewerInfo } from "./PhotoViewerInfo";
  * @param props - PhotoViewerProps
  * @returns JSX.Element
  */
-const PhotoViewer: React.FC<PhotoViewerProps> = ({
+export const PhotoViewer: React.FC<PhotoViewerProps> = ({
   images,
   startIndex = 0,
   className = "",
@@ -256,13 +256,8 @@ const PhotoViewer: React.FC<PhotoViewerProps> = ({
   );
 };
 
-export type { PhotoViewerProps  };
+export type { PhotoViewerProps };
 
-// Set display name for debugging
 PhotoViewer.displayName = 'PhotoViewer';
 
-// Default export (primary)
 export default PhotoViewer;
-
-// Named export for compatibility
-export { PhotoViewer };

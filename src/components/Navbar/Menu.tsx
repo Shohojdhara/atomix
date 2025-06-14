@@ -1,14 +1,14 @@
-import React, { ReactNode } from 'react';
+import React, { forwardRef, ReactNode } from 'react';
 import { MenuProps, MenuItemProps } from '../../lib/types/components';
 import { Icon } from '../Icon';
 
-const Menu: React.FC<MenuProps> = ({
+export const Menu: React.FC<MenuProps> = forwardRef<HTMLDivElement, MenuProps>(({
   children,
   className = '',
   disabled = false
-}) => {
+}, ref) => {
   return (
-    <div className={`c-menu ${className}`}>
+    <div ref={ref} className={`c-menu ${className}`}>
       <ul className="c-menu__list" role="menu">
         {React.Children.map(children, child => {
           if (React.isValidElement(child)) {
@@ -23,18 +23,11 @@ const Menu: React.FC<MenuProps> = ({
       </ul>
     </div>
   );
-};
+});
 
 export type { MenuProps, MenuItemProps, MenuDividerProps };
 
-// Set display name for debugging
-Menu.displayName = 'Menu';
-
-// Default export (primary)
 export default Menu;
-
-// Named export for compatibility
-export { Menu };
 
 interface MenuDividerProps {
   /**
@@ -43,7 +36,7 @@ interface MenuDividerProps {
   className?: string;
 }
 
-export const MenuItem: React.FC<MenuItemProps> = ({
+export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuItemProps>(({
   children,
   href = '#',
   icon,
@@ -51,7 +44,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   disabled = false,
   onClick,
   className = ''
-}) => {
+}, ref) => {
   const handleClick = (e: React.MouseEvent) => {
     if (disabled) {
       e.preventDefault();
@@ -66,7 +59,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   const itemClass = `c-menu__item ${active ? 'is-active' : ''} ${disabled ? 'is-disabled' : ''} ${className}`;
   
   return (
-    <li className={itemClass} role="menuitem">
+    <li ref={ref} className={itemClass} role="menuitem">
       <a 
         href={href} 
         className="c-menu__link"
@@ -97,7 +90,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
       </a>
     </li>
   );
-};
+});
 
 // Map icon-lux names to Phosphor icon names
 export const mapIconName = (luxIconName: string): any => {
@@ -120,10 +113,10 @@ export const mapIconName = (luxIconName: string): any => {
   return iconMap[luxIconName] || 'Circle'; // Default to Circle if no mapping found
 };
 
-export const MenuDivider: React.FC<MenuDividerProps> = ({
+export const MenuDivider: React.FC<MenuDividerProps> = forwardRef<HTMLLIElement, MenuDividerProps>(({
   className = ''
-}) => {
+}, ref) => {
   return (
-    <li className={`c-menu__divider ${className}`} role="separator"></li>
+    <li ref={ref} className={`c-menu__divider ${className}`} role="separator"></li>
   );
-}; 
+}); 

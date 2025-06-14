@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import { DataTableProps } from '../../lib/types/components';
-import { useDataTable } from './scripts';
+import { useDataTable } from '../../lib/composables/useDataTable';
 import { DATA_TABLE_CLASSES } from '../../lib/constants/components';
-import { Spinner } from '../Spinner';
-import { Icon } from '../Icon';
-import { Pagination } from '../Pagination';
+import { Spinner } from '../Spinner/Spinner';
+import { Icon } from '../Icon/Icon';
+import { Pagination } from '../Pagination/Pagination';
 
 /**
  * DataTable - A flexible and accessible data table component
@@ -19,9 +19,9 @@ import { Pagination } from '../Pagination';
  * />
  * ```
  */
-const DataTable: React.FC<DataTableProps> = ({
-  data = [],
-  columns = [],
+export const DataTable: React.FC<DataTableProps> = ({
+  data,
+  columns,
   className,
   sortable = false,
   filterable = false,
@@ -206,13 +206,8 @@ const DataTable: React.FC<DataTableProps> = ({
   );
 };
 
-export type { DataTableProps  };
+export type { DataTableProps };
 
-// Set display name for debugging
 DataTable.displayName = 'DataTable';
 
-// Default export (primary)
 export default DataTable;
-
-// Named export for compatibility
-export { DataTable };

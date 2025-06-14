@@ -1,18 +1,21 @@
-// Re-export with namespaces for backwards compatibility
-import * as components from './components';
-import * as lib from './lib';
-import * as layouts from './layouts';
+// Export all components individually for better tree-shaking
+export * from './components';
+
+// Export lib utilities
+export * from './lib';
+
+// Export layouts
+export * from './layouts';
 
 // Create a properly typed default export
 const atomix = {
-  // Export components
-  ...components,
-  // Export lib utilities
-  composables: lib.composables,
-  utils: lib.utils,
-  constants: lib.constants,
-  layouts: layouts
+  // Re-export all components and utilities
+  ...require('./components'),
+  composables: require('./lib').composables,
+  utils: require('./lib').utils,
+  constants: require('./lib').constants,
+  layouts: require('./layouts')
 };
 
-
+// Default export
 export default atomix;

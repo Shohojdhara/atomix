@@ -2,13 +2,13 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { DatePickerProps, DatePickerRef } from './types';
 import { useDatePicker } from '../../lib/composables/useDatePicker';
 import { formatDate } from './utils';
-import Icon from '../Icon';
+import { Icon } from '../Icon/Icon';
 
 /**
  * DatePicker component for selecting dates from a calendar interface.
  * Supports various display modes, date ranges, and customization options.
  */
-const DatePicker = forwardRef<DatePickerRef, DatePickerProps>(({
+export const DatePicker = forwardRef<DatePickerRef, DatePickerProps>(({
   value,
   onChange,
   selectionMode = 'single',
@@ -458,8 +458,6 @@ const DatePicker = forwardRef<DatePickerRef, DatePickerProps>(({
 DatePicker.displayName = 'DatePicker';
 
 
-export  {DatePicker};
-
-export type { DatePickerProps, DatePickerRef } from './types';
+export type { DatePickerProps, DatePickerRef };
 
 export default DatePicker;

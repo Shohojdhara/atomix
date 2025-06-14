@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, ReactNode } from 'react';
 import { TESTIMONIAL } from '../../lib/constants/components';
 
-interface TestimonialAuthor {
+export interface TestimonialAuthor {
   /**
    * The author's name
    */
@@ -23,7 +23,7 @@ interface TestimonialAuthor {
   avatarAlt?: string;
 }
 
-interface TestimonialProps {
+export interface TestimonialProps {
   /**
    * The testimonial quote text or content
    */
@@ -53,7 +53,7 @@ interface TestimonialProps {
 /**
  * Testimonial component for displaying customer quotes and feedback
  */
-const Testimonial: React.FC<TestimonialProps> = ({
+export const Testimonial: React.FC<TestimonialProps> = ({
   quote,
   author,
   size = '',
@@ -143,13 +143,7 @@ const Testimonial: React.FC<TestimonialProps> = ({
   );
 };
 
-export type { TestimonialProps, TestimonialAuthor };
 
-// Set display name for debugging
 Testimonial.displayName = 'Testimonial';
 
-// Default export (primary)
 export default Testimonial;
-
-// Named export for compatibility
-export { Testimonial };

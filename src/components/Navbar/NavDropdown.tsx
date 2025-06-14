@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef} from 'react';
 import { NavDropdownProps } from '../../lib/types/components';
 import { useNavDropdown } from '../../lib/composables/useNavbar';
 import { NavItem } from './NavItem';
 import { Icon } from '../Icon';
 
-export const NavDropdown: React.FC<NavDropdownProps> = ({
+export const NavDropdown: React.FC<NavDropdownProps> = forwardRef<HTMLLIElement, NavDropdownProps>(({
   title,
   children,
   alignment = 'start',
   megaMenu = false,
   className = '',
   disabled = false
-}) => {
+}, ref) => {
   const { generateDropdownMenuClass, getIconName } = useNavDropdown({ 
     alignment, megaMenu 
   });
@@ -99,4 +99,10 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({
       {menuContent}
     </NavItem>
   );
-}; 
+});
+
+export type { NavDropdownProps };
+
+NavDropdown.displayName = 'NavDropdown';
+
+export default NavDropdown;

@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { NavProps } from '../../lib/types/components';
 import { useNav } from '../../lib/composables/useNavbar';
 
-const Nav: React.FC<NavProps> = ({
+export const Nav: React.FC<NavProps> = forwardRef<HTMLUListElement, NavProps>(({
   children,
   alignment = 'start',
   className = '',
   disabled = false
-}) => {
+}, ref) => {
   const { generateNavClass } = useNav({ alignment });
   
   const navClass = generateNavClass({ alignment, className });
   
   return (
-    <ul className={navClass} role="menubar" aria-orientation="horizontal">
+    <ul ref={ref} className={navClass} role="menubar" aria-orientation="horizontal">
       {React.Children.map(children, child => {
         if (React.isValidElement(child)) {
           // Pass disabled prop down to all children if Nav is disabled
@@ -26,14 +26,10 @@ const Nav: React.FC<NavProps> = ({
       })}
     </ul>
   );
-}; 
+});
 
 export type { NavProps  };
 
-// Set display name for debugging
 Nav.displayName = 'Nav';
-
-// Default export (primary)
-export { Nav };
 
 export default Nav;

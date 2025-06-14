@@ -3,7 +3,7 @@ import { HeroProps, HeroAlignment } from '../../lib/types/components';
 import { useHero } from '../../lib/composables/useHero';
 import { HERO } from '../../lib/constants/components';
 
- const Hero: React.FC<HeroProps> = ({
+export const Hero: React.FC<HeroProps> = ({
   title,
   subtitle,
   text,
@@ -180,11 +180,6 @@ import { HERO } from '../../lib/constants/components';
 
 export type { HeroProps  };
 
-// Set display name for debugging
 Hero.displayName = 'Hero';
 
-// Default export (primary)
 export default Hero;
-
-// Named export for compatibility
-export { Hero };

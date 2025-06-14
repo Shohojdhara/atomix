@@ -2,7 +2,7 @@ import React from 'react';
 import { PaginationProps } from '../../lib/types/components';
 import { usePagination, DOTS } from '../../lib/composables/usePagination';
 import { PAGINATION_DEFAULTS } from '../../lib/constants/components';
-import { Icon, IconProps } from '../Icon';
+import { Icon, IconProps } from '../Icon/Icon';
 
 // @TODO: Add Search functionality for pagination
 
@@ -25,7 +25,7 @@ interface PaginationNavButtonProps {
 /**
  * PaginationNavButton component for rendering first, previous, next, and last buttons
  */
-const PaginationNavButton: React.FC<PaginationNavButtonProps> = ({ 
+export const PaginationNavButton: React.FC<PaginationNavButtonProps> = ({ 
   type, 
   onClick, 
   disabled, 
@@ -51,7 +51,7 @@ const PaginationNavButton: React.FC<PaginationNavButtonProps> = ({
 /**
  * Pagination component
  */
-const Pagination: React.FC<PaginationProps> = ({
+export const Pagination: React.FC<PaginationProps> = ({
   currentPage = PAGINATION_DEFAULTS.currentPage,
   totalPages = PAGINATION_DEFAULTS.totalPages,
   onPageChange,
@@ -165,14 +165,8 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
-
 export type { PaginationProps  };
 
-// Set display name for debugging
 Pagination.displayName = 'Pagination';
 
-// Default export (primary)
 export default Pagination;
-
-// Named export for compatibility
-export { Pagination };

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { TodoProps } from '../../lib/types/components';
 import { useTodo } from '../../lib/composables/useTodo';
-import { Icon } from '../Icon';
+import { Icon } from '../Icon/Icon';
 import { TODO } from '../../lib/constants/components';
 import { v4 as uuidv4 } from 'uuid';
 
-const Todo: React.FC<TodoProps> = ({
+export const Todo: React.FC<TodoProps> = ({
   items = [],
   title = 'Todo List',
   onAddTodo,
@@ -162,13 +162,8 @@ const Todo: React.FC<TodoProps> = ({
   );
 };
 
-export type { TodoProps  };
-
-// Set display name for debugging
 Todo.displayName = 'Todo';
 
-// Default export (primary)
-export default Todo;
+export type { TodoProps  };
 
-// Named export for compatibility
-export { Todo };
+export default Todo;

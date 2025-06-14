@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon } from '../Icon';
-import { Avatar } from '../Avatar';
+import { Icon } from '../Icon/Icon';
+import { Avatar } from '../Avatar/Avatar';
 import { MESSAGES } from '../../lib/constants/components';
 import { MessagesProps } from '../../lib/types/components';
 import { useMessages } from '../../lib/composables/useMessages';
@@ -8,7 +8,7 @@ import { useMessages } from '../../lib/composables/useMessages';
 /**
  * Messages component for displaying a chat interface with messages, images, and file attachments
  */
-const Messages: React.FC<MessagesProps> = ({
+export const Messages: React.FC<MessagesProps> = ({
   messages = [],
   otherAvatar,
   selfAvatar,
@@ -162,11 +162,6 @@ const Messages: React.FC<MessagesProps> = ({
 
 export type { MessagesProps  };
 
-// Set display name for debugging
 Messages.displayName = 'Messages';
 
-// Default export (primary)
 export default Messages;
-
-// Named export for compatibility
-export { Messages };

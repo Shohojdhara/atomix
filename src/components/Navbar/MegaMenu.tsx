@@ -1,15 +1,15 @@
-import React, { ReactNode } from 'react';
+import React, { forwardRef, ReactNode } from 'react';
 import { MegaMenuProps, MegaMenuColumnProps, MegaMenuLinkProps } from '../../lib/types/components';
 import { Icon } from '../Icon';
 import { mapIconName } from './Menu'; // Import the mapping function
 
-export const MegaMenu: React.FC<MegaMenuProps> = ({
+export const MegaMenu: React.FC<MegaMenuProps> = forwardRef<HTMLDivElement, MegaMenuProps>(({
   children,
   className = '',
   disabled = false
-}) => {
+}, ref) => {
   return (
-    <div className={`c-menu c-menu--mega ${className}`}>
+    <div ref={ref} className={`c-menu c-menu--mega ${className}`}>
       <div className="c-menu__container">
         <div className="c-menu__grid o-grid">
           {React.Children.map(children, child => {
@@ -26,20 +26,20 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({
       </div>
     </div>
   );
-};
+});
 
-export const MegaMenuColumn: React.FC<MegaMenuColumnProps> = ({
+export const MegaMenuColumn: React.FC<MegaMenuColumnProps> = forwardRef<HTMLDivElement, MegaMenuColumnProps>(({
   title,
   icon,
   children,
   width = 'auto',
   className = '',
   disabled = false
-}) => {
+}, ref) => {
   const columnClass = `o-grid__col o-grid__col--${width} ${className}`;
   
   return (
-    <div className={columnClass}>
+    <div ref={ref} className={columnClass}>
       {(title || icon) && (
         <div className="c-menu__header">
           {icon && (
@@ -83,15 +83,15 @@ export const MegaMenuColumn: React.FC<MegaMenuColumnProps> = ({
       </ul>
     </div>
   );
-};
+});
 
-export const MegaMenuLink: React.FC<MegaMenuLinkProps> = ({
+export const MegaMenuLink: React.FC<MegaMenuLinkProps> = forwardRef<HTMLAnchorElement, MegaMenuLinkProps>(({
   href,
   children,
   className = '',
   disabled = false,
   onClick
-}) => {
+}, ref) => {
   const handleClick = (e: React.MouseEvent) => {
     if (disabled) {
       e.preventDefault();
@@ -104,7 +104,7 @@ export const MegaMenuLink: React.FC<MegaMenuLinkProps> = ({
   };
   
   return (
-    <a 
+    <a ref={ref}
       href={href} 
       className={`c-menu__subitem-link ${disabled ? 'is-disabled' : ''} ${className}`}
       onClick={handleClick}
@@ -113,4 +113,4 @@ export const MegaMenuLink: React.FC<MegaMenuLinkProps> = ({
       {children}
     </a>
   );
-}; 
+});

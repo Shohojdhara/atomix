@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { AvatarProps } from '../../lib/types/components';
 import { AVATAR } from '../../lib/constants/components';
-import { Icon } from '../Icon';
+import { Icon } from '../Icon/Icon';
 
-const Avatar: React.FC<AvatarProps> = ({
+export const Avatar: React.FC<AvatarProps> = ({
   src,
   alt = 'Avatar',
   initials,
@@ -64,14 +64,8 @@ const Avatar: React.FC<AvatarProps> = ({
   );
 };
 
+Avatar.displayName = 'Avatar';
 
 export type { AvatarProps };
 
-// Set display name for debugging
-Avatar.displayName = 'Avatar';
-
-// Default export (primary)
 export default Avatar;
-
-// Named export for compatibility
-export { Avatar };

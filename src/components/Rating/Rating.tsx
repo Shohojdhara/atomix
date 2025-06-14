@@ -19,7 +19,7 @@ import useForkRef from '../../lib/utils/useForkRef';
  * // With half-star support
  * <Rating value={3.5} allowHalf maxValue={5} />
  */
-const Rating = forwardRef<HTMLDivElement, RatingProps>(({
+export const Rating = forwardRef<HTMLDivElement, RatingProps>(({
   value: valueProp = 0,
   defaultValue,
   maxValue = 5,
@@ -114,21 +114,6 @@ const Rating = forwardRef<HTMLDivElement, RatingProps>(({
   // Use vanilla JS implementation if specified
   useEffect(() => {
     if (!useVanillaJS || typeof window === 'undefined' || !internalRef.current) return;
-
-    // Dynamically import the rating script to avoid server-side rendering issues
-    import('./scripts/bundle').then(({ default: RatingClass }) => {
-      if (internalRef.current) {
-        ratingInstance.current = new RatingClass(internalRef.current, {
-          value: valueProp !== undefined ? valueProp : defaultValue,
-          maxValue,
-          allowHalf,
-          readOnly,
-          size,
-          color,
-          onChange
-        });
-      }
-    });
     
     // Cleanup on unmount
     return () => {
@@ -279,11 +264,4 @@ Rating.displayName = 'Rating';
 
 export type { RatingProps  };
 
-// Set display name for debugging
-Rating.displayName = 'Rating';
-
-// Default export (primary)
 export default Rating;
-
-// Named export for compatibility
-export { Rating };

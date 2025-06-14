@@ -6,7 +6,7 @@ import { SELECT } from '../../lib/constants/components';
 /**
  * Select - A component for dropdown selection
  */
-const Select: React.FC<SelectProps> = ({
+export const Select: React.FC<SelectProps> = ({
   options = [],
   value,
   onChange,
@@ -187,11 +187,7 @@ const Select: React.FC<SelectProps> = ({
 
 export type { SelectProps  };
 
-// Set display name for debugging
 Select.displayName = 'Select';
 
-// Default export (primary)
 export default Select;
-
-// Named export for compatibility
-export { Select };
+  

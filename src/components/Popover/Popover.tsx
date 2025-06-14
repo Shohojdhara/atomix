@@ -1,11 +1,11 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, forwardRef, createContext } from 'react';
 import { createPortal } from 'react-dom';
 import { POPOVER } from '../../lib/constants/components';
 import { usePopover } from '../../lib/composables/usePopover';
 import type { PopoverProps, PopoverTriggerProps } from '../../lib/types/components';
 
 // Context to share popover state between components
-const PopoverContext = React.createContext<{
+export const PopoverContext = createContext<{
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   triggerRef: React.RefObject<HTMLElement>;
@@ -22,7 +22,7 @@ const PopoverContext = React.createContext<{
 /**
  * Popover component for displaying floating content
  */
- const Popover: React.FC<PopoverProps> = ({
+export const Popover: React.FC<PopoverProps> = ({
   content,
   position = 'top',
   trigger = 'click',
@@ -89,10 +89,10 @@ const PopoverContext = React.createContext<{
 /**
  * PopoverTrigger component to wrap the element that triggers the popover
  */
-export const PopoverTrigger: React.FC<PopoverTriggerProps> = ({
+export const PopoverTrigger: React.FC<PopoverTriggerProps> = forwardRef<HTMLElement, PopoverTriggerProps>(({
   children,
   trigger: triggerProp,
-}) => {
+}, ref) => {
   const { isOpen, setIsOpen, triggerRef, popoverId, triggerType } = React.useContext(PopoverContext);
   
   // Determine which trigger type to use - prop from PopoverTrigger or from context
@@ -115,7 +115,7 @@ export const PopoverTrigger: React.FC<PopoverTriggerProps> = ({
   const child = React.Children.only(children) as React.ReactElement;
   
   const triggerProps: any = {
-    ref: triggerRef,
+    ref: ref || triggerRef,
     'aria-describedby': popoverId,
     'aria-expanded': isOpen,
   };
@@ -128,15 +128,10 @@ export const PopoverTrigger: React.FC<PopoverTriggerProps> = ({
   }
   
   return React.cloneElement(child, triggerProps);
-}; 
+}); 
 
 export type { PopoverProps, PopoverTriggerProps };
 
-// Set display name for debugging
 Popover.displayName = 'Popover';
 
-// Default export (primary)
 export default Popover;
-
-// Named export for compatibility
-export { Popover };

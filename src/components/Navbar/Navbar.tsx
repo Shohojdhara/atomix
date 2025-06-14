@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { NavbarProps } from '../../lib/types/components';
 import { useNavbar } from '../../lib/composables/useNavbar';
 import { NAVBAR } from '../../lib/constants/components';
 
-const Navbar: React.FC<NavbarProps> = ({
+export const Navbar: React.FC<NavbarProps> = forwardRef<HTMLDivElement, NavbarProps>(({
   brand,
   children,
   variant,
@@ -14,7 +14,7 @@ const Navbar: React.FC<NavbarProps> = ({
   onToggle,
   className = '',
   disabled = false
-}) => {
+}, ref) => {
   const { generateNavbarClass, generateContainerStyle, generateCollapseClass } = useNavbar({ 
     position, collapsible, expanded, onToggle
   });
@@ -81,7 +81,7 @@ const Navbar: React.FC<NavbarProps> = ({
   
   return (
     <nav className={navbarClass} aria-label="Main navigation">
-      <div className="c-navbar__container" style={containerStyle}>
+      <div ref={ref} className="c-navbar__container" style={containerStyle}>
         {brand && (
           typeof brand === 'string' ? (
             <a href="/" className="c-navbar__brand">{brand}</a>
@@ -114,16 +114,11 @@ const Navbar: React.FC<NavbarProps> = ({
       </div>
     </nav>
   );
-}; 
+});
 
 
 export type { NavbarProps };
 
-// Set display name for debugging
 Navbar.displayName = 'Navbar';
 
-// Default export (primary)
 export default Navbar;
-
-// Named export for compatibility
-export { Navbar };

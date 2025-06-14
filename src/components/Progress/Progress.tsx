@@ -3,7 +3,7 @@ import { ProgressProps } from '../../lib/types/components';
 import { useProgress } from '../../lib/composables/useProgress';
 import { PROGRESS } from '../../lib/constants/components';
 
-const Progress = forwardRef<HTMLDivElement, ProgressProps>((
+export const Progress = forwardRef<HTMLDivElement, ProgressProps>((
   {
     value,
     variant = 'primary',
@@ -40,11 +40,4 @@ const Progress = forwardRef<HTMLDivElement, ProgressProps>((
 
 export type { ProgressProps  };
 
-// Set display name for debugging
-Progress.displayName = 'Progress';
-
-// Default export (primary)
 export default Progress;
-
-// Named export for compatibility
-export { Progress };

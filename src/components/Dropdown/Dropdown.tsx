@@ -8,7 +8,7 @@ import type {
 } from '../../lib/types/components';
 
 // Context type definition
-type DropdownContextType = {
+export type DropdownContextType = {
   isOpen: boolean;
   close: () => void;
   id: string;
@@ -116,7 +116,7 @@ export const DropdownHeader: React.FC<DropdownHeaderProps> = ({ children, classN
 /**
  * Dropdown component for creating dropdown menus
  */
-const Dropdown: React.FC<DropdownProps> = ({
+export const Dropdown: React.FC<DropdownProps> = ({
   children, 
   menu,
   placement = 'bottom-start',
@@ -328,11 +328,6 @@ const Dropdown: React.FC<DropdownProps> = ({
 
 export type { DropdownProps, DropdownItemProps, DropdownDividerProps, DropdownHeaderProps };
 
-// Set display name for debugging
 Dropdown.displayName = 'Dropdown';
 
-// Default export (primary)
 export default Dropdown;
-
-// Named export for compatibility
-export { Dropdown };

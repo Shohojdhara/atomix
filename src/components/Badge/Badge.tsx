@@ -3,7 +3,7 @@ import { BadgeProps } from '../../lib/types/components';
 import { useBadge } from '../../lib/composables/useBadge';
 import { BADGE } from '../../lib/constants/components';
 
-const Badge: React.FC<BadgeProps> = ({
+export const Badge: React.FC<BadgeProps> = ({
   label,
   variant = 'primary',
   size = 'md',
@@ -30,13 +30,8 @@ const Badge: React.FC<BadgeProps> = ({
   );
 }; 
 
-export type { BadgeProps };
-
-// Set display name for debugging
 Badge.displayName = 'Badge';
 
-// Default export (primary)
-export default Badge;
+export type { BadgeProps };
 
-// Named export for compatibility
-export { Badge };
+export default Badge;

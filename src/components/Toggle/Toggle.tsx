@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { TOGGLE } from '../../lib/constants/components';
 
-interface ToggleProps {
+export interface ToggleProps {
   /**
    * Whether the toggle is initially on
    */
@@ -31,7 +31,7 @@ interface ToggleProps {
 /**
  * Toggle component for switching between two states
  */
-const Toggle: React.FC<ToggleProps> = ({
+export const Toggle: React.FC<ToggleProps> = ({
   initialOn = false,
   onToggleOn,
   onToggleOff,
@@ -109,12 +109,6 @@ const Toggle: React.FC<ToggleProps> = ({
   );
 }; 
 
-export type { ToggleProps  };
-
-// Set display name for debugging
 Toggle.displayName = 'Toggle';
 
-// Default export (primary)
 export default Toggle;
-
-export { Toggle };

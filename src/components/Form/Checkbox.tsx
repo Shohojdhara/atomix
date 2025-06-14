@@ -5,7 +5,7 @@ import { useCheckbox } from '../../lib/composables/useCheckbox';
 /**
  * Checkbox - A component for checkbox inputs
  */
- const Checkbox: React.FC<CheckboxProps> = ({
+export const Checkbox: React.FC<CheckboxProps> = ({
   label,
   checked = false,
   onChange,
@@ -58,11 +58,6 @@ import { useCheckbox } from '../../lib/composables/useCheckbox';
 
 export type { CheckboxProps  };
 
-// Set display name for debugging
 Checkbox.displayName = 'Checkbox';
 
-// Default export (primary)
 export default Checkbox;
-
-// Named export for compatibility
-export { Checkbox };

@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Rating } from '../Rating';
-import { Button } from '../Button';
+import { Rating } from '../Rating/Rating';
+import { Button } from '../Button/Button';
 import type { ThemeColor } from '../../lib/types/components';
 
-interface ProductReviewProps {
+export interface ProductReviewProps {
   /**
    * Product name
    */
@@ -48,7 +48,7 @@ interface ProductReviewProps {
 /**
  * ProductReview component for collecting user ratings and feedback
  */
-const ProductReview: React.FC<ProductReviewProps> = ({
+export const ProductReview: React.FC<ProductReviewProps> = ({
   productName,
   productImage,
   initialRating = 0,
@@ -67,23 +67,6 @@ const ProductReview: React.FC<ProductReviewProps> = ({
   useEffect(() => {
     // Only run on client-side
     if (typeof window === 'undefined' || !reviewRef.current) return;
-
-    // Dynamically import the product review script to avoid server-side rendering issues
-    import('./scripts/bundle').then(({ default: ProductReviewClass }) => {
-      if (reviewRef.current) {
-        reviewInstance.current = new ProductReviewClass(reviewRef.current, {
-          productName,
-          productImage,
-          initialRating,
-          maxRating,
-          allowHalf,
-          ratingColor,
-          onSubmit
-        });
-      }
-    }).catch(err => {
-      console.warn('Failed to load ProductReview script:', err);
-    });
     
     // Cleanup on unmount
     return () => {
@@ -185,13 +168,6 @@ const ProductReview: React.FC<ProductReviewProps> = ({
   );
 };
 
-export type { ProductReviewProps  };
-
-// Set display name for debugging
 ProductReview.displayName = 'ProductReview';
 
-// Default export (primary)
 export default ProductReview;
-
-// Named export for compatibility
-export { ProductReview };

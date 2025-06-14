@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef, ReactNode } from 'react';
+import React, { useState, useEffect, useRef, ReactNode, forwardRef } from 'react';
 import { NavItemProps } from '../../lib/types/components';
 import { useNavItem } from '../../lib/composables/useNavbar';
 
-export const NavItem: React.FC<NavItemProps> = ({
+export const NavItem: React.FC<NavItemProps> = forwardRef<HTMLLIElement, NavItemProps>(({
   children,
   dropdown = false,
   megaMenu = false,
@@ -12,7 +12,7 @@ export const NavItem: React.FC<NavItemProps> = ({
   className = '',
   disabled = false,
   'aria-expanded': ariaExpanded,
-}) => {
+}, ref) => {
   const { generateNavItemClass, generateNavLinkClass, handleClick } = useNavItem({ 
     dropdown,
     megaMenu,
@@ -24,7 +24,7 @@ export const NavItem: React.FC<NavItemProps> = ({
   const [isActive, setIsActive] = useState(false);
   
   // Ref for detecting outside clicks
-  const itemRef = useRef<HTMLLIElement>(null);
+  const itemRef = useRef<HTMLAnchorElement>(null);
   
   // Toggle dropdown
   const handleDropdownToggle = (e: React.MouseEvent) => {
@@ -100,13 +100,12 @@ export const NavItem: React.FC<NavItemProps> = ({
   const expanded = typeof ariaExpanded !== 'undefined' ? ariaExpanded : isActive;
   
   return (
-    <li 
+    <li ref={ref}
       className={navItemClass} 
-      ref={itemRef}
       role="menuitem"
       aria-haspopup={dropdown || megaMenu}
     >
-      <a 
+      <a ref={itemRef}
         href={href || '#'} 
         className={navLinkClass}
         onClick={(dropdown || megaMenu) ? handleDropdownToggle : handleClick(onClick)}
@@ -120,4 +119,10 @@ export const NavItem: React.FC<NavItemProps> = ({
       {(dropdown || megaMenu) && childContent.length > 1 && childContent[1]}
     </li>
   );
-}; 
+});
+
+export type { NavItemProps };
+
+NavItem.displayName = 'NavItem';
+
+export default NavItem;

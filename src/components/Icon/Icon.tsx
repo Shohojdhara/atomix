@@ -7,7 +7,7 @@ export type IconWeight = 'thin' | 'light' | 'regular' | 'bold' | 'fill' | 'duoto
 // We need to filter out non-icon exports from the Phosphor package
 type PhosphorIconsType = Exclude<keyof typeof PhosphorIcons, 'Icon' | 'IconContext' | 'IconBase' | 'IconProps' | 'createIcon' | 'default' | 'SSR'>;
 
-interface IconProps {
+export interface IconProps {
   /**
    * Icon name from Phosphor Icons
    */
@@ -51,7 +51,7 @@ const sizeMap: Record<IconSize, number> = {
 /**
  * Icon component that displays a Phosphor icon
  */
-const Icon: React.FC<IconProps> = ({
+export const Icon: React.FC<IconProps> = ({
   name,
   size = 'md',
   weight = 'regular',
@@ -84,13 +84,6 @@ const Icon: React.FC<IconProps> = ({
   );
 };
 
-export type { IconProps  };
-
-// Set display name for debugging
 Icon.displayName = 'Icon';
 
-// Default export (primary)
 export default Icon;
-
-// Named export for compatibility
-export { Icon };

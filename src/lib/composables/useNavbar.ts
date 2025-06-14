@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { NavbarProps, NavProps, NavItemProps, NavDropdownProps } from '../types/components';
 import { NAVBAR, NAV } from '../constants/components';
 import React from 'react';
-import { Icon } from '../../components/Icon';
+import { Icon } from '../../components/Icon/Icon';
 
 /**
  * Navbar state and functionality

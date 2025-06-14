@@ -44,4 +44,8 @@ export const ElevationCard: React.FC<ElevationCardProps> = ({
   );
 };
 
+export type { ElevationCardProps };
+
+ElevationCard.displayName = 'ElevationCard';  
+
 export default ElevationCard;

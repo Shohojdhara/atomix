@@ -3,7 +3,7 @@ import { SpinnerProps } from '../../lib/types/components';
 import { useSpinner } from '../../lib/composables/useSpinner';
 import { SPINNER } from '../../lib/constants/components';
 
-const Spinner: React.FC<SpinnerProps> = ({
+export const Spinner: React.FC<SpinnerProps> = ({
   size = 'md',
   variant = 'primary',
   fullscreen = false,
@@ -24,12 +24,8 @@ const Spinner: React.FC<SpinnerProps> = ({
   );
 };
 
-export type { SpinnerProps  };
+export type { SpinnerProps };
 
-// Set display name for debugging
 Spinner.displayName = 'Spinner';
 
-// Default export (primary)
 export default Spinner;
-
-export { Spinner };

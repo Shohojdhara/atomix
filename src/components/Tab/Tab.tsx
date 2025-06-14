@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, ReactNode } from 'react';
 import { TAB } from '../../lib/constants/components';
 
-interface TabItemProps {
+export interface TabItemProps {
   /**
    * Label for the tab
    */
@@ -23,7 +23,7 @@ interface TabItemProps {
   className?: string;
 }
 
-interface TabProps {
+export interface TabProps {
   /**
    * Array of tab items
    */
@@ -48,7 +48,7 @@ interface TabProps {
 /**
  * Tab component for switching between different content panels
  */
-const Tab: React.FC<TabProps> = ({
+export const Tab: React.FC<TabProps> = ({
   items,
   activeIndex = TAB.DEFAULTS.ACTIVE_INDEX,
   onTabChange,
@@ -130,12 +130,6 @@ const Tab: React.FC<TabProps> = ({
   );
 }; 
 
-export type { TabProps, TabItemProps };
-
-// Set display name for debugging
 Tab.displayName = 'Tab';
 
-// Default export (primary)
 export default Tab;
-
-export { Tab };

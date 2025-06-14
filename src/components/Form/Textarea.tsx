@@ -5,7 +5,7 @@ import { useTextarea } from '../../lib/composables/useTextarea';
 /**
  * Textarea - A component for multiline text input
  */
-const Textarea: React.FC<TextareaProps> = ({
+export const Textarea: React.FC<TextareaProps> = ({
   value,
   onChange,
   onBlur,
@@ -64,11 +64,6 @@ const Textarea: React.FC<TextareaProps> = ({
 
 export type { TextareaProps  };
 
-// Set display name for debugging
 Textarea.displayName = 'Textarea';
 
-// Default export (primary)
 export default Textarea;
-
-// Named export for compatibility
-export { Textarea };
