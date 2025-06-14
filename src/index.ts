@@ -1,22 +1,18 @@
-// Export components and utilities with namespaces to avoid conflicts
+// Re-export with namespaces for backwards compatibility
 import * as components from './components';
 import * as lib from './lib';
+import * as layouts from './layouts';
 
-// Re-export with namespaces
-export { components };
-export { lib };
-
-// Create a properly typed default export without spreading
-// This avoids TypeScript errors with internal types like UseAccordionResult
-const Atomix = {
-  // Export components explicitly
+// Create a properly typed default export
+const atomix = {
+  // Export components
   ...components,
-  // Export lib utilities explicitly
-  // We avoid spreading lib directly to prevent TypeScript errors with internal types
+  // Export lib utilities
   composables: lib.composables,
   utils: lib.utils,
-  types: lib.types,
-  constants: lib.constants
+  constants: lib.constants,
+  layouts: layouts
 };
 
-export default Atomix;
+
+export default atomix;

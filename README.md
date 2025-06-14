@@ -1,5 +1,56 @@
 # Atomix Design System
 
+Atomix is a modern component library for React web applications.
+
+## Installation
+
+```bash
+npm install @shohojdhara/atomix
+```
+
+## Usage
+
+### Importing Components
+
+```tsx
+// Import specific components
+import { Button, Card } from '@shohojdhara/atomix';
+
+// Or import the default export
+import Atomix from '@shohojdhara/atomix';
+const { Button, Card } = Atomix;
+```
+
+### Importing Types
+
+```tsx
+// Import component props types directly
+import { ButtonProps, CardProps } from '@shohojdhara/atomix';
+
+// Import specific types
+import { Size, ThemeColor } from '@shohojdhara/atomix/types/common';
+import { CardProps } from '@shohojdhara/atomix/types/components';
+
+// Import all common types
+import * as AtomixTypes from '@shohojdhara/atomix/types';
+```
+
+### CSS Styles
+
+```tsx
+// Import default CSS
+import '@shohojdhara/atomix/css';
+
+// Or minified CSS
+import '@shohojdhara/atomix/css/min';
+
+// Or import SCSS for customization
+import '@shohojdhara/atomix/scss';
+```
+
+## Documentation
+
+For full documentation, visit [our Storybook](https://liimonx.github.io/atomix).
 Atomix is a modern, flexible design system that provides both React components and vanilla JavaScript functionality for building beautiful web applications.
 
 ## NPM Package

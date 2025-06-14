@@ -5,9 +5,10 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@atomix-ux/react": ["./src/components/index.ts"],
-      "@atomix-ux/react/*": ["src/components/*"]
+      "@shohojdhara/atomix": ["./src/index.ts"],
+      "@shohojdhara/atomix/components": ["./src/components/index.ts"],
+      "@shohojdhara/atomix/lib": ["./src/lib/index.ts"],
+      "@shohojdhara/atomix/layouts": ["./src/layouts/index.ts"]
     },
     "strict": true,
     "esModuleInterop": true,
@@ -27,5 +28,5 @@
     ]
   },
   "include": ["src/**/*", "src/types/**/*"],
-  "exclude": ["node_modules", "src/components/*/scripts/bundle.ts", "**/*.stories.tsx"]
+  "exclude": ["node_modules", "src/components/**/scripts/*", "**/*.stories.tsx"]
 }

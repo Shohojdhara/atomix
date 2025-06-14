@@ -15,12 +15,18 @@
   ],
   "exports": {
     ".": {
-      "types": "./index.d.ts",
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/js/atomix.react.esm.js",
       "require": "./dist/js/atomix.react.cjs.js",
       "default": "./dist/js/atomix.react.esm.js"
     },
     "./package.json": "./package.json",
+    "./types": {
+      "types": "./dist/types/index.d.ts"
+    },
+    "./types/components": {
+      "types": "./dist/types/components.d.ts"
+    },
     "./css": {
       "types": "./css.d.ts",
       "default": "./dist/css/atomix.css"
@@ -30,6 +36,12 @@
       "default": "./dist/css/atomix.min.css"
     },
     "./scss": "./src/styles/index.scss"
+  },
+  "typesVersions": {
+    "*": {
+      "types": ["./dist/types/index.d.ts"],
+      "types/components": ["./dist/types/components.d.ts"]
+    }
   },
   "dependencies": {
     "@types/classnames": "^2.3.0",
@@ -99,7 +111,7 @@
     "analyze:bundle": "npm run analyze",
     "build:parallel": "npm-run-all --parallel build:cjs build:esm build:umd",
     "clean:dist": "rm -rf dist",
-    "build:components": "npm-run-all clean:dist build:types --parallel build:react build:styles build:types",
+    "build:components": "npm-run-all clean:dist --parallel build:react build:styles build:types",
     "build:react": "npx webpack --mode production --env target=components --env format=all",
     "build:styles": "npm run clean:dist && npx webpack --mode production --env target=styles",
     "build:cjs": "npx webpack --mode production --env target=components --env format=cjs",
