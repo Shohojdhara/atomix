@@ -24,10 +24,7 @@ const TypographyScale = ({
         {weight} • {className || 'base'}
       </span>
     </div>
-    <div 
-      className={`${className}`} 
-      style={{ fontWeight: weight }}
-    >
+    <div className={`${className}`} style={{ fontWeight: weight }}>
       {children}
     </div>
   </div>
@@ -62,36 +59,43 @@ const TypographyPreview = () => {
   ];
 
   const sampleText = 'The quick brown fox jumps over the lazy dog.';
-  const sampleTextLong = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.';
+  const sampleTextLong =
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula.';
 
   return (
     <div className={`typography-preview`}>
       <h1>Typography</h1>
-      
+
       <section className="typography-section">
         <h2>Font Family</h2>
         <div className="font-family-preview">
           <div className="font-family-item">
             <h3>Helvetica Neue</h3>
             <p className="font-helvetica">
-              ABCDEFGHIJKLMNOPQRSTUVWXYZ<br />
-              abcdefghijklmnopqrstuvwxyz<br />
+              ABCDEFGHIJKLMNOPQRSTUVWXYZ
+              <br />
+              abcdefghijklmnopqrstuvwxyz
+              <br />
               0123456789!@#$%^&*()
             </p>
           </div>
           <div className="font-family-item">
             <h3>System Font Stack</h3>
             <p className="font-system">
-              ABCDEFGHIJKLMNOPQRSTUVWXYZ<br />
-              abcdefghijklmnopqrstuvwxyz<br />
+              ABCDEFGHIJKLMNOPQRSTUVWXYZ
+              <br />
+              abcdefghijklmnopqrstuvwxyz
+              <br />
               0123456789!@#$%^&*()
             </p>
           </div>
           <div className="font-family-item">
             <h3>Monospace</h3>
             <p className="font-mono">
-              ABCDEFGHIJKLMNOPQRSTUVWXYZ<br />
-              abcdefghijklmnopqrstuvwxyz<br />
+              ABCDEFGHIJKLMNOPQRSTUVWXYZ
+              <br />
+              abcdefghijklmnopqrstuvwxyz
+              <br />
               0123456789!@#$%^&*()
             </p>
           </div>
@@ -103,10 +107,10 @@ const TypographyPreview = () => {
         <div className="font-weights-preview">
           {fontWeights.map(({ name, value }) => (
             <div key={value} className="font-weight-item">
-              <span className="font-weight-name">{name} ({value})</span>
-              <p style={{ fontWeight: value }}>
-                {sampleText}
-              </p>
+              <span className="font-weight-name">
+                {name} ({value})
+              </span>
+              <p style={{ fontWeight: value }}>{sampleText}</p>
             </div>
           ))}
         </div>
@@ -116,12 +120,7 @@ const TypographyPreview = () => {
         <h2>Type Scale</h2>
         <div className="type-scale-preview">
           {fontSizes.map(({ name, className }) => (
-            <TypographyScale 
-              key={className} 
-              name={name} 
-              className={className}
-              isDark={isDark}
-            >
+            <TypographyScale key={className} name={name} className={className} isDark={isDark}>
               {sampleText}
             </TypographyScale>
           ))}
@@ -131,9 +130,7 @@ const TypographyPreview = () => {
       <section className="typography-section">
         <h2>Text Styles</h2>
         <div className="text-styles-preview">
-          <TypographyScale name="Normal">
-            {sampleTextLong}
-          </TypographyScale>
+          <TypographyScale name="Normal">{sampleTextLong}</TypographyScale>
           <TypographyScale name="Italic" className="u-fst-italic">
             {sampleTextLong}
           </TypographyScale>

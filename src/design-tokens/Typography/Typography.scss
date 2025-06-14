@@ -3,10 +3,14 @@
   padding: 2rem;
   color: var(--atomix-primary-text-emphasis);
   background-color: var(--atomix-primary-bg);
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
   min-height: 100vh;
 
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     margin-top: 0;
     color: var(--atomix-primary-text-emphasis);
   }
@@ -61,11 +65,23 @@
   }
 
   .font-system {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+    font-family:
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      Oxygen-Sans,
+      Ubuntu,
+      Cantarell,
+      'Helvetica Neue',
+      Arial,
+      sans-serif;
   }
 
   .font-mono {
-    font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-family:
+      SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
     font-size: 0.9em;
   }
 }
@@ -132,24 +148,63 @@
   }
 
   // Apply text styles
-  &.display-1 { font-size: 4rem; line-height: 1.2; }
-  &.h1 { font-size: 2.5rem; line-height: 1.2; }
-  &.h2 { font-size: 2rem; line-height: 1.25; }
-  &.h3 { font-size: 1.75rem; line-height: 1.3; }
-  &.h4 { font-size: 1.5rem; line-height: 1.35; }
-  &.h5 { font-size: 1.25rem; line-height: 1.4; }
-  &.h6 { font-size: 1rem; line-height: 1.5; }
-  &.text-lg { font-size: 1.125rem; }
-  &.text-base { font-size: 1rem; }
-  &.text-md { font-size: 0.875rem; }
-  &.text-sm { font-size: 0.875rem; }
-  &.text-xs { font-size: 0.75rem; }
+  &.display-1 {
+    font-size: 4rem;
+    line-height: 1.2;
+  }
+  &.h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+  &.h2 {
+    font-size: 2rem;
+    line-height: 1.25;
+  }
+  &.h3 {
+    font-size: 1.75rem;
+    line-height: 1.3;
+  }
+  &.h4 {
+    font-size: 1.5rem;
+    line-height: 1.35;
+  }
+  &.h5 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+  &.h6 {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  &.text-lg {
+    font-size: 1.125rem;
+  }
+  &.text-base {
+    font-size: 1rem;
+  }
+  &.text-md {
+    font-size: 0.875rem;
+  }
+  &.text-sm {
+    font-size: 0.875rem;
+  }
+  &.text-xs {
+    font-size: 0.75rem;
+  }
 
   // Text styles
-  &.italic { font-style: italic; }
-  &.uppercase { text-transform: uppercase; }
-  &.underline { text-decoration: underline; }
-  &.line-through { text-decoration: line-through; }
+  &.italic {
+    font-style: italic;
+  }
+  &.uppercase {
+    text-transform: uppercase;
+  }
+  &.underline {
+    text-decoration: underline;
+  }
+  &.line-through {
+    text-decoration: line-through;
+  }
 }
 
 // Text Styles Preview
@@ -167,11 +222,19 @@
   .text-styles-preview {
     grid-template-columns: 1fr;
   }
-  
+
   .typography-scale {
-    &.display-1 { font-size: 3rem; }
-    &.h1 { font-size: 2rem; }
-    &.h2 { font-size: 1.75rem; }
-    &.h3 { font-size: 1.5rem; }
+    &.display-1 {
+      font-size: 3rem;
+    }
+    &.h1 {
+      font-size: 2rem;
+    }
+    &.h2 {
+      font-size: 1.75rem;
+    }
+    &.h3 {
+      font-size: 1.5rem;
+    }
   }
 }

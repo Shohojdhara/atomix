@@ -9,12 +9,10 @@ interface ColorSwatchProps {
 }
 
 const ColorSwatch = ({ name, value, isDark = false }: ColorSwatchProps) => (
-  <div
-    className={`color-swatch`}
-  >
-    <div 
-      className="color-box" 
-      style={{ 
+  <div className={`color-swatch`}>
+    <div
+      className="color-box"
+      style={{
         backgroundColor: value,
       }}
     />
@@ -71,17 +69,17 @@ const ColorPalette = ({ title, colors, isDark = false }: ColorPaletteProps) => {
       if (!colorGridElement) return;
 
       for (let i = 0; i < colorGridElement.children.length; i++) {
-          const swatchElement = colorGridElement.children[i] as HTMLDivElement;
-          if (swatchElement) {
-              const swatchRect = swatchElement.getBoundingClientRect();
-              const swatchCenterX = (swatchRect.left + swatchRect.right) / 2 - rect.left;
-              const distance = Math.abs(currentMouseX - swatchCenterX);
+        const swatchElement = colorGridElement.children[i] as HTMLDivElement;
+        if (swatchElement) {
+          const swatchRect = swatchElement.getBoundingClientRect();
+          const swatchCenterX = (swatchRect.left + swatchRect.right) / 2 - rect.left;
+          const distance = Math.abs(currentMouseX - swatchCenterX);
 
-              if (distance < minDistance) {
-                  minDistance = distance;
-                  closestIndex = i;
-              }
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestIndex = i;
           }
+        }
       }
       setClosestSwatchIdx(closestIndex);
     };
@@ -112,37 +110,37 @@ const ColorPalette = ({ title, colors, isDark = false }: ColorPaletteProps) => {
           if (mousePosX !== null && paletteRef.current) {
             const swatchElement = paletteRef.current.children[1].children[idx] as HTMLDivElement;
             if (swatchElement) {
-                const swatchRect = swatchElement.getBoundingClientRect();
-                const paletteRect = paletteRef.current.getBoundingClientRect();
-                const swatchCenterX = (swatchRect.left + swatchRect.right) / 2 - paletteRect.left;
-                const distance = Math.abs(mousePosX - swatchCenterX);
+              const swatchRect = swatchElement.getBoundingClientRect();
+              const paletteRect = paletteRef.current.getBoundingClientRect();
+              const swatchCenterX = (swatchRect.left + swatchRect.right) / 2 - paletteRect.left;
+              const distance = Math.abs(mousePosX - swatchCenterX);
 
-                const currentSwatchWidth = swatchRect.width;
-                const maxEffectDistance = currentSwatchWidth * 3;
+              const currentSwatchWidth = swatchRect.width;
+              const maxEffectDistance = currentSwatchWidth * 3;
 
-                if (distance < maxEffectDistance) {
-                    const normalizedDistance = distance / maxEffectDistance;
-                    const animationProgress = 1 - Math.pow(normalizedDistance, 2);
-                    translateY = Math.round(maxLift * animationProgress);
-                    if (maxLift < 0) {
-                        translateY = Math.max(maxLift, translateY);
-                    } else {
-                        translateY = Math.min(maxLift, translateY);
-                    }
+              if (distance < maxEffectDistance) {
+                const normalizedDistance = distance / maxEffectDistance;
+                const animationProgress = 1 - Math.pow(normalizedDistance, 2);
+                translateY = Math.round(maxLift * animationProgress);
+                if (maxLift < 0) {
+                  translateY = Math.max(maxLift, translateY);
+                } else {
+                  translateY = Math.min(maxLift, translateY);
                 }
+              }
             }
 
             if (closestSwatchIdx !== null) {
-                if (idx < closestSwatchIdx) {
-                    isRightHover = true; // All elements to the left of the closest
-                } else if (idx > closestSwatchIdx) {
-                    isLeftHover = true; // All elements to the right of the closest
-                }
+              if (idx < closestSwatchIdx) {
+                isRightHover = true; // All elements to the left of the closest
+              } else if (idx > closestSwatchIdx) {
+                isLeftHover = true; // All elements to the right of the closest
+              }
             }
           } else {
-              translateY = 0;
-              isLeftHover = false;
-              isRightHover = false;
+            translateY = 0;
+            isLeftHover = false;
+            isRightHover = false;
           }
 
           return (
@@ -153,10 +151,7 @@ const ColorPalette = ({ title, colors, isDark = false }: ColorPaletteProps) => {
                 transform: `translateY(${translateY}px)`,
               }}
             >
-              <div
-                className="color-box"
-                style={{ backgroundColor: value }}
-              />
+              <div className="color-box" style={{ backgroundColor: value }} />
               <div className="color-info">
                 <div className="color-name">{name}</div>
                 <div className="color-value">{value}</div>
@@ -274,35 +269,27 @@ const DesignTokens = () => {
   return (
     <div className={`design-tokens ${isDark ? 'dark' : 'light'}`}>
       <h1>Design Tokens</h1>
-      
+
       <section>
         <h2>Theme Colors</h2>
-        <ColorPalette 
-          title="Theme Colors" 
-          colors={themeColors} 
-          isDark={isDark} 
-        />
+        <ColorPalette title="Theme Colors" colors={themeColors} isDark={isDark} />
       </section>
 
       <section>
         <h2>Color Scales</h2>
         {Object.entries(colorScales).map(([name, colors]) => (
-          <ColorPalette 
+          <ColorPalette
             key={name}
-            title={name.charAt(0).toUpperCase() + name.slice(1)} 
-            colors={colors} 
-            isDark={isDark} 
+            title={name.charAt(0).toUpperCase() + name.slice(1)}
+            colors={colors}
+            isDark={isDark}
           />
         ))}
       </section>
 
       <section>
         <h2>Text Colors</h2>
-        <ColorPalette 
-          title="Text Colors" 
-          colors={textColors} 
-          isDark={isDark} 
-        />
+        <ColorPalette title="Text Colors" colors={textColors} isDark={isDark} />
       </section>
     </div>
   );

@@ -11,21 +11,25 @@ interface SpacingExampleProps {
 
 const SpacingExample = ({ name, size, value, isDark = false }: SpacingExampleProps) => {
   const sizeInPx = parseFloat(value) * 16; // Convert rem to px for display
-  
+
   return (
     <div className="spacing-example u-d-flex u-flex-column u-gap-2">
       <div className="spacing-info u-d-flex u-gap-2 u-justify-content-between u-items-center">
         <span className="spacing-name u-fs-sm u-fw-bold">{name}</span>
         <div className="spacing-details u-d-flex u-gap-2 u-items-center">
-          <code className="spacing-value u-fs-xs u-text-error u-bg-error-subtle u-rounded-sm u-px-2 u-py-1">{value}</code>
+          <code className="spacing-value u-fs-xs u-text-error u-bg-error-subtle u-rounded-sm u-px-2 u-py-1">
+            {value}
+          </code>
           <span className="spacing-px u-fs-xs">{sizeInPx}px</span>
         </div>
       </div>
-      <div 
+      <div
         className="spacing-visual"
-        style={{
-          '--spacing-size': value,
-        } as React.CSSProperties}
+        style={
+          {
+            '--spacing-size': value,
+          } as React.CSSProperties
+        }
       >
         <div className="spacing-visual-inner"></div>
       </div>
@@ -70,25 +74,22 @@ const SpacingPreview = () => {
   ];
 
   return (
-    <div className={`spacing-preview o-container o-container-fluid u-py-2 u-my-4 u-rounded-md ${isDark ? 'dark' : ''}`}>
+    <div
+      className={`spacing-preview o-container o-container-fluid u-py-2 u-my-4 u-rounded-md ${isDark ? 'dark' : ''}`}
+    >
       <h1 className="u-fs-xl u-text-primary u-mb-2">Spacing Scale</h1>
-      
+
       <section className="spacing-section u-bg-primary-subtle u-p-4 u-rounded-md">
         <h2>Spacing Units</h2>
         <p className="section-description u-fs-sm u-text-secondary u-mb-4">
-          The spacing scale is based on a 4px unit system. Each step in the scale represents a multiple of 4px.
-          Use these values for margin, padding, and other spacing-related properties.
+          The spacing scale is based on a 4px unit system. Each step in the scale represents a
+          multiple of 4px. Use these values for margin, padding, and other spacing-related
+          properties.
         </p>
-        
+
         <div className="spacing-grid">
           {spacingScale.map(({ name, value }) => (
-            <SpacingExample
-              key={name}
-              name={name}
-              size={name}
-              value={value}
-              isDark={isDark}
-            />
+            <SpacingExample key={name} name={name} size={name} value={value} isDark={isDark} />
           ))}
         </div>
       </section>

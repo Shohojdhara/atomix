@@ -10,14 +10,19 @@ interface ShadowExampleProps {
 
 const ShadowExample = ({ name, size, shadow, isDark = false, darkShadow }: ShadowExampleProps) => {
   const currentShadow = isDark && darkShadow ? darkShadow : shadow;
-  
+
   return (
     <div className="o-grid__col o-grid__col--xs-12 o-grid__col--md-4 o-grid__col--lg-3">
       <div className="u-d-flex u-flex-column u-gap-2">
         <span className="u-fs-sm u-fw-semibold">{name}</span>
-        <code className="u-py-2 u-px-4 u-bg-light-subtle u-rounded-md u-fs-xs u-shadow-inset u-border u-border-primary-subtle" style={{ minHeight: '50px' }}>{currentShadow}</code>
+        <code
+          className="u-py-2 u-px-4 u-bg-light-subtle u-rounded-md u-fs-xs u-shadow-inset u-border u-border-primary-subtle"
+          style={{ minHeight: '50px' }}
+        >
+          {currentShadow}
+        </code>
       </div>
-      <div 
+      <div
         className={`u-shadow-${size} u-bg-light-subtle u-rounded-md u-py-2 u-px-4 u-mt-2`}
         style={{ minHeight: '100px' }}
       ></div>
@@ -26,7 +31,6 @@ const ShadowExample = ({ name, size, shadow, isDark = false, darkShadow }: Shado
 };
 
 const BoxShadowPreview = () => {
-
   const shadows = [
     {
       name: 'Shadow',
@@ -67,19 +71,18 @@ const BoxShadowPreview = () => {
   ];
 
   return (
-    
     <div className={`o-container u-py-12`}>
       <h1 className="u-mb-8">Box Shadows</h1>
-      
+
       <section className="u-py-10 u-px-4 u-border u-border-dashed u-border-primary-subtle u-rounded-md">
         <h2 className="u-mb-2">Shadow Variants</h2>
         <p className="u-mb-4">
-          These are the available box shadow variants in the design system. 
-          They automatically adjust between light and dark modes.
+          These are the available box shadow variants in the design system. They automatically
+          adjust between light and dark modes.
         </p>
-        
+
         <div className="o-grid u-row-gap-4">
-          {shadows.map((shadow) => (
+          {shadows.map(shadow => (
             <ShadowExample
               key={shadow.name}
               name={shadow.name}
