@@ -73,6 +73,8 @@ pnpm add @shohojdhara/atomix
 
 ## Usage
 
+### Basic CSS Import
+
 ```tsx
 import { Button } from '@shohojdhara/atomix';
 import '@shohojdhara/atomix/css'; // Import styles
@@ -83,6 +85,38 @@ function App() {
   );
 }
 ```
+
+### Multiple CSS Integration Options
+
+Atomix provides several ways to integrate CSS based on your project needs:
+
+#### 1. Traditional CSS Import
+```javascript
+import '@shohojdhara/atomix/css';
+// or minified version
+import '@shohojdhara/atomix/css/min';
+```
+
+#### 2. SCSS Source Access
+```scss
+@use '@shohojdhara/atomix/scss' as atomix;
+// or selective imports
+@use '@shohojdhara/atomix/src/styles/06-components/components.button';
+```
+
+
+
+#### 3. CSS Modules
+```tsx
+import '@shohojdhara/atomix/css';
+import styles from './component.module.css';
+
+<Button className={`c-btn ${styles.customButton}`}>
+  Scoped Button
+</Button>
+```
+
+📚 **[Complete CSS Integration Guide](./CSS_INTEGRATION_GUIDE.md)** - Detailed documentation for all CSS integration approaches.
 
 ## CSS Variables
 
@@ -123,8 +157,10 @@ html[data-atomix-theme="dark"] {
 
 - 📚 [Full Documentation](https://liimonx.github.io/atomix)
 - 🎨 [Storybook](https://liimonx.github.io/atomix/storybook)
+- 🎨 **[CSS Integration Guide](./CSS_INTEGRATION_GUIDE.md)** - Complete guide for all CSS approaches
 - 🚀 [Next.js Integration Guide](./NEXTJS_INTEGRATION.md)
 - 📝 [Contributing Guide](./CONTRIBUTING.md)
+- 💡 [Examples](./examples/) - Working examples for different use cases
 
 ## Contributing
 

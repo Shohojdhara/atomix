@@ -38,6 +38,10 @@
       "default": "./dist/css/atomix.min.css"
     },
     "./scss": "./src/styles/index.scss",
+    "./css-modules": {
+      "types": "./src/styles/css-modules.d.ts",
+      "default": "./dist/css/atomix.css"
+    },
     "./components": {
       "types": "./dist/types/components/index.d.ts",
       "import": "./dist/js/atomix.react.esm.js",
@@ -91,6 +95,9 @@
       ],
       "css/min": [
         "./css.d.ts"
+      ],
+      "css-modules": [
+        "./src/styles/css-modules.d.ts"
       ],
       "components": [
         "./dist/types/components/index.d.ts"
