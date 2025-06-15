@@ -1,8 +1,36 @@
 import React, { useState, useEffect, useRef, ReactNode, forwardRef } from 'react';
-import { NavItemProps } from '../../lib/types/components';
-import { useNavItem } from '../../lib/composables/useNavbar';
+import { NavItemProps } from '../../../lib/types/components';
+import { useNavItem } from '../../../lib/composables/useNavbar';
 
-export const NavItem: React.FC<NavItemProps> = forwardRef<HTMLLIElement, NavItemProps>(
+/**
+ * NavItem component represents a single navigation item that can be a link, dropdown trigger, or mega menu trigger.
+ * 
+ * @example
+ * ```tsx
+ * // Simple nav item
+ * <NavItem href="/about" active>About</NavItem>
+ * 
+ * // Dropdown nav item
+ * <NavItem dropdown>
+ *   Services
+ *   <Menu>
+ *     <MenuItem href="/web">Web Design</MenuItem>
+ *     <MenuItem href="/mobile">Mobile Apps</MenuItem>
+ *   </Menu>
+ * </NavItem>
+ * 
+ * // Mega menu nav item
+ * <NavItem megaMenu>
+ *   Products
+ *   <MegaMenu>
+ *     <MegaMenuColumn title="Web">
+ *       <MegaMenuLink href="/websites">Websites</MegaMenuLink>
+ *     </MegaMenuColumn>
+ *   </MegaMenu>
+ * </NavItem>
+ * ```
+ */
+export const NavItem = forwardRef<HTMLLIElement, NavItemProps>(
   (
     {
       children,

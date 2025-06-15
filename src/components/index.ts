@@ -66,7 +66,7 @@ export { Messages, type MessagesProps } from './Messages/Messages';
 export { Modal, type ModalProps } from './Modal/Modal';
 
 // Navbar
-export { Navbar, type NavbarProps } from './Navbar/Navbar';
+export { Navbar, type NavbarProps } from './Navigation/Navbar/Navbar';
 
 // Pagination
 export { Pagination, type PaginationProps } from './Pagination/Pagination';

@@ -8,20 +8,36 @@
 .c-navbar {
   $root: &;
 
+  // 1. CSS Custom Properties
   --#{$prefix}navbar-padding-x: #{rem($navbar-padding-x)};
   --#{$prefix}navbar-padding-y: #{rem($navbar-padding-y)};
+  --#{$prefix}navbar-container-max-width: #{$navbar-container-max-width};
   --#{$prefix}navbar-bg: #{$navbar-bg};
   --#{$prefix}navbar-border-width: #{$navbar-border-width};
   --#{$prefix}navbar-border-color: #{$navbar-border-color};
+  --#{$prefix}navbar-box-shadow: #{$navbar-box-shadow};
   --#{$prefix}navbar-brand-margin-end: #{rem($navbar-brand-margin-end)};
+  --#{$prefix}navbar-brand-font-size: #{$navbar-brand-font-size};
+  --#{$prefix}navbar-brand-font-weight: #{$navbar-brand-font-weight};
+  --#{$prefix}navbar-brand-color: #{$navbar-brand-color};
   --#{$prefix}navbar-toggler-size: #{$navbar-toggler-size};
   --#{$prefix}navbar-toggler-color: #{$navbar-toggler-color};
-  --#{$prefix}navbar-container-max-width: #{$navbar-container-max-width};
+  --#{$prefix}navbar-toggler-bg: #{$navbar-toggler-bg};
+  --#{$prefix}navbar-toggler-border: #{$navbar-toggler-border};
+  --#{$prefix}navbar-toggler-border-radius: #{$navbar-toggler-border-radius};
+  --#{$prefix}navbar-toggler-focus-shadow: #{$navbar-toggler-focus-shadow};
+  --#{$prefix}navbar-collapse-padding-top: #{$navbar-collapse-padding-top};
+  --#{$prefix}navbar-collapse-transition: #{$navbar-collapse-transition};
+  --#{$prefix}navbar-backdrop-bg: #{$navbar-backdrop-bg};
+  --#{$prefix}navbar-backdrop-z-index: #{$navbar-backdrop-z-index};
+  --#{$prefix}navbar-z-index: #{$navbar-z-index};
 
+  // 2. Base Component Styles
   position: relative;
   padding: var(--#{$prefix}navbar-padding-y) 0;
-  border-bottom: 1px solid var(--#{$prefix}navbar-border-color);
+  border-bottom: var(--#{$prefix}navbar-border-width) solid var(--#{$prefix}navbar-border-color);
   background-color: var(--#{$prefix}navbar-bg);
+  z-index: var(--#{$prefix}navbar-z-index);
 
   &__container {
     display: flex;
@@ -33,10 +49,21 @@
     margin: 0 auto;
   }
 
+  // 3. Element Styles (BEM Elements)
   &__brand {
     margin-right: var(--#{$prefix}navbar-brand-margin-end);
     display: flex;
     align-items: center;
+    font-size: var(--#{$prefix}navbar-brand-font-size);
+    font-weight: var(--#{$prefix}navbar-brand-font-weight);
+    color: var(--#{$prefix}navbar-brand-color);
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: var(--#{$prefix}navbar-brand-color);
+      text-decoration: none;
+    }
 
     svg {
       color: inherit;
@@ -50,14 +77,23 @@
     width: var(--#{$prefix}navbar-toggler-size);
     height: var(--#{$prefix}navbar-toggler-size);
     padding: 0;
-    background-color: transparent;
-    border: 0;
-    border-radius: 4px;
+    background-color: var(--#{$prefix}navbar-toggler-bg);
+    border: var(--#{$prefix}navbar-toggler-border);
+    border-radius: var(--#{$prefix}navbar-toggler-border-radius);
     cursor: pointer;
+    transition: all 0.15s ease-in-out;
+
+    &:hover {
+      opacity: 0.8;
+    }
 
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      box-shadow: var(--#{$prefix}navbar-toggler-focus-shadow);
+    }
+
+    &:active {
+      transform: scale(0.95);
     }
 
     &-icon {
@@ -98,6 +134,26 @@
     flex-grow: 1;
     align-items: center;
     display: flex;
+    transition: var(--#{$prefix}navbar-collapse-transition);
+  }
+
+  // 4. Backdrop for mobile overlay
+  &__backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--#{$prefix}navbar-backdrop-bg);
+    z-index: var(--#{$prefix}navbar-backdrop-z-index);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+
+    &.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
   }
 
   // Responsive behavior for collapsible navbars
@@ -114,7 +170,7 @@
 
         &.is-expanded {
           display: block;
-          padding-top: 0.5rem;
+          padding-top: var(--#{$prefix}navbar-collapse-padding-top);
         }
 
         .c-nav {
@@ -210,12 +266,14 @@
     }
   }
 
+  // 5. Modifier Styles (BEM Modifiers)
   // Theme/variant styles
   @each $color, $value in maps.$theme-colors-bg-subtle {
     &--#{$color} {
       --#{$prefix}navbar-bg: var(--#{$prefix}#{$color}-bg-subtle);
       --#{$prefix}navbar-border-color: var(--#{$prefix}#{$color}-border-subtle);
       --#{$prefix}navbar-toggler-color: var(--#{$prefix}#{$color}-text);
+      --#{$prefix}navbar-brand-color: var(--#{$prefix}#{$color}-text-emphasis);
 
       .c-nav__link {
         color: var(--#{$prefix}#{$color}-text);
@@ -226,10 +284,27 @@
           background-color: var(--#{$prefix}#{$color}-subtle);
         }
       }
+    }
+  }
 
-      .c-navbar__brand {
-        color: var(--#{$prefix}#{$color}-text-emphasis);
-      }
+  // 6. Dark Mode Support
+  .dark-mode & {
+    --#{$prefix}navbar-bg: #{$navbar-bg-dark};
+    --#{$prefix}navbar-border-color: #{$navbar-border-color-dark};
+    --#{$prefix}navbar-brand-color: #{$navbar-brand-color-dark};
+    --#{$prefix}navbar-toggler-color: #{$navbar-toggler-color-dark};
+  }
+
+  // 7. Accessibility Considerations
+  @media (prefers-reduced-motion: reduce) {
+    --#{$prefix}navbar-collapse-transition: none;
+    
+    #{$root}__toggler {
+      transition: none;
+    }
+
+    #{$root}__backdrop {
+      transition: none;
     }
   }
 }

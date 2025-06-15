@@ -123,4 +123,50 @@
     margin: 0 auto;
     justify-content: center;
   }
+
+  // Float variants - floating navigation bubbles
+  &--float-top-center,
+  &--float-bottom-center {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: var(--#{$prefix}body-bg);
+    border: 1px solid var(--#{$prefix}border-color);
+    border-radius: $border-radius-pill;
+    box-shadow: var(--#{$prefix}box-shadow-lg);
+    padding: rem(8px) rem(16px);
+    backdrop-filter: blur(10px);
+    
+    // Add subtle background transparency
+    background: rgba(var(--#{$prefix}body-bg-rgb), 0.95);
+    
+    // Ensure items are properly spaced in float mode
+    #{$root}__item {
+      & + & {
+        margin-left: rem(4px);
+      }
+    }
+    
+    // Adjust link padding for compact float design
+    #{$root}__link {
+      padding: rem(8px) rem(12px);
+      border-radius: $border-radius-lg;
+      
+      &:hover,
+      &:focus,
+      &:active,
+      &.is-active {
+        background-color: var(--#{$prefix}brand-bg-subtle);
+      }
+    }
+  }
+
+  &--float-top-center {
+    top: rem(20px);
+  }
+
+  &--float-bottom-center {
+    bottom: rem(20px);
+  }
 }

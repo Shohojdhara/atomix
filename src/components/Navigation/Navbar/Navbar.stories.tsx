@@ -1,18 +1,75 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Navbar } from './Navbar';
-import { Nav } from './Nav';
-import { NavItem } from './NavItem';
-import { NavDropdown } from './NavDropdown';
-import { Menu, MenuItem, MenuDivider } from './Menu';
-import { MegaMenu, MegaMenuColumn, MegaMenuLink } from './MegaMenu';
-import { Icon } from '../Icon';
-import { AtomixLogo } from '../AtomixLogo';
+import { Nav } from '../Nav/Nav';
+import { NavItem } from '../Nav/NavItem';
+import { NavDropdown } from '../Nav/NavDropdown';
+import { Menu, MenuItem, MenuDivider } from '../Menu/Menu';
+import { MegaMenu, MegaMenuColumn, MegaMenuLink } from '../Menu/MegaMenu';
+import { Icon } from '../../Icon';
+import { AtomixLogo } from '../../AtomixLogo';
 
 const meta = {
-  title: 'Components/Navbar',
+  title: 'Components/Navigation/Navbar',
   component: Navbar,
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component: `
+The Navbar component provides a responsive navigation header with brand, navigation items, and collapsible mobile menu functionality. It follows the Atomix design system guidelines and includes both React and vanilla JavaScript implementations.
+
+## Features
+
+- **Responsive Design**: Automatically collapses on mobile devices
+- **Multiple Positions**: Static, fixed top, or fixed bottom positioning
+- **Theme Variants**: Support for all theme colors
+- **Accessibility**: Full keyboard navigation and screen reader support
+- **Dropdown & Mega Menus**: Support for both regular dropdowns and full-width mega menus
+- **Vanilla JS Support**: Complete vanilla JavaScript implementation available
+
+## Usage
+
+### Basic Navbar
+\`\`\`tsx
+<Navbar brand="My App">
+  <Nav>
+    <NavItem href="/">Home</NavItem>
+    <NavItem href="/about">About</NavItem>
+  </Nav>
+</Navbar>
+\`\`\`
+
+### With Dropdown
+\`\`\`tsx
+<Navbar brand="My App">
+  <Nav>
+    <NavDropdown title="Services">
+      <Menu>
+        <MenuItem href="/web">Web Design</MenuItem>
+        <MenuItem href="/mobile">Mobile Apps</MenuItem>
+      </Menu>
+    </NavDropdown>
+  </Nav>
+</Navbar>
+\`\`\`
+
+### Vanilla JavaScript
+\`\`\`html
+<nav class="c-navbar" data-navbar data-collapsible="true">
+  <div class="c-navbar__container">
+    <a href="/" class="c-navbar__brand">My App</a>
+    <button class="c-navbar__toggler" aria-expanded="false">
+      <span class="c-navbar__toggler-icon"></span>
+    </button>
+    <div class="c-navbar__collapse">
+      <!-- Navigation content -->
+    </div>
+  </div>
+</nav>
+\`\`\`
+        `,
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -20,6 +77,10 @@ const meta = {
       control: { type: 'select' },
       options: ['static', 'fixed', 'fixed-bottom'],
       description: 'Position of the navbar',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'static' },
+      },
     },
     variant: {
       control: { type: 'select' },
@@ -37,14 +98,50 @@ const meta = {
         'dark',
       ],
       description: 'The color variant of the navbar',
+      table: {
+        type: { summary: 'ThemeColor' },
+        defaultValue: { summary: 'undefined' },
+      },
     },
     collapsible: {
       control: 'boolean',
       description: 'Whether the navbar should collapse on small screens',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+      },
     },
     containerWidth: {
       control: 'text',
       description: 'Custom width for the navbar container',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'undefined' },
+      },
+    },
+    backdrop: {
+      control: 'boolean',
+      description: 'Whether to show backdrop when expanded on mobile',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    closeOnOutsideClick: {
+      control: 'boolean',
+      description: 'Whether to close navbar when clicking outside',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+      },
+    },
+    closeOnEscape: {
+      control: 'boolean',
+      description: 'Whether to close navbar on escape key press',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+      },
     },
   },
 } satisfies Meta<typeof Navbar>;

@@ -1,9 +1,23 @@
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
-import { NavbarProps } from '../../lib/types/components';
-import { useNavbar } from '../../lib/composables/useNavbar';
-import { NAVBAR } from '../../lib/constants/components';
+import { NavbarProps } from '../../../lib/types/components';
+import { useNavbar } from '../../../lib/composables/useNavbar';
+import { NAVBAR } from '../../../lib/constants/components';
 
-export const Navbar: React.FC<NavbarProps> = forwardRef<HTMLDivElement, NavbarProps>(
+/**
+ * Navbar component provides a responsive navigation header with brand, navigation items,
+ * and collapsible mobile menu functionality.
+ * 
+ * @example
+ * ```tsx
+ * <Navbar brand="My App" position="fixed" collapsible>
+ *   <Nav>
+ *     <NavItem href="/">Home</NavItem>
+ *     <NavItem href="/about">About</NavItem>
+ *   </Nav>
+ * </Navbar>
+ * ```
+ */
+export const Navbar = forwardRef<HTMLElement, NavbarProps>(
   (
     {
       brand,
@@ -16,6 +30,11 @@ export const Navbar: React.FC<NavbarProps> = forwardRef<HTMLDivElement, NavbarPr
       onToggle,
       className = '',
       disabled = false,
+      backdrop = false,
+      closeOnOutsideClick = true,
+      closeOnEscape = true,
+      ariaLabel = 'Main navigation',
+      id,
     },
     ref
   ) => {
@@ -90,8 +109,8 @@ export const Navbar: React.FC<NavbarProps> = forwardRef<HTMLDivElement, NavbarPr
     };
 
     return (
-      <nav className={navbarClass} aria-label="Main navigation">
-        <div ref={ref} className="c-navbar__container" style={containerStyle}>
+      <nav ref={ref} className={navbarClass} aria-label={ariaLabel} id={id}>
+        <div className="c-navbar__container" style={containerStyle}>
           {brand &&
             (typeof brand === 'string' ? (
               <a href="/" className="c-navbar__brand">

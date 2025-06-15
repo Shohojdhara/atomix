@@ -1,16 +1,64 @@
 @use 'settings.config' as config;
 @use 'settings.border-radius' as border-radius;
 @use 'settings.typography' as typography;
+@use 'settings.colors' as *;
 
+// Side menu container
 $side-menu-padding-x: 20px !default;
 $side-menu-padding-y: 24px !default;
 $side-menu-bg: var(--#{config.$prefix}body-bg) !default;
 $side-menu-border-radius: border-radius.$border-radius-xl !default;
+$side-menu-border-width: 1px !default;
+$side-menu-border-color: var(--#{config.$prefix}border-color) !default;
+$side-menu-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !default;
+
+// Side menu title
 $side-menu-title-font-size: typography.$font-size-base !default;
 $side-menu-title-font-weight: typography.$font-weight-medium !default;
 $side-menu-title-color: var(--#{config.$prefix}body-color) !default;
 $side-menu-title-spacer-y: 8px !default;
+
+// Side menu toggler
+$side-menu-toggler-padding-x: 12px !default;
+$side-menu-toggler-padding-y: 8px !default;
+$side-menu-toggler-bg: transparent !default;
+$side-menu-toggler-hover-bg: var(--#{config.$prefix}secondary-bg-subtle) !default;
+$side-menu-toggler-border-radius: border-radius.$border-radius-md !default;
+$side-menu-toggler-transition: all 0.2s ease-in-out !default;
+
+// Side menu items
 $side-menu-item-padding-x: 12px !default;
 $side-menu-item-padding-y: 8px !default;
 $side-menu-item-font-size: typography.$font-size-sm !default;
+$side-menu-item-font-weight: typography.$font-weight-normal !default;
 $side-menu-item-color: var(--#{config.$prefix}secondary-text-emphasis) !default;
+$side-menu-item-hover-color: var(--#{config.$prefix}body-color) !default;
+$side-menu-item-active-color: var(--#{config.$prefix}brand-text-emphasis) !default;
+$side-menu-item-disabled-color: var(--#{config.$prefix}disabled-text-emphasis) !default;
+$side-menu-item-bg: transparent !default;
+$side-menu-item-hover-bg: var(--#{config.$prefix}secondary-bg-subtle) !default;
+$side-menu-item-active-bg: var(--#{config.$prefix}brand-bg-subtle) !default;
+$side-menu-item-disabled-bg: transparent !default;
+$side-menu-item-border-radius:  border-radius.$border-radius-md !default;
+$side-menu-item-transition: all 0.2s ease-in-out !default;
+$side-menu-item-gap: 8px !default;
+
+// Side menu list
+$side-menu-list-margin-bottom: 12px !default;
+$side-menu-list-gap: 2px !default;
+
+// Side menu wrapper (for mobile animation)
+$side-menu-wrapper-transition: height 0.3s ease-in-out !default;
+$side-menu-inner-padding-top: 20px !default;
+
+// Mobile responsive
+$side-menu-mobile-padding-x: 16px !default;
+$side-menu-mobile-padding-y: 12px !default;
+
+// Dark mode variants
+$side-menu-bg-dark: var(--#{config.$prefix}gray-9) !default;
+$side-menu-border-color-dark: var(--#{config.$prefix}gray-7) !default;
+$side-menu-title-color-dark: var(--#{config.$prefix}gray-1) !default;
+$side-menu-item-color-dark: var(--#{config.$prefix}gray-3) !default;
+$side-menu-item-hover-color-dark: var(--#{config.$prefix}gray-1) !default;
+$side-menu-item-active-color-dark: var(--#{config.$prefix}brand-text-emphasis) !default;

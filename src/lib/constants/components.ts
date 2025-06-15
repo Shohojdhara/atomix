@@ -437,11 +437,38 @@ export const NAVBAR = {
     BRAND: '.c-navbar__brand',
     COLLAPSE: '.c-navbar__collapse',
     TOGGLER: '.c-navbar__toggler',
+    TOGGLER_ICON: '.c-navbar__toggler-icon',
   },
   CLASSES: {
+    BASE: 'c-navbar',
+    CONTAINER: 'c-navbar__container',
+    BRAND: 'c-navbar__brand',
+    COLLAPSE: 'c-navbar__collapse',
+    TOGGLER: 'c-navbar__toggler',
+    TOGGLER_ICON: 'c-navbar__toggler-icon',
     FIXED: 'c-navbar--fixed',
     FIXED_BOTTOM: 'c-navbar--fixed-bottom',
+    COLLAPSIBLE: 'c-navbar--collapsible',
     EXPANDED: 'is-expanded',
+    BACKDROP: 'c-navbar__backdrop',
+  },
+  ATTRIBUTES: {
+    NAVBAR: 'data-navbar',
+    COLLAPSIBLE: 'data-collapsible',
+    EXPANDED: 'data-expanded',
+    POSITION: 'data-position',
+    BACKDROP: 'data-backdrop',
+    AUTO_CLOSE: 'data-auto-close',
+    KEYBOARD: 'data-keyboard',
+  },
+  DEFAULTS: {
+    POSITION: 'static',
+    COLLAPSIBLE: true,
+    EXPANDED: false,
+    BACKDROP: false,
+    AUTO_CLOSE: true,
+    KEYBOARD: true,
+    ARIA_LABEL: 'Main navigation',
   },
 };
 
@@ -463,6 +490,52 @@ export const NAV = {
     CENTER: 'c-nav--center',
     ACTIVE: 'is-active',
     DISABLED: 'is-disabled',
+  },
+};
+
+/**
+ * SideMenu-specific constants
+ */
+export const SIDE_MENU = {
+  SELECTORS: {
+    SIDE_MENU: '.c-side-menu',
+    WRAPPER: '.c-side-menu__wrapper',
+    INNER: '.c-side-menu__inner',
+    TITLE: '.c-side-menu__title',
+    TOGGLER: '.c-side-menu__toggler',
+    TOGGLER_ICON: '.c-side-menu__toggler-icon',
+    LIST: '.c-side-menu__list',
+    ITEM: '.c-side-menu__item',
+    LINK: '.c-side-menu__link',
+    LINK_ICON: '.c-side-menu__link-icon',
+    LINK_TEXT: '.c-side-menu__link-text',
+  },
+  CLASSES: {
+    BASE: 'c-side-menu',
+    WRAPPER: 'c-side-menu__wrapper',
+    INNER: 'c-side-menu__inner',
+    TITLE: 'c-side-menu__title',
+    TOGGLER: 'c-side-menu__toggler',
+    TOGGLER_ICON: 'c-side-menu__toggler-icon',
+    LIST: 'c-side-menu__list',
+    ITEM: 'c-side-menu__item',
+    LINK: 'c-side-menu__link',
+    LINK_ICON: 'c-side-menu__link-icon',
+    LINK_TEXT: 'c-side-menu__link-text',
+    IS_OPEN: 'is-open',
+    ACTIVE: 'is-active',
+    DISABLED: 'is-disabled',
+  },
+  ATTRIBUTES: {
+    SIDE_MENU: 'data-side-menu',
+    COLLAPSIBLE: 'data-collapsible',
+    OPEN: 'data-open',
+    TITLE: 'data-title',
+  },
+  DEFAULTS: {
+    COLLAPSIBLE: true,
+    OPEN: false,
+    TOGGLE_ICON: '▶',
   },
 };
 

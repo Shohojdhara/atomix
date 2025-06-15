@@ -14,11 +14,15 @@ export function useNavbar(initialProps?: Partial<NavbarProps>) {
   const defaultProps: Partial<NavbarProps> = {
     position: 'static',
     collapsible: true,
+    backdrop: false,
+    closeOnOutsideClick: true,
+    closeOnEscape: true,
+    ariaLabel: 'Main navigation',
     ...initialProps,
   };
 
   // Local expanded state for when not controlled externally
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(defaultProps.expanded || false);
 
   /**
    * Generate navbar class based on properties
@@ -100,6 +104,7 @@ export function useNav(initialProps?: Partial<NavProps>) {
   // Default nav properties
   const defaultProps: Partial<NavProps> = {
     alignment: 'start',
+    variant: 'default',
     ...initialProps,
   };
 
@@ -109,11 +114,16 @@ export function useNav(initialProps?: Partial<NavProps>) {
    * @returns Class string
    */
   const generateNavClass = (props: Partial<NavProps>): string => {
-    const { alignment = defaultProps.alignment, className = '' } = props;
+    const { 
+      alignment = defaultProps.alignment, 
+      variant = defaultProps.variant,
+      className = '' 
+    } = props;
 
     const alignmentClass = alignment !== 'start' ? `c-nav--${alignment}` : '';
+    const variantClass = variant !== 'default' ? `c-nav--${variant}` : '';
 
-    return `c-nav ${alignmentClass} ${className}`.trim();
+    return `c-nav ${alignmentClass} ${variantClass} ${className}`.trim();
   };
 
   return {

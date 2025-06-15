@@ -421,6 +421,11 @@ export type NavbarPosition = 'static' | 'fixed' | 'fixed-bottom';
 export type NavAlignment = 'start' | 'center' | 'end';
 
 /**
+ * Nav variant options
+ */
+export type NavVariant = 'default' | 'float-top-center' | 'float-bottom-center';
+
+/**
  * Navbar component properties
  */
 export interface NavbarProps extends BaseComponentProps {
@@ -463,6 +468,31 @@ export interface NavbarProps extends BaseComponentProps {
    * Callback when expansion state changes
    */
   onToggle?: (expanded: boolean) => void;
+
+  /**
+   * Whether to show backdrop when expanded on mobile
+   */
+  backdrop?: boolean;
+
+  /**
+   * Whether to close navbar when clicking outside
+   */
+  closeOnOutsideClick?: boolean;
+
+  /**
+   * Whether to close navbar on escape key press
+   */
+  closeOnEscape?: boolean;
+
+  /**
+   * Custom aria-label for the navigation
+   */
+  ariaLabel?: string;
+
+  /**
+   * ID for the navbar (used for accessibility)
+   */
+  id?: string;
 }
 
 /**
@@ -478,6 +508,11 @@ export interface NavProps extends BaseComponentProps {
    * Alignment of nav items
    */
   alignment?: NavAlignment;
+
+  /**
+   * Nav variant (including float variants)
+   */
+  variant?: NavVariant;
 }
 
 /**
@@ -638,6 +673,96 @@ export interface MegaMenuLinkProps extends BaseComponentProps {
    * Link click handler
    */
   onClick?: () => void;
+}
+
+/**
+ * SideMenu component properties
+ */
+export interface SideMenuProps extends BaseComponentProps {
+  /**
+   * Menu title displayed at the top
+   */
+  title?: ReactNode;
+
+  /**
+   * Menu content (typically SideMenuList components)
+   */
+  children: ReactNode;
+
+  /**
+   * Whether the menu is open (for controlled component)
+   */
+  isOpen?: boolean;
+
+  /**
+   * Callback when menu open state changes
+   */
+  onToggle?: (isOpen: boolean) => void;
+
+  /**
+   * Whether the menu is collapsible on mobile
+   */
+  collapsible?: boolean;
+
+  /**
+   * Custom toggle icon
+   */
+  toggleIcon?: ReactNode;
+
+  /**
+   * ID for the menu (used for accessibility)
+   */
+  id?: string;
+}
+
+/**
+ * SideMenuList component properties
+ */
+export interface SideMenuListProps extends BaseComponentProps {
+  /**
+   * List items (typically SideMenuItem components)
+   */
+  children: ReactNode;
+}
+
+/**
+ * SideMenuItem component properties
+ */
+export interface SideMenuItemProps extends BaseComponentProps {
+  /**
+   * Item content
+   */
+  children: ReactNode;
+
+  /**
+   * Item href (renders as link)
+   */
+  href?: string;
+
+  /**
+   * Item click handler (renders as button if no href)
+   */
+  onClick?: (event: React.MouseEvent) => void;
+
+  /**
+   * Whether this item is active/current
+   */
+  active?: boolean;
+
+  /**
+   * Optional icon for the item
+   */
+  icon?: ReactNode;
+
+  /**
+   * Link target attribute
+   */
+  target?: string;
+
+  /**
+   * Link rel attribute
+   */
+  rel?: string;
 }
 
 /**

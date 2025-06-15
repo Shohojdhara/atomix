@@ -2,15 +2,45 @@
 @use './settings.typography' as *;
 @use './settings.colors' as *;
 
+// Navbar container and layout
 $navbar-padding-x: 64px !default;
 $navbar-padding-y: 8px !default;
+$navbar-container-max-width: 1600px !default;
+
+// Navbar appearance
 $navbar-bg: var(--#{$prefix}body-bg) !default;
 $navbar-border-width: 1px !default;
 $navbar-border-color: var(--#{$prefix}primary-border-subtle) !default;
+$navbar-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !default;
 
+// Brand/logo
 $navbar-brand-margin-end: 30px !default;
+$navbar-brand-font-size: $font-size-lg !default;
+$navbar-brand-font-weight: $font-weight-bold !default;
+$navbar-brand-color: var(--#{$prefix}body-color) !default;
 
+// Mobile toggler
 $navbar-toggler-size: 30px !default;
-$navbar-toggler-color: $black !default;
+$navbar-toggler-color: var(--#{$prefix}body-color) !default;
+$navbar-toggler-bg: transparent !default;
+$navbar-toggler-border: 0 !default;
+$navbar-toggler-border-radius: 4px !default;
+$navbar-toggler-focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !default;
 
-$navbar-container-max-width: 1600px !default;
+// Collapse/mobile menu
+$navbar-collapse-padding-top: 0.5rem !default;
+$navbar-collapse-transition: all 0.3s ease-in-out !default;
+
+// Backdrop (for mobile overlay)
+$navbar-backdrop-bg: rgba(0, 0, 0, 0.5) !default;
+$navbar-backdrop-z-index: 1029 !default;
+
+// Z-index values
+$navbar-z-index: 1030 !default;
+$navbar-fixed-z-index: 1030 !default;
+
+// Dark mode variants
+$navbar-bg-dark: var(--#{$prefix}gray-9) !default;
+$navbar-border-color-dark: var(--#{$prefix}gray-7) !default;
+$navbar-brand-color-dark: var(--#{$prefix}gray-1) !default;
+$navbar-toggler-color-dark: var(--#{$prefix}gray-1) !default;
