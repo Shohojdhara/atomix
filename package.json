@@ -1,6 +1,6 @@
 {
   "name": "@shohojdhara/atomix",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "description": "Atomix Design System - A modern component library for Web, React and Next.js applications with SSR support",
   "main": "dist/js/atomix.react.cjs.js",
   "module": "dist/js/atomix.react.esm.js",
