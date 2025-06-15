@@ -91,6 +91,10 @@ const baseConfig = {
     },
     // Prefer ESM modules when available
     mainFields: ['module', 'main'],
+    // Add fallbacks for Node.js core modules
+    fallback: {
+      crypto: false, // Provide empty mock for crypto
+    },
   },
   optimization: {
     minimize: true,

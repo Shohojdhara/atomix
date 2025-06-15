@@ -92,7 +92,7 @@ const nextConfig = {
   transpilePackages: ['@shohojdhara/atomix'],
   
   // Configure webpack for custom assets
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     // Handle SCSS files from Atomix
     config.module.rules.push({
       test: /\.scss$/,
@@ -108,11 +108,36 @@ const nextConfig = {
       ],
     });
 
+    // Handle TypeScript declaration files
+    config.module.rules.push({
+      test: /\.d\.ts$/,
+      exclude: /node_modules/,
+      use: [{ loader: 'ignore-loader' }]
+    });
+
+    // Add fallbacks for Node.js core modules (required for Webpack 5)
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        crypto: false, // Provide empty mock for crypto
+      };
+    }
+
     return config;
   },
 };
 
 module.exports = nextConfig;
+```
+
+For the TypeScript declaration files fix, you'll need to install:
+
+```bash
+npm install --save-dev ignore-loader
+# or
+yarn add --dev ignore-loader
+# or
+pnpm add --save-dev ignore-loader
 ```
 
 ### TypeScript Configuration

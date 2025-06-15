@@ -1,6 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
 import { TODO } from '../../../lib/constants/components';
 import type { TodoItem } from './types';
+import { generateUUID } from '../../../lib/utils';
 
 export type { TodoItem };
 export { useTodo } from '../../../lib/composables/useTodo';
@@ -371,7 +371,7 @@ export class Todo {
     if (!text.trim() || this.options.disabled) return null;
 
     const newItem: TodoItem = {
-      id: uuidv4(),
+      id: generateUUID(),
       text: text.trim(),
       completed: false,
     };
@@ -532,3 +532,43 @@ export class Todo {
 
 // Export todoInteractions
 export * from './todoInteractions';
+
+// Constants
+export const DEFAULT_TODO_ITEMS: TodoItem[] = [
+  {
+    id: '1',
+    text: 'Learn React',
+    completed: true
+  },
+  {
+    id: '2',
+    text: 'Build a Todo App',
+    completed: false
+  },
+  {
+    id: '3',
+    text: 'Deploy to production',
+    completed: false
+  }
+];
+
+// Helper functions
+
+/**
+ * Generate a unique ID for a todo item
+ */
+export function generateTodoId(): string {
+  return generateUUID();
+}
+
+/**
+ * Create a new todo item
+ * @param text - Text content for the todo
+ */
+export function createTodoItem(text: string): TodoItem {
+  return {
+    id: generateUUID(),
+    text,
+    completed: false
+  };
+}

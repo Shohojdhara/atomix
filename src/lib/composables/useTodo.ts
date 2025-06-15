@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { TodoProps, Size } from '../types/components';
-import { TodoItem } from '../../components/Todo/scripts/types';
-import { v4 as uuidv4 } from 'uuid';
+import { TodoItem, TodoProps } from '../types/components';
+import { generateUUID } from '../utils';
 import { TODO, SIZES } from '../constants/components';
 
 /**
@@ -57,7 +56,7 @@ export function useTodo(initialProps?: Partial<TodoProps>) {
     if (!text.trim()) return null;
 
     const newItem: TodoItem = {
-      id: uuidv4(),
+      id: generateUUID(),
       text: text.trim(),
       completed: false,
     };

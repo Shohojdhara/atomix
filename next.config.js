@@ -50,6 +50,21 @@ const nextConfig = {
       }
     });
 
+    // Handle TypeScript declaration files
+    config.module.rules.push({
+      test: /\.d\.ts$/,
+      exclude: /node_modules/,
+      use: [{ loader: 'ignore-loader' }]
+    });
+
+    // Add fallbacks for Node.js core modules
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        crypto: false, // Provide empty mock for crypto
+      };
+    }
+
     return config;
   },
 

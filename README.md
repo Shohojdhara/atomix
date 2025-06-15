@@ -13,6 +13,35 @@ Atomix is a modern component library for Web, React and Next.js applications wit
 - 📦 **Tree Shakeable** - Import only what you need
 - 🔧 **TypeScript** - Full TypeScript support
 
+## Webpack 5 & Next.js Compatibility
+
+Atomix is fully compatible with Webpack 5 and Next.js (including Turbopack). For projects using Webpack 5 or Next.js, you may need to add the following configuration to handle Node.js core modules:
+
+```js
+// For Next.js (in next.config.js)
+const nextConfig = {
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        crypto: false, // Provide empty mock for crypto
+      };
+    }
+    return config;
+  },
+  transpilePackages: ['@shohojdhara/atomix'],
+};
+
+// For Webpack 5 (in webpack.config.js)
+module.exports = {
+  resolve: {
+    fallback: {
+      crypto: false, // Provide empty mock for crypto
+    },
+  },
+};
+```
+
 ## Installation
 
 ```bash

@@ -3,7 +3,7 @@ import { TodoProps } from '../../lib/types/components';
 import { useTodo } from '../../lib/composables/useTodo';
 import { Icon } from '../Icon/Icon';
 import { TODO } from '../../lib/constants/components';
-import { v4 as uuidv4 } from 'uuid';
+import { generateUUID } from '../../lib/utils';
 
 export const Todo: React.FC<TodoProps> = ({
   items = [],
@@ -65,7 +65,7 @@ export const Todo: React.FC<TodoProps> = ({
 
     // Create a new todo item with a unique ID
     const newTodo = {
-      id: uuidv4(),
+      id: generateUUID(),
       text: inputText.trim(),
       completed: false,
     };
