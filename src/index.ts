@@ -8,13 +8,18 @@ export * from './lib';
 export * from './layouts';
 
 // Create a properly typed default export
+import * as components from './components';
+import { composables, utils, constants, types } from './lib';
+import * as layouts from './layouts';
+
 const atomix = {
   // Re-export all components and utilities
-  ...require('./components'),
-  composables: require('./lib').composables,
-  utils: require('./lib').utils,
-  constants: require('./lib').constants,
-  layouts: require('./layouts'),
+  ...components,
+  composables,
+  utils,
+  constants,
+  types,
+  layouts,
 };
 
 // Default export

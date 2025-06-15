@@ -21,6 +21,14 @@
       "default": "./dist/js/atomix.react.esm.js"
     },
     "./package.json": "./package.json",
+    "./styles": {
+      "types": "./css.d.ts",
+      "default": "./dist/css/atomix.css"
+    },
+    "./styles/min": {
+      "types": "./css.d.ts", 
+      "default": "./dist/css/atomix.min.css"
+    },
     "./css": {
       "types": "./css.d.ts",
       "default": "./dist/css/atomix.css"
@@ -30,8 +38,38 @@
       "default": "./dist/css/atomix.min.css"
     },
     "./scss": "./src/styles/index.scss",
-    "./next": {
-      "types": "./dist/types/index.d.ts",
+    "./components": {
+      "types": "./dist/types/components/index.d.ts",
+      "import": "./dist/js/atomix.react.esm.js",
+      "require": "./dist/js/atomix.react.cjs.js",
+      "default": "./dist/js/atomix.react.esm.js"
+    },
+    "./lib": {
+      "types": "./dist/types/lib/index.d.ts",
+      "import": "./dist/js/atomix.react.esm.js",
+      "require": "./dist/js/atomix.react.cjs.js",
+      "default": "./dist/js/atomix.react.esm.js"
+    },
+    "./layouts": {
+      "types": "./dist/types/layouts/index.d.ts",
+      "import": "./dist/js/atomix.react.esm.js",
+      "require": "./dist/js/atomix.react.cjs.js",
+      "default": "./dist/js/atomix.react.esm.js"
+    },
+    "./components/*": {
+      "types": "./dist/types/components/*/index.d.ts",
+      "import": "./dist/js/atomix.react.esm.js",
+      "require": "./dist/js/atomix.react.cjs.js",
+      "default": "./dist/js/atomix.react.esm.js"
+    },
+    "./lib/*": {
+      "types": "./dist/types/lib/*/index.d.ts",
+      "import": "./dist/js/atomix.react.esm.js",
+      "require": "./dist/js/atomix.react.cjs.js",
+      "default": "./dist/js/atomix.react.esm.js"
+    },
+    "./layouts/*": {
+      "types": "./dist/types/layouts/*/index.d.ts",
       "import": "./dist/js/atomix.react.esm.js",
       "require": "./dist/js/atomix.react.cjs.js",
       "default": "./dist/js/atomix.react.esm.js"
@@ -41,6 +79,39 @@
     "*": {
       "*": [
         "./dist/types/index.d.ts"
+      ],
+      "styles": [
+        "./css.d.ts"
+      ],
+      "styles/min": [
+        "./css.d.ts"
+      ],
+      "css": [
+        "./css.d.ts"
+      ],
+      "css/min": [
+        "./css.d.ts"
+      ],
+      "components": [
+        "./dist/types/components/index.d.ts"
+      ],
+      "components/*": [
+        "./dist/types/components/*/index.d.ts",
+        "./dist/types/components/*"
+      ],
+      "lib": [
+        "./dist/types/lib/index.d.ts"
+      ],
+      "lib/*": [
+        "./dist/types/lib/*/index.d.ts",
+        "./dist/types/lib/*"
+      ],
+      "layouts": [
+        "./dist/types/layouts/index.d.ts"
+      ],
+      "layouts/*": [
+        "./dist/types/layouts/*/index.d.ts",
+        "./dist/types/layouts/*"
       ]
     }
   },
@@ -118,8 +189,16 @@
     "webpack-node-externals": "^3.0.0"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    }
   },
   "scripts": {
     "dev": "npm run storybook",
@@ -177,6 +256,7 @@
     "CHANGELOG.md",
     "CONTRIBUTING.md",
     "NEXTJS_INTEGRATION.md",
+    "WEBPACK_INTEGRATION.md",
     "next.config.js",
     "css.d.ts",
     "examples",

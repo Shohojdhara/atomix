@@ -94,15 +94,15 @@ export * from './lib/index';
 // Export layouts
 export * from './layouts/index';
 
-// Define the default export
-declare const atomix: {
-  [key: string]: any;
-  
-  // Explicitly include lib namespaces
-  composables: any;
-  utils: any;
-  constants: any;
-  layouts: any;
+// Define the default export with proper typing
+import * as components from './components';
+import { composables, utils, constants, types } from './lib';
+
+declare const atomix: typeof components & {
+  composables: typeof composables;
+  utils: typeof utils;
+  constants: typeof constants;
+  types: typeof types;
 };
 
 // Default export
@@ -328,7 +328,14 @@ function fixLibTypes() {
 
 // Fix layouts index.d.ts file
 function fixLayouts() {
-  if (!ensureDirExists(LAYOUTS_DIR)) return;
+  if (!fs.existsSync(LAYOUTS_DIR)) {
+    // Create layouts directory and empty index file if it doesn't exist
+    fs.mkdirSync(LAYOUTS_DIR, { recursive: true });
+    const layoutsIndexPath = path.join(LAYOUTS_DIR, 'index.d.ts');
+    fs.writeFileSync(layoutsIndexPath, '// No layouts currently available\n');
+    console.log('✅ Created empty layouts index.d.ts');
+    return;
+  }
   
   try {
     // Get all layout directories
@@ -352,7 +359,9 @@ function fixLayouts() {
     
     // Create the layouts index.d.ts file
     const layoutsIndexPath = path.join(LAYOUTS_DIR, 'index.d.ts');
-    const content = exportStatements.join('\n') + '\n';
+    const content = exportStatements.length > 0 
+      ? exportStatements.join('\n') + '\n'
+      : '// No layouts currently available\n';
     fs.writeFileSync(layoutsIndexPath, content);
     
     console.log('✅ Fixed layouts index.d.ts');
@@ -372,13 +381,20 @@ function fixLibIndex() {
   }
   
   try {
-    // Create content that exports all lib modules
+    // Create content that exports all lib modules with proper typing
     const content = `// Auto-generated lib exports
 
-export * as composables from './composables';
-export * as utils from './utils';
-export * as types from './types';
-export * as constants from './constants';
+// Import and re-export as namespaces with proper typing
+import * as composablesImport from './composables';
+import * as utilsImport from './utils';
+import * as typesImport from './types';
+import * as constantsImport from './constants';
+
+// Export as namespaces with explicit typing
+export const composables: typeof composablesImport;
+export const utils: typeof utilsImport;
+export const types: typeof typesImport;
+export const constants: typeof constantsImport;
 `;
     
     fs.writeFileSync(libIndexPath, content);

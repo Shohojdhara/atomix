@@ -247,11 +247,7 @@ module.exports = (env = {}) => {
       plugins: [
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
-          filename: (pathData) => {
-            return pathData.chunk.name === 'minified'
-              ? `css/atomix.min.css`
-              : `css/atomix.css`;
-          },
+          filename: `css/atomix.css`,
         }),
         ...(analyze ? [new BundleAnalyzerPlugin({
           analyzerMode: 'static',
@@ -284,33 +280,51 @@ module.exports = (env = {}) => {
           arrowFunction: true,
           const: true,
           destructuring: true,
-          dynamicImport: true, // Support dynamic imports
+          dynamicImport: true,
+          forOf: true,
         },
         assetModuleFilename: 'assets/[name].[contenthash][ext]',
-        clean: false, // Don't clean on individual builds
-        chunkFilename: 'js/chunks/esm/[name].[contenthash].js', // Named chunks for better caching with unique path
+        clean: false,
+        chunkFilename: 'js/chunks/esm/[name].[contenthash].js',
+        // Ensure proper module format
+        chunkFormat: 'module',
+        chunkLoading: 'import',
       },
       experiments: {
         outputModule: true,
       },
       externals: [
-        // More specific externals for better control
-        {
-          'react': 'react',
-          'react-dom': 'react-dom',
-          'react-router-dom': 'react-router-dom',
-          'classnames': 'classnames',
-          'phosphor-react': 'phosphor-react',
-          'prism-react-renderer': 'prism-react-renderer',
-          // Next.js specific externals
-          'next': 'next',
-          'next/router': 'next/router',
-          'next/head': 'next/head',
-          'next/image': 'next/image',
-          'next/link': 'next/link',
+        // Function-based externals for better ESM compatibility
+        function ({ context, request }, callback) {
+          // Handle peer dependencies
+          if (/^react($|\/)/.test(request)) {
+            return callback(null, `module ${request}`);
+          }
+          if (/^react-dom($|\/)/.test(request)) {
+            return callback(null, `module ${request}`);
+          }
+          if (/^react-router-dom($|\/)/.test(request)) {
+            return callback(null, `module ${request}`);
+          }
+          if (/^classnames($|\/)/.test(request)) {
+            return callback(null, `module ${request}`);
+          }
+          if (/^phosphor-react($|\/)/.test(request)) {
+            return callback(null, `module ${request}`);
+          }
+          if (/^prism-react-renderer($|\/)/.test(request)) {
+            return callback(null, `module ${request}`);
+          }
+          // Next.js externals
+          if (/^next($|\/)/.test(request)) {
+            return callback(null, `module ${request}`);
+          }
+          // Exclude CSS/SCSS files
+          if (/\.(scss|css|d\.ts)$/.test(request)) {
+            return callback();
+          }
+          callback();
         },
-        // Exclude CSS/SCSS/TypeScript declaration files
-        /\.(scss|css|d\.ts)$/,
       ],
       plugins: [
         // Clean the dist directory only on the first build, but preserve CSS files
@@ -322,7 +336,7 @@ module.exports = (env = {}) => {
           reportFilename: 'reports/react-esm.html',
           openAnalyzer: false,
         })] : []),
-      ].filter(Boolean), // Filter out null values
+      ].filter(Boolean),
     });
   }
   
@@ -340,26 +354,52 @@ module.exports = (env = {}) => {
         library: {
           type: 'commonjs2',
         },
+        environment: {
+          // Target older Node.js environments for better compatibility
+          arrowFunction: false,
+          const: false,
+          destructuring: false,
+          forOf: false,
+          dynamicImport: false,
+        },
         assetModuleFilename: 'assets/[name].[contenthash][ext]',
         clean: false,
-        chunkFilename: 'js/chunks/cjs/[name].[contenthash].js', // Named chunks for better caching with unique path
+        chunkFilename: 'js/chunks/cjs/[name].[contenthash].js',
+        chunkFormat: 'commonjs',
+        chunkLoading: 'require',
       },
       externals: [
-        {
-          'react': 'react',
-          'react-dom': 'react-dom',
-          'react-router-dom': 'react-router-dom',
-          'classnames': 'classnames',
-          'phosphor-react': 'phosphor-react',
-          'prism-react-renderer': 'prism-react-renderer',
-          // Next.js specific externals
-          'next': 'next',
-          'next/router': 'next/router',
-          'next/head': 'next/head',
-          'next/image': 'next/image',
-          'next/link': 'next/link',
+        // Function-based externals for better CJS compatibility
+        function ({ context, request }, callback) {
+          // Handle peer dependencies
+          if (/^react($|\/)/.test(request)) {
+            return callback(null, `commonjs2 ${request}`);
+          }
+          if (/^react-dom($|\/)/.test(request)) {
+            return callback(null, `commonjs2 ${request}`);
+          }
+          if (/^react-router-dom($|\/)/.test(request)) {
+            return callback(null, `commonjs2 ${request}`);
+          }
+          if (/^classnames($|\/)/.test(request)) {
+            return callback(null, `commonjs2 ${request}`);
+          }
+          if (/^phosphor-react($|\/)/.test(request)) {
+            return callback(null, `commonjs2 ${request}`);
+          }
+          if (/^prism-react-renderer($|\/)/.test(request)) {
+            return callback(null, `commonjs2 ${request}`);
+          }
+          // Next.js externals
+          if (/^next($|\/)/.test(request)) {
+            return callback(null, `commonjs2 ${request}`);
+          }
+          // Exclude CSS/SCSS files
+          if (/\.(scss|css|d\.ts)$/.test(request)) {
+            return callback();
+          }
+          callback();
         },
-        /\.(scss|css|d\.ts)$/,
       ],
       plugins: analyze ? [new BundleAnalyzerPlugin({
         analyzerMode: 'static',
@@ -367,7 +407,7 @@ module.exports = (env = {}) => {
         openAnalyzer: false,
       })] : [],
       // Optimize for Node.js environment
-      target: 'node',
+      target: ['node', 'es5'],
       node: {
         __dirname: false,
         __filename: false,
