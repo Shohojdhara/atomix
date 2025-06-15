@@ -6,7 +6,7 @@ import { NAVBAR } from '../../../lib/constants/components';
 /**
  * Navbar component provides a responsive navigation header with brand, navigation items,
  * and collapsible mobile menu functionality.
- * 
+ *
  * @example
  * ```tsx
  * <Navbar brand="My App" position="fixed" collapsible>

@@ -15,7 +15,7 @@ const DEFAULTS = {
 /**
  * Navbar component class for vanilla JavaScript implementation
  * Provides responsive navigation functionality with collapsible mobile menu
- * 
+ *
  * @example
  * ```js
  * // Initialize a navbar
@@ -23,7 +23,7 @@ const DEFAULTS = {
  *   collapsible: true,
  *   autoClose: true
  * });
- * 
+ *
  * // Control programmatically
  * navbar.expand();
  * navbar.collapse();
@@ -43,10 +43,9 @@ export default class Navbar {
    * @param options - Configuration options
    */
   constructor(element: string | HTMLElement, options: any = {}) {
-    this.element = typeof element === 'string' 
-      ? document.querySelector(element) as HTMLElement 
-      : element;
-    
+    this.element =
+      typeof element === 'string' ? (document.querySelector(element) as HTMLElement) : element;
+
     if (!this.element) {
       throw new Error('Navbar element not found');
     }
@@ -167,7 +166,7 @@ export default class Navbar {
     // Dispatch custom event
     const eventType = this.isExpanded ? 'navbar:expanded' : 'navbar:collapsed';
     const customEvent = new CustomEvent(eventType, {
-      detail: { navbar: this, expanded: this.isExpanded }
+      detail: { navbar: this, expanded: this.isExpanded },
     });
     this.element.dispatchEvent(customEvent);
   }

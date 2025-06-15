@@ -3,7 +3,7 @@ import { SideMenuListProps } from '../../../lib/types/components';
 
 /**
  * SideMenuList component provides a container for side menu items.
- * 
+ *
  * @example
  * ```tsx
  * <SideMenuList>

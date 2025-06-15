@@ -4,7 +4,7 @@ import { useNav } from '../../../lib/composables/useNavbar';
 
 /**
  * Nav component provides a container for navigation items with proper alignment and accessibility.
- * 
+ *
  * @example
  * ```tsx
  * <Nav alignment="center">
@@ -18,7 +18,10 @@ import { useNav } from '../../../lib/composables/useNavbar';
  * ```
  */
 export const Nav = forwardRef<HTMLUListElement, NavProps>(
-  ({ children, alignment = 'start', variant = 'default', className = '', disabled = false }, ref) => {
+  (
+    { children, alignment = 'start', variant = 'default', className = '', disabled = false },
+    ref
+  ) => {
     const { generateNavClass } = useNav({ alignment, variant });
 
     const navClass = generateNavClass({ alignment, variant, className });

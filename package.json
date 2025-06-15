@@ -1,7 +1,7 @@
 {
   "name": "@shohojdhara/atomix",
   "version": "0.1.17",
-  "description": "Atomix Design System - A modern component library for web applications",
+  "description": "Atomix Design System - A modern component library for Web, React and Next.js applications with SSR support",
   "main": "dist/js/atomix.react.cjs.js",
   "module": "dist/js/atomix.react.esm.js",
   "unpkg": "dist/js/atomix.react.umd.js",
@@ -29,7 +29,13 @@
       "types": "./css.d.ts",
       "default": "./dist/css/atomix.min.css"
     },
-    "./scss": "./src/styles/index.scss"
+    "./scss": "./src/styles/index.scss",
+    "./next": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/js/atomix.react.esm.js",
+      "require": "./dist/js/atomix.react.cjs.js",
+      "default": "./dist/js/atomix.react.esm.js"
+    }
   },
   "typesVersions": {
     "*": {
@@ -164,15 +170,28 @@
   },
   "files": [
     "dist",
+    "src",
     "README.md",
     "LICENSE",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "NEXTJS_INTEGRATION.md",
+    "next.config.js",
+    "css.d.ts",
+    "examples",
+    "implementation-guide.md",
+    "tsconfig.json",
+    "babel.config.js",
+    "postcss.config.js",
+    "webpack.config.js"
   ],
   "keywords": [
     "ui",
     "components",
     "design-system",
     "react",
+    "nextjs",
+    "next.js",
     "typescript",
     "css",
     "scss",
@@ -182,7 +201,9 @@
     "accessibility",
     "responsive",
     "modern",
-    "frontend"
+    "frontend",
+    "ssr",
+    "server-side-rendering"
   ],
   "repository": {
     "type": "git",

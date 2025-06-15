@@ -7,7 +7,7 @@ import { Icon } from '../../Icon';
 /**
  * SideMenu component provides a collapsible navigation menu with title and menu items.
  * Automatically collapses on mobile devices and can be toggled via a header button.
- * 
+ *
  * @example
  * ```tsx
  * <SideMenu title="Navigation">
@@ -65,7 +65,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
             aria-expanded={isOpenState}
             aria-controls={id ? `${id}-content` : undefined}
             aria-disabled={disabled}
-            onKeyDown={(e) => {
+            onKeyDown={e => {
               if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
                 e.preventDefault();
                 handleToggle();
@@ -73,15 +73,11 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
             }}
           >
             <span className="c-side-menu__title">{title}</span>
-            <span className="c-side-menu__toggler-icon">
-              {toggleIcon || defaultToggleIcon}
-            </span>
+            <span className="c-side-menu__toggler-icon">{toggleIcon || defaultToggleIcon}</span>
           </div>
         )}
 
-        {title && !collapsible && (
-          <h3 className="c-side-menu__title">{title}</h3>
-        )}
+        {title && !collapsible && <h3 className="c-side-menu__title">{title}</h3>}
 
         <div
           ref={wrapperRef}

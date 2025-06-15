@@ -40,22 +40,22 @@ type Story = StoryObj<typeof meta>;
 // Mock icon component for stories
 const HomeIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-    <polyline points="9,22 9,12 15,12 15,22"/>
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    <polyline points="9,22 9,12 15,12 15,22" />
   </svg>
 );
 
 const UserIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-    <circle cx="12" cy="7" r="4"/>
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
   </svg>
 );
 
 const SettingsIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="12" cy="12" r="3"/>
-    <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+    <circle cx="12" cy="12" r="3" />
+    <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1" />
   </svg>
 );
 
@@ -64,9 +64,11 @@ export const Default: Story = {
   args: {
     alignment: 'start',
   },
-  render: (args) => (
+  render: args => (
     <Nav {...args}>
-      <NavItem href="/" active>Home</NavItem>
+      <NavItem href="/" active>
+        Home
+      </NavItem>
       <NavItem href="/about">About</NavItem>
       <NavItem href="/services">Services</NavItem>
       <NavItem href="/contact">Contact</NavItem>
@@ -79,10 +81,12 @@ export const StartAlignment: Story = {
   args: {
     alignment: 'start',
   },
-  render: (args) => (
+  render: args => (
     <div style={{ width: '100%', border: '1px dashed #ccc', padding: '1rem' }}>
       <Nav {...args}>
-        <NavItem href="/" active>Home</NavItem>
+        <NavItem href="/" active>
+          Home
+        </NavItem>
         <NavItem href="/about">About</NavItem>
         <NavItem href="/services">Services</NavItem>
         <NavItem href="/contact">Contact</NavItem>
@@ -95,10 +99,12 @@ export const CenterAlignment: Story = {
   args: {
     alignment: 'center',
   },
-  render: (args) => (
+  render: args => (
     <div style={{ width: '100%', border: '1px dashed #ccc', padding: '1rem' }}>
       <Nav {...args}>
-        <NavItem href="/" active>Home</NavItem>
+        <NavItem href="/" active>
+          Home
+        </NavItem>
         <NavItem href="/about">About</NavItem>
         <NavItem href="/services">Services</NavItem>
         <NavItem href="/contact">Contact</NavItem>
@@ -111,10 +117,12 @@ export const EndAlignment: Story = {
   args: {
     alignment: 'end',
   },
-  render: (args) => (
+  render: args => (
     <div style={{ width: '100%', border: '1px dashed #ccc', padding: '1rem' }}>
       <Nav {...args}>
-        <NavItem href="/" active>Home</NavItem>
+        <NavItem href="/" active>
+          Home
+        </NavItem>
         <NavItem href="/about">About</NavItem>
         <NavItem href="/services">Services</NavItem>
         <NavItem href="/contact">Contact</NavItem>
@@ -128,16 +136,24 @@ export const WithDropdown: Story = {
   args: {
     alignment: 'start',
   },
-  render: (args) => (
+  render: args => (
     <Nav {...args}>
-      <NavItem href="/" active>Home</NavItem>
+      <NavItem href="/" active>
+        Home
+      </NavItem>
       <NavItem href="/about">About</NavItem>
       <NavDropdown title="Services">
         <Menu>
-          <MenuItem href="/web-design" icon={<HomeIcon />}>Web Design</MenuItem>
-          <MenuItem href="/mobile-apps" icon={<UserIcon />}>Mobile Apps</MenuItem>
+          <MenuItem href="/web-design" icon={<HomeIcon />}>
+            Web Design
+          </MenuItem>
+          <MenuItem href="/mobile-apps" icon={<UserIcon />}>
+            Mobile Apps
+          </MenuItem>
           <MenuDivider />
-          <MenuItem href="/consulting" icon={<SettingsIcon />}>Consulting</MenuItem>
+          <MenuItem href="/consulting" icon={<SettingsIcon />}>
+            Consulting
+          </MenuItem>
         </Menu>
       </NavDropdown>
       <NavItem href="/contact">Contact</NavItem>
@@ -150,9 +166,11 @@ export const WithMultipleDropdowns: Story = {
   args: {
     alignment: 'start',
   },
-  render: (args) => (
+  render: args => (
     <Nav {...args}>
-      <NavItem href="/" active>Home</NavItem>
+      <NavItem href="/" active>
+        Home
+      </NavItem>
       <NavDropdown title="Services">
         <Menu>
           <MenuItem href="/web-design">Web Design</MenuItem>
@@ -179,9 +197,11 @@ export const Disabled: Story = {
     alignment: 'start',
     disabled: true,
   },
-  render: (args) => (
+  render: args => (
     <Nav {...args}>
-      <NavItem href="/" active>Home</NavItem>
+      <NavItem href="/" active>
+        Home
+      </NavItem>
       <NavItem href="/about">About</NavItem>
       <NavItem href="/services">Services</NavItem>
       <NavItem href="/contact">Contact</NavItem>
@@ -194,9 +214,11 @@ export const WithActiveStates: Story = {
   args: {
     alignment: 'start',
   },
-  render: (args) => (
+  render: args => (
     <Nav {...args}>
-      <NavItem href="/" active>Home</NavItem>
+      <NavItem href="/" active>
+        Home
+      </NavItem>
       <NavItem href="/about">About</NavItem>
       <NavItem href="/services">Services</NavItem>
       <NavItem href="/contact">Contact</NavItem>
@@ -215,31 +237,37 @@ export const AllAlignments: Story = {
         <h3>Start Alignment</h3>
         <div style={{ border: '1px dashed #ccc', padding: '1rem' }}>
           <Nav alignment="start">
-            <NavItem href="/" active>Home</NavItem>
+            <NavItem href="/" active>
+              Home
+            </NavItem>
             <NavItem href="/about">About</NavItem>
             <NavItem href="/services">Services</NavItem>
             <NavItem href="/contact">Contact</NavItem>
           </Nav>
         </div>
       </div>
-      
+
       <div style={{ marginBottom: '2rem' }}>
         <h3>Center Alignment</h3>
         <div style={{ border: '1px dashed #ccc', padding: '1rem' }}>
           <Nav alignment="center">
-            <NavItem href="/" active>Home</NavItem>
+            <NavItem href="/" active>
+              Home
+            </NavItem>
             <NavItem href="/about">About</NavItem>
             <NavItem href="/services">Services</NavItem>
             <NavItem href="/contact">Contact</NavItem>
           </Nav>
         </div>
       </div>
-      
+
       <div style={{ marginBottom: '2rem' }}>
         <h3>End Alignment</h3>
         <div style={{ border: '1px dashed #ccc', padding: '1rem' }}>
           <Nav alignment="end">
-            <NavItem href="/" active>Home</NavItem>
+            <NavItem href="/" active>
+              Home
+            </NavItem>
             <NavItem href="/about">About</NavItem>
             <NavItem href="/services">Services</NavItem>
             <NavItem href="/contact">Contact</NavItem>
@@ -256,11 +284,26 @@ export const FloatTopCenter: Story = {
     alignment: 'center',
     variant: 'float-top-center',
   },
-  render: (args) => (
-    <div style={{ height: '500vh', width: '95vw', position: 'relative', backgroundSize: 'contain', backgroundImage: 'url("https://images.unsplash.com/photo-1749301560225-3032826b9e7f?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")', padding: '2rem' }}>
-      <p>This is a demo of the floating nav. The nav should appear as a floating bubble at the top center.</p>
+  render: args => (
+    <div
+      style={{
+        height: '500vh',
+        width: '95vw',
+        position: 'relative',
+        backgroundSize: 'contain',
+        backgroundImage:
+          'url("https://images.unsplash.com/photo-1749301560225-3032826b9e7f?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+        padding: '2rem',
+      }}
+    >
+      <p>
+        This is a demo of the floating nav. The nav should appear as a floating bubble at the top
+        center.
+      </p>
       <Nav {...args}>
-        <NavItem href="/" active>Home</NavItem>
+        <NavItem href="/" active>
+          Home
+        </NavItem>
         <NavItem href="/about">About</NavItem>
         <NavItem href="/services">Services</NavItem>
         <NavItem href="/contact">Contact</NavItem>
@@ -274,11 +317,26 @@ export const FloatBottomCenter: Story = {
     alignment: 'center',
     variant: 'float-bottom-center',
   },
-  render: (args) => (
-    <div style={{ height: '500vh', width: '95vw', position: 'relative', backgroundSize: 'contain', backgroundImage: 'url("https://images.unsplash.com/photo-1749301560225-3032826b9e7f?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")', padding: '2rem' }}>
-      <p>This is a demo of the floating nav. The nav should appear as a floating bubble at the bottom center.</p>
+  render: args => (
+    <div
+      style={{
+        height: '500vh',
+        width: '95vw',
+        position: 'relative',
+        backgroundSize: 'contain',
+        backgroundImage:
+          'url("https://images.unsplash.com/photo-1749301560225-3032826b9e7f?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+        padding: '2rem',
+      }}
+    >
+      <p>
+        This is a demo of the floating nav. The nav should appear as a floating bubble at the bottom
+        center.
+      </p>
       <Nav {...args}>
-        <NavItem href="/" active>Home</NavItem>
+        <NavItem href="/" active>
+          Home
+        </NavItem>
         <NavItem href="/about">About</NavItem>
         <NavItem href="/services">Services</NavItem>
         <NavItem href="/contact">Contact</NavItem>
@@ -293,13 +351,29 @@ export const FloatWithIcons: Story = {
     alignment: 'center',
     variant: 'float-bottom-center',
   },
-  render: (args) => (
-    <div style={{ height: '500vh', width: '95vw', position: 'relative', backgroundSize: 'contain', backgroundImage: 'url("https://images.unsplash.com/photo-1749301560225-3032826b9e7f?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")', padding: '2rem' }}>
+  render: args => (
+    <div
+      style={{
+        height: '500vh',
+        width: '95vw',
+        position: 'relative',
+        backgroundSize: 'contain',
+        backgroundImage:
+          'url("https://images.unsplash.com/photo-1749301560225-3032826b9e7f?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+        padding: '2rem',
+      }}
+    >
       <p>Floating nav with icons - perfect for mobile-first navigation.</p>
       <Nav {...args}>
-        <NavItem href="/" active><HomeIcon /></NavItem>
-        <NavItem href="/profile"><UserIcon /></NavItem>
-        <NavItem href="/settings"><SettingsIcon /></NavItem>
+        <NavItem href="/" active>
+          <HomeIcon />
+        </NavItem>
+        <NavItem href="/profile">
+          <UserIcon />
+        </NavItem>
+        <NavItem href="/settings">
+          <SettingsIcon />
+        </NavItem>
       </Nav>
     </div>
   ),
@@ -315,17 +389,21 @@ export const CompleteShowcase: Story = {
       <div style={{ marginBottom: '3rem' }}>
         <h3>Basic Navigation</h3>
         <Nav alignment="start">
-          <NavItem href="/" active>Home</NavItem>
+          <NavItem href="/" active>
+            Home
+          </NavItem>
           <NavItem href="/about">About</NavItem>
           <NavItem href="/services">Services</NavItem>
           <NavItem href="/contact">Contact</NavItem>
         </Nav>
       </div>
-      
+
       <div style={{ marginBottom: '3rem' }}>
         <h3>Navigation with Dropdown</h3>
         <Nav alignment="start">
-          <NavItem href="/" active>Home</NavItem>
+          <NavItem href="/" active>
+            Home
+          </NavItem>
           <NavDropdown title="Services">
             <Menu>
               <MenuItem href="/web-design">Web Design</MenuItem>
@@ -337,26 +415,42 @@ export const CompleteShowcase: Story = {
           <NavItem href="/contact">Contact</NavItem>
         </Nav>
       </div>
-      
+
       <div style={{ marginBottom: '3rem' }}>
         <h3>Centered Navigation</h3>
         <div style={{ border: '1px dashed #ccc', padding: '1rem' }}>
           <Nav alignment="center">
-            <NavItem href="/" active>Home</NavItem>
+            <NavItem href="/" active>
+              Home
+            </NavItem>
             <NavItem href="/about">About</NavItem>
             <NavItem href="/services">Services</NavItem>
             <NavItem href="/contact">Contact</NavItem>
           </Nav>
         </div>
       </div>
-      
-      <div style={{ height: '200px', position: 'relative', background: '#f5f5f5', padding: '2rem', marginBottom: '3rem' }}>
+
+      <div
+        style={{
+          height: '200px',
+          position: 'relative',
+          background: '#f5f5f5',
+          padding: '2rem',
+          marginBottom: '3rem',
+        }}
+      >
         <h3>Float Bottom Center</h3>
         <p>Floating navigation bubble at bottom center</p>
         <Nav alignment="center" variant="float-bottom-center">
-          <NavItem href="/" active><HomeIcon /></NavItem>
-          <NavItem href="/profile"><UserIcon /></NavItem>
-          <NavItem href="/settings"><SettingsIcon /></NavItem>
+          <NavItem href="/" active>
+            <HomeIcon />
+          </NavItem>
+          <NavItem href="/profile">
+            <UserIcon />
+          </NavItem>
+          <NavItem href="/settings">
+            <SettingsIcon />
+          </NavItem>
         </Nav>
       </div>
     </div>

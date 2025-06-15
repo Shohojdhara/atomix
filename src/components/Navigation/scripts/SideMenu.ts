@@ -15,7 +15,7 @@ const DEFAULTS = {
 /**
  * SideMenu component class for vanilla JavaScript implementation
  * Provides collapsible side navigation functionality with responsive behavior
- * 
+ *
  * @example
  * ```js
  * // Initialize a side menu
@@ -23,7 +23,7 @@ const DEFAULTS = {
  *   collapsible: true,
  *   autoOpen: true
  * });
- * 
+ *
  * // Control programmatically
  * sideMenu.open();
  * sideMenu.close();
@@ -46,10 +46,9 @@ export default class SideMenu {
    * @param options - Configuration options
    */
   constructor(element: string | HTMLElement, options: any = {}) {
-    this.element = typeof element === 'string' 
-      ? document.querySelector(element) as HTMLElement 
-      : element;
-    
+    this.element =
+      typeof element === 'string' ? (document.querySelector(element) as HTMLElement) : element;
+
     if (!this.element) {
       throw new Error('SideMenu element not found');
     }
@@ -132,7 +131,7 @@ export default class SideMenu {
    */
   private _handleResize(): void {
     const isMobile = window.innerWidth < 768; // MD breakpoint
-    
+
     if (!this.options.collapsible) {
       // Always open if not collapsible
       this._updateOpenState(true, false);
@@ -142,7 +141,7 @@ export default class SideMenu {
     if (!isMobile && this.options.autoOpen) {
       // Auto-open on desktop
       this._updateOpenState(true, false);
-      
+
       // Reset wrapper height on desktop
       if (this.wrapper) {
         this.wrapper.style.height = 'auto';
@@ -161,7 +160,7 @@ export default class SideMenu {
     if (!this.wrapper || !this.inner) return;
 
     const isMobile = window.innerWidth < 768;
-    
+
     if (isMobile && this.options.collapsible) {
       if (this.isOpen) {
         this.wrapper.style.height = `${this.inner.scrollHeight}px`;
@@ -205,7 +204,7 @@ export default class SideMenu {
     // Dispatch custom event
     const eventType = this.isOpen ? 'sidemenu:opened' : 'sidemenu:closed';
     const customEvent = new CustomEvent(eventType, {
-      detail: { sideMenu: this, open: this.isOpen }
+      detail: { sideMenu: this, open: this.isOpen },
     });
     this.element.dispatchEvent(customEvent);
   }
@@ -251,7 +250,7 @@ export default class SideMenu {
    */
   public updateOptions(newOptions: Partial<typeof DEFAULTS>): void {
     this.options = { ...this.options, ...newOptions };
-    
+
     // Re-apply responsive behavior if autoOpen changed
     if ('autoOpen' in newOptions) {
       this._handleResize();
@@ -300,7 +299,7 @@ export default class SideMenu {
 
     // Reset DOM state
     this.element.classList.remove(SIDE_MENU.CLASSES.IS_OPEN);
-    
+
     if (this.wrapper) {
       this.wrapper.style.height = '';
       this.wrapper.removeAttribute('aria-hidden');

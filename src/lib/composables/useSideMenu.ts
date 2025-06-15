@@ -17,7 +17,7 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
 
   // Local open state for when not controlled externally
   const [isOpenState, setIsOpenState] = useState(defaultProps.isOpen || false);
-  
+
   // Refs for managing responsive behavior
   const wrapperRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
@@ -33,7 +33,7 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
   useEffect(() => {
     const handleResize = () => {
       const isMobile = window.innerWidth < 768; // MD breakpoint
-      
+
       if (!isMobile && defaultProps.collapsible) {
         // Auto-open on desktop
         if (typeof defaultProps.onToggle === 'function') {
@@ -41,14 +41,15 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
         } else {
           setIsOpenState(true);
         }
-        
+
         // Reset wrapper height on desktop
         if (wrapperRef.current) {
           wrapperRef.current.style.height = 'auto';
         }
       } else if (isMobile && wrapperRef.current && innerRef.current) {
         // Set proper height for mobile animation
-        const currentOpen = typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
+        const currentOpen =
+          typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
         if (currentOpen) {
           wrapperRef.current.style.height = `${innerRef.current.scrollHeight}px`;
         } else {
@@ -59,7 +60,7 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
 
     handleResize(); // Initial call
     window.addEventListener('resize', handleResize);
-    
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -68,10 +69,11 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
   // Update wrapper height when open state changes on mobile
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
-    
+
     if (isMobile && wrapperRef.current && innerRef.current && defaultProps.collapsible) {
-      const currentOpen = typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
-      
+      const currentOpen =
+        typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
+
       if (currentOpen) {
         wrapperRef.current.style.height = `${innerRef.current.scrollHeight}px`;
       } else {
@@ -86,10 +88,7 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
    * @returns Class string
    */
   const generateSideMenuClass = (props: Partial<SideMenuProps & { isOpen?: boolean }>): string => {
-    const {
-      className = '',
-      isOpen = false,
-    } = props;
+    const { className = '', isOpen = false } = props;
 
     const openClass = isOpen ? SIDE_MENU.CLASSES.IS_OPEN : '';
 
@@ -110,7 +109,8 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
   const handleToggle = () => {
     if (defaultProps.disabled) return;
 
-    const newState = typeof defaultProps.isOpen !== 'undefined' ? !defaultProps.isOpen : !isOpenState;
+    const newState =
+      typeof defaultProps.isOpen !== 'undefined' ? !defaultProps.isOpen : !isOpenState;
 
     if (typeof defaultProps.onToggle === 'function') {
       // Controlled component

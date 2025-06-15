@@ -5,22 +5,22 @@ import { useSideMenuItem } from '../../../lib/composables/useSideMenu';
 /**
  * SideMenuItem component represents a single navigation item in a side menu.
  * Can be rendered as a link or button with active and disabled states.
- * 
+ *
  * @example
  * ```tsx
  * // As a link
  * <SideMenuItem href="/about" active>About</SideMenuItem>
- * 
+ *
  * // As a button
  * <SideMenuItem onClick={() => console.log('clicked')}>
  *   Click me
  * </SideMenuItem>
- * 
+ *
  * // With icon
  * <SideMenuItem href="/settings" icon={<Icon name="Settings" />}>
  *   Settings
  * </SideMenuItem>
- * 
+ *
  * // Disabled
  * <SideMenuItem href="/disabled" disabled>
  *   Disabled Item

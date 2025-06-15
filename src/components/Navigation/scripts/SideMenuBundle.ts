@@ -1,7 +1,7 @@
 import SideMenu from './SideMenu';
-import { 
-  initFromDataAttributes, 
-  getInstance, 
+import {
+  initFromDataAttributes,
+  getInstance,
   create,
   disposeAll,
   openAll,
@@ -11,14 +11,14 @@ import {
   setActiveByHref,
   setActiveByText,
   setupGlobalEventDelegation,
-  autoSetActiveFromURL
+  autoSetActiveFromURL,
 } from './SideMenuInteractions';
 
 // Global registration for browser environments
 if (typeof window !== 'undefined') {
   // Initialize the Atomix global object if it doesn't exist
   (window as any).Atomix = (window as any).Atomix || {};
-  
+
   // Add SideMenu to the global Atomix object
   (window as any).Atomix.SideMenu = {
     create: create,
@@ -34,9 +34,9 @@ if (typeof window !== 'undefined') {
     setupGlobalEventDelegation: setupGlobalEventDelegation,
     autoSetActiveFromURL: autoSetActiveFromURL,
     // Direct class access
-    SideMenu: SideMenu
+    SideMenu: SideMenu,
   };
-  
+
   // Auto-initialize side menus when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
@@ -52,7 +52,7 @@ if (typeof window !== 'undefined') {
 }
 
 // Export everything for module bundling
-export { 
+export {
   SideMenu as default,
   initFromDataAttributes,
   getInstance,
@@ -65,5 +65,5 @@ export {
   setActiveByHref,
   setActiveByText,
   setupGlobalEventDelegation,
-  autoSetActiveFromURL
+  autoSetActiveFromURL,
 };

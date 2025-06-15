@@ -114,10 +114,10 @@ export function useNav(initialProps?: Partial<NavProps>) {
    * @returns Class string
    */
   const generateNavClass = (props: Partial<NavProps>): string => {
-    const { 
-      alignment = defaultProps.alignment, 
+    const {
+      alignment = defaultProps.alignment,
       variant = defaultProps.variant,
-      className = '' 
+      className = '',
     } = props;
 
     const alignmentClass = alignment !== 'start' ? `c-nav--${alignment}` : '';

@@ -4,12 +4,12 @@ import { useNavItem } from '../../../lib/composables/useNavbar';
 
 /**
  * NavItem component represents a single navigation item that can be a link, dropdown trigger, or mega menu trigger.
- * 
+ *
  * @example
  * ```tsx
  * // Simple nav item
  * <NavItem href="/about" active>About</NavItem>
- * 
+ *
  * // Dropdown nav item
  * <NavItem dropdown>
  *   Services
@@ -18,7 +18,7 @@ import { useNavItem } from '../../../lib/composables/useNavbar';
  *     <MenuItem href="/mobile">Mobile Apps</MenuItem>
  *   </Menu>
  * </NavItem>
- * 
+ *
  * // Mega menu nav item
  * <NavItem megaMenu>
  *   Products

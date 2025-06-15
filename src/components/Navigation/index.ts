@@ -12,12 +12,12 @@ export { SideMenuList } from './SideMenu/SideMenuList';
 export { SideMenuItem } from './SideMenu/SideMenuItem';
 
 // Types
-export type { 
-  NavbarProps, 
-  NavProps, 
-  NavItemProps, 
+export type {
+  NavbarProps,
+  NavProps,
+  NavItemProps,
   NavDropdownProps,
   SideMenuProps,
   SideMenuListProps,
-  SideMenuItemProps
+  SideMenuItemProps,
 } from '../../lib/types/components';

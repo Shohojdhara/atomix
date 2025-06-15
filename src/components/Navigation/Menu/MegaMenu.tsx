@@ -1,5 +1,9 @@
 import React, { forwardRef, ReactNode } from 'react';
-import { MegaMenuProps, MegaMenuColumnProps, MegaMenuLinkProps } from '../../../lib/types/components';
+import {
+  MegaMenuProps,
+  MegaMenuColumnProps,
+  MegaMenuLinkProps,
+} from '../../../lib/types/components';
 import { Icon } from '../../Icon/Icon';
 import { mapIconName } from './Menu'; // Import the mapping function
 

@@ -192,7 +192,7 @@ export const MultipleLists: Story = {
             Reports
           </SideMenuItem>
         </SideMenuList>
-        
+
         <SideMenuList>
           <SideMenuItem href="/users" icon={<Icon name="Users" size="sm" />}>
             Users
@@ -263,7 +263,7 @@ export const NonCollapsible: Story = {
 
 // Controlled Component
 export const Controlled: Story = {
-  render: (args) => {
+  render: args => {
     const [isOpen, setIsOpen] = React.useState(false);
 
     const handleToggle = (newIsOpen: boolean) => {
@@ -273,17 +273,14 @@ export const Controlled: Story = {
 
     return (
       <div>
-        <button 
-          onClick={() => handleToggle(!isOpen)}
-          style={{ marginBottom: '1rem' }}
-        >
+        <button onClick={() => handleToggle(!isOpen)} style={{ marginBottom: '1rem' }}>
           Toggle Menu (Currently: {isOpen ? 'Open' : 'Closed'})
         </button>
-        
-        <SideMenu 
+
+        <SideMenu
           {...args}
-          title="Controlled Menu" 
-          isOpen={isOpen} 
+          title="Controlled Menu"
+          isOpen={isOpen}
           onToggle={handleToggle}
           collapsible
         >
@@ -389,7 +386,7 @@ export const ComplexNavigation: Story = {
             Dashboard
           </SideMenuItem>
         </SideMenuList>
-        
+
         <SideMenuList>
           <SideMenuItem href="/users" icon={<Icon name="Users" size="sm" />}>
             User Management
@@ -401,7 +398,7 @@ export const ComplexNavigation: Story = {
             Audit Logs
           </SideMenuItem>
         </SideMenuList>
-        
+
         <SideMenuList>
           <SideMenuItem href="/content" icon={<Icon name="Article" size="sm" />}>
             Content Management
@@ -413,7 +410,7 @@ export const ComplexNavigation: Story = {
             SEO Settings
           </SideMenuItem>
         </SideMenuList>
-        
+
         <SideMenuList>
           <SideMenuItem href="/analytics" icon={<Icon name="TrendUp" size="sm" />}>
             Analytics
@@ -425,7 +422,7 @@ export const ComplexNavigation: Story = {
             Data Exports
           </SideMenuItem>
         </SideMenuList>
-        
+
         <SideMenuList>
           <SideMenuItem href="/settings" icon={<Icon name="Gear" size="sm" />}>
             System Settings
@@ -446,13 +443,13 @@ export const ComplexNavigation: Story = {
 
 // Responsive Demo
 export const ResponsiveDemo: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ maxWidth: '300px' }}>
       <p style={{ marginBottom: '1rem', fontSize: '0.875rem', color: '#666' }}>
-        Resize your browser window to see the responsive behavior.
-        On mobile (less than 768px), the menu becomes collapsible.
+        Resize your browser window to see the responsive behavior. On mobile (less than 768px), the
+        menu becomes collapsible.
       </p>
-      
+
       <SideMenu {...args} title="Responsive Menu" collapsible>
         <SideMenuList>
           <SideMenuItem href="/" icon={<Icon name="House" size="sm" />} active>
@@ -471,7 +468,7 @@ export const ResponsiveDemo: Story = {
             Contact
           </SideMenuItem>
         </SideMenuList>
-        
+
         <SideMenuList>
           <SideMenuItem href="/account" icon={<Icon name="User" size="sm" />}>
             My Account
@@ -511,7 +508,7 @@ export const EcommerceNavigation: Story = {
             Sports & Outdoors
           </SideMenuItem>
         </SideMenuList>
-        
+
         <SideMenuList>
           <SideMenuItem href="/account" icon={<Icon name="User" size="sm" />}>
             My Account
@@ -535,7 +532,7 @@ export const EcommerceNavigation: Story = {
 
 // Interactive Demo with Actions
 export const InteractiveDemo: Story = {
-  render: (args) => {
+  render: args => {
     const [activeItem, setActiveItem] = React.useState('/dashboard');
     const [isOpen, setIsOpen] = React.useState(false);
 
@@ -552,36 +549,44 @@ export const InteractiveDemo: Story = {
 
     return (
       <div>
-        <div style={{ marginBottom: '1rem', padding: '0.5rem', backgroundColor: '#f5f5f5', borderRadius: '4px' }}>
-          <strong>Current Page:</strong> {activeItem} | <strong>Menu:</strong> {isOpen ? 'Open' : 'Closed'}
+        <div
+          style={{
+            marginBottom: '1rem',
+            padding: '0.5rem',
+            backgroundColor: '#f5f5f5',
+            borderRadius: '4px',
+          }}
+        >
+          <strong>Current Page:</strong> {activeItem} | <strong>Menu:</strong>{' '}
+          {isOpen ? 'Open' : 'Closed'}
         </div>
-        
-        <SideMenu 
+
+        <SideMenu
           {...args}
-          title="Interactive Menu" 
+          title="Interactive Menu"
           isOpen={isOpen}
           onToggle={handleToggle}
           collapsible
         >
           <SideMenuList>
-            <SideMenuItem 
-              href="/dashboard" 
-              icon={<Icon name="ChartBar" size="sm" />} 
+            <SideMenuItem
+              href="/dashboard"
+              icon={<Icon name="ChartBar" size="sm" />}
               active={activeItem === '/dashboard'}
               onClick={() => handleItemClick('/dashboard')}
             >
               Dashboard
             </SideMenuItem>
-            <SideMenuItem 
-              href="/analytics" 
+            <SideMenuItem
+              href="/analytics"
               icon={<Icon name="TrendUp" size="sm" />}
               active={activeItem === '/analytics'}
               onClick={() => handleItemClick('/analytics')}
             >
               Analytics
             </SideMenuItem>
-            <SideMenuItem 
-              href="/users" 
+            <SideMenuItem
+              href="/users"
               icon={<Icon name="Users" size="sm" />}
               active={activeItem === '/users'}
               onClick={() => handleItemClick('/users')}
@@ -589,20 +594,17 @@ export const InteractiveDemo: Story = {
               Users
             </SideMenuItem>
           </SideMenuList>
-          
+
           <SideMenuList>
-            <SideMenuItem 
-              href="/settings" 
+            <SideMenuItem
+              href="/settings"
               icon={<Icon name="Gear" size="sm" />}
               active={activeItem === '/settings'}
               onClick={() => handleItemClick('/settings')}
             >
               Settings
             </SideMenuItem>
-            <SideMenuItem 
-              onClick={fn()}
-              icon={<Icon name="SignOut" size="sm" />}
-            >
+            <SideMenuItem onClick={fn()} icon={<Icon name="SignOut" size="sm" />}>
               Logout
             </SideMenuItem>
           </SideMenuList>

@@ -25,7 +25,9 @@ $btn-border-width: 1px !default;
 
 $btn-font-weight: $font-weight-medium !default;
 $btn-focus-width: 2px !default;
-$btn-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06) !default;
+$btn-box-shadow:
+  0 1px 3px rgba(0, 0, 0, 0.1),
+  0 1px 2px rgba(0, 0, 0, 0.06) !default;
 
 $btn-disabled-color: var(--#{$prefix}disabled-text-emphasis) !default;
 $btn-disabled-bg: var(--#{$prefix}secondary-bg-subtle) !default;
@@ -63,9 +65,13 @@ $btn-active-border-tint-amount: 10% !default;
 
 // Enhanced button states
 $btn-hover-transform: translateY(-1px) !default;
-$btn-hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1) !default;
+$btn-hover-shadow:
+  0 4px 12px rgba(0, 0, 0, 0.15),
+  0 2px 4px rgba(0, 0, 0, 0.1) !default;
 $btn-active-transform: translateY(0) !default;
-$btn-active-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1) !default;
+$btn-active-shadow:
+  0 1px 3px rgba(0, 0, 0, 0.2),
+  0 1px 2px rgba(0, 0, 0, 0.1) !default;
 $btn-focus-shadow-opacity: 0.25 !default;
 
 // Enable pointer cursor on buttons

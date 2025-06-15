@@ -52,7 +52,8 @@
   padding: var(--#{config.$prefix}side-menu-padding-y) var(--#{config.$prefix}side-menu-padding-x);
   background: var(--#{config.$prefix}side-menu-bg);
   border-radius: var(--#{config.$prefix}side-menu-border-radius);
-  border: var(--#{config.$prefix}side-menu-border-width) solid var(--#{config.$prefix}side-menu-border-color);
+  border: var(--#{config.$prefix}side-menu-border-width) solid
+    var(--#{config.$prefix}side-menu-border-color);
   box-shadow: var(--#{config.$prefix}side-menu-box-shadow);
 
   // 3. Responsive Styles
@@ -89,7 +90,8 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: var(--#{config.$prefix}side-menu-toggler-padding-y) var(--#{config.$prefix}side-menu-toggler-padding-x);
+    padding: var(--#{config.$prefix}side-menu-toggler-padding-y)
+      var(--#{config.$prefix}side-menu-toggler-padding-x);
     background: var(--#{config.$prefix}side-menu-toggler-bg);
     border: none;
     border-radius: var(--#{config.$prefix}side-menu-toggler-border-radius);
@@ -115,7 +117,7 @@
       transform: scale(0.98);
     }
 
-    &[aria-disabled="true"] {
+    &[aria-disabled='true'] {
       opacity: 0.6;
       cursor: not-allowed;
       pointer-events: none;
@@ -149,7 +151,8 @@
     align-items: center;
     gap: var(--#{config.$prefix}side-menu-item-gap);
     width: 100%;
-    padding: var(--#{config.$prefix}side-menu-item-padding-y) var(--#{config.$prefix}side-menu-item-padding-x);
+    padding: var(--#{config.$prefix}side-menu-item-padding-y)
+      var(--#{config.$prefix}side-menu-item-padding-x);
     color: var(--#{config.$prefix}side-menu-item-color);
     font-size: var(--#{config.$prefix}side-menu-item-font-size);
     font-weight: var(--#{config.$prefix}side-menu-item-font-weight);
@@ -183,7 +186,7 @@
     }
 
     &.is-disabled,
-    &[aria-disabled="true"] {
+    &[aria-disabled='true'] {
       color: var(--#{config.$prefix}side-menu-item-disabled-color);
       background: var(--#{config.$prefix}side-menu-item-disabled-bg);
       cursor: not-allowed;

@@ -292,6 +292,12 @@ module.exports = (env = {}) => {
           'classnames': 'classnames',
           'phosphor-react': 'phosphor-react',
           'prism-react-renderer': 'prism-react-renderer',
+          // Next.js specific externals
+          'next': 'next',
+          'next/router': 'next/router',
+          'next/head': 'next/head',
+          'next/image': 'next/image',
+          'next/link': 'next/link',
         },
         // Exclude CSS/SCSS/TypeScript declaration files
         /\.(scss|css|d\.ts)$/,
@@ -336,6 +342,12 @@ module.exports = (env = {}) => {
           'classnames': 'classnames',
           'phosphor-react': 'phosphor-react',
           'prism-react-renderer': 'prism-react-renderer',
+          // Next.js specific externals
+          'next': 'next',
+          'next/router': 'next/router',
+          'next/head': 'next/head',
+          'next/image': 'next/image',
+          'next/link': 'next/link',
         },
         /\.(scss|css|d\.ts)$/,
       ],
@@ -406,6 +418,37 @@ module.exports = (env = {}) => {
           commonjs2: 'phosphor-react',
           commonjs: 'phosphor-react',
           amd: 'phosphor-react',
+        },
+        // Next.js externals for UMD build
+        'next': {
+          root: 'Next',
+          commonjs2: 'next',
+          commonjs: 'next',
+          amd: 'next',
+        },
+        'next/router': {
+          root: 'NextRouter',
+          commonjs2: 'next/router',
+          commonjs: 'next/router',
+          amd: 'next/router',
+        },
+        'next/head': {
+          root: 'NextHead',
+          commonjs2: 'next/head',
+          commonjs: 'next/head',
+          amd: 'next/head',
+        },
+        'next/image': {
+          root: 'NextImage',
+          commonjs2: 'next/image',
+          commonjs: 'next/image',
+          amd: 'next/image',
+        },
+        'next/link': {
+          root: 'NextLink',
+          commonjs2: 'next/link',
+          commonjs: 'next/link',
+          amd: 'next/link',
         },
       },
       plugins: analyze ? [new BundleAnalyzerPlugin({
