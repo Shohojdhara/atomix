@@ -111,9 +111,15 @@ const nextConfig = {
     // Handle TypeScript declaration files
     config.module.rules.push({
       test: /\.d\.ts$/,
+      use: ['ignore-loader'],
       exclude: /node_modules/,
-      use: [{ loader: 'ignore-loader' }]
     });
+
+    // Ignore TypeScript declaration file warnings
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings || []),
+      { module: /\.d\.ts$/ }
+    ];
 
     // Add fallbacks for Node.js core modules (required for Webpack 5)
     if (!isServer) {

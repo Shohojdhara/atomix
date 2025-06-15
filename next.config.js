@@ -53,8 +53,8 @@ const nextConfig = {
     // Handle TypeScript declaration files
     config.module.rules.push({
       test: /\.d\.ts$/,
+      use: ['ignore-loader'],
       exclude: /node_modules/,
-      use: [{ loader: 'ignore-loader' }]
     });
 
     // Add fallbacks for Node.js core modules
@@ -64,6 +64,12 @@ const nextConfig = {
         crypto: false, // Provide empty mock for crypto
       };
     }
+
+    // Ignore TypeScript declaration file warnings
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings || []),
+      { module: /\.d\.ts$/ }
+    ];
 
     return config;
   },

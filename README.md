@@ -21,6 +21,19 @@ Atomix is fully compatible with Webpack 5 and Next.js (including Turbopack). For
 // For Next.js (in next.config.js)
 const nextConfig = {
   webpack: (config, { isServer }) => {
+    // Handle TypeScript declaration files
+    config.module.rules.push({
+      test: /\.d\.ts$/,
+      use: ['ignore-loader'],
+      exclude: /node_modules/,
+    });
+
+    // Ignore TypeScript declaration file warnings
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings || []),
+      { module: /\.d\.ts$/ }
+    ];
+
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -39,6 +52,12 @@ module.exports = {
       crypto: false, // Provide empty mock for crypto
     },
   },
+  // Fix TypeScript declaration files issues
+  ignoreWarnings: [
+    {
+      module: /\.d\.ts$/,
+    },
+  ],
 };
 ```
 
@@ -52,150 +71,20 @@ yarn add @shohojdhara/atomix
 pnpm add @shohojdhara/atomix
 ```
 
-## Quick Start
-
-### Next.js Integration
+## Usage
 
 ```tsx
-// app/layout.tsx (App Router)
-import '@shohojdhara/atomix/css'
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  )
-}
-```
-
-```tsx
-// app/page.tsx
-import { Button, Hero, Card } from '@shohojdhara/atomix'
-
-export default function HomePage() {
-  return (
-    <Hero
-      title="Welcome to Next.js with Atomix"
-      subtitle="Modern UI Components"
-      alignment="center"
-      actions={<Button variant="primary" label="Get Started" />}
-    />
-  )
-}
-```
-
-For detailed Next.js integration guide, see [NEXTJS_INTEGRATION.md](./NEXTJS_INTEGRATION.md).
-
-### React Applications
-
-```tsx
-// Import CSS
-import '@shohojdhara/atomix/css'
-
-// Import components
-import { Button, Card, Modal } from '@shohojdhara/atomix'
+import { Button } from '@shohojdhara/atomix';
+import '@shohojdhara/atomix/css'; // Import styles
 
 function App() {
   return (
-    <div>
-      <Card>
-        <div className="c-card__body">
-          <h3 className="c-card__title">Welcome to Atomix</h3>
-          <p className="c-card__text">Modern UI components for React</p>
-          <Button variant="primary" label="Get Started" />
-        </div>
-      </Card>
-    </div>
-  )
+    <Button variant="primary">Click Me</Button>
+  );
 }
 ```
 
-## Usage Options
-
-### Import Styles
-
-```tsx
-// Default CSS
-import '@shohojdhara/atomix/css'
-
-// Minified CSS
-import '@shohojdhara/atomix/css/min'
-
-// SCSS for customization
-import '@shohojdhara/atomix/scss'
-```
-
-### Import Components
-
-```tsx
-// Named imports (recommended for tree shaking)
-import { Button, Card, Modal } from '@shohojdhara/atomix'
-
-// Default import
-import Atomix from '@shohojdhara/atomix'
-const { Button, Card } = Atomix
-```
-
-### TypeScript Support
-
-```tsx
-import { ButtonProps, CardProps, Size, ThemeColor } from '@shohojdhara/atomix'
-
-// Component with typed props
-const MyButton: React.FC<ButtonProps> = (props) => {
-  return <Button {...props} />
-}
-```
-
-## Available Components
-
-### Core Components
-- **Button** - Versatile button component with multiple variants
-- **Card** - Flexible content container
-- **Badge** - Status and labeling component
-- **Avatar** - User profile images and placeholders
-
-### Navigation
-- **Navbar** - Application navigation bar
-- **Breadcrumb** - Navigation breadcrumbs
-- **Pagination** - Data pagination controls
-- **Steps** - Step-by-step navigation
-
-### Form Components
-- **Input** - Text input fields
-- **Select** - Dropdown selection
-- **Checkbox** - Checkbox inputs
-- **Radio** - Radio button inputs
-- **Toggle** - Switch toggle controls
-
-### Feedback
-- **Modal** - Dialog and overlay modals
-- **Tooltip** - Contextual tooltips
-- **Popover** - Rich contextual popovers
-- **Messages** - Alert and notification messages
-- **Progress** - Progress indicators
-
-### Data Display
-- **DataTable** - Feature-rich data tables
-- **List** - Structured lists
-- **Accordion** - Collapsible content sections
-- **Tabs** - Tabbed content organization
-
-### Layout
-- **Hero** - Hero sections with background support
-- **Grid** - Responsive grid system
-- **Container** - Content containers
-
-And many more! See our [Storybook](https://liimonx.github.io/atomix/storybook) for the complete component library.
-
-## Customization
-
-### CSS Variables
+## CSS Variables
 
 ```css
 :root {
@@ -249,3 +138,9 @@ MIT © [liimonx](https://github.com/liimonx)
 
 - [GitHub Issues](https://github.com/liimonx/atomix/issues)
 - [Discussions](https://github.com/liimonx/atomix/discussions)
+
+## Quick Start
+
+### Next.js Integration
+
+```

@@ -538,18 +538,18 @@ export const DEFAULT_TODO_ITEMS: TodoItem[] = [
   {
     id: '1',
     text: 'Learn React',
-    completed: true
+    completed: true,
   },
   {
     id: '2',
     text: 'Build a Todo App',
-    completed: false
+    completed: false,
   },
   {
     id: '3',
     text: 'Deploy to production',
-    completed: false
-  }
+    completed: false,
+  },
 ];
 
 // Helper functions
@@ -569,6 +569,6 @@ export function createTodoItem(text: string): TodoItem {
   return {
     id: generateUUID(),
     text,
-    completed: false
+    completed: false,
   };
 }

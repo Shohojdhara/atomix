@@ -96,6 +96,12 @@ const baseConfig = {
       crypto: false, // Provide empty mock for crypto
     },
   },
+  // Fix TypeScript declaration files issues
+  ignoreWarnings: [
+    {
+      module: /\.d\.ts$/,
+    },
+  ],
   optimization: {
     minimize: true,
     minimizer: [
