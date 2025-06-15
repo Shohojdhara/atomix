@@ -16,10 +16,18 @@
   $active-background: null,
   $active-border: null
 ) {
-  --#{config.$prefix}btn-color: #{colors.$white};
+  $btn-text-color: colors.$white;
+  $btn-text-hover-color: colors.$white;
+
+  @if ($color == 'light') {
+    $btn-text-color: var(--#{config.$prefix}dark-text-emphasis);
+    $btn-text-hover-color: var(--#{config.$prefix}dark-text-emphasis);
+  }
+
+  --#{config.$prefix}btn-color: #{$btn-text-color};
   --#{config.$prefix}btn-bg: #{$background};
   --#{config.$prefix}btn-border-color: #{$border};
-  --#{config.$prefix}btn-hover-color: #{colors.$white};
+  --#{config.$prefix}btn-hover-color: #{$btn-text-hover-color};
   --#{config.$prefix}btn-hover-bg: #{if(
       $hover-background,
       $hover-background,
@@ -49,14 +57,14 @@
 // Button outline variant mixin
 @mixin btn-outline-variant(
   $color,
-  $color-hover: colors.$white,
+  $color-hover: 'light',
   $hover-background: $color,
   $hover-border: $color,
   $active-background: $color,
   $active-border: $color
 ) {
   @if ($hover-background == 'primary') {
-    $hover-background: 'secondary';
+    $hover-background: 'primary';
   }
 
   @if ($hover-background == 'light') {

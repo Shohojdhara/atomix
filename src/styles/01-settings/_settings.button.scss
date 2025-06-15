@@ -3,29 +3,29 @@
 @use 'settings.typography' as *;
 
 $btn-color: var(--#{$prefix}body-color) !default;
-$btn-padding-y: 10px !default;
-$btn-padding-x: 16px !default;
+$btn-padding-y: 12px !default;
+$btn-padding-x: 20px !default;
 $btn-font-family: $font-family-base !default;
 $btn-font-size: $font-size-base !default;
-$btn-line-height: 1 !default;
-$btn-white-space: null !default; // Set to
-$btn-icon-size: 22px !default;
-$btn-icon-size-sm: 20px !default;
-$btn-icon-size-lg: 24px !default;
+$btn-line-height: 1.2 !default;
+$btn-white-space: nowrap !default;
+$btn-icon-size: 20px !default;
+$btn-icon-size-sm: 18px !default;
+$btn-icon-size-lg: 22px !default;
 
 $btn-padding-y-sm: 8px !default;
 $btn-padding-x-sm: 16px !default;
 $btn-font-size-sm: $font-size-sm !default;
 
-$btn-padding-y-lg: 14px !default;
-$btn-padding-x-lg: 16px !default;
-$btn-font-size-lg: $font-size-base !default;
+$btn-padding-y-lg: 16px !default;
+$btn-padding-x-lg: 24px !default;
+$btn-font-size-lg: $font-size-lg !default;
 
 $btn-border-width: 1px !default;
 
-$btn-font-weight: $font-weight-normal !default;
-$btn-focus-width: 1px !default;
-$btn-box-shadow: none !default;
+$btn-font-weight: $font-weight-medium !default;
+$btn-focus-width: 2px !default;
+$btn-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06) !default;
 
 $btn-disabled-color: var(--#{$prefix}disabled-text-emphasis) !default;
 $btn-disabled-bg: var(--#{$prefix}secondary-bg-subtle) !default;
@@ -49,10 +49,8 @@ $btn-link-border-color-hover: var(--#{$prefix}secondary-border-subtle) !default;
 $btn-inner-gap: 8px !default;
 
 $btn-transition:
-  color 0.15s ease-in-out,
-  background-color 0.15s ease-in-out,
-  border-color 0.15s ease-in-out,
-  box-shadow 0.15s ease-in-out !default;
+  all 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+  transform 0.15s ease-in-out !default;
 
 $btn-hover-bg-shade-amount: 71.5% !default;
 $btn-hover-bg-tint-amount: 82% !default;
@@ -62,6 +60,13 @@ $btn-active-bg-shade-amount: 20% !default;
 $btn-active-bg-tint-amount: 20% !default;
 $btn-active-border-shade-amount: 25% !default;
 $btn-active-border-tint-amount: 10% !default;
+
+// Enhanced button states
+$btn-hover-transform: translateY(-1px) !default;
+$btn-hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1) !default;
+$btn-active-transform: translateY(0) !default;
+$btn-active-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1) !default;
+$btn-focus-shadow-opacity: 0.25 !default;
 
 // Enable pointer cursor on buttons
 $enable-button-pointers: true !default;
