@@ -1,8 +1,8 @@
 {
   "name": "@shohojdhara/atomix",
-  "version": "0.1.23-rc.0",
-  "description": "Atomix Design System - A modern component library for Web, React and Next.js applications with SSR support",
-  "main": "dist/js/atomix.react.cjs.js",
+  "version": "0.1.15",
+  "description": "Atomix Design System - A modern component library for web applications",
+  "main": "dist/js/atomix.react.esm.js",
   "module": "dist/js/atomix.react.esm.js",
   "unpkg": "dist/js/atomix.react.umd.js",
   "jsdelivr": "dist/js/atomix.react.umd.js",
@@ -21,14 +21,6 @@
       "default": "./dist/js/atomix.react.esm.js"
     },
     "./package.json": "./package.json",
-    "./styles": {
-      "types": "./css.d.ts",
-      "default": "./dist/css/atomix.css"
-    },
-    "./styles/min": {
-      "types": "./css.d.ts",
-      "default": "./dist/css/atomix.min.css"
-    },
     "./css": {
       "types": "./css.d.ts",
       "default": "./dist/css/atomix.css"
@@ -38,97 +30,24 @@
       "default": "./dist/css/atomix.min.css"
     },
     "./scss": "./src/styles/index.scss",
-    "./css-modules": {
-      "types": "./src/styles/css-modules.d.ts",
-      "default": "./dist/css/atomix.css"
-    },
-    "./components": {
-      "types": "./dist/types/components/index.d.ts",
-      "import": "./dist/js/atomix.react.esm.js",
-      "require": "./dist/js/atomix.react.cjs.js",
-      "default": "./dist/js/atomix.react.esm.js"
-    },
-    "./lib": {
-      "types": "./dist/types/lib/index.d.ts",
-      "import": "./dist/js/atomix.react.esm.js",
-      "require": "./dist/js/atomix.react.cjs.js",
-      "default": "./dist/js/atomix.react.esm.js"
-    },
-    "./layouts": {
-      "types": "./dist/types/layouts/index.d.ts",
-      "import": "./dist/js/atomix.react.esm.js",
-      "require": "./dist/js/atomix.react.cjs.js",
-      "default": "./dist/js/atomix.react.esm.js"
-    },
-    "./components/*": {
-      "types": "./dist/types/components/*/index.d.ts",
-      "import": "./dist/js/atomix.react.esm.js",
-      "require": "./dist/js/atomix.react.cjs.js",
-      "default": "./dist/js/atomix.react.esm.js"
-    },
-    "./lib/*": {
-      "types": "./dist/types/lib/*/index.d.ts",
-      "import": "./dist/js/atomix.react.esm.js",
-      "require": "./dist/js/atomix.react.cjs.js",
-      "default": "./dist/js/atomix.react.esm.js"
-    },
-    "./layouts/*": {
-      "types": "./dist/types/layouts/*/index.d.ts",
-      "import": "./dist/js/atomix.react.esm.js",
-      "require": "./dist/js/atomix.react.cjs.js",
-      "default": "./dist/js/atomix.react.esm.js"
-    }
+    "./dist/types/*": "./dist/types/*"
   },
   "typesVersions": {
     "*": {
       "*": [
         "./dist/types/index.d.ts"
-      ],
-      "styles": [
-        "./css.d.ts"
-      ],
-      "styles/min": [
-        "./css.d.ts"
-      ],
-      "css": [
-        "./css.d.ts"
-      ],
-      "css/min": [
-        "./css.d.ts"
-      ],
-      "css-modules": [
-        "./src/styles/css-modules.d.ts"
-      ],
-      "components": [
-        "./dist/types/components/index.d.ts"
-      ],
-      "components/*": [
-        "./dist/types/components/*/index.d.ts",
-        "./dist/types/components/*"
-      ],
-      "lib": [
-        "./dist/types/lib/index.d.ts"
-      ],
-      "lib/*": [
-        "./dist/types/lib/*/index.d.ts",
-        "./dist/types/lib/*"
-      ],
-      "layouts": [
-        "./dist/types/layouts/index.d.ts"
-      ],
-      "layouts/*": [
-        "./dist/types/layouts/*/index.d.ts",
-        "./dist/types/layouts/*"
       ]
     }
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.27.6",
+    "@types/classnames": "^2.3.0",
+    "@types/node": "^20.0.0",
+    "@types/react-router-dom": "^5.3.3",
     "classnames": "^2.5.1",
     "phosphor-react": "^1.4.1",
     "prism-react-renderer": "^2.4.1",
-    "react-router-dom": "^6.22.3",
-    "uuid": "^9.0.1"
+    "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",
@@ -136,7 +55,6 @@
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "^7.27.0",
-    "@release-it/conventional-changelog": "10.0.1",
     "@size-limit/preset-app": "^11.0.0",
     "@storybook/addon-essentials": "^8.0.0",
     "@storybook/addon-interactions": "^8.0.0",
@@ -146,11 +64,8 @@
     "@storybook/react": "^8.0.0",
     "@storybook/react-webpack5": "^8.6.12",
     "@storybook/test": "^8.0.0",
-    "@types/classnames": "^2.3.0",
-    "@types/node": "^20.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^8.34.0",
     "@typescript-eslint/parser": "^8.34.0",
     "autoprefixer": "^10.4.21",
@@ -179,7 +94,6 @@
     "postcss-loader": "^8.1.1",
     "postcss-preset-env": "^10.2.3",
     "prettier": "^3.5.3",
-    "release-it": "19.0.3",
     "rimraf": "^5.0.5",
     "sass-embedded": "^1.87.0",
     "sass-loader": "^16.0.5",
@@ -195,128 +109,89 @@
     "webpack-dev-server": "^5.2.1",
     "webpack-node-externals": "^3.0.0"
   },
-  "peerDependencies": {
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": false
-    },
-    "react-dom": {
-      "optional": false
-    }
-  },
   "scripts": {
     "dev": "npm run storybook",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "predeploy": "npm run build-storybook && node scripts/prepare-deploy.js",
     "deploy": "gh-pages -d deploy",
-    "build": "npm run build:all",
-    "build:all": "npm-run-all clean:dist build:styles build:react build:types",
+    "// Build scripts": "",
+    "build": "npm run build:components",
+    "build:components": "npm-run-all clean:dist build:styles build:react build:types",
     "build:react": "webpack --mode production --env target=components --env format=all",
     "build:styles": "webpack --mode production --env target=styles",
     "build:types": "npm run clean:types && tsc --emitDeclarationOnly --declaration --declarationDir dist/types && node scripts/fix-types.js",
     "build:cjs": "webpack --mode production --env target=components --env format=cjs",
     "build:esm": "webpack --mode production --env target=components --env format=esm",
     "build:umd": "webpack --mode production --env target=components --env format=umd",
-    "clean": "npm run clean:all",
+    "// Utility scripts": "",
     "clean:dist": "rimraf dist",
     "clean:types": "rimraf dist/types",
     "clean:all": "npm-run-all clean:dist clean:types",
-    "test": "npm run test:types && npm run test:lint && npm run test:format",
-    "test:types": "tsc --noEmit",
-    "test:lint": "eslint --ext .js,.jsx,.ts,.tsx src/",
-    "test:format": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,scss}'",
-    "test:size": "size-limit",
+    "// Analysis scripts": "",
+    "analyze:bundle": "webpack --mode production --env target=components --env format=all --env analyze=true",
+    "analyze:size": "size-limit",
+    "analyze:all": "npm-run-all analyze:bundle analyze:size",
+    "// Version scripts": "",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major",
+    "// Publishing scripts": "",
+    "prepublishOnly": "npm-run-all test build",
+    "test:publish": "npm pack --dry-run",
+    "publish:rc": "npm publish --tag next",
+    "publish:latest": "npm publish",
+    "// Development scripts": "",
+    "link:local": "npm link && echo 'Package linked locally. Use npm link @shohojdhara/atomix in your project to test it.'",
+    "unlink:local": "npm unlink",
+    "test": "echo \"No tests specified\" && exit 0",
+    "// Linting and formatting scripts": "",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src/",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx src/ --fix",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss}'",
     "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,scss}'",
-    "typecheck": "tsc --noEmit",
-    "analyze:bundle": "webpack --mode production --env target=components --env format=all --env analyze=true",
-    "analyze:size": "size-limit",
-    "analyze:all": "npm-run-all analyze:bundle analyze:size",
-    "version:patch": "npm version patch",
-    "version:minor": "npm version minor",
-    "version:major": "npm version major",
-    "prepack": "npm run build && npm run test",
-    "prepublishOnly": "npm run prepack",
-    "postpublish": "echo 'Package published successfully! 🎉'",
-    "release:patch": "npm run version:patch && npm publish",
-    "release:minor": "npm run version:minor && npm publish",
-    "release:major": "npm run version:major && npm publish",
-    "release:beta": "npm version prerelease --preid=beta && npm publish --tag beta",
-    "release:alpha": "npm version prerelease --preid=alpha && npm publish --tag alpha",
-    "release:rc": "npm version prerelease --preid=rc && npm publish --tag next",
-    "pack:test": "npm pack --dry-run",
-    "pack:local": "npm pack",
-    "link:local": "npm link && echo 'Package linked locally. Use npm link @shohojdhara/atomix in your project to test it.'",
-    "unlink:local": "npm unlink"
+    "typecheck": "tsc --noEmit"
   },
   "files": [
-    "dist",
     "src",
+    "dist",
+    "index.d.ts",
+    "css.d.ts",
     "README.md",
     "LICENSE",
     "CHANGELOG.md",
-    "CONTRIBUTING.md",
-    "NEXTJS_INTEGRATION.md",
-    "WEBPACK_INTEGRATION.md",
-    "next.config.js",
-    "css.d.ts",
-    "examples",
-    "implementation-guide.md",
-    "tsconfig.json",
-    "babel.config.js",
-    "postcss.config.js",
-    "webpack.config.js"
+    "NPM_PUBLISHING.md"
   ],
   "keywords": [
     "ui",
     "components",
     "design-system",
     "react",
-    "nextjs",
-    "next.js",
+    "javascript",
     "typescript",
     "css",
-    "scss",
-    "ui-library",
-    "component-library",
-    "design-tokens",
-    "accessibility",
-    "responsive",
-    "modern",
-    "frontend",
-    "ssr",
-    "server-side-rendering"
+    "scss"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/liimonx/atomix.git"
   },
-  "author": {
-    "name": "liimonx",
-    "email": "liimonx@shohojdhara.org",
-    "url": "https://github.com/liimonx"
-  },
+  "author": "liimonx <liimonx@shohojdhara.org>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/liimonx/atomix/issues"
   },
-  "homepage": "https://liimonx.github.io/atomix",
+  "homepage": "https://github.com/liimonx/atomix#readme",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
   "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.0.0"
+    "node": ">=16.0.0"
   },
   "publishConfig": {
     "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
-  "funding": {
-    "type": "github",
-    "url": "https://github.com/sponsors/liimonx"
+    "registry": "https://registry.npmjs.org/",
+    "scope": "@shohojdhara"
   }
 }

@@ -1,3 +1,12 @@
+@use 'settings.config' as config;
+@use 'settings.border-radius' as *;
+
 $form-width: 100% !default;
 $form-items-spacer-y: 32px !default;
 $form-items-spacer-x: 12px !default;
+
+// Input variables
+$input-border-radius: $border-radius !default;
+$input-border-color: var(--#{config.$prefix}primary-border-subtle) !default;
+$input-focus-border-color: var(--#{config.$prefix}primary) !default;
+$input-focus-box-shadow: 0 0 0 2px rgba(var(--#{config.$prefix}primary-rgb), 0.25) !default;

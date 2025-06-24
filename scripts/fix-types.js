@@ -12,6 +12,21 @@ const COMPONENTS_DIR = path.resolve(TYPES_DIR, 'components');
 const LIB_DIR = path.resolve(TYPES_DIR, 'lib');
 const LAYOUTS_DIR = path.resolve(TYPES_DIR, 'layouts');
 
+// Helper function to delete a directory recursively
+function deleteDirectory(dirPath) {
+  if (fs.existsSync(dirPath)) {
+    fs.readdirSync(dirPath).forEach((file, index) => {
+      const curPath = path.join(dirPath, file);
+      if (fs.lstatSync(curPath).isDirectory()) { // recurse
+        deleteDirectory(curPath);
+      } else { // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(dirPath);
+  }
+}
+
 // Ensure directories exist
 if (!fs.existsSync(TYPES_DIR)) {
   console.error('Types directory does not exist. Run tsc first.');
@@ -25,6 +40,14 @@ function ensureDirExists(dir) {
     return false;
   }
   return true;
+}
+
+// Clean up unwanted declaration files
+function cleanUpDeclarationFiles() {
+  console.log('🧹 Cleaning up unwanted declaration files...');
+  deleteDirectory(LIB_DIR);
+  deleteDirectory(LAYOUTS_DIR);
+  console.log('✅ Cleaned up lib and layouts declaration files.');
 }
 
 // Fix component index file to ensure proper exports
@@ -49,7 +72,7 @@ function fixComponentIndexFile() {
       
       if (fs.existsSync(componentPath)) {
         // Export from main component file
-        newContent += `export * from './${componentDir}/${componentDir}';\n`;
+        newContent += `export * from './${componentDir}/${componentDir.replace('.tsx', '')}';\n`;
       } else {
         // If main component file doesn't exist, check for index.d.ts
         const indexFile = path.join(COMPONENTS_DIR, componentDir, 'index.d.ts');
@@ -94,15 +117,15 @@ export * from './lib/index';
 // Export layouts
 export * from './layouts/index';
 
-// Define the default export with proper typing
-import * as components from './components';
-import { composables, utils, constants, types } from './lib';
-
-declare const atomix: typeof components & {
-  composables: typeof composables;
-  utils: typeof utils;
-  constants: typeof constants;
-  types: typeof types;
+// Define the default export
+declare const atomix: {
+  [key: string]: any;
+  
+  // Explicitly include lib namespaces
+  composables: any;
+  utils: any;
+  constants: any;
+  layouts: any;
 };
 
 // Default export
@@ -126,12 +149,39 @@ function fixComponentFiles() {
     const componentDirs = fs.readdirSync(COMPONENTS_DIR)
       .filter(file => fs.statSync(path.join(COMPONENTS_DIR, file)).isDirectory());
     
+    // Special handling for components with known issues
+    const specialComponents = {
+      'Breadcrumb': `export { default, Breadcrumb } from './Breadcrumb';
+export type { BreadcrumbProps } from './Breadcrumb';
+`,
+      'River': `export { default, River } from './River';
+export type { RiverProps } from './River';
+`,
+      'Tab': `export { default, Tab } from './Tab';
+export type { TabProps } = './Tab';
+`,
+      'Toggle': `export { default, Toggle } from './Toggle';
+export type { ToggleProps } = './Toggle';
+`,
+      'Tooltip': `export { default, Tooltip } from './Tooltip';
+export type { TooltipProps } = './Tooltip';
+`
+    };
+    
+    // Apply special handling for components that need it
+    Object.keys(specialComponents).forEach(componentName => {
+      if (fs.existsSync(path.join(COMPONENTS_DIR, componentName, 'index.d.ts'))) {
+        const indexPath = path.join(COMPONENTS_DIR, componentName, 'index.d.ts');
+        fs.writeFileSync(indexPath, specialComponents[componentName]);
+        console.log(`✅ Applied special handling for ${componentName} component`);
+      }
+    });
+    
     // Process all component directories
     componentDirs.forEach(dir => {
+      // Fix main component file
       const componentPath = path.join(COMPONENTS_DIR, dir, `${dir}.d.ts`);
-      const indexPath = path.join(COMPONENTS_DIR, dir, 'index.d.ts');
       
-      // Fix main component file if it exists
       if (fs.existsSync(componentPath)) {
         let content = fs.readFileSync(componentPath, 'utf8');
         
@@ -157,46 +207,55 @@ function fixComponentFiles() {
         fs.writeFileSync(componentPath, content);
       }
       
-      // Fix component index files - this is the main issue causing the error
+      // Fix component index files
+      const indexPath = path.join(COMPONENTS_DIR, dir, 'index.d.ts');
+      
+      // Skip if this is a special component we already handled
+      if (specialComponents[dir] && fs.existsSync(indexPath)) {
+        return;
+      }
+      
       if (fs.existsSync(indexPath)) {
+        // Check if the index file has the correct exports
         let content = fs.readFileSync(indexPath, 'utf8');
         
-        // Check if the index file is trying to import from a file that doesn't exist
-        const importPattern = /from '\.\/([^']+)'/g;
-        let match;
-        let hasChanges = false;
-        
-        while ((match = importPattern.exec(content)) !== null) {
-          const importPath = match[1];
-          const fullPath = path.join(COMPONENTS_DIR, dir, `${importPath}.d.ts`);
-          
-          // If the imported file doesn't exist, try to find an alternative
-          if (!fs.existsSync(fullPath)) {
-            console.log(`⚠️ Missing import target: ${fullPath}`);
+        // If the file is trying to import from './ComponentName' but that file doesn't exist
+        // Update it to import from './scripts/index' instead
+        // Reverted logic: Ensure relative paths are maintained or fixed as originally intended.
+        // The previous logic for replacing relative paths with absolute paths has been removed.
+        // This block now ensures that if a component's main .d.ts file doesn't exist,
+        // it attempts to re-export from 'scripts/index' or another available .d.ts file.
+        // Replace absolute paths generated by TypeScript with relative paths
+        content = content.replace(/from '@shohojdhara\/atomix\/dist\/types\/components\/([^/]+)\/\1'/g, "from './$1'");
+        content = content.replace(/from '\.\/(.*?)\.tsx'/g, "from './$1'");
+        if (content.includes(`from './${dir}'`) && !fs.existsSync(path.join(COMPONENTS_DIR, dir, `${dir}.d.ts`))) {
+          if (fs.existsSync(path.join(COMPONENTS_DIR, dir, 'scripts', 'index.d.ts'))) {
+            content = content.replace(
+              new RegExp(`from '\.\/\${dir}'`, 'g'),
+              `from './scripts/index'`
+            );
+          } else {
+            const componentFiles = fs.readdirSync(path.join(COMPONENTS_DIR, dir))
+              .filter(file => file.endsWith('.d.ts') && file !== 'index.d.ts');
             
-            // Check if the main component file exists
-            const mainComponentPath = path.join(COMPONENTS_DIR, dir, `${dir}.d.ts`);
-            if (fs.existsSync(mainComponentPath)) {
+            if (componentFiles.length > 0) {
+              const firstComponent = componentFiles[0].replace(/\.d\.ts$/, '');
               content = content.replace(
-                new RegExp(`from '\./${importPath}'`, 'g'),
-                `from './${dir}'`
+                new RegExp(`from '\.\/\${dir}'`, 'g'),
+                `from './${firstComponent}'`
               );
-              hasChanges = true;
-              console.log(`✅ Fixed import in ${dir}/index.d.ts: './${importPath}' -> './${dir}'`);
             }
           }
-        }
-        
-        if (hasChanges) {
           fs.writeFileSync(indexPath, content);
         }
-      } else if (fs.existsSync(componentPath)) {
+      } else {
         // If index.d.ts doesn't exist but the component file does, create an index file
-        const newIndexContent = `export * from './${dir}';
+        if (fs.existsSync(componentPath)) {
+          const newIndexContent = `export * from './${dir}';
 export { default } from './${dir}';
 `;
-        fs.writeFileSync(indexPath, newIndexContent);
-        console.log(`✅ Created missing index.d.ts for ${dir}`);
+          fs.writeFileSync(indexPath, newIndexContent);
+        }
       }
     });
     
@@ -328,14 +387,7 @@ function fixLibTypes() {
 
 // Fix layouts index.d.ts file
 function fixLayouts() {
-  if (!fs.existsSync(LAYOUTS_DIR)) {
-    // Create layouts directory and empty index file if it doesn't exist
-    fs.mkdirSync(LAYOUTS_DIR, { recursive: true });
-    const layoutsIndexPath = path.join(LAYOUTS_DIR, 'index.d.ts');
-    fs.writeFileSync(layoutsIndexPath, '// No layouts currently available\n');
-    console.log('✅ Created empty layouts index.d.ts');
-    return;
-  }
+  if (!ensureDirExists(LAYOUTS_DIR)) return;
   
   try {
     // Get all layout directories
@@ -359,9 +411,7 @@ function fixLayouts() {
     
     // Create the layouts index.d.ts file
     const layoutsIndexPath = path.join(LAYOUTS_DIR, 'index.d.ts');
-    const content = exportStatements.length > 0 
-      ? exportStatements.join('\n') + '\n'
-      : '// No layouts currently available\n';
+    const content = exportStatements.join('\n') + '\n';
     fs.writeFileSync(layoutsIndexPath, content);
     
     console.log('✅ Fixed layouts index.d.ts');
@@ -381,20 +431,13 @@ function fixLibIndex() {
   }
   
   try {
-    // Create content that exports all lib modules with proper typing
+    // Create content that exports all lib modules
     const content = `// Auto-generated lib exports
 
-// Import and re-export as namespaces with proper typing
-import * as composablesImport from './composables';
-import * as utilsImport from './utils';
-import * as typesImport from './types';
-import * as constantsImport from './constants';
-
-// Export as namespaces with explicit typing
-export const composables: typeof composablesImport;
-export const utils: typeof utilsImport;
-export const types: typeof typesImport;
-export const constants: typeof constantsImport;
+export * as composables from './composables';
+export * as utils from './utils';
+export * as types from './types';
+export * as constants from './constants';
 `;
     
     fs.writeFileSync(libIndexPath, content);
@@ -405,29 +448,14 @@ export const constants: typeof constantsImport;
   }
 }
 
-// Run the fixes
-try {
-  console.log('🔧 Starting type declaration fixes...');
-  
-  // Fix component-related files
-  fixComponentFiles();
-  fixComponentIndexFile();
-  
-  // Fix lib-related files
-  fixLibComposables();
-  fixLibUtils();
-  fixLibConstants();
-  fixLibTypes();
-  fixLibIndex();
-  
-  // Fix layouts
-  fixLayouts();
-  
-  // Fix main index file (must be last as it depends on other fixes)
-  fixMainIndexFile();
-  
-  console.log('✅ All type declaration fixes completed successfully!');
-} catch (error) {
-  console.error(`❌ Error fixing type definitions:`, error);
-  process.exit(1);
-}
+// Run all fixes
+cleanUpDeclarationFiles();
+fixComponentIndexFile();
+fixMainIndexFile();
+fixComponentFiles();
+// The following functions are no longer needed as lib and layouts are deleted
+// fixLibComposables();
+// fixLibUtils();
+// fixLibConstants();
+// fixLibTypes();
+// fixLayouts();

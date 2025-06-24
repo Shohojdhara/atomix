@@ -12,6 +12,8 @@ $btn-white-space: nowrap !default;
 $btn-icon-size: 20px !default;
 $btn-icon-size-sm: 18px !default;
 $btn-icon-size-lg: 22px !default;
+$btn-letter-spacing: 0.0892857143em !default; // 1.25px/14px
+$btn-text-transform: none !default;
 
 $btn-padding-y-sm: 8px !default;
 $btn-padding-x-sm: 16px !default;
@@ -28,6 +30,9 @@ $btn-focus-width: 2px !default;
 $btn-box-shadow:
   0 1px 3px rgba(0, 0, 0, 0.1),
   0 1px 2px rgba(0, 0, 0, 0.06) !default;
+$btn-focus-box-shadow: 0 0 0 $btn-focus-width rgba(var(--#{$prefix}primary-rgb), 0.25) !default;
+$btn-focus-outline: 2px solid var(--#{$prefix}primary) !default;
+$btn-focus-outline-offset: 2px !default;
 
 $btn-disabled-color: var(--#{$prefix}disabled-text-emphasis) !default;
 $btn-disabled-bg: var(--#{$prefix}secondary-bg-subtle) !default;
