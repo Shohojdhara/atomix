@@ -79,6 +79,7 @@ implementation-guide.md
 atomix-component-guidelines.md
 atomix-roadmap.md
 NPM_PUBLISHING.md
+PUBLISHING.md
 
 # Environment and secrets
 .env*

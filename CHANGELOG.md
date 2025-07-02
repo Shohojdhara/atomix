@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.16] - 2025-07-02
+
 ### Added
 - Initial release of Atomix Design System
 - Core components library with React and vanilla JavaScript support
