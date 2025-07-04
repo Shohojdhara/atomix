@@ -449,13 +449,17 @@ export * as constants from './constants';
 }
 
 // Run all fixes
-cleanUpDeclarationFiles();
+// NOTE: We no longer clean up lib and layouts declaration files because
+// external projects rely on them for accurate type information.
+// cleanUpDeclarationFiles();
 fixComponentIndexFile();
 fixMainIndexFile();
 fixComponentFiles();
-// The following functions are no longer needed as lib and layouts are deleted
-// fixLibComposables();
-// fixLibUtils();
-// fixLibConstants();
-// fixLibTypes();
-// fixLayouts();
+// If additional fine-grained fixes are needed for lib/* or layouts/* you can
+// Run additional fixes for lib and layouts to ensure proper type exports
+fixLibIndex();
+fixLibComposables();
+fixLibUtils();
+fixLibConstants();
+fixLibTypes();
+fixLayouts();

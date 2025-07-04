@@ -1,182 +1,72 @@
-# Atomix Design System
 
-Atomix is a modern component library for Web, React and Next.js applications with full SSR support. It provides a comprehensive set of UI components built with accessibility, performance, and developer experience in mind.
+# Atomix
 
-## Features
+**Atomix** is a modern component library for Web, React and Next.js applications with full SSR support. It provides a comprehensive set of UI components built with accessibility, performance, and developer experience in mind.
 
-- 🚀 **Next.js Compatible** - Full SSR support with App Router
-- 🎨 **Modern Design** - Clean and contemporary design aesthetic
-- 📱 **Responsive** - Mobile-first responsive components
-- 🌓 **Theme Support** - Built-in dark/light theme support
-- ♿ **Accessible** - WCAG compliant components
-- 🛠️ **Customizable** - Extensive customization options
-- 📦 **Tree Shakeable** - Import only what you need
-- 🔧 **TypeScript** - Full TypeScript support
+## ✨ Features
 
-## Webpack 5 & Next.js Compatibility
+- **Comprehensive Component Library**: A rich set of UI components to build modern web applications.
+- **Full SSR Support**: Seamless integration with server-side rendering frameworks like Next.js.
+- **Accessibility First**: Built with accessibility in mind, following WAI-ARIA standards.
+- **High Performance**: Optimized for performance with a small bundle size.
+- **Developer Friendly**: Easy to use with a simple and intuitive API.
+- **Themeable**: Easily customize the look and feel to match your brand.
+- **TypeScript Support**: Written in TypeScript with predictable static types.
 
-Atomix is fully compatible with Webpack 5 and Next.js (including Turbopack). For projects using Webpack 5 or Next.js, you may need to add the following configuration to handle Node.js core modules:
+## 📦 Installation
 
-```js
-// For Next.js (in next.config.js)
-const nextConfig = {
-  webpack: (config, { isServer }) => {
-    // Handle TypeScript declaration files
-    config.module.rules.push({
-      test: /\.d\.ts$/,
-      use: ['ignore-loader'],
-      exclude: /node_modules/,
-    });
-
-    // Ignore TypeScript declaration file warnings
-    config.ignoreWarnings = [
-      ...(config.ignoreWarnings || []),
-      { module: /\.d\.ts$/ }
-    ];
-
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        crypto: false, // Provide empty mock for crypto
-      };
-    }
-    return config;
-  },
-  transpilePackages: ['@shohojdhara/atomix'],
-};
-
-// For Webpack 5 (in webpack.config.js)
-module.exports = {
-  resolve: {
-    fallback: {
-      crypto: false, // Provide empty mock for crypto
-    },
-  },
-  // Fix TypeScript declaration files issues
-  ignoreWarnings: [
-    {
-      module: /\.d\.ts$/,
-    },
-  ],
-};
-```
-
-## Installation
+To install Atomix, you can use npm or yarn:
 
 ```bash
 npm install @shohojdhara/atomix
-# or
-yarn add @shohojdhara/atomix
-# or
-pnpm add @shohojdhara/atomix
 ```
 
-## Usage
+```bash
+yarn add @shohojdhara/atomix
+```
 
-### Basic CSS Import
+## 🚀 Usage
 
-```tsx
-import { Button } from '@shohojdhara/atomix';
-import '@shohojdhara/atomix/css'; // Import styles
+To start using Atomix, import the CSS and the components you need.
+
+### CSS
+
+Import the CSS file in your main application file:
+
+```javascript
+import '@shohojdhara/atomix/dist/css/atomix.css';
+```
+
+### Components
+
+Import the components you want to use:
+
+```javascript
+import { Button, Card } from '@shohojdhara/atomix';
 
 function App() {
   return (
-    <Button variant="primary">Click Me</Button>
+    <div>
+      <Button>Click me</Button>
+      <Card>
+        <h2>Card Title</h2>
+        <p>This is a simple card component.</p>
+      </Card>
+    </div>
   );
 }
 ```
 
-### Multiple CSS Integration Options
+## 🤝 Contributing
 
-Atomix provides several ways to integrate CSS based on your project needs:
+We welcome contributions from the community. If you'd like to contribute, please follow these steps:
 
-#### 1. Traditional CSS Import
-```javascript
-import '@shohojdhara/atomix/css';
-// or minified version
-import '@shohojdhara/atomix/css/min';
-```
+1. **Fork the repository**: Fork the repository to your own GitHub account.
+2. **Create a branch**: Create a new branch for your feature or bug fix.
+3. **Make your changes**: Make your changes and commit them with a clear and concise message.
+4. **Push your changes**: Push your changes to your forked repository.
+5. **Create a pull request**: Create a pull request to the main repository.
 
-#### 2. SCSS Source Access
-```scss
-@use '@shohojdhara/atomix/scss' as atomix;
-// or selective imports
-@use '@shohojdhara/atomix/src/styles/06-components/components.button';
-```
+## 📝 License
 
-
-
-#### 3. CSS Modules
-```tsx
-import '@shohojdhara/atomix/css';
-import styles from './component.module.css';
-
-<Button className={`c-btn ${styles.customButton}`}>
-  Scoped Button
-</Button>
-```
-
-📚 **[Complete CSS Integration Guide](./CSS_INTEGRATION_GUIDE.md)** - Detailed documentation for all CSS integration approaches.
-
-## CSS Variables
-
-```css
-:root {
-  /* Primary Colors */
-  --atomix-primary-50: #eff6ff;
-  --atomix-primary-500: #3b82f6;
-  --atomix-primary-900: #1e3a8a;
-  
-  /* Spacing */
-  --atomix-spacing-xs: 0.25rem;
-  --atomix-spacing-sm: 0.5rem;
-  --atomix-spacing-md: 1rem;
-}
-```
-
-### Theme Support
-
-```tsx
-// Set theme programmatically
-document.documentElement.setAttribute('data-atomix-theme', 'dark')
-
-// Or use CSS
-html[data-atomix-theme="dark"] {
-  /* Dark theme styles */
-}
-```
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-
-## Documentation
-
-- 📚 [Full Documentation](https://liimonx.github.io/atomix)
-- 🎨 [Storybook](https://liimonx.github.io/atomix/storybook)
-- 🎨 **[CSS Integration Guide](./CSS_INTEGRATION_GUIDE.md)** - Complete guide for all CSS approaches
-- 🚀 [Next.js Integration Guide](./NEXTJS_INTEGRATION.md)
-- 📝 [Contributing Guide](./CONTRIBUTING.md)
-- 💡 [Examples](./examples/) - Working examples for different use cases
-
-## Contributing
-
-We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
-
-## License
-
-MIT © [liimonx](https://github.com/liimonx)
-
-## Support
-
-- [GitHub Issues](https://github.com/liimonx/atomix/issues)
-- [Discussions](https://github.com/liimonx/atomix/discussions)
-
-## Quick Start
-
-### Next.js Integration
-
-```
+Atomix is licensed under the [Apache-2.0 License](LICENSE).

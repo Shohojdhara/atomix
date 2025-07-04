@@ -1,151 +1,39 @@
+
 # Contributing to Atomix
 
-Thank you for your interest in contributing to Atomix! This document provides guidelines and instructions for contributing to the project.
+We're excited that you're interested in contributing to Atomix! This document outlines the guidelines for contributing to the project. By participating in this project, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md).
 
-## Table of Contents
+## How to Contribute
 
-- [Code of Conduct](#code-of-conduct)
-- [Getting Started](#getting-started)
-- [Development Workflow](#development-workflow)
-- [Pull Request Process](#pull-request-process)
-- [Coding Standards](#coding-standards)
-- [Testing](#testing)
-- [Documentation](#documentation)
+There are many ways to contribute to Atomix, including:
+
+- **Reporting bugs**: If you find a bug, please open an issue and provide a detailed description of the problem.
+- **Suggesting enhancements**: If you have an idea for a new feature or an improvement to an existing one, please open an issue to discuss it.
+- **Submitting pull requests**: If you'd like to contribute code, please open a pull request with your changes.
+
+## Development Setup
+
+To get started with development, you'll need to have Node.js and yarn installed on your machine. Then, follow these steps:
+
+1. **Fork the repository**: Fork the repository to your own GitHub account.
+2. **Clone the repository**: Clone your forked repository to your local machine.
+3. **Install dependencies**: Run `npm install` or `yarn install` to install the project dependencies.
+4. **Start the development server**: Run `npm run dev` or `yarn dev` to start the Storybook development server.
+
+## Pull Request Guidelines
+
+When submitting a pull request, please ensure that:
+
+- **Your code follows the project's coding style**: We use ESLint and Prettier to enforce a consistent coding style. Please run `npm run lint` and `npm run format` before submitting your pull request.
+- **Your changes are well-tested**: We use Jest and Testing Library for testing. Please add tests for any new features or bug fixes.
+- **Your commit messages are clear and concise**: We use the [Conventional Commits](https://www.conventionalcommits.org/) specification for our commit messages.
+- **Your pull request has a clear and descriptive title**: The title of your pull request should be a short summary of the changes you've made.
+- **Your pull request has a detailed description**: The description of your pull request should explain the changes you've made and why you've made them.
 
 ## Code of Conduct
 
-We expect all contributors to follow our [Code of Conduct](./CODE_OF_CONDUCT.md). Please read it before participating.
+We have a [Code of Conduct](CODE_OF_CONDUCT.md) that we expect all contributors to follow. Please read it before contributing to the project.
 
-## Getting Started
+## License
 
-### Prerequisites
-
-- Node.js (version 16 or higher)
-- npm (version 7 or higher)
-
-### Setup
-
-1. Fork the repository on GitHub
-2. Clone your fork locally
-   ```bash
-   git clone https://github.com/YOUR-USERNAME/atomix.git
-   cd atomix
-   ```
-3. Install dependencies
-   ```bash
-   npm install
-   ```
-4. Set up the development environment
-   ```bash
-   npm run dev
-   ```
-
-## Development Workflow
-
-### Branch Organization
-
-- `main` - The main development branch
-- `release/*` - Release branches
-- `feature/*` - Feature branches
-- `bugfix/*` - Bug fix branches
-
-### Working on Features
-
-1. Create a new branch from `main`
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-2. Make your changes
-3. Run tests and linting
-   ```bash
-   npm run test
-   npm run lint
-   ```
-4. Commit your changes with a descriptive commit message
-   ```bash
-   git commit -m "feat: add new feature"
-   ```
-   We follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
-
-5. Push your branch to your fork
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-## Pull Request Process
-
-1. Update the README.md or documentation with details of changes if appropriate
-2. Update the CHANGELOG.md with details of changes
-3. The PR should work with the latest version of the codebase
-4. Include screenshots or animated GIFs in your PR if it includes visual changes
-5. Link any related issues in the PR description
-
-## Coding Standards
-
-### JavaScript/TypeScript
-
-- We use ESLint for linting
-- We follow the Airbnb JavaScript Style Guide with some modifications
-- Use TypeScript for all new code
-- Document public APIs with JSDoc comments
-
-### CSS/SCSS
-
-- We follow the BEM methodology for CSS naming
-- Use SCSS for all styling
-- Follow the ITCSS architecture for organizing styles
-
-### Component Guidelines
-
-Please refer to the [Atomix Component Guidelines](./atomix-component-guidelines.md) for detailed information on creating and modifying components.
-
-## Testing
-
-- Write tests for all new features and bug fixes
-- Run the test suite before submitting a PR
-  ```bash
-  npm run test
-  ```
-
-## Documentation
-
-- Update documentation for any changes to the API
-- Use markdown for documentation
-- Include examples for new features
-
-## Release Process
-
-### Version Management
-
-We use semantic versioning for releases. To bump the version:
-
-```bash
-# Patch release (bug fixes)
-npm run version:patch
-
-# Minor release (new features)
-npm run version:minor
-
-# Major release (breaking changes)
-npm run version:major
-```
-
-### Publishing
-
-For release candidates:
-
-```bash
-npm run publish:rc
-```
-
-For stable releases:
-
-```bash
-npm run publish:latest
-```
-
-## Questions?
-
-If you have any questions, please feel free to open an issue or contact the maintainers.
-
-Thank you for contributing to Atomix!
+By contributing to Atomix, you agree that your contributions will be licensed under the [Apache-2.0 License](LICENSE).

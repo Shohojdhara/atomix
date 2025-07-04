@@ -75,6 +75,8 @@ dist/**/*.map
 !README.md
 !LICENSE.md
 !CHANGELOG.md
+!CONTRIBUTING.md
+!CODE_OF_CONDUCT.md
 implementation-guide.md
 atomix-component-guidelines.md
 atomix-roadmap.md
