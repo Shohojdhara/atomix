@@ -12,7 +12,7 @@ const version = require('./package.json').version;
 // Shared rules for all builds
 const sharedRules = [
   {
-    test: /\.(ts|tsx)$/,
+    test: /\.(js|jsx|ts|tsx)$/,
     exclude: [/node_modules/, /\.d\.ts$/],
     use: {
       loader: 'babel-loader',

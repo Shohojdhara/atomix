@@ -1,6 +1,6 @@
 {
   "name": "@shohojdhara/atomix",
-  "version": "0.1.24",
+  "version": "0.1.25",
   "description": "Atomix Design System - A modern component library for web applications",
   "main": "dist/js/atomix.react.cjs.js",
   "module": "dist/js/atomix.react.esm.js",
@@ -18,6 +18,7 @@
       "types": "./dist/types/index.d.ts",
       "import": "./dist/js/atomix.react.esm.js",
       "require": "./dist/js/atomix.react.cjs.js",
+      "browser": "./dist/js/atomix.react.umd.js",
       "default": "./dist/js/atomix.react.esm.js"
     },
     "./package.json": "./package.json",
@@ -30,7 +31,13 @@
       "default": "./dist/css/atomix.min.css"
     },
     "./scss": "./src/styles/index.scss",
-    "./dist/types/*": "./dist/types/*"
+    "./dist/types/*": "./dist/types/*",
+    "./components/*": {
+      "types": "./dist/types/components/*.d.ts",
+      "import": "./dist/js/components/*.js",
+      "require": "./dist/js/components/*.js",
+      "default": "./dist/js/components/*.js"
+    }
   },
   "typesVersions": {
     "*": {
@@ -107,7 +114,8 @@
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "build": "npm-run-all clean:dist build:styles build:react build:types",
+    "build": "npm-run-all clean:dist build:styles build:react build:types fix:exports",
+    "fix:exports": "node scripts/fix-exports.js",
     "build:react": "webpack --mode production --env target=components --env format=all",
     "build:styles": "webpack --mode production --env target=styles",
     "build:types": "npm run clean:types && tsc --emitDeclarationOnly --declaration --declarationDir dist/types && node scripts/fix-types.js",

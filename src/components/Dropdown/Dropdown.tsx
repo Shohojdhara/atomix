@@ -34,6 +34,7 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
   icon,
   onClick,
   className = '',
+  LinkComponent,
   ...props
 }) => {
   const { close } = useContext(DropdownContext);
@@ -61,20 +62,29 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
     .filter(Boolean)
     .join(' ');
 
+  const linkProps = {
+    href,
+    className: itemClasses,
+    onClick: handleClick,
+    role: 'menuitem',
+    tabIndex: 0,
+    ...props,
+  };
+
   if (href && !disabled) {
     return (
       <li>
-        <a
-          href={href}
-          className={itemClasses}
-          onClick={handleClick}
-          role="menuitem"
-          tabIndex={0}
-          {...props}
-        >
-          {icon && <span className="c-dropdown__menu-item-icon">{icon}</span>}
-          {children}
-        </a>
+        {LinkComponent ? (
+          <LinkComponent {...linkProps}>
+            {icon && <span className="c-dropdown__menu-item-icon">{icon}</span>}
+            {children}
+          </LinkComponent>
+        ) : (
+          <a {...linkProps}>
+            {icon && <span className="c-dropdown__menu-item-icon">{icon}</span>}
+            {children}
+          </a>
+        )}
       </li>
     );
   }

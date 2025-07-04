@@ -158,3 +158,4 @@ export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
 );
 
 GridCol.displayName = 'GridCol';
+export default GridCol;

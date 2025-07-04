@@ -403,4 +403,6 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
 
 MasonryGrid.displayName = 'MasonryGrid';
 
+export default MasonryGrid;
+
 // Ensure loadingImages state resets when items/columns/imagesLoaded change

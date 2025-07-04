@@ -40,3 +40,5 @@ export const MasonryGridItem = forwardRef<HTMLDivElement, MasonryGridItemProps>(
 );
 
 MasonryGridItem.displayName = 'MasonryGridItem';
+
+export default MasonryGridItem;

@@ -39,6 +39,7 @@ export const SideMenuItem = forwardRef<HTMLAnchorElement | HTMLButtonElement, Si
       className = '',
       target,
       rel,
+      LinkComponent,
     },
     ref
   ) => {
@@ -50,20 +51,27 @@ export const SideMenuItem = forwardRef<HTMLAnchorElement | HTMLButtonElement, Si
 
     const itemClass = generateSideMenuItemClass();
 
+    const linkProps = {
+      ref: ref as React.Ref<HTMLAnchorElement>,
+      href: disabled ? undefined : href,
+      className: itemClass,
+      onClick: handleClick(onClick),
+      'aria-disabled': disabled,
+      'aria-current': (active ? 'page' : undefined) as React.AriaAttributes['aria-current'],
+      target: target,
+      rel: rel,
+      tabIndex: disabled ? -1 : 0,
+    };
+
     // Render as link if href is provided
     if (href) {
-      return (
-        <a
-          ref={ref as React.Ref<HTMLAnchorElement>}
-          href={disabled ? undefined : href}
-          className={itemClass}
-          onClick={handleClick(onClick)}
-          aria-disabled={disabled}
-          aria-current={active ? 'page' : undefined}
-          target={target}
-          rel={rel}
-          tabIndex={disabled ? -1 : 0}
-        >
+      return LinkComponent ? (
+        <LinkComponent {...linkProps}>
+          {icon && <span className="c-side-menu__link-icon">{icon}</span>}
+          <span className="c-side-menu__link-text">{children}</span>
+        </LinkComponent>
+      ) : (
+        <a {...linkProps}>
           {icon && <span className="c-side-menu__link-icon">{icon}</span>}
           <span className="c-side-menu__link-text">{children}</span>
         </a>

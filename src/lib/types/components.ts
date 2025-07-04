@@ -553,6 +553,11 @@ export interface NavItemProps extends BaseComponentProps {
    * Whether dropdown/mega menu is expanded
    */
   'aria-expanded'?: boolean;
+
+  /**
+   * Optional custom link component
+   */
+  LinkComponent?: React.ElementType;
 }
 
 /**
@@ -763,6 +768,11 @@ export interface SideMenuItemProps extends BaseComponentProps {
    * Link rel attribute
    */
   rel?: string;
+
+  /**
+   * Optional custom link component
+   */
+  LinkComponent?: React.ElementType;
 }
 
 /**
@@ -2113,6 +2123,11 @@ export interface DropdownItemProps extends BaseComponentProps {
    * Item click handler
    */
   onClick?: (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
+
+  /**
+   * Optional custom link component
+   */
+  LinkComponent?: React.ElementType;
 }
 
 /**

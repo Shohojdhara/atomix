@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.25] - 2025-07-02
+
+### Fixed
+- Fixed module parse error with undefined exports in ESM build
+- Fixed Tooltip component export issue (previously exported as `Tooltip_Tooltip as Tooltip`)
+- Added post-build script to ensure all components are properly exported
+
+### Added
+- Added support for direct component imports via `@shohojdhara/atomix/components/*`
+- Added troubleshooting guide for common issues
+
 ## [0.1.18] - 2025-07-03
 
 ## [0.1.16] - 2025-07-02

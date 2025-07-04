@@ -48,12 +48,18 @@ export interface BreadcrumbProps {
    * Aria label for the navigation
    */
   ariaLabel?: string;
+
+  /**
+   * Optional custom link component
+   */
+  LinkComponent?: React.ElementType;
 }
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   items,
   divider,
   className = '',
   ariaLabel = 'Breadcrumb',
+  LinkComponent,
 }) => {
   const breadcrumbClasses = [BREADCRUMB.CLASSES.BASE, className].filter(Boolean).join(' ');
 
@@ -76,12 +82,20 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
             </>
           );
 
+          const linkProps = {
+            href: item.href,
+            className: BREADCRUMB.CLASSES.LINK,
+            onClick: item.onClick,
+          };
+
           return (
             <li key={index} className={itemClasses}>
               {item.href && !item.active ? (
-                <a href={item.href} className={BREADCRUMB.CLASSES.LINK} onClick={item.onClick}>
-                  {linkContent}
-                </a>
+                LinkComponent ? (
+                  <LinkComponent {...linkProps}>{linkContent}</LinkComponent>
+                ) : (
+                  <a {...linkProps}>{linkContent}</a>
+                )
               ) : (
                 <span className={BREADCRUMB.CLASSES.LINK}>{linkContent}</span>
               )}

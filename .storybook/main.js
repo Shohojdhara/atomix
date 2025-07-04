@@ -36,9 +36,10 @@ module.exports = {
     if (!config.output) config.output = {};
     config.output.chunkFormat = 'array-push';
     
-    // Handle TypeScript files
+    // Handle TypeScript and JavaScript files
     config.module.rules.push({
-      test: /\.(ts|tsx)$/,
+      test: /\.(js|jsx|ts|tsx)$/,
+      exclude: /node_modules/,
       loader: 'babel-loader',
       options: {
         presets: [

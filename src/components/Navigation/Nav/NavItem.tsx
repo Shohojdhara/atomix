@@ -42,6 +42,7 @@ export const NavItem = forwardRef<HTMLLIElement, NavItemProps>(
       className = '',
       disabled = false,
       'aria-expanded': ariaExpanded,
+      LinkComponent,
     },
     ref
   ) => {
@@ -132,19 +133,25 @@ export const NavItem = forwardRef<HTMLLIElement, NavItemProps>(
     // Use aria-expanded from props if provided, otherwise use local state
     const expanded = typeof ariaExpanded !== 'undefined' ? ariaExpanded : isActive;
 
+    const linkProps = {
+      ref: itemRef,
+      href: href || '#',
+      className: navLinkClass,
+      onClick: dropdown || megaMenu ? handleDropdownToggle : handleClick(onClick),
+      'aria-disabled': disabled,
+      'aria-expanded': dropdown || megaMenu ? expanded : undefined,
+      'aria-current': (active && !dropdown && !megaMenu ? 'page' : undefined) as React.AriaAttributes['aria-current'],
+    };
+
     return (
       <li ref={ref} className={navItemClass} role="menuitem" aria-haspopup={dropdown || megaMenu}>
-        <a
-          ref={itemRef}
-          href={href || '#'}
-          className={navLinkClass}
-          onClick={dropdown || megaMenu ? handleDropdownToggle : handleClick(onClick)}
-          aria-disabled={disabled}
-          aria-expanded={dropdown || megaMenu ? expanded : undefined}
-          aria-current={active && !dropdown && !megaMenu ? 'page' : undefined}
-        >
-          {dropdown || megaMenu ? childContent[0] : children}
-        </a>
+        {LinkComponent ? (
+          <LinkComponent {...linkProps}>
+            {dropdown || megaMenu ? childContent[0] : children}
+          </LinkComponent>
+        ) : (
+          <a {...linkProps}>{dropdown || megaMenu ? childContent[0] : children}</a>
+        )}
 
         {(dropdown || megaMenu) && childContent.length > 1 && childContent[1]}
       </li>
