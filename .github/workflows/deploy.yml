@@ -1,27 +1,29 @@
-name: Deploy to GitHub Pages
+name: Deploy Storybook Preview
 
 on:
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
+  pull-requests: write
 
-# Allow one concurrent deployment
+# Allow one concurrent deployment per branch
 concurrency:
-  group: 'pages'
+  group: 'pages-${{ github.ref }}'
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build-preview:
     runs-on: ubuntu-latest
+    outputs:
+      preview-url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,9 +40,6 @@ jobs:
       - name: Build components
         run: npm run build:components
 
-      - name: Build docs
-        run: npm run build:docs
-
       - name: Build Storybook
         run: npm run build-storybook
 
@@ -49,6 +48,7 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
+        if: github.ref == 'refs/heads/main'
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -58,3 +58,57 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        if: github.ref == 'refs/heads/main'
+        environment:
+          name: github-pages
+          url: ${{ steps.deployment.outputs.page_url }}
+
+  comment-preview:
+    runs-on: ubuntu-latest
+    needs: build-preview
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Comment PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && comment.body.includes('🚀 Storybook Preview')
+            );
+
+            const commentBody = `��� **Storybook Preview Built Successfully!**
+
+            Your Storybook preview has been built and is ready for review.
+            
+            📖 **Preview Details:**
+            - **Branch:** \`${{ github.head_ref }}\`
+            - **Commit:** \`${{ github.sha }}\`
+            - **Build Status:** ✅ Success
+            
+            🔗 **Links:**
+            - [View Storybook Preview](https://liimonx.github.io/atomix/storybook/) (Available after main branch merge)
+            - [View Build Logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            > This preview will be available on the main site once this PR is merged to the main branch.`;
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: commentBody
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: commentBody
+              });
+            }

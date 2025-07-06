@@ -78,6 +78,7 @@
     "sass": "^1.89.2",
     "sass-embedded": "^1.87.0",
     "sass-loader": "^16.0.5",
+    "serve": "^14.2.1",
     "size-limit": "^11.0.0",
     "storybook": "^8.0.0",
     "style-loader": "^4.0.0",
@@ -93,6 +94,8 @@
     "build-storybook": "storybook build",
     "build": "rollup -c",
     "build:watch": "rollup -c -w",
+    "build:components": "npm run build",
+    "build:docs": "npm run build-storybook",
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
     "prepublishOnly": "npm run ci",
@@ -103,7 +106,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "ci": "npm run build && npm run check-format && npm run check-exports && npm run lint && npm run test",
-    "local-release": "changeset version && changeset publish"
+    "local-release": "changeset version && changeset publish",
+    "preview:build": "npm run build-storybook && node scripts/prepare-deploy.js",
+    "preview:serve": "npm run preview:build && npx serve deploy -p 3000"
   },
   "files": [
     "dist",
