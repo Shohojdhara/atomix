@@ -2,62 +2,20 @@
   "name": "@shohojdhara/atomix",
   "version": "0.1.27",
   "description": "Atomix Design System - A modern component library for web applications",
-  "main": "dist/js/atomix.react.cjs.js",
-  "module": "dist/js/atomix.react.esm.js",
-  "unpkg": "dist/js/atomix.react.umd.js",
-  "jsdelivr": "dist/js/atomix.react.umd.js",
-  "browser": "dist/js/atomix.react.umd.js",
-  "types": "dist/types/index.d.ts",
-  "sideEffects": [
-    "*.css",
-    "*.scss",
-    "./dist/css/**/*"
-  ],
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/js/atomix.react.esm.js",
-      "require": "./dist/js/atomix.react.cjs.js",
-      "browser": "./dist/js/atomix.react.umd.js",
-      "default": "./dist/js/atomix.react.esm.js"
-    },
-    "./package.json": "./package.json",
-    "./css": {
-      "types": "./css.d.ts",
-      "default": "./dist/css/atomix.css"
-    },
-    "./css/min": {
-      "types": "./css.d.ts",
-      "default": "./dist/css/atomix.min.css"
-    },
-    "./scss": "./src/styles/index.scss",
-    "./dist/types/*": "./dist/types/*",
-    "./components/*": {
-      "types": "./dist/types/components/*.d.ts",
-      "import": "./dist/js/components/*.js",
-      "require": "./dist/js/components/*.js",
-      "default": "./dist/js/components/*.js"
-    }
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/types/index.d.ts"
-      ]
-    }
-  },
+  "main": "dist/idex.js",
+
   "dependencies": {
     "@babel/runtime-corejs3": "^7.27.6",
     "classnames": "^2.5.1",
     "phosphor-react": "^1.4.1"
   },
+
   "devDependencies": {
     "@babel/core": "^7.26.10",
     "@babel/plugin-transform-runtime": "^7.27.4",
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "^7.27.0",
-    "@size-limit/preset-app": "^11.0.0",
     "@storybook/addon-essentials": "^8.0.0",
     "@storybook/addon-interactions": "^8.0.0",
     "@storybook/addon-links": "^8.0.0",
@@ -75,11 +33,8 @@
     "autoprefixer": "^10.4.21",
     "babel-loader": "^10.0.0",
     "caniuse-lite": "^1.0.30001721",
-    "clean-webpack-plugin": "^4.0.0",
     "core-js": "^3.43.0",
     "css-loader": "^7.1.2",
-    "css-minimizer-webpack-plugin": "^5.0.1",
-    "cssnano": "^6.1.2",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-import": "^2.31.0",
@@ -88,9 +43,6 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "gh-pages": "^6.1.1",
-    "html-webpack-plugin": "^5.6.3",
-    "mini-css-extract-plugin": "^2.9.2",
-    "npm-run-all": "^4.1.5",
     "postcss": "^8.4.24",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^16.1.0",
@@ -106,59 +58,17 @@
     "terser": "^5.24.0",
     "terser-webpack-plugin": "^5.3.14",
     "typescript": "^5.0.4",
-    "webpack": "^5.99.7",
-    "webpack-bundle-analyzer": "^4.10.2",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.1",
-    "webpack-node-externals": "^3.0.0"
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "build": "npm-run-all clean:dist build:styles build:react build:types fix:exports",
-    "fix:exports": "node scripts/fix-exports.js",
-    "build:react": "webpack --mode production --env target=components --env format=all",
-    "build:styles": "webpack --mode production --env target=styles",
-    "build:types": "npm run clean:types && tsc --emitDeclarationOnly --declaration --declarationDir dist/types && node scripts/fix-types.js",
-    "build:cjs": "webpack --mode production --env target=components --env format=cjs",
-    "build:esm": "webpack --mode production --env target=components --env format=esm",
-    "build:umd": "webpack --mode production --env target=components --env format=umd",
-    "clean:dist": "rimraf dist",
-    "clean:types": "rimraf dist/types",
-    "clean:all": "npm-run-all clean:dist clean:types",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "predeploy": "npm run build-storybook && node scripts/prepare-deploy.js",
-    "deploy": "gh-pages -d deploy",
-    "analyze:bundle": "webpack --mode production --env target=components --env format=all --env analyze=true",
-    "analyze:size": "size-limit",
-    "analyze": "npm-run-all analyze:bundle analyze:size",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx src/",
-    "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx src/ --fix",
-    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss}'",
-    "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,css,scss}'",
-    "typecheck": "tsc --noEmit",
-    "test": "echo \"No tests specified\" && exit 0",
-    "prepublishOnly": "npm run build",
-    "prepack": "npm run build",
-    "test:publish": "npm pack --dry-run",
-    "publish:rc": "npm publish --tag next",
-    "publish:latest": "npm publish",
-    "version:patch": "npm version patch",
-    "version:minor": "npm version minor",
-    "version:major": "npm version major",
-    "release:patch": "node scripts/release.js patch",
-    "release:minor": "node scripts/release.js minor",
-    "release:major": "node scripts/release.js major"
+    "build-storybook": "storybook build"
   },
   "files": [
-    "src",
     "dist",
-    "index.d.ts",
-    "css.d.ts",
     "README.md",
     "LICENSE",
-    "CHANGELOG.md",
-    "NPM_PUBLISHING.md"
+    "CHANGELOG.md"
   ],
   "keywords": [
     "ui",
