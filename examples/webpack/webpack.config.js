@@ -88,7 +88,16 @@ module.exports = (env, argv) => {
               },
             },
             'postcss-loader',
-            'sass-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                api: 'modern',
+                implementation: 'sass-embedded',
+                sassOptions: {
+                  outputStyle: isProduction ? 'compressed' : 'expanded',
+                },
+              },
+            },
           ],
         },
 

@@ -36,8 +36,14 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         // Additional SCSS options if needed
-        additionalData: `@import "@shohojdhara/atomix/scss";`,
+        additionalData: `@import "@shohojdhara/atomix/scss/modern";`,
       },
+    },
+    devSourcemap: true,
+    // Use modern Sass API
+    sass: {
+      api: 'modern',
+      implementation: 'sass-embedded',
     },
   },
 

@@ -37,13 +37,19 @@ import '@shohojdhara/atomix/css/min';
 
 #### 2. SCSS Source Access (✅ Ready)
 ```scss
+// Modern API (recommended)
+@use '@shohojdhara/atomix/scss/modern' as atomix;
+
+// Legacy API
 @use '@shohojdhara/atomix/scss' as atomix;
-// or selective imports
-@use '@shohojdhara/atomix/src/styles/01-settings' as *;
-@use '@shohojdhara/atomix/src/styles/06-components/components.button';
+
+// or selective imports with modern API
+@use '@shohojdhara/atomix/src/styles/01-settings' as * with (api: 'modern');
+@use '@shohojdhara/atomix/src/styles/06-components/components.button' with (api: 'modern');
 ```
 
 **Features:**
+- Modern Sass API support for better performance
 - Full SCSS source access
 - Customizable variables
 - Selective component imports
@@ -69,6 +75,10 @@ import styles from '@shohojdhara/atomix/css-modules';
     "./css": "./dist/css/atomix.css",
     "./css/min": "./dist/css/atomix.min.css",
     "./scss": "./src/styles/index.scss",
+    "./scss/modern": {
+      "modern": "./src/styles/index.scss",
+      "default": "./src/styles/index.scss"
+    },
     "./css-modules": "./src/styles/css-modules.d.ts"
   }
 }
@@ -84,12 +94,17 @@ import '@shohojdhara/atomix/css';
 
 #### Vite
 ```javascript
-// vite.config.js - SCSS preprocessing
+// vite.config.js - SCSS preprocessing with modern API
 css: {
   preprocessorOptions: {
     scss: {
-      additionalData: `@use "@shohojdhara/atomix/scss" as *;`,
+      additionalData: `@use "@shohojdhara/atomix/scss/modern" as *;`,
     },
+  },
+  // Use modern Sass API
+  sass: {
+    api: 'modern',
+    implementation: 'sass-embedded',
   },
 }
 ```
@@ -158,8 +173,11 @@ import '@shohojdhara/atomix/css';
 $primary-6: #your-brand-color;
 $border-radius-base: 12px;
 
-// Import Atomix
-@use '@shohojdhara/atomix/scss' as atomix;
+// Import Atomix with modern API (recommended)
+@use '@shohojdhara/atomix/scss/modern' as atomix;
+
+// Or with legacy API
+// @use '@shohojdhara/atomix/scss' as atomix;
 ```
 
 ### 🎨 Theming Capabilities

@@ -67,7 +67,10 @@ require('@shohojdhara/atomix/css');
 Import the SCSS source for maximum customization:
 
 ```scss
-// Import everything
+// Import everything (modern API - recommended)
+@use '@shohojdhara/atomix/scss/modern' as atomix;
+
+// Or legacy API
 @use '@shohojdhara/atomix/scss' as atomix;
 
 // Or import specific layers
@@ -530,6 +533,23 @@ module.exports = {
 Import only the components you need:
 
 ```scss
+// Using modern API (recommended)
+// Import base layers (required)
+@use '@shohojdhara/atomix/src/styles/01-settings' as * with (api: 'modern');
+@use '@shohojdhara/atomix/src/styles/02-tools' as * with (api: 'modern');
+@use '@shohojdhara/atomix/src/styles/03-generic' as * with (api: 'modern');
+@use '@shohojdhara/atomix/src/styles/04-elements' as * with (api: 'modern');
+
+// Import only needed components
+@use '@shohojdhara/atomix/src/styles/06-components/components.button' with (api: 'modern');
+@use '@shohojdhara/atomix/src/styles/06-components/components.card' with (api: 'modern');
+@use '@shohojdhara/atomix/src/styles/06-components/components.input' with (api: 'modern');
+@use '@shohojdhara/atomix/src/styles/06-components/components.modal' with (api: 'modern');
+
+// Import utilities (optional)
+@use '@shohojdhara/atomix/src/styles/99-utilities' as * with (api: 'modern');
+
+// Or using legacy API
 // Import base layers (required)
 @use '@shohojdhara/atomix/src/styles/01-settings' as *;
 @use '@shohojdhara/atomix/src/styles/02-tools' as *;
@@ -574,12 +594,42 @@ import '@shohojdhara/atomix/css';
 **Problem:** Cannot resolve SCSS imports.
 
 **Solutions:**
-- Install `sass` or `node-sass`
-- Configure your bundler to handle SCSS files
+- Install `sass` or `sass-embedded` (recommended for modern API)
+- Configure your bundler to handle SCSS files with the modern API
 - Use correct import paths
 
 ```bash
+# For modern API (recommended)
+npm install sass-embedded
+
+# Or for legacy API
 npm install sass
+```
+
+**Configuring Modern API:**
+
+```javascript
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              api: 'modern',
+              implementation: 'sass-embedded',
+            },
+          },
+        ],
+      },
+    ],
+  },
+};
 ```
 
 #### 3. CSS Conflicts

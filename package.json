@@ -19,7 +19,13 @@
       "import": "./dist/index.css",
       "require": "./dist/index.css"
     },
+    "./css": "./dist/index.css",
+    "./css/min": "./dist/index.min.css",
     "./scss": "./src/styles/index.scss",
+    "./scss/modern": {
+      "modern": "./src/styles/index.scss",
+      "default": "./src/styles/index.scss"
+    },
     "./package.json": "./package.json"
   },
   "dependencies": {
