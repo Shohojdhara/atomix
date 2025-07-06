@@ -2,20 +2,40 @@
   "name": "@shohojdhara/atomix",
   "version": "0.1.27",
   "description": "Atomix Design System - A modern component library for web applications",
-  "main": "dist/idex.js",
-
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "style": "dist/index.css",
+  "sass": "src/styles/index.scss",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles": "./dist/index.css",
+    "./styles.css": "./dist/index.css",
+    "./dist/index.css": "./dist/index.css",
+    "./scss": "./src/styles/index.scss",
+    "./package.json": "./package.json"
+  },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.27.6",
     "classnames": "^2.5.1",
     "phosphor-react": "^1.4.1"
   },
-
   "devDependencies": {
     "@babel/core": "^7.26.10",
     "@babel/plugin-transform-runtime": "^7.27.4",
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "^7.27.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@storybook/addon-essentials": "^8.0.0",
     "@storybook/addon-interactions": "^8.0.0",
     "@storybook/addon-links": "^8.0.0",
@@ -50,6 +70,11 @@
     "postcss-preset-env": "^10.2.3",
     "prettier": "^3.5.3",
     "rimraf": "^5.0.5",
+    "rollup": "^4.9.6",
+    "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "sass": "^1.89.2",
     "sass-embedded": "^1.87.0",
     "sass-loader": "^16.0.5",
     "size-limit": "^11.0.0",
@@ -57,15 +82,22 @@
     "style-loader": "^4.0.0",
     "terser": "^5.24.0",
     "terser-webpack-plugin": "^5.3.14",
-    "typescript": "^5.0.4",
+    "tslib": "^2.6.2",
+    "typescript": "^5.0.4"
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "build": "rollup -c",
+    "build:watch": "rollup -c -w",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean",
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist",
+    "src/styles",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"

@@ -1,4 +1,3 @@
-import './styles/index.scss';
 // Export all components individually for better tree-shaking
 export * from './components';
 
