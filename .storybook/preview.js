@@ -6,17 +6,17 @@ export const decorators = [
   (Story, context) => {
     const { globals } = context;
     const colorMode = globals.colorMode || 'light';
-    
+
     // Update the data-atomix-theme attribute on the root element
     document.documentElement.setAttribute('data-atomix-theme', colorMode);
-    
+
     return Story();
   },
 ];
 
 // Parameters configuration
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {
       color: /(background|color)$/i,

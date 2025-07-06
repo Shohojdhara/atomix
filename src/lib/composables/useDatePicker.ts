@@ -301,8 +301,10 @@ export function useDatePicker({
         // This is a simplified implementation that would need improvement
         const parts = e.target.value.split('-');
         if (parts.length === 2) {
-          const startPart = parts[0].trim();
-          const endPart = parts[1].trim();
+          const startPart = parts[0]?.trim();
+          const endPart = parts[1]?.trim();
+          
+          if (!startPart || !endPart) return;
 
           const parsedStart = new Date(startPart);
           if (!isNaN(parsedStart.getTime())) {

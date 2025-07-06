@@ -13,7 +13,7 @@ permissions:
 
 # Allow one concurrent deployment
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: true
 
 jobs:
@@ -34,27 +34,27 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Build components
         run: npm run build:components
-        
+
       - name: Build docs
         run: npm run build:docs
-        
+
       - name: Build Storybook
         run: npm run build-storybook
-        
+
       - name: Prepare deployment
         run: node scripts/prepare-deploy.js
-        
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: './deploy'
-          
+
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 
+        uses: actions/deploy-pages@v4

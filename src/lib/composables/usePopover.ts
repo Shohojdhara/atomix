@@ -172,7 +172,7 @@ export const usePopover = ({
       spaces.sort((a, b) => b.space - a.space);
 
       // Select position with most space
-      bestPosition = spaces[0].position as PopoverPosition;
+      bestPosition = spaces[0]?.position as PopoverPosition;
     } else {
       // Check if the preferred position has enough space
       const needsFlip =

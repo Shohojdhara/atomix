@@ -44,7 +44,7 @@ yarn add @shohojdhara/atomix
 Alternatively, you can download and include the CSS and JavaScript files directly:
 
 ```html
-<link rel="stylesheet" href="path/to/@shohojdhara/atomix/css/atomix.min.css">
+<link rel="stylesheet" href="path/to/@shohojdhara/atomix/css/atomix.min.css" />
 <script src="path/to/@shohojdhara/atomix/js/atomix.js"></script>
 ```
 
@@ -69,23 +69,23 @@ For projects without a module bundler, include the CSS and JS files in your HTML
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Atomix Project</title>
-  
-  <!-- Atomix CSS -->
-  <link rel="stylesheet" href="path/to/@shohojdhara/atomix/css/atomix.min.css">
-</head>
-<body>
-  <!-- Your content here -->
-  
-  <!-- Atomix JS (optional, only if using JS components) -->
-  <script src="path/to/@shohojdhara/atomix/js/atomix.js"></script>
-  
-  <!-- Your scripts -->
-  <script src="path/to/your-script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Atomix Project</title>
+
+    <!-- Atomix CSS -->
+    <link rel="stylesheet" href="path/to/@shohojdhara/atomix/css/atomix.min.css" />
+  </head>
+  <body>
+    <!-- Your content here -->
+
+    <!-- Atomix JS (optional, only if using JS components) -->
+    <script src="path/to/@shohojdhara/atomix/js/atomix.js"></script>
+
+    <!-- Your scripts -->
+    <script src="path/to/your-script.js"></script>
+  </body>
 </html>
 ```
 
@@ -107,7 +107,7 @@ Atomix follows the ITCSS (Inverted Triangle CSS) methodology combined with BEM (
 <!-- Button component with primary modifier -->
 <button class="c-button c-button--primary">
   Button Text
-  
+
   <!-- An element within the button -->
   <span class="c-button__icon">
     <!-- Icon content -->
@@ -130,15 +130,10 @@ function MyComponent() {
     <div>
       {/* Basic Button */}
       <Button variant="primary">Click Me</Button>
-      
+
       {/* Avatar component */}
-      <Avatar 
-        src="https://example.com/avatar.jpg" 
-        size="md" 
-        circle={true} 
-        alt="User Avatar" 
-      />
-      
+      <Avatar src="https://example.com/avatar.jpg" size="md" circle={true} alt="User Avatar" />
+
       {/* Card component */}
       <Card>
         <Card.Header>Card Title</Card.Header>
@@ -148,7 +143,7 @@ function MyComponent() {
         </Card.Body>
         <Card.Footer>Footer information</Card.Footer>
       </Card>
-      
+
       {/* Avatar Group example */}
       <AvatarGroup max={3}>
         <Avatar src="user1.jpg" size="md" circle={true} />
@@ -172,7 +167,7 @@ Use Atomix components directly in your HTML with the appropriate classes:
 
 <!-- Avatar component -->
 <div class="c-avatar c-avatar--md c-avatar--circle">
-  <img src="user.jpg" alt="User Avatar" class="c-avatar__image">
+  <img src="user.jpg" alt="User Avatar" class="c-avatar__image" />
 </div>
 
 <!-- Card component -->
@@ -188,13 +183,13 @@ Use Atomix components directly in your HTML with the appropriate classes:
 <!-- Avatar Group component -->
 <div class="c-avatar-group">
   <div class="c-avatar c-avatar--md c-avatar--circle">
-    <img src="user1.jpg" alt="User 1" class="c-avatar__image">
+    <img src="user1.jpg" alt="User 1" class="c-avatar__image" />
   </div>
   <div class="c-avatar c-avatar--md c-avatar--circle">
-    <img src="user2.jpg" alt="User 2" class="c-avatar__image">
+    <img src="user2.jpg" alt="User 2" class="c-avatar__image" />
   </div>
   <div class="c-avatar c-avatar--md c-avatar--circle">
-    <img src="user3.jpg" alt="User 3" class="c-avatar__image">
+    <img src="user3.jpg" alt="User 3" class="c-avatar__image" />
   </div>
   <!-- More indicator (shown when max is reached) -->
   <div class="c-avatar c-avatar--md c-avatar--circle c-avatar-group__more">+2</div>
@@ -209,19 +204,19 @@ Atomix provides various form components for creating accessible forms:
 <!-- Form Group -->
 <div class="c-form-group">
   <label class="c-form-group__label" for="username">Username</label>
-  <input type="text" id="username" class="c-input" placeholder="Enter username">
+  <input type="text" id="username" class="c-input" placeholder="Enter username" />
   <div class="c-form-group__helper">Enter your username or email</div>
 </div>
 
 <!-- Radio buttons -->
 <div class="c-radio">
-  <input type="radio" id="radio1" name="radio-group" class="c-radio__input">
+  <input type="radio" id="radio1" name="radio-group" class="c-radio__input" />
   <label for="radio1" class="c-radio__label">Option 1</label>
 </div>
 
 <!-- Checkbox -->
 <div class="c-checkbox">
-  <input type="checkbox" id="checkbox1" class="c-checkbox__input">
+  <input type="checkbox" id="checkbox1" class="c-checkbox__input" />
   <label for="checkbox1" class="c-checkbox__label">Option 1</label>
 </div>
 
@@ -252,6 +247,7 @@ Atomix includes a flexible 12-column grid system:
 ```
 
 Key features:
+
 - Responsive breakpoints: `sm`, `md`, `lg`, `xl`
 - 12-column layout
 - Auto-layout options
@@ -281,6 +277,7 @@ Atomix uses a consistent spacing scale:
 ```
 
 The spacing scale follows this pattern:
+
 - `0`: 0
 - `1`: 0.25rem (4px)
 - `2`: 0.5rem (8px)
@@ -369,12 +366,12 @@ Atomix uses CSS variables (custom properties) for easy theming:
 /* In your custom CSS file */
 :root {
   /* Primary colors */
-  --atomix-primary-color: #3366ff; 
+  --atomix-primary-color: #3366ff;
   --atomix-primary-hover: #2a52cc;
-  
+
   /* Border radius */
   --atomix-border-radius: 4px;
-  
+
   /* Font family */
   --atomix-font-family: 'Montserrat', sans-serif;
 }
@@ -395,7 +392,7 @@ You can also customize specific components:
 /* Custom card styles */
 :root {
   --atomix-card-border-radius: 12px;
-  --atomix-card-box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  --atomix-card-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 ```
 
@@ -414,7 +411,7 @@ Atomix provides built-in dark mode support:
 You can also customize dark mode colors:
 
 ```css
-[data-theme="dark"] {
+[data-theme='dark'] {
   --atomix-primary-color: #5c8aff;
   --atomix-body-bg: #121212;
   --atomix-body-color: #f8f9fa;
@@ -426,16 +423,18 @@ You can also customize dark mode colors:
 ### Component Patterns
 
 1. **Consistent Component Usage**:
+
    ```jsx
    // Good - using variants consistently
    <Button variant="primary" size="md">Primary Button</Button>
    <Button variant="secondary" size="md">Secondary Button</Button>
-   
+
    // Avoid inconsistent naming
    <Button type="primary" btnSize="md">Inconsistent Button</Button>
    ```
 
 2. **Composition over Configuration**:
+
    ```jsx
    // Compose simple components to create complex UIs
    <Card>
@@ -443,9 +442,7 @@ You can also customize dark mode colors:
        <Avatar src="user.jpg" size="sm" />
        <h4>User Profile</h4>
      </Card.Header>
-     <Card.Body>
-       {/* Card content */}
-     </Card.Body>
+     <Card.Body>{/* Card content */}</Card.Body>
    </Card>
    ```
 
@@ -458,17 +455,21 @@ You can also customize dark mode colors:
 ### Accessibility
 
 1. **Always provide alt text for images**:
+
    ```html
-   <img src="image.jpg" alt="Descriptive text for the image">
+   <img src="image.jpg" alt="Descriptive text for the image" />
    ```
-   
+
    ```jsx
    <Avatar src="user.jpg" alt="User Profile" />
    ```
 
 2. **Use semantic markup when possible**:
+
    ```jsx
-   <Button as="a" href="https://example.com">Link Button</Button>
+   <Button as="a" href="https://example.com">
+     Link Button
+   </Button>
    ```
 
 3. **Ensure sufficient color contrast** and don't rely solely on color to convey information.
@@ -480,11 +481,13 @@ You can also customize dark mode colors:
 ### Common Issues
 
 1. **Components don't display correctly**:
+
    - Check if you've imported the CSS file correctly
    - Verify you're using the right class names or component props
    - Check for console errors
 
 2. **Responsive behavior issues**:
+
    - Ensure you've added the viewport meta tag
    - Verify you're using the correct responsive utility classes
    - Test on different screen sizes
@@ -502,5 +505,8 @@ You can also customize dark mode colors:
 
 ---
 
-This implementation guide provides a foundation for using Atomix in your projects. For more detailed information on specific components, refer to Storybook documentation or the component source code. 
+This implementation guide provides a foundation for using Atomix in your projects. For more detailed information on specific components, refer to Storybook documentation or the component source code.
+
+```
+
 ```

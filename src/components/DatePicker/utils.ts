@@ -71,9 +71,15 @@ export function parseDate(dateStr: string, format: string): Date | null {
     const parts = dateStr.split('/');
     if (parts.length !== 3) return null;
 
-    const month = parseInt(parts[0], 10) - 1;
-    const day = parseInt(parts[1], 10);
-    const year = parseInt(parts[2], 10);
+    const monthStr = parts[0];
+    const dayStr = parts[1];
+    const yearStr = parts[2];
+    
+    if (!monthStr || !dayStr || !yearStr) return null;
+
+    const month = parseInt(monthStr, 10) - 1;
+    const day = parseInt(dayStr, 10);
+    const year = parseInt(yearStr, 10);
 
     if (isNaN(month) || isNaN(day) || isNaN(year)) return null;
 
@@ -84,9 +90,15 @@ export function parseDate(dateStr: string, format: string): Date | null {
     const parts = dateStr.split('/');
     if (parts.length !== 3) return null;
 
-    const day = parseInt(parts[0], 10);
-    const month = parseInt(parts[1], 10) - 1;
-    const year = parseInt(parts[2], 10);
+    const dayStr = parts[0];
+    const monthStr = parts[1];
+    const yearStr = parts[2];
+    
+    if (!dayStr || !monthStr || !yearStr) return null;
+
+    const day = parseInt(dayStr, 10);
+    const month = parseInt(monthStr, 10) - 1;
+    const year = parseInt(yearStr, 10);
 
     if (isNaN(month) || isNaN(day) || isNaN(year)) return null;
 
@@ -97,9 +109,15 @@ export function parseDate(dateStr: string, format: string): Date | null {
     const parts = dateStr.split('-');
     if (parts.length !== 3) return null;
 
-    const year = parseInt(parts[0], 10);
-    const month = parseInt(parts[1], 10) - 1;
-    const day = parseInt(parts[2], 10);
+    const yearStr = parts[0];
+    const monthStr = parts[1];
+    const dayStr = parts[2];
+    
+    if (!yearStr || !monthStr || !dayStr) return null;
+
+    const year = parseInt(yearStr, 10);
+    const month = parseInt(monthStr, 10) - 1;
+    const day = parseInt(dayStr, 10);
 
     if (isNaN(month) || isNaN(day) || isNaN(year)) return null;
 
@@ -123,8 +141,12 @@ export function parseDateRange(
   const parts = rangeStr.split('-');
   if (parts.length !== 2) return { startDate: null, endDate: null };
 
-  const startDateStr = parts[0].trim();
-  const endDateStr = parts[1].trim();
+  const startDateStr = parts[0]?.trim();
+  const endDateStr = parts[1]?.trim();
+
+  if (!startDateStr || !endDateStr) {
+    return { startDate: null, endDate: null };
+  }
 
   const startDate = parseDate(startDateStr, format);
   const endDate = parseDate(endDateStr, format);

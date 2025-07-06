@@ -140,7 +140,9 @@ export const NavItem = forwardRef<HTMLLIElement, NavItemProps>(
       onClick: dropdown || megaMenu ? handleDropdownToggle : handleClick(onClick),
       'aria-disabled': disabled,
       'aria-expanded': dropdown || megaMenu ? expanded : undefined,
-      'aria-current': (active && !dropdown && !megaMenu ? 'page' : undefined) as React.AriaAttributes['aria-current'],
+      'aria-current': (active && !dropdown && !megaMenu
+        ? 'page'
+        : undefined) as React.AriaAttributes['aria-current'],
     };
 
     return (

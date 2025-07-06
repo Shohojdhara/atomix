@@ -249,7 +249,7 @@ class Upload implements UploadInstance {
     const filesToProcess = this.options.multiple ? files : [files[0]];
 
     // Validate files
-    const validFiles = filesToProcess.filter(file => this._validateFile(file));
+    const validFiles = filesToProcess.filter((file): file is File => file !== undefined && this._validateFile(file));
 
     // Notify about file selection
     if (validFiles.length && this.options.onFileSelect) {
@@ -258,8 +258,11 @@ class Upload implements UploadInstance {
 
     // Process the first valid file
     if (validFiles.length) {
-      this.setFile(validFiles[0]);
-      this._simulateUpload(validFiles[0]);
+      const firstFile = validFiles[0];
+      if (firstFile) {
+        this.setFile(firstFile);
+        this._simulateUpload(firstFile);
+      }
     }
   }
 

@@ -21,19 +21,10 @@
     "preRelease": false
   },
   "hooks": {
-    "before:init": [
-      "npm run test",
-      "npm run build"
-    ],
-    "after:bump": [
-      "npm run build"
-    ],
-    "before:release": [
-      "npm run pack:test"
-    ],
-    "after:release": [
-      "echo Successfully released ${name} v${version} to ${repo.repository}."
-    ]
+    "before:init": ["npm run test", "npm run build"],
+    "after:bump": ["npm run build"],
+    "before:release": ["npm run pack:test"],
+    "after:release": ["echo Successfully released ${name} v${version} to ${repo.repository}."]
   },
   "plugins": {
     "@release-it/conventional-changelog": {

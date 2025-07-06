@@ -8,7 +8,7 @@ addons.setConfig({
   panelPosition: 'bottom', // bottom or right
   enableShortcuts: false,
   showToolbar: true,
-  selectedPanel: null, 
+  selectedPanel: null,
   initialActive: 'sidebar',
 
   sidebar: {
@@ -33,7 +33,7 @@ addons.setConfig({
     </div>`,
     brandUrl: 'https://github.com/liimonx/atomix',
     brandTarget: '_self',
-    
+
     // Use hex colors to avoid issues with polished
     colorPrimary: '#6c757d',
     colorSecondary: '#7C3AED',
@@ -45,16 +45,14 @@ addons.setConfig({
     appBorderColor: '#212936',
     appBorderRadius: 4,
 
+    // Text colors
+    textColor: '#6c757d',
+    textInverseColor: '#ffffff',
 
-  // Text colors
-  textColor: '#6c757d',
-  textInverseColor: '#ffffff',
- 
-  // Toolbar default and active colors
-  barTextColor: '#6c757d',
-  barSelectedColor: '#7C3AED',
-  barHoverColor: '#7C3AED',
-  barBg: '#171f2a',
-
-  })
-}); 
+    // Toolbar default and active colors
+    barTextColor: '#6c757d',
+    barSelectedColor: '#7C3AED',
+    barHoverColor: '#7C3AED',
+    barBg: '#171f2a',
+  }),
+});

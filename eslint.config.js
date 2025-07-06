@@ -61,6 +61,14 @@ module.exports = [
     },
   },
   {
-    ignores: ['node_modules/', 'dist/', 'build/', 'coverage/', '**/*.d.ts', 'storybook-static/', 'docs/'],
+    ignores: [
+      'node_modules/',
+      'dist/',
+      'build/',
+      'coverage/',
+      '**/*.d.ts',
+      'storybook-static/',
+      'docs/',
+    ],
   },
 ];

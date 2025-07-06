@@ -1,6 +1,6 @@
 /**
  * Sample Next.js Configuration for consuming @shohojdhara/atomix
- * 
+ *
  * This configuration shows how to properly set up Next.js to work with Atomix
  * components, handle CSS imports, and optimize for SSR.
  */
@@ -19,7 +19,7 @@ const nextConfig = {
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // Enable exportsFields for proper module resolution
     config.resolve.exportsFields = ['exports'];
-    
+
     // Prefer ESM modules when available
     config.resolve.mainFields = ['module', 'main'];
 
@@ -35,9 +35,7 @@ const nextConfig = {
             importLoaders: 1,
             modules: {
               auto: true,
-              localIdentName: dev 
-                ? '[name]__[local]--[hash:base64:5]' 
-                : '[hash:base64:8]',
+              localIdentName: dev ? '[name]__[local]--[hash:base64:5]' : '[hash:base64:8]',
             },
           },
         },
@@ -56,9 +54,7 @@ const nextConfig = {
             importLoaders: 2,
             modules: {
               auto: true,
-              localIdentName: dev 
-                ? '[name]__[local]--[hash:base64:5]' 
-                : '[hash:base64:8]',
+              localIdentName: dev ? '[name]__[local]--[hash:base64:5]' : '[hash:base64:8]',
             },
           },
         },

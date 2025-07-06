@@ -712,19 +712,26 @@ export const usePhotoViewer = ({
 
         if (touches.length === 1 && currentState.zoomLevel > 1) {
           setIsDragging(true);
-          setStartDragPosition({
-            x: touches[0].clientX - currentState.position.x,
-            y: touches[0].clientY - currentState.position.y,
-          });
+          const touch = touches[0];
+          if (touch) {
+            setStartDragPosition({
+              x: touch.clientX - currentState.position.x,
+              y: touch.clientY - currentState.position.y,
+            });
+          }
         } else if (touches.length === 2) {
-          const dx = touches[0].clientX - touches[1].clientX;
-          const dy = touches[0].clientY - touches[1].clientY;
-          lastDistanceRef.current = Math.sqrt(dx * dx + dy * dy);
+          const touch1 = touches[0];
+          const touch2 = touches[1];
+          if (touch1 && touch2) {
+            const dx = touch1.clientX - touch2.clientX;
+            const dy = touch1.clientY - touch2.clientY;
+            lastDistanceRef.current = Math.sqrt(dx * dx + dy * dy);
 
-          lastMidpointRef.current = {
-            x: (touches[0].clientX + touches[1].clientX) / 2,
-            y: (touches[0].clientY + touches[1].clientY) / 2,
-          };
+            lastMidpointRef.current = {
+              x: (touch1.clientX + touch2.clientX) / 2,
+              y: (touch1.clientY + touch2.clientY) / 2,
+            };
+          }
         }
         return prev;
       });
@@ -758,76 +765,92 @@ export const usePhotoViewer = ({
           event.preventDefault();
         }
 
+        let newPosition: { x: number; y: number } | null = null;
+        let zoomDelta = 0;
+        let currentMidpoint: { x: number; y: number } | null = null;
+
         if (touches.length === 1 && isDragging && currentState.zoomLevel > 1) {
-          const newPosition = {
-            x: touches[0].clientX - startDragPosition.x,
-            y: touches[0].clientY - startDragPosition.y,
-          };
-          const constrainedPosition = constrainPosition(newPosition, currentState.bounds);
-
-          return {
-            ...prev,
-            [currentIndex]: {
-              ...currentState,
-              position: constrainedPosition,
-            },
-          };
-        } else if (touches.length === 2 && lastDistanceRef.current !== null) {
-          const dx = touches[0].clientX - touches[1].clientX;
-          const dy = touches[0].clientY - touches[1].clientY;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          const zoomDelta = (distance - lastDistanceRef.current) * 0.005;
-          lastDistanceRef.current = distance;
-
-          const currentMidpoint = {
-            x: (touches[0].clientX + touches[1].clientX) / 2,
-            y: (touches[0].clientY + touches[1].clientY) / 2,
-          };
-
-          const oldZoom = currentState.zoomLevel;
-          const newZoom = Math.max(0.1, Math.min(5, oldZoom + zoomDelta));
-
-          if (newZoom !== oldZoom && lastMidpointRef.current) {
-            let rect;
-            try {
-              rect = event.currentTarget.getBoundingClientRect();
-            } catch (error) {
-              console.warn('PhotoViewer: Error getting bounding rect in touch move', error);
-              return prev;
-            }
-
-            if (!rect || rect.width === 0 || rect.height === 0) return prev;
-
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const midpointX = currentMidpoint.x - rect.left - centerX;
-            const midpointY = currentMidpoint.y - rect.top - centerY;
-
-            const zoomFactor = newZoom / oldZoom;
-            const newBounds = calculateBounds(newZoom, currentState.rotation);
-
-            const newPosition = {
-              x: currentState.position.x + midpointX * (1 - zoomFactor) * 0.5,
-              y: currentState.position.y + midpointY * (1 - zoomFactor) * 0.5,
+          const touch = touches[0];
+          if (touch) {
+            newPosition = {
+              x: touch.clientX - startDragPosition.x,
+              y: touch.clientY - startDragPosition.y,
             };
-
-            const constrainedPosition = constrainPosition(newPosition, newBounds);
-
-            lastMidpointRef.current = currentMidpoint;
+          }
+          
+          if (newPosition) {
+            const constrainedPosition = constrainPosition(newPosition, currentState.bounds);
 
             return {
               ...prev,
               [currentIndex]: {
                 ...currentState,
-                zoomLevel: newZoom,
-                bounds: newBounds,
                 position: constrainedPosition,
               },
             };
           }
+        } else if (touches.length === 2 && lastDistanceRef.current !== null) {
+          const touch1 = touches[0];
+          const touch2 = touches[1];
+          if (touch1 && touch2) {
+            const dx = touch1.clientX - touch2.clientX;
+            const dy = touch1.clientY - touch2.clientY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-          lastMidpointRef.current = currentMidpoint;
+            zoomDelta = (distance - lastDistanceRef.current) * 0.005;
+            lastDistanceRef.current = distance;
+
+            currentMidpoint = {
+              x: (touch1.clientX + touch2.clientX) / 2,
+              y: (touch1.clientY + touch2.clientY) / 2,
+            };
+
+            const oldZoom = currentState.zoomLevel;
+            const newZoom = Math.max(0.1, Math.min(5, oldZoom + zoomDelta));
+
+            if (newZoom !== oldZoom && lastMidpointRef.current && currentMidpoint) {
+              let rect;
+              try {
+                rect = event.currentTarget.getBoundingClientRect();
+              } catch (error) {
+                console.warn('PhotoViewer: Error getting bounding rect in touch move', error);
+                return prev;
+              }
+
+              if (!rect || rect.width === 0 || rect.height === 0) return prev;
+
+              const centerX = rect.width / 2;
+              const centerY = rect.height / 2;
+              const midpointX = currentMidpoint.x - rect.left - centerX;
+              const midpointY = currentMidpoint.y - rect.top - centerY;
+
+              const zoomFactor = newZoom / oldZoom;
+              const newBounds = calculateBounds(newZoom, currentState.rotation);
+
+              const newPosition = {
+                x: currentState.position.x + midpointX * (1 - zoomFactor) * 0.5,
+                y: currentState.position.y + midpointY * (1 - zoomFactor) * 0.5,
+              };
+
+              const constrainedPosition = constrainPosition(newPosition, newBounds);
+
+              lastMidpointRef.current = currentMidpoint;
+
+              return {
+                ...prev,
+                [currentIndex]: {
+                  ...currentState,
+                  zoomLevel: newZoom,
+                  bounds: newBounds,
+                  position: constrainedPosition,
+                },
+              };
+            }
+
+            if (currentMidpoint) {
+              lastMidpointRef.current = currentMidpoint;
+            }
+          }
         }
         return prev;
       });

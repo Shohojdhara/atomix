@@ -274,7 +274,7 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
           // Find the shortest column
           const shortestCol = columnHeights.current.indexOf(Math.min(...columnHeights.current));
           const left = shortestCol * (colWidth + gap);
-          const top = columnHeights.current[shortestCol];
+          const top = columnHeights.current[shortestCol] ?? 0;
           const height = item.ref.current.offsetHeight;
           columnHeights.current[shortestCol] = top + height + gap;
           newPositions[index] = {

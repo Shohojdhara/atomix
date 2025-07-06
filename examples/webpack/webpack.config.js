@@ -1,6 +1,6 @@
 /**
  * Sample Webpack Configuration for consuming @shohojdhara/atomix
- * 
+ *
  * This configuration shows how to properly set up webpack to work with Atomix
  * components and handle CSS imports correctly.
  */
@@ -15,7 +15,7 @@ module.exports = (env, argv) => {
   return {
     mode: isProduction ? 'production' : 'development',
     entry: './src/index.js', // Your app entry point
-    
+
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: isProduction ? '[name].[contenthash].js' : '[name].js',
@@ -60,8 +60,8 @@ module.exports = (env, argv) => {
                 // Enable CSS modules for .module.css files
                 modules: {
                   auto: true,
-                  localIdentName: isProduction 
-                    ? '[hash:base64:8]' 
+                  localIdentName: isProduction
+                    ? '[hash:base64:8]'
                     : '[name]__[local]--[hash:base64:5]',
                 },
               },
@@ -81,8 +81,8 @@ module.exports = (env, argv) => {
                 importLoaders: 2,
                 modules: {
                   auto: true,
-                  localIdentName: isProduction 
-                    ? '[hash:base64:8]' 
+                  localIdentName: isProduction
+                    ? '[hash:base64:8]'
                     : '[name]__[local]--[hash:base64:5]',
                 },
               },
@@ -109,12 +109,14 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         template: './public/index.html',
       }),
-      
-      ...(isProduction ? [
-        new MiniCssExtractPlugin({
-          filename: '[name].[contenthash].css',
-        }),
-      ] : []),
+
+      ...(isProduction
+        ? [
+            new MiniCssExtractPlugin({
+              filename: '[name].[contenthash].css',
+            }),
+          ]
+        : []),
     ],
 
     // Development server configuration

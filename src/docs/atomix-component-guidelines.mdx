@@ -32,7 +32,8 @@ export default class ComponentName {
   private options: any;
 
   constructor(element: string | HTMLElement, options: any = {}) {
-    this.element = typeof element === 'string' ? document.querySelector(element) as HTMLElement : element;
+    this.element =
+      typeof element === 'string' ? (document.querySelector(element) as HTMLElement) : element;
     this.options = { ...DEFAULTS, ...options };
     this._init();
   }
@@ -57,13 +58,13 @@ import ComponentName from './index';
  */
 export function initFromDataAttributes(): ComponentName[] {
   const instances: ComponentName[] = [];
-  
+
   document.querySelectorAll('[data-component-name]').forEach(element => {
     const options = parseDataAttributes(element);
     const instance = new ComponentName(element as HTMLElement, options);
     instances.push(instance);
   });
-  
+
   return instances;
 }
 
@@ -90,15 +91,15 @@ import { initFromDataAttributes, getInstance, disposeAll } from './[ComponentNam
 if (typeof window !== 'undefined') {
   // Initialize the Atomix global object if it doesn't exist
   (window as any).Atomix = (window as any).Atomix || {};
-  
+
   // Add component to the global Atomix object
   (window as any).Atomix.ComponentName = {
     create: ComponentName,
     init: initFromDataAttributes,
     get: getInstance,
-    disposeAll: disposeAll
+    disposeAll: disposeAll,
   };
-  
+
   // Auto-initialize components when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
@@ -110,12 +111,7 @@ if (typeof window !== 'undefined') {
 }
 
 // Export everything for module bundling
-export { 
-  ComponentName as default,
-  initFromDataAttributes,
-  getInstance,
-  disposeAll
-};
+export { ComponentName as default, initFromDataAttributes, getInstance, disposeAll };
 ```
 
 ### 3. Type Definitions
@@ -223,7 +219,7 @@ $component-spacing: 8px !default;
        const [internalValue, setInternalValue] = useState(initialValue);
 
        // Determine if component is controlled or uncontrolled
-       const isControlled = typeof onChange !== "undefined";
+       const isControlled = typeof onChange !== 'undefined';
        const value = isControlled ? initialValue : internalValue;
 
        const handleRatingChange = (newValue: number) => {
@@ -258,20 +254,20 @@ $component-spacing: 8px !default;
      ```typescript
      export const RATING = {
        SELECTORS: {
-         RATING: ".c-rating",
-         STAR: ".c-rating__star",
-         STAR_FULL: ".c-rating__star-full",
-         STAR_HALF: ".c-rating__star-half",
+         RATING: '.c-rating',
+         STAR: '.c-rating__star',
+         STAR_FULL: '.c-rating__star-full',
+         STAR_HALF: '.c-rating__star-half',
        },
        CLASSES: {
-         FULL: "c-rating__star--full",
-         HALF: "c-rating__star--half",
-         SMALL: "c-rating--sm",
-         LARGE: "c-rating--lg",
+         FULL: 'c-rating__star--full',
+         HALF: 'c-rating__star--half',
+         SMALL: 'c-rating--sm',
+         LARGE: 'c-rating--lg',
        },
        ATTRIBUTES: {
-         READONLY: "data-readonly",
-         VALUE: "data-value",
+         READONLY: 'data-readonly',
+         VALUE: 'data-value',
        },
      };
      ```
@@ -283,10 +279,7 @@ $component-spacing: 8px !default;
      - Example:
      ```typescript
      // src/lib/utils/rating.ts
-     export function calculateRoundedRating(
-       value: number,
-       allowHalf: boolean
-     ): number {
+     export function calculateRoundedRating(value: number, allowHalf: boolean): number {
        return allowHalf ? Math.floor(value * 2) / 2 : Math.round(value);
      }
      ```
@@ -366,10 +359,10 @@ $component-spacing: 8px !default;
 
    ```typescript
    // In hook implementation
-   const isControlled = typeof onChange !== "undefined";
+   const isControlled = typeof onChange !== 'undefined';
    const value = isControlled ? externalValue : internalValue;
 
-   const handleChange = (newValue) => {
+   const handleChange = newValue => {
      if (!isControlled) {
        setInternalValue(newValue);
      }
@@ -501,7 +494,7 @@ Each component should have its own settings file in `01-settings/` that defines 
 
 ```scss
 // _settings.component-name.scss
-@use "settings.config" as config;
+@use 'settings.config' as config;
 
 // Define all component variables with !default flag for overriding
 $component-size: 32px !default;
@@ -525,11 +518,11 @@ Component styles should be defined in `06-components/` following these guideline
 
 ```scss
 // _components.component-name.scss
-@use "../01-settings/settings.config" as config;
-@use "../01-settings/settings.component-name" as component;
-@use "../01-settings/settings.colors" as *;
-@use "../02-tools/tools.rem" as rem;
-@use "../02-tools/tools.grid" as *;
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.component-name' as component;
+@use '../01-settings/settings.colors' as *;
+@use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.grid' as *;
 
 .c-component {
   $root: &; // Store reference to component root for nesting
@@ -836,11 +829,11 @@ The Atomix system provides several utility functions for working with colors:
 
 ```scss
 // Convert color to RGB format for use in rgba() functions
-@use "../02-tools/tools.to-rgb" as *;
+@use '../02-tools/tools.to-rgb' as *;
 background-color: rgba(to-rgb($primary), 0.5);
 
 // Lighten or darken colors
-@use "../02-tools/tools.color-functions" as *;
+@use '../02-tools/tools.color-functions' as *;
 $lighter-color: tint-color($primary, 20%);
 $darker-color: shade-color($primary, 20%);
 ```
@@ -867,8 +860,8 @@ $darker-color: shade-color($primary, 20%);
 export const EdgePanel: React.FC<EdgePanelProps> = ({
   title,
   children,
-  position = "start",
-  mode = "slide",
+  position = 'start',
+  mode = 'slide',
   isOpen = false,
   onOpenChange,
   backdrop = true,
@@ -900,8 +893,7 @@ export const EdgePanel: React.FC<EdgePanelProps> = ({
 // Basic structure of vanilla JS class
 class ComponentName {
   constructor(element, options = {}) {
-    this.$element =
-      typeof element === "string" ? document.querySelector(element) : element;
+    this.$element = typeof element === 'string' ? document.querySelector(element) : element;
     this.options = { ...defaults, ...options };
     this._initialize();
   }
@@ -938,5 +930,7 @@ class ComponentName {
 - Implement lazy initialization where appropriate
 
 By following these guidelines, you'll create components that integrate seamlessly with the Atomix design system and provide a consistent, high-quality user experience.
+
+```
 
 ```

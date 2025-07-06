@@ -1,73 +1,54 @@
 {
   "compilerOptions": {
-    // Target and Module Configuration
-    "target": "ES2020",
-    "module": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "moduleResolution": "node",
+    /* Base Options: */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "es2022",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
     "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+
+    /* For library builds with Rollup: */
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+
+    /* Library specific */
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "jsx": "react-jsx",
+
+    /* Path mapping */
     "baseUrl": ".",
     "paths": {
       "@shohojdhara/atomix": ["./src/index.ts"],
       "@/*": ["./src/*"]
     },
-    
-    // Strict Type Checking
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": false, // Temporarily disabled to fix build
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": false, // Temporarily disabled to fix build
-    "noImplicitThis": true,
-    "useUnknownInCatchVariables": true,
-    "alwaysStrict": true,
-    
-    // Additional Checks
-    "noUnusedLocals": false, // Temporarily disabled to fix build
-    "noUnusedParameters": false, // Temporarily disabled to fix build
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": false, // Temporarily disabled to fix build
-    
-    // Module Resolution and Imports
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-        "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    
-    // JSX and React
-    "jsx": "react-jsx",
-    
-    // Output Configuration
-    "declaration": true,
+
+    /* Output Configuration */
     "declarationDir": "./dist/types",
-    "emitDeclarationOnly": true,
-    "sourceMap": true,
     "outDir": "./dist",
-    
-    // Type Definitions
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types"
-    ]
+
+    /* Type Definitions */
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+
+    /* For linting only (since Rollup handles compilation) */
+    "noEmit": true
   },
-  "include": [
-    "src/components/**/*.tsx",
-    "src/components/**/index.ts",
-    "src/layouts/**/*.tsx",
-    "src/layouts/**/index.ts",
-    "src/lib/**/*.ts",
-    "src/index.ts"
-  ],
+  "include": ["src/**/*", "vitest.config.ts"],
   "exclude": [
     "node_modules",
     "dist",
     "**/*.stories.tsx",
     "**/*.stories.ts",
-    "**/*.test.ts",
-    "**/*.test.tsx",
     "**/scripts/**",
     "src/htmlComponentsEntry.ts"
   ]

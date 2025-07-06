@@ -1,6 +1,6 @@
 /**
  * Sample Vite Configuration for consuming @shohojdhara/atomix
- * 
+ *
  * This configuration shows how to properly set up Vite to work with Atomix
  * components and handle CSS imports correctly.
  */
@@ -45,7 +45,7 @@ export default defineConfig({
   build: {
     // Target modern browsers for better performance
     target: 'es2020',
-    
+
     // Rollup options for better bundle optimization
     rollupOptions: {
       output: {
@@ -89,12 +89,7 @@ export default defineConfig({
 
   // Dependency optimization
   optimizeDeps: {
-    include: [
-      '@shohojdhara/atomix',
-      'react',
-      'react-dom',
-      'react-router-dom',
-    ],
+    include: ['@shohojdhara/atomix', 'react', 'react-dom', 'react-router-dom'],
     // Force pre-bundling of Atomix for faster dev server startup
     force: true,
   },

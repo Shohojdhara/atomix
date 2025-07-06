@@ -17,10 +17,7 @@ export default function BasicCSSExample() {
                 This example uses the traditional CSS import approach with Atomix classes.
               </p>
               <div className="u-mt-3">
-                <Input 
-                  placeholder="Enter your name"
-                  className="u-mb-2"
-                />
+                <Input placeholder="Enter your name" className="u-mb-2" />
                 <Button variant="primary" className="c-btn--sm">
                   Submit
                 </Button>

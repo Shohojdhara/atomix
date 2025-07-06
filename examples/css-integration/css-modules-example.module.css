@@ -155,15 +155,15 @@
   .container {
     padding: 1rem 0;
   }
-  
+
   .title {
     font-size: 2rem;
   }
-  
+
   .buttonGroup {
     flex-direction: column;
   }
-  
+
   .featureGrid {
     grid-template-columns: 1fr;
   }

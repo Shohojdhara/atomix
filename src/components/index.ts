@@ -7,7 +7,10 @@ export { default as Button, type ButtonProps } from './Button/Button';
 export { default as Callout, type CalloutProps } from './Callout/Callout';
 export { default as Card, type CardProps } from './Card/Card';
 export { default as Checkbox, type CheckboxProps } from './Form/Checkbox';
-export { default as ColorModeToggle, type ColorModeToggleProps } from './ColorModeToggle/ColorModeToggle';
+export {
+  default as ColorModeToggle,
+  type ColorModeToggleProps,
+} from './ColorModeToggle/ColorModeToggle';
 export { default as Countdown, type CountdownProps } from './Countdown/Countdown';
 export { default as DataTable, type DataTableProps } from './DataTable/DataTable';
 export { default as DatePicker, type DatePickerProps } from './DatePicker/DatePicker';

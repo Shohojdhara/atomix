@@ -10,14 +10,13 @@
   "sass": "src/styles/index.scss",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.esm.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     },
-    "./styles": "./dist/index.css",
-    "./styles.css": "./dist/index.css",
-    "./dist/index.css": "./dist/index.css",
-    "./scss": "./src/styles/index.scss",
+    "./styles": {
+      "default": "./dist/index.css"
+    },
     "./package.json": "./package.json"
   },
   "dependencies": {
@@ -26,11 +25,13 @@
     "phosphor-react": "^1.4.1"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
     "@babel/core": "^7.26.10",
     "@babel/plugin-transform-runtime": "^7.27.4",
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "^7.27.0",
+    "@changesets/cli": "^2.29.5",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -83,7 +84,8 @@
     "terser": "^5.24.0",
     "terser-webpack-plugin": "^5.3.14",
     "tslib": "^2.6.2",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "vitest": "^3.2.4"
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
@@ -93,7 +95,15 @@
     "build:watch": "rollup -c -w",
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run ci",
+    "format": "prettier --write .",
+    "check-format": "prettier --check .",
+    "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "ci": "npm run build && npm run check-format && npm run check-exports && npm run lint && npm run test",
+    "local-release": "changeset version && changeset publish"
   },
   "files": [
     "dist",
@@ -124,7 +134,8 @@
   "homepage": "https://github.com/liimonx/atomix#readme",
   "peerDependencies": {
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "phosphor-react": "^1.4.1"
   },
   "engines": {
     "node": ">=16.0.0"

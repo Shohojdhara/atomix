@@ -1,96 +1,84 @@
 // Example Next.js page demonstrating Atomix components with SSR
 // This file shows how to use Atomix components in a Next.js application
 
-import React from 'react'
-import { GetServerSideProps } from 'next'
-import { 
-  Hero, 
-  Button, 
-  Card, 
-  Badge, 
-  DataTable, 
-  Pagination,
-  Modal
-} from '@shohojdhara/atomix'
-import useModal from '@shohojdhara/atomix'
+import React from 'react';
+import { GetServerSideProps } from 'next';
+import { Hero, Button, Card, Badge, DataTable, Pagination, Modal } from '@shohojdhara/atomix';
+import useModal from '@shohojdhara/atomix';
 
 // Example data that could come from an API
 interface User {
-  id: number
-  name: string
-  email: string
-  role: string
-  status: 'active' | 'inactive'
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  status: 'active' | 'inactive';
 }
 
 interface PageProps {
-  users: User[]
-  totalUsers: number
-  currentPage: number
+  users: User[];
+  totalUsers: number;
+  currentPage: number;
 }
 
 // This demonstrates SSR compatibility - data is fetched on the server
-export const getServerSideProps: GetServerSideProps<PageProps> = async (context) => {
-  const page = Number(context.query.page) || 1
-  
+export const getServerSideProps: GetServerSideProps<PageProps> = async context => {
+  const page = Number(context.query.page) || 1;
+
   // Simulate API call
   const users: User[] = Array.from({ length: 10 }, (_, i) => ({
     id: (page - 1) * 10 + i + 1,
     name: `User ${(page - 1) * 10 + i + 1}`,
     email: `user${(page - 1) * 10 + i + 1}@example.com`,
     role: ['Admin', 'User', 'Editor'][Math.floor(Math.random() * 3)],
-    status: Math.random() > 0.3 ? 'active' : 'inactive'
-  }))
+    status: Math.random() > 0.3 ? 'active' : 'inactive',
+  }));
 
   return {
     props: {
       users,
       totalUsers: 100, // Simulate total count
-      currentPage: page
-    }
-  }
-}
+      currentPage: page,
+    },
+  };
+};
 
 const NextJSExamplePage: React.FC<PageProps> = ({ users, totalUsers, currentPage }) => {
-  const { isOpen, openModal, closeModal } = useModal()
+  const { isOpen, openModal, closeModal } = useModal();
 
   // Define table columns
   const columns = [
     {
       key: 'id',
       title: 'ID',
-      render: (value: number) => <Badge variant="secondary">{value}</Badge>
+      render: (value: number) => <Badge variant="secondary">{value}</Badge>,
     },
     {
       key: 'name',
       title: 'Name',
-      render: (value: string) => <strong>{value}</strong>
+      render: (value: string) => <strong>{value}</strong>,
     },
     {
       key: 'email',
-      title: 'Email'
+      title: 'Email',
     },
     {
       key: 'role',
       title: 'Role',
       render: (value: string) => (
-        <Badge variant={value === 'Admin' ? 'primary' : 'secondary'}>
-          {value}
-        </Badge>
-      )
+        <Badge variant={value === 'Admin' ? 'primary' : 'secondary'}>{value}</Badge>
+      ),
     },
     {
       key: 'status',
       title: 'Status',
       render: (value: 'active' | 'inactive') => (
-        <Badge variant={value === 'active' ? 'success' : 'error'}>
-          {value}
-        </Badge>
-      )
-    }
-  ]
+        <Badge variant={value === 'active' ? 'success' : 'error'}>{value}</Badge>
+      ),
+    },
+  ];
 
-  const totalPages = Math.ceil(totalUsers / 10)
+  const totalPages = Math.ceil(totalUsers / 10);
 
   return (
     <div>
@@ -116,9 +104,7 @@ const NextJSExamplePage: React.FC<PageProps> = ({ users, totalUsers, currentPage
           <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-4">
             <div>
               <h2 className="u-h3 u-mb-2">User Management</h2>
-              <p className="u-text-muted">
-                Manage your users with server-side rendered data
-              </p>
+              <p className="u-text-muted">Manage your users with server-side rendered data</p>
             </div>
             <Button variant="primary" label="Add User" onClick={openModal} />
           </div>
@@ -133,15 +119,15 @@ const NextJSExamplePage: React.FC<PageProps> = ({ users, totalUsers, currentPage
                 emptyMessage="No users found"
                 className="u-mb-4"
               />
-              
+
               {/* Pagination - Works with Next.js routing */}
               <div className="u-d-flex u-justify-content-center">
                 <Pagination
                   currentPage={currentPage}
                   totalPages={totalPages}
-                  onPageChange={(page) => {
+                  onPageChange={page => {
                     // Use Next.js router for navigation
-                    window.location.href = `?page=${page}`
+                    window.location.href = `?page=${page}`;
                   }}
                   showFirstLastButtons={true}
                   showPrevNextButtons={true}
@@ -158,7 +144,9 @@ const NextJSExamplePage: React.FC<PageProps> = ({ users, totalUsers, currentPage
             <div className="o-grid__col o-grid__col--md-4 u-mb-4">
               <Card>
                 <div className="c-card__body u-text-center">
-                  <Badge variant="success" className="u-mb-3">✓ SSR Ready</Badge>
+                  <Badge variant="success" className="u-mb-3">
+                    ✓ SSR Ready
+                  </Badge>
                   <h3 className="c-card__title">Server Rendering</h3>
                   <p className="c-card__text">
                     All components render on the server for better SEO and performance
@@ -166,11 +154,13 @@ const NextJSExamplePage: React.FC<PageProps> = ({ users, totalUsers, currentPage
                 </div>
               </Card>
             </div>
-            
+
             <div className="o-grid__col o-grid__col--md-4 u-mb-4">
               <Card>
                 <div className="c-card__body u-text-center">
-                  <Badge variant="primary" className="u-mb-3">⚡ Hydration</Badge>
+                  <Badge variant="primary" className="u-mb-3">
+                    ⚡ Hydration
+                  </Badge>
                   <h3 className="c-card__title">Client Hydration</h3>
                   <p className="c-card__text">
                     Components hydrate seamlessly without layout shifts
@@ -178,11 +168,13 @@ const NextJSExamplePage: React.FC<PageProps> = ({ users, totalUsers, currentPage
                 </div>
               </Card>
             </div>
-            
+
             <div className="o-grid__col o-grid__col--md-4 u-mb-4">
               <Card>
                 <div className="c-card__body u-text-center">
-                  <Badge variant="info" className="u-mb-3">🎨 Styling</Badge>
+                  <Badge variant="info" className="u-mb-3">
+                    🎨 Styling
+                  </Badge>
                   <h3 className="c-card__title">CSS-in-JS Free</h3>
                   <p className="c-card__text">
                     No runtime CSS-in-JS means no styling flash during SSR
@@ -195,18 +187,13 @@ const NextJSExamplePage: React.FC<PageProps> = ({ users, totalUsers, currentPage
       </main>
 
       {/* Modal - Client-side interactivity */}
-      <Modal
-        isOpen={isOpen}
-        onClose={closeModal}
-        title="Add New User"
-        size="md"
-      >
+      <Modal isOpen={isOpen} onClose={closeModal} title="Add New User" size="md">
         <div className="u-p-4">
           <p className="u-mb-4">
-            This modal demonstrates client-side interactivity working 
-            seamlessly with SSR components.
+            This modal demonstrates client-side interactivity working seamlessly with SSR
+            components.
           </p>
-          
+
           <div className="u-d-flex u-gap-3 u-justify-content-end">
             <Button variant="secondary" label="Cancel" onClick={closeModal} />
             <Button variant="primary" label="Save User" onClick={closeModal} />
@@ -214,10 +201,10 @@ const NextJSExamplePage: React.FC<PageProps> = ({ users, totalUsers, currentPage
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default NextJSExamplePage
+export default NextJSExamplePage;
 
 // Additional example: Using Atomix in a Next.js API route
 // pages/api/users.ts

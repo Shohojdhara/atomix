@@ -221,29 +221,29 @@ export const Dropdown: React.FC<DropdownProps> = ({
       case 'ArrowDown':
         e.preventDefault();
         if (currentIndex < focusableItems.length - 1) {
-          focusableItems[currentIndex + 1].focus();
+          focusableItems[currentIndex + 1]?.focus();
         } else {
-          focusableItems[0].focus();
+          focusableItems[0]?.focus();
         }
         break;
 
       case 'ArrowUp':
         e.preventDefault();
         if (currentIndex > 0) {
-          focusableItems[currentIndex - 1].focus();
+          focusableItems[currentIndex - 1]?.focus();
         } else {
-          focusableItems[focusableItems.length - 1].focus();
+          focusableItems[focusableItems.length - 1]?.focus();
         }
         break;
 
       case 'Home':
         e.preventDefault();
-        focusableItems[0].focus();
+        focusableItems[0]?.focus();
         break;
 
       case 'End':
         e.preventDefault();
-        focusableItems[focusableItems.length - 1].focus();
+        focusableItems[focusableItems.length - 1]?.focus();
         break;
     }
   }, []);

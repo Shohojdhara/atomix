@@ -15,7 +15,7 @@ const external = [
   ...Object.keys(pkg.dependencies || {}),
   ...Object.keys(pkg.peerDependencies || {}),
   'react/jsx-runtime',
-  'react/jsx-dev-runtime'
+  'react/jsx-dev-runtime',
 ];
 
 const commonPlugins = [
@@ -61,12 +61,15 @@ export default [
           '@babel/preset-typescript',
         ],
         plugins: [
-          ['@babel/plugin-transform-runtime', {
-            corejs: 3,
-            helpers: true,
-            regenerator: true,
-            useESModules: true,
-          }],
+          [
+            '@babel/plugin-transform-runtime',
+            {
+              corejs: 3,
+              helpers: true,
+              regenerator: true,
+              useESModules: true,
+            },
+          ],
         ],
       }),
     ],
@@ -94,19 +97,25 @@ export default [
         exclude: 'node_modules/**',
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         presets: [
-          ['@babel/preset-env', { 
-            modules: false // Keep ES modules for Rollup, it will handle the CJS conversion
-          }],
+          [
+            '@babel/preset-env',
+            {
+              modules: false, // Keep ES modules for Rollup, it will handle the CJS conversion
+            },
+          ],
           '@babel/preset-react',
           '@babel/preset-typescript',
         ],
         plugins: [
-          ['@babel/plugin-transform-runtime', {
-            corejs: 3,
-            helpers: true,
-            regenerator: true,
-            useESModules: false,
-          }],
+          [
+            '@babel/plugin-transform-runtime',
+            {
+              corejs: 3,
+              helpers: true,
+              regenerator: true,
+              useESModules: false,
+            },
+          ],
         ],
       }),
     ],
@@ -138,12 +147,15 @@ export default [
           '@babel/preset-typescript',
         ],
         plugins: [
-          ['@babel/plugin-transform-runtime', {
-            corejs: 3,
-            helpers: true,
-            regenerator: true,
-            useESModules: true,
-          }],
+          [
+            '@babel/plugin-transform-runtime',
+            {
+              corejs: 3,
+              helpers: true,
+              regenerator: true,
+              useESModules: true,
+            },
+          ],
         ],
       }),
       terser({
