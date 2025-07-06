@@ -303,7 +303,7 @@ export function useDatePicker({
         if (parts.length === 2) {
           const startPart = parts[0]?.trim();
           const endPart = parts[1]?.trim();
-          
+
           if (!startPart || !endPart) return;
 
           const parsedStart = new Date(startPart);

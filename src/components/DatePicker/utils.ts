@@ -74,7 +74,7 @@ export function parseDate(dateStr: string, format: string): Date | null {
     const monthStr = parts[0];
     const dayStr = parts[1];
     const yearStr = parts[2];
-    
+
     if (!monthStr || !dayStr || !yearStr) return null;
 
     const month = parseInt(monthStr, 10) - 1;
@@ -93,7 +93,7 @@ export function parseDate(dateStr: string, format: string): Date | null {
     const dayStr = parts[0];
     const monthStr = parts[1];
     const yearStr = parts[2];
-    
+
     if (!dayStr || !monthStr || !yearStr) return null;
 
     const day = parseInt(dayStr, 10);
@@ -112,7 +112,7 @@ export function parseDate(dateStr: string, format: string): Date | null {
     const yearStr = parts[0];
     const monthStr = parts[1];
     const dayStr = parts[2];
-    
+
     if (!yearStr || !monthStr || !dayStr) return null;
 
     const year = parseInt(yearStr, 10);

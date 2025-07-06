@@ -777,7 +777,7 @@ export const usePhotoViewer = ({
               y: touch.clientY - startDragPosition.y,
             };
           }
-          
+
           if (newPosition) {
             const constrainedPosition = constrainPosition(newPosition, currentState.bounds);
 

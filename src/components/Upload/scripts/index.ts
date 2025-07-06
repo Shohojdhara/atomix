@@ -249,7 +249,9 @@ class Upload implements UploadInstance {
     const filesToProcess = this.options.multiple ? files : [files[0]];
 
     // Validate files
-    const validFiles = filesToProcess.filter((file): file is File => file !== undefined && this._validateFile(file));
+    const validFiles = filesToProcess.filter(
+      (file): file is File => file !== undefined && this._validateFile(file)
+    );
 
     // Notify about file selection
     if (validFiles.length && this.options.onFileSelect) {

@@ -85,16 +85,16 @@ jobs:
             const commentBody = `��� **Storybook Preview Built Successfully!**
 
             Your Storybook preview has been built and is ready for review.
-            
+
             📖 **Preview Details:**
             - **Branch:** \`${{ github.head_ref }}\`
             - **Commit:** \`${{ github.sha }}\`
             - **Build Status:** ✅ Success
-            
+
             🔗 **Links:**
             - [View Storybook Preview](https://liimonx.github.io/atomix/storybook/) (Available after main branch merge)
             - [View Build Logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            
+
             > This preview will be available on the main site once this PR is merged to the main branch.`;
 
             if (botComment) {

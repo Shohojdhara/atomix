@@ -234,7 +234,9 @@ export const Upload: React.FC<UploadProps> = ({
     const filesToProcess = multiple ? files : [files[0]];
 
     // Validate files
-    const validFiles = filesToProcess.filter((file): file is File => file !== undefined && validateFile(file));
+    const validFiles = filesToProcess.filter(
+      (file): file is File => file !== undefined && validateFile(file)
+    );
 
     // Notify about file selection
     if (validFiles.length && onFileSelect) {

@@ -18,7 +18,7 @@ if (fs.existsSync(storybookDir)) {
   if (fs.existsSync(storybookDeployDir)) {
     fs.rmSync(storybookDeployDir, { recursive: true, force: true });
   }
-  
+
   // Copy storybook-static to deploy/storybook
   fs.cpSync(storybookDir, storybookDeployDir, { recursive: true });
   console.log('✅ Storybook copied to deploy/storybook');

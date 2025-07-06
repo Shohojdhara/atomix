@@ -28,7 +28,12 @@ const commonPlugins = [
   postcss({
     extract: true,
     minimize: true,
-    use: ['sass'],
+    use: {
+      sass: {
+        api: 'modern',
+        silenceDeprecations: ['legacy-js-api'],
+      },
+    },
     extensions: ['.css', '.scss', '.sass'],
   }),
 ];
