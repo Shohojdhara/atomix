@@ -46,14 +46,14 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@storybook/addon-essentials": "^8.0.0",
-    "@storybook/addon-interactions": "^8.0.0",
-    "@storybook/addon-links": "^8.0.0",
-    "@storybook/blocks": "^8.0.0",
-    "@storybook/cli": "^8.0.0",
-    "@storybook/react": "^8.0.0",
-    "@storybook/react-webpack5": "^8.6.12",
-    "@storybook/test": "^8.0.0",
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/addon-interactions": "^8.6.14",
+    "@storybook/addon-links": "^8.6.14",
+    "@storybook/blocks": "^8.6.14",
+    "@storybook/cli": "^8.6.14",
+    "@storybook/react": "^8.6.14",
+    "@storybook/react-webpack5": "^8.6.14",
+    "@storybook/test": "^8.6.14",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -94,7 +94,7 @@
     "sass-loader": "^16.0.5",
     "serve": "^14.2.1",
     "size-limit": "^11.0.0",
-    "storybook": "^8.0.0",
+    "storybook": "^8.6.14",
     "style-loader": "^4.0.0",
     "terser": "^5.24.0",
     "terser-webpack-plugin": "^5.3.14",
@@ -144,14 +144,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/liimonx/atomix.git"
+    "url": "https://github.com/Shohojdhara/atomix.git"
   },
   "author": "liimonx <liimonx@shohojdhara.org>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/liimonx/atomix/issues"
+    "url": "https://github.com/Shohojdhara/atomix/issues"
   },
-  "homepage": "https://github.com/liimonx/atomix#readme",
+  "homepage": "https://github.com/Shohojdhara/atomix#readme",
   "peerDependencies": {
     "phosphor-react": "^1.4.1",
     "react": "^18.0.0",
@@ -162,7 +162,6 @@
   },
   "publishConfig": {
     "access": "public",
-    "registry": "https://registry.npmjs.org/",
-    "scope": "@shohojdhara"
+    "registry": "https://npm.pkg.github.com/"
   }
 }

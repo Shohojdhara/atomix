@@ -15,6 +15,7 @@ storybook-static/
 .env
 .env.local
 .env.*.local
+.npmrc
 
 # IDE files
 .idea/
