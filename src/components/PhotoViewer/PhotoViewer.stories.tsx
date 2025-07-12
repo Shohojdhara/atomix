@@ -1,6 +1,5 @@
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { Meta, StoryObj } from '@storybook/react-webpack5';
 import { PhotoViewer } from './PhotoViewer';
 import { ImageType } from '../../lib/types/components';
 import { ImageGallery } from './examples/ImageGallery';
@@ -29,7 +28,7 @@ export const Default: Story = {
       'https://picsum.photos/id/13/800/800',
     ],
     startIndex: 0,
-    onImageChange: fn(),
+    onImageChange: () => {},
   },
 };
 
@@ -45,7 +44,7 @@ export const StartAtSecond: Story = {
       'https://picsum.photos/id/13/800/800',
     ],
     startIndex: 1,
-    onImageChange: fn(),
+    onImageChange: () => {},
   },
 };
 
@@ -61,7 +60,7 @@ export const Disabled: Story = {
       'https://picsum.photos/id/13/800/800',
     ],
     disabled: true,
-    onImageChange: fn(),
+    onImageChange: () => {},
   },
 };
 
@@ -77,7 +76,7 @@ export const WithCustomClass: Story = {
       'https://picsum.photos/id/13/800/800',
     ],
     className: 'custom-photo-viewer',
-    onImageChange: fn(),
+    onImageChange: () => {},
   },
 };
 
@@ -109,7 +108,7 @@ export const WithEnhancedImages: Story = {
         tags: ['forest', 'nature', 'path'],
       } as ImageType, // Cast to ImageType
     ],
-    onImageChange: fn(),
+    onImageChange: () => {},
   },
 };
 
@@ -125,7 +124,7 @@ export const LeftThumbnails: Story = {
       'https://picsum.photos/id/13/800/800',
     ],
     thumbnailPosition: 'left',
-    onImageChange: fn(),
+    onImageChange: () => {},
   },
 };
 

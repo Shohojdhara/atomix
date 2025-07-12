@@ -1,5 +1,5 @@
-import { addons } from '@storybook/manager-api';
-import { create } from '@storybook/theming';
+import { addons } from 'storybook/manager-api';
+import { create } from 'storybook/theming';
 import packageJson from '../package.json';
 
 addons.setConfig({

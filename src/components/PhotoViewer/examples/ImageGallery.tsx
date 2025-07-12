@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { fn } from '@storybook/test';
 import { MasonryGridItem } from '../../../layouts/MasonryGrid/MasonryGridItem';
 import { MasonryGrid } from '../../../layouts/MasonryGrid/MasonryGrid';
 import { PhotoViewer } from '../PhotoViewer';
@@ -141,9 +140,7 @@ export const ImageGallery: React.FC = () => {
   };
 
   // Create spy function for image change handler
-  const handleImageChange = fn((index: number) => {
-    setSelectedImageIndex(index);
-  });
+  const handleImageChange = (index: number) => setSelectedImageIndex(index);
 
   return (
     <div className="c-image-gallery">

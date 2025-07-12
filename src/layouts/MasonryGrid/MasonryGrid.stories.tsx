@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-webpack5';
 import { MasonryGrid } from './MasonryGrid';
 import { MasonryGridItem } from './MasonryGridItem';
 import Card from '../../components/Card/Card';

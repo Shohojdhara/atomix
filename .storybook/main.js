@@ -2,11 +2,8 @@ const path = require('path');
 
 module.exports = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-  ],
+  addons: ['@storybook/addon-links', '@storybook/addon-docs'],
+
   framework: {
     name: '@storybook/react-webpack5',
     options: {
@@ -15,11 +12,10 @@ module.exports = {
       },
     },
   },
-  docs: {
-    autodocs: 'tag',
-  },
+
   // Serve the entire source directory as static files
   staticDirs: ['../src'],
+
   webpackFinal: async config => {
     if (!config.resolve) config.resolve = {};
     if (!config.resolve.alias) config.resolve.alias = {};
@@ -76,5 +72,5 @@ module.exports = {
     config.resolve.extensions.push('.ts', '.tsx');
 
     return config;
-  },
+  }
 };

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-webpack5';
 import { useState, useEffect } from 'react';
 import { EdgePanel } from './EdgePanel';
 import { Button } from '../Button/Button';

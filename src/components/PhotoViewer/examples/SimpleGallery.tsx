@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { fn } from '@storybook/test';
 import { PhotoViewer } from '../PhotoViewer';
 
 const images = [
@@ -22,10 +21,7 @@ export const SimpleGallery: React.FC = () => {
     setShowViewer(false);
   };
 
-  // Create spy functions for event handlers
-  const handleImageChange = fn((index: number) => {
-    setSelectedIndex(index);
-  });
+  const handleImageChange = (index: number) => setSelectedIndex(index);
 
   return (
     <div style={{ padding: '20px' }}>

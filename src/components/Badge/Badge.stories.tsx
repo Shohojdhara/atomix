@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-webpack5';
 import { Badge } from './Badge';
 import { BADGE } from '../../lib/constants/components';
 import { THEME_COLORS, SIZES } from '../../lib/constants/components';

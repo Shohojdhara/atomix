@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-webpack5';
 import { Dropdown, DropdownItem, DropdownDivider, DropdownHeader } from './index';
 import { Icon } from '../Icon';
 import { ThemeColor } from '../../lib/types/components';
