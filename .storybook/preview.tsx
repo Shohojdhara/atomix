@@ -13,7 +13,7 @@ const preview: Preview = {
       expanded: true,
     },
     docs: {
-      toc: true,
+      toc: false,
     },
     backgrounds: {
       default: 'none',
@@ -111,7 +111,7 @@ const preview: Preview = {
     },
   ],
 
-  tags: ['autodocs'],
+  tags: ['!autodocs'],
 };
 
 export default preview; 

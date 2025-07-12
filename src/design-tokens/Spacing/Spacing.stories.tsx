@@ -98,7 +98,7 @@ const SpacingPreview = () => {
 };
 
 export default {
-  title: 'Design Tokens/Spacing',
+  title: 'Design Tokens',
   component: SpacingPreview,
   parameters: {
     layout: 'fullscreen',

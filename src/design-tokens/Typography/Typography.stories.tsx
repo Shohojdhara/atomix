@@ -150,7 +150,7 @@ const TypographyPreview = () => {
 };
 
 export default {
-  title: 'Design Tokens/Typography',
+  title: 'Design Tokens',
   component: TypographyPreview,
   parameters: {
     layout: 'fullscreen',
