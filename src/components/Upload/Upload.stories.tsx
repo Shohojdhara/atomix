@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StoryFn, Meta } from '@storybook/react-webpack5';
+import { StoryFn, Meta } from '@storybook/react';
 import { Upload } from './Upload';
 import type { UploadProps } from './Upload';
 

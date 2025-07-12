@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, StoryFn } from '@storybook/react-webpack5';
+import { Meta, StoryFn } from '@storybook/react';
 import { Progress } from './Progress';
 import { ProgressProps } from '../../lib/types/components';
 

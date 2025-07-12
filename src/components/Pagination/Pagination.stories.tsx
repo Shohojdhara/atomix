@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Meta, StoryFn } from '@storybook/react-webpack5';
+import { Meta, StoryFn } from '@storybook/react';
 import { Pagination } from './Pagination';
 import { PaginationProps } from '../../lib/types/components';
-import { INITIAL_VIEWPORTS } from 'storybook/viewport';
 
 export default {
   title: 'Components/Pagination',
@@ -47,9 +46,6 @@ export default {
     },
   },
   parameters: {
-    viewport: {
-      viewports: INITIAL_VIEWPORTS,
-    },
     docs: {
       description: {
         component:

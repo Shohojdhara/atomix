@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Nav } from './Nav';
 import { NavItem } from './NavItem';
 import { NavDropdown } from './NavDropdown';

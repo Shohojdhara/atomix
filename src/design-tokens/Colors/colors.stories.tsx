@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Meta, StoryObj } from '@storybook/react-webpack5';
+import { Meta, StoryObj } from '@storybook/react';
 import './colors.scss';
 
 interface ColorSwatchProps {

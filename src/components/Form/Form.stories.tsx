@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Form } from './Form';
 import { FormGroup } from './FormGroup';
@@ -50,7 +50,7 @@ type Story = StoryObj<typeof meta>;
 
 // Basic form
 export const Basic: Story = {
-  args: {},
+  args: { children: undefined },
   render: args => (
     <Form {...args}>
       <FormGroup label="Name" htmlFor="name">
@@ -68,7 +68,7 @@ export const Basic: Story = {
 
 // Complete form with all input types
 export const CompleteForm: Story = {
-  args: {},
+  args: { children: undefined },
   render: () => (
     <div style={{ width: '500px' }}>
       <Form>
@@ -143,7 +143,7 @@ export const CompleteForm: Story = {
 
 // Interactive form
 export const Interactive: Story = {
-  args: {},
+  args: { children: undefined },
   render: () => {
     const [formData, setFormData] = useState({
       username: '',
@@ -335,6 +335,7 @@ export const Interactive: Story = {
 export const Disabled: Story = {
   args: {
     disabled: true,
+    children: undefined,
   },
   render: args => (
     <Form {...args}>
@@ -373,7 +374,7 @@ export const Disabled: Story = {
 
 // Form with validation states
 export const ValidationStates: Story = {
-  args: {},
+  args: { children: undefined },
   render: () => (
     <div style={{ width: '500px' }}>
       <Form>
@@ -431,7 +432,7 @@ export const ValidationStates: Story = {
         </FormGroup>
 
         <FormGroup valid={true} helperText="This checkbox is valid">
-          <Checkbox id="valid-checkbox" label="Valid Checkbox" checked={true} valid={true} />
+          <Checkbox id="valid-checkbox" label="Valid Checkbox" checked={true} onChange={() => {}} valid={true} />
         </FormGroup>
 
         <FormGroup invalid={true} helperText="This checkbox is invalid">
@@ -444,7 +445,7 @@ export const ValidationStates: Story = {
 
 // Different form input sizes
 export const InputSizes: Story = {
-  args: {},
+  args: { children: undefined },
   render: () => (
     <div style={{ width: '500px' }}>
       <Form>

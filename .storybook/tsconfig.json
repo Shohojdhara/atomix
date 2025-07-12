@@ -1,0 +1,38 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "target": "es2020",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "baseUrl": "../",
+    "paths": {
+      "@/*": ["src/*"],
+      "~/*": ["src/*"]
+    }
+  },
+  "include": [
+    "../src/**/*",
+    "../stories/**/*",
+    "../**/*.stories.*",
+    "../**/*.story.*",
+    "../*.stories.*",
+    "../*.story.*",
+    "./**/*"
+  ],
+  "exclude": [
+    "../node_modules",
+    "../dist",
+    "../build",
+    "../storybook-static"
+  ]
+} 

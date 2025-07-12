@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Meta, StoryObj } from '@storybook/react-webpack5';
-import { Callout } from './Callout';
+import { Meta, StoryObj } from '@storybook/react';
+import { Callout } from './Callout';  
 import { Button } from '../Button/Button';
 
 const meta: Meta<typeof Callout> = {
@@ -51,7 +51,7 @@ const meta: Meta<typeof Callout> = {
       control: 'boolean',
       description: 'Display the callout in one line',
       table: {
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
         type: { summary: 'boolean' },
       },
     },
@@ -59,7 +59,7 @@ const meta: Meta<typeof Callout> = {
       control: 'boolean',
       description: 'Display the callout as a toast notification',
       table: {
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
         type: { summary: 'boolean' },
       },
     },

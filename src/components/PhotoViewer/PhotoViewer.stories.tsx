@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react-webpack5';
+import { Meta, StoryObj } from '@storybook/react';
 import { PhotoViewer } from './PhotoViewer';
 import { ImageType } from '../../lib/types/components';
 import { ImageGallery } from './examples/ImageGallery';

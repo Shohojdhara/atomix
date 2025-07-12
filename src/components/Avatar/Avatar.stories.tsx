@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Avatar } from './Avatar';
 import { AvatarGroup } from './AvatarGroup';
 import { Icon } from '../Icon';

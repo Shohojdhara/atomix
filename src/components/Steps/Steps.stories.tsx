@@ -1,5 +1,5 @@
 import React from 'react';
-import { StoryFn, Meta } from '@storybook/react-webpack5';
+import { StoryFn, Meta } from '@storybook/react';
 import { Steps } from './Steps';
 import type { StepsProps } from './Steps';
 

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import type { Meta, StoryObj } from '@storybook/react';
 import { FormGroup } from './FormGroup';
 import { Input } from './Input';
 import { Select } from './Select';

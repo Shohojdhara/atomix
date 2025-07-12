@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-webpack5';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Navbar } from './Navbar';
 import { Nav } from '../Nav/Nav';
 import { NavItem } from '../Nav/NavItem';
@@ -411,11 +411,20 @@ export const WithAvatarDropdown: Story = {
         <NavDropdown
           title={
             <>
-              <img
-                src="/assets/images/avatar.jpg"
-                alt="User"
+              <div
                 className="c-avatar c-avatar--sm c-avatar--circle"
-              />
+                style={{ 
+                  backgroundColor: '#7C3AED', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  color: 'white',
+                  fontSize: '12px',
+                  fontWeight: 'bold'
+                }}
+              >
+                JD
+              </div>
               <span className="u-ms-2">User Name</span>
             </>
           }
@@ -481,11 +490,20 @@ export const ResponsiveNavbar: Story = {
         <NavDropdown
           title={
             <>
-              <img
-                src="/assets/images/avatar.jpg"
-                alt="User"
+              <div
                 className="c-avatar c-avatar--sm c-avatar--circle"
-              />
+                style={{ 
+                  backgroundColor: '#7C3AED', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  color: 'white',
+                  fontSize: '12px',
+                  fontWeight: 'bold'
+                }}
+              >
+                JD
+              </div>
             </>
           }
         >

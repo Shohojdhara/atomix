@@ -1,5 +1,5 @@
 import React from 'react';
-import { Meta, StoryObj } from '@storybook/react-webpack5';
+import { Meta, StoryObj } from '@storybook/react';
 import { Card, ElevationCard } from './index';
 
 const meta: Meta<typeof Card> = {
