@@ -1,4 +1,5 @@
-import { Messages, MessagesOptions, MessageItem } from './index';
+import { Messages, MessagesOptions } from './index';
+import { MessageItem } from '../../../lib/types/components';
 import * as MessagesInteractions from './componentInteractions';
 
 // Create a type for the Messages namespace
@@ -44,4 +45,6 @@ if (typeof window !== 'undefined') {
   });
 }
 
-export { Messages, type MessagesOptions, type MessageItem, MessagesInteractions };
+export { Messages, MessagesInteractions };
+export type { MessagesOptions } from './index';
+export type { MessageItem } from '../../../lib/types/components';

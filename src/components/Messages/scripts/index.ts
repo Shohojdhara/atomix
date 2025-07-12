@@ -1,7 +1,8 @@
 import { MESSAGES } from '../../../lib/constants/components';
+import { MessageItem } from '../../../lib/types/components';
 
 /**
- * Messages component options
+ * Messages component options for vanilla JS implementation
  */
 export interface MessagesOptions {
   /**
@@ -28,21 +29,6 @@ export interface MessagesOptions {
    * Whether the component is disabled
    */
   disabled?: boolean;
-}
-
-/**
- * Message item data structure
- */
-export interface MessageItem {
-  id: string;
-  text?: string;
-  image?: string;
-  file?: {
-    name: string;
-    size: string;
-  };
-  time: string;
-  isSelf?: boolean;
 }
 
 /**

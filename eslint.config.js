@@ -9,7 +9,7 @@ module.exports = [
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
-      ecmaVersion: 2021,
+      ecmaVersion: 2020, // Align with TypeScript target ES2020
       sourceType: 'module',
       globals: {
         window: 'readonly',
@@ -34,12 +34,13 @@ module.exports = [
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       parser: tsParser,
-      ecmaVersion: 2021,
+      ecmaVersion: 2020, // Align with TypeScript target ES2020
       sourceType: 'module',
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
         },
+        project: './tsconfig.json', // Use main tsconfig for linting
       },
       globals: {
         window: 'readonly',

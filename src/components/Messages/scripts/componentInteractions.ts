@@ -1,4 +1,5 @@
-import { Messages, MessagesOptions, MessageItem } from './index';
+import { Messages, MessagesOptions } from './index';
+import { MessageItem } from '../../../lib/types/components';
 
 /**
  * Initialize a Messages component on a specific element

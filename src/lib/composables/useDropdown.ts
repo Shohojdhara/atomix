@@ -17,8 +17,8 @@ interface UseDropdownProps {
 interface UseDropdownReturn {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  triggerRef: React.RefObject<HTMLElement>;
-  menuRef: React.RefObject<HTMLElement>;
+  triggerRef: React.RefObject<HTMLElement | null>;
+  menuRef: React.RefObject<HTMLElement | null>;
   dropdownId: string;
   currentPlacement: DropdownPlacement;
   updatePosition: () => void;

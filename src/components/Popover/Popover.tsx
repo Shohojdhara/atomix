@@ -8,7 +8,7 @@ import type { PopoverProps, PopoverTriggerProps } from '../../lib/types/componen
 export const PopoverContext = createContext<{
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  triggerRef: React.RefObject<HTMLElement>;
+  triggerRef: React.RefObject<HTMLElement | null>;
   popoverId: string;
   triggerType: 'click' | 'hover';
 }>({

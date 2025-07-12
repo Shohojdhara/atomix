@@ -13,9 +13,9 @@ interface UseAccordionResult {
   /** Update the panel height based on content */
   updatePanelHeight: () => void;
   /** Reference to the panel element */
-  panelRef: React.RefObject<HTMLDivElement>;
+  panelRef: React.RefObject<HTMLDivElement | null>;
   /** Reference to the content element */
-  contentRef: React.RefObject<HTMLDivElement>;
+  contentRef: React.RefObject<HTMLDivElement | null>;
   /** Generate accordion class names based on state */
   generateClassNames: (baseClassName?: string) => string;
   /** Generate header class names */

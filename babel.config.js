@@ -11,7 +11,7 @@ export default {
         corejs: 3,
         bugfixes: true,
         loose: false,
-        modules: false,
+        modules: false, // Keep ES modules for Rollup/bundlers
         debug: process.env.NODE_ENV === 'development',
       },
     ],
@@ -41,6 +41,7 @@ export default {
         corejs: 3,
         helpers: true,
         regenerator: true,
+        useESModules: true, // Align with Rollup ESM build
       },
     ],
   ],
@@ -51,7 +52,26 @@ export default {
       minified: true,
     },
     test: {
-      presets: [['@babel/preset-env', { targets: { node: 'current' } }]],
+      presets: [
+        [
+          '@babel/preset-env', 
+          { 
+            targets: { node: 'current' },
+            modules: 'commonjs' // Use CommonJS for tests
+          }
+        ]
+      ],
+      plugins: [
+        [
+          '@babel/plugin-transform-runtime',
+          {
+            corejs: 3,
+            helpers: true,
+            regenerator: true,
+            useESModules: false, // Use CommonJS for tests
+          },
+        ],
+      ],
     },
   },
   ignore: ['**/*.d.ts', '**/*.test.ts', '**/*.test.tsx', 'node_modules'],

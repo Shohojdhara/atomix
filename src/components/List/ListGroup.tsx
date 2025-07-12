@@ -20,9 +20,10 @@ export const ListGroup: React.FC<ListGroupProps> = ({
   return (
     <div className={listGroupClasses}>
       {validLists.map((child, index) => {
-        return React.cloneElement(child, {
+        const childProps = child.props as any;
+        return React.cloneElement(child as React.ReactElement<any>, {
           key: index,
-          variant: (child.props as any).variant ?? variant,
+          variant: childProps?.variant ?? variant,
         });
       })}
     </div>

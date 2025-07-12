@@ -19,9 +19,9 @@ interface UsePopoverProps {
 interface UsePopoverResult {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  triggerRef: RefObject<HTMLElement>;
-  popoverRef: RefObject<HTMLDivElement>;
-  arrowRef: RefObject<HTMLDivElement>;
+  triggerRef: RefObject<HTMLElement | null>;
+  popoverRef: RefObject<HTMLDivElement | null>;
+  arrowRef: RefObject<HTMLDivElement | null>;
   popoverId: string;
   currentPosition: PopoverPosition;
   updatePosition: () => void;

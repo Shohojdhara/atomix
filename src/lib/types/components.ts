@@ -270,9 +270,9 @@ export interface AccordionState {
  * Common element ref types
  */
 export interface ElementRefs {
-  panelRef?: React.RefObject<HTMLDivElement>;
-  contentRef?: React.RefObject<HTMLDivElement>;
-  buttonRef?: React.RefObject<HTMLButtonElement>;
+  panelRef?: React.RefObject<HTMLDivElement | null>;
+  contentRef?: React.RefObject<HTMLDivElement | null>;
+  buttonRef?: React.RefObject<HTMLButtonElement | null>;
 }
 
 /**
@@ -2433,17 +2433,17 @@ export interface UseCardReturn {
   /**
    * Reference to the card element
    */
-  cardRef: React.RefObject<HTMLDivElement>;
+  cardRef: React.RefObject<HTMLDivElement | null>;
 
   /**
    * Reference to the front side of a flip card
    */
-  frontRef: React.RefObject<HTMLDivElement>;
+  frontRef: React.RefObject<HTMLDivElement | null>;
 
   /**
    * Reference to the back side of a flip card
    */
-  backRef: React.RefObject<HTMLDivElement>;
+  backRef: React.RefObject<HTMLDivElement | null>;
 
   /**
    * Whether the card is flipped
@@ -2500,7 +2500,7 @@ export interface UseCardReturn {
    */
   getCardProps: () => {
     className: string;
-    ref: React.RefObject<HTMLDivElement>;
+    ref: React.RefObject<HTMLDivElement | null>;
     tabIndex?: number;
     role?: string;
     onMouseEnter: () => void;

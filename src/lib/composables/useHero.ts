@@ -39,12 +39,12 @@ interface UseHeroResult {
   /**
    * Reference to the hero element
    */
-  heroRef: React.RefObject<HTMLDivElement>;
+  heroRef: React.RefObject<HTMLDivElement | null>;
 
   /**
    * Reference to the video element
    */
-  videoRef: React.RefObject<HTMLVideoElement>;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
 
   /**
    * Apply parallax effect

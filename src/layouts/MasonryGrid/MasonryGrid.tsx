@@ -80,7 +80,7 @@ interface ItemPosition {
 interface MasonryItemData {
   element: React.ReactElement;
   position: ItemPosition | null;
-  ref: React.RefObject<HTMLDivElement>;
+  ref: React.RefObject<HTMLDivElement | null>;
   id: string;
   imageLoaded?: boolean;
 }

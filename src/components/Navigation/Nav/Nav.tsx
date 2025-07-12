@@ -31,9 +31,10 @@ export const Nav = forwardRef<HTMLUListElement, NavProps>(
         {React.Children.map(children, child => {
           if (React.isValidElement(child)) {
             // Pass disabled prop down to all children if Nav is disabled
-            return React.cloneElement(child, {
-              ...child.props,
-              disabled: disabled ? true : child.props.disabled,
+            const childProps = child.props as any;
+            return React.cloneElement(child as React.ReactElement<any>, {
+              ...childProps,
+              disabled: disabled ? true : childProps?.disabled,
             });
           }
           return child;

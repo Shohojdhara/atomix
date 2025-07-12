@@ -16,9 +16,10 @@ export const MegaMenu: React.FC<MegaMenuProps> = forwardRef<HTMLDivElement, Mega
             {React.Children.map(children, child => {
               if (React.isValidElement(child)) {
                 // Pass disabled prop down to all children if MegaMenu is disabled
-                return React.cloneElement(child, {
-                  ...child.props,
-                  disabled: disabled ? true : child.props.disabled,
+                const childProps = child.props as any;
+                return React.cloneElement(child as React.ReactElement<any>, {
+                  ...childProps,
+                  disabled: disabled ? true : childProps?.disabled,
                 });
               }
               return child;
@@ -62,11 +63,12 @@ export const MegaMenuColumn: React.FC<MegaMenuColumnProps> = forwardRef<
         {React.Children.map(children, child => {
           if (React.isValidElement(child)) {
             // Pass disabled prop down to all children if column is disabled
+            const childProps = child.props as any;
             return (
               <li className="c-menu__subitem" role="menuitem">
-                {React.cloneElement(child, {
-                  ...child.props,
-                  disabled: disabled ? true : child.props.disabled,
+                {React.cloneElement(child as React.ReactElement<any>, {
+                  ...childProps,
+                  disabled: disabled ? true : childProps?.disabled,
                 })}
               </li>
             );

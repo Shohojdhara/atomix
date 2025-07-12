@@ -5,9 +5,9 @@ import React, { useRef, useEffect, useState } from 'react';
  */
 export interface PhotoViewerImageProps {
   /** Ref to the image element */
-  imageRef: React.RefObject<HTMLImageElement>;
+  imageRef: React.RefObject<HTMLImageElement | null>;
   /** Ref to the container element */
-  containerRef?: React.RefObject<HTMLDivElement>;
+  containerRef?: React.RefObject<HTMLDivElement | null>;
   /** Image source URL */
   src: string;
   /** Image alt text */

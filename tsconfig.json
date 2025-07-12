@@ -3,7 +3,7 @@
     /* Base Options: */
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "target": "es2022",
+    "target": "ES2020", // Align with build config
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
@@ -23,7 +23,7 @@
     "sourceMap": true,
 
     /* Library specific */
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"], // Align with build config
     "jsx": "react-jsx",
 
     /* Path mapping */
@@ -38,12 +38,12 @@
     "outDir": "./dist",
 
     /* Type Definitions */
-    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "typeRoots": ["./node_modules/@types", "./src/types", "./types"],
 
     /* For linting only (since Rollup handles compilation) */
     "noEmit": true
   },
-  "include": ["src/**/*", "vitest.config.ts"],
+  "include": ["src/**/*", "types/**/*", "vitest.config.ts"],
   "exclude": [
     "node_modules",
     "dist",
