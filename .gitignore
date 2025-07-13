@@ -40,4 +40,10 @@ Thumbs.db
 .windsurf/
 .trae/
 
+# Cursor AI specific files (keep configuration files)
+.cursorignore
+setup-mcp-servers.sh
+.cursorrules
+.aicontext
+
 old/
