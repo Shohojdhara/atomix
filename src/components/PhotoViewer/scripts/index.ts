@@ -217,7 +217,9 @@ class PhotoViewer {
       <div class="c-photo-viewer__backdrop"></div>
       <div class="c-photo-viewer__container">
         <div class="c-photo-viewer__header">
-          <div class="c-photo-viewer__counter-badge"></div>
+          <div class="c-photo-viewer__header-left">
+            <div class="c-photo-viewer__counter-badge"></div>
+          </div>
           <div class="c-photo-viewer__actions">
             <button class="c-photo-viewer__action-button" data-action="zoom-out" aria-label="Zoom out">
               <svg width="20" height="20"><path d="M3 10h14" stroke="currentColor" stroke-width="2"/></svg>
@@ -256,7 +258,9 @@ class PhotoViewer {
             <svg width="24" height="24"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" fill="none"/></svg>
           </button>
         </div>
-        <div class="c-photo-viewer__thumbnails"></div>
+        <div class="c-photo-viewer__thumbnails">
+          <div class="c-photo-viewer__thumbnails-container"></div>
+        </div>
         <div class="c-photo-viewer__info-panel">
           <button class="c-photo-viewer__info-close" data-action="close-info" aria-label="Close info">
             <svg width="20" height="20"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2"/></svg>
@@ -714,22 +718,37 @@ class PhotoViewer {
       return;
     }
 
-    this.thumbnails.style.display = 'flex';
-    this.thumbnails.innerHTML = this.images
-      .map(
-        (image, index) => `
-      <button class="c-photo-viewer__thumbnail ${index === this.currentIndex ? 'is-active' : ''}" 
-              data-index="${index}" 
-              aria-label="View image ${index + 1}"
-              ${index === this.currentIndex ? 'aria-current="true"' : ''}>
-        <img src="${image.thumbnail || image.src}" 
-             alt="${image.alt || `Thumbnail ${index + 1}`}" 
-             class="c-photo-viewer__thumbnail-img" 
-             loading="lazy">
-      </button>
-    `
-      )
-      .join('');
+    this.thumbnails.style.display = 'block';
+
+    // Create the proper structure with thumbnails container
+    const thumbnailsHTML = `
+      <div class="c-photo-viewer__thumbnails-container">
+        ${this.images
+          .map((image, index) => {
+            const isActive = index === this.currentIndex;
+            const thumbnailSrc = image.thumbnail || image.src;
+            const imageTitle = image.title ? `: ${image.title}` : '';
+
+            return `
+                <button class="c-photo-viewer__thumbnail ${isActive ? 'is-active' : ''}" 
+                        data-index="${index}" 
+                        aria-label="View image ${index + 1}${imageTitle}"
+                        ${isActive ? 'aria-current="true"' : ''}>
+                  <div class="c-photo-viewer__thumbnail-wrapper">
+                    <img src="${thumbnailSrc}" 
+                         alt="${image.alt || `Thumbnail ${index + 1}`}" 
+                         class="c-photo-viewer__thumbnail-img" 
+                         loading="lazy">
+                    ${isActive ? '<div class="c-photo-viewer__thumbnail-indicator"></div>' : ''}
+                  </div>
+                </button>
+              `;
+          })
+          .join('')}
+      </div>
+    `;
+
+    this.thumbnails.innerHTML = thumbnailsHTML;
 
     // Bind thumbnail clicks
     this.thumbnails.addEventListener('click', event => {

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Button } from '../Button/Button';
-import { Icon } from '../Icon/Icon';
+import { Button } from '../Button';
+import { Icon } from '../Icon';
 
 /**
  * Props for the PhotoViewerNavigation component
@@ -51,32 +51,35 @@ export const PhotoViewerNavigation: React.FC<PhotoViewerNavigationProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [enableKeyboardNav, onPrev, onNext, onClose]);
 
-  return show ? (
+  if (!show) return null;
+
+  return (
     <>
       <Button
         iconOnly
         size="md"
-        variant="light"
+        variant="ghost"
         rounded
         onClick={onPrev}
         disabled={currentIndex === 0}
         aria-label="Previous image"
-        icon={<Icon name="CaretLeft" size="md" />}
         className="c-photo-viewer__nav-button c-photo-viewer__nav-button--prev"
+        icon={<Icon name="CaretLeft" size="md" />}
       />
+
       <Button
         iconOnly
         size="md"
-        variant="light"
+        variant="ghost"
         rounded
         onClick={onNext}
         disabled={currentIndex === imagesLength - 1}
         aria-label="Next image"
-        icon={<Icon name="CaretRight" size="md" />}
         className="c-photo-viewer__nav-button c-photo-viewer__nav-button--next"
+        icon={<Icon name="CaretRight" size="md" />}
       />
     </>
-  ) : null;
+  );
 };
 
 export default PhotoViewerNavigation;

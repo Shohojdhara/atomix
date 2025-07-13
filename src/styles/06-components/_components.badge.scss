@@ -6,15 +6,15 @@
 @use '../02-tools/tools.rem' as *;
 
 .c-badge {
-  --#{$prefix}tag-font-size: #{$tag-font-size};
-  --#{$prefix}tag-font-weight: #{$tag-font-weight};
+  --#{$prefix}tag-font-size: #{$badge-font-size};
+  --#{$prefix}tag-font-weight: #{$badge-font-weight};
   --#{$prefix}tag-color: var(--#{$prefix}body-color);
-  --#{$prefix}tag-padding-x: #{rem($tag-padding-x)};
-  --#{$prefix}tag-padding-y: #{rem($tag-padding-y)};
-  --#{$prefix}tag-border-radius: #{$tag-border-radius};
+  --#{$prefix}tag-padding-x: #{rem($badge-padding-x)};
+  --#{$prefix}tag-padding-y: #{rem($badge-padding-y)};
+  --#{$prefix}tag-border-radius: #{$badge-border-radius};
   --#{$prefix}tag-bg-color: var(--#{$prefix}body-bg);
-  --#{$prefix}tag-icon-size: #{rem($tag-icon-size)};
-  --#{$prefix}tag-inner-items-gap: #{rem($tag-inner-items-gap)};
+  --#{$prefix}tag-icon-size: #{rem($badge-icon-size)};
+  --#{$prefix}tag-inner-items-gap: #{rem($badge-inner-items-gap)};
 
   display: inline-flex;
   align-items: center;
@@ -35,11 +35,11 @@
   }
 
   &--sm {
-    --#{$prefix}tag-padding-y: #{$tag-padding-y-sm};
+    --#{$prefix}tag-padding-y: #{$badge-padding-y-sm};
   }
 
   &--lg {
-    --#{$prefix}tag-padding-y: #{$tag-padding-y-lg};
+    --#{$prefix}tag-padding-y: #{$badge-padding-y-lg};
   }
 
   @each $color, $value in maps.$theme-colors {

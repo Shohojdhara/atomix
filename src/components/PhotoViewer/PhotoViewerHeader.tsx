@@ -1,8 +1,8 @@
 import React from 'react';
 import { ImageType } from '../../lib/types/components';
-import { Button } from '../Button/Button';
-import { Badge } from '../Badge/Badge';
-import { Icon } from '../Icon/Icon';
+import { Badge } from '../Badge';
+import { Button } from '../Button';
+import { Icon } from '../Icon';
 
 /**
  * Props for the PhotoViewerHeader component
@@ -64,111 +64,118 @@ export const PhotoViewerHeader: React.FC<PhotoViewerHeaderProps> = ({
   currentImage,
 }) => (
   <div className="c-photo-viewer__header">
-    <Badge
-      label={`${currentIndex + 1} / ${imagesLength}`}
-      variant="light"
-      size="sm"
-      className="c-photo-viewer__counter-badge"
-    />
+    <div className="c-photo-viewer__header-left">
+      <Badge label={`${currentIndex + 1} / ${imagesLength}`} variant="primary" size="sm" />
+      {currentImage?.title && <h3 className="c-photo-viewer__image-title">{currentImage.title}</h3>}
+    </div>
+
     <div className="c-photo-viewer__actions">
       <Button
         iconOnly
         size="sm"
-        variant="light"
+        variant="ghost"
         rounded
         onClick={onZoomOut}
         disabled={zoomLevel <= 0.1}
         aria-label="Zoom out"
-        icon={<Icon name="Minus" size="sm" />}
         className="c-photo-viewer__action-button"
+        icon={<Icon name="Minus" size="sm" />}
       />
+
       <Button
         iconOnly
         size="sm"
-        variant="light"
+        variant="ghost"
         rounded
         onClick={onResetZoom}
         disabled={zoomLevel === 1}
         aria-label="Reset zoom"
-        icon={<Icon name="MagnifyingGlass" size="sm" />}
         className="c-photo-viewer__action-button"
+        icon={<Icon name="MagnifyingGlass" size="sm" />}
       />
+
       <Button
         iconOnly
         size="sm"
-        variant="light"
+        variant="ghost"
         rounded
         onClick={onZoomIn}
         disabled={zoomLevel >= 5}
         aria-label="Zoom in"
-        icon={<Icon name="Plus" size="sm" />}
         className="c-photo-viewer__action-button"
+        icon={<Icon name="Plus" size="sm" />}
       />
+
+      <div className="c-photo-viewer__divider" />
+
       <Button
         iconOnly
         size="sm"
-        variant="light"
+        variant="ghost"
         rounded
         onClick={onRotate}
         aria-label="Rotate image"
-        icon={<Icon name="ArrowsClockwise" size="sm" />}
         className="c-photo-viewer__action-button"
+        icon={<Icon name="ArrowsClockwise" size="sm" />}
       />
-      {currentImage?.src && (
+
+      <Button
+        iconOnly
+        size="sm"
+        variant="ghost"
+        rounded
+        onClick={onDownload}
+        aria-label="Download image"
+        className="c-photo-viewer__action-button"
+        icon={<Icon name="Download" size="sm" />}
+      />
+
+      {'share' in navigator && typeof navigator.share === 'function' && (
         <Button
           iconOnly
           size="sm"
-          variant="light"
-          rounded
-          onClick={onDownload}
-          aria-label="Download image"
-          icon={<Icon name="DownloadSimple" size="sm" />}
-          className="c-photo-viewer__action-button"
-        />
-      )}
-      {currentImage?.src && typeof navigator !== 'undefined' && 'share' in navigator && (
-        <Button
-          iconOnly
-          size="sm"
-          variant="light"
+          variant="ghost"
           rounded
           onClick={onShare}
           aria-label="Share image"
-          icon={<Icon name="ShareNetwork" size="sm" />}
           className="c-photo-viewer__action-button"
+          icon={<Icon name="Share" size="sm" />}
         />
       )}
+
       <Button
         iconOnly
         size="sm"
-        variant="light"
+        variant="ghost"
         rounded
         onClick={onToggleInfo}
-        aria-label={showInfo ? 'Hide info' : 'Show info'}
+        aria-label="Toggle info panel"
+        className={`c-photo-viewer__action-button ${showInfo ? 'is-active' : ''}`}
         icon={<Icon name="Info" size="sm" />}
-        className="c-photo-viewer__action-button"
       />
+
+      <div className="c-photo-viewer__divider" />
+
       <Button
         iconOnly
         size="sm"
-        variant="light"
+        variant="ghost"
         rounded
         onClick={onToggleFullscreen}
         aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-        icon={
-          isFullscreen ? <Icon name="ArrowsIn" size="sm" /> : <Icon name="ArrowsOut" size="sm" />
-        }
         className="c-photo-viewer__action-button"
+        icon={<Icon name={isFullscreen ? 'ArrowsIn' : 'ArrowsOut'} size="sm" />}
       />
+
       <Button
         iconOnly
         size="sm"
-        variant="light"
+        variant="ghost"
         rounded
         onClick={onClose}
-        aria-label="Close photo viewer"
+        aria-label="Close viewer"
+        className="c-photo-viewer__action-button c-photo-viewer__close-button"
         icon={<Icon name="X" size="sm" />}
-        className="c-photo-viewer__action-button c-photo-viewer__close"
       />
     </div>
   </div>

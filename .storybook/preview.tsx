@@ -33,6 +33,7 @@ const preview: Preview = {
       ],
     },
     viewport: {
+      defaultViewport: 'none',
       viewports: {
         mobile: {
           name: 'Mobile',
@@ -64,7 +65,6 @@ const preview: Preview = {
         },
       },
     },
-    layout: 'padded',
     options: {
       storySort: {
         order: [

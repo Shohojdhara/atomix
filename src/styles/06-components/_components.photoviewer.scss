@@ -1,4 +1,4 @@
-@use '../01-settings/settings.photoviewer' as photoviewer;
+@use '../01-settings/settings.photoviewer' as *;
 @use '../01-settings/settings.config' as config;
 @use '../01-settings/settings.colors' as *;
 @use '../01-settings/settings.border-radius' as *;
@@ -16,29 +16,27 @@
 }
 
 %standard-transition {
-  transition: all var(--#{config.$prefix}photoviewer-transition-duration)
-    var(--#{config.$prefix}photoviewer-transition-timing);
+  transition: all $photoviewer-transition-duration $photoviewer-transition-timing;
 }
 
-%standard-transition {
-  transition: all var(--#{config.$prefix}photoviewer-transition-duration)
-    var(--#{config.$prefix}photoviewer-transition-timing);
+%fast-transition {
+  transition: all $photoviewer-fast-transition $photoviewer-transition-timing;
 }
 
-%svg-icon {
-  fill: currentColor;
-  pointer-events: none;
-}
-
-// Common panel styles
+// Modern panel styles
 %panel-base {
-  background: $gray-1;
-  border-radius: var(--#{config.$prefix}photoviewer-control-border-radius);
-  box-shadow: $box-shadow-lg;
+  background: $photoviewer-component-background-color;
+  border: 1px solid $photoviewer-component-border-color;
+  border-radius: $photoviewer-image-container-border-radius;
+  box-shadow: $photoviewer-info-panel-shadow;
+  backdrop-filter: blur(8px);
 }
 
 // Custom scrollbar styling
 %custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--#{config.$prefix}tertiary-text-emphasis) transparent;
+
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -48,35 +46,37 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: $gray-4;
+    background: var(--#{config.$prefix}tertiary-text-emphasis);
     border-radius: 3px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: $gray-5;
+    background: var(--#{config.$prefix}secondary-text-emphasis);
   }
 }
 
-// Hover effect for interactive elements
+// Modern hover effects
 %hover-effect {
+  @extend %fast-transition;
+
   &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: $box-shadow-sm;
+    transform: translateY(-1px);
+    box-shadow: $photoviewer-control-shadow-hover;
   }
 
   &:active:not(:disabled) {
     transform: translateY(0);
-    box-shadow: $box-shadow-xs;
+    box-shadow: $photoviewer-control-shadow;
   }
 }
 
-// Common image styling
+// Enhanced image styling
 %image-base {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
   transform-origin: center center;
-  will-change: auto;
+  will-change: transform;
 
   // Enhanced image quality
   image-rendering: auto;
@@ -87,134 +87,57 @@
   // Smooth hardware-accelerated transforms
   transform: translateZ(0);
 
-  // Prevent any touch actions on the image itself
+  // Prevent touch actions on the image
   touch-action: none;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
 }
 
-// Thumbnail styling
+// Modern thumbnail styling
 %thumbnail-base {
   @extend %flex-center;
-  @extend %standard-transition;
+  @extend %fast-transition;
+
   border: 2px solid transparent;
-  border-radius: $border-radius-sm;
+  border-radius: $photoviewer-thumbnail-border-radius;
   padding: 0;
-  background: rgba(255, 255, 255, 0.1);
+  background: transparent;
   cursor: pointer;
   overflow: hidden;
   position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.2);
-    opacity: 1;
-    transition: opacity var(--#{config.$prefix}photoviewer-transition-duration)
-      var(--#{config.$prefix}photoviewer-transition-timing);
-  }
+  box-shadow: $photoviewer-thumbnail-shadow;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: $box-shadow-sm;
-    border-color: rgba(255, 255, 255, 0.3);
-
-    &::after {
-      opacity: 0;
-    }
+    box-shadow: $photoviewer-thumbnail-hover-shadow;
+    border-color: var(--#{config.$prefix}primary-border-subtle);
   }
 
   &.is-active {
-    border-color: var(--#{config.$prefix}photoviewer-thumbnail-border);
-    box-shadow: var(--#{config.$prefix}box-shadow-md);
+    border-color: $photoviewer-thumbnail-active-border-color;
+    box-shadow: $photoviewer-thumbnail-hover-shadow;
     transform: scale(1.05);
   }
 }
 
-// Info panel metadata styling
-%info-meta-item {
-  font-size: $font-size-sm;
-  color: $gray-7;
-  margin-bottom: 0.75rem;
-  padding-left: 1.5rem;
-  position: relative;
+// Info panel styling
+%info-section {
+  margin-bottom: $photoviewer-info-spacing;
 
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.4rem;
-    width: 8px;
-    height: 8px;
-    background: var(--#{config.$prefix}primary-lighter);
-    border-radius: 50%;
+  &:last-child {
+    margin-bottom: 0;
   }
 }
 
-// Info panel tag styling
-%info-tag {
-  display: inline-flex;
-  padding: 0.25rem 0.75rem;
-  background: $gray-2;
-  color: $gray-8;
-  border-radius: $border-radius-pill;
-  font-size: $font-size-xs;
-  font-weight: 500;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: var(--#{config.$prefix}primary-lighter);
-    color: var(--#{config.$prefix}primary-darker);
-  }
-}
-
-// Common responsive control size adjustments
-@mixin responsive-control-sizes($size-multiplier) {
-  &__action-btn,
-  &__action-button {
-    width: calc(var(--#{config.$prefix}photoviewer-control-size-small) * #{$size-multiplier});
-    height: calc(var(--#{config.$prefix}photoviewer-control-size-small) * #{$size-multiplier});
-
-    svg {
-      width: calc(20px * #{$size-multiplier});
-      height: calc(20px * #{$size-multiplier});
-    }
-  }
-
-  &__nav-btn,
-  &__nav-button {
-    width: calc(var(--#{config.$prefix}photoviewer-control-size) * #{$size-multiplier});
-    height: calc(var(--#{config.$prefix}photoviewer-control-size) * #{$size-multiplier});
-
-    svg {
-      width: calc(24px * #{$size-multiplier});
-      height: calc(24px * #{$size-multiplier});
-    }
-  }
-
-  &__thumbnail {
-    width: calc(var(--#{config.$prefix}photoviewer-thumbnail-size) * #{$size-multiplier});
-    height: calc(var(--#{config.$prefix}photoviewer-thumbnail-size) * #{$size-multiplier});
-  }
-}
-
-// When the PhotoViewer is open, an 'is-open-photoviewer' class is added to the body
-// This can be used to apply additional styling to the page when the PhotoViewer is active
+// When the PhotoViewer is open, add body class for styling
 body.is-open-photoviewer {
   overflow: hidden;
-
-  // Prevent iOS bounce scrolling
   position: fixed;
   width: 100%;
-
-  // Prevent touch zoom/pan on the entire page when PhotoViewer is open
   touch-action: none;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-
-  // Optimize for trackpad gestures on macOS
   -webkit-transform: translateZ(0);
   -webkit-backface-visibility: hidden;
 
@@ -226,51 +149,33 @@ body.is-open-photoviewer {
 // Enhanced mobile support
 @media (max-width: 768px) {
   body.is-open-photoviewer {
-    // Additional mobile-specific styles
     -webkit-overflow-scrolling: touch;
-
-    // Prevent address bar from showing/hiding
     height: 100vh;
-    height: 100dvh; // Dynamic viewport height
+    height: 100dvh;
   }
 }
 
-// Main component styles
+// Main PhotoViewer component
 .c-photo-viewer {
-  $root: &;
-  // Set CSS variables for component
-  --#{config.$prefix}photoviewer-bg: #{photoviewer.$component-background-color};
+  // CSS variables for theming
+  --#{config.$prefix}photoviewer-bg: #{$photoviewer-component-background-color};
   --#{config.$prefix}photoviewer-border-radius: #{$border-radius-xl};
   --#{config.$prefix}photoviewer-shadow: #{$box-shadow-lg};
-  --#{config.$prefix}photoviewer-backdrop-bg: #{photoviewer.$modal-background-color};
-  --#{config.$prefix}photoviewer-backdrop-blur: 12px;
-  --#{config.$prefix}photoviewer-action-color: #{photoviewer.$control-color};
-  --#{config.$prefix}photoviewer-action-hover-color: #{photoviewer.$control-color-hover};
-  --#{config.$prefix}photoviewer-action-bg: #{photoviewer.$control-background};
-  --#{config.$prefix}photoviewer-action-hover-bg: #{photoviewer.$control-background-hover};
-  --#{config.$prefix}photoviewer-close-color: #{photoviewer.$modal-close-button-color};
-  --#{config.$prefix}photoviewer-thumbnail-border: #{photoviewer.$thumbnail-active-border-color};
-  --#{config.$prefix}photoviewer-spacing: #{photoviewer.$component-spacing};
-  --#{config.$prefix}photoviewer-transition-duration: #{photoviewer.$photoviewer-transition-duration};
-  --#{config.$prefix}photoviewer-transition-timing: #{photoviewer.$photoviewer-transition-timing};
-  --#{config.$prefix}photoviewer-control-size: #{photoviewer.$control-size};
-  --#{config.$prefix}photoviewer-control-size-small: #{photoviewer.$control-size-small};
-  --#{config.$prefix}photoviewer-control-border-radius: #{photoviewer.$control-border-radius};
-  --#{config.$prefix}photoviewer-thumbnail-size: #{photoviewer.$thumbnail-size};
-  --#{config.$prefix}photoviewer-thumbnail-size-large: #{photoviewer.$thumbnail-size-large};
-  --#{config.$prefix}photoviewer-thumbnail-gap: #{photoviewer.$thumbnail-gap};
-  --#{config.$prefix}photoviewer-info-panel-width: #{photoviewer.$info-panel-width};
+  --#{config.$prefix}photoviewer-backdrop-bg: #{$photoviewer-modal-background-color};
+  --#{config.$prefix}photoviewer-backdrop-blur: #{$photoviewer-modal-backdrop-blur};
+  --#{config.$prefix}photoviewer-spacing: #{$photoviewer-component-spacing};
+  --#{config.$prefix}photoviewer-transition-duration: #{$photoviewer-transition-duration};
+  --#{config.$prefix}photoviewer-transition-timing: #{$photoviewer-transition-timing};
 
   @extend %flex-center;
   @extend %standard-transition;
-  height: 100vh;
-  background: var(--#{config.$prefix}photoviewer-bg);
-  border-radius: var(--#{config.$prefix}photoviewer-border-radius);
-  box-shadow: var(--#{config.$prefix}photoviewer-shadow);
+
   position: fixed;
   inset: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: 1000;
-  overflow: hidden;
+  background: transparent;
   opacity: 1;
   transition-property: opacity;
 
@@ -288,259 +193,172 @@ body.is-open-photoviewer {
   &__container {
     @extend %standard-transition;
     @extend %panel-base;
+
     position: relative;
     z-index: 2;
-    background: var(--#{config.$prefix}photoviewer-bg);
-    border-radius: var(--#{config.$prefix}photoviewer-border-radius);
-    padding: var(--#{config.$prefix}photoviewer-spacing);
     display: flex;
     flex-direction: column;
     min-width: 320px;
-    max-width: 90vw;
-    min-height: 240px;
-    max-height: 90vh;
-    width: 100%;
-    height: 100%;
-    transform: scale(1);
-    transition-property: transform;
-    overflow: hidden;
-
-    .is-entering & {
-      transform: scale(0.95);
-    }
-
-    .is-exiting & {
-      transform: scale(0.95);
-    }
+    max-width: 95vw;
+    max-height: 95vh;
+    width: auto;
+    height: auto;
+    padding: var(--#{config.$prefix}photoviewer-spacing);
+    margin: auto;
   }
 
+  // Header styling
   &__header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--#{config.$prefix}photoviewer-spacing);
-    position: relative;
-    z-index: 5;
+    justify-content: space-between;
+    padding: $photoviewer-header-padding;
+    background: $photoviewer-header-background;
+    border-bottom: 1px solid $photoviewer-header-border-color;
+    border-radius: $border-radius-lg $border-radius-lg 0 0;
+    min-height: $photoviewer-header-height;
+    flex-shrink: 0;
   }
 
-  &__counter,
+  &__header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
   &__counter-badge {
-    font-size: $font-size-sm;
-    color: $gray-7;
-    font-weight: 500;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 0.25rem 0.75rem;
-    border-radius: $border-radius-pill;
-    backdrop-filter: blur(4px);
-    box-shadow: $box-shadow-xs;
+    background: $photoviewer-counter-badge-background;
+    color: $photoviewer-counter-badge-color;
+    font-size: $photoviewer-counter-badge-font-size;
+    font-weight: $photoviewer-counter-badge-font-weight;
+    padding: $photoviewer-counter-badge-padding;
+    border-radius: $photoviewer-counter-badge-border-radius;
+  }
+
+  &__image-title {
+    font-size: $photoviewer-info-title-font-size;
+    font-weight: $photoviewer-info-title-font-weight;
+    color: $photoviewer-info-title-color;
+    margin: 0;
   }
 
   &__actions {
     display: flex;
-    gap: 0.75rem;
     align-items: center;
+    gap: 0.5rem;
   }
 
-  // Common button styles mixin
-  %button-base {
-    @extend %flex-center;
-    @extend %standard-transition;
+  &__divider {
+    width: 1px;
+    height: 1.5rem;
+    background: $photoviewer-component-border-color;
+    margin: 0 0.25rem;
+  }
+
+  &__action-button {
     @extend %hover-effect;
-    background: var(--#{config.$prefix}photoviewer-action-bg);
-    color: var(--#{config.$prefix}photoviewer-action-color);
-    border: none;
-    border-radius: var(--#{config.$prefix}photoviewer-control-border-radius);
-    cursor: pointer;
-    box-shadow: $box-shadow-xs;
+
+    width: $photoviewer-control-size-small;
+    height: $photoviewer-control-size-small;
+    border-radius: $photoviewer-control-border-radius;
+    background: $photoviewer-control-background;
+    border: 1px solid $photoviewer-control-border-color;
+    color: $photoviewer-control-color;
+    box-shadow: $photoviewer-control-shadow;
+
+    &:hover:not(:disabled) {
+      background: $photoviewer-control-background-hover;
+      color: $photoviewer-control-color-hover;
+      border-color: $photoviewer-control-color-hover;
+    }
 
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
 
-    svg {
-      @extend %svg-icon;
-      transition: transform 0.2s ease;
+    &.is-active {
+      background: $photoviewer-control-color-hover;
+      color: $photoviewer-control-background;
+      border-color: $photoviewer-control-color-hover;
     }
   }
 
-  &__action-btn,
-  &__action-button {
-    @extend %button-base;
-    width: var(--#{config.$prefix}photoviewer-control-size-small);
-    height: var(--#{config.$prefix}photoviewer-control-size-small);
+  &__close-button {
+    color: var(--#{config.$prefix}error);
 
     &:hover:not(:disabled) {
-      background: var(--#{config.$prefix}photoviewer-action-hover-bg);
-      color: var(--#{config.$prefix}photoviewer-action-hover-color);
-    }
-
-    svg {
-      width: 20px;
-      height: 20px;
+      background: var(--#{config.$prefix}error-bg-subtle);
+      color: var(--#{config.$prefix}error);
+      border-color: var(--#{config.$prefix}error);
     }
   }
 
-  &__close {
-    color: var(--#{config.$prefix}photoviewer-close-color);
-    background: rgba(0, 0, 0, 0.3);
-    margin-left: 0.5rem;
-
-    &:hover {
-      background: rgba(0, 0, 0, 0.5);
-    }
-  }
-
+  // Content area
   &__content {
     @extend %flex-center;
     position: relative;
-    flex: 1 1 auto;
-    overflow: hidden;
+    flex: 1;
     min-height: 0;
-
-    &.is-transitioning {
-      .c-photo-viewer__image-container {
-        opacity: 0.7;
-        transition: opacity 0.15s ease-out;
-      }
-    }
+    background: $photoviewer-image-container-background;
+    border-radius: 0 0 $border-radius-lg $border-radius-lg;
+    overflow: hidden;
   }
 
+  // Image container and image
   &__image-container {
     @extend %flex-center;
     position: relative;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
-    -webkit-overflow-scrolling: touch;
-
-    // Control touch interactions - allow pan and zoom only within the container
-    touch-action: pan-x pan-y pinch-zoom;
-
-    // Optimize for smooth trackpad gestures
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-
-    // Enable smooth scaling animations for trackpad gestures
-    transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background: $photoviewer-image-container-background;
+    cursor: grab;
 
     &.is-transitioning {
-      transition: opacity 0.15s ease-out;
-
-      .c-photo-viewer__image {
-        transition: opacity 0.15s ease-out !important;
-      }
-    }
-
-    // Prevent image selection and dragging
-    img {
       pointer-events: none;
-      -webkit-user-drag: none;
-      -khtml-user-drag: none;
-      -moz-user-drag: none;
-      -o-user-drag: none;
-      user-drag: none;
-
-      // Ensure touch actions are controlled
-      touch-action: none;
     }
 
-    // Loading state
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.1) 50%,
-        transparent 100%
-      );
-      animation: loading-shimmer 1.5s infinite;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    &.is-loading::before {
-      opacity: 1;
+    &:active {
+      cursor: grabbing;
     }
   }
 
   &__image {
     @extend %image-base;
+    @extend %standard-transition;
 
-    // Dynamic transitions based on state - optimized for trackpad
-    transition:
-      transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      opacity 0.2s ease-out,
-      filter 0.2s ease-out;
-
-    // Dragging state - disable transitions for direct manipulation
-    .c-photo-viewer--dragging & {
-      transition: none !important;
-      will-change: transform;
-    }
-
-    // Trackpad gesture state - smoother transitions for pinch zoom
-    &[style*='scale(']:not(.c-photo-viewer--dragging) {
-      transition: transform 0.1s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-
-    // Loading state
-    &.is-loading {
-      opacity: 0.3;
-      filter: blur(1px);
-    }
-
-    // Zoom state optimizations
-    &[style*='scale(1)'] {
-      will-change: auto;
-    }
-
-    &[style*='scale(']:not([style*='scale(1)']) {
-      will-change: transform;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      transition: none !important;
-      animation: none !important;
-    }
+    max-width: 100%;
+    max-height: 100%;
+    transition-property: transform, opacity;
   }
 
-  // Loading animation
-  @keyframes loading-shimmer {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(100%);
-    }
-  }
-
-  &__nav-btn,
+  // Navigation buttons
   &__nav-button {
-    @extend %button-base;
+    @extend %hover-effect;
+
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    width: var(--#{config.$prefix}photoviewer-control-size);
-    height: var(--#{config.$prefix}photoviewer-control-size);
-    z-index: 5;
+    transform: translateY(-50%) !important;
+    width: $photoviewer-nav-button-size;
+    height: $photoviewer-nav-button-size;
+    border-radius: $photoviewer-control-border-radius;
+    background: $photoviewer-nav-button-background;
+    border: 1px solid $photoviewer-control-border-color;
+    color: $photoviewer-nav-button-color;
+    box-shadow: $photoviewer-nav-button-shadow;
+    z-index: 10;
 
     &:hover:not(:disabled) {
-      background: var(--#{config.$prefix}photoviewer-action-hover-bg);
-      color: var(--#{config.$prefix}photoviewer-action-hover-color);
-      transform: translateY(-50%) scale(1.05);
+      background: $photoviewer-nav-button-hover-background;
+      color: $photoviewer-nav-button-hover-color;
+      border-color: $photoviewer-nav-button-hover-color;
+      box-shadow: $photoviewer-nav-button-hover-shadow;
     }
 
-    &:active:not(:disabled) {
-      transform: translateY(-50%) scale(1);
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
     }
 
     &--prev {
@@ -550,329 +368,569 @@ body.is-open-photoviewer {
     &--next {
       right: 1rem;
     }
-
-    svg {
-      width: 24px;
-      height: 24px;
-    }
   }
 
-  &--fullscreen {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-  }
-
+  // Thumbnails
   &__thumbnails {
+    padding: $photoviewer-component-spacing;
+    background: $photoviewer-component-background-color;
+    border-top: 1px solid $photoviewer-component-border-color;
+    max-height: 120px;
+    overflow-y: auto;
+    @extend %custom-scrollbar;
+  }
+
+  &__thumbnails-container {
     display: flex;
-    gap: var(--#{config.$prefix}photoviewer-thumbnail-gap);
-    margin-top: var(--#{config.$prefix}photoviewer-spacing);
+    gap: $photoviewer-thumbnail-gap;
+    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    padding: 0.5rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: $border-radius-lg;
-    backdrop-filter: blur(4px);
+    min-height: $photoviewer-thumbnail-size;
   }
 
   &__thumbnail {
     @extend %thumbnail-base;
-    width: var(--#{config.$prefix}photoviewer-thumbnail-size);
-    height: var(--#{config.$prefix}photoviewer-thumbnail-size);
+
+    width: $photoviewer-thumbnail-size;
+    height: $photoviewer-thumbnail-size;
+    flex-shrink: 0;
+    padding: 0;
+    border: 2px solid transparent;
+
+    &.is-active {
+      border-color: $photoviewer-thumbnail-active-border-color;
+    }
+  }
+
+  &__thumbnail-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: calc(#{$photoviewer-thumbnail-border-radius} - 2px);
   }
 
   &__thumbnail-img {
-    @extend %standard-transition;
-    @extend %image-base;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
-    border-radius: calc($border-radius-sm - 2px);
-    transition-property: transform;
-
-    .c-photo-viewer__thumbnail:hover & {
-      transform: scale(1.05);
-    }
+    transition: transform $photoviewer-fast-transition $photoviewer-transition-timing;
   }
 
-  &--dragging {
-    cursor: grabbing;
+  &__thumbnail-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 3px;
+    background: $photoviewer-thumbnail-active-border-color;
+    border-radius: 2px;
   }
 
-  &.is-disabled {
-    pointer-events: none;
-    opacity: 0.7;
-  }
-
-  &.is-entering {
-    opacity: 0;
-  }
-
-  &.is-exiting {
-    opacity: 0;
-  }
-
-  // Layout variants for thumbnail positions
-  &--thumbnails-left,
-  &--thumbnails-right {
-    .c-photo-viewer__container {
-      flex-direction: row;
-      gap: var(--#{config.$prefix}photoviewer-spacing);
-    }
-
-    .c-photo-viewer__thumbnails {
-      flex-direction: column;
-      margin-top: 0;
-      max-height: 80vh;
-      overflow-y: auto;
-    }
-
-    .c-photo-viewer__content {
-      flex: 1;
-    }
-  }
-
-  &--thumbnails-left {
-    .c-photo-viewer__thumbnails {
-      order: -1;
-    }
-  }
-
-  &--thumbnails-right {
-    .c-photo-viewer__thumbnails {
-      order: 1;
-    }
-  }
-
-  // Info panel styles
+  // Info panel
   &__info-panel {
-    @extend %standard-transition;
-    @extend %panel-base;
-    @extend %custom-scrollbar;
     position: absolute;
     top: 0;
     right: 0;
-    bottom: 0;
-    width: var(--#{config.$prefix}photoviewer-info-panel-width);
-    border-left: 1px solid $gray-3;
-    padding: 1.5rem;
-    overflow-y: auto;
-    z-index: 10;
+    width: $photoviewer-info-panel-width;
+    height: 100%;
+    background: $photoviewer-info-panel-background;
+    border-left: 1px solid $photoviewer-info-panel-border-color;
+    box-shadow: $photoviewer-info-panel-shadow;
+    z-index: 20;
     transform: translateX(100%);
-    transition-property: transform;
+    transition: transform $photoviewer-transition-duration $photoviewer-transition-timing;
+    overflow-y: auto;
+    @extend %custom-scrollbar;
   }
 
-  &--info-open {
-    .c-photo-viewer__container {
-      padding-right: var(--#{config.$prefix}photoviewer-info-panel-width);
-    }
+  &--info-open &__info-panel {
+    transform: translateX(0);
+  }
 
-    .c-photo-viewer__info-panel {
-      transform: translateX(0);
-    }
+  &__info-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $photoviewer-info-spacing;
+    background: $photoviewer-info-panel-background;
+    border-bottom: 1px solid $photoviewer-info-panel-border-color;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  &__info-panel-title {
+    font-size: $photoviewer-info-title-font-size;
+    font-weight: $photoviewer-info-title-font-weight;
+    color: $photoviewer-info-title-color;
+    margin: 0;
   }
 
   &__info-close {
-    @extend %button-base;
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: var(--#{config.$prefix}photoviewer-control-size-small);
-    height: var(--#{config.$prefix}photoviewer-control-size-small);
-    box-shadow: $box-shadow-xs;
-    z-index: 2;
+    @extend %hover-effect;
 
-    &:hover {
-      background: var(--#{config.$prefix}photoviewer-action-hover-bg);
-      transform: translateY(-2px);
-    }
+    width: $photoviewer-control-size-small;
+    height: $photoviewer-control-size-small;
+    border-radius: $photoviewer-control-border-radius;
+    background: $photoviewer-control-background;
+    border: 1px solid $photoviewer-control-border-color;
+    color: $photoviewer-control-color;
+    box-shadow: $photoviewer-control-shadow;
 
-    svg {
-      width: 16px;
-      height: 16px;
+    &:hover:not(:disabled) {
+      background: $photoviewer-control-background-hover;
+      color: $photoviewer-control-color-hover;
+      border-color: $photoviewer-control-color-hover;
     }
   }
 
   &__info-content {
-    margin-top: 2rem;
-    padding-bottom: 2rem;
+    padding: $photoviewer-info-spacing;
+  }
+
+  &__info-section {
+    @extend %info-section;
   }
 
   &__info-title {
-    font-size: $font-size-lg;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    color: $gray-9;
-    position: relative;
-
-    &::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 60px;
-      height: 2px;
-      background: var(--#{config.$prefix}primary);
-      border-radius: 2px;
-    }
+    font-size: $photoviewer-info-title-font-size;
+    font-weight: $photoviewer-info-title-font-weight;
+    color: $photoviewer-info-title-color;
+    margin: 0;
   }
 
   &__info-description {
-    font-size: $font-size-base;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-    color: $gray-8;
+    font-size: $photoviewer-info-description-font-size;
+    color: $photoviewer-info-description-color;
+    margin: 0;
+    line-height: 1.5;
   }
 
   &__info-meta {
-    @extend %info-meta-item;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__info-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: $photoviewer-info-meta-font-size;
+    color: $photoviewer-info-meta-color;
+  }
+
+  &__info-section-title {
+    font-size: $photoviewer-info-meta-font-size;
+    font-weight: $photoviewer-info-title-font-weight;
+    color: $photoviewer-info-title-color;
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   &__info-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
   }
 
   &__info-tag {
-    @extend %info-tag;
-  }
+    background: $photoviewer-tag-background;
+    color: $photoviewer-tag-color;
+    font-size: $photoviewer-tag-font-size;
+    font-weight: $photoviewer-tag-font-weight;
+    padding: $photoviewer-tag-padding;
+    border-radius: $photoviewer-tag-border-radius;
+    transition: all $photoviewer-fast-transition $photoviewer-transition-timing;
 
-  // Responsive styles
-  @media (max-width: 992px) {
-    @include responsive-control-sizes(0.9);
-
-    &__container {
-      max-width: 95vw;
-      max-height: 90vh;
-    }
-
-    &__image-container {
-      max-width: 90vw;
-      max-height: 70vh;
+    &:hover {
+      background: $photoviewer-tag-hover-background;
+      color: $photoviewer-tag-hover-color;
     }
   }
 
+  // Responsive design
   @media (max-width: 768px) {
-    @include responsive-control-sizes(0.8);
-
     &__container {
       max-width: 100vw;
       max-height: 100vh;
-      min-height: 100vh;
-      padding: 0.75rem;
       border-radius: 0;
+      padding: 0;
     }
 
     &__header {
-      margin-bottom: 0.75rem;
+      border-radius: 0;
+      padding: 0.75rem;
     }
 
-    &__actions {
-      gap: 0.5rem;
+    &__content {
+      border-radius: 0;
     }
 
-    &__image-container {
-      max-height: 75vh;
-    }
-
-    &__nav-btn,
     &__nav-button {
+      width: 2.5rem;
+      height: 2.5rem;
+
       &--prev {
-        left: 0.25rem;
+        left: 0.5rem;
       }
 
       &--next {
-        right: 0.25rem;
+        right: 0.5rem;
       }
     }
 
     &__thumbnails {
-      max-width: 100%;
-    }
-
-    &--thumbnails-left,
-    &--thumbnails-right {
-      .c-photo-viewer__container {
-        flex-direction: column;
-      }
-
-      .c-photo-viewer__thumbnails {
-        flex-direction: row;
-        order: 1;
-        margin-top: var(--#{config.$prefix}photoviewer-spacing);
-        max-height: none;
-        max-width: 100%;
-        overflow-x: auto;
-      }
-    }
-
-    &--info-open {
-      .c-photo-viewer__container {
-        padding-right: 0;
-      }
-
-      .c-photo-viewer__info-panel {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        transform: translateX(0);
-      }
-
-      .c-photo-viewer__info-panel {
-        overflow-y: auto;
-      }
-    }
-  }
-
-  @media (max-width: 480px) {
-    @include responsive-control-sizes(0.7);
-
-    &__container {
-      padding: 0.5rem;
-    }
-
-    &__header {
-      margin-bottom: 0.5rem;
-    }
-
-    &__counter,
-    &__counter-badge {
-      font-size: $font-size-xs;
-      padding: 0.2rem 0.5rem;
-    }
-
-    &__actions {
-      gap: 0.3rem;
-    }
-
-    &__image-container {
-      max-height: 65vh;
+      padding: 0.75rem;
     }
 
     &__info-panel {
       width: 100%;
-      height: 70%;
-      bottom: 0;
-      top: auto;
-      transform: translateY(100%);
-      border-left: none;
-      border-top: 1px solid $gray-3;
+      position: fixed;
+      top: 0;
+      right: 0;
+      transform: translateX(100%);
+    }
 
-      &.is-open {
-        transform: translateY(0);
+    &__info-header {
+      padding: 0.75rem;
+    }
+
+    &__info-content {
+      padding: 0.75rem;
+    }
+  }
+
+  // Fullscreen mode
+  &--fullscreen {
+    &__container {
+      max-width: 100vw;
+      max-height: 100vh;
+      border-radius: 0;
+      padding: 0;
+    }
+
+    &__header {
+      border-radius: 0;
+    }
+
+    &__content {
+      border-radius: 0;
+    }
+  }
+
+  // Dragging state
+  &--dragging {
+    &__image-container {
+      cursor: grabbing;
+    }
+
+    &__image {
+      transition: none;
+    }
+  }
+
+  // Thumbnail position variants
+  &--thumbnails-top {
+    .c-photo-viewer__container {
+      flex-direction: column;
+    }
+
+    .c-photo-viewer__thumbnails {
+      border-top: none;
+      border-bottom: 1px solid $photoviewer-component-border-color;
+      border-radius: $border-radius-lg $border-radius-lg 0 0;
+      order: -1;
+    }
+
+    .c-photo-viewer__header {
+      border-radius: 0;
+      border-bottom: 1px solid $photoviewer-header-border-color;
+      order: 0;
+    }
+
+    .c-photo-viewer__content {
+      border-radius: 0 0 $border-radius-lg $border-radius-lg;
+      border-top: none;
+      order: 1;
+    }
+  }
+
+  &--thumbnails-left {
+    .c-photo-viewer__container {
+      flex-direction: row;
+      max-width: calc(95vw + #{$photoviewer-info-panel-width});
+    }
+
+    .c-photo-viewer__thumbnails {
+      border-top: none;
+      border-bottom: none;
+      border-right: 1px solid $photoviewer-component-border-color;
+      border-radius: $border-radius-lg 0 0 $border-radius-lg;
+      max-height: none;
+      max-width: 120px;
+      min-width: 120px;
+      padding: $photoviewer-component-spacing 0.75rem;
+      order: -1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .c-photo-viewer__thumbnails-container {
+      flex-direction: column;
+      justify-content: flex-start;
+      min-height: auto;
+      min-width: $photoviewer-thumbnail-size;
+      flex: 1;
+    }
+
+    // Create a wrapper for header + content to keep them together on the right
+    .c-photo-viewer__header,
+    .c-photo-viewer__content {
+      order: 1;
+    }
+
+    .c-photo-viewer__header {
+      border-radius: 0 $border-radius-lg 0 0;
+      border-left: none;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 0.75rem;
+      min-height: auto;
+      position: relative;
+    }
+
+    .c-photo-viewer__header-left {
+      margin-bottom: 1rem;
+      align-self: flex-start;
+    }
+
+    .c-photo-viewer__actions {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+
+    .c-photo-viewer__content {
+      border-radius: 0 0 $border-radius-lg 0;
+      border-left: none;
+      flex: 1;
+    }
+  }
+
+  &--thumbnails-right {
+    .c-photo-viewer__container {
+      flex-direction: row;
+      max-width: calc(95vw + #{$photoviewer-info-panel-width});
+    }
+
+    .c-photo-viewer__thumbnails {
+      border-top: none;
+      border-bottom: none;
+      border-left: 1px solid $photoviewer-component-border-color;
+      border-radius: 0 $border-radius-lg $border-radius-lg 0;
+      max-height: none;
+      max-width: 120px;
+      min-width: 120px;
+      padding: $photoviewer-component-spacing 0.75rem;
+      order: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .c-photo-viewer__thumbnails-container {
+      flex-direction: column;
+      justify-content: flex-start;
+      min-height: auto;
+      min-width: $photoviewer-thumbnail-size;
+      flex: 1;
+    }
+
+    // Keep header + content together on the left
+    .c-photo-viewer__header,
+    .c-photo-viewer__content {
+      order: 0;
+    }
+
+    .c-photo-viewer__header {
+      border-radius: $border-radius-lg 0 0 0;
+      border-right: none;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0.75rem;
+      min-height: auto;
+      width: 100%;
+    }
+
+    .c-photo-viewer__header-left {
+      margin-bottom: 1rem;
+      align-self: flex-start;
+    }
+
+    .c-photo-viewer__actions {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+
+    .c-photo-viewer__content {
+      border-radius: 0 0 0 $border-radius-lg;
+      border-right: none;
+      flex: 1;
+    }
+  }
+
+  &--thumbnails-bottom {
+    // Default styles are already applied for bottom position
+    // This modifier exists for consistency and potential future customization
+    .c-photo-viewer__header {
+      border-radius: $border-radius-lg $border-radius-lg 0 0;
+    }
+
+    .c-photo-viewer__content {
+      border-radius: 0 0 $border-radius-lg $border-radius-lg;
+    }
+
+    .c-photo-viewer__thumbnails {
+      border-radius: 0 0 $border-radius-lg $border-radius-lg;
+    }
+  }
+
+  &--thumbnails-none {
+    .c-photo-viewer__thumbnails {
+      display: none;
+    }
+
+    .c-photo-viewer__container {
+      border-radius: $border-radius-lg;
+    }
+
+    .c-photo-viewer__header {
+      border-radius: $border-radius-lg $border-radius-lg 0 0;
+    }
+
+    .c-photo-viewer__content {
+      border-radius: 0 0 $border-radius-lg $border-radius-lg;
+    }
+  }
+
+  // Responsive adjustments for thumbnail positions
+  @media (max-width: 768px) {
+    &--thumbnails-left,
+    &--thumbnails-right {
+      .c-photo-viewer__container {
+        flex-direction: column;
+        max-width: 100vw;
+        border-radius: 0;
+      }
+
+      .c-photo-viewer__thumbnails {
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+        border-top: 1px solid $photoviewer-component-border-color;
+        border-radius: 0;
+        max-width: none;
+        min-width: auto;
+        order: 1;
+        padding: 0.75rem;
+        display: block;
+      }
+
+      .c-photo-viewer__thumbnails-container {
+        flex-direction: row;
+        justify-content: center;
+        min-height: $photoviewer-thumbnail-size;
+        min-width: auto;
+      }
+
+      .c-photo-viewer__content {
+        border-radius: 0;
+        order: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .c-photo-viewer__header {
+        border-radius: 0;
+        border-left: 1px solid $photoviewer-header-border-color;
+        border-right: 1px solid $photoviewer-header-border-color;
+        border-bottom: 1px solid $photoviewer-header-border-color;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: $photoviewer-header-padding;
+      }
+
+      .c-photo-viewer__header-left {
+        margin-bottom: 0;
+        align-self: auto;
+      }
+
+      .c-photo-viewer__actions {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
       }
     }
 
-    &--info-open &__info-panel {
-      padding: 1rem;
+    &--thumbnails-top {
+      .c-photo-viewer__container {
+        border-radius: 0;
+        flex-direction: column;
+      }
+
+      .c-photo-viewer__thumbnails {
+        border-radius: 0;
+        order: -1;
+      }
+
+      .c-photo-viewer__header {
+        border-radius: 0;
+        border-bottom: 1px solid $photoviewer-header-border-color;
+        order: 0;
+      }
+
+      .c-photo-viewer__content {
+        border-radius: 0;
+        order: 1;
+      }
+    }
+
+    &--thumbnails-bottom {
+      .c-photo-viewer__container {
+        border-radius: 0;
+      }
+
+      .c-photo-viewer__header {
+        border-radius: 0;
+      }
+
+      .c-photo-viewer__content {
+        border-radius: 0;
+      }
+
+      .c-photo-viewer__thumbnails {
+        border-radius: 0;
+      }
+    }
+
+    &--thumbnails-none {
+      .c-photo-viewer__container {
+        border-radius: 0;
+      }
+
+      .c-photo-viewer__header {
+        border-radius: 0;
+      }
+
+      .c-photo-viewer__content {
+        border-radius: 0;
+      }
     }
   }
 }
