@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
 import type { Preview } from '@storybook/react';
+import { useEffect } from 'react';
 import '../src/styles/index.scss';
 
 const preview: Preview = {
@@ -64,7 +64,7 @@ const preview: Preview = {
         },
       },
     },
-    layout: 'centered',
+    layout: 'padded',
     options: {
       storySort: {
         order: [
@@ -78,7 +78,7 @@ const preview: Preview = {
       },
     },
   },
-  
+
   globalTypes: {
     colorMode: {
       name: 'Color Mode',
@@ -99,14 +99,14 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       const colorMode = context.globals.colorMode || 'light';
-      
+
       useEffect(() => {
         document.documentElement.setAttribute('data-atomix-theme', colorMode);
         return () => {
           document.documentElement.removeAttribute('data-atomix-theme');
         };
       }, [colorMode]);
-      
+
       return <Story />;
     },
   ],
@@ -114,4 +114,4 @@ const preview: Preview = {
   tags: ['!autodocs'],
 };
 
-export default preview; 
+export default preview;
