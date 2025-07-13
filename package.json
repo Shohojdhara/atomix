@@ -26,6 +26,13 @@
       "modern": "./src/styles/index.scss",
       "default": "./src/styles/index.scss"
     },
+    "./themes": {
+      "import": "./src/styles/themes/index.scss",
+      "require": "./src/styles/themes/index.scss"
+    },
+    "./themes/css": "./dist/index.themes.css",
+    "./themes/scss": "./src/styles/themes/index.scss",
+    "./themes/settings": "./src/styles/01-settings/_settings.themes.scss",
     "./package.json": "./package.json"
   },
   "dependencies": {
@@ -111,6 +118,9 @@
     "build:watch": "rollup -c -w",
     "build:components": "npm run build",
     "build:docs": "npm run build-storybook",
+    "build:themes": "npm run build && npm run optimize:themes",
+    "optimize:themes": "node scripts/optimize-themes.js",
+    "validate:themes": "node scripts/validate-themes.js",
     "clean": "rimraf dist",
     "prebuild": "npm run clean",
     "prepublishOnly": "npm run ci",
@@ -121,7 +131,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "ci": "npm run build && npm run check-format && npm run check-exports && npm run lint && npm run test",
+    "ci": "npm run build && npm run check-format && npm run check-exports && npm run lint && npm run test && npm run validate:themes",
     "local-release": "changeset version && changeset publish",
     "preview:build": "npm run build-storybook && node scripts/prepare-deploy.js",
     "preview:serve": "npm run preview:build && npx serve deploy -p 3000"
@@ -129,6 +139,9 @@
   "files": [
     "dist",
     "src/styles",
+    "src/lib/utils/theme-manager.ts",
+    "scripts/optimize-themes.js",
+    "scripts/validate-themes.js",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"

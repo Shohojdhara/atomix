@@ -1,0 +1,46 @@
+/*!
+ * Shaj Card Themes
+ * Theme-specific card styling overrides
+ */
+
+@use '../theme-generator' as generator;
+
+// Card theme overrides for specific themes
+@mixin apply-card-themes($themes) {
+  @each $theme-name, $theme-config in $themes {
+    [data-theme='#{$theme-name}'] {
+      .c-card {
+        background-color: var(--shaj-surface);
+        border-color: var(--shaj-neutral-200);
+        border-radius: var(--shaj-component-card-border-radius);
+        border-width: var(--shaj-component-card-border-width);
+        box-shadow: var(--shaj-component-card-box-shadow);
+        padding: var(--shaj-component-card-padding);
+
+        &:hover {
+          box-shadow: var(--shaj-shadow-lg);
+          transform: translateY(-2px);
+          transition: all var(--shaj-duration-base) var(--shaj-timing-ease-out);
+        }
+
+        &__header {
+          border-bottom: 1px solid var(--shaj-neutral-200);
+          padding-bottom: var(--shaj-spacing-3);
+          margin-bottom: var(--shaj-spacing-4);
+        }
+
+        &__title {
+          color: var(--shaj-neutral-900);
+          font-size: var(--shaj-font-size-lg);
+          font-weight: var(--shaj-font-weight-semibold);
+        }
+
+        &__text {
+          color: var(--shaj-neutral-600);
+          font-size: var(--shaj-font-size-base);
+          line-height: var(--shaj-line-height-relaxed);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,209 @@
+/*!
+ * Shaj Theme Variant Examples
+ * Demonstrates how to use the theme variant generator to create different variations
+ * These examples show light/dark, high contrast, seasonal, and custom variants
+ */
+
+@use '../theme-variables' as vars;
+@use '../theme-variant-generator' as variant-gen;
+@use '../theme-generator' as generator;
+@use '../base/shaj-default' as shaj-default;
+@use '../base/shaj-ocean' as shaj-ocean;
+
+// ============================================================================
+// Light/Dark Mode Variants
+// ============================================================================
+
+// Generate dark mode variant of Shaj Default
+$shaj-default-dark: variant-gen.generate-theme-variant(shaj-default.$theme-config, 'dark');
+
+// Generate light mode variant of Shaj Ocean (if it was dark by default)
+$shaj-ocean-light: variant-gen.generate-theme-variant(shaj-ocean.$theme-config, 'light');
+
+// Register the variants
+// Note: Theme registration is handled in the main _index.scss file
+// // @include generator.register-theme('shaj-default-dark', $shaj-default-dark);
+// // @include generator.register-theme('shaj-ocean-light', $shaj-ocean-light);
+
+// ============================================================================
+// High Contrast Variants
+// ============================================================================
+
+// Generate high contrast variants for accessibility
+$shaj-default-high-contrast: variant-gen.generate-theme-variant(
+  shaj-default.$theme-config,
+  'high-contrast'
+);
+
+$shaj-ocean-high-contrast: variant-gen.generate-theme-variant(shaj-ocean.$theme-config, 'high-contrast');
+
+// Register high contrast variants
+// @include generator.register-theme('shaj-default-high-contrast', $shaj-default-high-contrast);
+// @include generator.register-theme('shaj-ocean-high-contrast', $shaj-ocean-high-contrast);
+
+// ============================================================================
+// Seasonal Variants
+// ============================================================================
+
+// Generate seasonal variants of Shaj Default
+$shaj-default-spring: variant-gen.generate-theme-variant(shaj-default.$theme-config, 'spring');
+
+$shaj-default-summer: variant-gen.generate-theme-variant(shaj-default.$theme-config, 'summer');
+
+$shaj-default-autumn: variant-gen.generate-theme-variant(shaj-default.$theme-config, 'autumn');
+
+$shaj-default-winter: variant-gen.generate-theme-variant(shaj-default.$theme-config, 'winter');
+
+// Register seasonal variants
+// @include generator.register-theme('shaj-default-spring', $shaj-default-spring);
+// @include generator.register-theme('shaj-default-summer', $shaj-default-summer);
+// @include generator.register-theme('shaj-default-autumn', $shaj-default-autumn);
+// @include generator.register-theme('shaj-default-winter', $shaj-default-winter);
+
+// ============================================================================
+// Custom Variants
+// ============================================================================
+
+// Create a custom variant with specific modifications
+$custom-config: (
+  'primary-hue': 280deg,
+  // Purple hue
+  'spacing-scale': 1.2,
+  // 20% larger spacing
+  'border-radius-scale': 0.5, // 50% smaller border radius
+);
+
+$shaj-default-custom: variant-gen.generate-theme-variant(
+  shaj-default.$theme-config,
+  '',
+  // No predefined variant type
+  $custom-config
+);
+
+// @include generator.register-theme('shaj-default-custom', $shaj-default-custom);
+
+// ============================================================================
+// Combined Variants
+// ============================================================================
+
+// Create a dark + high contrast variant
+$shaj-default-dark-high-contrast: variant-gen.generate-theme-variant(
+  $shaj-default-dark,
+  // Start with dark variant
+  'high-contrast' // Apply high contrast on top
+);
+
+// @include generator.register-theme(
+//   'shaj-default-dark-high-contrast',
+//   $shaj-default-dark-high-contrast
+// );
+
+// Create a seasonal + custom variant
+$shaj-ocean-summer-custom: variant-gen.generate-theme-variant(
+  shaj-ocean.$theme-config,
+  'summer',
+  (
+    'spacing-scale': 1.1,
+    'border-radius-scale': 1.3,
+  )
+);
+
+// @include generator.register-theme('shaj-ocean-summer-custom', $shaj-ocean-summer-custom);
+
+// ============================================================================
+// Batch Generation Using Mixins
+// ============================================================================
+
+// Generate all standard variants for Shaj Default
+@include variant-gen.generate-theme-variants('shaj-default', shaj-default.$theme-config);
+
+// Generate accessibility variants for Shaj Ocean
+@include variant-gen.generate-accessibility-variants('shaj-ocean', shaj-ocean.$theme-config);
+
+// ============================================================================
+// Usage Examples in CSS
+// ============================================================================
+
+// Example: Apply theme variants via CSS classes
+.theme-shaj-default-dark {
+  @include generator.apply-theme('shaj-default-dark');
+}
+
+.theme-shaj-ocean-high-contrast {
+  @include generator.apply-theme('shaj-ocean-high-contrast');
+}
+
+.theme-shaj-default-spring {
+  @include generator.apply-theme('shaj-default-spring');
+}
+
+// Example: Apply theme variants via data attributes
+[data-theme='shaj-default-dark'] {
+  @include generator.apply-theme('shaj-default-dark');
+}
+
+[data-theme='shaj-ocean-summer-custom'] {
+  @include generator.apply-theme('shaj-ocean-summer-custom');
+}
+
+// ============================================================================
+// Media Query Variants
+// ============================================================================
+
+// Automatically switch to dark mode based on system preference
+@media (prefers-color-scheme: dark) {
+  .theme-auto,
+  [data-theme='auto'] {
+    @include generator.apply-theme('shaj-default-dark');
+  }
+}
+
+// Automatically switch to high contrast based on system preference
+@media (prefers-contrast: high) {
+  .theme-auto-contrast,
+  [data-theme='auto-contrast'] {
+    @include generator.apply-theme('shaj-default-high-contrast');
+  }
+}
+
+// Reduce motion for accessibility
+@media (prefers-reduced-motion: reduce) {
+  .theme-reduced-motion,
+  [data-theme='reduced-motion'] {
+    --shaj-animation-duration: 0ms;
+    --shaj-transition-duration: 0ms;
+  }
+}
+
+// ============================================================================
+// Utility Classes for Theme Variants
+// ============================================================================
+
+// Theme switching utilities
+.theme-variant-dark {
+  @include generator.apply-theme('shaj-default-dark');
+}
+
+.theme-variant-light {
+  @include generator.apply-theme('shaj-default');
+}
+
+.theme-variant-high-contrast {
+  @include generator.apply-theme('shaj-default-high-contrast');
+}
+
+.theme-variant-spring {
+  @include generator.apply-theme('shaj-default-spring');
+}
+
+.theme-variant-summer {
+  @include generator.apply-theme('shaj-default-summer');
+}
+
+.theme-variant-autumn {
+  @include generator.apply-theme('shaj-default-autumn');
+}
+
+.theme-variant-winter {
+  @include generator.apply-theme('shaj-default-winter');
+}

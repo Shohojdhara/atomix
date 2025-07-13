@@ -1,0 +1,383 @@
+/*!
+ * CSS Variables Bridge for Shaj Theme System
+ * Converts theme configurations to CSS custom properties for runtime switching
+ * Provides utilities for theme management and dynamic theme application
+ */
+
+@use 'sass:map';
+@use 'sass:meta';
+@use 'sass:string';
+@use 'sass:color';
+@use 'theme-variables' as vars;
+
+// ============================================================================
+// CSS Custom Property Generation
+// ============================================================================
+
+/// Generate CSS custom properties from theme configuration
+/// @param {Map} $theme - Complete theme configuration
+/// @param {String} $prefix - CSS variable prefix (default: --shaj)
+@mixin generate-css-variables($theme, $prefix: '--shaj') {
+  // Colors
+  @if map-has-key($theme, 'colors') {
+    @include generate-color-variables(map-get($theme, 'colors'), $prefix);
+  }
+
+  // Typography
+  @if map-has-key($theme, 'typography') {
+    @include generate-typography-variables(map-get($theme, 'typography'), $prefix);
+  }
+
+  // Spacing
+  @if map-has-key($theme, 'spacing') {
+    @include generate-spacing-variables(map-get($theme, 'spacing'), $prefix);
+  }
+
+  // Border radius
+  @if map-has-key($theme, 'border-radius') {
+    @include generate-border-radius-variables(map-get($theme, 'border-radius'), $prefix);
+  }
+
+  // Shadows
+  @if map-has-key($theme, 'shadows') {
+    @include generate-shadow-variables(map-get($theme, 'shadows'), $prefix);
+  }
+
+  // Animations
+  @if map-has-key($theme, 'animations') {
+    @include generate-animation-variables(map-get($theme, 'animations'), $prefix);
+  }
+
+  // Components
+  @if map-has-key($theme, 'components') {
+    @include generate-component-variables(map-get($theme, 'components'), $prefix);
+  }
+}
+
+/// Generate color CSS variables
+/// @param {Map} $colors - Color configuration
+/// @param {String} $prefix - CSS variable prefix
+@mixin generate-color-variables($colors, $prefix) {
+  @each $color-name, $color-value in $colors {
+    @if type-of($color-value) == 'map' {
+      // Color scale (e.g., primary: { 50: #..., 100: #..., ... })
+      @each $shade, $shade-color in $color-value {
+        #{$prefix}-#{$color-name}-#{$shade}: #{$shade-color};
+      }
+    } @else {
+      // Single color (e.g., background: #...)
+      #{$prefix}-#{$color-name}: #{$color-value};
+    }
+  }
+}
+
+/// Generate typography CSS variables
+/// @param {Map} $typography - Typography configuration
+/// @param {String} $prefix - CSS variable prefix
+@mixin generate-typography-variables($typography, $prefix) {
+  @each $property, $value in $typography {
+    @if meta.type-of($value) == 'map' {
+      // Handle nested maps (font-weights, font-sizes, etc.)
+      @each $sub-property, $sub-value in $value {
+        #{$prefix}-#{$property}-#{$sub-property}: #{$sub-value};
+      }
+    } @else if meta.type-of($value) == 'list' {
+      // Handle lists (font-family)
+      #{$prefix}-#{$property}: #{$value};
+    } @else {
+      // Handle simple values
+      #{$prefix}-#{$property}: #{$value};
+    }
+  }
+}
+
+/// Generate spacing CSS variables
+/// @param {Map} $spacing - Spacing configuration
+/// @param {String} $prefix - CSS variable prefix
+@mixin generate-spacing-variables($spacing, $prefix) {
+  @each $size, $value in $spacing {
+    #{$prefix}-spacing-#{$size}: #{$value};
+  }
+}
+
+/// Generate border radius CSS variables
+/// @param {Map} $border-radius - Border radius configuration
+/// @param {String} $prefix - CSS variable prefix
+@mixin generate-border-radius-variables($border-radius, $prefix) {
+  @each $size, $value in $border-radius {
+    #{$prefix}-border-radius-#{$size}: #{$value};
+  }
+}
+
+/// Generate shadow CSS variables
+/// @param {Map} $shadows - Shadow configuration
+/// @param {String} $prefix - CSS variable prefix
+@mixin generate-shadow-variables($shadows, $prefix) {
+  @each $size, $value in $shadows {
+    #{$prefix}-shadow-#{$size}: #{$value};
+  }
+}
+
+/// Generate animation CSS variables
+/// @param {Map} $animations - Animation configuration
+/// @param {String} $prefix - CSS variable prefix
+@mixin generate-animation-variables($animations, $prefix) {
+  @each $property, $value in $animations {
+    #{$prefix}-animation-#{$property}: #{$value};
+  }
+}
+
+/// Generate component-specific CSS variables
+/// @param {Map} $components - Component configuration
+/// @param {String} $prefix - CSS variable prefix
+@mixin generate-component-variables($components, $prefix) {
+  @each $component, $config in $components {
+    @each $property, $value in $config {
+      #{$prefix}-#{$component}-#{$property}: #{$value};
+    }
+  }
+}
+
+// ============================================================================
+// Theme Application Mixins
+// ============================================================================
+
+/// Apply theme via CSS variables
+/// @param {String} $theme-name - Name of the theme to apply
+/// @param {Map} $theme-registry - Map of theme configurations
+/// @param {String} $selector - CSS selector to apply theme to (default: :root)
+@mixin apply-theme-variables($theme-name, $theme-registry, $selector: ':root') {
+  #{$selector} {
+    @include generate-css-variables(map-get($theme-registry, $theme-name));
+  }
+}
+
+/// Apply theme as data attribute
+/// @param {String} $theme-name - Name of the theme to apply
+/// @param {Map} $theme-registry - Map of theme configurations
+@mixin apply-theme-data-attribute($theme-name, $theme-registry) {
+  [data-theme='#{$theme-name}'] {
+    @include generate-css-variables(map-get($theme-registry, $theme-name));
+  }
+}
+
+/// Apply theme as CSS class
+/// @param {String} $theme-name - Name of the theme to apply
+/// @param {Map} $theme-registry - Map of theme configurations
+@mixin apply-theme-class($theme-name, $theme-registry) {
+  .theme-#{$theme-name} {
+    @include generate-css-variables(map-get($theme-registry, $theme-name));
+  }
+}
+
+// ============================================================================
+// Runtime Theme Switching Utilities
+// ============================================================================
+
+/// Generate theme switching CSS for all registered themes
+/// @param {Map} $theme-registry - Map of theme configurations
+@mixin generate-theme-switching($theme-registry) {
+  // Default theme on :root
+  :root {
+    @include generate-css-variables(map-get($theme-registry, 'shaj-default'));
+  }
+
+  // Generate data attribute selectors for all themes
+  @each $theme-name, $theme-config in $theme-registry {
+    [data-theme='#{$theme-name}'] {
+      @include generate-css-variables($theme-config);
+    }
+
+    .theme-#{$theme-name} {
+      @include generate-css-variables($theme-config);
+    }
+  }
+}
+
+/// Generate media query-based automatic theme switching
+/// @param {Map} $theme-registry - Map of theme configurations
+@mixin generate-auto-theme-switching($theme-registry) {
+  // Auto dark mode
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]),
+    [data-theme='auto'] {
+      @if map-has-key($theme-registry, 'shaj-default-dark') {
+        @include generate-css-variables(map-get($theme-registry, 'shaj-default-dark'));
+      }
+    }
+  }
+
+  // Auto high contrast
+  @media (prefers-contrast: high) {
+    :root:not([data-theme]),
+    [data-theme='auto-contrast'] {
+      @if map-has-key($theme-registry, 'shaj-default-high-contrast') {
+        @include generate-css-variables(map-get($theme-registry, 'shaj-default-high-contrast'));
+      }
+    }
+  }
+
+  // Reduced motion
+  @media (prefers-reduced-motion: reduce) {
+    :root,
+    [data-theme] {
+      --shaj-animation-duration: 0ms;
+      --shaj-transition-duration: 0ms;
+      --shaj-animation-easing: linear;
+    }
+  }
+}
+
+// ============================================================================
+// CSS Variable Utilities
+// ============================================================================
+
+/// Get CSS variable reference
+/// @param {String} $variable-name - Variable name without prefix
+/// @param {String} $fallback - Fallback value
+/// @param {String} $prefix - CSS variable prefix (default: --shaj)
+/// @return {String} - CSS var() function
+@function css-var($variable-name, $fallback: null, $prefix: '--shaj') {
+  $var-ref: var(#{$prefix}-#{$variable-name});
+
+  @if $fallback {
+    $var-ref: var(#{$prefix}-#{$variable-name}, #{$fallback});
+  }
+
+  @return $var-ref;
+}
+
+/// Generate color CSS variable reference
+/// @param {String} $color-name - Color name (e.g., 'primary')
+/// @param {String} $shade - Color shade (e.g., '500')
+/// @param {String} $fallback - Fallback color
+/// @return {String} - CSS var() function
+@function css-color($color-name, $shade: null, $fallback: null) {
+  $var-name: if($shade, '#{$color-name}-#{$shade}', $color-name);
+  @return css-var($var-name, $fallback);
+}
+
+/// Generate spacing CSS variable reference
+/// @param {String} $size - Spacing size (e.g., '4', 'lg')
+/// @param {String} $fallback - Fallback value
+/// @return {String} - CSS var() function
+@function css-spacing($size, $fallback: null) {
+  @return css-var('spacing-#{$size}', $fallback);
+}
+
+/// Generate border radius CSS variable reference
+/// @param {String} $size - Border radius size (e.g., 'md', 'lg')
+/// @param {String} $fallback - Fallback value
+/// @return {String} - CSS var() function
+@function css-border-radius($size, $fallback: null) {
+  @return css-var('border-radius-#{$size}', $fallback);
+}
+
+/// Generate shadow CSS variable reference
+/// @param {String} $size - Shadow size (e.g., 'sm', 'lg')
+/// @param {String} $fallback - Fallback value
+/// @return {String} - CSS var() function
+@function css-shadow($size, $fallback: null) {
+  @return css-var('shadow-#{$size}', $fallback);
+}
+
+// ============================================================================
+// Theme Validation and Testing
+// ============================================================================
+
+/// Validate that all required CSS variables are defined
+/// @param {List} $required-variables - List of required variable names
+@mixin validate-css-variables($required-variables) {
+  @each $variable in $required-variables {
+    @supports not (color: var(--shaj-#{$variable})) {
+      @error "Required CSS variable --shaj-#{$variable} is not defined";
+    }
+  }
+}
+
+/// Generate CSS variable fallback declarations
+/// @param {Map} $fallbacks - Map of variable names to fallback values
+@mixin generate-css-variable-fallbacks($fallbacks) {
+  @each $variable, $fallback in $fallbacks {
+    --shaj-#{$variable}: #{$fallback};
+  }
+}
+
+// ============================================================================
+// Component Integration Helpers
+// ============================================================================
+
+/// Mixin for theme-aware component styling
+/// @param {String} $component - Component name
+/// @param {Map} $properties - Map of CSS properties to theme variables
+@mixin theme-aware-component($component, $properties) {
+  @each $css-property, $theme-variable in $properties {
+    #{$css-property}: css-var('#{$component}-#{$theme-variable}');
+  }
+}
+
+/// Generate component theme variables
+/// @param {String} $component - Component name
+/// @param {Map} $theme-config - Component theme configuration
+@mixin generate-component-theme-variables($component, $theme-config) {
+  @each $property, $value in $theme-config {
+    --shaj-#{$component}-#{$property}: #{$value};
+  }
+}
+
+// ============================================================================
+// Advanced CSS Variable Features
+// ============================================================================
+
+/// Generate CSS variable with HSL decomposition for color manipulation
+/// @param {String} $color-name - Color variable name
+/// @param {Color} $color-value - Color value
+@mixin generate-hsl-color-variables($color-name, $color-value) {
+  --shaj-#{$color-name}: #{$color-value};
+  --shaj-#{$color-name}-h: #{color.hue($color-value)};
+  --shaj-#{$color-name}-s: #{color.saturation($color-value)};
+  --shaj-#{$color-name}-l: #{color.lightness($color-value)};
+  --shaj-#{$color-name}-hsl:
+    #{color.hue($color-value)}, #{color.saturation($color-value)}, #{color.lightness($color-value)};
+}
+
+/// Generate responsive CSS variables
+/// @param {String} $variable-name - Variable name
+/// @param {Map} $breakpoint-values - Map of breakpoint to value
+@mixin generate-responsive-css-variable($variable-name, $breakpoint-values) {
+  // Default value
+  @if map-has-key($breakpoint-values, 'default') {
+    --shaj-#{$variable-name}: #{map-get($breakpoint-values, 'default')};
+  }
+
+  // Responsive values
+  @each $breakpoint, $value in $breakpoint-values {
+    @if $breakpoint != 'default' {
+      @media (min-width: #{$breakpoint}) {
+        --shaj-#{$variable-name}: #{$value};
+      }
+    }
+  }
+}
+
+/// Generate CSS variables with calc() functions for dynamic scaling
+/// @param {String} $base-variable - Base variable name
+/// @param {Number} $scale-factor - Scale factor for calculations
+@mixin generate-scaled-css-variables($base-variable, $scale-factor) {
+  --shaj-#{$base-variable}-xs: calc(var(--shaj-#{$base-variable}) * #{$scale-factor * 0.75});
+  --shaj-#{$base-variable}-sm: calc(var(--shaj-#{$base-variable}) * #{$scale-factor * 0.875});
+  --shaj-#{$base-variable}-md: var(--shaj-#{$base-variable});
+  --shaj-#{$base-variable}-lg: calc(var(--shaj-#{$base-variable}) * #{$scale-factor * 1.125});
+  --shaj-#{$base-variable}-xl: calc(var(--shaj-#{$base-variable}) * #{$scale-factor * 1.25});
+}
+
+// ============================================================================
+// Export CSS Variable System
+// ============================================================================
+
+/// Main mixin to apply CSS variables bridge with theme registry
+/// @param {Map} $theme-registry - Map of theme configurations
+@mixin apply-css-variables-bridge($theme-registry) {
+  @include generate-theme-switching($theme-registry);
+  @include generate-auto-theme-switching($theme-registry);
+}

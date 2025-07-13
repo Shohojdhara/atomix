@@ -1,0 +1,396 @@
+/*!
+ * Enhanced Component Themes
+ * Comprehensive theme support for existing Atomix components
+ */
+
+@use '../theme-generator' as generator;
+@use '../css-variables-bridge' as bridge;
+@use '../../01-settings/settings.config' as config;
+
+// Enhanced Button Theme Support
+@mixin enhanced-button-themes($themes) {
+  @each $theme-name, $theme-config in $themes {
+    [data-theme='#{$theme-name}'] {
+      .c-btn {
+        // Override Atomix button variables with Shaj theme values
+        --#{config.$prefix}btn-font-family: var(--shaj-font-family);
+        --#{config.$prefix}btn-font-size: var(--shaj-component-button-font-size);
+        --#{config.$prefix}btn-font-weight: var(--shaj-component-button-font-weight);
+        --#{config.$prefix}btn-line-height: var(--shaj-component-button-line-height);
+        --#{config.$prefix}btn-padding-x: var(--shaj-component-button-padding-x);
+        --#{config.$prefix}btn-padding-y: var(--shaj-component-button-padding-y);
+        --#{config.$prefix}btn-border-width: var(--shaj-component-button-border-width);
+        --#{config.$prefix}btn-border-radius: var(--shaj-component-button-border-radius);
+        --#{config.$prefix}btn-box-shadow: var(--shaj-shadow-sm);
+
+        // Transition using theme values
+        transition: var(--shaj-component-button-transition);
+
+        // Primary button variant
+        &--primary {
+          --#{config.$prefix}btn-color: var(--shaj-neutral-50);
+          --#{config.$prefix}btn-bg: var(--shaj-primary-500);
+          --#{config.$prefix}btn-border-color: var(--shaj-primary-500);
+          --#{config.$prefix}btn-hover-color: var(--shaj-neutral-50);
+          --#{config.$prefix}btn-hover-bg: var(--shaj-primary-600);
+          --#{config.$prefix}btn-hover-border-color: var(--shaj-primary-600);
+          --#{config.$prefix}btn-focus-shadow-rgb: var(--shaj-primary-500);
+          --#{config.$prefix}btn-active-color: var(--shaj-neutral-50);
+          --#{config.$prefix}btn-active-bg: var(--shaj-primary-700);
+          --#{config.$prefix}btn-active-border-color: var(--shaj-primary-700);
+
+          &:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shaj-shadow-md);
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+        }
+
+        // Secondary button variant
+        &--secondary {
+          --#{config.$prefix}btn-color: var(--shaj-secondary-700);
+          --#{config.$prefix}btn-bg: var(--shaj-secondary-100);
+          --#{config.$prefix}btn-border-color: var(--shaj-secondary-200);
+          --#{config.$prefix}btn-hover-color: var(--shaj-secondary-800);
+          --#{config.$prefix}btn-hover-bg: var(--shaj-secondary-200);
+          --#{config.$prefix}btn-hover-border-color: var(--shaj-secondary-300);
+          --#{config.$prefix}btn-focus-shadow-rgb: var(--shaj-secondary-500);
+          --#{config.$prefix}btn-active-color: var(--shaj-secondary-900);
+          --#{config.$prefix}btn-active-bg: var(--shaj-secondary-300);
+          --#{config.$prefix}btn-active-border-color: var(--shaj-secondary-400);
+
+          &:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shaj-shadow-sm);
+          }
+        }
+
+        // Outline button variant
+        &--outline {
+          --#{config.$prefix}btn-color: var(--shaj-primary-500);
+          --#{config.$prefix}btn-bg: transparent;
+          --#{config.$prefix}btn-border-color: var(--shaj-primary-500);
+          --#{config.$prefix}btn-hover-color: var(--shaj-neutral-50);
+          --#{config.$prefix}btn-hover-bg: var(--shaj-primary-500);
+          --#{config.$prefix}btn-hover-border-color: var(--shaj-primary-500);
+          --#{config.$prefix}btn-focus-shadow-rgb: var(--shaj-primary-500);
+        }
+
+        // Ghost button variant
+        &--ghost {
+          --#{config.$prefix}btn-color: var(--shaj-primary-500);
+          --#{config.$prefix}btn-bg: transparent;
+          --#{config.$prefix}btn-border-color: transparent;
+          --#{config.$prefix}btn-hover-color: var(--shaj-primary-600);
+          --#{config.$prefix}btn-hover-bg: var(--shaj-primary-50);
+          --#{config.$prefix}btn-hover-border-color: transparent;
+        }
+
+        // Success button variant
+        &--success {
+          --#{config.$prefix}btn-color: var(--shaj-neutral-50);
+          --#{config.$prefix}btn-bg: var(--shaj-success);
+          --#{config.$prefix}btn-border-color: var(--shaj-success);
+          --#{config.$prefix}btn-hover-bg: var(--shaj-success);
+          --#{config.$prefix}btn-hover-border-color: var(--shaj-success);
+          --#{config.$prefix}btn-focus-shadow-rgb: var(--shaj-success);
+
+          &:hover {
+            filter: brightness(0.9);
+            transform: translateY(-1px);
+            box-shadow: var(--shaj-shadow-md);
+          }
+        }
+
+        // Warning button variant
+        &--warning {
+          --#{config.$prefix}btn-color: var(--shaj-neutral-50);
+          --#{config.$prefix}btn-bg: var(--shaj-warning);
+          --#{config.$prefix}btn-border-color: var(--shaj-warning);
+          --#{config.$prefix}btn-hover-bg: var(--shaj-warning);
+          --#{config.$prefix}btn-hover-border-color: var(--shaj-warning);
+          --#{config.$prefix}btn-focus-shadow-rgb: var(--shaj-warning);
+
+          &:hover {
+            filter: brightness(0.9);
+            transform: translateY(-1px);
+            box-shadow: var(--shaj-shadow-md);
+          }
+        }
+
+        // Error/Danger button variant
+        &--error,
+        &--danger {
+          --#{config.$prefix}btn-color: var(--shaj-neutral-50);
+          --#{config.$prefix}btn-bg: var(--shaj-error);
+          --#{config.$prefix}btn-border-color: var(--shaj-error);
+          --#{config.$prefix}btn-hover-bg: var(--shaj-error);
+          --#{config.$prefix}btn-hover-border-color: var(--shaj-error);
+          --#{config.$prefix}btn-focus-shadow-rgb: var(--shaj-error);
+
+          &:hover {
+            filter: brightness(0.9);
+            transform: translateY(-1px);
+            box-shadow: var(--shaj-shadow-md);
+          }
+        }
+
+        // Size variants
+        &--sm {
+          --#{config.$prefix}btn-padding-x: var(--shaj-spacing-3);
+          --#{config.$prefix}btn-padding-y: var(--shaj-spacing-1);
+          --#{config.$prefix}btn-font-size: var(--shaj-font-size-sm);
+        }
+
+        &--lg {
+          --#{config.$prefix}btn-padding-x: var(--shaj-spacing-6);
+          --#{config.$prefix}btn-padding-y: var(--shaj-spacing-3);
+          --#{config.$prefix}btn-font-size: var(--shaj-font-size-lg);
+        }
+
+        // Disabled state
+        &:disabled,
+        &--disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none !important;
+          box-shadow: none !important;
+
+          &:hover {
+            transform: none !important;
+            box-shadow: none !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Enhanced Card Theme Support
+@mixin enhanced-card-themes($themes) {
+  @each $theme-name, $theme-config in $themes {
+    [data-theme='#{$theme-name}'] {
+      .c-card {
+        // Override Atomix card variables with Shaj theme values
+        --#{config.$prefix}card-bg: var(--shaj-surface);
+        --#{config.$prefix}card-border-color: var(--shaj-neutral-200);
+        --#{config.$prefix}card-border-radius: var(--shaj-component-card-border-radius);
+        --#{config.$prefix}card-border-width: var(--shaj-component-card-border-width);
+        --#{config.$prefix}card-boxshadow: var(--shaj-component-card-box-shadow);
+        --#{config.$prefix}card-spacer-x: var(--shaj-component-card-padding);
+        --#{config.$prefix}card-spacer-y: var(--shaj-component-card-padding);
+        --#{config.$prefix}card-title-color: var(--shaj-neutral-900);
+        --#{config.$prefix}card-text-color: var(--shaj-neutral-600);
+
+        // Enhanced hover effects
+        &:hover {
+          --#{config.$prefix}card-boxshadow: var(--shaj-shadow-lg);
+          transform: translateY(-2px);
+          transition: all var(--shaj-duration-base) var(--shaj-timing-ease-out);
+        }
+
+        // Card variants
+        &--elevated {
+          --#{config.$prefix}card-boxshadow: var(--shaj-shadow-md);
+
+          &:hover {
+            --#{config.$prefix}card-boxshadow: var(--shaj-shadow-xl);
+          }
+        }
+
+        &--outlined {
+          --#{config.$prefix}card-boxshadow: none;
+          --#{config.$prefix}card-border-width: 2px;
+        }
+
+        &--filled {
+          --#{config.$prefix}card-bg: var(--shaj-surface-variant);
+          --#{config.$prefix}card-border-width: 0;
+        }
+      }
+    }
+  }
+}
+
+// Enhanced Form Component Theme Support
+@mixin enhanced-form-themes($themes) {
+  @each $theme-name, $theme-config in $themes {
+    [data-theme='#{$theme-name}'] {
+      .c-input,
+      .c-textarea,
+      .c-select {
+        // Override with Shaj theme values
+        --#{config.$prefix}input-bg: var(--shaj-surface);
+        --#{config.$prefix}input-border-color: var(--shaj-neutral-300);
+        --#{config.$prefix}input-border-radius: var(--shaj-component-input-border-radius);
+        --#{config.$prefix}input-border-width: var(--shaj-component-input-border-width);
+        --#{config.$prefix}input-color: var(--shaj-neutral-900);
+        --#{config.$prefix}input-font-size: var(--shaj-component-input-font-size);
+        --#{config.$prefix}input-line-height: var(--shaj-component-input-line-height);
+        --#{config.$prefix}input-padding-x: var(--shaj-component-input-padding-x);
+        --#{config.$prefix}input-padding-y: var(--shaj-component-input-padding-y);
+        --#{config.$prefix}input-placeholder-color: var(--shaj-neutral-400);
+
+        // Focus states
+        &:focus {
+          --#{config.$prefix}input-border-color: var(--shaj-primary-500);
+          outline: 2px solid var(--shaj-primary-500);
+          outline-offset: 2px;
+        }
+
+        // Error state
+        &--error,
+        &:invalid {
+          --#{config.$prefix}input-border-color: var(--shaj-error);
+
+          &:focus {
+            --#{config.$prefix}input-border-color: var(--shaj-error);
+            outline-color: var(--shaj-error);
+          }
+        }
+
+        // Success state
+        &--success {
+          --#{config.$prefix}input-border-color: var(--shaj-success);
+
+          &:focus {
+            --#{config.$prefix}input-border-color: var(--shaj-success);
+            outline-color: var(--shaj-success);
+          }
+        }
+
+        // Disabled state
+        &:disabled {
+          --#{config.$prefix}input-bg: var(--shaj-neutral-100);
+          --#{config.$prefix}input-color: var(--shaj-neutral-400);
+          cursor: not-allowed;
+        }
+      }
+
+      .c-label {
+        color: var(--shaj-neutral-700);
+        font-size: var(--shaj-font-size-sm);
+        font-weight: var(--shaj-font-weight-medium);
+      }
+
+      .c-checkbox,
+      .c-radio {
+        accent-color: var(--shaj-primary-500);
+      }
+    }
+  }
+}
+
+// Enhanced Modal Theme Support
+@mixin enhanced-modal-themes($themes) {
+  @each $theme-name, $theme-config in $themes {
+    [data-theme='#{$theme-name}'] {
+      .c-modal {
+        &__dialog {
+          background-color: var(--shaj-surface);
+          border-radius: var(--shaj-component-modal-border-radius);
+          box-shadow: var(--shaj-component-modal-box-shadow);
+        }
+
+        &__backdrop {
+          backdrop-filter: blur(var(--shaj-component-modal-backdrop-blur));
+        }
+
+        &__header {
+          border-bottom: 1px solid var(--shaj-neutral-200);
+        }
+
+        &__title {
+          color: var(--shaj-neutral-900);
+          font-size: var(--shaj-font-size-lg);
+          font-weight: var(--shaj-font-weight-semibold);
+        }
+
+        &__body {
+          color: var(--shaj-neutral-600);
+        }
+
+        &__footer {
+          border-top: 1px solid var(--shaj-neutral-200);
+        }
+      }
+    }
+  }
+}
+
+// Enhanced Navigation Theme Support
+@mixin enhanced-navigation-themes($themes) {
+  @each $theme-name, $theme-config in $themes {
+    [data-theme='#{$theme-name}'] {
+      .c-nav {
+        background-color: var(--shaj-surface);
+        border-bottom: 1px solid var(--shaj-neutral-200);
+
+        &__link {
+          color: var(--shaj-neutral-600);
+          transition: color var(--shaj-duration-fast) var(--shaj-timing-ease);
+
+          &:hover {
+            color: var(--shaj-primary-500);
+          }
+
+          &--active {
+            color: var(--shaj-primary-500);
+            font-weight: var(--shaj-font-weight-medium);
+          }
+        }
+      }
+
+      .c-dropdown {
+        &__menu {
+          background-color: var(--shaj-surface);
+          border: var(--shaj-component-dropdown-border-width) solid var(--shaj-neutral-200);
+          border-radius: var(--shaj-component-dropdown-border-radius);
+          box-shadow: var(--shaj-component-dropdown-box-shadow);
+          padding: var(--shaj-component-dropdown-padding);
+        }
+
+        &__item {
+          color: var(--shaj-neutral-700);
+          border-radius: var(--shaj-border-radius-sm);
+          transition: all var(--shaj-duration-fast) var(--shaj-timing-ease);
+
+          &:hover {
+            background-color: var(--shaj-primary-50);
+            color: var(--shaj-primary-600);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Enhanced Tooltip Theme Support
+@mixin enhanced-tooltip-themes($themes) {
+  @each $theme-name, $theme-config in $themes {
+    [data-theme='#{$theme-name}'] {
+      .c-tooltip {
+        background-color: var(--shaj-neutral-800);
+        color: var(--shaj-neutral-50);
+        border-radius: var(--shaj-component-tooltip-border-radius);
+        padding: var(--shaj-component-tooltip-padding-y) var(--shaj-component-tooltip-padding-x);
+        font-size: var(--shaj-component-tooltip-font-size);
+        max-width: var(--shaj-component-tooltip-max-width);
+        box-shadow: var(--shaj-shadow-lg);
+      }
+    }
+  }
+}
+
+// Master mixin to apply all enhanced themes
+@mixin apply-enhanced-component-themes($themes) {
+  @include enhanced-button-themes($themes);
+  @include enhanced-card-themes($themes);
+  @include enhanced-form-themes($themes);
+  @include enhanced-modal-themes($themes);
+  @include enhanced-navigation-themes($themes);
+  @include enhanced-tooltip-themes($themes);
+}

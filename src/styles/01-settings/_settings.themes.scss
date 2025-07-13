@@ -1,0 +1,26 @@
+/*!
+ * Shaj Theme Settings
+ * Expose Shaj theme CSS custom properties as SCSS variables for Atomix settings layer
+ * This file allows referencing theme values in other settings files and components
+ */
+
+// Example: Reference a Shaj theme variable as a SCSS variable
+$shaj-primary-500: var(--shaj-primary-500);
+$shaj-secondary-500: var(--shaj-secondary-500);
+$shaj-neutral-900: var(--shaj-neutral-900);
+$shaj-success: var(--shaj-success);
+$shaj-warning: var(--shaj-warning);
+$shaj-error: var(--shaj-error);
+$shaj-info: var(--shaj-info);
+$shaj-background: var(--shaj-background);
+$shaj-surface: var(--shaj-surface);
+$shaj-surface-variant: var(--shaj-surface-variant);
+$shaj-font-family: var(--shaj-font-family);
+$shaj-spacing-4: var(--shaj-spacing-4);
+$shaj-border-radius-lg: var(--shaj-border-radius-lg);
+$shaj-shadow-md: var(--shaj-shadow-md);
+
+// Usage: In other settings files, use $shaj-* variables for theme-aware values
+// Example:
+// $button-bg: $shaj-primary-500;
+// $card-radius: $shaj-border-radius-lg;

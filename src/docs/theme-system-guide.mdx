@@ -1,0 +1,738 @@
+# Shaj Theme System Guide
+
+The Shaj Theme System is a comprehensive theming solution for Atomix Design System that provides runtime theme switching, CSS custom properties management, and extensive customization capabilities.
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Quick Start](#quick-start)
+3. [Available Themes](#available-themes)
+4. [Theme Manager](#theme-manager)
+5. [React Integration](#react-integration)
+6. [CSS Variables](#css-variables)
+7. [Custom Themes](#custom-themes)
+8. [Accessibility](#accessibility)
+9. [Performance](#performance)
+10. [API Reference](#api-reference)
+11. [Migration Guide](#migration-guide)
+12. [Troubleshooting](#troubleshooting)
+
+## Overview
+
+The Shaj Theme System provides:
+
+- **6 Built-in Themes**: Default, Ocean, Sunset, Forest, Midnight, and Pastel
+- **Runtime Theme Switching**: Change themes dynamically without page reload
+- **CSS Custom Properties**: Modern CSS variable-based architecture
+- **TypeScript Support**: Comprehensive type definitions
+- **Accessibility Compliant**: WCAG 2.1 AA color contrast ratios
+- **Performance Optimized**: Lazy loading and CSS optimization
+- **Framework Agnostic**: Works with React, vanilla JS, or any framework
+
+## Quick Start
+
+### Installation
+
+The theme system is included with Atomix. Import the styles and utilities:
+
+```typescript
+// Import the theme system
+import { ThemeManager, useTheme } from '@shohojdhara/atomix';
+import '@shohojdhara/atomix/themes';
+```
+
+### Basic Usage
+
+#### React Hook
+
+```tsx
+import React from 'react';
+import { useTheme } from '@shohojdhara/atomix';
+
+function ThemeSelector() {
+  const { currentTheme, setTheme, availableThemes } = useTheme();
+
+  return (
+    <select value={currentTheme} onChange={e => setTheme(e.target.value)}>
+      {availableThemes.map(theme => (
+        <option key={theme} value={theme}>
+          {theme}
+        </option>
+      ))}
+    </select>
+  );
+}
+```
+
+#### Vanilla JavaScript
+
+```javascript
+import { ThemeManager } from '@shohojdhara/atomix';
+
+// Initialize theme manager
+const themeManager = new ThemeManager({
+  defaultTheme: 'shaj-default',
+  enablePersistence: true,
+});
+
+// Change theme
+themeManager.setTheme('shaj-ocean');
+
+// Get current theme
+console.log(themeManager.getCurrentTheme());
+```
+
+## Available Themes
+
+### Shaj Default
+
+- **Primary Color**: Sky Blue (#0ea5e9)
+- **Personality**: Clean, professional, and modern
+- **Use Case**: Corporate applications, dashboards
+
+### Shaj Ocean
+
+- **Primary Color**: Cyan (#0891b2)
+- **Personality**: Fresh, aquatic, and calming
+- **Use Case**: Health, wellness, environmental apps
+
+### Shaj Sunset
+
+- **Primary Color**: Orange (#f97316)
+- **Personality**: Warm, energetic, and vibrant
+- **Use Case**: Creative, entertainment, social apps
+
+### Shaj Forest
+
+- **Primary Color**: Green (#16a34a)
+- **Personality**: Natural, growth-oriented, and sustainable
+- **Use Case**: Finance, productivity, eco-friendly apps
+
+### Shaj Midnight
+
+- **Primary Color**: Purple (#a855f7)
+- **Personality**: Luxurious, creative, and sophisticated
+- **Use Case**: Premium, creative, or entertainment apps
+
+### Shaj Pastel
+
+- **Primary Color**: Pink (#ec4899)
+- **Personality**: Soft, friendly, and approachable
+- **Use Case**: Consumer, lifestyle, or community apps
+
+## Theme Manager
+
+The `ThemeManager` class is the core of the theme system:
+
+### Initialization
+
+```typescript
+import { ThemeManager } from '@shohojdhara/atomix';
+
+const themeManager = new ThemeManager({
+  defaultTheme: 'shaj-default',
+  enablePersistence: true,
+  storageKey: 'my-app-theme',
+  respectSystemPreference: true,
+  enableTransitions: true,
+  transitionDuration: 300,
+  rootSelector: ':root',
+});
+```
+
+### Configuration Options
+
+| Option                    | Type        | Default          | Description                              |
+| ------------------------- | ----------- | ---------------- | ---------------------------------------- |
+| `defaultTheme`            | `ThemeName` | `'shaj-default'` | Default theme to use                     |
+| `enablePersistence`       | `boolean`   | `true`           | Save theme preference to localStorage    |
+| `storageKey`              | `string`    | `'atomix-theme'` | localStorage key for persistence         |
+| `respectSystemPreference` | `boolean`   | `true`           | Use system color scheme preference       |
+| `enableTransitions`       | `boolean`   | `true`           | Smooth transitions when switching themes |
+| `transitionDuration`      | `number`    | `300`            | Transition duration in milliseconds      |
+| `rootSelector`            | `string`    | `':root'`        | CSS selector for root element            |
+
+### Methods
+
+#### `setTheme(theme: ThemeName): void`
+
+Changes the active theme.
+
+```typescript
+themeManager.setTheme('shaj-ocean');
+```
+
+#### `getCurrentTheme(): ThemeName`
+
+Returns the currently active theme.
+
+```typescript
+const currentTheme = themeManager.getCurrentTheme();
+```
+
+#### `getAvailableThemes(): ThemeName[]`
+
+Returns an array of available theme names.
+
+```typescript
+const themes = themeManager.getAvailableThemes();
+```
+
+#### `toggleMode(): void`
+
+Toggles between light and dark mode (if supported by theme).
+
+```typescript
+themeManager.toggleMode();
+```
+
+#### `getCSSVariable(name: string): string`
+
+Gets the value of a CSS custom property.
+
+```typescript
+const primaryColor = themeManager.getCSSVariable('--atomix-color-primary-600');
+```
+
+#### `setCSSVariable(name: string, value: string): void`
+
+Sets the value of a CSS custom property.
+
+```typescript
+themeManager.setCSSVariable('--atomix-color-primary-600', '#custom-color');
+```
+
+## React Integration
+
+### useTheme Hook
+
+The `useTheme` hook provides easy access to theme functionality in React components:
+
+```tsx
+import { useTheme } from '@shohojdhara/atomix';
+
+function MyComponent() {
+  const {
+    currentTheme,
+    setTheme,
+    availableThemes,
+    isLoading,
+    error,
+    toggleColorMode,
+    getThemeVariables,
+    getCSSVariable,
+    setCSSVariable,
+  } = useTheme();
+
+  if (isLoading) return <div>Loading theme...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  return (
+    <div>
+      <h2>Current Theme: {currentTheme}</h2>
+      <button onClick={() => setTheme('shaj-ocean')}>Switch to Ocean</button>
+      <button onClick={toggleColorMode}>Toggle Dark Mode</button>
+    </div>
+  );
+}
+```
+
+### Theme Provider
+
+For advanced use cases, you can use the ThemeProvider:
+
+```tsx
+import { ThemeProvider, ThemeManager } from '@shohojdhara/atomix';
+
+const themeManager = new ThemeManager({
+  defaultTheme: 'shaj-default',
+});
+
+function App() {
+  return (
+    <ThemeProvider manager={themeManager}>
+      <MyApp />
+    </ThemeProvider>
+  );
+}
+```
+
+### Component Theme Props
+
+Components can accept theme-specific props:
+
+```tsx
+import { Button } from '@shohojdhara/atomix';
+
+function MyComponent() {
+  return (
+    <Button
+      theme="shaj-ocean"
+      enableThemeTransitions={true}
+      themeVariables={{
+        '--atomix-color-primary-600': '#custom-blue',
+      }}
+    >
+      Themed Button
+    </Button>
+  );
+}
+```
+
+## CSS Variables
+
+The theme system uses CSS custom properties for maximum flexibility:
+
+### Color Variables
+
+```css
+/* Primary colors (50-950 scale) */
+--atomix-color-primary-50
+--atomix-color-primary-100
+/* ... */
+--atomix-color-primary-950
+
+/* Secondary colors */
+--atomix-color-secondary-50
+/* ... */
+--atomix-color-secondary-950
+
+/* Semantic colors */
+--atomix-color-success-500
+--atomix-color-warning-500
+--atomix-color-error-500
+--atomix-color-info-500
+
+/* Surface colors */
+--atomix-color-background
+--atomix-color-surface
+--atomix-color-text
+```
+
+### Typography Variables
+
+```css
+--atomix-font-family-primary
+--atomix-font-family-secondary
+--atomix-font-family-mono
+--atomix-font-size-base
+--atomix-line-height-base
+```
+
+### Spacing Variables
+
+```css
+--atomix-spacing-unit
+--atomix-spacing-xs
+--atomix-spacing-sm
+--atomix-spacing-md
+--atomix-spacing-lg
+--atomix-spacing-xl
+```
+
+### Using Variables in CSS
+
+```css
+.my-component {
+  background-color: var(--atomix-color-primary-600);
+  color: var(--atomix-color-text);
+  padding: var(--atomix-spacing-md);
+  border-radius: var(--atomix-border-radius-base);
+  box-shadow: var(--atomix-shadow-lg);
+}
+```
+
+### Using Variables in SCSS
+
+```scss
+@use '@shohojdhara/atomix/themes/settings' as theme;
+
+.my-component {
+  background-color: theme.$primary-600;
+  color: theme.$text-color;
+  padding: theme.$spacing-md;
+}
+```
+
+## Custom Themes
+
+### Creating a Custom Theme
+
+You can create custom themes by extending existing ones:
+
+```typescript
+import { ThemeManager, ThemeConfig } from '@shohojdhara/atomix';
+
+const customTheme: ThemeConfig = {
+  name: 'my-custom-theme',
+  displayName: 'My Custom Theme',
+  description: 'A custom theme for my application',
+  colors: {
+    primary: {
+      50: '#eff6ff',
+      100: '#dbeafe',
+      // ... define all color scales
+      950: '#1e3a8a',
+    },
+    // ... other color configurations
+  },
+  surfaces: {
+    light: {
+      background: '#ffffff',
+      surface: '#f8fafc',
+      // ... other surface colors
+    },
+    dark: {
+      background: '#0f172a',
+      surface: '#1e293b',
+      // ... other surface colors
+    },
+  },
+  typography: {
+    'font-family-primary': 'Inter, sans-serif',
+    'font-size-base': '16px',
+    // ... other typography settings
+  },
+  spacing: {
+    '1': '0.25rem',
+    '2': '0.5rem',
+    // ... spacing scale
+  },
+  borderRadius: {
+    sm: '0.125rem',
+    base: '0.25rem',
+    // ... border radius scale
+  },
+  shadows: {
+    sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+    // ... shadow definitions
+  },
+  animations: {
+    'duration-fast': '150ms',
+    'timing-ease': 'ease',
+    // ... animation settings
+  },
+  metadata: {
+    version: '1.0.0',
+    author: 'Your Name',
+    created: '2024-01-01',
+    modified: '2024-01-01',
+    tags: ['custom', 'brand'],
+  },
+};
+
+// Register the custom theme
+const themeManager = new ThemeManager();
+themeManager.registerTheme(customTheme);
+```
+
+### Theme Generator
+
+Use the theme generator for easier custom theme creation:
+
+```typescript
+import { generateTheme } from '@shohojdhara/atomix';
+
+const customTheme = generateTheme({
+  baseTheme: 'shaj-default',
+  name: 'my-brand',
+  displayName: 'My Brand Theme',
+  description: 'Corporate brand theme',
+  primaryColor: '#6366f1',
+  secondaryColor: '#8b5cf6',
+  generateDarkMode: true,
+  colorOverrides: {
+    success: {
+      500: '#10b981',
+      600: '#059669',
+    },
+  },
+  typographyOverrides: {
+    'font-family-primary': 'Roboto, sans-serif',
+  },
+});
+```
+
+## Accessibility
+
+The theme system is designed with accessibility in mind:
+
+### Color Contrast
+
+All themes meet WCAG 2.1 AA standards:
+
+- Normal text: 4.5:1 contrast ratio minimum
+- Large text: 3.0:1 contrast ratio minimum
+
+### Testing Contrast
+
+```typescript
+import { getContrastRatio, isAccessible } from '@shohojdhara/atomix';
+
+const ratio = getContrastRatio('#ffffff', '#0ea5e9');
+console.log(`Contrast ratio: ${ratio.toFixed(2)}:1`);
+
+const accessible = isAccessible('#ffffff', '#0ea5e9', 'AA');
+console.log(`Accessible: ${accessible}`);
+```
+
+### Validation
+
+Validate theme accessibility:
+
+```typescript
+import { validateTheme } from '@shohojdhara/atomix';
+
+const validation = validateTheme('shaj-default');
+console.log('Accessibility score:', validation.accessibility.score);
+console.log('Issues:', validation.accessibility.recommendations);
+```
+
+### Best Practices
+
+1. **Test with Screen Readers**: Ensure themes work with assistive technologies
+2. **Validate Color Combinations**: Use the built-in validation tools
+3. **Provide High Contrast Options**: Consider users with visual impairments
+4. **Test in Different Lighting**: Themes should work in various environments
+
+## Performance
+
+### Optimization Features
+
+1. **CSS Variable Optimization**: Unused variables are removed during build
+2. **Lazy Loading**: Themes can be loaded on-demand
+3. **Caching**: Theme configurations are cached for better performance
+4. **Tree Shaking**: Only used theme features are included in bundles
+
+### Performance Monitoring
+
+```typescript
+import { getThemePerformance } from '@shohojdhara/atomix';
+
+const metrics = getThemePerformance();
+console.log('Load time:', metrics.loadTime, 'ms');
+console.log('Variables count:', metrics.variableCount);
+console.log('Bundle size:', metrics.bundleSize, 'bytes');
+```
+
+### Best Practices
+
+1. **Preload Critical Themes**: Preload the default theme for faster initial load
+2. **Use Theme Transitions Sparingly**: Disable for performance-critical applications
+3. **Monitor Bundle Size**: Keep an eye on theme impact on bundle size
+4. **Optimize Custom Themes**: Remove unused properties from custom themes
+
+## API Reference
+
+### Types
+
+#### `ThemeName`
+
+```typescript
+type ThemeName =
+  | 'shaj-default'
+  | 'shaj-ocean'
+  | 'shaj-sunset'
+  | 'shaj-forest'
+  | 'shaj-midnight'
+  | 'shaj-pastel';
+```
+
+#### `ThemeConfig`
+
+```typescript
+interface ThemeConfig {
+  name: ThemeName;
+  displayName: string;
+  description: string;
+  colors: {
+    primary: ThemeColorConfig;
+    secondary: ThemeColorConfig;
+    neutral: ThemeColorConfig;
+    success: ThemeColorConfig;
+    warning: ThemeColorConfig;
+    error: ThemeColorConfig;
+    info: ThemeColorConfig;
+  };
+  surfaces: {
+    light: SurfaceColorConfig;
+    dark: SurfaceColorConfig;
+  };
+  typography: TypographyConfig;
+  spacing: SpacingConfig;
+  borderRadius: BorderRadiusConfig;
+  shadows: ShadowConfig;
+  animations: AnimationConfig;
+  metadata: {
+    version: string;
+    author?: string;
+    created: string;
+    modified: string;
+    tags: string[];
+  };
+}
+```
+
+#### `ThemeManagerOptions`
+
+```typescript
+interface ThemeManagerOptions {
+  defaultTheme?: ThemeName;
+  enablePersistence?: boolean;
+  storageKey?: string;
+  respectSystemPreference?: boolean;
+  enableTransitions?: boolean;
+  transitionDuration?: number;
+  rootSelector?: string;
+  preloadThemes?: boolean;
+  validateThemes?: boolean;
+}
+```
+
+### Functions
+
+#### `useTheme()`
+
+React hook for theme management.
+
+**Returns**: `UseThemeReturn`
+
+#### `getThemeManager(options?)`
+
+Get or create a theme manager instance.
+
+**Parameters**:
+
+- `options?: ThemeManagerOptions`
+
+**Returns**: `ThemeManager`
+
+#### `validateTheme(theme)`
+
+Validate a theme configuration.
+
+**Parameters**:
+
+- `theme: ThemeName | ThemeConfig`
+
+**Returns**: `ThemeValidationResult`
+
+#### `generateTheme(options)`
+
+Generate a custom theme.
+
+**Parameters**:
+
+- `options: ThemeGeneratorOptions`
+
+**Returns**: `ThemeConfig`
+
+## Migration Guide
+
+### From v0.1.x to v0.2.x
+
+1. **Import Changes**:
+
+   ```typescript
+   // Old
+   import { ThemeManager } from '@shohojdhara/atomix/theme';
+
+   // New
+   import { ThemeManager } from '@shohojdhara/atomix';
+   ```
+
+2. **CSS Variable Names**:
+
+   ```css
+   /* Old */
+   --shaj-primary-600
+
+   /* New */
+   --atomix-color-primary-600
+   ```
+
+3. **Theme Names**:
+
+   ```typescript
+   // Old
+   'default', 'ocean', 'sunset';
+
+   // New
+   'shaj-default', 'shaj-ocean', 'shaj-sunset';
+   ```
+
+### Breaking Changes
+
+- Theme configuration structure updated
+- CSS variable naming convention changed
+- Some theme manager options renamed
+
+### Migration Script
+
+```bash
+# Run the automated migration script
+npx @shohojdhara/atomix migrate-themes
+```
+
+## Troubleshooting
+
+### Common Issues
+
+#### Theme Not Loading
+
+```typescript
+// Check if theme is registered
+const available = themeManager.getAvailableThemes();
+console.log('Available themes:', available);
+
+// Check for errors
+const { error } = useTheme();
+if (error) {
+  console.error('Theme error:', error);
+}
+```
+
+#### CSS Variables Not Applied
+
+```typescript
+// Verify CSS variables are set
+const primaryColor = getComputedStyle(document.documentElement).getPropertyValue(
+  '--atomix-color-primary-600'
+);
+console.log('Primary color:', primaryColor);
+```
+
+#### Performance Issues
+
+```typescript
+// Check performance metrics
+const metrics = getThemePerformance();
+if (metrics.loadTime > 100) {
+  console.warn('Theme loading is slow');
+}
+
+// Disable transitions for better performance
+themeManager.setOptions({ enableTransitions: false });
+```
+
+### Debug Mode
+
+Enable debug mode for detailed logging:
+
+```typescript
+const themeManager = new ThemeManager({
+  debug: true,
+});
+```
+
+### Support
+
+For additional help:
+
+- Check the [GitHub Issues](https://github.com/Shohojdhara/atomix/issues)
+- Read the [Contributing Guide](https://github.com/Shohojdhara/atomix/blob/main/CONTRIBUTING.md)
+- Join our [Discord Community](https://discord.gg/atomix)
+
+---
+
+_This documentation is for Atomix Theme System v0.2.0. For older versions, see the [legacy documentation](./legacy-theme-docs.md)._

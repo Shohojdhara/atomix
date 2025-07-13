@@ -1,0 +1,539 @@
+/*!
+ * Theme Integration for Core Components
+ * Updates Atomix components to use Shaj theme variables
+ * Provides seamless theming for existing components
+ */
+
+@use '../../01-settings/settings.config' as config;
+@use '../css-variables-bridge' as theme;
+
+// ============================================================================
+// Button Theme Integration
+// ============================================================================
+
+.c-btn {
+  // Override default button variables with theme-aware values
+  --#{config.$prefix}btn-color: #{theme.$atomix-neutral-700};
+  --#{config.$prefix}btn-bg: #{theme.$atomix-surface};
+  --#{config.$prefix}btn-border-color: #{theme.$atomix-neutral-300};
+  --#{config.$prefix}btn-border-radius: #{theme.$atomix-border-radius-base};
+  --#{config.$prefix}btn-font-family: #{theme.$atomix-font-family};
+
+  // Hover states
+  --#{config.$prefix}btn-hover-color: #{theme.$atomix-neutral-800};
+  --#{config.$prefix}btn-hover-bg: #{theme.$atomix-neutral-50};
+  --#{config.$prefix}btn-hover-border-color: #{theme.$atomix-neutral-400};
+
+  // Focus states
+  --#{config.$prefix}btn-focus-shadow-rgb: #{theme.$atomix-primary-500};
+
+  // Disabled states
+  --#{config.$prefix}btn-disabled-color: #{theme.$atomix-neutral-400};
+  --#{config.$prefix}btn-disabled-bg: #{theme.$atomix-neutral-100};
+  --#{config.$prefix}btn-disabled-border-color: #{theme.$atomix-neutral-200};
+
+  // Transition using theme animation values
+  transition: all #{theme.$atomix-animation-duration} #{theme.$atomix-animation-easing};
+
+  // Primary button variant
+  &--primary {
+    --#{config.$prefix}btn-color: #{theme.$atomix-neutral-50};
+    --#{config.$prefix}btn-bg: #{theme.$atomix-primary-500};
+    --#{config.$prefix}btn-border-color: #{theme.$atomix-primary-500};
+    --#{config.$prefix}btn-hover-color: #{theme.$atomix-neutral-50};
+    --#{config.$prefix}btn-hover-bg: #{theme.$atomix-primary-600};
+    --#{config.$prefix}btn-hover-border-color: #{theme.$atomix-primary-600};
+
+    &:active {
+      --#{config.$prefix}btn-bg: #{theme.$atomix-primary-700};
+      --#{config.$prefix}btn-border-color: #{theme.$atomix-primary-700};
+    }
+  }
+
+  // Secondary button variant
+  &--secondary {
+    --#{config.$prefix}btn-color: #{theme.$atomix-neutral-50};
+    --#{config.$prefix}btn-bg: #{theme.$atomix-secondary-500};
+    --#{config.$prefix}btn-border-color: #{theme.$atomix-secondary-500};
+    --#{config.$prefix}btn-hover-color: #{theme.$atomix-neutral-50};
+    --#{config.$prefix}btn-hover-bg: #{theme.$atomix-secondary-600};
+    --#{config.$prefix}btn-hover-border-color: #{theme.$atomix-secondary-600};
+
+    &:active {
+      --#{config.$prefix}btn-bg: #{theme.$atomix-secondary-700};
+      --#{config.$prefix}btn-border-color: #{theme.$atomix-secondary-700};
+    }
+  }
+
+  // Success button variant
+  &--success {
+    --#{config.$prefix}btn-color: #{theme.$atomix-neutral-50};
+    --#{config.$prefix}btn-bg: #{theme.$atomix-success};
+    --#{config.$prefix}btn-border-color: #{theme.$atomix-success};
+    --#{config.$prefix}btn-hover-bg: color-mix(in srgb, #{theme.$atomix-success} 85%, black);
+    --#{config.$prefix}btn-hover-border-color: color-mix(
+      in srgb,
+      #{theme.$atomix-success} 85%,
+      black
+    );
+  }
+
+  // Warning button variant
+  &--warning {
+    --#{config.$prefix}btn-color: #{theme.$atomix-neutral-50};
+    --#{config.$prefix}btn-bg: #{theme.$atomix-warning};
+    --#{config.$prefix}btn-border-color: #{theme.$atomix-warning};
+    --#{config.$prefix}btn-hover-bg: color-mix(in srgb, #{theme.$atomix-warning} 85%, black);
+    --#{config.$prefix}btn-hover-border-color: color-mix(
+      in srgb,
+      #{theme.$atomix-warning} 85%,
+      black
+    );
+  }
+
+  // Error button variant
+  &--error,
+  &--danger {
+    --#{config.$prefix}btn-color: #{theme.$atomix-neutral-50};
+    --#{config.$prefix}btn-bg: #{theme.$atomix-error};
+    --#{config.$prefix}btn-border-color: #{theme.$atomix-error};
+    --#{config.$prefix}btn-hover-bg: color-mix(in srgb, #{theme.$atomix-error} 85%, black);
+    --#{config.$prefix}btn-hover-border-color: color-mix(
+      in srgb,
+      #{theme.$atomix-error} 85%,
+      black
+    );
+  }
+
+  // Outline variants
+  &--outline-primary {
+    --#{config.$prefix}btn-color: #{theme.$atomix-primary-600};
+    --#{config.$prefix}btn-bg: transparent;
+    --#{config.$prefix}btn-border-color: #{theme.$atomix-primary-500};
+    --#{config.$prefix}btn-hover-color: #{theme.$atomix-neutral-50};
+    --#{config.$prefix}btn-hover-bg: #{theme.$atomix-primary-500};
+    --#{config.$prefix}btn-hover-border-color: #{theme.$atomix-primary-500};
+  }
+
+  &--outline-secondary {
+    --#{config.$prefix}btn-color: #{theme.$atomix-secondary-600};
+    --#{config.$prefix}btn-bg: transparent;
+    --#{config.$prefix}btn-border-color: #{theme.$atomix-secondary-500};
+    --#{config.$prefix}btn-hover-color: #{theme.$atomix-neutral-50};
+    --#{config.$prefix}btn-hover-bg: #{theme.$atomix-secondary-500};
+    --#{config.$prefix}btn-hover-border-color: #{theme.$atomix-secondary-500};
+  }
+
+  // Ghost variant
+  &--ghost {
+    --#{config.$prefix}btn-color: #{theme.$atomix-primary-600};
+    --#{config.$prefix}btn-bg: transparent;
+    --#{config.$prefix}btn-border-color: transparent;
+    --#{config.$prefix}btn-hover-color: #{theme.$atomix-primary-700};
+    --#{config.$prefix}btn-hover-bg: #{theme.$atomix-primary-50};
+    --#{config.$prefix}btn-hover-border-color: transparent;
+  }
+
+  // Link variant
+  &--link {
+    --#{config.$prefix}btn-color: #{theme.$atomix-primary-600};
+    --#{config.$prefix}btn-hover-color: #{theme.$atomix-primary-700};
+    --#{config.$prefix}btn-bg: transparent;
+    --#{config.$prefix}btn-border-color: transparent;
+    --#{config.$prefix}btn-hover-bg: transparent;
+    --#{config.$prefix}btn-hover-border-color: transparent;
+  }
+}
+
+// ============================================================================
+// Card Theme Integration
+// ============================================================================
+
+.c-card {
+  // Override default card variables with theme-aware values
+  --#{config.$prefix}card-bg: #{theme.$atomix-surface};
+  --#{config.$prefix}card-border-color: #{theme.$atomix-neutral-200};
+  --#{config.$prefix}card-border-radius: #{theme.$atomix-border-radius-lg};
+  --#{config.$prefix}card-boxshadow: #{theme.$atomix-shadow-md};
+
+  // Text colors
+  --#{config.$prefix}card-title-color: #{theme.$atomix-neutral-900};
+  --#{config.$prefix}card-text-color: #{theme.$atomix-neutral-700};
+
+  // Hover state
+  --#{config.$prefix}card-bg-hover: #{theme.$atomix-surface-variant};
+
+  // Icon styling
+  --#{config.$prefix}card-icon-bg: #{theme.$atomix-primary-100};
+  --#{config.$prefix}card-icon-color: #{theme.$atomix-primary-600};
+
+  // Transition using theme animation values
+  transition: all #{theme.$atomix-animation-duration} #{theme.$atomix-animation-easing};
+
+  // Hover effects
+  &:hover {
+    box-shadow: #{theme.$atomix-shadow-lg};
+    transform: translateY(-2px);
+  }
+
+  // Elevation variants
+  &--elevated {
+    box-shadow: #{theme.$atomix-shadow-xl};
+
+    &:hover {
+      box-shadow: #{theme.$atomix-shadow-xl};
+      transform: translateY(-4px);
+    }
+  }
+
+  &--flat {
+    box-shadow: none;
+    border: 1px solid #{theme.$atomix-neutral-200};
+
+    &:hover {
+      box-shadow: #{theme.$atomix-shadow-sm};
+      border-color: #{theme.$atomix-neutral-300};
+    }
+  }
+}
+
+// ============================================================================
+// Form Controls Theme Integration
+// ============================================================================
+
+.c-form-control,
+.c-input,
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='number'],
+input[type='search'],
+input[type='tel'],
+input[type='url'],
+textarea,
+select {
+  background-color: #{theme.$atomix-surface};
+  border: #{theme.$atomix-border-width} solid #{theme.$atomix-neutral-300};
+  border-radius: #{theme.$atomix-border-radius-base};
+  color: #{theme.$atomix-neutral-900};
+  font-family: #{theme.$atomix-font-family};
+  transition: all #{theme.$atomix-animation-duration} #{theme.$atomix-animation-easing};
+
+  &::placeholder {
+    color: #{theme.$atomix-neutral-500};
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #{theme.$atomix-primary-500};
+    box-shadow: 0 0 0 3px color-mix(in srgb, #{theme.$atomix-primary-500} 20%, transparent);
+  }
+
+  &:disabled {
+    background-color: #{theme.$atomix-neutral-100};
+    border-color: #{theme.$atomix-neutral-200};
+    color: #{theme.$atomix-neutral-400};
+    cursor: not-allowed;
+  }
+
+  &.is-invalid,
+  &:invalid {
+    border-color: #{theme.$atomix-error};
+
+    &:focus {
+      box-shadow: 0 0 0 3px color-mix(in srgb, #{theme.$atomix-error} 20%, transparent);
+    }
+  }
+
+  &.is-valid,
+  &:valid {
+    border-color: #{theme.$atomix-success};
+
+    &:focus {
+      box-shadow: 0 0 0 3px color-mix(in srgb, #{theme.$atomix-success} 20%, transparent);
+    }
+  }
+}
+
+// Form labels
+.c-form-label,
+label {
+  color: #{theme.$atomix-neutral-700};
+  font-family: #{theme.$atomix-font-family};
+  font-weight: 500;
+}
+
+// Checkbox and radio styling
+.c-checkbox,
+.c-radio {
+  input[type='checkbox'],
+  input[type='radio'] {
+    accent-color: #{theme.$atomix-primary-500};
+  }
+}
+
+// ============================================================================
+// Modal Theme Integration
+// ============================================================================
+
+.c-modal {
+  // Modal backdrop
+  &__backdrop {
+    background-color: color-mix(in srgb, #{theme.$atomix-neutral-900} 50%, transparent);
+  }
+
+  // Modal content
+  &__content {
+    background-color: #{theme.$atomix-surface};
+    border-radius: #{theme.$atomix-border-radius-lg};
+    box-shadow: #{theme.$atomix-shadow-xl};
+    border: 1px solid #{theme.$atomix-neutral-200};
+  }
+
+  // Modal header
+  &__header {
+    border-bottom: 1px solid #{theme.$atomix-neutral-200};
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: #{theme.$atomix-neutral-900};
+      font-family: #{theme.$atomix-font-family};
+    }
+  }
+
+  // Modal body
+  &__body {
+    color: #{theme.$atomix-neutral-700};
+    font-family: #{theme.$atomix-font-family};
+  }
+
+  // Modal footer
+  &__footer {
+    border-top: 1px solid #{theme.$atomix-neutral-200};
+  }
+
+  // Close button
+  &__close {
+    color: #{theme.$atomix-neutral-500};
+    transition: color #{theme.$atomix-animation-duration} #{theme.$atomix-animation-easing};
+
+    &:hover {
+      color: #{theme.$atomix-neutral-700};
+    }
+  }
+}
+
+// ============================================================================
+// Navigation Theme Integration
+// ============================================================================
+
+.c-nav,
+.c-navbar {
+  background-color: #{theme.$atomix-surface};
+  border-bottom: 1px solid #{theme.$atomix-neutral-200};
+  box-shadow: #{theme.$atomix-shadow-sm};
+
+  // Navigation links
+  .c-nav__link,
+  .c-navbar__link {
+    color: #{theme.$atomix-neutral-700};
+    font-family: #{theme.$atomix-font-family};
+    transition: all #{theme.$atomix-animation-duration} #{theme.$atomix-animation-easing};
+
+    &:hover {
+      color: #{theme.$atomix-primary-600};
+      background-color: #{theme.$atomix-primary-50};
+    }
+
+    &.is-active,
+    &--active {
+      color: #{theme.$atomix-primary-600};
+      background-color: #{theme.$atomix-primary-100};
+      font-weight: 600;
+    }
+  }
+
+  // Brand/logo
+  .c-navbar__brand {
+    color: #{theme.$atomix-neutral-900};
+    font-weight: 700;
+  }
+}
+
+// ============================================================================
+// Tooltip Theme Integration
+// ============================================================================
+
+.c-tooltip {
+  background-color: #{theme.$atomix-neutral-900};
+  color: #{theme.$atomix-neutral-50};
+  border-radius: #{theme.$atomix-border-radius-base};
+  box-shadow: #{theme.$atomix-shadow-lg};
+  font-family: #{theme.$atomix-font-family};
+  font-size: #{theme.$atomix-font-size-sm};
+
+  // Tooltip arrow
+  &::before,
+  &::after {
+    border-color: #{theme.$atomix-neutral-900};
+  }
+}
+
+// ============================================================================
+// Alert/Message Theme Integration
+// ============================================================================
+
+.c-alert,
+.c-message {
+  border-radius: #{theme.$atomix-border-radius-base};
+  font-family: #{theme.$atomix-font-family};
+  border-width: #{theme.$atomix-border-width};
+
+  // Success alert
+  &--success {
+    background-color: color-mix(in srgb, #{theme.$atomix-success} 10%, #{theme.$atomix-surface});
+    border-color: #{theme.$atomix-success};
+    color: color-mix(in srgb, #{theme.$atomix-success} 80%, black);
+  }
+
+  // Warning alert
+  &--warning {
+    background-color: color-mix(in srgb, #{theme.$atomix-warning} 10%, #{theme.$atomix-surface});
+    border-color: #{theme.$atomix-warning};
+    color: color-mix(in srgb, #{theme.$atomix-warning} 80%, black);
+  }
+
+  // Error alert
+  &--error,
+  &--danger {
+    background-color: color-mix(in srgb, #{theme.$atomix-error} 10%, #{theme.$atomix-surface});
+    border-color: #{theme.$atomix-error};
+    color: color-mix(in srgb, #{theme.$atomix-error} 80%, black);
+  }
+
+  // Info alert
+  &--info {
+    background-color: color-mix(in srgb, #{theme.$atomix-info} 10%, #{theme.$atomix-surface});
+    border-color: #{theme.$atomix-info};
+    color: color-mix(in srgb, #{theme.$atomix-info} 80%, black);
+  }
+}
+
+// ============================================================================
+// Badge Theme Integration
+// ============================================================================
+
+.c-badge {
+  font-family: #{theme.$atomix-font-family};
+  border-radius: #{theme.$atomix-border-radius-full};
+
+  // Primary badge
+  &--primary {
+    background-color: #{theme.$atomix-primary-500};
+    color: #{theme.$atomix-neutral-50};
+  }
+
+  // Secondary badge
+  &--secondary {
+    background-color: #{theme.$atomix-secondary-500};
+    color: #{theme.$atomix-neutral-50};
+  }
+
+  // Success badge
+  &--success {
+    background-color: #{theme.$atomix-success};
+    color: #{theme.$atomix-neutral-50};
+  }
+
+  // Warning badge
+  &--warning {
+    background-color: #{theme.$atomix-warning};
+    color: #{theme.$atomix-neutral-50};
+  }
+
+  // Error badge
+  &--error,
+  &--danger {
+    background-color: #{theme.$atomix-error};
+    color: #{theme.$atomix-neutral-50};
+  }
+
+  // Outline variants
+  &--outline {
+    background-color: transparent;
+    border: 1px solid #{theme.$atomix-neutral-300};
+    color: #{theme.$atomix-neutral-700};
+
+    &.c-badge--primary {
+      border-color: #{theme.$atomix-primary-500};
+      color: #{theme.$atomix-primary-600};
+    }
+
+    &.c-badge--secondary {
+      border-color: #{theme.$atomix-secondary-500};
+      color: #{theme.$atomix-secondary-600};
+    }
+  }
+}
+
+// ============================================================================
+// Progress Theme Integration
+// ============================================================================
+
+.c-progress {
+  background-color: #{theme.$atomix-neutral-200};
+  border-radius: #{theme.$atomix-border-radius-full};
+
+  &__bar {
+    background-color: #{theme.$atomix-primary-500};
+    border-radius: #{theme.$atomix-border-radius-full};
+    transition: width #{theme.$atomix-animation-duration} #{theme.$atomix-animation-easing};
+
+    &--success {
+      background-color: #{theme.$atomix-success};
+    }
+
+    &--warning {
+      background-color: #{theme.$atomix-warning};
+    }
+
+    &--error,
+    &--danger {
+      background-color: #{theme.$atomix-error};
+    }
+  }
+}
+
+// ============================================================================
+// Spinner Theme Integration
+// ============================================================================
+
+.c-spinner {
+  border-color: #{theme.$atomix-neutral-200};
+  border-top-color: #{theme.$atomix-primary-500};
+
+  &--primary {
+    border-top-color: #{theme.$atomix-primary-500};
+  }
+
+  &--secondary {
+    border-top-color: #{theme.$atomix-secondary-500};
+  }
+
+  &--success {
+    border-top-color: #{theme.$atomix-success};
+  }
+
+  &--warning {
+    border-top-color: #{theme.$atomix-warning};
+  }
+
+  &--error,
+  &--danger {
+    border-top-color: #{theme.$atomix-error};
+  }
+}
