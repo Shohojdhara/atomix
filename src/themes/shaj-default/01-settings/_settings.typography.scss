@@ -1,0 +1,73 @@
+/*!
+ * Shaj Default Theme Typography
+ * Modern typography with Inter font family
+ * Overrides Atomix default typography settings
+ */
+
+// Font stacks - Inter as primary font
+$inter-font-stack:
+  'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto',
+  'Helvetica Neue', 'Arial', 'sans-serif' !default;
+
+// Override Atomix font families
+$font-family-base: $inter-font-stack !default;
+$font-family-sans-serif: $inter-font-stack !default;
+$headings-font-family: $inter-font-stack !default;
+
+// Font weights (Inter supports these weights)
+$font-weight-light: 300 !default;
+$font-weight-normal: 400 !default;
+$font-weight-medium: 500 !default;
+$font-weight-semibold: 600 !default;
+$font-weight-bold: 700 !default;
+$font-weight-heavy: 800 !default;
+$font-weight-black: 900 !default;
+
+// Font sizes - refined scale
+$font-size-xs: 0.75rem !default; // 12px
+$font-size-sm: 0.875rem !default; // 14px
+$font-size-base: 1rem !default; // 16px
+$font-size-md: 1.125rem !default; // 18px
+$font-size-lg: 1.25rem !default; // 20px
+$font-size-xl: 1.5rem !default; // 24px
+$font-size-2xl: 1.875rem !default; // 30px
+$font-size-3xl: 2.25rem !default; // 36px
+$font-size-4xl: 3rem !default; // 48px
+$font-size-5xl: 3.75rem !default; // 60px
+
+// Heading sizes
+$h1-font-size: $font-size-3xl !default; // 36px
+$h2-font-size: $font-size-2xl !default; // 30px
+$h3-font-size: $font-size-xl !default; // 24px
+$h4-font-size: $font-size-lg !default; // 20px
+$h5-font-size: $font-size-md !default; // 18px
+$h6-font-size: $font-size-base !default; // 16px
+
+// Line heights
+$line-height-tight: 1.25 !default;
+$line-height-base: 1.5 !default;
+$line-height-relaxed: 1.75 !default;
+
+// Override Atomix line heights
+$headings-line-height: $line-height-tight !default;
+
+// Letter spacing
+$letter-spacing-tight: -0.025em !default;
+$letter-spacing-normal: 0 !default;
+$letter-spacing-wide: 0.025em !default;
+
+// Heading letter spacing
+$h1-letter-spaceing: $letter-spacing-tight !default;
+$h2-letter-spaceing: $letter-spacing-tight !default;
+$h3-letter-spaceing: $letter-spacing-tight !default;
+$h4-letter-spaceing: $letter-spacing-normal !default;
+$h5-letter-spaceing: $letter-spacing-normal !default;
+$h6-letter-spaceing: $letter-spacing-normal !default;
+
+// Font weights for headings
+$headings-font-weight: $font-weight-semibold !default;
+
+// Display sizes for large text
+$display-1: $font-size-5xl !default; // 60px
+$display-2: $font-size-4xl !default; // 48px
+$display-3: $font-size-3xl !default; // 36px

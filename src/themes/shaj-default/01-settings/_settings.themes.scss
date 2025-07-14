@@ -1,0 +1,30 @@
+/*!
+ * Shaj Default Theme Metadata
+ * Theme configuration and metadata for the shaj-default theme
+ */
+
+// Theme metadata
+$theme-name: 'Shaj Default' !default;
+$theme-description: 'A clean, modern theme for professional applications' !default;
+$theme-version: '1.0.0' !default;
+$theme-author: 'Atomix Team' !default;
+$theme-category: 'professional' !default;
+
+// Theme tags
+$theme-tags: ('modern', 'clean', 'professional', 'blue', 'corporate') !default;
+
+// Accessibility information
+$theme-accessibility: (
+  wcag-level: 'AA',
+  contrast-ratio: 4.5,
+  supports-high-contrast: true,
+  supports-reduced-motion: true,
+) !default;
+
+// Theme preview information
+$theme-preview: (
+  primary-color: '#0ea5e9',
+  background-color: '#ffffff',
+  text-color: '#1f2937',
+  screenshot: null,
+) !default;

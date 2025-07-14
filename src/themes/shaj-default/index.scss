@@ -1,0 +1,26 @@
+/*!
+ * Atomix Design System theme Shaj Default
+ */
+
+// Import and forward local theme settings first (these override base settings)
+@forward '01-settings/index';
+@use '01-settings/index' as *;
+
+// Import and forward base styles with local overrides
+@forward '02-tools/index';
+@use '../../styles/02-tools/index' as *;
+
+@forward '03-generic/index';
+@use '../../styles/03-generic/index' as *;
+
+@forward '04-elements/index';
+@use '../../styles/04-elements/index' as *;
+
+@forward '05-objects/index';
+@use '../../styles/05-objects/index' as *;
+
+@forward '06-components/index';
+@use '../../styles/06-components/index' as *;
+
+@forward '99-utilities/index';
+@use '../../styles/99-utilities/index' as *;
