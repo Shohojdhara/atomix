@@ -3,24 +3,23 @@
  */
 
 // Import and forward local theme settings first (these override base settings)
-@forward '01-settings/index';
 @use '01-settings/index' as *;
 
 // Import and forward base styles with local overrides
-@forward '02-tools/index';
-@use '../../styles/02-tools/index' as *;
+@use '02-tools/index' as *;
+@use '../../styles/02-tools/index' as tools;
 
-@forward '03-generic/index';
-@use '../../styles/03-generic/index' as *;
+@use '03-generic/index' as *;
+@use '../../styles/03-generic/index' as generic;
 
-@forward '04-elements/index';
-@use '../../styles/04-elements/index' as *;
+@use '04-elements/index' as *;
+@use '../../styles/04-elements/index' as elements;
 
-@forward '05-objects/index';
-@use '../../styles/05-objects/index' as *;
+@use '05-objects/index' as *;
+@use '../../styles/05-objects/index' as objects;
 
-@forward '06-components/index';
-@use '../../styles/06-components/index' as *;
+@use '06-components/index' as *;
+@use '../../styles/06-components/index';
 
-@forward '99-utilities/index';
-@use '../../styles/99-utilities/index' as *;
+@use '99-utilities/index' as *;
+@use '../../styles/99-utilities/index' as utilities;

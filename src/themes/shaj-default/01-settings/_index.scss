@@ -1,7 +1,5 @@
 // Base colors and variables that everything depends on
 @forward './settings.colors';
-@forward './settings.themes';
-
 // Core settings that depend on colors
 @forward './settings.border';
 @forward './settings.border-radius';
