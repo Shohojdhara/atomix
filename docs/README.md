@@ -1,328 +1,274 @@
 # Atomix Documentation
 
-Welcome to the comprehensive documentation for the Atomix design system. This documentation provides everything you need to build amazing user interfaces with Atomix components.
+Welcome to the comprehensive documentation for the Atomix Design System. This documentation provides everything you need to build amazing, accessible, and consistent user interfaces.
 
-## 📖 Documentation Overview
+## 🚀 Quick Navigation
 
-### Quick Start Guides
+### 🏁 [Getting Started](./getting-started/README.md)
+Everything you need to get up and running with Atomix quickly.
+- [Installation Guide](./getting-started/installation.md) - Complete setup instructions
+- [Quick Start Tutorial](./getting-started/quick-start.md) - 5-minute tutorial
+- [Migration Guide](./getting-started/migration.md) - Migrate from other systems
 
-- **[Quick Reference](./quick-reference.md)** - Essential information for rapid development
-- **[Implementation Guide](./implementation-guide.md)** - Setup, installation, and configuration
-- **[Component Reference](./component-reference.md)** - Overview of all available components
-- **[CSS Utilities](./css-utilities.md)** - Comprehensive utility class reference
+### 🎨 [Design Tokens](./design-tokens/README.md)
+The foundation of the Atomix Design System - colors, spacing, typography, and more.
+- [Colors](./design-tokens/colors.md) - Comprehensive color system
+- [Spacing](./design-tokens/spacing.md) - Spacing and layout system
+- [Typography](./design-tokens/typography.md) - Type system and scales
+- [Elevation](./design-tokens/elevation.md) - Shadow and depth system
 
-### Detailed Component Documentation
+### 🏗️ [Styles System](./styles/README.md)
+CSS architecture, utilities, and customization built on ITCSS methodology.
+- [Architecture](./styles/architecture.md) - ITCSS structure and organization
+- [Customization](./styles/customization.md) - Theming and brand integration
+- [Utilities](./styles/utilities.md) - Complete utility class reference
+- [API Reference](./styles/api-reference.md) - Complete technical reference
 
-#### Core Components
-- **[Button Component](./components/button.md)** - Interactive buttons with variants, sizes, and states
-- **[Card Component](./components/card.md)** - Flexible content containers with headers, actions, and layouts
-- **[Avatar Components](./components/avatar.md)** - User profile images and avatar groups
+### 🧩 [Components](./components/README.md)
+Comprehensive component library with React and vanilla JavaScript implementations.
+- [Component Overview](./components/overview.md) - All available components
+- [Component Guidelines](./components/guidelines.md) - Development standards
+- [Individual Components](./components/) - Detailed component documentation
 
-#### Form System
-- **[Form Components](./components/form.md)** - Complete form system including Form, FormGroup, Input, Select, Checkbox, Radio, and Textarea
+### 📚 [Guides](./guides/README.md)
+In-depth guides and tutorials for mastering Atomix.
+- [Theming Guide](./guides/theming.md) - Advanced theming techniques
+- [Responsive Design](./guides/responsive-design.md) - Mobile-first patterns
+- [Performance](./guides/performance.md) - Optimization strategies
+- [Testing](./guides/testing.md) - Testing components and applications
 
-#### Navigation
-- **[Navigation Components](./components/navigation.md)** - Navbar, Nav, Menu, SideMenu, and Breadcrumb components
+### 🎯 [Examples](./examples/README.md)
+Real-world examples and implementation patterns.
+- [Common Patterns](./examples/common-patterns.md) - Frequently used UI patterns
+- [Layout Examples](./examples/layouts.md) - Complete page layouts
+- [Framework Integrations](./examples/integrations.md) - Integration examples
 
-#### Interactive Elements
-- **[Modal Component](./components/modal.md)** - Dialog overlays for focused interactions
+### 📖 [API Reference](./api/README.md)
+Complete technical reference for all APIs.
+- [React API](./api/react.md) - React component reference
+- [JavaScript API](./api/javascript.md) - Vanilla JS class reference
+- [CSS API](./api/css.md) - CSS classes and custom properties
 
-### System Guides
+### 📋 [Resources](./resources/README.md)
+Additional resources, community, and project information.
+- [Roadmap](./resources/roadmap.md) - Development roadmap
+- [Contributing](./resources/contributing.md) - How to contribute
+- [Support](./resources/support.md) - Getting help and support
 
-- **[CSS Utilities](./css-utilities.md)** - Complete utility class system for rapid styling
-- **[Component Guidelines](./atomix-component-guidelines.md)** - Development standards and best practices
-- **[Theme System Guide](../src/docs/theme-system-guide.mdx)** - Customization and theming
-- **[Roadmap](./atomix-roadmap.md)** - Future development plans
-
-## 🚀 Getting Started
+## ⚡ Quick Start
 
 ### Installation
 
 ```bash
 npm install @shohojdhara/atomix
+# or
+yarn add @shohojdhara/atomix
 ```
 
 ### Basic Usage
 
 ```jsx
 import React from 'react';
-import { Button, Card, Avatar, Badge } from '@shohojdhara/atomix';
+import { Button, Card, Badge } from '@shohojdhara/atomix';
 import '@shohojdhara/atomix/css';
 
 function App() {
   return (
-    <div>
-      <Card>
-        <Card.Header>
-          <Avatar src="/avatar.jpg" alt="User" />
-          <Badge color="primary">New</Badge>
-        </Card.Header>
-        <Card.Body>
-          <h3>Welcome to Atomix</h3>
-          <p>A modern design system for React applications.</p>
-        </Card.Body>
-        <Card.Footer>
-          <Button variant="primary">Get Started</Button>
-        </Card.Footer>
-      </Card>
-    </div>
-  );
-}
-```
-
-## 🧩 Component Categories
-
-### Basic Components
-Essential building blocks for any interface:
-- **Button** - Interactive elements for user actions
-- **Badge** - Small status indicators and labels
-- **Icon** - Icon wrapper component
-- **Spinner** - Loading indicators
-
-### Layout Components
-Structural elements for organizing content:
-- **Card** - Flexible content containers
-- **Hero** - Large promotional sections
-- **River** - Content with image sections
-- **SectionIntro** - Section introduction component
-
-### Form Components
-Complete form system with validation:
-- **Form** - Form container with submission handling
-- **FormGroup** - Field wrapper with labels and validation
-- **Input** - Text input fields with various types
-- **Select** - Dropdown selection controls
-- **Checkbox** - Boolean input controls
-- **Radio** - Single selection from groups
-- **Textarea** - Multi-line text input
-
-### Navigation Components
-Comprehensive navigation solutions:
-- **Navbar** - Main site navigation
-- **Nav** - Navigation lists
-- **Menu** - Menu containers
-- **SideMenu** - Sidebar navigation
-- **Breadcrumb** - Hierarchical navigation
-
-### Interactive Components
-Elements that respond to user interaction:
-- **Accordion** - Collapsible content sections
-- **Dropdown** - Dropdown menus
-- **Modal** - Dialog overlays
-- **Popover** - Contextual overlays
-- **Tooltip** - Hover information
-- **Tab** - Tabbed interfaces
-- **Toggle** - Switch controls
-
-### Data Display Components
-Components for presenting information:
-- **Avatar** - User profile images
-- **AvatarGroup** - Multiple avatar display
-- **List** - Ordered and unordered lists
-- **ListGroup** - Styled list containers
-- **DataTable** - Data tables with sorting and filtering
-- **Pagination** - Page navigation
-- **Progress** - Progress indicators
-- **Rating** - Star ratings
-
-### Specialized Components
-Purpose-built components for specific use cases:
-- **PhotoViewer** - Image gallery viewer
-- **Messages** - Chat/messaging interface
-- **Todo** - Task management
-- **Countdown** - Timer and countdown display
-- **DatePicker** - Date selection
-- **Upload** - File upload interface
-- **Steps** - Step-by-step processes
-- **Testimonial** - Customer testimonials
-- **ProductReview** - Product review display
-
-### Utility Components
-Helper components for enhanced functionality:
-- **ColorModeToggle** - Dark/light mode switcher
-- **EdgePanel** - Side panels and drawers
-- **Callout** - Highlighted information blocks
-
-## 🎨 Design System Features
-
-### Dual Implementation
-Every component provides both React and vanilla JavaScript implementations:
-
-```jsx
-// React usage
-import { Button } from '@shohojdhara/atomix';
-<Button onClick={handleClick}>Click me</Button>
-```
-
-```javascript
-// Vanilla JS usage
-const button = new Atomix.Button('.my-button', {
-  onClick: handleClick
-});
-```
-
-### ITCSS Architecture
-Follows the Inverted Triangle CSS methodology for scalable styling:
-
-```
-Settings    → Global variables and config
-Tools       → Mixins and functions
-Generic     → Normalize, reset, box-sizing
-Elements    → Bare HTML elements
-Objects     → Layout patterns
-Components  → UI components
-Utilities   → Helper classes
-```
-
-### Accessibility First
-All components include comprehensive accessibility features:
-- Proper ARIA attributes
-- Keyboard navigation support
-- Screen reader compatibility
-- Focus management
-- High contrast support
-
-### Responsive Design
-Components are built mobile-first with responsive breakpoints:
-- Mobile: 320px+
-- Tablet: 640px+
-- Desktop: 1024px+
-- Large: 1280px+
-
-## 🛠️ Development Workflow
-
-### Component Structure
-Each component follows a consistent structure:
-
-```
-src/components/ComponentName/
-├── ComponentName.tsx              # React component
-├── ComponentName.stories.tsx      # Storybook stories
-├── index.ts                       # Exports
-└── scripts/                       # Vanilla JS implementation
-    ├── index.ts                   # Main component class
-    ├── ComponentNameInteractions.ts # Event handlers
-    └── bundle.ts                  # Global registration
-```
-
-### Best Practices
-
-1. **Use semantic HTML** - Components render appropriate HTML elements
-2. **Provide accessible labels** - Always include ARIA attributes and labels
-3. **Handle loading states** - Use Spinner for async operations
-4. **Validate forms properly** - Use FormGroup validation features
-5. **Test with keyboard** - Ensure keyboard navigation works
-6. **Check color contrast** - Verify combinations meet WCAG standards
-
-### Testing Components
-
-```jsx
-import { render, screen, fireEvent } from '@testing-library/react';
-import { Button } from '@shohojdhara/atomix';
-
-test('button handles click events', () => {
-  const handleClick = jest.fn();
-  render(<Button label="Click me" onClick={handleClick} />);
-  
-  fireEvent.click(screen.getByRole('button'));
-  expect(handleClick).toHaveBeenCalledTimes(1);
-});
-```
-
-## 📚 Learning Resources
-
-### Interactive Examples
-- **[Storybook](https://storybook.atomix.design)** - Live component examples and playground
-- **Component Stories** - Each component includes comprehensive Storybook stories
-
-### Code Examples
-Every component documentation includes:
-- Basic usage examples
-- Advanced patterns
-- Common use cases
-- Accessibility examples
-- Vanilla JavaScript usage
-
-### Community
-- **GitHub Issues** - Bug reports and feature requests
-- **Discussions** - Community questions and sharing
-- **Contributing Guide** - How to contribute to the project
-
-## 🔧 Customization
-
-### Theme System
-Atomix provides a flexible theme system for customization:
-
-```css
-:root {
-  --color-primary: #3b82f6;
-  --color-secondary: #6b7280;
-  --spacing-md: 1rem;
-  --border-radius: 0.375rem;
-}
-```
-
-### Custom Components
-Build custom components using Atomix patterns:
-
-```jsx
-function CustomCard({ children, ...props }) {
-  return (
-    <Card className="custom-card" {...props}>
-      {children}
+    <Card>
+      <Card.Header>
+        <h2>Welcome to Atomix</h2>
+        <Badge variant="primary">New</Badge>
+      </Card.Header>
+      <Card.Body>
+        <p>A modern design system for building amazing interfaces.</p>
+        <Button variant="primary">Get Started</Button>
+      </Card.Body>
     </Card>
   );
 }
 ```
 
-### CSS Customization
-Override component styles using CSS custom properties:
+### Vanilla JavaScript
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/@shohojdhara/atomix/css">
+<script src="https://unpkg.com/@shohojdhara/atomix/js"></script>
+
+<div class="c-card">
+  <div class="c-card__header">
+    <h2>Welcome to Atomix</h2>
+    <span class="c-badge c-badge--primary">New</span>
+  </div>
+  <div class="c-card__body">
+    <p>A modern design system for building amazing interfaces.</p>
+    <button class="c-btn c-btn--primary">Get Started</button>
+  </div>
+</div>
+
+<script>Atomix.init();</script>
+```
+
+## 🎯 Key Features
+
+### 🎨 Design System Foundation
+- **Design Tokens** - Consistent colors, spacing, typography
+- **ITCSS Architecture** - Scalable CSS methodology
+- **Accessibility First** - WCAG 2.1 AA compliance
+- **Responsive Design** - Mobile-first approach
+
+### 🧩 Comprehensive Components
+- **40+ Components** - From basic buttons to complex data tables
+- **Dual Implementation** - React and vanilla JavaScript
+- **Consistent API** - Predictable props and behavior
+- **Customizable** - Easy theming and brand integration
+
+### 🛠️ Developer Experience
+- **TypeScript Support** - Full type definitions
+- **Tree Shakeable** - Import only what you need
+- **Modern CSS** - CSS custom properties and Grid/Flexbox
+- **Performance Optimized** - Minimal bundle size
+
+### 🌐 Framework Agnostic
+- **React** - First-class React components
+- **Vanilla JS** - Framework-independent classes
+- **Vue/Angular** - Community integrations available
+- **Static Sites** - Works with any HTML/CSS setup
+
+## 📚 Documentation Structure
+
+Our documentation is organized into logical sections for easy navigation:
+
+### 🏁 Getting Started
+Perfect for newcomers - installation, quick start, and migration guides.
+
+### 🎨 Design Tokens
+The foundation - colors, spacing, typography, and design principles.
+
+### 🏗️ Styles System
+CSS architecture, utilities, and customization using ITCSS methodology.
+
+### 🧩 Components
+Complete component library with examples and API documentation.
+
+### 📚 Guides
+In-depth tutorials for theming, responsive design, performance, and testing.
+
+### 🎯 Examples
+Real-world patterns, layouts, and framework integration examples.
+
+### 📖 API Reference
+Complete technical reference for React, JavaScript, and CSS APIs.
+
+### 📋 Resources
+Community resources, roadmap, contributing guidelines, and support.
+
+## 🎨 Theming and Customization
+
+### CSS Custom Properties
+Easy runtime theming with CSS custom properties:
 
 ```css
-.c-button--custom {
-  --button-bg: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-  --button-color: white;
+:root {
+  --atomix-primary: #your-brand-color;
+  --atomix-border-radius: 0.5rem;
+  --atomix-font-family-base: 'Your Font', sans-serif;
+}
+
+[data-theme="dark"] {
+  --atomix-bg-primary: #1f2937;
+  --atomix-text-primary: #f9fafb;
 }
 ```
 
-## 🚀 Performance
+### SCSS Configuration
+Build-time customization with SCSS variables:
 
-### Bundle Size
-Atomix is optimized for minimal bundle impact:
-- Tree-shakeable imports
-- Modular CSS
-- Optimized JavaScript
-- No unnecessary dependencies
+```scss
+@use '@shohojdhara/atomix/styles' with (
+  $primary-6: #2563eb,
+  $font-family-base: ('Inter', sans-serif),
+  $border-radius: 0.375rem
+);
+```
 
-### Best Practices
-- Import only needed components
-- Use CSS custom properties for theming
-- Implement proper loading states
-- Optimize images and assets
+### Component Theming
+Customize individual components:
 
-## 🔗 Additional Resources
+```css
+.c-btn--custom {
+  --atomix-btn-bg: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+  --atomix-btn-color: white;
+}
+```
 
-- **[GitHub Repository](https://github.com/shohojdhara/atomix)** - Source code and issues
-- **[NPM Package](https://www.npmjs.com/package/@shohojdhara/atomix)** - Package information
-- **[Changelog](../CHANGELOG.md)** - Version history and updates
-- **[Contributing](../CONTRIBUTING.md)** - How to contribute to the project
-- **[License](../LICENSE)** - MIT License information
+## 🚀 Learning Paths
 
-## 📞 Support
+### 👶 Beginner Path
+1. [Installation Guide](./getting-started/installation.md) - Set up your environment
+2. [Quick Start Tutorial](./getting-started/quick-start.md) - Build your first interface
+3. [Component Overview](./components/overview.md) - Explore available components
+4. [Basic Examples](./examples/common-patterns.md) - Learn common patterns
 
-Need help? Here are the best ways to get support:
+### 🧑‍💻 Intermediate Path
+1. [Design Tokens](./design-tokens/README.md) - Understand the foundation
+2. [Theming Guide](./guides/theming.md) - Customize for your brand
+3. [Responsive Design](./guides/responsive-design.md) - Build for all devices
+4. [Layout Examples](./examples/layouts.md) - Create complex layouts
 
-1. **Documentation** - Check this documentation first
-2. **Storybook** - Interactive examples and API reference
-3. **GitHub Issues** - Bug reports and feature requests
-4. **Discussions** - Community questions and help
+### 🚀 Advanced Path
+1. [Styles Architecture](./styles/architecture.md) - Master the CSS system
+2. [Advanced Customization](./guides/advanced-customization.md) - Deep customization
+3. [Performance Guide](./guides/performance.md) - Optimize your implementation
+4. [Contributing](./resources/contributing.md) - Give back to the community
+
+## 🌐 Community and Support
+
+### 📞 Getting Help
+- **[Documentation](./getting-started/README.md)** - Comprehensive guides and references
+- **[GitHub Issues](https://github.com/shohojdhara/atomix/issues)** - Bug reports and feature requests
+- **[Discussions](https://github.com/shohojdhara/atomix/discussions)** - Community Q&A
+- **[Support Guide](./resources/support.md)** - All support options
+
+### 🤝 Contributing
+- **[Contributing Guide](./resources/contributing.md)** - How to contribute
+- **[Code of Conduct](https://github.com/shohojdhara/atomix/blob/main/CODE_OF_CONDUCT.md)** - Community guidelines
+- **[Roadmap](./resources/roadmap.md)** - Future development plans
+
+### 🔗 Links
+- **[GitHub Repository](https://github.com/shohojdhara/atomix)** - Source code
+- **[NPM Package](https://www.npmjs.com/package/@shohojdhara/atomix)** - Package info
+- **[Storybook](https://storybook.atomix.design)** - Interactive examples
 
 ## 🎯 Next Steps
 
-1. **[Read the Quick Reference](./quick-reference.md)** for essential information
-2. **[Follow the Implementation Guide](./implementation-guide.md)** to set up your project
-3. **[Explore Component Documentation](./component-reference.md)** for detailed usage
-4. **[Check out Storybook](https://storybook.atomix.design)** for interactive examples
-5. **[Review the Theme Guide](../src/docs/theme-system-guide.mdx)** for customization
+### 🏁 Get Started
+1. **[Install Atomix](./getting-started/installation.md)** - Set up your development environment
+2. **[Quick Start Tutorial](./getting-started/quick-start.md)** - Build your first interface in 5 minutes
+3. **[Explore Components](./components/README.md)** - Browse the component library
 
-Welcome to Atomix! We're excited to see what you'll build. 🚀
+### 🎨 Learn the System
+1. **[Design Tokens](./design-tokens/README.md)** - Understand the foundation
+2. **[Styles Architecture](./styles/architecture.md)** - Learn the CSS methodology
+3. **[Theming Guide](./guides/theming.md)** - Customize for your brand
+
+### 🚀 Build Something Amazing
+1. **[Browse Examples](./examples/README.md)** - See real-world implementations
+2. **[Follow Best Practices](./components/guidelines.md)** - Build with quality
+3. **[Join the Community](https://github.com/shohojdhara/atomix/discussions)** - Connect with other developers
+
+---
+
+## 📊 Quick Stats
+
+- **40+ Components** - Comprehensive component library
+- **500+ Utility Classes** - Complete utility system
+- **200+ Design Tokens** - Consistent design foundation
+- **~45KB Bundle** - Optimized for performance
+- **WCAG 2.1 AA** - Accessibility compliant
+- **TypeScript** - Full type support
+
+---
+
+**Welcome to Atomix!** We're excited to see what you'll build. Start with our [Getting Started Guide](./getting-started/README.md) and join our growing community of developers building amazing interfaces. 🚀
+
+*Built with ❤️ by the Atomix team*
