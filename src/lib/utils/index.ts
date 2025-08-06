@@ -6,9 +6,6 @@ export * from './dom';
 // Export icon utilities
 export * from './icons';
 
-// Export theme utilities
-export * from './theme-manager';
-
 /**
  * Generate a UUID v4 compatible string without relying on Node.js crypto
  * This is a browser-compatible alternative to the uuid package
