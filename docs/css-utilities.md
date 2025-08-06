@@ -588,15 +588,15 @@ All utilities can be applied at specific breakpoints:
 
 ```html
 <!-- Responsive grid -->
-<div class="u-d-grid u-grid-cols-1 u-md-grid-cols-2 u-lg-grid-cols-3 u-gap-md">
+<div class="u-d-grid u-grid-cols-1 u-md-grid-cols-2 u-lg-grid-cols-3 u-gap-4">
   <div class="c-card">Card 1</div>
   <div class="c-card">Card 2</div>
   <div class="c-card">Card 3</div>
 </div>
 
 <!-- Responsive spacing -->
-<div class="u-p-sm u-md-p-md u-lg-p-lg">
-  <h2 class="u-fs-lg u-md-fs-xl u-lg-fs-2xl">Responsive Title</h2>
+<div class="u-p-2 u-md-p-4 u-lg-p-6">
+  <h2 class="u-fs-lg u-md-fs-4 u-lg-fs-2">Responsive Title</h2>
 </div>
 
 <!-- Responsive visibility -->
@@ -860,7 +860,7 @@ All utilities can be applied at specific breakpoints:
 ### Screen Reader Only
 
 ```css
-.u-sr-only {
+.u-visually-hidden {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -967,7 +967,7 @@ All utilities can be applied at specific breakpoints:
 </nav>
 
 <!-- Show print-only content -->
-<div class="u-display-none u-print-block">
+<div class="u-d-none u-print-d-block">
   <p>This content only appears when printing</p>
 </div>
 ```
@@ -993,16 +993,16 @@ All utilities can be applied at specific breakpoints:
 ### Hero Section
 
 ```html
-<section class="u-bg-primary u-text-white u-padding-y-xxl">
-  <div class="u-max-width-4xl u-margin-x-auto u-padding-x-lg">
+<section class="u-bg-primary u-text-white u-py-20">
+  <div class="u-mw-100 u-mx-auto u-px-6">
     <div class="u-text-center">
-      <h1 class="u-text-4xl u-font-bold u-margin-bottom-md">
+      <h1 class="u-fs-1 u-fw-bold u-mb-4">
         Welcome to Atomix
       </h1>
-      <p class="u-text-xl u-margin-bottom-lg u-max-width-2xl u-margin-x-auto">
+      <p class="u-fs-lg u-mb-8 u-mw-100 u-mx-auto">
         Build amazing interfaces with our comprehensive design system
       </p>
-      <div class="u-flex u-justify-center u-gap-md">
+      <div class="u-d-flex u-justify-content-center u-gap-4">
         <button class="c-button c-button--white c-button--lg">Get Started</button>
         <button class="c-button c-button--outline-white c-button--lg">Learn More</button>
       </div>
@@ -1014,16 +1014,16 @@ All utilities can be applied at specific breakpoints:
 ### Feature Grid
 
 ```html
-<section class="u-padding-y-xl">
-  <div class="u-max-width-6xl u-margin-x-auto u-padding-x-lg">
-    <h2 class="u-text-3xl u-font-bold u-text-center u-margin-bottom-xl">Features</h2>
-    <div class="u-grid u-grid-cols-1 u-md-grid-cols-2 u-lg-grid-cols-3 u-gap-lg">
-      <div class="u-text-center u-padding-lg">
-        <div class="u-width-16 u-height-16 u-bg-primary-100 u-rounded-full u-flex u-justify-center u-align-center u-margin-x-auto u-margin-bottom-md">
-          <svg class="u-width-8 u-height-8 u-text-primary">...</svg>
+<section class="u-py-16">
+  <div class="u-mw-100 u-mx-auto u-px-6">
+    <h2 class="u-fs-2 u-fw-bold u-text-center u-mb-16">Features</h2>
+    <div class="u-d-grid u-grid-cols-1 u-md-grid-cols-2 u-lg-grid-cols-3 u-gap-8">
+      <div class="u-text-center u-p-6">
+        <div class="u-w-100 u-h-100 u-bg-primary-subtle u-rounded-circle u-d-flex u-justify-content-center u-align-items-center u-mx-auto u-mb-4">
+          <svg class="u-w-50 u-h-50 u-text-primary">...</svg>
         </div>
-        <h3 class="u-text-xl u-font-semibold u-margin-bottom-sm">Fast</h3>
-        <p class="u-text-gray-600">Lightning fast performance</p>
+        <h3 class="u-fs-lg u-fw-semibold u-mb-2">Fast</h3>
+        <p class="u-text-secondary">Lightning fast performance</p>
       </div>
       <!-- More feature cards... -->
     </div>
@@ -1034,25 +1034,25 @@ All utilities can be applied at specific breakpoints:
 ### Dashboard Layout
 
 ```html
-<div class="u-min-height-screen u-bg-gray-50">
+<div class="u-min-vh-100 u-bg-light">
   <!-- Sidebar -->
-  <aside class="u-position-fixed u-top-0 u-left-0 u-width-64 u-height-full u-bg-white u-shadow-lg u-z-40">
-    <div class="u-padding-lg">
-      <h2 class="u-font-bold u-text-lg u-margin-bottom-lg">Dashboard</h2>
-      <nav class="u-space-y-sm">
-        <a href="#" class="u-display-block u-padding-sm u-rounded u-hover-bg-gray-100">Overview</a>
-        <a href="#" class="u-display-block u-padding-sm u-rounded u-hover-bg-gray-100">Analytics</a>
-        <a href="#" class="u-display-block u-padding-sm u-rounded u-hover-bg-gray-100">Settings</a>
+  <aside class="u-position-fixed u-top-0 u-start-0 u-w-100 u-h-100 u-bg-white u-shadow-lg u-z-fixed">
+    <div class="u-p-6">
+      <h2 class="u-fw-bold u-fs-lg u-mb-6">Dashboard</h2>
+      <nav class="u-gap-2">
+        <a href="#" class="u-d-block u-p-2 u-rounded u-hover-bg-light">Overview</a>
+        <a href="#" class="u-d-block u-p-2 u-rounded u-hover-bg-light">Analytics</a>
+        <a href="#" class="u-d-block u-p-2 u-rounded u-hover-bg-light">Settings</a>
       </nav>
     </div>
   </aside>
 
   <!-- Main content -->
-  <main class="u-margin-left-64 u-padding-lg">
-    <div class="u-grid u-grid-cols-1 u-md-grid-cols-2 u-lg-grid-cols-3 u-gap-lg">
-      <div class="c-card u-padding-lg">
-        <h3 class="u-font-semibold u-margin-bottom-sm">Metric 1</h3>
-        <p class="u-text-2xl u-font-bold u-text-primary">1,234</p>
+  <main class="u-ms-100 u-p-6">
+    <div class="u-d-grid u-grid-cols-1 u-md-grid-cols-2 u-lg-grid-cols-3 u-gap-6">
+      <div class="c-card u-p-6">
+        <h3 class="u-fw-semibold u-mb-2">Metric 1</h3>
+        <p class="u-fs-2 u-fw-bold u-text-primary">1,234</p>
       </div>
       <!-- More cards... -->
     </div>
@@ -1063,17 +1063,17 @@ All utilities can be applied at specific breakpoints:
 ### Modal Overlay
 
 ```html
-<div class="u-position-fixed u-inset-0 u-bg-black u-bg-opacity-50 u-flex u-justify-center u-align-center u-z-50">
-  <div class="u-bg-white u-rounded-lg u-shadow-xl u-max-width-md u-width-full u-margin-x-lg">
-    <div class="u-padding-lg">
-      <div class="u-flex u-justify-between u-align-center u-margin-bottom-md">
-        <h3 class="u-text-lg u-font-semibold">Modal Title</h3>
-        <button class="u-text-gray-400 u-hover-text-gray-600">
-          <svg class="u-width-6 u-height-6">...</svg>
+<div class="u-position-fixed u-top-0 u-start-0 u-end-0 u-bottom-0 u-bg-black u-opacity-50 u-d-flex u-justify-content-center u-align-items-center u-z-modal">
+  <div class="u-bg-white u-rounded-lg u-shadow-xl u-mw-100 u-w-100 u-mx-6">
+    <div class="u-p-6">
+      <div class="u-d-flex u-justify-content-between u-align-items-center u-mb-4">
+        <h3 class="u-fs-lg u-fw-semibold">Modal Title</h3>
+        <button class="u-text-secondary u-hover-text-dark">
+          <svg class="u-w-25 u-h-25">...</svg>
         </button>
       </div>
-      <p class="u-text-gray-600 u-margin-bottom-lg">Modal content goes here.</p>
-      <div class="u-flex u-justify-end u-gap-sm">
+      <p class="u-text-secondary u-mb-6">Modal content goes here.</p>
+      <div class="u-d-flex u-justify-content-end u-gap-2">
         <button class="c-button c-button--secondary">Cancel</button>
         <button class="c-button c-button--primary">Confirm</button>
       </div>
@@ -1121,9 +1121,9 @@ All utilities can be applied at specific breakpoints:
 </button>
 
 <!-- Card with custom spacing -->
-<div class="c-card u-p-xl u-mb-lg u-border-2 u-bc-primary">
-  <h3 class="u-fs-xl u-fw-bold u-mb-md">Custom Card</h3>
-  <p class="u-c-gray-600">Card with enhanced styling</p>
+<div class="c-card u-p-8 u-mb-6 u-border-2 u-border-primary">
+  <h3 class="u-fs-lg u-fw-bold u-mb-4">Custom Card</h3>
+  <p class="u-text-secondary">Card with enhanced styling</p>
 </div>
 ```
 
@@ -1131,16 +1131,16 @@ All utilities can be applied at specific breakpoints:
 
 ```html
 <!-- Success alert using utilities -->
-<div class="c-alert u-bg-success-50 u-border u-bc-success-200 u-c-success">
-  <div class="u-d-flex u-ai-center u-gap-sm">
-    <svg class="u-w-5 u-h-5">...</svg>
+<div class="c-alert u-bg-success-subtle u-border u-border-success-subtle u-text-success">
+  <div class="u-d-flex u-align-items-center u-gap-2">
+    <svg class="u-w-25 u-h-25">...</svg>
     <span class="u-fw-medium">Success message</span>
   </div>
 </div>
 
 <!-- Warning notification -->
-<div class="c-notification u-bg-warning-100 u-border-l-4 u-bc-warning u-p-md">
-  <p class="u-c-warning-800 u-fw-medium">Warning notification</p>
+<div class="c-notification u-bg-warning-subtle u-border-s-4 u-border-warning u-p-4">
+  <p class="u-text-warning u-fw-medium">Warning notification</p>
 </div>
 ```
 
