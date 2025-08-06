@@ -470,16 +470,51 @@ For feature requests, please provide:
 
 ## 🏆 Recognition
 
-Contributors are recognized in:
+Contributors are recognized in multiple ways:
 
-- **README** - Listed as contributors
-- **Changelog** - Credited for contributions
+### All Contributors
+We use the [All Contributors](https://allcontributors.org/) specification to recognize all types of contributions:
+
+- **Code** 💻 - Code contributions
+- **Design** 🎨 - Design and visual contributions
+- **Documentation** 📖 - Documentation improvements
+- **Ideas** 🤔 - Ideas, planning, and feedback
+- **Bug Reports** 🐛 - Bug reports and testing
+- **Maintenance** 🚧 - Repository maintenance
+- **Reviews** 👀 - Code reviews
+- **Tutorials** ✅ - Tutorials and examples
+
+### Adding Contributors
+
+To add a new contributor, comment on any issue or PR:
+
+```
+@all-contributors please add @username for code, design, doc
+```
+
+Available contribution types:
+- `code` - Code contributions
+- `design` - Design work
+- `doc` - Documentation
+- `ideas` - Ideas and planning
+- `bug` - Bug reports
+- `maintenance` - Maintenance work
+- `review` - Code reviews
+- `tutorial` - Tutorials
+- `test` - Testing
+- `infra` - Infrastructure
+- `translation` - Translation work
+
+### Other Recognition
+
+- **Changelog** - Credited for contributions in release notes
 - **Release notes** - Highlighted for major contributions
 - **Community** - Featured in community highlights
+- **Social media** - Shared on project social accounts
 
 ## 📄 License
 
-By contributing to Atomix, you agree that your contributions will be licensed under the MIT License.
+By contributing to Atomix, you agree that your contributions will be licensed under the Apache License 2.0.
 
 ---
 
