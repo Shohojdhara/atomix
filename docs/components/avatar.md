@@ -1,108 +1,139 @@
-# Avatar Components
+# Avatar
 
-The Avatar components provide flexible user profile image display with fallback options and group functionality. The system includes Avatar for individual profile images and AvatarGroup for displaying multiple avatars in a compact layout.
+The Avatar component displays user profile images, initials, or icons in a consistent circular or square format. It provides fallback mechanisms and supports various sizes and interactive states.
 
 ## Overview
 
-Avatars are essential for representing users in applications. They provide visual identity and help users quickly identify people in lists, comments, team members, and other contexts. The Atomix Avatar components handle image loading, fallbacks, and various display options.
+The Avatar component is designed to represent users or entities in your application. It gracefully handles missing images by falling back to initials or a default user icon, ensuring a consistent visual experience.
 
-## Components
+## Installation
 
-### Avatar
-Individual user profile image with fallback options
-
-### AvatarGroup
-Display multiple avatars in a stacked or inline layout
-
-## Avatar Component
-
-### Props API
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `src` | `string` | `undefined` | Avatar image URL |
-| `alt` | `string` | `'Avatar'` | Alt text for image |
-| `initials` | `string` | `undefined` | Fallback initials |
-| `icon` | `ReactNode` | `undefined` | Fallback icon |
-| `size` | `AvatarSize` | `'md'` | Avatar size |
-| `circle` | `boolean` | `false` | Circular avatar |
-| `disabled` | `boolean` | `false` | Disabled state |
-| `onClick` | `(event: MouseEvent) => void` | `undefined` | Click handler |
-| `className` | `string` | `''` | Additional CSS classes |
-
-### Size Options
-
-- `xs` - Extra small (24px)
-- `sm` - Small (32px)
-- `md` - Medium (40px) - default
-- `lg` - Large (48px)
-- `xl` - Extra large (64px)
-
-## Usage Examples
-
-### Basic Avatar
+The Avatar component is included in the Atomix package. Import it in your React components:
 
 ```jsx
-import React from 'react';
+import { Avatar, AvatarGroup } from '@shohojdhara/atomix';
+```
+
+For vanilla JavaScript projects, the avatar styles are available through CSS classes.
+
+## Basic Usage
+
+### React
+
+```jsx
 import { Avatar } from '@shohojdhara/atomix';
 
-function BasicAvatars() {
+function UserProfile() {
   return (
-    <div className="u-d-flex u-align-items-center u-gap-4">
-      {/* Avatar with image */}
-      <Avatar 
-        src="/user-avatar.jpg" 
-        alt="John Doe"
-        size="md"
-      />
-      
-      {/* Avatar with initials fallback */}
-      <Avatar 
-        src="/broken-image.jpg" 
-        alt="Jane Smith"
-        initials="JS"
-        size="md"
-      />
-      
-      {/* Avatar with icon fallback */}
-      <Avatar 
-        alt="Guest User"
-        icon={<Icon name="User" />}
-        size="md"
-      />
-      
-      {/* Circular avatar */}
-      <Avatar 
-        src="/user-avatar.jpg" 
-        alt="John Doe"
-        circle
-        size="md"
-      />
+    <div>
+      {/* Image avatar */}
+      <Avatar src="https://example.com/user.jpg" alt="John Doe" />
+
+      {/* Initials avatar */}
+      <Avatar initials="JD" />
+
+      {/* Icon avatar */}
+      <Avatar icon={<Icon name="User" />} />
     </div>
   );
 }
 ```
 
+### HTML/CSS
+
+```html
+<!-- Image avatar -->
+<div class="c-avatar c-avatar--md">
+  <img src="https://example.com/user.jpg" alt="John Doe" class="c-avatar__image" />
+</div>
+
+<!-- Initials avatar -->
+<div class="c-avatar c-avatar--md">
+  <span class="c-avatar__initials">JD</span>
+</div>
+
+<!-- Icon avatar -->
+<div class="c-avatar c-avatar--md">
+  <span class="c-avatar__icon">
+    <!-- Icon content -->
+  </span>
+</div>
+```
+
+## API Reference
+
+### Avatar Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `src` | `string` | - | URL of the avatar image |
+| `alt` | `string` | `'Avatar'` | Alt text for the avatar image |
+| `initials` | `string` | - | Text initials to display when no image is available |
+| `icon` | `ReactNode` | - | Icon element to display as fallback |
+| `size` | `AvatarSize` | `'md'` | Size of the avatar |
+| `circle` | `boolean` | `false` | Whether to display as a circle |
+| `disabled` | `boolean` | `false` | Whether the avatar is disabled |
+| `onClick` | `(event: MouseEvent) => void` | - | Click event handler |
+| `className` | `string` | `''` | Additional CSS classes |
+
+### AvatarGroup Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `ReactNode` | - | **Required.** Child Avatar components |
+| `max` | `number` | - | Maximum avatars to show before "+X" indicator |
+| `stacked` | `boolean` | `false` | Whether to display avatars in stacked formation |
+| `moreText` | `string` | `'+{count}'` | Custom text for the overflow indicator |
+| `className` | `string` | `''` | Additional CSS classes |
+
+### Size Options
+
+- `'xs'` - Extra small (24px)
+- `'sm'` - Small (32px)
+- `'md'` - Medium (40px) - Default
+- `'lg'` - Large (48px)
+- `'xl'` - Extra large (56px)
+
+## Examples
+
 ### Avatar Sizes
 
 ```jsx
-function AvatarSizes() {
-  const user = {
-    src: "/user-avatar.jpg",
-    alt: "John Doe",
-    initials: "JD"
-  };
+<div className="avatar-sizes">
+  <Avatar src="user.jpg" size="xs" />
+  <Avatar src="user.jpg" size="sm" />
+  <Avatar src="user.jpg" size="md" />
+  <Avatar src="user.jpg" size="lg" />
+  <Avatar src="user.jpg" size="xl" />
+</div>
+```
 
-  return (
-    <div className="u-d-flex u-align-items-center u-gap-4">
-      <Avatar {...user} size="xs" />
-      <Avatar {...user} size="sm" />
-      <Avatar {...user} size="md" />
-      <Avatar {...user} size="lg" />
-      <Avatar {...user} size="xl" />
-    </div>
-  );
-}
+### Circular Avatars
+
+```jsx
+<div className="avatar-shapes">
+  <Avatar src="user.jpg" size="md" />
+  <Avatar src="user.jpg" size="md" circle />
+</div>
+```
+
+### Fallback Mechanisms
+
+```jsx
+// Priority: Image → Initials → Icon → Default Icon
+<div className="avatar-fallbacks">
+  {/* Will show image */}
+  <Avatar src="valid-image.jpg" initials="JD" />
+
+  {/* Will show initials (broken image) */}
+  <Avatar src="broken-image.jpg" initials="JD" />
+
+  {/* Will show custom icon */}
+  <Avatar icon={<Icon name="User" />} />
+
+  {/* Will show default user icon */}
+  <Avatar />
+</div>
 ```
 
 ### Interactive Avatars
@@ -110,466 +141,281 @@ function AvatarSizes() {
 ```jsx
 function InteractiveAvatars() {
   const handleAvatarClick = (user) => {
-    console.log('Avatar clicked:', user.name);
+    console log(`Clicked on ${user.name}'s avatar`);
   };
 
-  const users = [
-    { id: 1, name: 'John Doe', avatar: '/john.jpg', initials: 'JD' },
-    { id: 2, name: 'Jane Smith', avatar: '/jane.jpg', initials: 'JS' },
-    { id: 3, name: 'Bob Johnson', avatar: '/bob.jpg', initials: 'BJ' }
-  ];
-
   return (
-    <div className="u-d-flex u-gap-3">
-      {users.map(user => (
-        <Avatar
-          key={user.id}
-          src={user.avatar}
-          alt={user.name}
-          initials={user.initials}
-          circle
-          onClick={() => handleAvatarClick(user)}
-          className="u-cursor-pointer u-hover:opacity-80 u-transition-opacity"
-        />
-      ))}
-    </div>
-  );
-}
-```
-
-### Avatar with Status
-
-```jsx
-import { Badge } from '@shohojdhara/atomix';
-
-function AvatarWithStatus() {
-  return (
-    <div className="u-d-relative u-d-inline-block">
-      <Avatar 
-        src="/user-avatar.jpg" 
+    <div>
+      <Avatar
+        src="user1.jpg"
         alt="John Doe"
+        onClick={() => handleAvatarClick({ name: 'John Doe' })}
         circle
-        size="lg"
       />
-      <Badge 
-        label=""
-        variant="success"
-        className="u-d-absolute u-d-bottom-1 u-d-right-1 u-w-4 u-h-4 u-rounded-full u-border-2 u-border-white"
+
+      <Avatar
+        initials="JS"
+        onClick={() => handleAvatarClick({ name: 'Jane Smith' })}
+        disabled
+        circle
       />
     </div>
   );
 }
 ```
 
-## AvatarGroup Component
-
-### Props API
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `children` | `ReactNode` | **required** | Avatar components |
-| `max` | `number` | `undefined` | Max avatars before showing "+X" |
-| `stacked` | `boolean` | `false` | Stacked layout |
-| `moreText` | `string` | `undefined` | Custom text for overflow indicator |
-| `className` | `string` | `''` | Additional CSS classes |
-
-### Usage
+### Avatar Groups
 
 ```jsx
-function AvatarGroupExamples() {
-  const teamMembers = [
-    { name: 'John Doe', avatar: '/john.jpg', initials: 'JD' },
-    { name: 'Jane Smith', avatar: '/jane.jpg', initials: 'JS' },
-    { name: 'Bob Johnson', avatar: '/bob.jpg', initials: 'BJ' },
-    { name: 'Alice Brown', avatar: '/alice.jpg', initials: 'AB' },
-    { name: 'Charlie Wilson', avatar: '/charlie.jpg', initials: 'CW' }
-  ];
+import { Avatar, AvatarGroup } from '@shohojdhara/atomix';
 
+function TeamAvatars() {
   return (
-    <div className="u-gap-6">
+    <div className="team-section">
       {/* Basic avatar group */}
       <AvatarGroup>
-        {teamMembers.slice(0, 3).map(member => (
-          <Avatar
-            key={member.name}
-            src={member.avatar}
-            alt={member.name}
-            initials={member.initials}
-            circle
-          />
-        ))}
+        <Avatar src="user1.jpg" circle />
+        <Avatar src="user2.jpg" circle />
+        <Avatar src="user3.jpg" circle />
+        <Avatar initials="AB" circle />
       </AvatarGroup>
 
       {/* Stacked avatar group */}
       <AvatarGroup stacked>
-        {teamMembers.slice(0, 4).map(member => (
-          <Avatar
-            key={member.name}
-            src={member.avatar}
-            alt={member.name}
-            initials={member.initials}
-            circle
-          />
-        ))}
+        <Avatar src="user1.jpg" circle />
+        <Avatar src="user2.jpg" circle />
+        <Avatar src="user3.jpg" circle />
+        <Avatar src="user4.jpg" circle />
       </AvatarGroup>
 
       {/* Avatar group with max limit */}
       <AvatarGroup max={3}>
-        {teamMembers.map(member => (
-          <Avatar
-            key={member.name}
-            src={member.avatar}
-            alt={member.name}
-            initials={member.initials}
-            circle
-          />
-        ))}
-      </AvatarGroup>
-
-      {/* Avatar group with custom more text */}
-      <AvatarGroup max={2} moreText="others">
-        {teamMembers.map(member => (
-          <Avatar
-            key={member.name}
-            src={member.avatar}
-            alt={member.name}
-            initials={member.initials}
-            circle
-          />
-        ))}
+        <Avatar src="user1.jpg" circle />
+        <Avatar src="user2.jpg" circle />
+        <Avatar src="user3.jpg" circle />
+        <Avatar src="user4.jpg" circle />
+        <Avatar src="user5.jpg" circle />
+        <Avatar src="user6.jpg" circle />
       </AvatarGroup>
     </div>
   );
 }
 ```
 
-### Team Member List
+### Custom Avatar Content
 
 ```jsx
-function TeamMemberList() {
-  const team = [
-    { 
-      id: 1, 
-      name: 'John Doe', 
-      role: 'Frontend Developer',
-      avatar: '/john.jpg',
-      initials: 'JD',
-      status: 'online'
-    },
-    { 
-      id: 2, 
-      name: 'Jane Smith', 
-      role: 'UI/UX Designer',
-      avatar: '/jane.jpg',
-      initials: 'JS',
-      status: 'away'
-    },
-    { 
-      id: 3, 
-      name: 'Bob Johnson', 
-      role: 'Backend Developer',
-      avatar: '/bob.jpg',
-      initials: 'BJ',
-      status: 'offline'
-    }
-  ];
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'online': return 'success';
-      case 'away': return 'warning';
-      case 'offline': return 'secondary';
-      default: return 'secondary';
-    }
-  };
-
+// Avatar with status indicator
+function AvatarWithStatus({ user, status }) {
   return (
-    <div className="u-gap-4">
-      {team.map(member => (
-        <div key={member.id} className="u-d-flex u-align-items-center u-gap-3">
-          <div className="u-d-relative">
-            <Avatar 
-              src={member.avatar}
-              alt={member.name}
-              initials={member.initials}
-              circle
-              size="md"
-            />
-            <div 
-              className={`u-d-absolute u-d-bottom-1 u-d-right-1 u-w-3 u-h-3 u-rounded-full u-border-2 u-border-white u-bg-${getStatusColor(member.status)}`}
-            />
-          </div>
-          <div>
-            <div className="u-fw-medium">{member.name}</div>
-            <div className="u-fs-sm u-text-secondary">{member.role}</div>
-          </div>
-        </div>
-      ))}
+    <div className="avatar-with-status">
+      <Avatar src={user.avatar} circle />
+      <span className={`status-indicator status-indicator--${status}`} />
     </div>
   );
 }
-```
 
-### Avatar Dropdown
-
-```jsx
-import { Dropdown, MenuItem } from '@shohojdhara/atomix';
-
-function AvatarDropdown({ user }) {
+// Avatar with badge
+function AvatarWithBadge({ user, badgeCount }) {
   return (
-    <Dropdown
-      trigger="click"
-      placement="bottom-end"
-      menu={
-        <div>
-          <MenuItem href="/profile" icon={<Icon name="User" />}>
-            View Profile
-          </MenuItem>
-          <MenuItem href="/settings" icon={<Icon name="Gear" />}>
-            Settings
-          </MenuItem>
-          <MenuItem href="/help" icon={<Icon name="Question" />}>
-            Help
-          </MenuItem>
-          <DropdownDivider />
-          <MenuItem onClick={handleLogout} icon={<Icon name="SignOut" />}>
-            Sign Out
-          </MenuItem>
-        </div>
-      }
-    >
-      <Avatar 
-        src={user.avatar}
-        alt={user.name}
-        initials={user.initials}
-        circle
-        className="u-cursor-pointer u-hover:opacity-80"
-      />
-    </Dropdown>
+    <div className="avatar-with-badge">
+      <Avatar src={user.avatar} circle />
+      {badgeCount > 0 && (
+        <span className="avatar-badge">{badgeCount}</span>
+      )}
+    </div>
   );
-}
-```
-
-## Vanilla JavaScript Usage
-
-```javascript
-// Basic avatar
-const avatar = new Atomix.Avatar('.my-avatar', {
-  src: '/user-avatar.jpg',
-  alt: 'John Doe',
-  initials: 'JD',
-  size: 'md',
-  circle: true,
-  onClick: () => {
-    console.log('Avatar clicked');
-  }
-});
-
-// Avatar group
-const avatarGroup = new Atomix.AvatarGroup('.avatar-group', {
-  max: 3,
-  stacked: true
-});
-
-// Initialize from data attributes
-Atomix.Avatar.initFromDataAttributes();
-```
-
-### HTML with Data Attributes
-
-```html
-<!-- Basic avatar -->
-<div 
-  class="c-avatar c-avatar--md c-avatar--circle" 
-  data-atomix="avatar"
-  data-src="/user-avatar.jpg"
-  data-alt="John Doe"
-  data-initials="JD">
-  <img src="/user-avatar.jpg" alt="John Doe" class="c-avatar__image">
-</div>
-
-<!-- Avatar with fallback -->
-<div 
-  class="c-avatar c-avatar--md" 
-  data-atomix="avatar"
-  data-initials="JS">
-  <span class="c-avatar__initials">JS</span>
-</div>
-
-<!-- Avatar group -->
-<div 
-  class="c-avatar-group c-avatar-group--stacked" 
-  data-atomix="avatar-group"
-  data-max="3">
-  <div class="c-avatar c-avatar--sm c-avatar--circle">
-    <img src="/user1.jpg" alt="User 1" class="c-avatar__image">
-  </div>
-  <div class="c-avatar c-avatar--sm c-avatar--circle">
-    <img src="/user2.jpg" alt="User 2" class="c-avatar__image">
-  </div>
-  <div class="c-avatar c-avatar--sm c-avatar--circle">
-    <span class="c-avatar__initials">+2</span>
-  </div>
-</div>
-```
-
-## Styling
-
-### CSS Classes
-
-```css
-/* Base avatar */
-.c-avatar {
-  /* Base avatar styles */
-}
-
-/* Size modifiers */
-.c-avatar--xs { /* Extra small */ }
-.c-avatar--sm { /* Small */ }
-.c-avatar--md { /* Medium (default) */ }
-.c-avatar--lg { /* Large */ }
-.c-avatar--xl { /* Extra large */ }
-
-/* Shape modifiers */
-.c-avatar--circle { /* Circular avatar */ }
-
-/* State modifiers */
-.is-disabled { /* Disabled state */ }
-
-/* Elements */
-.c-avatar__image { /* Image element */ }
-.c-avatar__initials { /* Initials text */ }
-.c-avatar__icon { /* Icon container */ }
-
-/* Avatar group */
-.c-avatar-group { /* Base group */ }
-.c-avatar-group--stacked { /* Stacked layout */ }
-.c-avatar-group__more { /* More indicator */ }
-```
-
-### Custom Styling
-
-```css
-/* Custom avatar variant */
-.c-avatar--bordered {
-  border: 2px solid var(--color-primary);
-  box-shadow: 0 0 0 2px var(--color-primary-50);
-}
-
-/* Hover effects */
-.c-avatar--interactive {
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.c-avatar--interactive:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Status indicators */
-.c-avatar--status::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 25%;
-  height: 25%;
-  border-radius: 50%;
-  border: 2px solid white;
-}
-
-.c-avatar--status-online::after {
-  background-color: var(--color-success);
-}
-
-.c-avatar--status-away::after {
-  background-color: var(--color-warning);
-}
-
-.c-avatar--status-offline::after {
-  background-color: var(--color-secondary);
 }
 ```
 
 ## Accessibility
 
-### ARIA Attributes
+The Avatar component follows accessibility best practices:
 
-- `role="img"` - Identifies avatar as image
-- `aria-label` - Provides accessible description
-- `alt` attribute - Image alternative text
-- `tabindex="0"` - Makes clickable avatars focusable
+### ARIA Support
 
-### Keyboard Navigation
+- `role="button"` is applied when `onClick` is provided
+- `tabIndex` is set appropriately for interactive avatars
+- `aria-disabled` is set when the avatar is disabled
 
-- **Tab** - Navigate to clickable avatars
-- **Enter/Space** - Activate clickable avatars
+### Keyboard Support
 
-### Screen Reader Support
+When interactive (with `onClick` prop):
+- **Enter/Space**: Activates the avatar
+- **Tab**: Moves focus to the avatar
+- **Shift + Tab**: Moves focus away from the avatar
 
-- Avatar images include descriptive alt text
-- Initials are announced as text
-- Interactive avatars are identified as buttons
-- Group context is preserved
+### Best Practices
 
-## Best Practices
+1. **Always provide alt text** for image avatars:
+   ```jsx
+   <Avatar src="user.jpg" alt="John Doe's profile picture" />
+   ```
 
-### Do's ✅
+2. **Use meaningful initials**:
+   ```jsx
+   <Avatar initials="JD" alt="John Doe" />
+   ```
 
-- Always provide meaningful alt text
-- Use initials as fallback for missing images
-- Keep avatar sizes consistent within contexts
-- Provide visual feedback for interactive avatars
-- Use appropriate sizes for the context
+3. **Consider screen reader users** with descriptive content:
+   ```jsx
+   <Avatar
+     src="user.jpg"
+     alt="John Doe, Senior Developer"
+     onClick={() => viewProfile(user)}
+   />
+   ```
 
-```jsx
-// Good: Proper fallbacks and accessibility
-<Avatar 
-  src="/user-avatar.jpg"
-  alt="John Doe - Software Engineer"
-  initials="JD"
-  circle
-  onClick={handleProfileClick}
-/>
+## Styling
+
+### CSS Custom Properties
+
+The Avatar component uses CSS custom properties for theming:
+
+```css
+:root {
+  /* Avatar sizes */
+  --atomix-avatar-xs-size: 1.5rem;
+  --atomix-avatar-sm-size: 2rem;
+  --atomix-avatar-md-size: 2.5rem;
+  --atomix-avatar-lg-size: 3rem;
+  --atomix-avatar-xl-size: 3.5rem;
+
+  /* Avatar styling */
+  --atomix-avatar-border-radius: var(--atomix-border-radius);
+  --atomix-avatar-bg: var(--atomix-gray-200);
+  --atomix-avatar-color: var(--atomix-gray-600);
+  --atomix-avatar-border: 1px solid var(--atomix-border-color);
+
+  /* Avatar font sizes for initials */
+  --atomix-avatar-xs-font-size: 0.75rem;
+  --atomix-avatar-sm-font-size: 0.875rem;
+  --atomix-avatar-md-font-size: 1rem;
+  --atomix-avatar-lg-font-size: 1.125rem;
+  --atomix-avatar-xl-font-size: 1.25rem;
+}
 ```
 
-### Don'ts ❌
+### CSS Classes
 
-- Don't use avatars without fallbacks
-- Don't make avatars too small to be recognizable
-- Don't use low-quality or pixelated images
-- Don't forget to handle image loading errors
+The component uses BEM methodology for CSS classes:
 
-```jsx
-// Bad: No fallback or accessibility
-<Avatar src="/user-avatar.jpg" />
+```css
+/* Base avatar class */
+.c-avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Size modifiers */
+.c-avatar--xs { width: var(--atomix-avatar-xs-size); height: var(--atomix-avatar-xs-size); }
+.c-avatar--sm { width: var(--atomix-avatar-sm-size); height: var(--atomix-avatar-sm-size); }
+.c-avatar--md { width: var(--atomix-avatar-md-size); height: var(--atomix-avatar-md-size); }
+.c-avatar--lg { width: var(--atomix-avatar-lg-size); height: var(--atomix-avatar-lg-size); }
+.c-avatar--xl { width: var(--atomix-avatar-xl-size); height: var(--atomix-avatar-xl-size); }
+
+/* Shape modifiers */
+.c-avatar--circle { border-radius: 50%; }
+
+/* Elements */
+.c-avatar__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.c-avatar__initials {
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.c-avatar__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* States */
+.c-avatar:hover {
+  cursor: pointer;
+}
+
+.c-avatar.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Avatar Group */
+.c-avatar-group {
+  display: flex;
+  align-items: center;
+}
+
+.c-avatar-group .c-avatar:not(:first-child) {
+  margin-left: -0.5rem;
+}
+
+.c-avatar-group--stacked .c-avatar:not(:first-child) {
+  margin-left: -0.75rem;
+}
+```
+
+### Customization Examples
+
+```css
+/* Custom avatar colors */
+.c-avatar--custom {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+/* Custom hover effects */
+.c-avatar--interactive:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Custom status indicator */
+.avatar-with-status {
+  position: relative;
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+.status-indicator--online { background-color: #10b981; }
+.status-indicator--away { background-color: #f59e0b; }
+.status-indicator--offline { background-color: #6b7280; }
 ```
 
 ## Common Patterns
 
-### User Profile Header
+### User Profile Card
 
 ```jsx
-function UserProfileHeader({ user }) {
+function UserProfileCard({ user }) {
   return (
-    <div className="u-d-flex u-align-items-center u-gap-4">
-      <Avatar 
+    <div className="profile-card">
+      <Avatar
         src={user.avatar}
-        alt={user.name}
-        initials={user.initials}
-        size="xl"
+        alt={`${user.name}'s profile picture`}
+        size="lg"
         circle
       />
-      <div>
-        <h1 className="u-fs-2xl u-fw-bold">{user.name}</h1>
-        <p className="u-fs-sm u-text-secondary">{user.title}</p>
-        <div className="u-d-flex u-align-items-center u-gap-2 u-mt-2">
-          <Badge label={user.status} variant="success" />
-          <span className="u-fs-sm u-text-secondary">
-            Last seen {user.lastSeen}
-          </span>
-        </div>
+      <div className="profile-info">
+        <h3>{user.name}</h3>
+        <p>{user.role}</p>
       </div>
     </div>
   );
@@ -581,89 +427,224 @@ function UserProfileHeader({ user }) {
 ```jsx
 function Comment({ comment }) {
   return (
-    <div className="u-d-flex u-gap-3">
-      <Avatar 
+    <div className="comment">
+      <Avatar
         src={comment.author.avatar}
         alt={comment.author.name}
-        initials={comment.author.initials}
-        circle
         size="sm"
+        circle
       />
-      <div className="u-flex-1">
-        <div className="u-d-flex u-align-items-center u-gap-2">
-          <span className="u-fw-medium">{comment.author.name}</span>
-          <span className="u-fs-sm u-text-secondary">{comment.timestamp}</span>
-        </div>
-        <p className="u-mt-1">{comment.content}</p>
+      <div className="comment-content">
+        <strong>{comment.author.name}</strong>
+        <p>{comment.text}</p>
+        <time>{comment.timestamp}</time>
       </div>
     </div>
   );
 }
 ```
 
-### Team Collaboration
+### Team Member List
 
 ```jsx
-function ProjectTeam({ project }) {
+function TeamMemberList({ members }) {
   return (
-    <Card>
-      <div className="u-d-flex u-justify-content-between">
-        <div>
-          <h3 className="u-fw-semibold">{project.name}</h3>
-          <p className="u-fs-sm u-text-secondary">{project.description}</p>
-        </div>
-        <AvatarGroup max={4} stacked>
-          {project.team.map(member => (
-            <Avatar
-              key={member.id}
-              src={member.avatar}
-              alt={member.name}
-              initials={member.initials}
-              circle
-              size="sm"
-            />
-          ))}
-        </AvatarGroup>
-      </div>
-    </Card>
+    <div className="team-list">
+      <h2>Team Members</h2>
+      <AvatarGroup max={5} stacked>
+        {members.map(member => (
+          <Avatar
+            key={member.id}
+            src={member.avatar}
+            alt={member.name}
+            circle
+            onClick={() => viewMemberProfile(member)}
+          />
+        ))}
+      </AvatarGroup>
+      <span className="team-count">{members.length} members</span>
+    </div>
   );
 }
 ```
 
-## Related Components
+### Upload Avatar
 
-- **Badge** - Status indicators
-- **Icon** - Fallback icons
-- **Dropdown** - Avatar menus
-- **Card** - Profile containers
-- **Button** - Interactive avatars
+```jsx
+function AvatarUpload({ currentAvatar, onUpload }) {
+  const fileInputRef = useRef(null);
+
+  const handleClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      onUpload(file);
+    }
+  };
+
+  return (
+    <div className="avatar-upload">
+      <Avatar
+        src={currentAvatar}
+        size="lg"
+        circle
+        onClick={handleClick}
+        className="avatar-upload__preview"
+      />
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+      />
+      <button onClick={handleClick} className="avatar-upload__button">
+        Change Avatar
+      </button>
+    </div>
+  );
+}
+```
 
 ## Performance Considerations
 
-- Use appropriate image sizes and formats
-- Implement lazy loading for avatar lists
-- Cache avatar images when possible
-- Optimize initials rendering for large lists
+1. **Image optimization**: Use appropriate image sizes and formats
+2. **Lazy loading**: Consider lazy loading for avatar images in long lists
+3. **Caching**: Implement proper caching strategies for avatar images
+4. **Fallback performance**: Initials render faster than icons
 
 ```jsx
-// Lazy loading example
-function LazyAvatar({ src, ...props }) {
+// Optimized avatar list with lazy loading
+function AvatarList({ users }) {
   return (
-    <Avatar 
-      src={src}
-      loading="lazy"
-      {...props}
-    />
+    <div className="avatar-list">
+      {users.map((user, index) => (
+        <Avatar
+          key={user.id}
+          src={user.avatar}
+          alt={user.name}
+          loading={index > 10 ? "lazy" : "eager"} // Lazy load after first 10
+          circle
+        />
+      ))}
+    </div>
+  );
+}
+```
+
+## Integration Examples
+
+### With React Router
+
+```jsx
+import { Link } from 'react-router-dom';
+
+function UserAvatar({ user }) {
+  return (
+    <Link to={`/users/${user.id}`} className="user-link">
+      <Avatar
+        src={user.avatar}
+        alt={user.name}
+        circle
+      />
+    </Link>
+  );
+}
+```
+
+### With Tooltip
+
+```jsx
+import { Tooltip } from '@shohojdhara/atomix';
+
+function TooltipAvatar({ user }) {
+  return (
+    <Tooltip content={`${user.name} - ${user.role}`}>
+      <Avatar
+        src={user.avatar}
+        alt={user.name}
+        circle
+      />
+    </Tooltip>
+  );
+}
+```
+
+### With Modal
+
+```jsx
+function ModalAvatar({ user }) {
+  const [showModal, setShowModal] = useState(false);
+
+  return (
+    <>
+      <Avatar
+        src={user.avatar}
+        alt={user.name}
+        onClick={() => setShowModal(true)}
+        circle
+      />
+
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)}>
+          <UserProfileModal user={user} />
+        </Modal>
+      )}
+    </>
   );
 }
 ```
 
 ## Browser Support
 
-Avatar components support all modern browsers:
+The Avatar component supports all modern browsers:
+
 - Chrome 60+
-- Firefox 60+
+- Firefox 55+
 - Safari 12+
 - Edge 79+
 
-Image loading and error handling work across all supported browsers.
+## Related Components
+
+- **[Icon](./icon.mdx)** - Used as fallback content
+- **[Badge](./badge.mdx)** - Often combined with avatars
+- **[Tooltip](./tooltip.mdx)** - For additional user information
+- **[Card](./card.mdx)** - Common container for avatar content
+- **[Button](./button.mdx)** - For interactive avatar functionality
+
+## Migration Guide
+
+### From v1.x to v2.x
+
+```jsx
+// v1.x (deprecated)
+<Avatar
+  image="user.jpg"
+  name="John Doe"
+  round={true}
+  onClick={handleClick}
+/>
+
+// v2.x (current)
+<Avatar
+  src="user.jpg"
+  alt="John Doe"
+  circle={true}
+  onClick={handleClick}
+/>
+```
+
+### From Custom Implementation
+
+```jsx
+// Before (custom implementation)
+<div className="user-avatar">
+  <img src="user.jpg" alt="User" className="avatar-img" />
+</div>
+
+// After (Atomix Avatar)
+<Avatar src="user.jpg" alt="User" circle />
+```

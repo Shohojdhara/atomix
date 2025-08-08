@@ -1,433 +1,529 @@
-# Button Component
+# Button
 
-The Button component is a fundamental interactive element used for user actions throughout your application. It supports multiple variants, sizes, and states with both React and vanilla JavaScript implementations.
+The Button component is a fundamental interactive element that allows users to trigger actions or navigate through your application. It supports multiple variants, sizes, icons, and states to fit various use cases.
 
 ## Overview
 
-Buttons are used to trigger actions, submit forms, navigate between pages, and perform other interactive tasks. The Atomix Button component provides a consistent interface with built-in accessibility features and customizable styling.
+The Button component provides a consistent and accessible way to create clickable elements. It can be rendered as a native `button` element or as other elements like links using the `as` prop for maximum flexibility.
 
-## Props API
+## Installation
 
-### ButtonProps
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `label` | `string` | **required** | Button text content |
-| `onClick` | `() => void` | `undefined` | Click event handler |
-| `variant` | `Variant` | `'primary'` | Visual style variant |
-| `size` | `Size` | `'md'` | Button size |
-| `icon` | `ReactNode` | `undefined` | Icon element to display |
-| `iconOnly` | `boolean` | `false` | Show only icon, hide label |
-| `rounded` | `boolean` | `false` | Make button fully rounded (pill shape) |
-| `disabled` | `boolean` | `false` | Disable button interaction |
-| `className` | `string` | `''` | Additional CSS classes |
-| `as` | `ElementType` | `'button'` | Render as different element (e.g., 'a', Link) |
-| `to` | `string` | `undefined` | Navigation target (when used with router) |
-| `href` | `string` | `undefined` | Link URL (when rendered as anchor) |
-
-### Variant Options
-
-- **Theme Colors**: `primary`, `secondary`, `tertiary`, `success`, `warning`, `error`, `info`, `light`, `dark`
-- **Outline Variants**: `outline-primary`, `outline-secondary`, etc.
-- **Special**: `link` (text-only button)
-
-### Size Options
-
-- `sm` - Small button (compact spacing)
-- `md` - Medium button (default)
-- `lg` - Large button (generous spacing)
-
-## Usage Examples
-
-### Basic React Usage
+The Button component is included in the Atomix package. Import it in your React components:
 
 ```jsx
-import React from 'react';
+import { Button } from '@shohojdhara/atomix';
+```
+
+For vanilla JavaScript projects, the button styles and functionality are available through the CSS classes and JavaScript modules.
+
+## Basic Usage
+
+### React
+
+```jsx
 import { Button } from '@shohojdhara/atomix';
 
 function MyComponent() {
-  const handleClick = () => {
-    console.log('Button clicked!');
-  };
-
   return (
     <div>
-      {/* Basic button */}
-      <Button label="Click me" onClick={handleClick} />
-      
-      {/* Primary button with icon */}
-      <Button 
-        label="Save" 
-        variant="primary" 
-        icon={<Icon name="FloppyDisk" />}
-        onClick={handleClick} 
-      />
-      
-      {/* Icon-only button */}
-      <Button 
-        label="Delete" 
-        variant="error" 
-        icon={<Icon name="Trash" />}
-        iconOnly
-        onClick={handleClick} 
-      />
-      
-      {/* Rounded button */}
-      <Button 
-        label="Subscribe" 
-        variant="success" 
-        rounded
-        onClick={handleClick} 
-      />
-      
-      {/* Disabled button */}
-      <Button 
-        label="Loading..." 
-        disabled
-        onClick={handleClick} 
-      />
+      <Button label="Primary Button" />
+      <Button label="Secondary Button" variant="secondary" />
+      <Button label="Disabled Button" disabled />
     </div>
   );
 }
 ```
 
-### Advanced React Usage
-
-```jsx
-import React from 'react';
-import { Button } from '@shohojdhara/atomix';
-import { Link } from 'react-router-dom';
-
-function AdvancedExample() {
-  return (
-    <div>
-      {/* Button as link */}
-      <Button 
-        as="a" 
-        href="https://example.com"
-        label="External Link"
-        variant="link"
-      />
-      
-      {/* Button with router Link */}
-      <Button 
-        as={Link}
-        to="/dashboard"
-        label="Go to Dashboard"
-        variant="primary"
-      />
-      
-      {/* Button with custom styling */}
-      <Button 
-        label="Custom Button"
-        className="my-custom-button"
-        variant="secondary"
-        size="lg"
-      />
-    </div>
-  );
-}
-```
-
-### Vanilla JavaScript Usage
-
-```javascript
-// Basic button initialization
-const button = new Atomix.Button('.my-button', {
-  label: 'Click me',
-  variant: 'primary',
-  onClick: () => {
-    console.log('Button clicked!');
-  }
-});
-
-// Button with icon
-const iconButton = new Atomix.Button('.icon-button', {
-  label: 'Save',
-  variant: 'success',
-  icon: 'FloppyDisk',
-  onClick: handleSave
-});
-
-// Icon-only button
-const iconOnlyButton = new Atomix.Button('.icon-only-button', {
-  label: 'Delete',
-  variant: 'error',
-  icon: 'Trash',
-  iconOnly: true,
-  onClick: handleDelete
-});
-
-// Initialize from data attributes
-Atomix.Button.initFromDataAttributes();
-```
-
-### HTML with Data Attributes
+### HTML/CSS
 
 ```html
-<!-- Basic button -->
-<button 
-  class="c-button" 
-  data-atomix="button"
-  data-variant="primary"
-  data-label="Click me">
-  Click me
-</button>
+<!-- Primary button -->
+<button class="c-button c-button--primary">Primary Button</button>
 
-<!-- Button with icon -->
-<button 
-  class="c-button c-button--success" 
-  data-atomix="button"
-  data-variant="success"
-  data-icon="FloppyDisk"
-  data-label="Save">
-  <span class="c-button__icon">
-    <i class="ph ph-floppy-disk"></i>
-  </span>
-  <span class="c-button__label">Save</span>
-</button>
+<!-- Secondary button -->
+<button class="c-button c-button--secondary">Secondary Button</button>
 
-<!-- Icon-only button -->
-<button 
-  class="c-button c-button--error c-button--icon-only" 
-  data-atomix="button"
-  data-variant="error"
-  data-icon="Trash"
-  data-icon-only="true"
-  aria-label="Delete">
-  <span class="c-button__icon">
-    <i class="ph ph-trash"></i>
-  </span>
-</button>
+<!-- Disabled button -->
+<button class="c-button c-button--primary" disabled>Disabled Button</button>
 ```
 
-## Styling
+## API Reference
 
-### CSS Classes
+### Props
 
-The Button component uses the following CSS class structure:
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | - | **Required.** The text content of the button |
+| `children` | `ReactNode` | - | Alternative to label, useful for complex content |
+| `variant` | `Variant` | `'primary'` | Visual style variant of the button |
+| `size` | `Size` | `'md'` | Size of the button (`'sm'`, `'md'`, `'lg'`) |
+| `disabled` | `boolean` | `false` | Whether the button is disabled |
+| `icon` | `ReactNode` | - | Optional icon element to display |
+| `iconOnly` | `boolean` | `false` | Whether to show only the icon (hides label visually) |
+| `rounded` | `boolean` | `false` | Whether to apply fully rounded (pill) styling |
+| `onClick` | `() => void` | - | Click event handler |
+| `as` | `ElementType` | `'button'` | The element type to render as |
+| `className` | `string` | `''` | Additional CSS classes |
 
-```css
-/* Base button */
-.c-button {
-  /* Base button styles */
-}
+### Variant Options
 
-/* Size modifiers */
-.c-button--sm { /* Small button */ }
-.c-button--md { /* Medium button (default) */ }
-.c-button--lg { /* Large button */ }
+The `variant` prop accepts the following values:
 
-/* Variant modifiers */
-.c-button--primary { /* Primary variant */ }
-.c-button--secondary { /* Secondary variant */ }
-.c-button--outline-primary { /* Outline primary */ }
-/* ... other variants */
+#### Solid Variants
+- `'primary'` - Primary brand color
+- `'secondary'` - Secondary color
+- `'success'` - Green success color
+- `'info'` - Blue informational color
+- `'warning'` - Yellow/orange warning color
+- `'error'` - Red error/danger color
+- `'light'` - Light gray
+- `'dark'` - Dark gray/black
 
-/* State modifiers */
-.c-button--rounded { /* Rounded/pill button */ }
-.c-button--icon-only { /* Icon-only button */ }
-.is-disabled { /* Disabled state */ }
+#### Outline Variants
+- `'outline-primary'` - Outlined primary
+- `'outline-secondary'` - Outlined secondary
+- `'outline-success'` - Outlined success
+- `'outline-info'` - Outlined info
+- `'outline-warning'` - Outlined warning
+- `'outline-error'` - Outlined error
+- `'outline-light'` - Outlined light
+- `'outline-dark'` - Outlined dark
 
-/* Elements */
-.c-button__icon { /* Icon container */ }
-.c-button__label { /* Label text */ }
+#### Special Variants
+- `'link'` - Styled as a text link
+
+### Size Options
+
+- `'sm'` - Small button (32px height)
+- `'md'` - Medium button (40px height) - Default
+- `'lg'` - Large button (48px height)
+
+## Examples
+
+### Button Variants
+
+```jsx
+// Solid variants
+<Button label="Primary" variant="primary" />
+<Button label="Secondary" variant="secondary" />
+<Button label="Success" variant="success" />
+<Button label="Error" variant="error" />
+
+// Outline variants
+<Button label="Outline Primary" variant="outline-primary" />
+<Button label="Outline Secondary" variant="outline-secondary" />
+
+// Link variant
+<Button label="Link Button" variant="link" />
 ```
 
-### Custom Styling
+### Button Sizes
 
-```css
-/* Custom button variant */
-.c-button--custom {
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-  border: none;
-  color: white;
-}
+```jsx
+<Button label="Small" variant="primary" size="sm" />
+<Button label="Medium" variant="primary" size="md" />
+<Button label="Large" variant="primary" size="lg" />
+```
 
-.c-button--custom:hover {
-  background: linear-gradient(45deg, #ff5252, #26a69a);
-}
+### Buttons with Icons
 
-/* Custom size */
-.c-button--xl {
-  padding: 1rem 2rem;
-  font-size: 1.25rem;
+```jsx
+import { Icon } from '@shohojdhara/atomix';
+
+// Button with icon and text
+<Button
+  label="Save Document"
+  variant="primary"
+  icon={<Icon name="Save" />}
+/>
+
+// Icon-only button
+<Button
+  label="Delete"
+  variant="error"
+  icon={<Icon name="Trash" />}
+  iconOnly
+/>
+```
+
+### Rounded Buttons
+
+```jsx
+<Button label="Rounded Button" variant="primary" rounded />
+<Button
+  label="Rounded with Icon"
+  variant="secondary"
+  icon={<Icon name="Heart" />}
+  rounded
+/>
+```
+
+### Button as Link
+
+```jsx
+// Render as an anchor tag
+<Button
+  label="Visit Website"
+  variant="link"
+  as="a"
+  href="https://example.com"
+  target="_blank"
+/>
+
+// Render with React Router Link (requires React Router)
+<Button
+  label="Go to Dashboard"
+  variant="primary"
+  as={Link}
+  to="/dashboard"
+/>
+```
+
+### Interactive Examples
+
+```jsx
+function InteractiveExample() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <Button
+        label={`Clicked ${count} times`}
+        onClick={() => setCount(count + 1)}
+        variant="primary"
+      />
+    </div>
+  );
 }
 ```
 
 ## Accessibility
 
-The Button component includes comprehensive accessibility features:
+The Button component follows WCAG accessibility guidelines:
+
+### Keyboard Support
+
+- **Space/Enter**: Activates the button
+- **Tab**: Moves focus to the button
+- **Shift + Tab**: Moves focus away from the button
 
 ### ARIA Attributes
 
-- `role="button"` - Applied when using non-button elements
-- `aria-disabled="true"` - Applied when disabled
-- `aria-label` - Used for icon-only buttons
-- `tabindex="0"` - Ensures keyboard focusability
+- `aria-disabled="true"` is applied when `disabled={true}`
+- `role="button"` is automatically applied when using non-button elements
+- Icon-only buttons should include `aria-label` for screen readers
 
-### Keyboard Navigation
+### Best Practices
 
-- **Enter/Space** - Activates the button
-- **Tab** - Moves focus to/from the button
-- **Disabled buttons** - Removed from tab order
-
-### Screen Reader Support
-
-- Button text is announced by screen readers
-- Icon-only buttons include accessible labels
-- Disabled state is communicated
-- Loading states can be announced with `aria-live`
-
-## Best Practices
-
-### Do's ✅
-
-- Use descriptive button labels that clearly indicate the action
-- Provide `aria-label` for icon-only buttons
-- Use appropriate variants for different action types
-- Group related buttons with consistent sizing
-- Use loading states for async operations
+1. **Always provide descriptive text**: Use clear, actionable language
+2. **Use appropriate variants**: Match the button style to its importance and context
+3. **Include focus indicators**: The component provides default focus styles
+4. **Icon-only buttons**: Always include accessible text via `aria-label` or tooltip
 
 ```jsx
-// Good: Clear, descriptive labels
-<Button label="Save Changes" variant="primary" />
-<Button label="Cancel" variant="secondary" />
-
-// Good: Icon-only with accessible label
-<Button 
-  label="Close dialog" 
-  icon={<Icon name="X" />}
+// Good: Icon-only button with accessible label
+<Button
+  label="Delete item"
+  icon={<Icon name="Trash" />}
   iconOnly
-  aria-label="Close dialog"
+  variant="error"
+  aria-label="Delete this item permanently"
 />
 ```
 
-### Don'ts ❌
+## Styling
 
-- Don't use vague labels like "Click here" or "Submit"
-- Don't rely solely on color to convey meaning
-- Don't make buttons too small for touch targets
-- Don't use too many different variants in one interface
+### CSS Custom Properties
 
-```jsx
-// Bad: Vague label
-<Button label="Click here" />
+The Button component uses CSS custom properties for theming:
 
-// Bad: No accessible label for icon-only
-<Button icon={<Icon name="X" />} iconOnly />
+```css
+:root {
+  /* Button base properties */
+  --atomix-btn-font-family: inherit;
+  --atomix-btn-font-weight: 500;
+  --atomix-btn-line-height: 1.5;
+  --atomix-btn-border-width: 1px;
+  --atomix-btn-border-radius: var(--atomix-border-radius);
 
-// Bad: Too many variants
-<Button variant="primary" />
-<Button variant="secondary" />
-<Button variant="tertiary" />
-<Button variant="success" />
-<Button variant="warning" />
+  /* Button sizes */
+  --atomix-btn-sm-padding-x: 0.75rem;
+  --atomix-btn-sm-padding-y: 0.375rem;
+  --atomix-btn-sm-font-size: 0.875rem;
+
+  --atomix-btn-md-padding-x: 1rem;
+  --atomix-btn-md-padding-y: 0.5rem;
+  --atomix-btn-md-font-size: 1rem;
+
+  --atomix-btn-lg-padding-x: 1.25rem;
+  --atomix-btn-lg-padding-y: 0.75rem;
+  --atomix-btn-lg-font-size: 1.125rem;
+
+  /* Button colors - Primary variant */
+  --atomix-btn-primary-color: var(--atomix-white);
+  --atomix-btn-primary-bg: var(--atomix-primary);
+  --atomix-btn-primary-border-color: var(--atomix-primary);
+  --atomix-btn-primary-hover-bg: var(--atomix-primary-dark);
+  --atomix-btn-primary-hover-border-color: var(--atomix-primary-dark);
+}
 ```
 
-## Common Patterns
+### CSS Classes
 
-### Button Groups
+The component uses BEM methodology for CSS classes:
+
+```css
+/* Base button class */
+.c-button {
+  /* Base button styles */
+}
+
+/* Size modifiers */
+.c-button--sm { /* Small size styles */ }
+.c-button--md { /* Medium size styles */ }
+.c-button--lg { /* Large size styles */ }
+
+/* Variant modifiers */
+.c-button--primary { /* Primary variant styles */ }
+.c-button--secondary { /* Secondary variant styles */ }
+.c-button--outline-primary { /* Outline primary styles */ }
+
+/* State modifiers */
+.c-button:disabled { /* Disabled state styles */ }
+.c-button:hover { /* Hover state styles */ }
+.c-button:focus { /* Focus state styles */ }
+
+/* Special modifiers */
+.c-button--rounded { /* Rounded/pill styling */ }
+.c-button--icon-only { /* Icon-only button styles */ }
+```
+
+### Customization Examples
+
+```css
+/* Custom button variant */
+.c-button--custom {
+  background: linear-gradient(45deg, #ff6b6b, #feca57);
+  border: none;
+  color: white;
+}
+
+.c-button--custom:hover {
+  background: linear-gradient(45deg, #ff5252, #ff9f43);
+  transform: translateY(-1px);
+}
+
+/* Custom rounded style */
+.c-button--pill {
+  border-radius: 2rem;
+}
+
+/* Custom icon spacing */
+.c-button .button__icon {
+  margin-right: 0.5rem;
+}
+
+.c-button--icon-only .button__icon {
+  margin-right: 0;
+}
+```
+
+## Integration with Forms
+
+The Button component integrates seamlessly with form libraries:
+
+### With HTML Forms
 
 ```jsx
-function ButtonGroup() {
+<form onSubmit={handleSubmit}>
+  <input type="text" name="username" />
+  <Button
+    label="Submit"
+    type="submit"
+    variant="primary"
+  />
+  <Button
+    label="Reset"
+    type="reset"
+    variant="secondary"
+  />
+</form>
+```
+
+### With React Hook Form
+
+```jsx
+import { useForm } from 'react-hook-form';
+
+function MyForm() {
+  const { handleSubmit } = useForm();
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
-    <div className="button-group">
-      <Button label="Save" variant="primary" />
-      <Button label="Save & Continue" variant="secondary" />
-      <Button label="Cancel" variant="link" />
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {/* Form fields */}
+      <Button
+        label="Submit Form"
+        type="submit"
+        variant="primary"
+      />
+    </form>
   );
 }
 ```
+
+## Performance Considerations
+
+1. **Icon optimization**: Use SVG icons for best performance and scalability
+2. **Event handlers**: Use `useCallback` for onClick handlers in parent components to prevent unnecessary re-renders
+3. **Bundle size**: Import only the icons you need when using icon libraries
+
+```jsx
+// Optimized example
+const MyComponent = memo(() => {
+  const handleClick = useCallback(() => {
+    // Handle click logic
+  }, []);
+
+  return (
+    <Button
+      label="Optimized Button"
+      onClick={handleClick}
+      variant="primary"
+    />
+  );
+});
+```
+
+## Common Patterns
 
 ### Loading States
 
 ```jsx
 function LoadingButton() {
   const [loading, setLoading] = useState(false);
-  
-  const handleSubmit = async () => {
+
+  const handleClick = async () => {
     setLoading(true);
     try {
-      await submitForm();
+      await api.saveData();
     } finally {
       setLoading(false);
     }
   };
-  
+
   return (
-    <Button 
+    <Button
       label={loading ? "Saving..." : "Save"}
+      onClick={handleClick}
       disabled={loading}
-      icon={loading ? <Spinner size="sm" /> : undefined}
-      onClick={handleSubmit}
+      icon={loading ? <Spinner size="sm" /> : <Icon name="Save" />}
+      variant="primary"
     />
   );
 }
 ```
 
-### Confirmation Actions
+### Button Groups
+
+```jsx
+<div className="button-group">
+  <Button label="Option 1" variant="outline-primary" />
+  <Button label="Option 2" variant="outline-primary" />
+  <Button label="Option 3" variant="outline-primary" />
+</div>
+```
+
+### Confirmation Patterns
 
 ```jsx
 function DeleteButton({ onDelete }) {
-  const [confirming, setConfirming] = useState(false);
-  
-  if (confirming) {
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  if (showConfirm) {
     return (
-      <div className="confirmation-buttons">
-        <Button 
-          label="Confirm Delete" 
-          variant="error" 
+      <div>
+        <span>Are you sure?</span>
+        <Button
+          label="Yes, Delete"
           onClick={onDelete}
+          variant="error"
+          size="sm"
         />
-        <Button 
-          label="Cancel" 
-          variant="link" 
-          onClick={() => setConfirming(false)}
+        <Button
+          label="Cancel"
+          onClick={() => setShowConfirm(false)}
+          variant="outline-secondary"
+          size="sm"
         />
       </div>
     );
   }
-  
+
   return (
-    <Button 
-      label="Delete" 
+    <Button
+      label="Delete"
+      onClick={() => setShowConfirm(true)}
       variant="outline-error"
-      onClick={() => setConfirming(true)}
     />
   );
 }
 ```
 
-## Related Components
-
-- **Icon** - Used within buttons for visual enhancement
-- **Spinner** - Used for loading states
-- **Tooltip** - Can provide additional context for icon-only buttons
-- **FormGroup** - Buttons are commonly used in forms
-
 ## Browser Support
 
 The Button component supports all modern browsers:
+
 - Chrome 60+
-- Firefox 60+
+- Firefox 55+
 - Safari 12+
 - Edge 79+
+
+For older browser support, ensure you have appropriate polyfills for:
+- CSS Custom Properties
+- Flexbox
+- ES6+ features (if using the JavaScript functionality)
+
+## Related Components
+
+- **[Icon](./icon.mdx)** - For adding icons to buttons
+- **[Spinner](./spinner.mdx)** - For loading states
+- **[Tooltip](./tooltip.mdx)** - For additional button context
+- **[Modal](./modal.mdx)** - Often triggered by buttons
+- **[Dropdown](./dropdown.mdx)** - Can use buttons as triggers
 
 ## Migration Guide
 
 ### From v1.x to v2.x
 
 ```jsx
-// v1.x
-<Button text="Click me" color="primary" />
+// v1.x (deprecated)
+<Button type="primary" onClick={handleClick}>
+  Button Text
+</Button>
 
-// v2.x
-<Button label="Click me" variant="primary" />
+// v2.x (current)
+<Button label="Button Text" variant="primary" onClick={handleClick} />
 ```
 
-The main changes:
-- `text` prop renamed to `label`
-- `color` prop renamed to `variant`
-- Added support for `as` prop for polymorphic rendering
+### From Custom Buttons
+
+```jsx
+// Before (custom button)
+<button className="my-custom-btn primary" onClick={handleClick}>
+  <Icon name="save" />
+  Save Document
+</button>
+
+// After (Atomix Button)
+<Button
+  label="Save Document"
+  variant="primary"
+  icon={<Icon name="Save" />}
+  onClick={handleClick}
+/>
+```
