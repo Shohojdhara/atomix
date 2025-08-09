@@ -1,9 +1,7 @@
-import * as Grid from './Grid';
-import * as MasonryGrid from './MasonryGrid';
+// Export Grid components
+export { Grid, GridCol, Container, Row } from './Grid';
+export type { GridProps, GridColProps, ContainerProps, RowProps } from './Grid';
 
-const layouts = {
-  ...Grid,
-  ...MasonryGrid,
-};
-
-export default layouts;
+// Export MasonryGrid components
+export { MasonryGrid, MasonryGridItem } from './MasonryGrid';
+export type { MasonryGridProps, MasonryGridItemProps } from './MasonryGrid';

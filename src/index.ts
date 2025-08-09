@@ -10,8 +10,8 @@ export * from './layouts';
 
 // Create a properly typed default export
 import * as components from './components';
-import { composables, utils, constants, types } from './lib';
 import * as layouts from './layouts';
+import { composables, constants, types, utils } from './lib';
 
 const atomix = {
   // Re-export all components and utilities
@@ -20,7 +20,7 @@ const atomix = {
   utils,
   constants,
   types,
-  layouts,
+  ...layouts,
 };
 
 // Default export
