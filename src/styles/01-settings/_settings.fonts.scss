@@ -1,4 +1,4 @@
-$assets-fonts-path: '../assets/fonts/';
+$assets-fonts-path: '../assets/fonts/' !default;
 
 @mixin font-face($name, $foldername, $filename, $weight: normal, $style: normal) {
   @font-face {

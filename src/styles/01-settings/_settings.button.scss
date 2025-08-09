@@ -49,7 +49,7 @@ $btn-border-radius-lg: $border-radius-xl !default;
 
 $btn-link-color: var(--#{$prefix}brand-text-emphasis) !default;
 $btn-link-color-hover: var(--#{$prefix}invert-text-emphasis) !default;
-$btn-link-font-weight: $font-weight-medium;
+$btn-link-font-weight: $font-weight-medium !default;
 $btn-link-border-color: var(--#{$prefix}brand-border-subtle) !default;
 $btn-link-border-color-hover: var(--#{$prefix}secondary-border-subtle) !default;
 

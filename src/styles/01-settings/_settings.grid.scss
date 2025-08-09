@@ -1,8 +1,8 @@
 @use 'settings.breakpoints' as breakpoints;
 
-$enable-grid-classes: true;
-$grid-columns: 12;
-$grid-gutter-width: 16px;
+$enable-grid-classes: true !default;
+$grid-columns: 12 !default;
+$grid-gutter-width: 16px !default;
 
 // Use breakpoints from the breakpoints module
 $container-max-widths: (

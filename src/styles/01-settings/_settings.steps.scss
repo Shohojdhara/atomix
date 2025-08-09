@@ -14,7 +14,7 @@ $steps-item-number-color: $steps-item-color !default;
 $steps-item-number-active-color: var(--#{config.$prefix}gray-1) !default;
 $steps-item-number-size: 28px !default;
 $steps-item-number-font-size: typography.$font-size-sm !default;
-$steps-item-number-border-radius: border-radius.$border-radius-pill;
+$steps-item-number-border-radius: border-radius.$border-radius-pill !default;
 $steps-item-font-size: typography.$font-size-sm !default;
 $steps-item-content-gap: 8px !default;
 

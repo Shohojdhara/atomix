@@ -31,4 +31,4 @@ $toggle-switch-handle-width: $toggle-switch-handle-width-md !default;
 $toggle-switch-handle-height: $toggle-switch-handle-height-md !default;
 
 $toggle-label-font-size: typography.$font-size-base !default;
-$toggle-label-color: var(--#{config.$prefix}primary-text-emphasis);
+$toggle-label-color: var(--#{config.$prefix}primary-text-emphasis) !default;

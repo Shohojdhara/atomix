@@ -13,7 +13,7 @@ $modal-content-box-shadow: var(--#{$prefix}box-shadow) !default;
 $modal-header-padding-bottom: 12px !default;
 $modal-title-font-size: $font-size-lg !default;
 $modal-sub-margin-top: 4px !default;
-$modal-sub-font-size: $font-size-sm;
+$modal-sub-font-size: $font-size-sm !default;
 $modal-sub-color: var(--#{$prefix}tertiary-text-emphasis) !default;
 
 $modal-footer-items-gap: 8px !default;

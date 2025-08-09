@@ -63,6 +63,6 @@ $spacing-sizes: (
 ) !default;
 
 $spacing-important: true !default;
-$enable-negative-margins: false;
+$enable-negative-margins: false !default;
 
 $negative-spacers: if($enable-negative-margins, negativify-map($spacing-sizes), null) !default;

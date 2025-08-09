@@ -20,7 +20,7 @@ $input-padding-y-sm: 6px !default;
 $input-padding-x-lg: 12px !default;
 $input-padding-y-lg: 12px !default;
 
-$input-border-width: 1px;
+$input-border-width: 1px !default;
 $input-border-color: var(--#{$prefix}primary-border-subtle) !default;
 $input-hover-border-color: var(--#{$prefix}secondary-border-subtle) !default;
 $input-focus-border-color: $input-hover-border-color !default;
