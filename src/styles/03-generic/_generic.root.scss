@@ -33,6 +33,10 @@ $gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255
     --#{config.$prefix}gray-#{$color}: #{$value};
   }
 
+  @each $color, $value in color-maps.$primarys {
+    --#{config.$prefix}primary-#{$color}: #{$value};
+  }
+
   @each $color, $value in color-maps.$theme-colors-text {
     --#{config.$prefix}#{$color}-text-emphasis: #{$value};
   }
