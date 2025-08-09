@@ -1,6 +1,7 @@
 import type { Preview } from '@storybook/react';
 import { useEffect } from 'react';
 import '../src/themes/shaj-default/index.scss';
+import '../src/styles/index.scss';
 
 const preview: Preview = {
   parameters: {

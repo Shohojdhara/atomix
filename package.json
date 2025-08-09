@@ -139,9 +139,9 @@
   "files": [
     "dist",
     "src/styles",
-    "src/lib/utils/theme-manager.ts",
-    "scripts/optimize-themes.js",
-    "scripts/validate-themes.js",
+    "src/components/",
+    "src/lib",
+    "src/layouts",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"

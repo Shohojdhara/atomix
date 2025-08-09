@@ -24,6 +24,14 @@ CSS architecture, utilities, and customization built on ITCSS methodology.
 - [Utilities](./styles/utilities.md) - Complete utility class reference
 - [API Reference](./styles/api-reference.md) - Complete technical reference
 
+### 🏗️ [Layouts](./layouts/README.md)
+Powerful layout system for creating responsive, flexible interfaces.
+- [Grid System](./layouts/grid.md) - Comprehensive 12-column responsive grid
+- [Masonry Grid](./layouts/masonry-grid.md) - Pinterest-style dynamic layouts
+- [Responsive Patterns](./layouts/responsive-patterns.md) - Common layout solutions
+- [Customization Guide](./layouts/customization.md) - Theming and advanced configuration
+- [Performance Best Practices](./layouts/performance.md) - Optimization strategies
+
 ### 🧩 [Components](./components/README.md)
 Comprehensive component library with React and vanilla JavaScript implementations.
 - [Component Overview](./components/overview.md) - All available components
@@ -116,6 +124,12 @@ function App() {
 - **Accessibility First** - WCAG 2.1 AA compliance
 - **Responsive Design** - Mobile-first approach
 
+### 🏗️ Layout System Foundation
+- **Grid System** - Flexible 12-column responsive layouts
+- **Masonry Grids** - Pinterest-style dynamic positioning
+- **Container Components** - Responsive content containers
+- **Mobile-First Design** - Optimized for all screen sizes
+
 ### 🧩 Comprehensive Components
 - **40+ Components** - From basic buttons to complex data tables
 - **Dual Implementation** - React and vanilla JavaScript
@@ -143,6 +157,9 @@ Perfect for newcomers - installation, quick start, and migration guides.
 
 ### 🎨 Design Tokens
 The foundation - colors, spacing, typography, and design principles.
+
+### 🏗️ Layouts
+Powerful layout system with grid, masonry, and responsive patterns.
 
 ### 🏗️ Styles System
 CSS architecture, utilities, and customization using ITCSS methodology.
@@ -211,9 +228,9 @@ Customize individual components:
 
 ### 🧑‍💻 Intermediate Path
 1. [Design Tokens](./design-tokens/README.md) - Understand the foundation
-2. [Theming Guide](./guides/theming.md) - Customize for your brand
-3. [Responsive Design](./guides/responsive-design.md) - Build for all devices
-4. [Layout Examples](./examples/layouts.md) - Create complex layouts
+2. [Layout System](./layouts/README.md) - Master responsive layouts
+3. [Theming Guide](./guides/theming.md) - Customize for your brand
+4. [Responsive Patterns](./layouts/responsive-patterns.md) - Common layout solutions
 
 ### 🚀 Advanced Path
 1. [Styles Architecture](./styles/architecture.md) - Master the CSS system
@@ -248,8 +265,9 @@ Customize individual components:
 
 ### 🎨 Learn the System
 1. **[Design Tokens](./design-tokens/README.md)** - Understand the foundation
-2. **[Styles Architecture](./styles/architecture.md)** - Learn the CSS methodology
-3. **[Theming Guide](./guides/theming.md)** - Customize for your brand
+2. **[Layout System](./layouts/README.md)** - Master responsive layouts
+3. **[Styles Architecture](./styles/architecture.md)** - Learn the CSS methodology
+4. **[Theming Guide](./guides/theming.md)** - Customize for your brand
 
 ### 🚀 Build Something Amazing
 1. **[Browse Examples](./examples/README.md)** - See real-world implementations
@@ -261,6 +279,7 @@ Customize individual components:
 ## 📊 Quick Stats
 
 - **40+ Components** - Comprehensive component library
+- **Complete Layout System** - Grid, masonry, and responsive patterns
 - **500+ Utility Classes** - Complete utility system
 - **200+ Design Tokens** - Consistent design foundation
 - **~45KB Bundle** - Optimized for performance
