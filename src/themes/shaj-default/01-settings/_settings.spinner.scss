@@ -1,0 +1,19 @@
+/*!
+ * Shaj Default Theme Spinner Settings
+ * Modern spinner/loading styling with clean aesthetics
+ * Overrides Atomix default spinner settings
+ */
+
+@use '../../../styles/01-settings/settings.spinner' with (
+  $spinner-sizes: (
+    sm: 16px, // 16px
+    md: 24px, // 24px
+    lg: 32px, // 32px
+  ),
+
+  $spinner-background-color: var(--atomix-secondary-bg-subtle),
+  $spinner-color: var(--atomix-body-color),
+  $spinner-border-width: 3px, // 3px
+  $spinner-border-width-sm: 2px, // 2px
+  $spinner-animation-speed: 0.8s // slightly slower for smoother feel
+);

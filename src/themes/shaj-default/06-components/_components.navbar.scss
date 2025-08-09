@@ -1,0 +1,99 @@
+/*!
+ * Shaj Default Theme Navbar Component Overrides
+ * Additional styling for modern navbar aesthetics
+ */
+@use '../01-settings/settings.config' as *;
+
+.c-navbar {
+  // Enhanced backdrop blur effect
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  // Subtle border
+  border-bottom: 1px solid var(--#{$prefix}gray-2);
+
+  // Brand styling
+  .c-navbar-brand {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--#{$prefix}gray-9);
+
+    &:hover {
+      color: var(--#{$prefix}primary-6);
+    }
+  }
+
+  // Nav links
+  .c-navbar-nav {
+    .c-nav-link {
+      font-weight: 500;
+      color: var(--#{$prefix}gray-7);
+      transition: all 200ms ease-in-out;
+      position: relative;
+
+      &:hover {
+        color: var(--#{$prefix}primary-6);
+      }
+
+      &.active {
+        color: var(--#{$prefix}primary-6);
+        font-weight: 600;
+
+        // Active indicator
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -8px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 4px;
+          height: 4px;
+          background: var(--#{$prefix}primary-6);
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+
+  // Mobile toggler
+  .c-navbar-toggler {
+    border: none;
+    padding: 8px;
+
+    &:focus {
+      box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.25);
+    }
+
+    .c-navbar-toggler-icon {
+      background-image: none;
+      width: 20px;
+      height: 2px;
+      background: var(--#{$prefix}gray-7);
+      position: relative;
+      transition: all 200ms ease-in-out;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 2px;
+        background: var(--#{$prefix}gray-7);
+        transition: all 200ms ease-in-out;
+      }
+
+      &::before {
+        top: -6px;
+      }
+
+      &::after {
+        bottom: -6px;
+      }
+    }
+  }
+
+  // Fixed navbar styling
+  &.c-navbar-fixed {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+}

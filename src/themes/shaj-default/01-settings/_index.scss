@@ -1,5 +1,12 @@
+/*!
+ * Shaj Default Theme Settings Index
+ * Modern design system settings for clean, aesthetic UI
+ */
+
 // Base colors and variables that everything depends on
 @forward './settings.colors';
+@forward './settings.config';
+
 // Core settings that depend on colors
 @forward './settings.border';
 @forward './settings.border-radius';
@@ -7,9 +14,9 @@
 @forward './settings.spacing';
 @forward './settings.breakpoints';
 @forward './settings.fonts';
-@forward './settings.config';
+@forward './settings.typography';
 
-// Component settings
+// Component settings - alphabetically ordered
 @forward './settings.accordion';
 @forward './settings.animations';
 @forward './settings.avatar-group';
@@ -17,19 +24,20 @@
 @forward './settings.badge';
 @forward './settings.btn-group';
 @forward './settings.button';
-@forward './settings.datepicker';
+@forward './settings.callout';
 @forward './settings.card';
 @forward './settings.checkbox-group';
 @forward './settings.checkbox';
 @forward './settings.color-mode';
 @forward './settings.countdown';
 @forward './settings.data-table';
+@forward './settings.datepicker';
 @forward './settings.dropdown';
 @forward './settings.edge-panel';
 @forward './settings.form';
+@forward './settings.form-group';
 @forward './settings.grid';
 @forward './settings.hero';
-@forward './settings.form-group';
 @forward './settings.input';
 @forward './settings.link';
 @forward './settings.list-group';
@@ -40,7 +48,6 @@
 @forward './settings.modal';
 @forward './settings.nav';
 @forward './settings.navbar';
-@forward './settings.callout';
 @forward './settings.pagination';
 @forward './settings.popover';
 @forward './settings.photoviewer';
@@ -58,6 +65,5 @@
 @forward './settings.testimonials';
 @forward './settings.toggle';
 @forward './settings.tooltip';
-@forward './settings.typography';
 @forward './settings.upload';
 @forward './settings.z-layers';

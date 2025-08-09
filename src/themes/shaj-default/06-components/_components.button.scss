@@ -1,0 +1,55 @@
+/*!
+ * Shaj Default Theme Button Component Overrides
+ * Additional styling for modern button aesthetics
+ */
+@use '../01-settings/settings.config' as *;
+
+.c-btn {
+  // Enhanced shadow and hover effects
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 200ms ease-in-out;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  // Primary button enhancements
+  &.c-btn-primary {
+    background: linear-gradient(135deg, var(--#{$prefix}primary-6), var(--#{$prefix}primary-7));
+    border-color: var(--#{$prefix}primary-6);
+
+    &:hover {
+      background: linear-gradient(135deg, var(--#{$prefix}primary-7), var(--#{$prefix}primary-8));
+      border-color: var(--#{$prefix}primary-7);
+    }
+  }
+
+  // Secondary button with subtle styling
+  &.c-btn-secondary {
+    background: var(--#{$prefix}gray-1);
+    border-color: var(--#{$prefix}gray-3);
+    color: var(--#{$prefix}gray-8);
+
+    &:hover {
+      background: var(--#{$prefix}gray-2);
+      border-color: var(--#{$prefix}gray-4);
+    }
+  }
+
+  // Outline buttons with modern styling
+  &.c-btn-outline-primary {
+    border-width: 1px;
+    background: transparent;
+
+    &:hover {
+      background: var(--#{$prefix}primary-1);
+      border-color: var(--#{$prefix}primary-6);
+    }
+  }
+}

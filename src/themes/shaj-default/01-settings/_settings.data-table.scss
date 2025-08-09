@@ -1,0 +1,53 @@
+/*!
+ * Shaj Default Theme Data Table Settings
+ * Modern data table styling with clean aesthetics
+ * Overrides Atomix default data table settings
+ */
+
+@use '../../../styles/01-settings/settings.data-table' with (
+  // DataTable Variables
+  $data-table-bg: var(--atomix-white),
+  $data-table-color: var(--atomix-body-color),
+  $data-table-border-color: var(--atomix-border-color),
+  $data-table-border-width: var(--atomix-border-width),
+  $data-table-border-style: var(--atomix-border-style),
+  $data-table-border-radius: var(--atomix-border-radius),
+
+  // Header
+  $data-table-header-bg: var(--atomix-gray-1), // lighter header
+  $data-table-header-color: var(--atomix-body-color),
+  $data-table-header-font-weight: 600, // bolder headers
+
+  // Cell padding - more generous
+  $data-table-cell-padding-y: 1rem, // 16px
+  $data-table-cell-padding-x: 1.25rem, // 20px
+  $data-table-cell-padding-y-sm: 0.75rem, // 12px
+  $data-table-cell-padding-x-sm: 1rem, // 16px
+
+  // Striped rows
+  $data-table-striped-bg: rgba(0, 0, 0, 0.02), // subtler stripes
+  $data-table-hover-bg: rgba(14, 165, 233, 0.05), // primary color hover
+
+  // Pagination
+  $data-table-pagination-padding-y: 0.75rem, // 12px
+  $data-table-pagination-padding-x: 1rem, // 16px
+  $data-table-pagination-bg: var(--atomix-white),
+  $data-table-pagination-border-color: var(--atomix-border-color),
+  $data-table-pagination-hover-bg: var(--atomix-gray-1),
+  $data-table-pagination-active-bg: var(--atomix-primary),
+  $data-table-pagination-active-color: var(--atomix-white),
+  $data-table-pagination-disabled-color: var(--atomix-gray-5),
+
+  // Search input
+  $data-table-search-bg: var(--atomix-white),
+  $data-table-search-border-color: var(--atomix-border-color),
+  $data-table-search-focus-border-color: var(--atomix-primary),
+  $data-table-search-padding-y: 0.75rem, // 12px
+  $data-table-search-padding-x: 1rem, // 16px
+  $data-table-search-border-radius: var(--atomix-border-radius),
+
+  // Sort icon
+  $data-table-sort-icon-size: 0.875rem, // 14px - slightly larger
+  $data-table-sort-icon-color: var(--atomix-gray-5),
+  $data-table-sort-icon-active-color: var(--atomix-primary)
+);

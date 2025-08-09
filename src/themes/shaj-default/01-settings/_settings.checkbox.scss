@@ -1,0 +1,25 @@
+/*!
+ * Shaj Default Theme Checkbox Settings
+ * Modern checkbox styling with clean aesthetics
+ * Overrides Atomix default checkbox settings
+ */
+
+@use '../../../styles/01-settings/settings.checkbox' with (
+  $checkbox-width: 20px, // 20px
+  $checkbox-height: 20px, // 20px
+  $checkbox-spacer: 12px, // 12px - more space between checkbox and label
+  $checkbox-font-size: 16px, // 16px
+  $checkbox-text-color: var(--atomix-body-color),
+  $checkbox-checked-text-color: var(--atomix-body-color),
+  $checkbox-text-color-disabled: var(--atomix-tertiary-text-emphasis),
+  $checkbox-checked-text-color-disabled: var(--atomix-disabled-text-emphasis),
+  $checkbox-bg: var(--atomix-body-bg),
+  $checkbox-checked-bg: var(--atomix-invert-bg-subtle),
+  $checkbox-checked-bg-hover: var(--atomix-tertiary-text-emphasis),
+  $checkbox-checked-bg-disabled: var(--atomix-disabled-text-emphasis),
+  $checkbox-border-width: 1px,
+  $checkbox-border-color: var(--atomix-tertiary-text-emphasis),
+  $checkbox-border-color-hover: var(--atomix-primary-text-emphasis),
+  $checkbox-border-color-disabled: var(--atomix-disabled-text-emphasis),
+  $checkbox-border-color-error: var(--atomix-error-border-subtle)
+);

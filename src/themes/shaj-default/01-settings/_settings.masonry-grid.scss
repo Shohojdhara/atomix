@@ -1,0 +1,19 @@
+/*!
+ * Shaj Default Theme Masonry Grid Settings
+ * Modern masonry layout styling with clean aesthetics
+ * Overrides Atomix default masonry grid settings
+ */
+
+@use '../../../styles/01-settings/settings.masonry-grid' with (
+  $masonry-grid-gap: 24px, // 24px - generous spacing
+  $masonry-grid-gap-sm: 12px, // 12px
+  $masonry-grid-gap-lg: 32px, // 32px
+  $masonry-grid-columns-xs: 1, // 1 column on mobile
+  $masonry-grid-columns-sm: 2, // 2 columns on small screens
+  $masonry-grid-columns-md: 3, // 3 columns on medium screens
+  $masonry-grid-columns-lg: 4, // 4 columns on large screens
+  $masonry-grid-columns-xl: 4, // 4 columns on xl screens
+  $masonry-grid-columns-xxl: 5, // 5 columns on xxl screens
+  $masonry-grid-item-transition: all 0.3s ease-in-out, // smooth transitions
+  $masonry-grid-item-bg-dark: var(--atomix-gray-9) // dark mode background
+);

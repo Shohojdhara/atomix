@@ -1,0 +1,18 @@
+/*!
+ * Shaj Default Theme Popover Settings
+ * Modern popover styling with clean aesthetics
+ * Overrides Atomix default popover settings
+ */
+
+@use '../../../styles/01-settings/settings.popover' with (
+  $popover-max-width: 320px, // 320px - wider for better content
+  $popover-padding-x: 20px, // 20px
+  $popover-padding-y: 16px, // 16px
+  $popover-inner-gap-x: 12px, // 12px
+  $popover-inner-gap-y: 16px, // 16px
+  $popover-bg: var(--atomix-body-bg),
+  $popover-border-radius: 8px, // 8px - softer corners
+  $popover-box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), // enhanced shadow
+  $popover-arrow-size: 10px, // 10px - smaller arrow
+  $popover-arrow-offset: 6px // 6px
+);

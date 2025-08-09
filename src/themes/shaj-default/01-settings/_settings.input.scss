@@ -1,1 +1,44 @@
+/*!
+ * Shaj Default Theme Input Settings
+ * Modern input styling with clean aesthetics
+ * Overrides Atomix default input settings
+ */
 
+@forward '../../../styles/01-settings/settings.input' with (
+  $input-width: 100%,
+  $input-color: var(--atomix-body-color),
+  $input-bg: var(--atomix-body-bg),
+  $input-bg-disabled: var(--atomix-secondary-bg-subtle),
+  $input-font-size: 16px, // 16px - better mobile experience
+  $input-font-size-sm: 14px, // 14px
+  $input-font-size-lg: 18px, // 18px
+  $input-line-height-md: 24px, // 24px
+  $input-line-height-sm: 20px, // 20px
+  $input-line-height-lg: 28px, // 28px
+
+  $input-padding-x: 16px, // 16px - more spacious
+  $input-padding-y: 12px, // 12px
+  $input-padding-x-sm: 12px, // 12px
+  $input-padding-y-sm: 8px, // 8px
+  $input-padding-x-lg: 20px, // 20px
+  $input-padding-y-lg: 16px, // 16px
+
+  $input-border-color: var(--atomix-primary-border-subtle),
+  $input-hover-border-color: var(--atomix-secondary-border-subtle),
+  $input-focus-border-color: var(--atomix-secondary-border-subtle),
+
+  $input-invalid-border-color: var(--atomix-error),
+  $input-success-border-color: var(--atomix-success),
+  $input-border-radius: 8px, // 8px - softer corners
+
+  $input-placeholder-color: var(--atomix-tertiary-text-emphasis),
+  $input-disabled-color: var(--atomix-tertiary-text-emphasis),
+  $input-disabled-bg: var(--atomix-secondary-bg-subtle),
+
+  $input-textarea-height: 120px, // 120px
+  $input-textarea-height-sm: 100px, // 100px
+  $input-textarea-height-lg: 160px // 160px
+);
+
+// Override variables that don't have !default in the original
+$input-border-width: 1px;

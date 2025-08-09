@@ -1,1 +1,51 @@
+/*!
+ * Shaj Default Theme Navbar Settings
+ * Modern navbar styling with clean aesthetics
+ * Overrides Atomix default navbar settings
+ */
 
+@use '../../../styles/01-settings/settings.navbar' with (
+  // Navbar container and layout
+  $navbar-padding-x: 32px, // 32px - more breathing room
+  $navbar-padding-y: 12px, // 12px
+  $navbar-container-max-width: 1440px, // 1440px
+  $navbar-height: 72px, // 72px - taller for modern feel
+
+  // Navbar appearance
+  $navbar-bg: var(--atomix-body-bg),
+  $navbar-border-width: 1px,
+  $navbar-border-color: var(--atomix-primary-border-subtle),
+  $navbar-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), // Even softer, larger shadow for depth
+
+  // Brand/logo
+  $navbar-brand-margin-end: 32px, // 32px
+  $navbar-brand-font-size: 20px, // 20px - slightly larger
+  $navbar-brand-font-weight: 600,
+  $navbar-brand-color: var(--atomix-body-color),
+
+  // Mobile toggler
+  $navbar-toggler-size: 36px, // 36px
+  $navbar-toggler-color: var(--atomix-body-color),
+  $navbar-toggler-bg: transparent,
+  $navbar-toggler-border: 0,
+  $navbar-toggler-border-radius: 6px, // 6px
+  $navbar-toggler-focus-shadow: 0 0 0 3px rgba(14, 165, 233, 0.3), // larger focus
+
+  // Collapse/mobile menu
+  $navbar-collapse-padding-top: 12px, // 12px
+  $navbar-collapse-transition: all 300ms ease-in-out, // smoother transition
+
+  // Backdrop (for mobile overlay)
+  $navbar-backdrop-bg: rgba(0, 0, 0, 0.5),
+  $navbar-backdrop-z-index: 1029,
+
+  // Z-index values
+  $navbar-z-index: 1030,
+  $navbar-fixed-z-index: 1030,
+
+  // Dark mode variants
+  $navbar-bg-dark: var(--atomix-gray-9),
+  $navbar-border-color-dark: var(--atomix-gray-7),
+  $navbar-brand-color-dark: var(--atomix-gray-1),
+  $navbar-toggler-color-dark: var(--atomix-gray-1)
+);

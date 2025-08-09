@@ -4,34 +4,39 @@
  * Overrides Atomix default card settings
  */
 
-// Card padding and spacing
-$card-padding: 24px !default; // 24px
-$card-padding-sm: 16px !default; // 16px
-$card-padding-lg: 32px !default; // 32px
+@use '../../../styles/01-settings/settings.card' with (
+  $card-spacer-y: 20px, // 20px - more generous spacing
+  $card-spacer-x: 20px, // 20px
+  $card-row-spacer-y: 16px, // 16px
+  $card-row-spacer-x: 16px, // 16px
+  $card-title-spacer-y: 6px, // 6px
+  $card-action-spacer-y: 16px, // 16px
+  $card-header-spacer-y: 16px, // 16px
 
-// Card border and radius
-$card-border-width: 1px !default;
-$card-border-radius: 8px !default; // 8px
-$card-border-radius-sm: 6px !default; // 6px
-$card-border-radius-lg: 12px !default; // 12px
+  $card-title-color: var(--atomix-body-color),
+  $card-title-font-size: 18px, // 18px - larger titles
+  $card-text-color: var(--atomix-secondary-text-emphasis),
+  $card-text-font-size: 16px, // 16px - better readability
 
-// Card shadows
-$card-box-shadow:
-  0 1px 3px 0 rgba(0, 0, 0, 0.1),
-  0 1px 2px 0 rgba(0, 0, 0, 0.06) !default;
-$card-hover-shadow:
-  0 4px 6px -1px rgba(0, 0, 0, 0.1),
-  0 2px 4px -1px rgba(0, 0, 0, 0.06) !default;
+  $card-border-width: 1px,
+  $card-border-color: var(--atomix-primary-border-subtle),
 
-// Card transitions
-$card-transition: all 250ms ease !default;
+  $card-border-radius: var(--atomix-border-radius-xl), // 12px
+  $card-image-border-radius: var(--atomix-border-radius-xl),
 
-// Card spacing
-$card-spacer-y: 16px !default; // 16px
-$card-spacer-x: 24px !default; // 24px
+  $card-boxshadow: 0 2px 8px rgba(0, 0, 0, 0.06), // subtle shadow
+  $card-hover-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), // elevated on hover
+  $card-height: null,
 
-// Card header and footer
-$card-header-padding-y: 16px !default; // 16px
-$card-header-padding-x: 24px !default; // 24px
-$card-footer-padding-y: 16px !default; // 16px
-$card-footer-padding-x: 24px !default; // 24px
+  $card-bg: var(--atomix-primary-bg-subtle),
+  $card-bg-hover: var(--atomix-secondary-bg-subtle),
+
+  $card-icon-size: 24px, // 24px - larger icons
+  $card-icon-padding: 12px, // 12px
+  $card-icon-bg: var(--atomix-brand-bg-subtle),
+  $card-icon-color: var(--atomix-brand-text-emphasis),
+
+  $card-width: 100%,
+
+  $card-hover: true // enable hover effects
+);
