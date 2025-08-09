@@ -8,9 +8,12 @@
   $list-group-width: 100%,
   $list-group-bg: null,
 
-  $list-group-item-padding-y: 16px, // 16px - more generous padding
-  $list-group-item-padding-x: 16px, // 16px
-  $list-group-item-font-size: 16px, // 16px
+  $list-group-item-padding-y: 16px,
+  // 16px - more generous padding
+  $list-group-item-padding-x: 16px,
+  // 16px
+  $list-group-item-font-size: 16px,
+  // 16px
   $list-group-item-color: var(--atomix-body-color),
   $list-group-item-disabled-color: var(--atomix-disabled-text-emphasis),
   $list-group-item-border-color: var(--atomix-primary-border-subtle),

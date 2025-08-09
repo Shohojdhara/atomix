@@ -1,7 +1,5 @@
 {
-  "files": [
-    "README.md"
-  ],
+  "files": ["README.md"],
   "imageSize": 100,
   "commit": false,
   "commitConvention": "angular",
@@ -11,12 +9,7 @@
       "name": "Shohojdhara",
       "avatar_url": "https://avatars.githubusercontent.com/u/shohojdhara?v=4",
       "profile": "https://github.com/shohojdhara",
-      "contributions": [
-        "code",
-        "design",
-        "doc",
-        "ideas"
-      ]
+      "contributions": ["code", "design", "doc", "ideas"]
     }
   ],
   "contributorsPerLine": 7,

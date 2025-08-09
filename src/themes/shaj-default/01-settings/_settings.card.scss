@@ -5,37 +5,47 @@
  */
 
 @use '../../../styles/01-settings/settings.card' with (
-  $card-spacer-y: 20px, // 20px - more generous spacing
-  $card-spacer-x: 20px, // 20px
-  $card-row-spacer-y: 16px, // 16px
-  $card-row-spacer-x: 16px, // 16px
-  $card-title-spacer-y: 6px, // 6px
-  $card-action-spacer-y: 16px, // 16px
-  $card-header-spacer-y: 16px, // 16px
+  $card-spacer-y: 20px,
+  // 20px - more generous spacing
+  $card-spacer-x: 20px,
+  // 20px
+  $card-row-spacer-y: 16px,
+  // 16px
+  $card-row-spacer-x: 16px,
+  // 16px
+  $card-title-spacer-y: 6px,
+  // 6px
+  $card-action-spacer-y: 16px,
+  // 16px
+  $card-header-spacer-y: 16px,
 
+  // 16px
   $card-title-color: var(--atomix-body-color),
-  $card-title-font-size: 18px, // 18px - larger titles
+  $card-title-font-size: 18px,
+  // 18px - larger titles
   $card-text-color: var(--atomix-secondary-text-emphasis),
-  $card-text-font-size: 16px, // 16px - better readability
+  $card-text-font-size: 16px,
 
+  // 16px - better readability
   $card-border-width: 1px,
   $card-border-color: var(--atomix-primary-border-subtle),
-
-  $card-border-radius: var(--atomix-border-radius-xl), // 12px
+  $card-border-radius: var(--atomix-border-radius-xl),
+  // 12px
   $card-image-border-radius: var(--atomix-border-radius-xl),
-
-  $card-boxshadow: 0 2px 8px rgba(0, 0, 0, 0.06), // subtle shadow
-  $card-hover-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), // elevated on hover
+  $card-boxshadow: 0 2px 8px rgba(0, 0, 0, 0.06),
+  // subtle shadow
+  $card-hover-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12),
+  // elevated on hover
   $card-height: null,
 
   $card-bg: var(--atomix-primary-bg-subtle),
   $card-bg-hover: var(--atomix-secondary-bg-subtle),
-
-  $card-icon-size: 24px, // 24px - larger icons
-  $card-icon-padding: 12px, // 12px
+  $card-icon-size: 24px,
+  // 24px - larger icons
+  $card-icon-padding: 12px,
+  // 12px
   $card-icon-bg: var(--atomix-brand-bg-subtle),
   $card-icon-color: var(--atomix-brand-text-emphasis),
-
   $card-width: 100%,
 
   $card-hover: true // enable hover effects

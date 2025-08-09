@@ -432,7 +432,13 @@ export const ValidationStates: Story = {
         </FormGroup>
 
         <FormGroup valid={true} helperText="This checkbox is valid">
-          <Checkbox id="valid-checkbox" label="Valid Checkbox" checked={true} onChange={() => {}} valid={true} />
+          <Checkbox
+            id="valid-checkbox"
+            label="Valid Checkbox"
+            checked={true}
+            onChange={() => {}}
+            valid={true}
+          />
         </FormGroup>
 
         <FormGroup invalid={true} helperText="This checkbox is invalid">

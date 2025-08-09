@@ -5,38 +5,47 @@
  */
 
 @use '../../../styles/01-settings/settings.dropdown' with (
-  $dropdown-min-width: 200px, // 200px - wider for better content
-  $dropdown-font-size: 16px, // 16px
+  $dropdown-min-width: 200px,
+  // 200px - wider for better content
+  $dropdown-font-size: 16px,
+  // 16px
   $dropdown-color: var(--atomix-body-color),
   $dropdown-bg: var(--atomix-body-bg),
   $dropdown-border-color: var(--atomix-primary-border-subtle),
-  $dropdown-border-radius: 8px, // 8px - softer corners
+  $dropdown-border-radius: 8px,
+  // 8px - softer corners
   $dropdown-border-width: 1px,
   $dropdown-padding-x: 0,
-  $dropdown-padding-y: 8px, // 8px
-  $dropdown-spacer: 6px, // 6px
-  $dropdown-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), // deeper shadow
-
-  $dropdown-item-padding-x: 16px, // 16px
-  $dropdown-item-padding-y: 10px, // 10px - more padding
+  $dropdown-padding-y: 8px,
+  // 8px
+  $dropdown-spacer: 6px,
+  // 6px
+  $dropdown-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1),
+  // deeper shadow
+  $dropdown-item-padding-x: 16px,
+  // 16px
+  $dropdown-item-padding-y: 10px,
+  // 10px - more padding
   $dropdown-item-hover-color: var(--atomix-secondary-text-emphasis),
   $dropdown-item-hover-bg: var(--atomix-brand-bg-subtle),
-
   // Animation settings
-  $dropdown-animation-duration: 0.2s, // faster
+  $dropdown-animation-duration: 0.2s,
+  // faster
   $dropdown-animation-timing: cubic-bezier(0.16, 1, 0.3, 1),
-
   // Link variables
   $dropdown-link-color: var(--atomix-body-color),
   $dropdown-link-hover-color: var(--atomix-brand-text-emphasis),
   $dropdown-link-hover-bg: var(--atomix-brand-bg-subtle),
   $dropdown-link-active-color: var(--atomix-brand-text-emphasis),
   $dropdown-link-active-bg: var(--atomix-brand-bg-subtle),
-  $dropdown-link-border-radius: 6px, // 6px
+  $dropdown-link-border-radius: 6px,
 
+  // 6px
   $dropdown-header-color: var(--atomix-tertiary-text-emphasis),
-  $dropdown-header-padding: 10px 16px, // consistent with items
+  $dropdown-header-padding: 10px 16px,
 
-  $dropdown-divider-margin-y: 8px, // 8px
+  // consistent with items
+  $dropdown-divider-margin-y: 8px,
+  // 8px
   $dropdown-divider-bg: var(--atomix-primary-border-subtle)
 );

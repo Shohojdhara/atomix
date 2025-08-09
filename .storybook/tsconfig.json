@@ -29,10 +29,5 @@
     "../*.story.*",
     "./**/*"
   ],
-  "exclude": [
-    "../node_modules",
-    "../dist",
-    "../build",
-    "../storybook-static"
-  ]
-} 
+  "exclude": ["../node_modules", "../dist", "../build", "../storybook-static"]
+}

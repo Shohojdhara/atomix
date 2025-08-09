@@ -14,6 +14,7 @@
     5: 5px,
   ),
   $border-style: solid,
-  $border-color: var(--atomix-gray-3), // softer default border
+  $border-color: var(--atomix-gray-3),
+  // softer default border
   $border-color-dark: var(--atomix-gray-5) // darker border for dark mode
 );

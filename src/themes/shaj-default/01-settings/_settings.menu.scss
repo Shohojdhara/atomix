@@ -5,35 +5,52 @@
  */
 
 @use '../../../styles/01-settings/settings.menu' with (
-  $menu-min-width: 200px, // 200px - wider for better content
-  $menu-container-width: 1440px, // 1440px - modern container width
-  $menu-padding-x: 12px, // 12px
-  $menu-padding-y: 12px, // 12px
+  $menu-min-width: 200px,
+  // 200px - wider for better content
+  $menu-container-width: 1440px,
+  // 1440px - modern container width
+  $menu-padding-x: 12px,
+  // 12px
+  $menu-padding-y: 12px,
 
+  // 12px
   $menu-bg: var(--atomix-body-bg),
-  $menu-border-radius: 8px, // 8px - softer corners
-  $menu-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), // enhanced shadow
-  $menu-items-gap: 4px, // 4px
+  $menu-border-radius: 8px,
+  // 8px - softer corners
+  $menu-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1),
+  // enhanced shadow
+  $menu-items-gap: 4px,
 
-  $menu-item-padding-x: 12px, // 12px
-  $menu-item-padding-y: 10px, // 10px
-  $menu-item-inner-gap: 8px, // 8px
+  // 4px
+  $menu-item-padding-x: 12px,
+  // 12px
+  $menu-item-padding-y: 10px,
+  // 10px
+  $menu-item-inner-gap: 8px,
+  // 8px
   $menu-item-color: var(--atomix-primary-text-emphasis),
-  $menu-item-font-size: 16px, // 16px
-  $menu-item-font-weight: 500, // medium weight
+  $menu-item-font-size: 16px,
+  // 16px
+  $menu-item-font-weight: 500,
+  // medium weight
   $menu-item-bg: var(--atomix-body-bg),
   $menu-item-bg-hover: var(--atomix-secondary-bg-subtle),
   $menu-item-bg-active: var(--atomix-brand-bg-subtle),
-  $menu-item-icon-size: 18px, // 18px
+  $menu-item-icon-size: 18px,
 
+  // 18px
   $menu-subitem-color: var(--atomix-secondary-text-emphasis),
   $menu-subitem-color-active: var(--atomix-brand-text-emphasis),
   $menu-subitem-font-weight: 400,
   $menu-subitem-font-weight-active: 500,
 
-  $menu-mega-padding-x: 48px, // 48px
-  $menu-mega-padding-y: 32px, // 32px
-  $menu-mega-grid-gap: 48px, // 48px
-  $menu-mega-header-title-font-size: 18px, // 18px
+  $menu-mega-padding-x: 48px,
+  // 48px
+  $menu-mega-padding-y: 32px,
+  // 32px
+  $menu-mega-grid-gap: 48px,
+  // 48px
+  $menu-mega-header-title-font-size: 18px,
+  // 18px
   $menu-mega-header-title-font-weight: 600 // bolder headers
 );

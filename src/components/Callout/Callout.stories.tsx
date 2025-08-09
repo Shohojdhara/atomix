@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { Callout } from './Callout';  
+import { Callout } from './Callout';
 import { Button } from '../Button/Button';
 
 const meta: Meta<typeof Callout> = {

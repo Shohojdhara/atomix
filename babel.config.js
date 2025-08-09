@@ -54,12 +54,12 @@ export default {
     test: {
       presets: [
         [
-          '@babel/preset-env', 
-          { 
+          '@babel/preset-env',
+          {
             targets: { node: 'current' },
-            modules: 'commonjs' // Use CommonJS for tests
-          }
-        ]
+            modules: 'commonjs', // Use CommonJS for tests
+          },
+        ],
       ],
       plugins: [
         [

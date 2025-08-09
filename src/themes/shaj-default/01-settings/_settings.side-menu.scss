@@ -6,32 +6,43 @@
 
 @use '../../../styles/01-settings/settings.side-menu' with (
   // Side menu container
-  $side-menu-padding-x: 24px, // 24px - more generous padding
-  $side-menu-padding-y: 32px, // 32px
+  $side-menu-padding-x: 24px,
+  // 24px - more generous padding
+  $side-menu-padding-y: 32px,
+  // 32px
   $side-menu-bg: var(--atomix-body-bg),
-  $side-menu-border-radius: 8px, // 8px - softer corners
+  $side-menu-border-radius: 8px,
+  // 8px - softer corners
   $side-menu-border-width: 1px,
   $side-menu-border-color: var(--atomix-border-color),
-  $side-menu-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), // enhanced shadow
-
+  $side-menu-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08),
+  // enhanced shadow
   // Side menu title
-  $side-menu-title-font-size: 18px, // 18px - larger title
+  $side-menu-title-font-size: 18px,
+  // 18px - larger title
   $side-menu-title-font-weight: 600,
   $side-menu-title-color: var(--atomix-body-color),
-  $side-menu-title-spacer-y: 12px, // 12px
+  $side-menu-title-spacer-y: 12px,
 
+  // 12px
   // Side menu toggler
-  $side-menu-toggler-padding-x: 12px, // 12px
-  $side-menu-toggler-padding-y: 8px, // 8px
+  $side-menu-toggler-padding-x: 12px,
+  // 12px
+  $side-menu-toggler-padding-y: 8px,
+  // 8px
   $side-menu-toggler-bg: transparent,
   $side-menu-toggler-hover-bg: var(--atomix-secondary-bg-subtle),
-  $side-menu-toggler-border-radius: 6px, // 6px
+  $side-menu-toggler-border-radius: 6px,
+  // 6px
   $side-menu-toggler-transition: all 0.2s ease-in-out,
 
   // Side menu items
-  $side-menu-item-padding-x: 16px, // 16px - more padding
-  $side-menu-item-padding-y: 12px, // 12px
-  $side-menu-item-font-size: 16px, // 16px - better readability
+  $side-menu-item-padding-x: 16px,
+  // 16px - more padding
+  $side-menu-item-padding-y: 12px,
+  // 12px
+  $side-menu-item-font-size: 16px,
+  // 16px - better readability
   $side-menu-item-font-weight: 400,
   $side-menu-item-color: var(--atomix-secondary-text-emphasis),
   $side-menu-item-hover-color: var(--atomix-body-color),
@@ -41,22 +52,29 @@
   $side-menu-item-hover-bg: var(--atomix-secondary-bg-subtle),
   $side-menu-item-active-bg: var(--atomix-brand-bg-subtle),
   $side-menu-item-disabled-bg: transparent,
-  $side-menu-item-border-radius: 6px, // 6px
+  $side-menu-item-border-radius: 6px,
+  // 6px
   $side-menu-item-transition: all 0.2s ease-in-out,
-  $side-menu-item-gap: 12px, // 12px
+  $side-menu-item-gap: 12px,
 
+  // 12px
   // Side menu list
-  $side-menu-list-margin-bottom: 16px, // 16px
-  $side-menu-list-gap: 4px, // 4px
+  $side-menu-list-margin-bottom: 16px,
+  // 16px
+  $side-menu-list-gap: 4px,
 
+  // 4px
   // Side menu wrapper (for mobile animation)
   $side-menu-wrapper-transition: height 0.3s ease-in-out,
-  $side-menu-inner-padding-top: 24px, // 24px
+  $side-menu-inner-padding-top: 24px,
 
+  // 24px
   // Mobile responsive
-  $side-menu-mobile-padding-x: 20px, // 20px
-  $side-menu-mobile-padding-y: 16px, // 16px
+  $side-menu-mobile-padding-x: 20px,
+  // 20px
+  $side-menu-mobile-padding-y: 16px,
 
+  // 16px
   // Dark mode variants
   $side-menu-bg-dark: var(--atomix-gray-9),
   $side-menu-border-color-dark: var(--atomix-gray-7),

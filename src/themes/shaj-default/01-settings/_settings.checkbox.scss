@@ -5,10 +5,14 @@
  */
 
 @use '../../../styles/01-settings/settings.checkbox' with (
-  $checkbox-width: 20px, // 20px
-  $checkbox-height: 20px, // 20px
-  $checkbox-spacer: 12px, // 12px - more space between checkbox and label
-  $checkbox-font-size: 16px, // 16px
+  $checkbox-width: 20px,
+  // 20px
+  $checkbox-height: 20px,
+  // 20px
+  $checkbox-spacer: 12px,
+  // 12px - more space between checkbox and label
+  $checkbox-font-size: 16px,
+  // 16px
   $checkbox-text-color: var(--atomix-body-color),
   $checkbox-checked-text-color: var(--atomix-body-color),
   $checkbox-text-color-disabled: var(--atomix-tertiary-text-emphasis),

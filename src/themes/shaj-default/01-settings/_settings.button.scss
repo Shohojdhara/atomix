@@ -21,7 +21,6 @@
   // 16px
   $btn-font-size-sm: 14px,
   // 14px
-
   // Large button sizing
   $btn-padding-y-lg: 16px,
   // 16px
@@ -29,7 +28,6 @@
   // 32px
   $btn-font-size-lg: 18px,
   // 18px
-
   // Button border and radius
   $btn-border-width: 1px,
   $btn-border-radius: 8px,
@@ -38,20 +36,21 @@
   // 6px
   $btn-border-radius-lg: 10px,
   // 10px
-
   // Button transitions
-  $btn-transition: all 200ms ease-in-out, // smoother transition
+  $btn-transition: all 200ms ease-in-out,
 
+  // smoother transition
   // Button focus and states
   $btn-focus-width: 2px,
-  $btn-focus-box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.3), // slightly larger focus ring
+  $btn-focus-box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.3),
+  // slightly larger focus ring
   $btn-disabled-opacity: 0.6,
 
   // Button icon spacing
   $btn-inner-gap: 8px,
   // 8px
-
   // Button hover effects
-  $btn-hover-transform: translateY(-2px), // more pronounced lift
+  $btn-hover-transform: translateY(-2px),
+  // more pronounced lift
   $btn-active-transform: translateY(0)
 );

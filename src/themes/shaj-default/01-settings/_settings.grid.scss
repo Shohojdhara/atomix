@@ -8,13 +8,19 @@
 @forward '../../../styles/01-settings/settings.grid' with (
   // Container max widths - modern responsive breakpoints
   $container-max-widths: (
-    xs: 360px, // 360px
-    sm: 576px, // 576px
-    md: 768px, // 768px
-    lg: 1024px, // 1024px
-    xl: 1280px, // 1280px - wider for modern screens
-    xxl: 1440px, // 1440px - even wider for large displays
-  )
+      xs: 360px,
+      // 360px
+      sm: 576px,
+      // 576px
+      md: 768px,
+      // 768px
+      lg: 1024px,
+      // 1024px
+      xl: 1280px,
+      // 1280px - wider for modern screens
+      xxl: 1440px,
+      // 1440px - even wider for large displays
+    )
 );
 
 // Override variables that don't have !default in the original

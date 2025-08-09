@@ -413,14 +413,14 @@ export const WithAvatarDropdown: Story = {
             <>
               <div
                 className="c-avatar c-avatar--sm c-avatar--circle"
-                style={{ 
-                  backgroundColor: '#7C3AED', 
-                  display: 'flex', 
-                  alignItems: 'center', 
+                style={{
+                  backgroundColor: '#7C3AED',
+                  display: 'flex',
+                  alignItems: 'center',
                   justifyContent: 'center',
                   color: 'white',
                   fontSize: '12px',
-                  fontWeight: 'bold'
+                  fontWeight: 'bold',
                 }}
               >
                 JD
@@ -492,14 +492,14 @@ export const ResponsiveNavbar: Story = {
             <>
               <div
                 className="c-avatar c-avatar--sm c-avatar--circle"
-                style={{ 
-                  backgroundColor: '#7C3AED', 
-                  display: 'flex', 
-                  alignItems: 'center', 
+                style={{
+                  backgroundColor: '#7C3AED',
+                  display: 'flex',
+                  alignItems: 'center',
                   justifyContent: 'center',
                   color: 'white',
                   fontSize: '12px',
-                  fontWeight: 'bold'
+                  fontWeight: 'bold',
                 }}
               >
                 JD
