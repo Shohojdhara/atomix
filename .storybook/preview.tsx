@@ -34,7 +34,6 @@ const preview: Preview = {
       ],
     },
     viewport: {
-      defaultViewport: 'none',
       viewports: {
         mobile: {
           name: 'Mobile',

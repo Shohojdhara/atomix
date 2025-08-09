@@ -18,3 +18,23 @@ export function generateUUID(): string {
     return v.toString(16);
   });
 }
+
+/**
+ * Extract YouTube video ID from various YouTube URL formats
+ * @param url - YouTube URL
+ * @returns YouTube video ID or null if not found
+ */
+export function extractYouTubeId(url: string): string | null {
+  const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
+}
+
+/**
+ * Check if a URL is a YouTube URL
+ * @param url - URL to check
+ * @returns True if the URL is a YouTube URL
+ */
+export function isYouTubeUrl(url: string): boolean {
+  return /(?:youtube\.com|youtu\.be)/.test(url);
+}

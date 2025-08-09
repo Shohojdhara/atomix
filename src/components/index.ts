@@ -44,3 +44,4 @@ export { default as Todo, type TodoProps } from './Todo/Todo';
 export { default as Toggle, type ToggleProps } from './Toggle/Toggle';
 export { default as Tooltip, type TooltipProps } from './Tooltip/Tooltip';
 export { default as Upload, type UploadProps } from './Upload/Upload';
+export { default as VideoPlayer, type VideoPlayerProps } from './VideoPlayer/VideoPlayer';
