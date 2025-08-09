@@ -1,6 +1,6 @@
 {
   "name": "@shohojdhara/atomix",
-  "version": "0.1.30",
+  "version": "0.2.00",
   "description": "Atomix Design System - A modern component library for web applications",
   "type": "module",
   "sideEffects": false,
@@ -36,6 +36,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
+    "@shohojdhara/atomix": "^0.2.0",
     "@storybook/react": "^8.6.14",
     "@storybook/react-vite": "^8.6.14",
     "@vitejs/plugin-react": "^4.6.0",
@@ -156,7 +157,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Shohojdhara/atomix.git"
+    "url": "git+https://github.com/Shohojdhara/atomix.git"
   },
   "author": "liimonx <liimonx@shohojdhara.org>",
   "license": "Apache-2.0",
