@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Avatar } from './Avatar';
 import { AvatarGroup } from './AvatarGroup';
 import { Icon } from '../Icon';
@@ -41,10 +42,7 @@ const meta = {
       control: 'boolean',
       description: 'Whether the avatar is disabled',
     },
-    onClick: {
-      action: 'clicked',
-      description: 'Optional click handler',
-    },
+
   },
 } satisfies Meta<typeof Avatar>;
 

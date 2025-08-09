@@ -1,5 +1,6 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Todo } from './Todo';
 import { generateUUID } from '../../lib/utils';
 
@@ -13,9 +14,7 @@ const meta: Meta<typeof Todo> = {
   argTypes: {
     items: { control: 'object' },
     title: { control: 'text' },
-    onAddTodo: { action: 'added' },
-    onToggleTodo: { action: 'toggled' },
-    onDeleteTodo: { action: 'deleted' },
+
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],

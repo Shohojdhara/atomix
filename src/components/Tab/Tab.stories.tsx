@@ -1,5 +1,6 @@
 import React from 'react';
 import { StoryFn, Meta } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Tab } from './Tab';
 
 export default {
@@ -10,7 +11,7 @@ export default {
       control: { type: 'number' },
       defaultValue: 0,
     },
-    onTabChange: { action: 'tab changed' },
+
   },
 } as Meta<typeof Tab>;
 

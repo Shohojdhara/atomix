@@ -1,5 +1,6 @@
 import React from 'react';
 import { StoryFn, Meta } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Steps } from './Steps';
 import type { StepsProps } from './Steps';
 
@@ -15,7 +16,7 @@ export default {
       control: { type: 'boolean' },
       defaultValue: false,
     },
-    onStepChange: { action: 'step changed' },
+
   },
 } as Meta<typeof Steps>;
 

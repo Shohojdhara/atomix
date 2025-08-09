@@ -1,5 +1,6 @@
 import React from 'react';
 import { StoryFn, Meta } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Popover, PopoverTrigger } from './Popover';
 import { Toggle } from '../Toggle/Toggle';
 import { Button } from '../Button/Button';
@@ -41,7 +42,7 @@ export default {
     className: {
       control: { type: 'text' },
     },
-    onOpenChange: { action: 'openChange' },
+
   },
 } as Meta<typeof Popover>;
 

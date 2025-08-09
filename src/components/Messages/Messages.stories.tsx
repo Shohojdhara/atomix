@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Messages } from './Messages';
 import { MessageItem } from '../../lib/types/components';
 
@@ -20,7 +21,7 @@ const meta: Meta<typeof Messages> = {
     messages: { control: 'object' },
     width: { control: 'text' },
     bodyHeight: { control: 'text' },
-    onSendMessage: { action: 'message sent' },
+
     otherName: { control: 'text' },
     otherAvatar: { control: 'text' },
     selfAvatar: { control: 'text' },

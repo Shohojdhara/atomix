@@ -1,5 +1,6 @@
 import React from 'react';
 import { StoryFn, Meta } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Toggle } from './Toggle';
 
 export default {
@@ -14,8 +15,7 @@ export default {
       control: { type: 'boolean' },
       defaultValue: false,
     },
-    onToggleOn: { action: 'toggled on' },
-    onToggleOff: { action: 'toggled off' },
+
   },
 } as Meta<typeof Toggle>;
 

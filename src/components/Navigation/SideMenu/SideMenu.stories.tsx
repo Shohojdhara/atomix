@@ -111,14 +111,7 @@ The SideMenu component provides a collapsible navigation menu with title and men
         defaultValue: { summary: 'false' },
       },
     },
-    onToggle: {
-      action: 'toggled',
-      description: 'Callback when menu open state changes',
-      table: {
-        type: { summary: '(isOpen: boolean) => void' },
-        defaultValue: { summary: 'undefined' },
-      },
-    },
+
   },
   args: {
     onToggle: fn(),

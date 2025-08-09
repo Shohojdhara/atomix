@@ -1,5 +1,6 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Card, ElevationCard } from './index';
 
 const meta: Meta<typeof Card> = {
@@ -20,7 +21,7 @@ const meta: Meta<typeof Card> = {
     flat: { control: 'boolean' },
     active: { control: 'boolean' },
     className: { control: 'text' },
-    onClick: { action: 'clicked' },
+
   },
 };
 

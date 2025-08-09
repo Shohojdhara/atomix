@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Meta, StoryFn } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Pagination } from './Pagination';
 import { PaginationProps } from '../../lib/types/components';
 
@@ -15,10 +16,7 @@ export default {
       control: 'number',
       description: 'Total number of pages',
     },
-    onPageChange: {
-      action: 'onPageChange',
-      description: 'Callback function when page changes',
-    },
+
     siblingCount: {
       control: 'number',
       description: 'Number of page links to show before and after current page',

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StoryFn, Meta } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Rating } from './Rating';
 import type { RatingProps } from '../../lib/types/components';
 
@@ -20,7 +21,7 @@ export default {
         options: ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'],
       },
     },
-    onChange: { action: 'onChange' },
+
   },
   parameters: {
     docs: {

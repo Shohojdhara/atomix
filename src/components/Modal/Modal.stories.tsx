@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import Modal from './Modal';
 
 const meta: Meta<typeof Modal> = {
@@ -31,9 +32,7 @@ const meta: Meta<typeof Modal> = {
       description: 'Whether to show the close button',
       defaultValue: true,
     },
-    onClose: { action: 'onClose' },
-    onOpen: { action: 'onOpen' },
-    onOpenChange: { action: 'onOpenChange' },
+
   },
 };
 

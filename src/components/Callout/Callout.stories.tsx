@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Callout } from './Callout';
 import { Button } from '../Button/Button';
 
@@ -63,13 +64,7 @@ const meta: Meta<typeof Callout> = {
         type: { summary: 'boolean' },
       },
     },
-    onClose: {
-      action: 'closed',
-      description: 'Callback when the close button is clicked',
-      table: {
-        type: { summary: '() => void' },
-      },
-    },
+
     actions: {
       control: false,
       description: 'Optional action buttons to display in the callout',

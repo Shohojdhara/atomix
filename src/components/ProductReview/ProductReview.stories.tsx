@@ -1,5 +1,6 @@
 import React from 'react';
 import { StoryFn, Meta } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { ProductReview, ProductReviewProps } from './ProductReview';
 
 export default {
@@ -24,7 +25,7 @@ export default {
         options: ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'],
       },
     },
-    onSubmit: { action: 'submitted' },
+
   },
 } as Meta<typeof ProductReview>;
 

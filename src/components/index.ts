@@ -35,6 +35,7 @@ export { default as Rating, type RatingProps } from './Rating/Rating';
 export { default as River, type RiverProps } from './River/River';
 export { default as SectionIntro, type SectionIntroProps } from './SectionIntro/SectionIntro';
 export { default as Select, type SelectProps } from './Form/Select';
+export { default as Slider, type SliderProps } from './Slider/Slider';
 export { default as Spinner, type SpinnerProps } from './Spinner/Spinner';
 export { default as Steps, type StepsProps } from './Steps/Steps';
 export { default as Tab, type TabProps } from './Tab/Tab';
