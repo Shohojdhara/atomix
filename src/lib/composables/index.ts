@@ -42,5 +42,6 @@ export * from './useCard';
 export * from './useDataTable';
 export * from './useModal';
 export * from './usePagination';
+export * from './useSlider';
 
 // Theme composables
