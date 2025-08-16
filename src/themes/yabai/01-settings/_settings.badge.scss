@@ -1,0 +1,26 @@
+/*!
+ * Yabai Theme Badge Settings
+ * Pill-shaped, high-energy badge styling
+ * Overrides Atomix default badge settings
+ */
+
+@use '../../../styles/01-settings/settings.badge' with (
+  // Pill-shaped badges
+  $badge-padding-y: 6px,
+  $badge-padding-x: 16px,
+  $badge-font-size: 12px,
+  $badge-font-weight: 700,
+
+  // Extreme pill shape
+  $badge-border-radius: 50rem
+);
+
+// Small badge sizing
+$badge-padding-y-sm: 4px;
+$badge-padding-x-sm: 12px;
+$badge-font-size-sm: 10px;
+
+// Large badge sizing
+$badge-padding-y-lg: 8px;
+$badge-padding-x-lg: 20px;
+$badge-font-size-lg: 14px;

@@ -1,0 +1,33 @@
+/*!
+ * Yabai Theme Spinner Settings
+ * High-energy spinner styling with orange theme
+ * Overrides Atomix default spinner settings
+ */
+
+@use '../../../styles/01-settings/settings.spinner' with (
+  // Spinner sizes
+  $spinner-width: 32px,
+  $spinner-height: 32px,
+  $spinner-width-sm: 20px,
+  $spinner-height-sm: 20px,
+  $spinner-width-lg: 48px,
+  $spinner-height-lg: 48px,
+  
+  // Spinner styling
+  $spinner-border-width: 3px,
+  $spinner-border-color: rgba(249, 115, 22, 0.2),
+  $spinner-border-top-color: var(--atomix-primary),
+  $spinner-border-radius: 50%,
+  
+  // Spinner animation
+  $spinner-animation-speed: 0.75s,
+  $spinner-animation-name: spin,
+  
+  // Spinner variants
+  $spinner-primary-color: var(--atomix-primary),
+  $spinner-secondary-color: var(--atomix-secondary-text-emphasis),
+  $spinner-success-color: var(--atomix-success),
+  $spinner-danger-color: var(--atomix-error),
+  $spinner-warning-color: var(--atomix-warning),
+  $spinner-info-color: var(--atomix-info)
+);

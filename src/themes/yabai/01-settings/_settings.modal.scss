@@ -1,0 +1,58 @@
+/*!
+ * Yabai Theme Modal Settings
+ * High-energy modal styling with dramatic effects
+ * Overrides Atomix default modal settings
+ */
+
+@use '../../../styles/01-settings/settings.modal' with (
+  // Modal sizing
+  $modal-inner-padding: 32px,
+  $modal-footer-margin-between: 16px,
+  $modal-dialog-margin: 20px,
+  $modal-dialog-margin-y-sm-up: 30px,
+
+  // Modal title
+  $modal-title-line-height: 1.2,
+  $modal-title-font-weight: 700,
+  $modal-title-font-size: 1.5rem,
+  $modal-title-text-transform: uppercase,
+  $modal-title-letter-spacing: 0.025em,
+
+  // Modal content styling
+  $modal-content-color: var(--atomix-body-color),
+  $modal-content-bg: var(--atomix-primary-bg),
+  $modal-content-border-color: var(--atomix-primary-border),
+  $modal-content-border-width: 2px,
+  $modal-content-border-radius: 24px,
+  $modal-content-inner-border-radius: 22px,
+
+  // Dramatic shadows with orange tint
+  $modal-content-box-shadow-xs: (
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -2px rgba(249, 115, 22, 0.1)
+    ),
+  $modal-content-box-shadow-sm-up: (
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 12px 20px -8px rgba(249, 115, 22, 0.15)
+  ),
+  // Modal backdrop
+  $modal-backdrop-bg: rgba(0, 0, 0, 0.6),
+  $modal-backdrop-opacity: 1,
+
+  // Header styling
+  $modal-header-border-color: var(--atomix-primary-border),
+  $modal-header-border-width: 2px,
+  $modal-header-padding-y: 24px,
+  $modal-header-padding-x: 32px,
+
+  // Footer styling
+  $modal-footer-bg: var(--atomix-secondary-bg-subtle),
+  $modal-footer-border-color: var(--atomix-primary-border),
+  $modal-footer-border-width: 2px,
+  $modal-footer-padding-y: 20px,
+  $modal-footer-padding-x: 32px,
+
+  // High-energy transitions
+  $modal-transition: transform opacity ease-out,
+  $modal-scale-transform: scale(0.9)
+);

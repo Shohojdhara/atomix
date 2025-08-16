@@ -1,0 +1,22 @@
+/*!
+ * Yabai Theme Card Settings
+ * High-energy card styling with dramatic shadows and rounded corners
+ * Overrides Atomix default card settings
+ */
+
+@use '../../../styles/01-settings/settings.card' with (
+  // Card structure
+  $card-spacer-y: 24px,
+  $card-spacer-x: 28px,
+  $card-title-spacer-y: 16px,
+  $card-title-color: var(--atomix-brand-text-emphasis),
+  $card-text-color: var(--atomix-brand-text-emphasis),
+  // Rounded corners for modern feel
+  $card-border-width: 2px,
+  $card-border-color: var(--atomix-brand-border-subtle),
+  $card-border-radius: 20px,
+
+  // Background and colors
+  $card-bg: var(--atomix-brand-bg-subtle),
+  // High-energy transitions
+);

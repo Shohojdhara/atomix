@@ -19,7 +19,6 @@ You are working on **Atomix**, a modern React component library and design syste
 1. **Dual Implementation Required**:
 
    - React component in `[ComponentName].tsx`
-   - Vanilla JS implementation in `scripts/` subdirectory
    - Both implementations must have feature parity
 
 2. **File Structure Pattern**:
@@ -29,10 +28,6 @@ You are working on **Atomix**, a modern React component library and design syste
    ├── ComponentName.tsx              # React component
    ├── ComponentName.stories.tsx      # Storybook stories
    ├── index.ts                       # Exports
-   └── scripts/                       # Vanilla JS implementation
-       ├── index.ts                   # Main component class
-       ├── ComponentNameInteractions.ts # Event handlers & utilities
-       └── bundle.ts                  # Global registration
    ```
 
 3. **TypeScript Requirements**:
@@ -111,7 +106,7 @@ You are working on **Atomix**, a modern React component library and design syste
 2. **Test component variants** thoroughly
 3. **Validate accessibility** features
 4. **Check responsive behavior**
-5. **Test both React and vanilla JS** implementations
+5. **Test both React** implementations
 
 ### Documentation:
 
@@ -131,13 +126,13 @@ You are working on **Atomix**, a modern React component library and design syste
 - Use proper TypeScript generics for flexible APIs
 - Handle edge cases gracefully
 
-### Vanilla JS Components:
+<!-- ### Vanilla JS Components:
 
 - Use ES6 classes with private methods
 - Implement proper event handling and cleanup
 - Support data attribute initialization
 - Provide public API methods (open, close, destroy)
-- Register components globally on window.Atomix
+- Register components globally on window.Atomix -->
 
 ### Styling:
 
@@ -180,7 +175,7 @@ export function useComponent(props: ComponentProps) {
 }
 ```
 
-### Vanilla JS Component Pattern:
+<!-- ### Vanilla JS Component Pattern:
 
 ```typescript
 export default class Component {
@@ -196,7 +191,7 @@ export default class Component {
   public close(): void {}
   public destroy(): void {}
 }
-```
+``` -->
 
 ## Error Handling
 

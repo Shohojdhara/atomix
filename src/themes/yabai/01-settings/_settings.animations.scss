@@ -1,0 +1,13 @@
+/*!
+ * Yabai Theme Animation Settings
+ * High-energy, fast animations for stimulating interfaces
+ * Overrides Atomix default animation settings
+ */
+
+@use '../../../styles/01-settings/settings.animations' with (
+  // Faster transition duration for high energy
+  $transition-duration: 0.15s,
+  
+  // High-energy easing function
+  $easing: cubic-bezier(0.4, 0, 0.2, 1)
+);

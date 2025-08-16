@@ -1,0 +1,52 @@
+/*!
+ * Yabai Theme Input Settings
+ * Pill-shaped, high-energy input styling
+ * Overrides Atomix default input settings
+ */
+
+@use '../../../styles/01-settings/settings.input' with (
+  // Input sizing
+  $input-padding-y: 14px,
+  $input-padding-x: 20px,
+  $input-font-family: var(--atomix-font-family-base),
+  $input-font-size: 16px,
+  $input-font-weight: 500,
+  $input-line-height: 1.4,
+
+  // Pill-shaped borders
+  $input-bg: var(--atomix-primary-bg),
+  $input-disabled-bg: var(--atomix-secondary-bg-subtle),
+  $input-disabled-border-color: var(--atomix-secondary-border),
+  $input-color: var(--atomix-body-color),
+  $input-border-color: var(--atomix-primary-border),
+  $input-border-width: 2px,
+  $input-border-radius: 50rem,
+
+  // Focus states with orange theme
+  $input-focus-bg: var(--atomix-primary-bg),
+  $input-focus-border-color: var(--atomix-primary),
+  $input-focus-color: var(--atomix-body-color),
+  $input-focus-width: 3px,
+  $input-focus-box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2),
+  // Placeholder styling
+  $input-placeholder-color: var(--atomix-tertiary-text-emphasis),
+  $input-plaintext-color: var(--atomix-body-color),
+  // Small input sizing
+  $input-padding-y-sm: 10px,
+  $input-padding-x-sm: 16px,
+  $input-font-size-sm: 14px,
+
+  // Large input sizing
+  $input-padding-y-lg: 18px,
+  $input-padding-x-lg: 24px,
+  $input-font-size-lg: 18px,
+
+  // High-energy transitions
+  $input-transition: (
+      border-color 150ms ease-in-out,
+      box-shadow 150ms ease-in-out,
+      transform 150ms ease-in-out
+    ),
+  $input-hover-transform: scale(1.02),
+  $input-focus-transform: scale(1.02)
+);
