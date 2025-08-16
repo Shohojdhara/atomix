@@ -1,7 +1,7 @@
 import React from 'react';
-import { BadgeProps } from '../../lib/types/components';
 import { useBadge } from '../../lib/composables/useBadge';
 import { BADGE } from '../../lib/constants/components';
+import { BadgeProps } from '../../lib/types/components';
 
 export const Badge: React.FC<BadgeProps> = ({
   label,
