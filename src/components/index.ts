@@ -9,6 +9,20 @@ export { default as Button, type ButtonProps } from './Button/Button';
 export { default as Callout, type CalloutProps } from './Callout/Callout';
 export { default as Card, type CardProps } from './Card/Card';
 export {
+  AreaChart,
+  BarChart,
+  Chart,
+  DonutChart,
+  LineChart,
+  PieChart,
+  type AreaChartProps,
+  type BarChartProps,
+  type ChartProps,
+  type DonutChartProps,
+  type LineChartProps,
+  type PieChartProps,
+} from './Chart';
+export {
   default as ColorModeToggle,
   type ColorModeToggleProps,
 } from './ColorModeToggle/ColorModeToggle';

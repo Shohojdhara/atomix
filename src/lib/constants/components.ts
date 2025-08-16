@@ -1,4 +1,4 @@
-import { ThemeColor, Size } from '../types/components';
+import { Size, ThemeColor } from '../types/components';
 
 /**
  * Default theme colors for components
@@ -1195,3 +1195,90 @@ export const sliderConstants = {
 };
 
 export const SLIDER = sliderConstants;
+
+/**
+ * Chart-specific constants
+ */
+export const CHART = {
+  BASE_CLASS: 'c-chart',
+  HEADER_CLASS: 'c-chart__header',
+  HEADER_CONTENT_CLASS: 'c-chart__header-content',
+  TITLE_CLASS: 'c-chart__title',
+  SUBTITLE_CLASS: 'c-chart__subtitle',
+  TOOLBAR_CLASS: 'c-chart__toolbar',
+  ACTION_CLASS: 'c-chart__action',
+  EXPORT_GROUP_CLASS: 'c-chart__export-group',
+  EXPORT_DROPDOWN_CLASS: 'c-chart__export-dropdown',
+  EXPORT_OPTION_CLASS: 'c-chart__export-option',
+  CONTENT_CLASS: 'c-chart__content',
+  CANVAS_CLASS: 'c-chart__canvas',
+  LEGEND_CLASS: 'c-chart__legend',
+  LEGEND_ITEM_CLASS: 'c-chart__legend-item',
+  LEGEND_LABEL_CLASS: 'c-chart__legend-label',
+  LEGEND_COLOR_CLASS: 'c-chart__legend-color',
+  TOOLTIP_CLASS: 'c-chart__tooltip',
+  TOOLTIP_TITLE_CLASS: 'c-chart__tooltip-title',
+  TOOLTIP_CONTENT_CLASS: 'c-chart__tooltip-content',
+  TOOLTIP_ITEM_CLASS: 'c-chart__tooltip-item',
+  TOOLTIP_LABEL_CLASS: 'c-chart__tooltip-label',
+  TOOLTIP_VALUE_CLASS: 'c-chart__tooltip-value',
+  AXIS_CLASS: 'c-chart__axis',
+  GRID_CLASS: 'c-chart__grid',
+  DATA_POINT_CLASS: 'c-chart__data-point',
+  LOADING_CLASS: 'c-chart__loading',
+  LOADING_SPINNER_CLASS: 'c-chart__loading-spinner',
+  LOADING_TEXT_CLASS: 'c-chart__loading-text',
+  ERROR_CLASS: 'c-chart__error',
+  ERROR_ICON_CLASS: 'c-chart__error-icon',
+  ERROR_CONTENT_CLASS: 'c-chart__error-content',
+  ERROR_MESSAGE_CLASS: 'c-chart__error-message',
+  ERROR_DETAILS_CLASS: 'c-chart__error-details',
+  EMPTY_CLASS: 'c-chart__empty',
+  EMPTY_ICON_CLASS: 'c-chart__empty-icon',
+  EMPTY_MESSAGE_CLASS: 'c-chart__empty-message',
+  EMPTY_DETAILS_CLASS: 'c-chart__empty-details',
+  TYPE_PREFIX: 'c-chart--',
+  SIZE_PREFIX: 'c-chart--',
+  VARIANT_PREFIX: 'c-chart--',
+  LOADING_STATE_CLASS: 'c-chart--loading',
+  ERROR_STATE_CLASS: 'c-chart--error',
+  CLASSES: {
+    // Chart Types
+    LINE: 'c-chart--line',
+    AREA: 'c-chart--area',
+    BAR: 'c-chart--bar',
+    HORIZONTAL_BAR: 'c-chart--horizontal-bar',
+    PIE: 'c-chart--pie',
+    DONUT: 'c-chart--donut',
+    DOUGHNUT: 'c-chart--doughnut',
+    SCATTER: 'c-chart--scatter',
+    RADAR: 'c-chart--radar',
+    BUBBLE: 'c-chart--bubble',
+    CANDLESTICK: 'c-chart--candlestick',
+
+    // Sizes
+    SM: 'c-chart--sm',
+    MD: 'c-chart--md',
+    LG: 'c-chart--lg',
+    XL: 'c-chart--xl',
+    FULL: 'c-chart--full',
+
+    // Variants
+    PRIMARY: 'c-chart--primary',
+    SECONDARY: 'c-chart--secondary',
+    SUCCESS: 'c-chart--success',
+    ERROR: 'c-chart--error',
+    WARNING: 'c-chart--warning',
+    INFO: 'c-chart--info',
+
+    // States
+    LOADING: 'c-chart--loading',
+    INTERACTIVE: 'c-chart--interactive',
+    DISABLED: 'c-chart--disabled',
+    FULLSCREEN: 'c-chart--fullscreen',
+    MINIMIZED: 'c-chart--minimized',
+
+    // Legacy Support
+    ADVANCED: 'c-chart--advanced',
+  },
+};
