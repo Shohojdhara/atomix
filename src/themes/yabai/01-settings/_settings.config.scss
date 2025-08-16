@@ -3,10 +3,4 @@
  * Core configuration settings for the high-energy Yabai theme
  */
 
-@use '../../../styles/01-settings/settings.config' with (
-  // Environment
-  $ENV: 'dev',
-  
-  // Prefix for CSS classes - keep atomix for compatibility
-  $prefix: 'atomix-'
-);
+@use '../../../styles/01-settings/settings.config';

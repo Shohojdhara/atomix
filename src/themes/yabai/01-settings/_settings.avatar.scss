@@ -8,8 +8,3 @@
   // Avatar sizes
   $avatar-size: ('xs': 24px, 'sm': 32px, 'md': 40px, 'lg': 56px, 'xl': 72px) // Pill-shaped avatars
 );
-
-// Avatar hover effects
-$avatar-transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-$avatar-hover-transform: scale(1.05);
-$avatar-hover-border-color: var(--atomix-primary);

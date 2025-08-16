@@ -49,7 +49,5 @@
   $tab-link-disabled-border-color: transparent,
   
   // High-energy transitions
-  $tab-transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1),
-  $tab-hover-transform: translateY(-2px) scale(1.02),
-  $tab-active-transform: translateY(-1px)
+  $tab-transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1)
 );

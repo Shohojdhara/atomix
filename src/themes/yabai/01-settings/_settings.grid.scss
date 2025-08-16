@@ -4,36 +4,4 @@
  * Overrides Atomix default grid settings
  */
 
-@use '../../../styles/01-settings/settings.grid' with (
-  // Grid columns
-  $grid-columns: 12,
-  $grid-gutter-width: 2rem,
-  $grid-row-columns: 6,
-  
-  // Container padding
-  $container-padding-x: 1.5rem,
-  
-  // Grid breakpoints (inherited from breakpoints)
-  $grid-breakpoints: (
-    xs: 0,
-    sm: 576px,
-    md: 768px,
-    lg: 992px,
-    xl: 1200px,
-    xxl: 1400px
-  ),
-  
-  // Container max widths
-  $container-max-widths: (
-    sm: 540px,
-    md: 720px,
-    lg: 960px,
-    xl: 1140px,
-    xxl: 1320px
-  ),
-  
-  // Enable CSS Grid
-  $enable-cssgrid: true,
-  $enable-container-classes: true,
-  $enable-grid-classes: true
-);
+@use '../../../styles/01-settings/settings.grid';
