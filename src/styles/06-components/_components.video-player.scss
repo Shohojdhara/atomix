@@ -41,11 +41,11 @@
   overflow: hidden;
   font-family: var(--#{$prefix}-font-family-base);
 
-  &:focus-within,
-  &:focus {
-    outline: 2px solid var(--#{$prefix}primary);
-    outline-offset: 2px;
-  }
+  // &:focus-within,
+  // &:focus {
+  //   outline: 2px solid var(--#{$prefix}primary);
+  //   outline-offset: 2px;
+  // }
 
   // Video element
   &__video {
@@ -56,30 +56,30 @@
 
     // Subtitle styling
     &::cue {
-      background: var(--#{$prefix}-video-player-subtitle-bg);
-      color: var(--#{$prefix}-video-player-subtitle-color);
-      font-size: var(--#{$prefix}-video-player-subtitle-font-size);
-      font-weight: var(--#{$prefix}-video-player-subtitle-font-weight);
-      line-height: var(--#{$prefix}-video-player-subtitle-line-height);
-      padding: var(--#{$prefix}-video-player-subtitle-padding);
-      border-radius: var(--#{$prefix}-video-player-subtitle-border-radius);
-      text-shadow: var(--#{$prefix}-video-player-subtitle-text-shadow);
+      background: var(--#{$prefix}video-player-subtitle-bg);
+      color: var(--#{$prefix}video-player-subtitle-color);
+      font-size: var(--#{$prefix}video-player-subtitle-font-size);
+      font-weight: var(--#{$prefix}video-player-subtitle-font-weight);
+      line-height: var(--#{$prefix}video-player-subtitle-line-height);
+      padding: var(--#{$prefix}video-player-subtitle-padding);
+      border-radius: var(--#{$prefix}video-player-subtitle-border-radius);
+      text-shadow: var(--#{$prefix}video-player-subtitle-text-shadow);
       white-space: pre-line;
       text-align: center;
       width: auto;
       height: auto;
       display: inline-block;
-      box-shadow: var(--#{$prefix}-video-player-subtitle-box-shadow);
+      box-shadow: var(--#{$prefix}video-player-subtitle-box-shadow);
     }
 
     &::cue(.large) {
-      font-size: calc(var(--#{$prefix}-video-player-subtitle-font-size) * 1.2);
-      padding: calc(var(--#{$prefix}-video-player-subtitle-padding) * 1.3);
+      font-size: calc(var(--#{$prefix}video-player-subtitle-font-size) * 1.2);
+      padding: calc(var(--#{$prefix}video-player-subtitle-padding) * 1.3);
     }
 
     &::cue(.small) {
-      font-size: calc(var(--#{$prefix}-video-player-subtitle-font-size) * 0.85);
-      padding: calc(var(--#{$prefix}-video-player-subtitle-padding) * 0.8);
+      font-size: calc(var(--#{$prefix}video-player-subtitle-font-size) * 0.85);
+      padding: calc(var(--#{$prefix}video-player-subtitle-padding) * 0.8);
     }
   }
 
@@ -253,7 +253,7 @@
   }
 
   &__volume-slider {
-    width: var(--#{$prefix}-video-player-volume-width, 5rem);
+    width: var(--#{$prefix}video-player-volume-width, 5rem);
     opacity: 0;
     visibility: hidden;
     transform: translateX(-0.5rem);
@@ -271,8 +271,8 @@
 
   &__volume-bar {
     position: relative;
-    height: var(--#{$prefix}-video-player-volume-height, 0.25rem);
-    background: var(--#{$prefix}-video-player-volume-bg, rgba(255, 255, 255, 0.3));
+    height: var(--#{$prefix}video-player-volume-height, 0.25rem);
+    background: var(--#{$prefix}video-player-volume-bg, rgba(255, 255, 255, 0.3));
     border-radius: 0.125rem;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -312,11 +312,11 @@
       content: '';
       position: absolute;
       top: 50%;
-      right: calc(var(--#{$prefix}-video-player-volume-thumb-size, 0.75rem) / -2);
-      width: var(--#{$prefix}-video-player-volume-thumb-size, 0.75rem);
-      height: var(--#{$prefix}-video-player-volume-thumb-size, 0.75rem);
+      right: calc(var(--#{$prefix}video-player-volume-thumb-size, 0.75rem) / -2);
+      width: var(--#{$prefix}video-player-volume-thumb-size, 0.75rem);
+      height: var(--#{$prefix}video-player-volume-thumb-size, 0.75rem);
       background: white;
-      border: 2px solid var(--#{$prefix}-video-player-volume-fill, var(--#{$prefix}primary));
+      border: 2px solid var(--#{$prefix}video-player-volume-fill, var(--#{$prefix}primary));
       border-radius: 50%;
       transform: translateY(-50%);
       opacity: 0;
@@ -444,7 +444,7 @@
     }
 
     &__volume-slider {
-      width: var(--#{$prefix}-video-player-volume-width-mobile, 3.75rem);
+      width: var(--#{$prefix}video-player-volume-width-mobile, 3.75rem);
       opacity: 1;
       visibility: visible;
       transform: translateX(0);
@@ -453,7 +453,7 @@
     }
 
     &__volume-bar {
-      height: var(--#{$prefix}-video-player-volume-height-hover, 0.375rem);
+      height: var(--#{$prefix}video-player-volume-height-hover, 0.375rem);
     }
 
     &__time-display {
@@ -475,7 +475,7 @@
     &__subtitles {
       bottom: 4rem;
       max-width: 95%;
-      
+
       &-text {
         font-size: #{$video-player-subtitle-font-size-mobile};
         padding: calc(#{$video-player-subtitle-padding} * 0.8);
@@ -511,7 +511,7 @@
 
     .c-video-player__subtitles {
       bottom: 6rem;
-      
+
       &-text {
         font-size: #{$video-player-subtitle-font-size-fullscreen};
         padding: calc(#{$video-player-subtitle-padding} * 1.3);
@@ -550,17 +550,6 @@
   // Ambient mode
   &--ambient {
     overflow: visible;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: -10%;
-      left: -10%;
-      right: -10%;
-      bottom: -10%;
-      background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.3) 0%, transparent 70%);
-      z-index: -2;
-    }
   }
 
   &__ambient-canvas {
@@ -571,7 +560,6 @@
     width: 120%;
     height: 120%;
     z-index: -1;
-    opacity: 0.4;
     filter: blur(40px);
     pointer-events: none;
     display: none;
@@ -593,22 +581,22 @@
     max-width: 90%;
     width: auto;
     height: auto;
-    
+
     &-text {
       display: inline-block;
       background: var(--#{$prefix}-video-player-subtitle-bg);
       color: var(--#{$prefix}-video-player-subtitle-color);
       font-size: var(--#{$prefix}-video-player-subtitle-font-size);
-      font-weight: var(--#{$prefix}-video-player-subtitle-font-weight);
-      line-height: var(--#{$prefix}-video-player-subtitle-line-height);
-      padding: var(--#{$prefix}-video-player-subtitle-padding);
-      border-radius: var(--#{$prefix}-video-player-subtitle-border-radius);
-      text-shadow: var(--#{$prefix}-video-player-subtitle-text-shadow);
+      font-weight: var(--#{$prefix}video-player-subtitle-font-weight);
+      line-height: var(--#{$prefix}video-player-subtitle-line-height);
+      padding: var(--#{$prefix}video-player-subtitle-padding);
+      border-radius: var(--#{$prefix}video-player-subtitle-border-radius);
+      text-shadow: var(--#{$prefix}video-player-subtitle-text-shadow);
       margin: 0.125rem;
       white-space: pre-line;
       word-wrap: break-word;
       max-width: 100%;
-      box-shadow: var(--#{$prefix}-video-player-subtitle-box-shadow);
+      box-shadow: var(--#{$prefix}video-player-subtitle-box-shadow);
     }
   }
 
