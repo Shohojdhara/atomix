@@ -17,7 +17,7 @@ const meta: Meta<typeof Chart> = {
   title: 'Components/Chart',
   component: Chart,
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
     docs: {
       description: {
         component: `
@@ -548,7 +548,7 @@ Perfect for displaying time-series data with clear trend visualization.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '400px' }}>
+    <div className="o-container-md">
       <LineChart
         {...args}
         title="Annual Revenue Trend"
@@ -584,7 +584,7 @@ Demonstrates how multiple datasets can tell a comprehensive story.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '450px' }}>
+    <div className="o-container-md">
       <LineChart
         {...args}
         title="Financial Performance Overview"
@@ -626,7 +626,7 @@ Uses bezier curves for a more polished, professional appearance.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '400px' }}>
+    <div className="o-container-md">
       <LineChart
         {...args}
         title="User Analytics Trends"
@@ -674,7 +674,7 @@ Ideal for showing cumulative data or emphasizing volume over time.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '400px' }}>
+    <div className="o-container-md">
       <AreaChart
         {...args}
         title="Revenue Growth Visualization"
@@ -716,7 +716,7 @@ Perfect for showing part-to-whole relationships over time.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '450px' }}>
+    <div className="o-container-md">
       <AreaChart
         {...args}
         title="Product Performance Stack"
@@ -758,7 +758,7 @@ Enhanced visual appeal with modern gradient effects.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '400px' }}>
+    <div className="o-container-md">
       <AreaChart
         {...args}
         title="User Engagement Metrics"
@@ -806,7 +806,7 @@ Perfect for showing comparisons between different groups or time periods.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '400px' }}>
+    <div className="o-container-md">
       <BarChart
         {...args}
         title="Quarterly Product Performance"
@@ -848,7 +848,7 @@ Ideal for displaying both total values and individual contributions.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '450px' }}>
+    <div className="o-container-md">
       <BarChart
         {...args}
         title="Financial Breakdown by Month"
@@ -890,7 +890,7 @@ Especially useful when category labels are lengthy or numerous.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '500px' }}>
+    <div className="o-container-md">
       <BarChart
         {...args}
         title="Team Performance Metrics"
@@ -940,7 +940,7 @@ Enhanced user experience with modern animation patterns.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '400px' }}>
+    <div className="o-container-md">
       <BarChart
         {...args}
         title="Weekly User Engagement"
@@ -988,7 +988,7 @@ Perfect for displaying market share, budget allocation, or categorical distribut
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '400px' }}>
+    <div className="o-container-md">
       <PieChart
         {...args}
         title="Market Share Analysis"
@@ -1021,7 +1021,7 @@ Ideal for displaying totals, summaries, or key metrics in the center.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '400px' }}>
+    <div className="o-container-md">
       <DonutChart
         {...args}
         title="Revenue Distribution"
@@ -1055,8 +1055,11 @@ Useful for dashboards showing related categorical data.
     },
   },
   render: args => (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', width: '800px' }}>
-      <div style={{ height: '300px' }}>
+    <div
+      style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}
+      className="o-container-md"
+    >
+      <div style={{ height: '400px' }}>
         <DonutChart
           title="Q3 Market Share"
           datasets={[
@@ -1078,7 +1081,7 @@ Useful for dashboards showing related categorical data.
           aria-label="Q3 market share donut chart"
         />
       </div>
-      <div style={{ height: '300px' }}>
+      <div style={{ height: '400px' }}>
         <DonutChart
           title="Q4 Market Share"
           datasets={[marketShareData]}
@@ -1112,7 +1115,7 @@ Each point represents a data item with X and Y coordinates, perfect for correlat
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '400px' }}>
+    <div className="o-container-md">
       <ScatterChart
         {...args}
         title="Team Performance Analysis"
@@ -1154,7 +1157,7 @@ Includes regression analysis and performance quadrants for strategic insights.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '450px' }}>
+    <div className="o-container-sm">
       <ScatterChart
         {...args}
         title="Strategic Performance Matrix"
@@ -1207,13 +1210,13 @@ Demonstrates mobile-first design with automatic scaling and layout adjustments.
     },
   },
   render: () => (
-    <div style={{ width: '100%' }}>
+    <div className="o-container">
       <div style={{ marginBottom: '24px' }}>
-        <h3>Desktop View (800px)</h3>
+        <h3>Desktop View (full)</h3>
         <div
           style={{
-            width: '800px',
-            height: '300px',
+            width: '100%',
+            height: 'auto',
             border: '1px solid var(--atomix-primary-border-subtle)',
             borderRadius: '4px',
           }}
@@ -1240,7 +1243,7 @@ Demonstrates mobile-first design with automatic scaling and layout adjustments.
         <div
           style={{
             width: '600px',
-            height: '280px',
+            height: 'auto',
             border: '1px solid var(--atomix-primary-border-subtle)',
             borderRadius: '4px',
           }}
@@ -1267,7 +1270,7 @@ Demonstrates mobile-first design with automatic scaling and layout adjustments.
         <div
           style={{
             width: '350px',
-            height: '250px',
+            height: 'auto',
             border: '1px solid var(--atomix-primary-border-subtle)',
             borderRadius: '4px',
           }}
@@ -1305,7 +1308,7 @@ Includes comprehensive ARIA labels, keyboard navigation, high contrast colors, a
     },
   },
   render: () => (
-    <div style={{ width: '800px', height: '400px' }}>
+    <div className="o-container-md">
       <LineChart
         title="Accessibility-First Chart Design"
         subtitle="Revenue trends with full accessibility support and keyboard navigation"
@@ -1376,7 +1379,7 @@ Demonstrates virtualization and optimization techniques for thousands of data po
     },
   },
   render: () => (
-    <div style={{ width: '800px', height: '400px' }}>
+    <div className="o-container-md">
       <LineChart
         title="Large Dataset Performance Test"
         subtitle={`Rendering ${generateLargeDataset(2000).data.length} data points with optimizations`}
@@ -1427,7 +1430,7 @@ Demonstrates streaming data visualization with smooth animations.
     }, []);
 
     return (
-      <div style={{ width: '800px', height: '400px' }}>
+      <div className="o-container-md">
         <LineChart
           title="Real-Time Metrics Dashboard"
           subtitle="Live data updates every 3 seconds"
@@ -1474,7 +1477,7 @@ Includes tooltips, crosshair, zoom, pan, and keyboard navigation.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '450px' }}>
+    <div className="o-container-md">
       <InteractiveChart
         {...args}
         title="Advanced Interactive Analytics"
@@ -1524,7 +1527,7 @@ Includes volume indicators, moving averages, and technical analysis features.
     },
   },
   render: args => (
-    <div style={{ width: '800px', height: '500px' }}>
+    <div className="o-container-md">
       <CandlestickChart
         {...args}
         title="Stock Price Technical Analysis"
@@ -1574,7 +1577,7 @@ Real-world example of how different chart types work together in a business inte
     },
   },
   render: args => (
-    <div style={{ width: '100%', padding: '20px' }}>
+    <div className="o-container">
       <div style={{ marginBottom: '32px', textAlign: 'center' }}>
         <h2 style={{ margin: '0 0 8px 0', fontSize: '24px' }}>Executive Analytics Dashboard</h2>
         <p style={{ margin: '0', color: 'var(--atomix-secondary-text-emphasis)' }}>
@@ -1591,7 +1594,7 @@ Real-world example of how different chart types work together in a business inte
         }}
       >
         {/* Primary Revenue Chart */}
-        <div style={{ height: '350px' }}>
+        <div>
           <LineChart
             title="Revenue & Profit Trends"
             subtitle="12-month financial performance"
@@ -1629,7 +1632,7 @@ Real-world example of how different chart types work together in a business inte
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
         {/* Product Performance */}
-        <div style={{ height: '280px' }}>
+        <div>
           <BarChart
             title="Product Performance"
             subtitle="Quarterly revenue"
@@ -1649,7 +1652,7 @@ Real-world example of how different chart types work together in a business inte
         </div>
 
         {/* User Analytics */}
-        <div style={{ height: '280px' }}>
+        <div>
           <AreaChart
             title="User Engagement"
             subtitle="Weekly analytics"
@@ -1666,7 +1669,7 @@ Real-world example of how different chart types work together in a business inte
         </div>
 
         {/* Performance Matrix */}
-        <div style={{ height: '280px' }}>
+        <div>
           <ScatterChart
             title="Team Performance"
             subtitle="Efficiency vs. output"

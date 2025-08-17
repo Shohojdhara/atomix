@@ -45,22 +45,60 @@ $chart-colors: (
 );
 
 // Chart Gradients
-$chart-gradients: (
-  primary: linear-gradient(135deg, var(--atomix-primary-4), var(--atomix-primary-7)),
-  secondary: linear-gradient(135deg, var(--atomix-secondary-4), var(--atomix-secondary-7)),
-  success: linear-gradient(135deg, var(--atomix-success-4), var(--atomix-success-7)),
-  warning: linear-gradient(135deg, var(--atomix-warning-4), var(--atomix-warning-7)),
-  error: linear-gradient(135deg, var(--atomix-error-4), var(--atomix-error-7)),
-  info: linear-gradient(135deg, var(--atomix-info-4), var(--atomix-info-7)),
+$chart-gradients-bg: (
+  primary: linear-gradient(
+      135deg,
+      rgba(var(--atomix-primary-rgb), 0.1),
+      rgba(var(--atomix-primary-rgb), 0.2)
+    ),
+  secondary: linear-gradient(
+      135deg,
+      rgba(var(--atomix-secondary-rgb), 0.1),
+      rgba(var(--atomix-secondary-rgb), 0.2)
+    ),
+  success: linear-gradient(
+      135deg,
+      rgba(var(--atomix-success-rgb), 0.1),
+      rgba(var(--atomix-success-rgb), 0.2)
+    ),
+  warning: linear-gradient(
+      135deg,
+      rgba(var(--atomix-warning-rgb), 0.1),
+      rgba(var(--atomix-warning-rgb), 0.2)
+    ),
+  error: linear-gradient(
+      135deg,
+      rgba(var(--atomix-error-rgb), 0.1),
+      rgba(var(--atomix-error-rgb), 0.2)
+    ),
+  info: linear-gradient(
+      135deg,
+      rgba(var(--atomix-info-rgb), 0.1),
+      rgba(var(--atomix-info-rgb), 0.2)
+    ),
 );
 
-// Chart Mixins
+$chart-gradients: (
+  primary: linear-gradient(135deg, var(--atomix-primary), var(--atomix-primary-bg-subtle)),
+  secondary: linear-gradient(135deg, var(--atomix-secondary), var(--atomix-secondary-bg-subtle)),
+  success: linear-gradient(135deg, var(--atomix-success), var(--atomix-success-bg-subtle)),
+  warning: linear-gradient(135deg, var(--atomix-warning), var(--atomix-warning-bg-subtle)),
+  error: linear-gradient(135deg, var(--atomix-error), var(--atomix-error-bg-subtle)),
+  info: linear-gradient(135deg, var(--atomix-info), var(--atomix-info-bg-subtle)),
+);
+
+// Chart Mixins gradient-background
 // =============================================================================
+
 @mixin chart-glassmorphism {
   backdrop-filter: blur($chart-backdrop-blur);
   -webkit-backdrop-filter: blur($chart-backdrop-blur);
   background: rgba(255, 255, 255, 0.05);
   border: $chart-border-width solid rgba(255, 255, 255, 0.1);
+}
+
+@mixin chart-gradient-background($color: 'primary') {
+  background: map.get($chart-gradients-bg, $color);
 }
 
 @mixin chart-gradient-border($color: 'primary') {
@@ -87,7 +125,7 @@ $chart-gradients: (
   &:hover {
     box-shadow: $box-shadow-lg;
     transform: $chart-hover-transform;
-    border-color: var(--atomix-primary-border-emphasis);
+    border-color: var(--atomix-primary-border-subtle);
   }
 }
 
@@ -129,15 +167,15 @@ $chart-gradients: (
 // Block: Base chart component
 // =============================================================================
 .c-chart {
-  @include component.component-base;
+  // @include component.component-base;
   @include chart-hover-elevation;
-  @include chart-focus-ring;
+  // @include chart-focus-ring;
   @include chart-gradient-border;
+  @include chart-gradient-background;
 
   display: flex;
   flex-direction: column;
-  background-color: var(--atomix-secondary-bg-subtle);
-  border: $chart-border-width solid var(--atomix-primary-border-subtle);
+  border: $chart-border-width solid var(--atomix-brand-border-subtle);
   border-radius: $border-radius-lg;
   overflow: hidden;
   box-shadow: $box-shadow-sm;
@@ -157,9 +195,9 @@ $chart-gradients: (
     inset: 0;
     background: linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.1) 0%,
+      rgba(var(--atomix-primary-rgb), 0.1) 0%,
       transparent 50%,
-      rgba(0, 0, 0, 0.05) 100%
+      rgba(var(--atomix-secondary-rgb), 0.05) 100%
     );
     pointer-events: none;
     z-index: 1;
@@ -317,7 +355,6 @@ $chart-gradients: (
 // Color Modifiers
 // =============================================================================
 .c-chart--primary {
-  @include component.component-variant('primary');
   @include chart-gradient-border('primary');
 
   --chart-primary-color: #{map.get($chart-colors, primary)};
@@ -337,16 +374,13 @@ $chart-gradients: (
   }
 
   &:hover {
-    border-color: var(--atomix-primary-border-emphasis);
-    box-shadow:
-      $box-shadow-lg,
-      0 0 0 1px var(--atomix-primary-border-emphasis);
+    border-color: var(--atomix-primary-border-subtle);
   }
 }
 
 .c-chart--secondary {
-  @include component.component-variant('secondary');
   @include chart-gradient-border('secondary');
+  @include chart-gradient-background('secondary');
 
   --chart-primary-color: #{map.get($chart-colors, secondary)};
 
@@ -356,23 +390,16 @@ $chart-gradients: (
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-
-    @supports not (background-clip: text) {
-      color: var(--atomix-secondary-text-emphasis);
-      background: none;
-      -webkit-text-fill-color: initial;
-    }
   }
 
   &:hover {
-    border-color: var(--atomix-secondary-border-emphasis);
+    border-color: var(--atomix-secondary-border-subtle);
   }
 }
 
 .c-chart--success {
-  @include component.component-variant('success');
   @include chart-gradient-border('success');
-
+  @include chart-gradient-background('success');
   --chart-primary-color: #{map.get($chart-colors, success)};
 
   .c-chart__title {
@@ -390,17 +417,13 @@ $chart-gradients: (
   }
 
   &:hover {
-    border-color: var(--atomix-success-border-emphasis);
-    box-shadow:
-      $box-shadow-lg,
-      0 0 0 1px var(--atomix-success-border-emphasis);
+    border-color: var(--atomix-success-border-subtle);
   }
 }
 
 .c-chart--error {
-  @include component.component-variant('error');
   @include chart-gradient-border('error');
-
+  @include chart-gradient-background('error');
   --chart-primary-color: #{map.get($chart-colors, error)};
 
   .c-chart__title {
@@ -418,17 +441,13 @@ $chart-gradients: (
   }
 
   &:hover {
-    border-color: var(--atomix-error-border-emphasis);
-    box-shadow:
-      $box-shadow-lg,
-      0 0 0 1px var(--atomix-error-border-emphasis);
+    border-color: var(--atomix-error-border-subtle);
   }
 }
 
 .c-chart--warning {
-  @include component.component-variant('warning');
   @include chart-gradient-border('warning');
-
+  @include chart-gradient-background('warning');
   --chart-primary-color: #{map.get($chart-colors, warning)};
 
   .c-chart__title {
@@ -446,17 +465,13 @@ $chart-gradients: (
   }
 
   &:hover {
-    border-color: var(--atomix-warning-border-emphasis);
-    box-shadow:
-      $box-shadow-lg,
-      0 0 0 1px var(--atomix-warning-border-emphasis);
+    border-color: var(--atomix-warning-border-subtle);
   }
 }
 
 .c-chart--info {
-  @include component.component-variant('info');
   @include chart-gradient-border('info');
-
+  @include chart-gradient-background('info');
   --chart-primary-color: #{map.get($chart-colors, info)};
 
   .c-chart__title {
@@ -474,22 +489,15 @@ $chart-gradients: (
   }
 
   &:hover {
-    border-color: var(--atomix-info-border-emphasis);
-    box-shadow:
-      $box-shadow-lg,
-      0 0 0 1px var(--atomix-info-border-emphasis);
+    border-color: var(--atomix-info-border-subtle);
   }
 }
 
 .c-chart--accent {
   @include chart-gradient-border('accent');
-
+  @include chart-gradient-background('accent');
   --chart-primary-color: #{map.get($chart-colors, accent)};
-  background: linear-gradient(
-    135deg,
-    var(--atomix-accent-bg-subtle),
-    var(--atomix-accent-bg-muted)
-  );
+
   border-color: var(--atomix-accent-border-subtle);
 
   .c-chart__title {
@@ -497,19 +505,15 @@ $chart-gradients: (
   }
 
   &:hover {
-    border-color: var(--atomix-accent-border-emphasis);
+    border-color: var(--atomix-accent-border-subtle);
   }
 }
 
 .c-chart--neutral {
   @include chart-gradient-border('neutral');
-
+  @include chart-gradient-background('neutral');
   --chart-primary-color: #{map.get($chart-colors, neutral)};
-  background: linear-gradient(
-    135deg,
-    var(--atomix-neutral-bg-subtle),
-    var(--atomix-neutral-bg-muted)
-  );
+
   border-color: var(--atomix-neutral-border-subtle);
 
   .c-chart__title {
@@ -517,7 +521,7 @@ $chart-gradients: (
   }
 
   &:hover {
-    border-color: var(--atomix-neutral-border-emphasis);
+    border-color: var(--atomix-neutral-border-subtle);
   }
 }
 
@@ -639,7 +643,7 @@ $chart-gradients: (
 }
 
 .c-chart--bordered {
-  border: 2px solid var(--atomix-primary-border-emphasis);
+  border: 2px solid var(--atomix-primary-border-subtle);
 }
 
 .c-chart--rounded {
@@ -654,12 +658,7 @@ $chart-gradients: (
 // =============================================================================
 .c-chart__header {
   padding: var(--chart-padding);
-  border-bottom: $chart-border-width solid var(--atomix-primary-border-subtle);
-  background: linear-gradient(
-    135deg,
-    var(--atomix-primary-bg-subtle),
-    var(--atomix-secondary-bg-subtle)
-  );
+  border-bottom: $chart-border-width solid var(--atomix-brand-bg-subtle);
   backdrop-filter: blur($chart-header-backdrop-blur);
   position: relative;
   display: flex;
@@ -675,12 +674,7 @@ $chart-gradients: (
     left: var(--chart-padding);
     right: var(--chart-padding);
     height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      var(--atomix-primary-border-subtle),
-      transparent
-    );
+    background: linear-gradient(90deg, transparent, var(--atomix-brand-border-subtle), transparent);
   }
 }
 
@@ -699,17 +693,14 @@ $chart-gradients: (
   word-wrap: break-word;
   hyphens: auto;
 
-  // Enhanced typography hierarchy
-  @supports (background-clip: text) {
-    background: linear-gradient(
-      135deg,
-      var(--atomix-primary-text-emphasis),
-      var(--atomix-secondary-text-emphasis)
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+  background: linear-gradient(
+    135deg,
+    var(--atomix-primary-text-emphasis),
+    var(--atomix-secondary-text-emphasis)
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 
   // Responsive font scaling
   @container (max-width: 400px) {
@@ -771,7 +762,7 @@ $chart-gradients: (
   &:hover {
     background-color: var(--atomix-primary-bg-subtle);
     color: var(--atomix-primary-text-emphasis);
-    border-color: var(--atomix-primary-border-emphasis);
+    border-color: var(--atomix-primary-border-subtle);
     transform: translateY(-1px);
 
     &::before {
@@ -868,7 +859,6 @@ $chart-gradients: (
   align-items: center;
   justify-content: center;
   min-height: map.get($spacing-sizes, 32); // 128px
-  background: var(--atomix-primary-bg-subtle);
   container-type: inline-size;
 
   // Enhanced background pattern
@@ -938,29 +928,20 @@ $chart-gradients: (
   flex-wrap: wrap;
   gap: map.get($spacing-sizes, 3);
   padding: var(--chart-padding);
-  border-top: $chart-border-width solid var(--atomix-primary-border-subtle);
-  background: linear-gradient(
-    135deg,
-    var(--atomix-primary-bg-subtle),
-    var(--atomix-secondary-bg-subtle)
-  );
-  backdrop-filter: blur($chart-backdrop-blur);
-  position: relative;
+  border-bottom: $chart-border-width solid var(--atomix-brand-border-subtle);
   z-index: 2;
 
-  &::before {
+  @include chart-glassmorphism();
+  @include chart-gradient-border();
+
+  &::after {
     content: '';
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: var(--chart-padding);
     right: var(--chart-padding);
     height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      var(--atomix-primary-border-subtle),
-      transparent
-    );
+    background: linear-gradient(90deg, transparent, var(--atomix-brand-border-subtle), transparent);
   }
 }
 
@@ -1024,12 +1005,12 @@ $chart-gradients: (
 
   &[data-highlighted='true'] {
     background-color: var(--atomix-primary-bg-subtle);
-    border-color: var(--atomix-primary-border-emphasis);
+    border-color: var(--atomix-primary-border-subtle);
     box-shadow: $box-shadow-md;
     transform: translateY(-2px);
 
     .c-chart__legend-color {
-      box-shadow: 0 0 0 2px var(--atomix-primary-border-emphasis);
+      box-shadow: 0 0 0 2px var(--atomix-primary-border-subtle);
       transform: scale(1.1);
     }
   }
@@ -1106,24 +1087,17 @@ $chart-gradients: (
 
 .c-chart__tooltip {
   position: absolute;
-  background: linear-gradient(
-    135deg,
-    var(--atomix-primary-bg-subtle),
-    var(--atomix-secondary-bg-subtle)
-  );
-  border: $chart-border-width solid var(--atomix-primary-border-subtle);
+  @include chart-glassmorphism();
+  @include chart-gradient-border();
   border-radius: $border-radius-lg;
   padding: map.get($spacing-sizes, 3) map.get($spacing-sizes, 4);
   box-shadow: $box-shadow-xl;
-  backdrop-filter: blur($chart-tooltip-backdrop-blur);
   font-size: $font-size-sm;
   color: var(--atomix-primary-text-emphasis);
   pointer-events: none;
   z-index: 1070;
   max-width: map.get($spacing-sizes, 64);
   min-width: map.get($spacing-sizes, 32);
-  // opacity: 0;
-  // transform: translateY(8px) scale(0.95);
   transition: all $chart-transition-duration $chart-transition-timing;
 
   // Enhanced visibility with smooth animation
@@ -1236,7 +1210,7 @@ $chart-gradients: (
   margin-bottom: map.get($spacing-sizes, 1);
   color: var(--atomix-primary-text-emphasis);
   font-size: $font-size-sm;
-  border-bottom: 1px solid var(--atomix-primary-border-subtle);
+  border-bottom: 1px solid var(--atomix-brand-border-subtle);
   padding-bottom: map.get($spacing-sizes, 1);
 }
 
@@ -1254,7 +1228,7 @@ $chart-gradients: (
 
   &:not(:last-child) {
     padding-bottom: map.get($spacing-sizes, 1);
-    border-bottom: 1px solid var(--atomix-primary-border-subtle);
+    border-bottom: 1px solid var(--atomix-brand-border-subtle);
   }
 }
 
@@ -1347,7 +1321,7 @@ $chart-gradients: (
     stroke-width: 1.5;
     stroke-dasharray: none;
     opacity: 0.6;
-    stroke: var(--atomix-primary-border-emphasis);
+    stroke: var(--atomix-primary-border-subtle);
   }
 
   // Interactive grid
@@ -1367,7 +1341,7 @@ $chart-gradients: (
   }
 
   &:focus-visible {
-    outline: 2px solid var(--atomix-primary-border-emphasis);
+    outline: 2px solid var(--atomix-primary-border-subtle);
     outline-offset: 2px;
   }
 
@@ -1383,9 +1357,9 @@ $chart-gradients: (
   }
 
   &[data-selected='true'] {
-    stroke: var(--atomix-primary-border-emphasis);
+    stroke: var(--atomix-primary-border-subtle);
     stroke-width: 2;
-    filter: drop-shadow(0 0 0 2px var(--atomix-primary-border-emphasis));
+    filter: drop-shadow(0 0 0 2px var(--atomix-primary-border-subtle));
   }
 
   &[data-animated='true'] {
@@ -1427,7 +1401,7 @@ $chart-gradients: (
     background: conic-gradient(
       from 0deg,
       transparent,
-      var(--atomix-primary-border-emphasis),
+      var(--atomix-primary-border-subtle),
       transparent
     );
     mask: radial-gradient(circle, transparent 65%, black 66%);
@@ -1652,7 +1626,7 @@ $chart-gradients: (
       }
 
       &:focus-visible {
-        outline: 2px solid var(--atomix-primary-border-emphasis);
+        outline: 2px solid var(--atomix-primary-border-subtle);
         outline-offset: 2px;
       }
 
@@ -1737,7 +1711,7 @@ $chart-gradients: (
       }
 
       &:focus-visible {
-        outline: 2px solid var(--atomix-primary-border-emphasis);
+        outline: 2px solid var(--atomix-primary-border-subtle);
         outline-offset: 4px;
       }
 
@@ -1849,7 +1823,7 @@ $chart-gradients: (
       }
 
       &:focus-visible {
-        outline: 2px solid var(--atomix-primary-border-emphasis);
+        outline: 2px solid var(--atomix-primary-border-subtle);
         outline-offset: 2px;
       }
 
@@ -1870,7 +1844,7 @@ $chart-gradients: (
       // Cluster highlighting
       &[data-cluster] {
         stroke-width: 2;
-        stroke: var(--atomix-primary-border-emphasis);
+        stroke: var(--atomix-primary-border-subtle);
       }
     }
 
@@ -2041,7 +2015,7 @@ $chart-gradients: (
 
       &:hover {
         stroke-width: 2;
-        stroke: var(--atomix-primary-border-emphasis);
+        stroke: var(--atomix-primary-border-subtle);
         filter: brightness(1.1);
       }
 
@@ -2552,7 +2526,7 @@ $chart-gradients: (
     .pie-slice,
     .donut-slice {
       &:focus {
-        outline: 2px solid var(--atomix-primary-border-emphasis);
+        outline: 2px solid var(--atomix-primary-border-subtle);
         outline-offset: 2px;
       }
     }
@@ -2704,7 +2678,7 @@ $chart-gradients: (
 .scatter-point,
 .bubble {
   &:focus-visible {
-    outline: 2px solid var(--atomix-primary-border-emphasis);
+    outline: 2px solid var(--atomix-primary-border-subtle);
     outline-offset: 2px;
   }
 }

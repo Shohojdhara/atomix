@@ -19,18 +19,22 @@
       max-width: $container-max-width;
     }
 
-    $extend-breakpoint: true;
-
     @each $name, $width in breakpoints.$grid-breakpoints {
-      @if ($extend-breakpoint) {
-        .o-container#{breakpoint-infix($name, breakpoints.$grid-breakpoints)} {
-          @extend %responsive-container-#{$breakpoint};
-        }
-
-        @if ($breakpoint == $name) {
-          $extend-breakpoint: false;
-        }
+      .o-container {
+        @extend %responsive-container-#{$breakpoint};
       }
+    }
+  }
+
+  $extend-breakpoint: true;
+
+  @if ($extend-breakpoint) {
+    .o-container-#{$breakpoint} {
+      @extend %responsive-container-#{$breakpoint};
+    }
+
+    @if ($breakpoint == $breakpoint) {
+      $extend-breakpoint: false;
     }
   }
 }
