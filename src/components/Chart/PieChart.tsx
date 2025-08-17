@@ -2,6 +2,7 @@ import { forwardRef, memo, useMemo } from 'react';
 import { CHART } from '../../lib/constants/components';
 import { ChartDataPoint, ChartProps } from '../../lib/types/components';
 import Chart from './Chart';
+import { cn } from '../../lib/utils'; // Assuming we have a class name utility
 
 interface PieChartProps extends Omit<ChartProps, 'type'> {
   /**
@@ -38,6 +39,11 @@ interface PieChartProps extends Omit<ChartProps, 'type'> {
      */
     padAngle?: number;
   };
+  
+  /**
+   * Optional className for the root element
+   */
+  className?: string;
 }
 
 const PieChart = memo(
@@ -55,12 +61,16 @@ const PieChart = memo(
           padAngle: 1,
         },
         onDataPointClick,
+        className,
         ...props
       },
       ref
     ) => {
       // Use the first dataset for pie chart
-      const dataset = datasets.length > 0 ? datasets[0] : { label: '', data: [] };
+      const dataset = useMemo(() => 
+        datasets.length > 0 ? datasets[0] : { label: '', data: [] },
+        [datasets]
+      );
 
       // Calculate dimensions and generate pie slices
       const chartContent = useMemo(() => {
@@ -77,28 +87,18 @@ const PieChart = memo(
 
         if (!validDataPoints.length) return null;
 
-        // Calculate chart dimensions
-        const width = 800;
-        const height = 400;
-        const radius = (Math.min(width, height) / 2) * 0.8;
+        // Calculate chart dimensions using CHART constants
+        const width = CHART.DEFAULT_WIDTH;
+        const height = CHART.DEFAULT_HEIGHT;
+        const radius = (Math.min(width, height) / 2) * CHART.PIE_RADIUS_RATIO;
         const centerX = width / 2;
         const centerY = height / 2;
 
-        // Generate colors if not provided
-        const defaultColors = [
-          '#7AFFD7',
-          '#1AFFD2',
-          '#00E6C3',
-          '#4DFF9F',
-          '#1AFF85',
-          '#00E66B',
-          '#DD6061',
-          '#FF1A1A',
-          '#E60000',
-          '#FFCC00',
-          '#E6B800',
-          '#B38F00',
-        ];
+        // Use CHART color palette if available in config
+        const defaultColors = useMemo(() => 
+          config.colorPalette?.pie || config.colorPalette?.default || CHART.DEFAULT_COLORS,
+          [config.colorPalette]
+        );
 
         // Sort data points if needed
         let dataPoints = [...validDataPoints];
@@ -280,6 +280,7 @@ const PieChart = memo(
             height="100%"
             viewBox={`0 0 ${width} ${height}`}
             preserveAspectRatio="xMidYMid meet"
+            className={CHART.CHART_SVG_CLASS}
           >
             <g>{validPieSlices}</g>
           </svg>
@@ -354,7 +355,14 @@ const PieChart = memo(
       }, [dataset, config.showLegend, pieOptions.showPercentages, onDataPointClick]);
 
       return (
-        <Chart ref={ref} type="pie" datasets={datasets} config={config} {...props}>
+        <Chart 
+          ref={ref} 
+          type="pie" 
+          datasets={datasets} 
+          config={config} 
+          className={cn(CHART.ROOT_CLASS, className)}
+          {...props}
+        >
           <div className={CHART.CANVAS_CLASS}>{chartContent}</div>
           {legend}
         </Chart>

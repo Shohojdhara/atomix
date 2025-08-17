@@ -230,40 +230,51 @@ const CandlestickChart = memo(
         ]);
         const minPrice = config.yAxis?.min ?? Math.min(...allPrices);
         const maxPrice = config.yAxis?.max ?? Math.max(...allPrices);
+        
+        // Handle case where all prices are the same to avoid division by zero
+        const priceRange = maxPrice !== minPrice ? maxPrice - minPrice : 1;
 
         // Calculate volume scale if needed
-        const maxVolume = candlestickOptions.showVolume
-          ? Math.max(...candlestickData.filter(d => d.volume).map(d => d.volume!))
+        const candlesWithVolume = candlestickData.filter(d => d.volume);
+        const maxVolume = candlestickOptions.showVolume && candlesWithVolume.length > 0
+          ? Math.max(...candlesWithVolume.map(d => d.volume!))
           : 0;
+        // Ensure maxVolume is at least 1 to avoid division by zero
+        const safeMaxVolume = maxVolume > 0 ? maxVolume : 1;
 
         const xScale = (i: number) => {
-          const baseX = padding.left + (i / (candlestickData.length - 1)) * innerWidth;
+          // Handle case where there's only one data point to avoid division by zero
+          const denominator = candlestickData.length > 1 ? candlestickData.length - 1 : 1;
+          const baseX = padding.left + (i / denominator) * innerWidth;
           return baseX * zoom.scale + zoom.translateX;
         };
 
         const priceScale = (price: number) => {
           const baseY =
-            padding.top + chartHeight - ((price - minPrice) / (maxPrice - minPrice)) * chartHeight;
+            padding.top + chartHeight - ((price - minPrice) / priceRange) * chartHeight;
           return baseY * zoom.scale + zoom.translateY;
         };
 
         const volumeScale = (volume: number) => {
+          // Use safeMaxVolume to avoid division by zero
           return (
             chartHeight +
             padding.top +
             10 +
-            ((maxVolume - volume) / maxVolume) * (volumeHeight - 20)
+            ((safeMaxVolume - volume) / safeMaxVolume) * (volumeHeight - 20)
           );
         };
 
-        const candleSpacing = innerWidth / candlestickData.length;
-        const candleWidth = candleSpacing * candlestickOptions.candleWidth!;
+        // Ensure we have at least one data point to avoid division by zero
+        const safeDataLength = Math.max(candlestickData.length, 1);
+        const candleSpacing = innerWidth / safeDataLength;
+        const candleWidth = candleSpacing * (candlestickOptions.candleWidth || 0.8);
 
         // Generate chart elements
         const chartElements = [];
 
         // Volume bars (if enabled)
-        if (candlestickOptions.showVolume) {
+        if (candlestickOptions.showVolume && candlesWithVolume.length > 0) {
           candlestickData.forEach((candle, i) => {
             if (!candle.volume) return;
 
@@ -273,15 +284,19 @@ const CandlestickChart = memo(
               ? candlestickOptions.bullishColor
               : candlestickOptions.bearishColor;
 
+            // Ensure all values are valid numbers before creating the rect element
+            const xPos = isNaN(x) ? 0 : x;
+            const candleWidthQuarter = isNaN(candleWidth / 4) ? 0 : candleWidth / 4;
+            const volScale = volumeScale(candle.volume);
+            const volHeight = chartHeight + padding.top + 10 + volumeHeight - 20 - volScale;
+            
             chartElements.push(
               <rect
                 key={`volume-${i}`}
-                x={x - candleWidth / 4}
-                y={volumeScale(candle.volume)}
-                width={candleWidth / 2}
-                height={
-                  chartHeight + padding.top + 10 + volumeHeight - 20 - volumeScale(candle.volume)
-                }
+                x={xPos - candleWidthQuarter}
+                y={isNaN(volScale) ? 0 : volScale}
+                width={isNaN(candleWidth / 2) ? 0 : candleWidth / 2}
+                height={isNaN(volHeight) ? 0 : volHeight}
                 fill={volumeColor}
                 opacity={0.3}
               />
@@ -320,25 +335,31 @@ const CandlestickChart = memo(
           const bodyHeight = Math.abs(closeY - openY);
 
           const isHovered = hoveredCandle?.index === i;
+          
+          // Ensure all values are valid numbers before creating elements
+          const xPos = isNaN(x) ? 0 : x;
+          const candleWidthHalf = isNaN(candleWidth / 2) ? 0 : candleWidth / 2;
+          const safeBodyTop = isNaN(bodyTop) ? 0 : bodyTop;
+          const safeBodyHeight = (isNaN(bodyHeight) || bodyHeight === 0) ? 1 : Math.abs(bodyHeight);
 
           chartElements.push(
             <g key={`candle-${i}`}>
               {/* High-Low line (wick) */}
               <line
-                x1={x}
-                y1={highY}
-                x2={x}
-                y2={lowY}
+                x1={isNaN(xPos) ? 0 : xPos}
+                y1={isNaN(highY) ? 0 : highY}
+                x2={isNaN(xPos) ? 0 : xPos}
+                y2={isNaN(lowY) ? 0 : lowY}
                 stroke={candleColor}
                 strokeWidth={isHovered ? 2 : 1}
               />
 
               {/* Candle body */}
               <rect
-                x={x - candleWidth / 2}
-                y={bodyTop}
-                width={candleWidth}
-                height={Math.max(bodyHeight, 1)}
+                x={xPos - candleWidthHalf}
+                y={safeBodyTop}
+                width={isNaN(candleWidth) ? 0 : candleWidth}
+                height={safeBodyHeight}
                 fill={isBullish ? candleColor : candleColor}
                 stroke={candleColor}
                 strokeWidth={1}
@@ -347,7 +368,7 @@ const CandlestickChart = memo(
                   cursor: 'pointer',
                   transition: 'opacity 0.2s ease-in-out',
                 }}
-                onMouseEnter={() => setHoveredCandle({ index: i, x, y: bodyTop, data: candle })}
+                onMouseEnter={() => setHoveredCandle({ index: i, x: xPos, y: safeBodyTop, data: candle })}
                 onMouseLeave={() => setHoveredCandle(null)}
                 onClick={() => onDataPointClick?.(candle as any, 0, i)}
               />
@@ -355,10 +376,10 @@ const CandlestickChart = memo(
               {/* Hover highlight */}
               {isHovered && (
                 <rect
-                  x={x - candleWidth / 2 - 2}
-                  y={bodyTop - 2}
-                  width={candleWidth + 4}
-                  height={Math.max(bodyHeight + 4, 5)}
+                  x={xPos - candleWidthHalf - 2}
+                  y={safeBodyTop - 2}
+                  width={isNaN(candleWidth + 4) ? 0 : candleWidth + 4}
+                  height={isNaN(safeBodyHeight + 4) ? 5 : Math.max(safeBodyHeight + 4, 5)}
                   fill="none"
                   stroke={candleColor}
                   strokeWidth={2}
@@ -380,7 +401,9 @@ const CandlestickChart = memo(
                 if (isNaN(value)) return '';
                 const x = xScale(i);
                 const y = priceScale(value);
-                return i === 0 || isNaN(movingAverage[i - 1]) ? `M ${x},${y}` : `L ${x},${y}`;
+                if (i === 0) return `M ${isNaN(x) ? 0 : x},${isNaN(y) ? 0 : y}`;
+                const prevValue = movingAverage[i - 1];
+                return (prevValue !== undefined && isNaN(prevValue)) ? `M ${isNaN(x) ? 0 : x},${isNaN(y) ? 0 : y}` : `L ${isNaN(x) ? 0 : x},${isNaN(y) ? 0 : y}`;
               })
               .join(' ');
 
@@ -402,9 +425,9 @@ const CandlestickChart = memo(
           chartElements.push(
             <g key="crosshair" style={{ pointerEvents: 'none' }}>
               <line
-                x1={crosshair.x}
+                x1={isNaN(crosshair.x) ? 0 : crosshair.x}
                 y1={padding.top}
-                x2={crosshair.x}
+                x2={isNaN(crosshair.x) ? 0 : crosshair.x}
                 y2={chartHeight + padding.top}
                 stroke="#e5e7eb"
                 strokeWidth={1}
@@ -413,9 +436,9 @@ const CandlestickChart = memo(
               />
               <line
                 x1={padding.left}
-                y1={crosshair.y}
+                y1={isNaN(crosshair.y) ? 0 : crosshair.y}
                 x2={width - padding.right}
-                y2={crosshair.y}
+                y2={isNaN(crosshair.y) ? 0 : crosshair.y}
                 stroke="#e5e7eb"
                 strokeWidth={1}
                 strokeDasharray="4,4"
@@ -431,14 +454,15 @@ const CandlestickChart = memo(
             {/* Horizontal price grid lines */}
             {config.yAxis?.showGrid &&
               Array.from({ length: 6 }).map((_, i) => {
-                const price = minPrice + ((maxPrice - minPrice) * i) / 5;
+                const price = minPrice + ((priceRange) * i) / 5;
+                const yPos = priceScale(price);
                 return (
                   <line
                     key={`price-grid-${i}`}
                     x1={padding.left}
-                    y1={priceScale(price)}
+                    y1={isNaN(yPos) ? 0 : yPos}
                     x2={width - padding.right}
-                    y2={priceScale(price)}
+                    y2={isNaN(yPos) ? 0 : yPos}
                     stroke="#e5e7eb"
                     strokeWidth={1}
                     strokeDasharray="2,2"
@@ -451,12 +475,13 @@ const CandlestickChart = memo(
             {config.xAxis?.showGrid &&
               candlestickData.map((_, i) => {
                 if (i % Math.ceil(candlestickData.length / 10) !== 0) return null;
+                const xPos = xScale(i);
                 return (
                   <line
                     key={`time-grid-${i}`}
-                    x1={xScale(i)}
+                    x1={isNaN(xPos) ? 0 : xPos}
                     y1={padding.top}
-                    x2={xScale(i)}
+                    x2={isNaN(xPos) ? 0 : xPos}
                     y2={chartHeight + padding.top}
                     stroke="#e5e7eb"
                     strokeWidth={1}
@@ -482,20 +507,21 @@ const CandlestickChart = memo(
                 strokeWidth={1}
               />
               {Array.from({ length: 6 }).map((_, i) => {
-                const price = minPrice + ((maxPrice - minPrice) * i) / 5;
+                const price = minPrice + ((priceRange) * i) / 5;
+                const yPos = priceScale(price);
                 return (
                   <g key={`price-axis-${i}`}>
                     <line
                       x1={padding.left - 5}
-                      y1={priceScale(price)}
+                      y1={isNaN(yPos) ? 0 : yPos}
                       x2={padding.left}
-                      y2={priceScale(price)}
+                      y2={isNaN(yPos) ? 0 : yPos}
                       stroke="#e5e7eb"
                       strokeWidth={1}
                     />
                     <text
                       x={padding.left - 10}
-                      y={priceScale(price)}
+                      y={isNaN(yPos) ? 0 : yPos}
                       textAnchor="end"
                       dominantBaseline="middle"
                       fontSize="12"
@@ -520,18 +546,19 @@ const CandlestickChart = memo(
               />
               {candlestickData.map((candle, i) => {
                 if (i % Math.ceil(candlestickData.length / 8) !== 0) return null;
+                const xPos = xScale(i);
                 return (
                   <g key={`time-axis-${i}`}>
                     <line
-                      x1={xScale(i)}
+                      x1={isNaN(xPos) ? 0 : xPos}
                       y1={chartHeight + padding.top}
-                      x2={xScale(i)}
+                      x2={isNaN(xPos) ? 0 : xPos}
                       y2={chartHeight + padding.top + 5}
                       stroke="#e5e7eb"
                       strokeWidth={1}
                     />
                     <text
-                      x={xScale(i)}
+                      x={isNaN(xPos) ? 0 : xPos}
                       y={chartHeight + padding.top + 20}
                       textAnchor="middle"
                       fontSize="12"
@@ -545,7 +572,7 @@ const CandlestickChart = memo(
             </g>
 
             {/* Volume axis (if enabled) */}
-            {candlestickOptions.showVolume && (
+            {candlestickOptions.showVolume && candlesWithVolume.length > 0 && (
               <g className={`${CHART.AXIS_CLASS} ${CHART.AXIS_CLASS}--volume`}>
                 <line
                   x1={width - padding.right}
@@ -556,20 +583,21 @@ const CandlestickChart = memo(
                   strokeWidth={1}
                 />
                 {Array.from({ length: 3 }).map((_, i) => {
-                  const volume = (maxVolume * (i + 1)) / 3;
+                  const volume = (safeMaxVolume * (i + 1)) / 3;
+                  const yPos = volumeScale(volume);
                   return (
                     <g key={`volume-axis-${i}`}>
                       <line
                         x1={width - padding.right}
-                        y1={volumeScale(volume)}
+                        y1={isNaN(yPos) ? 0 : yPos}
                         x2={width - padding.right + 5}
-                        y2={volumeScale(volume)}
+                        y2={isNaN(yPos) ? 0 : yPos}
                         stroke="#e5e7eb"
                         strokeWidth={1}
                       />
                       <text
                         x={width - padding.right + 10}
-                        y={volumeScale(volume)}
+                        y={isNaN(yPos) ? 0 : yPos}
                         textAnchor="start"
                         dominantBaseline="middle"
                         fontSize="10"
@@ -577,7 +605,9 @@ const CandlestickChart = memo(
                       >
                         {volume > 1000000
                           ? `${(volume / 1000000).toFixed(1)}M`
-                          : `${(volume / 1000).toFixed(0)}K`}
+                          : volume > 1000
+                          ? `${(volume / 1000).toFixed(0)}K`
+                          : `${Math.round(volume)}`}
                       </text>
                     </g>
                   );
@@ -631,7 +661,7 @@ const CandlestickChart = memo(
 
         return (
           <div
-            className="ohlc-tooltip"
+            className={CHART.TOOLTIP_CLASS}
             style={{
               position: 'absolute',
               left: x + 10,
@@ -702,6 +732,7 @@ const CandlestickChart = memo(
           </div>
           {candlestickOptions.showMovingAverages && candlestickOptions.movingAveragePeriods && (
             <div
+              className={CHART.LEGEND_CLASS}
               style={{
                 display: 'flex',
                 gap: '0.75rem',
@@ -712,6 +743,7 @@ const CandlestickChart = memo(
               {candlestickOptions.movingAveragePeriods.map((period, i) => (
                 <div key={period} style={{ display: 'flex', alignItems: 'center' }}>
                   <div
+                    className={CHART.LEGEND_COLOR_CLASS}
                     style={{
                       width: '12px',
                       height: '2px',
@@ -719,7 +751,7 @@ const CandlestickChart = memo(
                       marginRight: '0.25rem',
                     }}
                   />
-                  <span>MA{period}</span>
+                  <span className={CHART.LEGEND_LABEL_CLASS}>MA{period}</span>
                 </div>
               ))}
             </div>

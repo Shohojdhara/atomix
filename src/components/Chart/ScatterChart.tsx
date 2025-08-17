@@ -1,6 +1,7 @@
+import { ChartDataPoint } from '../../lib/types/components';
 import { forwardRef, memo, useCallback, useMemo, useState } from 'react';
 import { CHART } from '../../lib/constants/components';
-import { ChartDataPoint, ChartProps } from '../../lib/types/components';
+import { ChartProps } from '../../lib/types/components';
 import Chart from './Chart';
 
 interface ScatterDataPoint extends ChartDataPoint {
@@ -209,8 +210,8 @@ const ScatterChart = memo(
 
         // Simple K-means implementation
         let centroids = Array.from({ length: k }, (_, i) => ({
-          x: data[Math.floor((i * data.length) / k)].x,
-          y: data[Math.floor((i * data.length) / k)].y,
+          x: data[Math.floor((i * data.length) / k)]?.x || 0,
+          y: data[Math.floor((i * data.length) / k)]?.y || 0,
         }));
 
         let clusters = new Array(data.length);
@@ -224,12 +225,14 @@ const ScatterChart = memo(
           // Assign points to nearest centroid
           for (let i = 0; i < data.length; i++) {
             const point = data[i];
+            if (!point) continue;
+              
             let minDistance = Infinity;
             let nearestCluster = 0;
 
             for (let j = 0; j < k; j++) {
               const distance = Math.sqrt(
-                Math.pow(point.x - centroids[j].x, 2) + Math.pow(point.y - centroids[j].y, 2)
+                Math.pow(point.x - (centroids[j]?.x || 0), 2) + Math.pow(point.y - (centroids[j]?.y || 0), 2)
               );
               if (distance < minDistance) {
                 minDistance = distance;
@@ -245,7 +248,7 @@ const ScatterChart = memo(
 
           // Update centroids
           for (let j = 0; j < k; j++) {
-            const clusterPoints = data.filter((_, i) => clusters[i] === j);
+            const clusterPoints = data.filter((_, idx) => clusters[idx] === j);
             if (clusterPoints.length > 0) {
               centroids[j] = {
                 x: clusterPoints.reduce((sum, p) => sum + p.x, 0) / clusterPoints.length,
@@ -779,7 +782,13 @@ const ScatterChart = memo(
       }, [effectiveDatasets, config.showLegend, props.onLegendItemClick]);
 
       return (
-        <Chart ref={ref} type="scatter" datasets={datasets} config={config} {...props}>
+        <Chart 
+          ref={ref} 
+          type="scatter" 
+          datasets={datasets} 
+          config={config} 
+          {...props}
+        >
           <div className={CHART.CANVAS_CLASS} style={{ position: 'relative' }}>
             {chartContent}
             {tooltip}

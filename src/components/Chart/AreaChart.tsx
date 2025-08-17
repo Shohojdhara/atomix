@@ -377,6 +377,7 @@ const AreaChart = memo(
             {chartContent}
             {animationProgress < 1 && (
               <div
+                className={CHART.TOOLTIP_CLASS}
                 style={{
                   position: 'absolute',
                   top: '10px',

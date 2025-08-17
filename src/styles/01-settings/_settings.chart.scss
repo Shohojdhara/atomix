@@ -1,0 +1,124 @@
+@use 'sass:map';
+@use 'settings.spacing' as *;
+@use 'settings.typography' as *;
+@use 'settings.border-radius' as *;
+@use 'settings.box-shadow' as *;
+@use 'settings.colors' as *;
+@use 'settings.config' as *;
+
+// Chart Configuration
+// =============================================================================
+
+// Chart Base Settings
+$chart-border-width: 1px !default;
+$chart-border-color: var(--#{$prefix}brand-border-subtle) !default;
+$chart-bg: var(--#{$prefix}primary-bg-default) !default;
+$chart-border-radius: $border-radius-lg !default;
+
+// Chart Spacing
+$chart-padding: map.get($spacing-sizes, 4) !default;
+$chart-gap: map.get($spacing-sizes, 2) !default;
+$chart-header-spacer-y: map.get($spacing-sizes, 4) !default;
+$chart-title-spacer-y: map.get($spacing-sizes, 2) !default;
+$chart-legend-spacer: map.get($spacing-sizes, 3) !default;
+$chart-legend-item-spacer: map.get($spacing-sizes, 2) !default;
+
+// Chart Sizing
+$chart-min-height: map.get($spacing-sizes, 52) !default; // 208px
+$chart-min-height-xs: map.get($spacing-sizes, 28) !default; // 112px
+$chart-min-height-sm: map.get($spacing-sizes, 36) !default; // 144px
+$chart-min-height-md: map.get($spacing-sizes, 52) !default; // 208px
+$chart-min-height-lg: map.get($spacing-sizes, 72) !default; // 288px
+$chart-min-height-xl: map.get($spacing-sizes, 80) !default; // 320px
+$chart-min-height-2xl: map.get($spacing-sizes, 96) !default; // 384px
+$chart-canvas-min-height: map.get($spacing-sizes, 32) !default; // 128px
+
+// Chart Typography
+$chart-title-font-size: $font-size-lg !default;
+$chart-title-font-weight: $font-weight-semibold !default;
+$chart-title-color: var(--#{$prefix}primary-text-emphasis) !default;
+$chart-subtitle-color: var(--#{$prefix}secondary-text-emphasis) !default;
+$chart-axis-label-font-size: $font-size-xs !default;
+$chart-axis-label-font-weight: $font-weight-medium !default;
+$chart-axis-label-color: var(--#{$prefix}secondary-text-emphasis) !default;
+
+// Chart Colors
+$chart-primary-color: var(--#{$prefix}primary-6) !default;
+$chart-secondary-color: var(--#{$prefix}secondary-6) !default;
+
+// Chart Effects
+$chart-backdrop-blur: 8px !default;
+$chart-header-backdrop-blur: 12px !default;
+$chart-tooltip-backdrop-blur: 16px !default;
+$chart-glassmorphism-opacity: 0.6 !default;
+$chart-pattern-opacity: 0.03 !default;
+$chart-pattern-size: 20px !default;
+
+// Chart Transitions
+$chart-transition-duration: 0.3s !default;
+$chart-transition-timing: cubic-bezier(0.4, 0, 0.2, 1) !default;
+$chart-hover-transform: translateY(-1px) !default;
+$chart-active-transform: translateY(0) !default;
+
+// Chart Focus
+$chart-focus-ring-width: 3px !default;
+
+// Chart Elements
+$chart-legend-color-size: map.get($spacing-sizes, 3) !default;
+$chart-action-button-size: map.get($spacing-sizes, 8) !default;
+$chart-touch-target-size: map.get($spacing-sizes, 10) !default;
+
+// Chart Loading & States
+$chart-loading-spinner-size: map.get($spacing-sizes, 8) !default;
+$chart-error-icon-size: map.get($spacing-sizes, 12) !default;
+$chart-empty-icon-size: map.get($spacing-sizes, 16) !default;
+
+// Chart Tooltip
+$chart-tooltip-max-width: map.get($spacing-sizes, 64) !default;
+$chart-tooltip-min-width: map.get($spacing-sizes, 32) !default;
+$chart-tooltip-padding-y: map.get($spacing-sizes, 3) !default;
+$chart-tooltip-padding-x: map.get($spacing-sizes, 4) !default;
+$chart-tooltip-font-size: $font-size-sm !default;
+$chart-tooltip-border-radius: $border-radius-lg !default;
+
+// Chart Data Visualization
+$chart-line-width: 2.5 !default;
+$chart-line-width-hover: 3.5 !default;
+$chart-data-point-radius: 4 !default;
+$chart-data-point-radius-hover: 6 !default;
+$chart-data-point-radius-highlighted: 8 !default;
+$chart-area-opacity: 0.15 !default;
+$chart-area-opacity-hover: 0.25 !default;
+
+// Chart Grid & Axis
+$chart-grid-stroke-width: 0.5 !default;
+$chart-grid-opacity: 0.2 !default;
+$chart-grid-major-stroke-width: 1 !default;
+$chart-grid-major-opacity: 0.4 !default;
+$chart-grid-minor-opacity: 0.1 !default;
+$chart-grid-zero-stroke-width: 1.5 !default;
+$chart-grid-zero-opacity: 0.6 !default;
+$chart-axis-line-stroke-width: 1 !default;
+$chart-axis-line-opacity: 0.6 !default;
+
+// Chart Pie & Donut
+$chart-pie-stroke-width: 2 !default;
+$chart-pie-stroke-width-hover: 3 !default;
+$chart-pie-transition-duration: 0.4s !default;
+
+// Chart Bar
+$chart-bar-opacity-hover: 0.85 !default;
+
+// Chart Candlestick
+$chart-candlestick-wick-stroke-width: 1 !default;
+$chart-candlestick-wick-opacity: 0.8 !default;
+$chart-volume-bar-opacity: 0.3 !default;
+$chart-volume-bar-opacity-hover: 0.6 !default;
+
+// Chart Scatter
+$chart-scatter-point-radius: 4 !default;
+$chart-scatter-point-radius-hover: 6 !default;
+
+// Chart Responsive Breakpoints
+$chart-mobile-breakpoint: 768px !default;
+$chart-small-mobile-breakpoint: 480px !default;

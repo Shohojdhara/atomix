@@ -188,7 +188,7 @@ const Chart = memo(
         );
       };
 
-      const fullChartClass = `${chartClass}${isFullscreen ? ' c-chart--fullscreen' : ''}`;
+      const fullChartClass = `${chartClass}${isFullscreen ? ` ${CHART.CLASSES.FULLSCREEN}` : ''}`;
 
       return (
         <div

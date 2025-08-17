@@ -1,18 +1,18 @@
 import type { Preview } from '@storybook/react';
 import { useEffect } from 'react';
-import '../src/themes/yabai/index.scss';
-// import '../src/styles/index.scss';
+// import '../src/themes/yabai/index.scss';
+import '../src/styles/index.scss';
 
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/,
-      },
-      expanded: true,
-    },
+    // controls: {
+    //   matchers: {
+    //     color: /(background|color)$/i,
+    //     date: /Date$/,
+    //   },
+    //   expanded: true,
+    // },
     docs: {
       toc: false,
     },

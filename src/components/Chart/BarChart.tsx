@@ -298,7 +298,7 @@ const BarChart = memo(
 
                   {barOptions.showValues && barLength > 20 && (
                     <text
-                      className="c-chart__axis-label"
+                      className={CHART.AXIS_LABEL_CLASS}
                       x={x + barLength + 5}
                       y={y + barWidth / 2}
                       dominantBaseline="middle"
@@ -362,7 +362,7 @@ const BarChart = memo(
 
                   {barOptions.showValues && barHeight > 20 && (
                     <text
-                      className="c-chart__axis-label"
+                      className={CHART.AXIS_LABEL_CLASS}
                       x={x + barWidth / 2}
                       y={y - 5}
                       textAnchor="middle"
@@ -394,7 +394,7 @@ const BarChart = memo(
 
                 return (
                   <text
-                    className="c-chart__axis-label"
+                    className={CHART.AXIS_LABEL_CLASS}
                     key={`x-label-${i}`}
                     x={xPos}
                     y={height - 10}
@@ -418,7 +418,7 @@ const BarChart = memo(
 
                 return (
                   <text
-                    className="c-chart__axis-label"
+                    className={CHART.AXIS_LABEL_CLASS}
                     key={`y-label-${i}`}
                     x={padding.left - 10}
                     y={yPos}
@@ -444,7 +444,7 @@ const BarChart = memo(
 
                 return (
                   <text
-                    className="c-chart__axis-label"
+                    className={CHART.AXIS_LABEL_CLASS}
                     key={`x-label-${i}`}
                     x={xPos}
                     y={height - 10}
@@ -469,7 +469,7 @@ const BarChart = memo(
 
                 return (
                   <text
-                    className="c-chart__axis-label"
+                    className={CHART.AXIS_LABEL_CLASS}
                     key={`y-label-${i}`}
                     x={padding.left - 10}
                     y={yPos}

@@ -253,7 +253,13 @@ const LineChart = memo(
         const handleKeyDown = (event: KeyboardEvent) => {
           if (!realTimeData.length) return;
 
-          const maxIndex = realTimeData[0]?.data?.length - 1 || 0;
+          const firstDataset = realTimeData[0];
+          if (!firstDataset) return;
+
+          const firstDatasetData = firstDataset.data;
+          if (!firstDatasetData) return;
+
+          const maxIndex = firstDatasetData.length - 1 || 0;
 
           switch (event.key) {
             case 'ArrowLeft':
@@ -915,6 +921,7 @@ const LineChart = memo(
             {enhancedTooltip}
             {lineOptions.enableKeyboardNavigation && (
               <div
+                className={CHART.TOOLTIP_CLASS}
                 style={{
                   position: 'absolute',
                   bottom: '10px',
@@ -932,6 +939,7 @@ const LineChart = memo(
             )}
             {lineOptions.enableZoom && (
               <div
+                className={CHART.TOOLTIP_CLASS}
                 style={{
                   position: 'absolute',
                   top: '10px',
