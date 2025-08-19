@@ -1,8 +1,9 @@
-import { forwardRef, memo, useMemo } from 'react';
+import { forwardRef, memo, useMemo, useState } from 'react';
 import { CHART } from '../../lib/constants/components';
-import { ChartDataPoint } from '../../lib/types/components';
+import { ChartDataPoint } from './types';
 import Chart from './Chart';
 import { PieChartProps } from './PieChart';
+import ChartTooltip from './ChartTooltip';
 
 interface DonutChartProps extends Omit<PieChartProps, 'type'> {
   /**
@@ -64,6 +65,11 @@ const DonutChart = memo(
     ) => {
       // Use the first dataset for donut chart
       const dataset = datasets.length > 0 ? datasets[0] : { label: '', data: [] };
+      const [hoveredSlice, setHoveredSlice] = useState<{
+        index: number;
+        clientX: number;
+        clientY: number;
+      } | null>(null);
 
       // Calculate dimensions and generate donut slices
       const chartContent = useMemo(() => {
@@ -197,10 +203,15 @@ const DonutChart = memo(
               <path
                 d={pathData}
                 fill={color}
-                stroke="var(--atomix-primary-bg)"
-                strokeWidth={1}
-                className="donut-slice"
+                className="c-chart__donut-slice"
                 onClick={() => onDataPointClick?.(dataPoint, 0, index)}
+                onMouseEnter={(e) => {
+                  const rect = e.currentTarget.ownerSVGElement?.getBoundingClientRect();
+                  const clientX = rect ? rect.left + labelX : e.clientX;
+                  const clientY = rect ? rect.top + labelY : e.clientY;
+                  setHoveredSlice({ index, clientX, clientY });
+                }}
+                onMouseLeave={() => setHoveredSlice(null)}
                 data-tooltip={`${dataPoint.label}: ${dataPoint.value} (${percentageText})`}
               />
 
@@ -210,9 +221,7 @@ const DonutChart = memo(
                   y={labelY}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  fill="var(--atomix-primary-text-emphasis)"
-                  fontSize="12"
-                  fontWeight="bold"
+                  className="c-chart__donut-label"
                 >
                   {pieOptions.showPercentages ? percentageText : dataPoint.value}
                 </text>
@@ -223,16 +232,15 @@ const DonutChart = memo(
 
         // Center content
         const centerContent = donutOptions.showTotal && (
-          <g className="donut-center">
-            <circle cx={centerX} cy={centerY} r={innerRadius} fill="var(--atomix-primary-bg)" />
+          <g className="c-chart__donut-center">
+            <circle cx={centerX} cy={centerY} r={innerRadius} className="c-chart__donut-center-bg" />
             {donutOptions.centerLabel && (
               <text
                 x={centerX}
                 y={centerY - 15}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                fill="var(--atomix-secondary-text-emphasis)"
-                fontSize="14"
+                className="c-chart__donut-center-label"
               >
                 {donutOptions.centerLabel}
               </text>
@@ -242,9 +250,7 @@ const DonutChart = memo(
               y={centerY + (donutOptions.centerLabel ? 15 : 0)}
               textAnchor="middle"
               dominantBaseline="middle"
-              fill="var(--atomix-primary-text-emphasis)"
-              fontSize="24"
-              fontWeight="bold"
+              className="c-chart__donut-center-value"
             >
               {donutOptions.centerValue !== undefined ? donutOptions.centerValue : total}
             </text>
@@ -318,7 +324,7 @@ const DonutChart = memo(
                   onClick={() => onDataPointClick?.(point, 0, i)}
                 >
                   <div
-                    className={CHART.LEGEND_COLOR_CLASS}
+                    className={`${CHART.LEGEND_COLOR_CLASS} c-chart__legend-color`}
                     style={{
                       backgroundColor: point.color || defaultColors[i % defaultColors.length],
                     }}
@@ -335,7 +341,18 @@ const DonutChart = memo(
 
       return (
         <Chart ref={ref} type="donut" datasets={datasets} config={config} {...props}>
-          <div className={CHART.CANVAS_CLASS}>{chartContent}</div>
+          <div className={CHART.CANVAS_CLASS}>
+            {chartContent}
+            {hoveredSlice && dataset?.data?.[hoveredSlice.index] && (
+              <ChartTooltip
+                dataPoint={dataset.data[hoveredSlice.index]}
+                datasetLabel={dataset.label}
+                datasetColor={dataset.data[hoveredSlice.index].color}
+                position={{ x: hoveredSlice.clientX, y: hoveredSlice.clientY }}
+                visible={true}
+              />
+            )}
+          </div>
           {legend}
         </Chart>
       );

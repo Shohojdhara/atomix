@@ -660,9 +660,14 @@ export const usePhotoViewer = ({
           bounds: { minX: 0, maxX: 0, minY: 0, maxY: 0 },
         };
 
+        // Apply scaling factor to reduce drag sensitivity
+        const dragSensitivity = Math.min(1, 1 / currentState.zoomLevel);
+        const deltaX = (event.clientX - startDragPosition.x) * dragSensitivity;
+        const deltaY = (event.clientY - startDragPosition.y) * dragSensitivity;
+
         const newPosition = {
-          x: event.clientX - startDragPosition.x,
-          y: event.clientY - startDragPosition.y,
+          x: deltaX,
+          y: deltaY,
         };
 
         const constrainedPosition = constrainPosition(newPosition, currentState.bounds);
@@ -772,9 +777,14 @@ export const usePhotoViewer = ({
         if (touches.length === 1 && isDragging && currentState.zoomLevel > 1) {
           const touch = touches[0];
           if (touch) {
+            // Apply scaling factor to reduce touch drag sensitivity
+            const dragSensitivity = Math.min(1, 1 / currentState.zoomLevel);
+            const deltaX = (touch.clientX - startDragPosition.x) * dragSensitivity;
+            const deltaY = (touch.clientY - startDragPosition.y) * dragSensitivity;
+            
             newPosition = {
-              x: touch.clientX - startDragPosition.x,
-              y: touch.clientY - startDragPosition.y,
+              x: deltaX,
+              y: deltaY,
             };
           }
 

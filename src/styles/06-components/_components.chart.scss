@@ -282,35 +282,51 @@
     gap: var(--#{$prefix}chart-gap);
     flex-shrink: 0;
     margin-left: auto;
+    padding: map.get($spacing-sizes, 1);
+    border-radius: $border-radius-md;
+    background: var(--#{$prefix}primary-bg-subtle);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--#{$prefix}primary-border-subtle);
+    box-shadow: $box-shadow-sm;
+    transition: all $chart-transition-duration $chart-transition-timing;
+
+    &:hover {
+      box-shadow: $box-shadow-md;
+      background: var(--#{$prefix}primary-bg-default);
+    }
   }
 
   &__action {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: $chart-action-button-size;
-    height: $chart-action-button-size;
+    width: rem(32px);
+    height: rem(32px);
     border-radius: $border-radius-sm;
-    border: var(--#{$prefix}chart-border-width) solid var(--#{$prefix}primary-border-subtle);
+    border: 1px solid transparent;
     background-color: transparent;
     color: var(--#{$prefix}secondary-text-emphasis);
     cursor: pointer;
     transition: all $chart-transition-duration $chart-transition-timing;
     position: relative;
     overflow: hidden;
+    font-size: rem(14px);
 
     &::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: var(--#{$prefix}primary-bg-subtle);
+      background: var(--#{$prefix}primary-6);
       opacity: 0;
+      border-radius: inherit;
       transition: opacity $chart-transition-duration $chart-transition-timing;
     }
 
     svg {
       position: relative;
       z-index: 1;
+      width: rem(16px);
+      height: rem(16px);
       transition: transform $chart-transition-duration $chart-transition-timing;
     }
 
@@ -319,9 +335,10 @@
       color: var(--#{$prefix}primary-text-emphasis);
       border-color: var(--#{$prefix}primary-border-subtle);
       transform: translateY(-1px);
+      box-shadow: $box-shadow-sm;
 
       &::before {
-        opacity: 1;
+        opacity: 0.1;
       }
 
       svg {
@@ -330,11 +347,18 @@
     }
 
     &:focus-visible {
-      @include focus-ring;
+      outline: 2px solid var(--#{$prefix}primary-6);
+      outline-offset: 2px;
+      border-color: var(--#{$prefix}primary-border-subtle);
     }
 
     &:active {
-      transform: translateY(1px);
+      transform: translateY(0);
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      &::before {
+        opacity: 0.2;
+      }
 
       svg {
         transform: scale(0.95);
@@ -342,9 +366,138 @@
     }
 
     &:disabled {
-      opacity: 0.5;
+      opacity: 0.4;
       cursor: not-allowed;
       pointer-events: none;
+      transform: none;
+      box-shadow: none;
+
+      &:hover {
+        transform: none;
+        box-shadow: none;
+        background-color: transparent;
+        border-color: transparent;
+      }
+    }
+
+    // Variant styles
+    &--primary {
+      background-color: var(--#{$prefix}primary-6);
+      color: white;
+      border-color: var(--#{$prefix}primary-6);
+
+      &:hover {
+        background-color: var(--#{$prefix}primary-7);
+        border-color: var(--#{$prefix}primary-7);
+      }
+
+      &:active {
+        background-color: var(--#{$prefix}primary-8);
+      }
+    }
+
+    &--success {
+      background-color: var(--#{$prefix}success-6);
+      color: white;
+      border-color: var(--#{$prefix}success-6);
+
+      &:hover {
+        background-color: var(--#{$prefix}success-7);
+        border-color: var(--#{$prefix}success-7);
+      }
+    }
+
+    &--warning {
+      background-color: var(--#{$prefix}warning-6);
+      color: white;
+      border-color: var(--#{$prefix}warning-6);
+
+      &:hover {
+        background-color: var(--#{$prefix}warning-7);
+        border-color: var(--#{$prefix}warning-7);
+      }
+    }
+
+    &--danger {
+      background-color: var(--#{$prefix}error-6);
+      color: white;
+      border-color: var(--#{$prefix}error-6);
+
+      &:hover {
+        background-color: var(--#{$prefix}error-7);
+        border-color: var(--#{$prefix}error-7);
+      }
+    }
+  }
+
+  &__export-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: map.get($spacing-sizes, 1);
+
+    &:hover {
+      #{$root}__export-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  &__export-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: map.get($spacing-sizes, 1);
+    background: var(--#{$prefix}primary-bg-default);
+    border: 1px solid var(--#{$prefix}primary-border-subtle);
+    border-radius: $border-radius-md;
+    box-shadow: $box-shadow-lg;
+    padding: map.get($spacing-sizes, 1);
+    min-width: rem(120px);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all $chart-transition-duration $chart-transition-timing;
+    backdrop-filter: blur(8px);
+  }
+
+  &__export-option {
+    display: block;
+    width: 100%;
+    padding: map.get($spacing-sizes, 2) map.get($spacing-sizes, 3);
+    border: none;
+    background: transparent;
+    color: var(--#{$prefix}primary-text-emphasis);
+    font-size: rem(12px);
+    font-weight: $font-weight-medium;
+    text-align: left;
+    border-radius: $border-radius-sm;
+    cursor: pointer;
+    transition: all $chart-transition-duration $chart-transition-timing;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &:hover {
+      background-color: var(--#{$prefix}primary-bg-subtle);
+      color: var(--#{$prefix}primary-text-emphasis);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--#{$prefix}primary-6);
+      outline-offset: -2px;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: map.get($spacing-sizes, 1);
     }
   }
 
@@ -405,6 +558,11 @@
       text-rendering: optimizeLegibility;
       image-rendering: -webkit-optimize-contrast;
       image-rendering: crisp-edges;
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
     }
 
     canvas {
@@ -412,6 +570,79 @@
       height: 100%;
       image-rendering: -webkit-optimize-contrast;
       image-rendering: crisp-edges;
+    }
+  }
+
+  // Enhanced interactive features
+  &__crosshair {
+    pointer-events: none;
+
+    line,
+    &-line {
+      stroke: $chart-primary-border;
+      stroke-width: 1;
+      stroke-dasharray: 4, 4;
+      opacity: 0.7;
+
+      &--vertical,
+      &--horizontal {
+        opacity: 0.7;
+      }
+    }
+  }
+
+  &__zoom-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  &__navigator {
+    opacity: 0.8;
+
+    rect {
+      fill: rgba(0, 0, 0, 0.05);
+      stroke: var(--#{$prefix}gray-3);
+      stroke-width: 1;
+    }
+
+    path {
+      stroke-width: 1;
+      fill: none;
+      opacity: 0.6;
+    }
+  }
+
+  &__real-time-indicator {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--#{$prefix}success-bg-subtle);
+    color: var(--#{$prefix}success-text-emphasis);
+    padding: 4px 8px;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+    border: 1px solid var(--#{$prefix}success-border-subtle);
+
+    &::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--#{$prefix}success-6);
+      border-radius: 50%;
+      animation: chart-pulse-dot 2s ease-in-out infinite;
     }
   }
 
@@ -502,36 +733,84 @@
   }
 
   &__tooltip {
-    position: absolute;
+    position: fixed;
     backdrop-filter: blur($chart-tooltip-backdrop-blur);
     border-radius: $chart-tooltip-border-radius;
     padding: $chart-tooltip-padding-y $chart-tooltip-padding-x;
-    box-shadow: $box-shadow-xl;
+    box-shadow: var(--atomix-box-shadow);
     font-size: $chart-tooltip-font-size;
-    color: var(--#{$prefix}primary-text-emphasis);
+    color: $chart-primary-text;
     pointer-events: none;
     z-index: 1070;
     max-width: $chart-tooltip-max-width;
     min-width: $chart-tooltip-min-width;
     transition: all $chart-transition-duration $chart-transition-timing;
-    background: var(--#{$prefix}primary-bg-default);
-    border: var(--#{$prefix}chart-border-width) solid var(--#{$prefix}primary-border-subtle);
+    // background: $chart-primary-bg;
+    border: 1px solid $chart-primary-border;
+    opacity: 1;
+    transform: translateY(0) scale(1);
 
-    &[data-visible='true'] {
-      opacity: 1;
-      transform: translateY(0) scale(1);
+    &-title {
+      font-weight: $font-weight-bold;
+      margin-bottom: map.get($spacing-sizes, 2);
+      color: $chart-primary-text;
+      font-size: $font-size-sm;
     }
 
-    &[data-position='top'] {
-      transform: translateY(-8px) scale(0.95);
+    &-content {
+      display: flex;
+      flex-direction: column;
+      gap: map.get($spacing-sizes, 1);
     }
 
-    &[data-position='left'] {
-      transform: translateX(-8px) scale(0.95);
+    &-dataset {
+      display: flex;
+      align-items: center;
+      gap: map.get($spacing-sizes, 2);
     }
 
-    &[data-position='right'] {
-      transform: translateX(8px) scale(0.95);
+    &-color-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    &-dataset-label {
+      color: $chart-secondary-text;
+      font-size: $font-size-xs;
+    }
+
+    &-value {
+      font-weight: $font-weight-semibold;
+      color: $chart-primary-text;
+      font-size: $font-size-xs;
+    }
+
+    &-metadata {
+      margin-top: map.get($spacing-sizes, 2);
+      padding-top: map.get($spacing-sizes, 2);
+      border-top: 1px solid $chart-primary-border;
+    }
+
+    &-metadata-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: $font-size-xs;
+      margin-bottom: map.get($spacing-sizes, 1);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    &-metadata-key {
+      color: $chart-secondary-text;
+    }
+
+    &-metadata-value {
+      color: $chart-primary-text;
+      font-weight: $font-weight-medium;
     }
   }
 
@@ -551,14 +830,29 @@
   }
 
   &__axis-line {
-    stroke: var(--#{$prefix}primary-border-subtle);
+    stroke: $chart-primary-border;
     stroke-width: $chart-axis-line-stroke-width;
     opacity: $chart-axis-line-opacity;
     transition: opacity $chart-transition-duration $chart-transition-timing;
 
+    &--x,
+    &--y {
+      stroke-width: 2;
+    }
+
     &:hover {
       opacity: 0.8;
     }
+  }
+
+  &__tick-line {
+    stroke: $chart-primary-border;
+    stroke-width: 1;
+  }
+
+  &__tick-label {
+    font-size: $font-size-xs;
+    fill: $chart-secondary-text;
   }
 
   &__axis-label {
@@ -568,8 +862,26 @@
     text-anchor: middle;
   }
 
+  &__plot-area {
+    fill: rgba(248, 250, 252, 0.5);
+    stroke: $chart-primary-border;
+    stroke-width: 1;
+  }
+
+  &__value-label {
+    font-size: $font-size-xs;
+    fill: $chart-primary-text;
+    pointer-events: none;
+  }
+
+  &__data-label {
+    font-size: $font-size-xs;
+    fill: $chart-secondary-text;
+    pointer-events: none;
+  }
+
   &__grid {
-    stroke: var(--#{$prefix}primary-border-subtle);
+    stroke: $chart-primary-border;
     stroke-width: $chart-grid-stroke-width;
     stroke-dasharray: 2, 4;
     opacity: $chart-grid-opacity;
@@ -698,7 +1010,8 @@
 
   &--line {
     #{$root}__canvas {
-      .line-path {
+      .line-path,
+      #{$root}__line-path {
         fill: none;
         stroke-width: $chart-line-width;
         stroke-linecap: round;
@@ -706,7 +1019,6 @@
         transition: all $chart-transition-duration $chart-transition-timing;
         filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 
-        // Adding animation from old styles
         stroke-dasharray: 1000;
         stroke-dashoffset: 1000;
         animation: chart-draw-line 2s ease-out forwards;
@@ -717,22 +1029,41 @@
         }
       }
 
-      // Adding trend line from old styles
       .trend-line {
         stroke-dasharray: 5, 5;
         opacity: 0.7;
         animation: chart-dash-flow 2s linear infinite;
       }
 
-      .area-path {
+      .moving-average {
+        stroke-dasharray: 4, 4;
+        opacity: 0.6;
+        stroke-width: 1;
+        fill: none;
+      }
+
+      .area-path,
+      #{$root}__area-path {
         opacity: $chart-area-opacity;
         transition: opacity $chart-transition-duration $chart-transition-timing;
-
-        // Adding animation from old styles
         animation: chart-area-fade 1.5s ease-out;
 
         &:hover {
           opacity: $chart-area-opacity-hover;
+        }
+      }
+
+      .chart-point-label {
+        font-size: $font-size-xs;
+        font-weight: $font-weight-semibold;
+        text-anchor: middle;
+        dominant-baseline: middle;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+
+        &.visible {
+          opacity: 1;
         }
       }
 
@@ -749,6 +1080,11 @@
         &[data-highlighted='true'] {
           r: $chart-data-point-radius-highlighted;
           stroke-width: 3;
+        }
+
+        &:focus-visible {
+          outline: 2px solid $chart-focus-outline-color;
+          outline-offset: 2px;
         }
       }
     }
@@ -785,21 +1121,27 @@
   &--bar,
   &--horizontal-bar {
     #{$root}__canvas {
-      .bar {
+      .bar,
+      #{$root}__bar {
         transition: all $chart-transition-duration $chart-transition-timing;
         cursor: pointer;
         filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
-
         animation: chart-bar-grow 0.8s ease-out;
+        opacity: 1;
 
-        &:hover {
+        &:hover,
+        &--hovered {
           opacity: $chart-bar-opacity-hover;
           filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
         }
 
         &:focus-visible {
-          outline: 2px solid var(--#{$prefix}primary-border-subtle);
+          outline: 2px solid $chart-primary-border;
           outline-offset: 2px;
+        }
+
+        &[data-animated='true'] {
+          animation: chart-bar-grow 0.8s ease-out;
         }
       }
 
@@ -809,17 +1151,25 @@
         }
       }
 
-      .bar-value-label {
+      .bar-value-label,
+      #{$root}__bar-value-label {
         font-size: $font-size-xs;
         font-weight: $font-weight-medium;
-        fill: var(--#{$prefix}primary-text-emphasis);
+        fill: $chart-primary-text;
         text-anchor: middle;
-        opacity: 0;
+        opacity: 1;
         transition: opacity $chart-transition-duration $chart-transition-timing;
         font-variant-numeric: tabular-nums;
+        pointer-events: none;
 
-        .bar:hover + & {
+        &.visible {
           opacity: 1;
+        }
+      }
+
+      .bar-gradient {
+        stop {
+          transition: stop-opacity 0.3s ease;
         }
       }
     }
@@ -854,33 +1204,44 @@
   &--doughnut {
     #{$root}__canvas {
       .pie-slice,
-      .donut-slice {
+      .donut-slice,
+      #{$root}__pie-slice,
+      #{$root}__donut-slice {
         transition: all $chart-pie-transition-duration $chart-transition-timing;
-        stroke: var(--#{$prefix}primary-bg-subtle);
+        stroke: $chart-primary-bg;
         stroke-width: $chart-pie-stroke-width;
         cursor: pointer;
         transform-origin: center;
         filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        opacity: 1;
 
         animation: chart-pie-draw 1.5s ease-out;
 
-        &:hover {
-          opacity: 0.9;
+        &:hover,
+        &--hovered {
+          opacity: 0.8;
           transform: scale(1.05);
           stroke-width: $chart-pie-stroke-width-hover;
           filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
         }
 
+        &--selected {
+          stroke: $chart-primary-border;
+          stroke-width: 3;
+        }
+
         &:focus-visible {
-          outline: 2px solid var(--#{$prefix}primary-border-subtle);
+          outline: 2px solid $chart-primary-border;
           outline-offset: 4px;
         }
       }
 
-      .pie-label {
+      .pie-label,
+      #{$root}__pie-label,
+      #{$root}__donut-label {
         font-size: $font-size-xs;
         font-weight: $font-weight-semibold;
-        fill: var(--#{$prefix}primary-text-emphasis);
+        fill: $chart-primary-text;
         text-anchor: middle;
         pointer-events: none;
         transition: all $chart-transition-duration $chart-transition-timing;
@@ -896,15 +1257,29 @@
         animation: chart-donut-draw 1.5s ease-out;
       }
 
-      .donut-center {
-        fill: var(--#{$prefix}primary-bg-subtle);
+      .donut-center,
+      #{$root}__donut-center {
         transition: fill $chart-transition-duration $chart-transition-timing;
       }
 
-      .donut-center-label {
-        font-size: $font-size-lg;
+      #{$root}__donut-center-bg {
+        fill: $chart-primary-bg;
+      }
+
+      .donut-center-label,
+      #{$root}__donut-center-label {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        fill: $chart-secondary-text;
+        text-anchor: middle;
+        dominant-baseline: central;
+        font-variant-numeric: tabular-nums;
+      }
+
+      #{$root}__donut-center-value {
+        font-size: $font-size-xl;
         font-weight: $font-weight-bold;
-        fill: var(--#{$prefix}primary-text-emphasis);
+        fill: $chart-primary-text;
         text-anchor: middle;
         dominant-baseline: central;
         font-variant-numeric: tabular-nums;
@@ -914,23 +1289,111 @@
 
   &--scatter {
     #{$root}__canvas {
-      .scatter-point {
-        r: $chart-scatter-point-radius;
+      .scatter-point,
+      #{$root}__scatter-point {
+        stroke: $chart-primary-border;
+        stroke-width: 1;
         transition: all $chart-transition-duration $chart-transition-timing;
         cursor: pointer;
         filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
-
-        // Adding animation from old styles
         animation: chart-fade-in 0.6s ease-out;
 
         &:hover {
-          r: $chart-scatter-point-radius-hover;
           filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
         }
 
         &:focus-visible {
-          outline: 2px solid var(--#{$prefix}primary-border-subtle);
+          outline: 2px solid $chart-primary-border;
           outline-offset: 2px;
+        }
+      }
+
+      #{$root}__scatter-label {
+        font-size: $font-size-xs;
+        fill: $chart-primary-text;
+        pointer-events: none;
+      }
+    }
+  }
+
+  &--bubble {
+    #{$root}__canvas {
+      #{$root}__bubble {
+        stroke: $chart-primary-bg;
+        stroke-width: 2;
+        cursor: pointer;
+        transition: all $chart-transition-duration $chart-transition-timing;
+
+        &--animated {
+          transition: all 1s ease-out;
+        }
+
+        &:hover {
+          transform: scale(1.1);
+          filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+      }
+
+      #{$root}__bubble-label {
+        font-size: $font-size-xs;
+        font-weight: $font-weight-medium;
+        fill: $chart-tertiary-text;
+        pointer-events: none;
+
+        &--center {
+          fill: $chart-invert-text;
+          font-weight: $font-weight-bold;
+          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+      }
+    }
+  }
+
+  &--radar {
+    #{$root}__canvas {
+      #{$root}__radar-grid {
+        stroke: $chart-primary-border;
+        stroke-width: 1;
+        opacity: 0.3;
+      }
+
+      #{$root}__radar-axis {
+        stroke: $chart-primary-border;
+        stroke-width: 1;
+        opacity: 0.5;
+      }
+
+      #{$root}__radar-label {
+        font-size: $font-size-xs;
+        fill: $chart-secondary-text;
+      }
+
+      #{$root}__radar-fill {
+        transition: opacity $chart-transition-duration $chart-transition-timing;
+
+        &:hover {
+          opacity: 0.5 !important;
+        }
+      }
+
+      #{$root}__radar-line {
+        fill: none;
+        transition: stroke-width $chart-transition-duration $chart-transition-timing;
+
+        &:hover {
+          stroke-width: 3 !important;
+        }
+      }
+
+      #{$root}__radar-point {
+        stroke: $chart-primary-bg;
+        stroke-width: 2;
+        cursor: pointer;
+        transition: all $chart-transition-duration $chart-transition-timing;
+
+        &:hover {
+          transform: scale(1.3);
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
       }
     }
@@ -938,32 +1401,45 @@
 
   &--candlestick {
     #{$root}__canvas {
-      .candlestick {
-        transition: all $chart-transition-duration $chart-transition-timing;
+      .candlestick,
+      #{$root}__candlestick {
+        stroke-width: 1;
         cursor: pointer;
-
-        // Adding animation from old styles
+        transition: all $chart-transition-duration $chart-transition-timing;
         animation: chart-fade-in 0.6s ease-out;
+
+        &--bullish {
+          opacity: 0.8;
+        }
+
+        &--bearish {
+          opacity: 1;
+        }
 
         &:hover {
           opacity: 0.8;
           filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
         }
+      }
 
-        &.bullish {
-          fill: var(--#{$prefix}success-6);
-          stroke: var(--#{$prefix}success-7);
-        }
+      #{$root}__candlestick-highlight {
+        stroke-width: 2;
+        opacity: 0.5;
+      }
 
-        &.bearish {
-          fill: var(--#{$prefix}error-6);
-          stroke: var(--#{$prefix}error-7);
+      .wick,
+      #{$root}__wick {
+        stroke-width: $chart-candlestick-wick-stroke-width;
+        opacity: $chart-candlestick-wick-opacity;
+
+        &--hovered {
+          stroke-width: 2;
         }
       }
 
-      .wick {
-        stroke-width: $chart-candlestick-wick-stroke-width;
-        opacity: $chart-candlestick-wick-opacity;
+      #{$root}__moving-average {
+        stroke-width: 2;
+        opacity: 0.8;
       }
 
       .volume-bar {
@@ -973,6 +1449,289 @@
         &:hover {
           opacity: $chart-volume-bar-opacity-hover;
         }
+      }
+    }
+  }
+
+  &--gauge {
+    #{$root}__canvas {
+      #{$root}__gauge-background {
+        fill: $chart-secondary-bg;
+        stroke: $chart-primary-border;
+        stroke-width: 1;
+      }
+
+      #{$root}__gauge-zone {
+        stroke: $chart-primary-bg;
+        stroke-width: 2;
+      }
+
+      #{$root}__gauge-tick {
+        &--major {
+          stroke: $chart-secondary-text;
+          stroke-width: 2;
+        }
+
+        &--minor {
+          stroke: $chart-tertiary-text;
+          stroke-width: 1;
+        }
+      }
+
+      #{$root}__gauge-tick-label {
+        font-size: $font-size-xs;
+        fill: $chart-secondary-text;
+      }
+
+      #{$root}__gauge-min-max-label {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-bold;
+        fill: $chart-secondary-text;
+      }
+
+      #{$root}__gauge-needle {
+        #{$root}__gauge-needle-line {
+          stroke-width: 3;
+          stroke-linecap: round;
+        }
+
+        #{$root}__gauge-needle-center {
+          stroke: $chart-primary-bg;
+          stroke-width: 2;
+        }
+      }
+
+      #{$root}__gauge-value {
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-bold;
+        fill: $chart-primary-text;
+      }
+
+      #{$root}__gauge-label {
+        font-size: $font-size-sm;
+        fill: $chart-secondary-text;
+      }
+    }
+  }
+
+  &--funnel {
+    #{$root}__canvas {
+      #{$root}__funnel-segment {
+        stroke: $chart-primary-bg;
+        stroke-width: 2;
+        cursor: pointer;
+        transition: all $chart-transition-duration $chart-transition-timing;
+
+        &--animated {
+          transition: all 1s ease-out;
+        }
+
+        &:hover {
+          opacity: 0.8;
+          filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+      }
+
+      #{$root}__funnel-label {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-bold;
+        pointer-events: none;
+
+        &--inside {
+          fill: $chart-invert-text;
+          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        &--outside {
+          fill: $chart-primary-text;
+        }
+      }
+
+      #{$root}__funnel-value {
+        font-size: $font-size-xs;
+        pointer-events: none;
+
+        &--inside {
+          fill: $chart-invert-text;
+          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        &--outside {
+          fill: $chart-secondary-text;
+        }
+      }
+
+      #{$root}__funnel-conversion {
+        font-size: $font-size-xs;
+        fill: $chart-secondary-text;
+        font-style: italic;
+      }
+    }
+  }
+
+  &--heatmap {
+    #{$root}__canvas {
+      #{$root}__heatmap-axis-label {
+        font-size: $font-size-xs;
+        fill: var(--#{$prefix}gray-7);
+        font-weight: $font-weight-medium;
+        user-select: none;
+      }
+
+      #{$root}__heatmap-cell {
+        cursor: pointer;
+        transition: all 0.2s ease;
+        shape-rendering: crispEdges;
+
+        &--empty {
+          fill: var(--#{$prefix}gray-2);
+          stroke: var(--#{$prefix}gray-3);
+          stroke-width: 0.5;
+          opacity: 0.6;
+        }
+
+        &--hovered {
+          transform: scale(1.1);
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+          z-index: 10;
+        }
+
+        &:focus-visible {
+          outline: 2px solid var(--#{$prefix}primary-6);
+          outline-offset: 1px;
+        }
+      }
+
+      #{$root}__heatmap-value {
+        font-size: 9px;
+        font-weight: $font-weight-medium;
+        pointer-events: none;
+        user-select: none;
+        font-variant-numeric: tabular-nums;
+
+        &--light {
+          fill: white;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        &--dark {
+          fill: var(--#{$prefix}gray-8);
+        }
+      }
+
+      // Calendar variant styles
+      &.c-chart--calendar {
+        #{$root}__heatmap-cell {
+          rx: 2;
+        }
+      }
+
+      // Grid variant styles
+      &.c-chart--grid {
+        #{$root}__heatmap-cell {
+          rx: 4;
+        }
+      }
+    }
+
+    // Enhanced tooltip for heatmap
+    #{$root}__tooltip-custom {
+      padding: map.get($spacing-sizes, 2) map.get($spacing-sizes, 3);
+      background: var(--#{$prefix}primary-bg-default);
+      border: 1px solid var(--#{$prefix}primary-border-subtle);
+      border-radius: $border-radius-md;
+      box-shadow: $box-shadow-lg;
+      font-size: $font-size-xs;
+      color: var(--#{$prefix}primary-text-emphasis);
+      backdrop-filter: blur(8px);
+      max-width: 200px;
+    }
+  }
+
+  &--treemap {
+    #{$root}__canvas {
+      #{$root}__treemap-node {
+        cursor: pointer;
+        stroke: $chart-primary-bg;
+        stroke-width: 1;
+        transition: all $chart-transition-duration $chart-transition-timing;
+
+        &--animated {
+          transition: all 750ms ease-out;
+        }
+
+        &--hovered {
+          opacity: 0.8;
+        }
+
+        &--selected {
+          stroke-width: 2;
+        }
+      }
+
+      #{$root}__treemap-label {
+        font-size: $font-size-xs;
+        font-weight: $font-weight-bold;
+        fill: $chart-invert-text;
+        pointer-events: none;
+      }
+
+      #{$root}__treemap-value {
+        font-size: $font-size-xs;
+        fill: $chart-invert-text;
+        opacity: 0.8;
+        pointer-events: none;
+      }
+    }
+  }
+
+  &--waterfall {
+    #{$root}__canvas {
+      #{$root}__waterfall-bar {
+        stroke: $chart-primary-bg;
+        stroke-width: 2;
+        cursor: pointer;
+        transition: all $chart-transition-duration $chart-transition-timing;
+
+        &--animated {
+          transition: all 1s ease-out;
+        }
+
+        &:hover {
+          opacity: 0.8;
+          filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+      }
+
+      #{$root}__waterfall-value {
+        font-size: $font-size-xs;
+        font-weight: $font-weight-bold;
+        pointer-events: none;
+
+        &--center {
+          fill: $chart-invert-text;
+          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        &--outside {
+          fill: $chart-primary-text;
+        }
+      }
+
+      #{$root}__waterfall-connector {
+        stroke-width: 2;
+        opacity: 0.7;
+      }
+
+      #{$root}__waterfall-cumulative-line {
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      #{$root}__waterfall-cumulative-point {
+        stroke: $chart-primary-bg;
+        stroke-width: 2;
       }
     }
   }
@@ -1076,7 +1835,11 @@
 @keyframes chart-scale-in {
   0% {
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale(0.3);
+  }
+  60% {
+    opacity: 0.8;
+    transform: scale(1.1);
   }
   100% {
     opacity: 1;
@@ -1123,6 +1886,40 @@
   }
 }
 
+@keyframes chart-pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes chart-zoom-in {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes chart-slide-up {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 // Responsive Design
 @media (max-width: $chart-mobile-breakpoint) {
   .c-chart {
@@ -1138,6 +1935,34 @@
     &__toolbar {
       width: 100%;
       justify-content: flex-end;
+      padding: map.get($spacing-sizes, 2);
+      gap: map.get($spacing-sizes, 2);
+
+      // Stack toolbar items on very small screens
+      @media (max-width: 480px) {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    &__action {
+      width: rem(36px);
+      height: rem(36px);
+
+      svg {
+        width: rem(18px);
+        height: rem(18px);
+      }
+    }
+
+    &__export-dropdown {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin-top: 0;
+      min-width: rem(200px);
+      max-width: 90vw;
     }
 
     &__legend {
@@ -1170,10 +1995,32 @@
     &__subtitle {
       font-size: $font-size-xs;
     }
+
+    &__toolbar {
+      padding: map.get($spacing-sizes, 1);
+      gap: map.get($spacing-sizes, 1);
+      border-radius: $border-radius-sm;
+    }
+
+    &__action {
+      width: rem(28px);
+      height: rem(28px);
+      font-size: rem(12px);
+
+      svg {
+        width: rem(14px);
+        height: rem(14px);
+      }
+    }
+
+    &__export-option {
+      padding: map.get($spacing-sizes, 1) map.get($spacing-sizes, 2);
+      font-size: rem(11px);
+    }
   }
 }
 
-// Accessibility
+// Enhanced accessibility
 @media (prefers-reduced-motion: reduce) {
   .c-chart {
     transition: none;
@@ -1183,9 +2030,27 @@
     }
 
     * {
-      animation-duration: 0s !important;
-      transition-duration: 0s !important;
+      animation-duration: 0.01s !important;
+      transition-duration: 0.01s !important;
     }
+
+    &__real-time-indicator::before {
+      animation: none;
+    }
+  }
+}
+
+// Focus management for keyboard navigation
+.c-chart:focus-within {
+  &__data-point:focus {
+    outline: 2px solid var(--#{$prefix}primary-6);
+    outline-offset: 2px;
+    z-index: 10;
+  }
+
+  &__canvas svg {
+    outline: 2px solid var(--#{$prefix}primary-border-subtle);
+    outline-offset: 2px;
   }
 }
 
@@ -1209,6 +2074,51 @@
     &__data-point {
       stroke: black;
       stroke-width: 2;
+    }
+
+    &__crosshair line {
+      stroke: black;
+      opacity: 1;
+    }
+
+    &__zoom-indicator {
+      background: black;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .line-path {
+      stroke-width: 3 !important;
+    }
+
+    .bar {
+      stroke: black;
+      stroke-width: 2;
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .c-chart {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 2px solid black;
+    background: white;
+
+    &__toolbar {
+      display: none;
+    }
+
+    &__crosshair,
+    &__zoom-indicator,
+    &__real-time-indicator {
+      display: none;
+    }
+
+    * {
+      animation: none !important;
+      transition: none !important;
     }
   }
 }

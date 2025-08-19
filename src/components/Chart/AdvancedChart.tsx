@@ -1,7 +1,7 @@
 import { forwardRef, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { CHART } from '../../lib/constants/components';
-import { ChartDataPoint, ChartProps } from '../../lib/types/components';
 import Chart from './Chart';
+import { ChartDataPoint, ChartProps } from './types';
 
 interface AdvancedChartProps extends Omit<ChartProps, 'type'> {
   /**
@@ -609,10 +609,8 @@ const AdvancedChart = memo(
 
       return (
         <Chart ref={ref} type="advanced" datasets={realTimeData} config={config} {...props}>
-          <div className={CHART.CANVAS_CLASS} style={{ position: 'relative' }}>
-            {chartContent}
-            {advancedTooltip}
-          </div>
+          {chartContent}
+          {advancedTooltip}
           {exportControls}
           {dataTable}
         </Chart>

@@ -8,6 +8,9 @@ export * from './lib';
 // Export layouts
 export * from './layouts';
 
+// Export showcase
+export * from './showcase';
+
 // Create a properly typed default export
 import * as components from './components';
 import * as layouts from './layouts';

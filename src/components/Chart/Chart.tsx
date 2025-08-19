@@ -1,7 +1,9 @@
 import { forwardRef, memo, useCallback, useEffect, useState } from 'react';
 import { useChart } from '../../lib/composables/useChart';
+import { useChartToolbar } from '../../lib/composables/useChartToolbar';
 import { CHART } from '../../lib/constants/components';
 import { ChartProps } from '../../lib/types/components';
+import ChartToolbar from './ChartToolbar';
 
 const Chart = memo(
   forwardRef<HTMLDivElement, ChartProps>(
@@ -25,12 +27,53 @@ const Chart = memo(
         enableExport = false,
         enableRefresh = false,
         exportFormats = ['png', 'svg', 'csv'],
+        toolbarConfig,
+        customToolbarActions,
+        customToolbarGroups,
         ...props
       },
       ref
     ) => {
       const [isFullscreen, setIsFullscreen] = useState(false);
       const [isExporting, setIsExporting] = useState(false);
+
+      // Enhanced toolbar with dynamic configuration
+      const {
+        state: toolbarState,
+        handlers: toolbarHandlers,
+        toolbarGroups,
+      } = useChartToolbar(
+        type,
+        {
+          enableDefaults: showToolbar,
+          defaults: {
+            refresh: enableRefresh,
+            export: enableExport,
+            fullscreen: enableFullscreen,
+            zoom: true, // Enable zoom by default
+            pan: true,  // Enable pan by default
+            reset: true, // Enable reset by default
+            grid: true,  // Enable grid toggle by default
+            legend: true, // Enable legend toggle by default
+            tooltips: true, // Enable tooltips toggle by default
+            animations: true, // Enable animations toggle by default
+            settings: true, // Enable settings by default
+            ...toolbarConfig?.defaults,
+          },
+          exportFormats,
+          customActions: customToolbarActions,
+          customGroups: customToolbarGroups,
+          ...toolbarConfig,
+        },
+        {
+          onRefresh,
+          onExport,
+          onFullscreen: (fullscreen) => {
+            setIsFullscreen(fullscreen);
+            onFullscreen?.(fullscreen);
+          },
+        }
+      );
 
       const { generateChartClass, chartAttributes } = useChart({
         type,
@@ -49,142 +92,66 @@ const Chart = memo(
         className,
       });
 
-      // Enhanced fullscreen functionality
+      // Legacy handlers for backward compatibility
       const handleFullscreen = useCallback(() => {
-        setIsFullscreen(!isFullscreen);
-        onFullscreen?.(!isFullscreen);
-      }, [isFullscreen, onFullscreen]);
+        toolbarHandlers.onFullscreen(!toolbarState.isFullscreen);
+      }, [toolbarHandlers, toolbarState.isFullscreen]);
 
-      // Enhanced export functionality
       const handleExport = useCallback(
         async (format: string) => {
-          setIsExporting(true);
-          try {
-            await onExport?.(format);
-          } finally {
-            setIsExporting(false);
-          }
+          await toolbarHandlers.onExport(format);
         },
-        [onExport]
+        [toolbarHandlers]
       );
 
-      // Enhanced refresh functionality
       const handleRefresh = useCallback(() => {
-        onRefresh?.();
-      }, [onRefresh]);
+        toolbarHandlers.onRefresh();
+      }, [toolbarHandlers]);
 
-      // Keyboard navigation support
+      // Sync all toolbar state with component state
       useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-          if (!ref || typeof ref === 'function') return;
+        setIsFullscreen(toolbarState.isFullscreen);
+        setIsExporting(toolbarState.isExporting);
+      }, [toolbarState.isFullscreen, toolbarState.isExporting]);
 
-          const element = ref.current;
-          if (!element || !element.contains(document.activeElement)) return;
-
-          switch (event.key) {
-            case 'f':
-            case 'F':
-              if (enableFullscreen && (event.ctrlKey || event.metaKey)) {
-                event.preventDefault();
-                handleFullscreen();
-              }
-              break;
-            case 'r':
-            case 'R':
-              if (enableRefresh && (event.ctrlKey || event.metaKey)) {
-                event.preventDefault();
-                handleRefresh();
-              }
-              break;
-            case 'e':
-            case 'E':
-              if (enableExport && (event.ctrlKey || event.metaKey)) {
-                event.preventDefault();
-                handleExport('png');
-              }
-              break;
-          }
-        };
-
-        document.addEventListener('keydown', handleKeyDown);
-        return () => document.removeEventListener('keydown', handleKeyDown);
-      }, [
-        enableFullscreen,
-        enableRefresh,
-        enableExport,
-        handleFullscreen,
-        handleRefresh,
-        handleExport,
-        ref,
-      ]);
-
-      // Render toolbar if enabled
+      // Render enhanced toolbar
       const renderToolbar = () => {
         if (!showToolbar) return null;
+        
+        console.log('Chart: Rendering toolbar with groups', toolbarGroups);
+        console.log('Chart: Toolbar state', toolbarState);
 
         return (
-          <div className={CHART.TOOLBAR_CLASS}>
-            {enableRefresh && (
-              <button
-                className={CHART.ACTION_CLASS}
-                onClick={handleRefresh}
-                aria-label="Refresh chart data"
-                title="Refresh (Ctrl+R)"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z" />
-                </svg>
-              </button>
-            )}
-
-            {enableExport && (
-              <div className={CHART.EXPORT_GROUP_CLASS}>
-                <button
-                  className={CHART.ACTION_CLASS}
-                  onClick={() => handleExport('png')}
-                  disabled={isExporting}
-                  aria-label="Export chart as PNG"
-                  title="Export as PNG (Ctrl+E)"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-                  </svg>
-                </button>
-
-                {exportFormats.length > 1 && (
-                  <div className={CHART.EXPORT_DROPDOWN_CLASS}>
-                    {exportFormats.map(format => (
-                      <button
-                        key={format}
-                        className={CHART.EXPORT_OPTION_CLASS}
-                        onClick={() => handleExport(format)}
-                        disabled={isExporting}
-                      >
-                        {format.toUpperCase()}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {enableFullscreen && (
-              <button
-                className={CHART.ACTION_CLASS}
-                onClick={handleFullscreen}
-                aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-                title={`${isFullscreen ? 'Exit' : 'Enter'} fullscreen (Ctrl+F)`}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  {isFullscreen ? (
-                    <path d="M5,16H8V19H10V14H5M14,19H16V16H19V14H14M16,8V5H14V10H19V8M10,5V8H5V10H10V5Z" />
-                  ) : (
-                    <path d="M10,16V19H8V21H16V19H14V16M16,8V5H14V3H8V5H10V8M19,11V16H21V8H19V11M5,11V8H3V16H5V11Z" />
-                  )}
-                </svg>
-              </button>
-            )}
-          </div>
+          <ChartToolbar
+            chartType={type}
+            groups={toolbarGroups}
+            enableDefaults={toolbarGroups.length === 0}
+            exportFormats={exportFormats}
+            state={{
+              isFullscreen: toolbarState.isFullscreen,
+              isExporting: toolbarState.isExporting,
+              isRefreshing: toolbarState.isRefreshing,
+              zoomLevel: toolbarState.zoomLevel,
+              panEnabled: toolbarState.panEnabled,
+              showGrid: toolbarState.showGrid,
+              showLegend: toolbarState.showLegend,
+              showTooltips: toolbarState.showTooltips,
+              animationsEnabled: toolbarState.animationsEnabled,
+            }}
+            onRefresh={toolbarHandlers.onRefresh}
+            onExport={toolbarHandlers.onExport}
+            onFullscreen={toolbarHandlers.onFullscreen}
+            onZoomIn={toolbarHandlers.onZoomIn}
+            onZoomOut={toolbarHandlers.onZoomOut}
+            onZoomReset={toolbarHandlers.onZoomReset}
+            onPanToggle={toolbarHandlers.onPanToggle}
+            onReset={toolbarHandlers.onReset}
+            onSettings={toolbarHandlers.onSettings}
+            onGridToggle={toolbarHandlers.onGridToggle}
+            onLegendToggle={toolbarHandlers.onLegendToggle}
+            onTooltipsToggle={toolbarHandlers.onTooltipsToggle}
+            onAnimationsToggle={toolbarHandlers.onAnimationsToggle}
+          />
         );
       };
 
@@ -201,10 +168,10 @@ const Chart = memo(
           {...props}
         >
           {(title || subtitle || showToolbar) && (
-            <div className={CHART.HEADER_CLASS}>
-              <div className={CHART.HEADER_CONTENT_CLASS}>
-                {title && <h3 className={CHART.TITLE_CLASS}>{title}</h3>}
-                {subtitle && <p className={CHART.SUBTITLE_CLASS}>{subtitle}</p>}
+            <div className={`${CHART.HEADER_CLASS} u-d-flex u-justify-between u-align-items-start u-gap-4`}>
+              <div className={`${CHART.HEADER_CONTENT_CLASS} u-flex-1`}>
+                {title && <h3 className={`${CHART.TITLE_CLASS} u-mb-1`}>{title}</h3>}
+                {subtitle && <p className={`${CHART.SUBTITLE_CLASS} u-mb-0`}>{subtitle}</p>}
               </div>
               {renderToolbar()}
             </div>
@@ -215,7 +182,7 @@ const Chart = memo(
               <div className={CHART.LOADING_CLASS}>
                 <div className={CHART.LOADING_SPINNER_CLASS}></div>
                 <span className={CHART.LOADING_TEXT_CLASS}>
-                  {isExporting ? 'Exporting chart...' : 'Loading chart...'}
+                  {toolbarState.isExporting ? 'Exporting chart...' : toolbarState.isRefreshing ? 'Refreshing chart...' : 'Loading chart...'}
                 </span>
               </div>
             )}

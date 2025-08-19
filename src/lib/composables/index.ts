@@ -19,6 +19,9 @@ export * from './useSpinner';
 // Navbar composables
 export * from './useNavbar';
 
+// SideMenu composables
+export * from './useSideMenu';
+
 // EdgePanel composables
 export * from './useEdgePanel';
 
@@ -43,5 +46,16 @@ export * from './useDataTable';
 export * from './useModal';
 export * from './usePagination';
 export * from './useSlider';
+
+// Chart composables - simplified
+export * from './useChartData';
+export * from './useChartScale';
+export * from './useChartInteraction';
+
+// Legacy chart composables (deprecated)
+export * from './useChart';
+export * from './useLineChart';
+export * from './useBarChart';
+export * from './usePieChart';
 
 // Theme composables

@@ -4403,7 +4403,12 @@ export type ChartType =
   | 'bubble'
   | 'candlestick'
   | 'interactive'
-  | 'advanced';
+  | 'advanced'
+  | 'gauge'
+  | 'funnel'
+  | 'waterfall'
+  | 'heatmap'
+  | 'treemap';
 
 /**
  * Extended size options for charts

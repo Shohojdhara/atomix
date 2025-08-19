@@ -9,18 +9,57 @@ export { default as Button, type ButtonProps } from './Button/Button';
 export { default as Callout, type CalloutProps } from './Callout/Callout';
 export { default as Card, type CardProps } from './Card/Card';
 export {
+  AdvancedChart,
+  AnimatedChart,
   AreaChart,
   BarChart,
+  BubbleChart,
+  CandlestickChart,
   Chart,
+  ChartRenderer,
   DonutChart,
+  FunnelChart,
+  GaugeChart,
+  HeatmapChart,
+  InteractiveChart,
   LineChart,
+  MultiAxisChart,
   PieChart,
+  RadarChart,
+  RealTimeChart,
+  ScatterChart,
+  SimpleBarChart,
+  TreemapChart,
+  WaterfallChart,
+  type AdvancedChartProps,
+  type AnimatedChartProps,
   type AreaChartProps,
   type BarChartProps,
+  type BubbleChartProps,
+  type BubbleDataPoint,
+  type CandlestickChartProps,
+  type CandlestickDataPoint,
   type ChartProps,
   type DonutChartProps,
+  type FunnelChartProps,
+  type FunnelDataPoint,
+  type GaugeChartProps,
+  type HeatmapChartProps,
+  type HeatmapDataPoint,
+  type InteractiveChartProps,
   type LineChartProps,
+  type MultiAxisChartProps,
   type PieChartProps,
+  type RadarChartProps,
+  type RealTimeChartProps,
+  type ScatterChartProps,
+  type ScatterDataPoint,
+  type SimpleBarChartProps,
+  type TreemapChartProps,
+  type TreemapDataPoint,
+  type TreemapNode,
+  type WaterfallChartProps,
+  type WaterfallDataPoint,
 } from './Chart';
 export {
   default as ColorModeToggle,
@@ -43,6 +82,15 @@ export { default as List, type ListProps } from './List/List';
 export { default as Messages, type MessagesProps } from './Messages/Messages';
 export { default as Modal, type ModalProps } from './Modal/Modal';
 export { default as Navbar, type NavbarProps } from './Navigation/Navbar/Navbar';
+export { default as SideMenu, type SideMenuProps } from './Navigation/SideMenu/SideMenu';
+export {
+  default as SideMenuItem,
+  type SideMenuItemProps,
+} from './Navigation/SideMenu/SideMenuItem';
+export {
+  default as SideMenuList,
+  type SideMenuListProps,
+} from './Navigation/SideMenu/SideMenuList';
 export { default as Pagination, type PaginationProps } from './Pagination/Pagination';
 export { default as PhotoViewer, type PhotoViewerProps } from './PhotoViewer/PhotoViewer';
 export { default as Popover, type PopoverProps } from './Popover/Popover';

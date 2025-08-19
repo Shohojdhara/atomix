@@ -1211,6 +1211,9 @@ export const CHART = {
   EXPORT_GROUP_CLASS: 'c-chart__export-group',
   EXPORT_DROPDOWN_CLASS: 'c-chart__export-dropdown',
   EXPORT_OPTION_CLASS: 'c-chart__export-option',
+  TOOLBAR_GROUP_CLASS: 'c-chart__toolbar-group',
+  TOOLBAR_SEPARATOR_CLASS: 'c-chart__toolbar-separator',
+  TOOLBAR_LABEL_CLASS: 'c-chart__toolbar-label',
   CONTENT_CLASS: 'c-chart__content',
   CANVAS_CLASS: 'c-chart__canvas',
   LEGEND_CLASS: 'c-chart__legend',
@@ -1244,18 +1247,18 @@ export const CHART = {
   DEFAULT_HEIGHT: 400,
   PIE_RADIUS_RATIO: 0.8,
   DEFAULT_COLORS: [
-    '#7AFFD7',
-    '#1AFFD2',
-    '#00E6C3',
-    '#4DFF9F',
-    '#1AFF85',
-    '#00E66B',
-    '#DD6061',
-    '#FF1A1A',
-    '#E60000',
-    '#FFCC00',
-    '#E6B800',
-    '#B38F00',
+    'var(--atomix-primary)',
+    'var(--atomix-secondary)',
+    'var(--atomix-success)',
+    'var(--atomix-info)',
+    'var(--atomix-warning)',
+    'var(--atomix-error)',
+    'var(--atomix-primary-5)',
+    'var(--atomix-primary-7)',
+    'var(--atomix-primary-3)',
+    'var(--atomix-gray-6)',
+    'var(--atomix-gray-8)',
+    'var(--atomix-gray-4)',
   ],
   TYPE_PREFIX: 'c-chart--',
   SIZE_PREFIX: 'c-chart--',
@@ -1275,6 +1278,11 @@ export const CHART = {
     RADAR: 'c-chart--radar',
     BUBBLE: 'c-chart--bubble',
     CANDLESTICK: 'c-chart--candlestick',
+    GAUGE: 'c-chart--gauge',
+    FUNNEL: 'c-chart--funnel',
+    WATERFALL: 'c-chart--waterfall',
+    HEATMAP: 'c-chart--heatmap',
+    TREEMAP: 'c-chart--treemap',
 
     // Sizes
     SM: 'c-chart--sm',
@@ -1300,5 +1308,33 @@ export const CHART = {
 
     // Legacy Support
     ADVANCED: 'c-chart--advanced',
+
+    // Toolbar sizes
+    TOOLBAR_SM: 'c-chart__toolbar--sm',
+    TOOLBAR_MD: 'c-chart__toolbar--md',
+    TOOLBAR_LG: 'c-chart__toolbar--lg',
+
+    // Toolbar positions
+    TOOLBAR_TOP: 'c-chart__toolbar--top',
+    TOOLBAR_BOTTOM: 'c-chart__toolbar--bottom',
+    TOOLBAR_LEFT: 'c-chart__toolbar--left',
+    TOOLBAR_RIGHT: 'c-chart__toolbar--right',
+
+    // Action states
+    ACTION_ACTIVE: 'c-chart__action--active',
+    ACTION_DISABLED: 'c-chart__action--disabled',
+    ACTION_PRIMARY: 'c-chart__action--primary',
+    ACTION_SECONDARY: 'c-chart__action--secondary',
+    ACTION_SUCCESS: 'c-chart__action--success',
+    ACTION_INFO: 'c-chart__action--info',
+    ACTION_WARNING: 'c-chart__action--warning',
+    ACTION_ERROR: 'c-chart__action--error',
+  },
+  
+  // Toolbar configuration
+  TOOLBAR: {
+    SIZES: ['sm', 'md', 'lg'] as const,
+    POSITIONS: ['top', 'bottom', 'left', 'right'] as const,
+    ACTION_VARIANTS: ['primary', 'secondary', 'success', 'info', 'warning', 'error'] as const,
   },
 };

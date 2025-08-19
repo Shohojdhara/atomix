@@ -10,7 +10,7 @@ import {
   SkipForward,
   SpeakerHigh,
   SpeakerX,
-} from 'phosphor-react';
+} from '@phosphor-icons/react';
 import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { useAmbientMode } from '../../lib/composables/useAmbientMode';
 import { useVideoPlayer } from '../../lib/composables/useVideoPlayer';
@@ -89,8 +89,8 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
       getProgressPercentage,
       getBufferedPercentage,
     } = useVideoPlayer({
-      videoRef: (ref || videoRef) as React.RefObject<HTMLVideoElement>,
-      containerRef: containerRef as React.RefObject<HTMLDivElement>,
+      videoRef: videoRef,
+      containerRef: containerRef,
       onPlay,
       onPause,
       onEnded,
@@ -103,8 +103,8 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
     });
 
     useAmbientMode({
-      videoRef: (ref || videoRef) as React.RefObject<HTMLVideoElement>,
-      canvasRef: canvasRef as React.RefObject<HTMLCanvasElement>,
+      videoRef: videoRef,
+      canvasRef: canvasRef,
       enabled: ambientMode,
     });
 
@@ -158,7 +158,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
     const setSubtitle = useCallback(
       (subtitleLang: string | null) => {
-        const video = (ref || videoRef).current;
+        const video = videoRef.current;
         if (video) {
           const tracks = video.textTracks;
           console.log('Setting subtitle:', subtitleLang, 'Available tracks:', tracks.length);
@@ -183,12 +183,12 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
           setActiveSubtitle(subtitleLang);
         }
       },
-      [ref, videoRef]
+      [videoRef]
     );
 
     // Initialize subtitle tracks when video loads
     useEffect(() => {
-      const video = (ref || videoRef).current;
+      const video = videoRef.current;
       if (video && subtitles) {
         const handleLoadedData = () => {
           // Wait for tracks to be loaded
@@ -218,7 +218,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
           video.removeEventListener('canplay', handleCanPlay);
         };
       }
-    }, [subtitles, setSubtitle, ref, videoRef]);
+    }, [subtitles, setSubtitle, videoRef]);
 
     const handleContainerClick = useCallback(() => {
       if (containerRef.current) {
@@ -307,7 +307,14 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
           />
         ) : (
           <video
-            ref={ref || videoRef}
+            ref={(element) => {
+              videoRef.current = element;
+              if (typeof ref === 'function') {
+                ref(element);
+              } else if (ref) {
+                ref.current = element;
+              }
+            }}
             className={VIDEO_PLAYER.CLASSES.VIDEO}
             src={src}
             poster={poster}

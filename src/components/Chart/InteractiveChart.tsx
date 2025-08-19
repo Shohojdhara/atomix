@@ -1,7 +1,8 @@
 import { forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CHART } from '../../lib/constants/components';
-import { ChartDataPoint, ChartProps } from '../../lib/types/components';
+import { ChartDataPoint, ChartProps } from './types';
 import Chart from './Chart';
+import ChartTooltip from './ChartTooltip';
 
 interface InteractiveChartProps extends Omit<ChartProps, 'type'> {
   /**
@@ -116,7 +117,7 @@ const InteractiveChart = memo(
       } | null>(null);
 
       const [crosshair, setCrosshair] = useState<{ x: number; y: number } | null>(null);
-      const [zoom, setZoom] = useState({ scale: 1, translateX: 0, translateY: 0 });
+      const [zoom, setZoom] = useState({ scale: 1, translateX: 0, translateY: 0, lastDistance: 0 });
       const [brushSelection, setBrushSelection] = useState<{ startX: number; endX: number } | null>(
         null
       );
@@ -184,6 +185,82 @@ const InteractiveChart = memo(
         },
         [interactiveOptions.enableMouseWheelZoom]
       );
+
+      // Touch gesture handlers
+      const handleTouchStart = useCallback((event: React.TouchEvent<SVGSVGElement>) => {
+        event.preventDefault();
+        const touches = Array.from(event.touches);
+        
+        if (touches.length === 1) {
+          // Single touch - start panning
+          const rect = chartRef.current?.getBoundingClientRect();
+          if (rect) {
+            const x = touches[0].clientX - rect.left;
+            const y = touches[0].clientY - rect.top;
+            setCrosshair({ x, y });
+          }
+        } else if (touches.length === 2) {
+          // Two touches - prepare for pinch zoom
+          const distance = Math.sqrt(
+            Math.pow(touches[1].clientX - touches[0].clientX, 2) +
+            Math.pow(touches[1].clientY - touches[0].clientY, 2)
+          );
+          setZoom(prev => ({ ...prev, lastDistance: distance }));
+        }
+      }, []);
+
+      const handleTouchMove = useCallback((event: React.TouchEvent<SVGSVGElement>) => {
+        event.preventDefault();
+        const touches = Array.from(event.touches);
+        
+        if (touches.length === 1) {
+          // Single touch - update crosshair
+          const rect = chartRef.current?.getBoundingClientRect();
+          if (rect) {
+            const x = touches[0].clientX - rect.left;
+            const y = touches[0].clientY - rect.top;
+            setCrosshair({ x, y });
+          }
+        } else if (touches.length === 2) {
+          // Two touches - pinch zoom
+          const distance = Math.sqrt(
+            Math.pow(touches[1].clientX - touches[0].clientX, 2) +
+            Math.pow(touches[1].clientY - touches[0].clientY, 2)
+          );
+          
+          setZoom(prev => {
+            if (prev.lastDistance && prev.lastDistance > 0) {
+              const scale = distance / prev.lastDistance;
+              const newScale = Math.max(0.5, Math.min(5, prev.scale * scale));
+              
+              return {
+                ...prev,
+                scale: newScale,
+                lastDistance: distance,
+              };
+            }
+            return { ...prev, lastDistance: distance };
+          });
+        }
+      }, []);
+
+      const handleTouchEnd = useCallback((event: React.TouchEvent<SVGSVGElement>) => {
+        const touches = Array.from(event.touches);
+        
+        if (touches.length === 0) {
+          setCrosshair(null);
+          setZoom(prev => ({ ...prev, lastDistance: 0 }));
+        } else if (touches.length === 1) {
+          // Switch from pinch to single touch
+          const rect = chartRef.current?.getBoundingClientRect();
+          if (rect) {
+            const x = touches[0].clientX - rect.left;
+            const y = touches[0].clientY - rect.top;
+            setCrosshair({ x, y });
+          }
+          setZoom(prev => ({ ...prev, lastDistance: 0 }));
+        }
+      }, []);
 
       // Mouse move handler for crosshair
       const handleMouseMove = useCallback(
@@ -340,7 +417,7 @@ const InteractiveChart = memo(
 
                 {/* Data labels */}
                 {interactiveOptions.showDataLabels && (
-                  <text x={x} y={y - 15} textAnchor="middle" fontSize="10" fill="#374151">
+                  <text x={x} y={y - 15} textAnchor="middle" className="c-chart__data-label">
                     {point.value}
                   </text>
                 )}
@@ -360,20 +437,14 @@ const InteractiveChart = memo(
                 y1={padding.top}
                 x2={crosshair.x}
                 y2={height - padding.bottom}
-                stroke="#e5e7eb"
-                strokeWidth={1}
-                strokeDasharray="4,4"
-                opacity={0.7}
+                className="c-chart__crosshair-line c-chart__crosshair-line--vertical"
               />
               <line
                 x1={padding.left}
                 y1={crosshair.y}
                 x2={width - padding.right}
                 y2={crosshair.y}
-                stroke="#e5e7eb"
-                strokeWidth={1}
-                strokeDasharray="4,4"
-                opacity={0.7}
+                className="c-chart__crosshair-line c-chart__crosshair-line--horizontal"
               />
             </g>
           ) : null;
@@ -503,7 +574,13 @@ const InteractiveChart = memo(
             onMouseMove={handleMouseMove}
             onMouseLeave={() => setCrosshair(null)}
             onWheel={e => handleMouseWheel(e.nativeEvent)}
-            style={{ cursor: 'crosshair' }}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{ 
+              cursor: 'crosshair',
+              touchAction: 'none' // Prevent default touch behaviors
+            }}
           >
             {grid}
             {axes}
@@ -533,81 +610,18 @@ const InteractiveChart = memo(
         const { dataPoint, datasetIndex, clientX, clientY } = hoveredPoint;
         const dataset = filteredDatasets[datasetIndex];
 
-        if (interactiveOptions.customTooltipRenderer) {
-          return (
-            <div
-              className="c-chart__tooltip"
-              style={{
-                position: 'absolute',
-                left: clientX + 10,
-                top: clientY - 10,
-                zIndex: 1000,
-                pointerEvents: 'none',
-              }}
-            >
-              {interactiveOptions.customTooltipRenderer(
-                dataPoint,
-                datasetIndex,
-                hoveredPoint.pointIndex
-              )}
-            </div>
-          );
-        }
-
         return (
-          <div
-            className="c-chart__tooltip"
-            style={{
-              left: clientX + 10,
-              top: clientY - 10,
-            }}
-          >
-            <div
-              style={{
-                fontWeight: 'bold',
-                marginBottom: '0.5rem',
-                color: '#111827',
-              }}
-            >
-              {dataPoint.label}
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 'var(--space-1)' }}>
-              <div
-                style={{
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  backgroundColor: dataset?.color || '#7c3aed',
-                  marginRight: '0.5rem',
-                }}
-              />
-              <span style={{ color: '#6b7280' }}>
-                {dataset?.label}: <strong style={{ color: '#111827' }}>{dataPoint.value}</strong>
-              </span>
-            </div>
-            {dataPoint.metadata && (
-              <div
-                style={{
-                  marginTop: '0.5rem',
-                  paddingTop: '0.5rem',
-                  borderTop: '1px solid #e5e7eb',
-                }}
-              >
-                <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Additional Info:</div>
-                {Object.entries(dataPoint.metadata).map(([key, value]) => (
-                  <div
-                    key={key}
-                    style={{
-                      fontSize: '0.75rem',
-                      color: '#6b7280',
-                    }}
-                  >
-                    {key}: {String(value)}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <ChartTooltip
+            dataPoint={dataPoint}
+            datasetLabel={dataset?.label}
+            datasetColor={dataset?.color}
+            position={{ x: clientX, y: clientY }}
+            visible={true}
+            customRenderer={interactiveOptions.customTooltipRenderer ? 
+              () => interactiveOptions.customTooltipRenderer!(dataPoint, datasetIndex, hoveredPoint.pointIndex) : 
+              undefined
+            }
+          />
         );
       }, [
         interactiveOptions.richTooltips,

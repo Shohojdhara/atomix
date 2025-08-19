@@ -157,28 +157,28 @@ export function useChartPerformance() {
   }, []);
 
   /**
-   * Memory-efficient color palette generation
+   * Memory-efficient color palette generation using CSS custom properties
    */
   const generateOptimizedColorPalette = useMemo(() => {
     const baseColors = [
-      '#7AFFD7',
-      '#1AFFD2',
-      '#00E6C3',
-      '#4DFF9F',
-      '#1AFF85',
-      '#00E66B',
-      '#DD6061',
-      '#FF1A1A',
-      '#E60000',
-      '#FFCC00',
-      '#E6B800',
-      '#B38F00',
-      '#4ECDC4',
-      '#45B7D1',
-      '#96CEB4',
-      '#FECA57',
-      '#FF9FF3',
-      '#54A0FF',
+      'var(--atomix-primary)',
+      'var(--atomix-secondary)',
+      'var(--atomix-success)',
+      'var(--atomix-info)',
+      'var(--atomix-warning)',
+      'var(--atomix-error)',
+      'var(--atomix-primary-5)',
+      'var(--atomix-primary-7)',
+      'var(--atomix-primary-3)',
+      'var(--atomix-gray-6)',
+      'var(--atomix-gray-8)',
+      'var(--atomix-gray-4)',
+      'var(--atomix-primary-2)',
+      'var(--atomix-primary-8)',
+      'var(--atomix-gray-5)',
+      'var(--atomix-gray-7)',
+      'var(--atomix-primary-4)',
+      'var(--atomix-primary-6)',
     ];
 
     // Pre-generate a large palette to avoid runtime calculations

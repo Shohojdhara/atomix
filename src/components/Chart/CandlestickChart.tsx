@@ -1,7 +1,8 @@
 import { forwardRef, memo, useCallback, useMemo, useState } from 'react';
 import { CHART } from '../../lib/constants/components';
-import { ChartProps } from '../../lib/types/components';
 import Chart from './Chart';
+import ChartTooltip from './ChartTooltip';
+import { ChartProps } from './types';
 
 interface CandlestickDataPoint {
   /**
@@ -230,15 +231,16 @@ const CandlestickChart = memo(
         ]);
         const minPrice = config.yAxis?.min ?? Math.min(...allPrices);
         const maxPrice = config.yAxis?.max ?? Math.max(...allPrices);
-        
+
         // Handle case where all prices are the same to avoid division by zero
         const priceRange = maxPrice !== minPrice ? maxPrice - minPrice : 1;
 
         // Calculate volume scale if needed
         const candlesWithVolume = candlestickData.filter(d => d.volume);
-        const maxVolume = candlestickOptions.showVolume && candlesWithVolume.length > 0
-          ? Math.max(...candlesWithVolume.map(d => d.volume!))
-          : 0;
+        const maxVolume =
+          candlestickOptions.showVolume && candlesWithVolume.length > 0
+            ? Math.max(...candlesWithVolume.map(d => d.volume!))
+            : 0;
         // Ensure maxVolume is at least 1 to avoid division by zero
         const safeMaxVolume = maxVolume > 0 ? maxVolume : 1;
 
@@ -250,8 +252,7 @@ const CandlestickChart = memo(
         };
 
         const priceScale = (price: number) => {
-          const baseY =
-            padding.top + chartHeight - ((price - minPrice) / priceRange) * chartHeight;
+          const baseY = padding.top + chartHeight - ((price - minPrice) / priceRange) * chartHeight;
           return baseY * zoom.scale + zoom.translateY;
         };
 
@@ -289,7 +290,7 @@ const CandlestickChart = memo(
             const candleWidthQuarter = isNaN(candleWidth / 4) ? 0 : candleWidth / 4;
             const volScale = volumeScale(candle.volume);
             const volHeight = chartHeight + padding.top + 10 + volumeHeight - 20 - volScale;
-            
+
             chartElements.push(
               <rect
                 key={`volume-${i}`}
@@ -335,12 +336,12 @@ const CandlestickChart = memo(
           const bodyHeight = Math.abs(closeY - openY);
 
           const isHovered = hoveredCandle?.index === i;
-          
+
           // Ensure all values are valid numbers before creating elements
           const xPos = isNaN(x) ? 0 : x;
           const candleWidthHalf = isNaN(candleWidth / 2) ? 0 : candleWidth / 2;
           const safeBodyTop = isNaN(bodyTop) ? 0 : bodyTop;
-          const safeBodyHeight = (isNaN(bodyHeight) || bodyHeight === 0) ? 1 : Math.abs(bodyHeight);
+          const safeBodyHeight = isNaN(bodyHeight) || bodyHeight === 0 ? 1 : Math.abs(bodyHeight);
 
           chartElements.push(
             <g key={`candle-${i}`}>
@@ -351,7 +352,7 @@ const CandlestickChart = memo(
                 x2={isNaN(xPos) ? 0 : xPos}
                 y2={isNaN(lowY) ? 0 : lowY}
                 stroke={candleColor}
-                strokeWidth={isHovered ? 2 : 1}
+                className={`c-chart__wick ${isHovered ? 'c-chart__wick--hovered' : ''}`}
               />
 
               {/* Candle body */}
@@ -362,13 +363,13 @@ const CandlestickChart = memo(
                 height={safeBodyHeight}
                 fill={isBullish ? candleColor : candleColor}
                 stroke={candleColor}
-                strokeWidth={1}
-                opacity={isBullish ? 0.8 : 1}
-                style={{
-                  cursor: 'pointer',
-                  transition: 'opacity 0.2s ease-in-out',
+                className={`c-chart__candlestick ${isBullish ? 'c-chart__candlestick--bullish' : 'c-chart__candlestick--bearish'}`}
+                onMouseEnter={e => {
+                  const rect = e.currentTarget.ownerSVGElement?.getBoundingClientRect();
+                  const clientX = rect ? rect.left + xPos : e.clientX;
+                  const clientY = rect ? rect.top + safeBodyTop : e.clientY;
+                  setHoveredCandle({ index: i, x: clientX, y: clientY, data: candle });
                 }}
-                onMouseEnter={() => setHoveredCandle({ index: i, x: xPos, y: safeBodyTop, data: candle })}
                 onMouseLeave={() => setHoveredCandle(null)}
                 onClick={() => onDataPointClick?.(candle as any, 0, i)}
               />
@@ -382,8 +383,7 @@ const CandlestickChart = memo(
                   height={isNaN(safeBodyHeight + 4) ? 5 : Math.max(safeBodyHeight + 4, 5)}
                   fill="none"
                   stroke={candleColor}
-                  strokeWidth={2}
-                  opacity={0.5}
+                  className="c-chart__candlestick-highlight"
                 />
               )}
             </g>
@@ -403,7 +403,9 @@ const CandlestickChart = memo(
                 const y = priceScale(value);
                 if (i === 0) return `M ${isNaN(x) ? 0 : x},${isNaN(y) ? 0 : y}`;
                 const prevValue = movingAverage[i - 1];
-                return (prevValue !== undefined && isNaN(prevValue)) ? `M ${isNaN(x) ? 0 : x},${isNaN(y) ? 0 : y}` : `L ${isNaN(x) ? 0 : x},${isNaN(y) ? 0 : y}`;
+                return prevValue !== undefined && isNaN(prevValue)
+                  ? `M ${isNaN(x) ? 0 : x},${isNaN(y) ? 0 : y}`
+                  : `L ${isNaN(x) ? 0 : x},${isNaN(y) ? 0 : y}`;
               })
               .join(' ');
 
@@ -413,8 +415,7 @@ const CandlestickChart = memo(
                 d={pathData}
                 stroke={color}
                 fill="none"
-                strokeWidth={2}
-                opacity={0.8}
+                className="c-chart__moving-average"
               />
             );
           });
@@ -423,26 +424,20 @@ const CandlestickChart = memo(
         // Crosshair
         if (crosshair && candlestickOptions.enableCrosshair) {
           chartElements.push(
-            <g key="crosshair" style={{ pointerEvents: 'none' }}>
+            <g key="crosshair" className="c-chart__crosshair">
               <line
                 x1={isNaN(crosshair.x) ? 0 : crosshair.x}
                 y1={padding.top}
                 x2={isNaN(crosshair.x) ? 0 : crosshair.x}
                 y2={chartHeight + padding.top}
-                stroke="#e5e7eb"
-                strokeWidth={1}
-                strokeDasharray="4,4"
-                opacity={0.7}
+                className="c-chart__crosshair-line c-chart__crosshair-line--vertical"
               />
               <line
                 x1={padding.left}
                 y1={isNaN(crosshair.y) ? 0 : crosshair.y}
                 x2={width - padding.right}
                 y2={isNaN(crosshair.y) ? 0 : crosshair.y}
-                stroke="#e5e7eb"
-                strokeWidth={1}
-                strokeDasharray="4,4"
-                opacity={0.7}
+                className="c-chart__crosshair-line c-chart__crosshair-line--horizontal"
               />
             </g>
           );
@@ -454,7 +449,7 @@ const CandlestickChart = memo(
             {/* Horizontal price grid lines */}
             {config.yAxis?.showGrid &&
               Array.from({ length: 6 }).map((_, i) => {
-                const price = minPrice + ((priceRange) * i) / 5;
+                const price = minPrice + (priceRange * i) / 5;
                 const yPos = priceScale(price);
                 return (
                   <line
@@ -507,7 +502,7 @@ const CandlestickChart = memo(
                 strokeWidth={1}
               />
               {Array.from({ length: 6 }).map((_, i) => {
-                const price = minPrice + ((priceRange) * i) / 5;
+                const price = minPrice + (priceRange * i) / 5;
                 const yPos = priceScale(price);
                 return (
                   <g key={`price-axis-${i}`}>
@@ -606,8 +601,8 @@ const CandlestickChart = memo(
                         {volume > 1000000
                           ? `${(volume / 1000000).toFixed(1)}M`
                           : volume > 1000
-                          ? `${(volume / 1000).toFixed(0)}K`
-                          : `${Math.round(volume)}`}
+                            ? `${(volume / 1000).toFixed(0)}K`
+                            : `${Math.round(volume)}`}
                       </text>
                     </g>
                   );
@@ -650,86 +645,89 @@ const CandlestickChart = memo(
         onDataPointClick,
       ]);
 
-      // OHLC Tooltip
-      const ohlcTooltip = useMemo(() => {
-        if (!candlestickOptions.showOHLCTooltip || !hoveredCandle) return null;
+      // OHLC Tooltip custom renderer
+      const renderOHLCTooltip = useCallback(
+        (dataPoint: any) => {
+          if (!hoveredCandle) return null;
 
-        const { data, x, y } = hoveredCandle;
-        const isBullish = data.close >= data.open;
-        const change = data.close - data.open;
-        const changePercent = (change / data.open) * 100;
+          const { data } = hoveredCandle;
+          const isBullish = data.close >= data.open;
+          const change = data.close - data.open;
+          const changePercent = (change / data.open) * 100;
 
-        return (
-          <div
-            className={CHART.TOOLTIP_CLASS}
-            style={{
-              position: 'absolute',
-              left: x + 10,
-              top: y - 10,
-              background: '#ffffff',
-              border: '1px solid #e5e7eb',
-              borderRadius: '0.5rem',
-              padding: '0.75rem',
-              fontSize: '0.875rem',
-              boxShadow: '0 16px 48px rgba(0, 0, 0, 0.175)',
-              zIndex: 1000,
-              pointerEvents: 'none',
-              minWidth: '200px',
-            }}
-          >
-            <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>
-              {formatDate(data.date)}
+          return (
+            <div>
+              <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>
+                {formatDate(data.date)}
+              </div>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: '0.25rem',
+                  fontSize: '0.75rem',
+                }}
+              >
+                <div>
+                  Open: <strong>${data.open.toFixed(candlestickOptions.pricePrecision)}</strong>
+                </div>
+                <div>
+                  High: <strong>${data.high.toFixed(candlestickOptions.pricePrecision)}</strong>
+                </div>
+                <div>
+                  Low: <strong>${data.low.toFixed(candlestickOptions.pricePrecision)}</strong>
+                </div>
+                <div>
+                  Close: <strong>${data.close.toFixed(candlestickOptions.pricePrecision)}</strong>
+                </div>
+              </div>
+              <div
+                style={{
+                  marginTop: '0.5rem',
+                  paddingTop: '0.5rem',
+                  borderTop: '1px solid var(--atomix-gray-3)',
+                  color: isBullish
+                    ? candlestickOptions.bullishColor
+                    : candlestickOptions.bearishColor,
+                  fontWeight: 'bold',
+                }}
+              >
+                {isBullish ? '+' : ''}
+                {change.toFixed(candlestickOptions.pricePrecision)} ({changePercent.toFixed(2)}%)
+              </div>
+              {data.volume && (
+                <div style={{ marginTop: '0.25rem', fontSize: '0.75rem' }}>
+                  Volume: {data.volume.toLocaleString()}
+                </div>
+              )}
             </div>
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '0.25rem',
-                fontSize: '0.75rem',
-              }}
-            >
-              <div>
-                Open: <strong>${data.open.toFixed(candlestickOptions.pricePrecision)}</strong>
-              </div>
-              <div>
-                High: <strong>${data.high.toFixed(candlestickOptions.pricePrecision)}</strong>
-              </div>
-              <div>
-                Low: <strong>${data.low.toFixed(candlestickOptions.pricePrecision)}</strong>
-              </div>
-              <div>
-                Close: <strong>${data.close.toFixed(candlestickOptions.pricePrecision)}</strong>
-              </div>
-            </div>
-            <div
-              style={{
-                marginTop: '0.5rem',
-                paddingTop: '0.5rem',
-                borderTop: '1px solid #e5e7eb',
-                color: isBullish
-                  ? candlestickOptions.bullishColor
-                  : candlestickOptions.bearishColor,
-                fontWeight: 'bold',
-              }}
-            >
-              {isBullish ? '+' : ''}
-              {change.toFixed(candlestickOptions.pricePrecision)} ({changePercent.toFixed(2)}%)
-            </div>
-            {data.volume && (
-              <div style={{ marginTop: '0.25rem', fontSize: '0.75rem' }}>
-                Volume: {data.volume.toLocaleString()}
-              </div>
-            )}
-          </div>
-        );
-      }, [candlestickOptions, hoveredCandle, formatDate]);
+          );
+        },
+        [candlestickOptions, hoveredCandle, formatDate]
+      );
 
       return (
         <Chart ref={ref} type="candlestick" datasets={[]} config={config} {...props}>
-          <div className={CHART.CANVAS_CLASS} style={{ position: 'relative' }}>
-            {chartContent}
-            {ohlcTooltip}
-          </div>
+          {chartContent}
+          {candlestickOptions.showOHLCTooltip && hoveredCandle && (
+            <ChartTooltip
+              dataPoint={{
+                label: formatDate(hoveredCandle.data.date),
+                value: hoveredCandle.data.close,
+                metadata: {
+                  open: hoveredCandle.data.open,
+                  high: hoveredCandle.data.high,
+                  low: hoveredCandle.data.low,
+                  close: hoveredCandle.data.close,
+                  volume: hoveredCandle.data.volume,
+                },
+              }}
+              datasetLabel="OHLC"
+              position={{ x: hoveredCandle.x, y: hoveredCandle.y }}
+              visible={true}
+              customRenderer={renderOHLCTooltip}
+            />
+          )}
           {candlestickOptions.showMovingAverages && candlestickOptions.movingAveragePeriods && (
             <div
               className={CHART.LEGEND_CLASS}
