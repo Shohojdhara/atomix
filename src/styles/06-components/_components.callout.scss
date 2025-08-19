@@ -36,7 +36,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
   width: 100%;
   max-width: var(--#{config.$prefix}callout-width);
   gap: var(--#{config.$prefix}callout-actions-spacer);
@@ -52,6 +51,7 @@
       var(--#{config.$prefix}callout-transition-timing);
 
   &__content {
+    width: 100%;
     display: flex;
     gap: var(--#{config.$prefix}callout-message-spacer);
     align-items: flex-start;
@@ -68,6 +68,7 @@
 
   &__message {
     display: flex;
+    width: 100%;
     flex-direction: column;
     gap: rem.rem(4px);
   }

@@ -5,6 +5,8 @@
 @use '../02-tools/tools.rem' as rem;
 @use '../02-tools/tools.size' as *;
 @use '../02-tools/tools.spacing' as *;
+@use '../01-settings/settings.z-layers' as *;
+@use 'sass:map';
 
 .c-modal {
   $root: &;
@@ -41,6 +43,7 @@
   inset: 0;
   @include square(100%);
   display: none;
+  z-index: map.get($z-layers, modal);
 
   &__backdrop {
     position: absolute;

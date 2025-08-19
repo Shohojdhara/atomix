@@ -59,6 +59,7 @@
 
   &__content {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--#{$prefix}steps-item-content-gap);
   }
