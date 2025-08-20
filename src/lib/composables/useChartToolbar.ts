@@ -1,6 +1,6 @@
-import { useCallback, useState, useEffect } from 'react';
-import { ChartType } from '../../components/Chart/types';
+import { useCallback, useEffect, useState } from 'react';
 import { ChartToolbarAction, ChartToolbarGroup } from '../../components/Chart/ChartToolbar';
+import { ChartType } from '../../components/Chart/types';
 
 export interface ChartToolbarState {
   isFullscreen: boolean;
@@ -158,10 +158,8 @@ export function useChartToolbar(
   // Merge configurations
   const finalDefaults = { ...getChartDefaults(), ...defaults };
 
-  // Enhanced handlers with state management and console logging
   const enhancedHandlers = {
     onRefresh: useCallback(() => {
-      console.log('Chart Toolbar: Refresh clicked');
       setState(prev => ({ ...prev, isRefreshing: true }));
       handlers.onRefresh?.();
       setTimeout(() => {
@@ -169,48 +167,50 @@ export function useChartToolbar(
       }, 1000);
     }, [handlers.onRefresh]),
 
-    onExport: useCallback(async (format: string) => {
-      console.log('Chart Toolbar: Export clicked', format);
-      setState(prev => ({ ...prev, isExporting: true }));
-      try {
-        await handlers.onExport?.(format);
-      } finally {
-        setState(prev => ({ ...prev, isExporting: false }));
-      }
-    }, [handlers.onExport]),
+    onExport: useCallback(
+      async (format: string) => {
+        setState(prev => ({ ...prev, isExporting: true }));
+        try {
+          await handlers.onExport?.(format);
+        } finally {
+          setState(prev => ({ ...prev, isExporting: false }));
+        }
+      },
+      [handlers.onExport]
+    ),
 
-    onFullscreen: useCallback((isFullscreen: boolean) => {
-      console.log('Chart Toolbar: Fullscreen toggled', isFullscreen);
-      setState(prev => ({ ...prev, isFullscreen }));
-      handlers.onFullscreen?.(isFullscreen);
-    }, [handlers.onFullscreen]),
+    onFullscreen: useCallback(
+      (isFullscreen: boolean) => {
+        setState(prev => ({ ...prev, isFullscreen }));
+        handlers.onFullscreen?.(isFullscreen);
+      },
+      [handlers.onFullscreen]
+    ),
 
     onZoomIn: useCallback(() => {
-      console.log('Chart Toolbar: Zoom in clicked');
       setState(prev => ({ ...prev, zoomLevel: Math.min(prev.zoomLevel * 1.2, 5) }));
       handlers.onZoomIn?.();
     }, [handlers.onZoomIn]),
 
     onZoomOut: useCallback(() => {
-      console.log('Chart Toolbar: Zoom out clicked');
       setState(prev => ({ ...prev, zoomLevel: Math.max(prev.zoomLevel / 1.2, 0.2) }));
       handlers.onZoomOut?.();
     }, [handlers.onZoomOut]),
 
     onZoomReset: useCallback(() => {
-      console.log('Chart Toolbar: Zoom reset clicked');
       setState(prev => ({ ...prev, zoomLevel: 1 }));
       handlers.onZoomReset?.();
     }, [handlers.onZoomReset]),
 
-    onPanToggle: useCallback((enabled: boolean) => {
-      console.log('Chart Toolbar: Pan toggled', enabled);
-      setState(prev => ({ ...prev, panEnabled: enabled }));
-      handlers.onPanToggle?.(enabled);
-    }, [handlers.onPanToggle]),
+    onPanToggle: useCallback(
+      (enabled: boolean) => {
+        setState(prev => ({ ...prev, panEnabled: enabled }));
+        handlers.onPanToggle?.(enabled);
+      },
+      [handlers.onPanToggle]
+    ),
 
     onReset: useCallback(() => {
-      console.log('Chart Toolbar: Reset clicked');
       setState(prev => ({
         ...prev,
         zoomLevel: 1,
@@ -219,46 +219,48 @@ export function useChartToolbar(
       handlers.onReset?.();
     }, [handlers.onReset]),
 
-    onGridToggle: useCallback((show: boolean) => {
-      console.log('Chart Toolbar: Grid toggled', show);
-      setState(prev => ({ ...prev, showGrid: show }));
-      handlers.onGridToggle?.(show);
-    }, [handlers.onGridToggle]),
+    onGridToggle: useCallback(
+      (show: boolean) => {
+        setState(prev => ({ ...prev, showGrid: show }));
+        handlers.onGridToggle?.(show);
+      },
+      [handlers.onGridToggle]
+    ),
 
-    onLegendToggle: useCallback((show: boolean) => {
-      console.log('Chart Toolbar: Legend toggled', show);
-      setState(prev => ({ ...prev, showLegend: show }));
-      handlers.onLegendToggle?.(show);
-    }, [handlers.onLegendToggle]),
+    onLegendToggle: useCallback(
+      (show: boolean) => {
+        setState(prev => ({ ...prev, showLegend: show }));
+        handlers.onLegendToggle?.(show);
+      },
+      [handlers.onLegendToggle]
+    ),
 
-    onTooltipsToggle: useCallback((show: boolean) => {
-      console.log('Chart Toolbar: Tooltips toggled', show);
-      setState(prev => ({ ...prev, showTooltips: show }));
-      handlers.onTooltipsToggle?.(show);
-    }, [handlers.onTooltipsToggle]),
+    onTooltipsToggle: useCallback(
+      (show: boolean) => {
+        setState(prev => ({ ...prev, showTooltips: show }));
+        handlers.onTooltipsToggle?.(show);
+      },
+      [handlers.onTooltipsToggle]
+    ),
 
-    onAnimationsToggle: useCallback((enabled: boolean) => {
-      console.log('Chart Toolbar: Animations toggled', enabled);
-      setState(prev => ({ ...prev, animationsEnabled: enabled }));
-      handlers.onAnimationsToggle?.(enabled);
-    }, [handlers.onAnimationsToggle]),
+    onAnimationsToggle: useCallback(
+      (enabled: boolean) => {
+        setState(prev => ({ ...prev, animationsEnabled: enabled }));
+        handlers.onAnimationsToggle?.(enabled);
+      },
+      [handlers.onAnimationsToggle]
+    ),
 
-    onSettings: useCallback(() => {
-      console.log('Chart Toolbar: Settings clicked');
-    }, []),
+    onSettings: useCallback(() => {}, []),
   };
 
   // Generate chart-specific toolbar groups
   const generateToolbarGroups = useCallback((): ChartToolbarGroup[] => {
-    console.log('useChartToolbar: Generating toolbar groups for', chartType);
-    console.log('useChartToolbar: Final defaults', finalDefaults);
-    console.log('useChartToolbar: Current state', state);
-    
     const groups: ChartToolbarGroup[] = [];
 
     // Data actions group
     const dataActions: ChartToolbarAction[] = [];
-    
+
     if (finalDefaults.refresh) {
       dataActions.push({
         id: 'refresh',
@@ -443,7 +445,6 @@ export function useChartToolbar(
       }
     }
 
-    console.log('useChartToolbar: Generated groups', groups);
     return groups;
   }, [chartType, finalDefaults, state, enhancedHandlers, customActions, customGroups]);
 

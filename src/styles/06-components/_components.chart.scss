@@ -1329,7 +1329,7 @@
         }
 
         &:hover {
-          transform: scale(1.1);
+          // transform: scale(1.1);
           filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
         }
       }
@@ -1632,19 +1632,6 @@
           rx: 4;
         }
       }
-    }
-
-    // Enhanced tooltip for heatmap
-    #{$root}__tooltip-custom {
-      padding: map.get($spacing-sizes, 2) map.get($spacing-sizes, 3);
-      background: var(--#{$prefix}primary-bg-default);
-      border: 1px solid var(--#{$prefix}primary-border-subtle);
-      border-radius: $border-radius-md;
-      box-shadow: $box-shadow-lg;
-      font-size: $font-size-xs;
-      color: var(--#{$prefix}primary-text-emphasis);
-      backdrop-filter: blur(8px);
-      max-width: 200px;
     }
   }
 
