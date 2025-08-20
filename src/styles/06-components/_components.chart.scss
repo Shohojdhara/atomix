@@ -31,9 +31,7 @@
   border-radius: var(--#{$prefix}chart-border-radius);
   overflow: hidden;
   box-shadow: $box-shadow-sm;
-  backdrop-filter: blur($chart-backdrop-blur);
   position: relative;
-  isolation: isolate;
   min-height: var(--#{$prefix}chart-min-height);
   width: 100%;
   max-width: 100%;
@@ -56,7 +54,6 @@
 
   &:hover {
     box-shadow: $box-shadow-lg;
-    transform: $chart-hover-transform;
     border-color: var(--#{$prefix}primary-border-subtle);
   }
 
@@ -748,7 +745,6 @@
     // background: $chart-primary-bg;
     border: 1px solid $chart-primary-border;
     opacity: 1;
-    transform: translateY(0) scale(1);
 
     &-title {
       font-weight: $font-weight-bold;

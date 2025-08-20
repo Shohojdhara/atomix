@@ -120,7 +120,8 @@ export const ChartGallery: Story = {
         enableRefresh: true,
         onRefresh: () => console.log('Story: Refresh clicked'),
         onExport: (format: string) => console.log('Story: Export clicked', format),
-        onFullscreen: (isFullscreen: boolean) => console.log('Story: Fullscreen toggled', isFullscreen),
+        onFullscreen: (isFullscreen: boolean) =>
+          console.log('Story: Fullscreen toggled', isFullscreen),
       };
 
       // Custom toolbar with chart controls
@@ -532,22 +533,6 @@ export const AdvancedFeatures: Story = {
           />
         </Card>
       </div>
-    </Container>
-  ),
-};
-
-// Default
-export const Default: Story = {
-  render: () => (
-    <Container className="u-py-4">
-      <Card className="u-p-4">
-        <LineChart
-          title="Sample Chart"
-          datasets={datasets}
-          config={{ showLegend: true }}
-          className="u-h-100"
-        />
-      </Card>
     </Container>
   ),
 };

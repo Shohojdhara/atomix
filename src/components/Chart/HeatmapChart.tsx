@@ -560,17 +560,6 @@ const HeatmapChart = memo(
                 position: 'fixed',
                 left: tooltipPosition.x + 10,
                 top: tooltipPosition.y - 10,
-                transform: 'translateY(-100%)',
-                background: 'var(--atomix-gray-9)',
-                color: 'white',
-                padding: '8px 12px',
-                borderRadius: '6px',
-                fontSize: '12px',
-                fontWeight: '500',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-                zIndex: 1000,
-                pointerEvents: 'none',
-                whiteSpace: 'nowrap',
               }}
             >
               {tooltipConfig.formatter
