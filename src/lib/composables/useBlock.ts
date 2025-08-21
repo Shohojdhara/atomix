@@ -7,45 +7,50 @@ export interface UseBlockOptions {
   className?: string;
 }
 
-export function useBlock() {
-  const generateBlockClass = (options: UseBlockOptions): string => {
-    const { spacing = 'md', background = '', fullWidth = false, className = '' } = options;
+export interface UseBlockReturn {
+  generateBlockClass: (options: UseBlockOptions) => string;
+}
 
-    const spacingMap = {
-      xs: BLOCK.CLASSES.SPACING_XS,
-      sm: BLOCK.CLASSES.SPACING_SM,
-      md: BLOCK.CLASSES.SPACING_MD,
-      lg: BLOCK.CLASSES.SPACING_LG,
-      xl: BLOCK.CLASSES.SPACING_XL,
-      none: BLOCK.CLASSES.SPACING_NONE,
-    };
+/**
+ * useBlock composable for Block component
+ * Provides utility functions for generating consistent block styling
+ */
+export const useBlock = (): UseBlockReturn => {
+  const generateBlockClass = ({
+    spacing = BLOCK.SPACING.DEFAULT,
+    background = '',
+    fullWidth = false,
+    className = '',
+  }: UseBlockOptions): string => {
+    const classes: string[] = [BLOCK.BASE_CLASS];
 
-    const bgMap = {
-      primary: BLOCK.CLASSES.BG_PRIMARY,
-      secondary: BLOCK.CLASSES.BG_SECONDARY,
-      tertiary: BLOCK.CLASSES.BG_TERTIARY,
-      invert: BLOCK.CLASSES.BG_INVERT,
-      brand: BLOCK.CLASSES.BG_BRAND,
-      error: BLOCK.CLASSES.BG_ERROR,
-      success: BLOCK.CLASSES.BG_SUCCESS,
-      warning: BLOCK.CLASSES.BG_WARNING,
-      info: BLOCK.CLASSES.BG_INFO,
-      light: BLOCK.CLASSES.BG_LIGHT,
-      dark: BLOCK.CLASSES.BG_DARK,
-    };
+    // Add spacing class
+    if (spacing && spacing !== 'none') {
+      classes.push(`${BLOCK.SPACING_PREFIX}${spacing}`);
+    }
 
-    return [
-      BLOCK.BASE_CLASS,
-      bgMap[background as keyof typeof bgMap],
-      spacingMap[spacing],
-      fullWidth && BLOCK.CLASSES.FULL_WIDTH,
-      className,
-    ]
-      .filter(Boolean)
-      .join(' ');
+    // Add background class
+    if (background) {
+      const bgClass = BLOCK.CLASSES[`BG_${background.toUpperCase()}` as keyof typeof BLOCK.CLASSES];
+      if (bgClass) {
+        classes.push(bgClass);
+      }
+    }
+
+    // Add full-width class
+    if (fullWidth) {
+      classes.push(BLOCK.CLASSES.FULL_WIDTH);
+    }
+
+    // Add custom className
+    if (className) {
+      classes.push(className);
+    }
+
+    return classes.filter(Boolean).join(' ');
   };
 
   return {
     generateBlockClass,
   };
-}
+};

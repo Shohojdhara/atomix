@@ -1,6 +1,7 @@
 import React, { forwardRef, HTMLAttributes, ReactNode } from 'react';
 import { Container, ContainerProps } from '../../layouts/Grid/Container';
-import { BLOCK } from '../../lib/constants/index';
+import { BLOCK } from '../../lib/constants/components';
+import { useBlock } from '../../lib/composables/useBlock';
 
 export interface BlockProps extends HTMLAttributes<HTMLElement> {
   /**
@@ -108,38 +109,14 @@ export const Block = forwardRef<HTMLDivElement, BlockProps>(
     },
     ref
   ) => {
-    const spacingMap = {
-      xs: BLOCK.CLASSES.SPACING_XS,
-      sm: BLOCK.CLASSES.SPACING_SM,
-      md: BLOCK.CLASSES.SPACING_MD,
-      lg: BLOCK.CLASSES.SPACING_LG,
-      xl: BLOCK.CLASSES.SPACING_XL,
-      none: BLOCK.CLASSES.SPACING_NONE,
-    };
+    const { generateBlockClass } = useBlock();
 
-    const bgMap = {
-      primary: BLOCK.CLASSES.BG_PRIMARY,
-      secondary: BLOCK.CLASSES.BG_SECONDARY,
-      tertiary: BLOCK.CLASSES.BG_TERTIARY,
-      invert: BLOCK.CLASSES.BG_INVERT,
-      brand: BLOCK.CLASSES.BG_BRAND,
-      error: BLOCK.CLASSES.BG_ERROR,
-      success: BLOCK.CLASSES.BG_SUCCESS,
-      warning: BLOCK.CLASSES.BG_WARNING,
-      info: BLOCK.CLASSES.BG_INFO,
-      light: BLOCK.CLASSES.BG_LIGHT,
-      dark: BLOCK.CLASSES.BG_DARK,
-    };
-
-    const blockClasses = [
-      BLOCK.BASE_CLASS,
-      bgMap[background as keyof typeof bgMap],
-      spacingMap[spacing],
-      fullWidth && BLOCK.CLASSES.FULL_WIDTH,
+    const blockClasses = generateBlockClass({
+      spacing,
+      background,
+      fullWidth,
       className,
-    ]
-      .filter(Boolean)
-      .join(' ');
+    });
 
     return (
       <Component ref={ref} className={blockClasses} style={style} {...props}>
