@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { Container, GridCol, Row } from '../../layouts/Grid';
+import { Container, Grid, GridCol } from '../../layouts/Grid';
 import { Badge } from '../Badge';
 import { Button } from '../Button';
 import { Card } from '../Card';
@@ -388,7 +388,7 @@ export const ChartGallery: Story = {
           </div>
         </Card>
 
-        <Row>
+        <Grid>
           <GridCol xs={3}>
             <Card className="u-p-4 u-h-100">
               <h3 className="u-mb-4">Chart Types</h3>
@@ -419,7 +419,7 @@ export const ChartGallery: Story = {
               {renderChart()}
             </Card>
           </GridCol>
-        </Row>
+        </Grid>
       </Container>
     );
   },

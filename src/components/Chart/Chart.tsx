@@ -27,9 +27,6 @@ const Chart = memo(
         enableExport = false,
         enableRefresh = false,
         exportFormats = ['png', 'svg', 'csv'],
-        toolbarConfig,
-        customToolbarActions,
-        customToolbarGroups,
         ...props
       },
       ref
@@ -51,24 +48,20 @@ const Chart = memo(
             export: enableExport,
             fullscreen: enableFullscreen,
             zoom: true, // Enable zoom by default
-            pan: true,  // Enable pan by default
+            pan: true, // Enable pan by default
             reset: true, // Enable reset by default
-            grid: true,  // Enable grid toggle by default
+            grid: true, // Enable grid toggle by default
             legend: true, // Enable legend toggle by default
             tooltips: true, // Enable tooltips toggle by default
             animations: true, // Enable animations toggle by default
             settings: true, // Enable settings by default
-            ...toolbarConfig?.defaults,
           },
           exportFormats,
-          customActions: customToolbarActions,
-          customGroups: customToolbarGroups,
-          ...toolbarConfig,
         },
         {
           onRefresh,
           onExport,
-          onFullscreen: (fullscreen) => {
+          onFullscreen: fullscreen => {
             setIsFullscreen(fullscreen);
             onFullscreen?.(fullscreen);
           },
@@ -117,7 +110,6 @@ const Chart = memo(
       // Render enhanced toolbar
       const renderToolbar = () => {
         if (!showToolbar) return null;
-        
 
         return (
           <ChartToolbar
@@ -166,7 +158,9 @@ const Chart = memo(
           {...props}
         >
           {(title || subtitle || showToolbar) && (
-            <div className={`${CHART.HEADER_CLASS} u-d-flex u-justify-between u-align-items-start u-gap-4`}>
+            <div
+              className={`${CHART.HEADER_CLASS} u-d-flex u-justify-between u-align-items-start u-gap-4`}
+            >
               <div className={`${CHART.HEADER_CONTENT_CLASS} u-flex-1`}>
                 {title && <h3 className={`${CHART.TITLE_CLASS} u-mb-1`}>{title}</h3>}
                 {subtitle && <p className={`${CHART.SUBTITLE_CLASS} u-mb-0`}>{subtitle}</p>}
@@ -180,7 +174,11 @@ const Chart = memo(
               <div className={CHART.LOADING_CLASS}>
                 <div className={CHART.LOADING_SPINNER_CLASS}></div>
                 <span className={CHART.LOADING_TEXT_CLASS}>
-                  {toolbarState.isExporting ? 'Exporting chart...' : toolbarState.isRefreshing ? 'Refreshing chart...' : 'Loading chart...'}
+                  {toolbarState.isExporting
+                    ? 'Exporting chart...'
+                    : toolbarState.isRefreshing
+                      ? 'Refreshing chart...'
+                      : 'Loading chart...'}
                 </span>
               </div>
             )}
