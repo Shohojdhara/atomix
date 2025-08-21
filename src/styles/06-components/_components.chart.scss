@@ -555,11 +555,6 @@
       text-rendering: optimizeLegibility;
       image-rendering: -webkit-optimize-contrast;
       image-rendering: crisp-edges;
-      cursor: grab;
-
-      &:active {
-        cursor: grabbing;
-      }
     }
 
     canvas {
@@ -731,6 +726,8 @@
 
   &__tooltip {
     position: fixed;
+    top: 0;
+    left: 0;
     backdrop-filter: blur($chart-tooltip-backdrop-blur);
     border-radius: $chart-tooltip-border-radius;
     padding: $chart-tooltip-padding-y $chart-tooltip-padding-x;
@@ -741,7 +738,6 @@
     z-index: 1070;
     max-width: $chart-tooltip-max-width;
     min-width: $chart-tooltip-min-width;
-    transition: all $chart-transition-duration $chart-transition-timing;
     // background: $chart-primary-bg;
     border: 1px solid $chart-primary-border;
     opacity: 1;
@@ -880,7 +876,7 @@
     stroke: $chart-primary-border;
     stroke-width: $chart-grid-stroke-width;
     stroke-dasharray: 2, 4;
-    opacity: $chart-grid-opacity;
+    // opacity: $chart-grid-opacity;
     transition: opacity $chart-transition-duration $chart-transition-timing;
 
     &--major {
@@ -1749,7 +1745,6 @@
   }
 }
 
-// Adding missing animations from old chart styles
 @keyframes chart-draw-line {
   0% {
     stroke-dashoffset: 1000;

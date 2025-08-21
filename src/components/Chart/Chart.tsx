@@ -118,8 +118,6 @@ const Chart = memo(
       const renderToolbar = () => {
         if (!showToolbar) return null;
         
-        console.log('Chart: Rendering toolbar with groups', toolbarGroups);
-        console.log('Chart: Toolbar state', toolbarState);
 
         return (
           <ChartToolbar

@@ -76,10 +76,10 @@ const BarChart = memo(
                   onClick={() =>
                     point && handlers.onDataPointClick?.(point, bar.datasetIndex, bar.pointIndex)
                   }
-                  onMouseEnter={e => {
+                  onMouseMove={e => {
                     const rect = e.currentTarget.ownerSVGElement?.getBoundingClientRect();
                     const clientX = rect ? rect.left + bar.x + bar.width / 2 : e.clientX;
-                    const clientY = rect ? rect.top + bar.y : e.clientY;
+                    const clientY = e.clientY;
                     handleBarHover(bar.datasetIndex, bar.pointIndex, clientX, clientY);
                   }}
                   onMouseLeave={handleBarLeave}
