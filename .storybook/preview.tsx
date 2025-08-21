@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/react';
 import { useEffect } from 'react';
 // import '../src/themes/yabai/index.scss';
-import '../src/styles/index.scss';
+// import '../src/styles/index.scss';
 
 const preview: Preview = {
   parameters: {
@@ -93,6 +93,25 @@ const preview: Preview = {
         showName: true,
         dynamicTitle: true,
       },
+    },
+    stylesheets: {
+      themes: [
+        {
+          id: 'primary-theme',
+          title: 'Primary theme',
+          url: '../src/styles/index.scss',
+        },
+        {
+          id: 'yobai-theme',
+          title: 'Yobai theme',
+          url: '../src/themes/yabai/index.scss',
+        },
+        {
+          id: 'shaj-theme',
+          title: 'Shaj theme',
+          url: '../src/themes/shaj-default/index.scss',
+        },
+      ],
     },
   },
 
