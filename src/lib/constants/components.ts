@@ -1330,11 +1330,104 @@ export const CHART = {
     ACTION_WARNING: 'c-chart__action--warning',
     ACTION_ERROR: 'c-chart__action--error',
   },
-  
+
   // Toolbar configuration
   TOOLBAR: {
     SIZES: ['sm', 'md', 'lg'] as const,
     POSITIONS: ['top', 'bottom', 'left', 'right'] as const,
     ACTION_VARIANTS: ['primary', 'secondary', 'success', 'info', 'warning', 'error'] as const,
+  },
+};
+
+/**
+ * CodeSnippet-specific constants
+ */
+export const CODE_SNIPPET = {
+  BASE_CLASS: 'c-code-snippet',
+  CONTAINER_CLASS: 'c-code-snippet__container',
+  HEADER_CLASS: 'c-code-snippet__header',
+  LANGUAGE_CLASS: 'c-code-snippet__language',
+  ACTIONS_CLASS: 'c-code-snippet__actions',
+  ACTION_CLASS: 'c-code-snippet__action',
+  CONTENT_CLASS: 'c-code-snippet__content',
+  CODE_CLASS: 'c-code-snippet__content__code',
+  LINE_NUMBER_CLASS: 'c-code-snippet__content__line-number',
+  COPY_FEEDBACK_CLASS: 'c-code-snippet__copy-feedback',
+  
+  // Modifier classes
+  MODIFIERS: {
+    FULLSCREEN: 'c-code-snippet__container--fullscreen',
+    WRAP: 'c-code-snippet__content--wrap',
+    LIGHT: 'c-code-snippet__container--light',
+    DARK: 'c-code-snippet__container--dark',
+  },
+  
+  // Action states
+  ACTION_STATES: {
+    ACTIVE: 'c-code-snippet__action--active',
+    DISABLED: 'c-code-snippet__action--disabled',
+  },
+  
+  // Copy feedback states
+  COPY_FEEDBACK_STATES: {
+    VISIBLE: 'c-code-snippet__copy-feedback--visible',
+  },
+  
+  // Theme variants
+  THEMES: {
+    LIGHT: 'light',
+    DARK: 'dark',
+    AUTO: 'auto',
+  } as const,
+  
+  // Default props
+  DEFAULTS: {
+    SHOW_LINE_NUMBERS: true,
+    WRAP_LINES: false,
+    ENABLE_FULLSCREEN: true,
+    ENABLE_COPY: true,
+    SHOW_TOOLBAR: true,
+    THEME: 'light' as const,
+  },
+  
+  // Accessibility
+  ARIA_LABELS: {
+    COPY: 'Copy code to clipboard',
+    WRAP_LINES: 'Toggle line wrapping',
+    FULLSCREEN: 'Toggle fullscreen mode',
+    LANGUAGE: 'Code language',
+  },
+};
+
+/**
+ * Block-specific constants
+ */
+export const BLOCK = {
+  BASE_CLASS: 'o-block',
+  SPACING_PREFIX: 'o-block--',
+  CLASSES: {
+    SPACING_XS: 'o-block--xs',
+    SPACING_SM: 'o-block--sm',
+    SPACING_MD: 'o-block--md',
+    SPACING_LG: 'o-block--lg',
+    SPACING_XL: 'o-block--xl',
+    SPACING_NONE: 'o-block--no-spacing',
+    FULL_WIDTH: 'o-block--full-width',
+    BG_PRIMARY: 'o-block--primary',
+    BG_SECONDARY: 'o-block--secondary',
+    BG_TERTIARY: 'o-block--tertiary',
+    BG_INVERT: 'o-block--invert',
+    BG_BRAND: 'o-block--brand',
+    BG_ERROR: 'o-block--error',
+    BG_SUCCESS: 'o-block--success',
+    BG_WARNING: 'o-block--warning',
+    BG_INFO: 'o-block--info',
+    BG_LIGHT: 'o-block--light',
+    BG_DARK: 'o-block--dark',
+  },
+
+  SPACING: {
+    SIZES: ['xs', 'sm', 'md', 'lg', 'xl', 'none'] as const,
+    DEFAULT: 'md' as const,
   },
 };

@@ -4,6 +4,7 @@ export { default as AtomixLogo, type AtomixLogoProps } from './AtomixLogo/Atomix
 export { default as Avatar, type AvatarProps } from './Avatar/Avatar';
 export { default as AvatarGroup, type AvatarGroupProps } from './Avatar/AvatarGroup';
 export { default as Badge, type BadgeProps } from './Badge/Badge';
+export { default as Block, type BlockProps } from './Block';
 export { default as Breadcrumb, type BreadcrumbProps } from './Breadcrumb/Breadcrumb';
 export { default as Button, type ButtonProps } from './Button/Button';
 export { default as Callout, type CalloutProps } from './Callout/Callout';

@@ -36,13 +36,14 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@phosphor-icons/react": "^2.1.10",
+    "@phosphor-icons/react": "2.1.10",
     "@storybook/addon-viewport": "^9.0.8",
     "@storybook/react": "^8.6.14",
     "@storybook/react-vite": "^8.6.14",
     "@vitejs/plugin-react": "^4.6.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
+    "storybook-theme-switch-addon": "^1.0.2",
     "vite": "^5.4.19"
   },
   "devDependencies": {

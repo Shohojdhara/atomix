@@ -53,9 +53,11 @@ export * from './useChartScale';
 export * from './useChartInteraction';
 
 // Legacy chart composables (deprecated)
-export * from './useChart';
 export * from './useLineChart';
 export * from './useBarChart';
 export * from './usePieChart';
 
 // Theme composables
+
+// Block composables
+export * from './useBlock';
