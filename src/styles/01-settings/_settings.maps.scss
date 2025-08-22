@@ -89,14 +89,14 @@ $theme-colors-border-subtle-dark: (
 
 // Main theme colors map
 $theme-colors: (
-  'primary': $primary-6,
-  'secondary': $gray-6,
-  'success': $green-6,
-  'info': $blue-6,
-  'warning': $yellow-6,
-  'error': $red-6,
-  'light': $gray-1,
-  'dark': $gray-7,
+  'primary': $primary,
+  'secondary': $secondary,
+  'success': $success,
+  'info': $info,
+  'warning': $warning,
+  'error': $error,
+  'light': $light,
+  'dark': $dark,
 ) !default;
 
 $theme-colors-dark: (
