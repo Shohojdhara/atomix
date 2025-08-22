@@ -3,6 +3,40 @@
 @use '../01-settings/settings.colors' as colors;
 @use '../01-settings/settings.config' as config;
 
+// Psychedelic callout animations
+@keyframes callout-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(5px) rotate(-1deg);
+  }
+}
+
+@keyframes callout-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 15px var(--atomix-callout-border-color);
+  }
+  50% {
+    box-shadow: 
+      0 0 25px var(--atomix-callout-border-color),
+      0 0 35px rgba(157, 0, 255, 0.8),
+      0 0 45px rgba(255, 32, 133, 0.6);
+  }
+}
+
+@keyframes callout-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
 .c-callout {
   // Apply psychedelic background
   @include gradients.forest-floor-gradient();
@@ -18,10 +52,13 @@
 
   animation:
     color-shift 10s infinite,
-    breathe 4s ease-in-out infinite;
+    breathe 4s ease-in-out infinite,
+    callout-float 6s ease-in-out infinite,
+    callout-glow-pulse 3s infinite;
 
   position: relative;
   overflow: hidden;
+  border-radius: 10px;
 
   // Add a subtle pattern
   background-image:
@@ -42,6 +79,9 @@
     right: 0;
     bottom: 0;
     pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: callout-shimmer 3s infinite;
+    background-size: 200% 100%;
   }
 
   &__header {
@@ -52,6 +92,44 @@
       margin-left: 1rem;
       height: 2px;
       @include gradients.psychedelic-linear-gradient(var(--atomix-primary), var(--atomix-sucscess));
+      animation: callout-shimmer 2s infinite;
+      background-size: 200% 100%;
     }
+  }
+  
+  // Psychedelic variant
+  &--psychedelic {
+    @include gradients.rainbow-gradient();
+    background-size: 400% 400%;
+    animation: rainbow-shift 4s ease infinite, callout-float 5s ease-in-out infinite;
+    border: 2px solid transparent;
+    
+    &::after {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      animation: callout-shimmer 2s infinite;
+      background-size: 200% 100%;
+    }
+    
+    #{$root}__header::after {
+      @include gradients.rainbow-gradient();
+      background-size: 200% 100%;
+      animation: rainbow-shift 3s linear infinite;
+    }
+  }
+  
+  // Glowing variant
+  &--glow {
+    @include trippy.trippy-glow(var(--atomix-callout-border-color), 25px);
+    animation: callout-glow-pulse 1.5s infinite;
+    
+    &::after {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      animation: callout-shimmer 1.5s infinite;
+    }
+  }
+  
+  // Floating variant
+  &--floating {
+    animation: callout-float 4s ease-in-out infinite;
   }
 }
