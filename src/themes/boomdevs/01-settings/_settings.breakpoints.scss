@@ -1,0 +1,15 @@
+/*!
+ * Boomdevs Theme Breakpoints Settings
+ * Custom breakpoints for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.breakpoints' with (
+  $grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1440px
+  )
+);

@@ -1,0 +1,16 @@
+/*!
+ * Boomdevs Theme Grid Settings
+ * Custom grid styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.grid' with (
+  $grid-gutter-width: 24px,
+  $container-max-widths: (
+    xs: 340px,
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px,
+    xxl: 1320px
+  )
+);

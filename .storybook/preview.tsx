@@ -114,6 +114,11 @@ const preview: Preview = {
           title: 'Mashroom theme',
           url: '../src/themes/mashroom/index.scss',
         },
+        {
+          id: 'Boomdevs-theme',
+          title: 'Boomdevs theme',
+          url: '../src/themes/boomdevs/index.scss',
+        },
       ],
     },
   },

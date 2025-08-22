@@ -1,0 +1,11 @@
+/*!
+ * Boomdevs Theme Animations Settings
+ * Custom animations styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.animations' with (
+  $transition-duration: 0.25s,
+  $easing: cubic-bezier(0.4, 0, 0.2, 1),
+  $transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+  $transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)
+);

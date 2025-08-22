@@ -1,0 +1,12 @@
+/*!
+ * Boomdevs Theme Tabs Settings
+ * Custom tabs styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.tabs' with (
+  $tabs-nav-btn-font-weight: 600,
+  $tabs-nav-btn-color: var(--atomix-gray-7),
+  $tabs-nav-btn-active-color: var(--atomix-primary),
+  $tabs-nav-btn-border-active-color: var(--atomix-primary),
+  $tabs-nav-btn-bg-hover: var(--atomix-gray-1)
+);

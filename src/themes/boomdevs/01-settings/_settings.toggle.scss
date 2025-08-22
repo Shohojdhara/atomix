@@ -1,0 +1,14 @@
+/*!
+ * Boomdevs Theme Toggle Settings
+ * Custom toggle styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.toggle' with (
+  $toggle-switch-on-bg: var(--atomix-primary),
+  $toggle-switch-off-bg: var(--atomix-gray-3),
+  $toggle-switch-disabled-bg: var(--atomix-neugraytral-1),
+  $toggle-switch-border-radius: 12px,
+  $toggle-switch-handle-border-radius: 50%,
+  $toggle-label-font-size: 0.875rem,
+  $toggle-label-color: var(--atomix-gray-10)
+);

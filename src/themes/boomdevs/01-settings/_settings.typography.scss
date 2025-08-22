@@ -1,0 +1,58 @@
+/*!
+ * Boomdevs Theme Typography Settings
+ * Custom typography for the Boomdevs theme
+ */
+
+// Professional, clean typography for a development agency
+$font-family-primary:
+  'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto',
+  'Helvetica Neue', 'Arial', 'sans-serif' !default;
+$font-family-secondary:
+  'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto',
+  'Helvetica Neue', 'Arial', 'sans-serif' !default;
+$font-family-monospace:
+  'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Ubuntu Mono', 'Courier New', 'Courier',
+  'monospace' !default;
+
+// Font sizes following a consistent scale
+$font-size-xs: 0.75rem !default; // 12px
+$font-size-sm: 0.875rem !default; // 14px
+$font-size-base: 1rem !default; // 16px
+$font-size-md: 1.125rem !default; // 18px
+$font-size-lg: 1.25rem !default; // 20px
+$font-size-xl: 1.5rem !default; // 24px
+$font-size-2xl: 2rem !default; // 32px
+$font-size-3xl: 2.5rem !default; // 40px
+$font-size-4xl: 3rem !default; // 48px
+
+// Font weights for professional look
+$font-weight-light: 300 !default;
+$font-weight-normal: 400 !default;
+$font-weight-medium: 500 !default;
+$font-weight-semibold: 600 !default;
+$font-weight-bold: 700 !default;
+$font-weight-extrabold: 800 !default;
+
+// Line heights for readability
+$line-height-xs: 1.25 !default;
+$line-height-sm: 1.375 !default;
+$line-height-base: 1.5 !default;
+$line-height-lg: 1.625 !default;
+$line-height-xl: 1.75 !default;
+
+@use '../../../styles/01-settings/settings.typography' with (
+  $font-sizes: (
+    xs: $font-size-xs,
+    sm: $font-size-sm,
+    md: $font-size-md,
+    lg: $font-size-lg,
+    xl: $font-size-xl,
+  ),
+
+  $font-weight-light: 300,
+  $font-weight-normal: 400,
+  $font-weight-medium: 500,
+  $font-weight-semibold: 600,
+  $font-weight-bold: 700,
+  $font-weight-heavy: 800
+);

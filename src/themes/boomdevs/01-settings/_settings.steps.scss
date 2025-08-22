@@ -1,0 +1,12 @@
+/*!
+ * Boomdevs Theme Steps Settings
+ * Custom steps styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.steps' with (
+  $steps-item-active-color: var(--atomix-light),
+  $steps-item-active-bg: var(--atomix-primary),
+  $steps-item-number-active-color: var(--atomix-light),
+  $steps-item-number-size: 32px,
+  $steps-item-number-font-size: 0.875rem
+);

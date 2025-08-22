@@ -1,0 +1,11 @@
+/*!
+ * Boomdevs Theme Link Settings
+ * Custom link styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.link' with (
+  $link-color: var(--atomix-primary),
+  $link-hover-color: var(--atomix-primary-7),
+  $link-font-size: 1rem,
+  $link-font-weight: 400
+);

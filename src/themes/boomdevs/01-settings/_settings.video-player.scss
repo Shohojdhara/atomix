@@ -1,0 +1,12 @@
+/*!
+ * Boomdevs Theme Video Player Settings
+ * Custom video player styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.video-player' with (
+  $video-player-border-radius: 12px,
+  $video-player-progress-played: var(--atomix-primary),
+  $video-player-volume-fill: var(--atomix-primary),
+  $video-player-volume-fill-hover: var(--atomix-primary-7),
+  $video-player-volume-fill-active: var(--atomix-primary-8)
+);

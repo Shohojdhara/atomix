@@ -1,0 +1,13 @@
+/*!
+ * Boomdevs Theme Pagination Settings
+ * Custom pagination styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.pagination' with (
+  $pagination-border-radius: 6px,
+  $pagination-color: var(--atomix-gray-8),
+  $pagination-hover-color: var(--atomix-primary),
+  $pagination-hover-bg: var(--atomix-primary-1),
+  $pagination-active-color: var(--atomix-light),
+  $pagination-active-bg: var(--atomix-primary)
+);
