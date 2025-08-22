@@ -8,6 +8,46 @@
 @use '../02-tools/tools.psychedelic-gradients' as gradients;
 @use '../01-settings/settings.colors' as *;
 
+// Psychedelic toggle animations
+@keyframes toggle-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(157, 0, 255, 0.5);
+  }
+  50% {
+    box-shadow: 
+      0 0 15px rgba(157, 0, 255, 0.8),
+      0 0 25px rgba(255, 32, 133, 0.6),
+      0 0 35px rgba(255, 187, 0, 0.4);
+  }
+}
+
+@keyframes toggle-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes psychedelic-border-shift {
+  0% {
+    border-color: rgba(157, 0, 255, 0.5);
+  }
+  25% {
+    border-color: rgba(255, 32, 133, 0.6);
+  }
+  50% {
+    border-color: rgba(255, 187, 0, 0.7);
+  }
+  75% {
+    border-color: rgba(0, 255, 157, 0.6);
+  }
+  100% {
+    border-color: rgba(157, 0, 255, 0.5);
+  }
+}
+
 .c-toggle {
   $root: &;
   
@@ -15,6 +55,10 @@
   display: inline-block;
   width: 60px;
   height: 34px;
+  
+  // Add floating animation to the whole toggle
+  @include trippy.float-animation();
+  animation-duration: 4s;
   
   // Hide default checkbox
   &__input {
@@ -41,6 +85,9 @@
     // Add color shift effect
     @include trippy.color-shift();
     
+    // Add pulse animation
+    animation: toggle-pulse 2s infinite;
+    
     // Slider round element
     &::before {
       position: absolute;
@@ -55,12 +102,18 @@
       
       // Add glow to the slider round element
       @include trippy.trippy-glow(rgba(255, 255, 255, 0.5), 3px);
+      
+      // Add floating effect to the slider
+      @include trippy.float-animation();
+      animation-duration: 3s;
     }
   }
   
   // Checked state
   &__input:checked + &__slider {
     background: linear-gradient(90deg, #9d00ff, #d080ff, #00ff9d, #ffbb00, #ff2085, #9d00ff);
+    background-size: 400% 400%;
+    animation: rainbow-shift 4s ease infinite;
     
     &::before {
       transform: translateX(26px);
@@ -68,18 +121,29 @@
       
       // Add stronger glow when checked
       @include trippy.trippy-glow($yellow-4, 8px);
+      
+      // Add psychedelic pulse when checked
+      @include trippy.psychedelic-pulse($yellow-4);
     }
   }
   
   // Hover state
   &:hover &__input:not(:disabled) + &__slider {
     @include trippy.trippy-glow($red-4, 10px);
-    transform: scale(1.05);
+    transform: scale(1.05) rotate(2deg);
+    
+    // Speed up animations on hover
+    animation: toggle-pulse 0.5s infinite;
+    
+    &::before {
+      @include trippy.trippy-glow($red-4, 12px);
+    }
   }
   
   // Focus state
   &__input:focus + &__slider {
     @include trippy.trippy-glow($purple-4, 15px);
+    animation: toggle-pulse 0.3s infinite;
   }
   
   // Disabled state
@@ -120,6 +184,46 @@
     
     #{$root}__input:checked + #{$root}__slider::before {
       transform: translateX(22px);
+    }
+  }
+  
+  // Psychedelic variant
+  &--psychedelic {
+    #{$root}__slider {
+      @include gradients.rainbow-gradient();
+      background-size: 300% 300%;
+      animation: rainbow-shift 3s ease infinite;
+      border: 1px solid transparent;
+      
+      &::before {
+        @include gradients.psychedelic-linear-gradient($white, $yellow-4);
+      }
+    }
+    
+    #{$root}__input:checked + #{$root}__slider {
+      @include gradients.rainbow-gradient();
+      background-size: 400% 400%;
+      animation: rainbow-shift 2s ease infinite;
+      
+      &::before {
+        @include gradients.rainbow-gradient();
+        background-size: 200% 200%;
+        animation: rainbow-shift 2s linear infinite;
+        border-radius: 50%;
+      }
+    }
+  }
+  
+  // Glowing variant
+  &--glow {
+    #{$root}__slider {
+      @include trippy.trippy-glow(rgba(157, 0, 255, 0.5), 15px);
+      animation: toggle-pulse 1s infinite;
+    }
+    
+    #{$root}__input:checked + #{$root}__slider {
+      @include trippy.trippy-glow($yellow-4, 20px);
+      animation: toggle-pulse 0.5s infinite;
     }
   }
 }

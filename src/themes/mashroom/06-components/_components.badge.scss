@@ -3,6 +3,54 @@
 @use '../01-settings/settings.colors' as colors;
 @use '../01-settings/settings.config' as config;
 
+// Psychedelic badge animations
+@keyframes psychedelic-badge-shift {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    filter: hue-rotate(90deg);
+  }
+  50% {
+    filter: hue-rotate(180deg);
+  }
+  75% {
+    filter: hue-rotate(270deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes badge-glow-pulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 5px var(--atomix-tag-color),
+      0 0 10px rgba(157, 0, 255, 0.5);
+  }
+  50% {
+    box-shadow: 
+      0 0 15px var(--atomix-tag-color),
+      0 0 30px rgba(157, 0, 255, 0.8),
+      0 0 50px rgba(255, 32, 133, 0.6);
+  }
+}
+
+@keyframes badge-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-3px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(2px) rotate(-1deg);
+  }
+  75% {
+    transform: translateY(-1px) rotate(0.5deg);
+  }
+}
+
 .c-badge {
   @include gradients.psychedelic-linear-gradient(
     var(--atomix-tag-bg-color),
@@ -10,13 +58,27 @@
   );
   @include trippy.trippy-glow(var(--atomix-tag-color), 20px);
   @include trippy.float-animation();
+  
+  // Add psychedelic animations
+  animation: 
+    psychedelic-badge-shift 4s infinite linear,
+    badge-glow-pulse 2s infinite,
+    badge-float 3s ease-in-out infinite;
 
   border: 1px solid var(--atomix-tag-color);
   position: relative;
   overflow: hidden;
+  border-radius: 20px;
 
   &:hover {
     @include trippy.trippy-glow(colors.$primary-6, 20px);
+    transform: scale(1.1) rotate(5deg);
+    
+    // Enhance animations on hover
+    animation: 
+      psychedelic-badge-shift 1s infinite linear,
+      badge-glow-pulse 0.5s infinite,
+      badge-float 1s ease-in-out infinite;
   }
 
   &::after {
@@ -49,6 +111,40 @@
     }
     100% {
       left: 120%;
+    }
+  }
+  
+  // Psychedelic variant
+  &--psychedelic {
+    @include gradients.rainbow-gradient();
+    background-size: 300% 300%;
+    animation: rainbow-shift 3s ease infinite;
+    border: none;
+    
+    &:hover {
+      animation: rainbow-shift 1s linear infinite;
+      transform: scale(1.2) rotate(10deg);
+      @include trippy.trippy-glow(white, 30px);
+    }
+  }
+  
+  // Glowing variant
+  &--glow {
+    @include trippy.trippy-glow(var(--atomix-tag-bg-color), 30px);
+    animation: badge-glow-pulse 1s infinite;
+    
+    &:hover {
+      @include trippy.trippy-glow(var(--atomix-tag-bg-color), 50px);
+      animation: badge-glow-pulse 0.3s infinite;
+    }
+  }
+  
+  // Floating variant
+  &--floating {
+    animation: badge-float 2s ease-in-out infinite;
+    
+    &:hover {
+      animation: badge-float 0.5s ease-in-out infinite;
     }
   }
 }
