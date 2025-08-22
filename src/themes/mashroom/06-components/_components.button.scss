@@ -57,7 +57,6 @@
   animation: button-3d-pulse 3s infinite;
 
   // Add psychedelic shifting
-  @include psychedelic-button-shift();
   animation: 
     psychedelic-button-shift 5s infinite linear,
     button-3d-pulse 3s infinite ease-in-out;
