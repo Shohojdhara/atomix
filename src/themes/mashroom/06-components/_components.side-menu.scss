@@ -1,0 +1,610 @@
+/*!
+ * Mashroom Theme Side Menu Component
+ * Psychedelic sidebar navigation with mushroom effects
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-side-menu {
+  $root: &;
+
+  // Base side menu container
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 300px;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  border-right: 1px solid rgba(157, 0, 255, 0.3);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  // Mushroom cap shape for top
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(135deg, $purple-4, $yellow-4);
+    border-radius: 0 0 20px 20px;
+    animation: capGlow 4s ease-in-out infinite;
+
+    @keyframes capGlow {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+  }
+
+  // Open state
+  &--open {
+    left: 0;
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.2), 20px);
+  }
+
+  // Overlay for mobile
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
+  }
+
+  &--open ~ #{$root}__overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  // Header section
+  &__header {
+    padding: 2rem 1.5rem 1rem;
+    border-bottom: 1px solid rgba(157, 0, 255, 0.2);
+    margin-bottom: 1rem;
+  }
+
+  // Logo/brand area
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  &__logo {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, $purple-4, $yellow-4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $white;
+    font-weight: bold;
+    font-size: 1.25rem;
+    animation: logoSpin 8s linear infinite;
+
+    @keyframes logoSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  }
+
+  &__title {
+    color: $white;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  // User profile section
+  &__profile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(157, 0, 255, 0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(157, 0, 255, 0.2);
+      transform: translateX(5px);
+    }
+  }
+
+  &__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, $green-4, $yellow-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $white;
+    font-weight: bold;
+    font-size: 0.875rem;
+  }
+
+  &__user-info {
+    flex: 1;
+  }
+
+  &__username {
+    color: $white;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  &__status {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.75rem;
+  }
+
+  // Navigation menu
+  &__nav {
+    padding: 0 0.5rem;
+  }
+
+  &__section {
+    margin-bottom: 1.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__section-title {
+    padding: 0 1rem 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  // Menu items
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item {
+    margin-bottom: 0.25rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(157, 0, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    &:hover {
+      background: rgba(157, 0, 255, 0.2);
+      color: $white;
+      transform: translateX(5px);
+
+      &::before {
+        left: 100%;
+      }
+
+      #{$root}__icon {
+        transform: scale(1.2);
+        color: $yellow-4;
+      }
+    }
+
+    &--active {
+      background: rgba(157, 0, 255, 0.3);
+      color: $white;
+      font-weight: 600;
+
+      #{$root}__icon {
+        color: $yellow-4;
+        animation: iconPulse 2s ease-in-out infinite;
+      }
+
+      @keyframes iconPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+      }
+    }
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+  }
+
+  &__text {
+    flex: 1;
+    font-size: 0.875rem;
+  }
+
+  &__badge {
+    background: rgba(255, 187, 0, 0.8);
+    color: $black;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    animation: badgeBounce 3s ease-in-out infinite;
+
+    @keyframes badgeBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+  }
+
+  // Submenu items
+  &__submenu {
+    padding-left: 2.5rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+
+    &--open {
+      max-height: 200px;
+    }
+  }
+
+  &__subitem {
+    margin-bottom: 0.25rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__sublink {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.875rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(157, 0, 255, 0.1);
+      color: rgba(255, 255, 255, 0.9);
+      transform: translateX(3px);
+    }
+
+    &--active {
+      background: rgba(157, 0, 255, 0.2);
+      color: $white;
+    }
+  }
+
+  // Toggle button for submenus
+  &__toggle {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+
+    &--open {
+      transform: rotate(90deg);
+    }
+  }
+
+  // Footer section
+  &__footer {
+    margin-top: auto;
+    padding: 1rem;
+    border-top: 1px solid rgba(157, 0, 255, 0.2);
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__action {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 0.875rem;
+
+    &:hover {
+      background: rgba(157, 0, 255, 0.2);
+      color: $white;
+      transform: translateX(3px);
+    }
+  }
+
+  // Close button
+  &__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(157, 0, 255, 0.2);
+      color: $white;
+      transform: rotate(90deg);
+    }
+  }
+
+  // Hamburger trigger (for mobile)
+  &__trigger {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(157, 0, 255, 0.2);
+      @include trippy.trippy-glow(rgba(255, 187, 0, 0.3), 8px);
+    }
+
+    .c-icon {
+      width: 24px;
+      height: 24px;
+      color: $white;
+    }
+  }
+
+  // Size variants
+  &--sm {
+    width: 250px;
+    left: -250px;
+
+    #{$root}__link {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    #{$root}__icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &--lg {
+    width: 350px;
+    left: -350px;
+
+    #{$root}__link {
+      padding: 1rem 1.25rem;
+      font-size: 1rem;
+    }
+
+    #{$root}__icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  // Position variants
+  &--right {
+    left: auto;
+    right: -300px;
+    border-right: none;
+    border-left: 1px solid rgba(157, 0, 255, 0.3);
+
+    &::before {
+      border-radius: 0 0 0 20px;
+    }
+
+    &--open {
+      right: 0;
+    }
+
+    &--sm {
+      right: -250px;
+
+      &--open {
+        right: 0;
+      }
+    }
+
+    &--lg {
+      right: -350px;
+
+      &--open {
+        right: 0;
+      }
+    }
+  }
+
+  // Psychedelic variant
+  &--psychedelic {
+    background: linear-gradient(135deg, $purple-4, $yellow-4, $red-4, $green-4);
+    background-size: 400% 400%;
+    animation: psychedelicShift 15s ease infinite;
+
+    #{$root}__link {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes psychedelicShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  }
+
+  // Glow variant
+  &--glow {
+    &--open {
+      @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 30px);
+    }
+  }
+
+  // Dark variant
+  &--dark {
+    background: rgba(0, 0, 0, 0.95);
+    border-color: rgba(157, 0, 255, 0.5);
+  }
+
+  // Light variant
+  &--light {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(157, 0, 255, 0.2);
+
+    #{$root}__text,
+    #{$root}__username,
+    #{$root}__status,
+    #{$root}__section-title,
+    #{$root}__link,
+    #{$root}__sublink,
+    #{$root}__action {
+      color: $black;
+    }
+
+    #{$root}__icon {
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    #{$root}__badge {
+      background: rgba(157, 0, 255, 0.8);
+      color: $white;
+    }
+  }
+
+  // Floating spore particles
+  &__spore {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, $yellow-4, transparent);
+    border-radius: 50%;
+    animation: sporeFloat 10s ease-in-out infinite;
+    pointer-events: none;
+
+    &:nth-child(odd) {
+      animation-delay: -3s;
+    }
+
+    &:nth-child(even) {
+      animation-delay: -6s;
+    }
+  }
+
+  @keyframes sporeFloat {
+    0% {
+      transform: translateY(0) translateX(0) scale(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100px) translateX(20px) scale(1);
+      opacity: 0;
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    width: 280px;
+    left: -280px;
+
+    &--sm {
+      width: 220px;
+      left: -220px;
+    }
+
+    &--lg {
+      width: 320px;
+      left: -320px;
+    }
+
+    &--right {
+      right: -280px;
+
+      &--sm {
+        right: -220px;
+      }
+
+      &--lg {
+        right: -320px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    left: -100%;
+
+    &--sm,
+    &--lg {
+      width: 100%;
+      left: -100%;
+    }
+
+    &--right {
+      right: -100%;
+
+      &--sm,
+      &--lg {
+        right: -100%;
+      }
+    }
+  }
+}

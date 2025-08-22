@@ -1,0 +1,432 @@
+/*!
+ * Mashroom Theme Skeleton Component
+ * Glowing loading placeholders with psychedelic shimmer effects
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-skeleton {
+  $root: &;
+  
+  // Base skeleton styling
+  background: linear-gradient(
+    90deg,
+    rgba(157, 0, 255, 0.1) 0%,
+    rgba(255, 187, 0, 0.1) 20%,
+    rgba(255, 32, 133, 0.1) 40%,
+    rgba(0, 255, 136, 0.1) 60%,
+    rgba(157, 0, 255, 0.1) 80%,
+    rgba(255, 187, 0, 0.1) 100%
+  );
+  background-size: 400% 100%;
+  animation: skeletonShimmer 2s ease-in-out infinite;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  
+  // Shimmer overlay
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    animation: shimmerSweep 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes skeletonShimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes shimmerSweep {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+  }
+  
+  // Glow effect
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(157, 0, 255, 0.1) 0%,
+      transparent 70%
+    );
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+  
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
+  
+  // Shape variants
+  &--text {
+    height: 1rem;
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  &--text-lg {
+    height: 1.25rem;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  &--text-sm {
+    height: 0.875rem;
+    width: 100%;
+    max-width: 150px;
+  }
+  
+  &--heading {
+    height: 1.5rem;
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  &--heading-lg {
+    height: 2rem;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  &--paragraph {
+    height: 1rem;
+    width: 100%;
+    
+    &:nth-child(2) {
+      width: 85%;
+    }
+    
+    &:nth-child(3) {
+      width: 90%;
+    }
+  }
+  
+  &--avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  &--avatar-sm {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+  
+  &--avatar-lg {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+  }
+  
+  &--image {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+  }
+  
+  &--image-sm {
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+  }
+  
+  &--image-lg {
+    width: 100%;
+    height: 300px;
+    border-radius: 8px;
+  }
+  
+  &--button {
+    width: 120px;
+    height: 40px;
+    border-radius: 20px;
+  }
+  
+  &--button-sm {
+    width: 80px;
+    height: 32px;
+    border-radius: 16px;
+  }
+  
+  &--button-lg {
+    width: 160px;
+    height: 48px;
+    border-radius: 24px;
+  }
+  
+  &--card {
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+  }
+  
+  &--input {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+  }
+  
+  &--input-sm {
+    width: 100%;
+    height: 32px;
+    border-radius: 4px;
+  }
+  
+  &--input-lg {
+    width: 100%;
+    height: 48px;
+    border-radius: 4px;
+  }
+  
+  &--icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+  }
+  
+  &--icon-sm {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+  }
+  
+  &--icon-lg {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+  }
+  
+  // Container for multiple skeletons
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  &__row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  &__col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  // Loading animation container
+  &__loading {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    
+    // Animated border
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: linear-gradient(
+        45deg,
+        $purple-4,
+        $yellow-4,
+        $red-4,
+        $green-4,
+        $purple-4
+      ) border-box;
+      background-size: 400% 400%;
+      animation: borderGlow 4s ease-in-out infinite;
+      mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+    }
+    
+    @keyframes borderGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  }
+  
+  // Card skeleton layout
+  &__card {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    
+    #{$root}__avatar {
+      flex-shrink: 0;
+    }
+    
+    #{$root}__content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+  
+  // List skeleton layout
+  &__list {
+    #{$root}__item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+  
+  // Table skeleton layout
+  &__table {
+    #{$root}__row {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr 1fr;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+  
+  // Grid skeleton layout
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+  
+  // Pulse animation variant
+  &--pulse {
+    animation: pulseGlow 2s ease-in-out infinite;
+    
+    @keyframes pulseGlow {
+      0%, 100% {
+        opacity: 0.6;
+        @include trippy.trippy-glow(rgba(157, 0, 255, 0.2), 5px);
+      }
+      50% {
+        opacity: 1;
+        @include trippy.trippy-glow(rgba(255, 187, 0, 0.4), 10px);
+      }
+    }
+  }
+  
+  // Wave animation variant
+  &--wave {
+    position: relative;
+    overflow: hidden;
+    
+    &::after {
+      animation: wave 2s ease-in-out infinite;
+    }
+    
+    @keyframes wave {
+      0% {
+        transform: translateX(-100%) skewX(-15deg);
+      }
+      100% {
+        transform: translateX(200%) skewX(-15deg);
+      }
+    }
+  }
+  
+  // Psychedelic variant
+  &--psychedelic {
+    background: linear-gradient(
+      135deg,
+      rgba(157, 0, 255, 0.1),
+      rgba(255, 32, 133, 0.1),
+      rgba(0, 255, 136, 0.1),
+      rgba(255, 187, 0, 0.1),
+      rgba(157, 0, 255, 0.1)
+    );
+    background-size: 400% 400%;
+    animation: psychedelicShimmer 3s ease-in-out infinite;
+    
+    @keyframes psychedelicShimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  }
+  
+  // Dark variant
+  &--dark {
+    background: rgba(0, 0, 0, 0.4);
+    
+    &::before {
+      background: linear-gradient(
+        90deg,
+        rgba(157, 0, 255, 0.2),
+        rgba(255, 187, 0, 0.2),
+        rgba(255, 32, 133, 0.2)
+      );
+    }
+  }
+  
+  // Light variant
+  &--light {
+    background: rgba(255, 255, 255, 0.1);
+    
+    &::before {
+      background: linear-gradient(
+        90deg,
+        rgba(157, 0, 255, 0.1),
+        rgba(255, 187, 0, 0.1),
+        rgba(255, 32, 133, 0.1)
+      );
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    #{$root}__table {
+      #{$root}__row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+    }
+    
+    #{$root}__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

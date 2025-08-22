@@ -1,0 +1,167 @@
+/*!
+ * Mashroom Theme Tooltip Component
+ * Psychedelic mushroom-inspired theme with trippy visuals
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.config' as *;
+
+.c-tooltip {
+  $root: &;
+
+  // CSS Variables with psychedelic theme
+  --#{$prefix}tooltip-max-width: 200px;
+  --#{$prefix}tooltip-padding-x: 0.75rem;
+  --#{$prefix}tooltip-padding-y: 0.5rem;
+  --#{$prefix}tooltip-bg: #{rgba(25, 15, 40, 0.95)};
+  --#{$prefix}tooltip-font-size: 0.875rem;
+  --#{$prefix}tooltip-font-weight: 500;
+  --#{$prefix}tooltip-color: #{$white};
+  --#{$prefix}tooltip-border-radius: 0.5rem;
+  --#{$prefix}tooltip-border-width: 1px;
+  --#{$prefix}tooltip-border-color: transparent;
+  --#{$prefix}tooltip-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --#{$prefix}tooltip-arrow-size: 0.5rem;
+
+  position: absolute;
+  z-index: 1070;
+  display: block;
+  padding: var(--#{$prefix}tooltip-padding-y) var(--#{$prefix}tooltip-padding-x);
+  font-size: var(--#{$prefix}tooltip-font-size);
+  font-weight: var(--#{$prefix}tooltip-font-weight);
+  color: var(--#{$prefix}tooltip-color);
+  text-align: center;
+  text-decoration: none;
+  word-wrap: break-word;
+  max-width: var(--#{$prefix}tooltip-max-width);
+  background: var(--#{$prefix}tooltip-bg);
+  border-radius: var(--#{$prefix}tooltip-border-radius);
+  box-shadow: var(--#{$prefix}tooltip-box-shadow);
+  opacity: 0;
+
+  // Add psychedelic gradient border
+  border: var(--#{$prefix}tooltip-border-width) solid var(--#{$prefix}tooltip-border-color);
+  background:
+    linear-gradient(25deg, rgba(25, 15, 40, 0.95), rgba(25, 15, 40, 0.95)) padding-box,
+    linear-gradient(90deg, #9d00ff, #d080ff, #00ff9d, #ffbb00, #ff2085, #9d00ff) border-box;
+
+  // Add floating animation
+  @include trippy.float-animation();
+
+  // Add color shift effect
+  @include trippy.color-shift();
+
+  // Add pulse animation
+  @include trippy.psychedelic-pulse(rgba(157, 0, 255, 0.3));
+
+  // Show animation
+  &--show {
+    opacity: 1;
+    animation: fadeInScale 0.3s ease forwards;
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.8) rotate(-5deg);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+  }
+
+  // Hide animation
+  &--hide {
+    opacity: 0;
+    animation: fadeOutScale 0.3s ease forwards;
+
+    @keyframes fadeOutScale {
+      from {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.8) rotate(5deg);
+      }
+    }
+  }
+
+  // Tooltip arrow
+  &__arrow {
+    position: absolute;
+    width: var(--#{$prefix}tooltip-arrow-size);
+    height: var(--#{$prefix}tooltip-arrow-size);
+    background: inherit;
+    border: var(--#{$prefix}tooltip-border-width) solid var(--#{$prefix}tooltip-border-color);
+
+    // Add psychedelic gradient
+    background:
+      linear-gradient(25deg, rgba(25, 15, 40, 0.95), rgba(25, 15, 40, 0.95)) padding-box,
+      linear-gradient(90deg, #9d00ff, #d080ff, #00ff9d, #ffbb00, #ff2085, #9d00ff) border-box;
+
+    &::before {
+      position: absolute;
+      content: '';
+      width: 0;
+      height: 0;
+      border: calc(var(--#{$prefix}tooltip-arrow-size) / 2) solid transparent;
+    }
+  }
+
+  // Arrow positions
+  &[data-popper-placement^='top'] .c-tooltip__arrow {
+    bottom: calc(-1 * var(--#{$prefix}tooltip-arrow-size) / 2);
+
+    &::before {
+      border-top-color: var(--#{$prefix}tooltip-bg);
+      border-bottom: 0;
+    }
+  }
+
+  &[data-popper-placement^='right'] .c-tooltip__arrow {
+    left: calc(-1 * var(--#{$prefix}tooltip-arrow-size) / 2);
+
+    &::before {
+      border-right-color: var(--#{$prefix}tooltip-bg);
+      border-left: 0;
+    }
+  }
+
+  &[data-popper-placement^='bottom'] .c-tooltip__arrow {
+    top: calc(-1 * var(--#{$prefix}tooltip-arrow-size) / 2);
+
+    &::before {
+      border-bottom-color: var(--#{$prefix}tooltip-bg);
+      border-top: 0;
+    }
+  }
+
+  &[data-popper-placement^='left'] .c-tooltip__arrow {
+    right: calc(-1 * var(--#{$prefix}tooltip-arrow-size) / 2);
+
+    &::before {
+      border-left-color: var(--#{$prefix}tooltip-bg);
+      border-right: 0;
+    }
+  }
+
+  // Inner content
+  &__inner {
+    padding: var(--#{$prefix}tooltip-padding-y) var(--#{$prefix}tooltip-padding-x);
+  }
+
+  // Title
+  &__title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: $yellow-4;
+
+    // Add glow effect to title
+    @include trippy.trippy-glow($yellow-4, 5px);
+  }
+}

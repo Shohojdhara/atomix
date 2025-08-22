@@ -1,0 +1,539 @@
+/*!
+ * Mashroom Theme Video Player Component
+ * Trippy controls and mushroom overlay effects with psychedelic animations
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-video-player {
+  $root: &;
+  
+  // Base video player container
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.9);
+  @include trippy.trippy-glow(rgba(157, 0, 255, 0.2), 10px);
+  
+  // Mushroom cap curve
+  border-radius: 16px 16px 8px 8px;
+  
+  // Video element
+  &__video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 16px;
+  }
+  
+  // Controls container
+  &__controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      transparent 100%
+    );
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    
+    #{$root}:hover & {
+      opacity: 1;
+    }
+  }
+  
+  // Play/Pause button
+  &__play {
+    width: 48px;
+    height: 48px;
+    border: none;
+    background: linear-gradient(135deg, $purple-4, $yellow-4);
+    border-radius: 50%;
+    color: $white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 8px);
+    
+    &:hover {
+      transform: scale(1.1);
+      @include trippy.trippy-glow($yellow-4, 12px);
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+  
+  // Progress bar
+  &__progress {
+    flex: 1;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  
+  &__progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, $purple-4, $yellow-4, $red-4, $green-4);
+    background-size: 200% 100%;
+    border-radius: 3px;
+    transition: width 0.1s ease;
+    animation: progressShimmer 3s ease-in-out infinite;
+    @include trippy.trippy-glow($purple-4, 5px);
+  }
+  
+  @keyframes progressShimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  &__progress-buffer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    transition: width 0.1s ease;
+  }
+  
+  // Time display
+  &__time {
+    font-size: 0.875rem;
+    color: $white;
+    font-family: monospace;
+    min-width: 80px;
+    text-align: center;
+  }
+  
+  // Volume control
+  &__volume {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    &-button {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        color: $yellow-4;
+        transform: scale(1.1);
+      }
+    }
+    
+    &-slider {
+      width: 80px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      position: relative;
+      cursor: pointer;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background: linear-gradient(90deg, $purple-4, $yellow-4);
+        border-radius: 2px;
+        transition: width 0.1s ease;
+        @include trippy.trippy-glow($purple-4, 3px);
+      }
+    }
+  }
+  
+  // Settings button
+  &__settings {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      color: $yellow-4;
+      transform: rotate(90deg);
+    }
+  }
+  
+  // Fullscreen button
+  &__fullscreen {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      color: $yellow-4;
+      transform: scale(1.1);
+    }
+  }
+  
+  // Loading overlay
+  &__loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    
+    &--active {
+      opacity: 1;
+    }
+  }
+  
+  &__spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid $yellow-4;
+    border-radius: 50%;
+    animation: spinnerRotate 1s linear infinite;
+    @include trippy.trippy-glow($yellow-4, 10px);
+  }
+  
+  @keyframes spinnerRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  // Error overlay
+  &__error {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: $white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    
+    &--active {
+      opacity: 1;
+    }
+  }
+  
+  &__error-icon {
+    width: 64px;
+    height: 64px;
+    color: $red-4;
+    margin-bottom: 1rem;
+  }
+  
+  &__error-message {
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+  }
+  
+  &__error-retry {
+    padding: 0.5rem 1.5rem;
+    background: linear-gradient(135deg, $purple-4, $yellow-4);
+    border: none;
+    border-radius: 2rem;
+    color: $white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+  
+  // Floating spore particles
+  &__spores {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+    
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: radial-gradient(circle, $yellow-4, transparent);
+      border-radius: 50%;
+      animation: sporeFloat 8s ease-in-out infinite;
+    }
+    
+    &::before {
+      top: 20%;
+      left: 15%;
+      animation-delay: 0s;
+    }
+    
+    &::after {
+      top: 70%;
+      right: 20%;
+      animation-delay: 2s;
+    }
+  }
+  
+  @keyframes sporeFloat {
+    0%, 100% {
+      transform: translateY(0) translateX(0) scale(1);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateY(-15px) translateX(10px) scale(1.5);
+      opacity: 0.7;
+    }
+  }
+  
+  // Quality selector
+  &__quality {
+    position: absolute;
+    bottom: 60px;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    padding: 0.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    
+    &--active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    &-option {
+      padding: 0.5rem 1rem;
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 4px;
+      
+      &:hover {
+        background: rgba(157, 0, 255, 0.3);
+        color: $white;
+      }
+      
+      &--active {
+        background: $purple-4;
+        color: $white;
+      }
+    }
+  }
+  
+  // Speed control
+  &__speed {
+    position: absolute;
+    bottom: 60px;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 8px;
+    padding: 0.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    
+    &--active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    &-option {
+      padding: 0.5rem 1rem;
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 4px;
+      
+      &:hover {
+        background: rgba(157, 0, 255, 0.3);
+        color: $white;
+      }
+      
+      &--active {
+        background: $purple-4;
+        color: $white;
+      }
+    }
+  }
+  
+  // Size variants
+  &--sm {
+    max-width: 400px;
+    
+    #{$root}__controls {
+      padding: 0.5rem;
+      gap: 0.5rem;
+    }
+    
+    #{$root}__play {
+      width: 36px;
+      height: 36px;
+    }
+    
+    #{$root}__progress {
+      height: 4px;
+    }
+  }
+  
+  &--lg {
+    max-width: 1000px;
+    
+    #{$root}__controls {
+      padding: 1.5rem;
+      gap: 1.5rem;
+    }
+    
+    #{$root}__play {
+      width: 56px;
+      height: 56px;
+    }
+    
+    #{$root}__progress {
+      height: 8px;
+    }
+  }
+  
+  // Psychedelic variant
+  &--psychedelic {
+    #{$root}__controls {
+      background: linear-gradient(
+        to top,
+        rgba(157, 0, 255, 0.8) 0%,
+        rgba(255, 32, 133, 0.6) 50%,
+        transparent 100%
+      );
+    }
+    
+    #{$root}__play {
+      background: linear-gradient(135deg, $purple-4, $yellow-4, $red-4, $green-4);
+      background-size: 400% 400%;
+      animation: buttonGradient 3s ease-in-out infinite;
+    }
+    
+    #{$root}__progress-bar {
+      animation: psychedelicProgress 2s ease-in-out infinite;
+    }
+    
+    #{$root}__spinner {
+      border-top-color: $yellow-4;
+      animation: psychedelicSpinner 1s linear infinite;
+    }
+  }
+  
+  @keyframes buttonGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes psychedelicProgress {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+  }
+  
+  @keyframes psychedelicSpinner {
+    0% { 
+      transform: rotate(0deg);
+      filter: hue-rotate(0deg);
+    }
+    100% { 
+      transform: rotate(360deg);
+      filter: hue-rotate(360deg);
+    }
+  }
+  
+  // Glow variant
+  &--glow {
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 20px);
+    
+    #{$root}__play {
+      @include trippy.trippy-glow($yellow-4, 15px);
+    }
+    
+    #{$root}__progress-bar {
+      @include trippy.trippy-glow($purple-4, 8px);
+    }
+  }
+  
+  // Dark variant
+  &--dark {
+    background: rgba(0, 0, 0, 0.95);
+  }
+  
+  // Light variant
+  &--light {
+    background: rgba(255, 255, 255, 0.1);
+    
+    #{$root}__controls {
+      background: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0.8) 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        transparent 100%
+      );
+    }
+    
+    #{$root}__time {
+      color: rgba(0, 0, 0, 0.8);
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    #{$root}__controls {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    #{$root}__volume {
+      display: none;
+    }
+    
+    #{$root}__settings,
+    #{$root}__fullscreen {
+      width: 28px;
+      height: 28px;
+    }
+  }
+}

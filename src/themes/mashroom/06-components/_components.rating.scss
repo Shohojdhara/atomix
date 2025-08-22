@@ -1,0 +1,141 @@
+/*!
+ * Mashroom Theme Rating Component
+ * Psychedelic mushroom-inspired theme with trippy visuals
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.config' as *;
+.c-rating {
+  $root: &;
+  // Rating stars container
+  &__stars {
+    position: relative;
+  }
+
+  // Individual star
+  &__star {
+
+    position: relative;
+
+    // Add subtle glow to stars
+    @include trippy.trippy-glow(rgba($white, 0.1), 2px);
+
+    // Filled star
+    &--filled {
+      color: var(--#{$prefix}rating-star-bg);
+
+      // Add stronger glow to filled stars
+      @include trippy.trippy-glow($yellow-4, 5px);
+
+      // Add color shift animation
+      @include trippy.color-shift();
+    }
+
+    // Half-filled star
+    &--half {
+      color: var(--#{$prefix}rating-star-half-bg);
+
+      // Add moderate glow to half-filled stars
+      @include trippy.trippy-glow($yellow-6, 3px);
+    }
+
+    // Hover effect
+    &:hover {
+      transform: scale(var(--#{$prefix}rating-star-hover-scale)) rotate(10deg);
+      color: $red-4;
+
+      // Add strong glow on hover
+      @include trippy.trippy-glow($red-4, 10px);
+
+      // Add pulse animation on hover
+      @include trippy.psychedelic-pulse($red-4);
+    }
+
+    // Stars after hovered star
+    &--hover ~ & {
+      transform: scale(0.9) rotate(-5deg);
+      color: rgba($white, 0.1);
+
+      // Reduce glow for non-hovered stars
+      @include trippy.trippy-glow(rgba($white, 0.05), 1px);
+    }
+  }
+
+  // Rating label
+  &__label {
+    font-size: var(--#{$prefix}rating-label-font-size);
+    color: var(--#{$prefix}rating-label-color);
+    font-weight: 500;
+
+    // Add subtle floating effect to label
+    @include trippy.float-animation();
+  }
+
+  // Rating value display
+  &__value {
+    background: rgba(157, 0, 255, 0.2);
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    color: $yellow-4;
+
+    // Add psychedelic gradient background using mixin
+    @include gradients.mushroom-cap-gradient();
+
+    // Add glow effect
+    @include trippy.trippy-glow($purple-6, 5px);
+  }
+
+  // Read-only state
+  &--readonly {
+    .c-rating__star {
+      cursor: default;
+
+      &:hover {
+        transform: none;
+        color: var(--#{$prefix}rating-star-bg);
+        animation: none;
+      }
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    opacity: 0.6;
+
+    .c-rating__star {
+      cursor: not-allowed;
+      animation: none;
+
+      &:hover {
+        transform: none;
+        color: var(--#{$prefix}rating-star-empty-color);
+      }
+    }
+  }
+
+  // Large size variant
+  &--lg {
+    .c-rating__star {
+      font-size: 2rem;
+    }
+
+    .c-rating__label {
+      font-size: 1rem;
+    }
+  }
+
+  // Small size variant
+  &--sm {
+    .c-rating__star {
+      font-size: 1rem;
+    }
+
+    .c-rating__label {
+      font-size: 0.75rem;
+    }
+  }
+}

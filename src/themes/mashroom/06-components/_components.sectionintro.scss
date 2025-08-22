@@ -1,0 +1,519 @@
+/*!
+ * Mashroom Theme Section Intro Component
+ * Animated section intros with trippy headings and psychedelic visuals
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-sectionintro {
+  $root: &;
+  
+  // Base section intro styling
+  text-align: center;
+  padding: 3rem 0;
+  position: relative;
+  
+  // Animated background particles
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+      circle at 20% 30%,
+      rgba(157, 0, 255, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(255, 187, 0, 0.1) 0%,
+      transparent 50%
+    );
+    animation: backgroundShift 8s ease-in-out infinite;
+  }
+  
+  @keyframes backgroundShift {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+  
+  // Container
+  &__container {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  // Title styling
+  &__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(45deg, $purple-4, $yellow-4, $red-4, $green-4);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleRainbow 4s ease-in-out infinite;
+    
+    // Floating animation
+    animation: titleFloat 3s ease-in-out infinite, titleRainbow 4s ease-in-out infinite;
+  }
+  
+  @keyframes titleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+  
+  @keyframes titleRainbow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  // Subtitle styling
+  &__subtitle {
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    animation: subtitleFade 1s ease-in-out 0.5s both;
+  }
+  
+  @keyframes subtitleFade {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  // Description styling
+  &__description {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    animation: descriptionFade 1s ease-in-out 1s both;
+  }
+  
+  @keyframes descriptionFade {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  // CTA buttons
+  &__actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: actionsFade 1s ease-in-out 1.5s both;
+  }
+  
+  @keyframes actionsFade {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  &__btn {
+    padding: 0.75rem 2rem;
+    background: linear-gradient(45deg, $purple-4, $yellow-4);
+    border: none;
+    border-radius: 2rem;
+    color: $white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 10px);
+    
+    // Mushroom cap shape
+    border-radius: 2rem 2rem 1rem 1rem;
+    
+    &:hover {
+      transform: translateY(-3px) scale(1.05);
+      @include trippy.trippy-glow($yellow-4, 15px);
+    }
+    
+    &--secondary {
+      background: transparent;
+      border: 2px solid rgba(157, 0, 255, 0.5);
+      color: rgba(255, 255, 255, 0.9);
+      
+      &:hover {
+        background: rgba(157, 0, 255, 0.1);
+        border-color: $yellow-4;
+      }
+    }
+    
+    &--outline {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: rgba(255, 255, 255, 0.8);
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: $yellow-4;
+        color: $white;
+      }
+    }
+  }
+  
+  // Floating spore particles
+  &__spores {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+    
+    &::before,
+    &::after,
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(circle, $yellow-4, transparent);
+      border-radius: 50%;
+      animation: sporeFloat 6s ease-in-out infinite;
+    }
+    
+    &::before {
+      top: 20%;
+      left: 15%;
+      animation-delay: 0s;
+    }
+    
+    &::after {
+      top: 60%;
+      right: 20%;
+      animation-delay: 2s;
+    }
+    
+    &::before {
+      top: 40%;
+      left: 70%;
+      animation-delay: 4s;
+    }
+    
+    &::after {
+      top: 80%;
+      left: 40%;
+      animation-delay: 1s;
+    }
+  }
+  
+  @keyframes sporeFloat {
+    0%, 100% {
+      transform: translateY(0) translateX(0) scale(1);
+      opacity: 0.4;
+    }
+    50% {
+      transform: translateY(-15px) translateX(10px) scale(1.5);
+      opacity: 0.8;
+    }
+  }
+  
+  // Divider
+  &__divider {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, $purple-4, $yellow-4, $red-4);
+    margin: 1.5rem auto;
+    border-radius: 2px;
+    animation: dividerGlow 3s ease-in-out infinite;
+  }
+  
+  @keyframes dividerGlow {
+    0%, 100% { 
+      box-shadow: 0 0 5px rgba(157, 0, 255, 0.5);
+      transform: scaleX(1);
+    }
+    50% { 
+      box-shadow: 0 0 15px rgba(157, 0, 255, 0.8), 0 0 25px rgba(255, 187, 0, 0.5);
+      transform: scaleX(1.1);
+    }
+  }
+  
+  // Stats display
+  &__stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+    animation: statsFade 1s ease-in-out 2s both;
+  }
+  
+  @keyframes statsFade {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  &__stat {
+    text-align: center;
+    
+    &-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: $yellow-4;
+      background: linear-gradient(45deg, $yellow-4, $red-4);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: statNumberShift 3s ease-in-out infinite;
+    }
+    
+    &-label {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+  
+  @keyframes statNumberShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  // Size variants
+  &--sm {
+    padding: 2rem 0;
+    
+    #{$root}__title {
+      font-size: 2rem;
+    }
+    
+    #{$root}__subtitle {
+      font-size: 1.125rem;
+    }
+    
+    #{$root}__description {
+      font-size: 0.875rem;
+    }
+  }
+  
+  &--lg {
+    padding: 4rem 0;
+    
+    #{$root}__title {
+      font-size: 3rem;
+    }
+    
+    #{$root}__subtitle {
+      font-size: 1.5rem;
+    }
+    
+    #{$root}__description {
+      font-size: 1.125rem;
+    }
+  }
+  
+  &--xl {
+    padding: 5rem 0;
+    
+    #{$root}__title {
+      font-size: 3.5rem;
+    }
+    
+    #{$root}__subtitle {
+      font-size: 1.75rem;
+    }
+    
+    #{$root}__description {
+      font-size: 1.25rem;
+    }
+  }
+  
+  // Alignment variants
+  &--left {
+    text-align: left;
+    
+    #{$root}__container {
+      margin-left: 0;
+      margin-right: auto;
+    }
+    
+    #{$root}__divider {
+      margin-left: 0;
+      margin-right: auto;
+    }
+    
+    #{$root}__actions {
+      justify-content: flex-start;
+    }
+    
+    #{$root}__stats {
+      justify-content: flex-start;
+    }
+  }
+  
+  &--right {
+    text-align: right;
+    
+    #{$root}__container {
+      margin-left: auto;
+      margin-right: 0;
+    }
+    
+    #{$root}__divider {
+      margin-left: auto;
+      margin-right: 0;
+    }
+    
+    #{$root}__actions {
+      justify-content: flex-end;
+    }
+    
+    #{$root}__stats {
+      justify-content: flex-end;
+    }
+  }
+  
+  // Psychedelic variant
+  &--psychedelic {
+    &::before {
+      background: linear-gradient(
+        135deg,
+        rgba(157, 0, 255, 0.1) 0%,
+        rgba(255, 32, 133, 0.1) 25%,
+        rgba(0, 255, 136, 0.1) 50%,
+        rgba(255, 187, 0, 0.1) 75%,
+        rgba(157, 0, 255, 0.1) 100%
+      );
+      animation: psychedelicBackground 5s ease-in-out infinite;
+    }
+    
+    #{$root}__title {
+      animation: psychedelicTitle 3s ease-in-out infinite;
+    }
+    
+    #{$root}__btn {
+      background: linear-gradient(
+        135deg,
+        $purple-4,
+        $red-4,
+        $yellow-4,
+        $green-4
+      );
+      background-size: 400% 400%;
+      animation: psychedelicButton 4s ease-in-out infinite;
+    }
+  }
+  
+  @keyframes psychedelicBackground {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes psychedelicTitle {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+  }
+  
+  @keyframes psychedelicButton {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  // Dark variant
+  &--dark {
+    background: rgba(0, 0, 0, 0.8);
+    
+    &::before {
+      background: radial-gradient(
+        circle at 30% 40%,
+        rgba(157, 0, 255, 0.2) 0%,
+        transparent 60%
+      );
+    }
+  }
+  
+  // Light variant
+  &--light {
+    background: rgba(255, 255, 255, 0.1);
+    
+    #{$root}__title {
+      background: linear-gradient(45deg, $purple-4, $yellow-4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    #{$root}__subtitle,
+    #{$root}__description {
+      color: rgba(0, 0, 0, 0.8);
+    }
+    
+    #{$root}__btn--secondary {
+      border-color: rgba(0, 0, 0, 0.3);
+      color: rgba(0, 0, 0, 0.8);
+      
+      &:hover {
+        background: rgba(0, 0, 0, 0.1);
+        border-color: $purple-4;
+      }
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    padding: 2rem 0;
+    
+    #{$root}__title {
+      font-size: 2rem;
+    }
+    
+    #{$root}__subtitle {
+      font-size: 1.125rem;
+    }
+    
+    #{$root}__stats {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    #{$root}__actions {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}

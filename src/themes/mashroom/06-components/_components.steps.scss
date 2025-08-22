@@ -1,0 +1,183 @@
+/*!
+ * Mashroom Theme Steps Component
+ * Psychedelic mushroom-inspired theme with trippy visuals
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-steps {
+  $root: &;
+  
+  // Add psychedelic background
+  @include gradients.rainbow-gradient();
+  
+  // Add floating animation
+  @include trippy.float-animation();
+  
+  // Add color shift effect
+  @include trippy.color-shift();
+  
+  padding: 2rem;
+  border-radius: 1rem;
+  position: relative;
+  overflow: hidden;
+  
+  // Step item
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    padding-bottom: 2rem;
+    
+    // Connector line between steps
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2.5rem;
+      left: 1.25rem;
+      bottom: -1rem;
+      width: 2px;
+      background: rgba($white, 0.2);
+      z-index: 1;
+    }
+    
+    // Last item should not have connector
+    &:last-child::after {
+      display: none;
+    }
+  }
+  
+  // Step icon container
+  &__icon {
+    position: relative;
+    
+    // Add glow effect
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 5px);
+    
+    // Add floating animation to icon
+    @include trippy.float-animation();
+  }
+  
+  // Step number
+  &__number {
+    color: $white;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  // Step content
+  &__content {
+    flex: 1;
+  }
+  
+  // Step title
+  &__title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: $white;
+    font-size: 1.2rem;
+    
+    // Add glow effect to title
+    @include trippy.trippy-glow(rgba(255, 255, 255, 0.3), 3px);
+  }
+  
+  // Step description
+  &__description {
+    color: rgba($white, 0.8);
+    line-height: 1.5;
+  }
+  
+  // Completed step
+  &__item--completed {
+    #{$root}__icon {
+      background: linear-gradient(90deg, #9d00ff, #d080ff, #00ff9d, #ffbb00, #ff2085, #9d00ff);
+      
+      // Add stronger glow for completed steps
+      @include trippy.trippy-glow($yellow-4, 10px);
+    }
+    
+    #{$root}__number {
+      color: $yellow-4;
+    }
+    
+    #{$root}__title {
+      color: $yellow-4;
+      
+      // Add stronger glow to title
+      @include trippy.trippy-glow($yellow-4, 5px);
+    }
+    
+    // Change connector for completed steps
+    &::after {
+      background: linear-gradient(to bottom, $yellow-4, rgba($yellow-4, 0.3));
+    }
+  }
+  
+  // Active step
+  &__item--active {
+    #{$root}__icon {
+      background: rgba(255, 255, 255, 0.2);
+      
+      // Add pulse animation for active step
+      @include trippy.psychedelic-pulse($red-4);
+    }
+    
+    #{$root}__number {
+      color: $red-4;
+    }
+    
+    #{$root}__title {
+      color: $red-4;
+      
+      // Add stronger glow to title
+      @include trippy.trippy-glow($red-4, 5px);
+    }
+  }
+  
+  // Disabled step
+  &__item--disabled {
+    opacity: 0.5;
+    
+    #{$root}__icon {
+      animation: none;
+    }
+  }
+  
+  // Horizontal variant
+  &--horizontal {
+    display: flex;
+    align-items: flex-start;
+    
+    #{$root}__item {
+      flex: 1;
+      text-align: center;
+      padding-bottom: 0;
+      padding-right: 1rem;
+      
+      &::after {
+        top: 1.25rem;
+        left: calc(50% + 2rem);
+        right: calc(-50% + 2rem);
+        bottom: auto;
+        width: auto;
+        height: 2px;
+      }
+      
+      &:last-child::after {
+        display: none;
+      }
+    }
+    
+    #{$root}__icon {
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
+    
+    #{$root}__content {
+      margin-right: 1rem;
+    }
+  }
+}

@@ -1,0 +1,512 @@
+/*!
+ * Mashroom Theme Upload Component
+ * Mushroom-themed file drop zones with psychedelic drag effects
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-upload {
+  $root: &;
+  
+  // Base upload container
+  position: relative;
+  margin: 2rem 0;
+  
+  // Drop zone styling
+  &__dropzone {
+    position: relative;
+    border: 2px dashed rgba(157, 0, 255, 0.5);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+    
+    // Mushroom cap curve
+    border-radius: 16px 16px 8px 8px;
+    
+    // Hover state
+    &:hover {
+      border-color: $yellow-4;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+      @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 15px);
+    }
+    
+    // Drag over state
+    &--dragover {
+      border-color: $green-4;
+      background: rgba(0, 255, 136, 0.1);
+      transform: scale(1.02);
+      @include trippy.trippy-glow($green-4, 20px);
+      
+      #{$root}__icon {
+        transform: scale(1.2);
+        color: $green-4;
+      }
+    }
+    
+    // Disabled state
+    &--disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      
+      &:hover {
+        transform: none;
+        @include trippy.trippy-glow(none, 0);
+      }
+    }
+  }
+  
+  // Icon
+  &__icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1rem;
+    color: rgba(157, 0, 255, 0.7);
+    transition: all 0.3s ease;
+    animation: iconFloat 3s ease-in-out infinite;
+  }
+  
+  @keyframes iconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+  
+  // Text content
+  &__text {
+    margin-bottom: 1rem;
+  }
+  
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $white;
+    margin-bottom: 0.5rem;
+  }
+  
+  &__description {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  
+  // File input (hidden)
+  &__input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+  
+  // File list
+  &__files {
+    margin-top: 1.5rem;
+  }
+  
+  &__file {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    &--uploading {
+      #{$root}__progress {
+        opacity: 1;
+      }
+    }
+    
+    &--success {
+      border-left: 3px solid $green-4;
+      @include trippy.trippy-glow($green-4, 5px);
+    }
+    
+    &--error {
+      border-left: 3px solid $red-4;
+      @include trippy.trippy-glow($red-4, 5px);
+    }
+  }
+  
+  // File info
+  &__file-info {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  &__file-name {
+    font-weight: 500;
+    color: $white;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  &__file-size {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  // File preview
+  &__file-preview {
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    background: linear-gradient(135deg, $purple-4, $yellow-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $white;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 8px);
+  }
+  
+  // Progress bar
+  &__progress {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    margin-top: 0.5rem;
+  }
+  
+  &__progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, $purple-4, $yellow-4, $green-4);
+    background-size: 200% 100%;
+    border-radius: 2px;
+    animation: progressShimmer 2s ease-in-out infinite;
+    transition: width 0.3s ease;
+  }
+  
+  @keyframes progressShimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  // Actions
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+  
+  &__action {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: $white;
+      transform: scale(1.1);
+    }
+    
+    &--remove {
+      &:hover {
+        background: rgba(255, 32, 133, 0.2);
+        color: $red-4;
+      }
+    }
+    
+    &--retry {
+      &:hover {
+        background: rgba(0, 255, 136, 0.2);
+        color: $green-4;
+      }
+    }
+  }
+  
+  // Upload button
+  &__button {
+    margin-top: 1rem;
+    padding: 0.75rem 2rem;
+    background: linear-gradient(45deg, $purple-4, $yellow-4);
+    border: none;
+    border-radius: 2rem;
+    color: $white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 10px);
+    
+    &:hover {
+      transform: translateY(-2px);
+      @include trippy.trippy-glow($yellow-4, 15px);
+    }
+    
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      @include trippy.trippy-glow(none, 0);
+    }
+  }
+  
+  // Drag hint
+  &__hint {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+  
+  // Error message
+  &__error {
+    color: $red-4;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+  
+  // Success message
+  &__success {
+    color: $green-4;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    animation: successPulse 2s ease-in-out infinite;
+    
+    @keyframes successPulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+  }
+  
+  // Floating spore particles
+  &__spores {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+    
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(circle, $yellow-4, transparent);
+      border-radius: 50%;
+      animation: sporeFloat 6s ease-in-out infinite;
+    }
+    
+    &::before {
+      top: 30%;
+      left: 20%;
+      animation-delay: 0s;
+    }
+    
+    &::after {
+      top: 60%;
+      right: 30%;
+      animation-delay: 2s;
+    }
+  }
+  
+  @keyframes sporeFloat {
+    0%, 100% {
+      transform: translateY(0) translateX(0) scale(1);
+      opacity: 0.4;
+    }
+    50% {
+      transform: translateY(-15px) translateX(10px) scale(1.5);
+      opacity: 0.8;
+    }
+  }
+  
+  // Multiple file variant
+  &--multiple {
+    #{$root}__dropzone {
+      &::before {
+        content: 'Drop files here or click to select';
+        display: block;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+  
+  // Single file variant
+  &--single {
+    #{$root}__files {
+      #{$root}__file {
+        &:not(:last-child) {
+          display: none;
+        }
+      }
+    }
+  }
+  
+  // Image preview variant
+  &--image {
+    #{$root}__file-preview {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: none;
+      
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+    }
+  }
+  
+  // Compact variant
+  &--compact {
+    #{$root}__dropzone {
+      padding: 1.5rem;
+    }
+    
+    #{$root}__icon {
+      width: 48px;
+      height: 48px;
+    }
+    
+    #{$root}__file {
+      padding: 0.75rem;
+    }
+    
+    #{$root}__file-preview {
+      width: 32px;
+      height: 32px;
+      font-size: 1rem;
+    }
+  }
+  
+  // Psychedelic variant
+  &--psychedelic {
+    #{$root}__dropzone {
+      border-color: transparent;
+      background: linear-gradient(
+        135deg,
+        rgba(157, 0, 255, 0.1),
+        rgba(255, 32, 133, 0.1),
+        rgba(0, 255, 136, 0.1),
+        rgba(255, 187, 0, 0.1)
+      );
+      background-size: 400% 400%;
+      animation: psychedelicBackground 4s ease-in-out infinite;
+      
+      &::before {
+        border: 1px solid transparent;
+        background: linear-gradient(
+          45deg,
+          $purple-4,
+          $yellow-4,
+          $red-4,
+          $green-4,
+          $purple-4
+        ) border-box;
+        background-size: 400% 400%;
+        animation: psychedelicBorder 3s ease-in-out infinite;
+        mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        mask-composite: exclude;
+      }
+    }
+    
+    @keyframes psychedelicBackground {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    @keyframes psychedelicBorder {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  }
+  
+  // Glow variant
+  &--glow {
+    #{$root}__dropzone {
+      @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 20px);
+      
+      &:hover {
+        @include trippy.trippy-glow($yellow-4, 25px);
+      }
+    }
+  }
+  
+  // Dark variant
+  &--dark {
+    #{$root}__dropzone {
+      background: rgba(0, 0, 0, 0.4);
+    }
+  }
+  
+  // Light variant
+  &--light {
+    #{$root}__dropzone {
+      background: rgba(255, 255, 255, 0.1);
+      
+      #{$root}__title,
+      #{$root}__description {
+        color: rgba(0, 0, 0, 0.8);
+      }
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    #{$root}__dropzone {
+      padding: 2rem 1rem;
+    }
+    
+    #{$root}__icon {
+      width: 48px;
+      height: 48px;
+    }
+    
+    #{$root}__files {
+      #{$root}__file {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+    }
+  }
+}

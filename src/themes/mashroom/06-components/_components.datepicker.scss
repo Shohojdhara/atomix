@@ -1,0 +1,333 @@
+/*!
+ * Mashroom Theme DatePicker Component
+ * Psychedelic mushroom-inspired theme with trippy visuals
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-datepicker {
+  $root: &;
+  
+  // Base datepicker styling
+  position: relative;
+  display: inline-block;
+  
+  // Calendar container
+  &__calendar {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    min-width: 300px;
+    
+    // Trippy glow effect
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 20px);
+    
+    // Entrance animation
+    animation: calendarPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  
+  @keyframes calendarPop {
+    from {
+      opacity: 0;
+      transform: scale(0.8) rotate(-5deg);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+  }
+  
+  // Header
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  // Navigation buttons
+  &__nav {
+    display: flex;
+    gap: 0.5rem;
+    
+    &-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(157, 0, 255, 0.3);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 0.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: rgba(157, 0, 255, 0.2);
+        color: $white;
+        @include trippy.trippy-glow($yellow-4, 8px);
+      }
+    }
+  }
+  
+  // Current month/year display
+  &__current {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: $white;
+    background: linear-gradient(45deg, $purple-4, $yellow-4);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: monthColorShift 3s ease-in-out infinite;
+  }
+  
+  @keyframes monthColorShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  // Weekday headers
+  &__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  &__weekday {
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 0.5rem;
+  }
+  
+  // Days grid
+  &__days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+  }
+  
+  // Day cells
+  &__day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    
+    &:hover {
+      background: rgba(157, 0, 255, 0.2);
+      color: $white;
+      transform: scale(1.1);
+      @include trippy.trippy-glow($yellow-4, 8px);
+    }
+    
+    &--today {
+      background: rgba(255, 187, 0, 0.2);
+      color: $yellow-4;
+      font-weight: 600;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        border: 1px solid $yellow-4;
+        border-radius: 50%;
+        animation: todayGlow 2s ease-in-out infinite;
+      }
+    }
+    
+    @keyframes todayGlow {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    
+    &--selected {
+      background: linear-gradient(45deg, $purple-4, $red-4);
+      color: $white;
+      font-weight: 600;
+      animation: selectedPulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes selectedPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    &--disabled {
+      color: rgba(255, 255, 255, 0.3);
+      cursor: not-allowed;
+      
+      &:hover {
+        background: none;
+        transform: none;
+        @include trippy.trippy-glow(none, 0);
+      }
+    }
+    
+    &--other-month {
+      color: rgba(255, 255, 255, 0.4);
+    }
+    
+    &--weekend {
+      color: rgba(255, 187, 0, 0.8);
+    }
+  }
+  
+  // Time picker
+  &__time {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    
+    &-label {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.875rem;
+    }
+    
+    &-input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(157, 0, 255, 0.3);
+      color: rgba(255, 255, 255, 0.9);
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      
+      &:focus {
+        outline: none;
+        border-color: $yellow-4;
+        @include trippy.trippy-glow($yellow-4, 5px);
+      }
+    }
+  }
+  
+  // Input field
+  &__input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(157, 0, 255, 0.3);
+    border-radius: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      border-color: rgba(157, 0, 255, 0.5);
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: $yellow-4;
+      @include trippy.trippy-glow($yellow-4, 8px);
+    }
+    
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+  
+  // Range picker
+  &--range {
+    #{$root}__calendar {
+      min-width: 600px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+  }
+  
+  // Inline variant
+  &--inline {
+    #{$root}__calendar {
+      position: static;
+      box-shadow: none;
+      animation: none;
+    }
+  }
+  
+  // Sizes
+  &--sm {
+    #{$root}__calendar {
+      padding: 1rem;
+      min-width: 250px;
+      
+      #{$root}__day {
+        font-size: 0.75rem;
+      }
+    }
+  }
+  
+  &--lg {
+    #{$root}__calendar {
+      padding: 2rem;
+      min-width: 350px;
+      
+      #{$root}__day {
+        font-size: 1rem;
+      }
+    }
+  }
+  
+  // Psychedelic variant
+  &--psychedelic {
+    #{$root}__calendar {
+      background: linear-gradient(
+        135deg,
+        rgba(157, 0, 255, 0.1) 0%,
+        rgba(255, 32, 133, 0.1) 50%,
+        rgba(0, 255, 136, 0.1) 100%
+      );
+      border-color: rgba(157, 0, 255, 0.4);
+    }
+    
+    #{$root}__day {
+      &:hover {
+        background: linear-gradient(45deg, rgba(157, 0, 255, 0.3), rgba(255, 187, 0, 0.3));
+      }
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    #{$root}__calendar {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 350px;
+    }
+    
+    &--range {
+      #{$root}__calendar {
+        grid-template-columns: 1fr;
+        min-width: auto;
+      }
+    }
+  }
+}

@@ -1,0 +1,185 @@
+/*!
+ * Mashroom Theme Avatar Group Component
+ * Psychedelic mushroom-inspired theme with trippy visuals
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-avatar-group {
+  $root: &;
+
+  // Individual avatars in group
+  .c-avatar {
+    border: 2px solid rgba(157, 0, 255, 0.3);
+    transition: all 0.3s ease;
+    @include trippy.color-shift();
+
+    &:hover {
+      transform: translateY(-2px) scale(1.1);
+      z-index: 2;
+      @include trippy.trippy-glow($yellow-4, 8px);
+      @include trippy.psychedelic-pulse($yellow-4);
+      @include gradients.psychedelic-linear-gradient($purple-4, $yellow-4);
+    }
+  }
+
+  // Overlap styling
+  &--overlap {
+    .c-avatar {
+      margin-right: -1rem;
+      
+      &:hover {
+        margin-right: 0;
+      }
+    }
+  }
+
+  // Spaced variant
+  &--spaced {
+    .c-avatar {
+      margin-right: 0.5rem;
+      @include trippy.float-animation();
+    }
+  }
+
+  // Remaining count
+  &__remaining {
+    background: linear-gradient(45deg, $purple-4, $red-4);
+    border: 2px solid rgba(157, 0, 255, 0.3);
+
+    // Trippy glow effect
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 6px);
+    @include trippy.color-shift();
+    @include gradients.rainbow-gradient();
+
+    &:hover {
+      transform: translateY(-2px) scale(1.1);
+      @include trippy.trippy-glow($yellow-4, 10px);
+      @include trippy.psychedelic-pulse($yellow-4);
+    }
+  }
+
+  // Floating animation
+  &--animated {
+    .c-avatar {
+      animation: avatarFloat 3s ease-in-out infinite;
+      @include trippy.color-shift();
+
+      &:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      &:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      &:nth-child(4) {
+        animation-delay: 0.6s;
+      }
+    }
+
+    #{$root}__remaining {
+      animation: avatarFloat 3s ease-in-out infinite 0.8s;
+      @include trippy.color-shift();
+    }
+
+    @keyframes avatarFloat {
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      25% {
+        transform: translateY(-5px) rotate(2deg);
+      }
+      50% {
+        transform: translateY(-3px) rotate(0deg);
+      }
+      75% {
+        transform: translateY(-7px) rotate(-2deg);
+      }
+    }
+  }
+
+  // Hover reveal effect
+  &--hover-reveal {
+    .c-avatar {
+      opacity: 0.7;
+      transition: all 0.3s ease;
+      @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 4px);
+
+      &:hover {
+        opacity: 1;
+        transform: scale(1.2) rotate(5deg);
+        z-index: 3;
+        @include gradients.psychedelic-radial-gradient($yellow-4, $red-4, $purple-4);
+        @include trippy.psychedelic-pulse($yellow-4);
+        box-shadow: 0 0 20px rgba(255, 187, 0, 0.7);
+      }
+    }
+  }
+
+  // Psychedelic variant
+  &--psychedelic {
+    .c-avatar {
+      border-color: rgba(255, 187, 0, 0.4);
+      background: linear-gradient(45deg, $purple-4, $red-4, $green-4);
+      animation: psychedelicAvatar 3s ease-in-out infinite;
+      @include trippy.trippy-glow(rgba(157, 0, 255, 0.5), 6px);
+      box-shadow: 0 0 15px rgba(157, 0, 255, 0.5);
+
+      &:hover {
+        @include gradients.rainbow-gradient();
+        background-size: 400% 400%;
+        animation: rainbow-shift 4s ease infinite, avatarPulse 2s ease-in-out infinite;
+      }
+    }
+
+    #{$root}__remaining {
+      background: linear-gradient(45deg, $yellow-4, $purple-4, $red-4);
+      border-color: rgba(255, 187, 0, 0.4);
+      animation: psychedelicAvatar 3s ease-in-out infinite 0.5s;
+      @include trippy.trippy-glow(rgba(255, 187, 0, 0.5), 8px);
+      box-shadow: 0 0 20px rgba(255, 187, 0, 0.5);
+
+      &:hover {
+        @include gradients.rainbow-gradient();
+        background-size: 400% 400%;
+        animation: rainbow-shift 4s ease infinite, avatarPulse 2s ease-in-out infinite;
+      }
+    }
+
+    @keyframes psychedelicAvatar {
+      0%,
+      100% {
+        background-position: 0% 50%;
+        border-color: rgba(255, 187, 0, 0.4);
+        transform: rotate(0deg);
+      }
+      25% {
+        background-position: 50% 100%;
+        border-color: rgba(0, 255, 136, 0.4);
+        transform: rotate(2deg);
+      }
+      50% {
+        background-position: 100% 50%;
+        border-color: rgba(255, 32, 133, 0.4);
+        transform: rotate(0deg);
+      }
+      75% {
+        background-position: 50% 0%;
+        border-color: rgba(0, 255, 255, 0.4);
+        transform: rotate(-2deg);
+      }
+    }
+
+    @keyframes avatarPulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
