@@ -13,7 +13,7 @@ $primary-5: #3381ff !default;
 $primary-6: #0061ff !default;
 $primary-7: #004ecf !default;
 $primary-8: #003ca0 !default;
-$primary-9: #002c72 !default;
+$primary-9: #040dbf !default;
 $primary-10: #001c44 !default;
 
 // Accent Colors
@@ -86,7 +86,7 @@ $neutral-10: #212529 !default;
   $primary-6: #0061ff,
   $primary-7: #004ecf,
   $primary-8: #003ca0,
-  $primary-9: #002c72,
+  $primary-9: #040dbf,
   $primary-10: #001c44,
   $green-1: #e6f4ea,
   $green-2: #cce9d6,
@@ -137,5 +137,11 @@ $neutral-10: #212529 !default;
   $gray-7: $neutral-7,
   $gray-8: $neutral-8,
   $gray-9: $neutral-9,
-  $gray-10: $neutral-10
+  $gray-10: $neutral-10,
+  $primary: $primary-9,
+  $secondary: $neutral-2 ,
+  $light: $neutral-1 ,
+  $dark: $neutral-9,
 );
+
+
