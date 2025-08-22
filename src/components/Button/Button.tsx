@@ -1,7 +1,6 @@
-import React, { forwardRef, ElementType } from 'react';
-import { ButtonProps } from '../../lib/types/components';
+import { ElementType, forwardRef } from 'react';
 import { useButton } from '../../lib/composables/useButton';
-import { BUTTON } from '../../lib/constants/components';
+import { ButtonProps } from '../../lib/types/components';
 
 export type ButtonAsProp = {
   as?: ElementType;
@@ -56,8 +55,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps & ButtonAsProp>(
 
     return (
       <Component {...buttonProps}>
-        {icon && <span className="button__icon">{icon}</span>}
-        {!iconOnly && <span className="button__label">{label || children}</span>}
+        {icon && <span className="c-btn__icon">{icon}</span>}
+        {!iconOnly && <span className="c-btn__label">{label || children}</span>}
       </Component>
     );
   }
