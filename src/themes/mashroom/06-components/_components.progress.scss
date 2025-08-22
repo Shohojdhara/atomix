@@ -1,0 +1,134 @@
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as colors;
+@use '../01-settings/settings.config' as config;
+
+.c-progress {
+  $root: &;
+  width: 100%;
+  max-width: var(--#{config.$prefix}progress-width);
+  height: var(--#{config.$prefix}progress-bar-height);
+  background-color: rgba(colors.$black, 0.2);
+  border-radius: 50px;
+  overflow: hidden;
+  position: relative;
+
+  // Add a subtle glow to the background
+  @include trippy.trippy-glow(rgba(colors.$primary-6, 0.3), 5px);
+
+  // Add a subtle inner shadow for depth
+  box-shadow: inset 0 2px 5px rgba(colors.$black, 0.3);
+
+  &__bar {
+    width: var(--#{config.$prefix}progress-bar-width);
+    height: var(--#{config.$prefix}progress-bar-height);
+    color: colors.$white;
+    border-radius: 50px;
+    transition: var(--#{config.$prefix}progress-bar-transition)
+      var(--#{config.$prefix}progress-bar-easing);
+    position: relative;
+    overflow: hidden;
+
+    // Add psychedelic gradient to the progress bar
+    @include gradients.rainbow-gradient();
+    background-size: 200% 200%;
+    animation: progress-rainbow 2s ease infinite;
+
+    // Add a shine effect that moves with the progress
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+      );
+      animation: progress-shine 2s ease infinite;
+    }
+
+    // Add a pulse effect
+    @include trippy.psychedelic-pulse(colors.$white);
+  }
+
+  // Animations
+  @keyframes progress-rainbow {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes progress-shine {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  // Color variants
+  @each $color,
+    $value
+      in (
+        primary: colors.$primary-6,
+        success: colors.$green-6,
+        warning: colors.$yellow-6,
+        danger: colors.$red-6,
+        info: colors.$blue-6
+      )
+  {
+    &--#{$color} {
+      --#{config.$prefix}progress-bar-bg: #{$value};
+
+      .c-progress__bar {
+        @include gradients.psychedelic-linear-gradient($value, lighten($value, 15%));
+
+        // Adjust pulse color based on variant
+        @include trippy.psychedelic-pulse($value);
+      }
+    }
+  }
+
+  // Striped variant
+  &--striped {
+    .c-progress__bar {
+      background-image: linear-gradient(
+        45deg,
+        rgba(colors.$white, 0.15) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(colors.$white, 0.15) 50%,
+        rgba(colors.$white, 0.15) 75%,
+        transparent 75%,
+        transparent
+      );
+      background-size: 1rem 1rem;
+    }
+  }
+
+  // Animated variant
+  &--animated {
+    .c-progress__bar {
+      animation:
+        progress-bar-stripes 1s linear infinite,
+        progress-rainbow 2s ease infinite;
+    }
+
+    @keyframes progress-bar-stripes {
+      0% {
+        background-position: 1rem 0;
+      }
+      100% {
+        background-position: 0 0;
+      }
+    }
+  }
+}

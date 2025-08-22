@@ -1,0 +1,5 @@
+@use '../../../styles/01-settings/settings.checkbox-group' with (
+  $checkbox-group-items-spacer-y: 12px,
+  // 12px - better vertical spacing
+  $checkbox-group-items-spacer-x: 20px // 20px - more horizontal spacing
+);

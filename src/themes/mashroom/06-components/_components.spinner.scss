@@ -1,0 +1,141 @@
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as colors;
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.spinner' as spinner;
+@use '../01-settings/settings.maps' as maps;
+@use 'sass:map';
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg) #{'/* rtl:ignore */'};
+  }
+}
+
+@keyframes psychedelic-spinner {
+  0% {
+    transform: rotate(0deg) scale(1);
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    transform: rotate(90deg) scale(1.1);
+    filter: hue-rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg) scale(1);
+    filter: hue-rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg) scale(0.9);
+    filter: hue-rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes spinner-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 10px colors.$primary-6;
+  }
+  25% {
+    box-shadow:
+      0 0 20px colors.$blue-6,
+      0 0 30px colors.$blue-6;
+  }
+  50% {
+    box-shadow: 0 0 10px colors.$green-6;
+  }
+  75% {
+    box-shadow:
+      0 0 20px colors.$red-6,
+      0 0 30px colors.$red-6;
+  }
+}
+
+.c-spinner {
+  --#{config.$prefix}spinner-size: #{map.get(spinner.$spinner-sizes, md)};
+  --#{config.$prefix}spinner-background-color: #{spinner.$spinner-background-color};
+  --#{config.$prefix}spinner-color: #{spinner.$spinner-color};
+  --#{config.$prefix}spinner-border-width: #{spinner.$spinner-border-width};
+  --#{config.$prefix}spinner-animation-speed: #{spinner.$spinner-animation-speed};
+
+  color: var(--#{config.$prefix}spinner-background-color);
+  position: relative;
+
+  // Use a psychedelic gradient for the spinner
+  background: conic-gradient(
+    colors.$primary-6,
+    colors.$blue-6,
+    colors.$green-6,
+    colors.$yellow-6,
+    colors.$red-6,
+    colors.$primary-6
+  );
+  border-radius: 50%;
+  animation:
+    psychedelic-spinner var(--#{config.$prefix}spinner-animation-speed) ease-in-out infinite,
+    spinner-glow var(--#{config.$prefix}spinner-animation-speed) ease infinite;
+
+  // Add a glow effect
+  @include trippy.trippy-glow(colors.$primary-6, 10px);
+
+  // Add a central "hole" to make it look like a ring
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    right: 10%;
+    bottom: 10%;
+    background-color: colors.$black;
+    border-radius: 50%;
+  }
+
+  // Size variants
+  @each $size, $value in spinner.$spinner-sizes {
+    &--#{$size} {
+      --#{config.$prefix}spinner-size: #{$value};
+    }
+  }
+
+  // Color variants
+  @each $color, $value in maps.$theme-colors {
+    &--#{$color} {
+      @if ($color == 'secondary') {
+        --#{config.$prefix}spinner-background-color: var(--#{config.$prefix}body-bg);
+      }
+
+      --#{config.$prefix}spinner-color: var(--#{config.$prefix}#{$color});
+
+      // Apply color-specific effects
+      @if ($color == 'primary') {
+        animation:
+          psychedelic-spinner var(--#{config.$prefix}spinner-animation-speed) ease-in-out infinite,
+          spinner-glow var(--#{config.$prefix}spinner-animation-speed) ease infinite;
+      } @else {
+        // For other colors, use a simpler animation
+        animation: spinner var(--#{config.$prefix}spinner-animation-speed) linear infinite;
+      }
+    }
+  }
+
+  // Growing variant
+  &--growing {
+    animation:
+      spinner var(--#{config.$prefix}spinner-animation-speed) linear infinite,
+      spinner-grow 1s linear infinite;
+
+    @keyframes spinner-grow {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+    }
+  }
+}

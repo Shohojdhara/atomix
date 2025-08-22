@@ -1,7 +1,5 @@
 import type { Preview } from '@storybook/react';
 import { useEffect } from 'react';
-// import '../src/themes/yabai/index.scss';
-// import '../src/styles/index.scss';
 
 const preview: Preview = {
   parameters: {
@@ -110,6 +108,11 @@ const preview: Preview = {
           id: 'shaj-theme',
           title: 'Shaj theme',
           url: '../src/themes/shaj-default/index.scss',
+        },
+        {
+          id: 'magic-theme',
+          title: 'Mashroom theme',
+          url: '../src/themes/mashroom/index.scss',
         },
       ],
     },

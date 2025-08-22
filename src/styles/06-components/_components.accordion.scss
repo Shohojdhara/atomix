@@ -29,6 +29,9 @@
   max-width: var(--#{config.$prefix}accordion-width);
   border: var(--#{config.$prefix}accordion-border-width) solid
     var(--#{config.$prefix}accordion-border-color);
+  border-radius: var(--#{config.$prefix}accordion-border-radius);
+
+  overflow: hidden;
 
   &__header {
     display: flex;
@@ -38,7 +41,6 @@
     padding: var(--#{config.$prefix}accordion-header-padding-y)
       var(--#{config.$prefix}accordion-header-padding-x);
     background-color: var(--#{config.$prefix}accordion-header-bg);
-    border-radius: var(--#{config.$prefix}accordion-border-radius);
     border: none;
     cursor: pointer;
     width: 100%;

@@ -1,0 +1,59 @@
+/*!
+ * Mashroom Theme Breadcrumb Component
+ * Psychedelic mushroom-inspired theme with trippy visuals
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-breadcrumb {
+  // Apply psychedelic gradient background
+  @include gradients.rainbow-gradient();
+  
+  // Add floating animation for a magical effect
+  @include trippy.float-animation();
+  
+  // Add color shift for extra psychedelic effect
+  @include trippy.color-shift();
+  
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  
+  // Breadcrumb item
+  &__item {
+    display: inline-block;
+    color: white;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    
+    // Add glow effect to breadcrumb items
+    @include trippy.trippy-glow(rgba(255, 255, 255, 0.3), 5px);
+    
+    // Hover state
+    &:hover {
+      @include trippy.trippy-glow($red-4, 10px);
+      transform: scale(1.05);
+      transition: all 0.3s ease;
+    }
+  }
+  
+  // Separator between breadcrumb items
+  &__separator {
+    margin: 0 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    
+    // Add subtle pulse effect to separators
+    @include trippy.psychedelic-pulse(rgba(255, 255, 255, 0.5));
+  }
+  
+  // Active breadcrumb item
+  &__item--active {
+    color: $yellow-4;
+    font-weight: bold;
+    
+    // Add stronger glow effect to active item
+    @include trippy.trippy-glow($yellow-4, 15px);
+  }
+}

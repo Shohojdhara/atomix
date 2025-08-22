@@ -1,0 +1,42 @@
+/*!
+ * Mashroom Theme Avatar Component
+ * Psychedelic mushroom-inspired theme with trippy visuals
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-avatar {
+  // Add psychedelic glow effect
+  @include trippy.trippy-glow($primary-6, 8px);
+  
+  // Add floating animation for a magical effect
+  @include trippy.float-animation();
+  
+  // Add color shift for extra psychedelic effect
+  @include trippy.color-shift();
+  
+  // Add subtle breathing effect
+  @include trippy.psychedelic-breathing();
+
+  // Apply rainbow gradient border
+  border: 2px solid transparent;
+  background: 
+    linear-gradient(white, white) padding-box,
+    linear-gradient(90deg, #9d00ff, #d080ff, #00ff9d, #ffbb00, #ff2085, #9d00ff) border-box;
+
+  // Hover state with enhanced psychedelic effects
+  &:hover {
+    @include trippy.trippy-glow($red-4, 15px);
+    transform: scale(1.1) rotate(5deg);
+    transition: all 0.3s ease;
+  }
+
+  // Grouped avatars
+  .c-avatar-group & {
+    border-color: rgba($black, 0.2);
+    box-shadow: 0 0 5px rgba($primary-6, 0.5);
+  }
+}

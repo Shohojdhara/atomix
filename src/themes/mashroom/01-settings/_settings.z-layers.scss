@@ -1,0 +1,19 @@
+// Z-index layer definitions
+$z-index-dropdown: 1000 !default;
+$z-index-sticky: 1020 !default;
+$z-index-fixed: 1030 !default;
+$z-index-modal: 1040 !default;
+$z-index-popover: 1050 !default;
+$z-index-tooltip: 1060 !default;
+$z-index-toast: 1070 !default;
+
+// Z-index map for utilities
+$z-index-layers: (
+  dropdown: $z-index-dropdown,
+  sticky: $z-index-sticky,
+  fixed: $z-index-fixed,
+  modal: $z-index-modal,
+  popover: $z-index-popover,
+  tooltip: $z-index-tooltip,
+  toast: $z-index-toast,
+) !default;

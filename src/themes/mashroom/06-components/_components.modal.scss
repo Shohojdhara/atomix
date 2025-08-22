@@ -1,0 +1,142 @@
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as colors;
+@use '../01-settings/settings.config' as config;
+
+.c-modal {
+  // Add a psychedelic backdrop
+  &__backdrop {
+    background-color: rgba(colors.$black, 0.8);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    // Add a subtle animated pattern
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(157, 0, 255, 0.1) 1px, transparent 1px),
+      radial-gradient(circle at 20% 80%, rgba(0, 255, 157, 0.1) 1px, transparent 1px),
+      radial-gradient(circle at 80% 30%, rgba(255, 32, 133, 0.1) 1px, transparent 1px),
+      radial-gradient(circle at 60% 70%, rgba(255, 187, 0, 0.1) 1px, transparent 1px);
+    background-size: 100px 100px;
+    animation: backdrop-move 20s linear infinite;
+
+    @keyframes backdrop-move {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 100px 100px;
+      }
+    }
+
+    &--visible {
+      opacity: 1;
+    }
+  }
+
+  &__content {
+    @include gradients.forest-floor-gradient();
+    border: 2px solid colors.$primary-7;
+    border-radius: 20px;
+
+    // Add trippy glow effect
+    @include trippy.trippy-glow(colors.$primary-6, 20px);
+
+    // Add floating animation
+    @include trippy.float-animation();
+
+    // Add color shift
+    @include trippy.color-shift();
+
+    animation:
+      color-shift 10s infinite,
+      float 10s infinite;
+
+    position: relative;
+    overflow: hidden;
+
+    // Add a subtle inner glow
+    &::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border-radius: 22px;
+      background: linear-gradient(
+        45deg,
+        rgba(colors.$primary-6, 0.5),
+        rgba(colors.$green-6, 0.5),
+        rgba(colors.$yellow-6, 0.5),
+        rgba(colors.$red-6, 0.5)
+      );
+      z-index: -1;
+      animation: border-glow 3s ease infinite;
+    }
+
+    @keyframes border-glow {
+      0%,
+      100% {
+        opacity: 0.5;
+        filter: blur(5px);
+      }
+      50% {
+        opacity: 1;
+        filter: blur(10px);
+      }
+    }
+  }
+
+  &__header {
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      @include gradients.psychedelic-linear-gradient(colors.$primary-6, colors.$blue-6);
+    }
+  }
+
+  &__title {
+    // Add a subtle pulse effect to the title
+    @include trippy.psychedelic-pulse(colors.$primary-4);
+  }
+
+  &__body {
+  }
+
+  &__footer {
+    border-top: 1px solid rgba(colors.$primary-4, 0.3);
+  }
+
+  &__close {
+    // Add glow effect to close button
+    @include trippy.trippy-glow(colors.$red-6, 5px);
+
+    &:hover {
+      @include gradients.psychedelic-linear-gradient(colors.$red-6, colors.$purple-6);
+      transform: rotate(90deg);
+      transition: transform 0.3s ease;
+    }
+  }
+
+  // Size variants
+  &--sm {
+    max-width: 300px;
+  }
+
+  &--md {
+    max-width: 500px;
+  }
+
+  &--lg {
+    max-width: 800px;
+  }
+
+  &--xl {
+    max-width: 1140px;
+  }
+}

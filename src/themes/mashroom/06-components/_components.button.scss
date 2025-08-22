@@ -1,0 +1,35 @@
+/*!
+ * Mashroom Theme Button Component
+ * Psychedelic mushroom-inspired theme with trippy visuals
+ */
+
+// Import required tools and settings
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.button' as btn;
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+
+// Button styles with psychedelic theme
+.c-btn {
+  // Apply trippy glow effect
+  @include trippy.trippy-glow(var(--atomix-btn-border-color), 12px);
+
+  // Add float animation for a magical effect
+  @include trippy.float-animation();
+  @include trippy.color-shift();
+
+  // Hover state with enhanced psychedelic effects
+  &:hover {
+    @include gradients.psychedelic-linear-gradient(
+      var(--atomix-btn-color),
+      var(--atomix-btn-border-color)
+    );
+    transform: scale(1.05);
+    @include trippy.psychedelic-pulse(var(--atomix-btn-bg));
+  }
+
+  // Disabled state
+  &:disabled {
+    animation: none;
+  }
+}

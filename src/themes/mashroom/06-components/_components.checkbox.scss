@@ -1,0 +1,79 @@
+/*!
+ * Mashroom Theme Checkbox Component
+ * Psychedelic mushroom-inspired theme with trippy visuals
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-checkbox {
+  // Hide the default checkbox
+  &__input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  // Create a custom checkbox
+  &__checkmark {
+    position: relative;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+
+    // Add psychedelic glow effect
+    @include trippy.trippy-glow($primary-6, 5px);
+
+    // Add color shift for extra psychedelic effect
+    @include trippy.color-shift();
+  }
+
+  // On mouse-over, add a psychedelic glow
+  &:hover &__checkmark {
+    @include trippy.trippy-glow($red-4, 10px);
+    transform: scale(1.1);
+  }
+
+  // When the checkbox is checked
+  &__input:checked + &__checkmark {
+    background-color: $primary-6;
+    
+    // Add enhanced psychedelic pulse
+    @include trippy.psychedelic-pulse($primary-4);
+    
+    // Add psychedelic gradient
+    @include gradients.psychedelic-linear-gradient($primary-6, $red-4);
+  }
+
+  // Create the checkmark/indicator (hidden when not checked)
+  &__checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  // Show the checkmark when checked
+  &__input:checked + &__checkmark:after {
+    display: block;
+  }
+
+  // Style the checkmark/indicator
+  &__checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+    
+    // Add a subtle glow to the checkmark
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.7);
+  }
+}

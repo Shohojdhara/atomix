@@ -1,0 +1,24 @@
+/*!
+ * Shaj Default Theme Border Radius
+ * Modern border radius values for clean UI components
+ * Overrides Atomix default border radius settings
+ */
+
+// Modern border radius scale
+$border-radius-none: 0 !default;
+$border-radius-sm: 2px !default; // 2px
+$border-radius: 4px !default; // 4px - base
+$border-radius-md: 6px !default; // 6px
+$border-radius-lg: 8px !default; // 8px
+$border-radius-xl: 12px !default; // 12px
+$border-radius-2xl: 16px !default; // 16px
+$border-radius-3xl: 24px !default; // 24px
+$border-radius-4xl: 32px !default; // 32px
+$border-radius-full: 9999px !default; // Full rounded
+$border-radius-pill: 800px !default; // Pill shape
+
+// Aliases for backward compatibility
+$border-radius-xxl: $border-radius-2xl !default;
+
+// Enable rounded corners
+$enable-rounded: true !default;

@@ -1,0 +1,26 @@
+// Animation durations
+$transition-duration-fast: 150ms !default;
+$transition-duration: 250ms !default; // base
+$transition-duration-slow: 350ms !default;
+
+// Easing functions
+$easing-linear: linear !default;
+$easing: ease !default; // base
+$easing-in: ease-in !default;
+$easing-out: ease-out !default;
+$easing-in-out: ease-in-out !default;
+$easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55) !default;
+
+// Transition presets
+$transition-base: all $transition-duration $easing !default;
+$transition-fast: all $transition-duration-fast $easing-in-out !default;
+$transition-slow: all $transition-duration-slow $easing !default;
+
+// Component-specific transitions
+$transition-colors:
+  color $transition-duration-fast $easing-in-out,
+  background-color $transition-duration-fast $easing-in-out,
+  border-color $transition-duration-fast $easing-in-out !default;
+
+$transition-shadow: box-shadow $transition-duration $easing !default;
+$transition-transform: transform $transition-duration $easing !default;

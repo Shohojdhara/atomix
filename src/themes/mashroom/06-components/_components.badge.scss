@@ -1,0 +1,54 @@
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as colors;
+@use '../01-settings/settings.config' as config;
+
+.c-badge {
+  @include gradients.psychedelic-linear-gradient(
+    var(--atomix-tag-bg-color),
+    var(--atomix-tag-color)
+  );
+  @include trippy.trippy-glow(var(--atomix-tag-color), 20px);
+  @include trippy.float-animation();
+
+  border: 1px solid var(--atomix-tag-color);
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    @include trippy.trippy-glow(colors.$primary-6, 20px);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(25deg);
+    animation: shine 3s infinite linear;
+  }
+
+  @keyframes shine {
+    0% {
+      left: -60%;
+    }
+    20% {
+      left: 20%;
+    }
+    40% {
+      left: 40%;
+    }
+    60% {
+      left: 60%;
+    }
+    80% {
+      left: 80%;
+    }
+    100% {
+      left: 120%;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+@use '../../../styles/01-settings/settings.edge-panel' with (
+  $edge-panel-zindex: 1050,
+  // high z-index for overlay
+  $edge-panel-width: 320px,
+  // 320px - wider for better content
+  $edge-panel-height: 40vh,
+  // 40vh
+  $edge-panel-padding-x: 24px,
+  // 24px - more generous padding
+  $edge-panel-padding-y: 24px,
+  // 24px
+  $edge-panel-bg: var(--atomix-body-bg),
+  $edge-panel-color: var(--atomix-body-color),
+  $edge-panel-shadow: 0 8px 32px rgba(0, 0, 0, 0.15),
+  // enhanced shadow
+  $edge-panel-backdrop-bg: var(--atomix-invert-bg-subtle),
+  $edge-panel-backdrop-opacity: 0.6,
+  // more opaque backdrop
+  $edge-panel-backdrop-blur: 12px,
+  // 12px - more blur
+  $edge-panel-animation-duration: 250,
+  // faster animation
+  $edge-panel-border-color: var(--atomix-border-color)
+);

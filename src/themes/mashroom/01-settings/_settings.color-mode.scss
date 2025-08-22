@@ -1,0 +1,7 @@
+@use '../../../styles/01-settings/settings.color-mode' with (
+  // Enable dark mode support
+  $enable-dark-mode: true,
+
+  // Color mode configuration - use data attribute for better control
+  $color-mode-type: 'data-attribute' // Options: "media-query" or "data-attribute"
+);

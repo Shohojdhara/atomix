@@ -1,0 +1,57 @@
+@use '../../../styles/01-settings/settings.avatar' with (
+  // Avatar sizes - slightly larger for modern feel
+  $avatar-size: (
+      xs: 28px,
+      // 28px
+      sm: 36px,
+      // 36px
+      md: 44px,
+      // 44px
+      lg: 52px,
+      // 52px
+      xl: 64px,
+      // 64px
+    ),
+
+  // Avatar border radius - softer corners
+  $avatar-border-radius: (
+      xs: 6px,
+      // 6px
+      sm: 6px,
+      // 6px
+      md: 8px,
+      // 8px
+      lg: 8px,
+      // 8px
+      xl: 10px,
+      // 10px
+      circle: 50%
+    ),
+
+  // Avatar colors
+  $avatar-color: var(--atomix-primary-text-emphasis),
+  $avatar-bg: var(--atomix-secondary-bg-subtle),
+  $avatar-border-width: 1px,
+  $avatar-border-color: var(--atomix-primary-border-subtle),
+  // Avatar content
+  $avatar-fit: cover,
+  $avatar-initials-font-weight: 500,
+  $avatar-initials-font-size: (
+    xs: 12px,
+    // 12px
+    sm: 14px,
+    // 14px
+    md: 16px,
+    // 16px
+    lg: 18px,
+    // 18px
+    xl: 20px,
+    // 20px
+  ),
+
+  // Interactive states
+  $avatar-hover-opacity: 0.9,
+  $avatar-focus-ring-width: 2px,
+  $avatar-focus-ring-color: var(--atomix-primary-border-subtle),
+  $avatar-disabled-opacity: 0.6
+);
