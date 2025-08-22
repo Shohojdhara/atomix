@@ -10,7 +10,8 @@
 
 // Psychedelic checkbox animations
 @keyframes checkbox-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -19,11 +20,12 @@
 }
 
 @keyframes checkbox-glow-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 5px $primary-6;
   }
   50% {
-    box-shadow: 
+    box-shadow:
       0 0 10px $primary-6,
       0 0 20px rgba(157, 0, 255, 0.8),
       0 0 30px rgba(255, 32, 133, 0.6);
@@ -31,17 +33,19 @@
 }
 
 @keyframes checkbox-check-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 3px rgba(255, 255, 255, 0.7);
   }
   50% {
-    box-shadow: 
+    box-shadow:
       0 0 6px rgba(255, 255, 255, 0.9),
       0 0 12px rgba(255, 187, 0, 0.8);
   }
 }
 
 .c-checkbox {
+  $root: &;
   // Hide the default checkbox
   &__input {
     position: absolute;
@@ -65,11 +69,11 @@
 
     // Add color shift for extra psychedelic effect
     @include trippy.color-shift();
-    
+
     // Add floating animation
     @include trippy.float-animation();
     animation-duration: 3s;
-    
+
     // Add pulse animation
     animation: checkbox-glow-pulse 2s infinite;
   }
@@ -84,20 +88,20 @@
   // When the checkbox is checked
   &__input:checked + &__checkmark {
     background-color: $primary-6;
-    
+
     // Add enhanced psychedelic pulse
     @include trippy.psychedelic-pulse($primary-4);
-    
+
     // Add psychedelic gradient
     @include gradients.psychedelic-linear-gradient($primary-6, $red-4);
-    
+
     // Add floating effect when checked
     animation: checkbox-float 2s ease-in-out infinite;
   }
 
   // Create the checkmark/indicator (hidden when not checked)
   &__checkmark:after {
-    content: "";
+    content: '';
     position: absolute;
     display: none;
   }
@@ -116,61 +120,65 @@
     border: solid white;
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
-    
+
     // Add a subtle glow to the checkmark
     box-shadow: 0 0 3px rgba(255, 255, 255, 0.7);
     animation: checkbox-check-pulse 2s infinite;
   }
-  
+
   // Psychedelic variant
   &--psychedelic {
     #{$root}__checkmark {
       @include gradients.rainbow-gradient();
       background-size: 300% 300%;
-      animation: rainbow-shift 3s ease infinite, checkbox-glow-pulse 1s infinite;
+      animation:
+        rainbow-shift 3s ease infinite,
+        checkbox-glow-pulse 1s infinite;
       border: 1px solid transparent;
-      
+
       &:hover {
-        animation: rainbow-shift 1s ease infinite, checkbox-glow-pulse 0.3s infinite;
+        animation:
+          rainbow-shift 1s ease infinite,
+          checkbox-glow-pulse 0.3s infinite;
       }
     }
-    
+
     #{$root}__input:checked + #{$root}__checkmark {
       @include gradients.rainbow-gradient();
       background-size: 300% 300%;
       animation: rainbow-shift 2s ease infinite;
-      
+
       &::after {
         animation: checkbox-check-pulse 1s infinite;
       }
     }
   }
-  
+
   // Glowing variant
   &--glow {
     #{$root}__checkmark {
       @include trippy.trippy-glow($purple-4, 15px);
       animation: checkbox-glow-pulse 1s infinite;
-      
+
       &:hover {
         @include trippy.trippy-glow($red-4, 20px);
         animation: checkbox-glow-pulse 0.3s infinite;
       }
     }
-    
+
     #{$root}__input:checked + #{$root}__checkmark {
       @include trippy.trippy-glow($yellow-4, 25px);
       animation: checkbox-glow-pulse 0.5s infinite;
     }
   }
-  
+
   // Floating variant
   &--floating {
     #{$root}__checkmark {
       @include trippy.float-animation();
       animation-duration: 4s;
     }
-    
+
     #{$root}__input:checked + #{$root}__checkmark {
       animation: checkbox-float 1s ease-in-out infinite;
     }

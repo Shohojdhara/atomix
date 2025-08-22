@@ -41,6 +41,8 @@
 }
 
 .c-breadcrumb {
+  $root: &;
+  
   // Apply psychedelic gradient background
   @include gradients.rainbow-gradient();
   background-size: 300% 300%;

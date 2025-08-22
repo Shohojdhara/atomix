@@ -8,17 +8,62 @@
 @use '../02-tools/tools.psychedelic-gradients' as gradients;
 @use '../01-settings/settings.colors' as *;
 
+// Psychedelic steps animations
+@keyframes steps-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes steps-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(157, 0, 255, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 0 10px rgba(157, 0, 255, 0.6),
+      0 0 20px rgba(255, 32, 133, 0.4);
+  }
+}
+
+@keyframes steps-connector-pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes steps-title-pulse {
+  0%, 100% {
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 0 6px rgba(255, 255, 255, 0.6),
+      0 0 12px rgba(157, 0, 255, 0.4);
+  }
+}
+
 .c-steps {
   $root: &;
   
   // Add psychedelic background
   @include gradients.rainbow-gradient();
+  background-size: 300% 300%;
   
   // Add floating animation
   @include trippy.float-animation();
   
   // Add color shift effect
   @include trippy.color-shift();
+  
+  // Add pulse animation
+  animation: rainbow-shift 4s ease infinite, steps-glow-pulse 2s infinite;
   
   padding: 2rem;
   border-radius: 1rem;
@@ -42,6 +87,7 @@
       width: 2px;
       background: rgba($white, 0.2);
       z-index: 1;
+      animation: steps-connector-pulse 2s infinite;
     }
     
     // Last item should not have connector
@@ -53,12 +99,17 @@
   // Step icon container
   &__icon {
     position: relative;
+    z-index: 2;
     
     // Add glow effect
     @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 5px);
     
     // Add floating animation to icon
     @include trippy.float-animation();
+    animation-duration: 3s;
+    
+    // Add pulse animation
+    animation: steps-glow-pulse 2s infinite;
   }
   
   // Step number
@@ -66,6 +117,10 @@
     color: $white;
     font-weight: bold;
     font-size: 1.1rem;
+    
+    // Add floating effect
+    @include trippy.float-animation();
+    animation-duration: 4s;
   }
   
   // Step content
@@ -82,21 +137,32 @@
     
     // Add glow effect to title
     @include trippy.trippy-glow(rgba(255, 255, 255, 0.3), 3px);
+    
+    // Add pulse animation
+    animation: steps-title-pulse 2s infinite;
   }
   
   // Step description
   &__description {
     color: rgba($white, 0.8);
     line-height: 1.5;
+    
+    // Add subtle floating effect
+    @include trippy.float-animation();
+    animation-duration: 5s;
   }
   
   // Completed step
   &__item--completed {
     #{$root}__icon {
       background: linear-gradient(90deg, #9d00ff, #d080ff, #00ff9d, #ffbb00, #ff2085, #9d00ff);
+      background-size: 300% 300%;
       
       // Add stronger glow for completed steps
       @include trippy.trippy-glow($yellow-4, 10px);
+      
+      // Add rainbow animation
+      animation: rainbow-shift 3s linear infinite;
     }
     
     #{$root}__number {
@@ -108,11 +174,15 @@
       
       // Add stronger glow to title
       @include trippy.trippy-glow($yellow-4, 5px);
+      
+      // Add pulse animation
+      animation: steps-title-pulse 1s infinite;
     }
     
     // Change connector for completed steps
     &::after {
       background: linear-gradient(to bottom, $yellow-4, rgba($yellow-4, 0.3));
+      animation: steps-connector-pulse 1s infinite;
     }
   }
   
@@ -123,6 +193,10 @@
       
       // Add pulse animation for active step
       @include trippy.psychedelic-pulse($red-4);
+      
+      // Add floating effect
+      @include trippy.float-animation();
+      animation-duration: 2s;
     }
     
     #{$root}__number {
@@ -134,6 +208,9 @@
       
       // Add stronger glow to title
       @include trippy.trippy-glow($red-4, 5px);
+      
+      // Add pulse animation
+      animation: steps-title-pulse 1s infinite;
     }
   }
   
@@ -178,6 +255,90 @@
     
     #{$root}__content {
       margin-right: 1rem;
+    }
+  }
+  
+  // Psychedelic variant
+  &--psychedelic {
+    @include gradients.rainbow-gradient();
+    background-size: 400% 400%;
+    animation: rainbow-shift 2s ease infinite;
+    border: 1px solid transparent;
+    
+    #{$root}__item {
+      &::after {
+        @include gradients.rainbow-gradient();
+        background-size: 100% 100%;
+        animation: rainbow-shift 3s linear infinite;
+      }
+    }
+    
+    #{$root}__icon {
+      @include gradients.rainbow-gradient();
+      background-size: 200% 200%;
+      animation: rainbow-shift 3s linear infinite;
+      border-radius: 50%;
+    }
+    
+    #{$root}__number {
+      @include gradients.rainbow-gradient();
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      background-size: 200% 100%;
+      animation: rainbow-shift 3s linear infinite;
+    }
+    
+    #{$root}__title {
+      @include gradients.rainbow-gradient();
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      background-size: 200% 100%;
+      animation: rainbow-shift 3s linear infinite;
+    }
+  }
+  
+  // Glowing variant
+  &--glow {
+    @include trippy.trippy-glow($purple-4, 20px);
+    animation: steps-glow-pulse 1s infinite;
+    
+    #{$root}__icon {
+      @include trippy.trippy-glow(rgba(157, 0, 255, 0.5), 10px);
+      
+      &--completed {
+        @include trippy.trippy-glow($yellow-4, 15px);
+      }
+      
+      &--active {
+        @include trippy.trippy-glow($red-4, 15px);
+      }
+    }
+    
+    #{$root}__title {
+      @include trippy.trippy-glow(rgba(255, 255, 255, 0.2), 5px);
+    }
+  }
+  
+  // Floating variant
+  &--floating {
+    @include trippy.float-animation();
+    animation-duration: 5s;
+    
+    #{$root}__item {
+      @include trippy.float-animation();
+      animation-duration: 3s;
+    }
+    
+    #{$root}__icon {
+      @include trippy.float-animation();
+      animation-duration: 2s;
+    }
+    
+    #{$root}__content {
+      @include trippy.float-animation();
+      animation-duration: 4s;
     }
   }
 }

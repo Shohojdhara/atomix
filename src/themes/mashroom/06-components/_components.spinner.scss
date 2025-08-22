@@ -6,6 +6,7 @@
 @use '../01-settings/settings.maps' as maps;
 @use 'sass:map';
 
+// Psychedelic spinner animations
 @keyframes spinner {
   to {
     transform: rotate(360deg) #{'/* rtl:ignore */'};
@@ -55,6 +56,24 @@
   }
 }
 
+@keyframes spinner-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes rainbow-spinner {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
 .c-spinner {
   --#{config.$prefix}spinner-size: #{map.get(spinner.$spinner-sizes, md)};
   --#{config.$prefix}spinner-background-color: #{spinner.$spinner-background-color};
@@ -81,6 +100,10 @@
 
   // Add a glow effect
   @include trippy.trippy-glow(colors.$primary-6, 10px);
+
+  // Add floating animation
+  @include trippy.float-animation();
+  animation-duration: 4s;
 
   // Add a central "hole" to make it look like a ring
   &::before {
@@ -137,5 +160,38 @@
         transform: scale(1.2);
       }
     }
+  }
+  
+  // Psychedelic variant
+  &--psychedelic {
+    @include gradients.rainbow-gradient();
+    background-size: 300% 300%;
+    animation: 
+      rainbow-spinner 2s linear infinite,
+      spinner-glow 1s ease infinite,
+      spinner-float 3s ease-in-out infinite;
+    border-radius: 50%;
+    
+    &::before {
+      background-color: rgba(colors.$black, 0.7);
+    }
+  }
+  
+  // Glowing variant
+  &--glow {
+    @include trippy.trippy-glow(colors.$purple-4, 20px);
+    animation: 
+      spinner-glow 0.5s ease infinite,
+      spinner-float 2s ease-in-out infinite;
+    
+    &::before {
+      background-color: rgba(colors.$black, 0.5);
+    }
+  }
+  
+  // Floating variant
+  &--floating {
+    @include trippy.float-animation();
+    animation-duration: 2s;
   }
 }

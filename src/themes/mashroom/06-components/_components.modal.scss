@@ -3,7 +3,56 @@
 @use '../01-settings/settings.colors' as colors;
 @use '../01-settings/settings.config' as config;
 
+// Psychedelic modal animations
+@keyframes modal-float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(2deg);
+  }
+  66% {
+    transform: translateY(10px) rotate(-1deg);
+  }
+}
+
+@keyframes modal-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px colors.$primary-6;
+  }
+  50% {
+    box-shadow:
+      0 0 30px colors.$primary-6,
+      0 0 50px rgba(157, 0, 255, 0.8),
+      0 0 70px rgba(255, 32, 133, 0.6);
+  }
+}
+
+@keyframes modal-border-glow {
+  0%,
+  100% {
+    opacity: 0.5;
+    filter: blur(5px);
+  }
+  50% {
+    opacity: 1;
+    filter: blur(10px);
+  }
+}
+
+@keyframes modal-backdrop-move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100px 100px;
+  }
+}
+
 .c-modal {
+  $root: &;
   // Add a psychedelic backdrop
   &__backdrop {
     background-color: rgba(colors.$black, 0.8);
@@ -17,9 +66,9 @@
       radial-gradient(circle at 80% 30%, rgba(255, 32, 133, 0.1) 1px, transparent 1px),
       radial-gradient(circle at 60% 70%, rgba(255, 187, 0, 0.1) 1px, transparent 1px);
     background-size: 100px 100px;
-    animation: backdrop-move 20s linear infinite;
+    animation: modal-backdrop-move 20s linear infinite;
 
-    @keyframes backdrop-move {
+    @keyframes modal-backdrop-move {
       0% {
         background-position: 0 0;
       }
@@ -49,7 +98,8 @@
 
     animation:
       color-shift 10s infinite,
-      float 10s infinite;
+      float 10s infinite,
+      modal-glow-pulse 3s infinite;
 
     position: relative;
     overflow: hidden;
@@ -71,10 +121,10 @@
         rgba(colors.$red-6, 0.5)
       );
       z-index: -1;
-      animation: border-glow 3s ease infinite;
+      animation: modal-border-glow 3s ease infinite;
     }
 
-    @keyframes border-glow {
+    @keyframes modal-border-glow {
       0%,
       100% {
         opacity: 0.5;
@@ -97,12 +147,17 @@
       right: 0;
       height: 5px;
       @include gradients.psychedelic-linear-gradient(colors.$primary-6, colors.$blue-6);
+      animation: modal-border-glow 2s ease infinite;
     }
   }
 
   &__title {
     // Add a subtle pulse effect to the title
     @include trippy.psychedelic-pulse(colors.$primary-4);
+
+    // Add floating effect to title
+    @include trippy.float-animation();
+    animation-duration: 4s;
   }
 
   &__body {
@@ -116,10 +171,15 @@
     // Add glow effect to close button
     @include trippy.trippy-glow(colors.$red-6, 5px);
 
+    // Add floating effect
+    @include trippy.float-animation();
+    animation-duration: 3s;
+
     &:hover {
       @include gradients.psychedelic-linear-gradient(colors.$red-6, colors.$purple-6);
       transform: rotate(90deg);
       transition: transform 0.3s ease;
+      @include trippy.trippy-glow(colors.$yellow-4, 15px);
     }
   }
 
@@ -138,5 +198,67 @@
 
   &--xl {
     max-width: 1140px;
+  }
+
+  // Psychedelic variant
+  &--psychedelic {
+    #{$root}__content {
+      @include gradients.rainbow-gradient();
+      background-size: 400% 400%;
+      animation:
+        rainbow-shift 4s ease infinite,
+        modal-float 5s ease-in-out infinite;
+      border: 2px solid transparent;
+
+      &::before {
+        background: linear-gradient(
+          45deg,
+          rgba(157, 0, 255, 0.5),
+          rgba(0, 255, 157, 0.5),
+          rgba(255, 187, 0, 0.5),
+          rgba(255, 32, 133, 0.5)
+        );
+        animation: modal-border-glow 2s ease infinite;
+      }
+    }
+
+    #{$root}__header::after {
+      @include gradients.rainbow-gradient();
+      background-size: 200% 100%;
+      animation: rainbow-shift 3s linear infinite;
+    }
+
+    #{$root}__title {
+      @include gradients.rainbow-gradient();
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      background-size: 200% 100%;
+      animation: rainbow-shift 3s linear infinite;
+    }
+  }
+
+  // Glowing variant
+  &--glow {
+    #{$root}__content {
+      @include trippy.trippy-glow(colors.$purple-4, 30px);
+      animation: modal-glow-pulse 1.5s infinite;
+    }
+
+    #{$root}__close {
+      @include trippy.trippy-glow(colors.$red-4, 10px);
+
+      &:hover {
+        @include trippy.trippy-glow(colors.$yellow-4, 20px);
+      }
+    }
+  }
+
+  // Floating variant
+  &--floating {
+    #{$root}__content {
+      @include trippy.float-animation();
+      animation-duration: 6s;
+    }
   }
 }

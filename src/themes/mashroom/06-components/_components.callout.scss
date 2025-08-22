@@ -5,7 +5,8 @@
 
 // Psychedelic callout animations
 @keyframes callout-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
   33% {
@@ -17,11 +18,12 @@
 }
 
 @keyframes callout-glow-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 15px var(--atomix-callout-border-color);
   }
   50% {
-    box-shadow: 
+    box-shadow:
       0 0 25px var(--atomix-callout-border-color),
       0 0 35px rgba(157, 0, 255, 0.8),
       0 0 45px rgba(255, 32, 133, 0.6);
@@ -38,6 +40,7 @@
 }
 
 .c-callout {
+  $root: &;
   // Apply psychedelic background
   @include gradients.forest-floor-gradient();
 
@@ -96,38 +99,40 @@
       background-size: 200% 100%;
     }
   }
-  
+
   // Psychedelic variant
   &--psychedelic {
     @include gradients.rainbow-gradient();
     background-size: 400% 400%;
-    animation: rainbow-shift 4s ease infinite, callout-float 5s ease-in-out infinite;
+    animation:
+      rainbow-shift 4s ease infinite,
+      callout-float 5s ease-in-out infinite;
     border: 2px solid transparent;
-    
+
     &::after {
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
       animation: callout-shimmer 2s infinite;
       background-size: 200% 100%;
     }
-    
+
     #{$root}__header::after {
       @include gradients.rainbow-gradient();
       background-size: 200% 100%;
       animation: rainbow-shift 3s linear infinite;
     }
   }
-  
+
   // Glowing variant
   &--glow {
     @include trippy.trippy-glow(var(--atomix-callout-border-color), 25px);
     animation: callout-glow-pulse 1.5s infinite;
-    
+
     &::after {
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
       animation: callout-shimmer 1.5s infinite;
     }
   }
-  
+
   // Floating variant
   &--floating {
     animation: callout-float 4s ease-in-out infinite;
