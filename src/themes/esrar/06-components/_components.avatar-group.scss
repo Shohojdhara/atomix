@@ -1,0 +1,29 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../02-tools/tools.animations' as *;
+
+.c-avatar-group {
+  @include animations(
+    'slow-fade-in',
+    $duration: 0.6s,
+    $timing: ease-out,
+    $iteration-count: 1
+  );
+
+  .c-avatar {
+    @include animations(
+      'float',
+      $duration: 2s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+
+    &:hover {
+      @include animations(
+        'chill-spin',
+        $duration: 1s,
+        $timing: linear,
+        $iteration-count: infinite
+      );
+    }
+  }
+}

@@ -1,0 +1,76 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../02-tools/tools.animations' as *;
+@use '../../../styles/01-settings/settings.config' as config;
+
+.c-steps {
+  @include animations(
+    'pulse-slow',
+    $duration: 4s,
+    $timing: ease-in-out,
+    $iteration-count: infinite
+  );
+
+  position: relative;
+
+  &__item {
+    @include animations('float', $duration: 3s, $timing: ease-in-out, $iteration-count: infinite);
+
+    &:hover {
+      @include animations(
+        'color-pulse',
+        $duration: 1s,
+        $timing: ease-in-out,
+        $iteration-count: infinite
+      );
+    }
+
+    &--active {
+      @include animations(
+        'chill-rainbow',
+        $duration: 2s,
+        $timing: linear,
+        $iteration-count: infinite
+      );
+    }
+
+    &--completed {
+      @include animations(
+        'color-wave',
+        $duration: 3s,
+        $timing: ease-in-out,
+        $iteration-count: infinite
+      );
+    }
+  }
+
+  &__indicator {
+    @include animations(
+      'pulse-slow',
+      $duration: 2s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+
+    &:hover {
+      @include animations(
+        'chill-rainbow',
+        $duration: 1s,
+        $timing: linear,
+        $iteration-count: infinite
+      );
+    }
+  }
+
+  &__title {
+    @include animations('float', $duration: 2s, $timing: ease-in-out, $iteration-count: infinite);
+  }
+
+  &__description {
+    @include animations(
+      'pulse-slow',
+      $duration: 3s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+}

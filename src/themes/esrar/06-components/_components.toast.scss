@@ -1,0 +1,101 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../02-tools/tools.animations' as *;
+@use '../../../styles/01-settings/settings.config' as config;
+
+.c-toast {
+  @include animations(
+    'slow-fade-in',
+    $duration: 0.3s,
+    $timing: ease-in-out,
+    $iteration-count: 1
+  );
+  
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: conic-gradient(
+      var(--#{config.$prefix}primary-1),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-7),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-1)
+    );
+    animation: #{config.$prefix}chill-spin 8s linear infinite reverse;
+    opacity: 0.05;
+    z-index: -1;
+  }
+  
+  &__content {
+    @include animations(
+      'pulse-slow',
+      $duration: 3s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+  
+  &__title {
+    @include animations(
+      'float',
+      $duration: 2s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+  
+  &__close {
+    &:hover {
+      @include animations(
+        'chill-rainbow' 'wobble-chill',
+        $duration: 0.5s,
+        $timing: ease-in-out,
+        $iteration-count: infinite
+      );
+    }
+  }
+  
+  &--success {
+    @include animations(
+      'color-wave',
+      $duration: 2s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+  
+  &--warning {
+    @include animations(
+      'pulse-slow',
+      $duration: 1s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+  
+  &--error {
+    @include animations(
+      'chill-rainbow',
+      $duration: 1s,
+      $timing: linear,
+      $iteration-count: infinite
+    );
+  }
+  
+  &--info {
+    @include animations(
+      'color-pulse',
+      $duration: 2s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+}

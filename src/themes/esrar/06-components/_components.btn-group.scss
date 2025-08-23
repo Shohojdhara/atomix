@@ -1,0 +1,29 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../02-tools/tools.animations' as *;
+
+.c-btn-group {
+  @include animations(
+    'slow-fade-in',
+    $duration: 0.5s,
+    $timing: ease-out,
+    $iteration-count: 1
+  );
+
+  .c-btn {
+    @include animations(
+      'float',
+      $duration: 3s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+
+    &:hover {
+      @include animations(
+        'wobble-chill',
+        $duration: 1s,
+        $timing: ease-in-out,
+        $iteration-count: infinite
+      );
+    }
+  }
+}

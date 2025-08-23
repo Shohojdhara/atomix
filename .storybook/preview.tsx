@@ -119,6 +119,11 @@ const preview: Preview = {
           title: 'Boomdevs theme',
           url: '../src/themes/boomdevs/index.scss',
         },
+        {
+          id: 'Esrar-theme',
+          title: 'Esrar theme',
+          url: '../src/themes/esrar/index.scss',
+        },
       ],
     },
   },

@@ -1,0 +1,280 @@
+/*!
+ * Flash Theme Color Settings
+ * Custom color scheme for the Flash theme based on flash.trade
+ */
+
+// Basic Colors
+$white: #ffffff !default; /* Pure white - used throughout project */
+$black: #000000 !default; /* Pure black - used throughout project */
+
+// Color contrast variables
+$color-contrast-dark: #000000 !default; /* Contrast dark - accessibility */
+$color-contrast-light: #ffffff !default; /* Contrast light - accessibility */
+
+// Flash Primary Colors (from project analysis)
+$primary-1: #7affd70d !default; /* 5% opacity - subtle backgrounds */
+$primary-2: #7affd714 !default; /* 8% opacity - light backgrounds */
+$primary-3: #7affd71a !default; /* 10% opacity - input backgrounds */
+$primary-4: #7affd71f !default; /* 12% opacity - hover states */
+$primary-5: #7affd726 !default; /* 15% opacity - Primary bg - most common */
+$primary-6: #7affd7 !default; /* Main primary color (primary-color) - brand color */
+$primary-7: #7affd733 !default; /* 20% opacity - active states */
+$primary-8: #7affd74d !default; /* 30% opacity - focus states */
+$primary-9: #7affd766 !default; /* 40% opacity - borders */
+$primary-10: #7affd780 !default; /* 50% opacity - overlays */
+
+// Flash Success Colors
+$success-1: #4dff9f1a !default; /* Light success bg - subtle backgrounds */
+$success-2: #4ade8026 !default; /* Success background - component backgrounds */
+$success-3: #4ade8033 !default; /* Success hover - interactive states */
+$success-4: #4ade80 !default; /* f-green-58 - borders and text */
+$success-5: #4dff9f !default; /* f-primary - main success color */
+$success-6: #06d7a0 !default; /* f-green-43 - alternative success */
+$success-7: #5cc9a8 !default; /* f-green-26 base - chart colors */
+$success-8: #00ffed !default; /* f-aqua - accent success */
+$success-9: #4ade80 !default; /* Alternative success - duplicates */
+$success-10: #4dff9f !default; /* Deep success - duplicates */
+$success-11: #4ade801f !default; /* Found in DevnetAirdropTable.tsx */
+
+// Flash Error Colors
+$error-1: #ce3f4026 !default; /* Light error background - subtle backgrounds */
+$error-2: #dd606126 !default; /* Error background - component backgrounds */
+$error-3: #dd606133 !default; /* Error hover - interactive states */
+$error-4: #ce3f40 !default; /* f-red-60 - borders and text */
+$error-5: #dd6061 !default; /* f-red - main error color */
+$error-6: #dd6061 !default; /* Main error color - duplicates */
+$error-7: #ce3f40 !default; /* Alternative error - duplicates */
+$error-8: #dd6061 !default; /* Deep error - duplicates */
+$error-9: #dd6061 !default; /* Error variant - duplicates */
+$error-10: #dd6061 !default; /* Error variant - duplicates */
+
+// Flash Accent Colors
+$accent-1: #fff200 !default; /* Gradient yellow - found in voltage.tsx */
+$accent-2: #ffbc42 !default; /* Icon hover - found in globals.scss */
+$accent-3: #01e1e0 !default; /* Gradient cyan - found in voltage.tsx */
+$accent-4: #2b66ff !default; /* Blue accent - found in globals.scss */
+$accent-5: #34ffff !default; /* Light blue - found in globals.scss */
+$accent-6: #52b7b6 !default; /* Tab gradient end - found in globals.scss */
+$accent-7: #bcb75f !default; /* Tab gradient start - found in globals.scss */
+$accent-8: #2b7fff !default; /* Blue variant - found in globals.scss */
+$accent-9: #34ffff !default; /* Cyan variant - found in globals.scss */
+$accent-10: #01e1e0 !default; /* Deep cyan - found in globals.scss */
+$accent-11: #fffaf3 !default; /* Found in voltage.tsx - primary theme */
+$accent-12: #e3f2fd !default; /* Found in voltage.tsx - blue theme */
+$accent-13: #2196f3 !default; /* Found in voltage.tsx - blue theme */
+$accent-14: #00bcd4 !default; /* Found in voltage.tsx - blue theme */
+$accent-15: #ffebee !default; /* Found in voltage.tsx - red theme */
+$accent-16: #f44336 !default; /* Found in voltage.tsx - red theme */
+$accent-17: #ff5722 !default; /* Found in voltage.tsx - red theme */
+$accent-18: #e8f5e8 !default; /* Found in voltage.tsx - green theme */
+$accent-19: #4caf50 !default; /* Found in voltage.tsx - green theme */
+$accent-20: #8bc34a !default; /* Found in voltage.tsx - green theme */
+$accent-21: #f3e5f5 !default; /* Found in voltage.tsx - purple theme */
+$accent-22: #9c27b0 !default; /* Found in voltage.tsx - purple theme */
+$accent-23: #673ab7 !default; /* Found in voltage.tsx - purple theme */
+
+// Flash White Scale (f-white-XX pattern)
+$white-1: #ffffff1a !default; /* f-white-10 (10% opacity) - borders */
+$white-2: #ffffff33 !default; /* f-white-20 (20% opacity) - disabled text */
+$white-3: #ffffff66 !default; /* f-white-40 (40% opacity) - tertiary text */
+$white-4: #ffffff80 !default; /* f-white-50 (50% opacity) - secondary text */
+$white-5: #ffffffb3 !default; /* f-white-70 (70% opacity) - secondary text */
+$white-6: #ffffff80 !default; /* f-white-80 (80% opacity) - primary text */
+$white-7: #ffffff22 !default; /* Scrollbar thumb - found in globals.scss */
+$white-8: #ffffff26 !default; /* Input background - found in multiple files */
+$white-9: #ffffff08 !default; /* 3% opacity - found in project */
+$white-10: #ffffff0d !default; /* 5% opacity - found in project */
+$white-11: #ffffff0f !default; /* 6% opacity - found in SettingModal.module.scss */
+$white-12: #ffffff1f !default; /* 12% opacity - found in TokenModal.module.scss */
+
+// Flash Gray Scale
+$gray-1: #f5f5f5 !default; /* f-light-96 - light backgrounds */
+$gray-2: #d4d4d4 !default; /* f-light-d4 - light text */
+$gray-3: #a3a3a3 !default; /* f-gray-64 - muted text */
+$gray-4: #737373 !default; /* f-gray-73 - secondary text */
+$gray-5: #6e7985 !default; /* f-light-dark-48 - separator borders */
+$gray-6: #555 !default; /* Scrollbar thumb hover - found in globals.scss */
+$gray-7: #999d99 !default; /* Icon color - found in TradePage.module.scss */
+$gray-8: #a9ada9 !default; /* Icon color variant - found in TradePage.module.scss */
+$gray-9: #40cba3 !default; /* Icon color variant - found in TradePage.module.scss */
+$gray-10: #999d99 !default; /* Icon color variant - found in TradePage.module.scss */
+
+// Flash Dark Scale
+$dark-1: #171717 !default; /* f-dark-9 - card backgrounds */
+$dark-2: #1e1e1e !default; /* f-dark-12 - elevated backgrounds */
+$dark-3: #262626 !default; /* f-dark-15 - surface backgrounds */
+$dark-4: #212121 !default; /* Surface color - main backgrounds */
+$dark-5: #171d1b !default; /* Card background - found in RewardCard.module.scss */
+$dark-6: #252d26 !default; /* Elevated card - found in RewardCard.module.scss */
+$dark-7: #02130e !default; /* Modal backdrop - found in multiple files */
+$dark-8: #0a110b !default; /* Header background - found in header.scss */
+$dark-9: #080d0b !default; /* Mobile header - found in header.scss */
+$dark-10: #161a15 !default; /* Scrollbar track - found in globals.scss */
+$dark-11: #081513 !default; /* Found in Earn.module.scss */
+$dark-12: #060e0b !default; /* Found in ShareModalWrapper.module.scss */
+$dark-13: #142b28 !default; /* Found in LevelUpModal.module.scss */
+$dark-14: #091c18 !default; /* Found in TradingTerminal.tsx */
+$dark-15: #141714 !default; /* Found in DevnetAirdropTable.tsx */
+$dark-16: #001f0b !default; /* Found in TradingTerminal.tsx */
+$dark-17: #111111 !default; /* Found in MobileTradeBottom.tsx */
+
+// Flash Component Colors
+$component-1: #1a331f !default; /* Resizer bg - found in ResizerBox.module.scss */
+$component-2: #283e2c !default; /* Resizer bg hover - found in ResizerBox.module.scss */
+$component-3: #1d2521 !default; /* Resizer handle - found in ResizerBox.module.scss */
+$component-4: #242f30 !default; /* Table borders - found in TradePage.module.scss */
+$component-5: #09261e !default; /* Trading background - found in TradingTerminal.module.scss */
+$component-6: #2e5249 !default; /* Trading surface - found in globals.scss */
+$component-7: #30836a !default; /* Chart positive - found in globals.scss */
+$component-8: #d7c30f !default; /* Chart warning - found in globals.scss */
+$component-9: #2e8bd8 !default; /* Chart info - found in globals.scss */
+$component-10: #14a338 !default; /* Chart success - found in globals.scss */
+$component-11: #2b3430 !default; /* Found in ShareModalWrapper.module.scss */
+$component-12: #66bca2 !default; /* Found in CountdownTimer.tsx */
+$component-13: #66bca226 !default; /* Found in CountdownTimer.tsx */
+$component-14: #91cfbe !default; /* Found in RewardCard.tsx */
+$component-15: #112c24 !default; /* Found in RewardCard.tsx */
+$component-16: #000000b3 !default; /* Found in multiple files - modal overlays */
+$component-17: #e0e0e0 !default; /* Found in PriceCard.tsx */
+
+// Leverage Slider Colors
+$leverage-1: #c8fffb !default; /* Mark 1 - found in levUtils.tsx */
+$leverage-2: #67ffee !default; /* Mark 2 - found in levUtils.tsx */
+$leverage-3: #1dffe1 !default; /* Mark 3 - found in levUtils.tsx */
+$leverage-4: #1dfec6 !default; /* Mark 4 - found in levUtils.tsx */
+$leverage-5: #1dffac !default; /* Mark 5 - found in levUtils.tsx */
+$leverage-6: #1dff92 !default; /* Mark 6 - found in levUtils.tsx */
+$leverage-7: #1dff78 !default; /* Mark 7 - found in levUtils.tsx */
+
+// Text colors emphasis (semantic)
+$primary-text: $white-6 !default; /* f-white-80 - main text color */
+$secondary-text: $white-5 !default; /* f-white-70 - secondary text */
+$tertiary-text: $white-3 !default; /* f-white-40 - tertiary text */
+$disabled-text: $white-2 !default; /* f-white-20 - disabled text */
+$invert-text: $dark-1 !default; /* Dark text - for light backgrounds */
+$brand-text: $primary-6 !default; /* Primary color text - brand elements */
+$error-text: $error-5 !default; /* Error text - error messages */
+$success-text: $success-5 !default; /* Success text - success messages */
+$warning-text: $accent-1 !default; /* Warning text - warning messages */
+$info-text: $accent-3 !default; /* Info text - info messages */
+$light-text: $gray-1 !default; /* Light text - for dark backgrounds */
+$dark-text: $dark-1 !default; /* Dark text - for light backgrounds */
+
+// Background colors (semantic)
+$primary-bg: $white-1 !default; /* Primary background - subtle backgrounds */
+$secondary-bg: $dark-1 !default; /* Secondary background - card backgrounds */
+$tertiary-bg: $dark-2 !default; /* Tertiary background - elevated backgrounds */
+$invert-bg: $white-6 !default; /* Inverted background - light backgrounds */
+$brand-bg: $primary-5 !default; /* Brand background - primary brand backgrounds */
+$error-bg: $error-2 !default; /* Error background - error state backgrounds */
+$success-bg: $success-2 !default; /* Success background - success state backgrounds */
+$warning-bg: $accent-1 !default; /* Warning background - warning state backgrounds */
+$info-bg: $accent-3 !default; /* Info background - info state backgrounds */
+$light-bg: $gray-1 !default; /* Light background - light theme backgrounds */
+$dark-bg: $dark-1 !default; /* Dark background - dark theme backgrounds */
+
+// Border colors (semantic)
+$primary-border: $white-1 !default; /* Primary border - main borders */
+$secondary-border: $white-2 !default; /* Secondary border - secondary borders */
+$tertiary-border: $white-3 !default; /* Tertiary border - subtle borders */
+$success-border: $success-4 !default; /* Success border - success state borders */
+$error-border: $error-4 !default; /* Error border - error state borders */
+$warning-border: $accent-1 !default; /* Warning border - warning state borders */
+$info-border: $accent-3 !default; /* Info border - info state borders */
+$brand-border: $primary-6 !default; /* Brand border - brand element borders */
+$light-border: $gray-3 !default; /* Light border - light theme borders */
+$dark-border: $dark-3 !default; /* Dark border - dark theme borders */
+
+// Overlay colors
+$overlay-1: rgba(0, 0, 0, 0.45) !default; /* Black 45% opacity - modal overlays */
+$overlay-2: rgba(255, 255, 255, 0.1) !default; /* White 10% opacity - light overlays */
+
+@use '../../../styles/01-settings/settings.colors' with (
+  $white: $white,
+  $black: $black,
+  $color-contrast-dark: $color-contrast-dark,
+  $color-contrast-light: $color-contrast-light,
+
+  // Primary colors
+  $primary-1: $primary-1,
+  $primary-2: $primary-2,
+  $primary-3: $primary-3,
+  $primary-4: $primary-4,
+  $primary-5: $primary-5,
+  $primary-6: $primary-6,
+  $primary-7: $primary-7,
+  $primary-8: $primary-8,
+  $primary-9: $primary-9,
+  $primary-10: $primary-10,
+
+  // Success colors
+  $green-1: $success-1,
+  $green-2: $success-2,
+  $green-3: $success-3,
+  $green-4: $success-4,
+  $green-5: $success-5,
+  $green-6: $success-6,
+  $green-7: $success-7,
+  $green-8: $success-8,
+  $green-9: $success-9,
+  $green-10: $success-10,
+
+  // Error colors
+  $red-1: $error-1,
+  $red-2: $error-2,
+  $red-3: $error-3,
+  $red-4: $error-4,
+  $red-5: $error-5,
+  $red-6: $error-6,
+  $red-7: $error-7,
+  $red-8: $error-8,
+  $red-9: $error-9,
+  $red-10: $error-10,
+
+  // Accent colors
+  $blue-1: $accent-1,
+  $blue-2: $accent-2,
+  $blue-3: $accent-3,
+  $blue-4: $accent-4,
+  $blue-5: $accent-5,
+  $blue-6: $accent-6,
+  $blue-7: $accent-7,
+  $blue-8: $accent-8,
+  $blue-9: $accent-9,
+  $blue-10: $accent-10,
+
+  // Gray scale
+  $gray-1: $gray-1,
+  $gray-2: $gray-2,
+  $gray-3: $gray-3,
+  $gray-4: $gray-4,
+  $gray-5: $gray-5,
+  $gray-6: $gray-6,
+  $gray-7: $gray-7,
+  $gray-8: $gray-8,
+  $gray-9: $gray-9,
+  $gray-10: $gray-10,
+
+  $primary-border: $white-1,
+  $secondary-border: $white-2,
+  $success-border: $success-4,
+  $error-border: $error-4,
+  $warning-border: $accent-1,
+  $info-border: $accent-3,
+  $brand-border: $primary-6,
+  $light-border: $gray-3,
+  $dark-border: $dark-3,
+  $primary-text: $primary-text,
+  $primary-text-dark: $white-5,
+  $secondary-text: $secondary-text,
+  $tertiary-text: $tertiary-text,
+  $disabled-text: $disabled-text,
+  $invert-text: $invert-text,
+  $brand-text: $brand-text,
+  $error-text: $error-text,
+  $success-text: $success-text,
+  $warning-text: $warning-text,
+  $info-text: $info-text,
+  $light-text: $light-text,
+  $dark-text: $dark-text
+);

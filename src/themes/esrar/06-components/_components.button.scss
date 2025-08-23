@@ -1,0 +1,224 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../../../styles/02-tools/tools.component' as *;
+@use '../02-tools/tools.animations' as *;
+@use '../../../styles/01-settings/settings.config' as config;
+
+.c-btn {
+  // Enhance base interactions with hypnotic effects
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+
+  // Subtle base breathing effect
+  @media (prefers-reduced-motion: no-preference) {
+    @include animations(
+      'hypnotic-breathe',
+      $duration: 4s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+
+  &:hover {
+    @include animations(
+      'psychedelic-pulse',
+      $duration: 2s,
+      $timing: ease-in-out,
+      $iteration-count: 3
+    );
+    filter: brightness(1.2) saturate(1.3) contrast(1.1);
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    @include focus-ring(var(--#{config.$prefix}primary-5));
+    @include animations('trippy-wave', $duration: 1.5s, $timing: ease-in-out, $iteration-count: 2);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+    transition: transform 0.1s ease-in-out;
+  }
+}
+
+.c-btn--psychedelic {
+  position: relative;
+  overflow: hidden;
+
+  // Constant trippy effect for psychedelic variant
+  @media (prefers-reduced-motion: no-preference) {
+    @include animations(
+      'stoned-drift',
+      $duration: 6s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+
+  &:hover {
+    @include animations(
+      'chill-rainbow',
+      $duration: 1.5s,
+      $timing: linear,
+      $iteration-count: infinite
+    );
+    filter: saturate(2) contrast(1.3) brightness(1.3);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: conic-gradient(
+      var(--#{config.$prefix}primary-1),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-7),
+      var(--#{config.$prefix}primary-9),
+      var(--#{config.$prefix}primary-7),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-1)
+    );
+    opacity: 0.15;
+    z-index: -1;
+    border-radius: inherit;
+    animation: #{config.$prefix}chill-spin 8s linear infinite reverse;
+  }
+
+  &:hover::before {
+    animation: #{config.$prefix}chill-spin 1s linear infinite;
+    opacity: 0.4;
+    filter: blur(1px);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(
+      circle,
+      rgba(16, 185, 129, 0.3) 0%,
+      rgba(16, 185, 129, 0.1) 50%,
+      transparent 100%
+    );
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.6s ease-out;
+    z-index: -1;
+  }
+
+  &:hover::after {
+    width: 200%;
+    height: 200%;
+    animation: #{config.$prefix}psychedelic-pulse 1s ease-in-out infinite;
+  }
+}
+
+.c-btn--glow {
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+  position: relative;
+
+  // Pulsing glow effect
+  @media (prefers-reduced-motion: no-preference) {
+    @include animations(
+      'green-glow',
+      $duration: 3s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+
+  &:hover {
+    @include animations(
+      'psychedelic-pulse',
+      $duration: 1.5s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+    box-shadow:
+      0 0 25px rgba(16, 185, 129, 0.7),
+      0 0 50px rgba(16, 185, 129, 0.4),
+      inset 0 0 15px rgba(16, 185, 129, 0.2);
+    filter: saturate(1.5) brightness(1.2);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(
+      45deg,
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-7),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-3)
+    );
+    opacity: 0.1;
+    z-index: -1;
+    border-radius: inherit;
+    filter: blur(2px);
+    animation: #{config.$prefix}chill-rainbow 4s linear infinite;
+  }
+}
+
+.c-btn--floating {
+  // Constant floating with drift
+  @media (prefers-reduced-motion: no-preference) {
+    @include animations('float', $duration: 3s, $timing: ease-in-out, $iteration-count: infinite);
+  }
+
+  &:hover {
+    @include animations(
+      'stoned-drift',
+      $duration: 2s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+    filter: hue-rotate(30deg) saturate(1.3);
+    transform: translateY(-5px) scale(1.02);
+  }
+}
+
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  .c-btn {
+    &,
+    &:hover,
+    &:focus {
+      animation: none !important;
+      transform: none !important;
+    }
+
+    &::before,
+    &::after {
+      animation: none !important;
+    }
+  }
+
+  .c-btn--psychedelic,
+  .c-btn--glow,
+  .c-btn--floating {
+    &,
+    &:hover,
+    &:focus {
+      animation: none !important;
+      transform: none !important;
+    }
+
+    &::before,
+    &::after {
+      animation: none !important;
+    }
+  }
+}
