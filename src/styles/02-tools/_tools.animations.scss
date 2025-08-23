@@ -1,5 +1,6 @@
 @use '../01-settings/settings.animations' as animations;
 @use 'sass:list';
+@use 'sass:meta';
 @use 'tools.transition' as transition;
 @use '../01-settings/settings.config' as config;
 
@@ -17,3 +18,84 @@
     background-position: 0 50%;
   }
 }
+
+@mixin animations(
+  $names,
+  $duration: 1.4s,
+  $timing: linear,
+  $delay: 0s,
+  $iteration-count: infinite,
+  $direction: normal,
+  $fill-mode: none,
+  $play-state: running
+) {
+  $animations: ();
+
+  @if (meta.type-of($names) == 'list') {
+    @each $name in $names {
+      $animation: #{config.$prefix}#{$name}
+        $duration
+        $timing
+        $delay
+        $iteration-count
+        $direction
+        $fill-mode
+        $play-state;
+      $animations: list.append($animations, $animation, comma);
+    }
+  } @else {
+    $animations: #{config.$prefix}#{$names}
+      $duration
+      $timing
+      $delay
+      $iteration-count
+      $direction
+      $fill-mode
+      $play-state;
+  }
+
+  animation: #{$animations};
+}
+
+@mixin transition-animation(
+  $properties: all,
+  $duration: animations.$transition-duration,
+  $timing: animations.$easing,
+  $delay: 0s
+) {
+  @if (type-of($properties) == list) {
+    @each $property in $properties {
+      transition: $property $duration $timing $delay;
+    }
+  } @else {
+    transition: $properties $duration $timing $delay;
+  }
+}
+
+// Test case 1: Single animation (backward compatibility)
+// .test-single {
+//   @include animations.animations(
+//     'pulse-slow',
+//     $duration: 1.4s,
+//     $timing: linear
+//   );
+// }
+
+// Test case 2: Multiple animations
+// .test-multiple {
+//   @include animations.animations(
+//     ('pulse-slow', 'fade-in'),
+//     $duration: 1.4s,
+//     $timing: linear
+//   );
+// }
+
+// Test case 3: Multiple animations with different parameters
+// .test-multiple-different {
+//   @include animations.animations(
+//     'pulse-slow' 'fade-in' 'slide-up',
+//     $duration: 2s,
+//     $timing: ease-in-out,
+//     $iteration-count: infinite
+//   );
+// }
