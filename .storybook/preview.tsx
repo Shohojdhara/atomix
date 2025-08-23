@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/react';
 import { useEffect } from 'react';
+import '../src/styles/index.scss';
 
 const preview: Preview = {
   parameters: {

@@ -40,7 +40,6 @@
   border: var(--#{$prefix}card-border-width) solid var(--#{$prefix}card-border-color);
   border-radius: var(--#{$prefix}card-border-radius);
   background-color: var(--#{$prefix}card-bg);
-  overflow: hidden;
   @include basic-transition();
 
   &__header {

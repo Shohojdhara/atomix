@@ -27,6 +27,8 @@ const Chart = memo(
         enableExport = false,
         enableRefresh = false,
         exportFormats = ['png', 'svg', 'csv'],
+        datasets,
+        config,
         ...props
       },
       ref
