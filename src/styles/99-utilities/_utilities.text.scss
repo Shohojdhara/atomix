@@ -84,4 +84,9 @@ $utilities-text: (
     class: u-text,
     values: color-maps.$utilities-text-colors,
   ),
+  'text-emphasis-color': (
+    property: color,
+    class: u-text,
+    values: color-maps.$utilities-text-emphasis-colors,
+  ),
 );
