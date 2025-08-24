@@ -69,6 +69,7 @@ export { default as Dropdown, type DropdownProps } from './Dropdown/Dropdown';
 export { default as EdgePanel, type EdgePanelProps } from './EdgePanel/EdgePanel';
 export { default as Checkbox, type CheckboxProps } from './Form/Checkbox';
 export { default as Form, type FormProps } from './Form/Form';
+export { default as FormGroup, type FormGroupProps } from './Form/FormGroup';
 export { default as Input, type InputProps } from './Form/Input';
 export { default as Radio, type RadioProps } from './Form/Radio';
 export { default as Select, type SelectProps } from './Form/Select';
