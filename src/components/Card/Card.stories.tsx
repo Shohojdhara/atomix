@@ -1,6 +1,5 @@
-import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import React from 'react';
 import { Card, ElevationCard } from './index';
 
 const meta: Meta<typeof Card> = {

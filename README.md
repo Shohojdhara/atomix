@@ -1,6 +1,6 @@
 # Atomix Design System
 
-A modern, accessible design system and component library for building beautiful user interfaces. Built with React, TypeScript, and vanilla JavaScript.
+A modern, accessible design system and component library for building beautiful user interfaces. Built with React, TypeScript.
 
 [![npm version](https://badge.fury.io/js/@shohojdhara%2Fatomix.svg)](https://www.npmjs.com/package/@shohojdhara/atomix)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -10,7 +10,7 @@ A modern, accessible design system and component library for building beautiful 
 ## ✨ Features
 
 - 🧩 **40+ Components** - Comprehensive UI component library
-- ⚛️ **React + Vanilla JS** - Dual implementation for maximum flexibility
+- ⚛️ **React** - React implementation for maximum flexibility
 - 🎨 **Design Tokens** - Consistent colors, spacing, typography
 - ♿ **Accessibility First** - WCAG 2.1 AA compliant
 - 🎯 **TypeScript** - Full type safety and IntelliSense
@@ -36,25 +36,26 @@ import '@shohojdhara/atomix/css';
 
 function App() {
   return (
-    <Card>
-      <Card.Header>
-        <h3>Welcome to Atomix</h3>
-        <Badge variant="primary">New</Badge>
-      </Card.Header>
-      <Card.Body>
+    <Card 
+    header={ <Badge variant="primary" label="Badge"/>}
+    title="Welcome to Atomix" 
+    text="A modern design system" 
+    actions={
+        <Button variant="primary" label="Get Started"/>
+    }
+    image="https://placehold.co/600x400"
+    imageAlt="Placeholder image"
+    >
         <p>Build amazing interfaces with our design system.</p>
-        <Button variant="primary">Get Started</Button>
-      </Card.Body>
     </Card>
   );
 }
 ```
 
-### Vanilla JavaScript
+### Atomix css frameworks
 
 ```html
-<link rel="stylesheet" href="https://unpkg.com/@shohojdhara/atomix/css">
-<script src="https://unpkg.com/@shohojdhara/atomix/js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@shohojdhara/atomix/css/atomix.css">
 
 <div class="c-card">
   <div class="c-card__header">
@@ -67,7 +68,6 @@ function App() {
   </div>
 </div>
 
-<script>Atomix.init();</script>
 ```
 
 ## � Documentation
@@ -126,26 +126,6 @@ npm run build        # Build for production
 **[→ Full Development Guide](./docs/resources/contributing.md)**
  88+ |
 
-## 👥 Contributors
-
-Thanks to these amazing people who have contributed to Atomix:
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/shohojdhara"><img src="https://avatars.githubusercontent.com/u/shohojdhara?v=4?s=100" width="100px;" alt="Shohojdhara"/><br /><sub><b>Shohojdhara</b></sub></a><br /><a href="https://github.com/shohojdhara/atomix/commits?author=shohojdhara" title="Code">💻</a> <a href="#design-shohojdhara" title="Design">🎨</a> <a href="https://github.com/shohojdhara/atomix/commits?author=shohojdhara" title="Documentation">📖</a> <a href="#ideas-shohojdhara" title="Ideas, Planning, & Feedback">🤔</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
 ## 🤝 Contributing
 
 We welcome contributions! Please read our [Contributing Guide](./docs/resources/contributing.md) for details on:
@@ -163,7 +143,6 @@ We welcome contributions! Please read our [Contributing Guide](./docs/resources/
 4. **Push** to the branch: `git push origin feature/amazing-feature`
 5. **Open** a Pull Request
 
-All contributors will be automatically added to this list using [All Contributors](https://allcontributors.org/).
 
 ## 📄 License
 
