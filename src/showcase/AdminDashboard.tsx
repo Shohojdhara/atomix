@@ -8,10 +8,6 @@ import { Card } from '../components/Card/Card';
 import { BarChart, DonutChart, GaugeChart, LineChart, PieChart } from '../components/Chart';
 import ColorModeToggle from '../components/ColorModeToggle/ColorModeToggle';
 import { DataTable } from '../components/DataTable/DataTable';
-import { Form } from '../components/Form/Form';
-import { FormGroup } from '../components/Form/FormGroup';
-import { Input } from '../components/Form/Input';
-import { Select } from '../components/Form/Select';
 import { Icon } from '../components/Icon/Icon';
 import { Modal } from '../components/Modal/Modal';
 import { Menu, MenuItem } from '../components/Navigation/Menu/Menu';
@@ -23,6 +19,7 @@ import { SideMenuItem } from '../components/Navigation/SideMenu/SideMenuItem';
 import { SideMenuList } from '../components/Navigation/SideMenu/SideMenuList';
 import { Progress } from '../components/Progress/Progress';
 import { Toggle } from '../components/Toggle/Toggle';
+import { Form, FormGroup, Input, Select } from '../index';
 import { Grid } from '../layouts/Grid/Grid';
 import GridCol from '../layouts/Grid/GridCol';
 
