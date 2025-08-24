@@ -1,4 +1,4 @@
-import { forwardRef, memo, useCallback } from 'react';
+import { forwardRef, memo, ReactElement, useCallback } from 'react';
 import { ChartProps } from '../../lib/types/components';
 import Chart from './Chart';
 import ChartRenderer from './ChartRenderer';
@@ -128,7 +128,7 @@ const FunnelChart = memo(
       } = funnelOptions;
 
       const renderContent = useCallback(
-        ({ scales, colors, handlers }) => {
+        ({ scales, colors, handlers }: { scales: any; colors: any; handlers: any }) => {
           if (!funnelData.length) return null;
 
           const padding = 60;
@@ -140,7 +140,9 @@ const FunnelChart = memo(
           const processedData = funnelData.map((item, index) => {
             const percentage = (item.value / maxValue) * 100;
             const conversionRate =
-              index > 0 ? (item.value / funnelData[index - 1].value) * 100 : 100;
+              index > 0 && funnelData[index - 1]
+                ? (item.value / funnelData[index - 1]!.value) * 100
+                : 100;
 
             return {
               ...item,
@@ -150,7 +152,7 @@ const FunnelChart = memo(
             };
           });
 
-          const elements = [];
+          const elements: ReactElement[] = [];
 
           if (direction === 'vertical') {
             // Vertical funnel
@@ -202,7 +204,7 @@ const FunnelChart = memo(
                 // Calculate next segment width
                 const nextItem = processedData[index + 1];
                 let nextSegmentWidth: number;
-                if (proportional) {
+                if (proportional && nextItem) {
                   const nextRatio = Math.max(nextItem.percentage / 100, minSegmentRatio);
                   nextSegmentWidth = chartWidth * nextRatio;
                 } else {

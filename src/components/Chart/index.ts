@@ -6,20 +6,19 @@ import BubbleChart from './BubbleChart';
 import CandlestickChart from './CandlestickChart';
 import Chart from './Chart';
 import ChartRenderer from './ChartRenderer';
-import ChartTooltip from './ChartTooltip';
 import ChartToolbar from './ChartToolbar';
+import ChartTooltip from './ChartTooltip';
 import DonutChart from './DonutChart';
 import FunnelChart from './FunnelChart';
 import GaugeChart from './GaugeChart';
 import HeatmapChart from './HeatmapChart';
-import InteractiveChart from './InteractiveChart';
 import LineChart from './LineChart';
 import MultiAxisChart from './MultiAxisChart';
 import PieChart from './PieChart';
 import RadarChart from './RadarChart';
 import RealTimeChart from './RealTimeChart';
 import ScatterChart from './ScatterChart';
-import SimpleBarChart from './SimpleBarChart';
+
 import TreemapChart from './TreemapChart';
 import WaterfallChart from './WaterfallChart';
 
@@ -33,20 +32,18 @@ export {
   CandlestickChart,
   Chart,
   ChartRenderer,
-  ChartTooltip,
   ChartToolbar,
+  ChartTooltip,
   DonutChart,
   FunnelChart,
   GaugeChart,
   HeatmapChart,
-  InteractiveChart,
   LineChart,
   MultiAxisChart,
   PieChart,
   RadarChart,
   RealTimeChart,
   ScatterChart,
-  SimpleBarChart,
   TreemapChart,
   WaterfallChart,
 };
@@ -59,9 +56,9 @@ export {
   useChartData,
   useChartPerformance,
 } from '../../lib/composables/useChart';
-export { useChartToolbar } from '../../lib/composables/useChartToolbar';
 export { useChartAnalytics } from '../../lib/composables/useChartAnalytics';
 export { useChartExport } from '../../lib/composables/useChartExport';
+export { useChartToolbar } from '../../lib/composables/useChartToolbar';
 export { useLineChart } from '../../lib/composables/useLineChart';
 export { usePieChart } from '../../lib/composables/usePieChart';
 
@@ -72,28 +69,27 @@ export type { AreaChartProps } from './AreaChart';
 export type { BarChartProps } from './BarChart';
 export type { BubbleChartProps, BubbleDataPoint } from './BubbleChart';
 export type { CandlestickChartProps, CandlestickDataPoint } from './CandlestickChart';
+export type { ChartToolbarAction, ChartToolbarGroup, ChartToolbarProps } from './ChartToolbar';
 export type { ChartTooltipProps, TooltipPosition } from './ChartTooltip';
-export type { ChartToolbarProps, ChartToolbarAction, ChartToolbarGroup } from './ChartToolbar';
 export type { DonutChartProps } from './DonutChart';
 export type { FunnelChartProps, FunnelDataPoint } from './FunnelChart';
 export type { GaugeChartProps } from './GaugeChart';
 export type { HeatmapChartProps, HeatmapDataPoint } from './HeatmapChart';
-export type { InteractiveChartProps } from './InteractiveChart';
 export type { LineChartProps } from './LineChart';
 export type { AxisConfig, MultiAxisChartProps, MultiAxisDataset } from './MultiAxisChart';
 export type { PieChartProps } from './PieChart';
 export type { RadarChartProps } from './RadarChart';
 export type { RealTimeChartProps } from './RealTimeChart';
 export type { ScatterChartProps, ScatterDataPoint } from './ScatterChart';
-export type { SimpleBarChartProps } from './SimpleBarChart';
+
 export type { TreemapChartProps, TreemapDataPoint, TreemapNode } from './TreemapChart';
 export type {
   ChartConfig,
   ChartDataPoint,
   ChartDataset,
   ChartProps,
-  ChartType,
   ChartToolbarConfig,
+  ChartType,
 } from './types';
 export type { WaterfallChartProps, WaterfallDataPoint } from './WaterfallChart';
 
@@ -101,9 +97,9 @@ export type { WaterfallChartProps, WaterfallDataPoint } from './WaterfallChart';
 export type { BarChartOptions, BarDimensions } from '../../lib/composables/useBarChart';
 export type { ChartInteractionState, ChartScales } from '../../lib/composables/useChart';
 export type {
+  ChartToolbarHandlers,
   ChartToolbarState,
   ChartToolbarConfig as ToolbarConfig,
-  ChartToolbarHandlers,
 } from '../../lib/composables/useChartToolbar';
 export type { LineChartOptions } from '../../lib/composables/useLineChart';
 export type { PieChartOptions, PieSlice } from '../../lib/composables/usePieChart';

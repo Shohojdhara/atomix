@@ -1,8 +1,8 @@
 import { RefObject, useEffect, useRef } from 'react';
 
 export interface UseAmbientModeOptions {
-  videoRef: RefObject<HTMLVideoElement>;
-  canvasRef: RefObject<HTMLCanvasElement>;
+  videoRef: RefObject<HTMLVideoElement | null>;
+  canvasRef: RefObject<HTMLCanvasElement | null>;
   enabled: boolean;
   blur?: number;
   opacity?: number;
@@ -20,13 +20,13 @@ export function useAmbientMode({
   const animationFrameRef = useRef<number>(60);
 
   useEffect(() => {
-    if (!enabled || !videoRef.current || !canvasRef.current) return;
+    if (!enabled || !videoRef.current || !canvasRef.current) return undefined;
 
     const video = videoRef.current;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    if (!ctx) return;
+    if (!ctx) return undefined;
 
     const updateAmbientEffect = () => {
       if (!video || !canvas || !ctx) return;

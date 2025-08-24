@@ -165,16 +165,20 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
           // Hide all tracks first
           for (let i = 0; i < tracks.length; i++) {
-            tracks[i].mode = 'hidden';
-            console.log(`Track ${i}:`, tracks[i].language, tracks[i].label);
+            const track = tracks[i];
+            if (track) {
+              track.mode = 'hidden';
+              console.log(`Track ${i}:`, track.language, track.label);
+            }
           }
 
           // Show selected track
           if (subtitleLang) {
             for (let i = 0; i < tracks.length; i++) {
-              if (tracks[i].language === subtitleLang) {
-                tracks[i].mode = 'showing';
-                console.log('Showing track:', tracks[i].language, tracks[i].label);
+              const track = tracks[i];
+              if (track && track.language === subtitleLang) {
+                track.mode = 'showing';
+                console.log('Showing track:', track.language, track.label);
                 break;
               }
             }
@@ -218,6 +222,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
           video.removeEventListener('canplay', handleCanPlay);
         };
       }
+      return undefined;
     }, [subtitles, setSubtitle, videoRef]);
 
     const handleContainerClick = useCallback(() => {

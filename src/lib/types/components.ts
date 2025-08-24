@@ -4408,7 +4408,8 @@ export type ChartType =
   | 'funnel'
   | 'waterfall'
   | 'heatmap'
-  | 'treemap';
+  | 'treemap'
+  | 'realtime';
 
 /**
  * Extended size options for charts

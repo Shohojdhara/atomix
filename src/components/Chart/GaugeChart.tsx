@@ -175,7 +175,7 @@ const GaugeChart = memo(
       }, [value, min, max, animate, animationDuration, animationEasing, animatedValue]);
 
       const renderContent = useCallback(
-        ({ scales, colors, handlers }) => {
+        ({ scales, colors, handlers }: { scales: any; colors: any; handlers: any }) => {
           const centerX = scales.width / 2;
           const centerY = scales.height / 2;
           const radius = Math.min(centerX, centerY) * 0.8;

@@ -126,7 +126,7 @@ const AdvancedChart = memo(
 
       // Real-time data simulation
       useEffect(() => {
-        if (!advancedOptions.realTime) return;
+        if (!advancedOptions.realTime) return undefined;
 
         const interval = setInterval(() => {
           setRealTimeData(prevData =>

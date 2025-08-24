@@ -1,9 +1,8 @@
-import { forwardRef, memo, useState } from 'react';
-import { CHART } from '../../lib/constants/components';
-import { ChartProps } from './types';
+import { forwardRef, memo, ReactElement, useState } from 'react';
 import Chart from './Chart';
 import ChartRenderer from './ChartRenderer';
 import ChartTooltip from './ChartTooltip';
+import { ChartProps } from './types';
 
 export interface ScatterDataPoint {
   label: string;
@@ -67,12 +66,12 @@ const ScatterChart = memo(
             renderContent={({ scales, colors, datasets: renderedDatasets }) => {
               if (!renderedDatasets.length) return null;
 
-              const points = [];
+              const points: ReactElement[] = [];
 
-              renderedDatasets.forEach((dataset, datasetIndex) => {
+              renderedDatasets.forEach((dataset: any, datasetIndex: number) => {
                 const color = dataset.color || colors[datasetIndex % colors.length];
 
-                dataset.data?.forEach((point, pointIndex) => {
+                dataset.data?.forEach((point: any, pointIndex: number) => {
                   const x =
                     point.x !== undefined
                       ? scales.padding.left + (point.x / 100) * scales.innerWidth
@@ -133,9 +132,9 @@ const ScatterChart = memo(
               return <>{points}</>;
             }}
           />
-          {hoveredPoint && (
+          {hoveredPoint && datasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
             <ChartTooltip
-              dataPoint={datasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]}
+              dataPoint={datasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!}
               datasetLabel={datasets[hoveredPoint.datasetIndex]?.label}
               datasetColor={datasets[hoveredPoint.datasetIndex]?.color}
               position={{ x: hoveredPoint.clientX, y: hoveredPoint.clientY }}
@@ -150,4 +149,4 @@ const ScatterChart = memo(
 
 ScatterChart.displayName = 'ScatterChart';
 export default ScatterChart;
-export type { ScatterChartProps, ScatterDataPoint };
+export type { ScatterChartProps };

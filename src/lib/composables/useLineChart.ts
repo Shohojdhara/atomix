@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { ChartDataset, ChartDataPoint } from '../types/components';
+import { ChartDataPoint, ChartDataset } from '../types/components';
 
 /**
  * Line chart specific options
@@ -132,20 +132,23 @@ export function useLineChart(datasets: ChartDataset[], options: LineChartOptions
       const sum = data.slice(i - period + 1, i + 1).reduce((acc, point) => acc + point.value, 0);
       const average = sum / period;
 
-      result.push({
-        label: data[i].label,
-        value: average,
-        color: 'rgba(255, 255, 255, 0.5)',
-      });
+      const dataPoint = data[i];
+      if (dataPoint) {
+        result.push({
+          label: dataPoint.label,
+          value: average,
+          color: 'rgba(255, 255, 255, 0.5)',
+        });
+      }
     }
 
     return result;
   }, []);
 
   // Calculate trend line using linear regression
-  const calculateTrendLine = useCallback((data: ChartDataPoint[]) => {
+  const calculateTrendLine = useCallback((data: ChartDataPoint[]): (ChartDataPoint | null)[] => {
     const n = data.length;
-    if (n < 2) return data.map(() => null);
+    if (n < 2) return data.map((): null => null);
 
     const xSum = data.reduce((sum, _, i) => sum + i, 0);
     const ySum = data.reduce((sum, point) => sum + point.value, 0);
@@ -174,6 +177,9 @@ export function useLineChart(datasets: ChartDataset[], options: LineChartOptions
 
         const prev = points[i - 1];
         const next = points[i + 1];
+        if (!prev || !next) {
+          return { cp1x: point.x, cp1y: point.y, cp2x: point.x, cp2y: point.y };
+        }
         const dx = next.x - prev.x;
         const dy = next.y - prev.y;
 
@@ -185,11 +191,18 @@ export function useLineChart(datasets: ChartDataset[], options: LineChartOptions
         };
       });
 
-      let path = `M ${points[0].x},${points[0].y}`;
+      const firstPoint = points[0];
+      if (!firstPoint) return '';
+      let path = `M ${firstPoint.x},${firstPoint.y}`;
 
       for (let i = 1; i < points.length; i++) {
         const cp = controlPoints[i - 1];
-        path += ` C ${cp.cp2x},${cp.cp2y} ${controlPoints[i].cp1x},${controlPoints[i].cp1y} ${points[i].x},${points[i].y}`;
+        const currentControlPoint = controlPoints[i];
+        const currentPoint = points[i];
+
+        if (!cp || !currentControlPoint || !currentPoint) continue;
+
+        path += ` C ${cp.cp2x},${cp.cp2y} ${currentControlPoint.cp1x},${currentControlPoint.cp1y} ${currentPoint.x},${currentPoint.y}`;
       }
 
       return path;
@@ -251,7 +264,7 @@ export function useLineChart(datasets: ChartDataset[], options: LineChartOptions
   // Process datasets with additional data
   const processedDatasets = useMemo(() => {
     return datasets.map(dataset => {
-      const processed = { ...dataset };
+      const processed = { ...dataset } as any;
 
       // Add moving averages if enabled
       if (options.showMovingAverages && options.movingAveragePeriods) {

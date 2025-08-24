@@ -374,21 +374,21 @@ const HomePage: React.FC = () => {
           <div className="u-text-center u-mt-16">
             <h3 className="u-mb-4">Explore All Components</h3>
             <AvatarGroup max={12} className="u-justify-content-center">
-              <Avatar text="Bt" variant="primary" />
-              <Avatar text="Cr" variant="secondary" />
-              <Avatar text="Md" variant="success" />
-              <Avatar text="Fr" variant="warning" />
-              <Avatar text="Tp" variant="info" />
-              <Avatar text="Tl" variant="dark" />
-              <Avatar text="Cl" variant="light" />
-              <Avatar text="Ic" variant="primary" />
-              <Avatar text="Av" variant="secondary" />
-              <Avatar text="Dt" variant="success" />
-              <Avatar text="Rt" variant="warning" />
-              <Avatar text="Pg" variant="info" />
-              <Avatar text="St" variant="dark" />
-              <Avatar text="Tb" variant="light" />
-              <Avatar text="Ms" variant="primary" />
+              <Avatar initials="Bt" />
+              <Avatar initials="Cr" />
+              <Avatar initials="Md" />
+              <Avatar initials="Fr" />
+              <Avatar initials="Tp" />
+              <Avatar initials="Tl" />
+              <Avatar initials="Cl" />
+              <Avatar initials="Ic" />
+              <Avatar initials="Av" />
+              <Avatar initials="Dt" />
+              <Avatar initials="Rt" />
+              <Avatar initials="Pg" />
+              <Avatar initials="St" />
+              <Avatar initials="Tb" />
+              <Avatar initials="Ms" />
             </AvatarGroup>
             <p className="u-mt-4">
               All components are fully documented with examples and API references
@@ -661,7 +661,6 @@ const HomePage: React.FC = () => {
               ]}
               striped
               bordered
-              hover
             />
           </div>
 
@@ -902,7 +901,7 @@ const HomePage: React.FC = () => {
                       color: '#10b981',
                     },
                   ]}
-                  config={{ showGrid: true, showLegend: false }}
+                  config={{ showLegend: false }}
                   streamConfig={{
                     interval: 5000,
                     maxDataPoints: 20,
@@ -914,7 +913,6 @@ const HomePage: React.FC = () => {
                       value: Math.floor(Math.random() * 500) + 1500,
                     },
                   ]}
-                  height="300px"
                 />
               </Card>
             </GridCol>
@@ -943,7 +941,6 @@ const HomePage: React.FC = () => {
                     centerLabel: 'Total',
                     centerValue: '100%',
                   }}
-                  height="300px"
                 />
               </Card>
             </GridCol>
@@ -969,13 +966,12 @@ const HomePage: React.FC = () => {
                       color: '#8b5cf6',
                     },
                   ]}
-                  config={{ showGrid: true, showLegend: false }}
+                  config={{ showLegend: false }}
                   areaOptions={{
                     showArea: true,
                     fillOpacity: 0.3,
                     useGradient: true,
                   }}
-                  height="250px"
                 />
               </Card>
             </GridCol>
@@ -997,12 +993,11 @@ const HomePage: React.FC = () => {
                       color: '#06b6d4',
                     },
                   ]}
-                  config={{ showGrid: true, showLegend: false }}
+                  config={{ showLegend: false }}
                   barOptions={{
                     showValues: true,
                     cornerRadius: 4,
                   }}
-                  height="250px"
                 />
               </Card>
             </GridCol>
@@ -1068,7 +1063,7 @@ const HomePage: React.FC = () => {
                   <Badge variant="success" size="sm" label="Updated Daily" />
                 </div>
                 <Button variant="primary" size="sm" className="u-w-100">
-                  <Icon name="ExternalLink" className="u-me-2" size={14} />
+                  <Icon name="ArrowSquareOut" className="u-me-2" size={14} />
                   Browse Docs
                 </Button>
               </Card>
@@ -1209,7 +1204,7 @@ const HomePage: React.FC = () => {
                             </div>
                           </div>
                           <Button variant="primary" size="sm">
-                            <Icon name="ExternalLink" className="u-me-2" size={14} />
+                            <Icon name="ArrowSquareOut" className="u-me-2" size={14} />
                             Browse API Docs
                           </Button>
                         </div>
@@ -1225,10 +1220,10 @@ const HomePage: React.FC = () => {
                           </p>
                           <div className="u-mb-4">
                             <Upload
-                              accept=".zip,.tar.gz"
+                              acceptedFileTypes={['.zip', '.tar.gz']}
                               multiple={false}
-                              onUpload={() => {}}
-                              placeholder="Drop your project files here to get started"
+                              onFileSelect={() => {}}
+                              title="Drop your project files here to get started"
                             />
                           </div>
                           <div className="u-d-flex u-gap-2 u-flex-wrap u-mb-4">
@@ -1292,7 +1287,7 @@ const HomePage: React.FC = () => {
                 <div className="u-mt-3 u-text-center">
                   <p className="u-text-xs u-text-muted u-mb-2">Average response time: 2 hours</p>
                   <Button variant="outline-primary" size="sm" className="u-w-100">
-                    <Icon name="MessageCircle" className="u-me-2" size={14} />
+                    <Icon name="ChatCircle" className="u-me-2" size={14} />
                     Join Conversation
                   </Button>
                 </div>

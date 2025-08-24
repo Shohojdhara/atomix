@@ -143,7 +143,7 @@ export function useChartPerformance() {
    * Debounced data updates for real-time charts
    */
   const useDebouncedUpdates = useCallback((updateFunction: () => void, delay: number = 100) => {
-    const timeoutRef = useRef<NodeJS.Timeout>();
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     return useCallback(() => {
       if (timeoutRef.current) {
@@ -184,7 +184,7 @@ export function useChartPerformance() {
     // Pre-generate a large palette to avoid runtime calculations
     const extendedColors: string[] = [];
     for (let i = 0; i < 100; i++) {
-      extendedColors.push(baseColors[i % baseColors.length]);
+      extendedColors.push(baseColors[i % baseColors.length] || '#000000');
     }
 
     return (index: number) => extendedColors[index % extendedColors.length];
@@ -194,13 +194,13 @@ export function useChartPerformance() {
    * Optimized animation frame handling
    */
   const useAnimationFrame = useCallback((callback: () => void) => {
-    const requestRef = useRef<number>();
-    const previousTimeRef = useRef<number>();
+    const requestRef = useRef<number | null>(null);
+    const previousTimeRef = useRef<number | null>(null);
 
     const animate = useCallback(
       (time: number) => {
         if (previousTimeRef.current !== undefined) {
-          const deltaTime = time - previousTimeRef.current;
+          const deltaTime = time - (previousTimeRef.current || 0);
           callback();
         }
         previousTimeRef.current = time;
@@ -231,15 +231,23 @@ export function useChartPerformance() {
 
       // Check if any significant data changes occurred
       for (let i = 0; i < prevDatasets.length; i++) {
-        const prevData = prevDatasets[i].data;
-        const newData = newDatasets[i].data;
+        const prevDataset = prevDatasets[i];
+        const newDataset = newDatasets[i];
+        if (!prevDataset || !newDataset) continue;
+
+        const prevData = prevDataset.data;
+        const newData = newDataset.data;
 
         if (prevData.length !== newData.length) return true;
 
         // Check for significant value changes
         for (let j = 0; j < prevData.length; j++) {
-          const valueDiff = Math.abs(prevData[j].value - newData[j].value);
-          const relativeChange = valueDiff / Math.abs(prevData[j].value);
+          const prevPoint = prevData[j];
+          const newPoint = newData[j];
+          if (!prevPoint || !newPoint) continue;
+
+          const valueDiff = Math.abs(prevPoint.value - newPoint.value);
+          const relativeChange = valueDiff / Math.abs(prevPoint.value);
 
           if (relativeChange > threshold) return true;
         }

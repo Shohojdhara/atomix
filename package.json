@@ -21,33 +21,30 @@
     },
     "./css": "./dist/index.css",
     "./css/min": "./dist/index.min.css",
+    "./css/esm": "./dist/index.esm.css",
     "./scss": "./src/styles/index.scss",
-    "./scss/modern": {
-      "modern": "./src/styles/index.scss",
-      "default": "./src/styles/index.scss"
-    },
-    "./themes": {
-      "import": "./src/styles/themes/index.scss",
-      "require": "./src/styles/themes/index.scss"
-    },
-    "./themes/css": "./dist/index.themes.css",
-    "./themes/scss": "./src/styles/themes/index.scss",
-    "./themes/settings": "./src/styles/01-settings/_settings.themes.scss",
+    "./scss/settings": "./src/styles/01-settings/_index.scss",
+    "./scss/tools": "./src/styles/02-tools/_index.scss",
+    "./scss/generic": "./src/styles/03-generic/_index.scss",
+    "./scss/elements": "./src/styles/04-elements/_index.scss",
+    "./scss/objects": "./src/styles/05-objects/_index.scss",
+    "./scss/components": "./src/styles/06-components/_index.scss",
+    "./scss/utilities": "./src/styles/99-utilities/_index.scss",
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@phosphor-icons/react": "2.1.10",
+    "@phosphor-icons/react": "2.1.10"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
     "@storybook/addon-viewport": "^9.0.8",
     "@storybook/react": "^8.6.14",
     "@storybook/react-vite": "^8.6.14",
     "@vitejs/plugin-react": "^4.6.0",
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "storybook-theme-switch-addon": "^1.0.2",
-    "vite": "^5.4.19"
-  },
-  "devDependencies": {
-    "@arethetypeswrong/cli": "^0.18.2",
+    "vite": "^5.4.19",
     "@babel/core": "^7.26.10",
     "@babel/plugin-transform-runtime": "^7.27.4",
     "@babel/preset-env": "^7.26.9",
@@ -128,13 +125,18 @@
     "check-format": "prettier --check .",
     "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
     "lint": "tsc --noEmit",
+    "lint:fix": "eslint --fix src/",
+    "type-check": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
     "ci": "npm run build && npm run check-format && npm run check-exports && npm run lint && npm run test",
     "local-release": "changeset version && changeset publish",
     "preview:build": "npm run build-storybook && node scripts/prepare-deploy.js",
-    "preview:serve": "npm run preview:build && npx serve deploy -p 3000"
+    "preview:serve": "npm run preview:build && npx serve deploy -p 3000",
+    "size": "size-limit",
+    "analyze": "npm run build && size-limit --why"
   },
   "files": [
     "dist",
@@ -154,14 +156,24 @@
     "javascript",
     "typescript",
     "css",
-    "scss"
+    "scss",
+    "component-library",
+    "ui-components",
+    "react-components",
+    "typescript-components",
+    "modern-ui",
+    "accessible-components"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Shohojdhara/atomix.git"
   },
-  "author": "liimonx <liimonx@shohojdhara.org>",
+  "author": "liimonx <liimonx@boomdevs.com>",
   "license": "Apache-2.0",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/Shohojdhara"
+  },
   "bugs": {
     "url": "https://github.com/Shohojdhara/atomix/issues"
   },
@@ -172,10 +184,21 @@
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
   },
   "publishConfig": {
     "access": "public",
     "registry": "https://npm.pkg.github.com/"
-  }
+  },
+  "size-limit": [
+    {
+      "path": "dist/index.esm.js",
+      "limit": "500 KB"
+    },
+    {
+      "path": "dist/index.min.js",
+      "limit": "300 KB"
+    }
+  ]
 }

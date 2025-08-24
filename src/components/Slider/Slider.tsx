@@ -90,7 +90,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
         overflow: 'hidden',
         position: 'relative',
         cursor: grabCursor && !touching ? 'grab' : touching ? 'grabbing' : 'default',
-        ...rest.style,
+        ...(rest as any).style,
       }}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -129,7 +129,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
                 // For triple array: check if this slide index matches current real index
                 return index % slides.length === realIndex;
               })() && 'c-slider__slide--active',
-              slide.isClone && 'c-slider__slide--duplicate',
+              (slide as any).isClone && 'c-slider__slide--duplicate',
             ]
               .filter(Boolean)
               .join(' ')}

@@ -42,24 +42,33 @@ export class SliderInteractions {
     const element = this.slider.element;
 
     // Touch events
-    this.addEventListener(element, 'touchstart', this.handleTouchStart.bind(this), {
+    this.addEventListener(
+      element,
+      'touchstart',
+      this.handleTouchStart.bind(this) as EventListener,
+      {
+        passive: false,
+      }
+    );
+    this.addEventListener(document, 'touchmove', this.handleTouchMove.bind(this) as EventListener, {
       passive: false,
     });
-    this.addEventListener(document, 'touchmove', this.handleTouchMove.bind(this), {
-      passive: false,
-    });
-    this.addEventListener(document, 'touchend', this.handleTouchEnd.bind(this));
+    this.addEventListener(document, 'touchend', this.handleTouchEnd.bind(this) as EventListener);
 
     // Mouse events
-    this.addEventListener(element, 'mousedown', this.handleMouseDown.bind(this));
-    this.addEventListener(document, 'mousemove', this.handleMouseMove.bind(this));
-    this.addEventListener(document, 'mouseup', this.handleMouseUp.bind(this));
+    this.addEventListener(element, 'mousedown', this.handleMouseDown.bind(this) as EventListener);
+    this.addEventListener(document, 'mousemove', this.handleMouseMove.bind(this) as EventListener);
+    this.addEventListener(document, 'mouseup', this.handleMouseUp.bind(this) as EventListener);
 
     // Prevent context menu on long press
-    this.addEventListener(element, 'contextmenu', this.handleContextMenu.bind(this));
+    this.addEventListener(
+      element,
+      'contextmenu',
+      this.handleContextMenu.bind(this) as EventListener
+    );
 
     // Prevent drag on images
-    this.addEventListener(element, 'dragstart', this.handleDragStart.bind(this));
+    this.addEventListener(element, 'dragstart', this.handleDragStart.bind(this) as EventListener);
   }
 
   /**
@@ -68,16 +77,25 @@ export class SliderInteractions {
   public setupKeyboardEvents(): void {
     // Make slider focusable
     this.slider.element.setAttribute('tabindex', '0');
-    this.addEventListener(this.slider.element, 'keydown', this.handleKeyDown.bind(this));
+    this.addEventListener(
+      this.slider.element,
+      'keydown',
+      this.handleKeyDown.bind(this) as EventListener
+    );
   }
 
   /**
    * Setup mouse wheel events
    */
   public setupMousewheelEvents(): void {
-    this.addEventListener(this.slider.element, 'wheel', this.handleWheel.bind(this), {
-      passive: false,
-    });
+    this.addEventListener(
+      this.slider.element,
+      'wheel',
+      this.handleWheel.bind(this) as EventListener,
+      {
+        passive: false,
+      }
+    );
   }
 
   /**
@@ -87,7 +105,9 @@ export class SliderInteractions {
     if (!this.slider.config.allowTouchMove) return;
 
     const touch = e.touches[0];
-    this.startTouch(touch.clientX, touch.clientY, e);
+    if (touch) {
+      this.startTouch(touch.clientX, touch.clientY, e);
+    }
   }
 
   /**
@@ -142,7 +162,9 @@ export class SliderInteractions {
     if (!this.touchState.isDragging) return;
 
     const touch = e.touches[0];
-    this.moveTouch(touch.clientX, touch.clientY, e);
+    if (touch) {
+      this.moveTouch(touch.clientX, touch.clientY, e);
+    }
   }
 
   /**

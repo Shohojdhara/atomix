@@ -35,11 +35,11 @@ export default class VideoPlayer {
   private options: VideoPlayerOptions;
   private video: HTMLVideoElement | null = null;
   private iframe: HTMLIFrameElement | null = null;
-  private container: HTMLDivElement;
-  private interactions: VideoPlayerInteractions;
+  private container!: HTMLDivElement;
+  private interactions!: VideoPlayerInteractions;
   private controlsTimeout: NodeJS.Timeout | null = null;
   private isYouTube: boolean;
-  private videoId: string | null = null;
+  private videoId: string | null | undefined = null;
 
   // State
   private isPlaying = false;
@@ -84,11 +84,11 @@ export default class VideoPlayer {
     return /(?:youtube\.com|youtu\.be)/.test(url);
   }
 
-  private extractYouTubeId(url: string): string | null {
+  private extractYouTubeId(url: string): string | undefined {
     const regex =
       /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
     const match = url.match(regex);
-    return match ? match[1] : null;
+    return match ? match[1] : undefined;
   }
 
   private init(): void {

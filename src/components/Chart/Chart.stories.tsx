@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Container, Grid, GridCol } from '../../layouts/Grid';
 import { Badge } from '../Badge';
 import { Button } from '../Button';
@@ -21,7 +21,6 @@ import {
   FunnelChart,
   GaugeChart,
   HeatmapChart,
-  InteractiveChart,
   LineChart,
   MultiAxisChart,
   PieChart,
@@ -98,7 +97,6 @@ export const ChartGallery: Story = {
       { key: 'treemap', icon: 'Tree', label: 'Treemap', desc: 'Hierarchical data' },
       { key: 'animated', icon: 'Sparkle', label: 'Animated', desc: 'Motion graphics' },
       { key: 'realtime', icon: 'WifiHigh', label: 'Real-time', desc: 'Live streaming' },
-      { key: 'interactive', icon: 'GameController', label: 'Interactive', desc: 'User controls' },
       { key: 'multiaxis', icon: 'ChartLineUp', label: 'Multi-axis', desc: 'Multiple scales' },
       { key: 'advanced', icon: 'Rocket', label: 'Advanced', desc: 'Complex features' },
     ];
@@ -331,13 +329,7 @@ export const ChartGallery: Story = {
               />
             </div>
           );
-        case 'interactive':
-          return (
-            <div>
-              {customToolbar}
-              <InteractiveChart datasets={dynamicDatasets} {...commonProps} />
-            </div>
-          );
+
         case 'multiaxis':
           return (
             <div>
@@ -401,7 +393,7 @@ export const ChartGallery: Story = {
                       active={selectedType === key}
                     >
                       <div className="u-d-flex u-align-items-center u-gap-2">
-                        <Icon name={icon} size="sm" />
+                        <Icon name={icon as any} size="sm" />
                         <div>
                           <div>{label}</div>
                           {/* <small className="u-text-muted">{desc}</small> */}
@@ -415,9 +407,7 @@ export const ChartGallery: Story = {
           </GridCol>
 
           <GridCol xs={9}>
-            <Card className="u-p-4" style={{ minHeight: '600px' }}>
-              {renderChart()}
-            </Card>
+            <Card className="u-p-4 u-min-h-600">{renderChart()}</Card>
           </GridCol>
         </Grid>
       </Container>
@@ -482,14 +472,14 @@ export const AdvancedFeatures: Story = {
         style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))' }}
       >
         <Card className="u-p-4">
-          <InteractiveChart
-            title="Interactive Chart"
+          <MultiAxisChart
+            title="Multi-Axis Chart"
             datasets={datasets}
-            interactiveOptions={{
-              showCrosshair: true,
-              enableMouseWheelZoom: true,
-              highlightOnHover: true,
-            }}
+            yAxes={datasets.map((d, i) => ({
+              id: `axis${i}`,
+              position: i % 2 ? 'right' : 'left',
+              label: d.label,
+            }))}
             className="u-h-100"
           />
         </Card>

@@ -411,7 +411,7 @@ const TreemapChart = memo(
             id: item.id,
             label: item.label,
             value: item.value,
-            color: generateColor(item, 0, index),
+            color: generateColor(item, 0, index) || 'transparent',
             x: currentX,
             y: currentY,
             width: nodeWidth,

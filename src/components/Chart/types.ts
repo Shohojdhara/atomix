@@ -22,7 +22,8 @@ export type ChartType =
   | 'funnel'
   | 'waterfall'
   | 'heatmap'
-  | 'treemap';
+  | 'treemap'
+  | 'realtime';
 
 /**
  * Chart data point interface

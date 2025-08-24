@@ -10,7 +10,7 @@ interface HeatmapDataPoint {
   metadata?: Record<string, any>;
 }
 
-interface HeatmapChartProps extends Omit<ChartProps, 'type' | 'datasets'> {
+interface HeatmapChartProps extends Omit<ChartProps, 'type' | 'datasets' | 'variant'> {
   /**
    * Heatmap data points
    */
@@ -174,8 +174,8 @@ const HeatmapChart = memo(
         data.forEach(point => {
           const xIndex = xValues.indexOf(point.x);
           const yIndex = yValues.indexOf(point.y);
-          if (xIndex >= 0 && yIndex >= 0) {
-            matrix[yIndex][xIndex] = point;
+          if (xIndex >= 0 && yIndex >= 0 && matrix[yIndex]) {
+            matrix[yIndex]![xIndex] = point;
           }
         });
 
@@ -307,7 +307,7 @@ const HeatmapChart = memo(
 
       // Render heatmap content
       const renderContent = useCallback(
-        ({ scales }) => {
+        ({ scales }: { scales: any }) => {
           const { matrix, xLabels, yLabels } = processedData;
           console.log(
             'Rendering heatmap with matrix:',
@@ -595,7 +595,7 @@ export const generateHeatmapData = ({
       const value = Math.floor(Math.random() * (maxValue + 1));
       data.push({
         x: week,
-        y: days[day],
+        y: days[day] || `Day ${day}`,
         value,
         label: `Week ${week + 1}, ${days[day]}`,
         metadata: {

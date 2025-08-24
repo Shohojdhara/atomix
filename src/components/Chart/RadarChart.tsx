@@ -1,4 +1,4 @@
-import { forwardRef, memo, useCallback, useState } from 'react';
+import { forwardRef, memo, ReactElement, useCallback, useState } from 'react';
 import { ChartProps } from '../../lib/types/components';
 import Chart from './Chart';
 import ChartRenderer from './ChartRenderer';
@@ -129,7 +129,7 @@ const RadarChart = memo(
                 };
               });
 
-              const pathData = `M ${points.map(p => `${p.x},${p.y}`).join(' L ')} Z`;
+              const pathData = `M ${points.map((p: any) => `${p.x},${p.y}`).join(' L ')} Z`;
 
               gridElements.push(
                 <path
@@ -161,7 +161,7 @@ const RadarChart = memo(
           }
 
           // Generate axis labels
-          const labelElements = [];
+          const labelElements: ReactElement[] = [];
           if (showAxisLabels) {
             dataPoints.forEach((point: any, i: number) => {
               const angle = i * angleStep - Math.PI / 2;
@@ -185,7 +185,7 @@ const RadarChart = memo(
           }
 
           // Generate data paths
-          const dataElements = renderedDatasets.map((dataset, datasetIndex) => {
+          const dataElements = renderedDatasets.map((dataset: any, datasetIndex: number) => {
             const color = dataset.color || colors[datasetIndex];
             const points =
               dataset.data?.map((point: any, i: number) => {
@@ -203,7 +203,7 @@ const RadarChart = memo(
 
             const pathData = smooth
               ? generateSmoothRadarPath(points)
-              : `M ${points.map(p => `${p.x},${p.y}`).join(' L ')} Z`;
+              : `M ${points.map((p: any) => `${p.x},${p.y}`).join(' L ')} Z`;
 
             const elements = [];
 
@@ -234,7 +234,7 @@ const RadarChart = memo(
 
             // Data points
             if (showDataPoints) {
-              points.forEach((point, i) => {
+              points.forEach((point: any, i: number) => {
                 elements.push(
                   <circle
                     key={`point-${datasetIndex}-${i}`}
@@ -315,7 +315,7 @@ const RadarChart = memo(
           />
           {hoveredPoint && (
             <ChartTooltip
-              dataPoint={datasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]}
+              dataPoint={datasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]!}
               datasetLabel={datasets[hoveredPoint.datasetIndex]?.label}
               datasetColor={datasets[hoveredPoint.datasetIndex]?.color}
               position={{ x: hoveredPoint.clientX, y: hoveredPoint.clientY }}

@@ -128,8 +128,10 @@ export class VideoPlayerInteractions {
       if (this.isDestroyed) return;
 
       const touch = e.touches[0];
-      touchStartX = touch.clientX;
-      touchStartY = touch.clientY;
+      if (touch) {
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+      }
       touchStartTime = Date.now();
       isSeeking = false;
       isVolumeAdjusting = false;
@@ -139,6 +141,7 @@ export class VideoPlayerInteractions {
       if (this.isDestroyed) return;
 
       const touch = e.touches[0];
+      if (!touch) return;
       const deltaX = touch.clientX - touchStartX;
       const deltaY = touch.clientY - touchStartY;
       const absDeltaX = Math.abs(deltaX);
@@ -187,6 +190,7 @@ export class VideoPlayerInteractions {
       if (isSeeking) {
         // Apply the seek
         const touch = e.changedTouches[0];
+        if (!touch) return;
         const deltaX = touch.clientX - touchStartX;
         const seekAmount = (deltaX / this.element.clientWidth) * (this.videoPlayer as any).duration;
         const currentTime = (this.videoPlayer as any).currentTime;

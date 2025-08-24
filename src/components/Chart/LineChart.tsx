@@ -58,20 +58,30 @@ const LineChart = memo(
       } = useLineChart(datasets, lineOptions);
 
       const renderContent = useCallback(
-        ({ scales, colors, datasets: renderedDatasets, handlers }) => {
+        ({
+          scales,
+          colors,
+          datasets: renderedDatasets,
+          handlers,
+        }: {
+          scales: any;
+          colors: any;
+          datasets: any;
+          handlers: any;
+        }) => {
           if (!renderedDatasets.length) return null;
 
-          return renderedDatasets.map((dataset, datasetIndex) => {
+          return renderedDatasets.map((dataset: any, datasetIndex: number) => {
             const color = dataset.color || colors[datasetIndex];
             const points =
-              dataset.data?.map((point, i) => ({
+              dataset.data?.map((point: any, i: number) => ({
                 x: scales.xScale(i, dataset.data?.length),
                 y: scales.yScale(point.value),
               })) || [];
 
             const path = lineOptions.smooth
               ? generateSmoothPath(points)
-              : `M ${points.map(p => `${p.x},${p.y}`).join(' L ')}`;
+              : `M ${points.map((p: any) => `${p.x},${p.y}`).join(' L ')}`;
 
             return (
               <g key={`dataset-${datasetIndex}`}>
@@ -84,7 +94,7 @@ const LineChart = memo(
                 )}
                 <path d={path} stroke={color} fill="none" className="c-chart__line-path" />
                 {lineOptions.showDataPoints &&
-                  dataset.data?.map((point, i) => {
+                  dataset.data?.map((point: any, i: number) => {
                     const x = scales.xScale(i, dataset.data?.length);
                     const y = scales.yScale(point.value);
                     const isHovered =
@@ -103,7 +113,7 @@ const LineChart = memo(
                           const rect = e.currentTarget.ownerSVGElement?.getBoundingClientRect();
                           const clientX = rect ? rect.left + x : e.clientX;
                           const clientY = rect ? rect.top + y : e.clientY;
-                          handlePointHover(datasetIndex, i, x, y, clientX, clientY);
+                          handlePointHover(datasetIndex, i, x, y);
                         }}
                         onMouseLeave={handlePointLeave}
                       />
@@ -139,17 +149,18 @@ const LineChart = memo(
             onDataPointClick={onDataPointClick}
             renderContent={renderContent}
           />
-          {hoveredPoint && (
-            <ChartTooltip
-              dataPoint={
-                processedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]
-              }
-              datasetLabel={processedDatasets[hoveredPoint.datasetIndex]?.label}
-              datasetColor={processedDatasets[hoveredPoint.datasetIndex]?.color}
-              position={{ x: hoveredPoint.clientX, y: hoveredPoint.clientY }}
-              visible={true}
-            />
-          )}
+          {hoveredPoint &&
+            processedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
+              <ChartTooltip
+                dataPoint={
+                  processedDatasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!
+                }
+                datasetLabel={processedDatasets[hoveredPoint.datasetIndex]?.label}
+                datasetColor={processedDatasets[hoveredPoint.datasetIndex]?.color}
+                position={{ x: hoveredPoint.x, y: hoveredPoint.y }}
+                visible={true}
+              />
+            )}
         </Chart>
       );
     }

@@ -2,8 +2,8 @@ import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { VideoQuality } from '../types/components';
 
 export interface UseVideoPlayerOptions {
-  videoRef: RefObject<HTMLVideoElement>;
-  containerRef: RefObject<HTMLDivElement>;
+  videoRef: RefObject<HTMLVideoElement | null>;
+  containerRef: RefObject<HTMLDivElement | null>;
   onPlay?: () => void;
   onPause?: () => void;
   onEnded?: () => void;
@@ -200,7 +200,7 @@ export function useVideoPlayer({
   // Event listeners
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video) return undefined;
 
     const handleLoadStart = () => setIsLoading(true);
     const handleCanPlay = () => setIsLoading(false);
@@ -344,7 +344,7 @@ export function useVideoPlayer({
   // Mouse movement for controls
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container) return undefined;
 
     const handleMouseMove = () => resetControlsTimeout();
     const handleMouseLeave = () => {

@@ -253,13 +253,23 @@ const RealTimeChart = memo(
 
       // Render content with real-time optimizations
       const renderContent = useCallback(
-        ({ scales, colors, datasets: renderedDatasets, handlers }) => {
+        ({
+          scales,
+          colors,
+          datasets: renderedDatasets,
+          handlers,
+        }: {
+          scales: any;
+          colors: any;
+          datasets: any;
+          handlers: any;
+        }) => {
           if (!renderedDatasets.length) return null;
 
-          return renderedDatasets.map((dataset, datasetIndex) => {
+          return renderedDatasets.map((dataset: any, datasetIndex: number) => {
             const color = dataset.color || colors[datasetIndex];
             const points =
-              dataset.data?.map((point, i) => ({
+              dataset.data?.map((point: any, i: number) => ({
                 x: scales.xScale(i, dataset.data?.length),
                 y: scales.yScale(point.value),
                 timestamp: point.timestamp,
@@ -267,7 +277,7 @@ const RealTimeChart = memo(
 
             // Generate path with performance optimization
             const path =
-              points.length > 1 ? `M ${points.map(p => `${p.x},${p.y}`).join(' L ')}` : '';
+              points.length > 1 ? `M ${points.map((p: any) => `${p.x},${p.y}`).join(' L ')}` : '';
 
             return (
               <g key={`realtime-dataset-${datasetIndex}`}>
@@ -290,7 +300,7 @@ const RealTimeChart = memo(
                 />
 
                 {/* Data points with pulse animation for latest */}
-                {dataset.data?.map((point, i) => {
+                {dataset.data?.map((point: any, i: number) => {
                   const x = scales.xScale(i, dataset.data?.length);
                   const y = scales.yScale(point.value);
                   const isLatest = i === (dataset.data?.length || 0) - 1;

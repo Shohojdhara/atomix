@@ -2,6 +2,7 @@ import { forwardRef, memo, useCallback, useMemo } from 'react';
 import { ChartDataset, ChartProps } from '../../lib/types/components';
 import Chart from './Chart';
 import ChartRenderer from './ChartRenderer';
+import { ChartDataPoint } from './types';
 
 interface AxisConfig {
   /**
@@ -189,7 +190,23 @@ const MultiAxisChart = memo(
 
       // Render multi-axis content
       const renderContent = useCallback(
-        ({ scales: _, colors, datasets: renderedDatasets, handlers }) => {
+        ({
+          scales: _,
+          colors,
+          datasets: renderedDatasets,
+          handlers,
+        }: {
+          scales: any;
+          colors: string[];
+          datasets: MultiAxisDataset[];
+          handlers: {
+            onDataPointClick?: (
+              dataPoint: ChartDataPoint,
+              datasetIndex: number,
+              pointIndex: number
+            ) => void;
+          };
+        }) => {
           if (!renderedDatasets.length || !axisScales.x) return null;
 
           const {
@@ -309,8 +326,8 @@ const MultiAxisChart = memo(
                 />
 
                 {/* X-axis ticks and labels */}
-                {renderedDatasets[0]?.data?.map((point, i) => {
-                  const x = xScale(i, renderedDatasets[0].data?.length);
+                {renderedDatasets[0]?.data?.map((point: ChartDataPoint, i: number) => {
+                  const x = xScale(i, renderedDatasets[0]?.data?.length || 0);
                   return (
                     <g key={`x-tick-${i}`}>
                       <line
@@ -336,22 +353,25 @@ const MultiAxisChart = memo(
               </g>
 
               {/* Data visualization */}
-              {renderedDatasets.map((dataset, datasetIndex) => {
-                const axisScale = axisScales[dataset.yAxisId || yAxes[0]?.id];
+              {renderedDatasets.map((dataset: MultiAxisDataset, datasetIndex: number) => {
+                const axisScale =
+                  axisScales[(dataset as MultiAxisDataset).yAxisId || yAxes[0]?.id || ''];
                 if (!axisScale) return null;
 
                 const color = dataset.color || colors[datasetIndex];
-                const chartType = dataset.type || 'line';
+                const chartType = (dataset as MultiAxisDataset).type || 'line';
 
                 if (chartType === 'line' || chartType === 'area') {
                   const points =
-                    dataset.data?.map((point, i) => ({
+                    dataset.data?.map((point: ChartDataPoint, i: number) => ({
                       x: xScale(i, dataset.data?.length),
                       y: axisScale.yScale(point.value),
                     })) || [];
 
                   const path =
-                    points.length > 1 ? `M ${points.map(p => `${p.x},${p.y}`).join(' L ')}` : '';
+                    points.length > 1
+                      ? `M ${points.map((p: { x: number; y: number }) => `${p.x},${p.y}`).join(' L ')}`
+                      : '';
 
                   return (
                     <g key={`dataset-${datasetIndex}`}>
@@ -375,7 +395,7 @@ const MultiAxisChart = memo(
                       />
 
                       {/* Data points */}
-                      {dataset.data?.map((point, i) => {
+                      {dataset.data?.map((point: ChartDataPoint, i: number) => {
                         const x = xScale(i, dataset.data?.length);
                         const y = axisScale.yScale(point.value);
 
@@ -400,8 +420,8 @@ const MultiAxisChart = memo(
 
                   return (
                     <g key={`bars-${datasetIndex}`}>
-                      {dataset.data?.map((point, i) => {
-                        const x = xScale(i, dataset.data?.length);
+                      {dataset.data?.map((point: ChartDataPoint, i: number) => {
+                        const x = xScale(i, dataset.data?.length || 0);
                         const y = axisScale.yScale(point.value);
                         const barHeight = plotAreaBottom - y;
 
@@ -428,7 +448,7 @@ const MultiAxisChart = memo(
 
               {/* Legend */}
               <g transform={`translate(${plotAreaLeft}, ${plotAreaBottom + 50})`}>
-                {renderedDatasets.map((dataset, i) => {
+                {renderedDatasets.map((dataset: MultiAxisDataset, i: number) => {
                   const color = dataset.color || colors[i];
                   const x = i * 120;
 
@@ -436,7 +456,7 @@ const MultiAxisChart = memo(
                     <g key={`legend-${i}`} transform={`translate(${x}, 0)`}>
                       <rect x="0" y="0" width="12" height="12" fill={color} rx="2" />
                       <text x="18" y="9" fontSize="12" fill="var(--atomix-gray-8)">
-                        {dataset.label} ({dataset.yAxisId})
+                        {dataset.label} ({(dataset as MultiAxisDataset).yAxisId})
                       </text>
                     </g>
                   );

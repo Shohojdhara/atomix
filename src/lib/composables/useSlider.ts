@@ -221,10 +221,10 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
       const client =
         direction === 'horizontal'
           ? 'touches' in e
-            ? e.touches[0].clientX
+            ? e.touches[0]?.clientX || 0
             : e.clientX
           : 'touches' in e
-            ? e.touches[0].clientY
+            ? e.touches[0]?.clientY || 0
             : e.clientY;
       setTouchStart(client);
       setTouching(true);
@@ -240,10 +240,10 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
       const client =
         direction === 'horizontal'
           ? 'touches' in e
-            ? e.touches[0].clientX
+            ? e.touches[0]?.clientX || 0
             : e.clientX
           : 'touches' in e
-            ? e.touches[0].clientY
+            ? e.touches[0]?.clientY || 0
             : e.clientY;
       const diff = touchStart - client;
 
@@ -262,10 +262,10 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
       const client =
         direction === 'horizontal'
           ? 'changedTouches' in e
-            ? e.changedTouches[0].clientX
+            ? e.changedTouches[0]?.clientX || 0
             : e.clientX
           : 'changedTouches' in e
-            ? e.changedTouches[0].clientY
+            ? e.changedTouches[0]?.clientY || 0
             : e.clientY;
       const diff = touchStart - client;
 
@@ -289,12 +289,32 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
   return {
     activeIndex: realIndex,
     realIndex,
+    previousIndex: realIndex,
     isBeginning: !loop && realIndex === 0,
     isEnd: !loop && realIndex >= slides.length - slidesToShow,
+    progress: slides.length > 0 ? realIndex / (slides.length - 1) : 0,
+    autoplayRunning: false,
     transitioning: isTransitioning,
     touching,
-    slidesCount: slides.length,
+    translate: translateValue,
     slidesPerView: slidesToShow,
+    slidesCount: slides.length,
+    isLocked: false,
+    destroyed: false,
+    size: containerSize,
+    touches: {
+      startX: 0,
+      startY: 0,
+      currentX: 0,
+      currentY: 0,
+      diff: 0,
+    },
+    allowSlideNext: canSlideNext,
+    allowSlidePrev: canSlidePrev,
+    allowTouchMove,
+    animating: isTransitioning,
+    enabled: true,
+    initialized: true,
 
     slideNext,
     slidePrev,

@@ -1,9 +1,9 @@
 import { forwardRef, memo, useMemo, useState } from 'react';
 import { CHART } from '../../lib/constants/components';
-import { ChartDataPoint } from './types';
 import Chart from './Chart';
-import { PieChartProps } from './PieChart';
 import ChartTooltip from './ChartTooltip';
+import { PieChartProps } from './PieChart';
+import { ChartDataPoint } from './types';
 
 interface DonutChartProps extends Omit<PieChartProps, 'type'> {
   /**
@@ -350,9 +350,9 @@ const DonutChart = memo(
             {chartContent}
             {hoveredSlice && dataset?.data?.[hoveredSlice.index] && (
               <ChartTooltip
-                dataPoint={dataset.data[hoveredSlice.index]}
+                dataPoint={dataset.data[hoveredSlice.index]!}
                 datasetLabel={dataset.label}
-                datasetColor={dataset.data[hoveredSlice.index].color}
+                datasetColor={dataset.data[hoveredSlice.index]!.color}
                 position={{ x: hoveredSlice.clientX, y: hoveredSlice.clientY }}
                 visible={true}
               />

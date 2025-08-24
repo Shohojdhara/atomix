@@ -5,7 +5,7 @@ export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type IconWeight = 'thin' | 'light' | 'regular' | 'bold' | 'fill' | 'duotone';
 
 // We need to filter out non-icon exports from the Phosphor package
-type PhosphorIconsType = Exclude<
+export type PhosphorIconsType = Exclude<
   keyof typeof PhosphorIcons,
   'Icon' | 'IconContext' | 'IconBase' | 'IconProps' | 'createIcon' | 'default' | 'SSR'
 >;

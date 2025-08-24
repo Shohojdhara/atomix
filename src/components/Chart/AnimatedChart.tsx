@@ -101,7 +101,7 @@ const AnimatedChart = memo(
             // Data-influenced wave effect
             const dataInfluence =
               particle.dataIndex !== undefined && dataPoints[particle.dataIndex]
-                ? dataPoints[particle.dataIndex].value / maxValue
+                ? (dataPoints[particle.dataIndex]?.value || 0) / maxValue
                 : 0.5;
 
             const waveOffset =
@@ -166,7 +166,7 @@ const AnimatedChart = memo(
 
       useEffect(() => {
         const canvas = canvasRef.current;
-        if (!canvas) return;
+        if (!canvas) return undefined;
 
         const resizeCanvas = () => {
           canvas.width = canvas.offsetWidth;
@@ -203,3 +203,4 @@ const AnimatedChart = memo(
 
 AnimatedChart.displayName = 'AnimatedChart';
 export default AnimatedChart;
+export type { AnimatedChartProps };

@@ -1,12 +1,13 @@
 import { forwardRef, memo, useCallback, useState } from 'react';
 import { CHART } from '../../lib/constants/components';
 import { Icon } from '../Icon';
+import type { PhosphorIconsType } from '../Icon/Icon';
 import { ChartType } from './types';
 
 export interface ChartToolbarAction {
   id: string;
   label: string;
-  icon: string;
+  icon: PhosphorIconsType;
   onClick: () => void;
   disabled?: boolean;
   active?: boolean;
@@ -240,7 +241,10 @@ const ChartToolbar = memo(
             id: 'reset',
             label: 'Reset View',
             icon: 'ArrowCounterClockwise',
-            onClick: () => onZoomReset?.() || onReset?.(),
+            onClick: () => {
+              onZoomReset?.();
+              onReset?.();
+            },
             tooltip: 'Reset view (R)',
             shortcut: 'R',
           });
@@ -430,4 +434,3 @@ const ChartToolbar = memo(
 
 ChartToolbar.displayName = 'ChartToolbar';
 export default ChartToolbar;
-export type { ChartToolbarProps, ChartToolbarAction, ChartToolbarGroup };

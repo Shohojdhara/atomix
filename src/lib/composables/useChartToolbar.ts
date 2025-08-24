@@ -435,7 +435,12 @@ export function useChartToolbar(
     // Add custom actions to the last group or create a new one
     if (customActions.length > 0) {
       if (groups.length > 0) {
-        groups[groups.length - 1].actions.push(...customActions);
+        if (groups.length > 0) {
+          const lastGroup = groups[groups.length - 1];
+          if (lastGroup) {
+            lastGroup.actions.push(...customActions);
+          }
+        }
       } else {
         groups.push({
           id: 'custom-actions',

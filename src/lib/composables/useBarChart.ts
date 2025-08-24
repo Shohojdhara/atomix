@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ChartDataset } from '../types/components';
 
 /**
@@ -212,6 +212,7 @@ export function useBarChart(datasets: ChartDataset[], options: BarChartOptions =
                 (innerHeight / numCategories - barHeight) / 2;
             } else {
               barWidth = options.maxBarWidth;
+              const categoryWidth = (width - padding.left - padding.right) / numCategories;
               barX = padding.left + categoryIndex * categoryWidth + (categoryWidth - barWidth) / 2;
             }
           }

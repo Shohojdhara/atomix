@@ -1,17 +1,17 @@
+import { sliderConstants } from '../../../lib/constants/components';
 import {
-  SliderSlide,
   SliderAutoplay,
-  SliderPagination,
-  SliderNavigation,
-  SliderScrollbar,
   SliderEffect,
-  SliderThumbs,
-  SliderZoom,
   SliderLazy,
+  SliderNavigation,
+  SliderPagination,
+  SliderScrollbar,
+  SliderSlide,
+  SliderThumbs,
   SliderVirtual,
+  SliderZoom,
 } from '../../../lib/types/components';
 import { SliderInteractions } from './SliderInteractions';
-import { sliderConstants } from '../../../lib/constants/components';
 
 /**
  * Vanilla JS Slider implementation
@@ -20,7 +20,7 @@ import { sliderConstants } from '../../../lib/constants/components';
 export default class AtomixSlider {
   private element: HTMLElement;
   private wrapper: HTMLElement | null = null;
-  private slides: SliderSlide[];
+  private slides: SliderSlide[] = [];
   private currentIndex: number = 0;
   private realIndex: number = 0;
   private isTransitioning: boolean = false;
@@ -241,8 +241,8 @@ export default class AtomixSlider {
     this.slides.forEach((slide, index) => {
       const slideEl = document.createElement('div');
       slideEl.className = `c-slider__slide ${index === 0 ? 'c-slider__slide--active' : ''}`;
-      slideEl.innerHTML = slide.content;
-      this.wrapper.appendChild(slideEl);
+      slideEl.innerHTML = String(slide.content || '');
+      this.wrapper?.appendChild(slideEl);
     });
 
     this.element.innerHTML = '';
@@ -315,7 +315,11 @@ export default class AtomixSlider {
     }
 
     // Autoplay pause on hover
-    if (this.options.autoplay && this.options.autoplay.pauseOnHover) {
+    if (
+      this.options.autoplay &&
+      typeof this.options.autoplay === 'object' &&
+      this.options.autoplay.pauseOnHover
+    ) {
       this.element.addEventListener('mouseenter', () => this.stopAutoplay());
       this.element.addEventListener('mouseleave', () => this.startAutoplay());
     }
@@ -442,9 +446,10 @@ export default class AtomixSlider {
   public startAutoplay(): void {
     if (!this.options.autoplay || this.autoplayTimer) return;
 
+    const delay = typeof this.options.autoplay === 'object' ? this.options.autoplay.delay : 3000;
     this.autoplayTimer = window.setInterval(() => {
       this.next();
-    }, this.options.autoplay.delay);
+    }, delay);
   }
 
   public stopAutoplay(): void {

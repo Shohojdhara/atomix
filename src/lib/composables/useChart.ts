@@ -1,6 +1,6 @@
-import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CHART } from '../constants/components';
-import { ChartProps, ChartDataset, ChartDataPoint } from '../types/components';
+import { ChartDataset, ChartProps } from '../types/components';
 
 /**
  * Chart interaction state interface
@@ -373,7 +373,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
       };
 
       // Single touch - start dragging
-      if (touches.length === 1) {
+      if (touches.length === 1 && touches[0]) {
         const rect = (event.target as Element).getBoundingClientRect();
         const x = touches[0].x - rect.left;
         const y = touches[0].y - rect.top;
@@ -386,7 +386,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
       }
 
       // Multi-touch - prepare for pinch
-      if (touches.length === 2) {
+      if (touches.length === 2 && touches[0] && touches[1]) {
         const distance = Math.sqrt(
           Math.pow(touches[1].x - touches[0].x, 2) + Math.pow(touches[1].y - touches[0].y, 2)
         );
@@ -419,7 +419,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
       const rect = (event.target as Element).getBoundingClientRect();
 
       // Single touch - pan
-      if (touches.length === 1 && prev.isDragging && prev.dragStart) {
+      if (touches.length === 1 && touches[0] && prev.isDragging && prev.dragStart) {
         const x = touches[0].x - rect.left;
         const y = touches[0].y - rect.top;
         const deltaX = x - prev.dragStart.x;
@@ -440,7 +440,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
       }
 
       // Two touches - pinch zoom
-      if (touches.length === 2 && prev.touchState.isPinching) {
+      if (touches.length === 2 && touches[0] && touches[1] && prev.touchState.isPinching) {
         const distance = Math.sqrt(
           Math.pow(touches[1].x - touches[0].x, 2) + Math.pow(touches[1].y - touches[0].y, 2)
         );
@@ -450,8 +450,8 @@ export function useChart(initialProps?: Partial<ChartProps>) {
           const newZoomLevel = Math.max(0.1, Math.min(10, prev.zoomLevel * scale));
 
           // Calculate center point for zoom
-          const centerX = (touches[0].x + touches[1].x) / 2 - rect.left;
-          const centerY = (touches[0].y + touches[1].y) / 2 - rect.top;
+          const centerX = (touches[0]!.x + touches[1]!.x) / 2 - rect.left;
+          const centerY = (touches[0]!.y + touches[1]!.y) / 2 - rect.top;
 
           // Adjust pan offset to zoom towards center
           const zoomRatio = newZoomLevel / prev.zoomLevel;
@@ -517,7 +517,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
       }
 
       // Single touch remaining - switch from pinch to pan
-      if (touches.length === 1 && prev.touchState.isPinching) {
+      if (touches.length === 1 && touches[0] && prev.touchState.isPinching) {
         const rect = (event.target as Element).getBoundingClientRect();
         const x = touches[0].x - rect.left;
         const y = touches[0].y - rect.top;
@@ -817,9 +817,9 @@ export function useChartData(
   }, []);
 
   // Trend line calculation (linear regression)
-  const calculateTrendLine = useCallback((values: number[]) => {
+  const calculateTrendLine = useCallback((values: number[]): (number | null)[] => {
     const n = values.length;
-    if (n < 2) return values.map(() => null);
+    if (n < 2) return values.map((): null => null);
 
     const xSum = values.reduce((sum, _, i) => sum + i, 0);
     const ySum = values.reduce((sum, val) => sum + val, 0);
@@ -852,7 +852,7 @@ export function useChartData(
 
   // Real-time data updates
   useEffect(() => {
-    if (!enableRealTime) return;
+    if (!enableRealTime) return undefined;
 
     const interval = setInterval(() => {
       setProcessedData(prev => [...prev]); // Trigger re-render for real-time updates

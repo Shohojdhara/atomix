@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { ChartDataset, ChartDataPoint } from '../types/components';
+import { ChartDataPoint, ChartDataset } from '../types/components';
 
 export interface StatisticalAnalysis {
   mean: number;
@@ -97,7 +97,9 @@ export function useChartAnalytics(datasets: ChartDataset[]) {
     const sum = values.reduce((a, b) => a + b, 0);
     const mean = sum / n;
     const median =
-      n % 2 === 0 ? (sorted[n / 2 - 1] + sorted[n / 2]) / 2 : sorted[Math.floor(n / 2)];
+      n % 2 === 0
+        ? ((sorted[n / 2 - 1] || 0) + (sorted[n / 2] || 0)) / 2
+        : sorted[Math.floor(n / 2)] || 0;
 
     // Mode calculation
     const frequency: Record<number, number> = {};
@@ -119,9 +121,9 @@ export function useChartAnalytics(datasets: ChartDataset[]) {
     // Quartiles
     const q1Index = Math.floor(n * 0.25);
     const q3Index = Math.floor(n * 0.75);
-    const q1 = sorted[q1Index];
+    const q1 = sorted[q1Index] || 0;
     const q2 = median;
-    const q3 = sorted[q3Index];
+    const q3 = sorted[q3Index] || 0;
     const iqr = q3 - q1;
 
     // Outliers (using IQR method)
@@ -139,14 +141,14 @@ export function useChartAnalytics(datasets: ChartDataset[]) {
 
     return {
       mean,
-      median,
+      median: median || 0,
       mode,
       standardDeviation,
       variance,
       min,
       max,
       range,
-      quartiles: { q1, q2, q3, iqr },
+      quartiles: { q1: q1 || 0, q2: q2 || 0, q3: q3 || 0, iqr: iqr || 0 },
       outliers,
       skewness,
       kurtosis,
@@ -173,7 +175,7 @@ export function useChartAnalytics(datasets: ChartDataset[]) {
     // Linear regression calculations
     const sumX = x.reduce((a, b) => a + b, 0);
     const sumY = values.reduce((a, b) => a + b, 0);
-    const sumXY = x.reduce((acc, xi, i) => acc + xi * values[i], 0);
+    const sumXY = x.reduce((acc, xi, i) => acc + xi * (values[i] || 0), 0);
     const sumXX = x.reduce((acc, xi) => acc + xi * xi, 0);
     const sumYY = values.reduce((acc, yi) => acc + yi * yi, 0);
 
@@ -232,7 +234,7 @@ export function useChartAnalytics(datasets: ChartDataset[]) {
       let count = 0;
 
       for (let i = lag; i < values.length; i++) {
-        sum += values[i] * values[i - lag];
+        sum += (values[i] || 0) * (values[i - lag] || 0);
         count++;
       }
 
@@ -248,9 +250,13 @@ export function useChartAnalytics(datasets: ChartDataset[]) {
     const troughs: number[] = [];
 
     for (let i = 1; i < values.length - 1; i++) {
-      if (values[i] > values[i - 1] && values[i] > values[i + 1]) {
+      const current = values[i] || 0;
+      const prev = values[i - 1] || 0;
+      const next = values[i + 1] || 0;
+
+      if (current > prev && current > next) {
         peaks.push(i);
-      } else if (values[i] < values[i - 1] && values[i] < values[i + 1]) {
+      } else if (current < prev && current < next) {
         troughs.push(i);
       }
     }
@@ -306,19 +312,27 @@ export function useChartAnalytics(datasets: ChartDataset[]) {
       const strongCorrelations: CorrelationAnalysis['strongCorrelations'] = [];
 
       for (let i = 0; i < n; i++) {
-        const values1 = extractValues(datasets[i]);
+        const dataset1 = datasets[i];
+        if (!dataset1) continue;
+        const values1 = extractValues(dataset1);
 
         for (let j = 0; j < n; j++) {
           if (i === j) {
-            correlationMatrix[i][j] = 1;
+            if (correlationMatrix[i]) {
+              correlationMatrix[i]![j] = 1;
+            }
             continue;
           }
 
-          const values2 = extractValues(datasets[j]);
+          const dataset2 = datasets[j];
+          if (!dataset2) continue;
+          const values2 = extractValues(dataset2);
           const minLength = Math.min(values1.length, values2.length);
 
           if (minLength < 2) {
-            correlationMatrix[i][j] = 0;
+            if (correlationMatrix[i]) {
+              correlationMatrix[i]![j] = 0;
+            }
             continue;
           }
 
@@ -329,12 +343,17 @@ export function useChartAnalytics(datasets: ChartDataset[]) {
           const meanX = x.reduce((a, b) => a + b, 0) / minLength;
           const meanY = y.reduce((a, b) => a + b, 0) / minLength;
 
-          const numerator = x.reduce((acc, xi, idx) => acc + (xi - meanX) * (y[idx] - meanY), 0);
+          const numerator = x.reduce(
+            (acc, xi, idx) => acc + (xi - meanX) * ((y[idx] || 0) - meanY),
+            0
+          );
           const denomX = Math.sqrt(x.reduce((acc, xi) => acc + Math.pow(xi - meanX, 2), 0));
           const denomY = Math.sqrt(y.reduce((acc, yi) => acc + Math.pow(yi - meanY, 2), 0));
 
           const correlation = denomX * denomY !== 0 ? numerator / (denomX * denomY) : 0;
-          correlationMatrix[i][j] = correlation;
+          if (correlationMatrix[i]) {
+            correlationMatrix[i]![j] = correlation;
+          }
 
           // Track strong correlations
           if (Math.abs(correlation) > 0.7 && i < j) {
@@ -386,8 +405,8 @@ export function useChartAnalytics(datasets: ChartDataset[]) {
         totalDataPoints: datasets.reduce((sum, d) => sum + (d.data?.length || 0), 0),
         dateRange: datasets[0]?.data?.length
           ? {
-              start: datasets[0].data[0].label,
-              end: datasets[0].data[datasets[0].data.length - 1].label,
+              start: datasets[0].data[0]?.label || '',
+              end: datasets[0].data[datasets[0].data.length - 1]?.label || '',
             }
           : null,
         hasAnomalies: datasets.some(d => detectAnomalies(extractValues(d)).anomalies.length > 0),
@@ -430,15 +449,18 @@ export function useChartAnalytics(datasets: ChartDataset[]) {
     }
 
     // Seasonality insights
-    const seasonalDatasets = seasonality.filter(s => s.seasonality.hasSeasonality);
+    const seasonalDatasets = seasonality.filter((s: any) => s.seasonality.hasSeasonality);
     if (seasonalDatasets.length > 0) {
       insights.push(
-        `Seasonal patterns detected in ${seasonalDatasets.length} dataset(s) with periods ranging from ${Math.min(...seasonalDatasets.map(s => s.seasonality.period))} to ${Math.max(...seasonalDatasets.map(s => s.seasonality.period))}`
+        `Seasonal patterns detected in ${seasonalDatasets.length} dataset(s) with periods ranging from ${Math.min(...seasonalDatasets.map((s: any) => s.seasonality.period))} to ${Math.max(...seasonalDatasets.map((s: any) => s.seasonality.period))}`
       );
     }
 
     // Anomaly insights
-    const totalAnomalies = anomalies.reduce((sum, a) => sum + a.anomalies.anomalies.length, 0);
+    const totalAnomalies = anomalies.reduce(
+      (sum: number, a: any) => sum + a.anomalies.anomalies.length,
+      0
+    );
     if (totalAnomalies > 0) {
       insights.push(`${totalAnomalies} anomalies detected across all datasets`);
     }
@@ -453,7 +475,7 @@ export function useChartAnalytics(datasets: ChartDataset[]) {
 
     // Statistical insights
     const highVariability = statistics.filter(
-      s => s.stats.standardDeviation / Math.abs(s.stats.mean) > 0.5
+      (s: any) => s.stats.standardDeviation / Math.abs(s.stats.mean) > 0.5
     );
     if (highVariability.length > 0) {
       insights.push(`High variability detected in ${highVariability.length} dataset(s)`);

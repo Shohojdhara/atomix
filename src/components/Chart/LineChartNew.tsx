@@ -1,10 +1,10 @@
 import { forwardRef, memo, useState } from 'react';
-import Chart from './ChartNew';
-import { ChartProps } from './types';
 import { useChartData } from '../../lib/composables/useChartData';
-import { useChartScale } from '../../lib/composables/useChartScale';
 import { useChartInteraction } from '../../lib/composables/useChartInteraction';
+import { useChartScale } from '../../lib/composables/useChartScale';
+import Chart from './Chart';
 import ChartTooltip from './ChartTooltip';
+import { ChartDataPoint, ChartProps } from './types';
 
 interface LineChartProps extends Omit<ChartProps, 'type'> {
   /**
@@ -28,7 +28,7 @@ const LineChart = memo(
   forwardRef<HTMLDivElement, LineChartProps>(
     (
       {
-        data,
+        datasets,
         showArea = false,
         showPoints = true,
         smooth = false,
@@ -38,41 +38,29 @@ const LineChart = memo(
       },
       ref
     ) => {
-      const { data: processedData } = useChartData(data);
-      const scales = useChartScale(processedData, 400, 300);
+      const chartData = datasets?.[0]?.data || [];
+      const { data: processedData, stats } = useChartData(chartData);
       const { interaction, handlePointHover, handlePointClick } = useChartInteraction();
       const [tooltipData, setTooltipData] = useState<{
-        point: any;
+        point: ChartDataPoint;
         position: { x: number; y: number };
       } | null>(null);
 
-      // Generate SVG path
+      const scales = useChartScale(processedData, 800, 400);
+
       const generatePath = () => {
         if (!processedData.length) return '';
-
-        const points = processedData.map((point, index) => ({
-          x: scales.xScale(index),
-          y: scales.yScale(point.value),
-        }));
-
-        if (smooth) {
-          // Simple smooth curve using quadratic bezier
-          let path = `M ${points[0].x},${points[0].y}`;
-          for (let i = 1; i < points.length; i++) {
-            const prev = points[i - 1];
-            const curr = points[i];
-            const cpx = (prev.x + curr.x) / 2;
-            path += ` Q ${cpx},${prev.y} ${curr.x},${curr.y}`;
-          }
-          return path;
-        } else {
-          return `M ${points.map(p => `${p.x},${p.y}`).join(' L ')}`;
-        }
+        return processedData
+          .map((point, index) => {
+            const x = scales.xScale(index);
+            const y = scales.yScale(point.value);
+            return `${index === 0 ? 'M' : 'L'} ${x},${y}`;
+          })
+          .join(' ');
       };
 
       const generateAreaPath = () => {
-        if (!showArea || !processedData.length) return '';
-
+        if (!processedData.length) return '';
         const linePath = generatePath();
         const lastPoint = scales.xScale(processedData.length - 1);
         const firstPoint = scales.xScale(0);
@@ -143,7 +131,7 @@ const LineChart = memo(
                   onClick={() => {
                     if (interactive) {
                       handlePointClick(index);
-                      onDataPointClick?.(point, index);
+                      onDataPointClick?.(point, 0, index);
                     }
                   }}
                 />
@@ -153,7 +141,12 @@ const LineChart = memo(
       );
 
       return (
-        <Chart ref={ref} type="line" data={data} {...props}>
+        <Chart
+          ref={ref}
+          type="line"
+          datasets={[{ label: 'Line Chart', data: chartData }]}
+          {...props}
+        >
           {renderChart()}
           {tooltipData && (
             <ChartTooltip
