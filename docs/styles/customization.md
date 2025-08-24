@@ -131,40 +131,6 @@ Atomix uses CSS custom properties for runtime theming:
 }
 ```
 
-### Theme Switching
-
-```javascript
-// Theme switching utility
-class ThemeManager {
-  constructor() {
-    this.themes = ['light', 'dark', 'custom'];
-    this.currentTheme = this.getStoredTheme() || 'light';
-    this.applyTheme(this.currentTheme);
-  }
-  
-  applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('atomix-theme', theme);
-    this.currentTheme = theme;
-  }
-  
-  toggleTheme() {
-    const currentIndex = this.themes.indexOf(this.currentTheme);
-    const nextIndex = (currentIndex + 1) % this.themes.length;
-    this.applyTheme(this.themes[nextIndex]);
-  }
-  
-  getStoredTheme() {
-    return localStorage.getItem('atomix-theme');
-  }
-}
-
-// Usage
-const themeManager = new ThemeManager();
-document.getElementById('theme-toggle').addEventListener('click', () => {
-  themeManager.toggleTheme();
-});
-```
 
 ### Component-Level Theming
 

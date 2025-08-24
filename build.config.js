@@ -17,7 +17,7 @@ const buildConfig = {
   dirs: {
     src: path.resolve(__dirname, 'src'),
     dist: path.resolve(__dirname, 'dist'),
-    themes: path.resolve(__dirname, 'src/styles/themes'),
+    themes: path.resolve(__dirname, 'src/themes'),
     components: path.resolve(__dirname, 'src/components'),
     lib: path.resolve(__dirname, 'src/lib'),
   },

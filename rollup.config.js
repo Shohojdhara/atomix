@@ -3,8 +3,6 @@ import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
-import autoprefixer from 'autoprefixer';
-import cssnano from 'cssnano';
 import { readFileSync } from 'fs';
 import dts from 'rollup-plugin-dts';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
@@ -40,38 +38,6 @@ const mainPostcssConfig = {
     },
   },
   extensions: ['.css', '.scss', '.sass'],
-};
-
-// PostCSS configuration for theme-optimized build
-const themePostcssConfig = {
-  extract: 'index.themes.css',
-  minimize: true,
-  use: {
-    sass: {
-      api: 'modern',
-      silenceDeprecations: ['legacy-js-api'],
-      // Include theme-specific optimizations
-      includePaths: ['src/styles/themes'],
-    },
-  },
-  extensions: ['.css', '.scss', '.sass'],
-  // Optimize CSS custom properties for themes
-  plugins: [
-    autoprefixer,
-    cssnano({
-      preset: [
-        'default',
-        {
-          // Preserve CSS custom properties for theme switching
-          normalizeWhitespace: false,
-          discardComments: { removeAll: true },
-          reduceIdents: false,
-          mergeIdents: false,
-          discardUnused: false,
-        },
-      ],
-    }),
-  ],
 };
 
 export default [
@@ -175,10 +141,7 @@ export default [
     external,
     plugins: [
       ...commonPlugins,
-      postcss({
-        ...themePostcssConfig,
-        extract: 'index.min.css',
-      }),
+      postcss(mainPostcssConfig),
       typescript({
         tsconfig: './tsconfig.build.json',
         declaration: false,
@@ -208,13 +171,8 @@ export default [
       terser({
         compress: {
           drop_console: true,
-          // Preserve theme-related function names for debugging
-          keep_fnames: /theme|Theme/,
         },
-        mangle: {
-          // Preserve theme-related properties
-          reserved: ['theme', 'Theme', 'themeManager', 'ThemeManager'],
-        },
+        mangle: {},
       }),
     ],
   },
