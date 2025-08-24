@@ -191,7 +191,13 @@ const ChartToolbar = memo(
         const actions: ChartToolbarAction[] = [];
 
         // Zoom actions (for interactive charts)
-        if (defaults.zoom && (chartType === 'interactive' || chartType === 'line' || chartType === 'area' || chartType === 'bar')) {
+        if (
+          defaults.zoom &&
+          (chartType === 'interactive' ||
+            chartType === 'line' ||
+            chartType === 'area' ||
+            chartType === 'bar')
+        ) {
           actions.push(
             {
               id: 'zoom-in',
@@ -213,7 +219,10 @@ const ChartToolbar = memo(
         }
 
         // Pan toggle (for interactive charts)
-        if (defaults.pan && (chartType === 'interactive' || chartType === 'line' || chartType === 'area')) {
+        if (
+          defaults.pan &&
+          (chartType === 'interactive' || chartType === 'line' || chartType === 'area')
+        ) {
           actions.push({
             id: 'pan',
             label: 'Pan',
@@ -250,15 +259,27 @@ const ChartToolbar = memo(
           });
         }
 
-        return actions.length > 0 ? [
-          {
-            id: 'view-actions',
-            label: 'View',
-            actions,
-            separator: true,
-          },
-        ] : [];
-      }, [defaults, chartType, onZoomIn, onZoomOut, onPanToggle, onZoomReset, onReset, onFullscreen, state]);
+        return actions.length > 0
+          ? [
+              {
+                id: 'view-actions',
+                label: 'View',
+                actions,
+                separator: true,
+              },
+            ]
+          : [];
+      }, [
+        defaults,
+        chartType,
+        onZoomIn,
+        onZoomOut,
+        onPanToggle,
+        onZoomReset,
+        onReset,
+        onFullscreen,
+        state,
+      ]);
 
       // Generate chart-specific tool actions
       const getToolActions = useCallback((): ChartToolbarGroup[] => {
@@ -275,22 +296,27 @@ const ChartToolbar = memo(
           });
         }
 
-        return actions.length > 0 ? [
-          {
-            id: 'tool-actions',
-            label: 'Tools',
-            actions,
-          },
-        ] : [];
+        return actions.length > 0
+          ? [
+              {
+                id: 'tool-actions',
+                label: 'Tools',
+                actions,
+              },
+            ]
+          : [];
       }, [defaults, onSettings, showSettingsMenu]);
 
       // Always use provided groups if available, otherwise generate defaults
-      const allGroups = groups && groups.length > 0 ? groups : [
-        ...(enableDefaults ? getDefaultActions() : []),
-        ...(enableDefaults ? getViewActions() : []),
-        ...(enableDefaults ? getToolActions() : []),
-      ];
-      
+      const allGroups =
+        groups && groups.length > 0
+          ? groups
+          : [
+              ...(enableDefaults ? getDefaultActions() : []),
+              ...(enableDefaults ? getViewActions() : []),
+              ...(enableDefaults ? getToolActions() : []),
+            ];
+
       console.log('ChartToolbar: All groups', allGroups);
       console.log('ChartToolbar: Groups provided', groups);
       console.log('ChartToolbar: Enable defaults', enableDefaults);
@@ -322,7 +348,9 @@ const ChartToolbar = memo(
         if (!showExportMenu || !onExport) return null;
 
         return (
-          <div className={`${CHART.EXPORT_DROPDOWN_CLASS} u-position-absolute u-bg-white u-border u-border-radius u-shadow u-p-2 u-z-10`}>
+          <div
+            className={`${CHART.EXPORT_DROPDOWN_CLASS} u-position-absolute u-bg-white u-border u-border-radius u-shadow u-p-2 u-z-10`}
+          >
             <div className="u-mb-2 u-text-xs u-text-muted u-fw-medium">Export Formats</div>
             {exportFormats.map(format => (
               <button
@@ -347,13 +375,18 @@ const ChartToolbar = memo(
         if (!showSettingsMenu) return null;
 
         return (
-          <div className="u-position-absolute u-bg-white u-border u-border-radius u-shadow u-p-3 u-z-10" style={{ minWidth: '200px' }}>
+          <div
+            className="u-position-absolute u-bg-white u-border u-border-radius u-shadow u-p-3 u-z-10"
+            style={{ minWidth: '200px' }}
+          >
             <div className="u-mb-2 u-text-xs u-text-muted u-fw-medium">Chart Settings</div>
             <div className="u-d-flex u-flex-column u-gap-2">
               {state.zoomLevel && (
                 <div className="u-d-flex u-justify-between u-align-items-center">
                   <span className="u-text-sm">Zoom Level</span>
-                  <span className="u-text-sm u-text-muted">{Math.round((state.zoomLevel || 1) * 100)}%</span>
+                  <span className="u-text-sm u-text-muted">
+                    {Math.round((state.zoomLevel || 1) * 100)}%
+                  </span>
                 </div>
               )}
               <div className="u-d-flex u-justify-between u-align-items-center">
@@ -365,7 +398,8 @@ const ChartToolbar = memo(
         );
       };
 
-      const toolbarClass = `${CHART.TOOLBAR_CLASS} ${CHART.TOOLBAR_CLASS}--${size} ${CHART.TOOLBAR_CLASS}--${position} u-d-flex u-align-items-center u-gap-2 ${className}`.trim();
+      const toolbarClass =
+        `${CHART.TOOLBAR_CLASS} ${CHART.TOOLBAR_CLASS}--${size} ${CHART.TOOLBAR_CLASS}--${position} u-d-flex u-align-items-center u-gap-2 ${className}`.trim();
 
       return (
         <div ref={ref} className={toolbarClass} {...props}>
@@ -374,14 +408,14 @@ const ChartToolbar = memo(
               {group.separator && groupIndex > 0 && (
                 <div className="u-border-start u-h-4 u-mx-1 u-opacity-25" />
               )}
-              
+
               {group.label && size === 'lg' && (
                 <span className="u-text-xs u-text-muted u-me-1">{group.label}</span>
               )}
-              
+
               <div className="u-d-flex u-align-items-center u-gap-1 u-position-relative">
                 {group.actions.map(renderAction)}
-                
+
                 {/* Render contextual menus */}
                 {group.actions.some(a => a.id === 'export') && renderExportMenu()}
                 {group.actions.some(a => a.id === 'settings') && renderSettingsMenu()}

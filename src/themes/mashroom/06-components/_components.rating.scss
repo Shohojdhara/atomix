@@ -11,7 +11,8 @@
 
 // Psychedelic rating animations
 @keyframes rating-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -20,33 +21,36 @@
 }
 
 @keyframes rating-glow-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 5px rgba($white, 0.1);
   }
   50% {
-    box-shadow: 
+    box-shadow:
       0 0 10px rgba($white, 0.3),
       0 0 20px rgba(157, 0, 255, 0.5);
   }
 }
 
 @keyframes rating-star-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 5px $yellow-4;
   }
   50% {
-    box-shadow: 
+    box-shadow:
       0 0 10px $yellow-4,
       0 0 20px rgba(255, 187, 0, 0.8);
   }
 }
 
 @keyframes rating-hover-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 10px $red-4;
   }
   50% {
-    box-shadow: 
+    box-shadow:
       0 0 15px $red-4,
       0 0 25px rgba(255, 32, 133, 0.8);
   }
@@ -57,7 +61,7 @@
   // Rating stars container
   &__stars {
     position: relative;
-    
+
     // Add floating animation to stars container
     @include trippy.float-animation();
     animation-duration: 4s;
@@ -69,7 +73,7 @@
 
     // Add subtle glow to stars
     @include trippy.trippy-glow(rgba($white, 0.1), 2px);
-    
+
     // Add pulse animation
     animation: rating-glow-pulse 2s infinite;
 
@@ -82,7 +86,7 @@
 
       // Add color shift animation
       @include trippy.color-shift();
-      
+
       // Add pulse animation
       animation: rating-star-pulse 2s infinite;
     }
@@ -93,7 +97,7 @@
 
       // Add moderate glow to half-filled stars
       @include trippy.trippy-glow($yellow-6, 3px);
-      
+
       // Add subtle pulse
       animation: rating-glow-pulse 3s infinite;
     }
@@ -108,7 +112,7 @@
 
       // Add pulse animation on hover
       @include trippy.psychedelic-pulse($red-4);
-      
+
       // Add enhanced pulse animation
       animation: rating-hover-pulse 1s infinite;
     }
@@ -120,7 +124,7 @@
 
       // Reduce glow for non-hovered stars
       @include trippy.trippy-glow(rgba($white, 0.05), 1px);
-      
+
       // Add subtle floating effect
       @include trippy.float-animation();
       animation-duration: 3s;
@@ -135,7 +139,7 @@
 
     // Add subtle floating effect to label
     @include trippy.float-animation();
-    
+
     // Add color shift
     @include trippy.color-shift();
   }
@@ -153,11 +157,11 @@
 
     // Add glow effect
     @include trippy.trippy-glow($purple-6, 5px);
-    
+
     // Add floating animation
     @include trippy.float-animation();
     animation-duration: 3s;
-    
+
     // Add pulse animation
     @include trippy.psychedelic-pulse($purple-6);
   }
@@ -211,7 +215,7 @@
       font-size: 0.75rem;
     }
   }
-  
+
   // Psychedelic variant
   &--psychedelic {
     .c-rating__star {
@@ -221,7 +225,7 @@
       color: transparent;
       background-size: 200% 100%;
       animation: rainbow-shift 3s linear infinite;
-      
+
       &--filled {
         @include gradients.rainbow-gradient();
         background-clip: text;
@@ -230,7 +234,7 @@
         background-size: 200% 100%;
         animation: rainbow-shift 2s linear infinite;
       }
-      
+
       &--half {
         @include gradients.rainbow-gradient();
         background-clip: text;
@@ -239,13 +243,13 @@
         background-size: 200% 100%;
         animation: rainbow-shift 4s linear infinite;
       }
-      
+
       &:hover {
         animation: rainbow-shift 1s linear infinite;
         @include trippy.trippy-glow(white, 15px);
       }
     }
-    
+
     .c-rating__value {
       @include gradients.rainbow-gradient();
       background-size: 300% 300%;
@@ -253,41 +257,41 @@
       color: white;
     }
   }
-  
+
   // Glowing variant
   &--glow {
     .c-rating__star {
       @include trippy.trippy-glow($purple-4, 10px);
       animation: rating-glow-pulse 1s infinite;
-      
+
       &--filled {
         @include trippy.trippy-glow($yellow-4, 15px);
         animation: rating-star-pulse 1s infinite;
       }
-      
+
       &:hover {
         @include trippy.trippy-glow($red-4, 20px);
         animation: rating-hover-pulse 0.5s infinite;
       }
     }
-    
+
     .c-rating__value {
       @include trippy.trippy-glow($purple-6, 10px);
     }
   }
-  
+
   // Floating variant
   &--floating {
     .c-rating__stars {
       @include trippy.float-animation();
       animation-duration: 3s;
     }
-    
+
     .c-rating__star {
       @include trippy.float-animation();
       animation-duration: 2s;
     }
-    
+
     .c-rating__value {
       @include trippy.float-animation();
       animation-duration: 4s;

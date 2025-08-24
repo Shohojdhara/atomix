@@ -42,7 +42,6 @@ export default {
     className: {
       control: { type: 'text' },
     },
-
   },
 } as Meta<typeof Popover>;
 

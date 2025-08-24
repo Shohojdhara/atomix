@@ -11,7 +11,6 @@ export default {
       control: { type: 'number' },
       defaultValue: 0,
     },
-
   },
 } as Meta<typeof Tab>;
 

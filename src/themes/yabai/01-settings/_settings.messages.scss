@@ -13,32 +13,26 @@
   $message-border-radius: 16px,
   $message-font-size: 16px,
   $message-font-weight: 500,
-  
+
   // Message variants
   $message-primary-color: var(--atomix-primary-text),
   $message-primary-bg: var(--atomix-primary-bg-subtle),
   $message-primary-border-color: var(--atomix-primary),
-  
   $message-secondary-color: var(--atomix-secondary-text),
   $message-secondary-bg: var(--atomix-secondary-bg-subtle),
   $message-secondary-border-color: var(--atomix-secondary-border),
-  
   $message-success-color: var(--atomix-success-text),
   $message-success-bg: var(--atomix-success-bg-subtle),
   $message-success-border-color: var(--atomix-success),
-  
   $message-info-color: var(--atomix-info-text),
   $message-info-bg: var(--atomix-info-bg-subtle),
   $message-info-border-color: var(--atomix-info),
-  
   $message-warning-color: var(--atomix-warning-text),
   $message-warning-bg: var(--atomix-warning-bg-subtle),
   $message-warning-border-color: var(--atomix-warning),
-  
   $message-danger-color: var(--atomix-error-text),
   $message-danger-bg: var(--atomix-error-bg-subtle),
   $message-danger-border-color: var(--atomix-error),
-  
   // Message close button
   $message-close-font-size: 1.25rem,
   $message-close-font-weight: 700,

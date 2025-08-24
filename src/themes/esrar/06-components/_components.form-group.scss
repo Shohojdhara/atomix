@@ -2,12 +2,7 @@
 @use '../02-tools/tools.animations' as *;
 
 .c-form-group {
-  @include animations(
-    'slow-fade-in',
-    $duration: 0.5s,
-    $timing: ease-out,
-    $iteration-count: 1
-  );
+  @include animations('slow-fade-in', $duration: 0.5s, $timing: ease-out, $iteration-count: 1);
 
   &:focus-within {
     @include animations(

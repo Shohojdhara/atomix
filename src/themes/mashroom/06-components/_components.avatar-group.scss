@@ -10,7 +10,8 @@
 
 // Psychedelic avatar group animations
 @keyframes avatar-group-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -19,18 +20,20 @@
 }
 
 @keyframes avatar-group-glow-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 6px rgba(157, 0, 255, 0.4);
   }
   50% {
-    box-shadow: 
+    box-shadow:
       0 0 12px rgba(157, 0, 255, 0.7),
       0 0 24px rgba(255, 32, 133, 0.5);
   }
 }
 
 @keyframes avatar-group-pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -46,7 +49,7 @@
     border: 2px solid rgba(157, 0, 255, 0.3);
     transition: all 0.3s ease;
     @include trippy.color-shift();
-    
+
     // Add floating animation
     @include trippy.float-animation();
     animation-duration: 4s;
@@ -64,7 +67,7 @@
   &--overlap {
     .c-avatar {
       margin-right: -1rem;
-      
+
       &:hover {
         margin-right: 0;
       }
@@ -89,11 +92,11 @@
     @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 6px);
     @include trippy.color-shift();
     @include gradients.rainbow-gradient();
-    
+
     // Add floating animation
     @include trippy.float-animation();
     animation-duration: 3s;
-    
+
     // Add pulse animation
     animation: avatar-group-pulse 2s ease-in-out infinite;
 
@@ -149,7 +152,7 @@
       opacity: 0.7;
       transition: all 0.3s ease;
       @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 4px);
-      
+
       // Add floating animation
       @include trippy.float-animation();
       animation-duration: 5s;
@@ -177,7 +180,9 @@
       &:hover {
         @include gradients.rainbow-gradient();
         background-size: 400% 400%;
-        animation: rainbow-shift 4s ease infinite, avatarPulse 2s ease-in-out infinite;
+        animation:
+          rainbow-shift 4s ease infinite,
+          avatarPulse 2s ease-in-out infinite;
       }
     }
 
@@ -191,7 +196,9 @@
       &:hover {
         @include gradients.rainbow-gradient();
         background-size: 400% 400%;
-        animation: rainbow-shift 4s ease infinite, avatarPulse 2s ease-in-out infinite;
+        animation:
+          rainbow-shift 4s ease infinite,
+          avatarPulse 2s ease-in-out infinite;
       }
     }
 
@@ -220,7 +227,8 @@
     }
 
     @keyframes avatarPulse {
-      0%, 100% {
+      0%,
+      100% {
         transform: scale(1);
       }
       50% {
@@ -228,38 +236,38 @@
       }
     }
   }
-  
+
   // Glowing variant
   &--glow {
     .c-avatar {
       @include trippy.trippy-glow($purple-4, 10px);
       animation: avatar-group-glow-pulse 2s infinite;
       border-color: rgba(157, 0, 255, 0.5);
-      
+
       &:hover {
         @include trippy.trippy-glow($yellow-4, 15px);
         animation: avatar-group-glow-pulse 0.5s infinite;
       }
     }
-    
+
     #{$root}__remaining {
       @include trippy.trippy-glow($red-4, 12px);
       animation: avatar-group-glow-pulse 2s infinite;
-      
+
       &:hover {
         @include trippy.trippy-glow($yellow-4, 18px);
         animation: avatar-group-glow-pulse 0.5s infinite;
       }
     }
   }
-  
+
   // Floating variant
   &--floating {
     .c-avatar {
       @include trippy.float-animation();
       animation-duration: 3s;
     }
-    
+
     #{$root}__remaining {
       @include trippy.float-animation();
       animation-duration: 4s;

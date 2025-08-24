@@ -2,12 +2,7 @@
 @use '../02-tools/tools.animations' as *;
 
 .c-chart {
-  @include animations(
-    'slow-zoom-in',
-    $duration: 1s,
-    $timing: ease-out,
-    $iteration-count: 1
-  );
+  @include animations('slow-zoom-in', $duration: 1s, $timing: ease-out, $iteration-count: 1);
 }
 
 .c-chart--animated {
@@ -17,7 +12,7 @@
     $timing: linear,
     $iteration-count: infinite
   );
-  
+
   &:hover {
     @include animations(
       'pulse-slow' 'chill-spin',

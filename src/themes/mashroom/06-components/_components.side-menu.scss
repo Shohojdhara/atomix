@@ -38,8 +38,13 @@
     animation: capGlow 4s ease-in-out infinite;
 
     @keyframes capGlow {
-      0%, 100% { opacity: 0.8; }
-      50% { opacity: 1; }
+      0%,
+      100% {
+        opacity: 0.8;
+      }
+      50% {
+        opacity: 1;
+      }
     }
   }
 
@@ -97,8 +102,12 @@
     animation: logoSpin 8s linear infinite;
 
     @keyframes logoSpin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
     }
   }
 
@@ -240,8 +249,13 @@
       }
 
       @keyframes iconPulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.1); }
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
       }
     }
   }
@@ -268,8 +282,13 @@
     animation: badgeBounce 3s ease-in-out infinite;
 
     @keyframes badgeBounce {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
     }
   }
 
@@ -480,9 +499,15 @@
     }
 
     @keyframes psychedelicShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
   }
 

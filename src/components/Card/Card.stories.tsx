@@ -21,7 +21,6 @@ const meta: Meta<typeof Card> = {
     flat: { control: 'boolean' },
     active: { control: 'boolean' },
     className: { control: 'text' },
-
   },
 };
 

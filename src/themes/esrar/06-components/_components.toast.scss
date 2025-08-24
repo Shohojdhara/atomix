@@ -3,18 +3,13 @@
 @use '../../../styles/01-settings/settings.config' as config;
 
 .c-toast {
-  @include animations(
-    'slow-fade-in',
-    $duration: 0.3s,
-    $timing: ease-in-out,
-    $iteration-count: 1
-  );
-  
+  @include animations('slow-fade-in', $duration: 0.3s, $timing: ease-in-out, $iteration-count: 1);
+
   position: relative;
   overflow: hidden;
-  
+
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: -5px;
     left: -5px;
@@ -33,7 +28,7 @@
     opacity: 0.05;
     z-index: -1;
   }
-  
+
   &__content {
     @include animations(
       'pulse-slow',
@@ -42,16 +37,11 @@
       $iteration-count: infinite
     );
   }
-  
+
   &__title {
-    @include animations(
-      'float',
-      $duration: 2s,
-      $timing: ease-in-out,
-      $iteration-count: infinite
-    );
+    @include animations('float', $duration: 2s, $timing: ease-in-out, $iteration-count: infinite);
   }
-  
+
   &__close {
     &:hover {
       @include animations(
@@ -62,7 +52,7 @@
       );
     }
   }
-  
+
   &--success {
     @include animations(
       'color-wave',
@@ -71,7 +61,7 @@
       $iteration-count: infinite
     );
   }
-  
+
   &--warning {
     @include animations(
       'pulse-slow',
@@ -80,7 +70,7 @@
       $iteration-count: infinite
     );
   }
-  
+
   &--error {
     @include animations(
       'chill-rainbow',
@@ -89,7 +79,7 @@
       $iteration-count: infinite
     );
   }
-  
+
   &--info {
     @include animations(
       'color-pulse',

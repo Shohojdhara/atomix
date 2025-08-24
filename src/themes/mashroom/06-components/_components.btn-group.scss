@@ -10,7 +10,8 @@
 
 // Psychedelic button group animations
 @keyframes btn-group-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -19,11 +20,12 @@
 }
 
 @keyframes btn-group-glow-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 4px 20px rgba(157, 0, 255, 0.3);
   }
   50% {
-    box-shadow: 
+    box-shadow:
       0 4px 20px rgba(157, 0, 255, 0.5),
       0 0 30px rgba(255, 32, 133, 0.4),
       0 0 50px rgba(255, 187, 0, 0.3);
@@ -56,7 +58,7 @@
   $root: &;
 
   box-shadow: 0 4px 20px rgba(157, 0, 255, 0.3);
-  
+
   // Add floating animation
   @include trippy.float-animation();
   animation-duration: 5s;
@@ -107,7 +109,7 @@
     color: $white;
     font-weight: 600;
     padding: 0.75rem 1.5rem;
-    
+
     // Add floating animation to buttons
     @include trippy.float-animation();
     animation-duration: 4s;
@@ -388,12 +390,12 @@
       font-size: 0.875rem;
     }
   }
-  
+
   // Floating variant
   &--floating {
     @include trippy.float-animation();
     animation-duration: 3s;
-    
+
     .c-btn {
       @include trippy.float-animation();
       animation-duration: 2s;

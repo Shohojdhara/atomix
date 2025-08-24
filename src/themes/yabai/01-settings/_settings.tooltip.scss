@@ -15,15 +15,14 @@
   $tooltip-padding-y: 8px,
   $tooltip-padding-x: 12px,
   $tooltip-margin: 0,
-  
+
   // Tooltip arrow
   $tooltip-arrow-width: 8px,
   $tooltip-arrow-height: 4px,
   $tooltip-arrow-color: var(--atomix-gray-9),
-  
   // Tooltip transitions
   $tooltip-transition: opacity 150ms ease-in-out,
-  
+
   // Tooltip z-index
   $tooltip-zindex: 1080
 );

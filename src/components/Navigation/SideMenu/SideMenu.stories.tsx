@@ -111,7 +111,6 @@ The SideMenu component provides a collapsible navigation menu with title and men
         defaultValue: { summary: 'false' },
       },
     },
-
   },
   args: {
     onToggle: fn(),

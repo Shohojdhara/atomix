@@ -9,7 +9,8 @@
 @use '../01-settings/settings.colors' as *;
 
 @keyframes table-row-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -18,11 +19,14 @@
 }
 
 @keyframes table-glow-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 5px rgba(157, 0, 255, 0.3);
   }
   50% {
-    box-shadow: 0 0 20px rgba(157, 0, 255, 0.6), 0 0 30px rgba(255, 32, 133, 0.4);
+    box-shadow:
+      0 0 20px rgba(157, 0, 255, 0.6),
+      0 0 30px rgba(255, 32, 133, 0.4);
   }
 }
 
@@ -75,7 +79,7 @@
     background-size: 300% 300%;
     animation: rainbow-shift 6s ease infinite;
     position: relative;
-    
+
     // Add a subtle overlay for better text readability
     &::after {
       content: '';
@@ -110,7 +114,10 @@
         &:hover {
           background: rgba(157, 0, 255, 0.1);
           color: $white;
-          @include gradients.psychedelic-linear-gradient(rgba(157, 0, 255, 0.2), rgba(255, 32, 133, 0.2));
+          @include gradients.psychedelic-linear-gradient(
+            rgba(157, 0, 255, 0.2),
+            rgba(255, 32, 133, 0.2)
+          );
           transform: scale(1.02);
           @include trippy.trippy-glow($yellow-4, 10px);
         }
@@ -121,7 +128,7 @@
           right: 1rem;
           opacity: 0.5;
           transition: all 0.3s ease;
-          
+
           // Add psychedelic color to sort indicator
           color: $purple-4;
           text-shadow: 0 0 5px rgba(157, 0, 255, 0.7);
@@ -153,13 +160,13 @@
   // Row styling
   &__row {
     transition: all 0.3s ease;
-    
+
     // Add floating animation to rows
     &:nth-child(even) {
       @include trippy.float-animation();
       animation-duration: 6s;
     }
-    
+
     &:nth-child(odd) {
       @include trippy.float-animation();
       animation-duration: 7s;
@@ -170,9 +177,12 @@
     &:hover {
       background: rgba(157, 0, 255, 0.1);
       transform: scale(1.01);
-      @include gradients.psychedelic-linear-gradient(rgba(157, 0, 255, 0.1), rgba(157, 0, 255, 0.05));
+      @include gradients.psychedelic-linear-gradient(
+        rgba(157, 0, 255, 0.1),
+        rgba(157, 0, 255, 0.05)
+      );
       @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 10px);
-      
+
       // Add color shift on hover
       @include trippy.color-shift();
       animation-duration: 2s;
@@ -186,11 +196,11 @@
     // Animated variant
     &--animated {
       animation: table-row-float 3s ease-in-out infinite;
-      
+
       &:nth-child(2) {
         animation-delay: 0.2s;
       }
-      
+
       &:nth-child(3) {
         animation-delay: 0.4s;
       }
@@ -201,7 +211,7 @@
       background: linear-gradient(90deg, rgba(255, 187, 0, 0.2), rgba(255, 32, 133, 0.2));
       @include trippy.psychedelic-pulse($yellow-4);
       position: relative;
-      
+
       &::after {
         content: '';
         position: absolute;
@@ -224,7 +234,7 @@
     padding: 1rem 1.5rem;
     color: rgba(255, 255, 255, 0.8);
     border-bottom: 1px solid rgba(157, 0, 255, 0.1);
-    
+
     // Add subtle glow to cells
     @include trippy.trippy-glow(rgba(255, 255, 255, 0.05), 2px);
 
@@ -242,7 +252,7 @@
     // Action cells
     &--actions {
       text-align: right;
-      
+
       .c-btn {
         margin-left: 0.5rem;
         @include trippy.float-animation();
@@ -255,10 +265,10 @@
   &__footer {
     background: rgba(15, 5, 30, 0.7);
     border-top: 1px solid rgba(157, 0, 255, 0.2);
-    
+
     // Add psychedelic gradient to footer
     @include gradients.psychedelic-linear-gradient(rgba(157, 0, 255, 0.1), rgba(15, 5, 30, 0.7));
-    
+
     // Add glow effect
     @include trippy.trippy-glow(rgba(157, 0, 255, 0.2), 8px);
   }
@@ -270,7 +280,7 @@
     justify-content: flex-end;
     align-items: center;
     gap: 0.5rem;
-    
+
     // Add psychedelic background
     background: rgba(25, 15, 40, 0.5);
   }
@@ -281,11 +291,14 @@
     background-clip: padding-box;
     border: double 2px transparent;
     border-radius: 1rem;
-    
+
     &::before {
       content: '';
       position: absolute;
-      top: 0; right: 0; bottom: 0; left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
       z-index: -1;
       margin: -2px;
       border-radius: inherit;
@@ -293,17 +306,17 @@
       background-size: 400% 400%;
       animation: rainbow-shift 4s ease infinite;
     }
-    
+
     #{$root}__header {
       @include gradients.rainbow-gradient();
       background-size: 400% 400%;
       animation: rainbow-shift 5s ease infinite;
-      
+
       &-cell {
         @include trippy.psychedelic-pulse($yellow-4);
       }
     }
-    
+
     #{$root}__row {
       &:hover {
         @include gradients.rainbow-gradient();
@@ -325,16 +338,16 @@
   // Bordered variant
   &--bordered {
     border: 2px solid rgba(157, 0, 255, 0.3);
-    
+
     #{$root}__cell,
     #{$root}__header-cell {
       border-right: 1px solid rgba(157, 0, 255, 0.2);
-      
+
       &:last-child {
         border-right: none;
       }
     }
-    
+
     // Animate border colors
     animation: psychedelic-border-shift 3s infinite linear;
   }

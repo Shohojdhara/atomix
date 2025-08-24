@@ -15,7 +15,7 @@ export function cn(...args: any[]): string {
   return args
     .filter(Boolean)
     .flat()
-    .map((arg) => String(arg).trim())
+    .map(arg => String(arg).trim())
     .filter(Boolean)
     .join(' ');
 }
@@ -39,7 +39,8 @@ export function generateUUID(): string {
  * @returns YouTube video ID or null if not found
  */
 export function extractYouTubeId(url: string): string | null {
-  const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+  const regex =
+    /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
   const match = url.match(regex);
   return match ? (match[1] as string) : null;
 }

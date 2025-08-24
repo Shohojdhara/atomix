@@ -16,7 +16,6 @@ export default {
       control: { type: 'boolean' },
       defaultValue: false,
     },
-
   },
 } as Meta<typeof Steps>;
 

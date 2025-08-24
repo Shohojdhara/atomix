@@ -5,12 +5,12 @@ export interface ExportOptions {
    * Export format
    */
   format: 'png' | 'svg' | 'pdf' | 'csv' | 'json' | 'xlsx';
-  
+
   /**
    * Export quality (for raster formats)
    */
   quality?: number;
-  
+
   /**
    * Export dimensions
    */
@@ -18,17 +18,17 @@ export interface ExportOptions {
     width: number;
     height: number;
   };
-  
+
   /**
    * Background color
    */
   backgroundColor?: string;
-  
+
   /**
    * Include title and metadata
    */
   includeMetadata?: boolean;
-  
+
   /**
    * Custom filename
    */
@@ -40,12 +40,12 @@ export interface ShareOptions {
    * Share platforms
    */
   platforms: ('twitter' | 'facebook' | 'linkedin' | 'email' | 'copy-link')[];
-  
+
   /**
    * Share message
    */
   message?: string;
-  
+
   /**
    * Share URL
    */
@@ -59,75 +59,76 @@ export function useChartExport() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // Convert SVG to Canvas
-  const svgToCanvas = useCallback(async (
-    svgElement: SVGSVGElement, 
-    options: ExportOptions
-  ): Promise<HTMLCanvasElement> => {
-    const { dimensions, backgroundColor = 'white' } = options;
-    
-    // Get SVG dimensions
-    const svgRect = svgElement.getBoundingClientRect();
-    const width = dimensions?.width || svgRect.width;
-    const height = dimensions?.height || svgRect.height;
-    
-    // Create canvas
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d')!;
-    
-    // Set canvas dimensions
-    canvas.width = width;
-    canvas.height = height;
-    
-    // Set background
-    ctx.fillStyle = backgroundColor;
-    ctx.fillRect(0, 0, width, height);
-    
-    // Convert SVG to data URL
-    const svgData = new XMLSerializer().serializeToString(svgElement);
-    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-    const svgUrl = URL.createObjectURL(svgBlob);
-    
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => {
-        ctx.drawImage(img, 0, 0, width, height);
-        URL.revokeObjectURL(svgUrl);
-        resolve(canvas);
-      };
-      img.onerror = reject;
-      img.src = svgUrl;
-    });
-  }, []);
+  const svgToCanvas = useCallback(
+    async (svgElement: SVGSVGElement, options: ExportOptions): Promise<HTMLCanvasElement> => {
+      const { dimensions, backgroundColor = 'white' } = options;
+
+      // Get SVG dimensions
+      const svgRect = svgElement.getBoundingClientRect();
+      const width = dimensions?.width || svgRect.width;
+      const height = dimensions?.height || svgRect.height;
+
+      // Create canvas
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d')!;
+
+      // Set canvas dimensions
+      canvas.width = width;
+      canvas.height = height;
+
+      // Set background
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(0, 0, width, height);
+
+      // Convert SVG to data URL
+      const svgData = new XMLSerializer().serializeToString(svgElement);
+      const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+      const svgUrl = URL.createObjectURL(svgBlob);
+
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          ctx.drawImage(img, 0, 0, width, height);
+          URL.revokeObjectURL(svgUrl);
+          resolve(canvas);
+        };
+        img.onerror = reject;
+        img.src = svgUrl;
+      });
+    },
+    []
+  );
 
   // Export as PNG
-  const exportAsPNG = useCallback(async (
-    svgElement: SVGSVGElement,
-    options: ExportOptions
-  ): Promise<void> => {
-    const canvas = await svgToCanvas(svgElement, options);
-    const quality = options.quality || 0.9;
-    
-    canvas.toBlob((blob) => {
-      if (blob) {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.download = options.filename || 'chart.png';
-        link.href = url;
-        link.click();
-        URL.revokeObjectURL(url);
-      }
-    }, 'image/png', quality);
-  }, [svgToCanvas]);
+  const exportAsPNG = useCallback(
+    async (svgElement: SVGSVGElement, options: ExportOptions): Promise<void> => {
+      const canvas = await svgToCanvas(svgElement, options);
+      const quality = options.quality || 0.9;
+
+      canvas.toBlob(
+        blob => {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.download = options.filename || 'chart.png';
+            link.href = url;
+            link.click();
+            URL.revokeObjectURL(url);
+          }
+        },
+        'image/png',
+        quality
+      );
+    },
+    [svgToCanvas]
+  );
 
   // Export as SVG
-  const exportAsSVG = useCallback((
-    svgElement: SVGSVGElement,
-    options: ExportOptions
-  ): void => {
+  const exportAsSVG = useCallback((svgElement: SVGSVGElement, options: ExportOptions): void => {
     const svgData = new XMLSerializer().serializeToString(svgElement);
     const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(svgBlob);
-    
+
     const link = document.createElement('a');
     link.download = options.filename || 'chart.svg';
     link.href = url;
@@ -136,40 +137,37 @@ export function useChartExport() {
   }, []);
 
   // Export as PDF
-  const exportAsPDF = useCallback(async (
-    svgElement: SVGSVGElement,
-    options: ExportOptions
-  ): Promise<void> => {
-    // Note: This requires a PDF library like jsPDF
-    // For now, we'll convert to canvas and then to PDF
-    const canvas = await svgToCanvas(svgElement, options);
-    
-    // This would require jsPDF library
-    // const pdf = new jsPDF();
-    // const imgData = canvas.toDataURL('image/png');
-    // pdf.addImage(imgData, 'PNG', 0, 0);
-    // pdf.save(options.filename || 'chart.pdf');
-    
-    console.warn('PDF export requires jsPDF library to be installed');
-  }, [svgToCanvas]);
+  const exportAsPDF = useCallback(
+    async (svgElement: SVGSVGElement, options: ExportOptions): Promise<void> => {
+      // Note: This requires a PDF library like jsPDF
+      // For now, we'll convert to canvas and then to PDF
+      const canvas = await svgToCanvas(svgElement, options);
+
+      // This would require jsPDF library
+      // const pdf = new jsPDF();
+      // const imgData = canvas.toDataURL('image/png');
+      // pdf.addImage(imgData, 'PNG', 0, 0);
+      // pdf.save(options.filename || 'chart.pdf');
+
+      console.warn('PDF export requires jsPDF library to be installed');
+    },
+    [svgToCanvas]
+  );
 
   // Export data as CSV
-  const exportAsCSV = useCallback((
-    datasets: any[],
-    options: ExportOptions
-  ): void => {
+  const exportAsCSV = useCallback((datasets: any[], options: ExportOptions): void => {
     if (!datasets.length) return;
-    
+
     // Create CSV content
     const headers = ['Label', ...datasets.map(d => d.label)];
     const rows: string[][] = [headers];
-    
+
     // Get all unique labels
     const allLabels = new Set<string>();
     datasets.forEach(dataset => {
       dataset.data?.forEach((point: any) => allLabels.add(point.label));
     });
-    
+
     // Create data rows
     Array.from(allLabels).forEach(label => {
       const row = [label];
@@ -179,12 +177,12 @@ export function useChartExport() {
       });
       rows.push(row);
     });
-    
+
     // Convert to CSV string
-    const csvContent = rows.map(row => 
-      row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(',')
-    ).join('\n');
-    
+    const csvContent = rows
+      .map(row => row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+
     // Download
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -196,10 +194,7 @@ export function useChartExport() {
   }, []);
 
   // Export data as JSON
-  const exportAsJSON = useCallback((
-    datasets: any[],
-    options: ExportOptions
-  ): void => {
+  const exportAsJSON = useCallback((datasets: any[], options: ExportOptions): void => {
     const jsonData = {
       metadata: {
         exportDate: new Date().toISOString(),
@@ -212,7 +207,7 @@ export function useChartExport() {
         data: dataset.data,
       })),
     };
-    
+
     const jsonString = JSON.stringify(jsonData, null, 2);
     const blob = new Blob([jsonString], { type: 'application/json;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -224,137 +219,137 @@ export function useChartExport() {
   }, []);
 
   // Export data as Excel
-  const exportAsXLSX = useCallback((
-    datasets: any[],
-    options: ExportOptions
-  ): void => {
+  const exportAsXLSX = useCallback((datasets: any[], options: ExportOptions): void => {
     // Note: This requires a library like xlsx or exceljs
     console.warn('XLSX export requires xlsx library to be installed');
   }, []);
 
   // Main export function
-  const exportChart = useCallback(async (
-    svgElement: SVGSVGElement | null,
-    datasets: any[],
-    options: ExportOptions
-  ): Promise<void> => {
-    if (!svgElement && !['csv', 'json', 'xlsx'].includes(options.format)) {
-      throw new Error('SVG element is required for image exports');
-    }
-
-    try {
-      switch (options.format) {
-        case 'png':
-          if (svgElement) await exportAsPNG(svgElement, options);
-          break;
-        case 'svg':
-          if (svgElement) exportAsSVG(svgElement, options);
-          break;
-        case 'pdf':
-          if (svgElement) await exportAsPDF(svgElement, options);
-          break;
-        case 'csv':
-          exportAsCSV(datasets, options);
-          break;
-        case 'json':
-          exportAsJSON(datasets, options);
-          break;
-        case 'xlsx':
-          exportAsXLSX(datasets, options);
-          break;
-        default:
-          throw new Error(`Unsupported export format: ${options.format}`);
+  const exportChart = useCallback(
+    async (
+      svgElement: SVGSVGElement | null,
+      datasets: any[],
+      options: ExportOptions
+    ): Promise<void> => {
+      if (!svgElement && !['csv', 'json', 'xlsx'].includes(options.format)) {
+        throw new Error('SVG element is required for image exports');
       }
-    } catch (error) {
-      console.error('Export failed:', error);
-      throw error;
-    }
-  }, [exportAsPNG, exportAsSVG, exportAsPDF, exportAsCSV, exportAsJSON, exportAsXLSX]);
+
+      try {
+        switch (options.format) {
+          case 'png':
+            if (svgElement) await exportAsPNG(svgElement, options);
+            break;
+          case 'svg':
+            if (svgElement) exportAsSVG(svgElement, options);
+            break;
+          case 'pdf':
+            if (svgElement) await exportAsPDF(svgElement, options);
+            break;
+          case 'csv':
+            exportAsCSV(datasets, options);
+            break;
+          case 'json':
+            exportAsJSON(datasets, options);
+            break;
+          case 'xlsx':
+            exportAsXLSX(datasets, options);
+            break;
+          default:
+            throw new Error(`Unsupported export format: ${options.format}`);
+        }
+      } catch (error) {
+        console.error('Export failed:', error);
+        throw error;
+      }
+    },
+    [exportAsPNG, exportAsSVG, exportAsPDF, exportAsCSV, exportAsJSON, exportAsXLSX]
+  );
 
   // Share functionality
-  const shareChart = useCallback(async (
-    svgElement: SVGSVGElement | null,
-    shareOptions: ShareOptions
-  ): Promise<void> => {
-    const { platforms, message = 'Check out this chart!', url = window.location.href } = shareOptions;
+  const shareChart = useCallback(
+    async (svgElement: SVGSVGElement | null, shareOptions: ShareOptions): Promise<void> => {
+      const {
+        platforms,
+        message = 'Check out this chart!',
+        url = window.location.href,
+      } = shareOptions;
 
-    for (const platform of platforms) {
-      switch (platform) {
-        case 'twitter':
-          window.open(
-            `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(url)}`,
-            '_blank'
-          );
-          break;
-        case 'facebook':
-          window.open(
-            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-            '_blank'
-          );
-          break;
-        case 'linkedin':
-          window.open(
-            `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
-            '_blank'
-          );
-          break;
-        case 'email':
-          window.open(
-            `mailto:?subject=${encodeURIComponent('Chart Share')}&body=${encodeURIComponent(`${message}\n\n${url}`)}`,
-            '_blank'
-          );
-          break;
-        case 'copy-link':
-          try {
-            await navigator.clipboard.writeText(url);
-            // You might want to show a toast notification here
-            console.log('Link copied to clipboard');
-          } catch (error) {
-            console.error('Failed to copy link:', error);
-          }
-          break;
+      for (const platform of platforms) {
+        switch (platform) {
+          case 'twitter':
+            window.open(
+              `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(url)}`,
+              '_blank'
+            );
+            break;
+          case 'facebook':
+            window.open(
+              `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+              '_blank'
+            );
+            break;
+          case 'linkedin':
+            window.open(
+              `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+              '_blank'
+            );
+            break;
+          case 'email':
+            window.open(
+              `mailto:?subject=${encodeURIComponent('Chart Share')}&body=${encodeURIComponent(`${message}\n\n${url}`)}`,
+              '_blank'
+            );
+            break;
+          case 'copy-link':
+            try {
+              await navigator.clipboard.writeText(url);
+              // You might want to show a toast notification here
+              console.log('Link copied to clipboard');
+            } catch (error) {
+              console.error('Failed to copy link:', error);
+            }
+            break;
+        }
       }
-    }
-  }, []);
+    },
+    []
+  );
 
   // Copy chart as image to clipboard
-  const copyToClipboard = useCallback(async (
-    svgElement: SVGSVGElement,
-    options: Partial<ExportOptions> = {}
-  ): Promise<void> => {
-    try {
-      const canvas = await svgToCanvas(svgElement, { format: 'png', ...options });
-      
-      canvas.toBlob(async (blob) => {
-        if (blob && navigator.clipboard && window.ClipboardItem) {
-          try {
-            await navigator.clipboard.write([
-              new ClipboardItem({ 'image/png': blob })
-            ]);
-            console.log('Chart copied to clipboard');
-          } catch (error) {
-            console.error('Failed to copy to clipboard:', error);
+  const copyToClipboard = useCallback(
+    async (svgElement: SVGSVGElement, options: Partial<ExportOptions> = {}): Promise<void> => {
+      try {
+        const canvas = await svgToCanvas(svgElement, { format: 'png', ...options });
+
+        canvas.toBlob(async blob => {
+          if (blob && navigator.clipboard && window.ClipboardItem) {
+            try {
+              await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+              console.log('Chart copied to clipboard');
+            } catch (error) {
+              console.error('Failed to copy to clipboard:', error);
+            }
           }
-        }
-      }, 'image/png');
-    } catch (error) {
-      console.error('Failed to copy chart:', error);
-      throw error;
-    }
-  }, [svgToCanvas]);
+        }, 'image/png');
+      } catch (error) {
+        console.error('Failed to copy chart:', error);
+        throw error;
+      }
+    },
+    [svgToCanvas]
+  );
 
   // Print chart
-  const printChart = useCallback(async (
-    svgElement: SVGSVGElement,
-    options: Partial<ExportOptions> = {}
-  ): Promise<void> => {
-    try {
-      const canvas = await svgToCanvas(svgElement, { format: 'png', ...options });
-      const dataUrl = canvas.toDataURL('image/png');
-      
-      const printWindow = window.open('', '_blank');
-      if (printWindow) {
-        printWindow.document.write(`
+  const printChart = useCallback(
+    async (svgElement: SVGSVGElement, options: Partial<ExportOptions> = {}): Promise<void> => {
+      try {
+        const canvas = await svgToCanvas(svgElement, { format: 'png', ...options });
+        const dataUrl = canvas.toDataURL('image/png');
+
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+          printWindow.document.write(`
           <html>
             <head>
               <title>Chart Print</title>
@@ -368,22 +363,24 @@ export function useChartExport() {
             </body>
           </html>
         `);
-        printWindow.document.close();
-        printWindow.focus();
-        printWindow.print();
+          printWindow.document.close();
+          printWindow.focus();
+          printWindow.print();
+        }
+      } catch (error) {
+        console.error('Failed to print chart:', error);
+        throw error;
       }
-    } catch (error) {
-      console.error('Failed to print chart:', error);
-      throw error;
-    }
-  }, [svgToCanvas]);
+    },
+    [svgToCanvas]
+  );
 
   return {
     exportChart,
     shareChart,
     copyToClipboard,
     printChart,
-    
+
     // Individual export methods
     exportAsPNG,
     exportAsSVG,

@@ -105,24 +105,27 @@ export function useChart(initialProps?: Partial<ChartProps>) {
   /**
    * Generate chart class based on properties
    */
-  const generateChartClass = useCallback((props: Partial<ChartProps>): string => {
-    const {
-      type = defaultProps.type,
-      size = defaultProps.size,
-      variant = defaultProps.variant,
-      loading = defaultProps.loading,
-      error,
-      className = '',
-    } = props;
+  const generateChartClass = useCallback(
+    (props: Partial<ChartProps>): string => {
+      const {
+        type = defaultProps.type,
+        size = defaultProps.size,
+        variant = defaultProps.variant,
+        loading = defaultProps.loading,
+        error,
+        className = '',
+      } = props;
 
-    const typeClass = type ? `${CHART.TYPE_PREFIX}${type}` : '';
-    const sizeClass = size === 'md' ? '' : `${CHART.SIZE_PREFIX}${size}`;
-    const variantClass = variant ? `${CHART.VARIANT_PREFIX}${variant}` : '';
-    const loadingClass = loading ? CHART.LOADING_STATE_CLASS : '';
-    const errorClass = error ? CHART.ERROR_STATE_CLASS : '';
+      const typeClass = type ? `${CHART.TYPE_PREFIX}${type}` : '';
+      const sizeClass = size === 'md' ? '' : `${CHART.SIZE_PREFIX}${size}`;
+      const variantClass = variant ? `${CHART.VARIANT_PREFIX}${variant}` : '';
+      const loadingClass = loading ? CHART.LOADING_STATE_CLASS : '';
+      const errorClass = error ? CHART.ERROR_STATE_CLASS : '';
 
-    return `${CHART.BASE_CLASS} ${typeClass} ${variantClass} ${sizeClass} ${loadingClass} ${errorClass} ${className}`.trim();
-  }, [defaultProps]);
+      return `${CHART.BASE_CLASS} ${typeClass} ${variantClass} ${sizeClass} ${loadingClass} ${errorClass} ${className}`.trim();
+    },
+    [defaultProps]
+  );
 
   /**
    * Generate chart attributes for accessibility
@@ -153,58 +156,61 @@ export function useChart(initialProps?: Partial<ChartProps>) {
   /**
    * Calculate chart dimensions and scales with zoom and pan support
    */
-  const calculateScales = useCallback((
-    datasets: ChartDataset[],
-    width: number = CHART.DEFAULT_WIDTH,
-    height: number = CHART.DEFAULT_HEIGHT,
-    padding = { top: 20, right: 30, bottom: 40, left: 50 },
-    config?: any
-  ): ChartScales | null => {
-    if (!datasets.length) return null;
+  const calculateScales = useCallback(
+    (
+      datasets: ChartDataset[],
+      width: number = CHART.DEFAULT_WIDTH,
+      height: number = CHART.DEFAULT_HEIGHT,
+      padding = { top: 20, right: 30, bottom: 40, left: 50 },
+      config?: any
+    ): ChartScales | null => {
+      if (!datasets.length) return null;
 
-    const innerWidth = width - padding.left - padding.right;
-    const innerHeight = height - padding.top - padding.bottom;
+      const innerWidth = width - padding.left - padding.right;
+      const innerHeight = height - padding.top - padding.bottom;
 
-    // Calculate value bounds
-    const allValues = datasets.flatMap(dataset => 
-      dataset.data?.map(d => typeof d.value === 'number' ? d.value : 0) || []
-    );
-    
-    if (allValues.length === 0) return null;
-    
-    const minValue = config?.yAxis?.min ?? Math.min(0, ...allValues);
-    const maxValue = config?.yAxis?.max ?? Math.max(...allValues, 1);
-    const valueRange = maxValue - minValue;
+      // Calculate value bounds
+      const allValues = datasets.flatMap(
+        dataset => dataset.data?.map(d => (typeof d.value === 'number' ? d.value : 0)) || []
+      );
 
-    // Scale functions with zoom and pan support
-    const xScale = (index: number, dataLength?: number) => {
-      const totalLength = dataLength || datasets[0]?.data?.length || 1;
-      if (totalLength <= 1) return padding.left + innerWidth / 2;
-      
-      const baseX = padding.left + (index / (totalLength - 1)) * innerWidth;
-      return baseX * interactionState.zoomLevel + interactionState.panOffset.x;
-    };
+      if (allValues.length === 0) return null;
 
-    const yScale = (value: number) => {
-      if (valueRange === 0) return padding.top + innerHeight / 2;
-      
-      const baseY = padding.top + innerHeight - ((value - minValue) / valueRange) * innerHeight;
-      return baseY * interactionState.zoomLevel + interactionState.panOffset.y;
-    };
+      const minValue = config?.yAxis?.min ?? Math.min(0, ...allValues);
+      const maxValue = config?.yAxis?.max ?? Math.max(...allValues, 1);
+      const valueRange = maxValue - minValue;
 
-    return {
-      xScale,
-      yScale,
-      minValue,
-      maxValue,
-      valueRange,
-      innerWidth,
-      innerHeight,
-      width,
-      height,
-      padding,
-    };
-  }, [interactionState.zoomLevel, interactionState.panOffset]);
+      // Scale functions with zoom and pan support
+      const xScale = (index: number, dataLength?: number) => {
+        const totalLength = dataLength || datasets[0]?.data?.length || 1;
+        if (totalLength <= 1) return padding.left + innerWidth / 2;
+
+        const baseX = padding.left + (index / (totalLength - 1)) * innerWidth;
+        return baseX * interactionState.zoomLevel + interactionState.panOffset.x;
+      };
+
+      const yScale = (value: number) => {
+        if (valueRange === 0) return padding.top + innerHeight / 2;
+
+        const baseY = padding.top + innerHeight - ((value - minValue) / valueRange) * innerHeight;
+        return baseY * interactionState.zoomLevel + interactionState.panOffset.y;
+      };
+
+      return {
+        xScale,
+        yScale,
+        minValue,
+        maxValue,
+        valueRange,
+        innerWidth,
+        innerHeight,
+        width,
+        height,
+        padding,
+      };
+    },
+    [interactionState.zoomLevel, interactionState.panOffset]
+  );
 
   /**
    * Generate color palette using CSS custom properties
@@ -212,7 +218,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
   const getChartColors = useCallback((count: number) => {
     const colors = [
       'var(--atomix-primary)',
-      'var(--atomix-secondary)', 
+      'var(--atomix-secondary)',
       'var(--atomix-success)',
       'var(--atomix-info)',
       'var(--atomix-warning)',
@@ -224,27 +230,30 @@ export function useChart(initialProps?: Partial<ChartProps>) {
       'var(--atomix-gray-8)',
       'var(--atomix-gray-4)',
     ];
-    
+
     return Array.from({ length: count }, (_, i) => colors[i % colors.length]);
   }, []);
 
   /**
    * Enhanced point interaction handlers
    */
-  const handlePointHover = useCallback((
-    datasetIndex: number,
-    pointIndex: number,
-    x: number,
-    y: number,
-    clientX: number,
-    clientY: number
-  ) => {
-    setInteractionState(prev => ({
-      ...prev,
-      hoveredPoint: { datasetIndex, pointIndex, x, y, clientX, clientY },
-      focusedPointIndex: pointIndex,
-    }));
-  }, []);
+  const handlePointHover = useCallback(
+    (
+      datasetIndex: number,
+      pointIndex: number,
+      x: number,
+      y: number,
+      clientX: number,
+      clientY: number
+    ) => {
+      setInteractionState(prev => ({
+        ...prev,
+        hoveredPoint: { datasetIndex, pointIndex, x, y, clientX, clientY },
+        focusedPointIndex: pointIndex,
+      }));
+    },
+    []
+  );
 
   const handlePointLeave = useCallback(() => {
     setInteractionState(prev => ({
@@ -253,50 +262,47 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     }));
   }, []);
 
-  const handlePointClick = useCallback((
-    datasetIndex: number,
-    pointIndex: number,
-    multiSelect: boolean = false
-  ) => {
-    setInteractionState(prev => {
-      const pointKey = { datasetIndex, pointIndex };
-      const existingIndex = prev.selectedPoints.findIndex(
-        p => p.datasetIndex === datasetIndex && p.pointIndex === pointIndex
-      );
+  const handlePointClick = useCallback(
+    (datasetIndex: number, pointIndex: number, multiSelect: boolean = false) => {
+      setInteractionState(prev => {
+        const pointKey = { datasetIndex, pointIndex };
+        const existingIndex = prev.selectedPoints.findIndex(
+          p => p.datasetIndex === datasetIndex && p.pointIndex === pointIndex
+        );
 
-      let newSelectedPoints;
-      if (existingIndex >= 0) {
-        // Remove if already selected
-        newSelectedPoints = prev.selectedPoints.filter((_, i) => i !== existingIndex);
-      } else {
-        // Add to selection
-        newSelectedPoints = multiSelect 
-          ? [...prev.selectedPoints, pointKey]
-          : [pointKey];
-      }
+        let newSelectedPoints;
+        if (existingIndex >= 0) {
+          // Remove if already selected
+          newSelectedPoints = prev.selectedPoints.filter((_, i) => i !== existingIndex);
+        } else {
+          // Add to selection
+          newSelectedPoints = multiSelect ? [...prev.selectedPoints, pointKey] : [pointKey];
+        }
 
-      return {
-        ...prev,
-        selectedPoints: newSelectedPoints,
-      };
-    });
-  }, []);
+        return {
+          ...prev,
+          selectedPoints: newSelectedPoints,
+        };
+      });
+    },
+    []
+  );
 
   /**
    * Enhanced zoom and pan handlers
    */
   const handleZoom = useCallback((delta: number, centerX: number, centerY?: number) => {
     setInteractionState(prev => {
-      const zoomFactor = 1 - (delta * 0.001);
+      const zoomFactor = 1 - delta * 0.001;
       const newZoomLevel = Math.max(0.1, Math.min(10, prev.zoomLevel * zoomFactor));
-      
+
       // Adjust pan offset to zoom towards the center point
       const zoomRatio = newZoomLevel / prev.zoomLevel;
       const newPanOffset = {
         x: centerX - (centerX - prev.panOffset.x) * zoomRatio,
         y: centerY ? centerY - (centerY - prev.panOffset.y) * zoomRatio : prev.panOffset.y,
       };
-      
+
       return {
         ...prev,
         zoomLevel: newZoomLevel,
@@ -371,21 +377,20 @@ export function useChart(initialProps?: Partial<ChartProps>) {
         const rect = (event.target as Element).getBoundingClientRect();
         const x = touches[0].x - rect.left;
         const y = touches[0].y - rect.top;
-        
+
         return {
           ...newState,
           isDragging: true,
           dragStart: { x, y },
         };
       }
-      
+
       // Multi-touch - prepare for pinch
       if (touches.length === 2) {
         const distance = Math.sqrt(
-          Math.pow(touches[1].x - touches[0].x, 2) + 
-          Math.pow(touches[1].y - touches[0].y, 2)
+          Math.pow(touches[1].x - touches[0].x, 2) + Math.pow(touches[1].y - touches[0].y, 2)
         );
-        
+
         return {
           ...newState,
           touchState: {
@@ -403,7 +408,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
 
   const handleTouchMove = useCallback((event: TouchEvent | React.TouchEvent) => {
     event.preventDefault(); // Prevent scrolling
-    
+
     const touches = Array.from(event.touches).map(touch => ({
       id: touch.identifier,
       x: touch.clientX,
@@ -412,14 +417,14 @@ export function useChart(initialProps?: Partial<ChartProps>) {
 
     setInteractionState(prev => {
       const rect = (event.target as Element).getBoundingClientRect();
-      
+
       // Single touch - pan
       if (touches.length === 1 && prev.isDragging && prev.dragStart) {
         const x = touches[0].x - rect.left;
         const y = touches[0].y - rect.top;
         const deltaX = x - prev.dragStart.x;
         const deltaY = y - prev.dragStart.y;
-        
+
         return {
           ...prev,
           panOffset: {
@@ -433,29 +438,28 @@ export function useChart(initialProps?: Partial<ChartProps>) {
           },
         };
       }
-      
+
       // Two touches - pinch zoom
       if (touches.length === 2 && prev.touchState.isPinching) {
         const distance = Math.sqrt(
-          Math.pow(touches[1].x - touches[0].x, 2) + 
-          Math.pow(touches[1].y - touches[0].y, 2)
+          Math.pow(touches[1].x - touches[0].x, 2) + Math.pow(touches[1].y - touches[0].y, 2)
         );
-        
+
         if (prev.touchState.lastDistance > 0) {
           const scale = distance / prev.touchState.lastDistance;
           const newZoomLevel = Math.max(0.1, Math.min(10, prev.zoomLevel * scale));
-          
+
           // Calculate center point for zoom
           const centerX = (touches[0].x + touches[1].x) / 2 - rect.left;
           const centerY = (touches[0].y + touches[1].y) / 2 - rect.top;
-          
+
           // Adjust pan offset to zoom towards center
           const zoomRatio = newZoomLevel / prev.zoomLevel;
           const newPanOffset = {
             x: centerX - (centerX - prev.panOffset.x) * zoomRatio,
             y: centerY - (centerY - prev.panOffset.y) * zoomRatio,
           };
-          
+
           return {
             ...prev,
             zoomLevel: newZoomLevel,
@@ -467,7 +471,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
             },
           };
         }
-        
+
         return {
           ...prev,
           touchState: {
@@ -477,7 +481,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
           },
         };
       }
-      
+
       return {
         ...prev,
         touchState: {
@@ -511,13 +515,13 @@ export function useChart(initialProps?: Partial<ChartProps>) {
           },
         };
       }
-      
+
       // Single touch remaining - switch from pinch to pan
       if (touches.length === 1 && prev.touchState.isPinching) {
         const rect = (event.target as Element).getBoundingClientRect();
         const x = touches[0].x - rect.left;
         const y = touches[0].y - rect.top;
-        
+
         return {
           ...prev,
           isDragging: true,
@@ -530,7 +534,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
           },
         };
       }
-      
+
       return {
         ...prev,
         touchState: {
@@ -541,55 +545,70 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     });
   }, []);
 
-  const handlePointerDown = useCallback((event: PointerEvent | React.PointerEvent) => {
-    const isPen = event.pointerType === 'pen';
-    const isTouch = event.pointerType === 'touch';
-    
-    if (isPen) {
-      setInteractionState(prev => ({
-        ...prev,
-        penState: {
-          isPen: true,
-          pressure: event.pressure || 0,
-          tiltX: (event as any).tiltX || 0,
-          tiltY: (event as any).tiltY || 0,
-        },
-        isDragging: true,
-        dragStart: {
-          x: event.clientX - (event.target as Element).getBoundingClientRect().left,
-          y: event.clientY - (event.target as Element).getBoundingClientRect().top,
-        },
-      }));
-    } else if (!isTouch) {
-      // Regular mouse interaction
+  const handlePointerDown = useCallback(
+    (event: PointerEvent | React.PointerEvent) => {
+      const isPen = event.pointerType === 'pen';
+      const isTouch = event.pointerType === 'touch';
+
+      if (isPen) {
+        setInteractionState(prev => ({
+          ...prev,
+          penState: {
+            isPen: true,
+            pressure: event.pressure || 0,
+            tiltX: (event as any).tiltX || 0,
+            tiltY: (event as any).tiltY || 0,
+          },
+          isDragging: true,
+          dragStart: {
+            x: event.clientX - (event.target as Element).getBoundingClientRect().left,
+            y: event.clientY - (event.target as Element).getBoundingClientRect().top,
+          },
+        }));
+      } else if (!isTouch) {
+        // Regular mouse interaction
+        const rect = (event.target as Element).getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        handleDragStart(x, y);
+      }
+    },
+    [handleDragStart]
+  );
+
+  const handlePointerMove = useCallback(
+    (event: PointerEvent | React.PointerEvent) => {
       const rect = (event.target as Element).getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      handleDragStart(x, y);
-    }
-  }, [handleDragStart]);
 
-  const handlePointerMove = useCallback((event: PointerEvent | React.PointerEvent) => {
-    const rect = (event.target as Element).getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    
-    if (event.pointerType === 'pen' && interactionState.penState.isPen) {
-      setInteractionState(prev => {
-        if (prev.isDragging && prev.dragStart) {
-          const deltaX = x - prev.dragStart.x;
-          const deltaY = y - prev.dragStart.y;
-          
-          // Pen pressure affects pan sensitivity
-          const pressureMultiplier = Math.max(0.1, event.pressure || 0.5);
-          
+      if (event.pointerType === 'pen' && interactionState.penState.isPen) {
+        setInteractionState(prev => {
+          if (prev.isDragging && prev.dragStart) {
+            const deltaX = x - prev.dragStart.x;
+            const deltaY = y - prev.dragStart.y;
+
+            // Pen pressure affects pan sensitivity
+            const pressureMultiplier = Math.max(0.1, event.pressure || 0.5);
+
+            return {
+              ...prev,
+              panOffset: {
+                x: prev.panOffset.x + deltaX * pressureMultiplier,
+                y: prev.panOffset.y + deltaY * pressureMultiplier,
+              },
+              dragStart: { x, y },
+              penState: {
+                ...prev.penState,
+                pressure: event.pressure || 0,
+                tiltX: (event as any).tiltX || 0,
+                tiltY: (event as any).tiltY || 0,
+              },
+            };
+          }
+
           return {
             ...prev,
-            panOffset: {
-              x: prev.panOffset.x + deltaX * pressureMultiplier,
-              y: prev.panOffset.y + deltaY * pressureMultiplier,
-            },
-            dragStart: { x, y },
             penState: {
               ...prev.penState,
               pressure: event.pressure || 0,
@@ -597,47 +616,41 @@ export function useChart(initialProps?: Partial<ChartProps>) {
               tiltY: (event as any).tiltY || 0,
             },
           };
-        }
-        
-        return {
-          ...prev,
-          penState: {
-            ...prev.penState,
-            pressure: event.pressure || 0,
-            tiltX: (event as any).tiltX || 0,
-            tiltY: (event as any).tiltY || 0,
-          },
-        };
-      });
-    } else if (event.pointerType !== 'touch') {
-      // Regular mouse move
-      handleCrosshair(x, y);
-      
-      if (interactionState.isDragging && interactionState.dragStart) {
-        const deltaX = x - interactionState.dragStart.x;
-        const deltaY = y - interactionState.dragStart.y;
-        handlePan(deltaX, deltaY);
-      }
-    }
-  }, [interactionState, handleCrosshair, handlePan]);
+        });
+      } else if (event.pointerType !== 'touch') {
+        // Regular mouse move
+        handleCrosshair(x, y);
 
-  const handlePointerUp = useCallback((event: PointerEvent | React.PointerEvent) => {
-    if (event.pointerType === 'pen') {
-      setInteractionState(prev => ({
-        ...prev,
-        isDragging: false,
-        dragStart: null,
-        penState: {
-          isPen: false,
-          pressure: 0,
-          tiltX: 0,
-          tiltY: 0,
-        },
-      }));
-    } else if (event.pointerType !== 'touch') {
-      handleDragEnd();
-    }
-  }, [handleDragEnd]);
+        if (interactionState.isDragging && interactionState.dragStart) {
+          const deltaX = x - interactionState.dragStart.x;
+          const deltaY = y - interactionState.dragStart.y;
+          handlePan(deltaX, deltaY);
+        }
+      }
+    },
+    [interactionState, handleCrosshair, handlePan]
+  );
+
+  const handlePointerUp = useCallback(
+    (event: PointerEvent | React.PointerEvent) => {
+      if (event.pointerType === 'pen') {
+        setInteractionState(prev => ({
+          ...prev,
+          isDragging: false,
+          dragStart: null,
+          penState: {
+            isPen: false,
+            pressure: 0,
+            tiltX: 0,
+            tiltY: 0,
+          },
+        }));
+      } else if (event.pointerType !== 'touch') {
+        handleDragEnd();
+      }
+    },
+    [handleDragEnd]
+  );
 
   /**
    * Reset all interactions
@@ -658,23 +671,23 @@ export function useChart(initialProps?: Partial<ChartProps>) {
    */
   const startAnimation = useCallback((duration: number = 1000) => {
     setInteractionState(prev => ({ ...prev, isAnimating: true }));
-    
+
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current);
     }
-    
+
     const startTime = Date.now();
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       if (progress < 1) {
         animationFrameRef.current = requestAnimationFrame(animate);
       } else {
         setInteractionState(prev => ({ ...prev, isAnimating: false }));
       }
     };
-    
+
     animationFrameRef.current = requestAnimationFrame(animate);
   }, []);
 
@@ -707,20 +720,20 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     crosshair: interactionState.crosshair,
     brushSelection: interactionState.brushSelection,
     focusedPointIndex: interactionState.focusedPointIndex,
-    
+
     // Refs
     containerRef,
     svgRef,
-    
+
     // Props and attributes
     defaultProps,
     generateChartClass,
     chartAttributes: generateChartAttributes(initialProps || {}),
-    
+
     // Calculations
     calculateScales,
     getChartColors,
-    
+
     // Enhanced interactions
     handlePointHover,
     handlePointLeave,
@@ -732,7 +745,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     handleCrosshair,
     clearCrosshair,
     resetView,
-    
+
     // Touch and pointer handlers
     handleTouchStart,
     handleTouchMove,
@@ -740,11 +753,11 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,
-    
+
     // Animation
     startAnimation,
     stopAnimation,
-    
+
     // State setters for advanced use cases
     setInteractionState,
   };
@@ -753,15 +766,18 @@ export function useChart(initialProps?: Partial<ChartProps>) {
 /**
  * Hook for chart data processing and transformation
  */
-export function useChartData(datasets: ChartDataset[], options?: {
-  enableDecimation?: boolean;
-  maxDataPoints?: number;
-  enableRealTime?: boolean;
-  realTimeInterval?: number;
-}) {
+export function useChartData(
+  datasets: ChartDataset[],
+  options?: {
+    enableDecimation?: boolean;
+    maxDataPoints?: number;
+    enableRealTime?: boolean;
+    realTimeInterval?: number;
+  }
+) {
   const [processedData, setProcessedData] = useState(datasets);
   const [isProcessing, setIsProcessing] = useState(false);
-  
+
   const {
     enableDecimation = false,
     maxDataPoints = 1000,
@@ -770,18 +786,21 @@ export function useChartData(datasets: ChartDataset[], options?: {
   } = options || {};
 
   // Data decimation for performance
-  const decimateData = useCallback((data: ChartDataset[], maxPoints: number) => {
-    if (!enableDecimation || !data.length) return data;
+  const decimateData = useCallback(
+    (data: ChartDataset[], maxPoints: number) => {
+      if (!enableDecimation || !data.length) return data;
 
-    const dataLength = data[0]?.data?.length || 0;
-    if (dataLength <= maxPoints) return data;
+      const dataLength = data[0]?.data?.length || 0;
+      if (dataLength <= maxPoints) return data;
 
-    const step = Math.ceil(dataLength / maxPoints);
-    return data.map(dataset => ({
-      ...dataset,
-      data: dataset.data?.filter((_, index) => index % step === 0) || [],
-    }));
-  }, [enableDecimation]);
+      const step = Math.ceil(dataLength / maxPoints);
+      return data.map(dataset => ({
+        ...dataset,
+        data: dataset.data?.filter((_, index) => index % step === 0) || [],
+      }));
+    },
+    [enableDecimation]
+  );
 
   // Moving average calculation
   const calculateMovingAverage = useCallback((values: number[], period: number) => {
@@ -816,18 +835,18 @@ export function useChartData(datasets: ChartDataset[], options?: {
   // Process data when datasets change
   useEffect(() => {
     setIsProcessing(true);
-    
+
     const processData = async () => {
       let processed = [...datasets];
-      
+
       if (enableDecimation && maxDataPoints) {
         processed = decimateData(processed, maxDataPoints);
       }
-      
+
       setProcessedData(processed);
       setIsProcessing(false);
     };
-    
+
     processData();
   }, [datasets, decimateData, enableDecimation, maxDataPoints]);
 
@@ -855,11 +874,14 @@ export function useChartData(datasets: ChartDataset[], options?: {
 /**
  * Hook for chart accessibility features
  */
-export function useChartAccessibility(datasets: ChartDataset[], options?: {
-  enableKeyboardNavigation?: boolean;
-  enableScreenReader?: boolean;
-  announceDataChanges?: boolean;
-}) {
+export function useChartAccessibility(
+  datasets: ChartDataset[],
+  options?: {
+    enableKeyboardNavigation?: boolean;
+    enableScreenReader?: boolean;
+    announceDataChanges?: boolean;
+  }
+) {
   const {
     enableKeyboardNavigation = true,
     enableScreenReader = true,
@@ -868,89 +890,99 @@ export function useChartAccessibility(datasets: ChartDataset[], options?: {
 
   const [focusedPoint, setFocusedPoint] = useState({ datasetIndex: 0, pointIndex: 0 });
   const [announcement, setAnnouncement] = useState('');
-  
+
   // Keyboard navigation
-  const handleKeyDown = useCallback((event: KeyboardEvent, onPointSelect?: (datasetIndex: number, pointIndex: number) => void) => {
-    if (!enableKeyboardNavigation || !datasets.length) return;
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent, onPointSelect?: (datasetIndex: number, pointIndex: number) => void) => {
+      if (!enableKeyboardNavigation || !datasets.length) return;
 
-    const maxDatasetIndex = datasets.length - 1;
-    const maxPointIndex = (datasets[focusedPoint.datasetIndex]?.data?.length || 1) - 1;
+      const maxDatasetIndex = datasets.length - 1;
+      const maxPointIndex = (datasets[focusedPoint.datasetIndex]?.data?.length || 1) - 1;
 
-    switch (event.key) {
-      case 'ArrowLeft':
-        event.preventDefault();
-        setFocusedPoint(prev => ({
-          ...prev,
-          pointIndex: Math.max(0, prev.pointIndex - 1),
-        }));
-        break;
-      case 'ArrowRight':
-        event.preventDefault();
-        setFocusedPoint(prev => ({
-          ...prev,
-          pointIndex: Math.min(maxPointIndex, prev.pointIndex + 1),
-        }));
-        break;
-      case 'ArrowUp':
-        event.preventDefault();
-        setFocusedPoint(prev => ({
-          ...prev,
-          datasetIndex: Math.max(0, prev.datasetIndex - 1),
-        }));
-        break;
-      case 'ArrowDown':
-        event.preventDefault();
-        setFocusedPoint(prev => ({
-          ...prev,
-          datasetIndex: Math.min(maxDatasetIndex, prev.datasetIndex + 1),
-        }));
-        break;
-      case 'Home':
-        event.preventDefault();
-        setFocusedPoint(prev => ({ ...prev, pointIndex: 0 }));
-        break;
-      case 'End':
-        event.preventDefault();
-        setFocusedPoint(prev => ({ ...prev, pointIndex: maxPointIndex }));
-        break;
-      case 'Enter':
-      case ' ':
-        event.preventDefault();
-        onPointSelect?.(focusedPoint.datasetIndex, focusedPoint.pointIndex);
-        break;
-    }
-  }, [enableKeyboardNavigation, datasets, focusedPoint]);
+      switch (event.key) {
+        case 'ArrowLeft':
+          event.preventDefault();
+          setFocusedPoint(prev => ({
+            ...prev,
+            pointIndex: Math.max(0, prev.pointIndex - 1),
+          }));
+          break;
+        case 'ArrowRight':
+          event.preventDefault();
+          setFocusedPoint(prev => ({
+            ...prev,
+            pointIndex: Math.min(maxPointIndex, prev.pointIndex + 1),
+          }));
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          setFocusedPoint(prev => ({
+            ...prev,
+            datasetIndex: Math.max(0, prev.datasetIndex - 1),
+          }));
+          break;
+        case 'ArrowDown':
+          event.preventDefault();
+          setFocusedPoint(prev => ({
+            ...prev,
+            datasetIndex: Math.min(maxDatasetIndex, prev.datasetIndex + 1),
+          }));
+          break;
+        case 'Home':
+          event.preventDefault();
+          setFocusedPoint(prev => ({ ...prev, pointIndex: 0 }));
+          break;
+        case 'End':
+          event.preventDefault();
+          setFocusedPoint(prev => ({ ...prev, pointIndex: maxPointIndex }));
+          break;
+        case 'Enter':
+        case ' ':
+          event.preventDefault();
+          onPointSelect?.(focusedPoint.datasetIndex, focusedPoint.pointIndex);
+          break;
+      }
+    },
+    [enableKeyboardNavigation, datasets, focusedPoint]
+  );
 
   // Screen reader announcements
-  const announceData = useCallback((message: string) => {
-    if (!enableScreenReader) return;
-    
-    setAnnouncement(message);
-    // Clear announcement after a delay to allow screen readers to read it
-    setTimeout(() => setAnnouncement(''), 1000);
-  }, [enableScreenReader]);
+  const announceData = useCallback(
+    (message: string) => {
+      if (!enableScreenReader) return;
+
+      setAnnouncement(message);
+      // Clear announcement after a delay to allow screen readers to read it
+      setTimeout(() => setAnnouncement(''), 1000);
+    },
+    [enableScreenReader]
+  );
 
   // Announce data changes
   useEffect(() => {
     if (!announceDataChanges || !datasets.length) return;
-    
+
     const totalDataPoints = datasets.reduce((sum, dataset) => sum + (dataset.data?.length || 0), 0);
-    announceData(`Chart updated with ${datasets.length} datasets and ${totalDataPoints} data points`);
+    announceData(
+      `Chart updated with ${datasets.length} datasets and ${totalDataPoints} data points`
+    );
   }, [datasets, announceDataChanges, announceData]);
 
   // Generate accessible description
   const getAccessibleDescription = useCallback(() => {
     if (!datasets.length) return 'Empty chart';
-    
-    const datasetDescriptions = datasets.map((dataset, i) => {
-      const dataCount = dataset.data?.length || 0;
-      const values = dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [];
-      const min = Math.min(...values);
-      const max = Math.max(...values);
-      
-      return `Dataset ${i + 1}: ${dataset.label}, ${dataCount} points, range ${min} to ${max}`;
-    }).join('. ');
-    
+
+    const datasetDescriptions = datasets
+      .map((dataset, i) => {
+        const dataCount = dataset.data?.length || 0;
+        const values = dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [];
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+
+        return `Dataset ${i + 1}: ${dataset.label}, ${dataCount} points, range ${min} to ${max}`;
+      })
+      .join('. ');
+
     return `Chart with ${datasets.length} datasets. ${datasetDescriptions}`;
   }, [datasets]);
 
@@ -967,11 +999,14 @@ export function useChartAccessibility(datasets: ChartDataset[], options?: {
 /**
  * Hook for chart performance optimization
  */
-export function useChartPerformance(datasets: ChartDataset[], options?: {
-  enableVirtualization?: boolean;
-  enableMemoization?: boolean;
-  debounceMs?: number;
-}) {
+export function useChartPerformance(
+  datasets: ChartDataset[],
+  options?: {
+    enableVirtualization?: boolean;
+    enableMemoization?: boolean;
+    debounceMs?: number;
+  }
+) {
   const {
     enableVirtualization = false,
     enableMemoization = true,
@@ -980,44 +1015,54 @@ export function useChartPerformance(datasets: ChartDataset[], options?: {
 
   const [isOptimizing, setIsOptimizing] = useState(false);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   // Memoized calculations
   const memoizedScales = useMemo(() => {
     if (!enableMemoization) return null;
-    
+
     // Cache expensive scale calculations
     return datasets.map(dataset => ({
       label: dataset.label,
       dataLength: dataset.data?.length || 0,
-      minValue: Math.min(...(dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [0])),
-      maxValue: Math.max(...(dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [0])),
+      minValue: Math.min(
+        ...(dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [0])
+      ),
+      maxValue: Math.max(
+        ...(dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [0])
+      ),
     }));
   }, [datasets, enableMemoization]);
 
   // Debounced updates
-  const debouncedUpdate = useCallback((callback: () => void) => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-    
-    debounceRef.current = setTimeout(() => {
-      callback();
-      setIsOptimizing(false);
-    }, debounceMs);
-    
-    setIsOptimizing(true);
-  }, [debounceMs]);
+  const debouncedUpdate = useCallback(
+    (callback: () => void) => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+
+      debounceRef.current = setTimeout(() => {
+        callback();
+        setIsOptimizing(false);
+      }, debounceMs);
+
+      setIsOptimizing(true);
+    },
+    [debounceMs]
+  );
 
   // Virtualization helpers
-  const getVisibleRange = useCallback((scrollTop: number, itemHeight: number, containerHeight: number) => {
-    if (!enableVirtualization) return { start: 0, end: datasets[0]?.data?.length || 0 };
-    
-    const start = Math.floor(scrollTop / itemHeight);
-    const visibleCount = Math.ceil(containerHeight / itemHeight);
-    const end = Math.min(start + visibleCount + 1, datasets[0]?.data?.length || 0);
-    
-    return { start: Math.max(0, start - 1), end };
-  }, [enableVirtualization, datasets]);
+  const getVisibleRange = useCallback(
+    (scrollTop: number, itemHeight: number, containerHeight: number) => {
+      if (!enableVirtualization) return { start: 0, end: datasets[0]?.data?.length || 0 };
+
+      const start = Math.floor(scrollTop / itemHeight);
+      const visibleCount = Math.ceil(containerHeight / itemHeight);
+      const end = Math.min(start + visibleCount + 1, datasets[0]?.data?.length || 0);
+
+      return { start: Math.max(0, start - 1), end };
+    },
+    [enableVirtualization, datasets]
+  );
 
   // Cleanup
   useEffect(() => {

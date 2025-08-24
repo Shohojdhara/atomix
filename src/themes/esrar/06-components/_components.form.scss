@@ -9,11 +9,11 @@
     $timing: ease-in-out,
     $iteration-count: infinite
   );
-  
+
   position: relative;
-  
+
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: -10px;
     left: -10px;
@@ -30,15 +30,10 @@
     opacity: 0.03;
     z-index: -1;
   }
-  
+
   &__group {
-    @include animations(
-      'float',
-      $duration: 3s,
-      $timing: ease-in-out,
-      $iteration-count: infinite
-    );
-    
+    @include animations('float', $duration: 3s, $timing: ease-in-out, $iteration-count: infinite);
+
     &:hover {
       @include animations(
         'color-pulse',
@@ -48,7 +43,7 @@
       );
     }
   }
-  
+
   &__label {
     @include animations(
       'pulse-slow',
@@ -57,7 +52,7 @@
       $iteration-count: infinite
     );
   }
-  
+
   &__control {
     &:focus {
       @include animations(

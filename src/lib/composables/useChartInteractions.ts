@@ -23,7 +23,7 @@ export function useChartInteractions() {
   // Improved wheel handling for both mouse and trackpad
   const handleWheel = useCallback((event: WheelEvent) => {
     event.preventDefault();
-    
+
     const now = Date.now();
     const timeDelta = now - lastWheelTime.current;
     lastWheelTime.current = now;
@@ -31,7 +31,7 @@ export function useChartInteractions() {
     // Detect trackpad vs mouse wheel
     const isTrackpad = Math.abs(event.deltaY) < 50 && timeDelta < 50;
     const sensitivity = isTrackpad ? 0.01 : 0.1;
-    
+
     if (wheelTimeoutRef.current) {
       clearTimeout(wheelTimeoutRef.current);
     }
@@ -40,11 +40,11 @@ export function useChartInteractions() {
       const rect = (event.target as Element).getBoundingClientRect();
       const centerX = event.clientX - rect.left;
       const centerY = event.clientY - rect.top;
-      
+
       // Zoom calculation
-      const zoomFactor = 1 - (event.deltaY * sensitivity);
+      const zoomFactor = 1 - event.deltaY * sensitivity;
       const newZoomLevel = Math.max(0.1, Math.min(10, prev.zoomLevel * zoomFactor));
-      
+
       // Pan to zoom center
       const zoomRatio = newZoomLevel / prev.zoomLevel;
       const newPanOffset = {

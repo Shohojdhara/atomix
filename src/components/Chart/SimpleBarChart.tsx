@@ -12,9 +12,24 @@ interface SimpleBarChartProps extends Omit<ChartProps, 'type'> {
 
 const SimpleBarChart = memo(
   forwardRef<HTMLDivElement, SimpleBarChartProps>(
-    ({ datasets = [], config = {}, horizontal = false, stacked = false, showValues = true, onDataPointClick, ...props }, ref) => {
-      
-      const renderBars = ({ scales, colors, datasets: processedDatasets, onDataPointClick: handleClick }) => {
+    (
+      {
+        datasets = [],
+        config = {},
+        horizontal = false,
+        stacked = false,
+        showValues = true,
+        onDataPointClick,
+        ...props
+      },
+      ref
+    ) => {
+      const renderBars = ({
+        scales,
+        colors,
+        datasets: processedDatasets,
+        onDataPointClick: handleClick,
+      }) => {
         if (!scales || !processedDatasets.length) return null;
 
         const { xScale, yScale, minValue, maxValue, padding, width, height } = scales;
@@ -36,19 +51,27 @@ const SimpleBarChart = memo(
             if (horizontal) {
               const categoryHeight = (height - padding.top - padding.bottom) / numCategories;
               const availableHeight = categoryHeight * 0.8;
-              
+
               barHeight = stacked ? availableHeight : availableHeight / numDatasets;
-              barY = padding.top + categoryIndex * categoryHeight + (categoryHeight - availableHeight) / 2;
-              
+              barY =
+                padding.top +
+                categoryIndex * categoryHeight +
+                (categoryHeight - availableHeight) / 2;
+
               if (!stacked) {
                 barY += datasetIndex * barHeight;
               }
 
               barX = padding.left;
-              barWidth = ((value - minValue) / (maxValue - minValue)) * (width - padding.left - padding.right);
+              barWidth =
+                ((value - minValue) / (maxValue - minValue)) *
+                (width - padding.left - padding.right);
 
               if (stacked && datasetIndex > 0) {
-                barX = padding.left + ((stackedPositions[categoryIndex] - minValue) / (maxValue - minValue)) * (width - padding.left - padding.right);
+                barX =
+                  padding.left +
+                  ((stackedPositions[categoryIndex] - minValue) / (maxValue - minValue)) *
+                    (width - padding.left - padding.right);
                 stackedPositions[categoryIndex] += value;
               } else if (stacked) {
                 stackedPositions[categoryIndex] = value;
@@ -56,19 +79,24 @@ const SimpleBarChart = memo(
             } else {
               const categoryWidth = (width - padding.left - padding.right) / numCategories;
               const availableWidth = categoryWidth * 0.8;
-              
+
               barWidth = stacked ? availableWidth : availableWidth / numDatasets;
-              barX = padding.left + categoryIndex * categoryWidth + (categoryWidth - availableWidth) / 2;
-              
+              barX =
+                padding.left + categoryIndex * categoryWidth + (categoryWidth - availableWidth) / 2;
+
               if (!stacked) {
                 barX += datasetIndex * barWidth;
               }
 
-              barHeight = ((value - minValue) / (maxValue - minValue)) * (height - padding.top - padding.bottom);
+              barHeight =
+                ((value - minValue) / (maxValue - minValue)) *
+                (height - padding.top - padding.bottom);
               barY = height - padding.bottom - barHeight;
 
               if (stacked && datasetIndex > 0) {
-                const stackedHeight = ((stackedPositions[categoryIndex] - minValue) / (maxValue - minValue)) * (height - padding.top - padding.bottom);
+                const stackedHeight =
+                  ((stackedPositions[categoryIndex] - minValue) / (maxValue - minValue)) *
+                  (height - padding.top - padding.bottom);
                 barY = height - padding.bottom - stackedHeight - barHeight;
                 stackedPositions[categoryIndex] += value;
               } else if (stacked) {
@@ -111,8 +139,20 @@ const SimpleBarChart = memo(
             {processedDatasets[0]?.data?.map((point, i) => (
               <text
                 key={`x-label-${i}`}
-                x={horizontal ? padding.left - 10 : padding.left + i * ((width - padding.left - padding.right) / numCategories) + ((width - padding.left - padding.right) / numCategories) / 2}
-                y={horizontal ? padding.top + i * ((height - padding.top - padding.bottom) / numCategories) + ((height - padding.top - padding.bottom) / numCategories) / 2 : height - 10}
+                x={
+                  horizontal
+                    ? padding.left - 10
+                    : padding.left +
+                      i * ((width - padding.left - padding.right) / numCategories) +
+                      (width - padding.left - padding.right) / numCategories / 2
+                }
+                y={
+                  horizontal
+                    ? padding.top +
+                      i * ((height - padding.top - padding.bottom) / numCategories) +
+                      (height - padding.top - padding.bottom) / numCategories / 2
+                    : height - 10
+                }
                 textAnchor={horizontal ? 'end' : 'middle'}
                 dominantBaseline={horizontal ? 'middle' : 'auto'}
                 className="c-chart__axis-label"
@@ -130,8 +170,16 @@ const SimpleBarChart = memo(
               return (
                 <text
                   key={`y-label-${i}`}
-                  x={horizontal ? padding.left + (i / 4) * (width - padding.left - padding.right) : padding.left - 10}
-                  y={horizontal ? height - 10 : height - padding.bottom - (i / 4) * (height - padding.top - padding.bottom)}
+                  x={
+                    horizontal
+                      ? padding.left + (i / 4) * (width - padding.left - padding.right)
+                      : padding.left - 10
+                  }
+                  y={
+                    horizontal
+                      ? height - 10
+                      : height - padding.bottom - (i / 4) * (height - padding.top - padding.bottom)
+                  }
                   textAnchor={horizontal ? 'middle' : 'end'}
                   dominantBaseline={horizontal ? 'auto' : 'middle'}
                   className="c-chart__axis-label"
@@ -153,7 +201,13 @@ const SimpleBarChart = memo(
       };
 
       return (
-        <Chart ref={ref} type={horizontal ? 'horizontal-bar' : 'bar'} datasets={datasets} config={config} {...props}>
+        <Chart
+          ref={ref}
+          type={horizontal ? 'horizontal-bar' : 'bar'}
+          datasets={datasets}
+          config={config}
+          {...props}
+        >
           <div className={CHART.CANVAS_CLASS}>
             <ChartRenderer
               datasets={datasets}

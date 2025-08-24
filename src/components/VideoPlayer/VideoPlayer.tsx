@@ -307,7 +307,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
           />
         ) : (
           <video
-            ref={(element) => {
+            ref={element => {
               videoRef.current = element;
               if (typeof ref === 'function') {
                 ref(element);

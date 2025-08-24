@@ -9,12 +9,12 @@
     $timing: ease-in-out,
     $iteration-count: infinite
   );
-  
+
   position: relative;
   overflow: hidden;
-  
+
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: -10px;
     left: -10px;
@@ -31,7 +31,7 @@
     opacity: 0.05;
     z-index: -1;
   }
-  
+
   &__bar {
     @include animations(
       'chill-rainbow',
@@ -39,11 +39,11 @@
       $timing: linear,
       $iteration-count: infinite
     );
-    
+
     position: relative;
-    
+
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       top: 0;
       left: 0;

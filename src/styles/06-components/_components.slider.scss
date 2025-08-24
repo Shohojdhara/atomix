@@ -45,7 +45,8 @@
       will-change: transform;
 
       &.transitioning {
-        transition: transform var(--#{config.$prefix}slider-speed) var(--#{config.$prefix}slider-easing);
+        transition: transform var(--#{config.$prefix}slider-speed)
+          var(--#{config.$prefix}slider-easing);
       }
 
       &.repositioning {

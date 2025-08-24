@@ -205,7 +205,7 @@ const DonutChart = memo(
                 fill={color}
                 className="c-chart__donut-slice"
                 onClick={() => onDataPointClick?.(dataPoint, 0, index)}
-                onMouseEnter={(e) => {
+                onMouseEnter={e => {
                   const rect = e.currentTarget.ownerSVGElement?.getBoundingClientRect();
                   const clientX = rect ? rect.left + labelX : e.clientX;
                   const clientY = rect ? rect.top + labelY : e.clientY;
@@ -233,7 +233,12 @@ const DonutChart = memo(
         // Center content
         const centerContent = donutOptions.showTotal && (
           <g className="c-chart__donut-center">
-            <circle cx={centerX} cy={centerY} r={innerRadius} className="c-chart__donut-center-bg" />
+            <circle
+              cx={centerX}
+              cy={centerY}
+              r={innerRadius}
+              className="c-chart__donut-center-bg"
+            />
             {donutOptions.centerLabel && (
               <text
                 x={centerX}

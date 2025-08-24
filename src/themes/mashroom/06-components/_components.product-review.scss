@@ -31,24 +31,24 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(
-      circle at 30% 20%,
-      rgba(255, 187, 0, 0.1) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 70% 80%,
-      rgba(157, 0, 255, 0.1) 0%,
-      transparent 50%
-    );
+    background:
+      radial-gradient(circle at 30% 20%, rgba(255, 187, 0, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(157, 0, 255, 0.1) 0%, transparent 50%);
     border-radius: inherit;
     animation: backgroundFloat 6s ease-in-out infinite;
     pointer-events: none;
   }
 
   @keyframes backgroundFloat {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.05); }
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.05);
+    }
   }
 
   // Header section
@@ -92,9 +92,15 @@
   }
 
   @keyframes titleGradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 
   // Rating section
@@ -151,8 +157,13 @@
     }
 
     @keyframes starPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
     }
   }
 
@@ -240,9 +251,15 @@
   }
 
   @keyframes buttonGradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 
   // Floating spore particles
@@ -341,8 +358,13 @@
     animation: psychedelicShift 10s ease-in-out infinite;
 
     @keyframes psychedelicShift {
-      0%, 100% { filter: hue-rotate(0deg); }
-      50% { filter: hue-rotate(180deg); }
+      0%,
+      100% {
+        filter: hue-rotate(0deg);
+      }
+      50% {
+        filter: hue-rotate(180deg);
+      }
     }
   }
 

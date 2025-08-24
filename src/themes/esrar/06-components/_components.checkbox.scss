@@ -11,11 +11,11 @@
         $timing: linear,
         $iteration-count: infinite
       );
-      
+
       position: relative;
-      
+
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         top: -5px;
         left: -5px;
@@ -34,7 +34,7 @@
         border-radius: inherit;
       }
     }
-    
+
     &:focus + &__label::before {
       @include animations(
         'color-wave',
@@ -44,7 +44,7 @@
       );
     }
   }
-  
+
   &__label {
     @include animations(
       'pulse-slow',
@@ -52,18 +52,13 @@
       $timing: ease-in-out,
       $iteration-count: infinite
     );
-    
+
     position: relative;
-    
+
     &::before {
-      @include animations(
-        'float',
-        $duration: 2s,
-        $timing: ease-in-out,
-        $iteration-count: infinite
-      );
+      @include animations('float', $duration: 2s, $timing: ease-in-out, $iteration-count: infinite);
     }
-    
+
     &:hover {
       @include animations(
         'wobble-chill',

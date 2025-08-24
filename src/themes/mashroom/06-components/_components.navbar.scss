@@ -29,23 +29,23 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(
-      circle at 10% 50%,
-      rgba(255, 187, 0, 0.1) 0%,
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 90% 50%,
-      rgba(157, 0, 255, 0.1) 0%,
-      transparent 30%
-    );
+    background:
+      radial-gradient(circle at 10% 50%, rgba(255, 187, 0, 0.1) 0%, transparent 30%),
+      radial-gradient(circle at 90% 50%, rgba(157, 0, 255, 0.1) 0%, transparent 30%);
     animation: backgroundFlow 8s ease-in-out infinite;
     pointer-events: none;
   }
 
   @keyframes backgroundFlow {
-    0%, 100% { opacity: 0.3; transform: translateX(0); }
-    50% { opacity: 0.6; transform: translateX(10px); }
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: translateX(0);
+    }
+    50% {
+      opacity: 0.6;
+      transform: translateX(10px);
+    }
   }
 
   // Brand/logo area
@@ -75,8 +75,13 @@
     animation: logoSpin 4s ease-in-out infinite;
 
     @keyframes logoSpin {
-      0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(180deg); }
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(180deg);
+      }
     }
   }
 
@@ -128,10 +133,11 @@
       }
 
       @keyframes activeUnderline {
-        0%, 100% { 
+        0%,
+        100% {
           background: linear-gradient(90deg, $purple-4, $yellow-4);
         }
-        50% { 
+        50% {
           background: linear-gradient(90deg, $yellow-4, $red-4);
         }
       }
@@ -222,8 +228,13 @@
       }
 
       @keyframes badgePulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.2); }
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
       }
     }
   }
@@ -309,8 +320,12 @@
     animation: stickySlide 0.3s ease;
 
     @keyframes stickySlide {
-      from { transform: translateY(-100%); }
-      to { transform: translateY(0); }
+      from {
+        transform: translateY(-100%);
+      }
+      to {
+        transform: translateY(0);
+      }
     }
   }
 
@@ -328,8 +343,13 @@
     animation: float 6s ease-in-out infinite;
 
     @keyframes float {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(-5px); }
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      50% {
+        transform: translateX(-50%) translateY(-5px);
+      }
     }
   }
 
@@ -373,9 +393,15 @@
     }
 
     @keyframes psychedelicShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
   }
 

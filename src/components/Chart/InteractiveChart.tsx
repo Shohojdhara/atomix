@@ -190,7 +190,7 @@ const InteractiveChart = memo(
       const handleTouchStart = useCallback((event: React.TouchEvent<SVGSVGElement>) => {
         event.preventDefault();
         const touches = Array.from(event.touches);
-        
+
         if (touches.length === 1) {
           // Single touch - start panning
           const rect = chartRef.current?.getBoundingClientRect();
@@ -203,7 +203,7 @@ const InteractiveChart = memo(
           // Two touches - prepare for pinch zoom
           const distance = Math.sqrt(
             Math.pow(touches[1].clientX - touches[0].clientX, 2) +
-            Math.pow(touches[1].clientY - touches[0].clientY, 2)
+              Math.pow(touches[1].clientY - touches[0].clientY, 2)
           );
           setZoom(prev => ({ ...prev, lastDistance: distance }));
         }
@@ -212,7 +212,7 @@ const InteractiveChart = memo(
       const handleTouchMove = useCallback((event: React.TouchEvent<SVGSVGElement>) => {
         event.preventDefault();
         const touches = Array.from(event.touches);
-        
+
         if (touches.length === 1) {
           // Single touch - update crosshair
           const rect = chartRef.current?.getBoundingClientRect();
@@ -225,14 +225,14 @@ const InteractiveChart = memo(
           // Two touches - pinch zoom
           const distance = Math.sqrt(
             Math.pow(touches[1].clientX - touches[0].clientX, 2) +
-            Math.pow(touches[1].clientY - touches[0].clientY, 2)
+              Math.pow(touches[1].clientY - touches[0].clientY, 2)
           );
-          
+
           setZoom(prev => {
             if (prev.lastDistance && prev.lastDistance > 0) {
               const scale = distance / prev.lastDistance;
               const newScale = Math.max(0.5, Math.min(5, prev.scale * scale));
-              
+
               return {
                 ...prev,
                 scale: newScale,
@@ -246,7 +246,7 @@ const InteractiveChart = memo(
 
       const handleTouchEnd = useCallback((event: React.TouchEvent<SVGSVGElement>) => {
         const touches = Array.from(event.touches);
-        
+
         if (touches.length === 0) {
           setCrosshair(null);
           setZoom(prev => ({ ...prev, lastDistance: 0 }));
@@ -577,9 +577,9 @@ const InteractiveChart = memo(
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            style={{ 
+            style={{
               cursor: 'crosshair',
-              touchAction: 'none' // Prevent default touch behaviors
+              touchAction: 'none', // Prevent default touch behaviors
             }}
           >
             {grid}
@@ -617,9 +617,15 @@ const InteractiveChart = memo(
             datasetColor={dataset?.color}
             position={{ x: clientX, y: clientY }}
             visible={true}
-            customRenderer={interactiveOptions.customTooltipRenderer ? 
-              () => interactiveOptions.customTooltipRenderer!(dataPoint, datasetIndex, hoveredPoint.pointIndex) : 
-              undefined
+            customRenderer={
+              interactiveOptions.customTooltipRenderer
+                ? () =>
+                    interactiveOptions.customTooltipRenderer!(
+                      dataPoint,
+                      datasetIndex,
+                      hoveredPoint.pointIndex
+                    )
+                : undefined
             }
           />
         );

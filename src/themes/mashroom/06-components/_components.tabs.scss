@@ -10,7 +10,8 @@
 
 // Psychedelic tabs animations
 @keyframes tabs-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -19,11 +20,12 @@
 }
 
 @keyframes tabs-glow-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 4px 20px rgba(157, 0, 255, 0.3);
   }
   50% {
-    box-shadow: 
+    box-shadow:
       0 4px 20px rgba(157, 0, 255, 0.5),
       0 0 30px rgba(255, 32, 133, 0.4),
       0 0 50px rgba(255, 187, 0, 0.3);
@@ -31,70 +33,74 @@
 }
 
 @keyframes tabs-button-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 5px rgba($white, 0.1);
   }
   50% {
-    box-shadow: 
+    box-shadow:
       0 0 10px rgba($white, 0.2),
       0 0 20px rgba(157, 0, 255, 0.3);
   }
 }
 
 @keyframes tabs-active-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 15px $yellow-4;
   }
   50% {
-    box-shadow: 
+    box-shadow:
       0 0 20px $yellow-4,
       0 0 30px rgba(255, 187, 0, 0.8);
   }
 }
 
 @keyframes tabs-fade-in {
-  from { 
-    opacity: 0; 
-    transform: translateY(10px); 
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 .c-tabs {
   $root: &;
-  
+
   // Add psychedelic background
   @include gradients.rainbow-gradient();
   background-size: 300% 300%;
-  
+
   // Add floating animation for a magical effect
   @include trippy.float-animation();
-  
+
   // Add color shift for extra psychedelic effect
   @include trippy.color-shift();
-  
+
   // Add pulse animation
-  animation: rainbow-shift 4s ease infinite, tabs-glow-pulse 2s infinite;
-  
+  animation:
+    rainbow-shift 4s ease infinite,
+    tabs-glow-pulse 2s infinite;
+
   border-radius: 0.5rem;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(157, 0, 255, 0.3);
-  
+
   // Tab navigation
   &__nav {
     display: flex;
     border-bottom: 2px solid rgba($white, 0.2);
     background: rgba(157, 0, 255, 0.2);
     backdrop-filter: blur(5px);
-    
+
     // Add floating effect to nav
     @include trippy.float-animation();
     animation-duration: 3s;
   }
-  
+
   // Tab button
   &__btn {
     padding: 1rem 1.5rem;
@@ -105,13 +111,13 @@
     position: relative;
     font-weight: 600;
     transition: all 0.3s ease;
-    
+
     // Add glow effect
     @include trippy.trippy-glow(rgba($white, 0.1), 5px);
-    
+
     // Add pulse animation
     animation: tabs-button-pulse 2s infinite;
-    
+
     // Hover state
     &:hover {
       color: $white;
@@ -119,18 +125,18 @@
       transform: translateY(-2px) rotate(1deg);
       animation: tabs-button-pulse 0.5s infinite;
     }
-    
+
     // Active state
     &--active {
       color: $yellow-4;
       background: rgba(255, 187, 0, 0.15);
-      
+
       // Add stronger glow effect to active tab
       @include trippy.trippy-glow($yellow-4, 15px);
-      
+
       // Add pulse animation
       animation: tabs-active-pulse 2s infinite;
-      
+
       &::after {
         content: '';
         position: absolute;
@@ -144,7 +150,7 @@
         animation: tabs-active-pulse 2s infinite;
       }
     }
-    
+
     // Disabled state
     &:disabled {
       color: rgba($white, 0.4);
@@ -153,41 +159,41 @@
       @include trippy.trippy-glow(rgba($white, 0.05), 2px);
     }
   }
-  
+
   // Tab content
   &__content {
     padding: 1.5rem;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     min-height: 200px;
-    
+
     // Add subtle pulse effect to content
     @include trippy.psychedelic-pulse(rgba(157, 0, 255, 0.1));
-    
+
     // Add floating effect
     @include trippy.float-animation();
     animation-duration: 5s;
   }
-  
+
   // Tab panel (hidden/visible)
   &__panel {
     display: none;
-    
+
     &--active {
       display: block;
-      
+
       // Add fade-in animation when panel becomes active
       animation: tabs-fade-in 0.5s ease;
     }
   }
-  
+
   // Psychedelic variant
   &--psychedelic {
     @include gradients.rainbow-gradient();
     background-size: 400% 400%;
     animation: rainbow-shift 2s ease infinite;
     border: 1px solid transparent;
-    
+
     #{$root}__btn {
       @include gradients.rainbow-gradient();
       background-clip: text;
@@ -195,12 +201,12 @@
       color: transparent;
       background-size: 200% 100%;
       animation: rainbow-shift 3s linear infinite;
-      
+
       &:hover {
         animation: rainbow-shift 1s linear infinite;
         @include trippy.trippy-glow(white, 15px);
       }
-      
+
       &--active {
         @include gradients.rainbow-gradient();
         background-clip: text;
@@ -208,7 +214,7 @@
         color: transparent;
         background-size: 200% 100%;
         animation: rainbow-shift 2s linear infinite;
-        
+
         &::after {
           @include gradients.rainbow-gradient();
           background-size: 200% 100%;
@@ -216,7 +222,7 @@
         }
       }
     }
-    
+
     #{$root}__content {
       @include gradients.rainbow-gradient();
       background-size: 300% 300%;
@@ -225,36 +231,36 @@
       opacity: 0.9;
     }
   }
-  
+
   // Glowing variant
   &--glow {
     @include trippy.trippy-glow($purple-4, 25px);
     animation: tabs-glow-pulse 1s infinite;
-    
+
     #{$root}__btn {
       @include trippy.trippy-glow(rgba($white, 0.1), 10px);
-      
+
       &:hover {
         @include trippy.trippy-glow($red-4, 15px);
       }
-      
+
       &--active {
         @include trippy.trippy-glow($yellow-4, 20px);
         animation: tabs-active-pulse 1s infinite;
       }
     }
   }
-  
+
   // Floating variant
   &--floating {
     @include trippy.float-animation();
     animation-duration: 4s;
-    
+
     #{$root}__nav {
       @include trippy.float-animation();
       animation-duration: 2s;
     }
-    
+
     #{$root}__content {
       @include trippy.float-animation();
       animation-duration: 6s;

@@ -6,12 +6,5 @@
 
 @use '../../../styles/01-settings/settings.breakpoints' with (
   // Grid breakpoints - using the same as base but explicitly defined
-  $grid-breakpoints: (
-    xs: 0,
-    sm: 576px,
-    md: 768px,
-    lg: 992px,
-    xl: 1200px,
-    xxl: 1440px
-  )
+  $grid-breakpoints: (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1440px)
 );

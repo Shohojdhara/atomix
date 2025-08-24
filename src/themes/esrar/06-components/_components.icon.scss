@@ -2,12 +2,7 @@
 @use '../02-tools/tools.animations' as *;
 
 .c-icon {
-  @include animations(
-    'slow-fade-in',
-    $duration: 0.3s,
-    $timing: ease-out,
-    $iteration-count: 1
-  );
+  @include animations('slow-fade-in', $duration: 0.3s, $timing: ease-out, $iteration-count: 1);
 
   &:hover {
     @include animations(

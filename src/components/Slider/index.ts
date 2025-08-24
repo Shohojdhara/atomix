@@ -3,10 +3,10 @@
  * Following Atomix design system patterns
  */
 
-export type { 
-  SliderProps, 
-  SliderRefs, 
-  SliderSlide, 
+export type {
+  SliderProps,
+  SliderRefs,
+  SliderSlide,
   SliderState,
   SliderAutoplay,
   SliderPagination,
@@ -17,7 +17,7 @@ export type {
   SliderZoom,
   SliderLazy,
   SliderVirtual,
-  SliderBreakpoint
+  SliderBreakpoint,
 } from '../../lib/types/components';
 export { Slider } from './Slider';
 export { useSlider } from '../../lib/composables/useSlider';

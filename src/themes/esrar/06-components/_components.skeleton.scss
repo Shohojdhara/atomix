@@ -11,10 +11,5 @@
 }
 
 .c-skeleton--wave {
-  @include animations(
-    'color-wave',
-    $duration: 3s,
-    $timing: linear,
-    $iteration-count: infinite
-  );
+  @include animations('color-wave', $duration: 3s, $timing: linear, $iteration-count: infinite);
 }

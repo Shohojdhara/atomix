@@ -87,13 +87,24 @@ export type { RealTimeChartProps } from './RealTimeChart';
 export type { ScatterChartProps, ScatterDataPoint } from './ScatterChart';
 export type { SimpleBarChartProps } from './SimpleBarChart';
 export type { TreemapChartProps, TreemapDataPoint, TreemapNode } from './TreemapChart';
-export type { ChartConfig, ChartDataPoint, ChartDataset, ChartProps, ChartType, ChartToolbarConfig } from './types';
+export type {
+  ChartConfig,
+  ChartDataPoint,
+  ChartDataset,
+  ChartProps,
+  ChartType,
+  ChartToolbarConfig,
+} from './types';
 export type { WaterfallChartProps, WaterfallDataPoint } from './WaterfallChart';
 
 // Export hook types
 export type { BarChartOptions, BarDimensions } from '../../lib/composables/useBarChart';
 export type { ChartInteractionState, ChartScales } from '../../lib/composables/useChart';
-export type { ChartToolbarState, ChartToolbarConfig as ToolbarConfig, ChartToolbarHandlers } from '../../lib/composables/useChartToolbar';
+export type {
+  ChartToolbarState,
+  ChartToolbarConfig as ToolbarConfig,
+  ChartToolbarHandlers,
+} from '../../lib/composables/useChartToolbar';
 export type { LineChartOptions } from '../../lib/composables/useLineChart';
 export type { PieChartOptions, PieSlice } from '../../lib/composables/usePieChart';
 

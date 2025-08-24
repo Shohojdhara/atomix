@@ -41,7 +41,6 @@
   $toggle-lg-handle-size: 26px,
   $toggle-lg-handle-offset: 2px,
   $toggle-lg-handle-checked-offset: calc(100% - 28px),
-
   // High-energy transitions
   $toggle-transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1),
   $toggle-handle-transition: (transform 200ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms ease),

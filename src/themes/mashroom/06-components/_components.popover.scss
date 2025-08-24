@@ -10,11 +10,11 @@
 
 .c-popover {
   $root: &;
-  
+
   // Base popover styling
   position: relative;
   display: inline-block;
-  
+
   // Popover content
   &__content {
     position: absolute;
@@ -26,16 +26,16 @@
     padding: 1rem;
     min-width: 200px;
     max-width: 300px;
-    
+
     // Mushroom cap shape effect
     border-radius: 1.5rem 1.5rem 0.5rem 0.5rem;
-    
+
     // Trippy glow effect
     @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 15px);
-    
+
     // Entrance animation
     animation: popoverPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    
+
     // Stem effect
     &::after {
       content: '';
@@ -49,7 +49,7 @@
       border-radius: 0 0 4px 4px;
     }
   }
-  
+
   @keyframes popoverPop {
     from {
       opacity: 0;
@@ -60,14 +60,14 @@
       transform: scale(1) translateY(0);
     }
   }
-  
+
   // Arrow positioning
   &__arrow {
     position: absolute;
     width: 0;
     height: 0;
     border-style: solid;
-    
+
     // Top arrow
     &--top {
       bottom: -8px;
@@ -77,7 +77,7 @@
       border-right: 8px solid transparent;
       border-top: 8px solid rgba(157, 0, 255, 0.3);
     }
-    
+
     // Bottom arrow
     &--bottom {
       top: -8px;
@@ -87,7 +87,7 @@
       border-right: 8px solid transparent;
       border-bottom: 8px solid rgba(157, 0, 255, 0.3);
     }
-    
+
     // Left arrow
     &--left {
       right: -8px;
@@ -97,7 +97,7 @@
       border-bottom: 8px solid transparent;
       border-left: 8px solid rgba(157, 0, 255, 0.3);
     }
-    
+
     // Right arrow
     &--right {
       left: -8px;
@@ -108,7 +108,7 @@
       border-right: 8px solid rgba(157, 0, 255, 0.3);
     }
   }
-  
+
   // Title
   &__title {
     font-size: 1rem;
@@ -122,28 +122,34 @@
     background-clip: text;
     animation: titleColorShift 3s ease-in-out infinite;
   }
-  
+
   @keyframes titleColorShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
-  
+
   // Body content
   &__body {
     color: rgba(255, 255, 255, 0.8);
     font-size: 0.875rem;
     line-height: 1.4;
-    
+
     p {
       margin: 0 0 0.5rem 0;
-      
+
       &:last-child {
         margin-bottom: 0;
       }
     }
   }
-  
+
   // Actions
   &__actions {
     display: flex;
@@ -152,7 +158,7 @@
     padding-top: 0.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
-  
+
   // Button styling
   &__btn {
     padding: 0.375rem 0.75rem;
@@ -163,25 +169,25 @@
     font-size: 0.75rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    
+
     &:hover {
       background: rgba(157, 0, 255, 0.2);
       color: $white;
       @include trippy.trippy-glow($yellow-4, 5px);
     }
-    
+
     &--primary {
       background: linear-gradient(45deg, $purple-4, $red-4);
       border-color: transparent;
       color: $white;
-      
+
       &:hover {
         background: linear-gradient(45deg, $purple-3, $red-3);
         @include trippy.trippy-glow($yellow-4, 8px);
       }
     }
   }
-  
+
   // Positioning variants
   &--top {
     #{$root}__content {
@@ -191,7 +197,7 @@
       margin-bottom: 0.5rem;
     }
   }
-  
+
   &--bottom {
     #{$root}__content {
       top: 100%;
@@ -200,7 +206,7 @@
       margin-top: 0.5rem;
     }
   }
-  
+
   &--left {
     #{$root}__content {
       right: 100%;
@@ -209,7 +215,7 @@
       margin-right: 0.5rem;
     }
   }
-  
+
   &--right {
     #{$root}__content {
       left: 100%;
@@ -218,7 +224,7 @@
       margin-left: 0.5rem;
     }
   }
-  
+
   // Size variants
   &--sm {
     #{$root}__content {
@@ -227,42 +233,42 @@
       max-width: 200px;
       font-size: 0.875rem;
     }
-    
+
     #{$root}__title {
       font-size: 0.875rem;
     }
-    
+
     #{$root}__body {
       font-size: 0.75rem;
     }
   }
-  
+
   &--lg {
     #{$root}__content {
       padding: 1.5rem;
       min-width: 250px;
       max-width: 400px;
     }
-    
+
     #{$root}__title {
       font-size: 1.125rem;
     }
-    
+
     #{$root}__body {
       font-size: 1rem;
     }
   }
-  
+
   // Interactive trigger
   &__trigger {
     cursor: pointer;
     transition: all 0.3s ease;
-    
+
     &:hover {
       color: $yellow-4;
     }
   }
-  
+
   // Psychedelic variant
   &--psychedelic {
     #{$root}__content {
@@ -273,7 +279,7 @@
         rgba(0, 255, 136, 0.1) 100%
       );
       border-color: rgba(157, 0, 255, 0.4);
-      
+
       // Animated spore particles
       &::before {
         content: '';
@@ -282,36 +288,40 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: radial-gradient(
-          circle at 20% 30%,
-          rgba(255, 187, 0, 0.1) 0%,
-          transparent 50%
-        ),
-        radial-gradient(
-          circle at 80% 70%,
-          rgba(0, 255, 136, 0.1) 0%,
-          transparent 50%
-        );
+        background:
+          radial-gradient(circle at 20% 30%, rgba(255, 187, 0, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 70%, rgba(0, 255, 136, 0.1) 0%, transparent 50%);
         border-radius: inherit;
         animation: sporeFloat 4s ease-in-out infinite;
       }
     }
-    
+
     #{$root}__title {
       animation: psychedelicRainbow 2s ease-in-out infinite;
     }
   }
-  
+
   @keyframes sporeFloat {
-    0%, 100% { opacity: 0.3; transform: translateY(0px); }
-    50% { opacity: 0.6; transform: translateY(-5px); }
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: translateY(0px);
+    }
+    50% {
+      opacity: 0.6;
+      transform: translateY(-5px);
+    }
   }
-  
+
   @keyframes psychedelicRainbow {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(360deg); }
+    0% {
+      filter: hue-rotate(0deg);
+    }
+    100% {
+      filter: hue-rotate(360deg);
+    }
   }
-  
+
   // Dark variant
   &--dark {
     #{$root}__content {
@@ -319,25 +329,25 @@
       border-color: rgba(157, 0, 255, 0.5);
     }
   }
-  
+
   // Light variant
   &--light {
     #{$root}__content {
       background: rgba(255, 255, 255, 0.95);
       border-color: rgba(157, 0, 255, 0.2);
       color: $black;
-      
+
       #{$root}__title {
         color: $black;
         background: linear-gradient(45deg, $purple-4, $yellow-4);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
-      
+
       #{$root}__body {
         color: rgba(0, 0, 0, 0.7);
       }
-      
+
       #{$root}__btn {
         border-color: rgba(157, 0, 255, 0.3);
         background: rgba(157, 0, 255, 0.1);
@@ -345,7 +355,7 @@
       }
     }
   }
-  
+
   // Responsive adjustments
   @media (max-width: 768px) {
     #{$root}__content {
@@ -356,7 +366,7 @@
       margin: 0;
       max-width: 90vw;
     }
-    
+
     &--top,
     &--bottom,
     &--left,

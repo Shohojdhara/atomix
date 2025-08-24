@@ -9,11 +9,11 @@
     $timing: ease-in-out,
     $iteration-count: infinite
   );
-  
+
   position: relative;
-  
+
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -30,16 +30,11 @@
     opacity: 0.03;
     z-index: -1;
   }
-  
+
   &__list {
-    @include animations(
-      'float',
-      $duration: 2s,
-      $timing: ease-in-out,
-      $iteration-count: infinite
-    );
+    @include animations('float', $duration: 2s, $timing: ease-in-out, $iteration-count: infinite);
   }
-  
+
   &__item {
     &:hover {
       @include animations(
@@ -50,7 +45,7 @@
       );
     }
   }
-  
+
   &__link {
     @include animations(
       'wobble-chill',
@@ -58,7 +53,7 @@
       $timing: ease-in-out,
       $iteration-count: infinite
     );
-    
+
     &:hover {
       @include animations(
         'float' 'color-pulse',
@@ -67,7 +62,7 @@
         $iteration-count: infinite
       );
     }
-    
+
     &--active {
       @include animations(
         'chill-rainbow',
@@ -77,7 +72,7 @@
       );
     }
   }
-  
+
   &__ellipsis {
     @include animations(
       'pulse-slow',

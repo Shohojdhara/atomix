@@ -11,21 +11,20 @@
   $link-shade-percentage: 20%,
   $link-hover-color: var(--atomix-primary-hover),
   $link-hover-decoration: underline,
-  
+
   // High-energy link effects
   $link-transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1),
-  
   // Link focus states
   $link-focus-decoration: underline,
   $link-focus-color: var(--atomix-primary),
   $link-focus-outline: 2px solid rgba(249, 115, 22, 0.3),
   $link-focus-outline-offset: 2px,
-  
+
   // Link variants
   $link-opacity-base: 1,
   $link-opacity-hover: 0.85,
   $link-opacity-disabled: 0.5,
-  
+
   // Underline styling
   $link-underline-opacity: 0.3,
   $link-underline-hover-opacity: 0.7

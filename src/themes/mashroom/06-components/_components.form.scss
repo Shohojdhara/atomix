@@ -10,29 +10,29 @@
 
 .c-form {
   $root: &;
-  
+
   // Base form styling
   &__group {
     margin-bottom: 1.5rem;
   }
-  
+
   // Label styling with mushroom glow
   &__label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.9);
-    
+
     // Add trippy glow effect
     @include trippy.trippy-glow(rgba(255, 255, 255, 0.2), 5px);
-    
+
     &--required::after {
       content: ' *';
       color: $red-4;
       @include trippy.psychedelic-pulse($red-4);
     }
   }
-  
+
   // Input styling with mushroom cap design
   &__control {
     width: 100%;
@@ -44,36 +44,42 @@
     border: 2px solid rgba(157, 0, 255, 0.3);
     border-radius: 1rem;
     transition: all 0.3s ease;
-    
+
     // Add subtle mushroom texture
     background-image: radial-gradient(
       circle at 10% 10%,
       rgba(255, 187, 0, 0.1) 0%,
       transparent 50%
     );
-    
+
     &:focus {
       outline: none;
       border-color: $yellow-4;
       background: rgba(255, 255, 255, 0.15);
-      
+
       // Enhanced glow on focus
       @include trippy.trippy-glow($yellow-4, 10px);
-      
+
       // Add mushroom cap animation
       animation: mushroomFocus 0.5s ease;
     }
-    
+
     @keyframes mushroomFocus {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-      100% { transform: scale(1); }
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.02);
+      }
+      100% {
+        transform: scale(1);
+      }
     }
-    
+
     &::placeholder {
       color: rgba(255, 255, 255, 0.6);
     }
-    
+
     // Disabled state
     &:disabled {
       background: rgba(255, 255, 255, 0.05);
@@ -82,20 +88,20 @@
       cursor: not-allowed;
     }
   }
-  
+
   // Textarea specific styling
-  &__control[type="textarea"] {
+  &__control[type='textarea'] {
     resize: vertical;
     min-height: 100px;
   }
-  
+
   // Select dropdown styling
   &__select {
     @extend #{$root}__control;
     cursor: pointer;
-    
+
     // Custom arrow with mushroom style
-    background-image: 
+    background-image:
       url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%239d00ff' viewBox='0 0 16 16'%3e%3cpath d='m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z'/%3e%3c/svg%3e"),
       radial-gradient(circle at 10% 10%, rgba(255, 187, 0, 0.1) 0%, transparent 50%);
     background-repeat: no-repeat;
@@ -103,23 +109,23 @@
     background-size: 16px 12px;
     padding-right: 2.5rem;
   }
-  
+
   // Checkbox styling with mushroom cap design
   &__check {
     display: inline-flex;
     align-items: center;
     cursor: pointer;
-    
+
     &-input {
       position: absolute;
       opacity: 0;
-      
+
       &:checked + #{$root}__check-label::before {
         background: linear-gradient(45deg, $yellow-4, $red-4);
         border-color: $yellow-4;
         animation: mushroomCheck 0.3s ease;
       }
-      
+
       &:checked + #{$root}__check-label::after {
         content: '🍄';
         position: absolute;
@@ -127,17 +133,17 @@
         top: 0.25rem;
         font-size: 0.75rem;
       }
-      
+
       &:focus + #{$root}__check-label::before {
         @include trippy.trippy-glow($yellow-4, 8px);
       }
     }
-    
+
     &-label {
       position: relative;
       padding-left: 2rem;
       color: rgba(255, 255, 255, 0.9);
-      
+
       &::before {
         content: '';
         position: absolute;
@@ -152,29 +158,35 @@
         transition: all 0.3s ease;
       }
     }
-    
+
     @keyframes mushroomCheck {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
     }
   }
-  
+
   // Radio button styling
   &__radio {
     display: inline-flex;
     align-items: center;
     cursor: pointer;
-    
+
     &-input {
       position: absolute;
       opacity: 0;
-      
+
       &:checked + #{$root}__radio-label::before {
         border-color: $yellow-4;
         @include trippy.trippy-glow($yellow-4, 8px);
       }
-      
+
       &:checked + #{$root}__radio-label::after {
         content: '';
         position: absolute;
@@ -188,12 +200,12 @@
         animation: mushroomRadio 0.3s ease;
       }
     }
-    
+
     &-label {
       position: relative;
       padding-left: 2rem;
       color: rgba(255, 255, 255, 0.9);
-      
+
       &::before {
         content: '';
         position: absolute;
@@ -208,21 +220,27 @@
         transition: all 0.3s ease;
       }
     }
-    
+
     @keyframes mushroomRadio {
-      0% { transform: translateY(-50%) scale(0); }
-      50% { transform: translateY(-50%) scale(1.2); }
-      100% { transform: translateY(-50%) scale(1); }
+      0% {
+        transform: translateY(-50%) scale(0);
+      }
+      50% {
+        transform: translateY(-50%) scale(1.2);
+      }
+      100% {
+        transform: translateY(-50%) scale(1);
+      }
     }
   }
-  
+
   // Input group for combined inputs
   &__input-group {
     position: relative;
     display: flex;
     align-items: stretch;
     width: 100%;
-    
+
     &-text {
       display: flex;
       align-items: center;
@@ -233,18 +251,18 @@
       background: rgba(157, 0, 255, 0.2);
       border: 2px solid rgba(157, 0, 255, 0.3);
       border-radius: 1rem 0 0 1rem;
-      
+
       &:last-child {
         border-radius: 0 1rem 1rem 0;
       }
     }
-    
+
     #{$root}__control {
       &:not(:last-child) {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
       }
-      
+
       &:not(:first-child) {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
@@ -252,48 +270,48 @@
       }
     }
   }
-  
+
   // Validation states
   &__control.is-valid {
     border-color: $green-4;
     @include trippy.trippy-glow($green-4, 8px);
-    
+
     &:focus {
       border-color: $green-4;
     }
   }
-  
+
   &__control.is-invalid {
     border-color: $red-4;
     @include trippy.trippy-glow($red-4, 8px);
-    
+
     &:focus {
       border-color: $red-4;
     }
   }
-  
+
   // Form feedback
   &__feedback {
     margin-top: 0.25rem;
     font-size: 0.875rem;
-    
+
     &--valid {
       color: $green-4;
     }
-    
+
     &--invalid {
       color: $red-4;
     }
   }
-  
+
   // Floating labels
   &__floating {
     position: relative;
-    
+
     #{$root}__control {
       padding: 1.25rem 1rem 0.5rem;
     }
-    
+
     #{$root}__label {
       position: absolute;
       top: 0.75rem;
@@ -302,7 +320,7 @@
       color: rgba(255, 255, 255, 0.6);
       transition: all 0.3s ease;
       pointer-events: none;
-      
+
       &.is-focused,
       #{$root}__control:focus ~ & {
         top: 0.5rem;
@@ -311,25 +329,25 @@
       }
     }
   }
-  
+
   // Responsive adjustments
   @media (max-width: 768px) {
     &__control {
       font-size: 16px; // Prevents zoom on iOS
     }
-    
+
     &__input-group {
       flex-direction: column;
-      
+
       &-text {
         border-radius: 1rem 1rem 0 0;
         justify-content: center;
-        
+
         &:last-child {
           border-radius: 0 0 1rem 1rem;
         }
       }
-      
+
       #{$root}__control {
         border-radius: 0 0 1rem 1rem;
         border-left: 2px solid rgba(157, 0, 255, 0.3);

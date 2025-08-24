@@ -10,7 +10,7 @@
 
 .c-skeleton {
   $root: &;
-  
+
   // Base skeleton styling
   background: linear-gradient(
     90deg,
@@ -26,7 +26,7 @@
   border-radius: 4px;
   position: relative;
   overflow: hidden;
-  
+
   // Shimmer overlay
   &::before {
     content: '';
@@ -35,26 +35,31 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     animation: shimmerSweep 1.5s ease-in-out infinite;
   }
-  
+
   @keyframes skeletonShimmer {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
-  
+
   @keyframes shimmerSweep {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(200%); }
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(200%);
+    }
   }
-  
+
   // Glow effect
   &::after {
     content: '';
@@ -63,178 +68,179 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(
-      circle at 50% 50%,
-      rgba(157, 0, 255, 0.1) 0%,
-      transparent 70%
-    );
+    background: radial-gradient(circle at 50% 50%, rgba(157, 0, 255, 0.1) 0%, transparent 70%);
     animation: glowPulse 3s ease-in-out infinite;
   }
-  
+
   @keyframes glowPulse {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.7; }
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.7;
+    }
   }
-  
+
   // Shape variants
   &--text {
     height: 1rem;
     width: 100%;
     max-width: 200px;
   }
-  
+
   &--text-lg {
     height: 1.25rem;
     width: 100%;
     max-width: 300px;
   }
-  
+
   &--text-sm {
     height: 0.875rem;
     width: 100%;
     max-width: 150px;
   }
-  
+
   &--heading {
     height: 1.5rem;
     width: 100%;
     max-width: 250px;
   }
-  
+
   &--heading-lg {
     height: 2rem;
     width: 100%;
     max-width: 400px;
   }
-  
+
   &--paragraph {
     height: 1rem;
     width: 100%;
-    
+
     &:nth-child(2) {
       width: 85%;
     }
-    
+
     &:nth-child(3) {
       width: 90%;
     }
   }
-  
+
   &--avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
   }
-  
+
   &--avatar-sm {
     width: 32px;
     height: 32px;
     border-radius: 50%;
   }
-  
+
   &--avatar-lg {
     width: 64px;
     height: 64px;
     border-radius: 50%;
   }
-  
+
   &--image {
     width: 100%;
     height: 200px;
     border-radius: 8px;
   }
-  
+
   &--image-sm {
     width: 100%;
     height: 120px;
     border-radius: 8px;
   }
-  
+
   &--image-lg {
     width: 100%;
     height: 300px;
     border-radius: 8px;
   }
-  
+
   &--button {
     width: 120px;
     height: 40px;
     border-radius: 20px;
   }
-  
+
   &--button-sm {
     width: 80px;
     height: 32px;
     border-radius: 16px;
   }
-  
+
   &--button-lg {
     width: 160px;
     height: 48px;
     border-radius: 24px;
   }
-  
+
   &--card {
     width: 100%;
     height: 120px;
     border-radius: 8px;
   }
-  
+
   &--input {
     width: 100%;
     height: 40px;
     border-radius: 4px;
   }
-  
+
   &--input-sm {
     width: 100%;
     height: 32px;
     border-radius: 4px;
   }
-  
+
   &--input-lg {
     width: 100%;
     height: 48px;
     border-radius: 4px;
   }
-  
+
   &--icon {
     width: 24px;
     height: 24px;
     border-radius: 4px;
   }
-  
+
   &--icon-sm {
     width: 16px;
     height: 16px;
     border-radius: 2px;
   }
-  
+
   &--icon-lg {
     width: 32px;
     height: 32px;
     border-radius: 4px;
   }
-  
+
   // Container for multiple skeletons
   &__container {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   &__row {
     display: flex;
     gap: 1rem;
     align-items: center;
   }
-  
+
   &__col {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   // Loading animation container
   &__loading {
     display: flex;
@@ -245,7 +251,7 @@
     border-radius: 8px;
     position: relative;
     overflow: hidden;
-    
+
     // Animated border
     &::before {
       content: '';
@@ -256,27 +262,29 @@
       bottom: 0;
       border: 1px solid transparent;
       border-radius: 8px;
-      background: linear-gradient(
-        45deg,
-        $purple-4,
-        $yellow-4,
-        $red-4,
-        $green-4,
-        $purple-4
-      ) border-box;
+      background: linear-gradient(45deg, $purple-4, $yellow-4, $red-4, $green-4, $purple-4)
+        border-box;
       background-size: 400% 400%;
       animation: borderGlow 4s ease-in-out infinite;
-      mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      mask:
+        linear-gradient(#fff 0 0) padding-box,
+        linear-gradient(#fff 0 0);
       mask-composite: exclude;
     }
-    
+
     @keyframes borderGlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
   }
-  
+
   // Card skeleton layout
   &__card {
     display: flex;
@@ -284,11 +292,11 @@
     padding: 1rem;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    
+
     #{$root}__avatar {
       flex-shrink: 0;
     }
-    
+
     #{$root}__content {
       flex: 1;
       display: flex;
@@ -296,7 +304,7 @@
       gap: 0.5rem;
     }
   }
-  
+
   // List skeleton layout
   &__list {
     #{$root}__item {
@@ -304,13 +312,13 @@
       gap: 1rem;
       padding: 1rem 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      
+
       &:last-child {
         border-bottom: none;
       }
     }
   }
-  
+
   // Table skeleton layout
   &__table {
     #{$root}__row {
@@ -319,26 +327,27 @@
       gap: 1rem;
       padding: 1rem 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      
+
       &:last-child {
         border-bottom: none;
       }
     }
   }
-  
+
   // Grid skeleton layout
   &__grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1rem;
   }
-  
+
   // Pulse animation variant
   &--pulse {
     animation: pulseGlow 2s ease-in-out infinite;
-    
+
     @keyframes pulseGlow {
-      0%, 100% {
+      0%,
+      100% {
         opacity: 0.6;
         @include trippy.trippy-glow(rgba(157, 0, 255, 0.2), 5px);
       }
@@ -348,16 +357,16 @@
       }
     }
   }
-  
+
   // Wave animation variant
   &--wave {
     position: relative;
     overflow: hidden;
-    
+
     &::after {
       animation: wave 2s ease-in-out infinite;
     }
-    
+
     @keyframes wave {
       0% {
         transform: translateX(-100%) skewX(-15deg);
@@ -367,7 +376,7 @@
       }
     }
   }
-  
+
   // Psychedelic variant
   &--psychedelic {
     background: linear-gradient(
@@ -380,18 +389,24 @@
     );
     background-size: 400% 400%;
     animation: psychedelicShimmer 3s ease-in-out infinite;
-    
+
     @keyframes psychedelicShimmer {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
   }
-  
+
   // Dark variant
   &--dark {
     background: rgba(0, 0, 0, 0.4);
-    
+
     &::before {
       background: linear-gradient(
         90deg,
@@ -401,11 +416,11 @@
       );
     }
   }
-  
+
   // Light variant
   &--light {
     background: rgba(255, 255, 255, 0.1);
-    
+
     &::before {
       background: linear-gradient(
         90deg,
@@ -415,7 +430,7 @@
       );
     }
   }
-  
+
   // Responsive adjustments
   @media (max-width: 768px) {
     #{$root}__table {
@@ -424,7 +439,7 @@
         gap: 0.5rem;
       }
     }
-    
+
     #{$root}__grid {
       grid-template-columns: 1fr;
     }

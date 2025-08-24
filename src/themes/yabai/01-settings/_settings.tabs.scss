@@ -11,7 +11,7 @@
   $tab-content-border-color: var(--atomix-primary-border),
   $tab-content-border-width: 2px,
   $tab-content-border-radius: 16px,
-  
+
   // Tab navigation
   $tab-nav-margin-bottom: 16px,
   $tab-nav-border-color: var(--atomix-primary-border),
@@ -19,7 +19,7 @@
   $tab-nav-border-radius: 50rem,
   $tab-nav-bg: var(--atomix-secondary-bg-subtle),
   $tab-nav-padding: 4px,
-  
+
   // Tab links
   $tab-link-padding-y: 12px,
   $tab-link-padding-x: 24px,
@@ -32,22 +32,21 @@
   $tab-link-border-radius: 50rem,
   $tab-link-text-transform: uppercase,
   $tab-link-letter-spacing: 0.025em,
-  
+
   // Tab hover states
   $tab-link-hover-color: var(--atomix-primary),
   $tab-link-hover-bg: var(--atomix-primary-bg-subtle),
   $tab-link-hover-border-color: transparent,
-  
+
   // Active tab states
   $tab-link-active-color: var(--atomix-component-active-color),
   $tab-link-active-bg: var(--atomix-primary),
   $tab-link-active-border-color: var(--atomix-primary),
-  
   // Disabled tab states
   $tab-link-disabled-color: var(--atomix-tertiary-text-emphasis),
   $tab-link-disabled-bg: transparent,
   $tab-link-disabled-border-color: transparent,
-  
+
   // High-energy transitions
   $tab-transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1)
 );

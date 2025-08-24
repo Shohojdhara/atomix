@@ -23,12 +23,12 @@ interface ScatterChartProps extends Omit<ChartProps, 'type'> {
      * Point radius
      */
     pointRadius?: number;
-    
+
     /**
      * Whether to show point labels
      */
     showLabels?: boolean;
-    
+
     /**
      * Enable hover effects
      */
@@ -59,13 +59,7 @@ const ScatterChart = memo(
         clientY: number;
       } | null>(null);
       return (
-        <Chart
-          ref={ref}
-          type="scatter"
-          datasets={datasets}
-          config={config}
-          {...props}
-        >
+        <Chart ref={ref} type="scatter" datasets={datasets} config={config} {...props}>
           <ChartRenderer
             datasets={datasets}
             config={config}
@@ -79,13 +73,17 @@ const ScatterChart = memo(
                 const color = dataset.color || colors[datasetIndex % colors.length];
 
                 dataset.data?.forEach((point, pointIndex) => {
-                  const x = point.x !== undefined 
-                    ? scales.padding.left + (point.x / 100) * scales.innerWidth
-                    : scales.xScale(pointIndex, dataset.data?.length);
-                  
-                  const y = point.y !== undefined
-                    ? scales.padding.top + scales.innerHeight - (point.y / 100) * scales.innerHeight
-                    : scales.yScale(point.value);
+                  const x =
+                    point.x !== undefined
+                      ? scales.padding.left + (point.x / 100) * scales.innerWidth
+                      : scales.xScale(pointIndex, dataset.data?.length);
+
+                  const y =
+                    point.y !== undefined
+                      ? scales.padding.top +
+                        scales.innerHeight -
+                        (point.y / 100) * scales.innerHeight
+                      : scales.yScale(point.value);
 
                   points.push(
                     <g key={`point-${datasetIndex}-${pointIndex}`}>
@@ -96,21 +94,27 @@ const ScatterChart = memo(
                         fill={point.color || color}
                         className="c-chart__scatter-point"
                         onClick={() => onDataPointClick?.(point, datasetIndex, pointIndex)}
-                        onMouseEnter={(e) => {
+                        onMouseEnter={e => {
                           if (scatterOptions.enableHoverEffects) {
-                            e.currentTarget.setAttribute('r', String((point.size || scatterOptions.pointRadius || 4) * 1.5));
+                            e.currentTarget.setAttribute(
+                              'r',
+                              String((point.size || scatterOptions.pointRadius || 4) * 1.5)
+                            );
                             const rect = e.currentTarget.ownerSVGElement?.getBoundingClientRect();
                             const clientX = rect ? rect.left + x : e.clientX;
                             const clientY = rect ? rect.top + y : e.clientY;
                             setHoveredPoint({ datasetIndex, pointIndex, clientX, clientY });
                           }
                         }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.setAttribute('r', String(point.size || scatterOptions.pointRadius || 4));
+                        onMouseLeave={e => {
+                          e.currentTarget.setAttribute(
+                            'r',
+                            String(point.size || scatterOptions.pointRadius || 4)
+                          );
                           setHoveredPoint(null);
                         }}
                       />
-                      
+
                       {scatterOptions.showLabels && (
                         <text
                           x={x}

@@ -11,7 +11,6 @@
 @mixin trippy-glow($color: #9d00ff, $size: 10px) {
   box-shadow: 0 0 $size $color;
   transition: all 0.3s ease;
-
 }
 
 /// Psychedelic pulse animation mixin

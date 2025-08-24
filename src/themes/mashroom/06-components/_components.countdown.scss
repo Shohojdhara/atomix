@@ -33,23 +33,20 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(
-      circle at 30% 30%,
-      rgba(255, 187, 0, 0.1) 0%,
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 70% 70%,
-      rgba(157, 0, 255, 0.1) 0%,
-      transparent 30%
-    );
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255, 187, 0, 0.1) 0%, transparent 30%),
+      radial-gradient(circle at 70% 70%, rgba(157, 0, 255, 0.1) 0%, transparent 30%);
     animation: sporeFloat 12s linear infinite;
     pointer-events: none;
   }
 
   @keyframes sporeFloat {
-    0% { transform: rotate(0deg) scale(1); }
-    100% { transform: rotate(360deg) scale(1.1); }
+    0% {
+      transform: rotate(0deg) scale(1);
+    }
+    100% {
+      transform: rotate(360deg) scale(1.1);
+    }
   }
 
   // Countdown timer display
@@ -93,8 +90,13 @@
     }
 
     @keyframes glowPulse {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
+      0%,
+      100% {
+        opacity: 0.5;
+      }
+      50% {
+        opacity: 1;
+      }
     }
   }
 
@@ -107,11 +109,12 @@
     animation: numberGlow 3s ease-in-out infinite;
 
     @keyframes numberGlow {
-      0%, 100% { 
+      0%,
+      100% {
         text-shadow: 0 0 10px rgba(157, 0, 255, 0.8);
         transform: scale(1);
       }
-      50% { 
+      50% {
         text-shadow: 0 0 20px rgba(255, 187, 0, 0.8);
         transform: scale(1.05);
       }
@@ -158,8 +161,12 @@
     }
 
     @keyframes progressFill {
-      from { stroke-dashoffset: 314; }
-      to { stroke-dashoffset: 0; }
+      from {
+        stroke-dashoffset: 314;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
     }
   }
 
@@ -178,8 +185,13 @@
   }
 
   @keyframes textShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
   }
 
   // Completion state
@@ -189,11 +201,12 @@
     animation: completionPulse 2s ease-in-out infinite;
 
     @keyframes completionPulse {
-      0%, 100% { 
+      0%,
+      100% {
         box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
         transform: scale(1);
       }
-      50% { 
+      50% {
         box-shadow: 0 0 40px rgba(0, 255, 0, 0.8);
         transform: scale(1.02);
       }
@@ -272,9 +285,15 @@
   }
 
   @keyframes psychedelicShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 
   // Glow variant

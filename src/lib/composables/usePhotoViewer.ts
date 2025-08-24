@@ -781,7 +781,7 @@ export const usePhotoViewer = ({
             const dragSensitivity = Math.min(1, 1 / currentState.zoomLevel);
             const deltaX = (touch.clientX - startDragPosition.x) * dragSensitivity;
             const deltaY = (touch.clientY - startDragPosition.y) * dragSensitivity;
-            
+
             newPosition = {
               x: deltaX,
               y: deltaY,

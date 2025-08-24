@@ -117,11 +117,11 @@ const LineChart = memo(
       );
 
       return (
-        <Chart 
-          ref={ref} 
-          type="line" 
-          datasets={datasets} 
-          config={config} 
+        <Chart
+          ref={ref}
+          type="line"
+          datasets={datasets}
+          config={config}
           toolbarConfig={{
             defaults: {
               zoom: true,
@@ -129,7 +129,7 @@ const LineChart = memo(
               reset: true,
               grid: true,
               tooltips: true,
-            }
+            },
           }}
           {...props}
         >

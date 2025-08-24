@@ -52,20 +52,20 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
 
   const slideWidth = useMemo(() => {
     if (containerSize === 0) return 0;
-    return (containerSize - (spaceBetween * (slidesToShow - 1))) / slidesToShow;
+    return (containerSize - spaceBetween * (slidesToShow - 1)) / slidesToShow;
   }, [containerSize, spaceBetween, slidesToShow]);
 
   const allSlides = useMemo(() => {
     if (!loop || slides.length === 0) return slides;
-    
+
     // Create unique keys for each set
     const firstSet = slides.map((slide, i) => ({ ...slide, id: `set1-${slide.id || i}` }));
     const secondSet = slides.map((slide, i) => ({ ...slide, id: `set2-${slide.id || i}` }));
     const thirdSet = slides.map((slide, i) => ({ ...slide, id: `set3-${slide.id || i}` }));
-    
+
     return [...firstSet, ...secondSet, ...thirdSet];
   }, [slides, loop]);
-  
+
   const loopedSlides = slides.length;
 
   const translateValue = useMemo(() => {
@@ -85,9 +85,10 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
   useEffect(() => {
     const updateSize = () => {
       if (containerRef.current) {
-        const size = direction === 'horizontal' 
-          ? containerRef.current.offsetWidth 
-          : containerRef.current.offsetHeight;
+        const size =
+          direction === 'horizontal'
+            ? containerRef.current.offsetWidth
+            : containerRef.current.offsetHeight;
         setContainerSize(size);
       }
     };
@@ -98,20 +99,20 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
 
   const slideNext = useCallback(() => {
     if (isTransitioning) return;
-    
+
     if (loop) {
       const nextRealIndex = (realIndex + 1) % slides.length;
       const nextInternalIndex = internalIndex + 1;
-      
+
       setRealIndex(nextRealIndex);
       setInternalIndex(nextInternalIndex);
       setIsTransitioning(true);
       setDragOffset(0);
-      
+
       setTimeout(() => {
         setIsTransitioning(false);
         onSlideChange?.(nextRealIndex);
-        
+
         // Reposition after transition ends
         if (nextInternalIndex >= slides.length * 2) {
           repositioningRef.current = true;
@@ -127,30 +128,41 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
       setInternalIndex(nextIndex);
       setIsTransitioning(true);
       setDragOffset(0);
-      
+
       setTimeout(() => {
         setIsTransitioning(false);
         onSlideChange?.(nextIndex);
       }, speed);
     }
-  }, [realIndex, internalIndex, slides.length, slidesToShow, loop, isTransitioning, speed, onSlideChange, allSlides.length, loopedSlides]);
+  }, [
+    realIndex,
+    internalIndex,
+    slides.length,
+    slidesToShow,
+    loop,
+    isTransitioning,
+    speed,
+    onSlideChange,
+    allSlides.length,
+    loopedSlides,
+  ]);
 
   const slidePrev = useCallback(() => {
     if (isTransitioning) return;
-    
+
     if (loop) {
       const prevRealIndex = realIndex === 0 ? slides.length - 1 : realIndex - 1;
       const prevInternalIndex = internalIndex - 1;
-      
+
       setRealIndex(prevRealIndex);
       setInternalIndex(prevInternalIndex);
       setIsTransitioning(true);
       setDragOffset(0);
-      
+
       setTimeout(() => {
         setIsTransitioning(false);
         onSlideChange?.(prevRealIndex);
-        
+
         // Reposition after transition ends
         if (prevInternalIndex < slides.length) {
           repositioningRef.current = true;
@@ -166,73 +178,110 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
       setInternalIndex(prevIndex);
       setIsTransitioning(true);
       setDragOffset(0);
-      
+
       setTimeout(() => {
         setIsTransitioning(false);
         onSlideChange?.(prevIndex);
       }, speed);
     }
-  }, [realIndex, internalIndex, slides.length, loop, isTransitioning, speed, onSlideChange, allSlides.length, loopedSlides]);
+  }, [
+    realIndex,
+    internalIndex,
+    slides.length,
+    loop,
+    isTransitioning,
+    speed,
+    onSlideChange,
+    allSlides.length,
+    loopedSlides,
+  ]);
 
-  const goToSlide = useCallback((index: number) => {
-    if (isTransitioning || index === realIndex) return;
-    
-    setIsTransitioning(true);
-    setDragOffset(0);
-    
-    setRealIndex(index);
-    setInternalIndex(loop ? slides.length + index : index);
-    
-    setTimeout(() => {
-      setIsTransitioning(false);
-      onSlideChange?.(index);
-    }, speed);
-  }, [realIndex, isTransitioning, speed, onSlideChange, loop, loopedSlides]);
+  const goToSlide = useCallback(
+    (index: number) => {
+      if (isTransitioning || index === realIndex) return;
 
-  const handleTouchStart = useCallback((e: React.TouchEvent | React.MouseEvent) => {
-    if (!allowTouchMove) return;
-    
-    const client = direction === 'horizontal'
-      ? ('touches' in e ? e.touches[0].clientX : e.clientX)
-      : ('touches' in e ? e.touches[0].clientY : e.clientY);
-    setTouchStart(client);
-    setTouching(true);
-    setDragOffset(0);
-  }, [allowTouchMove, direction]);
+      setIsTransitioning(true);
+      setDragOffset(0);
 
-  const handleTouchMove = useCallback((e: React.TouchEvent | React.MouseEvent) => {
-    if (!touching || !allowTouchMove) return;
-    
-    const client = direction === 'horizontal'
-      ? ('touches' in e ? e.touches[0].clientX : e.clientX)
-      : ('touches' in e ? e.touches[0].clientY : e.clientY);
-    const diff = touchStart - client;
-    
-    if (Math.abs(diff) > 10) {
-      e.preventDefault();
-      setDragOffset(-diff * 0.5);
-    }
-  }, [touching, touchStart, allowTouchMove, direction]);
+      setRealIndex(index);
+      setInternalIndex(loop ? slides.length + index : index);
 
-  const handleTouchEnd = useCallback((e: React.TouchEvent | React.MouseEvent) => {
-    if (!touching || !allowTouchMove) return;
-    
-    const client = direction === 'horizontal'
-      ? ('changedTouches' in e ? e.changedTouches[0].clientX : e.clientX)
-      : ('changedTouches' in e ? e.changedTouches[0].clientY : e.clientY);
-    const diff = touchStart - client;
-    
-    setTouching(false);
-    setDragOffset(0);
-    
-    if (Math.abs(diff) > threshold) {
-      if (diff > 0) {
-        slideNext();
-      } else {
-        slidePrev();
+      setTimeout(() => {
+        setIsTransitioning(false);
+        onSlideChange?.(index);
+      }, speed);
+    },
+    [realIndex, isTransitioning, speed, onSlideChange, loop, loopedSlides]
+  );
+
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent | React.MouseEvent) => {
+      if (!allowTouchMove) return;
+
+      const client =
+        direction === 'horizontal'
+          ? 'touches' in e
+            ? e.touches[0].clientX
+            : e.clientX
+          : 'touches' in e
+            ? e.touches[0].clientY
+            : e.clientY;
+      setTouchStart(client);
+      setTouching(true);
+      setDragOffset(0);
+    },
+    [allowTouchMove, direction]
+  );
+
+  const handleTouchMove = useCallback(
+    (e: React.TouchEvent | React.MouseEvent) => {
+      if (!touching || !allowTouchMove) return;
+
+      const client =
+        direction === 'horizontal'
+          ? 'touches' in e
+            ? e.touches[0].clientX
+            : e.clientX
+          : 'touches' in e
+            ? e.touches[0].clientY
+            : e.clientY;
+      const diff = touchStart - client;
+
+      if (Math.abs(diff) > 10) {
+        e.preventDefault();
+        setDragOffset(-diff * 0.5);
       }
-    }
-  }, [touching, touchStart, threshold, slideNext, slidePrev, allowTouchMove, direction]);
+    },
+    [touching, touchStart, allowTouchMove, direction]
+  );
+
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent | React.MouseEvent) => {
+      if (!touching || !allowTouchMove) return;
+
+      const client =
+        direction === 'horizontal'
+          ? 'changedTouches' in e
+            ? e.changedTouches[0].clientX
+            : e.clientX
+          : 'changedTouches' in e
+            ? e.changedTouches[0].clientY
+            : e.clientY;
+      const diff = touchStart - client;
+
+      setTouching(false);
+      setDragOffset(0);
+
+      if (Math.abs(diff) > threshold) {
+        if (diff > 0) {
+          slideNext();
+        } else {
+          slidePrev();
+        }
+      }
+    },
+    [touching, touchStart, threshold, slideNext, slidePrev, allowTouchMove, direction]
+  );
 
   const canSlideNext = loop || realIndex < slides.length - slidesToShow;
   const canSlidePrev = loop || realIndex > 0;
@@ -246,20 +295,20 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     touching,
     slidesCount: slides.length,
     slidesPerView: slidesToShow,
-    
+
     slideNext,
     slidePrev,
     goToSlide,
     canSlideNext,
     canSlidePrev,
-    
+
     containerRef,
     wrapperRef,
-    
+
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
-    
+
     allSlides,
     translateValue,
     slideWidth,

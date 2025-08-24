@@ -2,19 +2,9 @@
 @use '../02-tools/tools.animations' as *;
 
 .c-popover {
-  @include animations(
-    'slow-zoom-in',
-    $duration: 0.3s,
-    $timing: ease-out,
-    $iteration-count: 1
-  );
+  @include animations('slow-zoom-in', $duration: 0.3s, $timing: ease-out, $iteration-count: 1);
 }
 
 .c-popover__content {
-  @include animations(
-    'slow-fade-in',
-    $duration: 0.3s,
-    $timing: ease-out,
-    $iteration-count: 1
-  );
+  @include animations('slow-fade-in', $duration: 0.3s, $timing: ease-out, $iteration-count: 1);
 }

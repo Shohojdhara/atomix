@@ -21,14 +21,7 @@ interface PieChartProps extends Omit<ChartProps, 'type'> {
 const PieChart = memo(
   forwardRef<HTMLDivElement, PieChartProps>(
     (
-      {
-        data,
-        donut = false,
-        showLabels = true,
-        onDataPointClick,
-        interactive = true,
-        ...props
-      },
+      { data, donut = false, showLabels = true, onDataPointClick, interactive = true, ...props },
       ref
     ) => {
       const { data: processedData, stats } = useChartData(data);
@@ -55,7 +48,7 @@ const PieChart = memo(
               // Calculate arc path
               const startAngle = currentAngle;
               const endAngle = currentAngle + angle;
-              
+
               const x1 = center + Math.cos(startAngle) * radius;
               const y1 = center + Math.sin(startAngle) * radius;
               const x2 = center + Math.cos(endAngle) * radius;
@@ -88,9 +81,9 @@ const PieChart = memo(
                     d={pathData}
                     fill={point.color || 'var(--atomix-primary)'}
                     className={`c-chart__pie-slice ${isHovered || isSelected ? 'c-chart__pie-slice--hovered' : ''}`}
-                    style={{ 
+                    style={{
                       cursor: interactive ? 'pointer' : 'default',
-                      transformOrigin: `${center}px ${center}px`
+                      transformOrigin: `${center}px ${center}px`,
                     }}
                     onMouseEnter={() => interactive && handlePointHover(index)}
                     onMouseLeave={() => interactive && handlePointHover(null)}

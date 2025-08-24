@@ -2,20 +2,10 @@
 @use '../02-tools/tools.animations' as *;
 
 .c-tag {
-  @include animations(
-    'slow-fade-in',
-    $duration: 0.4s,
-    $timing: ease-out,
-    $iteration-count: 1
-  );
+  @include animations('slow-fade-in', $duration: 0.4s, $timing: ease-out, $iteration-count: 1);
 
   &:hover {
-    @include animations(
-      'float',
-      $duration: 2s,
-      $timing: ease-in-out,
-      $iteration-count: infinite
-    );
+    @include animations('float', $duration: 2s, $timing: ease-in-out, $iteration-count: infinite);
   }
 
   &--removable {

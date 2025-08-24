@@ -32,7 +32,6 @@ const meta: Meta<typeof Modal> = {
       description: 'Whether to show the close button',
       defaultValue: true,
     },
-
   },
 };
 

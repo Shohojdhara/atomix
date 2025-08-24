@@ -29,15 +29,16 @@
 }
 
 @keyframes button-3d-pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1) translateZ(0);
-    box-shadow: 
+    box-shadow:
       0 4px 6px rgba(0, 0, 0, 0.1),
       0 0 10px var(--atomix-btn-border-color);
   }
   50% {
     transform: scale(1.05) translateZ(10px);
-    box-shadow: 
+    box-shadow:
       0 10px 20px rgba(0, 0, 0, 0.2),
       0 0 30px var(--atomix-btn-border-color),
       0 0 50px rgba(255, 255, 255, 0.3);
@@ -52,12 +53,12 @@
   // Add float animation for a magical effect
   @include trippy.float-animation();
   @include trippy.color-shift();
-  
+
   // Add 3D pulse effect
   animation: button-3d-pulse 3s infinite;
 
   // Add psychedelic shifting
-  animation: 
+  animation:
     psychedelic-button-shift 5s infinite linear,
     button-3d-pulse 3s infinite ease-in-out;
 
@@ -69,9 +70,9 @@
     );
     transform: scale(1.1) rotate(3deg);
     @include trippy.psychedelic-pulse(var(--atomix-btn-bg));
-    
+
     // Enhance animations on hover
-    animation: 
+    animation:
       psychedelic-button-shift 1s infinite linear,
       button-3d-pulse 1s infinite ease-in-out;
   }
@@ -80,7 +81,7 @@
   &:focus {
     outline: none;
     @include trippy.trippy-glow($yellow-4, 20px);
-    animation: 
+    animation:
       psychedelic-button-shift 0.5s infinite linear,
       button-3d-pulse 0.5s infinite ease-in-out;
   }
@@ -98,31 +99,31 @@
     cursor: not-allowed;
     @include trippy.trippy-glow(rgba(128, 128, 128, 0.3), 2px);
   }
-  
+
   // Psychedelic variant
   &--psychedelic {
     @include gradients.rainbow-gradient();
     background-size: 300% 300%;
     border: none;
     animation: rainbow-shift 4s ease infinite;
-    
+
     &:hover {
       animation: rainbow-shift 1s linear infinite;
       transform: scale(1.1) rotate(5deg);
       @include trippy.trippy-glow(white, 30px);
     }
-    
+
     &:active {
       transform: scale(0.95) rotate(-5deg);
     }
   }
-  
+
   // 3D variant
   &--3d {
     border-radius: 15px;
     position: relative;
     transform-style: preserve-3d;
-    
+
     &::before {
       content: '';
       position: absolute;
@@ -136,21 +137,21 @@
       z-index: -1;
       transform: translateZ(-20px);
     }
-    
+
     &:hover {
       transform: translateZ(20px) scale(1.05);
     }
-    
+
     &:active {
       transform: translateZ(0) scale(0.95);
     }
   }
-  
+
   // Glowing variant
   &--glow {
     @include trippy.trippy-glow(var(--atomix-btn-bg), 20px);
     animation: button-3d-pulse 2s infinite ease-in-out;
-    
+
     &:hover {
       @include trippy.trippy-glow(var(--atomix-btn-bg), 40px);
       animation: button-3d-pulse 0.5s infinite ease-in-out;

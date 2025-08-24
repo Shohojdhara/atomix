@@ -25,9 +25,12 @@ export class VideoPlayerInteractions {
   private setupKeyboardShortcuts(): void {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (this.isDestroyed) return;
-      
+
       // Only handle shortcuts when the video player is focused or contains the active element
-      if (!this.element.contains(document.activeElement) && document.activeElement !== this.element) {
+      if (
+        !this.element.contains(document.activeElement) &&
+        document.activeElement !== this.element
+      ) {
         return;
       }
 
@@ -36,49 +39,49 @@ export class VideoPlayerInteractions {
           e.preventDefault();
           this.videoPlayer.togglePlay();
           break;
-        
+
         case 'ArrowLeft':
           e.preventDefault();
           this.skipBackward(e.shiftKey ? 30 : 10);
           break;
-        
+
         case 'ArrowRight':
           e.preventDefault();
           this.skipForward(e.shiftKey ? 30 : 10);
           break;
-        
+
         case 'ArrowUp':
           e.preventDefault();
           this.adjustVolume(0.1);
           break;
-        
+
         case 'ArrowDown':
           e.preventDefault();
           this.adjustVolume(-0.1);
           break;
-        
+
         case 'KeyM':
           e.preventDefault();
           this.videoPlayer.toggleMute();
           break;
-        
+
         case 'KeyF':
           e.preventDefault();
           this.videoPlayer.toggleFullscreen();
           break;
-        
+
         case 'KeyP':
           e.preventDefault();
           this.videoPlayer.togglePictureInPicture();
           break;
-        
+
         case 'Escape':
           e.preventDefault();
           if ((this.videoPlayer as any).isFullscreen) {
             this.videoPlayer.toggleFullscreen();
           }
           break;
-        
+
         // Number keys for seeking to percentage
         case 'Digit0':
         case 'Digit1':
@@ -94,13 +97,13 @@ export class VideoPlayerInteractions {
           const digit = parseInt(e.code.replace('Digit', ''));
           this.seekToPercentage(digit * 10);
           break;
-        
+
         // Playback speed shortcuts
         case 'Comma':
           e.preventDefault();
           this.decreasePlaybackSpeed();
           break;
-        
+
         case 'Period':
           e.preventDefault();
           this.increasePlaybackSpeed();
@@ -109,7 +112,7 @@ export class VideoPlayerInteractions {
     };
 
     document.addEventListener('keydown', handleKeyDown);
-    
+
     // Store reference for cleanup
     (this as any).keydownHandler = handleKeyDown;
   }
@@ -123,7 +126,7 @@ export class VideoPlayerInteractions {
 
     const handleTouchStart = (e: TouchEvent) => {
       if (this.isDestroyed) return;
-      
+
       const touch = e.touches[0];
       touchStartX = touch.clientX;
       touchStartY = touch.clientY;
@@ -134,7 +137,7 @@ export class VideoPlayerInteractions {
 
     const handleTouchMove = (e: TouchEvent) => {
       if (this.isDestroyed) return;
-      
+
       const touch = e.touches[0];
       const deltaX = touch.clientX - touchStartX;
       const deltaY = touch.clientY - touchStartY;
@@ -148,11 +151,15 @@ export class VideoPlayerInteractions {
           isSeeking = true;
           e.preventDefault();
         }
-        
+
         if (isSeeking) {
-          const seekAmount = (deltaX / this.element.clientWidth) * (this.videoPlayer as any).duration;
+          const seekAmount =
+            (deltaX / this.element.clientWidth) * (this.videoPlayer as any).duration;
           const currentTime = (this.videoPlayer as any).currentTime;
-          const newTime = Math.max(0, Math.min(currentTime + seekAmount, (this.videoPlayer as any).duration));
+          const newTime = Math.max(
+            0,
+            Math.min(currentTime + seekAmount, (this.videoPlayer as any).duration)
+          );
           this.showSeekPreview(newTime);
         }
       } else if (absDeltaY > absDeltaX && absDeltaY > 20) {
@@ -161,7 +168,7 @@ export class VideoPlayerInteractions {
           isVolumeAdjusting = true;
           e.preventDefault();
         }
-        
+
         if (isVolumeAdjusting) {
           const volumeChange = -(deltaY / this.element.clientHeight);
           const currentVolume = (this.videoPlayer as any).volume;
@@ -173,7 +180,7 @@ export class VideoPlayerInteractions {
 
     const handleTouchEnd = (e: TouchEvent) => {
       if (this.isDestroyed) return;
-      
+
       const touchEndTime = Date.now();
       const touchDuration = touchEndTime - touchStartTime;
 
@@ -183,7 +190,10 @@ export class VideoPlayerInteractions {
         const deltaX = touch.clientX - touchStartX;
         const seekAmount = (deltaX / this.element.clientWidth) * (this.videoPlayer as any).duration;
         const currentTime = (this.videoPlayer as any).currentTime;
-        const newTime = Math.max(0, Math.min(currentTime + seekAmount, (this.videoPlayer as any).duration));
+        const newTime = Math.max(
+          0,
+          Math.min(currentTime + seekAmount, (this.videoPlayer as any).duration)
+        );
         this.videoPlayer.seek(newTime);
         this.hideSeekPreview();
       } else if (isVolumeAdjusting) {
@@ -208,13 +218,13 @@ export class VideoPlayerInteractions {
   private setupClickToPlay(): void {
     const handleClick = (e: MouseEvent) => {
       if (this.isDestroyed) return;
-      
+
       // Only toggle play if clicking on the video itself, not controls
       const target = e.target as HTMLElement;
       if (target.closest('.c-video-player__controls')) {
         return;
       }
-      
+
       this.videoPlayer.togglePlay();
     };
 
@@ -228,9 +238,9 @@ export class VideoPlayerInteractions {
 
     const handleDoubleClick = (e: MouseEvent) => {
       if (this.isDestroyed) return;
-      
+
       clickCount++;
-      
+
       if (clickCount === 1) {
         clickTimer = setTimeout(() => {
           clickCount = 0;
@@ -241,7 +251,7 @@ export class VideoPlayerInteractions {
           clickTimer = null;
         }
         clickCount = 0;
-        
+
         // Only toggle fullscreen if not clicking on controls
         const target = e.target as HTMLElement;
         if (!target.closest('.c-video-player__controls')) {

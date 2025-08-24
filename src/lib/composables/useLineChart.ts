@@ -129,9 +129,7 @@ export function useLineChart(datasets: ChartDataset[], options: LineChartOptions
     const result: ChartDataPoint[] = [];
 
     for (let i = period - 1; i < data.length; i++) {
-      const sum = data
-        .slice(i - period + 1, i + 1)
-        .reduce((acc, point) => acc + point.value, 0);
+      const sum = data.slice(i - period + 1, i + 1).reduce((acc, point) => acc + point.value, 0);
       const average = sum / period;
 
       result.push({
@@ -165,63 +163,72 @@ export function useLineChart(datasets: ChartDataset[], options: LineChartOptions
   }, []);
 
   // Generate SVG path for smooth curves
-  const generateSmoothPath = useCallback((points: Array<{ x: number; y: number }>, tension = 0.4) => {
-    if (points.length < 2) return '';
+  const generateSmoothPath = useCallback(
+    (points: Array<{ x: number; y: number }>, tension = 0.4) => {
+      if (points.length < 2) return '';
 
-    const controlPoints = points.map((point, i) => {
-      if (i === 0 || i === points.length - 1) {
-        return { cp1x: point.x, cp1y: point.y, cp2x: point.x, cp2y: point.y };
+      const controlPoints = points.map((point, i) => {
+        if (i === 0 || i === points.length - 1) {
+          return { cp1x: point.x, cp1y: point.y, cp2x: point.x, cp2y: point.y };
+        }
+
+        const prev = points[i - 1];
+        const next = points[i + 1];
+        const dx = next.x - prev.x;
+        const dy = next.y - prev.y;
+
+        return {
+          cp1x: point.x - dx * tension,
+          cp1y: point.y - dy * tension,
+          cp2x: point.x + dx * tension,
+          cp2y: point.y + dy * tension,
+        };
+      });
+
+      let path = `M ${points[0].x},${points[0].y}`;
+
+      for (let i = 1; i < points.length; i++) {
+        const cp = controlPoints[i - 1];
+        path += ` C ${cp.cp2x},${cp.cp2y} ${controlPoints[i].cp1x},${controlPoints[i].cp1y} ${points[i].x},${points[i].y}`;
       }
 
-      const prev = points[i - 1];
-      const next = points[i + 1];
-      const dx = next.x - prev.x;
-      const dy = next.y - prev.y;
-
-      return {
-        cp1x: point.x - dx * tension,
-        cp1y: point.y - dy * tension,
-        cp2x: point.x + dx * tension,
-        cp2y: point.y + dy * tension,
-      };
-    });
-
-    let path = `M ${points[0].x},${points[0].y}`;
-
-    for (let i = 1; i < points.length; i++) {
-      const cp = controlPoints[i - 1];
-      path += ` C ${cp.cp2x},${cp.cp2y} ${controlPoints[i].cp1x},${controlPoints[i].cp1y} ${points[i].x},${points[i].y}`;
-    }
-
-    return path;
-  }, []);
+      return path;
+    },
+    []
+  );
 
   // Zoom handlers
-  const handleZoom = useCallback((delta: number, centerX: number, centerY: number) => {
-    if (!options.enableZoom) return;
+  const handleZoom = useCallback(
+    (delta: number, centerX: number, centerY: number) => {
+      if (!options.enableZoom) return;
 
-    const zoomFactor = delta > 0 ? 0.9 : 1.1;
-    const newZoomLevel = Math.max(0.1, Math.min(10, zoomLevel * zoomFactor));
-    
-    setZoomLevel(newZoomLevel);
-    
-    // Adjust pan offset to zoom towards center
-    const zoomRatio = newZoomLevel / zoomLevel;
-    setPanOffset(prev => ({
-      x: centerX - (centerX - prev.x) * zoomRatio,
-      y: centerY - (centerY - prev.y) * zoomRatio,
-    }));
-  }, [zoomLevel, options.enableZoom]);
+      const zoomFactor = delta > 0 ? 0.9 : 1.1;
+      const newZoomLevel = Math.max(0.1, Math.min(10, zoomLevel * zoomFactor));
+
+      setZoomLevel(newZoomLevel);
+
+      // Adjust pan offset to zoom towards center
+      const zoomRatio = newZoomLevel / zoomLevel;
+      setPanOffset(prev => ({
+        x: centerX - (centerX - prev.x) * zoomRatio,
+        y: centerY - (centerY - prev.y) * zoomRatio,
+      }));
+    },
+    [zoomLevel, options.enableZoom]
+  );
 
   // Pan handlers
-  const handlePan = useCallback((deltaX: number, deltaY: number) => {
-    if (!options.enablePan) return;
+  const handlePan = useCallback(
+    (deltaX: number, deltaY: number) => {
+      if (!options.enablePan) return;
 
-    setPanOffset(prev => ({
-      x: prev.x + deltaX,
-      y: prev.y + deltaY,
-    }));
-  }, [options.enablePan]);
+      setPanOffset(prev => ({
+        x: prev.x + deltaX,
+        y: prev.y + deltaY,
+      }));
+    },
+    [options.enablePan]
+  );
 
   // Reset view
   const resetView = useCallback(() => {
@@ -230,9 +237,12 @@ export function useLineChart(datasets: ChartDataset[], options: LineChartOptions
   }, []);
 
   // Point hover handlers
-  const handlePointHover = useCallback((datasetIndex: number, pointIndex: number, x: number, y: number) => {
-    setHoveredPoint({ datasetIndex, pointIndex, x, y });
-  }, []);
+  const handlePointHover = useCallback(
+    (datasetIndex: number, pointIndex: number, x: number, y: number) => {
+      setHoveredPoint({ datasetIndex, pointIndex, x, y });
+    },
+    []
+  );
 
   const handlePointLeave = useCallback(() => {
     setHoveredPoint(null);
@@ -258,29 +268,36 @@ export function useLineChart(datasets: ChartDataset[], options: LineChartOptions
 
       return processed;
     });
-  }, [datasets, options.showMovingAverages, options.movingAveragePeriods, options.showTrendLines, calculateMovingAverage, calculateTrendLine]);
+  }, [
+    datasets,
+    options.showMovingAverages,
+    options.movingAveragePeriods,
+    options.showTrendLines,
+    calculateMovingAverage,
+    calculateTrendLine,
+  ]);
 
   return {
     // State
     zoomLevel,
     panOffset,
     hoveredPoint,
-    
+
     // Data
     processedDatasets,
-    
+
     // Handlers
     handleZoom,
     handlePan,
     resetView,
     handlePointHover,
     handlePointLeave,
-    
+
     // Utilities
     calculateMovingAverage,
     calculateTrendLine,
     generateSmoothPath,
-    
+
     // State setters
     setZoomLevel,
     setPanOffset,

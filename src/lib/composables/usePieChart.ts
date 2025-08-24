@@ -230,7 +230,7 @@ export function usePieChart(data: ChartDataPoint[], options: PieChartOptions = {
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // Easing function (ease-out)
       const easedProgress = 1 - Math.pow(1 - progress, 3);
       setAnimationProgress(easedProgress);
@@ -246,98 +246,113 @@ export function usePieChart(data: ChartDataPoint[], options: PieChartOptions = {
   }, [options.enableAnimations, options.animationDuration]);
 
   // Slice interaction handlers
-  const handleSliceHover = useCallback((index: number, clientX?: number, clientY?: number) => {
-    if (!options.enableHoverEffects) return;
-    setHoveredSlice(index);
-    
-    // Store client coordinates for tooltip positioning
-    if (clientX !== undefined && clientY !== undefined && slices[index]) {
-      slices[index].clientX = clientX;
-      slices[index].clientY = clientY;
-    }
-  }, [options.enableHoverEffects, slices]);
+  const handleSliceHover = useCallback(
+    (index: number, clientX?: number, clientY?: number) => {
+      if (!options.enableHoverEffects) return;
+      setHoveredSlice(index);
+
+      // Store client coordinates for tooltip positioning
+      if (clientX !== undefined && clientY !== undefined && slices[index]) {
+        slices[index].clientX = clientX;
+        slices[index].clientY = clientY;
+      }
+    },
+    [options.enableHoverEffects, slices]
+  );
 
   const handleSliceLeave = useCallback(() => {
     setHoveredSlice(null);
   }, []);
 
-  const handleSliceClick = useCallback((index: number) => {
-    if (!options.enableSelection) return;
+  const handleSliceClick = useCallback(
+    (index: number) => {
+      if (!options.enableSelection) return;
 
-    setSelectedSlices(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(index)) {
-        newSet.delete(index);
-      } else {
-        newSet.add(index);
-      }
-      return newSet;
-    });
-  }, [options.enableSelection]);
+      setSelectedSlices(prev => {
+        const newSet = new Set(prev);
+        if (newSet.has(index)) {
+          newSet.delete(index);
+        } else {
+          newSet.add(index);
+        }
+        return newSet;
+      });
+    },
+    [options.enableSelection]
+  );
 
   // Format label
-  const formatLabel = useCallback((slice: PieSlice) => {
-    if (options.labelFormatter) {
-      return options.labelFormatter(slice.value, slice.percentage, slice.label);
-    }
+  const formatLabel = useCallback(
+    (slice: PieSlice) => {
+      if (options.labelFormatter) {
+        return options.labelFormatter(slice.value, slice.percentage, slice.label);
+      }
 
-    const parts = [];
-    
-    if (options.showLabels !== false) {
-      parts.push(slice.label);
-    }
-    
-    if (options.showPercentages) {
-      parts.push(`${Math.round(slice.percentage)}%`);
-    }
-    
-    if (options.showValues) {
-      parts.push(slice.value.toString());
-    }
+      const parts = [];
 
-    return parts.join(' - ');
-  }, [options.labelFormatter, options.showLabels, options.showPercentages, options.showValues]);
+      if (options.showLabels !== false) {
+        parts.push(slice.label);
+      }
+
+      if (options.showPercentages) {
+        parts.push(`${Math.round(slice.percentage)}%`);
+      }
+
+      if (options.showValues) {
+        parts.push(slice.value.toString());
+      }
+
+      return parts.join(' - ');
+    },
+    [options.labelFormatter, options.showLabels, options.showPercentages, options.showValues]
+  );
 
   // Get slice transform for hover effect
-  const getSliceTransform = useCallback((slice: PieSlice, isHovered: boolean) => {
-    if (!isHovered || !options.enableHoverEffects || !options.hoverOffset) {
-      return '';
-    }
+  const getSliceTransform = useCallback(
+    (slice: PieSlice, isHovered: boolean) => {
+      if (!isHovered || !options.enableHoverEffects || !options.hoverOffset) {
+        return '';
+      }
 
-    const offsetX = Math.cos(slice.midAngle) * options.hoverOffset;
-    const offsetY = Math.sin(slice.midAngle) * options.hoverOffset;
-    
-    return `translate(${offsetX}, ${offsetY})`;
-  }, [options.enableHoverEffects, options.hoverOffset]);
+      const offsetX = Math.cos(slice.midAngle) * options.hoverOffset;
+      const offsetY = Math.sin(slice.midAngle) * options.hoverOffset;
+
+      return `translate(${offsetX}, ${offsetY})`;
+    },
+    [options.enableHoverEffects, options.hoverOffset]
+  );
 
   // Check if slice is selected
-  const isSliceSelected = useCallback((index: number) => {
-    return selectedSlices.has(index);
-  }, [selectedSlices]);
+  const isSliceSelected = useCallback(
+    (index: number) => {
+      return selectedSlices.has(index);
+    },
+    [selectedSlices]
+  );
 
   return {
     // Data
     processedData,
     slices,
     totalValue,
-    
+
     // State
     hoveredSlice,
     selectedSlices,
     animationProgress,
     isAnimating,
-    
+
     // Handlers
     handleSliceHover,
     handleSliceLeave,
     handleSliceClick,
     startAnimation,
-    
+
     // Utilities
     formatLabel,
     getSliceTransform,
     isSliceSelected,
-    
+
     // State setters
     setHoveredSlice,
     setSelectedSlices,

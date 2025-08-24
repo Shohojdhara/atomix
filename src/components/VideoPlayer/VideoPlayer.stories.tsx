@@ -111,8 +111,7 @@ export default meta;
 type Story = StoryObj<VideoPlayerProps>;
 
 // Sample video URLs (using Sintel - open source test video with subtitles)
-const sampleVideo =
-  'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4';
+const sampleVideo = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4';
 const samplePoster =
   'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/Sintel.jpg';
 
@@ -135,21 +134,21 @@ const sampleQualities = [
 ];
 
 const sampleSubtitles = [
-  { 
-    label: 'English', 
-    src: 'data:text/vtt;charset=utf-8;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjA1LjAwMApTaW50ZWwgLSBBbiBvcGVuIHNvdXJjZSBhbmltYXRlZCBzaG9ydCBmaWxtCgowMDowMDowNS4wMDAgLS0+IDAwOjAwOjEwLjAwMApCeSB0aGUgQmxlbmRlciBGb3VuZGF0aW9uCgowMDowMDoxMC4wMDAgLS0+IDAwOjAwOjE1LjAwMApUaGlzIGlzIGEgZGVtb25zdHJhdGlvbiBvZiBzdWJ0aXRsZXMKCjAwOjAwOjE1LjAwMCAtLT4gMDA6MDA6MjAuMDAwCllvdSBjYW4gc3dpdGNoIGJldHdlZW4gbGFuZ3VhZ2VzCgowMDowMDoyMC4wMDAgLS0+IDAwOjAwOjI1LjAwMApVc2luZyB0aGUgc2V0dGluZ3MgbWVudQ==', 
-    srcLang: 'en', 
-    default: true 
+  {
+    label: 'English',
+    src: 'data:text/vtt;charset=utf-8;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjA1LjAwMApTaW50ZWwgLSBBbiBvcGVuIHNvdXJjZSBhbmltYXRlZCBzaG9ydCBmaWxtCgowMDowMDowNS4wMDAgLS0+IDAwOjAwOjEwLjAwMApCeSB0aGUgQmxlbmRlciBGb3VuZGF0aW9uCgowMDowMDoxMC4wMDAgLS0+IDAwOjAwOjE1LjAwMApUaGlzIGlzIGEgZGVtb25zdHJhdGlvbiBvZiBzdWJ0aXRsZXMKCjAwOjAwOjE1LjAwMCAtLT4gMDA6MDA6MjAuMDAwCllvdSBjYW4gc3dpdGNoIGJldHdlZW4gbGFuZ3VhZ2VzCgowMDowMDoyMC4wMDAgLS0+IDAwOjAwOjI1LjAwMApVc2luZyB0aGUgc2V0dGluZ3MgbWVudQ==',
+    srcLang: 'en',
+    default: true,
   },
-  { 
-    label: 'Spanish', 
-    src: 'data:text/vtt;charset=utf-8;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjA1LjAwMApTaW50ZWwgLSBVbiBjb3J0b21ldHJhamUgYW5pbWFkbyBkZSBjw7NkaWdvIGFiaWVydG8KCjAwOjAwOjA1LjAwMCAtLT4gMDA6MDA6MTAuMDAwClBvciBsYSBGdW5kYWNpw7NuIEJsZW5kZXIKCjAwOjAwOjEwLjAwMCAtLT4gMDA6MDA6MTUuMDAwCkVzdGEgZXMgdW5hIGRlbW9zdHJhY2nDs24gZGUgc3VidMOtdHVsb3MKCjAwOjAwOjE1LjAwMCAtLT4gMDA6MDA6MjAuMDAwClB1ZWRlcyBjYW1iaWFyIGVudHJlIGlkaW9tYXMKCjAwOjAwOjIwLjAwMCAtLT4gMDA6MDA6MjUuMDAwClVzYW5kbyBlbCBtZW7DuiBkZSBjb25maWd1cmFjacOzbg==', 
-    srcLang: 'es' 
+  {
+    label: 'Spanish',
+    src: 'data:text/vtt;charset=utf-8;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjA1LjAwMApTaW50ZWwgLSBVbiBjb3J0b21ldHJhamUgYW5pbWFkbyBkZSBjw7NkaWdvIGFiaWVydG8KCjAwOjAwOjA1LjAwMCAtLT4gMDA6MDA6MTAuMDAwClBvciBsYSBGdW5kYWNpw7NuIEJsZW5kZXIKCjAwOjAwOjEwLjAwMCAtLT4gMDA6MDA6MTUuMDAwCkVzdGEgZXMgdW5hIGRlbW9zdHJhY2nDs24gZGUgc3VidMOtdHVsb3MKCjAwOjAwOjE1LjAwMCAtLT4gMDA6MDA6MjAuMDAwClB1ZWRlcyBjYW1iaWFyIGVudHJlIGlkaW9tYXMKCjAwOjAwOjIwLjAwMCAtLT4gMDA6MDA6MjUuMDAwClVzYW5kbyBlbCBtZW7DuiBkZSBjb25maWd1cmFjacOzbg==',
+    srcLang: 'es',
   },
-  { 
-    label: 'বাংলা', 
-    src: 'data:text/vtt;charset=utf-8;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjA1LjAwMApzaW50ZWwgLSDgpI/gppXgpp/gpr8g4KST4KSq4KWH4KSoIOCmuOCni+CmsOCnjeCmuCDgpI/gp43gpq/gpr/gpq7gp4fgpp/gp4fgpqEg4KaV4KaX4Ka/4KaoCgowMDowMDowNS4wMDAgLS0+IDAwOjAwOjEwLjAwMApgpqzgp43gpqzgp4fgpqjgp43gpqHgpr7gprAg4Kar4Ka+4KaJ4KaP4KaH4Ka24KaoIOCmr+CmvuCmsOCmvwowMDowMDoxMC4wMDAgLS0+IDAwOjAwOjE1LjAwMApgpqHgpr/gpp/gpr8g4Ka44Ka+4KaW4KaX4Ka/4KaX4KaC4KaXIOCmj+CmsOCmvuCmqOCmvuCmrOCmvuCmsCDgpqjgpr/gpqbgprDgp43gprbgpqgKCjAwOjAwOjE1LjAwMCAtLT4gMDA6MDA6MjAuMDAwCuCmhuCmquCmqOCmvuCmsOCmviDgpq3gpr7gprfgpr7gprAg4Kau4Kav4KaX4KWHIOCmquCmsOCmv+CmrOCmsOCnjeCmpOCmqCDgppXgprDgpqTgp4cg4Kaq4Ka+4Kaw4KasCgowMDowMDoyMC4wMDAgLS0+IDAwOjAwOjI1LjAwMApgprjgp4fgpp/gpr/gppngprgg4Kau4KeH4Kao4KeB4KaXIOCmrOCnjeCmr+CmreCmvuCmsOCmviDgppXgprDgp4fgpqQ=', 
-    srcLang: 'bn' 
+  {
+    label: 'বাংলা',
+    src: 'data:text/vtt;charset=utf-8;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjA1LjAwMApzaW50ZWwgLSDgpI/gppXgpp/gpr8g4KST4KSq4KWH4KSoIOCmuOCni+CmsOCnjeCmuCDgpI/gp43gpq/gpr/gpq7gp4fgpp/gp4fgpqEg4KaV4KaX4Ka/4KaoCgowMDowMDowNS4wMDAgLS0+IDAwOjAwOjEwLjAwMApgpqzgp43gpqzgp4fgpqjgp43gpqHgpr7gprAg4Kar4Ka+4KaJ4KaP4KaH4Ka24KaoIOCmr+CmvuCmsOCmvwowMDowMDoxMC4wMDAgLS0+IDAwOjAwOjE1LjAwMApgpqHgpr/gpp/gpr8g4Ka44Ka+4KaW4KaX4Ka/4KaX4KaC4KaXIOCmj+CmsOCmvuCmqOCmvuCmrOCmvuCmsCDgpqjgpr/gpqbgprDgp43gprbgpqgKCjAwOjAwOjE1LjAwMCAtLT4gMDA6MDA6MjAuMDAwCuCmhuCmquCmqOCmvuCmsOCmviDgpq3gpr7gprfgpr7gprAg4Kau4Kav4KaX4KWHIOCmquCmsOCmv+CmrOCmsOCnjeCmpOCmqCDgppXgprDgpqTgp4cg4Kaq4Ka+4Kaw4KasCgowMDowMDoyMC4wMDAgLS0+IDAwOjAwOjI1LjAwMApgprjgp4fgpp/gpr/gppngprgg4Kau4KeH4Kao4KeB4KaXIOCmrOCnjeCmr+CmreCmvuCmsOCmviDgppXgprDgp4fgpqQ=',
+    srcLang: 'bn',
   },
 ];
 
@@ -465,12 +464,14 @@ export const WithBengaliSubtitles: Story = {
     poster: samplePoster,
     width: '800px',
     height: '450px',
-    subtitles: [{
-      label: 'বাংলা',
-      src: 'data:text/vtt;charset=utf-8;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjA1LjAwMApzaW50ZWwgLSDgpI/gppXgpp/gpr8g4KST4KSq4KWH4KSoIOCmuOCni+CmsOCnjeCmuCDgpI/gp43gpq/gpr/gpq7gp4fgpp/gp4fgpqEg4KaV4KaX4Ka/4KaoCgowMDowMDowNS4wMDAgLS0+IDAwOjAwOjEwLjAwMApgpqzgp43gpqzgp4fgpqjgp43gpqHgpr7gprAg4Kar4Ka+4KaJ4KaP4KaH4Ka24KaoIOCmr+CmvuCmsOCmvwowMDowMDoxMC4wMDAgLS0+IDAwOjAwOjE1LjAwMApgpqHgpr/gpp/gpr8g4Ka44Ka+4KaW4KaX4Ka/4KaX4KaC4KaXIOCmj+CmsOCmvuCmqOCmvuCmrOCmvuCmsCDgpqjgpr/gpqbgprDgp43gprbgpqgKCjAwOjAwOjE1LjAwMCAtLT4gMDA6MDA6MjAuMDAwCuCmhuCmquCmqOCmvuCmsOCmviDgpq3gpr7gprfgpr7gprAg4Kau4Kav4KaX4KWHIOCmquCmsOCmv+CmrOCmsOCnjeCmpOCmqCDgppXgprDgpqTgp4cg4Kaq4Ka+4Kaw4KasCgowMDowMDoyMC4wMDAgLS0+IDAwOjAwOjI1LjAwMApgprjgp4fgpp/gpr/gppngprgg4Kau4KeH4Kao4KeB4KaXIOCmrOCnjeCmr+CmreCmvuCmsOCmviDgppXgprDgp4fgpqQ=',
-      srcLang: 'bn',
-      default: true
-    }],
+    subtitles: [
+      {
+        label: 'বাংলা',
+        src: 'data:text/vtt;charset=utf-8;base64,V0VCVlRUCgowMDowMDowMC4wMDAgLS0+IDAwOjAwOjA1LjAwMApzaW50ZWwgLSDgpI/gppXgpp/gpr8g4KST4KSq4KWH4KSoIOCmuOCni+CmsOCnjeCmuCDgpI/gp43gpq/gpr/gpq7gp4fgpp/gp4fgpqEg4KaV4KaX4Ka/4KaoCgowMDowMDowNS4wMDAgLS0+IDAwOjAwOjEwLjAwMApgpqzgp43gpqzgp4fgpqjgp43gpqHgpr7gprAg4Kar4Ka+4KaJ4KaP4KaH4Ka24KaoIOCmr+CmvuCmsOCmvwowMDowMDoxMC4wMDAgLS0+IDAwOjAwOjE1LjAwMApgpqHgpr/gpp/gpr8g4Ka44Ka+4KaW4KaX4Ka/4KaX4KaC4KaXIOCmj+CmsOCmvuCmqOCmvuCmrOCmvuCmsCDgpqjgpr/gpqbgprDgp43gprbgpqgKCjAwOjAwOjE1LjAwMCAtLT4gMDA6MDA6MjAuMDAwCuCmhuCmquCmqOCmvuCmsOCmviDgpq3gpr7gprfgpr7gprAg4Kau4Kav4KaX4KWHIOCmquCmsOCmv+CmrOCmsOCnjeCmpOCmqCDgppXgprDgpqTgp4cg4Kaq4Ka+4Kaw4KasCgowMDowMDoyMC4wMDAgLS0+IDAwOjAwOjI1LjAwMApgprjgp4fgpp/gpr/gppngprgg4Kau4KeH4Kao4KeB4KaXIOCmrOCnjeCmr+CmreCmvuCmsOCmviDgppXgprDgp4fgpqQ=',
+        srcLang: 'bn',
+        default: true,
+      },
+    ],
     showSettings: true,
     onPlay: fn(),
     onPause: fn(),

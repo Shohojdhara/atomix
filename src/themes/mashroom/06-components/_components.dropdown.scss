@@ -92,11 +92,14 @@
     background-clip: padding-box;
     border: double 2px transparent;
     border-radius: 0.5rem;
-    
+
     &::before {
       content: '';
       position: absolute;
-      top: 0; right: 0; bottom: 0; left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
       z-index: -1;
       margin: -2px;
       border-radius: inherit;
@@ -143,7 +146,7 @@
       animation: none;
       background: rgba(128, 128, 128, 0.2);
       @include trippy.trippy-glow(rgba(128, 128, 128, 0.3), 2px);
-      
+
       &::before {
         background: rgba(128, 128, 128, 0.5);
         animation: none;
@@ -171,11 +174,14 @@
     background-clip: padding-box;
     border: double 1px transparent;
     border-radius: 0.5rem;
-    
+
     &::before {
       content: '';
       position: absolute;
-      top: 0; right: 0; bottom: 0; left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
       z-index: -1;
       margin: -1px;
       border-radius: inherit;
@@ -215,7 +221,10 @@
       color: $white;
       @include trippy.trippy-glow($red-4, 8px);
       transform: translateX(5px) scale(1.02);
-      @include gradients.psychedelic-linear-gradient(rgba(157, 0, 255, 0.3), rgba(255, 32, 133, 0.3));
+      @include gradients.psychedelic-linear-gradient(
+        rgba(157, 0, 255, 0.3),
+        rgba(255, 32, 133, 0.3)
+      );
       background-blend-mode: overlay;
       @include trippy.color-shift();
     }
@@ -226,7 +235,10 @@
       color: $yellow-4;
       font-weight: 600;
       @include trippy.trippy-glow($yellow-4, 10px);
-      @include gradients.psychedelic-linear-gradient(rgba(255, 187, 0, 0.2), rgba(255, 187, 0, 0.1));
+      @include gradients.psychedelic-linear-gradient(
+        rgba(255, 187, 0, 0.2),
+        rgba(255, 187, 0, 0.1)
+      );
       animation: psychedelic-border-shift 2s infinite;
     }
 
@@ -273,7 +285,7 @@
 
     // Add subtle glow to header
     @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 3px);
-    
+
     // Add psychedelic effects
     @include gradients.psychedelic-linear-gradient(rgba(157, 0, 255, 0.1), rgba(157, 0, 255, 0.05));
     background-blend-mode: overlay;
@@ -287,29 +299,29 @@
       background-size: 300% 300%;
       animation: rainbow-shift 4s ease infinite;
       border-radius: 2rem;
-      
+
       &::before {
         border-radius: 2rem;
       }
-      
+
       &:hover {
         animation: rainbow-shift 2s linear infinite;
         transform: scale(1.1) rotate(5deg);
       }
     }
-    
+
     #{$root}__menu {
       @include gradients.rainbow-gradient();
       background-size: 400% 400%;
       animation: rainbow-shift 6s linear infinite;
       border-radius: 1rem;
-      
+
       &::before {
         border-radius: 1rem;
         animation: rainbow-shift 4s linear infinite reverse;
       }
     }
-    
+
     #{$root}__item {
       &:hover {
         @include gradients.rainbow-gradient();

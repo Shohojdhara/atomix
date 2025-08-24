@@ -44,8 +44,13 @@
   }
 
   @keyframes glowPulse {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 0.6; }
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 0.6;
+    }
   }
 
   // Form label
@@ -65,8 +70,13 @@
     }
 
     @keyframes requiredPulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
     }
   }
 
@@ -145,8 +155,8 @@
     margin-bottom: 0.5rem;
     cursor: pointer;
 
-    input[type="checkbox"],
-    input[type="radio"] {
+    input[type='checkbox'],
+    input[type='radio'] {
       margin-right: 0.5rem;
       accent-color: $purple-4;
       width: 1.2rem;
@@ -164,9 +174,15 @@
     }
 
     @keyframes checkPulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
     }
   }
 
@@ -183,9 +199,16 @@
     }
 
     @keyframes errorShake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+      25% {
+        transform: translateX(-5px);
+      }
+      75% {
+        transform: translateX(5px);
+      }
     }
   }
 
@@ -201,8 +224,13 @@
     }
 
     @keyframes errorGlow {
-      0%, 100% { box-shadow: 0 0 8px rgba(255, 0, 0, 0.3); }
-      50% { box-shadow: 0 0 16px rgba(255, 0, 0, 0.5); }
+      0%,
+      100% {
+        box-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 16px rgba(255, 0, 0, 0.5);
+      }
     }
   }
 
@@ -300,9 +328,15 @@
     }
 
     @keyframes psychedelicShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
   }
 

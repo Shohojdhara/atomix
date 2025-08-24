@@ -10,7 +10,7 @@
   $navbar-padding-x: 24px,
   $navbar-nav-link-padding-x: 16px,
   $navbar-nav-link-padding-y: 12px,
-  
+
   // Navbar brand
   $navbar-brand-font-size: 1.5rem,
   $navbar-brand-font-weight: 700,
@@ -20,7 +20,7 @@
   $navbar-brand-margin-end: 24px,
   $navbar-brand-text-transform: uppercase,
   $navbar-brand-letter-spacing: 0.025em,
-  
+
   // Navbar nav links
   $navbar-nav-link-color: var(--atomix-body-color),
   $navbar-nav-link-hover-color: var(--atomix-primary),
@@ -29,7 +29,7 @@
   $navbar-nav-link-font-weight: 600,
   $navbar-nav-link-text-transform: uppercase,
   $navbar-nav-link-letter-spacing: 0.025em,
-  
+
   // Navbar toggler
   $navbar-toggler-padding-y: 8px,
   $navbar-toggler-padding-x: 12px,
@@ -39,14 +39,12 @@
   $navbar-toggler-border-width: 2px,
   $navbar-toggler-focus-width: 3px,
   $navbar-toggler-transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1),
-  
   // Navbar colors
   $navbar-light-color: var(--atomix-body-color),
   $navbar-light-hover-color: var(--atomix-primary),
   $navbar-light-active-color: var(--atomix-primary),
   $navbar-light-disabled-color: var(--atomix-tertiary-text-emphasis),
   $navbar-light-toggler-border-color: var(--atomix-primary-border),
-  
   $navbar-dark-color: var(--atomix-body-color-dark),
   $navbar-dark-hover-color: var(--atomix-primary),
   $navbar-dark-active-color: var(--atomix-primary),

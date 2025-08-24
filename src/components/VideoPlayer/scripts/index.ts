@@ -56,15 +56,25 @@ export default class VideoPlayer {
 
   constructor(element: string | HTMLElement, options: VideoPlayerOptions) {
     this.element = typeof element === 'string' ? document.querySelector(element)! : element;
-    this.options = { controls: true, preload: 'metadata', aspectRatio: '16:9', playbackRates: [0.5, 0.75, 1, 1.25, 1.5, 2], ...options };
+    this.options = {
+      controls: true,
+      preload: 'metadata',
+      aspectRatio: '16:9',
+      playbackRates: [0.5, 0.75, 1, 1.25, 1.5, 2],
+      ...options,
+    };
 
     if (!this.element) {
       throw new Error('VideoPlayer: Element not found');
     }
 
     // Determine if this is a YouTube video
-    this.isYouTube = this.options.type === 'youtube' || !!this.options.youtubeId || this.isYouTubeUrl(this.options.src);
-    this.videoId = this.options.youtubeId || (this.isYouTube ? this.extractYouTubeId(this.options.src) : null);
+    this.isYouTube =
+      this.options.type === 'youtube' ||
+      !!this.options.youtubeId ||
+      this.isYouTubeUrl(this.options.src);
+    this.videoId =
+      this.options.youtubeId || (this.isYouTube ? this.extractYouTubeId(this.options.src) : null);
 
     this.currentQuality = this.options.quality?.[0] || null;
     this.init();
@@ -75,7 +85,8 @@ export default class VideoPlayer {
   }
 
   private extractYouTubeId(url: string): string | null {
-    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const regex =
+      /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
     const match = url.match(regex);
     return match ? match[1] : null;
   }
@@ -88,8 +99,9 @@ export default class VideoPlayer {
   }
 
   private createStructure(): void {
-    this.element.className = `${VIDEO_PLAYER.CLASSES.BASE} ${this.isYouTube ? VIDEO_PLAYER.CLASSES.YOUTUBE : ''} ${this.element.className}`.trim();
-    
+    this.element.className =
+      `${VIDEO_PLAYER.CLASSES.BASE} ${this.isYouTube ? VIDEO_PLAYER.CLASSES.YOUTUBE : ''} ${this.element.className}`.trim();
+
     if (this.options.aspectRatio) {
       this.element.style.aspectRatio = this.options.aspectRatio.replace(':', '/');
     }
@@ -101,7 +113,7 @@ export default class VideoPlayer {
       // Create YouTube iframe
       this.iframe = document.createElement('iframe');
       this.iframe.className = VIDEO_PLAYER.CLASSES.VIDEO;
-      
+
       const params = new URLSearchParams({
         autoplay: this.options.autoplay ? '1' : '0',
         loop: this.options.loop ? '1' : '0',
@@ -109,15 +121,16 @@ export default class VideoPlayer {
         controls: this.options.controls ? '1' : '0',
         modestbranding: '1',
         rel: '0',
-        ...(this.options.loop && { playlist: this.videoId })
+        ...(this.options.loop && { playlist: this.videoId }),
       });
-      
+
       this.iframe.src = `https://www.youtube.com/embed/${this.videoId}?${params.toString()}`;
       this.iframe.title = 'YouTube video player';
       this.iframe.frameBorder = '0';
-      this.iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      this.iframe.allow =
+        'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
       this.iframe.allowFullscreen = true;
-      
+
       this.container.appendChild(this.iframe);
     } else {
       // Create regular video element
@@ -147,7 +160,7 @@ export default class VideoPlayer {
         });
       }
     }
-    
+
     this.element.appendChild(this.container);
   }
 
@@ -189,7 +202,7 @@ export default class VideoPlayer {
         this.options.onVolumeChange?.(this.volume);
         this.render();
       });
-      this.video.addEventListener('error', (e) => {
+      this.video.addEventListener('error', e => {
         this.setLoading(false);
         this.options.onError?.(e);
       });
@@ -240,7 +253,7 @@ export default class VideoPlayer {
     // Remove existing controls and loading
     const existingControls = this.container.querySelector(`.${VIDEO_PLAYER.CLASSES.CONTROLS}`);
     const existingLoading = this.container.querySelector(`.${VIDEO_PLAYER.CLASSES.LOADING}`);
-    
+
     if (existingControls) existingControls.remove();
     if (existingLoading) existingLoading.remove();
 
@@ -265,18 +278,18 @@ export default class VideoPlayer {
     // Progress bar
     const progressContainer = document.createElement('div');
     progressContainer.className = VIDEO_PLAYER.CLASSES.PROGRESS_CONTAINER;
-    
+
     const progressBar = document.createElement('div');
     progressBar.className = VIDEO_PLAYER.CLASSES.PROGRESS_BAR;
-    
+
     const buffered = document.createElement('div');
     buffered.className = VIDEO_PLAYER.CLASSES.PROGRESS_BUFFERED;
     buffered.style.width = `${this.getBufferedPercentage()}%`;
-    
+
     const played = document.createElement('div');
     played.className = VIDEO_PLAYER.CLASSES.PROGRESS_PLAYED;
     played.style.width = `${this.getProgressPercentage()}%`;
-    
+
     const thumb = document.createElement('div');
     thumb.className = VIDEO_PLAYER.CLASSES.PROGRESS_THUMB;
     thumb.style.left = `${this.getProgressPercentage()}%`;
@@ -303,8 +316,12 @@ export default class VideoPlayer {
     leftControls.appendChild(playButton);
 
     // Skip buttons
-    const skipBackButton = this.createButton('skip-back', 'Skip back 10 seconds', () => this.seek(this.currentTime - 10));
-    const skipForwardButton = this.createButton('skip-forward', 'Skip forward 10 seconds', () => this.seek(this.currentTime + 10));
+    const skipBackButton = this.createButton('skip-back', 'Skip back 10 seconds', () =>
+      this.seek(this.currentTime - 10)
+    );
+    const skipForwardButton = this.createButton('skip-forward', 'Skip forward 10 seconds', () =>
+      this.seek(this.currentTime + 10)
+    );
     leftControls.appendChild(skipBackButton);
     leftControls.appendChild(skipForwardButton);
 
@@ -345,7 +362,9 @@ export default class VideoPlayer {
     }
 
     // Picture-in-picture button
-    const pipButton = this.createButton('picture-in-picture', 'Picture in Picture', () => this.togglePictureInPicture());
+    const pipButton = this.createButton('picture-in-picture', 'Picture in Picture', () =>
+      this.togglePictureInPicture()
+    );
     rightControls.appendChild(pipButton);
 
     // Fullscreen button
@@ -365,7 +384,7 @@ export default class VideoPlayer {
     this.container.appendChild(controls);
 
     // Add event listeners
-    progressBar.addEventListener('click', (e) => this.handleProgressClick(e));
+    progressBar.addEventListener('click', e => this.handleProgressClick(e));
   }
 
   private createButton(icon: string, label: string, onClick: () => void): HTMLButtonElement {
@@ -402,7 +421,7 @@ export default class VideoPlayer {
     container.appendChild(button);
     container.appendChild(slider);
 
-    bar.addEventListener('click', (e) => this.handleVolumeClick(e));
+    bar.addEventListener('click', e => this.handleVolumeClick(e));
 
     return container;
   }
@@ -454,17 +473,28 @@ export default class VideoPlayer {
   private getIconSVG(icon: string): string {
     const icons: Record<string, string> = {
       play: '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="m232.4 114.49-160-80A8 8 0 0 0 60 40v160a8 8 0 0 0 12.4 6.51l160-80a8 8 0 0 0 0-14.02Z"/></svg>',
-      pause: '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M200 32h-24a8 8 0 0 0-8 8v176a8 8 0 0 0 8 8h24a8 8 0 0 0 8-8V40a8 8 0 0 0-8-8ZM80 32H56a8 8 0 0 0-8 8v176a8 8 0 0 0 8 8h24a8 8 0 0 0 8-8V40a8 8 0 0 0-8-8Z"/></svg>',
-      'skip-back': '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M200 32a8 8 0 0 0-8 8v69.23L60.48 34.88A15.91 15.91 0 0 0 36 48v160a16 16 0 0 0 24.48 13.12L192 146.77V216a8 8 0 0 0 16 0V40a8 8 0 0 0-8-8Z"/></svg>',
-      'skip-forward': '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M208 32a8 8 0 0 0-8 8v69.23L68.48 34.88A15.91 15.91 0 0 0 44 48v160a16 16 0 0 0 24.48 13.12L200 146.77V216a8 8 0 0 0 16 0V40a8 8 0 0 0-8-8Z"/></svg>',
-      'volume-2': '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M155.51 24.81a8 8 0 0 0-8.42.88L77.25 80H32a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h45.25l69.84 54.31A8 8 0 0 0 160 224V32a8 8 0 0 0-4.49-7.19ZM32 96h40a8 8 0 0 0 4.91-1.69L144 64.46v127.08L76.91 161.69A8 8 0 0 0 72 160H32ZM208 128a39.93 39.93 0 0 1-10 26.46 8 8 0 0 1-12-10.58 24 24 0 0 0 0-31.72 8 8 0 1 1 12-10.58A40 40 0 0 1 208 128Z"/></svg>',
-      'volume-x': '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M155.51 24.81a8 8 0 0 0-8.42.88L77.25 80H32a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h45.25l69.84 54.31A8 8 0 0 0 160 224V32a8 8 0 0 0-4.49-7.19ZM32 96h40a8 8 0 0 0 4.91-1.69L144 64.46v127.08L76.91 161.69A8 8 0 0 0 72 160H32Zm171.31 16a8 8 0 0 1 0 11.31L192 134.63l11.31 11.32a8 8 0 1 1-11.32 11.31L180.68 146l-11.31 11.31a8 8 0 0 1-11.32-11.31L169.37 134l-11.32-11.31a8 8 0 0 1 11.32-11.32L180.68 122.68l11.31-11.31a8 8 0 0 1 11.32 0Z"/></svg>',
-      maximize: '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M208 48H48a16 16 0 0 0-16 16v128a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16Zm0 144H48V64h160v128Z"/></svg>',
-      minimize: '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M208 48H48a16 16 0 0 0-16 16v128a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16Zm0 144H48V64h160v128Z"/></svg>',
-      settings: '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="m229.94 218.06-50-50a88.05 88.05 0 1 0-11.31 11.31l50 50a8 8 0 0 0 11.32-11.31ZM40 112a72 72 0 1 1 72 72 72.08 72.08 0 0 1-72-72Z"/></svg>',
-      download: '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M224 152v56a16 16 0 0 1-16 16H48a16 16 0 0 1-16-16v-56a8 8 0 0 1 16 0v56h160v-56a8 8 0 0 1 16 0Zm-101.66 5.66a8 8 0 0 0 11.32 0l40-40a8 8 0 0 0-11.32-11.32L136 132.69V40a8 8 0 0 0-16 0v92.69l-26.34-26.35a8 8 0 0 0-11.32 11.32Z"/></svg>',
-      share: '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M229.66 109.66l-48 48a8 8 0 0 1-11.32-11.32L204.69 112H165a88 88 0 0 0-85.23 66.11 8 8 0 1 1-15.5-4.22A104 104 0 0 1 165 96h39.71L170.34 61.66a8 8 0 0 1 11.32-11.32l48 48a8 8 0 0 1 0 11.32Z"/></svg>',
-      'picture-in-picture': '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 7h-8v6h8V7zm2-4H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z"/></svg>'
+      pause:
+        '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M200 32h-24a8 8 0 0 0-8 8v176a8 8 0 0 0 8 8h24a8 8 0 0 0 8-8V40a8 8 0 0 0-8-8ZM80 32H56a8 8 0 0 0-8 8v176a8 8 0 0 0 8 8h24a8 8 0 0 0 8-8V40a8 8 0 0 0-8-8Z"/></svg>',
+      'skip-back':
+        '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M200 32a8 8 0 0 0-8 8v69.23L60.48 34.88A15.91 15.91 0 0 0 36 48v160a16 16 0 0 0 24.48 13.12L192 146.77V216a8 8 0 0 0 16 0V40a8 8 0 0 0-8-8Z"/></svg>',
+      'skip-forward':
+        '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M208 32a8 8 0 0 0-8 8v69.23L68.48 34.88A15.91 15.91 0 0 0 44 48v160a16 16 0 0 0 24.48 13.12L200 146.77V216a8 8 0 0 0 16 0V40a8 8 0 0 0-8-8Z"/></svg>',
+      'volume-2':
+        '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M155.51 24.81a8 8 0 0 0-8.42.88L77.25 80H32a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h45.25l69.84 54.31A8 8 0 0 0 160 224V32a8 8 0 0 0-4.49-7.19ZM32 96h40a8 8 0 0 0 4.91-1.69L144 64.46v127.08L76.91 161.69A8 8 0 0 0 72 160H32ZM208 128a39.93 39.93 0 0 1-10 26.46 8 8 0 0 1-12-10.58 24 24 0 0 0 0-31.72 8 8 0 1 1 12-10.58A40 40 0 0 1 208 128Z"/></svg>',
+      'volume-x':
+        '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M155.51 24.81a8 8 0 0 0-8.42.88L77.25 80H32a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h45.25l69.84 54.31A8 8 0 0 0 160 224V32a8 8 0 0 0-4.49-7.19ZM32 96h40a8 8 0 0 0 4.91-1.69L144 64.46v127.08L76.91 161.69A8 8 0 0 0 72 160H32Zm171.31 16a8 8 0 0 1 0 11.31L192 134.63l11.31 11.32a8 8 0 1 1-11.32 11.31L180.68 146l-11.31 11.31a8 8 0 0 1-11.32-11.31L169.37 134l-11.32-11.31a8 8 0 0 1 11.32-11.32L180.68 122.68l11.31-11.31a8 8 0 0 1 11.32 0Z"/></svg>',
+      maximize:
+        '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M208 48H48a16 16 0 0 0-16 16v128a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16Zm0 144H48V64h160v128Z"/></svg>',
+      minimize:
+        '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M208 48H48a16 16 0 0 0-16 16v128a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16Zm0 144H48V64h160v128Z"/></svg>',
+      settings:
+        '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="m229.94 218.06-50-50a88.05 88.05 0 1 0-11.31 11.31l50 50a8 8 0 0 0 11.32-11.31ZM40 112a72 72 0 1 1 72 72 72.08 72.08 0 0 1-72-72Z"/></svg>',
+      download:
+        '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M224 152v56a16 16 0 0 1-16 16H48a16 16 0 0 1-16-16v-56a8 8 0 0 1 16 0v56h160v-56a8 8 0 0 1 16 0Zm-101.66 5.66a8 8 0 0 0 11.32 0l40-40a8 8 0 0 0-11.32-11.32L136 132.69V40a8 8 0 0 0-16 0v92.69l-26.34-26.35a8 8 0 0 0-11.32 11.32Z"/></svg>',
+      share:
+        '<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M229.66 109.66l-48 48a8 8 0 0 1-11.32-11.32L204.69 112H165a88 88 0 0 0-85.23 66.11 8 8 0 1 1-15.5-4.22A104 104 0 0 1 165 96h39.71L170.34 61.66a8 8 0 0 1 11.32-11.32l48 48a8 8 0 0 1 0 11.32Z"/></svg>',
+      'picture-in-picture':
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 7h-8v6h8V7zm2-4H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z"/></svg>',
     };
     return icons[icon] || '';
   }
@@ -549,14 +579,14 @@ export default class VideoPlayer {
     if (this.video && !this.isYouTube) {
       const currentTime = this.video.currentTime;
       const wasPlaying = !this.video.paused;
-      
+
       this.video.src = quality.src;
       this.video.currentTime = currentTime;
-      
+
       if (wasPlaying) {
         this.video.play();
       }
-      
+
       this.currentQuality = quality;
     }
   }
@@ -617,7 +647,7 @@ export default class VideoPlayer {
       try {
         await navigator.share({
           title: 'Video',
-          url: window.location.href
+          url: window.location.href,
         });
       } catch (err) {
         console.log('Error sharing:', err);

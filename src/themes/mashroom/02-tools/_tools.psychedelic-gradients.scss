@@ -20,22 +20,20 @@
 
 /// Trippy rainbow gradient mixin
 @mixin rainbow-gradient() {
-  background: linear-gradient(
-    90deg,
-    #9d00ff,
-    #d080ff,
-    #00ff9d,
-    #ffbb00,
-    #ff2085,
-    #9d00ff
-  );
+  background: linear-gradient(90deg, #9d00ff, #d080ff, #00ff9d, #ffbb00, #ff2085, #9d00ff);
   background-size: 600% 600%;
   animation: rainbow-shift 8s ease infinite;
-  
+
   @keyframes rainbow-shift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 }
 
@@ -52,13 +50,7 @@
 
 /// Mushroom stem gradient mixin
 @mixin mushroom-stem-gradient() {
-  background: linear-gradient(
-    to bottom,
-    #f8f0ff 0%,
-    #f0d8ff 30%,
-    #e2b0ff 70%,
-    #d080ff 100%
-  );
+  background: linear-gradient(to bottom, #f8f0ff 0%, #f0d8ff 30%, #e2b0ff 70%, #d080ff 100%);
 }
 
 /// Magic mushroom spore gradient

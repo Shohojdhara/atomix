@@ -18,10 +18,10 @@ if (typeof window !== 'undefined') {
 // Auto-initialize video players with data attributes
 document.addEventListener('DOMContentLoaded', () => {
   const videoPlayers = document.querySelectorAll('[data-video-player]');
-  
-  videoPlayers.forEach((element) => {
+
+  videoPlayers.forEach(element => {
     const htmlElement = element as HTMLElement;
-    
+
     // Parse options from data attributes
     const options: VideoPlayerOptions = {
       src: htmlElement.dataset.src || '',
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
       aspectRatio: htmlElement.dataset.aspectRatio || '16:9',
       showDownload: htmlElement.dataset.showDownload === 'true',
       showShare: htmlElement.dataset.showShare === 'true',
-      showSettings: htmlElement.dataset.showSettings !== 'false'
+      showSettings: htmlElement.dataset.showSettings !== 'false',
     };
 
     // Parse playback rates

@@ -9,32 +9,31 @@
     $timing: ease-in-out,
     $iteration-count: infinite
   );
-  
+
   position: relative;
   overflow: hidden;
-  
+
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: -20px;
     left: -20px;
     width: 200%;
     height: 200%;
-    background: 
-      radial-gradient(
-        circle at center,
-        var(--#{config.$prefix}primary-5) 0%,
-        var(--#{config.$prefix}primary-3) 30%,
-        var(--#{config.$prefix}primary-1) 60%,
-        transparent 100%
-      );
-    animation: 
+    background: radial-gradient(
+      circle at center,
+      var(--#{config.$prefix}primary-5) 0%,
+      var(--#{config.$prefix}primary-3) 30%,
+      var(--#{config.$prefix}primary-1) 60%,
+      transparent 100%
+    );
+    animation:
       #{config.$prefix}chill-spin 15s linear infinite,
       #{config.$prefix}pulse-slow 3s ease-in-out infinite;
     opacity: 0.1;
     z-index: -1;
   }
-  
+
   &:hover {
     @include animations(
       'float' 'chill-rainbow',
@@ -42,9 +41,9 @@
       $timing: ease-in-out,
       $iteration-count: infinite
     );
-    
+
     &::before {
-      animation: 
+      animation:
         #{config.$prefix}chill-spin 5s linear infinite reverse,
         #{config.$prefix}pulse-slow 1s ease-in-out infinite;
     }

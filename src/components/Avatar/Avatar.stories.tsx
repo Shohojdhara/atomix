@@ -42,7 +42,6 @@ const meta = {
       control: 'boolean',
       description: 'Whether the avatar is disabled',
     },
-
   },
 } satisfies Meta<typeof Avatar>;
 

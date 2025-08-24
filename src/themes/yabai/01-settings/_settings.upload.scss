@@ -13,13 +13,12 @@
   $upload-border-radius: 20px,
   $upload-bg: var(--atomix-secondary-bg-subtle),
   $upload-min-height: 200px,
-  
+
   // Upload hover/active states
   $upload-hover-border-color: var(--atomix-primary),
   $upload-hover-bg: var(--atomix-primary-bg-subtle),
   $upload-active-border-color: var(--atomix-primary),
   $upload-active-bg: var(--atomix-primary-bg-subtle),
-  
   // Upload text styling
   $upload-text-color: var(--atomix-secondary-text-emphasis),
   $upload-text-font-size: 16px,
@@ -29,18 +28,17 @@
   $upload-title-font-weight: 700,
   $upload-title-text-transform: uppercase,
   $upload-title-letter-spacing: 0.025em,
-  
+
   // Upload icon
   $upload-icon-size: 48px,
   $upload-icon-color: var(--atomix-primary),
   $upload-icon-margin-bottom: 16px,
-  
+
   // Upload button
   $upload-button-margin-top: 16px,
-  
+
   // Upload transitions
   $upload-transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1),
-  
   // Upload progress
   $upload-progress-height: 8px,
   $upload-progress-bg: var(--atomix-secondary-bg-subtle),

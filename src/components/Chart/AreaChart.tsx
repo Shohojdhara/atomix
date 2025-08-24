@@ -9,25 +9,17 @@ interface AreaChartProps extends Omit<LineChartProps, 'lineOptions'> {
 }
 
 const AreaChart = memo(
-  forwardRef<HTMLDivElement, AreaChartProps>(
-    ({ areaOptions = {}, ...props }, ref) => {
-      // Area chart is essentially a line chart with area fill enabled
-      const enhancedAreaOptions = {
-        showArea: true,
-        fillOpacity: 0.3,
-        useGradient: true,
-        ...areaOptions,
-      };
+  forwardRef<HTMLDivElement, AreaChartProps>(({ areaOptions = {}, ...props }, ref) => {
+    // Area chart is essentially a line chart with area fill enabled
+    const enhancedAreaOptions = {
+      showArea: true,
+      fillOpacity: 0.3,
+      useGradient: true,
+      ...areaOptions,
+    };
 
-      return (
-        <LineChart
-          ref={ref}
-          lineOptions={enhancedAreaOptions}
-          {...props}
-        />
-      );
-    }
-  )
+    return <LineChart ref={ref} lineOptions={enhancedAreaOptions} {...props} />;
+  })
 );
 
 AreaChart.displayName = 'AreaChart';

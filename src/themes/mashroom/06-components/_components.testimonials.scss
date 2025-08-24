@@ -10,11 +10,11 @@
 
 .c-testimonials {
   $root: &;
-  
+
   // Base testimonials container
   position: relative;
   padding: 3rem 0;
-  
+
   // Animated background particles
   &::before {
     content: '';
@@ -23,24 +23,24 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(
-      circle at 25% 25%,
-      rgba(157, 0, 255, 0.1) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 75% 75%,
-      rgba(255, 187, 0, 0.1) 0%,
-      transparent 50%
-    );
+    background:
+      radial-gradient(circle at 25% 25%, rgba(157, 0, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(255, 187, 0, 0.1) 0%, transparent 50%);
     animation: backgroundFloat 8s ease-in-out infinite;
   }
-  
+
   @keyframes backgroundFloat {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.05); }
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1.05);
+    }
   }
-  
+
   // Container
   &__container {
     position: relative;
@@ -49,13 +49,13 @@
     margin: 0 auto;
     padding: 0 1rem;
   }
-  
+
   // Header
   &__header {
     text-align: center;
     margin-bottom: 3rem;
   }
-  
+
   &__title {
     font-size: 2.5rem;
     font-weight: 700;
@@ -67,19 +67,25 @@
     background-clip: text;
     animation: titleRainbow 4s ease-in-out infinite;
   }
-  
+
   @keyframes titleRainbow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
-  
+
   &__subtitle {
     font-size: 1.25rem;
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.6;
   }
-  
+
   // Testimonials grid
   &__grid {
     display: grid;
@@ -87,7 +93,7 @@
     gap: 2rem;
     margin-bottom: 2rem;
   }
-  
+
   // Individual testimonial card
   &__card {
     background: rgba(255, 255, 255, 0.1);
@@ -99,16 +105,21 @@
     overflow: hidden;
     transition: all 0.3s ease;
     animation: cardFloat 6s ease-in-out infinite;
-    
+
     // Mushroom cap curve
     border-radius: 16px 16px 8px 8px;
-    
+
     // Floating animation
     @keyframes cardFloat {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
     }
-    
+
     // Psychedelic border glow
     &::before {
       content: '';
@@ -119,31 +130,33 @@
       bottom: 0;
       border: 1px solid transparent;
       border-radius: 16px;
-      background: linear-gradient(
-        45deg,
-        $purple-4,
-        $yellow-4,
-        $red-4,
-        $green-4,
-        $purple-4
-      ) border-box;
+      background: linear-gradient(45deg, $purple-4, $yellow-4, $red-4, $green-4, $purple-4)
+        border-box;
       background-size: 400% 400%;
       animation: borderGlow 4s ease-in-out infinite;
-      mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      mask:
+        linear-gradient(#fff 0 0) padding-box,
+        linear-gradient(#fff 0 0);
       mask-composite: exclude;
     }
-    
+
     @keyframes borderGlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
-    
+
     &:hover {
       transform: translateY(-8px) scale(1.02);
       @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 15px);
     }
-    
+
     // Quote icon
     &::after {
       content: '"';
@@ -156,13 +169,13 @@
       line-height: 1;
     }
   }
-  
+
   // Card content
   &__content {
     position: relative;
     z-index: 1;
   }
-  
+
   &__quote {
     font-size: 1.125rem;
     line-height: 1.7;
@@ -170,13 +183,13 @@
     margin-bottom: 1.5rem;
     font-style: italic;
   }
-  
+
   &__author {
     display: flex;
     align-items: center;
     gap: 1rem;
   }
-  
+
   &__avatar {
     width: 50px;
     height: 50px;
@@ -190,47 +203,64 @@
     color: $white;
     @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 8px);
   }
-  
+
   &__info {
     flex: 1;
   }
-  
+
   &__name {
     font-weight: 600;
     color: $white;
     margin-bottom: 0.25rem;
   }
-  
+
   &__role {
     font-size: 0.875rem;
     color: rgba(255, 255, 255, 0.7);
   }
-  
+
   // Rating stars
   &__rating {
     display: flex;
     gap: 0.25rem;
     margin-bottom: 1rem;
   }
-  
+
   &__star {
     width: 16px;
     height: 16px;
     color: $yellow-4;
     animation: starPulse 2s ease-in-out infinite;
-    
-    &:nth-child(1) { animation-delay: 0s; }
-    &:nth-child(2) { animation-delay: 0.1s; }
-    &:nth-child(3) { animation-delay: 0.2s; }
-    &:nth-child(4) { animation-delay: 0.3s; }
-    &:nth-child(5) { animation-delay: 0.4s; }
-    
+
+    &:nth-child(1) {
+      animation-delay: 0s;
+    }
+    &:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+    &:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+    &:nth-child(4) {
+      animation-delay: 0.3s;
+    }
+    &:nth-child(5) {
+      animation-delay: 0.4s;
+    }
+
     @keyframes starPulse {
-      0%, 100% { opacity: 0.7; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.1); }
+      0%,
+      100% {
+        opacity: 0.7;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.1);
+      }
     }
   }
-  
+
   // Floating spore particles
   &__spores {
     position: absolute;
@@ -240,7 +270,7 @@
     bottom: 0;
     pointer-events: none;
     overflow: hidden;
-    
+
     &::before,
     &::after {
       content: '';
@@ -251,22 +281,23 @@
       border-radius: 50%;
       animation: sporeFloat 8s ease-in-out infinite;
     }
-    
+
     &::before {
       top: 20%;
       left: 10%;
       animation-delay: 0s;
     }
-    
+
     &::after {
       top: 60%;
       right: 15%;
       animation-delay: 2s;
     }
   }
-  
+
   @keyframes sporeFloat {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateY(0) translateX(0) scale(1);
       opacity: 0.3;
     }
@@ -275,32 +306,32 @@
       opacity: 0.7;
     }
   }
-  
+
   // Carousel variant
   &__carousel {
     position: relative;
     overflow: hidden;
     margin-bottom: 2rem;
   }
-  
+
   &__carousel-track {
     display: flex;
     transition: transform 0.5s ease;
   }
-  
+
   &__carousel-item {
     min-width: 100%;
     flex-shrink: 0;
     padding: 0 1rem;
   }
-  
+
   &__carousel-nav {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
     margin-top: 2rem;
   }
-  
+
   &__carousel-dot {
     width: 12px;
     height: 12px;
@@ -308,40 +339,40 @@
     background: rgba(255, 255, 255, 0.3);
     cursor: pointer;
     transition: all 0.3s ease;
-    
+
     &:hover {
       background: rgba(157, 0, 255, 0.5);
       transform: scale(1.2);
     }
-    
+
     &--active {
       background: $purple-4;
       @include trippy.trippy-glow($purple-4, 8px);
     }
   }
-  
+
   // Masonry layout
   &__masonry {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-auto-rows: min-content;
     gap: 1.5rem;
-    
+
     #{$root}__card {
-      &:nth-child(3n+1) {
+      &:nth-child(3n + 1) {
         grid-row: span 1;
       }
-      
-      &:nth-child(3n+2) {
+
+      &:nth-child(3n + 2) {
         grid-row: span 1.2;
       }
-      
+
       &:nth-child(3n) {
         grid-row: span 0.8;
       }
     }
   }
-  
+
   // Stats section
   &__stats {
     display: grid;
@@ -349,7 +380,7 @@
     gap: 2rem;
     margin: 3rem 0;
   }
-  
+
   &__stat {
     text-align: center;
     padding: 1.5rem;
@@ -358,13 +389,13 @@
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
-    
+
     &:hover {
       transform: translateY(-5px);
       @include trippy.trippy-glow(rgba(157, 0, 255, 0.2), 10px);
     }
   }
-  
+
   &__stat-number {
     font-size: 2.5rem;
     font-weight: 700;
@@ -377,50 +408,56 @@
     background-clip: text;
     animation: statNumberShift 3s ease-in-out infinite;
   }
-  
+
   @keyframes statNumberShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
-  
+
   &__stat-label {
     font-size: 1rem;
     color: rgba(255, 255, 255, 0.8);
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-  
+
   // Size variants
   &--sm {
     #{$root}__grid {
       grid-template-columns: 1fr;
       gap: 1rem;
     }
-    
+
     #{$root}__title {
       font-size: 2rem;
     }
-    
+
     #{$root}__card {
       padding: 1.5rem;
     }
   }
-  
+
   &--lg {
     #{$root}__grid {
       grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     }
-    
+
     #{$root}__title {
       font-size: 3rem;
     }
-    
+
     #{$root}__card {
       padding: 2.5rem;
     }
   }
-  
+
   // Psychedelic variant
   &--psychedelic {
     &::before {
@@ -434,75 +471,89 @@
       );
       animation: psychedelicBackground 5s ease-in-out infinite;
     }
-    
+
     #{$root}__title {
       animation: psychedelicTitle 3s ease-in-out infinite;
     }
-    
+
     #{$root}__card {
       &::before {
         animation: psychedelicBorder 2s ease-in-out infinite;
       }
     }
   }
-  
+
   @keyframes psychedelicBackground {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
-  
+
   @keyframes psychedelicTitle {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(360deg); }
+    0% {
+      filter: hue-rotate(0deg);
+    }
+    100% {
+      filter: hue-rotate(360deg);
+    }
   }
-  
+
   @keyframes psychedelicBorder {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(360deg); }
+    0% {
+      filter: hue-rotate(0deg);
+    }
+    100% {
+      filter: hue-rotate(360deg);
+    }
   }
-  
+
   // Dark variant
   &--dark {
     background: rgba(0, 0, 0, 0.8);
-    
+
     #{$root}__card {
       background: rgba(255, 255, 255, 0.05);
     }
   }
-  
+
   // Light variant
   &--light {
     background: rgba(255, 255, 255, 0.1);
-    
+
     #{$root}__title {
       background: linear-gradient(45deg, $purple-4, $yellow-4);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    
+
     #{$root}__quote,
     #{$root}__name {
       color: rgba(0, 0, 0, 0.8);
     }
-    
+
     #{$root}__role {
       color: rgba(0, 0, 0, 0.6);
     }
   }
-  
+
   // Responsive adjustments
   @media (max-width: 768px) {
     #{$root}__grid {
       grid-template-columns: 1fr;
       gap: 1.5rem;
     }
-    
+
     #{$root}__title {
       font-size: 2rem;
     }
-    
+
     #{$root}__stats {
       grid-template-columns: repeat(2, 1fr);
     }

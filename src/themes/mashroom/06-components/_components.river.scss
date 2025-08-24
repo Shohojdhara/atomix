@@ -44,9 +44,15 @@
   }
 
   @keyframes flowBackground {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 
   // River content stream
@@ -93,12 +99,30 @@
     }
 
     // Staggered animation delays
-    &:nth-child(1) { animation-delay: 0s; left: 10%; }
-    &:nth-child(2) { animation-delay: 3s; left: 30%; }
-    &:nth-child(3) { animation-delay: 6s; left: 50%; }
-    &:nth-child(4) { animation-delay: 9s; left: 70%; }
-    &:nth-child(5) { animation-delay: 12s; left: 20%; }
-    &:nth-child(6) { animation-delay: 15s; left: 60%; }
+    &:nth-child(1) {
+      animation-delay: 0s;
+      left: 10%;
+    }
+    &:nth-child(2) {
+      animation-delay: 3s;
+      left: 30%;
+    }
+    &:nth-child(3) {
+      animation-delay: 6s;
+      left: 50%;
+    }
+    &:nth-child(4) {
+      animation-delay: 9s;
+      left: 70%;
+    }
+    &:nth-child(5) {
+      animation-delay: 12s;
+      left: 20%;
+    }
+    &:nth-child(6) {
+      animation-delay: 15s;
+      left: 60%;
+    }
   }
 
   // Content within river items
@@ -130,10 +154,11 @@
     animation: avatarGlow 3s ease-in-out infinite;
 
     @keyframes avatarGlow {
-      0%, 100% { 
+      0%,
+      100% {
         box-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
       }
-      50% { 
+      50% {
         box-shadow: 0 0 20px rgba(255, 187, 0, 0.5);
       }
     }
@@ -173,8 +198,13 @@
     animation: mediaShimmer 3s ease-in-out infinite;
 
     @keyframes mediaShimmer {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; }
+      0%,
+      100% {
+        opacity: 0.7;
+      }
+      50% {
+        opacity: 1;
+      }
     }
   }
 
@@ -226,8 +256,15 @@
     animation: scrollHint 3s ease-in-out infinite;
 
     @keyframes scrollHint {
-      0%, 100% { opacity: 0.7; transform: translateX(-50%) translateY(0); }
-      50% { opacity: 1; transform: translateX(-50%) translateY(-5px); }
+      0%,
+      100% {
+        opacity: 0.7;
+        transform: translateX(-50%) translateY(0);
+      }
+      50% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-5px);
+      }
     }
 
     .c-icon {
@@ -236,8 +273,13 @@
       animation: arrowBounce 2s ease-in-out infinite;
 
       @keyframes arrowBounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(3px); }
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(3px);
+        }
       }
     }
   }
@@ -246,7 +288,8 @@
   &--loading {
     #{$root}__item {
       animation: none;
-      background: linear-gradient(90deg, 
+      background: linear-gradient(
+        90deg,
         rgba(157, 0, 255, 0.1) 25%,
         rgba(255, 187, 0, 0.1) 50%,
         rgba(157, 0, 255, 0.1) 75%
@@ -256,8 +299,12 @@
     }
 
     @keyframes loadingShimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
+      0% {
+        background-position: -200% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
     }
   }
 
@@ -278,8 +325,13 @@
       animation: emptyFloat 4s ease-in-out infinite;
 
       @keyframes emptyFloat {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
       }
     }
   }
@@ -311,11 +363,26 @@
       }
     }
 
-    #{$root}__item:nth-child(1) { animation-delay: 0s; top: 20%; }
-    #{$root}__item:nth-child(2) { animation-delay: 2s; top: 40%; }
-    #{$root}__item:nth-child(3) { animation-delay: 4s; top: 60%; }
-    #{$root}__item:nth-child(4) { animation-delay: 6s; top: 30%; }
-    #{$root}__item:nth-child(5) { animation-delay: 8s; top: 50%; }
+    #{$root}__item:nth-child(1) {
+      animation-delay: 0s;
+      top: 20%;
+    }
+    #{$root}__item:nth-child(2) {
+      animation-delay: 2s;
+      top: 40%;
+    }
+    #{$root}__item:nth-child(3) {
+      animation-delay: 4s;
+      top: 60%;
+    }
+    #{$root}__item:nth-child(4) {
+      animation-delay: 6s;
+      top: 30%;
+    }
+    #{$root}__item:nth-child(5) {
+      animation-delay: 8s;
+      top: 50%;
+    }
   }
 
   // Circular flow variant
@@ -394,9 +461,15 @@
     }
 
     @keyframes psychedelicShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
   }
 

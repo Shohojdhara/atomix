@@ -34,24 +34,24 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(
-      circle at 25% 25%,
-      rgba(255, 187, 0, 0.1) 0%,
-      transparent 40%
-    ),
-    radial-gradient(
-      circle at 75% 75%,
-      rgba(157, 0, 255, 0.1) 0%,
-      transparent 40%
-    );
+    background:
+      radial-gradient(circle at 25% 25%, rgba(255, 187, 0, 0.1) 0%, transparent 40%),
+      radial-gradient(circle at 75% 75%, rgba(157, 0, 255, 0.1) 0%, transparent 40%);
     animation: backgroundShift 10s ease-in-out infinite;
     pointer-events: none;
     z-index: 0;
   }
 
   @keyframes backgroundShift {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.05); }
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1.05);
+    }
   }
 
   // Individual list items
@@ -83,11 +83,12 @@
     }
 
     @keyframes activePulse {
-      0%, 100% { 
+      0%,
+      100% {
         border-left-color: $purple-4;
         transform: translateX(4px);
       }
-      50% { 
+      50% {
         border-left-color: $yellow-4;
         transform: translateX(6px);
       }
@@ -183,10 +184,11 @@
     animation: badgeGlow 3s ease-in-out infinite;
 
     @keyframes badgeGlow {
-      0%, 100% { 
+      0%,
+      100% {
         box-shadow: 0 0 5px rgba(157, 0, 255, 0.5);
       }
-      50% { 
+      50% {
         box-shadow: 0 0 10px rgba(255, 187, 0, 0.5);
       }
     }
@@ -220,8 +222,13 @@
       }
 
       @keyframes numberPulse {
-        0%, 100% { transform: translateY(-50%) scale(1); }
-        50% { transform: translateY(-50%) scale(1.1); }
+        0%,
+        100% {
+          transform: translateY(-50%) scale(1);
+        }
+        50% {
+          transform: translateY(-50%) scale(1.1);
+        }
       }
     }
   }
@@ -253,11 +260,12 @@
       }
 
       @keyframes horizontalActivePulse {
-        0%, 100% { 
+        0%,
+        100% {
           border-top-color: $purple-4;
           transform: translateY(-2px);
         }
-        50% { 
+        50% {
           border-top-color: $yellow-4;
           transform: translateY(-4px);
         }
@@ -327,9 +335,15 @@
     }
 
     @keyframes psychedelicShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
   }
 

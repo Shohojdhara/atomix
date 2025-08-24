@@ -25,7 +25,6 @@ export default {
         options: ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'],
       },
     },
-
   },
 } as Meta<typeof ProductReview>;
 
