@@ -1,9 +1,11 @@
+@use 'sass:map';
 @use './settings.border-radius' as radius;
 @use './settings.config' as config;
+@use './settings.spacing' as *;
 
 $accordion-width: 100% !default;
-$accordion-padding-x: 20px !default;
-$accordion-padding-y: 16px !default;
+$accordion-padding-x: map.get($spacing-sizes, 5) !default;
+$accordion-padding-y: map.get($spacing-sizes, 4) !default;
 
 $accordion-border-width: 2px !default;
 $accordion-border-color: transparent !default;
