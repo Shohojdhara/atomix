@@ -23,8 +23,8 @@ $btn-padding-y-sm: map.get(spacing.$spacing-sizes, 1) !default;
 $btn-padding-x-sm: map.get(spacing.$spacing-sizes, 2) !default;
 $btn-font-size-sm: $font-size-sm !default;
 
-$btn-padding-y-lg: map.get(spacing.$spacing-sizes, 2) !default;
-$btn-padding-x-lg: map.get(spacing.$spacing-sizes, 3) !default;
+$btn-padding-y-lg: map.get(spacing.$spacing-sizes, 4) !default;
+$btn-padding-x-lg: map.get(spacing.$spacing-sizes, 6) !default;
 $btn-font-size-lg: $font-size-lg !default;
 
 $btn-border-width: map.get(border.$border-widths, 1) !default;
