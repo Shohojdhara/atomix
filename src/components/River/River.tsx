@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { RIVER } from '../../lib/constants/components';
 import { useRiver, RiverProps } from '../../lib/composables/useRiver';
 
@@ -20,8 +20,6 @@ export const River: React.FC<RiverProps> = ({
   contentWidth,
   className = '',
 }) => {
-  const riverRef = useRef<HTMLDivElement>(null);
-  const riverInstance = useRef<any>(null);
 
   const {
     generateRiverClassNames,
@@ -43,30 +41,6 @@ export const River: React.FC<RiverProps> = ({
     contentWidth,
   });
 
-  useEffect(() => {
-    // Only run on client-side
-    if (typeof window === 'undefined' || !riverRef.current) return undefined;
-
-    // Dynamically import the river script to avoid server-side rendering issues
-    import('./scripts').then(({ default: RiverClass }) => {
-      if (riverRef.current) {
-        riverInstance.current = new RiverClass(riverRef.current, {
-          center,
-          breakout,
-          reverse,
-          backgroundImageSrc,
-          showOverlay,
-        });
-      }
-    });
-
-    // Cleanup on unmount
-    return () => {
-      if (riverInstance.current) {
-        riverInstance.current.destroy();
-      }
-    };
-  }, [center, breakout, reverse, backgroundImageSrc, showOverlay]);
 
   // Create custom style for river element with content width if provided
   const riverStyle: React.CSSProperties | undefined = contentWidth
@@ -117,7 +91,7 @@ export const River: React.FC<RiverProps> = ({
   // Render with content columns (advanced layout)
   if (contentColumns && contentColumns.length > 0) {
     return (
-      <div className={generateRiverClassNames(className)} ref={riverRef} style={riverStyle}>
+      <div className={generateRiverClassNames(className)} style={riverStyle}>
         {renderBackground()}
         <div className={`${RIVER.SELECTORS.CONTAINER.replace('.', '')} o-container`}>
           <div className={RIVER.SELECTORS.ROW.replace('.', '')}>
@@ -142,7 +116,7 @@ export const River: React.FC<RiverProps> = ({
 
   // Render with standard layout
   return (
-    <div className={generateRiverClassNames(className)} ref={riverRef} style={riverStyle}>
+    <div className={generateRiverClassNames(className)} style={riverStyle}>
       {renderBackground()}
       <div className={`${RIVER.SELECTORS.CONTAINER.replace('.', '')} o-container`}>
         <div className={RIVER.SELECTORS.ROW.replace('.', '')}>

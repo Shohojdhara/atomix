@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, ReactNode } from 'react';
+import React, { useState, ReactNode } from 'react';
 import { TAB } from '../../lib/constants/components';
 
 export interface TabItemProps {
@@ -55,28 +55,6 @@ export const Tab: React.FC<TabProps> = ({
   className = '',
 }) => {
   const [currentTab, setCurrentTab] = useState(activeIndex);
-  const tabRef = useRef<HTMLDivElement>(null);
-  const tabInstance = useRef<any>(null);
-
-  // Handle tab instance initialization and cleanup
-  useEffect(() => {
-    // Only run on client-side
-    if (typeof window === 'undefined' || !tabRef.current) return undefined;
-
-    // Dynamically import the tab script to avoid server-side rendering issues
-    import('./scripts').then(({ default: TabClass }) => {
-      if (tabRef.current) {
-        tabInstance.current = new TabClass(tabRef.current);
-      }
-    });
-
-    // Cleanup on unmount
-    return () => {
-      if (tabInstance.current) {
-        tabInstance.current.destroy();
-      }
-    };
-  }, []);
 
   // Handle tab change
   const handleTabClick = (index: number) => {
@@ -87,7 +65,7 @@ export const Tab: React.FC<TabProps> = ({
   };
 
   return (
-    <div className={`c-tabs js-atomix-tab ${className}`} ref={tabRef}>
+    <div className={`c-tabs js-atomix-tab ${className}`}>
       <ul className="c-tabs__nav">
         {items.map((item, index) => (
           <li className="c-tabs__nav-item" key={`tab-nav-${index}`}>

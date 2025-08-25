@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { TOGGLE } from '../../lib/constants/components';
 
 export interface ToggleProps {
@@ -39,66 +39,36 @@ export const Toggle: React.FC<ToggleProps> = ({
   className = '',
 }) => {
   const [isOn, setIsOn] = useState(initialOn);
-  const toggleRef = useRef<HTMLDivElement>(null);
-  const toggleInstance = useRef<any>(null);
 
-  useEffect(() => {
-    // Only run on client-side
-    if (typeof window === 'undefined' || !toggleRef.current) return undefined;
-
-    // Initialize toggle instance
-    import('./scripts').then(({ default: ToggleClass }) => {
-      if (toggleRef.current) {
-        toggleInstance.current = new ToggleClass(toggleRef.current);
-      }
-    });
-
-    // Add event listeners for custom events
-    const handleToggleOn = () => {
-      setIsOn(true);
+  // Handle toggle click
+  const handleClick = () => {
+    if (disabled) return;
+    
+    const newState = !isOn;
+    setIsOn(newState);
+    
+    if (newState) {
       if (onToggleOn) onToggleOn();
-    };
-
-    const handleToggleOff = () => {
-      setIsOn(false);
-      if (onToggleOff) onToggleOff();
-    };
-
-    const element = toggleRef.current;
-    element?.addEventListener('toggle:on', handleToggleOn);
-    element?.addEventListener('toggle:off', handleToggleOff);
-
-    // Set initial state if needed
-    if (initialOn && toggleInstance.current) {
-      toggleInstance.current.turnOn();
-    }
-
-    // Cleanup on unmount
-    return () => {
-      element?.removeEventListener('toggle:on', handleToggleOn);
-      element?.removeEventListener('toggle:off', handleToggleOff);
-
-      if (toggleInstance.current) {
-        toggleInstance.current.destroy();
-      }
-    };
-  }, [initialOn, onToggleOn, onToggleOff]);
-
-  // Update the toggle when the isOn prop changes
-  useEffect(() => {
-    if (!toggleInstance.current) return;
-
-    if (isOn) {
-      toggleInstance.current.turnOn();
     } else {
-      toggleInstance.current.turnOff();
+      if (onToggleOff) onToggleOff();
     }
-  }, [isOn]);
+  };
+
+  // Handle key down events
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (disabled) return;
+    
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick();
+    }
+  };
 
   return (
     <div
       className={`c-toggle ${isOn ? TOGGLE.CLASSES.IS_ON : ''} ${disabled ? 'is-disabled' : ''} ${className}`}
-      ref={toggleRef}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
       role="switch"
       aria-checked={isOn}
       tabIndex={disabled ? -1 : 0}

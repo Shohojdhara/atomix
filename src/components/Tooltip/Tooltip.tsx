@@ -1,6 +1,5 @@
-import React, { ReactNode, useRef, useEffect } from 'react';
+import React, { ReactNode, useState, useRef } from 'react';
 import { TOOLTIP } from '../../lib/constants/components';
-import { Tooltip as TooltipClass } from './scripts';
 
 export interface TooltipProps {
   /**
@@ -56,50 +55,90 @@ export const Tooltip: React.FC<TooltipProps> = ({
   delay = TOOLTIP.DEFAULTS.DELAY,
   offset = TOOLTIP.DEFAULTS.OFFSET,
 }) => {
-  const tooltipRef = useRef<HTMLDivElement>(null);
-  const tooltipInstance = useRef<any>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    if (tooltipRef.current) {
-      // Initialize tooltip
-      tooltipInstance.current = new TooltipClass(tooltipRef.current, {
-        position,
-        trigger,
-        delay,
-        offset,
-      });
+  const showTooltip = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
+    
+    if (delay > 0) {
+      timeoutRef.current = setTimeout(() => {
+        setIsVisible(true);
+      }, delay);
+    } else {
+      setIsVisible(true);
+    }
+  };
 
-    // Cleanup on unmount
-    return () => {
-      if (tooltipInstance.current) {
-        tooltipInstance.current.destroy();
-      }
-    };
-  }, [position, trigger, delay, offset]);
+  const hideTooltip = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setIsVisible(false);
+  };
+
+  const toggleTooltip = () => {
+    if (isVisible) {
+      hideTooltip();
+    } else {
+      showTooltip();
+    }
+  };
+
+  const getTooltipPositionClasses = () => {
+    switch (position) {
+      case 'top':
+        return 'c-tooltip--top';
+      case 'bottom':
+        return 'c-tooltip--bottom';
+      case 'left':
+        return 'c-tooltip--left';
+      case 'right':
+        return 'c-tooltip--right';
+      case 'top-left':
+        return 'c-tooltip--top-left';
+      case 'top-right':
+        return 'c-tooltip--top-right';
+      case 'bottom-left':
+        return 'c-tooltip--bottom-left';
+      case 'bottom-right':
+        return 'c-tooltip--bottom-right';
+      default:
+        return 'c-tooltip--top';
+    }
+  };
+
+  const triggerProps: React.HTMLAttributes<HTMLDivElement> = {};
+  
+  if (trigger === 'hover') {
+    triggerProps.onMouseEnter = showTooltip;
+    triggerProps.onMouseLeave = hideTooltip;
+  } else if (trigger === 'click') {
+    triggerProps.onClick = toggleTooltip;
+  }
 
   return (
     <div className="u-position-relative u-d-inline-block">
       <div
         className={`${TOOLTIP.SELECTORS.TRIGGER.substring(1)}${className ? ` ${className}` : ''}`}
+        {...triggerProps}
       >
         {children}
       </div>
-      <div
-        className={`c-tooltip ${TOOLTIP.SELECTORS.TOOLTIP.substring(1)}`}
-        ref={tooltipRef}
-        data-tooltip-position={position}
-        data-tooltip-trigger={trigger}
-      >
-        <div className={`c-tooltip__content ${TOOLTIP.SELECTORS.CONTENT.substring(1)}`}>
-          <span className={TOOLTIP.SELECTORS.ARROW.substring(1)}></span>
-          {content}
+      {isVisible && (
+        <div
+          className={`c-tooltip ${TOOLTIP.SELECTORS.TOOLTIP.substring(1)} ${getTooltipPositionClasses()}`}
+          data-tooltip-position={position}
+          data-tooltip-trigger={trigger}
+        >
+          <div className={`c-tooltip__content ${TOOLTIP.SELECTORS.CONTENT.substring(1)}`}>
+            <span className={TOOLTIP.SELECTORS.ARROW.substring(1)}></span>
+            {content}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
-
-Tooltip.displayName = 'Tooltip';
-
-export default Tooltip;

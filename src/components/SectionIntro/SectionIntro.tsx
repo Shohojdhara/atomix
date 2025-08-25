@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, ReactNode } from 'react';
+import React, { ReactNode, useEffect, useRef } from 'react';
 import { SECTION_INTRO } from '../../lib/constants/components';
 
 export interface SectionIntroProps {
@@ -92,19 +92,6 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
   useEffect(() => {
     // Only run on client-side
     if (typeof window === 'undefined' || !sectionIntroRef.current) return undefined;
-
-    // Dynamically import the section intro script to avoid server-side rendering issues
-    import('./scripts').then(({ default: SectionIntroClass }) => {
-      if (sectionIntroRef.current) {
-        sectionIntroInstance.current = new SectionIntroClass(sectionIntroRef.current, {
-          alignment,
-          backgroundImageSrc,
-          showOverlay,
-          size,
-          skeleton,
-        });
-      }
-    });
 
     // Cleanup on unmount
     return () => {

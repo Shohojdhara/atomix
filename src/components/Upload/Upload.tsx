@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { UPLOAD } from '../../lib/constants/components';
 
 export interface UploadProps {
@@ -103,9 +103,7 @@ export const Upload: React.FC<UploadProps> = ({
   onFileUploadError,
   className = '',
 }) => {
-  const uploadRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const uploadInstance = useRef<any>(null);
 
   const [status, setStatus] = useState<UploadStatus>('idle');
   const [isDragging, setIsDragging] = useState(false);
@@ -115,55 +113,6 @@ export const Upload: React.FC<UploadProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const dragCounter = useRef(0);
-
-  useEffect(() => {
-    // Only run on client-side
-    if (typeof window === 'undefined' || !uploadRef.current) return undefined;
-
-    // Dynamically import the upload script to avoid server-side rendering issues
-    import('./scripts').then(({ default: UploadClass }) => {
-      if (uploadRef.current) {
-        uploadInstance.current = new UploadClass(uploadRef.current, {
-          disabled,
-          maxSizeInMB,
-          acceptedFileTypes,
-          multiple,
-          onFileSelect,
-          onFileUpload: (file: File, progress: number) => {
-            setUploadProgress(progress);
-            setTimeLeft(`${Math.ceil((100 - progress) / 5)} seconds left`);
-            if (onFileUpload) onFileUpload(file, progress);
-          },
-          onFileUploadComplete: (file: File) => {
-            setStatus('success');
-            setSuccessMessage('Upload successful');
-            if (onFileUploadComplete) onFileUploadComplete(file);
-          },
-          onFileUploadError: (file: File, error: string) => {
-            setStatus('error');
-            setErrorMessage(error);
-            if (onFileUploadError) onFileUploadError(file, error);
-          },
-        });
-      }
-    });
-
-    // Cleanup on unmount
-    return () => {
-      if (uploadInstance.current) {
-        uploadInstance.current.destroy();
-      }
-    };
-  }, [
-    disabled,
-    maxSizeInMB,
-    acceptedFileTypes,
-    multiple,
-    onFileSelect,
-    onFileUpload,
-    onFileUploadComplete,
-    onFileUploadError,
-  ]);
 
   // Handle file input change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -313,109 +262,101 @@ export const Upload: React.FC<UploadProps> = ({
     }, 500);
   };
 
-  // Handle close button click
-  const handleClose = () => {
+  // Reset upload
+  const resetUpload = () => {
     setStatus('idle');
     setCurrentFile(null);
     setUploadProgress(0);
     setTimeLeft(null);
     setErrorMessage(null);
     setSuccessMessage(null);
-
-    // Reset input
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
   };
-
-  // Determine CSS classes
-  const uploadClasses = [
-    'c-upload',
-    disabled ? UPLOAD.CLASSES.DISABLED : '',
-    status === 'loading' ? UPLOAD.CLASSES.LOADING : '',
-    status === 'success' ? UPLOAD.CLASSES.SUCCESS : '',
-    status === 'error' ? UPLOAD.CLASSES.ERROR : '',
-    isDragging ? UPLOAD.CLASSES.DRAGGING : '',
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
-
-  // Update CSS variable for progress
-  const style =
-    uploadProgress > 0
-      ? ({
-          [UPLOAD.ATTRIBUTES.PERCENTAGE]: uploadProgress,
-        } as React.CSSProperties)
-      : {};
 
   return (
     <div
-      className={uploadClasses}
-      ref={uploadRef}
-      style={style}
+      className={`c-upload ${isDragging ? UPLOAD.CLASSES.DRAGGING : ''} ${disabled ? UPLOAD.CLASSES.DISABLED : ''} ${className}`}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
       <div className="c-upload__inner">
-        <div className="c-upload__icon">{icon}</div>
-        <h3 className="c-upload__title">{title}</h3>
-        <p className="c-upload__text">{supportedFilesText}</p>
-        <button
-          className="c-upload__btn c-btn c-btn--primary"
-          disabled={disabled}
-          onClick={handleButtonClick}
-        >
-          {buttonText}
-        </button>
-        <p className="c-upload__helper-text">{helperText}</p>
+        {/* Hidden file input */}
         <input
-          ref={inputRef}
           type="file"
+          ref={inputRef}
+          className="c-upload__input"
+          onChange={handleFileChange}
+          disabled={disabled}
           accept={acceptedFileTypes.join(',')}
           multiple={multiple}
-          style={{ display: 'none' }}
-          onChange={handleFileChange}
         />
-      </div>
 
-      {(status === 'loading' || status === 'success' || status === 'error') && currentFile && (
-        <div className="c-upload__loader">
-          <div className="c-upload__loader-status">
-            <h5 className="c-upload__loader-title">{currentFile.name}</h5>
-            <div className="c-upload__loader-progress">
-              {status === 'loading' && uploadProgress < 100 && (
-                <>
-                  <div className="c-upload__loader-par">{uploadProgress}%</div>
-                  {timeLeft && <div className="c-upload__loader-time">{timeLeft}</div>}
-                </>
-              )}
-              {status === 'success' && successMessage}
-              {status === 'error' && errorMessage}
-            </div>
-          </div>
+        {/* Drag and drop area */}
+        <div className="c-upload__drop-area">
+          <div className="c-upload__icon">{icon}</div>
+          <h3 className="c-upload__title">{title}</h3>
+          <p className="c-upload__text">{supportedFilesText}</p>
 
-          <div className="c-upload__loader-control">
-            {status === 'loading' && uploadProgress < 100 && (
-              <div className="c-upload__loader-bar">
-                <svg>
-                  <circle cx="10" cy="10" r="10"></circle>
-                  <circle cx="10" cy="10" r="10"></circle>
-                </svg>
+          <button
+            type="button"
+            className="c-upload__button c-button"
+            onClick={handleButtonClick}
+            disabled={disabled}
+          >
+            {buttonText}
+          </button>
+
+          <p className="c-upload__helper">{helperText}</p>
+        </div>
+
+        {/* Progress and status area */}
+        {status !== 'idle' && (
+          <div className="c-upload__status">
+            {currentFile && (
+              <div className="c-upload__file">
+                <span className="c-upload__file-name">{currentFile.name}</span>
+                <span className="c-upload__file-size">
+                  {(currentFile.size / (1024 * 1024)).toFixed(2)} MB
+                </span>
               </div>
             )}
-            <button className="c-upload__loader-close c-btn c-btn--icon" onClick={handleClose}>
-              {status === 'success' ? (
-                <i className="icon-lux-check-circle-fill"></i>
-              ) : (
-                <i className="icon-lux-x"></i>
-              )}
+
+            {status === 'loading' && (
+              <div className="c-upload__progress">
+                <div
+                  className="c-upload__progress-bar"
+                  role="progressbar"
+                  aria-valuenow={uploadProgress}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  style={{ width: `${uploadProgress}%` }}
+                ></div>
+              </div>
+            )}
+
+            {timeLeft && <div className="c-upload__time">{timeLeft}</div>}
+
+            {status === 'error' && errorMessage && (
+              <div className="c-upload__error">
+                <span className="c-upload__error-icon">⚠️</span>
+                {errorMessage}
+              </div>
+            )}
+
+            {status === 'success' && successMessage && (
+              <div className="c-upload__success">
+                <span className="c-upload__success-icon">✓</span>
+                {successMessage}
+              </div>
+            )}
+
+            <button type="button" className="c-upload__reset" onClick={resetUpload}>
+              Upload another file
             </button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
