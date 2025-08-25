@@ -1,4 +1,4 @@
-import{j as M}from"./jsx-runtime-BjG_zV1W.js";import{f as e}from"./index-BxLnRenJ.js";import{V as be}from"./VideoPlayer-D66DaJt3.js";import"./SpeakerX.es-Cg-mjUf1.js";import"./index-BVDOR7y2.js";import"./components-BrxBU25R.js";import"./index-kdCLY6-3.js";const Ee={title:"Components/VideoPlayer",component:be,parameters:{layout:"centered",backgrounds:{default:"dark"},docs:{description:{component:`
+import{j as M}from"./jsx-runtime-BjG_zV1W.js";import{f as e}from"./index-BxLnRenJ.js";import{V as be}from"./VideoPlayer-B8-9NTsU.js";import"./SpeakerX.es-Cg-mjUf1.js";import"./index-BVDOR7y2.js";import"./components-BrxBU25R.js";import"./index-kdCLY6-3.js";const Ee={title:"Components/VideoPlayer",component:be,parameters:{layout:"centered",backgrounds:{default:"dark"},docs:{description:{component:`
 # VideoPlayer Component
 
 An advanced, modern video player with custom controls, keyboard shortcuts, picture-in-picture support, fullscreen capabilities, and comprehensive accessibility features. Now supports both regular video files and YouTube embeds.

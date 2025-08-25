@@ -1,4 +1,4 @@
-import{j as e}from"./jsx-runtime-BjG_zV1W.js";import{G as m,a as r}from"./Container-CXdNHNc5.js";import{B as n}from"./Button-_O9VEUtI.js";import{C as i}from"./Card-Bp6dcI4n.js";import{B as s}from"./Block-CkFuxLsK.js";import"./index-BVDOR7y2.js";import"./components-BrxBU25R.js";const Q={title:"Components/Block",component:s,parameters:{layout:"fullscreen",docs:{description:{component:`
+import{j as e}from"./jsx-runtime-BjG_zV1W.js";import{G as m,a as r}from"./Container-CXdNHNc5.js";import{B as n}from"./Button-_O9VEUtI.js";import{C as i}from"./Card-Bp6dcI4n.js";import{B as s}from"./Block-Bj0gY5JU.js";import"./index-BVDOR7y2.js";import"./components-BrxBU25R.js";const Q={title:"Components/Block",component:s,parameters:{layout:"fullscreen",docs:{description:{component:`
 The Block component is a flexible layout container designed for creating consistent section layouts.
 It provides standardized spacing, background variants, and container behavior for organizing content
 into distinct sections or blocks.

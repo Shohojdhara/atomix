@@ -1,1 +1,0 @@
-var t="theme",e={stylesheets:{themes:[{id:"primary-theme",title:"Primary theme",url:"./primary-theme.css"},{id:"secondary-theme",title:"Secondary theme",url:"./secondary-theme.css"},{id:"tertiary-theme",title:"Tertiary theme",url:"./tertiary-theme.css"}]}};e.stylesheets;var r={globals:{[t]:void 0},globalTypes:e},s=r;export{s as default};
