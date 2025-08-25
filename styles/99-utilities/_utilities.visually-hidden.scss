@@ -1,5 +1,0 @@
-@use '../02-tools/tools.hidden-visually' as *;
-
-.u-visually-hidden {
-  @include visually-hidden;
-}

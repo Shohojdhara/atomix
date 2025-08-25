@@ -1,8 +1,0 @@
-@use 'settings.config' as config;
-
-$rating-star-size: 32px !default;
-$rating-star-size-sm: 16px !default;
-$rating-star-size-lg: 48px !default;
-$rating-star-bg: var(--#{config.$prefix}primary) !default;
-$rating-star-half-bg: $rating-star-bg !default;
-$rating-stars-gap: 2px !default;

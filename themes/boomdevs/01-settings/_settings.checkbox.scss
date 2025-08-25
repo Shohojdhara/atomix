@@ -1,9 +1,0 @@
-/*!
- * Boomdevs Theme Checkbox Settings
- * Custom checkbox styles for the Boomdevs theme
- */
-
-@use '../../../styles/01-settings/settings.checkbox' with (
-  $checkbox-checked-bg: var(--atomix-primary),
-  $checkbox-border-color-hover: var(--atomix-primary)
-);
