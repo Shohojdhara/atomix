@@ -49,7 +49,10 @@ $utility-defaults: (
     $infix: if($state, if(meta.type-of($state) == 'string', '#{$state}#{$infix}', $infix), $infix);
 
     // Don't prefix if value key is null (e.g. with shadow-none utility)
-    $class-name: if($key, '#{$property-class}-#{$key}#{$infix}', '#{$property-class}#{$infix}');
+    // Escape key to ensure valid CSS selector (e.g. 1.5 -> 1\.5)
+    $escaped-key: if($key, _escape-key($key), null);
+
+    $class-name: if($escaped-key, '#{$property-class}-#{$escaped-key}#{$infix}', '#{$property-class}#{$infix}');
 
     @if map.get($utility, class) == null {
       .#{$class-name} {
@@ -58,7 +61,7 @@ $utility-defaults: (
         }
       }
     } @else {
-      .#{map.get($utility, class)}#{$infix}#{if($key, '-#{$key}', '')} {
+      .#{map.get($utility, class)}#{$infix}#{if($escaped-key, '-#{$escaped-key}', '')} {
         @each $property in $properties {
           #{$property}: $value if(map.get($utility, rtl), null, !important);
         }
@@ -123,6 +126,20 @@ $utility-defaults: (
 // Helper function to get breakpoint infix
 @function get-breakpoint-infix($breakpoint) {
   @return if($breakpoint == null, '', '-#{$breakpoint}');
+}
+
+// Helper function to escape keys for safe CSS class names
+@function _escape-key($key) {
+  $key-str: #{ $key };
+  $escaped: '';
+  $len: string.length($key-str);
+
+  @for $i from 1 through $len {
+    $char: string.slice($key-str, $i, $i);
+    $escaped: $escaped + if($char == '.', '\\.', $char);
+  }
+
+  @return $escaped;
 }
 
 // Helper function to create value lists
