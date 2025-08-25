@@ -4,4 +4,4 @@ Uses the CSS grid column classes defined in _objects.grid.scss.`,displayName:"Gr
 Uses the CSS container classes defined in _objects.container.scss.`,displayName:"Container",props:{children:{defaultValue:null,description:"The content to be rendered within the container",name:"children",required:!0,type:{name:"ReactNode"}},className:{defaultValue:{value:""},description:"Additional CSS class names",name:"className",required:!1,type:{name:"string"}},type:{defaultValue:null,description:`Container type:
 - undefined: responsive container with max-width at each breakpoint
 - 'fluid': full width container
-- 'sm', 'md', 'lg', 'xl', 'xxl': responsive container with max-width at specified breakpoint`,name:"type",required:!1,type:{name:"enum",value:[{value:'"sm"'},{value:'"md"'},{value:'"lg"'},{value:'"xl"'},{value:'"fluid"'},{value:'"xxl"'}]}}}}}catch{}export{f as C,u as G,d as a};
+- 'sm', 'md', 'lg', 'xl', 'xxl': responsive container with max-width at specified breakpoint`,name:"type",required:!1,type:{name:"enum",value:[{value:'"sm"'},{value:'"md"'},{value:'"lg"'},{value:'"xl"'},{value:'"xxl"'},{value:'"fluid"'}]}}}}}catch{}export{f as C,u as G,d as a};
