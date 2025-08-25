@@ -35,32 +35,36 @@ const DemoCard: React.FC<{
   variant?: 'primary' | 'secondary' | 'accent';
   height?: 'auto' | 'sm' | 'md' | 'lg';
 }> = ({ children, variant = 'primary', height = 'auto' }) => {
+  const heightStyles = {
+    auto: '60px',
+    sm: '50px',
+    md: '75px',
+    lg: '100px',
+  };
   const variantClasses = {
-    primary: 'u-bg-primary-subtle u-border-primary-subtle',
-    secondary: 'u-bg-secondary-subtle u-border-secondary-subtle',
+    primary: 'u-bg-brand-subtle u-border-brand-subtle',
+    secondary: 'u-bg-success-subtle u-border-success-subtle',
     accent: 'u-bg-info-subtle u-border-info-subtle',
   };
-
-  const heightClasses = {
-    auto: '',
-    sm: 'u-h-25',
-    md: 'u-h-50',
-    lg: 'u-h-75',
+  const variantTextClasses = {
+    primary: 'u-text-brand-emphasis',
+    secondary: 'u-text-success-emphasis',
+    accent: 'u-text-info-emphasis',
   };
 
   return (
     <div
-      className={`u-p-4 u-rounded u-border u-text-center u-d-flex u-align-items-center u-justify-content-center ${variantClasses[variant]} ${heightClasses[height]}`}
-      style={{ minHeight: height === 'auto' ? '60px' : undefined }}
+      className={`u-p-4 u-rounded u-border u-text-center u-d-flex u-align-items-center u-justify-content-center ${variantClasses[variant]}`}
+      style={{ minHeight: heightStyles[height] }}
     >
-      <div className="u-text-primary u-fw-medium">{children}</div>
+      <div className={`${variantTextClasses[variant]} u-fw-medium`}>{children}</div>
     </div>
   );
 };
 
 const CodeSnippet: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div
-    className="u-bg-dark u-text-light u-p-3 u-rounded u-fs-sm u-fw-normal"
+    className="u-bg-dark u-text-light-emphasis u-p-3 u-rounded u-fs-sm u-fw-normal"
     style={{ fontFamily: 'monospace' }}
   >
     {children}
@@ -76,8 +80,8 @@ const CodeSnippet: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 export const GettingStarted: Story = {
   render: () => (
     <div className="u-mb-8">
-      <h2 className="u-mb-4 u-text-primary">Basic Grid Layout</h2>
-      <p className="u-mb-6 u-text-secondary">
+      <h2 className="u-mb-1 u-text-brand-emphasis">Basic Grid Layout</h2>
+      <p className="u-mb-6 u-text-secondary-emphasis">
         Equal columns that stack on mobile and expand on larger screens:
       </p>
 
@@ -102,8 +106,8 @@ export const GettingStarted: Story = {
       </CodeSnippet>
 
       <div className="u-mt-8">
-        <h3 className="u-mb-4 u-text-primary">Responsive Behavior</h3>
-        <p className="u-mb-4 u-text-secondary">
+        <h3 className="u-mb-1 u-text-brand-emphasis">Responsive Behavior</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">
           Columns automatically adjust at different screen sizes:
         </p>
 
@@ -145,24 +149,24 @@ export const GettingStarted: Story = {
 export const LayoutPatterns: Story = {
   render: () => (
     <div className="u-mb-8">
-      <h2 className="u-mb-6 u-text-primary">Common Layout Patterns</h2>
+      <h2 className="u-mb-6 u-text-brand-emphasis">Common Layout Patterns</h2>
 
       {/* Sidebar Layout */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Sidebar Layout</h3>
-        <p className="u-mb-4 u-text-secondary">Perfect for dashboards and admin interfaces:</p>
+        <h3 className="u-mb-1 u-text-brand-emphasis">Sidebar Layout</h3>
+        <p className="u-mb-4">Perfect for dashboards and admin interfaces:</p>
 
         <Grid className="u-mb-6">
           <GridCol xs={12} md={3}>
             <DemoCard variant="accent" height="lg">
               <div>Sidebar</div>
-              <div className="u-fs-sm u-text-secondary">Navigation, filters, etc.</div>
+              <div className="u-fs-sm ">Navigation, filters, etc.</div>
             </DemoCard>
           </GridCol>
           <GridCol xs={12} md={9}>
             <DemoCard height="lg">
               <div>Main Content</div>
-              <div className="u-fs-sm u-text-secondary">Primary content area</div>
+              <div className="u-fs-sm">Primary content area</div>
             </DemoCard>
           </GridCol>
         </Grid>
@@ -170,16 +174,14 @@ export const LayoutPatterns: Story = {
 
       {/* Hero + Features */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Hero + Features</h3>
-        <p className="u-mb-4 u-text-secondary">
-          Landing page layout with hero section and feature cards:
-        </p>
+        <h3 className="u-mb-1 u-text-brand-emphasis">Hero + Features</h3>
+        <p className="u-mb-4 ">Landing page layout with hero section and feature cards:</p>
 
         <Grid className="u-mb-4">
           <GridCol xs={12}>
             <DemoCard variant="accent" height="md">
               <div>Hero Section</div>
-              <div className="u-fs-sm u-text-secondary">Full-width banner</div>
+              <div className="u-fs-sm">Full-width banner</div>
             </DemoCard>
           </GridCol>
         </Grid>
@@ -199,14 +201,14 @@ export const LayoutPatterns: Story = {
 
       {/* Article Layout */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Article Layout</h3>
-        <p className="u-mb-4 u-text-secondary">Centered content with optional sidebar:</p>
+        <h3 className="u-mb-1 u-text-brand-emphasis">Article Layout</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">Centered content with optional sidebar:</p>
 
         <Grid className="u-mb-6">
           <GridCol xs={12} md={8} offsetMd={2}>
             <DemoCard height="lg">
               <div>Article Content</div>
-              <div className="u-fs-sm u-text-secondary">Centered, readable width</div>
+              <div className="u-fs-sm u-text-secondary-emphasis">Centered, readable width</div>
             </DemoCard>
           </GridCol>
         </Grid>
@@ -223,12 +225,12 @@ export const LayoutPatterns: Story = {
 export const ColumnSizing: Story = {
   render: () => (
     <div className="u-mb-8">
-      <h2 className="u-mb-6 u-text-primary">Column Sizing Options</h2>
+      <h2 className="u-mb-6 u-text-brand-emphasis">Column Sizing Options</h2>
 
       {/* Fixed Sizes */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Fixed Column Sizes</h3>
-        <p className="u-mb-4 u-text-secondary">Specify exact column widths (1-12):</p>
+        <h3 className="u-mb-1 u-text-brand-emphasis">Fixed Column Sizes</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">Specify exact column widths (1-12):</p>
 
         <Grid className="u-mb-4">
           <GridCol xs={2}>
@@ -260,8 +262,10 @@ export const ColumnSizing: Story = {
 
       {/* Auto Sizing */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Auto-Sizing Columns</h3>
-        <p className="u-mb-4 u-text-secondary">Columns that automatically size based on content:</p>
+        <h3 className="u-mb-1 u-text-brand-emphasis">Auto-Sizing Columns</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">
+          Columns that automatically size based on content:
+        </p>
 
         <Grid className="u-mb-4">
           <GridCol>
@@ -290,8 +294,8 @@ export const ColumnSizing: Story = {
 
       {/* Mixed Sizes */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Mixed Sizing</h3>
-        <p className="u-mb-4 u-text-secondary">
+        <h3 className="u-mb-1 u-text-brand-emphasis">Mixed Sizing</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">
           Combine fixed and auto sizing for flexible layouts:
         </p>
 
@@ -328,12 +332,12 @@ export const ColumnSizing: Story = {
 export const ColumnOffsets: Story = {
   render: () => (
     <div className="u-mb-8">
-      <h2 className="u-mb-6 u-text-primary">Column Offsets</h2>
+      <h2 className="u-mb-6 u-text-brand-emphasis">Column Offsets</h2>
 
       {/* Basic Offsets */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Basic Offsets</h3>
-        <p className="u-mb-4 u-text-secondary">Push columns to the right using offsets:</p>
+        <h3 className="u-mb-1 u-text-brand-emphasis">Basic Offsets</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">Push columns to the right using offsets:</p>
 
         <Grid className="u-mb-4">
           <GridCol xs={4}>
@@ -356,8 +360,8 @@ export const ColumnOffsets: Story = {
 
       {/* Centering */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Centering Content</h3>
-        <p className="u-mb-4 u-text-secondary">Center columns using equal offsets:</p>
+        <h3 className="u-mb-1 u-text-brand-emphasis">Centering Content</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">Center columns using equal offsets:</p>
 
         <Grid className="u-mb-4">
           <GridCol xs={6} offsetXs={3}>
@@ -374,8 +378,10 @@ export const ColumnOffsets: Story = {
 
       {/* Responsive Offsets */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Responsive Offsets</h3>
-        <p className="u-mb-4 u-text-secondary">Different offsets at different screen sizes:</p>
+        <h3 className="u-mb-1 u-text-brand-emphasis">Responsive Offsets</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">
+          Different offsets at different screen sizes:
+        </p>
 
         <Grid className="u-mb-6">
           <GridCol xs={12} sm={6} offsetSm={3} md={4} offsetMd={4} lg={3} offsetLg={3}>
@@ -398,42 +404,42 @@ export const ColumnOffsets: Story = {
 export const Containers: Story = {
   render: () => (
     <div className="u-mb-8">
-      <h2 className="u-mb-6 u-text-primary">Container Types</h2>
+      <h2 className="u-mb-6 u-text-brand-emphasis">Container Types</h2>
 
       {/* Default Container */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Default Container</h3>
-        <p className="u-mb-4 u-text-secondary">
+        <h3 className="u-mb-1 u-text-brand-emphasis">Default Container</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">
           Responsive container with max-width at each breakpoint:
         </p>
 
         <Container className="u-mb-6">
           <DemoCard variant="accent" height="md">
             <div>Default Container</div>
-            <div className="u-fs-sm u-text-secondary">Responsive max-width, centered</div>
+            <div className="u-fs-sm u-text-secondary-emphasis">Responsive max-width, centered</div>
           </DemoCard>
         </Container>
       </div>
 
       {/* Fluid Container */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Fluid Container</h3>
-        <p className="u-mb-4 u-text-secondary">
+        <h3 className="u-mb-1 u-text-brand-emphasis">Fluid Container</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">
           Full-width container that spans the entire viewport:
         </p>
 
         <Container type="fluid" className="u-mb-6">
           <DemoCard variant="secondary" height="md">
             <div>Fluid Container</div>
-            <div className="u-fs-sm u-text-secondary">Full viewport width</div>
+            <div className="u-fs-sm u-text-secondary-emphasis">Full viewport width</div>
           </DemoCard>
         </Container>
       </div>
 
       {/* Breakpoint Containers */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Breakpoint Containers</h3>
-        <p className="u-mb-4 u-text-secondary">
+        <h3 className="u-mb-1 u-text-brand-emphasis">Breakpoint Containers</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">
           Containers with max-width at specific breakpoints:
         </p>
 
@@ -452,8 +458,8 @@ export const Containers: Story = {
 
       {/* Container with Grid */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Container with Grid</h3>
-        <p className="u-mb-4 u-text-secondary">
+        <h3 className="u-mb-1 u-text-brand-emphasis">Container with Grid</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">
           Combine containers with grids for structured layouts:
         </p>
 
@@ -483,15 +489,17 @@ export const Containers: Story = {
 export const AlignmentAndSpacing: Story = {
   render: () => (
     <div className="u-mb-8">
-      <h2 className="u-mb-6 u-text-primary">Alignment & Spacing</h2>
+      <h2 className="u-mb-6 u-text-brand-emphasis">Alignment & Spacing</h2>
 
       {/* Horizontal Alignment */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Horizontal Alignment</h3>
-        <p className="u-mb-4 u-text-secondary">Control how columns are distributed horizontally:</p>
+        <h3 className="u-mb-1 u-text-brand-emphasis">Horizontal Alignment</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">
+          Control how columns are distributed horizontally:
+        </p>
 
         <div className="u-mb-4">
-          <h4 className="u-mb-3 u-text-secondary u-fw-medium">justify-content="start"</h4>
+          <h4 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">justify-content="start"</h4>
           <Row justifyContent="start" className="u-mb-4">
             <GridCol xs={3}>
               <DemoCard variant="secondary">Col 1</DemoCard>
@@ -503,7 +511,7 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-4">
-          <h4 className="u-mb-3 u-text-secondary u-fw-medium">justify-content="center"</h4>
+          <h4 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">justify-content="center"</h4>
           <Row justifyContent="center" className="u-mb-4">
             <GridCol xs={3}>
               <DemoCard variant="secondary">Col 1</DemoCard>
@@ -515,7 +523,9 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-4">
-          <h4 className="u-mb-3 u-text-secondary u-fw-medium">justify-content="between"</h4>
+          <h4 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">
+            justify-content="between"
+          </h4>
           <Row justifyContent="between" className="u-mb-4">
             <GridCol xs={3}>
               <DemoCard variant="secondary">Col 1</DemoCard>
@@ -527,7 +537,7 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-6">
-          <h4 className="u-mb-3 u-text-secondary u-fw-medium">justify-content="around"</h4>
+          <h4 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">justify-content="around"</h4>
           <Row justifyContent="around" className="u-mb-4">
             <GridCol xs={3}>
               <DemoCard variant="secondary">Col 1</DemoCard>
@@ -541,14 +551,18 @@ export const AlignmentAndSpacing: Story = {
 
       {/* Vertical Alignment */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">Vertical Alignment</h3>
-        <p className="u-mb-4 u-text-secondary">
+        <h3 className="u-mb-1 u-text-brand-emphasis">Vertical Alignment</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">
           Control how columns align vertically when they have different heights:
         </p>
 
         <div className="u-mb-4">
-          <h4 className="u-mb-3 u-text-secondary u-fw-medium">align-items="start"</h4>
-          <Row alignItems="start" className="u-mb-4 u-bg-light" style={{ minHeight: '150px' }}>
+          <h4 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">align-items="start"</h4>
+          <Row
+            alignItems="start"
+            className="u-mb-4 u-bg-brand-subtle"
+            style={{ minHeight: '150px' }}
+          >
             <GridCol xs={4}>
               <DemoCard height="sm">Short</DemoCard>
             </GridCol>
@@ -562,8 +576,12 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-4">
-          <h4 className="u-mb-3 u-text-secondary u-fw-medium">align-items="center"</h4>
-          <Row alignItems="center" className="u-mb-4 u-bg-light" style={{ minHeight: '150px' }}>
+          <h4 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">align-items="center"</h4>
+          <Row
+            alignItems="center"
+            className="u-mb-4 u-bg-brand-subtle"
+            style={{ minHeight: '150px' }}
+          >
             <GridCol xs={4}>
               <DemoCard height="sm">Short</DemoCard>
             </GridCol>
@@ -577,8 +595,8 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-6">
-          <h4 className="u-mb-3 u-text-secondary u-fw-medium">align-items="end"</h4>
-          <Row alignItems="end" className="u-mb-4 u-bg-light" style={{ minHeight: '150px' }}>
+          <h4 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">align-items="end"</h4>
+          <Row alignItems="end" className="u-mb-4 u-bg-brand-subtle" style={{ minHeight: '150px' }}>
             <GridCol xs={4}>
               <DemoCard height="sm">Short</DemoCard>
             </GridCol>
@@ -594,11 +612,11 @@ export const AlignmentAndSpacing: Story = {
 
       {/* No Gutters */}
       <div className="u-mb-8">
-        <h3 className="u-mb-4 u-text-primary">No Gutters</h3>
-        <p className="u-mb-4 u-text-secondary">Remove spacing between columns:</p>
+        <h3 className="u-mb-1 u-text-brand-emphasis">No Gutters</h3>
+        <p className="u-mb-4 u-text-secondary-emphasis">Remove spacing between columns:</p>
 
         <div className="u-mb-4">
-          <h4 className="u-mb-3 u-text-secondary u-fw-medium">With gutters (default)</h4>
+          <h4 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">With gutters (default)</h4>
           <Row className="u-mb-4">
             <GridCol xs={4}>
               <DemoCard variant="secondary">Column 1</DemoCard>
@@ -613,7 +631,7 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-6">
-          <h4 className="u-mb-3 u-text-secondary u-fw-medium">No gutters</h4>
+          <h4 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">No gutters</h4>
           <Row noGutters className="u-mb-4">
             <GridCol xs={4}>
               <DemoCard variant="accent">Column 1</DemoCard>
@@ -639,8 +657,8 @@ export const AlignmentAndSpacing: Story = {
 export const NestedGrids: Story = {
   render: () => (
     <div className="u-mb-8">
-      <h2 className="u-mb-6 u-text-primary">Nested Grids</h2>
-      <p className="u-mb-6 u-text-secondary">
+      <h2 className="u-mb-6 u-text-brand-emphasis">Nested Grids</h2>
+      <p className="u-mb-6 u-text-secondary-emphasis">
         Create complex layouts by nesting grids within columns. Each nested grid starts fresh with
         12 columns.
       </p>
@@ -648,7 +666,7 @@ export const NestedGrids: Story = {
       <Grid>
         <GridCol xs={12} md={6}>
           <div className="u-p-4 u-border u-rounded u-bg-info-subtle u-mb-4">
-            <h4 className="u-mb-4 u-text-primary">Left Section</h4>
+            <h4 className="u-mb-4 u-text-info-emphasis">Left Section</h4>
             <Grid>
               <GridCol xs={12} className="u-mb-4">
                 <DemoCard variant="secondary">Nested Full Width</DemoCard>
@@ -665,7 +683,7 @@ export const NestedGrids: Story = {
 
         <GridCol xs={12} md={6}>
           <div className="u-p-4 u-border u-rounded u-bg-success-subtle u-mb-4">
-            <h4 className="u-mb-4 u-text-primary">Right Section</h4>
+            <h4 className="u-mb-4 u-text-success-emphasis">Right Section</h4>
             <Grid>
               <GridCol xs={4}>
                 <DemoCard variant="accent">1/3</DemoCard>
@@ -682,15 +700,15 @@ export const NestedGrids: Story = {
       </Grid>
 
       <div className="u-mt-8">
-        <h3 className="u-mb-4 u-text-primary">Complex Nested Example</h3>
-        <p className="u-mb-4 u-text-secondary">
+        <h3 className="u-mb-1 u-text-brand-emphasis">Complex Nested Example</h3>
+        <p className="u-mb-4 u-text-brand-emphasis">
           Dashboard-style layout with multiple levels of nesting:
         </p>
 
         <Grid>
           <GridCol xs={12}>
             <div className="u-p-4 u-border u-rounded u-bg-warning-subtle u-mb-4">
-              <h4 className="u-mb-4 u-text-primary">Header</h4>
+              <h4 className="u-mb-4 u-text-warning-emphasis">Header</h4>
               <Grid>
                 <GridCol xs={12} sm={6} md={8}>
                   <DemoCard variant="secondary">Logo & Navigation</DemoCard>
@@ -704,7 +722,7 @@ export const NestedGrids: Story = {
 
           <GridCol xs={12} md={3}>
             <div className="u-p-4 u-border u-rounded u-bg-info-subtle u-mb-4">
-              <h4 className="u-mb-4 u-text-primary">Sidebar</h4>
+              <h4 className="u-mb-4 u-text-info-emphasis">Sidebar</h4>
               <Grid>
                 <GridCol xs={12} className="u-mb-2">
                   <DemoCard variant="accent" height="sm">
@@ -727,7 +745,7 @@ export const NestedGrids: Story = {
 
           <GridCol xs={12} md={9}>
             <div className="u-p-4 u-border u-rounded u-bg-success-subtle">
-              <h4 className="u-mb-4 u-text-primary">Main Content</h4>
+              <h4 className="u-mb-4 u-text-success-emphasis">Main Content</h4>
               <Grid>
                 <GridCol xs={12} className="u-mb-4">
                   <DemoCard height="sm">Content Header</DemoCard>
@@ -758,14 +776,14 @@ export const NestedGrids: Story = {
 export const BreakpointReference: Story = {
   render: () => (
     <div className="u-mb-8">
-      <h2 className="u-mb-6 u-text-primary">Breakpoint Reference</h2>
-      <p className="u-mb-6 u-text-secondary">
+      <h2 className="u-mb-6 u-text-brand-emphasis">Breakpoint Reference</h2>
+      <p className="u-mb-6 u-text-secondary-emphasis">
         The grid system uses these breakpoints. Resize your browser to see how columns adapt.
       </p>
 
-      <div className="u-mb-6 u-p-4 u-border u-rounded u-bg-light">
-        <h4 className="u-mb-4 u-text-primary">Breakpoint Sizes</h4>
-        <ul className="u-text-secondary">
+      <div className="u-mb-6 u-p-4 u-border u-rounded u-bg-brand-subtle">
+        <h4 className="u-mb-4 u-text-brand-emphasis">Breakpoint Sizes</h4>
+        <ul className="u-text-secondary-emphasis">
           <li>
             <strong>xs:</strong> 0px and up (all devices)
           </li>
@@ -787,8 +805,8 @@ export const BreakpointReference: Story = {
         </ul>
       </div>
 
-      <h3 className="u-mb-4 u-text-primary">Responsive Behavior Demo</h3>
-      <p className="u-mb-4 u-text-secondary">
+      <h3 className="u-mb-1 u-text-brand-emphasis">Responsive Behavior Demo</h3>
+      <p className="u-mb-4 u-text-secondary-emphasis">
         These columns show different layouts at each breakpoint:
       </p>
 
@@ -832,8 +850,8 @@ export const BreakpointReference: Story = {
       </Grid>
 
       <div className="u-p-4 u-border u-rounded u-bg-warning-subtle">
-        <h4 className="u-mb-3 u-text-primary">Current Breakpoint</h4>
-        <p className="u-text-secondary u-mb-0">
+        <h4 className="u-mb-3 u-text-brand-emphasis">Current Breakpoint</h4>
+        <p className="u-text-secondary-emphasis u-mb-0">
           Resize your browser window to see how the columns above adapt to different screen sizes.
           The grid system automatically adjusts the layout based on the available space.
         </p>
