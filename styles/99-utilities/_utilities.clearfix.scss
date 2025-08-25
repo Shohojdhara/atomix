@@ -1,0 +1,5 @@
+@use '../02-tools/tools.clearfix' as *;
+
+.u-clearfix {
+  @include clearfix;
+}

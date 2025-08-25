@@ -1,0 +1,161 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.rating' as rating;
+@use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.size' as size;
+@use '../02-tools/tools.breakpoints' as *;
+@use '../02-tools/tools.grid' as *;
+
+.c-rating {
+  $root: &;
+
+  // CSS Variables for component configuration
+  --#{config.$prefix}rating-star-size: #{rating.$rating-star-size};
+  --#{config.$prefix}rating-star-bg: #{rating.$rating-star-bg};
+  --#{config.$prefix}rating-star-half-bg: #{rating.$rating-star-half-bg};
+  --#{config.$prefix}rating-stars-gap: #{rem.rem(rating.$rating-stars-gap)};
+  --#{config.$prefix}rating-star-empty-color: var(--#{config.$prefix}border-color);
+  --#{config.$prefix}rating-star-hover-scale: 1.1;
+  --#{config.$prefix}rating-star-transition: transform 0.2s ease-in-out;
+  --#{config.$prefix}rating-label-font-size: #{rem.rem(14px)};
+  --#{config.$prefix}rating-label-color: var(--#{config.$prefix}text-muted);
+  --#{config.$prefix}rating-label-margin-bottom: #{rem.rem(8px)};
+  --#{config.$prefix}rating-value-margin-top: #{rem.rem(8px)};
+  --#{config.$prefix}rating-value-font-size: #{rem.rem(14px)};
+
+  // Base styles
+  display: flex;
+  gap: var(--#{config.$prefix}rating-stars-gap);
+  align-items: center;
+  position: relative;
+
+  &[data-readonly='false'] {
+    cursor: pointer;
+
+    #{$root}__star {
+      transition: var(--#{config.$prefix}rating-star-transition);
+
+      &:hover,
+      &:focus {
+        transform: scale(var(--#{config.$prefix}rating-star-hover-scale));
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--#{config.$prefix}primary);
+        outline-offset: 2px;
+        border-radius: 2px;
+      }
+    }
+  }
+
+  // Star styles
+  &__star {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      @include size.square(var(--#{config.$prefix}rating-star-size));
+    }
+
+    &--full {
+      #{$root}__star-full {
+        fill: var(--#{config.$prefix}rating-star-bg);
+      }
+    }
+
+    &--half {
+      #{$root}__star-half {
+        display: block;
+      }
+    }
+
+    // Apply theme colors to individual stars
+    @each $color, $value in maps.$theme-colors {
+      &--#{$color} {
+        --#{config.$prefix}rating-star-bg: #{$value};
+      }
+    }
+
+    // Focused state
+    &--focused {
+      outline: 2px solid var(--#{config.$prefix}primary);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+  }
+
+  // Star outline styles (empty star)
+  &__star-outline {
+    stroke: var(--#{config.$prefix}rating-star-bg);
+    fill: var(--#{config.$prefix}rating-star-empty-color);
+    stroke-width: 1px;
+  }
+
+  // Full star styles
+  &__star-full {
+    fill: var(--#{config.$prefix}rating-star-bg);
+    display: none;
+
+    #{$root}__star--full & {
+      display: block;
+    }
+  }
+
+  // Half-star styles
+  &__star-half {
+    fill: var(--#{config.$prefix}rating-star-bg);
+    display: none;
+
+    #{$root}__star--half & {
+      display: block;
+    }
+  }
+
+  // Label styles
+  &__label {
+    display: block;
+    font-size: var(--#{config.$prefix}rating-label-font-size);
+    color: var(--#{config.$prefix}rating-label-color);
+    margin-bottom: var(--#{config.$prefix}rating-label-margin-bottom);
+  }
+
+  // Value display styles
+  &__value {
+    margin-top: var(--#{config.$prefix}rating-value-margin-top);
+    font-size: var(--#{config.$prefix}rating-value-font-size);
+  }
+
+  // Size variants
+  &--sm {
+    --#{config.$prefix}rating-star-size: #{rating.$rating-star-size-sm};
+    --#{config.$prefix}rating-stars-gap: #{rem.rem(1px)};
+  }
+
+  &--lg {
+    --#{config.$prefix}rating-star-size: #{rating.$rating-star-size-lg};
+    --#{config.$prefix}rating-stars-gap: #{rem.rem(4px)};
+  }
+
+  // Container for vertical layout with label and value
+  &-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // Apply theme colors to the entire rating component
+  @each $color, $value in maps.$theme-colors {
+    &--#{$color} {
+      --#{config.$prefix}rating-star-bg: #{$value};
+    }
+  }
+
+  // Responsive adjustments
+  @include media-breakpoint-up(md) {
+    &--lg {
+      --#{config.$prefix}rating-stars-gap: #{rem.rem(6px)};
+    }
+  }
+}

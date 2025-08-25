@@ -1,0 +1,50 @@
+@use 'settings.colors' as colors;
+@use 'settings.border-radius' as border-radius;
+@use 'settings.typography' as typography;
+
+// Todo component variables
+
+// Base styles
+$todo-bg: colors.$white !default;
+$todo-color: colors.$gray-9 !default;
+$todo-border-color: colors.$gray-3 !default;
+$todo-border-radius: border-radius.$border-radius !default;
+$todo-padding: 1.25rem !default;
+$todo-margin-bottom: 1.5rem !default;
+
+// Title
+$todo-title-font-size: 1.25rem !default;
+$todo-title-font-weight: typography.$font-weight-bold !default;
+$todo-title-margin-bottom: 1rem !default;
+
+// Form
+$todo-form-margin-bottom: 1rem !default;
+$todo-form-gap: 0.5rem !default;
+
+// Item
+$todo-item-padding: 0.75rem !default;
+$todo-item-border-color: colors.$gray-3 !default;
+$todo-item-hover-bg: colors.$gray-2 !default;
+
+// Completed item
+$todo-completed-color: colors.$gray-6 !default;
+$todo-completed-text-decoration: line-through !default;
+
+// Empty state
+$todo-empty-color: colors.$gray-6 !default;
+
+// Small size
+$todo-padding-sm: 0.75rem !default;
+$todo-font-size-sm: 0.875rem !default;
+$todo-title-font-size-sm: 1.1rem !default;
+$todo-title-margin-bottom-sm: 0.75rem !default;
+$todo-item-padding-sm: 0.5rem !default;
+
+// Large size
+$todo-padding-lg: 1.5rem !default;
+$todo-title-font-size-lg: 1.5rem !default;
+$todo-title-margin-bottom-lg: 1.25rem !default;
+$todo-item-padding-lg: 1rem !default;
+
+// Disabled state
+$todo-disabled-opacity: 0.6 !default;

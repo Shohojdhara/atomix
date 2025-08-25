@@ -1,0 +1,30 @@
+/*!
+ * Shaj Default Theme Testimonials Settings
+ * Modern testimonial styling with clean aesthetics
+ * Overrides Atomix default testimonials settings
+ */
+
+@use '../../../styles/01-settings/settings.testimonials' with (
+  $testimonial-width: 100%,
+  $testimonial-padding-x: 0px,
+  $testimonial-padding-y: 0px,
+  $testimonial-inner-spacer: 24px,
+  // 24px - more generous spacing
+  $testimonial-bg: null,
+  $testimonial-quote-font-size: 24px,
+  // 24px - impactful quotes
+  $testimonial-quote-font-size-sm: 18px,
+  // 18px
+  $testimonial-quote-font-size-lg: 32px,
+  // 32px
+  $testimonial-quote-font-weight: 500,
+  // medium weight for readability
+  $testimonial-quote-color: var(--atomix-body-color),
+  $testimonial-author-font-size: 16px,
+  // 16px
+  $testimonial-author-color: var(--atomix-body-color),
+  $testimonial-author-role-font-size: 14px,
+  // 14px - larger role text
+  $testimonial-author-role-color: var(--atomix-tertiary-text-emphasis),
+  $testimonial-author-inner-spacer: 8px // 8px - tighter author spacing
+);

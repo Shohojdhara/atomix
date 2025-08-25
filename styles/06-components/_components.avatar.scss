@@ -1,0 +1,101 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.avatar' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.border-radius' as *;
+@use '../02-tools/tools.object-fit' as *;
+@use '../02-tools/tools.size' as *;
+@use '../02-tools/tools.animations' as *;
+
+// Avatar base component
+.c-avatar {
+  // CSS custom properties
+  --#{$prefix}avatar-fit: #{$avatar-fit};
+  --#{$prefix}avatar-size: #{rem(map.get($avatar-size, md))};
+  --#{$prefix}avatar-border-radius: #{map.get($avatar-border-radius, md)};
+  --#{$prefix}avatar-border-circle-radius: #{map.get($avatar-border-radius, 'circle')};
+  --#{$prefix}avatar-color: #{$avatar-color};
+  --#{$prefix}avatar-bg: #{$avatar-bg};
+  --#{$prefix}avatar-border-width: #{$avatar-border-width};
+  --#{$prefix}avatar-border-color: #{$avatar-border-color};
+  --#{$prefix}avatar-initials-font-size: #{map.get($avatar-initials-font-size, md)};
+  --#{$prefix}avatar-hover-opacity: #{$avatar-hover-opacity};
+  --#{$prefix}avatar-focus-ring-width: #{$avatar-focus-ring-width};
+  --#{$prefix}avatar-focus-ring-color: #{$avatar-focus-ring-color};
+  --#{$prefix}avatar-disabled-opacity: #{$avatar-disabled-opacity};
+
+  // Base styles
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  @include square(var(--#{$prefix}avatar-size));
+  border-radius: var(--#{$prefix}avatar-border-radius);
+  background-color: var(--#{$prefix}avatar-bg);
+  color: var(--#{$prefix}avatar-color);
+  border: var(--#{$prefix}avatar-border-width) solid var(--#{$prefix}avatar-border-color);
+  overflow: hidden;
+  user-select: none;
+  @include basic-transition(opacity);
+
+  // Size variants
+  @each $size, $value in $avatar-size {
+    &--#{$size} {
+      --#{$prefix}avatar-size: #{rem($value)};
+      --#{$prefix}avatar-border-radius: #{map.get($avatar-border-radius, $size)};
+      --#{$prefix}avatar-initials-font-size: #{map.get($avatar-initials-font-size, $size)};
+    }
+  }
+
+  // Shape variant
+  &--circle {
+    --#{$prefix}avatar-border-radius: var(--#{$prefix}avatar-border-circle-radius);
+  }
+
+  // Interactive states
+  &[role='button'] {
+    cursor: pointer;
+
+    &:hover {
+      opacity: var(--#{$prefix}avatar-hover-opacity);
+    }
+
+    &:focus-visible {
+      outline: var(--#{$prefix}avatar-focus-ring-width) solid
+        var(--#{$prefix}avatar-focus-ring-color);
+      outline-offset: 1px;
+    }
+  }
+
+  &.is-disabled,
+  &[aria-disabled='true'] {
+    opacity: var(--#{$prefix}avatar-disabled-opacity);
+    pointer-events: none;
+  }
+
+  // Avatar content elements
+  &__image {
+    width: 100%;
+    height: 100%;
+    @include object-fit(var(--#{$prefix}avatar-fit));
+  }
+
+  &__initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: var(--#{$prefix}avatar-initials-font-size);
+    font-weight: $avatar-initials-font-weight;
+    text-transform: uppercase;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+}

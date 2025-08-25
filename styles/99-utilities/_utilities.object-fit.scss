@@ -1,0 +1,17 @@
+@use 'sass:map';
+
+// Define utilities for object-fit
+$utilities-object-fit: (
+  'object-fit': (
+    responsive: true,
+    property: object-fit,
+    class: u-object-fit,
+    values: (
+      contain: contain,
+      cover: cover,
+      fill: fill,
+      scale: scale-down,
+      none: none,
+    ),
+  ),
+);

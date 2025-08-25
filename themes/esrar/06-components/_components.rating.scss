@@ -1,0 +1,26 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../02-tools/tools.animations' as *;
+
+.c-rating {
+  @include animations('slow-fade-in', $duration: 0.6s, $timing: ease-out, $iteration-count: 1);
+
+  &__item {
+    &:hover {
+      @include animations(
+        'chill-spin',
+        $duration: 0.8s,
+        $timing: ease-in-out,
+        $iteration-count: infinite
+      );
+    }
+
+    &.is-active {
+      @include animations(
+        'pulse-slow',
+        $duration: 1s,
+        $timing: ease-in-out,
+        $iteration-count: infinite
+      );
+    }
+  }
+}

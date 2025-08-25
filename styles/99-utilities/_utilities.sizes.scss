@@ -1,0 +1,81 @@
+@use 'sass:map';
+
+// Define utilities for sizes
+$utilities-sizes: (
+  'width': (
+    responsive: true,
+    property: width,
+    class: u-w,
+    values: (
+      5: 5%,
+      10: 10%,
+      25: 25%,
+      50: 50%,
+      75: 75%,
+      100: 100%,
+      auto: auto,
+    ),
+  ),
+  'max-width': (
+    responsive: true,
+    property: max-width,
+    class: u-mw,
+    values: (
+      100: 100%,
+    ),
+  ),
+  'viewport-width': (
+    responsive: true,
+    property: width,
+    class: u-vw,
+    values: (
+      100: 100vw,
+    ),
+  ),
+  'min-viewport-width': (
+    responsive: true,
+    property: min-width,
+    class: u-min-vw,
+    values: (
+      100: 100vw,
+    ),
+  ),
+  'height': (
+    responsive: true,
+    property: height,
+    class: u-h,
+    values: (
+      5: 5%,
+      10: 10%,
+      25: 25%,
+      50: 50%,
+      75: 75%,
+      100: 100%,
+      auto: auto,
+    ),
+  ),
+  'max-height': (
+    responsive: true,
+    property: max-height,
+    class: u-mh,
+    values: (
+      100: 100%,
+    ),
+  ),
+  'viewport-height': (
+    responsive: true,
+    property: height,
+    class: u-vh,
+    values: (
+      100: 100vh,
+    ),
+  ),
+  'min-viewport-height': (
+    responsive: true,
+    property: min-height,
+    class: u-min-vh,
+    values: (
+      100: 100vh,
+    ),
+  ),
+);

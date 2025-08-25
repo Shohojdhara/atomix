@@ -1,0 +1,27 @@
+@use 'sass:map';
+
+$z-layers: (
+  n1: -1,
+  0: 0,
+  1: 1,
+  2: 2,
+  3: 3,
+  4: 4,
+  5: 5,
+  dropdown: 1000,
+  sticky: 1020,
+  fixed: 1030,
+  modal: 1040,
+  popover: 1050,
+  tooltip: 1060,
+  drawer: 1070,
+) !default;
+
+// Z-index variables for common components
+$z-index-dropdown: map.get($z-layers, dropdown) !default;
+$z-index-sticky: map.get($z-layers, sticky) !default;
+$z-index-fixed: map.get($z-layers, fixed) !default;
+$z-index-modal: map.get($z-layers, modal) !default;
+$z-index-popover: map.get($z-layers, popover) !default;
+$z-index-tooltip: map.get($z-layers, tooltip) !default;
+$z-index-drawer: map.get($z-layers, drawer) !default;

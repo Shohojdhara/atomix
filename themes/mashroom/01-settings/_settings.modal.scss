@@ -1,0 +1,41 @@
+@forward '../../../styles/01-settings/settings.modal' with (
+  $modal-inner-padding: 24px,
+
+  // 24px - more spacious
+  $modal-content-color: null,
+  $modal-content-bg: var(--atomix-body-bg),
+  $modal-content-border-radius: 12px,
+  // 12px - softer corners
+  $modal-content-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
+  // deeper shadow
+  $modal-header-padding-bottom: 16px,
+  // 16px
+  $modal-title-font-size: 20px,
+  // 20px - larger titles
+  $modal-sub-margin-top: 6px,
+  // 6px
+  $modal-sub-color: var(--atomix-tertiary-text-emphasis),
+  $modal-footer-items-gap: 12px,
+
+  // 12px
+  $modal-backdrop-bg: var(--atomix-invert-bg-subtle),
+  $modal-backdrop-opacity: 0.6,
+  // slightly more opaque
+  $modal-backdrop-blur: 12px,
+
+  // 12px - more blur
+  $modal-close-icon-color: #000000,
+  $modal-close-icon-size: 24px,
+
+  // 24px - smaller close button
+  $modal-sm: 480px,
+  // 480px
+  $modal-md: 720px,
+  // 720px
+  $modal-lg: 960px,
+  // 960px
+  $modal-xl: 1200px // 1200px
+);
+
+// Override variables that don't have !default in the original
+$modal-sub-font-size: 14px; // 14px

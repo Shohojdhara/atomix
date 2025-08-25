@@ -1,0 +1,54 @@
+@use '../01-settings/settings.typography' as typography;
+
+h1,
+.h1 {
+  font-size: typography.$h1-font-size;
+  letter-spacing: typography.$h1-letter-spaceing;
+}
+
+h2,
+.h2 {
+  font-size: typography.$h2-font-size;
+  letter-spacing: typography.$h2-letter-spaceing;
+}
+
+h3,
+.h3 {
+  font-size: typography.$h3-font-size;
+  letter-spacing: typography.$h3-letter-spaceing;
+}
+
+h4,
+.h4 {
+  font-size: typography.$h4-font-size;
+  letter-spacing: typography.$h4-letter-spaceing;
+}
+
+h5,
+.h5 {
+  font-size: typography.$h5-font-size;
+  letter-spacing: typography.$h5-letter-spaceing;
+}
+
+h6,
+.h6 {
+  font-size: typography.$h6-font-size;
+  letter-spacing: typography.$h6-letter-spaceing;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: typography.$headings-font-family;
+  font-weight: typography.$headings-font-weight;
+  line-height: typography.$headings-line-height;
+}

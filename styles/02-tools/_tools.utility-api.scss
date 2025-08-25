@@ -1,0 +1,144 @@
+// Utility API
+// Bootstrap 5-inspired utility generator for Atomix Design System
+//
+// This API is used to generate utility classes from utility maps defined in the 99-utilities folder.
+// It provides a consistent way to generate utility classes with responsive variants, states, and more.
+
+@use 'sass:map';
+@use 'sass:string';
+@use 'sass:list';
+@use 'sass:meta';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.breakpoints' as *;
+
+// Default config for utilities
+$utility-defaults: (
+  responsive: true,
+  rfs: false,
+  print: false,
+  dark: false,
+  class: null,
+  state: null,
+  local-vars: (),
+  rtl: true,
+) !default;
+
+// Core function to generate utility classes
+@mixin generate-utility($utility, $infix: '', $is-rfs: false) {
+  $values: map.get($utility, values);
+
+  // If the values are a list or string, convert it to a map
+  @if meta.type-of($values) == 'string' or meta.type-of($values) == 'list' {
+    $values: zip($values, $values);
+  }
+
+  @each $key, $value in $values {
+    $properties: map.get($utility, property);
+    $property-class: map.get($utility, class);
+    $property-class: if($property-class, $property-class, list.nth($properties, 1));
+
+    // Multiple properties are possible, like with borders or shadows
+    $property-class: if(
+      meta.type-of($property-class) == 'list',
+      list.nth($property-class, 1),
+      $property-class
+    );
+
+    // State variants (hover, focus, active, etc.)
+    $state: map.get($utility, state);
+    $infix: if($state, if(meta.type-of($state) == 'string', '#{$state}#{$infix}', $infix), $infix);
+
+    // Don't prefix if value key is null (e.g. with shadow-none utility)
+    $class-name: if($key, '#{$property-class}-#{$key}#{$infix}', '#{$property-class}#{$infix}');
+
+    @if map.get($utility, class) == null {
+      .#{$class-name} {
+        @each $property in $properties {
+          #{$property}: $value if(map.get($utility, rtl), null, !important);
+        }
+      }
+    } @else {
+      .#{map.get($utility, class)}#{$infix}#{if($key, '-#{$key}', '')} {
+        @each $property in $properties {
+          #{$property}: $value if(map.get($utility, rtl), null, !important);
+        }
+      }
+    }
+  }
+}
+
+// Core function to generate responsive utilities
+@mixin generate-responsive-utilities($utility, $breakpoints, $breakpoint-infix-generator) {
+  $responsive: map.get($utility, responsive);
+
+  @if $responsive {
+    @each $breakpoint in map.keys($breakpoints) {
+      $infix: call($breakpoint-infix-generator, $breakpoint);
+
+      @include media-breakpoint-up($breakpoint) {
+        @include generate-utility($utility, $infix);
+      }
+    }
+  } @else {
+    @include generate-utility($utility);
+  }
+}
+
+// Main mixin to generate all utilities
+@mixin generate-utilities(
+  $utilities,
+  $breakpoints: $grid-breakpoints,
+  $breakpoint-infix-generator: null
+) {
+  // Set default breakpoint infix generator if not provided
+  $breakpoint-infix-generator: if(
+    $breakpoint-infix-generator,
+    $breakpoint-infix-generator,
+    get-breakpoint-infix
+  );
+
+  @each $utility, $config in $utilities {
+    // Merge default config
+    $config: map.merge($utility-defaults, $config);
+
+    // Only process if the utility is not explicitly set to false
+    @if map.get($config, generated) != false {
+      $utility-map: (
+        property: map.get($config, property),
+        values: map.get($config, values),
+        class: map.get($config, class),
+        state: map.get($config, state),
+        rtl: map.get($config, rtl),
+      );
+
+      @include generate-responsive-utilities(
+        $utility-map,
+        $breakpoints,
+        $breakpoint-infix-generator
+      );
+    }
+  }
+}
+
+// Helper function to get breakpoint infix
+@function get-breakpoint-infix($breakpoint) {
+  @return if($breakpoint == null, '', '-#{$breakpoint}');
+}
+
+// Helper function to create value lists
+@function zip($keys, $values) {
+  $result: ();
+  $index: 1;
+
+  @each $key in $keys {
+    $result: map.merge(
+      $result,
+      (
+        $key: if($index <= list.length($values), list.nth($values, $index), null),
+      )
+    );
+    $index: $index + 1;
+  }
+
+  @return $result;
+}

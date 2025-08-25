@@ -1,0 +1,34 @@
+@use 'settings.config' as config;
+@use 'settings.border-radius' as borderRadius;
+@use 'settings.typography' as typography;
+
+$toggle-gap: 12px !default;
+
+$toggle-switch-on-bg: var(--#{config.$prefix}primary) !default;
+$toggle-switch-off-bg: var(--#{config.$prefix}tertiary-bg-subtle) !default;
+$toggle-switch-disabled-bg: var(--#{config.$prefix}secondary-bg-subtle) !default;
+$toggle-switch-border-radius: borderRadius.$border-radius-lg !default;
+$toggle-switch-box-shadow: null !default;
+
+$toggle-switch-width-sm: 48px !default;
+$toggle-switch-height-sm: 24px !default;
+$toggle-switch-width-md: 36px !default;
+$toggle-switch-height-md: 20px !default;
+
+$toggle-switch-width: $toggle-switch-width-md !default;
+$toggle-switch-height: $toggle-switch-height-md !default;
+
+$toggle-switch-handle-bg: var(--#{config.$prefix}primary-bg-subtle) !default;
+$toggle-switch-handle-border-radius: borderRadius.$border-radius-pill !default;
+$toggle-switch-handle-margin: 3px !default;
+
+$toggle-switch-handle-width-sm: 20px !default;
+$toggle-switch-handle-width-md: 14px !default;
+$toggle-switch-handle-height-sm: 20px !default;
+$toggle-switch-handle-height-md: 14px !default;
+
+$toggle-switch-handle-width: $toggle-switch-handle-width-md !default;
+$toggle-switch-handle-height: $toggle-switch-handle-height-md !default;
+
+$toggle-label-font-size: typography.$font-size-base !default;
+$toggle-label-color: var(--#{config.$prefix}primary-text-emphasis) !default;

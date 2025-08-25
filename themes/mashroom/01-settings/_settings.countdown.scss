@@ -1,0 +1,20 @@
+@use '../../../styles/01-settings/settings.countdown' with (
+  $countdown-color: var(--atomix-body-color),
+  $countdown-font-size: 16px,
+  // 16px
+  $countdown-font-weight: 500,
+  $countdown-focused-time-font-size: 20px,
+  // 20px - larger for emphasis
+  $countdown-focused-label-font-size: 12px,
+  // 12px
+  $countdown-focused-border-radius: 6px,
+  // 6px - softer corners
+  $countdown-focused-bg: var(--atomix-secondary-bg-subtle),
+  $countdown-item-padding-x: 16px,
+  // 16px - more padding
+  $countdown-item-padding-y: 12px,
+  // 12px
+  $countdown-items-gap: 8px,
+  // 8px
+  $countdown-focused-items-gap: 12px // 12px
+);

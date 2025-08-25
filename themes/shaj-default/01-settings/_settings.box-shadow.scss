@@ -1,0 +1,46 @@
+/*!
+ * Shaj Default Theme Box Shadows
+ * Elegant shadows for modern UI components
+ * Overrides Atomix default box shadow settings
+ */
+
+// Elegant shadows for light mode
+$box-shadow-none: none !default;
+$box-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !default;
+$box-shadow:
+  0 1px 3px 0 rgba(0, 0, 0, 0.1),
+  0 1px 2px 0 rgba(0, 0, 0, 0.06) !default;
+$box-shadow-md:
+  0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  0 2px 4px -1px rgba(0, 0, 0, 0.06) !default;
+$box-shadow-lg:
+  0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  0 4px 6px -2px rgba(0, 0, 0, 0.05) !default;
+$box-shadow-xl:
+  0 20px 25px -5px rgba(0, 0, 0, 0.1),
+  0 10px 10px -5px rgba(0, 0, 0, 0.04) !default;
+$box-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !default;
+$box-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06) !default;
+
+// Alias for backward compatibility
+$box-shadow-xs: $box-shadow-sm !default;
+
+// Dark mode shadows
+$box-shadow-dark:
+  0 1px 3px 0 rgba(0, 0, 0, 0.3),
+  0 1px 2px 0 rgba(0, 0, 0, 0.2) !default;
+$box-shadow-sm-dark: 0 1px 2px 0 rgba(0, 0, 0, 0.2) !default;
+$box-shadow-md-dark:
+  0 4px 6px -1px rgba(0, 0, 0, 0.3),
+  0 2px 4px -1px rgba(0, 0, 0, 0.2) !default;
+$box-shadow-lg-dark:
+  0 10px 15px -3px rgba(0, 0, 0, 0.3),
+  0 4px 6px -2px rgba(0, 0, 0, 0.2) !default;
+$box-shadow-xl-dark:
+  0 20px 25px -5px rgba(0, 0, 0, 0.3),
+  0 10px 10px -5px rgba(0, 0, 0, 0.2) !default;
+$box-shadow-2xl-dark: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !default;
+$box-shadow-inner-dark: inset 0 2px 4px 0 rgba(0, 0, 0, 0.2) !default;
+
+// Alias for backward compatibility
+$box-shadow-xs-dark: $box-shadow-sm-dark !default;

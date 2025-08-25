@@ -1,0 +1,20 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../02-tools/tools.animations' as *;
+
+.c-datepicker {
+  @include animations(
+    'slow-zoom-in' 'color-pulse',
+    $duration: 1s,
+    $timing: ease-out,
+    $iteration-count: 1
+  );
+}
+
+.c-datepicker__calendar {
+  @include animations(
+    'slow-fade-in' 'color-wave',
+    $duration: 1.5s,
+    $timing: ease-out,
+    $iteration-count: infinite
+  );
+}

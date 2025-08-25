@@ -1,0 +1,23 @@
+/*!
+ * Shaj Default Theme Progress Settings
+ * Modern progress bar styling with clean aesthetics
+ * Overrides Atomix default progress settings
+ */
+
+@use '../../../styles/01-settings/settings.progress' with (
+  $progress-width: 100%,
+  $progress-height: 8px,
+  // 8px - slightly thicker
+  $progress-font-size: 12px,
+  // 12px
+  $progress-bg: var(--atomix-secondary-bg-subtle),
+  $progress-border-radius: 800px,
+  // pill shape
+  $progress-bar-height: 8px,
+  // 8px
+  $progress-bar-color: var(--atomix-primary-text-emphasis),
+  $progress-bar-bg: var(--atomix-primary),
+  $progress-bar-transition: 0.3s,
+  // smoother transition
+  $progress-bar-easing: ease-in-out
+);

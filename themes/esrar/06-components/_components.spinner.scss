@@ -1,0 +1,71 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../../../styles/02-tools/tools.component' as *;
+@use '../02-tools/tools.animations' as *;
+@use '../../../styles/01-settings/settings.config' as config;
+
+.c-spinner {
+  @include animations('chill-spin', $duration: 1.2s, $timing: linear, $iteration-count: infinite);
+
+  background: conic-gradient(
+    var(--#{config.$prefix}primary-3),
+    var(--#{config.$prefix}primary-5),
+    var(--#{config.$prefix}primary-7),
+    var(--#{config.$prefix}primary-5),
+    var(--#{config.$prefix}primary-3)
+  );
+  border: none;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    right: 10%;
+    bottom: 10%;
+    background: var(--#{config.$prefix}black);
+    border-radius: 50%;
+  }
+}
+
+.c-spinner--pulse {
+  @include animations(
+    'pulse-slow',
+    $duration: 1.5s,
+    $timing: ease-in-out,
+    $iteration-count: infinite
+  );
+
+  background: var(--#{config.$prefix}primary-5);
+}
+
+.c-spinner--growing {
+  @include animations('chill-spin', $duration: 0.8s, $timing: linear, $iteration-count: infinite);
+
+  background: linear-gradient(
+    45deg,
+    var(--#{config.$prefix}primary-3),
+    var(--#{config.$prefix}primary-5),
+    var(--#{config.$prefix}primary-7)
+  );
+}
+
+// Reduced motion support - spinner still needs to indicate loading
+@media (prefers-reduced-motion: reduce) {
+  .c-spinner {
+    animation-duration: 2s; // Slower, less jarring
+  }
+
+  .c-spinner--pulse {
+    @include animations(
+      'pulse-slow',
+      $duration: 2s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+
+  .c-spinner--growing {
+    animation-duration: 1.5s; // Slower spin
+  }
+}

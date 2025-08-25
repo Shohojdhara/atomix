@@ -1,0 +1,101 @@
+@use 'settings.config' as config;
+@use 'settings.colors' as *;
+@use 'settings.border-radius' as *;
+@use 'settings.box-shadow' as *;
+@use 'settings.typography' as *;
+// Component spacing and layout
+$photoviewer-component-spacing: 1.5rem !default;
+$photoviewer-component-border-color: var(--#{config.$prefix}primary-border-subtle) !default;
+$photoviewer-component-background-color: var(--#{config.$prefix}body-bg) !default;
+$component-background-color: var(--#{config.$prefix}body-bg) !default;
+
+// Modal/backdrop variables
+$photoviewer-modal-background-color: rgba($gray-9, 0.8) !default;
+$photoviewer-modal-backdrop-blur: 12px !default;
+$photoviewer-modal-close-button-color: var(--#{config.$prefix}body-color) !default;
+
+// Panel variables
+$photoviewer-info-panel-width: 320px !default;
+$photoviewer-info-panel-background: var(--#{config.$prefix}body-bg) !default;
+$photoviewer-info-panel-border-color: var(--#{config.$prefix}primary-border-subtle) !default;
+$photoviewer-info-panel-shadow: $box-shadow-lg !default;
+
+// Thumbnail variables
+$photoviewer-thumbnail-active-border-color: var(--#{config.$prefix}primary) !default;
+$photoviewer-thumbnail-size: 64px !default;
+$photoviewer-thumbnail-size-large: 80px !default;
+$photoviewer-thumbnail-gap: 0.75rem !default;
+$photoviewer-thumbnail-border-radius: $border-radius !default;
+$photoviewer-thumbnail-shadow: $box-shadow-sm !default;
+$photoviewer-thumbnail-hover-shadow: $box-shadow-md !default;
+
+// Animation variables
+$photoviewer-transition-duration: 0.3s !default;
+$photoviewer-transition-timing: cubic-bezier(0.4, 0, 0.2, 1) !default;
+$photoviewer-fast-transition: 0.15s !default;
+
+// Control variables
+$photoviewer-control-size: 2.75rem !default;
+$photoviewer-control-size-small: 2.25rem !default;
+$photoviewer-control-border-radius: $border-radius-pill !default;
+$photoviewer-control-background: var(--#{config.$prefix}body-bg) !default;
+$photoviewer-control-background-hover: var(--#{config.$prefix}secondary-bg-subtle) !default;
+$photoviewer-control-color: var(--#{config.$prefix}body-color) !default;
+$photoviewer-control-color-hover: var(--#{config.$prefix}primary) !default;
+$photoviewer-control-border-color: var(--#{config.$prefix}primary-border-subtle) !default;
+$photoviewer-control-shadow: $box-shadow-sm !default;
+$photoviewer-control-shadow-hover: $box-shadow-md !default;
+
+// Header variables
+$photoviewer-header-height: 4rem !default;
+$photoviewer-header-padding: 1rem !default;
+$photoviewer-header-background: var(--#{config.$prefix}body-bg) !default;
+$photoviewer-header-border-color: var(--#{config.$prefix}primary-border-subtle) !default;
+$photoviewer-header-shadow: $box-shadow-xs !default;
+
+// Navigation variables
+$photoviewer-nav-button-size: 3rem !default;
+$photoviewer-nav-button-background: var(--#{config.$prefix}body-bg) !default;
+$photoviewer-nav-button-color: var(--#{config.$prefix}body-color) !default;
+$photoviewer-nav-button-hover-background: var(--#{config.$prefix}secondary-bg-subtle) !default;
+$photoviewer-nav-button-hover-color: var(--#{config.$prefix}primary) !default;
+$photoviewer-nav-button-shadow: $box-shadow-sm !default;
+$photoviewer-nav-button-hover-shadow: $box-shadow-md !default;
+
+// Counter badge variables
+$photoviewer-counter-badge-background: var(--#{config.$prefix}primary) !default;
+$photoviewer-counter-badge-color: var(--#{config.$prefix}white) !default;
+$photoviewer-counter-badge-font-size: $font-size-sm !default;
+$photoviewer-counter-badge-font-weight: $font-weight-medium !default;
+$photoviewer-counter-badge-padding: 0.25rem 0.75rem !default;
+$photoviewer-counter-badge-border-radius: $border-radius-pill !default;
+
+// Image container variables
+$photoviewer-image-container-background: var(--#{config.$prefix}body-bg) !default;
+$photoviewer-image-container-border-radius: $border-radius-lg !default;
+
+// Info panel content variables
+$photoviewer-info-title-font-size: $font-size-lg !default;
+$photoviewer-info-title-font-weight: $font-weight-semibold !default;
+$photoviewer-info-title-color: var(--#{config.$prefix}body-color) !default;
+$photoviewer-info-description-font-size: $font-size-base !default;
+$photoviewer-info-description-color: var(--#{config.$prefix}secondary-text-emphasis) !default;
+$photoviewer-info-meta-font-size: $font-size-sm !default;
+$photoviewer-info-meta-color: var(--#{config.$prefix}tertiary-text-emphasis) !default;
+$photoviewer-info-spacing: 1rem !default;
+
+// Tag variables
+$photoviewer-tag-background: var(--#{config.$prefix}secondary-bg-subtle) !default;
+$photoviewer-tag-color: var(--#{config.$prefix}secondary-text-emphasis) !default;
+$photoviewer-tag-hover-background: var(--#{config.$prefix}primary-bg-subtle) !default;
+$photoviewer-tag-hover-color: var(--#{config.$prefix}primary) !default;
+$photoviewer-tag-font-size: $font-size-xs !default;
+$photoviewer-tag-font-weight: $font-weight-medium !default;
+$photoviewer-tag-padding: 0.25rem 0.5rem !default;
+$photoviewer-tag-border-radius: $border-radius-sm !default;
+
+// Dark mode support
+$photoviewer-component-background-color-dark: var(--#{config.$prefix}body-bg) !default;
+$photoviewer-modal-background-color-dark: rgba($gray-1, 0.8) !default;
+$photoviewer-control-background-dark: var(--#{config.$prefix}body-bg) !default;
+$photoviewer-control-color-dark: var(--#{config.$prefix}body-color) !default;

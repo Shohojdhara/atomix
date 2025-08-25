@@ -1,0 +1,23 @@
+@use './settings.colors' as colors;
+@use './settings.config' as config;
+@use './settings.typography' as fonts;
+@use './settings.spacing' as spacing;
+@use './settings.border' as border;
+@use 'sass:map';
+
+// Avatar group spacing
+$avatar-group-gap: map.get(spacing.$spacing-sizes, 2) !default;
+$avatar-group-stacked-overlap: 50% !default;
+$avatar-group-stacked-hover-gap: map.get(spacing.$spacing-sizes, 2) !default;
+
+// Avatar group "more" indicator
+$avatar-group-more-color: var(--#{config.$prefix}tertiary-text-emphasis) !default;
+$avatar-group-more-bg: var(--#{config.$prefix}body-bg) !default;
+$avatar-group-more-font-size: fonts.$font-size-sm !default;
+$avatar-group-more-font-weight: fonts.$font-weight-medium !default;
+$avatar-group-more-border-width: map.get(border.$border-widths, 1) !default;
+$avatar-group-more-border-color: var(--#{config.$prefix}primary-border-subtle) !default;
+
+// Avatar group transitions
+$avatar-group-transition-duration: 0.2s !default;
+$avatar-group-transition-timing: ease-in-out !default;

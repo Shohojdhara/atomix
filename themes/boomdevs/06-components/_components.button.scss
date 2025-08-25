@@ -1,0 +1,11 @@
+.c-btn {
+  --atomix-btn-hover-bg: #242ffa;
+
+  &__icon {
+    transition: 0.3s ease-in-out;
+  }
+
+  &:hover &__icon {
+    transform: translateX(-8px);
+  }
+}

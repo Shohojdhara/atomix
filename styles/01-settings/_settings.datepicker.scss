@@ -1,0 +1,44 @@
+@use 'settings.config' as config;
+@use 'settings.border-radius' as border-radius;
+@use 'settings.typography' as typography;
+
+$datepicker-padding-x: 8px !default;
+$datepicker-padding-y: 12px !default;
+
+$datepicker-bg: var(--#{config.$prefix}body-bg);
+$datepicker-color: var(--#{config.$prefix}body-color);
+$datepicker-deactivate-color: var(--#{config.$prefix}tertiary-text-emphasis);
+$datepicker-border-radius: border-radius.$border-radius-xl !default;
+$datepicker-border-width: null !default;
+$datepicker-border-color: null !default;
+$datepicker-box-shadow: var(--#{config.$prefix}box-shadow);
+
+$datepicker-body-padding-x: 4px !default;
+$datepicker-body-padding-y: 4px !default;
+
+$datepicker-month-font-size: typography.$font-size-sm !default;
+$datepicker-month-font-weight: typography.$font-weight-bold !default;
+
+$datepicker-year-font-size: $datepicker-month-font-size !default;
+$datepicker-year-font-weight: typography.$font-weight-bold !default;
+
+$datepicker-week-font-size: typography.$font-size-sm !default;
+$datepicker-week-font-weight: typography.$font-weight-normal !default;
+$datepicker-week-width: 40px !default;
+$datepicker-week-height: 40px !default;
+
+$datepicker-day-font-size: typography.$font-size-sm !default;
+$datepicker-day-font-weight: typography.$font-weight-normal !default;
+$datepicker-day-width: $datepicker-week-width !default;
+$datepicker-day-height: $datepicker-week-height !default;
+$datepicker-day-hover-bg: var(--#{config.$prefix}secondary-bg-subtle) !default;
+$datepicker-day-border-radius: border-radius.$border-radius-pill !default;
+
+$datepicker-today-color: var(--#{config.$prefix}brand-text-emphasis);
+
+$datepicker-day-in-range-bg: var(--#{config.$prefix}brand-bg-subtle);
+$datepicker-day-selected-color: var(--#{config.$prefix}gray-1);
+$datepicker-day-selected-bg: var(--#{config.$prefix}primary);
+
+$datepicker-width: ($datepicker-week-width * 7) + ($datepicker-padding-x * 2) +
+  ($datepicker-body-padding-x + $datepicker-body-padding-y) !default;

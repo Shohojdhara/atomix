@@ -1,0 +1,9 @@
+@use 'sass:color';
+@use 'sass:meta';
+
+@function to-rgb($color) {
+  @if meta.type-of($color) == 'color' {
+    @return "#{color.channel($color, 'red', $space: rgb)}, #{color.channel($color, 'green', $space: rgb)}, #{color.channel($color, 'blue', $space: rgb)}";
+  }
+  @return $color; // Pass through CSS variable or string
+}

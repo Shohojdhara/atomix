@@ -1,0 +1,124 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.tabs' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.transition' as *;
+@use '../02-tools/tools.breakpoints' as *;
+@use '../02-tools/tools.grid' as *;
+
+.c-tabs {
+  $root: &;
+
+  --#{$prefix}tabs-width: #{$tabs-width};
+  --#{$prefix}tabs-nav-btn-padding-x: #{rem($tabs-nav-btn-padding-x)};
+  --#{$prefix}tabs-nav-btn-padding-y: #{rem($tabs-nav-btn-padding-y)};
+  --#{$prefix}tabs-nav-btn-font-size: #{$tabs-nav-btn-font-size};
+  --#{$prefix}tabs-nav-btn-font-weight: #{$tabs-nav-btn-font-weight};
+  --#{$prefix}tabs-nav-btn-color: #{$tabs-nav-btn-color};
+  --#{$prefix}tabs-nav-btn-active-color: #{$tabs-nav-btn-active-color};
+  --#{$prefix}tabs-nav-btn-disabled-color: #{$tabs-nav-btn-disabled-color};
+  --#{$prefix}tabs-nav-btn-bg: #{$tabs-nav-btn-bg};
+  --#{$prefix}tabs-nav-btn-bg-hover: #{$tabs-nav-btn-bg-hover};
+  --#{$prefix}tabs-nav-btn-bg-active: #{$tabs-nav-btn-bg-active};
+  --#{$prefix}tabs-nav-btn-bg-disabled: #{$tabs-nav-btn-bg-disabled};
+  --#{$prefix}tabs-nav-btn-border-radius: #{$tabs-nav-btn-border-radius};
+  --#{$prefix}tabs-nav-btn-border-width: #{$tabs-nav-btn-border-width};
+  --#{$prefix}tabs-nav-btn-border-color: #{$tabs-nav-btn-border-color};
+  --#{$prefix}tabs-nav-btn-border-active-color: #{$tabs-nav-btn-border-active-color};
+  --#{$prefix}tabs-nav-btn-border-disabled-color: #{$tabs-nav-btn-border-disabled-color};
+  --#{$prefix}tabs-nav-btns-gap: #{rem($tabs-nav-btns-gap)};
+  --#{$prefix}tabs-nav-btn-inner-gap: #{rem($tabs-nav-btn-inner-gap)};
+  --#{$prefix}tabs-nav-btn-icon-size: #{rem($tab-nav-btn-icon-size)};
+  --#{$prefix}tabs-panel-padding-x: #{rem($tabs-panel-padding-x)};
+  --#{$prefix}tabs-panel-padding-y: #{rem($tabs-panel-padding-y)};
+
+  width: 100%;
+  max-width: var(--#{$prefix}tabs-width);
+
+  &__nav {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+
+    @include media-breakpoint-down(sm) {
+      flex-wrap: wrap;
+    }
+  }
+
+  &__nav-item {
+    width: 50%;
+
+    & + & {
+      margin-left: var(--#{$prefix}tabs-nav-btns-gap);
+    }
+  }
+
+  &__nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--#{$prefix}tabs-nav-btn-inner-gap);
+    width: 100%;
+    color: var(--#{$prefix}tabs-nav-btn-color);
+    font-size: var(--#{$prefix}tabs-nav-btn-font-size);
+    font-weight: var(--#{$prefix}tabs-nav-btn-font-weight);
+    padding: var(--#{$prefix}tabs-nav-btn-padding-y) var(--#{$prefix}tabs-nav-btn-padding-x);
+    border-radius: var(--#{$prefix}tabs-nav-btn-border-radius);
+    border: var(--#{$prefix}tabs-nav-btn-border-width) solid transparent;
+    border-bottom: var(--#{$prefix}tabs-nav-btn-border-width) solid
+      var(--#{$prefix}tabs-nav-btn-border-color);
+    background-color: var(--#{$prefix}tabs-nav-btn-bg);
+    @include basic-transition();
+
+    &:active,
+    &.is-active {
+      color: var(--#{$prefix}tabs-nav-btn-active-color);
+      border-color: transparent transparent var(--#{$prefix}tabs-nav-btn-border-active-color)
+        transparent;
+    }
+
+    &:hover {
+      background-color: var(--#{$prefix}tabs-nav-btn-bg-hover);
+    }
+
+    &:disabled,
+    &.is-disabled {
+      --#{$prefix}tabs-nav-btn-border-active-color: var(
+        --#{$prefix}tabs-nav-btn-border-disabled-color
+      );
+
+      color: var(--#{$prefix}tabs-nav-btn-border-disabled-color);
+      background-color: var(--#{$prefix}tabs-nav-btn-bg-disabled);
+      pointer-events: none;
+    }
+
+    &:focus-visible {
+      outline: none;
+      border-color: var(--#{$prefix}tabs-nav-btn-border-active-color);
+    }
+
+    > i {
+      font-size: var(--#{$prefix}tabs-nav-btn-icon-size);
+    }
+  }
+
+  &__panels {
+    position: relative;
+  }
+
+  &__panel {
+    display: none;
+    opacity: 0;
+    overflow: hidden;
+    transition: opacity 0.3s cubic-bezier(0.65, 0.32, 1, 0.72);
+
+    &.is-active {
+      display: block;
+      opacity: 1;
+    }
+  }
+
+  &__panel-body {
+    padding: var(--#{$prefix}tabs-panel-padding-y) var(--#{$prefix}tabs-panel-padding-x);
+  }
+}

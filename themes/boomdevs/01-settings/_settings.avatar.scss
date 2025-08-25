@@ -1,0 +1,9 @@
+/*!
+ * Boomdevs Theme Avatar Settings
+ * Custom avatar styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.avatar' with (
+  $avatar-initials-font-weight: 600,
+  $avatar-focus-ring-color: var(--atomix-primary)
+);

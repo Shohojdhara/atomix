@@ -1,0 +1,31 @@
+@use 'sass:map';
+@use 'sass:meta';
+@use 'sass:color';
+@use '../02-tools/tools.to-rgb' as to-rgb;
+
+/// Calls `$function` for each pair in `$map`, passing the value of `$key` and `$value` as arguments.
+/// Returns a new map with the same keys and the result of `$function` as values.
+@function map-loop($map, $function-name, $key: '$key', $value: '$value') {
+  $result: ();
+  @each $k, $v in $map {
+    $function-result: null;
+
+    // Handle the to-rgb function specifically since it's commonly used
+    @if $function-name == 'to-rgb' {
+      $function-result: to-rgb.to-rgb($v);
+    } @else {
+      // For unsupported functions, return the original value
+      // or you could use @warn instead of @error to continue execution
+      @warn "Function #{$function-name} not supported by map-loop, returning original value";
+      $function-result: $v;
+    }
+
+    $result: map.merge(
+      $result,
+      (
+        $k: $function-result,
+      )
+    );
+  }
+  @return $result;
+}

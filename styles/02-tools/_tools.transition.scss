@@ -1,0 +1,50 @@
+@use '../01-settings/settings.animations' as animations;
+@use 'sass:list';
+
+// Transition base mixin
+@mixin transition-base($property: all, $duration: 0.2s, $timing: ease-in-out, $delay: 0s) {
+  transition-property: $property;
+  transition-duration: $duration;
+  transition-timing-function: $timing;
+  transition-delay: $delay;
+}
+
+// Basic transition mixin (used by components)
+@mixin basic-transition($property: all, $duration: 0.2s, $timing: ease-in-out, $delay: 0s) {
+  @include transition-base($property, $duration, $timing, $delay);
+}
+
+// Multiple properties transition
+@mixin transition($transitions...) {
+  $props: ();
+  $durations: ();
+  $timings: ();
+  $delays: ();
+
+  @each $transition in $transitions {
+    $property: nth($transition, 1);
+    $duration: 0.2s;
+    $timing-function: ease-in-out;
+    $delay: 0s;
+
+    @if length($transition) > 1 {
+      $duration: nth($transition, 2);
+    }
+    @if length($transition) > 2 {
+      $timing-function: nth($transition, 3);
+    }
+    @if length($transition) > 3 {
+      $delay: nth($transition, 4);
+    }
+
+    $props: append($props, $property, comma);
+    $durations: append($durations, $duration, comma);
+    $timings: append($timings, $timing-function, comma);
+    $delays: append($delays, $delay, comma);
+  }
+
+  transition-property: $props;
+  transition-duration: $durations;
+  transition-timing-function: $timings;
+  transition-delay: $delays;
+}

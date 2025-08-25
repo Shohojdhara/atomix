@@ -1,0 +1,13 @@
+/*!
+ * Boomdevs Theme Breadcrumb Settings
+ * Custom breadcrumb styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.breadcrumb' with (
+  $breadcrumb-font-size: 0.875rem,
+  $breadcrumb-color: var(--atomix-gray-7),
+  $breadcrumb-hover-color: var(--atomix-brand-text-emphasis),
+  $breadcrumb-active-color: var(--atomix-gray-10),
+  $breadcrumb-divider-color: var(--atomix-gray-6),
+  $breadcrumb-divider: '/'
+);

@@ -1,0 +1,22 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../02-tools/tools.animations' as *;
+
+.c-data-table {
+  @include animations(
+    'slow-fade-in-up' 'color-wave',
+    $duration: 2s,
+    $timing: ease-out,
+    $iteration-count: infinite
+  );
+}
+
+.c-data-table__row {
+  &:hover {
+    @include animations(
+      'color-pulse' 'float',
+      $duration: 2s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+}

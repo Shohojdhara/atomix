@@ -1,0 +1,402 @@
+/*!
+ * Mashroom Theme Countdown Component
+ * Mushroom-themed timer animations with psychedelic effects
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-countdown {
+  $root: &;
+
+  // Base countdown container
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid rgba(157, 0, 255, 0.5);
+  position: relative;
+  overflow: hidden;
+
+  // Mushroom cap shape
+  border-radius: 20px 20px 10px 10px;
+
+  // Animated background spores
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255, 187, 0, 0.1) 0%, transparent 30%),
+      radial-gradient(circle at 70% 70%, rgba(157, 0, 255, 0.1) 0%, transparent 30%);
+    animation: sporeFloat 12s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes sporeFloat {
+    0% {
+      transform: rotate(0deg) scale(1);
+    }
+    100% {
+      transform: rotate(360deg) scale(1.1);
+    }
+  }
+
+  // Countdown timer display
+  &__timer {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  // Individual time units (days, hours, minutes, seconds)
+  &__unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(157, 0, 255, 0.2), rgba(255, 187, 0, 0.2));
+    border-radius: 12px;
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    min-width: 80px;
+    position: relative;
+    overflow: hidden;
+
+    // Glowing edge effect
+    &::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, $purple-4, $yellow-4, $red-4, $green-4);
+      border-radius: 12px;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover::before {
+      opacity: 1;
+      animation: glowPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%,
+      100% {
+        opacity: 0.5;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+  }
+
+  // Time value display
+  &__value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: $white;
+    text-shadow: 0 0 10px rgba(157, 0, 255, 0.8);
+    animation: numberGlow 3s ease-in-out infinite;
+
+    @keyframes numberGlow {
+      0%,
+      100% {
+        text-shadow: 0 0 10px rgba(157, 0, 255, 0.8);
+        transform: scale(1);
+      }
+      50% {
+        text-shadow: 0 0 20px rgba(255, 187, 0, 0.8);
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  // Time label (days, hours, etc.)
+  &__label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.25rem;
+  }
+
+  // Progress ring for visual countdown
+  &__progress {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 1rem 0;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    circle {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+    }
+
+    .background {
+      stroke: rgba(157, 0, 255, 0.2);
+    }
+
+    .progress {
+      stroke: url(#countdownGradient);
+      stroke-dasharray: 314;
+      stroke-dashoffset: 314;
+      animation: progressFill 60s linear infinite;
+    }
+
+    @keyframes progressFill {
+      from {
+        stroke-dashoffset: 314;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+  }
+
+  // Time remaining text
+  &__message {
+    font-size: 1.25rem;
+    color: $white;
+    text-align: center;
+    margin-top: 1rem;
+    background: linear-gradient(45deg, $purple-4, $yellow-4, $red-4);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: textShift 3s ease-in-out infinite;
+  }
+
+  @keyframes textShift {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  // Completion state
+  &--completed {
+    background: linear-gradient(135deg, rgba(0, 255, 0, 0.2), rgba(0, 255, 157, 0.2));
+    border-color: rgba(0, 255, 0, 0.5);
+    animation: completionPulse 2s ease-in-out infinite;
+
+    @keyframes completionPulse {
+      0%,
+      100% {
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 40px rgba(0, 255, 0, 0.8);
+        transform: scale(1.02);
+      }
+    }
+
+    #{$root}__value {
+      color: $green-4;
+      animation: none;
+    }
+
+    #{$root}__message {
+      background: linear-gradient(45deg, $green-4, $yellow-4);
+    }
+  }
+
+  // Size variants
+  &--sm {
+    padding: 1rem;
+
+    #{$root}__timer {
+      gap: 0.5rem;
+    }
+
+    #{$root}__unit {
+      padding: 0.5rem;
+      min-width: 60px;
+    }
+
+    #{$root}__value {
+      font-size: 1.5rem;
+    }
+
+    #{$root}__progress {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  &--lg {
+    padding: 3rem;
+
+    #{$root}__timer {
+      gap: 1.5rem;
+    }
+
+    #{$root}__unit {
+      padding: 1.5rem;
+      min-width: 100px;
+    }
+
+    #{$root}__value {
+      font-size: 3rem;
+    }
+
+    #{$root}__progress {
+      width: 150px;
+      height: 150px;
+    }
+  }
+
+  // Psychedelic variant
+  &--psychedelic {
+    background: linear-gradient(135deg, $purple-4, $yellow-4, $red-4, $green-4);
+    background-size: 400% 400%;
+    animation: psychedelicShift 8s ease infinite;
+
+    #{$root}__unit {
+      background: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    #{$root}__value {
+      color: $white;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  @keyframes psychedelicShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  // Glow variant
+  &--glow {
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 20px);
+
+    &:hover {
+      @include trippy.trippy-glow(rgba(255, 187, 0, 0.6), 30px);
+    }
+  }
+
+  // Dark variant
+  &--dark {
+    background: rgba(0, 0, 0, 0.9);
+    border-color: rgba(157, 0, 255, 0.7);
+  }
+
+  // Light variant
+  &--light {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(157, 0, 255, 0.3);
+
+    #{$root}__value {
+      color: $black;
+      text-shadow: 0 0 10px rgba(157, 0, 255, 0.4);
+    }
+
+    #{$root}__label {
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    #{$root}__message {
+      color: $black;
+    }
+  }
+
+  // Floating spore particles
+  &__spore {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, $yellow-4, transparent);
+    border-radius: 50%;
+    animation: sporeFloat 8s ease-in-out infinite;
+    pointer-events: none;
+
+    &:nth-child(odd) {
+      animation-delay: -3s;
+    }
+
+    &:nth-child(even) {
+      animation-delay: -6s;
+    }
+  }
+
+  @keyframes sporeFloat {
+    0% {
+      transform: translateY(0) translateX(0) scale(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-80px) translateX(20px) scale(1);
+      opacity: 0;
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    #{$root}__timer {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    #{$root}__unit {
+      min-width: 70px;
+      padding: 0.75rem;
+    }
+
+    #{$root}__value {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+
+    #{$root}__unit {
+      min-width: 60px;
+      padding: 0.5rem;
+    }
+
+    #{$root}__value {
+      font-size: 1.25rem;
+    }
+
+    #{$root}__label {
+      font-size: 0.625rem;
+    }
+  }
+}

@@ -1,0 +1,413 @@
+/*!
+ * Mashroom Theme Edge Panel Component
+ * Psychedelic mushroom-inspired sliding panels with trippy effects
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-edge-panel {
+  $root: &;
+
+  // Base panel styling
+  position: fixed;
+  top: 0;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(157, 0, 255, 0.3);
+  height: 100vh;
+  width: 300px;
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  // Trippy glow effect
+  @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 20px);
+
+  // Mushroom cap curve effect
+  border-radius: 0 2rem 2rem 0;
+
+  // Position variants
+  &--left {
+    left: 0;
+    transform: translateX(-100%);
+    border-radius: 0 2rem 2rem 0;
+
+    #{$root}--open {
+      transform: translateX(0);
+    }
+  }
+
+  &--right {
+    right: 0;
+    transform: translateX(100%);
+    border-radius: 2rem 0 0 2rem;
+
+    #{$root}--open {
+      transform: translateX(0);
+    }
+  }
+
+  &--top {
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 200px;
+    transform: translateY(-100%);
+    border-radius: 0 0 2rem 2rem;
+
+    #{$root}--open {
+      transform: translateY(0);
+    }
+  }
+
+  &--bottom {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 200px;
+    transform: translateY(100%);
+    border-radius: 2rem 2rem 0 0;
+
+    #{$root}--open {
+      transform: translateY(0);
+    }
+  }
+
+  // Header
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(157, 0, 255, 0.2);
+    background: linear-gradient(135deg, rgba(157, 0, 255, 0.1), rgba(255, 32, 133, 0.1));
+  }
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $white;
+    background: linear-gradient(45deg, $purple-4, $yellow-4);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleColorShift 3s ease-in-out infinite;
+  }
+
+  @keyframes titleColorShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: $white;
+      transform: rotate(90deg);
+      @include trippy.trippy-glow($yellow-4, 8px);
+    }
+  }
+
+  // Content area
+  &__content {
+    padding: 1.5rem;
+    height: calc(100% - 80px);
+    overflow-y: auto;
+
+    // Custom scrollbar
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, $purple-4, $yellow-4);
+      border-radius: 3px;
+
+      &:hover {
+        background: linear-gradient(135deg, $purple-3, $yellow-3);
+      }
+    }
+  }
+
+  // Backdrop overlay
+  &__backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+
+    &--open {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  // Trigger button
+  &__trigger {
+    position: fixed;
+    background: linear-gradient(45deg, $purple-4, $yellow-4);
+    color: $white;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    cursor: pointer;
+    z-index: 1001;
+    transition: all 0.3s ease;
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 15px);
+
+    // Mushroom cap shape
+    border-radius: 50% 50% 40% 40%;
+
+    &:hover {
+      transform: scale(1.1);
+      @include trippy.trippy-glow($yellow-4, 20px);
+    }
+
+    &--left {
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &--right {
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &--top {
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &--bottom {
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  // Floating spore particles
+  &__spores {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: radial-gradient(circle, $yellow-4, transparent);
+      border-radius: 50%;
+      animation: sporeFloat 4s ease-in-out infinite;
+    }
+
+    &::before {
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    &::after {
+      top: 70%;
+      right: 20%;
+      animation-delay: 2s;
+    }
+  }
+
+  @keyframes sporeFloat {
+    0%,
+    100% {
+      transform: translateY(0) translateX(0) scale(1);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(-20px) translateX(10px) scale(1.5);
+      opacity: 1;
+    }
+  }
+
+  // Size variants
+  &--sm {
+    width: 250px;
+
+    &--top,
+    &--bottom {
+      height: 150px;
+    }
+  }
+
+  &--lg {
+    width: 400px;
+
+    &--top,
+    &--bottom {
+      height: 300px;
+    }
+  }
+
+  &--xl {
+    width: 500px;
+
+    &--top,
+    &--bottom {
+      height: 400px;
+    }
+  }
+
+  &--fullscreen {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+
+  // Animation variants
+  &--slide {
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  &--fade {
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+
+    #{$root}--open {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &--scale {
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+    transform: scale(0.8);
+    opacity: 0;
+
+    #{$root}--open {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  // Psychedelic variant
+  &--psychedelic {
+    background: linear-gradient(
+      135deg,
+      rgba(157, 0, 255, 0.1) 0%,
+      rgba(255, 32, 133, 0.1) 50%,
+      rgba(0, 255, 136, 0.1) 100%
+    );
+    border-color: rgba(157, 0, 255, 0.4);
+
+    #{$root}__header {
+      background: linear-gradient(
+        135deg,
+        rgba(157, 0, 255, 0.2),
+        rgba(255, 32, 133, 0.2),
+        rgba(0, 255, 136, 0.2)
+      );
+    }
+
+    #{$root}__trigger {
+      background: linear-gradient(135deg, $purple-4, $red-4, $yellow-4, $green-4);
+      background-size: 400% 400%;
+      animation: psychedelicShift 3s ease-in-out infinite;
+    }
+  }
+
+  @keyframes psychedelicShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  // Dark variant
+  &--dark {
+    background: rgba(0, 0, 0, 0.95);
+    border-color: rgba(157, 0, 255, 0.5);
+  }
+
+  // Glass variant
+  &--glass {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+
+    #{$root}__header {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    &--left,
+    &--right {
+      width: 100%;
+      max-width: 300px;
+    }
+
+    &--trigger {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    &--left,
+    &--right {
+      width: 100%;
+      max-width: none;
+    }
+
+    &--top,
+    &--bottom {
+      height: 250px;
+    }
+  }
+}

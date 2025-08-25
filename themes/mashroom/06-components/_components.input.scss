@@ -1,0 +1,147 @@
+/*!
+ * Mashroom Theme Input Component
+ * Psychedelic mushroom-inspired theme with trippy visuals
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+// Psychedelic input animations
+@keyframes input-float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes input-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba($primary-6, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 0 10px rgba($primary-6, 0.8),
+      0 0 20px rgba(157, 0, 255, 0.6),
+      0 0 30px rgba(255, 32, 133, 0.4);
+  }
+}
+
+@keyframes input-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.c-input {
+  // Add psychedelic glow effect
+  @include trippy.trippy-glow(rgba($primary-6, 0.5), 5px);
+
+  // Add color shift for extra psychedelic effect
+  @include trippy.color-shift();
+
+  // Add psychedelic gradient border
+  border: 2px solid transparent;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) padding-box,
+    linear-gradient(90deg, #9d00ff, #d080ff, #00ff9d, #ffbb00, #ff2085, #9d00ff) border-box;
+  background-size: 300% 300%;
+
+  border-radius: 8px;
+  padding: 10px 15px;
+  transition: all 0.3s ease;
+
+  // Add floating animation
+  @include trippy.float-animation();
+  animation-duration: 4s;
+
+  // Add pulse animation
+  animation: input-glow-pulse 3s infinite;
+
+  // Focus state with enhanced psychedelic effects
+  &:focus {
+    outline: none;
+    @include trippy.trippy-glow($red-4, 15px);
+    transform: scale(1.02);
+
+    // Add psychedelic pulse animation
+    @include trippy.psychedelic-pulse($primary-4);
+
+    // Speed up animations on focus
+    animation: input-glow-pulse 1s infinite;
+  }
+
+  // Hover state
+  &:hover {
+    @include trippy.trippy-glow($primary-4, 10px);
+    transform: scale(1.01) rotate(1deg);
+    animation: input-glow-pulse 2s infinite;
+  }
+
+  // Disabled state
+  &:disabled {
+    animation: none;
+    background-color: rgba($gray-3, 0.5);
+    @include trippy.trippy-glow(rgba($gray-3, 0.3), 2px);
+  }
+
+  // Placeholder styling
+  &::placeholder {
+    color: $gray-4;
+    opacity: 0.7;
+
+    // Add subtle floating effect to placeholder
+    @include trippy.float-animation();
+    animation-duration: 3s;
+  }
+
+  // Psychedelic variant
+  &--psychedelic {
+    @include gradients.rainbow-gradient();
+    background-size: 400% 400%;
+    border: 2px solid transparent;
+    animation: rainbow-shift 4s ease infinite;
+
+    &:focus {
+      animation: rainbow-shift 2s ease infinite;
+      @include trippy.trippy-glow(white, 20px);
+    }
+
+    &:hover {
+      animation: rainbow-shift 3s ease infinite;
+    }
+  }
+
+  // Glowing variant
+  &--glow {
+    @include trippy.trippy-glow($purple-4, 15px);
+    animation: input-glow-pulse 2s infinite;
+
+    &:focus {
+      @include trippy.trippy-glow($red-4, 25px);
+      animation: input-glow-pulse 0.5s infinite;
+    }
+
+    &:hover {
+      @include trippy.trippy-glow($yellow-4, 20px);
+    }
+  }
+
+  // Floating variant
+  &--floating {
+    @include trippy.float-animation();
+    animation-duration: 3s;
+
+    &:focus {
+      animation: input-float 1s ease-in-out infinite;
+    }
+  }
+}

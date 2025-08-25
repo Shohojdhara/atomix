@@ -1,0 +1,17 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.checkbox-group' as *;
+@use '../02-tools/tools.rem' as *;
+
+.c-checkbox-group {
+  --#{$prefix}checkbox-group-items-spacer-y: #{rem($checkbox-group-items-spacer-y)};
+  --#{$prefix}checkbox-group-items-spacer-x: #{rem($checkbox-group-items-spacer-x)};
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--#{$prefix}checkbox-group-items-spacer-y) var(--#{$prefix}checkbox-group-items-spacer-x);
+
+  &--horizontal {
+    flex-direction: row;
+  }
+}

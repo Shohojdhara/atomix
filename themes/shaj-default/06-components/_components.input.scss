@@ -1,0 +1,58 @@
+/*!
+ * Shaj Default Theme Input Component Overrides
+ * Additional styling for modern input aesthetics
+ */
+@use '../01-settings/settings.config' as *;
+
+.c-form-control {
+  // Enhanced focus states
+  transition: all 200ms ease-in-out;
+  border: 1px solid var(--#{$prefix}gray-3);
+
+  &:focus {
+    border-color: var(--#{$prefix}primary-6);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+    outline: none;
+  }
+
+  &:hover:not(:focus) {
+    border-color: var(--#{$prefix}gray-4);
+  }
+
+  // Placeholder styling
+  &::placeholder {
+    color: var(--#{$prefix}gray-5);
+    font-style: italic;
+  }
+
+  // Error state
+  &.c-is-invalid {
+    border-color: var(--#{$prefix}red-6);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  }
+
+  // Success state
+  &.c-is-valid {
+    border-color: var(--#{$prefix}green-6);
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+  }
+}
+
+// Input group styling
+.c-input-group {
+  .c-input-group-text {
+    background: var(--#{$prefix}gray-1);
+    border-color: var(--#{$prefix}gray-3);
+    color: var(--#{$prefix}gray-6);
+    font-weight: 500;
+  }
+}
+
+// Floating labels
+.c-form-floating {
+  .c-form-control:focus ~ label,
+  .c-form-control:not(:placeholder-shown) ~ label {
+    color: var(--#{$prefix}primary-6);
+    font-weight: 500;
+  }
+}

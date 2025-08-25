@@ -1,0 +1,21 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.form' as *;
+@use '../02-tools/tools.rem' as *;
+
+.c-form {
+  --#{$prefix}form-width: #{$form-width};
+  --#{$prefix}form-items-spacer-y: #{rem($form-items-spacer-y)};
+  --#{$prefix}form-items-spacer-x: #{rem($form-items-spacer-x)};
+
+  width: 100%;
+  max-width: var(--#{$prefix}form-width);
+
+  > * + * {
+    margin-top: var(--#{$prefix}form-items-spacer-y);
+  }
+
+  .o-grid {
+    --#{$prefix}gutter-x: var(--#{$prefix}form-items-spacer-x);
+    --#{$prefix}gutter-y: var(--#{$prefix}form-items-spacer-y);
+  }
+}

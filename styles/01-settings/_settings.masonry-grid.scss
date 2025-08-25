@@ -1,0 +1,17 @@
+@use 'settings.config' as config;
+@use 'settings.breakpoints' as breakpoints;
+
+// Define all masonry grid variables with !default flag for overriding
+$masonry-grid-gap: 16px !default;
+$masonry-grid-gap-sm: 8px !default;
+$masonry-grid-gap-lg: 24px !default;
+$masonry-grid-columns-xs: 1 !default;
+$masonry-grid-columns-sm: 2 !default;
+$masonry-grid-columns-md: 3 !default;
+$masonry-grid-columns-lg: 4 !default;
+$masonry-grid-columns-xl: 4 !default;
+$masonry-grid-columns-xxl: 5 !default;
+$masonry-grid-item-transition: all 0.3s ease-in-out !default;
+
+// Define dark mode variables if needed
+$masonry-grid-item-bg-dark: var(--#{config.$prefix}gray-9) !default;

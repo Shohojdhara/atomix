@@ -1,0 +1,12 @@
+/*!
+ * Atomix Design System v0.1.0
+ */
+
+// Load Atomix settings and configuration
+@use '01-settings/index' as *;
+@use '02-tools/index' as *;
+@use '03-generic/index' as *;
+@use '04-elements/index' as *;
+@use '05-objects/index' as *;
+@use '06-components/index' as *;
+@use '99-utilities/index' as *;

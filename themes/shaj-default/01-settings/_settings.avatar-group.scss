@@ -1,0 +1,28 @@
+/*!
+ * Shaj Default Theme Avatar Group Settings
+ * Modern avatar group styling with clean aesthetics
+ * Overrides Atomix default avatar group settings
+ */
+
+@use '../../../styles/01-settings/settings.avatar-group' with (
+  // Avatar group spacing
+  $avatar-group-gap: 12px,
+  // 12px - more generous spacing
+  $avatar-group-stacked-overlap: 40%,
+  // 40% - less overlap for clarity
+  $avatar-group-stacked-hover-gap: 12px,
+
+  // 12px
+  // Avatar group "more" indicator
+  $avatar-group-more-color: var(--atomix-tertiary-text-emphasis),
+  $avatar-group-more-bg: var(--atomix-body-bg),
+  $avatar-group-more-font-size: 14px,
+  // 14px
+  $avatar-group-more-font-weight: 500,
+  $avatar-group-more-border-width: 1px,
+  $avatar-group-more-border-color: var(--atomix-primary-border-subtle),
+  // Avatar group transitions
+  $avatar-group-transition-duration: 0.3s,
+  // smoother transition
+  $avatar-group-transition-timing: ease-in-out
+);

@@ -1,0 +1,7 @@
+$transition-duration: 0.3s !default;
+$easing: cubic-bezier(0.23, 1, 0.32, 1) !default;
+
+// Transition variables
+$transition-base: all $transition-duration $easing !default;
+$transition-fast: all 0.15s $easing !default;
+$transition-slow: all 0.5s $easing !default;

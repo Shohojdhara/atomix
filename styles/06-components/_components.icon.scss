@@ -1,0 +1,80 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.colors' as colors;
+@use '../02-tools/tools.rem' as *;
+
+// Icon component
+//
+// Styling for Phosphor Icons
+
+.c-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 1;
+
+  // Icon sizes
+  &--xs {
+    height: rem(16px);
+    width: rem(16px);
+  }
+
+  &--sm {
+    height: rem(20px);
+    width: rem(20px);
+  }
+
+  &--md {
+    height: rem(24px);
+    width: rem(24px);
+  }
+
+  &--lg {
+    height: rem(32px);
+    width: rem(32px);
+  }
+
+  &--xl {
+    height: rem(40px);
+    width: rem(40px);
+  }
+
+  // Icon colors - these will be used if no color is specified in the component
+  &--primary {
+    color: colors.$primary;
+  }
+
+  &--secondary {
+    color: colors.$secondary;
+  }
+
+  &--success {
+    color: colors.$success;
+  }
+
+  &--error {
+    color: colors.$error;
+  }
+
+  &--warning {
+    color: colors.$warning;
+  }
+
+  &--info {
+    color: colors.$info;
+  }
+
+  // Current color - inherits color from parent
+  &--current {
+    color: currentColor;
+  }
+
+  // Icon with text - adds spacing when used next to text
+  &--with-text-right {
+    margin-right: rem(8px);
+  }
+
+  &--with-text-left {
+    margin-left: rem(8px);
+  }
+}

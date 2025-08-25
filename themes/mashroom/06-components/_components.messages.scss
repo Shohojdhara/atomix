@@ -1,0 +1,277 @@
+/*!
+ * Mashroom Theme Messages Component
+ * Psychedelic mushroom-inspired theme with trippy visuals
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-messages {
+  $root: &;
+
+  // Message item styling
+  &__item {
+    position: relative;
+    margin-bottom: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+
+    // Mushroom cap notification shape
+    &::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: 20px;
+      width: 15px;
+      height: 6px;
+      background: inherit;
+      border: inherit;
+      border-bottom: none;
+      border-radius: 15px 15px 0 0;
+    }
+
+    // Trippy glow effect
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 10px);
+
+    // Entrance animation
+    animation: messageSlideIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    @keyframes messageSlideIn {
+      from {
+        opacity: 0;
+        transform: translateX(100%) scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+  }
+
+  // Message content
+  &__content {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  // Icon styling
+  &__icon {
+    flex-shrink: 0;
+    font-size: 1.25rem;
+    animation: iconBounce 2s ease-in-out infinite;
+  }
+
+  @keyframes iconBounce {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  // Text container
+  &__text {
+    flex: 1;
+
+    &-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    &-body {
+      font-size: 0.875rem;
+      line-height: 1.4;
+      opacity: 0.9;
+    }
+  }
+
+  // Close button
+  &__close {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: $white;
+      transform: rotate(90deg);
+      @include trippy.trippy-glow(rgba(255, 255, 255, 0.3), 8px);
+    }
+  }
+
+  // Progress bar for auto-dismiss
+  &__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 0 0 1rem 1rem;
+    animation: progressShrink 5s linear forwards;
+
+    @keyframes progressShrink {
+      from {
+        width: 100%;
+      }
+      to {
+        width: 0%;
+      }
+    }
+  }
+
+  // Message variants with mushroom colors
+  &__item--info {
+    background: rgba(0, 123, 255, 0.15);
+    border-color: rgba(0, 123, 255, 0.3);
+    @include trippy.trippy-glow(rgba(0, 123, 255, 0.3), 10px);
+
+    #{$root}__icon {
+      color: #00bfff;
+    }
+
+    #{$root}__text-title {
+      color: #00bfff;
+    }
+  }
+
+  &__item--success {
+    background: rgba(40, 167, 69, 0.15);
+    border-color: rgba(40, 167, 69, 0.3);
+    @include trippy.trippy-glow(rgba(40, 167, 69, 0.3), 10px);
+
+    #{$root}__icon {
+      color: #28a745;
+    }
+
+    #{$root}__text-title {
+      color: #28a745;
+    }
+  }
+
+  &__item--warning {
+    background: rgba(255, 193, 7, 0.15);
+    border-color: rgba(255, 193, 7, 0.3);
+    @include trippy.trippy-glow(rgba(255, 193, 7, 0.3), 10px);
+
+    #{$root}__icon {
+      color: #ffc107;
+    }
+
+    #{$root}__text-title {
+      color: #ffc107;
+    }
+  }
+
+  &__item--error {
+    background: rgba(220, 53, 69, 0.15);
+    border-color: rgba(220, 53, 69, 0.3);
+    @include trippy.trippy-glow(rgba(220, 53, 69, 0.3), 10px);
+
+    #{$root}__icon {
+      color: #dc3545;
+    }
+
+    #{$root}__text-title {
+      color: #dc3545;
+    }
+  }
+
+  // Psychedelic variant
+  &__item--psychedelic {
+    background: linear-gradient(
+      135deg,
+      rgba(157, 0, 255, 0.15) 0%,
+      rgba(255, 32, 133, 0.15) 50%,
+      rgba(0, 255, 136, 0.15) 100%
+    );
+    border-color: rgba(157, 0, 255, 0.4);
+
+    // Animated psychedelic border
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(45deg, #9d00ff, #ff2085, #00ff88, #ff2085, #9d00ff);
+      border-radius: 1rem;
+      z-index: -1;
+      animation: psychedelicBorder 2s linear infinite;
+    }
+
+    @keyframes psychedelicBorder {
+      0% {
+        opacity: 0.5;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0.5;
+      }
+    }
+
+    #{$root}__icon {
+      background: linear-gradient(45deg, #ff2085, #9d00ff, #00ff88);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: iconColorShift 2s ease-in-out infinite;
+    }
+
+    #{$root}__text-title {
+      background: linear-gradient(45deg, #ff2085, #9d00ff);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: titleColorShift 3s ease-in-out infinite;
+    }
+
+    @keyframes iconColorShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    @keyframes titleColorShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+  }
+
+  // Exit animation
+  &__item--exiting {
+    animation: messageSlideOut 0.3s ease forwards;
+  }
+
+  @keyframes messageSlideOut {
+    to {
+      opacity: 0;
+      transform: translateX(100%) scale(0.8);
+    }
+  }
+}

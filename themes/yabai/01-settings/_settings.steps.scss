@@ -1,0 +1,33 @@
+/*!
+ * Yabai Theme Steps Settings
+ * High-energy step indicator styling with pill shapes
+ * Overrides Atomix default steps settings
+ */
+
+@use '../../../styles/01-settings/settings.steps' with (
+  // Step structure
+  $step-size: 40px,
+  $step-border-width: 3px,
+  $step-border-radius: 50%,
+  $step-font-size: 16px,
+  $step-font-weight: 700,
+
+  // Step colors
+  $step-bg: var(--atomix-secondary-bg-subtle),
+  $step-color: var(--atomix-secondary-text-emphasis),
+  $step-border-color: var(--atomix-primary-border),
+  // Active step
+  $step-active-bg: var(--atomix-primary),
+  $step-active-color: var(--atomix-component-active-color),
+  $step-active-border-color: var(--atomix-primary),
+  // Completed step
+  $step-completed-bg: var(--atomix-success),
+  $step-completed-color: var(--atomix-component-active-color),
+  $step-completed-border-color: var(--atomix-success),
+  // Step connector
+  $step-connector-width: 2px,
+  $step-connector-color: var(--atomix-primary-border),
+  $step-connector-active-color: var(--atomix-primary),
+  // Step transitions
+  $step-transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1)
+);

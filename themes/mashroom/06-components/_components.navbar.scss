@@ -1,0 +1,538 @@
+/*!
+ * Mashroom Theme Navbar Component
+ * Mushroom-themed header navigation with psychedelic effects
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-navbar {
+  $root: &;
+
+  // Base navbar container
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: rgba(0, 0, 0, 0.9);
+  border-bottom: 1px solid rgba(157, 0, 255, 0.3);
+  position: relative;
+  z-index: 1000;
+
+  // Animated background particles
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(circle at 10% 50%, rgba(255, 187, 0, 0.1) 0%, transparent 30%),
+      radial-gradient(circle at 90% 50%, rgba(157, 0, 255, 0.1) 0%, transparent 30%);
+    animation: backgroundFlow 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes backgroundFlow {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: translateX(0);
+    }
+    50% {
+      opacity: 0.6;
+      transform: translateX(10px);
+    }
+  }
+
+  // Brand/logo area
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: $white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: $yellow-4;
+      transform: scale(1.05);
+      @include trippy.trippy-glow(rgba(255, 187, 0, 0.4), 8px);
+    }
+  }
+
+  // Logo icon
+  &__logo {
+    width: 32px;
+    height: 32px;
+    color: rgba(157, 0, 255, 0.8);
+    transition: all 0.3s ease;
+    animation: logoSpin 4s ease-in-out infinite;
+
+    @keyframes logoSpin {
+      0%,
+      100% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  // Navigation links container
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  // Navigation links
+  &__link {
+    position: relative;
+    padding: 0.5rem 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, $purple-4, $yellow-4);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    &:hover {
+      color: $white;
+      transform: translateY(-2px);
+
+      &::after {
+        width: 100%;
+        @include trippy.trippy-glow(rgba(255, 187, 0, 0.5), 4px);
+      }
+    }
+
+    &.is-active {
+      color: $white;
+
+      &::after {
+        width: 100%;
+        background: linear-gradient(90deg, $purple-4, $yellow-4);
+        animation: activeUnderline 2s ease-in-out infinite;
+      }
+
+      @keyframes activeUnderline {
+        0%,
+        100% {
+          background: linear-gradient(90deg, $purple-4, $yellow-4);
+        }
+        50% {
+          background: linear-gradient(90deg, $yellow-4, $red-4);
+        }
+      }
+    }
+  }
+
+  // Search area
+  &__search {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .c-input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(157, 0, 255, 0.3);
+      border-radius: 20px;
+      padding: 0.5rem 1rem 0.5rem 2.5rem;
+      color: $white;
+      transition: all 0.3s ease;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      &:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.15);
+        @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 8px);
+        transform: scale(1.05);
+      }
+    }
+
+    .c-icon {
+      position: absolute;
+      left: 0.75rem;
+      color: rgba(157, 0, 255, 0.7);
+      z-index: 2;
+    }
+  }
+
+  // User actions area
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  // Action buttons
+  &__action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    border-radius: 50%;
+    color: rgba(157, 0, 255, 0.8);
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(157, 0, 255, 0.2);
+      color: $white;
+      transform: scale(1.1);
+      @include trippy.trippy-glow(rgba(255, 187, 0, 0.4), 6px);
+    }
+
+    &.has-badge {
+      position: relative;
+
+      &::after {
+        content: attr(data-badge);
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        width: 18px;
+        height: 18px;
+        background: linear-gradient(135deg, $red-4, $yellow-4);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.625rem;
+        font-weight: bold;
+        color: $white;
+        animation: badgePulse 2s ease-in-out infinite;
+      }
+
+      @keyframes badgePulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+      }
+    }
+  }
+
+  // Mobile menu toggle
+  &__toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: rgba(157, 0, 255, 0.8);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: $yellow-4;
+      transform: rotate(90deg);
+    }
+  }
+
+  // Mobile menu container
+  &__mobile {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(157, 0, 255, 0.3);
+    padding: 2rem;
+    transition: left 0.3s ease;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    &.is-open {
+      left: 0;
+    }
+
+    #{$root}__link {
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(157, 0, 255, 0.2);
+      width: 100%;
+
+      &::after {
+        display: none;
+      }
+
+      &:hover {
+        background: rgba(157, 0, 255, 0.1);
+        border-radius: 8px;
+        padding-left: 1rem;
+      }
+    }
+  }
+
+  // Overlay for mobile menu
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+
+    &.is-visible {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  // Sticky variant
+  &--sticky {
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(10px);
+    animation: stickySlide 0.3s ease;
+
+    @keyframes stickySlide {
+      from {
+        transform: translateY(-100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  // Floating variant
+  &--floating {
+    position: fixed;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1200px;
+    border-radius: 50px;
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 15px);
+    animation: float 6s ease-in-out infinite;
+
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      50% {
+        transform: translateX(-50%) translateY(-5px);
+      }
+    }
+  }
+
+  // Size variants
+  &--sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+
+    #{$root}__logo {
+      width: 24px;
+      height: 24px;
+    }
+
+    #{$root}__brand {
+      font-size: 1.25rem;
+    }
+  }
+
+  &--lg {
+    padding: 1.5rem 3rem;
+    font-size: 1.125rem;
+
+    #{$root}__logo {
+      width: 40px;
+      height: 40px;
+    }
+
+    #{$root}__brand {
+      font-size: 1.75rem;
+    }
+  }
+
+  // Psychedelic variant
+  &--psychedelic {
+    background: linear-gradient(135deg, rgba(157, 0, 255, 0.8), rgba(255, 187, 0, 0.8));
+    background-size: 400% 400%;
+    animation: psychedelicShift 8s ease infinite;
+
+    #{$root}__link {
+      color: $white;
+    }
+
+    @keyframes psychedelicShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+  }
+
+  // Glow variant
+  &--glow {
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.4), 15px);
+
+    &:hover {
+      @include trippy.trippy-glow(rgba(255, 187, 0, 0.6), 20px);
+    }
+  }
+
+  // Dark variant
+  &--dark {
+    background: rgba(0, 0, 0, 0.95);
+    border-color: rgba(157, 0, 255, 0.5);
+  }
+
+  // Light variant
+  &--light {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(157, 0, 255, 0.2);
+
+    #{$root}__link {
+      color: $black;
+    }
+
+    #{$root}__search .c-input {
+      background: rgba(255, 255, 255, 0.2);
+      color: $black;
+
+      &::placeholder {
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+
+  // Floating spore particles
+  &__spore {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: radial-gradient(circle, $yellow-4, transparent);
+    border-radius: 50%;
+    animation: sporeFloat 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 2;
+
+    &:nth-child(odd) {
+      animation-delay: -2s;
+    }
+
+    &:nth-child(even) {
+      animation-delay: -4s;
+    }
+  }
+
+  @keyframes sporeFloat {
+    0% {
+      transform: translateY(0) translateX(0) scale(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-50px) translateX(10px) scale(1);
+      opacity: 0;
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 1rem;
+
+    &__nav,
+    &__search,
+    &__actions {
+      width: 100%;
+    }
+
+    &__nav {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    &__link {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(157, 0, 255, 0.2);
+
+      &::after {
+        bottom: 0;
+        height: 2px;
+      }
+    }
+
+    &__toggle {
+      display: block;
+      align-self: flex-end;
+    }
+
+    &--floating {
+      position: static;
+      transform: none;
+      width: 100%;
+      border-radius: 0;
+      animation: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.75rem 1rem;
+
+    &__brand {
+      font-size: 1.25rem;
+    }
+
+    &__logo {
+      width: 28px;
+      height: 28px;
+    }
+
+    &__action {
+      width: 36px;
+      height: 36px;
+    }
+  }
+}

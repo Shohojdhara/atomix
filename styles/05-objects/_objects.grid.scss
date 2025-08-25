@@ -1,0 +1,25 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.grid' as grid;
+@use '../02-tools/tools.grid' as *;
+@use '../02-tools/tools.breakpoints' as *;
+
+.o-grid {
+  --#{config.$prefix}gutter-y: #{grid.$grid-gutter-width};
+  @include make-row();
+
+  &__col {
+    @include make-col-ready();
+  }
+
+  &--no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+
+    .o-grid__col {
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+}
+
+@include grid-columns();

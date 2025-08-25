@@ -1,0 +1,26 @@
+/*!
+ * Yabai Theme Skeleton Settings
+ * High-energy skeleton loading styling with rounded corners
+ * Overrides Atomix default skeleton settings
+ */
+
+@use '../../../styles/01-settings/settings.skeleton' with (
+  // Skeleton structure
+  $skeleton-height: 1rem,
+  $skeleton-border-radius: 8px,
+  $skeleton-bg: var(--atomix-secondary-bg-subtle),
+  $skeleton-animation-duration: 1.5s,
+
+  // Skeleton variants
+  $skeleton-text-height: 1rem,
+  $skeleton-title-height: 1.5rem,
+  $skeleton-avatar-size: 40px,
+  $skeleton-avatar-border-radius: 50%,
+
+  // Skeleton animation
+  $skeleton-shimmer-bg: linear-gradient(90deg, transparent, rgba(249, 115, 22, 0.1), transparent),
+  // Skeleton colors
+  $skeleton-color-start: var(--atomix-secondary-bg-subtle),
+  $skeleton-color-middle: var(--atomix-tertiary-bg-subtle),
+  $skeleton-color-end: var(--atomix-secondary-bg-subtle)
+);

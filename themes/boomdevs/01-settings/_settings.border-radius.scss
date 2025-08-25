@@ -1,0 +1,16 @@
+/*!
+ * Boomdevs Theme Border Radius Settings
+ * Custom border radius styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.border-radius' with (
+  $border-radius: 0.5rem,
+  $border-radius-sm: 0.25rem,
+  $border-radius-md: 0.5rem,
+  $border-radius-lg: 0.75rem,
+  $border-radius-xl: 1rem,
+  $border-radius-xxl: 1.25rem,
+  $border-radius-3xl: 1.5rem,
+  $border-radius-4xl: 2rem,
+  $border-radius-pill: 50rem
+);

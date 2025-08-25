@@ -1,0 +1,16 @@
+/*!
+ * Boomdevs Theme Modal Settings
+ * Custom modal styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.modal' with (
+  $modal-content-border-radius: 8px,
+  $modal-content-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1),
+  $modal-header-padding-bottom: 16px,
+  $modal-title-font-size: 1.5rem,
+  $modal-sub-font-size: 0.875rem,
+  $modal-sub-color: var(--atomix-gray-7),
+  $modal-close-icon-color: var(--atomix-black),
+  $modal-backdrop-bg: var(--atomix-black),
+  $modal-backdrop-opacity: 0.6
+);

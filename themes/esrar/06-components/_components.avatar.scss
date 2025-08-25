@@ -1,0 +1,61 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../02-tools/tools.animations' as *;
+@use '../../../styles/01-settings/settings.config' as config;
+
+.c-avatar {
+  @include animations('float', $duration: 4s, $timing: ease-in-out, $iteration-count: infinite);
+
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -100%;
+    background: conic-gradient(
+      var(--#{config.$prefix}primary-1),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-7),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-1)
+    );
+    animation: #{config.$prefix}chill-spin 6s linear infinite reverse;
+    opacity: 0.1;
+    z-index: -1;
+  }
+
+  &:hover {
+    @include animations(
+      'chill-rainbow' 'pulse-slow',
+      $duration: 1s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+
+    &::before {
+      animation: #{config.$prefix}chill-spin 2s linear infinite;
+      opacity: 0.2;
+    }
+  }
+
+  &--pulse {
+    @include animations(
+      'pulse-slow',
+      $duration: 1.5s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+
+  &--glow {
+    box-shadow: 0 0 10px var(--#{config.$prefix}primary-5);
+
+    &:hover {
+      box-shadow:
+        0 0 20px var(--#{config.$prefix}primary-7),
+        0 0 30px var(--#{config.$prefix}primary-3);
+    }
+  }
+}

@@ -1,0 +1,408 @@
+/*!
+ * Mashroom Theme Product Review Component
+ * Mushroom-themed ratings and reviews with psychedelic effects
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-product-review {
+  $root: &;
+
+  // Base review container
+  position: relative;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(157, 0, 255, 0.3);
+  border-radius: 20px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  @include trippy.trippy-glow(rgba(157, 0, 255, 0.2), 15px);
+
+  // Mushroom cap curve effect
+  border-radius: 20px 20px 10px 10px;
+
+  // Animated background particles
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(255, 187, 0, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 70% 80%, rgba(157, 0, 255, 0.1) 0%, transparent 50%);
+    border-radius: inherit;
+    animation: backgroundFloat 6s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes backgroundFloat {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.05);
+    }
+  }
+
+  // Header section
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(157, 0, 255, 0.5);
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 8px);
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1) rotate(5deg);
+      @include trippy.trippy-glow(rgba(255, 187, 0, 0.5), 12px);
+    }
+  }
+
+  &__product-info {
+    flex: 1;
+  }
+
+  &__product-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    background: linear-gradient(45deg, $purple-4, $yellow-4, $red-4);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: titleGradient 4s ease infinite;
+  }
+
+  @keyframes titleGradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  // Rating section
+  &__rating-section {
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__rating-label {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: $white;
+    text-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+  }
+
+  // Custom rating stars with mushroom effects
+  .c-rating {
+    &__stars {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    &__star {
+      font-size: 2rem;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+
+      &:hover {
+        color: $yellow-4;
+        transform: scale(1.2) rotate(15deg);
+        @include trippy.trippy-glow($yellow-4, 8px);
+      }
+
+      &.is-active {
+        color: $yellow-4;
+        animation: starPulse 2s ease-in-out infinite;
+        @include trippy.trippy-glow($yellow-4, 5px);
+      }
+
+      &.is-half {
+        color: $yellow-5;
+        @include trippy.trippy-glow($yellow-5, 3px);
+      }
+
+      &:hover ~ & {
+        color: rgba(255, 255, 255, 0.1);
+        transform: scale(0.9);
+      }
+    }
+
+    @keyframes starPulse {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  // Comment section
+  &__comment-section {
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__comment-label {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: $white;
+    text-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+  }
+
+  &__comment {
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(157, 0, 255, 0.3);
+    border-radius: 12px;
+    color: $white;
+    font-size: 1rem;
+    resize: vertical;
+    transition: all 0.3s ease;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: rgba(255, 187, 0, 0.5);
+      @include trippy.trippy-glow(rgba(255, 187, 0, 0.3), 8px);
+      transform: scale(1.02);
+    }
+
+    &:hover {
+      border-color: rgba(157, 0, 255, 0.5);
+    }
+  }
+
+  // Actions
+  &__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 1;
+  }
+
+  // Submit button with mushroom effects
+  &__submit-btn {
+    background: linear-gradient(45deg, $purple-4, $red-4, $yellow-4);
+    background-size: 200% 200%;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    color: $white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: buttonGradient 3s ease infinite;
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 8px);
+
+    &:hover {
+      transform: translateY(-2px) scale(1.05);
+      @include trippy.trippy-glow(rgba(255, 187, 0, 0.5), 12px);
+    }
+
+    &:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+
+  @keyframes buttonGradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  // Floating spore particles
+  &__spore {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, $yellow-4, transparent);
+    border-radius: 50%;
+    animation: float 8s ease-in-out infinite;
+    pointer-events: none;
+
+    &:nth-child(odd) {
+      animation-delay: -2s;
+    }
+
+    &:nth-child(even) {
+      animation-delay: -4s;
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0) translateX(0) scale(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100px) translateX(20px) scale(1);
+      opacity: 0;
+    }
+  }
+
+  // Variants
+  &--compact {
+    padding: 1rem;
+
+    #{$root}__image {
+      width: 60px;
+      height: 60px;
+    }
+
+    #{$root}__product-name {
+      font-size: 1.2rem;
+    }
+
+    #{$root}__comment {
+      min-height: 80px;
+    }
+  }
+
+  &--large {
+    padding: 3rem;
+
+    #{$root}__image {
+      width: 120px;
+      height: 120px;
+    }
+
+    #{$root}__product-name {
+      font-size: 1.8rem;
+    }
+
+    #{$root}__comment {
+      min-height: 150px;
+    }
+  }
+
+  &--dark {
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  &--light {
+    background: rgba(255, 255, 255, 0.1);
+    color: $black;
+
+    #{$root}__rating-label,
+    #{$root}__comment-label {
+      color: $black;
+      text-shadow: 0 0 10px rgba(157, 0, 255, 0.3);
+    }
+
+    #{$root}__comment {
+      background: rgba(255, 255, 255, 0.8);
+      color: $black;
+    }
+  }
+
+  &--psychedelic {
+    background: linear-gradient(135deg, rgba(157, 0, 255, 0.2), rgba(255, 187, 0, 0.2));
+    animation: psychedelicShift 10s ease-in-out infinite;
+
+    @keyframes psychedelicShift {
+      0%,
+      100% {
+        filter: hue-rotate(0deg);
+      }
+      50% {
+        filter: hue-rotate(180deg);
+      }
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+
+    #{$root}__header {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    #{$root}__image {
+      width: 100px;
+      height: 100px;
+    }
+
+    #{$root}__actions {
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    border-radius: 15px;
+
+    #{$root}__product-name {
+      font-size: 1.3rem;
+    }
+
+    #{$root}__rating-label,
+    #{$root}__comment-label {
+      font-size: 1rem;
+    }
+
+    #{$root}__comment {
+      min-height: 100px;
+      font-size: 0.9rem;
+    }
+  }
+}

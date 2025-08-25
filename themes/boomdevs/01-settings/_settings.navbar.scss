@@ -1,0 +1,16 @@
+/*!
+ * Boomdevs Theme Navbar Settings
+ * Custom navbar styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.navbar' with (
+  $navbar-padding-x: 24px,
+  $navbar-padding-y: 12px,
+  $navbar-height: 70px,
+  $navbar-bg: var(--atomix-light),
+  $navbar-border-width: 0,
+  $navbar-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08),
+  $navbar-brand-font-weight: 700,
+  $navbar-brand-color: var(--atomix-primary),
+  $navbar-toggler-color: var(--atomix-primary)
+);

@@ -1,0 +1,12 @@
+@use 'sass:color';
+@use 'sass:map';
+@use './settings.colors' as *;
+@use './settings.typography' as *;
+@use './settings.spacing' as *;
+
+$link-color: $primary !default;
+$link-color-dark: $primary-dark !default;
+$link-hover-color: darken($link-color, 20) !default;
+$link-font-size: $font-size-base !default;
+$link-font-weight: $font-weight-normal !default;
+$link-icon-spacer: map.get($spacing-sizes, 1) !default;

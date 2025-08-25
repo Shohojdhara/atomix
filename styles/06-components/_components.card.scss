@@ -1,0 +1,147 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.card' as *;
+@use '../01-settings/settings.border-radius' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.animations' as *;
+@use '../02-tools/tools.object-fit' as *;
+@use '../02-tools/tools.size' as *;
+
+.c-card {
+  $root: &;
+  --#{$prefix}card-spacer-y: #{rem($card-spacer-y)};
+  --#{$prefix}card-spacer-x: #{rem($card-spacer-x)};
+  --#{$prefix}card-row-spacer-y: #{rem($card-row-spacer-y)};
+  --#{$prefix}card-row-spacer-x: #{rem($card-row-spacer-x)};
+  --#{$prefix}card-title-spacer-y: #{rem($card-title-spacer-y)};
+  --#{$prefix}card-action-spacer-y: #{rem($card-action-spacer-y)};
+  --#{$prefix}card-header-spacer-y: #{rem($card-header-spacer-y)};
+  --#{$prefix}card-title-color: #{$card-title-color};
+  --#{$prefix}card-title-font-size: #{$card-title-font-size};
+  --#{$prefix}card-text-color: #{$card-text-color};
+  --#{$prefix}card-text-font-size: #{$card-text-font-size};
+  --#{$prefix}card-border-color: #{$card-border-color};
+  --#{$prefix}card-border-width: #{$card-border-width};
+  --#{$prefix}card-border-radius: #{$card-border-radius};
+  --#{$prefix}card-image-border-radius: #{$card-image-border-radius};
+  --#{$prefix}card-boxshadow: #{$card-boxshadow};
+  --#{$prefix}card-height: #{$card-height};
+  --#{$prefix}card-bg: #{$card-bg};
+  --#{$prefix}card-bg-hover: #{$card-bg-hover};
+  --#{$prefix}card-icon-size: #{rem($card-icon-size)};
+  --#{$prefix}card-icon-padding: #{rem($card-icon-padding)};
+  --#{$prefix}card-icon-bg: #{$card-icon-bg};
+  --#{$prefix}card-icon-color: #{$card-icon-color};
+  --#{$prefix}card-width: #{$card-width};
+
+  width: 100%;
+  max-width: var(--#{$prefix}card-width);
+  padding: var(--#{$prefix}card-spacer-y) var(--#{$prefix}card-spacer-x);
+  border: var(--#{$prefix}card-border-width) solid var(--#{$prefix}card-border-color);
+  border-radius: var(--#{$prefix}card-border-radius);
+  background-color: var(--#{$prefix}card-bg);
+  @include basic-transition();
+
+  &__header {
+    margin-bottom: var(--#{$prefix}card-header-spacer-y);
+  }
+
+  &__image {
+    width: 100%;
+    max-width: 100%;
+    border-radius: var(--#{$prefix}card-image-border-radius);
+    @include object-fit(cover);
+  }
+
+  &__body {
+    position: relative;
+  }
+
+  &__title {
+    color: var(--#{$prefix}card-title-color);
+    font-size: var(--#{$prefix}card-title-font-size);
+    margin-bottom: var(--#{$prefix}card-title-spacer-y);
+  }
+
+  &__text {
+    color: var(--#{$prefix}card-text-color);
+    font-size: var(--#{$prefix}card-text-font-size);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--#{$prefix}card-action-spacer-y);
+    margin-top: var(--#{$prefix}card-action-spacer-y);
+  }
+
+  &__icon {
+    display: inline-flex;
+    font-size: var(--#{$prefix}card-icon-size);
+    color: var(--#{$prefix}card-icon-color);
+    background-color: var(--#{$prefix}card-icon-bg);
+    padding: var(--#{$prefix}card-icon-padding);
+    border-radius: $border-radius-pill;
+  }
+
+  @if ($card-hover == true) {
+    &:hover {
+      background-color: var(--#{$prefix}card-bg-hover);
+    }
+  }
+
+  &:focus,
+  &.is-active {
+    --#{$prefix}card-border-color: var(--#{$prefix}brand-border-subtle);
+  }
+
+  &--row {
+    display: flex;
+    padding: var(--#{$prefix}card-row-spacer-y) var(--#{$prefix}card-row-spacer-x);
+
+    #{$root} {
+      &__header {
+        margin-bottom: 0;
+      }
+
+      &__body {
+        flex: 1;
+        padding-left: var(--#{$prefix}card-row-spacer-x);
+        padding-top: 0;
+      }
+
+      &__image {
+        flex: 1;
+        @include square(100%);
+        max-width: none;
+        @include object-fit(cover);
+      }
+    }
+  }
+
+  &--flat {
+    padding: 0;
+
+    #{$root}__body {
+      padding: var(--#{$prefix}card-row-spacer-y) var(--#{$prefix}card-row-spacer-x);
+    }
+
+    #{$root}__image {
+      border-radius: 0;
+    }
+
+    #{$root}__footer {
+      padding: var(--#{$prefix}card-row-spacer-y) var(--#{$prefix}card-row-spacer-x);
+      padding-top: 0;
+    }
+  }
+}
+
+// Elevation effect for ElevationCard
+.is-elevated {
+  .c-card {
+    box-shadow: var(--#{$prefix}box-shadow-lg, 0 16px 48px rgba(0, 0, 0, 0.175));
+    z-index: 1;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}

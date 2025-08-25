@@ -1,0 +1,15 @@
+/*!
+ * Shaj Default Theme Position Settings
+ * Modern positioning utilities with clean aesthetics
+ * Overrides Atomix default position settings
+ */
+
+@use '../../../styles/01-settings/settings.position' with (
+  $position-values: (
+    0: 0,
+    25: 25%,
+    50: 50%,
+    75: 75%,
+    100: 100%,
+  )
+);

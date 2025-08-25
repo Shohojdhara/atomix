@@ -1,0 +1,47 @@
+/*!
+ * Shaj Default Theme Hero Settings
+ * Modern hero section styling with clean aesthetics
+ * Overrides Atomix default hero settings
+ */
+
+@use '../../../styles/01-settings/settings.hero' with (
+  $hero-padding-x: 0px,
+  $hero-padding-y: 64px,
+  // 64px - more dramatic spacing
+  $hero-spacer-y: 80px,
+
+  // 80px
+  $hero-bg: var(--atomix-body-bg),
+  $hero-overlay: var(--atomix-brand-bg-subtle),
+  $hero-overlay-opacity: 0.6,
+
+  // slightly more opaque
+  $hero-subtitle-font-size: 18px,
+  // 18px - larger subtitle
+  $hero-title-font-size: 56px,
+  // 56px - impactful title
+  $hero-text-font-size: 18px,
+
+  // 18px - better readability
+  $hero-subtitle-color: var(--atomix-secondary-text-emphasis),
+  $hero-title-color: var(--atomix-body-color),
+  $hero-text-color: var(--atomix-secondary-color-text-emphasis),
+  $hero-subtitle-font-weight: 500,
+  // medium weight
+  $hero-title-font-weight: 700,
+  // bold
+  $hero-text-font-weight: 400,
+
+  $hero-subtitle-margin-bottom: 16px,
+  // 16px
+  $hero-text-margin-top: 16px,
+  // 16px
+  $hero-actions-margin-top: 32px,
+  // 32px - more space for CTAs
+  $hero-actions-inner-gap: 16px,
+
+  // 16px
+  $hero-grid-gutter: 80px,
+  // 80px - more generous spacing
+  $hero-content-width: 640px // 640px - wider content area
+);

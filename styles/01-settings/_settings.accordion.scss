@@ -1,0 +1,31 @@
+@use 'sass:map';
+@use './settings.border-radius' as radius;
+@use './settings.config' as config;
+@use './settings.spacing' as *;
+
+$accordion-width: 100% !default;
+$accordion-padding-x: map.get($spacing-sizes, 5) !default;
+$accordion-padding-y: map.get($spacing-sizes, 4) !default;
+
+$accordion-border-width: 2px !default;
+$accordion-border-color: transparent !default;
+$accordion-border-radius: radius.$border-radius-sm !default;
+
+$accordion-body-padding-x: $accordion-padding-x !default;
+$accordion-body-padding-y: 8px !default;
+$accordion-body-color: var(--#{config.$prefix}body-color) !default;
+$accordion-body-bg: var(--#{config.$prefix}secondary-bg-subtle) !default;
+
+$accordion-header-padding-x: $accordion-padding-x !default;
+$accordion-header-padding-y: $accordion-padding-y !default;
+$accordion-header-color: var(--#{config.$prefix}body-color) !default;
+$accordion-header-bg: var(--#{config.$prefix}secondary-bg-subtle) !default;
+
+$accordion-header-bg-hover: var(--#{config.$prefix}tertiary-bg-subtle) !default;
+
+$accordion-icon-size: 20px !default;
+$accordion-icon-color: var(--#{config.$prefix}body-color) !default;
+
+$accordion-icon-transform: 180deg !default;
+
+$accordion-disable-color: var(--#{config.$prefix}tertiary-text-emphasis) !default;

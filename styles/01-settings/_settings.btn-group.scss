@@ -1,0 +1,4 @@
+@use 'sass:map';
+@use 'settings.spacing' as spacing;
+
+$btn-group-gap: map.get(spacing.$spacing-sizes, 3) !default;

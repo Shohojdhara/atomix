@@ -1,0 +1,25 @@
+/*!
+ * Shaj Default Theme Badge Settings
+ * Modern badge styling with clean aesthetics
+ * Overrides Atomix default badge settings
+ */
+
+@use '../../../styles/01-settings/settings.badge' with (
+  $badge-font-size: 12px,
+  // 12px
+  $badge-font-weight: 500,
+  // medium weight
+  $badge-padding-x: 12px,
+  // 12px - more padding
+  $badge-padding-y: 6px,
+  // 6px
+  $badge-padding-y-sm: 4px,
+  // 4px
+  $badge-padding-y-lg: 8px,
+  // 8px
+  $badge-border-radius: 800px,
+  // pill shape
+  $badge-icon-size: 14px,
+  // 14px - smaller icons
+  $badge-inner-items-gap: 6px // 6px
+);

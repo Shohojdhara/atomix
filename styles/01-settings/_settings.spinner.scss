@@ -1,0 +1,13 @@
+@use 'settings.config' as config;
+
+$spinner-sizes: (
+  sm: 16px,
+  md: 24px,
+  lg: 32px,
+) !default;
+
+$spinner-background-color: var(--#{config.$prefix}secondary-bg-subtle) !default;
+$spinner-color: var(--#{config.$prefix}body-color) !default;
+$spinner-border-width: 3px !default;
+$spinner-border-width-sm: 2px !default;
+$spinner-animation-speed: 0.75s !default;

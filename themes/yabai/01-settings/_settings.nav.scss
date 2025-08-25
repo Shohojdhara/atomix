@@ -1,0 +1,37 @@
+/*!
+ * Yabai Theme Navigation Settings
+ * High-energy navigation styling with pill-shaped elements
+ * Overrides Atomix default navigation settings
+ */
+
+@use '../../../styles/01-settings/settings.nav' with (
+  // Navigation link styling
+  $nav-link-padding-y: 12px,
+  $nav-link-padding-x: 20px,
+  $nav-link-font-size: 16px,
+  $nav-link-font-weight: 600,
+  $nav-link-color: var(--atomix-body-color),
+  $nav-link-hover-color: var(--atomix-primary),
+  $nav-link-transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1),
+  $nav-link-disabled-color: var(--atomix-tertiary-text-emphasis),
+  // Pill-shaped active states
+  $nav-link-border-radius: 50rem,
+  $nav-link-hover-bg: var(--atomix-primary-bg-subtle),
+  $nav-link-active-bg: var(--atomix-primary),
+  $nav-link-active-color: var(--atomix-component-active-color),
+  // Navigation tabs
+  $nav-tabs-border-color: var(--atomix-primary-border),
+  $nav-tabs-border-width: 2px,
+  $nav-tabs-border-radius: 16px,
+  $nav-tabs-link-hover-border-color: var(--atomix-primary-border),
+  $nav-tabs-link-active-color: var(--atomix-primary),
+  $nav-tabs-link-active-bg: var(--atomix-primary-bg),
+  $nav-tabs-link-active-border-color: var(--atomix-primary),
+  // Navigation pills (perfect for Yabai theme)
+  $nav-pills-border-radius: 50rem,
+  $nav-pills-link-active-color: var(--atomix-component-active-color),
+  $nav-pills-link-active-bg: var(--atomix-primary),
+  // Text styling for energy
+  $nav-link-text-transform: uppercase,
+  $nav-link-letter-spacing: 0.025em
+);

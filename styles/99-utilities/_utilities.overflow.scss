@@ -1,0 +1,20 @@
+@use 'sass:map';
+
+// Define utilities for overflow
+$utilities-overflow: (
+  'overflow': (
+    property: overflow,
+    class: u-overflow,
+    values: auto hidden visible scroll,
+  ),
+  'overflow-x': (
+    property: overflow-x,
+    class: u-overflow-x,
+    values: auto hidden visible scroll,
+  ),
+  'overflow-y': (
+    property: overflow-y,
+    class: u-overflow-y,
+    values: auto hidden visible scroll,
+  ),
+);

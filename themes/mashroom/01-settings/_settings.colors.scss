@@ -1,0 +1,180 @@
+@use 'sass:color';
+
+@use '../../../styles/02-tools/tools.to-rgb' as *;
+@use '../../../styles/02-tools/tools.color-functions' as *;
+$white: #ffffff;
+$black: #000000;
+
+$purple-1: #f8f0ff;
+$purple-2: #f0d8ff;
+$purple-3: #e2b0ff;
+$purple-4: #d080ff;
+$purple-5: #b94dff;
+$purple-6: #9d00ff;
+// Deep psychedelic purple
+$purple-7: #7d00cc;
+$purple-8: #5e0099;
+$purple-9: #400066;
+$purple-10: #26003d;
+
+$primary-1: $purple-1;
+$primary-2: $purple-2;
+$primary-3: $purple-3;
+$primary-4: $purple-4;
+$primary-5: $purple-5;
+$primary-6: $purple-6;
+// Deep psychedelic purple
+$primary-7: $purple-7;
+$primary-8: $purple-8;
+$primary-9: $purple-9;
+$primary-10: $purple-10;
+
+// Primitives Blue Colors - Psychedelic blues and cyans
+$blue-1: #f0ffff;
+$blue-2: #d0f8ff;
+$blue-3: #90e8ff;
+$blue-4: #40d0ff;
+$blue-5: #00b4ff;
+$blue-6: #008cff;
+// Electric blue
+$blue-7: #0066cc;
+$blue-8: #004499;
+$blue-9: #003366;
+
+$blue-10: #001f3d;
+
+// Primitives Gray Colors - Keeping neutral grays for balance
+$gray-1: #f9fafb;
+$gray-2: #f3f4f6;
+$gray-3: #e5e7eb;
+$gray-4: #d1d5db;
+$gray-5: #9ca3af;
+$gray-6: #6b7280;
+$gray-7: #4b5563;
+$gray-8: #374151;
+$gray-9: #1f2937;
+$gray-10: #111827;
+
+$green-1: #f0fff8;
+$green-2: #d0ffeb;
+$green-3: #a0ffd4;
+$green-4: #50ffbb;
+$green-5: #00ff9d;
+$green-6: #00d984;
+// Electric green
+$green-7: #00b36b;
+$green-8: #008c52;
+$green-9: #006638;
+$green-10: #004020;
+
+$yellow-1: #fffff0;
+$yellow-2: #ffffd8;
+$yellow-3: #ffffb0;
+$yellow-4: #ffff6a;
+$yellow-5: #ffdd20;
+$yellow-6: #ffbb00;
+// Vibrant psychedelic yellow
+$yellow-7: #cc9900;
+$yellow-8: #997700;
+$yellow-9: #665500;
+$yellow-10: #332c00;
+
+// Primitives Red Colors - Vibrant magenta/red
+$red-1: #fff0f5;
+$red-2: #ffe0eb;
+$red-3: #ffc0d5;
+$red-4: #ff90ba;
+$red-5: #ff609f;
+$red-6: #ff2085;
+// Psychedelic magenta
+$red-7: #d9006f;
+$red-8: #b3005b;
+$red-9: #8c0047;
+$red-10: #660033;
+
+@use '../../../styles/01-settings/settings.colors' with (
+  // Basic Colors
+  $white: #ffffff,
+  $black: #000000,
+
+  // Color contrast variables
+  $color-contrast-dark: #000000,
+  $color-contrast-light: #ffffff,
+
+  // Primitives Primary Colors - Psychedelic purples and magentas
+  $primary-1: #f8f0ff,
+  $primary-2: #f0d8ff,
+  $primary-3: #e2b0ff,
+  $primary-4: #d080ff,
+  $primary-5: #b94dff,
+  $primary-6: #9d00ff,
+  // Deep psychedelic purple
+  $primary-7: #7d00cc,
+  $primary-8: #5e0099,
+  $primary-9: #400066,
+  $primary-10: #26003d,
+
+  // Primitives Red Colors - Vibrant magenta/red
+  $red-1: #fff0f5,
+  $red-2: #ffe0eb,
+  $red-3: #ffc0d5,
+  $red-4: #ff90ba,
+  $red-5: #ff609f,
+  $red-6: #ff2085,
+  // Psychedelic magenta
+  $red-7: #d9006f,
+  $red-8: #b3005b,
+  $red-9: #8c0047,
+  $red-10: #660033,
+
+  // Primitives Green Colors - Electric greens and limes
+  $green-1: #f0fff8,
+  $green-2: #d0ffeb,
+  $green-3: #a0ffd4,
+  $green-4: #50ffbb,
+  $green-5: #00ff9d,
+  $green-6: #00d984,
+  // Electric green
+  $green-7: #00b36b,
+  $green-8: #008c52,
+  $green-9: #006638,
+  $green-10: #004020,
+
+  // Primitives Yellow Colors - Psychedelic yellows and oranges
+  $yellow-1: #fffff0,
+  $yellow-2: #ffffd8,
+  $yellow-3: #ffffb0,
+  $yellow-4: #ffff6a,
+  $yellow-5: #ffdd20,
+  $yellow-6: #ffbb00,
+  // Vibrant psychedelic yellow
+  $yellow-7: #cc9900,
+  $yellow-8: #997700,
+  $yellow-9: #665500,
+  $yellow-10: #332c00,
+
+  // Primitives Blue Colors - Psychedelic blues and cyans
+  $blue-1: #f0ffff,
+  $blue-2: #d0f8ff,
+  $blue-3: #90e8ff,
+  $blue-4: #40d0ff,
+  $blue-5: #00b4ff,
+  $blue-6: #008cff,
+  // Electric blue
+  $blue-7: #0066cc,
+  $blue-8: #004499,
+  $blue-9: #003366,
+  $blue-10: #001f3d,
+
+  // Primitives Gray Colors - Keeping neutral grays for balance
+  $gray-1: #f9fafb,
+  $gray-2: #f3f4f6,
+  $gray-3: #e5e7eb,
+  $gray-4: #d1d5db,
+  $gray-5: #9ca3af,
+  $gray-6: #6b7280,
+  $gray-7: #4b5563,
+  $gray-8: #374151,
+  $gray-9: #1f2937,
+  $gray-10: #111827
+);

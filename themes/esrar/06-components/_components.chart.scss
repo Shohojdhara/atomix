@@ -1,0 +1,24 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../02-tools/tools.animations' as *;
+
+.c-chart {
+  @include animations('slow-zoom-in', $duration: 1s, $timing: ease-out, $iteration-count: 1);
+}
+
+.c-chart--animated {
+  @include animations(
+    'color-wave' 'chill-rainbow',
+    $duration: 4s,
+    $timing: linear,
+    $iteration-count: infinite
+  );
+
+  &:hover {
+    @include animations(
+      'pulse-slow' 'chill-spin',
+      $duration: 2s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+}

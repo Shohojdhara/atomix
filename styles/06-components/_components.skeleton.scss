@@ -1,0 +1,55 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.skeleton' as *;
+@use '../01-settings/settings.border-radius' as *;
+
+.c-skeleton {
+  $root: &;
+
+  --#{$prefix}skeleton-width: 100%;
+  --#{$prefix}skeleton-height: 1em;
+  --#{$prefix}skeleton-color: #{$skeleton-color};
+  --#{$prefix}skeleton-color-gradient-end: #{$skeleton-color-gradient-end};
+  --#{$prefix}skeleton-gradient-from-color: #{$skeleton-gradient-from-color};
+  --#{$prefix}skeleton-gradient-to-color: #{$skeleton-gradient-to-color};
+  --#{$prefix}skeleton-border-radius: #{$border-radius-sm};
+
+  display: inline-block;
+  width: var(--#{$prefix}skeleton-width);
+  min-height: var(--#{$prefix}skeleton-height);
+  background: linear-gradient(
+    90deg,
+    var(--#{$prefix}skeleton-gradient-from-color) 25%,
+    var(--#{$prefix}skeleton-gradient-to-color) 37%,
+    var(--#{$prefix}skeleton-gradient-from-color) 63%
+  );
+  background-size: 400% 100%;
+  border-radius: var(--#{$prefix}skeleton-border-radius);
+  animation-name: #{$prefix}-skeleton-loading;
+  animation-duration: 1.4s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+  pointer-events: none;
+  vertical-align: middle;
+  cursor: wait;
+
+  &--rect {
+    width: calc(var(--#{$prefix}skeleton-height) * 5.15);
+    min-height: calc(var(--#{$prefix}skeleton-height) * 2.4);
+    border-radius: $border-radius;
+  }
+
+  &--circle {
+    width: var(--#{$prefix}skeleton-height);
+    border-radius: $border-radius-pill;
+  }
+
+  &--square {
+    width: var(--#{$prefix}skeleton-height);
+  }
+
+  @each $size, $value in $skeleton-sizes {
+    &--#{$size} {
+      --#{$prefix}skeleton-height: #{$value};
+    }
+  }
+}

@@ -1,0 +1,14 @@
+$skeleton-sizes: (
+  sm: 14px,
+  md: 16px,
+  lg: 24px,
+  xl: 32px,
+  xxl: 36px,
+  3xl: 40px,
+  4xl: 44px,
+) !default;
+
+$skeleton-color: rgba(0, 0, 0, 0.06) !default;
+$skeleton-color-gradient-end: rgba(0, 0, 0, 0.15) !default;
+$skeleton-gradient-from-color: rgba(0, 0, 0, 0.06) !default;
+$skeleton-gradient-to-color: rgba(0, 0, 0, 0.15) !default;

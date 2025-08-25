@@ -1,0 +1,51 @@
+/*!
+ * Yabai Theme Toggle Settings
+ * High-energy toggle/switch styling with pill shapes
+ * Overrides Atomix default toggle settings
+ */
+
+@use '../../../styles/01-settings/settings.toggle' with (
+  // Toggle switch structure
+  $toggle-width: 56px,
+  $toggle-height: 28px,
+  $toggle-border-radius: 50rem,
+  $toggle-border-width: 2px,
+  $toggle-border-color: var(--atomix-primary-border),
+  $toggle-bg: var(--atomix-secondary-bg-subtle),
+  $toggle-checked-bg: var(--atomix-primary),
+  $toggle-checked-border-color: var(--atomix-primary),
+  // Toggle handle (the sliding part)
+  $toggle-handle-size: 20px,
+  $toggle-handle-border-radius: 50rem,
+  $toggle-handle-bg: var(--atomix-component-active-color),
+  $toggle-handle-border-width: 1px,
+  $toggle-handle-border-color: var(--atomix-primary-border),
+  $toggle-handle-shadow: 0 2px 4px rgba(0, 0, 0, 0.1),
+  $toggle-handle-checked-shadow: 0 2px 8px rgba(249, 115, 22, 0.3),
+  // Toggle positions
+  $toggle-handle-offset: 2px,
+  $toggle-handle-checked-offset: calc(100% - 22px),
+  // Focus states with orange theme
+  $toggle-focus-border-color: var(--atomix-primary),
+  $toggle-focus-box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2),
+  $toggle-focus-width: 3px,
+
+  // Size variations
+  $toggle-sm-width: 44px,
+  $toggle-sm-height: 22px,
+  $toggle-sm-handle-size: 16px,
+  $toggle-sm-handle-offset: 2px,
+  $toggle-sm-handle-checked-offset: calc(100% - 18px),
+  $toggle-lg-width: 68px,
+  $toggle-lg-height: 34px,
+  $toggle-lg-handle-size: 26px,
+  $toggle-lg-handle-offset: 2px,
+  $toggle-lg-handle-checked-offset: calc(100% - 28px),
+  // High-energy transitions
+  $toggle-transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1),
+  $toggle-handle-transition: (transform 200ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms ease),
+  // Disabled states
+  $toggle-disabled-opacity: 0.5,
+  $toggle-disabled-bg: var(--atomix-tertiary-bg-subtle),
+  $toggle-disabled-border-color: var(--atomix-tertiary-border)
+);

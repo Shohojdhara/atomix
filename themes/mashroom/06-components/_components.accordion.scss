@@ -1,0 +1,187 @@
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as colors;
+@use '../01-settings/settings.config' as config;
+
+// Psychedelic accordion animations
+@keyframes accordion-float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes accordion-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(157, 0, 255, 0.8),
+      0 0 30px rgba(255, 32, 133, 0.6),
+      0 0 40px rgba(255, 187, 0, 0.4);
+  }
+}
+
+@keyframes accordion-expand {
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.c-accordion {
+  $root: &;
+  // Apply psychedelic border with glow effect
+  @include trippy.trippy-glow(colors.$primary-6, 10px);
+
+  // Add color shift for extra psychedelic effect
+  @include trippy.color-shift();
+
+  // Add floating animation
+  @include trippy.float-animation();
+  animation-duration: 6s;
+
+  // Add pulse animation
+  animation: accordion-glow-pulse 3s infinite;
+
+  &__header {
+    @include gradients.mushroom-cap-gradient();
+
+    // Add pulse effect to header
+    @include trippy.psychedelic-pulse(colors.$primary-4);
+
+    // Add a subtle pattern
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+
+    // Add floating effect
+    @include trippy.float-animation();
+    animation-duration: 4s;
+
+    // Add psychedelic border
+    border: 1px solid rgba(157, 0, 255, 0.3);
+
+    &:hover {
+      @include gradients.psychedelic-linear-gradient(colors.$primary-6, colors.$blue-6);
+      transform: scale(1.01) rotate(1deg);
+      @include trippy.trippy-glow(colors.$red-4, 15px);
+    }
+
+    // Active state
+    &--active {
+      @include gradients.rainbow-gradient();
+      background-size: 300% 300%;
+      animation: rainbow-shift 4s ease infinite;
+      border: 1px solid rgba(255, 187, 0, 0.5);
+
+      &:hover {
+        animation: rainbow-shift 2s ease infinite;
+        @include trippy.trippy-glow(colors.$yellow-4, 20px);
+      }
+    }
+  }
+
+  &__body {
+    @include gradients.mushroom-stem-gradient();
+    border-top: 1px solid colors.$primary-3;
+
+    // Add animation when expanding
+    animation: accordion-expand 0.3s ease-out;
+
+    // Add a subtle sparkle effect
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(1px 1px at 20px 30px, var(--atomix-body-color), rgba(255, 255, 255, 0)),
+        radial-gradient(1px 1px at 40px 70px, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
+      background-repeat: repeat;
+      background-size: 50px 50px;
+      animation: sparkle 3s linear infinite;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    @keyframes sparkle {
+      from {
+        background-position: 0 0;
+      }
+      to {
+        background-position: 50px 50px;
+      }
+    }
+  }
+
+  // Psychedelic variant
+  &--psychedelic {
+    @include gradients.rainbow-gradient();
+    background-size: 400% 400%;
+    animation: rainbow-shift 6s ease infinite;
+    border: 2px solid transparent;
+    border-radius: 10px;
+
+    #{$root}__header {
+      @include gradients.rainbow-gradient();
+      background-size: 300% 300%;
+      animation: rainbow-shift 4s ease infinite;
+      border: none;
+      border-radius: 8px 8px 0 0;
+
+      &:hover {
+        animation: rainbow-shift 2s ease infinite;
+      }
+
+      &--active {
+        @include gradients.rainbow-gradient();
+        background-size: 300% 300%;
+        animation: rainbow-shift 3s ease infinite;
+      }
+    }
+
+    #{$root}__body {
+      @include gradients.spore-gradient();
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+    }
+  }
+
+  // Floating variant
+  &--floating {
+    @include trippy.float-animation();
+    animation-duration: 5s;
+
+    #{$root}__header {
+      @include trippy.float-animation();
+      animation-duration: 3s;
+    }
+  }
+
+  // Glowing variant
+  &--glow {
+    @include trippy.trippy-glow(colors.$purple-4, 20px);
+    animation: accordion-glow-pulse 2s infinite;
+
+    #{$root}__header {
+      @include trippy.trippy-glow(colors.$red-4, 15px);
+
+      &--active {
+        @include trippy.trippy-glow(colors.$yellow-4, 25px);
+      }
+    }
+  }
+}

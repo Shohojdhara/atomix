@@ -1,0 +1,11 @@
+@use '../01-settings/settings.config' as config;
+@use '../02-tools/tools.animations' as animations;
+
+a {
+  color: rgba(var(--#{config.$prefix}link-color-rgb), var(--#{config.$prefix}u-link-opacity, 1));
+  @include animations.basic-transition(color);
+  &,
+  &:hover {
+    text-decoration: none;
+  }
+}

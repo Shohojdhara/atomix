@@ -1,0 +1,15 @@
+/*!
+ * Boomdevs Theme Todo Settings
+ * Custom todo styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.todo' with (
+  $todo-bg: var(--atomix-light),
+  $todo-color: var(--atomix-gray-10),
+  $todo-border-color: var(--atomix-gray-4),
+  $todo-border-radius: 8px,
+  $todo-item-border-color: var(--atomix-gray-4),
+  $todo-item-hover-bg: var(--atomix-gray-1),
+  $todo-completed-color: var(--atomix-gray-6),
+  $todo-empty-color: var(--atomix-gray-6)
+);

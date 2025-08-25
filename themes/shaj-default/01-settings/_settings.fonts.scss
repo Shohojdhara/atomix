@@ -1,0 +1,13 @@
+/*!
+ * Shaj Default Theme Fonts
+ * Font imports and font-face declarations for the shaj-default theme
+ */
+
+// Google Fonts import for Inter
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+// Font display optimization
+$font-display: swap !default;
+
+// Font loading strategy
+$font-loading-strategy: 'swap' !default;

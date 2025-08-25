@@ -1,0 +1,104 @@
+/*!
+ * Shaj Default Theme Messages Settings
+ * Modern messaging/chat styling with clean aesthetics
+ * Overrides Atomix default messages settings
+ */
+
+@forward '../../../styles/01-settings/settings.messages' with (
+  $messages-padding-x: 24px,
+  // 24px - more generous padding
+  $messages-padding-y: 24px,
+  // 24px
+  $messages-border-radius: 12px,
+  // 12px - softer corners
+  $messages-border-width: 0px,
+  $messages-border-color: null,
+  $messages-bg: var(--atomix-secondary-bg-subtle),
+  $messages-content-margin-top: 24px,
+
+  // 24px
+  $messages-avatar-margin: 12px,
+
+  // 12px
+  $messages-items-padding-x: 0px,
+  $messages-items-padding-y: 0px,
+  $messages-items-width: 520px,
+  // 520px - wider for modern screens
+  $messages-items-border-width: 0px,
+  $messages-items-border-color: transparent,
+  $messages-items-border-radius: null,
+  $messages-items-gap: 8px,
+
+  // 8px - better spacing
+  $messages-text-padding-x: 16px,
+  // 16px
+  $messages-text-padding-y: 12px,
+  // 12px
+  $messages-text-font-size: 16px,
+  // 16px - better readability
+  $messages-text-primary-color: var(--atomix-body-color),
+  $messages-text-secondary-color: var(--atomix-body-color),
+  $messages-text-primary-bg: var(--atomix-brand-bg-subtle),
+  $messages-text-secondary-bg: var(--atomix-tertiary-bg-subtle),
+  $messages-text-border-radius: 16px,
+
+  // 16px - modern bubble shape
+  $messages-file-padding-x: 16px,
+  // 16px
+  $messages-file-padding-y: 12px,
+  // 12px
+  $messages-file-text-font-size: 16px,
+  // 16px
+  $messages-file-text-primary-color: var(--atomix-body-color),
+  $messages-file-text-secondary-color: var(--atomix-body-color),
+  $messages-file-icon-size: 44px,
+  // 44px - larger icons
+  $messages-file-icon-bg: var(--atomix-primary-2),
+  $messages-file-icon-bg-dark: var(--atomix-primary-7),
+  $messages-file-icon-margin-right: 12px,
+  // 12px
+  $messages-file-info-font-size: 12px,
+  // 12px
+  $messages-file-info-color: var(--atomix-tertiary-text-emphasis),
+  $messages-file-primary-bg: var(--atomix-brand-bg-subtle),
+  $messages-file-secondary-bg: var(--atomix-tertiary-bg-subtle),
+  $messages-file-border-radius: 16px,
+
+  // 16px
+  $messages-image-width: 320px,
+  // 320px - better mobile experience
+  $messages-image-height: 240px,
+  // 240px
+  $messages-image-border-radius: 12px,
+
+  // 12px
+  $messages-form-margin-top: 24px,
+  // 24px
+  $messages-form-row-gap: 12px,
+  // 12px
+  $messages-form-submit-icon-size: 20px,
+
+  // 20px
+  $messages-input-padding-x: 16px,
+  // 16px
+  $messages-input-padding-y: 12px,
+  // 12px
+  $messages-input-font-size: 16px,
+  // 16px
+  $messages-input-color: var(--atomix-body-color),
+  $messages-input-placeholder-color: var(--atomix-tertiary-text-emphasis),
+  $messages-input-border-width: 1px,
+  $messages-input-border-color: var(--atomix-secondary-border-subtle),
+  $messages-input-border-radius: 8px,
+
+  // 8px
+  $messages-input-options-icons-size: 20px,
+  // 20px
+  $messages-input-options-row-gap: 8px,
+
+  // 8px
+  $messages-body-height: calc(100vh - 500px) // adjusted height
+);
+
+// Override variables that don't have !default in the original
+$messages-width: 100%;

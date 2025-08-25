@@ -1,0 +1,479 @@
+// Component Mixins
+// =============================================================================
+
+@use 'sass:color';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.colors' as colors;
+@use '../01-settings/settings.border-radius' as *;
+@use '../01-settings/settings.box-shadow' as *;
+@use '../01-settings/settings.breakpoints' as *;
+@use 'tools.to-rgb' as *;
+
+// Base component mixin
+// Provides common base styles for all components
+@mixin component-base {
+  // Reset box model
+  box-sizing: border-box;
+
+  // Default font settings
+  font-family: var(--#{$prefix}body-font-family);
+  font-size: var(--#{$prefix}body-font-size);
+  line-height: var(--#{$prefix}body-line-height);
+
+  // Default color settings
+  color: var(--#{$prefix}body-color);
+
+  // Default border settings
+  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) transparent;
+  border-radius: var(--#{$prefix}border-radius);
+
+  // Default transition
+  transition: all 0.2s ease-in-out;
+
+  // Default cursor
+  cursor: default;
+
+  // Default outline
+  outline: none;
+
+  // Default position
+  position: relative;
+
+  // Default display
+  display: inline-block;
+
+  // Default text decoration
+  text-decoration: none;
+
+  // Default list style
+  list-style: none;
+
+  // Default margin and padding reset
+  margin: 0;
+  padding: 0;
+}
+
+// Focus ring mixin
+// Provides consistent focus styling for interactive elements
+@mixin focus-ring($color: var(--#{$prefix}focus-border-color), $width: 2px, $offset: 2px) {
+  &:focus-visible {
+    outline: $width solid $color;
+    outline-offset: $offset;
+    box-shadow: 0 0 0 $width $color;
+  }
+}
+
+// Interactive component mixin
+// Provides hover and focus states for interactive components
+@mixin component-interactive(
+  $hover-bg: var(--#{$prefix}primary-hover),
+  $hover-color: var(--#{$prefix}primary-text-emphasis),
+  $active-bg: var(--#{$prefix}primary-7),
+  $active-color: var(--#{$prefix}primary-text-emphasis)
+) {
+  cursor: pointer;
+
+  &:hover {
+    background-color: $hover-bg;
+    color: $hover-color;
+  }
+
+  &:active {
+    background-color: $active-bg;
+    color: $active-color;
+  }
+
+  @include focus-ring;
+}
+
+// Disabled component mixin
+// Provides consistent disabled state styling
+@mixin component-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: inherit;
+    color: inherit;
+    transform: none;
+  }
+}
+
+// Loading component mixin
+// Provides consistent loading state styling
+@mixin component-loading {
+  pointer-events: none;
+  opacity: 0.7;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid var(--#{$prefix}border-primary-subtle);
+    border-top: 2px solid var(--#{$prefix}primary-border-subtle);
+    border-radius: 50%;
+    animation: component-spin 1s linear infinite;
+  }
+}
+
+// Selected component mixin
+// Provides consistent selected state styling
+@mixin component-selected(
+  $bg: var(--#{$prefix}brand-bg-subtle),
+  $color: var(--#{$prefix}brand-text-emphasis),
+  $border: var(--#{$prefix}brand-border-subtle)
+) {
+  background-color: $bg;
+  color: $color;
+  border-color: $border;
+}
+
+// Active component mixin
+// Provides consistent active state styling
+@mixin component-active(
+  $bg: var(--#{$prefix}primary-7),
+  $color: var(--#{$prefix}primary-text-emphasis),
+  $border: var(--#{$prefix}primary)
+) {
+  background-color: $bg;
+  color: $color;
+  border-color: $border;
+}
+
+// Error component mixin
+// Provides consistent error state styling
+@mixin component-error(
+  $bg: var(--#{$prefix}error-bg-subtle),
+  $color: var(--#{$prefix}error-text-emphasis),
+  $border: var(--#{$prefix}error-border-subtle)
+) {
+  background-color: $bg;
+  color: $color;
+  border-color: $border;
+}
+
+// Success component mixin
+// Provides consistent success state styling
+@mixin component-success(
+  $bg: var(--#{$prefix}success-bg-subtle),
+  $color: var(--#{$prefix}success-text-emphasis),
+  $border: var(--#{$prefix}success-border-subtle)
+) {
+  background-color: $bg;
+  color: $color;
+  border-color: $border;
+}
+
+// Warning component mixin
+// Provides consistent warning state styling
+@mixin component-warning(
+  $bg: var(--#{$prefix}warning-bg-subtle),
+  $color: var(--#{$prefix}warning-text-emphasis),
+  $border: var(--#{$prefix}warning-border-subtle)
+) {
+  background-color: $bg;
+  color: $color;
+  border-color: $border;
+}
+
+// Info component mixin
+// Provides consistent info state styling
+@mixin component-info(
+  $bg: var(--#{$prefix}info-bg-subtle),
+  $color: var(--#{$prefix}info-text-emphasis),
+  $border: var(--#{$prefix}info-border-subtle)
+) {
+  background-color: $bg;
+  color: $color;
+  border-color: $border;
+}
+
+// Responsive component mixin
+// Provides responsive behavior for components
+@mixin component-responsive($breakpoint: 'md') {
+  @media (max-width: map-get($grid-breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+// Accessibility component mixin
+// Provides accessibility enhancements
+@mixin component-accessibility {
+  // High contrast mode support
+  @media (prefers-contrast: high) {
+    border-width: 2px;
+  }
+
+  // Reduced motion support
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    animation: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  // Focus visible support
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// Component size mixin
+// Provides consistent sizing for components
+@mixin component-size($size: 'md') {
+  @if $size == 'sm' {
+    font-size: 0.875rem;
+    padding: var(--#{$prefix}border-radius-sm) var(--#{$prefix}border-radius);
+  } @else if $size == 'md' {
+    font-size: var(--#{$prefix}body-font-size);
+    padding: var(--#{$prefix}border-radius) calc(var(--#{$prefix}border-radius) + 0.25rem);
+  } @else if $size == 'lg' {
+    font-size: 1.125rem;
+    padding: calc(var(--#{$prefix}border-radius) + 0.125rem)
+      calc(var(--#{$prefix}border-radius) + 0.5rem);
+  } @else if $size == 'xl' {
+    font-size: 1.25rem;
+    padding: calc(var(--#{$prefix}border-radius) + 0.25rem)
+      calc(var(--#{$prefix}border-radius) + 0.75rem);
+  }
+}
+
+// Component variant mixin
+// Provides consistent variant styling
+@mixin component-variant($variant: 'primary') {
+  @if $variant == 'primary' {
+    background-color: var(--#{$prefix}brand-bg-subtle);
+    color: var(--#{$prefix}brand-text-emphasis);
+    border-color: var(--#{$prefix}brand-border-subtle);
+  } @else if $variant == 'secondary' {
+    background-color: var(--#{$prefix}secondary-bg-subtle);
+    color: var(--#{$prefix}secondary-text-emphasis);
+    border-color: var(--#{$prefix}secondary-border-subtle);
+  } @else if $variant == 'success' {
+    @include component-success;
+  } @else if $variant == 'error' {
+    @include component-error;
+  } @else if $variant == 'warning' {
+    @include component-warning;
+  } @else if $variant == 'info' {
+    @include component-info;
+  }
+}
+
+// Component animation mixin
+// Provides consistent animations for components
+@mixin component-animation($type: 'fade') {
+  @if $type == 'fade' {
+    opacity: 0;
+    animation: component-fade-in 0.3s ease-in-out forwards;
+  } @else if $type == 'slide' {
+    transform: translateY(20px);
+    opacity: 0;
+    animation: component-slide-in 0.3s ease-out forwards;
+  } @else if $type == 'scale' {
+    transform: scale(0.9);
+    opacity: 0;
+    animation: component-scale-in 0.2s ease-out forwards;
+  }
+}
+
+// Component shadow mixin
+// Provides consistent shadow styling
+@mixin component-shadow($level: 'md') {
+  @if $level == 'sm' {
+    box-shadow: var(--#{$prefix}box-shadow-sm);
+  } @else if $level == 'md' {
+    box-shadow: var(--#{$prefix}box-shadow);
+  } @else if $level == 'lg' {
+    box-shadow: var(--#{$prefix}box-shadow-lg);
+  } @else if $level == 'xl' {
+    box-shadow: var(--#{$prefix}box-shadow-xl);
+  }
+}
+
+// Component border mixin
+// Provides consistent border styling
+@mixin component-border(
+  $style: 'solid',
+  $width: var(--#{$prefix}border-width),
+  $color: var(--#{$prefix}border-primary-subtle)
+) {
+  border: $width $style $color;
+}
+
+// Component radius mixin
+// Provides consistent border radius styling
+@mixin component-radius($radius: 'md') {
+  @if $radius == 'sm' {
+    border-radius: var(--#{$prefix}border-radius-sm);
+  } @else if $radius == 'md' {
+    border-radius: var(--#{$prefix}border-radius);
+  } @else if $radius == 'lg' {
+    border-radius: var(--#{$prefix}border-radius-lg);
+  } @else if $radius == 'xl' {
+    border-radius: var(--#{$prefix}border-radius-xl);
+  } @else if $radius == 'full' {
+    border-radius: var(--#{$prefix}border-radius-pill);
+  }
+}
+
+// Component typography mixin
+// Provides consistent typography styling
+@mixin component-typography($size: 'base', $weight: 'normal', $line-height: 'base') {
+  @if $size == 'base' {
+    font-size: var(--#{$prefix}body-font-size);
+  } @else if $size == 'sm' {
+    font-size: 0.875rem;
+  } @else if $size == 'lg' {
+    font-size: 1.125rem;
+  } @else if $size == 'xl' {
+    font-size: 1.25rem;
+  }
+
+  @if $weight == 'normal' {
+    font-weight: var(--#{$prefix}body-font-weight);
+  } @else if $weight == 'medium' {
+    font-weight: 500;
+  } @else if $weight == 'semibold' {
+    font-weight: 600;
+  } @else if $weight == 'bold' {
+    font-weight: 700;
+  }
+
+  @if $line-height == 'base' {
+    line-height: var(--#{$prefix}body-line-height);
+  } @else if $line-height == 'tight' {
+    line-height: 1.2;
+  } @else if $line-height == 'relaxed' {
+    line-height: 1.6;
+  }
+}
+
+// Component spacing mixin
+// Provides consistent spacing styling
+@mixin component-spacing($padding: 'md', $margin: 'none') {
+  @if $padding == 'sm' {
+    padding: var(--#{$prefix}border-radius-sm);
+  } @else if $padding == 'md' {
+    padding: var(--#{$prefix}border-radius);
+  } @else if $padding == 'lg' {
+    padding: calc(var(--#{$prefix}border-radius) + 0.25rem);
+  } @else if $padding == 'xl' {
+    padding: calc(var(--#{$prefix}border-radius) + 0.5rem);
+  }
+
+  @if $margin != 'none' {
+    margin: var(--#{$prefix}border-radius);
+  }
+}
+
+// Component layout mixin
+// Provides consistent layout styling
+@mixin component-layout($display: 'block', $position: 'relative') {
+  display: $display;
+  position: $position;
+}
+
+// Component flexbox mixin
+// Provides consistent flexbox styling
+@mixin component-flex(
+  $direction: 'row',
+  $justify: 'flex-start',
+  $align: 'stretch',
+  $wrap: 'nowrap'
+) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  flex-wrap: $wrap;
+}
+
+// Component grid mixin
+// Provides consistent grid styling
+@mixin component-grid($columns: 1, $gap: 'md') {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: var(--#{$prefix}border-radius);
+}
+
+// Component overflow mixin
+// Provides consistent overflow styling
+@mixin component-overflow($overflow: 'visible') {
+  overflow: $overflow;
+}
+
+// Component z-index mixin
+// Provides consistent z-index styling
+@mixin component-z-index($level: 'base') {
+  @if $level == 'base' {
+    z-index: 1;
+  } @else if $level == 'dropdown' {
+    z-index: 1000;
+  } @else if $level == 'sticky' {
+    z-index: 1020;
+  } @else if $level == 'fixed' {
+    z-index: 1030;
+  } @else if $level == 'modal' {
+    z-index: 1050;
+  } @else if $level == 'popover' {
+    z-index: 1060;
+  } @else if $level == 'tooltip' {
+    z-index: 1070;
+  } @else if $level == 'toast' {
+    z-index: 1080;
+  }
+}
+
+// Component animations
+// =============================================================================
+
+@keyframes component-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes component-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes component-slide-in {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes component-scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

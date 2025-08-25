@@ -1,0 +1,125 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.select' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.transition' as transition;
+@use '../02-tools/tools.hidden-visually' as *;
+
+.c-select {
+  $root: &;
+
+  --#{$prefix}select-width: #{rem($select-width)};
+  --#{$prefix}select-padding-x: #{rem($select-padding-x)};
+  --#{$prefix}select-padding-y: #{rem($select-padding-y)};
+  --#{$prefix}select-color: #{$select-color};
+  --#{$prefix}select-font-size: #{$select-font-size};
+  --#{$prefix}select-font-size-lg: #{$select-font-size-lg};
+  --#{$prefix}select-icon-toggle-size: #{rem($select-icon-toggle-size)};
+  --#{$prefix}select-icon-toggle-color: #{$select-icon-toggle-color};
+  --#{$prefix}select-placeholder-color: #{$select-placeholder-color};
+  --#{$prefix}select-bg: #{$select-bg};
+  --#{$prefix}select-expanded-bg: #{$select-expanded-bg};
+  --#{$prefix}select-border-color: #{$select-border-color};
+  --#{$prefix}select-border-color-hover: #{$select-border-color-hover};
+  --#{$prefix}select-border-radius: #{$select-border-radius};
+  --#{$prefix}select-inner-spacer: #{rem($select-inner-spacer)};
+  --#{$prefix}select-dropdown-icon-size: #{rem($select-dropdown-icon-size)};
+  --#{$prefix}select-panel-padding-x: #{rem($select-panel-padding-x)};
+  --#{$prefix}select-panel-padding-y: #{rem($select-panel-padding-y)};
+  --#{$prefix}select-panel-spacer-y: #{rem($select-panel-spacer-y)};
+  --#{$prefix}select-panel-bg: #{$select-panel-bg};
+  --#{$prefix}select-panel-box-shadow: #{$select-panel-box-shadow};
+  --#{$prefix}select-panel-border-radius: #{$select-panel-border-radius};
+  --#{$prefix}select-item-padding-x: #{rem($select-item-padding-x)};
+  --#{$prefix}select-item-padding-y: #{rem($select-item-padding-y)};
+  --#{$prefix}select-item-color: #{$select-item-color};
+  --#{$prefix}select-item-bg: #{$select-item-bg};
+  --#{$prefix}select-item-border-radius: #{$select-item-border-radius};
+  --#{$prefix}select-item-bg-hover: #{$select-item-bg-hover};
+
+  select {
+    @include visually-hidden();
+  }
+
+  position: relative;
+  width: var(--#{$prefix}select-width);
+
+  &__selected {
+    width: 100%;
+    padding: var(--#{$prefix}select-padding-x) var(--#{$prefix}select-padding-y);
+    color: var(--#{$prefix}select-placeholder-color);
+    font-size: var(--#{$prefix}select-font-size);
+    background-color: var(--#{$prefix}select-bg);
+    border: 1px solid var(--#{$prefix}select-border-color);
+    border-radius: var(--#{$prefix}select-border-radius);
+    cursor: pointer;
+
+    @include transition.basic-transition();
+
+    &:hover {
+      border-color: var(--#{$prefix}select-border-color-hover);
+    }
+  }
+
+  &__toggle-icon {
+    color: var(--#{$prefix}select-icon-toggle-color);
+    font-size: var(--#{$prefix}select-icon-toggle-size);
+    position: absolute;
+    top: var(--#{$prefix}select-padding-y);
+    right: var(--#{$prefix}select-padding-x);
+    transform-origin: center center;
+
+    @include transition.basic-transition();
+  }
+
+  &__body {
+    position: absolute;
+    width: 100%;
+    height: 0px;
+    top: calc(100% + var(--#{$prefix}select-panel-spacer-y));
+    left: 0;
+    background-color: var(--#{$prefix}select-panel-bg);
+    border-radius: var(--#{$prefix}select-panel-border-radius);
+    box-shadow: var(--#{$prefix}select-panel-box-shadow);
+    overflow: hidden;
+    @include transition.basic-transition;
+    z-index: 99;
+  }
+
+  &__panel {
+    padding: var(--#{$prefix}select-panel-padding-x) var(--#{$prefix}select-panel-padding-y);
+  }
+
+  &__items {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+  }
+
+  &__item {
+    padding: var(--#{$prefix}select-item-padding-x) var(--#{$prefix}select-item-padding-y);
+    color: var(--#{$prefix}select-item-color);
+    background-color: var(--#{$prefix}select-item-bg);
+    border-radius: var(--#{$prefix}select-item-border-radius);
+    @include transition.basic-transition;
+
+    &,
+    & > * {
+      cursor: pointer;
+    }
+
+    &:hover {
+      background-color: var(--#{$prefix}select-item-bg-hover);
+    }
+  }
+
+  &--lg {
+    --#{$prefix}select-font-size: var(--#{$prefix}select-font-size-lg);
+  }
+
+  &.is-open {
+    --#{$prefix}select-bg: var(--#{$prefix}select-expanded-bg);
+    #{$root}__toggle-icon {
+      transform: rotate(180deg);
+    }
+  }
+}

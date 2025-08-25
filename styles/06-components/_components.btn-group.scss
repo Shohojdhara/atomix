@@ -1,0 +1,35 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.btn-group' as *;
+@use '../02-tools/tools.rem' as *;
+
+.c-btn-group {
+  --#{$prefix}btn-group-gap: #{$btn-group-gap};
+
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+
+  .c-btn {
+    flex: 1 1 auto;
+    position: relative;
+
+    &:not(:first-child):not(:last-child) {
+      border-radius: 0px;
+    }
+
+    &:first-child:not(:last-child) {
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+
+    &:last-child:not(:first-child) {
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+    }
+  }
+
+  .c-btn + .c-btn {
+    margin-left: calc(var(--#{$prefix}btn-border-width) * -1);
+  }
+}

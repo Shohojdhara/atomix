@@ -1,0 +1,498 @@
+/*!
+ * Mashroom Theme Photo Viewer Component
+ * Psychedelic gallery navigation with mushroom-inspired effects
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-photo-viewer {
+  $root: &;
+
+  // Base photo viewer container
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.9);
+  @include trippy.trippy-glow(rgba(157, 0, 255, 0.2), 10px);
+
+  // Mushroom cap curve
+  border-radius: 16px 16px 8px 8px;
+
+  // Main image container
+  &__main {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: all 0.3s ease;
+    cursor: zoom-in;
+
+    &--zoomed {
+      cursor: zoom-out;
+      transform: scale(1.5);
+    }
+  }
+
+  // Navigation arrows
+  &__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border: none;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    color: $white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 8px);
+
+    &:hover {
+      background: rgba(157, 0, 255, 0.7);
+      transform: translateY(-50%) scale(1.1);
+      @include trippy.trippy-glow($yellow-4, 12px);
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      @include trippy.trippy-glow(none, 0);
+    }
+
+    &--prev {
+      left: 1rem;
+    }
+
+    &--next {
+      right: 1rem;
+    }
+  }
+
+  // Thumbnail strip
+  &__thumbnails {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    overflow-x: auto;
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: linear-gradient(90deg, $purple-4, $yellow-4);
+      border-radius: 2px;
+    }
+  }
+
+  &__thumbnail {
+    width: 80px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    flex-shrink: 0;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      z-index: 1;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.3s ease;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 8px);
+
+      img {
+        transform: scale(1.1);
+      }
+    }
+
+    &--active {
+      &::before {
+        border-color: $yellow-4;
+        @include trippy.trippy-glow($yellow-4, 8px);
+      }
+    }
+  }
+
+  // Controls bar
+  &__controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      transparent 100%
+    );
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    #{$root}:hover & {
+      opacity: 1;
+    }
+  }
+
+  // Zoom controls
+  &__zoom {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &-button {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: $white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(157, 0, 255, 0.7);
+        @include trippy.trippy-glow($yellow-4, 8px);
+      }
+    }
+
+    &-level {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.8);
+      min-width: 50px;
+      text-align: center;
+    }
+  }
+
+  // Counter
+  &__counter {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-family: monospace;
+  }
+
+  // Fullscreen button
+  &__fullscreen {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: $white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: auto;
+
+    &:hover {
+      background: rgba(157, 0, 255, 0.7);
+      @include trippy.trippy-glow($yellow-4, 8px);
+    }
+  }
+
+  // Loading overlay
+  &__loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    &--active {
+      opacity: 1;
+    }
+  }
+
+  &__spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid $yellow-4;
+    border-radius: 50%;
+    animation: spinnerRotate 1s linear infinite;
+    @include trippy.trippy-glow($yellow-4, 10px);
+  }
+
+  @keyframes spinnerRotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  // Lightbox mode
+  &--lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    max-width: none;
+    margin: 0;
+    border-radius: 0;
+
+    #{$root}__main {
+      height: calc(100vh - 120px);
+    }
+
+    #{$root}__thumbnails {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  // Grid view
+  &--grid {
+    #{$root}__main {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    #{$root}__image {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+        @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 8px);
+      }
+    }
+
+    #{$root}__nav {
+      display: none;
+    }
+
+    #{$root}__thumbnails {
+      display: none;
+    }
+  }
+
+  // Carousel mode
+  &--carousel {
+    #{$root}__main {
+      overflow: hidden;
+    }
+
+    #{$root}__image {
+      transition: transform 0.5s ease;
+    }
+  }
+
+  // Size variants
+  &--sm {
+    max-width: 600px;
+
+    #{$root}__thumbnail {
+      width: 60px;
+      height: 45px;
+    }
+
+    #{$root}__nav {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  &--lg {
+    max-width: 1400px;
+
+    #{$root}__thumbnail {
+      width: 100px;
+      height: 75px;
+    }
+
+    #{$root}__nav {
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  // Psychedelic variant
+  &--psychedelic {
+    #{$root}__controls {
+      background: linear-gradient(
+        to top,
+        rgba(157, 0, 255, 0.8) 0%,
+        rgba(255, 32, 133, 0.6) 50%,
+        transparent 100%
+      );
+    }
+
+    #{$root}__nav {
+      background: linear-gradient(135deg, $purple-4, $yellow-4, $red-4, $green-4);
+      background-size: 400% 400%;
+      animation: buttonGradient 3s ease-in-out infinite;
+    }
+
+    #{$root}__thumbnail {
+      &::before {
+        border-color: $yellow-4;
+        animation: thumbnailGlow 2s ease-in-out infinite;
+      }
+    }
+
+    #{$root}__spinner {
+      border-top-color: $yellow-4;
+      animation: psychedelicSpinner 1s linear infinite;
+    }
+  }
+
+  @keyframes buttonGradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes thumbnailGlow {
+    0%,
+    100% {
+      box-shadow: 0 0 5px rgba(255, 187, 0, 0.5);
+    }
+    50% {
+      box-shadow:
+        0 0 15px rgba(255, 187, 0, 0.8),
+        0 0 25px rgba(157, 0, 255, 0.5);
+    }
+  }
+
+  @keyframes psychedelicSpinner {
+    0% {
+      transform: rotate(0deg);
+      filter: hue-rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+      filter: hue-rotate(360deg);
+    }
+  }
+
+  // Glow variant
+  &--glow {
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 20px);
+
+    #{$root}__nav {
+      @include trippy.trippy-glow($yellow-4, 12px);
+    }
+
+    #{$root}__thumbnail--active::before {
+      @include trippy.trippy-glow($yellow-4, 12px);
+    }
+  }
+
+  // Dark variant
+  &--dark {
+    background: rgba(0, 0, 0, 0.95);
+  }
+
+  // Light variant
+  &--light {
+    background: rgba(255, 255, 255, 0.1);
+
+    #{$root}__controls {
+      background: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0.8) 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        transparent 100%
+      );
+    }
+
+    #{$root}__counter {
+      color: rgba(0, 0, 0, 0.8);
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    #{$root}__nav {
+      width: 40px;
+      height: 40px;
+    }
+
+    #{$root}__thumbnails {
+      padding: 0.5rem;
+    }
+
+    #{$root}__thumbnail {
+      width: 60px;
+      height: 45px;
+    }
+
+    #{$root}__controls {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    #{$root}__zoom {
+      order: -1;
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

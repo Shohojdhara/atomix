@@ -1,0 +1,334 @@
+/*!
+ * Mashroom Theme Dropdown Component
+ * Psychedelic mushroom-inspired theme with trippy visuals
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+// Add keyframe animations for psychedelic dropdown
+@keyframes mashroom-dropdown-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.95) rotate(-5deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes mashroom-dropdown-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.95) rotate(5deg);
+  }
+}
+
+@keyframes mashroom-dropdown-pulse {
+  0% {
+    box-shadow: 0 0 5px rgba(157, 0, 255, 0.5);
+  }
+  50% {
+    box-shadow:
+      0 0 15px rgba(157, 0, 255, 0.8),
+      0 0 25px rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(157, 0, 255, 0.5);
+  }
+}
+
+@keyframes psychedelic-border-shift {
+  0% {
+    border-color: $purple-4;
+    box-shadow: 0 0 5px rgba(157, 0, 255, 0.5);
+  }
+  25% {
+    border-color: $red-4;
+    box-shadow: 0 0 10px rgba(255, 32, 133, 0.7);
+  }
+  50% {
+    border-color: $yellow-4;
+    box-shadow: 0 0 15px rgba(255, 187, 0, 0.8);
+  }
+  75% {
+    border-color: $green-4;
+    box-shadow: 0 0 10px rgba(0, 255, 157, 0.7);
+  }
+  100% {
+    border-color: $purple-4;
+    box-shadow: 0 0 5px rgba(157, 0, 255, 0.5);
+  }
+}
+
+.c-dropdown {
+  $root: &;
+  position: relative;
+  display: inline-block;
+
+  // Dropdown toggle button
+  &__toggle {
+    padding: 0.5rem 1rem;
+    background: rgba(157, 0, 255, 0.2);
+    color: white;
+    border: 2px solid transparent;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    // Add psychedelic gradient border
+    background: linear-gradient(rgba(157, 0, 255, 0.2), rgba(157, 0, 255, 0.2));
+    background-clip: padding-box;
+    border: double 2px transparent;
+    border-radius: 0.5rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      margin: -2px;
+      border-radius: inherit;
+      @include gradients.psychedelic-linear-gradient($purple-4, $red-4);
+      animation: psychedelic-border-shift 4s infinite linear;
+    }
+
+    // Add glow effect
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.5), 5px);
+
+    // Add floating animation
+    @include trippy.float-animation();
+
+    // Add color shift
+    @include trippy.color-shift();
+
+    // Hover state
+    &:hover {
+      background: linear-gradient(rgba(157, 0, 255, 0.3), rgba(157, 0, 255, 0.3));
+      @include trippy.trippy-glow($red-4, 10px);
+      transform: scale(1.05) rotate(2deg);
+      &::before {
+        @include gradients.rainbow-gradient();
+        animation: rainbow-shift 3s infinite linear;
+      }
+    }
+
+    // Active/focus state
+    &:active,
+    &:focus {
+      outline: none;
+      @include trippy.trippy-glow($yellow-4, 15px);
+      background: linear-gradient(rgba(255, 187, 0, 0.2), rgba(255, 187, 0, 0.2));
+      transform: scale(0.95);
+      &::before {
+        @include gradients.psychedelic-linear-gradient($yellow-4, $green-4);
+      }
+    }
+
+    // Disabled state
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      animation: none;
+      background: rgba(128, 128, 128, 0.2);
+      @include trippy.trippy-glow(rgba(128, 128, 128, 0.3), 2px);
+
+      &::before {
+        background: rgba(128, 128, 128, 0.5);
+        animation: none;
+      }
+    }
+  }
+
+  // Dropdown menu
+  &__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    background: rgba(25, 15, 40, 0.95); // Dark purple background
+    backdrop-filter: blur(10px);
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    overflow: hidden;
+    margin-top: 0.5rem;
+
+    // Add psychedelic border
+    border: 1px solid transparent;
+    background: linear-gradient(25deg, rgba(25, 15, 40, 0.95), rgba(25, 15, 40, 0.95));
+    background-clip: padding-box;
+    border: double 1px transparent;
+    border-radius: 0.5rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      margin: -1px;
+      border-radius: inherit;
+      @include gradients.psychedelic-linear-gradient($purple-4, $red-4);
+      animation: psychedelic-border-shift 4s infinite linear;
+    }
+
+    // Add pulse animation
+    animation: mashroom-dropdown-pulse 3s infinite;
+
+    // Animation classes
+    &--open {
+      animation: mashroom-dropdown-fade-in 0.3s ease forwards;
+    }
+
+    &--close {
+      animation: mashroom-dropdown-fade-out 0.3s ease forwards;
+    }
+  }
+
+  // Dropdown item
+  &__item {
+    padding: 0.75rem 1rem;
+    color: rgba($white, 0.8);
+    text-decoration: none;
+    display: block;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+
+    // Add subtle glow
+    @include trippy.trippy-glow(rgba(255, 255, 255, 0.1), 3px);
+
+    // Add psychedelic background on hover
+    &:hover {
+      background: rgba(157, 0, 255, 0.2);
+      color: $white;
+      @include trippy.trippy-glow($red-4, 8px);
+      transform: translateX(5px) scale(1.02);
+      @include gradients.psychedelic-linear-gradient(
+        rgba(157, 0, 255, 0.3),
+        rgba(255, 32, 133, 0.3)
+      );
+      background-blend-mode: overlay;
+      @include trippy.color-shift();
+    }
+
+    // Active state
+    &--active {
+      background: rgba(255, 187, 0, 0.2);
+      color: $yellow-4;
+      font-weight: 600;
+      @include trippy.trippy-glow($yellow-4, 10px);
+      @include gradients.psychedelic-linear-gradient(
+        rgba(255, 187, 0, 0.2),
+        rgba(255, 187, 0, 0.1)
+      );
+      animation: psychedelic-border-shift 2s infinite;
+    }
+
+    // Disabled state
+    &:disabled,
+    &--disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      animation: none;
+      background: transparent;
+      @include trippy.trippy-glow(rgba(255, 255, 255, 0.05), 1px);
+
+      &:hover {
+        background: transparent;
+        transform: none;
+        @include gradients.rainbow-gradient();
+      }
+    }
+
+    // Divider
+    &--divider {
+      height: 1px;
+      padding: 0;
+      background: rgba(157, 0, 255, 0.3);
+      margin: 0.25rem 0;
+      pointer-events: none;
+
+      // Add psychedelic gradient to divider
+      background: linear-gradient(90deg, transparent, $purple-6, transparent);
+      @include gradients.rainbow-gradient();
+      background-size: 200% 100%;
+      animation: rainbow-shift 3s linear infinite;
+    }
+  }
+
+  // Dropdown header
+  &__header {
+    padding: 0.75rem 1rem;
+    color: $purple-3;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    // Add subtle glow to header
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 3px);
+
+    // Add psychedelic effects
+    @include gradients.psychedelic-linear-gradient(rgba(157, 0, 255, 0.1), rgba(157, 0, 255, 0.05));
+    background-blend-mode: overlay;
+    @include trippy.color-shift();
+  }
+
+  // Psychedelic variant
+  &--psychedelic {
+    #{$root}__toggle {
+      @include gradients.rainbow-gradient();
+      background-size: 300% 300%;
+      animation: rainbow-shift 4s ease infinite;
+      border-radius: 2rem;
+
+      &::before {
+        border-radius: 2rem;
+      }
+
+      &:hover {
+        animation: rainbow-shift 2s linear infinite;
+        transform: scale(1.1) rotate(5deg);
+      }
+    }
+
+    #{$root}__menu {
+      @include gradients.rainbow-gradient();
+      background-size: 400% 400%;
+      animation: rainbow-shift 6s linear infinite;
+      border-radius: 1rem;
+
+      &::before {
+        border-radius: 1rem;
+        animation: rainbow-shift 4s linear infinite reverse;
+      }
+    }
+
+    #{$root}__item {
+      &:hover {
+        @include gradients.rainbow-gradient();
+        background-size: 200% 200%;
+        animation: rainbow-shift 2s linear infinite;
+        color: white;
+      }
+    }
+  }
+}

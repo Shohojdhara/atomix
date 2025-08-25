@@ -1,0 +1,11 @@
+/*!
+ * Boomdevs Theme Spinner Settings
+ * Custom spinner styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.spinner' with (
+  $spinner-color: var(--atomix-primary),
+  $spinner-background-color: var(--atomix-gray-3),
+  $spinner-border-width: 2px,
+  $spinner-border-width-sm: 1px
+);

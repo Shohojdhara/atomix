@@ -1,0 +1,10 @@
+/*!
+ * Boomdevs Theme List Settings
+ * Custom list styles for the Boomdevs theme
+ */
+
+@use '../../../styles/01-settings/settings.list' with (
+  $list-font-size: 1rem,
+  $list-item-gap: 6px,
+  $list-padding-left: 24px
+);

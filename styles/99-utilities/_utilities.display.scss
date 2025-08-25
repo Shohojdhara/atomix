@@ -1,0 +1,13 @@
+@use 'sass:map';
+
+// Define utilities for display
+$utilities-display: (
+  'display': (
+    responsive: true,
+    print: true,
+    property: display,
+    class: u-d,
+    values: inline inline-block block grid inline-grid table table-row table-cell flex inline-flex
+      none,
+  ),
+);

@@ -1,0 +1,19 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as config;
+
+// Define utilities for shadows
+$utilities-shadow: (
+  'shadow': (
+    property: box-shadow,
+    class: u-shadow,
+    values: (
+      null: var(--#{config.$prefix}box-shadow),
+      xs: var(--#{config.$prefix}box-shadow-xs),
+      sm: var(--#{config.$prefix}box-shadow-sm),
+      lg: var(--#{config.$prefix}box-shadow-lg),
+      xl: var(--#{config.$prefix}box-shadow-xl),
+      inset: var(--#{config.$prefix}box-shadow-inset),
+      none: none,
+    ),
+  ),
+);

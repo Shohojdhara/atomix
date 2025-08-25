@@ -1,0 +1,24 @@
+@use '../01-settings/settings.fonts' as fonts;
+@use '../01-settings/settings.typography' as *;
+
+// // Import Helvetica Neue font family using the font-face mixin
+// @include fonts.font-face('Helvetica Neue', 'HelveticaNeue', 'HelveticaNeue', $font-weight-normal, normal);
+// @include fonts.font-face('Helvetica Neue', 'HelveticaNeue', 'HelveticaNeue-Light', $font-weight-light, normal);
+// @include fonts.font-face('Helvetica Neue', 'HelveticaNeue', 'HelveticaNeue-Medium', $font-weight-medium, normal);
+// @include fonts.font-face('Helvetica Neue', 'HelveticaNeue', 'HelveticaNeue-Bold', $font-weight-bold, normal);
+// @include fonts.font-face('Helvetica Neue', 'HelveticaNeue', 'HelveticaNeue-Thin', $font-weight-light - 100, normal);
+// @include fonts.font-face('Helvetica Neue', 'HelveticaNeue', 'HelveticaNeue-UltraLight', $font-weight-light - 200, normal);
+
+// // Italic versions
+// @include fonts.font-face('Helvetica Neue', 'HelveticaNeue', 'HelveticaNeue-Italic', $font-weight-normal, italic);
+// @include fonts.font-face('Helvetica Neue', 'HelveticaNeue', 'HelveticaNeue-LightItalic', $font-weight-light, italic);
+// @include fonts.font-face('Helvetica Neue', 'HelveticaNeue', 'HelveticaNeue-MediumItalic', $font-weight-medium, italic);
+// @include fonts.font-face('Helvetica Neue', 'HelveticaNeue', 'HelveticaNeue-BoldItalic', $font-weight-bold, italic);
+// @include fonts.font-face('Helvetica Neue', 'HelveticaNeue', 'HelveticaNeue-ThinItalic', $font-weight-light - 100, italic);
+// @include fonts.font-face('Helvetica Neue', 'HelveticaNeue', 'HelveticaNeue-UltraLightItalic', $font-weight-light - 200, italic);
+
+// // Condensed versions
+// @include fonts.font-face('Helvetica Neue Condensed', 'HelveticaNeue', 'HelveticaNeue-CondensedBold', $font-weight-bold, normal);
+// @include fonts.font-face('Helvetica Neue Condensed', 'HelveticaNeue', 'HelveticaNeue-CondensedBlack', $font-weight-black, normal);
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');

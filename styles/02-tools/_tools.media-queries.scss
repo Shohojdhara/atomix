@@ -1,0 +1,69 @@
+@use '../01-settings/settings.breakpoints' as breakpoints;
+@use 'sass:map';
+
+// Media Up - Min-width
+@mixin media-up($breakpoint) {
+  @if map.has-key(breakpoints.$grid-breakpoints, $breakpoint) {
+    $value: map.get(breakpoints.$grid-breakpoints, $breakpoint);
+    @media (min-width: $value) {
+      @content;
+    }
+  } @else {
+    @warn "Unknown breakpoint `#{$breakpoint}` in $breakpoints";
+  }
+}
+
+// Media Down - Max-width
+@mixin media-down($breakpoint) {
+  @if map.has-key(breakpoints.$grid-breakpoints, $breakpoint) {
+    $value: map.get(breakpoints.$grid-breakpoints, $breakpoint);
+    @media (max-width: ($value - 0.02px)) {
+      @content;
+    }
+  } @else {
+    @warn "Unknown breakpoint `#{$breakpoint}` in $breakpoints";
+  }
+}
+
+// Media Between - Min-width and Max-width
+@mixin media-between($lower, $upper) {
+  @if map.has-key(breakpoints.$grid-breakpoints, $lower) and
+    map.has-key(breakpoints.$grid-breakpoints, $upper)
+  {
+    $min: map.get(breakpoints.$grid-breakpoints, $lower);
+    $max: map.get(breakpoints.$grid-breakpoints, $upper);
+    @media (min-width: $min) and (max-width: ($max - 0.02px)) {
+      @content;
+    }
+  } @else {
+    @warn "Unknown breakpoint `#{$lower}` or `#{$upper}` in $breakpoints";
+  }
+}
+
+// Media Only - Specific breakpoint
+@mixin media-only($breakpoint) {
+  @if map.has-key(breakpoints.$grid-breakpoints, $breakpoint) {
+    $lower: $breakpoint;
+    $upper: 'xl';
+
+    @if $breakpoint == 'xs' {
+      $upper: 'sm';
+    } @else if $breakpoint == 'sm' {
+      $upper: 'md';
+    } @else if $breakpoint == 'md' {
+      $upper: 'lg';
+    } @else if $breakpoint == 'lg' {
+      $upper: 'xl';
+    } @else if $breakpoint == 'xl' {
+      @include media-up($breakpoint) {
+        @content;
+      }
+    } @else {
+      @include media-between($lower, $upper) {
+        @content;
+      }
+    }
+  } @else {
+    @warn "Unknown breakpoint `#{$breakpoint}` in $breakpoints";
+  }
+}

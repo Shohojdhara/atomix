@@ -1,0 +1,51 @@
+/*!
+ * Shaj Default Theme Photo Viewer Settings
+ * Modern photo viewer/lightbox styling with clean aesthetics
+ * Overrides Atomix default photo viewer settings
+ */
+
+@use '../../../styles/01-settings/settings.photoviewer' with (
+  // Modal/backdrop variables
+  $photoviewer-modal-background-color: rgba(17, 24, 39, 0.9),
+  // darker backdrop
+  $photoviewer-modal-backdrop-blur: 16px,
+  // more blur
+  $photoviewer-modal-close-button-color: var(--atomix-body-color),
+  // Panel variables
+  $photoviewer-info-panel-width: 360px,
+  // wider panel
+  $photoviewer-info-panel-background: var(--atomix-body-bg),
+  $photoviewer-info-panel-border-color: var(--atomix-primary-border-subtle),
+  // Thumbnail variables
+  $photoviewer-thumbnail-active-border-color: var(--atomix-primary),
+  $photoviewer-thumbnail-size: 72px,
+  // larger thumbnails
+  $photoviewer-thumbnail-size-large: 96px,
+  // larger thumbnails
+  $photoviewer-thumbnail-gap: 1rem,
+  // more spacing
+  $photoviewer-thumbnail-border-radius: 8px,
+
+  // softer corners
+  // Animation variables
+  $photoviewer-transition-duration: 0.25s,
+  // faster transitions
+  $photoviewer-transition-timing: cubic-bezier(0.4, 0, 0.2, 1),
+  $photoviewer-fast-transition: 0.1s,
+
+  // Control variables
+  $photoviewer-control-size: 3rem,
+  // larger controls
+  $photoviewer-control-size-small: 2.5rem,
+  $photoviewer-control-background: var(--atomix-body-bg),
+  $photoviewer-control-background-hover: var(--atomix-secondary-bg-subtle),
+  $photoviewer-control-color: var(--atomix-body-color),
+  $photoviewer-control-color-hover: var(--atomix-primary),
+  // Navigation variables
+  $photoviewer-nav-button-size: 3.5rem,
+  // larger nav buttons
+  $photoviewer-nav-button-background: var(--atomix-body-bg),
+  $photoviewer-nav-button-color: var(--atomix-body-color),
+  $photoviewer-nav-button-hover-background: var(--atomix-secondary-bg-subtle),
+  $photoviewer-nav-button-hover-color: var(--atomix-primary)
+);

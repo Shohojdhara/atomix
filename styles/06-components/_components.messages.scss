@@ -1,0 +1,332 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.messages' as messages;
+@use '../01-settings/settings.border-radius' as border;
+@use '../01-settings/settings.typography' as typo;
+@use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.size' as *;
+@use '../02-tools/tools.object-fit' as *;
+@use '../02-tools/tools.color-mode' as *;
+@use '../02-tools/tools.size' as *;
+
+.c-messages {
+  $root: &;
+
+  --#{config.$prefix}messages-width: #{messages.$messages-width};
+  --#{config.$prefix}messages-padding-x: #{rem.rem(messages.$messages-padding-x)};
+  --#{config.$prefix}messages-padding-y: #{rem.rem(messages.$messages-padding-y)};
+  --#{config.$prefix}messages-border-radius: #{messages.$messages-border-radius};
+  --#{config.$prefix}messages-border-width: #{messages.$messages-border-width};
+  --#{config.$prefix}messages-border-color: #{messages.$messages-border-color};
+  --#{config.$prefix}messages-bg: #{messages.$messages-bg};
+  --#{config.$prefix}messages-content-margin-top: #{rem.rem(messages.$messages-content-margin-top)};
+  --#{config.$prefix}messages-avatar-margin: #{rem.rem(messages.$messages-avatar-margin)};
+  --#{config.$prefix}messages-items-padding-x: #{rem.rem(messages.$messages-items-padding-x)};
+  --#{config.$prefix}messages-items-padding-y: #{rem.rem(messages.$messages-items-padding-y)};
+  --#{config.$prefix}messages-items-width: #{rem.rem(messages.$messages-items-width)};
+  --#{config.$prefix}messages-items-border-width: #{messages.$messages-items-border-width};
+  --#{config.$prefix}messages-items-border-color: #{messages.$messages-items-border-color};
+  --#{config.$prefix}messages-items-border-radius: #{messages.$messages-items-border-radius};
+  --#{config.$prefix}messages-items-gap: #{rem.rem(messages.$messages-items-gap)};
+  --#{config.$prefix}messages-text-padding-x: #{rem.rem(messages.$messages-text-padding-x)};
+  --#{config.$prefix}messages-text-padding-y: #{rem.rem(messages.$messages-text-padding-y)};
+  --#{config.$prefix}messages-text-color: #{messages.$messages-text-secondary-color};
+  --#{config.$prefix}messages-text-font-size: #{messages.$messages-text-font-size};
+  --#{config.$prefix}messages-text-bg: #{messages.$messages-text-secondary-bg};
+  --#{config.$prefix}messages-text-border-radius: #{messages.$messages-text-border-radius};
+  --#{config.$prefix}messages-file-padding-x: #{messages.$messages-file-padding-x};
+  --#{config.$prefix}messages-file-padding-y: #{messages.$messages-file-padding-y};
+  --#{config.$prefix}messages-file-text-font-size: #{messages.$messages-file-text-font-size};
+  --#{config.$prefix}messages-file-text-color: #{messages.$messages-file-text-secondary-color};
+  --#{config.$prefix}messages-file-icon-size: #{rem.rem(messages.$messages-file-icon-size)};
+  --#{config.$prefix}messages-file-icon-margin-right: #{messages.$messages-file-icon-margin-right};
+  --#{config.$prefix}messages-file-icon-bg: #{messages.$messages-file-icon-bg};
+  --#{config.$prefix}messages-file-info-font-size: #{messages.$messages-file-info-font-size};
+  --#{config.$prefix}messages-file-info-color: #{messages.$messages-file-info-color};
+  --#{config.$prefix}messages-file-bg: #{messages.$messages-file-secondary-bg};
+  --#{config.$prefix}messages-file-border-radius: #{messages.$messages-file-border-radius};
+  --#{config.$prefix}messages-image-width: #{messages.$messages-image-width};
+  --#{config.$prefix}messages-image-height: #{messages.$messages-image-height};
+  --#{config.$prefix}messages-image-border-radius: #{messages.$messages-image-border-radius};
+  --#{config.$prefix}messages-form-margin-top: #{rem.rem(messages.$messages-form-margin-top)};
+  --#{config.$prefix}messages-form-row-gap: #{rem.rem(messages.$messages-form-row-gap)};
+  --#{config.$prefix}messages-form-submit-icon-size: #{rem.rem(
+      messages.$messages-form-submit-icon-size
+    )};
+  --#{config.$prefix}messages-input-padding-x: #{rem.rem(messages.$messages-input-padding-x)};
+  --#{config.$prefix}messages-input-padding-y: #{rem.rem(messages.$messages-input-padding-y)};
+  --#{config.$prefix}messages-input-font-size: #{messages.$messages-input-font-size};
+  --#{config.$prefix}messages-input-color: #{messages.$messages-input-color};
+  --#{config.$prefix}messages-input-placeholder-color: #{messages.$messages-input-placeholder-color};
+  --#{config.$prefix}messages-input-border-width: #{messages.$messages-input-border-width};
+  --#{config.$prefix}messages-input-border-color: #{messages.$messages-input-border-color};
+  --#{config.$prefix}messages-input-border-radius: #{messages.$messages-input-border-radius};
+  --#{config.$prefix}messages-input-options-icons-size: #{messages.$messages-input-options-icons-size};
+  --#{config.$prefix}messages-input-options-row-gap: #{rem.rem(
+      messages.$messages-input-options-row-gap
+    )};
+  --#{config.$prefix}messages-body-height: #{messages.$messages-body-height};
+
+  width: 100%;
+  max-width: var(--#{config.$prefix}messages-width);
+  min-width: var(--#{config.$prefix}messages-width);
+  padding: var(--#{config.$prefix}messages-padding-y) var(--#{config.$prefix}messages-padding-x);
+  border-radius: var(--#{config.$prefix}messages-border-radius);
+  border: var(--#{config.$prefix}messages-border-width) solid
+    var(--#{config.$prefix}messages-border-color);
+  background-color: var(--#{config.$prefix}messages-bg);
+
+  &__body {
+    max-height: var(--#{config.$prefix}messages-body-height);
+    min-height: var(--#{config.$prefix}messages-body-height);
+    overflow: auto;
+  }
+
+  &__content {
+    display: flex;
+    align-items: flex-end;
+
+    margin-top: var(--#{config.$prefix}messages-content-margin-top);
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--#{config.$prefix}messages-items-gap);
+    width: 100%;
+    max-width: var(--#{config.$prefix}messages-items-width);
+    padding: var(--#{config.$prefix}messages-items-padding-y)
+      var(--#{config.$prefix}messages-items-padding-x);
+    border: var(--#{config.$prefix}messages-items-border-width) solid
+      var(--#{config.$prefix}messages-items-border-color);
+
+    > *:first-child {
+      border-radius: var(--#{config.$prefix}messages-text-border-radius)
+        var(--#{config.$prefix}messages-text-border-radius)
+        var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm;
+    }
+
+    > *:last-child {
+      border-radius: border.$border-radius-sm var(--#{config.$prefix}messages-text-border-radius)
+        var(--#{config.$prefix}messages-text-border-radius)
+        var(--#{config.$prefix}messages-text-border-radius);
+    }
+  }
+
+  &__avatar {
+    flex: 0 0 var(--#{config.$prefix}avatar-size);
+    margin-right: var(--#{config.$prefix}messages-avatar-margin);
+  }
+
+  &__name {
+    color: var(--#{config.$prefix}secondary-text-emphasis);
+    font-size: var(--#{config.$prefix}messages-file-info-font-size);
+    font-weight: typo.$font-weight-medium;
+  }
+
+  &__time {
+    display: block;
+    width: 100%;
+    text-align: right;
+    color: var(--#{config.$prefix}messages-file-info-color);
+    font-size: var(--#{config.$prefix}messages-file-info-font-size);
+    margin-top: var(--#{config.$prefix}messages-items-gap);
+  }
+
+  &__text {
+    width: fit-content;
+    color: var(--#{config.$prefix}messages-text-color);
+    font-size: var(--#{config.$prefix}messages-text-font-size);
+    padding: var(--#{config.$prefix}messages-text-padding-y)
+      var(--#{config.$prefix}messages-text-padding-x);
+    background-color: var(--#{config.$prefix}messages-text-bg);
+    border-radius: border.$border-radius-sm var(--#{config.$prefix}messages-text-border-radius)
+      var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm;
+  }
+
+  &__file {
+    display: flex;
+    flex-wrap: wrap;
+    padding: var(--#{config.$prefix}messages-file-padding-y)
+      var(--#{config.$prefix}messages-file-padding-x);
+    border-radius: border.$border-radius-sm var(--#{config.$prefix}messages-file-border-radius)
+      var(--#{config.$prefix}messages-file-border-radius) border.$border-radius-sm;
+    background: var(--#{config.$prefix}messages-file-bg);
+  }
+
+  &__file-icon {
+    display: grid !important;
+    place-items: center;
+    font-size: rem.rem(24px);
+    @include square(var(--#{config.$prefix}messages-file-icon-size));
+    color: var(--#{config.$prefix}tertiary-text-emphasis);
+    margin-right: var(--#{config.$prefix}messages-file-icon-margin-right);
+    background-color: var(--#{config.$prefix}body-bg);
+    border-radius: border.$border-radius-pill;
+  }
+
+  &__file-name {
+    color: var(--#{config.$prefix}messages-file-text-color);
+    font-size: var(--#{config.$prefix}messages-file-text-font-size);
+  }
+
+  &__file-size {
+    color: var(--#{config.$prefix}messages-file-info-color);
+    font-size: var(--#{config.$prefix}messages-file-info-font-size);
+  }
+
+  &__image {
+    @include size(
+      var(--#{config.$prefix}messages-image-width),
+      var(--#{config.$prefix}messages-image-height)
+    );
+    border-radius: border.$border-radius-sm var(--#{config.$prefix}messages-image-border-radius)
+      var(--#{config.$prefix}messages-image-border-radius) border.$border-radius-sm;
+    @include object-fit(cover);
+  }
+
+  &__content--self {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+
+    #{$root} {
+      &__avatar {
+        margin-right: 0;
+        margin-left: var(--#{config.$prefix}messages-avatar-margin);
+      }
+
+      &__items {
+        align-items: flex-end;
+        border-radius: var(--#{config.$prefix}messages-items-border-radius)
+          var(--#{config.$prefix}messages-items-border-radius) 0
+          var(--#{config.$prefix}messages-items-border-radius);
+
+        > *:first-child {
+          border-radius: var(--#{config.$prefix}messages-text-border-radius)
+            var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm
+            var(--#{config.$prefix}messages-text-border-radius);
+        }
+
+        > *:last-child {
+          border-radius: var(--#{config.$prefix}messages-text-border-radius)
+            border.$border-radius-sm var(--#{config.$prefix}messages-text-border-radius)
+            var(--#{config.$prefix}messages-text-border-radius);
+        }
+      }
+
+      &__text {
+        --#{config.$prefix}messages-text-color: #{messages.$messages-text-primary-color};
+        --#{config.$prefix}messages-text-bg: #{messages.$messages-text-primary-bg};
+        border-radius: var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm
+          border.$border-radius-sm var(--#{config.$prefix}messages-text-border-radius);
+      }
+
+      &__file {
+        --#{config.$prefix}messages-file-text-color: #{messages.$messages-file-text-primary-color};
+        --#{config.$prefix}messages-file-bg: #{messages.$messages-file-primary-bg};
+        border-radius: var(--#{config.$prefix}messages-file-border-radius) border.$border-radius-sm
+          border.$border-radius-sm var(--#{config.$prefix}messages-file-border-radius);
+
+        @include color-mode('dark') {
+          --#{config.$prefix}messages-file-icon-bg: #{messages.$messages-file-icon-bg-dark};
+        }
+      }
+
+      &__image {
+        border-radius: var(--#{config.$prefix}messages-image-border-radius) border.$border-radius-sm
+          border.$border-radius-sm var(--#{config.$prefix}messages-image-border-radius);
+      }
+
+      &__file-icon {
+        color: var(--#{config.$prefix}invert-text-emphasis);
+        background-color: var(--#{config.$prefix}messages-file-icon-bg);
+
+        @include color-mode('dark') {
+          --#{config.$prefix}messages-file-icon-bg: #{messages.$messages-file-icon-bg-dark};
+        }
+      }
+    }
+  }
+
+  &__form {
+    display: flex;
+    gap: var(--#{config.$prefix}messages-form-row-gap);
+    margin-top: var(--#{config.$prefix}messages-form-margin-top);
+  }
+
+  &__input-group {
+    width: 100%;
+    position: relative;
+  }
+
+  &__options {
+    position: absolute;
+    right: var(--#{config.$prefix}messages-input-padding-x);
+    top: 50%;
+    display: flex;
+    gap: var(--#{config.$prefix}messages-input-options-row-gap);
+    align-items: center;
+    transform: translateY(-50%);
+  }
+
+  &__option {
+    appearance: none;
+    border: 0;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  &__option-icon {
+    color: var(--#{config.$prefix}tertiary-text-emphasis);
+    cursor: pointer;
+  }
+
+  &__input {
+    width: 100%;
+    padding: var(--#{config.$prefix}messages-input-padding-y)
+      var(--#{config.$prefix}messages-input-padding-x);
+    color: var(--#{config.$prefix}messages-input-color);
+    font-size: var(--#{config.$prefix}messages-input-font-size);
+    border: var(--#{config.$prefix}messages-input-border-width) solid
+      var(--#{config.$prefix}messages-input-border-color);
+    border-radius: var(--#{config.$prefix}messages-input-border-radius);
+    background-color: var(--#{config.$prefix}messages-bg);
+    resize: none;
+
+    &::placeholder {
+      color: var(--#{config.$prefix}messages-input-placeholder-color);
+      font-size: var(--#{config.$prefix}messages-input-font-size);
+    }
+
+    &:focus {
+      outline: 0;
+      border-color: var(--#{config.$prefix}primary);
+    }
+  }
+
+  &__submit {
+    display: grid;
+    place-items: center;
+    align-self: flex-end;
+    padding: rem.rem(10px);
+    background-color: var(--#{config.$prefix}brand-bg-subtle);
+    color: var(--#{config.$prefix}invert-text-emphasis);
+    border-radius: border.$border-radius-pill;
+    cursor: pointer;
+    appearance: none;
+    border: 0;
+
+    .c-icon {
+      width: var(--#{config.$prefix}messages-form-submit-icon-size);
+      height: var(--#{config.$prefix}messages-form-submit-icon-size);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}

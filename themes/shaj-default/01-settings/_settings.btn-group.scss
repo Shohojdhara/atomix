@@ -1,0 +1,11 @@
+/*!
+ * Shaj Default Theme Button Group Settings
+ * Modern button group styling with clean aesthetics
+ * Overrides Atomix default button group settings
+ */
+
+// Forward the btn-group settings as-is since the original doesn't use !default
+@forward '../../../styles/01-settings/settings.btn-group';
+
+// Override the gap value directly
+$btn-group-gap: 8px; // 8px - tighter grouping for cohesion

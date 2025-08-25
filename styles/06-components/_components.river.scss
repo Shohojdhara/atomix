@@ -1,0 +1,216 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.river' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.size' as *;
+@use '../02-tools/tools.object-fit' as *;
+@use '../02-tools/tools.breakpoints' as *;
+@use '../02-tools/tools.grid' as grid;
+
+.c-river {
+  $root: &;
+
+  --#{config.$prefix}river-width: #{$river-width};
+  --#{config.$prefix}river-padding-x: #{rem($river-padding-x)};
+  --#{config.$prefix}river-padding-y: #{rem($river-padding-y)};
+  --#{config.$prefix}river-border-radius: #{$river-border-radius};
+  --#{config.$prefix}river-bg: #{$river-bg};
+  --#{config.$prefix}river-overlay: #{$river-overlay};
+  --#{config.$prefix}river-overlay-opacity: #{$river-overlay-opacity};
+  --#{config.$prefix}river-title-font-size: #{$river-title-font-size};
+  --#{config.$prefix}river-text-font-size: #{$river-text-font-size};
+  --#{config.$prefix}river-title-font-weight: #{$river-title-font-weight};
+  --#{config.$prefix}river-text-font-weight: #{$river-text-font-weight};
+  --#{config.$prefix}river-title-color: #{$river-title-color};
+  --#{config.$prefix}river-text-color: #{$river-text-color};
+  --#{config.$prefix}river-text-margin-top: #{rem($river-text-margin-top)};
+  --#{config.$prefix}river-actions-margin-top: #{rem($river-actions-margin-top)};
+  --#{config.$prefix}river-actions-spacing-x: #{rem($river-actions-spacing-x)};
+  --#{config.$prefix}river-image-border-radius: #{$river-image-border-radius};
+  --#{config.$prefix}river-image-box-shadow: #{$river-image-box-shadow};
+  --#{config.$prefix}river-spacing-inner: #{rem($river-spacing-inner)};
+  --#{config.$prefix}river-content-max-width: #{rem($river-content-max-width)};
+  --#{config.$prefix}river-breakout-title-width: #{rem($river-breakout-title-width)};
+  --#{config.$prefix}river-breakout-text-width: #{rem($river-breakout-text-width)};
+  --#{config.$prefix}river-content-width: var(
+    --river-content-width,
+    #{rem($river-content-max-width)}
+  );
+
+  position: relative;
+  width: 100%;
+  max-width: var(--#{config.$prefix}river-width);
+  padding: var(--#{config.$prefix}river-padding-y) var(--#{config.$prefix}river-padding-x);
+  border-radius: var(--#{config.$prefix}river-border-radius);
+  background-color: var(--#{config.$prefix}river-bg);
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    border-radius: var(--#{config.$prefix}river-border-radius);
+  }
+
+  &__bg-image {
+    @include square(100%);
+    @include object-fit(cover);
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--#{config.$prefix}river-overlay);
+    opacity: var(--#{config.$prefix}river-overlay-opacity);
+    border-radius: var(--#{config.$prefix}river-border-radius);
+  }
+
+  &__container {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--#{config.$prefix}river-spacing-inner);
+
+    @include media-breakpoint-down(md) {
+      gap: calc(var(--#{config.$prefix}river-spacing-inner) / 2.6);
+    }
+  }
+
+  &__content {
+    flex: 1;
+    width: 100%;
+    max-width: var(--#{config.$prefix}river-content-width);
+
+    @include media-breakpoint-down(md) {
+      width: 100%;
+      flex: auto;
+    }
+  }
+
+  &__content-col {
+    width: 100%;
+
+    &--title {
+      max-width: var(--#{config.$prefix}river-breakout-title-width);
+    }
+
+    &--text {
+      max-width: var(--#{config.$prefix}river-breakout-text-width);
+    }
+  }
+
+  &__visual {
+    flex: 1;
+
+    @include media-breakpoint-down(md) {
+      width: 100%;
+      flex: auto;
+    }
+  }
+
+  &__title {
+    color: var(--#{config.$prefix}river-title-color);
+    font-size: calc(2.15625rem + 1.5vw);
+    font-weight: var(--#{config.$prefix}river-title-font-weight);
+    letter-spacing: -1px;
+
+    @include media-breakpoint-up(md) {
+      font-size: var(--#{config.$prefix}river-title-font-size);
+      line-height: 1.2;
+    }
+  }
+
+  &__text {
+    color: var(--#{config.$prefix}river-text-color);
+    font-size: var(--#{config.$prefix}river-text-font-size);
+    font-weight: var(--#{config.$prefix}river-text-font-weight);
+    margin-top: var(--#{config.$prefix}river-text-margin-top);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--#{config.$prefix}river-actions-spacing-x);
+    margin-top: var(--#{config.$prefix}river-actions-margin-top);
+  }
+
+  &__image-wrapper {
+    border-radius: var(--#{config.$prefix}river-image-border-radius);
+    box-shadow: var(--#{config.$prefix}river-image-box-shadow);
+    overflow: hidden;
+  }
+
+  &__image {
+    max-width: none;
+    @include square(100%);
+    @include object-fit(cover);
+    will-change: transform;
+  }
+
+  // When the river has a background image, we need to adjust text colors for readability
+  &__bg ~ &__container {
+    #{$root}__title,
+    #{$root}__text {
+      color: #fff; // White text on dark backgrounds for better contrast
+    }
+  }
+
+  &--center {
+    #{$root} {
+      &__row {
+        flex-direction: column;
+        gap: calc(var(--#{config.$prefix}river-spacing-inner) / 2);
+      }
+
+      &__content {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      &__actions {
+        justify-content: center;
+      }
+    }
+  }
+
+  &--reverse {
+    #{$root} {
+      &__row {
+        @include media-breakpoint-up(md) {
+          flex-direction: row-reverse;
+        }
+      }
+    }
+  }
+
+  &--breakout {
+    max-width: 100%;
+    border-radius: 0;
+
+    #{$root} {
+      &__bg,
+      &__overlay {
+        border-radius: 0;
+      }
+
+      &__row {
+        flex-direction: column;
+      }
+
+      &__content {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+
+        @include media-breakpoint-down(md) {
+          flex-wrap: wrap;
+        }
+      }
+    }
+  }
+}

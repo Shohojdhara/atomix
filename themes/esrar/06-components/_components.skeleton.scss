@@ -1,0 +1,15 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../02-tools/tools.animations' as *;
+
+.c-skeleton {
+  @include animations(
+    'pulse-slow',
+    $duration: 1.5s,
+    $timing: ease-in-out,
+    $iteration-count: infinite
+  );
+}
+
+.c-skeleton--wave {
+  @include animations('color-wave', $duration: 3s, $timing: linear, $iteration-count: infinite);
+}

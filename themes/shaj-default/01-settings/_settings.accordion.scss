@@ -1,0 +1,38 @@
+/*!
+ * Shaj Default Theme Accordion Settings
+ * Modern accordion styling with clean aesthetics
+ * Overrides Atomix default accordion settings
+ */
+
+@use '../../../styles/01-settings/settings.accordion' with (
+  $accordion-width: 100%,
+  $accordion-padding-x: 24px,
+  // 24px - more spacious
+  $accordion-padding-y: 16px,
+
+  // 16px
+  $accordion-border-width: 1px,
+  $accordion-border-color: transparent,
+  $accordion-border-radius: 8px,
+
+  // 8px - softer
+  $accordion-body-padding-x: 24px,
+  // 24px
+  $accordion-body-padding-y: 12px,
+  // 12px
+  $accordion-body-color: var(--atomix-body-color),
+  $accordion-body-bg: var(--atomix-secondary-bg-subtle),
+  $accordion-header-padding-x: 24px,
+  // 24px
+  $accordion-header-padding-y: 16px,
+  // 16px
+  $accordion-header-color: var(--atomix-body-color),
+  $accordion-header-bg: var(--atomix-secondary-bg-subtle),
+  $accordion-header-bg-hover: var(--atomix-tertiary-bg-subtle),
+  $accordion-icon-size: 20px,
+  // 20px - larger icons
+  $accordion-icon-color: var(--atomix-body-color),
+  $accordion-icon-transform: 180deg,
+
+  $accordion-disable-color: var(--atomix-tertiary-text-emphasis)
+);

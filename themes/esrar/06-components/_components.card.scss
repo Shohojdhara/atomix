@@ -1,0 +1,134 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../../../styles/02-tools/tools.component' as *;
+@use '../02-tools/tools.animations' as *;
+@use '../../../styles/01-settings/settings.config' as config;
+
+.c-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // Subtle breathing effect
+  @media (prefers-reduced-motion: no-preference) {
+    @include animations(
+      'hypnotic-breathe',
+      $duration: 8s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -100%;
+    background: conic-gradient(
+      var(--#{config.$prefix}primary-1),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-1)
+    );
+    animation: #{config.$prefix}chill-spin 15s linear infinite reverse;
+    opacity: 0.03;
+    z-index: -1;
+    border-radius: inherit;
+  }
+
+  &:hover {
+    @include animations('melt', $duration: 3s, $timing: ease-in-out, $iteration-count: 2);
+    filter: saturate(1.3) brightness(1.05) hue-rotate(20deg);
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+
+    &::before {
+      animation: #{config.$prefix}chill-rainbow 3s linear infinite;
+      opacity: 0.08;
+    }
+  }
+
+  // Add ripple effect on click
+  &:active {
+    transform: translateY(-1px) scale(0.99);
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: #{config.$prefix}psychedelic-pulse 0.6s ease-out;
+      pointer-events: none;
+    }
+  }
+}
+
+// Special trippy card variant
+.c-card--trippy {
+  @media (prefers-reduced-motion: no-preference) {
+    @include animations(
+      'stoned-drift',
+      $duration: 5s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+
+  &::before {
+    background: conic-gradient(
+      var(--#{config.$prefix}primary-1),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-7),
+      var(--#{config.$prefix}primary-9),
+      var(--#{config.$prefix}primary-7),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-1)
+    );
+    opacity: 0.06;
+    animation: #{config.$prefix}chill-rainbow 8s linear infinite;
+  }
+
+  &:hover {
+    @include animations(
+      'trippy-wave',
+      $duration: 2s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+    filter: saturate(2) contrast(1.2) brightness(1.2) hue-rotate(45deg);
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .c-card {
+    &,
+    &:hover {
+      animation: none !important;
+      transform: none !important;
+    }
+
+    &::before,
+    &::after {
+      animation: none !important;
+    }
+  }
+
+  .c-card--trippy {
+    &,
+    &:hover {
+      animation: none !important;
+      transform: none !important;
+    }
+
+    &::before {
+      animation: none !important;
+    }
+  }
+}

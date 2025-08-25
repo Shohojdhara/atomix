@@ -1,0 +1,20 @@
+/*!
+ * Shaj Default Theme Form Group Settings
+ * Modern form group styling with clean aesthetics
+ * Overrides Atomix default form group settings
+ */
+
+@use '../../../styles/01-settings/settings.form-group' with (
+  $input-group-width: 100%,
+  $input-group-label-color: var(--atomix-secondary-text-emphasis),
+  $input-group-label-font-size: 14px,
+  // 14px
+  $input-group-label-font-size-sm: 12px,
+  // 12px
+  $input-group-label-margin-bottom: 8px,
+  // 8px
+  $input-group-helper-text-color: var(--atomix-tertiary-text-emphasis),
+  $input-group-helper-text-font-size: 12px,
+  // 12px
+  $input-group-helper-text-margin-top: 6px // 6px - tighter spacing
+);

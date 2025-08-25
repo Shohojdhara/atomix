@@ -1,0 +1,64 @@
+// ============================================================================
+// VIDEO PLAYER SETTINGS
+// ============================================================================
+
+// Video Player Colors
+$video-player-bg: #000 !default;
+$video-player-controls-bg: linear-gradient(transparent, rgba(0, 0, 0, 0.8)) !default;
+$video-player-progress-bg: rgba(255, 255, 255, 0.3) !default;
+$video-player-progress-buffered: rgba(255, 255, 255, 0.5) !default;
+$video-player-progress-played: var(--atomix-color-primary) !default;
+$video-player-button-hover: rgba(255, 255, 255, 0.2) !default;
+$video-player-settings-bg: rgba(0, 0, 0, 0.9) !default;
+
+// Video Player Dimensions
+$video-player-border-radius: 8px !default;
+$video-player-controls-padding: 20px 16px 16px !default;
+$video-player-progress-height: 4px !default;
+$video-player-progress-height-hover: 6px !default;
+$video-player-button-size: 40px !default;
+$video-player-button-size-mobile: 36px !default;
+$video-player-button-size-fullscreen: 48px !default;
+$video-player-volume-width: 80px !default;
+$video-player-volume-width-mobile: 60px !default;
+$video-player-volume-height: 4px !default;
+$video-player-volume-height-hover: 6px !default;
+$video-player-volume-thumb-size: 12px !default;
+$video-player-volume-bg: rgba(255, 255, 255, 0.3) !default;
+$video-player-volume-bg-hover: rgba(255, 255, 255, 0.5) !default;
+$video-player-volume-fill: var(--atomix-color-primary) !default;
+$video-player-volume-fill-hover: var(--atomix-color-primary-light) !default;
+$video-player-volume-fill-active: var(--atomix-color-primary-dark) !default;
+
+// Video Player Typography
+$video-player-font-size: 14px !default;
+$video-player-font-size-mobile: 12px !default;
+$video-player-font-size-fullscreen: 16px !default;
+$video-player-font-weight: 500 !default;
+
+// Video Player Transitions
+$video-player-transition: all 0.3s ease !default;
+$video-player-transition-fast: all 0.2s ease !default;
+$video-player-transition-progress: width 0.1s ease !default;
+
+// Video Player Subtitles
+$video-player-subtitle-bg: rgba(0, 0, 0, 0.85) !default;
+$video-player-subtitle-color: #ffffff !default;
+$video-player-subtitle-font-size: 18px !default;
+$video-player-subtitle-font-size-mobile: 16px !default;
+$video-player-subtitle-font-size-fullscreen: 24px !default;
+$video-player-subtitle-font-weight: 500 !default;
+$video-player-subtitle-line-height: 1.5 !default;
+$video-player-subtitle-padding-y: 6px !default;
+$video-player-subtitle-padding-x: 12px !default;
+$video-player-subtitle-border-radius: 6px !default;
+$video-player-subtitle-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !default;
+$video-player-subtitle-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !default;
+
+// Video Player Z-Index
+$video-player-loading-z: 2 !default;
+$video-player-controls-z: 3 !default;
+$video-player-subtitles-z: 4 !default;
+
+// Video Player Breakpoints
+$video-player-mobile-breakpoint: 768px !default;

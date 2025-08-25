@@ -1,0 +1,117 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../../../styles/02-tools/tools.component' as *;
+@use '../02-tools/tools.animations' as *;
+@use '../../../styles/01-settings/settings.config' as config;
+
+.c-badge {
+  position: relative;
+  overflow: hidden;
+
+  // Subtle breathing effect for badges
+  @media (prefers-reduced-motion: no-preference) {
+    @include animations(
+      'hypnotic-breathe',
+      $duration: 5s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+
+  &:hover {
+    @include animations(
+      'psychedelic-pulse',
+      $duration: 2s,
+      $timing: ease-in-out,
+      $iteration-count: 3
+    );
+    filter: saturate(1.4) brightness(1.1) hue-rotate(15deg);
+  }
+
+  // Subtle glow effect on focus for accessibility
+  &:focus-visible {
+    @include focus-ring(var(--#{config.$prefix}primary-5));
+    @include animations('trippy-wave', $duration: 1s, $timing: ease-in-out, $iteration-count: 2);
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+  }
+
+  // Add subtle background effect
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -100%;
+    background: conic-gradient(
+      var(--#{config.$prefix}primary-1),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-1)
+    );
+    opacity: 0.05;
+    z-index: -1;
+    border-radius: inherit;
+    animation: #{config.$prefix}chill-spin 12s linear infinite reverse;
+  }
+
+  &:hover::before {
+    opacity: 0.15;
+    animation: #{config.$prefix}chill-spin 3s linear infinite;
+  }
+}
+
+// Special hypnotic badge variant
+.c-badge--hypnotic {
+  @media (prefers-reduced-motion: no-preference) {
+    @include animations(
+      'stoned-drift',
+      $duration: 4s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+
+  &::before {
+    background: conic-gradient(
+      var(--#{config.$prefix}primary-1),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-7),
+      var(--#{config.$prefix}primary-5),
+      var(--#{config.$prefix}primary-3),
+      var(--#{config.$prefix}primary-1)
+    );
+    opacity: 0.1;
+    animation: #{config.$prefix}chill-rainbow 6s linear infinite;
+  }
+
+  &:hover {
+    @include animations('melt', $duration: 2s, $timing: ease-in-out, $iteration-count: 2);
+    filter: saturate(2) contrast(1.2) brightness(1.2);
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .c-badge {
+    &,
+    &:hover {
+      animation: none !important;
+      transform: none !important;
+    }
+
+    &::before {
+      animation: none !important;
+    }
+  }
+
+  .c-badge--hypnotic {
+    &,
+    &:hover {
+      animation: none !important;
+      transform: none !important;
+    }
+
+    &::before {
+      animation: none !important;
+    }
+  }
+}

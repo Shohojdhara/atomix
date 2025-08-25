@@ -1,0 +1,15 @@
+@use '../01-settings/settings.typography' as typography;
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: typography.$font-family-base;
+  font-weight: typography.$font-weight-base;
+  font-size: typography.$font-size-base;
+  line-height: typography.$line-height-base;
+
+  &.is-blocked,
+  &.is-modal-open {
+    overflow: hidden;
+  }
+}

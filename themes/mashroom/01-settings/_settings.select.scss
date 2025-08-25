@@ -1,0 +1,47 @@
+@use '../../../styles/01-settings/settings.select' with (
+  $select-width: 320px,
+  // 320px - wider for better content
+  $select-padding-x: 16px,
+  // 16px
+  $select-padding-y: 12px,
+  // 12px
+  $select-color: var(--atomix-body-color),
+  $select-font-size: 16px,
+  // 16px
+  $select-font-size-lg: 18px,
+  // 18px
+  $select-icon-toggle-size: 20px,
+  // 20px
+  $select-icon-toggle-color: var(--atomix-secondary-text-emphasis),
+  $select-placeholder-color: var(--atomix-tertiary-text-emphasis),
+  $select-bg: var(--atomix-body-bg),
+  $select-expanded-bg: var(--atomix-secondary-bg-subtle),
+  $select-border-color: var(--atomix-primary-border-subtle),
+  $select-border-color-hover: var(--atomix-secondary-border-subtle),
+  $select-border-radius: 8px,
+  // 8px
+  $select-inner-spacer: 8px,
+  // 8px
+  $select-dropdown-icon-size: 20px,
+  // 20px
+  $select-panel-padding-x: 8px,
+  // 8px
+  $select-panel-padding-y: 8px,
+  // 8px
+  $select-panel-spacer-y: 8px,
+  // 8px
+  $select-panel-bg: var(--atomix-body-bg),
+  $select-panel-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1),
+  // enhanced shadow
+  $select-panel-border-radius: 8px,
+  // 8px
+  $select-item-padding-x: 12px,
+  // 12px
+  $select-item-padding-y: 10px,
+  // 10px
+  $select-item-color: var(--atomix-body-color),
+  $select-item-bg: var(--atomix-body-bg),
+  $select-item-border-radius: 6px,
+  // 6px
+  $select-item-bg-hover: var(--atomix-secondary-bg-subtle)
+);

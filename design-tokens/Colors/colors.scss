@@ -1,0 +1,121 @@
+.design-tokens {
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: var(--atomix-primary-bg);
+  color: var(--atomix-primary-text-emphasis);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+
+  h1,
+  h2,
+  h3 {
+    margin-top: 0;
+    color: var(--atomix-primary-text-emphasis);
+  }
+
+  section {
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    background-color: var(--atomix-secondary-bg);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  h2 {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--atomix-primary-border);
+  }
+
+  h3 {
+    margin-bottom: 1rem;
+    color: var(--atomix-secondary-text-emphasis);
+  }
+}
+
+.color-palette {
+  margin-bottom: 2rem;
+
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    margin-top: 1rem;
+    row-gap: 1rem;
+  }
+}
+
+.color-swatch {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.1s ease-out;
+
+  &:hover {
+    transform: translateY(-20px);
+    border-radius: var(--atomix-border-radius) var(--atomix-border-radius) 0 0;
+  }
+
+  &.is-right-hover {
+    border-radius: 4px 0 4px 0px;
+  }
+
+  &.is-left-hover {
+    border-radius: 0 4px 0 4px;
+  }
+
+  .color-box {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    padding: 0.5rem;
+    box-sizing: border-box;
+  }
+
+  .color-info {
+    padding: 0.75rem;
+    background-color: var(--atomix-primary-bg);
+  }
+
+  .color-name {
+    font-weight: 500;
+    font-size: var(atomix-fo);
+    margin-bottom: 0.25rem;
+    color: var(--atomix-primary-text);
+  }
+
+  .color-value {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--atomix-secondary-text-emphasis);
+    word-break: break-all;
+  }
+}
+
+/* Dark mode specific styles */
+.design-tokens.dark {
+  .color-swatch {
+    .color-info {
+      background-color: var(--atomix-primary-bg-dark);
+      border-top-color: var(--atomix-primary-border-dark);
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .color-palette .color-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .design-tokens {
+    padding: 1rem;
+  }
+
+  .color-palette .color-grid {
+    grid-template-columns: 1fr;
+  }
+}

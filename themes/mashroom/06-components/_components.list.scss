@@ -1,0 +1,145 @@
+/*!
+ * Mashroom Theme List Component
+ * Psychedelic mushroom-inspired theme with trippy visuals
+ */
+
+// Import required tools and settings
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+
+.c-list {
+  $root: &;
+
+  // Add psychedelic background
+  background: rgba(25, 15, 40, 0.7);
+
+  // Add floating animation
+  @include trippy.float-animation();
+
+  // Add color shift effect
+  @include trippy.color-shift();
+
+  padding: 1rem;
+  border-radius: 0.5rem;
+  list-style: none;
+
+  // Add psychedelic border
+  border: 1px solid transparent;
+  background:
+    linear-gradient(25deg, rgba(25, 15, 40, 0.7), rgba(25, 15, 40, 0.7)) padding-box,
+    linear-gradient(90deg, #9d00ff, #d080ff, #00ff9d, #ffbb00, #ff2085, #9d00ff) border-box;
+
+  // List item
+  &__item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba($white, 0.1);
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+
+    // Add subtle glow
+    @include trippy.trippy-glow(rgba(255, 255, 255, 0.05), 2px);
+
+    // Hover state
+    &:hover {
+      background: rgba(157, 0, 255, 0.1);
+      transform: translateX(5px);
+
+      // Add stronger glow on hover
+      @include trippy.trippy-glow($red-4, 5px);
+    }
+
+    // Last item should not have border
+    &:last-child {
+      border-bottom: none;
+    }
+
+    // Active item
+    &--active {
+      background: rgba(255, 187, 0, 0.15);
+
+      // Add stronger glow for active items
+      @include trippy.trippy-glow($yellow-4, 8px);
+    }
+
+    // Disabled item
+    &--disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      animation: none;
+
+      &:hover {
+        background: transparent;
+        transform: none;
+      }
+    }
+  }
+
+  // List item icon
+  &__icon {
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+
+    // Add glow effect to icons
+    @include trippy.trippy-glow(rgba(255, 255, 255, 0.3), 3px);
+  }
+
+  // List item content
+  &__content {
+    flex: 1;
+    color: rgba($white, 0.9);
+  }
+
+  // List item actions
+  &__actions {
+    margin-left: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  // Action button
+  &__action {
+    background: rgba(157, 0, 255, 0.2);
+    border: none;
+    color: $white;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    // Add glow effect
+    @include trippy.trippy-glow(rgba(157, 0, 255, 0.3), 3px);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+
+      // Add stronger glow on hover
+      @include trippy.trippy-glow($red-4, 5px);
+    }
+  }
+
+  // Bordered variant
+  &--bordered {
+    border: 2px solid transparent;
+    background:
+      linear-gradient(25deg, rgba(25, 15, 40, 0.7), rgba(25, 15, 40, 0.7)) padding-box,
+      linear-gradient(90deg, #9d00ff, #d080ff, #00ff9d, #ffbb00, #ff2085, #9d00ff) border-box;
+  }
+
+  // Striped variant
+  &--striped {
+    #{$root}__item:nth-child(even) {
+      background: rgba(157, 0, 255, 0.05);
+    }
+
+    #{$root}__item:hover {
+      background: rgba(157, 0, 255, 0.15);
+    }
+  }
+}

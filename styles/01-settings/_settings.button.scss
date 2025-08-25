@@ -1,0 +1,84 @@
+@use 'sass:map';
+@use 'settings.spacing' as spacing;
+@use 'settings.border' as border;
+@use 'settings.box-shadow' as shadow;
+@use 'settings.config' as *;
+@use 'settings.border-radius' as *;
+@use 'settings.typography' as *;
+
+$btn-color: var(--#{$prefix}body-color) !default;
+$btn-padding-y: map.get(spacing.$spacing-sizes, 3) !default;
+$btn-padding-x: map.get(spacing.$spacing-sizes, 4) !default;
+$btn-font-family: $font-family-base !default;
+$btn-font-size: $font-size-base !default;
+$btn-line-height: 1.2 !default;
+$btn-white-space: nowrap !default;
+$btn-icon-size: map.get(spacing.$spacing-sizes, 4) !default;
+$btn-icon-size-sm: map.get(spacing.$spacing-sizes, 3) !default;
+$btn-icon-size-lg: map.get(spacing.$spacing-sizes, 5) !default;
+$btn-letter-spacing: 0.0892857143em !default; // 1.25px/14px
+$btn-text-transform: none !default;
+
+$btn-padding-y-sm: map.get(spacing.$spacing-sizes, 1) !default;
+$btn-padding-x-sm: map.get(spacing.$spacing-sizes, 2) !default;
+$btn-font-size-sm: $font-size-sm !default;
+
+$btn-padding-y-lg: map.get(spacing.$spacing-sizes, 4) !default;
+$btn-padding-x-lg: map.get(spacing.$spacing-sizes, 6) !default;
+$btn-font-size-lg: $font-size-lg !default;
+
+$btn-border-width: map.get(border.$border-widths, 1) !default;
+
+$btn-font-weight: $font-weight-medium !default;
+$btn-focus-width: 2px !default;
+$btn-box-shadow: shadow.$box-shadow !default;
+$btn-focus-box-shadow: 0 0 0 $btn-focus-width rgba(var(--#{$prefix}primary-rgb), 0.25) !default;
+$btn-focus-outline: 2px solid var(--#{$prefix}primary) !default;
+$btn-focus-outline-offset: 2px !default;
+
+$btn-disabled-color: var(--#{$prefix}disabled-text-emphasis) !default;
+$btn-disabled-bg: var(--#{$prefix}secondary-bg-subtle) !default;
+$btn-disabled-border-color: var(--#{$prefix}primary-border-subtle) !default;
+$btn-disabled-opacity: 0.65 !default;
+
+$btn-link-color: var(--#{$prefix}link-color) !default;
+$btn-link-hover-color: var(--#{$prefix}link-hover-color) !default;
+$btn-link-disabled-color: var(--#{$prefix}disabled-text-emphasis) !default;
+
+$btn-border-radius: $border-radius-xl !default;
+$btn-border-radius-sm: $border-radius !default;
+$btn-border-radius-lg: $border-radius-xl !default;
+
+$btn-link-color: var(--#{$prefix}brand-text-emphasis) !default;
+$btn-link-color-hover: var(--#{$prefix}invert-text-emphasis) !default;
+$btn-link-font-weight: $font-weight-medium !default;
+$btn-link-border-color: var(--#{$prefix}brand-border-subtle) !default;
+$btn-link-border-color-hover: var(--#{$prefix}secondary-border-subtle) !default;
+
+$btn-inner-gap: map.get(spacing.$spacing-sizes, 2) !default;
+
+$btn-transition:
+  all 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+  transform 0.15s ease-in-out !default;
+
+$btn-hover-bg-shade-amount: 71.5% !default;
+$btn-hover-bg-tint-amount: 82% !default;
+$btn-hover-border-shade-amount: 20% !default;
+$btn-hover-border-tint-amount: 10% !default;
+$btn-active-bg-shade-amount: 20% !default;
+$btn-active-bg-tint-amount: 20% !default;
+$btn-active-border-shade-amount: 25% !default;
+$btn-active-border-tint-amount: 10% !default;
+
+// Enhanced button states
+$btn-hover-transform: translateY(-1px) !default;
+$btn-hover-shadow: shadow.$box-shadow-sm !default;
+$btn-active-transform: translateY(0) !default;
+$btn-active-shadow: shadow.$box-shadow-xs !default;
+$btn-focus-shadow-opacity: 0.25 !default;
+
+// Enable pointer cursor on buttons
+$enable-button-pointers: true !default;
+
+// Enable gradients
+$enable-gradients: false !default;

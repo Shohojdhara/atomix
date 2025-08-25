@@ -1,0 +1,16 @@
+@use '../01-settings/settings.config' as config;
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.docs-story {
+  background: var(--#{config.$prefix}body-bg) !important;
+}

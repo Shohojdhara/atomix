@@ -1,0 +1,61 @@
+@use 'settings.colors' as *;
+@use 'settings.config' as config;
+@use '../02-tools/tools.rem' as rem;
+
+// Callout
+$callout-width: 100% !default;
+$callout-padding-x: 16px !default;
+$callout-padding-y: 16px !default;
+$callout-tost-padding-x: 16px !default;
+$callout-tost-padding-y: 16px !default;
+$callout-bg: $white !default;
+$callout-border-radius: 8px !default;
+$callout-border-color: $gray-3 !default;
+$callout-border-width: 1px !default;
+$callout-title-font-size: 16px !default;
+$callout-title-font-weight: 600 !default;
+$callout-title-color: $gray-9 !default;
+$callout-text-font-size: 14px !default;
+$callout-text-font-weight: 400 !default;
+$callout-text-color: $gray-7 !default;
+$callout-message-spacer: 12px !default;
+$callout-icon-size: 20px !default;
+$callout-icon-color: $primary !default;
+$callout-close-btn-size: 20px !default;
+$callout-actions-spacer: 8px !default;
+$callout-actions-spacer-y: 12px !default;
+$callout-toast-bg: $white !default;
+$callout-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1) !default;
+
+// Toast positions
+$callout-toast-positions: (
+  'top-right': (
+    top: 16px,
+    right: 16px,
+  ),
+  'top-left': (
+    top: 16px,
+    left: 16px,
+  ),
+  'top-center': (
+    top: 16px,
+    left: 50%,
+    transform: translateX(-50%),
+  ),
+  'bottom-right': (
+    bottom: 16px,
+    right: 16px,
+  ),
+  'bottom-left': (
+    bottom: 16px,
+    left: 16px,
+  ),
+  'bottom-center': (
+    bottom: 16px,
+    left: 50%,
+    transform: translateX(-50%),
+  ),
+) !default;
+
+// Z-index for toast containers
+$callout-toast-z-index: 1000 !default;

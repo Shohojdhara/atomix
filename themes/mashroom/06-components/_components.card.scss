@@ -1,0 +1,225 @@
+@use '../02-tools/tools.trippy-effects' as trippy;
+@use '../02-tools/tools.psychedelic-gradients' as gradients;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.config' as config;
+
+// Psychedelic card animations
+@keyframes card-float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(2deg);
+  }
+  66% {
+    transform: translateY(10px) rotate(-1deg);
+  }
+}
+
+@keyframes card-glow-pulse {
+  0% {
+    box-shadow:
+      0 0 20px rgba(157, 0, 255, 0.5),
+      0 0 30px rgba(157, 0, 255, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 40px rgba(157, 0, 255, 0.8),
+      0 0 60px rgba(255, 32, 133, 0.6),
+      0 0 80px rgba(255, 187, 0, 0.4);
+  }
+  100% {
+    box-shadow:
+      0 0 20px rgba(157, 0, 255, 0.5),
+      0 0 30px rgba(157, 0, 255, 0.3);
+  }
+}
+
+@keyframes card-border-shift {
+  0% {
+    border-color: rgba(157, 0, 255, 0.5);
+  }
+  25% {
+    border-color: rgba(255, 32, 133, 0.6);
+  }
+  50% {
+    border-color: rgba(255, 187, 0, 0.7);
+  }
+  75% {
+    border-color: rgba(0, 255, 157, 0.6);
+  }
+  100% {
+    border-color: rgba(157, 0, 255, 0.5);
+  }
+}
+
+.c-card {
+  $root: &;
+
+  // Apply psychedelic background with rainbow gradient
+  @include gradients.rainbow-gradient();
+  background-size: 400% 400%;
+
+  // Add floating animation for a magical effect
+  @include trippy.float-animation();
+  animation-duration: 8s;
+
+  // Add color shift for extra psychedelic effect
+  @include trippy.color-shift();
+
+  // Add trippy glow effect
+  @include trippy.trippy-glow($primary-6, 20px);
+
+  // Add psychedelic pulse animation
+  @include trippy.psychedelic-pulse($primary-4);
+
+  // Add card-specific animations
+  animation:
+    rainbow-shift 8s ease infinite,
+    card-float 6s ease-in-out infinite,
+    card-glow-pulse 3s infinite;
+
+  // Add psychedelic border
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border: double 2px transparent;
+  border-radius: 25px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    margin: -2px;
+    border-radius: inherit;
+    @include gradients.psychedelic-linear-gradient($purple-4, $red-4);
+    animation: card-border-shift 4s infinite linear;
+  }
+
+  // Add a subtle overlay for better content readability
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 23px;
+    z-index: -1;
+  }
+
+  &:hover {
+    @include gradients.psychedelic-linear-gradient(var(--atomix-primary-6), var(--atomix-info));
+
+    // Enhance effects on hover
+    @include trippy.trippy-glow(var(--atomix-primary-4), 30px);
+
+    transform: scale(1.02) rotate(1deg);
+    transition: all 0.3s ease;
+
+    // Speed up animations on hover
+    animation:
+      rainbow-shift 2s ease infinite,
+      card-float 3s ease-in-out infinite,
+      card-glow-pulse 1s infinite;
+
+    &::before {
+      @include gradients.rainbow-gradient();
+      background-size: 200% 200%;
+      animation: rainbow-shift 2s linear infinite;
+    }
+  }
+
+  &__header {
+    background: rgba($black, 0.2);
+    padding: 1rem;
+    border-bottom: 1px solid rgba($primary-4, 0.5);
+    backdrop-filter: blur(5px);
+    border-radius: 23px 23px 0 0;
+
+    // Add psychedelic effects to header
+    @include gradients.psychedelic-linear-gradient(rgba(157, 0, 255, 0.2), rgba(157, 0, 255, 0.1));
+    @include trippy.color-shift();
+    animation-duration: 10s;
+  }
+
+  &__body {
+    background: rgba($white, 0.1);
+    padding: 1rem;
+    backdrop-filter: blur(2px);
+
+    // Add subtle psychedelic effects to body
+    @include gradients.psychedelic-linear-gradient(
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.05)
+    );
+    background-blend-mode: overlay;
+  }
+
+  &__footer {
+    background: rgba($black, 0.2);
+    padding: 1rem;
+    border-top: 1px solid rgba($primary-4, 0.5);
+    backdrop-filter: blur(5px);
+    border-radius: 0 0 23px 23px;
+
+    // Add psychedelic effects to footer
+    @include gradients.psychedelic-linear-gradient(rgba(157, 0, 255, 0.1), rgba(157, 0, 255, 0.05));
+    @include trippy.color-shift();
+    animation-duration: 12s;
+  }
+
+  // Psychedelic variant
+  &--psychedelic {
+    @include gradients.rainbow-gradient();
+    background-size: 600% 600%;
+    animation: rainbow-shift 4s ease infinite;
+
+    &::before {
+      @include gradients.rainbow-gradient();
+      background-size: 600% 600%;
+      animation: rainbow-shift 4s linear infinite reverse;
+    }
+
+    &:hover {
+      animation: rainbow-shift 1s ease infinite;
+
+      &::before {
+        animation: rainbow-shift 1s linear infinite;
+      }
+    }
+  }
+
+  // Glass variant
+  &--glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+
+    &::after {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    #{$root}__header,
+    #{$root}__footer {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    #{$root}__body {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  // Floating variant
+  &--floating {
+    animation: card-float 4s ease-in-out infinite;
+
+    &:hover {
+      animation: card-float 2s ease-in-out infinite;
+    }
+  }
+}

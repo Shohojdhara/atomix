@@ -1,0 +1,10 @@
+/*!
+ * Yabai Theme Avatar Settings
+ * High-energy avatar styling with pill shapes
+ * Overrides Atomix default avatar settings
+ */
+
+@use '../../../styles/01-settings/settings.avatar' with (
+  // Avatar sizes
+  $avatar-size: ('xs': 24px, 'sm': 32px, 'md': 40px, 'lg': 56px, 'xl': 72px) // Pill-shaped avatars
+);

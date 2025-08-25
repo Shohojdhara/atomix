@@ -1,0 +1,134 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.button' as button;
+@use '../01-settings/settings.colors' as colors;
+@use '../01-settings/settings.maps' as color-maps;
+@use '../01-settings/settings.border-radius' as border-radius;
+@use '../02-tools/tools.border-radius' as *;
+@use '../02-tools/tools.button' as *;
+@use '../02-tools/tools.rem' as *;
+
+.c-btn {
+  $root: &;
+
+  --#{config.$prefix}btn-padding-x: #{button.$btn-padding-x};
+  --#{config.$prefix}btn-padding-y: #{button.$btn-padding-y};
+  --#{config.$prefix}btn-font-family: #{button.$btn-font-family};
+  --#{config.$prefix}btn-font-size: #{button.$btn-font-size};
+  --#{config.$prefix}btn-font-weight: #{button.$btn-font-weight};
+  --#{config.$prefix}btn-line-height: #{button.$btn-line-height};
+  --#{config.$prefix}btn-icon-size: #{rem(button.$btn-icon-size)};
+  --#{config.$prefix}btn-color: #{button.$btn-color};
+  --#{config.$prefix}btn-bg: transparent;
+  --#{config.$prefix}btn-border-width: #{button.$btn-border-width};
+  --#{config.$prefix}btn-border-color: transparent;
+  --#{config.$prefix}btn-border-radius: #{button.$btn-border-radius};
+  --#{config.$prefix}btn-hover-border-color: transparent;
+  --#{config.$prefix}btn-box-shadow: #{button.$btn-box-shadow};
+  --#{config.$prefix}btn-disabled-opacity: #{button.$btn-disabled-opacity};
+  --#{config.$prefix}btn-focus-box-shadow: 0 0 0 #{button.$btn-focus-width}
+    rgba(var(--#{config.$prefix}btn-focus-shadow-rgb), 0.5);
+  --#{config.$prefix}btn-inner-gap: #{rem(button.$btn-inner-gap)};
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--#{config.$prefix}btn-inner-gap);
+  padding: var(--#{config.$prefix}btn-padding-y) var(--#{config.$prefix}btn-padding-x);
+  font-family: var(--#{config.$prefix}btn-font-family);
+  font-size: var(--#{config.$prefix}btn-font-size);
+  font-weight: var(--#{config.$prefix}btn-font-weight);
+  line-height: var(--#{config.$prefix}btn-line-height);
+  color: var(--#{config.$prefix}btn-color);
+  text-align: center;
+  text-decoration: if(colors.$link-decoration == none, null, none);
+  white-space: button.$btn-white-space;
+  vertical-align: middle;
+  background-color: var(--#{config.$prefix}btn-bg);
+  cursor: if(button.$enable-button-pointers, pointer, null);
+  user-select: none;
+  border: var(--#{config.$prefix}btn-border-width) solid var(--#{config.$prefix}btn-border-color);
+  border-radius: var(--#{config.$prefix}btn-border-radius);
+  transition: button.$btn-transition;
+
+  &__icon {
+    font-size: var(--#{config.$prefix}btn-icon-size);
+  }
+
+  &:hover {
+    color: var(--#{config.$prefix}btn-hover-color);
+    text-decoration: if(colors.$link-hover-decoration == underline, none, null);
+    background-color: var(--#{config.$prefix}btn-hover-bg);
+    border-color: var(--#{config.$prefix}btn-hover-border-color);
+  }
+
+  @each $color, $value in color-maps.$theme-colors {
+    &--#{$color} {
+      @include btn-variant($color, $value);
+    }
+  }
+
+  @each $color, $value in color-maps.$theme-colors {
+    &--outline-#{$color} {
+      @include btn-outline-variant($color);
+    }
+  }
+
+  &--lg {
+    @include btn-size(
+      button.$btn-padding-y-lg,
+      button.$btn-padding-x-lg,
+      button.$btn-font-size-lg,
+      button.$btn-border-radius-lg
+    );
+
+    #{$root}__icon {
+      --#{config.$prefix}btn-icon-size: #{rem(button.$btn-icon-size-lg)};
+    }
+  }
+
+  &--sm {
+    @include btn-size(
+      button.$btn-padding-y-sm,
+      button.$btn-padding-x-sm,
+      button.$btn-font-size-sm,
+      button.$btn-border-radius-sm
+    );
+
+    #{$root}__icon {
+      --#{config.$prefix}btn-icon-size: #{rem(button.$btn-icon-size-sm)};
+    }
+  }
+
+  &--rounded {
+    --#{config.$prefix}btn-border-radius: #{border-radius.$border-radius-pill};
+  }
+
+  &--link {
+    --#{config.$prefix}btn-color: #{button.$btn-link-color};
+    --#{config.$prefix}btn-color-hover: #{button.$btn-link-color-hover};
+    --#{config.$prefix}btn-font-weight: #{button.$btn-link-font-weight};
+
+    border-radius: 0px;
+    border-bottom: var(--#{config.$prefix}btn-border-width) solid button.$btn-link-border-color;
+
+    &:hover {
+      border-bottom: var(--#{config.$prefix}btn-border-width) solid
+        button.$btn-link-border-color-hover;
+    }
+  }
+
+  &--icon {
+    --#{config.$prefix}btn-padding-x: var(--#{config.$prefix}btn-padding-y);
+  }
+
+  &:disabled,
+  &--disabled,
+  fieldset:disabled & {
+    color: var(--#{config.$prefix}btn-disabled-color);
+    pointer-events: none;
+    background-color: var(--#{config.$prefix}btn-disabled-bg);
+    background-image: if(button.$enable-gradients, none, null);
+    border-color: var(--#{config.$prefix}btn-disabled-border-color);
+    opacity: var(--#{config.$prefix}btn-disabled-opacity);
+  }
+}

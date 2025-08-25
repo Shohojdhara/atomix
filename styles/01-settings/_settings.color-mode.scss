@@ -1,0 +1,5 @@
+// Enable dark mode support
+$enable-dark-mode: true !default;
+
+// Color mode configuration
+$color-mode-type: 'data-attribute' !default; // Options: "media-query" or "data-attribute"

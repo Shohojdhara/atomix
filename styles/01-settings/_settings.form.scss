@@ -1,0 +1,6 @@
+@use 'settings.config' as config;
+@use 'settings.border-radius' as *;
+
+$form-width: 100% !default;
+$form-items-spacer-y: 32px !default;
+$form-items-spacer-x: 12px !default;

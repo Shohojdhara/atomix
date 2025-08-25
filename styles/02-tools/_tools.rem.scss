@@ -1,0 +1,9 @@
+@use 'sass:math';
+
+@function rem($pixels) {
+  @if math.unit($pixels) == 'px' {
+    @return math.div($pixels, 16px) * 1rem;
+  } @else {
+    @return $pixels;
+  }
+}

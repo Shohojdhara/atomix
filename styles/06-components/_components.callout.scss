@@ -1,0 +1,273 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.callout' as callout;
+@use '../02-tools/tools.rem' as rem;
+
+.c-callout {
+  $root: &;
+
+  --#{config.$prefix}callout-width: #{callout.$callout-width};
+  --#{config.$prefix}callout-padding-x: #{rem.rem(callout.$callout-padding-x)};
+  --#{config.$prefix}callout-padding-y: #{rem.rem(callout.$callout-padding-y)};
+  --#{config.$prefix}callout-tost-padding-x: #{rem.rem(callout.$callout-tost-padding-x)};
+  --#{config.$prefix}callout-tost-padding-y: #{rem.rem(callout.$callout-tost-padding-y)};
+  --#{config.$prefix}callout-bg: #{callout.$callout-bg};
+  --#{config.$prefix}callout-border-radius: #{callout.$callout-border-radius};
+  --#{config.$prefix}callout-border-color: #{callout.$callout-border-color};
+  --#{config.$prefix}callout-border-witdh: #{callout.$callout-border-width};
+  --#{config.$prefix}callout-title-font-size: #{callout.$callout-title-font-size};
+  --#{config.$prefix}callout-title-font-weight: #{callout.$callout-title-font-weight};
+  --#{config.$prefix}callout-title-color: #{callout.$callout-title-color};
+  --#{config.$prefix}callout-text-font-size: #{callout.$callout-text-font-size};
+  --#{config.$prefix}callout-text-font-weight: #{callout.$callout-text-font-weight};
+  --#{config.$prefix}callout-text-color: #{callout.$callout-text-color};
+  --#{config.$prefix}callout-message-spacer: #{rem.rem(callout.$callout-message-spacer)};
+  --#{config.$prefix}callout-icon-size: #{callout.$callout-icon-size};
+  --#{config.$prefix}callout-icon-color: #{callout.$callout-icon-color};
+  --#{config.$prefix}callout-close-btn-size: #{callout.$callout-close-btn-size};
+  --#{config.$prefix}callout-actions-spacer: #{rem.rem(callout.$callout-actions-spacer)};
+  --#{config.$prefix}callout-actions-spacer-y: #{rem.rem(callout.$callout-actions-spacer-y)};
+  --#{config.$prefix}callout-toast-bg: #{callout.$callout-toast-bg};
+  --#{config.$prefix}callout-box-shadow: #{callout.$callout-box-shadow};
+  --#{config.$prefix}callout-transition-duration: 0.3s;
+  --#{config.$prefix}callout-transition-timing: cubic-bezier(0.16, 1, 0.3, 1);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--#{config.$prefix}callout-width);
+  gap: var(--#{config.$prefix}callout-actions-spacer);
+  padding: var(--#{config.$prefix}callout-padding-y) var(--#{config.$prefix}callout-padding-x);
+  background: var(--#{config.$prefix}callout-bg);
+  border-radius: var(--#{config.$prefix}callout-border-radius);
+  border: var(--#{config.$prefix}callout-border-witdh) solid
+    var(--#{config.$prefix}callout-border-color);
+  transition:
+    opacity var(--#{config.$prefix}callout-transition-duration)
+      var(--#{config.$prefix}callout-transition-timing),
+    transform var(--#{config.$prefix}callout-transition-duration)
+      var(--#{config.$prefix}callout-transition-timing);
+
+  &__content {
+    width: 100%;
+    display: flex;
+    gap: var(--#{config.$prefix}callout-message-spacer);
+    align-items: flex-start;
+  }
+
+  &__icon {
+    color: var(--#{config.$prefix}callout-icon-color);
+    font-size: var(--#{config.$prefix}callout-icon-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__message {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: rem.rem(4px);
+  }
+
+  &__title {
+    color: var(--#{config.$prefix}callout-title-color);
+    font-size: var(--#{config.$prefix}callout-title-font-size);
+    font-weight: var(--#{config.$prefix}callout-title-font-weight);
+  }
+
+  &__text {
+    color: var(--#{config.$prefix}callout-text-color);
+    font-size: var(--#{config.$prefix}callout-text-font-size);
+    font-weight: var(--#{config.$prefix}callout-text-font-weight);
+    line-height: 1.5;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--#{config.$prefix}callout-actions-spacer);
+    margin-left: auto;
+  }
+
+  &__close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--#{config.$prefix}callout-title-color);
+    border: none;
+    outline: none;
+    background: none;
+    padding: rem.rem(4px);
+    font-size: var(--#{config.$prefix}callout-close-btn-size);
+    cursor: pointer;
+    border-radius: rem.rem(4px);
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 2px var(--#{config.$prefix}callout-border-color);
+    }
+  }
+
+  &--oneline {
+    #{$root} {
+      &__message {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--#{config.$prefix}callout-message-spacer);
+      }
+    }
+  }
+
+  &--toast {
+    position: relative;
+    max-width: rem.rem(350px);
+    width: 100%;
+    padding: var(--#{config.$prefix}callout-tost-padding-y)
+      var(--#{config.$prefix}callout-tost-padding-x);
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border: none;
+    background-color: var(--#{config.$prefix}callout-toast-bg);
+    box-shadow: var(--#{config.$prefix}callout-box-shadow);
+    animation: calloutToastIn 0.3s var(--#{config.$prefix}callout-transition-timing) forwards;
+
+    #{$root} {
+      &__content {
+        align-items: flex-start;
+        width: 100%;
+      }
+
+      &__actions {
+        padding-left: calc(
+          var(--#{config.$prefix}callout-icon-size) + var(--#{config.$prefix}callout-message-spacer)
+        );
+        margin-top: var(--#{config.$prefix}callout-actions-spacer-y);
+      }
+
+      &__close-btn {
+        position: absolute;
+        top: var(--#{config.$prefix}callout-tost-padding-y);
+        right: var(--#{config.$prefix}callout-tost-padding-x);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--#{config.$prefix}callout-border-color);
+      outline-offset: 2px;
+    }
+  }
+
+  @each $color, $value in maps.$theme-colors {
+    &--#{$color} {
+      @if ($color == 'primary') {
+        --#{config.$prefix}callout-bg: var(--#{config.$prefix}brand-bg-subtle);
+        --#{config.$prefix}callout-border-color: var(--#{config.$prefix}brand-border-subtle);
+        --#{config.$prefix}callout-icon-color: var(--#{config.$prefix}brand-text-emphasis);
+      } @else if($color == 'light') {
+        --#{config.$prefix}callout-title-color: var(--#{config.$prefix}dark);
+        --#{config.$prefix}callout-text-color: var(--#{config.$prefix}dark);
+        --#{config.$prefix}callout-bg: var(--#{config.$prefix}light);
+        --#{config.$prefix}callout-border-color: var(--#{config.$prefix}primary-border-subtle);
+        --#{config.$prefix}callout-icon-color: var(--#{config.$prefix}tertiary-text-emphasis);
+      } @else if($color == 'dark') {
+        --#{config.$prefix}callout-title-color: var(--#{config.$prefix}light);
+        --#{config.$prefix}callout-text-color: #{$gray-4};
+        --#{config.$prefix}callout-bg: var(--#{config.$prefix}dark);
+        --#{config.$prefix}callout-border-color: var(--#{config.$prefix}primary-border-subtle);
+        --#{config.$prefix}callout-icon-color: var(--#{config.$prefix}light);
+      } @else {
+        --#{config.$prefix}callout-bg: var(--#{config.$prefix}#{$color}-bg-subtle);
+        --#{config.$prefix}callout-border-color: var(--#{config.$prefix}#{$color}-border-subtle);
+        --#{config.$prefix}callout-icon-color: var(--#{config.$prefix}#{$color}-text-emphasis);
+      }
+    }
+  }
+
+  &.is-hide {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+  }
+}
+
+// Toast container styles
+.c-callout-container {
+  position: fixed;
+  z-index: callout.$callout-toast-z-index;
+  display: flex;
+  flex-direction: column;
+  gap: rem.rem(8px);
+  max-width: 100%;
+  pointer-events: none; // Allow clicking through the container
+
+  // Make toasts clickable
+  .c-callout--toast {
+    pointer-events: auto;
+  }
+
+  // Position variants
+  @each $position, $props in callout.$callout-toast-positions {
+    &--#{$position} {
+      @each $prop, $value in $props {
+        #{$prop}: $value;
+      }
+    }
+  }
+
+  // Animation variants by position
+  &--top-right,
+  &--top-left,
+  &--top-center {
+    .c-callout--toast {
+      animation-name: calloutToastInTop;
+    }
+  }
+
+  &--bottom-right,
+  &--bottom-left,
+  &--bottom-center {
+    .c-callout--toast {
+      animation-name: calloutToastInBottom;
+    }
+  }
+}
+
+// Toast animations
+@keyframes calloutToastInTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes calloutToastInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

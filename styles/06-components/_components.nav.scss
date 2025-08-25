@@ -1,0 +1,172 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.nav' as *;
+@use '../01-settings/settings.border-radius' as *;
+@use '../02-tools/tools.transition' as transition;
+@use '../02-tools/tools.event' as *;
+@use '../02-tools/tools.rem' as *;
+
+.c-nav {
+  $root: &;
+
+  --#{$prefix}nav-item-gap-x: #{rem($nav-item-gap-x)};
+  --#{$prefix}nav-link-padding-x: #{rem($nav-link-padding-x)};
+  --#{$prefix}nav-link-padding-y: #{rem($nav-link-padding-y)};
+  --#{$prefix}nav-link-font-size: #{$nav-link-font-size};
+  --#{$prefix}nav-link-font-weight: #{$nav-link-font-weight};
+  --#{$prefix}nav-link-color: #{$nav-link-color};
+  --#{$prefix}nav-link-hover-color: #{$nav-link-hover-color};
+  --#{$prefix}nav-link-bg: #{$nav-link-bg};
+  --#{$prefix}nav-link-hover-bg: #{$nav-link-hover-bg};
+  --#{$prefix}nav-link-inner-gap: #{rem($nav-link-inner-gap)};
+  --#{$prefix}nav-icon-size: #{$nav-icon-size};
+
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+
+  &__item {
+    & + & {
+      margin-left: var(--#{$prefix}nav-item-gap-x);
+    }
+
+    &--dropdown {
+      position: relative;
+    }
+
+    &:hover {
+      #{$root}__icon {
+        transform: rotate(-180deg);
+      }
+
+      #{$root}__dropdown-menu,
+      #{$root}__mega-menu {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--#{$prefix}nav-link-inner-gap);
+    font-size: var(--#{$prefix}nav-link-font-size);
+    font-weight: var(--#{$prefix}nav-link-font-weight);
+    padding: var(--#{$prefix}nav-link-padding-y) var(--#{$prefix}nav-link-padding-x);
+    border-radius: $border-radius-lg;
+
+    @include transition.basic-transition();
+
+    @include on-event(true) {
+      color: var(--#{$prefix}nav-link-color);
+    }
+
+    @include on-event() {
+      background-color: var(--#{$prefix}nav-link-hover-bg);
+    }
+
+    &--disabled {
+      color: var(--#{$prefix}disabled-text-emphasis);
+      pointer-events: none;
+    }
+
+    &:focus,
+    &:active,
+    &.is-active {
+      background-color: var(--#{$prefix}brand-bg-subtle);
+    }
+  }
+
+  &__icon {
+    font-size: var(--#{$prefix}nav-icon-size);
+    @include transition.basic-transition();
+  }
+
+  &__dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+    white-space: nowrap;
+    @include transition.basic-transition();
+
+    &--center {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &--end {
+      left: auto;
+      right: 0;
+    }
+  }
+
+  &__mega-menu {
+    position: absolute;
+    top: calc(100% - var(--#{$prefix}navbar-padding-y));
+    left: 0;
+    width: 100%;
+    visibility: hidden;
+    opacity: 0;
+    @include transition.basic-transition();
+  }
+
+  &--end {
+    margin-left: auto;
+    justify-content: flex-end;
+  }
+
+  &--center {
+    margin: 0 auto;
+    justify-content: center;
+  }
+
+  // Float variants - floating navigation bubbles
+  &--float-top-center,
+  &--float-bottom-center {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background: var(--#{$prefix}body-bg);
+    border: 1px solid var(--#{$prefix}border-color);
+    border-radius: $border-radius-pill;
+    box-shadow: var(--#{$prefix}box-shadow-lg);
+    padding: rem(8px) rem(16px);
+    backdrop-filter: blur(10px);
+
+    // Add subtle background transparency
+    background: rgba(var(--#{$prefix}body-bg-rgb), 0.95);
+
+    // Ensure items are properly spaced in float mode
+    #{$root}__item {
+      & + & {
+        margin-left: rem(4px);
+      }
+    }
+
+    // Adjust link padding for compact float design
+    #{$root}__link {
+      padding: rem(8px) rem(12px);
+      border-radius: $border-radius-lg;
+
+      &:hover,
+      &:focus,
+      &:active,
+      &.is-active {
+        background-color: var(--#{$prefix}brand-bg-subtle);
+      }
+    }
+  }
+
+  &--float-top-center {
+    top: rem(20px);
+  }
+
+  &--float-bottom-center {
+    bottom: rem(20px);
+  }
+}

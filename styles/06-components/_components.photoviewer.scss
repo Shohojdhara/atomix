@@ -1,0 +1,936 @@
+@use '../01-settings/settings.photoviewer' as *;
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.border-radius' as *;
+@use '../01-settings/settings.box-shadow' as *;
+@use '../01-settings/settings.spacing' as *;
+@use '../01-settings/settings.typography' as *;
+@use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.spacing' as *;
+
+// Common mixins
+%flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+%standard-transition {
+  transition: all $photoviewer-transition-duration $photoviewer-transition-timing;
+}
+
+%fast-transition {
+  transition: all $photoviewer-fast-transition $photoviewer-transition-timing;
+}
+
+// Modern panel styles
+%panel-base {
+  background: $photoviewer-component-background-color;
+  border: 1px solid $photoviewer-component-border-color;
+  border-radius: $photoviewer-image-container-border-radius;
+  box-shadow: $photoviewer-info-panel-shadow;
+  backdrop-filter: blur(8px);
+}
+
+// Custom scrollbar styling
+%custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--#{config.$prefix}tertiary-text-emphasis) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--#{config.$prefix}tertiary-text-emphasis);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--#{config.$prefix}secondary-text-emphasis);
+  }
+}
+
+// Modern hover effects
+%hover-effect {
+  @extend %fast-transition;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: $photoviewer-control-shadow-hover;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: $photoviewer-control-shadow;
+  }
+}
+
+// Enhanced image styling
+%image-base {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transform-origin: center center;
+  will-change: transform;
+
+  // Enhanced image quality
+  image-rendering: auto;
+  image-rendering: -webkit-optimize-contrast;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  // Smooth hardware-accelerated transforms
+  transform: translateZ(0);
+
+  // Prevent touch actions on the image
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+// Modern thumbnail styling
+%thumbnail-base {
+  @extend %flex-center;
+  @extend %fast-transition;
+
+  border: 2px solid transparent;
+  border-radius: $photoviewer-thumbnail-border-radius;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  box-shadow: $photoviewer-thumbnail-shadow;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $photoviewer-thumbnail-hover-shadow;
+    border-color: var(--#{config.$prefix}primary-border-subtle);
+  }
+
+  &.is-active {
+    border-color: $photoviewer-thumbnail-active-border-color;
+    box-shadow: $photoviewer-thumbnail-hover-shadow;
+    transform: scale(1.05);
+  }
+}
+
+// Info panel styling
+%info-section {
+  margin-bottom: $photoviewer-info-spacing;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// When the PhotoViewer is open, add body class for styling
+body.is-open-photoviewer {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+
+  @supports (overflow: clip) {
+    overflow: clip;
+  }
+}
+
+// Enhanced mobile support
+@media (max-width: 768px) {
+  body.is-open-photoviewer {
+    -webkit-overflow-scrolling: touch;
+    height: 100vh;
+    height: 100dvh;
+  }
+}
+
+// Main PhotoViewer component
+.c-photo-viewer {
+  // CSS variables for theming
+  --#{config.$prefix}photoviewer-bg: #{$photoviewer-component-background-color};
+  --#{config.$prefix}photoviewer-border-radius: #{$border-radius-xl};
+  --#{config.$prefix}photoviewer-shadow: #{$box-shadow-lg};
+  --#{config.$prefix}photoviewer-backdrop-bg: #{$photoviewer-modal-background-color};
+  --#{config.$prefix}photoviewer-backdrop-blur: #{$photoviewer-modal-backdrop-blur};
+  --#{config.$prefix}photoviewer-spacing: #{$photoviewer-component-spacing};
+  --#{config.$prefix}photoviewer-transition-duration: #{$photoviewer-transition-duration};
+  --#{config.$prefix}photoviewer-transition-timing: #{$photoviewer-transition-timing};
+
+  @extend %flex-center;
+  @extend %standard-transition;
+
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background: transparent;
+  opacity: 1;
+  transition-property: opacity;
+
+  &__backdrop {
+    @extend %standard-transition;
+    position: absolute;
+    inset: 0;
+    background: var(--#{config.$prefix}photoviewer-backdrop-bg);
+    backdrop-filter: blur(var(--#{config.$prefix}photoviewer-backdrop-blur));
+    z-index: 1;
+    opacity: 1;
+    transition-property: opacity;
+  }
+
+  &__container {
+    @extend %standard-transition;
+    @extend %panel-base;
+
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    min-width: 320px;
+    max-width: 95vw;
+    max-height: 95vh;
+    width: auto;
+    height: auto;
+    padding: var(--#{config.$prefix}photoviewer-spacing);
+    margin: auto;
+  }
+
+  // Header styling
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $photoviewer-header-padding;
+    background: $photoviewer-header-background;
+    border-bottom: 1px solid $photoviewer-header-border-color;
+    border-radius: $border-radius-lg $border-radius-lg 0 0;
+    min-height: $photoviewer-header-height;
+    flex-shrink: 0;
+  }
+
+  &__header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__counter-badge {
+    background: $photoviewer-counter-badge-background;
+    color: $photoviewer-counter-badge-color;
+    font-size: $photoviewer-counter-badge-font-size;
+    font-weight: $photoviewer-counter-badge-font-weight;
+    padding: $photoviewer-counter-badge-padding;
+    border-radius: $photoviewer-counter-badge-border-radius;
+  }
+
+  &__image-title {
+    font-size: $photoviewer-info-title-font-size;
+    font-weight: $photoviewer-info-title-font-weight;
+    color: $photoviewer-info-title-color;
+    margin: 0;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__divider {
+    width: 1px;
+    height: 1.5rem;
+    background: $photoviewer-component-border-color;
+    margin: 0 0.25rem;
+  }
+
+  &__action-button {
+    @extend %hover-effect;
+
+    width: $photoviewer-control-size-small;
+    height: $photoviewer-control-size-small;
+    border-radius: $photoviewer-control-border-radius;
+    background: $photoviewer-control-background;
+    border: 1px solid $photoviewer-control-border-color;
+    color: $photoviewer-control-color;
+    box-shadow: $photoviewer-control-shadow;
+
+    &:hover:not(:disabled) {
+      background: $photoviewer-control-background-hover;
+      color: $photoviewer-control-color-hover;
+      border-color: $photoviewer-control-color-hover;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.is-active {
+      background: $photoviewer-control-color-hover;
+      color: $photoviewer-control-background;
+      border-color: $photoviewer-control-color-hover;
+    }
+  }
+
+  &__close-button {
+    color: var(--#{config.$prefix}error);
+
+    &:hover:not(:disabled) {
+      background: var(--#{config.$prefix}error-bg-subtle);
+      color: var(--#{config.$prefix}error);
+      border-color: var(--#{config.$prefix}error);
+    }
+  }
+
+  // Content area
+  &__content {
+    @extend %flex-center;
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    background: $photoviewer-image-container-background;
+    border-radius: 0 0 $border-radius-lg $border-radius-lg;
+    overflow: hidden;
+  }
+
+  // Image container and image
+  &__image-container {
+    @extend %flex-center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: $photoviewer-image-container-background;
+    cursor: grab;
+
+    &.is-transitioning {
+      pointer-events: none;
+    }
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  &__image {
+    @extend %image-base;
+    @extend %standard-transition;
+
+    max-width: 100%;
+    max-height: 100%;
+    transition-property: transform, opacity;
+  }
+
+  // Navigation buttons
+  &__nav-button {
+    @extend %hover-effect;
+
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) !important;
+    width: $photoviewer-nav-button-size;
+    height: $photoviewer-nav-button-size;
+    border-radius: $photoviewer-control-border-radius;
+    background: $photoviewer-nav-button-background;
+    border: 1px solid $photoviewer-control-border-color;
+    color: $photoviewer-nav-button-color;
+    box-shadow: $photoviewer-nav-button-shadow;
+    z-index: 10;
+
+    &:hover:not(:disabled) {
+      background: $photoviewer-nav-button-hover-background;
+      color: $photoviewer-nav-button-hover-color;
+      border-color: $photoviewer-nav-button-hover-color;
+      box-shadow: $photoviewer-nav-button-hover-shadow;
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    &--prev {
+      left: 1rem;
+    }
+
+    &--next {
+      right: 1rem;
+    }
+  }
+
+  // Thumbnails
+  &__thumbnails {
+    padding: $photoviewer-component-spacing;
+    background: $photoviewer-component-background-color;
+    border-top: 1px solid $photoviewer-component-border-color;
+    max-height: 120px;
+    overflow-y: auto;
+    @extend %custom-scrollbar;
+  }
+
+  &__thumbnails-container {
+    display: flex;
+    gap: $photoviewer-thumbnail-gap;
+    align-items: center;
+    justify-content: center;
+    min-height: $photoviewer-thumbnail-size;
+  }
+
+  &__thumbnail {
+    @extend %thumbnail-base;
+
+    width: $photoviewer-thumbnail-size;
+    height: $photoviewer-thumbnail-size;
+    flex-shrink: 0;
+    padding: 0;
+    border: 2px solid transparent;
+
+    &.is-active {
+      border-color: $photoviewer-thumbnail-active-border-color;
+    }
+  }
+
+  &__thumbnail-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: calc(#{$photoviewer-thumbnail-border-radius} - 2px);
+  }
+
+  &__thumbnail-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $photoviewer-fast-transition $photoviewer-transition-timing;
+  }
+
+  &__thumbnail-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 3px;
+    background: $photoviewer-thumbnail-active-border-color;
+    border-radius: 2px;
+  }
+
+  // Info panel
+  &__info-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: $photoviewer-info-panel-width;
+    height: 100%;
+    background: $photoviewer-info-panel-background;
+    border-left: 1px solid $photoviewer-info-panel-border-color;
+    box-shadow: $photoviewer-info-panel-shadow;
+    z-index: 20;
+    transform: translateX(100%);
+    transition: transform $photoviewer-transition-duration $photoviewer-transition-timing;
+    overflow-y: auto;
+    @extend %custom-scrollbar;
+  }
+
+  &--info-open &__info-panel {
+    transform: translateX(0);
+  }
+
+  &__info-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $photoviewer-info-spacing;
+    background: $photoviewer-info-panel-background;
+    border-bottom: 1px solid $photoviewer-info-panel-border-color;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  &__info-panel-title {
+    font-size: $photoviewer-info-title-font-size;
+    font-weight: $photoviewer-info-title-font-weight;
+    color: $photoviewer-info-title-color;
+    margin: 0;
+  }
+
+  &__info-close {
+    @extend %hover-effect;
+
+    width: $photoviewer-control-size-small;
+    height: $photoviewer-control-size-small;
+    border-radius: $photoviewer-control-border-radius;
+    background: $photoviewer-control-background;
+    border: 1px solid $photoviewer-control-border-color;
+    color: $photoviewer-control-color;
+    box-shadow: $photoviewer-control-shadow;
+
+    &:hover:not(:disabled) {
+      background: $photoviewer-control-background-hover;
+      color: $photoviewer-control-color-hover;
+      border-color: $photoviewer-control-color-hover;
+    }
+  }
+
+  &__info-content {
+    padding: $photoviewer-info-spacing;
+  }
+
+  &__info-section {
+    @extend %info-section;
+  }
+
+  &__info-title {
+    font-size: $photoviewer-info-title-font-size;
+    font-weight: $photoviewer-info-title-font-weight;
+    color: $photoviewer-info-title-color;
+    margin: 0;
+  }
+
+  &__info-description {
+    font-size: $photoviewer-info-description-font-size;
+    color: $photoviewer-info-description-color;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  &__info-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__info-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: $photoviewer-info-meta-font-size;
+    color: $photoviewer-info-meta-color;
+  }
+
+  &__info-section-title {
+    font-size: $photoviewer-info-meta-font-size;
+    font-weight: $photoviewer-info-title-font-weight;
+    color: $photoviewer-info-title-color;
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__info-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &__info-tag {
+    background: $photoviewer-tag-background;
+    color: $photoviewer-tag-color;
+    font-size: $photoviewer-tag-font-size;
+    font-weight: $photoviewer-tag-font-weight;
+    padding: $photoviewer-tag-padding;
+    border-radius: $photoviewer-tag-border-radius;
+    transition: all $photoviewer-fast-transition $photoviewer-transition-timing;
+
+    &:hover {
+      background: $photoviewer-tag-hover-background;
+      color: $photoviewer-tag-hover-color;
+    }
+  }
+
+  // Responsive design
+  @media (max-width: 768px) {
+    &__container {
+      max-width: 100vw;
+      max-height: 100vh;
+      border-radius: 0;
+      padding: 0;
+    }
+
+    &__header {
+      border-radius: 0;
+      padding: 0.75rem;
+    }
+
+    &__content {
+      border-radius: 0;
+    }
+
+    &__nav-button {
+      width: 2.5rem;
+      height: 2.5rem;
+
+      &--prev {
+        left: 0.5rem;
+      }
+
+      &--next {
+        right: 0.5rem;
+      }
+    }
+
+    &__thumbnails {
+      padding: 0.75rem;
+    }
+
+    &__info-panel {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      right: 0;
+      transform: translateX(100%);
+    }
+
+    &__info-header {
+      padding: 0.75rem;
+    }
+
+    &__info-content {
+      padding: 0.75rem;
+    }
+  }
+
+  // Fullscreen mode
+  &--fullscreen {
+    &__container {
+      max-width: 100vw;
+      max-height: 100vh;
+      border-radius: 0;
+      padding: 0;
+    }
+
+    &__header {
+      border-radius: 0;
+    }
+
+    &__content {
+      border-radius: 0;
+    }
+  }
+
+  // Dragging state
+  &--dragging {
+    &__image-container {
+      cursor: grabbing;
+    }
+
+    &__image {
+      transition: none;
+    }
+  }
+
+  // Thumbnail position variants
+  &--thumbnails-top {
+    .c-photo-viewer__container {
+      flex-direction: column;
+    }
+
+    .c-photo-viewer__thumbnails {
+      border-top: none;
+      border-bottom: 1px solid $photoviewer-component-border-color;
+      border-radius: $border-radius-lg $border-radius-lg 0 0;
+      order: -1;
+    }
+
+    .c-photo-viewer__header {
+      border-radius: 0;
+      border-bottom: 1px solid $photoviewer-header-border-color;
+      order: 0;
+    }
+
+    .c-photo-viewer__content {
+      border-radius: 0 0 $border-radius-lg $border-radius-lg;
+      border-top: none;
+      order: 1;
+    }
+  }
+
+  &--thumbnails-left {
+    .c-photo-viewer__container {
+      flex-direction: row;
+      max-width: calc(95vw + #{$photoviewer-info-panel-width});
+    }
+
+    .c-photo-viewer__thumbnails {
+      border-top: none;
+      border-bottom: none;
+      border-right: 1px solid $photoviewer-component-border-color;
+      border-radius: $border-radius-lg 0 0 $border-radius-lg;
+      max-height: none;
+      max-width: 120px;
+      min-width: 120px;
+      padding: $photoviewer-component-spacing 0.75rem;
+      order: -1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .c-photo-viewer__thumbnails-container {
+      flex-direction: column;
+      justify-content: flex-start;
+      min-height: auto;
+      min-width: $photoviewer-thumbnail-size;
+      flex: 1;
+    }
+
+    // Create a wrapper for header + content to keep them together on the right
+    .c-photo-viewer__header,
+    .c-photo-viewer__content {
+      order: 1;
+    }
+
+    .c-photo-viewer__header {
+      border-radius: 0 $border-radius-lg 0 0;
+      border-left: none;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 0.75rem;
+      min-height: auto;
+      position: relative;
+    }
+
+    .c-photo-viewer__header-left {
+      margin-bottom: 1rem;
+      align-self: flex-start;
+    }
+
+    .c-photo-viewer__actions {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+
+    .c-photo-viewer__content {
+      border-radius: 0 0 $border-radius-lg 0;
+      border-left: none;
+      flex: 1;
+    }
+  }
+
+  &--thumbnails-right {
+    .c-photo-viewer__container {
+      flex-direction: row;
+      max-width: calc(95vw + #{$photoviewer-info-panel-width});
+    }
+
+    .c-photo-viewer__thumbnails {
+      border-top: none;
+      border-bottom: none;
+      border-left: 1px solid $photoviewer-component-border-color;
+      border-radius: 0 $border-radius-lg $border-radius-lg 0;
+      max-height: none;
+      max-width: 120px;
+      min-width: 120px;
+      padding: $photoviewer-component-spacing 0.75rem;
+      order: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .c-photo-viewer__thumbnails-container {
+      flex-direction: column;
+      justify-content: flex-start;
+      min-height: auto;
+      min-width: $photoviewer-thumbnail-size;
+      flex: 1;
+    }
+
+    // Keep header + content together on the left
+    .c-photo-viewer__header,
+    .c-photo-viewer__content {
+      order: 0;
+    }
+
+    .c-photo-viewer__header {
+      border-radius: $border-radius-lg 0 0 0;
+      border-right: none;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0.75rem;
+      min-height: auto;
+      width: 100%;
+    }
+
+    .c-photo-viewer__header-left {
+      margin-bottom: 1rem;
+      align-self: flex-start;
+    }
+
+    .c-photo-viewer__actions {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+
+    .c-photo-viewer__content {
+      border-radius: 0 0 0 $border-radius-lg;
+      border-right: none;
+      flex: 1;
+    }
+  }
+
+  &--thumbnails-bottom {
+    // Default styles are already applied for bottom position
+    // This modifier exists for consistency and potential future customization
+    .c-photo-viewer__header {
+      border-radius: $border-radius-lg $border-radius-lg 0 0;
+    }
+
+    .c-photo-viewer__content {
+      border-radius: 0 0 $border-radius-lg $border-radius-lg;
+    }
+
+    .c-photo-viewer__thumbnails {
+      border-radius: 0 0 $border-radius-lg $border-radius-lg;
+    }
+  }
+
+  &--thumbnails-none {
+    .c-photo-viewer__thumbnails {
+      display: none;
+    }
+
+    .c-photo-viewer__container {
+      border-radius: $border-radius-lg;
+    }
+
+    .c-photo-viewer__header {
+      border-radius: $border-radius-lg $border-radius-lg 0 0;
+    }
+
+    .c-photo-viewer__content {
+      border-radius: 0 0 $border-radius-lg $border-radius-lg;
+    }
+  }
+
+  // Responsive adjustments for thumbnail positions
+  @media (max-width: 768px) {
+    &--thumbnails-left,
+    &--thumbnails-right {
+      .c-photo-viewer__container {
+        flex-direction: column;
+        max-width: 100vw;
+        border-radius: 0;
+      }
+
+      .c-photo-viewer__thumbnails {
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+        border-top: 1px solid $photoviewer-component-border-color;
+        border-radius: 0;
+        max-width: none;
+        min-width: auto;
+        order: 1;
+        padding: 0.75rem;
+        display: block;
+      }
+
+      .c-photo-viewer__thumbnails-container {
+        flex-direction: row;
+        justify-content: center;
+        min-height: $photoviewer-thumbnail-size;
+        min-width: auto;
+      }
+
+      .c-photo-viewer__content {
+        border-radius: 0;
+        order: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .c-photo-viewer__header {
+        border-radius: 0;
+        border-left: 1px solid $photoviewer-header-border-color;
+        border-right: 1px solid $photoviewer-header-border-color;
+        border-bottom: 1px solid $photoviewer-header-border-color;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: $photoviewer-header-padding;
+      }
+
+      .c-photo-viewer__header-left {
+        margin-bottom: 0;
+        align-self: auto;
+      }
+
+      .c-photo-viewer__actions {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+      }
+    }
+
+    &--thumbnails-top {
+      .c-photo-viewer__container {
+        border-radius: 0;
+        flex-direction: column;
+      }
+
+      .c-photo-viewer__thumbnails {
+        border-radius: 0;
+        order: -1;
+      }
+
+      .c-photo-viewer__header {
+        border-radius: 0;
+        border-bottom: 1px solid $photoviewer-header-border-color;
+        order: 0;
+      }
+
+      .c-photo-viewer__content {
+        border-radius: 0;
+        order: 1;
+      }
+    }
+
+    &--thumbnails-bottom {
+      .c-photo-viewer__container {
+        border-radius: 0;
+      }
+
+      .c-photo-viewer__header {
+        border-radius: 0;
+      }
+
+      .c-photo-viewer__content {
+        border-radius: 0;
+      }
+
+      .c-photo-viewer__thumbnails {
+        border-radius: 0;
+      }
+    }
+
+    &--thumbnails-none {
+      .c-photo-viewer__container {
+        border-radius: 0;
+      }
+
+      .c-photo-viewer__header {
+        border-radius: 0;
+      }
+
+      .c-photo-viewer__content {
+        border-radius: 0;
+      }
+    }
+  }
+}

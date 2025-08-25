@@ -1,0 +1,59 @@
+@use 'settings.config' as *;
+@use 'settings.colors' as *;
+@use 'settings.border-radius' as *;
+@use 'settings.spacing' as *;
+@use 'sass:map';
+
+// ============================================================================
+// SLIDER SETTINGS
+// ============================================================================
+
+// Base configuration
+$slider-height: 300px !default;
+$slider-width: 100% !default;
+$slider-speed: 300ms !default;
+$slider-easing: cubic-bezier(0.4, 0, 0.2, 1) !default;
+
+// Navigation
+$slider-nav-size: map.get($spacing-sizes, 11) !default; // 44px
+$slider-nav-size-mobile: map.get($spacing-sizes, 9) !default; // 36px
+$slider-nav-offset: map.get($spacing-sizes, 4) !default; // 16px
+$slider-nav-offset-mobile: map.get($spacing-sizes, 2) !default; // 8px
+$slider-nav-background: var(--#{$prefix}primary-bg-subtle) !default;
+$slider-nav-background-hover: var(--#{$prefix}secondary-bg-subtle) !default;
+$slider-nav-color: var(--#{$prefix}primary-text) !default;
+$slider-nav-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !default;
+$slider-nav-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.2) !default;
+$slider-nav-border-radius: $border-radius-pill !default;
+
+// Pagination
+$slider-pagination-offset: map.get($spacing-sizes, 4) !default; // 16px
+$slider-pagination-offset-mobile: map.get($spacing-sizes, 3) !default; // 12px
+$slider-pagination-bullet-size: map.get($spacing-sizes, 2) !default; // 8px
+$slider-pagination-bullet-gap: map.get($spacing-sizes, 2) !default; // 8px
+$slider-pagination-bullet-background: var(--#{$prefix}tertiary-bg-subtle) !default;
+$slider-pagination-bullet-background-active: var(--#{$prefix}primary) !default;
+$slider-pagination-bullet-background-hover: var(--#{$prefix}secondary-bg-subtle) !default;
+$slider-pagination-bullet-border-radius: $border-radius-pill !default;
+
+// Slide content
+$slider-content-padding: map.get($spacing-sizes, 4) !default; // 16px
+$slider-content-padding-mobile: map.get($spacing-sizes, 3) !default; // 12px
+$slider-content-background: linear-gradient(transparent, rgba(0, 0, 0, 0.7)) !default;
+$slider-content-color: var(--#{$prefix}light-text) !default;
+
+// Empty state
+$slider-empty-background: var(--#{$prefix}secondary-bg-subtle) !default;
+$slider-empty-border: 2px dashed var(--#{$prefix}primary-border-subtle) !default;
+$slider-empty-message-color: var(--#{$prefix}tertiary-text) !default;
+$slider-empty-border-radius: $border-radius-md !default;
+
+// Transitions
+$slider-transition: all 0.2s $slider-easing !default;
+$slider-nav-transition: all 0.2s $slider-easing !default;
+$slider-pagination-transition: all 0.2s $slider-easing !default;
+
+// Z-index layers
+$slider-z-index-base: 1 !default;
+$slider-z-index-slide-active: 2 !default;
+$slider-z-index-controls: 10 !default;

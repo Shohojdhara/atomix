@@ -1,0 +1,11 @@
+@use 'sass:map';
+@use '../01-settings/settings.z-layers' as *;
+
+// Define utilities for z-index
+$utilities-z-index: (
+  'z-index': (
+    property: z-index,
+    class: u-z,
+    values: $z-layers,
+  ),
+);

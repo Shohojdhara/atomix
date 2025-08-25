@@ -1,0 +1,32 @@
+/// Hide content visually while keeping it accessible to screen readers
+/// @author Harry Roberts
+/// @link https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css
+@mixin visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
+}
+
+/// Unhide visually hidden content
+@mixin visually-unhide {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  width: auto;
+  white-space: normal;
+}
+
+/// Visually hide but reveal on focus
+@mixin visually-hidden-focusable {
+  &:not(:focus):not(:focus-within) {
+    @include visually-hidden;
+  }
+}

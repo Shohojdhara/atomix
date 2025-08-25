@@ -1,0 +1,19 @@
+@use '../../../styles/02-tools/tools.animations' as *;
+@use '../02-tools/tools.animations' as *;
+
+.c-timeline {
+  @include animations('slow-fade-in', $duration: 0.8s, $timing: ease-out, $iteration-count: 1);
+}
+
+.c-timeline__item {
+  @include animations('slow-fade-in-up', $duration: 0.5s, $timing: ease-out, $iteration-count: 1);
+
+  &:hover {
+    @include animations(
+      'color-pulse',
+      $duration: 2s,
+      $timing: ease-in-out,
+      $iteration-count: infinite
+    );
+  }
+}

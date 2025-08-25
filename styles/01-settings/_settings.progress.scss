@@ -1,0 +1,15 @@
+@use 'settings.config' as config;
+@use 'settings.typography' as typography;
+@use 'settings.border-radius' as border-radius;
+@use 'settings.animations' as animations;
+
+$progress-width: 100% !default;
+$progress-height: 6px !default;
+$progress-font-size: typography.$font-size-xs !default;
+$progress-bg: var(--#{config.$prefix}secondary-bg-subtle) !default;
+$progress-border-radius: border-radius.$border-radius-pill !default;
+$progress-bar-height: $progress-height !default;
+$progress-bar-color: var(--#{config.$prefix}primary-text-emphasis) !default;
+$progress-bar-bg: var(--#{config.$prefix}primary) !default;
+$progress-bar-transition: animations.$transition-duration !default;
+$progress-bar-easing: animations.$easing !default;

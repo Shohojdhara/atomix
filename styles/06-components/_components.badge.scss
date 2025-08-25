@@ -1,0 +1,62 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.badge' as *;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../02-tools/tools.rem' as *;
+
+.c-badge {
+  --#{$prefix}tag-font-size: #{$badge-font-size};
+  --#{$prefix}tag-font-weight: #{$badge-font-weight};
+  --#{$prefix}tag-color: var(--#{$prefix}body-color);
+  --#{$prefix}tag-padding-x: #{rem($badge-padding-x)};
+  --#{$prefix}tag-padding-y: #{rem($badge-padding-y)};
+  --#{$prefix}tag-border-radius: #{$badge-border-radius};
+  --#{$prefix}tag-bg-color: var(--#{$prefix}body-bg);
+  --#{$prefix}tag-icon-size: #{rem($badge-icon-size)};
+  --#{$prefix}tag-inner-items-gap: #{rem($badge-inner-items-gap)};
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--#{$prefix}tag-inner-items-gap);
+  color: var(--#{$prefix}tag-color);
+  font-size: var(--#{$prefix}tag-font-size);
+  font-weight: var(--#{$prefix}tag-font-weight);
+  line-height: 1;
+  padding: var(--#{$prefix}tag-padding-y) var(--#{$prefix}tag-padding-x);
+  border-radius: var(--#{$prefix}tag-border-radius);
+  background-color: var(--#{$prefix}tag-bg-color);
+  user-select: none;
+
+  &__icon {
+    font-size: var(--#{$prefix}tag-icon-size);
+    color: var(--#{$prefix}tag-color);
+    fill: var(--#{$prefix}tag-color);
+  }
+
+  &--sm {
+    --#{$prefix}tag-padding-y: #{$badge-padding-y-sm};
+  }
+
+  &--lg {
+    --#{$prefix}tag-padding-y: #{$badge-padding-y-lg};
+  }
+
+  @each $color, $value in maps.$theme-colors {
+    &--#{$color} {
+      @if ($color == 'primary') {
+        --#{$prefix}tag-bg-color: var(--#{$prefix}brand-bg-subtle);
+        --#{$prefix}tag-color: var(--#{$prefix}brand-text-emphasis);
+      } @else if ($color == 'dark') {
+        --#{$prefix}tag-bg-color: var(--#{$prefix}dark);
+        --#{$prefix}tag-color: var(--#{$prefix}light);
+      } @else if ($color == 'light') {
+        --#{$prefix}tag-bg-color: var(--#{$prefix}light);
+        --#{$prefix}tag-color: var(--#{$prefix}dark);
+      } @else {
+        --#{$prefix}tag-bg-color: var(--#{$prefix}#{$color}-bg-subtle);
+        --#{$prefix}tag-color: var(--#{$prefix}#{$color}-text-emphasis);
+      }
+    }
+  }
+}

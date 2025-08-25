@@ -1,0 +1,163 @@
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.sectionintro' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.breakpoints' as *;
+@use '../02-tools/tools.grid' as *;
+
+.c-sectionintro {
+  $root: &;
+
+  --#{$prefix}sectionintro-padding-x: #{rem($sectionintro-padding-x)};
+  --#{$prefix}sectionintro-padding-y: #{rem($sectionintro-padding-y)};
+  --#{$prefix}sectionintro-title-font-size: #{$sectionintro-title-font-size};
+  --#{$prefix}sectionintro-text-font-size: #{$sectionintro-text-font-size};
+  --#{$prefix}sectionintro-title-color: #{$sectionintro-title-color};
+  --#{$prefix}sectionintro-text-color: #{$sectionintro-text-color};
+  --#{$prefix}sectionintro-title-font-weight: #{$sectionintro-title-font-weight};
+  --#{$prefix}sectionintro-text-font-weight: #{$sectionintro-text-font-weight};
+  --#{$prefix}sectionintro-label-margin-bottom: #{rem($sectionintro-label-margin-bottom)};
+  --#{$prefix}sectionintro-text-margin-top: #{rem($sectionintro-text-margin-top)};
+  --#{$prefix}sectionintro-actions-margin-top: #{rem($sectionintro-actions-margin-top)};
+  --#{$prefix}sectionintro-actions-inner-gap: #{rem($sectionintro-actions-inner-gap)};
+  --#{$prefix}sectionintro-width: #{rem($sectionintro-width)};
+  --#{$prefix}sectionintro-image-margin-top: #{rem(24px)};
+  --#{$prefix}sectionintro-image-max-width: 100%;
+  --#{$prefix}sectionintro-overlay-opacity: 0.7;
+  --#{$prefix}sectionintro-overlay-bg-color: rgba(0, 0, 0, 0.5);
+  --#{$prefix}sectionintro-bg-z-index: -1;
+  --#{$prefix}sectionintro-sm-title-font-size: #{$sectionintro-title-font-size * 0.8};
+  --#{$prefix}sectionintro-lg-title-font-size: #{$sectionintro-title-font-size * 1.25};
+
+  width: 100%;
+  max-width: var(--#{$prefix}sectionintro-width);
+  padding: var(--#{$prefix}sectionintro-padding-y) var(--#{$prefix}sectionintro-padding-x);
+  position: relative;
+  overflow: hidden;
+
+  &__label {
+    margin-bottom: var(--#{$prefix}sectionintro-label-margin-bottom);
+  }
+
+  &__title {
+    color: var(--#{$prefix}sectionintro-title-color);
+    font-size: var(--#{$prefix}sectionintro-title-font-size);
+    font-weight: var(--#{$prefix}sectionintro-title-font-weight);
+  }
+
+  &__text {
+    color: var(--#{$prefix}sectionintro-text-color);
+    font-size: var(--#{$prefix}sectionintro-text-font-size);
+    font-weight: var(--#{$prefix}sectionintro-text-font-weight);
+    margin-top: var(--#{$prefix}sectionintro-text-margin-top);
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--#{$prefix}sectionintro-actions-inner-gap);
+    margin-top: var(--#{$prefix}sectionintro-actions-margin-top);
+  }
+
+  &--center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: {
+      left: auto;
+      right: auto;
+    }
+  }
+
+  &--right {
+    margin-left: auto;
+    text-align: right;
+
+    #{$root}__actions {
+      justify-content: flex-end;
+    }
+  }
+
+  &__container {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__image-wrapper {
+    margin-top: var(--#{$prefix}sectionintro-image-margin-top);
+    display: flex;
+    justify-content: center;
+  }
+
+  &__image {
+    max-width: var(--#{$prefix}sectionintro-image-max-width);
+    height: auto;
+    border-radius: var(--#{$prefix}border-radius);
+  }
+
+  &__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--#{$prefix}sectionintro-bg-z-index);
+    overflow: hidden;
+  }
+
+  &__bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--#{$prefix}sectionintro-overlay-bg-color);
+    opacity: var(--#{$prefix}sectionintro-overlay-opacity);
+  }
+
+  &--has-bg {
+    color: var(--#{$prefix}color-white);
+
+    #{$root}__title,
+    #{$root}__text,
+    #{$root}__label {
+      color: var(--#{$prefix}color-white);
+    }
+  }
+
+  &--sm {
+    #{$root}__title {
+      font-size: var(--#{$prefix}sectionintro-sm-title-font-size);
+    }
+
+    #{$root}__text {
+      font-size: calc(var(--#{$prefix}sectionintro-text-font-size) * 0.9);
+    }
+  }
+
+  &--lg {
+    #{$root}__title {
+      font-size: var(--#{$prefix}sectionintro-lg-title-font-size);
+    }
+
+    #{$root}__text {
+      font-size: calc(var(--#{$prefix}sectionintro-text-font-size) * 1.1);
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    &__container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &--has-bg {
+      padding: rem(60px) var(--#{$prefix}sectionintro-padding-x);
+    }
+  }
+}

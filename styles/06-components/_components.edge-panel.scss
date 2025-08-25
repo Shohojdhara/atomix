@@ -1,0 +1,350 @@
+@use 'sass:map';
+@use '../01-settings/settings.config' as *;
+@use '../01-settings/settings.edge-panel' as *;
+@use '../01-settings/settings.z-layers' as *;
+@use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.animations' as *;
+
+// EdgePanel SCSS Styling
+.c-edge-panel {
+  $root: &;
+
+  // CSS Custom Properties for Easy Theming
+  --#{$prefix}edge-panel-zindex: #{$edge-panel-zindex};
+  --#{$prefix}edge-panel-width: #{rem($edge-panel-width)};
+  --#{$prefix}edge-panel-height: #{$edge-panel-height};
+  --#{$prefix}edge-panel-padding-x: #{rem($edge-panel-padding-x)};
+  --#{$prefix}edge-panel-padding-y: #{rem($edge-panel-padding-y)};
+  --#{$prefix}edge-panel-bg: #{$edge-panel-bg};
+  --#{$prefix}edge-panel-color: #{$edge-panel-color};
+  --#{$prefix}edge-panel-shadow: #{$edge-panel-shadow};
+  --#{$prefix}edge-panel-backdrop-bg: #{$edge-panel-backdrop-bg};
+  --#{$prefix}edge-panel-backdrop-opacity: #{$edge-panel-backdrop-opacity};
+  --#{$prefix}edge-panel-backdrop-blur: #{$edge-panel-backdrop-blur};
+  --#{$prefix}edge-panel-animation-duration: #{$edge-panel-animation-duration}ms;
+  --#{$prefix}edge-panel-border-color: #{$edge-panel-border-color};
+
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--#{$prefix}edge-panel-zindex);
+
+  // Backdrop Styling
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: var(--#{$prefix}edge-panel-backdrop-bg);
+    backdrop-filter: blur(var(--#{$prefix}edge-panel-backdrop-blur));
+    opacity: 0;
+    z-index: map.get($z-layers, 1);
+    transition: opacity var(--#{$prefix}edge-panel-animation-duration) ease;
+    will-change: opacity;
+
+    &.is-animating {
+      animation: fadeIn 0.3s ease forwards;
+    }
+
+    &.is-animating-out {
+      animation: fadeOut 0.3s ease forwards;
+    }
+  }
+
+  // Panel Container
+  &__container {
+    position: absolute;
+    color: var(--#{$prefix}edge-panel-color);
+    width: var(--#{$prefix}edge-panel-width);
+    height: 100%;
+    background-color: var(--#{$prefix}edge-panel-bg);
+    box-shadow: var(--#{$prefix}edge-panel-shadow);
+    z-index: map.get($z-layers, 2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    will-change: transform, opacity;
+
+    &.is-animating {
+      animation: slideIn var(--#{$prefix}edge-panel-animation-duration)
+        cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    &.is-animating-out {
+      animation: slideOut var(--#{$prefix}edge-panel-animation-duration)
+        cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  }
+
+  // Panel Header
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--#{$prefix}edge-panel-padding-y) var(--#{$prefix}edge-panel-padding-x);
+    border-bottom: 1px solid var(--#{$prefix}edge-panel-border-color);
+    flex-shrink: 0;
+  }
+
+  // Close Button
+  &__close {
+    user-select: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--#{$prefix}primary);
+      outline-offset: 2px;
+    }
+  }
+
+  // Panel Body
+  &__body {
+    padding: var(--#{$prefix}edge-panel-padding-y) var(--#{$prefix}edge-panel-padding-x);
+    overflow-y: auto;
+    flex: 1;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  // Variants for Panel Positioning
+  &--start {
+    #{$root}__container {
+      left: 0;
+      top: 0;
+      bottom: 0;
+      border-right: 1px solid var(--#{$prefix}edge-panel-border-color);
+      transform: translateX(-100%);
+
+      &.is-animating {
+        animation-name: slideInStart;
+      }
+
+      &.is-animating-out {
+        animation-name: slideOutStart;
+      }
+    }
+  }
+
+  &--end {
+    #{$root}__container {
+      right: 0;
+      top: 0;
+      bottom: 0;
+      left: auto;
+      border-left: 1px solid var(--#{$prefix}edge-panel-border-color);
+      transform: translateX(100%);
+
+      &.is-animating {
+        animation-name: slideInEnd;
+      }
+
+      &.is-animating-out {
+        animation-name: slideOutEnd;
+      }
+    }
+  }
+
+  &--top {
+    #{$root}__container {
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: auto;
+      width: 100%;
+      height: var(--#{$prefix}edge-panel-height);
+      transform: translateY(-100%);
+      border-bottom: 1px solid var(--#{$prefix}edge-panel-border-color);
+
+      &.is-animating {
+        animation-name: slideInTop;
+      }
+
+      &.is-animating-out {
+        animation-name: slideOutTop;
+      }
+    }
+  }
+
+  &--bottom {
+    #{$root}__container {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: auto;
+      width: 100%;
+      height: var(--#{$prefix}edge-panel-height);
+      transform: translateY(100%);
+      border-top: 1px solid var(--#{$prefix}edge-panel-border-color);
+
+      &.is-animating {
+        animation-name: slideInBottom;
+      }
+
+      &.is-animating-out {
+        animation-name: slideOutBottom;
+      }
+    }
+  }
+
+  // Active State (When Open)
+  &.is-open {
+    #{$root}__backdrop {
+      opacity: var(--#{$prefix}edge-panel-backdrop-opacity);
+    }
+
+    #{$root}__container {
+      transform: translateX(0) translateY(0);
+    }
+  }
+
+  // No animation mode
+  &[data-mode='none'] {
+    #{$root}__container {
+      // Disable all transitions
+      transition: none !important;
+      animation: none !important;
+
+      &.is-animating,
+      &.is-animating-out {
+        animation: none !important;
+      }
+    }
+
+    #{$root}__backdrop {
+      transition: none !important;
+      animation: none !important;
+
+      &.is-animating,
+      &.is-animating-out {
+        animation: none !important;
+      }
+    }
+  }
+}
+
+// Body Modifier When Panel is Open
+.is-edgepanel-open {
+  --#{$prefix}edge-panel-animation-duration: #{$edge-panel-animation-duration}ms;
+  overflow: hidden;
+
+  &.is-pushed {
+    transition:
+      padding-left var(--#{$prefix}edge-panel-animation-duration) cubic-bezier(0.16, 1, 0.3, 1),
+      padding-right var(--#{$prefix}edge-panel-animation-duration) cubic-bezier(0.16, 1, 0.3, 1),
+      padding-top var(--#{$prefix}edge-panel-animation-duration) cubic-bezier(0.16, 1, 0.3, 1),
+      padding-bottom var(--#{$prefix}edge-panel-animation-duration) cubic-bezier(0.16, 1, 0.3, 1);
+
+    // Disable scrolling on iOS
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+
+  &:not(.is-pushed) {
+    // Disable scrolling on iOS
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Simple fade in animation
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: var(--#{$prefix}edge-panel-backdrop-opacity);
+  }
+}
+
+// Simple fade out animation
+@keyframes fadeOut {
+  from {
+    opacity: var(--#{$prefix}edge-panel-backdrop-opacity);
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+// Position-specific animations
+@keyframes slideInStart {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutStart {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideInEnd {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutEnd {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes slideInTop {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOutTop {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes slideInBottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOutBottom {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}

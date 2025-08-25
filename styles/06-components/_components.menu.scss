@@ -1,0 +1,239 @@
+@use '../01-settings/settings.config' as config;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.menu' as menu;
+@use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.animations' as animations;
+@use '../02-tools/tools.color-mode' as *;
+
+.c-menu {
+  $root: &;
+
+  --#{config.$prefix}menu-min-width: #{rem.rem(menu.$menu-min-width)};
+  --#{config.$prefix}menu-container-width: #{rem.rem(menu.$menu-container-width)};
+  --#{config.$prefix}menu-padding-x: #{rem.rem(menu.$menu-padding-x)};
+  --#{config.$prefix}menu-padding-y: #{rem.rem(menu.$menu-padding-y)};
+  --#{config.$prefix}menu-bg: #{menu.$menu-bg};
+  --#{config.$prefix}menu-border-radius: #{menu.$menu-border-radius};
+  --#{config.$prefix}menu-box-shadow: #{menu.$menu-box-shadow};
+  --#{config.$prefix}menu-items-gap: #{menu.$menu-items-gap};
+  --#{config.$prefix}menu-item-padding-x: #{menu.$menu-item-padding-x};
+  --#{config.$prefix}menu-item-padding-y: #{menu.$menu-item-padding-y};
+  --#{config.$prefix}menu-item-inner-gap: #{menu.$menu-item-inner-gap};
+  --#{config.$prefix}menu-item-color: #{menu.$menu-item-color};
+  --#{config.$prefix}menu-item-font-size: #{menu.$menu-item-font-size};
+  --#{config.$prefix}menu-item-font-weight: #{menu.$menu-item-font-weight};
+  --#{config.$prefix}menu-item-bg: #{menu.$menu-item-bg};
+  --#{config.$prefix}menu-item-bg-hover: #{menu.$menu-item-bg-hover};
+  --#{config.$prefix}menu-item-bg-active: #{menu.$menu-item-bg-active};
+  --#{config.$prefix}menu-item-icon-size: #{menu.$menu-item-icon-size};
+  --#{config.$prefix}menu-subitem-color: #{menu.$menu-subitem-color};
+  --#{config.$prefix}menu-subitem-color-active: #{menu.$menu-subitem-color-active};
+  --#{config.$prefix}menu-subitem-font-weight: #{menu.$menu-subitem-font-weight};
+  --#{config.$prefix}menu-subitem-font-weight-active: #{menu.$menu-subitem-font-weight-active};
+  --#{config.$prefix}menu-mega-padding-x: #{rem.rem(menu.$menu-mega-padding-x)};
+  --#{config.$prefix}menu-mega-padding-y: #{rem.rem(menu.$menu-mega-padding-y)};
+  --#{config.$prefix}menu-mega-grid-gap: #{rem.rem(menu.$menu-mega-grid-gap)};
+  --#{config.$prefix}menu-mega-header-title-font-size: #{menu.$menu-mega-header-title-font-size};
+  --#{config.$prefix}menu-mega-header-title-font-weight: #{menu.$menu-mega-header-title-font-weight};
+
+  display: inline-block;
+  min-width: var(--#{config.$prefix}menu-min-width);
+  padding: var(--#{config.$prefix}menu-item-padding-y) var(--#{config.$prefix}menu-item-padding-x);
+  background-color: var(--#{config.$prefix}menu-bg);
+  border-radius: var(--#{config.$prefix}menu-border-radius);
+  box-shadow: var(--#{config.$prefix}menu-box-shadow);
+  z-index: 5;
+
+  &__container {
+    width: 100%;
+    max-width: var(--#{config.$prefix}menu-container-width);
+    margin: {
+      left: auto;
+      right: auto;
+    }
+    padding: 0 var(--#{config.$prefix}menu-mega-padding-x);
+  }
+
+  &__list {
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: 0;
+  }
+
+  &__item {
+    & + & {
+      margin-top: var(--#{config.$prefix}menu-items-gap);
+    }
+
+    &--haschildren {
+      position: relative;
+
+      > #{$root} {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        visibility: hidden;
+        opacity: 0;
+        @include animations.basic-transition();
+      }
+
+      &:hover {
+        > #{$root} {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: var(--#{config.$prefix}menu-item-inner-gap);
+    padding: var(--#{config.$prefix}menu-item-padding-y) var(--#{config.$prefix}menu-item-padding-x);
+    color: var(--#{config.$prefix}menu-item-color);
+    font-size: var(--#{config.$prefix}menu-item-font-size);
+    font-weight: var(--#{config.$prefix}menu-item-font-weight);
+    background-color: var(--#{config.$prefix}menu-item-bg);
+    border-radius: var(--#{config.$prefix}menu-border-radius);
+    cursor: pointer;
+    @include animations.basic-transition();
+
+    &:hover {
+      color: var(--#{config.$prefix}menu-item-color);
+      background-color: var(--#{config.$prefix}menu-item-bg-hover);
+    }
+
+    &:focus,
+    &:active,
+    &.is-active {
+      background-color: var(--#{config.$prefix}menu-item-bg-active);
+    }
+  }
+
+  &__icon {
+    font-size: var(--#{config.$prefix}menu-item-icon-size);
+  }
+
+  &__toggle {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  &__toggle-icon {
+    margin-left: auto;
+    @include animations.basic-transition();
+  }
+
+  &__subitems {
+    position: relative;
+  }
+
+  &__subitems-wrapper {
+    height: 0px;
+    overflow: hidden;
+    @include animations.basic-transition();
+  }
+
+  &__subitems-list {
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: rem.rem(23px);
+  }
+
+  &__subitem-link {
+    display: flex;
+    align-items: center;
+    gap: var(--#{config.$prefix}menu-item-inner-gap);
+    padding: var(--#{config.$prefix}menu-item-padding-y) var(--#{config.$prefix}menu-item-padding-x);
+    color: var(--#{config.$prefix}menu-subitem-color);
+    font-size: var(--#{config.$prefix}menu-item-font-size);
+    font-weight: var(--#{config.$prefix}menu-subitem-font-weight);
+    @include animations.basic-transition();
+
+    &:hover {
+      color: var(--#{config.$prefix}primary);
+    }
+
+    &:focus,
+    &:active,
+    &.is-active {
+      color: var(--#{config.$prefix}menu-subitem-color-active);
+      font-weight: var(--#{config.$prefix}menu-subitem-font-weight-active);
+    }
+  }
+
+  &__grid {
+    --#{config.$prefix}gutter-x: var(--#{config.$prefix}menu-mega-grid-gap);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: var(--#{config.$prefix}menu-item-inner-gap);
+    padding: 0 var(--#{config.$prefix}menu-item-padding-y)
+      var(--#{config.$prefix}menu-item-padding-x) var(--#{config.$prefix}menu-item-padding-x);
+    margin-bottom: var(--#{config.$prefix}menu-item-padding-y);
+    border-bottom: 1px solid var(--#{config.$prefix}primary-border-subtle);
+  }
+
+  &__header-title {
+    color: var(--#{config.$prefix}menu-item-color);
+    font-size: var(--#{config.$prefix}menu-mega-header-title-font-size);
+    font-weight: var(--#{config.$prefix}menu-mega-header-title-font-weight);
+  }
+
+  &__header-icon {
+    font-size: rem.rem(24px);
+  }
+
+  &__content-title {
+    color: var(--#{config.$prefix}menu-item-color);
+    font-size: var(--#{config.$prefix}menu-item-font-size);
+    font-weight: var(--#{config.$prefix}menu-item-font-weight);
+  }
+
+  &__content-text {
+    color: var(--#{config.$prefix}menu-subitem-color);
+    font-size: var(--#{config.$prefix}menu-item-font-size);
+    margin-top: var(--#{config.$prefix}menu-items-gap);
+  }
+
+  &__content-menu {
+    height: 100%;
+    padding-left: var(--#{config.$prefix}menu-mega-grid-gap);
+    border-left: 1px solid var(--#{config.$prefix}primary-border-subtle);
+  }
+
+  &__content-menu-title {
+    color: var(--#{config.$prefix}menu-subitem-color);
+    font-size: var(--#{config.$prefix}menu-item-font-size);
+  }
+
+  &__content-menu-list {
+    padding-left: 0;
+    list-style: none;
+  }
+
+  &__content-menu-item {
+    margin-top: rem.rem(12px);
+  }
+
+  &__content-menu-link {
+    color: var(--#{config.$prefix}menu-item-color);
+    font-size: var(--#{config.$prefix}menu-item-font-size);
+    font-weight: var(--#{config.$prefix}menu-item-font-weight);
+
+    &:hover {
+      color: var(--#{config.$prefix}menu-item-color);
+    }
+  }
+
+  &--mega {
+    width: 100%;
+    min-height: auto;
+    padding: var(--#{config.$prefix}menu-mega-padding-y) 0;
+    border-radius: 0px;
+  }
+}
