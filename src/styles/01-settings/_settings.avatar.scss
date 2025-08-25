@@ -25,7 +25,7 @@ $avatar-border-radius: (
 // Avatar colors
 $avatar-color: var(--#{config.$prefix}primary-text-emphasis) !default;
 $avatar-bg: var(--#{config.$prefix}secondary-bg-subtle) !default;
-$avatar-border-width: 1px !default;
+$avatar-border-width: calc(var(--#{config.$prefix}border-width) * 1) !default;
 $avatar-border-color: var(--#{config.$prefix}primary-border-subtle) !default;
 
 // Avatar content
@@ -41,6 +41,6 @@ $avatar-initials-font-size: (
 
 // Interactive states
 $avatar-hover-opacity: 0.8 !default;
-$avatar-focus-ring-width: 2px !default;
+$avatar-focus-ring-width: calc(var(--#{config.$prefix}border-width) * 2) !default;
 $avatar-focus-ring-color: var(--#{config.$prefix}primary-border-subtle) !default;
 $avatar-disabled-opacity: 0.5 !default;

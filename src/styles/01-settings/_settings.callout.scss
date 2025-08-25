@@ -1,60 +1,78 @@
+@use 'sass:map';
 @use 'settings.colors' as *;
 @use 'settings.config' as config;
+@use './settings.spacing' as *;
 @use '../02-tools/tools.rem' as rem;
+
+$toast-positions-top: map.get($spacing-sizes, 4); //16px
+$toast-positions-right: map.get($spacing-sizes, 4); //16px
+$toast-positions-bottom: map.get($spacing-sizes, 4); //16px
+$toast-positions-left: map.get($spacing-sizes, 4); //16px
 
 // Callout
 $callout-width: 100% !default;
-$callout-padding-x: 16px !default;
-$callout-padding-y: 16px !default;
-$callout-tost-padding-x: 16px !default;
-$callout-tost-padding-y: 16px !default;
+
+$callout-padding-x: map.get($spacing-sizes, 4) !default; //16px
+$callout-padding-y: map.get($spacing-sizes, 4) !default; //16px
+
+$callout-tost-padding-x: map.get($spacing-sizes, 4) !default; //16px
+$callout-tost-padding-y: map.get($spacing-sizes, 4) !default; //16px
+$callout-toast-bg: $white !default;
+
 $callout-bg: $white !default;
-$callout-border-radius: 8px !default;
+
+$callout-border-radius: map.get($spacing-sizes, 2) !default; //8px
 $callout-border-color: $gray-3 !default;
-$callout-border-width: 1px !default;
-$callout-title-font-size: 16px !default;
+$callout-border-width: var(--#{config.$prefix}border-width) !default; //1px
+
+$callout-title-font-size: map.get($spacing-sizes, 4) !default; //16px
 $callout-title-font-weight: 600 !default;
 $callout-title-color: $gray-9 !default;
-$callout-text-font-size: 14px !default;
+
+$callout-text-font-size: map.get($spacing-sizes, 3.5) !default; //14px
 $callout-text-font-weight: 400 !default;
 $callout-text-color: $gray-7 !default;
-$callout-message-spacer: 12px !default;
-$callout-icon-size: 20px !default;
+
+$callout-message-spacer: map.get($spacing-sizes, 3) !default; //12px
+
+$callout-icon-size: map.get($spacing-sizes, 5) !default; //20px
 $callout-icon-color: $primary !default;
-$callout-close-btn-size: 20px !default;
-$callout-actions-spacer: 8px !default;
-$callout-actions-spacer-y: 12px !default;
-$callout-toast-bg: $white !default;
+
+$callout-close-btn-size: map.get($spacing-sizes, 5) !default; //20px
+
+$callout-actions-spacer: map.get($spacing-sizes, 2) !default; //8px
+$callout-actions-spacer-y: map.get($spacing-sizes, 3) !default; //12px
+
 $callout-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1) !default;
 
 // Toast positions
 $callout-toast-positions: (
-  'top-right': (
-    top: 16px,
-    right: 16px,
-  ),
-  'top-left': (
-    top: 16px,
-    left: 16px,
-  ),
-  'top-center': (
-    top: 16px,
-    left: 50%,
-    transform: translateX(-50%),
-  ),
-  'bottom-right': (
-    bottom: 16px,
-    right: 16px,
-  ),
-  'bottom-left': (
-    bottom: 16px,
-    left: 16px,
-  ),
-  'bottom-center': (
-    bottom: 16px,
-    left: 50%,
-    transform: translateX(-50%),
-  ),
+        'top-right': (
+                top: $toast-positions-top,
+                right: $toast-positions-right,
+        ),
+        'top-left': (
+                top: $toast-positions-top,
+                left: $toast-positions-left,
+        ),
+        'top-center': (
+                top: $toast-positions-top,
+                left: 50%,
+                transform: translateX(-50%),
+        ),
+        'bottom-right': (
+                bottom: $toast-positions-bottom,
+                right: $toast-positions-right,
+        ),
+        'bottom-left': (
+                bottom: $toast-positions-bottom,
+                left: $toast-positions-left,
+        ),
+        'bottom-center': (
+                bottom: $toast-positions-bottom,
+                left: 50%,
+                transform: translateX(-50%),
+        ),
 ) !default;
 
 // Z-index for toast containers
