@@ -5,7 +5,7 @@
 
 $breadcrumb-font-size: fonts.$font-size-sm !default;
 $breadcrumb-link-padding-y: map.get(spacing.$spacing-sizes, 1) !default;
-$breadcrumb-link-padding-x: 0px !default;
+$breadcrumb-link-padding-x: map.get(spacing.$spacing-sizes, 0) !default;
 $breadcrumb-link-border-width: map.get(spacing.$spacing-sizes, 2) !default;
 $breadcrumb-items-gap: map.get(spacing.$spacing-sizes, 3) !default;
 $breadcrumb-margin-bottom: map.get(spacing.$spacing-sizes, 4) !default;
