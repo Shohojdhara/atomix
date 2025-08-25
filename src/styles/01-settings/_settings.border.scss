@@ -1,8 +1,11 @@
 @use './settings.colors' as colors;
+@use './settings.config' as config;
 
 $border-color: colors.$primary-border !default;
 $border-color-dark: colors.$primary-border-dark !default;
-$border-width: 1px !default;
+
+$border-width: var(--#{config.$prefix}border-width) !default; //1px
+
 $border-style: solid !default;
 
 $border-widths: (

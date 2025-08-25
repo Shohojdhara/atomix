@@ -1,12 +1,18 @@
+@use 'sass:map';
 @use 'settings.border-radius' as radius;
 @use 'settings.typography' as fonts;
+@use './settings.spacing' as *;
 
 $badge-font-size: fonts.$font-size-xs !default;
 $badge-font-weight: fonts.$font-weight-normal !default;
-$badge-padding-x: 10px !default;
-$badge-padding-y: 6px !default;
-$badge-padding-y-sm: 4px !default;
-$badge-padding-y-lg: 8px !default;
+
+$badge-padding-x: map.get($spacing-sizes, 2.5) !default; //10px
+$badge-padding-y: map.get($spacing-sizes, 1.5) !default; //6px
+$badge-padding-y-sm: map.get($spacing-sizes, 1) !default; //4px
+$badge-padding-y-lg: map.get($spacing-sizes, 2) !default; //8px
+
 $badge-border-radius: radius.$border-radius-pill !default;
-$badge-icon-size: 16px !default;
-$badge-inner-items-gap: 6px !default;
+
+$badge-icon-size: map.get($spacing-sizes, 4) !default; //16px
+
+$badge-inner-items-gap: map.get($spacing-sizes, 1.5) !default; //6px
