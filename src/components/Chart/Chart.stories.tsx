@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Container, Grid, GridCol } from '../../layouts/Grid';
 import { Badge } from '../Badge';
 import { Button } from '../Button';
@@ -46,7 +46,6 @@ const meta: Meta<typeof Chart> = {
       },
     },
   },
-  tags: ['autodocs'],
 };
 
 export default meta;

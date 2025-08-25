@@ -1,10 +1,10 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { SideMenu } from './SideMenu';
-import { SideMenuList } from './SideMenuList';
-import { SideMenuItem } from './SideMenuItem';
+import React from 'react';
 import { Icon } from '../../Icon';
+import { SideMenu } from './SideMenu';
+import { SideMenuItem } from './SideMenuItem';
+import { SideMenuList } from './SideMenuList';
 
 const meta = {
   title: 'Components/Navigation/SideMenu',
@@ -77,7 +77,6 @@ The SideMenu component provides a collapsible navigation menu with title and men
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     title: {
       control: 'text',

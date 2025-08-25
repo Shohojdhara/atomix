@@ -63,12 +63,12 @@ const DemoCard: React.FC<{
 };
 
 const CodeSnippet: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div
-    className="u-bg-dark u-text-light-emphasis u-p-3 u-rounded u-fs-sm u-fw-normal"
+  <pre
+    className="u-bg-dark-subtle u-text-error-emphasis u-p-3 u-rounded u-fs-sm u-fw-normal"
     style={{ fontFamily: 'monospace' }}
   >
     {children}
-  </div>
+  </pre>
 );
 
 /**
@@ -99,9 +99,9 @@ export const GettingStarted: Story = {
 
       <CodeSnippet>
         {`<Grid>
-  <GridCol xs={12} md={4}>Column 1</GridCol>
-  <GridCol xs={12} md={4}>Column 2</GridCol>
-  <GridCol xs={12} md={4}>Column 3</GridCol>
+  <GridCol xs={12} md={4}> Column 1 </GridCol>
+  <GridCol xs={12} md={4}> Column 2 </GridCol>
+  <GridCol xs={12} md={4}> Column 3 </GridCol>
 </Grid>`}
       </CodeSnippet>
 

@@ -1,8 +1,7 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Hero } from './Hero';
-import { Button } from '../Button/Button';
 import { HERO } from '../../lib/constants/components';
+import { Button } from '../Button/Button';
+import { Hero } from './Hero';
 
 // Extract class names without the leading dots
 const HERO_CLASS = HERO.SELECTORS.HERO.replace('.', '');
@@ -29,7 +28,6 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
   argTypes: {
     title: {
       control: 'text',

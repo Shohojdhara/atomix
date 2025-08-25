@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import DatePicker from './DatePicker';
 import { DateRange } from './types';
 import { formatDateRange } from './utils';
@@ -10,7 +10,6 @@ const meta: Meta<typeof DatePicker> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
   argTypes: {
     value: { control: 'date' },
     startDate: { control: 'date' },

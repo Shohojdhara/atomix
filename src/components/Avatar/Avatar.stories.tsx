@@ -1,9 +1,7 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { Icon } from '../Icon';
 import { Avatar } from './Avatar';
 import { AvatarGroup } from './AvatarGroup';
-import { Icon } from '../Icon';
 
 const meta = {
   title: 'Components/Avatar',
@@ -11,7 +9,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
   argTypes: {
     src: {
       control: 'text',

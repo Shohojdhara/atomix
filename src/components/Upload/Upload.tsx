@@ -293,67 +293,56 @@ export const Upload: React.FC<UploadProps> = ({
         />
 
         {/* Drag and drop area */}
-        <div className="c-upload__drop-area">
+        <div className="c-upload__inner">
           <div className="c-upload__icon">{icon}</div>
           <h3 className="c-upload__title">{title}</h3>
           <p className="c-upload__text">{supportedFilesText}</p>
 
           <button
             type="button"
-            className="c-upload__button c-button"
+            className="c-upload__btn c-btn"
             onClick={handleButtonClick}
             disabled={disabled}
           >
             {buttonText}
           </button>
 
-          <p className="c-upload__helper">{helperText}</p>
+          <p className="c-upload__helper-text">{helperText}</p>
         </div>
 
         {/* Progress and status area */}
         {status !== 'idle' && (
-          <div className="c-upload__status">
+          <div 
+            className="c-upload__loader"
+            style={{ '--upload-loader-percentage': uploadProgress } as React.CSSProperties}
+          >
             {currentFile && (
-              <div className="c-upload__file">
-                <span className="c-upload__file-name">{currentFile.name}</span>
-                <span className="c-upload__file-size">
-                  {(currentFile.size / (1024 * 1024)).toFixed(2)} MB
-                </span>
+              <div className="c-upload__loader-status">
+                <h5 className="c-upload__loader-title">{currentFile.name}</h5>
+                <div className="c-upload__loader-progress">
+                  <div className="c-upload__loader-par">{uploadProgress}%</div>
+                  <div className="c-upload__loader-time">{timeLeft}</div>
+                </div>
               </div>
             )}
 
-            {status === 'loading' && (
-              <div className="c-upload__progress">
-                <div
-                  className="c-upload__progress-bar"
-                  role="progressbar"
-                  aria-valuenow={uploadProgress}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                  style={{ width: `${uploadProgress}%` }}
-                ></div>
+            {(status === 'loading' || status === 'error' || status === 'success') && (
+              <div className="c-upload__loader-control">
+                <div className="c-upload__loader-bar">
+                  <svg>
+                    <circle cx="10" cy="10" r="10"></circle>
+                    <circle cx="10" cy="10" r="10"></circle>
+                  </svg>
+                </div>
+                <button 
+                  type="button" 
+                  className="c-upload__loader-close c-btn"
+                  onClick={resetUpload}
+                >
+                  <i className="icon-lux-x"></i>
+                </button>
               </div>
             )}
-
-            {timeLeft && <div className="c-upload__time">{timeLeft}</div>}
-
-            {status === 'error' && errorMessage && (
-              <div className="c-upload__error">
-                <span className="c-upload__error-icon">⚠️</span>
-                {errorMessage}
-              </div>
-            )}
-
-            {status === 'success' && successMessage && (
-              <div className="c-upload__success">
-                <span className="c-upload__success-icon">✓</span>
-                {successMessage}
-              </div>
-            )}
-
-            <button type="button" className="c-upload__reset" onClick={resetUpload}>
-              Upload another file
-            </button>
           </div>
         )}
       </div>

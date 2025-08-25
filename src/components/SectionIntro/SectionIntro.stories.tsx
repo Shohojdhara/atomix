@@ -1,7 +1,6 @@
-import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { SectionIntro } from './SectionIntro';
 import { Button } from '../Button';
+import { SectionIntro } from './SectionIntro';
 
 const meta: Meta<typeof SectionIntro> = {
   title: 'Components/SectionIntro',
@@ -9,7 +8,6 @@ const meta: Meta<typeof SectionIntro> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
   argTypes: {
     title: { control: 'text' },
     label: { control: 'text' },

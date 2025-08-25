@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import { Messages } from './Messages';
+import { useState } from 'react';
 import { MessageItem } from '../../lib/types/components';
+import { Messages } from './Messages';
 
 const meta: Meta<typeof Messages> = {
   title: 'Components/Messages',
@@ -16,7 +15,6 @@ const meta: Meta<typeof Messages> = {
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     messages: { control: 'object' },
     width: { control: 'text' },

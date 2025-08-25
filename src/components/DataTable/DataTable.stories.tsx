@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { DataTable } from './DataTable';
+import { useState } from 'react';
 import { DataTableColumn } from '../../lib/types/components';
+import { DataTable } from './DataTable';
 
 const meta: Meta<typeof DataTable> = {
   title: 'Components/DataTable',
@@ -9,7 +9,6 @@ const meta: Meta<typeof DataTable> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
   argTypes: {
     data: { control: 'object' },
     columns: { control: 'object' },

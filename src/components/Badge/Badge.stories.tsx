@@ -1,8 +1,6 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { BADGE, SIZES, THEME_COLORS } from '../../lib/constants/components';
 import { Badge } from './Badge';
-import { BADGE } from '../../lib/constants/components';
-import { THEME_COLORS, SIZES } from '../../lib/constants/components';
 
 // Extract class names without the leading dots
 const BADGE_CLASS = BADGE.BASE_CLASS;
@@ -13,7 +11,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: { type: 'select' },

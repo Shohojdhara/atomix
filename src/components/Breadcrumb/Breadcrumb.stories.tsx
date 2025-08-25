@@ -1,7 +1,6 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Breadcrumb } from './Breadcrumb';
 import { Icon } from '../Icon';
+import { Breadcrumb } from './Breadcrumb';
 
 const meta = {
   title: 'Components/Breadcrumb',
@@ -9,7 +8,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
   argTypes: {
     items: { control: 'object' },
     divider: { control: 'text' },

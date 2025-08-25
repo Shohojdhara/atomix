@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { Checkbox } from './Checkbox';
 import { Form } from './Form';
 import { FormGroup } from './FormGroup';
 import { Input } from './Input';
-import { Select } from './Select';
-import { Checkbox } from './Checkbox';
 import { Radio } from './Radio';
+import { Select } from './Select';
 import { Textarea } from './Textarea';
 
 // Overriding the args to make children optional since we're providing it in render
@@ -19,7 +19,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
   argTypes: {
     disabled: {
       control: 'boolean',

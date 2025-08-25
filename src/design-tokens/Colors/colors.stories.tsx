@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './colors.scss';
 
 interface ColorSwatchProps {
@@ -289,7 +289,8 @@ const DesignTokens = () => {
 
       <section>
         <h2>Text Colors</h2>
-        <ColorPalette title="Text Colors" colors={textColors} isDark={isDark} />
+        <ColorPalette title="Text Colors Emphasis" colors={textColors} isDark={isDark} />
+        <ColorPalette title="Text Colors Emphasis dark" colors={textColors} isDark={true} />
       </section>
     </div>
   );

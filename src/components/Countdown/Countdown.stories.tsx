@@ -7,7 +7,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
   argTypes: {
     target: { control: 'date', description: 'Target date/time' },
     show: {
