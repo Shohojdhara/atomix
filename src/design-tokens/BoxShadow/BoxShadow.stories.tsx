@@ -16,14 +16,14 @@ const ShadowExample = ({ name, size, shadow, isDark = false, darkShadow }: Shado
       <div className="u-d-flex u-flex-column u-gap-2">
         <span className="u-fs-sm u-fw-semibold">{name}</span>
         <code
-          className="u-py-2 u-px-4 u-bg-light-subtle u-rounded-md u-fs-xs u-shadow-inset u-border u-border-primary-subtle"
+          className="u-py-2 u-px-4 u-bg-body-subtle u-rounded-md u-fs-xs u-shadow-inset u-border u-border-primary-subtle"
           style={{ minHeight: '50px' }}
         >
           {currentShadow}
         </code>
       </div>
       <div
-        className={`u-shadow-${size} u-bg-light-subtle u-rounded-md u-py-2 u-px-4 u-mt-2`}
+        className={`u-shadow-${size} u-bg-body-subtle u-rounded-md u-py-2 u-px-4 u-mt-2`}
         style={{ minHeight: '100px' }}
       ></div>
     </div>
