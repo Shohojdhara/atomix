@@ -1,5 +1,12 @@
-import { BreadcrumbItem, BreadcrumbOptions } from '../../components/Breadcrumb/scripts/types';
+import { BreadcrumbItem } from '../../components/Breadcrumb/Breadcrumb';
 import { BREADCRUMB } from '../constants/components';
+
+interface BreadcrumbOptions {
+  items: BreadcrumbItem[];
+  divider?: React.ReactNode;
+  className?: string;
+  ariaLabel?: string;
+}
 
 /**
  * Breadcrumb state and functionality

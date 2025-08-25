@@ -132,6 +132,7 @@
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "ci": "npm run build && npm run check-format && npm run check-exports && npm run lint && npm run test",
+    "deploy-storybook": "npm run build-storybook && gh-pages -d storybook-static",
     "local-release": "changeset version && changeset publish",
     "preview:build": "npm run build-storybook && node scripts/prepare-deploy.js",
     "preview:serve": "npm run preview:build && npx serve deploy -p 3000",

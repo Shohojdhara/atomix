@@ -93,40 +93,6 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
-    stylesheets: {
-      themes: [
-        {
-          id: 'primary-theme',
-          title: 'Primary theme',
-          url: '../src/styles/index.scss',
-        },
-        {
-          id: 'yobai-theme',
-          title: 'Yobai theme',
-          url: '../src/themes/yabai/index.scss',
-        },
-        {
-          id: 'shaj-theme',
-          title: 'Shaj theme',
-          url: '../src/themes/shaj-default/index.scss',
-        },
-        {
-          id: 'magic-theme',
-          title: 'Mashroom theme',
-          url: '../src/themes/mashroom/index.scss',
-        },
-        {
-          id: 'Boomdevs-theme',
-          title: 'Boomdevs theme',
-          url: '../src/themes/boomdevs/index.scss',
-        },
-        {
-          id: 'Esrar-theme',
-          title: 'Esrar theme',
-          url: '../src/themes/esrar/index.scss',
-        },
-      ],
-    },
   },
 
   decorators: [

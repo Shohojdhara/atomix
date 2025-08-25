@@ -22,4 +22,3 @@ export type {
 export { Slider } from './Slider';
 export { useSlider } from '../../lib/composables/useSlider';
 export type { UseSliderOptions, UseSliderReturn } from '../../lib/composables/useSlider';
-export { default as AtomixSlider } from './scripts/index';
