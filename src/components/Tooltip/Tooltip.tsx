@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useRef } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 import { TOOLTIP } from '../../lib/constants/components';
 
 export interface TooltipProps {
@@ -62,7 +62,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    
+
     if (delay > 0) {
       timeoutRef.current = setTimeout(() => {
         setIsVisible(true);
@@ -111,7 +111,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   };
 
   const triggerProps: React.HTMLAttributes<HTMLDivElement> = {};
-  
+
   if (trigger === 'hover') {
     triggerProps.onMouseEnter = showTooltip;
     triggerProps.onMouseLeave = hideTooltip;
@@ -133,7 +133,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
           data-tooltip-position={position}
           data-tooltip-trigger={trigger}
         >
-          <div className={`c-tooltip__content ${TOOLTIP.SELECTORS.CONTENT.substring(1)}`}>
+          <div
+            className={`c-tooltip__content ${TOOLTIP.SELECTORS.CONTENT.substring(1)} ${isVisible && 'is-active'}`}
+          >
             <span className={TOOLTIP.SELECTORS.ARROW.substring(1)}></span>
             {content}
           </div>
@@ -142,3 +144,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     </div>
   );
 };
+
+Tooltip.displayName = 'Tooltip';
+
+export default Tooltip;
