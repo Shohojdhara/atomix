@@ -15,8 +15,8 @@ $callout-width: 100% !default;
 $callout-padding-x: map.get($spacing-sizes, 4) !default; //16px
 $callout-padding-y: map.get($spacing-sizes, 4) !default; //16px
 
-$callout-toast-padding-x: map.get($spacing-sizes, 4) !default; //16px
-$callout-toast-padding-y: map.get($spacing-sizes, 4) !default; //16px
+$callout-tost-padding-x: map.get($spacing-sizes, 4) !default; //16px
+$callout-tost-padding-y: map.get($spacing-sizes, 4) !default; //16px
 $callout-toast-bg: $white !default;
 
 $callout-bg: $white !default;
