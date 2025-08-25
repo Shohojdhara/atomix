@@ -1,0 +1,19 @@
+import{j as e}from"./jsx-runtime-BjG_zV1W.js";import{T as m}from"./Tab-DI59MP5V.js";import"./index-BVDOR7y2.js";import"./components-BrxBU25R.js";const T={title:"Components/Tab",component:m,argTypes:{activeIndex:{control:{type:"number"},defaultValue:0}}},s=b=>e.jsx("div",{style:{maxWidth:"600px",margin:"0 auto",padding:"30px"},children:e.jsx(m,{...b})}),t=s.bind({});t.args={items:[{label:"Tab 1",content:e.jsx("p",{children:"This is the content for Tab 1. Default tab content."})},{label:"Tab 2",content:e.jsx("p",{children:"This is the content for Tab 2. It contains different information."})},{label:"Tab 3",content:e.jsx("p",{children:"This is the content for Tab 3. Another unique content section."})}],activeIndex:0};const n=s.bind({});n.args={items:[{label:"Tab 1",content:e.jsx("p",{children:"This is the content for Tab 1."})},{label:"Tab 2",content:e.jsx("p",{children:"This is the content for Tab 2. It's initially active."})},{label:"Tab 3",content:e.jsx("p",{children:"This is the content for Tab 3."})}],activeIndex:1};const i=s.bind({});i.args={items:[{label:"Features",content:e.jsxs("div",{children:[e.jsx("h3",{children:"Key Features"}),e.jsxs("ul",{children:[e.jsx("li",{children:"Responsive design"}),e.jsx("li",{children:"Accessible navigation"}),e.jsx("li",{children:"Smooth transitions"})]})]})},{label:"Specifications",content:e.jsxs("div",{children:[e.jsx("h3",{children:"Technical Specifications"}),e.jsxs("table",{style:{width:"100%",borderCollapse:"collapse"},children:[e.jsx("thead",{children:e.jsxs("tr",{children:[e.jsx("th",{style:{border:"1px solid #ddd",padding:"8px",textAlign:"left"},children:"Property"}),e.jsx("th",{style:{border:"1px solid #ddd",padding:"8px",textAlign:"left"},children:"Value"})]})}),e.jsxs("tbody",{children:[e.jsxs("tr",{children:[e.jsx("td",{style:{border:"1px solid #ddd",padding:"8px"},children:"Size"}),e.jsx("td",{style:{border:"1px solid #ddd",padding:"8px"},children:"Medium"})]}),e.jsxs("tr",{children:[e.jsx("td",{style:{border:"1px solid #ddd",padding:"8px"},children:"Material"}),e.jsx("td",{style:{border:"1px solid #ddd",padding:"8px"},children:"Aluminum"})]})]})]})]})},{label:"Reviews",content:e.jsxs("div",{children:[e.jsx("h3",{children:"Customer Reviews"}),e.jsxs("div",{style:{padding:"10px",marginBottom:"10px",backgroundColor:"#f9f9f9"},children:[e.jsxs("p",{style:{marginBottom:"5px"},children:[e.jsx("strong",{children:"John D."})," ★★★★★"]}),e.jsx("p",{children:"Great product, highly recommended!"})]}),e.jsxs("div",{style:{padding:"10px",backgroundColor:"#f9f9f9"},children:[e.jsxs("p",{style:{marginBottom:"5px"},children:[e.jsx("strong",{children:"Sarah T."})," ★★★★☆"]}),e.jsx("p",{children:"Very good quality and fast shipping."})]})]})}],activeIndex:0};var r,d,a;t.parameters={...t.parameters,docs:{...(r=t.parameters)==null?void 0:r.docs,source:{originalSource:`args => <div style={{
+  maxWidth: '600px',
+  margin: '0 auto',
+  padding: '30px'
+}}>
+    <Tab {...args} />
+  </div>`,...(a=(d=t.parameters)==null?void 0:d.docs)==null?void 0:a.source}}};var o,l,c;n.parameters={...n.parameters,docs:{...(o=n.parameters)==null?void 0:o.docs,source:{originalSource:`args => <div style={{
+  maxWidth: '600px',
+  margin: '0 auto',
+  padding: '30px'
+}}>
+    <Tab {...args} />
+  </div>`,...(c=(l=n.parameters)==null?void 0:l.docs)==null?void 0:c.source}}};var p,x,h;i.parameters={...i.parameters,docs:{...(p=i.parameters)==null?void 0:p.docs,source:{originalSource:`args => <div style={{
+  maxWidth: '600px',
+  margin: '0 auto',
+  padding: '30px'
+}}>
+    <Tab {...args} />
+  </div>`,...(h=(x=i.parameters)==null?void 0:x.docs)==null?void 0:h.source}}};const y=["Default","WithDifferentActiveTab","WithRichContent"];export{t as Default,n as WithDifferentActiveTab,i as WithRichContent,y as __namedExportsOrder,T as default};
