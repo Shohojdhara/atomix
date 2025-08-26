@@ -1705,6 +1705,11 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@ljcl/storybook-addon-cssprops@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.npmjs.org/@ljcl/storybook-addon-cssprops/-/storybook-addon-cssprops-5.0.1.tgz"
+  integrity sha512-WXLk+Kzxs0+VxZTT4HepsOf4VTXMOo8hZ8N9GLTy4OhnqfIko9bmgGrMxgX0PdAXyqKRgZNljhy8IzyVjGIGjg==
+
 "@loaderkit/resolve@^1.0.2":
   version "1.0.4"
   resolved "https://registry.npmjs.org/@loaderkit/resolve/-/resolve-1.0.4.tgz"
