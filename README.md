@@ -1,161 +1,205 @@
 # Atomix Design System
 
-A modern, accessible design system and component library for building beautiful user interfaces. Built with React, TypeScript.
+> A modern, accessible design system and component library for building beautiful user interfaces.
 
-[![npm version](https://badge.fury.io/js/@shohojdhara%2Fatomix.svg)](https://www.npmjs.com/package/@shohojdhara/atomix)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
+[![npm version](https://img.shields.io/npm/v/@shohojdhara/atomix)](https://www.npmjs.com/package/@shohojdhara/atomix)
+[![License](https://img.shields.io/npm/l/@shohojdhara/atomix)](https://github.com/Shohojdhara/atomix/blob/main/LICENSE)
+[![Downloads](https://img.shields.io/npm/dm/@shohojdhara/atomix)](https://www.npmjs.com/package/@shohojdhara/atomix)
 
-## ✨ Features
+## Overview
 
-- 🧩 **40+ Components** - Comprehensive UI component library
-- ⚛️ **React** - React implementation for maximum flexibility
-- 🎨 **Design Tokens** - Consistent colors, spacing, typography
-- ♿ **Accessibility First** - WCAG 2.1 AA compliant
-- 🎯 **TypeScript** - Full type safety and IntelliSense
-- 📱 **Responsive** - Mobile-first design approach
-- 🌙 **Dark Mode** - Built-in theme switching
-- 🚀 **Performance** - Tree-shakeable, optimized bundles
+Atomix is a modern, accessible design system and component library for building beautiful user interfaces. It provides a comprehensive set of 40+ production-ready components with consistent design language, accessibility compliance, and performance optimization.
 
-## 🚀 Quick Start
+### Key Features
 
-### Installation
+- **40+ Production-Ready Components**: Buttons, cards, forms, navigation, and more
+- **Design System Compliance**: Consistent design language with design tokens
+- **Accessibility First**: WCAG 2.1 AA compliant components
+- **TypeScript Support**: Full TypeScript definitions for all components
+- **Responsive Design**: Mobile-first responsive components
+- **Dark Mode Support**: Built-in dark mode support for all components
+- **Tree-Shaking Support**: Optimized for modern bundlers
+- **Multiple Themes**: Multiple built-in themes with easy customization
+- **React & Vanilla JavaScript**: Support for both React and vanilla JavaScript
+
+## Installation
 
 ```bash
 npm install @shohojdhara/atomix
-# or
-yarn add @shohojdhara/atomix
 ```
 
-### React Usage
+## Usage
+
+### React
 
 ```jsx
-import { Button, Card, Badge } from '@shohojdhara/atomix';
+import { Button } from '@shohojdhara/atomix';
 import '@shohojdhara/atomix/css';
 
 function App() {
+  return <Button variant="primary">Hello World</Button>;
+}
+```
+
+### Vanilla JavaScript
+
+```js
+import { Button } from '@shohojdhara/atomix';
+import '@shohojdhara/atomix/css';
+
+// Create a button
+const button = new Button({
+  variant: 'primary',
+  children: 'Hello World'
+});
+
+// Mount to DOM
+button.mount(document.getElementById('app'));
+```
+
+## Styles
+
+Atomix provides comprehensive styling through CSS or SCSS:
+
+### CSS
+
+```js
+// Import the main CSS file
+import '@shohojdhara/atomix/css';
+
+// Or import the minified version
+import '@shohojdhara/atomix/css/min';
+```
+
+### SCSS
+
+```scss
+// Import the main SCSS file
+@use '~@shohojdhara/atomix/scss' as atomix;
+
+// Or import individual modules
+@use '~@shohojdhara/atomix/scss/settings' as settings;
+@use '~@shohojdhara/atomix/scss/tools' as tools;
+@use '~@shohojdhara/atomix/scss/components' as components;
+```
+
+## Themes
+
+Atomix comes with multiple built-in themes:
+
+```js
+// Import a specific theme
+import '@shohojdhara/atomix/themes/boomdevs';
+
+// Or use the theme switcher
+import { ThemeSwitcher } from '@shohojdhara/atomix';
+
+function App() {
   return (
-    <Card 
-    header={ <Badge variant="primary" label="Badge"/>}
-    title="Welcome to Atomix" 
-    text="A modern design system" 
-    actions={
-        <Button variant="primary" label="Get Started"/>
-    }
-    image="https://placehold.co/600x400"
-    imageAlt="Placeholder image"
-    >
-        <p>Build amazing interfaces with our design system.</p>
-    </Card>
+    <ThemeSwitcher>
+      <Button variant="primary">Themed Button</Button>
+    </ThemeSwitcher>
   );
 }
 ```
 
-### Atomix css frameworks
+Available themes:
+- Default (shaj-default)
+- BoomDevs
+- Esrar
+- Mashroom
+- Yabai
 
-```html
-<link rel="stylesheet" href="https://unpkg.com/@shohojdhara/atomix/css/atomix.css">
+## Build Process
 
-<div class="c-card">
-  <div class="c-card__header">
-    <h3>Welcome to Atomix</h3>
-    <span class="c-badge c-badge--primary">New</span>
-  </div>
-  <div class="c-card__body">
-    <p>Build amazing interfaces with our design system.</p>
-    <button class="c-btn c-btn--primary">Get Started</button>
-  </div>
-</div>
+The Atomix Design System uses a comprehensive build process to generate optimized assets:
 
-```
-
-## � Documentation
-
-**[📖 Complete Documentation →](./docs/README.md)**
-
-### Quick Links
-
-- **[🏁 Getting Started](./docs/getting-started/README.md)** - Installation, setup, and first steps
-- **[🧩 Components](./docs/components/README.md)** - Complete component library
-- **[🎨 Design Tokens](./docs/design-tokens/README.md)** - Colors, spacing, typography
-- **[🏗️ Styles](./docs/styles/README.md)** - CSS architecture and utilities
-- **[📚 Guides](./docs/guides/README.md)** - Theming, responsive design, performance
-- **[🎯 Examples](./docs/examples/README.md)** - Real-world usage patterns
-- **[📖 API Reference](./docs/api/README.md)** - Complete API documentation
-
-### Learning Paths
-
-**👶 Beginner**: [Installation](./docs/getting-started/installation.md) → [Quick Start](./docs/getting-started/quick-start.md) → [Components](./docs/components/README.md)
-
-**🧑‍💻 Intermediate**: [Design Tokens](./docs/design-tokens/README.md) → [Theming](./docs/guides/theming.md) → [Examples](./docs/examples/README.md)
-
-**🚀 Advanced**: [Architecture](./docs/styles/architecture.md) → [Customization](./docs/styles/customization.md) → [Contributing](./docs/resources/contributing.md)
-
-## 🧩 Components
-
-**40+ Production-Ready Components**
-
-| Category | Components |
-|----------|------------|
-| **Basic** | Button, Badge, Icon, Spinner |
-| **Layout** | Card, Container, Grid, Hero |
-| **Forms** | Input, Select, Checkbox, Radio, Textarea |
-| **Navigation** | Navbar, Breadcrumb, Pagination, Tabs |
-| **Data Display** | Avatar, DataTable, List, Progress |
-| **Feedback** | Modal, Tooltip, Alert, Notification |
-| **Interactive** | Accordion, Dropdown, DatePicker |
-
-**[→ View All Components](./docs/components/README.md)**
-
-## 🛠️ Development
+### Main Build
 
 ```bash
-# Clone and setup
-git clone https://github.com/shohojdhara/atomix.git
-cd atomix
-npm install
-
-# Development
-npm run dev          # Start dev server
-npm run storybook    # Component playground
-npm test             # Run tests
-npm run build        # Build for production
+npm run build
 ```
 
-**[→ Full Development Guide](./docs/resources/contributing.md)**
- 88+ |
+This command will:
+1. Build the main JavaScript library (ESM and CJS formats)
+2. Generate TypeScript definitions
+3. Build the main CSS styles (`dist/atomix.css` and `dist/atomix.min.css`)
+4. Build all themes in `dist/themes/`
 
-## 🤝 Contributing
+### Individual Builds
 
-We welcome contributions! Please read our [Contributing Guide](./docs/resources/contributing.md) for details on:
+```bash
+# Build only the main styles
+npm run build:styles
 
-- Code standards and guidelines
-- Development workflow
-- Testing requirements
-- Pull request process
+# Build only the themes
+npm run build:themes
 
-### How to Contribute
+# Build only the main library
+npm run rollup -c
+```
 
-1. **Fork** the repository
-2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
-3. **Commit** your changes: `git commit -m 'Add amazing feature'`
-4. **Push** to the branch: `git push origin feature/amazing-feature`
-5. **Open** a Pull Request
+### Development
 
+```bash
+# Start Storybook for component development
+npm run dev
 
-## 📄 License
+# Run tests
+npm test
 
-Apache License 2.0 - see [LICENSE](./LICENSE) for details.
+# Run tests in watch mode
+npm run test:watch
 
-## 🔗 Links
+# Generate test coverage
+npm run test:coverage
+```
 
-- **[📖 Documentation](./docs/README.md)** - Complete documentation
-- **[🎨 Storybook](https://storybook.atomix.design)** - Interactive examples
-- **[📦 NPM](https://www.npmjs.com/package/@shohojdhara/atomix)** - Package info
-- **[🐛 Issues](https://github.com/shohojdhara/atomix/issues)** - Bug reports
-- **[💬 Discussions](https://github.com/shohojdhara/atomix/discussions)** - Community
+## Components
 
----
+Atomix provides 40+ production-ready components organized into categories:
 
-**Built with ❤️ by the Shohojdhara Atomix team**
+- **Actions**: [Button](src/components/Button), [Dropdown](src/components/Dropdown), [Pagination](src/components/Pagination)
+- **Data Display**: [Badge](src/components/Badge), [Card](src/components/Card), [Table](src/components/Table)
+- **Feedback**: [Alert](src/components/Alert), [Loader](src/components/Loader), [Progress](src/components/Progress)
+- **Forms**: [Checkbox](src/components/Checkbox), [Input](src/components/Input), [Select](src/components/Select)
+- **Navigation**: [Breadcrumb](src/components/Breadcrumb), [Navbar](src/components/Navbar), [Tabs](src/components/Tabs)
+- **Surfaces**: [Accordion](src/components/Accordion), [Callout](src/components/Callout), [Modal](src/components/Modal)
+- **Utilities**: [ColorModeToggle](src/components/ColorModeToggle), [Portal](src/components/Portal), [ThemeProvider](src/components/ThemeProvider)
+
+## Design Tokens
+
+Atomix uses design tokens for consistent design language:
+
+- **Colors**: Consistent color palette with light and dark mode variants
+- **Spacing**: Consistent spacing scale based on 4px grid
+- **Typography**: Consistent typography scale with responsive adjustments
+- **Borders**: Consistent border radius and width system
+- **Shadows**: Consistent shadow system for depth and elevation
+
+## Accessibility
+
+All Atomix components are built with accessibility in mind:
+
+- **WCAG 2.1 AA Compliant**: All components meet WCAG 2.1 AA standards
+- **Keyboard Navigation**: Full keyboard navigation support
+- **Screen Reader Support**: Proper ARIA attributes and semantic HTML
+- **Focus Management**: Consistent focus indicators and management
+- **Color Contrast**: Proper color contrast ratios for readability
+
+## Browser Support
+
+Atomix supports all modern browsers:
+
+- Chrome (latest 2 versions)
+- Firefox (latest 2 versions)
+- Safari (latest 2 versions)
+- Edge (latest 2 versions)
+
+## Contributing
+
+Contributions are welcome! Please read our [contributing guidelines](CONTRIBUTING.md) for details on our code of conduct and development process.
+
+## License
+
+Apache 2.0 © [Shohojdhara](https://github.com/Shohojdhara)

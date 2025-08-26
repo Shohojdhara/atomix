@@ -7,6 +7,7 @@ const config: StorybookConfig = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
+    './theme-switcher.ts',
   ],
 
   framework: {
@@ -21,6 +22,9 @@ const config: StorybookConfig = {
   typescript: {
     reactDocgen: 'react-docgen-typescript',
   },
+  
+  staticDirs: ['../dist'],
+  
   async viteFinal(config) {
     // Merge custom CSS configuration with existing config
     const { mergeConfig } = await import('vite');

@@ -1,6 +1,16 @@
+import { addons } from '@storybook/preview-api';
 import type { Preview } from '@storybook/react';
 import { useEffect } from 'react';
 import '../src/styles/index.scss';
+
+// Theme list
+const themes = [
+  { name: 'Default', class: 'shaj-default', color: '#3b82f6' },
+  { name: 'BoomDevs', class: 'boomdevs', color: '#8b5cf6' },
+  { name: 'Esrar', class: 'esrar', color: '#10b981' },
+  { name: 'Mashroom', class: 'mashroom', color: '#f59e0b' },
+  { name: 'Yabai', class: 'yabai', color: '#ef4444' },
+];
 
 const preview: Preview = {
   parameters: {
@@ -51,12 +61,12 @@ const preview: Preview = {
         desktop: {
           name: 'Desktop',
           styles: {
-            width: '1200px',
-            height: '800px',
+            width: '1366px',
+            height: '768px',
           },
         },
-        wide: {
-          name: 'Wide',
+        large: {
+          name: 'Large Screen',
           styles: {
             width: '1920px',
             height: '1080px',
@@ -64,55 +74,113 @@ const preview: Preview = {
         },
       },
     },
-    options: {
-      storySort: {
-        order: [
-          'Introduction',
-          'Design Tokens',
-          ['Colors', 'Typography', 'Spacing', 'Box Shadow'],
-          'Layouts',
-          'Components',
-          'Showcase',
-        ],
-      },
-    },
-  },
-
-  globalTypes: {
-    colorMode: {
-      name: 'Color Mode',
-      description: 'Global color mode for components',
-      defaultValue: 'light',
-      toolbar: {
-        icon: 'circlehollow',
-        items: [
-          { value: 'light', title: 'Light', left: '☀️' },
-          { value: 'dark', title: 'Dark', left: '🌙' },
-        ],
-        showName: true,
-        dynamicTitle: true,
-      },
-    },
   },
 
   decorators: [
     (Story, context) => {
-      const colorMode = context.globals.colorMode || 'light';
+      const theme = context.globals?.theme || 'shaj-default';
+      const colorMode = context.globals?.colorMode || 'light';
 
       useEffect(() => {
-        // Apply Atomix color mode
-        document.documentElement.setAttribute('data-atomix-theme', colorMode);
+        // Remove all theme classes
+        document.body.classList.forEach(className => {
+          if (themes.map(t => t.class).includes(className)) {
+            document.body.classList.remove(className);
+          }
+        });
 
-        return () => {
-          document.documentElement.removeAttribute('data-atomix-theme');
-        };
-      }, [colorMode]);
+        // Add the selected theme class
+        document.body.classList.add(theme);
 
-      return <Story />;
+        // Update data-theme attribute
+        document.body.setAttribute('data-theme', theme);
+
+        // Handle color mode
+        document.body.classList.remove('light', 'dark');
+        document.body.classList.add(colorMode);
+        document.body.setAttribute('data-atomix-color-mode', colorMode);
+
+        // Load theme CSS
+        const themeLink = document.getElementById('storybook-theme');
+        if (themeLink) {
+          themeLink.remove();
+        }
+
+        if (theme !== 'shaj-default') {
+          const link = document.createElement('link');
+          link.id = 'storybook-theme';
+          link.rel = 'stylesheet';
+          link.href = `/themes/${theme}.css`;
+          document.head.appendChild(link);
+        }
+
+        // Apply color mode to the theme
+        const themeStyle = document.getElementById('storybook-theme-vars');
+        if (themeStyle) {
+          themeStyle.remove();
+        }
+
+        // Create dynamic style for theme variables
+        const style = document.createElement('style');
+        style.id = 'storybook-theme-vars';
+        style.textContent = `
+          :root {
+            --storybook-color-mode: ${colorMode};
+          }
+        `;
+        document.head.appendChild(style);
+
+        // Also update the color mode attribute that the components use
+        document.documentElement.setAttribute('data-atomix-color-mode', colorMode);
+      }, [theme, colorMode]);
+
+      return Story();
     },
   ],
 
-  tags: ['!autodocs'],
+  globalTypes: {
+    theme: {
+      name: 'Theme',
+      description: 'Global theme for components',
+      defaultValue: 'shaj-default',
+      toolbar: {
+        title: 'Theme',
+        icon: 'paintbrush',
+        items: themes.map(theme => ({
+          value: theme.class,
+          title: theme.name,
+          left: `🎨`,
+        })),
+      },
+    },
+    colorMode: {
+      name: 'Color Mode',
+      description: 'Color mode for components',
+      defaultValue: 'light',
+      toolbar: {
+        title: 'Color',
+        icon: 'mirror',
+        items: [
+          { value: 'light', title: 'Light', left: '⚪' },
+          { value: 'dark', title: 'Dark', left: '⚫' },
+        ],
+      },
+    },
+  },
 };
+
+// Listen for theme updates
+if (typeof window !== 'undefined') {
+  const channel = addons.getChannel();
+  channel.on('theme-update', (theme: string) => {
+    document.body.setAttribute('data-theme', theme);
+    document.body.classList.forEach(className => {
+      if (themes.map(t => t.class).includes(className)) {
+        document.body.classList.remove(className);
+      }
+    });
+    document.body.classList.add(theme);
+  });
+}
 
 export default preview;
