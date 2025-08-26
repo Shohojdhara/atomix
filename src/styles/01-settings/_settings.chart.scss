@@ -10,7 +10,7 @@
 // =============================================================================
 
 // Chart Base Settings
-$chart-border-width: 1px !default;
+$chart-border-width: var(--#{$prefix}border-width) !default; //1px
 $chart-border-color: var(--atomix-border-color) !default;
 $chart-bg: var(--atomix-body-bg) !default;
 $chart-border-radius: $border-radius-lg !default;
@@ -99,12 +99,12 @@ $chart-warning-hover: var(--atomix-warning-hover) !default;
 $chart-info-hover: var(--atomix-info-hover) !default;
 
 // Chart Effects
-$chart-backdrop-blur: 8px !default;
-$chart-header-backdrop-blur: 12px !default;
-$chart-tooltip-backdrop-blur: 16px !default;
+$chart-backdrop-blur: map.get($spacing-sizes, 2) !default; //8px
+$chart-header-backdrop-blur: map.get($spacing-sizes, 3) !default; //12px
+$chart-tooltip-backdrop-blur: map.get($spacing-sizes, 4) !default; //16px
 $chart-glassmorphism-opacity: 0.6 !default;
 $chart-pattern-opacity: 0.03 !default;
-$chart-pattern-size: 20px !default;
+$chart-pattern-size: map.get($spacing-sizes, 5) !default; //20px
 
 // Chart Transitions
 $chart-transition-duration: 0.3s !default;
@@ -113,7 +113,7 @@ $chart-hover-transform: translateY(-1px) !default;
 $chart-active-transform: translateY(0) !default;
 
 // Chart Focus
-$chart-focus-ring-width: 3px !default;
+$chart-focus-ring-width: calc(var(--#{$prefix}border-width) * 3) !default; //3px
 
 // Chart Elements
 $chart-legend-color-size: map.get($spacing-sizes, 3) !default;
@@ -190,7 +190,7 @@ $chart-max-data-points: 500 !default;
 $chart-debounce-delay: 100ms !default;
 
 // Chart Accessibility
-$chart-focus-outline-width: 2px !default;
+$chart-focus-outline-width: calc(var(--#{$prefix}border-width) * 2) !default;  //2px
 $chart-focus-outline-color: var(--atomix-focus-border-color) !default;
 $chart-keyboard-nav-highlight: var(--atomix-primary-bg-subtle) !default;
 
