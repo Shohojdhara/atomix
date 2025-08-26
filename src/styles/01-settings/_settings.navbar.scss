@@ -1,21 +1,24 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use './settings.config' as *;
 @use './settings.typography' as *;
 @use './settings.colors' as *;
+@use './settings.border-radius' as *;
 
 // Navbar container and layout
-$navbar-padding-x: 64px !default;
-$navbar-padding-y: 8px !default;
+$navbar-padding-x: map.get($spacing-sizes, 16) !default; //64px
+$navbar-padding-y: map.get($spacing-sizes, 2) !default; //8px
 $navbar-container-max-width: 1600px !default;
 $navbar-height: 56px !default;
 
 // Navbar appearance
 $navbar-bg: var(--#{$prefix}body-bg) !default;
-$navbar-border-width: 1px !default;
+$navbar-border-width: var(--#{$prefix}border-width) !default;
 $navbar-border-color: var(--#{$prefix}primary-border-subtle) !default;
 $navbar-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !default;
 
 // Brand/logo
-$navbar-brand-margin-end: 30px !default;
+$navbar-brand-margin-end: map.get($spacing-sizes, 7.5) !default; //30px
 $navbar-brand-font-size: $font-size-lg !default;
 $navbar-brand-font-weight: $font-weight-bold !default;
 $navbar-brand-color: var(--#{$prefix}body-color) !default;
@@ -25,7 +28,7 @@ $navbar-toggler-size: 30px !default;
 $navbar-toggler-color: var(--#{$prefix}body-color) !default;
 $navbar-toggler-bg: transparent !default;
 $navbar-toggler-border: 0 !default;
-$navbar-toggler-border-radius: 4px !default;
+$navbar-toggler-border-radius: $border-radius-sm !default;
 $navbar-toggler-focus-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !default;
 
 // Collapse/mobile menu
