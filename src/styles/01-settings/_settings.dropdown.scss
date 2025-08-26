@@ -1,6 +1,8 @@
+@use 'sass:map';
 @use 'settings.typography' as typography;
 @use 'settings.config' as config;
 @use 'settings.border-radius' as border-radius;
+@use './settings.spacing' as *;
 
 $dropdown-min-width: 180px !default;
 $dropdown-font-size: typography.$font-size-base !default;
@@ -8,14 +10,14 @@ $dropdown-color: var(--#{config.$prefix}body-color) !default;
 $dropdown-bg: var(--#{config.$prefix}body-bg) !default;
 $dropdown-border-color: var(--#{config.$prefix}primary-border-subtle) !default;
 $dropdown-border-radius: border-radius.$border-radius !default;
-$dropdown-border-width: 1px !default;
-$dropdown-padding-x: 0 !default;
-$dropdown-padding-y: 8px !default;
-$dropdown-spacer: 4px !default;
+$dropdown-border-width: var(--#{config.$prefix}border-width) !default;
+$dropdown-padding-x: map.get($spacing-sizes, 0) !default; //0px
+$dropdown-padding-y: map.get($spacing-sizes, 2) !default; //8px
+$dropdown-spacer: map.get($spacing-sizes, 1) !default; //4px
 $dropdown-box-shadow: var(--#{config.$prefix}box-shadow) !default;
 
-$dropdown-item-padding-x: 16px !default;
-$dropdown-item-padding-y: 8px !default;
+$dropdown-item-padding-x: map.get($spacing-sizes, 4) !default; //16px
+$dropdown-item-padding-y: map.get($spacing-sizes, 2) !default; //8px
 $dropdown-item-hover-color: var(--#{config.$prefix}secondary-text-emphasis) !default;
 $dropdown-item-hover-bg: var(--#{config.$prefix}brand-bg-subtle) !default;
 
@@ -34,5 +36,5 @@ $dropdown-link-border-radius: border-radius.$border-radius !default;
 $dropdown-header-color: var(--#{config.$prefix}tertiary-text-emphasis) !default;
 $dropdown-header-padding: $dropdown-item-padding-y $dropdown-item-padding-x !default;
 
-$dropdown-divider-margin-y: 8px !default;
+$dropdown-divider-margin-y:  map.get($spacing-sizes, 2) !default; //8px
 $dropdown-divider-bg: var(--#{config.$prefix}primary-border-subtle) !default;
