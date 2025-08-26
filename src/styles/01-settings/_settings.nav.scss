@@ -1,18 +1,20 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use './settings.config' as *;
 @use './settings.typography' as *;
 @use './settings.border-radius' as *;
 @use './settings.colors' as *;
 
-$nav-item-gap-x: 8px !default;
+$nav-item-gap-x: map.get($spacing-sizes, 2) !default; //8px
 
-$nav-link-padding-x: 12px !default;
-$nav-link-padding-y: 8px !default;
+$nav-link-padding-x: map.get($spacing-sizes, 3) !default; //12px
+$nav-link-padding-y: map.get($spacing-sizes, 2) !default; //8px
 $nav-link-font-size: $font-size-base !default;
 $nav-link-font-weight: $font-weight-medium !default;
 $nav-link-color: var(--#{$prefix}body-color) !default;
 $nav-link-hover-color: $nav-link-color !default;
 $nav-link-bg: var(--#{$prefix}body-bg) !default;
 $nav-link-hover-bg: var(--#{$prefix}secondary-bg-subtle) !default;
-$nav-link-inner-gap: 8px !default;
+$nav-link-inner-gap: map.get($spacing-sizes, 2) !default; //8px
 
 $nav-icon-size: 20px !default;
