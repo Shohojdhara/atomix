@@ -8,7 +8,6 @@ node_modules/
 # Build output
 build/
 dist/
-deploy/
 storybook-static/
 
 # Environment files
@@ -28,6 +27,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.package-lock.json
 
 # OS files
 .DS_Store
@@ -39,11 +39,10 @@ Thumbs.db
 .junie/
 .windsurf/
 .trae/
+.qodo/
 
 # Cursor AI specific files (keep configuration files)
 .cursorignore
 setup-mcp-servers.sh
 .cursorrules
 .aicontext
-
-old/
