@@ -1,10 +1,12 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use 'settings.typography' as typography;
 @use 'settings.config' as config;
 
 $testimonial-width: 100% !default;
-$testimonial-padding-x: 0px !default;
-$testimonial-padding-y: 0px !default;
-$testimonial-inner-spacer: 20px !default;
+$testimonial-padding-x: map.get($spacing-sizes, 0) !default; //0px
+$testimonial-padding-y: map.get($spacing-sizes, 0) !default; //0px
+$testimonial-inner-spacer: map.get($spacing-sizes, 20) !default; //20px
 $testimonial-bg: null !default;
 $testimonial-quote-font-size: typography.$h3-font-size !default;
 $testimonial-quote-font-size-sm: typography.$font-size-md !default;
@@ -15,4 +17,4 @@ $testimonial-author-font-size: typography.$font-size-base !default;
 $testimonial-author-color: var(--#{config.$prefix}body-color) !default;
 $testimonial-author-role-font-size: typography.$font-size-xs !default;
 $testimonial-author-role-color: var(--#{config.$prefix}tertiary-text-emphasis) !default;
-$testimonial-author-inner-spacer: 12px !default;
+$testimonial-author-inner-spacer: map.get($spacing-sizes, 12) !default; //12px
