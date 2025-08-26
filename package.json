@@ -1,6 +1,6 @@
 {
   "name": "@shohojdhara/atomix",
-  "version": "0.2.02",
+  "version": "0.2.1",
   "description": "Atomix Design System - A modern component library for web applications",
   "type": "module",
   "sideEffects": false,
@@ -17,7 +17,7 @@
     },
     "./styles": {
       "import": "./dist/atomix.css",
-      "require": "./dist/atomix.css"
+      "require": "./dist/atomix.min.css"
     },
     "./css": "./dist/atomix.css",
     "./css/min": "./dist/atomix.min.css",
