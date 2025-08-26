@@ -1,8 +1,10 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use 'settings.config' as config;
 @use 'settings.border-radius' as borderRadius;
 @use 'settings.typography' as typography;
 
-$toggle-gap: 12px !default;
+$toggle-gap: map.get($spacing-sizes, 3) !default; //12px
 
 $toggle-switch-on-bg: var(--#{config.$prefix}primary) !default;
 $toggle-switch-off-bg: var(--#{config.$prefix}tertiary-bg-subtle) !default;
