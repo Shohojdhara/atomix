@@ -2,6 +2,7 @@
 // This file generates all utility classes
 
 @use 'sass:map';
+@use 'sass:meta';
 @use '../02-tools/_tools.utility-api' as util-api;
 @use '../01-settings/settings.breakpoints' as breakpoints;
 @use 'utilities.background' as bg;
