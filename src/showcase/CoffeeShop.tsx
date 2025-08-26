@@ -2,31 +2,26 @@ import React from 'react';
 
 // Importing components from the library
 import {
-  Hero,
-  SectionIntro,
+  Block,
   Button,
   Card,
-  Testimonial,
-  TestimonialProps,
-  Rating,
+  Hero,
   Icon,
   ProductReview,
-  Block,
+  SectionIntro,
+  Testimonial,
+  TestimonialProps,
 } from '../components';
 
 // Importing layout components
 import { Container, Grid, GridCol } from '../layouts';
-
-// Importing utility classes
-import '../../utility-classes.css';
-import '../styles/index.scss';
 
 const CoffeeShop: React.FC = () => {
   // Testimonial data
   const testimonials: TestimonialProps[] = [
     {
       quote:
-        'The best coffee I\'ve ever had! The atmosphere is cozy and the baristas are truly skilled. I come here every morning before work.',
+        "The best coffee I've ever had! The atmosphere is cozy and the baristas are truly skilled. I come here every morning before work.",
       author: {
         name: 'Sarah Johnson',
         role: 'Regular Customer',
@@ -53,28 +48,32 @@ const CoffeeShop: React.FC = () => {
       name: 'Espresso',
       description: 'Strong and rich shot of coffee',
       price: '$3.50',
-      image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400&q=80',
+      image:
+        'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400&q=80',
     },
     {
       id: 2,
       name: 'Cappuccino',
       description: 'Espresso with steamed milk foam',
       price: '$4.50',
-      image: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400&q=80',
+      image:
+        'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400&q=80',
     },
     {
       id: 3,
       name: 'Latte',
       description: 'Espresso with steamed milk',
       price: '$5.00',
-      image: 'https://images.unsplash.com/photo-1461023058302-3690708b4880?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400&q=80',
+      image:
+        'https://images.unsplash.com/photo-1461023058302-3690708b4880?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400&q=80',
     },
     {
       id: 4,
       name: 'Mocha',
       description: 'Espresso with chocolate and steamed milk',
       price: '$5.50',
-      image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400&q=80',
+      image:
+        'https://images.unsplash.com/photo-1572490122747-3968b75cc699?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400&q=80',
     },
   ];
 
@@ -131,7 +130,7 @@ const CoffeeShop: React.FC = () => {
             text="Founded in 2010, Brew & Bean has been serving the community with premium coffee and homemade pastries. Our beans are ethically sourced from sustainable farms around the world."
             alignment="center"
           />
-          
+
           <Grid>
             <GridCol md={4}>
               <Card className="u-text-center u-h-100">
@@ -142,7 +141,7 @@ const CoffeeShop: React.FC = () => {
                 </p>
               </Card>
             </GridCol>
-            
+
             <GridCol md={4}>
               <Card className="u-text-center u-h-100">
                 <Icon name="Heart" size={48} className="u-text-primary u-mb-3" />
@@ -152,7 +151,7 @@ const CoffeeShop: React.FC = () => {
                 </p>
               </Card>
             </GridCol>
-            
+
             <GridCol md={4}>
               <Card className="u-text-center u-h-100">
                 <Icon name="Leaf" size={48} className="u-text-primary u-mb-3" />
@@ -174,13 +173,13 @@ const CoffeeShop: React.FC = () => {
             text="Discover our selection of expertly crafted coffee and delicious pastries"
             alignment="center"
           />
-          
+
           <div className="u-mb-8">
             <h3 className="u-text-2xl u-font-semibold u-text-center u-mb-6">Coffee Selection</h3>
             <Grid>
-              {coffeeProducts.map((product) => (
+              {coffeeProducts.map(product => (
                 <GridCol md={6} lg={3} key={product.id}>
-                  <Card 
+                  <Card
                     image={product.image}
                     imageAlt={product.name}
                     title={product.name}
@@ -197,11 +196,11 @@ const CoffeeShop: React.FC = () => {
               ))}
             </Grid>
           </div>
-          
+
           <div>
             <h3 className="u-text-2xl u-font-semibold u-text-center u-mb-6">Pastries & Food</h3>
             <Grid>
-              {menuItems.map((item) => (
+              {menuItems.map(item => (
                 <GridCol md={6} lg={3} key={item.id}>
                   <Card
                     title={item.name}
@@ -229,7 +228,7 @@ const CoffeeShop: React.FC = () => {
             text="See what our customers have to say about their experience"
             alignment="center"
           />
-          
+
           <Grid>
             {testimonials.map((testimonial, index) => (
               <GridCol md={6} key={index}>
@@ -237,13 +236,9 @@ const CoffeeShop: React.FC = () => {
               </GridCol>
             ))}
           </Grid>
-          
+
           <div className="u-text-center u-mt-8">
-            <ProductReview 
-              productName="Brew & Bean Coffee Shop"
-              initialRating={5}
-              maxRating={5}
-            />
+            <ProductReview productName="Brew & Bean Coffee Shop" initialRating={5} maxRating={5} />
           </div>
         </Container>
       </section>
@@ -256,7 +251,7 @@ const CoffeeShop: React.FC = () => {
             text="Come experience the cozy atmosphere and amazing coffee"
             alignment="center"
           />
-          
+
           <Grid>
             <GridCol md={6}>
               <Card>
@@ -264,11 +259,11 @@ const CoffeeShop: React.FC = () => {
                 <p className="u-mb-2">123 Coffee Street</p>
                 <p className="u-mb-2">Brewville, BC 12345</p>
                 <p className="u-mb-4">Canada</p>
-                
+
                 <Button variant="secondary" label="Get Directions" />
               </Card>
             </GridCol>
-            
+
             <GridCol md={6}>
               <Card>
                 <h3 className="u-text-xl u-font-semibold u-mb-4">Hours</h3>
@@ -293,17 +288,20 @@ const CoffeeShop: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <Block 
+      <Block
         className="u-my-12"
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080&q=80')",
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080&q=80')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       >
         <Container>
           <div className="u-text-center u-py-12">
-            <h2 className="u-text-3xl u-font-bold u-text-white u-mb-4">Ready for Your Perfect Cup?</h2>
+            <h2 className="u-text-3xl u-font-bold u-text-white u-mb-4">
+              Ready for Your Perfect Cup?
+            </h2>
             <p className="u-text-white u-mb-6 u-mx-auto" style={{ maxWidth: '600px' }}>
               Join us for a memorable coffee experience in our cozy café
             </p>
