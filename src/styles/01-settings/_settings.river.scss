@@ -1,10 +1,12 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use 'settings.config' as config;
 @use 'settings.typography' as typography;
 @use 'settings.colors' as colors;
 
 $river-width: 100% !default;
-$river-padding-x: 0px !default;
-$river-padding-y: 40px !default;
+$river-padding-x: map.get($spacing-sizes, 0) !default; //0px
+$river-padding-y: map.get($spacing-sizes, 10) !default; //40px
 $river-border-radius: 0px;
 $river-bg: var(--#{config.$prefix}body-bg) !default;
 $river-overlay: colors.$dark !default;
@@ -19,14 +21,14 @@ $river-text-font-weight: typography.$font-weight-normal !default;
 $river-title-color: var(--#{config.$prefix}body-color) !default;
 $river-text-color: var(--#{config.$prefix}secondary-text-emphasis) !default;
 
-$river-text-margin-top: 12px !default;
-$river-actions-margin-top: 12px !default;
-$river-actions-spacing-x: 12px !default;
+$river-text-margin-top: map.get($spacing-sizes, 3) !default; //12px
+$river-actions-margin-top: map.get($spacing-sizes, 3) !default; //12px
+$river-actions-spacing-x: map.get($spacing-sizes, 3) !default; //12px
 
 $river-image-border-radius: 0px !default;
 $river-image-box-shadow: null !default;
 
-$river-spacing-inner: 64px !default;
+$river-spacing-inner: map.get($spacing-sizes, 16) !default; //64px
 
 $river-content-max-width: 536px !default;
 
