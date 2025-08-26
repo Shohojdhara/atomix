@@ -1,10 +1,12 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use 'settings.config' as config;
 @use 'settings.typography' as typography;
 @use 'settings.border-radius' as borderRadius;
 
 $tooltip-max-width: 240px !default;
-$tooltip-padding-x: 12px !default;
-$tooltip-padding-y: 8px !default;
+$tooltip-padding-x: map.get($spacing-sizes, 3) !default; //12px
+$tooltip-padding-y: map.get($spacing-sizes, 2) !default; //8px
 $tooltip-bg: var(--#{config.$prefix}invert-bg-subtle) !default;
 
 $tooltip-font-size: typography.$font-size-xs !default;
@@ -16,4 +18,4 @@ $tooltip-border-width: null !default;
 $tooltip-border-color: null !default;
 $tooltip-box-shadow: null !default;
 
-$tooltip-arrow-size: 12px !default;
+$tooltip-arrow-size: map.get($spacing-sizes, 3) !default; //12px
