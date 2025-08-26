@@ -32,7 +32,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          rm -f package-lock.json
           npm install
 
       - name: Build Storybook
