@@ -1,13 +1,15 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use 'settings.config' as config;
 @use 'settings.border-radius' as border-radius;
 
 $popover-max-width: 300px !default;
-$popover-padding-x: 16px !default;
+$popover-padding-x: map.get($spacing-sizes, 4) !default; //16px
 $popover-padding-y: $popover-padding-x !default;
-$popover-inner-gap-x: 12px !default;
-$popover-inner-gap-y: 16px !default;
+$popover-inner-gap-x: map.get($spacing-sizes, 3) !default; //12px
+$popover-inner-gap-y: map.get($spacing-sizes, 4) !default; //16px
 $popover-bg: var(--#{config.$prefix}body-bg) !default;
 $popover-border-radius: border-radius.$border-radius-xl !default;
 $popover-box-shadow: var(--#{config.$prefix}box-shadow) !default;
-$popover-arrow-size: 12px !default;
+$popover-arrow-size: map.get($spacing-sizes, 3) !default; //12px
 $popover-arrow-offset: 6px !default;
