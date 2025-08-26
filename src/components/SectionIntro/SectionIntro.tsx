@@ -117,7 +117,7 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
   if (skeleton) {
     return (
       <div className={sectionIntroClasses} ref={sectionIntroRef}>
-        <div className="c-sectionintro__container o-container">
+        <div className="c-sectionintro__container">
           {label && (
             <div className="c-sectionintro__label">
               <span className="c-skeleton u-w-25"></span>

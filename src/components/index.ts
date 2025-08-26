@@ -79,6 +79,8 @@ export { default as Icon, type IconProps } from './Icon/Icon';
 export { default as List, type ListProps } from './List/List';
 export { default as Messages, type MessagesProps } from './Messages/Messages';
 export { default as Modal, type ModalProps } from './Modal/Modal';
+export { default as Nav, type NavProps } from './Navigation/Nav/Nav';
+export { default as NavItem, type NavItemProps } from './Navigation/Nav/NavItem';
 export { default as Navbar, type NavbarProps } from './Navigation/Navbar/Navbar';
 export { default as SideMenu, type SideMenuProps } from './Navigation/SideMenu/SideMenu';
 export {
