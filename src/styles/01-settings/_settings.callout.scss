@@ -47,32 +47,32 @@ $callout-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1) !default;
 
 // Toast positions
 $callout-toast-positions: (
-        'top-right': (
-                top: $toast-positions-top,
-                right: $toast-positions-right,
-        ),
-        'top-left': (
-                top: $toast-positions-top,
-                left: $toast-positions-left,
-        ),
-        'top-center': (
-                top: $toast-positions-top,
-                left: 50%,
-                transform: translateX(-50%),
-        ),
-        'bottom-right': (
-                bottom: $toast-positions-bottom,
-                right: $toast-positions-right,
-        ),
-        'bottom-left': (
-                bottom: $toast-positions-bottom,
-                left: $toast-positions-left,
-        ),
-        'bottom-center': (
-                bottom: $toast-positions-bottom,
-                left: 50%,
-                transform: translateX(-50%),
-        ),
+  'top-right': (
+    top: $toast-positions-top,
+    right: $toast-positions-right,
+  ),
+  'top-left': (
+    top: $toast-positions-top,
+    left: $toast-positions-left,
+  ),
+  'top-center': (
+    top: $toast-positions-top,
+    left: 50%,
+    transform: translateX(-50%),
+  ),
+  'bottom-right': (
+    bottom: $toast-positions-bottom,
+    right: $toast-positions-right,
+  ),
+  'bottom-left': (
+    bottom: $toast-positions-bottom,
+    left: $toast-positions-left,
+  ),
+  'bottom-center': (
+    bottom: $toast-positions-bottom,
+    left: 50%,
+    transform: translateX(-50%),
+  ),
 ) !default;
 
 // Z-index for toast containers

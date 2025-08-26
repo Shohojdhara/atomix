@@ -43,10 +43,10 @@ export const Toggle: React.FC<ToggleProps> = ({
   // Handle toggle click
   const handleClick = () => {
     if (disabled) return;
-    
+
     const newState = !isOn;
     setIsOn(newState);
-    
+
     if (newState) {
       if (onToggleOn) onToggleOn();
     } else {
@@ -57,7 +57,7 @@ export const Toggle: React.FC<ToggleProps> = ({
   // Handle key down events
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (disabled) return;
-    
+
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       handleClick();

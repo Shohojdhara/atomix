@@ -20,7 +20,6 @@ export const River: React.FC<RiverProps> = ({
   contentWidth,
   className = '',
 }) => {
-
   const {
     generateRiverClassNames,
     generateContentClass,
@@ -40,7 +39,6 @@ export const River: React.FC<RiverProps> = ({
     showOverlay,
     contentWidth,
   });
-
 
   // Create custom style for river element with content width if provided
   const riverStyle: React.CSSProperties | undefined = contentWidth

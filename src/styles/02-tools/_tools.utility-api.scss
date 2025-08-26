@@ -52,7 +52,11 @@ $utility-defaults: (
     // Escape key to ensure valid CSS selector (e.g. 1.5 -> 1\.5)
     $escaped-key: if($key, _escape-key($key), null);
 
-    $class-name: if($escaped-key, '#{$property-class}-#{$escaped-key}#{$infix}', '#{$property-class}#{$infix}');
+    $class-name: if(
+      $escaped-key,
+      '#{$property-class}-#{$escaped-key}#{$infix}',
+      '#{$property-class}#{$infix}'
+    );
 
     @if map.get($utility, class) == null {
       .#{$class-name} {
@@ -130,7 +134,7 @@ $utility-defaults: (
 
 // Helper function to escape keys for safe CSS class names
 @function _escape-key($key) {
-  $key-str: #{ $key };
+  $key-str: #{$key};
   $escaped: '';
   $len: string.length($key-str);
 

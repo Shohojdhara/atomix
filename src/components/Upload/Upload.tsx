@@ -312,7 +312,7 @@ export const Upload: React.FC<UploadProps> = ({
 
         {/* Progress and status area */}
         {status !== 'idle' && (
-          <div 
+          <div
             className="c-upload__loader"
             style={{ '--upload-loader-percentage': uploadProgress } as React.CSSProperties}
           >
@@ -334,8 +334,8 @@ export const Upload: React.FC<UploadProps> = ({
                     <circle cx="10" cy="10" r="10"></circle>
                   </svg>
                 </div>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="c-upload__loader-close c-btn"
                   onClick={resetUpload}
                 >
