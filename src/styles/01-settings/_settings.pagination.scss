@@ -1,3 +1,5 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use './settings.config' as *;
 @use './settings.typography' as *;
 @use './settings.colors' as *;
@@ -7,8 +9,8 @@ $pagination-size: 32px !default;
 $pagination-size-sm: 24px !default;
 $pagination-size-lg: 40px !default;
 
-$pagination-padding-x: 8px !default;
-$pagination-padding-y: 8px !default;
+$pagination-padding-x: map.get($spacing-sizes, 2) !default; //8px
+$pagination-padding-y: map.get($spacing-sizes, 2) !default; //8px
 
 $pagination-font-size: $font-size-sm !default;
 
@@ -16,7 +18,7 @@ $pagination-color: var(--#{$prefix}secondary-text-emphasis) !default;
 $pagination-bg: var(--#{$prefix}body-bg) !default;
 $pagination-border-radius: $border-radius-pill !default;
 
-$pagination-focus-border-width: 2px !default;
+$pagination-focus-border-width: calc(var(--#{$prefix}border-width) * 2) !default;
 $pagination-focus-border-color: var(--#{$prefix}brand-border-subtle) !default;
 
 $pagination-hover-color: var(--#{$prefix}body-color) !default;
