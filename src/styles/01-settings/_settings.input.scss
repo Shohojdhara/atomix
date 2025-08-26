@@ -1,3 +1,5 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use './settings.config' as *;
 @use './settings.typography' as *;
 @use './settings.border-radius' as *;
@@ -13,14 +15,14 @@ $input-line-height-md: 20px !default;
 $input-line-height-sm: 20px !default;
 $input-line-height-lg: 24px !default;
 
-$input-padding-x: 12px !default;
-$input-padding-y: 10px !default;
-$input-padding-x-sm: 12px !default;
-$input-padding-y-sm: 6px !default;
-$input-padding-x-lg: 12px !default;
-$input-padding-y-lg: 12px !default;
+$input-padding-x: map.get($spacing-sizes, 3) !default; //12px
+$input-padding-y: map.get($spacing-sizes, 2.5) !default; //10px
+$input-padding-x-sm: map.get($spacing-sizes, 3) !default; //12px
+$input-padding-y-sm: map.get($spacing-sizes, 1.5) !default; //6px
+$input-padding-x-lg: map.get($spacing-sizes, 3) !default; //12px
+$input-padding-y-lg: map.get($spacing-sizes, 3) !default; //12px
 
-$input-border-width: 1px !default;
+$input-border-width: var(--#{$prefix}border-width) !default;
 $input-border-color: var(--#{$prefix}primary-border-subtle) !default;
 $input-hover-border-color: var(--#{$prefix}secondary-border-subtle) !default;
 $input-focus-border-color: $input-hover-border-color !default;
