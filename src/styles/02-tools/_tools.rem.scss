@@ -1,9 +1,23 @@
 @use 'sass:math';
+@use 'sass:meta';
 
-@function rem($pixels) {
-  @if math.unit($pixels) == 'px' {
-    @return math.div($pixels, 16px) * 1rem;
-  } @else {
-    @return $pixels;
+@function rem($value) {
+  // Handle null values safely, just return null if value is null
+  @if $value == null {
+    @return null;
   }
+
+  // If it's not a number, return as it is
+  @if meta.type-of($value) != 'number' {
+    @return $value;
+  }
+
+  // If the value is in pixels, convert to rem
+  @if math.unit($value) == 'px' {
+    @return math.div($value, 16px) * 1rem;
+  }
+
+  // Otherwise, return the value as it is (for rem/em/% values)
+  @return $value;
 }
+
