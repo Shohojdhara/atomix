@@ -3,6 +3,7 @@
 //
 // This API is used to generate utility classes from utility maps defined in the 99-utilities folder.
 // It provides a consistent way to generate utility classes with responsive variants, states, and more.
+// SASS Decimal Interpolation – If you want a more technical name, this focuses on the way decimal values are now processed in SASS with this code base or you can just use integer both will work.
 
 @use 'sass:map';
 @use 'sass:string';
@@ -13,14 +14,14 @@
 
 // Default config for utilities
 $utility-defaults: (
-  responsive: true,
-  rfs: false,
-  print: false,
-  dark: false,
-  class: null,
-  state: null,
-  local-vars: (),
-  rtl: true,
+        responsive: true,
+        rfs: false,
+        print: false,
+        dark: false,
+        class: null,
+        state: null,
+        local-vars: (),
+        rtl: true,
 ) !default;
 
 // Core function to generate utility classes
@@ -37,11 +38,16 @@ $utility-defaults: (
     $property-class: map.get($utility, class);
     $property-class: if($property-class, $property-class, list.nth($properties, 1));
 
+    // Handle decimal key case for spacing, only for numbers (integers or floats)
+    @if meta.type-of($key) == 'number' and $key % 1 != 0 {
+      $key: round($key); // Round to the nearest integer
+    }
+
     // Multiple properties are possible, like with borders or shadows
     $property-class: if(
-      meta.type-of($property-class) == 'list',
-      list.nth($property-class, 1),
-      $property-class
+                    meta.type-of($property-class) == 'list',
+                    list.nth($property-class, 1),
+                    $property-class
     );
 
     // State variants (hover, focus, active, etc.)
@@ -92,9 +98,9 @@ $utility-defaults: (
 ) {
   // Set default breakpoint infix generator if not provided
   $breakpoint-infix-generator: if(
-    $breakpoint-infix-generator,
-    $breakpoint-infix-generator,
-    get-breakpoint-infix
+                  $breakpoint-infix-generator,
+                  $breakpoint-infix-generator,
+                  get-breakpoint-infix
   );
 
   @each $utility, $config in $utilities {
@@ -104,17 +110,17 @@ $utility-defaults: (
     // Only process if the utility is not explicitly set to false
     @if map.get($config, generated) != false {
       $utility-map: (
-        property: map.get($config, property),
-        values: map.get($config, values),
-        class: map.get($config, class),
-        state: map.get($config, state),
-        rtl: map.get($config, rtl),
+              property: map.get($config, property),
+              values: map.get($config, values),
+              class: map.get($config, class),
+              state: map.get($config, state),
+              rtl: map.get($config, rtl),
       );
 
       @include generate-responsive-utilities(
-        $utility-map,
-        $breakpoints,
-        $breakpoint-infix-generator
+                      $utility-map,
+                      $breakpoints,
+                      $breakpoint-infix-generator
       );
     }
   }
@@ -132,10 +138,10 @@ $utility-defaults: (
 
   @each $key in $keys {
     $result: map.merge(
-      $result,
-      (
-        $key: if($index <= list.length($values), list.nth($values, $index), null),
-      )
+                    $result,
+                    (
+                            $key: if($index <= list.length($values), list.nth($values, $index), null),
+                    )
     );
     $index: $index + 1;
   }
