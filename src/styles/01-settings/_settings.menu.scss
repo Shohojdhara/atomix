@@ -1,35 +1,37 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use './settings.config' as *;
 @use './settings.typography' as *;
 @use './settings.border-radius' as *;
 
 $menu-min-width: 160px !default;
 $menu-container-width: 1600px !default;
-$menu-padding-x: 8px !default;
+$menu-padding-x: map.get($spacing-sizes, 2) !default; //8px
 $menu-padding-y: $menu-padding-x !default;
 
 $menu-bg: var(--#{$prefix}body-bg) !default;
 $menu-border-radius: $border-radius-xxl !default;
 $menu-box-shadow: var(--#{$prefix}box-shadow) !default;
-$menu-items-gap: 4px !default;
+$menu-items-gap: map.get($spacing-sizes, 1) !default; //4px
 
-$menu-item-padding-x: 8px !default;
+$menu-item-padding-x: map.get($spacing-sizes, 2) !default; //8px
 $menu-item-padding-y: $menu-item-padding-x !default;
-$menu-item-inner-gap: 8px !default;
+$menu-item-inner-gap: map.get($spacing-sizes, 2) !default; //8px
 $menu-item-color: var(--#{$prefix}primary-text-emphasis) !default;
 $menu-item-font-size: $font-size-base !default;
 $menu-item-font-weight: $font-weight-bold !default;
 $menu-item-bg: var(--#{$prefix}body-bg) !default;
 $menu-item-bg-hover: var(--#{$prefix}secondary-bg-subtle) !default;
 $menu-item-bg-active: var(--#{$prefix}brand-bg-subtle) !default;
-$menu-item-icon-size: 20px !default;
+$menu-item-icon-size: map.get($spacing-sizes, 5) !default; //20px
 
 $menu-subitem-color: var(--#{$prefix}secondary-text-emphasis) !default;
 $menu-subitem-color-active: var(--#{$prefix}brand-text-emphasis) !default;
 $menu-subitem-font-weight: $font-weight-normal !default;
 $menu-subitem-font-weight-active: $font-weight-medium !default;
 
-$menu-mega-padding-x: 64px !default;
-$menu-mega-padding-y: 28px !default;
-$menu-mega-grid-gap: 40px !default;
+$menu-mega-padding-x: map.get($spacing-sizes, 16) !default; //64px
+$menu-mega-padding-y: map.get($spacing-sizes, 7) !default; //28px
+$menu-mega-grid-gap: map.get($spacing-sizes, 10) !default; //40px
 $menu-mega-header-title-font-size: $font-size-lg !default;
 $menu-mega-header-title-font-weight: $font-weight-medium !default;
