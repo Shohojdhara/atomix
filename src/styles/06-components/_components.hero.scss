@@ -36,6 +36,7 @@
   place-items: center;
   padding: var(--#{$prefix}hero-padding-y) var(--#{$prefix}hero-padding-x);
   background-color: var(--#{$prefix}hero-bg);
+  overflow: hidden;
 
   &__bg {
     position: absolute;

@@ -1,9 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { AdminDashboard } from './AdminDashboard';
-import HomePage from './HomePage';
-import Portfolio from './Portfolio';
 import CoffeeShop from './CoffeeShop';
+import Ecommerce from './Ecommerce';
+import Healthcare from './Healthcare';
+import HomePage from './HomePage';
 import ISP from './ISP';
+import Portfolio from './Portfolio';
+import Saas from './Saas';
+import Travel from './Travel';
 
 const meta: Meta<typeof AdminDashboard> = {
   title: 'Showcase/Showcase',
@@ -32,4 +36,20 @@ export const CoffeeShopShowcase: Story = {
 
 export const ISPShowcase: Story = {
   render: () => <ISP />,
+};
+
+export const SaasShowcase: Story = {
+  render: () => <Saas />,
+};
+
+export const EcommerceShowcase: Story = {
+  render: () => <Ecommerce />,
+};
+
+export const HealthcareShowcase: Story = {
+  render: () => <Healthcare />,
+};
+
+export const TravelShowcase: Story = {
+  render: () => <Travel />,
 };
