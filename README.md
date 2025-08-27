@@ -41,22 +41,6 @@ function App() {
 }
 ```
 
-### Vanilla JavaScript
-
-```js
-import { Button } from '@shohojdhara/atomix';
-import '@shohojdhara/atomix/css';
-
-// Create a button
-const button = new Button({
-  variant: 'primary',
-  children: 'Hello World'
-});
-
-// Mount to DOM
-button.mount(document.getElementById('app'));
-```
-
 ## Styles
 
 Atomix provides comprehensive styling through CSS or SCSS:
@@ -190,11 +174,6 @@ All Atomix components are built with accessibility in mind:
 ## Browser Support
 
 Atomix supports all modern browsers:
-
-- Chrome (latest 2 versions)
-- Firefox (latest 2 versions)
-- Safari (latest 2 versions)
-- Edge (latest 2 versions)
 
 ## Contributing
 
