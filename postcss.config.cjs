@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   plugins: {
     'postcss-import': {},
     'postcss-flexbugs-fixes': {},
@@ -31,3 +31,4 @@ export default {
       : {}),
   },
 };
+
