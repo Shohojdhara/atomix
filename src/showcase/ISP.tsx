@@ -342,10 +342,12 @@ const ISP: React.FC = () => {
             {testimonials.map((testimonial, index) => (
               <GridCol key={index} xs={12} md={4}>
                 <Testimonial
-                  name={testimonial.name}
-                  role={testimonial.role}
-                  avatarSrc={testimonial.avatar}
-                  text={testimonial.content}
+                  quote={testimonial.content}
+                  author={{
+                    name: testimonial.name,
+                    role: testimonial.role,
+                    avatarSrc: testimonial.avatar,
+                  }}
                   className="u-h-100"
                 />
               </GridCol>
