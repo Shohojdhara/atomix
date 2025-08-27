@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 
 // Importing components from the library
 import {
@@ -32,14 +32,10 @@ import {
   Textarea,
   Toggle,
   Tooltip,
-} from '../components';
+} from '../../components';
 
 // Importing layout components
-import { Container, Grid, GridCol } from '../layouts';
-
-// Importing utility classes
-import '../../utility-classes.css';
-import '../styles/index.scss';
+import { Container, Grid, GridCol } from '../../layouts';
 
 const Portfolio: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

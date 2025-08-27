@@ -11,10 +11,10 @@ import {
   SectionIntro,
   Testimonial,
   TestimonialProps,
-} from '../components';
+} from '../../components';
 
 // Importing layout components
-import { Container, Grid, GridCol } from '../layouts';
+import { Container, Grid, GridCol } from '../../layouts';
 
 const CoffeeShop: React.FC = () => {
   // Testimonial data

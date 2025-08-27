@@ -19,8 +19,8 @@ import {
   Steps,
   Testimonial,
   Textarea,
-} from '../components';
-import { Container, Grid, GridCol, Row } from '../layouts';
+} from '../../components';
+import { Container, Grid, GridCol, Row } from '../../layouts';
 
 const Healthcare: React.FC = () => {
   const [activeTab, setActiveTab] = useState('tab1');

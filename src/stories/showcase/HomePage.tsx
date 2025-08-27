@@ -26,8 +26,8 @@ import {
   Toggle,
   Upload,
   VideoPlayer,
-} from '../components';
-import { Container, GridCol, Row } from '../layouts';
+} from '../../components';
+import { Container, GridCol, Row } from '../../layouts';
 
 const HomePage: React.FC = () => {
   const [isVideoModalOpen, setIsVideoModalOpen] = React.useState(false);

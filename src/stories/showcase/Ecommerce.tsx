@@ -9,8 +9,8 @@ import {
   Icon,
   SectionIntro,
   Testimonial,
-} from '../components';
-import { Container, Grid, GridCol, Row } from '../layouts';
+} from '../../components';
+import { Container, Grid, GridCol, Row } from '../../layouts';
 
 const Ecommerce: React.FC = () => {
   const [cartCount, setCartCount] = useState(3);

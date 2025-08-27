@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
 import {
   AtomixLogo,
+  Badge,
   Button,
   Card,
   Hero,
   Icon,
   SectionIntro,
-  Testimonial,
-  Badge,
-  Callout,
   Tab,
-} from '../components';
-import { Container, Grid, GridCol, Row } from '../layouts';
+  Testimonial,
+} from '../../components';
+import { Container, Grid, GridCol, Row } from '../../layouts';
 
 const Saas: React.FC = () => {
   const [isAnnual, setIsAnnual] = useState(true);
-  
+
   const features = [
     {
       icon: <Icon name="Rocket" size={24} />,
@@ -110,39 +109,49 @@ const Saas: React.FC = () => {
     {
       name: 'Alex Johnson',
       role: 'CTO, TechCorp',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
-      content: 'This platform has transformed our workflow. We\'ve seen a 40% increase in productivity since implementation.',
+      avatar:
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
+      content:
+        "This platform has transformed our workflow. We've seen a 40% increase in productivity since implementation.",
     },
     {
       name: 'Sarah Williams',
       role: 'Product Manager, InnovateX',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face',
-      content: 'The analytics features alone are worth the investment. We\'ve gained insights that helped double our conversion rate.',
+      avatar:
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face',
+      content:
+        "The analytics features alone are worth the investment. We've gained insights that helped double our conversion rate.",
     },
     {
       name: 'Michael Chen',
       role: 'CEO, GrowthStart',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
-      content: 'Implementation was seamless and the support team is exceptional. We were up and running in less than a day.',
+      avatar:
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+      content:
+        'Implementation was seamless and the support team is exceptional. We were up and running in less than a day.',
     },
   ];
 
   const faqs = [
     {
       question: 'How secure is my data?',
-      answer: 'We use industry-standard encryption protocols and regularly undergo security audits to ensure your data is always protected.',
+      answer:
+        'We use industry-standard encryption protocols and regularly undergo security audits to ensure your data is always protected.',
     },
     {
       question: 'Can I cancel my subscription anytime?',
-      answer: 'Yes, you can cancel your subscription at any time with no cancellation fees. You will continue to have access until the end of your billing period.',
+      answer:
+        'Yes, you can cancel your subscription at any time with no cancellation fees. You will continue to have access until the end of your billing period.',
     },
     {
       question: 'Do you offer discounts for non-profits?',
-      answer: 'Yes, we offer special pricing for non-profit organizations. Please contact our sales team for more information.',
+      answer:
+        'Yes, we offer special pricing for non-profit organizations. Please contact our sales team for more information.',
     },
     {
       question: 'How often do you release updates?',
-      answer: 'We release minor updates weekly and major feature updates quarterly. All updates are free for subscribers.',
+      answer:
+        'We release minor updates weekly and major feature updates quarterly. All updates are free for subscribers.',
     },
   ];
 
@@ -175,8 +184,12 @@ const Saas: React.FC = () => {
         text="Powerful tools to help your team collaborate, analyze, and grow. Join thousands of companies already using our platform."
         actions={
           <>
-            <Button variant="primary" size="lg" className="u-me-2">Start Free Trial</Button>
-            <Button variant="outline-primary" size="lg">Watch Demo</Button>
+            <Button variant="primary" size="lg" className="u-me-2">
+              Start Free Trial
+            </Button>
+            <Button variant="outline-primary" size="lg">
+              Watch Demo
+            </Button>
           </>
         }
         className="u-mb-0"
@@ -220,9 +233,7 @@ const Saas: React.FC = () => {
             {features.map((feature, index) => (
               <GridCol key={index} xs={12} sm={6} md={4} className="u-mb-5">
                 <div className="c-feature">
-                  <div className="c-feature__icon u-mb-3">
-                    {feature.icon}
-                  </div>
+                  <div className="c-feature__icon u-mb-3">{feature.icon}</div>
                   <h3 className="c-feature__title u-mb-2">{feature.title}</h3>
                   <p className="c-feature__description u-text-muted">{feature.description}</p>
                 </div>
@@ -278,27 +289,27 @@ const Saas: React.FC = () => {
               </GridCol>
             ))}
           </Grid>
-          
+
           <div className="u-text-center u-mt-6">
             <div className="c-avatar-group">
               <div className="c-avatar">
-                <img 
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" 
-                  alt="User" 
+                <img
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+                  alt="User"
                   className="c-avatar__img"
                 />
               </div>
               <div className="c-avatar">
-                <img 
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" 
-                  alt="User" 
+                <img
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face"
+                  alt="User"
                   className="c-avatar__img"
                 />
               </div>
               <div className="c-avatar">
-                <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" 
-                  alt="User" 
+                <img
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+                  alt="User"
                   className="c-avatar__img"
                 />
               </div>
@@ -318,19 +329,19 @@ const Saas: React.FC = () => {
             text="Choose the plan that works best for your team with a 14-day free trial."
             className="u-text-center u-mb-6"
           />
-          
+
           <div className="u-text-center u-mb-6">
             <Badge label="Save 20% with annual billing" variant="primary" className="u-mb-4" />
             <div>
-              <Button 
-                variant={isAnnual ? "primary" : "outline-primary"} 
+              <Button
+                variant={isAnnual ? 'primary' : 'outline-primary'}
                 onClick={() => setIsAnnual(true)}
                 className="u-mx-1"
               >
                 Annual
               </Button>
-              <Button 
-                variant={!isAnnual ? "primary" : "outline-primary"} 
+              <Button
+                variant={!isAnnual ? 'primary' : 'outline-primary'}
                 onClick={() => setIsAnnual(false)}
                 className="u-mx-1"
               >
@@ -338,7 +349,7 @@ const Saas: React.FC = () => {
               </Button>
             </div>
           </div>
-          
+
           <Grid>
             {pricingPlans.map((plan, index) => (
               <GridCol key={index} xs={12} md={4} className="u-mb-4">
@@ -367,8 +378,8 @@ const Saas: React.FC = () => {
                         </li>
                       ))}
                     </ul>
-                    <Button 
-                      variant={plan.popular ? "primary" : "outline-primary"} 
+                    <Button
+                      variant={plan.popular ? 'primary' : 'outline-primary'}
                       className="u-w-100"
                     >
                       {plan.cta}
@@ -407,8 +418,12 @@ const Saas: React.FC = () => {
                 Join thousands of satisfied customers and transform your workflow today.
               </p>
               <div>
-                <Button variant="light" size="lg" className="u-me-2">Start Free Trial</Button>
-                <Button variant="outline-light" size="lg">Schedule a Demo</Button>
+                <Button variant="light" size="lg" className="u-me-2">
+                  Start Free Trial
+                </Button>
+                <Button variant="outline-light" size="lg">
+                  Schedule a Demo
+                </Button>
               </div>
             </GridCol>
           </Row>
@@ -430,30 +445,60 @@ const Saas: React.FC = () => {
             <GridCol xs={6} md={2} className="u-mb-4">
               <h5 className="u-mb-3">Product</h5>
               <ul className="u-list-unstyled u-text-muted">
-                <li className="u-mb-2"><a href="#" className="u-link-light">Features</a></li>
-                <li className="u-mb-2"><a href="#" className="u-link-light">Pricing</a></li>
-                <li className="u-mb-2"><a href="#" className="u-link-light">Integrations</a></li>
-                <li className="u-mb-2"><a href="#" className="u-link-light">Roadmap</a></li>
+                <li className="u-mb-2">
+                  <a href="#" className="u-link-light">
+                    Features
+                  </a>
+                </li>
+                <li className="u-mb-2">
+                  <a href="#" className="u-link-light">
+                    Pricing
+                  </a>
+                </li>
+                <li className="u-mb-2">
+                  <a href="#" className="u-link-light">
+                    Integrations
+                  </a>
+                </li>
+                <li className="u-mb-2">
+                  <a href="#" className="u-link-light">
+                    Roadmap
+                  </a>
+                </li>
               </ul>
             </GridCol>
             <GridCol xs={6} md={2} className="u-mb-4">
               <h5 className="u-mb-3">Resources</h5>
               <ul className="u-list-unstyled u-text-muted">
-                <li className="u-mb-2"><a href="#" className="u-link-light">Documentation</a></li>
-                <li className="u-mb-2"><a href="#" className="u-link-light">Blog</a></li>
-                <li className="u-mb-2"><a href="#" className="u-link-light">Tutorials</a></li>
-                <li className="u-mb-2"><a href="#" className="u-link-light">Support</a></li>
+                <li className="u-mb-2">
+                  <a href="#" className="u-link-light">
+                    Documentation
+                  </a>
+                </li>
+                <li className="u-mb-2">
+                  <a href="#" className="u-link-light">
+                    Blog
+                  </a>
+                </li>
+                <li className="u-mb-2">
+                  <a href="#" className="u-link-light">
+                    Tutorials
+                  </a>
+                </li>
+                <li className="u-mb-2">
+                  <a href="#" className="u-link-light">
+                    Support
+                  </a>
+                </li>
               </ul>
             </GridCol>
             <GridCol xs={12} md={4} className="u-mb-4">
               <h5 className="u-mb-3">Subscribe to our newsletter</h5>
-              <p className="u-text-muted u-mb-3">
-                Get the latest news and updates.
-              </p>
+              <p className="u-text-muted u-mb-3">Get the latest news and updates.</p>
               <div className="u-d-flex">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
+                <input
+                  type="email"
+                  placeholder="Enter your email"
                   className="u-form-control u-flex-grow-1 u-me-2"
                 />
                 <Button variant="primary">Subscribe</Button>

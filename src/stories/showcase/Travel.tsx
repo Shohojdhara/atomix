@@ -16,8 +16,8 @@ import {
   SectionIntro,
   Steps,
   Testimonial,
-} from '../components';
-import { Container, Grid, GridCol, Row } from '../layouts';
+} from '../../components';
+import { Container, Grid, GridCol, Row } from '../../layouts';
 
 const Travel: React.FC = () => {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);

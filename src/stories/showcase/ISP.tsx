@@ -10,10 +10,10 @@ import {
   SectionIntro,
   Testimonial,
   VideoPlayer,
-} from '../components';
-import Nav from '../components/Navigation/Nav/Nav';
-import NavItem from '../components/Navigation/Nav/NavItem';
-import { Container, GridCol, Row } from '../layouts';
+} from '../../components';
+import Nav from '../../components/Navigation/Nav/Nav';
+import NavItem from '../../components/Navigation/Nav/NavItem';
+import { Container, GridCol, Row } from '../../layouts';
 
 const ISP: React.FC = () => {
   const plans = [
