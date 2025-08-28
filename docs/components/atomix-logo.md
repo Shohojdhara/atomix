@@ -1,40 +1,66 @@
 # AtomixLogo
 
-The AtomixLogo component displays the Atomix brand logo as an SVG icon. It's a simple, customizable logo component that maintains brand consistency across your application while providing flexibility for different display contexts.
+The AtomixLogo component displays the Atomix brand logo as an SVG element. It's a lightweight, customizable component that maintains brand consistency across your application while providing flexibility for different display contexts.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Props](#props)
+- [Examples](#examples)
+- [Accessibility](#accessibility)
+- [Styling](#styling)
+- [Performance](#performance)
+- [Integration](#integration)
+- [Migration](#migration)
 
 ## Overview
 
-The AtomixLogo component renders the official Atomix logo as a scalable SVG element. It supports customization of size, color, and all standard SVG properties while maintaining the visual integrity of the brand.
+The AtomixLogo component provides a consistent way to display the Atomix brand logo throughout your application. Implemented as an SVG for crisp rendering at any size, it can be easily customized while maintaining visual integrity.
+
+## Features
+
+- 🖼️ Lightweight SVG implementation
+- 🎨 Customizable size and color
+- ✅ Accessible with proper SVG attributes
+- 📱 Responsive design capabilities
+- 🌈 Inherits color by default from parent text color
+- ⚙️ Supports all standard SVG props
+- 🔍 Optimized for performance
 
 ## Installation
 
-The AtomixLogo component is included in the Atomix package. Import it in your React components:
-
-```jsx
-import { AtomixLogo } from '@shohojdhara/atomix';
+```bash
+npm install @shohojdhara/atomix
 ```
 
-## Basic Usage
+Import the component and styles:
 
-### React
+```tsx
+import { AtomixLogo } from '@shohojdhara/atomix';
+import '@shohojdhara/atomix/css';
+```
 
-```jsx
+## Usage
+
+```tsx
 import { AtomixLogo } from '@shohojdhara/atomix';
 
-function MyComponent() {
+export function Header() {
   return (
-    <AtomixLogo 
-      width={32} 
-      height={32} 
-      color="currentColor" 
-    />
+    <header>
+      <AtomixLogo />
+      <h1>My Application</h1>
+    </header>
   );
 }
 ```
 
-### HTML/CSS
+### HTML/CSS (Vanilla Implementation)
 
-For vanilla JavaScript or HTML implementations, you can use the SVG markup directly:
+For non-React projects, you can use the SVG markup directly:
 
 ```html
 <!-- Basic Atomix logo -->
@@ -43,6 +69,260 @@ For vanilla JavaScript or HTML implementations, you can use the SVG markup direc
   <path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" fill="currentColor"/>
 </svg>
 ```
+
+## Props
+
+The AtomixLogo component accepts all standard SVG props in addition to the following custom props:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `width` | `number \| string` | `24` | Width of the logo |
+| `height` | `number \| string` | `24` | Height of the logo |
+| `color` | `string` | `'currentColor'` | Fill color of the logo |
+| `...props` | `React.SVGProps<SVGSVGElement>` | - | All other SVG element props |
+
+### TypeScript Interface
+
+```typescript
+interface AtomixLogoProps extends React.SVGProps<SVGSVGElement> {
+  height?: number | string;
+  width?: number | string;
+  color?: string;
+}
+```
+
+## Examples
+
+### Basic Usage
+
+```jsx
+import { AtomixLogo } from '@shohojdhara/atomix';
+
+function BasicExample() {
+  return <AtomixLogo />;
+}
+```
+
+### Custom Size and Color
+
+```jsx
+import { AtomixLogo } from '@shohojdhara/atomix';
+
+function CustomizedExample() {
+  return (
+    <div>
+      {/* Large blue logo */}
+      <AtomixLogo width={48} height={48} color="#3b82f6" />
+      
+      {/* Small red logo */}
+      <AtomixLogo width={16} height={16} color="#ef4444" />
+      
+      {/* Responsive width with inherited color */}
+      <AtomixLogo width="100%" height={32} />
+    </div>
+  );
+}
+```
+
+### As Link
+
+```jsx
+import { AtomixLogo } from '@shohojdhara/atomix';
+
+function LogoLink() {
+  return (
+    <a href="/" aria-label="Home">
+      <AtomixLogo width={32} height={32} />
+    </a>
+  );
+}
+```
+
+### In a Button
+
+```jsx
+import { AtomixLogo } from '@shohojdhara/atomix';
+import { Button } from '@shohojdhara/atomix';
+
+function LogoButton() {
+  return (
+    <Button variant="secondary" aria-label="Atomix Home">
+      <AtomixLogo width={24} height={24} />
+    </Button>
+  );
+}
+```
+
+## Accessibility
+
+The AtomixLogo component includes accessibility features out of the box:
+
+```jsx
+function AccessibleLogo() {
+  return (
+    <AtomixLogo 
+      width={32} 
+      height={32}
+      role="img"
+      aria-label="Atomix logo"
+    />
+  );
+}
+```
+
+### Best Practices
+
+- Always provide an `aria-label` when the logo serves as a meaningful element
+- Use appropriate sizing for different contexts
+- Ensure sufficient color contrast when using custom colors
+- Consider using `role="img"` for screen readers when the logo is decorative
+
+## Styling
+
+### CSS Custom Properties
+
+The logo inherits color from its parent element when using `currentColor`:
+
+```css
+:root {
+  --logo-color-primary: #2b77e4;
+  --logo-color-secondary: #6b7280;
+}
+
+.brand-primary .atomix-logo {
+  color: var(--logo-color-primary);
+}
+
+.brand-muted .atomix-logo {
+  color: var(--logo-color-secondary);
+}
+```
+
+### Custom Styling
+
+```css
+/* Logo wrapper styles */
+.logo-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Hover effects */
+.logo-link:hover .atomix-logo {
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+/* Dark mode adaptation */
+@media (prefers-color-scheme: dark) {
+  .atomix-logo {
+    color: #f7fafc;
+  }
+}
+
+/* Responsive sizing */
+@media (max-width: 768px) {
+  .navbar .atomix-logo {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .navbar .atomix-logo {
+    width: 36px;
+    height: 36px;
+  }
+}
+```
+
+## Performance
+
+The AtomixLogo component is optimized for performance:
+
+- **SVG Optimization**: The logo is already optimized as an inline SVG
+- **Bundle Size**: Minimal impact on bundle size due to simple SVG structure
+- **Rendering**: No external dependencies or image loading required
+- **Scalability**: Vector-based, scales perfectly at any size without quality loss
+
+## Integration
+
+### With React Router
+
+```jsx
+import { Link } from 'react-router-dom';
+
+function NavigationLogo() {
+  return (
+    <Link to="/" className="logo-link">
+      <AtomixLogo width={32} height={32} />
+    </Link>
+  );
+}
+```
+
+### With Styled Components
+
+```jsx
+import styled from 'styled-components';
+
+const StyledLogo = styled(AtomixLogo)`
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+function AnimatedLogo() {
+  return <StyledLogo width={40} height={40} />;
+}
+```
+
+### With Theme Provider
+
+```jsx
+import { useTheme } from '../theme/ThemeProvider';
+
+function ThemedLogo() {
+  const { colors } = useTheme();
+  
+  return (
+    <AtomixLogo 
+      width={32} 
+      height={32}
+      color={colors.primary}
+    />
+  );
+}
+```
+
+## Migration
+
+### From Custom Logo
+
+If you're replacing a custom logo implementation:
+
+```jsx
+// Before
+<img src="/logo.svg" alt="Logo" width="32" height="32" />
+
+// After
+<AtomixLogo width={32} height={32} aria-label="Atomix logo" />
+```
+
+### From Icon Font
+
+```jsx
+// Before
+<i className="icon-logo" style={{ fontSize: '32px' }}></i>
+
+// After
+<AtomixLogo width={32} height={32} />
+```
+
+The AtomixLogo component provides a consistent, scalable, and accessible way to display the Atomix brand across your application while maintaining design system consistency.
 
 ## API Reference
 

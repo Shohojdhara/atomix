@@ -8,13 +8,18 @@ The EdgePanel component creates an overlay panel that slides in from any edge of
 
 ## Installation
 
-The EdgePanel component is included in the Atomix package. Import it in your React components:
+Install the Atomix package:
 
-```jsx
-import { EdgePanel } from '@shohojdhara/atomix';
+```bash
+npm install @shohojdhara/atomix
 ```
 
-For vanilla JavaScript projects, the edge panel styles and functionality are available through the CSS classes and JavaScript modules.
+Import the component and styles:
+
+```tsx
+import { EdgePanel } from '@shohojdhara/atomix';
+import '@shohojdhara/atomix/css';
+```
 
 ## Basic Usage
 
