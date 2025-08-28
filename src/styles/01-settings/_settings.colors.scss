@@ -249,4 +249,24 @@ $focus-border-color-dark: $primary-4 !default;
 $component-active-color: $white !default;
 $component-active-bg: $primary !default;
 
+// Gradient theme colors for light mode
+$gradient-primary: linear-gradient(135deg, $primary-2, $primary-3, $primary-4) !default;
+$gradient-secondary: linear-gradient(135deg, $gray-2, $gray-3, $gray-4) !default;
+$gradient-light: linear-gradient(135deg, $gray-1, $gray-2, $gray-3) !default;
+$gradient-dark: linear-gradient(135deg, $gray-7, $gray-9, $black) !default;
+$gradient-success: linear-gradient(135deg, $green-2, $green-4, $green-5) !default;
+$gradient-info: linear-gradient(135deg, $blue-2, $blue-3, $blue-5) !default;
+$gradient-warning: linear-gradient(135deg, $yellow-2, $yellow-3, $yellow-5) !default;
+$gradient-error: linear-gradient(135deg, $red-1, $red-2, $red-3) !default;
+
+// Gradient theme colors for dark mode
+$gradient-primary-dark: linear-gradient(135deg, $primary-10, $primary-9, $primary-8) !default;
+$gradient-secondary-dark: linear-gradient(135deg, $gray-8, $gray-6, $gray-4) !default;
+$gradient-light-dark: linear-gradient(135deg, $gray-5, $gray-6, $gray-5) !default;
+$gradient-dark-dark: linear-gradient(135deg, $black, $gray-7, $gray-9) !default;
+$gradient-success-dark: linear-gradient(135deg, $green-10, $green-7, $green-9) !default;
+$gradient-info-dark: linear-gradient(135deg, $blue-10, $blue-8, $blue-9) !default;
+$gradient-warning-dark: linear-gradient(135deg, $yellow-10, $yellow-8, $yellow-9) !default;
+$gradient-error-dark: linear-gradient(135deg, $red-10, $red-7, $red-10) !default;
+
 // All variables are automatically exported when using @use

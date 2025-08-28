@@ -289,3 +289,25 @@ $shadows-dark: (
   'shadow-xl': var(--#{config.$prefix}box-shadow-xl-dark),
   'shadow-inset': var(--#{config.$prefix}box-shadow-inset-dark),
 ) !default;
+
+$gradient-colors: (
+  'primary': $gradient-primary,
+  'secondary': $gradient-secondary,
+  'light': $gradient-light,
+  'dark': $gradient-dark,
+  'success': $gradient-success,
+  'info': $gradient-info,
+  'warning': $gradient-warning,
+  'error': $gradient-error,
+);
+
+$gradient-colors-dark: (
+  'primary': $gradient-primary-dark,
+  'secondary': $gradient-secondary-dark,
+  'light': $gradient-light-dark,
+  'dark': $gradient-dark-dark,
+  'success': $gradient-success-dark,
+  'info': $gradient-info-dark,
+  'warning': $gradient-warning-dark,
+  'error': $gradient-error-dark,
+);

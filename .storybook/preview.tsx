@@ -5,11 +5,13 @@ import '../src/styles/index.scss';
 
 // Theme list
 const themes = [
-  { name: 'Default', class: 'shaj-default', color: '#3b82f6' },
+  { name: 'Atomix', class: 'atomix', color: '#000000' },
+  { name: 'Shaj', class: 'shaj-default', color: '#3b82f6' },
   { name: 'BoomDevs', class: 'boomdevs', color: '#8b5cf6' },
   { name: 'Esrar', class: 'esrar', color: '#10b981' },
   { name: 'Mashroom', class: 'mashroom', color: '#f59e0b' },
   { name: 'Yabai', class: 'yabai', color: '#ef4444' },
+  { name: 'None', class: 'none', color: '#ef4444' },
 ];
 
 const preview: Preview = {
@@ -78,7 +80,7 @@ const preview: Preview = {
 
   decorators: [
     (Story, context) => {
-      const theme = context.globals?.theme || 'shaj-default';
+      const theme = context.globals?.theme || 'atomix';
       const colorMode = context.globals?.colorMode || 'light';
 
       useEffect(() => {
@@ -106,13 +108,17 @@ const preview: Preview = {
           themeLink.remove();
         }
 
-        if (theme !== 'shaj-default') {
-          const link = document.createElement('link');
-          link.id = 'storybook-theme';
-          link.rel = 'stylesheet';
+        const link = document.createElement('link');
+        link.id = 'storybook-theme';
+        link.rel = 'stylesheet';
+        if (theme === 'atomix') {
+          link.href = `/atomix.css`;
+        } else if (theme === 'none') {
+          link.href = ``;
+        } else {
           link.href = `/themes/${theme}.css`;
-          document.head.appendChild(link);
         }
+        document.head.appendChild(link);
 
         // Apply color mode to the theme
         const themeStyle = document.getElementById('storybook-theme-vars');
@@ -142,7 +148,7 @@ const preview: Preview = {
     theme: {
       name: 'Theme',
       description: 'Global theme for components',
-      defaultValue: 'shaj-default',
+      defaultValue: 'atomix',
       toolbar: {
         title: 'Theme',
         icon: 'paintbrush',
