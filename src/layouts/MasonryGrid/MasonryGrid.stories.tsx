@@ -1,11 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect, useState } from 'react';
-import Card from '../../components/Card/Card';
-import ElevationCard from '../../components/Card/ElevationCard';
-import Button from '../../components/Button/Button';
-import Spinner from '../../components/Spinner/Spinner';
-import Progress from '../../components/Progress/Progress';
-import Badge from '../../components/Badge/Badge';
+import { default as Card, default as ElevationCard } from '../../components/Card/Card';
 import { MasonryGrid } from './MasonryGrid';
 import { MasonryGridItem } from './MasonryGridItem';
 
@@ -17,7 +12,7 @@ const meta: Meta<typeof MasonryGrid> = {
   },
   decorators: [
     Story => (
-      <div className="u-p-4">
+      <div style={{ padding: '1rem' }}>
         <Story />
       </div>
     ),
@@ -68,10 +63,10 @@ const CardWithImage: React.FC<{
       text={cardText}
       className="u-h-100"
       actions={
-        <>
-          <Button variant="primary" size="sm">View</Button>
-          <Button variant="outline-primary" size="sm">More</Button>
-        </>
+        <React.Fragment>
+          <button className="c-btn c-btn--primary c-btn--sm">View</button>
+          <button className="c-btn c-btn--outline-primary c-btn--sm">More</button>
+        </React.Fragment>
       }
     />
   );
@@ -157,7 +152,7 @@ export const DynamicLoading: Story = {
 
           {loading && (
             <div className="u-p-4 u-mb-4 u-bg-brand-subtle u-border u-rounded u-text-center">
-              <Spinner className="u-mb-3" />
+              <div className="u-spinner u-spinner-primary u-mb-3"></div>
               <p className="u-m-0">Loading initial items...</p>
             </div>
           )}
@@ -286,10 +281,11 @@ export const ProgressiveImageLoading: Story = {
                 </span>
                 <span>{Math.round((loadedCount / totalCount) * 100)}%</span>
               </div>
-              <div className="u-mb-2" style={{ height: '8px' }}>
-                <Progress 
-                  value={(loadedCount / totalCount) * 100} 
-                />
+              <div className="u-progress u-mb-2" style={{ height: '8px' }}>
+                <div
+                  className="u-progress-bar u-bg-primary"
+                  style={{ width: `${(loadedCount / totalCount) * 100}%` }}
+                ></div>
               </div>
               {layoutComplete && (
                 <div className="u-text-success">
@@ -348,7 +344,7 @@ export const MixedContent: Story = {
             title="Text Only Card"
             text="This card contains only text content with no image."
             className="u-h-100"
-            actions={<Button variant="primary" size="sm">Action</Button>}
+            actions={<button className="u-btn u-btn-primary u-btn-sm u-mt-3">Action</button>}
           />
         </MasonryGridItem>
 
@@ -360,11 +356,15 @@ export const MixedContent: Story = {
           <div className="u-p-4 u-border u-rounded u-bg-brand-subtle u-h-100">
             <h4 className="u-mb-3">Custom Content</h4>
             <p>This is a custom content block using utility classes.</p>
-            <div className="u-d-flex u-gap-2 u-mt-3">
-              <Badge variant="primary" label="New" />
-              <Badge variant="secondary" label="Featured" />
+            <div className="u-d-flex u-justify-content-between u-mt-3">
+              <span className="u-badge u-badge-primary">New</span>
+              <span className="u-badge u-badge-secondary">Featured</span>
             </div>
           </div>
+        </MasonryGridItem>
+
+        <MasonryGridItem>
+          <CardWithImage index={61} />
         </MasonryGridItem>
 
         <MasonryGridItem>
