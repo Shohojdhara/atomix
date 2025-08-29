@@ -16,6 +16,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
     allowTouchMove = true,
     threshold = 50,
     grabCursor = true,
+    autoplay,
     navigation,
     pagination,
     className,
@@ -41,6 +42,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
     speed,
     allowTouchMove,
     threshold,
+    autoplay,
     onSlideChange,
   });
 
@@ -82,7 +84,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
 
   return (
     <div
-      ref={ref || containerRef}
+      ref={ref || (containerRef as React.RefObject<HTMLDivElement>)}
       className={containerClasses}
       style={{
         height: typeof height === 'number' ? `${height}px` : height,
@@ -101,7 +103,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
       onMouseLeave={handleTouchEnd}
     >
       <div
-        ref={wrapperRef}
+        ref={wrapperRef as React.RefObject<HTMLDivElement>}
         className="c-slider__wrapper"
         style={{
           display: 'flex',

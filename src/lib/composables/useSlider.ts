@@ -35,12 +35,15 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     speed = 300,
     allowTouchMove = true,
     threshold = 50,
+    autoplay,
     onSlideChange,
   } = options;
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const repositioningRef = useRef(false);
+  const autoplayRef = useRef<NodeJS.Timeout | null>(null);
+  const [autoplayRunning, setAutoplayRunning] = useState(false);
 
   const [realIndex, setRealIndex] = useState(initialSlide);
   const [internalIndex, setInternalIndex] = useState(0);
@@ -73,6 +76,160 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     return -(internalIndex * slideWidth) + dragOffset;
   }, [slideWidth, internalIndex, dragOffset]);
 
+  // Autoplay effect
+  useEffect(() => {
+    if (!autoplay) {
+      if (autoplayRef.current) {
+        clearInterval(autoplayRef.current);
+        autoplayRef.current = null;
+      }
+      setAutoplayRunning(false);
+      return;
+    }
+
+    const autoplayParams = typeof autoplay === 'boolean' ? { delay: 3000 } : autoplay;
+    const { delay = 3000, pauseOnMouseEnter = false, disableOnInteraction = false, reverseDirection = false } = autoplayParams;
+
+    // Clear any existing interval
+    if (autoplayRef.current) {
+      clearInterval(autoplayRef.current);
+    }
+
+    // Create new interval
+    autoplayRef.current = setInterval(() => {
+      // We need to use a functional update to get the latest values
+      setRealIndex(prevRealIndex => {
+        if (isTransitioning) return prevRealIndex;
+        
+        // Stop autoplay on interaction if disableOnInteraction is true
+        if (disableOnInteraction && autoplayRef.current) {
+          clearInterval(autoplayRef.current);
+          autoplayRef.current = null;
+          setAutoplayRunning(false);
+        }
+
+        let nextIndex;
+        if (loop) {
+          nextIndex = (prevRealIndex + 1) % slides.length;
+        } else {
+          nextIndex = Math.min(prevRealIndex + 1, slides.length - slidesToShow);
+        }
+        
+        // Trigger the slide change
+        if (reverseDirection) {
+          // For reverse direction, we would go to previous slide
+          const prevIndex = loop ? (prevRealIndex === 0 ? slides.length - 1 : prevRealIndex - 1) : Math.max(prevRealIndex - 1, 0);
+          setInternalIndex(loop ? slides.length + prevIndex : prevIndex);
+          setIsTransitioning(true);
+          setDragOffset(0);
+
+          setTimeout(() => {
+            setIsTransitioning(false);
+            onSlideChange?.(prevIndex);
+          }, speed);
+          
+          return prevIndex;
+        } else {
+          // Normal direction
+          setInternalIndex(loop ? slides.length + nextIndex : nextIndex);
+          setIsTransitioning(true);
+          setDragOffset(0);
+
+          setTimeout(() => {
+            setIsTransitioning(false);
+            onSlideChange?.(nextIndex);
+            
+            // Reposition after transition ends for looped sliders
+            if (loop && nextIndex >= slides.length * 2) {
+              repositioningRef.current = true;
+              setInternalIndex(slides.length + nextIndex);
+              setTimeout(() => {
+                repositioningRef.current = false;
+              }, 0);
+            }
+          }, speed);
+          
+          return nextIndex;
+        }
+      });
+    }, delay);
+    
+    setAutoplayRunning(true);
+
+    // Handle pause on mouse enter/leave if enabled
+    let containerElement: HTMLDivElement | null = null;
+    const handleMouseEnter = () => {
+      if (autoplayRef.current) {
+        clearInterval(autoplayRef.current);
+        autoplayRef.current = null;
+        setAutoplayRunning(false);
+      }
+    };
+    
+    const handleMouseLeave = () => {
+      // Restart autoplay
+      if (autoplayRef.current) {
+        clearInterval(autoplayRef.current);
+      }
+      
+      autoplayRef.current = setInterval(() => {
+        setRealIndex(prevRealIndex => {
+          if (isTransitioning) return prevRealIndex;
+          
+          let nextIndex;
+          if (loop) {
+            nextIndex = (prevRealIndex + 1) % slides.length;
+          } else {
+            nextIndex = Math.min(prevRealIndex + 1, slides.length - slidesToShow);
+          }
+          
+          setInternalIndex(loop ? slides.length + nextIndex : nextIndex);
+          setIsTransitioning(true);
+          setDragOffset(0);
+
+          setTimeout(() => {
+            setIsTransitioning(false);
+            onSlideChange?.(nextIndex);
+            
+            if (loop) {
+              // Reposition after transition ends
+              if (nextIndex >= slides.length * 2) {
+                repositioningRef.current = true;
+                setInternalIndex(slides.length + nextIndex);
+                setTimeout(() => {
+                  repositioningRef.current = false;
+                }, 0);
+              }
+            }
+          }, speed);
+          
+          return nextIndex;
+        });
+      }, delay);
+      
+      setAutoplayRunning(true);
+    };
+
+    if (pauseOnMouseEnter && containerRef.current) {
+      containerElement = containerRef.current;
+      containerElement.addEventListener('mouseenter', handleMouseEnter);
+      containerElement.addEventListener('mouseleave', handleMouseLeave);
+    }
+
+    // Cleanup
+    return () => {
+      if (autoplayRef.current) {
+        clearInterval(autoplayRef.current);
+        autoplayRef.current = null;
+      }
+      if (containerElement) {
+        containerElement.removeEventListener('mouseenter', handleMouseEnter);
+        containerElement.removeEventListener('mouseleave', handleMouseLeave);
+      }
+      setAutoplayRunning(false);
+    };
+  }, [autoplay, slides.length, loop, slidesToShow, isTransitioning, speed, onSlideChange, repositioningRef]);
+
   // Initialize
   useEffect(() => {
     if (loop) {
@@ -99,6 +256,13 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
 
   const slideNext = useCallback(() => {
     if (isTransitioning) return;
+
+    // Stop autoplay on interaction if disableOnInteraction is true
+    if (autoplay && typeof autoplay === 'object' && autoplay.disableOnInteraction && autoplayRef.current) {
+      clearInterval(autoplayRef.current);
+      autoplayRef.current = null;
+      setAutoplayRunning(false);
+    }
 
     if (loop) {
       const nextRealIndex = (realIndex + 1) % slides.length;
@@ -145,10 +309,18 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     onSlideChange,
     allSlides.length,
     loopedSlides,
+    autoplay
   ]);
 
   const slidePrev = useCallback(() => {
     if (isTransitioning) return;
+
+    // Stop autoplay on interaction if disableOnInteraction is true
+    if (autoplay && typeof autoplay === 'object' && autoplay.disableOnInteraction && autoplayRef.current) {
+      clearInterval(autoplayRef.current);
+      autoplayRef.current = null;
+      setAutoplayRunning(false);
+    }
 
     if (loop) {
       const prevRealIndex = realIndex === 0 ? slides.length - 1 : realIndex - 1;
@@ -194,11 +366,19 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     onSlideChange,
     allSlides.length,
     loopedSlides,
+    autoplay
   ]);
 
   const goToSlide = useCallback(
     (index: number) => {
       if (isTransitioning || index === realIndex) return;
+
+      // Stop autoplay on interaction if disableOnInteraction is true
+      if (autoplay && typeof autoplay === 'object' && autoplay.disableOnInteraction && autoplayRef.current) {
+        clearInterval(autoplayRef.current);
+        autoplayRef.current = null;
+        setAutoplayRunning(false);
+      }
 
       setIsTransitioning(true);
       setDragOffset(0);
@@ -211,12 +391,19 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
         onSlideChange?.(index);
       }, speed);
     },
-    [realIndex, isTransitioning, speed, onSlideChange, loop, loopedSlides]
+    [realIndex, isTransitioning, speed, onSlideChange, loop, loopedSlides, autoplay]
   );
 
   const handleTouchStart = useCallback(
     (e: React.TouchEvent | React.MouseEvent) => {
       if (!allowTouchMove) return;
+
+      // Stop autoplay on interaction if disableOnInteraction is true
+      if (autoplay && typeof autoplay === 'object' && autoplay.disableOnInteraction && autoplayRef.current) {
+        clearInterval(autoplayRef.current);
+        autoplayRef.current = null;
+        setAutoplayRunning(false);
+      }
 
       const client =
         direction === 'horizontal'
@@ -230,7 +417,7 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
       setTouching(true);
       setDragOffset(0);
     },
-    [allowTouchMove, direction]
+    [allowTouchMove, direction, autoplay]
   );
 
   const handleTouchMove = useCallback(
@@ -293,7 +480,7 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     isBeginning: !loop && realIndex === 0,
     isEnd: !loop && realIndex >= slides.length - slidesToShow,
     progress: slides.length > 0 ? realIndex / (slides.length - 1) : 0,
-    autoplayRunning: false,
+    autoplayRunning,
     transitioning: isTransitioning,
     touching,
     translate: translateValue,
