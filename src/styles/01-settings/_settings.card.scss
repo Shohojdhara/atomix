@@ -30,7 +30,7 @@ $card-bg: var(--#{config.$prefix}primary-bg-subtle) !default;
 $card-bg-hover: var(--#{config.$prefix}secondary-bg-subtle) !default;
 
 $card-icon-size: map.get($spacing-sizes, 5) !default; //20px
-$card-icon-padding: map.get($spacing-sizes, 2.5) !default; //10px
+$card-icon-padding: map.get($spacing-sizes, 1.5) !default; //10px
 $card-icon-bg: var(--#{config.$prefix}brand-bg-subtle) !default;
 $card-icon-color: var(--#{config.$prefix}brand-text-emphasis) !default;
 

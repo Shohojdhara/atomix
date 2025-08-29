@@ -1,11 +1,13 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use 'sass:math';
 @use 'settings.config' as config;
 @use 'settings.typography' as typography;
 @use 'settings.grid' as grid;
 
 $tabs-width: 100% !default;
-$tabs-nav-btn-padding-x: 8px !default;
-$tabs-nav-btn-padding-y: 12px !default;
+$tabs-nav-btn-padding-x: map.get($spacing-sizes, 2) !default; //8px
+$tabs-nav-btn-padding-y: map.get($spacing-sizes, 3) !default; //12px
 $tabs-nav-btn-font-size: typography.$font-size-base !default;
 $tabs-nav-btn-font-weight: typography.$font-weight-medium !default;
 $tabs-nav-btn-color: var(--#{config.$prefix}tertiary-text-emphasis) !default;
@@ -16,13 +18,13 @@ $tabs-nav-btn-bg-hover: var(--#{config.$prefix}secondary-bg-subtle) !default;
 $tabs-nav-btn-bg-active: var(--#{config.$prefix}body-bg) !default;
 $tabs-nav-btn-bg-disabled: var(--#{config.$prefix}body-bg) !default;
 $tabs-nav-btn-border-radius: 0px !default;
-$tabs-nav-btn-border-width: 2px !default;
+$tabs-nav-btn-border-width: calc(var(--#{config.$prefix}border-width) * 2) !default;
 $tabs-nav-btn-border-color: transparent !default;
 $tabs-nav-btn-border-active-color: var(--#{config.$prefix}brand-border-subtle) !default;
 $tabs-nav-btn-border-disabled-color: var(--#{config.$prefix}primary-border-subtle) !default;
 $tabs-nav-btns-gap: 0px !default;
-$tabs-nav-btn-inner-gap: 8px !default;
-$tab-nav-btn-icon-size: 20px !default;
+$tabs-nav-btn-inner-gap:map.get($spacing-sizes, 2) !default; //8px
+$tab-nav-btn-icon-size: map.get($spacing-sizes, 5) !default; //20px
 
 $tabs-panel-padding-x: math.div(grid.$grid-gutter-width, 2) !default;
 $tabs-panel-padding-y: $tabs-panel-padding-x !default;

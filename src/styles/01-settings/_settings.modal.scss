@@ -1,22 +1,24 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use './settings.config' as *;
 @use './settings.typography' as *;
 @use './settings.border-radius' as *;
 @use './settings.colors' as *;
 
-$modal-inner-padding: 16px !default;
+$modal-inner-padding: map.get($spacing-sizes, 4) !default; //16px
 
 $modal-content-color: null !default;
 $modal-content-bg: var(--#{$prefix}body-bg) !default;
 $modal-content-border-radius: $border-radius-xl !default;
 $modal-content-box-shadow: var(--#{$prefix}box-shadow) !default;
 
-$modal-header-padding-bottom: 12px !default;
+$modal-header-padding-bottom: map.get($spacing-sizes, 3) !default; //12px
 $modal-title-font-size: $font-size-lg !default;
-$modal-sub-margin-top: 4px !default;
+$modal-sub-margin-top: map.get($spacing-sizes, 1) !default; //4px
 $modal-sub-font-size: $font-size-sm !default;
 $modal-sub-color: var(--#{$prefix}tertiary-text-emphasis) !default;
 
-$modal-footer-items-gap: 8px !default;
+$modal-footer-items-gap: map.get($spacing-sizes, 8) !default; //8px
 
 $modal-backdrop-bg: var(--#{$prefix}invert-bg-subtle) !default;
 $modal-backdrop-opacity: 0.5 !default;

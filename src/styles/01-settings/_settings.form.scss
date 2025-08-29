@@ -1,6 +1,8 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use 'settings.config' as config;
 @use 'settings.border-radius' as *;
 
 $form-width: 100% !default;
-$form-items-spacer-y: 32px !default;
-$form-items-spacer-x: 12px !default;
+$form-items-spacer-y: map.get($spacing-sizes, 8) !default; //32px
+$form-items-spacer-x: map.get($spacing-sizes, 3) !default; //12px

@@ -1,2 +1,5 @@
-$checkbox-group-items-spacer-y: 8px !default;
-$checkbox-group-items-spacer-x: 16px !default;
+@use 'sass:map';
+@use './settings.spacing' as *;
+
+$checkbox-group-items-spacer-y: map.get($spacing-sizes, 2) !default; //8px
+$checkbox-group-items-spacer-x: map.get($spacing-sizes, 4) !default; //16px

@@ -1,14 +1,16 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use 'settings.config' as config;
 @use 'settings.typography' as typography;
 @use 'settings.border-radius' as border-radius;
 
 $select-width: 300px !default;
-$select-padding-x: 12px !default;
+$select-padding-x: map.get($spacing-sizes, 3) !default; //12px
 $select-padding-y: $select-padding-x !default;
 $select-color: var(--#{config.$prefix}body-color) !default;
 $select-font-size: typography.$font-size-sm !default;
 $select-font-size-lg: typography.$font-size-base !default;
-$select-icon-toggle-size: 20px !default;
+$select-icon-toggle-size: map.get($spacing-sizes, 5) !default; //20px
 $select-icon-toggle-color: var(--#{config.$prefix}secondary-text-emphasis) !default;
 $select-placeholder-color: var(--#{config.$prefix}tertiary-text-emphasis) !default;
 $select-bg: var(--#{config.$prefix}body-bg) !default;
@@ -16,9 +18,9 @@ $select-expanded-bg: var(--#{config.$prefix}secondary-bg-subtle) !default;
 $select-border-color: var(--#{config.$prefix}primary-border-subtle) !default;
 $select-border-color-hover: var(--#{config.$prefix}secondary-border-subtle) !default;
 $select-border-radius: border-radius.$border-radius-xl !default;
-$select-inner-spacer: 8px !default;
-$select-dropdown-icon-size: 24px !default;
-$select-panel-padding-x: 8px !default;
+$select-inner-spacer: map.get($spacing-sizes, 2) !default; //8px
+$select-dropdown-icon-size: map.get($spacing-sizes, 6) !default; //24px
+$select-panel-padding-x: map.get($spacing-sizes, 2) !default; //8px
 $select-panel-padding-y: $select-panel-padding-x !default;
 $select-panel-spacer-y: $select-panel-padding-y !default;
 $select-panel-bg: var(--#{config.$prefix}body-bg) !default;

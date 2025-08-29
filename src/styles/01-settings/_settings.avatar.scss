@@ -5,21 +5,21 @@
 
 // Avatar sizes
 $avatar-size: (
-  xs: 24px,
-  sm: 32px,
-  md: 40px,
-  lg: 48px,
-  xl: 56px,
+        xs: 24px,
+        sm: 32px,
+        md: 40px,
+        lg: 48px,
+        xl: 56px,
 ) !default;
 
 // Avatar border radius
 $avatar-border-radius: (
-  xs: radius.$border-radius-sm,
-  sm: radius.$border-radius-sm,
-  md: radius.$border-radius,
-  lg: radius.$border-radius,
-  xl: radius.$border-radius,
-  circle: 50%,
+        xs: radius.$border-radius-sm,
+        sm: radius.$border-radius-sm,
+        md: radius.$border-radius,
+        lg: radius.$border-radius,
+        xl: radius.$border-radius,
+        circle: 50%,
 ) !default;
 
 // Avatar colors
@@ -32,11 +32,11 @@ $avatar-border-color: var(--#{config.$prefix}primary-border-subtle) !default;
 $avatar-fit: cover !default;
 $avatar-initials-font-weight: fonts.$font-weight-medium !default;
 $avatar-initials-font-size: (
-  xs: fonts.$font-size-xs,
-  sm: fonts.$font-size-xs,
-  md: fonts.$font-size-sm,
-  lg: fonts.$font-size-base,
-  xl: fonts.$font-size-base,
+        xs: fonts.$font-size-xs,
+        sm: fonts.$font-size-xs,
+        md: fonts.$font-size-sm,
+        lg: fonts.$font-size-base,
+        xl: fonts.$font-size-base,
 ) !default;
 
 // Interactive states

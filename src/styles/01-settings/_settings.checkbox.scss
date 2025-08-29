@@ -1,19 +1,25 @@
+@use 'sass:map';
+@use './settings.spacing' as *;
 @use 'settings.config' as config;
 @use 'settings.typography' as fonts;
 
-$checkbox-width: 20px !default;
-$checkbox-height: 20px !default;
-$checkbox-spacer: 8px !default;
+$checkbox-width: map.get($spacing-sizes, 5) !default; //20px
+$checkbox-height: map.get($spacing-sizes, 5) !default; //20px
+
+$checkbox-spacer: map.get($spacing-sizes, 2) !default; //8px
+
 $checkbox-font-size: fonts.$font-size-base !default;
 $checkbox-text-color: var(--#{config.$prefix}body-color) !default;
 $checkbox-checked-text-color: $checkbox-text-color !default;
 $checkbox-text-color-disabled: var(--#{config.$prefix}tertiary-text-emphasis) !default;
 $checkbox-checked-text-color-disabled: var(--#{config.$prefix}disabled-text-emphasis) !default;
+
 $checkbox-bg: var(--#{config.$prefix}body-bg) !default;
 $checkbox-checked-bg: var(--#{config.$prefix}invert-bg-subtle) !default;
 $checkbox-checked-bg-hover: var(--#{config.$prefix}tertiary-text-emphasis) !default;
 $checkbox-checked-bg-disabled: var(--#{config.$prefix}disabled-text-emphasis) !default;
-$checkbox-border-width: 1px !default;
+
+$checkbox-border-width: var(--#{config.$prefix}border-width) !default;
 $checkbox-border-color: var(--#{config.$prefix}tertiary-text-emphasis) !default;
 $checkbox-border-color-hover: var(--#{config.$prefix}primary-text-emphasis) !default;
 $checkbox-border-color-disabled: var(--#{config.$prefix}disabled-text-emphasis) !default;
