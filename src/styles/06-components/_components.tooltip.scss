@@ -43,6 +43,10 @@
     transition:
       opacity 0.2s ease-out,
       transform 0.2s ease-out;
+    &.is-active {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 
   &__arrow {
@@ -123,14 +127,5 @@
   &--bottom-right {
     top: calc(100% + var(--#{$prefix}tooltip-arrow-size));
     right: 0;
-  }
-
-  &.is-active {
-    pointer-events: auto;
-
-    .c-tooltip__content {
-      opacity: 1;
-      transform: scale(1);
-    }
   }
 }

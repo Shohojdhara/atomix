@@ -24,6 +24,11 @@
     $btn-text-hover-color: var(--#{config.$prefix}dark-text-emphasis);
   }
 
+  @if ($color == 'secondary') {
+    $btn-text-color: var(--#{config.$prefix}dark-text-emphasis);
+    $btn-text-hover-color: var(--#{config.$prefix}dark-text-emphasis);
+  }
+
   --#{config.$prefix}btn-color: #{$btn-text-color};
   --#{config.$prefix}btn-bg: #{$background};
   --#{config.$prefix}btn-border-color: #{$border};

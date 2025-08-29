@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import React from 'react';
 import { SliderSlide } from '../../lib/types/components';
 import { Slider } from './Slider';
 
@@ -10,7 +9,6 @@ const meta = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
   argTypes: {
     slides: { control: 'object' },
     slidesToShow: { control: { type: 'number', min: 1, max: 5 } },

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, ReactNode } from 'react';
+import React, { useEffect, useState, ReactNode } from 'react';
 import { STEPS } from '../../lib/constants/components';
 
 export interface StepItem {
@@ -56,39 +56,11 @@ export const Steps: React.FC<StepsProps> = ({
   className = '',
 }) => {
   const [currentStep, setCurrentStep] = useState(activeIndex);
-  const stepsRef = useRef<HTMLDivElement>(null);
-  const stepsInstance = useRef<any>(null);
-
-  useEffect(() => {
-    // Only run on client-side
-    if (typeof window === 'undefined' || !stepsRef.current) return undefined;
-
-    // Dynamically import the steps script to avoid server-side rendering issues
-    import('./scripts').then(({ default: StepsClass }) => {
-      if (stepsRef.current) {
-        stepsInstance.current = new StepsClass(stepsRef.current, {
-          activeIndex: currentStep,
-          vertical,
-        });
-      }
-    });
-
-    // Cleanup on unmount
-    return () => {
-      if (stepsInstance.current) {
-        stepsInstance.current.destroy();
-      }
-    };
-  }, []);
 
   // Update steps when activeIndex prop changes
   useEffect(() => {
     if (currentStep !== activeIndex) {
       setCurrentStep(activeIndex);
-
-      if (stepsInstance.current) {
-        stepsInstance.current.setActive(activeIndex);
-      }
     }
   }, [activeIndex]);
 
@@ -97,11 +69,6 @@ export const Steps: React.FC<StepsProps> = ({
     const nextIndex = currentStep + 1;
     if (nextIndex < items.length) {
       setCurrentStep(nextIndex);
-
-      if (stepsInstance.current) {
-        stepsInstance.current.next();
-      }
-
       if (onStepChange) {
         onStepChange(nextIndex);
       }
@@ -113,11 +80,6 @@ export const Steps: React.FC<StepsProps> = ({
     const prevIndex = currentStep - 1;
     if (prevIndex >= 0) {
       setCurrentStep(prevIndex);
-
-      if (stepsInstance.current) {
-        stepsInstance.current.previous();
-      }
-
       if (onStepChange) {
         onStepChange(prevIndex);
       }
@@ -127,7 +89,6 @@ export const Steps: React.FC<StepsProps> = ({
   return (
     <div
       className={`c-steps ${vertical ? STEPS.CLASSES.VERTICAL : ''} ${className}`}
-      ref={stepsRef}
       role="navigation"
       aria-label="Steps"
     >

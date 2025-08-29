@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Navbar } from './Navbar';
-import { Nav } from '../Nav/Nav';
-import { NavItem } from '../Nav/NavItem';
-import { NavDropdown } from '../Nav/NavDropdown';
-import { Menu, MenuItem, MenuDivider } from '../Menu/Menu';
-import { MegaMenu, MegaMenuColumn, MegaMenuLink } from '../Menu/MegaMenu';
-import { Icon } from '../../Icon';
 import { AtomixLogo } from '../../AtomixLogo';
+import { Icon } from '../../Icon';
+import { MegaMenu, MegaMenuColumn, MegaMenuLink } from '../Menu/MegaMenu';
+import { Menu, MenuDivider, MenuItem } from '../Menu/Menu';
+import { Nav } from '../Nav/Nav';
+import { NavDropdown } from '../Nav/NavDropdown';
+import { NavItem } from '../Nav/NavItem';
+import { Navbar } from './Navbar';
 
 const meta = {
   title: 'Components/Navigation/Navbar',
@@ -71,7 +71,6 @@ The Navbar component provides a responsive navigation header with brand, navigat
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     position: {
       control: { type: 'select' },

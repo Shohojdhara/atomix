@@ -29,7 +29,6 @@
   --atomix-video-player-subtitle-font-size: #{$video-player-subtitle-font-size};
   --atomix-video-player-subtitle-font-weight: #{$video-player-subtitle-font-weight};
   --atomix-video-player-subtitle-line-height: #{$video-player-subtitle-line-height};
-  --atomix-video-player-subtitle-padding: #{$video-player-subtitle-padding};
   --atomix-video-player-subtitle-border-radius: #{$video-player-subtitle-border-radius};
   --atomix-video-player-subtitle-text-shadow: #{$video-player-subtitle-text-shadow};
   --atomix-video-player-subtitle-box-shadow: #{$video-player-subtitle-box-shadow};
@@ -469,7 +468,8 @@
     // Mobile subtitle adjustments
     &__video::cue {
       font-size: #{$video-player-subtitle-font-size-mobile};
-      padding: calc(#{$video-player-subtitle-padding} * 0.8);
+      padding: calc(#{$video-player-subtitle-padding-y} * 0.8)
+        calc(#{$video-player-subtitle-padding-x} * 0.8);
     }
 
     &__subtitles {
@@ -478,7 +478,8 @@
 
       &-text {
         font-size: #{$video-player-subtitle-font-size-mobile};
-        padding: calc(#{$video-player-subtitle-padding} * 0.8);
+        padding: calc(#{$video-player-subtitle-padding-y} * 0.8)
+          calc(#{$video-player-subtitle-padding-x} * 0.8);
       }
     }
   }
@@ -506,7 +507,8 @@
     // Fullscreen subtitle adjustments
     .c-video-player__video::cue {
       font-size: #{$video-player-subtitle-font-size-fullscreen};
-      padding: calc(#{$video-player-subtitle-padding} * 1.3);
+      padding: calc(#{$video-player-subtitle-padding-y} * 1.3)
+        calc(#{$video-player-subtitle-padding-x} * 1.3);
     }
 
     .c-video-player__subtitles {
@@ -514,7 +516,8 @@
 
       &-text {
         font-size: #{$video-player-subtitle-font-size-fullscreen};
-        padding: calc(#{$video-player-subtitle-padding} * 1.3);
+        padding: calc(#{$video-player-subtitle-padding-y} * 1.3)
+          calc(#{$video-player-subtitle-padding-x} * 1.3);
       }
     }
   }

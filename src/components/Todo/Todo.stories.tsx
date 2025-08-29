@@ -1,8 +1,6 @@
-import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import { Todo } from './Todo';
 import { generateUUID } from '../../lib/utils';
+import { Todo } from './Todo';
 
 const meta: Meta<typeof Todo> = {
   title: 'Components/Todo',
@@ -10,7 +8,6 @@ const meta: Meta<typeof Todo> = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
   argTypes: {
     items: { control: 'object' },
     title: { control: 'text' },

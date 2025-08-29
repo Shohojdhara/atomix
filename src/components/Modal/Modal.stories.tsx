@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { useState } from 'react';
 import Modal from './Modal';
 
 const meta: Meta<typeof Modal> = {
@@ -9,7 +8,6 @@ const meta: Meta<typeof Modal> = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
   argTypes: {
     size: {
       control: 'select',

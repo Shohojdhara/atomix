@@ -15,7 +15,7 @@
       }
     }
   } @else {
-    [data-#{config.$prefix}theme='#{$mode}'] {
+    [data-#{config.$prefix}color-mode='#{$mode}'] {
       @content;
     }
   }

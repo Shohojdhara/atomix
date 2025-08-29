@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState, useEffect } from 'react';
-import { EdgePanel } from './EdgePanel';
+import { useEffect, useState } from 'react';
 import { Button } from '../Button/Button';
+import { EdgePanel } from './EdgePanel';
 
 const meta = {
   title: 'Components/EdgePanel',
@@ -15,7 +15,6 @@ const meta = {
       },
     },
   },
-  tags: ['autodocs'],
   argTypes: {
     position: {
       control: { type: 'select' },

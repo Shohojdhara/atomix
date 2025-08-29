@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Checkbox } from './Checkbox';
 import { FormGroup } from './FormGroup';
 import { Input } from './Input';
-import { Select } from './Select';
-import { Checkbox } from './Checkbox';
 import { Radio } from './Radio';
+import { Select } from './Select';
 import { Textarea } from './Textarea';
 
 const meta = {
@@ -12,7 +12,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
   argTypes: {
     label: {
       control: 'text',

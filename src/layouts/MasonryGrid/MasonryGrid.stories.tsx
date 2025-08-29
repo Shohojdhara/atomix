@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
+import React, { useEffect, useState } from 'react';
+import { default as Card, default as ElevationCard } from '../../components/Card/Card';
 import { MasonryGrid } from './MasonryGrid';
 import { MasonryGridItem } from './MasonryGridItem';
-import Card from '../../components/Card/Card';
-import ElevationCard from '../../components/Card/Card';
 
 const meta: Meta<typeof MasonryGrid> = {
   title: 'Layouts/MasonryGrid',
@@ -152,7 +151,7 @@ export const DynamicLoading: Story = {
           <p className="u-mb-4">The masonry grid recalculates positions as new items are added.</p>
 
           {loading && (
-            <div className="u-p-4 u-mb-4 u-bg-light u-border u-rounded u-text-center">
+            <div className="u-p-4 u-mb-4 u-bg-brand-subtle u-border u-rounded u-text-center">
               <div className="u-spinner u-spinner-primary u-mb-3"></div>
               <p className="u-m-0">Loading initial items...</p>
             </div>
@@ -272,7 +271,7 @@ export const ProgressiveImageLoading: Story = {
           The grid shows items immediately and updates positions as each image loads.
         </p>
 
-        <div className="u-bg-light u-p-3 u-rounded u-mb-4">
+        <div className="u-bg-brand-subtle u-p-3 u-rounded u-mb-4">
           <h4 className="u-mb-2">Loading Progress</h4>
           {totalCount > 0 && (
             <div className="u-mb-2">
@@ -354,7 +353,7 @@ export const MixedContent: Story = {
         </MasonryGridItem>
 
         <MasonryGridItem>
-          <div className="u-p-4 u-border u-rounded u-bg-light u-h-100">
+          <div className="u-p-4 u-border u-rounded u-bg-brand-subtle u-h-100">
             <h4 className="u-mb-3">Custom Content</h4>
             <p>This is a custom content block using utility classes.</p>
             <div className="u-d-flex u-justify-content-between u-mt-3">

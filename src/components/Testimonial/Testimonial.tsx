@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, ReactNode } from 'react';
+import React, { ReactNode, useEffect, useRef } from 'react';
 import { TESTIMONIAL } from '../../lib/constants/components';
 
 export interface TestimonialAuthor {
@@ -66,16 +66,6 @@ export const Testimonial: React.FC<TestimonialProps> = ({
   useEffect(() => {
     // Only run on client-side
     if (typeof window === 'undefined' || !testimonialRef.current) return undefined;
-
-    // Dynamically import the testimonial script to avoid server-side rendering issues
-    import('./scripts').then(({ default: TestimonialClass }) => {
-      if (testimonialRef.current) {
-        testimonialInstance.current = new TestimonialClass(testimonialRef.current, {
-          size,
-          skeleton,
-        });
-      }
-    });
 
     // Cleanup on unmount
     return () => {

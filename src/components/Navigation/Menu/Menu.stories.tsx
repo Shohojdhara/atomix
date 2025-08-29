@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Menu, MenuItem, MenuDivider } from './Menu';
+import { Menu, MenuDivider, MenuItem } from './Menu';
 
 const meta = {
   title: 'Components/Navigation/Menu',
@@ -7,7 +7,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
   argTypes: {
     disabled: {
       control: 'boolean',

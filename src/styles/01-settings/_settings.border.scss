@@ -4,7 +4,7 @@
 $border-color: colors.$primary-border !default;
 $border-color-dark: colors.$primary-border-dark !default;
 
-$border-width: var(--#{config.$prefix}border-width) !default; //1px
+$border-width: 1px !default; //1px
 
 $border-style: solid !default;
 

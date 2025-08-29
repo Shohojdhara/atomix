@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { Dropdown, DropdownItem, DropdownDivider, DropdownHeader } from './index';
-import { Icon } from '../Icon';
+import React, { useState } from 'react';
 import { ThemeColor } from '../../lib/types/components';
+import { Icon } from '../Icon';
+import { Dropdown, DropdownDivider, DropdownHeader, DropdownItem } from './index';
 
 const meta: Meta<typeof Dropdown> = {
   title: 'Components/Dropdown',
   component: Dropdown,
-  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
     docs: {

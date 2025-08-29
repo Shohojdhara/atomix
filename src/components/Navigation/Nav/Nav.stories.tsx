@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Menu, MenuDivider, MenuItem } from '../Menu/Menu';
 import { Nav } from './Nav';
-import { NavItem } from './NavItem';
 import { NavDropdown } from './NavDropdown';
-import { Menu, MenuItem, MenuDivider } from '../Menu/Menu';
-import { Icon } from '../../Icon/Icon';
+import { NavItem } from './NavItem';
 
 const meta = {
   title: 'Components/Navigation/Nav',
@@ -11,7 +10,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
   argTypes: {
     alignment: {
       control: { type: 'select' },

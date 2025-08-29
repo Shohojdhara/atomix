@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, ReactNode } from 'react';
+import React, { ReactNode, useEffect, useRef } from 'react';
 import { SECTION_INTRO } from '../../lib/constants/components';
 
 export interface SectionIntroProps {
@@ -93,19 +93,6 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
     // Only run on client-side
     if (typeof window === 'undefined' || !sectionIntroRef.current) return undefined;
 
-    // Dynamically import the section intro script to avoid server-side rendering issues
-    import('./scripts').then(({ default: SectionIntroClass }) => {
-      if (sectionIntroRef.current) {
-        sectionIntroInstance.current = new SectionIntroClass(sectionIntroRef.current, {
-          alignment,
-          backgroundImageSrc,
-          showOverlay,
-          size,
-          skeleton,
-        });
-      }
-    });
-
     // Cleanup on unmount
     return () => {
       if (sectionIntroInstance.current) {
@@ -130,7 +117,7 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
   if (skeleton) {
     return (
       <div className={sectionIntroClasses} ref={sectionIntroRef}>
-        <div className="c-sectionintro__container o-container">
+        <div className="c-sectionintro__container">
           {label && (
             <div className="c-sectionintro__label">
               <span className="c-skeleton u-w-25"></span>
@@ -177,17 +164,15 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
   return (
     <div className={sectionIntroClasses} ref={sectionIntroRef}>
       {renderBackground()}
-      <div className="c-sectionintro__container o-container">
-        {label && <div className="c-sectionintro__label">{label}</div>}
-        <h2 className="c-sectionintro__title">{title}</h2>
-        {text && <div className="c-sectionintro__text">{text}</div>}
-        {actions && <div className="c-sectionintro__actions">{actions}</div>}
-        {imageSrc && (
-          <div className="c-sectionintro__image-wrapper">
-            <img src={imageSrc} alt={imageAlt} className="c-sectionintro__image" />
-          </div>
-        )}
-      </div>
+      {label && <div className="c-sectionintro__label">{label}</div>}
+      <h2 className="c-sectionintro__title">{title}</h2>
+      {text && <div className="c-sectionintro__text">{text}</div>}
+      {actions && <div className="c-sectionintro__actions">{actions}</div>}
+      {imageSrc && (
+        <div className="c-sectionintro__image-wrapper">
+          <img src={imageSrc} alt={imageAlt} className="c-sectionintro__image" />
+        </div>
+      )}
     </div>
   );
 };

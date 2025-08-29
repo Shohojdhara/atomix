@@ -15,6 +15,7 @@ babel.config.js
 postcss.config.js
 tsconfig.json
 tsconfig.node.json
+package-lock.json
 
 # Configuration files
 .eslintrc*
