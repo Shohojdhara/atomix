@@ -164,17 +164,15 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
   return (
     <div className={sectionIntroClasses} ref={sectionIntroRef}>
       {renderBackground()}
-      <div className="c-sectionintro__container o-container">
-        {label && <div className="c-sectionintro__label">{label}</div>}
-        <h2 className="c-sectionintro__title">{title}</h2>
-        {text && <div className="c-sectionintro__text">{text}</div>}
-        {actions && <div className="c-sectionintro__actions">{actions}</div>}
-        {imageSrc && (
-          <div className="c-sectionintro__image-wrapper">
-            <img src={imageSrc} alt={imageAlt} className="c-sectionintro__image" />
-          </div>
-        )}
-      </div>
+      {label && <div className="c-sectionintro__label">{label}</div>}
+      <h2 className="c-sectionintro__title">{title}</h2>
+      {text && <div className="c-sectionintro__text">{text}</div>}
+      {actions && <div className="c-sectionintro__actions">{actions}</div>}
+      {imageSrc && (
+        <div className="c-sectionintro__image-wrapper">
+          <img src={imageSrc} alt={imageAlt} className="c-sectionintro__image" />
+        </div>
+      )}
     </div>
   );
 };
