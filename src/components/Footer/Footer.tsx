@@ -90,7 +90,7 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(
                 {brandLogo && (
                   <div className="c-footer__brand-logo">
                     {typeof brandLogo === 'string' ? (
-                      <img src={brandLogo} alt={brand || 'Brand Logo'} />
+                      <img src={brandLogo} alt={'Brand Logo'} />
                     ) : (
                       brandLogo
                     )}
