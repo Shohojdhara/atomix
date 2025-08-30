@@ -68,6 +68,19 @@ export { default as DatePicker, type DatePickerProps } from './DatePicker/DatePi
 export { default as Dropdown, type DropdownProps } from './Dropdown/Dropdown';
 export { default as EdgePanel, type EdgePanelProps } from './EdgePanel/EdgePanel';
 export { default as Checkbox, type CheckboxProps } from './Form/Checkbox';
+export {
+  Footer,
+  FooterSection,
+  FooterLink,
+  FooterSocialLink,
+  type FooterProps,
+  type FooterSectionProps,
+  type FooterLinkProps,
+  type FooterSocialLinkProps,
+  type FooterLayout,
+  type SocialPlatform,
+  type SocialLink,
+} from './Footer';
 export { default as Form, type FormProps } from './Form/Form';
 export { default as FormGroup, type FormGroupProps } from './Form/FormGroup';
 export { default as Input, type InputProps } from './Form/Input';
