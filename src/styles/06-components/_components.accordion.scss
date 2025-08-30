@@ -2,6 +2,8 @@
 @use '../01-settings/settings.accordion' as accordion;
 @use '../01-settings/settings.config' as config;
 @use '../02-tools/tools.animations' as *;
+@use '../01-settings/settings.background' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-accordion {
   $root: &;
@@ -30,20 +32,22 @@
   border: var(--#{config.$prefix}accordion-border-width) solid
     var(--#{config.$prefix}accordion-border-color);
   border-radius: var(--#{config.$prefix}accordion-border-radius);
-
   overflow: hidden;
 
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
     color: var(--#{config.$prefix}accordion-header-color);
     padding: var(--#{config.$prefix}accordion-header-padding-y)
       var(--#{config.$prefix}accordion-header-padding-x);
-    background-color: var(--#{config.$prefix}accordion-header-bg);
     border: none;
+    outline: none;
     cursor: pointer;
-    width: 100%;
+    @include basic-transition(background);
+
+    @include dynamic-background(accordion.$accordion-header-bg);
 
     &--icon-left {
       flex-direction: row-reverse;
@@ -52,7 +56,7 @@
     }
 
     &:hover {
-      --#{config.$prefix}accordion-header-bg: var(--#{config.$prefix}accordion-header-bg-hover);
+      @include dynamic-background(accordion.$accordion-header-bg-hover);
     }
   }
 
@@ -80,9 +84,9 @@
     color: var(--#{config.$prefix}accordion-body-color);
     padding: var(--#{config.$prefix}accordion-body-padding-y)
       var(--#{config.$prefix}accordion-body-padding-x);
-    background-color: var(--#{config.$prefix}accordion-body-bg);
     border-radius: 0 0 var(--#{config.$prefix}accordion-border-radius)
       var(--#{config.$prefix}accordion-border-radius);
+    @include dynamic-background(accordion.$accordion-body-bg);
   }
 
   &:focus,

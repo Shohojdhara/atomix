@@ -1,0 +1,83 @@
+@use 'sass:meta';
+@use 'sass:string';
+@use 'sass:math';
+@use 'sass:color';
+@use 'sass:map';
+@use '../01-settings/settings.background' as *;
+@use '../01-settings/settings.config' as *;
+@use '../02-tools/tools.to-rgb' as *;
+
+/// @param {Color|String} $color - Background color or CSS custom property
+/// @param {Number} $transparency - Alpha transparency value (0-1)
+/// @param {Number} $blur - Backdrop blur amount in pixels
+/// @param {String} $blend-mode - CSS blend mode for advanced compositing
+/// @param {String} $gradient-direction - Gradient direction for overlay effects
+/// @param {Bool} $use-backdrop-filter - Enable/disable backdrop filter support
+@mixin dynamic-background(
+  $color,
+  $transparency: $background-transparency-medium,
+  $blur: $background-blur-medium,
+  $blend-mode: null,
+  $gradient-direction: null,
+  $use-backdrop-filter: $background-enable-backdrop-filter
+) {
+  // Validate inputs
+  @if $transparency < 0 or $transparency > 1 {
+    @error 'Transparency must be between 0 and 1, got #{$transparency}';
+  }
+  
+  @if $blur < 0 {
+    @error 'Blur value must be non-negative, got #{$blur}px';
+  }
+
+  // Handle color values with transparency and effects
+  @if $transparency > 0 {
+    @if $gradient-direction or $background-enable-gradient-overlay {
+      // Resolve direction from map if it's a key
+      $resolved-direction: $gradient-direction;
+      @if $background-enable-gradient-overlay and not $gradient-direction {
+        $resolved-direction: map.get($background-gradient-directions, 'vertical');
+      }
+      @if map.has-key($background-gradient-directions, $resolved-direction) {
+        $resolved-direction: map.get($background-gradient-directions, $resolved-direction);
+      }
+      
+      background: linear-gradient(
+        #{$resolved-direction},
+        color-mix(in srgb, #{$color} #{math.percentage($transparency)}, transparent),
+        color-mix(in srgb, #{$color} #{math.percentage(math.max(0, $transparency - 0.1))}, transparent)
+      );
+    } @else {
+      background-color: color-mix(in srgb, #{$color} #{math.percentage($transparency)}, transparent);
+    }
+  } @else {
+    background-color: $color;
+  }
+  
+  @if $blend-mode {
+    // Validate blend mode
+    @if index($background-blend-modes, $blend-mode) {
+      mix-blend-mode: $blend-mode;
+    } @else {
+      @warn 'Invalid blend mode: #{$blend-mode}. Available modes: #{$background-blend-modes}';
+    }
+  }
+  
+  // Apply backdrop filter with browser support
+  @if $blur > 0 and $use-backdrop-filter {
+    backdrop-filter: blur(#{$blur}px);
+    -webkit-backdrop-filter: blur(#{$blur}px);
+  }
+  
+  // Apply glassmorphism effects if enabled globally
+  @if $background-enable-glassmorphism {
+    border: 1px solid rgba(255, 255, 255, $background-glassmorphism-border-opacity);
+    border-radius: inherit;
+    
+    @if not $use-backdrop-filter and $background-glassmorphism-blur > 0 {
+      backdrop-filter: blur(#{$background-glassmorphism-blur}px);
+      -webkit-backdrop-filter: blur(#{$background-glassmorphism-blur}px);
+    }
+  }
+}
+

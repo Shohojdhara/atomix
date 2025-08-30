@@ -1,0 +1,45 @@
+// Core transparency levels (used in dynamic-background-core defaults)
+$background-transparency-light:             0.1 !default;
+$background-transparency-medium:            0.3 !default;
+$background-transparency-heavy:             0.6 !default;
+
+// Core blur levels (used in dynamic-background-core defaults)
+$background-blur-subtle:                    5 !default;
+$background-blur-medium:                    15 !default;
+$background-blur-heavy:                     25 !default;
+
+// Glassmorphism specific settings (used in glassmorphism mixin)
+$background-glassmorphism-transparency:     0.15 !default;
+$background-glassmorphism-blur:             20 !default;
+$background-glassmorphism-border-opacity:   0.2 !default;
+
+// Gradient system (used in gradient-background and dynamic-background-core)
+$background-gradient-directions: (
+  'horizontal': 'to right',
+  'vertical': 'to bottom',
+  'diagonal': 'to bottom right',
+  'radial': 'radial-gradient(circle at center)'
+) !default;
+
+// Blend modes validation list (used in dynamic-background-core)
+$background-blend-modes: (
+  'multiply',
+  'screen',
+  'overlay',
+  'soft-light',
+  'hard-light',
+  'color-dodge',
+  'color-burn',
+  'normal'
+) !default;
+
+// Common background colors for quick access
+$background-glass-light:                    rgba(255, 255, 255, $background-glassmorphism-transparency) !default;
+$background-glass-dark:                     rgba(0, 0, 0, $background-glassmorphism-transparency) !default;
+
+// Backdrop filter support toggle
+$background-enable-backdrop-filter:         true !default;
+
+// Global effect toggles
+$background-enable-glassmorphism:           true !default;
+$background-enable-gradient-overlay:        false !default;

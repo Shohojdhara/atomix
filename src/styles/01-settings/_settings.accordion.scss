@@ -2,30 +2,31 @@
 @use './settings.border-radius' as radius;
 @use './settings.config' as config;
 @use './settings.spacing' as *;
+@use './settings.colors' as *;
 
-$accordion-width: 100% !default;
-$accordion-padding-x: map.get($spacing-sizes, 5) !default;
-$accordion-padding-y: map.get($spacing-sizes, 4) !default;
+$accordion-width:                           100% !default;
+$accordion-padding-x:                       map.get($spacing-sizes, 5) !default;
+$accordion-padding-y:                       map.get($spacing-sizes, 4) !default;
 
-$accordion-border-width: calc(var(--#{config.$prefix}border-width) * 2) !default;
-$accordion-border-color: transparent !default;
-$accordion-border-radius: radius.$border-radius-sm !default;
+$accordion-border-width:                    calc(var(--#{config.$prefix}border-width) * 2) !default;
+$accordion-border-color:                    transparent !default;
+$accordion-border-radius:                   radius.$border-radius-sm !default;
 
-$accordion-body-padding-x: $accordion-padding-x !default;
-$accordion-body-padding-y: map.get($spacing-sizes, 2) !default;
-$accordion-body-color: var(--#{config.$prefix}body-color) !default;
-$accordion-body-bg: var(--#{config.$prefix}secondary-bg-subtle) !default;
+$accordion-body-padding-x:                  $accordion-padding-x !default;
+$accordion-body-padding-y:                  map.get($spacing-sizes, 2) !default;
+$accordion-body-color:                      var(--#{config.$prefix}body-color) !default;
+$accordion-body-bg:                         var(--#{config.$prefix}body-bg) !default;
 
-$accordion-header-padding-x: $accordion-padding-x !default;
-$accordion-header-padding-y: $accordion-padding-y !default;
-$accordion-header-color: var(--#{config.$prefix}body-color) !default;
-$accordion-header-bg: var(--#{config.$prefix}secondary-bg-subtle) !default;
+$accordion-header-padding-x:                $accordion-padding-x !default;
+$accordion-header-padding-y:                $accordion-padding-y !default;
+$accordion-header-color:                    var(--#{config.$prefix}body-color) !default;
+$accordion-header-bg:                       var(--#{config.$prefix}body-bg)!default;
 
-$accordion-header-bg-hover: var(--#{config.$prefix}tertiary-bg-subtle) !default;
+$accordion-header-bg-hover:                 var(--#{config.$prefix}body-bg) !default;
 
-$accordion-icon-size: map.get($spacing-sizes, 5) !default;
-$accordion-icon-color: var(--#{config.$prefix}body-color) !default;
+$accordion-icon-size:                       map.get($spacing-sizes, 5) !default;
+$accordion-icon-color:                      var(--#{config.$prefix}body-color) !default;
 
-$accordion-icon-transform: 180deg !default;
+$accordion-icon-transform:                  180deg !default;
 
-$accordion-disable-color: var(--#{config.$prefix}tertiary-text-emphasis) !default;
+$accordion-disable-color:                   var(--#{config.$prefix}tertiary-text-emphasis) !default;
