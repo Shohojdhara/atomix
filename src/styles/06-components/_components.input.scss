@@ -4,6 +4,7 @@
 @use '../02-tools/tools.rem' as *;
 @use '../02-tools/tools.animations' as *;
 @use '../02-tools/tools.placeholder' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-input {
   $root: &;
@@ -30,7 +31,7 @@
   border: var(--#{$prefix}input-border-width) solid var(--#{$prefix}input-border-color);
   border-radius: var(--#{$prefix}input-border-radius);
   outline: none;
-  background-color: var(--#{$prefix}input-bg);
+  @include dynamic-background(var(--#{$prefix}input-bg));
   @include basic-transition();
 
   &:focus,

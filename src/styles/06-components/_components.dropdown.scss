@@ -3,6 +3,7 @@
 @use '../02-tools/_tools.rem' as *;
 @use '../02-tools/_tools.animations' as *;
 @use '../02-tools/_tools.spacing' as *;
+@use '../02-tools/tools.background' as *;
 
 // Add keyframe animations for dropdown
 @keyframes #{$prefix}dropdown-fade-in {
@@ -176,7 +177,7 @@
     padding: var(--#{$prefix}dropdown-padding-y) var(--#{$prefix}dropdown-padding-x);
     list-style: none;
     @include mb(0);
-    background-color: var(--#{$prefix}dropdown-bg);
+    @include dynamic-background(var(--#{$prefix}dropdown-bg));
     border-radius: var(--#{$prefix}dropdown-border-radius);
     box-shadow: var(--#{$prefix}dropdown-box-shadow);
     overflow: hidden;
@@ -199,14 +200,14 @@
     &:hover,
     &:focus {
       color: var(--#{$prefix}dropdown-link-hover-color);
-      background-color: var(--#{$prefix}dropdown-link-hover-bg);
+      @include dynamic-background(var(--#{$prefix}dropdown-link-hover-bg));
       outline: none;
       padding-left: calc(var(--#{$prefix}dropdown-item-padding-x) + 3px);
     }
 
     &.is-active {
       color: var(--#{$prefix}dropdown-active-color);
-      background-color: var(--#{$prefix}dropdown-active-bg);
+      @include dynamic-background(var(--#{$prefix}dropdown-active-bg));
     }
 
     &.is-disabled {

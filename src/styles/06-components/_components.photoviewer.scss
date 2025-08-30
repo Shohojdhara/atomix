@@ -7,6 +7,7 @@
 @use '../01-settings/settings.typography' as *;
 @use '../02-tools/tools.rem' as rem;
 @use '../02-tools/tools.spacing' as *;
+@use '../02-tools/tools.background' as *;
 
 // Common mixins
 %flex-center {
@@ -25,7 +26,7 @@
 
 // Modern panel styles
 %panel-base {
-  background: $photoviewer-component-background-color;
+  @include dynamic-background($photoviewer-component-background-color);
   border: 1px solid $photoviewer-component-border-color;
   border-radius: $photoviewer-image-container-border-radius;
   box-shadow: $photoviewer-info-panel-shadow;
@@ -102,7 +103,7 @@
   border: 2px solid transparent;
   border-radius: $photoviewer-thumbnail-border-radius;
   padding: 0;
-  background: transparent;
+  @include dynamic-background(transparent);
   cursor: pointer;
   overflow: hidden;
   position: relative;
@@ -175,7 +176,7 @@ body.is-open-photoviewer {
   width: 100vw;
   height: 100vh;
   z-index: 1000;
-  background: transparent;
+  @include dynamic-background(transparent);
   opacity: 1;
   transition-property: opacity;
 

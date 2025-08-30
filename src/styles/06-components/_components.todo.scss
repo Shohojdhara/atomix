@@ -3,6 +3,7 @@
 @use '../01-settings/settings.colors' as colors;
 @use '../02-tools/tools.color-functions' as *;
 @use '../02-tools/tools.to-rgb' as *;
+@use '../02-tools/tools.background' as *;
 
 // Component: Todo
 // Description: Styles for the Todo component
@@ -26,7 +27,7 @@
   margin-bottom: todo.$todo-margin-bottom;
   border: 1px solid var(--#{config.$prefix}todo-border-color);
   border-radius: var(--#{config.$prefix}todo-border-radius);
-  background-color: var(--#{config.$prefix}todo-bg);
+  @include dynamic-background(var(--#{config.$prefix}todo-bg));
   color: var(--#{config.$prefix}todo-color);
   padding: todo.$todo-padding;
 
@@ -79,7 +80,7 @@
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: var(--#{config.$prefix}todo-item-hover-bg);
+      @include dynamic-background(var(--#{config.$prefix}todo-item-hover-bg));
     }
 
     &--completed {

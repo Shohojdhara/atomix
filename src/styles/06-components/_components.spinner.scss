@@ -4,6 +4,7 @@
 @use '../01-settings/settings.spinner' as spinner;
 @use '../02-tools/tools.rem' as rem;
 @use '../02-tools/tools.size' as size;
+@use '../02-tools/tools.background' as *;
 @use 'sass:map';
 
 @keyframes spinner {

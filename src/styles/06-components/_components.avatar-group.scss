@@ -6,6 +6,7 @@
 @use '../02-tools/tools.border-radius' as *;
 @use '../02-tools/tools.animations' as *;
 @use '../01-settings/settings.typography' as *;
+@use '../02-tools/tools.background' as *;
 
 // Avatar group component
 .c-avatar-group {
@@ -35,7 +36,7 @@
     color: var(--#{$prefix}avatar-group-more-color);
     font-size: var(--#{$prefix}avatar-group-more-font-size);
     font-weight: var(--#{$prefix}avatar-group-more-font-weight);
-    background-color: var(--#{$prefix}avatar-group-more-bg);
+    @include dynamic-background(var(--#{$prefix}avatar-group-more-bg));
     border: var(--#{$prefix}avatar-group-more-border-width) solid
       var(--#{$prefix}avatar-group-more-border-color);
 

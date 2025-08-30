@@ -6,6 +6,7 @@
 @use '../02-tools/_tools.rem' as *;
 @use '../02-tools/_tools.animations' as *;
 @use '../01-settings/_settings.z-layers' as *;
+@use '../02-tools/tools.background' as *;
 
 // DatePicker base component
 // --------------------------------------------------
@@ -105,7 +106,7 @@
     z-index: map.get($z-layers, 5);
     width: var(--#{$prefix}datepicker-width);
     padding: var(--#{$prefix}datepicker-padding-y) var(--#{$prefix}datepicker-padding-x);
-    background-color: var(--#{$prefix}datepicker-bg);
+    @include dynamic-background(var(--#{$prefix}datepicker-bg));
     border-radius: var(--#{$prefix}datepicker-border-radius);
     box-shadow: var(--#{$prefix}datepicker-box-shadow);
     margin-top: rem(4px);

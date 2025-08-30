@@ -5,6 +5,7 @@
 @use '../01-settings/settings.config' as *;
 @use '../01-settings/settings.video-player' as *;
 @use '../01-settings/settings.colors' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-video-player {
   --atomix-video-player-bg: #{$video-player-bg};
@@ -35,7 +36,7 @@
 
   position: relative;
   width: 100%;
-  background: var(--#{$prefix}-video-player-bg, #000);
+  @include dynamic-background(var(--#{$prefix}-video-player-bg, #000));
   border-radius: var(--#{$prefix}-video-player-border-radius, 0.5rem);
   overflow: hidden;
   font-family: var(--#{$prefix}-font-family-base);
@@ -127,7 +128,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    @include dynamic-background(linear-gradient(transparent, rgba(0, 0, 0, 0.8)));
     padding: 1.25rem 1rem 1rem;
     opacity: 0;
     visibility: hidden;
@@ -351,7 +352,7 @@
     bottom: 3.125rem;
     right: 0;
     min-width: 12.5rem;
-    background: rgba(var(--#{$prefix}primary-rgb), 0.7);
+    @include dynamic-background(rgba(var(--#{$prefix}primary-rgb), 0.7));
     border-radius: 0.5rem;
     padding: 0.5rem;
     backdrop-filter: blur(10px);

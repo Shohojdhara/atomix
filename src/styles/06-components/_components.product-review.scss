@@ -5,6 +5,7 @@
 @use '../02-tools/tools.size' as size;
 @use '../02-tools/tools.grid' as *;
 @use '../02-tools/tools.breakpoints' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-product-review {
   $root: &;
@@ -21,7 +22,7 @@
 
   padding: var(--#{config.$prefix}product-review-padding);
   border-radius: var(--#{config.$prefix}product-review-border-radius);
-  background-color: var(--#{config.$prefix}product-review-bg);
+  @include dynamic-background(var(--#{config.$prefix}product-review-bg));
   border: 1px solid var(--#{config.$prefix}product-review-border-color);
   width: 100%;
   max-width: rem.rem(600px);
@@ -89,7 +90,7 @@
     padding: rem.rem(12px);
     border: 1px solid var(--#{config.$prefix}product-review-border-color);
     border-radius: var(--#{config.$prefix}border-radius);
-    background-color: var(--#{config.$prefix}body-bg);
+    @include dynamic-background(var(--#{config.$prefix}body-bg));
     color: var(--#{config.$prefix}body-color);
     font-family: inherit;
     resize: vertical;

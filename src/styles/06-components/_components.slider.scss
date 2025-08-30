@@ -7,6 +7,7 @@
 @use '../01-settings/settings.colors' as colors;
 @use '../02-tools/tools.rem' as *;
 @use '../02-tools/tools.breakpoints' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-slider {
   --#{config.$prefix}slider-speed: #{slider.$slider-speed};
@@ -73,7 +74,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: slider.$slider-empty-background;
+    @include dynamic-background(slider.$slider-empty-background);
     border: slider.$slider-empty-border;
     border-radius: slider.$slider-empty-border-radius;
   }
@@ -119,7 +120,7 @@
   height: var(--#{config.$prefix}slider-nav-size);
   border: none;
   border-radius: slider.$slider-nav-border-radius;
-  background: slider.$slider-nav-background;
+  @include dynamic-background(slider.$slider-nav-background);
   color: slider.$slider-nav-color;
   cursor: pointer;
   pointer-events: auto;
@@ -131,7 +132,7 @@
   box-shadow: slider.$slider-nav-shadow;
 
   &:hover {
-    background: slider.$slider-nav-background-hover;
+    @include dynamic-background(slider.$slider-nav-background-hover);
     transform: translateY(-50%) scale(1.05);
     box-shadow: slider.$slider-nav-shadow-hover;
   }
@@ -190,13 +191,13 @@
   height: slider.$slider-pagination-bullet-size;
   border-radius: slider.$slider-pagination-bullet-border-radius;
   border: none;
-  background: slider.$slider-pagination-bullet-background;
+  @include dynamic-background(slider.$slider-pagination-bullet-background);
   cursor: pointer;
   pointer-events: auto;
   transition: slider.$slider-pagination-transition;
 
   &:hover {
-    background: slider.$slider-pagination-bullet-background-hover;
+    @include dynamic-background(slider.$slider-pagination-bullet-background-hover);
     transform: scale(1.2);
   }
 
@@ -205,7 +206,7 @@
   }
 
   &--active {
-    background: slider.$slider-pagination-bullet-background-active;
+    @include dynamic-background(slider.$slider-pagination-bullet-background-active);
     transform: scale(1.2);
   }
 }

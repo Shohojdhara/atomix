@@ -9,6 +9,7 @@
 @use '../02-tools/tools.component' as *;
 @use '../02-tools/tools.rem' as *;
 @use '../02-tools/tools.animations' as *;
+@use '../02-tools/tools.background' as *;
 
 @use 'sass:map';
 
@@ -35,7 +36,7 @@
   min-height: var(--#{$prefix}chart-min-height);
   width: 100%;
   max-width: 100%;
-  background-color: var(--#{$prefix}chart-bg);
+  @include dynamic-background(var(--#{$prefix}chart-bg));
   @include basic-transition();
 
   &::after {

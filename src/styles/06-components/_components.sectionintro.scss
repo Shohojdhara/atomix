@@ -3,6 +3,7 @@
 @use '../02-tools/tools.rem' as *;
 @use '../02-tools/tools.breakpoints' as *;
 @use '../02-tools/tools.grid' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-sectionintro {
   $root: &;
@@ -116,7 +117,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--#{$prefix}sectionintro-overlay-bg-color);
+    @include dynamic-background(var(--#{$prefix}sectionintro-overlay-bg-color));
     opacity: var(--#{$prefix}sectionintro-overlay-opacity);
   }
 

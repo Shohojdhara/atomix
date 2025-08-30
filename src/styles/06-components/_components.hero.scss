@@ -6,6 +6,7 @@
 @use '../02-tools/tools.object-fit' as *;
 @use '../02-tools/tools.breakpoints' as *;
 @use '../02-tools/tools.grid' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-hero {
   $root: &;
@@ -35,7 +36,7 @@
   display: grid;
   place-items: center;
   padding: var(--#{$prefix}hero-padding-y) var(--#{$prefix}hero-padding-x);
-  background-color: var(--#{$prefix}hero-bg);
+  @include dynamic-background(var(--#{$prefix}hero-bg));
   overflow: hidden;
 
   &__bg {
@@ -57,7 +58,7 @@
   &__overlay {
     position: absolute;
     inset: 0;
-    background: var(--#{$prefix}hero-overlay);
+    @include dynamic-background(var(--#{$prefix}hero-overlay));
     opacity: var(--#{$prefix}hero-overlay-opacity);
     z-index: 1;
   }

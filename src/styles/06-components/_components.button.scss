@@ -6,6 +6,7 @@
 @use '../02-tools/tools.border-radius' as *;
 @use '../02-tools/tools.button' as *;
 @use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-btn {
   $root: &;
@@ -43,7 +44,7 @@
   text-decoration: if(colors.$link-decoration == none, null, none);
   white-space: button.$btn-white-space;
   vertical-align: middle;
-  background-color: var(--#{config.$prefix}btn-bg);
+  @include dynamic-background(var(--#{config.$prefix}btn-bg));
   cursor: if(button.$enable-button-pointers, pointer, null);
   user-select: none;
   border: var(--#{config.$prefix}btn-border-width) solid var(--#{config.$prefix}btn-border-color);
@@ -57,7 +58,7 @@
   &:hover {
     color: var(--#{config.$prefix}btn-hover-color);
     text-decoration: if(colors.$link-hover-decoration == underline, none, null);
-    background-color: var(--#{config.$prefix}btn-hover-bg);
+    @include dynamic-background(var(--#{config.$prefix}btn-hover-bg));
     border-color: var(--#{config.$prefix}btn-hover-border-color);
   }
 
@@ -126,7 +127,7 @@
   fieldset:disabled & {
     color: var(--#{config.$prefix}btn-disabled-color);
     pointer-events: none;
-    background-color: var(--#{config.$prefix}btn-disabled-bg);
+    @include dynamic-background(var(--#{config.$prefix}btn-disabled-bg));
     background-image: if(button.$enable-gradients, none, null);
     border-color: var(--#{config.$prefix}btn-disabled-border-color);
     opacity: var(--#{config.$prefix}btn-disabled-opacity);

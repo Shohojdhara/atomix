@@ -15,10 +15,10 @@
 /// @param {Bool} $use-backdrop-filter - Enable/disable backdrop filter support
 @mixin dynamic-background(
   $color,
-  $transparency: $background-transparency-medium,
-  $blur: $background-blur-medium,
+  $transparency: $background-transparency,
+  $blur: $background-blur,
   $blend-mode: null,
-  $gradient-direction: null,
+  $gradient-direction: horizontal,
   $use-backdrop-filter: $background-enable-backdrop-filter
 ) {
   // Validate inputs
@@ -67,17 +67,8 @@
   @if $blur > 0 and $use-backdrop-filter {
     backdrop-filter: blur(#{$blur}px);
     -webkit-backdrop-filter: blur(#{$blur}px);
+    box-shadow: var(--atomix-box-shadow-inset);
   }
   
-  // Apply glassmorphism effects if enabled globally
-  @if $background-enable-glassmorphism {
-    border: 1px solid rgba(255, 255, 255, $background-glassmorphism-border-opacity);
-    border-radius: inherit;
-    
-    @if not $use-backdrop-filter and $background-glassmorphism-blur > 0 {
-      backdrop-filter: blur(#{$background-glassmorphism-blur}px);
-      -webkit-backdrop-filter: blur(#{$background-glassmorphism-blur}px);
-    }
-  }
 }
 

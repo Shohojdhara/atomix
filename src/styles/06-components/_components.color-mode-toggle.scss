@@ -1,6 +1,7 @@
 @use '../01-settings/settings.config' as *;
 @use '../01-settings/settings.colors' as colors;
 @use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-color-mode-toggle {
   display: inline-flex;
@@ -15,7 +16,7 @@
   color: var(--#{$prefix}body-color);
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    @include dynamic-background(rgba(0, 0, 0, 0.05));
   }
 
   &:focus {
@@ -30,7 +31,7 @@
 
   [data-#{$prefix}theme='dark'] & {
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      @include dynamic-background(rgba(255, 255, 255, 0.1));
     }
   }
 }

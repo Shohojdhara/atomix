@@ -4,6 +4,7 @@
 @use '../01-settings/settings.z-layers' as *;
 @use '../02-tools/tools.rem' as *;
 @use '../02-tools/tools.animations' as *;
+@use '../02-tools/tools.background' as *;
 
 // EdgePanel SCSS Styling
 .c-edge-panel {
@@ -34,7 +35,7 @@
   &__backdrop {
     position: absolute;
     inset: 0;
-    background: var(--#{$prefix}edge-panel-backdrop-bg);
+    @include dynamic-background(var(--#{$prefix}edge-panel-backdrop-bg));
     backdrop-filter: blur(var(--#{$prefix}edge-panel-backdrop-blur));
     opacity: 0;
     z-index: map.get($z-layers, 1);
@@ -56,7 +57,7 @@
     color: var(--#{$prefix}edge-panel-color);
     width: var(--#{$prefix}edge-panel-width);
     height: 100%;
-    background-color: var(--#{$prefix}edge-panel-bg);
+    @include dynamic-background(var(--#{$prefix}edge-panel-bg));
     box-shadow: var(--#{$prefix}edge-panel-shadow);
     z-index: map.get($z-layers, 2);
     overflow: hidden;
@@ -97,7 +98,7 @@
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: rgba(0, 0, 0, 0.05);
+      @include dynamic-background(rgba(0, 0, 0, 0.05));
     }
 
     &:focus-visible {

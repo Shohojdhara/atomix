@@ -3,6 +3,7 @@
 @use '../01-settings/settings.maps' as maps;
 @use '../01-settings/settings.list' as list;
 @use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.background' as *;
 
 .c-list {
   $root: &;
@@ -41,7 +42,7 @@
         left: 0;
         width: var(--#{config.$prefix}list-item-dash-width);
         height: var(--#{config.$prefix}list-item-dash-height);
-        background: var(--#{config.$prefix}list-color);
+        @include dynamic-background(var(--#{config.$prefix}list-color));
         transform: translateY(-50%);
       }
     }

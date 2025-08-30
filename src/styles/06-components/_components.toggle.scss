@@ -4,6 +4,7 @@
 @use '../02-tools/tools.rem' as *;
 @use '../02-tools/tools.hidden' as *;
 @use '../02-tools/tools.transition' as transition;
+@use '../02-tools/tools.background' as *;
 
 .c-toggle {
   $root: &;
@@ -34,7 +35,7 @@
     flex: 0 0 var(--#{$prefix}toggle-switch-width);
     width: var(--#{$prefix}toggle-switch-width);
     height: var(--#{$prefix}toggle-switch-height);
-    background-color: var(--#{$prefix}toggle-switch-bg);
+    @include dynamic-background(var(--#{$prefix}toggle-switch-bg));
     border-radius: var(--#{$prefix}toggle-switch-border-radius);
     user-select: none;
     cursor: pointer;
@@ -47,7 +48,7 @@
       width: var(--#{$prefix}toggle-switch-handle-width);
       height: var(--#{$prefix}toggle-switch-handle-height);
       margin: var(--#{$prefix}toggle-switch-handle-margin);
-      background: var(--#{$prefix}toggle-switch-handle-bg);
+      @include dynamic-background(var(--#{$prefix}toggle-switch-handle-bg));
       border-radius: var(--#{$prefix}toggle-switch-handle-border-radius);
 
       @include transition.basic-transition();
@@ -80,7 +81,7 @@
     pointer-events: none;
 
     #{$root}__switch {
-      background: var(--#{$prefix}toggle-switch-disabled-bg);
+      @include dynamic-background(var(--#{$prefix}toggle-switch-disabled-bg));
     }
   }
 
@@ -92,7 +93,7 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: colors.$overlay-2;
+        @include dynamic-background(colors.$overlay-2);
         border-radius: var(--#{$prefix}toggle-switch-handle-border-radius);
       }
     }

@@ -4,6 +4,7 @@
 @use '../01-settings/settings.colors' as *;
 @use '../01-settings/settings.maps' as maps;
 @use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-list-group {
   --#{config.$prefix}list-group-width: #{$list-group-width};
@@ -24,7 +25,7 @@
   list-style: none;
   width: 100%;
   max-width: var(--#{config.$prefix}list-group-width);
-  background: var(--#{config.$prefix}list-group-bg);
+  @include dynamic-background(var(--#{config.$prefix}list-group-bg));
 
   &__item {
     padding: var(--#{config.$prefix}list-group-item-padding-y)
@@ -33,7 +34,7 @@
     color: var(--#{config.$prefix}list-group-item-color);
     border-bottom: var(--#{config.$prefix}list-group-item-border-width) solid
       var(--#{config.$prefix}list-group-item-border-color);
-    background: var(--#{config.$prefix}list-group-item-bg);
+    @include dynamic-background(var(--#{config.$prefix}list-group-item-bg));
 
     @each $state in map.keys(maps.$theme-colors) {
       &--#{$state} {

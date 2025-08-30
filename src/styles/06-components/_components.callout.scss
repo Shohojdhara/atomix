@@ -3,6 +3,7 @@
 @use '../01-settings/settings.maps' as maps;
 @use '../01-settings/settings.callout' as callout;
 @use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.background' as *;
 
 .c-callout {
   $root: &;
@@ -40,7 +41,7 @@
   max-width: var(--#{config.$prefix}callout-width);
   gap: var(--#{config.$prefix}callout-actions-spacer);
   padding: var(--#{config.$prefix}callout-padding-y) var(--#{config.$prefix}callout-padding-x);
-  background: var(--#{config.$prefix}callout-bg);
+  @include dynamic-background(var(--#{config.$prefix}callout-bg));
   border-radius: var(--#{config.$prefix}callout-border-radius);
   border: var(--#{config.$prefix}callout-border-witdh) solid
     var(--#{config.$prefix}callout-border-color);
@@ -144,7 +145,7 @@
     align-items: flex-start;
     justify-content: flex-start;
     border: none;
-    background-color: var(--#{config.$prefix}callout-toast-bg);
+    @include dynamic-background(var(--#{config.$prefix}callout-toast-bg));
     box-shadow: var(--#{config.$prefix}callout-box-shadow);
     animation: calloutToastIn 0.3s var(--#{config.$prefix}callout-transition-timing) forwards;
 

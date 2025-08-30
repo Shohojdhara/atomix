@@ -47,7 +47,7 @@
     cursor: pointer;
     @include basic-transition(background);
 
-    @include dynamic-background(accordion.$accordion-header-bg);
+    @include dynamic-background(var(--#{config.$prefix}accordion-header-bg));
 
     &--icon-left {
       flex-direction: row-reverse;
@@ -56,7 +56,7 @@
     }
 
     &:hover {
-      @include dynamic-background(accordion.$accordion-header-bg-hover);
+      --#{config.$prefix}accordion-header-bg: var(--#{config.$prefix}accordion-header-bg-hover);
     }
   }
 
@@ -86,7 +86,7 @@
       var(--#{config.$prefix}accordion-body-padding-x);
     border-radius: 0 0 var(--#{config.$prefix}accordion-border-radius)
       var(--#{config.$prefix}accordion-border-radius);
-    @include dynamic-background(accordion.$accordion-body-bg);
+    @include dynamic-background(var(--#{config.$prefix}accordion-body-bg));
   }
 
   &:focus,

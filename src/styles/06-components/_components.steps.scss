@@ -3,6 +3,7 @@
 @use '../02-tools/tools.rem' as *;
 @use '../02-tools/tools.size' as *;
 @use '../02-tools/tools.hidden' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-steps {
   $root: &;
@@ -53,7 +54,7 @@
   &__line {
     width: var(--#{$prefix}steps-line-width);
     height: var(--#{$prefix}steps-line-height);
-    background-color: var(--#{$prefix}steps-item-bg);
+    @include dynamic-background(var(--#{$prefix}steps-item-bg));
     transition: 1s;
   }
 
@@ -70,7 +71,7 @@
     @include square(var(--#{$prefix}steps-item-number-size));
     color: var(--#{$prefix}steps-item-number-color);
     font-size: var(--#{$prefix}steps-item-number-font-size);
-    background-color: var(--#{$prefix}steps-item-number-bg);
+    @include dynamic-background(var(--#{$prefix}steps-item-number-bg));
     border-radius: var(--#{$prefix}steps-item-number-border-radius);
   }
 

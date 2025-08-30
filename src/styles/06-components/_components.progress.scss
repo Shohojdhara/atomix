@@ -3,6 +3,7 @@
 @use '../01-settings/settings.maps' as maps;
 @use '../01-settings/settings.progress' as progress;
 @use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.background' as *;
 
 .c-progress {
   --#{config.$prefix}progress-width: #{progress.$progress-width};
@@ -21,7 +22,7 @@
   width: 100%;
   max-width: var(--#{config.$prefix}progress-width);
   height: var(--#{config.$prefix}progress-bar-height);
-  background-color: var(--#{config.$prefix}progress-bg);
+  @include dynamic-background(var(--#{config.$prefix}progress-bg));
   border-radius: var(--#{config.$prefix}progress-border-radius);
   overflow: hidden;
 
@@ -29,7 +30,7 @@
     width: var(--#{config.$prefix}progress-bar-width);
     height: var(--#{config.$prefix}progress-bar-height);
     color: var(--#{config.$prefix}progress-bar-color);
-    background-color: var(--#{config.$prefix}progress-bar-bg);
+    @include dynamic-background(var(--#{config.$prefix}progress-bar-bg));
     border-radius: var(--#{config.$prefix}progress-border-radius);
     transition: var(--#{config.$prefix}progress-bar-transition)
       var(--#{config.$prefix}progress-bar-easing);

@@ -4,6 +4,7 @@
 @use '../02-tools/tools.transition' as *;
 @use '../02-tools/tools.breakpoints' as *;
 @use '../02-tools/tools.grid' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-tabs {
   $root: &;
@@ -67,7 +68,7 @@
     border: var(--#{$prefix}tabs-nav-btn-border-width) solid transparent;
     border-bottom: var(--#{$prefix}tabs-nav-btn-border-width) solid
       var(--#{$prefix}tabs-nav-btn-border-color);
-    background-color: var(--#{$prefix}tabs-nav-btn-bg);
+    @include dynamic-background(var(--#{$prefix}tabs-nav-btn-bg));
     @include basic-transition();
 
     &:active,
@@ -78,7 +79,7 @@
     }
 
     &:hover {
-      background-color: var(--#{$prefix}tabs-nav-btn-bg-hover);
+      @include dynamic-background(var(--#{$prefix}tabs-nav-btn-bg-hover));
     }
 
     &:disabled,
@@ -88,7 +89,7 @@
       );
 
       color: var(--#{$prefix}tabs-nav-btn-border-disabled-color);
-      background-color: var(--#{$prefix}tabs-nav-btn-bg-disabled);
+      @include dynamic-background(var(--#{$prefix}tabs-nav-btn-bg-disabled));
       pointer-events: none;
     }
 

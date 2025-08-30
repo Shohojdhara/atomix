@@ -5,6 +5,7 @@
 @use '../02-tools/tools.transition' as *;
 @use '../02-tools/tools.hidden-visually' as *;
 @use '../02-tools/tools.border-radius' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-upload {
   $root: &;
@@ -61,13 +62,13 @@
   width: 100%;
   max-width: var(--#{$prefix}upload-width);
   padding: var(--#{$prefix}upload-padding-y) var(--#{$prefix}upload-padding-x);
-  background-color: var(--#{$prefix}upload-bg);
+  @include dynamic-background(var(--#{$prefix}upload-bg));
   border-radius: var(--#{$prefix}upload-border-radius);
 
   @include basic-transition();
 
   &:hover {
-    background-color: var(--#{$prefix}upload-hover-bg);
+    @include dynamic-background(var(--#{$prefix}upload-hover-bg));
   }
 
   &__inner {
@@ -82,7 +83,7 @@
   &__icon {
     font-size: var(--#{$prefix}upload-icon-size);
     padding: var(--#{$prefix}upload-icon-padding);
-    background-color: var(--#{$prefix}upload-icon-bg);
+    @include dynamic-background(var(--#{$prefix}upload-icon-bg));
 
     @include border-radius($border-radius-pill);
   }

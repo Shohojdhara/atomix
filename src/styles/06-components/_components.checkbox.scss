@@ -4,6 +4,7 @@
 @use '../01-settings/settings.border-radius' as *;
 @use '../02-tools/tools.rem' as *;
 @use '../02-tools/tools.animations' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-checkbox {
   $root: &;
@@ -32,7 +33,7 @@
   &__input {
     position: relative;
     appearance: none;
-    background-color: var(--#{$prefix}checkbox-bg);
+    @include dynamic-background(var(--#{$prefix}checkbox-bg));
     width: var(--#{$prefix}checkbox-width);
     height: var(--#{$prefix}checkbox-height);
     color: currentColor;

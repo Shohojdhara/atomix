@@ -9,6 +9,7 @@
 @use '../02-tools/tools.object-fit' as *;
 @use '../02-tools/tools.color-mode' as *;
 @use '../02-tools/tools.size' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-messages {
   $root: &;
@@ -75,7 +76,7 @@
   border-radius: var(--#{config.$prefix}messages-border-radius);
   border: var(--#{config.$prefix}messages-border-width) solid
     var(--#{config.$prefix}messages-border-color);
-  background-color: var(--#{config.$prefix}messages-bg);
+  @include dynamic-background(var(--#{config.$prefix}messages-bg));
 
   &__body {
     max-height: var(--#{config.$prefix}messages-body-height);
@@ -140,7 +141,7 @@
     font-size: var(--#{config.$prefix}messages-text-font-size);
     padding: var(--#{config.$prefix}messages-text-padding-y)
       var(--#{config.$prefix}messages-text-padding-x);
-    background-color: var(--#{config.$prefix}messages-text-bg);
+    @include dynamic-background(var(--#{config.$prefix}messages-text-bg));
     border-radius: border.$border-radius-sm var(--#{config.$prefix}messages-text-border-radius)
       var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm;
   }
@@ -152,7 +153,7 @@
       var(--#{config.$prefix}messages-file-padding-x);
     border-radius: border.$border-radius-sm var(--#{config.$prefix}messages-file-border-radius)
       var(--#{config.$prefix}messages-file-border-radius) border.$border-radius-sm;
-    background: var(--#{config.$prefix}messages-file-bg);
+    @include dynamic-background(var(--#{config.$prefix}messages-file-bg));
   }
 
   &__file-icon {
@@ -162,7 +163,7 @@
     @include square(var(--#{config.$prefix}messages-file-icon-size));
     color: var(--#{config.$prefix}tertiary-text-emphasis);
     margin-right: var(--#{config.$prefix}messages-file-icon-margin-right);
-    background-color: var(--#{config.$prefix}body-bg);
+    @include dynamic-background(var(--#{config.$prefix}body-bg));
     border-radius: border.$border-radius-pill;
   }
 
@@ -240,7 +241,7 @@
 
       &__file-icon {
         color: var(--#{config.$prefix}invert-text-emphasis);
-        background-color: var(--#{config.$prefix}messages-file-icon-bg);
+        @include dynamic-background(var(--#{config.$prefix}messages-file-icon-bg));
 
         @include color-mode('dark') {
           --#{config.$prefix}messages-file-icon-bg: #{messages.$messages-file-icon-bg-dark};
@@ -293,7 +294,7 @@
     border: var(--#{config.$prefix}messages-input-border-width) solid
       var(--#{config.$prefix}messages-input-border-color);
     border-radius: var(--#{config.$prefix}messages-input-border-radius);
-    background-color: var(--#{config.$prefix}messages-bg);
+    @include dynamic-background(var(--#{config.$prefix}messages-bg));
     resize: none;
 
     &::placeholder {
@@ -312,7 +313,7 @@
     place-items: center;
     align-self: flex-end;
     padding: rem.rem(10px);
-    background-color: var(--#{config.$prefix}brand-bg-subtle);
+    @include dynamic-background(var(--#{config.$prefix}brand-bg-subtle));
     color: var(--#{config.$prefix}invert-text-emphasis);
     border-radius: border.$border-radius-pill;
     cursor: pointer;

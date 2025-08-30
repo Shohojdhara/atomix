@@ -5,6 +5,7 @@
 @use '../02-tools/tools.rem' as rem;
 @use '../02-tools/tools.animations' as animations;
 @use '../02-tools/tools.color-mode' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-menu {
   $root: &;
@@ -40,7 +41,7 @@
   display: inline-block;
   min-width: var(--#{config.$prefix}menu-min-width);
   padding: var(--#{config.$prefix}menu-item-padding-y) var(--#{config.$prefix}menu-item-padding-x);
-  background-color: var(--#{config.$prefix}menu-bg);
+  @include dynamic-background(var(--#{config.$prefix}menu-bg));
   border-radius: var(--#{config.$prefix}menu-border-radius);
   box-shadow: var(--#{config.$prefix}menu-box-shadow);
   z-index: 5;
@@ -95,20 +96,20 @@
     color: var(--#{config.$prefix}menu-item-color);
     font-size: var(--#{config.$prefix}menu-item-font-size);
     font-weight: var(--#{config.$prefix}menu-item-font-weight);
-    background-color: var(--#{config.$prefix}menu-item-bg);
+    @include dynamic-background(var(--#{config.$prefix}menu-item-bg));
     border-radius: var(--#{config.$prefix}menu-border-radius);
     cursor: pointer;
     @include animations.basic-transition();
 
     &:hover {
       color: var(--#{config.$prefix}menu-item-color);
-      background-color: var(--#{config.$prefix}menu-item-bg-hover);
+      @include dynamic-background(var(--#{config.$prefix}menu-item-bg-hover));
     }
 
     &:focus,
     &:active,
     &.is-active {
-      background-color: var(--#{config.$prefix}menu-item-bg-active);
+      @include dynamic-background(var(--#{config.$prefix}menu-item-bg-active));
     }
   }
 

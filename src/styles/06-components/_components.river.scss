@@ -5,6 +5,7 @@
 @use '../02-tools/tools.object-fit' as *;
 @use '../02-tools/tools.breakpoints' as *;
 @use '../02-tools/tools.grid' as grid;
+@use '../02-tools/tools.background' as *;
 
 .c-river {
   $root: &;
@@ -41,7 +42,7 @@
   max-width: var(--#{config.$prefix}river-width);
   padding: var(--#{config.$prefix}river-padding-y) var(--#{config.$prefix}river-padding-x);
   border-radius: var(--#{config.$prefix}river-border-radius);
-  background-color: var(--#{config.$prefix}river-bg);
+  @include dynamic-background(var(--#{config.$prefix}river-bg));
 
   &__bg {
     position: absolute;
@@ -59,7 +60,7 @@
   &__overlay {
     position: absolute;
     inset: 0;
-    background: var(--#{config.$prefix}river-overlay);
+    @include dynamic-background(var(--#{config.$prefix}river-overlay));
     opacity: var(--#{config.$prefix}river-overlay-opacity);
     border-radius: var(--#{config.$prefix}river-border-radius);
   }

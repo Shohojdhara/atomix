@@ -6,6 +6,7 @@
 @use '../02-tools/tools.animations' as *;
 @use '../02-tools/tools.object-fit' as *;
 @use '../02-tools/tools.size' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-card {
   $root: &;
@@ -39,8 +40,9 @@
   padding: var(--#{$prefix}card-spacer-y) var(--#{$prefix}card-spacer-x);
   border: var(--#{$prefix}card-border-width) solid var(--#{$prefix}card-border-color);
   border-radius: var(--#{$prefix}card-border-radius);
-  background-color: var(--#{$prefix}card-bg);
   @include basic-transition();
+
+  @include dynamic-background(var(--#{$prefix}card-bg));
 
   &__header {
     margin-bottom: var(--#{$prefix}card-header-spacer-y);
@@ -86,7 +88,7 @@
 
   @if ($card-hover == true) {
     &:hover {
-      background-color: var(--#{$prefix}card-bg-hover);
+      @include dynamic-background(var(--#{$prefix}card-bg-hover));
     }
   }
 

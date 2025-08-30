@@ -2,6 +2,7 @@
 @use '../01-settings/settings.tooltip' as *;
 @use '../02-tools/tools.rem' as *;
 @use '../02-tools/tools.size' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-tooltip {
   $root: &;
@@ -35,7 +36,7 @@
     font-size: var(--#{$prefix}tooltip-font-size);
     font-weight: var(--#{$prefix}tooltip-font-weight);
     padding: var(--#{$prefix}tooltip-padding-y) var(--#{$prefix}tooltip-padding-x);
-    background-color: var(--#{$prefix}tooltip-bg);
+    @include dynamic-background(var(--#{$prefix}tooltip-bg));
     border-radius: var(--#{$prefix}tooltip-border-radius);
     z-index: 2;
     opacity: 0;
@@ -55,7 +56,7 @@
     left: 50%;
     transform: translateX(-50%) rotate(45deg);
     @include square(var(--#{$prefix}tooltip-arrow-size));
-    background-color: var(--#{$prefix}tooltip-bg);
+    @include dynamic-background(var(--#{$prefix}tooltip-bg));
     z-index: 1;
   }
 

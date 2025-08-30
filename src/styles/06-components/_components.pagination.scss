@@ -2,6 +2,7 @@
 @use '../01-settings/settings.pagination' as pagination;
 @use '../02-tools/tools.rem' as rem;
 @use '../02-tools/tools.size' as size;
+@use '../02-tools/tools.background' as *;
 
 .c-pagination {
   $root: &;
@@ -81,7 +82,7 @@
     font-size: var(--#{config.$prefix}pagination-font-size);
     padding: var(--#{config.$prefix}pagination-padding-y)
       var(--#{config.$prefix}pagination-padding-x);
-    background-color: var(--#{config.$prefix}pagination-bg);
+    @include dynamic-background(var(--#{config.$prefix}pagination-bg));
     border-radius: var(--#{config.$prefix}pagination-border-radius);
     border: none;
     cursor: pointer;

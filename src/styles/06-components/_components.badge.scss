@@ -4,6 +4,7 @@
 @use '../01-settings/settings.colors' as *;
 @use '../01-settings/settings.maps' as maps;
 @use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-badge {
   --#{$prefix}tag-font-size: #{$badge-font-size};
@@ -25,7 +26,7 @@
   line-height: 1;
   padding: var(--#{$prefix}tag-padding-y) var(--#{$prefix}tag-padding-x);
   border-radius: var(--#{$prefix}tag-border-radius);
-  background-color: var(--#{$prefix}tag-bg-color);
+  @include dynamic-background(var(--#{$prefix}tag-bg-color));
   user-select: none;
 
   &__icon {

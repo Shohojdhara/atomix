@@ -5,6 +5,7 @@
 @use '../01-settings/settings.spacing' as *;
 @use '../01-settings/settings.typography' as *;
 @use '../02-tools/tools.rem' as rem;
+@use '../02-tools/tools.background' as *;
 
 .c-image-gallery {
   width: 100%;

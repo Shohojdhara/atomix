@@ -5,6 +5,7 @@
 @use '../02-tools/tools.breakpoints' as *;
 @use '../02-tools/tools.grid' as grid;
 @use '../02-tools/tools.transition' as transition;
+@use '../02-tools/tools.background' as *;
 
 .c-side-menu {
   $root: &;
@@ -50,7 +51,7 @@
   // 2. Base Component Styles
   width: 100%;
   padding: var(--#{config.$prefix}side-menu-padding-y) var(--#{config.$prefix}side-menu-padding-x);
-  background: var(--#{config.$prefix}side-menu-bg);
+  @include dynamic-background(var(--#{config.$prefix}side-menu-bg));
   border-radius: var(--#{config.$prefix}side-menu-border-radius);
   border: var(--#{config.$prefix}side-menu-border-width) solid
     var(--#{config.$prefix}side-menu-border-color);
@@ -92,7 +93,7 @@
     width: 100%;
     padding: var(--#{config.$prefix}side-menu-toggler-padding-y)
       var(--#{config.$prefix}side-menu-toggler-padding-x);
-    background: var(--#{config.$prefix}side-menu-toggler-bg);
+    @include dynamic-background(var(--#{config.$prefix}side-menu-toggler-bg));
     border: none;
     border-radius: var(--#{config.$prefix}side-menu-toggler-border-radius);
     cursor: pointer;
@@ -105,7 +106,7 @@
     }
 
     &:hover {
-      background: var(--#{config.$prefix}side-menu-toggler-hover-bg);
+      @include dynamic-background(var(--#{config.$prefix}side-menu-toggler-hover-bg));
     }
 
     &:focus {
@@ -156,7 +157,7 @@
     color: var(--#{config.$prefix}side-menu-item-color);
     font-size: var(--#{config.$prefix}side-menu-item-font-size);
     font-weight: var(--#{config.$prefix}side-menu-item-font-weight);
-    background: var(--#{config.$prefix}side-menu-item-bg);
+    @include dynamic-background(var(--#{config.$prefix}side-menu-item-bg));
     border: none;
     border-radius: var(--#{config.$prefix}side-menu-item-border-radius);
     text-decoration: none;
@@ -165,7 +166,7 @@
 
     &:hover {
       color: var(--#{config.$prefix}side-menu-item-hover-color);
-      background: var(--#{config.$prefix}side-menu-item-hover-bg);
+      @include dynamic-background(var(--#{config.$prefix}side-menu-item-hover-bg));
       text-decoration: none;
     }
 
@@ -181,14 +182,14 @@
     // 5. State Classes
     &.is-active {
       color: var(--#{config.$prefix}side-menu-item-active-color);
-      background: var(--#{config.$prefix}side-menu-item-active-bg);
+      @include dynamic-background(var(--#{config.$prefix}side-menu-item-active-bg));
       font-weight: typography.$font-weight-medium;
     }
 
     &.is-disabled,
     &[aria-disabled='true'] {
       color: var(--#{config.$prefix}side-menu-item-disabled-color);
-      background: var(--#{config.$prefix}side-menu-item-disabled-bg);
+      @include dynamic-background(var(--#{config.$prefix}side-menu-item-disabled-bg));
       cursor: not-allowed;
       pointer-events: none;
       opacity: 0.6;

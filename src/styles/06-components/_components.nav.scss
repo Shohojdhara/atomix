@@ -4,6 +4,7 @@
 @use '../02-tools/tools.transition' as transition;
 @use '../02-tools/tools.event' as *;
 @use '../02-tools/tools.rem' as *;
+@use '../02-tools/tools.background' as *;
 
 .c-nav {
   $root: &;
@@ -64,7 +65,7 @@
     }
 
     @include on-event() {
-      background-color: var(--#{$prefix}nav-link-hover-bg);
+      @include dynamic-background(var(--#{$prefix}nav-link-hover-bg));
     }
 
     &--disabled {
@@ -75,7 +76,7 @@
     &:focus,
     &:active,
     &.is-active {
-      background-color: var(--#{$prefix}brand-bg-subtle);
+      @include dynamic-background(var(--#{$prefix}brand-bg-subtle));
     }
   }
 
@@ -131,7 +132,7 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    background: var(--#{$prefix}body-bg);
+    @include dynamic-background(var(--#{$prefix}body-bg));
     border: 1px solid var(--#{$prefix}border-color);
     border-radius: $border-radius-pill;
     box-shadow: var(--#{$prefix}box-shadow-lg);
@@ -139,7 +140,7 @@
     backdrop-filter: blur(10px);
 
     // Add subtle background transparency
-    background: rgba(var(--#{$prefix}body-bg-rgb), 0.95);
+    @include dynamic-background(rgba(var(--#{$prefix}body-bg-rgb), 0.95));
 
     // Ensure items are properly spaced in float mode
     #{$root}__item {
@@ -157,7 +158,7 @@
       &:focus,
       &:active,
       &.is-active {
-        background-color: var(--#{$prefix}brand-bg-subtle);
+        @include dynamic-background(var(--#{$prefix}brand-bg-subtle));
       }
     }
   }
