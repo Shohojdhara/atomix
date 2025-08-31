@@ -1,32 +1,9 @@
 // Core transparency levels (used in dynamic-background-core defaults)
-$background-transparency:            0.5 !default;
-
+$background-transparency:            0.7!default;
 // Core blur levels (used in dynamic-background-core defaults)
 $background-blur:                    10 !default;
 
-// Gradient system (used in gradient-background and dynamic-background-core)
-$background-gradient-directions: (
-  'horizontal': 'to right',
-  'vertical': 'to bottom',
-  'diagonal': 'to bottom right',
-  'radial': 'radial-gradient(circle at center)'
-) !default;
-
-// Blend modes validation list (used in dynamic-background-core)
-$background-blend-modes: (
-  'multiply',
-  'screen',
-  'overlay',
-  'soft-light',
-  'hard-light',
-  'color-dodge',
-  'color-burn',
-  'normal'
-) !default;
-
 // Backdrop filter support toggle
 $background-enable-backdrop-filter:         true !default;
-
 // Global effect toggles
-$background-enable-glassmorphism:           true !default;
-$background-enable-gradient-overlay:        false !default;
+$background-enable-gradient-overlay:        true !default;

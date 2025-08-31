@@ -9,7 +9,6 @@
 @use '../01-settings/settings.typography' as typography;
 @use 'sass:meta';
 
-$gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)) !default;
 
 :root,
 [data-#{config.$prefix}color-mode='light'] {
@@ -53,13 +52,20 @@ $gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255
     --#{config.$prefix}#{$color}-hover: #{$value};
   }
 
+  @each $color, $value in color-maps.$gradient-colors {
+    --#{config.$prefix}#{$color}-gradient: #{$value};
+  }
+
+  --#{config.$prefix}gradient: #{map-get(color-maps.$gradient-colors, light)};
+
   // Fonts
 
   // Note: Use meta.inspect for lists so that quoted items keep the quotes.
   // See https://github.com/sass/sass/issues/2383#issuecomment-336349172
   --#{config.$prefix}font-sans-serif: #{meta.inspect(typography.$font-family-sans-serif)};
   --#{config.$prefix}font-monospace: #{meta.inspect(typography.$font-family-monospace)};
-  --#{config.$prefix}gradient: #{$gradient};
+
+  
 
   // Root and body
   // scss-docs-start root-body-variables
@@ -160,6 +166,12 @@ $gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255
     @each $color, $value in color-maps.$theme-colors-hover-dark {
       --#{config.$prefix}#{$color}-hover: #{$value};
     }
+
+    @each $color, $value in color-maps.$gradient-colors-dark {
+      --#{config.$prefix}#{$color}-gradient: #{$value};
+    }
+
+  --#{config.$prefix}gradient: #{map-get(color-maps.$gradient-colors, dark)};
 
     --#{config.$prefix}box-shadow: #{box-shadow.$box-shadow-dark};
     --#{config.$prefix}box-shadow-xs: #{box-shadow.$box-shadow-xs-dark};

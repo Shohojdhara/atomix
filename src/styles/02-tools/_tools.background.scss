@@ -7,68 +7,79 @@
 @use '../01-settings/settings.config' as *;
 @use '../02-tools/tools.to-rgb' as *;
 
-/// @param {Color|String} $color - Background color or CSS custom property
-/// @param {Number} $transparency - Alpha transparency value (0-1)
-/// @param {Number} $blur - Backdrop blur amount in pixels
-/// @param {String} $blend-mode - CSS blend mode for advanced compositing
-/// @param {String} $gradient-direction - Gradient direction for overlay effects
-/// @param {Bool} $use-backdrop-filter - Enable/disable backdrop filter support
 @mixin dynamic-background(
   $color,
   $transparency: $background-transparency,
   $blur: $background-blur,
-  $blend-mode: null,
-  $gradient-direction: horizontal,
   $use-backdrop-filter: $background-enable-backdrop-filter
 ) {
   // Validate inputs
   @if $transparency < 0 or $transparency > 1 {
     @error 'Transparency must be between 0 and 1, got #{$transparency}';
   }
-  
+
   @if $blur < 0 {
     @error 'Blur value must be non-negative, got #{$blur}px';
   }
 
-  // Handle color values with transparency and effects
   @if $transparency > 0 {
-    @if $gradient-direction or $background-enable-gradient-overlay {
-      // Resolve direction from map if it's a key
-      $resolved-direction: $gradient-direction;
-      @if $background-enable-gradient-overlay and not $gradient-direction {
-        $resolved-direction: map.get($background-gradient-directions, 'vertical');
-      }
-      @if map.has-key($background-gradient-directions, $resolved-direction) {
-        $resolved-direction: map.get($background-gradient-directions, $resolved-direction);
-      }
-      
-      background: linear-gradient(
-        #{$resolved-direction},
-        color-mix(in srgb, #{$color} #{math.percentage($transparency)}, transparent),
-        color-mix(in srgb, #{$color} #{math.percentage(math.max(0, $transparency - 0.1))}, transparent)
-      );
+    @if $background-enable-gradient-overlay {
+      background:
+    // Top highlight layer
+        linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.15) 0%,
+          rgba(255, 255, 255, 0.05) 25%,
+          transparent 50%
+        ),
+        // Main liquid glass layer
+        linear-gradient(
+            to bottom,
+            color-mix(in srgb, #{$color} #{math.percentage($transparency * 1.2)}, transparent) 0%,
+            color-mix(in srgb, #{$color} #{math.percentage($transparency)}, transparent) 35%,
+            color-mix(in srgb, #{$color} #{math.percentage($transparency * 0.8)}, transparent) 65%,
+            color-mix(in srgb, #{$color} #{math.percentage($transparency * 1.1)}, transparent) 100%
+          ),
+        // Bottom shadow layer
+        radial-gradient(
+            ellipse at bottom,
+            color-mix(in srgb, #{$color} #{math.percentage($transparency * 0.3)}, transparent) 0%,
+            transparent 70%
+          );
+          
     } @else {
-      background-color: color-mix(in srgb, #{$color} #{math.percentage($transparency)}, transparent);
+      background-color: color-mix(
+        in srgb,
+        #{$color} #{math.percentage($transparency)},
+        transparent
+      );
     }
   } @else {
     background-color: $color;
   }
-  
-  @if $blend-mode {
-    // Validate blend mode
-    @if index($background-blend-modes, $blend-mode) {
-      mix-blend-mode: $blend-mode;
-    } @else {
-      @warn 'Invalid blend mode: #{$blend-mode}. Available modes: #{$background-blend-modes}';
-    }
-  }
-  
   // Apply backdrop filter with browser support
-  @if $blur > 0 and $use-backdrop-filter {
+  @if $blur > 0 or $use-backdrop-filter {
     backdrop-filter: blur(#{$blur}px);
     -webkit-backdrop-filter: blur(#{$blur}px);
-    box-shadow: var(--atomix-box-shadow-inset);
+    box-shadow:
+      var(--atomix-box-shadow-inset),
+      // Inner glow
+      inset
+        0
+        1px
+        0
+        rgba(255, 255, 255, 0.25),
+      inset 0 -1px 0 color-mix(in srgb, #{$color} 10%, transparent),
+      // Outer depth
+      0
+        8px
+        32px
+        color-mix(in srgb, #{$color} 20%, transparent),
+      0 1px 2px rgba(0, 0, 0, 0.1),
+      0
+        8px
+        20px
+        color-mix(in srgb, #{$color} 20%, transparent),
+      0 1px 2px rgba(0, 0, 0, 0.1);
   }
-  
 }
-
