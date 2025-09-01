@@ -67,33 +67,6 @@ import '@shohojdhara/atomix/css/min';
 @use '~@shohojdhara/atomix/scss/components' as components;
 ```
 
-## Themes
-
-Atomix comes with multiple built-in themes:
-
-```js
-// Import a specific theme
-import '@shohojdhara/atomix/themes/boomdevs';
-
-// Or use the theme switcher
-import { ThemeSwitcher } from '@shohojdhara/atomix';
-
-function App() {
-  return (
-    <ThemeSwitcher>
-      <Button variant="primary">Themed Button</Button>
-    </ThemeSwitcher>
-  );
-}
-```
-
-Available themes:
-- Default (shaj-default)
-- BoomDevs
-- Esrar
-- Mashroom
-- Yabai
-
 ## Build Process
 
 The Atomix Design System uses a comprehensive build process to generate optimized assets:
