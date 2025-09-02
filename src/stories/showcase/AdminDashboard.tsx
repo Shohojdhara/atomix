@@ -337,31 +337,6 @@ export const AdminDashboard: React.FC = () => {
 
   const renderDashboardView = () => (
     <Grid>
-      {/* Welcome Header */}
-      <GridCol xs={12}>
-        <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-4">
-          <div>
-            <h1 className="u-fs-1 u-fw-bold u-mb-1">Welcome back, Admin!</h1>
-            <p className="u-text-secondary-emphasis">
-              Here's what's happening with your business today.
-            </p>
-          </div>
-          <div className="u-d-flex u-gap-2">
-            <Button variant="secondary" onClick={handleRefreshData} disabled={isRefreshing}>
-              <Icon
-                name={isRefreshing ? 'Spinner' : 'ArrowClockwise'}
-                size="sm"
-                className={`u-me-1 ${isRefreshing ? 'u-spin' : ''}`}
-              />
-              {isRefreshing ? 'Refreshing...' : 'Refresh Data'}
-            </Button>
-            <Button variant="primary" onClick={() => handleQuickAction('export')}>
-              <Icon name="Download" size="sm" className="u-me-1" />
-              Export Data
-            </Button>
-          </div>
-        </div>
-      </GridCol>
 
       {/* Enhanced Stats Cards Row */}
       <GridCol xs={12} sm={6} md={3}>

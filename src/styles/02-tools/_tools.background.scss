@@ -59,8 +59,8 @@
   }
   // Apply backdrop filter with browser support
   @if $blur > 0 or $use-backdrop-filter {
-    backdrop-filter: blur(#{$blur}px);
-    -webkit-backdrop-filter: blur(#{$blur}px);
+    backdrop-filter:  blur(#{$blur}px) saturate(1.5) contrast(1.2) brightness(1.1);
+    -webkit-backdrop-filter: blur(#{$blur}px) saturate(1.2) contrast(1.2) brightness(1.1);;
     box-shadow:
       var(--atomix-box-shadow-inset),
       // Inner glow
@@ -71,7 +71,7 @@
         rgba(255, 255, 255, 0.25),
       inset 0 -1px 0 color-mix(in srgb, #{$color} 10%, transparent),
       // Outer depth
-      0
+      4px
         8px
         32px
         color-mix(in srgb, #{$color} 20%, transparent),
