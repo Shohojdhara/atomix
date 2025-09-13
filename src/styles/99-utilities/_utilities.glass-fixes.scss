@@ -1,0 +1,48 @@
+// =============================================================================
+// GLASS EFFECT UTILITIES
+// =============================================================================
+// Minimal utilities that don't duplicate React component inline styles
+
+// =============================================================================
+// BACKDROP FILTER FIXES
+// =============================================================================
+
+// Remove problematic properties that break backdrop-filter
+.u-glass-clean-root {
+  isolation: initial !important;
+  contain: none !important;
+  transform-style: flat !important;
+  will-change: auto !important;
+  transform: none !important;
+}
+
+// =============================================================================
+// DEBUG UTILITIES
+// =============================================================================
+
+.u-glass-debug {
+  outline: 2px dashed red !important;
+
+  &::after {
+    content: 'Glass Debug';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    background: red;
+    color: white;
+    font-size: 10px;
+    padding: 2px 4px;
+    z-index: 9999;
+  }
+}
+
+// =============================================================================
+// ACCESSIBILITY
+// =============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .u-glass-no-motion {
+    transition: none !important;
+    animation: none !important;
+  }
+}
