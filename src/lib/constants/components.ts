@@ -1433,6 +1433,37 @@ export const BLOCK = {
 };
 
 /**
+ * GlassContainer-specific constants
+ */
+export const GLASS_CONTAINER = {
+  CLASSES: {
+    BASE: 'c-glass-container',
+    GLASS: 'c-glass-container__glass',
+    WARP: 'c-glass-container__warp',
+    CONTENT: 'c-glass-container__content',
+    OVERLAY: 'c-glass-container__overlay',
+    OVERLAY_VISIBLE: 'c-glass-container__overlay--visible',
+    OVERLAY_HIDDEN: 'c-glass-container__overlay--hidden',
+    OVERLAY_BLEND: 'c-glass-container__overlay-blend',
+    BORDER: 'c-glass-container__border',
+    BORDER_OVERLAY: 'c-glass-container__border-overlay',
+    HOVER_EFFECT: 'c-glass-container__hover-effect',
+    ACTIVE_EFFECT: 'c-glass-container__active-effect',
+    INTERACTION_EFFECT: 'c-glass-container__interaction-effect',
+    ACTIVE: 'c-glass-container--active',
+    CLICKABLE: 'c-glass-container--clickable',
+  },
+  DISPLACEMENT_MAPS: {
+    STANDARD:
+      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjcwIiBoZWlnaHQ9IjY5IiB2aWV3Qm94PSIwIDAgMjcwIDY5IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZ3JhZGllbnQiIGN4PSI1MCUiIGN5PSI1MCUiIHI9IjUwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzgwODA4MCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzgwODA4MCIvPjwvcmFkaWFsR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+PC9zdmc+',
+    POLAR:
+      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjcwIiBoZWlnaHQ9IjY5IiB2aWV3Qm94PSIwIDAgMjcwIDY5IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0icG9sYXIiIGN4PSI1MCUiIGN5PSI1MCUiIHI9IjUwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQwNDA0MCIvPjxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjODA4MDgwIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNDA0MDQwIi8+PC9yYWRpYWxHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwb2xhcikiLz48L3N2Zz4=',
+    PROMINENT:
+      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjcwIiBoZWlnaHQ9IjY5IiB2aWV3Qm94PSIwIDAgMjcwIDY5IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0icHJvbWluZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNDA0MDQwIi8+PHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiNjMGMwYzAiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0MDQwNDAiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3Byb21pbmVudCkiLz48L3N2Zz4=',
+  },
+};
+
+/**
  * Footer-specific constants
  */
 export const FOOTER = {
@@ -1514,5 +1545,59 @@ export const FOOTER = {
     NEWSLETTER_PLACEHOLDER: 'Enter your email',
     NEWSLETTER_BUTTON_TEXT: 'Subscribe',
     BACK_TO_TOP_TEXT: 'Back to Top',
+  },
+};
+
+/**
+ * AtomixGlass-specific constants
+ */
+export const ATOMIX_GLASS = {
+  BASE_CLASS: 'c-atomix-glass',
+  WARP_CLASS: 'c-atomix-glass__warp',
+  CONTENT_CLASS: 'c-atomix-glass__content',
+  BORDER_CLASS: 'c-atomix-glass__border',
+  OVER_LIGHT_CLASS: 'c-atomix-glass__over-light',
+  HOVER_EFFECT_CLASS: 'c-atomix-glass__hover-effect',
+  ACTIVE_EFFECT_CLASS: 'c-atomix-glass__active-effect',
+  GLOW_EFFECT_CLASS: 'c-atomix-glass__glow-effect',
+  VARIANT_PREFIX: 'c-atomix-glass--',
+  MODE_PREFIX: 'c-atomix-glass--',
+  CLASSES: {
+    BASE: 'c-atomix-glass',
+    WARP: 'c-atomix-glass__warp',
+    CONTENT: 'c-atomix-glass__content',
+    BORDER: 'c-atomix-glass__border',
+    BORDER_OVERLAY: 'c-atomix-glass__border--overlay',
+    OVER_LIGHT: 'c-atomix-glass__over-light',
+    OVER_LIGHT_ACTIVE: 'c-atomix-glass__over-light--active',
+    OVER_LIGHT_OVERLAY: 'c-atomix-glass__over-light--overlay',
+    OVER_LIGHT_OVERLAY_ACTIVE: 'c-atomix-glass__over-light--overlay-active',
+    HOVER_EFFECT: 'c-atomix-glass__hover-effect',
+    HOVER_EFFECT_ACTIVE: 'c-atomix-glass__hover-effect--active',
+    ACTIVE_EFFECT: 'c-atomix-glass__active-effect',
+    ACTIVE_EFFECT_ACTIVE: 'c-atomix-glass__active-effect--active',
+    GLOW_EFFECT: 'c-atomix-glass__glow-effect',
+    GLOW_EFFECT_HOVER: 'c-atomix-glass__glow-effect--hover',
+    GLOW_EFFECT_ACTIVE: 'c-atomix-glass__glow-effect--active',
+    // Modifiers
+    CLICKABLE: 'c-atomix-glass--clickable',
+    ACTIVE: 'c-atomix-glass--active',
+    // Mode variants
+    STANDARD: 'c-atomix-glass--standard',
+    POLAR: 'c-atomix-glass--polar',
+    PROMINENT: 'c-atomix-glass--prominent',
+    SHADER: 'c-atomix-glass--shader',
+  },
+  DEFAULTS: {
+    DISPLACEMENT_SCALE: 70,
+    BLUR_AMOUNT: 0.0625,
+    SATURATION: 140,
+    ABERRATION_INTENSITY: 2,
+    ELASTICITY: 0.15,
+    CORNER_RADIUS: 999,
+    PADDING: '24px 32px',
+    MODE: 'standard',
+    OVER_LIGHT: false,
+    SIZE: 'md',
   },
 };

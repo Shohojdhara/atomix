@@ -22,10 +22,11 @@
     @error 'Blur value must be non-negative, got #{$blur}px';
   }
 
-  @if $transparency > 0 {
+  // Apply background based on transparency settings
+  @if $background-transparency-enable and $transparency > 0 {
     @if $background-enable-gradient-overlay {
       background:
-    // Top highlight layer
+        // Top highlight layer
         linear-gradient(
           135deg,
           rgba(255, 255, 255, 0.15) 0%,
@@ -46,7 +47,6 @@
             color-mix(in srgb, #{$color} #{math.percentage($transparency * 0.3)}, transparent) 0%,
             transparent 70%
           );
-          
     } @else {
       background-color: color-mix(
         in srgb,
@@ -57,29 +57,30 @@
   } @else {
     background-color: $color;
   }
-  // Apply backdrop filter with browser support
-  @if $blur > 0 or $use-backdrop-filter {
-    backdrop-filter:  blur(#{$blur}px) saturate(1.5) contrast(1.2) brightness(1.1);
-    -webkit-backdrop-filter: blur(#{$blur}px) saturate(1.2) contrast(1.2) brightness(1.1);;
+
+  // Apply backdrop filter effects based on settings
+  @if $background-enable-backdrop-filter and ($blur > 0 or $use-backdrop-filter) {
+    backdrop-filter: blur(#{$blur}px) saturate(1.5) contrast(1.2) brightness(1.1);
+    -webkit-backdrop-filter: blur(#{$blur}px) saturate(1.2) contrast(1.2) brightness(1.1);
+  }
+
+  @if $background-enable-with-shadow {
     box-shadow:
       var(--atomix-box-shadow-inset),
       // Inner glow
-      inset
-        0
-        1px
-        0
-        rgba(255, 255, 255, 0.25),
-      inset 0 -1px 0 color-mix(in srgb, #{$color} 10%, transparent),
+      // inset
+      //   0
+      //   1px
+      //   0
+      //   rgba(255, 255, 255, 0.25),
+      // inset 0 -1px 0 color-mix(in srgb, #{$color} 10%, transparent),
       // Outer depth
       4px
         8px
         32px
         color-mix(in srgb, #{$color} 20%, transparent),
       0 1px 2px rgba(0, 0, 0, 0.1),
-      0
-        8px
-        20px
-        color-mix(in srgb, #{$color} 20%, transparent),
+      0 8px 20px color-mix(in srgb, #{$color} 20%, transparent),
       0 1px 2px rgba(0, 0, 0, 0.1);
   }
 }

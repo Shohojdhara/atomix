@@ -8,6 +8,7 @@
 @use '../01-settings/settings.box-shadow' as box-shadow;
 @use '../01-settings/settings.typography' as typography;
 @use 'sass:meta';
+@use 'sass:map';
 
 
 :root,
@@ -56,7 +57,7 @@
     --#{config.$prefix}#{$color}-gradient: #{$value};
   }
 
-  --#{config.$prefix}gradient: #{map-get(color-maps.$gradient-colors, light)};
+  --#{config.$prefix}gradient: #{map.get(color-maps.$gradient-colors, light)};
 
   // Fonts
 
@@ -171,7 +172,7 @@
       --#{config.$prefix}#{$color}-gradient: #{$value};
     }
 
-  --#{config.$prefix}gradient: #{map-get(color-maps.$gradient-colors, dark)};
+  --#{config.$prefix}gradient: #{map.get(color-maps.$gradient-colors, dark)};
 
     --#{config.$prefix}box-shadow: #{box-shadow.$box-shadow-dark};
     --#{config.$prefix}box-shadow-xs: #{box-shadow.$box-shadow-xs-dark};

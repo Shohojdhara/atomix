@@ -1,6 +1,7 @@
 export type { SliderProps, VideoPlayerProps } from '../lib/types/components';
 export { default as Accordion, type AccordionProps } from './Accordion/Accordion';
 export { default as AtomixLogo, type AtomixLogoProps } from './AtomixLogo/AtomixLogo';
+export { default as AtomixGlass, type AtomixGlassProps } from './AtomixGlass';
 export { default as Avatar, type AvatarProps } from './Avatar/Avatar';
 export { default as AvatarGroup, type AvatarGroupProps } from './Avatar/AvatarGroup';
 export { default as Badge, type BadgeProps } from './Badge/Badge';

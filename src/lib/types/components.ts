@@ -241,6 +241,86 @@ export interface CalloutProps extends BaseComponentProps {
 }
 
 /**
+ * AtomixGlass component properties
+ */
+export interface AtomixGlassProps extends BaseComponentProps {
+  /**
+   * Content to display inside the glass effect
+   */
+  children: ReactNode;
+
+  /**
+   * Displacement scale for the glass effect
+   */
+  displacementScale?: number;
+
+  /**
+   * Blur amount for the backdrop
+   */
+  blurAmount?: number;
+
+  /**
+   * Saturation percentage for the backdrop
+   */
+  saturation?: number;
+
+  /**
+   * Chromatic aberration intensity
+   */
+  aberrationIntensity?: number;
+
+  /**
+   * Elasticity factor for mouse interactions
+   */
+  elasticity?: number;
+
+  /**
+   * Corner radius in pixels
+   */
+  cornerRadius?: number;
+
+  /**
+   * External global mouse position
+   */
+  globalMousePos?: { x: number; y: number };
+
+  /**
+   * External mouse offset
+   */
+  mouseOffset?: { x: number; y: number };
+
+  /**
+   * Reference to mouse container element
+   */
+  mouseContainer?: React.RefObject<HTMLElement | null> | null;
+
+  /**
+   * Padding for the glass container
+   */
+  padding?: string;
+
+  /**
+   * CSS style object
+   */
+  style?: React.CSSProperties;
+
+  /**
+   * Whether the glass is over a light background
+   */
+  overLight?: boolean;
+
+  /**
+   * Glass effect mode
+   */
+  mode?: 'standard' | 'polar' | 'prominent' | 'shader';
+
+  /**
+   * Optional click handler
+   */
+  onClick?: () => void;
+}
+
+/**
  * Accordion component properties
  */
 export interface AccordionProps extends BaseComponentProps {
@@ -2552,6 +2632,16 @@ export interface CardProps extends BaseComponentProps {
    * Card content (body)
    */
   children?: ReactNode;
+
+  /**
+   * Card styles
+   */
+  styles?: React.CSSProperties;
+
+  /**
+   * Card className
+   */
+  className?: string;
 
   /**
    * Optional click handler
@@ -5018,3 +5108,167 @@ export interface FooterSocialLinkProps extends BaseComponentProps {
    */
   variant?: 'default' | 'filled' | 'outlined';
 }
+
+// ============================================================================
+// GLASS CONTAINER COMPONENT TYPES
+// ============================================================================
+
+/**
+ * Glass container displacement modes
+ */
+export type GlassMode = 'standard' | 'polar' | 'prominent' | 'shader';
+
+/**
+ * Glass container size configuration
+ */
+export interface GlassSize {
+  /**
+   * Width of the glass container
+   */
+  width: number;
+
+  /**
+   * Height of the glass container
+   */
+  height: number;
+}
+
+/**
+ * Mouse position coordinates
+ */
+export interface MousePosition {
+  /**
+   * X coordinate
+   */
+  x: number;
+
+  /**
+   * Y coordinate
+   */
+  y: number;
+}
+
+/**
+ * Glass container component properties
+ */
+export interface GlassContainerProps extends BaseComponentProps {
+  /**
+   * Content to display inside the glass container
+   */
+  children: ReactNode;
+
+  /**
+   * Scale of the displacement effect (0-100)
+   * @default 25
+   */
+  displacementScale?: number;
+
+  /**
+   * Amount of blur applied to the backdrop (0-50)
+   * @default 12
+   */
+  blurAmount?: number;
+
+  /**
+   * Saturation level of the backdrop filter (0-300%)
+   * @default 180
+   */
+  saturation?: number;
+
+  /**
+   * Intensity of chromatic aberration effect (0-10)
+   * @default 2
+   */
+  aberrationIntensity?: number;
+
+  /**
+   * Elasticity of mouse interaction effects (0-1)
+   * @default 0.15
+   */
+  elasticity?: number;
+
+  /**
+   * Border radius of the glass container
+   * @default 999
+   */
+  cornerRadius?: number;
+
+  /**
+   * Padding inside the glass container
+   * @default '24px 32px'
+   */
+  padding?: string;
+
+  /**
+   * Size configuration for the glass container
+   * @default { width: 270, height: 69 }
+   */
+  glassSize?: GlassSize;
+
+  /**
+   * Displacement map mode
+   * @default 'standard'
+   */
+  mode?: GlassMode;
+
+  /**
+   * Whether the container is over a light background
+   * @default false
+   */
+  overLight?: boolean;
+
+  /**
+   * Active state of the container
+   * @default false
+   */
+  active?: boolean;
+
+  /**
+   * Click handler for the glass container
+   */
+  onClick?: () => void;
+
+  /**
+   * Mouse enter handler
+   */
+  onMouseEnter?: () => void;
+
+  /**
+   * Mouse leave handler
+   */
+  onMouseLeave?: () => void;
+
+  /**
+   * Mouse down handler
+   */
+  onMouseDown?: () => void;
+
+  /**
+   * Mouse up handler
+   */
+  onMouseUp?: () => void;
+
+  /**
+   * External mouse container reference for tracking
+   */
+  mouseContainer?: React.RefObject<HTMLElement | null>;
+
+  /**
+   * External global mouse position
+   */
+  globalMousePos?: MousePosition;
+
+  /**
+   * External mouse offset from container center
+   */
+  mouseOffset?: MousePosition;
+
+  /**
+   * Custom CSS styles
+   */
+  style?: React.CSSProperties;
+}
+
+/**
+ * AtomixGlass component properties
+ */

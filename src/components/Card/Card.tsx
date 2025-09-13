@@ -19,6 +19,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       className = '',
       children,
       onClick,
+      styles,
       ...rest
     },
     ref
@@ -28,13 +29,11 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       row ? CARD.CLASSES.ROW : '',
       flat ? CARD.CLASSES.FLAT : '',
       active ? CARD.CLASSES.ACTIVE : '',
-      className,
-    ]
-      .filter(Boolean)
-      .join(' ');
+      className
+    ].filter(Boolean).join(' ');
 
     return (
-      <div ref={ref} className={cardClasses} onClick={onClick} {...rest}>
+      <div ref={ref} className={cardClasses} onClick={onClick} {...rest} style={styles}>
         {(image || icon || header) && (
           <div className={CARD.SELECTORS.HEADER.substring(1)}>
             {header}
