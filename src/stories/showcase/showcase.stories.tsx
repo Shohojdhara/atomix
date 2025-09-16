@@ -54,7 +54,3 @@ export const HealthcareShowcase: Story = {
 export const TravelShowcase: Story = {
   render: () => <Travel />,
 };
-
-export const YopillLandingShowcase: Story = {
-  render: () => <YopillLanding />,
-};

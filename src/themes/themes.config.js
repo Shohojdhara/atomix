@@ -40,14 +40,6 @@ export const themesConfig = {
       tags: ['dark', 'contrast'],
       supportsDarkMode: true
     },
-    'yabai': {
-      name: 'Yabai',
-      description: 'Yabai theme for the Atomix Design System',
-      author: 'Yabai Team',
-      version: '1.0.0',
-      tags: ['dark', 'vibrant'],
-      supportsDarkMode: true
-    }
   },
 
   // Build configuration
