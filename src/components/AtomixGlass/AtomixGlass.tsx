@@ -45,12 +45,11 @@ const GlassFilter: React.FC<{
   id: string;
   displacementScale: number;
   aberrationIntensity: number;
-  width: number;
-  height: number;
+
   mode: 'standard' | 'polar' | 'prominent' | 'shader';
   shaderMapUrl?: string;
-}> = ({ id, displacementScale, aberrationIntensity, width, height, mode, shaderMapUrl }) => (
-  <svg style={{ position: 'absolute', width, height }} aria-hidden="true">
+}> = ({ id, displacementScale, aberrationIntensity, mode, shaderMapUrl }) => (
+  <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0 }} aria-hidden="true">
     <defs>
       <radialGradient id={`${id}-edge-mask`} cx="50%" cy="50%" r="50%">
         <stop offset="0%" stopColor="black" stopOpacity="0" />
@@ -208,7 +207,7 @@ const GlassContainer = forwardRef<
       className = '',
       style,
       displacementScale = 25,
-      blurAmount = 1.5,
+      blurAmount = 12,
       saturation = 180,
       aberrationIntensity = 2,
       onMouseEnter,
@@ -239,8 +238,8 @@ const GlassContainer = forwardRef<
     }, [mode, glassSize.width, glassSize.height]);
 
     const backdropStyle = {
-      filter: isFirefox ? null : `url(#${filterId})`,
-      backdropFilter: `blur(${(overLight ? 2 : 1) + blurAmount}px) saturate(${saturation}%)`,
+      filter: `url(#${filterId})`,
+      backdropFilter: `blur(${blurAmount}px) saturate(${saturation}%)`,
     };
 
     return (
@@ -255,8 +254,7 @@ const GlassContainer = forwardRef<
           id={filterId}
           displacementScale={displacementScale}
           aberrationIntensity={aberrationIntensity}
-          width={glassSize.width}
-          height={glassSize.height}
+         
           shaderMapUrl={shaderMapUrl}
         />
 
@@ -264,9 +262,8 @@ const GlassContainer = forwardRef<
           className="c-glass-container__glass"
           style={{
             borderRadius: `${cornerRadius}px`,
-            boxShadow: overLight
-              ? 'var(--atomix-glass-container-shadow-light)'
-              : 'var(--atomix-glass-container-shadow-dark)',
+            position: 'relative',
+            transition: 'all 0.2s ease-in-out',
           }}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -276,21 +273,22 @@ const GlassContainer = forwardRef<
           {/* backdrop layer that gets wiggly */}
           <span
             className="c-glass-container__warp"
-            style={
-              {
-                ...backdropStyle,
-                position: 'absolute',
-                inset: '0',
-                borderRadius: `${cornerRadius}px`,
-                overflow: 'hidden',
-              } as CSSProperties
-            }
+            style={{
+              ...backdropStyle,
+              position: 'absolute',
+              inset: 1,
+              zIndex: 0,
+              borderRadius: `${cornerRadius}px`,
+              overflow: 'hidden',
+            }}
           />
 
           {/* user content stays sharp */}
           <div
             className="c-glass-container__content"
             style={{
+              position: 'relative',
+              zIndex: 1,
               borderRadius: `${cornerRadius}px`,
             }}
           >
@@ -309,12 +307,12 @@ export const AtomixGlass = forwardRef<HTMLDivElement, AtomixGlassProps>(
   (
     {
       children,
-      displacementScale = 70,
-      blurAmount = 5,
-      saturation = 140,
-      aberrationIntensity = 2,
+  displacementScale = 70,
+  blurAmount = 12,
+  saturation = 180,
+  aberrationIntensity = 2,
       elasticity = 0.15,
-      cornerRadius = 999,
+      cornerRadius = 20,
       globalMousePos: externalGlobalMousePos,
       mouseOffset: externalMouseOffset,
       mouseContainer = null,
@@ -323,6 +321,8 @@ export const AtomixGlass = forwardRef<HTMLDivElement, AtomixGlassProps>(
       style = {},
       mode = 'standard',
       onClick,
+      showBorderEffects = true,
+      showHoverEffects = true,
     },
     ref
   ) => {
@@ -521,8 +521,8 @@ export const AtomixGlass = forwardRef<HTMLDivElement, AtomixGlassProps>(
             position: 'absolute',
             top: 0,
             left: 0,
-            height: glassSize.height,
-            width: glassSize.width,
+            height: '100%',
+            width: '100%',
             borderRadius: `${cornerRadius}px`,
             transform: baseStyle.transform,
             transition: baseStyle.transition,
@@ -537,8 +537,8 @@ export const AtomixGlass = forwardRef<HTMLDivElement, AtomixGlassProps>(
             position: 'absolute',
             top: 0,
             left: 0,
-            height: glassSize.height,
-            width: glassSize.width,
+            height: '100%',
+            width: '100%',
             borderRadius: `${cornerRadius}px`,
             transform: baseStyle.transform,
             transition: baseStyle.transition,
@@ -572,144 +572,110 @@ export const AtomixGlass = forwardRef<HTMLDivElement, AtomixGlassProps>(
           {children}
         </GlassContainer>
 
-        {/* Border layer 1 - extracted from glass container */}
-        <span
-          className="c-atomix-glass__border"
-          style={
-            {
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              height: glassSize.height,
-              width: glassSize.width,
-              borderRadius: `${cornerRadius}px`,
-              transform: baseStyle.transform,
-              transition: baseStyle.transition,
-              pointerEvents: 'none',
-              mixBlendMode: 'screen',
-              opacity: 0.3,
-              padding: '1.5px',
-              WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-              WebkitMaskComposite: 'xor',
-              maskComposite: 'exclude',
-              boxShadow:
-                '0 0 0 0.5px rgba(255, 255, 255, 0.6) inset, 0 1px 3px rgba(255, 255, 255, 0.4) inset, 0 1px 8px rgba(255, 255, 255, 0.2) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
-              background: `linear-gradient(
-          ${135 + mouseOffset.x * 1.2}deg,
-          rgba(255, 255, 255, 0.0) 0%,
-          rgba(255, 255, 255, ${0.15 + Math.abs(mouseOffset.x) * 0.01}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
-          rgba(255, 255, 255, ${0.5 + Math.abs(mouseOffset.x) * 0.015}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
-          rgba(255, 255, 255, 0.0) 100%
-        )`,
-              '--mouse-x': `${50 + mouseOffset.x * 0.5}%`,
-              '--mouse-y': `${50 + mouseOffset.y * 0.5}%`,
-            } as React.CSSProperties
-          }
-        />
 
-        {/* Border layer 2 - duplicate with mix-blend-overlay */}
-        <span
-          className="c-atomix-glass__border-overlay"
-          style={
-            {
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              height: glassSize.height,
-              width: glassSize.width,
-              borderRadius: `${cornerRadius}px`,
-              transform: baseStyle.transform,
-              transition: baseStyle.transition,
-              pointerEvents: 'none',
-              mixBlendMode: 'overlay',
-              padding: '1.5px',
-              WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-              WebkitMaskComposite: 'xor',
-              maskComposite: 'exclude',
-              boxShadow:
-                '0 0 0 0.5px rgba(255, 255, 255, 0.6) inset, 0 1px 3px rgba(255, 255, 255, 0.4) inset, 0 1px 8px rgba(255, 255, 255, 0.2) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
-              background: `linear-gradient(
-          ${135 + mouseOffset.x * 1.2}deg,
-          rgba(255, 255, 255, 0.0) 0%,
-          rgba(255, 255, 255, ${0.4 + Math.abs(mouseOffset.x) * 0.01}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
-          rgba(255, 255, 255, ${0.75 + Math.abs(mouseOffset.x) * 0.015}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
-          rgba(255, 255, 255, 0.0) 100%
-        )`,
-              '--mouse-x': `${50 + mouseOffset.x * 0.5}%`,
-              '--mouse-y': `${50 + mouseOffset.y * 0.5}%`,
-            } as React.CSSProperties
-          }
-        />
+        {/* Border Effects */}
+        {showBorderEffects && (
+          <>
+            <span
+              className="c-atomix-glass__border"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                height: '100%',
+                width: '100%',
+                borderRadius: `${cornerRadius}px`,
+                transform: baseStyle.transform,
+                transition: baseStyle.transition,
+                pointerEvents: 'none',
+                mixBlendMode: 'screen',
+                opacity: 0.2,
+                zIndex:1,
+                padding: '1.5px',
+                WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+                WebkitMaskComposite: 'xor',
+                maskComposite: 'exclude',
+                boxShadow:
+                  '0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
+                background: `linear-gradient(
+                  ${135 + mouseOffset.x * 1.2}deg,
+                  rgba(255, 255, 255, 0.0) 0%,
+                  rgba(255, 255, 255, ${0.12 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
+                  rgba(255, 255, 255, ${0.4 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
+                  rgba(255, 255, 255, 0.0) 100%
+                )`,
+              } as React.CSSProperties}
+            />
+            <span
+              className="c-atomix-glass__border-overlay"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                height: '100%',
+                width: '100%',
+                zIndex:1,
+                borderRadius: `${cornerRadius}px`,
+                transform: baseStyle.transform,
+                transition: baseStyle.transition,
+                pointerEvents: 'none',
+                mixBlendMode: 'overlay',
+                padding: '1.5px',
+                WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+                WebkitMaskComposite: 'xor',
+                maskComposite: 'exclude',
+                boxShadow:
+                  '0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
+                background: `linear-gradient(
+                  ${135 + mouseOffset.x * 1.2}deg,
+                  rgba(255, 255, 255, 0.0) 0%,
+                  rgba(255, 255, 255, ${0.32 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
+                  rgba(255, 255, 255, ${0.6 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
+                  rgba(255, 255, 255, 0.0) 100%
+                )`,
+              } as React.CSSProperties}
+            />
+          </>
+        )}
 
-        {/* Hover effects */}
-        {Boolean(onClick) && (
+        {/* Hover Effects */}
+        {showHoverEffects && Boolean(onClick) && (
           <>
             <div
               className="c-atomix-glass__hover-effect"
-              style={
-                {
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  height: glassSize.height,
-                  width: glassSize.width + 1,
-                  borderRadius: `${cornerRadius}px`,
-                  transform: baseStyle.transform,
-                  pointerEvents: 'none',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  opacity: isHovered || isActive ? 0.7 : 0,
-                  background: `radial-gradient(circle at ${50 + mouseOffset.x * 0.5}% ${50 + mouseOffset.y * 0.5}%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 30%, rgba(255, 255, 255, 0) 70%)`,
-                  mixBlendMode: 'overlay',
-                  filter: isHovered || isActive ? 'blur(0px)' : 'blur(1px)',
-                  '--mouse-x': `${50 + mouseOffset.x * 0.5}%`,
-                  '--mouse-y': `${50 + mouseOffset.y * 0.5}%`,
-                } as React.CSSProperties
-              }
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                height: '100%',
+                width: '100%',
+                borderRadius: `${cornerRadius}px`,
+                transform: baseStyle.transform,
+                pointerEvents: 'none',
+                transition: 'all 0.2s ease-out',
+                opacity: isHovered || isActive ? 0.5 : 0,
+                backgroundImage:
+                  'radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50%)',
+                mixBlendMode: 'overlay',
+              }}
             />
             <div
               className="c-atomix-glass__active-effect"
-              style={
-                {
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  height: glassSize.height,
-                  width: glassSize.width + 1,
-                  borderRadius: `${cornerRadius}px`,
-                  transform: `${baseStyle.transform} ${isActive ? 'scale(1.05)' : ''}`,
-                  pointerEvents: 'none',
-                  transition: 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
-                  opacity: isActive ? 0.8 : 0,
-                  background: `radial-gradient(circle at ${50 + mouseOffset.x * 0.5}% ${50 + mouseOffset.y * 0.5}%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.6) 40%, rgba(255, 255, 255, 0) 80%)`,
-                  mixBlendMode: 'overlay',
-                  filter: isActive ? 'blur(0px)' : 'blur(0.5px)',
-                  '--mouse-x': `${50 + mouseOffset.x * 0.5}%`,
-                  '--mouse-y': `${50 + mouseOffset.y * 0.5}%`,
-                } as React.CSSProperties
-              }
-            />
-            <div
-              className="c-atomix-glass__interaction-effect"
-              style={
-                {
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  height: glassSize.height,
-                  width: glassSize.width + 1,
-                  borderRadius: `${cornerRadius}px`,
-                  transform: baseStyle.transform,
-                  pointerEvents: 'none',
-                  transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                  opacity: isHovered ? 0.5 : isActive ? 0.9 : 0,
-                  background: `conic-gradient(from ${mouseOffset.x * 2}deg at ${50 + mouseOffset.x * 0.5}% ${50 + mouseOffset.y * 0.5}%, rgba(255, 255, 255, 1) 0deg, rgba(255, 255, 255, 0.5) 120deg, rgba(255, 255, 255, 0.2) 240deg, rgba(255, 255, 255, 1) 360deg)`,
-                  mixBlendMode: 'overlay',
-                  filter: isHovered ? 'blur(20px)' : isActive ? 'blur(0px)' : 'blur(1px)',
-                  '--mouse-x': `${50 + mouseOffset.x * 0.5}%`,
-                  '--mouse-y': `${50 + mouseOffset.y * 0.5}%`,
-                  '--rotation': `${mouseOffset.x * 2}deg`,
-                } as React.CSSProperties
-              }
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                height: '100%',
+                width: '100%',
+                borderRadius: `${cornerRadius}px`,
+                transform: baseStyle.transform,
+                pointerEvents: 'none',
+                transition: 'all 0.2s ease-out',
+                opacity: isActive ? 0.5 : 0,
+                backgroundImage:
+                  'radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 80%)',
+                mixBlendMode: 'overlay',
+              }}
             />
           </>
         )}

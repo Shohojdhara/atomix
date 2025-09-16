@@ -318,6 +318,16 @@ export interface AtomixGlassProps extends BaseComponentProps {
    * Optional click handler
    */
   onClick?: () => void;
+
+  /**
+   * Show border effects (outer border, overlay)
+   */
+  showBorderEffects?: boolean;
+
+  /**
+   * Show hover effects (hover, active, interaction)
+   */
+  showHoverEffects?: boolean;
 }
 
 /**

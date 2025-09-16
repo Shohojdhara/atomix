@@ -1,10 +1,10 @@
 // Global effect toggles
 $background-enable-backdrop-filter: false !default;
-$background-enable-gradient-overlay: false !default;
-$background-transparency-enable: false !default;
-$background-enable-with-shadow: false !default;
+$background-enable-gradient-overlay: true !default;
+$background-transparency-enable: true !default;
+$background-enable-with-shadow: true !default;
 
 // Core transparency levels (used in dynamic-background-core defaults)
-$background-transparency: 0.4 !default;
+$background-transparency: 0.5 !default;
 // Core blur levels (used in dynamic-background-core defaults)
-$background-blur: 10 !default;
+$background-blur: 2 !default;
