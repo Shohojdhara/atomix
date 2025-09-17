@@ -1441,11 +1441,7 @@ export const InteractivePlayground: Story = {
 
     // Control panel styles
     const controlPanelStyle = {
-      position: 'absolute' as const,
-      top: '20px',
-      left: '20px',
-      zIndex: 10,
-      width: '280px',
+      width: '400px',
       padding: '20px',
       borderRadius: '12px',
       background: 'rgba(0,0,0,0.7)',
@@ -2239,7 +2235,7 @@ export const MobileUIExample: Story = {
       height: '100%',
       borderRadius: '24px',
       position: 'relative' as const,
-      background: 'url(https://images.unsplash.com/photo-1636690636968-4568d7e94fe7?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+      background: 'url(https://images.unsplash.ƒcom/photo-1636690636968-4568d7e94fe7?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
       overflow: 'hidden',
     };
 
