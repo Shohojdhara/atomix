@@ -58,6 +58,11 @@ export interface BaseComponentProps {
    * Component disabled state
    */
   disabled?: boolean;
+  
+  /**
+   * Component children
+   */
+  children?: ReactNode;
 }
 
 /**
@@ -247,7 +252,7 @@ export interface AtomixGlassProps extends BaseComponentProps {
   /**
    * Content to display inside the glass effect
    */
-  children: ReactNode;
+  children?: ReactNode;
 
   /**
    * Displacement scale for the glass effect
@@ -474,6 +479,11 @@ export interface HeroProps extends BaseComponentProps {
   videoBackground?: string;
 
   /**
+   * Glass effect properties for content container
+   */
+  glass?: AtomixGlassProps | boolean;
+
+  /**
    * Video background options
    */
   videoOptions?: {
@@ -497,6 +507,11 @@ export interface HeroProps extends BaseComponentProps {
      */
     posterUrl?: string;
   };
+
+  /**
+   * Component children
+   */
+  children?: ReactNode;
 }
 
 /**

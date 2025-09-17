@@ -2,6 +2,7 @@ import React, { CSSProperties, useEffect } from 'react';
 import { HeroProps, HeroAlignment } from '../../lib/types/components';
 import { useHero } from '../../lib/composables/useHero';
 import { HERO } from '../../lib/constants/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 export const Hero: React.FC<HeroProps> = ({
   title,
@@ -21,6 +22,8 @@ export const Hero: React.FC<HeroProps> = ({
   parallax = false,
   parallaxIntensity = 0.5,
   videoBackground,
+  children,
+  glass,
   videoOptions = {
     autoplay: true,
     loop: true,
@@ -64,7 +67,7 @@ export const Hero: React.FC<HeroProps> = ({
 
     return (
       <video
-        ref={videoRef}
+        ref={videoRef as React.LegacyRef<HTMLVideoElement>}
         className="c-hero__video"
         autoPlay={autoplay}
         loop={loop}
@@ -96,14 +99,63 @@ export const Hero: React.FC<HeroProps> = ({
     );
   };
 
-  const renderContent = () => (
-    <div className={HERO.SELECTORS.CONTENT.replace('.', '')}>
-      {subtitle && <p className={HERO.SELECTORS.SUBTITLE.replace('.', '')}>{subtitle}</p>}
-      <h1 className={HERO.SELECTORS.TITLE.replace('.', '')}>{title}</h1>
-      {text && <p className={HERO.SELECTORS.TEXT.replace('.', '')}>{text}</p>}
-      {actions && <div className={HERO.SELECTORS.ACTIONS.replace('.', '')}>{actions}</div>}
-    </div>
-  );
+  const renderContent = () => {
+    const content = (
+      <div className={HERO.SELECTORS.CONTENT.replace('.', '')}>
+        {subtitle && <p className={HERO.SELECTORS.SUBTITLE.replace('.', '')}>{subtitle}</p>}
+        <h1 className={HERO.SELECTORS.TITLE.replace('.', '')}>{title}</h1>
+        {text && <p className={HERO.SELECTORS.TEXT.replace('.', '')}>{text}</p>}
+        {actions && <div className={HERO.SELECTORS.ACTIONS.replace('.', '')}>{actions}</div>}
+      </div>
+    );
+
+    // If glass is explicitly set to false, don't apply glass effect
+    if (glass === false) {
+      return content;
+    }
+
+    // If glass is true or an object, apply glass effect
+    if (glass) {
+      // If glass is true, use default glass props
+      if (glass === true) {
+        return (
+          <AtomixGlass
+            displacementScale={100}
+            blurAmount={2}
+            saturation={180}
+            aberrationIntensity={2}
+            cornerRadius={8}
+            overLight={false}
+            mode="standard"
+            showBorderEffects={true}
+            showHoverEffects={true}
+          >
+            <div className={`${HERO.SELECTORS.CONTENT.replace('.', '')} u-p-4`}>
+              {subtitle && <p className={HERO.SELECTORS.SUBTITLE.replace('.', '')}>{subtitle}</p>}
+              <h1 className={HERO.SELECTORS.TITLE.replace('.', '')}>{title}</h1>
+              {text && <p className={HERO.SELECTORS.TEXT.replace('.', '')}>{text}</p>}
+              {actions && <div className={HERO.SELECTORS.ACTIONS.replace('.', '')}>{actions}</div>}
+            </div>
+          </AtomixGlass>
+        );
+      }
+
+      // If glass is an object, use provided glass props
+      return (
+        <AtomixGlass {...glass}>
+          <div className={`${HERO.SELECTORS.CONTENT.replace('.', '')} u-p-4`}>
+            {subtitle && <p className={HERO.SELECTORS.SUBTITLE.replace('.', '')}>{subtitle}</p>}
+            <h1 className={HERO.SELECTORS.TITLE.replace('.', '')}>{title}</h1>
+            {text && <p className={HERO.SELECTORS.TEXT.replace('.', '')}>{text}</p>}
+            {actions && <div className={HERO.SELECTORS.ACTIONS.replace('.', '')}>{actions}</div>}
+          </div>
+        </AtomixGlass>
+      );
+    }
+
+    // Default behavior - no glass effect
+    return content;
+  };
 
   const renderForegroundImage = () => {
     if (!hasForegroundImage) return null;
@@ -145,7 +197,7 @@ export const Hero: React.FC<HeroProps> = ({
 
   return (
     <div
-      ref={heroRef}
+      ref={heroRef as React.LegacyRef<HTMLDivElement>}
       className={generateHeroClassNames(className)}
       style={heroStyle}
       data-parallax={parallax ? 'true' : undefined}
@@ -153,7 +205,9 @@ export const Hero: React.FC<HeroProps> = ({
     >
       {renderBackground()}
       <div className={`${HERO.SELECTORS.CONTAINER.replace('.', '')} o-container`}>
-        {useGridLayout ? (
+        {children ? (
+          <div className={HERO.SELECTORS.GRID.replace('.', '')}>{children}</div>
+        ) : useGridLayout ? (
           <div className={`${HERO.SELECTORS.GRID.replace('.', '')} o-grid`}>
             {renderGridContent()}
           </div>

@@ -92,6 +92,10 @@ const meta = {
       control: 'text',
       description: 'Video background URL',
     },
+    glass: {
+      control: 'object',
+      description: 'Glass effect properties or boolean to enable/disable',
+    },
     videoOptions: {
       control: 'object',
       description: 'Video background options',
@@ -137,6 +141,50 @@ export const Default: Story = {
     actions: primaryActionButtons,
   },
 };
+
+/**
+ * Hero with glass effect
+ */
+export const WithGlassEffect: Story = {
+  args: {
+    title: 'Hero with Glass Effect',
+    subtitle: 'Modern UI with Glassmorphism',
+    text: 'This hero content is wrapped in a glass effect container for a modern look.',
+    backgroundImageSrc: 'https://picsum.photos/id/106/1920/1080',
+    showOverlay: true,
+    alignment: 'center',
+    glass: true,
+    contentWidth: '800px',
+    actions: primaryActionButtons,
+  },
+};
+
+/**
+ * Hero with custom glass effect
+ */
+export const WithCustomGlassEffect: Story = {
+  args: {
+    title: 'Hero with Custom Glass Effect',
+    subtitle: 'Fully Customizable Glass Properties',
+    text: 'This hero uses custom glass effect properties for a unique visual style.',
+    backgroundImageSrc: 'https://picsum.photos/id/20/1920/1080',
+    showOverlay: true,
+    alignment: 'center',
+    glass: {
+      displacementScale: 150,
+      blurAmount: 5,
+      saturation: 120,
+      aberrationIntensity: 1.5,
+      cornerRadius: 15,
+      mode: 'polar',
+      showBorderEffects: true,
+      showHoverEffects: true,
+    },
+    contentWidth: '800px',
+    actions: primaryActionButtons,
+  },
+};
+
 
 /**
  * Hero with left-aligned content and image on right
