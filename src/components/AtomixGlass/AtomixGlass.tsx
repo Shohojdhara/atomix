@@ -512,7 +512,7 @@ export const AtomixGlass = forwardRef<HTMLDivElement, AtomixGlassProps>(
     return (
       <div
         className={`c-atomix-glass ${Boolean(onClick) ? 'c-atomix-glass--clickable' : ''} ${isActive ? 'c-atomix-glass--active' : ''} ${overLight ? 'c-atomix-glass--over-light' : ''}`}
-        style={{ position: 'relative', display: 'inline-block' }}
+        style={{ position: 'relative'}}
       >
         {/* Over light effect */}
         <div

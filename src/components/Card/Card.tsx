@@ -1,6 +1,7 @@
 import React, { forwardRef, Ref } from 'react';
 import { CARD } from '../../lib/constants/components';
 import { CardProps } from '../../lib/types/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   (
@@ -20,6 +21,8 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       children,
       onClick,
       styles,
+      glass,
+      cardAppearance = glass,
       ...rest
     },
     ref
@@ -29,11 +32,19 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       row ? CARD.CLASSES.ROW : '',
       flat ? CARD.CLASSES.FLAT : '',
       active ? CARD.CLASSES.ACTIVE : '',
-      className
-    ].filter(Boolean).join(' ');
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ');
 
-    return (
-      <div ref={ref} className={cardClasses} onClick={onClick} {...rest} style={styles}>
+      const cardGlassStyles = {
+        ['--atomix-card-bg' as string]: 'transparent',
+        ['--atomix-card-border-width' as string]: '0',
+        ['--atomix-card-border-radius' as string]: '0px',
+      };  
+
+    const cardContent = (
+      <>
         {(image || icon || header) && (
           <div className={CARD.SELECTORS.HEADER.substring(1)}>
             {header}
@@ -56,6 +67,23 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
         {actions && <div className={CARD.SELECTORS.ACTIONS.substring(1)}>{actions}</div>}
 
         {footer && <div className={CARD.SELECTORS.FOOTER.substring(1)}>{footer}</div>}
+      </>
+    );
+
+    if (glass) {
+      const glassProps = glass === true ? {} : glass;
+      return (
+        <AtomixGlass {...glassProps}>
+          <div ref={ref} className={cardClasses} onClick={onClick} {...rest} style={{ ...styles, ...(cardAppearance && cardGlassStyles)}}>
+            {cardContent}
+          </div>
+        </AtomixGlass>
+      );
+    }
+
+    return (
+      <div ref={ref} className={cardClasses} onClick={onClick} {...rest} style={styles}>
+        {cardContent}
       </div>
     );
   }

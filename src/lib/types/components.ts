@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { AtomixGlass } from '../../components/AtomixGlass/AtomixGlass';
 
 /**
  * Common component size options
@@ -2653,6 +2654,13 @@ export interface CardProps extends BaseComponentProps {
    */
   active?: boolean;
 
+  /**
+   * Applies a glass morphism effect to the card.
+   * Can be a boolean to enable with default settings, or an object with `AtomixGlassProps` to customize the effect.
+   */
+  glass?: boolean | Omit<React.ComponentProps<typeof AtomixGlass>, 'children'>;
+  
+  cardAppearance?: boolean;
   /**
    * Card content (body)
    */

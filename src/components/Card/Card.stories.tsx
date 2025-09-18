@@ -1,6 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Card, ElevationCard } from './index';
+import { Grid, GridCol } from '../../layouts';
+import { Container } from '../../layouts/';
+
+import Icon from '../Icon';
 
 const meta: Meta<typeof Card> = {
   title: 'Components/Card',
@@ -101,5 +105,141 @@ export const WithElevation: Story = {
     text: 'Hover over this card to see an elevation effect.',
     image: 'https://picsum.photos/id/0/712/500',
     imageAlt: 'Placeholder',
+  },
+};
+
+// Card with Glass Effect
+export const WithGlassEffect: Story = {
+  render: args => (
+    <div
+      style={{
+        backgroundImage: `url(https://picsum.photos/id/128/1920/1024)`,
+        backgroundSize: 'cover',
+        height: '80vh',
+        width: '90vw',
+        display: 'grid',
+        borderRadius: '12px',
+        placeItems: 'center',
+      }}
+    >
+      <Card {...args} styles={{ ['--atomix-card-width' as string]: '300px' }} />
+    </div>
+  ),
+  args: {
+    title: 'Card with Glass Effect',
+    text: 'This card has a glass morphism effect applied.',
+    image: 'https://picsum.photos/id/128/300/150',
+    imageAlt: 'Placeholder',
+    glass: true,
+    actions: (
+      <React.Fragment>
+        <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
+        <button className="c-btn c-btn--secondary c-btn--sm">Cancel</button>
+      </React.Fragment>
+    ),
+  },
+};
+
+// Card with Custom Glass Effect
+export const WithCustomGlassEffect: Story = {
+  render: args => (
+    <div
+      style={{
+        backgroundImage: `url(https://images.unsplash.com/photo-1754851582381-04fe7bedd618?q=80&w=3860&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        height: '95vh',
+        width: '95vw',
+        padding: '20px',
+        borderRadius: '12px',
+        overflow: 'auto',
+        display: 'grid',
+        placeItems: 'center',
+      }}
+    >
+      <Container>
+        <Grid alignItems="center">
+          <GridCol sm={6} lg={3} className="u-mb-4">
+            <Card
+              {...args}
+              title="Card with Standard Glass"
+              text="This card has mode: 'standard' glass  effect. blurAmount: 2,
+          saturation: 160,
+          displacementScale: 60,
+          aberrationIntensity: 2"
+              glass={{
+                blurAmount: 2,
+                saturation: 160,
+                displacementScale: 60,
+                aberrationIntensity: 2,
+                mode: 'standard',
+              }}
+            />
+          </GridCol>
+          <GridCol sm={6} lg={3} className="u-mb-4">
+            <Card
+              {...args}
+              title="Card with Polar Glass"
+              text="This card has mode: 'polar' glass  effect. blurAmount: 2,
+          saturation: 160,
+          displacementScale: 60,
+          aberrationIntensity: 2,"
+              glass={{
+                blurAmount: 2,
+                saturation: 160,
+                displacementScale: 60,
+                aberrationIntensity: 2,
+                mode: 'polar',
+              }}
+            />
+          </GridCol>
+          <GridCol sm={6} lg={3} className="u-mb-4">
+            <Card
+              {...args}
+              title="Card with Prominent Glass"
+              text="This card has mode: 'prominent' glass  effect. blurAmount: 2,
+          saturation: 160,
+          displacementScale: 60,
+          aberrationIntensity: 2,"
+              glass={{
+                blurAmount: 2,
+                saturation: 160,
+                displacementScale: 60,
+                aberrationIntensity: 2,
+                mode: 'prominent',
+              }}
+            />
+          </GridCol>
+          <GridCol sm={6} lg={3} className="u-mb-4">
+            <Card
+              {...args}
+              title="Card with Shader Glass"
+              text="This card has mode: 'shader' glass  effect. blurAmount: 2,
+          saturation: 160,
+          displacementScale: 60,
+          aberrationIntensity: 2,"
+              glass={{
+                blurAmount: 2,
+                saturation: 160,
+                displacementScale: 60,
+                aberrationIntensity: 0,
+                mode: 'shader',
+              }}
+            />
+          </GridCol>
+        </Grid>
+      </Container>
+    </div>
+  ),
+  args: {
+    // icon: <Icon name="Laptop" />,
+    image:
+      'https://images.unsplash.com/photo-1754851582381-04fe7bedd618?q=80&w=3860&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    actions: (
+      <React.Fragment>
+        <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
+        <button className="c-btn c-btn--secondary c-btn--sm">Cancel</button>
+      </React.Fragment>
+    ),
   },
 };
