@@ -119,37 +119,43 @@ export const Hero: React.FC<HeroProps> = ({
       // If glass is true, use default glass props
       if (glass === true) {
         return (
-          <AtomixGlass
-            displacementScale={100}
-            blurAmount={2}
-            saturation={180}
-            aberrationIntensity={2}
-            cornerRadius={8}
-            overLight={false}
-            mode="standard"
-            showBorderEffects={true}
-            showHoverEffects={true}
-          >
-            <div className={`${HERO.SELECTORS.CONTENT.replace('.', '')} u-p-4`}>
+          <div className={HERO.SELECTORS.CONTENT.replace('.', '')}>
+            <AtomixGlass
+              displacementScale={100}
+              blurAmount={2}
+              saturation={180}
+              aberrationIntensity={2}
+              cornerRadius={8}
+              overLight={false}
+              mode="standard"
+              showBorderEffects={true}
+              showHoverEffects={true}
+            >
+              <div className="u-p-4">
+                {subtitle && <p className={HERO.SELECTORS.SUBTITLE.replace('.', '')}>{subtitle}</p>}
+                <h1 className={HERO.SELECTORS.TITLE.replace('.', '')}>{title}</h1>
+                {text && <p className={HERO.SELECTORS.TEXT.replace('.', '')}>{text}</p>}
+                {actions && (
+                  <div className={HERO.SELECTORS.ACTIONS.replace('.', '')}>{actions}</div>
+                )}
+              </div>
+            </AtomixGlass>
+          </div>
+        );
+      }
+
+      // If glass is an object, use provided glass props
+      return (
+        <div className={HERO.SELECTORS.CONTENT.replace('.', '')}>
+          <AtomixGlass {...glass}>
+            <div className="u-p-4">
               {subtitle && <p className={HERO.SELECTORS.SUBTITLE.replace('.', '')}>{subtitle}</p>}
               <h1 className={HERO.SELECTORS.TITLE.replace('.', '')}>{title}</h1>
               {text && <p className={HERO.SELECTORS.TEXT.replace('.', '')}>{text}</p>}
               {actions && <div className={HERO.SELECTORS.ACTIONS.replace('.', '')}>{actions}</div>}
             </div>
           </AtomixGlass>
-        );
-      }
-
-      // If glass is an object, use provided glass props
-      return (
-        <AtomixGlass {...glass}>
-          <div className={`${HERO.SELECTORS.CONTENT.replace('.', '')} u-p-4`}>
-            {subtitle && <p className={HERO.SELECTORS.SUBTITLE.replace('.', '')}>{subtitle}</p>}
-            <h1 className={HERO.SELECTORS.TITLE.replace('.', '')}>{title}</h1>
-            {text && <p className={HERO.SELECTORS.TEXT.replace('.', '')}>{text}</p>}
-            {actions && <div className={HERO.SELECTORS.ACTIONS.replace('.', '')}>{actions}</div>}
-          </div>
-        </AtomixGlass>
+        </div>
       );
     }
 
