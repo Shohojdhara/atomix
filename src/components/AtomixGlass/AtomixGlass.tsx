@@ -13,16 +13,21 @@ import { displacementMap, polarDisplacementMap, prominentDisplacementMap } from 
 
 // Generate shader-based displacement map using shaderUtils
 const generateShaderDisplacementMap = (width: number, height: number): string => {
-  const generator = new ShaderDisplacementGenerator({
-    width,
-    height,
-    fragment: fragmentShaders.liquidGlass,
-  });
+  try {
+    const generator = new ShaderDisplacementGenerator({
+      width,
+      height,
+      fragment: fragmentShaders.liquidGlass,
+    });
 
-  const dataUrl = generator.updateShader();
-  generator.destroy();
+    const dataUrl = generator.updateShader();
+    generator.destroy();
 
-  return dataUrl;
+    return dataUrl;
+  } catch (error) {
+    // Fallback to standard displacement map if shader generation fails
+    return displacementMap;
+  }
 };
 
 const getMap = (mode: 'standard' | 'polar' | 'prominent' | 'shader', shaderMapUrl?: string) => {
@@ -233,9 +238,13 @@ const GlassContainer = forwardRef<
 
     // Generate shader displacement map when in shader mode
     useEffect(() => {
-      if (mode === 'shader') {
-        const url = generateShaderDisplacementMap(glassSize.width, glassSize.height);
-        setShaderMapUrl(url);
+      if (mode === 'shader' && glassSize.width > 0 && glassSize.height > 0) {
+        try {
+          const url = generateShaderDisplacementMap(glassSize.width, glassSize.height);
+          setShaderMapUrl(url);
+        } catch (error) {
+          console.warn('Failed to generate shader displacement map:', error);
+        }
       }
     }, [mode, glassSize.width, glassSize.height]);
 

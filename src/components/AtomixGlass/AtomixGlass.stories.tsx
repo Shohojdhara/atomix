@@ -1,18 +1,19 @@
 /**
  * AtomixGlass.stories.tsx
  *
- * This file contains Storybook stories for the AtomixGlass component, showcasing
+ * This file contains comprehensive Storybook stories for the AtomixGlass component, showcasing
  * various use cases, configurations, and best practices. The stories demonstrate
  * the component's versatility and provide examples for developers to reference.
- *
+ *\
  * @package Atomix
  * @component AtomixGlass
  */
 
 import { Meta, StoryObj } from '@storybook/react';
 import AtomixGlass from './AtomixGlass';
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import React from 'react';
+import type { RefObject } from 'react';
 
 /**
  * Storybook meta configuration for AtomixGlass component
@@ -123,6 +124,33 @@ interface BackgroundWrapperProps {
   className?: string;
   /** Additional inline styles */
   style?: React.CSSProperties;
+  /** Enable interactive background movement */
+  interactive?: boolean;
+}
+
+/**
+ * Interactive Story Container
+ *
+ * A container that provides mouse tracking and interactive background effects
+ * for enhanced storytelling and demonstration purposes.
+ */
+interface StoryContainerProps {
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+  interactive?: boolean;
+}
+
+/**
+ * Interactive Wrapper Component
+ *
+ * Provides mouse position tracking and offset calculations for interactive stories
+ */
+interface InteractiveWrapperProps {
+  children: (
+    mousePos: { x: number; y: number },
+    mouseOffset: { x: number; y: number },
+    containerRef: RefObject<HTMLDivElement>
+  ) => React.ReactNode;
 }
 
 /**
@@ -204,6 +232,106 @@ const BackgroundWrapper = ({
       >
         {children}
       </div>
+    </div>
+  );
+};
+
+/**
+ * Interactive Story Container Component
+ *
+ * A container that provides mouse tracking and interactive background effects
+ * for enhanced storytelling and demonstration purposes.
+ */
+const StoryContainer = ({ children, style = {}, interactive = false }: StoryContainerProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [backgroundPosition, setBackgroundPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (containerRef.current && interactive) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        // Calculate offset as a percentage
+        const offsetX = ((e.clientX - centerX) / rect.width) * 100;
+        const offsetY = ((e.clientY - centerY) / rect.height) * 100;
+
+        setBackgroundPosition({ x: offsetX, y: offsetY });
+      }
+    },
+    [interactive]
+  );
+
+  useEffect(() => {
+    const currentRef = containerRef.current;
+    if (currentRef && interactive) {
+      currentRef.addEventListener('mousemove', handleMouseMove);
+      return () => {
+        currentRef.removeEventListener('mousemove', handleMouseMove);
+      };
+    }
+  }, [handleMouseMove, interactive]);
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundImage: interactive
+          ? 'url(https://images.unsplash.com/photo-1663882658055-40f1d4249867?q=80&w=3807&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'
+          : undefined,
+        backgroundSize: interactive ? '160%' : 'cover',
+        backgroundPosition: interactive
+          ? `calc(50% + ${backgroundPosition.x}px) calc(50% + ${backgroundPosition.y}px)`
+          : 'center',
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
+/**
+ * Interactive Wrapper Component
+ *
+ * Provides mouse position tracking and offset calculations for interactive stories
+ */
+const InteractiveWrapper = ({ children }: InteractiveWrapperProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      setMouseOffset({
+        x: ((e.clientX - centerX) / rect.width) * 100,
+        y: ((e.clientY - centerY) / rect.height) * 100,
+      });
+    }
+    setMousePos({ x: e.clientX, y: e.clientY });
+  }, []);
+
+  useEffect(() => {
+    const currentRef = containerRef.current;
+    currentRef?.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      currentRef?.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [handleMouseMove]);
+
+  return (
+    <div ref={containerRef} style={{ width: '100%', height: '100%' }}>
+      {children(mousePos, mouseOffset, containerRef)}
     </div>
   );
 };
@@ -539,7 +667,6 @@ export const ModeShowcase: Story = {
                   saturation={settings.saturation}
                   aberrationIntensity={settings.aberrationIntensity}
                   cornerRadius={15}
-                  
                   onClick={() => handleMouseEnter(mode)}
                 >
                   <div
@@ -1889,284 +2016,6 @@ export const AccessibleExample: Story = {
 };
 
 /**
- * Layered Glass Components - Demonstrates depth and stacking effects
- *
- * This story showcases how to create depth and dimension by layering multiple
- * AtomixGlass components with different properties and z-index values.
- */
-/**
- * LayeredGlassExample Story
- *
- * This story demonstrates how to create depth and visual hierarchy by stacking
- * multiple AtomixGlass components with different properties. The layered approach
- * creates a rich, dimensional interface that showcases the component's versatility.
- *
- * Key features demonstrated:
- * - Stacking multiple glass components with different z-indices
- * - Varying opacity and blur amounts between layers
- * - Interactive hover effects that highlight the active layer
- * - Creating visual hierarchy through size and positioning
- */
-export const LayeredGlassExample: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Demonstrates how to create depth and visual hierarchy by stacking multiple AtomixGlass components with different properties.',
-      },
-    },
-  },
-  render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [activeLayer, setActiveLayer] = useState<number | null>(null);
-
-    // Define layers with different properties
-    const layers = [
-      {
-        name: 'Background Layer',
-        displacementScale: 15,
-        blurAmount: 20,
-        saturation: 140,
-        aberrationIntensity: 1,
-        cornerRadius: 20,
-        zIndex: 1,
-        width: '90%',
-        height: '80%',
-        description: 'Base layer with subtle effects and maximum blur',
-      },
-      {
-        name: 'Middle Layer',
-        displacementScale: 25,
-        blurAmount: 0,
-        saturation: 180,
-        aberrationIntensity: 2,
-        cornerRadius: 15,
-        zIndex: 1,
-        width: '70%',
-        height: '60%',
-        description: 'Medium intensity effects with balanced properties',
-      },
-      {
-        name: 'Foreground Layer',
-        displacementScale: 35,
-        blurAmount: 8,
-        saturation: 220,
-        aberrationIntensity: 3,
-        cornerRadius: 10,
-        zIndex: 3,
-        width: '50%',
-        height: '40%',
-        description: 'High intensity effects with minimal blur for sharp details',
-      },
-    ];
-
-    const handleMouseEnter = (index: number) => {
-      setActiveLayer(index);
-    };
-
-    const handleMouseLeave = () => {
-      setActiveLayer(null);
-    };
-
-    return (
-      <BackgroundWrapper
-        backgroundImage={backgrounds.abstract1}
-        height="80vh"
-        style={{ maxWidth: '1400px' }}
-      >
-        <div
-          style={{
-            padding: '30px 20px',
-            textAlign: 'center',
-            marginBottom: '20px',
-          }}
-        >
-          <h2
-            style={{
-              margin: '0 0 10px 0',
-              fontSize: '28px',
-              fontWeight: 500,
-              color: '#ffffff',
-              textShadow: '0 2px 4px rgba(0,0,0,0.2)',
-            }}
-          >
-            Layered Glass Components
-          </h2>
-          <p
-            style={{
-              fontSize: '16px',
-              maxWidth: '700px',
-              margin: '0 auto 30px',
-              color: '#ffffff',
-              textShadow: '0 1px 2px rgba(0,0,0,0.2)',
-            }}
-          >
-            Create depth and dimension by layering multiple glass components with different
-            properties. Hover over each layer to see detailed information about its configuration.
-          </p>
-        </div>
-
-        {/* Layered components container */}
-        <div
-          style={{
-            position: 'relative',
-            width: '100%',
-            height: '500px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          {/* Render layers from back to front */}
-          {layers.map((layer, index) => {
-            const isActive = activeLayer === index;
-
-            return (
-              <div
-                key={index}
-                style={{
-                  position: 'absolute',
-                  zIndex: layer.zIndex,
-                  width: layer.width,
-                  height: layer.height,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  transition: 'transform 0.3s ease-out',
-                  transform: isActive ? 'scale(1.05)' : 'scale(1)',
-                }}
-                onMouseEnter={() => handleMouseEnter(index)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <AtomixGlass
-                  displacementScale={layer.displacementScale}
-                  blurAmount={layer.blurAmount}
-                  saturation={layer.saturation}
-                  aberrationIntensity={layer.aberrationIntensity}
-                  cornerRadius={layer.cornerRadius}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '20px',
-                  }}
-                >
-                  <h3
-                    style={{
-                      margin: '0 0 15px 0',
-                      fontSize: '22px',
-                      fontWeight: 500,
-                    }}
-                  >
-                    {layer.name}
-                  </h3>
-
-                  {isActive && (
-                    <div
-                      style={{
-                        background: 'rgba(255,255,255,0.1)',
-                        borderRadius: '8px',
-                        padding: '15px',
-                        marginBottom: '15px',
-                        maxWidth: '300px',
-                        width: '100%',
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          marginBottom: '8px',
-                        }}
-                      >
-                        <span>Displacement:</span>
-                        <span>{layer.displacementScale}</span>
-                      </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          marginBottom: '8px',
-                        }}
-                      >
-                        <span>Blur:</span>
-                        <span>{layer.blurAmount}</span>
-                      </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          marginBottom: '8px',
-                        }}
-                      >
-                        <span>Saturation:</span>
-                        <span>{layer.saturation}%</span>
-                      </div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Aberration:</span>
-                        <span>{layer.aberrationIntensity}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  <p
-                    style={{
-                      fontSize: '14px',
-                      lineHeight: 1.6,
-                      textAlign: 'center',
-                      margin: '0 0 15px 0',
-                      maxWidth: '300px',
-                    }}
-                  >
-                    {layer.description}
-                  </p>
-
-                  {isActive && (
-                    <div
-                      style={{
-                        display: 'flex',
-                        gap: '10px',
-                        marginTop: '10px',
-                      }}
-                    >
-                      <button className="c-btn c-btn--primary">Select</button>
-                      <button className="c-btn c-btn--secondary">Details</button>
-                    </div>
-                  )}
-                </AtomixGlass>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Layer selector buttons */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '15px',
-            marginTop: '30px',
-          }}
-        >
-          {layers.map((layer, index) => (
-            <button
-              key={index}
-              className={`c-btn ${activeLayer === index ? 'c-btn--primary' : 'c-btn--secondary'}`}
-              onClick={() => setActiveLayer(index === activeLayer ? null : index)}
-            >
-              {layer.name}
-            </button>
-          ))}
-        </div>
-      </BackgroundWrapper>
-    );
-  },
-};
-
-/**
  * Mobile UI Example - Showcases the component on smaller screens
  *
  * This story demonstrates how AtomixGlass components can be used to create
@@ -2202,7 +2051,10 @@ export const MobileUIExample: Story = {
       height: '100%',
       borderRadius: '24px',
       position: 'relative' as const,
-      background: 'url(https://images.unsplash.ƒcom/photo-1636690636968-4568d7e94fe7?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+      backgroundImage:
+        'url(https://images.unsplash.com/photo-1697231924875-a6eea91b071b?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+      backgroundSize: 'cover' as const,
+      backgroundPosition: 'center' as const,
       overflow: 'hidden',
     };
 
@@ -2248,7 +2100,7 @@ export const MobileUIExample: Story = {
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
                 displacementScale={15}
-                blurAmount={8}
+                blurAmount={0.01}
                 saturation={140}
                 aberrationIntensity={1}
                 cornerRadius={20}
@@ -2292,7 +2144,7 @@ export const MobileUIExample: Story = {
 
               <AtomixGlass
                 displacementScale={20}
-                blurAmount={10}
+                blurAmount={0.01}
                 saturation={160}
                 aberrationIntensity={1.5}
                 cornerRadius={15}
@@ -2347,7 +2199,7 @@ export const MobileUIExample: Story = {
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
                 displacementScale={18}
-                blurAmount={9}
+                blurAmount={0.01}
                 saturation={150}
                 aberrationIntensity={1.2}
                 cornerRadius={15}
@@ -2384,7 +2236,7 @@ export const MobileUIExample: Story = {
 
               <AtomixGlass
                 displacementScale={15}
-                blurAmount={8}
+                blurAmount={0.01}
                 saturation={140}
                 aberrationIntensity={1}
                 cornerRadius={15}
@@ -2422,7 +2274,7 @@ export const MobileUIExample: Story = {
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
                 displacementScale={22}
-                blurAmount={11}
+                blurAmount={0.01}
                 saturation={170}
                 aberrationIntensity={1.8}
                 cornerRadius={15}
@@ -2525,7 +2377,7 @@ export const MobileUIExample: Story = {
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
                 displacementScale={20}
-                blurAmount={10}
+                blurAmount={0.01}
                 saturation={160}
                 aberrationIntensity={1.5}
                 cornerRadius={15}
@@ -2595,43 +2447,40 @@ export const MobileUIExample: Story = {
 
     return (
       <BackgroundWrapper
-        backgroundImage={backgrounds.purpleGradient}
+        backgroundImage="https://images.unsplash.com/photo-1651667766251-07a2c9443feb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         height="auto"
         style={{
           maxWidth: '1400px',
           padding: '40px 20px',
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
         }}
       >
-        <h2
-          style={{
-            margin: '0 0 20px 0',
-            fontSize: '28px',
-            fontWeight: 500,
-            color: '#ffffff',
-            textAlign: 'center',
-            textShadow: '0 2px 4px rgba(0,0,0,0.2)',
-          }}
-        >
-          Mobile UI Example
-        </h2>
+        <div style={{ maxWidth: '300px' }}>
+          <h2
+            style={{
+              margin: '0 0 20px 0',
+              fontSize: '28px',
+              fontWeight: 500,
+              color: '#ffffff',
+              textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+            }}
+          >
+            Mobile UI Example
+          </h2>
 
-        <p
-          style={{
-            fontSize: '16px',
-            maxWidth: '600px',
-            margin: '0 auto 30px',
-            color: '#ffffff',
-            textAlign: 'center',
-            textShadow: '0 1px 2px rgba(0,0,0,0.2)',
-          }}
-        >
-          AtomixGlass components optimized for mobile interfaces with touch-friendly controls
-        </p>
-
+          <p
+            style={{
+              fontSize: '16px',
+              maxWidth: '600px',
+              margin: '0 auto 30px',
+              color: '#ffffff',
+              textShadow: '0 1px 2px rgba(0,0,0,0.2)',
+            }}
+          >
+            AtomixGlass components optimized for mobile interfaces with touch-friendly controls
+          </p>
+        </div>
         {/* Phone frame */}
         <div style={phoneFrameStyle}>
           <div style={phoneScreenStyle}>
@@ -2642,7 +2491,7 @@ export const MobileUIExample: Story = {
               {/* Header */}
               <AtomixGlass
                 displacementScale={10}
-                blurAmount={5}
+                blurAmount={0.01}
                 saturation={120}
                 aberrationIntensity={0.8}
                 cornerRadius={0}
@@ -2674,7 +2523,7 @@ export const MobileUIExample: Story = {
               {/* Bottom navigation */}
               <AtomixGlass
                 displacementScale={10}
-                blurAmount={5}
+                blurAmount={0.01}
                 saturation={120}
                 aberrationIntensity={0.8}
                 cornerRadius={0}
@@ -2771,7 +2620,7 @@ export const ThemeSwitching: Story = {
         >
           <AtomixGlass
             displacementScale={20}
-            blurAmount={5}
+            blurAmount={0.2}
             saturation={160}
             aberrationIntensity={1.5}
             cornerRadius={20}

@@ -17,6 +17,7 @@ import { useVideoPlayer } from '../../lib/composables/useVideoPlayer';
 import { VIDEO_PLAYER } from '../../lib/constants/components';
 import { VideoPlayerProps } from '../../lib/types/components';
 import { extractYouTubeId, isYouTubeUrl } from '../../lib/utils';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 /**
  * Advanced Video Player Component
@@ -51,6 +52,9 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
       subtitles,
       quality,
       ambientMode = false,
+      glass = false,
+      glassOpacity = 1,
+      glassContent,
       ...props
     },
     ref
@@ -115,6 +119,10 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
     const [activeSubtitle, setActiveSubtitle] = useState<string | null>(
       subtitles?.find(sub => sub.default)?.srcLang || null
     );
+    const [videoDimensions, setVideoDimensions] = useState<{ width: number; height: number }>({
+      width: 0,
+      height: 0,
+    });
 
     const handleProgressClick = useCallback(
       (e: React.MouseEvent<HTMLDivElement>) => {
@@ -225,6 +233,64 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
       return undefined;
     }, [subtitles, setSubtitle, videoRef]);
 
+    // Track video/iframe dimensions for AtomixGlass
+    useEffect(() => {
+      const updateDimensions = () => {
+        if (isYouTube && iframeRef.current) {
+          const iframe = iframeRef.current;
+          const rect = iframe.getBoundingClientRect();
+          setVideoDimensions({ width: rect.width, height: rect.height });
+        } else if (videoRef.current) {
+          const video = videoRef.current;
+          const rect = video.getBoundingClientRect();
+          setVideoDimensions({ width: rect.width, height: rect.height });
+        }
+      };
+
+      // Initial measurement with slight delay to ensure element is rendered
+      const initialTimer = setTimeout(updateDimensions, 100);
+
+      // Use ResizeObserver to track size changes
+      const resizeObserver = new ResizeObserver(updateDimensions);
+
+      if (isYouTube && iframeRef.current) {
+        const iframe = iframeRef.current;
+        resizeObserver.observe(iframe);
+
+        // Listen for iframe load event
+        const handleIframeLoad = () => updateDimensions();
+        iframe.addEventListener('load', handleIframeLoad);
+
+        return () => {
+          clearTimeout(initialTimer);
+          resizeObserver.disconnect();
+          iframe.removeEventListener('load', handleIframeLoad);
+        };
+      } else if (videoRef.current) {
+        const video = videoRef.current;
+        resizeObserver.observe(video);
+
+        // Listen for video metadata loaded event
+        const handleLoadedMetadata = () => updateDimensions();
+        video.addEventListener('loadedmetadata', handleLoadedMetadata);
+
+        return () => {
+          clearTimeout(initialTimer);
+          resizeObserver.disconnect();
+          video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        };
+      }
+
+      // Also listen for window resize
+      window.addEventListener('resize', updateDimensions);
+
+      return () => {
+        clearTimeout(initialTimer);
+        resizeObserver.disconnect();
+        window.removeEventListener('resize', updateDimensions);
+      };
+    }, [isYouTube, videoRef, iframeRef]);
+
     const handleContainerClick = useCallback(() => {
       if (containerRef.current) {
         containerRef.current.focus();
@@ -271,7 +337,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
     return (
       <div
         ref={containerRef}
-        className={`${VIDEO_PLAYER.CLASSES.BASE} ${isYouTube ? VIDEO_PLAYER.CLASSES.YOUTUBE : ''} ${ambientMode ? VIDEO_PLAYER.CLASSES.AMBIENT : ''} ${className}`}
+        className={`${VIDEO_PLAYER.CLASSES.BASE} ${isYouTube ? VIDEO_PLAYER.CLASSES.YOUTUBE : ''} ${ambientMode ? VIDEO_PLAYER.CLASSES.AMBIENT : ''} ${glass ? VIDEO_PLAYER.CLASSES.GLASS : ''} ${className}`}
         style={{
           width,
           height,
@@ -313,11 +379,13 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         ) : (
           <video
             ref={element => {
-              videoRef.current = element;
+              if (videoRef && videoRef.current !== element) {
+                (videoRef as React.MutableRefObject<HTMLVideoElement | null>).current = element;
+              }
               if (typeof ref === 'function') {
                 ref(element);
-              } else if (ref) {
-                ref.current = element;
+              } else if (ref && ref.current !== element) {
+                (ref as React.MutableRefObject<HTMLVideoElement | null>).current = element;
               }
             }}
             className={VIDEO_PLAYER.CLASSES.VIDEO}
@@ -350,9 +418,66 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
           </div>
         )}
 
+        {/* Glass overlay - positioned between video and controls */}
+        {glass && (
+          <div
+            className={VIDEO_PLAYER.CLASSES.GLASS_OVERLAY}
+            style={{
+              transition: 'opacity 0.3s ease',
+            }}
+          >
+            <AtomixGlass
+              {...(typeof glass === 'boolean' ? {} : glass)}
+              style={{
+                borderRadius: 'inherit',
+              }}
+              mouseContainer={containerRef}
+              blurAmount={-0.90}
+              saturation={100}
+              aberrationIntensity={0}
+              cornerRadius={0}
+              mode="shader"
+              elasticity={0}
+            >
+              {!glassContent && (
+                <div
+                  style={{
+                    width: videoDimensions.width > 0 ? `${videoDimensions.width}px` : '100%',
+                    height: videoDimensions.height > 0 ? `${videoDimensions.height}px` : '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'transparent',
+                  }}
+                >
+                  {/* Glass effect background */}
+                </div>
+              )}
+            </AtomixGlass>
+          </div>
+        )}
+
+        {/* Custom glass content overlay */}
+        {glass && glassContent && (
+          <div
+            className={VIDEO_PLAYER.CLASSES.GLASS_CONTENT}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {glassContent}
+          </div>
+        )}
+
         {controls && !isYouTube && (
           <div
             className={`${VIDEO_PLAYER.CLASSES.CONTROLS} ${showControls ? VIDEO_PLAYER.CLASSES.CONTROLS_VISIBLE : ''}`}
+            style={{
+              position: 'relative',
+              zIndex: glass ? 3 : 'auto',
+            }}
           >
             <div className={VIDEO_PLAYER.CLASSES.PROGRESS_CONTAINER}>
               <div className={VIDEO_PLAYER.CLASSES.PROGRESS_BAR} onClick={handleProgressClick}>

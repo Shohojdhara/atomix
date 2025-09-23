@@ -2494,6 +2494,34 @@ export interface VideoPlayerProps extends BaseComponentProps {
   ambientMode?: boolean;
 
   /**
+   * Glass morphism variant configuration
+   * - true: Enable with default settings
+   * - false/undefined: Disable glass effect
+   * - object: Custom glass configuration
+   */
+  glass?: boolean | {
+    displacementScale?: number;
+    blurAmount?: number;
+    saturation?: number;
+    aberrationIntensity?: number;
+    elasticity?: number;
+    cornerRadius?: number;
+    mode?: 'standard' | 'polar' | 'prominent' | 'shader';
+    overLight?: boolean;
+  };
+
+  /**
+   * Glass overlay opacity (0-1) when glass variant is enabled
+   * @default 0.3
+   */
+  glassOpacity?: number;
+
+  /**
+   * Custom content to display over the glass layer
+   */
+  glassContent?: React.ReactNode;
+
+  /**
    * Play event handler
    */
   onPlay?: () => void;

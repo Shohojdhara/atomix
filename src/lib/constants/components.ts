@@ -1081,6 +1081,9 @@ export const VIDEO_PLAYER = {
     SETTINGS_OPTION_ACTIVE: 'c-video-player__settings-option--active',
     AMBIENT: 'c-video-player--ambient',
     AMBIENT_CANVAS: 'c-video-player__ambient-canvas',
+    GLASS: 'c-video-player--glass',
+    GLASS_OVERLAY: 'c-video-player__glass-overlay',
+    GLASS_CONTENT: 'c-video-player__glass-content',
   },
   DEFAULTS: {
     CONTROLS_TIMEOUT: 3000,
