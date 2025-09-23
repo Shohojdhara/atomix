@@ -168,7 +168,7 @@ export const WithCustomGlassEffect: Story = {
           displacementScale: 60,
           aberrationIntensity: 2"
               glass={{
-                blurAmount: 2,
+                blurAmount: 0,
                 saturation: 160,
                 displacementScale: 60,
                 aberrationIntensity: 2,
@@ -185,7 +185,7 @@ export const WithCustomGlassEffect: Story = {
           displacementScale: 60,
           aberrationIntensity: 2,"
               glass={{
-                blurAmount: 2,
+                blurAmount: 0,
                 saturation: 160,
                 displacementScale: 60,
                 aberrationIntensity: 2,
@@ -202,7 +202,7 @@ export const WithCustomGlassEffect: Story = {
           displacementScale: 60,
           aberrationIntensity: 2,"
               glass={{
-                blurAmount: 2,
+                blurAmount: 0,
                 saturation: 160,
                 displacementScale: 60,
                 aberrationIntensity: 2,
@@ -219,7 +219,7 @@ export const WithCustomGlassEffect: Story = {
           displacementScale: 60,
           aberrationIntensity: 2,"
               glass={{
-                blurAmount: 2,
+                blurAmount: 0,
                 saturation: 160,
                 displacementScale: 60,
                 aberrationIntensity: 0,

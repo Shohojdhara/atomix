@@ -6,10 +6,10 @@ import {
   useId,
   useRef,
   useState,
+  useMemo,
 } from 'react';
 import { ShaderDisplacementGenerator, fragmentShaders } from './shader-utils';
 import { displacementMap, polarDisplacementMap, prominentDisplacementMap } from './utils';
-import { AtomixGlassProps } from '../../lib/types/components';
 
 // Generate shader-based displacement map using shaderUtils
 const generateShaderDisplacementMap = (width: number, height: number): string => {
@@ -45,11 +45,12 @@ const GlassFilter: React.FC<{
   id: string;
   displacementScale: number;
   aberrationIntensity: number;
-
+  width: number;
+  height: number;
   mode: 'standard' | 'polar' | 'prominent' | 'shader';
   shaderMapUrl?: string;
-}> = ({ id, displacementScale, aberrationIntensity, mode, shaderMapUrl }) => (
-  <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0 }} aria-hidden="true">
+}> = ({ id, displacementScale, aberrationIntensity, width, height, mode, shaderMapUrl }) => (
+  <svg style={{ position: 'absolute', width, height, inset: 0 }} aria-hidden="true">
     <defs>
       <radialGradient id={`${id}-edge-mask`} cx="50%" cy="50%" r="50%">
         <stop offset="0%" stopColor="black" stopOpacity="0" />
@@ -178,7 +179,7 @@ const GlassFilter: React.FC<{
   </svg>
 );
 
-/* ---------- Glass Container Component ---------- */
+/* ---------- container ---------- */
 const GlassContainer = forwardRef<
   HTMLDivElement,
   React.PropsWithChildren<{
@@ -196,6 +197,7 @@ const GlassContainer = forwardRef<
     active?: boolean;
     overLight?: boolean;
     cornerRadius?: number;
+    padding?: string;
     glassSize?: { width: number; height: number };
     onClick?: () => void;
     mode?: 'standard' | 'polar' | 'prominent' | 'shader';
@@ -216,8 +218,9 @@ const GlassContainer = forwardRef<
       onMouseUp,
       active = false,
       overLight = false,
-      cornerRadius = 20,
-      glassSize = { width: 270, height: 69 },
+      cornerRadius = 0,
+      padding = '0 0',
+      glassSize = { width: 0, height: 0 },
       onClick,
       mode = 'standard',
     },
@@ -226,8 +229,7 @@ const GlassContainer = forwardRef<
     const filterId = useId();
     const [shaderMapUrl, setShaderMapUrl] = useState<string>('');
 
-    const isFirefox =
-      typeof navigator !== 'undefined' && navigator.userAgent.toLowerCase().includes('firefox');
+    const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
 
     // Generate shader displacement map when in shader mode
     useEffect(() => {
@@ -237,15 +239,15 @@ const GlassContainer = forwardRef<
       }
     }, [mode, glassSize.width, glassSize.height]);
 
-    const backdropStyle = {
+    const backdropStyle = useMemo(() => ({
       filter: `url(#${filterId})`,
-      backdropFilter: `blur(${blurAmount}px) saturate(${saturation}%)`,
-    };
+      backdropFilter: `blur(${(overLight ? 12 : 4) + blurAmount * 32}px) saturate(${saturation}%)`,
+    }), [filterId, blurAmount, saturation, overLight]);
 
     return (
       <div
         ref={ref}
-        className={`c-glass-container ${className} ${active ? 'c-glass-container--active' : ''} ${Boolean(onClick) ? 'c-glass-container--clickable' : ''} ${overLight ? 'c-glass-container--over-light' : ''}`}
+        className={` ${className} ${active ? 'active' : ''}`}
         style={style}
         onClick={onClick}
       >
@@ -254,16 +256,21 @@ const GlassContainer = forwardRef<
           id={filterId}
           displacementScale={displacementScale}
           aberrationIntensity={aberrationIntensity}
-         
+          width={glassSize.width}
+          height={glassSize.height}
           shaderMapUrl={shaderMapUrl}
         />
 
         <div
-          className="c-glass-container__glass"
+          className="glass"
           style={{
-            borderRadius: `${cornerRadius}px`,
             position: 'relative',
+            padding,
+            borderRadius: `${cornerRadius}px`,
             transition: 'all 0.2s ease-in-out',
+            boxShadow: overLight
+              ? '0px 16px 70px rgba(0, 0, 0, 0.75)'
+              : '0px 12px 40px rgba(0, 0, 0, 0.25)',
           }}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -272,24 +279,25 @@ const GlassContainer = forwardRef<
         >
           {/* backdrop layer that gets wiggly */}
           <span
-            className="c-glass-container__warp"
-            style={{
-              ...backdropStyle,
-              position: 'absolute',
-              inset: 1,
-              zIndex: 0,
-              borderRadius: `${cornerRadius}px`,
-              overflow: 'hidden',
-            }}
+            className="glass__warp"
+            style={
+              {
+                ...backdropStyle,
+                borderRadius: `${cornerRadius}px`,
+                position: 'absolute',
+                inset: '0',
+              } as CSSProperties
+            }
           />
 
           {/* user content stays sharp */}
           <div
-            className="c-glass-container__content"
             style={{
               position: 'relative',
               zIndex: 1,
-              borderRadius: `${cornerRadius}px`,
+              textShadow: overLight
+                ? '0px 2px 12px rgba(0, 0, 0, 0)'
+                : '0px 2px 12px rgba(0, 0, 0, 0.4)',
             }}
           >
             {children}
@@ -302,388 +310,435 @@ const GlassContainer = forwardRef<
 
 GlassContainer.displayName = 'GlassContainer';
 
-/* ---------- Main AtomixGlass Component ---------- */
-export const AtomixGlass = forwardRef<HTMLDivElement, AtomixGlassProps>(
-  (
-    {
-      children,
+interface AtomixGlassProps {
+  children: React.ReactNode;
+  displacementScale?: number;
+  blurAmount?: number;
+  saturation?: number;
+  aberrationIntensity?: number;
+  elasticity?: number;
+  cornerRadius?: number;
+  globalMousePos?: { x: number; y: number };
+  mouseOffset?: { x: number; y: number };
+  mouseContainer?: React.RefObject<HTMLElement | null> | null;
+  className?: string;
+  padding?: string;
+  style?: React.CSSProperties;
+  overLight?: boolean;
+  mode?: 'standard' | 'polar' | 'prominent' | 'shader';
+  onClick?: () => void;
+}
+
+export function AtomixGlass({
+  children,
   displacementScale = 70,
-  blurAmount = 12,
-  saturation = 180,
+  blurAmount = 0.0625,
+  saturation = 140,
   aberrationIntensity = 2,
-      elasticity = 0.15,
-      cornerRadius = 20,
-      globalMousePos: externalGlobalMousePos,
-      mouseOffset: externalMouseOffset,
-      mouseContainer = null,
-      className = '',
-      overLight = false,
-      style = {},
-      mode = 'standard',
-      onClick,
-      showBorderEffects = true,
-      showHoverEffects = true,
-    },
-    ref
-  ) => {
-    const glassRef = useRef<HTMLDivElement>(null);
-    const [isHovered, setIsHovered] = useState(false);
-    const [isActive, setIsActive] = useState(false);
-    const [glassSize, setGlassSize] = useState({ width: 270, height: 69 });
-    const [internalGlobalMousePos, setInternalGlobalMousePos] = useState({ x: 0, y: 0 });
-    const [internalMouseOffset, setInternalMouseOffset] = useState({ x: 0, y: 0 });
+  elasticity = 0.15,
+  cornerRadius = 20,
+  globalMousePos: externalGlobalMousePos,
+  mouseOffset: externalMouseOffset,
+  mouseContainer = null,
+  className = '',
+  padding = '0 0',
+  overLight = false,
+  style = {},
+  mode = 'standard',
+  onClick,
+}: AtomixGlassProps) {
+  const glassRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [glassSize, setGlassSize] = useState({ width: 270, height: 69 });
+  const [internalGlobalMousePos, setInternalGlobalMousePos] = useState({ x: 0, y: 0 });
+  const [internalMouseOffset, setInternalMouseOffset] = useState({ x: 0, y: 0 });
 
-    // Use external mouse position if provided, otherwise use internal
-    const globalMousePos = externalGlobalMousePos || internalGlobalMousePos;
-    const mouseOffset = externalMouseOffset || internalMouseOffset;
+  // Use external mouse position if provided, otherwise use internal
+  const globalMousePos = externalGlobalMousePos || internalGlobalMousePos;
+  const mouseOffset = externalMouseOffset || internalMouseOffset;
 
-    // Internal mouse tracking
-    const handleMouseMove = useCallback(
-      (e: MouseEvent) => {
-        const container = mouseContainer?.current || glassRef.current;
-        if (!container) {
-          return;
-        }
-
-        const rect = container.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        setInternalMouseOffset({
-          x: ((e.clientX - centerX) / rect.width) * 100,
-          y: ((e.clientY - centerY) / rect.height) * 100,
-        });
-
-        setInternalGlobalMousePos({
-          x: e.clientX,
-          y: e.clientY,
-        });
-      },
-      [mouseContainer]
-    );
-
-    // Set up mouse tracking if no external mouse position is provided
-    useEffect(() => {
-      if (externalGlobalMousePos && externalMouseOffset) {
-        // External mouse tracking is provided, don't set up internal tracking
-        return;
-      }
-
+  // Internal mouse tracking
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
       const container = mouseContainer?.current || glassRef.current;
       if (!container) {
         return;
       }
 
-      container.addEventListener('mousemove', handleMouseMove);
+      const rect = container.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
 
-      return () => {
-        container.removeEventListener('mousemove', handleMouseMove);
-      };
-    }, [handleMouseMove, mouseContainer, externalGlobalMousePos, externalMouseOffset]);
+      setInternalMouseOffset({
+        x: ((e.clientX - centerX) / rect.width) * 100,
+        y: ((e.clientY - centerY) / rect.height) * 100,
+      });
 
-    // Calculate directional scaling based on mouse position
-    const calculateDirectionalScale = useCallback(() => {
-      if (!globalMousePos.x || !globalMousePos.y || !glassRef.current) {
-        return 'scale(1)';
+      setInternalGlobalMousePos({
+        x: e.clientX,
+        y: e.clientY,
+      });
+    },
+    [mouseContainer]
+  );
+
+  // Set up mouse tracking if no external mouse position is provided
+  useEffect(() => {
+    if (externalGlobalMousePos && externalMouseOffset) {
+      // External mouse tracking is provided, don't set up internal tracking
+      return;
+    }
+
+    const container = mouseContainer?.current || glassRef.current;
+    if (!container) {
+      return;
+    }
+
+    container.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      container.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [handleMouseMove, mouseContainer, externalGlobalMousePos, externalMouseOffset]);
+
+  // Calculate directional scaling based on mouse position
+  const calculateDirectionalScale = useCallback(() => {
+    if (!globalMousePos.x || !globalMousePos.y || !glassRef.current) {
+      return 'scale(1)';
+    }
+
+    const rect = glassRef.current.getBoundingClientRect();
+    const pillCenterX = rect.left + rect.width / 2;
+    const pillCenterY = rect.top + rect.height / 2;
+    const pillWidth = glassSize.width;
+    const pillHeight = glassSize.height;
+
+    const deltaX = globalMousePos.x - pillCenterX;
+    const deltaY = globalMousePos.y - pillCenterY;
+
+    // Calculate distance from mouse to pill edges (not center)
+    const edgeDistanceX = Math.max(0, Math.abs(deltaX) - pillWidth / 2);
+    const edgeDistanceY = Math.max(0, Math.abs(deltaY) - pillHeight / 2);
+    const edgeDistance = Math.sqrt(edgeDistanceX * edgeDistanceX + edgeDistanceY * edgeDistanceY);
+
+    // Activation zone: 200px from edges
+    const activationZone = 200;
+
+    // If outside activation zone, no effect
+    if (edgeDistance > activationZone) {
+      return 'scale(1)';
+    }
+
+    // Calculate fade-in factor (1 at edge, 0 at activation zone boundary)
+    const fadeInFactor = 1 - edgeDistance / activationZone;
+
+    // Normalize the deltas for direction
+    const centerDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    if (centerDistance === 0) {
+      return 'scale(1)';
+    }
+
+    const normalizedX = deltaX / centerDistance;
+    const normalizedY = deltaY / centerDistance;
+
+    // Calculate stretch factors with fade-in
+    const stretchIntensity = Math.min(centerDistance / 300, 1) * elasticity * fadeInFactor;
+
+    // X-axis scaling: stretch horizontally when moving left/right, compress when moving up/down
+    const scaleX =
+      1 +
+      Math.abs(normalizedX) * stretchIntensity * 0.3 -
+      Math.abs(normalizedY) * stretchIntensity * 0.15;
+
+    // Y-axis scaling: stretch vertically when moving up/down, compress when moving left/right
+    const scaleY =
+      1 +
+      Math.abs(normalizedY) * stretchIntensity * 0.3 -
+      Math.abs(normalizedX) * stretchIntensity * 0.15;
+
+    return `scaleX(${Math.max(0.8, scaleX)}) scaleY(${Math.max(0.8, scaleY)})`;
+  }, [globalMousePos, elasticity, glassSize]);
+
+  // Helper function to calculate fade-in factor based on distance from element edges
+  const calculateFadeInFactor = useCallback(() => {
+    if (!globalMousePos.x || !globalMousePos.y || !glassRef.current) {
+      return 0;
+    }
+
+    const rect = glassRef.current.getBoundingClientRect();
+    const pillCenterX = rect.left + rect.width / 2;
+    const pillCenterY = rect.top + rect.height / 2;
+    const pillWidth = glassSize.width;
+    const pillHeight = glassSize.height;
+
+    const edgeDistanceX = Math.max(0, Math.abs(globalMousePos.x - pillCenterX) - pillWidth / 2);
+    const edgeDistanceY = Math.max(0, Math.abs(globalMousePos.y - pillCenterY) - pillHeight / 2);
+    const edgeDistance = Math.sqrt(edgeDistanceX * edgeDistanceX + edgeDistanceY * edgeDistanceY);
+
+    const activationZone = 200;
+    return edgeDistance > activationZone ? 0 : 1 - edgeDistance / activationZone;
+  }, [globalMousePos, glassSize]);
+
+  // Helper function to calculate elastic translation
+  const calculateElasticTranslation = useCallback(() => {
+    if (!glassRef.current) {
+      return { x: 0, y: 0 };
+    }
+
+    const fadeInFactor = calculateFadeInFactor();
+    const rect = glassRef.current.getBoundingClientRect();
+    const pillCenterX = rect.left + rect.width / 2;
+    const pillCenterY = rect.top + rect.height / 2;
+
+    return {
+      x: (globalMousePos.x - pillCenterX) * elasticity * 0.1 * fadeInFactor,
+      y: (globalMousePos.y - pillCenterY) * elasticity * 0.1 * fadeInFactor,
+    };
+  }, [globalMousePos, elasticity, calculateFadeInFactor]);
+
+  // Update glass size whenever component mounts, content changes, or window resizes
+  useEffect(() => {
+    const updateGlassSize = () => {
+      if (glassRef.current) {
+        const rect = glassRef.current.getBoundingClientRect();
+        setGlassSize({ width: rect.width, height: rect.height });
       }
-
-      const rect = glassRef.current.getBoundingClientRect();
-      const pillCenterX = rect.left + rect.width / 2;
-      const pillCenterY = rect.top + rect.height / 2;
-      const pillWidth = glassSize.width;
-      const pillHeight = glassSize.height;
-
-      const deltaX = globalMousePos.x - pillCenterX;
-      const deltaY = globalMousePos.y - pillCenterY;
-
-      // Calculate distance from mouse to pill edges (not center)
-      const edgeDistanceX = Math.max(0, Math.abs(deltaX) - pillWidth / 2);
-      const edgeDistanceY = Math.max(0, Math.abs(deltaY) - pillHeight / 2);
-      const edgeDistance = Math.sqrt(edgeDistanceX * edgeDistanceX + edgeDistanceY * edgeDistanceY);
-
-      // Activation zone: 200px from edges
-      const activationZone = 200;
-
-      // If outside activation zone, no effect
-      if (edgeDistance > activationZone) {
-        return 'scale(1)';
-      }
-
-      // Calculate fade-in factor (1 at edge, 0 at activation zone boundary)
-      const fadeInFactor = 1 - edgeDistance / activationZone;
-
-      // Normalize the deltas for direction
-      const centerDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-      if (centerDistance === 0) {
-        return 'scale(1)';
-      }
-
-      const normalizedX = deltaX / centerDistance;
-      const normalizedY = deltaY / centerDistance;
-
-      // Calculate stretch factors with fade-in
-      const stretchIntensity = Math.min(centerDistance / 300, 1) * elasticity * fadeInFactor;
-
-      // X-axis scaling: stretch horizontally when moving left/right, compress when moving up/down
-      const scaleX =
-        1 +
-        Math.abs(normalizedX) * stretchIntensity * 0.3 -
-        Math.abs(normalizedY) * stretchIntensity * 0.15;
-
-      // Y-axis scaling: stretch vertically when moving up/down, compress when moving left/right
-      const scaleY =
-        1 +
-        Math.abs(normalizedY) * stretchIntensity * 0.3 -
-        Math.abs(normalizedX) * stretchIntensity * 0.15;
-
-      return `scaleX(${Math.max(0.8, scaleX)}) scaleY(${Math.max(0.8, scaleY)})`;
-    }, [globalMousePos, elasticity, glassSize]);
-
-    // Helper function to calculate fade-in factor based on distance from element edges
-    const calculateFadeInFactor = useCallback(() => {
-      if (!globalMousePos.x || !globalMousePos.y || !glassRef.current) {
-        return 0;
-      }
-
-      const rect = glassRef.current.getBoundingClientRect();
-      const pillCenterX = rect.left + rect.width / 2;
-      const pillCenterY = rect.top + rect.height / 2;
-      const pillWidth = glassSize.width;
-      const pillHeight = glassSize.height;
-
-      const edgeDistanceX = Math.max(0, Math.abs(globalMousePos.x - pillCenterX) - pillWidth / 2);
-      const edgeDistanceY = Math.max(0, Math.abs(globalMousePos.y - pillCenterY) - pillHeight / 2);
-      const edgeDistance = Math.sqrt(edgeDistanceX * edgeDistanceX + edgeDistanceY * edgeDistanceY);
-
-      const activationZone = 200;
-      return edgeDistance > activationZone ? 0 : 1 - edgeDistance / activationZone;
-    }, [globalMousePos, glassSize]);
-
-    // Helper function to calculate elastic translation
-    const calculateElasticTranslation = useCallback(() => {
-      if (!glassRef.current) {
-        return { x: 0, y: 0 };
-      }
-
-      const fadeInFactor = calculateFadeInFactor();
-      const rect = glassRef.current.getBoundingClientRect();
-      const pillCenterX = rect.left + rect.width / 2;
-      const pillCenterY = rect.top + rect.height / 2;
-
-      return {
-        x: (globalMousePos.x - pillCenterX) * elasticity * 0.1 * fadeInFactor,
-        y: (globalMousePos.y - pillCenterY) * elasticity * 0.1 * fadeInFactor,
-      };
-    }, [globalMousePos, elasticity, calculateFadeInFactor]);
-
-    // Update glass size whenever component mounts or window resizes
-    useEffect(() => {
-      const updateGlassSize = () => {
-        if (glassRef.current) {
-          const rect = glassRef.current.getBoundingClientRect();
-          setGlassSize({ width: rect.width, height: rect.height });
-        }
-      };
-
-      updateGlassSize();
-      if (typeof window !== 'undefined') {
-        window.addEventListener('resize', updateGlassSize);
-        return () => window.removeEventListener('resize', updateGlassSize);
-      }
-    }, []);
-
-    const transformStyle = `translate(${calculateElasticTranslation().x}px, ${calculateElasticTranslation().y}px) ${isActive && Boolean(onClick) ? 'scale(0.96)' : calculateDirectionalScale()}`;
-
-    const baseStyle = {
-      position: 'relative' as const,
-      ...style,
-      transform: transformStyle,
-      transition: 'all ease-out 0.2s',
     };
 
-    const positionStyles = {
-      position: 'absolute' as const,
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-    };
+    // Update size immediately
+    updateGlassSize();
 
-    return (
+    // Create ResizeObserver to watch for content size changes
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined' && glassRef.current) {
+      resizeObserver = new ResizeObserver(updateGlassSize);
+      resizeObserver.observe(glassRef.current);
+    }
+
+    // Also listen for window resize
+    window.addEventListener('resize', updateGlassSize);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', updateGlassSize);
+      if (resizeObserver && glassRef.current) {
+        resizeObserver.unobserve(glassRef.current);
+        resizeObserver.disconnect();
+      }
+    };
+  }, [cornerRadius]); // Add cornerRadius as dependency
+
+  // Optimize transform calculations using useMemo
+  const elasticTranslation = useMemo(() => calculateElasticTranslation(), [calculateElasticTranslation]);
+  const directionalScale = useMemo(() => calculateDirectionalScale(), [calculateDirectionalScale]);
+  const transformStyle = useMemo(() => 
+    `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) ${isActive && Boolean(onClick) ? 'scale(0.96)' : directionalScale}`,
+    [elasticTranslation, isActive, onClick, directionalScale]
+  );
+
+  // Optimize base style using useMemo
+  const baseStyle = useMemo(() => ({
+    ...style,
+    transform: transformStyle,
+    transition: 'all ease-out 0.2s',
+    willChange: 'transform', // Improve performance
+  }), [style, transformStyle]);
+
+  // Optimize position styles using useMemo
+  const positionStyles = useMemo(() => ({
+    position: (baseStyle.position || 'absolute') as React.CSSProperties['position'],
+    top: baseStyle.top || 0,
+    left: baseStyle.left || 0,
+  }), [baseStyle]);
+
+  // Optimize border styles using useMemo
+  const borderLayer1Style = useMemo(() => ({
+    ...positionStyles,
+    height: glassSize.height,
+    width: glassSize.width,
+    borderRadius: `${cornerRadius}px`,
+    transform: baseStyle.transform,
+    transition: baseStyle.transition,
+    overflow: 'hidden',
+    pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
+    mixBlendMode: 'screen' as React.CSSProperties['mixBlendMode'],
+    opacity: 0.2,
+    padding: '1.5px',
+    zIndex: 4,
+    WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+    WebkitMaskComposite: 'xor',
+    maskComposite: 'exclude',
+    boxShadow:
+      '0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
+    background: `linear-gradient(
+      ${135 + mouseOffset.x * 1.2}deg,
+      rgba(255, 255, 255, 0.0) 0%,
+      rgba(255, 255, 255, ${0.12 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
+      rgba(255, 255, 255, ${0.4 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
+      rgba(255, 255, 255, 0.0) 100%
+    )`,
+  }), [positionStyles, glassSize, cornerRadius, baseStyle, mouseOffset]);
+
+  const borderLayer2Style = useMemo(() => ({
+    ...positionStyles,
+    height: glassSize.height,
+    width: glassSize.width,
+    borderRadius: `${cornerRadius}px`,
+    transform: baseStyle.transform,
+    transition: baseStyle.transition,
+    overflow: 'hidden',
+    pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
+    zIndex: 5,
+    mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
+    padding: '1.5px',
+    WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+    WebkitMaskComposite: 'xor',
+    maskComposite: 'exclude',
+    boxShadow:
+      '0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
+    background: `linear-gradient(
+      ${135 + mouseOffset.x * 1.2}deg,
+      rgba(255, 255, 255, 0.0) 0%,
+      rgba(255, 255, 255, ${0.32 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
+      rgba(255, 255, 255, ${0.6 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
+      rgba(255, 255, 255, 0.0) 100%
+    )`,
+  }), [positionStyles, glassSize, cornerRadius, baseStyle, mouseOffset]);
+
+  // Optimize hover effects using useMemo
+  const hoverEffect1Style = useMemo(() => ({
+    ...positionStyles,
+    height: glassSize.height,
+    width: glassSize.width + 1,
+    borderRadius: `${cornerRadius}px`,
+    transform: baseStyle.transform,
+    pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
+    transition: 'all 0.2s ease-out',
+    opacity: isHovered || isActive ? 0.5 : 0,
+    background: `radial-gradient(
+      circle at ${50 + mouseOffset.x/2}% ${50 + mouseOffset.y/2}%, 
+      rgba(255, 255, 255, 0.5) 0%, 
+      rgba(255, 255, 255, 0) 50%
+    )`,
+    mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
+  }), [positionStyles, glassSize, cornerRadius, baseStyle, isHovered, isActive, mouseOffset]);
+
+  const hoverEffect2Style = useMemo(() => ({
+    ...positionStyles,
+    height: glassSize.height,
+    width: glassSize.width + 1,
+    borderRadius: `${cornerRadius}px`,
+    overflow: 'hidden',
+    transform: baseStyle.transform,
+    pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
+    transition: 'all 0.2s ease-out',
+    opacity: isActive ? 0.5 : 0,
+    background: `radial-gradient(
+      circle at ${50 + mouseOffset.x/1.5}% ${50 + mouseOffset.y/1.5}%, 
+      rgba(255, 255, 255, 1) 0%, 
+      rgba(255, 255, 255, 0) 80%
+    )`,
+    mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
+  }), [positionStyles, glassSize, cornerRadius, baseStyle, isActive, mouseOffset]);
+
+  const hoverEffect3Style = useMemo(() => ({
+    ...positionStyles,
+    height: glassSize.height,
+    width: glassSize.width + 1,
+    transform: baseStyle.transform,
+    borderRadius: `${cornerRadius}px`,
+    pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
+    transition: 'all 0.2s ease-out',
+    opacity: isHovered ? 0.4 : isActive ? 0.8 : 0,
+    background: `radial-gradient(
+      circle at ${50 + mouseOffset.x}% ${50 + mouseOffset.y}%, 
+      rgba(255, 255, 255, 1) 0%, 
+      rgba(255, 255, 255, 0) 100%
+    )`,
+    mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
+  }), [positionStyles, glassSize, cornerRadius, baseStyle, isHovered, isActive, mouseOffset]);
+
+  return (
+    <div style={{ ...positionStyles, position: 'relative' } }>
+      {/* Over light effect */}
       <div
-        className={`c-atomix-glass ${Boolean(onClick) ? 'c-atomix-glass--clickable' : ''} ${isActive ? 'c-atomix-glass--active' : ''} ${overLight ? 'c-atomix-glass--over-light' : ''}`}
-        style={{ position: 'relative'}}
+        className={`u-bg-dark ${overLight ? 'u-opacity-50' : 'u-opacity-0'}`}
+        style={{
+          ...positionStyles,
+          height: glassSize.height,
+          width: glassSize.width,
+          borderRadius: `${cornerRadius}px`,
+          transform: baseStyle.transform,
+          transition: baseStyle.transition,
+          willChange: 'transform',
+        }}
+      />
+      <div
+        className={`u-bg-black ${overLight ? 'u-opacity-25' : 'u-opacity-0'}`}
+        style={{
+          ...positionStyles,
+          height: glassSize.height,
+          width: glassSize.width,
+          borderRadius: `${cornerRadius}px`,
+          transform: baseStyle.transform,
+          transition: baseStyle.transition,
+          mixBlendMode: 'overlay',
+          pointerEvents: 'none',
+          willChange: 'transform',
+        }}
+      />
+
+      <GlassContainer
+        ref={glassRef}
+        className={className}
+        style={baseStyle}
+        cornerRadius={cornerRadius}
+        displacementScale={overLight ? displacementScale * 0.5 : displacementScale}
+        blurAmount={blurAmount}
+        saturation={saturation}
+        aberrationIntensity={aberrationIntensity}
+        glassSize={glassSize}
+        padding={padding}
+        mouseOffset={mouseOffset}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onMouseDown={() => setIsActive(true)}
+        onMouseUp={() => setIsActive(false)}
+        active={isActive}
+        overLight={overLight}
+        onClick={onClick}
+        mode={mode}
       >
-        {/* Over light effect */}
-        <div
-          className={`c-atomix-glass__over-light ${overLight ? 'c-atomix-glass__over-light--active' : ''}`}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            height: '100%',
-            width: '100%',
-            borderRadius: `${cornerRadius}px`,
-            transform: baseStyle.transform,
-            transition: baseStyle.transition,
-            backgroundColor: 'black',
-            opacity: overLight ? 0.2 : 0,
-            pointerEvents: 'none',
-          }}
-        />
-        <div
-          className={`c-atomix-glass__over-light-overlay ${overLight ? 'c-atomix-glass__over-light-overlay--active' : ''}`}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            height: '100%',
-            width: '100%',
-            borderRadius: `${cornerRadius}px`,
-            transform: baseStyle.transform,
-            transition: baseStyle.transition,
-            backgroundColor: 'black',
-            opacity: overLight ? 1 : 0,
-            mixBlendMode: 'overlay',
-            pointerEvents: 'none',
-          }}
-        />
+        {children}
+      </GlassContainer>
 
-        <GlassContainer
-          ref={glassRef}
-          className={className}
-          style={{ ...baseStyle, position: 'relative', zIndex: 1 }}
-          cornerRadius={cornerRadius}
-          displacementScale={overLight ? displacementScale * 0.5 : displacementScale}
-          blurAmount={blurAmount}
-          saturation={saturation}
-          aberrationIntensity={aberrationIntensity}
-          glassSize={glassSize}
-          mouseOffset={mouseOffset}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onMouseDown={() => setIsActive(true)}
-          onMouseUp={() => setIsActive(false)}
-          active={isActive}
-          overLight={overLight}
-          onClick={onClick}
-          mode={mode}
-        >
-          {children}
-        </GlassContainer>
+      {/* Border layer 1 - extracted from glass container */}
+      <span
+        style={borderLayer1Style}
+      />
 
+      {/* Border layer 2 - duplicate with mix-blend-overlay */}
+      <span
+        style={borderLayer2Style}
+      />
 
-        {/* Border Effects */}
-        {showBorderEffects && (
-          <>
-            <span
-              className="c-atomix-glass__border"
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                height: '100%',
-                width: '100%',
-                borderRadius: `${cornerRadius}px`,
-                transform: baseStyle.transform,
-                transition: baseStyle.transition,
-                pointerEvents: 'none',
-                mixBlendMode: 'screen',
-                opacity: 0.2,
-                zIndex:1,
-                padding: '1.5px',
-                WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-                WebkitMaskComposite: 'xor',
-                maskComposite: 'exclude',
-                boxShadow:
-                  '0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
-                background: `linear-gradient(
-                  ${135 + mouseOffset.x * 1.2}deg,
-                  rgba(255, 255, 255, 0.0) 0%,
-                  rgba(255, 255, 255, ${0.12 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
-                  rgba(255, 255, 255, ${0.4 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
-                  rgba(255, 255, 255, 0.0) 100%
-                )`,
-              } as React.CSSProperties}
-            />
-            <span
-              className="c-atomix-glass__border-overlay"
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                height: '100%',
-                width: '100%',
-                zIndex:1,
-                borderRadius: `${cornerRadius}px`,
-                transform: baseStyle.transform,
-                transition: baseStyle.transition,
-                pointerEvents: 'none',
-                mixBlendMode: 'overlay',
-                padding: '1.5px',
-                WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-                WebkitMaskComposite: 'xor',
-                maskComposite: 'exclude',
-                boxShadow:
-                  '0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
-                background: `linear-gradient(
-                  ${135 + mouseOffset.x * 1.2}deg,
-                  rgba(255, 255, 255, 0.0) 0%,
-                  rgba(255, 255, 255, ${0.32 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
-                  rgba(255, 255, 255, ${0.6 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
-                  rgba(255, 255, 255, 0.0) 100%
-                )`,
-              } as React.CSSProperties}
-            />
-          </>
-        )}
-
-        {/* Hover Effects */}
-        {showHoverEffects && Boolean(onClick) && (
-          <>
-            <div
-              className="c-atomix-glass__hover-effect"
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                height: '100%',
-                width: '100%',
-                borderRadius: `${cornerRadius}px`,
-                transform: baseStyle.transform,
-                pointerEvents: 'none',
-                transition: 'all 0.2s ease-out',
-                opacity: isHovered || isActive ? 0.5 : 0,
-                backgroundImage:
-                  'radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50%)',
-                mixBlendMode: 'overlay',
-              }}
-            />
-            <div
-              className="c-atomix-glass__active-effect"
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                height: '100%',
-                width: '100%',
-                borderRadius: `${cornerRadius}px`,
-                transform: baseStyle.transform,
-                pointerEvents: 'none',
-                transition: 'all 0.2s ease-out',
-                opacity: isActive ? 0.5 : 0,
-                backgroundImage:
-                  'radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 80%)',
-                mixBlendMode: 'overlay',
-              }}
-            />
-          </>
-        )}
-      </div>
-    );
-  }
-);
-
-AtomixGlass.displayName = 'AtomixGlass';
+      {/* Hover effects */}
+      {Boolean(onClick) && (
+        <>
+          <div
+            style={hoverEffect1Style}
+          />
+          <div
+            style={hoverEffect2Style}
+          />
+          <div
+            style={hoverEffect3Style}
+          />
+        </>
+      )}
+    </div>
+  );
+}
 
 export default AtomixGlass;

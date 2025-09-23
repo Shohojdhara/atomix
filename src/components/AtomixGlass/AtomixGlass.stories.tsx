@@ -43,7 +43,7 @@ const meta: Meta<typeof AtomixGlass> = {
       description: 'Displacement scale for the glass effect',
     },
     blurAmount: {
-      control: { type: 'range', min: 0, max: 30, step: 0.5 },
+      control: { type: 'range', min: 0, max: 1, step: 0.005 },
       description: 'Blur amount for the backdrop',
     },
     saturation: {
@@ -74,14 +74,6 @@ const meta: Meta<typeof AtomixGlass> = {
       control: 'select',
       options: ['standard', 'polar', 'prominent', 'shader'],
       description: 'Glass effect mode',
-    },
-    showBorderEffects: {
-      control: 'boolean',
-      description: 'Show border effects (outer border, overlay)',
-    },
-    showHoverEffects: {
-      control: 'boolean',
-      description: 'Show hover effects (hover, active, interaction)',
     },
     className: {
       control: 'text',
@@ -196,7 +188,7 @@ const BackgroundWrapper = ({
             bottom: 0,
             backgroundColor: finalOverlayColor,
             opacity: finalOverlayOpacity,
-            zIndex: 1,
+            zIndex: -1,
           }}
         />
       )}
@@ -312,15 +304,13 @@ export const Default: Story = {
       </div>
     ),
     displacementScale: 25,
-    blurAmount: 12,
+    blurAmount: 0,
     saturation: 180,
-    aberrationIntensity: 2,
+    aberrationIntensity: 0,
     cornerRadius: 20,
     padding: '0', // Padding is handled by the inner content div
     overLight: false,
     mode: 'standard',
-    showBorderEffects: true,
-    showHoverEffects: true,
   },
   decorators: [
     Story => (
@@ -388,15 +378,13 @@ export const Interactive: Story = {
   },
   args: {
     displacementScale: 30,
-    blurAmount: 15,
+    blurAmount: 0,
     saturation: 200,
     aberrationIntensity: 3,
     cornerRadius: 15,
     padding: '0', // Padding handled by inner content
     overLight: false,
     mode: 'standard',
-    showBorderEffects: true,
-    showHoverEffects: true,
   },
   parameters: {
     docs: {
@@ -446,7 +434,7 @@ export const ModeShowcase: Story = {
     const modeSettings = {
       standard: {
         displacementScale: 25,
-        blurAmount: 12,
+        blurAmount: 0,
         saturation: 180,
         aberrationIntensity: 2,
         description: 'Standard glass effect with balanced displacement and aberration',
@@ -454,7 +442,7 @@ export const ModeShowcase: Story = {
       },
       polar: {
         displacementScale: 30,
-        blurAmount: 10,
+        blurAmount: 0,
         saturation: 160,
         aberrationIntensity: 1.5,
         description: 'Polar displacement creates a circular refraction pattern',
@@ -462,7 +450,7 @@ export const ModeShowcase: Story = {
       },
       prominent: {
         displacementScale: 35,
-        blurAmount: 15,
+        blurAmount: 0,
         saturation: 200,
         aberrationIntensity: 2.5,
         description: 'Enhanced displacement with stronger edge effects',
@@ -470,7 +458,7 @@ export const ModeShowcase: Story = {
       },
       shader: {
         displacementScale: 40,
-        blurAmount: 18,
+        blurAmount: 0,
         saturation: 220,
         aberrationIntensity: 3,
         description: 'Advanced shader-based displacement for maximum visual impact',
@@ -551,8 +539,7 @@ export const ModeShowcase: Story = {
                   saturation={settings.saturation}
                   aberrationIntensity={settings.aberrationIntensity}
                   cornerRadius={15}
-                  showBorderEffects={true}
-                  showHoverEffects={true}
+                  
                   onClick={() => handleMouseEnter(mode)}
                 >
                   <div
@@ -717,12 +704,10 @@ export const AppleInspiredUI: Story = {
 
           <AtomixGlass
             displacementScale={120}
-            blurAmount={20}
+            blurAmount={0}
             saturation={150}
             aberrationIntensity={50}
             cornerRadius={8}
-            showBorderEffects={true}
-            showHoverEffects={false}
             mode="standard"
             elasticity={0}
           >
@@ -879,12 +864,10 @@ export const AppleInspiredUI: Story = {
           {/* Center widget - iOS style with improved design */}
           <AtomixGlass
             displacementScale={20}
-            blurAmount={5}
+            blurAmount={0}
             saturation={150}
             aberrationIntensity={2}
             cornerRadius={24}
-            showBorderEffects={true}
-            showHoverEffects={false}
             mode="standard"
           >
             <div style={{ padding: '30px' }}>
@@ -958,12 +941,10 @@ export const AppleInspiredUI: Story = {
               {/* Notification card with improved design */}
               <AtomixGlass
                 displacementScale={12}
-                blurAmount={8}
+                blurAmount={0}
                 saturation={130}
                 aberrationIntensity={1}
                 cornerRadius={16}
-                showBorderEffects={true}
-                showHoverEffects={true}
                 elasticity={0}
                 mode="standard"
               >
@@ -1041,12 +1022,10 @@ export const AppleInspiredUI: Story = {
           {/* Bottom dock - macOS style with improved design and hover effects */}
           <AtomixGlass
             displacementScale={18}
-            blurAmount={12}
+            blurAmount={0}
             saturation={140}
             aberrationIntensity={1.2}
             cornerRadius={24}
-            showBorderEffects={true}
-            showHoverEffects={true}
             style={{
               maxWidth: '600px',
             }}
@@ -1182,12 +1161,10 @@ export const HeroExample: Story = {
         >
           <AtomixGlass
             displacementScale={50}
-            blurAmount={8}
+            blurAmount={0}
             saturation={150}
             aberrationIntensity={3}
             cornerRadius={30}
-            showBorderEffects={true}
-            showHoverEffects={true}
             style={{ maxWidth: '800px' }}
           >
             <div style={{ padding: '40px 60px' }}>
@@ -1266,13 +1243,11 @@ export const PerformanceOptimization: Story = {
               </h3>
               <AtomixGlass
                 displacementScale={10}
-                blurAmount={5}
+                blurAmount={0}
                 saturation={120}
                 aberrationIntensity={0.5}
                 elasticity={0.2}
                 cornerRadius={10}
-                showBorderEffects={false}
-                showHoverEffects={false}
                 mode="standard"
                 style={{ height: '100%', minHeight: '200px' }}
               >
@@ -1298,13 +1273,11 @@ export const PerformanceOptimization: Story = {
               <h3 style={{ color: '#fff', marginBottom: '15px' }}>Balanced Configuration</h3>
               <AtomixGlass
                 displacementScale={20}
-                blurAmount={10}
+                blurAmount={0}
                 saturation={150}
                 aberrationIntensity={1.5}
                 elasticity={0.3}
                 cornerRadius={15}
-                showBorderEffects={true}
-                showHoverEffects={true}
                 mode="standard"
                 style={{ height: '100%', minHeight: '200px' }}
               >
@@ -1415,7 +1388,7 @@ export const InteractivePlayground: Story = {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [settings, setSettings] = useState({
       displacementScale: 25,
-      blurAmount: 12,
+      blurAmount: 0,
       saturation: 180,
       aberrationIntensity: 2,
       cornerRadius: 15,
@@ -1664,8 +1637,6 @@ export const InteractivePlayground: Story = {
             aberrationIntensity={settings.aberrationIntensity}
             cornerRadius={settings.cornerRadius}
             mode={settings.mode}
-            showBorderEffects={settings.showBorderEffects}
-            showHoverEffects={settings.showHoverEffects}
             overLight={settings.overLight}
             style={{ width: '400px', maxWidth: '100%' }}
           >
@@ -1722,12 +1693,10 @@ export const AccessibleExample: Story = {
     >
       <AtomixGlass
         displacementScale={15}
-        blurAmount={8}
+        blurAmount={0}
         saturation={140}
         aberrationIntensity={1}
         cornerRadius={15}
-        showBorderEffects={true}
-        showHoverEffects={true}
         // Using style for interactive elements instead of aria attributes
         style={{
           width: '400px',
@@ -1968,7 +1937,7 @@ export const LayeredGlassExample: Story = {
       {
         name: 'Middle Layer',
         displacementScale: 25,
-        blurAmount: 12,
+        blurAmount: 0,
         saturation: 180,
         aberrationIntensity: 2,
         cornerRadius: 15,
@@ -2075,8 +2044,6 @@ export const LayeredGlassExample: Story = {
                   saturation={layer.saturation}
                   aberrationIntensity={layer.aberrationIntensity}
                   cornerRadius={layer.cornerRadius}
-                  showBorderEffects={true}
-                  showHoverEffects={true}
                   style={{
                     width: '100%',
                     height: '100%',
@@ -2285,8 +2252,6 @@ export const MobileUIExample: Story = {
                 saturation={140}
                 aberrationIntensity={1}
                 cornerRadius={20}
-                showBorderEffects={true}
-                showHoverEffects={true}
               >
                 <div style={{ padding: '20px' }}>
                   <h3 style={{ margin: '0 0 10px 0', fontSize: '18px' }}>Welcome Back</h3>
@@ -2331,8 +2296,6 @@ export const MobileUIExample: Story = {
                 saturation={160}
                 aberrationIntensity={1.5}
                 cornerRadius={15}
-                showBorderEffects={true}
-                showHoverEffects={true}
               >
                 <div style={{ padding: '20px' }}>
                   <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>Recent Activity</h3>
@@ -2388,8 +2351,6 @@ export const MobileUIExample: Story = {
                 saturation={150}
                 aberrationIntensity={1.2}
                 cornerRadius={15}
-                showBorderEffects={true}
-                showHoverEffects={true}
               >
                 <div style={{ padding: '15px' }}>
                   <div
@@ -2427,8 +2388,6 @@ export const MobileUIExample: Story = {
                 saturation={140}
                 aberrationIntensity={1}
                 cornerRadius={15}
-                showBorderEffects={true}
-                showHoverEffects={true}
               >
                 <div style={{ padding: '20px' }}>
                   <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>Search Categories</h3>
@@ -2467,8 +2426,6 @@ export const MobileUIExample: Story = {
                 saturation={170}
                 aberrationIntensity={1.8}
                 cornerRadius={15}
-                showBorderEffects={true}
-                showHoverEffects={true}
               >
                 <div style={{ padding: '20px' }}>
                   <div
@@ -2572,8 +2529,6 @@ export const MobileUIExample: Story = {
                 saturation={160}
                 aberrationIntensity={1.5}
                 cornerRadius={15}
-                showBorderEffects={true}
-                showHoverEffects={true}
               >
                 <div
                   style={{
@@ -2691,8 +2646,6 @@ export const MobileUIExample: Story = {
                 saturation={120}
                 aberrationIntensity={0.8}
                 cornerRadius={0}
-                showBorderEffects={false}
-                showHoverEffects={false}
                 style={{ borderRadius: '0' }}
               >
                 <div style={headerStyle}>
@@ -2725,8 +2678,6 @@ export const MobileUIExample: Story = {
                 saturation={120}
                 aberrationIntensity={0.8}
                 cornerRadius={0}
-                showBorderEffects={false}
-                showHoverEffects={false}
                 style={{ borderRadius: '0' }}
               >
                 <div
@@ -2824,8 +2775,6 @@ export const ThemeSwitching: Story = {
             saturation={160}
             aberrationIntensity={1.5}
             cornerRadius={20}
-            showBorderEffects={true}
-            showHoverEffects={true}
             overLight={theme === 'light'}
             style={{ width: '350px' }}
           >

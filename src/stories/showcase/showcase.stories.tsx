@@ -8,7 +8,6 @@ import ISP from './ISP';
 import Portfolio from './Portfolio';
 import Saas from './Saas';
 import Travel from './Travel';
-import GlassShowcase from './GlassShowcase';
 
 const meta: Meta<typeof AdminDashboard> = {
   title: 'Showcase/Showcase',
@@ -55,6 +54,3 @@ export const TravelShowcase: Story = {
   render: () => <Travel />,
 };
 
-export const GlassShowcaseExample: Story = {
-  render: () => <GlassShowcase />,
-};

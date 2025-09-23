@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import {
+  ColorModeToggle,
+  AtomixGlass,
   AtomixLogo,
   Badge,
   Button,
@@ -149,21 +151,37 @@ const Travel: React.FC = () => {
   return (
     <>
       {/* Navigation */}
-      <header className="u-bg-body u-shadow-sm">
+      <AtomixGlass
+        blurAmount={0.1}
+        displacementScale={200}
+        aberrationIntensity={2}
+        cornerRadius={10}
+        elasticity={0.01}
+        mode="standard"
+        style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 5 }}
+      >
         <Container>
-          <Row className="u-align-items-center u-py-3">
-            <GridCol xs={6} md={3}>
+          <div className="u-d-flex u-align-items-center u-justify-content-between u-py-4">
+            <div className="u-d-flex u-align-items-center u-gap-2">
               <AtomixLogo />
-            </GridCol>
-            <GridCol xs={6} md={9} className="u-d-flex u-justify-content-end">
-              <Button variant="outline-primary" className="u-me-2">
-                Sign In
+              <span className="u-text-xl u-fw-bold">Atomix</span>
+            </div>
+            <nav className="u-d-none u-d-md-flex u-align-items-center u-gap-6">
+              <a href="#features">Features</a>
+              <a href="#components">Components</a>
+              <a href="#testimonials">Testimonials</a>
+              <a href="#pricing">Pricing</a>
+            </nav>
+            <div className="u-d-flex u-align-items-center u-gap-3">
+              <ColorModeToggle />
+              <Button variant="outline" size="sm">
+                Documentation
               </Button>
-              <Button variant="primary">Sign Up</Button>
-            </GridCol>
-          </Row>
+              <Button size="sm">Get Started</Button>
+            </div>
+          </div>
         </Container>
-      </header>
+      </AtomixGlass>
 
       {/* Hero Section */}
       <Hero
@@ -184,6 +202,7 @@ const Travel: React.FC = () => {
             </Button>
           </>
         }
+        fullViewportHeight={true}
         backgroundImageSrc="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?w=1920&h=800&fit=crop"
         className="u-mb-0"
       />

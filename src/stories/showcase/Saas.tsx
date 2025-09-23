@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import {
   AtomixLogo,
+  AtomixGlass,
+  ColorModeToggle,
   Badge,
   Button,
   Card,
@@ -164,19 +166,39 @@ const Saas: React.FC = () => {
 
   return (
     <>
-      {/* Navigation */}
-      <header className="u-bg-body u-shadow-sm">
-        <Container>
-          <Row className="u-align-items-center u-py-3">
-            <GridCol xs={6} md={3}>
-              <AtomixLogo />
-            </GridCol>
-            <GridCol xs={6} md={9} className="u-d-flex u-justify-content-end">
-              <Button variant="primary">Get Started</Button>
-            </GridCol>
-          </Row>
-        </Container>
-      </header>
+           {/* Navigation */}
+              <AtomixGlass
+                   blurAmount={0.1}
+                   displacementScale={200}
+                   aberrationIntensity={0}
+                   cornerRadius={10}
+                   elasticity={0.01}
+                   mode="standard"
+                   style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 5 }}
+                 >
+                   <Container>
+                     <div className="u-d-flex u-align-items-center u-justify-content-between u-py-4">
+                       <div className="u-d-flex u-align-items-center u-gap-2">
+                         <AtomixLogo />
+                         <span className="u-text-xl u-fw-bold">Atomix</span>
+                       </div>
+                       <nav className="u-d-none u-d-md-flex u-align-items-center u-gap-6">
+                         <a href="#features">Features</a>
+                         <a href="#components">Components</a>
+                         <a href="#testimonials">Testimonials</a>
+                         <a href="#pricing">Pricing</a>
+                       </nav>
+                       <div className="u-d-flex u-align-items-center u-gap-3">
+                         <ColorModeToggle />
+                         <Button variant="outline" size="sm">
+                           Documentation
+                         </Button>
+                         <Button size="sm">Get Started</Button>
+                       </div>
+                     </div>
+                   </Container>
+                 </AtomixGlass>
+           
 
       {/* Hero Section */}
       <Hero

@@ -121,15 +121,14 @@ export const Hero: React.FC<HeroProps> = ({
         return (
           <div className={HERO.SELECTORS.CONTENT.replace('.', '')}>
             <AtomixGlass
-              displacementScale={100}
-              blurAmount={2}
+              displacementScale={60}
+              blurAmount={0}
               saturation={180}
-              aberrationIntensity={2}
+              aberrationIntensity={0}
               cornerRadius={8}
               overLight={false}
               mode="standard"
-              showBorderEffects={true}
-              showHoverEffects={true}
+              
             >
               <div className="u-p-4">
                 {subtitle && <p className={HERO.SELECTORS.SUBTITLE.replace('.', '')}>{subtitle}</p>}

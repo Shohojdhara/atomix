@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Accordion,
   AreaChart,
+  AtomixGlass,
   AtomixLogo,
   Avatar,
   AvatarGroup,
@@ -133,7 +134,17 @@ const HomePage: React.FC = () => {
   return (
     <div className="homepage">
       {/* Header */}
-      <header className="u-position-sticky u-top-0 u-z-5 u-bg-body u-border-bottom u-border-light-subtle">
+
+      <AtomixGlass
+        blurAmount={0.01}
+        displacementScale={60}
+        aberrationIntensity={0}
+        cornerRadius={30}
+        elasticity={0.01}
+        mode="standard"
+        onClick={()=> {}}
+        style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 5 }}
+      >
         <Container>
           <div className="u-d-flex u-align-items-center u-justify-content-between u-py-4">
             <div className="u-d-flex u-align-items-center u-gap-2">
@@ -155,7 +166,7 @@ const HomePage: React.FC = () => {
             </div>
           </div>
         </Container>
-      </header>
+      </AtomixGlass>
 
       {/* Hero Section */}
       <Hero
