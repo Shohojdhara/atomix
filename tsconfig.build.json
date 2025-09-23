@@ -48,6 +48,7 @@
     "**/*.spec.tsx",
     "**/scripts/**",
     "src/htmlComponentsEntry.ts",
-    ".storybook/**/*"
+    ".storybook/**/*",
+    "src/stories/**/*"
   ]
 }

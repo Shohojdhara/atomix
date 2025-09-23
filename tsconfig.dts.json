@@ -35,7 +35,9 @@
     "sourceMap": false,
     "outDir": "./dist",
     "rootDir": "./src",
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "preserveSymlinks": false,
+    "allowJs": false
   },
   "include": ["src/**/*"],
   "exclude": [
@@ -50,6 +52,7 @@
     "**/scripts/**",
     "src/htmlComponentsEntry.ts",
     ".storybook/**/*",
-    "src/styles/**/*"
+    "src/styles/**/*",
+    "src/stories/**/*"
   ]
 }

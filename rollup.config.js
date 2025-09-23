@@ -16,6 +16,10 @@ const external = [
   ...Object.keys(pkg.peerDependencies || {}),
   'react/jsx-runtime',
   'react/jsx-dev-runtime',
+  'react',
+  'react-dom',
+  '@phosphor-icons/react',
+  'classnames',
 ];
 
 const commonPlugins = [
@@ -49,6 +53,7 @@ export default [
       format: 'esm',
       sourcemap: true,
       inlineDynamicImports: true,
+      generatedCode: 'es2015',
     },
     external,
     plugins: [
@@ -64,8 +69,21 @@ export default [
         exclude: 'node_modules/**',
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         presets: [
-          ['@babel/preset-env', { modules: false }],
-          '@babel/preset-react',
+          [
+            '@babel/preset-env', 
+            { 
+              modules: false,
+              targets: {
+                esmodules: true,
+              },
+            }
+          ],
+          [
+            '@babel/preset-react', 
+            {
+              runtime: 'automatic',
+            }
+          ],
           '@babel/preset-typescript',
         ],
         plugins: [
@@ -91,11 +109,15 @@ export default [
       sourcemap: true,
       exports: 'named',
       inlineDynamicImports: true,
+      interop: 'compat',
     },
     external,
     plugins: [
       ...commonPlugins,
-      postcss(mainPostcssConfig),
+      postcss({
+        ...mainPostcssConfig,
+        extract: false, // Don't extract CSS in CJS build
+      }),
       typescript({
         tsconfig: './tsconfig.build.json',
         declaration: false,
@@ -109,7 +131,10 @@ export default [
           [
             '@babel/preset-env',
             {
-              modules: false, // Keep ES modules for Rollup, it will handle the CJS conversion
+              modules: false, // Keep false for Rollup to handle module conversion
+              targets: {
+                node: '16',
+              },
             },
           ],
           '@babel/preset-react',

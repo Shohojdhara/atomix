@@ -13,24 +13,75 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.esm.js",
-      "require": "./dist/index.js"
+      "require": "./dist/index.js",
+      "default": "./dist/index.esm.js"
     },
     "./styles": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/atomix.css",
-      "require": "./dist/atomix.min.css"
+      "require": "./dist/atomix.css",
+      "default": "./dist/atomix.css"
     },
-    "./css": "./dist/atomix.css",
-    "./css/min": "./dist/atomix.min.css",
-    "./scss": "./src/styles/index.scss",
-    "./scss/settings": "./src/styles/01-settings/_index.scss",
-    "./scss/tools": "./src/styles/02-tools/_index.scss",
-    "./scss/generic": "./src/styles/03-generic/_index.scss",
-    "./scss/elements": "./src/styles/04-elements/_index.scss",
-    "./scss/objects": "./src/styles/05-objects/_index.scss",
-    "./scss/components": "./src/styles/06-components/_index.scss",
-    "./scss/utilities": "./src/styles/99-utilities/_index.scss",
-    "./themes/*": "./dist/themes/*.css",
-    "./themes/*.min": "./dist/themes/*.min.css",
+    "./css": {
+      "import": "./dist/atomix.css",
+      "require": "./dist/atomix.css",
+      "default": "./dist/atomix.css"
+    },
+    "./css/min": {
+      "import": "./dist/atomix.min.css",
+      "require": "./dist/atomix.min.css",
+      "default": "./dist/atomix.min.css"
+    },
+    "./scss": {
+      "import": "./src/styles/index.scss",
+      "require": "./src/styles/index.scss",
+      "default": "./src/styles/index.scss"
+    },
+    "./scss/settings": {
+      "import": "./src/styles/01-settings/_index.scss",
+      "require": "./src/styles/01-settings/_index.scss",
+      "default": "./src/styles/01-settings/_index.scss"
+    },
+    "./scss/tools": {
+      "import": "./src/styles/02-tools/_index.scss",
+      "require": "./src/styles/02-tools/_index.scss",
+      "default": "./src/styles/02-tools/_index.scss"
+    },
+    "./scss/generic": {
+      "import": "./src/styles/03-generic/_index.scss",
+      "require": "./src/styles/03-generic/_index.scss",
+      "default": "./src/styles/03-generic/_index.scss"
+    },
+    "./scss/elements": {
+      "import": "./src/styles/04-elements/_index.scss",
+      "require": "./src/styles/04-elements/_index.scss",
+      "default": "./src/styles/04-elements/_index.scss"
+    },
+    "./scss/objects": {
+      "import": "./src/styles/05-objects/_index.scss",
+      "require": "./src/styles/05-objects/_index.scss",
+      "default": "./src/styles/05-objects/_index.scss"
+    },
+    "./scss/components": {
+      "import": "./src/styles/06-components/_index.scss",
+      "require": "./src/styles/06-components/_index.scss",
+      "default": "./src/styles/06-components/_index.scss"
+    },
+    "./scss/utilities": {
+      "import": "./src/styles/99-utilities/_index.scss",
+      "require": "./src/styles/99-utilities/_index.scss",
+      "default": "./src/styles/99-utilities/_index.scss"
+    },
+    "./themes/*": {
+      "import": "./dist/themes/*.css",
+      "require": "./dist/themes/*.css",
+      "default": "./dist/themes/*.css"
+    },
+    "./themes/*.min": {
+      "import": "./dist/themes/*.min.css", 
+      "require": "./dist/themes/*.min.css",
+      "default": "./dist/themes/*.min.css"
+    },
     "./package.json": "./package.json"
   },
   "dependencies": {
