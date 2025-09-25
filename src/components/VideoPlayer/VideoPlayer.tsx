@@ -432,11 +432,9 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                 borderRadius: 'inherit',
               }}
               mouseContainer={containerRef}
-              blurAmount={-0.90}
+              blurAmount={0}
               saturation={100}
-              aberrationIntensity={0}
               cornerRadius={0}
-              mode="shader"
               elasticity={0}
             >
               {!glassContent && (
