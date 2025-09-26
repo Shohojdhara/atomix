@@ -195,17 +195,21 @@ const GlassContainer = forwardRef<
     saturation?: number;
     aberrationIntensity?: number;
     mouseOffset?: { x: number; y: number };
+    globalMousePos?: { x: number; y: number };
     onMouseLeave?: () => void;
     onMouseEnter?: () => void;
     onMouseDown?: () => void;
     onMouseUp?: () => void;
     active?: boolean;
+    isHovered?: boolean;
+    isActive?: boolean;
     overLight?: boolean;
     cornerRadius?: number;
     padding?: string;
     glassSize?: { width: number; height: number };
     onClick?: () => void;
     mode?: 'standard' | 'polar' | 'prominent' | 'shader';
+    transform?: string;
   }>
 >(
   (
@@ -217,17 +221,22 @@ const GlassContainer = forwardRef<
       blurAmount = 12,
       saturation = 180,
       aberrationIntensity = 2,
+      mouseOffset = { x: 0, y: 0 },
+      globalMousePos = { x: 0, y: 0 },
       onMouseEnter,
       onMouseLeave,
       onMouseDown,
       onMouseUp,
       active = false,
+      isHovered = false,
+      isActive = false,
       overLight = false,
       cornerRadius = 0,
       padding = '0 0',
       glassSize = { width: 0, height: 0 },
       onClick,
       mode = 'standard',
+      transform = 'none',
     },
     ref
   ) => {
@@ -248,10 +257,108 @@ const GlassContainer = forwardRef<
       }
     }, [mode, glassSize.width, glassSize.height]);
 
-    const backdropStyle = useMemo(() => ({
-      filter: `url(#${filterId})`,
-      backdropFilter: `blur(${(overLight ? 12 : 4) + blurAmount * 32}px) saturate(${saturation}%)`,
-    }), [filterId, blurAmount, saturation, overLight]);
+    // Ensure GlassContainer size stays synchronized with cornerRadius changes
+    useEffect(() => {
+      if (!ref || typeof ref === 'function') return;
+
+      const element = (ref as React.RefObject<HTMLDivElement>).current;
+      if (!element) return;
+
+      // Force a reflow to ensure the element has updated its size
+      const timeoutId = setTimeout(() => {
+        try {
+          // Trigger a reflow by reading the offsetHeight
+          element.offsetHeight;
+        } catch (error) {
+          console.warn('AtomixGlass: Error in GlassContainer size sync:', error);
+        }
+      }, 0);
+
+      return () => clearTimeout(timeoutId);
+    }, [cornerRadius, glassSize.width, glassSize.height]);
+
+    // Calculate liquid glass backdrop filter with dynamic blur
+    const liquidBlur = useMemo(() => {
+      if (!ref || !globalMousePos.x || !globalMousePos.y) {
+        return {
+          baseBlur: blurAmount,
+          edgeBlur: blurAmount * 0.5,
+          centerBlur: blurAmount * 0.2,
+          flowBlur: blurAmount * 0.3,
+        };
+      }
+
+      const rect = (ref as React.RefObject<HTMLDivElement>).current?.getBoundingClientRect();
+      if (!rect) {
+        return {
+          baseBlur: blurAmount,
+          edgeBlur: blurAmount * 0.5,
+          centerBlur: blurAmount * 0.2,
+          flowBlur: blurAmount * 0.3,
+        };
+      }
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      // Calculate distance from mouse to center
+      const deltaX = globalMousePos.x - centerX;
+      const deltaY = globalMousePos.y - centerY;
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+      // Calculate normalized position (0-1 from center to edge)
+      const maxDistance = Math.sqrt(rect.width * rect.width + rect.height * rect.height) / 2;
+      const normalizedDistance = Math.min(distance / maxDistance, 1);
+
+      // Calculate mouse offset influence
+      const mouseInfluence =
+        Math.sqrt(mouseOffset.x * mouseOffset.x + mouseOffset.y * mouseOffset.y) / 100;
+
+      // Base blur with liquid flow effect
+      const baseBlur = blurAmount + mouseInfluence * blurAmount * 0.4;
+
+      // Edge blur - stronger at edges, follows mouse movement
+      const edgeIntensity = normalizedDistance * 1.5 + mouseInfluence * 0.3;
+      const edgeBlur = baseBlur * (0.8 + edgeIntensity * 0.6);
+
+      // Center blur - minimal in center, increases with mouse influence
+      const centerIntensity = (1 - normalizedDistance) * 0.3 + mouseInfluence * 0.2;
+      const centerBlur = baseBlur * (0.3 + centerIntensity * 0.4);
+
+      // Flow blur - follows mouse direction for liquid effect
+      const flowDirection = Math.atan2(deltaY, deltaX);
+      const flowIntensity = Math.sin(flowDirection + mouseInfluence * Math.PI) * 0.5 + 0.5;
+      const flowBlur = baseBlur * (0.4 + flowIntensity * 0.6);
+
+      // Interaction state modifiers
+      const hoverMultiplier = isHovered ? 1.2 : 1;
+      const activeMultiplier = isActive ? 1.4 : 1;
+      const stateMultiplier = hoverMultiplier * activeMultiplier;
+
+      return {
+        baseBlur: Math.max(0.1, baseBlur * stateMultiplier),
+        edgeBlur: Math.max(0.1, edgeBlur * stateMultiplier),
+        centerBlur: Math.max(0.1, centerBlur * stateMultiplier),
+        flowBlur: Math.max(0.1, flowBlur * stateMultiplier),
+      };
+    }, [blurAmount, globalMousePos, mouseOffset, isHovered, isActive, ref]);
+
+    const backdropStyle = useMemo(() => {
+      // Calculate dynamic saturation based on blur intensity for liquid effect
+      const dynamicSaturation = saturation + liquidBlur.baseBlur * 20;
+
+      // Create layered blur effect for liquid glass
+      const blurLayers = [
+        `blur(${liquidBlur.baseBlur}px)`,
+        `blur(${liquidBlur.edgeBlur}px)`,
+        `blur(${liquidBlur.centerBlur}px)`,
+        `blur(${liquidBlur.flowBlur}px)`,
+      ];
+
+      return {
+        filter: `url(#${filterId})`,
+        backdropFilter: `${blurLayers.join(' ')} saturate(${Math.min(dynamicSaturation, 200)}%)`,
+      };
+    }, [filterId, liquidBlur, saturation]);
 
     return (
       <div
@@ -260,23 +367,13 @@ const GlassContainer = forwardRef<
         style={style}
         onClick={onClick}
       >
-        <GlassFilter
-          mode={mode}
-          id={filterId}
-          displacementScale={displacementScale}
-          aberrationIntensity={aberrationIntensity}
-          width={glassSize.width}
-          height={glassSize.height}
-          shaderMapUrl={shaderMapUrl}
-        />
-
         <div
           className="glass"
           style={{
             position: 'relative',
             padding,
             borderRadius: `${cornerRadius}px`,
-            transition: 'all 0.2s ease-in-out',
+            transition: 'all 0.2s ease-out',
             boxShadow: overLight
               ? '0px 16px 70px rgba(0, 0, 0, 0.75)'
               : '0px 12px 40px rgba(0, 0, 0, 0.25)',
@@ -286,6 +383,15 @@ const GlassContainer = forwardRef<
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
         >
+          <GlassFilter
+            mode={mode}
+            id={filterId}
+            displacementScale={displacementScale}
+            aberrationIntensity={aberrationIntensity}
+            width={glassSize.width}
+            height={glassSize.height}
+            shaderMapUrl={shaderMapUrl}
+          />
           {/* backdrop layer that gets wiggly */}
           <span
             className="glass__warp"
@@ -336,6 +442,20 @@ interface AtomixGlassProps {
   overLight?: boolean;
   mode?: 'standard' | 'polar' | 'prominent' | 'shader';
   onClick?: () => void;
+
+  // Accessibility props
+  'aria-label'?: string;
+  'aria-describedby'?: string;
+  role?: string;
+  tabIndex?: number;
+
+  // Performance and accessibility options
+  reducedMotion?: boolean;
+  highContrast?: boolean;
+  disableEffects?: boolean;
+
+  // Performance monitoring
+  enablePerformanceMonitoring?: boolean;
 }
 
 export function AtomixGlass({
@@ -355,6 +475,20 @@ export function AtomixGlass({
   style = {},
   mode = 'standard',
   onClick,
+
+  // Accessibility props
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
+  role,
+  tabIndex,
+
+  // Performance and accessibility options
+  reducedMotion = false,
+  highContrast = false,
+  disableEffects = false,
+
+  // Performance monitoring
+  enablePerformanceMonitoring = false,
 }: AtomixGlassProps) {
   const glassRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -363,39 +497,136 @@ export function AtomixGlass({
   const [internalGlobalMousePos, setInternalGlobalMousePos] = useState({ x: 0, y: 0 });
   const [internalMouseOffset, setInternalMouseOffset] = useState({ x: 0, y: 0 });
 
+  // Detect user preferences for accessibility
+  const [userPrefersReducedMotion, setUserPrefersReducedMotion] = useState(false);
+  const [userPrefersHighContrast, setUserPrefersHighContrast] = useState(false);
+
+  // Check for user preferences on mount with browser compatibility
+  useEffect(() => {
+    // Check if matchMedia is supported (IE9+)
+    if (typeof window.matchMedia !== 'function') {
+      console.warn('AtomixGlass: matchMedia not supported, using default preferences');
+      return;
+    }
+
+    try {
+      const mediaQueryReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const mediaQueryHighContrast = window.matchMedia('(prefers-contrast: high)');
+
+      setUserPrefersReducedMotion(mediaQueryReducedMotion.matches);
+      setUserPrefersHighContrast(mediaQueryHighContrast.matches);
+
+      const handleReducedMotionChange = (e: MediaQueryListEvent) => {
+        setUserPrefersReducedMotion(e.matches);
+      };
+
+      const handleHighContrastChange = (e: MediaQueryListEvent) => {
+        setUserPrefersHighContrast(e.matches);
+      };
+
+      // Use addEventListener if available, fallback to addListener for older browsers
+      if (mediaQueryReducedMotion.addEventListener) {
+        mediaQueryReducedMotion.addEventListener('change', handleReducedMotionChange);
+        mediaQueryHighContrast.addEventListener('change', handleHighContrastChange);
+      } else if (mediaQueryReducedMotion.addListener) {
+        // Fallback for older browsers
+        mediaQueryReducedMotion.addListener(handleReducedMotionChange);
+        mediaQueryHighContrast.addListener(handleHighContrastChange);
+      }
+
+      return () => {
+        if (mediaQueryReducedMotion.removeEventListener) {
+          mediaQueryReducedMotion.removeEventListener('change', handleReducedMotionChange);
+          mediaQueryHighContrast.removeEventListener('change', handleHighContrastChange);
+        } else if (mediaQueryReducedMotion.removeListener) {
+          // Fallback for older browsers
+          mediaQueryReducedMotion.removeListener(handleReducedMotionChange);
+          mediaQueryHighContrast.removeListener(handleHighContrastChange);
+        }
+      };
+    } catch (error) {
+      console.warn('AtomixGlass: Error setting up media queries:', error);
+    }
+  }, []);
+
+  // Determine effective settings based on user preferences and props
+  const effectiveReducedMotion = reducedMotion || userPrefersReducedMotion;
+  const effectiveHighContrast = highContrast || userPrefersHighContrast;
+  const effectiveDisableEffects = disableEffects || effectiveReducedMotion;
+
   // Use external mouse position if provided, otherwise use internal
   const globalMousePos = externalGlobalMousePos || internalGlobalMousePos;
   const mouseOffset = externalMouseOffset || internalMouseOffset;
 
-  // Internal mouse tracking
+  // Throttled mouse tracking for better performance
+  const mouseMoveThrottleRef = useRef<number | null>(null);
+  const lastMouseEventRef = useRef<MouseEvent | null>(null);
+
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      const container = mouseContainer?.current || glassRef.current;
-      if (!container) {
-        return;
+      // Store the latest mouse event
+      lastMouseEventRef.current = e;
+
+      // Throttle mouse events to 60fps for better performance
+      if (mouseMoveThrottleRef.current === null) {
+        mouseMoveThrottleRef.current = requestAnimationFrame(() => {
+          const event = lastMouseEventRef.current;
+          if (!event) {
+            mouseMoveThrottleRef.current = null;
+            return;
+          }
+
+          const container = mouseContainer?.current || glassRef.current;
+          if (!container) {
+            mouseMoveThrottleRef.current = null;
+            return;
+          }
+
+          try {
+            const startTime = enablePerformanceMonitoring ? performance.now() : 0;
+
+            const rect = container.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            setInternalMouseOffset({
+              x: ((event.clientX - centerX) / rect.width) * 100,
+              y: ((event.clientY - centerY) / rect.height) * 100,
+            });
+
+            setInternalGlobalMousePos({
+              x: event.clientX,
+              y: event.clientY,
+            });
+
+            if (enablePerformanceMonitoring) {
+              const endTime = performance.now();
+              const duration = endTime - startTime;
+              if (duration > 5) {
+                // Log if mouse tracking takes more than 5ms
+                console.warn(`AtomixGlass: Mouse tracking took ${duration.toFixed(2)}ms`);
+              }
+            }
+          } catch (error) {
+            console.warn('AtomixGlass: Error in mouse tracking:', error);
+          } finally {
+            mouseMoveThrottleRef.current = null;
+          }
+        });
       }
-
-      const rect = container.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-
-      setInternalMouseOffset({
-        x: ((e.clientX - centerX) / rect.width) * 100,
-        y: ((e.clientY - centerY) / rect.height) * 100,
-      });
-
-      setInternalGlobalMousePos({
-        x: e.clientX,
-        y: e.clientY,
-      });
     },
     [mouseContainer]
   );
 
-  // Set up mouse tracking if no external mouse position is provided
+  // Set up mouse tracking if no external mouse position is provided and effects are enabled
   useEffect(() => {
     if (externalGlobalMousePos && externalMouseOffset) {
       // External mouse tracking is provided, don't set up internal tracking
+      return;
+    }
+
+    if (effectiveDisableEffects) {
+      // Don't set up mouse tracking if effects are disabled
       return;
     }
 
@@ -404,12 +635,23 @@ export function AtomixGlass({
       return;
     }
 
-    container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     return () => {
       container.removeEventListener('mousemove', handleMouseMove);
+      // Clean up any pending animation frames
+      if (mouseMoveThrottleRef.current) {
+        cancelAnimationFrame(mouseMoveThrottleRef.current);
+        mouseMoveThrottleRef.current = null;
+      }
     };
-  }, [handleMouseMove, mouseContainer, externalGlobalMousePos, externalMouseOffset]);
+  }, [
+    handleMouseMove,
+    mouseContainer,
+    externalGlobalMousePos,
+    externalMouseOffset,
+    effectiveDisableEffects,
+  ]);
 
   // Calculate directional scaling based on mouse position
   const calculateDirectionalScale = useCallback(() => {
@@ -508,168 +750,544 @@ export function AtomixGlass({
 
   // Update glass size whenever component mounts, content changes, or window resizes
   useEffect(() => {
-    const updateGlassSize = () => {
-      if (glassRef.current) {
-        const rect = glassRef.current.getBoundingClientRect();
-        setGlassSize({ width: rect.width, height: rect.height });
+    // Type guard to ensure element is valid
+    const isValidElement = (element: HTMLElement | null): element is HTMLElement => {
+      return element !== null && element instanceof HTMLElement && element.isConnected;
+    };
+
+    // Debounced size update function with error handling and performance optimization
+    let rafId: number | null = null;
+    let lastSize = { width: 0, height: 0 };
+    let lastCornerRadius = cornerRadius;
+
+    const updateGlassSize = (forceUpdate = false): void => {
+      try {
+        // Cancel previous animation frame if still pending
+        if (rafId !== null) {
+          cancelAnimationFrame(rafId);
+        }
+
+        rafId = requestAnimationFrame(() => {
+          try {
+            // Validate element exists and is connected to DOM
+            if (!isValidElement(glassRef.current)) {
+              console.warn('AtomixGlass: Element not available for size calculation');
+              return;
+            }
+
+            const rect = glassRef.current.getBoundingClientRect();
+
+            // Validate rect dimensions
+            if (rect.width <= 0 || rect.height <= 0) {
+              console.warn('AtomixGlass: Invalid dimensions detected', {
+                width: rect.width,
+                height: rect.height,
+              });
+              return;
+            }
+
+            // Calculate size with corner radius consideration
+            // Corner radius can affect the visual bounds, so we need to account for it
+            const cornerRadiusOffset = Math.max(0, cornerRadius * 0.1); // Small offset for visual accuracy
+            const newSize = {
+              width: Math.round(rect.width + cornerRadiusOffset),
+              height: Math.round(rect.height + cornerRadiusOffset),
+            };
+
+            // Force update if corner radius changed or dimensions changed
+            const cornerRadiusChanged = lastCornerRadius !== cornerRadius;
+            const dimensionsChanged =
+              newSize.width !== lastSize.width || newSize.height !== lastSize.height;
+
+            if (forceUpdate || cornerRadiusChanged || dimensionsChanged) {
+              lastSize = newSize;
+              lastCornerRadius = cornerRadius;
+              setGlassSize(newSize);
+
+              if (enablePerformanceMonitoring && (cornerRadiusChanged || dimensionsChanged)) {
+                console.log('AtomixGlass: Size updated', {
+                  newSize,
+                  cornerRadius,
+                  cornerRadiusChanged,
+                  dimensionsChanged,
+                });
+              }
+            }
+          } catch (error) {
+            console.error('AtomixGlass: Error updating glass size:', error);
+          } finally {
+            rafId = null;
+          }
+        });
+      } catch (error) {
+        console.error('AtomixGlass: Error in updateGlassSize:', error);
       }
     };
 
-    // Update size immediately
-    updateGlassSize();
+    // Debounced window resize handler
+    let resizeTimeoutId: NodeJS.Timeout | null = null;
+    const debouncedResizeHandler = (): void => {
+      if (resizeTimeoutId) {
+        clearTimeout(resizeTimeoutId);
+      }
+      resizeTimeoutId = setTimeout(updateGlassSize, 16); // ~60fps
+    };
 
-    // Create ResizeObserver to watch for content size changes
-    let resizeObserver: ResizeObserver | null = null;
-    if (typeof ResizeObserver !== 'undefined' && glassRef.current) {
-      resizeObserver = new ResizeObserver(updateGlassSize);
-      resizeObserver.observe(glassRef.current);
+    // Update size immediately with error handling
+    try {
+      updateGlassSize(true); // Force initial update
+    } catch (error) {
+      console.error('AtomixGlass: Error in initial size update:', error);
     }
 
-    // Also listen for window resize
-    window.addEventListener('resize', updateGlassSize);
-    
-    // Cleanup
+    // Create ResizeObserver with enhanced error handling and fallback
+    let resizeObserver: ResizeObserver | null = null;
+    let fallbackInterval: NodeJS.Timeout | null = null;
+
+    try {
+      // Check for ResizeObserver support with better browser compatibility
+      const hasResizeObserver =
+        typeof ResizeObserver !== 'undefined' &&
+        typeof ResizeObserver.prototype.observe === 'function';
+
+      if (hasResizeObserver && isValidElement(glassRef.current)) {
+        try {
+          resizeObserver = new ResizeObserver(entries => {
+            try {
+              // Process all entries to handle multiple elements if needed
+              for (const entry of entries) {
+                if (entry.target === glassRef.current) {
+                  updateGlassSize();
+                  break;
+                }
+              }
+            } catch (error) {
+              console.error('AtomixGlass: Error in ResizeObserver callback:', error);
+            }
+          });
+
+          resizeObserver.observe(glassRef.current);
+        } catch (resizeObserverError) {
+          console.warn(
+            'AtomixGlass: ResizeObserver creation failed, using fallback:',
+            resizeObserverError
+          );
+          // Fallback to interval-based checking
+          fallbackInterval = setInterval(() => {
+            if (isValidElement(glassRef.current)) {
+              updateGlassSize();
+            }
+          }, 100);
+        }
+      } else {
+        // Fallback for browsers without ResizeObserver support
+        console.warn('AtomixGlass: ResizeObserver not supported, using fallback polling');
+        fallbackInterval = setInterval(() => {
+          if (isValidElement(glassRef.current)) {
+            updateGlassSize();
+          }
+        }, 100); // Check every 100ms as fallback
+      }
+    } catch (error) {
+      console.error('AtomixGlass: Error setting up ResizeObserver:', error);
+      // Fallback to interval-based checking
+      fallbackInterval = setInterval(() => {
+        if (isValidElement(glassRef.current)) {
+          updateGlassSize();
+        }
+      }, 100);
+    }
+
+    // Listen for window resize with debouncing
+    window.addEventListener('resize', debouncedResizeHandler, { passive: true });
+
+    // Cleanup function with comprehensive error handling
     return () => {
-      window.removeEventListener('resize', updateGlassSize);
-      if (resizeObserver && glassRef.current) {
-        resizeObserver.unobserve(glassRef.current);
-        resizeObserver.disconnect();
+      try {
+        // Cancel any pending animation frames
+        if (rafId !== null) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+
+        // Clear resize timeout
+        if (resizeTimeoutId) {
+          clearTimeout(resizeTimeoutId);
+          resizeTimeoutId = null;
+        }
+
+        // Remove window resize listener
+        window.removeEventListener('resize', debouncedResizeHandler);
+
+        // Clean up ResizeObserver
+        if (resizeObserver) {
+          try {
+            if (isValidElement(glassRef.current)) {
+              resizeObserver.unobserve(glassRef.current);
+            }
+            resizeObserver.disconnect();
+          } catch (error) {
+            console.error('AtomixGlass: Error cleaning up ResizeObserver:', error);
+          }
+          resizeObserver = null;
+        }
+
+        // Clean up fallback interval
+        if (fallbackInterval) {
+          clearInterval(fallbackInterval);
+          fallbackInterval = null;
+        }
+      } catch (error) {
+        console.error('AtomixGlass: Error in cleanup:', error);
       }
     };
-  }, [cornerRadius]); // Add cornerRadius as dependency
+  }, [cornerRadius, enablePerformanceMonitoring]); // Add cornerRadius as dependency
 
-  // Optimize transform calculations using useMemo
-  const elasticTranslation = useMemo(() => calculateElasticTranslation(), [calculateElasticTranslation]);
-  const directionalScale = useMemo(() => calculateDirectionalScale(), [calculateDirectionalScale]);
-  const transformStyle = useMemo(() => 
-    `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) ${isActive && Boolean(onClick) ? 'scale(0.96)' : directionalScale}`,
-    [elasticTranslation, isActive, onClick, directionalScale]
+  // Additional effect to handle cornerRadius changes specifically
+  useEffect(() => {
+    if (!glassRef.current) return;
+
+    // Force a size update when cornerRadius changes to ensure synchronization
+    const timeoutId = setTimeout(() => {
+      try {
+        const rect = glassRef.current?.getBoundingClientRect();
+        if (rect && rect.width > 0 && rect.height > 0) {
+          const cornerRadiusOffset = Math.max(0, cornerRadius * 0.1);
+          const newSize = {
+            width: Math.round(rect.width + cornerRadiusOffset),
+            height: Math.round(rect.height + cornerRadiusOffset),
+          };
+          setGlassSize(newSize);
+
+          if (enablePerformanceMonitoring) {
+            console.log('AtomixGlass: Corner radius change triggered size update', {
+              cornerRadius,
+              newSize,
+            });
+          }
+        }
+      } catch (error) {
+        console.warn('AtomixGlass: Error in corner radius size update:', error);
+      }
+    }, 0); // Use setTimeout to ensure DOM has updated
+
+    return () => clearTimeout(timeoutId);
+  }, [cornerRadius, enablePerformanceMonitoring]);
+
+  // Optimize transform calculations using useMemo with accessibility support
+  const elasticTranslation = useMemo(() => {
+    if (effectiveDisableEffects) {
+      return { x: 0, y: 0 };
+    }
+    return calculateElasticTranslation();
+  }, [calculateElasticTranslation, effectiveDisableEffects]);
+
+  const directionalScale = useMemo(() => {
+    if (effectiveDisableEffects) {
+      return 'scale(1)';
+    }
+    return calculateDirectionalScale();
+  }, [calculateDirectionalScale, effectiveDisableEffects]);
+
+  const transformStyle = useMemo(() => {
+    if (effectiveDisableEffects) {
+      return isActive && Boolean(onClick) ? 'scale(0.98)' : 'scale(1)';
+    }
+    return `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) ${isActive && Boolean(onClick) ? 'scale(0.96)' : directionalScale}`;
+  }, [elasticTranslation, isActive, onClick, directionalScale, effectiveDisableEffects]);
+
+  // Optimize base style using useMemo with accessibility support
+  const baseStyle = useMemo(
+    () => ({
+      ...style,
+      transform: transformStyle,
+      transition: effectiveReducedMotion ? 'none' : 'all ease-out 0.2s',
+      willChange: effectiveDisableEffects ? 'auto' : 'transform', // Improve performance
+      // High contrast support
+      ...(effectiveHighContrast && {
+        border: '2px solid currentColor',
+        outline: '2px solid transparent',
+        outlineOffset: '2px',
+      }),
+    }),
+    [style, transformStyle, effectiveReducedMotion, effectiveDisableEffects, effectiveHighContrast]
   );
 
-  // Optimize base style using useMemo
-  const baseStyle = useMemo(() => ({
-    ...style,
-    transform: transformStyle,
-    transition: 'all ease-out 0.2s',
-    willChange: 'transform', // Improve performance
-  }), [style, transformStyle]);
-
   // Optimize position styles using useMemo
-  const positionStyles = useMemo(() => ({
-    position: (baseStyle.position || 'absolute') as React.CSSProperties['position'],
-    top: baseStyle.top || 0,
-    left: baseStyle.left || 0,
-  }), [baseStyle]);
+  const positionStyles = useMemo(
+    () => ({
+      position: (baseStyle.position || 'absolute') as React.CSSProperties['position'],
+      top: baseStyle.top || 0,
+      left: baseStyle.left || 0,
+    }),
+    [baseStyle]
+  );
 
-  // Optimize border styles using useMemo
-  const borderLayer1Style = useMemo(() => ({
-    ...positionStyles,
-    height: glassSize.height,
-    width: glassSize.width,
-    borderRadius: `${cornerRadius}px`,
-    transform: baseStyle.transform,
-    transition: baseStyle.transition,
-    overflow: 'hidden',
-    pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
-    mixBlendMode: 'screen' as React.CSSProperties['mixBlendMode'],
-    opacity: 0.2,
-    padding: '1.5px',
-    zIndex: 4,
-    WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-    WebkitMaskComposite: 'xor',
-    maskComposite: 'exclude',
-    boxShadow:
-      '0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
-    background: `linear-gradient(
-      ${135 + mouseOffset.x * 1.2}deg,
-      rgba(255, 255, 255, 0.0) 0%,
-      rgba(255, 255, 255, ${0.12 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
-      rgba(255, 255, 255, ${0.4 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
-      rgba(255, 255, 255, 0.0) 100%
-    )`,
-  }), [positionStyles, glassSize, cornerRadius, baseStyle, mouseOffset]);
+  // Get real-time size from DOM element to avoid resize synchronization issues
+  const getCurrentElementSize = useCallback(() => {
+    if (!glassRef.current) {
+      return { width: 0, height: 0 };
+    }
 
-  const borderLayer2Style = useMemo(() => ({
-    ...positionStyles,
-    height: glassSize.height,
-    width: glassSize.width,
-    borderRadius: `${cornerRadius}px`,
-    transform: baseStyle.transform,
-    transition: baseStyle.transition,
-    overflow: 'hidden',
-    pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
-    zIndex: 5,
-    mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
-    padding: '1.5px',
-    WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-    WebkitMaskComposite: 'xor',
-    maskComposite: 'exclude',
-    boxShadow:
-      '0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
-    background: `linear-gradient(
-      ${135 + mouseOffset.x * 1.2}deg,
-      rgba(255, 255, 255, 0.0) 0%,
-      rgba(255, 255, 255, ${0.32 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
-      rgba(255, 255, 255, ${0.6 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
-      rgba(255, 255, 255, 0.0) 100%
-    )`,
-  }), [positionStyles, glassSize, cornerRadius, baseStyle, mouseOffset]);
+    try {
+      const rect = glassRef.current.getBoundingClientRect();
+      return {
+        width: Math.max(rect.width, 0),
+        height: Math.max(rect.height, 0),
+      };
+    } catch (error) {
+      console.warn('AtomixGlass: Error getting current element size:', error);
+      return { width: 0, height: 0 };
+    }
+  }, []);
 
-  // Optimize hover effects using useMemo
-  const hoverEffect1Style = useMemo(() => ({
-    ...positionStyles,
-    height: glassSize.height,
-    width: glassSize.width + 1,
-    borderRadius: `${cornerRadius}px`,
-    transform: baseStyle.transform,
-    pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
-    transition: 'all 0.2s ease-out',
-    opacity: isHovered || isActive ? 0.5 : 0,
-    background: `radial-gradient(
-      circle at ${50 + mouseOffset.x/2}% ${50 + mouseOffset.y/2}%, 
-      rgba(255, 255, 255, 0.5) 0%, 
-      rgba(255, 255, 255, 0) 50%
-    )`,
-    mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
-  }), [positionStyles, glassSize, cornerRadius, baseStyle, isHovered, isActive, mouseOffset]);
+  // Calculate transformed size accounting for elasticity effects
+  const getTransformedSize = useCallback(() => {
+    const currentSize = getCurrentElementSize();
 
-  const hoverEffect2Style = useMemo(() => ({
-    ...positionStyles,
-    height: glassSize.height,
-    width: glassSize.width + 1,
-    borderRadius: `${cornerRadius}px`,
-    overflow: 'hidden',
-    transform: baseStyle.transform,
-    pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
-    transition: 'all 0.2s ease-out',
-    opacity: isActive ? 0.5 : 0,
-    background: `radial-gradient(
-      circle at ${50 + mouseOffset.x/1.5}% ${50 + mouseOffset.y/1.5}%, 
-      rgba(255, 255, 255, 1) 0%, 
-      rgba(255, 255, 255, 0) 80%
-    )`,
-    mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
-  }), [positionStyles, glassSize, cornerRadius, baseStyle, isActive, mouseOffset]);
+    if (effectiveDisableEffects || currentSize.width === 0 || currentSize.height === 0) {
+      return currentSize;
+    }
 
-  const hoverEffect3Style = useMemo(() => ({
-    ...positionStyles,
-    height: glassSize.height,
-    width: glassSize.width + 1,
-    transform: baseStyle.transform,
-    borderRadius: `${cornerRadius}px`,
-    pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
-    transition: 'all 0.2s ease-out',
-    opacity: isHovered ? 0.4 : isActive ? 0.8 : 0,
-    background: `radial-gradient(
-      circle at ${50 + mouseOffset.x}% ${50 + mouseOffset.y}%, 
-      rgba(255, 255, 255, 1) 0%, 
-      rgba(255, 255, 255, 0) 100%
-    )`,
-    mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
-  }), [positionStyles, glassSize, cornerRadius, baseStyle, isHovered, isActive, mouseOffset]);
+    // Extract scale values from directionalScale (handles both scale() and scaleX()/scaleY())
+    let scaleX = 1;
+    let scaleY = 1;
+
+    // Check for simple scale() function
+    const simpleScaleMatch = directionalScale.match(/scale\(([^)]+)\)/);
+    if (simpleScaleMatch && simpleScaleMatch[1]) {
+      const scaleValue = parseFloat(simpleScaleMatch[1]);
+      scaleX = scaleValue;
+      scaleY = scaleValue;
+    } else {
+      // Check for scaleX() function
+      const scaleXMatch = directionalScale.match(/scaleX\(([^)]+)\)/);
+      if (scaleXMatch && scaleXMatch[1]) {
+        scaleX = parseFloat(scaleXMatch[1]);
+      }
+
+      // Check for scaleY() function
+      const scaleYMatch = directionalScale.match(/scaleY\(([^)]+)\)/);
+      if (scaleYMatch && scaleYMatch[1]) {
+        scaleY = parseFloat(scaleYMatch[1]);
+      }
+    }
+
+    // Account for the scale transformation with separate X and Y scaling
+    const transformedSize = {
+      width: currentSize.width * scaleX,
+      height: currentSize.height * scaleY,
+    };
+
+    // Debug logging for scale values (only when performance monitoring is enabled)
+    if (enablePerformanceMonitoring && (scaleX !== 1 || scaleY !== 1)) {
+      console.log('AtomixGlass: Scale transformation detected', {
+        directionalScale,
+        scaleX,
+        scaleY,
+        originalSize: currentSize,
+        transformedSize,
+      });
+    }
+
+    return transformedSize;
+  }, [
+    getCurrentElementSize,
+    directionalScale,
+    effectiveDisableEffects,
+    enablePerformanceMonitoring,
+  ]);
+
+  // Optimize border styles using useMemo with real-time size synchronization
+  const borderLayer1Style = useMemo(() => {
+    // Get transformed size accounting for elasticity effects
+    const transformedSize = getTransformedSize();
+    const borderWidth = 1.5;
+
+    // Use transformed size if available, fallback to glassSize state
+    const adjustedSize = {
+      width: transformedSize.width > 0 ? transformedSize.width : Math.max(glassSize.width, 0),
+      height: transformedSize.height > 0 ? transformedSize.height : Math.max(glassSize.height, 0),
+    };
+
+    return {
+      ...positionStyles,
+      position: 'absolute' as React.CSSProperties['position'],
+      inset: '0',
+      borderRadius: `${Math.max(0, cornerRadius)}px`,
+      transform: baseStyle.transform,
+      transition: effectiveReducedMotion ? 'none' : baseStyle.transition,
+      overflow: 'hidden',
+      pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
+      mixBlendMode: 'screen' as React.CSSProperties['mixBlendMode'],
+      opacity: 0.2,
+      padding: `${borderWidth}px`,
+      boxSizing: 'border-box' as React.CSSProperties['boxSizing'],
+      zIndex: 4,
+      WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+      WebkitMaskComposite: 'xor',
+      maskComposite: 'exclude',
+      boxShadow:
+        '0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
+      background: `linear-gradient(
+        ${135 + mouseOffset.x * 1.2}deg,
+        rgba(255, 255, 255, 0.0) 0%,
+        rgba(255, 255, 255, ${0.12 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
+        rgba(255, 255, 255, ${0.4 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
+        rgba(255, 255, 255, 0.0) 100%
+      )`,
+    };
+  }, [
+    positionStyles,
+    glassSize,
+    cornerRadius,
+    baseStyle,
+    mouseOffset,
+    effectiveReducedMotion,
+    getTransformedSize,
+  ]);
+
+  const borderLayer2Style = useMemo(() => {
+    // Get transformed size accounting for elasticity effects
+    const transformedSize = getTransformedSize();
+    const borderWidth = 1.5;
+
+    // Use transformed size if available, fallback to glassSize state
+    const adjustedSize = {
+      width: transformedSize.width > 0 ? transformedSize.width : Math.max(glassSize.width, 0),
+      height: transformedSize.height > 0 ? transformedSize.height : Math.max(glassSize.height, 0),
+    };
+
+    return {
+      ...positionStyles,
+      position: 'absolute' as React.CSSProperties['position'],
+      inset: '0',
+      borderRadius: `${Math.max(0, cornerRadius)}px`,
+      transform: baseStyle.transform,
+      transition: effectiveReducedMotion ? 'none' : baseStyle.transition,
+      overflow: 'hidden',
+      pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
+      zIndex: 5,
+      mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
+      padding: `${borderWidth}px`,
+      boxSizing: 'border-box' as React.CSSProperties['boxSizing'],
+      WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
+      WebkitMaskComposite: 'xor',
+      maskComposite: 'exclude',
+      boxShadow:
+        '0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35)',
+      background: `linear-gradient(
+        ${135 + mouseOffset.x * 1.2}deg,
+        rgba(255, 255, 255, 0.0) 0%,
+        rgba(255, 255, 255, ${0.32 + Math.abs(mouseOffset.x) * 0.008}) ${Math.max(10, 33 + mouseOffset.y * 0.3)}%,
+        rgba(255, 255, 255, ${0.6 + Math.abs(mouseOffset.x) * 0.012}) ${Math.min(90, 66 + mouseOffset.y * 0.4)}%,
+        rgba(255, 255, 255, 0.0) 100%
+      )`,
+    };
+  }, [
+    positionStyles,
+    glassSize,
+    cornerRadius,
+    baseStyle,
+    mouseOffset,
+    effectiveReducedMotion,
+    getTransformedSize,
+  ]);
+
+  // Optimize hover effects using useMemo with real-time size synchronization
+  const hoverEffect1Style = useMemo(() => {
+    return {
+      ...positionStyles,
+      position: 'absolute' as React.CSSProperties['position'],
+      inset: '0',
+      borderRadius: `${Math.max(0, cornerRadius)}px`,
+      transform: baseStyle.transform,
+      pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
+      transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
+      opacity: isHovered || isActive ? 0.5 : 0,
+      background: `radial-gradient(
+        circle at ${50 + mouseOffset.x / 2}% ${50 + mouseOffset.y / 2}%, 
+        rgba(255, 255, 255, 0.5) 0%, 
+        rgba(255, 255, 255, 0) 50%
+      )`,
+      mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
+    };
+  }, [
+    positionStyles,
+    cornerRadius,
+    baseStyle,
+    isHovered,
+    isActive,
+    mouseOffset,
+    effectiveReducedMotion,
+  ]);
+
+  const hoverEffect2Style = useMemo(() => {
+    return {
+      ...positionStyles,
+      position: 'absolute' as React.CSSProperties['position'],
+      inset: '0',
+      borderRadius: `${Math.max(0, cornerRadius)}px`,
+      overflow: 'hidden',
+      transform: baseStyle.transform,
+      pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
+      transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
+      opacity: isActive ? 0.5 : 0,
+      background: `radial-gradient(
+        circle at ${50 + mouseOffset.x / 1.5}% ${50 + mouseOffset.y / 1.5}%, 
+        rgba(255, 255, 255, 1) 0%, 
+        rgba(255, 255, 255, 0) 80%
+      )`,
+      mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
+    };
+  }, [positionStyles, cornerRadius, baseStyle, isActive, mouseOffset, effectiveReducedMotion]);
+
+  const hoverEffect3Style = useMemo(() => {
+    return {
+      ...positionStyles,
+      position: 'absolute' as React.CSSProperties['position'],
+      inset: '0',
+      transform: baseStyle.transform,
+      borderRadius: `${Math.max(0, cornerRadius)}px`,
+      pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
+      transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
+      opacity: isHovered ? 0.4 : isActive ? 0.8 : 0,
+      background: `radial-gradient(
+        circle at ${50 + mouseOffset.x}% ${50 + mouseOffset.y}%, 
+        rgba(255, 255, 255, 1) 0%, 
+        rgba(255, 255, 255, 0) 100%
+      )`,
+      mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
+    };
+  }, [
+    positionStyles,
+    cornerRadius,
+    baseStyle,
+    isHovered,
+    isActive,
+    mouseOffset,
+    effectiveReducedMotion,
+  ]);
 
   return (
-    <div style={{ ...positionStyles, position: 'relative' } }>
+    <div
+      style={{ ...positionStyles, position: 'relative' }}
+      role={role || (onClick ? 'button' : undefined)}
+      tabIndex={onClick ? (tabIndex ?? 0) : tabIndex}
+      aria-label={ariaLabel}
+      aria-describedby={ariaDescribedBy}
+      aria-disabled={onClick ? false : undefined}
+      onKeyDown={
+        onClick
+          ? e => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onClick();
+              }
+            }
+          : undefined
+      }
+    >
       {/* Over light effect */}
       <div
         className={`u-bg-dark ${overLight ? 'u-opacity-50' : 'u-opacity-0'}`}
@@ -701,49 +1319,45 @@ export function AtomixGlass({
       <GlassContainer
         ref={glassRef}
         className={className}
-        style={baseStyle}
+        style={{
+          ...baseStyle,
+          transform: baseStyle.transform, // Remove transform from GlassContainer since it's applied to the parent
+        }}
         cornerRadius={cornerRadius}
-        displacementScale={overLight ? displacementScale * 0.5 : displacementScale}
-        blurAmount={blurAmount}
-        saturation={saturation}
-        aberrationIntensity={aberrationIntensity}
+        displacementScale={
+          effectiveDisableEffects ? 0 : overLight ? displacementScale * 0.5 : displacementScale
+        }
+        blurAmount={effectiveDisableEffects ? 0 : blurAmount}
+        saturation={effectiveHighContrast ? 200 : saturation}
+        aberrationIntensity={effectiveDisableEffects ? 0 : aberrationIntensity}
         glassSize={glassSize}
         padding={padding}
-        mouseOffset={mouseOffset}
+        mouseOffset={effectiveDisableEffects ? { x: 0, y: 0 } : mouseOffset}
+        globalMousePos={effectiveDisableEffects ? { x: 0, y: 0 } : globalMousePos}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onMouseDown={() => setIsActive(true)}
         onMouseUp={() => setIsActive(false)}
         active={isActive}
+        isHovered={isHovered}
+        isActive={isActive}
         overLight={overLight}
         onClick={onClick}
-        mode={mode}
+        mode={effectiveDisableEffects ? 'standard' : mode}
+        transform={baseStyle.transform} // Pass the transform to apply to glass__warp
       >
         {children}
       </GlassContainer>
 
-      {/* Border layer 1 - extracted from glass container */}
-      <span
-        style={borderLayer1Style}
-      />
+      <span style={borderLayer1Style} />
 
-      {/* Border layer 2 - duplicate with mix-blend-overlay */}
-      <span
-        style={borderLayer2Style}
-      />
+      <span style={borderLayer2Style} />
 
-      {/* Hover effects */}
       {Boolean(onClick) && (
         <>
-          <div
-            style={hoverEffect1Style}
-          />
-          <div
-            style={hoverEffect2Style}
-          />
-          <div
-            style={hoverEffect3Style}
-          />
+          <div style={hoverEffect1Style} />
+          <div style={hoverEffect2Style} />
+          <div style={hoverEffect3Style} />
         </>
       )}
     </div>
