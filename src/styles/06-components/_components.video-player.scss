@@ -8,31 +8,31 @@
 @use '../02-tools/tools.background' as *;
 
 .c-video-player {
-  --atomix-video-player-bg: #{$video-player-bg};
-  --atomix-video-player-border-radius: #{$video-player-border-radius};
-  --atomix-video-player-controls-padding: #{$video-player-controls-padding};
-  --atomix-video-player-progress-height: #{$video-player-progress-height};
-  --atomix-video-player-button-size: #{$video-player-button-size};
-  --atomix-video-player-font-size: #{$video-player-font-size};
-  --atomix-video-player-transition: #{$video-player-transition};
-  --atomix-video-player-volume-width: #{$video-player-volume-width};
-  --atomix-video-player-volume-width-mobile: #{$video-player-volume-width-mobile};
-  --atomix-video-player-volume-height: #{$video-player-volume-height};
-  --atomix-video-player-volume-height-hover: #{$video-player-volume-height-hover};
-  --atomix-video-player-volume-thumb-size: #{$video-player-volume-thumb-size};
-  --atomix-video-player-volume-bg: #{$video-player-volume-bg};
-  --atomix-video-player-volume-bg-hover: #{$video-player-volume-bg-hover};
-  --atomix-video-player-volume-fill: #{$video-player-volume-fill};
-  --atomix-video-player-volume-fill-hover: #{$video-player-volume-fill-hover};
-  --atomix-video-player-volume-fill-active: #{$video-player-volume-fill-active};
-  --atomix-video-player-subtitle-bg: #{$video-player-subtitle-bg};
-  --atomix-video-player-subtitle-color: #{$video-player-subtitle-color};
-  --atomix-video-player-subtitle-font-size: #{$video-player-subtitle-font-size};
-  --atomix-video-player-subtitle-font-weight: #{$video-player-subtitle-font-weight};
-  --atomix-video-player-subtitle-line-height: #{$video-player-subtitle-line-height};
-  --atomix-video-player-subtitle-border-radius: #{$video-player-subtitle-border-radius};
-  --atomix-video-player-subtitle-text-shadow: #{$video-player-subtitle-text-shadow};
-  --atomix-video-player-subtitle-box-shadow: #{$video-player-subtitle-box-shadow};
+  --#{$prefix}-video-player-bg: #{$video-player-bg};
+  --#{$prefix}-video-player-border-radius: #{$video-player-border-radius};
+  --#{$prefix}-video-player-controls-padding: #{$video-player-controls-padding};
+  --#{$prefix}-video-player-progress-height: #{$video-player-progress-height};
+  --#{$prefix}-video-player-button-size: #{$video-player-button-size};
+  --#{$prefix}-video-player-font-size: #{$video-player-font-size};
+  --#{$prefix}-video-player-transition: #{$video-player-transition};
+  --#{$prefix}-video-player-volume-width: #{$video-player-volume-width};
+  --#{$prefix}-video-player-volume-width-mobile: #{$video-player-volume-width-mobile};
+  --#{$prefix}-video-player-volume-height: #{$video-player-volume-height};
+  --#{$prefix}-video-player-volume-height-hover: #{$video-player-volume-height-hover};
+  --#{$prefix}-video-player-volume-thumb-size: #{$video-player-volume-thumb-size};
+  --#{$prefix}-video-player-volume-bg: #{$video-player-volume-bg};
+  --#{$prefix}-video-player-volume-bg-hover: #{$video-player-volume-bg-hover};
+  --#{$prefix}-video-player-volume-fill: #{$video-player-volume-fill};
+  --#{$prefix}-video-player-volume-fill-hover: #{$video-player-volume-fill-hover};
+  --#{$prefix}-video-player-volume-fill-active: #{$video-player-volume-fill-active};
+  --#{$prefix}-video-player-subtitle-bg: #{$video-player-subtitle-bg};
+  --#{$prefix}-video-player-subtitle-color: #{$video-player-subtitle-color};
+  --#{$prefix}-video-player-subtitle-font-size: #{$video-player-subtitle-font-size};
+  --#{$prefix}-video-player-subtitle-font-weight: #{$video-player-subtitle-font-weight};
+  --#{$prefix}-video-player-subtitle-line-height: #{$video-player-subtitle-line-height};
+  --#{$prefix}-video-player-subtitle-border-radius: #{$video-player-subtitle-border-radius};
+  --#{$prefix}-video-player-subtitle-text-shadow: #{$video-player-subtitle-text-shadow};
+  --#{$prefix}-video-player-subtitle-box-shadow: #{$video-player-subtitle-box-shadow};
 
   position: relative;
   width: 100%;
@@ -128,7 +128,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    @include dynamic-background(linear-gradient(transparent, rgba(0, 0, 0, 0.8)));
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
     padding: 1.25rem 1rem 1rem;
     opacity: 0;
     visibility: hidden;
@@ -575,18 +575,12 @@
 
   // Glass morphism variant
   &--glass {
-    overflow: visible;
     position: relative;
   }
 
   &__glass-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    border-radius: inherit;
+    overflow: hidden;
+    border-radius: var(--#{$prefix}-video-player-border-radius, 0.5rem);
   }
 
   &__glass-content {
@@ -596,7 +590,6 @@
     right: 0;
     bottom: 0;
     pointer-events: auto;
-    border-radius: inherit;
   }
 
   // Subtitle track styling (fallback for browsers that don't support ::cue)

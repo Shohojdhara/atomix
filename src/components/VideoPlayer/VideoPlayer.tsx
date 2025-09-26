@@ -63,6 +63,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const iframeRef = useRef<HTMLIFrameElement>(null);
+    const [containerBorderRadius, setContainerBorderRadius] = useState<number>(8);
 
     // Determine video source and type
     const isYouTube = type === 'youtube' || youtubeId || (src && isYouTubeUrl(src));
@@ -297,6 +298,43 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
       }
     }, []);
 
+    // Detect container border radius
+    useEffect(() => {
+      const detectBorderRadius = () => {
+        if (!containerRef.current) return;
+
+        const computedStyle = window.getComputedStyle(containerRef.current);
+        const borderRadius = computedStyle.borderRadius || computedStyle.borderTopLeftRadius;
+        
+        // Parse the border radius value (remove 'px' and convert to number)
+        const radiusValue = parseFloat(borderRadius);
+        if (!isNaN(radiusValue)) {
+          setContainerBorderRadius(radiusValue);
+        }
+      };
+
+      // Detect border radius immediately
+      detectBorderRadius();
+
+      // Create ResizeObserver to watch for style changes
+      let resizeObserver: ResizeObserver | null = null;
+      if (typeof ResizeObserver !== 'undefined' && containerRef.current) {
+        resizeObserver = new ResizeObserver(detectBorderRadius);
+        resizeObserver.observe(containerRef.current);
+      }
+
+      // Also listen for window resize (in case styles change)
+      window.addEventListener('resize', detectBorderRadius);
+
+      return () => {
+        window.removeEventListener('resize', detectBorderRadius);
+        if (resizeObserver && containerRef.current) {
+          resizeObserver.unobserve(containerRef.current);
+          resizeObserver.disconnect();
+        }
+      };
+    }, []);
+
     const handleKeyDown = useCallback(
       (e: React.KeyboardEvent) => {
         switch (e.key) {
@@ -422,9 +460,6 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         {glass && (
           <div
             className={VIDEO_PLAYER.CLASSES.GLASS_OVERLAY}
-            style={{
-              transition: 'opacity 0.3s ease',
-            }}
           >
             <AtomixGlass
               {...(typeof glass === 'boolean' ? {} : glass)}
@@ -434,7 +469,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
               mouseContainer={containerRef}
               blurAmount={0}
               saturation={100}
-              cornerRadius={0}
+              cornerRadius={containerBorderRadius}
               elasticity={0}
             >
               {!glassContent && (
@@ -473,7 +508,6 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
           <div
             className={`${VIDEO_PLAYER.CLASSES.CONTROLS} ${showControls ? VIDEO_PLAYER.CLASSES.CONTROLS_VISIBLE : ''}`}
             style={{
-              position: 'relative',
               zIndex: glass ? 3 : 'auto',
             }}
           >
