@@ -122,7 +122,7 @@ export const Hero: React.FC<HeroProps> = ({
           <div className={HERO.SELECTORS.CONTENT.replace('.', '')}>
             <AtomixGlass
               displacementScale={60}
-              blurAmount={0}
+              blurAmount={3}
               saturation={180}
               aberrationIntensity={0}
               cornerRadius={8}

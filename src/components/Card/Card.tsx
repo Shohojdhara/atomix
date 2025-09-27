@@ -22,7 +22,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       onClick,
       styles,
       glass,
-      cardAppearance = glass,
       ...rest
     },
     ref
@@ -36,13 +35,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     ]
       .filter(Boolean)
       .join(' ');
-
-      const cardGlassStyles = {
-        ['--atomix-card-bg' as string]: 'transparent',
-        ['--atomix-card-border-width' as string]: '0',
-        ['--atomix-card-border-radius' as string]: '0px',
-      };  
-
+    
     const cardContent = (
       <>
         {(image || icon || header) && (
@@ -73,16 +66,12 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     if (glass) {
       const glassProps = glass === true ? {} : glass;
       return (
-        <AtomixGlass {...glassProps}>
-          <div ref={ref} className={cardClasses} onClick={onClick} {...rest} style={{ ...styles, ...(cardAppearance && cardGlassStyles)}}>
-            {cardContent}
-          </div>
-        </AtomixGlass>
+        <div ref={ref} className={cardClasses + ' c-card--glass'} onClick={onClick} {...rest} style={{ ...styles}}><AtomixGlass {...{...glassProps, cornerRadius: 10}}><div className="c-card__glass-content">{cardContent}</div></AtomixGlass></div>
       );
     }
 
     return (
-      <div ref={ref} className={cardClasses} onClick={onClick} {...rest} style={styles}>
+      <div ref={ref} className={cardClasses} onClick={onClick} {...rest} style={{ ...styles}}>
         {cardContent}
       </div>
     );
