@@ -1,4 +1,5 @@
 import React from 'react';
+import { AtomixGlassProps } from '../../lib/types/components';
 
 export type DatePickerViewMode = 'days' | 'months' | 'years';
 
@@ -142,6 +143,13 @@ export interface DatePickerProps {
    * @default "md"
    */
   size?: DatePickerSize;
+
+  /**
+   * Applies a glass morphism effect to the calendar dropdown.
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect.
+   * @default false
+   */
+  glass?: boolean | AtomixGlassProps;
 }
 
 export interface DatePickerRef {
