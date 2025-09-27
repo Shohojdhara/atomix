@@ -321,8 +321,8 @@ const GlassContainer = forwardRef<
 
       const blurLayers = [
         `blur(${liquidBlur.baseBlur}px)`,
-        `blur(${liquidBlur.edgeBlur}px)`,
-        `blur(${liquidBlur.centerBlur}px)`,
+        // `blur(${liquidBlur.edgeBlur}px)`,
+        // `blur(${liquidBlur.centerBlur}px)`,
         `blur(${liquidBlur.flowBlur}px)`,
       ];
 
