@@ -1,6 +1,7 @@
 import { ElementType, forwardRef } from 'react';
 import { useButton } from '../../lib/composables/useButton';
 import { ButtonProps } from '../../lib/types/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 export type ButtonAsProp = {
   as?: ElementType;
@@ -23,6 +24,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps & ButtonAsProp>(
       rounded = false,
       className = '',
       as: Component = 'button',
+      glass,
       ...props
     },
     ref
@@ -32,6 +34,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps & ButtonAsProp>(
       size,
       disabled,
       rounded,
+      glass,
     });
 
     const buttonClass = generateButtonClass({
@@ -40,8 +43,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps & ButtonAsProp>(
       disabled,
       rounded,
       iconOnly,
+      glass,
       className,
     });
+
+    // Custom styles for glass effect
+    const glassStyles = glass ? {} : {};
 
     // Handle the case when the button is rendered as a link or another component
     const buttonProps = {
@@ -50,15 +57,40 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps & ButtonAsProp>(
       onClick: handleClick(onClick),
       disabled,
       'aria-disabled': disabled,
+      style: glass ? glassStyles : undefined,
       ...props,
     };
 
-    return (
-      <Component {...buttonProps}>
+    const buttonContent = (
+      <>
         {icon && <span className="c-btn__icon">{icon}</span>}
         {!iconOnly && <span className="c-btn__label">{label || children}</span>}
-      </Component>
+      </>
     );
+
+    if (glass) {
+      // Default glass settings for buttons
+      const defaultGlassProps = {
+        displacementScale: 80,
+        blurAmount: 1,
+        saturation: 200,
+        aberrationIntensity: 1,
+        cornerRadius: 12,
+        mode: 'shader' as const,
+        mouseContainer: ref,
+        onclick: ()=>{}
+      };
+
+      const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+      return (
+        <AtomixGlass {...glassProps}>
+          <Component {...buttonProps}>{buttonContent}</Component>
+        </AtomixGlass>
+      );
+    }
+
+    return <Component {...buttonProps}>{buttonContent}</Component>;
   }
 );
 

@@ -10,6 +10,7 @@
 @mixin dynamic-background(
   $color,
   $transparency: $background-transparency,
+  $background-transparency-enable: $background-transparency-enable,
   $blur: $background-blur,
   $use-backdrop-filter: $background-enable-backdrop-filter
 ) {

@@ -132,4 +132,14 @@
     border-color: var(--#{config.$prefix}btn-disabled-border-color);
     opacity: var(--#{config.$prefix}btn-disabled-opacity);
   }
+
+  // Glass morphism effect styles
+  &--glass {
+    @include dynamic-background(var(--#{config.$prefix}btn-bg), 0.5, true);
+
+    &:hover {
+      @include dynamic-background(var(--#{config.$prefix}btn-hover-bg), 0.3, true);
+    }
+
+  }
 }

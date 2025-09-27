@@ -59,7 +59,7 @@ export interface BaseComponentProps {
    * Component disabled state
    */
   disabled?: boolean;
-  
+
   /**
    * Component children
    */
@@ -174,6 +174,12 @@ export interface ButtonProps extends BaseComponentProps {
    * Make button fully rounded (pill shape)
    */
   rounded?: boolean;
+
+  /**
+   * Glass morphism effect for the button
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -2499,16 +2505,18 @@ export interface VideoPlayerProps extends BaseComponentProps {
    * - false/undefined: Disable glass effect
    * - object: Custom glass configuration
    */
-  glass?: boolean | {
-    displacementScale?: number;
-    blurAmount?: number;
-    saturation?: number;
-    aberrationIntensity?: number;
-    elasticity?: number;
-    cornerRadius?: number;
-    mode?: 'standard' | 'polar' | 'prominent' | 'shader';
-    overLight?: boolean;
-  };
+  glass?:
+    | boolean
+    | {
+        displacementScale?: number;
+        blurAmount?: number;
+        saturation?: number;
+        aberrationIntensity?: number;
+        elasticity?: number;
+        cornerRadius?: number;
+        mode?: 'standard' | 'polar' | 'prominent' | 'shader';
+        overLight?: boolean;
+      };
 
   /**
    * Glass overlay opacity (0-1) when glass variant is enabled
@@ -2687,7 +2695,7 @@ export interface CardProps extends BaseComponentProps {
    * Can be a boolean to enable with default settings, or an object with `AtomixGlassProps` to customize the effect.
    */
   glass?: boolean | Omit<React.ComponentProps<typeof AtomixGlass>, 'children'>;
-  
+
   cardAppearance?: boolean;
   /**
    * Card content (body)

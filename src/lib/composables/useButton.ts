@@ -27,6 +27,7 @@ export function useButton(initialProps?: Partial<ButtonProps>) {
       disabled = defaultProps.disabled,
       rounded = defaultProps.rounded,
       iconOnly = false,
+      glass = defaultProps.glass,
       className = '',
     } = props;
 
@@ -34,8 +35,9 @@ export function useButton(initialProps?: Partial<ButtonProps>) {
     const iconOnlyClass = iconOnly ? 'c-btn--icon' : '';
     const roundedClass = rounded ? 'c-btn--rounded' : '';
     const disabledClass = disabled ? 'c-btn--disabled' : '';
+    const glassClass = glass ? 'c-btn--glass' : '';
 
-    return `c-btn c-btn--${variant} ${sizeClass} ${iconOnlyClass} ${roundedClass} ${disabledClass} ${className}`.trim();
+    return `c-btn c-btn--${variant} ${sizeClass} ${iconOnlyClass} ${roundedClass} ${disabledClass} ${glassClass} ${className}`.trim();
   };
 
   /**
