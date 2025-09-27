@@ -11,6 +11,7 @@ export function useCallout(initialProps?: Partial<CalloutProps>) {
     variant: 'primary',
     oneLine: false,
     toast: false,
+    glass: false,
     ...initialProps,
   };
 
@@ -24,14 +25,16 @@ export function useCallout(initialProps?: Partial<CalloutProps>) {
       variant = defaultProps.variant,
       oneLine = defaultProps.oneLine,
       toast = defaultProps.toast,
+      glass = defaultProps.glass,
       className = '',
     } = props;
 
     const oneLineClass = oneLine ? 'c-callout--oneline' : '';
     const toastClass = toast ? 'c-callout--toast' : '';
     const variantClass = variant ? `c-callout--${variant}` : '';
+    const glassClass = glass ? 'c-callout--glass' : '';
 
-    return `c-callout ${variantClass} ${oneLineClass} ${toastClass} ${className}`.trim();
+    return `c-callout ${variantClass} ${oneLineClass} ${toastClass} ${glassClass} ${className}`.trim();
   };
 
   /**

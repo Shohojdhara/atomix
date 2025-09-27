@@ -2,6 +2,7 @@ import React from 'react';
 import { CalloutProps } from '../../lib/types/components';
 import { useCallout } from '../../lib/composables/useCallout';
 import { Icon } from '../Icon/Icon';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 /**
  * Callout component for displaying important messages, notifications, or alerts
@@ -15,6 +16,7 @@ export const Callout: React.FC<CalloutProps> = ({
   actions,
   oneLine = false,
   toast = false,
+  glass,
   className,
   ...props
 }) => {
@@ -22,6 +24,7 @@ export const Callout: React.FC<CalloutProps> = ({
     variant,
     oneLine,
     toast,
+    glass,
     className,
   });
 
@@ -46,12 +49,8 @@ export const Callout: React.FC<CalloutProps> = ({
     return baseAttributes;
   };
 
-  return (
-    <div
-      className={generateCalloutClass({ variant, oneLine, toast, className })}
-      {...getAriaAttributes()}
-      {...props}
-    >
+  const calloutContent = (
+    <>
       <div className="c-callout__content">
         {icon && <div className="c-callout__icon">{icon}</div>}
         <div className="c-callout__message">
@@ -67,8 +66,28 @@ export const Callout: React.FC<CalloutProps> = ({
           <Icon name="X" size="md" />
         </button>
       )}
-    </div>
+      </>
   );
+
+  if (glass) {
+    // Default glass settings for callouts
+    const defaultGlassProps = {
+      displacementScale: 160,
+      blurAmount: 3,
+      saturation: 70,
+      aberrationIntensity: 1,
+      cornerRadius: 8,
+      overLight: false,
+      elasticity: 0,
+      mode: 'standard' as const,
+    };
+
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+    return <div className={generateCalloutClass({ variant, oneLine, toast, glass, className })} {...getAriaAttributes()} {...props}><AtomixGlass {...glassProps}><div className="c-callout__glass-content">{calloutContent}</div></AtomixGlass></div>;
+  }
+
+  return <div className={generateCalloutClass({ variant, oneLine, toast, glass, className })} {...getAriaAttributes()} {...props}>{calloutContent}</div>;
 };
 
 Callout.displayName = 'Callout';

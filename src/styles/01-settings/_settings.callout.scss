@@ -17,33 +17,33 @@ $callout-padding-y: map.get($spacing-sizes, 4) !default; //16px
 
 $callout-tost-padding-x: map.get($spacing-sizes, 4) !default; //16px
 $callout-tost-padding-y: map.get($spacing-sizes, 4) !default; //16px
-$callout-toast-bg: $white !default;
+$callout-toast-bg: var(--#{config.$prefix}body-bg) !default;
 
-$callout-bg: $white !default;
+$callout-bg: var(--#{config.$prefix}body-bg) !default;
 
 $callout-border-radius: map.get($spacing-sizes, 2) !default; //8px
-$callout-border-color: $gray-3 !default;
+$callout-border-color: var(--#{config.$prefix}border-color) !default;
 $callout-border-width: var(--#{config.$prefix}border-width) !default; //1px
 
 $callout-title-font-size: map.get($spacing-sizes, 4) !default; //16px
 $callout-title-font-weight: 600 !default;
-$callout-title-color: $gray-9 !default;
+$callout-title-color: var(--#{config.$prefix}body-color) !default;
 
 $callout-text-font-size: map.get($spacing-sizes, 3.5) !default; //14px
 $callout-text-font-weight: 400 !default;
-$callout-text-color: $gray-7 !default;
+$callout-text-color: var(--#{config.$prefix}body-color) !default;
 
 $callout-message-spacer: map.get($spacing-sizes, 3) !default; //12px
 
 $callout-icon-size: map.get($spacing-sizes, 5) !default; //20px
-$callout-icon-color: $primary !default;
+$callout-icon-color: var(--#{config.$prefix}primary) !default;
 
 $callout-close-btn-size: map.get($spacing-sizes, 5) !default; //20px
 
 $callout-actions-spacer: map.get($spacing-sizes, 2) !default; //8px
 $callout-actions-spacer-y: map.get($spacing-sizes, 3) !default; //12px
 
-$callout-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1) !default;
+$callout-box-shadow: var(--#{config.$prefix}box-shadow) !default;
 
 // Toast positions
 $callout-toast-positions: (

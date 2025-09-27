@@ -90,9 +90,9 @@
   &__actions {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
     gap: var(--#{config.$prefix}callout-actions-spacer);
     margin-left: auto;
+    margin-right: 10px;
   }
 
   &__close-btn {
@@ -199,6 +199,45 @@
         --#{config.$prefix}callout-icon-color: var(--#{config.$prefix}#{$color}-text-emphasis);
       }
     }
+  }
+
+  // Glass morphism effect styles
+  &--glass {
+    @include dynamic-background(var(--#{config.$prefix}callout-bg), $background-transparency-enable: true);
+    padding: 0;
+    border: none;
+    display: block;
+
+    #{$root}__glass-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: var(--#{config.$prefix}callout-padding-y) var(--#{config.$prefix}callout-padding-x);
+      border: var(--#{config.$prefix}callout-border-witdh) solid
+        var(--#{config.$prefix}callout-border-color);
+      max-width: var(--#{config.$prefix}callout-width);
+      border-radius: var(--#{config.$prefix}callout-border-radius);
+      width: 100%;
+    }
+
+    // Adjust text colors for glass effect
+    #{$root}__title {
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    #{$root}__text {
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    // Glass effect for toast variant
+    &#{$root}--toast {
+      @include dynamic-background(var(--#{config.$prefix}callout-bg), $background-transparency-enable: true);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    }
+
+
   }
 
   &.is-hide {

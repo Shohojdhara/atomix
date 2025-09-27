@@ -1,5 +1,5 @@
+import React, { useEffect, useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { useEffect, useState } from 'react';
 import { Button } from '../Button/Button';
 import { Callout } from './Callout';
 
@@ -60,6 +60,14 @@ const meta: Meta<typeof Callout> = {
       table: {
         defaultValue: { summary: 'false' },
         type: { summary: 'boolean' },
+      },
+    },
+    glass: {
+      control: 'boolean',
+      description: 'Enable glass morphism effect',
+      table: {
+        defaultValue: { summary: 'false' },
+        type: { summary: 'AtomixGlassProps | boolean' },
       },
     },
 
@@ -369,81 +377,135 @@ const ToastDemoTemplate = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div style={{ display: 'flex', gap: '8px' }}>
-        <Button
-          label="Add Info Toast"
-          variant="primary"
-          size="sm"
-          onClick={() => addToast('info')}
-        />
-        <Button
-          label="Add Success Toast"
-          variant="success"
-          size="sm"
-          onClick={() => addToast('success')}
-        />
-        <Button
-          label="Add Warning Toast"
-          variant="warning"
-          size="sm"
-          onClick={() => addToast('warning')}
-        />
-        <Button
-          label="Add Error Toast"
-          variant="error"
-          size="sm"
-          onClick={() => addToast('error')}
-        />
-      </div>
-
+    <div
+      style={{
+        background: `linear-gradient(135deg, 
+          rgba(255, 107, 107, 0.15) 0%, 
+          rgba(255, 142, 83, 0.15) 25%, 
+          rgba(255, 193, 7, 0.15) 50%, 
+          rgba(76, 175, 80, 0.15) 75%, 
+          rgba(33, 150, 243, 0.15) 100%),
+          url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")`,
+        backgroundSize: 'cover, cover',
+        backgroundPosition: 'center, center',
+        backgroundBlendMode: 'overlay, normal',
+        padding: '2rem',
+        minHeight: '90vh',
+        position: 'relative',
+      }}
+    >
+      {/* Additional background layer for depth */}
       <div
         style={{
-          position: 'relative',
-          height: '300px',
-          border: '1px dashed #ccc',
-          borderRadius: '8px',
-          padding: '16px',
-          overflow: 'hidden',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.2,
+          zIndex: -1,
         }}
-      >
+      />
+      
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <Button
+            label="Add Info Toast"
+            variant="primary"
+            size="sm"
+            onClick={() => addToast('info')}
+          />
+          <Button
+            label="Add Success Toast"
+            variant="success"
+            size="sm"
+            onClick={() => addToast('success')}
+          />
+          <Button
+            label="Add Warning Toast"
+            variant="warning"
+            size="sm"
+            onClick={() => addToast('warning')}
+          />
+          <Button
+            label="Add Error Toast"
+            variant="error"
+            size="sm"
+            onClick={() => addToast('error')}
+          />
+        </div>
+
         <div
           style={{
-            position: 'absolute',
-            top: '16px',
-            right: '16px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-            maxWidth: '350px',
+            position: 'relative',
+            height: '400px',
+            border: '2px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '16px',
+            padding: '20px',
+            overflow: 'hidden',
+            background: `linear-gradient(45deg, 
+              rgba(255, 107, 107, 0.1) 0%, 
+              rgba(255, 142, 83, 0.1) 25%, 
+              rgba(255, 193, 7, 0.1) 50%, 
+              rgba(76, 175, 80, 0.1) 75%, 
+              rgba(33, 150, 243, 0.1) 100%),
+              url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")`,
+            backgroundSize: 'cover, cover',
+            backgroundPosition: 'center, center',
+            backgroundBlendMode: 'overlay, normal',
+            backdropFilter: 'blur(1px)',
           }}
         >
-          {toasts.map(toast => (
-            <Callout
-              key={toast.id}
-              title={getTitle(toast.variant)}
-              variant={toast.variant as any}
-              icon={getIcon(toast.variant)}
-              toast={true}
-              onClose={() => removeToast(toast.id)}
-            >
-              {getMessage(toast.variant)}
-            </Callout>
-          ))}
-        </div>
-        {toasts.length === 0 && (
           <div
             style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
               display: 'flex',
-              height: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#666',
+              flexDirection: 'column',
+              gap: '12px',
+              maxWidth: '350px',
             }}
           >
-            Click a button above to show toast notifications here
+            {toasts.map(toast => (
+              <Callout
+                key={toast.id}
+                title={getTitle(toast.variant)}
+                variant={toast.variant as any}
+                icon={getIcon(toast.variant)}
+                toast={true}
+                onClose={() => removeToast(toast.id)}
+              >
+                {getMessage(toast.variant)}
+              </Callout>
+            ))}
           </div>
-        )}
+          {toasts.length === 0 && (
+            <div
+              style={{
+                display: 'flex',
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                textAlign: 'center',
+                textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
+                fontSize: '18px',
+                fontWeight: '500',
+              }}
+            >
+              <div>
+                <div style={{ marginBottom: '8px' }}>🎨 Click a button above to show toast notifications here 🎨</div>
+                <small style={{ opacity: 0.8 }}>
+                  Beautiful colorful backgrounds enhance the visual experience
+                </small>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -488,20 +550,55 @@ const AutoDismissTemplate = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      {visible ? (
-        <Callout
-          title={`Auto-dismissing in ${countdown} seconds`}
-          variant="warning"
-          icon={<WarningIcon />}
-          onClose={() => setVisible(false)}
-        >
-          This callout will automatically dismiss after the countdown. You can also dismiss it
-          manually.
-        </Callout>
-      ) : (
-        <Button label="Show Auto-dismiss Callout" variant="primary" onClick={resetCallout} />
-      )}
+    <div
+      style={{
+        background: `linear-gradient(135deg, 
+          rgba(255, 107, 107, 0.2) 0%, 
+          rgba(255, 142, 83, 0.2) 25%, 
+          rgba(255, 193, 7, 0.2) 50%, 
+          rgba(76, 175, 80, 0.2) 75%, 
+          rgba(33, 150, 243, 0.2) 100%),
+          url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")`,
+        backgroundSize: 'cover, cover',
+        backgroundPosition: 'center, center',
+        backgroundBlendMode: 'overlay, normal',
+        padding: '4rem',
+        minHeight: '400px',
+        position: 'relative',
+      }}
+    >
+      {/* Additional background layer for depth */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: 'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.3,
+          zIndex: -1,
+        }}
+      />
+      
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative', zIndex: 1 }}>
+        {visible ? (
+          <Callout
+            title={`Auto-dismissing in ${countdown} seconds`}
+            variant="warning"
+            icon={<WarningIcon />}
+            glass
+            onClose={() => setVisible(false)}
+          >
+            This callout will automatically dismiss after the countdown. You can also dismiss it
+            manually. The glass effect looks beautiful against this colorful background!
+          </Callout>
+        ) : (
+          <Button label="Show Auto-dismiss Callout" variant="primary" onClick={resetCallout} />
+        )}
+      </div>
     </div>
   );
 };
@@ -534,7 +631,7 @@ const AllVariantsTemplate = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px'}}>
       {variants.map(variant => (
         <Callout
           key={variant}
@@ -582,6 +679,644 @@ export const CustomContent: Story = {
     docs: {
       description: {
         story: 'Callouts can contain rich, custom content beyond simple text.',
+      },
+    },
+  },
+};
+
+// Glass morphism variants
+export const Glass: Story = {
+  args: {
+    title: 'Glass Morphism',
+    children: 'This callout uses glass morphism effect for a modern, translucent appearance.',
+    variant: 'primary',
+    icon: <InfoIcon />,
+    glass: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Glass morphism callouts provide a modern, translucent appearance with backdrop blur effects.',
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '4rem',
+          minHeight: '300px',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const GlassSuccess: Story = {
+  args: {
+    title: 'Success with Glass Effect',
+    children: 'Your changes have been saved successfully with a beautiful glass effect.',
+    variant: 'success',
+    icon: <SuccessIcon />,
+    glass: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Success callouts with glass morphism effect for enhanced visual appeal.',
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '4rem',
+          minHeight: '300px',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const GlassWarning: Story = {
+  args: {
+    title: 'Warning Glass',
+    children: 'Please review your information before proceeding. Glass effect adds elegance.',
+    variant: 'warning',
+    icon: <WarningIcon />,
+    glass: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Warning callouts with glass effect maintain urgency while adding visual sophistication.',
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '4rem',
+          minHeight: '300px',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const GlassError: Story = {
+  args: {
+    title: 'Error with Glass',
+    children: 'There was a problem processing your request. Glass effect softens the appearance.',
+    variant: 'error',
+    icon: <ErrorIcon />,
+    glass: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Error callouts with glass morphism provide a softer, more approachable error presentation.',
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '4rem',
+          minHeight: '300px',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const GlassDark: Story = {
+  args: {
+    title: 'Dark Glass Mode',
+    children: 'This dark variant with glass effect creates stunning visual depth.',
+    variant: 'dark',
+    icon: <InfoIcon />,
+    glass: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Dark callouts with glass effect create dramatic visual depth and contrast.',
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '4rem',
+          minHeight: '300px',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const GlassWithActions: Story = {
+  args: {
+    title: 'Glass Update Available',
+    children: 'A new version is available. The glass effect enhances the modern feel.',
+    variant: 'info',
+    icon: <InfoIcon />,
+    glass: true,
+    actions: (
+      <>
+        <Button label="Update Now" variant="primary" size="sm" />
+        <Button label="Later" variant="outline-primary" size="sm" />
+      </>
+    ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Glass callouts with action buttons maintain full functionality while adding visual appeal.',
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '4rem',
+          minHeight: '300px',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const GlassDismissible: Story = {
+  args: {
+    title: 'Glass Notification',
+    children:
+      'This dismissible glass callout can be closed while maintaining its elegant appearance.',
+    variant: 'primary',
+    icon: <InfoIcon />,
+    glass: true,
+    onClose: () => console.log('Glass callout closed'),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Dismissible glass callouts combine functionality with modern glass morphism aesthetics.',
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '4rem',
+          minHeight: '300px',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const GlassToast: Story = {
+  args: {
+    title: 'Glass Toast Notification',
+    children:
+      'This glass toast notification combines the elegance of glass morphism with toast functionality.',
+    variant: 'success',
+    icon: <SuccessIcon />,
+    toast: true,
+    glass: true,
+    onClose: () => console.log('Glass toast closed'),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Glass toast notifications provide an elegant, floating appearance with enhanced visual depth.',
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '4rem',
+          minHeight: '300px',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const GlassOneLine: Story = {
+  args: {
+    title: 'Glass one-line notification',
+    variant: 'info',
+    icon: <InfoIcon />,
+    oneLine: true,
+    glass: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Compact one-line glass callouts maintain elegance in minimal space.',
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div
+        style={{
+          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '4rem',
+          minHeight: '300px',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+const GlassVariantsTemplate = () => {
+  const variants = ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'];
+
+  const getIcon = (variant: string) => {
+    switch (variant) {
+      case 'success':
+        return <SuccessIcon />;
+      case 'warning':
+        return <WarningIcon />;
+      case 'error':
+        return <ErrorIcon />;
+      default:
+        return <InfoIcon />;
+    }
+  };
+
+  const backgrounds = [
+    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80', // Mountain landscape
+    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80', // Forest
+    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80', // Ocean
+    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80', // Sunset
+    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80', // City lights
+    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80', // Desert
+    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80', // Aurora
+    'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80', // Space
+  ];
+
+  return (
+    <div
+      style={{
+        background: `linear-gradient(135deg, 
+          rgba(255, 107, 107, 0.1) 0%, 
+          rgba(255, 142, 83, 0.1) 25%, 
+          rgba(255, 193, 7, 0.1) 50%, 
+          rgba(76, 175, 80, 0.1) 75%, 
+          rgba(33, 150, 243, 0.1) 100%)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '4rem',
+        minHeight: '100vh',
+        position: 'relative',
+      }}
+    >
+      {/* Multiple background layers for depth */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.3,
+          zIndex: -1,
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: 'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          opacity: 0.2,
+          zIndex: -2,
+        }}
+      />
+      
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', position: 'relative', zIndex: 1 }}>
+        {variants.map((variant, index) => (
+          <div
+            key={variant}
+            style={{
+              backgroundImage: `url("${backgrounds[index % backgrounds.length]}")`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              padding: '2rem',
+              borderRadius: '16px',
+              position: 'relative',
+              overflow: 'hidden',
+              backgroundAttachment: 'fixed',
+            }}
+          >
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'rgba(0, 0, 0, 0.1)',
+                zIndex: -1,
+              }}
+            />
+            <Callout
+              title={`${variant.charAt(0).toUpperCase() + variant.slice(1)} Glass Variant`}
+              variant={variant as any}
+              icon={getIcon(variant)}
+              glass
+            >
+              This is an example of the {variant} callout variant with glass morphism effect against a beautiful {index % 2 === 0 ? 'mountain' : 'forest'} background.
+            </Callout>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export const AllGlassVariants: Story = {
+  render: () => <GlassVariantsTemplate />,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Overview of all available callout variants with glass morphism effect.',
+      },
+    },
+  },
+};
+
+const GlassToastDemoTemplate = () => {
+  const [toasts, setToasts] = useState<{ id: string; variant: string }[]>([]);
+
+  const addToast = (variant: string) => {
+    const id = Math.random().toString(36).substring(2, 9);
+    setToasts([...toasts, { id, variant }]);
+
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      setToasts(current => current.filter(toast => toast.id !== id));
+    }, 5000);
+  };
+
+  const removeToast = (id: string) => {
+    setToasts(current => current.filter(toast => toast.id !== id));
+  };
+
+  const getIcon = (variant: string) => {
+    switch (variant) {
+      case 'success':
+        return <SuccessIcon />;
+      case 'warning':
+        return <WarningIcon />;
+      case 'error':
+        return <ErrorIcon />;
+      default:
+        return <InfoIcon />;
+    }
+  };
+
+  const getTitle = (variant: string) => {
+    switch (variant) {
+      case 'success':
+        return 'Glass Success';
+      case 'warning':
+        return 'Glass Warning';
+      case 'error':
+        return 'Glass Error';
+      default:
+        return 'Glass Info';
+    }
+  };
+
+  const getMessage = (variant: string) => {
+    switch (variant) {
+      case 'success':
+        return 'Glass operation completed successfully!';
+      case 'warning':
+        return 'Glass warning: Please review before continuing.';
+      case 'error':
+        return 'Glass error occurred. Please try again.';
+      default:
+        return 'This is a glass informational message.';
+    }
+  };
+
+  return (
+    <div
+      style={{
+        background: `linear-gradient(135deg, 
+          rgba(255, 107, 107, 0.2) 0%, 
+          rgba(255, 142, 83, 0.2) 25%, 
+          rgba(255, 193, 7, 0.2) 50%, 
+          rgba(76, 175, 80, 0.2) 75%, 
+          rgba(33, 150, 243, 0.2) 100%),
+          url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")`,
+        backgroundSize: 'cover, cover',
+        backgroundPosition: 'center, center',
+        backgroundBlendMode: 'overlay, normal',
+        padding: '2rem',
+        minHeight: '100vh',
+        position: 'relative',
+      }}
+    >
+      {/* Additional background layers for depth */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: 'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.3,
+          zIndex: -1,
+          backgroundAttachment: 'fixed',
+        }}
+      />
+      
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <Button
+            label="Add Glass Info Toast"
+            variant="primary"
+            size="sm"
+            onClick={() => addToast('info')}
+          />
+          <Button
+            label="Add Glass Success Toast"
+            variant="success"
+            size="sm"
+            onClick={() => addToast('success')}
+          />
+          <Button
+            label="Add Glass Warning Toast"
+            variant="warning"
+            size="sm"
+            onClick={() => addToast('warning')}
+          />
+          <Button
+            label="Add Glass Error Toast"
+            variant="error"
+            size="sm"
+            onClick={() => addToast('error')}
+          />
+        </div>
+
+        <div
+          style={{
+            position: 'relative',
+            height: '400px',
+            border: '2px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '16px',
+            padding: '20px',
+            overflow: 'hidden',
+            background: `linear-gradient(45deg, 
+              rgba(255, 107, 107, 0.1) 0%, 
+              rgba(255, 142, 83, 0.1) 25%, 
+              rgba(255, 193, 7, 0.1) 50%, 
+              rgba(76, 175, 80, 0.1) 75%, 
+              rgba(33, 150, 243, 0.1) 100%),
+              url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")`,
+            backgroundSize: 'cover, cover',
+            backgroundPosition: 'center, center',
+            backgroundBlendMode: 'overlay, normal',
+            backdropFilter: 'blur(2px)',
+            backgroundAttachment: 'fixed',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              maxWidth: '350px',
+            }}
+          >
+            {toasts.map(toast => (
+              <Callout
+                key={toast.id}
+                title={getTitle(toast.variant)}
+                variant={toast.variant as any}
+                icon={getIcon(toast.variant)}
+                toast={true}
+                glass
+                onClose={() => removeToast(toast.id)}
+              >
+                {getMessage(toast.variant)}
+              </Callout>
+            ))}
+          </div>
+          {toasts.length === 0 && (
+            <div
+              style={{
+                display: 'flex',
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                textAlign: 'center',
+                textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
+                fontSize: '18px',
+                fontWeight: '500',
+              }}
+            >
+              <div>
+                <div style={{ marginBottom: '8px' }}>✨ Click a button above to show glass toast notifications here ✨</div>
+                <small style={{ opacity: 0.8 }}>
+                  Beautiful colorful backgrounds help visualize the glass morphism effect
+                </small>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const GlassToastDemo: Story = {
+  render: () => <GlassToastDemoTemplate />,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Interactive demo showing glass toast notifications with enhanced visual appeal against a gradient background.',
       },
     },
   },

@@ -250,6 +250,12 @@ export interface CalloutProps extends BaseComponentProps {
    * Display as toast notification
    */
   toast?: boolean;
+
+  /**
+   * Glass morphism effect for the callout
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
