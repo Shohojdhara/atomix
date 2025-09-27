@@ -11,7 +11,6 @@ import {
 import { ShaderDisplacementGenerator, fragmentShaders } from './shader-utils';
 import { displacementMap, polarDisplacementMap, prominentDisplacementMap } from './utils';
 
-// Generate shader-based displacement map using shaderUtils
 const generateShaderDisplacementMap = (width: number, height: number): string => {
   try {
     const generator = new ShaderDisplacementGenerator({
@@ -25,7 +24,6 @@ const generateShaderDisplacementMap = (width: number, height: number): string =>
 
     return dataUrl;
   } catch (error) {
-    // Fallback to standard displacement map if shader generation fails
     return displacementMap;
   }
 };
@@ -45,7 +43,6 @@ const getMap = (mode: 'standard' | 'polar' | 'prominent' | 'shader', shaderMapUr
   }
 };
 
-/* ---------- SVG filter (edge-only displacement) ---------- */
 const GlassFilter: React.FC<{
   id: string;
   displacementScale: number;
@@ -78,7 +75,6 @@ const GlassFilter: React.FC<{
           preserveAspectRatio="xMidYMid slice"
         />
 
-        {/* Create edge mask using the displacement map itself */}
         <feColorMatrix
           in="DISPLACEMENT_MAP"
           type="matrix"
@@ -92,10 +88,8 @@ const GlassFilter: React.FC<{
           <feFuncA type="discrete" tableValues={`0 ${aberrationIntensity * 0.05} 1`} />
         </feComponentTransfer>
 
-        {/* Original undisplaced image for center */}
         <feOffset in="SourceGraphic" dx="0" dy="0" result="CENTER_ORIGINAL" />
 
-        {/* Red channel displacement with slight offset */}
         <feDisplacementMap
           in="SourceGraphic"
           in2="DISPLACEMENT_MAP"
@@ -114,7 +108,6 @@ const GlassFilter: React.FC<{
           result="RED_CHANNEL"
         />
 
-        {/* Green channel displacement */}
         <feDisplacementMap
           in="SourceGraphic"
           in2="DISPLACEMENT_MAP"
@@ -133,7 +126,6 @@ const GlassFilter: React.FC<{
           result="GREEN_CHANNEL"
         />
 
-        {/* Blue channel displacement with slight offset */}
         <feDisplacementMap
           in="SourceGraphic"
           in2="DISPLACEMENT_MAP"
@@ -152,18 +144,15 @@ const GlassFilter: React.FC<{
           result="BLUE_CHANNEL"
         />
 
-        {/* Combine all channels with screen blend mode for chromatic aberration */}
         <feBlend in="GREEN_CHANNEL" in2="BLUE_CHANNEL" mode="screen" result="GB_COMBINED" />
         <feBlend in="RED_CHANNEL" in2="GB_COMBINED" mode="screen" result="RGB_COMBINED" />
 
-        {/* Add slight blur to soften the aberration effect */}
         <feGaussianBlur
           in="RGB_COMBINED"
           stdDeviation={Math.max(0.1, 0.5 - aberrationIntensity * 0.1)}
           result="ABERRATED_BLURRED"
         />
 
-        {/* Apply edge mask to aberration effect */}
         <feComposite
           in="ABERRATED_BLURRED"
           in2="EDGE_MASK"
@@ -171,20 +160,17 @@ const GlassFilter: React.FC<{
           result="EDGE_ABERRATION"
         />
 
-        {/* Create inverted mask for center */}
         <feComponentTransfer in="EDGE_MASK" result="INVERTED_MASK">
           <feFuncA type="table" tableValues="1 0" />
         </feComponentTransfer>
         <feComposite in="CENTER_ORIGINAL" in2="INVERTED_MASK" operator="in" result="CENTER_CLEAN" />
 
-        {/* Combine edge aberration with clean center */}
         <feComposite in="EDGE_ABERRATION" in2="CENTER_CLEAN" operator="over" />
       </filter>
     </defs>
   </svg>
 );
 
-/* ---------- container ---------- */
 const GlassContainer = forwardRef<
   HTMLDivElement,
   React.PropsWithChildren<{
@@ -207,6 +193,7 @@ const GlassContainer = forwardRef<
     cornerRadius?: number;
     padding?: string;
     glassSize?: { width: number; height: number };
+
     onClick?: () => void;
     mode?: 'standard' | 'polar' | 'prominent' | 'shader';
     transform?: string;
@@ -245,7 +232,6 @@ const GlassContainer = forwardRef<
 
     const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
 
-    // Generate shader displacement map when in shader mode
     useEffect(() => {
       if (mode === 'shader' && glassSize.width > 0 && glassSize.height > 0) {
         try {
@@ -257,17 +243,14 @@ const GlassContainer = forwardRef<
       }
     }, [mode, glassSize.width, glassSize.height]);
 
-    // Ensure GlassContainer size stays synchronized with cornerRadius changes
     useEffect(() => {
       if (!ref || typeof ref === 'function') return;
 
       const element = (ref as React.RefObject<HTMLDivElement>).current;
       if (!element) return;
 
-      // Force a reflow to ensure the element has updated its size
       const timeoutId = setTimeout(() => {
         try {
-          // Trigger a reflow by reading the offsetHeight
           element.offsetHeight;
         } catch (error) {
           console.warn('AtomixGlass: Error in GlassContainer size sync:', error);
@@ -277,7 +260,6 @@ const GlassContainer = forwardRef<
       return () => clearTimeout(timeoutId);
     }, [cornerRadius, glassSize.width, glassSize.height]);
 
-    // Calculate liquid glass backdrop filter with dynamic blur
     const liquidBlur = useMemo(() => {
       if (!ref || !globalMousePos.x || !globalMousePos.y) {
         return {
@@ -300,36 +282,28 @@ const GlassContainer = forwardRef<
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
 
-      // Calculate distance from mouse to center
       const deltaX = globalMousePos.x - centerX;
       const deltaY = globalMousePos.y - centerY;
       const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-      // Calculate normalized position (0-1 from center to edge)
       const maxDistance = Math.sqrt(rect.width * rect.width + rect.height * rect.height) / 2;
       const normalizedDistance = Math.min(distance / maxDistance, 1);
 
-      // Calculate mouse offset influence
       const mouseInfluence =
         Math.sqrt(mouseOffset.x * mouseOffset.x + mouseOffset.y * mouseOffset.y) / 100;
 
-      // Base blur with liquid flow effect
       const baseBlur = blurAmount + mouseInfluence * blurAmount * 0.4;
 
-      // Edge blur - stronger at edges, follows mouse movement
       const edgeIntensity = normalizedDistance * 1.5 + mouseInfluence * 0.3;
       const edgeBlur = baseBlur * (0.8 + edgeIntensity * 0.6);
 
-      // Center blur - minimal in center, increases with mouse influence
       const centerIntensity = (1 - normalizedDistance) * 0.3 + mouseInfluence * 0.2;
       const centerBlur = baseBlur * (0.3 + centerIntensity * 0.4);
 
-      // Flow blur - follows mouse direction for liquid effect
       const flowDirection = Math.atan2(deltaY, deltaX);
       const flowIntensity = Math.sin(flowDirection + mouseInfluence * Math.PI) * 0.5 + 0.5;
       const flowBlur = baseBlur * (0.4 + flowIntensity * 0.6);
 
-      // Interaction state modifiers
       const hoverMultiplier = isHovered ? 1.2 : 1;
       const activeMultiplier = isActive ? 1.4 : 1;
       const stateMultiplier = hoverMultiplier * activeMultiplier;
@@ -343,10 +317,8 @@ const GlassContainer = forwardRef<
     }, [blurAmount, globalMousePos, mouseOffset, isHovered, isActive, ref]);
 
     const backdropStyle = useMemo(() => {
-      // Calculate dynamic saturation based on blur intensity for liquid effect
       const dynamicSaturation = saturation + liquidBlur.baseBlur * 20;
 
-      // Create layered blur effect for liquid glass
       const blurLayers = [
         `blur(${liquidBlur.baseBlur}px)`,
         `blur(${liquidBlur.edgeBlur}px)`,
@@ -392,7 +364,6 @@ const GlassContainer = forwardRef<
             height={glassSize.height}
             shaderMapUrl={shaderMapUrl}
           />
-          {/* backdrop layer that gets wiggly */}
           <span
             className="glass__warp"
             style={
@@ -405,7 +376,6 @@ const GlassContainer = forwardRef<
             }
           />
 
-          {/* user content stays sharp */}
           <div
             style={{
               position: 'relative',
@@ -443,18 +413,24 @@ interface AtomixGlassProps {
   mode?: 'standard' | 'polar' | 'prominent' | 'shader';
   onClick?: () => void;
 
-  // Accessibility props
+  /**
+   * Accessibility props
+   */
   'aria-label'?: string;
   'aria-describedby'?: string;
   role?: string;
   tabIndex?: number;
 
-  // Performance and accessibility options
+  /**
+   * Performance and accessibility options
+   */
   reducedMotion?: boolean;
   highContrast?: boolean;
   disableEffects?: boolean;
 
-  // Performance monitoring
+  /**
+   * Performance monitoring
+   */
   enablePerformanceMonitoring?: boolean;
 }
 
@@ -476,18 +452,15 @@ export function AtomixGlass({
   mode = 'standard',
   onClick,
 
-  // Accessibility props
   'aria-label': ariaLabel,
   'aria-describedby': ariaDescribedBy,
   role,
   tabIndex,
 
-  // Performance and accessibility options
   reducedMotion = false,
   highContrast = false,
   disableEffects = false,
 
-  // Performance monitoring
   enablePerformanceMonitoring = false,
 }: AtomixGlassProps) {
   const glassRef = useRef<HTMLDivElement>(null);
@@ -497,13 +470,10 @@ export function AtomixGlass({
   const [internalGlobalMousePos, setInternalGlobalMousePos] = useState({ x: 0, y: 0 });
   const [internalMouseOffset, setInternalMouseOffset] = useState({ x: 0, y: 0 });
 
-  // Detect user preferences for accessibility
   const [userPrefersReducedMotion, setUserPrefersReducedMotion] = useState(false);
   const [userPrefersHighContrast, setUserPrefersHighContrast] = useState(false);
 
-  // Check for user preferences on mount with browser compatibility
   useEffect(() => {
-    // Check if matchMedia is supported (IE9+)
     if (typeof window.matchMedia !== 'function') {
       console.warn('AtomixGlass: matchMedia not supported, using default preferences');
       return;
@@ -524,12 +494,10 @@ export function AtomixGlass({
         setUserPrefersHighContrast(e.matches);
       };
 
-      // Use addEventListener if available, fallback to addListener for older browsers
       if (mediaQueryReducedMotion.addEventListener) {
         mediaQueryReducedMotion.addEventListener('change', handleReducedMotionChange);
         mediaQueryHighContrast.addEventListener('change', handleHighContrastChange);
       } else if (mediaQueryReducedMotion.addListener) {
-        // Fallback for older browsers
         mediaQueryReducedMotion.addListener(handleReducedMotionChange);
         mediaQueryHighContrast.addListener(handleHighContrastChange);
       }
@@ -539,7 +507,6 @@ export function AtomixGlass({
           mediaQueryReducedMotion.removeEventListener('change', handleReducedMotionChange);
           mediaQueryHighContrast.removeEventListener('change', handleHighContrastChange);
         } else if (mediaQueryReducedMotion.removeListener) {
-          // Fallback for older browsers
           mediaQueryReducedMotion.removeListener(handleReducedMotionChange);
           mediaQueryHighContrast.removeListener(handleHighContrastChange);
         }
@@ -549,25 +516,20 @@ export function AtomixGlass({
     }
   }, []);
 
-  // Determine effective settings based on user preferences and props
   const effectiveReducedMotion = reducedMotion || userPrefersReducedMotion;
   const effectiveHighContrast = highContrast || userPrefersHighContrast;
   const effectiveDisableEffects = disableEffects || effectiveReducedMotion;
 
-  // Use external mouse position if provided, otherwise use internal
   const globalMousePos = externalGlobalMousePos || internalGlobalMousePos;
   const mouseOffset = externalMouseOffset || internalMouseOffset;
 
-  // Throttled mouse tracking for better performance
   const mouseMoveThrottleRef = useRef<number | null>(null);
   const lastMouseEventRef = useRef<MouseEvent | null>(null);
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
-      // Store the latest mouse event
       lastMouseEventRef.current = e;
 
-      // Throttle mouse events to 60fps for better performance
       if (mouseMoveThrottleRef.current === null) {
         mouseMoveThrottleRef.current = requestAnimationFrame(() => {
           const event = lastMouseEventRef.current;
@@ -603,7 +565,6 @@ export function AtomixGlass({
               const endTime = performance.now();
               const duration = endTime - startTime;
               if (duration > 5) {
-                // Log if mouse tracking takes more than 5ms
                 console.warn(`AtomixGlass: Mouse tracking took ${duration.toFixed(2)}ms`);
               }
             }
@@ -618,15 +579,12 @@ export function AtomixGlass({
     [mouseContainer]
   );
 
-  // Set up mouse tracking if no external mouse position is provided and effects are enabled
   useEffect(() => {
     if (externalGlobalMousePos && externalMouseOffset) {
-      // External mouse tracking is provided, don't set up internal tracking
       return;
     }
 
     if (effectiveDisableEffects) {
-      // Don't set up mouse tracking if effects are disabled
       return;
     }
 
@@ -639,7 +597,6 @@ export function AtomixGlass({
 
     return () => {
       container.removeEventListener('mousemove', handleMouseMove);
-      // Clean up any pending animation frames
       if (mouseMoveThrottleRef.current) {
         cancelAnimationFrame(mouseMoveThrottleRef.current);
         mouseMoveThrottleRef.current = null;
@@ -653,7 +610,6 @@ export function AtomixGlass({
     effectiveDisableEffects,
   ]);
 
-  // Calculate directional scaling based on mouse position
   const calculateDirectionalScale = useCallback(() => {
     if (!globalMousePos.x || !globalMousePos.y || !glassRef.current) {
       return 'scale(1)';
@@ -668,23 +624,18 @@ export function AtomixGlass({
     const deltaX = globalMousePos.x - pillCenterX;
     const deltaY = globalMousePos.y - pillCenterY;
 
-    // Calculate distance from mouse to pill edges (not center)
     const edgeDistanceX = Math.max(0, Math.abs(deltaX) - pillWidth / 2);
     const edgeDistanceY = Math.max(0, Math.abs(deltaY) - pillHeight / 2);
     const edgeDistance = Math.sqrt(edgeDistanceX * edgeDistanceX + edgeDistanceY * edgeDistanceY);
 
-    // Activation zone: 200px from edges
     const activationZone = 200;
 
-    // If outside activation zone, no effect
     if (edgeDistance > activationZone) {
       return 'scale(1)';
     }
 
-    // Calculate fade-in factor (1 at edge, 0 at activation zone boundary)
     const fadeInFactor = 1 - edgeDistance / activationZone;
 
-    // Normalize the deltas for direction
     const centerDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     if (centerDistance === 0) {
       return 'scale(1)';
@@ -693,16 +644,13 @@ export function AtomixGlass({
     const normalizedX = deltaX / centerDistance;
     const normalizedY = deltaY / centerDistance;
 
-    // Calculate stretch factors with fade-in
     const stretchIntensity = Math.min(centerDistance / 300, 1) * elasticity * fadeInFactor;
 
-    // X-axis scaling: stretch horizontally when moving left/right, compress when moving up/down
     const scaleX =
       1 +
       Math.abs(normalizedX) * stretchIntensity * 0.3 -
       Math.abs(normalizedY) * stretchIntensity * 0.15;
 
-    // Y-axis scaling: stretch vertically when moving up/down, compress when moving left/right
     const scaleY =
       1 +
       Math.abs(normalizedY) * stretchIntensity * 0.3 -
@@ -711,7 +659,6 @@ export function AtomixGlass({
     return `scaleX(${Math.max(0.8, scaleX)}) scaleY(${Math.max(0.8, scaleY)})`;
   }, [globalMousePos, elasticity, glassSize]);
 
-  // Helper function to calculate fade-in factor based on distance from element edges
   const calculateFadeInFactor = useCallback(() => {
     if (!globalMousePos.x || !globalMousePos.y || !glassRef.current) {
       return 0;
@@ -731,7 +678,6 @@ export function AtomixGlass({
     return edgeDistance > activationZone ? 0 : 1 - edgeDistance / activationZone;
   }, [globalMousePos, glassSize]);
 
-  // Helper function to calculate elastic translation
   const calculateElasticTranslation = useCallback(() => {
     if (!glassRef.current) {
       return { x: 0, y: 0 };
@@ -748,28 +694,23 @@ export function AtomixGlass({
     };
   }, [globalMousePos, elasticity, calculateFadeInFactor]);
 
-  // Update glass size whenever component mounts, content changes, or window resizes
   useEffect(() => {
-    // Type guard to ensure element is valid
     const isValidElement = (element: HTMLElement | null): element is HTMLElement => {
       return element !== null && element instanceof HTMLElement && element.isConnected;
     };
 
-    // Debounced size update function with error handling and performance optimization
     let rafId: number | null = null;
     let lastSize = { width: 0, height: 0 };
     let lastCornerRadius = cornerRadius;
 
     const updateGlassSize = (forceUpdate = false): void => {
       try {
-        // Cancel previous animation frame if still pending
         if (rafId !== null) {
           cancelAnimationFrame(rafId);
         }
 
         rafId = requestAnimationFrame(() => {
           try {
-            // Validate element exists and is connected to DOM
             if (!isValidElement(glassRef.current)) {
               console.warn('AtomixGlass: Element not available for size calculation');
               return;
@@ -777,7 +718,6 @@ export function AtomixGlass({
 
             const rect = glassRef.current.getBoundingClientRect();
 
-            // Validate rect dimensions
             if (rect.width <= 0 || rect.height <= 0) {
               console.warn('AtomixGlass: Invalid dimensions detected', {
                 width: rect.width,
@@ -786,15 +726,12 @@ export function AtomixGlass({
               return;
             }
 
-            // Calculate size with corner radius consideration
-            // Corner radius can affect the visual bounds, so we need to account for it
-            const cornerRadiusOffset = Math.max(0, cornerRadius * 0.1); // Small offset for visual accuracy
+            const cornerRadiusOffset = Math.max(0, cornerRadius * 0.1);
             const newSize = {
               width: Math.round(rect.width + cornerRadiusOffset),
               height: Math.round(rect.height + cornerRadiusOffset),
             };
 
-            // Force update if corner radius changed or dimensions changed
             const cornerRadiusChanged = lastCornerRadius !== cornerRadius;
             const dimensionsChanged =
               newSize.width !== lastSize.width || newSize.height !== lastSize.height;
@@ -824,28 +761,24 @@ export function AtomixGlass({
       }
     };
 
-    // Debounced window resize handler
     let resizeTimeoutId: NodeJS.Timeout | null = null;
     const debouncedResizeHandler = (): void => {
       if (resizeTimeoutId) {
         clearTimeout(resizeTimeoutId);
       }
-      resizeTimeoutId = setTimeout(updateGlassSize, 16); // ~60fps
+      resizeTimeoutId = setTimeout(updateGlassSize, 16);
     };
 
-    // Update size immediately with error handling
     try {
-      updateGlassSize(true); // Force initial update
+      updateGlassSize(true);
     } catch (error) {
       console.error('AtomixGlass: Error in initial size update:', error);
     }
 
-    // Create ResizeObserver with enhanced error handling and fallback
     let resizeObserver: ResizeObserver | null = null;
     let fallbackInterval: NodeJS.Timeout | null = null;
 
     try {
-      // Check for ResizeObserver support with better browser compatibility
       const hasResizeObserver =
         typeof ResizeObserver !== 'undefined' &&
         typeof ResizeObserver.prototype.observe === 'function';
@@ -854,7 +787,6 @@ export function AtomixGlass({
         try {
           resizeObserver = new ResizeObserver(entries => {
             try {
-              // Process all entries to handle multiple elements if needed
               for (const entry of entries) {
                 if (entry.target === glassRef.current) {
                   updateGlassSize();
@@ -872,7 +804,6 @@ export function AtomixGlass({
             'AtomixGlass: ResizeObserver creation failed, using fallback:',
             resizeObserverError
           );
-          // Fallback to interval-based checking
           fallbackInterval = setInterval(() => {
             if (isValidElement(glassRef.current)) {
               updateGlassSize();
@@ -880,17 +811,15 @@ export function AtomixGlass({
           }, 100);
         }
       } else {
-        // Fallback for browsers without ResizeObserver support
         console.warn('AtomixGlass: ResizeObserver not supported, using fallback polling');
         fallbackInterval = setInterval(() => {
           if (isValidElement(glassRef.current)) {
             updateGlassSize();
           }
-        }, 100); // Check every 100ms as fallback
+        }, 100);
       }
     } catch (error) {
       console.error('AtomixGlass: Error setting up ResizeObserver:', error);
-      // Fallback to interval-based checking
       fallbackInterval = setInterval(() => {
         if (isValidElement(glassRef.current)) {
           updateGlassSize();
@@ -898,28 +827,22 @@ export function AtomixGlass({
       }, 100);
     }
 
-    // Listen for window resize with debouncing
     window.addEventListener('resize', debouncedResizeHandler, { passive: true });
 
-    // Cleanup function with comprehensive error handling
     return () => {
       try {
-        // Cancel any pending animation frames
         if (rafId !== null) {
           cancelAnimationFrame(rafId);
           rafId = null;
         }
 
-        // Clear resize timeout
         if (resizeTimeoutId) {
           clearTimeout(resizeTimeoutId);
           resizeTimeoutId = null;
         }
 
-        // Remove window resize listener
         window.removeEventListener('resize', debouncedResizeHandler);
 
-        // Clean up ResizeObserver
         if (resizeObserver) {
           try {
             if (isValidElement(glassRef.current)) {
@@ -932,7 +855,6 @@ export function AtomixGlass({
           resizeObserver = null;
         }
 
-        // Clean up fallback interval
         if (fallbackInterval) {
           clearInterval(fallbackInterval);
           fallbackInterval = null;
@@ -941,13 +863,11 @@ export function AtomixGlass({
         console.error('AtomixGlass: Error in cleanup:', error);
       }
     };
-  }, [cornerRadius, enablePerformanceMonitoring]); // Add cornerRadius as dependency
+  }, [cornerRadius, enablePerformanceMonitoring]);
 
-  // Additional effect to handle cornerRadius changes specifically
   useEffect(() => {
     if (!glassRef.current) return;
 
-    // Force a size update when cornerRadius changes to ensure synchronization
     const timeoutId = setTimeout(() => {
       try {
         const rect = glassRef.current?.getBoundingClientRect();
@@ -969,12 +889,11 @@ export function AtomixGlass({
       } catch (error) {
         console.warn('AtomixGlass: Error in corner radius size update:', error);
       }
-    }, 0); // Use setTimeout to ensure DOM has updated
+    }, 0);
 
     return () => clearTimeout(timeoutId);
   }, [cornerRadius, enablePerformanceMonitoring]);
 
-  // Optimize transform calculations using useMemo with accessibility support
   const elasticTranslation = useMemo(() => {
     if (effectiveDisableEffects) {
       return { x: 0, y: 0 };
@@ -996,14 +915,12 @@ export function AtomixGlass({
     return `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) ${isActive && Boolean(onClick) ? 'scale(0.96)' : directionalScale}`;
   }, [elasticTranslation, isActive, onClick, directionalScale, effectiveDisableEffects]);
 
-  // Optimize base style using useMemo with accessibility support
   const baseStyle = useMemo(
     () => ({
       ...style,
       transform: transformStyle,
       transition: effectiveReducedMotion ? 'none' : 'all ease-out 0.2s',
-      willChange: effectiveDisableEffects ? 'auto' : 'transform', // Improve performance
-      // High contrast support
+      willChange: effectiveDisableEffects ? 'auto' : 'transform',
       ...(effectiveHighContrast && {
         border: '2px solid currentColor',
         outline: '2px solid transparent',
@@ -1013,7 +930,6 @@ export function AtomixGlass({
     [style, transformStyle, effectiveReducedMotion, effectiveDisableEffects, effectiveHighContrast]
   );
 
-  // Optimize position styles using useMemo
   const positionStyles = useMemo(
     () => ({
       position: (baseStyle.position || 'absolute') as React.CSSProperties['position'],
@@ -1023,7 +939,6 @@ export function AtomixGlass({
     [baseStyle]
   );
 
-  // Get real-time size from DOM element to avoid resize synchronization issues
   const getCurrentElementSize = useCallback(() => {
     if (!glassRef.current) {
       return { width: 0, height: 0 };
@@ -1041,7 +956,6 @@ export function AtomixGlass({
     }
   }, []);
 
-  // Calculate transformed size accounting for elasticity effects
   const getTransformedSize = useCallback(() => {
     const currentSize = getCurrentElementSize();
 
@@ -1049,37 +963,31 @@ export function AtomixGlass({
       return currentSize;
     }
 
-    // Extract scale values from directionalScale (handles both scale() and scaleX()/scaleY())
     let scaleX = 1;
     let scaleY = 1;
 
-    // Check for simple scale() function
     const simpleScaleMatch = directionalScale.match(/scale\(([^)]+)\)/);
     if (simpleScaleMatch && simpleScaleMatch[1]) {
       const scaleValue = parseFloat(simpleScaleMatch[1]);
       scaleX = scaleValue;
       scaleY = scaleValue;
     } else {
-      // Check for scaleX() function
       const scaleXMatch = directionalScale.match(/scaleX\(([^)]+)\)/);
       if (scaleXMatch && scaleXMatch[1]) {
         scaleX = parseFloat(scaleXMatch[1]);
       }
 
-      // Check for scaleY() function
       const scaleYMatch = directionalScale.match(/scaleY\(([^)]+)\)/);
       if (scaleYMatch && scaleYMatch[1]) {
         scaleY = parseFloat(scaleYMatch[1]);
       }
     }
 
-    // Account for the scale transformation with separate X and Y scaling
     const transformedSize = {
       width: currentSize.width * scaleX,
       height: currentSize.height * scaleY,
     };
 
-    // Debug logging for scale values (only when performance monitoring is enabled)
     if (enablePerformanceMonitoring && (scaleX !== 1 || scaleY !== 1)) {
       console.log('AtomixGlass: Scale transformation detected', {
         directionalScale,
@@ -1098,13 +1006,10 @@ export function AtomixGlass({
     enablePerformanceMonitoring,
   ]);
 
-  // Optimize border styles using useMemo with real-time size synchronization
   const borderLayer1Style = useMemo(() => {
-    // Get transformed size accounting for elasticity effects
     const transformedSize = getTransformedSize();
     const borderWidth = 1.5;
 
-    // Use transformed size if available, fallback to glassSize state
     const adjustedSize = {
       width: transformedSize.width > 0 ? transformedSize.width : Math.max(glassSize.width, 0),
       height: transformedSize.height > 0 ? transformedSize.height : Math.max(glassSize.height, 0),
@@ -1148,11 +1053,9 @@ export function AtomixGlass({
   ]);
 
   const borderLayer2Style = useMemo(() => {
-    // Get transformed size accounting for elasticity effects
     const transformedSize = getTransformedSize();
     const borderWidth = 1.5;
 
-    // Use transformed size if available, fallback to glassSize state
     const adjustedSize = {
       width: transformedSize.width > 0 ? transformedSize.width : Math.max(glassSize.width, 0),
       height: transformedSize.height > 0 ? transformedSize.height : Math.max(glassSize.height, 0),
@@ -1194,7 +1097,6 @@ export function AtomixGlass({
     getTransformedSize,
   ]);
 
-  // Optimize hover effects using useMemo with real-time size synchronization
   const hoverEffect1Style = useMemo(() => {
     return {
       ...positionStyles,
@@ -1206,8 +1108,8 @@ export function AtomixGlass({
       transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
       opacity: isHovered || isActive ? 0.5 : 0,
       background: `radial-gradient(
-        circle at ${50 + mouseOffset.x / 2}% ${50 + mouseOffset.y / 2}%, 
-        rgba(255, 255, 255, 0.5) 0%, 
+        circle at ${50 + mouseOffset.x / 2}% ${50 + mouseOffset.y / 2}%,
+        rgba(255, 255, 255, 0.5) 0%,
         rgba(255, 255, 255, 0) 50%
       )`,
       mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
@@ -1234,8 +1136,8 @@ export function AtomixGlass({
       transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
       opacity: isActive ? 0.5 : 0,
       background: `radial-gradient(
-        circle at ${50 + mouseOffset.x / 1.5}% ${50 + mouseOffset.y / 1.5}%, 
-        rgba(255, 255, 255, 1) 0%, 
+        circle at ${50 + mouseOffset.x / 1.5}% ${50 + mouseOffset.y / 1.5}%,
+        rgba(255, 255, 255, 1) 0%,
         rgba(255, 255, 255, 0) 80%
       )`,
       mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
@@ -1253,8 +1155,8 @@ export function AtomixGlass({
       transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
       opacity: isHovered ? 0.4 : isActive ? 0.8 : 0,
       background: `radial-gradient(
-        circle at ${50 + mouseOffset.x}% ${50 + mouseOffset.y}%, 
-        rgba(255, 255, 255, 1) 0%, 
+        circle at ${50 + mouseOffset.x}% ${50 + mouseOffset.y}%,
+        rgba(255, 255, 255, 1) 0%,
         rgba(255, 255, 255, 0) 100%
       )`,
       mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
@@ -1288,7 +1190,6 @@ export function AtomixGlass({
           : undefined
       }
     >
-      {/* Over light effect */}
       <div
         className={`u-bg-dark ${overLight ? 'u-opacity-50' : 'u-opacity-0'}`}
         style={{
@@ -1321,7 +1222,7 @@ export function AtomixGlass({
         className={className}
         style={{
           ...baseStyle,
-          transform: baseStyle.transform, // Remove transform from GlassContainer since it's applied to the parent
+          transform: baseStyle.transform,
         }}
         cornerRadius={cornerRadius}
         displacementScale={
@@ -1344,7 +1245,7 @@ export function AtomixGlass({
         overLight={overLight}
         onClick={onClick}
         mode={effectiveDisableEffects ? 'standard' : mode}
-        transform={baseStyle.transform} // Pass the transform to apply to glass__warp
+        transform={baseStyle.transform}
       >
         {children}
       </GlassContainer>
