@@ -209,7 +209,7 @@ const BackgroundWrapper = ({
   backgroundIndex,
   overlay = false,
   overlayColor = 'rgba(0,0,0,0)',
-  overlayOpacity = 0,
+  overlayOpacity = 1,
   height = '90vh',
   width = '90vw',
   borderRadius = '12px',
@@ -217,7 +217,8 @@ const BackgroundWrapper = ({
   className = '',
   style = {},
 }: BackgroundWrapperProps) => {
-  const bgImage = backgroundIndex !== undefined ? backgroundImages[backgroundIndex] : backgroundImage;
+  const bgImage =
+    backgroundIndex !== undefined ? backgroundImages[backgroundIndex] : backgroundImage;
   const finalOverlayColor = overlay ? 'rgba(0,0,0,0.5)' : overlayColor;
   const finalOverlayOpacity = overlay ? 0.5 : overlayOpacity;
 
@@ -276,23 +277,66 @@ const BackgroundWrapper = ({
 /**
  * Sample video URLs and configurations
  */
-const sampleVideo = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4';
-const samplePoster = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/Sintel.jpg';
+// Different video sources for various stories
+const videoSources = {
+  sintel: {
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+    poster: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/Sintel.jpg',
+  },
+  bigBuckBunny: {
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    poster:
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg',
+  },
+  elephantsDream: {
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+    poster:
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ElephantsDream.jpg',
+  },
+  forBiggerBlazes: {
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    poster:
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerBlazes.jpg',
+  },
+  tearsOfSteel: {
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+    poster:
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/TearsOfSteel.jpg',
+  },
+  subaru: {
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4',
+    poster:
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/SubaruOutbackOnStreetAndDirt.jpg',
+  },
+  volks: {
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4',
+    poster:
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/VolkswagenGTIReview.jpg',
+  },
+  weAreGoingOnBullrun: {
+    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
+    poster:
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/WeAreGoingOnBullrun.jpg',
+  },
+};
+
+const sampleVideo = videoSources.sintel.src;
+const samplePoster = videoSources.sintel.poster;
 
 const sampleQualities = [
   {
     label: '1080p HD',
-    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+    src: videoSources.sintel.src,
     resolution: '1920x1080',
   },
   {
     label: '720p',
-    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+    src: videoSources.sintel.src,
     resolution: '1280x720',
   },
   {
     label: '480p',
-    src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+    src: videoSources.sintel.src,
     resolution: '854x480',
   },
 ];
@@ -324,8 +368,8 @@ const sampleSubtitles = [
  */
 export const Default: Story = {
   args: {
-    src: sampleVideo,
-    poster: samplePoster,
+    src: videoSources.sintel.src,
+    poster: videoSources.sintel.poster,
     width: '800px',
     height: '450px',
     controls: true,
@@ -379,12 +423,7 @@ export const YouTubeEmbed: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper
-        backgroundIndex={1}
-        height="60vh"
-        width="85vw"
-        overlayOpacity={0.2}
-      >
+      <BackgroundWrapper backgroundIndex={1} height="60vh" width="85vw" overlayOpacity={0.2}>
         <Story />
       </BackgroundWrapper>
     ),
@@ -412,12 +451,7 @@ export const YouTubeURL: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper
-        backgroundIndex={1}
-        height="60vh"
-        width="85vw"
-        overlayOpacity={0.2}
-      >
+      <BackgroundWrapper backgroundIndex={1} height="60vh" width="85vw" overlayOpacity={0.2}>
         <Story />
       </BackgroundWrapper>
     ),
@@ -437,8 +471,8 @@ export const YouTubeURL: Story = {
  */
 export const AdvancedFeatures: Story = {
   args: {
-    src: sampleVideo,
-    poster: samplePoster,
+    src: videoSources.bigBuckBunny.src,
+    poster: videoSources.bigBuckBunny.poster,
     width: '900px',
     height: '506px',
     controls: true,
@@ -459,12 +493,7 @@ export const AdvancedFeatures: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper
-        backgroundIndex={0}
-        height="75vh"
-        width="95vw"
-        overlayOpacity={0.15}
-      >
+      <BackgroundWrapper backgroundIndex={0} height="75vh" width="95vw" overlayOpacity={0.15}>
         <Story />
       </BackgroundWrapper>
     ),
@@ -484,7 +513,7 @@ export const AdvancedFeatures: Story = {
  */
 export const AmbientMode: Story = {
   args: {
-    src: sampleVideo,
+    src: videoSources.elephantsDream.src,
     poster: samplePoster,
     width: '800px',
     height: '450px',
@@ -529,8 +558,8 @@ export const AmbientMode: Story = {
  */
 export const GlassEffect: Story = {
   args: {
-    src: sampleVideo,
-    poster: samplePoster,
+    src: videoSources.forBiggerBlazes.src,
+    poster: videoSources.forBiggerBlazes.poster,
     width: '800px',
     height: '450px',
     glass: true,
@@ -550,12 +579,7 @@ export const GlassEffect: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper
-        backgroundIndex={3}
-        height="70vh"
-        width="90vw"
-        overlayOpacity={0.1}
-      >
+      <BackgroundWrapper backgroundIndex={3} height="70vh" width="90vw" overlayOpacity={0.1}>
         <Story />
       </BackgroundWrapper>
     ),
@@ -572,8 +596,8 @@ export const GlassEffect: Story = {
 
 export const GlassCustom: Story = {
   args: {
-    src: sampleVideo,
-    poster: samplePoster,
+    src: videoSources.tearsOfSteel.src,
+    poster: videoSources.tearsOfSteel.poster,
     width: '800px',
     height: '450px',
     glass: {
@@ -626,10 +650,10 @@ export const GlassCustom: Story = {
 };
 
 export const GlassWithInteractiveContent: Story = {
-  render: (args) => {
+  render: args => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [showOverlay, setShowOverlay] = useState(true);
-    
+
     return (
       <BackgroundWrapper
         style={{
@@ -643,45 +667,55 @@ export const GlassWithInteractiveContent: Story = {
           {...args}
           glassContent={
             showOverlay ? (
-              <div style={{
-                background: 'rgba(255, 255, 255, 0.15)',
-                backdropFilter: 'blur(20px)',
-                borderRadius: '20px',
-                padding: '40px',
-                textAlign: 'center',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
-                maxWidth: '500px',
-                boxShadow: '0 12px 40px rgba(0, 0, 0, 0.3)',
-              }}>
-                <h2 style={{ 
-                  margin: '0 0 20px 0', 
-                  color: 'white',
-                  fontSize: '28px',
-                  fontWeight: '600',
-                  textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)',
-                }}>
+              <div
+                style={{
+                  background: 'rgba(255, 255, 255, 0.15)',
+                  backdropFilter: 'blur(20px)',
+                  borderRadius: '20px',
+                  padding: '40px',
+                  textAlign: 'center',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  maxWidth: '500px',
+                  boxShadow: '0 12px 40px rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                <h2
+                  style={{
+                    margin: '0 0 20px 0',
+                    color: 'white',
+                    fontSize: '28px',
+                    fontWeight: '600',
+                    textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)',
+                  }}
+                >
                   🎬 Premium Cinema Experience
                 </h2>
-                <p style={{ 
-                  margin: '0 0 30px 0', 
-                  color: 'rgba(255, 255, 255, 0.9)', 
-                  fontSize: '18px',
-                  lineHeight: '1.6',
-                  textShadow: '0 1px 4px rgba(0, 0, 0, 0.5)',
-                }}>
-                  Immerse yourself in a cinematic journey with our advanced glass morphism effects, 
-                  premium video quality, and interactive features designed for the ultimate viewing experience.
+                <p
+                  style={{
+                    margin: '0 0 30px 0',
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    fontSize: '18px',
+                    lineHeight: '1.6',
+                    textShadow: '0 1px 4px rgba(0, 0, 0, 0.5)',
+                  }}
+                >
+                  Immerse yourself in a cinematic journey with our advanced glass morphism effects,
+                  premium video quality, and interactive features designed for the ultimate viewing
+                  experience.
                 </p>
-                <div style={{
-                  display: 'flex',
-                  gap: '16px',
-                  justifyContent: 'center',
-                  flexWrap: 'wrap',
-                }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '16px',
+                    justifyContent: 'center',
+                    flexWrap: 'wrap',
+                  }}
+                >
                   <button
                     onClick={() => setShowOverlay(false)}
                     style={{
-                      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15))',
+                      background:
+                        'linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15))',
                       border: '1px solid rgba(255, 255, 255, 0.4)',
                       borderRadius: '14px',
                       color: 'white',
@@ -694,15 +728,17 @@ export const GlassWithInteractiveContent: Story = {
                       boxShadow: '0 6px 20px rgba(0, 0, 0, 0.2)',
                       transform: 'translateY(0)',
                     }}
-                    onMouseOver={(e) => {
+                    onMouseOver={e => {
                       const target = e.target as HTMLButtonElement;
-                      target.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.25))';
+                      target.style.background =
+                        'linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.25))';
                       target.style.transform = 'translateY(-2px)';
                       target.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.3)';
                     }}
-                    onMouseOut={(e) => {
+                    onMouseOut={e => {
                       const target = e.target as HTMLButtonElement;
-                      target.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15))';
+                      target.style.background =
+                        'linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15))';
                       target.style.transform = 'translateY(0)';
                       target.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.2)';
                     }}
@@ -722,12 +758,12 @@ export const GlassWithInteractiveContent: Story = {
                       transition: 'all 0.3s ease',
                       textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)',
                     }}
-                    onMouseOver={(e) => {
+                    onMouseOver={e => {
                       const target = e.target as HTMLButtonElement;
                       target.style.background = 'rgba(255, 255, 255, 0.2)';
                       target.style.transform = 'translateY(-1px)';
                     }}
-                    onMouseOut={(e) => {
+                    onMouseOut={e => {
                       const target = e.target as HTMLButtonElement;
                       target.style.background = 'rgba(255, 255, 255, 0.1)';
                       target.style.transform = 'translateY(0)';
@@ -786,8 +822,8 @@ export const GlassWithInteractiveContent: Story = {
  */
 export const ResponsivePlayer: Story = {
   args: {
-    src: sampleVideo,
-    poster: samplePoster,
+    src: videoSources.volks.src,
+    poster: videoSources.volks.poster,
     width: '100%',
     aspectRatio: '16:9',
     controls: true,
@@ -805,19 +841,23 @@ export const ResponsivePlayer: Story = {
   },
   decorators: [
     Story => (
-      <div style={{ 
-        width: '100%', 
-        maxWidth: '1200px', 
-        margin: '0 auto',
-        padding: '20px',
-        background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
-        borderRadius: '16px',
-      }}>
-        <div style={{
-          marginBottom: '20px',
-          textAlign: 'center',
-          color: 'white',
-        }}>
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: '20px',
+          background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+          borderRadius: '16px',
+        }}
+      >
+        <div
+          style={{
+            marginBottom: '20px',
+            textAlign: 'center',
+            color: 'white',
+          }}
+        >
           <h3 style={{ margin: '0 0 10px 0', fontSize: '24px', fontWeight: '600' }}>
             Responsive Video Player
           </h3>
@@ -841,8 +881,8 @@ export const ResponsivePlayer: Story = {
 
 export const SquareFormat: Story = {
   args: {
-    src: sampleVideo,
-    poster: samplePoster,
+    src: videoSources.weAreGoingOnBullrun.src,
+    poster: videoSources.weAreGoingOnBullrun.poster,
     aspectRatio: '1:1',
     width: '500px',
     controls: true,
@@ -856,12 +896,7 @@ export const SquareFormat: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper
-        backgroundIndex={4}
-        height="60vh"
-        width="80vw"
-        overlayOpacity={0.3}
-      >
+      <BackgroundWrapper backgroundIndex={4} height="60vh" width="80vw" overlayOpacity={0.3}>
         <div style={{ textAlign: 'center', color: 'white' }}>
           <h3 style={{ margin: '0 0 20px 0', fontSize: '22px', fontWeight: '600' }}>
             Square Format Video
@@ -886,8 +921,8 @@ export const SquareFormat: Story = {
 
 export const VerticalFormat: Story = {
   args: {
-    src: sampleVideo,
-    poster: samplePoster,
+    src: videoSources.bigBuckBunny.src,
+    poster: videoSources.bigBuckBunny.poster,
     aspectRatio: '9:16',
     width: '360px',
     controls: true,
@@ -902,12 +937,7 @@ export const VerticalFormat: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper
-        backgroundIndex={1}
-        height="90vh"
-        width="70vw"
-        overlayOpacity={0.2}
-      >
+      <BackgroundWrapper backgroundIndex={1} height="90vh" width="70vw" overlayOpacity={0.2}>
         <div style={{ textAlign: 'center', color: 'white' }}>
           <h3 style={{ margin: '0 0 20px 0', fontSize: '22px', fontWeight: '600' }}>
             Vertical/Portrait Format
@@ -935,8 +965,8 @@ export const VerticalFormat: Story = {
  */
 export const MinimalPlayer: Story = {
   args: {
-    src: sampleVideo,
-    poster: samplePoster,
+    src: videoSources.elephantsDream.src,
+    poster: videoSources.elephantsDream.poster,
     width: '600px',
     height: '338px',
     controls: true,
@@ -953,12 +983,7 @@ export const MinimalPlayer: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper
-        backgroundIndex={0}
-        height="60vh"
-        width="80vw"
-        overlayOpacity={0.1}
-      >
+      <BackgroundWrapper backgroundIndex={0} height="60vh" width="80vw" overlayOpacity={0.1}>
         <div style={{ textAlign: 'center', color: 'white' }}>
           <h3 style={{ margin: '0 0 20px 0', fontSize: '22px', fontWeight: '600' }}>
             Minimal Configuration
@@ -983,8 +1008,8 @@ export const MinimalPlayer: Story = {
 
 export const AutoplayMuted: Story = {
   args: {
-    src: sampleVideo,
-    poster: samplePoster,
+    src: videoSources.forBiggerBlazes.src,
+    poster: videoSources.forBiggerBlazes.poster,
     autoplay: true,
     muted: true,
     loop: true,
@@ -1001,12 +1026,7 @@ export const AutoplayMuted: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper
-        backgroundIndex={2}
-        height="60vh"
-        width="85vw"
-        overlayOpacity={0.2}
-      >
+      <BackgroundWrapper backgroundIndex={2} height="60vh" width="85vw" overlayOpacity={0.2}>
         <div style={{ textAlign: 'center', color: 'white' }}>
           <h3 style={{ margin: '0 0 20px 0', fontSize: '22px', fontWeight: '600' }}>
             Autoplay & Loop Configuration
@@ -1034,8 +1054,8 @@ export const AutoplayMuted: Story = {
  */
 export const WithSubtitles: Story = {
   args: {
-    src: sampleVideo,
-    poster: samplePoster,
+    src: videoSources.tearsOfSteel.src,
+    poster: videoSources.tearsOfSteel.poster,
     width: '800px',
     height: '450px',
     subtitles: sampleSubtitles,
@@ -1051,12 +1071,7 @@ export const WithSubtitles: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper
-        backgroundIndex={3}
-        height="70vh"
-        width="90vw"
-        overlayOpacity={0.15}
-      >
+      <BackgroundWrapper backgroundIndex={3} height="70vh" width="90vw" overlayOpacity={0.15}>
         <div style={{ textAlign: 'center', color: 'white', marginBottom: '30px' }}>
           <h3 style={{ margin: '0 0 10px 0', fontSize: '22px', fontWeight: '600' }}>
             Multi-Language Subtitles
@@ -1117,20 +1132,22 @@ export const InteractivePlayground: Story = {
         style={{ position: 'relative' }}
       >
         {/* Control Panel */}
-        <div style={{
-          position: 'absolute',
-          top: '20px',
-          left: '20px',
-          width: '300px',
-          padding: '20px',
-          borderRadius: '12px',
-          background: 'rgba(0,0,0,0.8)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255,255,255,0.2)',
-          color: 'white',
-          fontSize: '14px',
-          zIndex: 10,
-        }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: '20px',
+            left: '20px',
+            width: '300px',
+            padding: '20px',
+            borderRadius: '12px',
+            background: 'rgba(0,0,0,0.8)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            color: 'white',
+            fontSize: '14px',
+            zIndex: 10,
+          }}
+        >
           <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', textAlign: 'center' }}>
             VideoPlayer Controls
           </h3>
@@ -1142,7 +1159,7 @@ export const InteractivePlayground: Story = {
             </label>
             <select
               value={settings.aspectRatio}
-              onChange={(e) => handleChange('aspectRatio', e.target.value)}
+              onChange={e => handleChange('aspectRatio', e.target.value)}
               style={{
                 width: '100%',
                 padding: '8px',
@@ -1170,7 +1187,7 @@ export const InteractivePlayground: Story = {
               min="0"
               max="4"
               value={settings.backgroundIndex}
-              onChange={(e) => handleChange('backgroundIndex', parseInt(e.target.value))}
+              onChange={e => handleChange('backgroundIndex', parseInt(e.target.value))}
               style={{ width: '100%', accentColor: '#6366f1' }}
             />
           </div>
@@ -1187,7 +1204,7 @@ export const InteractivePlayground: Story = {
                 max="1"
                 step="0.05"
                 value={settings.glassOpacity}
-                onChange={(e) => handleChange('glassOpacity', parseFloat(e.target.value))}
+                onChange={e => handleChange('glassOpacity', parseFloat(e.target.value))}
                 style={{ width: '100%', accentColor: '#6366f1' }}
               />
             </div>
@@ -1205,30 +1222,37 @@ export const InteractivePlayground: Story = {
             { key: 'ambientMode', label: 'Ambient Mode' },
             { key: 'glass', label: 'Glass Effect' },
           ].map(({ key, label }) => (
-            <div key={key} style={{ display: 'flex', alignItems: 'center', marginBottom: '12px', gap: '8px' }}>
+            <div
+              key={key}
+              style={{ display: 'flex', alignItems: 'center', marginBottom: '12px', gap: '8px' }}
+            >
               <input
                 type="checkbox"
                 id={key}
                 checked={settings[key as keyof typeof settings] as boolean}
-                onChange={(e) => handleChange(key, e.target.checked)}
+                onChange={e => handleChange(key, e.target.checked)}
                 style={{ width: '16px', height: '16px' }}
               />
-              <label htmlFor={key} style={{ fontSize: '13px' }}>{label}</label>
+              <label htmlFor={key} style={{ fontSize: '13px' }}>
+                {label}
+              </label>
             </div>
           ))}
         </div>
 
         {/* Video Player */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100%',
-          paddingLeft: '340px',
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            paddingLeft: '340px',
+          }}
+        >
           <VideoPlayer
-            src={sampleVideo}
-            poster={samplePoster}
+            src={videoSources.subaru.src}
+            poster={videoSources.subaru.poster}
             width="700px"
             aspectRatio={settings.aspectRatio}
             autoplay={settings.autoplay}

@@ -580,6 +580,9 @@
 
   &__glass-overlay {
     overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
     border-radius: var(--#{$prefix}-video-player-border-radius, 0.5rem);
   }
 

@@ -451,6 +451,10 @@ const backgrounds = {
   // Interior spaces
   abstract1: backgroundImages[6], // Cozy café interior
   abstract2: backgroundImages[9], // Modern library
+
+  // Video backgrounds
+  videoBackground:
+    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
 };
 
 /**
@@ -1575,6 +1579,7 @@ export const InteractivePlayground: Story = {
       showHoverEffects: true,
       overLight: false,
       background: backgrounds.blueGradient,
+      useVideoBackground: false,
     });
 
     const handleChange = (property: string, value: any) => {
@@ -1635,9 +1640,9 @@ export const InteractivePlayground: Story = {
 
     return (
       <BackgroundWrapper
-        backgroundImage={settings.background}
+        backgroundImage={settings.useVideoBackground ? 'transparent' : settings.background}
         height="80vh"
-        style={{ maxWidth: '1400px', position: 'relative' }}
+        style={{ maxWidth: '1400px', position: 'relative', overflow: 'hidden' }}
       >
         {/* Control Panel */}
         <div style={controlPanelStyle}>
@@ -1796,7 +1801,38 @@ export const InteractivePlayground: Story = {
             />
             <label htmlFor="overLight">Over Light</label>
           </div>
+
+          <div style={checkboxContainerStyle}>
+            <input
+              type="checkbox"
+              id="useVideoBackground"
+              checked={settings.useVideoBackground}
+              onChange={e => handleChange('useVideoBackground', e.target.checked)}
+            />
+            <label htmlFor="useVideoBackground">Use Video Background</label>
+          </div>
         </div>
+
+        {/* Video Background */}
+        {settings.useVideoBackground && (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              zIndex: -1,
+            }}
+          >
+            <source src={backgrounds.videoBackground} type="video/mp4" />
+          </video>
+        )}
 
         {/* Glass Component Preview */}
         <div
@@ -1826,6 +1862,8 @@ export const InteractivePlayground: Story = {
               <p style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '20px' }}>
                 Adjust the controls on the left to see how different properties affect the glass
                 effect in real-time.
+                {settings.useVideoBackground &&
+                  ' Try the video background for an enhanced experience!'}
               </p>
               <div
                 style={{
@@ -1848,7 +1886,7 @@ export const InteractivePlayground: Story = {
     docs: {
       description: {
         story:
-          'An interactive playground that allows you to experiment with all AtomixGlass component properties in real-time. Use the control panel to adjust settings and see how they affect the appearance and behavior of the glass effect.',
+          'An interactive playground that allows you to experiment with all AtomixGlass component properties in real-time. Use the control panel to adjust settings and see how they affect the appearance and behavior of the glass effect. Toggle the video background option to see how the glass effect works with dynamic content.',
       },
     },
   },
@@ -2740,5 +2778,213 @@ export const ThemeSwitching: Story = {
         </div>
       </BackgroundWrapper>
     );
+  },
+};
+
+/**
+ * Video Background Example
+ * Demonstrates the glass effect over a moving video background
+ */
+export const VideoBackground: Story = {
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [glassSettings, setGlassSettings] = useState({
+      displacementScale: 80,
+      blurAmount: 0,
+      saturation: 150,
+      aberrationIntensity: 0,
+      cornerRadius: 24,
+      mode: 'standard' as const,
+    });
+
+    const updateSettings = (property: string, value: any) => {
+      setGlassSettings(prev => ({
+        ...prev,
+        [property]: value,
+      }));
+    };
+
+    return (
+      <div style={{ position: 'relative', height: '80vh', width: '90vw', overflow: 'hidden' }}>
+        {/* Video Background */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            zIndex: -1,
+          }}
+        >
+          <source src={backgrounds.videoBackground} type="video/mp4" />
+        </video>
+
+        {/* Content over video */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            padding: '40px',
+            gap: '40px',
+            flexWrap: 'wrap',
+          }}
+        >
+          {/* Main Glass Card */}
+          <AtomixGlass
+            displacementScale={glassSettings.displacementScale}
+            blurAmount={glassSettings.blurAmount}
+            saturation={glassSettings.saturation}
+            aberrationIntensity={glassSettings.aberrationIntensity}
+            cornerRadius={glassSettings.cornerRadius}
+            mode={glassSettings.mode}
+            style={{ width: '400px', maxWidth: '100%' }}
+          >
+            <div style={{ padding: '32px', textAlign: 'center' }}>
+              <h2 style={{ marginTop: 0, fontSize: '28px', fontWeight: 600, marginBottom: '16px' }}>
+                Glass Over Video
+              </h2>
+              <p style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '24px', opacity: 0.9 }}>
+                Experience the stunning glass morphism effect overlaid on dynamic video content. The
+                glass element creates a sophisticated focal point while maintaining visual harmony
+                with the moving background.
+              </p>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: '12px',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <button className="c-btn c-btn--primary">Get Started</button>
+                <button className="c-btn c-btn--outline">Learn More</button>
+              </div>
+            </div>
+          </AtomixGlass>
+
+          {/* Side Control Panel */}
+          <AtomixGlass
+            displacementScale={40}
+            blurAmount={0.06}
+            saturation={120}
+            aberrationIntensity={1.5}
+            cornerRadius={16}
+            mode="standard"
+            style={{ width: '300px', maxWidth: '100%' }}
+          >
+            <div style={{ padding: '24px' }}>
+              <h3 style={{ marginTop: 0, fontSize: '18px', marginBottom: '20px' }}>
+                Live Controls
+              </h3>
+
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
+                  Displacement: {glassSettings.displacementScale}
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="150"
+                  value={glassSettings.displacementScale}
+                  onChange={e => updateSettings('displacementScale', parseInt(e.target.value))}
+                  style={{ width: '100%', accentColor: '#6366f1' }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
+                  Blur: {glassSettings.blurAmount}
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="10"
+                  step="0.5"
+                  value={glassSettings.blurAmount}
+                  onChange={e => updateSettings('blurAmount', parseFloat(e.target.value))}
+                  style={{ width: '100%', accentColor: '#6366f1' }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
+                  Saturation: {glassSettings.saturation}%
+                </label>
+                <input
+                  type="range"
+                  min="50"
+                  max="300"
+                  value={glassSettings.saturation}
+                  onChange={e => updateSettings('saturation', parseInt(e.target.value))}
+                  style={{ width: '100%', accentColor: '#6366f1' }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
+                  Aberration: {glassSettings.aberrationIntensity}
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="5"
+                  step="0.1"
+                  value={glassSettings.aberrationIntensity}
+                  onChange={e => updateSettings('aberrationIntensity', parseFloat(e.target.value))}
+                  style={{ width: '100%', accentColor: '#6366f1' }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
+                  Corner Radius: {glassSettings.cornerRadius}px
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={glassSettings.cornerRadius}
+                  onChange={e => updateSettings('cornerRadius', parseInt(e.target.value))}
+                  style={{ width: '100%', accentColor: '#6366f1' }}
+                />
+              </div>
+
+              <button
+                className="c-btn c-btn--secondary"
+                style={{ width: '100%' }}
+                onClick={() => {
+                  setGlassSettings({
+                    displacementScale: 80,
+                    blurAmount: 0.08,
+                    saturation: 150,
+                    aberrationIntensity: 2.5,
+                    cornerRadius: 24,
+                    mode: 'standard',
+                  });
+                }}
+              >
+                Reset Defaults
+              </button>
+            </div>
+          </AtomixGlass>
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This example showcases the AtomixGlass component over a dynamic video background, demonstrating how the glass effect creates stunning visual hierarchy and focus over moving content. Use the live controls to experiment with different settings and see how they affect the glass appearance in real-time.',
+      },
+    },
   },
 };
