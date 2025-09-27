@@ -305,7 +305,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
         const computedStyle = window.getComputedStyle(containerRef.current);
         const borderRadius = computedStyle.borderRadius || computedStyle.borderTopLeftRadius;
-        
+
         // Parse the border radius value (remove 'px' and convert to number)
         const radiusValue = parseFloat(borderRadius);
         if (!isNaN(radiusValue)) {
@@ -458,17 +458,17 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
         {/* Glass overlay - positioned between video and controls */}
         {glass && (
-          <div
-            className={VIDEO_PLAYER.CLASSES.GLASS_OVERLAY}
-          >
+          <div className={VIDEO_PLAYER.CLASSES.GLASS_OVERLAY}>
             <AtomixGlass
               {...(typeof glass === 'boolean' ? {} : glass)}
               style={{
                 borderRadius: 'inherit',
               }}
               mouseContainer={containerRef}
+              displacementScale={30}
               blurAmount={0}
               saturation={100}
+              aberrationIntensity={0}
               cornerRadius={containerBorderRadius}
               elasticity={0}
             >

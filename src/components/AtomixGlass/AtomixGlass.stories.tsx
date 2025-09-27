@@ -41,40 +41,65 @@ const meta: Meta<typeof AtomixGlass> = {
     },
     displacementScale: {
       control: { type: 'range', min: 0, max: 100, step: 1 },
-      description: 'Displacement scale for the glass effect',
+      description: 'Displacement scale for the glass effect (default: 70)',
+      table: { defaultValue: { summary: '70' } },
     },
     blurAmount: {
-      control: { type: 'range', min: 0, max: 1, step: 0.005 },
-      description: 'Blur amount for the backdrop',
+      control: { type: 'range', min: 0, max: 10, step: 0.5 },
+      description: 'Blur amount for the backdrop (default: 0.0625)',
+      table: { defaultValue: { summary: '0.0625' } },
     },
     saturation: {
       control: { type: 'range', min: 100, max: 300, step: 5 },
-      description: 'Saturation percentage for the backdrop',
+      description: 'Saturation percentage for the backdrop (default: 140)',
+      table: { defaultValue: { summary: '140' } },
     },
     aberrationIntensity: {
       control: { type: 'range', min: 0, max: 10, step: 0.1 },
-      description: 'Chromatic aberration intensity',
+      description: 'Chromatic aberration intensity (default: 2)',
+      table: { defaultValue: { summary: '2' } },
     },
     elasticity: {
       control: { type: 'range', min: 0, max: 1, step: 0.01 },
-      description: 'Elasticity factor for mouse interactions',
+      description: 'Elasticity factor for mouse interactions (default: 0.15)',
+      table: { defaultValue: { summary: '0.15' } },
     },
     cornerRadius: {
       control: { type: 'range', min: 0, max: 50, step: 1 },
-      description: 'Corner radius in pixels',
+      description: 'Corner radius in pixels (default: 20)',
+      table: { defaultValue: { summary: '20' } },
+    },
+    globalMousePos: {
+      control: 'object',
+      description: 'External global mouse position { x: number; y: number }',
+    },
+    mouseOffset: {
+      control: 'object',
+      description: 'External mouse offset { x: number; y: number }',
+    },
+    mouseContainer: {
+      control: false,
+      description: 'React ref object for mouse container element',
     },
     padding: {
       control: 'text',
-      description: 'Padding for the glass container',
+      description: 'Padding for the glass container (default: "0 0")',
+      table: { defaultValue: { summary: '"0 0"' } },
     },
     overLight: {
       control: 'boolean',
-      description: 'Whether the glass is over a light background',
+      description: 'Whether the glass is over a light background (default: false)',
+      table: { defaultValue: { summary: 'false' } },
     },
     mode: {
       control: 'select',
       options: ['standard', 'polar', 'prominent', 'shader'],
-      description: 'Glass effect mode',
+      description: 'Glass effect mode (default: "standard")',
+      table: { defaultValue: { summary: '"standard"' } },
+    },
+    onClick: {
+      action: 'clicked',
+      description: 'Click event handler',
     },
     className: {
       control: 'text',
@@ -83,6 +108,42 @@ const meta: Meta<typeof AtomixGlass> = {
     style: {
       control: 'object',
       description: 'CSS style object',
+    },
+    'aria-label': {
+      control: 'text',
+      description: 'ARIA label for accessibility',
+    },
+    'aria-describedby': {
+      control: 'text',
+      description: 'ARIA describedby attribute for accessibility',
+    },
+    role: {
+      control: 'text',
+      description: 'ARIA role attribute',
+    },
+    tabIndex: {
+      control: 'number',
+      description: 'Tab index for keyboard navigation',
+    },
+    reducedMotion: {
+      control: 'boolean',
+      description: 'Override for reduced motion preference (default: false)',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    highContrast: {
+      control: 'boolean',
+      description: 'Override for high contrast preference (default: false)',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    disableEffects: {
+      control: 'boolean',
+      description: 'Disable all visual effects (default: false)',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    enablePerformanceMonitoring: {
+      control: 'boolean',
+      description: 'Enable performance monitoring (default: false)',
+      table: { defaultValue: { summary: 'false' } },
     },
   },
 };
@@ -283,7 +344,7 @@ const StoryContainer = ({ children, style = {}, interactive = false }: StoryCont
         alignItems: 'center',
         justifyContent: 'center',
         backgroundImage: interactive
-          ? 'url(https://images.unsplash.com/photo-1663882658055-40f1d4249867?q=80&w=3807&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'
+          ? 'url(https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'
           : undefined,
         backgroundSize: interactive ? '160%' : 'cover',
         backgroundPosition: interactive
@@ -343,26 +404,26 @@ const InteractiveWrapper = ({ children }: InteractiveWrapperProps) => {
  * AtomixGlass component, showcasing different visual styles and contexts.
  */
 const backgroundImages = [
-  // 0: Blue gradient - modern, tech-focused
-  'https://images.unsplash.com/photo-1636690636968-4568d7e94fe7?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  // 1: Purple nebula - cosmic, futuristic
-  'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop',
-  // 2: City lights - urban, night scene
-  'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=2144&auto=format&fit=crop',
-  // 3: Abstract waves - fluid, dynamic
-  'https://images.unsplash.com/photo-1614850715649-1d0106293bd1?q=80&w=2070&auto=format&fit=crop',
-  // 4: Mountain landscape - natural, serene
-  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop',
-  // 5: Geometric patterns - structured, organized
-  'https://images.unsplash.com/photo-1550859492-d5da9d8e45f3?q=80&w=2070&auto=format&fit=crop',
-  // 6: Blurred lights - soft, ambient
-  'https://images.unsplash.com/photo-1492112007959-c35ae067c37b?q=80&w=2071&auto=format&fit=crop',
-  // 7: Dark texture - minimal, elegant
-  'https://images.unsplash.com/photo-1557682224-5b8590cd9ec5?q=80&w=2029&auto=format&fit=crop',
-  // 8: Colorful abstract - vibrant, energetic
-  'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=2070&auto=format&fit=crop',
-  // 9: Soft gradient - subtle, professional
-  'https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=2068&auto=format&fit=crop',
+  // 0: Modern office interior with natural lighting
+  'https://images.pexels.com/photos/5653101/pexels-photo-5653101.jpeg',
+  // 1: Beautiful natural landscape - mountains and lake
+  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 2: Urban cityscape with modern buildings
+  'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 3: Forest path with sunlight filtering through trees
+  'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 4: Ocean waves and beach scene
+  'https://images.unsplash.com/photo-1505142468610-359e7d316be0?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 5: Modern architecture with glass facades
+  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 6: Cozy café interior with warm lighting
+  'https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 7: Desert landscape with dramatic sky
+  'https://images.unsplash.com/photo-1509316785289-025f5b846b35?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 8: Tropical paradise with palm trees and ocean
+  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  // 9: Modern library or workspace with natural light
+  'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 ];
 
 /**
@@ -370,36 +431,26 @@ const backgroundImages = [
  * @deprecated Use backgroundImages array instead
  */
 const backgrounds = {
-  // Gradients
-  blueGradient: backgroundImages[0],
-  purpleGradient:
-    'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=2070&auto=format&fit=crop',
-  greenGradient:
-    'https://images.unsplash.com/photo-1579546929662-711aa81148cf?q=80&w=2070&auto=format&fit=crop',
+  // Office and workspace environments
+  blueGradient: backgroundImages[0], // Modern office interior
+  purpleGradient: backgroundImages[1], // Mountain landscape
+  greenGradient: backgroundImages[3], // Forest path
 
-  // Apple-inspired
-  macosWallpaper:
-    'https://images.unsplash.com/photo-1489769002049-ccd828976a6c?q=80&w=2070&auto=format&fit=crop',
-  iosWallpaper:
-    'https://images.unsplash.com/photo-1604076913837-52ab5629fba9?q=80&w=2070&auto=format&fit=crop',
+  // Apple-inspired natural scenes
+  macosWallpaper: backgroundImages[1], // Mountain landscape
+  iosWallpaper: backgroundImages[4], // Ocean waves
 
-  // Nature
-  mountains:
-    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop',
-  ocean:
-    'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?q=80&w=2057&auto=format&fit=crop',
+  // Nature scenes
+  mountains: backgroundImages[1], // Mountain landscape
+  ocean: backgroundImages[4], // Ocean waves
 
-  // Urban
-  cityNight:
-    'https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=2064&auto=format&fit=crop',
-  cityDay:
-    'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=2070&auto=format&fit=crop',
+  // Urban environments
+  cityNight: backgroundImages[2], // Urban cityscape
+  cityDay: backgroundImages[5], // Modern architecture
 
-  // Abstract
-  abstract1:
-    'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2064&auto=format&fit=crop',
-  abstract2:
-    'https://images.unsplash.com/photo-1507908708918-778587c9e563?q=80&w=2071&auto=format&fit=crop',
+  // Interior spaces
+  abstract1: backgroundImages[6], // Cozy café interior
+  abstract2: backgroundImages[9], // Modern library
 };
 
 /**
@@ -431,14 +482,15 @@ export const Default: Story = {
         </div>
       </div>
     ),
-    displacementScale: 25,
-    blurAmount: 0,
-    saturation: 180,
-    aberrationIntensity: 0,
-    cornerRadius: 20,
-    padding: '0', // Padding is handled by the inner content div
-    overLight: false,
-    mode: 'standard',
+    displacementScale: 70, // Using component default
+    blurAmount: 1, // Using component default
+    saturation: 140, // Using component default
+    aberrationIntensity: 2, // Using component default
+    elasticity: 0.15, // Using component default
+    cornerRadius: 20, // Using component default
+    padding: '0 0', // Using component default
+    overLight: false, // Using component default
+    mode: 'standard', // Using component default
   },
   decorators: [
     Story => (
@@ -505,12 +557,13 @@ export const Interactive: Story = {
     );
   },
   args: {
-    displacementScale: 30,
-    blurAmount: 0,
+    displacementScale: 50,
+    blurAmount: 0.0625,
     saturation: 200,
     aberrationIntensity: 3,
+    elasticity: 0.2,
     cornerRadius: 15,
-    padding: '0', // Padding handled by inner content
+    padding: '0 0',
     overLight: false,
     mode: 'standard',
   },
@@ -561,34 +614,34 @@ export const ModeShowcase: Story = {
     // Different settings for each mode to highlight their unique characteristics
     const modeSettings = {
       standard: {
-        displacementScale: 25,
-        blurAmount: 0,
-        saturation: 180,
+        displacementScale: 70,
+        blurAmount: 0.0625,
+        saturation: 140,
         aberrationIntensity: 2,
         description: 'Standard glass effect with balanced displacement and aberration',
         color: '#ffffff',
       },
       polar: {
-        displacementScale: 30,
-        blurAmount: 0,
+        displacementScale: 85,
+        blurAmount: 0.05,
         saturation: 160,
-        aberrationIntensity: 1.5,
+        aberrationIntensity: 2.5,
         description: 'Polar displacement creates a circular refraction pattern',
         color: '#f0f8ff',
       },
       prominent: {
-        displacementScale: 35,
-        blurAmount: 0,
-        saturation: 200,
-        aberrationIntensity: 2.5,
+        displacementScale: 95,
+        blurAmount: 0.08,
+        saturation: 180,
+        aberrationIntensity: 3,
         description: 'Enhanced displacement with stronger edge effects',
         color: '#ffffff',
       },
       shader: {
-        displacementScale: 40,
-        blurAmount: 0,
-        saturation: 220,
-        aberrationIntensity: 3,
+        displacementScale: 100,
+        blurAmount: 0.1,
+        saturation: 200,
+        aberrationIntensity: 4,
         description: 'Advanced shader-based displacement for maximum visual impact',
         color: '#e6f7ff',
       },
@@ -604,13 +657,7 @@ export const ModeShowcase: Story = {
     };
 
     return (
-      <BackgroundWrapper
-        backgroundImage={
-          'https://images.unsplash.com/photo-1559825477-6f38d6332bb6?q=80&w=1336&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-        }
-        height="75vh"
-        overlayOpacity={0.1}
-      >
+      <BackgroundWrapper backgroundImage={backgroundImages[2]} height="75vh" overlayOpacity={0.1}>
         <div>
           <div
             style={{
@@ -666,7 +713,8 @@ export const ModeShowcase: Story = {
                   blurAmount={settings.blurAmount}
                   saturation={settings.saturation}
                   aberrationIntensity={settings.aberrationIntensity}
-                  cornerRadius={15}
+                  elasticity={0.15}
+                  cornerRadius={50}
                   onClick={() => handleMouseEnter(mode)}
                 >
                   <div
@@ -812,9 +860,9 @@ export const AppleInspiredUI: Story = {
 
     return (
       <BackgroundWrapper
-        backgroundImage={backgrounds.blueGradient}
+        backgroundImage={'https://images.pexels.com/photos/18772443/pexels-photo-18772443.jpeg'}
         height="90vh"
-        style={{ maxWidth: '1400px', padding: '10px' }}
+        style={{ maxWidth: '90vw', padding: '10px' }}
       >
         {/* Main content area */}
         <div
@@ -830,12 +878,12 @@ export const AppleInspiredUI: Story = {
           {/* Top menu bar - macOS style with improved design */}
 
           <AtomixGlass
-            displacementScale={120}
-            blurAmount={0}
+            displacementScale={40}
+            blurAmount={2}
             saturation={150}
-            aberrationIntensity={50}
+            aberrationIntensity={0}
             cornerRadius={8}
-            mode="standard"
+            mode="shader"
             elasticity={0}
           >
             <div
@@ -990,10 +1038,10 @@ export const AppleInspiredUI: Story = {
           </AtomixGlass>
           {/* Center widget - iOS style with improved design */}
           <AtomixGlass
-            displacementScale={20}
-            blurAmount={0}
+            displacementScale={50}
+            blurAmount={1}
             saturation={150}
-            aberrationIntensity={2}
+            aberrationIntensity={0.1}
             cornerRadius={24}
             mode="standard"
           >
@@ -1149,10 +1197,11 @@ export const AppleInspiredUI: Story = {
           {/* Bottom dock - macOS style with improved design and hover effects */}
           <AtomixGlass
             displacementScale={18}
-            blurAmount={0}
+            blurAmount={2}
             saturation={140}
             aberrationIntensity={1.2}
             cornerRadius={24}
+            mode="polar"
             style={{
               maxWidth: '600px',
             }}
@@ -1273,10 +1322,7 @@ export const AppleInspiredUI: Story = {
 // Hero section example
 export const HeroExample: Story = {
   render: () => (
-    <BackgroundWrapper
-      backgroundImage="https://images.unsplash.com/photo-1723212990832-838b7cd733f8?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-      height="90vh"
-    >
+    <BackgroundWrapper backgroundImage={backgroundImages[0]} height="90vh">
       <div>
         <div
           style={{
@@ -1287,11 +1333,13 @@ export const HeroExample: Story = {
           }}
         >
           <AtomixGlass
-            displacementScale={50}
-            blurAmount={0}
-            saturation={150}
-            aberrationIntensity={3}
+            displacementScale={45}
+            blurAmount={0.08}
+            saturation={170}
+            aberrationIntensity={2.5}
+            elasticity={0.18}
             cornerRadius={30}
+            mode="standard"
             style={{ maxWidth: '800px' }}
           >
             <div style={{ padding: '40px 60px' }}>
@@ -1369,21 +1417,23 @@ export const PerformanceOptimization: Story = {
                 High Performance Configuration
               </h3>
               <AtomixGlass
-                displacementScale={10}
-                blurAmount={0}
+                displacementScale={25}
+                blurAmount={0.02}
                 saturation={120}
-                aberrationIntensity={0.5}
-                elasticity={0.2}
+                aberrationIntensity={0.8}
+                elasticity={0.1}
                 cornerRadius={10}
                 mode="standard"
+                reducedMotion={false}
+                disableEffects={false}
                 style={{ height: '100%', minHeight: '200px' }}
               >
                 <div style={{ padding: '20px' }}>
                   <h4 style={{ marginTop: 0 }}>Optimized for Performance</h4>
                   <p>This configuration prioritizes performance over visual effects:</p>
                   <ul>
-                    <li>Low displacement scale (10)</li>
-                    <li>Minimal blur amount (5px)</li>
+                    <li>Low displacement scale (25)</li>
+                    <li>Minimal blur amount (0.02)</li>
                     <li>Reduced saturation (120%)</li>
                     <li>Simple mode with no hover effects</li>
                     <li>No border effects</li>
@@ -1399,21 +1449,22 @@ export const PerformanceOptimization: Story = {
             <div className="o-grid__col o-grid__col--12 o-grid__col--6@md">
               <h3 style={{ color: '#fff', marginBottom: '15px' }}>Balanced Configuration</h3>
               <AtomixGlass
-                displacementScale={20}
-                blurAmount={0}
+                displacementScale={55}
+                blurAmount={0.04}
                 saturation={150}
-                aberrationIntensity={1.5}
-                elasticity={0.3}
+                aberrationIntensity={1.8}
+                elasticity={0.15}
                 cornerRadius={15}
                 mode="standard"
+                enablePerformanceMonitoring={true}
                 style={{ height: '100%', minHeight: '200px' }}
               >
                 <div style={{ padding: '20px' }}>
                   <h4 style={{ marginTop: 0 }}>Balanced Approach</h4>
                   <p>This configuration balances performance and visual appeal:</p>
                   <ul>
-                    <li>Moderate displacement scale (20)</li>
-                    <li>Medium blur amount (10px)</li>
+                    <li>Moderate displacement scale (55)</li>
+                    <li>Medium blur amount (0.04)</li>
                     <li>Balanced saturation (150%)</li>
                     <li>Normal mode with subtle hover effects</li>
                     <li>Minimal border effects</li>
@@ -1473,7 +1524,7 @@ import AtomixGlass from './AtomixGlass';
 const OptimizedGlassCard = memo(({ title, content }) => {
   // Adjust settings based on device capability
   const isMobile = window.innerWidth < 768;
-  
+
   return (
     <AtomixGlass
       displacementScale={isMobile ? 10 : 20}
@@ -1514,11 +1565,11 @@ export const InteractivePlayground: Story = {
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [settings, setSettings] = useState({
-      displacementScale: 25,
-      blurAmount: 0,
-      saturation: 180,
+      displacementScale: 70,
+      blurAmount: 0.0625,
+      saturation: 140,
       aberrationIntensity: 2,
-      cornerRadius: 15,
+      cornerRadius: 20,
       mode: 'standard' as const,
       showBorderEffects: true,
       showHoverEffects: true,
@@ -1604,7 +1655,7 @@ export const InteractivePlayground: Story = {
               type="range"
               id="displacementScale"
               min="0"
-              max="50"
+              max="100"
               value={settings.displacementScale}
               onChange={e => handleChange('displacementScale', parseInt(e.target.value))}
               style={sliderStyle}
@@ -1621,9 +1672,10 @@ export const InteractivePlayground: Story = {
               type="range"
               id="blurAmount"
               min="0"
-              max="30"
+              max="1"
+              step="0.005"
               value={settings.blurAmount}
-              onChange={e => handleChange('blurAmount', parseInt(e.target.value))}
+              onChange={e => handleChange('blurAmount', parseFloat(e.target.value))}
               style={sliderStyle}
             />
           </div>
@@ -1819,17 +1871,22 @@ export const AccessibleExample: Story = {
       aria-hidden="false"
     >
       <AtomixGlass
-        displacementScale={15}
-        blurAmount={0}
-        saturation={140}
-        aberrationIntensity={1}
+        displacementScale={40}
+        blurAmount={1}
+        saturation={160}
+        aberrationIntensity={1.5}
+        elasticity={0}
         cornerRadius={15}
-        // Using style for interactive elements instead of aria attributes
+        aria-label="Contact form container"
+        aria-describedby="form-description"
+        role="region"
+        tabIndex={-1}
+        reducedMotion={false}
+        highContrast={false}
         style={{
           width: '400px',
-          cursor: 'pointer',
+          cursor: 'default',
         }}
-        onClick={() => {}}
       >
         <div style={{ padding: '30px' }}>
           <h2
@@ -2056,6 +2113,7 @@ export const MobileUIExample: Story = {
       backgroundSize: 'cover' as const,
       backgroundPosition: 'center' as const,
       overflow: 'hidden',
+      color: 'white',
     };
 
     const phoneNotchStyle = {
@@ -2099,15 +2157,26 @@ export const MobileUIExample: Story = {
           return (
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
-                displacementScale={15}
-                blurAmount={0.01}
-                saturation={140}
-                aberrationIntensity={1}
+                displacementScale={35}
+                blurAmount={1}
+                saturation={150}
+                aberrationIntensity={1.5}
+                elasticity={0.2}
                 cornerRadius={20}
+                mode="standard"
               >
                 <div style={{ padding: '20px' }}>
-                  <h3 style={{ margin: '0 0 10px 0', fontSize: '18px' }}>Welcome Back</h3>
-                  <p style={{ margin: '0 0 15px 0', fontSize: '14px', lineHeight: 1.5 }}>
+                  <h3 style={{ margin: '0 0 10px 0', fontSize: '18px', color: 'white' }}>
+                    Welcome Back
+                  </h3>
+                  <p
+                    style={{
+                      margin: '0 0 15px 0',
+                      fontSize: '14px',
+                      lineHeight: 1.5,
+                      color: 'white',
+                    }}
+                  >
                     Your daily summary and activity feed
                   </p>
                   <div
@@ -2133,8 +2202,10 @@ export const MobileUIExample: Story = {
                       👤
                     </div>
                     <div>
-                      <div style={{ fontWeight: 500 }}>User Profile</div>
-                      <div style={{ fontSize: '12px', opacity: 0.7 }}>View your account</div>
+                      <div style={{ fontWeight: 500, color: 'white' }}>User Profile</div>
+                      <div style={{ fontSize: '12px', opacity: 0.7, color: 'white' }}>
+                        View your account
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -2143,14 +2214,18 @@ export const MobileUIExample: Story = {
               <div style={{ height: '15px' }} />
 
               <AtomixGlass
-                displacementScale={20}
-                blurAmount={0.01}
-                saturation={160}
-                aberrationIntensity={1.5}
+                displacementScale={30}
+                blurAmount={2}
+                saturation={165}
+                aberrationIntensity={0}
+                elasticity={0.2}
                 cornerRadius={15}
+                mode="standard"
               >
                 <div style={{ padding: '20px' }}>
-                  <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>Recent Activity</h3>
+                  <h3 style={{ margin: '0 0 15px 0', fontSize: '16px', color: 'white' }}>
+                    Recent Activity
+                  </h3>
                   {[1, 2, 3].map(item => (
                     <div
                       key={item}
@@ -2172,19 +2247,20 @@ export const MobileUIExample: Story = {
                           alignItems: 'center',
                           justifyContent: 'center',
                           fontSize: '14px',
+                          color: 'white',
                         }}
                       >
                         {item === 1 ? '📝' : item === 2 ? '🔔' : '💬'}
                       </div>
                       <div>
-                        <div style={{ fontSize: '14px' }}>
+                        <div style={{ fontSize: '14px', color: 'white' }}>
                           {item === 1
                             ? 'New document created'
                             : item === 2
                               ? 'Reminder: Meeting at 3 PM'
                               : 'New message from Sarah'}
                         </div>
-                        <div style={{ fontSize: '12px', opacity: 0.7 }}>
+                        <div style={{ fontSize: '12px', opacity: 0.7, color: 'white' }}>
                           {item === 1 ? '5 minutes ago' : item === 2 ? '1 hour ago' : '3 hours ago'}
                         </div>
                       </div>
@@ -2198,11 +2274,13 @@ export const MobileUIExample: Story = {
           return (
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
-                displacementScale={18}
-                blurAmount={0.01}
-                saturation={150}
-                aberrationIntensity={1.2}
+                displacementScale={40}
+                blurAmount={1}
+                saturation={155}
+                aberrationIntensity={1.8}
+                elasticity={0.13}
                 cornerRadius={15}
+                mode="standard"
               >
                 <div style={{ padding: '15px' }}>
                   <div
@@ -2236,13 +2314,15 @@ export const MobileUIExample: Story = {
 
               <AtomixGlass
                 displacementScale={15}
-                blurAmount={0.01}
+                blurAmount={1}
                 saturation={140}
                 aberrationIntensity={1}
                 cornerRadius={15}
               >
                 <div style={{ padding: '20px' }}>
-                  <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>Search Categories</h3>
+                  <h3 style={{ margin: '0 0 15px 0', fontSize: '16px', color: '#fff' }}>
+                    Search Categories
+                  </h3>
                   <div
                     style={{
                       display: 'grid',
@@ -2273,11 +2353,13 @@ export const MobileUIExample: Story = {
           return (
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
-                displacementScale={22}
-                blurAmount={0.01}
-                saturation={170}
-                aberrationIntensity={1.8}
+                displacementScale={50}
+                blurAmount={1}
+                saturation={175}
+                aberrationIntensity={2.2}
+                elasticity={0.14}
                 cornerRadius={15}
+                mode="standard"
               >
                 <div style={{ padding: '20px' }}>
                   <div
@@ -2288,7 +2370,7 @@ export const MobileUIExample: Story = {
                       marginBottom: '15px',
                     }}
                   >
-                    <h3 style={{ margin: 0, fontSize: '18px' }}>Notifications</h3>
+                    <h3 style={{ margin: 0, fontSize: '18px', color: 'white' }}>Notifications</h3>
                     <button
                       onClick={clearNotifications}
                       style={{
@@ -2338,14 +2420,14 @@ export const MobileUIExample: Story = {
                             {index === 0 ? '📱' : index === 1 ? '🔔' : '✉️'}
                           </div>
                           <div>
-                            <div style={{ fontSize: '14px', fontWeight: 500 }}>
+                            <div style={{ fontSize: '14px', fontWeight: 500, color: 'white' }}>
                               {index === 0
                                 ? 'New Login Detected'
                                 : index === 1
                                   ? 'Calendar Reminder'
                                   : 'New Message'}
                             </div>
-                            <div style={{ fontSize: '12px', opacity: 0.7 }}>
+                            <div style={{ fontSize: '12px', opacity: 0.7, color: 'white' }}>
                               {index === 0
                                 ? 'A new device logged into your account'
                                 : index === 1
@@ -2376,11 +2458,13 @@ export const MobileUIExample: Story = {
           return (
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
-                displacementScale={20}
-                blurAmount={0.01}
-                saturation={160}
-                aberrationIntensity={1.5}
+                displacementScale={42}
+                blurAmount={1}
+                saturation={165}
+                aberrationIntensity={2.0}
+                elasticity={0.16}
                 cornerRadius={15}
+                mode="standard"
               >
                 <div
                   style={{
@@ -2405,8 +2489,12 @@ export const MobileUIExample: Story = {
                   >
                     👤
                   </div>
-                  <h3 style={{ margin: '0 0 5px 0', fontSize: '18px' }}>User Name</h3>
-                  <p style={{ margin: '0 0 20px 0', fontSize: '14px', opacity: 0.7 }}>
+                  <h3 style={{ margin: '0 0 5px 0', fontSize: '18px', color: 'white' }}>
+                    User Name
+                  </h3>
+                  <p
+                    style={{ margin: '0 0 20px 0', fontSize: '14px', opacity: 0.7, color: 'white' }}
+                  >
                     user@example.com
                   </p>
                   <button
@@ -2447,138 +2535,147 @@ export const MobileUIExample: Story = {
 
     return (
       <BackgroundWrapper
-        backgroundImage="https://images.unsplash.com/photo-1651667766251-07a2c9443feb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        height="auto"
+        backgroundImage={'https://images.pexels.com/photos/16702076/pexels-photo-16702076.jpeg'}
+        height="90vh"
         style={{
           maxWidth: '1400px',
           padding: '40px 20px',
-          display: 'flex',
-          justifyContent: 'center',
         }}
       >
-        <div style={{ maxWidth: '300px' }}>
-          <h2
-            style={{
-              margin: '0 0 20px 0',
-              fontSize: '28px',
-              fontWeight: 500,
-              color: '#ffffff',
-              textShadow: '0 2px 4px rgba(0,0,0,0.2)',
-            }}
-          >
-            Mobile UI Example
-          </h2>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{ maxWidth: '300px' }}>
+            <h2
+              style={{
+                margin: '0 0 20px 0',
+                fontSize: '28px',
+                fontWeight: 500,
+                color: '#ffffff',
+                textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+              }}
+            >
+              Mobile UI Example
+            </h2>
 
-          <p
-            style={{
-              fontSize: '16px',
-              maxWidth: '600px',
-              margin: '0 auto 30px',
-              color: '#ffffff',
-              textShadow: '0 1px 2px rgba(0,0,0,0.2)',
-            }}
-          >
-            AtomixGlass components optimized for mobile interfaces with touch-friendly controls
-          </p>
-        </div>
-        {/* Phone frame */}
-        <div style={phoneFrameStyle}>
-          <div style={phoneScreenStyle}>
-            <div style={phoneNotchStyle} />
+            <p
+              style={{
+                fontSize: '16px',
+                maxWidth: '600px',
+                margin: '0 auto 30px',
+                color: '#ffffff',
+                textShadow: '0 1px 2px rgba(0,0,0,0.2)',
+              }}
+            >
+              AtomixGlass components optimized for mobile interfaces with touch-friendly controls
+            </p>
+          </div>
+          {/* Phone frame */}
+          <div style={phoneFrameStyle}>
+            <div style={phoneScreenStyle}>
+              <div style={phoneNotchStyle} />
 
-            {/* App content */}
-            <div style={appContentStyle}>
-              {/* Header */}
-              <AtomixGlass
-                displacementScale={10}
-                blurAmount={0.01}
-                saturation={120}
-                aberrationIntensity={0.8}
-                cornerRadius={0}
-                style={{ borderRadius: '0' }}
-              >
-                <div style={headerStyle}>
-                  <h2 style={{ margin: 0, fontSize: '18px' }}>
-                    {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
-                  </h2>
-                  <div
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '50%',
-                      background: 'rgba(255,255,255,0.1)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    👤
-                  </div>
-                </div>
-              </AtomixGlass>
-
-              {/* Main content area */}
-              <div style={mainContentStyle}>{renderTabContent()}</div>
-
-              {/* Bottom navigation */}
-              <AtomixGlass
-                displacementScale={10}
-                blurAmount={0.01}
-                saturation={120}
-                aberrationIntensity={0.8}
-                cornerRadius={0}
-                style={{ borderRadius: '0' }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-around',
-                    padding: '15px 0',
-                  }}
+              {/* App content */}
+              <div style={appContentStyle}>
+                {/* Header */}
+                <AtomixGlass
+                  displacementScale={30}
+                  blurAmount={1}
+                  saturation={130}
+                  aberrationIntensity={1.2}
+                  elasticity={0.1}
+                  cornerRadius={0}
+                  mode="standard"
                 >
-                  {[
-                    { id: 'home', icon: '🏠' },
-                    { id: 'search', icon: '🔍' },
-                    { id: 'notifications', icon: '🔔', badge: notificationCount },
-                    { id: 'profile', icon: '👤' },
-                  ].map(tab => (
+                  <div style={headerStyle}>
+                    <h2 style={{ margin: 0, fontSize: '18px' }}>
+                      {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+                    </h2>
                     <div
-                      key={tab.id}
-                      onClick={() => handleTabChange(tab.id)}
                       style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '50%',
+                        background: 'rgba(255,255,255,0.1)',
                         display: 'flex',
-                        flexDirection: 'column',
                         alignItems: 'center',
-                        opacity: activeTab === tab.id ? 1 : 0.6,
-                        position: 'relative',
-                        cursor: 'pointer',
+                        justifyContent: 'center',
                       }}
                     >
-                      <div style={{ fontSize: '20px' }}>{tab.icon}</div>
-                      {tab.badge && tab.badge > 0 && (
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '-5px',
-                            right: '-5px',
-                            background: '#ff3b3080',
-                            color: 'white',
-                            borderRadius: '50%',
-                            width: '18px',
-                            height: '18px',
-                            fontSize: '12px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                          }}
-                        >
-                          {tab.badge}
-                        </div>
-                      )}
+                      👤
                     </div>
-                  ))}
-                </div>
-              </AtomixGlass>
+                  </div>
+                </AtomixGlass>
+
+                {/* Main content area */}
+                <div style={mainContentStyle}>{renderTabContent()}</div>
+
+                {/* Bottom navigation */}
+                <AtomixGlass
+                  displacementScale={25}
+                  blurAmount={1}
+                  saturation={125}
+                  aberrationIntensity={1.0}
+                  elasticity={0.08}
+                  cornerRadius={0}
+                  mode="standard"
+                  style={{ borderRadius: '0' }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                      padding: '15px 0',
+                    }}
+                  >
+                    {[
+                      { id: 'home', icon: '🏠' },
+                      { id: 'search', icon: '🔍' },
+                      { id: 'notifications', icon: '🔔', badge: notificationCount },
+                      { id: 'profile', icon: '👤' },
+                    ].map(tab => (
+                      <div
+                        key={tab.id}
+                        onClick={() => handleTabChange(tab.id)}
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          opacity: activeTab === tab.id ? 1 : 0.6,
+                          position: 'relative',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <div style={{ fontSize: '20px' }}>{tab.icon}</div>
+                        {tab.badge && tab.badge > 0 && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: '-5px',
+                              right: '-5px',
+                              background: '#ff3b3080',
+                              color: 'white',
+                              borderRadius: '50%',
+                              width: '18px',
+                              height: '18px',
+                              fontSize: '12px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            {tab.badge}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </AtomixGlass>
+              </div>
             </div>
           </div>
         </div>
@@ -2605,8 +2702,8 @@ export const ThemeSwitching: Story = {
       <BackgroundWrapper
         backgroundImage={
           theme === 'light'
-            ? 'https://images.unsplash.com/photo-1658875057463-8036f19fd5a7?q=80&w=2262&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-            : 'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=2070&auto=format&fit=crop'
+            ? backgroundImages[6] // Cozy café interior for light theme
+            : backgroundImages[7] // Desert landscape for dark theme
         }
       >
         <div
@@ -2619,12 +2716,14 @@ export const ThemeSwitching: Story = {
           }}
         >
           <AtomixGlass
-            displacementScale={20}
-            blurAmount={0.2}
-            saturation={160}
-            aberrationIntensity={1.5}
+            displacementScale={60}
+            blurAmount={1}
+            saturation={theme === 'light' ? 120 : 160}
+            aberrationIntensity={2.2}
+            elasticity={0.15}
             cornerRadius={20}
             overLight={theme === 'light'}
+            mode="standard"
             style={{ width: '350px' }}
           >
             <div style={{ padding: '25px', textAlign: 'center' }}>
