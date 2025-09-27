@@ -46,6 +46,10 @@ const meta: Meta<typeof DatePicker> = {
         'right-end',
       ],
     },
+    glass: {
+      control: { type: 'boolean' },
+      description: 'Apply glass morphism effect to the calendar dropdown',
+    },
   },
 };
 
@@ -329,6 +333,190 @@ export const DifferentFormats: Story = {
           value={date3}
           onChange={setDate3}
         />
+      </div>
+    );
+  },
+};
+
+export const GlassEffect: Story = {
+  args: {
+    placeholder: 'Select date...',
+    glass: true,
+    size: 'md',
+    placement: 'bottom-start',
+    selectionMode: 'single',
+  },
+  render: args => {
+    const [date, setDate] = useState<Date | null>(null);
+    return (
+      <div
+        style={{
+          width: '97vw',
+          minHeight: '97vh',
+          background:
+            'url(https://images.unsplash.com/photo-1701341263063-1f3303c759d7?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '2rem',
+          borderRadius: '12px',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <div className="u-mx-auto" style={{ width: '300px' }} data-testid="read-only-datepicker">
+          <DatePicker {...args} value={date} onChange={setDate} />
+        </div>
+      </div>
+    );
+  },
+};
+
+export const GlassEffectCustomized: Story = {
+  args: {
+    placeholder: 'Select date...',
+    glass: {
+      displacementScale: 60,
+      blurAmount: 0,
+      saturation: 180,
+      aberrationIntensity: 2,
+      cornerRadius: 16,
+      overLight: false,
+      mode: 'polar' as const,
+    },
+    size: 'md',
+    placement: 'bottom-start',
+    selectionMode: 'single',
+  },
+  render: args => {
+    const [date, setDate] = useState<Date | null>(null);
+    return (
+      <div
+        style={{
+          width: '98vw',
+          minHeight: '97vh',
+          background:
+            'url(https://images.unsplash.com/photo-1744035522988-08bf64003759?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+          padding: '2rem',
+          borderRadius: '12px',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <div className="u-mx-auto" data-testid="read-only-datepicker">
+          <DatePicker {...args} value={date} onChange={setDate} />
+        </div>
+      </div>
+    );
+  },
+};
+
+export const GlassEffectInline: Story = {
+  args: {
+    glass: true,
+    inline: true,
+    showWeekNumbers: true,
+    selectionMode: 'single',
+  },
+  render: args => {
+    const [date, setDate] = useState<Date | null>(new Date());
+    return (
+      <div
+        style={{
+          width: '98vw',
+          minHeight: '97vh',
+          background:
+            'url(https://images.unsplash.com/photo-1497449711066-ecd7e3d6a484?q=80&w=1365&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+          padding: '2rem',
+          borderRadius: '16px',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <div className="u-mx-auto u-w-50" data-testid="read-only-datepicker">
+          <DatePicker {...args} value={date} onChange={setDate} />
+        </div>
+      </div>
+    );
+  },
+};
+
+export const GlassEffectRangeSelection: Story = {
+  args: {
+    selectionMode: 'range',
+    placeholder: 'Select date range...',
+    glass: {
+      displacementScale: 45,
+      blurAmount: 0,
+      saturation: 160,
+      aberrationIntensity: 1.5,
+      cornerRadius: 14,
+      overLight: false,
+      mode: 'prominent' as const,
+    },
+  },
+  render: args => {
+    const [dateRange, setDateRange] = useState<DateRange>({
+      startDate: null,
+      endDate: null,
+    });
+
+    const handleRangeChange = (range: DateRange) => {
+      setDateRange(range);
+    };
+
+    return (
+      <div
+        style={{
+          width: '98vw',
+          minHeight: '97vh',
+          background:
+            'url(https://images.unsplash.com/photo-1723046833386-5a494bdb6da7?q=80&w=2694&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+          padding: '2rem',
+          borderRadius: '12px',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '1rem',
+        }}
+      >
+        <div
+          className="u-mt-20 u-mx-auto"
+          style={{ width: '300px' }}
+          data-testid="read-only-datepicker"
+        >
+          <div
+            style={{
+              padding: '0.75rem',
+              marginBottom: '1rem',
+              background: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '0.5rem',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              color: 'white',
+              fontSize: '0.875rem',
+            }}
+          >
+            <p>
+              Selected range:{' '}
+              {dateRange.startDate && dateRange.endDate
+                ? formatDateRange(dateRange.startDate, dateRange.endDate, 'MM/dd/yyyy')
+                : dateRange.startDate
+                  ? formatDateRange(dateRange.startDate, null, 'MM/dd/yyyy')
+                  : 'No range selected'}
+            </p>
+          </div>
+          <DatePicker
+            {...args}
+            startDate={dateRange.startDate}
+            endDate={dateRange.endDate}
+            onRangeChange={handleRangeChange}
+          />
+        </div>
       </div>
     );
   },

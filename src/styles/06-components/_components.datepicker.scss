@@ -161,6 +161,24 @@
     &--right-end {
       bottom: 0;
     }
+
+    &--glass {
+      z-index: unset;
+      box-shadow: none;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      background: transparent;
+    }
+  }
+
+  &__glass-content {
+    z-index: unset;
+    box-shadow: none;
+    border: none;
+    border-radius: var(--#{$prefix}datepicker-border-radius);
+    padding: var(--#{$prefix}datepicker-padding-y) var(--#{$prefix}datepicker-padding-x);
+    background: color-mix(in srgb, var(--#{$prefix}datepicker-bg) 50%, transparent 0%);
   }
 
   // Inline mode
