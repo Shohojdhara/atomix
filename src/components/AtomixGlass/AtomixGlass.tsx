@@ -437,7 +437,7 @@ interface AtomixGlassProps {
 export function AtomixGlass({
   children,
   displacementScale = 70,
-  blurAmount = 0.0625,
+  blurAmount = 0,
   saturation = 140,
   aberrationIntensity = 2,
   elasticity = 0.15,
