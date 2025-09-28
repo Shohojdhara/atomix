@@ -199,12 +199,12 @@ const Healthcare: React.FC = () => {
     <>
       {/* Navigation */}
          <AtomixGlass
-              blurAmount={0.1}
+              blurAmount={10}
               displacementScale={200}
-              aberrationIntensity={0}
+              aberrationIntensity={0.1}
               cornerRadius={10}
-              elasticity={0.01}
-              mode="standard"
+              elasticity={0.0}
+              saturation={300}
               style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 5 }}
             >
               <Container>

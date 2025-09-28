@@ -1007,18 +1007,18 @@ export function AtomixGlass({
   ]);
 
   const borderLayer1Style = useMemo(() => {
-    const transformedSize = getTransformedSize();
     const borderWidth = 1.5;
 
     const adjustedSize = {
-      width: transformedSize.width > 0 ? transformedSize.width : Math.max(glassSize.width, 0),
-      height: transformedSize.height > 0 ? transformedSize.height : Math.max(glassSize.height, 0),
+      width: baseStyle.position !== 'fixed' ? '100%' : baseStyle.width ? baseStyle.width : Math.max(glassSize.width, 0),
+      height: baseStyle.position !== 'fixed' ? '100%' : baseStyle.height ? baseStyle.height : Math.max(glassSize.height, 0),
     };
 
     return {
       ...positionStyles,
-      position: 'absolute' as React.CSSProperties['position'],
-      inset: '0',
+
+      width: adjustedSize.width,
+      height: adjustedSize.height,
       borderRadius: `${Math.max(0, cornerRadius)}px`,
       transform: baseStyle.transform,
       transition: effectiveReducedMotion ? 'none' : baseStyle.transition,
@@ -1028,7 +1028,7 @@ export function AtomixGlass({
       opacity: 0.2,
       padding: `${borderWidth}px`,
       boxSizing: 'border-box' as React.CSSProperties['boxSizing'],
-      zIndex: 4,
+      zIndex: 5,
       WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
       WebkitMaskComposite: 'xor',
       maskComposite: 'exclude',
@@ -1049,28 +1049,26 @@ export function AtomixGlass({
     baseStyle,
     mouseOffset,
     effectiveReducedMotion,
-    getTransformedSize,
   ]);
 
   const borderLayer2Style = useMemo(() => {
-    const transformedSize = getTransformedSize();
     const borderWidth = 1.5;
 
     const adjustedSize = {
-      width: transformedSize.width > 0 ? transformedSize.width : Math.max(glassSize.width, 0),
-      height: transformedSize.height > 0 ? transformedSize.height : Math.max(glassSize.height, 0),
+      width: baseStyle.position !== 'fixed' ? '100%' : baseStyle.width ? baseStyle.width : Math.max(glassSize.width, 0),
+      height: baseStyle.position !== 'fixed' ? '100%' : baseStyle.height ? baseStyle.height : Math.max(glassSize.height, 0),
     };
 
     return {
       ...positionStyles,
-      position: 'absolute' as React.CSSProperties['position'],
-      inset: '0',
+      width: adjustedSize.width,
+      height: adjustedSize.height,
       borderRadius: `${Math.max(0, cornerRadius)}px`,
       transform: baseStyle.transform,
       transition: effectiveReducedMotion ? 'none' : baseStyle.transition,
       overflow: 'hidden',
       pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
-      zIndex: 5,
+      zIndex: 6,
       mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
       padding: `${borderWidth}px`,
       boxSizing: 'border-box' as React.CSSProperties['boxSizing'],
@@ -1094,7 +1092,6 @@ export function AtomixGlass({
     baseStyle,
     mouseOffset,
     effectiveReducedMotion,
-    getTransformedSize,
   ]);
 
   const hoverEffect1Style = useMemo(() => {

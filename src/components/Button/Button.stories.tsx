@@ -395,6 +395,8 @@ export const GlassVariants: Story = {
         <Button label="Info" variant="info" glass />
         <Button label="Warning" variant="warning" glass />
         <Button label="Error" variant="error" glass />
+        <Button label="Light" variant="light" glass />
+        <Button label="Dark" variant="dark" glass />
       </div>
     </div>
   ),
@@ -413,7 +415,7 @@ export const GlassOutlineVariants: Story = {
           'url(https://cdn.pixabay.com/photo/2018/08/15/13/10/new-year-background-3608029_1280.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        padding: '20rem 15rem',
+        padding: '20rem 10rem',
         borderRadius: '12px',
       }}
     >
@@ -424,6 +426,8 @@ export const GlassOutlineVariants: Story = {
         <Button label="Outline Info" variant="outline-info" glass />
         <Button label="Outline Warning" variant="outline-warning" glass />
         <Button label="Outline Error" variant="outline-error" glass />
+        <Button label="Outline Light" variant="outline-light" glass />
+        <Button label="Outline Dark" variant="outline-dark" glass />
       </div>
     </div>
   ),
