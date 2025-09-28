@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { InputProps } from '../../lib/types/components';
 import { useInput } from '../../lib/composables/useInput';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 /**
  * Input - A component for text input fields
  */
-export const Input: React.FC<InputProps> = ({
+export const Input = forwardRef<HTMLInputElement, InputProps>(({
   type = 'text',
   value,
   onChange,
@@ -32,7 +33,8 @@ export const Input: React.FC<InputProps> = ({
   step,
   ariaLabel,
   ariaDescribedBy,
-}) => {
+  glass,
+}, ref) => {
   const { generateInputClass } = useInput({
     size,
     variant,
@@ -42,7 +44,7 @@ export const Input: React.FC<InputProps> = ({
   });
 
   const inputClass = generateInputClass({
-    className,
+    className: `${className} ${glass ? 'c-input--glass' : ''}`.trim(),
     size,
     variant,
     disabled,
@@ -51,8 +53,12 @@ export const Input: React.FC<InputProps> = ({
     type,
   });
 
-  return (
+  // Custom styles for glass effect
+  const glassStyles = glass ? {} : {};
+
+  const inputElement = (
     <input
+      ref={ref}
       type={type}
       className={inputClass}
       value={value}
@@ -76,12 +82,35 @@ export const Input: React.FC<InputProps> = ({
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedBy}
       aria-invalid={invalid}
+      style={glass ? glassStyles : undefined}
     />
   );
-};
 
-export type { InputProps };
+  if (glass) {
+    // Default glass settings for inputs
+    const defaultGlassProps = {
+      displacementScale: 60,
+      blurAmount: 1,
+      saturation: 180,
+      aberrationIntensity: 0.2,
+      cornerRadius: 12,
+      mode: 'shader' as const,
+    };
+
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+    return (
+      <AtomixGlass {...glassProps}>
+        {inputElement}
+      </AtomixGlass>
+    );
+  }
+
+  return inputElement;
+});
 
 Input.displayName = 'Input';
+
+export type { InputProps };
 
 export default Input;

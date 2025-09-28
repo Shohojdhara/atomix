@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { TextareaProps } from '../../lib/types/components';
 import { useTextarea } from '../../lib/composables/useTextarea';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 /**
  * Textarea - A component for multiline text input
  */
-export const Textarea: React.FC<TextareaProps> = ({
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
   value,
   onChange,
   onBlur,
@@ -28,7 +29,8 @@ export const Textarea: React.FC<TextareaProps> = ({
   autoFocus = false,
   ariaLabel,
   ariaDescribedBy,
-}) => {
+  glass,
+}, ref) => {
   const { generateTextareaClass } = useTextarea({
     size,
     variant,
@@ -38,7 +40,7 @@ export const Textarea: React.FC<TextareaProps> = ({
   });
 
   const textareaClass = generateTextareaClass({
-    className,
+    className: `${className} ${glass ? 'c-input--glass' : ''}`.trim(),
     size,
     variant,
     disabled,
@@ -46,8 +48,12 @@ export const Textarea: React.FC<TextareaProps> = ({
     valid,
   });
 
-  return (
+  // Custom styles for glass effect
+  const glassStyles = glass ? {} : {};
+
+  const textareaElement = (
     <textarea
+      ref={ref}
       className={textareaClass}
       value={value}
       onChange={onChange}
@@ -67,12 +73,35 @@ export const Textarea: React.FC<TextareaProps> = ({
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedBy}
       aria-invalid={invalid}
+      style={glass ? glassStyles : undefined}
     />
   );
-};
 
-export type { TextareaProps };
+  if (glass) {
+    // Default glass settings for textareas
+    const defaultGlassProps = {
+      displacementScale: 60,
+      blurAmount: 1,
+      saturation: 180,
+      aberrationIntensity: 1,
+      cornerRadius: 8,
+      mode: 'shader' as const,
+    };
+
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+    return (
+      <AtomixGlass {...glassProps}>
+        {textareaElement}
+      </AtomixGlass>
+    );
+  }
+
+  return textareaElement;
+});
 
 Textarea.displayName = 'Textarea';
+
+export type { TextareaProps };
 
 export default Textarea;

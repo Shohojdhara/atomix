@@ -46,6 +46,10 @@ const meta = {
       control: 'boolean',
       description: 'Whether the textarea is valid',
     },
+    glass: {
+      control: 'boolean',
+      description: 'Enable glass morphism effect',
+    },
   },
 } satisfies Meta<typeof Textarea>;
 
@@ -118,6 +122,106 @@ export const States: Story = {
         value="This content cannot be edited"
         rows={2}
       />
+    </div>
+  ),
+};
+
+// Glass Effect
+export const Glass: Story = {
+  args: {
+    placeholder: 'Glass Textarea',
+    rows: 4,
+    glass: true,
+  },
+  render: (args) => (
+    <div
+      style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        padding: '2rem',
+        borderRadius: '12px',
+        minHeight: '200px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Textarea {...args} />
+    </div>
+  ),
+};
+
+// Glass Variants
+export const GlassVariants: Story = {
+  render: () => (
+    <div
+      style={{
+        background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)',
+        padding: '2rem',
+        borderRadius: '12px',
+      }}
+    >
+      <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
+        Glass Textarea Variants
+      </h3>
+      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
+        <Textarea placeholder="Small Glass" size="sm" rows={3} glass />
+        <Textarea placeholder="Medium Glass" size="md" rows={3} glass />
+        <Textarea placeholder="Large Glass" size="lg" rows={3} glass />
+        <Textarea placeholder="Primary Glass" variant="primary" rows={3} glass />
+        <Textarea placeholder="Success Glass" variant="success" rows={3} glass />
+        <Textarea placeholder="Custom Glass" rows={4} glass={{
+          displacementScale: 80,
+          blurAmount: 2,
+          saturation: 200,
+          aberrationIntensity: 2,
+          cornerRadius: 12,
+        }} />
+      </div>
+    </div>
+  ),
+};
+
+// Glass Showcase
+export const GlassShowcase: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      {/* Basic Glass */}
+      <div
+        style={{
+          background: 'url(https://cdn.pixabay.com/photo/2021/11/13/08/50/athens-6790780_1280.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '2rem',
+          borderRadius: '12px',
+        }}
+      >
+        <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
+          Glass Textarea on Background
+        </h3>
+        <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
+          <Textarea placeholder="Write your message..." rows={4} glass />
+          <Textarea placeholder="Additional notes..." rows={3} glass />
+        </div>
+      </div>
+
+      {/* Different Glass Modes */}
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+          padding: '2rem',
+          borderRadius: '12px',
+        }}
+      >
+        <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
+          Glass Modes
+        </h3>
+        <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
+          <Textarea placeholder="Standard Mode" rows={3} glass={{ mode: 'standard' }} />
+          <Textarea placeholder="Polar Mode" rows={3} glass={{ mode: 'polar' }} />
+          <Textarea placeholder="Prominent Mode" rows={3} glass={{ mode: 'prominent' }} />
+          <Textarea placeholder="Shader Mode" rows={3} glass={{ mode: 'shader' }} />
+        </div>
+      </div>
     </div>
   ),
 };

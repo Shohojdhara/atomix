@@ -105,4 +105,34 @@
     --#{$prefix}input-bg: #{$input-disabled-bg};
     pointer-events: none;
   }
+
+  // Glass morphism effect styles
+  &--glass {
+    @include dynamic-background(var(--#{$prefix}input-bg), $background-transparency-enable: true);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+
+    &:focus,
+    &:hover {
+      @include dynamic-background(var(--#{$prefix}input-bg), $background-transparency-enable: true);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+        0 0 0 2px rgba(var(--#{$prefix}primary-rgb, 122, 255, 215), 0.3);
+    }
+
+
+
+    &#{$root}--textarea {
+      resize: vertical;
+    }
+
+    // Glass disabled state
+    &:disabled,
+    &.is-disabled {
+      @include dynamic-background(var(--#{$prefix}input-bg), $background-transparency-enable: true);
+      opacity: 0.6;
+    }
+  }
 }

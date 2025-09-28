@@ -39,6 +39,10 @@ const meta = {
       control: 'text',
       description: 'Placeholder text',
     },
+    glass: {
+      control: 'boolean',
+      description: 'Enable glass morphism effect',
+    },
   },
 } satisfies Meta<typeof Input>;
 
@@ -101,6 +105,126 @@ export const States: Story = {
       <Input placeholder="Disabled input" disabled />
       <Input placeholder="Valid input" valid />
       <Input placeholder="Invalid input" invalid />
+    </div>
+  ),
+};
+
+// Glass Effect
+export const Glass: Story = {
+  args: {
+    placeholder: 'Glass Input',
+    glass: true,
+  },
+  render: (args) => (
+    <div
+      style={{
+        background: 'url(https://cdn.pixabay.com/photo/2021/11/13/08/50/athens-6790780_1280.jpg)',
+        padding: '2rem',
+        borderRadius: '12px',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '200px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Input {...args} />
+    </div>
+  ),
+};
+
+// Glass Variants
+export const GlassVariants: Story = {
+  render: () => (
+    <div
+      style={{
+        background: 'url(https://cdn.pixabay.com/photo/2021/11/13/08/50/athens-6790780_1280.jpg)',
+        padding: '2rem',
+        borderRadius: '12px',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '200px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
+        Glass Input Variants
+      </h3>
+      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+        <Input placeholder="Small Glass" size="sm" glass />
+        <Input placeholder="Medium Glass" size="md" glass />
+        <Input placeholder="Large Glass" size="lg" glass />
+        <Input placeholder="Primary Glass" variant="primary" glass />
+        <Input placeholder="Success Glass" variant="success" glass />
+        <Input placeholder="Custom Glass" glass={{
+          displacementScale: 80,
+          blurAmount: 2,
+          saturation: 200,
+          aberrationIntensity: 2,
+          cornerRadius: 12,
+        }} />
+      </div>
+    </div>
+  ),
+};
+
+// Glass Showcase
+export const GlassShowcase: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      {/* Basic Glass */}
+      <div
+        style={{
+          background: 'url(https://cdn.pixabay.com/photo/2021/11/13/08/50/athens-6790780_1280.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '2rem',
+          borderRadius: '12px',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          minHeight: '200px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
+          Glass Input on Background
+        </h3>
+        <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+          <Input placeholder="Enter your name" glass />
+          <Input type="email" placeholder="Enter your email" glass />
+          <Input type="password" placeholder="Enter password" glass />
+        </div>
+      </div>
+
+      {/* Different Glass Modes */}
+      <div
+        style={{
+          background: 'url(https://cdn.pixabay.com/photo/2021/11/13/08/50/athens-6790780_1280.jpg)',
+          padding: '2rem',
+          borderRadius: '12px',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          minHeight: '200px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
+          Glass Modes
+        </h3>
+        <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+          <Input placeholder="Standard Mode" glass={{ mode: 'standard' }} />
+          <Input placeholder="Polar Mode" glass={{ mode: 'polar' }} />
+          <Input placeholder="Prominent Mode" glass={{ mode: 'prominent' }} />
+          <Input placeholder="Shader Mode" glass={{ mode: 'shader' }} />
+        </div>
+      </div>
     </div>
   ),
 };

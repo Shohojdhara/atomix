@@ -1420,6 +1420,11 @@ export interface InputProps extends BaseComponentProps {
    * ID of element that describes this input
    */
   ariaDescribedBy?: string;
+
+  /**
+   * Glass morphism effect
+   */
+  glass?: boolean | Omit<React.ComponentProps<typeof AtomixGlass>, 'children'>;
 }
 
 /**
@@ -1750,6 +1755,11 @@ export interface TextareaProps extends BaseComponentProps {
    * ID of element that describes this textarea
    */
   ariaDescribedBy?: string;
+
+  /**
+   * Glass morphism effect
+   */
+  glass?: boolean | Omit<React.ComponentProps<typeof AtomixGlass>, 'children'>;
 }
 
 /**
