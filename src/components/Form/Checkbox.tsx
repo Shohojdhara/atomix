@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckboxProps } from '../../lib/types/components';
 import { useCheckbox } from '../../lib/composables/useCheckbox';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 /**
  * Checkbox - A component for checkbox inputs
@@ -20,6 +21,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   indeterminate = false,
   ariaLabel,
   ariaDescribedBy,
+  glass,
 }) => {
   const { generateCheckboxClass, checkboxRef } = useCheckbox({
     indeterminate,
@@ -29,14 +31,14 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   });
 
   const checkboxClass = generateCheckboxClass({
-    className,
+    className: `${className} ${glass ? 'c-checkbox--glass' : ''}`.trim(),
     disabled,
     invalid,
     valid,
     indeterminate,
   });
 
-  return (
+  const checkboxContent = (
     <div className={checkboxClass}>
       <input
         ref={checkboxRef}
@@ -60,6 +62,28 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       )}
     </div>
   );
+
+  if (glass) {
+    // Default glass settings for checkboxes
+    const defaultGlassProps = {
+      displacementScale: 40,
+      blurAmount: 1,
+      saturation: 160,
+      aberrationIntensity: 0.3,
+      cornerRadius: 6,
+      mode: 'shader' as const,
+    };
+
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+    return (
+      <AtomixGlass {...glassProps}>
+        {checkboxContent}
+      </AtomixGlass>
+    );
+  }
+
+  return checkboxContent;
 };
 
 export type { CheckboxProps };

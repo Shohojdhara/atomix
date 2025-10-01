@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { SelectProps } from '../../lib/types/components';
 import { useSelect } from '../../lib/composables';
 import { SELECT } from '../../lib/constants/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 /**
  * Select - A component for dropdown selection
@@ -24,6 +25,7 @@ export const Select: React.FC<SelectProps> = ({
   multiple = false,
   ariaLabel,
   ariaDescribedBy,
+  glass,
 }) => {
   const { generateSelectClass } = useSelect({
     size,
@@ -33,7 +35,7 @@ export const Select: React.FC<SelectProps> = ({
   });
 
   const selectClass = generateSelectClass({
-    className,
+    className: `${className} ${glass ? 'c-select--glass' : ''}`.trim(),
     size,
     disabled,
     invalid,
@@ -112,7 +114,7 @@ export const Select: React.FC<SelectProps> = ({
     }
   };
 
-  return (
+  const selectContent = (
     <div
       className={`${selectClass} ${isOpen ? SELECT.CLASSES.IS_OPEN : ''}`}
       ref={dropdownRef}
@@ -182,6 +184,28 @@ export const Select: React.FC<SelectProps> = ({
       </div>
     </div>
   );
+
+  if (glass) {
+    // Default glass settings for select components
+    const defaultGlassProps = {
+      displacementScale: 60,
+      blurAmount: 1,
+      saturation: 180,
+      aberrationIntensity: 0.2,
+      cornerRadius: 12,
+      mode: 'shader' as const,
+    };
+
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+    return (
+      <AtomixGlass {...glassProps}>
+        {selectContent}
+      </AtomixGlass>
+    );
+  }
+
+  return selectContent;
 };
 
 export type { SelectProps };

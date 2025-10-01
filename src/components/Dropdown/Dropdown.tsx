@@ -1,5 +1,6 @@
 import React, { useRef, useState, useCallback, createContext, useContext, useEffect } from 'react';
 import { DROPDOWN } from '../../lib/constants/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import type {
   DropdownProps,
   DropdownItemProps,
@@ -138,6 +139,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   minWidth = DROPDOWN.DEFAULTS.MIN_WIDTH,
   variant,
   className = '',
+  glass,
   ...props
 }) => {
   // Set up controlled vs uncontrolled state
@@ -294,6 +296,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
     trigger === 'click' ? 'c-dropdown--onclick' : '',
     variant ? `c-dropdown--${variant}` : '',
     isOpen ? 'is-open' : '',
+    glass ? 'c-dropdown--glass' : '',
     className,
   ]
     .filter(Boolean)
@@ -305,6 +308,14 @@ export const Dropdown: React.FC<DropdownProps> = ({
   if (minWidth !== undefined) {
     menuStyleProps.minWidth = typeof minWidth === 'number' ? `${minWidth}px` : minWidth;
   }
+
+  const menuContent = (
+    <div className="c-dropdown__menu-inner" style={menuStyleProps}>
+      <DropdownContext.Provider value={{ isOpen, close, id: dropdownId, trigger }}>
+        <ul className={`c-dropdown__menu ${glass ? 'c-dropdown__menu--glass' : ''}`}>{menu}</ul>
+      </DropdownContext.Provider>
+    </div>
+  );
 
   return (
     <div
@@ -335,11 +346,29 @@ export const Dropdown: React.FC<DropdownProps> = ({
         aria-hidden={!isOpen}
         onKeyDown={handleKeyDown}
       >
-        <div className="c-dropdown__menu-inner" style={menuStyleProps}>
-          <DropdownContext.Provider value={{ isOpen, close, id: dropdownId, trigger }}>
-            <ul className="c-dropdown__menu">{menu}</ul>
-          </DropdownContext.Provider>
-        </div>
+        {glass ? (
+          // Default glass settings for dropdowns
+          (() => {
+            const defaultGlassProps = {
+              displacementScale: 60,
+              blurAmount: 1,
+              saturation: 160,
+              aberrationIntensity: 0.5,
+              cornerRadius: 12,
+              mode: 'shader' as const,
+            };
+
+            const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+            return (
+              <AtomixGlass {...glassProps} style={{position: 'absolute', width: '100%', height: '100%'}}>
+                {menuContent}
+              </AtomixGlass>
+            );
+          })()
+        ) : (
+          menuContent
+        )}
       </div>
     </div>
   );

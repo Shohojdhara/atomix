@@ -1,5 +1,7 @@
 import React, { useState, ReactNode } from 'react';
 import { TAB } from '../../lib/constants/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import { AtomixGlassProps } from '../../lib/types/components';
 
 export interface TabItemProps {
   /**
@@ -43,6 +45,12 @@ export interface TabProps {
    * Additional CSS class for the tab component
    */
   className?: string;
+
+  /**
+   * Glass morphism effect for the tab component
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -53,6 +61,7 @@ export const Tab: React.FC<TabProps> = ({
   activeIndex = TAB.DEFAULTS.ACTIVE_INDEX,
   onTabChange,
   className = '',
+  glass,
 }) => {
   const [currentTab, setCurrentTab] = useState(activeIndex);
 
@@ -64,7 +73,7 @@ export const Tab: React.FC<TabProps> = ({
     }
   };
 
-  return (
+  const tabContent = (
     <div className={`c-tabs js-atomix-tab ${className}`}>
       <ul className="c-tabs__nav">
         {items.map((item, index) => (
@@ -104,6 +113,28 @@ export const Tab: React.FC<TabProps> = ({
       </div>
     </div>
   );
+
+  if (glass) {
+    // Default glass settings for tabs
+    const defaultGlassProps = {
+      displacementScale: 60,
+      blurAmount: 1,
+      saturation: 160,
+      aberrationIntensity: 0.5,
+      cornerRadius: 8,
+      mode: 'shader' as const,
+    };
+
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+    return (
+      <AtomixGlass {...glassProps}>
+        {tabContent}
+      </AtomixGlass>
+    );
+  }
+
+  return tabContent;
 };
 
 Tab.displayName = 'Tab';

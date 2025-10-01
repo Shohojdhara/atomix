@@ -42,6 +42,10 @@ export default {
     className: {
       control: { type: 'text' },
     },
+    glass: {
+      control: { type: 'boolean' },
+      description: 'Enable glass morphism effect',
+    },
   },
 } as Meta<typeof Popover>;
 
@@ -141,3 +145,93 @@ AutoPosition.args = {
   position: 'auto',
   defaultOpen: true, // Open by default to showcase auto-positioning
 };
+
+/**
+ * Glass morphism popover example.
+ */
+export const GlassPopover = Template.bind({});
+GlassPopover.args = {
+  ...Default.args,
+  glass: true,
+};
+GlassPopover.decorators = [
+  (Story) => (
+    <div style={{ 
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
+      minHeight: '100vh',
+      padding: '2rem'
+    }}>
+      <Story />
+    </div>
+  ),
+];
+
+/**
+ * Glass popover with custom settings.
+ */
+export const GlassPopoverCustom = Template.bind({});
+GlassPopoverCustom.args = {
+  ...Default.args,
+  glass: {
+    displacementScale: 80,
+    blurAmount: 2,
+    saturation: 200,
+    aberrationIntensity: 1,
+    cornerRadius: 16,
+    mode: 'polar',
+  },
+};
+GlassPopoverCustom.decorators = [
+  (Story) => (
+    <div style={{ 
+      background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)', 
+      minHeight: '100vh',
+      padding: '2rem'
+    }}>
+      <Story />
+    </div>
+  ),
+];
+
+/**
+ * Glass popover with hover trigger.
+ */
+export const GlassPopoverHover = Template.bind({});
+GlassPopoverHover.args = {
+  ...Default.args,
+  trigger: 'hover',
+  delay: 200,
+  glass: true,
+};
+GlassPopoverHover.decorators = [
+  (Story) => (
+    <div style={{ 
+      background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', 
+      minHeight: '100vh',
+      padding: '2rem'
+    }}>
+      <Story />
+    </div>
+  ),
+];
+
+/**
+ * Glass popover with different positions.
+ */
+export const GlassPopoverPositions = Template.bind({});
+GlassPopoverPositions.args = {
+  ...Default.args,
+  glass: true,
+  defaultOpen: true,
+};
+GlassPopoverPositions.decorators = [
+  (Story) => (
+    <div style={{ 
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
+      minHeight: '100vh',
+      padding: '2rem'
+    }}>
+      <Story />
+    </div>
+  ),
+];

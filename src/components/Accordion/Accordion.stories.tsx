@@ -45,6 +45,10 @@ const meta = {
       control: 'text',
       description: 'Content inside the accordion',
     },
+    glass: {
+      control: 'boolean',
+      description: 'Enable glass morphism effect',
+    },
   },
 } satisfies Meta<typeof Accordion>;
 
@@ -265,6 +269,139 @@ export const Controlled: Story = {
       description: {
         story:
           'This story demonstrates a controlled Accordion using the `isOpen` and `onOpenChange` props.',
+      },
+    },
+  },
+};
+
+// Glass Variant
+export const Glass: Story = {
+  args: {
+    title: 'Glass Accordion',
+    children: <p>This accordion has a glass morphism effect applied.</p>,
+    glass: true,
+  },
+  render: (args) => (
+    <div
+      style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        padding: '2rem',
+        borderRadius: '12px',
+        minHeight: '300px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div style={{ width: '100%', maxWidth: '500px' }}>
+        <Accordion {...args} />
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'This story demonstrates an Accordion with glass morphism effect enabled against a gradient background.',
+      },
+    },
+  },
+};
+
+// Glass with Custom Settings
+export const GlassCustom: Story = {
+  args: {
+    title: 'Custom Glass Accordion',
+    children: <p>This accordion has custom glass morphism settings.</p>,
+    glass: {
+      displacementScale: 80,
+      blurAmount: 2,
+      saturation: 200,
+      aberrationIntensity: 0.8,
+      cornerRadius: 12,
+    },
+  },
+  render: (args) => (
+    <div
+      style={{
+        background: 'url(https://images.unsplash.com/photo-1660478481785-cb609142d9ab?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '2rem',
+        borderRadius: '12px',
+        minHeight: '400px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div style={{ width: '100%', maxWidth: '500px' }}>
+        <Accordion {...args} />
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'This story demonstrates an Accordion with custom glass morphism settings against a scenic background image.',
+      },
+    },
+  },
+};
+
+// Glass Accordion Group
+export const GlassGroup: Story = {
+  args: {
+    title: 'Glass Accordion Group',
+    children: <p>Group example with glass effect - see render function</p>,
+  },
+  render: () => (
+    <div
+      style={{
+        background: 'url(https://images.unsplash.com/photo-1587289087865-396fc357ef9e?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+        backgroundSize: '200% 200%',
+        animation: 'gradient 15s ease infinite',
+        padding: '2rem',
+        borderRadius: '12px',
+        minHeight: '500px',
+      }}
+    >
+      <style>
+        {`
+          @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+        `}
+      </style>
+      <h2 style={{ color: 'white', textAlign: 'center', marginBottom: '2rem', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+        Glass Accordion Group
+      </h2>
+      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}>
+        <Accordion title="First Glass Accordion" defaultOpen={true} glass>
+          <p>Content of the first glass accordion with beautiful glass morphism effect.</p>
+        </Accordion>
+
+        <Accordion title="Second Glass Accordion" glass>
+          <p>Content of the second glass accordion showcasing the glass effect.</p>
+        </Accordion>
+
+        <Accordion title="Third Glass Accordion" glass>
+          <p>Content of the third glass accordion with more content.</p>
+          <p>Additional paragraph to demonstrate scrolling and glass effects.</p>
+          <ul>
+            <li>Glass effect item 1</li>
+            <li>Glass effect item 2</li>
+            <li>Glass effect item 3</li>
+          </ul>
+        </Accordion>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'This story demonstrates multiple Accordions with glass morphism effects against an animated gradient background.',
       },
     },
   },

@@ -30,6 +30,10 @@ const meta: Meta<typeof Modal> = {
       description: 'Whether to show the close button',
       defaultValue: true,
     },
+    glass: {
+      control: 'boolean',
+      description: 'Enable glass morphism effect',
+    },
   },
 };
 
@@ -281,4 +285,235 @@ export const Sizes: Story = {
       </div>
     );
   },
+};
+
+/**
+ * Glass morphism modal example.
+ */
+export const GlassModal: Story = {
+  render: args => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <>
+        <div
+          className="c-btn c-btn--primary"
+          onClick={() => setIsOpen(true)}
+          style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
+        >
+          Open Glass Modal
+        </div>
+
+        <Modal
+          {...args}
+          isOpen={isOpen}
+          onOpenChange={setIsOpen}
+          title="Glass Modal"
+          subtitle="This modal features a beautiful glass morphism effect."
+          glass={true}
+        >
+          <p>
+            This modal demonstrates the glass morphism effect with a translucent, frosted appearance.
+            The glass effect creates a modern, elegant look that works well over colorful backgrounds.
+          </p>
+          <p>
+            The glass effect includes displacement, blur, and chromatic aberration for a premium feel.
+          </p>
+        </Modal>
+      </>
+    );
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
+        minHeight: '100vh',
+        padding: '2rem'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+/**
+ * Glass modal with custom settings.
+ */
+export const GlassModalCustom: Story = {
+  render: args => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <>
+        <div
+          className="c-btn c-btn--primary"
+          onClick={() => setIsOpen(true)}
+          style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
+        >
+          Open Custom Glass Modal
+        </div>
+
+        <Modal
+          {...args}
+          isOpen={isOpen}
+          onOpenChange={setIsOpen}
+          title="Custom Glass Modal"
+          subtitle="This modal has customized glass effect settings."
+          glass={{
+            displacementScale: 120,
+            blurAmount: 3,
+            saturation: 200,
+            aberrationIntensity: 2,
+            cornerRadius: 20,
+            mode: 'polar',
+          }}
+          footer={
+            <>
+              <div
+                className="c-btn c-btn--outline-secondary"
+                onClick={() => setIsOpen(false)}
+                style={{
+                  cursor: 'pointer',
+                  padding: '8px 16px',
+                  display: 'inline-block',
+                  marginRight: '8px',
+                }}
+              >
+                Cancel
+              </div>
+              <div
+                className="c-btn c-btn--primary"
+                onClick={() => setIsOpen(false)}
+                style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
+              >
+                Confirm
+              </div>
+            </>
+          }
+        >
+          <p>
+            This modal uses custom glass settings with enhanced displacement, blur, and chromatic aberration.
+            The polar mode creates a different visual effect compared to the standard shader mode.
+          </p>
+        </Modal>
+      </>
+    );
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)', 
+        minHeight: '100vh',
+        padding: '2rem'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+/**
+ * Glass modal with different sizes.
+ */
+export const GlassModalSizes: Story = {
+  render: () => {
+    const [size, setSize] = useState<'sm' | 'md' | 'lg' | 'xl'>('md');
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <div className="u-d-flex u-flex-column u-gap-4">
+        <div className="u-d-flex u-gap-4">
+          <div
+            className={`c-btn ${size === 'sm' ? 'c-btn--primary' : 'c-btn--secondary'}`}
+            onClick={() => {
+              setSize('sm');
+              setIsOpen(true);
+            }}
+            style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
+          >
+            Small Glass Modal
+          </div>
+
+          <div
+            className={`c-btn ${size === 'md' ? 'c-btn--primary' : 'c-btn--secondary'}`}
+            onClick={() => {
+              setSize('md');
+              setIsOpen(true);
+            }}
+            style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
+          >
+            Medium Glass Modal
+          </div>
+
+          <div
+            className={`c-btn ${size === 'lg' ? 'c-btn--primary' : 'c-btn--secondary'}`}
+            onClick={() => {
+              setSize('lg');
+              setIsOpen(true);
+            }}
+            style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
+          >
+            Large Glass Modal
+          </div>
+
+          <div
+            className={`c-btn ${size === 'xl' ? 'c-btn--primary' : 'c-btn--secondary'}`}
+            onClick={() => {
+              setSize('xl');
+              setIsOpen(true);
+            }}
+            style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
+          >
+            Extra Large Glass Modal
+          </div>
+        </div>
+
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={setIsOpen}
+          title={`${size.toUpperCase()} Glass Modal`}
+          subtitle="This modal demonstrates glass effect with different sizes."
+          size={size}
+          glass={true}
+          footer={
+            <>
+              <div
+                className="c-btn c-btn--outline-secondary"
+                onClick={() => setIsOpen(false)}
+                style={{
+                  cursor: 'pointer',
+                  padding: '8px 16px',
+                  display: 'inline-block',
+                  marginRight: '8px',
+                }}
+              >
+                Cancel
+              </div>
+              <div
+                className="c-btn c-btn--primary"
+                onClick={() => setIsOpen(false)}
+                style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
+              >
+                Confirm
+              </div>
+            </>
+          }
+        >
+          <p>This is a {size.toUpperCase()} sized glass modal.</p>
+          <p>The glass effect adapts to different modal sizes while maintaining its visual appeal.</p>
+        </Modal>
+      </div>
+    );
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', 
+        minHeight: '100vh',
+        padding: '2rem'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
 };

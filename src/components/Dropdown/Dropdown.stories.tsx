@@ -67,6 +67,10 @@ const meta: Meta<typeof Dropdown> = {
       control: 'boolean',
       description: 'Whether to close the dropdown when pressing the Escape key',
     },
+    glass: {
+      control: 'boolean',
+      description: 'Enable glass morphism effect',
+    },
   },
 };
 
@@ -347,6 +351,147 @@ export const AllVariants: Story = {
                 <>
                   <DropdownItem>Menu item 1</DropdownItem>
                   <DropdownItem>Menu item 2</DropdownItem>
+                </>
+              }
+            />
+          ))}
+        </div>
+      </div>
+    );
+  },
+};
+
+/**
+ * Glass morphism dropdown example.
+ */
+export const GlassDropdown: Story = {
+  args: {
+    ...Default.args,
+    glass: true,
+  },
+  render: args => <InteractiveDropdown {...args} />,
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
+        minHeight: '100vh',
+        padding: '2rem'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+/**
+ * Glass dropdown with custom settings.
+ */
+export const GlassDropdownCustom: Story = {
+  args: {
+    ...Default.args,
+    glass: {
+      displacementScale: 80,
+      blurAmount: 2,
+      saturation: 200,
+      aberrationIntensity: 1,
+      cornerRadius: 16,
+      mode: 'polar',
+    },
+  },
+  render: args => <InteractiveDropdown {...args} />,
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)', 
+        minHeight: '100vh',
+        padding: '2rem'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+/**
+ * Glass dropdown with icons.
+ */
+export const GlassDropdownWithIcons: Story = {
+  args: {
+    ...WithIcons.args,
+    glass: true,
+  },
+  render: args => <InteractiveDropdown {...args} />,
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', 
+        minHeight: '100vh',
+        padding: '2rem'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+/**
+ * Glass dropdown with all variants.
+ */
+export const GlassAllVariants: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Glass morphism effect applied to dropdowns with all color variants.',
+      },
+    },
+  },
+  render: () => {
+    const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+    const handleOpenChange = (variant: string, isOpen: boolean) => {
+      if (isOpen) {
+        setOpenDropdown(variant);
+      } else if (openDropdown === variant) {
+        setOpenDropdown(null);
+      }
+    };
+
+    return (
+      <div style={{ 
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
+        minHeight: '100vh',
+        padding: '2rem'
+      }}>
+        <div className="u-d-flex u-flex-wrap u-gap-3">
+          {[
+            'primary',
+            'secondary',
+            'tertiary',
+            'success',
+            'info',
+            'warning',
+            'error',
+            'light',
+            'dark',
+          ].map(color => (
+            <Dropdown
+              key={color}
+              variant={color as ThemeColor}
+              trigger="click"
+              isOpen={openDropdown === color}
+              onOpenChange={isOpen => handleOpenChange(color, isOpen)}
+              glass={true}
+              children={
+                <button className={`c-btn c-btn--${color}`}>
+                  {color} <Icon name="CaretDown" className="c-dropdown__toggle-icon" size="sm" />
+                </button>
+              }
+              menu={
+                <>
+                  <DropdownItem>Menu item 1</DropdownItem>
+                  <DropdownItem>Menu item 2</DropdownItem>
+                  <DropdownItem>Menu item 3</DropdownItem>
                 </>
               }
             />

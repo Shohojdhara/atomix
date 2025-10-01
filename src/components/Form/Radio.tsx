@@ -1,6 +1,7 @@
 import React from 'react';
 import { RadioProps } from '../../lib/types/components';
 import { useRadio } from '../../lib/composables/useRadio';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 /**
  * Radio - A component for radio button inputs
@@ -19,6 +20,7 @@ export const Radio: React.FC<RadioProps> = ({
   valid = false,
   ariaLabel,
   ariaDescribedBy,
+  glass,
 }) => {
   const { generateRadioClass } = useRadio({
     disabled,
@@ -27,13 +29,13 @@ export const Radio: React.FC<RadioProps> = ({
   });
 
   const radioClass = generateRadioClass({
-    className,
+    className: `${className} ${glass ? 'c-radio--glass' : ''}`.trim(),
     disabled,
     invalid,
     valid,
   });
 
-  return (
+  const radioContent = (
     <div className={radioClass}>
       <input
         type="radio"
@@ -56,6 +58,28 @@ export const Radio: React.FC<RadioProps> = ({
       )}
     </div>
   );
+
+  if (glass) {
+    // Default glass settings for radio buttons
+    const defaultGlassProps = {
+      displacementScale: 40,
+      blurAmount: 1,
+      saturation: 160,
+      aberrationIntensity: 0.3,
+      cornerRadius: 6,
+      mode: 'shader' as const,
+    };
+
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+    return (
+      <AtomixGlass {...glassProps}>
+        {radioContent}
+      </AtomixGlass>
+    );
+  }
+
+  return radioContent;
 };
 
 export type { RadioProps };

@@ -1,5 +1,7 @@
 import React, { ReactNode, useRef, useState } from 'react';
 import { TOOLTIP } from '../../lib/constants/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import { AtomixGlassProps } from '../../lib/types/components';
 
 export interface TooltipProps {
   /**
@@ -44,6 +46,12 @@ export interface TooltipProps {
    * Offset from the trigger element (in pixels)
    */
   offset?: number;
+
+  /**
+   * Glass morphism effect for the tooltip
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 export const Tooltip: React.FC<TooltipProps> = ({
@@ -54,6 +62,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   className = '',
   delay = TOOLTIP.DEFAULTS.DELAY,
   offset = TOOLTIP.DEFAULTS.OFFSET,
+  glass,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -129,16 +138,43 @@ export const Tooltip: React.FC<TooltipProps> = ({
       </div>
       {isVisible && (
         <div
-          className={`c-tooltip ${TOOLTIP.SELECTORS.TOOLTIP.substring(1)} ${getTooltipPositionClasses()}`}
+          className={`c-tooltip ${TOOLTIP.SELECTORS.TOOLTIP.substring(1)} ${getTooltipPositionClasses()} ${glass ? 'c-tooltip--glass' : ''}`}
           data-tooltip-position={position}
           data-tooltip-trigger={trigger}
         >
-          <div
-            className={`c-tooltip__content ${TOOLTIP.SELECTORS.CONTENT.substring(1)} ${isVisible && 'is-active'}`}
-          >
-            <span className={TOOLTIP.SELECTORS.ARROW.substring(1)}></span>
-            {content}
-          </div>
+          {glass ? (
+            // Default glass settings for tooltips
+            (() => {
+              const defaultGlassProps = {
+                displacementScale: 40,
+                blurAmount: 1,
+                saturation: 160,
+                aberrationIntensity: 0.3,
+                cornerRadius: 6,
+                mode: 'shader' as const,
+              };
+
+              const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+              return (
+                <AtomixGlass {...glassProps}>
+                  <div
+                    className={`c-tooltip__content ${TOOLTIP.SELECTORS.CONTENT.substring(1)} ${isVisible && 'is-active'}`}
+                  >
+                    <span className={TOOLTIP.SELECTORS.ARROW.substring(1)}></span>
+                    {content}
+                  </div>
+                </AtomixGlass>
+              );
+            })()
+          ) : (
+            <div
+              className={`c-tooltip__content ${TOOLTIP.SELECTORS.CONTENT.substring(1)} ${isVisible && 'is-active'}`}
+            >
+              <span className={TOOLTIP.SELECTORS.ARROW.substring(1)}></span>
+              {content}
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -1,7 +1,8 @@
 import React, { ReactNode, useId } from 'react';
 import { ACCORDION } from '../../lib/constants/components';
 import { useAccordion } from '../../lib/composables/useAccordion';
-import { BaseComponentProps, IconPosition } from '../../lib/types/components';
+import { BaseComponentProps, IconPosition, AtomixGlassProps } from '../../lib/types/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 /**
  * Accordion component for showing/hiding content panels
@@ -41,6 +42,12 @@ export interface AccordionProps extends BaseComponentProps {
    * Callback when open state changes (for controlled mode)
    */
   onOpenChange?: (open: boolean) => void;
+
+  /**
+   * Glass morphism effect for the accordion
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 export const Accordion: React.FC<AccordionProps> = ({
@@ -53,6 +60,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   iconPosition = 'right',
   icon,
   className = '',
+  glass,
 }) => {
   // Generate unique IDs for accessibility
   const instanceId = useId();
@@ -95,8 +103,8 @@ export const Accordion: React.FC<AccordionProps> = ({
     </i>
   );
 
-  return (
-    <div className={generateClassNames(className)}>
+  const accordionContent = (
+    <div className={generateClassNames(className) + (glass ? ' c-accordion--glass' : '')}>
       <button
         id={buttonId}
         className={generateHeaderClassNames()}
@@ -122,6 +130,28 @@ export const Accordion: React.FC<AccordionProps> = ({
       </div>
     </div>
   );
+
+  if (glass) {
+    // Default glass settings for accordions
+    const defaultGlassProps = {
+      displacementScale: 20,
+      blurAmount: 10,
+      saturation: 140,
+      aberrationIntensity: 0.5,
+      cornerRadius: 8,
+      mode: 'shader' as const,
+    };
+
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+    return (
+      <AtomixGlass {...glassProps}>
+        {accordionContent}
+      </AtomixGlass>
+    );
+  }
+
+  return accordionContent;
 };
 
 // Set display name for debugging

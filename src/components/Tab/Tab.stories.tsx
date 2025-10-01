@@ -11,6 +11,10 @@ export default {
       control: { type: 'number' },
       defaultValue: 0,
     },
+    glass: {
+      control: 'boolean',
+      description: 'Enable glass morphism effect',
+    },
   },
 } as Meta<typeof Tab>;
 
@@ -126,4 +130,88 @@ WithRichContent.args = {
     },
   ],
   activeIndex: 0,
+};
+
+export const Glass = {
+  args: {
+    items: [
+      {
+        label: 'Glass Tab 1',
+        content: <p>This is the content for Glass Tab 1 with glass morphism effect.</p>,
+      },
+      {
+        label: 'Glass Tab 2',
+        content: <p>This is the content for Glass Tab 2 with glass morphism effect.</p>,
+      },
+      {
+        label: 'Glass Tab 3',
+        content: <p>This is the content for Glass Tab 3 with glass morphism effect.</p>,
+      },
+    ],
+    activeIndex: 0,
+    glass: true,
+  },
+  render: (args) => (
+    <div
+      style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        padding: '2rem',
+        borderRadius: '12px',
+        minHeight: '400px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div style={{ width: '100%', maxWidth: '600px' }}>
+        <Tab {...args} />
+      </div>
+    </div>
+  ),
+};
+
+export const GlassCustom = {
+  args: {
+    items: [
+      {
+        label: 'Custom Glass Tab 1',
+        content: <p>This tab has custom glass morphism settings.</p>,
+      },
+      {
+        label: 'Custom Glass Tab 2',
+        content: <p>Enhanced glass effect with custom parameters.</p>,
+      },
+      {
+        label: 'Custom Glass Tab 3',
+        content: <p>Another tab with the same custom glass settings.</p>,
+      },
+    ],
+    activeIndex: 0,
+    glass: {
+      displacementScale: 80,
+      blurAmount: 2,
+      saturation: 200,
+      aberrationIntensity: 0.8,
+      cornerRadius: 12,
+    },
+  },
+  render: (args) => (
+    <div
+      style={{
+        background: 'url(https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '2rem',
+        borderRadius: '12px',
+        minHeight: '500px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div style={{ width: '100%', maxWidth: '600px' }}>
+        <Tab {...args} />
+      </div>
+    </div>
+  ),
 };

@@ -72,14 +72,14 @@ export const Callout: React.FC<CalloutProps> = ({
   if (glass) {
     // Default glass settings for callouts
     const defaultGlassProps = {
-      displacementScale: 160,
-      blurAmount: 3,
+      displacementScale: 20,
+      blurAmount: 2,
       saturation: 70,
       aberrationIntensity: 1,
       cornerRadius: 8,
       overLight: false,
       elasticity: 0,
-      mode: 'standard' as const,
+      mode: 'shader' as const,
     };
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };

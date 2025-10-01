@@ -11,6 +11,7 @@
 
 import { Meta, StoryObj } from '@storybook/react';
 import AtomixGlass from './AtomixGlass';
+import Button from '../Button/Button';
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import React from 'react';
 import type { RefObject } from 'react';
@@ -486,7 +487,7 @@ export const Default: Story = {
         </div>
       </div>
     ),
-    displacementScale: 70, // Using component default
+    displacementScale: 15, // Using component default
     blurAmount: 1, // Using component default
     saturation: 140, // Using component default
     aberrationIntensity: 2, // Using component default
@@ -561,7 +562,7 @@ export const Interactive: Story = {
     );
   },
   args: {
-    displacementScale: 50,
+    displacementScale: 15,
     blurAmount: 0.0625,
     saturation: 200,
     aberrationIntensity: 3,
@@ -618,7 +619,7 @@ export const ModeShowcase: Story = {
     // Different settings for each mode to highlight their unique characteristics
     const modeSettings = {
       standard: {
-        displacementScale: 70,
+        displacementScale: 15,
         blurAmount: 0.0625,
         saturation: 140,
         aberrationIntensity: 2,
@@ -626,7 +627,7 @@ export const ModeShowcase: Story = {
         color: '#ffffff',
       },
       polar: {
-        displacementScale: 85,
+        displacementScale: 15,
         blurAmount: 0.05,
         saturation: 160,
         aberrationIntensity: 2.5,
@@ -634,7 +635,7 @@ export const ModeShowcase: Story = {
         color: '#f0f8ff',
       },
       prominent: {
-        displacementScale: 95,
+        displacementScale: 15,
         blurAmount: 0.08,
         saturation: 180,
         aberrationIntensity: 3,
@@ -642,9 +643,9 @@ export const ModeShowcase: Story = {
         color: '#ffffff',
       },
       shader: {
-        displacementScale: 100,
+        displacementScale: 15,
         blurAmount: 0.1,
-        saturation: 200,
+        saturation: 150,
         aberrationIntensity: 4,
         description: 'Advanced shader-based displacement for maximum visual impact',
         color: '#e6f7ff',
@@ -882,10 +883,10 @@ export const AppleInspiredUI: Story = {
           {/* Top menu bar - macOS style with improved design */}
 
           <AtomixGlass
-            displacementScale={40}
+            displacementScale={15}
             blurAmount={2}
             saturation={150}
-            aberrationIntensity={0}
+            aberrationIntensity={0.2}
             cornerRadius={8}
             mode="shader"
             elasticity={0}
@@ -1042,12 +1043,12 @@ export const AppleInspiredUI: Story = {
           </AtomixGlass>
           {/* Center widget - iOS style with improved design */}
           <AtomixGlass
-            displacementScale={50}
-            blurAmount={1}
+            displacementScale={15}
+            blurAmount={2}
             saturation={150}
             aberrationIntensity={0.1}
             cornerRadius={24}
-            mode="standard"
+            mode="shader"
           >
             <div style={{ padding: '30px' }}>
               <h2
@@ -1120,12 +1121,12 @@ export const AppleInspiredUI: Story = {
               {/* Notification card with improved design */}
               <AtomixGlass
                 displacementScale={12}
-                blurAmount={0}
+                blurAmount={5}
                 saturation={130}
                 aberrationIntensity={1}
                 cornerRadius={16}
                 elasticity={0}
-                mode="standard"
+                mode="shader"
               >
                 <div style={{ padding: '18px', fontSize: '14px' }}>
                   <div
@@ -1200,7 +1201,7 @@ export const AppleInspiredUI: Story = {
 
           {/* Bottom dock - macOS style with improved design and hover effects */}
           <AtomixGlass
-            displacementScale={18}
+            displacementScale={15}
             blurAmount={2}
             saturation={140}
             aberrationIntensity={1.2}
@@ -1570,7 +1571,7 @@ export const InteractivePlayground: Story = {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [settings, setSettings] = useState({
       displacementScale: 70,
-      blurAmount: 0.0625,
+      blurAmount: 1,
       saturation: 140,
       aberrationIntensity: 2,
       cornerRadius: 20,
@@ -1580,6 +1581,7 @@ export const InteractivePlayground: Story = {
       overLight: false,
       background: backgrounds.blueGradient,
       useVideoBackground: false,
+      elasticity: 0.15,
     });
 
     const handleChange = (property: string, value: any) => {
@@ -1677,8 +1679,8 @@ export const InteractivePlayground: Story = {
               type="range"
               id="blurAmount"
               min="0"
-              max="1"
-              step="0.005"
+              max="20"
+              step="0.05"
               value={settings.blurAmount}
               onChange={e => handleChange('blurAmount', parseFloat(e.target.value))}
               style={sliderStyle}
@@ -1733,6 +1735,24 @@ export const InteractivePlayground: Story = {
               max="50"
               value={settings.cornerRadius}
               onChange={e => handleChange('cornerRadius', parseInt(e.target.value))}
+              style={sliderStyle}
+            />
+          </div>
+
+            {/* Elasticity */}
+          <div style={sliderContainerStyle}>
+            <div style={sliderLabelStyle}>
+              <label htmlFor="elasticity">Elasticity</label>
+              <span>{settings.elasticity}</span>
+            </div>
+            <input
+              type="range"
+              id="elasticity"
+              min="0"
+              max="1"
+              step="0.01"
+              value={settings.elasticity}
+              onChange={e => handleChange('elasticity',e.target.value)}
               style={sliderStyle}
             />
           </div>
@@ -1853,6 +1873,7 @@ export const InteractivePlayground: Story = {
             cornerRadius={settings.cornerRadius}
             mode={settings.mode}
             overLight={settings.overLight}
+            elasticity={settings.elasticity}
             style={{ width: '400px', maxWidth: '100%' }}
           >
             <div style={{ padding: '30px', textAlign: 'center' }}>
@@ -1873,8 +1894,8 @@ export const InteractivePlayground: Story = {
                   flexWrap: 'wrap',
                 }}
               >
-                <button className="c-btn c-btn--primary">Primary Button</button>
-                <button className="c-btn c-btn--secondary">Secondary</button>
+                <Button label="Primary" variant="primary" glass={{elasticity: 0}}/>
+                <Button label="secondary" variant="secondary" glass={{elasticity: 0}}/>
               </div>
             </div>
           </AtomixGlass>

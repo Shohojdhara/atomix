@@ -191,7 +191,7 @@
         --#{config.$prefix}callout-title-color: var(--#{config.$prefix}light);
         --#{config.$prefix}callout-text-color: #{$gray-4};
         --#{config.$prefix}callout-bg: var(--#{config.$prefix}dark);
-        --#{config.$prefix}callout-border-color: var(--#{config.$prefix}primary-border-subtle);
+        --#{config.$prefix}callout-border-color: var(--#{config.$prefix}dark-border-subtle);
         --#{config.$prefix}callout-icon-color: var(--#{config.$prefix}light);
       } @else {
         --#{config.$prefix}callout-bg: var(--#{config.$prefix}#{$color}-bg-subtle);

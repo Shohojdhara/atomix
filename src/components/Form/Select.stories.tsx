@@ -34,6 +34,10 @@ const meta = {
       control: 'boolean',
       description: 'Whether multiple options can be selected',
     },
+    glass: {
+      control: 'boolean',
+      description: 'Enable glass morphism effect',
+    },
   },
 } satisfies Meta<typeof Select>;
 
@@ -148,4 +152,110 @@ export const DisabledOptions: Story = {
     ],
     placeholder: 'Select a country',
   },
+};
+
+// Glass variant
+export const Glass: Story = {
+  args: {
+    options: countries,
+    placeholder: 'Glass Select',
+    glass: true,
+  },
+  render: (args) => (
+    <div
+      style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        padding: '2rem',
+        borderRadius: '12px',
+        minHeight: '200px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div style={{ width: '100%', maxWidth: '300px' }}>
+        <Select {...args} />
+      </div>
+    </div>
+  ),
+};
+
+// Glass with custom settings
+export const GlassCustom: Story = {
+  args: {
+    options: countries,
+    placeholder: 'Custom Glass Select',
+    glass: {
+      displacementScale: 80,
+      blurAmount: 2,
+      saturation: 200,
+      aberrationIntensity: 0.8,
+      cornerRadius: 12,
+    },
+  },
+  render: (args) => (
+    <div
+      style={{
+        background: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '2rem',
+        borderRadius: '12px',
+        minHeight: '300px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div style={{ width: '100%', maxWidth: '300px' }}>
+        <h3 style={{ color: 'white', marginBottom: '1rem', textAlign: 'center', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+          Custom Glass Select
+        </h3>
+        <Select {...args} />
+      </div>
+    </div>
+  ),
+};
+
+// Glass states
+export const GlassStates: Story = {
+  args: {
+    options: countries,
+  },
+  render: (args) => (
+    <div
+      style={{
+        background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57)',
+        backgroundSize: '400% 400%',
+        animation: 'gradient 15s ease infinite',
+        padding: '2rem',
+        borderRadius: '12px',
+        minHeight: '400px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <style>
+        {`
+          @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+        `}
+      </style>
+      <div style={{ width: '100%', maxWidth: '300px' }}>
+        <h3 style={{ color: 'white', marginBottom: '2rem', textAlign: 'center', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+          Glass Select States
+        </h3>
+        <div className="u-d-flex u-flex-column u-gap-3">
+          <Select options={args.options} placeholder="Glass Select" glass />
+          <Select options={args.options} placeholder="Glass Disabled" disabled glass />
+          <Select options={args.options} placeholder="Glass Valid" valid value="us" glass />
+          <Select options={args.options} placeholder="Glass Invalid" invalid glass />
+        </div>
+      </div>
+    </div>
+  ),
 };

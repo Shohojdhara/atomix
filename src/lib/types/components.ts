@@ -2,6 +2,48 @@ import { ReactNode } from 'react';
 import { AtomixGlass } from '../../components/AtomixGlass/AtomixGlass';
 
 /**
+ * AtomixGlass component props interface
+ */
+export interface AtomixGlassProps {
+  children: React.ReactNode;
+  displacementScale?: number;
+  blurAmount?: number;
+  saturation?: number;
+  aberrationIntensity?: number;
+  elasticity?: number;
+  cornerRadius?: number;
+  globalMousePos?: { x: number; y: number };
+  mouseOffset?: { x: number; y: number };
+  mouseContainer?: React.RefObject<HTMLElement | null> | null;
+  className?: string;
+  padding?: string;
+  style?: React.CSSProperties;
+  overLight?: boolean;
+  mode?: 'standard' | 'polar' | 'prominent' | 'shader';
+  onClick?: () => void;
+
+  /**
+   * Accessibility props
+   */
+  'aria-label'?: string;
+  'aria-describedby'?: string;
+  role?: string;
+  tabIndex?: number;
+
+  /**
+   * Performance and accessibility options
+   */
+  reducedMotion?: boolean;
+  highContrast?: boolean;
+  disableEffects?: boolean;
+
+  /**
+   * Performance monitoring
+   */
+  enablePerformanceMonitoring?: boolean;
+}
+
+/**
  * Common component size options
  */
 export type Size = 'sm' | 'md' | 'lg';
@@ -205,6 +247,12 @@ export interface BadgeProps extends BaseComponentProps {
    * Optional icon
    */
   icon?: ReactNode;
+
+  /**
+   * Glass morphism effect for the badge
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -258,95 +306,6 @@ export interface CalloutProps extends BaseComponentProps {
   glass?: AtomixGlassProps | boolean;
 }
 
-/**
- * AtomixGlass component properties
- */
-export interface AtomixGlassProps extends BaseComponentProps {
-  /**
-   * Content to display inside the glass effect
-   */
-  children?: ReactNode;
-
-  /**
-   * Displacement scale for the glass effect
-   */
-  displacementScale?: number;
-
-  /**
-   * Blur amount for the backdrop
-   */
-  blurAmount?: number;
-
-  /**
-   * Saturation percentage for the backdrop
-   */
-  saturation?: number;
-
-  /**
-   * Chromatic aberration intensity
-   */
-  aberrationIntensity?: number;
-
-  /**
-   * Elasticity factor for mouse interactions
-   */
-  elasticity?: number;
-
-  /**
-   * Corner radius in pixels
-   */
-  cornerRadius?: number;
-
-  /**
-   * External global mouse position
-   */
-  globalMousePos?: { x: number; y: number };
-
-  /**
-   * External mouse offset
-   */
-  mouseOffset?: { x: number; y: number };
-
-  /**
-   * Reference to mouse container element
-   */
-  mouseContainer?: React.RefObject<HTMLElement | null> | null;
-
-  /**
-   * Padding for the glass container
-   */
-  padding?: string;
-
-  /**
-   * CSS style object
-   */
-  style?: React.CSSProperties;
-
-  /**
-   * Whether the glass is over a light background
-   */
-  overLight?: boolean;
-
-  /**
-   * Glass effect mode
-   */
-  mode?: 'standard' | 'polar' | 'prominent' | 'shader';
-
-  /**
-   * Optional click handler
-   */
-  onClick?: () => void;
-
-  /**
-   * Show border effects (outer border, overlay)
-   */
-  showBorderEffects?: boolean;
-
-  /**
-   * Show hover effects (hover, active, interaction)
-   */
-  showHoverEffects?: boolean;
-}
 
 /**
  * Accordion component properties
@@ -376,6 +335,12 @@ export interface AccordionProps extends BaseComponentProps {
    * Custom icon for the accordion
    */
   icon?: ReactNode;
+
+  /**
+   * Glass morphism effect for the accordion
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -1140,6 +1105,12 @@ export interface PaginationProps extends BaseComponentProps {
    * Accessible label for the navigation element
    */
   ariaLabel?: string;
+
+  /**
+   * Glass morphism effect for the pagination component
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -1525,6 +1496,12 @@ export interface SelectProps extends BaseComponentProps {
    * ID of element that describes this select
    */
   ariaDescribedBy?: string;
+
+  /**
+   * Glass morphism effect for the select
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -1590,6 +1567,12 @@ export interface CheckboxProps extends BaseComponentProps {
    * ID of element that describes this checkbox
    */
   ariaDescribedBy?: string;
+
+  /**
+   * Glass morphism effect for the checkbox
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -1650,6 +1633,12 @@ export interface RadioProps extends BaseComponentProps {
    * ID of element that describes this radio
    */
   ariaDescribedBy?: string;
+
+  /**
+   * Glass morphism effect for the radio button
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -1890,6 +1879,12 @@ export interface ModalProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
    * Content for the modal footer
    */
   footer?: React.ReactNode;
+
+  /**
+   * Glass morphism effect for the modal
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -2142,6 +2137,12 @@ export interface PopoverProps {
    * Children content (removed in favor of using PopoverTrigger)
    */
   children?: ReactNode;
+
+  /**
+   * Glass morphism effect for the popover
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -2235,6 +2236,12 @@ export interface DropdownProps extends BaseComponentProps {
    * Optional ID for the dropdown
    */
   id?: string;
+
+  /**
+   * Glass morphism effect for the dropdown menu
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -2385,6 +2392,12 @@ export interface RatingProps extends BaseComponentProps {
    * Whether to use the vanilla JS implementation
    */
   useVanillaJS?: boolean;
+
+  /**
+   * Glass morphism effect for the rating component
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**

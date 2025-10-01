@@ -43,6 +43,24 @@
     --#{$prefix}tag-padding-y: #{$badge-padding-y-lg};
   }
 
+  &--glass {
+    @include dynamic-background(
+      var(--#{$prefix}tag-bg-color),
+      $background-transparency-enable: true,
+      $transparency: 0.8
+    );
+    border: 1px solid color-mix(in srgb, var(--#{$prefix}tag-color) 20%, transparent);
+
+
+      // // Outer depth and glass effect
+      // 0 1px 3px rgba(0, 0, 0, 0.2),
+      // 0 2px 8px rgba(0, 0, 0, 0.15),
+      // 0 4px 16px rgba(0, 0, 0, 0.1),
+      
+      // Subtle highlight on top edge
+      // 0 -1px 0 rgba(255, 255, 255, 0.1);
+  }
+
   @each $color, $value in maps.$theme-colors {
     &--#{$color} {
       @if ($color == 'primary') {
@@ -51,13 +69,29 @@
       } @else if ($color == 'dark') {
         --#{$prefix}tag-bg-color: var(--#{$prefix}dark);
         --#{$prefix}tag-color: var(--#{$prefix}light);
+        border: 1px solid var(--#{$prefix}dark);
       } @else if ($color == 'light') {
         --#{$prefix}tag-bg-color: var(--#{$prefix}light);
         --#{$prefix}tag-color: var(--#{$prefix}dark);
+        border: 1px solid var(--#{$prefix}light);
       } @else {
         --#{$prefix}tag-bg-color: var(--#{$prefix}#{$color}-bg-subtle);
         --#{$prefix}tag-color: var(--#{$prefix}#{$color}-text-emphasis);
       }
     }
   }
+}
+
+.c-badge-glass {
+  box-shadow:
+    // Inner glow
+    inset 1px 2px 3px rgba(255, 255, 255, 0.1),
+    inset 0 -2px 2px rgba(0, 0, 0, 0.3);
+    // 0 1px 3px rgba(0, 0, 0, 0.2),
+    // 0 2px 8px rgba(0, 0, 0, 0.15),
+    // 0 4px 16px rgba(0, 0, 0, 0.1),
+    // Subtle highlight on top edge
+    // 0 -1px 0 rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+
 }

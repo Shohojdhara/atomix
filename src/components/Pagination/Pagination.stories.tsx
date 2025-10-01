@@ -42,6 +42,10 @@ export default {
       control: 'text',
       description: 'Custom class for the pagination container',
     },
+    glass: {
+      control: 'boolean',
+      description: 'Enable glass morphism effect',
+    },
   },
   parameters: {
     docs: {
@@ -183,6 +187,103 @@ CustomStyling.parameters = {
   docs: {
     description: {
       story: 'Pagination with custom CSS class for additional styling.',
+    },
+  },
+};
+
+export const Glass = {
+  args: {
+    currentPage: 5,
+    totalPages: 15,
+    siblingCount: 1,
+    showFirstLastButtons: true,
+    showPrevNextButtons: true,
+    size: 'md',
+    glass: true,
+  },
+  render: (args) => {
+    const [currentPage, setCurrentPage] = React.useState(args.currentPage);
+    const handlePageChange = (page: number) => {
+      setCurrentPage(page);
+      args.onPageChange?.(page);
+    };
+    
+    return (
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          padding: '2rem',
+          borderRadius: '12px',
+          minHeight: '200px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Pagination {...args} currentPage={currentPage} onPageChange={handlePageChange} />
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pagination with glass morphism effect enabled against a gradient background.',
+      },
+    },
+  },
+};
+
+export const GlassCustom = {
+  args: {
+    currentPage: 5,
+    totalPages: 15,
+    siblingCount: 2,
+    showFirstLastButtons: true,
+    showPrevNextButtons: true,
+    size: 'lg',
+    glass: {
+      displacementScale: 80,
+      blurAmount: 2,
+      saturation: 200,
+      aberrationIntensity: 0.8,
+      cornerRadius: 12,
+    },
+  },
+  render: (args) => {
+    const [currentPage, setCurrentPage] = React.useState(args.currentPage);
+    const handlePageChange = (page: number) => {
+      setCurrentPage(page);
+      args.onPageChange?.(page);
+    };
+    
+    return (
+      <div
+        style={{
+          background: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '2rem',
+          borderRadius: '12px',
+          minHeight: '300px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div style={{ textAlign: 'center' }}>
+          <h3 style={{ color: 'white', marginBottom: '2rem', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+            Custom Glass Pagination
+          </h3>
+          <Pagination {...args} currentPage={currentPage} onPageChange={handlePageChange} />
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pagination with custom glass morphism settings against a scenic background.',
+      },
     },
   },
 };

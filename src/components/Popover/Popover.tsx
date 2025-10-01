@@ -2,6 +2,7 @@ import React, { ReactNode, forwardRef, createContext } from 'react';
 import { createPortal } from 'react-dom';
 import { POPOVER } from '../../lib/constants/components';
 import { usePopover } from '../../lib/composables/usePopover';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import type { PopoverProps, PopoverTriggerProps } from '../../lib/types/components';
 
 // Context to share popover state between components
@@ -36,6 +37,7 @@ export const Popover: React.FC<PopoverProps> = ({
   closeOnEscape = true,
   id,
   children,
+  glass,
 }) => {
   const {
     isOpen,
@@ -69,14 +71,38 @@ export const Popover: React.FC<PopoverProps> = ({
         createPortal(
           <div
             ref={popoverRef}
-            className={`c-popover c-popover--${currentPosition} ${isOpen ? POPOVER.CLASSES.IS_OPEN : ''} ${className}`}
+            className={`c-popover c-popover--${currentPosition} ${isOpen ? POPOVER.CLASSES.IS_OPEN : ''} ${glass ? 'c-popover--glass' : ''} ${className}`}
             id={popoverId}
             role="tooltip"
             aria-hidden={!isOpen}
           >
-            <div className="c-popover__content">
-              <div className="c-popover__content-inner">{content}</div>
-            </div>
+            {glass ? (
+              // Default glass settings for popovers
+              (() => {
+                const defaultGlassProps = {
+                  displacementScale: 50,
+                  blurAmount: 1,
+                  saturation: 160,
+                  aberrationIntensity: 0.5,
+                  cornerRadius: 8,
+                  mode: 'shader' as const,
+                };
+
+                const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+                return (
+                  <AtomixGlass {...glassProps}>
+                    <div className="c-popover__content">
+                      <div className="c-popover__content-inner">{content}</div>
+                    </div>
+                  </AtomixGlass>
+                );
+              })()
+            ) : (
+              <div className="c-popover__content">
+                <div className="c-popover__content-inner">{content}</div>
+              </div>
+            )}
             <div ref={arrowRef} className="c-popover__arrow"></div>
           </div>,
           document.body

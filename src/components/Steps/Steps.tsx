@@ -1,5 +1,7 @@
 import React, { useEffect, useState, ReactNode } from 'react';
 import { STEPS } from '../../lib/constants/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import { AtomixGlassProps } from '../../lib/types/components';
 
 export interface StepItem {
   /**
@@ -43,6 +45,12 @@ export interface StepsProps {
    * Additional CSS class
    */
   className?: string;
+
+  /**
+   * Glass morphism effect for the steps component
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -54,6 +62,7 @@ export const Steps: React.FC<StepsProps> = ({
   vertical = false,
   onStepChange,
   className = '',
+  glass,
 }) => {
   const [currentStep, setCurrentStep] = useState(activeIndex);
 
@@ -86,7 +95,7 @@ export const Steps: React.FC<StepsProps> = ({
     }
   };
 
-  return (
+  const stepsContent = (
     <div
       className={`c-steps ${vertical ? STEPS.CLASSES.VERTICAL : ''} ${className}`}
       role="navigation"
@@ -108,6 +117,28 @@ export const Steps: React.FC<StepsProps> = ({
       ))}
     </div>
   );
+
+  if (glass) {
+    // Default glass settings for steps
+    const defaultGlassProps = {
+      displacementScale: 60,
+      blurAmount: 1,
+      saturation: 160,
+      aberrationIntensity: 0.5,
+      cornerRadius: 8,
+      mode: 'shader' as const,
+    };
+
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+    return (
+      <AtomixGlass {...glassProps}>
+        {stepsContent}
+      </AtomixGlass>
+    );
+  }
+
+  return stepsContent;
 };
 
 Steps.displayName = 'Steps';

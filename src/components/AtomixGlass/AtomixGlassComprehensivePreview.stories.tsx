@@ -299,7 +299,7 @@ export const ComprehensiveShowcase: Story = {
     );
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [settings, setSettings] = useState({
-      displacementScale: 120,
+      displacementScale: 15,
       blurAmount: 0,
       saturation: 140,
       aberrationIntensity: 2,

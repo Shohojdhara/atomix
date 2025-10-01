@@ -47,12 +47,10 @@ const GlassFilter: React.FC<{
   id: string;
   displacementScale: number;
   aberrationIntensity: number;
-  width: number;
-  height: number;
   mode: 'standard' | 'polar' | 'prominent' | 'shader';
   shaderMapUrl?: string;
-}> = ({ id, displacementScale, aberrationIntensity, width, height, mode, shaderMapUrl }) => (
-  <svg style={{ position: 'absolute', width, height, inset: 0 }} aria-hidden="true">
+}> = ({ id, displacementScale, aberrationIntensity, mode, shaderMapUrl }) => (
+  <svg style={{ position: 'absolute', width: '100%', height: '100%', inset: 0 }} aria-hidden="true">
     <defs>
       <radialGradient id={`${id}-edge-mask`} cx="50%" cy="50%" r="50%">
         <stop offset="0%" stopColor="black" stopOpacity="0" />
@@ -111,7 +109,7 @@ const GlassFilter: React.FC<{
         <feDisplacementMap
           in="SourceGraphic"
           in2="DISPLACEMENT_MAP"
-          scale={displacementScale * ((mode === 'shader' ? 1 : -1) - aberrationIntensity * 0.05)}
+          scale={displacementScale * ((mode === 'shader' ? 1 : -1) - aberrationIntensity * 0.02)}
           xChannelSelector="R"
           yChannelSelector="B"
           result="GREEN_DISPLACED"
@@ -129,7 +127,7 @@ const GlassFilter: React.FC<{
         <feDisplacementMap
           in="SourceGraphic"
           in2="DISPLACEMENT_MAP"
-          scale={displacementScale * ((mode === 'shader' ? 1 : -1) - aberrationIntensity * 0.1)}
+          scale={displacementScale * ((mode === 'shader' ? 1 : -1) - aberrationIntensity * 0.03)}
           xChannelSelector="R"
           yChannelSelector="B"
           result="BLUE_DISPLACED"
@@ -197,6 +195,8 @@ const GlassContainer = forwardRef<
     onClick?: () => void;
     mode?: 'standard' | 'polar' | 'prominent' | 'shader';
     transform?: string;
+    effectiveDisableEffects?: boolean;
+    effectiveReducedMotion?: boolean;
   }>
 >(
   (
@@ -205,7 +205,7 @@ const GlassContainer = forwardRef<
       className = '',
       style,
       displacementScale = 25,
-      blurAmount = 12,
+      blurAmount = 0.0625,
       saturation = 180,
       aberrationIntensity = 2,
       mouseOffset = { x: 0, y: 0 },
@@ -224,6 +224,8 @@ const GlassContainer = forwardRef<
       onClick,
       mode = 'standard',
       transform = 'none',
+      effectiveDisableEffects = false,
+      effectiveReducedMotion = false,
     },
     ref
   ) => {
@@ -346,11 +348,9 @@ const GlassContainer = forwardRef<
             padding,
             borderRadius: `${cornerRadius}px`,
             transition: 'all 0.2s ease-out',
-            boxShadow: overLight
-              ? '0px 16px 70px rgba(0, 0, 0, 0.75)'
-              : '0px 12px 40px rgba(0, 0, 0, 0.25)',
+    
           }}
-          onMouseEnter={onMouseEnter}
+         onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
@@ -360,8 +360,6 @@ const GlassContainer = forwardRef<
             id={filterId}
             displacementScale={displacementScale}
             aberrationIntensity={aberrationIntensity}
-            width={glassSize.width}
-            height={glassSize.height}
             shaderMapUrl={shaderMapUrl}
           />
           <span
@@ -374,6 +372,23 @@ const GlassContainer = forwardRef<
                 inset: '0',
               } as CSSProperties
             }
+          />
+
+          {/* Apple Liquid Glass Inner Shadow Layer */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: '1px',
+              borderRadius: `${cornerRadius}px`,
+              pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
+              zIndex: 20,
+              boxShadow: [
+                '0 0 20px rgba(0, 0, 0, 0.15) inset',
+                '0 4px 8px rgba(0, 0, 0, 0.08) inset',
+              ].join(', '),
+              opacity: effectiveDisableEffects ? 0 : 1,
+              transition: effectiveReducedMotion ? 'none' : 'opacity 0.2s ease-out',
+            }}
           />
 
           <div
@@ -436,10 +451,10 @@ interface AtomixGlassProps {
 
 export function AtomixGlass({
   children,
-  displacementScale = 70,
-  blurAmount = 0,
-  saturation = 140,
-  aberrationIntensity = 2,
+  displacementScale = 15,
+  blurAmount = 0.5,
+  saturation = 120,
+  aberrationIntensity = 1,
   elasticity = 0.15,
   cornerRadius = 20,
   globalMousePos: externalGlobalMousePos,
@@ -1022,7 +1037,6 @@ export function AtomixGlass({
       borderRadius: `${Math.max(0, cornerRadius)}px`,
       transform: baseStyle.transform,
       transition: effectiveReducedMotion ? 'none' : baseStyle.transition,
-      overflow: 'hidden',
       pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
       mixBlendMode: 'screen' as React.CSSProperties['mixBlendMode'],
       opacity: 0.2,
@@ -1243,6 +1257,8 @@ export function AtomixGlass({
         onClick={onClick}
         mode={effectiveDisableEffects ? 'standard' : mode}
         transform={baseStyle.transform}
+        effectiveDisableEffects={effectiveDisableEffects}
+        effectiveReducedMotion={effectiveReducedMotion}
       >
         {children}
       </GlassContainer>

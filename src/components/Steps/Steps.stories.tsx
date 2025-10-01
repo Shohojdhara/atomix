@@ -16,6 +16,10 @@ export default {
       control: { type: 'boolean' },
       defaultValue: false,
     },
+    glass: {
+      control: 'boolean',
+      description: 'Enable glass morphism effect',
+    },
   },
 } as Meta<typeof Steps>;
 
@@ -156,3 +160,118 @@ export const Interactive: StoryFn<typeof Steps> = () => (
     <InteractiveSteps />
   </div>
 );
+
+export const Glass = {
+  args: {
+    items: [
+      { number: 1, text: 'Glass Step 1' },
+      { number: 2, text: 'Glass Step 2' },
+      { number: 3, text: 'Glass Step 3' },
+      { number: 4, text: 'Glass Step 4' },
+      { number: 5, text: 'Glass Step 5' },
+    ],
+    activeIndex: 1,
+    vertical: false,
+    glass: true,
+  },
+  render: (args) => (
+    <div
+      style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        padding: '2rem',
+        borderRadius: '12px',
+        minHeight: '300px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div style={{ width: '100%', maxWidth: '800px' }}>
+        <Steps {...args} />
+      </div>
+    </div>
+  ),
+};
+
+export const GlassVertical = {
+  args: {
+    items: [
+      { number: 1, text: 'Glass Step 1' },
+      { number: 2, text: 'Glass Step 2' },
+      { number: 3, text: 'Glass Step 3' },
+      { number: 4, text: 'Glass Step 4' },
+      { number: 5, text: 'Glass Step 5' },
+    ],
+    activeIndex: 1,
+    vertical: true,
+    glass: true,
+  },
+  render: (args) => (
+    <div
+      style={{
+        background: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '2rem',
+        borderRadius: '12px',
+        minHeight: '500px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div style={{ width: '100%', maxWidth: '400px' }}>
+        <Steps {...args} />
+      </div>
+    </div>
+  ),
+};
+
+export const GlassCustom = {
+  args: {
+    items: [
+      { number: 1, text: 'Custom Glass Step 1' },
+      { number: 2, text: 'Custom Glass Step 2' },
+      { number: 3, text: 'Custom Glass Step 3' },
+      { number: 4, text: 'Custom Glass Step 4' },
+      { number: 5, text: 'Custom Glass Step 5' },
+    ],
+    activeIndex: 1,
+    vertical: false,
+    glass: {
+      displacementScale: 80,
+      blurAmount: 2,
+      saturation: 200,
+      aberrationIntensity: 0.8,
+      cornerRadius: 12,
+    },
+  },
+  render: (args) => (
+    <div
+      style={{
+        background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57)',
+        backgroundSize: '400% 400%',
+        animation: 'gradient 15s ease infinite',
+        padding: '2rem',
+        borderRadius: '12px',
+        minHeight: '400px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <style>
+        {`
+          @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+        `}
+      </style>
+      <div style={{ width: '100%', maxWidth: '800px' }}>
+        <Steps {...args} />
+      </div>
+    </div>
+  ),
+};

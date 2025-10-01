@@ -84,7 +84,7 @@
   &__menu-wrapper {
     position: absolute;
     left: 0;
-    z-index: 99;
+    // z-index: 99;
     display: flex;
     opacity: 0;
     visibility: hidden;
@@ -177,10 +177,16 @@
     padding: var(--#{$prefix}dropdown-padding-y) var(--#{$prefix}dropdown-padding-x);
     list-style: none;
     @include mb(0);
+        border: 1px solid rgba(255, 255, 255, 0.08);
     @include dynamic-background(var(--#{$prefix}dropdown-bg));
     border-radius: var(--#{$prefix}dropdown-border-radius);
     box-shadow: var(--#{$prefix}dropdown-box-shadow);
     overflow: hidden;
+
+    &--glass {
+      @include dynamic-background(var(--#{$prefix}dropdown-bg), $background-transparency-enable: true);
+      box-shadow: var(--#{$prefix}dropdown-box-shadow);
+    }
   }
 
   &__menu-item {

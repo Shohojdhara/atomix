@@ -3,6 +3,7 @@ import { THEME_COLORS, SIZES, RATING } from '../../lib/constants/components';
 import { useRating } from '../../lib/composables/useRating';
 import type { RatingProps } from '../../lib/types/components';
 import useForkRef from '../../lib/utils/useForkRef';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 /**
  * Rating component for displaying and collecting star ratings
@@ -34,6 +35,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
       label,
       id,
       useVanillaJS = false,
+      glass,
       ...restProps
     },
     ref
@@ -262,7 +264,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
       return stars;
     };
 
-    return (
+    const ratingContent = (
       <div
         className={ratingClasses}
         ref={useForkRef(internalRef, ref)}
@@ -276,6 +278,28 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
         {renderStars()}
       </div>
     );
+
+    if (glass) {
+      // Default glass settings for ratings
+      const defaultGlassProps = {
+        displacementScale: 60,
+        blurAmount: 1,
+        saturation: 160,
+        aberrationIntensity: 0.5,
+        cornerRadius: 8,
+        mode: 'shader' as const,
+      };
+
+      const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+      return (
+        <AtomixGlass {...glassProps}>
+          {ratingContent}
+        </AtomixGlass>
+      );
+    }
+
+    return ratingContent;
   }
 );
 

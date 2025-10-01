@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { TOGGLE } from '../../lib/constants/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import { AtomixGlassProps } from '../../lib/types/components';
 
 export interface ToggleProps {
   /**
@@ -26,6 +28,12 @@ export interface ToggleProps {
    * Additional CSS class for the toggle
    */
   className?: string;
+
+  /**
+   * Glass morphism effect for the toggle
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -37,6 +45,7 @@ export const Toggle: React.FC<ToggleProps> = ({
   onToggleOff,
   disabled = false,
   className = '',
+  glass,
 }) => {
   const [isOn, setIsOn] = useState(initialOn);
 
@@ -64,7 +73,7 @@ export const Toggle: React.FC<ToggleProps> = ({
     }
   };
 
-  return (
+  const toggleContent = (
     <div
       className={`c-toggle ${isOn ? TOGGLE.CLASSES.IS_ON : ''} ${disabled ? 'is-disabled' : ''} ${className}`}
       onClick={handleClick}
@@ -77,6 +86,28 @@ export const Toggle: React.FC<ToggleProps> = ({
       <div className="c-toggle__switch"></div>
     </div>
   );
+
+  if (glass) {
+    // Default glass settings for toggles
+    const defaultGlassProps = {
+      displacementScale: 60,
+      blurAmount: 1,
+      saturation: 160,
+      aberrationIntensity: 0.5,
+      cornerRadius: 8,
+      mode: 'shader' as const,
+    };
+
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+    return (
+      <AtomixGlass {...glassProps}>
+        {toggleContent}
+      </AtomixGlass>
+    );
+  }
+
+  return toggleContent;
 };
 
 Toggle.displayName = 'Toggle';

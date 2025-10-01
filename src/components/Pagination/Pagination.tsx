@@ -3,6 +3,7 @@ import { PaginationProps } from '../../lib/types/components';
 import { usePagination, DOTS } from '../../lib/composables/usePagination';
 import { PAGINATION_DEFAULTS } from '../../lib/constants/components';
 import { Icon, IconProps } from '../Icon/Icon';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 // @TODO: Add Search functionality for pagination
 
@@ -61,6 +62,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   size = PAGINATION_DEFAULTS.size,
   className = '',
   ariaLabel = 'Pagination',
+  glass,
 }) => {
   const { paginationRange, goToPage, nextPage, prevPage, firstPage, lastPage } = usePagination({
     currentPage,
@@ -74,7 +76,7 @@ export const Pagination: React.FC<PaginationProps> = ({
     return null;
   }
 
-  return (
+  const paginationContent = (
     <nav className={`c-pagination c-pagination--${size} ${className}`} aria-label={ariaLabel}>
       <ul className="c-pagination__items">
         {showFirstLastButtons && (
@@ -153,6 +155,28 @@ export const Pagination: React.FC<PaginationProps> = ({
       </ul>
     </nav>
   );
+
+  if (glass) {
+    // Default glass settings for pagination
+    const defaultGlassProps = {
+      displacementScale: 60,
+      blurAmount: 1,
+      saturation: 160,
+      aberrationIntensity: 0.5,
+      cornerRadius: 8,
+      mode: 'shader' as const,
+    };
+
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+    return (
+      <AtomixGlass {...glassProps}>
+        {paginationContent}
+      </AtomixGlass>
+    );
+  }
+
+  return paginationContent;
 };
 
 export type { PaginationProps };

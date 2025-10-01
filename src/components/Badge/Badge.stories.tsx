@@ -30,6 +30,10 @@ const meta = {
       control: 'text',
       description: 'Optional icon element to display in the badge',
     },
+    glass: {
+      control: 'boolean',
+      description: 'Enable glass morphism effect',
+    },
   },
 } satisfies Meta<typeof Badge>;
 
@@ -368,4 +372,169 @@ export const ThemeAwareBadges: Story = {
       </div>
     </div>
   ),
+};
+
+// Glass Variants
+export const GlassPrimary: Story = {
+  args: {
+    label: 'Glass Primary',
+    variant: 'primary',
+    size: 'md',
+    glass: true,
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        background: 'url(https://cdn.pixabay.com/photo/2021/06/14/22/46/milky-way-6337038_1280.jpg)', 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '10rem 25rem',
+        borderRadius: '8px'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const GlassSecondary: Story = {
+  args: {
+    label: 'Glass Secondary',
+    variant: 'secondary',
+    size: 'md',
+    glass: true,
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        background: 'url(https://cdn.pixabay.com/photo/2021/11/11/17/03/insect-6786728_1280.jpg)', 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '10rem 25rem',
+        borderRadius: '8px'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const GlassSuccess: Story = {
+  args: {
+    label: 'Glass Success',
+    variant: 'success',
+    size: 'md',
+    glass: true,
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        background: 'url(https://cdn.pixabay.com/photo/2025/07/29/15/55/mantis-9742906_1280.jpg)', 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '10rem 25rem',
+        borderRadius: '8px'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const GlassWithIcon: Story = {
+  args: {
+    label: 'Glass with Icon',
+    variant: 'primary',
+    size: 'md',
+    icon: <Icon />,
+    glass: true,
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        background: 'url(https://cdn.pixabay.com/photo/2023/07/07/20/42/grasshopper-8113345_1280.jpg)', 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '10rem 25rem',
+        borderRadius: '8px'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const GlassAllVariants: Story = {
+  args: {
+    label: 'Glass Badge',
+    variant: 'primary',
+    glass: true,
+  },
+  render: () => (
+    <div style={{ 
+      background: 'url(https://cdn.pixabay.com/photo/2023/07/07/20/42/grasshopper-8113345_1280.jpg)', 
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      padding: '10rem 25rem',
+      borderRadius: '8px'
+    }}>
+      <div className="u-d-flex u-flex-wrap u-gap-2">
+        {THEME_COLORS.map(color => (
+          <Badge key={color} label={color} variant={color} glass={true} />
+        ))}
+      </div>
+    </div>
+  ),
+};
+
+export const GlassAllSizes: Story = {
+  args: {
+    label: 'Glass Badge',
+    variant: 'primary',
+    glass: true,
+  },
+  render: () => (
+    <div style={{ 
+      background: 'url(https://cdn.pixabay.com/photo/2025/07/18/15/17/grasshopper-9721629_1280.jpg)', 
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      padding: '10rem 25rem',
+      borderRadius: '8px'
+    }}>
+      <div className="u-d-flex u-align-items-center u-gap-2">
+        <Badge label="Small" variant="primary" size="sm" glass={true} />
+        <Badge label="Medium" variant="primary" size="md" glass={true} />
+        <Badge label="Large" variant="primary" size="lg" glass={{cornerRadius: 14}} />
+      </div>
+    </div>
+  ),
+};
+
+export const GlassCustomSettings: Story = {
+  args: {
+    label: 'Custom Glass',
+    variant: 'primary',
+    size: 'md',
+    glass: {
+      displacementScale: 80,
+      blurAmount: 2,
+      saturation: 200,
+      aberrationIntensity: 1,
+      cornerRadius: 16,
+      mode: 'polar',
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ 
+        background: 'url(https://cdn.pixabay.com/photo/2021/06/14/22/46/milky-way-6337038_1280.jpg)', 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '10rem 25rem',
+        borderRadius: '8px'
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
 };

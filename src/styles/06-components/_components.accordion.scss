@@ -112,4 +112,20 @@
     --#{config.$prefix}accordion-body-color: var(--#{config.$prefix}accordion-disable-color);
     --#{config.$prefix}accordion-icon-color: var(--#{config.$prefix}accordion-disable-color);
   }
+
+  &--glass {
+    border-color: transparent;
+    #{$root}__header {
+      @include dynamic-background(
+        var(--#{config.$prefix}accordion-header-bg),
+        $background-transparency-enable: true
+      );
+    }
+    #{$root}__body {
+      @include dynamic-background(
+        var(--#{config.$prefix}accordion-header-bg),
+        $background-transparency-enable: true
+      );
+    }
+  }
 }
