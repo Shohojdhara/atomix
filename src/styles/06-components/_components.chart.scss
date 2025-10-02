@@ -2021,7 +2021,7 @@
 
 // Focus management for keyboard navigation
 .c-chart:focus-within {
-  &__data-point:focus {
+  .c-chart__data-point:focus {
     outline: 2px solid var(--#{$prefix}primary-6);
     outline-offset: 2px;
     z-index: 10;
