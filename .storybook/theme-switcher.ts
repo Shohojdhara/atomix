@@ -7,9 +7,7 @@ import React from 'react';
 const themes = [
   { name: 'Shaj', class: 'shaj-default', color: '#3b82f6' },
   { name: 'BoomDevs', class: 'boomdevs', color: '#8b5cf6' },
-  { name: 'Esrar', class: 'esrar', color: '#10b981' },
   { name: 'Mashroom', class: 'mashroom', color: '#f59e0b' },
-  { name: 'Yabai', class: 'yabai', color: '#ef4444' },
 ];
 
 interface ThemeSwitcherProps {

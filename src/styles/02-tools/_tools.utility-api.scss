@@ -27,6 +27,7 @@ $utility-defaults: (
 // Core function to generate utility classes
 @mixin generate-utility($utility, $infix: '', $is-rfs: false) {
   $values: map.get($utility, values);
+  $css-var: map.get($utility, css-var);
 
   // If the values are a list or string, convert it to a map
   @if meta.type-of($values) == 'string' or meta.type-of($values) == 'list' {
@@ -36,44 +37,64 @@ $utility-defaults: (
   @each $key, $value in $values {
     $properties: map.get($utility, property);
     $property-class: map.get($utility, class);
-    $property-class: if($property-class, $property-class, list.nth($properties, 1));
-
-    // Handle decimal key case for spacing, only for numbers (integers or floats)
-    @if meta.type-of($key) == 'number' and $key % 1 != 0 {
-      $key: round($key); // Round to the nearest integer
+    
+    // Handle case where property-class is null
+    @if $property-class == null and $properties {
+      $property-class: if(
+        meta.type-of($properties) == 'list',
+        list.nth($properties, 1),
+        $properties
+      );
     }
 
-    // Multiple properties are possible, like with borders or shadows
-    $property-class: if(
-                    meta.type-of($property-class) == 'list',
-                    list.nth($property-class, 1),
-                    $property-class
-    );
-
     // State variants (hover, focus, active, etc.)
+    // Create a local copy of infix to avoid affecting other utilities
+    $local-infix: $infix;
     $state: map.get($utility, state);
-    $infix: if($state, if(meta.type-of($state) == 'string', '#{$state}#{$infix}', $infix), $infix);
+    $local-infix: if($state, if(meta.type-of($state) == 'string', '#{$state}#{$local-infix}', $local-infix), $local-infix);
 
-    // Don't prefix if value key is null (e.g. with shadow-none utility)
-    // Escape key to ensure valid CSS selector (e.g. 1.5 -> 1\.5)
+    // Escape special characters in key for valid CSS class names
     $escaped-key: if($key, _escape-key($key), null);
-
-    $class-name: if(
-      $escaped-key,
-      '#{$property-class}-#{$escaped-key}#{$infix}',
-      '#{$property-class}#{$infix}'
-    );
-
+    
     @if map.get($utility, class) == null {
+      // Generate class with property name as class
+      $class-name: if($key, '#{$property-class}-#{$escaped-key}#{$local-infix}', '#{$property-class}#{$local-infix}');
+      
       .#{$class-name} {
-        @each $property in $properties {
-          #{$property}: $value if(map.get($utility, rtl), null, !important);
+        @if $css-var {
+          // Handle CSS variable generation
+          $css-variable-name: str-replace(#{$property-class}, '.', '\\.');
+          --atomix-u-#{$css-variable-name}: #{$value};
+        } @else if $properties {
+          @each $property in $properties {
+            #{$property}: $value if(map.get($utility, rtl), null, !important);
+          }
+        } @else {
+          #{$property-class}: $value if(map.get($utility, rtl), null, !important);
         }
       }
     } @else {
-      .#{map.get($utility, class)}#{$infix}#{if($escaped-key, '-#{$escaped-key}', '')} {
-        @each $property in $properties {
-          #{$property}: $value if(map.get($utility, rtl), null, !important);
+      // Generate class with custom class name
+      $base-class: map.get($utility, class);
+      $modifier: if($key, '-#{$escaped-key}', '');
+      
+      .#{$base-class}#{$local-infix}#{$modifier} {
+        @if $css-var and $properties {
+          // Handle CSS variable generation with properties
+          @each $property in $properties {
+            $css-variable-name: str-replace(#{$property}, '.', '\\.');
+            --atomix-u-#{$css-variable-name}: #{$value};
+          }
+        } @else if $css-var {
+          // Handle CSS variable generation without properties
+          $css-variable-name: str-replace(#{$base-class}, '.', '\\.');
+          --atomix-u-#{$css-variable-name}#{$modifier}: #{$value};
+        } @else if $properties {
+          @each $property in $properties {
+            #{$property}: $value if(map.get($utility, rtl), null, !important);
+          }
+        } @else {
+          #{$base-class}: $value if(map.get($utility, rtl), null, !important);
         }
       }
     }
@@ -122,6 +143,8 @@ $utility-defaults: (
               class: map.get($config, class),
               state: map.get($config, state),
               rtl: map.get($config, rtl),
+              css-var: map.get($config, css-var),
+              local-vars: map.get($config, local-vars),
       );
 
       @include generate-responsive-utilities(
@@ -168,4 +191,16 @@ $utility-defaults: (
   }
 
   @return $result;
+}
+
+// Helper function to replace strings
+@function str-replace($string, $search, $replace: '') {
+  $index: string.index($string, $search);
+  
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + 
+      str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+  
+  @return $string;
 }

@@ -8,9 +8,6 @@ const themes = [
   { name: 'Atomix', class: 'atomix', color: '#000000' },
   { name: 'Shaj', class: 'shaj-default', color: '#3b82f6' },
   { name: 'BoomDevs', class: 'boomdevs', color: '#8b5cf6' },
-  { name: 'Esrar', class: 'esrar', color: '#10b981' },
-  { name: 'Mashroom', class: 'mashroom', color: '#f59e0b' },
-  { name: 'Yabai', class: 'yabai', color: '#ef4444' },
   { name: 'None', class: 'none', color: '#ef4444' },
 ];
 
