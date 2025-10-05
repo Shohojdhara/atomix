@@ -11,7 +11,81 @@ import {
 import { ShaderDisplacementGenerator, fragmentShaders } from './shader-utils';
 import { displacementMap, polarDisplacementMap, prominentDisplacementMap } from './utils';
 
-const generateShaderDisplacementMap = (width: number, height: number): string => {
+// Types
+type DisplacementMode = 'standard' | 'polar' | 'prominent' | 'shader';
+type MousePosition = { x: number; y: number };
+type GlassSize = { width: number; height: number };
+type OverLightConfig =
+  | boolean
+  | 'auto'
+  | { threshold?: number; opacity?: number; contrast?: number };
+type OverLightObjectConfig = { threshold?: number; opacity?: number; contrast?: number };
+
+// Constants
+const ACTIVATION_ZONE = 200;
+const MIN_BLUR = 0.1;
+const MOUSE_INFLUENCE_DIVISOR = 100;
+const EDGE_FADE_PIXELS = 2;
+
+// Helper functions with validation
+const calculateDistance = (pos1: MousePosition, pos2: MousePosition): number => {
+  if (
+    !pos1 ||
+    !pos2 ||
+    typeof pos1.x !== 'number' ||
+    typeof pos1.y !== 'number' ||
+    typeof pos2.x !== 'number' ||
+    typeof pos2.y !== 'number'
+  ) {
+    return 0;
+  }
+  const deltaX = pos1.x - pos2.x;
+  const deltaY = pos1.y - pos2.y;
+  return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+};
+
+const calculateElementCenter = (rect: DOMRect | null): MousePosition => {
+  if (!rect) {
+    return { x: 0, y: 0 };
+  }
+  return {
+    x: rect.left + rect.width / 2,
+    y: rect.top + rect.height / 2,
+  };
+};
+
+const calculateMouseInfluence = (mouseOffset: MousePosition): number => {
+  if (!mouseOffset || typeof mouseOffset.x !== 'number' || typeof mouseOffset.y !== 'number') {
+    return 0;
+  }
+  return (
+    Math.sqrt(mouseOffset.x * mouseOffset.x + mouseOffset.y * mouseOffset.y) /
+    MOUSE_INFLUENCE_DIVISOR
+  );
+};
+
+const clampBlur = (value: number): number => {
+  if (typeof value !== 'number' || isNaN(value)) {
+    return MIN_BLUR;
+  }
+  return Math.max(MIN_BLUR, value);
+};
+
+const validateGlassSize = (size: GlassSize): boolean => {
+  return (
+    size &&
+    typeof size.width === 'number' &&
+    typeof size.height === 'number' &&
+    size.width > 0 &&
+    size.height > 0
+  );
+};
+
+const generateShaderDisplacementMap = (
+  width: number,
+  height: number,
+  mousePosition?: MousePosition
+): string => {
   try {
     const generator = new ShaderDisplacementGenerator({
       width,
@@ -19,16 +93,17 @@ const generateShaderDisplacementMap = (width: number, height: number): string =>
       fragment: fragmentShaders.liquidGlass,
     });
 
-    const dataUrl = generator.updateShader();
+    const dataUrl = generator.updateShader(mousePosition);
     generator.destroy();
 
     return dataUrl;
   } catch (error) {
+    console.warn('AtomixGlass: Failed to generate shader displacement map:', error);
     return displacementMap;
   }
 };
 
-const getMap = (mode: 'standard' | 'polar' | 'prominent' | 'shader', shaderMapUrl?: string) => {
+const getDisplacementMap = (mode: DisplacementMode, shaderMapUrl?: string): string => {
   switch (mode) {
     case 'standard':
       return displacementMap;
@@ -39,17 +114,26 @@ const getMap = (mode: 'standard' | 'polar' | 'prominent' | 'shader', shaderMapUr
     case 'shader':
       return shaderMapUrl || displacementMap;
     default:
-      throw new Error(`Invalid mode: ${mode}`);
+      console.warn(`AtomixGlass: Invalid displacement mode: ${mode}`);
+      return displacementMap;
   }
 };
 
-const GlassFilter: React.FC<{
+interface GlassFilterProps {
   id: string;
   displacementScale: number;
   aberrationIntensity: number;
-  mode: 'standard' | 'polar' | 'prominent' | 'shader';
+  mode: DisplacementMode;
   shaderMapUrl?: string;
-}> = ({ id, displacementScale, aberrationIntensity, mode, shaderMapUrl }) => (
+}
+
+const GlassFilter: React.FC<GlassFilterProps> = ({
+  id,
+  displacementScale,
+  aberrationIntensity,
+  mode,
+  shaderMapUrl,
+}) => (
   <svg style={{ position: 'absolute', width: '100%', height: '100%', inset: 0 }} aria-hidden="true">
     <defs>
       <radialGradient id={`${id}-edge-mask`} cx="50%" cy="50%" r="50%">
@@ -69,7 +153,7 @@ const GlassFilter: React.FC<{
           width="100%"
           height="100%"
           result="DISPLACEMENT_MAP"
-          href={getMap(mode, shaderMapUrl)}
+          href={getDisplacementMap(mode, shaderMapUrl)}
           preserveAspectRatio="xMidYMid slice"
         />
 
@@ -169,36 +253,35 @@ const GlassFilter: React.FC<{
   </svg>
 );
 
-const GlassContainer = forwardRef<
-  HTMLDivElement,
-  React.PropsWithChildren<{
-    className?: string;
-    style?: React.CSSProperties;
-    displacementScale?: number;
-    blurAmount?: number;
-    saturation?: number;
-    aberrationIntensity?: number;
-    mouseOffset?: { x: number; y: number };
-    globalMousePos?: { x: number; y: number };
-    onMouseLeave?: () => void;
-    onMouseEnter?: () => void;
-    onMouseDown?: () => void;
-    onMouseUp?: () => void;
-    active?: boolean;
-    isHovered?: boolean;
-    isActive?: boolean;
-    overLight?: boolean;
-    cornerRadius?: number;
-    padding?: string;
-    glassSize?: { width: number; height: number };
+interface GlassContainerProps {
+  className?: string;
+  style?: React.CSSProperties;
+  displacementScale?: number;
+  blurAmount?: number;
+  saturation?: number;
+  aberrationIntensity?: number;
+  mouseOffset?: MousePosition;
+  globalMousePosition?: MousePosition;
+  onMouseLeave?: () => void;
+  onMouseEnter?: () => void;
+  onMouseDown?: () => void;
+  onMouseUp?: () => void;
+  active?: boolean;
+  isHovered?: boolean;
+  isActive?: boolean;
+  overLight?: boolean;
+  cornerRadius?: number;
+  padding?: string;
+  glassSize?: GlassSize;
+  onClick?: () => void;
+  mode?: DisplacementMode;
+  transform?: string;
+  effectiveDisableEffects?: boolean;
+  effectiveReducedMotion?: boolean;
+  children?: React.ReactNode;
+}
 
-    onClick?: () => void;
-    mode?: 'standard' | 'polar' | 'prominent' | 'shader';
-    transform?: string;
-    effectiveDisableEffects?: boolean;
-    effectiveReducedMotion?: boolean;
-  }>
->(
+const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
   (
     {
       children,
@@ -209,7 +292,7 @@ const GlassContainer = forwardRef<
       saturation = 180,
       aberrationIntensity = 2,
       mouseOffset = { x: 0, y: 0 },
-      globalMousePos = { x: 0, y: 0 },
+      globalMousePosition = { x: 0, y: 0 },
       onMouseEnter,
       onMouseLeave,
       onMouseDown,
@@ -232,16 +315,11 @@ const GlassContainer = forwardRef<
     const filterId = useId();
     const [shaderMapUrl, setShaderMapUrl] = useState<string>('');
 
-    const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
-
+    // Generate initial shader map when mode/size changes
     useEffect(() => {
       if (mode === 'shader' && glassSize.width > 0 && glassSize.height > 0) {
-        try {
-          const url = generateShaderDisplacementMap(glassSize.width, glassSize.height);
-          setShaderMapUrl(url);
-        } catch (error) {
-          console.warn('Failed to generate shader displacement map:', error);
-        }
+        const url = generateShaderDisplacementMap(glassSize.width, glassSize.height);
+        setShaderMapUrl(url);
       }
     }, [mode, glassSize.width, glassSize.height]);
 
@@ -252,56 +330,43 @@ const GlassContainer = forwardRef<
       if (!element) return;
 
       const timeoutId = setTimeout(() => {
-        try {
-          element.offsetHeight;
-        } catch (error) {
-          console.warn('AtomixGlass: Error in GlassContainer size sync:', error);
-        }
+        // Force reflow to ensure proper sizing
+        element.offsetHeight;
       }, 0);
 
       return () => clearTimeout(timeoutId);
     }, [cornerRadius, glassSize.width, glassSize.height]);
 
     const liquidBlur = useMemo(() => {
-      if (!ref || !globalMousePos.x || !globalMousePos.y) {
-        return {
-          baseBlur: blurAmount,
-          edgeBlur: blurAmount * 0.5,
-          centerBlur: blurAmount * 0.2,
-          flowBlur: blurAmount * 0.3,
-        };
+      const defaultBlur = {
+        baseBlur: blurAmount,
+        edgeBlur: blurAmount * 0.3,
+        centerBlur: blurAmount * 0.1,
+        flowBlur: blurAmount * 0.2,
+      };
+
+      if (!ref || !globalMousePosition.x || !globalMousePosition.y) {
+        return defaultBlur;
       }
 
       const rect = (ref as React.RefObject<HTMLDivElement>).current?.getBoundingClientRect();
       if (!rect) {
-        return {
-          baseBlur: blurAmount,
-          edgeBlur: blurAmount * 0.5,
-          centerBlur: blurAmount * 0.2,
-          flowBlur: blurAmount * 0.3,
-        };
+        return defaultBlur;
       }
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
 
-      const deltaX = globalMousePos.x - centerX;
-      const deltaY = globalMousePos.y - centerY;
-      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
+      const center = calculateElementCenter(rect);
+      const distance = calculateDistance(globalMousePosition, center);
       const maxDistance = Math.sqrt(rect.width * rect.width + rect.height * rect.height) / 2;
       const normalizedDistance = Math.min(distance / maxDistance, 1);
-
-      const mouseInfluence =
-        Math.sqrt(mouseOffset.x * mouseOffset.x + mouseOffset.y * mouseOffset.y) / 100;
+      const mouseInfluence = calculateMouseInfluence(mouseOffset);
 
       const baseBlur = blurAmount + mouseInfluence * blurAmount * 0.4;
-
       const edgeIntensity = normalizedDistance * 1.5 + mouseInfluence * 0.3;
       const edgeBlur = baseBlur * (0.8 + edgeIntensity * 0.6);
-
       const centerIntensity = (1 - normalizedDistance) * 0.3 + mouseInfluence * 0.2;
       const centerBlur = baseBlur * (0.3 + centerIntensity * 0.4);
-
+      const deltaX = globalMousePosition.x - center.x;
+      const deltaY = globalMousePosition.y - center.y;
       const flowDirection = Math.atan2(deltaY, deltaX);
       const flowIntensity = Math.sin(flowDirection + mouseInfluence * Math.PI) * 0.5 + 0.5;
       const flowBlur = baseBlur * (0.4 + flowIntensity * 0.6);
@@ -311,20 +376,20 @@ const GlassContainer = forwardRef<
       const stateMultiplier = hoverMultiplier * activeMultiplier;
 
       return {
-        baseBlur: Math.max(0.1, baseBlur * stateMultiplier),
-        edgeBlur: Math.max(0.1, edgeBlur * stateMultiplier),
-        centerBlur: Math.max(0.1, centerBlur * stateMultiplier),
-        flowBlur: Math.max(0.1, flowBlur * stateMultiplier),
+        baseBlur: clampBlur(baseBlur * stateMultiplier),
+        edgeBlur: clampBlur(edgeBlur * stateMultiplier),
+        centerBlur: clampBlur(centerBlur * stateMultiplier),
+        flowBlur: clampBlur(flowBlur * stateMultiplier),
       };
-    }, [blurAmount, globalMousePos, mouseOffset, isHovered, isActive, ref]);
+    }, [blurAmount, globalMousePosition, mouseOffset, isHovered, isActive, ref]);
 
     const backdropStyle = useMemo(() => {
       const dynamicSaturation = saturation + liquidBlur.baseBlur * 20;
 
       const blurLayers = [
         `blur(${liquidBlur.baseBlur}px)`,
-        // `blur(${liquidBlur.edgeBlur}px)`,
-        // `blur(${liquidBlur.centerBlur}px)`,
+        `blur(${liquidBlur.edgeBlur}px)`,
+        `blur(${liquidBlur.centerBlur}px)`,
         `blur(${liquidBlur.flowBlur}px)`,
       ];
 
@@ -348,9 +413,8 @@ const GlassContainer = forwardRef<
             padding,
             borderRadius: `${cornerRadius}px`,
             transition: 'all 0.2s ease-out',
-    
           }}
-         onMouseEnter={onMouseEnter}
+          onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
@@ -374,7 +438,7 @@ const GlassContainer = forwardRef<
             }
           />
 
-          {/* Apple Liquid Glass Inner Shadow Layer */}
+          {/* Enhanced Apple Liquid Glass Inner Shadow Layer */}
           <div
             style={{
               position: 'absolute',
@@ -382,22 +446,37 @@ const GlassContainer = forwardRef<
               borderRadius: `${cornerRadius}px`,
               pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
               zIndex: 20,
-              boxShadow: [
-                '0 0 20px rgba(0, 0, 0, 0.15) inset',
-                '0 4px 8px rgba(0, 0, 0, 0.08) inset',
-              ].join(', '),
+              boxShadow: overLight
+                ? [
+                    `inset 0 1px 0 rgba(255, 255, 255, ${0.4 + (mouseOffset?.x || 0) * 0.002})`,
+                    `inset 0 -1px 0 rgba(0, 0, 0, ${0.2 + Math.abs(mouseOffset?.y || 0) * 0.001})`,
+                    `inset 0 0 20px rgba(0, 0, 0, ${0.08 + Math.abs((mouseOffset?.x || 0) + (mouseOffset?.y || 0)) * 0.001})`,
+                    `0 2px 12px rgba(0, 0, 0, ${0.12 + Math.abs(mouseOffset?.y || 0) * 0.002})`,
+                  ].join(', ')
+                : [
+                    '0 0 20px rgba(0, 0, 0, 0.15) inset',
+                    '0 4px 8px rgba(0, 0, 0, 0.08) inset',
+                  ].join(', '),
               opacity: effectiveDisableEffects ? 0 : 1,
-              transition: effectiveReducedMotion ? 'none' : 'opacity 0.2s ease-out',
+              transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
+              background: overLight
+                ? `linear-gradient(${180 + (mouseOffset?.x || 0) * 0.5}deg, 
+                    rgba(255, 255, 255, 0.1) 0%, 
+                    transparent 20%, 
+                    transparent 80%, 
+                    rgba(0, 0, 0, 0.05) 100%)`
+                : 'none',
             }}
           />
 
           <div
             style={{
               position: 'relative',
-              zIndex: 1,
+              zIndex: 4,
               textShadow: overLight
-                ? '0px 2px 12px rgba(0, 0, 0, 0)'
+                ? `0px 1px 3px rgba(0, 0, 0, 0.2), 0px 2px 8px rgba(0, 0, 0, 0.1)`
                 : '0px 2px 12px rgba(0, 0, 0, 0.4)',
+              // filter: overLight ? `brightness(${0.95}) contrast(${1.1})` : 'none',
             }}
           >
             {children}
@@ -418,51 +497,55 @@ interface AtomixGlassProps {
   aberrationIntensity?: number;
   elasticity?: number;
   cornerRadius?: number;
-  globalMousePos?: { x: number; y: number };
-  mouseOffset?: { x: number; y: number };
+  globalMousePosition?: MousePosition;
+  mouseOffset?: MousePosition;
   mouseContainer?: React.RefObject<HTMLElement | null> | null;
   className?: string;
   padding?: string;
   style?: React.CSSProperties;
-  overLight?: boolean;
-  mode?: 'standard' | 'polar' | 'prominent' | 'shader';
+  overLight?: OverLightConfig;
+  mode?: DisplacementMode;
   onClick?: () => void;
 
-  /**
-   * Accessibility props
-   */
+  // Accessibility props
   'aria-label'?: string;
   'aria-describedby'?: string;
   role?: string;
   tabIndex?: number;
 
-  /**
-   * Performance and accessibility options
-   */
+  // Performance and accessibility options
   reducedMotion?: boolean;
   highContrast?: boolean;
   disableEffects?: boolean;
 
-  /**
-   * Performance monitoring
-   */
+  // Performance monitoring
   enablePerformanceMonitoring?: boolean;
 }
 
+/**
+ * AtomixGlass - A high-performance glass morphism component with liquid distortion effects
+ *
+ * Features:
+ * - Hardware-accelerated glass effects with SVG filters
+ * - Mouse-responsive liquid distortion
+ * - Automatic light/dark theme detection
+ * - Accessibility and performance optimizations
+ * - Multiple displacement modes (standard, polar, prominent, shader)
+ */
 export function AtomixGlass({
   children,
-  displacementScale = 15,
-  blurAmount = 0.5,
-  saturation = 120,
-  aberrationIntensity = 1,
-  elasticity = 0.15,
-  cornerRadius = 20,
-  globalMousePos: externalGlobalMousePos,
+  displacementScale = 25,
+  blurAmount = 1.2,
+  saturation = 140,
+  aberrationIntensity = 2.5,
+  elasticity = 0.25,
+  cornerRadius = 16,
+  globalMousePosition: externalGlobalMousePosition,
   mouseOffset: externalMouseOffset,
   mouseContainer = null,
   className = '',
   padding = '0 0',
-  overLight = false,
+  overLight = 'auto',
   style = {},
   mode = 'standard',
   onClick,
@@ -481,14 +564,98 @@ export function AtomixGlass({
   const glassRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [glassSize, setGlassSize] = useState({ width: 270, height: 69 });
-  const [internalGlobalMousePos, setInternalGlobalMousePos] = useState({ x: 0, y: 0 });
-  const [internalMouseOffset, setInternalMouseOffset] = useState({ x: 0, y: 0 });
+  const [glassSize, setGlassSize] = useState<GlassSize>({ width: 270, height: 69 });
+  const [internalGlobalMousePosition, setInternalGlobalMousePosition] = useState<MousePosition>({
+    x: 0,
+    y: 0,
+  });
+  const [internalMouseOffset, setInternalMouseOffset] = useState<MousePosition>({ x: 0, y: 0 });
 
   const [userPrefersReducedMotion, setUserPrefersReducedMotion] = useState(false);
   const [userPrefersHighContrast, setUserPrefersHighContrast] = useState(false);
+  const [detectedOverLight, setDetectedOverLight] = useState(false);
+
+  // Memoized derived values for performance
+  const effectiveReducedMotion = useMemo(
+    () => reducedMotion || userPrefersReducedMotion,
+    [reducedMotion, userPrefersReducedMotion]
+  );
+  const effectiveHighContrast = useMemo(
+    () => highContrast || userPrefersHighContrast,
+    [highContrast, userPrefersHighContrast]
+  );
+  const effectiveDisableEffects = useMemo(
+    () => disableEffects || effectiveReducedMotion,
+    [disableEffects, effectiveReducedMotion]
+  );
 
   useEffect(() => {
+    // Enhanced auto-detect light background with multiple sampling points
+    if (overLight === 'auto' && glassRef.current) {
+      try {
+        const element = glassRef.current;
+        const rect = element.getBoundingClientRect();
+
+        let totalLuminance = 0;
+        let validSamples = 0;
+
+        // Check parent elements and computed styles
+        let currentElement = element.parentElement;
+        while (currentElement && validSamples < 3) {
+          const computedStyle = window.getComputedStyle(currentElement);
+          const bgColor = computedStyle.backgroundColor;
+
+          if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
+            const rgb = bgColor.match(/\d+/g);
+            if (rgb && rgb.length >= 3) {
+              const r = Number(rgb[0]) || 0;
+              const g = Number(rgb[1]) || 0;
+              const b = Number(rgb[2]) || 0;
+              const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+              totalLuminance += luminance;
+              validSamples++;
+            }
+          }
+          currentElement = currentElement.parentElement;
+        }
+
+        // Use canvas sampling as fallback for complex backgrounds
+        if (validSamples === 0 && typeof document !== 'undefined') {
+          try {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              canvas.width = 1;
+              canvas.height = 1;
+
+              // Sample the background at element position
+              const imageData = ctx.getImageData(0, 0, 1, 1);
+              const r = imageData.data[0] || 0;
+              const g = imageData.data[1] || 0;
+              const b = imageData.data[2] || 0;
+              const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+              totalLuminance = luminance;
+              validSamples = 1;
+            }
+          } catch (canvasError) {
+            // Canvas sampling failed, use default
+          }
+        }
+
+        if (validSamples > 0) {
+          const avgLuminance = totalLuminance / validSamples;
+          let threshold = 0.7;
+          if (typeof overLight === 'object' && overLight !== null && overLight !== 'auto') {
+            const objConfig = overLight as OverLightObjectConfig;
+            threshold = objConfig.threshold || 0.7;
+          }
+          setDetectedOverLight(avgLuminance > threshold);
+        }
+      } catch (error) {
+        console.warn('AtomixGlass: Error detecting background brightness:', error);
+      }
+    }
+
     if (typeof window.matchMedia !== 'function') {
       console.warn('AtomixGlass: matchMedia not supported, using default preferences');
       return;
@@ -531,12 +698,52 @@ export function AtomixGlass({
     }
   }, []);
 
-  const effectiveReducedMotion = reducedMotion || userPrefersReducedMotion;
-  const effectiveHighContrast = highContrast || userPrefersHighContrast;
-  const effectiveDisableEffects = disableEffects || effectiveReducedMotion;
+  // Derived values are now memoized above
 
-  const globalMousePos = externalGlobalMousePos || internalGlobalMousePos;
-  const mouseOffset = externalMouseOffset || internalMouseOffset;
+  const globalMousePosition = useMemo(
+    () => externalGlobalMousePosition || internalGlobalMousePosition,
+    [externalGlobalMousePosition, internalGlobalMousePosition]
+  );
+  const mouseOffset = useMemo(
+    () => externalMouseOffset || internalMouseOffset,
+    [externalMouseOffset, internalMouseOffset]
+  );
+
+  const getEffectiveOverLight = useCallback(() => {
+    if (typeof overLight === 'boolean') return overLight;
+    if (overLight === 'auto') return detectedOverLight;
+    return detectedOverLight;
+  }, [overLight, detectedOverLight]);
+
+  const overLightConfig = useMemo(() => {
+    const isOverLight = getEffectiveOverLight();
+    const mouseInfluence = calculateMouseInfluence(mouseOffset);
+    const hoverIntensity = isHovered ? 1.3 : 1;
+    const activeIntensity = isActive ? 1.5 : 1;
+
+    const baseConfig = {
+      isOverLight,
+      threshold: 0.7,
+      opacity: 0.4 * hoverIntensity * activeIntensity,
+      contrast: 1.3 + mouseInfluence * 0.2,
+      brightness: 0.9 + mouseInfluence * 0.1,
+      saturationBoost: 1.2 + mouseInfluence * 0.3,
+      shadowIntensity: 0.8 + mouseInfluence * 0.4,
+      borderOpacity: 0.6 + mouseInfluence * 0.2,
+    };
+
+    if (typeof overLight === 'object' && overLight !== null) {
+      const objConfig = overLight as OverLightObjectConfig;
+      return {
+        ...baseConfig,
+        threshold: objConfig.threshold || baseConfig.threshold,
+        opacity: (objConfig.opacity || 0.4) * hoverIntensity * activeIntensity,
+        contrast: (objConfig.contrast || 1.3) + mouseInfluence * 0.2,
+      };
+    }
+
+    return baseConfig;
+  }, [overLight, getEffectiveOverLight, mouseOffset, isHovered, isActive]);
 
   const mouseMoveThrottleRef = useRef<number | null>(null);
   const lastMouseEventRef = useRef<MouseEvent | null>(null);
@@ -559,43 +766,43 @@ export function AtomixGlass({
             return;
           }
 
-          try {
-            const startTime = enablePerformanceMonitoring ? performance.now() : 0;
+          const startTime = enablePerformanceMonitoring ? performance.now() : 0;
 
-            const rect = container.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-
-            setInternalMouseOffset({
-              x: ((event.clientX - centerX) / rect.width) * 100,
-              y: ((event.clientY - centerY) / rect.height) * 100,
-            });
-
-            setInternalGlobalMousePos({
-              x: event.clientX,
-              y: event.clientY,
-            });
-
-            if (enablePerformanceMonitoring) {
-              const endTime = performance.now();
-              const duration = endTime - startTime;
-              if (duration > 5) {
-                console.warn(`AtomixGlass: Mouse tracking took ${duration.toFixed(2)}ms`);
-              }
-            }
-          } catch (error) {
-            console.warn('AtomixGlass: Error in mouse tracking:', error);
-          } finally {
+          const rect = container.getBoundingClientRect();
+          if (rect.width === 0 || rect.height === 0) {
             mouseMoveThrottleRef.current = null;
+            return;
           }
+
+          const center = calculateElementCenter(rect);
+
+          setInternalMouseOffset({
+            x: ((event.clientX - center.x) / rect.width) * 100,
+            y: ((event.clientY - center.y) / rect.height) * 100,
+          });
+
+          setInternalGlobalMousePosition({
+            x: event.clientX,
+            y: event.clientY,
+          });
+
+          if (enablePerformanceMonitoring) {
+            const endTime = performance.now();
+            const duration = endTime - startTime;
+            if (duration > 5) {
+              console.warn(`AtomixGlass: Mouse tracking took ${duration.toFixed(2)}ms`);
+            }
+          }
+
+          mouseMoveThrottleRef.current = null;
         });
       }
     },
-    [mouseContainer]
+    [mouseContainer, enablePerformanceMonitoring]
   );
 
   useEffect(() => {
-    if (externalGlobalMousePos && externalMouseOffset) {
+    if (externalGlobalMousePosition && externalMouseOffset) {
       return;
     }
 
@@ -620,78 +827,82 @@ export function AtomixGlass({
   }, [
     handleMouseMove,
     mouseContainer,
-    externalGlobalMousePos,
+    externalGlobalMousePosition,
     externalMouseOffset,
     effectiveDisableEffects,
   ]);
 
   const calculateDirectionalScale = useCallback(() => {
-    if (!globalMousePos.x || !globalMousePos.y || !glassRef.current) {
+    if (
+      !globalMousePosition.x ||
+      !globalMousePosition.y ||
+      !glassRef.current ||
+      !validateGlassSize(glassSize)
+    ) {
       return 'scale(1)';
     }
 
     const rect = glassRef.current.getBoundingClientRect();
-    const pillCenterX = rect.left + rect.width / 2;
-    const pillCenterY = rect.top + rect.height / 2;
-    const pillWidth = glassSize.width;
-    const pillHeight = glassSize.height;
+    const center = calculateElementCenter(rect);
+    const deltaX = globalMousePosition.x - center.x;
+    const deltaY = globalMousePosition.y - center.y;
 
-    const deltaX = globalMousePos.x - pillCenterX;
-    const deltaY = globalMousePos.y - pillCenterY;
+    const edgeDistanceX = Math.max(0, Math.abs(deltaX) - glassSize.width / 2);
+    const edgeDistanceY = Math.max(0, Math.abs(deltaY) - glassSize.height / 2);
+    const edgeDistance = calculateDistance({ x: edgeDistanceX, y: edgeDistanceY }, { x: 0, y: 0 });
 
-    const edgeDistanceX = Math.max(0, Math.abs(deltaX) - pillWidth / 2);
-    const edgeDistanceY = Math.max(0, Math.abs(deltaY) - pillHeight / 2);
-    const edgeDistance = Math.sqrt(edgeDistanceX * edgeDistanceX + edgeDistanceY * edgeDistanceY);
-
-    const activationZone = 200;
-
-    if (edgeDistance > activationZone) {
+    if (edgeDistance > ACTIVATION_ZONE) {
       return 'scale(1)';
     }
 
-    const fadeInFactor = 1 - edgeDistance / activationZone;
+    const fadeInFactor = 1 - edgeDistance / ACTIVATION_ZONE;
+    const centerDistance = calculateDistance(globalMousePosition, center);
 
-    const centerDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     if (centerDistance === 0) {
       return 'scale(1)';
     }
 
     const normalizedX = deltaX / centerDistance;
     const normalizedY = deltaY / centerDistance;
-
     const stretchIntensity = Math.min(centerDistance / 300, 1) * elasticity * fadeInFactor;
 
     const scaleX =
       1 +
       Math.abs(normalizedX) * stretchIntensity * 0.3 -
       Math.abs(normalizedY) * stretchIntensity * 0.15;
-
     const scaleY =
       1 +
       Math.abs(normalizedY) * stretchIntensity * 0.3 -
       Math.abs(normalizedX) * stretchIntensity * 0.15;
 
     return `scaleX(${Math.max(0.8, scaleX)}) scaleY(${Math.max(0.8, scaleY)})`;
-  }, [globalMousePos, elasticity, glassSize]);
+  }, [globalMousePosition, elasticity, glassSize]);
 
   const calculateFadeInFactor = useCallback(() => {
-    if (!globalMousePos.x || !globalMousePos.y || !glassRef.current) {
+    if (
+      !globalMousePosition.x ||
+      !globalMousePosition.y ||
+      !glassRef.current ||
+      !validateGlassSize(glassSize)
+    ) {
       return 0;
     }
 
     const rect = glassRef.current.getBoundingClientRect();
-    const pillCenterX = rect.left + rect.width / 2;
-    const pillCenterY = rect.top + rect.height / 2;
-    const pillWidth = glassSize.width;
-    const pillHeight = glassSize.height;
+    const center = calculateElementCenter(rect);
 
-    const edgeDistanceX = Math.max(0, Math.abs(globalMousePos.x - pillCenterX) - pillWidth / 2);
-    const edgeDistanceY = Math.max(0, Math.abs(globalMousePos.y - pillCenterY) - pillHeight / 2);
-    const edgeDistance = Math.sqrt(edgeDistanceX * edgeDistanceX + edgeDistanceY * edgeDistanceY);
+    const edgeDistanceX = Math.max(
+      0,
+      Math.abs(globalMousePosition.x - center.x) - glassSize.width / 2
+    );
+    const edgeDistanceY = Math.max(
+      0,
+      Math.abs(globalMousePosition.y - center.y) - glassSize.height / 2
+    );
+    const edgeDistance = calculateDistance({ x: edgeDistanceX, y: edgeDistanceY }, { x: 0, y: 0 });
 
-    const activationZone = 200;
-    return edgeDistance > activationZone ? 0 : 1 - edgeDistance / activationZone;
-  }, [globalMousePos, glassSize]);
+    return edgeDistance > ACTIVATION_ZONE ? 0 : 1 - edgeDistance / ACTIVATION_ZONE;
+  }, [globalMousePosition, glassSize]);
 
   const calculateElasticTranslation = useCallback(() => {
     if (!glassRef.current) {
@@ -700,18 +911,21 @@ export function AtomixGlass({
 
     const fadeInFactor = calculateFadeInFactor();
     const rect = glassRef.current.getBoundingClientRect();
-    const pillCenterX = rect.left + rect.width / 2;
-    const pillCenterY = rect.top + rect.height / 2;
+    const center = calculateElementCenter(rect);
 
     return {
-      x: (globalMousePos.x - pillCenterX) * elasticity * 0.1 * fadeInFactor,
-      y: (globalMousePos.y - pillCenterY) * elasticity * 0.1 * fadeInFactor,
+      x: (globalMousePosition.x - center.x) * elasticity * 0.1 * fadeInFactor,
+      y: (globalMousePosition.y - center.y) * elasticity * 0.1 * fadeInFactor,
     };
-  }, [globalMousePos, elasticity, calculateFadeInFactor]);
+  }, [globalMousePosition, elasticity, calculateFadeInFactor]);
 
   useEffect(() => {
     const isValidElement = (element: HTMLElement | null): element is HTMLElement => {
       return element !== null && element instanceof HTMLElement && element.isConnected;
+    };
+
+    const validateSize = (size: GlassSize): boolean => {
+      return validateGlassSize(size) && size.width <= 4096 && size.height <= 4096;
     };
 
     let rafId: number | null = null;
@@ -742,7 +956,7 @@ export function AtomixGlass({
             }
 
             const cornerRadiusOffset = Math.max(0, cornerRadius * 0.1);
-            const newSize = {
+            const newSize: GlassSize = {
               width: Math.round(rect.width + cornerRadiusOffset),
               height: Math.round(rect.height + cornerRadiusOffset),
             };
@@ -751,7 +965,10 @@ export function AtomixGlass({
             const dimensionsChanged =
               newSize.width !== lastSize.width || newSize.height !== lastSize.height;
 
-            if (forceUpdate || cornerRadiusChanged || dimensionsChanged) {
+            if (
+              (forceUpdate || cornerRadiusChanged || dimensionsChanged) &&
+              validateSize(newSize)
+            ) {
               lastSize = newSize;
               lastCornerRadius = cornerRadius;
               setGlassSize(newSize);
@@ -954,80 +1171,23 @@ export function AtomixGlass({
     [baseStyle]
   );
 
-  const getCurrentElementSize = useCallback(() => {
-    if (!glassRef.current) {
-      return { width: 0, height: 0 };
-    }
-
-    try {
-      const rect = glassRef.current.getBoundingClientRect();
-      return {
-        width: Math.max(rect.width, 0),
-        height: Math.max(rect.height, 0),
-      };
-    } catch (error) {
-      console.warn('AtomixGlass: Error getting current element size:', error);
-      return { width: 0, height: 0 };
-    }
-  }, []);
-
-  const getTransformedSize = useCallback(() => {
-    const currentSize = getCurrentElementSize();
-
-    if (effectiveDisableEffects || currentSize.width === 0 || currentSize.height === 0) {
-      return currentSize;
-    }
-
-    let scaleX = 1;
-    let scaleY = 1;
-
-    const simpleScaleMatch = directionalScale.match(/scale\(([^)]+)\)/);
-    if (simpleScaleMatch && simpleScaleMatch[1]) {
-      const scaleValue = parseFloat(simpleScaleMatch[1]);
-      scaleX = scaleValue;
-      scaleY = scaleValue;
-    } else {
-      const scaleXMatch = directionalScale.match(/scaleX\(([^)]+)\)/);
-      if (scaleXMatch && scaleXMatch[1]) {
-        scaleX = parseFloat(scaleXMatch[1]);
-      }
-
-      const scaleYMatch = directionalScale.match(/scaleY\(([^)]+)\)/);
-      if (scaleYMatch && scaleYMatch[1]) {
-        scaleY = parseFloat(scaleYMatch[1]);
-      }
-    }
-
-    const transformedSize = {
-      width: currentSize.width * scaleX,
-      height: currentSize.height * scaleY,
-    };
-
-    if (enablePerformanceMonitoring && (scaleX !== 1 || scaleY !== 1)) {
-      console.log('AtomixGlass: Scale transformation detected', {
-        directionalScale,
-        scaleX,
-        scaleY,
-        originalSize: currentSize,
-        transformedSize,
-      });
-    }
-
-    return transformedSize;
-  }, [
-    getCurrentElementSize,
-    directionalScale,
-    effectiveDisableEffects,
-    enablePerformanceMonitoring,
-  ]);
+  const adjustedSize = {
+    width:
+      baseStyle.position !== 'fixed'
+        ? '100%'
+        : baseStyle.width
+          ? baseStyle.width
+          : Math.max(glassSize.width, 0),
+    height:
+      baseStyle.position !== 'fixed'
+        ? '100%'
+        : baseStyle.height
+          ? baseStyle.height
+          : Math.max(glassSize.height, 0),
+  };
 
   const borderLayer1Style = useMemo(() => {
     const borderWidth = 1.5;
-
-    const adjustedSize = {
-      width: baseStyle.position !== 'fixed' ? '100%' : baseStyle.width ? baseStyle.width : Math.max(glassSize.width, 0),
-      height: baseStyle.position !== 'fixed' ? '100%' : baseStyle.height ? baseStyle.height : Math.max(glassSize.height, 0),
-    };
 
     return {
       ...positionStyles,
@@ -1056,22 +1216,10 @@ export function AtomixGlass({
         rgba(255, 255, 255, 0.0) 100%
       )`,
     };
-  }, [
-    positionStyles,
-    glassSize,
-    cornerRadius,
-    baseStyle,
-    mouseOffset,
-    effectiveReducedMotion,
-  ]);
+  }, [positionStyles, glassSize, cornerRadius, baseStyle, mouseOffset, effectiveReducedMotion]);
 
   const borderLayer2Style = useMemo(() => {
     const borderWidth = 1.5;
-
-    const adjustedSize = {
-      width: baseStyle.position !== 'fixed' ? '100%' : baseStyle.width ? baseStyle.width : Math.max(glassSize.width, 0),
-      height: baseStyle.position !== 'fixed' ? '100%' : baseStyle.height ? baseStyle.height : Math.max(glassSize.height, 0),
-    };
 
     return {
       ...positionStyles,
@@ -1099,16 +1247,10 @@ export function AtomixGlass({
         rgba(255, 255, 255, 0.0) 100%
       )`,
     };
-  }, [
-    positionStyles,
-    glassSize,
-    cornerRadius,
-    baseStyle,
-    mouseOffset,
-    effectiveReducedMotion,
-  ]);
+  }, [positionStyles, glassSize, cornerRadius, baseStyle, mouseOffset, effectiveReducedMotion]);
 
   const hoverEffect1Style = useMemo(() => {
+    const isOverLight = overLightConfig?.isOverLight;
     return {
       ...positionStyles,
       position: 'absolute' as React.CSSProperties['position'],
@@ -1117,13 +1259,20 @@ export function AtomixGlass({
       transform: baseStyle.transform,
       pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
       transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
-      opacity: isHovered || isActive ? 0.5 : 0,
-      background: `radial-gradient(
-        circle at ${50 + mouseOffset.x / 2}% ${50 + mouseOffset.y / 2}%,
-        rgba(255, 255, 255, 0.5) 0%,
-        rgba(255, 255, 255, 0) 50%
-      )`,
-      mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
+      opacity: isHovered || isActive ? (isOverLight ? 0.3 : 0.5) : 0,
+      background: isOverLight
+        ? `radial-gradient(
+            circle at ${50 + mouseOffset.x / 2}% ${50 + mouseOffset.y / 2}%,
+            rgba(0, 0, 0, 0.2) 0%,
+            rgba(0, 0, 0, 0.05) 30%,
+            rgba(0, 0, 0, 0) 60%
+          )`
+        : `radial-gradient(
+            circle at ${50 + mouseOffset.x / 2}% ${50 + mouseOffset.y / 2}%,
+            rgba(255, 255, 255, 0.5) 0%,
+            rgba(255, 255, 255, 0) 50%
+          )`,
+      mixBlendMode: isOverLight ? 'multiply' : ('overlay' as React.CSSProperties['mixBlendMode']),
     };
   }, [
     positionStyles,
@@ -1133,9 +1282,11 @@ export function AtomixGlass({
     isActive,
     mouseOffset,
     effectiveReducedMotion,
+    overLightConfig,
   ]);
 
   const hoverEffect2Style = useMemo(() => {
+    const isOverLight = overLightConfig?.isOverLight;
     return {
       ...positionStyles,
       position: 'absolute' as React.CSSProperties['position'],
@@ -1145,17 +1296,33 @@ export function AtomixGlass({
       transform: baseStyle.transform,
       pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
       transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
-      opacity: isActive ? 0.5 : 0,
-      background: `radial-gradient(
-        circle at ${50 + mouseOffset.x / 1.5}% ${50 + mouseOffset.y / 1.5}%,
-        rgba(255, 255, 255, 1) 0%,
-        rgba(255, 255, 255, 0) 80%
-      )`,
-      mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
+      opacity: isActive ? (isOverLight ? 0.4 : 0.5) : 0,
+      background: isOverLight
+        ? `radial-gradient(
+            circle at ${50 + mouseOffset.x / 1.5}% ${50 + mouseOffset.y / 1.5}%,
+            rgba(0, 0, 0, 0.3) 0%,
+            rgba(0, 0, 0, 0.1) 40%,
+            rgba(0, 0, 0, 0) 80%
+          )`
+        : `radial-gradient(
+            circle at ${50 + mouseOffset.x / 1.5}% ${50 + mouseOffset.y / 1.5}%,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(255, 255, 255, 0) 80%
+          )`,
+      mixBlendMode: isOverLight ? 'multiply' : ('overlay' as React.CSSProperties['mixBlendMode']),
     };
-  }, [positionStyles, cornerRadius, baseStyle, isActive, mouseOffset, effectiveReducedMotion]);
+  }, [
+    positionStyles,
+    cornerRadius,
+    baseStyle,
+    isActive,
+    mouseOffset,
+    effectiveReducedMotion,
+    overLightConfig,
+  ]);
 
   const hoverEffect3Style = useMemo(() => {
+    const isOverLight = overLightConfig?.isOverLight;
     return {
       ...positionStyles,
       position: 'absolute' as React.CSSProperties['position'],
@@ -1164,13 +1331,20 @@ export function AtomixGlass({
       borderRadius: `${Math.max(0, cornerRadius)}px`,
       pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
       transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
-      opacity: isHovered ? 0.4 : isActive ? 0.8 : 0,
-      background: `radial-gradient(
-        circle at ${50 + mouseOffset.x}% ${50 + mouseOffset.y}%,
-        rgba(255, 255, 255, 1) 0%,
-        rgba(255, 255, 255, 0) 100%
-      )`,
-      mixBlendMode: 'overlay' as React.CSSProperties['mixBlendMode'],
+      opacity: isHovered ? (isOverLight ? 0.25 : 0.4) : isActive ? (isOverLight ? 0.5 : 0.8) : 0,
+      background: isOverLight
+        ? `radial-gradient(
+            circle at ${50 + mouseOffset.x}% ${50 + mouseOffset.y}%,
+            rgba(0, 0, 0, 0.4) 0%,
+            rgba(0, 0, 0, 0.1) 50%,
+            rgba(0, 0, 0, 0) 100%
+          )`
+        : `radial-gradient(
+            circle at ${50 + mouseOffset.x}% ${50 + mouseOffset.y}%,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(255, 255, 255, 0) 100%
+          )`,
+      mixBlendMode: isOverLight ? 'multiply' : ('overlay' as React.CSSProperties['mixBlendMode']),
     };
   }, [
     positionStyles,
@@ -1180,6 +1354,7 @@ export function AtomixGlass({
     isActive,
     mouseOffset,
     effectiveReducedMotion,
+    overLightConfig,
   ]);
 
   return (
@@ -1201,32 +1376,50 @@ export function AtomixGlass({
           : undefined
       }
     >
+      {/* Enhanced Apple Liquid Glass Base Layer */}
       <div
-        className={`u-bg-dark ${overLight ? 'u-opacity-50' : 'u-opacity-0'}`}
         style={{
           ...positionStyles,
-          height: glassSize.height,
-          width: glassSize.width,
+          height: adjustedSize.height,
+          width: adjustedSize.width,
           borderRadius: `${cornerRadius}px`,
           transform: baseStyle.transform,
           transition: baseStyle.transition,
+          pointerEvents: 'none',
           willChange: 'transform',
+          background: overLightConfig.isOverLight
+            ? `linear-gradient(135deg, 
+                rgba(0, 0, 0, ${0.12 + mouseOffset.x * 0.002}) 0%, 
+                rgba(0, 0, 0, ${0.08 + mouseOffset.y * 0.001}) 50%, 
+                rgba(0, 0, 0, ${0.15 + Math.abs(mouseOffset.x) * 0.003}) 100%)`
+            : 'rgba(255, 255, 255, 0.1)',
+          opacity: overLightConfig.isOverLight ? overLightConfig.opacity : 0,
+          
         }}
       />
+
+      {/* Enhanced Overlay Layer with Dynamic Gradients */}
       <div
-        className={`u-bg-black ${overLight ? 'u-opacity-25' : 'u-opacity-0'}`}
         style={{
           ...positionStyles,
-          height: glassSize.height,
-          width: glassSize.width,
+          height: adjustedSize.height,
+          width: adjustedSize.width,
           borderRadius: `${cornerRadius}px`,
           transform: baseStyle.transform,
           transition: baseStyle.transition,
           mixBlendMode: 'overlay',
           pointerEvents: 'none',
           willChange: 'transform',
+          background: overLightConfig.isOverLight
+            ? `radial-gradient(circle at ${50 + mouseOffset.x * 0.5}% ${50 + mouseOffset.y * 0.5}%, 
+                rgba(0, 0, 0, ${0.08 + Math.abs(mouseOffset.x) * 0.002}) 0%, 
+                rgba(0, 0, 0, ${0.04}) 40%, 
+                rgba(0, 0, 0, ${0.12 + Math.abs(mouseOffset.y) * 0.002}) 100%)`
+            : 'rgba(255, 255, 255, 0.05)',
+          opacity: overLightConfig.isOverLight ? overLightConfig.opacity * 0.9 : 0,
         }}
       />
+
 
       <GlassContainer
         ref={glassRef}
@@ -1237,15 +1430,33 @@ export function AtomixGlass({
         }}
         cornerRadius={cornerRadius}
         displacementScale={
-          effectiveDisableEffects ? 0 : overLight ? displacementScale * 0.5 : displacementScale
+          effectiveDisableEffects
+            ? 0
+            : mode === 'shader'
+              ? displacementScale * 0.8
+              : overLightConfig.isOverLight
+                ? displacementScale * 0.6
+                : displacementScale
         }
         blurAmount={effectiveDisableEffects ? 0 : blurAmount}
-        saturation={effectiveHighContrast ? 200 : saturation}
-        aberrationIntensity={effectiveDisableEffects ? 0 : aberrationIntensity}
+        saturation={
+          effectiveHighContrast
+            ? 200
+            : overLightConfig.isOverLight
+              ? saturation * overLightConfig.saturationBoost
+              : saturation
+        }
+        aberrationIntensity={
+          effectiveDisableEffects
+            ? 0
+            : mode === 'shader'
+              ? aberrationIntensity * 0.7
+              : aberrationIntensity
+        }
         glassSize={glassSize}
         padding={padding}
         mouseOffset={effectiveDisableEffects ? { x: 0, y: 0 } : mouseOffset}
-        globalMousePos={effectiveDisableEffects ? { x: 0, y: 0 } : globalMousePos}
+        globalMousePosition={effectiveDisableEffects ? { x: 0, y: 0 } : globalMousePosition}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onMouseDown={() => setIsActive(true)}
@@ -1253,9 +1464,9 @@ export function AtomixGlass({
         active={isActive}
         isHovered={isHovered}
         isActive={isActive}
-        overLight={overLight}
+        overLight={overLightConfig?.isOverLight || false}
         onClick={onClick}
-        mode={effectiveDisableEffects ? 'standard' : mode}
+        mode={mode}
         transform={baseStyle.transform}
         effectiveDisableEffects={effectiveDisableEffects}
         effectiveReducedMotion={effectiveReducedMotion}

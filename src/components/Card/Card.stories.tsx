@@ -168,11 +168,12 @@ export const WithCustomGlassEffect: Story = {
           displacementScale: 60,
           aberrationIntensity: 2"
               glass={{
-                blurAmount: 0,
+                blurAmount: 2,
                 saturation: 160,
                 displacementScale: 60,
                 aberrationIntensity: 2,
                 mode: 'standard',
+                overLight: false,
               }}
             />
           </GridCol>
@@ -190,6 +191,8 @@ export const WithCustomGlassEffect: Story = {
                 displacementScale: 60,
                 aberrationIntensity: 2,
                 mode: 'polar',
+                overLight: false,
+
               }}
             />
           </GridCol>

@@ -71,14 +71,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps & ButtonAsProp>(
     if (glass) {
       // Default glass settings for buttons
       const defaultGlassProps = {
-        displacementScale: 80,
-        blurAmount: 1,
+        displacementScale: 25,
+        blurAmount: 0.5,
         saturation: 200,
         aberrationIntensity: 1,
         cornerRadius: 12,
-        mode: 'shader' as const,
         mouseContainer: ref,
-        onclick: ()=>{}
+        overLight: {},
       };
 
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
