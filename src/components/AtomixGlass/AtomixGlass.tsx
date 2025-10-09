@@ -545,7 +545,7 @@ export function AtomixGlass({
   mouseContainer = null,
   className = '',
   padding = '0 0',
-  overLight = 'auto',
+  overLight = false,
   style = {},
   mode = 'standard',
   onClick,

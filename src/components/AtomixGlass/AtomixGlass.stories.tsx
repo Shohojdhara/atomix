@@ -15,6 +15,7 @@ import Button from '../Button/Button';
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import React from 'react';
 import type { RefObject } from 'react';
+import { BoxArrowDownIcon } from '@phosphor-icons/react';
 
 /**
  * Storybook meta configuration for AtomixGlass component
@@ -70,7 +71,7 @@ const meta: Meta<typeof AtomixGlass> = {
       description: 'Corner radius in pixels (default: 20)',
       table: { defaultValue: { summary: '20' } },
     },
-    globalMousePos: {
+    globalMousePosition: {
       control: 'object',
       description: 'External global mouse position { x: number; y: number }',
     },
@@ -242,9 +243,9 @@ const BackgroundWrapper = ({
   const bgImage =
     backgroundIndex !== undefined ? backgroundImages[backgroundIndex] : backgroundImage;
 
-  // Apply default overlay settings if overlay flag is true
-  const finalOverlayColor = overlay ? 'rgba(0,0,0,0.5)' : overlayColor;
-  const finalOverlayOpacity = overlay ? 0.5 : overlayOpacity;
+  // Apply default overlay settings if overlay flag is true using nullish coalescing
+  const finalOverlayColor = overlay ? 'rgba(0,0,0,0.5)' : (overlayColor ?? 'rgba(0,0,0,0)');
+  const finalOverlayOpacity = overlay ? 0.5 : (overlayOpacity ?? 0);
 
   return (
     <div
@@ -254,8 +255,10 @@ const BackgroundWrapper = ({
         width: width,
         minHeight: height,
         height: '100%',
-        backgroundImage: bgImage ? `url(${bgImage})` : undefined,
         backgroundColor: !bgImage ? '#1a1a2e' : undefined, // Fallback color if no image
+        background: bgImage
+          ? `url(${bgImage}) ${finalOverlayOpacity && ',' + finalOverlayColor}`
+          : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
@@ -278,7 +281,6 @@ const BackgroundWrapper = ({
             bottom: 0,
             backgroundColor: finalOverlayColor,
             opacity: finalOverlayOpacity,
-            zIndex: -1,
           }}
         />
       )}
@@ -290,6 +292,7 @@ const BackgroundWrapper = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          color: 'white',
         }}
       >
         {children}
@@ -487,12 +490,12 @@ export const Default: Story = {
         </div>
       </div>
     ),
-    displacementScale: 15, // Using component default
+    displacementScale: 100, // Using component default
     blurAmount: 1, // Using component default
     saturation: 140, // Using component default
     aberrationIntensity: 2, // Using component default
     elasticity: 0.15, // Using component default
-    cornerRadius: 20, // Using component default
+    cornerRadius: 40, // Using component default
     padding: '0 0', // Using component default
     overLight: false, // Using component default
     mode: 'standard', // Using component default
@@ -619,34 +622,34 @@ export const ModeShowcase: Story = {
     // Different settings for each mode to highlight their unique characteristics
     const modeSettings = {
       standard: {
-        displacementScale: 15,
-        blurAmount: 0.0625,
+        displacementScale: 150,
+        blurAmount: 0,
         saturation: 140,
-        aberrationIntensity: 2,
+        aberrationIntensity: 'default',
         description: 'Standard glass effect with balanced displacement and aberration',
         color: '#ffffff',
       },
       polar: {
-        displacementScale: 15,
-        blurAmount: 0.05,
-        saturation: 160,
-        aberrationIntensity: 2.5,
+        displacementScale: 120,
+        blurAmount: 0,
+        saturation: 140,
+        aberrationIntensity: 'default',
         description: 'Polar displacement creates a circular refraction pattern',
         color: '#f0f8ff',
       },
       prominent: {
-        displacementScale: 15,
-        blurAmount: 0.08,
-        saturation: 180,
-        aberrationIntensity: 3,
+        displacementScale: 100,
+        blurAmount: 0,
+        saturation: 140,
+        aberrationIntensity: 'default',
         description: 'Enhanced displacement with stronger edge effects',
         color: '#ffffff',
       },
       shader: {
-        displacementScale: 15,
-        blurAmount: 0.1,
-        saturation: 150,
-        aberrationIntensity: 4,
+        displacementScale: 200,
+        blurAmount: 0,
+        saturation: 140,
+        aberrationIntensity: 'default',
         description: 'Advanced shader-based displacement for maximum visual impact',
         color: '#e6f7ff',
       },
@@ -662,7 +665,11 @@ export const ModeShowcase: Story = {
     };
 
     return (
-      <BackgroundWrapper backgroundImage={backgroundImages[2]} height="75vh" overlayOpacity={0.1}>
+      <BackgroundWrapper
+        backgroundImage="https://plus.unsplash.com/premium_photo-1728613098996-af5b4ee51be8?q=80&w=3269&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        height="95vh"
+        overlay={true}
+      >
         <div>
           <div
             style={{
@@ -717,18 +724,19 @@ export const ModeShowcase: Story = {
                   displacementScale={settings.displacementScale}
                   blurAmount={settings.blurAmount}
                   saturation={settings.saturation}
-                  aberrationIntensity={settings.aberrationIntensity}
-                  elasticity={0.15}
-                  cornerRadius={50}
+                  elasticity={0.2}
+                  cornerRadius={40}
                   onClick={() => handleMouseEnter(mode)}
+                  overLight={false}
                 >
                   <div
                     style={{
-                      padding: '24px 50px',
+                      padding: '20px 40px',
                       textAlign: 'center',
-                      maxWidth: '400px',
+                      maxWidth: '350px',
                       minHeight: '200px',
                       width: '100%',
+                      textShadow: '1px 2px 6px rgba(0,0,0,0.7)',
                     }}
                   >
                     <h3
@@ -766,6 +774,7 @@ export const ModeShowcase: Story = {
                           fontSize: '12px',
                           padding: '4px 8px',
                           borderRadius: '4px',
+                          backdropFilter: 'blur(2px)',
                           background: 'rgba(255,255,255,0.2)',
                         }}
                       >
@@ -777,6 +786,7 @@ export const ModeShowcase: Story = {
                           padding: '4px 8px',
                           borderRadius: '4px',
                           background: 'rgba(255,255,255,0.2)',
+                          backdropFilter: 'blur(2px)',
                         }}
                       >
                         Blur: {settings.blurAmount}
@@ -786,6 +796,7 @@ export const ModeShowcase: Story = {
                           fontSize: '12px',
                           padding: '4px 8px',
                           borderRadius: '4px',
+                          backdropFilter: 'blur(2px)',
                           background: 'rgba(255,255,255,0.2)',
                         }}
                       >
@@ -901,7 +912,7 @@ export const AppleInspiredUI: Story = {
               }}
             >
               {/* Apple logo and app menu */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '20px', color: '#fff' }}>
                 <span
                   style={{
                     fontSize: '20px',
@@ -942,7 +953,7 @@ export const AppleInspiredUI: Story = {
               </div>
 
               {/* Status icons */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: '#fff' }}>
                 {/* Battery indicator */}
                 <div
                   style={{
@@ -1347,7 +1358,7 @@ export const HeroExample: Story = {
             mode="standard"
             style={{ maxWidth: '800px' }}
           >
-            <div style={{ padding: '40px 60px' }}>
+            <div style={{ padding: '40px 60px', color: 'white' }}>
               <h1 style={{ marginTop: 0, fontSize: '2.5rem' }}>Modern Glass UI</h1>
               <p style={{ fontSize: '1.2rem', marginBottom: '30px' }}>
                 Create stunning interfaces with the AtomixGlass component. Perfect for modern, sleek
@@ -1739,7 +1750,7 @@ export const InteractivePlayground: Story = {
             />
           </div>
 
-            {/* Elasticity */}
+          {/* Elasticity */}
           <div style={sliderContainerStyle}>
             <div style={sliderLabelStyle}>
               <label htmlFor="elasticity">Elasticity</label>
@@ -1752,7 +1763,7 @@ export const InteractivePlayground: Story = {
               max="1"
               step="0.01"
               value={settings.elasticity}
-              onChange={e => handleChange('elasticity',e.target.value)}
+              onChange={e => handleChange('elasticity', e.target.value)}
               style={sliderStyle}
             />
           </div>
@@ -1894,8 +1905,8 @@ export const InteractivePlayground: Story = {
                   flexWrap: 'wrap',
                 }}
               >
-                <Button label="Primary" variant="primary" glass={{elasticity: 0}}/>
-                <Button label="secondary" variant="secondary" glass={{elasticity: 0}}/>
+                <Button label="Primary" variant="primary" glass={{ elasticity: 0 }} />
+                <Button label="secondary" variant="secondary" glass={{ elasticity: 0 }} />
               </div>
             </div>
           </AtomixGlass>
@@ -2158,8 +2169,9 @@ export const MobileUIExample: Story = {
       height: '667px',
       borderRadius: '36px',
       padding: '12px',
-      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+      boxShadow: '0 -25px 50px 12px rgba(255, 255, 255, 0.3)',
       position: 'relative' as const,
+      backdropFilter: 'blur(12px)',
     };
 
     const phoneScreenStyle = {
@@ -2168,10 +2180,9 @@ export const MobileUIExample: Story = {
       borderRadius: '24px',
       position: 'relative' as const,
       backgroundImage:
-        'url(https://images.unsplash.com/photo-1697231924875-a6eea91b071b?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+        'url(https://images.unsplash.com/photo-1759691397916-abc3fe1dbb43?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
       backgroundSize: 'cover' as const,
       backgroundPosition: 'center' as const,
-      overflow: 'hidden',
       color: 'white',
     };
 
@@ -2202,6 +2213,9 @@ export const MobileUIExample: Story = {
       width: '100%',
       justifyContent: 'space-between',
       alignItems: 'center',
+      borderTop: '1px solid rgba(255, 255, 255, 0.5)',
+      borderRadius: '24px',
+      background: 'linear-gradient(to bottom, rgba(255,255,255, 0.2), rgba(0,0,0,0.1))',
     };
 
     const mainContentStyle = {
@@ -2216,15 +2230,20 @@ export const MobileUIExample: Story = {
           return (
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
-                displacementScale={35}
-                blurAmount={1}
-                saturation={150}
-                aberrationIntensity={1.5}
-                elasticity={0.2}
-                cornerRadius={20}
-                mode="standard"
+                displacementScale={60}
+                blurAmount={0}
+                cornerRadius={24}
+                mode="prominent"
+                onClick={() => null}
+                overLight={false}
               >
-                <div style={{ padding: '20px' }}>
+                <div
+                  style={{
+                    padding: '20px',
+                    background: 'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
+                    borderRadius: '24px',
+                  }}
+                >
                   <h3 style={{ margin: '0 0 10px 0', fontSize: '18px', color: 'white' }}>
                     Welcome Back
                   </h3>
@@ -2251,11 +2270,13 @@ export const MobileUIExample: Story = {
                         width: '40px',
                         height: '40px',
                         borderRadius: '50%',
-                        background: 'rgba(255,255,255,0.2)',
+                        background:
+                          'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontSize: '18px',
+                        backdropFilter: 'blur(10px)',
                       }}
                     >
                       👤
@@ -2273,15 +2294,22 @@ export const MobileUIExample: Story = {
               <div style={{ height: '15px' }} />
 
               <AtomixGlass
-                displacementScale={30}
-                blurAmount={2}
-                saturation={165}
-                aberrationIntensity={0}
+                displacementScale={60}
+                blurAmount={0}
+                saturation={185}
                 elasticity={0.2}
-                cornerRadius={15}
+                cornerRadius={30}
                 mode="standard"
+                onClick={() => null}
+                overLight={false}
               >
-                <div style={{ padding: '20px' }}>
+                <div
+                  style={{
+                    padding: '20px',
+                    background: 'linear-gradient(to top, rgba(255,255,255,0.1), rgba(0,0,0,0.1))',
+                    borderRadius: '30px',
+                  }}
+                >
                   <h3 style={{ margin: '0 0 15px 0', fontSize: '16px', color: 'white' }}>
                     Recent Activity
                   </h3>
@@ -2289,11 +2317,16 @@ export const MobileUIExample: Story = {
                     <div
                       key={item}
                       style={{
-                        padding: '10px 0',
-                        borderBottom: item < 3 ? '1px solid rgba(255,255,255,0.1)' : 'none',
+                        padding: '10px',
+                        borderBottom: '1px solid rgba(255,255,255,0.4)',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '10px',
+                        backdropFilter: 'blur(10px)',
+                        borderRadius: '10px',
+                        marginBottom: '10px',
+                        background:
+                          'linear-gradient(to top, rgba(255,255,255,0.15), rgba(0,0,0,0.15))',
                       }}
                     >
                       <div
@@ -2301,12 +2334,14 @@ export const MobileUIExample: Story = {
                           width: '32px',
                           height: '32px',
                           borderRadius: '8px',
-                          background: 'rgba(255,255,255,0.15)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           fontSize: '14px',
                           color: 'white',
+                          background:
+                            'linear-gradient(to left, rgba(255,255,255,0.15), rgba(0,0,0,0.15))',
+                          backdropFilter: 'blur(10px)',
                         }}
                       >
                         {item === 1 ? '📝' : item === 2 ? '🔔' : '💬'}
@@ -2333,23 +2368,29 @@ export const MobileUIExample: Story = {
           return (
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
-                displacementScale={40}
-                blurAmount={1}
-                saturation={155}
-                aberrationIntensity={1.8}
-                elasticity={0.13}
+                displacementScale={220}
+                blurAmount={0}
                 cornerRadius={15}
-                mode="standard"
+                mode="shader"
+                onClick={() => null}
+                overLight={false}
               >
-                <div style={{ padding: '15px' }}>
+                <div
+                  style={{
+                    padding: '15px',
+                    borderRadius: '15px',
+                    background: 'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
+                  }}
+                >
                   <div
                     style={{
                       display: 'flex',
                       alignItems: 'center',
                       gap: '10px',
-                      background: 'rgba(255,255,255,0.1)',
                       borderRadius: '10px',
                       padding: '8px 12px',
+                      background: 'linear-gradient(to top, rgba(255,255,255,0.3), rgba(0,0,0,0.3))',
+                      backdropFilter: 'blur(10px)',
                     }}
                   >
                     <span>🔍</span>
@@ -2372,13 +2413,20 @@ export const MobileUIExample: Story = {
               <div style={{ height: '15px' }} />
 
               <AtomixGlass
-                displacementScale={15}
-                blurAmount={1}
-                saturation={140}
-                aberrationIntensity={1}
+                displacementScale={60}
+                blurAmount={0}
                 cornerRadius={15}
+                onClick={() => null}
+                overLight={false}
               >
-                <div style={{ padding: '20px' }}>
+                <div
+                  style={{
+                    padding: '20px',
+                    borderRadius: '15px',
+                    background:
+                      'linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
+                  }}
+                >
                   <h3 style={{ margin: '0 0 15px 0', fontSize: '16px', color: '#fff' }}>
                     Search Categories
                   </h3>
@@ -2398,6 +2446,7 @@ export const MobileUIExample: Story = {
                           borderRadius: '10px',
                           textAlign: 'center',
                           fontSize: '14px',
+                          backdropFilter: 'blur(10px)',
                         }}
                       >
                         {category}
@@ -2412,15 +2461,20 @@ export const MobileUIExample: Story = {
           return (
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
-                displacementScale={50}
-                blurAmount={1}
-                saturation={175}
-                aberrationIntensity={2.2}
-                elasticity={0.14}
+                displacementScale={60}
+                blurAmount={0}
                 cornerRadius={15}
                 mode="standard"
+                onClick={() => null}
+                overLight={false}
               >
-                <div style={{ padding: '20px' }}>
+                <div
+                  style={{
+                    padding: '20px',
+                    borderRadius: '15px',
+                    background: 'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
+                  }}
+                >
                   <div
                     style={{
                       display: 'flex',
@@ -2440,6 +2494,7 @@ export const MobileUIExample: Story = {
                         fontSize: '12px',
                         color: 'white',
                         cursor: 'pointer',
+                        backdropFilter: 'blur(10px)',
                       }}
                     >
                       Clear All
@@ -2454,6 +2509,7 @@ export const MobileUIExample: Story = {
                           padding: '12px',
                           background: 'rgba(255,255,255,0.1)',
                           borderRadius: '10px',
+                          backdropFilter: 'blur(10px)',
                           marginBottom: '10px',
                         }}
                       >
@@ -2474,6 +2530,7 @@ export const MobileUIExample: Story = {
                               alignItems: 'center',
                               justifyContent: 'center',
                               fontSize: '16px',
+                              backdropFilter: 'blur(10px)',
                             }}
                           >
                             {index === 0 ? '📱' : index === 1 ? '🔔' : '✉️'}
@@ -2504,6 +2561,7 @@ export const MobileUIExample: Story = {
                         padding: '30px 0',
                         opacity: 0.7,
                         fontSize: '14px',
+                        backdropFilter: 'blur(10px)',
                       }}
                     >
                       No new notifications
@@ -2517,20 +2575,23 @@ export const MobileUIExample: Story = {
           return (
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
-                displacementScale={42}
-                blurAmount={1}
-                saturation={165}
-                aberrationIntensity={2.0}
+                displacementScale={120}
+                blurAmount={0}
+                saturation={180}
                 elasticity={0.16}
                 cornerRadius={15}
                 mode="standard"
+                onClick={() => null}
+                overLight={false}
               >
                 <div
                   style={{
                     padding: '25px 20px',
+                    borderRadius: '15px',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    background: 'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
                   }}
                 >
                   <div
@@ -2544,6 +2605,7 @@ export const MobileUIExample: Story = {
                       justifyContent: 'center',
                       fontSize: '36px',
                       marginBottom: '15px',
+                      backdropFilter: 'blur(10px)',
                     }}
                   >
                     👤
@@ -2556,33 +2618,14 @@ export const MobileUIExample: Story = {
                   >
                     user@example.com
                   </p>
-                  <button
-                    style={{
-                      background: 'rgba(255,255,255,0.2)',
-                      border: 'none',
-                      borderRadius: '8px',
-                      padding: '8px 16px',
-                      color: 'white',
-                      fontSize: '14px',
-                      width: '100%',
-                      marginBottom: '10px',
-                    }}
-                  >
-                    Edit Profile
-                  </button>
-                  <button
-                    style={{
-                      background: 'rgba(255,255,255,0.1)',
-                      border: 'none',
-                      borderRadius: '8px',
-                      padding: '8px 16px',
-                      color: 'white',
-                      fontSize: '14px',
-                      width: '100%',
-                    }}
-                  >
-                    Settings
-                  </button>
+                  <Button label="Edit Profile" variant="erorr" size="md" />
+                  <Button
+                    glass
+                    label="Settings"
+                    variant="dark"
+                    size="md"
+                  />
+                    
                 </div>
               </AtomixGlass>
             </div>
@@ -2594,7 +2637,9 @@ export const MobileUIExample: Story = {
 
     return (
       <BackgroundWrapper
-        backgroundImage={'https://images.pexels.com/photos/16702076/pexels-photo-16702076.jpeg'}
+        backgroundImage={
+          'https://images.unsplash.com/photo-1649718347807-322222472ed9?q=80&w=3134&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+        }
         height="90vh"
         style={{
           maxWidth: '1400px',
@@ -2642,13 +2687,14 @@ export const MobileUIExample: Story = {
               <div style={appContentStyle}>
                 {/* Header */}
                 <AtomixGlass
-                  displacementScale={30}
-                  blurAmount={1}
-                  saturation={130}
-                  aberrationIntensity={1.2}
-                  elasticity={0.1}
-                  cornerRadius={0}
-                  mode="standard"
+                  displacementScale={260}
+                  blurAmount={2}
+                  saturation={180}
+                  elasticity={0}
+                  cornerRadius={26}
+                  mode="shader"
+                  onClick={() => null}
+                  overLight={false}
                 >
                   <div style={headerStyle}>
                     <h2 style={{ margin: 0, fontSize: '18px' }}>
@@ -2675,20 +2721,21 @@ export const MobileUIExample: Story = {
 
                 {/* Bottom navigation */}
                 <AtomixGlass
-                  displacementScale={25}
-                  blurAmount={1}
-                  saturation={125}
-                  aberrationIntensity={1.0}
-                  elasticity={0.08}
-                  cornerRadius={0}
-                  mode="standard"
-                  style={{ borderRadius: '0' }}
+                  displacementScale={100}
+                  blurAmount={0}
+                  elasticity={0}
+                  cornerRadius={18}
+                  mode="shader"
+                  onClick={() => null}
+                  overLight={false}
                 >
                   <div
                     style={{
                       display: 'flex',
                       justifyContent: 'space-around',
-                      padding: '15px 0',
+                      padding: '5px 10px',
+                      background: 'linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(0,0,0,0.1))',
+                      borderRadius: '18px',
                     }}
                   >
                     {[
@@ -2706,7 +2753,10 @@ export const MobileUIExample: Story = {
                           alignItems: 'center',
                           opacity: activeTab === tab.id ? 1 : 0.6,
                           position: 'relative',
-                          cursor: 'pointer',
+                          padding: '10px 20px',
+                          backdropFilter: 'blur(10px)',
+                          borderRadius: '10px',
+                          background: 'linear-gradient(to left, rgba(255,255,255,0.5), rgba(0,0,0,0.5))',
                         }}
                       >
                         <div style={{ fontSize: '20px' }}>{tab.icon}</div>
@@ -2716,7 +2766,7 @@ export const MobileUIExample: Story = {
                               position: 'absolute',
                               top: '-5px',
                               right: '-5px',
-                              background: '#ff3b3080',
+                              background: 'linear-gradient(to top, rgba(255,0,0,0.6), rgba(255,0,0,7))',
                               color: 'white',
                               borderRadius: '50%',
                               width: '18px',
@@ -2725,6 +2775,7 @@ export const MobileUIExample: Story = {
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
+                              backdropFilter: 'blur(10px)',
                             }}
                           >
                             {tab.badge}
@@ -2781,7 +2832,7 @@ export const ThemeSwitching: Story = {
             aberrationIntensity={2.2}
             elasticity={0.15}
             cornerRadius={20}
-            overLight={theme === 'light'}
+            overLight={true}
             mode="standard"
             style={{ width: '350px' }}
           >
