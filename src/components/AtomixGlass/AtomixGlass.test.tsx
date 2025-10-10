@@ -40,7 +40,7 @@ describe('AtomixGlass Component', () => {
 
   test('renders with showHoverEffects enabled', () => {
     render(
-      <AtomixGlass showHoverEffects={true}>
+      <AtomixGlass >
         <div>Test Content</div>
       </AtomixGlass>
     );
@@ -189,7 +189,7 @@ describe('AtomixGlass Visual Regression', () => {
 
   test('matches snapshot with showHoverEffects', () => {
       const { container } = render(
-        <AtomixGlass showHoverEffects={true}>
+        <AtomixGlass>
           <div>Glass with Hover Effects</div>
         </AtomixGlass>
       );

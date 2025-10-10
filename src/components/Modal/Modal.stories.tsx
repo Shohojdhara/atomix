@@ -366,7 +366,7 @@ export const GlassModalCustom: Story = {
             aberrationIntensity: 2,
             cornerRadius: 20,
             mode: 'polar',
-          }}
+          }as any}
           footer={
             <>
               <div
@@ -402,9 +402,11 @@ export const GlassModalCustom: Story = {
   decorators: [
     (Story) => (
       <div style={{ 
-        background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)', 
-        minHeight: '100vh',
-        padding: '2rem'
+        background: 'url(https://images.unsplash.com/photo-1744872665943-fd335d371059?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)', 
+        height: '100vh',
+        width: '100vw',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}>
         <Story />
       </div>

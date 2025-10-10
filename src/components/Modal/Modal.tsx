@@ -198,16 +198,15 @@ export const Modal: React.FC<ModalProps> = ({
             const defaultGlassProps = {
               displacementScale: 100,
               blurAmount: 2,
-              saturation: 180,
               aberrationIntensity: 1,
-              cornerRadius: 16,
+              cornerRadius: 12,
               mode: 'shader' as const,
             };
 
             const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
             return (
-              <AtomixGlass {...glassProps}>
+              <AtomixGlass {...glassProps} >
                 {modalContent}
               </AtomixGlass>
             );

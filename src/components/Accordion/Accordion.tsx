@@ -120,11 +120,11 @@ export const Accordion: React.FC<AccordionProps> = ({
       <div
         id={panelId}
         className={ACCORDION.SELECTORS.PANEL.replace('.', '')}
-        ref={panelRef}
+        ref={panelRef as React.RefObject<HTMLDivElement>}
         role="region"
         aria-labelledby={buttonId}
       >
-        <div className={ACCORDION.SELECTORS.BODY.replace('.', '')} ref={contentRef}>
+        <div className={ACCORDION.SELECTORS.BODY.replace('.', '')} ref={contentRef as React.RefObject<HTMLDivElement>}>
           {children}
         </div>
       </div>
@@ -134,11 +134,9 @@ export const Accordion: React.FC<AccordionProps> = ({
   if (glass) {
     // Default glass settings for accordions
     const defaultGlassProps = {
-      displacementScale: 20,
-      blurAmount: 10,
-      saturation: 140,
-      aberrationIntensity: 0.5,
-      cornerRadius: 8,
+      displacementScale: 60,
+      blurAmount: 1.5,
+      cornerRadius: 4,
       mode: 'shader' as const,
     };
 

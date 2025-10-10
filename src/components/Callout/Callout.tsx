@@ -66,28 +66,48 @@ export const Callout: React.FC<CalloutProps> = ({
           <Icon name="X" size="md" />
         </button>
       )}
-      </>
+    </>
   );
 
   if (glass) {
     // Default glass settings for callouts
     const defaultGlassProps = {
-      displacementScale: 20,
-      blurAmount: 2,
-      saturation: 70,
-      aberrationIntensity: 1,
+      displacementScale: 80,
+      blurAmount: 0,
       cornerRadius: 8,
-      overLight: false,
       elasticity: 0,
       mode: 'shader' as const,
     };
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-    return <div className={generateCalloutClass({ variant, oneLine, toast, glass, className })} {...getAriaAttributes()} {...props}><AtomixGlass {...glassProps}><div className="c-callout__glass-content">{calloutContent}</div></AtomixGlass></div>;
+    return (
+      <div
+        className={generateCalloutClass({ variant, oneLine, toast, glass, className })}
+        {...getAriaAttributes()}
+        {...props}
+      >
+        <AtomixGlass {...glassProps}>
+          <div
+            className="c-callout__glass-content"
+            style={{ borderRadius: glassProps.cornerRadius }}
+          >
+            {calloutContent}
+          </div>
+        </AtomixGlass>
+      </div>
+    );
   }
 
-  return <div className={generateCalloutClass({ variant, oneLine, toast, glass, className })} {...getAriaAttributes()} {...props}>{calloutContent}</div>;
+  return (
+    <div
+      className={generateCalloutClass({ variant, oneLine, toast, glass, className })}
+      {...getAriaAttributes()}
+      {...props}
+    >
+      {calloutContent}
+    </div>
+  );
 };
 
 Callout.displayName = 'Callout';

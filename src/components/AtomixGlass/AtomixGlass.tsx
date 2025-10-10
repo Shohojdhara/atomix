@@ -8,7 +8,11 @@ import {
   useState,
   useMemo,
 } from 'react';
-import { ShaderDisplacementGenerator, fragmentShaders } from './shader-utils';
+import {
+  ShaderDisplacementGenerator,
+  fragmentShaders,
+  type FragmentShaderType,
+} from './shader-utils';
 import { displacementMap, polarDisplacementMap, prominentDisplacementMap } from './utils';
 
 // Types
@@ -114,7 +118,7 @@ const getDisplacementMap = (mode: DisplacementMode, shaderMapUrl?: string): stri
     case 'shader':
       return shaderMapUrl || displacementMap;
     default:
-      console.warn(`AtomixGlass: Invalid displacement mode: ${mode}`);
+      console.warn('AtomixGlass: Invalid displacement mode');
       return displacementMap;
   }
 };
@@ -278,6 +282,7 @@ interface GlassContainerProps {
   transform?: string;
   effectiveDisableEffects?: boolean;
   effectiveReducedMotion?: boolean;
+  shaderVariant?: FragmentShaderType;
   children?: React.ReactNode;
 }
 
@@ -309,19 +314,32 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
       transform = 'none',
       effectiveDisableEffects = false,
       effectiveReducedMotion = false,
+      shaderVariant = 'liquidGlass',
     },
     ref
   ) => {
     const filterId = useId();
     const [shaderMapUrl, setShaderMapUrl] = useState<string>('');
+    const shaderGeneratorRef = useRef<ShaderDisplacementGenerator | null>(null);
 
-    // Generate initial shader map when mode/size changes
+    // Generate initial shader map when mode/size/variant changes
     useEffect(() => {
       if (mode === 'shader' && glassSize.width > 0 && glassSize.height > 0) {
-        const url = generateShaderDisplacementMap(glassSize.width, glassSize.height);
+        shaderGeneratorRef.current?.destroy();
+        const selectedShader = fragmentShaders[shaderVariant] || fragmentShaders.liquidGlass;
+        shaderGeneratorRef.current = new ShaderDisplacementGenerator({
+          width: glassSize.width,
+          height: glassSize.height,
+          fragment: selectedShader,
+        });
+        const url = shaderGeneratorRef.current.updateShader();
         setShaderMapUrl(url);
       }
-    }, [mode, glassSize.width, glassSize.height]);
+      return () => {
+        shaderGeneratorRef.current?.destroy();
+        shaderGeneratorRef.current = null;
+      };
+    }, [mode, glassSize.width, glassSize.height, shaderVariant]);
 
     useEffect(() => {
       if (!ref || typeof ref === 'function') return;
@@ -337,6 +355,15 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
       return () => clearTimeout(timeoutId);
     }, [cornerRadius, glassSize.width, glassSize.height]);
 
+    const [rectCache, setRectCache] = useState<DOMRect | null>(null);
+
+    useEffect(() => {
+      if (!ref || typeof ref === 'function') return;
+      const element = (ref as React.RefObject<HTMLDivElement>).current;
+      if (!element) return;
+      setRectCache(element.getBoundingClientRect());
+    }, [ref, glassSize]);
+
     const liquidBlur = useMemo(() => {
       const defaultBlur = {
         baseBlur: blurAmount,
@@ -345,18 +372,14 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
         flowBlur: blurAmount * 0.2,
       };
 
-      if (!ref || !globalMousePosition.x || !globalMousePosition.y) {
+      if (!rectCache || !globalMousePosition.x || !globalMousePosition.y) {
         return defaultBlur;
       }
 
-      const rect = (ref as React.RefObject<HTMLDivElement>).current?.getBoundingClientRect();
-      if (!rect) {
-        return defaultBlur;
-      }
-
-      const center = calculateElementCenter(rect);
+      const center = calculateElementCenter(rectCache);
       const distance = calculateDistance(globalMousePosition, center);
-      const maxDistance = Math.sqrt(rect.width * rect.width + rect.height * rect.height) / 2;
+      const maxDistance =
+        Math.sqrt(rectCache.width * rectCache.width + rectCache.height * rectCache.height) / 2;
       const normalizedDistance = Math.min(distance / maxDistance, 1);
       const mouseInfluence = calculateMouseInfluence(mouseOffset);
 
@@ -381,7 +404,7 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
         centerBlur: clampBlur(centerBlur * stateMultiplier),
         flowBlur: clampBlur(flowBlur * stateMultiplier),
       };
-    }, [blurAmount, globalMousePosition, mouseOffset, isHovered, isActive, ref]);
+    }, [blurAmount, globalMousePosition, mouseOffset, isHovered, isActive, rectCache]);
 
     const backdropStyle = useMemo(() => {
       const dynamicSaturation = saturation + liquidBlur.baseBlur * 20;
@@ -394,8 +417,7 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
       ];
 
       return {
-        filter: `url(#${filterId})`,
-        backdropFilter: `${blurLayers.join(' ')} saturate(${Math.min(dynamicSaturation, 200)}%)`,
+        backdropFilter: `${blurLayers.join(' ')} saturate(${Math.min(dynamicSaturation, 200)}%) url(#${filterId})`,
       };
     }, [filterId, liquidBlur, saturation]);
 
@@ -507,6 +529,9 @@ interface AtomixGlassProps {
   mode?: DisplacementMode;
   onClick?: () => void;
 
+  // Shader variant selection
+  shaderVariant?: FragmentShaderType;
+
   // Accessibility props
   'aria-label'?: string;
   'aria-describedby'?: string;
@@ -549,6 +574,8 @@ export function AtomixGlass({
   style = {},
   mode = 'standard',
   onClick,
+
+  shaderVariant = 'liquidGlass',
 
   'aria-label': ariaLabel,
   'aria-describedby': ariaDescribedBy,
@@ -685,16 +712,21 @@ export function AtomixGlass({
       }
 
       return () => {
-        if (mediaQueryReducedMotion.removeEventListener) {
-          mediaQueryReducedMotion.removeEventListener('change', handleReducedMotionChange);
-          mediaQueryHighContrast.removeEventListener('change', handleHighContrastChange);
-        } else if (mediaQueryReducedMotion.removeListener) {
-          mediaQueryReducedMotion.removeListener(handleReducedMotionChange);
-          mediaQueryHighContrast.removeListener(handleHighContrastChange);
+        try {
+          if (mediaQueryReducedMotion.removeEventListener) {
+            mediaQueryReducedMotion.removeEventListener('change', handleReducedMotionChange);
+            mediaQueryHighContrast.removeEventListener('change', handleHighContrastChange);
+          } else if (mediaQueryReducedMotion.removeListener) {
+            mediaQueryReducedMotion.removeListener(handleReducedMotionChange);
+            mediaQueryHighContrast.removeListener(handleHighContrastChange);
+          }
+        } catch (cleanupError) {
+          console.error('AtomixGlass: Error cleaning up media query listeners:', cleanupError);
         }
       };
     } catch (error) {
-      console.warn('AtomixGlass: Error setting up media queries:', error);
+      console.error('AtomixGlass: Error setting up media queries:', error);
+      return undefined;
     }
   }, []);
 
@@ -920,180 +952,90 @@ export function AtomixGlass({
   }, [globalMousePosition, elasticity, calculateFadeInFactor]);
 
   useEffect(() => {
-    const isValidElement = (element: HTMLElement | null): element is HTMLElement => {
-      return element !== null && element instanceof HTMLElement && element.isConnected;
-    };
+    const isValidElement = (element: HTMLElement | null): element is HTMLElement =>
+      element !== null && element instanceof HTMLElement && element.isConnected;
 
-    const validateSize = (size: GlassSize): boolean => {
-      return validateGlassSize(size) && size.width <= 4096 && size.height <= 4096;
-    };
+    const validateSize = (size: GlassSize): boolean =>
+      validateGlassSize(size) && size.width <= 4096 && size.height <= 4096;
 
     let rafId: number | null = null;
     let lastSize = { width: 0, height: 0 };
     let lastCornerRadius = cornerRadius;
 
     const updateGlassSize = (forceUpdate = false): void => {
-      try {
-        if (rafId !== null) {
-          cancelAnimationFrame(rafId);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+
+      rafId = requestAnimationFrame(() => {
+        if (!isValidElement(glassRef.current)) return;
+
+        const rect = glassRef.current.getBoundingClientRect();
+        if (rect.width <= 0 || rect.height <= 0) return;
+
+        const cornerRadiusOffset = Math.max(0, cornerRadius * 0.1);
+        const newSize: GlassSize = {
+          width: Math.round(rect.width + cornerRadiusOffset),
+          height: Math.round(rect.height + cornerRadiusOffset),
+        };
+
+        const cornerRadiusChanged = lastCornerRadius !== cornerRadius;
+        const dimensionsChanged =
+          newSize.width !== lastSize.width || newSize.height !== lastSize.height;
+
+        if ((forceUpdate || cornerRadiusChanged || dimensionsChanged) && validateSize(newSize)) {
+          lastSize = newSize;
+          lastCornerRadius = cornerRadius;
+          setGlassSize(newSize);
         }
 
-        rafId = requestAnimationFrame(() => {
-          try {
-            if (!isValidElement(glassRef.current)) {
-              console.warn('AtomixGlass: Element not available for size calculation');
-              return;
-            }
-
-            const rect = glassRef.current.getBoundingClientRect();
-
-            if (rect.width <= 0 || rect.height <= 0) {
-              console.warn('AtomixGlass: Invalid dimensions detected', {
-                width: rect.width,
-                height: rect.height,
-              });
-              return;
-            }
-
-            const cornerRadiusOffset = Math.max(0, cornerRadius * 0.1);
-            const newSize: GlassSize = {
-              width: Math.round(rect.width + cornerRadiusOffset),
-              height: Math.round(rect.height + cornerRadiusOffset),
-            };
-
-            const cornerRadiusChanged = lastCornerRadius !== cornerRadius;
-            const dimensionsChanged =
-              newSize.width !== lastSize.width || newSize.height !== lastSize.height;
-
-            if (
-              (forceUpdate || cornerRadiusChanged || dimensionsChanged) &&
-              validateSize(newSize)
-            ) {
-              lastSize = newSize;
-              lastCornerRadius = cornerRadius;
-              setGlassSize(newSize);
-
-              if (enablePerformanceMonitoring && (cornerRadiusChanged || dimensionsChanged)) {
-                console.log('AtomixGlass: Size updated', {
-                  newSize,
-                  cornerRadius,
-                  cornerRadiusChanged,
-                  dimensionsChanged,
-                });
-              }
-            }
-          } catch (error) {
-            console.error('AtomixGlass: Error updating glass size:', error);
-          } finally {
-            rafId = null;
-          }
-        });
-      } catch (error) {
-        console.error('AtomixGlass: Error in updateGlassSize:', error);
-      }
+        rafId = null;
+      });
     };
 
     let resizeTimeoutId: NodeJS.Timeout | null = null;
     const debouncedResizeHandler = (): void => {
-      if (resizeTimeoutId) {
-        clearTimeout(resizeTimeoutId);
-      }
+      if (resizeTimeoutId) clearTimeout(resizeTimeoutId);
       resizeTimeoutId = setTimeout(updateGlassSize, 16);
     };
 
-    try {
-      updateGlassSize(true);
-    } catch (error) {
-      console.error('AtomixGlass: Error in initial size update:', error);
-    }
+    updateGlassSize(true);
 
     let resizeObserver: ResizeObserver | null = null;
     let fallbackInterval: NodeJS.Timeout | null = null;
 
-    try {
-      const hasResizeObserver =
-        typeof ResizeObserver !== 'undefined' &&
-        typeof ResizeObserver.prototype.observe === 'function';
+    const hasResizeObserver = typeof ResizeObserver !== 'undefined';
 
-      if (hasResizeObserver && isValidElement(glassRef.current)) {
-        try {
-          resizeObserver = new ResizeObserver(entries => {
-            try {
-              for (const entry of entries) {
-                if (entry.target === glassRef.current) {
-                  updateGlassSize();
-                  break;
-                }
-              }
-            } catch (error) {
-              console.error('AtomixGlass: Error in ResizeObserver callback:', error);
-            }
-          });
-
-          resizeObserver.observe(glassRef.current);
-        } catch (resizeObserverError) {
-          console.warn(
-            'AtomixGlass: ResizeObserver creation failed, using fallback:',
-            resizeObserverError
-          );
-          fallbackInterval = setInterval(() => {
-            if (isValidElement(glassRef.current)) {
+    if (hasResizeObserver && isValidElement(glassRef.current)) {
+      try {
+        resizeObserver = new ResizeObserver(entries => {
+          for (const entry of entries) {
+            if (entry.target === glassRef.current) {
               updateGlassSize();
+              break;
             }
-          }, 100);
-        }
-      } else {
-        console.warn('AtomixGlass: ResizeObserver not supported, using fallback polling');
-        fallbackInterval = setInterval(() => {
-          if (isValidElement(glassRef.current)) {
-            updateGlassSize();
           }
-        }, 100);
+        });
+        resizeObserver.observe(glassRef.current);
+      } catch {
+        fallbackInterval = setInterval(
+          () => isValidElement(glassRef.current) && updateGlassSize(),
+          100
+        );
       }
-    } catch (error) {
-      console.error('AtomixGlass: Error setting up ResizeObserver:', error);
-      fallbackInterval = setInterval(() => {
-        if (isValidElement(glassRef.current)) {
-          updateGlassSize();
-        }
-      }, 100);
+    } else {
+      fallbackInterval = setInterval(
+        () => isValidElement(glassRef.current) && updateGlassSize(),
+        100
+      );
     }
 
     window.addEventListener('resize', debouncedResizeHandler, { passive: true });
 
     return () => {
-      try {
-        if (rafId !== null) {
-          cancelAnimationFrame(rafId);
-          rafId = null;
-        }
-
-        if (resizeTimeoutId) {
-          clearTimeout(resizeTimeoutId);
-          resizeTimeoutId = null;
-        }
-
-        window.removeEventListener('resize', debouncedResizeHandler);
-
-        if (resizeObserver) {
-          try {
-            if (isValidElement(glassRef.current)) {
-              resizeObserver.unobserve(glassRef.current);
-            }
-            resizeObserver.disconnect();
-          } catch (error) {
-            console.error('AtomixGlass: Error cleaning up ResizeObserver:', error);
-          }
-          resizeObserver = null;
-        }
-
-        if (fallbackInterval) {
-          clearInterval(fallbackInterval);
-          fallbackInterval = null;
-        }
-      } catch (error) {
-        console.error('AtomixGlass: Error in cleanup:', error);
-      }
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      if (resizeTimeoutId) clearTimeout(resizeTimeoutId);
+      if (fallbackInterval) clearInterval(fallbackInterval);
+      window.removeEventListener('resize', debouncedResizeHandler);
+      resizeObserver?.disconnect();
     };
   }, [cornerRadius, enablePerformanceMonitoring]);
 
@@ -1101,30 +1043,20 @@ export function AtomixGlass({
     if (!glassRef.current) return;
 
     const timeoutId = setTimeout(() => {
-      try {
-        const rect = glassRef.current?.getBoundingClientRect();
-        if (rect && rect.width > 0 && rect.height > 0) {
-          const cornerRadiusOffset = Math.max(0, cornerRadius * 0.1);
-          const newSize = {
-            width: Math.round(rect.width + cornerRadiusOffset),
-            height: Math.round(rect.height + cornerRadiusOffset),
-          };
-          setGlassSize(newSize);
+      if (!glassRef.current) return;
 
-          if (enablePerformanceMonitoring) {
-            console.log('AtomixGlass: Corner radius change triggered size update', {
-              cornerRadius,
-              newSize,
-            });
-          }
-        }
-      } catch (error) {
-        console.warn('AtomixGlass: Error in corner radius size update:', error);
+      const rect = glassRef.current.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        const cornerRadiusOffset = Math.max(0, cornerRadius * 0.1);
+        setGlassSize({
+          width: Math.round(rect.width + cornerRadiusOffset),
+          height: Math.round(rect.height + cornerRadiusOffset),
+        });
       }
     }, 0);
 
     return () => clearTimeout(timeoutId);
-  }, [cornerRadius, enablePerformanceMonitoring]);
+  }, [cornerRadius]);
 
   const elasticTranslation = useMemo(() => {
     if (effectiveDisableEffects) {
@@ -1394,7 +1326,6 @@ export function AtomixGlass({
                 rgba(0, 0, 0, ${0.15 + Math.abs(mouseOffset.x) * 0.003}) 100%)`
             : 'rgba(255, 255, 255, 0.1)',
           opacity: overLightConfig.isOverLight ? overLightConfig.opacity : 0,
-          
         }}
       />
 
@@ -1419,7 +1350,6 @@ export function AtomixGlass({
           opacity: overLightConfig.isOverLight ? overLightConfig.opacity * 0.9 : 0,
         }}
       />
-
 
       <GlassContainer
         ref={glassRef}
@@ -1470,6 +1400,7 @@ export function AtomixGlass({
         transform={baseStyle.transform}
         effectiveDisableEffects={effectiveDisableEffects}
         effectiveReducedMotion={effectiveReducedMotion}
+        shaderVariant={shaderVariant}
       >
         {children}
       </GlassContainer>

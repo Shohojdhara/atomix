@@ -624,6 +624,7 @@ export const ModeShowcase: Story = {
       standard: {
         displacementScale: 150,
         blurAmount: 0,
+        shaderVariant: 'premiumGlass',
         saturation: 140,
         aberrationIntensity: 'default',
         description: 'Standard glass effect with balanced displacement and aberration',
@@ -632,12 +633,14 @@ export const ModeShowcase: Story = {
       polar: {
         displacementScale: 120,
         blurAmount: 0,
+        shaderVariant: 'premiumGlass',
         saturation: 140,
         aberrationIntensity: 'default',
         description: 'Polar displacement creates a circular refraction pattern',
         color: '#f0f8ff',
       },
       prominent: {
+        shaderVariant: 'premiumGlass',
         displacementScale: 100,
         blurAmount: 0,
         saturation: 140,
@@ -646,7 +649,8 @@ export const ModeShowcase: Story = {
         color: '#ffffff',
       },
       shader: {
-        displacementScale: 200,
+        displacementScale: 190,
+        shaderVariant: 'premiumGlass',
         blurAmount: 0,
         saturation: 140,
         aberrationIntensity: 'default',
@@ -724,6 +728,7 @@ export const ModeShowcase: Story = {
                   displacementScale={settings.displacementScale}
                   blurAmount={settings.blurAmount}
                   saturation={settings.saturation}
+                  shaderVariant={settings.shaderVariant as any}
                   elasticity={0.2}
                   cornerRadius={40}
                   onClick={() => handleMouseEnter(mode)}
@@ -815,6 +820,298 @@ export const ModeShowcase: Story = {
 };
 
 /**
+ * Shader Variants Showcase - Demonstrates the new Apple-style shader variants
+ *
+ * This story showcases all available shader variants with their unique characteristics.
+ * Each variant provides a different visual effect optimized for specific use cases.
+ */
+export const ShaderVariantsShowcase: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Showcases the new Apple-style shader variants available in shader mode. Each variant provides unique visual characteristics with different distortion patterns, organic flow, and animation effects.',
+      },
+    },
+  },
+  render: () => {
+    const [activeVariant, setActiveVariant] = useState<string | null>(null);
+    const variants = [
+      'liquidGlass',
+      'appleFluid',
+      'premiumGlass',
+      'liquidMetal',
+      'basiBasi',
+    ] as const;
+
+    const variantSettings = {
+      liquidGlass: {
+        displacementScale: 25,
+        description:
+          'Enhanced liquid glass with time-based animations, multi-layered organic distortion, and chromatic aberration',
+        features: [
+          'Time-based animation',
+          'Multi-layer distortion',
+          'Chromatic aberration',
+          'Depth effects',
+        ],
+        color: '#ffffff',
+        icon: '💧',
+      },
+      appleFluid: {
+        displacementScale: 25,
+        description: 'Premium fluid glass with vortex effects and high-quality organic distortion',
+        features: ['Vortex effects', '5-octave noise', 'Fluid dynamics', 'Mouse-driven flow'],
+        color: '#e6f7ff',
+        icon: '🌊',
+      },
+      premiumGlass: {
+        displacementScale: 25,
+        description: 'High-end glass with advanced refraction and multi-layer depth effects',
+        features: ['Advanced refraction', 'Multi-layer depth', 'Radial distortion', 'Edge-aware'],
+        color: '#f0f8ff',
+        icon: '💎',
+      },
+      liquidMetal: {
+        displacementScale: 25,
+        description: 'Metallic liquid effect with shimmer and wave patterns',
+        features: [
+          'Metallic waves',
+          'Shimmer effect',
+          '4-octave noise',
+          'High-frequency animation',
+        ],
+        color: '#fff5e6',
+        icon: '✨',
+      },
+      basiBasi: {
+        displacementScale: 25,
+        description:
+          'Expert premium glass with caustics, spectral dispersion, 7-layer parallax depth, and volumetric scattering',
+        features: [
+          'Caustic patterns',
+          'Spectral dispersion',
+          '7-layer parallax',
+          'Volumetric scattering',
+          'Micro-surface detail',
+          'Advanced turbulence',
+        ],
+        color: '#fff',
+        icon: '🔮',
+      },
+    };
+
+    return (
+      <BackgroundWrapper
+        backgroundImage="https://images.unsplash.com/photo-1530569427831-a0a4b8a0d206?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        height="95vh"
+      >
+        <div>
+          <div
+            style={{
+              padding: '20px 0',
+              textAlign: 'center',
+              marginBottom: '30px',
+            }}
+          >
+            <h2
+              style={{
+                margin: '0 0 10px 0',
+                fontSize: '36px',
+                fontWeight: 600,
+                color: '#ffffff',
+                textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              }}
+            >
+              Apple-Style Shader Variants
+            </h2>
+            <p
+              style={{
+                fontSize: '18px',
+                maxWidth: '600px',
+                margin: '0 auto',
+                color: '#ffffff',
+                textShadow: '0 1px 3px rgba(0,0,0,0.3)',
+              }}
+            >
+              Experience premium liquid glass effects with advanced shader technology
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '24px',
+              maxWidth: '1200px',
+              margin: '0 auto',
+              padding: '0 20px',
+            }}
+          >
+            {variants.map(variant => {
+              const settings = variantSettings[variant];
+              const isActive = activeVariant === variant;
+
+              return (
+                <AtomixGlass
+                  key={variant}
+                  mode="shader"
+                  shaderVariant={variant}
+                  displacementScale={settings.displacementScale}
+                  blurAmount={1.5}
+                  saturation={150}
+                  aberrationIntensity={2}
+                  elasticity={0.2}
+                  cornerRadius={24}
+                  onClick={() => setActiveVariant(variant)}
+                  overLight={false}
+                >
+                  <div
+                    style={{
+                      padding: '30px',
+                      textAlign: 'center',
+                      minHeight: '320px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      textShadow: '1px 2px 6px rgba(0,0,0,0.7)',
+                    }}
+                  >
+                    <div>
+                      <div
+                        style={{
+                          fontSize: '48px',
+                          marginBottom: '16px',
+                        }}
+                      >
+                        {settings.icon}
+                      </div>
+                      <h3
+                        style={{
+                          margin: '0 0 12px 0',
+                          fontSize: '24px',
+                          fontWeight: 600,
+                          color: settings.color,
+                        }}
+                      >
+                        {variant.replace(/([A-Z])/g, ' $1').trim()}
+                      </h3>
+                      <p
+                        style={{
+                          margin: '0 0 20px 0',
+                          fontSize: '14px',
+                          lineHeight: 1.6,
+                          color: settings.color,
+                          opacity: 0.9,
+                        }}
+                      >
+                        {settings.description}
+                      </p>
+                    </div>
+
+                    <div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: '8px',
+                          marginBottom: '16px',
+                        }}
+                      >
+                        {settings.features.map((feature, idx) => (
+                          <div
+                            key={idx}
+                            style={{
+                              fontSize: '12px',
+                              padding: '6px 12px',
+                              borderRadius: '8px',
+                              background: 'rgba(255,255,255,0.15)',
+                              backdropFilter: 'blur(4px)',
+                              color: settings.color,
+                            }}
+                          >
+                            ✓ {feature}
+                          </div>
+                        ))}
+                      </div>
+
+                      <div
+                        style={{
+                          fontSize: '11px',
+                          padding: '8px',
+                          borderRadius: '8px',
+                          background: 'rgba(0,0,0,0.2)',
+                          backdropFilter: 'blur(2px)',
+                          color: settings.color,
+                        }}
+                      >
+                        Displacement: {settings.displacementScale} | Mode: shader
+                      </div>
+                    </div>
+                  </div>
+                </AtomixGlass>
+              );
+            })}
+          </div>
+
+          <div
+            style={{
+              marginTop: '40px',
+              padding: '24px',
+              maxWidth: '800px',
+              margin: '40px auto 0',
+              textAlign: 'center',
+            }}
+          >
+            <AtomixGlass
+              mode="shader"
+              shaderVariant="liquidGlass"
+              displacementScale={20}
+              blurAmount={2}
+              saturation={140}
+              aberrationIntensity={1.5}
+              cornerRadius={16}
+              elasticity={0}
+            >
+              <div style={{ padding: '20px' }}>
+                <h4 style={{ margin: '0 0 12px 0', fontSize: '18px', color: '#ffffff' }}>
+                  💡 Usage Tip
+                </h4>
+                <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.6, color: '#ffffff' }}>
+                  Set{' '}
+                  <code
+                    style={{
+                      background: 'rgba(255,255,255,0.2)',
+                      padding: '2px 6px',
+                      borderRadius: '4px',
+                    }}
+                  >
+                    mode="shader"
+                  </code>{' '}
+                  and use{' '}
+                  <code
+                    style={{
+                      background: 'rgba(255,255,255,0.2)',
+                      padding: '2px 6px',
+                      borderRadius: '4px',
+                    }}
+                  >
+                    shaderVariant
+                  </code>{' '}
+                  prop to choose between 'liquidGlass', 'appleFluid', 'premiumGlass', or
+                  'liquidMetal'. Each variant includes time-based animations for a living glass
+                  effect.
+                </p>
+              </div>
+            </AtomixGlass>
+          </div>
+        </div>
+      </BackgroundWrapper>
+    );
+  },
+};
+
+/**
  * Apple-inspired UI example showcasing the liquid glass effect
  *
  * This story demonstrates how to create Apple-like interfaces using the AtomixGlass component,
@@ -894,12 +1191,12 @@ export const AppleInspiredUI: Story = {
           {/* Top menu bar - macOS style with improved design */}
 
           <AtomixGlass
-            displacementScale={15}
-            blurAmount={2}
+            displacementScale={70}
+            blurAmount={0}
             saturation={150}
-            aberrationIntensity={0.2}
             cornerRadius={8}
             mode="shader"
+            shaderVariant='premiumGlass'
             elasticity={0}
           >
             <div
@@ -1054,12 +1351,12 @@ export const AppleInspiredUI: Story = {
           </AtomixGlass>
           {/* Center widget - iOS style with improved design */}
           <AtomixGlass
-            displacementScale={15}
+            displacementScale={50}
             blurAmount={2}
-            saturation={150}
-            aberrationIntensity={0.1}
+            shaderVariant='premiumGlass'
             cornerRadius={24}
             mode="shader"
+            elasticity={0}
           >
             <div style={{ padding: '30px' }}>
               <h2
@@ -2619,13 +2916,7 @@ export const MobileUIExample: Story = {
                     user@example.com
                   </p>
                   <Button label="Edit Profile" variant="erorr" size="md" />
-                  <Button
-                    glass
-                    label="Settings"
-                    variant="dark"
-                    size="md"
-                  />
-                    
+                  <Button glass label="Settings" variant="dark" size="md" />
                 </div>
               </AtomixGlass>
             </div>
@@ -2734,7 +3025,8 @@ export const MobileUIExample: Story = {
                       display: 'flex',
                       justifyContent: 'space-around',
                       padding: '5px 10px',
-                      background: 'linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(0,0,0,0.1))',
+                      background:
+                        'linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(0,0,0,0.1))',
                       borderRadius: '18px',
                     }}
                   >
@@ -2756,7 +3048,8 @@ export const MobileUIExample: Story = {
                           padding: '10px 20px',
                           backdropFilter: 'blur(10px)',
                           borderRadius: '10px',
-                          background: 'linear-gradient(to left, rgba(255,255,255,0.5), rgba(0,0,0,0.5))',
+                          background:
+                            'linear-gradient(to left, rgba(255,255,255,0.5), rgba(0,0,0,0.5))',
                         }}
                       >
                         <div style={{ fontSize: '20px' }}>{tab.icon}</div>
@@ -2766,7 +3059,8 @@ export const MobileUIExample: Story = {
                               position: 'absolute',
                               top: '-5px',
                               right: '-5px',
-                              background: 'linear-gradient(to top, rgba(255,0,0,0.6), rgba(255,0,0,7))',
+                              background:
+                                'linear-gradient(to top, rgba(255,0,0,0.6), rgba(255,0,0,7))',
                               color: 'white',
                               borderRadius: '50%',
                               width: '18px',

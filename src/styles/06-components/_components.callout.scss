@@ -203,7 +203,7 @@
 
   // Glass morphism effect styles
   &--glass {
-    @include dynamic-background(var(--#{config.$prefix}callout-bg), $background-transparency-enable: true);
+    background: none;
     padding: 0;
     border: none;
     display: block;
@@ -218,6 +218,10 @@
       max-width: var(--#{config.$prefix}callout-width);
       border-radius: var(--#{config.$prefix}callout-border-radius);
       width: 100%;
+      @include dynamic-background(
+        var(--#{config.$prefix}callout-bg),
+        $background-transparency-enable: true
+      );
     }
 
     // Adjust text colors for glass effect
@@ -231,13 +235,14 @@
 
     // Glass effect for toast variant
     &#{$root}--toast {
-      @include dynamic-background(var(--#{config.$prefix}callout-bg), $background-transparency-enable: true);
+      @include dynamic-background(
+        var(--#{config.$prefix}callout-bg),
+        $background-transparency-enable: true
+      );
       box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.1),
         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
     }
-
-
   }
 
   &.is-hide {

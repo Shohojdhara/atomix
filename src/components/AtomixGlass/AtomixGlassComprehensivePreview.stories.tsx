@@ -129,9 +129,9 @@ interface InteractiveContainerProps {
  */
 const backgroundImages = [
   // Tech/Digital
-  'https://images.unsplash.com/photo-1636630636968-4568d7e94fe7?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1530569427831-a0a4b8a0d206?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   // Purple Nebula
-  'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop',
+  'https://live.staticflickr.com/5472/30982547010_2a76a81546_k.jpg',
   // Urban Night
   'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=2144&auto=format&fit=crop',
   // Abstract Waves
@@ -234,11 +234,7 @@ const BackgroundWrapper = ({
 /**
  * Interactive Container with mouse tracking
  */
-const InteractiveContainer = ({
-  children,
-  backgroundImage = backgroundImages[6],
-  style = {},
-}: InteractiveContainerProps) => {
+const InteractiveContainer = ({ children }: InteractiveContainerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
@@ -263,24 +259,7 @@ const InteractiveContainer = ({
     return () => currentRef?.removeEventListener('mousemove', handleMouseMove);
   }, [handleMouseMove]);
 
-  return (
-    <div
-      ref={containerRef}
-      style={{
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: '160%',
-        backgroundPosition: `calc(50% + ${mouseOffset.x}px) calc(50% + ${mouseOffset.y}px)`,
-        ...style,
-      }}
-    >
-      {children(mousePos, mouseOffset, containerRef)}
-    </div>
-  );
+  return <div ref={containerRef}>{children(mousePos, mouseOffset, containerRef)}</div>;
 };
 
 /**
@@ -496,23 +475,12 @@ export const ComprehensiveShowcase: Story = {
                           cornerRadius: 20,
                         }}
                         onClick={() => setSelectedMode(mode.id as any)}
-                        styles={{
-                          height: '100%',
-                          cursor: 'pointer',
-                          transform: selectedMode === mode.id ? 'scale(1.02)' : 'scale(1)',
-                          transition: 'transform 0.3s ease',
-                        }}
                       >
-                        <div className="u-text-center" style={{ padding: '2.5rem' }}>
-                          <h3
-                            className="u-mb-4 u-fw-medium"
-                            style={{
-                              fontSize: '1.25rem',
-                              color: selectedMode === mode.id ? '#7c3aed' : '#ffffff',
-                            }}
-                          >
-                            {mode.name} Mode
-                          </h3>
+                        <div className="u-text-center">
+                          <Callout variant="success" glass oneLine className='u-mb-2'>
+                            <h4>✨ {mode.name} Mode</h4>
+                          </Callout>
+
                           <p
                             className="u-mb-5"
                             style={{ fontSize: '1rem', lineHeight: 1.5, opacity: 0.8 }}
@@ -546,14 +514,6 @@ export const ComprehensiveShowcase: Story = {
                               Aberration: {mode.settings.aberrationIntensity}
                             </span>
                           </div>
-
-                          {selectedMode === mode.id && (
-                            <div className="u-mt-4">
-                              <Callout variant="success" oneLine>
-                                ✨ Active Mode
-                              </Callout>
-                            </div>
-                          )}
                         </div>
                       </Card>
                     </div>
@@ -582,7 +542,6 @@ export const ComprehensiveShowcase: Story = {
                   </h2>
 
                   <AtomixGlass
-                    globalMousePos={mousePos}
                     mouseOffset={mouseOffset}
                     mouseContainer={containerRef}
                     displacementScale={150}
@@ -1138,7 +1097,7 @@ export const ComprehensiveShowcase: Story = {
 
     return (
       <BackgroundWrapper
-        backgroundIndex={6}
+        backgroundIndex={1}
         interactive={activeSection === 'interactive'}
         height="auto"
         style={{
@@ -1309,7 +1268,6 @@ export const InteractiveDemo: Story = {
       {(mousePos, mouseOffset, containerRef) => (
         <div className="u-flex u-flex-column u-items-center u-gap-8">
           <AtomixGlass
-            globalMousePos={mousePos}
             mouseOffset={mouseOffset}
             mouseContainer={containerRef}
             displacementScale={150}

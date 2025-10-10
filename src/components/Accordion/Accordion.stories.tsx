@@ -2,6 +2,8 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Accordion } from './Accordion';
 import { ACCORDION } from '../../lib/constants/components';
+import type { AtomixGlassProps } from '../../lib/types/components';
+import { ShaderVariantsShowcase } from '../AtomixGlass/AtomixGlass.stories';
 
 // Extract class names without the leading dots
 const ACCORDION_CLASS = ACCORDION.SELECTORS.ACCORDION.replace('.', '');
@@ -283,11 +285,13 @@ export const Glass: Story = {
   },
   render: (args) => (
     <div
-      style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+       style={{
+        background: 'url(https://images.unsplash.com/photo-1759915995309-404c743bfbf9?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         padding: '2rem',
         borderRadius: '12px',
-        minHeight: '300px',
+        height: '97vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -313,27 +317,40 @@ export const GlassCustom: Story = {
     title: 'Custom Glass Accordion',
     children: <p>This accordion has custom glass morphism settings.</p>,
     glass: {
-      displacementScale: 80,
-      blurAmount: 2,
-      saturation: 200,
-      aberrationIntensity: 0.8,
-      cornerRadius: 12,
-    },
+      displacementScale: 180,
+      blurAmount: 3,
+      saturation: 60,
+      cornerRadius: 4,
+      mode: 'polar',
+    } as AtomixGlassProps as any,
   },
   render: (args) => (
     <div
       style={{
-        background: 'url(https://images.unsplash.com/photo-1660478481785-cb609142d9ab?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
-        backgroundSize: 'cover',
+        background: 'url(https://images.unsplash.com/photo-1754147965582-edcb63324a81?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+        backgroundSize: '120%',
         backgroundPosition: 'center',
         padding: '2rem',
         borderRadius: '12px',
-        minHeight: '400px',
+        minHeight: '97vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        animation: 'gradient 15s ease infinite',
       }}
     >
+       <style>
+        {`
+          @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            20% { background-position: 70% 50%; }
+            40% { background-position: 0% 50%; }
+            50% { background-position: 50% 0%; }
+            75% { background-position: 50% 50%; }
+            100% { background-position: 50% 0%; }
+          }
+        `}
+      </style>
       <div style={{ width: '100%', maxWidth: '500px' }}>
         <Accordion {...args} />
       </div>
@@ -353,16 +370,24 @@ export const GlassGroup: Story = {
   args: {
     title: 'Glass Accordion Group',
     children: <p>Group example with glass effect - see render function</p>,
+     glass: {
+      displacementScale: 180,
+      blurAmount: 1,
+      saturation: 60,
+      cornerRadius: 4,
+      mode: 'shader',
+      ShaderVariant: 'premiumGlass'
+    } as any,
   },
   render: () => (
     <div
       style={{
-        background: 'url(https://images.unsplash.com/photo-1587289087865-396fc357ef9e?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
-        backgroundSize: '200% 200%',
+        background: 'url(https://images.unsplash.com/photo-1623237353316-417116e040a5?q=80&w=3307&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+        backgroundSize: '150%',
         animation: 'gradient 15s ease infinite',
         padding: '2rem',
         borderRadius: '12px',
-        minHeight: '500px',
+        minHeight: '97vh',
       }}
     >
       <style>

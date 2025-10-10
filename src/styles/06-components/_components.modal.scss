@@ -40,7 +40,7 @@
   --#{config.$prefix}modal-xl: #{rem.rem(modal.$modal-xl)};
   --#{config.$prefix}modal-width: var(--#{config.$prefix}modal-md);
 
-  position: fixed;
+  position: absolute;
   inset: 0;
   @include square(100%);
   display: none;
@@ -66,10 +66,8 @@
       right: auto;
     }
     opacity: 0;
-    z-index: 2;
     pointer-events: none;
     transition: 0.3s ease;
-    will-change: transform;
   }
 
   &__content {
@@ -141,6 +139,18 @@
 
   &--xl {
     --#{config.$prefix}modal-width: var(--#{config.$prefix}modal-xl);
+  }
+
+  &--glass {
+    #{$root} {
+      &
+      &__content {
+        @include dynamic-background(
+          var(--#{config.$prefix}modal-content-bg),
+          $background-transparency-enable: true
+        );
+      }
+    }
   }
 
   &.is-open {
