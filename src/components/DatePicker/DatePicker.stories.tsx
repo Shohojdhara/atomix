@@ -149,8 +149,696 @@ export const DateRangeSelection: Story = {
               ? formatDateRange(dateRange.startDate, dateRange.endDate, 'MM/dd/yyyy')
               : dateRange.startDate
                 ? formatDateRange(dateRange.startDate, null, 'MM/dd/yyyy')
-                : 'No range selected'}
+                : 'No date selected'}
           </p>
+        </div>
+      </div>
+    );
+  },
+};
+
+// Glass Effect - Basic
+export const GlassEffectBasic: Story = {
+  args: {
+    placeholder: 'Select date...',
+    clearable: true,
+    showTodayButton: true,
+    selectionMode: 'single',
+    glass: true,
+  },
+  render: args => {
+    const [date, setDate] = useState<Date | null>(null);
+    return (
+      <div
+        style={{
+          background: 'url(https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '3rem',
+          borderRadius: '12px',
+          minHeight: '95vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '2rem',
+        }}
+      >
+        <div
+          style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
+        >
+          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Glass DatePicker</h3>
+          <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
+            DatePicker with glass morphism effect
+          </p>
+        </div>
+        <div style={{ width: '300px' }}>
+          <DatePicker {...args} value={date} onChange={setDate} />
+        </div>
+      </div>
+    );
+  },
+};
+
+// Glass Mode Variants - Standard
+export const GlassModeStandard: Story = {
+  args: {
+    placeholder: 'Select date...',
+    selectionMode: 'single',
+    glass: {
+      mode: 'standard',
+      displacementScale: 50,
+      blurAmount: 3,
+      saturation: 160,
+      aberrationIntensity: 0,
+      cornerRadius: 12,
+      overLight: false,
+      elasticity: 0,
+    } as any,
+  },
+  render: args => {
+    const [date, setDate] = useState<Date | null>(null);
+    return (
+      <div
+        style={{
+          background: 'url(https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '3rem',
+          borderRadius: '12px',
+          minHeight: '95vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '2rem',
+        }}
+      >
+        <div
+          style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
+        >
+          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Standard Glass Mode</h3>
+          <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
+            Classic glass morphism with blur and displacement
+          </p>
+        </div>
+        <div style={{ width: '300px' }}>
+          <DatePicker {...args} value={date} onChange={setDate} />
+        </div>
+      </div>
+    );
+  },
+};
+
+// Glass Mode Variants - Polar
+export const GlassModePolar: Story = {
+  args: {
+    placeholder: 'Select date...',
+    selectionMode: 'single',
+    glass: {
+      mode: 'polar',
+      displacementScale: 60,
+      blurAmount: 2.5,
+      saturation: 180,
+      aberrationIntensity: 2,
+      cornerRadius: 12,
+    } as any,
+  },
+  render: args => {
+    const [date, setDate] = useState<Date | null>(null);
+    return (
+      <div
+        style={{
+          background: 'url(https://images.unsplash.com/photo-1557683316-973673baf926?w=1920)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '3rem',
+          borderRadius: '12px',
+          minHeight: '95vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '2rem',
+        }}
+      >
+        <div
+          style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
+        >
+          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Polar Glass Mode</h3>
+          <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>Radial distortion effect from center</p>
+        </div>
+        <div style={{ width: '300px' }}>
+          <DatePicker {...args} value={date} onChange={setDate} />
+        </div>
+      </div>
+    );
+  },
+};
+
+// Glass Mode Variants - Prominent
+export const GlassModeProminent: Story = {
+  args: {
+    placeholder: 'Select date...',
+    selectionMode: 'single',
+    glass: {
+      mode: 'prominent',
+      displacementScale: 80,
+      blurAmount: 3.5,
+      saturation: 200,
+      aberrationIntensity: 3,
+      cornerRadius: 12,
+    } as any,
+  },
+  render: args => {
+    const [date, setDate] = useState<Date | null>(null);
+    return (
+      <div
+        style={{
+          background: 'url(https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1920)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '3rem',
+          borderRadius: '12px',
+          minHeight: '95vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '2rem',
+        }}
+      >
+        <div
+          style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
+        >
+          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Prominent Glass Mode</h3>
+          <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
+            Enhanced distortion with maximum depth
+          </p>
+        </div>
+        <div style={{ width: '300px' }}>
+          <DatePicker {...args} value={date} onChange={setDate} />
+        </div>
+      </div>
+    );
+  },
+};
+
+// Glass Mode Variants - Shader
+export const GlassModeShader: Story = {
+  args: {
+    placeholder: 'Select date...',
+    selectionMode: 'single',
+    glass: {
+      mode: 'shader',
+      shaderVariant: 'liquidGlass',
+      displacementScale: 55,
+      blurAmount: 2.8,
+      saturation: 170,
+      cornerRadius: 12,
+    } as any,
+  },
+  render: args => {
+    const [date, setDate] = useState<Date | null>(null);
+    return (
+      <div
+        style={{
+          background: 'url(https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=1920)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '3rem',
+          borderRadius: '12px',
+          minHeight: '95vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '2rem',
+        }}
+      >
+        <div
+          style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
+        >
+          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Shader Glass Mode</h3>
+          <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>GPU-accelerated liquid glass effect</p>
+        </div>
+        <div style={{ width: '300px' }}>
+          <DatePicker {...args} value={date} onChange={setDate} />
+        </div>
+      </div>
+    );
+  },
+};
+
+// All Glass Modes Comparison
+export const AllGlassModesComparison: Story = {
+  render: () => {
+    const [date1, setDate1] = useState<Date | null>(null);
+    const [date2, setDate2] = useState<Date | null>(null);
+    const [date3, setDate3] = useState<Date | null>(null);
+    const [date4, setDate4] = useState<Date | null>(null);
+
+    return (
+      <div
+        style={{
+          background: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '3rem',
+          borderRadius: '12px',
+          minHeight: '95vh',
+          overflow: 'auto',
+        }}
+      >
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <h2
+            style={{
+              textAlign: 'center',
+              color: 'white',
+              marginBottom: '3rem',
+              fontSize: '2rem',
+              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+            }}
+          >
+            Glass Mode DatePicker Comparison
+          </h2>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '2rem',
+            }}
+          >
+            {/* Standard Mode */}
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                padding: '2rem',
+                borderRadius: '12px',
+                backdropFilter: 'blur(10px)',
+                textAlign: 'center',
+              }}
+            >
+              <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.25rem' }}>
+                Standard
+              </h3>
+              <p
+                style={{
+                  color: 'rgba(255,255,255,0.8)',
+                  fontSize: '0.875rem',
+                  marginBottom: '1.5rem',
+                }}
+              >
+                Classic blur and displacement
+              </p>
+              <DatePicker
+                placeholder="Select date..."
+                value={date1}
+                onChange={setDate1}
+                glass={
+                  {
+                    mode: 'standard',
+                    displacementScale: 50,
+                    blurAmount: 3,
+                    saturation: 160,
+                  } as any
+                }
+              />
+            </div>
+
+            {/* Polar Mode */}
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                padding: '2rem',
+                borderRadius: '12px',
+                backdropFilter: 'blur(10px)',
+                textAlign: 'center',
+              }}
+            >
+              <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.25rem' }}>Polar</h3>
+              <p
+                style={{
+                  color: 'rgba(255,255,255,0.8)',
+                  fontSize: '0.875rem',
+                  marginBottom: '1.5rem',
+                }}
+              >
+                Radial distortion effect
+              </p>
+              <DatePicker
+                placeholder="Select date..."
+                value={date2}
+                onChange={setDate2}
+                glass={
+                  {
+                    mode: 'polar',
+                    displacementScale: 60,
+                    blurAmount: 2.5,
+                    saturation: 180,
+                  } as any
+                }
+              />
+            </div>
+
+            {/* Prominent Mode */}
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                padding: '2rem',
+                borderRadius: '12px',
+                backdropFilter: 'blur(10px)',
+                textAlign: 'center',
+              }}
+            >
+              <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.25rem' }}>
+                Prominent
+              </h3>
+              <p
+                style={{
+                  color: 'rgba(255,255,255,0.8)',
+                  fontSize: '0.875rem',
+                  marginBottom: '1.5rem',
+                }}
+              >
+                Maximum depth and distortion
+              </p>
+              <DatePicker
+                placeholder="Select date..."
+                value={date3}
+                onChange={setDate3}
+                glass={
+                  {
+                    mode: 'prominent',
+                    displacementScale: 80,
+                    blurAmount: 3.5,
+                    saturation: 200,
+                  } as any
+                }
+              />
+            </div>
+
+            {/* Shader Mode */}
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                padding: '2rem',
+                borderRadius: '12px',
+                backdropFilter: 'blur(10px)',
+                textAlign: 'center',
+              }}
+            >
+              <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.25rem' }}>Shader</h3>
+              <p
+                style={{
+                  color: 'rgba(255,255,255,0.8)',
+                  fontSize: '0.875rem',
+                  marginBottom: '1.5rem',
+                }}
+              >
+                GPU-accelerated liquid glass
+              </p>
+              <DatePicker
+                placeholder="Select date..."
+                value={date4}
+                onChange={setDate4}
+                glass={
+                  {
+                    mode: 'shader',
+                    shaderVariant: 'liquidGlass',
+                    displacementScale: 55,
+                    blurAmount: 2.8,
+                  } as any
+                }
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+// Glass DatePicker with Range Selection
+export const GlassRangeSelection: Story = {
+  args: {
+    selectionMode: 'range',
+    placeholder: 'Select date range...',
+    glass: true,
+  },
+  render: args => {
+    const [dateRange, setDateRange] = useState<DateRange>({
+      startDate: null,
+      endDate: null,
+    });
+
+    return (
+      <div
+        style={{
+          background: 'url(https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '3rem',
+          borderRadius: '12px',
+          minHeight: '95vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '2rem',
+        }}
+      >
+        <div
+          style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
+        >
+          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Glass Range DatePicker</h3>
+          <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
+            Select date ranges with glass morphism effect
+          </p>
+        </div>
+        <div style={{ width: '300px' }}>
+          <DatePicker
+            {...args}
+            startDate={dateRange.startDate}
+            endDate={dateRange.endDate}
+            onRangeChange={setDateRange}
+          />
+          {dateRange.startDate && dateRange.endDate && (
+            <div
+              style={{
+                marginTop: '1rem',
+                padding: '1rem',
+                background: 'rgba(255,255,255,0.1)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '8px',
+                color: 'white',
+                textAlign: 'center',
+              }}
+            >
+              <p style={{ fontSize: '0.875rem' }}>
+                Range: {formatDateRange(dateRange.startDate, dateRange.endDate, 'MM/dd/yyyy')}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  },
+};
+
+// Glass DatePicker Inline
+export const GlassInline: Story = {
+  args: {
+    inline: true,
+    showWeekNumbers: true,
+    selectionMode: 'single',
+    glass: {
+      mode: 'polar',
+      displacementScale: 60,
+      blurAmount: 2.5,
+    } as any,
+  },
+  render: args => {
+    const [date, setDate] = useState<Date | null>(new Date());
+    return (
+      <div
+        style={{
+          background: 'url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '3rem',
+          borderRadius: '12px',
+          minHeight: '95vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '2rem',
+        }}
+      >
+        <div
+          style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
+        >
+          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Inline Glass DatePicker</h3>
+          <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
+            Always visible with glass morphism effect
+          </p>
+        </div>
+        <DatePicker {...args} value={date} onChange={setDate} />
+      </div>
+    );
+  },
+};
+
+// Glass DatePicker Showcase
+export const GlassShowcase: Story = {
+  render: () => {
+    const [date1, setDate1] = useState<Date | null>(null);
+    const [date2, setDate2] = useState<Date | null>(null);
+    const [dateRange, setDateRange] = useState<DateRange>({
+      startDate: null,
+      endDate: null,
+    });
+
+    return (
+      <div
+        style={{
+          background: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          padding: '3rem',
+          borderRadius: '12px',
+          minHeight: '95vh',
+          overflow: 'auto',
+        }}
+      >
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <h2
+            style={{
+              textAlign: 'center',
+              color: 'white',
+              marginBottom: '3rem',
+              fontSize: '2rem',
+              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+            }}
+          >
+            Glass DatePicker Showcase
+          </h2>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+            {/* Single Date Selection */}
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                padding: '2rem',
+                borderRadius: '12px',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <h3 style={{ color: 'white', marginBottom: '1.5rem' }}>Single Date Selection</h3>
+              <div
+                style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', justifyContent: 'center' }}
+              >
+                <div style={{ flex: '1 1 250px', minWidth: '250px' }}>
+                  <label style={{ color: 'white', display: 'block', marginBottom: '0.5rem' }}>
+                    Standard Glass
+                  </label>
+                  <DatePicker
+                    placeholder="Select date..."
+                    value={date1}
+                    onChange={setDate1}
+                    glass={true}
+                  />
+                </div>
+                <div style={{ flex: '1 1 250px', minWidth: '250px' }}>
+                  <label style={{ color: 'white', display: 'block', marginBottom: '0.5rem' }}>
+                    Polar Glass
+                  </label>
+                  <DatePicker
+                    placeholder="Select date..."
+                    value={date2}
+                    onChange={setDate2}
+                    glass={
+                      {
+                        mode: 'polar',
+                        displacementScale: 60,
+                      } as any
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Range Selection */}
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                padding: '2rem',
+                borderRadius: '12px',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <h3 style={{ color: 'white', marginBottom: '1.5rem' }}>Range Selection</h3>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{ width: '300px' }}>
+                  <DatePicker
+                    selectionMode="range"
+                    placeholder="Select date range..."
+                    startDate={dateRange.startDate}
+                    endDate={dateRange.endDate}
+                    onRangeChange={setDateRange}
+                    glass={
+                      {
+                        mode: 'shader',
+                        shaderVariant: 'liquidGlass',
+                      } as any
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Different Sizes */}
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                padding: '2rem',
+                borderRadius: '12px',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <h3 style={{ color: 'white', marginBottom: '1.5rem' }}>Different Sizes</h3>
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '2rem',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <div style={{ flex: '1 1 200px', minWidth: '200px' }}>
+                  <label style={{ color: 'white', display: 'block', marginBottom: '0.5rem' }}>
+                    Small
+                  </label>
+                  <DatePicker placeholder="Select date..." size="sm" glass={true} />
+                </div>
+                <div style={{ flex: '1 1 250px', minWidth: '250px' }}>
+                  <label style={{ color: 'white', display: 'block', marginBottom: '0.5rem' }}>
+                    Medium
+                  </label>
+                  <DatePicker placeholder="Select date..." size="md" glass={true} />
+                </div>
+                <div style={{ flex: '1 1 300px', minWidth: '300px' }}>
+                  <label style={{ color: 'white', display: 'block', marginBottom: '0.5rem' }}>
+                    Large
+                  </label>
+                  <DatePicker placeholder="Select date..." size="lg" glass={true} />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -338,7 +1026,7 @@ export const DifferentFormats: Story = {
   },
 };
 
-export const GlassEffect: Story = {
+export const WithGlassEffect: Story = {
   args: {
     placeholder: 'Select date...',
     glass: true,
@@ -382,7 +1070,7 @@ export const GlassEffectCustomized: Story = {
       cornerRadius: 16,
       overLight: false,
       mode: 'polar' as const,
-    },
+    } as any,
     size: 'md',
     placement: 'bottom-start',
     selectionMode: 'single',
@@ -447,16 +1135,16 @@ export const GlassEffectInline: Story = {
 export const GlassEffectRangeSelection: Story = {
   args: {
     selectionMode: 'range',
-    placeholder: 'Select date range...',
+    placeholder: 'Select date...',
     glass: {
-      displacementScale: 45,
+      displacementScale: 100,
       blurAmount: 0,
-      saturation: 160,
-      aberrationIntensity: 1.5,
-      cornerRadius: 14,
+      saturation: 200,
+      aberrationIntensity: 4,
+      cornerRadius: 16,
       overLight: false,
       mode: 'prominent' as const,
-    },
+    } as any,
   },
   render: args => {
     const [dateRange, setDateRange] = useState<DateRange>({

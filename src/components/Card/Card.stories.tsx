@@ -192,7 +192,6 @@ export const WithCustomGlassEffect: Story = {
                 aberrationIntensity: 2,
                 mode: 'polar',
                 overLight: false,
-
               }}
             />
           </GridCol>
@@ -245,4 +244,561 @@ export const WithCustomGlassEffect: Story = {
       </React.Fragment>
     ),
   },
+};
+
+// Glass Mode Variants - Standard
+export const GlassModeStandard: Story = {
+  render: args => (
+    <div
+      style={{
+        backgroundImage: 'url(https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        height: '95vh',
+        width: '95vw',
+        padding: '3rem',
+        borderRadius: '12px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '2rem',
+      }}
+    >
+      <div style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Standard Glass Mode</h3>
+        <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
+          Classic glass morphism with blur and displacement
+        </p>
+      </div>
+      <Card
+        title="Standard Glass Card"
+        text="This card uses the standard glass mode with classic blur and displacement effects."
+        image="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800"
+        imageAlt="Standard glass"
+        className="u-w-50"
+        glass={{
+          mode: 'standard',
+          displacementScale: 60,
+          blurAmount: 2,
+          saturation: 160,
+          aberrationIntensity: 2,
+          elasticity: 0,
+        }}
+        actions={
+          <React.Fragment>
+            <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
+            <button className="c-btn c-btn--secondary c-btn--sm">Details</button>
+          </React.Fragment>
+        }
+      />
+    </div>
+  ),
+};
+
+// Glass Mode Variants - Polar
+export const GlassModePolar: Story = {
+  render: args => (
+    <div
+      style={{
+        backgroundImage: 'url(https://images.unsplash.com/photo-1557683316-973673baf926?w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        height: '95vh',
+        width: '95vw',
+        padding: '3rem',
+        borderRadius: '12px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '2rem',
+      }}
+    >
+      <div style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Polar Glass Mode</h3>
+        <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>Radial distortion effect from center</p>
+      </div>
+      <Card
+        className="u-w-50"
+        title="Polar Glass Card"
+        text="This card uses the polar glass mode with radial distortion effects emanating from the center."
+        image="https://images.unsplash.com/photo-1557683316-973673baf926?w=800"
+        imageAlt="Polar glass"
+        glass={{
+          mode: 'polar',
+          displacementScale: 80,
+          blurAmount: 1.5,
+          saturation: 180,
+          aberrationIntensity: 3,
+          elasticity: 0,
+        }}
+        actions={
+          <React.Fragment>
+            <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
+            <button className="c-btn c-btn--secondary c-btn--sm">Details</button>
+          </React.Fragment>
+        }
+      />
+    </div>
+  ),
+};
+
+// Glass Mode Variants - Prominent
+export const GlassModeProminent: Story = {
+  render: args => (
+    <div
+      style={{
+        backgroundImage: 'url(https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        height: '95vh',
+        width: '95vw',
+        padding: '3rem',
+        borderRadius: '12px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '2rem',
+      }}
+    >
+      <div style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Prominent Glass Mode</h3>
+        <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>Enhanced distortion with maximum depth</p>
+      </div>
+      <Card
+        className="u-w-50"
+        title="Prominent Glass Card"
+        text="This card uses the prominent glass mode with enhanced distortion and maximum visual depth."
+        image="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800"
+        imageAlt="Prominent glass"
+        glass={{
+          mode: 'prominent',
+          displacementScale: 100,
+          blurAmount: 2.5,
+          saturation: 200,
+          aberrationIntensity: 4,
+          elasticity: 0,
+        }}
+        actions={
+          <React.Fragment>
+            <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
+            <button className="c-btn c-btn--secondary c-btn--sm">Details</button>
+          </React.Fragment>
+        }
+      />
+    </div>
+  ),
+};
+
+// Glass Mode Variants - Shader
+export const GlassModeShader: Story = {
+  render: args => (
+    <div
+      style={{
+        backgroundImage: 'url(https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        height: '95vh',
+        width: '95vw',
+        padding: '3rem',
+        borderRadius: '12px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '2rem',
+      }}
+    >
+      <div style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Shader Glass Mode</h3>
+        <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>GPU-accelerated liquid glass effect</p>
+      </div>
+      <Card
+        className="u-w-50"
+        title="Shader Glass Card"
+        text="This card uses the shader glass mode with GPU-accelerated liquid glass effects."
+        image="https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=800"
+        imageAlt="Shader glass"
+        glass={{
+          mode: 'shader',
+          shaderVariant: 'liquidGlass',
+          displacementScale: 70,
+          blurAmount: 1.8,
+          saturation: 170,
+          elasticity: 0,
+        }}
+        actions={
+          <React.Fragment>
+            <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
+            <button className="c-btn c-btn--secondary c-btn--sm">Details</button>
+          </React.Fragment>
+        }
+      />
+    </div>
+  ),
+};
+
+// All Glass Modes Comparison
+export const AllGlassModesComparison: Story = {
+  render: () => (
+    <div
+      style={{
+        backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '3rem',
+        borderRadius: '12px',
+        minHeight: '95vh',
+        overflow: 'auto',
+      }}
+    >
+      <Container>
+        <h2
+          style={{
+            textAlign: 'center',
+            color: 'white',
+            marginBottom: '3rem',
+            fontSize: '2rem',
+            textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+          }}
+        >
+          Glass Mode Cards Comparison
+        </h2>
+
+        <Grid alignItems="stretch">
+          <GridCol sm={6} lg={3} className="u-mb-4">
+            <Card
+              title="Standard Glass"
+              text="Classic blur and displacement effects for a refined glass appearance."
+              image="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400"
+              imageAlt="Standard"
+              glass={{
+                mode: 'standard',
+                displacementScale: 60,
+                blurAmount: 2,
+                saturation: 160,
+                aberrationIntensity: 2,
+              }}
+              actions={<button className="c-btn c-btn--primary c-btn--sm">View</button>}
+            />
+          </GridCol>
+
+          <GridCol sm={6} lg={3} className="u-mb-4">
+            <Card
+              title="Polar Glass"
+              text="Radial distortion effects emanating from the center point."
+              image="https://images.unsplash.com/photo-1557683316-973673baf926?w=400"
+              imageAlt="Polar"
+              glass={{
+                mode: 'polar',
+                displacementScale: 80,
+                blurAmount: 1.5,
+                saturation: 180,
+                aberrationIntensity: 3,
+              }}
+              actions={<button className="c-btn c-btn--secondary c-btn--sm">View</button>}
+            />
+          </GridCol>
+
+          <GridCol sm={6} lg={3} className="u-mb-4">
+            <Card
+              title="Prominent Glass"
+              text="Enhanced distortion with maximum depth and visual impact."
+              image="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400"
+              imageAlt="Prominent"
+              glass={{
+                mode: 'prominent',
+                displacementScale: 100,
+                blurAmount: 2.5,
+                saturation: 200,
+                aberrationIntensity: 4,
+              }}
+              actions={<button className="c-btn c-btn--success c-btn--sm">View</button>}
+            />
+          </GridCol>
+
+          <GridCol sm={6} lg={3} className="u-mb-4">
+            <Card
+              title="Shader Glass"
+              text="GPU-accelerated liquid glass with smooth animations."
+              image="https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=400"
+              imageAlt="Shader"
+              glass={{
+                mode: 'shader',
+                shaderVariant: 'liquidGlass',
+                displacementScale: 70,
+                blurAmount: 1.8,
+                saturation: 170,
+              }}
+              actions={<button className="c-btn c-btn--info c-btn--sm">View</button>}
+            />
+          </GridCol>
+        </Grid>
+      </Container>
+    </div>
+  ),
+};
+
+// Glass Card Gallery
+export const GlassCardGallery: Story = {
+  render: () => (
+    <div
+      style={{
+        backgroundImage: 'url(https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '3rem',
+        borderRadius: '12px',
+        minHeight: '95vh',
+        minWidth: '95vw',
+        overflow: 'auto',
+      }}
+    >
+      <Container>
+        <h2
+          style={{
+            textAlign: 'center',
+            color: 'white',
+            marginBottom: '3rem',
+            fontSize: '2rem',
+            textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+          }}
+        >
+          Glass Card Gallery
+        </h2>
+
+        <Grid alignItems="stretch">
+          <GridCol sm={6} lg={4} className="u-mb-4">
+            <Card
+              title="Nature Photography"
+              text="Explore breathtaking landscapes and natural wonders from around the world."
+              image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600"
+              imageAlt="Nature"
+              glass={true}
+              actions={
+                <React.Fragment>
+                  <button className="c-btn c-btn--primary c-btn--sm">Explore</button>
+                  <button className="c-btn c-btn--outline-primary c-btn--sm">Save</button>
+                </React.Fragment>
+              }
+            />
+          </GridCol>
+
+          <GridCol sm={6} lg={4} className="u-mb-4">
+            <Card
+              title="Urban Architecture"
+              text="Discover modern architectural designs and city landscapes."
+              image="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=600"
+              imageAlt="Architecture"
+              glass={true}
+              actions={
+                <React.Fragment>
+                  <button className="c-btn c-btn--secondary c-btn--sm">Explore</button>
+                  <button className="c-btn c-btn--outline-secondary c-btn--sm">Save</button>
+                </React.Fragment>
+              }
+            />
+          </GridCol>
+
+          <GridCol sm={6} lg={4} className="u-mb-4">
+            <Card
+              title="Abstract Art"
+              text="Experience vibrant colors and unique artistic expressions."
+              image="https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=600"
+              imageAlt="Abstract"
+              glass={true}
+              actions={
+                <React.Fragment>
+                  <button className="c-btn c-btn--success c-btn--sm">Explore</button>
+                  <button className="c-btn c-btn--outline-success c-btn--sm">Save</button>
+                </React.Fragment>
+              }
+            />
+          </GridCol>
+
+          <GridCol sm={6} lg={4} className="u-mb-4">
+            <Card
+              title="Ocean Views"
+              text="Dive into serene ocean scenes and coastal beauty."
+              image="https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=600"
+              imageAlt="Ocean"
+              glass={{
+                mode: 'polar',
+                displacementScale: 70,
+                blurAmount: 2,
+              }}
+              actions={
+                <React.Fragment>
+                  <button className="c-btn c-btn--info c-btn--sm">Explore</button>
+                  <button className="c-btn c-btn--outline-info c-btn--sm">Save</button>
+                </React.Fragment>
+              }
+            />
+          </GridCol>
+
+          <GridCol sm={6} lg={4} className="u-mb-4">
+            <Card
+              title="Mountain Peaks"
+              text="Scale the heights with stunning mountain photography."
+              image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600"
+              imageAlt="Mountains"
+              glass={{
+                mode: 'prominent',
+                displacementScale: 90,
+              }}
+              actions={
+                <React.Fragment>
+                  <button className="c-btn c-btn--warning c-btn--sm">Explore</button>
+                  <button className="c-btn c-btn--outline-warning c-btn--sm">Save</button>
+                </React.Fragment>
+              }
+            />
+          </GridCol>
+
+          <GridCol sm={6} lg={4} className="u-mb-4">
+            <Card
+              title="Night Sky"
+              text="Gaze at the stars and celestial wonders above."
+              image="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600"
+              imageAlt="Night Sky"
+              glass={{
+                mode: 'shader',
+                shaderVariant: 'liquidGlass',
+              }}
+              actions={
+                <React.Fragment>
+                  <button className="c-btn c-btn--dark c-btn--sm">Explore</button>
+                  <button className="c-btn c-btn--outline-dark c-btn--sm">Save</button>
+                </React.Fragment>
+              }
+            />
+          </GridCol>
+        </Grid>
+      </Container>
+    </div>
+  ),
+};
+
+// Glass Card Layouts
+export const GlassCardLayouts: Story = {
+  render: () => (
+    <div
+      style={{
+        backgroundImage: 'url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '3rem',
+        borderRadius: '12px',
+        minHeight: '95vh',
+        minWidth: '95vw',
+        overflow: 'auto',
+      }}
+    >
+      <Container>
+        <h2
+          style={{
+            textAlign: 'center',
+            color: 'white',
+            marginBottom: '3rem',
+            fontSize: '2rem',
+            textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+          }}
+        >
+          Glass Card Layouts
+        </h2>
+
+        <div style={{ display: 'flex', gap: '2rem' }}>
+          {/* Standard Layout */}
+          <div className="u-w-50">
+            <h3
+              style={{
+                color: 'white',
+                marginBottom: '1rem',
+                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+              }}
+            >
+              Standard Layout
+            </h3>
+            <Card
+              title="Standard Glass Card"
+              text="This is a standard glass card with vertical layout."
+              image="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800"
+              imageAlt="Standard"
+              glass={true}
+              actions={
+                <React.Fragment>
+                  <button className="c-btn c-btn--primary c-btn--sm">Action</button>
+                  <button className="c-btn c-btn--outline-primary c-btn--sm">Cancel</button>
+                </React.Fragment>
+              }
+            />
+          </div>
+
+          {/* Row Layout */}
+          <div className="u-w-50">
+            <h3
+              style={{
+                color: 'white',
+                marginBottom: '1rem',
+                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+              }}
+            >
+              Row Layout
+            </h3>
+            <Card
+              title="Row Glass Card"
+              text="This is a row glass card with horizontal layout."
+              image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800"
+              imageAlt="Row"
+              row={true}
+              glass={{
+                mode: 'polar',
+                displacementScale: 60,
+                elasticity: 0,
+              }}
+              actions={
+                <React.Fragment>
+                  <button className="c-btn c-btn--secondary c-btn--sm">Action</button>
+                  <button className="c-btn c-btn--outline-secondary c-btn--sm">Cancel</button>
+                </React.Fragment>
+              }
+            />
+          </div>
+
+          {/* Flat Layout */}
+          <div className="u-w-50">
+            <h3
+              style={{
+                color: 'white',
+                marginBottom: '1rem',
+                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+              }}
+            >
+              Flat Layout
+            </h3>
+            <Card
+              title="Flat Glass Card"
+              text="This is a flat glass card with edge-to-edge image."
+              image="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800"
+              imageAlt="Flat"
+              flat={true}
+              glass={{
+                mode: 'shader',
+                shaderVariant: 'liquidGlass',
+                elasticity: 0,
+              }}
+              actions={
+                <React.Fragment>
+                  <button className="c-btn c-btn--success c-btn--sm">Action</button>
+                  <button className="c-btn c-btn--outline-success c-btn--sm">Cancel</button>
+                </React.Fragment>
+              }
+            />
+          </div>
+        </div>
+      </Container>
+    </div>
+  ),
 };

@@ -17,6 +17,11 @@ import type { RefObject } from 'react';
 import { Button } from '../Button/Button';
 import { Card } from '../Card/Card';
 import { Callout } from '../Callout/Callout';
+import {
+  BackgroundWrapper as SharedBackgroundWrapper,
+  backgrounds,
+  backgroundImages as sharedBackgroundImages,
+} from './stories/shared-components';
 
 /**
  * Comprehensive meta configuration combining features from both stories
@@ -477,7 +482,7 @@ export const ComprehensiveShowcase: Story = {
                         onClick={() => setSelectedMode(mode.id as any)}
                       >
                         <div className="u-text-center">
-                          <Callout variant="success" glass oneLine className='u-mb-2'>
+                          <Callout variant="success" glass oneLine className="u-mb-2">
                             <h4>✨ {mode.name} Mode</h4>
                           </Callout>
 
@@ -1155,40 +1160,466 @@ export const ComprehensiveShowcase: Story = {
         story: `
 # Comprehensive AtomixGlass Showcase
 
-This comprehensive preview combines the best features from multiple AtomixGlass story implementations, providing:
+This comprehensive preview combines the best features from multiple AtomixGlass story implementations, providing a complete exploration of all capabilities.
 
 ## 🏠 Overview Section
-- Hero introduction with feature highlights
-- Key capabilities grid showcase
-- Visual feature demonstration
+- Hero introduction with gradient text effects
+- Feature grid with icon highlights
+- Call-to-action buttons and navigation
 
 ## 🎨 Modes Section
-- All 4 glass modes side-by-side
-- Interactive mode selection
-- Settings comparison
+- All 4 glass modes demonstrated with optimal settings
+- Interactive mode selection with visual feedback
+- Real-time settings comparison displays
 
 ## 🖱️ Interactive Section
-- Real-time mouse tracking
-- Dynamic displacement effects
-- Live parameter display
+- Real-time mouse tracking with position display
+- Dynamic displacement effects based on cursor movement
+- Live parameter updates and mode switching
 
 ## 📱 Applications Section
-- Mobile interface examples
-- Desktop application demos
-- Apple-inspired designs
+- Mobile interface examples with responsive designs
+- Desktop application UI demonstrations
+- Apple-inspired premium interface patterns
 
 ## 🎮 Playground Section
-- Live customization controls
-- Real-time preview updates
-- Reset to defaults functionality
+- Comprehensive live customization controls
+- Real-time visual preview updates
+- Quick reset to default configuration
+- All parameters adjustable via range sliders
 
 ## ⚡ Performance Section
-- Optimization configurations
-- Best practices guide
-- Accessibility considerations
+- Three optimization tiers: High Performance, Balanced, High Quality
+- Configuration recommendations for different use cases
+- Best practices for mobile and desktop deployments
+- Accessibility considerations and guidelines
 
-Navigate between sections using the floating navigation bar to explore all AtomixGlass capabilities.
+Navigate between sections using the floating navigation bar at the top to explore all AtomixGlass capabilities in detail.
         `,
+      },
+    },
+    layout: 'fullscreen',
+  },
+};
+
+/**
+ * Production-Ready UI Examples
+ *
+ * Real-world interface patterns using AtomixGlass in production scenarios.
+ */
+export const ProductionExamples: Story = {
+  render: () => (
+    <BackgroundWrapper
+      backgroundIndex={2}
+      height="auto"
+      style={{ minHeight: '100vh', paddingBottom: '4rem' }}
+    >
+      <div className="u-pt-20 u-pb-16 u-px-5">
+        <div className="o-container">
+          <div className="u-text-center u-mb-12">
+            <h2
+              className="u-mb-5 u-fw-bold u-text-white"
+              style={{ fontSize: '3rem', textShadow: '0 2px 20px rgba(0,0,0,0.5)' }}
+            >
+              Production UI Examples
+            </h2>
+            <p
+              className="u-text-lg u-opacity-90 u-text-white u-mx-auto"
+              style={{ maxWidth: '700px', fontSize: '1.25rem' }}
+            >
+              Real-world interface patterns built with AtomixGlass for modern applications
+            </p>
+          </div>
+
+          {/* Dashboard Cards */}
+          <div className="u-mb-16">
+            <h3 className="u-mb-6 u-text-white u-fw-semibold" style={{ fontSize: '2rem' }}>
+              Dashboard Cards
+            </h3>
+            <div className="o-grid">
+              <div className="o-grid__row">
+                {[
+                  {
+                    icon: '📊',
+                    title: 'Analytics',
+                    value: '24,531',
+                    change: '+12.5%',
+                    color: '#3B82F6',
+                  },
+                  {
+                    icon: '👥',
+                    title: 'Active Users',
+                    value: '8,429',
+                    change: '+5.2%',
+                    color: '#10B981',
+                  },
+                  {
+                    icon: '💰',
+                    title: 'Revenue',
+                    value: '$47,293',
+                    change: '+18.4%',
+                    color: '#8B5CF6',
+                  },
+                  {
+                    icon: '📈',
+                    title: 'Growth Rate',
+                    value: '23.8%',
+                    change: '+3.1%',
+                    color: '#F59E0B',
+                  },
+                ].map((stat, index) => (
+                  <div
+                    key={index}
+                    className="o-grid__col o-grid__col--12 o-grid__col--6@md o-grid__col--3@lg u-mb-8"
+                  >
+                    <AtomixGlass
+                      displacementScale={100}
+                      blurAmount={0}
+                      saturation={140}
+                      aberrationIntensity={1.5}
+                      cornerRadius={20}
+                      elasticity={0.2}
+                    >
+                      <div className="u-p-6">
+                        <div className="u-d-flex u-justify-content-between u-align-items-start u-mb-4">
+                          <div style={{ fontSize: '2.5rem', opacity: 0.9 }}>{stat.icon}</div>
+                          <span
+                            className="u-fs-sm u-fw-semibold"
+                            style={{
+                              color: '#10B981',
+                              padding: '4px 12px',
+                              borderRadius: '12px',
+                              background: 'rgba(16, 185, 129, 0.2)',
+                            }}
+                          >
+                            {stat.change}
+                          </span>
+                        </div>
+                        <h4 className="u-mb-2 u-text-white u-opacity-80 u-fs-sm">{stat.title}</h4>
+                        <p className="u-mb-0 u-fw-bold u-text-white" style={{ fontSize: '2rem' }}>
+                          {stat.value}
+                        </p>
+                      </div>
+                    </AtomixGlass>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Pricing Cards */}
+          <div className="u-mb-16">
+            <h3 className="u-mb-6 u-text-white u-fw-semibold" style={{ fontSize: '2rem' }}>
+              Pricing Tables
+            </h3>
+            <div className="o-grid">
+              <div className="o-grid__row">
+                {[
+                  {
+                    name: 'Starter',
+                    price: '$19',
+                    features: ['5 Projects', '10GB Storage', 'Basic Support'],
+                    highlight: false,
+                  },
+                  {
+                    name: 'Professional',
+                    price: '$49',
+                    features: ['20 Projects', '100GB Storage', 'Priority Support', 'API Access'],
+                    highlight: true,
+                  },
+                  {
+                    name: 'Enterprise',
+                    price: '$99',
+                    features: [
+                      'Unlimited Projects',
+                      '1TB Storage',
+                      '24/7 Support',
+                      'Advanced API',
+                      'Custom Domain',
+                    ],
+                    highlight: false,
+                  },
+                ].map((plan, index) => (
+                  <div key={index} className="o-grid__col o-grid__col--12 o-grid__col--4@lg u-mb-8">
+                    <AtomixGlass
+                      displacementScale={plan.highlight ? 150 : 100}
+                      blurAmount={0}
+                      saturation={plan.highlight ? 160 : 130}
+                      aberrationIntensity={plan.highlight ? 3 : 1.5}
+                      cornerRadius={24}
+                      elasticity={0.2}
+                      style={{
+                        transform: plan.highlight ? 'scale(1.05)' : 'scale(1)',
+                        transition: 'transform 0.3s',
+                      }}
+                    >
+                      <div className="u-p-8 u-text-center">
+                        {plan.highlight && (
+                          <div className="u-mb-3">
+                            <span
+                              style={{
+                                padding: '6px 16px',
+                                borderRadius: '20px',
+                                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                color: 'white',
+                                fontSize: '0.875rem',
+                                fontWeight: 600,
+                              }}
+                            >
+                              MOST POPULAR
+                            </span>
+                          </div>
+                        )}
+                        <h4
+                          className="u-mb-3 u-text-white u-fw-semibold"
+                          style={{ fontSize: '1.5rem' }}
+                        >
+                          {plan.name}
+                        </h4>
+                        <div className="u-mb-6">
+                          <span className="u-fw-bold u-text-white" style={{ fontSize: '3rem' }}>
+                            {plan.price}
+                          </span>
+                          <span className="u-text-white u-opacity-70">/month</span>
+                        </div>
+                        <ul className="u-mb-6 u-ps-0" style={{ listStyle: 'none' }}>
+                          {plan.features.map((feature, i) => (
+                            <li key={i} className="u-mb-2 u-text-white u-opacity-90">
+                              ✓ {feature}
+                            </li>
+                          ))}
+                        </ul>
+                        <Button
+                          variant={plan.highlight ? 'primary' : 'outline-light'}
+                          size="md"
+                          style={{ width: '100%' }}
+                        >
+                          Get Started
+                        </Button>
+                      </div>
+                    </AtomixGlass>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation Menu */}
+          <div>
+            <h3 className="u-mb-6 u-text-white u-fw-semibold" style={{ fontSize: '2rem' }}>
+              Navigation Components
+            </h3>
+            <AtomixGlass
+              displacementScale={80}
+              blurAmount={0}
+              saturation={130}
+              aberrationIntensity={1.2}
+              cornerRadius={16}
+            >
+              <div className="u-p-2" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {['Home', 'Features', 'Pricing', 'Documentation', 'Blog', 'Contact'].map(
+                  (item, index) => (
+                    <Button key={index} variant={index === 0 ? 'primary' : 'ghost'} size="md">
+                      {item}
+                    </Button>
+                  )
+                )}
+              </div>
+            </AtomixGlass>
+          </div>
+        </div>
+      </div>
+    </BackgroundWrapper>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Production-ready UI examples demonstrating AtomixGlass in real-world interface patterns including dashboard cards, pricing tables, and navigation components.',
+      },
+    },
+    layout: 'fullscreen',
+  },
+};
+
+/**
+ * Accessibility Features Demonstration
+ *
+ * Shows how AtomixGlass supports accessibility features and WCAG compliance.
+ */
+export const AccessibilityShowcase: Story = {
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [reducedMotion, setReducedMotion] = useState(false);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [highContrast, setHighContrast] = useState(false);
+
+    return (
+      <BackgroundWrapper backgroundIndex={0} height="auto" style={{ minHeight: '100vh' }}>
+        <div className="u-pt-20 u-pb-16 u-px-5">
+          <div className="o-container" style={{ maxWidth: '1200px' }}>
+            <div className="u-text-center u-mb-12">
+              <h2 className="u-mb-5 u-fw-bold u-text-white" style={{ fontSize: '3rem' }}>
+                Accessibility Features
+              </h2>
+              <p
+                className="u-text-lg u-opacity-90 u-text-white u-mx-auto"
+                style={{ maxWidth: '700px' }}
+              >
+                AtomixGlass is designed with accessibility in mind, supporting WCAG 2.1 AA standards
+              </p>
+            </div>
+
+            {/* Controls */}
+            <div className="u-mb-12 u-d-flex u-justify-content-center u-gap-4 u-flex-wrap">
+              <AtomixGlass displacementScale={60} aberrationIntensity={0.5} cornerRadius={12}>
+                <Button
+                  variant={reducedMotion ? 'primary' : 'outline-light'}
+                  onClick={() => setReducedMotion(!reducedMotion)}
+                  size="md"
+                >
+                  {reducedMotion ? '✓ ' : ''}Reduced Motion
+                </Button>
+              </AtomixGlass>
+              <AtomixGlass displacementScale={60} aberrationIntensity={0.5} cornerRadius={12}>
+                <Button
+                  variant={highContrast ? 'primary' : 'outline-light'}
+                  onClick={() => setHighContrast(!highContrast)}
+                  size="md"
+                >
+                  {highContrast ? '✓ ' : ''}High Contrast
+                </Button>
+              </AtomixGlass>
+            </div>
+
+            {/* Accessibility Examples */}
+            <div className="o-grid">
+              <div className="o-grid__row">
+                {/* Reduced Motion Example */}
+                <div className="o-grid__col o-grid__col--12 o-grid__col--6@lg u-mb-8">
+                  <AtomixGlass
+                    displacementScale={reducedMotion ? 40 : 100}
+                    aberrationIntensity={reducedMotion ? 0.5 : 2}
+                    saturation={130}
+                    cornerRadius={20}
+                    elasticity={reducedMotion ? 0 : 0.2}
+                  >
+                    <div className="u-p-8">
+                      <h3
+                        className="u-mb-4 u-text-white u-fw-semibold"
+                        style={{ fontSize: '1.5rem' }}
+                      >
+                        ♿ Reduced Motion Support
+                      </h3>
+                      <p className="u-mb-4 u-opacity-90" style={{ lineHeight: 1.6 }}>
+                        When reduced motion is enabled, glass effects are minimized to reduce visual
+                        discomfort:
+                      </p>
+                      <ul className="u-ps-5" style={{ lineHeight: 1.8 }}>
+                        <li>Lower displacement scale (40 vs 100)</li>
+                        <li>Reduced aberration intensity (0.5 vs 2)</li>
+                        <li>Disabled elasticity animations</li>
+                        <li>Respects prefers-reduced-motion CSS media query</li>
+                      </ul>
+                    </div>
+                  </AtomixGlass>
+                </div>
+
+                {/* High Contrast Example */}
+                <div className="o-grid__col o-grid__col--12 o-grid__col--6@lg u-mb-8">
+                  <AtomixGlass
+                    displacementScale={100}
+                    aberrationIntensity={highContrast ? 0 : 2}
+                    saturation={highContrast ? 100 : 140}
+                    cornerRadius={20}
+                    overLight={highContrast}
+                  >
+                    <div className="u-p-8">
+                      <h3
+                        className="u-mb-4 u-fw-semibold"
+                        style={{ fontSize: '1.5rem', color: highContrast ? '#000' : '#fff' }}
+                      >
+                        👁️ High Contrast Mode
+                      </h3>
+                      <p
+                        className="u-mb-4"
+                        style={{
+                          lineHeight: 1.6,
+                          opacity: highContrast ? 1 : 0.9,
+                          color: highContrast ? '#000' : '#fff',
+                        }}
+                      >
+                        High contrast mode enhances readability by adjusting visual effects:
+                      </p>
+                      <ul
+                        className="u-ps-5"
+                        style={{ lineHeight: 1.8, color: highContrast ? '#000' : '#fff' }}
+                      >
+                        <li>Removes chromatic aberration</li>
+                        <li>Normalizes color saturation</li>
+                        <li>Optimized text contrast ratios</li>
+                        <li>WCAG AAA compliance for text</li>
+                      </ul>
+                    </div>
+                  </AtomixGlass>
+                </div>
+
+                {/* Keyboard Navigation */}
+                <div className="o-grid__col o-grid__col--12 u-mb-8">
+                  <AtomixGlass
+                    displacementScale={100}
+                    aberrationIntensity={1.5}
+                    saturation={140}
+                    cornerRadius={20}
+                  >
+                    <div className="u-p-8">
+                      <h3
+                        className="u-mb-4 u-text-white u-fw-semibold"
+                        style={{ fontSize: '1.5rem' }}
+                      >
+                        ⌨️ Keyboard Navigation & Screen Reader Support
+                      </h3>
+                      <div className="o-grid">
+                        <div className="o-grid__row">
+                          <div className="o-grid__col o-grid__col--12 o-grid__col--6@md">
+                            <p className="u-mb-4 u-opacity-90" style={{ lineHeight: 1.6 }}>
+                              All interactive elements are fully keyboard accessible:
+                            </p>
+                            <ul className="u-ps-5 u-mb-4" style={{ lineHeight: 1.8 }}>
+                              <li>Tab navigation support</li>
+                              <li>Focus indicators preserved</li>
+                              <li>Enter/Space activation</li>
+                              <li>Escape to close modals</li>
+                            </ul>
+                          </div>
+                          <div className="o-grid__col o-grid__col--12 o-grid__col--6@md">
+                            <p className="u-mb-4 u-opacity-90" style={{ lineHeight: 1.6 }}>
+                              Screen reader compatibility ensures inclusive access:
+                            </p>
+                            <ul className="u-ps-5" style={{ lineHeight: 1.8 }}>
+                              <li>Proper ARIA labels</li>
+                              <li>Semantic HTML structure</li>
+                              <li>Descriptive alt text</li>
+                              <li>Live region announcements</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </AtomixGlass>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </BackgroundWrapper>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Comprehensive accessibility features demonstration including reduced motion support, high contrast mode, keyboard navigation, and screen reader compatibility following WCAG 2.1 AA standards.',
       },
     },
     layout: 'fullscreen',
@@ -1323,5 +1754,721 @@ export const InteractiveDemo: Story = {
         story: 'Interactive demonstration with real-time mouse tracking and live position display.',
       },
     },
+  },
+};
+
+/**
+ * Advanced Playground - Enhanced playground with presets and code export
+ *
+ * Professional-grade interactive configuration tool with preset management,
+ * code generation, and performance monitoring.
+ */
+export const AdvancedPlayground: Story = {
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [settings, setSettings] = useState({
+      displacementScale: 120,
+      blurAmount: 0,
+      saturation: 140,
+      aberrationIntensity: 2,
+      elasticity: 0.15,
+      cornerRadius: 20,
+      overLight: false,
+    });
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [selectedMode, setSelectedMode] = useState<'standard' | 'polar' | 'prominent' | 'shader'>(
+      'standard'
+    );
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [showCode, setShowCode] = useState(false);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [copiedCode, setCopiedCode] = useState(false);
+
+    const presets = {
+      minimal: {
+        name: 'Minimal',
+        icon: '🌿',
+        settings: {
+          displacementScale: 40,
+          blurAmount: 0,
+          saturation: 110,
+          aberrationIntensity: 0.5,
+          elasticity: 0.05,
+          cornerRadius: 12,
+          overLight: false,
+        },
+        mode: 'standard' as const,
+      },
+      standard: {
+        name: 'Standard',
+        icon: '⚖️',
+        settings: {
+          displacementScale: 120,
+          blurAmount: 0,
+          saturation: 140,
+          aberrationIntensity: 2,
+          elasticity: 0.15,
+          cornerRadius: 20,
+          overLight: false,
+        },
+        mode: 'standard' as const,
+      },
+      premium: {
+        name: 'Premium',
+        icon: '💎',
+        settings: {
+          displacementScale: 180,
+          blurAmount: 0,
+          saturation: 170,
+          aberrationIntensity: 3.5,
+          elasticity: 0.25,
+          cornerRadius: 28,
+          overLight: false,
+        },
+        mode: 'prominent' as const,
+      },
+      dramatic: {
+        name: 'Dramatic',
+        icon: '🎭',
+        settings: {
+          displacementScale: 200,
+          blurAmount: 0,
+          saturation: 200,
+          aberrationIntensity: 5,
+          elasticity: 0.35,
+          cornerRadius: 32,
+          overLight: false,
+        },
+        mode: 'shader' as const,
+      },
+    };
+
+    const applyPreset = (presetKey: keyof typeof presets) => {
+      const preset = presets[presetKey];
+      setSettings(preset.settings);
+      setSelectedMode(preset.mode);
+    };
+
+    const generateCode = () => {
+      return `<AtomixGlass
+  displacementScale={${settings.displacementScale}}
+  blurAmount={${settings.blurAmount}}
+  saturation={${settings.saturation}}
+  aberrationIntensity={${settings.aberrationIntensity}}
+  elasticity={${settings.elasticity}}
+  cornerRadius={${settings.cornerRadius}}
+  overLight={${settings.overLight}}
+  mode="${selectedMode}"
+>
+  <div className="your-content">
+    {/* Your content here */}
+  </div>
+</AtomixGlass>`;
+    };
+
+    const copyCode = () => {
+      navigator.clipboard.writeText(generateCode());
+      setCopiedCode(true);
+      setTimeout(() => setCopiedCode(false), 2000);
+    };
+
+    const exportConfig = () => {
+      const config = { ...settings, mode: selectedMode };
+      const dataStr = JSON.stringify(config, null, 2);
+      const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+      const exportFileDefaultName = 'atomix-glass-config.json';
+
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click();
+    };
+
+    // Calculate performance score
+    const performanceScore = Math.max(
+      0,
+      Math.min(
+        100,
+        100 -
+          settings.displacementScale * 0.15 -
+          Math.abs(settings.blurAmount) * 20 -
+          settings.aberrationIntensity * 3 -
+          settings.elasticity * 20
+      )
+    );
+
+    const getPerformanceColor = () => {
+      if (performanceScore >= 80) return '#10B981';
+      if (performanceScore >= 60) return '#F59E0B';
+      return '#EF4444';
+    };
+
+    const getPerformanceLabel = () => {
+      if (performanceScore >= 80) return 'Excellent';
+      if (performanceScore >= 60) return 'Good';
+      if (performanceScore >= 40) return 'Fair';
+      return 'Heavy';
+    };
+
+    return (
+      <BackgroundWrapper backgroundIndex={1} height="100vh" style={{ overflow: 'hidden' }}>
+        <div style={{ display: 'flex', height: '100vh' }}>
+          {/* Control Panel */}
+          <div
+            style={{
+              width: '420px',
+              height: '100vh',
+              overflowY: 'auto',
+              background: 'rgba(0, 0, 0, 0.9)',
+              backdropFilter: 'blur(20px)',
+              padding: '2rem',
+              borderRight: '1px solid rgba(255,255,255,0.1)',
+            }}
+          >
+            <div className="u-mb-8">
+              <h2 className="u-mb-2 u-text-white u-fw-bold" style={{ fontSize: '2rem' }}>
+                Advanced Playground
+              </h2>
+              <p className="u-text-white u-opacity-70 u-fs-sm">
+                Fine-tune every parameter with live preview
+              </p>
+            </div>
+
+            {/* Performance Indicator */}
+            <div
+              className="u-mb-6 u-p-4 u-rounded"
+              style={{
+                background: 'rgba(255,255,255,0.05)',
+                border: `2px solid ${getPerformanceColor()}`,
+              }}
+            >
+              <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-2">
+                <span className="u-text-white u-fw-semibold">Performance Score</span>
+                <span className="u-fw-bold" style={{ color: getPerformanceColor() }}>
+                  {Math.round(performanceScore)}/100
+                </span>
+              </div>
+              <div
+                style={{
+                  height: '8px',
+                  background: 'rgba(255,255,255,0.1)',
+                  borderRadius: '4px',
+                  overflow: 'hidden',
+                }}
+              >
+                <div
+                  style={{
+                    height: '100%',
+                    width: `${performanceScore}%`,
+                    background: getPerformanceColor(),
+                    transition: 'all 0.3s',
+                  }}
+                />
+              </div>
+              <div
+                className="u-mt-2 u-text-center u-fs-xs"
+                style={{ color: getPerformanceColor() }}
+              >
+                {getPerformanceLabel()} -{' '}
+                {performanceScore >= 80
+                  ? 'Suitable for all devices'
+                  : performanceScore >= 60
+                    ? 'Good for modern devices'
+                    : 'Best for high-end hardware'}
+              </div>
+            </div>
+
+            {/* Quick Presets */}
+            <div className="u-mb-6">
+              <label className="u-d-block u-mb-3 u-text-white u-fw-semibold">Quick Presets</label>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                {Object.entries(presets).map(([key, preset]) => (
+                  <button
+                    key={key}
+                    onClick={() => applyPreset(key as keyof typeof presets)}
+                    style={{
+                      padding: '12px',
+                      background: 'rgba(255,255,255,0.1)',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      borderRadius: '12px',
+                      color: 'white',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      textAlign: 'center',
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+                    }}
+                  >
+                    <div style={{ fontSize: '1.5rem', marginBottom: '4px' }}>{preset.icon}</div>
+                    <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{preset.name}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Controls */}
+            {Object.entries(settings).map(([key, value]) => (
+              <div key={key} className="u-mb-5">
+                <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-2">
+                  <label
+                    className="u-text-white u-fs-sm u-fw-medium"
+                    style={{ textTransform: 'capitalize' }}
+                  >
+                    {key.replace(/([A-Z])/g, ' $1').trim()}
+                  </label>
+                  <span className="u-text-white u-opacity-80 u-fs-sm u-fw-semibold">
+                    {typeof value === 'boolean'
+                      ? value
+                        ? 'On'
+                        : 'Off'
+                      : typeof value === 'number'
+                        ? value.toFixed(
+                            key.includes('Amount') ||
+                              key.includes('elasticity') ||
+                              key.includes('aberration')
+                              ? 2
+                              : 0
+                          )
+                        : value}
+                  </span>
+                </div>
+                {typeof value === 'boolean' ? (
+                  <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={value}
+                      onChange={e => setSettings(prev => ({ ...prev, [key]: e.target.checked }))}
+                      style={{ width: '1.25rem', height: '1.25rem', cursor: 'pointer' }}
+                    />
+                  </label>
+                ) : (
+                  <input
+                    type="range"
+                    min={key === 'blurAmount' ? -1 : 0}
+                    max={
+                      key === 'displacementScale'
+                        ? 200
+                        : key === 'saturation'
+                          ? 300
+                          : key === 'aberrationIntensity'
+                            ? 10
+                            : key === 'cornerRadius'
+                              ? 100
+                              : 1
+                    }
+                    step={
+                      key === 'aberrationIntensity' || key === 'elasticity' || key === 'blurAmount'
+                        ? 0.01
+                        : 1
+                    }
+                    value={value as number}
+                    onChange={e =>
+                      setSettings(prev => ({ ...prev, [key]: parseFloat(e.target.value) }))
+                    }
+                    style={{ width: '100%', height: '6px', accentColor: '#7AFFD7' }}
+                  />
+                )}
+              </div>
+            ))}
+
+            {/* Mode Selector */}
+            <div className="u-mb-6">
+              <label className="u-d-block u-mb-2 u-text-white u-fw-semibold">Glass Mode</label>
+              <select
+                value={selectedMode}
+                onChange={e => setSelectedMode(e.target.value as any)}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  background: 'rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: '8px',
+                  color: 'white',
+                  fontSize: '1rem',
+                }}
+              >
+                <option value="standard" style={{ background: '#1a1a1a' }}>
+                  Standard
+                </option>
+                <option value="polar" style={{ background: '#1a1a1a' }}>
+                  Polar
+                </option>
+                <option value="prominent" style={{ background: '#1a1a1a' }}>
+                  Prominent
+                </option>
+                <option value="shader" style={{ background: '#1a1a1a' }}>
+                  Shader
+                </option>
+              </select>
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <Button
+                variant="primary"
+                size="md"
+                onClick={() => setShowCode(!showCode)}
+                style={{ width: '100%' }}
+              >
+                {showCode ? '👁️ Hide Code' : '💻 Show Code'}
+              </Button>
+              <Button
+                variant="outline-light"
+                size="md"
+                onClick={copyCode}
+                style={{ width: '100%' }}
+              >
+                {copiedCode ? '✓ Copied!' : '📋 Copy Code'}
+              </Button>
+              <Button
+                variant="outline-light"
+                size="md"
+                onClick={exportConfig}
+                style={{ width: '100%' }}
+              >
+                💾 Export Config
+              </Button>
+              <Button
+                variant="ghost"
+                size="md"
+                onClick={() => {
+                  setSettings({
+                    displacementScale: 120,
+                    blurAmount: 0,
+                    saturation: 140,
+                    aberrationIntensity: 2,
+                    elasticity: 0.15,
+                    cornerRadius: 20,
+                    overLight: false,
+                  });
+                  setSelectedMode('standard');
+                }}
+                style={{ width: '100%' }}
+              >
+                🔄 Reset
+              </Button>
+            </div>
+          </div>
+
+          {/* Preview Area */}
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '3rem',
+              position: 'relative',
+            }}
+          >
+            {showCode ? (
+              <div style={{ width: '100%', maxWidth: '700px' }}>
+                <AtomixGlass
+                  displacementScale={80}
+                  aberrationIntensity={1}
+                  cornerRadius={16}
+                  saturation={120}
+                >
+                  <div style={{ padding: '2rem' }}>
+                    <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-4">
+                      <h3 className="u-text-white u-fw-semibold" style={{ fontSize: '1.5rem' }}>
+                        Generated Code
+                      </h3>
+                      <Button variant="primary" size="sm" onClick={copyCode}>
+                        {copiedCode ? '✓ Copied' : 'Copy'}
+                      </Button>
+                    </div>
+                    <pre
+                      style={{
+                        background: 'rgba(0,0,0,0.5)',
+                        padding: '1.5rem',
+                        borderRadius: '8px',
+                        overflow: 'auto',
+                        maxHeight: '500px',
+                        color: '#7AFFD7',
+                        fontSize: '0.875rem',
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      <code>{generateCode()}</code>
+                    </pre>
+                  </div>
+                </AtomixGlass>
+              </div>
+            ) : (
+              <AtomixGlass
+                {...settings}
+                mode={selectedMode}
+                style={{ maxWidth: '600px', width: '100%' }}
+              >
+                <div style={{ padding: '3rem', textAlign: 'center' }}>
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '8px 20px',
+                      borderRadius: '24px',
+                      background: 'rgba(122, 255, 215, 0.2)',
+                      color: '#7AFFD7',
+                      fontSize: '0.875rem',
+                      fontWeight: 600,
+                      marginBottom: '1.5rem',
+                    }}
+                  >
+                    ✨ LIVE PREVIEW
+                  </div>
+                  <h2 className="u-mb-4 u-text-white u-fw-bold" style={{ fontSize: '2.5rem' }}>
+                    AtomixGlass
+                  </h2>
+                  <p
+                    className="u-mb-6 u-opacity-90"
+                    style={{ fontSize: '1.125rem', lineHeight: 1.6 }}
+                  >
+                    Adjust the controls on the left to see real-time changes. Each parameter affects
+                    the visual appearance and performance characteristics of the glass effect.
+                  </p>
+                  <div
+                    className="u-d-flex u-justify-content-center u-flex-wrap"
+                    style={{ gap: '1rem' }}
+                  >
+                    <Button variant="primary" size="lg">
+                      Primary Action
+                    </Button>
+                    <Button variant="outline-light" size="lg">
+                      Secondary
+                    </Button>
+                  </div>
+                  <div
+                    className="u-mt-8 u-p-4 u-rounded"
+                    style={{ background: 'rgba(255,255,255,0.1)' }}
+                  >
+                    <div className="o-grid">
+                      <div className="o-grid__row">
+                        <div className="o-grid__col o-grid__col--6">
+                          <div className="u-fs-xs u-opacity-80">Mode</div>
+                          <div className="u-fw-bold">{selectedMode}</div>
+                        </div>
+                        <div className="o-grid__col o-grid__col--6">
+                          <div className="u-fs-xs u-opacity-80">Displacement</div>
+                          <div className="u-fw-bold">{settings.displacementScale}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </AtomixGlass>
+            )}
+          </div>
+        </div>
+      </BackgroundWrapper>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Advanced interactive playground with preset configurations, code generation, configuration export, and real-time performance monitoring. Perfect for fine-tuning AtomixGlass for your specific use case.',
+      },
+    },
+    layout: 'fullscreen',
+  },
+};
+
+/**
+ * Responsive Design Showcase
+ *
+ * Demonstrates how AtomixGlass adapts to different screen sizes and device types.
+ */
+export const ResponsiveDesign: Story = {
+  render: () => (
+    <BackgroundWrapper backgroundIndex={3} height="auto" style={{ minHeight: '100vh' }}>
+      <div className="u-pt-20 u-pb-16 u-px-5">
+        <div className="o-container">
+          <div className="u-text-center u-mb-12">
+            <h2 className="u-mb-5 u-fw-bold u-text-white" style={{ fontSize: '3rem' }}>
+              Responsive Design
+            </h2>
+            <p
+              className="u-text-lg u-opacity-90 u-text-white u-mx-auto"
+              style={{ maxWidth: '700px' }}
+            >
+              AtomixGlass automatically optimizes for different screen sizes with recommended
+              configurations
+            </p>
+          </div>
+
+          <div className="o-grid">
+            <div className="o-grid__row">
+              {/* Mobile Configuration */}
+              <div className="o-grid__col o-grid__col--12 o-grid__col--4@lg u-mb-8">
+                <div className="u-text-center u-mb-4">
+                  <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>📱</div>
+                  <h3 className="u-text-white u-fw-semibold" style={{ fontSize: '1.5rem' }}>
+                    Mobile
+                  </h3>
+                  <p className="u-text-white u-opacity-70 u-fs-sm">320px - 767px</p>
+                </div>
+                <AtomixGlass
+                  displacementScale={60}
+                  blurAmount={0}
+                  saturation={120}
+                  aberrationIntensity={0.8}
+                  elasticity={0.08}
+                  cornerRadius={16}
+                >
+                  <div className="u-p-6">
+                    <h4 className="u-mb-3 u-text-white u-fw-semibold">Optimized for Mobile</h4>
+                    <ul className="u-ps-5 u-text-sm u-mb-4" style={{ lineHeight: 1.8 }}>
+                      <li>Lower displacement (60)</li>
+                      <li>Minimal aberration (0.8)</li>
+                      <li>Reduced elasticity (0.08)</li>
+                      <li>Touch-optimized</li>
+                    </ul>
+                    <Button variant="primary" size="sm" style={{ width: '100%' }}>
+                      Mobile Action
+                    </Button>
+                  </div>
+                </AtomixGlass>
+              </div>
+
+              {/* Tablet Configuration */}
+              <div className="o-grid__col o-grid__col--12 o-grid__col--4@lg u-mb-8">
+                <div className="u-text-center u-mb-4">
+                  <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>📱</div>
+                  <h3 className="u-text-white u-fw-semibold" style={{ fontSize: '1.5rem' }}>
+                    Tablet
+                  </h3>
+                  <p className="u-text-white u-opacity-70 u-fs-sm">768px - 1023px</p>
+                </div>
+                <AtomixGlass
+                  displacementScale={100}
+                  blurAmount={0}
+                  saturation={130}
+                  aberrationIntensity={1.5}
+                  elasticity={0.15}
+                  cornerRadius={20}
+                >
+                  <div className="u-p-6">
+                    <h4 className="u-mb-3 u-text-white u-fw-semibold">Balanced for Tablet</h4>
+                    <ul className="u-ps-5 u-text-sm u-mb-4" style={{ lineHeight: 1.8 }}>
+                      <li>Moderate displacement (100)</li>
+                      <li>Balanced aberration (1.5)</li>
+                      <li>Standard elasticity (0.15)</li>
+                      <li>Touch & hover support</li>
+                    </ul>
+                    <Button variant="primary" size="md" style={{ width: '100%' }}>
+                      Tablet Action
+                    </Button>
+                  </div>
+                </AtomixGlass>
+              </div>
+
+              {/* Desktop Configuration */}
+              <div className="o-grid__col o-grid__col--12 o-grid__col--4@lg u-mb-8">
+                <div className="u-text-center u-mb-4">
+                  <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>🖥️</div>
+                  <h3 className="u-text-white u-fw-semibold" style={{ fontSize: '1.5rem' }}>
+                    Desktop
+                  </h3>
+                  <p className="u-text-white u-opacity-70 u-fs-sm">1024px+</p>
+                </div>
+                <AtomixGlass
+                  displacementScale={150}
+                  blurAmount={0}
+                  saturation={160}
+                  aberrationIntensity={3}
+                  elasticity={0.25}
+                  cornerRadius={24}
+                >
+                  <div className="u-p-6">
+                    <h4 className="u-mb-3 u-text-white u-fw-semibold">Enhanced for Desktop</h4>
+                    <ul className="u-ps-5 u-text-sm u-mb-4" style={{ lineHeight: 1.8 }}>
+                      <li>High displacement (150)</li>
+                      <li>Enhanced aberration (3)</li>
+                      <li>Fluid elasticity (0.25)</li>
+                      <li>Full interactive effects</li>
+                    </ul>
+                    <Button variant="primary" size="lg" style={{ width: '100%' }}>
+                      Desktop Action
+                    </Button>
+                  </div>
+                </AtomixGlass>
+              </div>
+            </div>
+          </div>
+
+          {/* Responsive Best Practices */}
+          <div className="u-mt-12">
+            <AtomixGlass
+              displacementScale={100}
+              aberrationIntensity={1.5}
+              saturation={140}
+              cornerRadius={20}
+            >
+              <div className="u-p-8">
+                <h3
+                  className="u-mb-6 u-text-white u-fw-semibold u-text-center"
+                  style={{ fontSize: '2rem' }}
+                >
+                  📋 Responsive Best Practices
+                </h3>
+                <div
+                  className="o-
+grid"
+                >
+                  <div className="o-grid__row">
+                    <div className="o-grid__col o-grid__col--12 o-grid__col--6@md">
+                      <h4 className="u-mb-3 u-text-white u-fw-medium">Use Media Queries</h4>
+                      <p className="u-opacity-90" style={{ lineHeight: 1.6 }}>
+                        Adjust glass effect parameters based on viewport size using CSS media
+                        queries or JavaScript matchMedia API for optimal performance across devices.
+                      </p>
+                    </div>
+                    <div className="o-grid__col o-grid__col--12 o-grid__col--6@md">
+                      <h4 className="u-mb-3 u-text-white u-fw-medium">Test on Real Devices</h4>
+                      <p className="u-opacity-90" style={{ lineHeight: 1.6 }}>
+                        Always test on actual devices to ensure performance and visual quality meet
+                        expectations, especially on mobile devices with varying hardware
+                        capabilities.
+                      </p>
+                    </div>
+                    <div className="o-grid__col o-grid__col--12 o-grid__col--6@md">
+                      <h4 className="u-mb-3 u-text-white u-fw-medium">Progressive Enhancement</h4>
+                      <p className="u-opacity-90" style={{ lineHeight: 1.6 }}>
+                        Start with minimal effects for all devices and progressively enhance the
+                        experience for capable hardware using feature detection.
+                      </p>
+                    </div>
+                    <div className="o-grid__col o-grid__col--12 o-grid__col--6@md">
+                      <h4 className="u-mb-3 u-text-white u-fw-medium">Touch Considerations</h4>
+                      <p className="u-opacity-90" style={{ lineHeight: 1.6 }}>
+                        Reduce or disable hover effects on touch devices. Consider larger touch
+                        targets and ensure interactive elements remain accessible.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </AtomixGlass>
+          </div>
+        </div>
+      </div>
+    </BackgroundWrapper>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Comprehensive responsive design guide showing optimized AtomixGlass configurations for mobile, tablet, and desktop devices with best practices for each screen size.',
+      },
+    },
+    layout: 'fullscreen',
   },
 };

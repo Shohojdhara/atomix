@@ -326,7 +326,8 @@ export const GlassEffect: Story = {
     Story => (
       <div
         style={{
-          background: 'url(https://cdn.pixabay.com/photo/2022/10/02/17/23/mushroom-7494046_1280.jpg)',
+          background:
+            'url(https://cdn.pixabay.com/photo/2022/10/02/17/23/mushroom-7494046_1280.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '10rem 25rem',
@@ -442,8 +443,7 @@ export const GlassSizes: Story = {
   render: () => (
     <div
       style={{
-        background:
-          'url(https://cdn.pixabay.com/photo/2020/12/15/01/43/street-5832394_1280.jpg)',
+        background: 'url(https://cdn.pixabay.com/photo/2020/12/15/01/43/street-5832394_1280.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         padding: '10rem 20rem',
@@ -451,7 +451,7 @@ export const GlassSizes: Story = {
       }}
     >
       <div className="u-d-flex u-align-items-center u-gap-2">
-        <Button label="Small Glass" variant="primary" size="sm" glass={{cornerRadius: 8}} />
+        <Button label="Small Glass" variant="primary" size="sm" glass={{ cornerRadius: 8 }} />
         <Button label="Medium Glass" variant="primary" size="md" glass />
         <Button label="Large Glass" variant="primary" size="lg" glass />
       </div>
@@ -469,8 +469,7 @@ export const GlassWithIcons: Story = {
   render: () => (
     <div
       style={{
-        background:
-          'url(https://cdn.pixabay.com/photo/2020/12/15/01/43/street-5832394_1280.jpg)',
+        background: 'url(https://cdn.pixabay.com/photo/2020/12/15/01/43/street-5832394_1280.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         padding: '25rem',
@@ -478,10 +477,29 @@ export const GlassWithIcons: Story = {
       }}
     >
       <div className="u-d-flex u-flex-wrap u-gap-2">
-        <Button label="With Icon" variant="primary" icon={<Icon />} glass={{cornerRadius: 12}} />
-        <Button label="Icon Only" variant="error" icon={<Icon />} iconOnly glass={{cornerRadius: 12}} />
-        <Button label="Rounded Glass" variant="success" icon={<Icon />} rounded glass={{cornerRadius: 24}} />
-        <Button label="Rounded Icon" variant="info" icon={<Icon />} iconOnly rounded glass={{cornerRadius: 50}} />
+        <Button label="With Icon" variant="primary" icon={<Icon />} glass={{ cornerRadius: 12 }} />
+        <Button
+          label="Icon Only"
+          variant="error"
+          icon={<Icon />}
+          iconOnly
+          glass={{ cornerRadius: 12 }}
+        />
+        <Button
+          label="Rounded Glass"
+          variant="success"
+          icon={<Icon />}
+          rounded
+          glass={{ cornerRadius: 24 }}
+        />
+        <Button
+          label="Rounded Icon"
+          variant="info"
+          icon={<Icon />}
+          iconOnly
+          rounded
+          glass={{ cornerRadius: 50 }}
+        />
       </div>
     </div>
   ),
@@ -500,8 +518,7 @@ export const GlassRounded: Story = {
     Story => (
       <div
         style={{
-          background:
-            'url(https://cdn.pixabay.com/photo/2020/12/15/01/43/street-5832394_1280.jpg)',
+          background: 'url(https://cdn.pixabay.com/photo/2020/12/15/01/43/street-5832394_1280.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '25rem',
@@ -526,8 +543,7 @@ export const GlassShowcase: Story = {
       {/* Primary Glass Variants */}
       <div
         style={{
-          background:
-            'url(https://cdn.pixabay.com/photo/2021/11/13/08/50/athens-6790780_1280.jpg)',
+          background: 'url(https://cdn.pixabay.com/photo/2021/11/13/08/50/athens-6790780_1280.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '2rem',
@@ -538,12 +554,12 @@ export const GlassShowcase: Story = {
           Primary Glass Variants
         </h3>
         <div className="u-d-flex u-flex-wrap u-gap-2 u-align-items-center">
-          <Button label="Small Glass" variant="primary" size="sm" glass={{cornerRadius: 8}} />
+          <Button label="Small Glass" variant="primary" size="sm" glass={{ cornerRadius: 8 }} />
           <Button label="Medium Glass" variant="primary" size="md" glass />
           <Button label="Large Glass" variant="primary" size="lg" glass />
           <Button label="With Icon" variant="primary" icon={<Icon />} glass />
           <Button label="Icon Only" variant="primary" icon={<Icon />} iconOnly glass />
-          <Button label="Rounded" variant="primary" rounded glass={{cornerRadius: 24}} />
+          <Button label="Rounded" variant="primary" rounded glass={{ cornerRadius: 24 }} />
         </div>
       </div>
 
@@ -572,8 +588,7 @@ export const GlassShowcase: Story = {
       {/* Custom Glass Configuration */}
       <div
         style={{
-          background:
-            'url(https://cdn.pixabay.com/photo/2019/09/29/17/21/greece-4513857_1280.jpg)',
+          background: 'url(https://cdn.pixabay.com/photo/2019/09/29/17/21/greece-4513857_1280.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '2rem',
@@ -626,8 +641,7 @@ export const GlassShowcase: Story = {
       {/* Light Background */}
       <div
         style={{
-          background:
-            'url(https://cdn.pixabay.com/photo/2019/09/29/17/21/greece-4513852_1280.jpg)',
+          background: 'url(https://cdn.pixabay.com/photo/2019/09/29/17/21/greece-4513852_1280.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '2rem',
@@ -650,6 +664,473 @@ export const GlassShowcase: Story = {
               saturation: 120,
             }}
           />
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+// Glass Mode Variants - Standard
+export const GlassModeStandard: Story = {
+  args: {
+    label: 'Standard Glass Mode',
+    variant: 'primary',
+    glass: {
+      mode: 'standard',
+      displacementScale: 60,
+      blurAmount: 2,
+      saturation: 160,
+      aberrationIntensity: 2,
+      cornerRadius: 12,
+    },
+  },
+  render: args => (
+    <div
+      style={{
+        background: 'url(https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        gap: '2rem',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: '95vw',
+        minHeight: '95vh',
+      }}
+    >
+      <div style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Standard Glass Mode</h3>
+        <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
+          Classic glass morphism with blur and displacement
+        </p>
+      </div>
+      <Button {...args} />
+    </div>
+  ),
+};
+
+// Glass Mode Variants - Polar
+export const GlassModePolar: Story = {
+  args: {
+    label: 'Polar Glass Mode',
+    variant: 'secondary',
+    glass: {
+      mode: 'polar',
+      displacementScale: 80,
+      blurAmount: 1.5,
+      saturation: 180,
+      aberrationIntensity: 3,
+      cornerRadius: 12,
+    },
+  },
+  render: args => (
+    <div
+      style={{
+        background: 'url(https://images.unsplash.com/photo-1557683316-973673baf926?w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        borderRadius: '12px',
+        display: 'flex',
+        gap: '2rem',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: '95vw',
+        minHeight: '95vh',
+      }}
+    >
+      <div style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Polar Glass Mode</h3>
+        <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>Radial distortion effect from center</p>
+      </div>
+      <Button {...args} />
+    </div>
+  ),
+};
+
+// Glass Mode Variants - Prominent
+export const GlassModeProminent: Story = {
+  args: {
+    label: 'Prominent Glass Mode',
+    variant: 'success',
+    glass: {
+      mode: 'prominent',
+      displacementScale: 100,
+      blurAmount: 2.5,
+      saturation: 200,
+      aberrationIntensity: 4,
+      cornerRadius: 12,
+    },
+  },
+  render: args => (
+    <div
+      style={{
+        background: 'url(https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        borderRadius: '12px',
+        display: 'flex',
+        gap: '2rem',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: '95vw',
+        minHeight: '95vh',
+      }}
+    >
+      <div style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Prominent Glass Mode</h3>
+        <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>Enhanced distortion with maximum depth</p>
+      </div>
+      <Button {...args} />
+    </div>
+  ),
+};
+
+// Glass Mode Variants - Shader
+export const GlassModeShader: Story = {
+  args: {
+    label: 'Shader Glass Mode',
+    variant: 'info',
+    glass: {
+      mode: 'shader',
+      shaderVariant: 'liquidGlass',
+      displacementScale: 70,
+      blurAmount: 1.8,
+      saturation: 170,
+      cornerRadius: 12,
+    },
+  },
+  render: args => (
+    <div
+      style={{
+        background: 'url(https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        borderRadius: '12px',
+        display: 'flex',
+        gap: '2rem',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: '95vw',
+        minHeight: '95vh',
+      }}
+    >
+      <div style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Shader Glass Mode</h3>
+        <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>GPU-accelerated liquid glass effect</p>
+      </div>
+      <Button {...args} />
+    </div>
+  ),
+};
+
+// All Glass Modes Comparison
+export const AllGlassModes: Story = {
+  render: () => (
+    <div
+      style={{
+        background: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '3rem',
+        borderRadius: '12px',
+        minHeight: '90vh',
+        minWidth: '90vw',
+      }}
+    >
+      <div style={{ width: '90vw', margin: '0 auto' }}>
+        <h2
+          style={{
+            textAlign: 'center',
+            color: 'white',
+            marginBottom: '3rem',
+            fontSize: '2rem',
+            textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+          }}
+        >
+          Glass Mode Variants Comparison
+        </h2>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '2rem',
+          }}
+        >
+          {/* Standard Mode */}
+          <div
+            style={{
+              background: 'rgba(255,255,255,0.1)',
+              padding: '2rem',
+              borderRadius: '12px',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.25rem' }}>Standard</h3>
+            <p
+              style={{
+                color: 'rgba(255,255,255,0.8)',
+                fontSize: '0.875rem',
+                marginBottom: '1.5rem',
+              }}
+            >
+              Classic blur and displacement
+            </p>
+            <Button
+              label="Standard Glass"
+              variant="primary"
+              glass={{
+                mode: 'standard',
+                displacementScale: 60,
+                blurAmount: 2,
+                saturation: 160,
+                aberrationIntensity: 2,
+              }}
+            />
+          </div>
+
+          {/* Polar Mode */}
+          <div
+            style={{
+              background: 'rgba(255,255,255,0.1)',
+              padding: '2rem',
+              borderRadius: '12px',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.25rem' }}>Polar</h3>
+            <p
+              style={{
+                color: 'rgba(255,255,255,0.8)',
+                fontSize: '0.875rem',
+                marginBottom: '1.5rem',
+              }}
+            >
+              Radial distortion effect
+            </p>
+            <Button
+              label="Polar Glass"
+              variant="secondary"
+              glass={{
+                mode: 'polar',
+                displacementScale: 80,
+                blurAmount: 1.5,
+                saturation: 180,
+                aberrationIntensity: 3,
+              }}
+            />
+          </div>
+
+          {/* Prominent Mode */}
+          <div
+            style={{
+              background: 'rgba(255,255,255,0.1)',
+              padding: '2rem',
+              borderRadius: '12px',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.25rem' }}>Prominent</h3>
+            <p
+              style={{
+                color: 'rgba(255,255,255,0.8)',
+                fontSize: '0.875rem',
+                marginBottom: '1.5rem',
+              }}
+            >
+              Maximum depth and distortion
+            </p>
+            <Button
+              label="Prominent Glass"
+              variant="success"
+              glass={{
+                mode: 'prominent',
+                displacementScale: 100,
+                blurAmount: 2.5,
+                saturation: 200,
+                aberrationIntensity: 4,
+              }}
+            />
+          </div>
+
+          {/* Shader Mode */}
+          <div
+            style={{
+              background: 'rgba(255,255,255,0.1)',
+              padding: '2rem',
+              borderRadius: '12px',
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.25rem' }}>Shader</h3>
+            <p
+              style={{
+                color: 'rgba(255,255,255,0.8)',
+                fontSize: '0.875rem',
+                marginBottom: '1.5rem',
+              }}
+            >
+              GPU-accelerated liquid glass
+            </p>
+            <Button
+              label="Shader Glass"
+              variant="info"
+              glass={{
+                mode: 'shader',
+                shaderVariant: 'liquidGlass',
+                displacementScale: 70,
+                blurAmount: 1.8,
+                saturation: 170,
+              }}
+            />
+          </div>
+        </div>
+
+        {/* All Variants with Different Colors */}
+        <div style={{ marginTop: '3rem' }}>
+          <h3
+            style={{
+              textAlign: 'center',
+              color: 'white',
+              marginBottom: '2rem',
+              fontSize: '1.5rem',
+              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+            }}
+          >
+            All Color Variants with Glass
+          </h3>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
+            <Button label="Primary" variant="primary" glass />
+            <Button label="Secondary" variant="secondary" glass />
+            <Button label="Success" variant="success" glass />
+            <Button label="Info" variant="info" glass />
+            <Button label="Warning" variant="warning" glass />
+            <Button label="Error" variant="error" glass />
+            <Button label="Light" variant="light" glass />
+            <Button label="Dark" variant="dark" glass />
+          </div>
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+// Glass Button States Showcase
+export const GlassStatesShowcase: Story = {
+  render: () => (
+    <div
+      style={{
+        background: 'url(https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '3rem',
+        borderRadius: '12px',
+        minHeight: '90vh',
+      }}
+    >
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <h2
+          style={{
+            textAlign: 'center',
+            color: 'white',
+            marginBottom: '3rem',
+            fontSize: '2rem',
+            textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+          }}
+        >
+          Glass Button States & Interactions
+        </h2>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+          {/* Sizes */}
+          <div
+            style={{
+              background: 'rgba(255,255,255,0.08)',
+              padding: '2rem',
+              borderRadius: '12px',
+              backdropFilter: 'blur(10px)',
+            }}
+          >
+            <h3 style={{ color: 'white', marginBottom: '1.5rem' }}>Sizes</h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+              <Button label="Small" variant="primary" size="sm" glass={{ cornerRadius: 8 }} />
+              <Button label="Medium" variant="primary" size="md" glass={{ cornerRadius: 12 }} />
+              <Button label="Large" variant="primary" size="lg" glass={{ cornerRadius: 16 }} />
+            </div>
+          </div>
+
+          {/* With Icons */}
+          <div
+            style={{
+              background: 'rgba(255,255,255,0.08)',
+              padding: '2rem',
+              borderRadius: '12px',
+              backdropFilter: 'blur(10px)',
+            }}
+          >
+            <h3 style={{ color: 'white', marginBottom: '1.5rem' }}>With Icons</h3>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <Button label="With Icon" variant="primary" icon={<Icon />} glass />
+              <Button label="Icon Only" variant="secondary" icon={<Icon />} iconOnly glass />
+              <Button
+                label="Rounded"
+                variant="success"
+                icon={<Icon />}
+                rounded
+                glass={{ cornerRadius: 24 }}
+              />
+            </div>
+          </div>
+
+          {/* Outline Variants */}
+          <div
+            style={{
+              background: 'rgba(255,255,255,0.08)',
+              padding: '2rem',
+              borderRadius: '12px',
+              backdropFilter: 'blur(10px)',
+            }}
+          >
+            <h3 style={{ color: 'white', marginBottom: '1.5rem' }}>Outline Variants</h3>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <Button label="Outline Primary" variant="outline-primary" glass />
+              <Button label="Outline Secondary" variant="outline-secondary" glass />
+              <Button label="Outline Success" variant="outline-success" glass />
+              <Button label="Outline Error" variant="outline-error" glass />
+            </div>
+          </div>
+
+          {/* Disabled State */}
+          <div
+            style={{
+              background: 'rgba(255,255,255,0.08)',
+              padding: '2rem',
+              borderRadius: '12px',
+              backdropFilter: 'blur(10px)',
+            }}
+          >
+            <h3 style={{ color: 'white', marginBottom: '1.5rem' }}>Disabled State</h3>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <Button label="Disabled Glass" variant="primary" disabled glass />
+              <Button label="Disabled Outline" variant="outline-primary" disabled glass />
+            </div>
+          </div>
         </div>
       </div>
     </div>
