@@ -4104,26 +4104,27 @@ export const WeatherWidget: Story = {
     ];
 
     return (
-      <BackgroundWrapper backgroundImage={backgroundImages[1]}>
+      <BackgroundWrapper backgroundImage={'https://images.unsplash.com/photo-1671521739306-65c98fe91cf8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2071'}>
         <AtomixGlass
-          displacementScale={25}
-          blurAmount={15}
-          saturation={1.1}
+          displacementScale={60}
+          blurAmount={1.1}
+          saturation={190}
           cornerRadius={32}
           mode="standard"
+          elasticity={0}
         >
-          <div style={{ padding: '40px', minWidth: '380px', maxWidth: '500px' }}>
+          <div style={{ padding: '20px', minWidth: '380px', maxWidth: '500px' }}>
             {/* Header */}
             <div
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: '32px',
+                marginBottom: '10px',
               }}
             >
               <div>
-                <h2 style={{ margin: 0, fontSize: '28px', fontWeight: 700, marginBottom: '4px' }}>
+                <h2 style={{ margin: 0, fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>
                   Weather
                 </h2>
                 <p style={{ margin: 0, fontSize: '14px', opacity: 0.7 }}>
@@ -4148,9 +4149,9 @@ export const WeatherWidget: Story = {
             </div>
 
             {/* Current Weather */}
-            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-              <div style={{ fontSize: '80px', marginBottom: '16px' }}>⛅</div>
-              <div style={{ fontSize: '64px', fontWeight: 700, marginBottom: '8px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+              <div style={{ fontSize: '50px', marginBottom: '10px' }}>⛅</div>
+              <div style={{ fontSize: '48px', fontWeight: 700, marginBottom: '8px' }}>
                 {currentWeather.temp}°{unit}
               </div>
               <div style={{ fontSize: '18px', opacity: 0.8, marginBottom: '8px' }}>
@@ -4167,30 +4168,30 @@ export const WeatherWidget: Story = {
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: '16px',
-                marginBottom: '32px',
-                padding: '20px',
+                marginBottom: '24px',
+                padding: '10px',
                 borderRadius: '20px',
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)',
+                background: 'rgba(0,0,0,0.2)',
+                border: '1px solid rgba(255,255,255,0.4)',
               }}
             >
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '24px', marginBottom: '8px' }}>💧</div>
-                <div style={{ fontSize: '20px', fontWeight: 600, marginBottom: '4px' }}>
+                <div style={{ fontSize: '20px', marginBottom: '4px' }}>💧</div>
+                <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
                   {currentWeather.humidity}%
                 </div>
                 <div style={{ fontSize: '12px', opacity: 0.6 }}>Humidity</div>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '24px', marginBottom: '8px' }}>💨</div>
-                <div style={{ fontSize: '20px', fontWeight: 600, marginBottom: '4px' }}>
+                <div style={{ fontSize: '20px', marginBottom: '4px' }}>💨</div>
+                <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
                   {currentWeather.windSpeed} km/h
                 </div>
                 <div style={{ fontSize: '12px', opacity: 0.6 }}>Wind</div>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '24px', marginBottom: '8px' }}>🌧️</div>
-                <div style={{ fontSize: '20px', fontWeight: 600, marginBottom: '4px' }}>
+                <div style={{ fontSize: '20px', marginBottom: '4px' }}>🌧️</div>
+                <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
                   {currentWeather.precipitation}%
                 </div>
                 <div style={{ fontSize: '12px', opacity: 0.6 }}>Rain</div>
@@ -4211,19 +4212,19 @@ export const WeatherWidget: Story = {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      padding: '16px',
+                      padding: '8px 16px',
                       borderRadius: '16px',
                       background:
-                        selectedDay === index ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.05)',
-                      border: `1px solid ${selectedDay === index ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.1)'}`,
+                        selectedDay === index ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.05)',
+                      border: `1px solid ${selectedDay === index ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.1)'}`,
                       cursor: 'pointer',
                       transition: 'all 0.2s ease',
                     }}
                   >
-                    <div style={{ fontSize: '14px', fontWeight: 600, width: '50px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 600, width: '50px' }}>
                       {day.day}
                     </div>
-                    <div style={{ fontSize: '28px' }}>{day.icon}</div>
+                    <div style={{ fontSize: '20px' }}>{day.icon}</div>
                     <div style={{ fontSize: '13px', opacity: 0.7, flex: 1, textAlign: 'center' }}>
                       {day.condition}
                     </div>
@@ -4536,20 +4537,20 @@ export const SearchResults: Story = {
         : results.filter(r => r.type === selectedFilter.slice(0, -1));
 
     return (
-      <BackgroundWrapper backgroundImage={backgroundImages[6]}>
+      <BackgroundWrapper backgroundImage={'https://images.unsplash.com/photo-1708446737917-04712abc09a8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070'}>
         <AtomixGlass
-          displacementScale={28}
-          blurAmount={18}
-          saturation={1.15}
+          displacementScale={80}
+          blurAmount={1.1}
           cornerRadius={30}
           mode="standard"
+          elasticity={0}
         >
-          <div style={{ padding: '40px', minWidth: '600px', maxWidth: '800px' }}>
+          <div style={{ padding: '24px', minWidth: '800px', maxWidth: '900px' }}>
             {/* Search Header */}
-            <h2 style={{ margin: '0 0 24px 0', fontSize: '28px', fontWeight: 700 }}>Search</h2>
+            <h2 style={{ margin: '0 0 20px 0', fontSize: '24px', fontWeight: 700 }}>Search</h2>
 
             {/* Search Input */}
-            <div style={{ position: 'relative', marginBottom: '24px' }}>
+            <div style={{ position: 'relative', marginBottom: '20px' }}>
               <input
                 type="text"
                 value={searchQuery}
@@ -4557,8 +4558,8 @@ export const SearchResults: Story = {
                 placeholder="Search for anything..."
                 style={{
                   width: '100%',
-                  padding: '16px 48px 16px 20px',
-                  borderRadius: '16px',
+                  padding: '12px 48px 12px 20px',
+                  borderRadius: '8px',
                   border: '1px solid rgba(255,255,255,0.2)',
                   background: 'rgba(255,255,255,0.1)',
                   color: 'inherit',
@@ -4587,7 +4588,7 @@ export const SearchResults: Story = {
                   onClick={() => setSelectedFilter(filter)}
                   style={{
                     padding: '8px 16px',
-                    borderRadius: '12px',
+                    borderRadius: '8px',
                     border: '1px solid rgba(255,255,255,0.2)',
                     background:
                       selectedFilter === filter
@@ -4608,7 +4609,7 @@ export const SearchResults: Story = {
             </div>
 
             {/* Results Count */}
-            <div style={{ marginBottom: '20px', fontSize: '14px', opacity: 0.7 }}>
+            <div style={{ marginBottom: '10px', fontSize: '14px', opacity: 0.7 }}>
               Found {filteredResults.length} results for "{searchQuery}"
             </div>
 
@@ -4617,7 +4618,7 @@ export const SearchResults: Story = {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '16px',
+                gap: '10px',
                 maxHeight: '600px',
                 overflowY: 'auto',
               }}
@@ -4626,9 +4627,9 @@ export const SearchResults: Story = {
                 <div
                   key={index}
                   style={{
-                    padding: '20px',
-                    borderRadius: '16px',
-                    background: 'rgba(255,255,255,0.08)',
+                    padding: '8px 20px',
+                    borderRadius: '8px',
+                    background: 'rgba(255,255,255,0.2)',
                     border: '1px solid rgba(255,255,255,0.1)',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
@@ -4647,8 +4648,7 @@ export const SearchResults: Story = {
                         style={{
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '8px',
-                          marginBottom: '8px',
+                          gap: '6px',
                         }}
                       >
                         <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>
@@ -4657,7 +4657,7 @@ export const SearchResults: Story = {
                         {result.duration && (
                           <span
                             style={{
-                              padding: '2px 8px',
+                              padding: '2px 4px',
                               borderRadius: '6px',
                               background: 'rgba(255,255,255,0.15)',
                               fontSize: '11px',
@@ -4673,7 +4673,6 @@ export const SearchResults: Story = {
                           margin: '0 0 12px 0',
                           fontSize: '14px',
                           opacity: 0.8,
-                          lineHeight: 1.5,
                         }}
                       >
                         {result.description}

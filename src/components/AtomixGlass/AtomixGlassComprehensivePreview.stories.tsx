@@ -553,7 +553,7 @@ export const ComprehensiveShowcase: Story = {
                     blurAmount={0}
                     saturation={160}
                     aberrationIntensity={3}
-                    elasticity={0.3}
+                    elasticity={0}
                     cornerRadius={25}
                     mode={selectedMode}
                   >
@@ -1237,7 +1237,6 @@ export const ProductionExamples: Story = {
               Dashboard Cards
             </h3>
             <div className="o-grid">
-              <div className="o-grid__row">
                 {[
                   {
                     icon: '📊',
@@ -1270,15 +1269,15 @@ export const ProductionExamples: Story = {
                 ].map((stat, index) => (
                   <div
                     key={index}
-                    className="o-grid__col o-grid__col--12 o-grid__col--6@md o-grid__col--3@lg u-mb-8"
+                    className="o-grid__col o-grid__col--12 o-grid__col--md-6 o-grid__col--lg-3 u-mb-8"
                   >
                     <AtomixGlass
                       displacementScale={100}
-                      blurAmount={0}
+                      blurAmount={3}
                       saturation={140}
                       aberrationIntensity={1.5}
                       cornerRadius={20}
-                      elasticity={0.2}
+                      elasticity={0}
                     >
                       <div className="u-p-6">
                         <div className="u-d-flex u-justify-content-between u-align-items-start u-mb-4">
@@ -1303,7 +1302,6 @@ export const ProductionExamples: Story = {
                     </AtomixGlass>
                   </div>
                 ))}
-              </div>
             </div>
           </div>
 
@@ -1313,7 +1311,6 @@ export const ProductionExamples: Story = {
               Pricing Tables
             </h3>
             <div className="o-grid">
-              <div className="o-grid__row">
                 {[
                   {
                     name: 'Starter',
@@ -1340,14 +1337,14 @@ export const ProductionExamples: Story = {
                     highlight: false,
                   },
                 ].map((plan, index) => (
-                  <div key={index} className="o-grid__col o-grid__col--12 o-grid__col--4@lg u-mb-8">
+                  <div key={index} className="o-grid__col o-grid__col--12 o-grid__col--lg-4 u-mb-8">
                     <AtomixGlass
                       displacementScale={plan.highlight ? 150 : 100}
-                      blurAmount={0}
+                      blurAmount={3}
                       saturation={plan.highlight ? 160 : 130}
                       aberrationIntensity={plan.highlight ? 3 : 1.5}
                       cornerRadius={24}
-                      elasticity={0.2}
+                      elasticity={0}
                       style={{
                         transform: plan.highlight ? 'scale(1.05)' : 'scale(1)',
                         transition: 'transform 0.3s',
@@ -1400,7 +1397,6 @@ export const ProductionExamples: Story = {
                     </AtomixGlass>
                   </div>
                 ))}
-              </div>
             </div>
           </div>
 
@@ -1411,7 +1407,7 @@ export const ProductionExamples: Story = {
             </h3>
             <AtomixGlass
               displacementScale={80}
-              blurAmount={0}
+              blurAmount={3}
               saturation={130}
               aberrationIntensity={1.2}
               cornerRadius={16}
@@ -1705,7 +1701,7 @@ export const InteractiveDemo: Story = {
             blurAmount={0}
             saturation={160}
             aberrationIntensity={3}
-            elasticity={0.3}
+            elasticity={0}
             cornerRadius={25}
             mode="shader"
           >
@@ -2320,7 +2316,7 @@ export const ResponsiveDesign: Story = {
                   blurAmount={0}
                   saturation={120}
                   aberrationIntensity={0.8}
-                  elasticity={0.08}
+                  elasticity={0}
                   cornerRadius={16}
                 >
                   <div className="u-p-6">
@@ -2352,7 +2348,7 @@ export const ResponsiveDesign: Story = {
                   blurAmount={0}
                   saturation={130}
                   aberrationIntensity={1.5}
-                  elasticity={0.15}
+                  elasticity={0}
                   cornerRadius={20}
                 >
                   <div className="u-p-6">
@@ -2384,7 +2380,7 @@ export const ResponsiveDesign: Story = {
                   blurAmount={0}
                   saturation={160}
                   aberrationIntensity={3}
-                  elasticity={0.25}
+                  elasticity={0}
                   cornerRadius={24}
                 >
                   <div className="u-p-6">
@@ -2420,8 +2416,7 @@ export const ResponsiveDesign: Story = {
                   📋 Responsive Best Practices
                 </h3>
                 <div
-                  className="o-
-grid"
+                  className="o-grid"
                 >
                   <div className="o-grid__row">
                     <div className="o-grid__col o-grid__col--12 o-grid__col--6@md">

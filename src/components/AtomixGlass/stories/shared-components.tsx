@@ -175,6 +175,7 @@ export const BackgroundWrapper = ({
         position: 'relative',
         minHeight: height,
         height: '100%',
+        width: width,
         backgroundColor: !bgImage ? '#1a1a2e' : undefined, // Fallback color if no image
         background: bgImage
           ? `url(${bgImage}) ${finalOverlayOpacity && ',' + finalOverlayColor}`
