@@ -66,7 +66,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     if (glass) {
       const glassProps = glass === true ? {} : glass;
       return (
-        <div ref={ref} className={cardClasses + ' c-card--glass'} onClick={onClick} {...rest} style={{ ...styles}}><AtomixGlass {...{...glassProps, cornerRadius: 10}}><div className="c-card__glass-content">{cardContent}</div></AtomixGlass></div>
+        <div ref={ref} className={cardClasses + ' c-card--glass'} onClick={onClick} {...rest} style={{ ...styles}}><AtomixGlass {...{...glassProps, cornerRadius: 10, elasticity: 0}}><div className="c-card__glass-content">{cardContent}</div></AtomixGlass></div>
       );
     }
 

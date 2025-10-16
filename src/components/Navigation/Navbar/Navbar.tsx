@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { NavbarProps } from '../../../lib/types/components';
 import { useNavbar } from '../../../lib/composables/useNavbar';
 import { NAVBAR } from '../../../lib/constants/components';
+import { AtomixGlass } from '../../AtomixGlass/AtomixGlass';
 
 /**
  * Navbar component provides a responsive navigation header with brand, navigation items,
@@ -35,6 +36,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
       closeOnEscape = true,
       ariaLabel = 'Main navigation',
       id,
+      glass,
     },
     ref
   ) => {
@@ -108,36 +110,55 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
       }
     };
 
+    const navbarContent = (
+      <div className="c-navbar__container" style={containerStyle}>
+        {brand &&
+          (typeof brand === 'string' ? (
+            <a href="/" className="c-navbar__brand">
+              {brand}
+            </a>
+          ) : (
+            <div className="c-navbar__brand">{brand}</div>
+          ))}
+
+        {collapsible && (
+          <button
+            className="c-navbar__toggler"
+            onClick={handleToggleClick}
+            aria-expanded={navbarExpanded}
+            aria-label="Toggle navigation"
+            aria-controls="navbar-collapse"
+            disabled={disabled}
+            type="button"
+          >
+            <span className="c-navbar__toggler-icon"></span>
+          </button>
+        )}
+
+        <div id="navbar-collapse" className={collapseClass} ref={collapseRef}>
+          {children}
+        </div>
+      </div>
+    );
+
+    if (glass) {
+      const defaultGlassProps = {
+        displacementScale: 80,
+        blurAmount: 2,
+        cornerRadius: 0,
+        mode: 'shader' as const,
+      };
+      const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+      return (
+        <nav ref={ref} className={navbarClass + ' c-navbar--glass'} aria-label={ariaLabel} id={id}>
+          <AtomixGlass {...glassProps}>{navbarContent}</AtomixGlass>
+        </nav>
+      );
+    }
+
     return (
       <nav ref={ref} className={navbarClass} aria-label={ariaLabel} id={id}>
-        <div className="c-navbar__container" style={containerStyle}>
-          {brand &&
-            (typeof brand === 'string' ? (
-              <a href="/" className="c-navbar__brand">
-                {brand}
-              </a>
-            ) : (
-              <div className="c-navbar__brand">{brand}</div>
-            ))}
-
-          {collapsible && (
-            <button
-              className="c-navbar__toggler"
-              onClick={handleToggleClick}
-              aria-expanded={navbarExpanded}
-              aria-label="Toggle navigation"
-              aria-controls="navbar-collapse"
-              disabled={disabled}
-              type="button"
-            >
-              <span className="c-navbar__toggler-icon"></span>
-            </button>
-          )}
-
-          <div id="navbar-collapse" className={collapseClass} ref={collapseRef}>
-            {children}
-          </div>
-        </div>
+        {navbarContent}
       </nav>
     );
   }

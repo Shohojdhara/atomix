@@ -5,6 +5,6 @@ $background-transparency-enable: false !default;
 $background-enable-with-shadow: false !default;
 
 // Core transparency levels (used in dynamic-background-core defaults)
-$background-transparency: .4!default;
+$background-transparency: 0.001!default;
 // Core blur levels (used in dynamic-background-core defaults)
 $background-blur: 0 !default;

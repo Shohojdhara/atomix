@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import { NavProps } from '../../../lib/types/components';
 import { useNav } from '../../../lib/composables/useNavbar';
+import { AtomixGlass } from '../../AtomixGlass/AtomixGlass';
 
 /**
  * Nav component provides a container for navigation items with proper alignment and accessibility.
@@ -19,18 +20,17 @@ import { useNav } from '../../../lib/composables/useNavbar';
  */
 export const Nav = forwardRef<HTMLUListElement, NavProps>(
   (
-    { children, alignment = 'start', variant = 'default', className = '', disabled = false },
+    { children, alignment = 'start', variant = 'default', className = '', disabled = false, glass },
     ref
   ) => {
     const { generateNavClass } = useNav({ alignment, variant });
 
     const navClass = generateNavClass({ alignment, variant, className });
 
-    return (
-      <ul ref={ref} className={navClass} role="menubar" aria-orientation="horizontal">
+    const navContent = (
+      <ul ref={ref} className={navClass + (glass ? ' c-nav--glass' : '')} role="menubar" aria-orientation="horizontal">
         {React.Children.map(children, child => {
           if (React.isValidElement(child)) {
-            // Pass disabled prop down to all children if Nav is disabled
             const childProps = child.props as any;
             return React.cloneElement(child as React.ReactElement<any>, {
               ...childProps,
@@ -41,6 +41,19 @@ export const Nav = forwardRef<HTMLUListElement, NavProps>(
         })}
       </ul>
     );
+
+    if (glass) {
+      const defaultGlassProps = {
+        displacementScale: 60,
+        blurAmount: 1.5,
+        cornerRadius: 8,
+        mode: 'shader' as const,
+      };
+      const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+      return <AtomixGlass {...glassProps}>{navContent}</AtomixGlass>;
+    }
+
+    return navContent;
   }
 );
 

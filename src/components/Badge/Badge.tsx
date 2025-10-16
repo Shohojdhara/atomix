@@ -38,9 +38,10 @@ export const Badge: React.FC<BadgeProps> = ({
     const defaultGlassProps = {
       displacementScale: 5,
       blurAmount: 0.5,
-      cornerRadius: 999,
+      cornerRadius: 12,
       mode: 'standard' as const,
       className: 'c-badge--glass',
+       elasticity: 0
     };
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };

@@ -514,6 +514,12 @@ export interface SpinnerProps extends BaseComponentProps {
    * Whether the spinner should be displayed fullscreen
    */
   fullscreen?: boolean;
+
+  /**
+   * Glass morphism effect for the spinner
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -1071,6 +1077,12 @@ export interface DataTableProps extends BaseComponentProps {
    * Callback when sorting changes
    */
   onSort?: (sortConfig: SortConfig) => void;
+
+  /**
+   * Glass morphism effect for the data table
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -1192,6 +1204,12 @@ export interface TodoProps extends BaseComponentProps {
    * Whether to show the completed todos
    */
   showCompleted?: boolean;
+
+  /**
+   * Glass morphism effect for the todo component
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -1810,6 +1828,12 @@ export interface AvatarProps extends BaseComponentProps {
    * Optional click handler
    */
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+
+  /**
+   * Glass morphism effect for the avatar
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -1835,6 +1859,12 @@ export interface AvatarGroupProps extends BaseComponentProps {
    * Custom text for the "more" indicator
    */
   moreText?: string;
+
+  /**
+   * Glass morphism effect for the avatar group
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -1956,6 +1986,12 @@ export interface BreadcrumbOptions {
    * Accessible label for the breadcrumb navigation
    */
   ariaLabel?: string;
+
+  /**
+   * Glass morphism effect for the breadcrumb
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -2019,8 +2055,8 @@ export interface MessageItem {
 }
 
 /**
- * Messages component properties
- */
+   * Messages component properties
+   */
 export interface MessagesProps extends BaseComponentProps {
   /**
    * Array of message items to display
@@ -2066,6 +2102,12 @@ export interface MessagesProps extends BaseComponentProps {
    * Unique identifier for the messages component
    */
   id?: string;
+
+  /**
+   * Glass morphism effect for the messages component
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**
@@ -2348,6 +2390,12 @@ export interface ProgressProps extends BaseComponentProps {
    * Accessible label for screen readers
    */
   ariaLabel?: string;
+
+  /**
+   * Glass morphism effect for the progress bar
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
 }
 
 /**

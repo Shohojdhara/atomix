@@ -2,12 +2,14 @@ import React from 'react';
 import { SpinnerProps } from '../../lib/types/components';
 import { useSpinner } from '../../lib/composables/useSpinner';
 import { SPINNER } from '../../lib/constants/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 export const Spinner: React.FC<SpinnerProps> = ({
   size = 'md',
   variant = 'primary',
   fullscreen = false,
   className = '',
+  glass,
 }) => {
   const { generateSpinnerClass } = useSpinner({
     size,
@@ -19,14 +21,27 @@ export const Spinner: React.FC<SpinnerProps> = ({
     size,
     variant,
     fullscreen,
-    className,
+    className: `${className} ${glass ? 'c-spinner--glass' : ''}`.trim(),
   });
 
-  return (
+  const spinnerContent = (
     <div className={spinnerClass} role="status">
       <span className={SPINNER.VISUALLY_HIDDEN}>Loading...</span>
     </div>
   );
+
+  if (glass) {
+    const defaultGlassProps = {
+      displacementScale: 20,
+      blurAmount: 1,
+      cornerRadius: 999,
+      mode: 'shader' as const,
+    };
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+    return <AtomixGlass {...glassProps}>{spinnerContent}</AtomixGlass>;
+  }
+
+  return spinnerContent;
 };
 
 export type { SpinnerProps };

@@ -8,6 +8,9 @@ import { Card } from '../../components/Card/Card';
 import { BarChart, DonutChart, GaugeChart, LineChart, PieChart } from '../../components/Chart';
 import ColorModeToggle from '../../components/ColorModeToggle/ColorModeToggle';
 import { DataTable } from '../../components/DataTable/DataTable';
+import { AtomixGlass } from '../../components/AtomixGlass/AtomixGlass';
+import { AtomixLogo } from '../../components/AtomixLogo/AtomixLogo';
+import { Container } from '../../layouts/';
 import { Icon } from '../../components/Icon/Icon';
 import { Modal } from '../../components/Modal/Modal';
 import { Menu, MenuItem } from '../../components/Navigation/Menu/Menu';
@@ -188,6 +191,7 @@ export const AdminDashboard: React.FC = () => {
           variant={value === 'Admin' ? 'primary' : value === 'Manager' ? 'success' : 'secondary'}
           size="sm"
           label={value}
+          glass={true}
         />
       ),
     },
@@ -208,6 +212,7 @@ export const AdminDashboard: React.FC = () => {
           }
           size="sm"
           label={value}
+          glass={true}
         />
       ),
     },
@@ -217,10 +222,10 @@ export const AdminDashboard: React.FC = () => {
       title: 'Actions',
       render: (value: any, row: User) => (
         <div className="u-d-flex u-gap-2">
-          <Button size="sm" variant="primary" onClick={() => handleEditUser(row)}>
+          <Button size="sm" variant="primary" onClick={() => handleEditUser(row)} glass={true}>
             Edit
           </Button>
-          <Button size="sm" variant="error" onClick={() => handleDeleteUser(row.id)}>
+          <Button size="sm" variant="error" onClick={() => handleDeleteUser(row.id)} glass={true}>
             Delete
           </Button>
         </div>
@@ -337,10 +342,9 @@ export const AdminDashboard: React.FC = () => {
 
   const renderDashboardView = () => (
     <Grid>
-
       {/* Enhanced Stats Cards Row */}
       <GridCol xs={12} sm={6} md={3}>
-        <Card className="u-mb-3">
+        <Card className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-d-flex u-justify-content-between u-align-items-start">
               <div>
@@ -354,7 +358,12 @@ export const AdminDashboard: React.FC = () => {
               </div>
             </div>
             <div className="u-d-flex u-align-items-center u-mt-2">
-              <Badge variant="success" size="sm" label={`+${dashboardStats.growth}%`} />
+              <Badge
+                variant="success"
+                size="sm"
+                label={`+${dashboardStats.growth}%`}
+                glass={true}
+              />
               <span className="u-text-secondary-emphasis u-fs-6 u-ms-2">vs last month</span>
             </div>
           </div>
@@ -362,7 +371,7 @@ export const AdminDashboard: React.FC = () => {
       </GridCol>
 
       <GridCol xs={12} sm={6} md={3}>
-        <Card className="u-mb-3">
+        <Card className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-d-flex u-justify-content-between u-align-items-start">
               <div>
@@ -376,7 +385,7 @@ export const AdminDashboard: React.FC = () => {
               </div>
             </div>
             <div className="u-d-flex u-align-items-center u-mt-2">
-              <Badge variant="success" size="sm" label="+8%" />
+              <Badge variant="success" size="sm" label="+8%" glass={true} />
               <span className="u-text-secondary-emphasis u-fs-6 u-ms-2">vs last month</span>
             </div>
           </div>
@@ -384,7 +393,7 @@ export const AdminDashboard: React.FC = () => {
       </GridCol>
 
       <GridCol xs={12} sm={6} md={3}>
-        <Card className="u-mb-3">
+        <Card className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-d-flex u-justify-content-between u-align-items-start">
               <div>
@@ -398,7 +407,7 @@ export const AdminDashboard: React.FC = () => {
               </div>
             </div>
             <div className="u-d-flex u-align-items-center u-mt-2">
-              <Badge variant="success" size="sm" label="+15%" />
+              <Badge variant="success" size="sm" label="+15%" glass={true} />
               <span className="u-text-secondary-emphasis u-fs-6 u-ms-2">vs last month</span>
             </div>
           </div>
@@ -406,7 +415,7 @@ export const AdminDashboard: React.FC = () => {
       </GridCol>
 
       <GridCol xs={12} sm={6} md={3}>
-        <Card className="u-mb-3">
+        <Card className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-d-flex u-justify-content-between u-align-items-start">
               <div>
@@ -426,7 +435,7 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Key Metrics Row */}
       <GridCol xs={12} sm={6} md={3}>
-        <Card className="u-mb-3">
+        <Card className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-d-flex u-justify-content-between u-align-items-center">
               <div>
@@ -440,7 +449,7 @@ export const AdminDashboard: React.FC = () => {
       </GridCol>
 
       <GridCol xs={12} sm={6} md={3}>
-        <Card className="u-mb-3">
+        <Card className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-d-flex u-justify-content-between u-align-items-center">
               <div>
@@ -456,7 +465,7 @@ export const AdminDashboard: React.FC = () => {
       </GridCol>
 
       <GridCol xs={12} sm={6} md={3}>
-        <Card className="u-mb-3">
+        <Card className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-d-flex u-justify-content-between u-align-items-center">
               <div>
@@ -472,7 +481,7 @@ export const AdminDashboard: React.FC = () => {
       </GridCol>
 
       <GridCol xs={12} sm={6} md={3}>
-        <Card className="u-mb-3">
+        <Card className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-d-flex u-justify-content-between u-align-items-center">
               <div>
@@ -487,7 +496,7 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Main Dashboard Charts */}
       <GridCol xs={12} md={8}>
-        <Card className="u-mb-3">
+        <Card className="u-mb-3" glass={true}>
           <div className="u-d-flex u-justify-content-between u-align-items-center u-p-3 u-border-b">
             <div>
               <h4 className="u-fw-medium u-mb-1">Traffic Overview</h4>
@@ -499,6 +508,7 @@ export const AdminDashboard: React.FC = () => {
                 variant={selectedTimeRange === '7D' ? 'primary' : 'secondary'}
                 onClick={() => handleTimeRangeChange('7D')}
                 disabled={isRefreshing}
+                glass={true}
               >
                 7D
               </Button>
@@ -507,6 +517,7 @@ export const AdminDashboard: React.FC = () => {
                 variant={selectedTimeRange === '30D' ? 'primary' : 'secondary'}
                 onClick={() => handleTimeRangeChange('30D')}
                 disabled={isRefreshing}
+                glass={true}
               >
                 30D
               </Button>
@@ -515,6 +526,7 @@ export const AdminDashboard: React.FC = () => {
                 variant={selectedTimeRange === '90D' ? 'primary' : 'secondary'}
                 onClick={() => handleTimeRangeChange('90D')}
                 disabled={isRefreshing}
+                glass={true}
               >
                 90D
               </Button>
@@ -527,7 +539,7 @@ export const AdminDashboard: React.FC = () => {
       </GridCol>
 
       <GridCol xs={12} md={4}>
-        <Card title="User Distribution" className="u-mb-3">
+        <Card title="User Distribution" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <DonutChart datasets={userDistributionDatasets} size="md" />
             <div className="u-mt-3">
@@ -574,7 +586,7 @@ export const AdminDashboard: React.FC = () => {
       </GridCol>
 
       <GridCol xs={12} md={6}>
-        <Card title="Monthly Goals" className="u-mb-3">
+        <Card title="Monthly Goals" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-mb-4">
               <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-2">
@@ -617,10 +629,10 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Recent Activity Enhanced */}
       <GridCol xs={12} md={6}>
-        <Card className="u-mb-3">
+        <Card className="u-mb-3" glass={true}>
           <div className="u-d-flex u-justify-content-between u-align-items-center u-p-3 u-border-b">
             <h4 className="u-fw-medium u-mb-0">Recent Activity</h4>
-            <Button size="sm" variant="outline-primary">
+            <Button size="sm" variant="outline-primary" glass={true}>
               View All
             </Button>
           </div>
@@ -634,7 +646,7 @@ export const AdminDashboard: React.FC = () => {
                 <div className="u-text-secondary-emphasis u-fs-6">John Doe joined the platform</div>
                 <div className="u-text-secondary-emphasis u-fs-6">2 minutes ago</div>
               </div>
-              <Badge variant="success" size="sm" label="New" />
+              <Badge variant="success" size="sm" label="New" glass={true} />
             </div>
 
             <div className="u-d-flex u-align-items-start u-mb-3">
@@ -646,7 +658,7 @@ export const AdminDashboard: React.FC = () => {
                 <div className="u-text-secondary-emphasis u-fs-6">$249.99 from Jane Smith</div>
                 <div className="u-text-secondary-emphasis u-fs-6">5 minutes ago</div>
               </div>
-              <Badge variant="primary" size="sm" label="$249" />
+              <Badge variant="primary" size="sm" label="$249" glass={true} />
             </div>
 
             <div className="u-d-flex u-align-items-start u-mb-3">
@@ -658,7 +670,7 @@ export const AdminDashboard: React.FC = () => {
                 <div className="u-text-secondary-emphasis u-fs-6">Database connection restored</div>
                 <div className="u-text-secondary-emphasis u-fs-6">10 minutes ago</div>
               </div>
-              <Badge variant="info" size="sm" label="Fixed" />
+              <Badge variant="info" size="sm" label="Fixed" glass={true} />
             </div>
 
             <div className="u-d-flex u-align-items-start">
@@ -672,7 +684,7 @@ export const AdminDashboard: React.FC = () => {
                 </div>
                 <div className="u-text-secondary-emphasis u-fs-6">15 minutes ago</div>
               </div>
-              <Badge variant="warning" size="sm" label="Large" />
+              <Badge variant="warning" size="sm" label="Large" glass={true} />
             </div>
           </div>
         </Card>
@@ -680,7 +692,7 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Top Products/Features */}
       <GridCol xs={12} md={6}>
-        <Card title="Top Performing Features" className="u-mb-3">
+        <Card title="Top Performing Features" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-3 u-pb-2 u-border-b">
               <div className="u-d-flex u-align-items-center">
@@ -746,7 +758,7 @@ export const AdminDashboard: React.FC = () => {
       </GridCol>
 
       <GridCol xs={12} md={6}>
-        <Card title="System Performance" className="u-mb-3">
+        <Card title="System Performance" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <BarChart
               datasets={[
@@ -763,7 +775,7 @@ export const AdminDashboard: React.FC = () => {
       </GridCol>
 
       <GridCol xs={12} md={6}>
-        <Card title="Conversion Funnel" className="u-mb-3">
+        <Card title="Conversion Funnel" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <BarChart
               datasets={[
@@ -854,7 +866,7 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Quick Actions */}
       <GridCol xs={12}>
-        <Card title="Quick Actions" className="u-mb-3">
+        <Card title="Quick Actions" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <Grid>
               <GridCol xs={12} sm={6} md={2}>
@@ -863,6 +875,7 @@ export const AdminDashboard: React.FC = () => {
                   className="u-w-100 u-mb-2 u-d-flex u-flex-column u-align-items-center u-py-3"
                   onClick={() => handleQuickAction('add-user')}
                   disabled={quickActionLoading === 'add-user'}
+                  glass={true}
                 >
                   <Icon
                     name={quickActionLoading === 'add-user' ? 'Spinner' : 'Plus'}
@@ -880,6 +893,7 @@ export const AdminDashboard: React.FC = () => {
                   className="u-w-100 u-mb-2 u-d-flex u-flex-column u-align-items-center u-py-3"
                   onClick={() => handleQuickAction('export-data')}
                   disabled={quickActionLoading === 'export-data'}
+                  glass={true}
                 >
                   <Icon
                     name={quickActionLoading === 'export-data' ? 'Spinner' : 'Download'}
@@ -897,6 +911,7 @@ export const AdminDashboard: React.FC = () => {
                   className="u-w-100 u-mb-2 u-d-flex u-flex-column u-align-items-center u-py-3"
                   onClick={() => handleQuickAction('generate-report')}
                   disabled={quickActionLoading === 'generate-report'}
+                  glass={true}
                 >
                   <Icon
                     name={quickActionLoading === 'generate-report' ? 'Spinner' : 'FileText'}
@@ -914,6 +929,7 @@ export const AdminDashboard: React.FC = () => {
                   className="u-w-100 u-mb-2 u-d-flex u-flex-column u-align-items-center u-py-3"
                   onClick={() => handleQuickAction('send-alert')}
                   disabled={quickActionLoading === 'send-alert'}
+                  glass={true}
                 >
                   <Icon
                     name={quickActionLoading === 'send-alert' ? 'Spinner' : 'Bell'}
@@ -931,6 +947,7 @@ export const AdminDashboard: React.FC = () => {
                   className="u-w-100 u-mb-2 u-d-flex u-flex-column u-align-items-center u-py-3"
                   onClick={() => handleQuickAction('security-scan')}
                   disabled={quickActionLoading === 'security-scan'}
+                  glass={true}
                 >
                   <Icon
                     name={quickActionLoading === 'security-scan' ? 'Spinner' : 'Shield'}
@@ -947,6 +964,7 @@ export const AdminDashboard: React.FC = () => {
                   variant="outline-secondary"
                   className="u-w-100 u-mb-2 u-d-flex u-flex-column u-align-items-center u-py-3"
                   onClick={() => setActiveView('settings')}
+                  glass={true}
                 >
                   <Icon name="Gear" size="md" className="u-mb-2" />
                   <div className="u-fs-6">Settings</div>
@@ -965,11 +983,11 @@ export const AdminDashboard: React.FC = () => {
       <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-4">
         <h1 className="u-fs-1 u-fw-bold">Users</h1>
         <div className="u-d-flex u-gap-2">
-          <Button variant="secondary">
+          <Button variant="secondary" glass={true}>
             <Icon name="Download" size="sm" className="u-me-1" />
             Export
           </Button>
-          <Button variant="primary" onClick={() => setIsAddUserModalOpen(true)}>
+          <Button variant="primary" onClick={() => setIsAddUserModalOpen(true)} glass={true}>
             <Icon name="Plus" size="sm" className="u-me-1" />
             Add User
           </Button>
@@ -999,7 +1017,7 @@ export const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Data Table */}
-      <Card>
+      <Card glass={true}>
         <DataTable
           data={filteredUsers}
           columns={userColumns}
@@ -1018,14 +1036,14 @@ export const AdminDashboard: React.FC = () => {
   const renderAnalyticsView = () => (
     <Grid>
       <GridCol xs={12}>
-        <Callout variant="info" className="u-mb-4">
+        <Callout variant="info" className="u-mb-4" glass={true}>
           <Icon name="ChartBar" size="sm" className="u-me-2" />
           Analytics dashboard with comprehensive metrics and insights.
         </Callout>
       </GridCol>
 
       <GridCol xs={12} md={6}>
-        <Card title="Performance Metrics" className="u-mb-3">
+        <Card title="Performance Metrics" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-mb-3">
               <div className="u-d-flex u-justify-content-between u-mb-1">
@@ -1053,7 +1071,7 @@ export const AdminDashboard: React.FC = () => {
       </GridCol>
 
       <GridCol xs={12} md={6}>
-        <Card title="User Engagement" className="u-mb-3">
+        <Card title="User Engagement" className="u-mb-3" glass={true}>
           <PieChart datasets={userDistributionDatasets} size="md" />
         </Card>
       </GridCol>
@@ -1072,11 +1090,11 @@ export const AdminDashboard: React.FC = () => {
             </p>
           </div>
           <div className="u-d-flex u-gap-2">
-            <Button variant="secondary">
+            <Button variant="secondary" glass={true}>
               <Icon name="Calendar" size="sm" className="u-me-1" />
               Schedule Report
             </Button>
-            <Button variant="primary">
+            <Button variant="primary" glass={true}>
               <Icon name="FileText" size="sm" className="u-me-1" />
               Generate Report
             </Button>
@@ -1086,7 +1104,7 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Report Filters */}
       <GridCol xs={12}>
-        <Card title="Report Filters" className="u-mb-4">
+        <Card title="Report Filters" className="u-mb-4" glass={true}>
           <div className="u-p-3">
             <Grid>
               <GridCol xs={12} md={3}>
@@ -1161,11 +1179,11 @@ export const AdminDashboard: React.FC = () => {
             </Grid>
 
             <div className="u-d-flex u-gap-2 u-mt-3">
-              <Button variant="primary">
+              <Button variant="primary" glass={true}>
                 <Icon name="FunnelSimple" size="sm" className="u-me-1" />
                 Apply Filters
               </Button>
-              <Button variant="secondary">
+              <Button variant="secondary" glass={true}>
                 <Icon name="X" size="sm" className="u-me-1" />
                 Clear Filters
               </Button>
@@ -1180,14 +1198,14 @@ export const AdminDashboard: React.FC = () => {
           <h3 className="u-fs-3 u-fw-medium u-mb-3">Quick Reports</h3>
           <Grid>
             <GridCol xs={12} sm={6} md={3}>
-              <Card className="u-mb-3 u-text-center">
+              <Card className="u-mb-3 u-text-center" glass={true}>
                 <div className="u-p-3">
                   <Icon name="Users" size="lg" className="u-mb-2 u-text-brand-emphasis" />
                   <h5 className="u-fw-medium u-mb-1">User Report</h5>
                   <p className="u-text-secondary-emphasis u-fs-6 u-mb-3">
                     User registrations and activity
                   </p>
-                  <Button size="sm" variant="outline-primary" className="u-w-100">
+                  <Button size="sm" variant="outline-primary" className="u-w-100" glass={true}>
                     Generate
                   </Button>
                 </div>
@@ -1195,14 +1213,14 @@ export const AdminDashboard: React.FC = () => {
             </GridCol>
 
             <GridCol xs={12} sm={6} md={3}>
-              <Card className="u-mb-3 u-text-center">
+              <Card className="u-mb-3 u-text-center" glass={true}>
                 <div className="u-p-3">
                   <Icon name="TrendUp" size="lg" className="u-mb-2 u-text-success-emphasis" />
                   <h5 className="u-fw-medium u-mb-1">Sales Report</h5>
                   <p className="u-text-secondary-emphasis u-fs-6 u-mb-3">
                     Revenue and sales analytics
                   </p>
-                  <Button size="sm" variant="outline-primary" className="u-w-100">
+                  <Button size="sm" variant="outline-primary" className="u-w-100" glass={true}>
                     Generate
                   </Button>
                 </div>
@@ -1210,14 +1228,14 @@ export const AdminDashboard: React.FC = () => {
             </GridCol>
 
             <GridCol xs={12} sm={6} md={3}>
-              <Card className="u-mb-3 u-text-center">
+              <Card className="u-mb-3 u-text-center" glass={true}>
                 <div className="u-p-3">
                   <Icon name="ChartBar" size="lg" className="u-mb-2 u-text-info" />
                   <h5 className="u-fw-medium u-mb-1">Analytics Report</h5>
                   <p className="u-text-secondary-emphasis u-fs-6 u-mb-3">
                     Performance metrics and KPIs
                   </p>
-                  <Button size="sm" variant="outline-primary" className="u-w-100">
+                  <Button size="sm" variant="outline-primary" className="u-w-100" glass={true}>
                     Generate
                   </Button>
                 </div>
@@ -1225,14 +1243,14 @@ export const AdminDashboard: React.FC = () => {
             </GridCol>
 
             <GridCol xs={12} sm={6} md={3}>
-              <Card className="u-mb-3 u-text-center">
+              <Card className="u-mb-3 u-text-center" glass={true}>
                 <div className="u-p-3">
                   <Icon name="Shield" size="lg" className="u-mb-2 u-text-warning" />
                   <h5 className="u-fw-medium u-mb-1">Security Report</h5>
                   <p className="u-text-secondary-emphasis u-fs-6 u-mb-3">
                     Security events and audit logs
                   </p>
-                  <Button size="sm" variant="outline-primary" className="u-w-100">
+                  <Button size="sm" variant="outline-primary" className="u-w-100" glass={true}>
                     Generate
                   </Button>
                 </div>
@@ -1244,7 +1262,7 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Recent Reports Table */}
       <GridCol xs={12} md={8}>
-        <Card title="Recent Reports" className="u-mb-3">
+        <Card title="Recent Reports" className="u-mb-3" glass={true}>
           <DataTable
             data={[
               {
@@ -1307,6 +1325,7 @@ export const AdminDashboard: React.FC = () => {
                     }
                     size="sm"
                     label={value}
+                    glass={true}
                   />
                 ),
               },
@@ -1320,15 +1339,15 @@ export const AdminDashboard: React.FC = () => {
                   <div className="u-d-flex u-gap-1">
                     {row.status === 'Completed' && (
                       <>
-                        <Button size="sm" variant="outline-primary">
+                        <Button size="sm" variant="outline-primary" glass={true}>
                           <Icon name="Download" size="sm" />
                         </Button>
-                        <Button size="sm" variant="outline-secondary">
+                        <Button size="sm" variant="outline-secondary" glass={true}>
                           <Icon name="Eye" size="sm" />
                         </Button>
                       </>
                     )}
-                    <Button size="sm" variant="outline-error">
+                    <Button size="sm" variant="outline-error" glass={true}>
                       <Icon name="Trash" size="sm" />
                     </Button>
                   </div>
@@ -1346,7 +1365,7 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Report Statistics */}
       <GridCol xs={12} md={4}>
-        <Card title="Report Statistics" className="u-mb-3">
+        <Card title="Report Statistics" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-mb-3">
               <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-2">
@@ -1389,7 +1408,7 @@ export const AdminDashboard: React.FC = () => {
           </div>
         </Card>
 
-        <Card title="Scheduled Reports" className="u-mb-3">
+        <Card title="Scheduled Reports" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-3">
               <div>
@@ -1415,7 +1434,7 @@ export const AdminDashboard: React.FC = () => {
               <Toggle />
             </div>
 
-            <Button variant="outline-primary" size="sm" className="u-w-100">
+            <Button variant="outline-primary" size="sm" className="u-w-100" glass={true}>
               <Icon name="Plus" size="sm" className="u-me-1" />
               Add Schedule
             </Button>
@@ -1425,7 +1444,7 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Report Charts */}
       <GridCol xs={12}>
-        <Card title="Report Generation Trends" className="u-mb-3">
+        <Card title="Report Generation Trends" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <Grid>
               <GridCol xs={12} md={8}>
@@ -1484,11 +1503,11 @@ export const AdminDashboard: React.FC = () => {
             </p>
           </div>
           <div className="u-d-flex u-gap-2">
-            <Button variant="secondary">
+            <Button variant="secondary" glass={true}>
               <Icon name="ArrowCounterClockwise" size="sm" className="u-me-1" />
               Reset All
             </Button>
-            <Button variant="primary">
+            <Button variant="primary" glass={true}>
               <Icon name="FloppyDisk" size="sm" className="u-me-1" />
               Save Changes
             </Button>
@@ -1498,7 +1517,7 @@ export const AdminDashboard: React.FC = () => {
 
       {/* General Settings */}
       <GridCol xs={12} md={6}>
-        <Card title="General Settings" className="u-mb-3">
+        <Card title="General Settings" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-mb-3">
               <FormGroup label="Application Name" htmlFor="app-name">
@@ -1566,7 +1585,7 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Security Settings */}
       <GridCol xs={12} md={6}>
-        <Card title="Security Settings" className="u-mb-3">
+        <Card title="Security Settings" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-mb-3">
               <FormGroup label="Session Timeout (minutes)" htmlFor="session-timeout">
@@ -1631,7 +1650,7 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Notification Settings */}
       <GridCol xs={12} md={6}>
-        <Card title="Notification Settings" className="u-mb-3">
+        <Card title="Notification Settings" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-mb-3">
               <h6 className="u-fw-medium u-mb-2">Email Notifications</h6>
@@ -1676,7 +1695,7 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Data & Privacy */}
       <GridCol xs={12} md={6}>
-        <Card title="Data & Privacy" className="u-mb-3">
+        <Card title="Data & Privacy" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <div className="u-mb-3">
               <FormGroup label="Data Retention (days)" htmlFor="data-retention">
@@ -1721,11 +1740,11 @@ export const AdminDashboard: React.FC = () => {
             </div>
 
             <div className="u-d-flex u-gap-2">
-              <Button variant="outline-error" size="sm" className="u-flex-fill">
+              <Button variant="outline-error" size="sm" className="u-flex-fill" glass={true}>
                 <Icon name="Download" size="sm" className="u-me-1" />
                 Export Data
               </Button>
-              <Button variant="outline-error" size="sm" className="u-flex-fill">
+              <Button variant="outline-error" size="sm" className="u-flex-fill" glass={true}>
                 <Icon name="Trash" size="sm" className="u-me-1" />
                 Delete Data
               </Button>
@@ -1736,7 +1755,7 @@ export const AdminDashboard: React.FC = () => {
 
       {/* API Settings */}
       <GridCol xs={12}>
-        <Card title="API Settings" className="u-mb-3">
+        <Card title="API Settings" className="u-mb-3" glass={true}>
           <div className="u-p-3">
             <Grid>
               <GridCol xs={12} md={6}>
@@ -1805,11 +1824,11 @@ export const AdminDashboard: React.FC = () => {
                   </div>
                 </div>
                 <div className="u-d-flex u-gap-2">
-                  <Button variant="secondary" size="sm">
+                  <Button variant="secondary" size="sm" glass={true}>
                     <Icon name="Eye" size="sm" className="u-me-1" />
                     Reveal
                   </Button>
-                  <Button variant="outline-primary" size="sm">
+                  <Button variant="outline-primary" size="sm" glass={true}>
                     <Icon name="ArrowsClockwise" size="sm" className="u-me-1" />
                     Regenerate
                   </Button>
@@ -1841,8 +1860,47 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="o-container-fluid">
-      {/* Sidebar Navigation */}
+      {/* Top Navigation */}
+      <Card
+        glass={true}
+      >
+        <Container>
+          <div className="u-d-flex u-align-items-center u-justify-content-between">
+            <AtomixLogo />
+            <div className="u-d-flex u-align-items-center u-gap-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleNotificationClick}
+                className={notificationCount > 0 ? 'u-relative' : ''}
+                glass={true}
+              >
+                <Icon name="Bell" size="sm" />
+                {notificationCount > 0 && (
+                  <Badge
+                    variant="error"
+                    size="sm"
+                    label={notificationCount.toString()}
+                    className="u-absolute u-top-0 u-end-0 u-transform u-translate-x-1/2 u--translate-y-1/2"
+                    glass={true}
+                  />
+                )}
+              </Button>
+              <ColorModeToggle className="u-text-secondary-emphasis" />
+              <NavDropdown title="Profile">
+                <Menu>
+                  <MenuItem href="#settings">Settings</MenuItem>
+                  <MenuItem href="#logout">Logout</MenuItem>
+                </Menu>
+              </NavDropdown>
+            </div>
+          </div>
+        </Container>
+      </Card>
+
       <Grid>
+        {/* Sidebar Navigation */}
+
         <GridCol xs={12} md={3}>
           <div className="u-p-3">
             <svg xmlns="http://www.w3.org/2000/svg" width="120" height="48" viewBox="0 0 100 48">
@@ -1858,7 +1916,8 @@ export const AdminDashboard: React.FC = () => {
               </text>
             </svg>
           </div>
-          <SideMenu title="Admin Panel" collapsible={false}>
+          <Card glass >
+          <SideMenu title="Admin Panel" collapsible={false} className="u-h-100 u-bg-transparent">
             <SideMenuList>
               <SideMenuItem
                 href="#dashboard"
@@ -1900,52 +1959,22 @@ export const AdminDashboard: React.FC = () => {
               </SideMenuItem>
             </SideMenuList>
           </SideMenu>
+          </Card>
         </GridCol>
 
         {/* Main Content Area */}
         <GridCol xs={12} md={9}>
-          {/* Top Navigation */}
-          <Navbar className="u-border-b">
-            <Nav className="u-justify-content-between u-w-100">
-              <div className="u-d-flex u-align-items-center">
-                <Breadcrumb
-                  items={[
-                    { label: 'Admin', href: '#' },
-                    {
-                      label: activeView.charAt(0).toUpperCase() + activeView.slice(1),
-                      href: '#',
-                    },
-                  ]}
-                />
-              </div>
-              <div className="u-d-flex u-align-items-center u-gap-3">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleNotificationClick}
-                  className={notificationCount > 0 ? 'u-relative' : ''}
-                >
-                  <Icon name="Bell" size="sm" />
-                  {notificationCount > 0 && (
-                    <Badge
-                      variant="error"
-                      size="sm"
-                      label={notificationCount.toString()}
-                      className="u-absolute u-top-0 u-end-0 u-transform u-translate-x-1/2 u--translate-y-1/2"
-                    />
-                  )}
-                </Button>
-                <ColorModeToggle className="u-text-secondary-emphasis" />
-                <NavDropdown title="Profile">
-                  <Menu>
-                    <MenuItem href="#settings">Settings</MenuItem>
-                    <MenuItem href="#logout">Logout</MenuItem>
-                  </Menu>
-                </NavDropdown>
-              </div>
-            </Nav>
-          </Navbar>
-
+          <div className="u-d-flex u-align-items-center">
+            <Breadcrumb
+              items={[
+                { label: 'Admin', href: '#' },
+                {
+                  label: activeView.charAt(0).toUpperCase() + activeView.slice(1),
+                  href: '#',
+                },
+              ]}
+            />
+          </div>
           {/* Content */}
           <div className="u-flex-fill u-overflow-auto">
             <Block spacing="md" className="u-p-4">
@@ -1963,10 +1992,10 @@ export const AdminDashboard: React.FC = () => {
         size="md"
         footer={
           <div className="u-d-flex u-gap-2 u-justify-content-end">
-            <Button variant="secondary" onClick={() => setIsAddUserModalOpen(false)}>
+            <Button variant="secondary" onClick={() => setIsAddUserModalOpen(false)} glass={true}>
               Cancel
             </Button>
-            <Button variant="primary" type="submit" form="add-user-form">
+            <Button variant="primary" type="submit" form="add-user-form" glass={true}>
               Add User
             </Button>
           </div>
@@ -2029,10 +2058,10 @@ export const AdminDashboard: React.FC = () => {
         size="md"
         footer={
           <div className="u-d-flex u-gap-2 u-justify-content-end">
-            <Button variant="secondary" onClick={() => setIsEditUserModalOpen(false)}>
+            <Button variant="secondary" onClick={() => setIsEditUserModalOpen(false)} glass={true}>
               Cancel
             </Button>
-            <Button variant="primary" type="submit" form="edit-user-form">
+            <Button variant="primary" type="submit" form="edit-user-form" glass={true}>
               Save Changes
             </Button>
           </div>

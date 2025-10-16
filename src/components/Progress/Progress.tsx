@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react';
 import { ProgressProps } from '../../lib/types/components';
 import { useProgress } from '../../lib/composables/useProgress';
 import { PROGRESS } from '../../lib/constants/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
   (
@@ -12,6 +13,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
       className = '',
       disabled = false,
       ariaLabel = PROGRESS.DEFAULTS.ARIA_LABEL,
+      glass,
     },
     ref
   ) => {
@@ -22,10 +24,10 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
       className,
     });
 
-    return (
+    const progressContent = (
       <div
         ref={ref}
-        className={progressClasses}
+        className={progressClasses + (glass ? ' c-progress--glass' : '')}
         style={progressStyle}
         role="progressbar"
         aria-valuemin={0}
@@ -37,6 +39,19 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
         <div className={PROGRESS.CLASSES.BAR}></div>
       </div>
     );
+
+    if (glass) {
+      const defaultGlassProps = {
+        displacementScale: 30,
+        blurAmount: 0.5,
+        cornerRadius: 8,
+        mode: 'shader' as const,
+      };
+      const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+      return <AtomixGlass {...glassProps}>{progressContent}</AtomixGlass>;
+    }
+
+    return progressContent;
   }
 );
 

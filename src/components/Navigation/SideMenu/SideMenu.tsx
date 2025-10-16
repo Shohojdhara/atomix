@@ -3,6 +3,7 @@ import { SideMenuProps } from '../../../lib/types/components';
 import { useSideMenu } from '../../../lib/composables/useSideMenu';
 import { SIDE_MENU } from '../../../lib/constants/components';
 import { Icon } from '../../Icon';
+import { AtomixGlass } from '../../AtomixGlass/AtomixGlass';
 
 /**
  * SideMenu component provides a collapsible navigation menu with title and menu items.
@@ -31,6 +32,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       disabled = false,
       toggleIcon,
       id,
+      glass,
     },
     ref
   ) => {
@@ -54,8 +56,8 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
     // Default toggle icon using Atomix Icon component
     const defaultToggleIcon = <Icon name="CaretRight" size="xs" />;
 
-    return (
-      <div ref={ref} className={sideMenuClass} id={id}>
+    const sideMenuContent = (
+      <>
         {title && collapsible && (
           <div
             className="c-side-menu__toggler"
@@ -89,6 +91,27 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
             {children}
           </div>
         </div>
+      </>
+    );
+
+    if (glass) {
+      const defaultGlassProps = {
+        displacementScale: 70,
+        blurAmount: 2,
+        cornerRadius: 8,
+        mode: 'shader' as const,
+      };
+      const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+      return (
+        <div ref={ref} className={sideMenuClass + ' c-side-menu--glass'} id={id}>
+          <AtomixGlass {...glassProps}>{sideMenuContent}</AtomixGlass>
+        </div>
+      );
+    }
+
+    return (
+      <div ref={ref} className={sideMenuClass} id={id}>
+        {sideMenuContent}
       </div>
     );
   }
