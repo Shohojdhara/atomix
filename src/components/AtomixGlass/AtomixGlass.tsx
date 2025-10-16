@@ -293,6 +293,7 @@ interface GlassContainerProps {
   effectiveDisableEffects?: boolean;
   effectiveReducedMotion?: boolean;
   shaderVariant?: FragmentShaderType;
+  enableLiquidBlur?: boolean;
   children?: React.ReactNode;
 }
 
@@ -325,6 +326,7 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
       effectiveDisableEffects = false,
       effectiveReducedMotion = false,
       shaderVariant = 'liquidGlass',
+      enableLiquidBlur = false,
     },
     ref
   ) => {
@@ -382,7 +384,7 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
         flowBlur: blurAmount * 1.2,
       };
 
-      if (!rectCache || !globalMousePosition.x || !globalMousePosition.y) {
+      if (!enableLiquidBlur || !rectCache || !globalMousePosition.x || !globalMousePosition.y) {
         return defaultBlur;
       }
 
@@ -414,7 +416,7 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
         centerBlur: clampBlur(centerBlur * stateMultiplier),
         flowBlur: clampBlur(flowBlur * stateMultiplier),
       };
-    }, [blurAmount, globalMousePosition, mouseOffset, isHovered, isActive, rectCache]);
+    }, [enableLiquidBlur, blurAmount, globalMousePosition, mouseOffset, isHovered, isActive, rectCache]);
 
     const backdropStyle = useMemo(() => {
       const dynamicSaturation = saturation + liquidBlur.baseBlur * 20;
@@ -551,6 +553,7 @@ interface AtomixGlassProps {
   reducedMotion?: boolean;
   highContrast?: boolean;
   disableEffects?: boolean;
+  enableLiquidBlur?: boolean;
 
   // Performance monitoring
   enablePerformanceMonitoring?: boolean;
@@ -592,6 +595,7 @@ export function AtomixGlass({
   reducedMotion = false,
   highContrast = false,
   disableEffects = false,
+  enableLiquidBlur = false,
 
   enablePerformanceMonitoring = false,
 }: AtomixGlassProps) {
@@ -1247,6 +1251,7 @@ export function AtomixGlass({
         effectiveDisableEffects={effectiveDisableEffects}
         effectiveReducedMotion={effectiveReducedMotion}
         shaderVariant={shaderVariant}
+        enableLiquidBlur={enableLiquidBlur}
       >
         {children}
       </GlassContainer>
