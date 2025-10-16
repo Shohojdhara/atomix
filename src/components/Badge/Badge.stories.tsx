@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { BADGE, SIZES, THEME_COLORS } from '../../lib/constants/components';
 import { Badge } from './Badge';
 
@@ -407,7 +408,7 @@ export const GlassSecondary: Story = {
   decorators: [
     (Story) => (
       <div style={{ 
-        background: 'url(https://cdn.pixabay.com/photo/2021/11/11/17/03/insect-6786728_1280.jpg)', 
+        background: 'url(https://images.unsplash.com/photo-1584384689201-e0bcbe2c7f1d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1287)', 
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         padding: '10rem 25rem',
@@ -504,7 +505,7 @@ export const GlassAllSizes: Story = {
       <div className="u-d-flex u-align-items-center u-gap-2">
         <Badge label="Small" variant="primary" size="sm" glass={true} />
         <Badge label="Medium" variant="primary" size="md" glass={true} />
-        <Badge label="Large" variant="primary" size="lg" glass={{cornerRadius: 14}} />
+        <Badge label="Large" variant="primary" size="lg" glass={true} />
       </div>
     </div>
   ),

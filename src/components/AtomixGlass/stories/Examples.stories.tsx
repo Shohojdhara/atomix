@@ -7,11 +7,18 @@
  * @package Atomix
  * @component AtomixGlass
  */
-
+import React from 'react';
+import { useState, useEffect } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import AtomixGlass from '../AtomixGlass';
 import { BackgroundWrapper, backgrounds, backgroundImages } from './shared-components';
-import { useState, useEffect } from 'react';
+
+import { Button } from '../../Button';
+import { Badge } from '../../Badge';
+import { Callout } from '../../Callout';
+import { Input } from '../../Form/Input';
+import { Container, Grid, GridCol } from '../../../layouts/Grid';
+import { Icon } from '../../Icon/Icon';
 
 const meta: Meta<typeof AtomixGlass> = {
   title: 'Components/AtomixGlass/Examples',
@@ -25,463 +32,11 @@ const meta: Meta<typeof AtomixGlass> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['!autodocs'],
 };
 
 export default meta;
 type Story = StoryObj<typeof AtomixGlass>;
-
-/**
- * Apple-inspired UI example showcasing the liquid glass effect
- *
- * This story demonstrates how to create Apple-like interfaces using the AtomixGlass component,
- * mimicking the frosted glass effect seen in macOS and iOS with realistic design elements
- * and interactions that closely resemble Apple's design language.
- */
-export const AppleInspiredUI: Story = {
-  render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [activeTab, setActiveTab] = useState('home');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [currentTime, setCurrentTime] = useState('');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [hoverDockItem, setHoverDockItem] = useState<number | null>(null);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [notificationCount, setNotificationCount] = useState(3);
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      // Update time every minute
-      const updateTime = () => {
-        const now = new Date();
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        const formattedHours = hours % 12 || 12;
-        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-        setCurrentTime(`${formattedHours}:${formattedMinutes} ${ampm}`);
-      };
-
-      updateTime();
-      const interval = setInterval(updateTime, 60000);
-
-      return () => clearInterval(interval);
-    }, []);
-
-    const handleTabChange = (tab: string) => {
-      setActiveTab(tab);
-    };
-
-    // Apple-style app icons with gradient backgrounds
-    const appIcons = [
-      { name: 'Photos', color: 'linear-gradient(135deg, #FF9500, #FF2D55)', symbol: '📷' },
-      { name: 'Music', color: 'linear-gradient(135deg, #FF2D55, #AF52DE)', symbol: '🎵' },
-      { name: 'Mail', color: 'linear-gradient(135deg, #5AC8FA, #007AFF)', symbol: '✉️' },
-      { name: 'Maps', color: 'linear-gradient(135deg, #34C759, #5AC8FA)', symbol: '🗺️' },
-      { name: 'Weather', color: 'linear-gradient(135deg, #007AFF, #5AC8FA)', symbol: '☀️' },
-      { name: 'Notes', color: 'linear-gradient(135deg, #FFCC00, #FF9500)', symbol: '📝' },
-    ];
-
-    // Dock apps with more realistic icons
-    const dockApps = [
-      { name: 'Finder', symbol: '🔍', color: 'linear-gradient(135deg, #1E88E5, #64B5F6)' },
-      { name: 'Safari', symbol: '🧭', color: 'linear-gradient(135deg, #039BE5, #81D4FA)' },
-      { name: 'Messages', symbol: '💬', color: 'linear-gradient(135deg, #43A047, #81C784)' },
-      { name: 'Calendar', symbol: '📅', color: 'linear-gradient(135deg, #E53935, #EF5350)' },
-      { name: 'Photos', symbol: '🖼️', color: 'linear-gradient(135deg, #8E24AA, #BA68C8)' },
-    ];
-
-    return (
-      <BackgroundWrapper
-        backgroundImage={'https://images.pexels.com/photos/18772443/pexels-photo-18772443.jpeg'}
-        height="90vh"
-        style={{ maxWidth: '90vw', padding: '10px' }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            height: '90vh',
-            width: '100%',
-          }}
-        >
-          {/* Top menu bar - macOS style */}
-          <AtomixGlass
-            displacementScale={70}
-            blurAmount={0}
-            saturation={150}
-            cornerRadius={8}
-            mode="shader"
-            shaderVariant="premiumGlass"
-            elasticity={0}
-          >
-            <div
-              style={{
-                padding: '10px 16px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '77vw',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '20px', color: '#fff' }}>
-                <span
-                  style={{
-                    fontSize: '20px',
-                    fontWeight: 600,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                  }}
-                >
-                  <span style={{ fontSize: '22px' }}>🍎</span>
-                  <span>Atomix</span>
-                </span>
-                <div style={{ display: 'flex', gap: '16px' }}>
-                  {['Finder', 'File', 'Edit', 'View', 'Window', 'Help'].map(tab => (
-                    <button
-                      key={tab}
-                      onClick={() => handleTabChange(tab.toLowerCase())}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        padding: '4px 8px',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        backgroundColor:
-                          activeTab === tab.toLowerCase()
-                            ? 'rgba(255,255,255,0.15)'
-                            : 'transparent',
-                        transition: 'all 0.2s ease',
-                        fontSize: '13px',
-                        fontWeight: activeTab === tab.toLowerCase() ? 600 : 400,
-                        color: 'inherit',
-                      }}
-                    >
-                      {tab}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: '#fff' }}>
-                <div
-                  style={{ display: 'flex', alignItems: 'center', fontSize: '12px', gap: '4px' }}
-                >
-                  <span>🔋</span>
-                  <span>75%</span>
-                </div>
-                <div style={{ fontSize: '14px' }}>📶</div>
-                <span style={{ fontSize: '13px', fontWeight: 500 }}>
-                  {currentTime || '10:30 AM'}
-                </span>
-                <div
-                  style={{
-                    position: 'relative',
-                    width: '26px',
-                    height: '26px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #64B5F6, #1976D2)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    color: 'white',
-                    cursor: 'pointer',
-                    boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-                  }}
-                >
-                  A
-                  {notificationCount > 0 && (
-                    <span
-                      style={{
-                        position: 'absolute',
-                        top: '-4px',
-                        right: '-4px',
-                        width: '14px',
-                        height: '14px',
-                        borderRadius: '50%',
-                        backgroundColor: '#FF3B30',
-                        color: 'white',
-                        fontSize: '10px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        border: '1px solid rgba(255,255,255,0.8)',
-                      }}
-                    >
-                      {notificationCount}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </AtomixGlass>
-
-          {/* Center widget - iOS style */}
-          <AtomixGlass
-            displacementScale={50}
-            blurAmount={2}
-            shaderVariant="premiumGlass"
-            cornerRadius={24}
-            mode="shader"
-            elasticity={0}
-          >
-            <div style={{ padding: '30px' }}>
-              <h2
-                style={{
-                  marginTop: 0,
-                  fontSize: '26px',
-                  fontWeight: 600,
-                  marginBottom: '24px',
-                  textAlign: 'center',
-                  background: 'linear-gradient(135deg, #007AFF, #5AC8FA)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                Welcome to Atomix OS
-              </h2>
-
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(3, 1fr)',
-                  gap: '20px',
-                  marginBottom: '28px',
-                }}
-              >
-                {appIcons.map(app => (
-                  <div
-                    key={app.name}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: '8px',
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: '56px',
-                        height: '56px',
-                        borderRadius: '14px',
-                        background: app.color,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '24px',
-                        boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
-                        transition: 'transform 0.2s ease',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {app.symbol}
-                    </div>
-                    <span style={{ fontSize: '13px', fontWeight: 500, opacity: 0.9 }}>
-                      {app.name}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <AtomixGlass
-                displacementScale={12}
-                blurAmount={5}
-                saturation={130}
-                aberrationIntensity={1}
-                cornerRadius={16}
-                elasticity={0}
-                mode="shader"
-              >
-                <div style={{ padding: '18px', fontSize: '14px' }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      marginBottom: '12px',
-                    }}
-                  >
-                    <div
-                      style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}
-                    >
-                      <span style={{ fontSize: '16px' }}>📣</span>
-                      <span>Notifications</span>
-                    </div>
-                    <span
-                      style={{
-                        fontSize: '12px',
-                        padding: '2px 8px',
-                        borderRadius: '10px',
-                        background: 'rgba(255,45,85,0.2)',
-                        color: '#FF2D55',
-                        fontWeight: 600,
-                      }}
-                    >
-                      {notificationCount} New
-                    </span>
-                  </div>
-
-                  <div
-                    style={{
-                      padding: '10px 0',
-                      borderTop: '1px solid rgba(255,255,255,0.1)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <div>
-                      <div style={{ fontWeight: 500, marginBottom: '4px' }}>
-                        New Atomix Glass Component
-                      </div>
-                      <div style={{ fontSize: '12px', opacity: 0.8 }}>
-                        Experience the next generation of UI effects
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '8px',
-                        background: 'linear-gradient(135deg, #007AFF, #5AC8FA)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '18px',
-                      }}
-                    >
-                      ✨
-                    </div>
-                  </div>
-                </div>
-              </AtomixGlass>
-            </div>
-          </AtomixGlass>
-
-          {/* Bottom dock - macOS style */}
-          <AtomixGlass
-            displacementScale={15}
-            blurAmount={2}
-            saturation={140}
-            aberrationIntensity={1.2}
-            cornerRadius={24}
-            mode="polar"
-            style={{ maxWidth: '600px' }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '16px',
-                padding: '6px',
-              }}
-            >
-              {dockApps.map((app, index) => (
-                <div
-                  key={index}
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '12px',
-                    background: app.color,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '20px',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                    transform:
-                      hoverDockItem === index
-                        ? 'translateY(-10px) scale(1.1)'
-                        : 'translateY(0) scale(1)',
-                    boxShadow:
-                      hoverDockItem === index
-                        ? '0 10px 20px rgba(0,0,0,0.2)'
-                        : '0 4px 10px rgba(0,0,0,0.1)',
-                    position: 'relative',
-                  }}
-                  onMouseEnter={() => setHoverDockItem(index)}
-                  onMouseLeave={() => setHoverDockItem(null)}
-                >
-                  {app.symbol}
-                  {hoverDockItem === index && (
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: '-30px',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        background: 'rgba(0,0,0,0.7)',
-                        color: 'white',
-                        padding: '4px 10px',
-                        borderRadius: '6px',
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {app.name}
-                    </div>
-                  )}
-                </div>
-              ))}
-
-              <div
-                style={{
-                  width: '1px',
-                  height: '30px',
-                  background: 'rgba(255,255,255,0.3)',
-                  margin: '0 4px',
-                }}
-              />
-
-              <div
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '12px',
-                  background: 'rgba(255,255,255,0.2)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '20px',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                  transform:
-                    hoverDockItem === 999
-                      ? 'translateY(-10px) scale(1.1)'
-                      : 'translateY(0) scale(1)',
-                  boxShadow:
-                    hoverDockItem === 999
-                      ? '0 10px 20px rgba(0,0,0,0.2)'
-                      : '0 4px 10px rgba(0,0,0,0.1)',
-                }}
-                onMouseEnter={() => setHoverDockItem(999)}
-                onMouseLeave={() => setHoverDockItem(null)}
-              >
-                🗑️
-              </div>
-            </div>
-          </AtomixGlass>
-        </div>
-      </BackgroundWrapper>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'An enhanced Apple-inspired UI example showcasing how to create macOS and iOS-like interfaces using the AtomixGlass component. This example includes a realistic menu bar with status icons, app grid with gradient icons, notification center, and an interactive dock with hover effects - all with the signature Apple frosted glass aesthetic.',
-      },
-    },
-  },
-};
 
 /**
  * Hero section example
@@ -490,7 +45,11 @@ export const AppleInspiredUI: Story = {
  */
 export const HeroExample: Story = {
   render: () => (
-    <BackgroundWrapper backgroundImage={backgroundImages[0]} height="90vh">
+    <BackgroundWrapper
+      backgroundImage={
+        'https://images.unsplash.com/photo-1656164596804-21df1d21b870?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132'
+      }
+    >
       <div>
         <div
           style={{
@@ -501,16 +60,15 @@ export const HeroExample: Story = {
           }}
         >
           <AtomixGlass
-            displacementScale={45}
-            blurAmount={0.08}
-            saturation={170}
-            aberrationIntensity={2.5}
-            elasticity={0.18}
+            displacementScale={100}
+            blurAmount={1}
             cornerRadius={30}
-            mode="standard"
-            style={{ maxWidth: '800px' }}
+            mode="shader"
+            shaderVariant="premiumGlass"
+            style={{ maxWidth: '900px' }}
+            onClick={() => {}}
           >
-            <div style={{ padding: '40px 60px', color: 'white' }}>
+            <div style={{ padding: '60px 100px', color: 'white' }}>
               <h1 style={{ marginTop: 0, fontSize: '2.5rem' }}>Modern Glass UI</h1>
               <p style={{ fontSize: '1.2rem', marginBottom: '30px' }}>
                 Create stunning interfaces with the AtomixGlass component. Perfect for modern, sleek
@@ -519,8 +77,10 @@ export const HeroExample: Story = {
               <div
                 style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}
               >
-                <button className="c-btn c-btn--primary">Get Started</button>
-                <button className="c-btn c-btn--outline-light">Learn More</button>
+                <Button glass>Get Started</Button>
+                <Button glass variant={'light'}>
+                  Learn More
+                </Button>
               </div>
             </div>
           </AtomixGlass>
@@ -533,69 +93,6 @@ export const HeroExample: Story = {
       description: {
         story:
           'A hero section example demonstrating how to use AtomixGlass for landing page headers with call-to-action buttons.',
-      },
-    },
-  },
-};
-
-/**
- * Theme switching example
- *
- * Shows how the glass effect adapts to different themes.
- */
-export const ThemeSwitching: Story = {
-  render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-
-    return (
-      <BackgroundWrapper
-        backgroundImage={
-          theme === 'light'
-            ? backgroundImages[6] // Cozy café interior for light theme
-            : backgroundImages[7] // Desert landscape for dark theme
-        }
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '20px',
-          }}
-        >
-          <AtomixGlass
-            displacementScale={60}
-            blurAmount={1}
-            saturation={theme === 'light' ? 120 : 160}
-            aberrationIntensity={2.2}
-            elasticity={0.15}
-            cornerRadius={20}
-            overLight={theme === 'light'}
-            mode="standard"
-            style={{ width: '350px' }}
-          >
-            <div style={{ padding: '25px', textAlign: 'center' }}>
-              <h2 style={{ marginTop: 0 }}>{theme === 'light' ? 'Light Theme' : 'Dark Theme'}</h2>
-              <p>The glass effect adapts to different background themes.</p>
-              <button
-                className={`u-mt-4 c-btn c-btn--${theme === 'light' ? 'primary' : 'outline-light'}`}
-                onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-              >
-                Switch to {theme === 'light' ? 'Dark' : 'Light'} Theme
-              </button>
-            </div>
-          </AtomixGlass>
-        </div>
-      </BackgroundWrapper>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Demonstrates how AtomixGlass adapts to different theme backgrounds. The overLight prop adjusts the glass effect for better visibility on light backgrounds.',
       },
     },
   },
@@ -853,21 +350,22 @@ export const DashboardCards: Story = {
         color: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
       },
     ];
-
     return (
       <BackgroundWrapper
-        backgroundImage={backgroundImages[2]}
+        backgroundImage={
+          'https://images.unsplash.com/photo-1614188973043-4ed7d383de37?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1470'
+        }
         height="90vh"
         style={{ padding: '40px' }}
       >
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', color: 'white' }}>
           <AtomixGlass
             displacementScale={30}
-            blurAmount={0.05}
+            blurAmount={5}
             saturation={140}
             cornerRadius={20}
             mode="standard"
-            style={{ marginBottom: '32px', padding: '24px' }}
+            padding="20px 30px"
           >
             <h1 style={{ margin: 0, fontSize: '32px', fontWeight: 700 }}>Analytics Dashboard</h1>
             <p style={{ margin: '8px 0 0 0', opacity: 0.8, fontSize: '16px' }}>
@@ -875,81 +373,75 @@ export const DashboardCards: Story = {
             </p>
           </AtomixGlass>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-              gap: '20px',
-            }}
-          >
+          <Grid className="u-mt-10">
             {stats.map((stat, index) => (
-              <div
-                key={index}
-                style={{
-                  cursor: 'pointer',
-                  transition: 'transform 0.3s ease',
-                  transform: selectedCard === index ? 'translateY(-8px)' : 'translateY(0)',
-                }}
-                onMouseEnter={() => setSelectedCard(index)}
-                onMouseLeave={() => setSelectedCard(null)}
-              >
-                <AtomixGlass
-                  displacementScale={selectedCard === index ? 50 : 35}
-                  blurAmount={0.06}
-                  saturation={selectedCard === index ? 160 : 130}
-                  aberrationIntensity={selectedCard === index ? 2 : 1}
-                  cornerRadius={16}
-                  mode="standard"
+              <GridCol md={6} className="u-mb-4">
+                <div
+                  key={index}
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={() => setSelectedCard(index)}
+                  onMouseLeave={() => setSelectedCard(null)}
                 >
-                  <div style={{ padding: '24px' }}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginBottom: '16px',
-                      }}
-                    >
+                  <AtomixGlass
+                    displacementScale={selectedCard === index ? 50 : 35}
+                    blurAmount={selectedCard === index ? 1.5 : 1}
+                    saturation={selectedCard === index ? 132 : 130}
+                    aberrationIntensity={selectedCard === index ? 2 : 1}
+                    cornerRadius={16}
+                    mode="standard"
+                  >
+                    <div style={{ padding: '24px' }}>
                       <div
                         style={{
-                          width: '48px',
-                          height: '48px',
-                          borderRadius: '12px',
-                          background: stat.color,
                           display: 'flex',
                           alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '24px',
+                          justifyContent: 'space-between',
+                          marginBottom: '16px',
                         }}
                       >
-                        {stat.icon}
+                        <div
+                          style={{
+                            width: '48px',
+                            height: '48px',
+                            borderRadius: '12px',
+                            background: stat.color,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '24px',
+                          }}
+                        >
+                          {stat.icon}
+                        </div>
+                        <div
+                          style={{
+                            padding: '4px 12px',
+                            borderRadius: '20px',
+                            background:
+                              stat.trend === 'up'
+                                ? 'rgba(16, 185, 129, 0.2)'
+                                : 'rgba(239, 68, 68, 0.2)',
+                            color: stat.trend === 'up' ? '#10b981' : '#ef4444',
+                            fontSize: '14px',
+                            fontWeight: 600,
+                          }}
+                        >
+                          {stat.change}
+                        </div>
                       </div>
-                      <div
-                        style={{
-                          padding: '4px 12px',
-                          borderRadius: '20px',
-                          background:
-                            stat.trend === 'up'
-                              ? 'rgba(16, 185, 129, 0.2)'
-                              : 'rgba(239, 68, 68, 0.2)',
-                          color: stat.trend === 'up' ? '#10b981' : '#ef4444',
-                          fontSize: '14px',
-                          fontWeight: 600,
-                        }}
-                      >
-                        {stat.change}
-                      </div>
-                    </div>
 
-                    <div style={{ fontSize: '14px', opacity: 0.7, marginBottom: '8px' }}>
-                      {stat.title}
+                      <div style={{ fontSize: '14px', opacity: 0.7, marginBottom: '8px' }}>
+                        {stat.title}
+                      </div>
+                      <div style={{ fontSize: '28px', fontWeight: 700 }}>{stat.value}</div>
                     </div>
-                    <div style={{ fontSize: '28px', fontWeight: 700 }}>{stat.value}</div>
-                  </div>
-                </AtomixGlass>
-              </div>
+                  </AtomixGlass>
+                </div>
+              </GridCol>
             ))}
-          </div>
+          </Grid>
         </div>
       </BackgroundWrapper>
     );
@@ -987,34 +479,30 @@ export const ProductCard: Story = {
 
     return (
       <BackgroundWrapper
-        backgroundImage={backgroundImages[5]}
-        height="90vh"
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        overlay={true}
+        backgroundImage={
+          'https://images.unsplash.com/photo-1711779321812-59cdf38ab31f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132'
+        }
       >
-        <AtomixGlass
-          displacementScale={45}
-          blurAmount={0.08}
-          saturation={140}
-          aberrationIntensity={1.8}
-          cornerRadius={24}
-          mode="standard"
-          style={{ width: '420px', maxWidth: '90vw' }}
-        >
-          <div style={{ padding: '32px' }}>
+        <AtomixGlass displacementScale={50} blurAmount={1.5} mode="standard" overLight={'auto'} elasticity={0}>
+          <div style={{ padding: '20px', width: '300px' }}>
             {/* Product Image */}
             <div
               style={{
                 width: '100%',
-                height: '280px',
-                borderRadius: '16px',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                height: '200px',
+                borderRadius: '12px',
+                background:
+                  'linear-gradient(135deg,rgba(102, 126, 234, 0.42) 0%, rgba(118, 75, 162, 0.6) 100%)',
                 marginBottom: '24px',
+                backdropFilter: 'blur(10px)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '80px',
                 position: 'relative',
                 overflow: 'hidden',
+                opacity: 0.85,
               }}
             >
               👕
@@ -1023,7 +511,7 @@ export const ProductCard: Story = {
                   position: 'absolute',
                   top: '16px',
                   right: '16px',
-                  background: 'rgba(239, 68, 68, 0.9)',
+                  background: 'rgba(239, 68, 68, 0.85)',
                   color: 'white',
                   padding: '6px 12px',
                   borderRadius: '8px',
@@ -1036,18 +524,16 @@ export const ProductCard: Story = {
             </div>
 
             {/* Product Info */}
-            <h2 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 700 }}>
+            <h2 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: 700 }}>
               Premium Cotton T-Shirt
             </h2>
-            <p style={{ margin: '0 0 16px 0', opacity: 0.7, fontSize: '14px' }}>
+            <p style={{ margin: '0 0 8px 0', opacity: 0.7, fontSize: '12px' }}>
               Ultra-soft fabric with a modern fit. Perfect for everyday wear.
             </p>
 
             {/* Price */}
-            <div
-              style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}
-            >
-              <span style={{ fontSize: '32px', fontWeight: 700, color: '#10b981' }}>$49.99</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <span style={{ fontSize: '20px', fontWeight: 700, color: '#10b981' }}>$49.99</span>
               <span
                 style={{
                   fontSize: '20px',
@@ -1060,7 +546,7 @@ export const ProductCard: Story = {
             </div>
 
             {/* Size Selection */}
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: '8px' }}>
               <label
                 style={{
                   display: 'block',
@@ -1073,63 +559,35 @@ export const ProductCard: Story = {
               </label>
               <div style={{ display: 'flex', gap: '8px' }}>
                 {sizes.map(size => (
-                  <button
+                  <Button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    style={{
-                      flex: 1,
-                      padding: '10px',
-                      borderRadius: '8px',
-                      border:
-                        selectedSize === size
-                          ? '2px solid #667eea'
-                          : '1px solid rgba(255,255,255,0.2)',
-                      background:
-                        selectedSize === size
-                          ? 'rgba(102, 126, 234, 0.2)'
-                          : 'rgba(255,255,255,0.05)',
-                      color: 'inherit',
-                      cursor: 'pointer',
-                      fontSize: '14px',
-                      fontWeight: selectedSize === size ? 600 : 400,
-                      transition: 'all 0.2s ease',
-                    }}
+                    variant={selectedSize === size ? 'success' : 'outline-success'}
+                    glass
                   >
                     {size}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
 
             {/* Quantity */}
-            <div style={{ marginBottom: '24px' }}>
+            <div style={{ marginBottom: '8px' }}>
               <label
                 style={{
                   display: 'block',
                   fontSize: '14px',
                   fontWeight: 600,
-                  marginBottom: '10px',
+                  marginBottom: '4px',
+                  color: 'white',
                 }}
               >
                 Quantity
               </label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '8px',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'rgba(255,255,255,0.05)',
-                    color: 'inherit',
-                    cursor: 'pointer',
-                    fontSize: '18px',
-                    fontWeight: 600,
-                  }}
-                >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Button onClick={() => setQuantity(Math.max(1, quantity - 1))} glass>
                   −
-                </button>
+                </Button>
                 <span
                   style={{
                     fontSize: '18px',
@@ -1140,41 +598,23 @@ export const ProductCard: Story = {
                 >
                   {quantity}
                 </span>
-                <button
-                  onClick={() => setQuantity(Math.min(10, quantity + 1))}
-                  style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '8px',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'rgba(255,255,255,0.05)',
-                    color: 'inherit',
-                    cursor: 'pointer',
-                    fontSize: '18px',
-                    fontWeight: 600,
-                  }}
-                >
+                <Button onClick={() => setQuantity(Math.min(10, quantity + 1))} glass>
                   +
-                </button>
+                </Button>
               </div>
             </div>
 
             {/* Add to Cart Button */}
-            <button
+            <Button
               onClick={handleAddToCart}
-              className="c-btn c-btn--primary"
-              style={{
-                width: '100%',
-                padding: '14px',
-                fontSize: '16px',
-                fontWeight: 600,
-                background: addedToCart
-                  ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
-                  : undefined,
-              }}
+              variant="primary"
+              glass={{ cornerRadius: 8 }}
+              size="sm"
+              style={{ width: '100%' }}
+              icon={addedToCart ? <Icon name="Check" /> : <Icon name="ShoppingCart" />}
             >
-              {addedToCart ? '✓ Added to Cart!' : '🛒 Add to Cart'}
-            </button>
+              {addedToCart ? 'Added to Cart!' : 'Add to Cart'}
+            </Button>
           </div>
         </AtomixGlass>
       </BackgroundWrapper>
@@ -1202,7 +642,7 @@ export const NotificationCenter: Story = {
       {
         id: 1,
         type: 'success',
-        icon: '✅',
+        icon: <Icon name="Check" />,
         title: 'Deployment Successful',
         message: 'Your application has been deployed to production.',
         time: '2 min ago',
@@ -1211,7 +651,7 @@ export const NotificationCenter: Story = {
       {
         id: 2,
         type: 'warning',
-        icon: '⚠️',
+        icon: <Icon name="Warning" />,
         title: 'High CPU Usage',
         message: 'Server load has exceeded 85% for the past 10 minutes.',
         time: '15 min ago',
@@ -1220,7 +660,7 @@ export const NotificationCenter: Story = {
       {
         id: 3,
         type: 'info',
-        icon: '💬',
+        icon: <Icon name="Chats" />,
         title: 'New Message',
         message: 'You have 3 new messages from the team.',
         time: '1 hour ago',
@@ -1229,7 +669,7 @@ export const NotificationCenter: Story = {
       {
         id: 4,
         type: 'update',
-        icon: '🔄',
+        icon: <Icon name="ArrowClockwise" />,
         title: 'System Update Available',
         message: 'Version 2.4.0 is ready to install.',
         time: '3 hours ago',
@@ -1251,25 +691,17 @@ export const NotificationCenter: Story = {
 
     return (
       <BackgroundWrapper
-        backgroundImage={backgroundImages[0]}
-        height="90vh"
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        backgroundImage={
+          'https://images.unsplash.com/photo-1712230983973-6bf75ad1476e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132'
+        }
       >
-        <AtomixGlass
-          displacementScale={40}
-          blurAmount={0.06}
-          saturation={140}
-          aberrationIntensity={1.5}
-          cornerRadius={20}
-          mode="standard"
-          style={{ width: '450px', maxWidth: '90vw', maxHeight: '80vh', overflow: 'hidden' }}
-        >
-          <div>
+        <AtomixGlass displacementScale={70} blurAmount={1} elasticity={0} mode="prominent">
+          <div style={{ borderRadius: '16px', overflow: 'hidden',  color: 'var(--atomix-success-text-emphasis)', background: 'color-mix(in srgb, var(--atomix-success) 10%, transparent)' }}>
             {/* Header */}
             <div
               style={{
                 padding: '20px 24px',
-                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                borderBottom: '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
@@ -1280,7 +712,7 @@ export const NotificationCenter: Story = {
                 {unreadCount > 0 && (
                   <span
                     style={{
-                      background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                      background: 'var(--atomix-error)',
                       color: 'white',
                       padding: '2px 8px',
                       borderRadius: '10px',
@@ -1298,7 +730,7 @@ export const NotificationCenter: Story = {
                   style={{
                     background: 'none',
                     border: 'none',
-                    color: '#ef4444',
+                    color: 'var(--atomix-error-color-text-emphasis)',
                     fontSize: '13px',
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -1320,7 +752,9 @@ export const NotificationCenter: Story = {
                     opacity: 0.6,
                   }}
                 >
-                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔔</div>
+                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>
+                    <Icon name="Bell" />
+                  </div>
                   <div style={{ fontSize: '16px' }}>No notifications</div>
                 </div>
               ) : (
@@ -1330,18 +764,18 @@ export const NotificationCenter: Story = {
                     onClick={() => markAsRead(notification.id)}
                     style={{
                       padding: '16px 24px',
-                      borderBottom: '1px solid rgba(255,255,255,0.05)',
+                      borderBottom: '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)',
                       cursor: 'pointer',
-                      background: notification.read ? 'transparent' : 'rgba(102, 126, 234, 0.1)',
+                      background: notification.read ? 'transparent' : 'color-mix(in srgb, var(--atomix-success) 10%, transparent)',
                       transition: 'background 0.2s ease',
                     }}
                     onMouseEnter={e => {
-                      e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                      e.currentTarget.style.background = 'color-mix(in srgb, var(--atomix-success) 10%, transparent)';
                     }}
                     onMouseLeave={e => {
                       e.currentTarget.style.background = notification.read
                         ? 'transparent'
-                        : 'rgba(102, 126, 234, 0.1)';
+                        : 'color-mix(in srgb, var(--atomix-success) 10%, transparent)';
                     }}
                   >
                     <div style={{ display: 'flex', gap: '12px' }}>
@@ -1369,7 +803,7 @@ export const NotificationCenter: Story = {
                                 width: '8px',
                                 height: '8px',
                                 borderRadius: '50%',
-                                background: '#3b82f6',
+                                background: 'var(--atomix-success)',
                                 flexShrink: 0,
                                 marginTop: '4px',
                               }}
@@ -1432,255 +866,237 @@ export const LoginForm: Story = {
 
     return (
       <BackgroundWrapper
-        backgroundImage={backgroundImages[3]}
-        height="100vh"
+        backgroundImage={
+          'https://images.unsplash.com/photo-1585937318604-b1f6c789a877?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1548'
+        }
         overlayOpacity={0.3}
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        style={{ overflow: 'auto' }}
       >
-        <AtomixGlass
-          displacementScale={50}
-          blurAmount={0.1}
-          saturation={130}
-          aberrationIntensity={2}
-          cornerRadius={24}
-          mode="standard"
-          style={{ width: '440px', maxWidth: '90vw' }}
-        >
-          <div style={{ padding: '40px' }}>
-            {/* Logo/Header */}
-            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-              <div
-                style={{
-                  width: '64px',
-                  height: '64px',
-                  borderRadius: '16px',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '32px',
-                  margin: '0 auto 16px',
-                }}
-              >
-                🔐
-              </div>
-              <h2 style={{ margin: '0 0 8px 0', fontSize: '28px', fontWeight: 700 }}>
-                Welcome Back
-              </h2>
-              <p style={{ margin: 0, opacity: 0.7, fontSize: '14px' }}>
-                Sign in to continue to your account
-              </p>
-            </div>
-
-            {/* Form */}
-            <form onSubmit={handleSubmit}>
-              <div style={{ marginBottom: '20px' }}>
-                <label
+        <div className="u-py-6 u-text-white">
+          <AtomixGlass
+            displacementScale={50}
+            blurAmount={1}
+            saturation={130}
+            aberrationIntensity={2}
+            cornerRadius={24}
+            mode="standard"
+          >
+            <div style={{ padding: '24px', width: '350px' }}>
+              {/* Logo/Header */}
+              <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+                <div
                   style={{
-                    display: 'block',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    marginBottom: '8px',
-                  }}
-                >
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '12px 16px',
-                    borderRadius: '10px',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'rgba(255,255,255,0.05)',
-                    color: 'inherit',
-                    fontSize: '14px',
-                    outline: 'none',
-                    transition: 'all 0.2s ease',
-                  }}
-                />
-              </div>
-
-              <div style={{ marginBottom: '20px' }}>
-                <label
-                  style={{
-                    display: 'block',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    marginBottom: '8px',
-                  }}
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '12px 16px',
-                    borderRadius: '10px',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'rgba(255,255,255,0.05)',
-                    color: 'inherit',
-                    fontSize: '14px',
-                    outline: 'none',
-                    transition: 'all 0.2s ease',
-                  }}
-                />
-              </div>
-
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: '24px',
-                }}
-              >
-                <label
-                  style={{
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '16px',
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '8px',
-                    fontSize: '14px',
-                    cursor: 'pointer',
+                    justifyContent: 'center',
+                    fontSize: '24px',
+                    margin: '0 auto 16px',
                   }}
                 >
-                  <input
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={e => setRememberMe(e.target.checked)}
-                    style={{ accentColor: '#667eea' }}
+                  <Icon name="Lock" />
+                </div>
+                <h2 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 700 }}>
+                  Welcome Back
+                </h2>
+                <p style={{ margin: 0, opacity: 0.7, fontSize: '14px' }}>
+                  Sign in to continue to your account
+                </p>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleSubmit}>
+                <div style={{ marginBottom: '20px' }}>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      marginBottom: '8px',
+                    }}
+                  >
+                    Email Address
+                  </label>
+                  <Input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    required
+                    glass={{
+                      elasticity: 0,
+                    }}
                   />
-                  Remember me
-                </label>
+                </div>
+
+                <div style={{ marginBottom: '20px' }}>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      marginBottom: '8px',
+                    }}
+                  >
+                    Password
+                  </label>
+                  <Input
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    glass={{
+                      elasticity: 0,
+                    }}
+                  />
+                </div>
+
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '20px',
+                  }}
+                >
+                  <label
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      fontSize: '12px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={e => setRememberMe(e.target.checked)}
+                      style={{ accentColor: '#667eea' }}
+                    />
+                    Remember me
+                  </label>
+                  <a
+                    href="#"
+                    style={{
+                      fontSize: '12px',
+                      color: '#667eea',
+                      textDecoration: 'none',
+                      fontWeight: 600,
+                    }}
+                  >
+                    Forgot password?
+                  </a>
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  variant="primary"
+                  glass={{
+                    elasticity: 0,
+                  }}
+                  className="u-d-block u-w-100"
+                >
+                  {isLoading ? 'Signing in...' : 'Sign In'}
+                </Button>
+              </form>
+
+              {/* Social Login */}
+              <div style={{ marginTop: '20px' }}>
+                <div
+                  style={{
+                    position: 'relative',
+                    textAlign: 'center',
+                    marginBottom: '20px',
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: 0,
+                      right: 0,
+                      height: '1px',
+                      background: 'rgba(255,255,255,0.1)',
+                    }}
+                  />
+                  <span
+                    style={{
+                      position: 'relative',
+                      padding: '0 16px',
+                      background: 'inherit',
+                      fontSize: '12px',
+                      opacity: 0.6,
+                    }}
+                  >
+                    Or continue with
+                  </span>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <button
+                    style={{
+                      flex: 1,
+                      padding: '10px',
+                      borderRadius: '10px',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      background: 'rgba(255,255,255,0.05)',
+                      color: 'inherit',
+                      cursor: 'pointer',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    <span>🔵</span> Google
+                  </button>
+                  <button
+                    style={{
+                      flex: 1,
+                      padding: '10px',
+                      borderRadius: '10px',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      background: 'rgba(255,255,255,0.05)',
+                      color: 'inherit',
+                      cursor: 'pointer',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    <span>⚫</span> GitHub
+                  </button>
+                </div>
+              </div>
+
+              {/* Sign Up Link */}
+              <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '12px' }}>
+                Don't have an account?{' '}
                 <a
                   href="#"
                   style={{
-                    fontSize: '14px',
                     color: '#667eea',
                     textDecoration: 'none',
                     fontWeight: 600,
                   }}
                 >
-                  Forgot password?
+                  Sign up
                 </a>
               </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="c-btn c-btn--primary"
-                style={{
-                  width: '100%',
-                  padding: '14px',
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  opacity: isLoading ? 0.7 : 1,
-                  cursor: isLoading ? 'not-allowed' : 'pointer',
-                }}
-              >
-                {isLoading ? 'Signing in...' : 'Sign In'}
-              </button>
-            </form>
-
-            {/* Social Login */}
-            <div style={{ marginTop: '24px' }}>
-              <div
-                style={{
-                  position: 'relative',
-                  textAlign: 'center',
-                  marginBottom: '20px',
-                }}
-              >
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: 0,
-                    right: 0,
-                    height: '1px',
-                    background: 'rgba(255,255,255,0.1)',
-                  }}
-                />
-                <span
-                  style={{
-                    position: 'relative',
-                    padding: '0 16px',
-                    background: 'inherit',
-                    fontSize: '13px',
-                    opacity: 0.6,
-                  }}
-                >
-                  Or continue with
-                </span>
-              </div>
-
-              <div style={{ display: 'flex', gap: '12px' }}>
-                <button
-                  style={{
-                    flex: 1,
-                    padding: '12px',
-                    borderRadius: '10px',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'rgba(255,255,255,0.05)',
-                    color: 'inherit',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                  }}
-                >
-                  <span>🔵</span> Google
-                </button>
-                <button
-                  style={{
-                    flex: 1,
-                    padding: '12px',
-                    borderRadius: '10px',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'rgba(255,255,255,0.05)',
-                    color: 'inherit',
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                  }}
-                >
-                  <span>⚫</span> GitHub
-                </button>
-              </div>
             </div>
-
-            {/* Sign Up Link */}
-            <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '14px' }}>
-              Don't have an account?{' '}
-              <a
-                href="#"
-                style={{
-                  color: '#667eea',
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                }}
-              >
-                Sign up
-              </a>
-            </div>
-          </div>
-        </AtomixGlass>
+          </AtomixGlass>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -1722,41 +1138,39 @@ export const MusicPlayer: Story = {
 
     return (
       <BackgroundWrapper
-        backgroundImage={backgroundImages[4]}
-        height="90vh"
-        overlayOpacity={0.4}
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        backgroundImage={
+          'https://images.unsplash.com/photo-1586057281167-6a28377c4023?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987'
+        }
       >
         <AtomixGlass
           displacementScale={55}
-          blurAmount={0.1}
-          saturation={150}
-          aberrationIntensity={2.2}
+          blurAmount={3}
           cornerRadius={28}
+          elasticity={0.01}
           mode="standard"
-          style={{ width: '480px', maxWidth: '90vw' }}
         >
-          <div style={{ padding: '32px' }}>
+          <div style={{ padding: '16px', width: '350px' }}>
             {/* Album Art */}
-            <div
-              style={{
-                width: '100%',
-                aspectRatio: '1',
-                borderRadius: '20px',
-                background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-                marginBottom: '28px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '120px',
-                boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
-              }}
-            >
-              🎵
-            </div>
-
+            <AtomixGlass displacementScale={0} blurAmount={0} cornerRadius={20} mode="standard">
+              <div
+                style={{
+                  aspectRatio: '1:2',
+                  borderRadius: '20px',
+                  background:
+                    'linear-gradient(135deg, rgba(var(--atomix-primary-rgb),0.5) 0%, rgba(var(--atomix-secondary-rgb),0.5) 100%)',
+                  marginBottom: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '120px',
+                  boxShadow: '0 20px 40px rgba(var(--atomix-primary-rgb),0.3)',
+                }}
+              >
+                <Icon name="MusicNotes" />
+              </div>
+            </AtomixGlass>
             {/* Track Info */}
-            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '16px' }}>
               <h2 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 700 }}>
                 Summer Vibes
               </h2>
@@ -1764,7 +1178,7 @@ export const MusicPlayer: Story = {
             </div>
 
             {/* Progress Bar */}
-            <div style={{ marginBottom: '12px' }}>
+            <div style={{ marginBottom: '8px' }}>
               <div
                 style={{
                   height: '6px',
@@ -1784,7 +1198,8 @@ export const MusicPlayer: Story = {
                   style={{
                     height: '100%',
                     width: `${(currentTime / totalDuration) * 100}%`,
-                    background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+                    background:
+                      'linear-gradient(90deg, rgba(var(--atomix-primary-rgb),0.5) 0%, rgba(var(--atomix-secondary-rgb),0.5) 100%)',
                     transition: 'width 0.1s ease',
                   }}
                 />
@@ -1810,7 +1225,7 @@ export const MusicPlayer: Story = {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '20px',
-                marginBottom: '24px',
+                marginBottom: '16px',
               }}
             >
               <button
@@ -1820,7 +1235,9 @@ export const MusicPlayer: Story = {
                   height: '40px',
                   borderRadius: '50%',
                   border: 'none',
-                  background: isShuffle ? 'rgba(102, 126, 234, 0.3)' : 'rgba(255,255,255,0.1)',
+                  background: isShuffle
+                    ? 'rgba(var(--atomix-primary-rgb),0.3)'
+                    : 'rgba(255,255,255,0.1)',
                   color: 'inherit',
                   cursor: 'pointer',
                   fontSize: '16px',
@@ -1829,7 +1246,7 @@ export const MusicPlayer: Story = {
                   justifyContent: 'center',
                 }}
               >
-                🔀
+                <Icon name="Shuffle" />
               </button>
 
               <button
@@ -1847,7 +1264,7 @@ export const MusicPlayer: Story = {
                   justifyContent: 'center',
                 }}
               >
-                ⏮️
+                <Icon name="Rewind" />
               </button>
 
               <button
@@ -1857,17 +1274,18 @@ export const MusicPlayer: Story = {
                   height: '64px',
                   borderRadius: '50%',
                   border: 'none',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  background:
+                    'linear-gradient(135deg, rgba(var(--atomix-primary-rgb),0.5) 0%, rgba(var(--atomix-secondary-rgb),0.5) 100%)',
                   color: 'white',
                   cursor: 'pointer',
                   fontSize: '28px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  boxShadow: '0 8px 20px rgba(102, 126, 234, 0.4)',
+                  boxShadow: '0 8px 20px rgba(var(--atomix-primary-rgb),0.4)',
                 }}
               >
-                {isPlaying ? '⏸️' : '▶️'}
+                {isPlaying ? <Icon name="Pause" /> : <Icon name="Play" />}
               </button>
 
               <button
@@ -1885,7 +1303,7 @@ export const MusicPlayer: Story = {
                   justifyContent: 'center',
                 }}
               >
-                ⏭️
+                <Icon name="FastForward" />
               </button>
 
               <button
@@ -1909,14 +1327,20 @@ export const MusicPlayer: Story = {
                   justifyContent: 'center',
                 }}
               >
-                {repeatMode === 'one' ? '🔂' : '🔁'}
+                {repeatMode === 'one' ? <Icon name="RepeatOnce" /> : <Icon name="Repeat" />}
               </button>
             </div>
 
             {/* Volume Control */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <span style={{ fontSize: '18px', opacity: 0.7 }}>
-                {volume === 0 ? '🔇' : volume < 50 ? '🔉' : '🔊'}
+                {volume === 0 ? (
+                  <Icon name="SpeakerLow" />
+                ) : volume < 50 ? (
+                  <Icon name="SpeakerX" />
+                ) : (
+                  <Icon name="SpeakerHigh" />
+                )}
               </span>
               <input
                 type="range"
@@ -2007,242 +1431,233 @@ export const PricingTable: Story = {
     );
 
     return (
-      <BackgroundWrapper
-        backgroundImage={backgroundImages[3]}
-        height="90vh"
+      <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '20px',
+          height: '95vh',
+          width: '97vw',
+          borderRadius: '12px',
+          overflow: 'auto',
+          backgroundImage: `url('https://images.unsplash.com/photo-1658852528450-35115f3c01f3?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
         }}
       >
-        <div style={{ width: '100%', maxWidth: '1200px' }}>
+        <Container className="u-py-6 u-text-white">
           {/* Header */}
-          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <h1 style={{ fontSize: '48px', fontWeight: 800, margin: '0 0 16px 0' }}>
+          <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+            <h1 style={{ fontSize: '40px', fontWeight: 800, margin: '0 0 8px 0' }}>
               Choose Your Plan
             </h1>
-            <p style={{ fontSize: '18px', opacity: 0.8, marginBottom: '32px' }}>
+            <p style={{ fontSize: '16px', opacity: 0.8, marginBottom: '12px' }}>
               Start free, then scale as you grow
             </p>
 
             {/* Billing Toggle */}
-            <AtomixGlass
-              blurAmount={0.08}
-              saturation={120}
-              cornerRadius={50}
-              mode="standard"
-              style={{ display: 'inline-flex', padding: '6px' }}
-            >
-              <button
-                onClick={() => setBillingCycle('monthly')}
-                style={{
-                  padding: '12px 28px',
-                  borderRadius: '50px',
-                  border: 'none',
-                  background:
-                    billingCycle === 'monthly' ? 'rgba(102, 126, 234, 0.5)' : 'transparent',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  fontWeight: billingCycle === 'monthly' ? 600 : 400,
-                  transition: 'all 0.3s ease',
-                }}
-              >
-                Monthly
-              </button>
-              <button
-                onClick={() => setBillingCycle('yearly')}
-                style={{
-                  padding: '12px 28px',
-                  borderRadius: '50px',
-                  border: 'none',
-                  background:
-                    billingCycle === 'yearly' ? 'rgba(102, 126, 234, 0.5)' : 'transparent',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  fontWeight: billingCycle === 'yearly' ? 600 : 400,
-                  transition: 'all 0.3s ease',
-                  position: 'relative',
-                }}
-              >
-                Yearly
-                <span
+            <div style={{ width: '100%', maxWidth: '200px', margin: '0 auto' }}>
+              <AtomixGlass blurAmount={1} saturation={120} cornerRadius={50} mode="standard">
+                <button
+                  onClick={() => setBillingCycle('monthly')}
                   style={{
-                    position: 'absolute',
-                    top: '-8px',
-                    right: '-8px',
-                    background: '#10b981',
-                    color: 'white',
-                    fontSize: '11px',
-                    padding: '2px 6px',
-                    borderRadius: '8px',
-                    fontWeight: 700,
+                    padding: '10px 24px',
+                    borderRadius: '50px',
+                    border: 'none',
+                    background:
+                      billingCycle === 'monthly' ? 'rgba(102, 126, 234, 0.5)' : 'transparent',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    fontWeight: billingCycle === 'monthly' ? 600 : 400,
+                    transition: 'all 0.3s ease',
                   }}
                 >
-                  Save {savings}%
-                </span>
-              </button>
-            </AtomixGlass>
-          </div>
-
-          {/* Pricing Cards */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '24px',
-            }}
-          >
-            {plans.map((plan, index) => (
-              <AtomixGlass
-                key={index}
-                displacementScale={plan.popular ? 50 : 40}
-                blurAmount={0.08}
-                saturation={plan.popular ? 150 : 130}
-                aberrationIntensity={plan.popular ? 2 : 1.5}
-                cornerRadius={24}
-                mode="standard"
-                style={{
-                  position: 'relative',
-                  transform: plan.popular ? 'scale(1.05)' : 'scale(1)',
-                  transition: 'transform 0.3s ease',
-                }}
-              >
-                {plan.popular && (
-                  <div
+                  Monthly
+                </button>
+                <button
+                  onClick={() => setBillingCycle('yearly')}
+                  style={{
+                    padding: '10px 24px',
+                    borderRadius: '50px',
+                    border: 'none',
+                    background:
+                      billingCycle === 'yearly' ? 'rgba(102, 126, 234, 0.5)' : 'transparent',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    fontWeight: billingCycle === 'yearly' ? 600 : 400,
+                    transition: 'all 0.3s ease',
+                    position: 'relative',
+                  }}
+                >
+                  Yearly
+                  <span
                     style={{
                       position: 'absolute',
-                      top: '-12px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                      top: '-8px',
+                      right: '-8px',
+                      background: '#10b981',
                       color: 'white',
-                      padding: '6px 20px',
-                      borderRadius: '20px',
-                      fontSize: '12px',
+                      fontSize: '11px',
+                      padding: '2px 6px',
+                      borderRadius: '8px',
                       fontWeight: 700,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px',
                     }}
                   >
-                    Most Popular
-                  </div>
-                )}
+                    Save {savings}%
+                  </span>
+                </button>
+              </AtomixGlass>
+            </div>
+          </div>
 
-                <div style={{ padding: '32px' }}>
-                  {/* Plan Header */}
-                  <div
-                    style={{
-                      width: '60px',
-                      height: '60px',
-                      borderRadius: '16px',
-                      background: plan.color,
-                      marginBottom: '20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '28px',
-                    }}
-                  >
-                    {index === 0 ? '🚀' : index === 1 ? '⭐' : '👑'}
-                  </div>
-
-                  <h3 style={{ fontSize: '24px', fontWeight: 700, margin: '0 0 8px 0' }}>
-                    {plan.name}
-                  </h3>
-                  <p style={{ fontSize: '14px', opacity: 0.7, marginBottom: '24px' }}>
-                    {plan.description}
-                  </p>
-
-                  {/* Price */}
-                  <div style={{ marginBottom: '28px' }}>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                      <span style={{ fontSize: '48px', fontWeight: 800 }}>
-                        ${plan.price[billingCycle]}
-                      </span>
-                      <span style={{ fontSize: '16px', opacity: 0.6 }}>
-                        /{billingCycle === 'monthly' ? 'month' : 'year'}
-                      </span>
-                    </div>
-                    {billingCycle === 'yearly' && (
-                      <p style={{ fontSize: '14px', opacity: 0.7, margin: '8px 0 0 0' }}>
-                        ${(plan.price.yearly / 12).toFixed(2)} per month
-                      </p>
-                    )}
-                  </div>
-
-                  {/* CTA Button */}
-                  <button
-                    style={{
-                      width: '100%',
-                      padding: '16px',
-                      borderRadius: '12px',
-                      border: 'none',
-                      background: plan.popular
-                        ? 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
-                        : 'rgba(255, 255, 255, 0.15)',
-                      color: 'white',
-                      fontSize: '16px',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      marginBottom: '28px',
-                      transition: 'transform 0.2s ease',
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
-                    onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
-                  >
-                    Get Started
-                  </button>
-
-                  {/* Features List */}
-                  <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '20px' }}>
-                    <p
+          <Grid className="u-pb-6">
+            {plans.map((plan, index) => (
+              <GridCol xs={12} md={4} lg={4}>
+                <AtomixGlass
+                  key={index}
+                  displacementScale={plan.popular ? 100 : 40}
+                  blurAmount={1}
+                  saturation={plan.popular ? 180 : 130}
+                  aberrationIntensity={plan.popular ? 2 : 1.5}
+                  cornerRadius={24}
+                  elasticity={0.01}
+                  mode="standard"
+                >
+                  {plan.popular && (
+                    <div
                       style={{
+                        position: 'absolute',
+                        top: '-12px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                        color: 'white',
+                        padding: '4px 16px',
+                        borderRadius: '20px',
                         fontSize: '12px',
-                        textTransform: 'uppercase',
                         fontWeight: 700,
+                        textTransform: 'uppercase',
                         letterSpacing: '0.5px',
-                        marginBottom: '16px',
-                        opacity: 0.7,
                       }}
                     >
-                      What's Included
+                      Most Popular
+                    </div>
+                  )}
+
+                  <div style={{ padding: '20px', minHeight: '500px' }}>
+                    {/* Plan Header */}
+                    <div
+                      style={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '16px',
+                        background: plan.color,
+                        marginBottom: '12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '20px',
+                      }}
+                    >
+                      {index === 0 ? '🚀' : index === 1 ? '⭐' : '👑'}
+                    </div>
+
+                    <h3 style={{ fontSize: '16px', fontWeight: 700, margin: '0 0 8px 0' }}>
+                      {plan.name}
+                    </h3>
+                    <p style={{ fontSize: '12px', opacity: 0.7, marginBottom: '12px' }}>
+                      {plan.description}
                     </p>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                      {plan.features.map((feature, idx) => (
-                        <li
-                          key={idx}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '12px',
-                            marginBottom: '12px',
-                            fontSize: '14px',
-                          }}
-                        >
-                          <span
+
+                    {/* Price */}
+                    <div style={{ marginBottom: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+                        <span style={{ fontSize: '36px', fontWeight: 800 }}>
+                          ${plan.price[billingCycle]}
+                        </span>
+                        <span style={{ fontSize: '14px', opacity: 0.6 }}>
+                          /{billingCycle === 'monthly' ? 'month' : 'year'}
+                        </span>
+                      </div>
+                      {billingCycle === 'yearly' && (
+                        <p style={{ fontSize: '12px', opacity: 0.7, margin: '2px 0 0 0' }}>
+                          ${(plan.price.yearly / 12).toFixed(2)} per month
+                        </p>
+                      )}
+                    </div>
+
+                    {/* CTA Button */}
+                    <button
+                      style={{
+                        width: '100%',
+                        padding: '10px',
+                        borderRadius: '12px',
+                        border: 'none',
+                        background: plan.popular
+                          ? 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+                          : 'rgba(255, 255, 255, 0.15)',
+                        color: 'white',
+                        fontSize: '16px',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        marginBottom: '10px',
+                        transition: 'transform 0.2s ease',
+                      }}
+                      onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
+                      onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+                    >
+                      Get Started
+                    </button>
+
+                    {/* Features List */}
+                    <div
+                      style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '10px' }}
+                    >
+                      <p
+                        style={{
+                          fontSize: '12px',
+                          textTransform: 'uppercase',
+                          fontWeight: 700,
+                          letterSpacing: '0.5px',
+                          marginBottom: '10px',
+                          opacity: 0.7,
+                        }}
+                      >
+                        What's Included
+                      </p>
+                      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                        {plan.features.map((feature, idx) => (
+                          <li
+                            key={idx}
                             style={{
-                              color: '#10b981',
-                              fontSize: '18px',
-                              fontWeight: 700,
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '10px',
+                              marginBottom: '8px',
+                              fontSize: '12px',
                             }}
                           >
-                            ✓
-                          </span>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
+                            <span
+                              style={{
+                                color: '#10b981',
+                                fontSize: '14px',
+                                fontWeight: 700,
+                              }}
+                            >
+                              ✓
+                            </span>
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              </AtomixGlass>
+                </AtomixGlass>
+              </GridCol>
             ))}
-          </div>
-        </div>
-      </BackgroundWrapper>
+          </Grid>
+        </Container>
+      </div>
     );
   },
   parameters: {
@@ -2329,265 +1744,245 @@ export const ChatInterface: Story = {
 
     return (
       <BackgroundWrapper
-        backgroundImage={backgroundImages[2]}
-        height="90vh"
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        backgroundImage={
+          'https://images.unsplash.com/photo-1707332287886-84315bbb04bb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132'
+        }
       >
         <AtomixGlass
-          displacementScale={45}
-          blurAmount={0.08}
-          saturation={140}
-          aberrationIntensity={1.8}
+          displacementScale={100}
+          blurAmount={0.5}
           cornerRadius={24}
-          mode="standard"
-          style={{
-            width: '450px',
-            maxWidth: '90vw',
-            height: '650px',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
+          elasticity={0}
+          mode="prominent"
         >
-          {/* Chat Header */}
-          <div
+          <span
             style={{
-              padding: '20px 24px',
-              borderBottom: '1px solid rgba(255,255,255,0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '16px',
+              background: 'var(--atomix-brand-bg-subtle)',
+              position: 'absolute',
+              inset: 0,
+              zIndex: -1,
+              opacity: 0.5,
+              borderRadius: 24,
             }}
-          >
-            <div style={{ position: 'relative' }}>
-              <div
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                }}
-              >
-                👤
-              </div>
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: '2px',
-                  right: '2px',
-                  width: '14px',
-                  height: '14px',
-                  borderRadius: '50%',
-                  background: onlineStatus ? '#10b981' : '#6b7280',
-                  border: '2px solid rgba(0,0,0,0.2)',
-                }}
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700 }}>Alex Johnson</h3>
-              <p style={{ margin: 0, fontSize: '14px', opacity: 0.7 }}>
-                {onlineStatus ? 'Active now' : 'Offline'}
-              </p>
-            </div>
-            <button
-              onClick={() => setOnlineStatus(!onlineStatus)}
+          ></span>
+          <div className="u-text-brand-emphasis">
+            {/* Chat Header */}
+            <div
               style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                border: 'none',
-                background: 'rgba(255,255,255,0.1)',
-                color: 'inherit',
-                cursor: 'pointer',
-                fontSize: '18px',
+                padding: '20px 24px',
+                borderBottom: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '16px',
               }}
             >
-              ⋮
-            </button>
-          </div>
-
-          {/* Messages Area */}
-          <div
-            style={{
-              flex: 1,
-              padding: '24px',
-              overflowY: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px',
-            }}
-          >
-            {messages.map(message => (
-              <div
-                key={message.id}
-                style={{
-                  display: 'flex',
-                  justifyContent: message.sender === 'me' ? 'flex-end' : 'flex-start',
-                  gap: '12px',
-                  animation: 'slideIn 0.3s ease',
-                }}
-              >
-                {message.sender === 'other' && (
-                  <div
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '16px',
-                      flexShrink: 0,
-                    }}
-                  >
-                    {message.avatar}
-                  </div>
-                )}
+              <div style={{ position: 'relative' }}>
                 <div
                   style={{
-                    maxWidth: '70%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: message.sender === 'me' ? 'flex-end' : 'flex-start',
-                  }}
-                >
-                  <div
-                    style={{
-                      padding: '12px 16px',
-                      borderRadius:
-                        message.sender === 'me' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                      background:
-                        message.sender === 'me'
-                          ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                          : 'rgba(255,255,255,0.15)',
-                      backdropFilter: 'blur(10px)',
-                    }}
-                  >
-                    <p style={{ margin: 0, fontSize: '15px', lineHeight: '1.5' }}>{message.text}</p>
-                  </div>
-                  <span
-                    style={{
-                      fontSize: '12px',
-                      opacity: 0.6,
-                      marginTop: '4px',
-                      padding: '0 4px',
-                    }}
-                  >
-                    {message.time}
-                  </span>
-                </div>
-              </div>
-            ))}
-
-            {/* Typing Indicator */}
-            {isTyping && (
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <div
-                  style={{
-                    width: '32px',
-                    height: '32px',
+                    width: '48px',
+                    height: '48px',
                     borderRadius: '50%',
                     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '16px',
+                    fontSize: '24px',
+                    opacity: '0.8',
                   }}
                 >
                   👤
                 </div>
                 <div
                   style={{
-                    padding: '12px 16px',
-                    borderRadius: '16px 16px 16px 4px',
-                    background: 'rgba(255,255,255,0.15)',
-                    backdropFilter: 'blur(10px)',
+                    position: 'absolute',
+                    bottom: '2px',
+                    right: '2px',
+                    width: '14px',
+                    height: '14px',
+                    borderRadius: '50%',
+                    background: onlineStatus ? '#10b981' : '#6b7280',
+                    border: '2px solid rgba(0,0,0,0.2)',
                   }}
-                >
-                  <div style={{ display: 'flex', gap: '4px' }}>
-                    {[0, 1, 2].map(i => (
-                      <div
-                        key={i}
-                        style={{
-                          width: '8px',
-                          height: '8px',
-                          borderRadius: '50%',
-                          background: 'currentColor',
-                          opacity: 0.6,
-                          animation: `pulse 1.4s ease-in-out ${i * 0.2}s infinite`,
-                        }}
-                      />
-                    ))}
-                  </div>
-                </div>
+                />
               </div>
-            )}
-          </div>
+              <div style={{ flex: 1 }}>
+                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700 }}>Alex Johnson</h3>
+                <p style={{ margin: 0, fontSize: '14px', opacity: 0.7 }}>
+                  {onlineStatus ? 'Active now' : 'Offline'}
+                </p>
+              </div>
+              <button
+                onClick={() => setOnlineStatus(!onlineStatus)}
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  border: 'none',
+                  background: 'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                  color: 'inherit',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                }}
+              >
+                ⋮
+              </button>
+            </div>
 
-          {/* Message Input */}
-          <div
-            style={{
-              padding: '20px 24px',
-              borderTop: '1px solid rgba(255,255,255,0.1)',
-              display: 'flex',
-              gap: '12px',
-            }}
-          >
-            <button
-              style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '50%',
-                border: 'none',
-                background: 'rgba(255,255,255,0.1)',
-                color: 'inherit',
-                cursor: 'pointer',
-                fontSize: '20px',
-                flexShrink: 0,
-              }}
-            >
-              📎
-            </button>
-            <input
-              type="text"
-              value={inputText}
-              onChange={e => setInputText(e.target.value)}
-              onKeyPress={e => e.key === 'Enter' && handleSend()}
-              placeholder="Type a message..."
+            {/* Messages Area */}
+            <div
               style={{
                 flex: 1,
-                padding: '12px 16px',
-                borderRadius: '22px',
-                border: '1px solid rgba(255,255,255,0.2)',
-                background: 'rgba(255,255,255,0.1)',
-                color: 'inherit',
-                fontSize: '15px',
-                outline: 'none',
-              }}
-            />
-            <button
-              onClick={handleSend}
-              style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '50%',
-                border: 'none',
-                background: inputText.trim()
-                  ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                  : 'rgba(255,255,255,0.1)',
-                color: 'white',
-                cursor: inputText.trim() ? 'pointer' : 'default',
-                fontSize: '20px',
-                flexShrink: 0,
-                transition: 'all 0.2s ease',
+                padding: '24px',
+                overflowY: 'auto',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px',
               }}
             >
-              ➤
-            </button>
+              {messages.map(message => (
+                <div
+                  key={message.id}
+                  style={{
+                    display: 'flex',
+                    justifyContent: message.sender === 'me' ? 'flex-end' : 'flex-start',
+                    gap: '12px',
+                    animation: 'slideIn 0.3s ease',
+                  }}
+                >
+                  {message.sender === 'other' && (
+                    <div
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '50%',
+                        background: 'var(--atomix-brand-bg-subtle)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '16px',
+                        flexShrink: 0,
+                        opacity: 0.8,
+                      }}
+                    >
+                      {message.avatar}
+                    </div>
+                  )}
+                  <div
+                    style={{
+                      maxWidth: '70%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: message.sender === 'me' ? 'flex-end' : 'flex-start',
+                    }}
+                  >
+                    <div
+                      style={{
+                        padding: '12px 16px',
+                        borderRadius:
+                          message.sender === 'me' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                        background:
+                          message.sender === 'me'
+                            ? 'var(--atomix-brand-bg-subtle)'
+                            : 'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                        backdropFilter: 'blur(10px)',
+                      }}
+                    >
+                      <p style={{ margin: 0, fontSize: '15px', lineHeight: '1.5' }}>
+                        {message.text}
+                      </p>
+                    </div>
+                    <span
+                      style={{
+                        fontSize: '12px',
+                        opacity: 0.6,
+                        marginTop: '4px',
+                        padding: '0 4px',
+                      }}
+                    >
+                      {message.time}
+                    </span>
+                  </div>
+                </div>
+              ))}
+
+              {/* Typing Indicator */}
+              {isTyping && (
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '50%',
+                      background: 'var(--atomix-brand-bg-subtle)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '16px',
+                    }}
+                  >
+                    👤
+                  </div>
+                  <div
+                    style={{
+                      padding: '12px 16px',
+                      borderRadius: '16px 16px 16px 4px',
+                      background: 'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                      backdropFilter: 'blur(10px)',
+                    }}
+                  >
+                    <div style={{ display: 'flex', gap: '4px' }}>
+                      {[0, 1, 2].map(i => (
+                        <div
+                          key={i}
+                          style={{
+                            width: '8px',
+                            height: '8px',
+                            borderRadius: '50%',
+                            background: 'currentColor',
+                            opacity: 0.6,
+                            animation: `pulse 1.4s ease-in-out ${i * 0.2}s infinite`,
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Message Input */}
+            <div
+              style={{
+                padding: '10px 24px',
+                borderTop: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+                gap: '12px',
+              }}
+            >
+              <Button size="md" glass={{}} icon={<Icon name="Paperclip" />} iconOnly />
+
+              <Input
+                glass
+                variant="light"
+                size="md"
+                type="text"
+                value={inputText}
+                onChange={e => setInputText(e.target.value)}
+                placeholder="Type a message..."
+              />
+              <Button
+                onClick={handleSend}
+                size="md"
+                iconOnly
+                glass={{
+                  cornerRadius: 100,
+                }}
+                rounded
+                icon={<Icon name="PaperPlaneTilt" />}
+              />
+            </div>
           </div>
         </AtomixGlass>
 
@@ -2641,42 +2036,43 @@ export const ProfileCard: Story = {
     const [showShareMenu, setShowShareMenu] = useState(false);
 
     const stats = [
-      { label: 'Followers', value: '12.5K' },
+      { label: 'Followers', value: '15' },
       { label: 'Following', value: '842' },
       { label: 'Posts', value: '1,234' },
     ];
 
     const socialLinks = [
-      { icon: '🐦', name: 'Twitter', color: '#1DA1F2' },
-      { icon: '💼', name: 'LinkedIn', color: '#0077B5' },
-      { icon: '🌐', name: 'Website', color: '#667eea' },
-      { icon: '📧', name: 'Email', color: '#EA4335' },
+      { icon: <Icon name="X" />, name: 'Twitter', color: '#1DA1F2' },
+      { icon: <Icon name="LinkedinLogo" />, name: 'LinkedIn', color: '#0077B5' },
+      { icon: <Icon name="Globe" />, name: 'Website', color: '#667eea' },
+      { icon: <Icon name="Envelope" />, name: 'Email', color: '#EA4335' },
     ];
 
     return (
       <BackgroundWrapper
-        backgroundImage={backgroundImages[4]}
-        height="90vh"
-        width="90vw"
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        backgroundImage={
+          'https://images.unsplash.com/photo-1603504979665-c4ed0261b4d7?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070'
+        }
+        overlayOpacity={0.3}
+        overlayColor="var(--atomix-success-bg-subtle)"
       >
         <AtomixGlass
           displacementScale={45}
-          blurAmount={0.08}
-          saturation={140}
-          aberrationIntensity={1.8}
+          blurAmount={5}
           cornerRadius={24}
           mode="standard"
-          style={{ width: '420px', maxWidth: '90vw', position: 'relative' }}
+          style={{ width: '420px' }}
+          elasticity={0.05}
+          onClick={() => {}}
         >
           {/* Cover Image */}
           <div
             style={{
-              height: '140px',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              height: '130px',
+              background: 'var(--atomix-success-gradient)',
               borderRadius: '24px 24px 0 0',
               position: 'relative',
-              overflow: 'hidden',
+              opacity: 0.5,
             }}
           >
             <div
@@ -2692,66 +2088,51 @@ export const ProfileCard: Story = {
             />
           </div>
 
-          <div style={{ padding: '0 32px 32px' }}>
+          <div style={{ padding: '0 20px 20px' }}>
             {/* Profile Picture */}
             <div
               style={{
-                marginTop: '-50px',
-                marginBottom: '20px',
+                marginTop: '-40px',
+                marginBottom: '10px',
                 position: 'relative',
                 display: 'inline-block',
               }}
             >
               <div
                 style={{
-                  width: '100px',
-                  height: '100px',
+                  width: '70px',
+                  height: '70px',
                   borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '48px',
                   border: '4px solid rgba(0,0,0,0.2)',
                   position: 'relative',
+                  overflow: 'hidden',
                 }}
               >
-                👨‍💻
+                <img src="https://avatars.githubusercontent.com/u/26011051?v=4" alt="Profile" />
               </div>
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: '4px',
-                  right: '4px',
-                  width: '20px',
-                  height: '20px',
-                  borderRadius: '50%',
-                  background: '#10b981',
-                  border: '3px solid rgba(0,0,0,0.2)',
-                }}
-              />
             </div>
 
             {/* Name & Title */}
             <div style={{ marginBottom: '20px' }}>
-              <h2 style={{ margin: '0 0 4px 0', fontSize: '28px', fontWeight: 700 }}>
-                Jordan Smith
-              </h2>
-              <p style={{ margin: '0 0 8px 0', fontSize: '16px', opacity: 0.8 }}>
-                Senior Product Designer
+              <h2 style={{ margin: '0 0 4px 0', fontSize: '24px', fontWeight: 700 }}>Limon Khan</h2>
+              <p style={{ margin: '0 0 8px 0', fontSize: '14px', opacity: 0.8 }}>
+                Senior Frontend Developer
               </p>
               <p style={{ margin: 0, fontSize: '14px', opacity: 0.7 }}>
-                🌍 San Francisco, CA • 🕐 PST
+                <Icon name="Globe" /> BANGLADESH, Dhaka • <Icon name="Clock" /> GMT+5
               </p>
             </div>
 
             {/* Bio */}
             <p
               style={{
-                fontSize: '15px',
+                fontSize: '13px',
                 lineHeight: '1.6',
                 opacity: 0.9,
-                marginBottom: '24px',
+                marginBottom: '20px',
               }}
             >
               Passionate about creating beautiful, intuitive user experiences. Coffee enthusiast ☕
@@ -2763,15 +2144,18 @@ export const ProfileCard: Story = {
               style={{
                 display: 'flex',
                 justifyContent: 'space-around',
-                marginBottom: '28px',
+                marginBottom: '20px',
                 padding: '20px 0',
-                borderTop: '1px solid rgba(255,255,255,0.1)',
-                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                borderTop: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.21)',
+                background: 'color-mix(in srgb, var(--atomix-success-bg-subtle) 10%, transparent)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '10px',
               }}
             >
               {stats.map((stat, index) => (
                 <div key={index} style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>
+                  <div style={{ fontSize: '18px', fontWeight: 700, marginBottom: '4px' }}>
                     {stat.value}
                   </div>
                   <div style={{ fontSize: '13px', opacity: 0.7 }}>{stat.label}</div>
@@ -2780,134 +2164,134 @@ export const ProfileCard: Story = {
             </div>
 
             {/* Action Buttons */}
-            <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
-              <button
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px',
+                marginBottom: '20px',
+              }}
+            >
+              <Button
                 onClick={() => setIsFollowing(!isFollowing)}
+                glass={{
+                  elasticity: 0,
+                  style: {
+                    width: '100%',
+                  },
+                }}
+                variant="success"
                 style={{
-                  flex: 1,
-                  padding: '14px',
-                  borderRadius: '12px',
-                  border: 'none',
-                  background: isFollowing
-                    ? 'rgba(255,255,255,0.15)'
-                    : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  color: 'white',
-                  fontSize: '16px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
+                  width: '100%',
+                  padding: '14px 40px',
                 }}
               >
                 {isFollowing ? '✓ Following' : '+ Follow'}
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => setShowShareMenu(!showShareMenu)}
+                glass={{
+                  elasticity: 0,
+                }}
+                variant="outline-success"
                 style={{
-                  padding: '14px',
-                  borderRadius: '12px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'rgba(255,255,255,0.1)',
-                  color: 'inherit',
-                  fontSize: '16px',
-                  cursor: 'pointer',
-                  minWidth: '50px',
+                  width: '100%',
+                  position: 'relative',
                 }}
               >
-                📤
-              </button>
+                <Icon name="Share" />
+              </Button>
             </div>
 
             {/* Social Links */}
-            <div>
+            <div
+              style={{
+                background: 'color-mix(in srgb, var(--atomix-success-bg-subtle) 10%, transparent)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '10px',
+                padding: '10px 20px',
+              }}
+            >
               <p
                 style={{
                   fontSize: '13px',
                   textTransform: 'uppercase',
                   fontWeight: 700,
                   letterSpacing: '0.5px',
-                  marginBottom: '12px',
+                  marginBottom: '10px',
                   opacity: 0.7,
                 }}
               >
                 Connect
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: '8px',
+                  width: '100%',
+                  position: 'relative',
+                }}
+              >
                 {socialLinks.map((link, index) => (
-                  <button
+                  <Button
                     key={index}
+                    glass={{
+                      elasticity: 0,
+                    }}
+                    variant="success"
                     style={{
-                      padding: '12px',
-                      borderRadius: '10px',
-                      border: 'none',
-                      background: 'rgba(255,255,255,0.1)',
-                      color: 'inherit',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                      fontSize: '14px',
-                      transition: 'all 0.2s ease',
-                    }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.background = `${link.color}20`;
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-                      e.currentTarget.style.transform = 'translateY(0)';
+                      width: '100%',
                     }}
                   >
-                    <span style={{ fontSize: '20px' }}>{link.icon}</span>
+                    {link.icon}
                     <span>{link.name}</span>
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
-          </div>
 
-          {/* Share Menu */}
-          {showShareMenu && (
-            <div
-              style={{
-                position: 'absolute',
-                top: '100%',
-                right: '32px',
-                marginTop: '8px',
-                zIndex: 10,
-              }}
-            >
-              <AtomixGlass
-                blurAmount={0.08}
-                saturation={130}
-                cornerRadius={16}
-                mode="standard"
-                style={{ padding: '12px', minWidth: '180px' }}
+            {/* Share Menu */}
+            {showShareMenu && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '60%',
+                  right: '0%',
+                }}
               >
-                {['Copy Link', 'Share via Email', 'Download vCard'].map((option, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setShowShareMenu(false)}
-                    style={{
-                      width: '100%',
-                      padding: '12px',
-                      border: 'none',
-                      background: 'transparent',
-                      color: 'inherit',
-                      textAlign: 'left',
-                      cursor: 'pointer',
-                      fontSize: '14px',
-                      borderRadius: '8px',
-                      transition: 'background 0.2s ease',
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
-                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </AtomixGlass>
-            </div>
-          )}
+                <AtomixGlass
+                  blurAmount={0.8}
+                  cornerRadius={16}
+                  elasticity={0}
+                  mode="standard"
+                  style={{
+                    position: 'absolute',
+                    width: '160xp',
+                  }}
+                >
+                  {['Copy Link', 'Share via Email', 'Download vCard'].map((option, idx) => (
+                    <div key={idx} style={{ marginTop: '6px' }}>
+                      <Button
+                        key={idx}
+                        variant="outline-success"
+                        onClick={() => setShowShareMenu(false)}
+                        glass={{
+                          elasticity: 0,
+                        }}
+                        style={{
+                          width: '100%',
+                        }}
+                      >
+                        {option}
+                      </Button>
+                    </div>
+                  ))}
+                </AtomixGlass>
+              </div>
+            )}
+          </div>
         </AtomixGlass>
       </BackgroundWrapper>
     );
@@ -2950,18 +2334,18 @@ export const SettingsPanel: Story = {
 
     return (
       <BackgroundWrapper
-        backgroundImage={backgroundImages[1]}
+        backgroundImage={
+          'https://images.unsplash.com/photo-1589083564233-216e84045fc0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2670'
+        }
         height="90vh"
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}
       >
         <AtomixGlass
           displacementScale={45}
-          blurAmount={0.08}
-          saturation={140}
-          aberrationIntensity={1.8}
+          blurAmount={1}
           cornerRadius={24}
           mode="standard"
-          style={{ width: '550px', maxWidth: '90vw' }}
+          style={{ width: '550px' }}
         >
           <div style={{ padding: '32px' }}>
             {/* Header */}
@@ -3198,7 +2582,7 @@ export const SettingsPanel: Story = {
               >
                 <div>
                   <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
-                    📧 Email Frequency
+                    <Icon name="Envelope" /> Email Frequency
                   </div>
                   <div style={{ fontSize: '14px', opacity: 0.7 }}>How often to receive emails</div>
                 </div>
@@ -3313,33 +2697,36 @@ export const EventCard: Story = {
     };
 
     const attendees = [
-      { name: 'Sarah M.', avatar: '👩' },
-      { name: 'John D.', avatar: '👨' },
-      { name: 'Emily R.', avatar: '👱‍♀️' },
-      { name: 'Mike T.', avatar: '👨‍🦰' },
-      { name: 'Lisa K.', avatar: '👩‍🦱' },
+      { name: 'Sarah M.', avatar: <Icon name="User" /> },
+      { name: 'John D.', avatar: <Icon name="User" /> },
+      { name: 'Emily R.', avatar: <Icon name="User" /> },
+      { name: 'Mike T.', avatar: <Icon name="User" /> },
+      { name: 'Lisa K.', avatar: <Icon name="User" /> },
     ];
 
     return (
       <BackgroundWrapper
-        backgroundImage={backgroundImages[0]}
+        backgroundImage={
+          'https://images.unsplash.com/photo-1748365335261-8c87bc861af1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2832'
+        }
         height="90vh"
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
         <AtomixGlass
           displacementScale={45}
-          blurAmount={0.08}
-          saturation={140}
-          aberrationIntensity={1.8}
+          blurAmount={4}
           cornerRadius={24}
           mode="standard"
-          style={{ width: '480px', maxWidth: '90vw' }}
+          style={{ width: '480px' }}
         >
           {/* Event Image */}
           <div
             style={{
               height: '220px',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background:
+                'url(https://images.unsplash.com/photo-1646784208071-7f35325e10cb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
               borderRadius: '24px 24px 0 0',
               position: 'relative',
               overflow: 'hidden',
@@ -3348,7 +2735,9 @@ export const EventCard: Story = {
               justifyContent: 'center',
             }}
           >
-            <div style={{ fontSize: '80px' }}>🎉</div>
+            <div style={{ fontSize: '80px' }}>
+              <Icon name="Confetti" />
+            </div>
             <div
               style={{
                 position: 'absolute',
@@ -3363,9 +2752,12 @@ export const EventCard: Story = {
                 gap: '8px',
                 fontSize: '14px',
                 fontWeight: 600,
+                color: 'white',
               }}
             >
-              <span style={{ fontSize: '18px' }}>🔥</span>
+              <span style={{ fontSize: '18px' }}>
+                <Icon name="Sparkle" />
+              </span>
               Trending
             </div>
           </div>
@@ -3385,7 +2777,9 @@ export const EventCard: Story = {
                 fontWeight: 600,
               }}
             >
-              <span style={{ fontSize: '18px' }}>📅</span>
+              <span style={{ fontSize: '18px' }}>
+                <Icon name="CalendarBlank" />
+              </span>
               Saturday, Dec 16, 2024 • 7:00 PM
             </div>
 
@@ -3405,7 +2799,9 @@ export const EventCard: Story = {
                 opacity: 0.9,
               }}
             >
-              <span style={{ fontSize: '18px' }}>📍</span>
+              <span style={{ fontSize: '18px' }}>
+                <Icon name="MapPinLine" />
+              </span>
               <span>Innovation Hub, 123 Tech Street, SF</span>
             </div>
 
@@ -3420,7 +2816,9 @@ export const EventCard: Story = {
                 opacity: 0.9,
               }}
             >
-              <span style={{ fontSize: '18px' }}>👤</span>
+              <span style={{ fontSize: '18px' }}>
+                <Icon name="UserCircle" />
+              </span>
               <span>Hosted by Design Community SF</span>
             </div>
 
@@ -3532,7 +2930,9 @@ export const EventCard: Story = {
                   gap: '8px',
                 }}
               >
-                <span style={{ fontSize: '18px' }}>✓</span>
+                <span style={{ fontSize: '18px' }}>
+                  <Icon name="Check" />
+                </span>
                 Going
               </button>
               <button
@@ -3555,7 +2955,9 @@ export const EventCard: Story = {
                   gap: '8px',
                 }}
               >
-                <span style={{ fontSize: '18px' }}>🤔</span>
+                <span style={{ fontSize: '18px' }}>
+                  <Icon name="Smiley" />
+                </span>
                 Maybe
               </button>
               <button
@@ -3578,7 +2980,9 @@ export const EventCard: Story = {
                   gap: '8px',
                 }}
               >
-                <span style={{ fontSize: '18px' }}>✗</span>
+                <span style={{ fontSize: '18px' }}>
+                  <Icon name="X" />
+                </span>
                 Can't Go
               </button>
             </div>
@@ -3598,7 +3002,7 @@ export const EventCard: Story = {
                   cursor: 'pointer',
                 }}
               >
-                📅 Add to Calendar
+                <Icon name="Calendar" /> Add to Calendar
               </button>
               <button
                 style={{
@@ -3613,7 +3017,7 @@ export const EventCard: Story = {
                   cursor: 'pointer',
                 }}
               >
-                🔗 Get Directions
+                <Icon name="MapPin" /> Get Directions
               </button>
             </div>
           </div>
@@ -3658,13 +3062,13 @@ export const SocialMediaPost: Story = {
     const comments = [
       {
         user: 'Alex Chen',
-        avatar: '👨‍💼',
+        avatar: <Icon name="UserCircle" />,
         text: 'This looks amazing! Great work on the design.',
         time: '2h ago',
       },
       {
         user: 'Sarah Williams',
-        avatar: '👩‍🎨',
+        avatar: <Icon name="UserCircle" />,
         text: 'Love the color palette and the attention to detail! 🎨',
         time: '4h ago',
       },
@@ -3672,19 +3076,30 @@ export const SocialMediaPost: Story = {
 
     return (
       <BackgroundWrapper
-        backgroundImage={backgroundImages[3]}
-        height="90vh"
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        backgroundImage={
+          'https://images.unsplash.com/photo-1732912567466-26580df08084?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132'
+        }
+        overlay={true}
       >
         <AtomixGlass
-          displacementScale={45}
-          blurAmount={0.08}
-          saturation={140}
-          aberrationIntensity={1.8}
+          displacementScale={105}
+          blurAmount={4}
           cornerRadius={24}
           mode="standard"
-          style={{ width: '500px', maxWidth: '90vw' }}
+          style={{ width: '450px' }}
+          elasticity={0}
         >
+          <span
+            style={{
+              background: 'var(--atomix-primary-gradient)',
+              position: 'absolute',
+              inset: 0,
+              zIndex: -1,
+              opacity: 0.3,
+              borderRadius: 24,
+            }}
+          ></span>
+
           {/* Post Header */}
           <div
             style={{
@@ -3692,7 +3107,8 @@ export const SocialMediaPost: Story = {
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
-              borderBottom: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '24px',
+              borderBottom: '1px solid rgba(255,255,255,0.2)',
             }}
           >
             <div
@@ -3700,37 +3116,29 @@ export const SocialMediaPost: Story = {
                 width: '48px',
                 height: '48px',
                 borderRadius: '50%',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                background: 'url(https://avatars.githubusercontent.com/u/26011051?v=4)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '24px',
+                color: 'white',
               }}
-            >
-              👨‍🎨
-            </div>
+            ></div>
             <div style={{ flex: 1 }}>
-              <h3 style={{ margin: '0 0 2px 0', fontSize: '16px', fontWeight: 700 }}>
-                Michael Rivera
-              </h3>
+              <h3 style={{ margin: '0 0 2px 0', fontSize: '16px', fontWeight: 700 }}>Limon Khan</h3>
               <p style={{ margin: 0, fontSize: '14px', opacity: 0.7 }}>
-                Product Designer • 6 hours ago
+                Frontend Developer • 6 hours ago
               </p>
             </div>
-            <button
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                border: 'none',
-                background: 'rgba(255,255,255,0.1)',
-                color: 'inherit',
-                cursor: 'pointer',
-                fontSize: '18px',
+            <Button
+              glass={{
+                cornerRadius: 8,
               }}
-            >
-              ⋮
-            </button>
+              size="sm"
+              icon={<Icon name="DotsThree" />}
+            />
           </div>
 
           {/* Post Content */}
@@ -3747,21 +3155,17 @@ export const SocialMediaPost: Story = {
             </p>
 
             {/* Tags */}
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
+            <div
+              style={{
+                display: 'flex',
+                gap: '8px',
+                marginBottom: '20px',
+                flexWrap: 'wrap',
+                borderRadius: '10px',
+              }}
+            >
               {['#design', '#ui', '#glassmorphism', '#webdesign'].map((tag, idx) => (
-                <span
-                  key={idx}
-                  style={{
-                    padding: '6px 12px',
-                    borderRadius: '16px',
-                    background: 'rgba(102, 126, 234, 0.2)',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    color: '#667eea',
-                  }}
-                >
-                  {tag}
-                </span>
+                <Badge key={idx} label={tag} glass variant="primary" />
               ))}
             </div>
           </div>
@@ -3770,17 +3174,18 @@ export const SocialMediaPost: Story = {
           <div
             style={{
               height: '280px',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background:
+                'url(https://images.unsplash.com/photo-1732912567466-26580df08084?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '80px',
-              borderTop: '1px solid rgba(255,255,255,0.1)',
-              borderBottom: '1px solid rgba(255,255,255,0.1)',
+                borderTop: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+              borderBottom: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
             }}
-          >
-            🎨
-          </div>
+          ></div>
 
           {/* Engagement Stats */}
           <div
@@ -3791,7 +3196,7 @@ export const SocialMediaPost: Story = {
               alignItems: 'center',
               fontSize: '14px',
               opacity: 0.8,
-              borderBottom: '1px solid rgba(255,255,255,0.1)',
+              borderBottom: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
             }}
           >
             <span>{likes.toLocaleString()} likes</span>
@@ -3807,87 +3212,30 @@ export const SocialMediaPost: Story = {
               padding: '12px 24px',
               display: 'flex',
               gap: '8px',
-              borderBottom: showComments ? '1px solid rgba(255,255,255,0.1)' : 'none',
+              borderBottom: showComments ? '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)' : 'none',
             }}
           >
-            <button
-              onClick={handleLike}
-              style={{
-                flex: 1,
-                padding: '12px',
-                borderRadius: '10px',
-                border: 'none',
-                background: liked ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255,255,255,0.1)',
-                color: liked ? '#ef4444' : 'inherit',
-                fontSize: '15px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              <span style={{ fontSize: '18px' }}>{liked ? '❤️' : '🤍'}</span>
-              Like
-            </button>
-            <button
-              onClick={() => setShowComments(!showComments)}
-              style={{
-                flex: 1,
-                padding: '12px',
-                borderRadius: '10px',
-                border: 'none',
-                background: showComments ? 'rgba(102, 126, 234, 0.2)' : 'rgba(255,255,255,0.1)',
-                color: showComments ? '#667eea' : 'inherit',
-                fontSize: '15px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-              }}
-            >
-              <span style={{ fontSize: '18px' }}>💬</span>
-              Comment
-            </button>
-            <button
-              onClick={() => setSaved(!saved)}
-              style={{
-                flex: 1,
-                padding: '12px',
-                borderRadius: '10px',
-                border: 'none',
-                background: saved ? 'rgba(102, 126, 234, 0.2)' : 'rgba(255,255,255,0.1)',
-                color: saved ? '#667eea' : 'inherit',
-                fontSize: '15px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-              }}
-            >
-              <span style={{ fontSize: '18px' }}>{saved ? '🔖' : '📑'}</span>
+            <Button onClick={handleLike} variant="error" glass>
+              <span style={{ fontSize: '18px' }}>
+                {liked ? <Icon name="Heart" /> : <Icon name="HeartStraight" />}
+              </span>
+              {liked ? 'Liked' : 'Like'}
+            </Button>
+            <Button onClick={() => setShowComments(!showComments)} variant="info" glass>
+              <span style={{ fontSize: '18px' }}>
+                <Icon name="Chats" />
+              </span>
+              {showComments ? 'Comments' : 'Comment'}
+            </Button>
+            <Button onClick={() => setSaved(!saved)} variant="success" glass>
+              <span style={{ fontSize: '18px' }}>
+                {saved ? <Icon name="Bookmark" /> : <Icon name="FilePlus" />}
+              </span>
               {saved ? 'Saved' : 'Save'}
-            </button>
-            <button
-              style={{
-                padding: '12px',
-                borderRadius: '10px',
-                border: 'none',
-                background: 'rgba(255,255,255,0.1)',
-                color: 'inherit',
-                fontSize: '18px',
-                cursor: 'pointer',
-                minWidth: '46px',
-              }}
-            >
-              📤
-            </button>
+            </Button>
+            <Button variant="success" glass>
+              <Icon name="UploadSimple" />
+            </Button>
           </div>
 
           {/* Comments Section */}
@@ -3915,7 +3263,7 @@ export const SocialMediaPost: Story = {
                     <div style={{ flex: 1 }}>
                       <div
                         style={{
-                          background: 'rgba(255,255,255,0.1)',
+                          background: 'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
                           padding: '12px 16px',
                           borderRadius: '12px 12px 12px 4px',
                         }}
@@ -3941,32 +3289,12 @@ export const SocialMediaPost: Story = {
                           paddingLeft: '16px',
                         }}
                       >
-                        <button
-                          style={{
-                            border: 'none',
-                            background: 'none',
-                            color: 'inherit',
-                            fontSize: '13px',
-                            opacity: 0.7,
-                            cursor: 'pointer',
-                            padding: 0,
-                          }}
-                        >
+                        <Button variant="error" glass>
                           Like
-                        </button>
-                        <button
-                          style={{
-                            border: 'none',
-                            background: 'none',
-                            color: 'inherit',
-                            fontSize: '13px',
-                            opacity: 0.7,
-                            cursor: 'pointer',
-                            padding: 0,
-                          }}
-                        >
+                        </Button>
+                        <Button variant="outline-info" glass>
                           Reply
-                        </button>
+                        </Button>
                         <span style={{ fontSize: '13px', opacity: 0.6 }}>{comment.time}</span>
                       </div>
                     </div>
@@ -3989,7 +3317,7 @@ export const SocialMediaPost: Story = {
                     flexShrink: 0,
                   }}
                 >
-                  😊
+                  <Icon name="UserCircle" />
                 </div>
                 <div style={{ flex: 1 }}>
                   <input
@@ -4001,7 +3329,7 @@ export const SocialMediaPost: Story = {
                       width: '100%',
                       padding: '12px 16px',
                       borderRadius: '20px',
-                      border: '1px solid rgba(255,255,255,0.2)',
+                      border: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
                       background: 'rgba(255,255,255,0.1)',
                       color: 'inherit',
                       fontSize: '14px',
@@ -4010,21 +3338,9 @@ export const SocialMediaPost: Story = {
                   />
                   {commentText && (
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
-                      <button
-                        onClick={() => setCommentText('')}
-                        style={{
-                          padding: '8px 20px',
-                          borderRadius: '16px',
-                          border: 'none',
-                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                          color: 'white',
-                          fontSize: '14px',
-                          fontWeight: 600,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        Post
-                      </button>
+                      <Button onClick={() => setCommentText('')} variant="success">
+                        <Icon name="PaperPlaneTilt" />
+                      </Button>
                     </div>
                   )}
                 </div>
@@ -4070,41 +3386,45 @@ export const WeatherWidget: Story = {
         day: 'Mon',
         high: unit === 'C' ? 26 : 79,
         low: unit === 'C' ? 18 : 64,
-        icon: '⛅',
+        icon: <Icon name="Sun" />,
         condition: 'Partly Cloudy',
       },
       {
         day: 'Tue',
         high: unit === 'C' ? 28 : 82,
         low: unit === 'C' ? 20 : 68,
-        icon: '☀️',
+        icon: <Icon name="Sun" />,
         condition: 'Sunny',
       },
       {
         day: 'Wed',
         high: unit === 'C' ? 25 : 77,
         low: unit === 'C' ? 19 : 66,
-        icon: '🌧️',
+        icon: <Icon name="CloudRain" />,
         condition: 'Rainy',
       },
       {
         day: 'Thu',
         high: unit === 'C' ? 23 : 73,
         low: unit === 'C' ? 17 : 63,
-        icon: '⛈️',
+        icon: <Icon name="CloudRain" />,
         condition: 'Thunderstorm',
       },
       {
         day: 'Fri',
         high: unit === 'C' ? 27 : 81,
         low: unit === 'C' ? 21 : 70,
-        icon: '☀️',
+        icon: <Icon name="Sun" />,
         condition: 'Sunny',
       },
     ];
 
     return (
-      <BackgroundWrapper backgroundImage={'https://images.unsplash.com/photo-1671521739306-65c98fe91cf8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2071'}>
+      <BackgroundWrapper
+        backgroundImage={
+          'https://images.unsplash.com/photo-1671521739306-65c98fe91cf8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2071'
+        }
+      >
         <AtomixGlass
           displacementScale={60}
           blurAmount={1.1}
@@ -4131,26 +3451,14 @@ export const WeatherWidget: Story = {
                   📍 {currentWeather.location}
                 </p>
               </div>
-              <button
-                onClick={() => setUnit(unit === 'C' ? 'F' : 'C')}
-                style={{
-                  padding: '8px 16px',
-                  borderRadius: '12px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'rgba(255,255,255,0.1)',
-                  color: 'inherit',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
-                °{unit}
-              </button>
+              <Button onClick={() => setUnit(unit === 'C' ? 'F' : 'C')}>°{unit}</Button>
             </div>
 
             {/* Current Weather */}
             <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-              <div style={{ fontSize: '50px', marginBottom: '10px' }}>⛅</div>
+              <div style={{ fontSize: '50px', marginBottom: '10px' }}>
+                <Icon name="Cloud" />
+              </div>
               <div style={{ fontSize: '48px', fontWeight: 700, marginBottom: '8px' }}>
                 {currentWeather.temp}°{unit}
               </div>
@@ -4176,21 +3484,27 @@ export const WeatherWidget: Story = {
               }}
             >
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '20px', marginBottom: '4px' }}>💧</div>
+                <div style={{ fontSize: '20px', marginBottom: '4px' }}>
+                  <Icon name="Drop" />
+                </div>
                 <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
                   {currentWeather.humidity}%
                 </div>
                 <div style={{ fontSize: '12px', opacity: 0.6 }}>Humidity</div>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '20px', marginBottom: '4px' }}>💨</div>
+                <div style={{ fontSize: '20px', marginBottom: '4px' }}>
+                  <Icon name="Wind" />
+                </div>
                 <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
                   {currentWeather.windSpeed} km/h
                 </div>
                 <div style={{ fontSize: '12px', opacity: 0.6 }}>Wind</div>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '20px', marginBottom: '4px' }}>🌧️</div>
+                <div style={{ fontSize: '20px', marginBottom: '4px' }}>
+                  <Icon name="CloudRain" />
+                </div>
                 <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
                   {currentWeather.precipitation}%
                 </div>
@@ -4252,220 +3566,6 @@ export const WeatherWidget: Story = {
 };
 
 /**
- * File Upload Component - Drag and drop file uploader with progress
- */
-export const FileUploadComponent: Story = {
-  render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [files, setFiles] = useState<
-      Array<{
-        name: string;
-        size: number;
-        progress: number;
-        status: 'uploading' | 'complete' | 'error';
-      }>
-    >([]);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [isDragging, setIsDragging] = useState(false);
-
-    const handleFileAdd = (fileName: string) => {
-      const newFile = {
-        name: fileName,
-        size: Math.floor(Math.random() * 10000000) + 100000,
-        progress: 0,
-        status: 'uploading' as const,
-      };
-      setFiles(prev => [...prev, newFile]);
-
-      // Simulate upload progress
-      const interval = setInterval(() => {
-        setFiles(prev =>
-          prev.map(f => {
-            if (f.name === fileName && f.progress < 100) {
-              const newProgress = Math.min(f.progress + Math.random() * 30, 100);
-              return {
-                ...f,
-                progress: newProgress,
-                status: newProgress === 100 ? 'complete' : 'uploading',
-              };
-            }
-            return f;
-          })
-        );
-      }, 500);
-
-      setTimeout(() => clearInterval(interval), 4000);
-    };
-
-    const formatFileSize = (bytes: number) => {
-      if (bytes < 1024) return bytes + ' B';
-      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-      return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-    };
-
-    return (
-      <BackgroundWrapper backgroundImage={backgroundImages[5]}>
-        <AtomixGlass
-          displacementScale={30}
-          blurAmount={20}
-          saturation={1.2}
-          cornerRadius={28}
-          mode="standard"
-        >
-          <div style={{ padding: '40px', minWidth: '500px', maxWidth: '600px' }}>
-            <h2 style={{ margin: '0 0 8px 0', fontSize: '28px', fontWeight: 700 }}>Upload Files</h2>
-            <p style={{ margin: '0 0 32px 0', fontSize: '14px', opacity: 0.7 }}>
-              Drag and drop files or click to browse
-            </p>
-
-            {/* Drop Zone */}
-            <div
-              onDragOver={e => {
-                e.preventDefault();
-                setIsDragging(true);
-              }}
-              onDragLeave={() => setIsDragging(false)}
-              onDrop={e => {
-                e.preventDefault();
-                setIsDragging(false);
-                handleFileAdd(`document-${files.length + 1}.pdf`);
-              }}
-              onClick={() => handleFileAdd(`image-${files.length + 1}.jpg`)}
-              style={{
-                border: `2px dashed ${isDragging ? 'rgba(100,200,255,0.8)' : 'rgba(255,255,255,0.3)'}`,
-                borderRadius: '20px',
-                padding: '60px 40px',
-                textAlign: 'center',
-                marginBottom: '32px',
-                background: isDragging ? 'rgba(100,200,255,0.1)' : 'rgba(255,255,255,0.05)',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-              }}
-            >
-              <div style={{ fontSize: '64px', marginBottom: '16px' }}>📁</div>
-              <div style={{ fontSize: '18px', fontWeight: 600, marginBottom: '8px' }}>
-                {isDragging ? 'Drop files here' : 'Choose files or drag here'}
-              </div>
-              <div style={{ fontSize: '14px', opacity: 0.6 }}>
-                Supports: JPG, PNG, PDF, DOC (Max 50MB)
-              </div>
-            </div>
-
-            {/* File List */}
-            {files.length > 0 && (
-              <div>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: '16px',
-                  }}
-                >
-                  <h3 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>
-                    Uploading {files.filter(f => f.status !== 'complete').length} of {files.length}
-                  </h3>
-                  <button
-                    onClick={() => setFiles([])}
-                    style={{
-                      padding: '6px 12px',
-                      borderRadius: '8px',
-                      border: 'none',
-                      background: 'rgba(255,255,255,0.1)',
-                      color: 'inherit',
-                      fontSize: '12px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Clear All
-                  </button>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  {files.map((file, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        padding: '16px',
-                        borderRadius: '16px',
-                        background: 'rgba(255,255,255,0.08)',
-                        border: '1px solid rgba(255,255,255,0.1)',
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '12px',
-                          marginBottom: '12px',
-                        }}
-                      >
-                        <div style={{ fontSize: '32px' }}>
-                          {file.name.endsWith('.pdf')
-                            ? '📄'
-                            : file.name.endsWith('.jpg')
-                              ? '🖼️'
-                              : '📎'}
-                        </div>
-                        <div style={{ flex: 1 }}>
-                          <div style={{ fontSize: '14px', fontWeight: 600, marginBottom: '4px' }}>
-                            {file.name}
-                          </div>
-                          <div style={{ fontSize: '12px', opacity: 0.6 }}>
-                            {formatFileSize(file.size)}
-                          </div>
-                        </div>
-                        <div>
-                          {file.status === 'complete' && <div style={{ fontSize: '24px' }}>✅</div>}
-                          {file.status === 'uploading' && (
-                            <div style={{ fontSize: '14px', fontWeight: 600, color: '#64c8ff' }}>
-                              {Math.round(file.progress)}%
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Progress Bar */}
-                      {file.status === 'uploading' && (
-                        <div
-                          style={{
-                            height: '6px',
-                            borderRadius: '3px',
-                            background: 'rgba(255,255,255,0.1)',
-                            overflow: 'hidden',
-                          }}
-                        >
-                          <div
-                            style={{
-                              height: '100%',
-                              width: `${file.progress}%`,
-                              background: 'linear-gradient(90deg, #64c8ff 0%, #667eea 100%)',
-                              transition: 'width 0.3s ease',
-                            }}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </AtomixGlass>
-      </BackgroundWrapper>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'A modern file upload component with drag-and-drop functionality, upload progress tracking, and file management. Ideal for document management systems, media uploads, or form attachments.',
-      },
-    },
-  },
-};
-
-/**
  * Search Results - Search interface with filtered results
  */
 export const SearchResults: Story = {
@@ -4486,7 +3586,7 @@ export const SearchResults: Story = {
         url: 'example.com/article-1',
         date: '2 days ago',
         author: 'Sarah Chen',
-        icon: '📝',
+        icon: <Icon name="Notebook" />,
       },
       {
         type: 'video',
@@ -4496,7 +3596,7 @@ export const SearchResults: Story = {
         url: 'example.com/video-1',
         date: '1 week ago',
         author: 'John Design',
-        icon: '🎥',
+        icon: <Icon name="Video" />,
         duration: '24:35',
       },
       {
@@ -4507,7 +3607,7 @@ export const SearchResults: Story = {
         url: 'example.com/docs-1',
         date: '3 days ago',
         author: 'Atomix Team',
-        icon: '📚',
+        icon: <Icon name="Book" />,
       },
       {
         type: 'tutorial',
@@ -4517,7 +3617,7 @@ export const SearchResults: Story = {
         url: 'example.com/tutorial-1',
         date: '5 days ago',
         author: 'Maria Garcia',
-        icon: '🎓',
+        icon: <Icon name="GraduationCap" />,
       },
       {
         type: 'article',
@@ -4527,7 +3627,7 @@ export const SearchResults: Story = {
         url: 'example.com/article-2',
         date: '1 week ago',
         author: 'Alex Kim',
-        icon: '📝',
+        icon: <Icon name="Notebook" />,
       },
     ];
 
@@ -4537,35 +3637,56 @@ export const SearchResults: Story = {
         : results.filter(r => r.type === selectedFilter.slice(0, -1));
 
     return (
-      <BackgroundWrapper backgroundImage={'https://images.unsplash.com/photo-1708446737917-04712abc09a8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070'}>
+      <BackgroundWrapper
+        backgroundImage={
+          'https://images.unsplash.com/photo-1751624534511-63da274d9e15?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2376'
+        }
+      >
         <AtomixGlass
-          displacementScale={80}
-          blurAmount={1.1}
+          displacementScale={30}
+          blurAmount={2}
           cornerRadius={30}
           mode="standard"
+          onClick={() => {}}
           elasticity={0}
         >
-          <div style={{ padding: '24px', minWidth: '800px', maxWidth: '900px' }}>
+          <div
+            className=""
+            style={{
+              padding: '24px',
+              minWidth: '800px',
+              maxWidth: '900px',
+              borderRadius: '30px',
+              position: 'relative',
+            }}
+          >
+            <span
+              style={{
+                position: 'absolute',
+                inset: 1,
+                background: 'var(--atomix-warning-gradient)',
+                opacity: 0.2,
+                zIndex: -1,
+                borderRadius: '30px',
+              }}
+            ></span>
             {/* Search Header */}
             <h2 style={{ margin: '0 0 20px 0', fontSize: '24px', fontWeight: 700 }}>Search</h2>
 
             {/* Search Input */}
             <div style={{ position: 'relative', marginBottom: '20px' }}>
-              <input
+              <Input
                 type="text"
+                variant="info"
+                glass={
+                  {
+                    displacementScale: 0,
+                    elasticity: 0,
+                  } as any
+                }
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search for anything..."
-                style={{
-                  width: '100%',
-                  padding: '12px 48px 12px 20px',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'rgba(255,255,255,0.1)',
-                  color: 'inherit',
-                  fontSize: '16px',
-                  outline: 'none',
-                }}
               />
               <div
                 style={{
@@ -4576,35 +3697,24 @@ export const SearchResults: Story = {
                   fontSize: '20px',
                 }}
               >
-                🔍
+                <Icon name="MagnifyingGlass" />
               </div>
             </div>
 
             {/* Filters */}
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', overflowX: 'auto' }}>
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
               {filters.map(filter => (
-                <button
+                <Button
                   key={filter}
-                  onClick={() => setSelectedFilter(filter)}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: '8px',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background:
-                      selectedFilter === filter
-                        ? 'rgba(255,255,255,0.25)'
-                        : 'rgba(255,255,255,0.08)',
-                    color: 'inherit',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    textTransform: 'capitalize',
-                    transition: 'all 0.2s ease',
+                  variant={selectedFilter === filter ? 'warning' : 'light'}
+                  glass={{
+                    displacementScale: 0,
+                    blurAmount: 0,
                   }}
+                  onClick={() => setSelectedFilter(filter)}
                 >
                   {filter}
-                </button>
+                </Button>
               ))}
             </div>
 
@@ -4619,30 +3729,24 @@ export const SearchResults: Story = {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '10px',
-                maxHeight: '600px',
+                maxHeight: '400px',
                 overflowY: 'auto',
               }}
             >
               {filteredResults.map((result, index) => (
-                <div
+                <Callout
                   key={index}
-                  style={{
-                    padding: '8px 20px',
-                    borderRadius: '8px',
-                    background: 'rgba(255,255,255,0.2)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
-                  }}
+                  variant="success"
+                  title={result.title}
+                  icon={result.icon}
+                  glass={
+                    {
+                      displacementScale: 0,
+                      blurAmount: 0,
+                    } as any
+                  }
                 >
                   <div style={{ display: 'flex', gap: '16px' }}>
-                    <div style={{ fontSize: '40px', flexShrink: 0 }}>{result.icon}</div>
                     <div style={{ flex: 1 }}>
                       <div
                         style={{
@@ -4651,9 +3755,6 @@ export const SearchResults: Story = {
                           gap: '6px',
                         }}
                       >
-                        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>
-                          {result.title}
-                        </h3>
                         {result.duration && (
                           <span
                             style={{
@@ -4694,7 +3795,7 @@ export const SearchResults: Story = {
                       </div>
                     </div>
                   </div>
-                </div>
+                </Callout>
               ))}
             </div>
           </div>
@@ -4754,86 +3855,124 @@ export const PaymentForm: Story = {
     };
 
     return (
-      <BackgroundWrapper backgroundImage={backgroundImages[0]}>
+      <BackgroundWrapper
+        backgroundImage={
+          'https://images.unsplash.com/photo-1691938643618-d0c1a14afa8d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070'
+        }
+        width="90vw"
+        height="97vh"
+      >
         <AtomixGlass
-          displacementScale={32}
-          blurAmount={22}
-          saturation={1.1}
+          displacementScale={120}
+          blurAmount={2}
+          saturation={180}
           cornerRadius={28}
           mode="standard"
+          shaderVariant="premiumGlass"
+          elasticity={0}
         >
-          <div style={{ padding: '40px', minWidth: '450px', maxWidth: '500px' }}>
-            <h2 style={{ margin: '0 0 8px 0', fontSize: '28px', fontWeight: 700 }}>
+          <div
+            style={{
+              padding: '20px',
+              position: 'relative',
+              minWidth: '300px',
+              maxWidth: '400px',
+              borderRadius: '28px',
+            }}
+          >
+            <span
+              style={{
+                position: 'absolute',
+                inset: 1,
+                background: 'rgba(var(--atomix-primary-rgb),0.5)',
+                opacity: 0.5,
+                zIndex: -1,
+                borderRadius: '28px',
+              }}
+            ></span>
+            <h2 style={{ margin: '0 0 6px 0', fontSize: '20px', fontWeight: 700 }}>
               Payment Details
             </h2>
-            <p style={{ margin: '0 0 32px 0', fontSize: '14px', opacity: 0.7 }}>
+            <p style={{ margin: '0 0 10px 0', fontSize: '14px', opacity: 0.7 }}>
               Complete your purchase securely
             </p>
 
             {/* Card Preview */}
-            <div
-              style={{
-                padding: '28px',
-                borderRadius: '20px',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                marginBottom: '32px',
-                minHeight: '200px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
+            <AtomixGlass
+              mode="standard"
+              displacementScale={0}
+              blurAmount={0}
+              saturation={200}
+              elasticity={0}
             >
               <div
                 style={{
-                  position: 'absolute',
-                  top: '-50px',
-                  right: '-50px',
-                  width: '200px',
-                  height: '200px',
-                  borderRadius: '50%',
-                  background: 'rgba(255,255,255,0.1)',
+                  padding: '20px',
+                  borderRadius: '16px',
+                  marginBottom: '16px',
+                  minHeight: '200px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  position: 'relative',
+                  background: 'var(--atomix-dark-gradient)',
+                  overflow: 'hidden',
+                  opacity: 0.9,
                 }}
-              />
-              <div
-                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}
               >
-                <div style={{ fontSize: '14px', fontWeight: 600, opacity: 0.9 }}>CREDIT CARD</div>
-                <div style={{ fontSize: '32px' }}>💳</div>
-              </div>
-              <div>
                 <div
                   style={{
-                    fontSize: '24px',
-                    fontWeight: 600,
-                    marginBottom: '16px',
-                    letterSpacing: '2px',
+                    position: 'absolute',
+                    top: '-50px',
+                    right: '-50px',
+                    width: '200px',
+                    height: '200px',
+                    borderRadius: '50%',
+                    background: 'rgba(255,255,255,0.7)',
                   }}
-                >
-                  {cardNumber || '•••• •••• •••• ••••'}
-                </div>
+                />
                 <div
-                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end' }}
+                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}
                 >
-                  <div>
-                    <div style={{ fontSize: '10px', opacity: 0.7, marginBottom: '4px' }}>
-                      CARD HOLDER
-                    </div>
-                    <div style={{ fontSize: '14px', fontWeight: 600, textTransform: 'uppercase' }}>
-                      {cardName || 'YOUR NAME'}
-                    </div>
+                  <div style={{ fontSize: '14px', fontWeight: 600, opacity: 0.9 }}>CREDIT CARD</div>
+                  <div style={{ fontSize: '32px' }}>💳</div>
+                </div>
+                <div>
+                  <div
+                    style={{
+                      fontSize: '24px',
+                      fontWeight: 600,
+                      marginBottom: '10px',
+                      letterSpacing: '2px',
+                    }}
+                  >
+                    {cardNumber || '•••• •••• •••• ••••'}
                   </div>
-                  <div>
-                    <div style={{ fontSize: '10px', opacity: 0.7, marginBottom: '4px' }}>
-                      EXPIRES
+                  <div
+                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end' }}
+                  >
+                    <div>
+                      <div style={{ fontSize: '10px', opacity: 0.7, marginBottom: '4px' }}>
+                        CARD HOLDER
+                      </div>
+                      <div
+                        style={{ fontSize: '14px', fontWeight: 600, textTransform: 'uppercase' }}
+                      >
+                        {cardName || 'YOUR NAME'}
+                      </div>
                     </div>
-                    <div style={{ fontSize: '14px', fontWeight: 600 }}>{expiryDate || 'MM/YY'}</div>
+                    <div>
+                      <div style={{ fontSize: '10px', opacity: 0.7, marginBottom: '4px' }}>
+                        EXPIRES
+                      </div>
+                      <div style={{ fontSize: '14px', fontWeight: 600 }}>
+                        {expiryDate || 'MM/YY'}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
+            </AtomixGlass>
             {/* Form */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div>
@@ -4847,22 +3986,18 @@ export const PaymentForm: Story = {
                 >
                   Card Number
                 </label>
-                <input
+                <Input
+                  variant="primary"
+                  glass={
+                    {
+                      elasticity: 0,
+                    } as any
+                  }
                   type="text"
                   value={cardNumber}
                   onChange={e => setCardNumber(formatCardNumber(e.target.value))}
                   placeholder="1234 5678 9012 3456"
                   maxLength={19}
-                  style={{
-                    width: '100%',
-                    padding: '14px 16px',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'rgba(255,255,255,0.1)',
-                    color: 'inherit',
-                    fontSize: '16px',
-                    outline: 'none',
-                  }}
                 />
               </div>
 
@@ -4877,21 +4012,17 @@ export const PaymentForm: Story = {
                 >
                   Cardholder Name
                 </label>
-                <input
+                <Input
+                  variant="primary"
+                  glass={
+                    {
+                      elasticity: 0,
+                    } as any
+                  }
                   type="text"
                   value={cardName}
                   onChange={e => setCardName(e.target.value)}
                   placeholder="John Doe"
-                  style={{
-                    width: '100%',
-                    padding: '14px 16px',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'rgba(255,255,255,0.1)',
-                    color: 'inherit',
-                    fontSize: '16px',
-                    outline: 'none',
-                  }}
                 />
               </div>
 
@@ -4907,22 +4038,18 @@ export const PaymentForm: Story = {
                   >
                     Expiry Date
                   </label>
-                  <input
+                  <Input
+                    variant="primary"
+                    glass={
+                      {
+                        elasticity: 0,
+                      } as any
+                    }
                     type="text"
                     value={expiryDate}
                     onChange={e => setExpiryDate(formatExpiry(e.target.value))}
                     placeholder="MM/YY"
                     maxLength={5}
-                    style={{
-                      width: '100%',
-                      padding: '14px 16px',
-                      borderRadius: '12px',
-                      border: '1px solid rgba(255,255,255,0.2)',
-                      background: 'rgba(255,255,255,0.1)',
-                      color: 'inherit',
-                      fontSize: '16px',
-                      outline: 'none',
-                    }}
                   />
                 </div>
                 <div>
@@ -4936,22 +4063,18 @@ export const PaymentForm: Story = {
                   >
                     CVV
                   </label>
-                  <input
+                  <Input
+                    variant="primary"
+                    glass={
+                      {
+                        elasticity: 0,
+                      } as any
+                    }
                     type="text"
                     value={cvv}
                     onChange={e => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
                     placeholder="123"
                     maxLength={4}
-                    style={{
-                      width: '100%',
-                      padding: '14px 16px',
-                      borderRadius: '12px',
-                      border: '1px solid rgba(255,255,255,0.2)',
-                      background: 'rgba(255,255,255,0.1)',
-                      color: 'inherit',
-                      fontSize: '16px',
-                      outline: 'none',
-                    }}
                   />
                 </div>
               </div>
@@ -4963,9 +4086,9 @@ export const PaymentForm: Story = {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '12px',
-                  padding: '16px',
+                  padding: '8px',
                   borderRadius: '12px',
-                  background: 'rgba(255,255,255,0.05)',
+                  background: 'rgba(var(--atomix-primary-rgb),0.5)',
                   cursor: 'pointer',
                 }}
               >
@@ -4976,8 +4099,8 @@ export const PaymentForm: Story = {
                     borderRadius: '6px',
                     border: '2px solid rgba(255,255,255,0.3)',
                     background: saveCard
-                      ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                      : 'transparent',
+                      ? 'linear-gradient(135deg, var(--atomix-primary) 0%, var(--atomix-primary-hover) 100%)'
+                      : 'rgba(255,255,255,0.1)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -4992,9 +4115,9 @@ export const PaymentForm: Story = {
               {/* Amount Summary */}
               <div
                 style={{
-                  padding: '20px',
+                  padding: '14px',
                   borderRadius: '16px',
-                  background: 'rgba(255,255,255,0.08)',
+                  background: 'rgba(var(--atomix-primary-rgb),0.3)',
                   border: '1px solid rgba(255,255,255,0.1)',
                 }}
               >
@@ -5034,28 +4157,12 @@ export const PaymentForm: Story = {
               </div>
 
               {/* Submit Button */}
-              <button
-                style={{
-                  width: '100%',
-                  padding: '16px',
-                  borderRadius: '12px',
-                  border: 'none',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  color: 'white',
-                  fontSize: '16px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  transition: 'transform 0.2s ease',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.transform = 'scale(1.02)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.transform = 'scale(1)';
-                }}
-              >
-                Pay $141.90
-              </button>
+              <Button
+                label="Pay 41.90"
+                variant="primary"
+                className="u-w-100"
+                glass={{ elasticity: 0 }}
+              />
 
               <div style={{ textAlign: 'center', fontSize: '12px', opacity: 0.6 }}>
                 🔒 Secured by 256-bit SSL encryption
@@ -5100,35 +4207,57 @@ export const NewsletterSubscription: Story = {
 
     const benefits = [
       {
-        icon: '📬',
+        icon: <Icon name="Envelope" />,
         title: 'Weekly Updates',
         description: 'Get the latest news and updates every week',
       },
       {
-        icon: '🎁',
+        icon: <Icon name="Gift" />,
         title: 'Exclusive Content',
         description: 'Access premium articles and resources',
       },
-      { icon: '💡', title: 'Expert Tips', description: 'Learn from industry professionals' },
-      { icon: '🎉', title: 'Early Access', description: 'Be the first to try new features' },
+      {
+        icon: <Icon name="Lightbulb" />,
+        title: 'Expert Tips',
+        description: 'Learn from industry professionals',
+      },
+      {
+        icon: <Icon name="Confetti" />,
+        title: 'Early Access',
+        description: 'Be the first to try new features',
+      },
     ];
 
     return (
-      <BackgroundWrapper backgroundImage={backgroundImages[1]}>
+      <BackgroundWrapper
+        backgroundImage={
+          'https://images.unsplash.com/photo-1656873186004-f53c335fa348?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2532'
+        }
+      >
         <AtomixGlass
-          displacementScale={30}
-          blurAmount={20}
-          saturation={1.2}
+          displacementScale={100}
+          blurAmount={1}
           cornerRadius={32}
           mode="standard"
+          elasticity={0}
         >
-          <div style={{ padding: '50px', minWidth: '500px', maxWidth: '600px' }}>
+          <div
+            style={{
+              padding: '30px',
+              minWidth: '450px',
+              maxWidth: '500px',
+              width: '100%',
+              height: '100%',
+            }}
+          >
             {!subscribed ? (
               <>
                 {/* Header */}
-                <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-                  <div style={{ fontSize: '60px', marginBottom: '16px' }}>📧</div>
-                  <h2 style={{ margin: '0 0 12px 0', fontSize: '32px', fontWeight: 700 }}>
+                <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                  <div style={{ fontSize: '50px', marginBottom: '10px' }}>
+                    <Icon name="Chats" />
+                  </div>
+                  <h2 style={{ margin: '0 0 10px 0', fontSize: '32px', fontWeight: 700 }}>
                     Join Our Newsletter
                   </h2>
                   <p style={{ margin: 0, fontSize: '16px', opacity: 0.8, lineHeight: 1.6 }}>
@@ -5137,65 +4266,55 @@ export const NewsletterSubscription: Story = {
                 </div>
 
                 {/* Email Input */}
-                <div style={{ marginBottom: '32px' }}>
-                  <div style={{ position: 'relative' }}>
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={e => setEmail(e.target.value)}
-                      placeholder="Enter your email address"
-                      onKeyPress={e => {
-                        if (e.key === 'Enter') handleSubscribe();
-                      }}
-                      style={{
-                        width: '100%',
-                        padding: '18px 140px 18px 20px',
-                        borderRadius: '16px',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        background: 'rgba(255,255,255,0.1)',
-                        color: 'inherit',
-                        fontSize: '16px',
-                        outline: 'none',
-                      }}
-                    />
-                    <button
+                <div style={{ marginBottom: '20px' }}>
+                  <div
+                    style={{ position: 'relative' }}
+                    className="u-d-flex u-gap-2 u-align-items-center"
+                  >
+                    <div className="u-w-100">
+                      <Input
+                        variant="brand"
+                        glass={
+                          {
+                            elasticity: 0,
+                            overlight: false,
+                          } as any
+                        }
+                        type="email"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        placeholder="Enter your email address"
+                      />
+                    </div>
+
+                    <Button
                       onClick={handleSubscribe}
                       disabled={!email || isLoading}
-                      style={{
-                        position: 'absolute',
-                        right: '6px',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        padding: '12px 24px',
-                        borderRadius: '12px',
-                        border: 'none',
-                        background: email
-                          ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                          : 'rgba(255,255,255,0.2)',
-                        color: 'white',
-                        fontSize: '14px',
-                        fontWeight: 700,
-                        cursor: email ? 'pointer' : 'not-allowed',
-                        opacity: isLoading ? 0.7 : 1,
-                      }}
+                      variant="primary"
+                      glass={
+                        {
+                          elasticity: 0,
+                        } as any
+                      }
+                      className="u-w-100"
                     >
                       {isLoading ? 'Subscribing...' : 'Subscribe'}
-                    </button>
+                    </Button>
                   </div>
-                  <p style={{ margin: '12px 0 0 0', fontSize: '13px', opacity: 0.6 }}>
+                  <p style={{ margin: '10px 0 0 0', fontSize: '13px', opacity: 0.6 }}>
                     No spam. Unsubscribe anytime.
                   </p>
                 </div>
 
                 {/* Benefits Grid */}
                 <div
-                  style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}
+                  style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}
                 >
                   {benefits.map((benefit, index) => (
                     <div
                       key={index}
                       style={{
-                        padding: '20px',
+                        padding: '10px',
                         borderRadius: '16px',
                         background: 'rgba(255,255,255,0.08)',
                         border: '1px solid rgba(255,255,255,0.1)',
@@ -5217,28 +4336,28 @@ export const NewsletterSubscription: Story = {
                   style={{
                     display: 'flex',
                     justifyContent: 'space-around',
-                    marginTop: '32px',
-                    padding: '24px',
+                    marginTop: '20px',
+                    padding: '20px',
                     borderRadius: '16px',
                     background: 'rgba(255,255,255,0.05)',
                   }}
                 >
                   <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: '28px', fontWeight: 700, marginBottom: '4px' }}>
+                    <div style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>
                       50K+
                     </div>
                     <div style={{ fontSize: '13px', opacity: 0.6 }}>Subscribers</div>
                   </div>
                   <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)' }} />
                   <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: '28px', fontWeight: 700, marginBottom: '4px' }}>
+                    <div style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>
                       4.9★
                     </div>
                     <div style={{ fontSize: '13px', opacity: 0.6 }}>Rating</div>
                   </div>
                   <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)' }} />
                   <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: '28px', fontWeight: 700, marginBottom: '4px' }}>
+                    <div style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>
                       Weekly
                     </div>
                     <div style={{ fontSize: '13px', opacity: 0.6 }}>Delivery</div>
@@ -5247,8 +4366,10 @@ export const NewsletterSubscription: Story = {
               </>
             ) : (
               /* Success State */
-              <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                <div style={{ fontSize: '80px', marginBottom: '24px' }}>🎉</div>
+              <div style={{ textAlign: 'center', padding: '30px 20px' }}>
+                <div style={{ fontSize: '80px', marginBottom: '24px' }}>
+                  <Icon name="Confetti" />
+                </div>
                 <h2 style={{ margin: '0 0 16px 0', fontSize: '32px', fontWeight: 700 }}>
                   Welcome Aboard!
                 </h2>
@@ -5259,11 +4380,11 @@ export const NewsletterSubscription: Story = {
                 </p>
                 <div
                   style={{
-                    padding: '20px',
+                    padding: '10px',
                     borderRadius: '16px',
                     background: 'rgba(100,200,100,0.15)',
                     border: '1px solid rgba(100,200,100,0.3)',
-                    marginBottom: '24px',
+                    marginBottom: '20px',
                   }}
                 >
                   <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
@@ -5271,24 +4392,16 @@ export const NewsletterSubscription: Story = {
                   </div>
                   <div style={{ fontSize: '14px', opacity: 0.8 }}>{email}</div>
                 </div>
-                <button
+                <Button
                   onClick={() => {
                     setSubscribed(false);
                     setEmail('');
                   }}
-                  style={{
-                    padding: '14px 32px',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'rgba(255,255,255,0.1)',
-                    color: 'inherit',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
+                  glass
+                  variant="primary"
                 >
                   Subscribe Another Email
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -5319,28 +4432,28 @@ export const ProgressTracker: Story = {
         id: 1,
         title: 'Account Setup',
         description: 'Create your profile and set preferences',
-        icon: '👤',
+        icon: <Icon name="User" />,
         status: 'completed',
       },
       {
         id: 2,
         title: 'Payment Method',
         description: 'Add your payment information',
-        icon: '💳',
+        icon: <Icon name="CreditCard" />,
         status: 'current',
       },
       {
         id: 3,
         title: 'Verification',
         description: 'Verify your email and phone',
-        icon: '✉️',
+        icon: <Icon name="Envelope" />,
         status: 'upcoming',
       },
       {
         id: 4,
         title: 'Complete',
         description: 'Review and finish setup',
-        icon: '🎉',
+        icon: <Icon name="Confetti" />,
         status: 'upcoming',
       },
     ];
@@ -5352,7 +4465,11 @@ export const ProgressTracker: Story = {
     };
 
     return (
-      <BackgroundWrapper backgroundImage={backgroundImages[6]}>
+      <BackgroundWrapper
+        backgroundImage={
+          'https://images.unsplash.com/photo-1656873186004-f53c335fa348?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2532'
+        }
+      >
         <AtomixGlass
           displacementScale={28}
           blurAmount={18}
@@ -5360,7 +4477,7 @@ export const ProgressTracker: Story = {
           cornerRadius={30}
           mode="standard"
         >
-          <div style={{ padding: '50px', minWidth: '650px', maxWidth: '800px' }}>
+          <div style={{ padding: '30px', minWidth: '550px', maxWidth: '700px' }}>
             <h2 style={{ margin: '0 0 12px 0', fontSize: '32px', fontWeight: 700 }}>
               Getting Started
             </h2>
@@ -5467,7 +4584,7 @@ export const ProgressTracker: Story = {
                         flexShrink: 0,
                       }}
                     >
-                      {isCompleted ? '✓' : step.icon}
+                      {isCompleted ? <Icon name="Check" /> : step.icon}
                     </div>
 
                     {/* Step Content */}
@@ -5519,7 +4636,9 @@ export const ProgressTracker: Story = {
 
                     {/* Arrow */}
                     {step.id <= currentStep && (
-                      <div style={{ fontSize: '20px', opacity: 0.5 }}>→</div>
+                      <div style={{ fontSize: '20px', opacity: 0.5 }}>
+                        <Icon name="ArrowRight" />
+                      </div>
                     )}
                   </div>
                 );
@@ -5543,7 +4662,7 @@ export const ProgressTracker: Story = {
                   opacity: currentStep === 1 ? 0.5 : 1,
                 }}
               >
-                ← Previous
+                <Icon name="ArrowLeft" /> Previous
               </button>
               <button
                 onClick={() => setCurrentStep(Math.min(steps.length, currentStep + 1))}
@@ -5563,7 +4682,9 @@ export const ProgressTracker: Story = {
                   opacity: currentStep === steps.length ? 0.5 : 1,
                 }}
               >
-                {currentStep === steps.length ? 'Completed ✓' : 'Next →'}
+                {currentStep === steps.length
+                  ? 'Completed <Icon name="Check" />'
+                  : 'Next <Icon name="ArrowRight" />'}
               </button>
             </div>
           </div>
@@ -5576,6 +4697,1178 @@ export const ProgressTracker: Story = {
       description: {
         story:
           'A comprehensive progress tracker for multi-step processes with status indicators, step navigation, and progress visualization. Perfect for onboarding flows, checkout processes, or application wizards.',
+      },
+    },
+  },
+};
+/**
+ * Mobile UI Example - Showcases the component on smaller screens
+ *
+ * This story demonstrates how AtomixGlass components can be used to create
+ * mobile-friendly interfaces with responsive design and touch interactions.
+ */
+export const MobileUIExample: Story = {
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [activeTab, setActiveTab] = useState('home');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [notificationCount, setNotificationCount] = useState(3);
+
+    const handleTabChange = (tab: string) => {
+      setActiveTab(tab);
+    };
+
+    const clearNotifications = () => {
+      setNotificationCount(0);
+    };
+
+    // Mobile device frame styles
+    const phoneFrameStyle = {
+      width: '375px',
+      height: '667px',
+      borderRadius: '36px',
+      padding: '12px',
+      boxShadow: '0 -25px 50px 12px rgba(255, 255, 255, 0.3)',
+      position: 'relative' as const,
+      backdropFilter: 'blur(12px)',
+    };
+
+    const phoneScreenStyle = {
+      width: '100%',
+      height: '100%',
+      borderRadius: '24px',
+      position: 'relative' as const,
+      backgroundImage:
+        'url(https://images.unsplash.com/photo-1699100329878-7f28bb780787?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132)',
+      backgroundSize: 'cover' as const,
+      backgroundPosition: 'center' as const,
+      color: 'white',
+    };
+
+    const phoneNotchStyle = {
+      position: 'absolute' as const,
+      top: '0',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: '180px',
+      height: '30px',
+      borderBottomLeftRadius: '14px',
+      borderBottomRightRadius: '14px',
+      background: '#000',
+      zIndex: 10,
+    };
+
+    // App content styles
+    const appContentStyle = {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column' as const,
+      position: 'relative' as const,
+    };
+
+    const headerStyle = {
+      padding: '50px 20px 15px',
+      display: 'flex',
+      width: '100%',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderTop: '1px solid rgba(255, 255, 255, 0.5)',
+      borderRadius: '24px',
+      background: 'linear-gradient(to bottom, rgba(255,255,255, 0.2), rgba(0,0,0,0.1))',
+    };
+
+    const mainContentStyle = {
+      flex: 1,
+      padding: '0 15px',
+    };
+
+    // Tab content based on active tab
+    const renderTabContent = () => {
+      switch (activeTab) {
+        case 'home':
+          return (
+            <div style={{ padding: '10px 0' }}>
+              <AtomixGlass
+                displacementScale={60}
+                blurAmount={0}
+                cornerRadius={24}
+                mode="prominent"
+                onClick={() => null}
+                overLight={false}
+              >
+                <div
+                  style={{
+                    padding: '20px',
+                    background: 'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
+                    borderRadius: '24px',
+                  }}
+                >
+                  <h3 style={{ margin: '0 0 10px 0', fontSize: '18px', color: 'white' }}>
+                    Welcome Back
+                  </h3>
+                  <p
+                    style={{
+                      margin: '0 0 15px 0',
+                      fontSize: '14px',
+                      lineHeight: 1.5,
+                      color: 'white',
+                    }}
+                  >
+                    Your daily summary and activity feed
+                  </p>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      marginTop: '15px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        background:
+                          'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '18px',
+                        backdropFilter: 'blur(10px)',
+                      }}
+                    >
+                      <Icon name="User" />
+                    </div>
+                    <div>
+                      <div style={{ fontWeight: 500, color: 'white' }}>User Profile</div>
+                      <div style={{ fontSize: '12px', opacity: 0.7, color: 'white' }}>
+                        View your account
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </AtomixGlass>
+
+              <div style={{ height: '15px' }} />
+
+              <AtomixGlass
+                displacementScale={60}
+                blurAmount={0}
+                saturation={185}
+                elasticity={0.2}
+                cornerRadius={30}
+                mode="standard"
+                onClick={() => null}
+                overLight={false}
+              >
+                <div
+                  style={{
+                    padding: '20px',
+                    background: 'linear-gradient(to top, rgba(255,255,255,0.1), rgba(0,0,0,0.1))',
+                    borderRadius: '30px',
+                  }}
+                >
+                  <h3 style={{ margin: '0 0 15px 0', fontSize: '16px', color: 'white' }}>
+                    Recent Activity
+                  </h3>
+                  {[1, 2, 3].map(item => (
+                    <div
+                      key={item}
+                      style={{
+                        padding: '10px',
+                        borderBottom: '1px solid rgba(255,255,255,0.4)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        backdropFilter: 'blur(10px)',
+                        borderRadius: '10px',
+                        marginBottom: '10px',
+                        background:
+                          'linear-gradient(to top, rgba(255,255,255,0.15), rgba(0,0,0,0.15))',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '8px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '14px',
+                          color: 'white',
+                          background:
+                            'linear-gradient(to left, rgba(255,255,255,0.15), rgba(0,0,0,0.15))',
+                          backdropFilter: 'blur(10px)',
+                        }}
+                      >
+                        {item === 1 ? (
+                          <Icon name="File" />
+                        ) : item === 2 ? (
+                          <Icon name="Bell" />
+                        ) : (
+                          <Icon name="Chats" />
+                        )}
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '14px', color: 'white' }}>
+                          {item === 1
+                            ? 'New document created'
+                            : item === 2
+                              ? 'Reminder: Meeting at 3 PM'
+                              : 'New message from Sarah'}
+                        </div>
+                        <div style={{ fontSize: '12px', opacity: 0.7, color: 'white' }}>
+                          {item === 1 ? '5 minutes ago' : item === 2 ? '1 hour ago' : '3 hours ago'}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </AtomixGlass>
+            </div>
+          );
+        case 'search':
+          return (
+            <div style={{ padding: '10px 0' }}>
+              <AtomixGlass
+                displacementScale={220}
+                blurAmount={0}
+                cornerRadius={15}
+                mode="shader"
+                onClick={() => null}
+                overLight={false}
+              >
+                <div
+                  style={{
+                    padding: '15px',
+                    borderRadius: '15px',
+                    background: 'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      borderRadius: '10px',
+                      padding: '8px 12px',
+                      background: 'linear-gradient(to top, rgba(255,255,255,0.3), rgba(0,0,0,0.3))',
+                      backdropFilter: 'blur(10px)',
+                    }}
+                  >
+                    <span>
+                      <Icon name="MagnifyingGlass" />
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Search..."
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        outline: 'none',
+                        color: 'white',
+                        width: '100%',
+                        fontSize: '14px',
+                      }}
+                    />
+                  </div>
+                </div>
+              </AtomixGlass>
+
+              <div style={{ height: '15px' }} />
+
+              <AtomixGlass
+                displacementScale={60}
+                blurAmount={0}
+                cornerRadius={15}
+                onClick={() => null}
+                overLight={false}
+              >
+                <div
+                  style={{
+                    padding: '20px',
+                    borderRadius: '15px',
+                    background:
+                      'linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
+                  }}
+                >
+                  <h3 style={{ margin: '0 0 15px 0', fontSize: '16px', color: '#fff' }}>
+                    Search Categories
+                  </h3>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(2, 1fr)',
+                      gap: '10px',
+                    }}
+                  >
+                    {['Photos', 'Documents', 'Messages', 'Settings'].map(category => (
+                      <div
+                        key={category}
+                        style={{
+                          padding: '15px',
+                          background: 'rgba(255,255,255,0.1)',
+                          borderRadius: '10px',
+                          textAlign: 'center',
+                          fontSize: '14px',
+                          backdropFilter: 'blur(10px)',
+                        }}
+                      >
+                        {category}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </AtomixGlass>
+            </div>
+          );
+        case 'notifications':
+          return (
+            <div style={{ padding: '10px 0' }}>
+              <AtomixGlass
+                displacementScale={60}
+                blurAmount={0}
+                cornerRadius={15}
+                mode="standard"
+                onClick={() => null}
+                overLight={false}
+              >
+                <div
+                  style={{
+                    padding: '20px',
+                    borderRadius: '15px',
+                    background: 'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '15px',
+                    }}
+                  >
+                    <h3 style={{ margin: 0, fontSize: '18px', color: 'white' }}>Notifications</h3>
+                    <button
+                      onClick={clearNotifications}
+                      style={{
+                        background: 'rgba(255,255,255,0.2)',
+                        border: 'none',
+                        borderRadius: '5px',
+                        padding: '5px 10px',
+                        fontSize: '12px',
+                        color: 'white',
+                        cursor: 'pointer',
+                        backdropFilter: 'blur(10px)',
+                      }}
+                    >
+                      Clear All
+                    </button>
+                  </div>
+
+                  {notificationCount > 0 ? (
+                    Array.from({ length: notificationCount }).map((_, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          padding: '12px',
+                          background: 'rgba(255,255,255,0.1)',
+                          borderRadius: '10px',
+                          backdropFilter: 'blur(10px)',
+                          marginBottom: '10px',
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: '36px',
+                              height: '36px',
+                              borderRadius: '50%',
+                              background: 'rgba(255,255,255,0.2)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '16px',
+                              backdropFilter: 'blur(10px)',
+                            }}
+                          >
+                            {index === 0 ? (
+                              <Icon name="PhoneCall" />
+                            ) : index === 1 ? (
+                              <Icon name="Bell" />
+                            ) : (
+                              <Icon name="Envelope" />
+                            )}
+                          </div>
+                          <div>
+                            <div style={{ fontSize: '14px', fontWeight: 500, color: 'white' }}>
+                              {index === 0
+                                ? 'New Login Detected'
+                                : index === 1
+                                  ? 'Calendar Reminder'
+                                  : 'New Message'}
+                            </div>
+                            <div style={{ fontSize: '12px', opacity: 0.7, color: 'white' }}>
+                              {index === 0
+                                ? 'A new device logged into your account'
+                                : index === 1
+                                  ? 'Meeting with design team in 30 minutes'
+                                  : 'Sarah sent you a new message'}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div
+                      style={{
+                        textAlign: 'center',
+                        padding: '30px 0',
+                        opacity: 0.7,
+                        fontSize: '14px',
+                        backdropFilter: 'blur(10px)',
+                      }}
+                    >
+                      No new notifications
+                    </div>
+                  )}
+                </div>
+              </AtomixGlass>
+            </div>
+          );
+        case 'profile':
+          return (
+            <div style={{ padding: '10px 0' }}>
+              <AtomixGlass
+                displacementScale={120}
+                blurAmount={0}
+                saturation={180}
+                elasticity={0.16}
+                cornerRadius={15}
+                mode="standard"
+                onClick={() => null}
+                overLight={false}
+              >
+                <div
+                  style={{
+                    padding: '25px 20px',
+                    borderRadius: '15px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    background: 'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '80px',
+                      height: '80px',
+                      borderRadius: '50%',
+                      background: 'rgba(255,255,255,0.2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '36px',
+                      marginBottom: '15px',
+                      backdropFilter: 'blur(10px)',
+                    }}
+                  >
+                    <Icon name="User" />
+                  </div>
+                  <h3 style={{ margin: '0 0 5px 0', fontSize: '18px', color: 'white' }}>
+                    User Name
+                  </h3>
+                  <p
+                    style={{ margin: '0 0 20px 0', fontSize: '14px', opacity: 0.7, color: 'white' }}
+                  >
+                    user@example.com
+                  </p>
+                  <Button label="Edit Profile" variant="erorr" size="md" />
+                  <Button glass label="Settings" variant="dark" size="md" />
+                </div>
+              </AtomixGlass>
+            </div>
+          );
+        default:
+          return null;
+      }
+    };
+
+    return (
+      <BackgroundWrapper
+        backgroundImage={
+          'https://images.unsplash.com/photo-1524169358666-79f22534bc6e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2670'
+        }
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{ maxWidth: '300px' }}>
+            <h2
+              style={{
+                margin: '0 0 20px 0',
+                fontSize: '28px',
+                fontWeight: 500,
+                color: '#ffffff',
+                textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+              }}
+            >
+              Mobile UI Example
+            </h2>
+
+            <p
+              style={{
+                fontSize: '16px',
+                maxWidth: '600px',
+                margin: '0 auto 30px',
+                color: '#ffffff',
+                textShadow: '0 1px 2px rgba(0,0,0,0.2)',
+              }}
+            >
+              AtomixGlass components optimized for mobile interfaces with touch-friendly controls
+            </p>
+          </div>
+          {/* Phone frame */}
+          <div style={phoneFrameStyle}>
+            <div style={phoneScreenStyle}>
+              <div style={phoneNotchStyle} />
+
+              {/* App content */}
+              <div style={appContentStyle}>
+                {/* Header */}
+                <AtomixGlass
+                  displacementScale={20}
+                  blurAmount={1}
+                  saturation={180}
+                  elasticity={0}
+                  cornerRadius={26}
+                  mode="shader"
+                  shaderVariant="premiumGlass"
+                  onClick={() => null}
+                  overLight={false}
+                >
+                  <div style={headerStyle}>
+                    <h2 style={{ margin: 0, fontSize: '18px' }}>
+                      {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+                    </h2>
+                    <div
+                      style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '50%',
+                        background: 'rgba(255,255,255,0.1)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Icon name="User" />
+                    </div>
+                  </div>
+                </AtomixGlass>
+
+                {/* Main content area */}
+                <div style={mainContentStyle}>{renderTabContent()}</div>
+
+                {/* Bottom navigation */}
+                <AtomixGlass
+                  displacementScale={25}
+                  elasticity={0}
+                  cornerRadius={18}
+                  mode="shader"
+                  shaderVariant="premiumGlass"
+                  onClick={() => null}
+                  overLight={false}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                      padding: '5px 10px',
+                      background:
+                        'linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(0,0,0,0.1))',
+                      borderRadius: '18px',
+                    }}
+                  >
+                    {[
+                      { id: 'home', icon: <Icon name="House" /> },
+                      { id: 'search', icon: <Icon name="MagnifyingGlass" /> },
+                      { id: 'notifications', icon: <Icon name="Bell" />, badge: notificationCount },
+                      { id: 'profile', icon: <Icon name="User" /> },
+                    ].map(tab => (
+                      <div
+                        key={tab.id}
+                        onClick={() => handleTabChange(tab.id)}
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          opacity: activeTab === tab.id ? 1 : 0.6,
+                          position: 'relative',
+                          padding: '10px 20px',
+                          backdropFilter: 'blur(10px)',
+                          borderRadius: '10px',
+                          background:
+                            'linear-gradient(to left, rgba(255,255,255,0.5), rgba(0,0,0,0.5))',
+                        }}
+                      >
+                        <div style={{ fontSize: '20px' }}>{tab.icon}</div>
+                        {tab.badge && tab.badge > 0 && (
+                          <div
+                            style={{
+                              position: 'absolute',
+                              top: '-5px',
+                              right: '-5px',
+                              background:
+                                'linear-gradient(to top, rgba(255,0,0,0.6), rgba(255,0,0,7))',
+                              color: 'white',
+                              borderRadius: '50%',
+                              width: '18px',
+                              height: '18px',
+                              fontSize: '12px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              backdropFilter: 'blur(10px)',
+                            }}
+                          >
+                            {tab.badge}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </AtomixGlass>
+              </div>
+            </div>
+          </div>
+        </div>
+      </BackgroundWrapper>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This example demonstrates how AtomixGlass components can be optimized for mobile interfaces. The design showcases a complete mobile app UI with navigation tabs, responsive layouts, and touch-friendly controls. The glass effect provides a modern and elegant look while maintaining excellent readability and usability on smaller screens.',
+      },
+    },
+  },
+};
+
+/**
+ * Apple-inspired UI example showcasing the liquid glass effect
+ *
+ * This story demonstrates how to create Apple-like interfaces using the AtomixGlass component,
+ * mimicking the frosted glass effect seen in macOS and iOS with realistic design elements
+ * and interactions that closely resemble Apple's design language.
+ */
+export const AppleInspiredUI: Story = {
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [activeTab, setActiveTab] = useState('home');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [currentTime, setCurrentTime] = useState('');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [hoverDockItem, setHoverDockItem] = useState<number | null>(null);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [notificationCount, setNotificationCount] = useState(3);
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      // Update time every minute
+      const updateTime = () => {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const formattedHours = hours % 12 || 12;
+        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+        setCurrentTime(`${formattedHours}:${formattedMinutes} ${ampm}`);
+      };
+
+      updateTime();
+      const interval = setInterval(updateTime, 60000);
+
+      return () => clearInterval(interval);
+    }, []);
+
+    const handleTabChange = (tab: string) => {
+      setActiveTab(tab);
+    };
+
+    // Apple-style app icons with gradient backgrounds
+    const appIcons = [
+      {
+        name: 'Photos',
+        color: 'linear-gradient(135deg, #FF9500, #FF2D55)',
+        symbol: <Icon name="Image" />,
+      },
+      {
+        name: 'Music',
+        color: 'linear-gradient(135deg, #FF2D55, #AF52DE)',
+        symbol: <Icon name="MusicNotes" />,
+      },
+      {
+        name: 'Mail',
+        color: 'linear-gradient(135deg, #5AC8FA, #007AFF)',
+        symbol: <Icon name="Envelope" />,
+      },
+      {
+        name: 'Maps',
+        color: 'linear-gradient(135deg, #34C759, #5AC8FA)',
+        symbol: <Icon name="MapPin" />,
+      },
+      {
+        name: 'Weather',
+        color: 'linear-gradient(135deg, #007AFF, #5AC8FA)',
+        symbol: <Icon name="Sun" />,
+      },
+      {
+        name: 'Notes',
+        color: 'linear-gradient(135deg, #FFCC00, #FF9500)',
+        symbol: <Icon name="Notebook" />,
+      },
+    ];
+
+    // Dock apps with more realistic icons
+    const dockApps = [
+      {
+        name: 'Finder',
+        symbol: <Icon name="MagnifyingGlass" />,
+        color: 'linear-gradient(135deg, #1E88E5, #64B5F6)',
+      },
+      {
+        name: 'Safari',
+        symbol: <Icon name="MapPin" />,
+        color: 'linear-gradient(135deg, #039BE5, #81D4FA)',
+      },
+      {
+        name: 'Messages',
+        symbol: <Icon name="Chats" />,
+        color: 'linear-gradient(135deg, #43A047, #81C784)',
+      },
+      {
+        name: 'Calendar',
+        symbol: <Icon name="Calendar" />,
+        color: 'linear-gradient(135deg, #E53935, #EF5350)',
+      },
+      {
+        name: 'Photos',
+        symbol: <Icon name="Image" />,
+        color: 'linear-gradient(135deg, #8E24AA, #BA68C8)',
+      },
+    ];
+
+    return (
+      <BackgroundWrapper
+        backgroundImage={
+          'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2128'
+        }
+        height="90vh"
+        style={{ maxWidth: '90vw', padding: '10px' }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            height: '90vh',
+            width: '100%',
+          }}
+        >
+          {/* Top menu bar - macOS style */}
+          <AtomixGlass
+            displacementScale={70}
+            blurAmount={0}
+            saturation={150}
+            cornerRadius={8}
+            mode="shader"
+            shaderVariant="premiumGlass"
+            elasticity={0}
+          >
+            <div
+              style={{
+                padding: '10px 16px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '77vw',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '20px', color: '#fff' }}>
+                <span
+                  style={{
+                    fontSize: '20px',
+                    fontWeight: 600,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  <span style={{ fontSize: '22px' }}>
+                    <Icon name="AppleLogo" />
+                  </span>
+                  <span>Atomix</span>
+                </span>
+                <div style={{ display: 'flex', gap: '16px' }}>
+                  {['Finder', 'File', 'Edit', 'View', 'Window', 'Help'].map(tab => (
+                    <button
+                      key={tab}
+                      onClick={() => handleTabChange(tab.toLowerCase())}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        padding: '4px 8px',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        backgroundColor:
+                          activeTab === tab.toLowerCase()
+                            ? 'rgba(255,255,255,0.15)'
+                            : 'transparent',
+                        transition: 'all 0.2s ease',
+                        fontSize: '13px',
+                        fontWeight: activeTab === tab.toLowerCase() ? 600 : 400,
+                        color: 'inherit',
+                      }}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: '#fff' }}>
+                <div
+                  style={{ display: 'flex', alignItems: 'center', fontSize: '12px', gap: '4px' }}
+                >
+                  <span>
+                    <Icon name="BatteryFull" />
+                  </span>
+                  <span>75%</span>
+                </div>
+                <div style={{ fontSize: '14px' }}>
+                  <Icon name="WifiX" />
+                </div>
+                <span style={{ fontSize: '13px', fontWeight: 500 }}>
+                  {currentTime || '10:30 AM'}
+                </span>
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '26px',
+                    height: '26px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #64B5F6, #1976D2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    color: 'white',
+                    cursor: 'pointer',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+                  }}
+                >
+                  <Icon name="Airplane" />
+                  {notificationCount > 0 && (
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: '-4px',
+                        right: '-4px',
+                        width: '14px',
+                        height: '14px',
+                        borderRadius: '50%',
+                        backgroundColor: '#FF3B30',
+                        color: 'white',
+                        fontSize: '10px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        border: '1px solid rgba(255,255,255,0.8)',
+                      }}
+                    >
+                      {notificationCount}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </AtomixGlass>
+
+          {/* Center widget - iOS style */}
+          <AtomixGlass
+            displacementScale={50}
+            blurAmount={2}
+            shaderVariant="premiumGlass"
+            cornerRadius={24}
+            mode="shader"
+            elasticity={0}
+          >
+            <div style={{ padding: '30px' }}>
+              <h2
+                style={{
+                  marginTop: 0,
+                  fontSize: '26px',
+                  fontWeight: 600,
+                  marginBottom: '24px',
+                  textAlign: 'center',
+                  background: 'linear-gradient(135deg, #007AFF, #5AC8FA)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                Welcome to Atomix OS
+              </h2>
+
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '20px',
+                  marginBottom: '28px',
+                }}
+              >
+                {appIcons.map(app => (
+                  <div
+                    key={app.name}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '56px',
+                        height: '56px',
+                        borderRadius: '14px',
+                        background: app.color,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '24px',
+                        boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
+                        transition: 'transform 0.2s ease',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {app.symbol}
+                    </div>
+                    <span style={{ fontSize: '13px', fontWeight: 500, opacity: 0.9 }}>
+                      {app.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <AtomixGlass
+                displacementScale={12}
+                blurAmount={5}
+                saturation={130}
+                aberrationIntensity={1}
+                cornerRadius={16}
+                elasticity={0}
+                mode="shader"
+              >
+                <div style={{ padding: '18px', fontSize: '14px' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginBottom: '12px',
+                    }}
+                  >
+                    <div
+                      style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}
+                    >
+                      <span style={{ fontSize: '16px' }}>
+                        <Icon name="BellRinging" />
+                      </span>
+                      <span>Notifications</span>
+                    </div>
+                    <span
+                      style={{
+                        fontSize: '12px',
+                        padding: '2px 8px',
+                        borderRadius: '10px',
+                        background: 'rgba(255,45,85,0.2)',
+                        color: '#FF2D55',
+                        fontWeight: 600,
+                      }}
+                    >
+                      {notificationCount} New
+                    </span>
+                  </div>
+
+                  <div
+                    style={{
+                      padding: '10px 0',
+                      borderTop: '1px solid rgba(255,255,255,0.1)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontWeight: 500, marginBottom: '4px' }}>
+                        New Atomix Glass Component
+                      </div>
+                      <div style={{ fontSize: '12px', opacity: 0.8 }}>
+                        Experience the next generation of UI effects
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        background: 'linear-gradient(135deg, #007AFF, #5AC8FA)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '18px',
+                      }}
+                    >
+                      <Icon name="Star" />
+                    </div>
+                  </div>
+                </div>
+              </AtomixGlass>
+            </div>
+          </AtomixGlass>
+
+          {/* Bottom dock - macOS style */}
+          <AtomixGlass
+            displacementScale={15}
+            blurAmount={2}
+            saturation={140}
+            aberrationIntensity={1.2}
+            cornerRadius={24}
+            mode="polar"
+            style={{ maxWidth: '600px' }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '16px',
+                padding: '6px',
+              }}
+            >
+              {dockApps.map((app, index) => (
+                <div
+                  key={index}
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '12px',
+                    background: app.color,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '20px',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    transform:
+                      hoverDockItem === index
+                        ? 'translateY(-10px) scale(1.1)'
+                        : 'translateY(0) scale(1)',
+                    boxShadow:
+                      hoverDockItem === index
+                        ? '0 10px 20px rgba(0,0,0,0.2)'
+                        : '0 4px 10px rgba(0,0,0,0.1)',
+                    position: 'relative',
+                  }}
+                  onMouseEnter={() => setHoverDockItem(index)}
+                  onMouseLeave={() => setHoverDockItem(null)}
+                >
+                  {app.symbol}
+                  {hoverDockItem === index && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '-30px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        background: 'rgba(0,0,0,0.7)',
+                        color: 'white',
+                        padding: '4px 10px',
+                        borderRadius: '6px',
+                        fontSize: '12px',
+                        fontWeight: 500,
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {app.name}
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              <div
+                style={{
+                  width: '1px',
+                  height: '30px',
+                  background: 'rgba(255,255,255,0.3)',
+                  margin: '0 4px',
+                }}
+              />
+
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '12px',
+                  background: 'rgba(255,255,255,0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '20px',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  transform:
+                    hoverDockItem === 999
+                      ? 'translateY(-10px) scale(1.1)'
+                      : 'translateY(0) scale(1)',
+                  boxShadow:
+                    hoverDockItem === 999
+                      ? '0 10px 20px rgba(0,0,0,0.2)'
+                      : '0 4px 10px rgba(0,0,0,0.1)',
+                }}
+                onMouseEnter={() => setHoverDockItem(999)}
+                onMouseLeave={() => setHoverDockItem(null)}
+              >
+                🗑️
+              </div>
+            </div>
+          </AtomixGlass>
+        </div>
+      </BackgroundWrapper>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'An enhanced Apple-inspired UI example showcasing how to create macOS and iOS-like interfaces using the AtomixGlass component. This example includes a realistic menu bar with status icons, app grid with gradient icons, notification center, and an interactive dock with hover effects - all with the signature Apple frosted glass aesthetic.',
       },
     },
   },

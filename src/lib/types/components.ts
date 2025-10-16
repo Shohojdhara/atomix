@@ -23,6 +23,11 @@ export interface AtomixGlassProps {
   onClick?: () => void;
 
   /**
+   * Shader variant for shader mode
+   */
+  shaderVariant?: 'liquidGlass' | 'premiumGlass';
+
+  /**
    * Accessibility props
    */
   'aria-label'?: string;
@@ -305,7 +310,6 @@ export interface CalloutProps extends BaseComponentProps {
    */
   glass?: AtomixGlassProps | boolean;
 }
-
 
 /**
  * Accordion component properties
@@ -892,49 +896,61 @@ export type EdgePanelMode = 'slide' | 'push' | 'none';
  */
 export interface EdgePanelProps extends BaseComponentProps {
   /**
-   * Panel title
+   * Title of the panel
    */
-  title?: ReactNode;
+  title?: React.ReactNode;
 
   /**
-   * Panel content
+   * Position of the panel
+   * @default 'start'
    */
-  children: ReactNode;
-
-  /**
-   * Panel position
-   */
-  position?: EdgePanelPosition;
+  position?: 'start' | 'end' | 'top' | 'bottom';
 
   /**
    * Animation mode
+   * @default 'slide'
    */
-  mode?: EdgePanelMode;
+  mode?: 'slide' | 'push' | 'none';
 
   /**
    * Whether the panel is open
+   * @default false
    */
   isOpen?: boolean;
 
   /**
-   * Open/close callback
+   * Callback when panel open state changes
    */
   onOpenChange?: (open: boolean) => void;
 
   /**
-   * Show backdrop
+   * Whether to show backdrop
+   * @default true
    */
   backdrop?: boolean;
 
   /**
-   * Close when clicking backdrop
+   * Whether to close panel when clicking backdrop
+   * @default true
    */
   closeOnBackdropClick?: boolean;
 
   /**
-   * Close when pressing escape key
+   * Whether to close panel when pressing Escape key
+   * @default true
    */
   closeOnEscape?: boolean;
+
+  /**
+   * Glass effect configuration
+   * @default undefined
+   */
+  glass?: boolean | AtomixGlassProps;
+
+  /**
+   * Children elements
+   */
+  children: React.ReactNode;
 }
 
 /**

@@ -159,7 +159,7 @@ const preview: Preview = {
     colorMode: {
       name: 'Color Mode',
       description: 'Color mode for components',
-      defaultValue: 'light',
+      defaultValue: 'dark',
       toolbar: {
         title: 'Color',
         icon: 'mirror',

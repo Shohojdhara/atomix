@@ -153,10 +153,9 @@ export const BackgroundWrapper = ({
   overlay = false,
   overlayColor = 'rgba(0,0,0,0)',
   overlayOpacity = 0,
-  height = '90vh',
-  width = '90vw',
+  height = '97vh',
+  width = '97vw',
   borderRadius = '12px',
-  padding = '24px',
   className = '',
   style = {},
 }: BackgroundWrapperProps) => {
@@ -173,8 +172,7 @@ export const BackgroundWrapper = ({
       className={`atomix-glass-background ${className}`}
       style={{
         position: 'relative',
-        minHeight: height,
-        height: '100%',
+        height: height,
         width: width,
         backgroundColor: !bgImage ? '#1a1a2e' : undefined, // Fallback color if no image
         background: bgImage
@@ -187,7 +185,7 @@ export const BackgroundWrapper = ({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: borderRadius,
-        padding: padding,
+        overflow: 'auto',
         ...style,
       }}
     >
@@ -200,24 +198,13 @@ export const BackgroundWrapper = ({
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: finalOverlayColor,
+            background: finalOverlayColor,
             opacity: finalOverlayOpacity,
           }}
         />
       )}
-      <div
-        style={{
-          position: 'relative',
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-        }}
-      >
+    
         {children}
-      </div>
     </div>
   );
 };

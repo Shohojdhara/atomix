@@ -138,7 +138,17 @@ const GlassFilter: React.FC<GlassFilterProps> = ({
   mode,
   shaderMapUrl,
 }) => (
-  <svg style={{ position: 'absolute', width: '100%', height: '100%', inset: 0 }} aria-hidden="true">
+  <svg
+    style={{
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      inset: 0,
+      visibility: 'hidden',
+      opacity: 0,
+    }}
+    aria-hidden="true"
+  >
     <defs>
       <radialGradient id={`${id}-edge-mask`} cx="50%" cy="50%" r="50%">
         <stop offset="0%" stopColor="black" stopOpacity="0" />
@@ -367,9 +377,9 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
     const liquidBlur = useMemo(() => {
       const defaultBlur = {
         baseBlur: blurAmount,
-        edgeBlur: blurAmount * 0.3,
-        centerBlur: blurAmount * 0.1,
-        flowBlur: blurAmount * 0.2,
+        edgeBlur: blurAmount * 1.25,
+        centerBlur: blurAmount * 1.1,
+        flowBlur: blurAmount * 1.2,
       };
 
       if (!rectCache || !globalMousePosition.x || !globalMousePosition.y) {
@@ -434,7 +444,6 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
             position: 'relative',
             padding,
             borderRadius: `${cornerRadius}px`,
-            transition: 'all 0.2s ease-out',
           }}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -467,7 +476,7 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
               inset: '1px',
               borderRadius: `${cornerRadius}px`,
               pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
-              zIndex: 20,
+              zIndex: 5,
               boxShadow: overLight
                 ? [
                     `inset 0 1px 0 rgba(255, 255, 255, ${0.4 + (mouseOffset?.x || 0) * 0.002})`,
@@ -480,12 +489,12 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
                     '0 4px 8px rgba(0, 0, 0, 0.08) inset',
                   ].join(', '),
               opacity: effectiveDisableEffects ? 0 : 1,
-              transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
+              // transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
               background: overLight
-                ? `linear-gradient(${180 + (mouseOffset?.x || 0) * 0.5}deg, 
-                    rgba(255, 255, 255, 0.1) 0%, 
-                    transparent 20%, 
-                    transparent 80%, 
+                ? `linear-gradient(${180 + (mouseOffset?.x || 0) * 0.5}deg,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    transparent 20%,
+                    transparent 80%,
                     rgba(0, 0, 0, 0.05) 100%)`
                 : 'none',
             }}
@@ -1129,6 +1138,7 @@ export function AtomixGlass({
       borderRadius: `${Math.max(0, cornerRadius)}px`,
       transform: baseStyle.transform,
       transition: effectiveReducedMotion ? 'none' : baseStyle.transition,
+      transitionProperty: 'transform',
       pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
       mixBlendMode: 'screen' as React.CSSProperties['mixBlendMode'],
       opacity: 0.2,
@@ -1160,6 +1170,7 @@ export function AtomixGlass({
       borderRadius: `${Math.max(0, cornerRadius)}px`,
       transform: baseStyle.transform,
       transition: effectiveReducedMotion ? 'none' : baseStyle.transition,
+      transitionProperty: 'transform',
       overflow: 'hidden',
       pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
       zIndex: 6,
@@ -1189,6 +1200,7 @@ export function AtomixGlass({
       inset: '0',
       borderRadius: `${Math.max(0, cornerRadius)}px`,
       transform: baseStyle.transform,
+      transitionProperty: 'transform',
       pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
       transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
       opacity: isHovered || isActive ? (isOverLight ? 0.3 : 0.5) : 0,
@@ -1228,6 +1240,7 @@ export function AtomixGlass({
       transform: baseStyle.transform,
       pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
       transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
+      transitionProperty: 'transform, opacity',
       opacity: isActive ? (isOverLight ? 0.4 : 0.5) : 0,
       background: isOverLight
         ? `radial-gradient(
@@ -1263,6 +1276,7 @@ export function AtomixGlass({
       borderRadius: `${Math.max(0, cornerRadius)}px`,
       pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
       transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
+      transitionProperty: 'transform, opacity',
       opacity: isHovered ? (isOverLight ? 0.25 : 0.4) : isActive ? (isOverLight ? 0.5 : 0.8) : 0,
       background: isOverLight
         ? `radial-gradient(
@@ -1308,49 +1322,6 @@ export function AtomixGlass({
           : undefined
       }
     >
-      {/* Enhanced Apple Liquid Glass Base Layer */}
-      <div
-        style={{
-          ...positionStyles,
-          height: adjustedSize.height,
-          width: adjustedSize.width,
-          borderRadius: `${cornerRadius}px`,
-          transform: baseStyle.transform,
-          transition: baseStyle.transition,
-          pointerEvents: 'none',
-          willChange: 'transform',
-          background: overLightConfig.isOverLight
-            ? `linear-gradient(135deg, 
-                rgba(0, 0, 0, ${0.12 + mouseOffset.x * 0.002}) 0%, 
-                rgba(0, 0, 0, ${0.08 + mouseOffset.y * 0.001}) 50%, 
-                rgba(0, 0, 0, ${0.15 + Math.abs(mouseOffset.x) * 0.003}) 100%)`
-            : 'rgba(255, 255, 255, 0.1)',
-          opacity: overLightConfig.isOverLight ? overLightConfig.opacity : 0,
-        }}
-      />
-
-      {/* Enhanced Overlay Layer with Dynamic Gradients */}
-      <div
-        style={{
-          ...positionStyles,
-          height: adjustedSize.height,
-          width: adjustedSize.width,
-          borderRadius: `${cornerRadius}px`,
-          transform: baseStyle.transform,
-          transition: baseStyle.transition,
-          mixBlendMode: 'overlay',
-          pointerEvents: 'none',
-          willChange: 'transform',
-          background: overLightConfig.isOverLight
-            ? `radial-gradient(circle at ${50 + mouseOffset.x * 0.5}% ${50 + mouseOffset.y * 0.5}%, 
-                rgba(0, 0, 0, ${0.08 + Math.abs(mouseOffset.x) * 0.002}) 0%, 
-                rgba(0, 0, 0, ${0.04}) 40%, 
-                rgba(0, 0, 0, ${0.12 + Math.abs(mouseOffset.y) * 0.002}) 100%)`
-            : 'rgba(255, 255, 255, 0.05)',
-          opacity: overLightConfig.isOverLight ? overLightConfig.opacity * 0.9 : 0,
-        }}
-      />
-
       <GlassContainer
         ref={glassRef}
         className={className}
@@ -1404,7 +1375,6 @@ export function AtomixGlass({
       >
         {children}
       </GlassContainer>
-
       <span style={borderLayer1Style} />
 
       <span style={borderLayer2Style} />
@@ -1416,6 +1386,50 @@ export function AtomixGlass({
           <div style={hoverEffect3Style} />
         </>
       )}
+      {/* Enhanced Apple Liquid Glass Base Layer */}
+      <div
+        style={{
+          ...positionStyles,
+          height: adjustedSize.height,
+          width: adjustedSize.width,
+          borderRadius: `${cornerRadius}px`,
+          transform: baseStyle.transform,
+          transition: baseStyle.transition,
+          transitionProperty: 'transform, opacity',
+          pointerEvents: 'none',
+          willChange: 'transform, opacity',
+          background: overLightConfig.isOverLight
+            ? `linear-gradient(135deg,
+                rgba(0, 0, 0, ${0.12 + mouseOffset.x * 0.002}) 0%,
+                rgba(0, 0, 0, ${0.08 + mouseOffset.y * 0.001}) 50%,
+                rgba(0, 0, 0, ${0.15 + Math.abs(mouseOffset.x) * 0.003}) 100%)`
+            : 'rgba(255, 255, 255, 0.1)',
+          opacity: overLightConfig.isOverLight ? overLightConfig.opacity : 0,
+        }}
+      />
+
+      {/* Enhanced Overlay Layer with Dynamic Gradients */}
+      <div
+        style={{
+          ...positionStyles,
+          height: adjustedSize.height,
+          width: adjustedSize.width,
+          borderRadius: `${cornerRadius}px`,
+          transform: baseStyle.transform,
+          transition: baseStyle.transition,
+          transitionProperty: 'transform, opacity',
+          mixBlendMode: 'overlay',
+          pointerEvents: 'none',
+          willChange: 'transform, opacity',
+          background: overLightConfig.isOverLight
+            ? `radial-gradient(circle at ${50 + mouseOffset.x * 0.5}% ${50 + mouseOffset.y * 0.5}%,
+                rgba(0, 0, 0, ${0.08 + Math.abs(mouseOffset.x) * 0.002}) 0%,
+                rgba(0, 0, 0, ${0.04}) 40%,
+                rgba(0, 0, 0, ${0.12 + Math.abs(mouseOffset.y) * 0.002}) 100%)`
+            : 'rgba(255, 255, 255, 0.05)',
+          opacity: overLightConfig.isOverLight ? overLightConfig.opacity * 0.9 : 0,
+        }}
+      />
     </div>
   );
 }

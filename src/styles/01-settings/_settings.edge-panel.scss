@@ -11,7 +11,7 @@ $edge-panel-padding-y: map.get($spacing-sizes, 4) !default; //16px
 $edge-panel-bg: var(--#{config.$prefix}body-bg) !default;
 $edge-panel-color: var(--#{config.$prefix}body-color) !default;
 $edge-panel-shadow: var(--#{config.$prefix}box-shadow) !default;
-$edge-panel-backdrop-bg: var(--#{config.$prefix}invert-bg-subtle) !default;
+$edge-panel-backdrop-bg: var(--#{config.$prefix}dark-bg-subtle) !default;
 $edge-panel-backdrop-opacity: 0.5 !default;
 $edge-panel-backdrop-blur: 10px !default;
 $edge-panel-animation-duration: 300 !default;

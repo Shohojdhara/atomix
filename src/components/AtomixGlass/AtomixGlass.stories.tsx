@@ -409,11 +409,11 @@ const InteractiveWrapper = ({ children }: InteractiveWrapperProps) => {
  */
 const backgroundImages = [
   // 0: Modern office interior with natural lighting
-  'https://images.pexels.com/photos/5653101/pexels-photo-5653101.jpeg',
+  'https://images.unsplash.com/photo-1637825891028-564f672aa42c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2670',
   // 1: Beautiful natural landscape - mountains and lake
   'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   // 2: Urban cityscape with modern buildings
-  'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2670',
   // 3: Forest path with sunlight filtering through trees
   'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   // 4: Ocean waves and beach scene
@@ -485,29 +485,16 @@ export const Default: Story = {
           and interactive effects.
         </p>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
-          <button className="c-btn c-btn--primary">Explore</button>
-          <button className="c-btn c-btn--outline-light">Learn More</button>
+          <Button variant="primary" glass>Explore</Button>
+          <Button variant="outline-primary" glass>Learn More</Button>
         </div>
       </div>
     ),
-    displacementScale: 100, // Using component default
-    blurAmount: 1, // Using component default
-    saturation: 140, // Using component default
-    aberrationIntensity: 2, // Using component default
-    elasticity: 0.15, // Using component default
-    cornerRadius: 40, // Using component default
-    padding: '0 0', // Using component default
-    overLight: false, // Using component default
-    mode: 'standard', // Using component default
   },
   decorators: [
     Story => (
       <BackgroundWrapper
-        backgroundImage={backgrounds.blueGradient}
-        height="70vh"
-        width="90vw"
-        overlayOpacity={0.1}
-        overlayColor="rgba(0,0,0,0.2)"
+        backgroundImage={backgroundImages[0]}
       >
         <Story />
       </BackgroundWrapper>
@@ -523,68 +510,6 @@ export const Default: Story = {
   },
 };
 
-// Interactive demo with controls
-export const Interactive: Story = {
-  render: args => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [isActive, setIsActive] = useState(false);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [isClicked, setIsClicked] = useState(false);
-
-    return (
-      <BackgroundWrapper
-        backgroundImage={backgrounds.purpleGradient}
-        height="65vh"
-        overlayOpacity={0.15}
-      >
-        <AtomixGlass
-          {...args}
-          onClick={() => {
-            setIsActive(!isActive);
-            setIsClicked(!isClicked);
-          }}
-        >
-          <div style={{ padding: '30px', textAlign: 'center', minWidth: '300px' }}>
-            <h3 style={{ margin: '0 0 16px 0', fontSize: '22px', fontWeight: 500 }}>
-              Interactive Glass
-            </h3>
-            <p style={{ margin: '0 0 20px 0', fontSize: '16px', lineHeight: 1.5 }}>
-              {isClicked
-                ? 'Thanks for clicking!'
-                : 'Hover and click to see the interactive effects in action.'}
-            </p>
-            <button
-              className={`c-btn c-btn--${isClicked ? 'success' : 'primary'}`}
-              style={{ transition: 'all 0.3s ease' }}
-            >
-              {isClicked ? 'Clicked!' : 'Click Me'}
-            </button>
-          </div>
-        </AtomixGlass>
-      </BackgroundWrapper>
-    );
-  },
-  args: {
-    displacementScale: 15,
-    blurAmount: 0.0625,
-    saturation: 200,
-    aberrationIntensity: 3,
-    elasticity: 0.2,
-    cornerRadius: 15,
-    padding: '0 0',
-    overLight: false,
-    mode: 'standard',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'An interactive example that demonstrates the hover and click effects of the AtomixGlass component. Try hovering and clicking to see the glass react to user interactions.',
-      },
-    },
-  },
-};
-
 /**
  * Mode Showcase - Demonstrates the visual differences between the various modes
  *
@@ -592,7 +517,7 @@ export const Interactive: Story = {
  * optimized settings for each mode to highlight their unique characteristics.
  */
 /**
- * ModeShowcase Story
+ * Modes Story
  *
  * This story demonstrates the different modes available in the AtomixGlass component.
  * Each mode provides a unique visual effect with different displacement patterns,
@@ -605,7 +530,7 @@ export const Interactive: Story = {
  * - prominent: Enhanced displacement with stronger edge effects
  * - shader: Advanced shader-based displacement for maximum visual impact
  */
-export const ModeShowcase: Story = {
+export const Modes: Story = {
   parameters: {
     docs: {
       description: {
@@ -671,7 +596,6 @@ export const ModeShowcase: Story = {
     return (
       <BackgroundWrapper
         backgroundImage="https://plus.unsplash.com/premium_photo-1728613098996-af5b4ee51be8?q=80&w=3269&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        height="95vh"
         overlay={true}
       >
         <div>
@@ -820,804 +744,514 @@ export const ModeShowcase: Story = {
 };
 
 /**
- * Shader Variants Showcase - Demonstrates the new Apple-style shader variants
+ * Playground - Enhanced playground with presets and code export
  *
- * This story showcases all available shader variants with their unique characteristics.
- * Each variant provides a different visual effect optimized for specific use cases.
+ * Professional-grade interactive configuration tool with preset management,
+ * code generation, and performance monitoring.
  */
-export const ShaderVariantsShowcase: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Showcases the new Apple-style shader variants available in shader mode. Each variant provides unique visual characteristics with different distortion patterns, organic flow, and animation effects.',
-      },
-    },
-  },
+export const Playground: Story = {
   render: () => {
-    const [activeVariant, setActiveVariant] = useState<string | null>(null);
-    const variants = [
-      'liquidGlass',
-      'appleFluid',
-      'premiumGlass',
-      'liquidMetal',
-      'basiBasi',
-    ] as const;
-
-    const variantSettings = {
-      liquidGlass: {
-        displacementScale: 25,
-        description:
-          'Enhanced liquid glass with time-based animations, multi-layered organic distortion, and chromatic aberration',
-        features: [
-          'Time-based animation',
-          'Multi-layer distortion',
-          'Chromatic aberration',
-          'Depth effects',
-        ],
-        color: '#ffffff',
-        icon: '💧',
-      },
-      appleFluid: {
-        displacementScale: 25,
-        description: 'Premium fluid glass with vortex effects and high-quality organic distortion',
-        features: ['Vortex effects', '5-octave noise', 'Fluid dynamics', 'Mouse-driven flow'],
-        color: '#e6f7ff',
-        icon: '🌊',
-      },
-      premiumGlass: {
-        displacementScale: 25,
-        description: 'High-end glass with advanced refraction and multi-layer depth effects',
-        features: ['Advanced refraction', 'Multi-layer depth', 'Radial distortion', 'Edge-aware'],
-        color: '#f0f8ff',
-        icon: '💎',
-      },
-      liquidMetal: {
-        displacementScale: 25,
-        description: 'Metallic liquid effect with shimmer and wave patterns',
-        features: [
-          'Metallic waves',
-          'Shimmer effect',
-          '4-octave noise',
-          'High-frequency animation',
-        ],
-        color: '#fff5e6',
-        icon: '✨',
-      },
-      basiBasi: {
-        displacementScale: 25,
-        description:
-          'Expert premium glass with caustics, spectral dispersion, 7-layer parallax depth, and volumetric scattering',
-        features: [
-          'Caustic patterns',
-          'Spectral dispersion',
-          '7-layer parallax',
-          'Volumetric scattering',
-          'Micro-surface detail',
-          'Advanced turbulence',
-        ],
-        color: '#fff',
-        icon: '🔮',
-      },
-    };
-
-    return (
-      <BackgroundWrapper
-        backgroundImage="https://images.unsplash.com/photo-1530569427831-a0a4b8a0d206?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        height="95vh"
-      >
-        <div>
-          <div
-            style={{
-              padding: '20px 0',
-              textAlign: 'center',
-              marginBottom: '30px',
-            }}
-          >
-            <h2
-              style={{
-                margin: '0 0 10px 0',
-                fontSize: '36px',
-                fontWeight: 600,
-                color: '#ffffff',
-                textShadow: '0 2px 8px rgba(0,0,0,0.3)',
-              }}
-            >
-              Apple-Style Shader Variants
-            </h2>
-            <p
-              style={{
-                fontSize: '18px',
-                maxWidth: '600px',
-                margin: '0 auto',
-                color: '#ffffff',
-                textShadow: '0 1px 3px rgba(0,0,0,0.3)',
-              }}
-            >
-              Experience premium liquid glass effects with advanced shader technology
-            </p>
-          </div>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '24px',
-              maxWidth: '1200px',
-              margin: '0 auto',
-              padding: '0 20px',
-            }}
-          >
-            {variants.map(variant => {
-              const settings = variantSettings[variant];
-              const isActive = activeVariant === variant;
-
-              return (
-                <AtomixGlass
-                  key={variant}
-                  mode="shader"
-                  shaderVariant={variant}
-                  displacementScale={settings.displacementScale}
-                  blurAmount={1.5}
-                  saturation={150}
-                  aberrationIntensity={2}
-                  elasticity={0.2}
-                  cornerRadius={24}
-                  onClick={() => setActiveVariant(variant)}
-                  overLight={false}
-                >
-                  <div
-                    style={{
-                      padding: '30px',
-                      textAlign: 'center',
-                      minHeight: '320px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      textShadow: '1px 2px 6px rgba(0,0,0,0.7)',
-                    }}
-                  >
-                    <div>
-                      <div
-                        style={{
-                          fontSize: '48px',
-                          marginBottom: '16px',
-                        }}
-                      >
-                        {settings.icon}
-                      </div>
-                      <h3
-                        style={{
-                          margin: '0 0 12px 0',
-                          fontSize: '24px',
-                          fontWeight: 600,
-                          color: settings.color,
-                        }}
-                      >
-                        {variant.replace(/([A-Z])/g, ' $1').trim()}
-                      </h3>
-                      <p
-                        style={{
-                          margin: '0 0 20px 0',
-                          fontSize: '14px',
-                          lineHeight: 1.6,
-                          color: settings.color,
-                          opacity: 0.9,
-                        }}
-                      >
-                        {settings.description}
-                      </p>
-                    </div>
-
-                    <div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '8px',
-                          marginBottom: '16px',
-                        }}
-                      >
-                        {settings.features.map((feature, idx) => (
-                          <div
-                            key={idx}
-                            style={{
-                              fontSize: '12px',
-                              padding: '6px 12px',
-                              borderRadius: '8px',
-                              background: 'rgba(255,255,255,0.15)',
-                              backdropFilter: 'blur(4px)',
-                              color: settings.color,
-                            }}
-                          >
-                            ✓ {feature}
-                          </div>
-                        ))}
-                      </div>
-
-                      <div
-                        style={{
-                          fontSize: '11px',
-                          padding: '8px',
-                          borderRadius: '8px',
-                          background: 'rgba(0,0,0,0.2)',
-                          backdropFilter: 'blur(2px)',
-                          color: settings.color,
-                        }}
-                      >
-                        Displacement: {settings.displacementScale} | Mode: shader
-                      </div>
-                    </div>
-                  </div>
-                </AtomixGlass>
-              );
-            })}
-          </div>
-
-          <div
-            style={{
-              marginTop: '40px',
-              padding: '24px',
-              maxWidth: '800px',
-              margin: '40px auto 0',
-              textAlign: 'center',
-            }}
-          >
-            <AtomixGlass
-              mode="shader"
-              shaderVariant="liquidGlass"
-              displacementScale={20}
-              blurAmount={2}
-              saturation={140}
-              aberrationIntensity={1.5}
-              cornerRadius={16}
-              elasticity={0}
-            >
-              <div style={{ padding: '20px' }}>
-                <h4 style={{ margin: '0 0 12px 0', fontSize: '18px', color: '#ffffff' }}>
-                  💡 Usage Tip
-                </h4>
-                <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.6, color: '#ffffff' }}>
-                  Set{' '}
-                  <code
-                    style={{
-                      background: 'rgba(255,255,255,0.2)',
-                      padding: '2px 6px',
-                      borderRadius: '4px',
-                    }}
-                  >
-                    mode="shader"
-                  </code>{' '}
-                  and use{' '}
-                  <code
-                    style={{
-                      background: 'rgba(255,255,255,0.2)',
-                      padding: '2px 6px',
-                      borderRadius: '4px',
-                    }}
-                  >
-                    shaderVariant
-                  </code>{' '}
-                  prop to choose between 'liquidGlass', 'appleFluid', 'premiumGlass', or
-                  'liquidMetal'. Each variant includes time-based animations for a living glass
-                  effect.
-                </p>
-              </div>
-            </AtomixGlass>
-          </div>
-        </div>
-      </BackgroundWrapper>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [settings, setSettings] = useState({
+      displacementScale: 120,
+      blurAmount: 0,
+      saturation: 140,
+      aberrationIntensity: 2,
+      elasticity: 0.15,
+      cornerRadius: 20,
+      overLight: false,
+    });
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [selectedMode, setSelectedMode] = useState<'standard' | 'polar' | 'prominent' | 'shader'>(
+      'standard'
     );
-  },
-};
-
-/**
- * Apple-inspired UI example showcasing the liquid glass effect
- *
- * This story demonstrates how to create Apple-like interfaces using the AtomixGlass component,
- * mimicking the frosted glass effect seen in macOS and iOS with realistic design elements
- * and interactions that closely resemble Apple's design language.
- */
-export const AppleInspiredUI: Story = {
-  render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [activeTab, setActiveTab] = useState('home');
+    const [showCode, setShowCode] = useState(false);
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [currentTime, setCurrentTime] = useState('');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [hoverDockItem, setHoverDockItem] = useState<number | null>(null);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [notificationCount, setNotificationCount] = useState(3);
+    const [copiedCode, setCopiedCode] = useState(false);
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      // Update time every minute
-      const updateTime = () => {
-        const now = new Date();
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        const formattedHours = hours % 12 || 12;
-        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-        setCurrentTime(`${formattedHours}:${formattedMinutes} ${ampm}`);
-      };
-
-      updateTime(); // Initial call
-      const interval = setInterval(updateTime, 60000);
-
-      return () => clearInterval(interval);
-    }, []);
-
-    const handleTabChange = (tab: string) => {
-      setActiveTab(tab);
+    const presets = {
+      minimal: {
+        name: 'Minimal',
+        icon: '🌿',
+        settings: {
+          displacementScale: 40,
+          blurAmount: 0,
+          saturation: 110,
+          aberrationIntensity: 0.5,
+          elasticity: 0.05,
+          cornerRadius: 12,
+          overLight: false,
+        },
+        mode: 'standard' as const,
+      },
+      standard: {
+        name: 'Standard',
+        icon: '⚖️',
+        settings: {
+          displacementScale: 120,
+          blurAmount: 0,
+          saturation: 140,
+          aberrationIntensity: 2,
+          elasticity: 0.15,
+          cornerRadius: 20,
+          overLight: false,
+        },
+        mode: 'standard' as const,
+      },
+      premium: {
+        name: 'Premium',
+        icon: '💎',
+        settings: {
+          displacementScale: 180,
+          blurAmount: 0,
+          saturation: 170,
+          aberrationIntensity: 3.5,
+          elasticity: 0.25,
+          cornerRadius: 28,
+          overLight: false,
+        },
+        mode: 'prominent' as const,
+      },
+      dramatic: {
+        name: 'Dramatic',
+        icon: '🎭',
+        settings: {
+          displacementScale: 200,
+          blurAmount: 0,
+          saturation: 200,
+          aberrationIntensity: 5,
+          elasticity: 0.35,
+          cornerRadius: 32,
+          overLight: false,
+        },
+        mode: 'shader' as const,
+      },
     };
 
-    // Apple-style app icons with gradient backgrounds
-    const appIcons = [
-      { name: 'Photos', color: 'linear-gradient(135deg, #FF9500, #FF2D55)', symbol: '📷' },
-      { name: 'Music', color: 'linear-gradient(135deg, #FF2D55, #AF52DE)', symbol: '🎵' },
-      { name: 'Mail', color: 'linear-gradient(135deg, #5AC8FA, #007AFF)', symbol: '✉️' },
-      { name: 'Maps', color: 'linear-gradient(135deg, #34C759, #5AC8FA)', symbol: '🗺️' },
-      { name: 'Weather', color: 'linear-gradient(135deg, #007AFF, #5AC8FA)', symbol: '☀️' },
-      { name: 'Notes', color: 'linear-gradient(135deg, #FFCC00, #FF9500)', symbol: '📝' },
-    ];
+    const applyPreset = (presetKey: keyof typeof presets) => {
+      const preset = presets[presetKey];
+      setSettings(preset.settings);
+      setSelectedMode(preset.mode);
+    };
 
-    // Dock apps with more realistic icons
-    const dockApps = [
-      { name: 'Finder', symbol: '🔍', color: 'linear-gradient(135deg, #1E88E5, #64B5F6)' },
-      { name: 'Safari', symbol: '🧭', color: 'linear-gradient(135deg, #039BE5, #81D4FA)' },
-      { name: 'Messages', symbol: '💬', color: 'linear-gradient(135deg, #43A047, #81C784)' },
-      { name: 'Calendar', symbol: '📅', color: 'linear-gradient(135deg, #E53935, #EF5350)' },
-      { name: 'Photos', symbol: '🖼️', color: 'linear-gradient(135deg, #8E24AA, #BA68C8)' },
-    ];
+    const generateCode = () => {
+      return `<AtomixGlass
+  displacementScale={${settings.displacementScale}}
+  blurAmount={${settings.blurAmount}}
+  saturation={${settings.saturation}}
+  aberrationIntensity={${settings.aberrationIntensity}}
+  elasticity={${settings.elasticity}}
+  cornerRadius={${settings.cornerRadius}}
+  overLight={${settings.overLight}}
+  mode="${selectedMode}"
+>
+  <div className="your-content">
+    {/* Your content here */}
+  </div>
+</AtomixGlass>`;
+    };
+
+    const copyCode = () => {
+      navigator.clipboard.writeText(generateCode());
+      setCopiedCode(true);
+      setTimeout(() => setCopiedCode(false), 2000);
+    };
+
+    const exportConfig = () => {
+      const config = { ...settings, mode: selectedMode };
+      const dataStr = JSON.stringify(config, null, 2);
+      const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+      const exportFileDefaultName = 'atomix-glass-config.json';
+
+      const linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click();
+    };
+
+    // Calculate performance score
+    const performanceScore = Math.max(
+      0,
+      Math.min(
+        100,
+        100 -
+          settings.displacementScale * 0.15 -
+          Math.abs(settings.blurAmount) * 20 -
+          settings.aberrationIntensity * 3 -
+          settings.elasticity * 20
+      )
+    );
+
+    const getPerformanceColor = () => {
+      if (performanceScore >= 80) return '#10B981';
+      if (performanceScore >= 60) return '#F59E0B';
+      return '#EF4444';
+    };
+
+    const getPerformanceLabel = () => {
+      if (performanceScore >= 80) return 'Excellent';
+      if (performanceScore >= 60) return 'Good';
+      if (performanceScore >= 40) return 'Fair';
+      return 'Heavy';
+    };
 
     return (
-      <BackgroundWrapper
-        backgroundImage={'https://images.pexels.com/photos/18772443/pexels-photo-18772443.jpeg'}
-        height="90vh"
-        style={{ maxWidth: '90vw', padding: '10px' }}
-      >
-        {/* Main content area */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            height: '90vh',
-            width: '100%',
-          }}
-        >
-          {/* Top menu bar - macOS style with improved design */}
-
-          <AtomixGlass
-            displacementScale={70}
-            blurAmount={0}
-            saturation={150}
-            cornerRadius={8}
-            mode="shader"
-            shaderVariant='premiumGlass'
-            elasticity={0}
+      <BackgroundWrapper backgroundIndex={1} height="100vh" style={{ overflow: 'hidden' }}>
+        <div style={{ display: 'flex', height: '100vh' }}>
+          {/* Control Panel */}
+          <div
+            style={{
+              width: '420px',
+              height: '100vh',
+              overflowY: 'auto',
+              background: 'rgba(0, 0, 0, 0.9)',
+              backdropFilter: 'blur(20px)',
+              padding: '2rem',
+              borderRight: '1px solid rgba(255,255,255,0.1)',
+            }}
           >
+            <div className="u-mb-8">
+              <h2 className="u-mb-2 u-text-white u-fw-bold" style={{ fontSize: '2rem' }}>
+                Advanced Playground
+              </h2>
+              <p className="u-text-white u-opacity-70 u-fs-sm">
+                Fine-tune every parameter with live preview
+              </p>
+            </div>
+
+            {/* Performance Indicator */}
             <div
+              className="u-mb-6 u-p-4 u-rounded"
               style={{
-                padding: '10px 16px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '77vw',
+                background: 'rgba(255,255,255,0.05)',
+                border: `2px solid ${getPerformanceColor()}`,
               }}
             >
-              {/* Apple logo and app menu */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '20px', color: '#fff' }}>
-                <span
-                  style={{
-                    fontSize: '20px',
-                    fontWeight: 600,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                  }}
-                >
-                  <span style={{ fontSize: '22px' }}>🍎</span>
-                  <span>Atomix</span>
+              <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-2">
+                <span className="u-text-white u-fw-semibold">Performance Score</span>
+                <span className="u-fw-bold" style={{ color: getPerformanceColor() }}>
+                  {Math.round(performanceScore)}/100
                 </span>
-                <div style={{ display: 'flex', gap: '16px' }}>
-                  {['Finder', 'File', 'Edit', 'View', 'Window', 'Help'].map(tab => (
-                    <button
-                      key={tab}
-                      onClick={() => handleTabChange(tab.toLowerCase())}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        padding: '4px 8px',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        backgroundColor:
-                          activeTab === tab.toLowerCase()
-                            ? 'rgba(255,255,255,0.15)'
-                            : 'transparent',
-                        transition: 'all 0.2s ease',
-                        fontSize: '13px',
-                        fontWeight: activeTab === tab.toLowerCase() ? 600 : 400,
-                        color: 'inherit',
-                      }}
-                    >
-                      {tab}
-                    </button>
-                  ))}
-                </div>
               </div>
-
-              {/* Status icons */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', color: '#fff' }}>
-                {/* Battery indicator */}
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    fontSize: '12px',
-                    gap: '4px',
-                  }}
-                >
-                  <span
-                    style={{
-                      display: 'inline-block',
-                      width: '20px',
-                      height: '10px',
-                      border: '1px solid currentColor',
-                      borderRadius: '2px',
-                      position: 'relative',
-                      marginRight: '2px',
-                    }}
-                  >
-                    <span
-                      style={{
-                        position: 'absolute',
-                        left: '1px',
-                        top: '1px',
-                        bottom: '1px',
-                        width: '12px',
-                        backgroundColor: 'currentColor',
-                        borderRadius: '1px',
-                      }}
-                    ></span>
-                    <span
-                      style={{
-                        position: 'absolute',
-                        right: '-4px',
-                        top: '2px',
-                        width: '2px',
-                        height: '6px',
-                        backgroundColor: 'currentColor',
-                        borderRadius: '0 1px 1px 0',
-                      }}
-                    ></span>
-                  </span>
-                  <span>75%</span>
-                </div>
-
-                {/* WiFi icon */}
-                <div style={{ fontSize: '14px' }}>📶</div>
-
-                {/* Time */}
-                <span style={{ fontSize: '13px', fontWeight: 500 }}>
-                  {currentTime || '10:30 AM'}
-                </span>
-
-                {/* User profile */}
-                <div
-                  style={{
-                    position: 'relative',
-                    width: '26px',
-                    height: '26px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #64B5F6, #1976D2)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    color: 'white',
-                    cursor: 'pointer',
-                    boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-                  }}
-                >
-                  A
-                  {notificationCount > 0 && (
-                    <span
-                      style={{
-                        position: 'absolute',
-                        top: '-4px',
-                        right: '-4px',
-                        width: '14px',
-                        height: '14px',
-                        borderRadius: '50%',
-                        backgroundColor: '#FF3B30',
-                        color: 'white',
-                        fontSize: '10px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        border: '1px solid rgba(255,255,255,0.8)',
-                      }}
-                    >
-                      {notificationCount}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </AtomixGlass>
-          {/* Center widget - iOS style with improved design */}
-          <AtomixGlass
-            displacementScale={50}
-            blurAmount={2}
-            shaderVariant='premiumGlass'
-            cornerRadius={24}
-            mode="shader"
-            elasticity={0}
-          >
-            <div style={{ padding: '30px' }}>
-              <h2
-                style={{
-                  marginTop: 0,
-                  fontSize: '26px',
-                  fontWeight: 600,
-                  marginBottom: '24px',
-                  textAlign: 'center',
-                  background: 'linear-gradient(135deg, #007AFF, #5AC8FA)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                Welcome to Atomix OS
-              </h2>
-
-              {/* App grid with improved styling */}
               <div
                 style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(3, 1fr)',
-                  gap: '20px',
-                  marginBottom: '28px',
+                  height: '8px',
+                  background: 'rgba(255,255,255,0.1)',
+                  borderRadius: '4px',
+                  overflow: 'hidden',
                 }}
               >
-                {appIcons.map(app => (
-                  <div
-                    key={app.name}
+                <div
+                  style={{
+                    height: '100%',
+                    width: `${performanceScore}%`,
+                    background: getPerformanceColor(),
+                    transition: 'all 0.3s',
+                  }}
+                />
+              </div>
+              <div
+                className="u-mt-2 u-text-center u-fs-xs"
+                style={{ color: getPerformanceColor() }}
+              >
+                {getPerformanceLabel()} -{' '}
+                {performanceScore >= 80
+                  ? 'Suitable for all devices'
+                  : performanceScore >= 60
+                    ? 'Good for modern devices'
+                    : 'Best for high-end hardware'}
+              </div>
+            </div>
+
+            {/* Quick Presets */}
+            <div className="u-mb-6">
+              <label className="u-d-block u-mb-3 u-text-white u-fw-semibold">Quick Presets</label>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                {Object.entries(presets).map(([key, preset]) => (
+                  <button
+                    key={key}
+                    onClick={() => applyPreset(key as keyof typeof presets)}
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: '8px',
+                      padding: '12px',
+                      background: 'rgba(255,255,255,0.1)',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      borderRadius: '12px',
+                      color: 'white',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      textAlign: 'center',
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
                     }}
                   >
-                    <div
-                      style={{
-                        width: '56px',
-                        height: '56px',
-                        borderRadius: '14px',
-                        background: app.color,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '24px',
-                        boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
-                        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                        cursor: 'pointer',
-                        transform: 'translateY(0)',
-                        // Note: React inline styles don't support pseudo-classes like :hover
-                        // For hover effects, use CSS classes or onMouseEnter/onMouseLeave handlers
-                      }}
-                    >
-                      {app.symbol}
-                    </div>
-                    <span
-                      style={{
-                        fontSize: '13px',
-                        fontWeight: 500,
-                        opacity: 0.9,
-                      }}
-                    >
-                      {app.name}
-                    </span>
-                  </div>
+                    <div style={{ fontSize: '1.5rem', marginBottom: '4px' }}>{preset.icon}</div>
+                    <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{preset.name}</div>
+                  </button>
                 ))}
               </div>
+            </div>
 
-              {/* Notification card with improved design */}
-              <AtomixGlass
-                displacementScale={12}
-                blurAmount={5}
-                saturation={130}
-                aberrationIntensity={1}
-                cornerRadius={16}
-                elasticity={0}
-                mode="shader"
+            {/* Controls */}
+            {Object.entries(settings).map(([key, value]) => (
+              <div key={key} className="u-mb-5">
+                <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-2">
+                  <label
+                    className="u-text-white u-fs-sm u-fw-medium"
+                    style={{ textTransform: 'capitalize' }}
+                  >
+                    {key.replace(/([A-Z])/g, ' $1').trim()}
+                  </label>
+                  <span className="u-text-white u-opacity-80 u-fs-sm u-fw-semibold">
+                    {typeof value === 'boolean'
+                      ? value
+                        ? 'On'
+                        : 'Off'
+                      : typeof value === 'number'
+                        ? value.toFixed(
+                            key.includes('Amount') ||
+                              key.includes('elasticity') ||
+                              key.includes('aberration')
+                              ? 2
+                              : 0
+                          )
+                        : value}
+                  </span>
+                </div>
+                {typeof value === 'boolean' ? (
+                  <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={value}
+                      onChange={e => setSettings(prev => ({ ...prev, [key]: e.target.checked }))}
+                      style={{ width: '1.25rem', height: '1.25rem', cursor: 'pointer' }}
+                    />
+                  </label>
+                ) : (
+                  <input
+                    type="range"
+                    min={key === 'blurAmount' ? -1 : 0}
+                    max={
+                      key === 'displacementScale'
+                        ? 200
+                        : key === 'saturation'
+                          ? 300
+                          : key === 'aberrationIntensity'
+                            ? 10
+                            : key === 'cornerRadius'
+                              ? 100
+                              : 1
+                    }
+                    step={
+                      key === 'aberrationIntensity' || key === 'elasticity' || key === 'blurAmount'
+                        ? 0.01
+                        : 1
+                    }
+                    value={value as number}
+                    onChange={e =>
+                      setSettings(prev => ({ ...prev, [key]: parseFloat(e.target.value) }))
+                    }
+                    style={{ width: '100%', height: '6px', accentColor: '#7AFFD7' }}
+                  />
+                )}
+              </div>
+            ))}
+
+            {/* Mode Selector */}
+            <div className="u-mb-6">
+              <label className="u-d-block u-mb-2 u-text-white u-fw-semibold">Glass Mode</label>
+              <select
+                value={selectedMode}
+                onChange={e => setSelectedMode(e.target.value as any)}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  background: 'rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: '8px',
+                  color: 'white',
+                  fontSize: '1rem',
+                }}
               >
-                <div style={{ padding: '18px', fontSize: '14px' }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      marginBottom: '12px',
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        fontWeight: 600,
-                      }}
-                    >
-                      <span style={{ fontSize: '16px' }}>📣</span>
-                      <span>Notifications</span>
-                    </div>
-                    <span
-                      style={{
-                        fontSize: '12px',
-                        padding: '2px 8px',
-                        borderRadius: '10px',
-                        background: 'rgba(255,45,85,0.2)',
-                        color: '#FF2D55',
-                        fontWeight: 600,
-                      }}
-                    >
-                      {notificationCount} New
-                    </span>
-                  </div>
+                <option value="standard" style={{ background: '#1a1a1a' }}>
+                  Standard
+                </option>
+                <option value="polar" style={{ background: '#1a1a1a' }}>
+                  Polar
+                </option>
+                <option value="prominent" style={{ background: '#1a1a1a' }}>
+                  Prominent
+                </option>
+                <option value="shader" style={{ background: '#1a1a1a' }}>
+                  Shader
+                </option>
+              </select>
+            </div>
 
-                  <div
-                    style={{
-                      padding: '10px 0',
-                      borderTop: '1px solid rgba(255,255,255,0.1)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <div>
-                      <div style={{ fontWeight: 500, marginBottom: '4px' }}>
-                        New Atomix Glass Component
-                      </div>
-                      <div style={{ fontSize: '12px', opacity: 0.8 }}>
-                        Experience the next generation of UI effects
-                      </div>
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <Button
+                variant="primary"
+                size="md"
+                onClick={() => setShowCode(!showCode)}
+                style={{ width: '100%' }}
+              >
+                {showCode ? '👁️ Hide Code' : '💻 Show Code'}
+              </Button>
+              <Button
+                variant="outline-light"
+                size="md"
+                onClick={copyCode}
+                style={{ width: '100%' }}
+              >
+                {copiedCode ? '✓ Copied!' : '📋 Copy Code'}
+              </Button>
+              <Button
+                variant="outline-light"
+                size="md"
+                onClick={exportConfig}
+                style={{ width: '100%' }}
+              >
+                💾 Export Config
+              </Button>
+              <Button
+                variant="ghost"
+                size="md"
+                onClick={() => {
+                  setSettings({
+                    displacementScale: 120,
+                    blurAmount: 0,
+                    saturation: 140,
+                    aberrationIntensity: 2,
+                    elasticity: 0.15,
+                    cornerRadius: 20,
+                    overLight: false,
+                  });
+                  setSelectedMode('standard');
+                }}
+                style={{ width: '100%' }}
+              >
+                🔄 Reset
+              </Button>
+            </div>
+          </div>
+
+          {/* Preview Area */}
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '3rem',
+              position: 'relative',
+            }}
+          >
+            {showCode ? (
+              <div style={{ width: '100%', maxWidth: '700px' }}>
+                <AtomixGlass
+                  displacementScale={80}
+                  aberrationIntensity={1}
+                  cornerRadius={16}
+                  saturation={120}
+                >
+                  <div style={{ padding: '2rem' }}>
+                    <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-4">
+                      <h3 className="u-text-white u-fw-semibold" style={{ fontSize: '1.5rem' }}>
+                        Generated Code
+                      </h3>
+                      <Button variant="primary" size="sm" onClick={copyCode}>
+                        {copiedCode ? '✓ Copied' : 'Copy'}
+                      </Button>
                     </div>
-                    <div
+                    <pre
                       style={{
-                        width: '36px',
-                        height: '36px',
+                        background: 'rgba(0,0,0,0.5)',
+                        padding: '1.5rem',
                         borderRadius: '8px',
-                        background: 'linear-gradient(135deg, #007AFF, #5AC8FA)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '18px',
+                        overflow: 'auto',
+                        maxHeight: '500px',
+                        color: '#7AFFD7',
+                        fontSize: '0.875rem',
+                        lineHeight: 1.6,
                       }}
                     >
-                      ✨
+                      <code>{generateCode()}</code>
+                    </pre>
+                  </div>
+                </AtomixGlass>
+              </div>
+            ) : (
+              <AtomixGlass
+                {...settings}
+                mode={selectedMode}
+                style={{ maxWidth: '600px', width: '100%' }}
+              >
+                <div style={{ padding: '3rem', textAlign: 'center' }}>
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '8px 20px',
+                      borderRadius: '24px',
+                      background: 'rgba(122, 255, 215, 0.2)',
+                      color: '#7AFFD7',
+                      fontSize: '0.875rem',
+                      fontWeight: 600,
+                      marginBottom: '1.5rem',
+                    }}
+                  >
+                    ✨ LIVE PREVIEW
+                  </div>
+                  <h2 className="u-mb-4 u-text-white u-fw-bold" style={{ fontSize: '2.5rem' }}>
+                    AtomixGlass
+                  </h2>
+                  <p
+                    className="u-mb-6 u-opacity-90"
+                    style={{ fontSize: '1.125rem', lineHeight: 1.6 }}
+                  >
+                    Adjust the controls on the left to see real-time changes. Each parameter affects
+                    the visual appearance and performance characteristics of the glass effect.
+                  </p>
+                  <div
+                    className="u-d-flex u-justify-content-center u-flex-wrap"
+                    style={{ gap: '1rem' }}
+                  >
+                    <Button variant="primary" size="lg">
+                      Primary Action
+                    </Button>
+                    <Button variant="outline-light" size="lg">
+                      Secondary
+                    </Button>
+                  </div>
+                  <div
+                    className="u-mt-8 u-p-4 u-rounded"
+                    style={{ background: 'rgba(255,255,255,0.1)' }}
+                  >
+                    <div className="o-grid">
+                      <div className="o-grid__row">
+                        <div className="o-grid__col o-grid__col--6">
+                          <div className="u-fs-xs u-opacity-80">Mode</div>
+                          <div className="u-fw-bold">{selectedMode}</div>
+                        </div>
+                        <div className="o-grid__col o-grid__col--6">
+                          <div className="u-fs-xs u-opacity-80">Displacement</div>
+                          <div className="u-fw-bold">{settings.displacementScale}</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </AtomixGlass>
-            </div>
-          </AtomixGlass>
-
-          {/* Bottom dock - macOS style with improved design and hover effects */}
-          <AtomixGlass
-            displacementScale={15}
-            blurAmount={2}
-            saturation={140}
-            aberrationIntensity={1.2}
-            cornerRadius={24}
-            mode="polar"
-            style={{
-              maxWidth: '600px',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '16px',
-                padding: '6px',
-              }}
-            >
-              {dockApps.map((app, index) => (
-                <div
-                  key={index}
-                  style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '12px',
-                    background: app.color,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '20px',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                    transform:
-                      hoverDockItem === index
-                        ? 'translateY(-10px) scale(1.1)'
-                        : 'translateY(0) scale(1)',
-                    boxShadow:
-                      hoverDockItem === index
-                        ? '0 10px 20px rgba(0,0,0,0.2)'
-                        : '0 4px 10px rgba(0,0,0,0.1)',
-                    position: 'relative',
-                  }}
-                  onMouseEnter={() => setHoverDockItem(index)}
-                  onMouseLeave={() => setHoverDockItem(null)}
-                >
-                  {app.symbol}
-                  {/* App name tooltip on hover */}
-                  {hoverDockItem === index && (
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: '-30px',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        background: 'rgba(0,0,0,0.7)',
-                        color: 'white',
-                        padding: '4px 10px',
-                        borderRadius: '6px',
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {app.name}
-                    </div>
-                  )}
-                </div>
-              ))}
-
-              {/* Separator line */}
-              <div
-                style={{
-                  width: '1px',
-                  height: '30px',
-                  background: 'rgba(255,255,255,0.3)',
-                  margin: '0 4px',
-                }}
-              ></div>
-
-              {/* Trash icon */}
-              <div
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '12px',
-                  background: 'rgba(255,255,255,0.2)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '20px',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                  transform:
-                    hoverDockItem === 999
-                      ? 'translateY(-10px) scale(1.1)'
-                      : 'translateY(0) scale(1)',
-                  boxShadow:
-                    hoverDockItem === 999
-                      ? '0 10px 20px rgba(0,0,0,0.2)'
-                      : '0 4px 10px rgba(0,0,0,0.1)',
-                }}
-                onMouseEnter={() => setHoverDockItem(999)}
-                onMouseLeave={() => setHoverDockItem(null)}
-              >
-                🗑️
-              </div>
-            </div>
-          </AtomixGlass>
+            )}
+          </div>
         </div>
       </BackgroundWrapper>
     );
@@ -1626,1731 +1260,495 @@ export const AppleInspiredUI: Story = {
     docs: {
       description: {
         story:
-          'An enhanced Apple-inspired UI example showcasing how to create macOS and iOS-like interfaces using the AtomixGlass component. This example includes a realistic menu bar with status icons, app grid with gradient icons, notification center, and an interactive dock with hover effects - all with the signature Apple frosted glass aesthetic.',
+          'Advanced interactive playground with preset configurations, code generation, configuration export, and real-time performance monitoring. Perfect for fine-tuning AtomixGlass for your specific use case.',
       },
     },
+    layout: 'fullscreen',
   },
 };
 
-// Hero section example
-export const HeroExample: Story = {
-  render: () => (
-    <BackgroundWrapper backgroundImage={backgroundImages[0]} height="90vh">
-      <div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            textAlign: 'center',
-          }}
-        >
-          <AtomixGlass
-            displacementScale={45}
-            blurAmount={0.08}
-            saturation={170}
-            aberrationIntensity={2.5}
-            elasticity={0.18}
-            cornerRadius={30}
-            mode="standard"
-            style={{ maxWidth: '800px' }}
-          >
-            <div style={{ padding: '40px 60px', color: 'white' }}>
-              <h1 style={{ marginTop: 0, fontSize: '2.5rem' }}>Modern Glass UI</h1>
-              <p style={{ fontSize: '1.2rem', marginBottom: '30px' }}>
-                Create stunning interfaces with the AtomixGlass component. Perfect for modern, sleek
-                designs that stand out.
-              </p>
-              <div
-                style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}
-              >
-                <button className="c-btn c-btn--primary">Get Started</button>
-                <button className="c-btn c-btn--outline-light">Learn More</button>
-              </div>
-            </div>
-          </AtomixGlass>
-        </div>
-      </div>
-    </BackgroundWrapper>
-  ),
-};
 
+/**
+ * Performance Optimization Dashboard
+ *
+ * Demonstrates enterprise-grade performance optimization techniques with side-by-side
+ * comparisons of different configuration strategies and their impact on rendering efficiency.
+ */
 export const PerformanceOptimization: Story = {
   parameters: {
     docs: {
       description: {
         story:
-          'This example demonstrates performance optimization techniques for the AtomixGlass component. It shows how different settings affect performance and provides best practices for optimal usage.',
+          'A comprehensive performance optimization guide showcasing three distinct configuration profiles: High Performance (mobile-optimized), Balanced (desktop standard), and Premium (high-end hardware). Each profile demonstrates the trade-offs between visual fidelity and rendering performance.',
       },
     },
   },
   render: () => (
-    <BackgroundWrapper backgroundIndex={3} overlay={true}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
-        <h2 style={{ color: '#fff', marginBottom: '30px', textAlign: 'center' }}>
-          Performance Optimization Guide
-        </h2>
-
-        <div
-          style={{
-            marginBottom: '40px',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-            padding: '20px',
-            borderRadius: '10px',
-          }}
-        >
-          <h3 style={{ color: '#fff', marginBottom: '15px' }}>Best Practices</h3>
-          <ul style={{ color: '#fff', lineHeight: '1.6' }}>
-            <li>
-              <strong>Limit the number of instances</strong> - Use AtomixGlass components sparingly
-              on a single page
-            </li>
-            <li>
-              <strong>Optimize size</strong> - Smaller glass components perform better than
-              full-screen ones
-            </li>
-            <li>
-              <strong>Reduce complexity for mobile</strong> - Use simpler settings on mobile devices
-            </li>
-            <li>
-              <strong>Disable effects when not needed</strong> - Turn off hover effects for
-              non-interactive elements
-            </li>
-            <li>
-              <strong>Use appropriate mode</strong> - Choose the right mode based on performance
-              requirements
-            </li>
-          </ul>
-        </div>
-
-        <div className="o-grid">
-          <div className="o-grid__row">
-            <div className="o-grid__col o-grid__col--12 o-grid__col--6@md">
-              <h3 style={{ color: '#fff', marginBottom: '15px' }}>
-                High Performance Configuration
-              </h3>
-              <AtomixGlass
-                displacementScale={25}
-                blurAmount={0.02}
-                saturation={120}
-                aberrationIntensity={0.8}
-                elasticity={0.1}
-                cornerRadius={10}
-                mode="standard"
-                reducedMotion={false}
-                disableEffects={false}
-                style={{ height: '100%', minHeight: '200px' }}
-              >
-                <div style={{ padding: '20px' }}>
-                  <h4 style={{ marginTop: 0 }}>Optimized for Performance</h4>
-                  <p>This configuration prioritizes performance over visual effects:</p>
-                  <ul>
-                    <li>Low displacement scale (25)</li>
-                    <li>Minimal blur amount (0.02)</li>
-                    <li>Reduced saturation (120%)</li>
-                    <li>Simple mode with no hover effects</li>
-                    <li>No border effects</li>
-                  </ul>
-                  <p>
-                    <strong>Best for:</strong> Mobile devices, pages with multiple instances, or
-                    low-end hardware
-                  </p>
-                </div>
-              </AtomixGlass>
-            </div>
-
-            <div className="o-grid__col o-grid__col--12 o-grid__col--6@md">
-              <h3 style={{ color: '#fff', marginBottom: '15px' }}>Balanced Configuration</h3>
-              <AtomixGlass
-                displacementScale={55}
-                blurAmount={0.04}
-                saturation={150}
-                aberrationIntensity={1.8}
-                elasticity={0.15}
-                cornerRadius={15}
-                mode="standard"
-                enablePerformanceMonitoring={true}
-                style={{ height: '100%', minHeight: '200px' }}
-              >
-                <div style={{ padding: '20px' }}>
-                  <h4 style={{ marginTop: 0 }}>Balanced Approach</h4>
-                  <p>This configuration balances performance and visual appeal:</p>
-                  <ul>
-                    <li>Moderate displacement scale (55)</li>
-                    <li>Medium blur amount (0.04)</li>
-                    <li>Balanced saturation (150%)</li>
-                    <li>Normal mode with subtle hover effects</li>
-                    <li>Minimal border effects</li>
-                  </ul>
-                  <p>
-                    <strong>Best for:</strong> Most desktop applications and modern devices
-                  </p>
-                </div>
-              </AtomixGlass>
-            </div>
-          </div>
-
-          <div className="o-grid__row" style={{ marginTop: '30px' }}>
-            <div className="o-grid__col o-grid__col--12">
-              <div
-                style={{
-                  backgroundColor: 'rgba(0,0,0,0.7)',
-                  padding: '20px',
-                  borderRadius: '10px',
-                }}
-              >
-                <h3 style={{ color: '#fff', marginBottom: '15px' }}>Performance Monitoring Tips</h3>
-                <ol style={{ color: '#fff', lineHeight: '1.6' }}>
-                  <li>Use browser developer tools to monitor performance</li>
-                  <li>Check for dropped frames in the Performance panel</li>
-                  <li>Monitor GPU usage when using advanced effects</li>
-                  <li>Test on various devices to ensure consistent performance</li>
-                  <li>
-                    Consider using the <code>React.memo</code> HOC to prevent unnecessary re-renders
-                  </li>
-                </ol>
-
-                <div
-                  style={{
-                    marginTop: '20px',
-                    padding: '15px',
-                    backgroundColor: 'rgba(255,255,255,0.1)',
-                    borderRadius: '5px',
-                  }}
-                >
-                  <h4 style={{ color: '#fff', marginBottom: '10px' }}>
-                    Code Example: Optimized Usage
-                  </h4>
-                  <pre
-                    style={{
-                      backgroundColor: 'rgba(0,0,0,0.5)',
-                      padding: '15px',
-                      borderRadius: '5px',
-                      overflow: 'auto',
-                    }}
-                  >
-                    <code style={{ color: '#e6e6e6', display: 'block', fontFamily: 'monospace' }}>
-                      {`import React, { memo } from 'react';
-import AtomixGlass from './AtomixGlass';
-
-// Use memo to prevent unnecessary re-renders
-const OptimizedGlassCard = memo(({ title, content }) => {
-  // Adjust settings based on device capability
-  const isMobile = window.innerWidth < 768;
-
-  return (
-    <AtomixGlass
-      displacementScale={isMobile ? 10 : 20}
-      blurAmount={isMobile ? 5 : 10}
-      saturation={isMobile ? 120 : 150}
-      aberrationIntensity={isMobile ? 0.5 : 1.5}
-      mode={isMobile ? "simple" : "normal"}
-      showHoverEffects={!isMobile}
-    >
-      <div style={{ padding: '20px' }}>
-        <h3>{title}</h3>
-        <p>{content}</p>
-      </div>
-    </AtomixGlass>
-  );
-});
-
-export default OptimizedGlassCard;`}
-                    </code>
-                  </pre>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </BackgroundWrapper>
-  ),
-};
-
-/**
- * Interactive Playground story with dynamic controls for all component props
- *
- * This story provides a comprehensive playground for experimenting with all
- * AtomixGlass component properties in real-time.
- */
-export const InteractivePlayground: Story = {
-  render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [settings, setSettings] = useState({
-      displacementScale: 70,
-      blurAmount: 1,
-      saturation: 140,
-      aberrationIntensity: 2,
-      cornerRadius: 20,
-      mode: 'standard' as const,
-      showBorderEffects: true,
-      showHoverEffects: true,
-      overLight: false,
-      background: backgrounds.blueGradient,
-      useVideoBackground: false,
-      elasticity: 0.15,
-    });
-
-    const handleChange = (property: string, value: any) => {
-      setSettings(prev => ({
-        ...prev,
-        [property]: value,
-      }));
-    };
-
-    const modes = ['standard', 'polar', 'prominent', 'shader'] as const;
-    const backgroundOptions = Object.entries(backgrounds).map(([key, value]) => ({
-      label: key,
-      value,
-    }));
-
-    // Control panel styles
-    const controlPanelStyle = {
-      width: '400px',
-      padding: '20px',
-      borderRadius: '12px',
-      background: 'rgba(0,0,0,0.7)',
-      boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-      color: 'white',
-      fontSize: '14px',
-    };
-
-    const sliderContainerStyle = {
-      marginBottom: '16px',
-    };
-
-    const sliderLabelStyle = {
-      display: 'flex',
-      justifyContent: 'space-between',
-      marginBottom: '6px',
-    };
-
-    const sliderStyle = {
-      width: '100%',
-      accentColor: '#6366f1',
-    };
-
-    const selectStyle = {
-      width: '100%',
-      padding: '8px',
-      backgroundColor: 'rgba(255,255,255,0.1)',
-      color: 'white',
-      border: '1px solid rgba(255,255,255,0.2)',
-      borderRadius: '4px',
-      marginBottom: '16px',
-    };
-
-    const checkboxContainerStyle = {
-      display: 'flex',
-      alignItems: 'center',
-      marginBottom: '12px',
-      gap: '8px',
-    };
-
-    return (
-      <BackgroundWrapper
-        backgroundImage={settings.useVideoBackground ? 'transparent' : settings.background}
-        height="80vh"
-        style={{ maxWidth: '1400px', position: 'relative', overflow: 'hidden' }}
-      >
-        {/* Control Panel */}
-        <div style={controlPanelStyle}>
-          <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', textAlign: 'center' }}>
-            AtomixGlass Controls
-          </h3>
-
-          {/* Displacement Scale */}
-          <div style={sliderContainerStyle}>
-            <div style={sliderLabelStyle}>
-              <label htmlFor="displacementScale">Displacement Scale</label>
-              <span>{settings.displacementScale}</span>
-            </div>
-            <input
-              type="range"
-              id="displacementScale"
-              min="0"
-              max="100"
-              value={settings.displacementScale}
-              onChange={e => handleChange('displacementScale', parseInt(e.target.value))}
-              style={sliderStyle}
-            />
-          </div>
-
-          {/* Blur Amount */}
-          <div style={sliderContainerStyle}>
-            <div style={sliderLabelStyle}>
-              <label htmlFor="blurAmount">Blur Amount</label>
-              <span>{settings.blurAmount}</span>
-            </div>
-            <input
-              type="range"
-              id="blurAmount"
-              min="0"
-              max="20"
-              step="0.05"
-              value={settings.blurAmount}
-              onChange={e => handleChange('blurAmount', parseFloat(e.target.value))}
-              style={sliderStyle}
-            />
-          </div>
-
-          {/* Saturation */}
-          <div style={sliderContainerStyle}>
-            <div style={sliderLabelStyle}>
-              <label htmlFor="saturation">Saturation</label>
-              <span>{settings.saturation}%</span>
-            </div>
-            <input
-              type="range"
-              id="saturation"
-              min="0"
-              max="300"
-              value={settings.saturation}
-              onChange={e => handleChange('saturation', parseInt(e.target.value))}
-              style={sliderStyle}
-            />
-          </div>
-
-          {/* Aberration Intensity */}
-          <div style={sliderContainerStyle}>
-            <div style={sliderLabelStyle}>
-              <label htmlFor="aberrationIntensity">Aberration Intensity</label>
-              <span>{settings.aberrationIntensity}</span>
-            </div>
-            <input
-              type="range"
-              id="aberrationIntensity"
-              min="0"
-              max="10"
-              step="0.1"
-              value={settings.aberrationIntensity}
-              onChange={e => handleChange('aberrationIntensity', parseFloat(e.target.value))}
-              style={sliderStyle}
-            />
-          </div>
-
-          {/* Corner Radius */}
-          <div style={sliderContainerStyle}>
-            <div style={sliderLabelStyle}>
-              <label htmlFor="cornerRadius">Corner Radius</label>
-              <span>{settings.cornerRadius}px</span>
-            </div>
-            <input
-              type="range"
-              id="cornerRadius"
-              min="0"
-              max="50"
-              value={settings.cornerRadius}
-              onChange={e => handleChange('cornerRadius', parseInt(e.target.value))}
-              style={sliderStyle}
-            />
-          </div>
-
-          {/* Elasticity */}
-          <div style={sliderContainerStyle}>
-            <div style={sliderLabelStyle}>
-              <label htmlFor="elasticity">Elasticity</label>
-              <span>{settings.elasticity}</span>
-            </div>
-            <input
-              type="range"
-              id="elasticity"
-              min="0"
-              max="1"
-              step="0.01"
-              value={settings.elasticity}
-              onChange={e => handleChange('elasticity', e.target.value)}
-              style={sliderStyle}
-            />
-          </div>
-
-          {/* Mode Select */}
-          <label htmlFor="mode" style={{ display: 'block', marginBottom: '6px' }}>
-            Mode
-          </label>
-          <select
-            id="mode"
-            value={settings.mode}
-            onChange={e => handleChange('mode', e.target.value)}
-            style={selectStyle}
-          >
-            {modes.map(mode => (
-              <option key={mode} value={mode}>
-                {mode.charAt(0).toUpperCase() + mode.slice(1)}
-              </option>
-            ))}
-          </select>
-
-          {/* Background Select */}
-          <label htmlFor="background" style={{ display: 'block', marginBottom: '6px' }}>
-            Background
-          </label>
-          <select
-            id="background"
-            value={settings.background}
-            onChange={e => handleChange('background', e.target.value)}
-            style={selectStyle}
-          >
-            {backgroundOptions.map(option => (
-              <option key={option.label} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-
-          {/* Checkboxes */}
-          <div style={checkboxContainerStyle}>
-            <input
-              type="checkbox"
-              id="showBorderEffects"
-              checked={settings.showBorderEffects}
-              onChange={e => handleChange('showBorderEffects', e.target.checked)}
-            />
-            <label htmlFor="showBorderEffects">Show Border Effects</label>
-          </div>
-
-          <div style={checkboxContainerStyle}>
-            <input
-              type="checkbox"
-              id="showHoverEffects"
-              checked={settings.showHoverEffects}
-              onChange={e => handleChange('showHoverEffects', e.target.checked)}
-            />
-            <label htmlFor="showHoverEffects">Show Hover Effects</label>
-          </div>
-
-          <div style={checkboxContainerStyle}>
-            <input
-              type="checkbox"
-              id="overLight"
-              checked={settings.overLight}
-              onChange={e => handleChange('overLight', e.target.checked)}
-            />
-            <label htmlFor="overLight">Over Light</label>
-          </div>
-
-          <div style={checkboxContainerStyle}>
-            <input
-              type="checkbox"
-              id="useVideoBackground"
-              checked={settings.useVideoBackground}
-              onChange={e => handleChange('useVideoBackground', e.target.checked)}
-            />
-            <label htmlFor="useVideoBackground">Use Video Background</label>
-          </div>
-        </div>
-
-        {/* Video Background */}
-        {settings.useVideoBackground && (
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
+    <BackgroundWrapper backgroundIndex={2} overlay={true} padding="60px 20px">
+      <div style={{  margin: '0 auto', width: '100%' }}>
+        {/* Header Section */}
+        <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <h1
             style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              zIndex: -1,
+              color: '#fff',
+              fontSize: '3rem',
+              fontWeight: '700',
+              marginBottom: '16px',
+              letterSpacing: '-0.02em',
             }}
           >
-            <source src={backgrounds.videoBackground} type="video/mp4" />
-          </video>
-        )}
-
-        {/* Glass Component Preview */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100%',
-            width: '100%',
-            paddingLeft: '300px', // Make room for the control panel
-          }}
-        >
-          <AtomixGlass
-            displacementScale={settings.displacementScale}
-            blurAmount={settings.blurAmount}
-            saturation={settings.saturation}
-            aberrationIntensity={settings.aberrationIntensity}
-            cornerRadius={settings.cornerRadius}
-            mode={settings.mode}
-            overLight={settings.overLight}
-            elasticity={settings.elasticity}
-            style={{ width: '400px', maxWidth: '100%' }}
-          >
-            <div style={{ padding: '30px', textAlign: 'center' }}>
-              <h2 style={{ marginTop: 0, fontSize: '24px', fontWeight: 500, marginBottom: '16px' }}>
-                Interactive Preview
-              </h2>
-              <p style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '20px' }}>
-                Adjust the controls on the left to see how different properties affect the glass
-                effect in real-time.
-                {settings.useVideoBackground &&
-                  ' Try the video background for an enhanced experience!'}
-              </p>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  gap: '12px',
-                  flexWrap: 'wrap',
-                }}
-              >
-                <Button label="Primary" variant="primary" glass={{ elasticity: 0 }} />
-                <Button label="secondary" variant="secondary" glass={{ elasticity: 0 }} />
-              </div>
-            </div>
-          </AtomixGlass>
-        </div>
-      </BackgroundWrapper>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'An interactive playground that allows you to experiment with all AtomixGlass component properties in real-time. Use the control panel to adjust settings and see how they affect the appearance and behavior of the glass effect. Toggle the video background option to see how the glass effect works with dynamic content.',
-      },
-    },
-  },
-};
-
-// Accessibility example
-/**
- * Accessible Example - Demonstrates accessibility best practices
- *
- * This story showcases how to implement accessibility features with AtomixGlass
- * components, ensuring they are usable by people with disabilities.
- */
-export const AccessibleExample: Story = {
-  render: () => (
-    <BackgroundWrapper
-      backgroundImage={backgrounds.abstract2}
-      height="70vh"
-      width="90vw"
-      overlayOpacity={0.1}
-      aria-hidden="false"
-    >
-      <AtomixGlass
-        displacementScale={40}
-        blurAmount={1}
-        saturation={160}
-        aberrationIntensity={1.5}
-        elasticity={0}
-        cornerRadius={15}
-        aria-label="Contact form container"
-        aria-describedby="form-description"
-        role="region"
-        tabIndex={-1}
-        reducedMotion={false}
-        highContrast={false}
-        style={{
-          width: '400px',
-          cursor: 'default',
-        }}
-      >
-        <div style={{ padding: '30px' }}>
-          <h2
-            id="form-title"
+            Performance Optimization
+          </h1>
+          <p
             style={{
-              marginTop: 0,
-              fontSize: '24px',
-              marginBottom: '20px',
-              color: '#ffffff',
+              color: 'rgba(255,255,255,0.85)',
+              fontSize: '1.25rem',
+              maxWidth: '700px',
+              margin: '0 auto',
+              lineHeight: '1.6',
             }}
           >
-            Contact Us
-          </h2>
-          width: '80%',
-          {/* Adding description for screen readers */}
-          <p id="form-description" style={{ marginBottom: '20px', fontSize: '16px' }}>
-            Please fill out the form below to get in touch with our team.
+            Fine-tune AtomixGlass for optimal performance across different device capabilities
           </p>
-          <form aria-describedby="form-description">
-            <div style={{ marginBottom: '20px' }}>
-              <label
-                htmlFor="name"
-                style={{
-                  display: 'block',
-                  marginBottom: '8px',
-                  fontWeight: 500,
-                }}
-              >
-                Name{' '}
-                <span aria-hidden="true" style={{ color: '#ff3b30' }}>
-                  *
-                </span>
-              </label>
-              <input
-                id="name"
-                type="text"
-                aria-required="true"
-                aria-invalid="false"
-                aria-describedby="name-error"
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  borderRadius: '6px',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  color: '#ffffff',
-                  fontSize: '16px',
-                }}
-              />
-              <div
-                id="name-error"
-                role="alert"
-                style={{
-                  height: '20px',
-                  fontSize: '14px',
-                  color: '#ff3b30',
-                  marginTop: '4px',
-                }}
-              ></div>
-            </div>
-
-            <div style={{ marginBottom: '20px' }}>
-              <label
-                htmlFor="email"
-                style={{
-                  display: 'block',
-                  marginBottom: '8px',
-                  fontWeight: 500,
-                }}
-              >
-                Email{' '}
-                <span aria-hidden="true" style={{ color: '#ff3b30' }}>
-                  *
-                </span>
-              </label>
-              <input
-                id="email"
-                type="email"
-                aria-required="true"
-                aria-invalid="false"
-                aria-describedby="email-error"
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  borderRadius: '6px',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  color: '#ffffff',
-                  fontSize: '16px',
-                }}
-              />
-              <div
-                id="email-error"
-                role="alert"
-                style={{
-                  height: '20px',
-                  fontSize: '14px',
-                  color: '#ff3b30',
-                  marginTop: '4px',
-                }}
-              ></div>
-            </div>
-
-            <div style={{ marginBottom: '20px' }}>
-              <label
-                htmlFor="message"
-                style={{
-                  display: 'block',
-                  marginBottom: '8px',
-                  fontWeight: 500,
-                }}
-              >
-                Message{' '}
-                <span aria-hidden="true" style={{ color: '#ff3b30' }}>
-                  *
-                </span>
-              </label>
-              <textarea
-                id="message"
-                rows={4}
-                aria-required="true"
-                aria-invalid="false"
-                aria-describedby="message-error"
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  borderRadius: '6px',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  color: '#ffffff',
-                  fontSize: '16px',
-                  resize: 'vertical',
-                }}
-              />
-              <div
-                id="message-error"
-                role="alert"
-                style={{
-                  height: '20px',
-                  fontSize: '14px',
-                  color: '#ff3b30',
-                  marginTop: '4px',
-                }}
-              ></div>
-            </div>
-
-            <div style={{ marginBottom: '20px' }}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <input
-                  id="privacy-policy"
-                  type="checkbox"
-                  aria-required="true"
-                  style={{
-                    marginRight: '10px',
-                    width: '18px',
-                    height: '18px',
-                  }}
-                />
-                <label htmlFor="privacy-policy">
-                  I agree to the{' '}
-                  <a href="#" style={{ color: '#ffffff', textDecoration: 'underline' }}>
-                    Privacy Policy
-                  </a>
-                </label>
-              </div>
-            </div>
-
-            <button type="submit" className="c-btn c-btn--primary" aria-label="Submit contact form">
-              Send Message
-            </button>
-          </form>
         </div>
-      </AtomixGlass>
-    </BackgroundWrapper>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'An example showcasing accessibility features with the AtomixGlass component. This form includes proper ARIA attributes, semantic HTML, and keyboard navigation support.',
-      },
-    },
-  },
-};
 
-/**
- * Mobile UI Example - Showcases the component on smaller screens
- *
- * This story demonstrates how AtomixGlass components can be used to create
- * mobile-friendly interfaces with responsive design and touch interactions.
- */
-export const MobileUIExample: Story = {
-  render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [activeTab, setActiveTab] = useState('home');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [notificationCount, setNotificationCount] = useState(3);
-
-    const handleTabChange = (tab: string) => {
-      setActiveTab(tab);
-    };
-
-    const clearNotifications = () => {
-      setNotificationCount(0);
-    };
-
-    // Mobile device frame styles
-    const phoneFrameStyle = {
-      width: '375px',
-      height: '667px',
-      borderRadius: '36px',
-      padding: '12px',
-      boxShadow: '0 -25px 50px 12px rgba(255, 255, 255, 0.3)',
-      position: 'relative' as const,
-      backdropFilter: 'blur(12px)',
-    };
-
-    const phoneScreenStyle = {
-      width: '100%',
-      height: '100%',
-      borderRadius: '24px',
-      position: 'relative' as const,
-      backgroundImage:
-        'url(https://images.unsplash.com/photo-1759691397916-abc3fe1dbb43?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
-      backgroundSize: 'cover' as const,
-      backgroundPosition: 'center' as const,
-      color: 'white',
-    };
-
-    const phoneNotchStyle = {
-      position: 'absolute' as const,
-      top: '0',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: '180px',
-      height: '30px',
-      borderBottomLeftRadius: '14px',
-      borderBottomRightRadius: '14px',
-      background: '#000',
-      zIndex: 10,
-    };
-
-    // App content styles
-    const appContentStyle = {
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column' as const,
-      position: 'relative' as const,
-    };
-
-    const headerStyle = {
-      padding: '50px 20px 15px',
-      display: 'flex',
-      width: '100%',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      borderTop: '1px solid rgba(255, 255, 255, 0.5)',
-      borderRadius: '24px',
-      background: 'linear-gradient(to bottom, rgba(255,255,255, 0.2), rgba(0,0,0,0.1))',
-    };
-
-    const mainContentStyle = {
-      flex: 1,
-      padding: '0 15px',
-    };
-
-    // Tab content based on active tab
-    const renderTabContent = () => {
-      switch (activeTab) {
-        case 'home':
-          return (
-            <div style={{ padding: '10px 0' }}>
-              <AtomixGlass
-                displacementScale={60}
-                blurAmount={0}
-                cornerRadius={24}
-                mode="prominent"
-                onClick={() => null}
-                overLight={false}
-              >
-                <div
-                  style={{
-                    padding: '20px',
-                    background: 'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
-                    borderRadius: '24px',
-                  }}
-                >
-                  <h3 style={{ margin: '0 0 10px 0', fontSize: '18px', color: 'white' }}>
-                    Welcome Back
-                  </h3>
-                  <p
-                    style={{
-                      margin: '0 0 15px 0',
-                      fontSize: '14px',
-                      lineHeight: 1.5,
-                      color: 'white',
-                    }}
-                  >
-                    Your daily summary and activity feed
-                  </p>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                      marginTop: '15px',
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '50%',
-                        background:
-                          'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '18px',
-                        backdropFilter: 'blur(10px)',
-                      }}
-                    >
-                      👤
-                    </div>
-                    <div>
-                      <div style={{ fontWeight: 500, color: 'white' }}>User Profile</div>
-                      <div style={{ fontSize: '12px', opacity: 0.7, color: 'white' }}>
-                        View your account
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </AtomixGlass>
-
-              <div style={{ height: '15px' }} />
-
-              <AtomixGlass
-                displacementScale={60}
-                blurAmount={0}
-                saturation={185}
-                elasticity={0.2}
-                cornerRadius={30}
-                mode="standard"
-                onClick={() => null}
-                overLight={false}
-              >
-                <div
-                  style={{
-                    padding: '20px',
-                    background: 'linear-gradient(to top, rgba(255,255,255,0.1), rgba(0,0,0,0.1))',
-                    borderRadius: '30px',
-                  }}
-                >
-                  <h3 style={{ margin: '0 0 15px 0', fontSize: '16px', color: 'white' }}>
-                    Recent Activity
-                  </h3>
-                  {[1, 2, 3].map(item => (
-                    <div
-                      key={item}
-                      style={{
-                        padding: '10px',
-                        borderBottom: '1px solid rgba(255,255,255,0.4)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '10px',
-                        backdropFilter: 'blur(10px)',
-                        borderRadius: '10px',
-                        marginBottom: '10px',
-                        background:
-                          'linear-gradient(to top, rgba(255,255,255,0.15), rgba(0,0,0,0.15))',
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: '32px',
-                          height: '32px',
-                          borderRadius: '8px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '14px',
-                          color: 'white',
-                          background:
-                            'linear-gradient(to left, rgba(255,255,255,0.15), rgba(0,0,0,0.15))',
-                          backdropFilter: 'blur(10px)',
-                        }}
-                      >
-                        {item === 1 ? '📝' : item === 2 ? '🔔' : '💬'}
-                      </div>
-                      <div>
-                        <div style={{ fontSize: '14px', color: 'white' }}>
-                          {item === 1
-                            ? 'New document created'
-                            : item === 2
-                              ? 'Reminder: Meeting at 3 PM'
-                              : 'New message from Sarah'}
-                        </div>
-                        <div style={{ fontSize: '12px', opacity: 0.7, color: 'white' }}>
-                          {item === 1 ? '5 minutes ago' : item === 2 ? '1 hour ago' : '3 hours ago'}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </AtomixGlass>
-            </div>
-          );
-        case 'search':
-          return (
-            <div style={{ padding: '10px 0' }}>
-              <AtomixGlass
-                displacementScale={220}
-                blurAmount={0}
-                cornerRadius={15}
-                mode="shader"
-                onClick={() => null}
-                overLight={false}
-              >
-                <div
-                  style={{
-                    padding: '15px',
-                    borderRadius: '15px',
-                    background: 'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                      borderRadius: '10px',
-                      padding: '8px 12px',
-                      background: 'linear-gradient(to top, rgba(255,255,255,0.3), rgba(0,0,0,0.3))',
-                      backdropFilter: 'blur(10px)',
-                    }}
-                  >
-                    <span>🔍</span>
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      style={{
-                        background: 'transparent',
-                        border: 'none',
-                        outline: 'none',
-                        color: 'white',
-                        width: '100%',
-                        fontSize: '14px',
-                      }}
-                    />
-                  </div>
-                </div>
-              </AtomixGlass>
-
-              <div style={{ height: '15px' }} />
-
-              <AtomixGlass
-                displacementScale={60}
-                blurAmount={0}
-                cornerRadius={15}
-                onClick={() => null}
-                overLight={false}
-              >
-                <div
-                  style={{
-                    padding: '20px',
-                    borderRadius: '15px',
-                    background:
-                      'linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
-                  }}
-                >
-                  <h3 style={{ margin: '0 0 15px 0', fontSize: '16px', color: '#fff' }}>
-                    Search Categories
-                  </h3>
-                  <div
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(2, 1fr)',
-                      gap: '10px',
-                    }}
-                  >
-                    {['Photos', 'Documents', 'Messages', 'Settings'].map(category => (
-                      <div
-                        key={category}
-                        style={{
-                          padding: '15px',
-                          background: 'rgba(255,255,255,0.1)',
-                          borderRadius: '10px',
-                          textAlign: 'center',
-                          fontSize: '14px',
-                          backdropFilter: 'blur(10px)',
-                        }}
-                      >
-                        {category}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </AtomixGlass>
-            </div>
-          );
-        case 'notifications':
-          return (
-            <div style={{ padding: '10px 0' }}>
-              <AtomixGlass
-                displacementScale={60}
-                blurAmount={0}
-                cornerRadius={15}
-                mode="standard"
-                onClick={() => null}
-                overLight={false}
-              >
-                <div
-                  style={{
-                    padding: '20px',
-                    borderRadius: '15px',
-                    background: 'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginBottom: '15px',
-                    }}
-                  >
-                    <h3 style={{ margin: 0, fontSize: '18px', color: 'white' }}>Notifications</h3>
-                    <button
-                      onClick={clearNotifications}
-                      style={{
-                        background: 'rgba(255,255,255,0.2)',
-                        border: 'none',
-                        borderRadius: '5px',
-                        padding: '5px 10px',
-                        fontSize: '12px',
-                        color: 'white',
-                        cursor: 'pointer',
-                        backdropFilter: 'blur(10px)',
-                      }}
-                    >
-                      Clear All
-                    </button>
-                  </div>
-
-                  {notificationCount > 0 ? (
-                    Array.from({ length: notificationCount }).map((_, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          padding: '12px',
-                          background: 'rgba(255,255,255,0.1)',
-                          borderRadius: '10px',
-                          backdropFilter: 'blur(10px)',
-                          marginBottom: '10px',
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                          }}
-                        >
-                          <div
-                            style={{
-                              width: '36px',
-                              height: '36px',
-                              borderRadius: '50%',
-                              background: 'rgba(255,255,255,0.2)',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              fontSize: '16px',
-                              backdropFilter: 'blur(10px)',
-                            }}
-                          >
-                            {index === 0 ? '📱' : index === 1 ? '🔔' : '✉️'}
-                          </div>
-                          <div>
-                            <div style={{ fontSize: '14px', fontWeight: 500, color: 'white' }}>
-                              {index === 0
-                                ? 'New Login Detected'
-                                : index === 1
-                                  ? 'Calendar Reminder'
-                                  : 'New Message'}
-                            </div>
-                            <div style={{ fontSize: '12px', opacity: 0.7, color: 'white' }}>
-                              {index === 0
-                                ? 'A new device logged into your account'
-                                : index === 1
-                                  ? 'Meeting with design team in 30 minutes'
-                                  : 'Sarah sent you a new message'}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div
-                      style={{
-                        textAlign: 'center',
-                        padding: '30px 0',
-                        opacity: 0.7,
-                        fontSize: '14px',
-                        backdropFilter: 'blur(10px)',
-                      }}
-                    >
-                      No new notifications
-                    </div>
-                  )}
-                </div>
-              </AtomixGlass>
-            </div>
-          );
-        case 'profile':
-          return (
-            <div style={{ padding: '10px 0' }}>
-              <AtomixGlass
-                displacementScale={120}
-                blurAmount={0}
-                saturation={180}
-                elasticity={0.16}
-                cornerRadius={15}
-                mode="standard"
-                onClick={() => null}
-                overLight={false}
-              >
-                <div
-                  style={{
-                    padding: '25px 20px',
-                    borderRadius: '15px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    background: 'linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2))',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '80px',
-                      height: '80px',
-                      borderRadius: '50%',
-                      background: 'rgba(255,255,255,0.2)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '36px',
-                      marginBottom: '15px',
-                      backdropFilter: 'blur(10px)',
-                    }}
-                  >
-                    👤
-                  </div>
-                  <h3 style={{ margin: '0 0 5px 0', fontSize: '18px', color: 'white' }}>
-                    User Name
-                  </h3>
-                  <p
-                    style={{ margin: '0 0 20px 0', fontSize: '14px', opacity: 0.7, color: 'white' }}
-                  >
-                    user@example.com
-                  </p>
-                  <Button label="Edit Profile" variant="erorr" size="md" />
-                  <Button glass label="Settings" variant="dark" size="md" />
-                </div>
-              </AtomixGlass>
-            </div>
-          );
-        default:
-          return null;
-      }
-    };
-
-    return (
-      <BackgroundWrapper
-        backgroundImage={
-          'https://images.unsplash.com/photo-1649718347807-322222472ed9?q=80&w=3134&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-        }
-        height="90vh"
-        style={{
-          maxWidth: '1400px',
-          padding: '40px 20px',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-          }}
+        {/* Performance Guidelines */}
+        <AtomixGlass
+          displacementScale={30}
+          blurAmount={0.03}
+          saturation={130}
+          aberrationIntensity={1.2}
+          elasticity={0}
+          cornerRadius={16}
+          mode="standard"
+          style={{ marginBottom: '48px' }}
         >
-          <div style={{ maxWidth: '300px' }}>
+          <div style={{ padding: '32px' }}>
             <h2
               style={{
-                margin: '0 0 20px 0',
-                fontSize: '28px',
-                fontWeight: 500,
-                color: '#ffffff',
-                textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                color: '#fff',
+                fontSize: '1.75rem',
+                fontWeight: '600',
+                marginBottom: '24px',
+                marginTop: 0,
               }}
             >
-              Mobile UI Example
+              Best Practices & Guidelines
             </h2>
-
-            <p
+            <div
               style={{
-                fontSize: '16px',
-                maxWidth: '600px',
-                margin: '0 auto 30px',
-                color: '#ffffff',
-                textShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: '24px',
+                color: '#fff',
               }}
             >
-              AtomixGlass components optimized for mobile interfaces with touch-friendly controls
-            </p>
-          </div>
-          {/* Phone frame */}
-          <div style={phoneFrameStyle}>
-            <div style={phoneScreenStyle}>
-              <div style={phoneNotchStyle} />
-
-              {/* App content */}
-              <div style={appContentStyle}>
-                {/* Header */}
-                <AtomixGlass
-                  displacementScale={260}
-                  blurAmount={2}
-                  saturation={180}
-                  elasticity={0}
-                  cornerRadius={26}
-                  mode="shader"
-                  onClick={() => null}
-                  overLight={false}
+              <div>
+                <div
+                  style={{
+                    fontSize: '2rem',
+                    marginBottom: '12px',
+                    opacity: 0.9,
+                  }}
                 >
-                  <div style={headerStyle}>
-                    <h2 style={{ margin: 0, fontSize: '18px' }}>
-                      {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
-                    </h2>
-                    <div
-                      style={{
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '50%',
-                        background: 'rgba(255,255,255,0.1)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      👤
-                    </div>
-                  </div>
-                </AtomixGlass>
-
-                {/* Main content area */}
-                <div style={mainContentStyle}>{renderTabContent()}</div>
-
-                {/* Bottom navigation */}
-                <AtomixGlass
-                  displacementScale={100}
-                  blurAmount={0}
-                  elasticity={0}
-                  cornerRadius={18}
-                  mode="shader"
-                  onClick={() => null}
-                  overLight={false}
+                  ⚡
+                </div>
+                <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '8px' }}>
+                  Limit Instances
+                </h3>
+                <p style={{ fontSize: '0.9375rem', lineHeight: '1.6', opacity: 0.85, margin: 0 }}>
+                  Use 3-5 glass components maximum per view to maintain optimal frame rates
+                </p>
+              </div>
+              <div>
+                <div
+                  style={{
+                    fontSize: '2rem',
+                    marginBottom: '12px',
+                    opacity: 0.9,
+                  }}
                 >
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-around',
-                      padding: '5px 10px',
-                      background:
-                        'linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(0,0,0,0.1))',
-                      borderRadius: '18px',
-                    }}
-                  >
-                    {[
-                      { id: 'home', icon: '🏠' },
-                      { id: 'search', icon: '🔍' },
-                      { id: 'notifications', icon: '🔔', badge: notificationCount },
-                      { id: 'profile', icon: '👤' },
-                    ].map(tab => (
-                      <div
-                        key={tab.id}
-                        onClick={() => handleTabChange(tab.id)}
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          opacity: activeTab === tab.id ? 1 : 0.6,
-                          position: 'relative',
-                          padding: '10px 20px',
-                          backdropFilter: 'blur(10px)',
-                          borderRadius: '10px',
-                          background:
-                            'linear-gradient(to left, rgba(255,255,255,0.5), rgba(0,0,0,0.5))',
-                        }}
-                      >
-                        <div style={{ fontSize: '20px' }}>{tab.icon}</div>
-                        {tab.badge && tab.badge > 0 && (
-                          <div
-                            style={{
-                              position: 'absolute',
-                              top: '-5px',
-                              right: '-5px',
-                              background:
-                                'linear-gradient(to top, rgba(255,0,0,0.6), rgba(255,0,0,7))',
-                              color: 'white',
-                              borderRadius: '50%',
-                              width: '18px',
-                              height: '18px',
-                              fontSize: '12px',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              backdropFilter: 'blur(10px)',
-                            }}
-                          >
-                            {tab.badge}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </AtomixGlass>
+                  📱
+                </div>
+                <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '8px' }}>
+                  Mobile Optimization
+                </h3>
+                <p style={{ fontSize: '0.9375rem', lineHeight: '1.6', opacity: 0.85, margin: 0 }}>
+                  Reduce complexity on mobile: lower displacement scale and disable hover effects
+                </p>
+              </div>
+              <div>
+                <div
+                  style={{
+                    fontSize: '2rem',
+                    marginBottom: '12px',
+                    opacity: 0.9,
+                  }}
+                >
+                  🎯
+                </div>
+                <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '8px' }}>
+                  Strategic Placement
+                </h3>
+                <p style={{ fontSize: '0.9375rem', lineHeight: '1.6', opacity: 0.85, margin: 0 }}>
+                  Apply glass effects to focal points only—cards, modals, and navigation elements
+                </p>
               </div>
             </div>
           </div>
-        </div>
-      </BackgroundWrapper>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'This example demonstrates how AtomixGlass components can be optimized for mobile interfaces. The design showcases a complete mobile app UI with navigation tabs, responsive layouts, and touch-friendly controls. The glass effect provides a modern and elegant look while maintaining excellent readability and usability on smaller screens.',
-      },
-    },
-  },
-};
+        </AtomixGlass>
 
-// Theme switching example
-export const ThemeSwitching: Story = {
-  render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-
-    return (
-      <BackgroundWrapper
-        backgroundImage={
-          theme === 'light'
-            ? backgroundImages[6] // Cozy café interior for light theme
-            : backgroundImages[7] // Desert landscape for dark theme
-        }
-      >
+        {/* Configuration Comparison Grid */}
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '20px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+            gap: '32px',
           }}
         >
-          <AtomixGlass
-            displacementScale={60}
-            blurAmount={1}
-            saturation={theme === 'light' ? 120 : 160}
-            aberrationIntensity={2.2}
-            elasticity={0.15}
-            cornerRadius={20}
-            overLight={true}
-            mode="standard"
-            style={{ width: '350px' }}
-          >
-            <div style={{ padding: '25px', textAlign: 'center' }}>
-              <h2 style={{ marginTop: 0 }}>{theme === 'light' ? 'Light Theme' : 'Dark Theme'}</h2>
-              <p>The glass effect adapts to different background themes.</p>
-              <button
-                className={`u-mt-4 c-btn c-btn--${theme === 'light' ? 'primary' : 'outline-light'}`}
-                onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-              >
-                Switch to {theme === 'light' ? 'Dark' : 'Light'} Theme
-              </button>
-            </div>
-          </AtomixGlass>
-        </div>
-      </BackgroundWrapper>
-    );
-  },
-};
-
-/**
- * Video Background Example
- * Demonstrates the glass effect over a moving video background
- */
-export const VideoBackground: Story = {
-  render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [glassSettings, setGlassSettings] = useState({
-      displacementScale: 80,
-      blurAmount: 0,
-      saturation: 150,
-      aberrationIntensity: 0,
-      cornerRadius: 24,
-      mode: 'standard' as const,
-    });
-
-    const updateSettings = (property: string, value: any) => {
-      setGlassSettings(prev => ({
-        ...prev,
-        [property]: value,
-      }));
-    };
-
-    return (
-      <div style={{ position: 'relative', height: '80vh', width: '90vw', overflow: 'hidden' }}>
-        {/* Video Background */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            zIndex: -1,
-          }}
-        >
-          <source src={backgrounds.videoBackground} type="video/mp4" />
-        </video>
-
-        {/* Content over video */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100%',
-            padding: '40px',
-            gap: '40px',
-            flexWrap: 'wrap',
-          }}
-        >
-          {/* Main Glass Card */}
-          <AtomixGlass
-            displacementScale={glassSettings.displacementScale}
-            blurAmount={glassSettings.blurAmount}
-            saturation={glassSettings.saturation}
-            aberrationIntensity={glassSettings.aberrationIntensity}
-            cornerRadius={glassSettings.cornerRadius}
-            mode={glassSettings.mode}
-            style={{ width: '400px', maxWidth: '100%' }}
-          >
-            <div style={{ padding: '32px', textAlign: 'center' }}>
-              <h2 style={{ marginTop: 0, fontSize: '28px', fontWeight: 600, marginBottom: '16px' }}>
-                Glass Over Video
-              </h2>
-              <p style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '24px', opacity: 0.9 }}>
-                Experience the stunning glass morphism effect overlaid on dynamic video content. The
-                glass element creates a sophisticated focal point while maintaining visual harmony
-                with the moving background.
-              </p>
+          {/* High Performance Profile */}
+          <div>
+            <div
+              style={{
+                marginBottom: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+              }}
+            >
               <div
                 style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  gap: '12px',
-                  flexWrap: 'wrap',
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: '#34C759',
+                  boxShadow: '0 0 12px rgba(52, 199, 89, 0.6)',
                 }}
-              >
-                <button className="c-btn c-btn--primary">Get Started</button>
-                <button className="c-btn c-btn--outline">Learn More</button>
-              </div>
-            </div>
-          </AtomixGlass>
-
-          {/* Side Control Panel */}
-          <AtomixGlass
-            displacementScale={40}
-            blurAmount={0.06}
-            saturation={120}
-            aberrationIntensity={1.5}
-            cornerRadius={16}
-            mode="standard"
-            style={{ width: '300px', maxWidth: '100%' }}
-          >
-            <div style={{ padding: '24px' }}>
-              <h3 style={{ marginTop: 0, fontSize: '18px', marginBottom: '20px' }}>
-                Live Controls
+              />
+              <h3 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: '600', margin: 0 }}>
+                High Performance
               </h3>
-
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
-                  Displacement: {glassSettings.displacementScale}
-                </label>
-                <input
-                  type="range"
-                  min="0"
-                  max="150"
-                  value={glassSettings.displacementScale}
-                  onChange={e => updateSettings('displacementScale', parseInt(e.target.value))}
-                  style={{ width: '100%', accentColor: '#6366f1' }}
-                />
-              </div>
-
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
-                  Blur: {glassSettings.blurAmount}
-                </label>
-                <input
-                  type="range"
-                  min="0"
-                  max="10"
-                  step="0.5"
-                  value={glassSettings.blurAmount}
-                  onChange={e => updateSettings('blurAmount', parseFloat(e.target.value))}
-                  style={{ width: '100%', accentColor: '#6366f1' }}
-                />
-              </div>
-
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
-                  Saturation: {glassSettings.saturation}%
-                </label>
-                <input
-                  type="range"
-                  min="50"
-                  max="300"
-                  value={glassSettings.saturation}
-                  onChange={e => updateSettings('saturation', parseInt(e.target.value))}
-                  style={{ width: '100%', accentColor: '#6366f1' }}
-                />
-              </div>
-
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
-                  Aberration: {glassSettings.aberrationIntensity}
-                </label>
-                <input
-                  type="range"
-                  min="0"
-                  max="5"
-                  step="0.1"
-                  value={glassSettings.aberrationIntensity}
-                  onChange={e => updateSettings('aberrationIntensity', parseFloat(e.target.value))}
-                  style={{ width: '100%', accentColor: '#6366f1' }}
-                />
-              </div>
-
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
-                  Corner Radius: {glassSettings.cornerRadius}px
-                </label>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={glassSettings.cornerRadius}
-                  onChange={e => updateSettings('cornerRadius', parseInt(e.target.value))}
-                  style={{ width: '100%', accentColor: '#6366f1' }}
-                />
-              </div>
-
-              <button
-                className="c-btn c-btn--secondary"
-                style={{ width: '100%' }}
-                onClick={() => {
-                  setGlassSettings({
-                    displacementScale: 80,
-                    blurAmount: 0.08,
-                    saturation: 150,
-                    aberrationIntensity: 2.5,
-                    cornerRadius: 24,
-                    mode: 'standard',
-                  });
+            </div>
+            <AtomixGlass
+              displacementScale={25}
+              blurAmount={0.02}
+              saturation={120}
+              aberrationIntensity={0.8}
+              elasticity={0.08}
+              cornerRadius={12}
+              mode="standard"
+              style={{ height: '100%', minHeight: '400px' }}
+            >
+              <div
+                style={{
+                  padding: '28px',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
                 }}
               >
-                Reset Defaults
-              </button>
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '6px 12px',
+                    borderRadius: '20px',
+                    backgroundColor: 'rgba(52, 199, 89, 0.2)',
+                    color: '#34C759',
+                    fontSize: '0.875rem',
+                    fontWeight: '600',
+                    marginBottom: '20px',
+                    alignSelf: 'flex-start',
+                  }}
+                >
+                  <span>🚀</span>
+                  <span>OPTIMIZED</span>
+                </div>
+                <h4
+                  style={{
+                    marginTop: 0,
+                    marginBottom: '16px',
+                    fontSize: '1.25rem',
+                    fontWeight: '600',
+                  }}
+                >
+                  Mobile-First Configuration
+                </h4>
+                <div style={{ flex: 1 }}>
+                  <div style={{ marginBottom: '24px' }}>
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr auto',
+                        gap: '12px',
+                        fontSize: '0.9375rem',
+                        lineHeight: '1.8',
+                      }}
+                    >
+                      <span style={{ opacity: 0.85 }}>Displacement Scale:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>25</span>
+                      <span style={{ opacity: 0.85 }}>Blur Amount:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.02</span>
+                      <span style={{ opacity: 0.85 }}>Saturation:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>120%</span>
+                      <span style={{ opacity: 0.85 }}>Aberration:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.8</span>
+                      <span style={{ opacity: 0.85 }}>Elasticity:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.08</span>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      padding: '16px',
+                      borderRadius: '8px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                      fontSize: '0.875rem',
+                      lineHeight: '1.6',
+                    }}
+                  >
+                    <strong style={{ display: 'block', marginBottom: '8px' }}>Best For:</strong>
+                    <ul style={{ margin: 0, paddingLeft: '20px', opacity: 0.85 }}>
+                      <li>Mobile devices & tablets</li>
+                      <li>Multiple glass instances</li>
+                      <li>Battery-constrained devices</li>
+                      <li>Background animations</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </AtomixGlass>
+          </div>
+
+          {/* Balanced Profile */}
+          <div>
+            <div
+              style={{
+                marginBottom: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+              }}
+            >
+              <div
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: '#FF9500',
+                  boxShadow: '0 0 12px rgba(255, 149, 0, 0.6)',
+                }}
+              />
+              <h3 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: '600', margin: 0 }}>
+                Balanced
+              </h3>
             </div>
-          </AtomixGlass>
+            <AtomixGlass
+              displacementScale={55}
+              blurAmount={0.04}
+              saturation={150}
+              aberrationIntensity={1.8}
+              elasticity={0.15}
+              cornerRadius={12}
+              mode="standard"
+              style={{ height: '100%', minHeight: '400px' }}
+            >
+              <div
+                style={{
+                  padding: '28px',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '6px 12px',
+                    borderRadius: '20px',
+                    backgroundColor: 'rgba(255, 149, 0, 0.2)',
+                    color: '#FF9500',
+                    fontSize: '0.875rem',
+                    fontWeight: '600',
+                    marginBottom: '20px',
+                    alignSelf: 'flex-start',
+                  }}
+                >
+                  <span>⚖️</span>
+                  <span>RECOMMENDED</span>
+                </div>
+                <h4
+                  style={{
+                    marginTop: 0,
+                    marginBottom: '16px',
+                    fontSize: '1.25rem',
+                    fontWeight: '600',
+                  }}
+                >
+                  Production Standard
+                </h4>
+                <div style={{ flex: 1 }}>
+                  <div style={{ marginBottom: '24px' }}>
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr auto',
+                        gap: '12px',
+                        fontSize: '0.9375rem',
+                        lineHeight: '1.8',
+                      }}
+                    >
+                      <span style={{ opacity: 0.85 }}>Displacement Scale:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>55</span>
+                      <span style={{ opacity: 0.85 }}>Blur Amount:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.04</span>
+                      <span style={{ opacity: 0.85 }}>Saturation:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>150%</span>
+                      <span style={{ opacity: 0.85 }}>Aberration:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>1.8</span>
+                      <span style={{ opacity: 0.85 }}>Elasticity:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.15</span>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      padding: '16px',
+                      borderRadius: '8px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                      fontSize: '0.875rem',
+                      lineHeight: '1.6',
+                    }}
+                  >
+                    <strong style={{ display: 'block', marginBottom: '8px' }}>Best For:</strong>
+                    <ul style={{ margin: 0, paddingLeft: '20px', opacity: 0.85 }}>
+                      <li>Desktop applications</li>
+                      <li>Modern web browsers</li>
+                      <li>Mid-range devices</li>
+                      <li>General use cases</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </AtomixGlass>
+          </div>
+
+          {/* Premium Profile */}
+          <div>
+            <div
+              style={{
+                marginBottom: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+              }}
+            >
+              <div
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: '#AF52DE',
+                  boxShadow: '0 0 12px rgba(175, 82, 222, 0.6)',
+                }}
+              />
+              <h3 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: '600', margin: 0 }}>
+                Premium
+              </h3>
+            </div>
+            <AtomixGlass
+              displacementScale={85}
+              blurAmount={0.08}
+              saturation={180}
+              aberrationIntensity={3.2}
+              elasticity={0.22}
+              cornerRadius={12}
+              mode="standard"
+              style={{ height: '100%', minHeight: '400px' }}
+            >
+              <div
+                style={{
+                  padding: '28px',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '6px 12px',
+                    borderRadius: '20px',
+                    backgroundColor: 'rgba(175, 82, 222, 0.2)',
+                    color: '#AF52DE',
+                    fontSize: '0.875rem',
+                    fontWeight: '600',
+                    marginBottom: '20px',
+                    alignSelf: 'flex-start',
+                  }}
+                >
+                  <span>✨</span>
+                  <span>PREMIUM</span>
+                </div>
+                <h4
+                  style={{
+                    marginTop: 0,
+                    marginBottom: '16px',
+                    fontSize: '1.25rem',
+                    fontWeight: '600',
+                  }}
+                >
+                  High-Fidelity Visual
+                </h4>
+                <div style={{ flex: 1 }}>
+                  <div style={{ marginBottom: '24px' }}>
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr auto',
+                        gap: '12px',
+                        fontSize: '0.9375rem',
+                        lineHeight: '1.8',
+                      }}
+                    >
+                      <span style={{ opacity: 0.85 }}>Displacement Scale:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>85</span>
+                      <span style={{ opacity: 0.85 }}>Blur Amount:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.08</span>
+                      <span style={{ opacity: 0.85 }}>Saturation:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>180%</span>
+                      <span style={{ opacity: 0.85 }}>Aberration:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>3.2</span>
+                      <span style={{ opacity: 0.85 }}>Elasticity:</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.22</span>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      padding: '16px',
+                      borderRadius: '8px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                      fontSize: '0.875rem',
+                      lineHeight: '1.6',
+                    }}
+                  >
+                    <strong style={{ display: 'block', marginBottom: '8px' }}>Best For:</strong>
+                    <ul style={{ margin: 0, paddingLeft: '20px', opacity: 0.85 }}>
+                      <li>High-end hardware</li>
+                      <li>Hero sections & CTAs</li>
+                      <li>Premium experiences</li>
+                      <li>Single focal elements</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </AtomixGlass>
+          </div>
         </div>
       </div>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'This example showcases the AtomixGlass component over a dynamic video background, demonstrating how the glass effect creates stunning visual hierarchy and focus over moving content. Use the live controls to experiment with different settings and see how they affect the glass appearance in real-time.',
-      },
-    },
-  },
+    </BackgroundWrapper>
+  ),
 };

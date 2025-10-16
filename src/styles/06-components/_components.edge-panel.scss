@@ -349,3 +349,104 @@
     transform: translateY(100%);
   }
 }
+
+// Glass Variant Styles
+.c-edge-panel--glass {
+  position: absolute;
+  z-index: unset;
+
+  .c-edge-panel__container {
+    background: transparent;
+    box-shadow: none;
+    overflow: hidden;
+    border: none;
+    padding: 0;
+    z-index: unset;
+    will-change: initial;
+    transform: none !important;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .c-edge-panel__glass-content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+    padding: 0;
+    border-radius: inherit;
+    transition: opacity 0.3s ease;
+  }
+
+  .c-edge-panel__header {
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
+    padding: var(--#{$prefix}edge-panel-padding-y) var(--#{$prefix}edge-panel-padding-x);
+  }
+
+  .c-edge-panel__body {
+    background: transparent;
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--#{$prefix}edge-panel-padding-y) var(--#{$prefix}edge-panel-padding-x);
+  }
+
+  .c-edge-panel__close {
+    background: rgba(255, 255, 255, 0.05);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    &:focus-visible {
+      outline-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  .c-edge-panel__backdrop {
+    animation: fadeIn 0.3s ease forwards;
+    z-index: 0;
+
+    &.is-animating-out {
+      animation: fadeOut 0.3s ease forwards;
+    }
+  }
+
+  // Remove borders for glass variant on all positions
+  &.c-edge-panel--start .c-edge-panel__glass-wrapper {
+    animation: slideInStart 0.3s ease forwards;
+
+    &.is-animating-out {
+      animation: slideOutStart 0.3s ease forwards;
+    }
+  }
+
+  &.c-edge-panel--end .c-edge-panel__glass-wrapper {
+    animation: slideInEnd 0.3s ease forwards;
+
+    &.is-animating-out {
+      animation: slideOutEnd 0.3s ease forwards;
+    }
+  }
+
+  &.c-edge-panel--top .c-edge-panel__glass-wrapper {
+    animation: slideInTop 0.3s ease forwards;
+  }
+
+  &.c-edge-panel--bottom .c-edge-panel__glass-wrapper {
+    animation: slideInBottom 0.3s ease forwards;
+  }
+
+  &.c-edge-panel--bottom .c-edge-panel__container, &.c-edge-panel--top .c-edge-panel__container {
+    width: 100vw;
+    height: auto;
+  }
+
+  &.c-edge-panel--bottom .c-edge-panel__glass-content, &.c-edge-panel--top .c-edge-panel__glass-content {
+    width: 100vw;
+    height: auto;
+  }
+}
