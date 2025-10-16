@@ -10,20 +10,20 @@
     mask-composite: exclude;
     box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35);
     padding: 1.5px;
-    position: var(--atomix-glass-position, absolute);
-    top: var(--atomix-glass-top, 0);
-    left: var(--atomix-glass-left, 0);
-    width: var(--atomix-glass-width);
-    height: var(--atomix-glass-height);
-    border-radius: var(--atomix-glass-radius);
-    transform: var(--atomix-glass-transform);
-    transition: var(--atomix-glass-transition);
+    position: var(--glass-position, absolute);
+    top: var(--glass-top, 0);
+    left: var(--glass-left, 0);
+    width: var(--glass-width);
+    height: var(--glass-height);
+    border-radius: var(--glass-radius);
+    transform: var(--glass-transform);
+    transition: var(--glass-transition);
     transition-property: transform;
     background: linear-gradient(
-      calc(135deg + var(--atomix-glass-mouse-x, 0) * 1.2deg),
+      calc(135deg + var(--mouse-x, 0) * 1.2deg),
       rgba(255, 255, 255, 0.0) 0%,
-      rgba(255, 255, 255, calc(0.12 + abs(var(--atomix-glass-mouse-x, 0)) * 0.008)) clamp(10%, calc(33% + var(--atomix-glass-mouse-y, 0) * 0.3%), 100%),
-      rgba(255, 255, 255, calc(0.4 + abs(var(--atomix-glass-mouse-x, 0)) * 0.012)) clamp(0%, calc(66% + var(--atomix-glass-mouse-y, 0) * 0.4%), 90%),
+      rgba(255, 255, 255, calc(0.12 + abs(var(--mouse-x, 0)) * 0.008)) clamp(10%, calc(33% + var(--mouse-y, 0) * 0.3%), 100%),
+      rgba(255, 255, 255, calc(0.4 + abs(var(--mouse-x, 0)) * 0.012)) clamp(0%, calc(66% + var(--mouse-y, 0) * 0.4%), 90%),
       rgba(255, 255, 255, 0.0) 100%
     );
   }
@@ -39,20 +39,20 @@
     box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset, 0 1px 4px rgba(0, 0, 0, 0.35);
     padding: 1.5px;
     overflow: hidden;
-    position: var(--atomix-glass-position, absolute);
-    top: var(--atomix-glass-top, 0);
-    left: var(--atomix-glass-left, 0);
-    width: var(--atomix-glass-width);
-    height: var(--atomix-glass-height);
-    border-radius: var(--atomix-glass-radius);
-    transform: var(--atomix-glass-transform);
-    transition: var(--atomix-glass-transition);
+    position: var(--glass-position, absolute);
+    top: var(--glass-top, 0);
+    left: var(--glass-left, 0);
+    width: var(--glass-width);
+    height: var(--glass-height);
+    border-radius: var(--glass-radius);
+    transform: var(--glass-transform);
+    transition: var(--glass-transition);
     transition-property: transform;
     background: linear-gradient(
-      calc(135deg + var(--atomix-glass-mouse-x, 0) * 1.2deg),
+      calc(135deg + var(--mouse-x, 0) * 1.2deg),
       rgba(255, 255, 255, 0.0) 0%,
-      rgba(255, 255, 255, calc(0.32 + abs(var(--atomix-glass-mouse-x, 0)) * 0.008)) clamp(10%, calc(33% + var(--atomix-glass-mouse-y, 0) * 0.3%), 100%),
-      rgba(255, 255, 255, calc(0.6 + abs(var(--atomix-glass-mouse-x, 0)) * 0.012)) clamp(0%, calc(66% + var(--atomix-glass-mouse-y, 0) * 0.4%), 90%),
+      rgba(255, 255, 255, calc(0.32 + abs(var(--mouse-x, 0)) * 0.008)) clamp(10%, calc(33% + var(--mouse-y, 0) * 0.3%), 100%),
+      rgba(255, 255, 255, calc(0.6 + abs(var(--mouse-x, 0)) * 0.012)) clamp(0%, calc(66% + var(--mouse-y, 0) * 0.4%), 90%),
       rgba(255, 255, 255, 0.0) 100%
     );
   }
@@ -61,13 +61,19 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    border-radius: var(--atomix-glass-radius);
-    transform: var(--atomix-glass-transform);
-    transition: var(--atomix-glass-transition);
+    border-radius: var(--glass-radius);
+    transform: var(--glass-transform);
+    transition: var(--glass-transition);
     transition-property: transform, opacity;
-    opacity: var(--atomix-glass-hover-opacity, 0);
-    background: var(--atomix-glass-hover-bg);
-    mix-blend-mode: var(--atomix-glass-hover-blend);
+    opacity: var(--hover-opacity, 0);
+    mix-blend-mode: var(--hover-blend);
+    
+    background: radial-gradient(
+      circle at calc(50% + var(--mouse-x-half, 0) * 1%) calc(50% + var(--mouse-y-half, 0) * 1%),
+      rgba(calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(0.5 - var(--is-over-light, 0) * 0.3)) 0%,
+      rgba(calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(0.05 * var(--is-over-light, 0))) 30%,
+      transparent calc(50% + var(--is-over-light, 0) * 10%)
+    );
   }
 
   &__hover-effect-2 {
@@ -75,58 +81,82 @@
     inset: 0;
     pointer-events: none;
     overflow: hidden;
-    border-radius: var(--atomix-glass-radius);
-    transform: var(--atomix-glass-transform);
-    transition: var(--atomix-glass-transition);
+    border-radius: var(--glass-radius);
+    transform: var(--glass-transform);
+    transition: var(--glass-transition);
     transition-property: transform, opacity;
-    opacity: var(--atomix-glass-active-opacity, 0);
-    background: var(--atomix-glass-active-bg);
-    mix-blend-mode: var(--atomix-glass-active-blend);
+    opacity: var(--active-opacity, 0);
+    mix-blend-mode: var(--hover-blend);
+    
+    background: radial-gradient(
+      circle at calc(50% + var(--mouse-x-third, 0) * 1%) calc(50% + var(--mouse-y-third, 0) * 1%),
+      rgba(calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(1 - var(--is-over-light, 0) * 0.7)) 0%,
+      rgba(calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(0.1 * var(--is-over-light, 0))) 40%,
+      transparent 80%
+    );
   }
 
   &__hover-effect-3 {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    border-radius: var(--atomix-glass-radius);
-    transform: var(--atomix-glass-transform);
-    transition: var(--atomix-glass-transition);
+    border-radius: var(--glass-radius);
+    transform: var(--glass-transform);
+    transition: var(--glass-transition);
     transition-property: transform, opacity;
-    opacity: var(--atomix-glass-hover-active-opacity, 0);
-    background: var(--atomix-glass-hover-active-bg);
-    mix-blend-mode: var(--atomix-glass-hover-active-blend);
+    opacity: var(--hover-active-opacity, 0);
+    mix-blend-mode: var(--hover-blend);
+    
+    background: radial-gradient(
+      circle at calc(50% + var(--mouse-x, 0) * 1%) calc(50% + var(--mouse-y, 0) * 1%),
+      rgba(calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(1 - var(--is-over-light, 0) * 0.6)) 0%,
+      rgba(calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(0.1 * var(--is-over-light, 0))) 50%,
+      transparent 100%
+    );
   }
 
   &__base-layer {
     pointer-events: none;
     will-change: transform, opacity;
-    position: var(--atomix-glass-position, absolute);
-    top: var(--atomix-glass-top, 0);
-    left: var(--atomix-glass-left, 0);
-    width: var(--atomix-glass-width);
-    height: var(--atomix-glass-height);
-    border-radius: var(--atomix-glass-radius);
-    transform: var(--atomix-glass-transform);
-    transition: var(--atomix-glass-transition);
+    position: var(--glass-position, absolute);
+    top: var(--glass-top, 0);
+    left: var(--glass-left, 0);
+    width: var(--glass-width);
+    height: var(--glass-height);
+    border-radius: var(--glass-radius);
+    transform: var(--glass-transform);
+    transition: var(--glass-transition);
     transition-property: transform, opacity;
-    background: var(--atomix-glass-base-bg);
-    opacity: var(--atomix-glass-base-opacity, 0);
+    opacity: var(--base-opacity, 0);
+    
+    background: linear-gradient(
+      135deg,
+      rgba(calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(0.1 + var(--is-over-light, 0) * 0.02)) 0%,
+      rgba(calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(0.08 + var(--is-over-light, 0) * 0.04)) 50%,
+      rgba(calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(0.15 + var(--is-over-light, 0) * 0.03)) 100%
+    );
   }
 
   &__overlay-layer {
     pointer-events: none;
     mix-blend-mode: overlay;
     will-change: transform, opacity;
-    position: var(--atomix-glass-position, absolute);
-    top: var(--atomix-glass-top, 0);
-    left: var(--atomix-glass-left, 0);
-    width: var(--atomix-glass-width);
-    height: var(--atomix-glass-height);
-    border-radius: var(--atomix-glass-radius);
-    transform: var(--atomix-glass-transform);
-    transition: var(--atomix-glass-transition);
+    position: var(--glass-position, absolute);
+    top: var(--glass-top, 0);
+    left: var(--glass-left, 0);
+    width: var(--glass-width);
+    height: var(--glass-height);
+    border-radius: var(--glass-radius);
+    transform: var(--glass-transform);
+    transition: var(--glass-transition);
     transition-property: transform, opacity;
-    background: var(--atomix-glass-overlay-bg);
-    opacity: var(--atomix-glass-overlay-opacity, 0);
+    opacity: var(--overlay-opacity, 0);
+    
+    background: radial-gradient(
+      circle at calc(50% + var(--mouse-x, 0) * 0.5%) calc(50% + var(--mouse-y, 0) * 0.5%),
+      rgba(calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(0.08 + var(--is-over-light, 0) * 0.04)) 0%,
+      rgba(calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), 0.04) 40%,
+      rgba(calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(255 * (1 - var(--is-over-light, 0))), calc(0.12 + var(--is-over-light, 0) * 0.03)) 100%
+    );
   }
 }

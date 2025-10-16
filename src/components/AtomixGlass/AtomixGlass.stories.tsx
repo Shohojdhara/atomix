@@ -754,7 +754,7 @@ export const Playground: Story = {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [settings, setSettings] = useState({
       displacementScale: 120,
-      blurAmount: 0,
+      blurAmount: 1,
       saturation: 140,
       aberrationIntensity: 2,
       elasticity: 0.15,
@@ -776,7 +776,7 @@ export const Playground: Story = {
         icon: '🌿',
         settings: {
           displacementScale: 40,
-          blurAmount: 0,
+          blurAmount: .5,
           saturation: 110,
           aberrationIntensity: 0.5,
           elasticity: 0.05,
@@ -790,7 +790,7 @@ export const Playground: Story = {
         icon: '⚖️',
         settings: {
           displacementScale: 120,
-          blurAmount: 0,
+          blurAmount: 1,
           saturation: 140,
           aberrationIntensity: 2,
           elasticity: 0.15,
@@ -804,7 +804,7 @@ export const Playground: Story = {
         icon: '💎',
         settings: {
           displacementScale: 180,
-          blurAmount: 0,
+          blurAmount: 1.5,
           saturation: 170,
           aberrationIntensity: 3.5,
           elasticity: 0.25,
@@ -818,7 +818,7 @@ export const Playground: Story = {
         icon: '🎭',
         settings: {
           displacementScale: 200,
-          blurAmount: 0,
+          blurAmount: 1,
           saturation: 200,
           aberrationIntensity: 5,
           elasticity: 0.35,
@@ -877,7 +877,7 @@ export const Playground: Story = {
         100,
         100 -
           settings.displacementScale * 0.15 -
-          Math.abs(settings.blurAmount) * 20 -
+          Math.abs(settings.blurAmount) * 2 -
           settings.aberrationIntensity * 3 -
           settings.elasticity * 20
       )
@@ -1036,7 +1036,7 @@ export const Playground: Story = {
                 ) : (
                   <input
                     type="range"
-                    min={key === 'blurAmount' ? -1 : 0}
+                    min={0}
                     max={
                       key === 'displacementScale'
                         ? 200
@@ -1046,7 +1046,9 @@ export const Playground: Story = {
                             ? 10
                             : key === 'cornerRadius'
                               ? 100
-                              : 1
+                              : key === 'blurAmount'
+                                ? 10
+                                : 1
                     }
                     step={
                       key === 'aberrationIntensity' || key === 'elasticity' || key === 'blurAmount'

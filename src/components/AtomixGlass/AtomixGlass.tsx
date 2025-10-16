@@ -1125,57 +1125,62 @@ export function AtomixGlass({
           : Math.max(glassSize.height, 0),
   };
 
-  const cssVars = useMemo(() => ({
-    '--atomix-glass-position': positionStyles.position,
-    '--atomix-glass-top': positionStyles.top,
-    '--atomix-glass-left': positionStyles.left,
-    '--atomix-glass-width': adjustedSize.width,
-    '--atomix-glass-height': adjustedSize.height,
-    '--atomix-glass-radius': `${Math.max(0, cornerRadius)}px`,
-    '--atomix-glass-transform': baseStyle.transform,
-    '--atomix-glass-transition': effectiveReducedMotion ? 'none' : baseStyle.transition,
-    '--atomix-glass-mouse-x': mouseOffset.x,
-    '--atomix-glass-mouse-y': mouseOffset.y,
-  } as React.CSSProperties), [positionStyles, adjustedSize, cornerRadius, baseStyle, effectiveReducedMotion, mouseOffset]);
-
-
-
-  const hoverVars = useMemo(() => {
-    const isOverLight = overLightConfig?.isOverLight;
+  // Single memoized CSS variables object - consolidates all style calculations
+  const cssVars = useMemo(() => {
+    const isOverLight = overLightConfig?.isOverLight ?? false;
+    
     return {
-      '--atomix-glass-hover-opacity': isHovered || isActive ? (isOverLight ? 0.3 : 0.5) : 0,
-      '--atomix-glass-hover-bg': isOverLight
-        ? `radial-gradient(circle at ${50 + mouseOffset.x / 2}% ${50 + mouseOffset.y / 2}%, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.05) 30%, rgba(0, 0, 0, 0) 60%)`
-        : `radial-gradient(circle at ${50 + mouseOffset.x / 2}% ${50 + mouseOffset.y / 2}%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 50%)`,
-      '--atomix-glass-hover-blend': isOverLight ? 'multiply' : 'overlay',
+      // Position vars
+      '--glass-position': positionStyles.position,
+      '--glass-top': `${positionStyles.top}px`,
+      '--glass-left': `${positionStyles.left}px`,
+      
+      // Base layout vars
+      '--glass-width':  baseStyle.position !== 'fixed' ? adjustedSize.width :   `${adjustedSize.width}px`,
+      '--glass-height':  baseStyle.position !== 'fixed' ? adjustedSize.height :  `${adjustedSize.height}px`,
+      '--glass-radius': `${cornerRadius}px`,
+      '--glass-transform': baseStyle.transform,
+      '--glass-transition': effectiveReducedMotion ? 'none' : baseStyle.transition,
+      
+      // Mouse position (normalized values for CSS calc)
+      '--mouse-x': mouseOffset.x,
+      '--mouse-y': mouseOffset.y,
+      '--mouse-x-half': mouseOffset.x / 2,
+      '--mouse-x-third': mouseOffset.x / 1.5,
+      
+      // State flags (0 or 1 for CSS calculations)
+      '--is-hovered': isHovered ? 1 : 0,
+      '--is-active': isActive ? 1 : 0,
+      '--is-over-light': isOverLight ? 1 : 0,
+      
+      // Opacity values
+      '--hover-opacity': isHovered || isActive ? (isOverLight ? 0.3 : 0.5) : 0,
+      '--active-opacity': isActive ? (isOverLight ? 0.4 : 0.5) : 0,
+      '--hover-active-opacity': isHovered ? (isOverLight ? 0.25 : 0.4) : isActive ? (isOverLight ? 0.5 : 0.8) : 0,
+      
+      // Blend modes
+      '--hover-blend': isOverLight ? 'multiply' : 'overlay',
+      
+      // Base layer values
+      '--base-opacity': isOverLight ? overLightConfig.opacity : 0,
+      '--overlay-opacity': isOverLight ? overLightConfig.opacity * 0.9 : 0,
     } as React.CSSProperties;
-  }, [isHovered, isActive, mouseOffset, overLightConfig]);
-
-  const activeVars = useMemo(() => {
-    const isOverLight = overLightConfig?.isOverLight;
-    return {
-      '--atomix-glass-active-opacity': isActive ? (isOverLight ? 0.4 : 0.5) : 0,
-      '--atomix-glass-active-bg': isOverLight
-        ? `radial-gradient(circle at ${50 + mouseOffset.x / 1.5}% ${50 + mouseOffset.y / 1.5}%, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0) 80%)`
-        : `radial-gradient(circle at ${50 + mouseOffset.x / 1.5}% ${50 + mouseOffset.y / 1.5}%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 80%)`,
-      '--atomix-glass-active-blend': isOverLight ? 'multiply' : 'overlay',
-    } as React.CSSProperties;
-  }, [isActive, mouseOffset, overLightConfig]);
-
-  const hoverActiveVars = useMemo(() => {
-    const isOverLight = overLightConfig?.isOverLight;
-    return {
-      '--atomix-glass-hover-active-opacity': isHovered ? (isOverLight ? 0.25 : 0.4) : isActive ? (isOverLight ? 0.5 : 0.8) : 0,
-      '--atomix-glass-hover-active-bg': isOverLight
-        ? `radial-gradient(circle at ${50 + mouseOffset.x}% ${50 + mouseOffset.y}%, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0) 100%)`
-        : `radial-gradient(circle at ${50 + mouseOffset.x}% ${50 + mouseOffset.y}%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%)`,
-      '--atomix-glass-hover-active-blend': isOverLight ? 'multiply' : 'overlay',
-    } as React.CSSProperties;
-  }, [isHovered, isActive, mouseOffset, overLightConfig]);
+  }, [
+    positionStyles,
+    adjustedSize,
+    cornerRadius,
+    baseStyle,
+    effectiveReducedMotion,
+    mouseOffset,
+    isHovered,
+    isActive,
+    overLightConfig,
+  ]);
 
   return (
     <div
-      style={{ ...positionStyles, position: 'relative' }}
+      className="atomix-glass"
+      style={{ ...positionStyles, position: 'relative', ...cssVars }}
       role={role || (onClick ? 'button' : undefined)}
       tabIndex={onClick ? (tabIndex ?? 0) : tabIndex}
       aria-label={ariaLabel}
@@ -1245,36 +1250,18 @@ export function AtomixGlass({
       >
         {children}
       </GlassContainer>
-      <span className="atomix-glass__border-layer-1" style={cssVars} />
-      <span className="atomix-glass__border-layer-2" style={cssVars} />
+      <span className="atomix-glass__border-layer-1" />
+      <span className="atomix-glass__border-layer-2" />
 
       {Boolean(onClick) && (
         <>
-          <div className="atomix-glass__hover-effect-1" style={{ ...cssVars, ...hoverVars }} />
-          <div className="atomix-glass__hover-effect-2" style={{ ...cssVars, ...activeVars }} />
-          <div className="atomix-glass__hover-effect-3" style={{ ...cssVars, ...hoverActiveVars }} />
+          <div className="atomix-glass__hover-effect-1" />
+          <div className="atomix-glass__hover-effect-2" />
+          <div className="atomix-glass__hover-effect-3" />
         </>
       )}
-      <div
-        className="atomix-glass__base-layer"
-        style={{
-          ...cssVars,
-          '--atomix-glass-base-bg': overLightConfig.isOverLight
-            ? `linear-gradient(135deg, rgba(0, 0, 0, ${0.12 + mouseOffset.x * 0.002}) 0%, rgba(0, 0, 0, ${0.08 + mouseOffset.y * 0.001}) 50%, rgba(0, 0, 0, ${0.15 + Math.abs(mouseOffset.x) * 0.003}) 100%)`
-            : 'rgba(255, 255, 255, 0.1)',
-          '--atomix-glass-base-opacity': overLightConfig.isOverLight ? overLightConfig.opacity : 0,
-        } as React.CSSProperties}
-      />
-      <div
-        className="atomix-glass__overlay-layer"
-        style={{
-          ...cssVars,
-          '--atomix-glass-overlay-bg': overLightConfig.isOverLight
-            ? `radial-gradient(circle at ${50 + mouseOffset.x * 0.5}% ${50 + mouseOffset.y * 0.5}%, rgba(0, 0, 0, ${0.08 + Math.abs(mouseOffset.x) * 0.002}) 0%, rgba(0, 0, 0, 0.04) 40%, rgba(0, 0, 0, ${0.12 + Math.abs(mouseOffset.y) * 0.002}) 100%)`
-            : 'rgba(255, 255, 255, 0.05)',
-          '--atomix-glass-overlay-opacity': overLightConfig.isOverLight ? overLightConfig.opacity * 0.9 : 0,
-        } as React.CSSProperties}
-      />
+      <div className="atomix-glass__base-layer" />
+      <div className="atomix-glass__overlay-layer" />
     </div>
   );
 }
