@@ -85,27 +85,6 @@ const validateGlassSize = (size: GlassSize): boolean => {
   );
 };
 
-const generateShaderDisplacementMap = (
-  width: number,
-  height: number,
-  mousePosition?: MousePosition
-): string => {
-  try {
-    const generator = new ShaderDisplacementGenerator({
-      width,
-      height,
-      fragment: fragmentShaders.liquidGlass,
-    });
-
-    const dataUrl = generator.updateShader(mousePosition);
-    generator.destroy();
-
-    return dataUrl;
-  } catch (error) {
-    console.warn('AtomixGlass: Failed to generate shader displacement map:', error);
-    return displacementMap;
-  }
-};
 
 const getDisplacementMap = (mode: DisplacementMode, shaderMapUrl?: string): string => {
   switch (mode) {
@@ -554,6 +533,8 @@ interface AtomixGlassProps {
   highContrast?: boolean;
   disableEffects?: boolean;
   enableLiquidBlur?: boolean;
+  enableBorderEffect?: boolean;
+  enableOverLightLayers?: boolean;
 
   // Performance monitoring
   enablePerformanceMonitoring?: boolean;
@@ -596,6 +577,8 @@ export function AtomixGlass({
   highContrast = false,
   disableEffects = false,
   enableLiquidBlur = false,
+  enableBorderEffect = false,
+  enableOverLightLayers = false,
 
   enablePerformanceMonitoring = false,
 }: AtomixGlassProps) {
@@ -1132,7 +1115,8 @@ export function AtomixGlass({
   // Single memoized CSS variables object - consolidates all style calculations
   const cssVars = useMemo(() => {
     const isOverLight = overLightConfig?.isOverLight ?? false;
-    
+    enableOverLightLayers = isOverLight;
+
     return {
       // Position vars
       '--glass-position': positionStyles.position,
@@ -1255,8 +1239,12 @@ export function AtomixGlass({
       >
         {children}
       </GlassContainer>
-      <span className="atomix-glass__border-layer-1" />
-      <span className="atomix-glass__border-layer-2" />
+      {enableBorderEffect && (
+        <>
+          <span className="atomix-glass__border-layer-1" />
+          <span className="atomix-glass__border-layer-2" />
+        </>
+      )}
 
       {Boolean(onClick) && (
         <>
@@ -1265,8 +1253,12 @@ export function AtomixGlass({
           <div className="atomix-glass__hover-effect-3" />
         </>
       )}
-      <div className="atomix-glass__base-layer" />
-      <div className="atomix-glass__overlay-layer" />
+      {enableOverLightLayers && (
+        <>
+          <div className="atomix-glass__base-layer" />
+          <div className="atomix-glass__overlay-layer" />
+        </>
+      )}
     </div>
   );
 }
