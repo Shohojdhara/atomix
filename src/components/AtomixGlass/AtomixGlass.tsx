@@ -577,7 +577,7 @@ export function AtomixGlass({
   highContrast = false,
   disableEffects = false,
   enableLiquidBlur = false,
-  enableBorderEffect = false,
+  enableBorderEffect = true,
   enableOverLightLayers = false,
 
   enablePerformanceMonitoring = false,
@@ -1112,63 +1112,40 @@ export function AtomixGlass({
           : Math.max(glassSize.height, 0),
   };
 
-  // Single memoized CSS variables object - consolidates all style calculations
-  const cssVars = useMemo(() => {
+  const glassVars = useMemo(() => {
     const isOverLight = overLightConfig?.isOverLight ?? false;
-    enableOverLightLayers = isOverLight;
-
+    const mx = mouseOffset.x;
+    const my = mouseOffset.y;
+    
     return {
-      // Position vars
-      '--glass-position': positionStyles.position,
-      '--glass-top': `${positionStyles.top}px`,
-      '--glass-left': `${positionStyles.left}px`,
-      
-      // Base layout vars
-      '--glass-width':  baseStyle.position !== 'fixed' ? adjustedSize.width :   `${adjustedSize.width}px`,
-      '--glass-height':  baseStyle.position !== 'fixed' ? adjustedSize.height :  `${adjustedSize.height}px`,
-      '--glass-radius': `${cornerRadius}px`,
-      '--glass-transform': baseStyle.transform,
-      '--glass-transition': effectiveReducedMotion ? 'none' : baseStyle.transition,
-      
-      // Mouse position (normalized values for CSS calc)
-      '--mouse-x': mouseOffset.x,
-      '--mouse-y': mouseOffset.y,
-      '--mouse-x-half': mouseOffset.x / 2,
-      '--mouse-x-third': mouseOffset.x / 1.5,
-      
-      // State flags (0 or 1 for CSS calculations)
-      '--is-hovered': isHovered ? 1 : 0,
-      '--is-active': isActive ? 1 : 0,
-      '--is-over-light': isOverLight ? 1 : 0,
-      
-      // Opacity values
-      '--hover-opacity': isHovered || isActive ? (isOverLight ? 0.3 : 0.5) : 0,
-      '--active-opacity': isActive ? (isOverLight ? 0.4 : 0.5) : 0,
-      '--hover-active-opacity': isHovered ? (isOverLight ? 0.25 : 0.4) : isActive ? (isOverLight ? 0.5 : 0.8) : 0,
-      
-      // Blend modes
-      '--hover-blend': isOverLight ? 'multiply' : 'overlay',
-      
-      // Base layer values
-      '--base-opacity': isOverLight ? overLightConfig.opacity : 0,
-      '--overlay-opacity': isOverLight ? overLightConfig.opacity * 0.9 : 0,
+      '--g-pos': positionStyles.position,
+      '--g-top': positionStyles.top !== 'fixed' ? `${positionStyles.top}px` : '0',
+      '--g-left': positionStyles.left !== 'fixed' ? `${positionStyles.left}px` : '0',
+      '--g-w': baseStyle.position !== 'fixed' ? adjustedSize.width : `${adjustedSize.width}px`,
+      '--g-h': baseStyle.position !== 'fixed' ? adjustedSize.height : `${adjustedSize.height}px`,
+      '--g-r': `${cornerRadius}px`,
+      '--g-t': baseStyle.transform,
+      '--g-tr': effectiveReducedMotion ? 'none' : baseStyle.transition,
+      '--g-blend': isOverLight ? 'multiply' : 'overlay',
+      '--g-b1': `linear-gradient(${135 + mx * 1.2}deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${0.12 + Math.abs(mx) * 0.008}) ${Math.max(10, 33 + my * 0.3)}%, rgba(255,255,255,${0.4 + Math.abs(mx) * 0.012}) ${Math.min(90, 66 + my * 0.4)}%, rgba(255,255,255,0) 100%)`,
+      '--g-b2': `linear-gradient(${135 + mx * 1.2}deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${0.32 + Math.abs(mx) * 0.008}) ${Math.max(10, 33 + my * 0.3)}%, rgba(255,255,255,${0.6 + Math.abs(mx) * 0.012}) ${Math.min(90, 66 + my * 0.4)}%, rgba(255,255,255,0) 100%)`,
+      '--g-h1-o': (isHovered || isActive) ? (isOverLight ? 0.3 : 0.5) : 0,
+      '--g-h1': isOverLight ? `radial-gradient(circle at ${50 + mx / 2}% ${50 + my / 2}%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0) 60%)` : `radial-gradient(circle at ${50 + mx / 2}% ${50 + my / 2}%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 50%)`,
+      '--g-h2-o': isActive ? (isOverLight ? 0.4 : 0.5) : 0,
+      '--g-h2': isOverLight ? `radial-gradient(circle at ${50 + mx / 1.5}% ${50 + my / 1.5}%, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0) 80%)` : `radial-gradient(circle at ${50 + mx / 1.5}% ${50 + my / 1.5}%, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 80%)`,
+      '--g-h3-o': isHovered ? (isOverLight ? 0.25 : 0.4) : isActive ? (isOverLight ? 0.5 : 0.8) : 0,
+      '--g-h3': isOverLight ? `radial-gradient(circle at ${50 + mx}% ${50 + my}%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)` : `radial-gradient(circle at ${50 + mx}% ${50 + my}%, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%)`,
+      '--g-base-o': isOverLight ? overLightConfig.opacity : 0,
+      '--g-base': isOverLight ? `linear-gradient(135deg, rgba(0,0,0,${0.12 + mx * 0.002}) 0%, rgba(0,0,0,${0.08 + my * 0.001}) 50%, rgba(0,0,0,${0.15 + Math.abs(mx) * 0.003}) 100%)` : 'rgba(255,255,255,0.1)',
+      '--g-over-o': isOverLight ? overLightConfig.opacity * 0.9 : 0,
+      '--g-over': isOverLight ? `radial-gradient(circle at ${50 + mx * 0.5}% ${50 + my * 0.5}%, rgba(0,0,0,${0.08 + Math.abs(mx) * 0.002}) 0%, rgba(0,0,0,0.04) 40%, rgba(0,0,0,${0.12 + Math.abs(my) * 0.002}) 100%)` : 'rgba(255,255,255,0.05)',
     } as React.CSSProperties;
-  }, [
-    positionStyles,
-    adjustedSize,
-    cornerRadius,
-    baseStyle,
-    effectiveReducedMotion,
-    mouseOffset,
-    isHovered,
-    isActive,
-    overLightConfig,
-  ]);
+  }, [positionStyles, adjustedSize, cornerRadius, baseStyle, effectiveReducedMotion, mouseOffset, isHovered, isActive, overLightConfig]);
 
   return (
     <div
       className="atomix-glass"
-      style={{ ...positionStyles, position: 'relative', ...cssVars }}
+      style={{ ...positionStyles, position: 'relative', ...glassVars }}
       role={role || (onClick ? 'button' : undefined)}
       tabIndex={onClick ? (tabIndex ?? 0) : tabIndex}
       aria-label={ariaLabel}
@@ -1188,10 +1165,7 @@ export function AtomixGlass({
       <GlassContainer
         ref={glassRef}
         className={className}
-        style={{
-          ...baseStyle,
-          transform: baseStyle.transform,
-        }}
+        style={baseStyle}
         cornerRadius={cornerRadius}
         displacementScale={
           effectiveDisableEffects
@@ -1241,22 +1215,21 @@ export function AtomixGlass({
       </GlassContainer>
       {enableBorderEffect && (
         <>
-          <span className="atomix-glass__border-layer-1" />
-          <span className="atomix-glass__border-layer-2" />
+          <span className="atomix-glass__border-1" />
+          <span className="atomix-glass__border-2" />
         </>
       )}
-
       {Boolean(onClick) && (
         <>
-          <div className="atomix-glass__hover-effect-1" />
-          <div className="atomix-glass__hover-effect-2" />
-          <div className="atomix-glass__hover-effect-3" />
+          <div className="atomix-glass__hover-1" />
+          <div className="atomix-glass__hover-2" />
+          <div className="atomix-glass__hover-3" />
         </>
       )}
       {enableOverLightLayers && (
         <>
-          <div className="atomix-glass__base-layer" />
-          <div className="atomix-glass__overlay-layer" />
+          <div className="atomix-glass__base" />
+          <div className="atomix-glass__overlay" />
         </>
       )}
     </div>
