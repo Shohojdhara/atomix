@@ -1,14 +1,11 @@
 .atomix-glass {
   &__layer {
     pointer-events: none;
-    position: var(--g-pos, absolute);
-    top: var(--g-top, 0);
-    left: var(--g-left, 0);
-    width: var(--g-w);
-    height: var(--g-h);
-    border-radius: var(--g-r);
-    transform: var(--g-t);
-    transition: var(--g-tr);
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    transform: inherit;
+    transition: inherit;
   }
 
   &__border-1,
@@ -25,15 +22,11 @@
 
   &__border-1 {
     z-index: 5;
-    mix-blend-mode: var(--g-blend);
     opacity: 0.5;
-    background: var(--g-b1);
   }
 
   &__border-2 {
     z-index: 6;
-    mix-blend-mode: var(--g-blend);
-    background: var(--g-b2);
   }
 
   &__hover-1,
@@ -42,35 +35,30 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    border-radius: var(--g-r);
-    transform: var(--g-t);
-    transition: var(--g-tr);
+    border-radius: inherit;
+    transform: inherit;
+    transition: inherit;
     transition-property: transform, opacity;
-    mix-blend-mode: var(--g-blend);
   }
 
   &__hover-1 {
-    opacity: var(--g-h1-o, 0);
-    background: var(--g-h1);
+    opacity: 0;
   }
 
   &__hover-2 {
     overflow: hidden;
-    opacity: var(--g-h2-o, 0);
-    background: var(--g-h2);
+    opacity: 0;
   }
 
   &__hover-3 {
-    opacity: var(--g-h3-o, 0);
-    background: var(--g-h3);
+    opacity: 0;
   }
 
   &__base {
     @extend .atomix-glass__layer;
     will-change: transform;
     transition-property: transform, opacity;
-    opacity: var(--g-base-o, 0);
-    background: var(--g-base);
+    opacity: 0;
   }
 
   &__overlay {
@@ -78,7 +66,6 @@
     mix-blend-mode: overlay;
     will-change: transform;
     transition-property: transform, opacity;
-    opacity: var(--g-over-o, 0);
-    background: var(--g-over);
+    opacity: 0;
   }
 }

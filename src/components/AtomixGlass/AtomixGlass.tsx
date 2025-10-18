@@ -412,19 +412,49 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
       };
     }, [filterId, liquidBlur, saturation]);
 
+    const containerVars = useMemo(() => {
+      const mx = mouseOffset?.x || 0;
+      const my = mouseOffset?.y || 0;
+      const scopedId = `gc-${filterId.replace(/:/g, '')}`;
+      
+      return {
+        [`--${scopedId}-padding`]: padding,
+        [`--${scopedId}-radius`]: `${cornerRadius}px`,
+        [`--${scopedId}-backdrop`]: backdropStyle.backdropFilter,
+        [`--${scopedId}-shadow`]: overLight
+          ? [
+              `inset 0 1px 0 rgba(255, 255, 255, ${0.4 + mx * 0.002})`,
+              `inset 0 -1px 0 rgba(0, 0, 0, ${0.2 + Math.abs(my) * 0.001})`,
+              `inset 0 0 20px rgba(0, 0, 0, ${0.08 + Math.abs(mx + my) * 0.001})`,
+              `0 2px 12px rgba(0, 0, 0, ${0.12 + Math.abs(my) * 0.002})`,
+            ].join(', ')
+          : '0 0 20px rgba(0, 0, 0, 0.15) inset, 0 4px 8px rgba(0, 0, 0, 0.08) inset',
+        [`--${scopedId}-shadow-opacity`]: effectiveDisableEffects ? 0 : 1,
+        [`--${scopedId}-bg`]: overLight
+          ? `linear-gradient(${180 + mx * 0.5}deg, rgba(255, 255, 255, 0.1) 0%, transparent 20%, transparent 80%, rgba(0, 0, 0, 0.05) 100%)`
+          : 'none',
+        [`--${scopedId}-text-shadow`]: overLight
+          ? '0px 1px 3px rgba(0, 0, 0, 0.2), 0px 2px 8px rgba(0, 0, 0, 0.1)'
+          : '0px 2px 12px rgba(0, 0, 0, 0.4)',
+        '--gc-scoped-id': scopedId,
+      } as React.CSSProperties;
+    }, [filterId, padding, cornerRadius, backdropStyle, mouseOffset, overLight, effectiveDisableEffects]);
+
+    const scopedId = `gc-${filterId.replace(/:/g, '')}`;
+
     return (
       <div
         ref={ref}
         className={` ${className} ${active ? 'active' : ''}`}
-        style={style}
+        style={{ ...style, ...containerVars }}
         onClick={onClick}
       >
         <div
           className="atomix-glass"
           style={{
             position: 'relative',
-            padding,
-            borderRadius: `${cornerRadius}px`,
+            padding: `var(--${scopedId}-padding)`,
+            borderRadius: `var(--${scopedId}-radius)`,
           }}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -440,14 +470,12 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
           />
           <span
             className="atomix-glass__warp"
-            style={
-              {
-                ...backdropStyle,
-                borderRadius: `${cornerRadius}px`,
-                position: 'absolute',
-                inset: '0',
-              } as CSSProperties
-            }
+            style={{
+              backdropFilter: `var(--${scopedId}-backdrop)`,
+              borderRadius: `var(--${scopedId}-radius)`,
+              position: 'absolute',
+              inset: '0',
+            }}
           />
 
           {/* Enhanced Apple Liquid Glass Inner Shadow Layer */}
@@ -455,38 +483,18 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
             style={{
               position: 'absolute',
               inset: '1.5px',
-              borderRadius: `${cornerRadius}px`,
-              pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
-              boxShadow: overLight
-                ? [
-                    `inset 0 1px 0 rgba(255, 255, 255, ${0.4 + (mouseOffset?.x || 0) * 0.002})`,
-                    `inset 0 -1px 0 rgba(0, 0, 0, ${0.2 + Math.abs(mouseOffset?.y || 0) * 0.001})`,
-                    `inset 0 0 20px rgba(0, 0, 0, ${0.08 + Math.abs((mouseOffset?.x || 0) + (mouseOffset?.y || 0)) * 0.001})`,
-                    `0 2px 12px rgba(0, 0, 0, ${0.12 + Math.abs(mouseOffset?.y || 0) * 0.002})`,
-                  ].join(', ')
-                : [
-                    '0 0 20px rgba(0, 0, 0, 0.15) inset',
-                    '0 4px 8px rgba(0, 0, 0, 0.08) inset',
-                  ].join(', '),
-              opacity: effectiveDisableEffects ? 0 : 1,
-              // transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
-              background: overLight
-                ? `linear-gradient(${180 + (mouseOffset?.x || 0) * 0.5}deg,
-                    rgba(255, 255, 255, 0.1) 0%,
-                    transparent 20%,
-                    transparent 80%,
-                    rgba(0, 0, 0, 0.05) 100%)`
-                : 'none',
+              borderRadius: `var(--${scopedId}-radius)`,
+              pointerEvents: 'none',
+              boxShadow: `var(--${scopedId}-shadow)`,
+              opacity: `var(--${scopedId}-shadow-opacity)`,
+              background: `var(--${scopedId}-bg)`,
             }}
           />
 
           <div
             style={{
               position: 'relative',
-              textShadow: overLight
-                ? `0px 1px 3px rgba(0, 0, 0, 0.2), 0px 2px 8px rgba(0, 0, 0, 0.1)`
-                : '0px 2px 12px rgba(0, 0, 0, 0.4)',
-              // filter: overLight ? `brightness(${0.95}) contrast(${1.1})` : 'none',
+              textShadow: `var(--${scopedId}-text-shadow)`,
             }}
           >
             {children}
@@ -1110,35 +1118,40 @@ export function AtomixGlass({
           : Math.max(glassSize.height, 0),
   };
 
+  const glassId = useId();
   const glassVars = useMemo(() => {
     const isOverLight = overLightConfig?.isOverLight ?? false;
     const mx = mouseOffset.x;
     const my = mouseOffset.y;
+    const scopedId = `ag-${glassId.replace(/:/g, '')}`;
     
     return {
-      '--g-pos': positionStyles.position,
-      '--g-top': positionStyles.top !== 'fixed' ? `${positionStyles.top}px` : '0',
-      '--g-left': positionStyles.left !== 'fixed' ? `${positionStyles.left}px` : '0',
-      '--g-w': baseStyle.position !== 'fixed' ? adjustedSize.width : `${adjustedSize.width}px`,
-      '--g-h': baseStyle.position !== 'fixed' ? adjustedSize.height : `${adjustedSize.height}px`,
-      '--g-r': `${cornerRadius}px`,
-      '--g-t': baseStyle.transform,
-      '--g-tr': effectiveReducedMotion ? 'none' : baseStyle.transition,
-      '--g-blend': isOverLight ? 'multiply' : 'overlay',
-      '--g-b1': `linear-gradient(${135 + mx * 1.2}deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${0.12 + Math.abs(mx) * 0.008}) ${Math.max(10, 33 + my * 0.3)}%, rgba(255,255,255,${0.4 + Math.abs(mx) * 0.012}) ${Math.min(90, 66 + my * 0.4)}%, rgba(255,255,255,0) 100%)`,
-      '--g-b2': `linear-gradient(${135 + mx * 1.2}deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${0.32 + Math.abs(mx) * 0.008}) ${Math.max(10, 33 + my * 0.3)}%, rgba(255,255,255,${0.6 + Math.abs(mx) * 0.012}) ${Math.min(90, 66 + my * 0.4)}%, rgba(255,255,255,0) 100%)`,
-      '--g-h1-o': (isHovered || isActive) ? (isOverLight ? 0.3 : 0.5) : 0,
-      '--g-h1': isOverLight ? `radial-gradient(circle at ${50 + mx / 2}% ${50 + my / 2}%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0) 60%)` : `radial-gradient(circle at ${50 + mx / 2}% ${50 + my / 2}%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 50%)`,
-      '--g-h2-o': isActive ? (isOverLight ? 0.4 : 0.5) : 0,
-      '--g-h2': isOverLight ? `radial-gradient(circle at ${50 + mx / 1.5}% ${50 + my / 1.5}%, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0) 80%)` : `radial-gradient(circle at ${50 + mx / 1.5}% ${50 + my / 1.5}%, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 80%)`,
-      '--g-h3-o': isHovered ? (isOverLight ? 0.25 : 0.4) : isActive ? (isOverLight ? 0.5 : 0.8) : 0,
-      '--g-h3': isOverLight ? `radial-gradient(circle at ${50 + mx}% ${50 + my}%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)` : `radial-gradient(circle at ${50 + mx}% ${50 + my}%, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%)`,
-      '--g-base-o': isOverLight ? overLightConfig.opacity : 0,
-      '--g-base': isOverLight ? `linear-gradient(135deg, rgba(0,0,0,${0.12 + mx * 0.002}) 0%, rgba(0,0,0,${0.08 + my * 0.001}) 50%, rgba(0,0,0,${0.15 + Math.abs(mx) * 0.003}) 100%)` : 'rgba(255,255,255,0.1)',
-      '--g-over-o': isOverLight ? overLightConfig.opacity * 0.9 : 0,
-      '--g-over': isOverLight ? `radial-gradient(circle at ${50 + mx * 0.5}% ${50 + my * 0.5}%, rgba(0,0,0,${0.08 + Math.abs(mx) * 0.002}) 0%, rgba(0,0,0,0.04) 40%, rgba(0,0,0,${0.12 + Math.abs(my) * 0.002}) 100%)` : 'rgba(255,255,255,0.05)',
+      [`--${scopedId}-pos`]: positionStyles.position,
+      [`--${scopedId}-top`]: positionStyles.top !== 'fixed' ? `${positionStyles.top}px` : '0',
+      [`--${scopedId}-left`]: positionStyles.left !== 'fixed' ? `${positionStyles.left}px` : '0',
+      [`--${scopedId}-w`]: baseStyle.position !== 'fixed' ? adjustedSize.width : `${adjustedSize.width}px`,
+      [`--${scopedId}-h`]: baseStyle.position !== 'fixed' ? adjustedSize.height : `${adjustedSize.height}px`,
+      [`--${scopedId}-r`]: `${cornerRadius}px`,
+      [`--${scopedId}-t`]: baseStyle.transform,
+      [`--${scopedId}-tr`]: effectiveReducedMotion ? 'none' : baseStyle.transition,
+      [`--${scopedId}-blend`]: isOverLight ? 'multiply' : 'overlay',
+      [`--${scopedId}-b1`]: `linear-gradient(${135 + mx * 1.2}deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${0.12 + Math.abs(mx) * 0.008}) ${Math.max(10, 33 + my * 0.3)}%, rgba(255,255,255,${0.4 + Math.abs(mx) * 0.012}) ${Math.min(90, 66 + my * 0.4)}%, rgba(255,255,255,0) 100%)`,
+      [`--${scopedId}-b2`]: `linear-gradient(${135 + mx * 1.2}deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${0.32 + Math.abs(mx) * 0.008}) ${Math.max(10, 33 + my * 0.3)}%, rgba(255,255,255,${0.6 + Math.abs(mx) * 0.012}) ${Math.min(90, 66 + my * 0.4)}%, rgba(255,255,255,0) 100%)`,
+      [`--${scopedId}-h1-o`]: (isHovered || isActive) ? (isOverLight ? 0.3 : 0.5) : 0,
+      [`--${scopedId}-h1`]: isOverLight ? `radial-gradient(circle at ${50 + mx / 2}% ${50 + my / 2}%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0) 60%)` : `radial-gradient(circle at ${50 + mx / 2}% ${50 + my / 2}%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 50%)`,
+      [`--${scopedId}-h2-o`]: isActive ? (isOverLight ? 0.4 : 0.5) : 0,
+      [`--${scopedId}-h2`]: isOverLight ? `radial-gradient(circle at ${50 + mx / 1.5}% ${50 + my / 1.5}%, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0) 80%)` : `radial-gradient(circle at ${50 + mx / 1.5}% ${50 + my / 1.5}%, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 80%)`,
+      [`--${scopedId}-h3-o`]: isHovered ? (isOverLight ? 0.25 : 0.4) : isActive ? (isOverLight ? 0.5 : 0.8) : 0,
+      [`--${scopedId}-h3`]: isOverLight ? `radial-gradient(circle at ${50 + mx}% ${50 + my}%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)` : `radial-gradient(circle at ${50 + mx}% ${50 + my}%, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%)`,
+      [`--${scopedId}-base-o`]: isOverLight ? overLightConfig.opacity : 0,
+      [`--${scopedId}-base`]: isOverLight ? `linear-gradient(135deg, rgba(0,0,0,${0.12 + mx * 0.002}) 0%, rgba(0,0,0,${0.08 + my * 0.001}) 50%, rgba(0,0,0,${0.15 + Math.abs(mx) * 0.003}) 100%)` : 'rgba(255,255,255,0.1)',
+      [`--${scopedId}-over-o`]: isOverLight ? overLightConfig.opacity * 0.9 : 0,
+      [`--${scopedId}-over`]: isOverLight ? `radial-gradient(circle at ${50 + mx * 0.5}% ${50 + my * 0.5}%, rgba(0,0,0,${0.08 + Math.abs(mx) * 0.002}) 0%, rgba(0,0,0,0.04) 40%, rgba(0,0,0,${0.12 + Math.abs(my) * 0.002}) 100%)` : 'rgba(255,255,255,0.05)',
+      '--ag-scoped-id': scopedId,
     } as React.CSSProperties;
-  }, [positionStyles, adjustedSize, cornerRadius, baseStyle, effectiveReducedMotion, mouseOffset, isHovered, isActive, overLightConfig]);
+  }, [glassId, positionStyles, adjustedSize, cornerRadius, baseStyle, effectiveReducedMotion, mouseOffset, isHovered, isActive, overLightConfig]);
+
+  const scopedId = `ag-${glassId.replace(/:/g, '')}`;
 
   return (
     <div
@@ -1213,21 +1226,107 @@ export function AtomixGlass({
       </GlassContainer>
       {enableBorderEffect && (
         <>
-          <span className="atomix-glass__border-1" />
-          <span className="atomix-glass__border-2" />
+          <span
+            className="atomix-glass__border-1"
+            style={{
+              position: `var(--${scopedId}-pos)` as any,
+              top: `var(--${scopedId}-top)`,
+              left: `var(--${scopedId}-left)`,
+              width: `var(--${scopedId}-w)`,
+              height: `var(--${scopedId}-h)`,
+              borderRadius: `var(--${scopedId}-r)`,
+              transform: `var(--${scopedId}-t)`,
+              transition: `var(--${scopedId}-tr)`,
+              mixBlendMode: `var(--${scopedId}-blend)` as any,
+              background: `var(--${scopedId}-b1)`,
+            }}
+          />
+          <span
+            className="atomix-glass__border-2"
+            style={{
+              position: `var(--${scopedId}-pos)` as any,
+              top: `var(--${scopedId}-top)`,
+              left: `var(--${scopedId}-left)`,
+              width: `var(--${scopedId}-w)`,
+              height: `var(--${scopedId}-h)`,
+              borderRadius: `var(--${scopedId}-r)`,
+              transform: `var(--${scopedId}-t)`,
+              transition: `var(--${scopedId}-tr)`,
+              mixBlendMode: `var(--${scopedId}-blend)` as any,
+              background: `var(--${scopedId}-b2)`,
+            }}
+          />
         </>
       )}
       {Boolean(onClick) && (
         <>
-          <div className="atomix-glass__hover-1" />
-          <div className="atomix-glass__hover-2" />
-          <div className="atomix-glass__hover-3" />
+          <div
+            className="atomix-glass__hover-1"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: `var(--${scopedId}-r)`,
+              transform: `var(--${scopedId}-t)`,
+              transition: `var(--${scopedId}-tr)`,
+              mixBlendMode: `var(--${scopedId}-blend)` as any,
+              opacity: `var(--${scopedId}-h1-o)`,
+              background: `var(--${scopedId}-h1)`,
+            }}
+          />
+          <div
+            className="atomix-glass__hover-2"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: `var(--${scopedId}-r)`,
+              transform: `var(--${scopedId}-t)`,
+              transition: `var(--${scopedId}-tr)`,
+              mixBlendMode: `var(--${scopedId}-blend)` as any,
+              opacity: `var(--${scopedId}-h2-o)`,
+              background: `var(--${scopedId}-h2)`,
+            }}
+          />
+          <div
+            className="atomix-glass__hover-3"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: `var(--${scopedId}-r)`,
+              transform: `var(--${scopedId}-t)`,
+              transition: `var(--${scopedId}-tr)`,
+              mixBlendMode: `var(--${scopedId}-blend)` as any,
+              opacity: `var(--${scopedId}-h3-o)`,
+              background: `var(--${scopedId}-h3)`,
+            }}
+          />
         </>
       )}
       {enableOverLightLayers && (
         <>
-          <div className="atomix-glass__base" />
-          <div className="atomix-glass__overlay" />
+          <div
+            className="atomix-glass__base"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: `var(--${scopedId}-r)`,
+              transform: `var(--${scopedId}-t)`,
+              transition: `var(--${scopedId}-tr)`,
+              opacity: `var(--${scopedId}-base-o)`,
+              background: `var(--${scopedId}-base)`,
+            }}
+          />
+          <div
+            className="atomix-glass__overlay"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: `var(--${scopedId}-r)`,
+              transform: `var(--${scopedId}-t)`,
+              transition: `var(--${scopedId}-tr)`,
+              opacity: `var(--${scopedId}-over-o)`,
+              background: `var(--${scopedId}-over)`,
+            }}
+          />
         </>
       )}
     </div>

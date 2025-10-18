@@ -4164,7 +4164,7 @@ export const NewsletterSubscription: Story = {
     return (
       <BackgroundWrapper
         backgroundImage={
-          'https://images.unsplash.com/photo-1656873186004-f53c335fa348?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2532'
+          'https://images.unsplash.com/photo-1760715751401-02487fcd24b5?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1760'
         }
         overlay={false}
       >
