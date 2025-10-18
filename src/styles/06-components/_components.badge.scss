@@ -47,9 +47,9 @@
     @include dynamic-background(
       var(--#{$prefix}tag-bg-color),
       $background-transparency-enable: true,
-      $transparency: 0.8
+      $transparency: 0.2
     );
-    border: 1px solid color-mix(in srgb, var(--#{$prefix}tag-color) 20%, transparent);
+    border: 1px solid color-mix(in srgb, var(--#{$prefix}tag-color) 90%, transparent);
 
 
       // // Outer depth and glass effect
@@ -82,16 +82,3 @@
   }
 }
 
-.c-badge-glass {
-  box-shadow:
-    // Inner glow
-    inset 1px 2px 3px rgba(255, 255, 255, 0.1),
-    inset 0 -2px 2px rgba(0, 0, 0, 0.3);
-    // 0 1px 3px rgba(0, 0, 0, 0.2),
-    // 0 2px 8px rgba(0, 0, 0, 0.15),
-    // 0 4px 16px rgba(0, 0, 0, 0.1),
-    // Subtle highlight on top edge
-    // 0 -1px 0 rgba(255, 255, 255, 0.1);
-    border-radius: 999px;
-
-}

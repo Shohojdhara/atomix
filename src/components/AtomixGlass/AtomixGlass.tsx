@@ -420,7 +420,7 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
         onClick={onClick}
       >
         <div
-          className="glass"
+          className="atomix-glass"
           style={{
             position: 'relative',
             padding,
@@ -439,7 +439,7 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
             shaderMapUrl={shaderMapUrl}
           />
           <span
-            className="glass__warp"
+            className="atomix-glass__warp"
             style={
               {
                 ...backdropStyle,
@@ -454,10 +454,9 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
           <div
             style={{
               position: 'absolute',
-              inset: '1px',
+              inset: '1.5px',
               borderRadius: `${cornerRadius}px`,
               pointerEvents: 'none' as React.CSSProperties['pointerEvents'],
-              zIndex: 5,
               boxShadow: overLight
                 ? [
                     `inset 0 1px 0 rgba(255, 255, 255, ${0.4 + (mouseOffset?.x || 0) * 0.002})`,
@@ -484,7 +483,6 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
           <div
             style={{
               position: 'relative',
-              zIndex: 4,
               textShadow: overLight
                 ? `0px 1px 3px rgba(0, 0, 0, 0.2), 0px 2px 8px rgba(0, 0, 0, 0.1)`
                 : '0px 2px 12px rgba(0, 0, 0, 0.4)',

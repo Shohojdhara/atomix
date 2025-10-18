@@ -68,15 +68,13 @@ export const HeroExample: Story = {
             style={{ maxWidth: '900px' }}
             onClick={() => {}}
           >
-            <div style={{ padding: '60px 100px', color: 'white' }}>
-              <h1 style={{ marginTop: 0, fontSize: '2.5rem' }}>Modern Glass UI</h1>
-              <p style={{ fontSize: '1.2rem', marginBottom: '30px' }}>
+            <div className="u-p-6 u-text-white">
+              <h1 className="u-mt-0 u-fs-1 u-fw-bold">Modern Glass UI</h1>
+              <p className="u-fs-4 u-mb-4">
                 Create stunning interfaces with the AtomixGlass component. Perfect for modern, sleek
                 designs that stand out.
               </p>
-              <div
-                style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}
-              >
+              <div className="u-d-flex u-gap-3 u-justify-content-center u-flex-wrap">
                 <Button glass>Get Started</Button>
                 <Button glass variant={'light'}>
                   Learn More
@@ -367,8 +365,8 @@ export const DashboardCards: Story = {
             mode="standard"
             padding="20px 30px"
           >
-            <h1 style={{ margin: 0, fontSize: '32px', fontWeight: 700 }}>Analytics Dashboard</h1>
-            <p style={{ margin: '8px 0 0 0', opacity: 0.8, fontSize: '16px' }}>
+            <h1 className="u-m-0 u-fs-2 u-fw-bold">Analytics Dashboard</h1>
+            <p className="u-mt-2 u-mb-0 u-opacity-80 u-fs-6">
               Real-time performance metrics and insights
             </p>
           </AtomixGlass>
@@ -392,7 +390,7 @@ export const DashboardCards: Story = {
                     cornerRadius={16}
                     mode="standard"
                   >
-                    <div style={{ padding: '24px' }}>
+                    <div className="u-p-4">
                       <div
                         style={{
                           display: 'flex',
@@ -485,13 +483,12 @@ export const ProductCard: Story = {
         }
       >
         <AtomixGlass displacementScale={50} blurAmount={1.5} mode="standard" overLight={'auto'} elasticity={0}>
-          <div style={{ padding: '20px', width: '300px' }}>
+          <div className="u-p-3" style={{ width: '300px' }}>
             {/* Product Image */}
             <div
+              className="u-w-100 u-rounded-3"
               style={{
-                width: '100%',
                 height: '200px',
-                borderRadius: '12px',
                 background:
                   'linear-gradient(135deg,rgba(102, 126, 234, 0.42) 0%, rgba(118, 75, 162, 0.6) 100%)',
                 marginBottom: '24px',
@@ -524,46 +521,34 @@ export const ProductCard: Story = {
             </div>
 
             {/* Product Info */}
-            <h2 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: 700 }}>
+            <h2 className="u-m-0 u-mb-1 u-fs-6 u-fw-bold">
               Premium Cotton T-Shirt
             </h2>
-            <p style={{ margin: '0 0 8px 0', opacity: 0.7, fontSize: '12px' }}>
+            <p className="u-m-0 u-mb-2 u-opacity-70 u-fs-7">
               Ultra-soft fabric with a modern fit. Perfect for everyday wear.
             </p>
 
             {/* Price */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-              <span style={{ fontSize: '20px', fontWeight: 700, color: '#10b981' }}>$49.99</span>
-              <span
-                style={{
-                  fontSize: '20px',
-                  textDecoration: 'line-through',
-                  opacity: 0.5,
-                }}
-              >
+            <div className="u-d-flex u-align-items-center u-gap-2 u-mb-2">
+              <span className="u-fs-4 u-fw-bold u-text-success">$49.99</span>
+              <span className="u-fs-4 u-text-decoration-line-through u-opacity-50">
                 $71.99
               </span>
             </div>
 
             {/* Size Selection */}
-            <div style={{ marginBottom: '8px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  marginBottom: '10px',
-                }}
-              >
+            <div className="u-mb-2">
+              <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">
                 Select Size
               </label>
-              <div style={{ display: 'flex', gap: '8px' }}>
+              <div className="u-d-flex u-gap-2">
                 {sizes.map(size => (
                   <Button
                     key={size}
                     onClick={() => setSelectedSize(size)}
                     variant={selectedSize === size ? 'success' : 'outline-success'}
                     glass
+                    size="sm"
                   >
                     {size}
                   </Button>
@@ -572,19 +557,11 @@ export const ProductCard: Story = {
             </div>
 
             {/* Quantity */}
-            <div style={{ marginBottom: '8px' }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  marginBottom: '4px',
-                  color: 'white',
-                }}
-              >
+            <div className="u-mb-2">
+              <label className="u-d-block u-fs-7 u-fw-semibold u-mb-1 u-text-white">
                 Quantity
               </label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div className="u-d-flex u-align-items-center u-gap-2">
                 <Button onClick={() => setQuantity(Math.max(1, quantity - 1))} glass>
                   −
                 </Button>
@@ -696,19 +673,11 @@ export const NotificationCenter: Story = {
         }
       >
         <AtomixGlass displacementScale={70} blurAmount={1} elasticity={0} mode="prominent">
-          <div style={{ borderRadius: '16px', overflow: 'hidden',  color: 'var(--atomix-success-text-emphasis)', background: 'color-mix(in srgb, var(--atomix-success) 10%, transparent)' }}>
+          <div className="u-rounded-4 u-overflow-hidden u-text-success-emphasis" style={{ background: 'color-mix(in srgb, var(--atomix-success) 10%, transparent)' }}>
             {/* Header */}
-            <div
-              style={{
-                padding: '20px 24px',
-                borderBottom: '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 700 }}>Notifications</h2>
+            <div className="u-p-4 u-d-flex u-justify-content-between u-align-items-center" style={{ borderBottom: '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)' }}>
+              <div className="u-d-flex u-align-items-center u-gap-2">
+                <h2 className="u-m-0 u-fs-4 u-fw-bold">Notifications</h2>
                 {unreadCount > 0 && (
                   <span
                     style={{
@@ -743,7 +712,7 @@ export const NotificationCenter: Story = {
             </div>
 
             {/* Notifications List */}
-            <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+            <div className="u-overflow-y-auto" style={{ maxHeight: '500px' }}>
               {notifications.length === 0 ? (
                 <div
                   style={{
@@ -881,9 +850,9 @@ export const LoginForm: Story = {
             cornerRadius={24}
             mode="standard"
           >
-            <div style={{ padding: '24px', width: '350px' }}>
+            <div className="u-p-4" style={{ width: '350px' }}>
               {/* Logo/Header */}
-              <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+              <div className="u-text-center u-mb-5">
                 <div
                   style={{
                     width: '56px',
@@ -899,25 +868,18 @@ export const LoginForm: Story = {
                 >
                   <Icon name="Lock" />
                 </div>
-                <h2 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 700 }}>
+                <h2 className="u-m-0 u-mb-2 u-fs-3 u-fw-bold">
                   Welcome Back
                 </h2>
-                <p style={{ margin: 0, opacity: 0.7, fontSize: '14px' }}>
+                <p className="u-m-0 u-opacity-70 u-fs-7">
                   Sign in to continue to your account
                 </p>
               </div>
 
               {/* Form */}
               <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: '20px' }}>
-                  <label
-                    style={{
-                      display: 'block',
-                      fontSize: '12px',
-                      fontWeight: 600,
-                      marginBottom: '8px',
-                    }}
-                  >
+                <div className="u-mb-3">
+                  <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">
                     Email Address
                   </label>
                   <Input
@@ -932,15 +894,8 @@ export const LoginForm: Story = {
                   />
                 </div>
 
-                <div style={{ marginBottom: '20px' }}>
-                  <label
-                    style={{
-                      display: 'block',
-                      fontSize: '12px',
-                      fontWeight: 600,
-                      marginBottom: '8px',
-                    }}
-                  >
+                <div className="u-mb-3">
+                  <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">
                     Password
                   </label>
                   <Input
@@ -1149,7 +1104,7 @@ export const MusicPlayer: Story = {
           elasticity={0.01}
           mode="standard"
         >
-          <div style={{ padding: '16px', width: '350px' }}>
+          <div className="u-p-3" style={{ width: '350px' }}>
             {/* Album Art */}
             <AtomixGlass displacementScale={0} blurAmount={0} cornerRadius={20} mode="standard">
               <div
@@ -1170,11 +1125,11 @@ export const MusicPlayer: Story = {
               </div>
             </AtomixGlass>
             {/* Track Info */}
-            <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-              <h2 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 700 }}>
+            <div className="u-text-center u-mb-3">
+              <h2 className="u-m-0 u-mb-2 u-fs-3 u-fw-bold">
                 Summer Vibes
               </h2>
-              <p style={{ margin: 0, opacity: 0.7, fontSize: '16px' }}>The Atomix Band</p>
+              <p className="u-m-0 u-opacity-70 u-fs-6">The Atomix Band</p>
             </div>
 
             {/* Progress Bar */}
@@ -2349,15 +2304,15 @@ export const SettingsPanel: Story = {
         >
           <div style={{ padding: '32px' }}>
             {/* Header */}
-            <div style={{ marginBottom: '32px' }}>
-              <h2 style={{ margin: '0 0 8px 0', fontSize: '32px', fontWeight: 700 }}>Settings</h2>
-              <p style={{ margin: 0, fontSize: '15px', opacity: 0.7 }}>
+            <div className="u-mb-5">
+              <h2 className="u-m-0 u-mb-2 u-fs-2 u-fw-bold">Settings</h2>
+              <p className="u-m-0 u-fs-6 u-opacity-70">
                 Manage your account preferences and settings
               </p>
             </div>
 
             {/* General Section */}
-            <div style={{ marginBottom: '32px' }}>
+            <div className="u-mb-5">
               <h3
                 style={{
                   fontSize: '14px',
@@ -2512,7 +2467,7 @@ export const SettingsPanel: Story = {
             </div>
 
             {/* Notifications Section */}
-            <div style={{ marginBottom: '32px' }}>
+            <div className="u-mb-5">
               <h3
                 style={{
                   fontSize: '14px',
@@ -2617,7 +2572,7 @@ export const SettingsPanel: Story = {
             </div>
 
             {/* Action Buttons */}
-            <div style={{ display: 'flex', gap: '12px' }}>
+            <div className="u-d-flex u-gap-2">
               <button
                 onClick={handleSave}
                 style={{
@@ -3082,8 +3037,8 @@ export const SocialMediaPost: Story = {
         overlay={true}
       >
         <AtomixGlass
-          displacementScale={105}
-          blurAmount={4}
+          displacementScale={200}
+          blurAmount={5}
           cornerRadius={24}
           mode="standard"
           style={{ width: '450px' }}
@@ -3094,8 +3049,8 @@ export const SocialMediaPost: Story = {
               background: 'var(--atomix-primary-gradient)',
               position: 'absolute',
               inset: 0,
-              zIndex: -1,
-              opacity: 0.3,
+              zIndex: -6,
+              opacity: 0,
               borderRadius: 24,
             }}
           ></span>
@@ -3871,15 +3826,7 @@ export const PaymentForm: Story = {
           shaderVariant="premiumGlass"
           elasticity={0}
         >
-          <div
-            style={{
-              padding: '20px',
-              position: 'relative',
-              minWidth: '300px',
-              maxWidth: '400px',
-              borderRadius: '28px',
-            }}
-          >
+          <div className="u-p-3 u-position-relative u-rounded-5" style={{ minWidth: '300px', maxWidth: '400px' }}>
             <span
               style={{
                 position: 'absolute',
@@ -3890,10 +3837,10 @@ export const PaymentForm: Story = {
                 borderRadius: '28px',
               }}
             ></span>
-            <h2 style={{ margin: '0 0 6px 0', fontSize: '20px', fontWeight: 700 }}>
+            <h2 className="u-m-0 u-mb-1 u-fs-4 u-fw-bold">
               Payment Details
             </h2>
-            <p style={{ margin: '0 0 10px 0', fontSize: '14px', opacity: 0.7 }}>
+            <p className="u-m-0 u-mb-2 u-fs-7 u-opacity-70">
               Complete your purchase securely
             </p>
 
@@ -3974,16 +3921,9 @@ export const PaymentForm: Story = {
               </div>
             </AtomixGlass>
             {/* Form */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div className="u-d-flex u-flex-column u-gap-3">
               <div>
-                <label
-                  style={{
-                    display: 'block',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    marginBottom: '8px',
-                  }}
-                >
+                <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">
                   Card Number
                 </label>
                 <Input
@@ -4002,14 +3942,7 @@ export const PaymentForm: Story = {
               </div>
 
               <div>
-                <label
-                  style={{
-                    display: 'block',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    marginBottom: '8px',
-                  }}
-                >
+                <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">
                   Cardholder Name
                 </label>
                 <Input
@@ -4026,7 +3959,7 @@ export const PaymentForm: Story = {
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div className="u-d-grid u-gap-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
                 <div>
                   <label
                     style={{
@@ -4233,10 +4166,11 @@ export const NewsletterSubscription: Story = {
         backgroundImage={
           'https://images.unsplash.com/photo-1656873186004-f53c335fa348?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2532'
         }
+        overlay={false}
       >
         <AtomixGlass
           displacementScale={100}
-          blurAmount={1}
+          blurAmount={3}
           cornerRadius={32}
           mode="standard"
           elasticity={0}
@@ -4477,11 +4411,11 @@ export const ProgressTracker: Story = {
           cornerRadius={30}
           mode="standard"
         >
-          <div style={{ padding: '30px', minWidth: '550px', maxWidth: '700px' }}>
-            <h2 style={{ margin: '0 0 12px 0', fontSize: '32px', fontWeight: 700 }}>
+          <div className="u-p-5" style={{ minWidth: '550px', maxWidth: '700px' }}>
+            <h2 className="u-m-0 u-mb-2 u-fs-2 u-fw-bold">
               Getting Started
             </h2>
-            <p style={{ margin: '0 0 48px 0', fontSize: '16px', opacity: 0.7 }}>
+            <p className="u-m-0 u-fs-6 u-opacity-70" style={{ marginBottom: '48px' }}>
               Complete the following steps to set up your account
             </p>
 
@@ -4646,7 +4580,7 @@ export const ProgressTracker: Story = {
             </div>
 
             {/* Navigation Buttons */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px' }}>
+            <div className="u-d-flex u-justify-content-between u-gap-3">
               <button
                 onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
                 disabled={currentStep === 1}

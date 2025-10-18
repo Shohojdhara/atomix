@@ -25,15 +25,14 @@
 
   &__border-1 {
     z-index: 5;
-    mix-blend-mode: screen;
-    opacity: 0.2;
+    mix-blend-mode: var(--g-blend);
+    opacity: 0.5;
     background: var(--g-b1);
   }
 
   &__border-2 {
     z-index: 6;
-    mix-blend-mode: overlay;
-    overflow: hidden;
+    mix-blend-mode: var(--g-blend);
     background: var(--g-b2);
   }
 

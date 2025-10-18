@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useBadge } from '../../lib/composables/useBadge';
 import { BADGE } from '../../lib/constants/components';
 import { BadgeProps } from '../../lib/types/components';
@@ -19,6 +19,8 @@ export const Badge: React.FC<BadgeProps> = ({
     disabled,
   });
 
+  const ref = useRef<HTMLSpanElement>(null);
+
   const badgeClass = generateBadgeClass({
     variant,
     size,
@@ -27,7 +29,7 @@ export const Badge: React.FC<BadgeProps> = ({
   });
 
   const badgeElement = (
-    <span className={badgeClass} aria-disabled={disabled}>
+    <span className={badgeClass} aria-disabled={disabled} ref={ref}>
       {icon && <span className={BADGE.ICON_CLASS}>{icon}</span>}
       <span>{label}</span>
     </span>
@@ -36,9 +38,10 @@ export const Badge: React.FC<BadgeProps> = ({
   if (glass) {
     // Default glass settings for badges
     const defaultGlassProps = {
-      displacementScale: 5,
-      blurAmount: 0.5,
-      cornerRadius: 12,
+      displacementScale: 10,
+      saturation: 200,
+      blurAmount: 1,
+      cornerRadius: ref.current?.getBoundingClientRect().width ? ref.current?.getBoundingClientRect().width / 2 : 16,
       mode: 'standard' as const,
       className: 'c-badge--glass',
        elasticity: 0
