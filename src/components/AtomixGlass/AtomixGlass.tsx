@@ -494,6 +494,7 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
           <div
             style={{
               position: 'relative',
+              zIndex: 4,
               textShadow: `var(--${scopedId}-text-shadow)`,
             }}
           >
