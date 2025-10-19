@@ -273,6 +273,7 @@ interface GlassContainerProps {
   effectiveReducedMotion?: boolean;
   shaderVariant?: FragmentShaderType;
   enableLiquidBlur?: boolean;
+  elasticity?: number;
   children?: React.ReactNode;
 }
 
@@ -306,6 +307,7 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
       effectiveReducedMotion = false,
       shaderVariant = 'liquidGlass',
       enableLiquidBlur = false,
+      elasticity = 0,
     },
     ref
   ) => {
@@ -494,8 +496,10 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
           <div
             style={{
               position: 'relative',
-              zIndex: 4,
-              textShadow: `var(--${scopedId}-text-shadow)`,
+              ...(elasticity !== 0 && {
+                zIndex: 4,
+                textShadow: `var(--${scopedId}-text-shadow)`,
+              }),
             }}
           >
             {children}
@@ -1083,16 +1087,18 @@ export function AtomixGlass({
   const baseStyle = useMemo(
     () => ({
       ...style,
-      transform: transformStyle,
-      transition: effectiveReducedMotion ? 'none' : 'all ease-out 0.2s',
-      willChange: effectiveDisableEffects ? 'auto' : 'transform',
+      ...(elasticity !== 0 && {
+        transform: transformStyle,
+        transition: effectiveReducedMotion ? 'none' : 'all ease-out 0.2s',
+        willChange: effectiveDisableEffects ? 'auto' : 'transform',
+      }),
       ...(effectiveHighContrast && {
         border: '2px solid currentColor',
         outline: '2px solid transparent',
         outlineOffset: '2px',
       }),
     }),
-    [style, transformStyle, effectiveReducedMotion, effectiveDisableEffects, effectiveHighContrast]
+    [style, transformStyle, effectiveReducedMotion, effectiveDisableEffects, effectiveHighContrast, elasticity]
   );
 
   const positionStyles = useMemo(
@@ -1221,6 +1227,7 @@ export function AtomixGlass({
         effectiveDisableEffects={effectiveDisableEffects}
         effectiveReducedMotion={effectiveReducedMotion}
         shaderVariant={shaderVariant}
+        elasticity={elasticity}
         enableLiquidBlur={enableLiquidBlur}
       >
         {children}
@@ -1238,7 +1245,6 @@ export function AtomixGlass({
               borderRadius: `var(--${scopedId}-r)`,
               transform: `var(--${scopedId}-t)`,
               transition: `var(--${scopedId}-tr)`,
-              mixBlendMode: `var(--${scopedId}-blend)` as any,
               background: `var(--${scopedId}-b1)`,
             }}
           />

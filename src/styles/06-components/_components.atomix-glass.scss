@@ -22,7 +22,8 @@
 
   &__border-1 {
     z-index: 5;
-    opacity: 0.5;
+    opacity: 0.3;
+    mix-blend-mode: screen;
   }
 
   &__border-2 {

@@ -760,7 +760,7 @@ export const PerformanceOptimization: Story = {
     },
   },
   render: () => (
-    <BackgroundWrapper backgroundIndex={2} overlay={true} padding="60px 20px">
+    <BackgroundWrapper backgroundImage={'https://images.unsplash.com/photo-1706705618478-505e088180c4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2532'} padding="60px 20px">
       <div style={{  margin: '0 auto', width: '100%' }}>
         {/* Header Section */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
@@ -790,13 +790,13 @@ export const PerformanceOptimization: Story = {
 
         {/* Performance Guidelines */}
         <AtomixGlass
-          displacementScale={30}
-          blurAmount={0.03}
+          displacementScale={60}
+          blurAmount={3}
           saturation={130}
           aberrationIntensity={1.2}
           elasticity={0}
           cornerRadius={16}
-          mode="standard"
+          mode="prominent"
           style={{ marginBottom: '48px' }}
         >
           <div style={{ padding: '32px' }}>
@@ -907,10 +907,10 @@ export const PerformanceOptimization: Story = {
             </div>
             <AtomixGlass
               displacementScale={25}
-              blurAmount={0.02}
+              blurAmount={0.2}
               saturation={120}
               aberrationIntensity={0.8}
-              elasticity={0.08}
+              elasticity={0.8}
               cornerRadius={12}
               mode="standard"
               style={{ height: '100%', minHeight: '400px' }}
@@ -965,13 +965,13 @@ export const PerformanceOptimization: Story = {
                       <span style={{ opacity: 0.85 }}>Displacement Scale:</span>
                       <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>25</span>
                       <span style={{ opacity: 0.85 }}>Blur Amount:</span>
-                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.02</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.2</span>
                       <span style={{ opacity: 0.85 }}>Saturation:</span>
                       <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>120%</span>
                       <span style={{ opacity: 0.85 }}>Aberration:</span>
                       <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.8</span>
                       <span style={{ opacity: 0.85 }}>Elasticity:</span>
-                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.08</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.8</span>
                     </div>
                   </div>
                   <div
@@ -1021,7 +1021,7 @@ export const PerformanceOptimization: Story = {
             </div>
             <AtomixGlass
               displacementScale={55}
-              blurAmount={0.04}
+              blurAmount={0.4}
               saturation={150}
               aberrationIntensity={1.8}
               elasticity={0.15}
@@ -1079,7 +1079,7 @@ export const PerformanceOptimization: Story = {
                       <span style={{ opacity: 0.85 }}>Displacement Scale:</span>
                       <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>55</span>
                       <span style={{ opacity: 0.85 }}>Blur Amount:</span>
-                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.04</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.4</span>
                       <span style={{ opacity: 0.85 }}>Saturation:</span>
                       <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>150%</span>
                       <span style={{ opacity: 0.85 }}>Aberration:</span>
@@ -1135,7 +1135,7 @@ export const PerformanceOptimization: Story = {
             </div>
             <AtomixGlass
               displacementScale={85}
-              blurAmount={0.08}
+              blurAmount={0.8}
               saturation={180}
               aberrationIntensity={3.2}
               elasticity={0.22}
@@ -1193,7 +1193,7 @@ export const PerformanceOptimization: Story = {
                       <span style={{ opacity: 0.85 }}>Displacement Scale:</span>
                       <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>85</span>
                       <span style={{ opacity: 0.85 }}>Blur Amount:</span>
-                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.08</span>
+                      <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>0.8</span>
                       <span style={{ opacity: 0.85 }}>Saturation:</span>
                       <span style={{ fontWeight: '600', fontFamily: 'monospace' }}>180%</span>
                       <span style={{ opacity: 0.85 }}>Aberration:</span>

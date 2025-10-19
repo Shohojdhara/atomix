@@ -482,7 +482,7 @@ export const ProductCard: Story = {
           'https://images.unsplash.com/photo-1711779321812-59cdf38ab31f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132'
         }
       >
-        <AtomixGlass displacementScale={50} blurAmount={1.5} mode="standard" overLight={'auto'} elasticity={0}>
+        <AtomixGlass displacementScale={50} blurAmount={1.5} mode="standard" elasticity={0}>
           <div className="u-p-3" style={{ width: '300px' }}>
             {/* Product Image */}
             <div
@@ -1700,19 +1700,19 @@ export const ChatInterface: Story = {
     return (
       <BackgroundWrapper
         backgroundImage={
-          'https://images.unsplash.com/photo-1707332287886-84315bbb04bb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132'
+          'https://images.unsplash.com/photo-1671509774803-1640e8853b50?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1364'
         }
       >
         <AtomixGlass
           displacementScale={100}
-          blurAmount={0.5}
+          blurAmount={1}
           cornerRadius={24}
-          elasticity={0}
+          elasticity={0.1}
           mode="prominent"
         >
           <span
             style={{
-              background: 'var(--atomix-brand-bg-subtle)',
+              background: 'var(--atomix-body-bg)',
               position: 'absolute',
               inset: 0,
               zIndex: -1,
@@ -2009,7 +2009,7 @@ export const ProfileCard: Story = {
           'https://images.unsplash.com/photo-1603504979665-c4ed0261b4d7?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070'
         }
         overlayOpacity={0.3}
-        overlayColor="var(--atomix-success-bg-subtle)"
+        overlayColor="var(--atomix-body-bg)"
       >
         <AtomixGlass
           displacementScale={45}
@@ -2024,7 +2024,7 @@ export const ProfileCard: Story = {
           <div
             style={{
               height: '130px',
-              background: 'var(--atomix-success-gradient)',
+              background: 'var(--atomix-primary-gradient)',
               borderRadius: '24px 24px 0 0',
               position: 'relative',
               opacity: 0.5,
@@ -2136,7 +2136,7 @@ export const ProfileCard: Story = {
                     width: '100%',
                   },
                 }}
-                variant="success"
+                variant="info"
                 style={{
                   width: '100%',
                   padding: '14px 40px',
@@ -2149,7 +2149,7 @@ export const ProfileCard: Story = {
                 glass={{
                   elasticity: 0,
                 }}
-                variant="outline-success"
+                variant="outline-info"
                 style={{
                   width: '100%',
                   position: 'relative',
@@ -2162,7 +2162,7 @@ export const ProfileCard: Story = {
             {/* Social Links */}
             <div
               style={{
-                background: 'color-mix(in srgb, var(--atomix-success-bg-subtle) 10%, transparent)',
+                background: 'color-mix(in srgb, var(--atomix-brand-bg-subtle) 50%, transparent)',
                 backdropFilter: 'blur(10px)',
                 borderRadius: '10px',
                 padding: '10px 20px',
@@ -2195,7 +2195,7 @@ export const ProfileCard: Story = {
                     glass={{
                       elasticity: 0,
                     }}
-                    variant="success"
+                    variant="primary"
                     style={{
                       width: '100%',
                     }}
@@ -4211,7 +4211,6 @@ export const NewsletterSubscription: Story = {
                         glass={
                           {
                             elasticity: 0,
-                            overlight: false,
                           } as any
                         }
                         type="email"
@@ -4728,7 +4727,6 @@ export const MobileUIExample: Story = {
                 cornerRadius={24}
                 mode="prominent"
                 onClick={() => null}
-                overLight={false}
               >
                 <div
                   style={{
@@ -4794,7 +4792,6 @@ export const MobileUIExample: Story = {
                 cornerRadius={30}
                 mode="standard"
                 onClick={() => null}
-                overLight={false}
               >
                 <div
                   style={{
@@ -4872,7 +4869,6 @@ export const MobileUIExample: Story = {
                 cornerRadius={15}
                 mode="shader"
                 onClick={() => null}
-                overLight={false}
               >
                 <div
                   style={{
@@ -4918,7 +4914,6 @@ export const MobileUIExample: Story = {
                 blurAmount={0}
                 cornerRadius={15}
                 onClick={() => null}
-                overLight={false}
               >
                 <div
                   style={{
@@ -4967,7 +4962,6 @@ export const MobileUIExample: Story = {
                 cornerRadius={15}
                 mode="standard"
                 onClick={() => null}
-                overLight={false}
               >
                 <div
                   style={{
@@ -5089,7 +5083,6 @@ export const MobileUIExample: Story = {
                 cornerRadius={15}
                 mode="standard"
                 onClick={() => null}
-                overLight={false}
               >
                 <div
                   style={{
@@ -5191,7 +5184,6 @@ export const MobileUIExample: Story = {
                   mode="shader"
                   shaderVariant="premiumGlass"
                   onClick={() => null}
-                  overLight={false}
                 >
                   <div style={headerStyle}>
                     <h2 style={{ margin: 0, fontSize: '18px' }}>
@@ -5224,7 +5216,6 @@ export const MobileUIExample: Story = {
                   mode="shader"
                   shaderVariant="premiumGlass"
                   onClick={() => null}
-                  overLight={false}
                 >
                   <div
                     style={{
