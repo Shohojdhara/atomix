@@ -143,16 +143,33 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
 
     if (glass) {
       const defaultGlassProps = {
-        displacementScale: 80,
+        displacementScale: 30,
         blurAmount: 2,
         cornerRadius: 0,
+        elasticity: 0,
         mode: 'shader' as const,
+        shaderVariant: 'premiumGlass' as const,
       };
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
       return (
-        <nav ref={ref} className={navbarClass + ' c-navbar--glass'} aria-label={ariaLabel} id={id}>
-          <AtomixGlass {...glassProps}>{navbarContent}</AtomixGlass>
-        </nav>
+        <AtomixGlass
+          {...glassProps}
+          style={{
+            ...(position === 'fixed' && { position: 'fixed' }),
+            left: 0,
+            right: 0,
+            top: 0,
+          }}
+        >
+          <nav
+            ref={ref}
+            className={navbarClass + ' c-navbar--glass'}
+            aria-label={ariaLabel}
+            id={id}
+          >
+            {navbarContent}
+          </nav>
+        </AtomixGlass>
       );
     }
 

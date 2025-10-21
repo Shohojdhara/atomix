@@ -101,8 +101,10 @@ export function useBarChart(datasets: ChartDataset[], options: BarChartOptions =
   const [hoveredBar, setHoveredBar] = useState<{
     datasetIndex: number;
     pointIndex: number;
-    x: number;
-    y: number;
+    chartX: number;
+    chartY: number;
+    clientX: number;
+    clientY: number;
   } | null>(null);
 
   const [animationProgress, setAnimationProgress] = useState(0);
@@ -119,6 +121,7 @@ export function useBarChart(datasets: ChartDataset[], options: BarChartOptions =
     ): BarDimensions[] => {
       if (!datasets.length) return [];
 
+      // Use provided dimensions and padding (from ChartRenderer scales)
       const innerWidth = width - padding.left - padding.right;
       const innerHeight = height - padding.top - padding.bottom;
       const numCategories = datasets[0]?.data?.length || 0;
@@ -270,8 +273,15 @@ export function useBarChart(datasets: ChartDataset[], options: BarChartOptions =
 
   // Bar hover handlers
   const handleBarHover = useCallback(
-    (datasetIndex: number, pointIndex: number, x: number, y: number) => {
-      setHoveredBar({ datasetIndex, pointIndex, x, y });
+    (datasetIndex: number, pointIndex: number, chartX: number, chartY: number, clientX: number, clientY: number) => {
+      setHoveredBar({ 
+        datasetIndex, 
+        pointIndex, 
+        chartX, 
+        chartY,
+        clientX,
+        clientY 
+      });
     },
     []
   );

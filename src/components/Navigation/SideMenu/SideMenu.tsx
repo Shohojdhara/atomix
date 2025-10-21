@@ -4,6 +4,7 @@ import { useSideMenu } from '../../../lib/composables/useSideMenu';
 import { SIDE_MENU } from '../../../lib/constants/components';
 import { Icon } from '../../Icon';
 import { AtomixGlass } from '../../AtomixGlass/AtomixGlass';
+import { log } from 'console';
 
 /**
  * SideMenu component provides a collapsible navigation menu with title and menu items.
@@ -98,14 +99,16 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       const defaultGlassProps = {
         displacementScale: 70,
         blurAmount: 2,
-        cornerRadius: 8,
+        cornerRadius: 12,
         mode: 'shader' as const,
       };
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
       return (
-        <div ref={ref} className={sideMenuClass + ' c-side-menu--glass'} id={id}>
-          <AtomixGlass {...glassProps}>{sideMenuContent}</AtomixGlass>
-        </div>
+        <AtomixGlass {...glassProps}>
+          <div ref={ref} className={sideMenuClass + ' c-side-menu--glass'} id={id}>
+            {sideMenuContent}
+          </div>
+        </AtomixGlass>
       );
     }
 

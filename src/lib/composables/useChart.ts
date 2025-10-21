@@ -17,6 +17,7 @@ export interface ChartInteractionState {
   selectedPoints: Array<{ datasetIndex: number; pointIndex: number }>;
   zoomLevel: number;
   panOffset: { x: number; y: number };
+  panEnabled: boolean;
   isAnimating: boolean;
   isDragging: boolean;
   dragStart: { x: number; y: number } | null;
@@ -66,6 +67,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     selectedPoints: [],
     zoomLevel: 1,
     panOffset: { x: 0, y: 0 },
+    panEnabled: false,
     isAnimating: false,
     isDragging: false,
     dragStart: null,
@@ -99,143 +101,18 @@ export function useChart(initialProps?: Partial<ChartProps>) {
 
   // Animation frame ref for smooth updates
   const animationFrameRef = useRef<number | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
 
-  /**
-   * Generate chart class based on properties
-   */
-  const generateChartClass = useCallback(
-    (props: Partial<ChartProps>): string => {
-      const {
-        type = defaultProps.type,
-        size = defaultProps.size,
-        variant = defaultProps.variant,
-        loading = defaultProps.loading,
-        error,
-        className = '',
-      } = props;
-
-      const typeClass = type ? `${CHART.TYPE_PREFIX}${type}` : '';
-      const sizeClass = size === 'md' ? '' : `${CHART.SIZE_PREFIX}${size}`;
-      const variantClass = variant ? `${CHART.VARIANT_PREFIX}${variant}` : '';
-      const loadingClass = loading ? CHART.LOADING_STATE_CLASS : '';
-      const errorClass = error ? CHART.ERROR_STATE_CLASS : '';
-
-      return `${CHART.BASE_CLASS} ${typeClass} ${variantClass} ${sizeClass} ${loadingClass} ${errorClass} ${className}`.trim();
-    },
-    [defaultProps]
-  );
-
-  /**
-   * Generate chart attributes for accessibility
-   */
-  const generateChartAttributes = useCallback((props: Partial<ChartProps>) => {
-    const { loading, error, type } = props;
-
-    const attributes: Record<string, string> = {
-      role: 'img',
-      'aria-live': 'polite',
+  // Cleanup animation frame on unmount
+  useEffect(() => {
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
     };
-
-    if (loading) {
-      attributes['aria-busy'] = 'true';
-    }
-
-    if (error) {
-      attributes['aria-invalid'] = 'true';
-    }
-
-    if (type) {
-      attributes['data-chart-type'] = type;
-    }
-
-    return attributes;
   }, []);
 
   /**
-   * Calculate chart dimensions and scales with zoom and pan support
-   */
-  const calculateScales = useCallback(
-    (
-      datasets: ChartDataset[],
-      width: number = CHART.DEFAULT_WIDTH,
-      height: number = CHART.DEFAULT_HEIGHT,
-      padding = { top: 20, right: 30, bottom: 40, left: 50 },
-      config?: any
-    ): ChartScales | null => {
-      if (!datasets.length) return null;
-
-      const innerWidth = width - padding.left - padding.right;
-      const innerHeight = height - padding.top - padding.bottom;
-
-      // Calculate value bounds
-      const allValues = datasets.flatMap(
-        dataset => dataset.data?.map(d => (typeof d.value === 'number' ? d.value : 0)) || []
-      );
-
-      if (allValues.length === 0) return null;
-
-      const minValue = config?.yAxis?.min ?? Math.min(0, ...allValues);
-      const maxValue = config?.yAxis?.max ?? Math.max(...allValues, 1);
-      const valueRange = maxValue - minValue;
-
-      // Scale functions with zoom and pan support
-      const xScale = (index: number, dataLength?: number) => {
-        const totalLength = dataLength || datasets[0]?.data?.length || 1;
-        if (totalLength <= 1) return padding.left + innerWidth / 2;
-
-        const baseX = padding.left + (index / (totalLength - 1)) * innerWidth;
-        return baseX * interactionState.zoomLevel + interactionState.panOffset.x;
-      };
-
-      const yScale = (value: number) => {
-        if (valueRange === 0) return padding.top + innerHeight / 2;
-
-        const baseY = padding.top + innerHeight - ((value - minValue) / valueRange) * innerHeight;
-        return baseY * interactionState.zoomLevel + interactionState.panOffset.y;
-      };
-
-      return {
-        xScale,
-        yScale,
-        minValue,
-        maxValue,
-        valueRange,
-        innerWidth,
-        innerHeight,
-        width,
-        height,
-        padding,
-      };
-    },
-    [interactionState.zoomLevel, interactionState.panOffset]
-  );
-
-  /**
-   * Generate color palette using CSS custom properties
-   */
-  const getChartColors = useCallback((count: number) => {
-    const colors = [
-      'var(--atomix-primary)',
-      'var(--atomix-secondary)',
-      'var(--atomix-success)',
-      'var(--atomix-info)',
-      'var(--atomix-warning)',
-      'var(--atomix-error)',
-      'var(--atomix-primary-5)',
-      'var(--atomix-primary-7)',
-      'var(--atomix-primary-3)',
-      'var(--atomix-gray-6)',
-      'var(--atomix-gray-8)',
-      'var(--atomix-gray-4)',
-    ];
-
-    return Array.from({ length: count }, (_, i) => colors[i % colors.length]);
-  }, []);
-
-  /**
-   * Enhanced point interaction handlers
+   * Point interaction handlers
    */
   const handlePointHover = useCallback(
     (
@@ -249,7 +126,6 @@ export function useChart(initialProps?: Partial<ChartProps>) {
       setInteractionState(prev => ({
         ...prev,
         hoveredPoint: { datasetIndex, pointIndex, x, y, clientX, clientY },
-        focusedPointIndex: pointIndex,
       }));
     },
     []
@@ -262,44 +138,35 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     }));
   }, []);
 
-  const handlePointClick = useCallback(
-    (datasetIndex: number, pointIndex: number, multiSelect: boolean = false) => {
-      setInteractionState(prev => {
-        const pointKey = { datasetIndex, pointIndex };
-        const existingIndex = prev.selectedPoints.findIndex(
-          p => p.datasetIndex === datasetIndex && p.pointIndex === pointIndex
-        );
+  const handlePointClick = useCallback((datasetIndex: number, pointIndex: number) => {
+    setInteractionState(prev => {
+      const isSelected = prev.selectedPoints.some(
+        point => point.datasetIndex === datasetIndex && point.pointIndex === pointIndex
+      );
 
-        let newSelectedPoints;
-        if (existingIndex >= 0) {
-          // Remove if already selected
-          newSelectedPoints = prev.selectedPoints.filter((_, i) => i !== existingIndex);
-        } else {
-          // Add to selection
-          newSelectedPoints = multiSelect ? [...prev.selectedPoints, pointKey] : [pointKey];
-        }
-
-        return {
-          ...prev,
-          selectedPoints: newSelectedPoints,
-        };
-      });
-    },
-    []
-  );
+      return {
+        ...prev,
+        selectedPoints: isSelected
+          ? prev.selectedPoints.filter(
+              point => !(point.datasetIndex === datasetIndex && point.pointIndex === pointIndex)
+            )
+          : [...prev.selectedPoints, { datasetIndex, pointIndex }],
+      };
+    });
+  }, []);
 
   /**
-   * Enhanced zoom and pan handlers
+   * Zoom and pan handlers
    */
-  const handleZoom = useCallback((delta: number, centerX: number, centerY?: number) => {
+  const handleZoom = useCallback((delta: number, centerX?: number, centerY?: number) => {
     setInteractionState(prev => {
       const zoomFactor = 1 - delta * 0.001;
       const newZoomLevel = Math.max(0.1, Math.min(10, prev.zoomLevel * zoomFactor));
-
-      // Adjust pan offset to zoom towards the center point
       const zoomRatio = newZoomLevel / prev.zoomLevel;
+
+      // Adjust pan offset to zoom towards center point
       const newPanOffset = {
-        x: centerX - (centerX - prev.panOffset.x) * zoomRatio,
+        x: centerX ? centerX - (centerX - prev.panOffset.x) * zoomRatio : prev.panOffset.x,
         y: centerY ? centerY - (centerY - prev.panOffset.y) * zoomRatio : prev.panOffset.y,
       };
 
@@ -372,8 +239,8 @@ export function useChart(initialProps?: Partial<ChartProps>) {
         },
       };
 
-      // Single touch - start dragging
-      if (touches.length === 1 && touches[0]) {
+      // Single touch - start dragging only if pan is enabled
+      if (touches.length === 1 && touches[0] && prev.panEnabled) {
         const rect = (event.target as Element).getBoundingClientRect();
         const x = touches[0].x - rect.left;
         const y = touches[0].y - rect.top;
@@ -418,20 +285,50 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     setInteractionState(prev => {
       const rect = (event.target as Element).getBoundingClientRect();
 
-      // Single touch - pan
-      if (touches.length === 1 && touches[0] && prev.isDragging && prev.dragStart) {
+      // Single touch - pan (only if pan is enabled)
+      if (touches.length === 1 && touches[0] && prev.isDragging && prev.dragStart && prev.panEnabled) {
         const x = touches[0].x - rect.left;
         const y = touches[0].y - rect.top;
-        const deltaX = x - prev.dragStart.x;
-        const deltaY = y - prev.dragStart.y;
+        
+        // Use previous touch position for delta calculation if available
+        const prevTouch = prev.touchState.touches[0];
+        let deltaX, deltaY;
+        
+        if (prevTouch) {
+          // Calculate delta from previous touch position
+          const prevX = prevTouch.x - rect.left;
+          const prevY = prevTouch.y - rect.top;
+          deltaX = x - prevX;
+          deltaY = y - prevY;
+        } else {
+          // Fallback to drag start position
+          deltaX = x - prev.dragStart.x;
+          deltaY = y - prev.dragStart.y;
+        }
 
+        // Apply sensitivity reduction for touch
+        const sensitivity = 0.6; // Slightly higher than mouse for touch comfort
+        const adjustedDeltaX = deltaX * sensitivity;
+        const adjustedDeltaY = deltaY * sensitivity;
+
+        // Only pan if there's meaningful movement (reduces jitter)
+        if (Math.abs(adjustedDeltaX) > 1 || Math.abs(adjustedDeltaY) > 1) {
+          return {
+            ...prev,
+            panOffset: {
+              x: prev.panOffset.x + adjustedDeltaX,
+              y: prev.panOffset.y + adjustedDeltaY,
+            },
+            touchState: {
+              ...prev.touchState,
+              touches,
+            },
+          };
+        }
+        
+        // Update touch state even if no panning occurred
         return {
           ...prev,
-          panOffset: {
-            x: prev.panOffset.x + deltaX,
-            y: prev.panOffset.y + deltaY,
-          },
-          dragStart: { x, y },
           touchState: {
             ...prev.touchState,
             touches,
@@ -500,7 +397,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     }));
 
     setInteractionState(prev => {
-      // Reset states when no touches remain
+      // If no touches left, end all touch interactions
       if (touches.length === 0) {
         return {
           ...prev,
@@ -516,15 +413,14 @@ export function useChart(initialProps?: Partial<ChartProps>) {
         };
       }
 
-      // Single touch remaining - switch from pinch to pan
-      if (touches.length === 1 && touches[0] && prev.touchState.isPinching) {
+      // If one touch left, continue dragging if pan is enabled
+      if (touches.length === 1 && prev.panEnabled) {
         const rect = (event.target as Element).getBoundingClientRect();
-        const x = touches[0].x - rect.left;
-        const y = touches[0].y - rect.top;
+        const x = touches[0]!.x - rect.left;
+        const y = touches[0]!.y - rect.top;
 
         return {
           ...prev,
-          isDragging: true,
           dragStart: { x, y },
           touchState: {
             ...prev.touchState,
@@ -532,6 +428,24 @@ export function useChart(initialProps?: Partial<ChartProps>) {
             isPinching: false,
             lastDistance: 0,
           },
+        };
+      }
+
+      // If two touches left, continue pinching
+      if (touches.length === 2) {
+        const distance = Math.sqrt(
+          Math.pow(touches[1]!.x - touches[0]!.x, 2) + Math.pow(touches[1]!.y - touches[0]!.y, 2)
+        );
+
+        return {
+          ...prev,
+          touchState: {
+            ...prev.touchState,
+            touches,
+            lastDistance: distance,
+            isPinching: true,
+          },
+          isDragging: false,
         };
       }
 
@@ -545,208 +459,148 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     });
   }, []);
 
-  const handlePointerDown = useCallback(
-    (event: PointerEvent | React.PointerEvent) => {
-      const isPen = event.pointerType === 'pen';
-      const isTouch = event.pointerType === 'touch';
+  const handlePointerDown = useCallback((event: PointerEvent) => {
+    if (event.pointerType === 'pen') {
+      setInteractionState(prev => ({
+        ...prev,
+        penState: {
+          ...prev.penState,
+          isPen: true,
+          pressure: event.pressure,
+          tiltX: event.tiltX,
+          tiltY: event.tiltY,
+        },
+      }));
+    }
+  }, []);
 
-      if (isPen) {
-        setInteractionState(prev => ({
-          ...prev,
-          penState: {
-            isPen: true,
-            pressure: event.pressure || 0,
-            tiltX: (event as any).tiltX || 0,
-            tiltY: (event as any).tiltY || 0,
-          },
-          isDragging: true,
-          dragStart: {
-            x: event.clientX - (event.target as Element).getBoundingClientRect().left,
-            y: event.clientY - (event.target as Element).getBoundingClientRect().top,
-          },
-        }));
-      } else if (!isTouch) {
-        // Regular mouse interaction
-        const rect = (event.target as Element).getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-        handleDragStart(x, y);
-      }
-    },
-    [handleDragStart]
-  );
+  const handlePointerMove = useCallback((event: PointerEvent) => {
+    if (event.pointerType === 'pen') {
+      setInteractionState(prev => ({
+        ...prev,
+        penState: {
+          ...prev.penState,
+          pressure: event.pressure,
+          tiltX: event.tiltX,
+          tiltY: event.tiltY,
+        },
+      }));
+    }
+  }, []);
 
-  const handlePointerMove = useCallback(
-    (event: PointerEvent | React.PointerEvent) => {
-      const rect = (event.target as Element).getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
-      if (event.pointerType === 'pen' && interactionState.penState.isPen) {
-        setInteractionState(prev => {
-          if (prev.isDragging && prev.dragStart) {
-            const deltaX = x - prev.dragStart.x;
-            const deltaY = y - prev.dragStart.y;
-
-            // Pen pressure affects pan sensitivity
-            const pressureMultiplier = Math.max(0.1, event.pressure || 0.5);
-
-            return {
-              ...prev,
-              panOffset: {
-                x: prev.panOffset.x + deltaX * pressureMultiplier,
-                y: prev.panOffset.y + deltaY * pressureMultiplier,
-              },
-              dragStart: { x, y },
-              penState: {
-                ...prev.penState,
-                pressure: event.pressure || 0,
-                tiltX: (event as any).tiltX || 0,
-                tiltY: (event as any).tiltY || 0,
-              },
-            };
-          }
-
-          return {
-            ...prev,
-            penState: {
-              ...prev.penState,
-              pressure: event.pressure || 0,
-              tiltX: (event as any).tiltX || 0,
-              tiltY: (event as any).tiltY || 0,
-            },
-          };
-        });
-      } else if (event.pointerType !== 'touch') {
-        // Regular mouse move
-        handleCrosshair(x, y);
-
-        if (interactionState.isDragging && interactionState.dragStart) {
-          const deltaX = x - interactionState.dragStart.x;
-          const deltaY = y - interactionState.dragStart.y;
-          handlePan(deltaX, deltaY);
-        }
-      }
-    },
-    [interactionState, handleCrosshair, handlePan]
-  );
-
-  const handlePointerUp = useCallback(
-    (event: PointerEvent | React.PointerEvent) => {
-      if (event.pointerType === 'pen') {
-        setInteractionState(prev => ({
-          ...prev,
-          isDragging: false,
-          dragStart: null,
-          penState: {
-            isPen: false,
-            pressure: 0,
-            tiltX: 0,
-            tiltY: 0,
-          },
-        }));
-      } else if (event.pointerType !== 'touch') {
-        handleDragEnd();
-      }
-    },
-    [handleDragEnd]
-  );
-
-  /**
-   * Reset all interactions
-   */
-  const resetView = useCallback(() => {
-    setInteractionState(prev => ({
-      ...prev,
-      zoomLevel: 1,
-      panOffset: { x: 0, y: 0 },
-      selectedPoints: [],
-      crosshair: null,
-      brushSelection: null,
-    }));
+  const handlePointerUp = useCallback((event: PointerEvent) => {
+    if (event.pointerType === 'pen') {
+      setInteractionState(prev => ({
+        ...prev,
+        penState: {
+          ...prev.penState,
+          isPen: false,
+          pressure: 0,
+          tiltX: 0,
+          tiltY: 0,
+        },
+      }));
+    }
   }, []);
 
   /**
-   * Enhanced animation helpers
+   * Chart calculations and utilities
    */
-  const startAnimation = useCallback((duration: number = 1000) => {
-    setInteractionState(prev => ({ ...prev, isAnimating: true }));
+  const calculateScales = useCallback(
+    (
+      datasets: ChartDataset[],
+      width: number = CHART.DEFAULT_WIDTH,
+      height: number = CHART.DEFAULT_HEIGHT,
+      padding: { top: number; right: number; bottom: number; left: number } = { 
+        top: 20, 
+        right: 20, 
+        bottom: 30, 
+        left: 40 
+      },
+      config?: ChartProps['config']
+    ): ChartScales | null => {
+      if (!datasets || datasets.length === 0) return null;
 
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
+      // Flatten all data points to find min/max values
+      const allDataPoints = datasets.flatMap(dataset => dataset.data);
+      if (allDataPoints.length === 0) return null;
+
+      const minValue = Math.min(...allDataPoints.map(point => point.value));
+      const maxValue = Math.max(...allDataPoints.map(point => point.value));
+      const valueRange = maxValue - minValue || 1; // Avoid division by zero
+
+      // Apply padding
+      const innerWidth = width - padding.left - padding.right;
+      const innerHeight = height - padding.top - padding.bottom;
+
+      // Create scale functions
+      const xScale = (index: number, dataLength: number = allDataPoints.length) => {
+        if (dataLength <= 1) return padding.left + innerWidth / 2;
+        return padding.left + (index / (dataLength - 1)) * innerWidth;
+      };
+
+      const yScale = (value: number) => {
+        // Invert Y axis (SVG coordinates start from top)
+        return (
+          padding.top + innerHeight - ((value - minValue) / valueRange) * innerHeight
+        );
+      };
+
+      return {
+        xScale,
+        yScale,
+        minValue,
+        maxValue,
+        valueRange,
+        innerWidth,
+        innerHeight,
+        width,
+        height,
+        padding,
+      };
+    },
+    []
+  );
+
+  const getChartColors = useCallback((count: number): (string | undefined)[] => {
+    if (count <= 0) return [];
+
+    // Generate colors from the theme
+    const colors = [];
+    for (let i = 0; i < count; i++) {
+      // Cycle through available colors
+      const colorIndex = i % CHART.DEFAULT_COLORS.length;
+      colors.push(CHART.DEFAULT_COLORS[colorIndex]);
     }
 
-    const startTime = Date.now();
-    const animate = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-
-      if (progress < 1) {
-        animationFrameRef.current = requestAnimationFrame(animate);
-      } else {
-        setInteractionState(prev => ({ ...prev, isAnimating: false }));
-      }
-    };
-
-    animationFrameRef.current = requestAnimationFrame(animate);
+    return colors;
   }, []);
 
-  const stopAnimation = useCallback(() => {
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-      animationFrameRef.current = null;
-    }
-    setInteractionState(prev => ({ ...prev, isAnimating: false }));
-  }, []);
+  // Ref for SVG element
+  const svgRef = useRef<SVGSVGElement>(null);
 
-  // Cleanup animation on unmount
-  useEffect(() => {
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, []);
-
+  // Return all chart functionality
   return {
     // State
     interactionState,
-    hoveredPoint: interactionState.hoveredPoint,
-    selectedPoints: interactionState.selectedPoints,
-    zoomLevel: interactionState.zoomLevel,
-    panOffset: interactionState.panOffset,
-    isAnimating: interactionState.isAnimating,
-    isDragging: interactionState.isDragging,
-    crosshair: interactionState.crosshair,
-    brushSelection: interactionState.brushSelection,
-    focusedPointIndex: interactionState.focusedPointIndex,
+    setInteractionState,
 
-    // Refs
-    containerRef,
-    svgRef,
-
-    // Props and attributes
-    defaultProps,
-    generateChartClass,
-    chartAttributes: generateChartAttributes(initialProps || {}),
-
-    // Calculations
-    calculateScales,
-    getChartColors,
-
-    // Enhanced interactions
+    // Point interaction handlers
     handlePointHover,
     handlePointLeave,
     handlePointClick,
+
+    // Zoom and pan handlers
     handleZoom,
     handlePan,
     handleDragStart,
     handleDragEnd,
+
+    // Crosshair handlers
     handleCrosshair,
     clearCrosshair,
-    resetView,
 
-    // Touch and pointer handlers
+    // Touch and pen handlers
     handleTouchStart,
     handleTouchMove,
     handleTouchEnd,
@@ -754,12 +608,10 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     handlePointerMove,
     handlePointerUp,
 
-    // Animation
-    startAnimation,
-    stopAnimation,
-
-    // State setters for advanced use cases
-    setInteractionState,
+    // Utilities
+    calculateScales,
+    getChartColors,
+    svgRef,
   };
 }
 
@@ -976,8 +828,8 @@ export function useChartAccessibility(
       .map((dataset, i) => {
         const dataCount = dataset.data?.length || 0;
         const values = dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [];
-        const min = Math.min(...values);
-        const max = Math.max(...values);
+        const min = values.length > 0 ? Math.min(...values) : 0;
+        const max = values.length > 0 ? Math.max(...values) : 0;
 
         return `Dataset ${i + 1}: ${dataset.label}, ${dataCount} points, range ${min} to ${max}`;
       })
@@ -1021,16 +873,17 @@ export function useChartPerformance(
     if (!enableMemoization) return null;
 
     // Cache expensive scale calculations
-    return datasets.map(dataset => ({
-      label: dataset.label,
-      dataLength: dataset.data?.length || 0,
-      minValue: Math.min(
-        ...(dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [0])
-      ),
-      maxValue: Math.max(
-        ...(dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [0])
-      ),
-    }));
+    return datasets.map(dataset => {
+      const values = dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [];
+      const validValues = values.length > 0 ? values : [0];
+      
+      return {
+        label: dataset.label,
+        dataLength: dataset.data?.length || 0,
+        minValue: Math.min(...validValues),
+        maxValue: Math.max(...validValues),
+      };
+    });
   }, [datasets, enableMemoization]);
 
   // Debounced updates

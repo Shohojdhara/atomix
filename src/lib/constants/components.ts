@@ -1214,6 +1214,7 @@ export const CHART = {
   EXPORT_GROUP_CLASS: 'c-chart__export-group',
   EXPORT_DROPDOWN_CLASS: 'c-chart__export-dropdown',
   EXPORT_OPTION_CLASS: 'c-chart__export-option',
+  SETTINGS_MENU_CLASS: 'c-chart__settings-menu',
   TOOLBAR_GROUP_CLASS: 'c-chart__toolbar-group',
   TOOLBAR_SEPARATOR_CLASS: 'c-chart__toolbar-separator',
   TOOLBAR_LABEL_CLASS: 'c-chart__toolbar-label',

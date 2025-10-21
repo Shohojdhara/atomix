@@ -231,9 +231,13 @@
     }
   }
 
+  &--fixed:not(.c-navbar--glass),
+  &--fixed-bottom:not(.c-navbar--glass) {
+    position: fixed;
+  }
+
   &--fixed,
   &--fixed-bottom {
-    position: fixed;
     left: 0;
     right: 0;
     width: 100%;
@@ -244,12 +248,19 @@
     top: 0;
   }
 
+  &--glass {
+    position: relative;
+    background-color: transparent;
+    border-bottom: none;
+  }
+
   &--fixed-bottom {
     bottom: 0;
 
     .c-nav__dropdown-menu {
       top: auto;
       bottom: 100%;
+      z-index: 999;
     }
 
     .c-nav--end .c-nav__dropdown-menu {

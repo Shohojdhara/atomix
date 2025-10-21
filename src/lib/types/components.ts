@@ -605,6 +605,12 @@ export interface NavbarProps extends BaseComponentProps {
    * ID for the navbar (used for accessibility)
    */
   id?: string;
+
+  /**
+   * Enable glass morphism effect.
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: boolean | Omit<AtomixGlassProps, 'children'>;
 }
 
 /**
@@ -625,6 +631,12 @@ export interface NavProps extends BaseComponentProps {
    * Nav variant (including float variants)
    */
   variant?: NavVariant;
+
+  /**
+   * Enable glass morphism effect.
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: boolean | Omit<AtomixGlassProps, 'children'>;
 }
 
 /**
@@ -830,6 +842,12 @@ export interface SideMenuProps extends BaseComponentProps {
    * ID for the menu (used for accessibility)
    */
   id?: string;
+
+  /**
+   * Glass morphism effect for the side menu
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: boolean | Omit<AtomixGlassProps, 'children'>;
 }
 
 /**
@@ -2055,8 +2073,8 @@ export interface MessageItem {
 }
 
 /**
-   * Messages component properties
-   */
+ * Messages component properties
+ */
 export interface MessagesProps extends BaseComponentProps {
   /**
    * Array of message items to display
@@ -2107,7 +2125,7 @@ export interface MessagesProps extends BaseComponentProps {
    * Glass morphism effect for the messages component
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
-  glass?: AtomixGlassProps | boolean;
+  glass?: boolean | Omit<AtomixGlassProps, 'children'>;
 }
 
 /**

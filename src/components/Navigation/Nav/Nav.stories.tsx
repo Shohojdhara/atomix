@@ -377,6 +377,475 @@ export const FloatWithIcons: Story = {
   ),
 };
 
+// Glass Morphism Effect Stories - Professional Showcase
+
+/**
+ * Background wrapper component for consistent glass effect demonstrations
+ */
+interface BackgroundWrapperProps {
+  children: React.ReactNode;
+  backgroundImage: string;
+  height?: string;
+  padding?: string;
+  overlay?: boolean;
+}
+
+const BackgroundWrapper = ({
+  children,
+  backgroundImage,
+  height = '90vh',
+  padding = '60px 40px',
+  overlay = false,
+}: BackgroundWrapperProps) => (
+  <div
+    style={{
+      position: 'relative',
+      width: '100%',
+      minHeight: height,
+      background: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: padding,
+      borderRadius: '12px',
+    }}
+  >
+    {overlay && (
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.3)',
+          borderRadius: '12px',
+        }}
+      />
+    )}
+    <div
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '2rem',
+      }}
+    >
+      {children}
+    </div>
+  </div>
+);
+
+/**
+ * Glass Effect - Default
+ *
+ * Demonstrates the Nav component with default glass morphism settings.
+ * The glass effect provides a modern, frosted appearance that works
+ * beautifully against detailed backgrounds.
+ */
+export const Glass: Story = {
+  render: () => (
+    <BackgroundWrapper
+      backgroundImage="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2940&auto=format&fit=crop"
+      overlay
+    >
+      <div style={{ textAlign: 'center', maxWidth: '800px', marginBottom: '3rem' }}>
+        <h2
+          style={{
+            color: 'white',
+            fontSize: '32px',
+            fontWeight: 600,
+            marginBottom: '16px',
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Glass Navigation
+        </h2>
+        <p
+          style={{
+            color: 'rgba(255,255,255,0.9)',
+            fontSize: '18px',
+            lineHeight: 1.6,
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          A modern navigation component with glassmorphism effect. Perfect for creating visually
+          stunning interfaces that blend seamlessly with any background.
+        </p>
+      </div>
+      <Nav alignment="center" glass>
+        <NavItem href="/" active>
+          Home
+        </NavItem>
+        <NavItem href="/about">About</NavItem>
+        <NavItem href="/services">Services</NavItem>
+        <NavItem href="/contact">Contact</NavItem>
+      </Nav>
+    </BackgroundWrapper>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Basic glass morphism effect with default settings. The navigation maintains excellent readability while creating a beautiful frosted glass aesthetic.',
+      },
+    },
+  },
+};
+
+/**
+ * Glass Float Variants - Top & Bottom
+ *
+ * Showcases floating navigation with glass effect at different positions.
+ * Ideal for fixed navigation bars and mobile-first designs.
+ */
+export const GlassFloatVariants: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <BackgroundWrapper
+        backgroundImage="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2940&auto=format&fit=crop"
+        height="80vh"
+      >
+        <div style={{ textAlign: 'center', maxWidth: '700px', marginTop: '60px' }}>
+          <h3
+            style={{
+              color: 'white',
+              fontSize: '28px',
+              fontWeight: 600,
+              marginBottom: '12px',
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+            }}
+          >
+            Float Top Center
+          </h3>
+          <p
+            style={{
+              color: 'rgba(255,255,255,0.85)',
+              fontSize: '16px',
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+            }}
+          >
+            Perfect for hero sections and landing pages
+          </p>
+        </div>
+        <Nav alignment="center" variant="float-top-center" glass>
+          <NavItem href="/" active>
+            Home
+          </NavItem>
+          <NavItem href="/explore">Explore</NavItem>
+          <NavItem href="/features">Features</NavItem>
+          <NavItem href="/pricing">Pricing</NavItem>
+        </Nav>
+      </BackgroundWrapper>
+
+      <BackgroundWrapper
+        backgroundImage="https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=2940&auto=format&fit=crop"
+        height="80vh"
+      >
+        <div style={{ textAlign: 'center', maxWidth: '700px' }}>
+          <h3
+            style={{
+              color: 'white',
+              fontSize: '28px',
+              fontWeight: 600,
+              marginBottom: '12px',
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+            }}
+          >
+            Float Bottom Center
+          </h3>
+          <p
+            style={{
+              color: 'rgba(255,255,255,0.85)',
+              fontSize: '16px',
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+            }}
+          >
+            Ideal for mobile navigation and tab bars
+          </p>
+        </div>
+        <Nav alignment="center" variant="float-bottom-center" glass>
+          <NavItem href="/" active>
+            <HomeIcon />
+          </NavItem>
+          <NavItem href="/search">
+            <UserIcon />
+          </NavItem>
+          <NavItem href="/settings">
+            <SettingsIcon />
+          </NavItem>
+        </Nav>
+      </BackgroundWrapper>
+    </div>
+  ),
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story:
+          'Floating navigation variants that stay fixed at the top or bottom of the viewport. The glass effect creates a sense of depth while maintaining focus on content.',
+      },
+    },
+  },
+};
+
+/**
+ * Glass with Custom Properties
+ *
+ * Demonstrates advanced customization of the glass effect with various
+ * displacement, blur, and corner radius settings.
+ */
+export const GlassCustom: Story = {
+  render: () => (
+    <BackgroundWrapper
+      backgroundImage="https://images.unsplash.com/photo-1505142468610-359e7d316be0?q=80&w=2940&auto=format&fit=crop"
+      overlay
+    >
+      <div style={{ textAlign: 'center', maxWidth: '800px', marginBottom: '3rem' }}>
+        <h2
+          style={{
+            color: 'white',
+            fontSize: '32px',
+            fontWeight: 600,
+            marginBottom: '16px',
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Custom Glass Properties
+        </h2>
+        <p
+          style={{
+            color: 'rgba(255,255,255,0.9)',
+            fontSize: '18px',
+            lineHeight: 1.6,
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Enhanced glass effect with custom displacement, blur, and corner radius. Perfect for
+          creating unique visual experiences.
+        </p>
+      </div>
+      <Nav
+        alignment="center"
+        variant="float-top-center"
+        glass={{
+          displacementScale: 80,
+          blurAmount: 2.5,
+          cornerRadius: 20,
+          mode: 'shader',
+        }}
+      >
+        <NavItem href="/" active>
+          Home
+        </NavItem>
+        <NavItem href="/destinations">Destinations</NavItem>
+        <NavItem href="/gallery">Gallery</NavItem>
+        <NavDropdown title="More">
+          <Menu>
+            <MenuItem href="/blog">Blog</MenuItem>
+            <MenuItem href="/about">About</MenuItem>
+            <MenuItem href="/contact">Contact</MenuItem>
+          </Menu>
+        </NavDropdown>
+      </Nav>
+    </BackgroundWrapper>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Customized glass effect with increased displacement and blur for a more pronounced visual impact. Demonstrates the flexibility of the glass morphism system.',
+      },
+    },
+  },
+};
+
+/**
+ * Glass with Dropdown Integration
+ *
+ * Shows how the glass effect integrates seamlessly with dropdown menus,
+ * maintaining visual consistency across all interactive elements.
+ */
+export const GlassWithDropdown: Story = {
+  render: () => (
+    <BackgroundWrapper
+      backgroundImage="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2940&auto=format&fit=crop"
+      overlay
+    >
+      <div style={{ textAlign: 'center', maxWidth: '800px', marginBottom: '3rem' }}>
+        <h2
+          style={{
+            color: 'white',
+            fontSize: '32px',
+            fontWeight: 600,
+            marginBottom: '16px',
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Glass Navigation with Dropdowns
+        </h2>
+        <p
+          style={{
+            color: 'rgba(255,255,255,0.9)',
+            fontSize: '18px',
+            lineHeight: 1.6,
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          The glass effect extends to dropdown menus, creating a cohesive visual hierarchy
+          throughout your navigation.
+        </p>
+      </div>
+      <Nav alignment="center" glass>
+        <NavItem href="/" active>
+          Home
+        </NavItem>
+        <NavItem href="/explore">Explore</NavItem>
+        <NavDropdown title="Activities">
+          <Menu>
+            <MenuItem href="/hiking" icon={<HomeIcon />}>
+              Hiking
+            </MenuItem>
+            <MenuItem href="/camping" icon={<UserIcon />}>
+              Camping
+            </MenuItem>
+            <MenuItem href="/wildlife" icon={<SettingsIcon />}>
+              Wildlife
+            </MenuItem>
+          </Menu>
+        </NavDropdown>
+        <NavItem href="/guides">Guides</NavItem>
+        <NavItem href="/contact">Contact</NavItem>
+      </Nav>
+    </BackgroundWrapper>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Glass navigation with integrated dropdown menus. The glass effect is maintained throughout the interaction, providing a consistent and polished user experience.',
+      },
+    },
+  },
+};
+
+/**
+ * Glass Theme Variations
+ *
+ * A comprehensive showcase of glass navigation across different themed
+ * backgrounds, demonstrating versatility and adaptability.
+ */
+export const GlassThemeShowcase: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+      {/* Ocean Theme */}
+      <BackgroundWrapper
+        backgroundImage="https://images.unsplash.com/photo-1505142468610-359e7d316be0?q=80&w=2940&auto=format&fit=crop"
+        height="70vh"
+      >
+        <h3
+          style={{
+            color: 'white',
+            fontSize: '24px',
+            fontWeight: 600,
+            textAlign: 'center',
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Ocean & Travel Theme
+        </h3>
+        <Nav alignment="center" glass>
+          <NavItem href="/" active>
+            Home
+          </NavItem>
+          <NavItem href="/destinations">Destinations</NavItem>
+          <NavItem href="/experiences">Experiences</NavItem>
+          <NavItem href="/booking">Book Now</NavItem>
+        </Nav>
+      </BackgroundWrapper>
+
+      {/* Sunset Theme */}
+      <BackgroundWrapper
+        backgroundImage="https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?q=80&w=2940&auto=format&fit=crop"
+        height="70vh"
+      >
+        <h3
+          style={{
+            color: 'white',
+            fontSize: '24px',
+            fontWeight: 600,
+            textAlign: 'center',
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Warm & Inviting Theme
+        </h3>
+        <Nav
+          alignment="center"
+          glass={{
+            displacementScale: 60,
+            blurAmount: 2,
+            cornerRadius: 16,
+            mode: 'shader',
+          }}
+        >
+          <NavItem href="/" active>
+            Home
+          </NavItem>
+          <NavItem href="/menu">Menu</NavItem>
+          <NavItem href="/reservations">Reservations</NavItem>
+          <NavItem href="/about">About Us</NavItem>
+        </Nav>
+      </BackgroundWrapper>
+
+      {/* Urban Theme */}
+      <BackgroundWrapper
+        backgroundImage="https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=2940&auto=format&fit=crop"
+        height="70vh"
+      >
+        <h3
+          style={{
+            color: 'white',
+            fontSize: '24px',
+            fontWeight: 600,
+            textAlign: 'center',
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Modern & Professional Theme
+        </h3>
+        <Nav alignment="center" variant="float-bottom-center" glass>
+          <NavItem href="/" active>
+            <HomeIcon />
+          </NavItem>
+          <NavItem href="/portfolio">
+            <UserIcon />
+          </NavItem>
+          <NavItem href="/services">
+            <SettingsIcon />
+          </NavItem>
+        </Nav>
+      </BackgroundWrapper>
+    </div>
+  ),
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story:
+          'A comprehensive showcase demonstrating how glass navigation adapts to different themes and color palettes. Each example represents a different use case and aesthetic.',
+      },
+    },
+  },
+};
+
 // Complete showcase
 export const CompleteShowcase: Story = {
   args: {

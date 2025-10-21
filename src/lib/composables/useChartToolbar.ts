@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ChartToolbarAction, ChartToolbarGroup } from '../../components/Chart/ChartToolbar';
 import { ChartType } from '../../components/Chart/types';
 
@@ -107,10 +107,16 @@ export function useChartToolbar(
       case 'line':
       case 'area':
       case 'bar':
+      case 'horizontal-bar':
       case 'scatter':
+      case 'bubble':
+      case 'funnel':
+      case 'waterfall':
+      case 'candlestick':
         return {
           ...baseDefaults,
           zoom: true,
+          pan: true,
           reset: true,
         };
 
@@ -132,31 +138,16 @@ export function useChartToolbar(
           grid: false,
         };
 
-      case 'heatmap':
-      case 'treemap':
-        return {
-          ...baseDefaults,
-          zoom: true,
-          pan: true,
-          grid: false,
-        };
-
-      case 'candlestick':
-        return {
-          ...baseDefaults,
-          zoom: true,
-          pan: true,
-          reset: true,
-          grid: true,
-        };
 
       default:
         return baseDefaults;
     }
   }, [chartType]);
 
-  // Merge configurations
-  const finalDefaults = { ...getChartDefaults(), ...defaults };
+  // Merge configurations with memoization
+  const finalDefaults = useMemo(() => {
+    return { ...getChartDefaults(), ...defaults };
+  }, [getChartDefaults, defaults]);
 
   const enhancedHandlers = {
     onRefresh: useCallback(() => {

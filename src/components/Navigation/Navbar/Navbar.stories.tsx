@@ -567,3 +567,416 @@ export const MegaMenuVsDropdown: Story = {
     </div>
   ),
 };
+
+// Glass Morphism Effect Stories - Professional Showcase
+
+/**
+ * Background wrapper component for consistent glass effect demonstrations
+ */
+interface BackgroundWrapperProps {
+  children: React.ReactNode;
+  backgroundImage: string;
+  height?: string;
+  padding?: string;
+  overlay?: boolean;
+}
+
+const BackgroundWrapper = ({
+  children,
+  backgroundImage,
+  height = '90vh',
+  padding = '60px 40px',
+  overlay = false,
+}: BackgroundWrapperProps) => (
+  <div
+    style={{
+      position: 'relative',
+      width: '100%',
+      minHeight: height,
+      background: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: padding,
+      borderRadius: '12px',
+    }}
+  >
+    {overlay && (
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.3)',
+          borderRadius: '12px',
+        }}
+      />
+    )}
+    <div
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '2rem',
+      }}
+    >
+      {children}
+    </div>
+  </div>
+);
+
+/**
+ * Glass Effect - Default Fixed Navbar
+ *
+ * Demonstrates the Navbar component with default glass morphism settings
+ * in a fixed position. The glass effect provides a modern, frosted appearance.
+ */
+export const Glass: Story = {
+  render: () => (
+    <BackgroundWrapper
+      backgroundImage="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2940&auto=format&fit=crop"
+      overlay
+    >
+      <div style={{ width: '100%', maxWidth: '1200px' }}>
+        <Navbar brand={<LogoBrand />} position="fixed" glass>
+          <Nav alignment="end">
+            <NavItem href="/" active>
+              Home
+            </NavItem>
+            <NavItem href="/about">About</NavItem>
+            <NavItem href="/services">Services</NavItem>
+            <NavItem href="/contact">Contact</NavItem>
+          </Nav>
+        </Navbar>
+      </div>
+      <div style={{ textAlign: 'center', maxWidth: '800px', paddingTop: '100px' }}>
+        <h2
+          style={{
+            color: 'white',
+            fontSize: '32px',
+            fontWeight: 600,
+            marginBottom: '16px',
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Glass Navbar
+        </h2>
+        <p
+          style={{
+            color: 'rgba(255,255,255,0.9)',
+            fontSize: '18px',
+            lineHeight: 1.6,
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          A modern navigation bar with glassmorphism effect. Fixed positioning keeps it accessible
+          while the transparent glass aesthetic blends beautifully with any background.
+        </p>
+      </div>
+    </BackgroundWrapper>
+  ),
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story:
+          'Basic glass morphism effect with fixed positioning. The navbar maintains excellent readability while creating a beautiful frosted glass aesthetic that stays at the top of the viewport.',
+      },
+    },
+  },
+};
+
+/**
+ * Glass with Custom Properties
+ *
+ * Demonstrates advanced customization of the glass effect with various
+ * displacement, blur, and corner radius settings.
+ */
+export const GlassCustom: Story = {
+  render: () => (
+    <BackgroundWrapper
+      backgroundImage="https://images.unsplash.com/photo-1505142468610-359e7d316be0?q=80&w=2940&auto=format&fit=crop"
+      overlay
+    >
+      <div style={{ width: '100%', maxWidth: '1200px' }}>
+        <Navbar
+          brand={<LogoBrand />}
+          position="fixed"
+          glass={{
+            displacementScale: 100,
+            blurAmount: 2.5,
+            cornerRadius: 0,
+            mode: 'shader',
+          }}
+        >
+          <Nav alignment="end">
+            <NavItem href="/" active>
+              Home
+            </NavItem>
+            <NavItem href="/destinations">Destinations</NavItem>
+            <NavDropdown title="Explore">
+              <Menu>
+                <MenuItem href="/beaches" icon={<Icon name="Sun" />}>
+                  Beaches
+                </MenuItem>
+                <MenuItem href="/diving" icon={<Icon name="Waves" />}>
+                  Diving
+                </MenuItem>
+                <MenuDivider />
+                <MenuItem href="/resorts" icon={<Icon name="House" />}>
+                  Resorts
+                </MenuItem>
+              </Menu>
+            </NavDropdown>
+            <NavItem href="/contact">Contact</NavItem>
+          </Nav>
+        </Navbar>
+      </div>
+      <div style={{ textAlign: 'center', maxWidth: '800px', paddingTop: '100px' }}>
+        <h2
+          style={{
+            color: 'white',
+            fontSize: '32px',
+            fontWeight: 600,
+            marginBottom: '16px',
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Custom Glass Properties
+        </h2>
+        <p
+          style={{
+            color: 'rgba(255,255,255,0.9)',
+            fontSize: '18px',
+            lineHeight: 1.6,
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Enhanced glass effect with custom displacement and blur. Perfect for creating unique
+          visual experiences with more pronounced depth and refraction.
+        </p>
+      </div>
+    </BackgroundWrapper>
+  ),
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story:
+          'Customized glass effect with increased displacement and blur for a more pronounced visual impact. The sharp corners (cornerRadius: 0) create a modern, edge-to-edge aesthetic.',
+      },
+    },
+  },
+};
+
+/**
+ * Glass with Dropdown & Mega Menu
+ *
+ * Shows how the glass effect integrates seamlessly with dropdown menus
+ * and mega menus, maintaining visual consistency.
+ */
+
+export const GlassWithMegaMenu: Story = {
+  render: () => (
+    <BackgroundWrapper
+      backgroundImage="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2940&auto=format&fit=crop"
+      overlay
+    >
+      <div style={{ width: '100%', maxWidth: '1200px' }}>
+        <Navbar brand={<LogoBrand />} position="fixed" glass>
+          <Nav alignment="end">
+            <NavItem href="/" active>
+              Home
+            </NavItem>
+            <NavDropdown title="Products" megaMenu>
+              <MegaMenu>
+                <MegaMenuColumn title="Web Design" icon="icon-lux-circle">
+                  <MegaMenuLink href="/web/templates">Templates</MegaMenuLink>
+                  <MegaMenuLink href="/web/themes">Themes</MegaMenuLink>
+                  <MegaMenuLink href="/web/plugins">Plugins</MegaMenuLink>
+                </MegaMenuColumn>
+                <MegaMenuColumn title="Development" icon="icon-lux-circle">
+                  <MegaMenuLink href="/dev/frameworks">Frameworks</MegaMenuLink>
+                  <MegaMenuLink href="/dev/libraries">Libraries</MegaMenuLink>
+                  <MegaMenuLink href="/dev/tools">Tools</MegaMenuLink>
+                </MegaMenuColumn>
+                <MegaMenuColumn title="Marketing" icon="icon-lux-circle">
+                  <MegaMenuLink href="/marketing/seo">SEO Tools</MegaMenuLink>
+                  <MegaMenuLink href="/marketing/social">Social Media</MegaMenuLink>
+                  <MegaMenuLink href="/marketing/analytics">Analytics</MegaMenuLink>
+                </MegaMenuColumn>
+              </MegaMenu>
+            </NavDropdown>
+            <NavItem href="/pricing">Pricing</NavItem>
+            <NavItem href="/about">About</NavItem>
+          </Nav>
+        </Navbar>
+      </div>
+      <div style={{ textAlign: 'center', maxWidth: '800px', paddingTop: '100px' }}>
+        <h2
+          style={{
+            color: 'white',
+            fontSize: '32px',
+            fontWeight: 600,
+            marginBottom: '16px',
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Glass with Mega Menu
+        </h2>
+        <p
+          style={{
+            color: 'rgba(255,255,255,0.9)',
+            fontSize: '18px',
+            lineHeight: 1.6,
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          The glass effect seamlessly extends to mega menu dropdowns, creating a cohesive visual
+          experience perfect for e-commerce and content-rich websites.
+        </p>
+      </div>
+    </BackgroundWrapper>
+  ),
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story:
+          'Glass navbar with integrated mega menu. The glass effect maintains consistency throughout complex navigation structures, providing a polished and professional appearance.',
+      },
+    },
+  },
+};
+
+/**
+ * Glass Theme Variations
+ *
+ * A comprehensive showcase of glass navbar across different themed
+ * backgrounds, demonstrating versatility and variant support.
+ */
+export const GlassThemeShowcase: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+      {/* Nature Theme */}
+      <BackgroundWrapper
+        backgroundImage="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2940&auto=format&fit=crop"
+        height="70vh"
+      >
+        <div style={{ width: '100%', maxWidth: '1200px' }}>
+          <Navbar brand={<LogoBrand />} position="fixed" glass>
+            <Nav alignment="end">
+              <NavItem href="/" active>
+                Home
+              </NavItem>
+              <NavItem href="/explore">Explore</NavItem>
+              <NavItem href="/adventures">Adventures</NavItem>
+              <NavItem href="/contact">Contact</NavItem>
+            </Nav>
+          </Navbar>
+        </div>
+        <div style={{ paddingTop: '100px', textAlign: 'center' }}>
+          <h3
+            style={{
+              color: 'white',
+              fontSize: '24px',
+              fontWeight: 600,
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+            }}
+          >
+            Nature & Adventure Theme
+          </h3>
+        </div>
+      </BackgroundWrapper>
+
+      {/* Urban Theme - Dark Variant */}
+      <BackgroundWrapper
+        backgroundImage="https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=2940&auto=format&fit=crop"
+        height="70vh"
+      >
+        <div style={{ width: '100%', maxWidth: '1200px' }}>
+          <Navbar brand={<LogoBrand />} position="fixed" variant="dark" glass>
+            <Nav alignment="end">
+              <NavItem href="/" active>
+                Home
+              </NavItem>
+              <NavItem href="/portfolio">Portfolio</NavItem>
+              <NavItem href="/services">Services</NavItem>
+              <NavItem href="/blog">Blog</NavItem>
+            </Nav>
+          </Navbar>
+        </div>
+        <div style={{ paddingTop: '100px', textAlign: 'center' }}>
+          <h3
+            style={{
+              color: 'white',
+              fontSize: '24px',
+              fontWeight: 600,
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+            }}
+          >
+            Modern & Professional Theme
+          </h3>
+        </div>
+      </BackgroundWrapper>
+
+      {/* Sunset Theme */}
+      <BackgroundWrapper
+        backgroundImage="https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?q=80&w=2940&auto=format&fit=crop"
+        height="70vh"
+      >
+        <div style={{ width: '100%', maxWidth: '1200px' }}>
+          <Navbar
+            brand={<LogoBrand />}
+            position="fixed"
+            glass={{
+              displacementScale: 60,
+              blurAmount: 2,
+              cornerRadius: 0,
+              mode: 'shader',
+            }}
+          >
+            <Nav alignment="end">
+              <NavItem href="/" active>
+                Home
+              </NavItem>
+              <NavItem href="/destinations">Destinations</NavItem>
+              <NavItem href="/experiences">Experiences</NavItem>
+              <NavItem href="/booking">Book Now</NavItem>
+            </Nav>
+          </Navbar>
+        </div>
+        <div style={{ paddingTop: '100px', textAlign: 'center' }}>
+          <h3
+            style={{
+              color: 'white',
+              fontSize: '24px',
+              fontWeight: 600,
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+            }}
+          >
+            Travel & Hospitality Theme
+          </h3>
+        </div>
+      </BackgroundWrapper>
+    </div>
+  ),
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story:
+          'A comprehensive showcase demonstrating how glass navbar adapts to different themes, color palettes, and content types. Each example represents a distinct use case with appropriate styling.',
+      },
+    },
+  },
+};

@@ -245,20 +245,10 @@ export function usePieChart(data: ChartDataPoint[], options: PieChartOptions = {
     requestAnimationFrame(animate);
   }, [options.enableAnimations, options.animationDuration]);
 
-  // Slice interaction handlers
-  const handleSliceHover = useCallback(
-    (index: number, clientX?: number, clientY?: number) => {
-      if (!options.enableHoverEffects) return;
-      setHoveredSlice(index);
-
-      // Store client coordinates for tooltip positioning
-      if (clientX !== undefined && clientY !== undefined && slices[index]) {
-        slices[index].clientX = clientX;
-        slices[index].clientY = clientY;
-      }
-    },
-    [options.enableHoverEffects, slices]
-  );
+  // Slice hover handlers
+  const handleSliceHover = useCallback((index: number, clientX: number, clientY: number) => {
+    setHoveredSlice(index);
+  }, []);
 
   const handleSliceLeave = useCallback(() => {
     setHoveredSlice(null);

@@ -607,3 +607,343 @@ export const InteractiveDemo: Story = {
     onToggle: fn(),
   },
 };
+
+// Glass Morphism Effect Stories - Professional Showcase
+
+/**
+ * Background wrapper component for consistent glass effect demonstrations
+ */
+interface BackgroundWrapperProps {
+  children: React.ReactNode;
+  backgroundImage: string;
+  height?: string;
+  padding?: string;
+  overlay?: boolean;
+}
+
+const BackgroundWrapper = ({
+  children,
+  backgroundImage,
+  height = '90vh',
+  padding = '60px 40px',
+  overlay = false,
+}: BackgroundWrapperProps) => (
+  <div
+    style={{
+      position: 'relative',
+      width: '100%',
+      minHeight: height,
+      background: `url(${backgroundImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      padding: padding,
+      borderRadius: '12px',
+      gap: '3rem',
+    }}
+  >
+    {overlay && (
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.3)',
+          borderRadius: '12px',
+        }}
+      />
+    )}
+    {children}
+  </div>
+);
+
+/**
+ * Glass Effect - Default
+ *
+ * Demonstrates the SideMenu component with default glass morphism settings.
+ * The glass effect provides a modern, frosted appearance perfect for sidebar navigation.
+ */
+export const Glass: Story = {
+  render: () => (
+    <BackgroundWrapper
+      backgroundImage="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2940&auto=format&fit=crop"
+      overlay
+    >
+      <div style={{ position: 'relative', width: '300px' }}>
+        <SideMenu title="Navigation" glass>
+          <SideMenuList>
+            <SideMenuItem href="/" icon={<Icon name="House" size="sm" />} active>
+              Home
+            </SideMenuItem>
+            <SideMenuItem href="/explore" icon={<Icon name="Compass" size="sm" />}>
+              Explore
+            </SideMenuItem>
+            <SideMenuItem href="/services" icon={<Icon name="Briefcase" size="sm" />}>
+              Services
+            </SideMenuItem>
+            <SideMenuItem href="/contact" icon={<Icon name="Envelope" size="sm" />}>
+              Contact
+            </SideMenuItem>
+          </SideMenuList>
+          <SideMenuList>
+            <SideMenuItem href="/settings" icon={<Icon name="Gear" size="sm" />}>
+              Settings
+            </SideMenuItem>
+          </SideMenuList>
+        </SideMenu>
+      </div>
+      <div style={{ position: 'relative', zIndex: 1, flex: 1, maxWidth: '600px' }}>
+        <h2
+          style={{
+            color: 'white',
+            fontSize: '32px',
+            fontWeight: 600,
+            marginBottom: '16px',
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Glass SideMenu
+        </h2>
+        <p
+          style={{
+            color: 'rgba(255,255,255,0.9)',
+            fontSize: '18px',
+            lineHeight: 1.6,
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          A modern sidebar navigation with glassmorphism effect. Perfect for dashboards, admin
+          panels, and application interfaces that require elegant navigation.
+        </p>
+      </div>
+    </BackgroundWrapper>
+  ),
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story:
+          'Basic glass morphism effect with default settings. The sidebar maintains excellent readability while creating a beautiful frosted glass aesthetic.',
+      },
+    },
+  },
+};
+
+/**
+ * Glass with Custom Properties
+ *
+ * Demonstrates advanced customization of the glass effect with various
+ * displacement, blur, and corner radius settings.
+ */
+export const GlassCustom: Story = {
+  render: () => (
+    <BackgroundWrapper
+      backgroundImage="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2940&auto=format&fit=crop"
+      overlay
+    >
+      <div style={{ position: 'relative', width: '320px' }}>
+        <SideMenu
+          title="Nature Explorer"
+          glass={{
+            displacementScale: 70,
+            blurAmount: 2,
+            cornerRadius: 12,
+            mode: 'shader',
+          }}
+        >
+          <SideMenuList>
+            <SideMenuItem href="/" icon={<Icon name="House" size="sm" />} active>
+              Home
+            </SideMenuItem>
+            <SideMenuItem href="/trails" icon={<Icon name="MapPin" size="sm" />}>
+              Trails
+            </SideMenuItem>
+            <SideMenuItem href="/wildlife" icon={<Icon name="Sparkle" size="sm" />}>
+              Wildlife
+            </SideMenuItem>
+            <SideMenuItem href="/camping" icon={<Icon name="Tent" size="sm" />}>
+              Camping
+            </SideMenuItem>
+          </SideMenuList>
+          <SideMenuList>
+            <SideMenuItem href="/guides" icon={<Icon name="Book" size="sm" />}>
+              Guides
+            </SideMenuItem>
+            <SideMenuItem href="/gear" icon={<Icon name="Backpack" size="sm" />}>
+              Gear List
+            </SideMenuItem>
+          </SideMenuList>
+        </SideMenu>
+      </div>
+      <div style={{ position: 'relative', zIndex: 1, flex: 1, maxWidth: '600px' }}>
+        <h2
+          style={{
+            color: 'white',
+            fontSize: '32px',
+            fontWeight: 600,
+            marginBottom: '16px',
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Custom Glass Properties
+        </h2>
+        <p
+          style={{
+            color: 'rgba(255,255,255,0.9)',
+            fontSize: '18px',
+            lineHeight: 1.6,
+            textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+          }}
+        >
+          Enhanced glass effect with custom displacement, blur, and corner radius. Perfect for
+          creating unique visual experiences tailored to your brand.
+        </p>
+      </div>
+    </BackgroundWrapper>
+  ),
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story:
+          'Customized glass effect with increased displacement and blur for a more pronounced visual impact. Demonstrates the flexibility of the glass morphism system.',
+      },
+    },
+  },
+};
+
+/**
+ * Glass Theme Variations
+ *
+ * A comprehensive showcase of glass sidebar across different themed
+ * backgrounds, demonstrating versatility and adaptability.
+ */
+export const GlassThemeShowcase: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+      {/* Ocean Theme */}
+      <BackgroundWrapper
+        backgroundImage="https://images.unsplash.com/photo-1505142468610-359e7d316be0?q=80&w=2940&auto=format&fit=crop"
+        height="70vh"
+      >
+        <div style={{ position: 'relative', width: '300px' }}>
+          <SideMenu title="Ocean Explorer" glass>
+            <SideMenuList>
+              <SideMenuItem href="/" icon={<Icon name="House" size="sm" />} active>
+                Home
+              </SideMenuItem>
+              <SideMenuItem href="/beaches" icon={<Icon name="Sun" size="sm" />}>
+                Beaches
+              </SideMenuItem>
+              <SideMenuItem href="/diving" icon={<Icon name="Waves" size="sm" />}>
+                Diving
+              </SideMenuItem>
+            </SideMenuList>
+          </SideMenu>
+        </div>
+        <div style={{ position: 'relative', flex: 1 }}>
+          <h3
+            style={{
+              color: 'white',
+              fontSize: '24px',
+              fontWeight: 600,
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+            }}
+          >
+            Ocean & Travel Theme
+          </h3>
+        </div>
+      </BackgroundWrapper>
+
+      {/* Urban Theme */}
+      <BackgroundWrapper
+        backgroundImage="https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=2940&auto=format&fit=crop"
+        height="70vh"
+      >
+        <div style={{ position: 'relative', width: '300px' }}>
+          <SideMenu title="Admin Panel" glass>
+            <SideMenuList>
+              <SideMenuItem href="/dashboard" icon={<Icon name="ChartBar" size="sm" />} active>
+                Dashboard
+              </SideMenuItem>
+              <SideMenuItem href="/analytics" icon={<Icon name="TrendUp" size="sm" />}>
+                Analytics
+              </SideMenuItem>
+              <SideMenuItem href="/users" icon={<Icon name="Users" size="sm" />}>
+                Users
+              </SideMenuItem>
+            </SideMenuList>
+          </SideMenu>
+        </div>
+        <div style={{ position: 'relative', flex: 1 }}>
+          <h3
+            style={{
+              color: 'white',
+              fontSize: '24px',
+              fontWeight: 600,
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+            }}
+          >
+            Modern & Professional Theme
+          </h3>
+        </div>
+      </BackgroundWrapper>
+
+      {/* Sunset Theme */}
+      <BackgroundWrapper
+        backgroundImage="https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?q=80&w=2940&auto=format&fit=crop"
+        height="70vh"
+      >
+        <div style={{ position: 'relative', width: '320px' }}>
+          <SideMenu
+            title="Travel Hub"
+            glass={{
+              displacementScale: 60,
+              blurAmount: 1.8,
+              cornerRadius: 16,
+              mode: 'shader',
+            }}
+          >
+            <SideMenuList>
+              <SideMenuItem href="/home" icon={<Icon name="House" size="sm" />} active>
+                Home
+              </SideMenuItem>
+              <SideMenuItem href="/destinations" icon={<Icon name="MapPin" size="sm" />}>
+                Destinations
+              </SideMenuItem>
+              <SideMenuItem href="/bookings" icon={<Icon name="Calendar" size="sm" />}>
+                Bookings
+              </SideMenuItem>
+            </SideMenuList>
+          </SideMenu>
+        </div>
+        <div style={{ position: 'relative', flex: 1 }}>
+          <h3
+            style={{
+              color: 'white',
+              fontSize: '24px',
+              fontWeight: 600,
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+            }}
+          >
+            Warm & Inviting Theme
+          </h3>
+        </div>
+      </BackgroundWrapper>
+    </div>
+  ),
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story:
+          'A comprehensive showcase demonstrating how glass sidebar adapts to different themes and color palettes. Each example represents a different use case and aesthetic.',
+      },
+    },
+  },
+};

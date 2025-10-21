@@ -205,6 +205,11 @@
     flex: 1;
   }
 
+  &--glass {
+    background-color: transparent;
+    border-bottom: none;
+  }
+
   // 6. State Classes
   &.is-open {
     #{$root}__toggler-icon {
