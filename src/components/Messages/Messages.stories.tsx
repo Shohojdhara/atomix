@@ -158,3 +158,116 @@ export const Interactive: StoryObj<typeof Messages> = {
     },
   },
 };
+
+// Glass morphism variant
+export const Glass: Story = {
+  args: {
+    ...Default.args,
+    glass: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Messages component with glass morphism effect applied.',
+      },
+    },
+    backgrounds: {
+      default: 'image',
+      values: [
+        {
+          name: 'image',
+          value:
+            'url(https://images.unsplash.com/photo-1649579037846-bf8c4d19d045?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070)',
+        },
+      ],
+    },
+  },
+};
+
+// Glass morphism with custom properties
+export const GlassCustom: Story = {
+  args: {
+    ...Default.args,
+    glass: {
+      displacementScale: 30,
+      blurAmount: 0,
+      cornerRadius: 16,
+      elasticity: 0,
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Messages component with customized glass morphism effect.',
+      },
+    },
+    backgrounds: {
+      default: 'image',
+      position: 'center',
+      values: [
+        {
+          name: 'image',
+          value:
+            'url(https://images.unsplash.com/photo-1760888102496-8ed280c9fc62?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2532)',
+        },
+      ],
+    },
+  },
+};
+
+// Interactive glass example
+export const InteractiveGlass: StoryObj<typeof Messages> = {
+  render: args => {
+    const [messages, setMessages] = useState<MessageItem[]>(args.messages || []);
+
+    const handleSendMessage = (text: string) => {
+      const newMessage: MessageItem = {
+        id: `msg-${Date.now()}`,
+        text,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        isSelf: true,
+      };
+
+      setMessages([...messages, newMessage]);
+    };
+
+    return <Messages {...args} messages={messages} onSendMessage={handleSendMessage} />;
+  },
+  args: {
+    width: '800px',
+    bodyHeight: '400px',
+    otherName: 'Meghan',
+    otherAvatar:
+      'https://images.unsplash.com/photo-1648074074225-16189e7ad8c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1935&q=80',
+    selfAvatar:
+      'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80',
+    messages: [
+      {
+        id: '1',
+        text: 'Hi there! How can I help you today?',
+        time: '12:00 PM',
+        isSelf: false,
+      },
+    ],
+    placeholder: 'Type your message here...',
+    glass: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'An interactive glass morphism example where you can send messages and see them appear in the chat.',
+      },
+    },
+    backgrounds: {
+      default: 'image',
+      values: [
+        {
+          name: 'image',
+          value:
+            'url(https://images.unsplash.com/photo-1760709072133-2472415b05f4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987)',
+        },
+      ],
+    },
+  },
+};

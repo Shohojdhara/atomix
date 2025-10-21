@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from '../Icon/Icon';
 import { Avatar } from '../Avatar/Avatar';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { MESSAGES } from '../../lib/constants/components';
 import { MessagesProps } from '../../lib/types/components';
 import { useMessages } from '../../lib/composables/useMessages';
@@ -20,6 +21,7 @@ export const Messages: React.FC<MessagesProps> = ({
   bodyHeight,
   disabled = false,
   id,
+  glass,
 }) => {
   const { inputValue, handleInputChange, handleSubmit, handleKeyDown } = useMessages({
     onSendMessage,
@@ -29,15 +31,18 @@ export const Messages: React.FC<MessagesProps> = ({
   const messagesId = id || `messages-${Math.random().toString(36).substr(2, 9)}`;
   const inputId = `${messagesId}-input`;
 
-  return (
-    <div
-      className={`${MESSAGES.CLASSES.BASE} ${disabled ? 'is-disabled' : ''} ${className}`}
-      style={{ '--atomix-messages-width': width } as React.CSSProperties}
-      id={messagesId}
-      aria-label="Chat messages"
-      role="log"
-      aria-live="polite"
-    >
+  // Default glass settings for messages
+  const defaultGlassProps = {
+    displacementScale: 150,
+    cornerRadius: 12,
+    elasticity: 0,
+    aberrationIntensity: 2,
+  };
+
+  const messagesClasses = `${MESSAGES.CLASSES.BASE} ${glass ? 'c-messages--glass' : ''} ${disabled ? 'is-disabled' : ''} ${className}`;
+
+  const messagesContent = (
+    <>
       <div
         className={MESSAGES.CLASSES.BODY}
         style={
@@ -161,6 +166,43 @@ export const Messages: React.FC<MessagesProps> = ({
           <Icon name="PaperPlaneTilt" aria-hidden="true" size={24} />
         </button>
       </form>
+    </>
+  );
+
+  if (glass) {
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+    return (
+      <div
+        className={messagesClasses}
+        style={{ '--atomix-messages-width': width } as React.CSSProperties}
+        id={messagesId}
+        aria-label="Chat messages"
+        role="log"
+        aria-live="polite"
+      >
+        <AtomixGlass {...glassProps}>
+          <div
+            className="c-messages__glass-content"
+            style={{ borderRadius: glassProps.cornerRadius }}
+          >
+            {messagesContent}
+          </div>
+        </AtomixGlass>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={messagesClasses}
+      style={{ '--atomix-messages-width': width } as React.CSSProperties}
+      id={messagesId}
+      aria-label="Chat messages"
+      role="log"
+      aria-live="polite"
+    >
+      {messagesContent}
     </div>
   );
 };

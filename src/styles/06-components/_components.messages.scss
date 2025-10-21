@@ -330,4 +330,180 @@
       cursor: not-allowed;
     }
   }
+
+  // Glass morphism variant
+  &--glass {
+    background: transparent;
+    border: none;
+    padding: 0;
+
+    #{$root}__glass-content {
+      padding: var(--#{config.$prefix}messages-padding-y) var(--#{config.$prefix}messages-padding-x);
+      border-radius: var(--#{config.$prefix}messages-border-radius);
+    }
+
+    // Enhanced body styling for glass variant
+    #{$root}__body {
+      border-radius: border.$border-radius-md;
+      padding: rem.rem(8px);
+      @include dynamic-background(
+        var(--#{config.$prefix}body-bg),
+        $background-transparency-enable: true,
+        $transparency: 0.15
+      );
+    }
+
+    // Text messages styling
+    #{$root}__text {
+      @include dynamic-background(
+        var(--#{config.$prefix}body-bg),
+        $background-transparency-enable: true
+      );
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    // Self message text styling
+    #{$root}__content--self {
+      #{$root}__text {
+        @include dynamic-background(
+          var(--#{config.$prefix}brand-bg-subtle),
+          $background-transparency-enable: true
+        );
+        border: 1px solid rgba(var(--#{config.$prefix}primary-rgb), 0.3);
+        backdrop-filter: blur(8px);
+      }
+
+      #{$root}__file {
+        @include dynamic-background(
+          var(--#{config.$prefix}brand-bg-subtle),
+          $background-transparency-enable: true
+        );
+        border: 1px solid rgba(var(--#{config.$prefix}primary-rgb), 0.3);
+        backdrop-filter: blur(8px);
+      }
+    }
+
+    // File attachment styling
+    #{$root}__file {
+      @include dynamic-background(
+        var(--#{config.$prefix}brand-bg-subtle),
+        $background-transparency-enable: true
+      );
+      border: 1px solid rgba(var(--#{config.$prefix}primary-rgb), 0.3);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    #{$root}__file-icon {
+      @include dynamic-background(
+        var(--#{config.$prefix}brand-bg-subtle),
+        $background-transparency-enable: true
+      );
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    // Image styling
+    #{$root}__image {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    // Avatar styling
+    #{$root}__avatar {
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    // Name label styling
+    #{$root}__name {
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      font-weight: typo.$font-weight-semibold;
+    }
+
+    // Time label styling
+    #{$root}__time {
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    // Enhanced form styling
+    #{$root}__form {
+      padding-top: rem.rem(12px);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      margin-top: rem.rem(16px);
+    }
+
+    // Input group styling
+    #{$root}__input {
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      color: var(--#{config.$prefix}primary-text-emphasis);
+
+      &:focus {
+        background: rgba(255, 255, 255, 0.45);
+        border-color: var(--#{config.$prefix}primary);
+        box-shadow: 0 0 0 3px rgba(var(--#{config.$prefix}primary-rgb), 0.15);
+      }
+
+      &::placeholder {
+        opacity: 0.8;
+        color: var(--#{config.$prefix}primary-text-emphasis);
+      }
+    }
+
+    // Options buttons styling
+    #{$root}__option {
+      padding: rem.rem(6px);
+      border-radius: border.$border-radius-sm;
+      transition: background-color 0.2s ease;
+
+      &:hover:not(:disabled) {
+        background: rgba(var(--#{config.$prefix}secondary-bg-rgb), 0.4);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--#{config.$prefix}primary);
+        outline-offset: 2px;
+      }
+    }
+
+    #{$root}__option-icon {
+      opacity: 0.8;
+      transition: opacity 0.2s ease;
+
+      #{$root}__option:hover & {
+        opacity: 1;
+      }
+    }
+
+    // Submit button styling
+    #{$root}__submit {
+      background: rgba(var(--#{config.$prefix}primary-rgb), 0.9);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(var(--#{config.$prefix}primary-rgb), 0.4);
+      box-shadow: 0 2px 8px rgba(var(--#{config.$prefix}primary-rgb), 0.3);
+      transition: all 0.2s ease;
+
+      &:hover:not(:disabled) {
+        background: rgba(var(--#{config.$prefix}primary-rgb), 1);
+        box-shadow: 0 4px 12px rgba(var(--#{config.$prefix}primary-rgb), 0.4);
+        transform: translateY(-1px);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: 0 1px 4px rgba(var(--#{config.$prefix}primary-rgb), 0.3);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        background: rgba(var(--#{config.$prefix}primary-rgb), 0.5);
+      }
+    }
+  }
 }
