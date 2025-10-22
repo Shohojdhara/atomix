@@ -1,7 +1,6 @@
-import { forwardRef, memo, useCallback } from 'react';
+import { forwardRef, memo, useState } from 'react';
 import { LineChartOptions, useLineChart } from '../../lib/composables/useLineChart';
-import Chart from './Chart';
-import ChartRenderer from './ChartRenderer';
+import BaseChart from './BaseChart';
 import ChartTooltip from './ChartTooltip';
 import { ChartProps } from './types';
 
@@ -48,6 +47,19 @@ const LineChart = memo(
       },
       ref
     ) => {
+      // Merge default options with provided options
+      const mergedLineOptions: LineChartOptions = {
+        showDataPoints: true,
+        lineWidth: 2,
+        pointRadius: 4,
+        smooth: false,
+        tension: 0.4,
+        showArea: false,
+        fillOpacity: 0.3,
+        showPointLabels: false,
+        ...lineOptions,
+      };
+
       const {
         processedDatasets,
         generateSmoothPath,
@@ -55,113 +67,140 @@ const LineChart = memo(
         handlePointHover,
         handlePointLeave,
         hoveredPoint,
-      } = useLineChart(datasets, lineOptions);
+      } = useLineChart(datasets, mergedLineOptions);
 
-      const renderContent = useCallback(
-        ({
-          scales,
-          colors,
-          datasets: renderedDatasets,
-          handlers,
-        }: {
-          scales: any;
-          colors: any;
-          datasets: any;
-          handlers: any;
-        }) => {
-          if (!renderedDatasets.length) return null;
+      const renderContent = ({
+        scales,
+        colors,
+        datasets: renderedDatasets,
+        handlers,
+        hoveredPoint,
+      }: {
+        scales: any;
+        colors: any;
+        datasets: any;
+        handlers: any;
+        hoveredPoint: {
+          datasetIndex: number;
+          pointIndex: number;
+          x: number;
+          y: number;
+          clientX: number;
+          clientY: number;
+        } | null;
+      }) => {
+        if (!renderedDatasets.length) return null;
 
-          return renderedDatasets.map((dataset: any, datasetIndex: number) => {
-            const color = dataset.color || colors[datasetIndex];
-            const points =
-              dataset.data?.map((point: any, i: number) => ({
-                x: scales.xScale(i, dataset.data?.length),
-                y: scales.yScale(point.value),
-              })) || [];
+        return (
+          <>
+            {renderedDatasets.map((dataset: any, datasetIndex: number) => {
+              const color = dataset.color || colors[datasetIndex];
+              const dataLength = dataset.data?.length || 0;
+              
+              if (dataLength === 0) return null;
 
-            const path = lineOptions.smooth
-              ? generateSmoothPath(points)
-              : `M ${points.map((p: any) => `${p.x},${p.y}`).join(' L ')}`;
+              // Generate points with proper coordinates
+              const points =
+                dataset.data?.map((point: any, i: number) => ({
+                  x: scales.xScale(i, dataLength),
+                  y: scales.yScale(point.value),
+                })) || [];
 
-            return (
-              <g key={`dataset-${datasetIndex}`}>
-                {lineOptions.showArea && (
-                  <path
-                    d={`${path} L ${points[points.length - 1]?.x || 0},${scales.yScale(0)} L ${points[0]?.x || 0},${scales.yScale(0)} Z`}
-                    fill={color}
-                    className="c-chart__area-path"
+              // Generate line path - ensure proper SVG path format
+              const path = mergedLineOptions.smooth
+                ? generateSmoothPath(points)
+                : `M ${points.map((p: any) => `${p.x},${p.y}`).join(' L ')}`;
+
+              return (
+                <g key={`dataset-${datasetIndex}`}>
+                  {mergedLineOptions.showArea && (
+                    <path
+                      d={`${path} L ${points[points.length - 1]?.x || 0},${scales.yScale(0)} L ${points[0]?.x || 0},${scales.yScale(0)} Z`}
+                      fill={color}
+                      fillOpacity={mergedLineOptions.fillOpacity || 0.3}
+                      className="c-chart__area-path"
+                    />
+                  )}
+                  <path 
+                    d={path} 
+                    stroke={color}
+                    strokeWidth={mergedLineOptions.lineWidth || 2}
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="c-chart__line-path" 
                   />
-                )}
-                <path d={path} stroke={color} fill="none" className="c-chart__line-path" />
-                {lineOptions.showDataPoints &&
-                  dataset.data?.map((point: any, i: number) => {
-                    const x = scales.xScale(i, dataset.data?.length);
-                    const y = scales.yScale(point.value);
-                    const isHovered =
-                      hoveredPoint?.datasetIndex === datasetIndex && hoveredPoint?.pointIndex === i;
+                  {mergedLineOptions.showDataPoints &&
+                    dataset.data?.map((point: any, i: number) => {
+                      const x = scales.xScale(i, dataLength);
+                      const y = scales.yScale(point.value);
+                      const isHovered =
+                        hoveredPoint?.datasetIndex === datasetIndex && hoveredPoint?.pointIndex === i;
 
-                    return (
-                      <circle
-                        key={`point-${i}`}
-                        cx={x}
-                        cy={y}
-                        r={lineOptions.pointRadius || 4}
-                        fill={color}
-                        className={`c-chart__data-point ${isHovered ? 'c-chart__data-point--hovered' : ''}`}
-                        onClick={() => handlers.onDataPointClick?.(point, datasetIndex, i)}
-                        onMouseEnter={e => {
-                          const rect = e.currentTarget.ownerSVGElement?.getBoundingClientRect();
-                          const clientX = rect ? rect.left + x : e.clientX;
-                          const clientY = rect ? rect.top + y : e.clientY;
-                          handlePointHover(datasetIndex, i, x, y);
-                        }}
-                        onMouseLeave={handlePointLeave}
-                      />
-                    );
-                  })}
-              </g>
-            );
-          });
-        },
-        [lineOptions, generateSmoothPath, hoveredPoint, handlePointHover, handlePointLeave]
-      );
+                      return (
+                        <g key={`point-${i}`}>
+                          <circle
+                            cx={x}
+                            cy={y}
+                            r={isHovered ? mergedLineOptions.pointRadius! * 1.5 : mergedLineOptions.pointRadius}
+                            fill={color}
+                            stroke="white"
+                            strokeWidth={isHovered ? 2 : 1}
+                            className={`c-chart__data-point ${isHovered ? 'c-chart__data-point--hovered' : ''}`}
+                            onMouseEnter={e => {
+                              const rect = e.currentTarget.getBoundingClientRect();
+                              handlers.onPointHover(datasetIndex, i, x, y, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                            }}
+                            onMouseLeave={handlers.onPointLeave}
+                            onClick={() => handlers.onDataPointClick?.(point, datasetIndex, i)}
+                            style={{ cursor: 'pointer' }}
+                          />
+                          {mergedLineOptions.showPointLabels && (
+                            <text
+                              x={x}
+                              y={y - 15}
+                              textAnchor="middle"
+                              fontSize="12"
+                              fill={color}
+                              className="c-chart__point-label"
+                            >
+                              {point.value}
+                            </text>
+                          )}
+                        </g>
+                      );
+                    })}
+                </g>
+              );
+            })}
+            {config?.showTooltips !== false && hoveredPoint &&
+              renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
+                <ChartTooltip
+                  dataPoint={
+                    renderedDatasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!
+                  }
+                  datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
+                  datasetColor={renderedDatasets[hoveredPoint.datasetIndex]?.color}
+                  position={{ x: hoveredPoint.clientX, y: hoveredPoint.clientY }}
+                  visible={true}
+                />
+              )}
+          </>
+        );
+      };
 
       return (
-        <Chart
+        <BaseChart
           ref={ref}
           type="line"
-          datasets={datasets}
+          datasets={processedDatasets}
           config={config}
-          toolbarConfig={{
-            defaults: {
-              zoom: true,
-              pan: true,
-              reset: true,
-              grid: true,
-              tooltips: true,
-            },
-          }}
+          renderContent={renderContent}
+          onDataPointClick={onDataPointClick}
+          interactive={true}
+          enableAccessibility={true}
           {...props}
-        >
-          <ChartRenderer
-            datasets={processedDatasets}
-            config={config}
-            onDataPointClick={onDataPointClick}
-            renderContent={renderContent}
-          />
-          {hoveredPoint &&
-            processedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
-              <ChartTooltip
-                dataPoint={
-                  processedDatasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!
-                }
-                datasetLabel={processedDatasets[hoveredPoint.datasetIndex]?.label}
-                datasetColor={processedDatasets[hoveredPoint.datasetIndex]?.color}
-                position={{ x: hoveredPoint.x, y: hoveredPoint.y }}
-                visible={true}
-              />
-            )}
-        </Chart>
+        />
       );
     }
   )

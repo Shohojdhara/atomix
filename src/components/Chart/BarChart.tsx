@@ -1,9 +1,8 @@
-import { forwardRef, memo, useCallback } from 'react';
+import { forwardRef, memo } from 'react';
 import { BarChartOptions, useBarChart } from '../../lib/composables/useBarChart';
-import Chart from './Chart';
-import ChartRenderer from './ChartRenderer';
+import BaseChart from './BaseChart';
 import ChartTooltip from './ChartTooltip';
-import { ChartProps } from './types';
+import { ChartDataPoint, ChartProps } from './types';
 
 interface BarChartProps extends Omit<ChartProps, 'type'> {
   /**
@@ -33,111 +32,103 @@ const BarChart = memo(
       const { calculateBarDimensions, handleBarHover, handleBarLeave, hoveredBar, formatValue } =
         useBarChart(datasets, barOptions);
 
-      const renderContent = useCallback(
-        ({
-          scales,
-          colors,
-          datasets: renderedDatasets,
-          handlers,
-        }: {
-          scales: any;
-          colors: any;
-          datasets: any;
-          handlers: any;
-        }) => {
-          if (!renderedDatasets.length) return null;
+      const renderContent = ({
+        scales,
+        colors,
+        datasets: renderedDatasets,
+        handlers,
+        hoveredPoint,
+      }: {
+        scales: any;
+        colors: any;
+        datasets: any;
+        handlers: any;
+        hoveredPoint: {
+          datasetIndex: number;
+          pointIndex: number;
+          x: number;
+          y: number;
+          clientX: number;
+          clientY: number;
+        } | null;
+      }) => {
+        if (!renderedDatasets.length) return null;
 
-          const barDimensions = calculateBarDimensions(
-            renderedDatasets,
-            scales.width,
-            scales.height,
-            scales.padding,
-            horizontal
-          );
+        const barDimensions = calculateBarDimensions(
+          renderedDatasets,
+          scales.width,
+          scales.height,
+          scales.padding,
+          horizontal
+        );
 
-          return barDimensions.map((bar, index) => {
-            const dataset = renderedDatasets[bar.datasetIndex];
-            const point = dataset.data?.[bar.pointIndex];
-            const color = dataset.color || colors[bar.datasetIndex];
-            const isHovered =
-              hoveredBar?.datasetIndex === bar.datasetIndex &&
-              hoveredBar?.pointIndex === bar.pointIndex;
+        return (
+          <>
+            {barDimensions.map((bar, index) => {
+              const dataset = renderedDatasets[bar.datasetIndex];
+              const point = dataset.data?.[bar.pointIndex];
+              const color = dataset.color || colors[bar.datasetIndex];
+              const isHovered =
+                hoveredPoint?.datasetIndex === bar.datasetIndex &&
+                hoveredPoint?.pointIndex === bar.pointIndex;
 
-            return (
-              <g key={`bar-${index}`}>
-                <rect
-                  x={bar.x}
-                  y={bar.y}
-                  width={bar.width}
-                  height={bar.height}
-                  fill={color}
-                  rx={barOptions.cornerRadius || 4}
-                  className={`c-chart__bar ${isHovered ? 'c-chart__bar--hovered' : ''}`}
-                  onClick={() =>
-                    point && handlers.onDataPointClick?.(point, bar.datasetIndex, bar.pointIndex)
-                  }
-                  onMouseMove={e => {
-                    const rect = e.currentTarget.ownerSVGElement?.getBoundingClientRect();
-                    const clientX = rect ? rect.left + bar.x + bar.width / 2 : e.clientX;
-                    const clientY = e.clientY;
-                    handleBarHover(bar.datasetIndex, bar.pointIndex, clientX, clientY);
-                  }}
-                  onMouseLeave={handleBarLeave}
-                />
-                {barOptions.showValues && (
-                  <text
-                    x={bar.x + bar.width / 2}
-                    y={bar.y - 5}
-                    textAnchor="middle"
-                    className="c-chart__bar-value-label"
-                  >
-                    {formatValue(bar.value)}
-                  </text>
-                )}
-              </g>
-            );
-          });
-        },
-        [
-          calculateBarDimensions,
-          horizontal,
-          barOptions,
-          hoveredBar,
-          handleBarHover,
-          handleBarLeave,
-          formatValue,
-        ]
-      );
+              return (
+                <g key={`bar-${index}`}>
+                  <rect
+                    x={bar.x}
+                    y={bar.y}
+                    width={bar.width}
+                    height={bar.height}
+                    fill={color}
+                    rx={barOptions.cornerRadius || 4}
+                    className={`c-chart__bar ${isHovered ? 'c-chart__bar--hovered' : ''}`}
+                    onClick={() =>
+                      point && handlers.onDataPointClick?.(point, bar.datasetIndex, bar.pointIndex)
+                    }
+                    onMouseEnter={e => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      handlers.onPointHover(bar.datasetIndex, bar.pointIndex, bar.x, bar.y, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                    }}
+                    onMouseLeave={handlers.onPointLeave}
+                  />
+                  {barOptions.showValues && (
+                    <text
+                      x={bar.x + bar.width / 2}
+                      y={bar.y - 5}
+                      textAnchor="middle"
+                      className="c-chart__bar-value-label"
+                    >
+                      {formatValue(bar.value)}
+                    </text>
+                  )}
+                </g>
+              );
+            })}
+            {config?.showTooltips !== false && hoveredPoint && (
+              <ChartTooltip
+                dataPoint={
+                  renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] as ChartDataPoint
+                }
+                datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
+                datasetColor={renderedDatasets[hoveredPoint.datasetIndex]?.color}
+                position={{ x: hoveredPoint.clientX, y: hoveredPoint.clientY }}
+                visible={true}
+              />
+            )}
+          </>
+        );
+      };
 
       return (
-        <Chart
+        <BaseChart
           ref={ref}
-          type={horizontal ? 'horizontal-bar' : 'bar'}
+          type="bar"
           datasets={datasets}
           config={config}
+          renderContent={renderContent}
+          onDataPointClick={onDataPointClick}
           {...props}
-        >
-          <ChartRenderer
-            datasets={datasets}
-            config={config}
-            onDataPointClick={onDataPointClick}
-            renderContent={renderContent}
-          />
-          {hoveredBar && (
-            <ChartTooltip
-              dataPoint={
-                datasets[hoveredBar.datasetIndex]?.data?.[hoveredBar.pointIndex] || {
-                  label: '',
-                  value: 0,
-                }
-              }
-              datasetLabel={datasets[hoveredBar.datasetIndex]?.label}
-              datasetColor={datasets[hoveredBar.datasetIndex]?.color}
-              position={{ x: hoveredBar.x, y: hoveredBar.y }}
-              visible={true}
-            />
-          )}
-        </Chart>
+        />
       );
     }
   )

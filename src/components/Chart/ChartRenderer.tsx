@@ -1,4 +1,4 @@
-import { forwardRef, memo, useCallback, useMemo } from 'react';
+import { forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   useChart,
   useChartAccessibility,
@@ -7,6 +7,7 @@ import {
 } from '../../lib/composables/useChart';
 import { CHART } from '../../lib/constants/components';
 import { ChartProps } from '../../lib/types/components';
+import { useChartContext } from './Chart';
 
 /**
  * Enhanced chart renderer component with comprehensive functionality
@@ -50,6 +51,14 @@ const ChartRenderer = memo(
           focusedPoint: { datasetIndex: number; pointIndex: number };
           getAccessibleDescription: () => string;
         };
+        hoveredPoint: {
+          datasetIndex: number;
+          pointIndex: number;
+          x: number;
+          y: number;
+          clientX: number;
+          clientY: number;
+        } | null;
       }) => React.ReactNode;
     }
   >(
@@ -68,112 +77,198 @@ const ChartRenderer = memo(
       },
       ref
     ) => {
-      // Enhanced chart hooks
-      const {
-        calculateScales,
-        getChartColors,
-        interactionState,
-        handlePointHover,
-        handlePointLeave,
-        handlePointClick,
-        handleZoom,
-        handlePan,
-        handleDragStart,
-        handleDragEnd,
-        handleCrosshair,
-        clearCrosshair,
-        handleTouchStart,
-        handleTouchMove,
-        handleTouchEnd,
-        handlePointerDown,
-        handlePointerMove,
-        handlePointerUp,
-        svgRef,
-      } = useChart({ interactive });
-
+      // Get chart context (zoom/pan state from toolbar) - optional
+      let chartContext: ReturnType<typeof useChartContext> | null = null;
+      try {
+        chartContext = useChartContext();
+      } catch (e) {
+        // ChartRenderer used outside of Chart component - use internal state only
+      }
+      
+      // Chart composition hooks
+      const { calculateScales, getChartColors } = useChart();
       const { processedData, isProcessing } = useChartData(datasets, {
         enableRealTime,
         enableDecimation: enablePerformanceOptimization,
         maxDataPoints: 1000,
       });
-
-      const { announcement, focusedPoint, getAccessibleDescription, handleKeyDown } =
-        useChartAccessibility(processedData, {
-          enableKeyboardNavigation: enableAccessibility,
-          enableScreenReader: enableAccessibility,
-        });
-
-      const { isOptimizing, debouncedUpdate } = useChartPerformance(processedData, {
-        enableMemoization: enablePerformanceOptimization,
-        debounceMs: 100,
+      const { isOptimizing, memoizedScales } = useChartPerformance(
+        processedData,
+        {
+          enableVirtualization: false,
+          enableMemoization: enablePerformanceOptimization,
+          debounceMs: 100,
+        }
+      );
+      const { announcement, focusedPoint } = useChartAccessibility(processedData, {
+        enableScreenReader: enableAccessibility,
+        enableKeyboardNavigation: enableAccessibility,
+        announceDataChanges: enableAccessibility,
       });
 
-      // Enhanced interaction handlers with touch/pen support
+      // Interaction state
+      const interactionStateRef = useRef({
+        isDragging: false,
+        dragStart: { x: 0, y: 0 },
+        lastPan: { x: 0, y: 0 },
+      });
+      
+      // Hovered point state
+      const [hoveredPoint, setHoveredPoint] = useState<{
+        datasetIndex: number;
+        pointIndex: number;
+        x: number;
+        y: number;
+        clientX: number;
+        clientY: number;
+      } | null>(null);
+      
+      // Ref for SVG element
+      const svgRef = useRef<SVGSVGElement>(null);
+      
+      // Event handlers
+      const handlePointHover = useCallback(
+        (
+          datasetIndex: number,
+          pointIndex: number,
+          x: number,
+          y: number,
+          clientX: number,
+          clientY: number
+        ) => {
+          // Handle point hover
+          setHoveredPoint({ datasetIndex, pointIndex, x, y, clientX, clientY });
+        },
+        []
+      );
+
+      const handlePointLeave = useCallback(() => {
+        // Reset hover state
+        setHoveredPoint(null);
+      }, []);
+
+      const rafRef = useRef<number | null>(null);
+
       const handleMouseMove = useCallback(
         (event: React.MouseEvent<SVGSVGElement>) => {
-          if (!interactive || interactionState.touchState.isTouch) return;
+          if (!interactive || !chartContext || !chartContext.panEnabled) return;
+          if (!interactionStateRef.current.isDragging) return;
 
-          const rect = event.currentTarget.getBoundingClientRect();
-          const x = event.clientX - rect.left;
-          const y = event.clientY - rect.top;
+          if (rafRef.current) return;
 
-          handleCrosshair(x, y);
+          rafRef.current = requestAnimationFrame(() => {
+            const svg = svgRef.current;
+            if (!svg) {
+              rafRef.current = null;
+              return;
+            }
 
-          if (interactionState.isDragging && interactionState.dragStart) {
-            const deltaX = x - interactionState.dragStart.x;
-            const deltaY = y - interactionState.dragStart.y;
-            handlePan(deltaX, deltaY);
-          }
+            const rect = svg.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            const deltaX = x - interactionStateRef.current.dragStart.x;
+            const deltaY = y - interactionStateRef.current.dragStart.y;
+            
+            chartContext.setPanOffset({
+              x: interactionStateRef.current.lastPan.x + deltaX,
+              y: interactionStateRef.current.lastPan.y + deltaY,
+            });
+
+            rafRef.current = null;
+          });
         },
-        [interactive, interactionState, handleCrosshair, handlePan]
+        [interactive, chartContext]
       );
 
       const handleMouseDown = useCallback(
         (event: React.MouseEvent<SVGSVGElement>) => {
-          if (!interactive || interactionState.touchState.isTouch) return;
+          if (!interactive || !chartContext || !chartContext.panEnabled) return;
 
-          const rect = event.currentTarget.getBoundingClientRect();
+          const svg = svgRef.current;
+          if (!svg) return;
+
+          const rect = svg.getBoundingClientRect();
           const x = event.clientX - rect.left;
           const y = event.clientY - rect.top;
 
-          handleDragStart(x, y);
+          interactionStateRef.current.isDragging = true;
+          interactionStateRef.current.dragStart = { x, y };
+          interactionStateRef.current.lastPan = { ...chartContext.panOffset };
         },
-        [interactive, interactionState.touchState.isTouch, handleDragStart]
+        [interactive, chartContext]
       );
 
       const handleMouseUp = useCallback(() => {
-        if (!interactive || interactionState.touchState.isTouch) return;
-        handleDragEnd();
-      }, [interactive, interactionState.touchState.isTouch, handleDragEnd]);
+        interactionStateRef.current.isDragging = false;
+      }, []);
 
       const handleWheel = useCallback(
         (event: React.WheelEvent<SVGSVGElement>) => {
-          if (!interactive) return;
-
+          if (!interactive || !chartContext) return;
+          
           event.preventDefault();
-          const rect = event.currentTarget.getBoundingClientRect();
-          const centerX = event.clientX - rect.left;
-          const centerY = event.clientY - rect.top;
-
-          // Detect trackpad vs mouse wheel
-          const isTrackpad = Math.abs(event.deltaY) < 50;
-          const sensitivity = isTrackpad ? 0.01 : 0.1;
-          const adjustedDelta = event.deltaY * sensitivity;
-
-          handleZoom(adjustedDelta, centerX, centerY);
+          
+          const delta = -event.deltaY * 0.001;
+          const newZoom = Math.max(0.2, Math.min(5, chartContext.zoomLevel + delta));
+          chartContext.setZoomLevel(newZoom);
         },
-        [interactive, handleZoom]
+        [interactive, chartContext]
       );
 
-      const enhancedOnDataPointClick = useCallback(
-        (dataPoint: any, datasetIndex: number, pointIndex: number) => {
-          if (!interactive) return;
-
-          handlePointClick(datasetIndex, pointIndex);
-          onDataPointClick?.(dataPoint, datasetIndex, pointIndex);
-        },
-        [interactive, handlePointClick, onDataPointClick]
+      // Memoized handlers
+      const handlers = useMemo(
+        () => ({
+          onDataPointClick,
+          onPointHover: handlePointHover,
+          onPointLeave: handlePointLeave,
+          onMouseMove: handleMouseMove,
+          onMouseDown: handleMouseDown,
+          onMouseUp: handleMouseUp,
+          onWheel: handleWheel,
+        }),
+        [
+          onDataPointClick,
+          handlePointHover,
+          handlePointLeave,
+          handleMouseMove,
+          handleMouseDown,
+          handleMouseUp,
+          handleWheel,
+        ]
       );
+
+      // Memoized accessibility props
+      const accessibility = useMemo(
+        () => ({
+          announcement,
+          focusedPoint,
+          getAccessibleDescription: () => 'Chart description',
+        }),
+        [announcement, focusedPoint]
+      );
+
+      const transform = useMemo(() => {
+        if (!chartContext) return '';
+        return `translate(${chartContext.panOffset.x}px, ${chartContext.panOffset.y}px) scale(${chartContext.zoomLevel})`;
+      }, [chartContext?.panOffset.x, chartContext?.panOffset.y, chartContext?.zoomLevel]);
+
+      useEffect(() => {
+        return () => {
+          if (rafRef.current) {
+            cancelAnimationFrame(rafRef.current);
+          }
+        };
+      }, []);
+
+      if (isOptimizing) {
+        return (
+          <div className={`${CHART.CONTENT_CLASS} ${CHART.LOADING_CLASS}`}>
+            <div className={CHART.LOADING_SPINNER_CLASS}></div>
+            <span className={CHART.LOADING_TEXT_CLASS}>Optimizing chart...</span>
+          </div>
+        );
+      }
 
       // Calculate chart data with enhanced features
       const chartData = useMemo(() => {
@@ -187,7 +282,7 @@ const ChartRenderer = memo(
         return {
           scales,
           colors,
-          datasets: processedData.map((dataset, i) => ({
+          datasets: processedData.map((dataset: any, i) => ({
             ...dataset,
             color: dataset.color || colors[i],
           })),
@@ -199,120 +294,94 @@ const ChartRenderer = memo(
       }
 
       return (
-        <svg
-          ref={ref || svgRef}
-          width="100%"
-          height="100%"
-          viewBox={`0 0 ${chartData.scales.width} ${chartData.scales.height}`}
-          preserveAspectRatio="xMidYMid meet"
-          className={CHART.CHART_SVG_CLASS}
-          onMouseMove={handleMouseMove}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={() => {
-            clearCrosshair();
-            handleMouseUp();
-          }}
-          onWheel={handleWheel}
-          onTouchStart={e => handleTouchStart(e.nativeEvent)}
-          onTouchMove={e => handleTouchMove(e.nativeEvent)}
-          onTouchEnd={e => handleTouchEnd(e.nativeEvent)}
-          onPointerDown={e => handlePointerDown(e.nativeEvent)}
-          onPointerMove={e => handlePointerMove(e.nativeEvent)}
-          onPointerUp={e => handlePointerUp(e.nativeEvent)}
-          tabIndex={enableAccessibility ? 0 : undefined}
-          role={enableAccessibility ? 'img' : undefined}
-          aria-label={enableAccessibility ? getAccessibleDescription() : undefined}
-          onKeyDown={
-            enableAccessibility
-              ? e =>
-                  handleKeyDown(e.nativeEvent, (datasetIndex: number, pointIndex: number) => {
-                    const dataPoint = processedData[datasetIndex]?.data[pointIndex];
-                    enhancedOnDataPointClick(dataPoint, datasetIndex, pointIndex);
-                  })
-              : undefined
-          }
-          style={{
-            touchAction: 'none',
-            userSelect: 'none',
-            WebkitUserSelect: 'none',
-          }}
-        >
-          {/* Accessibility announcement */}
-          {enableAccessibility && announcement && (
-            <text x="-9999" y="-9999" className="sr-only" aria-live="polite">
-              {announcement}
-            </text>
-          )}
-
-          {renderContent({
-            ...chartData,
-            interactionState,
-            handlers: {
-              onDataPointClick: enhancedOnDataPointClick,
-              onPointHover: handlePointHover,
-              onPointLeave: handlePointLeave,
-              onMouseMove: handleMouseMove,
-              onMouseDown: handleMouseDown,
-              onMouseUp: handleMouseUp,
-              onWheel: handleWheel,
-            },
-            accessibility: {
-              announcement,
-              focusedPoint,
-              getAccessibleDescription,
-            },
-          })}
-
-          {/* Crosshair overlay */}
-          {interactive && interactionState.crosshair && (
-            <g className="chart-crosshair" style={{ pointerEvents: 'none' }}>
-              <line
-                x1={interactionState.crosshair.x}
-                y1={0}
-                x2={interactionState.crosshair.x}
-                y2={chartData.scales.height}
-                stroke="var(--atomix-gray-4)"
-                strokeWidth="1"
-                strokeDasharray="4,4"
-                opacity="0.6"
-              />
-              <line
-                x1={0}
-                y1={interactionState.crosshair.y}
-                x2={chartData.scales.width}
-                y2={interactionState.crosshair.y}
-                stroke="var(--atomix-gray-4)"
-                strokeWidth="1"
-                strokeDasharray="4,4"
-                opacity="0.6"
-              />
+        <>
+          <svg
+            ref={svgRef}
+            width={width}
+            height={height}
+            className={CHART.CANVAS_CLASS}
+            role="img"
+            aria-label="Chart visualization"
+            tabIndex={0}
+            style={{
+              transform: transform,
+              transformOrigin: 'center center',
+              willChange: chartContext?.panEnabled ? 'transform' : 'auto',
+            }}
+            onMouseMove={handleMouseMove}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onWheel={handleWheel}
+          >
+            {/* Chart grid */}
+            <g className="c-chart__grid-group">
+              {/* X-axis grid lines */}
+              {chartData.datasets[0]?.data.map((_: any, index: number) => (
+                <line
+                  key={`x-grid-${index}`}
+                  x1={chartData.scales.xScale(index, chartData.datasets[0]?.data.length)}
+                  y1={0}
+                  x2={chartData.scales.xScale(index, chartData.datasets[0]?.data.length)}
+                  y2={height}
+                  className="c-chart__grid c-chart__grid--vertical"
+                />
+              ))}
+              
+              {/* Y-axis grid lines - generate 5 ticks by default */}
+              {Array.from({ length: 5 }).map((_: any, index: number) => {
+                const value = chartData.scales.minValue + 
+                  (chartData.scales.maxValue - chartData.scales.minValue) * (index / 4);
+                return (
+                  <line
+                    key={`y-grid-${index}`}
+                    x1={0}
+                    y1={chartData.scales.yScale(value)}
+                    x2={width}
+                    y2={chartData.scales.yScale(value)}
+                    className="c-chart__grid c-chart__grid--horizontal"
+                  />
+                );
+              })}
             </g>
-          )}
 
-          {/* Zoom indicator */}
-          {interactive && interactionState.zoomLevel !== 1 && (
-            <g className="chart-zoom-indicator">
-              <rect
-                x={chartData.scales.width - 80}
-                y={10}
-                width="70"
-                height="20"
-                fill="rgba(0, 0, 0, 0.8)"
-                rx="4"
-              />
-              <text
-                x={chartData.scales.width - 45}
-                y={24}
-                textAnchor="middle"
-                fill="white"
-                fontSize="12"
-              >
-                {Math.round(interactionState.zoomLevel * 100)}%
-              </text>
-            </g>
-          )}
-        </svg>
+            {/* Render chart content */}
+            {renderContent({
+              scales: chartData.scales,
+              colors: chartData.colors,
+              datasets: chartData.datasets,
+              interactionState: interactionStateRef.current,
+              handlers,
+              accessibility,
+              hoveredPoint,
+            })}
+
+            {/* Crosshair for enhanced interaction */}
+            {interactive && chartContext?.panEnabled && (
+              <g className="c-chart__crosshair">
+                <line
+                  x1={0}
+                  y1={height / 2}
+                  x2={width}
+                  y2={height / 2}
+                  className="c-chart__crosshair-line c-chart__crosshair-line--horizontal"
+                />
+                <line
+                  x1={width / 2}
+                  y1={0}
+                  x2={width / 2}
+                  y2={height}
+                  className="c-chart__crosshair-line c-chart__crosshair-line--vertical"
+                />
+              </g>
+            )}
+          </svg>
+
+          {/* Screen reader announcements */}
+          <div aria-live="polite" className="u-visually-hidden">
+            {announcement}
+          </div>
+        </>
       );
     }
   )

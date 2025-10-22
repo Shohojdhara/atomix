@@ -1,6 +1,6 @@
 import { forwardRef, memo, useCallback, useMemo, useState } from 'react';
-import { ChartProps } from '../../lib/types/components';
-import Chart from './Chart';
+import BaseChart from './BaseChart';
+import { ChartProps } from './types';
 
 interface HeatmapDataPoint {
   x: string | number;
@@ -64,28 +64,18 @@ interface HeatmapChartProps extends Omit<ChartProps, 'type' | 'datasets' | 'vari
      */
     height?: number;
     /**
-     * Cell border radius
-     */
-    borderRadius?: number;
-    /**
-     * Cell spacing
+     * Spacing between cells
      */
     spacing?: number;
     /**
-     * Show cell borders
+     * Border radius for cells
      */
-    showBorders?: boolean;
+    borderRadius?: number;
+    /**
+     * Whether to show cell labels
+     */
+    showLabels?: boolean;
   };
-
-  /**
-   * Whether to show values in cells
-   */
-  showValues?: boolean;
-
-  /**
-   * Value formatter
-   */
-  valueFormatter?: (value: number) => string;
 
   /**
    * Whether to show color legend
@@ -93,247 +83,151 @@ interface HeatmapChartProps extends Omit<ChartProps, 'type' | 'datasets' | 'vari
   showColorLegend?: boolean;
 
   /**
-   * Tooltip configuration
+   * Whether to show grid lines
    */
-  tooltipConfig?: {
-    enabled: boolean;
-    formatter?: (dataPoint: HeatmapDataPoint) => string;
-  };
-
-  /**
-   * Layout variant - grid or calendar style
-   */
-  variant?: 'grid' | 'calendar';
-
-  /**
-   * Animation configuration
-   */
-  animationConfig?: {
-    enabled?: boolean;
-    duration?: number;
-    delay?: number;
-    easing?: string;
-  };
+  showGrid?: boolean;
 }
+
+// Predefined color schemes
+const colorSchemes: Record<string, string[]> = {
+  viridis: ['#440154', '#482777', '#3f4a8a', '#31678e', '#26838f', '#1f9d8a', '#6cce5a', '#b6de2b', '#fee825'],
+  plasma: ['#0d0887', '#5302a3', '#8b0aa5', '#b83289', '#db5c68', '#f48849', '#febd2a', '#f0f921'],
+  inferno: ['#000004', '#1b0c41', '#4b0c6b', '#781c6d', '#a52c60', '#cf4446', '#ed6925', '#fb9b06', '#fcffa4'],
+  magma: ['#000004', '#1c1044', '#4f127b', '#812581', '#b5367a', '#e55964', '#fb8761', '#fec287', '#fcfdbf'],
+  blues: ['#f7fbff', '#deebf7', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b'],
+  reds: ['#fff5f0', '#fee0d2', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#a50f15', '#67000d'],
+  greens: ['#f7fcf5', '#e5f5e0', '#c7e9c0', '#a1d99b', '#74c476', '#41ab5d', '#238b45', '#006d2c', '#00441b'],
+  github: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'],
+};
 
 const HeatmapChart = memo(
   forwardRef<HTMLDivElement, HeatmapChartProps>(
     (
       {
         data = [],
-        colorScale = { scheme: 'github', steps: 5 },
-        cellConfig = {
-          width: 12,
-          height: 12,
-          borderRadius: 2,
-          spacing: 2,
-          showBorders: false,
-        },
-        showValues = false,
-        valueFormatter = v => v.toFixed(0),
-        showColorLegend = true,
-        tooltipConfig = { enabled: true },
-        variant = 'grid',
-        animationConfig = {
-          enabled: true,
-          duration: 800,
-          delay: 50,
-          easing: 'ease-out',
-        },
         config = {},
+        colorScale = {
+          scheme: 'viridis',
+          steps: 9,
+        },
+        cellConfig = {
+          width: 40,
+          height: 40,
+          spacing: 2,
+          borderRadius: 4,
+          showLabels: false,
+        },
+        showColorLegend = true,
+        showGrid = true,
+        onDataPointClick,
         ...props
       },
       ref
     ) => {
       const [hoveredCell, setHoveredCell] = useState<HeatmapDataPoint | null>(null);
-      const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
       // Process data into matrix format
       const processedData = useMemo(() => {
-        console.log('HeatmapChart data:', data);
         if (!data.length) {
-          console.log('No data provided to HeatmapChart');
-          return { matrix: [], xLabels: [], yLabels: [], minValue: 0, maxValue: 1 };
+          return { matrix: [], xLabels: [], yLabels: [] };
         }
 
-        // Get unique x and y values
-        const xValues = [...new Set(data.map(d => d.x))].sort();
-        const yValues = [...new Set(data.map(d => d.y))].sort();
-
-        // Calculate value range
-        const values = data.map(d => d.value);
-        const minValue = colorScale.min ?? Math.min(...values);
-        const maxValue = colorScale.max ?? Math.max(...values);
+        // Extract unique x and y labels
+        const xLabels = Array.from(new Set(data.map(d => d.x))).sort();
+        const yLabels = Array.from(new Set(data.map(d => d.y))).sort();
 
         // Create matrix
-        const matrix: (HeatmapDataPoint | null)[][] = yValues.map(() =>
-          new Array(xValues.length).fill(null)
-        );
-
-        // Fill matrix with data
-        data.forEach(point => {
-          const xIndex = xValues.indexOf(point.x);
-          const yIndex = yValues.indexOf(point.y);
-          if (xIndex >= 0 && yIndex >= 0 && matrix[yIndex]) {
-            matrix[yIndex]![xIndex] = point;
-          }
+        const matrix: (HeatmapDataPoint | null)[][] = [];
+        yLabels.forEach(y => {
+          const row: (HeatmapDataPoint | null)[] = [];
+          xLabels.forEach(x => {
+            const point = data.find(d => d.x === x && d.y === y);
+            row.push(point || null);
+          });
+          matrix.push(row);
         });
 
-        return {
-          matrix,
-          xLabels: xValues,
-          yLabels: yValues,
-          minValue,
-          maxValue,
-        };
-      }, [data, colorScale.min, colorScale.max]);
+        return { matrix, xLabels, yLabels };
+      }, [data]);
 
-      // Enhanced color schemes with GitHub-style contribution colors
-      const colorSchemes = {
-        viridis: [
-          '#440154',
-          '#482777',
-          '#3f4a8a',
-          '#31678e',
-          '#26838f',
-          '#1f9d8a',
-          '#6cce5a',
-          '#b6de2b',
-          '#fee825',
-        ],
-        plasma: [
-          '#0d0887',
-          '#5302a3',
-          '#8b0aa5',
-          '#b83289',
-          '#db5c68',
-          '#f48849',
-          '#febd2a',
-          '#f0f921',
-        ],
-        inferno: [
-          '#000004',
-          '#1b0c41',
-          '#4a0c6b',
-          '#781c6d',
-          '#a52c60',
-          '#cf4446',
-          '#ed6925',
-          '#fb9b06',
-          '#fcffa4',
-        ],
-        magma: [
-          '#000004',
-          '#1c1044',
-          '#4f127b',
-          '#812581',
-          '#b5367a',
-          '#e55964',
-          '#fb8761',
-          '#fec287',
-          '#fcfdbf',
-        ],
-        blues: [
-          '#f7fbff',
-          '#deebf7',
-          '#c6dbef',
-          '#9ecae1',
-          '#6baed6',
-          '#4292c6',
-          '#2171b5',
-          '#08519c',
-          '#08306b',
-        ],
-        reds: [
-          '#fff5f0',
-          '#fee0d2',
-          '#fcbba1',
-          '#fc9272',
-          '#fb6a4a',
-          '#ef3b2c',
-          '#cb181d',
-          '#a50f15',
-          '#67000d',
-        ],
-        greens: [
-          '#f7fcf5',
-          '#e5f5e0',
-          '#c7e9c0',
-          '#a1d99b',
-          '#74c476',
-          '#41ab5d',
-          '#238b45',
-          '#006d2c',
-          '#00441b',
-        ],
-        github: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
-        custom: colorScale.colors || ['#ffffff', '#000000'],
-      };
-
-      // Generate color scale
-      const getColor = useCallback(
+      // Get color for a value
+      const getColorForValue = useCallback(
         (value: number) => {
-          const { minValue, maxValue } = processedData;
-          const range = maxValue - minValue;
-          if (range === 0) return colorSchemes[colorScale.scheme][0];
+          if (!processedData.matrix.length) return '#f0f0f0';
 
-          const normalizedValue = (value - minValue) / range;
-          const colors = colorSchemes[colorScale.scheme];
+          // Determine min/max values
+          let minValue = colorScale.min;
+          let maxValue = colorScale.max;
+
+          if (minValue === undefined || maxValue === undefined) {
+            const allValues = data
+              .filter(d => d.value !== undefined)
+              .map(d => d.value);
+            if (minValue === undefined) minValue = Math.min(...allValues);
+            if (maxValue === undefined) maxValue = Math.max(...allValues);
+          }
+
+          // Get color scheme
+          let colors: string[];
+          if (colorScale.scheme === 'custom' && colorScale.colors) {
+            colors = colorScale.colors;
+          } else {
+            colors = colorSchemes[colorScale.scheme] || colorSchemes.viridis;
+          }
+
+          // Calculate steps
           const steps = colorScale.steps || colors.length;
+          const valueRange = maxValue - minValue;
+          if (valueRange === 0) return colors[0];
 
+          // Normalize value and get color
+          const normalizedValue = (value - minValue) / valueRange;
           const colorIndex = Math.min(Math.floor(normalizedValue * steps), steps - 1);
           const scaledIndex = Math.floor((colorIndex / steps) * (colors.length - 1));
 
           return colors[scaledIndex];
         },
-        [processedData, colorScale.scheme, colorScale.steps, colorSchemes]
+        [processedData, colorScale, data]
       );
 
-      // Handle cell hover
-      const handleCellHover = useCallback(
-        (dataPoint: HeatmapDataPoint | null, event?: React.MouseEvent) => {
-          setHoveredCell(dataPoint);
+      const renderContent = ({
+        scales,
+        colors,
+        datasets: renderedDatasets,
+        handlers,
+        hoveredPoint,
+      }: {
+        scales: any;
+        colors: string[];
+        datasets: any[];
+        handlers: any;
+        hoveredPoint: {
+          datasetIndex: number;
+          pointIndex: number;
+          x: number;
+          y: number;
+          clientX: number;
+          clientY: number;
+        } | null;
+      }) => {
+        const { matrix, xLabels, yLabels } = processedData;
+        if (!matrix.length) {
+          return null;
+        }
 
-          if (event && dataPoint) {
-            const rect = event.currentTarget.getBoundingClientRect();
-            setTooltipPosition({
-              x: event.clientX,
-              y: event.clientY,
-            });
-          }
-        },
-        []
-      );
+        const cellWidth = cellConfig.width || 40;
+        const cellHeight = cellConfig.height || 40;
+        const spacing = cellConfig.spacing || 2;
+        const borderRadius = cellConfig.borderRadius || 4;
 
-      // Render heatmap content
-      const renderContent = useCallback(
-        ({ scales }: { scales: any }) => {
-          const { matrix, xLabels, yLabels } = processedData;
-          console.log(
-            'Rendering heatmap with matrix:',
-            matrix,
-            'xLabels:',
-            xLabels,
-            'yLabels:',
-            yLabels
-          );
-          if (!matrix.length) {
-            console.log('Matrix is empty, not rendering');
-            return null;
-          }
+        const totalWidth = xLabels.length * (cellWidth + spacing) - spacing;
+        const totalHeight = yLabels.length * (cellHeight + spacing) - spacing;
 
-          const cellWidth = cellConfig.width || 40;
-          const cellHeight = cellConfig.height || 40;
-          const spacing = cellConfig.spacing || 2;
-          const borderRadius = cellConfig.borderRadius || 4;
+        const startX = 100; // Leave space for y-axis labels
+        const startY = 50; // Leave space for x-axis labels
 
-          const totalWidth = xLabels.length * (cellWidth + spacing) - spacing;
-          const totalHeight = yLabels.length * (cellHeight + spacing) - spacing;
-
-          const startX = 100; // Leave space for y-axis labels
-          const startY = 50; // Leave space for x-axis labels
-
-          return (
+        return (
+          <>
             <g>
               {/* Gradient definitions */}
               <defs>
@@ -350,75 +244,14 @@ const HeatmapChart = memo(
                 )}
               </defs>
 
-              {/* X-axis labels */}
-              {xLabels.map((label, i) => {
-                const showLabel =
-                  variant === 'calendar'
-                    ? i % 4 === 0
-                    : i % Math.max(1, Math.floor(xLabels.length / 12)) === 0;
-                return showLabel ? (
-                  <text
-                    key={`x-label-${i}`}
-                    x={startX + i * (cellWidth + spacing) + cellWidth / 2}
-                    y={startY - 8}
-                    textAnchor="middle"
-                    className="c-chart__heatmap-axis-label"
-                    fontSize="11"
-                    fill="var(--atomix-gray-7)"
-                  >
-                    {String(label)}
-                  </text>
-                ) : null;
-              })}
+              {/* Grid cells */}
+              {matrix.map((row, rowIndex) => {
+                return row.map((cell, colIndex) => {
+                  if (!cell) return null;
 
-              {/* Y-axis labels */}
-              {yLabels.map((label, i) => (
-                <text
-                  key={`y-label-${i}`}
-                  x={startX - 8}
-                  y={startY + i * (cellHeight + spacing) + cellHeight / 2}
-                  textAnchor="end"
-                  dominantBaseline="middle"
-                  className="c-chart__heatmap-axis-label"
-                  fontSize="11"
-                  fill="var(--atomix-gray-7)"
-                >
-                  {String(label)}
-                </text>
-              ))}
-
-              {/* Heatmap cells */}
-              {matrix.map((row, rowIndex) =>
-                row.map((cell, colIndex) => {
                   const x = startX + colIndex * (cellWidth + spacing);
                   const y = startY + rowIndex * (cellHeight + spacing);
-                  const animationDelay = animationConfig.enabled
-                    ? (rowIndex * xLabels.length + colIndex) * (animationConfig.delay || 50)
-                    : 0;
-
-                  if (!cell) {
-                    return (
-                      <rect
-                        key={`empty-${rowIndex}-${colIndex}`}
-                        x={x}
-                        y={y}
-                        width={cellWidth}
-                        height={cellHeight}
-                        rx={borderRadius}
-                        fill="var(--atomix-gray-2)"
-                        stroke={cellConfig.showBorders ? 'var(--atomix-gray-3)' : 'none'}
-                        strokeWidth={cellConfig.showBorders ? 0.5 : 0}
-                        className="c-chart__heatmap-cell c-chart__heatmap-cell--empty"
-                        style={{
-                          animation: animationConfig.enabled
-                            ? `chart-fade-in ${animationConfig.duration}ms ${animationConfig.easing} ${animationDelay}ms both`
-                            : 'none',
-                        }}
-                      />
-                    );
-                  }
-
-                  const color = getColor(cell.value);
+                  const color = getColorForValue(cell.value);
                   const isHovered = hoveredCell === cell;
 
                   return (
@@ -428,187 +261,125 @@ const HeatmapChart = memo(
                         y={y}
                         width={cellWidth}
                         height={cellHeight}
-                        fill={color}
                         rx={borderRadius}
-                        stroke={cellConfig.showBorders ? 'var(--atomix-gray-3)' : 'none'}
-                        strokeWidth={cellConfig.showBorders ? 0.5 : 0}
+                        ry={borderRadius}
+                        fill={color}
                         className={`c-chart__heatmap-cell ${isHovered ? 'c-chart__heatmap-cell--hovered' : ''}`}
-                        onMouseEnter={e => handleCellHover(cell, e)}
-                        onMouseLeave={() => handleCellHover(null)}
                         style={{
-                          cursor: 'pointer',
                           transition: 'all 0.2s ease',
-                          animation: animationConfig.enabled
-                            ? `chart-scale-in ${animationConfig.duration}ms ${animationConfig.easing} ${animationDelay}ms both`
-                            : 'none',
-                          transform: isHovered ? 'scale(1.1)' : 'scale(1)',
-                          filter: isHovered ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' : 'none',
+                          transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                          transformOrigin: 'center',
                         }}
+                        onClick={() => onDataPointClick?.(cell, rowIndex, colIndex)}
+                        onMouseEnter={e => {
+                          setHoveredCell(cell);
+                        }}
+                        onMouseLeave={() => setHoveredCell(null)}
                       />
-
-                      {/* Cell value */}
-                      {showValues && cell.value > 0 && (
+                      {cellConfig.showLabels && cell.label && (
                         <text
                           x={x + cellWidth / 2}
                           y={y + cellHeight / 2}
                           textAnchor="middle"
                           dominantBaseline="middle"
-                          fontSize="9"
-                          fontWeight="500"
-                          fill={
-                            cell.value > (processedData.minValue + processedData.maxValue) / 2
-                              ? 'white'
-                              : 'var(--atomix-gray-8)'
-                          }
-                          className="c-chart__heatmap-value"
-                          style={{ pointerEvents: 'none' }}
+                          className="c-chart__heatmap-label"
                         >
-                          {valueFormatter(cell.value)}
+                          {cell.label}
                         </text>
                       )}
                     </g>
                   );
-                })
-              )}
+                });
+              })}
 
-              {/* Enhanced color legend */}
-              {showColorLegend && (
-                <g transform={`translate(${startX + totalWidth + 40}, ${startY})`}>
-                  <text x="0" y="-15" fontSize="12" fontWeight="600" fill="var(--atomix-gray-8)">
-                    Activity
+              {/* X-axis labels */}
+              {xLabels.map((label, index) => {
+                const x = startX + index * (cellWidth + spacing) + cellWidth / 2;
+                const y = startY + matrix.length * (cellHeight + spacing) + 20;
+
+                return (
+                  <text
+                    key={`x-label-${index}`}
+                    x={x}
+                    y={y}
+                    textAnchor="middle"
+                    className="c-chart__heatmap-axis-label"
+                  >
+                    {String(label)}
                   </text>
+                );
+              })}
 
-                  {/* Legend scale boxes */}
-                  <g transform="translate(0, 10)">
-                    <text x="-5" y="15" fontSize="10" fill="var(--atomix-gray-6)" textAnchor="end">
-                      Less
-                    </text>
+              {/* Y-axis labels */}
+              {yLabels.map((label, index) => {
+                const x = startX - 20;
+                const y = startY + index * (cellHeight + spacing) + cellHeight / 2;
 
-                    {colorSchemes[colorScale.scheme].map((color, i) => (
-                      <rect
-                        key={i}
-                        x={i * 14}
-                        y={0}
-                        width={12}
-                        height={12}
-                        fill={color}
-                        rx={2}
-                        stroke="var(--atomix-gray-3)"
-                        strokeWidth={0.5}
-                      />
-                    ))}
+                return (
+                  <text
+                    key={`y-label-${index}`}
+                    x={x}
+                    y={y}
+                    textAnchor="end"
+                    dominantBaseline="middle"
+                    className="c-chart__heatmap-axis-label"
+                  >
+                    {String(label)}
+                  </text>
+                );
+              })}
 
-                    <text
-                      x={colorSchemes[colorScale.scheme].length * 14 + 5}
-                      y="15"
-                      fontSize="10"
-                      fill="var(--atomix-gray-6)"
-                    >
-                      More
-                    </text>
-                  </g>
+              {/* Color legend */}
+              {showColorLegend && (
+                <g transform="translate(600, 100)">
+                  <rect
+                    x="0"
+                    y="0"
+                    width="20"
+                    height="200"
+                    fill="url(#heatmap-legend-gradient)"
+                    stroke="var(--atomix-border-color)"
+                    strokeWidth="1"
+                  />
+                  <text x="-10" y="-10" className="c-chart__heatmap-legend-title">
+                    Values
+                  </text>
+                  <text x="25" y="5" textAnchor="start" className="c-chart__heatmap-legend-label">
+                    High
+                  </text>
+                  <text x="25" y="200" textAnchor="start" className="c-chart__heatmap-legend-label">
+                    Low
+                  </text>
                 </g>
               )}
             </g>
-          );
+          </>
+        );
+      };
+
+      // Convert data to datasets format for BaseChart
+      const datasets = [
+        {
+          label: 'Heatmap Data',
+          data: data,
         },
-        [
-          processedData,
-          cellConfig,
-          showValues,
-          valueFormatter,
-          showColorLegend,
-          getColor,
-          hoveredCell,
-          handleCellHover,
-          colorScale.scheme,
-          colorSchemes,
-        ]
-      );
-
-      // Calculate optimal dimensions based on data
-      const { matrix, xLabels, yLabels } = processedData;
-      const cellWidth = cellConfig.width || 12;
-      const cellHeight = cellConfig.height || 12;
-      const spacing = cellConfig.spacing || 2;
-
-      const chartWidth = Math.max(600, xLabels.length * (cellWidth + spacing) + 200);
-      const chartHeight = Math.max(400, yLabels.length * (cellHeight + spacing) + 150);
+      ];
 
       return (
-        <Chart
+        <BaseChart
           ref={ref}
           type="heatmap"
-          datasets={[]}
+          datasets={datasets}
           config={config}
-          className={`c-chart--heatmap c-chart--${variant}`}
+          renderContent={renderContent}
+          onDataPointClick={onDataPointClick}
           {...props}
-        >
-          <svg
-            width={chartWidth}
-            height={chartHeight}
-            viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-            className="c-chart__svg"
-            style={{ width: '100%', height: '100%' }}
-          >
-            {renderContent({ scales: { width: chartWidth, height: chartHeight } })}
-          </svg>
-          {tooltipConfig.enabled && hoveredCell && (
-            <div
-              className="c-chart__tooltip"
-              style={{
-                position: 'fixed',
-                left: tooltipPosition.x + 10,
-                top: tooltipPosition.y - 10,
-              }}
-            >
-              {tooltipConfig.formatter
-                ? tooltipConfig.formatter(hoveredCell)
-                : `${hoveredCell.label || `${hoveredCell.x}, ${hoveredCell.y}`}: ${hoveredCell.value}`}
-            </div>
-          )}
-        </Chart>
+        />
       );
     }
   )
 );
 
 HeatmapChart.displayName = 'HeatmapChart';
-
-/**
- * Generate sample heatmap data for testing
- */
-export const generateHeatmapData = ({
-  weeks = 52,
-  daysPerWeek = 7,
-  maxValue = 10,
-}: {
-  weeks?: number;
-  daysPerWeek?: number;
-  maxValue?: number;
-} = {}): HeatmapDataPoint[] => {
-  const data: HeatmapDataPoint[] = [];
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-  for (let week = 0; week < weeks; week++) {
-    for (let day = 0; day < daysPerWeek; day++) {
-      const value = Math.floor(Math.random() * (maxValue + 1));
-      data.push({
-        x: week,
-        y: days[day] || `Day ${day}`,
-        value,
-        label: `Week ${week + 1}, ${days[day]}`,
-        metadata: {
-          week: week + 1,
-          day: days[day],
-          intensity: value > maxValue * 0.7 ? 'high' : value > maxValue * 0.3 ? 'medium' : 'low',
-        },
-      });
-    }
-  }
-
-  return data;
-};
-
 export default HeatmapChart;
 export type { HeatmapChartProps, HeatmapDataPoint };

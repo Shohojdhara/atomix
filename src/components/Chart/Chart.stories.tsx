@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 import { useState } from 'react';
 import { Container, Grid, GridCol } from '../../layouts/Grid';
 import { Badge } from '../Badge';
@@ -10,7 +11,6 @@ import { SideMenuItem } from '../Navigation/SideMenu/SideMenuItem';
 import { SideMenuList } from '../Navigation/SideMenu/SideMenuList';
 
 import {
-  AdvancedChart,
   AnimatedChart,
   AreaChart,
   BarChart,
@@ -25,7 +25,6 @@ import {
   MultiAxisChart,
   PieChart,
   RadarChart,
-  RealTimeChart,
   ScatterChart,
   TreemapChart,
   WaterfallChart,
@@ -59,6 +58,50 @@ const generateData = (points = 20) =>
       `Point ${i + 1}`,
     value: Math.floor(Math.random() * 100) + 20,
   }));
+
+const generateTimeSeriesData = (points = 20) => 
+  Array.from({ length: points }, (_, i) => ({
+    label: new Date(Date.now() - (points - i) * 24 * 60 * 60 * 1000).toLocaleDateString(),
+    value: Math.floor(Math.random() * 1000) + 500,
+  }));
+
+const generateCandlestickData = (points = 20) => 
+  Array.from({ length: points }, (_, i) => {
+    const open = Math.floor(Math.random() * 100) + 50;
+    const close = Math.floor(Math.random() * 100) + 50;
+    const high = Math.max(open, close) + Math.floor(Math.random() * 20);
+    const low = Math.min(open, close) - Math.floor(Math.random() * 20);
+    return {
+      date: `Day ${i + 1}`,
+      open,
+      high,
+      low,
+      close,
+      volume: Math.floor(Math.random() * 10000) + 1000,
+    };
+  });
+
+const generateBubbleData = (points = 15) => 
+  Array.from({ length: points }, (_, i) => ({
+    label: `Point ${i + 1}`,
+    x: Math.floor(Math.random() * 100),
+    y: Math.floor(Math.random() * 100),
+    size: Math.floor(Math.random() * 50) + 10,
+    value: Math.floor(Math.random() * 1000),
+  }));
+
+const generateHeatmapData = () => {
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`);
+  
+  return days.map(day => 
+    hours.map(hour => ({
+      x: hour,
+      y: day,
+      value: Math.floor(Math.random() * 100),
+    }))
+  ).flat();
+};
 
 const datasets = [
   { label: 'Sales', data: generateData(), color: '#3b82f6' },
@@ -95,9 +138,7 @@ export const ChartGallery: Story = {
       { key: 'funnel', icon: 'Funnel', label: 'Funnel', desc: 'Process stages' },
       { key: 'treemap', icon: 'Tree', label: 'Treemap', desc: 'Hierarchical data' },
       { key: 'animated', icon: 'Sparkle', label: 'Animated', desc: 'Motion graphics' },
-      { key: 'realtime', icon: 'WifiHigh', label: 'Real-time', desc: 'Live streaming' },
       { key: 'multiaxis', icon: 'ChartLineUp', label: 'Multi-axis', desc: 'Multiple scales' },
-      { key: 'advanced', icon: 'Rocket', label: 'Advanced', desc: 'Complex features' },
     ];
 
     // Generate dynamic data based on dataPoints
@@ -148,6 +189,15 @@ export const ChartGallery: Story = {
               icon={<Icon name="List" />}
               label={`${showLegend ? 'Hide' : 'Show'} legend`}
             />
+
+            {/* Animation Toggle */}
+            <Button
+              size="sm"
+              variant={animated ? 'success' : 'secondary'}
+              onClick={() => setAnimated(!animated)}
+              icon={<Icon name="Sparkle" />}
+              label={`${animated ? 'Disable' : 'Enable'} animations`}
+            />
           </div>
         </div>
       );
@@ -178,20 +228,14 @@ export const ChartGallery: Story = {
           return (
             <div>
               {customToolbar}
-              <PieChart
-                datasets={[{ label: 'Data', data: generateData(dataPoints) }]}
-                {...commonProps}
-              />
+              <PieChart datasets={[{ label: 'Distribution', data: generateData(6) }]} {...commonProps} />
             </div>
           );
         case 'donut':
           return (
             <div>
               {customToolbar}
-              <DonutChart
-                datasets={[{ label: 'Data', data: generateData(dataPoints) }]}
-                {...commonProps}
-              />
+              <DonutChart datasets={[{ label: 'Distribution', data: generateData(6) }]} {...commonProps} />
             </div>
           );
         case 'scatter':
@@ -205,22 +249,16 @@ export const ChartGallery: Story = {
           return (
             <div>
               {customToolbar}
-              <RadarChart datasets={[dynamicDatasets[0]]} {...commonProps} />
+              <RadarChart datasets={dynamicDatasets} {...commonProps} />
             </div>
           );
         case 'bubble':
           return (
             <div>
               {customToolbar}
-              <BubbleChart
-                bubbleData={Array.from({ length: dataPoints }, (_, i) => ({
-                  label: `Point ${i + 1}`,
-                  x: Math.random() * 100,
-                  y: Math.random() * 100,
-                  size: Math.random() * 50 + 20,
-                  color: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'][i % 4],
-                }))}
-                {...commonProps}
+              <BubbleChart 
+                bubbleData={generateBubbleData(dataPoints)} 
+                {...commonProps} 
               />
             </div>
           );
@@ -228,20 +266,19 @@ export const ChartGallery: Story = {
           return (
             <div>
               {customToolbar}
-              <GaugeChart value={Math.min(dataPoints * 5, 100)} {...commonProps} />
+              <GaugeChart 
+                value={75}
+                max={100}
+                {...commonProps}
+              />
             </div>
           );
         case 'heatmap':
           return (
             <div>
               {customToolbar}
-              <HeatmapChart
-                data={Array.from({ length: dataPoints * 4 }, (_, i) => ({
-                  x: i % Math.ceil(Math.sqrt(dataPoints * 4)),
-                  y: Math.floor(i / Math.ceil(Math.sqrt(dataPoints * 4))),
-                  value: Math.random() * 100,
-                  label: `${i}`,
-                }))}
+              <HeatmapChart 
+                data={generateHeatmapData()} 
                 {...commonProps}
               />
             </div>
@@ -250,14 +287,8 @@ export const ChartGallery: Story = {
           return (
             <div>
               {customToolbar}
-              <CandlestickChart
-                candlestickData={Array.from({ length: dataPoints }, (_, i) => ({
-                  date: new Date(2024, 0, i + 1).toISOString(),
-                  open: 100 + Math.random() * 20,
-                  high: 120 + Math.random() * 20,
-                  low: 80 + Math.random() * 20,
-                  close: 110 + Math.random() * 20,
-                }))}
+              <CandlestickChart 
+                candlestickData={generateCandlestickData(dataPoints)} 
                 {...commonProps}
               />
             </div>
@@ -267,16 +298,13 @@ export const ChartGallery: Story = {
             <div>
               {customToolbar}
               <WaterfallChart
-                waterfallData={Array.from({ length: Math.min(dataPoints, 8) }, (_, i) => {
-                  if (i === 0) return { label: 'Start', value: 100, type: 'total' };
-                  if (i === Math.min(dataPoints, 8) - 1)
-                    return { label: 'End', value: 100 + (i - 1) * 5, type: 'total' };
-                  return {
-                    label: `Step ${i}`,
-                    value: Math.random() > 0.5 ? Math.random() * 30 : -Math.random() * 20,
-                    type: Math.random() > 0.5 ? 'positive' : 'negative',
-                  };
-                })}
+                waterfallData={[
+                  { label: 'Starting Balance', value: 1000, type: 'subtotal' },
+                  { label: 'Sales', value: 500, type: 'positive' },
+                  { label: 'Expenses', value: -200, type: 'negative' },
+                  { label: 'Taxes', value: -100, type: 'negative' },
+                  { label: 'Net Profit', value: 200, type: 'subtotal' },
+                ]}
                 {...commonProps}
               />
             </div>
@@ -286,10 +314,12 @@ export const ChartGallery: Story = {
             <div>
               {customToolbar}
               <FunnelChart
-                funnelData={Array.from({ length: Math.min(dataPoints, 8) }, (_, i) => ({
-                  label: `Stage ${i + 1}`,
-                  value: 1000 - i * 100 - Math.random() * 50,
-                }))}
+                funnelData={[
+                  { label: 'Visitors', value: 1000 },
+                  { label: 'Signups', value: 300 },
+                  { label: 'Purchases', value: 150 },
+                  { label: 'Repeat Customers', value: 60 },
+                ]}
                 {...commonProps}
               />
             </div>
@@ -315,20 +345,6 @@ export const ChartGallery: Story = {
               <AnimatedChart datasets={dynamicDatasets} {...commonProps} />
             </div>
           );
-        case 'realtime':
-          return (
-            <div>
-              {customToolbar}
-              <RealTimeChart
-                datasets={[]}
-                dataSource={async () => [
-                  { label: new Date().toLocaleTimeString(), value: Math.random() * 100 },
-                ]}
-                {...commonProps}
-              />
-            </div>
-          );
-
         case 'multiaxis':
           return (
             <div>
@@ -342,13 +358,6 @@ export const ChartGallery: Story = {
                 }))}
                 {...commonProps}
               />
-            </div>
-          );
-        case 'advanced':
-          return (
-            <div>
-              {customToolbar}
-              <AdvancedChart datasets={dynamicDatasets} {...commonProps} />
             </div>
           );
         default:
@@ -395,7 +404,7 @@ export const ChartGallery: Story = {
                         <Icon name={icon as any} size="sm" />
                         <div>
                           <div>{label}</div>
-                          {/* <small className="u-text-muted">{desc}</small> */}
+                          <small className="u-text-muted">{desc}</small>
                         </div>
                       </div>
                     </SideMenuItem>
@@ -404,9 +413,10 @@ export const ChartGallery: Story = {
               </SideMenu>
             </Card>
           </GridCol>
-
           <GridCol xs={9}>
-            <Card className="u-p-4 u-min-h-600">{renderChart()}</Card>
+            <Card className="u-p-0 u-overflow-hidden">
+              <div className="u-h-100 u-min-h-100 u-overflow-auto">{renderChart()}</div>
+            </Card>
           </GridCol>
         </Grid>
       </Container>
@@ -414,114 +424,146 @@ export const ChartGallery: Story = {
   },
 };
 
-// Quick Examples
-export const BasicCharts: Story = {
+// Individual chart stories for documentation
+export const LineChartStory: Story = {
   render: () => (
-    <Container className="u-py-4">
-      <div
-        className="u-d-grid u-gap-4"
-        style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}
-      >
-        <Card className="u-p-4">
-          <LineChart
-            title="Line Chart"
-            datasets={[datasets[0]]}
-            config={{ showLegend: false }}
-            className="u-h-100"
-          />
-        </Card>
-
-        <Card className="u-p-4">
-          <BarChart
-            title="Bar Chart"
-            datasets={[datasets[1]]}
-            config={{ showLegend: false }}
-            className="u-h-100"
-          />
-        </Card>
-
-        <Card className="u-p-4">
-          <PieChart
-            title="Pie Chart"
-            datasets={[{ label: 'Data', data: generateData(4) }]}
-            config={{ showLegend: true }}
-            className="u-h-100"
-          />
-        </Card>
-
-        <Card className="u-p-4">
-          <DonutChart
-            title="Donut Chart"
-            datasets={[{ label: 'Data', data: generateData(4) }]}
-            config={{ showLegend: true }}
-            className="u-h-100"
-          />
-        </Card>
-      </div>
+    <Container className="u-py-6">
+      <Grid>
+        <GridCol xs={12}>
+          <Card className="u-p-6">
+            <LineChart 
+              datasets={[
+                { label: 'Sales', data: generateData(12), color: '#3b82f6' },
+                { label: 'Revenue', data: generateData(12), color: '#10b981' },
+              ]}
+              title="Line Chart Example"
+              config={{ showLegend: true, animate: true }}
+              showToolbar
+            />
+          </Card>
+        </GridCol>
+      </Grid>
     </Container>
   ),
+  name: 'Line Chart',
 };
 
-// Advanced Features
-export const AdvancedFeatures: Story = {
+export const BarChartStory: Story = {
   render: () => (
-    <Container className="u-py-4">
-      <div
-        className="u-d-grid u-gap-4"
-        style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))' }}
-      >
-        <Card className="u-p-4">
-          <MultiAxisChart
-            title="Multi-Axis Chart"
-            datasets={datasets}
-            yAxes={datasets.map((d, i) => ({
-              id: `axis${i}`,
-              position: i % 2 ? 'right' : 'left',
-              label: d.label,
-            }))}
-            className="u-h-100"
-          />
-        </Card>
-
-        <Card className="u-p-4">
-          <AnimatedChart
-            title="Animated Chart"
-            datasets={datasets}
-            animationConfig={{ duration: 2000, easing: 'bounce' }}
-            className="u-h-100"
-          />
-        </Card>
-
-        <Card className="u-p-4">
-          <RealTimeChart
-            title="Real-time Chart"
-            datasets={[]}
-            dataSource={async () => [
-              {
-                label: new Date().toLocaleTimeString(),
-                value: Math.sin(Date.now() * 0.001) * 20 + 50,
-              },
-            ]}
-            streamConfig={{ interval: 1000, maxDataPoints: 20, autoScroll: true }}
-            className="u-h-100"
-          />
-        </Card>
-
-        <Card className="u-p-4">
-          <GaugeChart
-            title="Gauge Chart"
-            value={78}
-            gaugeOptions={{
-              colorZones: [
-                { from: 0, to: 50, color: '#ef4444' },
-                { from: 50, to: 80, color: '#f59e0b' },
-                { from: 80, to: 100, color: '#10b981' },
-              ],
-            }}
-            className="u-h-100"
-          />
-        </Card>
-      </div>
+    <Container className="u-py-6">
+      <Grid>
+        <GridCol xs={12}>
+          <Card className="u-p-6">
+            <BarChart 
+              datasets={[
+                { label: 'Sales', data: generateData(8), color: '#3b82f6' },
+                { label: 'Revenue', data: generateData(8), color: '#10b981' },
+              ]}
+              title="Bar Chart Example"
+              config={{ showLegend: true, animate: true }}
+              showToolbar
+            />
+          </Card>
+        </GridCol>
+      </Grid>
     </Container>
   ),
+  name: 'Bar Chart',
+};
+
+export const PieChartStory: Story = {
+  render: () => (
+    <Container className="u-py-6">
+      <Grid>
+        <GridCol xs={12}>
+          <Card className="u-p-6">
+            <PieChart 
+              datasets={[{ label: 'Market Share', data: generateData(6) }]}
+              title="Pie Chart Example"
+              config={{ showLegend: true, animate: true }}
+              showToolbar
+            />
+          </Card>
+        </GridCol>
+      </Grid>
+    </Container>
+  ),
+  name: 'Pie Chart',
+};
+
+export const DonutChartStory: Story = {
+  render: () => (
+    <Container className="u-py-6">
+      <Grid>
+        <GridCol xs={12}>
+          <Card className="u-p-6">
+            <DonutChart 
+              datasets={[{ label: 'Market Share', data: generateData(6) }]}
+              title="Donut Chart Example"
+              config={{ showLegend: true, animate: true }}
+              showToolbar
+            />
+          </Card>
+        </GridCol>
+      </Grid>
+    </Container>
+  ),
+  name: 'Donut Chart',
+};
+
+export const CandlestickChartStory: Story = {
+  render: () => (
+    <Container className="u-py-6">
+      <Grid>
+        <GridCol xs={12}>
+          <Card className="u-p-6">
+            <CandlestickChart 
+              candlestickData={generateCandlestickData(20)}
+              title="Candlestick Chart Example"
+              config={{ showLegend: true, animate: true, showTooltips: true }}
+              candlestickOptions={{ showTooltips: true }}
+              showToolbar
+            />
+          </Card>
+        </GridCol>
+      </Grid>
+    </Container>
+  ),
+  name: 'Candlestick Chart',
+};
+
+export const TooltipTestStory: Story = {
+  render: () => (
+    <Container className="u-py-6">
+      <Grid>
+        <GridCol xs={12}>
+          <Card className="u-p-6">
+            <LineChart 
+              datasets={[
+                { 
+                  label: 'Sales', 
+                  data: generateData(12).map((d, i) => ({
+                    ...d,
+                    metadata: {
+                      trend: i % 2 === 0 ? 'Up' : 'Down',
+                      change: `${Math.floor(Math.random() * 10)}%`
+                    }
+                  })), 
+                  color: '#3b82f6' 
+                },
+              ]}
+              title="Tooltip Test Chart"
+              config={{ 
+                showLegend: true, 
+                animate: true,
+                showTooltips: true
+              }}
+              showToolbar
+            />
+          </Card>
+        </GridCol>
+      </Grid>
+    </Container>
+  ),
+  name: 'Tooltip Test',
 };

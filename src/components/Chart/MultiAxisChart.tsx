@@ -1,7 +1,6 @@
-import { forwardRef, memo, useCallback, useMemo } from 'react';
+import { forwardRef, memo } from 'react';
 import { ChartDataset, ChartProps } from '../../lib/types/components';
-import Chart from './Chart';
-import ChartRenderer from './ChartRenderer';
+import BaseChart from './BaseChart';
 import { ChartDataPoint } from './types';
 
 interface AxisConfig {
@@ -49,36 +48,80 @@ interface MultiAxisDataset extends ChartDataset {
    */
   yAxisId?: string;
   /**
-   * Chart type for this dataset
+   * X-axis ID this dataset should use
    */
-  type?: 'line' | 'bar' | 'area';
+  xAxisId?: string;
 }
 
-interface MultiAxisChartProps extends Omit<ChartProps, 'type' | 'datasets'> {
+interface MultiAxisChartProps extends Omit<ChartProps, 'type'> {
   /**
-   * Multi-axis datasets
+   * Multi-axis chart datasets
    */
   datasets: MultiAxisDataset[];
 
   /**
    * Y-axis configurations
    */
-  yAxes: AxisConfig[];
+  yAxes?: AxisConfig[];
 
   /**
-   * X-axis configuration
+   * X-axis configurations
    */
-  xAxis?: AxisConfig;
+  xAxes?: AxisConfig[];
 
   /**
-   * Whether to sync zoom across axes
+   * Multi-axis chart specific options
    */
-  syncZoom?: boolean;
-
-  /**
-   * Whether to show crosshair across all axes
-   */
-  showCrosshair?: boolean;
+  multiAxisOptions?: {
+    /**
+     * Whether to show legend
+     */
+    showLegend?: boolean;
+    /**
+     * Legend position
+     */
+    legendPosition?: 'top' | 'bottom' | 'left' | 'right';
+    /**
+     * Whether to synchronize axis ranges
+     */
+    syncAxes?: boolean;
+    /**
+     * Padding between axes
+     */
+    axisPadding?: number;
+    /**
+     * Whether to show tooltips
+     */
+    showTooltips?: boolean;
+    /**
+     * Tooltip position
+     */
+    tooltipPosition?: 'auto' | 'nearest' | 'average';
+    /**
+     * Interpolation method for line charts
+     */
+    interpolation?: 'linear' | 'step' | 'natural' | 'monotone';
+    /**
+     * Whether to show area under lines
+     */
+    showArea?: boolean;
+    /**
+     * Area opacity (0-1)
+     */
+    areaOpacity?: number;
+    /**
+     * Whether to show data points
+     */
+    showDataPoints?: boolean;
+    /**
+     * Data point radius
+     */
+    pointRadius?: number;
+    /**
+     * Whether to connect points across null values
+     */
+    spanGaps?: boolean;
+  };
 }
 
 const MultiAxisChart = memo(
@@ -86,408 +129,255 @@ const MultiAxisChart = memo(
     (
       {
         datasets = [],
-        yAxes = [],
-        xAxis,
         config = {},
-        syncZoom = true,
-        showCrosshair = true,
+        yAxes = [],
+        xAxes = [],
+        multiAxisOptions = {},
+        onDataPointClick,
         ...props
       },
       ref
     ) => {
-      // Calculate scales for each axis
-      const axisScales = useMemo(() => {
-        const scales: Record<string, any> = {};
+      const {
+        showLegend = true,
+        legendPosition = 'top',
+        syncAxes = false,
+        axisPadding = 20,
+        showTooltips = true,
+        tooltipPosition = 'nearest',
+        interpolation = 'linear',
+        showArea = false,
+        areaOpacity = 0.3,
+        showDataPoints = true,
+        pointRadius = 4,
+        spanGaps = false,
+      } = multiAxisOptions;
 
-        // Default dimensions
-        const width = 800;
-        const height = 400;
-        const leftAxisWidth = 60;
-        const rightAxisWidth = 60;
-        const topAxisHeight = 40;
-        const bottomAxisHeight = 60;
+      const renderContent = ({
+        scales,
+        colors,
+        datasets: renderedDatasets,
+        handlers,
+        hoveredPoint,
+      }: {
+        scales: any;
+        colors: string[];
+        datasets: any[];
+        handlers: any;
+        hoveredPoint: {
+          datasetIndex: number;
+          pointIndex: number;
+          x: number;
+          y: number;
+          clientX: number;
+          clientY: number;
+        } | null;
+      }) => {
+        if (!datasets.length) return null;
 
-        // Calculate available space
-        const leftAxes = yAxes.filter(axis => axis.position === 'left');
-        const rightAxes = yAxes.filter(axis => axis.position === 'right');
+        const padding = 60;
+        const chartWidth = scales.width - padding * 2;
+        const chartHeight = scales.height - padding * 2;
 
-        const totalLeftWidth = leftAxes.length * leftAxisWidth;
-        const totalRightWidth = rightAxes.length * rightAxisWidth;
+        // Create axis configurations
+        const yAxisConfigs: AxisConfig[] = yAxes.length
+          ? yAxes
+          : [
+              {
+                id: 'y-axis-1',
+                position: 'left',
+                label: 'Y Axis',
+              },
+            ];
 
-        const plotAreaLeft = totalLeftWidth;
-        const plotAreaRight = width - totalRightWidth;
-        const plotAreaTop = topAxisHeight;
-        const plotAreaBottom = height - bottomAxisHeight;
-        const plotAreaWidth = plotAreaRight - plotAreaLeft;
-        const plotAreaHeight = plotAreaBottom - plotAreaTop;
+        const xAxisConfigs: AxisConfig[] = xAxes.length
+          ? xAxes
+          : [
+              {
+                id: 'x-axis-1',
+                position: 'bottom',
+                label: 'X Axis',
+              },
+            ];
 
-        // Create scales for each Y-axis
-        yAxes.forEach((axis, index) => {
-          // Find datasets using this axis
-          const axisDatasets = datasets.filter(d => d.yAxisId === axis.id);
-
-          if (axisDatasets.length === 0) return;
-
-          // Calculate value range
-          const allValues = axisDatasets.flatMap(
-            dataset => dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || []
-          );
-
-          const minValue = axis.min ?? Math.min(0, ...allValues);
-          const maxValue = axis.max ?? Math.max(...allValues, 1);
-          const valueRange = maxValue - minValue;
-
-          // Create scale function
-          const yScale = (value: number) => {
-            if (valueRange === 0) return plotAreaTop + plotAreaHeight / 2;
-            return (
-              plotAreaTop + plotAreaHeight - ((value - minValue) / valueRange) * plotAreaHeight
-            );
-          };
-
-          // Calculate axis position
-          let axisX;
-          if (axis.position === 'left') {
-            const leftIndex = leftAxes.findIndex(a => a.id === axis.id);
-            axisX = leftIndex * leftAxisWidth + leftAxisWidth / 2;
-          } else {
-            const rightIndex = rightAxes.findIndex(a => a.id === axis.id);
-            axisX = plotAreaRight + rightIndex * rightAxisWidth + rightAxisWidth / 2;
+        // Group datasets by axis
+        const datasetsByYAxis: Record<string, any[]> = {};
+        datasets.forEach((dataset, index) => {
+          const axisId = dataset.yAxisId || yAxisConfigs[0]?.id || 'y-axis-1';
+          if (!datasetsByYAxis[axisId]) {
+            datasetsByYAxis[axisId] = [];
           }
+          datasetsByYAxis[axisId].push({ ...dataset, index });
+        });
 
-          scales[axis.id] = {
-            yScale,
-            minValue,
-            maxValue,
-            valueRange,
-            axisX,
-            tickCount: axis.tickCount || 5,
-            format: axis.format || ((v: number) => v.toFixed(1)),
+        // Calculate scales for each axis
+        const axisScales: Record<string, { min: number; max: number; scale: number }> = {};
+        Object.entries(datasetsByYAxis).forEach(([axisId, axisDatasets]) => {
+          const allValues = axisDatasets.flatMap(dataset =>
+            dataset.data.map((d: any) => d.value)
+          );
+          const min = Math.min(...allValues);
+          const max = Math.max(...allValues);
+          const range = max - min || 1; // Avoid division by zero
+          axisScales[axisId] = {
+            min,
+            max,
+            scale: chartHeight / range,
           };
         });
 
-        // X-axis scale
-        const maxDataLength = Math.max(...datasets.map(d => d.data?.length || 0));
-        const xScale = (index: number, dataLength?: number) => {
-          const totalLength = dataLength || maxDataLength;
-          if (totalLength <= 1) return plotAreaLeft + plotAreaWidth / 2;
-          return plotAreaLeft + (index / (totalLength - 1)) * plotAreaWidth;
-        };
+        // Generate chart elements
+        const elements: React.ReactNode[] = [];
 
-        scales.x = {
-          xScale,
-          plotAreaLeft,
-          plotAreaRight,
-          plotAreaTop,
-          plotAreaBottom,
-          plotAreaWidth,
-          plotAreaHeight,
-          maxDataLength,
-        };
-
-        return scales;
-      }, [datasets, yAxes, xAxis]);
-
-      // Render multi-axis content
-      const renderContent = useCallback(
-        ({
-          scales: _,
-          colors,
-          datasets: renderedDatasets,
-          handlers,
-        }: {
-          scales: any;
-          colors: string[];
-          datasets: MultiAxisDataset[];
-          handlers: {
-            onDataPointClick?: (
-              dataPoint: ChartDataPoint,
-              datasetIndex: number,
-              pointIndex: number
-            ) => void;
-          };
-        }) => {
-          if (!renderedDatasets.length || !axisScales.x) return null;
-
-          const {
-            xScale,
-            plotAreaLeft,
-            plotAreaRight,
-            plotAreaTop,
-            plotAreaBottom,
-            plotAreaWidth,
-            plotAreaHeight,
-          } = axisScales.x;
-
-          return (
-            <g>
-              {/* Plot area background */}
-              <rect
-                x={plotAreaLeft}
-                y={plotAreaTop}
-                width={plotAreaWidth}
-                height={plotAreaHeight}
-                className="c-chart__plot-area"
-              />
-
-              {/* Y-axis grids and axes */}
-              {yAxes.map((axis, axisIndex) => {
-                const axisScale = axisScales[axis.id];
-                if (!axisScale) return null;
-
-                const ticks = Array.from({ length: axisScale.tickCount }, (_, i) => {
-                  const value =
-                    axisScale.minValue +
-                    (axisScale.maxValue - axisScale.minValue) * (i / (axisScale.tickCount - 1));
-                  return {
-                    value,
-                    y: axisScale.yScale(value),
-                    label: axisScale.format(value),
-                  };
-                });
-
-                return (
-                  <g key={`y-axis-${axis.id}`}>
-                    {/* Grid lines */}
-                    {axis.showGrid &&
-                      ticks.map((tick, i) => (
-                        <line
-                          key={`grid-${i}`}
-                          x1={plotAreaLeft}
-                          y1={tick.y}
-                          x2={plotAreaRight}
-                          y2={tick.y}
-                          className="c-chart__grid"
-                        />
-                      ))}
-
-                    {/* Axis line */}
-                    <line
-                      x1={axisScale.axisX}
-                      y1={plotAreaTop}
-                      x2={axisScale.axisX}
-                      y2={plotAreaBottom}
-                      stroke={axis.color || 'var(--atomix-secondary-text)'}
-                      className="c-chart__axis-line"
-                    />
-
-                    {/* Ticks and labels */}
-                    {ticks.map((tick, i) => (
-                      <g key={`tick-${i}`}>
-                        <line
-                          x1={axisScale.axisX - 5}
-                          y1={tick.y}
-                          x2={axisScale.axisX + 5}
-                          y2={tick.y}
-                          stroke={axis.color || 'var(--atomix-gray-6)'}
-                          strokeWidth="1"
-                        />
-                        <text
-                          x={axis.position === 'left' ? axisScale.axisX - 10 : axisScale.axisX + 10}
-                          y={tick.y}
-                          textAnchor={axis.position === 'left' ? 'end' : 'start'}
-                          dominantBaseline="middle"
-                          className="c-chart__tick-label"
-                        >
-                          {tick.label}
-                        </text>
-                      </g>
-                    ))}
-
-                    {/* Axis label */}
-                    {axis.label && (
-                      <text
-                        x={axisScale.axisX}
-                        y={axis.position === 'left' ? 20 : plotAreaBottom + 40}
-                        textAnchor="middle"
-                        fontSize="14"
-                        fontWeight="bold"
-                        fill={axis.color || 'var(--atomix-gray-8)'}
-                        transform={
-                          axis.position === 'left' ? `rotate(-90, ${axisScale.axisX}, 20)` : ''
-                        }
-                      >
-                        {axis.label}
-                      </text>
-                    )}
-                  </g>
-                );
-              })}
-
-              {/* X-axis */}
-              <g>
-                <line
-                  x1={plotAreaLeft}
-                  y1={plotAreaBottom}
-                  x2={plotAreaRight}
-                  y2={plotAreaBottom}
-                  stroke="var(--atomix-gray-6)"
-                  strokeWidth="2"
-                />
-
-                {/* X-axis ticks and labels */}
-                {renderedDatasets[0]?.data?.map((point: ChartDataPoint, i: number) => {
-                  const x = xScale(i, renderedDatasets[0]?.data?.length || 0);
-                  return (
-                    <g key={`x-tick-${i}`}>
-                      <line
-                        x1={x}
-                        y1={plotAreaBottom}
-                        x2={x}
-                        y2={plotAreaBottom + 5}
-                        stroke="var(--atomix-gray-6)"
-                        strokeWidth="1"
-                      />
-                      <text
-                        x={x}
-                        y={plotAreaBottom + 20}
-                        textAnchor="middle"
-                        fontSize="12"
-                        fill="var(--atomix-gray-7)"
-                      >
-                        {point.label}
-                      </text>
-                    </g>
-                  );
-                })}
-              </g>
-
-              {/* Data visualization */}
-              {renderedDatasets.map((dataset: MultiAxisDataset, datasetIndex: number) => {
-                const axisScale =
-                  axisScales[(dataset as MultiAxisDataset).yAxisId || yAxes[0]?.id || ''];
-                if (!axisScale) return null;
-
-                const color = dataset.color || colors[datasetIndex];
-                const chartType = (dataset as MultiAxisDataset).type || 'line';
-
-                if (chartType === 'line' || chartType === 'area') {
-                  const points =
-                    dataset.data?.map((point: ChartDataPoint, i: number) => ({
-                      x: xScale(i, dataset.data?.length),
-                      y: axisScale.yScale(point.value),
-                    })) || [];
-
-                  const path =
-                    points.length > 1
-                      ? `M ${points.map((p: { x: number; y: number }) => `${p.x},${p.y}`).join(' L ')}`
-                      : '';
-
-                  return (
-                    <g key={`dataset-${datasetIndex}`}>
-                      {/* Area fill */}
-                      {chartType === 'area' && (
-                        <path
-                          d={`${path} L ${points[points.length - 1]?.x || 0},${plotAreaBottom} L ${points[0]?.x || 0},${plotAreaBottom} Z`}
-                          fill={color}
-                          opacity="0.3"
-                        />
-                      )}
-
-                      {/* Line */}
-                      <path
-                        d={path}
-                        stroke={color}
-                        fill="none"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-
-                      {/* Data points */}
-                      {dataset.data?.map((point: ChartDataPoint, i: number) => {
-                        const x = xScale(i, dataset.data?.length);
-                        const y = axisScale.yScale(point.value);
-
-                        return (
-                          <circle
-                            key={`point-${i}`}
-                            cx={x}
-                            cy={y}
-                            r="4"
-                            fill={color}
-                            className="c-chart__data-point"
-                            onClick={() => handlers.onDataPointClick?.(point, datasetIndex, i)}
-                          />
-                        );
-                      })}
-                    </g>
-                  );
-                }
-
-                if (chartType === 'bar') {
-                  const barWidth = (plotAreaWidth / (dataset.data?.length || 1)) * 0.6;
-
-                  return (
-                    <g key={`bars-${datasetIndex}`}>
-                      {dataset.data?.map((point: ChartDataPoint, i: number) => {
-                        const x = xScale(i, dataset.data?.length || 0);
-                        const y = axisScale.yScale(point.value);
-                        const barHeight = plotAreaBottom - y;
-
-                        return (
-                          <rect
-                            key={`bar-${i}`}
-                            x={x - barWidth / 2}
-                            y={y}
-                            width={barWidth}
-                            height={barHeight}
-                            fill={color}
-                            rx="4"
-                            onClick={() => handlers.onDataPointClick?.(point, datasetIndex, i)}
-                            style={{ cursor: 'pointer' }}
-                          />
-                        );
-                      })}
-                    </g>
-                  );
-                }
-
-                return null;
-              })}
-
-              {/* Legend */}
-              <g transform={`translate(${plotAreaLeft}, ${plotAreaBottom + 50})`}>
-                {renderedDatasets.map((dataset: MultiAxisDataset, i: number) => {
-                  const color = dataset.color || colors[i];
-                  const x = i * 120;
-
-                  return (
-                    <g key={`legend-${i}`} transform={`translate(${x}, 0)`}>
-                      <rect x="0" y="0" width="12" height="12" fill={color} rx="2" />
-                      <text x="18" y="9" fontSize="12" fill="var(--atomix-gray-8)">
-                        {dataset.label} ({(dataset as MultiAxisDataset).yAxisId})
-                      </text>
-                    </g>
-                  );
-                })}
-              </g>
-            </g>
+        // Draw grid lines
+        for (let i = 0; i <= 5; i++) {
+          const y = padding + (i / 5) * chartHeight;
+          elements.push(
+            <line
+              key={`grid-${i}`}
+              x1={padding}
+              y1={y}
+              x2={padding + chartWidth}
+              y2={y}
+              stroke="#E5E7EB"
+              strokeWidth="1"
+            />
           );
-        },
-        [axisScales, yAxes]
-      );
+        }
+
+        // Draw datasets
+        datasets.forEach((dataset, datasetIndex) => {
+          const axisId = dataset.yAxisId || yAxisConfigs[0]?.id || 'y-axis-1';
+          const axisScale = axisScales[axisId];
+          const color = dataset.color || colors[datasetIndex % colors.length];
+
+          // Generate points
+          const points = dataset.data.map((point: any, pointIndex: number) => ({
+            x: padding + (pointIndex / (dataset.data.length - 1)) * chartWidth,
+            y: axisScale ? padding + chartHeight - (point.value - axisScale.min) * axisScale.scale : 0,
+          }));
+
+          // Generate line path
+          let linePath = '';
+          if (points.length > 0) {
+            linePath = `M ${points.map((p: any) => `${p.x},${p.y}`).join(' L ')}`;
+          }
+
+          // Draw area under line
+          if (showArea && linePath) {
+            const areaPath = `${linePath} L ${padding + chartWidth},${padding + chartHeight} L ${padding},${padding + chartHeight} Z`;
+            elements.push(
+              <path
+                key={`area-${datasetIndex}`}
+                d={areaPath}
+                fill={color}
+                fillOpacity={areaOpacity}
+              />
+            );
+          }
+
+          // Draw line
+          elements.push(
+            <path
+              key={`line-${datasetIndex}`}
+              d={linePath}
+              stroke={color}
+              fill="none"
+              strokeWidth="2"
+            />
+          );
+
+          // Draw data points
+          if (showDataPoints) {
+            points.forEach((point: any, pointIndex: number) => {
+              const dataPoint = dataset.data[pointIndex];
+              if (dataPoint) {
+                elements.push(
+                  <circle
+                    key={`point-${datasetIndex}-${pointIndex}`}
+                    cx={point.x}
+                    cy={point.y}
+                    r={pointRadius}
+                    fill={color}
+                    onClick={() => handlers.onDataPointClick?.(dataPoint, datasetIndex, pointIndex)}
+                  />
+                );
+              }
+            });
+          }
+        });
+
+        // Draw axes
+        yAxisConfigs.forEach(axis => {
+          elements.push(
+            <line
+              key={`y-axis-${axis.id}`}
+              x1={padding}
+              y1={padding}
+              x2={padding}
+              y2={padding + chartHeight}
+              stroke={axis.color || '#000'}
+              strokeWidth="2"
+            />
+          );
+        });
+
+        xAxisConfigs.forEach(axis => {
+          elements.push(
+            <line
+              key={`x-axis-${axis.id}`}
+              x1={padding}
+              y1={padding + chartHeight}
+              x2={padding + chartWidth}
+              y2={padding + chartHeight}
+              stroke={axis.color || '#000'}
+              strokeWidth="2"
+            />
+          );
+        });
+
+        // Draw legend
+        if (showLegend) {
+          const legendY = legendPosition === 'top' ? 20 : scales.height - 30;
+          datasets.forEach((dataset, index) => {
+            const color = dataset.color || colors[index % colors.length];
+            const legendX = padding + (index * chartWidth) / datasets.length;
+            
+            elements.push(
+              <g key={`legend-${index}`}>
+                <rect
+                  x={legendX}
+                  y={legendY}
+                  width="12"
+                  height="12"
+                  fill={color}
+                />
+                <text
+                  x={legendX + 16}
+                  y={legendY + 10}
+                  fontSize="12"
+                  fill="#000"
+                >
+                  {dataset.label}
+                </text>
+              </g>
+            );
+          });
+        }
+
+        return <g>{elements}</g>;
+      };
 
       return (
-        <Chart
+        <BaseChart
           ref={ref}
           type="line"
           datasets={datasets}
           config={config}
-          title="Multi-Axis Chart"
-          showToolbar
+          renderContent={renderContent}
+          onDataPointClick={onDataPointClick}
           {...props}
-        >
-          <ChartRenderer
-            datasets={datasets}
-            config={config}
-            width={800}
-            height={500}
-            renderContent={renderContent}
-            interactive
-            enableAccessibility
-          />
-        </Chart>
+        />
       );
     }
   )
@@ -495,4 +385,3 @@ const MultiAxisChart = memo(
 
 MultiAxisChart.displayName = 'MultiAxisChart';
 export default MultiAxisChart;
-export type { AxisConfig, MultiAxisChartProps, MultiAxisDataset };

@@ -20,7 +20,6 @@ import {
   Modal,
   Progress,
   Rating,
-  RealTimeChart,
   SectionIntro,
   Steps,
   Tab,
@@ -142,7 +141,7 @@ const HomePage: React.FC = () => {
         cornerRadius={30}
         elasticity={0.01}
         mode="standard"
-        onClick={()=> {}}
+        onClick={() => {}}
         style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 5 }}
       >
         <Container>
@@ -897,34 +896,6 @@ const HomePage: React.FC = () => {
             <GridCol xs={12} lg={8}>
               <Card className="u-h-100">
                 <h4 className="u-mb-4">Component Usage</h4>
-                <RealTimeChart
-                  datasets={[
-                    {
-                      label: 'Button',
-                      data: [
-                        { label: 'Mon', value: 1250 },
-                        { label: 'Tue', value: 1380 },
-                        { label: 'Wed', value: 1420 },
-                        { label: 'Thu', value: 1650 },
-                        { label: 'Fri', value: 1580 },
-                        { label: 'Sat', value: 1720 },
-                      ],
-                      color: '#10b981',
-                    },
-                  ]}
-                  config={{ showLegend: false }}
-                  streamConfig={{
-                    interval: 5000,
-                    maxDataPoints: 20,
-                    autoScroll: true,
-                  }}
-                  dataSource={async () => [
-                    {
-                      label: new Date().toLocaleTimeString(),
-                      value: Math.floor(Math.random() * 500) + 1500,
-                    },
-                  ]}
-                />
               </Card>
             </GridCol>
 

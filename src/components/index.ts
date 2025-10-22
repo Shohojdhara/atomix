@@ -11,7 +11,6 @@ export { default as Button, type ButtonProps } from './Button/Button';
 export { default as Callout, type CalloutProps } from './Callout/Callout';
 export { default as Card, type CardProps } from './Card/Card';
 export {
-  AdvancedChart,
   AnimatedChart,
   AreaChart,
   BarChart,
@@ -27,11 +26,9 @@ export {
   MultiAxisChart,
   PieChart,
   RadarChart,
-  RealTimeChart,
   ScatterChart,
   TreemapChart,
   WaterfallChart,
-  type AdvancedChartProps,
   type AnimatedChartProps,
   type AreaChartProps,
   type BarChartProps,
@@ -50,7 +47,6 @@ export {
   type MultiAxisChartProps,
   type PieChartProps,
   type RadarChartProps,
-  type RealTimeChartProps,
   type ScatterChartProps,
   type ScatterDataPoint,
   type TreemapChartProps,

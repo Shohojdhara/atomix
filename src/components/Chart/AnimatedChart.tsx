@@ -1,5 +1,5 @@
 import { forwardRef, memo, useCallback, useEffect, useRef } from 'react';
-import Chart from './Chart';
+import BaseChart from './BaseChart';
 import { ChartProps } from './types';
 
 interface AnimatedChartProps extends Omit<ChartProps, 'type'> {
@@ -19,8 +19,7 @@ interface AnimatedChartProps extends Omit<ChartProps, 'type'> {
 
 const AnimatedChart = memo(
   forwardRef<HTMLDivElement, AnimatedChartProps>(
-    ({ datasets = [], config = {}, chartType = 'line', particleEffects, ...props }, ref) => {
-      const canvasRef = useRef<HTMLCanvasElement>(null);
+    ({ datasets = [], config = {}, chartType = 'line', particleEffects, onDataPointClick, ...props }, ref) => {
       const animationRef = useRef<number>(0);
       const timeRef = useRef(0);
       const particlesRef = useRef<
@@ -36,166 +35,172 @@ const AnimatedChart = memo(
         }>
       >([]);
 
-      const animate = useCallback(
-        (timestamp?: number) => {
-          const canvas = canvasRef.current;
-          if (!canvas) return;
+      const renderContent = useCallback(
+        ({
+          scales,
+          colors,
+          datasets: chartDatasets,
+          handlers,
+        }: {
+          scales: any;
+          colors: string[];
+          datasets: any[];
+          handlers: any;
+        }) => {
+          // Animation time tracking
+          useEffect(() => {
+            const animateFrame = (timestamp: number) => {
+              timeRef.current = timestamp;
+              animationRef.current = requestAnimationFrame(animateFrame);
+            };
+            
+            animationRef.current = requestAnimationFrame(animateFrame);
+            
+            return () => {
+              if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current);
+              }
+            };
+          }, []);
 
-          const ctx = canvas.getContext('2d');
-          if (!ctx) return;
+          if (!chartDatasets.length) return null;
 
-          const { width, height } = canvas;
-          const time = timeRef.current * 0.02;
+          const padding = 40;
+          const chartWidth = scales.width - padding * 2;
+          const chartHeight = scales.height - padding * 2;
 
-          // Create gradient background
-          const gradient = ctx.createLinearGradient(0, 0, 0, height);
-          gradient.addColorStop(0, '#0a0a0a');
-          gradient.addColorStop(0.5, '#1a1a2e');
-          gradient.addColorStop(1, '#16213e');
+          // Create animated elements based on chart type
+          const elements: React.ReactNode[] = [];
 
-          ctx.fillStyle = gradient;
-          ctx.fillRect(0, 0, width, height);
-
-          // Calculate data-based wave positions
-          const dataPoints = datasets[0]?.data || [];
-          const maxValue = Math.max(...dataPoints.map(d => d.value));
-          const minValue = Math.min(...dataPoints.map(d => d.value));
-          const valueRange = maxValue - minValue || 1;
-
-          // Generate particles based on data
-          if (particlesRef.current.length < (particleEffects?.count || 800)) {
-            for (let i = 0; i < 3; i++) {
-              const dataIndex = Math.floor(Math.random() * dataPoints.length);
-              const dataPoint = dataPoints[dataIndex];
-
-              if (dataPoint) {
-                const normalizedValue = (dataPoint.value - minValue) / valueRange;
-                const dataX = (dataIndex / (dataPoints.length - 1)) * width;
-                const dataY = height - normalizedValue * height * 0.6 - height * 0.2;
-
-                particlesRef.current.push({
-                  x: dataX + (Math.random() - 0.5) * 50,
-                  y: dataY + (Math.random() - 0.5) * 30,
-                  vx: (Math.random() - 0.5) * (particleEffects?.speed || 2),
-                  vy: -Math.random() * 2 - 0.5,
-                  life: 1,
-                  size: (particleEffects?.size || 2) * (0.5 + normalizedValue * 0.5),
-                  color:
-                    particleEffects?.colors?.[dataIndex % (particleEffects.colors.length || 1)] ||
-                    '#22c55e',
-                  dataIndex,
+          chartDatasets.forEach((dataset: any, datasetIndex: number) => {
+            const color = dataset.color || colors[datasetIndex % colors.length];
+            
+            switch (chartType) {
+              case 'bar':
+                // Create animated bars
+                dataset.data.forEach((point: any, pointIndex: number) => {
+                  const barWidth = chartWidth / dataset.data.length * 0.8;
+                  const x = padding + pointIndex * (chartWidth / dataset.data.length) + (chartWidth / dataset.data.length - barWidth) / 2;
+                  const height = (point.value / 100) * chartHeight; // Assuming normalized values
+                  const y = padding + chartHeight - height;
+                  
+                  elements.push(
+                    <rect
+                      key={`bar-${datasetIndex}-${pointIndex}`}
+                      x={x}
+                      y={y}
+                      width={barWidth}
+                      height={height}
+                      fill={color}
+                      style={{
+                        transform: `scaleY(${Math.sin(timeRef.current * 0.01 + pointIndex * 0.2) * 0.1 + 0.9})`,
+                        transformOrigin: 'bottom',
+                      }}
+                      onClick={() => handlers.onDataPointClick?.(point, datasetIndex, pointIndex)}
+                    />
+                  );
                 });
+                break;
+                
+              case 'area':
+              case 'line':
+              default:
+                // Create animated line/area
+                const points = dataset.data.map((point: any, pointIndex: number) => ({
+                  x: padding + (pointIndex / (dataset.data.length - 1)) * chartWidth,
+                  y: padding + chartHeight - (point.value / 100) * chartHeight, // Assuming normalized values
+                }));
+                
+                if (points.length > 0) {
+                  const linePath = `M ${points.map((p: any) => `${p.x},${p.y}`).join(' L ')}`;
+                  
+                  // Area for area chart
+                  if (chartType === 'area') {
+                    const areaPath = `${linePath} L ${padding + chartWidth},${padding + chartHeight} L ${padding},${padding + chartHeight} Z`;
+                    elements.push(
+                      <path
+                        key={`area-${datasetIndex}`}
+                        d={areaPath}
+                        fill={color}
+                        fillOpacity="0.3"
+                        style={{
+                          transform: `translateY(${Math.sin(timeRef.current * 0.01) * 2}px)`,
+                        }}
+                      />
+                    );
+                  }
+                  
+                  // Line
+                  elements.push(
+                    <path
+                      key={`line-${datasetIndex}`}
+                      d={linePath}
+                      stroke={color}
+                      fill="none"
+                      strokeWidth="2"
+                      style={{
+                        transform: `translateY(${Math.sin(timeRef.current * 0.01) * 2}px)`,
+                      }}
+                    />
+                  );
+                  
+                  // Data points
+                  points.forEach((point: any, pointIndex: number) => {
+                    elements.push(
+                      <circle
+                        key={`point-${datasetIndex}-${pointIndex}`}
+                        cx={point.x}
+                        cy={point.y}
+                        r="4"
+                        fill={color}
+                        style={{
+                          transform: `scale(${1 + Math.sin(timeRef.current * 0.01 + pointIndex) * 0.2})`,
+                        }}
+                        onClick={() => handlers.onDataPointClick?.(dataset.data[pointIndex], datasetIndex, pointIndex)}
+                      />
+                    );
+                  });
+                }
+                break;
+            }
+          });
+
+          // Particle effects
+          if (particleEffects?.enabled) {
+            for (let i = 0; i < particleEffects.count; i++) {
+              const particle = particlesRef.current[i];
+              if (particle) {
+                elements.push(
+                  <circle
+                    key={`particle-${i}`}
+                    cx={particle.x}
+                    cy={particle.y}
+                    r={particle.size}
+                    fill={particle.color}
+                    style={{
+                      opacity: particle.life,
+                    }}
+                  />
+                );
               }
             }
           }
 
-          // Update and draw particles
-          particlesRef.current = particlesRef.current.filter(particle => {
-            particle.x += particle.vx;
-            particle.y += particle.vy;
-            particle.life -= 0.008;
-            particle.vy += 0.015;
-
-            if (particle.life <= 0 || particle.y > height + 50) return false;
-
-            // Data-influenced wave effect
-            const dataInfluence =
-              particle.dataIndex !== undefined && dataPoints[particle.dataIndex]
-                ? (dataPoints[particle.dataIndex]?.value || 0) / maxValue
-                : 0.5;
-
-            const waveOffset =
-              Math.sin(particle.x * 0.01 + time) * 20 * dataInfluence +
-              Math.sin(particle.x * 0.008 + time * 1.2) * 15;
-            const finalY = particle.y + waveOffset;
-
-            ctx.save();
-            ctx.globalAlpha = particle.life * 0.8;
-            ctx.beginPath();
-            ctx.arc(particle.x, finalY, particle.size, 0, Math.PI * 2);
-            ctx.fillStyle = particle.color;
-            ctx.fill();
-
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = particle.color;
-            ctx.fill();
-            ctx.restore();
-
-            return true;
-          });
-
-          // Draw data-based flowing lines
-          if (dataPoints.length > 1) {
-            const colors = particleEffects?.colors || ['#22c55e'];
-            colors.forEach((color, index) => {
-              ctx.strokeStyle = color;
-              ctx.lineWidth = 2;
-              ctx.globalAlpha = 0.6;
-              ctx.beginPath();
-
-              dataPoints.forEach((point, i) => {
-                const x = (i / (dataPoints.length - 1)) * width;
-                const normalizedValue = (point.value - minValue) / valueRange;
-                const baseY = height - normalizedValue * height * 0.6 - height * 0.2;
-                const y = baseY + Math.sin(x * 0.008 + time + index) * 30;
-
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-              });
-              ctx.stroke();
-            });
-          }
-
-          // Draw grid
-          ctx.strokeStyle = 'rgba(34, 197, 94, 0.1)';
-          ctx.lineWidth = 1;
-          ctx.globalAlpha = 0.2;
-
-          for (let x = 0; x < width; x += 60) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, height);
-            ctx.stroke();
-          }
-
-          timeRef.current += 1;
-          animationRef.current = requestAnimationFrame(animate);
+          return <g>{elements}</g>;
         },
-        [particleEffects, datasets]
+        [chartType, particleEffects]
       );
 
-      useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return undefined;
-
-        const resizeCanvas = () => {
-          canvas.width = canvas.offsetWidth;
-          canvas.height = canvas.offsetHeight;
-        };
-
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-        animate(0);
-
-        return () => {
-          window.removeEventListener('resize', resizeCanvas);
-          if (animationRef.current) {
-            cancelAnimationFrame(animationRef.current);
-          }
-        };
-      }, [animate]);
-
       return (
-        <Chart ref={ref} type={chartType} datasets={datasets} config={config} {...props}>
-          <canvas
-            ref={canvasRef}
-            style={{
-              width: '100%',
-              height: '100%',
-              borderRadius: '8px',
-            }}
-          />
-        </Chart>
+        <BaseChart
+          ref={ref}
+          type="animated"
+          datasets={datasets}
+          config={config}
+          renderContent={renderContent}
+          onDataPointClick={onDataPointClick}
+          {...props}
+        />
       );
     }
   )
@@ -203,4 +208,3 @@ const AnimatedChart = memo(
 
 AnimatedChart.displayName = 'AnimatedChart';
 export default AnimatedChart;
-export type { AnimatedChartProps };

@@ -1,7 +1,6 @@
 // Export all showcase components for easy importing
 export { AtomixGlassShowcase } from './AtomixGlassShowcase';
 export { ComponentGallery } from './ComponentGallery';
-
 // Re-export existing showcase components
 export { AdminDashboard } from './AdminDashboard';
 export { CoffeeShop } from './CoffeeShop';

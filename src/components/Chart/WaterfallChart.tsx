@@ -1,7 +1,6 @@
-import { forwardRef, memo, useCallback } from 'react';
+import { forwardRef, memo } from 'react';
+import BaseChart from './BaseChart';
 import { ChartProps } from '../../lib/types/components';
-import Chart from './Chart';
-import ChartRenderer from './ChartRenderer';
 
 export interface WaterfallDataPoint {
   label: string;
@@ -118,18 +117,26 @@ const WaterfallChart = memo(
         baselineColor = '#f3f4f6',
       } = waterfallOptions;
 
-      const renderContent = useCallback(
-        ({
-          scales,
-          colors,
-          handlers,
-        }: {
-          scales: { width: number; height: number };
-          colors: string[];
-          handlers: {
-            onDataPointClick?: (dataPoint: any, datasetIndex: number, pointIndex: number) => void;
-          };
-        }) => {
+      const renderContent = ({
+        scales,
+        colors,
+        datasets: renderedDatasets,
+        handlers,
+        hoveredPoint,
+      }: {
+        scales: any;
+        colors: string[];
+        datasets: any[];
+        handlers: any;
+        hoveredPoint: {
+          datasetIndex: number;
+          pointIndex: number;
+          x: number;
+          y: number;
+          clientX: number;
+          clientY: number;
+        } | null;
+      }) => {
           if (!waterfallData.length) return null;
 
           const padding = 60;
@@ -353,8 +360,8 @@ const WaterfallChart = memo(
           );
 
           // X-axis labels
-          waterfallData.forEach((item, index) => {
-            const x = xScale(index);
+          processedData.forEach((item, index) => {
+            const x = padding + index * barSpacing + barSpacing / 2;
             elements.push(
               <text
                 key={`x-label-${index}`}
@@ -370,77 +377,27 @@ const WaterfallChart = memo(
             );
           });
 
-          // Y-axis labels
-          const yTicks = 5;
-          for (let i = 0; i <= yTicks; i++) {
-            const value = minValue + (i / yTicks) * valueRange;
-            const y = yScale(value);
-
-            elements.push(
-              <g key={`y-tick-${i}`}>
-                <line
-                  x1={padding - 5}
-                  y1={y}
-                  x2={padding}
-                  y2={y}
-                  stroke="var(--atomix-gray-4)"
-                  strokeWidth="1"
-                />
-                <text
-                  x={padding - 10}
-                  y={y}
-                  textAnchor="end"
-                  dominantBaseline="middle"
-                  fontSize="11"
-                  fill="var(--atomix-gray-6)"
-                >
-                  {valueFormatter(value)}
-                </text>
-              </g>
-            );
-          }
-
           return <g>{elements}</g>;
-        },
-        [
-          waterfallData,
-          showConnectors,
-          connectorColor,
-          connectorStyle,
-          showValues,
-          valuePosition,
-          barWidth,
-          showCumulativeLine,
-          cumulativeLineColor,
-          animate,
-          animationDuration,
-          animationDelay,
-          valueFormatter,
-          showBaseline,
-          baselineColor,
-        ]
-      );
+        };
 
-      // Convert waterfall data to datasets format for ChartRenderer
+      // Convert waterfallData to datasets format for BaseChart
       const datasets = [
         {
           label: 'Waterfall Data',
-          data: waterfallData.map(item => ({
-            label: item.label,
-            value: item.value,
-          })),
+          data: waterfallData,
         },
       ];
 
       return (
-        <Chart ref={ref} type="waterfall" datasets={datasets} config={config} {...props}>
-          <ChartRenderer
-            datasets={datasets}
-            config={config}
-            onDataPointClick={onDataPointClick}
-            renderContent={renderContent}
-          />
-        </Chart>
+        <BaseChart
+          ref={ref}
+          type="waterfall"
+          datasets={datasets}
+          config={config}
+          renderContent={renderContent}
+          onDataPointClick={onDataPointClick}
+          {...props}
+        />
       );
     }
   )
@@ -448,3 +405,4 @@ const WaterfallChart = memo(
 
 WaterfallChart.displayName = 'WaterfallChart';
 export default WaterfallChart;
+export type { WaterfallChartProps, WaterfallDataPoint };

@@ -1,6 +1,6 @@
 import { forwardRef, memo, useCallback, useMemo, useState } from 'react';
+import BaseChart from './BaseChart';
 import { ChartProps } from '../../lib/types/components';
-import Chart from './Chart';
 
 interface TreemapDataPoint {
   id: string;
@@ -51,27 +51,21 @@ interface TreemapChartProps extends Omit<ChartProps, 'type' | 'datasets'> {
      */
     palette?: string[];
     /**
-     * Value-based color range
+     * Whether to use gradients
      */
-    valueRange?: [string, string];
+    useGradients?: boolean;
   };
-
-  /**
-   * Whether to show labels
-   */
-  showLabels?: boolean;
-
-  /**
-   * Whether to show values
-   */
-  showValues?: boolean;
 
   /**
    * Label configuration
    */
   labelConfig?: {
     /**
-     * Minimum cell size to show label
+     * Whether to show labels
+     */
+    showLabels?: boolean;
+    /**
+     * Minimum size for showing labels
      */
     minSize?: number;
     /**
@@ -81,50 +75,26 @@ interface TreemapChartProps extends Omit<ChartProps, 'type' | 'datasets'> {
     /**
      * Text color
      */
-    color?: string;
+    textColor?: string;
   };
 
   /**
-   * Border configuration
+   * Interaction configuration
    */
-  borderConfig?: {
+  interactionConfig?: {
     /**
-     * Border width
+     * Whether to enable tooltips
      */
-    width?: number;
+    enableTooltips?: boolean;
     /**
-     * Border color
+     * Whether to enable zoom
      */
-    color?: string;
+    enableZoom?: boolean;
     /**
-     * Border radius
+     * Whether to enable selection
      */
-    radius?: number;
+    enableSelection?: boolean;
   };
-
-  /**
-   * Animation configuration
-   */
-  animationConfig?: {
-    /**
-     * Enable animations
-     */
-    enabled?: boolean;
-    /**
-     * Animation duration
-     */
-    duration?: number;
-    /**
-     * Animation easing
-     */
-    easing?: string;
-  };
-
-  /**
-   * Interaction handlers
-   */
-  onNodeClick?: (node: TreemapNode) => void;
-  onNodeHover?: (node: TreemapNode | null) => void;
 }
 
 const TreemapChart = memo(
@@ -134,25 +104,13 @@ const TreemapChart = memo(
         data = [],
         algorithm = 'squarified',
         colorConfig = { scheme: 'category' },
-        showLabels = true,
-        showValues = false,
         labelConfig = {
+          showLabels: true,
           minSize: 1000,
           fontSize: 12,
-          color: 'white',
+          textColor: 'white',
         },
-        borderConfig = {
-          width: 1,
-          color: 'white',
-          radius: 2,
-        },
-        animationConfig = {
-          enabled: true,
-          duration: 750,
-          easing: 'ease-out',
-        },
-        onNodeClick,
-        onNodeHover,
+        onDataPointClick,
         config = {},
         ...props
       },
@@ -162,7 +120,6 @@ const TreemapChart = memo(
       const [selectedNode, setSelectedNode] = useState<TreemapNode | null>(null);
       const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
-      // Build hierarchical tree structure
       const treeData = useMemo(() => {
         console.log('TreemapChart data:', data);
         if (!data.length) {
@@ -219,7 +176,7 @@ const TreemapChart = memo(
         (node: TreemapDataPoint, depth: number, index: number) => {
           if (node.color) return node.color;
 
-          const { scheme, palette, valueRange } = colorConfig;
+          const { scheme, palette } = colorConfig;
 
           const defaultPalette = [
             '#3b82f6',
@@ -243,11 +200,10 @@ const TreemapChart = memo(
               const depthColors = ['#1e40af', '#3b82f6', '#60a5fa', '#93c5fd', '#dbeafe'];
               return depthColors[Math.min(depth, depthColors.length - 1)];
             case 'value':
-              if (valueRange && treeData) {
+              if (data.length > 0) {
                 const maxValue = Math.max(...data.map(d => d.value));
                 const minValue = Math.min(...data.map(d => d.value));
                 const ratio = (node.value - minValue) / (maxValue - minValue);
-                // Simple interpolation between two colors
                 return `hsl(${220 + ratio * 100}, 70%, ${30 + ratio * 40}%)`;
               }
               return colors[0];
@@ -255,7 +211,7 @@ const TreemapChart = memo(
               return colors[index % colors.length];
           }
         },
-        [colorConfig, data, treeData]
+        [colorConfig, data]
       );
 
       // Squarified treemap algorithm
@@ -431,139 +387,97 @@ const TreemapChart = memo(
         });
       }, [data, generateColor]);
 
-      // Handle node interactions
-      const handleNodeClick = useCallback(
-        (node: TreemapNode) => {
-          setSelectedNode(node);
-          onNodeClick?.(node);
-        },
-        [onNodeClick]
-      );
-
-      const handleNodeHover = useCallback(
-        (node: TreemapNode | null, event?: React.MouseEvent) => {
-          setHoveredNode(node);
-          onNodeHover?.(node);
-
-          if (event && node) {
-            const rect = event.currentTarget.getBoundingClientRect();
-            setTooltipPosition({
-              x: event.clientX,
-              y: event.clientY,
-            });
-          }
-        },
-        [onNodeHover]
-      );
-
-      // Render treemap content
-      const renderContent = useCallback(() => {
+      const renderContent = ({
+        scales,
+        colors,
+        datasets: renderedDatasets,
+        handlers,
+        hoveredPoint,
+      }: {
+        scales: any;
+        colors: string[];
+        datasets: any[];
+        handlers: any;
+        hoveredPoint: {
+          datasetIndex: number;
+          pointIndex: number;
+          x: number;
+          y: number;
+          clientX: number;
+          clientY: number;
+        } | null;
+      }) => {
         if (!treemapNodes.length) return null;
 
         return (
-          <g>
+          <>
             {treemapNodes.map(node => {
               const isHovered = hoveredNode === node;
               const isSelected = selectedNode === node;
               const area = node.width * node.height;
-              const showLabel = showLabels && area >= (labelConfig.minSize || 1000);
+              const showLabel = labelConfig.showLabels && area >= (labelConfig.minSize || 1000);
 
               return (
                 <g key={node.id}>
-                  {/* Node rectangle */}
                   <rect
                     x={node.x}
                     y={node.y}
                     width={node.width}
                     height={node.height}
                     fill={node.color}
-                    rx={borderConfig.radius || 2}
-                    className={`c-chart__treemap-node ${isHovered ? 'c-chart__treemap-node--hovered' : ''} ${isSelected ? 'c-chart__treemap-node--selected' : ''} ${animationConfig.enabled ? 'c-chart__treemap-node--animated' : ''}`}
-                    onMouseEnter={e => handleNodeHover(node, e)}
-                    onMouseLeave={() => handleNodeHover(null)}
-                    onClick={() => handleNodeClick(node)}
+                    className={`c-chart__treemap-node ${isHovered ? 'c-chart__treemap-node--hovered' : ''} ${isSelected ? 'c-chart__treemap-node--selected' : ''}`}
+                    onClick={() => {
+                      setSelectedNode(node);
+                      handlers.onDataPointClick?.(node.originalData, 0, 0);
+                    }}
+                    onMouseEnter={e => {
+                      setHoveredNode(node);
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      handlers.onPointHover(0, 0, node.x, node.y, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                    }}
+                    onMouseLeave={() => {
+                      setHoveredNode(null);
+                      handlers.onPointLeave();
+                    }}
                   />
-
-                  {/* Node label */}
                   {showLabel && (
-                    <g>
-                      <text
-                        x={node.x + node.width / 2}
-                        y={node.y + node.height / 2 - (showValues ? 8 : 0)}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                        className="c-chart__treemap-label"
-                      >
-                        {node.label}
-                      </text>
-
-                      {showValues && (
-                        <text
-                          x={node.x + node.width / 2}
-                          y={node.y + node.height / 2 + 12}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                          className="c-chart__treemap-value"
-                        >
-                          {node.value.toLocaleString()}
-                        </text>
-                      )}
-                    </g>
+                    <text
+                      x={node.x + node.width / 2}
+                      y={node.y + node.height / 2}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      className="c-chart__treemap-label"
+                      style={{ fontSize: labelConfig.fontSize, fill: labelConfig.textColor }}
+                    >
+                      {node.label}
+                    </text>
                   )}
                 </g>
               );
             })}
-          </g>
+          </>
         );
-      }, [
-        treemapNodes,
-        hoveredNode,
-        selectedNode,
-        showLabels,
-        showValues,
-        labelConfig,
-        borderConfig,
-        animationConfig,
-        handleNodeHover,
-        handleNodeClick,
-      ]);
+      };
+
+      // Convert data to datasets format for BaseChart
+      const datasets = [
+        {
+          label: 'Treemap Data',
+          data: data,
+        },
+      ];
 
       return (
-        <Chart ref={ref} type="treemap" datasets={[]} config={config} {...props}>
-          <svg
-            width={800}
-            height={600}
-            viewBox="0 0 800 600"
-            style={{ width: '100%', height: '100%' }}
-          >
-            {renderContent()}
-          </svg>
-
-          {hoveredNode && (
-            <div
-              className="c-chart__tooltip"
-              style={{
-                position: 'fixed',
-                left: tooltipPosition.x + 10,
-                top: tooltipPosition.y - 10,
-                transform: 'translateY(-100%)',
-                background: 'var(--atomix-gray-9)',
-                color: 'white',
-                padding: '8px 12px',
-                borderRadius: '6px',
-                fontSize: '12px',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-                zIndex: 1000,
-                pointerEvents: 'none',
-              }}
-            >
-              <div>
-                <strong>{hoveredNode?.label}</strong>
-              </div>
-              <div>Value: {hoveredNode?.value.toLocaleString()}</div>
-            </div>
-          )}
-        </Chart>
+        <BaseChart
+          ref={ref}
+          type="treemap"
+          datasets={datasets}
+          config={config}
+          renderContent={renderContent}
+          onDataPointClick={onDataPointClick}
+          interactive={true}
+          {...props}
+        />
       );
     }
   )

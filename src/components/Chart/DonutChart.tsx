@@ -1,6 +1,5 @@
-import { forwardRef, memo, useMemo, useState } from 'react';
-import { CHART } from '../../lib/constants/components';
-import Chart from './Chart';
+import { forwardRef, memo, useMemo } from 'react';
+import BaseChart from './BaseChart';
 import ChartTooltip from './ChartTooltip';
 import { PieChartProps } from './PieChart';
 import { ChartDataPoint } from './types';
@@ -65,11 +64,6 @@ const DonutChart = memo(
     ) => {
       // Use the first dataset for donut chart
       const dataset = datasets.length > 0 ? datasets[0] : { label: '', data: [] };
-      const [hoveredSlice, setHoveredSlice] = useState<{
-        index: number;
-        clientX: number;
-        clientY: number;
-      } | null>(null);
 
       // Calculate dimensions and generate donut slices
       const chartContent = useMemo(() => {
@@ -99,267 +93,189 @@ const DonutChart = memo(
           '#7AFFD7',
           '#1AFFD2',
           '#00E6C3',
-          '#4DFF9F',
-          '#1AFF85',
-          '#00E66B',
-          '#DD6061',
-          '#FF1A1A',
-          '#E60000',
-          '#FFCC00',
-          '#E6B800',
-          '#B38F00',
+          '#00CCA3',
+          '#00B383',
+          '#009966',
+          '#00804D',
+          '#006633',
         ];
 
-        // Sort data points if needed
-        let dataPoints = [...validDataPoints];
-        if (pieOptions.sortByValue) {
-          dataPoints.sort((a, b) => b.value - a.value);
-        }
+        const colors = dataset.color
+          ? [dataset.color]
+          : dataset.data?.map((_, i) => defaultColors[i % defaultColors.length]) || defaultColors;
 
         // Calculate total value
-        const total = dataPoints.reduce((sum, point) => sum + point.value, 0);
-
-        // Prevent division by zero
-        if (total <= 0 || !isFinite(total)) return null;
+        const total = validDataPoints.reduce((sum, point) => sum + point.value, 0);
 
         // Calculate angles for each slice
-        const slices: Array<{
-          dataPoint: ChartDataPoint;
-          index: number;
-          startAngle: number;
-          endAngle: number;
-          color: string;
-          percentage: number;
-        }> = [];
+        let currentAngle = (pieOptions.startAngle || 0) * (Math.PI / 180);
+        const slices = validDataPoints.map((point, index) => {
+          const sliceAngle = (point.value / total) * (2 * Math.PI);
+          const startAngle = currentAngle;
+          const endAngle = currentAngle + sliceAngle;
+          const midAngle = (startAngle + endAngle) / 2;
 
-        let currentAngle = ((pieOptions.startAngle ?? 0) * Math.PI) / 180;
+          // Calculate label position
+          const labelRadius = outerRadius * 0.75;
+          const labelX = centerX + Math.cos(midAngle) * labelRadius;
+          const labelY = centerY + Math.sin(midAngle) * labelRadius;
 
-        dataPoints.forEach((point, i) => {
-          const percentage = point.value / total;
+          // Calculate slice path
+          const x1 = centerX + innerRadius * Math.cos(startAngle);
+          const y1 = centerY + innerRadius * Math.sin(startAngle);
+          const x2 = centerX + outerRadius * Math.cos(startAngle);
+          const y2 = centerY + outerRadius * Math.sin(startAngle);
+          const x3 = centerX + outerRadius * Math.cos(endAngle);
+          const y3 = centerY + outerRadius * Math.sin(endAngle);
+          const x4 = centerX + innerRadius * Math.cos(endAngle);
+          const y4 = centerY + innerRadius * Math.sin(endAngle);
 
-          // Validate percentage calculation
-          if (!isFinite(percentage) || percentage < 0) return;
+          // Large arc flag (1 if arc is > 180 degrees, 0 otherwise)
+          const largeArcFlag = sliceAngle > Math.PI ? 1 : 0;
 
-          const angle = percentage * 2 * Math.PI - ((pieOptions.padAngle ?? 1) * Math.PI) / 180;
-
-          // Validate angle calculation
-          if (!isFinite(angle) || angle < 0) return;
-
-          const endAngle = currentAngle + angle;
-
-          // Validate angles before adding to slices
-          if (!isFinite(currentAngle) || !isFinite(endAngle)) return;
-
-          slices.push({
-            dataPoint: point,
-            index: i,
-            startAngle: currentAngle,
-            endAngle: endAngle,
-            color: (point.color || defaultColors[i % defaultColors.length]) as string,
-            percentage,
-          });
-
-          currentAngle = endAngle + ((pieOptions.padAngle ?? 1) * Math.PI) / 180;
-        });
-
-        // Generate SVG arc path for each slice
-        const donutSlices = slices.map(slice => {
-          const { startAngle, endAngle, color, dataPoint, index, percentage } = slice;
-
-          // Calculate outer arc points
-          const outerStartX = centerX + outerRadius * Math.cos(startAngle);
-          const outerStartY = centerY + outerRadius * Math.sin(startAngle);
-          const outerEndX = centerX + outerRadius * Math.cos(endAngle);
-          const outerEndY = centerY + outerRadius * Math.sin(endAngle);
-
-          // Calculate inner arc points
-          const innerStartX = centerX + innerRadius * Math.cos(endAngle);
-          const innerStartY = centerY + innerRadius * Math.sin(endAngle);
-          const innerEndX = centerX + innerRadius * Math.cos(startAngle);
-          const innerEndY = centerY + innerRadius * Math.sin(startAngle);
-
-          const largeArcFlag = endAngle - startAngle > Math.PI ? 1 : 0;
-
-          // Create donut segment path
-          const pathData = [
-            `M ${outerStartX},${outerStartY}`,
-            `A ${outerRadius},${outerRadius} 0 ${largeArcFlag},1 ${outerEndX},${outerEndY}`,
-            `L ${innerStartX},${innerStartY}`,
-            `A ${innerRadius},${innerRadius} 0 ${largeArcFlag},0 ${innerEndX},${innerEndY}`,
+          const path = [
+            `M ${x1} ${y1}`,
+            `L ${x2} ${y2}`,
+            `A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 1 ${x3} ${y3}`,
+            `L ${x4} ${y4}`,
+            `A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${x1} ${y1}`,
             'Z',
           ].join(' ');
 
-          // Calculate position for labels/values
-          const midAngle = startAngle + (endAngle - startAngle) / 2;
-          const labelRadius = (outerRadius + innerRadius) / 2;
-          const labelX = centerX + labelRadius * Math.cos(midAngle);
-          const labelY = centerY + labelRadius * Math.sin(midAngle);
+          currentAngle = endAngle;
 
-          // Format percentage
-          const percentageText = `${Math.round(percentage * 100)}%`;
-
-          return (
-            <g key={`slice-${index}`}>
-              <path
-                d={pathData}
-                fill={color}
-                className="c-chart__donut-slice"
-                onClick={() => onDataPointClick?.(dataPoint, 0, index)}
-                onMouseEnter={e => {
-                  const rect = e.currentTarget.ownerSVGElement?.getBoundingClientRect();
-                  const clientX = rect ? rect.left + labelX : e.clientX;
-                  const clientY = rect ? rect.top + labelY : e.clientY;
-                  setHoveredSlice({ index, clientX, clientY });
-                }}
-                onMouseLeave={() => setHoveredSlice(null)}
-                data-tooltip={`${dataPoint.label}: ${dataPoint.value} (${percentageText})`}
-              />
-
-              {pieOptions.showValues && (
-                <text
-                  x={labelX}
-                  y={labelY}
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  className="c-chart__donut-label"
-                >
-                  {pieOptions.showPercentages ? percentageText : dataPoint.value}
-                </text>
-              )}
-            </g>
-          );
+          return {
+            path,
+            color: point.color || colors[index],
+            labelPosition: { x: labelX, y: labelY },
+            dataPoint: point,
+            value: point.value,
+            percentage: (point.value / total) * 100,
+          };
         });
 
-        // Center content
-        const centerContent = donutOptions.showTotal && (
-          <g className="c-chart__donut-center">
-            <circle
-              cx={centerX}
-              cy={centerY}
-              r={innerRadius}
-              className="c-chart__donut-center-bg"
-            />
-            {donutOptions.centerLabel && (
-              <text
-                x={centerX}
-                y={centerY - 15}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="c-chart__donut-center-label"
-              >
-                {donutOptions.centerLabel}
-              </text>
-            )}
-            <text
-              x={centerX}
-              y={centerY + (donutOptions.centerLabel ? 15 : 0)}
-              textAnchor="middle"
-              dominantBaseline="middle"
-              className="c-chart__donut-center-value"
-            >
-              {donutOptions.centerValue !== undefined ? donutOptions.centerValue : total}
-            </text>
-          </g>
-        );
+        return { slices, total };
+      }, [dataset, pieOptions, donutOptions]);
+
+      const renderContent = ({
+        scales,
+        colors,
+        datasets: renderedDatasets,
+        handlers,
+        hoveredPoint,
+      }: {
+        scales: any;
+        colors: string[];
+        datasets: any[];
+        handlers: any;
+        hoveredPoint: {
+          datasetIndex: number;
+          pointIndex: number;
+          x: number;
+          y: number;
+          clientX: number;
+          clientY: number;
+        } | null;
+      }) => {
+        if (!chartContent) return null;
+        const { slices, total } = chartContent;
 
         return (
-          <svg
-            width="100%"
-            height="100%"
-            viewBox={`0 0 ${width} ${height}`}
-            preserveAspectRatio="xMidYMid meet"
-          >
-            <g>
-              {donutSlices}
-              {centerContent}
-            </g>
-          </svg>
-        );
-      }, [dataset, pieOptions, donutOptions, onDataPointClick]);
-
-      // Render legend if enabled
-      const legend = useMemo(() => {
-        if (!config.showLegend || !dataset?.data?.length) return null;
-
-        // Filter out invalid data points (same as chart content)
-        const validDataPoints = dataset?.data?.filter(
-          point =>
-            typeof point.value === 'number' &&
-            !isNaN(point.value) &&
-            isFinite(point.value) &&
-            point.value > 0
-        );
-
-        if (!validDataPoints.length) return null;
-
-        // Generate colors if not provided
-        const defaultColors = [
-          '#7AFFD7',
-          '#1AFFD2',
-          '#00E6C3',
-          '#4DFF9F',
-          '#1AFF85',
-          '#00E66B',
-          '#DD6061',
-          '#FF1A1A',
-          '#E60000',
-          '#FFCC00',
-          '#E6B800',
-          '#B38F00',
-        ];
-
-        // Calculate total for percentages
-        const total = validDataPoints.reduce((sum, point) => sum + point.value, 0);
-
-        // Prevent division by zero
-        if (total <= 0 || !isFinite(total)) return null;
-
-        return (
-          <div className={CHART.LEGEND_CLASS}>
-            {validDataPoints.map((point, i) => {
-              const percentage = Math.round((point.value / total) * 100);
-
-              // Validate percentage calculation
-              if (!isFinite(percentage)) return null;
+          <>
+            {slices.map((slice, index) => {
+              const isHovered = hoveredPoint?.pointIndex === index;
 
               return (
-                <div
-                  key={`legend-${i}`}
-                  className={CHART.LEGEND_ITEM_CLASS}
-                  onClick={() => onDataPointClick?.(point, 0, i)}
-                >
-                  <div
-                    className={`${CHART.LEGEND_COLOR_CLASS} c-chart__legend-color`}
+                <g key={`slice-${index}`}>
+                  <path
+                    d={slice.path}
+                    fill={slice.color}
+                    className={`c-chart__donut-slice ${isHovered ? 'c-chart__donut-slice--hovered' : ''}`}
                     style={{
-                      backgroundColor: point.color || defaultColors[i % defaultColors.length],
+                      transition: 'transform 0.2s ease',
+                      transform: isHovered ? 'scale(1.02)' : 'scale(1)',
+                      transformOrigin: 'center',
                     }}
+                    onClick={() => handlers.onDataPointClick?.(slice.dataPoint, 0, index)}
+                    onMouseEnter={e => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      handlers.onPointHover(0, index, slice.labelPosition.x, slice.labelPosition.y, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                    }}
+                    onMouseLeave={handlers.onPointLeave}
                   />
-                  <span className={CHART.LEGEND_LABEL_CLASS}>
-                    {point.label} {pieOptions.showPercentages && `(${percentage}%)`}
-                  </span>
-                </div>
+                  {pieOptions.showLabels && (
+                    <text
+                      x={slice.labelPosition.x}
+                      y={slice.labelPosition.y}
+                      textAnchor="middle"
+                      className="c-chart__donut-label"
+                    >
+                      {slice.dataPoint.label}
+                    </text>
+                  )}
+                  {pieOptions.showPercentages && (
+                    <text
+                      x={slice.labelPosition.x}
+                      y={slice.labelPosition.y + 20}
+                      textAnchor="middle"
+                      className="c-chart__donut-percentage"
+                    >
+                      {slice.percentage.toFixed(1)}%
+                    </text>
+                  )}
+                </g>
               );
             })}
-          </div>
-        );
-      }, [dataset, config.showLegend, pieOptions.showPercentages, onDataPointClick]);
 
-      return (
-        <Chart ref={ref} type="donut" datasets={datasets} config={config} {...props}>
-          <div className={CHART.CANVAS_CLASS}>
-            {chartContent}
-            {hoveredSlice && dataset?.data?.[hoveredSlice.index] && (
+            {/* Center label and value */}
+            {donutOptions.showTotal && (
+              <g>
+                <text
+                  x={scales.width / 2}
+                  y={scales.height / 2 - 10}
+                  textAnchor="middle"
+                  className="c-chart__donut-center-label"
+                >
+                  {donutOptions.centerLabel}
+                </text>
+                <text
+                  x={scales.width / 2}
+                  y={scales.height / 2 + 20}
+                  textAnchor="middle"
+                  className="c-chart__donut-center-value"
+                >
+                  {donutOptions.centerValue !== undefined
+                    ? donutOptions.centerValue
+                    : total.toLocaleString()}
+                </text>
+              </g>
+            )}
+            {config?.showTooltips !== false && hoveredPoint && hoveredPoint.pointIndex < slices.length && (
               <ChartTooltip
-                dataPoint={dataset.data[hoveredSlice.index]!}
-                datasetLabel={dataset.label}
-                datasetColor={dataset.data[hoveredSlice.index]!.color}
-                position={{ x: hoveredSlice.clientX, y: hoveredSlice.clientY }}
+                dataPoint={slices[hoveredPoint.pointIndex].dataPoint}
+                datasetLabel={dataset?.label}
+                datasetColor={slices[hoveredPoint.pointIndex]?.color}
+                position={{
+                  x: hoveredPoint.clientX,
+                  y: hoveredPoint.clientY,
+                }}
                 visible={true}
               />
             )}
-          </div>
-          {legend}
-        </Chart>
+          </>
+        );
+      };
+
+      return (
+        <BaseChart
+          ref={ref}
+          type="donut"
+          datasets={datasets}
+          config={config}
+          renderContent={renderContent}
+          onDataPointClick={onDataPointClick}
+          {...props}
+        />
       );
     }
   )

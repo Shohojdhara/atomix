@@ -1,7 +1,5 @@
-import { forwardRef, memo, useCallback, useEffect, useState } from 'react';
-import Chart from './Chart';
-import ChartRenderer from './ChartRenderer';
-import ChartTooltip from './ChartTooltip';
+import { forwardRef, memo } from 'react';
+import BaseChart from './BaseChart';
 import { ChartProps } from './types';
 
 export interface GaugeChartProps extends Omit<ChartProps, 'type' | 'datasets'> {
@@ -106,441 +104,303 @@ export interface GaugeChartProps extends Omit<ChartProps, 'type' | 'datasets'> {
 
 const GaugeChart = memo(
   forwardRef<HTMLDivElement, GaugeChartProps>(
-    ({ value, min = 0, max = 100, config = {}, gaugeOptions = {}, ...props }, ref) => {
+    (
+      {
+        value,
+        min = 0,
+        max = 100,
+        config = {},
+        gaugeOptions = {},
+        onDataPointClick,
+        ...props
+      },
+      ref
+    ) => {
       const {
-        startAngle = 225,
-        endAngle = 315,
-        thickness = 0.3,
+        startAngle = 180, // Default to left side (180 degrees)
+        endAngle = 0,     // Default to right side (0 degrees)
+        thickness = 0.2,
         showNeedle = true,
-        needleColor = 'var(--atomix-gray-8)',
+        needleColor = '#334155',
         showValue = true,
-        valueFormatter = v => v.toFixed(0),
+        valueFormatter = (val: number) => val.toFixed(1),
         showMinMaxLabels = true,
         showTicks = true,
         majorTicks = 5,
         minorTicks = 4,
-        colorZones = [
-          { from: 0, to: 30, color: 'var(--atomix-success)', label: 'Good' },
-          { from: 30, to: 70, color: 'var(--atomix-warning)', label: 'Warning' },
-          { from: 70, to: 100, color: 'var(--atomix-error)', label: 'Critical' },
-        ],
+        colorZones = [],
         animate = true,
         animationDuration = 1000,
-        animationEasing = 'ease-out',
-        useGradient = true,
-        label,
+        animationEasing = 'easeOutCubic',
+        useGradient = false,
+        label = '',
         labelPosition = 'bottom',
       } = gaugeOptions;
 
-      const [animatedValue, setAnimatedValue] = useState(animate ? min : value);
-      const [hoveredElement, setHoveredElement] = useState<{
-        clientX: number;
-        clientY: number;
-      } | null>(null);
+      const renderContent = ({
+        scales,
+        colors,
+        datasets: renderedDatasets,
+        handlers,
+        hoveredPoint,
+      }: {
+        scales: any;
+        colors: string[];
+        datasets: any[];
+        handlers: any;
+        hoveredPoint: {
+          datasetIndex: number;
+          pointIndex: number;
+          x: number;
+          y: number;
+          clientX: number;
+          clientY: number;
+        } | null;
+      }) => {
+        const width = scales.width;
+        const height = scales.height;
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const radius = Math.min(width, height) / 2 * 0.9;
 
-      useEffect(() => {
-        if (animate) {
-          const startTime = Date.now();
-          const startValue = animatedValue;
-          const targetValue = Math.max(min, Math.min(max, value));
-          const valueChange = targetValue - startValue;
+        // Calculate angles in radians
+        // In SVG, y-axis points down, so we need to adjust our angles accordingly
+        // We negate the angles to account for the SVG coordinate system
+        const startAngleRad = (-startAngle * Math.PI) / 180;
+        const endAngleRad = (-endAngle * Math.PI) / 180;
+        const angleRange = endAngleRad - startAngleRad;
 
-          const animateStep = () => {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / animationDuration, 1);
+        // Clamp value to min/max range
+        const clampedValue = Math.min(Math.max(value, min), max);
+        const normalizedValue = (clampedValue - min) / (max - min);
+        const valueAngle = startAngleRad + normalizedValue * angleRange;
 
-            // Apply easing
-            let easedProgress = progress;
-            if (animationEasing === 'ease-out') {
-              easedProgress = 1 - Math.pow(1 - progress, 3);
-            } else if (animationEasing === 'ease-in') {
-              easedProgress = Math.pow(progress, 3);
-            } else if (animationEasing === 'ease-in-out') {
-              easedProgress =
-                progress < 0.5 ? 4 * Math.pow(progress, 3) : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-            }
-
-            const currentValue = startValue + valueChange * easedProgress;
-            setAnimatedValue(currentValue);
-
-            if (progress < 1) {
-              requestAnimationFrame(animateStep);
-            }
-          };
-
-          requestAnimationFrame(animateStep);
-        } else {
-          setAnimatedValue(value);
-        }
-      }, [value, min, max, animate, animationDuration, animationEasing, animatedValue]);
-
-      const renderContent = useCallback(
-        ({ scales, colors, handlers }: { scales: any; colors: any; handlers: any }) => {
-          const centerX = scales.width / 2;
-          const centerY = scales.height / 2;
-          const radius = Math.min(centerX, centerY) * 0.8;
+        // Create SVG path for the track
+        const createArcPath = (
+          centerX: number,
+          centerY: number,
+          radius: number,
+          startAngle: number,
+          endAngle: number,
+          thickness: number
+        ) => {
           const innerRadius = radius * (1 - thickness);
+          const x1 = centerX + radius * Math.cos(startAngle);
+          const y1 = centerY + radius * Math.sin(startAngle);
+          const x2 = centerX + radius * Math.cos(endAngle);
+          const y2 = centerY + radius * Math.sin(endAngle);
+          const x3 = centerX + innerRadius * Math.cos(endAngle);
+          const y3 = centerY + innerRadius * Math.sin(endAngle);
+          const x4 = centerX + innerRadius * Math.cos(startAngle);
+          const y4 = centerY + innerRadius * Math.sin(startAngle);
 
-          // Convert angles to radians
-          const startRad = (startAngle * Math.PI) / 180;
-          const endRad = (endAngle * Math.PI) / 180;
-          const totalAngle = endRad - startRad;
+          // Determine large arc flag based on angle difference
+          const angleDiff = Math.abs(endAngle - startAngle);
+          const largeArcFlag = angleDiff > Math.PI ? 1 : 0;
+          // Sweep flag (1 for positive angle direction)
+          const sweepFlag = endAngle > startAngle ? 1 : 0;
 
-          // Normalize value
-          const normalizedValue = (animatedValue - min) / (max - min);
-          const valueAngle = startRad + totalAngle * normalizedValue;
+          return `M ${x1} ${y1} 
+                  A ${radius} ${radius} 0 ${largeArcFlag} ${sweepFlag} ${x2} ${y2}
+                  L ${x3} ${y3}
+                  A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} ${1 - sweepFlag} ${x4} ${y4}
+                  Z`;
+        };
 
-          const elements = [];
-
-          // Background arc
-          const backgroundPath = describeArc(
-            centerX,
-            centerY,
-            radius,
-            innerRadius,
-            startAngle,
-            endAngle
+        // Create color zones
+        const zones = [];
+        for (const zone of colorZones) {
+          const zoneStart = startAngleRad + ((zone.from - min) / (max - min)) * angleRange;
+          const zoneEnd = startAngleRad + ((zone.to - min) / (max - min)) * angleRange;
+          
+          zones.push(
+            <path
+              key={`zone-${zone.from}-${zone.to}`}
+              d={createArcPath(centerX, centerY, radius, zoneStart, zoneEnd, thickness)}
+              fill={zone.color}
+            />
           );
-          elements.push(
-            <path key="background" d={backgroundPath} className="c-chart__gauge-background" />
-          );
+        }
 
-          // Color zones
-          colorZones.forEach((zone, index) => {
-            const zoneStartAngle =
-              startAngle + ((zone.from - min) / (max - min)) * (endAngle - startAngle);
-            const zoneEndAngle =
-              startAngle + ((zone.to - min) / (max - min)) * (endAngle - startAngle);
+        // Create ticks
+        const ticks = [];
+        if (showTicks) {
+          // Major ticks
+          for (let i = 0; i <= majorTicks; i++) {
+            const tickValue = min + (max - min) * (i / majorTicks);
+            const tickAngle = startAngleRad + (i / majorTicks) * angleRange;
+            const tickRadius = radius * 0.95;
+            const tickLength = radius * 0.05;
+            const x1 = centerX + tickRadius * Math.cos(tickAngle);
+            const y1 = centerY + tickRadius * Math.sin(tickAngle);
+            const x2 = centerX + (tickRadius - tickLength) * Math.cos(tickAngle);
+            const y2 = centerY + (tickRadius - tickLength) * Math.sin(tickAngle);
 
-            const zonePath = describeArc(
-              centerX,
-              centerY,
-              radius,
-              innerRadius,
-              zoneStartAngle,
-              zoneEndAngle
-            );
-
-            let fillColor = zone.color;
-            if (useGradient) {
-              const gradientId = `gauge-gradient-${index}`;
-              elements.push(
-                <defs key={`gradient-def-${index}`}>
-                  <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor={zone.color} stopOpacity="0.8" />
-                    <stop offset="100%" stopColor={zone.color} stopOpacity="1" />
-                  </linearGradient>
-                </defs>
-              );
-              fillColor = `url(#${gradientId})`;
-            }
-
-            elements.push(
-              <path
-                key={`zone-${index}`}
-                d={zonePath}
-                fill={fillColor}
-                className="c-chart__gauge-zone"
+            ticks.push(
+              <line
+                key={`major-tick-${i}`}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="#64748b"
+                strokeWidth="2"
               />
             );
-          });
 
-          // Ticks
-          if (showTicks) {
-            for (let i = 0; i <= majorTicks; i++) {
-              const tickAngle = startAngle + (i / majorTicks) * (endAngle - startAngle);
-              const tickRad = (tickAngle * Math.PI) / 180;
-
-              // Major tick
-              const majorTickStart = {
-                x: centerX + Math.cos(tickRad) * (radius - 10),
-                y: centerY + Math.sin(tickRad) * (radius - 10),
-              };
-              const majorTickEnd = {
-                x: centerX + Math.cos(tickRad) * radius,
-                y: centerY + Math.sin(tickRad) * radius,
-              };
-
-              elements.push(
-                <line
-                  key={`major-tick-${i}`}
-                  x1={majorTickStart.x}
-                  y1={majorTickStart.y}
-                  x2={majorTickEnd.x}
-                  y2={majorTickEnd.y}
-                  className="c-chart__gauge-tick c-chart__gauge-tick--major"
-                />
-              );
-
-              // Tick label
-              const tickValue = min + (i / majorTicks) * (max - min);
-              const labelRadius = radius + 15;
-              const labelX = centerX + Math.cos(tickRad) * labelRadius;
-              const labelY = centerY + Math.sin(tickRad) * labelRadius;
-
-              elements.push(
+            // Labels for major ticks
+            if (showMinMaxLabels) {
+              const labelX = centerX + (tickRadius - tickLength - 10) * Math.cos(tickAngle);
+              const labelY = centerY + (tickRadius - tickLength - 10) * Math.sin(tickAngle);
+              
+              ticks.push(
                 <text
-                  key={`tick-label-${i}`}
+                  key={`label-${i}`}
                   x={labelX}
                   y={labelY}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  className="c-chart__gauge-tick-label"
+                  fontSize="12"
+                  fill="#64748b"
                 >
-                  {tickValue.toFixed(0)}
+                  {tickValue}
                 </text>
               );
-
-              // Minor ticks
-              if (i < majorTicks) {
-                for (let j = 1; j <= minorTicks; j++) {
-                  const minorTickAngle =
-                    tickAngle + (j / (minorTicks + 1)) * ((endAngle - startAngle) / majorTicks);
-                  const minorTickRad = (minorTickAngle * Math.PI) / 180;
-
-                  const minorTickStart = {
-                    x: centerX + Math.cos(minorTickRad) * (radius - 5),
-                    y: centerY + Math.sin(minorTickRad) * (radius - 5),
-                  };
-                  const minorTickEnd = {
-                    x: centerX + Math.cos(minorTickRad) * radius,
-                    y: centerY + Math.sin(minorTickRad) * radius,
-                  };
-
-                  elements.push(
-                    <line
-                      key={`minor-tick-${i}-${j}`}
-                      x1={minorTickStart.x}
-                      y1={minorTickStart.y}
-                      x2={minorTickEnd.x}
-                      y2={minorTickEnd.y}
-                      className="c-chart__gauge-tick c-chart__gauge-tick--minor"
-                    />
-                  );
-                }
-              }
             }
           }
 
-          // Min/Max labels
-          if (showMinMaxLabels) {
-            const minLabelRadius = radius + 30;
-            const maxLabelRadius = radius + 30;
+          // Minor ticks
+          for (let i = 0; i < majorTicks * minorTicks; i++) {
+            const tickAngle = startAngleRad + (i / (majorTicks * minorTicks)) * angleRange;
+            const tickRadius = radius * 0.95;
+            const tickLength = radius * 0.025;
+            const x1 = centerX + tickRadius * Math.cos(tickAngle);
+            const y1 = centerY + tickRadius * Math.sin(tickAngle);
+            const x2 = centerX + (tickRadius - tickLength) * Math.cos(tickAngle);
+            const y2 = centerY + (tickRadius - tickLength) * Math.sin(tickAngle);
 
-            const minLabelX = centerX + Math.cos(startRad) * minLabelRadius;
-            const minLabelY = centerY + Math.sin(startRad) * minLabelRadius;
-            const maxLabelX = centerX + Math.cos(endRad) * maxLabelRadius;
-            const maxLabelY = centerY + Math.sin(endRad) * maxLabelRadius;
-
-            elements.push(
-              <text
-                key="min-label"
-                x={minLabelX}
-                y={minLabelY}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="c-chart__gauge-min-max-label"
-              >
-                {min}
-              </text>
-            );
-
-            elements.push(
-              <text
-                key="max-label"
-                x={maxLabelX}
-                y={maxLabelY}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="c-chart__gauge-min-max-label"
-              >
-                {max}
-              </text>
+            ticks.push(
+              <line
+                key={`minor-tick-${i}`}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="#94a3b8"
+                strokeWidth="1"
+              />
             );
           }
+        }
 
-          // Needle
-          if (showNeedle) {
-            const needleLength = radius * 0.8;
-            const needleX = centerX + Math.cos(valueAngle) * needleLength;
-            const needleY = centerY + Math.sin(valueAngle) * needleLength;
+        // Create needle
+        const needle = showNeedle ? (
+          <g>
+            <line
+              x1={centerX}
+              y1={centerY}
+              x2={centerX + radius * 0.8 * Math.cos(valueAngle)}
+              y2={centerY + radius * 0.8 * Math.sin(valueAngle)}
+              stroke={needleColor}
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+            <circle
+              cx={centerX}
+              cy={centerY}
+              r="8"
+              fill={needleColor}
+            />
+          </g>
+        ) : null;
 
-            elements.push(
-              <g key="needle" className="c-chart__gauge-needle">
-                <line
-                  x1={centerX}
-                  y1={centerY}
-                  x2={needleX}
-                  y2={needleY}
-                  stroke={needleColor}
-                  className="c-chart__gauge-needle-line"
-                />
-                <circle
-                  cx={centerX}
-                  cy={centerY}
-                  r="6"
-                  fill={needleColor}
-                  className="c-chart__gauge-needle-center"
-                  onMouseEnter={e => {
-                    const rect = e.currentTarget.ownerSVGElement?.getBoundingClientRect();
-                    const clientX = rect ? rect.left + centerX : e.clientX;
-                    const clientY = rect ? rect.top + centerY : e.clientY;
-                    setHoveredElement({ clientX, clientY });
-                  }}
-                  onMouseLeave={() => setHoveredElement(null)}
-                />
-              </g>
-            );
-          }
+        // Value text
+        const valueText = showValue ? (
+          <text
+            x={centerX}
+            y={centerY + 10}
+            textAnchor="middle"
+            fontSize="24"
+            fontWeight="bold"
+            fill="#1e293b"
+          >
+            {valueFormatter(clampedValue)}
+          </text>
+        ) : null;
 
-          // Value text
-          if (showValue) {
-            let valueY = centerY;
-            if (labelPosition === 'top') valueY = centerY - 20;
-            if (labelPosition === 'bottom') valueY = centerY + 20;
+        // Label
+        const labelText = label ? (
+          <text
+            x={centerX}
+            y={labelPosition === 'top' ? centerY - radius * 0.7 : centerY + radius * 0.7}
+            textAnchor="middle"
+            fontSize="16"
+            fill="#64748b"
+          >
+            {label}
+          </text>
+        ) : null;
 
-            elements.push(
-              <text
-                key="value-text"
-                x={centerX}
-                y={valueY}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="c-chart__gauge-value"
-              >
-                {valueFormatter(animatedValue)}
-              </text>
-            );
-          }
-
-          // Custom label
-          if (label) {
-            let labelY = centerY + 40;
-            if (labelPosition === 'top') labelY = centerY - 40;
-            if (labelPosition === 'center') labelY = centerY + 10;
-
-            elements.push(
-              <text
-                key="custom-label"
-                x={centerX}
-                y={labelY}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="c-chart__gauge-label"
-              >
-                {label}
-              </text>
-            );
-          }
-
-          return <g>{elements}</g>;
-        },
-        [
-          animatedValue,
-          min,
-          max,
-          startAngle,
-          endAngle,
-          thickness,
-          showNeedle,
-          needleColor,
-          showValue,
-          valueFormatter,
-          showMinMaxLabels,
-          showTicks,
-          majorTicks,
-          minorTicks,
-          colorZones,
-          useGradient,
-          label,
-          labelPosition,
-        ]
-      );
-
-      // Helper function to create arc path
-      const describeArc = (
-        x: number,
-        y: number,
-        radius: number,
-        innerRadius: number,
-        startAngle: number,
-        endAngle: number
-      ) => {
-        const start = polarToCartesian(x, y, radius, endAngle);
-        const end = polarToCartesian(x, y, radius, startAngle);
-        const innerStart = polarToCartesian(x, y, innerRadius, endAngle);
-        const innerEnd = polarToCartesian(x, y, innerRadius, startAngle);
-
-        const largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1';
-
-        return [
-          'M',
-          start.x,
-          start.y,
-          'A',
-          radius,
-          radius,
-          0,
-          largeArcFlag,
-          0,
-          end.x,
-          end.y,
-          'L',
-          innerEnd.x,
-          innerEnd.y,
-          'A',
-          innerRadius,
-          innerRadius,
-          0,
-          largeArcFlag,
-          1,
-          innerStart.x,
-          innerStart.y,
-          'Z',
-        ].join(' ');
+        return (
+          <g>
+            {/* Background track */}
+            <path
+              d={createArcPath(centerX, centerY, radius, startAngleRad, endAngleRad, thickness)}
+              fill="#e2e8f0"
+            />
+            
+            {/* Color zones */}
+            {zones}
+            
+            {/* Value track */}
+            <path
+              d={createArcPath(
+                centerX,
+                centerY,
+                radius,
+                startAngleRad,
+                valueAngle,
+                thickness
+              )}
+              fill="#3b82f6"
+              style={{
+                transition: animate ? `all ${animationDuration}ms ${animationEasing}` : 'none',
+              }}
+            />
+            
+            {/* Ticks */}
+            {ticks}
+            
+            {/* Needle */}
+            {needle}
+            
+            {/* Value text */}
+            {valueText}
+            
+            {/* Label */}
+            {labelText}
+          </g>
+        );
       };
 
-      const polarToCartesian = (
-        centerX: number,
-        centerY: number,
-        radius: number,
-        angleInDegrees: number
-      ) => {
-        const angleInRadians = (angleInDegrees * Math.PI) / 180.0;
-        return {
-          x: centerX + radius * Math.cos(angleInRadians),
-          y: centerY + radius * Math.sin(angleInRadians),
-        };
-      };
-
-      // Convert gauge value to datasets format for ChartRenderer
+      // Convert value to datasets format for BaseChart
       const datasets = [
         {
           label: 'Gauge Value',
-          data: [{ label: 'Current', value: animatedValue }],
+          data: [{ label: 'Value', value }],
         },
       ];
 
       return (
-        <Chart ref={ref} type="gauge" datasets={datasets} config={config} {...props}>
-          <ChartRenderer datasets={datasets} config={config} renderContent={renderContent} />
-          {hoveredElement && (
-            <ChartTooltip
-              dataPoint={{
-                label: label || 'Current Value',
-                value: animatedValue,
-                metadata: {
-                  min,
-                  max,
-                  percentage: (((animatedValue - min) / (max - min)) * 100).toFixed(1) + '%',
-                },
-              }}
-              datasetLabel="Gauge"
-              position={{ x: hoveredElement.clientX, y: hoveredElement.clientY }}
-              visible={true}
-            />
-          )}
-        </Chart>
+        <BaseChart
+          ref={ref}
+          type="gauge"
+          datasets={datasets}
+          config={config}
+          renderContent={renderContent}
+          onDataPointClick={onDataPointClick}
+          {...props}
+        />
       );
     }
   )
