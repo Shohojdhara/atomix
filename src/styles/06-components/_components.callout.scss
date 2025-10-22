@@ -214,7 +214,7 @@
       align-items: center;
       padding: var(--#{config.$prefix}callout-padding-y) var(--#{config.$prefix}callout-padding-x);
       border: var(--#{config.$prefix}callout-border-witdh) solid
-        var(--#{config.$prefix}callout-border-color);
+        color-mix(in srgb, var(--#{config.$prefix}callout-border-color) 20%, transparent);
       max-width: var(--#{config.$prefix}callout-width);
       border-radius: var(--#{config.$prefix}callout-border-radius);
       width: 100%;
