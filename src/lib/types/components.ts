@@ -5051,7 +5051,7 @@ export interface CodeBlockProps extends BaseComponentProps {
 /**
  * Footer layout options
  */
-export type FooterLayout = 'columns' | 'centered' | 'minimal' | 'stacked';
+export type FooterLayout = 'columns' | 'centered' | 'minimal' | 'stacked' | 'flexible' | 'sidebar' | 'wide';
 
 /**
  * Social media platform types

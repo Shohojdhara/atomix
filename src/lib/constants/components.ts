@@ -1529,6 +1529,9 @@ export const FOOTER = {
     CENTERED: 'c-footer--centered',
     MINIMAL: 'c-footer--minimal',
     STACKED: 'c-footer--stacked',
+    FLEXIBLE: 'c-footer--flexible',
+    SIDEBAR: 'c-footer--sidebar',
+    WIDE: 'c-footer--wide',
     // Size variants
     SM: 'c-footer--sm',
     MD: 'c-footer--md',

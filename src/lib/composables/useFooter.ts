@@ -38,6 +38,7 @@ export function useFooter(options: UseFooterOptions = {}) {
       `c-footer--${variant}`,
       FOOTER.CLASSES[size.toUpperCase() as keyof typeof FOOTER.CLASSES] || FOOTER.CLASSES.MD,
       sticky && FOOTER.CLASSES.STICKY,
+      showNewsletter && 'c-footer--with-newsletter',
       className,
     ];
     return classes.filter(Boolean).join(' ');
