@@ -21,6 +21,14 @@ export interface GridProps extends HTMLAttributes<HTMLDivElement> {
    * No gutters between columns
    */
   noGutters?: boolean;
+  /**
+   * Flex direction
+   */
+  direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse';
+  /**
+   * Wrap behavior
+   */
+  wrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
 }
 
 /**
@@ -37,7 +45,7 @@ export interface GridProps extends HTMLAttributes<HTMLDivElement> {
  * ```
  */
 export const Grid = forwardRef<HTMLDivElement, GridProps>(
-  ({ children, className = '', justifyContent, alignItems, noGutters, ...props }, ref) => {
+  ({ children, className = '', justifyContent, alignItems, noGutters, direction, wrap, ...props }, ref) => {
     const classes = ['o-grid'];
 
     if (justifyContent) {
@@ -50,6 +58,14 @@ export const Grid = forwardRef<HTMLDivElement, GridProps>(
 
     if (noGutters) {
       classes.push('o-grid--no-gutters');
+    }
+
+    if (direction) {
+      classes.push(`u-flex-direction-${direction}`);
+    }
+
+    if (wrap) {
+      classes.push(`u-flex-wrap-${wrap}`);
     }
 
     if (className) {

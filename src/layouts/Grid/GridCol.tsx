@@ -12,27 +12,27 @@ export interface GridColProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Number of columns to span at extra small breakpoint (default)
    */
-  xs?: number | 'auto';
+  xs?: number | 'auto' | boolean;
   /**
    * Number of columns to span at small breakpoint
    */
-  sm?: number | 'auto';
+  sm?: number | 'auto' | boolean;
   /**
    * Number of columns to span at medium breakpoint
    */
-  md?: number | 'auto';
+  md?: number | 'auto' | boolean;
   /**
    * Number of columns to span at large breakpoint
    */
-  lg?: number | 'auto';
+  lg?: number | 'auto' | boolean;
   /**
    * Number of columns to span at extra large breakpoint
    */
-  xl?: number | 'auto';
+  xl?: number | 'auto' | boolean;
   /**
    * Number of columns to span at extra extra large breakpoint
    */
-  xxl?: number | 'auto';
+  xxl?: number | 'auto' | boolean;
   /**
    * Offset at extra small breakpoint
    */
@@ -57,6 +57,22 @@ export interface GridColProps extends HTMLAttributes<HTMLDivElement> {
    * Offset at extra extra large breakpoint
    */
   offsetXxl?: number;
+  /**
+   * Flex grow property
+   */
+  grow?: boolean;
+  /**
+   * Flex shrink property
+   */
+  shrink?: boolean;
+  /**
+   * Flex basis property
+   */
+  basis?: string;
+  /**
+   * Alignment of the column
+   */
+  align?: 'start' | 'end' | 'center' | 'baseline' | 'stretch';
 }
 
 /**
@@ -80,6 +96,10 @@ export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
       offsetLg,
       offsetXl,
       offsetXxl,
+      grow,
+      shrink,
+      basis,
+      align,
       ...props
     },
     ref
@@ -88,56 +108,44 @@ export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
     const isDefaultAuto = !xs && !sm && !md && !lg && !xl && !xxl;
     const classes = isDefaultAuto ? ['o-grid__col', 'o-grid__col--auto'] : ['o-grid__col'];
 
+    // Helper function to process responsive props
+    const processResponsiveProp = (value: number | 'auto' | boolean | undefined, breakpoint: string) => {
+      if (value === undefined) return;
+      
+      // Handle boolean values
+      if (value === true) {
+        classes.push(breakpoint === 'xs' ? 'o-grid__col--auto' : `o-grid__col--${breakpoint}-auto`);
+        return;
+      }
+      
+      if (value === false) {
+        // False means don't apply any class for this breakpoint
+        return;
+      }
+      
+      // Handle string/number values
+      if (breakpoint === 'xs') {
+        if (value === 'auto') {
+          classes.push('o-grid__col--auto');
+        } else {
+          classes.push(`o-grid__col--${value}`);
+        }
+      } else {
+        if (value === 'auto') {
+          classes.push(`o-grid__col--${breakpoint}-auto`);
+        } else {
+          classes.push(`o-grid__col--${breakpoint}-${value}`);
+        }
+      }
+    };
+
     // Add column size classes based on the exact SCSS pattern
-    // For xs (default breakpoint), the infix is empty
-    if (xs) {
-      if (xs === 'auto') {
-        classes.push('o-grid__col--auto');
-      } else {
-        classes.push(`o-grid__col--${xs}`);
-      }
-    }
-
-    // For other breakpoints, the infix includes the dash
-    if (sm) {
-      if (sm === 'auto') {
-        classes.push('o-grid__col--sm-auto');
-      } else {
-        classes.push(`o-grid__col--sm-${sm}`);
-      }
-    }
-
-    if (md) {
-      if (md === 'auto') {
-        classes.push('o-grid__col--md-auto');
-      } else {
-        classes.push(`o-grid__col--md-${md}`);
-      }
-    }
-
-    if (lg) {
-      if (lg === 'auto') {
-        classes.push('o-grid__col--lg-auto');
-      } else {
-        classes.push(`o-grid__col--lg-${lg}`);
-      }
-    }
-
-    if (xl) {
-      if (xl === 'auto') {
-        classes.push('o-grid__col--xl-auto');
-      } else {
-        classes.push(`o-grid__col--xl-${xl}`);
-      }
-    }
-
-    if (xxl) {
-      if (xxl === 'auto') {
-        classes.push('o-grid__col--xxl-auto');
-      } else {
-        classes.push(`o-grid__col--xxl-${xxl}`);
-      }
-    }
+    processResponsiveProp(xs, 'xs');
+    processResponsiveProp(sm, 'sm');
+    processResponsiveProp(md, 'md');
+    processResponsiveProp(lg, 'lg');
+    processResponsiveProp(xl, 'xl');
+    processResponsiveProp(xxl, 'xxl');
 
     // Add offset classes based on the exact SCSS pattern
     if (offsetXs) classes.push(`o-grid__offset--${offsetXs}`);
@@ -146,6 +154,23 @@ export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
     if (offsetLg) classes.push(`o-grid__offset--lg-${offsetLg}`);
     if (offsetXl) classes.push(`o-grid__offset--xl-${offsetXl}`);
     if (offsetXxl) classes.push(`o-grid__offset--xxl-${offsetXxl}`);
+
+    // Add flex properties
+    if (grow !== undefined) {
+      classes.push(grow ? 'u-flex-grow-1' : 'u-flex-grow-0');
+    }
+    
+    if (shrink !== undefined) {
+      classes.push(shrink ? 'u-flex-shrink-1' : 'u-flex-shrink-0');
+    }
+    
+    if (basis) {
+      classes.push(`u-flex-basis-${basis}`);
+    }
+    
+    if (align) {
+      classes.push(`u-align-self-${align}`);
+    }
 
     if (className) classes.push(className);
 
