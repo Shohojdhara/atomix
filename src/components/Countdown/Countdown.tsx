@@ -11,6 +11,8 @@ export interface CountdownProps {
   focused?: boolean;
   /** Custom className */
   className?: string;
+  /** Custom style */
+  style?: React.CSSProperties;
   /** Optional callback when countdown reaches zero */
   onComplete?: () => void;
 }
@@ -32,6 +34,7 @@ export const Countdown: React.FC<CountdownProps> = forwardRef<HTMLDivElement, Co
       separator = ':',
       focused = false,
       className = '',
+      style,
       onComplete,
     },
     ref
@@ -68,6 +71,7 @@ export const Countdown: React.FC<CountdownProps> = forwardRef<HTMLDivElement, Co
       <div
         ref={ref}
         className={`c-countdown${focused ? ' c-countdown--focused' : ''} ${className}`.trim()}
+        style={style}
       >
         {timeParts.map((part, idx) => (
           <React.Fragment key={part.label}>

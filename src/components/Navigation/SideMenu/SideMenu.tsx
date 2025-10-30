@@ -30,6 +30,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       onToggle,
       collapsible = true,
       className = '',
+      style,
       disabled = false,
       toggleIcon,
       id,
@@ -105,7 +106,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
       return (
         <AtomixGlass {...glassProps}>
-          <div ref={ref} className={sideMenuClass + ' c-side-menu--glass'} id={id}>
+          <div ref={ref} className={sideMenuClass + ' c-side-menu--glass'} id={id} style={style}>
             {sideMenuContent}
           </div>
         </AtomixGlass>
@@ -113,7 +114,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
     }
 
     return (
-      <div ref={ref} className={sideMenuClass} id={id}>
+      <div ref={ref} className={sideMenuClass} id={id} style={style}>
         {sideMenuContent}
       </div>
     );

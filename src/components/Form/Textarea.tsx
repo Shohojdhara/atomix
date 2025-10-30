@@ -13,6 +13,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
   onFocus,
   placeholder,
   className = '',
+  style,
   disabled = false,
   required = false,
   readOnly = false,
@@ -73,7 +74,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedBy}
       aria-invalid={invalid}
-      style={glass ? glassStyles : undefined}
+      style={glass ? { ...glassStyles, ...style } : style}
     />
   );
 

@@ -61,6 +61,7 @@ export const EdgePanel: React.FC<EdgePanelProps> = ({
   closeOnBackdropClick = true,
   closeOnEscape = true,
   className = '',
+  style,
   glass,
 }) => {
   const {
@@ -118,7 +119,7 @@ export const EdgePanel: React.FC<EdgePanelProps> = ({
   );
 
   return (
-    <div className={panelClass} data-position={position} data-mode={mode}>
+    <div className={panelClass} data-position={position} data-mode={mode} style={style}>
       {backdrop && (
         <div ref={backdropRef} className="c-edge-panel__backdrop" onClick={handleBackdropClick} />
       )}

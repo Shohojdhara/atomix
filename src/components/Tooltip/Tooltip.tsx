@@ -60,6 +60,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   position = TOOLTIP.DEFAULTS.POSITION,
   trigger = TOOLTIP.DEFAULTS.TRIGGER,
   className = '',
+  style,
   delay = TOOLTIP.DEFAULTS.DELAY,
   offset = TOOLTIP.DEFAULTS.OFFSET,
   glass,
@@ -129,7 +130,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   }
 
   return (
-    <div className="u-position-relative u-d-inline-block">
+    <div className="u-position-relative u-d-inline-block" style={style}>
       <div
         className={`${TOOLTIP.SELECTORS.TRIGGER.substring(1)}${className ? ` ${className}` : ''}`}
         {...triggerProps}

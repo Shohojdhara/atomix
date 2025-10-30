@@ -45,6 +45,7 @@ export const Toggle: React.FC<ToggleProps> = ({
   onToggleOff,
   disabled = false,
   className = '',
+  style,
   glass,
 }) => {
   const [isOn, setIsOn] = useState(initialOn);
@@ -76,6 +77,7 @@ export const Toggle: React.FC<ToggleProps> = ({
   const toggleContent = (
     <div
       className={`c-toggle ${isOn ? TOGGLE.CLASSES.IS_ON : ''} ${disabled ? 'is-disabled' : ''} ${className}`}
+      style={style}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       role="switch"

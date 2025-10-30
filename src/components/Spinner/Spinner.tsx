@@ -9,6 +9,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
   variant = 'primary',
   fullscreen = false,
   className = '',
+  style,
   glass,
 }) => {
   const { generateSpinnerClass } = useSpinner({
@@ -25,7 +26,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
   });
 
   const spinnerContent = (
-    <div className={spinnerClass} role="status">
+    <div className={spinnerClass} style={style} role="status">
       <span className={SPINNER.VISUALLY_HIDDEN}>Loading...</span>
     </div>
   );

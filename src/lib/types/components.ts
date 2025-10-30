@@ -111,6 +111,11 @@ export interface BaseComponentProps {
    * Component children
    */
   children?: ReactNode;
+
+  /**
+   * Inline style for the component root element
+   */
+  style?: React.CSSProperties;
 }
 
 /**
@@ -227,6 +232,11 @@ export interface ButtonProps extends BaseComponentProps {
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;
+
+  /**
+   * Custom style for the button
+   */
+  style?: React.CSSProperties;
 }
 
 /**
@@ -258,6 +268,11 @@ export interface BadgeProps extends BaseComponentProps {
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;
+
+  /**
+   * Custom style for the badge
+   */
+  style?: React.CSSProperties;
 }
 
 /**
@@ -309,6 +324,11 @@ export interface CalloutProps extends BaseComponentProps {
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;
+
+  /**
+   * Custom style for the callout
+   */
+  style?: React.CSSProperties;
 }
 
 /**
@@ -1852,6 +1872,11 @@ export interface AvatarProps extends BaseComponentProps {
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;
+
+  /**
+   * Custom style for the avatar
+   */
+  style?: React.CSSProperties;
 }
 
 /**
@@ -2816,7 +2841,7 @@ export interface CardProps extends BaseComponentProps {
   /**
    * Card styles
    */
-  styles?: React.CSSProperties;
+  style?: React.CSSProperties;
 
   /**
    * Card className

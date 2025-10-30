@@ -15,6 +15,7 @@ export const Todo: React.FC<TodoProps> = ({
   placeholder = 'Add a new todo',
   showCompleted = true,
   className = '',
+  style,
   disabled = false,
 }) => {
   const { inputText, setInputText, addTodo, generateTodoClasses, generateItemClasses } = useTodo({
@@ -89,7 +90,7 @@ export const Todo: React.FC<TodoProps> = ({
   const todoClass = generateTodoClasses({ size, className, disabled });
 
   return (
-    <div className={todoClass}>
+    <div className={todoClass} style={style}>
       {title && <h2 className="c-todo__title">{title}</h2>}
 
       <form className="c-todo__form" onSubmit={handleFormSubmit}>

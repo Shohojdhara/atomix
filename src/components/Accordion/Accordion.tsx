@@ -48,6 +48,11 @@ export interface AccordionProps extends BaseComponentProps {
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;
+
+  /**
+   * Custom style for the accordion
+   */
+  style?: React.CSSProperties;
 }
 
 export const Accordion: React.FC<AccordionProps> = ({
@@ -60,6 +65,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   iconPosition = 'right',
   icon,
   className = '',
+  style,
   glass,
 }) => {
   // Generate unique IDs for accessibility
@@ -104,7 +110,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   );
 
   const accordionContent = (
-    <div className={generateClassNames(className) + (glass ? ' c-accordion--glass' : '')}>
+    <div className={generateClassNames(className) + (glass ? ' c-accordion--glass' : '')} style={style}>
       <button
         id={buttonId}
         className={generateHeaderClassNames()}

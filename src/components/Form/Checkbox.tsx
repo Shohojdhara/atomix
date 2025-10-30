@@ -11,6 +11,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   checked = false,
   onChange,
   className = '',
+  style,
   disabled = false,
   required = false,
   id,
@@ -39,7 +40,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   });
 
   const checkboxContent = (
-    <div className={checkboxClass}>
+    <div className={checkboxClass} style={style}>
       <input
         ref={checkboxRef}
         type="checkbox"

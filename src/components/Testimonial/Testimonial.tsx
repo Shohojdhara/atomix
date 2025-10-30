@@ -48,6 +48,11 @@ export interface TestimonialProps {
    * Additional CSS class
    */
   className?: string;
+
+  /**
+   * Custom style for the testimonial
+   */
+  style?: React.CSSProperties;
 }
 
 /**
@@ -59,6 +64,7 @@ export const Testimonial: React.FC<TestimonialProps> = ({
   size = '',
   skeleton = false,
   className = '',
+  style,
 }) => {
   const testimonialRef = useRef<HTMLDivElement>(null);
   const testimonialInstance = useRef<any>(null);
@@ -88,7 +94,7 @@ export const Testimonial: React.FC<TestimonialProps> = ({
   // Render skeleton version
   if (skeleton) {
     return (
-      <div className={testimonialClasses} ref={testimonialRef}>
+      <div className={testimonialClasses} ref={testimonialRef} style={style}>
         <blockquote className="c-testimonial__quote">
           <span className="c-skeleton"></span>
           <span className="c-skeleton"></span>
@@ -112,7 +118,7 @@ export const Testimonial: React.FC<TestimonialProps> = ({
 
   // Render normal version
   return (
-    <div className={testimonialClasses} ref={testimonialRef}>
+    <div className={testimonialClasses} ref={testimonialRef} style={style}>
       <blockquote className="c-testimonial__quote">{quote}</blockquote>
       {author && (
         <div className="c-testimonial__author">

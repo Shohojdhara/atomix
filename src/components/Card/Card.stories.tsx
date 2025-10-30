@@ -122,7 +122,7 @@ export const WithGlassEffect: Story = {
         placeItems: 'center',
       }}
     >
-      <Card {...args} styles={{ ['--atomix-card-width' as string]: '300px' }} />
+      <Card {...args} style={{ ['--atomix-card-width' as string]: '300px' }} />
     </div>
   ),
   args: {

@@ -139,6 +139,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   minWidth = DROPDOWN.DEFAULTS.MIN_WIDTH,
   variant,
   className = '',
+  style,
   glass,
   ...props
 }) => {
@@ -321,6 +322,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
     <div
       ref={dropdownRef}
       className={dropdownClasses}
+      style={style}
       onMouseEnter={trigger === 'hover' ? handleHoverOpen : undefined}
       {...props}
     >

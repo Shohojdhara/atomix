@@ -30,6 +30,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
       expanded,
       onToggle,
       className = '',
+      style,
       disabled = false,
       backdrop = false,
       closeOnOutsideClick = true,
@@ -166,6 +167,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
             className={navbarClass + ' c-navbar--glass'}
             aria-label={ariaLabel}
             id={id}
+            style={style}
           >
             {navbarContent}
           </nav>
@@ -174,7 +176,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
     }
 
     return (
-      <nav ref={ref} className={navbarClass} aria-label={ariaLabel} id={id}>
+      <nav ref={ref} className={navbarClass} aria-label={ariaLabel} id={id} style={style}>
         {navbarContent}
       </nav>
     );

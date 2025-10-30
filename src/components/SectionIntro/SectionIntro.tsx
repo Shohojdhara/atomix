@@ -67,6 +67,11 @@ export interface SectionIntroProps {
    * Additional CSS class
    */
   className?: string;
+
+  /**
+   * Custom style for the section intro
+   */
+  style?: React.CSSProperties;
 }
 
 /**
@@ -85,6 +90,7 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
   size = 'md',
   skeleton = false,
   className = '',
+  style,
 }) => {
   const sectionIntroRef = useRef<HTMLDivElement>(null);
   const sectionIntroInstance = useRef<any>(null);
@@ -116,7 +122,7 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
   // Render skeleton version
   if (skeleton) {
     return (
-      <div className={sectionIntroClasses} ref={sectionIntroRef}>
+      <div className={sectionIntroClasses} ref={sectionIntroRef} style={style}>
         <div className="c-sectionintro__container">
           {label && (
             <div className="c-sectionintro__label">
@@ -162,7 +168,7 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
 
   // Render normal version
   return (
-    <div className={sectionIntroClasses} ref={sectionIntroRef}>
+    <div className={sectionIntroClasses} ref={sectionIntroRef} style={style}>
       {renderBackground()}
       {label && <div className="c-sectionintro__label">{label}</div>}
       <h2 className="c-sectionintro__title">{title}</h2>

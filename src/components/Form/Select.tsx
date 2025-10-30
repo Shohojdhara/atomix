@@ -15,6 +15,7 @@ export const Select: React.FC<SelectProps> = ({
   onFocus,
   placeholder = 'Select an option',
   className = '',
+  style,
   disabled = false,
   required = false,
   id,
@@ -118,6 +119,7 @@ export const Select: React.FC<SelectProps> = ({
     <div
       className={`${selectClass} ${isOpen ? SELECT.CLASSES.IS_OPEN : ''}`}
       ref={dropdownRef}
+      style={style}
       aria-expanded={isOpen}
     >
       {/* Native select for accessibility and form submission */}

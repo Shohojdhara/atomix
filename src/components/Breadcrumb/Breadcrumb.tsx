@@ -26,6 +26,16 @@ export interface BreadcrumbItem {
    * Optional click handler
    */
   onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+
+  /**
+   * Custom style for the breadcrumb item
+   */
+  style?: React.CSSProperties;
+
+  /**
+   * Additional className
+   */
+  className?: string;
 }
 
 export interface BreadcrumbProps {
@@ -53,6 +63,11 @@ export interface BreadcrumbProps {
    * Optional custom link component
    */
   LinkComponent?: React.ElementType;
+
+  /**
+   * Custom style for the breadcrumb
+   */
+  style?: React.CSSProperties;
 }
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   items,
@@ -60,11 +75,12 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
   className = '',
   ariaLabel = 'Breadcrumb',
   LinkComponent,
+  style,
 }) => {
   const breadcrumbClasses = [BREADCRUMB.CLASSES.BASE, className].filter(Boolean).join(' ');
 
   return (
-    <nav aria-label={ariaLabel}>
+    <nav aria-label={ariaLabel} style={style}>
       <ol className={breadcrumbClasses}>
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
@@ -86,15 +102,16 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
             href: item.href,
             className: BREADCRUMB.CLASSES.LINK,
             onClick: item.onClick,
+            style: item.style,
           };
 
           return (
-            <li key={index} className={itemClasses}>
+            <li key={index} className={itemClasses} style={item.style}>
               {item.href && !item.active ? (
                 LinkComponent ? (
-                  <LinkComponent {...linkProps}>{linkContent}</LinkComponent>
+                  <LinkComponent {...linkProps as React.ComponentProps<React.ElementType>}>{linkContent}</LinkComponent>
                 ) : (
-                  <a {...linkProps}>{linkContent}</a>
+                  <a {...linkProps as React.ComponentProps<'a'>}>{linkContent}</a>
                 )
               ) : (
                 <span className={BREADCRUMB.CLASSES.LINK}>{linkContent}</span>

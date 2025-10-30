@@ -18,6 +18,7 @@ export const Messages: React.FC<MessagesProps> = ({
   onSendMessage,
   placeholder = 'Type a message',
   className = '',
+  style,
   bodyHeight,
   disabled = false,
   id,
@@ -175,7 +176,7 @@ export const Messages: React.FC<MessagesProps> = ({
     return (
       <div
         className={messagesClasses}
-        style={{ '--atomix-messages-width': width } as React.CSSProperties}
+        style={{ '--atomix-messages-width': width, ...style } as React.CSSProperties}
         id={messagesId}
         aria-label="Chat messages"
         role="log"
@@ -196,7 +197,7 @@ export const Messages: React.FC<MessagesProps> = ({
   return (
     <div
       className={messagesClasses}
-      style={{ '--atomix-messages-width': width } as React.CSSProperties}
+      style={{ '--atomix-messages-width': width, ...style } as React.CSSProperties}
       id={messagesId}
       aria-label="Chat messages"
       role="log"

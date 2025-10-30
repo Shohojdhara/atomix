@@ -11,6 +11,7 @@ export const FormGroup: React.FC<FormGroupProps> = ({
   helperText,
   htmlFor,
   className = '',
+  style,
   disabled = false,
   required = false,
   invalid = false,
@@ -33,7 +34,7 @@ export const FormGroup: React.FC<FormGroupProps> = ({
   });
 
   return (
-    <div className={formGroupClass}>
+    <div className={formGroupClass} style={style}>
       {label && (
         <label className="c-form-group__label" htmlFor={htmlFor}>
           {label}

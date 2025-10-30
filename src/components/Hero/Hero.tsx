@@ -19,6 +19,7 @@ export const Hero: React.FC<HeroProps> = ({
   contentColSize = 5,
   contentWidth,
   className = '',
+  style,
   parallax = false,
   parallaxIntensity = 0.5,
   videoBackground,
@@ -54,11 +55,10 @@ export const Hero: React.FC<HeroProps> = ({
   });
 
   // Create custom style for hero element with content width if provided
-  const heroStyle: React.CSSProperties | undefined = contentWidth
-    ? ({
-        '--atomix-hero-content-width': contentWidth,
-      } as React.CSSProperties)
-    : undefined;
+  const heroStyle: React.CSSProperties | undefined = {
+    ...(contentWidth ? { '--atomix-hero-content-width': contentWidth } : {}),
+    ...style,
+  };
 
   const renderVideoBackground = () => {
     if (!videoBackground) return null;

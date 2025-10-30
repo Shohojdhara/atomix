@@ -55,6 +55,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
       glass = false,
       glassOpacity = 1,
       glassContent,
+      style,
       ...props
     },
     ref
@@ -380,6 +381,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
           width,
           height,
           aspectRatio: aspectRatio ? aspectRatio.replace(':', '/') : undefined,
+          ...style,
         }}
         tabIndex={0}
         onClick={handleContainerClick}

@@ -102,6 +102,7 @@ export const Upload: React.FC<UploadProps> = ({
   onFileUploadComplete,
   onFileUploadError,
   className = '',
+  style,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -275,6 +276,7 @@ export const Upload: React.FC<UploadProps> = ({
   return (
     <div
       className={`c-upload ${isDragging ? UPLOAD.CLASSES.DRAGGING : ''} ${disabled ? UPLOAD.CLASSES.DISABLED : ''} ${className}`}
+      style={style}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}

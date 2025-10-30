@@ -6,7 +6,7 @@ import { Icon } from '../../Icon/Icon';
 
 export const NavDropdown: React.FC<NavDropdownProps> = forwardRef<HTMLLIElement, NavDropdownProps>(
   (
-    { title, children, alignment = 'start', megaMenu = false, className = '', disabled = false },
+    { title, children, alignment = 'start', megaMenu = false, className = '', style, disabled = false },
     ref
   ) => {
     const { generateDropdownMenuClass, getIconName } = useNavDropdown({
@@ -90,6 +90,7 @@ export const NavDropdown: React.FC<NavDropdownProps> = forwardRef<HTMLLIElement,
         href="#"
         onClick={handleToggle}
         aria-expanded={isActive}
+        style={style}
       >
         {titleWithIcon}
         {menuContent}

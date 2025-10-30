@@ -28,6 +28,7 @@ export const Popover: React.FC<PopoverProps> = ({
   position = 'top',
   trigger = 'click',
   className = '',
+  style,
   delay = 0,
   offset = 12,
   defaultOpen = false,
@@ -72,6 +73,7 @@ export const Popover: React.FC<PopoverProps> = ({
           <div
             ref={popoverRef}
             className={`c-popover c-popover--${currentPosition} ${isOpen ? POPOVER.CLASSES.IS_OPEN : ''} ${glass ? 'c-popover--glass' : ''} ${className}`}
+            style={style}
             id={popoverId}
             role="tooltip"
             aria-hidden={!isOpen}

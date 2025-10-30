@@ -32,6 +32,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
       color,
       onChange,
       className = '',
+      style,
       label,
       id,
       useVanillaJS = false,
@@ -269,6 +270,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
         className={ratingClasses}
         ref={useForkRef(internalRef, ref)}
         id={id}
+        style={style}
         data-readonly={readOnly ? 'true' : 'false'}
         onMouseLeave={handleMouseLeave}
         role={readOnly ? 'img' : 'radiogroup'}

@@ -23,6 +23,7 @@ export const DataTable: React.FC<DataTableProps> = ({
   data,
   columns,
   className,
+  style,
   sortable = false,
   filterable = false,
   paginated = false,
@@ -193,7 +194,7 @@ export const DataTable: React.FC<DataTableProps> = ({
   };
 
   return (
-    <div className={DATA_TABLE_CLASSES.container} {...props}>
+    <div className={DATA_TABLE_CLASSES.container} style={style} {...props}>
       {renderToolbar()}
       <div className={DATA_TABLE_CLASSES.tableWrapper}>
         <table ref={tableRef} className={tableClass}>

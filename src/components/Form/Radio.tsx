@@ -11,6 +11,7 @@ export const Radio: React.FC<RadioProps> = ({
   checked = false,
   onChange,
   className = '',
+  style,
   disabled = false,
   required = false,
   id,
@@ -36,7 +37,7 @@ export const Radio: React.FC<RadioProps> = ({
   });
 
   const radioContent = (
-    <div className={radioClass}>
+    <div className={radioClass} style={style}>
       <input
         type="radio"
         className="c-radio__input"

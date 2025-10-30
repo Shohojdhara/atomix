@@ -12,6 +12,7 @@ export const Badge: React.FC<BadgeProps> = ({
   icon,
   className = '',
   glass,
+  style,
 }) => {
   const { generateBadgeClass } = useBadge({
     variant,
@@ -29,7 +30,7 @@ export const Badge: React.FC<BadgeProps> = ({
   });
 
   const badgeElement = (
-    <span className={badgeClass} aria-disabled={disabled} ref={ref}>
+    <span className={badgeClass} aria-disabled={disabled} ref={ref} style={style}>
       {icon && <span className={BADGE.ICON_CLASS}>{icon}</span>}
       <span>{label}</span>
     </span>

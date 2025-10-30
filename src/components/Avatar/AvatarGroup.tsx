@@ -8,6 +8,7 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
   max,
   stacked = false,
   className = '',
+  style,
   moreText,
 }) => {
   // Generate CSS classes
@@ -47,7 +48,7 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
     .join(' ');
 
   return (
-    <div className={avatarGroupClasses}>
+    <div className={avatarGroupClasses} style={style}>
       {visibleAvatars.map((child, index) => {
         if (isValidElement<AvatarProps>(child)) {
           // Clone the Avatar element to ensure proper styling

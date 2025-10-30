@@ -6,6 +6,7 @@ import { ElevationCardProps } from '../../lib/types/components';
 export const ElevationCard: React.FC<ElevationCardProps> = ({
   elevationClass = 'is-elevated',
   className = '',
+  style,
   children,
   onClick,
   ...props
@@ -24,6 +25,7 @@ export const ElevationCard: React.FC<ElevationCardProps> = ({
     <div
       className={`${className} ${cardProps.className}`}
       ref={cardProps.ref}
+      style={style}
       tabIndex={cardProps.tabIndex}
       role={cardProps.role}
       onMouseEnter={cardProps.onMouseEnter}

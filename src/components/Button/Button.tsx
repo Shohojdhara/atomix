@@ -25,6 +25,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps & ButtonAsProp>(
       className = '',
       as: Component = 'button',
       glass,
+      style,
       ...props
     },
     ref
@@ -57,7 +58,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps & ButtonAsProp>(
       onClick: handleClick(onClick),
       disabled,
       'aria-disabled': disabled,
-      style: glass ? glassStyles : undefined,
+      style: glass ? { ...glassStyles, ...style } : style,
       ...props,
     };
 

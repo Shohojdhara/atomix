@@ -10,6 +10,7 @@ export const Form: React.FC<FormProps> = ({
   onSubmit,
   onReset,
   className = '',
+  style,
   disabled = false,
   id,
   method = 'post',
@@ -27,6 +28,7 @@ export const Form: React.FC<FormProps> = ({
     <form
       id={id}
       className={formClass}
+      style={style}
       onSubmit={handleSubmit(onSubmit)}
       onReset={handleReset(onReset)}
       method={method}

@@ -47,6 +47,11 @@ export interface TabProps {
   className?: string;
 
   /**
+   * Custom style for the tab component
+   */
+  style?: React.CSSProperties;
+
+  /**
    * Glass morphism effect for the tab component
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
@@ -61,6 +66,7 @@ export const Tab: React.FC<TabProps> = ({
   activeIndex = TAB.DEFAULTS.ACTIVE_INDEX,
   onTabChange,
   className = '',
+  style,
   glass,
 }) => {
   const [currentTab, setCurrentTab] = useState(activeIndex);
@@ -74,7 +80,7 @@ export const Tab: React.FC<TabProps> = ({
   };
 
   const tabContent = (
-    <div className={`c-tabs js-atomix-tab ${className}`}>
+    <div className={`c-tabs js-atomix-tab ${className}`} style={style}>
       <ul className="c-tabs__nav">
         {items.map((item, index) => (
           <li className="c-tabs__nav-item" key={`tab-nav-${index}`}>

@@ -14,6 +14,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({
   onFocus,
   placeholder,
   className = '',
+  style,
   disabled = false,
   required = false,
   readOnly = false,
@@ -82,7 +83,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(({
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedBy}
       aria-invalid={invalid}
-      style={glass ? glassStyles : undefined}
+      style={glass ? { ...glassStyles, ...style } : style}
     />
   );
 

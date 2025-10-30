@@ -57,6 +57,7 @@ export const ProductReview: React.FC<ProductReviewProps> = ({
   ratingColor = 'warning' as ThemeColor,
   onSubmit,
   className = '',
+  style,
 }) => {
   const [rating, setRating] = useState<number>(initialRating);
   const [comment, setComment] = useState<string>('');
@@ -90,7 +91,7 @@ export const ProductReview: React.FC<ProductReviewProps> = ({
 
   if (submitted) {
     return (
-      <div className={containerClasses} ref={reviewRef}>
+      <div className={containerClasses} ref={reviewRef} style={style}>
         <div className="c-product-review__success">
           <h3>Thank you for your review!</h3>
           <p>Your feedback helps us improve our products.</p>
@@ -109,7 +110,7 @@ export const ProductReview: React.FC<ProductReviewProps> = ({
   }
 
   return (
-    <div className={containerClasses} ref={reviewRef}>
+    <div className={containerClasses} ref={reviewRef} style={style}>
       <div className="c-product-review__header">
         <h3 className="c-product-review__title">Review {productName}</h3>
         {productImage && (

@@ -88,6 +88,7 @@ export const Modal: React.FC<ModalProps> = ({
   backdrop = true,
   keyboard = true,
   className = '',
+  style,
   closeButton = true,
   footer,
   glass,
@@ -184,7 +185,7 @@ export const Modal: React.FC<ModalProps> = ({
     <div
       ref={modalRef}
       className={modalClasses}
-      style={{ display: isOpenState ? 'block' : 'none' }}
+      style={{ display: isOpenState ? 'block' : 'none', ...style }}
       role="dialog"
       aria-modal="true"
       aria-hidden={!isOpenState}

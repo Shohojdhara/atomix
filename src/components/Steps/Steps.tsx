@@ -62,6 +62,7 @@ export const Steps: React.FC<StepsProps> = ({
   vertical = false,
   onStepChange,
   className = '',
+  style,
   glass,
 }) => {
   const [currentStep, setCurrentStep] = useState(activeIndex);
@@ -98,6 +99,7 @@ export const Steps: React.FC<StepsProps> = ({
   const stepsContent = (
     <div
       className={`c-steps ${vertical ? STEPS.CLASSES.VERTICAL : ''} ${className}`}
+      style={style}
       role="navigation"
       aria-label="Steps"
     >

@@ -3,9 +3,9 @@ import { MenuProps, MenuItemProps } from '../../../lib/types/components';
 import { Icon } from '../../Icon/Icon';
 
 export const Menu: React.FC<MenuProps> = forwardRef<HTMLDivElement, MenuProps>(
-  ({ children, className = '', disabled = false }, ref) => {
+  ({ children, className = '', style, disabled = false }, ref) => {
     return (
-      <div ref={ref} className={`c-menu ${className}`}>
+      <div ref={ref} className={`c-menu ${className}`} style={style}>
         <ul className="c-menu__list" role="menu">
           {React.Children.map(children, child => {
             if (React.isValidElement(child)) {

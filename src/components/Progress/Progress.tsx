@@ -11,6 +11,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
       variant = 'primary',
       size = 'md',
       className = '',
+      style,
       disabled = false,
       ariaLabel = PROGRESS.DEFAULTS.ARIA_LABEL,
       glass,
@@ -28,7 +29,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
       <div
         ref={ref}
         className={progressClasses + (glass ? ' c-progress--glass' : '')}
-        style={progressStyle}
+        style={{ ...progressStyle, ...style }}
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={100}

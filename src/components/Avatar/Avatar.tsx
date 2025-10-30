@@ -13,6 +13,8 @@ export const Avatar: React.FC<AvatarProps> = ({
   className = '',
   disabled = false,
   onClick,
+  style,
+  glass,
 }) => {
   const [imageError, setImageError] = useState(false);
 
@@ -45,6 +47,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       role={onClick ? 'button' : undefined}
       tabIndex={onClick && !disabled ? 0 : undefined}
       aria-disabled={disabled || undefined}
+      style={style}
     >
       {src && !imageError ? (
         <img src={src} alt={alt} className="c-avatar__image" onError={handleImageError} />

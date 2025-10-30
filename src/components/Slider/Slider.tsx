@@ -20,13 +20,14 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
     navigation,
     pagination,
     className,
+    style,
     onSlideChange,
     ...rest
   } = props;
 
   if (!slides || slides.length === 0) {
     return (
-      <div className="c-slider c-slider--empty" style={{ height, width }}>
+      <div className="c-slider c-slider--empty" style={{ height, width, ...style }}>
         <div className="c-slider__empty-message">No slides available</div>
       </div>
     );
@@ -92,7 +93,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
         overflow: 'hidden',
         position: 'relative',
         cursor: grabCursor && !touching ? 'grab' : touching ? 'grabbing' : 'default',
-        ...(rest as any).style,
+        ...style,
       }}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}

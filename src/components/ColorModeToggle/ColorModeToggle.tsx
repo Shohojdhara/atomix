@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 export interface ColorModeToggleProps {
   className?: string;
+  style?: React.CSSProperties;
 }
 
-export const ColorModeToggle: React.FC<ColorModeToggleProps> = ({ className = '' }) => {
+export const ColorModeToggle: React.FC<ColorModeToggleProps> = ({ className = '', style }) => {
   const [colorMode, setColorMode] = useState<'light' | 'dark'>('light');
 
   // Initialize color mode from localStorage or system preference
@@ -66,6 +67,7 @@ export const ColorModeToggle: React.FC<ColorModeToggleProps> = ({ className = ''
       onClick={toggleColorMode}
       aria-label={`Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`}
       title={`Switch to ${colorMode === 'light' ? 'dark' : 'light'} mode`}
+      style={style}
     >
       {colorMode === 'light' ? (
         <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">

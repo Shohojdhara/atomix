@@ -7,6 +7,7 @@ import { List } from './List';
 export const ListGroup: React.FC<ListGroupProps> = ({
   children,
   className = '',
+  style,
   variant = 'default',
 }) => {
   // Generate CSS classes
@@ -18,7 +19,7 @@ export const ListGroup: React.FC<ListGroupProps> = ({
   ) as React.ReactElement[];
 
   return (
-    <div className={listGroupClasses}>
+    <div className={listGroupClasses} style={style}>
       {validLists.map((child, index) => {
         const childProps = child.props as any;
         return React.cloneElement(child as React.ReactElement<any>, {

@@ -37,6 +37,11 @@ export interface IconProps {
   className?: string;
 
   /**
+   * Custom style
+   */
+  style?: React.CSSProperties;
+
+  /**
    * Alt text for accessibility
    */
   alt?: string;
@@ -60,6 +65,7 @@ export const Icon: React.FC<IconProps> = ({
   weight = 'regular',
   color,
   className = '',
+  style,
   alt,
 }) => {
   // Get the icon component from Phosphor
@@ -76,7 +82,7 @@ export const Icon: React.FC<IconProps> = ({
   const pixelSize = typeof size === 'string' ? sizeMap[size as IconSize] || 24 : size;
 
   return (
-    <span className={`c-icon c-icon--${size} ${className}`} aria-hidden={!alt} title={alt}>
+    <span className={`c-icon c-icon--${size} ${className}`} style={style} aria-hidden={!alt} title={alt}>
       <IconComponent size={pixelSize} weight={weight} color={color} aria-label={alt} />
     </span>
   );

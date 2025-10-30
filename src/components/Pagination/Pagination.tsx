@@ -61,6 +61,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   showPrevNextButtons = PAGINATION_DEFAULTS.showPrevNextButtons,
   size = PAGINATION_DEFAULTS.size,
   className = '',
+  style,
   ariaLabel = 'Pagination',
   glass,
 }) => {
@@ -77,7 +78,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   }
 
   const paginationContent = (
-    <nav className={`c-pagination c-pagination--${size} ${className}`} aria-label={ariaLabel}>
+    <nav className={`c-pagination c-pagination--${size} ${className}`} style={style} aria-label={ariaLabel}>
       <ul className="c-pagination__items">
         {showFirstLastButtons && (
           <PaginationNavButton

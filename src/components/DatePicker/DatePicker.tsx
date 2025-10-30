@@ -34,6 +34,7 @@ export const DatePicker = forwardRef<DatePickerRef, DatePickerProps>(
       placement = 'bottom-start',
       inputClassName = '',
       size = 'md',
+      style,
       glass,
       ...props
     },
@@ -464,7 +465,7 @@ export const DatePicker = forwardRef<DatePickerRef, DatePickerProps>(
     );
 
     return (
-      <div className={datepickerClassName} ref={datePickerRef} {...props}>
+      <div className={datepickerClassName} ref={datePickerRef} style={style} {...props}>
         {!inline && (
           <div className="c-datepicker__input-wrapper">
             <input

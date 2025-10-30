@@ -18,6 +18,7 @@ export const Callout: React.FC<CalloutProps> = ({
   toast = false,
   glass,
   className,
+  style,
   ...props
 }) => {
   const { generateCalloutClass, handleClose } = useCallout({
@@ -26,6 +27,7 @@ export const Callout: React.FC<CalloutProps> = ({
     toast,
     glass,
     className,
+    style,
   });
 
   // Determine appropriate ARIA attributes based on variant
@@ -84,6 +86,7 @@ export const Callout: React.FC<CalloutProps> = ({
         className={generateCalloutClass({ variant, oneLine, toast, glass, className })}
         {...getAriaAttributes()}
         {...props}
+        style={style}
       >
         <AtomixGlass {...glassProps}>
           <div
@@ -102,6 +105,7 @@ export const Callout: React.FC<CalloutProps> = ({
       className={generateCalloutClass({ variant, oneLine, toast, glass, className })}
       {...getAriaAttributes()}
       {...props}
+      style={style}
     >
       {calloutContent}
     </div>

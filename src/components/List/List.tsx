@@ -6,6 +6,7 @@ export const List: React.FC<ListProps> = ({
   children,
   variant = 'default',
   className = '',
+  style,
   ...props
 }) => {
   // Generate CSS classes
@@ -17,7 +18,7 @@ export const List: React.FC<ListProps> = ({
   const ListElement = ['number', 'text'].includes(variant) ? 'ol' : 'ul';
 
   return (
-    <ListElement className={listClasses} {...props}>
+    <ListElement className={listClasses} style={style} {...props}>
       {React.Children.map(children, child => {
         if (React.isValidElement(child)) {
           return <li className="c-list__item">{child}</li>;

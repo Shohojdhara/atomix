@@ -8,9 +8,9 @@ import { Icon } from '../../Icon/Icon';
 import { mapIconName } from './Menu'; // Import the mapping function
 
 export const MegaMenu: React.FC<MegaMenuProps> = forwardRef<HTMLDivElement, MegaMenuProps>(
-  ({ children, className = '', disabled = false }, ref) => {
+  ({ children, className = '', style, disabled = false }, ref) => {
     return (
-      <div ref={ref} className={`c-menu c-menu--mega ${className}`}>
+      <div ref={ref} className={`c-menu c-menu--mega ${className}`} style={style}>
         <div className="c-menu__container">
           <div className="c-menu__grid o-grid">
             {React.Children.map(children, child => {
