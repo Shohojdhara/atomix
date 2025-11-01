@@ -44,7 +44,10 @@
   inset: 0;
   @include square(100%);
   display: none;
-  z-index: map.get($z-layers, modal);
+
+  &:not(.c-modal--glass) {
+    z-index: map.get($z-layers, modal);
+  }
 
   &__backdrop {
     position: absolute;
@@ -143,8 +146,7 @@
 
   &--glass {
     #{$root} {
-      &
-      &__content {
+      & &__content {
         @include dynamic-background(
           var(--#{config.$prefix}modal-content-bg),
           $background-transparency-enable: true

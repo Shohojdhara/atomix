@@ -8,6 +8,7 @@ import {
   useState,
   useMemo,
 } from 'react';
+import React from 'react';
 import {
   ShaderDisplacementGenerator,
   fragmentShaders,
@@ -30,6 +31,7 @@ const ACTIVATION_ZONE = 200;
 const MIN_BLUR = 0.1;
 const MOUSE_INFLUENCE_DIVISOR = 100;
 const EDGE_FADE_PIXELS = 2;
+const DEFAULT_CORNER_RADIUS = 16; // Fallback value matching design system $border-radius-xxl
 
 // Helper functions with validation
 const calculateDistance = (pos1: MousePosition, pos2: MousePosition): number => {
@@ -83,6 +85,136 @@ const validateGlassSize = (size: GlassSize): boolean => {
     size.width > 0 &&
     size.height > 0
   );
+};
+
+// Border-radius extraction utilities
+const parseBorderRadiusValue = (value: string | number | undefined): number => {
+  if (typeof value === 'number') return Math.max(0, value);
+  if (typeof value !== 'string' || !value.trim()) return DEFAULT_CORNER_RADIUS;
+  
+  const trimmedValue = value.trim();
+  
+  // Handle px values
+  if (trimmedValue.endsWith('px')) {
+    const parsed = parseFloat(trimmedValue);
+    return isNaN(parsed) ? DEFAULT_CORNER_RADIUS : Math.max(0, parsed);
+  }
+  
+  // Handle rem values (assume 16px = 1rem)
+  if (trimmedValue.endsWith('rem')) {
+    const parsed = parseFloat(trimmedValue);
+    return isNaN(parsed) ? DEFAULT_CORNER_RADIUS : Math.max(0, parsed * 16);
+  }
+  
+  // Handle em values (assume 16px = 1em for simplicity)
+  if (trimmedValue.endsWith('em')) {
+    const parsed = parseFloat(trimmedValue);
+    return isNaN(parsed) ? DEFAULT_CORNER_RADIUS : Math.max(0, parsed * 16);
+  }
+  
+  // Handle percentage (convert to approximate px value, assuming 200px container)
+  if (trimmedValue.endsWith('%')) {
+    const parsed = parseFloat(trimmedValue);
+    return isNaN(parsed) ? DEFAULT_CORNER_RADIUS : Math.max(0, (parsed / 100) * 200);
+  }
+  
+  // Handle unitless numbers
+  const numValue = parseFloat(trimmedValue);
+  return isNaN(numValue) ? DEFAULT_CORNER_RADIUS : Math.max(0, numValue);
+};
+
+const extractBorderRadiusFromStyle = (style: CSSProperties | undefined): number | null => {
+  if (!style) {
+    return null;
+  }
+  
+  // Check various border-radius properties
+  const borderRadius = style.borderRadius || 
+                      style.borderTopLeftRadius || 
+                      style.borderTopRightRadius || 
+                      style.borderBottomLeftRadius || 
+                      style.borderBottomRightRadius;
+  
+  if (borderRadius !== undefined) {
+    const parsed = parseBorderRadiusValue(borderRadius);
+    return parsed;
+  }
+  
+  return null;
+};
+
+// Extract border-radius from computed styles of a DOM element reference
+const extractBorderRadiusFromDOMElement = (element: HTMLElement | null): number | null => {
+  if (!element || typeof window === 'undefined') {
+    return null;
+  }
+  
+  try {
+    const computedStyles = window.getComputedStyle(element);
+    const borderRadius = computedStyles.borderRadius || 
+                        computedStyles.borderTopLeftRadius || 
+                        computedStyles.borderTopRightRadius || 
+                        computedStyles.borderBottomLeftRadius || 
+                        computedStyles.borderBottomRightRadius;
+    
+    if (borderRadius && borderRadius !== '0px' && borderRadius !== 'auto') {
+      const parsed = parseBorderRadiusValue(borderRadius);
+      return parsed > 0 ? parsed : null;
+    }
+    
+    return null;
+  } catch (error) {
+    return null;
+  }
+};
+
+const extractBorderRadiusFromElement = (element: React.ReactElement): number | null => {
+  if (!element || !element.props) {
+    return null;
+  }
+
+  // Check inline styles first (highest priority)
+  if (element.props.style) {
+    const radiusFromStyle = extractBorderRadiusFromStyle(element.props.style);
+    if (radiusFromStyle !== null && radiusFromStyle > 0) {
+      return radiusFromStyle;
+    }
+  }
+  
+  // If element has children, recursively check them
+  if (element.props.children) {
+    const childRadius = extractBorderRadiusFromChildren(element.props.children);
+    if (childRadius !== DEFAULT_CORNER_RADIUS && childRadius > 0) {
+      return childRadius;
+    }
+  }
+  
+  return null;
+};
+
+const extractBorderRadiusFromChildren = (children: React.ReactNode): number => {
+  if (!children) {
+    return DEFAULT_CORNER_RADIUS;
+  }
+  
+  try {
+    const childArray = React.Children.toArray(children);
+    
+    for (let i = 0; i < childArray.length; i++) {
+      const child = childArray[i];
+      
+      if (React.isValidElement(child)) {
+        const radius = extractBorderRadiusFromElement(child);
+        if (radius !== null) {
+          return radius;
+        }
+      } else {
+      }
+    }
+  } catch (error) {
+  }
+  
+  return DEFAULT_CORNER_RADIUS;
 };
 
 
@@ -246,7 +378,7 @@ const GlassFilter: React.FC<GlassFilterProps> = ({
   </svg>
 );
 
-interface GlassContainerProps {
+interface AtomixGlassContainerProps {
   className?: string;
   style?: React.CSSProperties;
   displacementScale?: number;
@@ -274,10 +406,11 @@ interface GlassContainerProps {
   shaderVariant?: FragmentShaderType;
   enableLiquidBlur?: boolean;
   elasticity?: number;
+  contentRef?: React.RefObject<HTMLDivElement>;
   children?: React.ReactNode;
 }
 
-const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
+const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContainerProps>(
   (
     {
       children,
@@ -302,12 +435,12 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
       glassSize = { width: 0, height: 0 },
       onClick,
       mode = 'standard',
-      transform = 'none',
       effectiveDisableEffects = false,
       effectiveReducedMotion = false,
       shaderVariant = 'liquidGlass',
       enableLiquidBlur = false,
       elasticity = 0,
+      contentRef,
     },
     ref
   ) => {
@@ -397,7 +530,15 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
         centerBlur: clampBlur(centerBlur * stateMultiplier),
         flowBlur: clampBlur(flowBlur * stateMultiplier),
       };
-    }, [enableLiquidBlur, blurAmount, globalMousePosition, mouseOffset, isHovered, isActive, rectCache]);
+    }, [
+      enableLiquidBlur,
+      blurAmount,
+      globalMousePosition,
+      mouseOffset,
+      isHovered,
+      isActive,
+      rectCache,
+    ]);
 
     const backdropStyle = useMemo(() => {
       const dynamicSaturation = saturation + liquidBlur.baseBlur * 20;
@@ -418,7 +559,7 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
       const mx = mouseOffset?.x || 0;
       const my = mouseOffset?.y || 0;
       const scopedId = `gc-${filterId.replace(/:/g, '')}`;
-      
+
       return {
         [`--${scopedId}-padding`]: padding,
         [`--${scopedId}-radius`]: `${cornerRadius}px`,
@@ -440,19 +581,27 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
           : '0px 2px 12px rgba(0, 0, 0, 0.4)',
         '--gc-scoped-id': scopedId,
       } as React.CSSProperties;
-    }, [filterId, padding, cornerRadius, backdropStyle, mouseOffset, overLight, effectiveDisableEffects]);
+    }, [
+      filterId,
+      padding,
+      cornerRadius,
+      backdropStyle,
+      mouseOffset,
+      overLight,
+      effectiveDisableEffects,
+    ]);
 
     const scopedId = `gc-${filterId.replace(/:/g, '')}`;
 
     return (
       <div
         ref={ref}
-        className={` ${className} ${active ? 'active' : ''}`}
+        className={`c-atomix-glass__container ${className} ${active ? 'active' : ''}`}
         style={{ ...style, ...containerVars }}
         onClick={onClick}
       >
         <div
-          className="atomix-glass"
+          className="c-atomix-glass__inner"
           style={{
             position: 'relative',
             padding: `var(--${scopedId}-padding)`,
@@ -463,37 +612,42 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
         >
-          <GlassFilter
-            mode={mode}
-            id={filterId}
-            displacementScale={displacementScale}
-            aberrationIntensity={aberrationIntensity}
-            shaderMapUrl={shaderMapUrl}
-          />
-          <span
-            className="atomix-glass__warp"
-            style={{
-              backdropFilter: `var(--${scopedId}-backdrop)`,
-              borderRadius: `var(--${scopedId}-radius)`,
-              position: 'absolute',
-              inset: '0',
-            }}
-          />
+          <div className="c-atomix-glass__filter">
+            <GlassFilter
+              mode={mode}
+              id={filterId}
+              displacementScale={displacementScale}
+              aberrationIntensity={aberrationIntensity}
+              shaderMapUrl={shaderMapUrl}
+            />
+            <span
+              className="c-atomix-glass__filter-overlay"
+              style={{
+                backdropFilter: `var(--${scopedId}-backdrop)`,
+                borderRadius: `var(--${scopedId}-radius)`,
+                position: 'absolute',
+                inset: '0',
+              }}
+            />
 
-          {/* Enhanced Apple Liquid Glass Inner Shadow Layer */}
-          <div
-            style={{
-              position: 'absolute',
-              inset: '1.5px',
-              borderRadius: `var(--${scopedId}-radius)`,
-              pointerEvents: 'none',
-              boxShadow: `var(--${scopedId}-shadow)`,
-              opacity: `var(--${scopedId}-shadow-opacity)`,
-              background: `var(--${scopedId}-bg)`,
-            }}
-          />
+            {/* Enhanced Apple Liquid Glass Inner Shadow Layer */}
+            <div
+              className="c-atomix-glass__filter-shadow"
+              style={{
+                position: 'absolute',
+                inset: '1.5px',
+                borderRadius: `var(--${scopedId}-radius)`,
+                pointerEvents: 'none',
+                boxShadow: `var(--${scopedId}-shadow)`,
+                opacity: `var(--${scopedId}-shadow-opacity)`,
+                background: `var(--${scopedId}-bg)`,
+              }}
+            />
+          </div>
 
           <div
+            ref={contentRef}
+            className="c-atomix-glass__content"
             style={{
               position: 'relative',
               ...(elasticity !== 0 && {
@@ -510,7 +664,7 @@ const GlassContainer = forwardRef<HTMLDivElement, GlassContainerProps>(
   }
 );
 
-GlassContainer.displayName = 'GlassContainer';
+AtomixGlassContainer.displayName = 'AtomixGlassContainer';
 
 interface AtomixGlassProps {
   children: React.ReactNode;
@@ -549,6 +703,9 @@ interface AtomixGlassProps {
 
   // Performance monitoring
   enablePerformanceMonitoring?: boolean;
+  
+  // Debug mode for cornerRadius extraction
+  debugCornerRadius?: boolean;
 }
 
 /**
@@ -557,9 +714,22 @@ interface AtomixGlassProps {
  * Features:
  * - Hardware-accelerated glass effects with SVG filters
  * - Mouse-responsive liquid distortion
+ * - Dynamic border-radius extraction from children CSS properties
  * - Automatic light/dark theme detection
  * - Accessibility and performance optimizations
  * - Multiple displacement modes (standard, polar, prominent, shader)
+ *
+ * @example
+ * // Dynamic border-radius extraction
+ * <AtomixGlass>
+ *   <div style={{ borderRadius: '12px' }}>Content with 12px radius</div>
+ * </AtomixGlass>
+ *
+ * @example
+ * // Manual border-radius override
+ * <AtomixGlass cornerRadius={20}>
+ *   <div>Content with 20px glass radius</div>
+ * </AtomixGlass>
  */
 export function AtomixGlass({
   children,
@@ -568,7 +738,7 @@ export function AtomixGlass({
   saturation = 140,
   aberrationIntensity = 2.5,
   elasticity = 0.05,
-  cornerRadius = 16,
+  cornerRadius, // Dynamic value extracted from children CSS properties, falls back to design system default
   globalMousePosition: externalGlobalMousePosition,
   mouseOffset: externalMouseOffset,
   mouseContainer = null,
@@ -592,8 +762,10 @@ export function AtomixGlass({
   enableOverLightLayers = false,
 
   enablePerformanceMonitoring = false,
+  debugCornerRadius = false,
 }: AtomixGlassProps) {
   const glassRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [glassSize, setGlassSize] = useState<GlassSize>({ width: 270, height: 69 });
@@ -602,12 +774,90 @@ export function AtomixGlass({
     y: 0,
   });
   const [internalMouseOffset, setInternalMouseOffset] = useState<MousePosition>({ x: 0, y: 0 });
+  
+  // Dynamic cornerRadius extraction from children
+  const [dynamicCornerRadius, setDynamicCornerRadius] = useState<number>(DEFAULT_CORNER_RADIUS);
+
+  // Extract border-radius from actual DOM element and children when they change
+  useEffect(() => {
+    const extractRadius = () => {
+      try {
+        let extractedRadius: number | null = null;
+        let extractionSource = 'default';
+
+        // First, try to extract from the actual rendered DOM element (most reliable)
+        if (contentRef.current) {
+          const firstChild = contentRef.current.firstElementChild as HTMLElement;
+          if (firstChild) {
+            const domRadius = extractBorderRadiusFromDOMElement(firstChild);
+            if (domRadius !== null && domRadius > 0) {
+              extractedRadius = domRadius;
+              extractionSource = 'DOM element';
+            }
+          }
+        }
+        
+        // Fallback to React children inspection
+        if (extractedRadius === null) {
+          const childRadius = extractBorderRadiusFromChildren(children);
+          if (childRadius > 0 && childRadius !== DEFAULT_CORNER_RADIUS) {
+            extractedRadius = childRadius;
+            extractionSource = 'React children';
+          }
+        }
+
+        // Update state if we found a valid radius
+        if (extractedRadius !== null && extractedRadius > 0) {
+          setDynamicCornerRadius(extractedRadius);
+          
+          if (debugCornerRadius) {
+            console.log('[AtomixGlass] Corner radius extracted:', {
+              value: extractedRadius,
+              source: extractionSource,
+              timestamp: new Date().toISOString(),
+            });
+          }
+        } else if (debugCornerRadius) {
+          console.log('[AtomixGlass] No corner radius found, using default:', DEFAULT_CORNER_RADIUS);
+        }
+      } catch (error) {
+        if (debugCornerRadius) {
+          console.error('[AtomixGlass] Error extracting corner radius:', error);
+        }
+      }
+    };
+
+    // Initial extraction
+    extractRadius();
+
+    // Re-extract after a short delay to catch CSS that loads asynchronously
+    const timeoutId = setTimeout(extractRadius, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, [children, debugCornerRadius]);
 
   const [userPrefersReducedMotion, setUserPrefersReducedMotion] = useState(false);
   const [userPrefersHighContrast, setUserPrefersHighContrast] = useState(false);
   const [detectedOverLight, setDetectedOverLight] = useState(false);
 
   // Memoized derived values for performance
+  const effectiveCornerRadius = useMemo(() => {
+    // Manual prop takes precedence
+    if (cornerRadius !== undefined) {
+      const result = Math.max(0, cornerRadius);
+      if (debugCornerRadius) {
+        console.log('[AtomixGlass] Using manual cornerRadius prop:', result);
+      }
+      return result;
+    }
+    
+    // Use dynamic extraction
+    const result = Math.max(0, dynamicCornerRadius);
+    if (debugCornerRadius) {
+      console.log('[AtomixGlass] Using dynamic cornerRadius:', result);
+    }
+    return result;
+  }, [cornerRadius, dynamicCornerRadius, debugCornerRadius]);
   const effectiveReducedMotion = useMemo(
     () => reducedMotion || userPrefersReducedMotion,
     [reducedMotion, userPrefersReducedMotion]
@@ -956,6 +1206,7 @@ export function AtomixGlass({
     };
   }, [globalMousePosition, elasticity, calculateFadeInFactor]);
 
+  // Consolidated size and radius update effect
   useEffect(() => {
     const isValidElement = (element: HTMLElement | null): element is HTMLElement =>
       element !== null && element instanceof HTMLElement && element.isConnected;
@@ -965,7 +1216,7 @@ export function AtomixGlass({
 
     let rafId: number | null = null;
     let lastSize = { width: 0, height: 0 };
-    let lastCornerRadius = cornerRadius;
+    let lastCornerRadius = effectiveCornerRadius;
 
     const updateGlassSize = (forceUpdate = false): void => {
       if (rafId !== null) cancelAnimationFrame(rafId);
@@ -976,19 +1227,21 @@ export function AtomixGlass({
         const rect = glassRef.current.getBoundingClientRect();
         if (rect.width <= 0 || rect.height <= 0) return;
 
-        const cornerRadiusOffset = Math.max(0, cornerRadius * 0.1);
+        // Use a small offset based on corner radius for better visual alignment
+        const cornerRadiusOffset = Math.max(0, Math.min(effectiveCornerRadius * 0.1, 10));
         const newSize: GlassSize = {
           width: Math.round(rect.width + cornerRadiusOffset),
           height: Math.round(rect.height + cornerRadiusOffset),
         };
 
-        const cornerRadiusChanged = lastCornerRadius !== cornerRadius;
+        const cornerRadiusChanged = lastCornerRadius !== effectiveCornerRadius;
         const dimensionsChanged =
-          newSize.width !== lastSize.width || newSize.height !== lastSize.height;
+          Math.abs(newSize.width - lastSize.width) > 1 || 
+          Math.abs(newSize.height - lastSize.height) > 1;
 
         if ((forceUpdate || cornerRadiusChanged || dimensionsChanged) && validateSize(newSize)) {
           lastSize = newSize;
-          lastCornerRadius = cornerRadius;
+          lastCornerRadius = effectiveCornerRadius;
           setGlassSize(newSize);
         }
 
@@ -999,10 +1252,11 @@ export function AtomixGlass({
     let resizeTimeoutId: NodeJS.Timeout | null = null;
     const debouncedResizeHandler = (): void => {
       if (resizeTimeoutId) clearTimeout(resizeTimeoutId);
-      resizeTimeoutId = setTimeout(updateGlassSize, 16);
+      resizeTimeoutId = setTimeout(() => updateGlassSize(false), 16);
     };
 
-    updateGlassSize(true);
+    // Initial update with slight delay to ensure DOM is ready
+    const initialTimeoutId = setTimeout(() => updateGlassSize(true), 0);
 
     let resizeObserver: ResizeObserver | null = null;
     let fallbackInterval: NodeJS.Timeout | null = null;
@@ -1014,7 +1268,7 @@ export function AtomixGlass({
         resizeObserver = new ResizeObserver(entries => {
           for (const entry of entries) {
             if (entry.target === glassRef.current) {
-              updateGlassSize();
+              updateGlassSize(false);
               break;
             }
           }
@@ -1022,13 +1276,13 @@ export function AtomixGlass({
         resizeObserver.observe(glassRef.current);
       } catch {
         fallbackInterval = setInterval(
-          () => isValidElement(glassRef.current) && updateGlassSize(),
+          () => isValidElement(glassRef.current) && updateGlassSize(false),
           100
         );
       }
     } else {
       fallbackInterval = setInterval(
-        () => isValidElement(glassRef.current) && updateGlassSize(),
+        () => isValidElement(glassRef.current) && updateGlassSize(false),
         100
       );
     }
@@ -1036,32 +1290,14 @@ export function AtomixGlass({
     window.addEventListener('resize', debouncedResizeHandler, { passive: true });
 
     return () => {
+      clearTimeout(initialTimeoutId);
       if (rafId !== null) cancelAnimationFrame(rafId);
       if (resizeTimeoutId) clearTimeout(resizeTimeoutId);
       if (fallbackInterval) clearInterval(fallbackInterval);
       window.removeEventListener('resize', debouncedResizeHandler);
       resizeObserver?.disconnect();
     };
-  }, [cornerRadius, enablePerformanceMonitoring]);
-
-  useEffect(() => {
-    if (!glassRef.current) return;
-
-    const timeoutId = setTimeout(() => {
-      if (!glassRef.current) return;
-
-      const rect = glassRef.current.getBoundingClientRect();
-      if (rect.width > 0 && rect.height > 0) {
-        const cornerRadiusOffset = Math.max(0, cornerRadius * 0.1);
-        setGlassSize({
-          width: Math.round(rect.width + cornerRadiusOffset),
-          height: Math.round(rect.height + cornerRadiusOffset),
-        });
-      }
-    }, 0);
-
-    return () => clearTimeout(timeoutId);
-  }, [cornerRadius]);
+  }, [effectiveCornerRadius]);
 
   const elasticTranslation = useMemo(() => {
     if (effectiveDisableEffects) {
@@ -1098,7 +1334,14 @@ export function AtomixGlass({
         outlineOffset: '2px',
       }),
     }),
-    [style, transformStyle, effectiveReducedMotion, effectiveDisableEffects, effectiveHighContrast, elasticity]
+    [
+      style,
+      transformStyle,
+      effectiveReducedMotion,
+      effectiveDisableEffects,
+      effectiveHighContrast,
+      elasticity,
+    ]
   );
 
   const positionStyles = useMemo(
@@ -1131,38 +1374,69 @@ export function AtomixGlass({
     const mx = mouseOffset.x;
     const my = mouseOffset.y;
     const scopedId = `ag-${glassId.replace(/:/g, '')}`;
-    
+
     return {
       [`--${scopedId}-pos`]: positionStyles.position,
       [`--${scopedId}-top`]: positionStyles.top !== 'fixed' ? `${positionStyles.top}px` : '0',
       [`--${scopedId}-left`]: positionStyles.left !== 'fixed' ? `${positionStyles.left}px` : '0',
-      [`--${scopedId}-w`]: baseStyle.position !== 'fixed' ? adjustedSize.width : `${adjustedSize.width}px`,
-      [`--${scopedId}-h`]: baseStyle.position !== 'fixed' ? adjustedSize.height : `${adjustedSize.height}px`,
-      [`--${scopedId}-r`]: `${cornerRadius}px`,
+      [`--${scopedId}-w`]:
+        baseStyle.position !== 'fixed' ? adjustedSize.width : `${adjustedSize.width}px`,
+      [`--${scopedId}-h`]:
+        baseStyle.position !== 'fixed' ? adjustedSize.height : `${adjustedSize.height}px`,
+      [`--${scopedId}-r`]: `${effectiveCornerRadius}px`,
       [`--${scopedId}-t`]: baseStyle.transform,
       [`--${scopedId}-tr`]: effectiveReducedMotion ? 'none' : baseStyle.transition,
       [`--${scopedId}-blend`]: isOverLight ? 'multiply' : 'overlay',
       [`--${scopedId}-b1`]: `linear-gradient(${135 + mx * 1.2}deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${0.12 + Math.abs(mx) * 0.008}) ${Math.max(10, 33 + my * 0.3)}%, rgba(255,255,255,${0.4 + Math.abs(mx) * 0.012}) ${Math.min(90, 66 + my * 0.4)}%, rgba(255,255,255,0) 100%)`,
       [`--${scopedId}-b2`]: `linear-gradient(${135 + mx * 1.2}deg, rgba(255,255,255,0) 0%, rgba(255,255,255,${0.32 + Math.abs(mx) * 0.008}) ${Math.max(10, 33 + my * 0.3)}%, rgba(255,255,255,${0.6 + Math.abs(mx) * 0.012}) ${Math.min(90, 66 + my * 0.4)}%, rgba(255,255,255,0) 100%)`,
-      [`--${scopedId}-h1-o`]: (isHovered || isActive) ? (isOverLight ? 0.3 : 0.5) : 0,
-      [`--${scopedId}-h1`]: isOverLight ? `radial-gradient(circle at ${50 + mx / 2}% ${50 + my / 2}%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0) 60%)` : `radial-gradient(circle at ${50 + mx / 2}% ${50 + my / 2}%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 50%)`,
+      [`--${scopedId}-h1-o`]: isHovered || isActive ? (isOverLight ? 0.3 : 0.5) : 0,
+      [`--${scopedId}-h1`]: isOverLight
+        ? `radial-gradient(circle at ${50 + mx / 2}% ${50 + my / 2}%, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0) 60%)`
+        : `radial-gradient(circle at ${50 + mx / 2}% ${50 + my / 2}%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 50%)`,
       [`--${scopedId}-h2-o`]: isActive ? (isOverLight ? 0.4 : 0.5) : 0,
-      [`--${scopedId}-h2`]: isOverLight ? `radial-gradient(circle at ${50 + mx / 1.5}% ${50 + my / 1.5}%, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0) 80%)` : `radial-gradient(circle at ${50 + mx / 1.5}% ${50 + my / 1.5}%, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 80%)`,
-      [`--${scopedId}-h3-o`]: isHovered ? (isOverLight ? 0.25 : 0.4) : isActive ? (isOverLight ? 0.5 : 0.8) : 0,
-      [`--${scopedId}-h3`]: isOverLight ? `radial-gradient(circle at ${50 + mx}% ${50 + my}%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)` : `radial-gradient(circle at ${50 + mx}% ${50 + my}%, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%)`,
+      [`--${scopedId}-h2`]: isOverLight
+        ? `radial-gradient(circle at ${50 + mx / 1.5}% ${50 + my / 1.5}%, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0) 80%)`
+        : `radial-gradient(circle at ${50 + mx / 1.5}% ${50 + my / 1.5}%, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 80%)`,
+      [`--${scopedId}-h3-o`]: isHovered
+        ? isOverLight
+          ? 0.25
+          : 0.4
+        : isActive
+          ? isOverLight
+            ? 0.5
+            : 0.8
+          : 0,
+      [`--${scopedId}-h3`]: isOverLight
+        ? `radial-gradient(circle at ${50 + mx}% ${50 + my}%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0) 100%)`
+        : `radial-gradient(circle at ${50 + mx}% ${50 + my}%, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%)`,
       [`--${scopedId}-base-o`]: isOverLight ? overLightConfig.opacity : 0,
-      [`--${scopedId}-base`]: isOverLight ? `linear-gradient(135deg, rgba(0,0,0,${0.12 + mx * 0.002}) 0%, rgba(0,0,0,${0.08 + my * 0.001}) 50%, rgba(0,0,0,${0.15 + Math.abs(mx) * 0.003}) 100%)` : 'rgba(255,255,255,0.1)',
+      [`--${scopedId}-base`]: isOverLight
+        ? `linear-gradient(135deg, rgba(0,0,0,${0.12 + mx * 0.002}) 0%, rgba(0,0,0,${0.08 + my * 0.001}) 50%, rgba(0,0,0,${0.15 + Math.abs(mx) * 0.003}) 100%)`
+        : 'rgba(255,255,255,0.1)',
       [`--${scopedId}-over-o`]: isOverLight ? overLightConfig.opacity * 0.9 : 0,
-      [`--${scopedId}-over`]: isOverLight ? `radial-gradient(circle at ${50 + mx * 0.5}% ${50 + my * 0.5}%, rgba(0,0,0,${0.08 + Math.abs(mx) * 0.002}) 0%, rgba(0,0,0,0.04) 40%, rgba(0,0,0,${0.12 + Math.abs(my) * 0.002}) 100%)` : 'rgba(255,255,255,0.05)',
+      [`--${scopedId}-over`]: isOverLight
+        ? `radial-gradient(circle at ${50 + mx * 0.5}% ${50 + my * 0.5}%, rgba(0,0,0,${0.08 + Math.abs(mx) * 0.002}) 0%, rgba(0,0,0,0.04) 40%, rgba(0,0,0,${0.12 + Math.abs(my) * 0.002}) 100%)`
+        : 'rgba(255,255,255,0.05)',
       '--ag-scoped-id': scopedId,
     } as React.CSSProperties;
-  }, [glassId, positionStyles, adjustedSize, cornerRadius, baseStyle, effectiveReducedMotion, mouseOffset, isHovered, isActive, overLightConfig]);
+  }, [
+    glassId,
+    positionStyles,
+    adjustedSize,
+    effectiveCornerRadius,
+    baseStyle,
+    effectiveReducedMotion,
+    mouseOffset,
+    isHovered,
+    isActive,
+    overLightConfig,
+  ]);
 
   const scopedId = `ag-${glassId.replace(/:/g, '')}`;
 
   return (
     <div
-      className="atomix-glass"
+      className={`c-atomix-glass ${className}`}
       style={{ ...positionStyles, position: 'relative', ...glassVars }}
       role={role || (onClick ? 'button' : undefined)}
       tabIndex={onClick ? (tabIndex ?? 0) : tabIndex}
@@ -1180,11 +1454,12 @@ export function AtomixGlass({
           : undefined
       }
     >
-      <GlassContainer
+      <AtomixGlassContainer
         ref={glassRef}
+        contentRef={contentRef}
         className={className}
         style={baseStyle}
-        cornerRadius={cornerRadius}
+        cornerRadius={effectiveCornerRadius}
         displacementScale={
           effectiveDisableEffects
             ? 0
@@ -1231,11 +1506,11 @@ export function AtomixGlass({
         enableLiquidBlur={enableLiquidBlur}
       >
         {children}
-      </GlassContainer>
+      </AtomixGlassContainer>
       {enableBorderEffect && (
         <>
           <span
-            className="atomix-glass__border-1"
+            className="c-atomix-glass__border-1"
             style={{
               position: `var(--${scopedId}-pos)` as any,
               top: `var(--${scopedId}-top)`,
@@ -1249,7 +1524,7 @@ export function AtomixGlass({
             }}
           />
           <span
-            className="atomix-glass__border-2"
+            className="c-atomix-glass__border-2"
             style={{
               position: `var(--${scopedId}-pos)` as any,
               top: `var(--${scopedId}-top)`,
@@ -1268,7 +1543,7 @@ export function AtomixGlass({
       {Boolean(onClick) && (
         <>
           <div
-            className="atomix-glass__hover-1"
+            className="c-atomix-glass__hover-1"
             style={{
               position: 'absolute',
               inset: 0,
@@ -1281,7 +1556,7 @@ export function AtomixGlass({
             }}
           />
           <div
-            className="atomix-glass__hover-2"
+            className="c-atomix-glass__hover-2"
             style={{
               position: 'absolute',
               inset: 0,
@@ -1294,7 +1569,7 @@ export function AtomixGlass({
             }}
           />
           <div
-            className="atomix-glass__hover-3"
+            className="c-atomix-glass__hover-3"
             style={{
               position: 'absolute',
               inset: 0,
@@ -1311,7 +1586,7 @@ export function AtomixGlass({
       {enableOverLightLayers && (
         <>
           <div
-            className="atomix-glass__base"
+            className="c-atomix-glass__base"
             style={{
               position: 'absolute',
               inset: 0,
@@ -1323,7 +1598,7 @@ export function AtomixGlass({
             }}
           />
           <div
-            className="atomix-glass__overlay"
+            className="c-atomix-glass__overlay"
             style={{
               position: 'absolute',
               inset: 0,

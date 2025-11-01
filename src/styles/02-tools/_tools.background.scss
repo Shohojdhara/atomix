@@ -10,17 +10,11 @@
 @mixin dynamic-background(
   $color,
   $transparency: $background-transparency,
-  $background-transparency-enable: $background-transparency-enable,
-  $blur: $background-blur,
-  $use-backdrop-filter: $background-enable-backdrop-filter
+  $background-transparency-enable: $background-transparency-enable
 ) {
   // Validate inputs
   @if $transparency < 0 or $transparency > 1 {
     @error 'Transparency must be between 0 and 1, got #{$transparency}';
-  }
-
-  @if $blur < 0 {
-    @error 'Blur value must be non-negative, got #{$blur}px';
   }
 
   // Apply background based on transparency settings
@@ -59,11 +53,6 @@
     background-color: $color;
   }
 
-  // Apply backdrop filter effects based on settings
-  @if $background-enable-backdrop-filter and ($blur > 0 or $use-backdrop-filter) {
-    backdrop-filter: blur(#{$blur}px) saturate(1.5) contrast(1.2) brightness(1.1);
-    -webkit-backdrop-filter: blur(#{$blur}px) saturate(1.2) contrast(1.2) brightness(1.1);
-  }
 
   @if $background-enable-with-shadow {
     box-shadow:

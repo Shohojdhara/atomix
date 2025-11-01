@@ -1,0 +1,16 @@
+/*!
+ * Applemix Theme Configuration
+ * Core configuration variables for the Apple-inspired liquid glass theme
+ */
+
+@use '../../../styles/01-settings/settings.config' with (
+  $prefix: 'atomix-',
+
+);
+// Environment configuration
+$ENV: 'dev';
+
+// CSS variable prefix for theme namespacing
+$theme-name: 'applemix';
+$theme-version: '1.0.0';
+$theme-author: 'Atomix Design System';

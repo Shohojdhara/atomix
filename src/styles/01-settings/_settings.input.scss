@@ -24,7 +24,7 @@ $input-padding-y-lg: map.get($spacing-sizes, 3) !default; //12px
 
 $input-border-width: var(--#{$prefix}border-width) !default;
 $input-border-color: var(--#{$prefix}primary-border-subtle) !default;
-$input-hover-border-color: var(--#{$prefix}secondary-border-subtle) !default;
+$input-hover-border-color: $input-border-color !default;
 $input-focus-border-color: $input-hover-border-color !default;
 
 $input-invalid-border-color: var(--#{$prefix}error) !default;

@@ -1,10 +1,10 @@
 # Footer Component
 
-A comprehensive footer component with multiple layout options, social links, newsletter signup, and responsive design.
+The Footer component provides a comprehensive footer section with multiple layout options, social links, newsletter signup, and responsive design.
 
 ## Features
 
-- **Multiple Layouts**: Columns, centered, minimal, and stacked layouts
+- **Multiple Layouts**: Columns, centered, minimal, stacked, flexible, sidebar, and wide layouts
 - **Social Media Integration**: Built-in support for 20+ social platforms
 - **Newsletter Signup**: Optional newsletter subscription form
 - **Responsive Design**: Mobile-first with collapsible sections
@@ -74,7 +74,7 @@ import { Footer, FooterSection, FooterLink } from '@shohojdhara/atomix';
 | `brandLogo` | `string \| ReactNode` | - | Brand logo (image URL or React element) |
 | `brandDescription` | `ReactNode` | - | Brand description text |
 | `copyright` | `ReactNode` | - | Copyright text |
-| `layout` | `'columns' \| 'centered' \| 'minimal' \| 'stacked'` | `'columns'` | Footer layout variant |
+| `layout` | `'columns' \| 'centered' \| 'minimal' \| 'stacked' \| 'flexible' \| 'sidebar' \| 'wide'` | `'columns'` | Footer layout variant |
 | `variant` | `ThemeColor` | `'primary'` | Color variant |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size variant |
 | `showNewsletter` | `boolean` | `false` | Whether to show newsletter signup |
@@ -162,6 +162,36 @@ interface SocialLink {
 </Footer>
 ```
 
+### Flexible
+```tsx
+<Footer layout="flexible">
+  {/* Flexible layout that adapts to content */}
+</Footer>
+```
+
+### Sidebar
+```tsx
+<Footer layout="sidebar">
+  {/* Brand section on left, content on right */}
+</Footer>
+```
+
+### Wide
+```tsx
+<Footer layout="wide">
+  {/* Wide layout with extended content area */}
+</Footer>
+```
+
+## Grid System Integration
+
+The Footer component uses the enhanced Grid and GridCol components for responsive layouts:
+
+- Grid supports additional props like `direction` and `wrap`
+- GridCol supports additional props like `grow`, `shrink`, `basis`, and `align`
+
+These enhancements provide better control over the footer layout for different screen sizes and design requirements.
+
 ## Styling
 
 The Footer component uses CSS custom properties for theming:
@@ -247,6 +277,55 @@ The Footer component uses CSS custom properties for theming:
     <FooterLink href="/help">Help Center</FooterLink>
     <FooterLink href="/community">Community</FooterLink>
     <FooterLink href="/contact">Contact Us</FooterLink>
+  </FooterSection>
+</Footer>
+```
+
+### Sidebar Layout Example
+
+```tsx
+<Footer 
+  layout="sidebar"
+  brand="My Company"
+  brandLogo="/logo.png"
+  copyright="© 2024 My Company. All rights reserved."
+  showNewsletter
+>
+  <FooterSection title="Products">
+    <FooterLink href="/product1">Product 1</FooterLink>
+    <FooterLink href="/product2">Product 2</FooterLink>
+  </FooterSection>
+  
+  <FooterSection title="Company">
+    <FooterLink href="/about">About Us</FooterLink>
+    <FooterLink href="/careers">Careers</FooterLink>
+  </FooterSection>
+</Footer>
+```
+
+### Wide Layout with Flexible Design
+
+```tsx
+<Footer 
+  layout="wide"
+  brand="Enterprise Solution"
+  copyright="© 2024 Enterprise Solution. All rights reserved."
+  showNewsletter
+  socialLinks={[
+    { platform: 'linkedin', url: 'https://linkedin.com/company' },
+    { platform: 'twitter', url: 'https://twitter.com/company' }
+  ]}
+>
+  <FooterSection title="Solutions">
+    <FooterLink href="/cloud">Cloud Services</FooterLink>
+    <FooterLink href="/security">Security</FooterLink>
+    <FooterLink href="/analytics">Analytics</FooterLink>
+  </FooterSection>
+  
+  <FooterSection title="Resources">
+    <FooterLink href="/whitepapers">Whitepapers</FooterLink>
+    <FooterLink href="/case-studies">Case Studies</FooterLink>
+    <FooterLink href="/webinars">Webinars</FooterLink>
   </FooterSection>
 </Footer>
 ```

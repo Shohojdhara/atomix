@@ -5232,6 +5232,11 @@ export interface FooterSectionProps extends BaseComponentProps {
    * Whether section is collapsed by default
    */
   defaultCollapsed?: boolean;
+  
+  /**
+   * Whether newsletter is shown in the footer
+   */
+  showNewsletter?: boolean;
 
   /**
    * Section content

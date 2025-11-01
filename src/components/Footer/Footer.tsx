@@ -4,6 +4,8 @@ import { useFooter } from '../../lib/composables/useFooter';
 import { Button } from '../Button';
 import { Input, Form } from '../Form';
 import { FooterSocialLink } from './FooterSocialLink';
+import { Grid, GridCol } from '../../layouts/Grid';
+import { FooterSection } from './FooterSection';
 
 /**
  * Footer component provides a comprehensive footer section with multiple layout options,
@@ -79,14 +81,61 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(
       className,
     });
 
+    // Calculate grid column sizes based on layout
+    const getGridColumnSizes = () => {
+      switch (layout) {
+        case 'columns':
+          // For columns layout, we have 3 columns (brand, content, newsletter)
+          return { brand: 4, content: !showNewsletter ? 8 : 4, newsletter: !showNewsletter ? 0 : 4 };
+        case 'centered':
+          // For centered layout, brand takes full width, content and newsletter are centered
+          return { brand: 12, content: 12, newsletter: !showNewsletter ? 0 : 12 };
+        case 'minimal':
+          // For minimal layout, everything takes full width
+          return { brand: 12, content: 12, newsletter: !showNewsletter ? 0 : 12 };
+        case 'stacked':
+          // For stacked layout, everything takes full width but stacked vertically
+          return { brand: 12, content: 12, newsletter: !showNewsletter ? 0 : 12 };
+        case 'flexible':
+          // For flexible layout, adjust based on content
+          return { brand: 'auto', content: 'auto', newsletter: 'auto' };
+        case 'sidebar':
+          // For sidebar layout, brand on left, content and newsletter on right
+          return { brand: 3, content: !showNewsletter ? 9 : 9, newsletter: !showNewsletter ? 0 : 9 };
+        case 'wide':
+          // For wide layout, content takes more space
+          return { brand: 3, content: !showNewsletter ? 6 : 6, newsletter: !showNewsletter ? 0 : 3 };
+        default:
+          return { brand: 4, content: !showNewsletter ? 8 : 4, newsletter: !showNewsletter ? 0 : 4 };
+      }
+    };
+
+    const columnSizes = getGridColumnSizes();
+    
+    // Calculate responsive column sizes
+    const getResponsiveColumnProps = (columnType: 'brand' | 'content' | 'newsletter') => {
+      const baseMd = layout === 'columns' || layout === 'sidebar' || layout === 'wide' ? columnSizes[columnType] : 12;
+      
+      // For flexible layout, we want auto-sizing
+      if (layout === 'flexible' && columnSizes[columnType] === 'auto') {
+        return { xs: 12, sm: true, md: true };
+      }
+      
+      // For other layouts, we use specific sizes
+      return { xs: 12, md: baseMd };
+    };
+
     return (
       <footer ref={ref} className={footerClass} {...props}>
         <div className={containerClass}>
           {/* Main Footer Content */}
-          <div className={sectionsClass}>
+          <Grid className={sectionsClass} alignItems="start" justifyContent={layout === 'centered' ? 'center' : undefined}>
             {/* Brand Section */}
             {(brand || brandLogo || brandDescription) && (
-              <div className={brandClass}>
+              <GridCol 
+                {...getResponsiveColumnProps('brand') as any}
+                className={brandClass}
+              >
                 {brandLogo && (
                   <div className="c-footer__brand-logo">
                     {typeof brandLogo === 'string' ? (
@@ -107,7 +156,7 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(
                   </div>
                 )}
                 {socialLinks.length > 0 && (
-                  <div className="c-footer__social">
+                  <div className="c-footer__social" data-testid="footer-social-links">
                     {socialLinks.map((link, index) => (
                       <FooterSocialLink
                         key={`${link.platform}-${index}`}
@@ -120,19 +169,35 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(
                     ))}
                   </div>
                 )}
-              </div>
+              </GridCol>
             )}
 
             {/* Footer Sections */}
             {children && (
-              <div className="c-footer__sections">
-                {children}
-              </div>
+              <GridCol 
+                {...getResponsiveColumnProps('content') as any}
+                className="c-footer__content"
+              >
+                <Grid className='c-footer__sections' alignItems={layout === 'centered' || layout === 'stacked' ? 'center' : undefined}>
+                  {React.Children.map(children, (child) => {
+                    // Check if the child is a valid React element
+                    if (React.isValidElement(child)) {
+                      console.log('Footer - passing showNewsletter:', showNewsletter, typeof showNewsletter);
+                      // Clone the element and pass the showNewsletter prop
+                      return React.cloneElement(child, { showNewsletter } as any);
+                    }
+                    return child;
+                  })}
+                </Grid>
+              </GridCol>
             )}
 
             {/* Newsletter Section */}
             {showNewsletter && (
-              <div className="c-footer__newsletter">
+              <GridCol 
+                {...getResponsiveColumnProps('newsletter') as any}
+                className="c-footer__newsletter"
+              >
                 <h4 className="c-footer__newsletter-title">{newsletterTitle}</h4>
                 {newsletterDescription && (
                   <p className="c-footer__newsletter-description">{newsletterDescription}</p>
@@ -156,14 +221,9 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(
                     </Button>
                   </div>
                 </Form>
-              </div>
+              </GridCol>
             )}
-          </div>
-
-          {/* Footer Bottom */}
-          {(copyright || showBackToTop) && showDivider && (
-            <hr className="c-footer__divider" />
-          )}
+          </Grid>
 
           {(copyright || showBackToTop) && (
             <div className={bottomClass}>

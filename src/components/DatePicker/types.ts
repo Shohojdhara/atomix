@@ -150,6 +150,11 @@ export interface DatePickerProps {
    * @default false
    */
   glass?: boolean | AtomixGlassProps;
+
+  /**
+   * Custom style for the datepicker component
+   */
+  style?: React.CSSProperties;
 }
 
 export interface DatePickerRef {

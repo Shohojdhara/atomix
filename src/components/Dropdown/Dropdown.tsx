@@ -76,10 +76,15 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
     return (
       <li>
         {LinkComponent ? (
-          <LinkComponent {...linkProps}>
-            {icon && <span className="c-dropdown__menu-item-icon">{icon}</span>}
-            {children}
-          </LinkComponent>
+          (() => {
+            const Component = LinkComponent as React.ComponentType<any>;
+            return (
+              <Component {...linkProps}>
+                {icon && <span className="c-dropdown__menu-item-icon">{icon}</span>}
+                {children}
+              </Component>
+            );
+          })()
         ) : (
           <a {...linkProps}>
             {icon && <span className="c-dropdown__menu-item-icon">{icon}</span>}
@@ -342,7 +347,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
       <div
         ref={menuRef}
         id={dropdownId}
-        className={`c-dropdown__menu-wrapper c-dropdown__menu-wrapper--${placement} ${isOpen ? 'is-open' : ''}`}
+        className={`c-dropdown__menu-wrapper c-dropdown__menu-wrapper--${placement} ${isOpen ? 'is-open' : ''} ${glass ? 'is-glass' : ''}`}
         role="menu"
         aria-orientation="vertical"
         aria-hidden={!isOpen}
@@ -352,18 +357,14 @@ export const Dropdown: React.FC<DropdownProps> = ({
           // Default glass settings for dropdowns
           (() => {
             const defaultGlassProps = {
-              displacementScale: 60,
-              blurAmount: 1,
-              saturation: 160,
-              aberrationIntensity: 0.5,
-              cornerRadius: 12,
-              mode: 'shader' as const,
+              displacementScale: 20,
+              elasticity: 0,
             };
 
             const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
             return (
-              <AtomixGlass {...glassProps} style={{position: 'absolute', width: '100%', height: '100%'}}>
+              <AtomixGlass {...glassProps}>
                 {menuContent}
               </AtomixGlass>
             );

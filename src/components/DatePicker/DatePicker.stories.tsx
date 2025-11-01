@@ -211,7 +211,6 @@ export const GlassModeStandard: Story = {
       blurAmount: 3,
       saturation: 160,
       aberrationIntensity: 0,
-      cornerRadius: 12,
       overLight: false,
       elasticity: 0,
     } as any,
@@ -261,7 +260,6 @@ export const GlassModePolar: Story = {
       blurAmount: 2.5,
       saturation: 180,
       aberrationIntensity: 2,
-      cornerRadius: 12,
     } as any,
   },
   render: args => {
@@ -307,7 +305,6 @@ export const GlassModeProminent: Story = {
       blurAmount: 3.5,
       saturation: 200,
       aberrationIntensity: 3,
-      cornerRadius: 12,
     } as any,
   },
   render: args => {
@@ -355,7 +352,6 @@ export const GlassModeShader: Story = {
       displacementScale: 55,
       blurAmount: 2.8,
       saturation: 170,
-      cornerRadius: 12,
     } as any,
   },
   render: args => {
@@ -1067,7 +1063,6 @@ export const GlassEffectCustomized: Story = {
       blurAmount: 0,
       saturation: 180,
       aberrationIntensity: 2,
-      cornerRadius: 16,
       overLight: false,
       mode: 'polar' as const,
     } as any,
@@ -1137,12 +1132,6 @@ export const GlassEffectRangeSelection: Story = {
     selectionMode: 'range',
     placeholder: 'Select date...',
     glass: {
-      displacementScale: 100,
-      blurAmount: 0,
-      saturation: 200,
-      aberrationIntensity: 4,
-      cornerRadius: 16,
-      overLight: false,
       mode: 'prominent' as const,
     } as any,
   },

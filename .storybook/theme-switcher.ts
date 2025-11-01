@@ -8,6 +8,7 @@ const themes = [
   { name: 'Shaj', class: 'shaj-default', color: '#3b82f6' },
   { name: 'BoomDevs', class: 'boomdevs', color: '#8b5cf6' },
   { name: 'Mashroom', class: 'mashroom', color: '#f59e0b' },
+  { name: 'Applemix', class: 'applemix', color: '#f59e0b' },
 ];
 
 interface ThemeSwitcherProps {
@@ -34,16 +35,16 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({ api }) => {
     }
 
     // Listen for story changes
-    api.getChannel().on('storyChanged', handleStoryChanged);
+    addons.getChannel().on('storyChanged', handleStoryChanged);
 
     return () => {
-      api.getChannel().off('storyChanged', handleStoryChanged);
+      addons.getChannel().off('storyChanged', handleStoryChanged);
     };
-  }, [api]);
+  }, [api]); 
 
   const handleThemeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedTheme = event.target.value;
-    api.updateGlobals({ theme: selectedTheme });
+    addons.updateGlobals({ theme: selectedTheme });
   };
 
   return React.createElement(

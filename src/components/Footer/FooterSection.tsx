@@ -1,5 +1,7 @@
 import React, { forwardRef } from 'react';
-import { FooterSectionProps } from '../../lib/types/components';
+import { FooterSectionProps } from '@/lib/types/components';
+import { GridCol } from '@/layouts';
+import { useFooter } from '@/lib/composables/useFooter';
 
 /**
  * FooterSection component provides a section within the footer for organizing links and content.
@@ -12,13 +14,17 @@ import { FooterSectionProps } from '../../lib/types/components';
  * </FooterSection>
  * ```
  */
-export const FooterSection = forwardRef<HTMLDivElement, FooterSectionProps>(
+export const FooterSection = forwardRef<
+  HTMLDivElement,
+  FooterSectionProps & { showNewsletter?: boolean }
+>(
   (
     {
       title,
       icon,
       collapsible = false,
       defaultCollapsed = false,
+      showNewsletter = false,
       children,
       className = '',
       ...props
@@ -27,6 +33,8 @@ export const FooterSection = forwardRef<HTMLDivElement, FooterSectionProps>(
   ) => {
     const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
 
+    console.log('FooterSection render - showNewsletter:', showNewsletter, 'Type:', typeof showNewsletter);
+    
     const handleToggle = () => {
       if (collapsible) {
         setIsCollapsed(!isCollapsed);
@@ -43,41 +51,46 @@ export const FooterSection = forwardRef<HTMLDivElement, FooterSectionProps>(
       .join(' ');
 
     return (
-      <div ref={ref} className={sectionClass} {...props}>
-        {title && (
-          <div className="c-footer__section-header">
-            {collapsible ? (
-              <button
-                type="button"
-                className="c-footer__section-toggle"
-                onClick={handleToggle}
-                aria-expanded={!isCollapsed}
-                aria-controls={`footer-section-${title.toString().toLowerCase().replace(/\s+/g, '-')}`}
-              >
-                {icon && <span className="c-footer__section-icon">{icon}</span>}
-                <h4 className="c-footer__section-title">{title}</h4>
-                <span className="c-footer__section-chevron">
-                  {isCollapsed ? '▼' : '▲'}
-                </span>
-              </button>
-            ) : (
-              <div className="c-footer__section-header-content">
-                {icon && <span className="c-footer__section-icon">{icon}</span>}
-                <h4 className="c-footer__section-title">{title}</h4>
-              </div>
-            )}
+      <GridCol xs={12} md={showNewsletter ? 6 : 3} className="c-footer__section-col">
+        <div ref={ref} className={sectionClass} {...props}>
+          <div>DEBUG: showNewsletter={String(showNewsletter)}, md={showNewsletter ? 6 : 3}</div>
+          {title && (
+            <div className="c-footer__section-header">
+              {collapsible ? (
+                <button
+                  type="button"
+                  className="c-footer__section-toggle"
+                  onClick={handleToggle}
+                  aria-expanded={!isCollapsed}
+                  aria-controls={`footer-section-${title.toString().toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  {icon && <span className="c-footer__section-icon">{icon}</span>}
+                  <h4 className="c-footer__section-title">{title}</h4>
+                  <span className="c-footer__section-chevron">{isCollapsed ? '▼' : '▲'}</span>
+                </button>
+              ) : (
+                <div className="c-footer__section-header-content">
+                  {icon && <span className="c-footer__section-icon">{icon}</span>}
+                  <h4 className="c-footer__section-title">{title}</h4>
+                </div>
+              )}
+            </div>
+          )}
+          <div
+            className="c-footer__section-content"
+            id={
+              title
+                ? `footer-section-${title.toString().toLowerCase().replace(/\s+/g, '-')}`
+                : undefined
+            }
+            style={{
+              display: collapsible && isCollapsed ? 'none' : 'flex',
+            }}
+          >
+            {children}
           </div>
-        )}
-        <div
-          className="c-footer__section-content"
-          id={title ? `footer-section-${title.toString().toLowerCase().replace(/\s+/g, '-')}` : undefined}
-          style={{
-            display: collapsible && isCollapsed ? 'none' : 'block',
-          }}
-        >
-          {children}
         </div>
-      </div>
+      </GridCol>
     );
   }
 );

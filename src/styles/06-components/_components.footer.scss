@@ -6,6 +6,7 @@
 @use '../01-settings/settings.maps' as maps;
 @use '../02-tools/tools.animations' as *;
 @use '../02-tools/tools.background' as *;
+@use '../02-tools/tools.to-rgb' as *;
 
 .c-footer {
   $root: &;
@@ -24,6 +25,12 @@
   --#{$prefix}footer-newsletter-padding: #{rem($footer-newsletter-padding)};
   --#{$prefix}footer-bottom-padding-top: #{rem($footer-bottom-padding-top)};
   --#{$prefix}footer-bottom-margin-top: #{rem($footer-bottom-margin-top)};
+  --#{$prefix}footer-brand-logo-margin-bottom: #{rem($footer-brand-logo-margin-bottom)};
+  --#{$prefix}footer-brand-logo-hover-opacity: #{$footer-brand-logo-hover-opacity};
+  --#{$prefix}footer-section-header-gap: #{rem($footer-section-header-gap)};
+  --#{$prefix}footer-section-toggle-padding: #{$footer-section-toggle-padding};
+  --#{$prefix}footer-bg-rgb: #{to-rgb($footer-bg)};
+  --#{$prefix}disabled-opacity: 0.6;
 
   // Base Styles
   @include dynamic-background(var(--#{$prefix}footer-bg));
@@ -42,28 +49,49 @@
   }
 
   &__sections {
-    display: grid;
-    gap: var(--#{$prefix}footer-section-margin-bottom);
     margin-bottom: var(--#{$prefix}footer-bottom-margin-top);
-    grid-template-columns: 1fr;
-
-    @include media.media-up('md') {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: clamp(2rem, 4vw, 3rem);
+    width: 100%;
+    max-width: var(--#{$prefix}footer-container-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    
+    &--columns {
+      // Default grid behavior
+    }
+    
+    &--centered {
+      justify-content: center;
+      align-items: center;
+    }
+    
+    &--stacked {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: clamp(1.5rem, 4vw, 2.5rem);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 
   // Brand Section
   &__brand {
+    grid-area: brand;
     margin-bottom: var(--#{$prefix}footer-brand-margin-bottom);
+
+    @include media.media-up('md') {
+      margin-bottom: 0;
+    }
 
     &-logo {
       display: inline-block;
-      margin-bottom: 1rem;
+      margin-bottom: var(--#{$prefix}footer-brand-logo-margin-bottom);
       transition: opacity 0.2s ease;
 
       &:hover {
-        opacity: 0.8;
+        opacity: var(--#{$prefix}footer-brand-logo-hover-opacity);
       }
 
       img {
@@ -95,7 +123,12 @@
 
   // Section
   &__section {
-    margin-bottom: var(--#{$prefix}footer-section-margin-bottom);
+    margin-bottom: 0; // Reset margin as grid gap handles spacing
+
+    // Only add margin on mobile when not using grid areas
+    @include media.media-down('sm') {
+      margin-bottom: var(--#{$prefix}footer-section-margin-bottom);
+    }
 
     &-header {
       margin-bottom: #{$footer-section-title-margin-bottom};
@@ -103,7 +136,7 @@
       &-content {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: var(--#{$prefix}footer-section-header-gap);
       }
     }
 
@@ -112,7 +145,7 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      padding: 0.75rem 0;
+      padding: var(--#{$prefix}footer-section-toggle-padding);
       background: none;
       border: none;
       cursor: pointer;
@@ -134,6 +167,7 @@
 
     &-title {
       margin: 0;
+      width: 100%;
       font-size: #{$footer-section-title-font-size};
       font-weight: #{$footer-section-title-font-weight};
       color: #{$footer-section-title-color};
@@ -150,7 +184,7 @@
     &-chevron {
       font-size: 0.875rem;
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      color: var(--#{$prefix}text-muted);
+      color: var(--#{$prefix}gray-6);
     }
 
     &-content {
@@ -246,7 +280,7 @@
       color: #{$footer-link-disabled-color};
       cursor: not-allowed;
       pointer-events: none;
-      opacity: 0.6;
+      opacity: var(--#{$prefix}disabled-opacity);
     }
 
     &-icon {
@@ -296,7 +330,12 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+        background: linear-gradient(
+          45deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.1) 50%,
+          transparent 70%
+        );
         transform: translateX(-100%);
         transition: transform 0.6s ease;
       }
@@ -329,7 +368,7 @@
       }
 
       &--disabled {
-        opacity: 0.5;
+        opacity: var(--#{$prefix}disabled-opacity);
         cursor: not-allowed;
         pointer-events: none;
       }
@@ -352,21 +391,41 @@
       }
 
       // Platform-specific colors with modern gradients
-      &--facebook:hover { background: linear-gradient(135deg, #1877f2, #42a5f5); }
-      &--twitter:hover { background: linear-gradient(135deg, #1da1f2, #64b5f6); }
-      &--instagram:hover { background: linear-gradient(135deg, #e4405f, #f06292, #ba68c8); }
-      &--linkedin:hover { background: linear-gradient(135deg, #0077b5, #42a5f5); }
-      &--youtube:hover { background: linear-gradient(135deg, #ff0000, #ff5722); }
-      &--github:hover { background: linear-gradient(135deg, #333, #666); }
-      &--discord:hover { background: linear-gradient(135deg, #5865f2, #7289da); }
-      &--tiktok:hover { background: linear-gradient(135deg, #000, #ff0050); }
-      &--whatsapp:hover { background: linear-gradient(135deg, #25d366, #66bb6a); }
+      &--facebook:hover {
+        background: linear-gradient(135deg, #1877f2, #42a5f5);
+      }
+      &--twitter:hover {
+        background: linear-gradient(135deg, #1da1f2, #64b5f6);
+      }
+      &--instagram:hover {
+        background: linear-gradient(135deg, #e4405f, #f06292, #ba68c8);
+      }
+      &--linkedin:hover {
+        background: linear-gradient(135deg, #0077b5, #42a5f5);
+      }
+      &--youtube:hover {
+        background: linear-gradient(135deg, #ff0000, #ff5722);
+      }
+      &--github:hover {
+        background: linear-gradient(135deg, #333, #666);
+      }
+      &--discord:hover {
+        background: linear-gradient(135deg, #5865f2, #7289da);
+      }
+      &--tiktok:hover {
+        background: linear-gradient(135deg, #000, #ff0050);
+      }
+      &--whatsapp:hover {
+        background: linear-gradient(135deg, #25d366, #66bb6a);
+      }
     }
   }
 
   // Newsletter
   &__newsletter {
-    @include dynamic-background(linear-gradient(135deg, #{$footer-newsletter-bg}, rgba(#{$footer-newsletter-bg}, 0.8)));
+    @include dynamic-background(
+      linear-gradient(135deg, #{$footer-newsletter-bg}, rgba(#{$footer-newsletter-bg}, 0.8))
+    );
     padding: #{$footer-newsletter-padding};
     border-radius: #{$footer-newsletter-border-radius};
     border: 1px solid var(--#{$prefix}border-subtle);
@@ -397,12 +456,16 @@
       color: #{$footer-newsletter-description-color};
       line-height: 1.6;
       max-width: 45ch;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     &-form {
       display: flex;
       gap: 0.75rem;
       align-items: flex-end;
+      width: 100%;
+      max-width: 100%;
 
       @include media.media-down('sm') {
         flex-direction: column;
@@ -431,6 +494,7 @@
       border-radius: #{$footer-newsletter-input-border-radius};
       outline: none;
       transition: all 0.3s ease;
+      box-sizing: border-box;
 
       &:focus {
         border-color: #{$footer-newsletter-input-focus-border-color};
@@ -439,7 +503,7 @@
       }
 
       &::placeholder {
-        color: var(--#{$prefix}text-muted);
+        color: var(--#{$prefix}gray-6);
         transition: opacity 0.3s ease;
       }
 
@@ -465,7 +529,12 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+        background: linear-gradient(
+          45deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.2) 50%,
+          transparent 70%
+        );
         transform: translateX(-100%);
         transition: transform 0.6s ease;
       }
@@ -527,24 +596,31 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.25rem;
-    @include dynamic-background(var(--#{$prefix}surface-variant));
+    @include dynamic-background(var(--#{$prefix}secondary-bg));
     border: 1px solid var(--#{$prefix}border-subtle);
     color: #{$footer-back-to-top-color};
     font-size: #{$footer-back-to-top-font-size};
     font-weight: #{$footer-back-to-top-font-weight};
     cursor: pointer;
-    transition: #{$footer-back-to-top-transition};
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 2rem;
     position: relative;
     overflow: hidden;
+    text-decoration: none;
+    outline: none;
 
     &::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+      background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.1) 50%,
+        transparent 70%
+      );
       transform: translateX(-100%);
-      transition: transform 0.6s ease;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     &:hover,
@@ -552,8 +628,8 @@
       color: #{$footer-back-to-top-hover-color};
       @include dynamic-background(var(--#{$prefix}primary));
       border-color: var(--#{$prefix}primary);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 
       &::before {
         transform: translateX(100%);
@@ -564,6 +640,11 @@
       }
     }
 
+    &:active {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    }
+
     &:focus-visible {
       outline: 2px solid var(--#{$prefix}primary);
       outline-offset: 2px;
@@ -572,7 +653,7 @@
     &-icon {
       font-size: 1.25em;
       font-weight: bold;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     &-text {
@@ -593,27 +674,11 @@
 
   // Layout Variants
   &--columns {
-    #{$root}__sections {
-      @include media.media-up('md') {
-        display: grid;
-        grid-template-columns: minmax(300px, 1fr) 2fr minmax(250px, 1fr);
-        gap: clamp(2rem, 5vw, 4rem);
-        align-items: start;
-      }
-
-      @include media.media-up('lg') {
-        grid-template-columns: minmax(350px, 1fr) 3fr minmax(300px, 1fr);
-      }
-    }
+    // Removed CSS grid styles to use layout components instead
   }
 
   &--centered {
     text-align: center;
-
-    #{$root}__sections {
-      justify-content: center;
-      align-items: center;
-    }
 
     #{$root}__social {
       justify-content: center;
@@ -627,6 +692,7 @@
 
   &--minimal {
     --#{$prefix}footer-padding-y: #{rem($footer-padding-sm)};
+    --#{$prefix}footer-social-gap: #{rem(0.75)};
 
     #{$root}__sections {
       margin-bottom: 1rem;
@@ -634,7 +700,7 @@
     }
 
     #{$root}__section {
-      margin-bottom: 1rem;
+      margin-bottom: 0;
     }
 
     #{$root}__newsletter {
@@ -654,18 +720,40 @@
       margin-right: auto;
     }
   }
+  
+  &--flexible {
+    #{$root}__section-col {
+      flex: 1 1 auto;
+      min-width: 250px;
+    }
+  }
+  
+  &--sidebar {
+    #{$root}__sections {
+      &--columns {
+        align-items: flex-start;
+      }
+    }
+  }
+  
+  &--wide {
+    #{$root}__sections {
+      max-width: 100%;
+      padding: 0 1rem;
+    }
+  }
 
   // Size Variants
   &--sm {
     --#{$prefix}footer-padding-y: #{rem($footer-padding-sm)};
     --#{$prefix}footer-section-margin-bottom: #{rem(1.5rem)};
-    --#{$prefix}footer-brand-margin-bottom: #{rem(1rem)};
     --#{$prefix}footer-social-gap: #{rem(0.75rem)};
   }
 
   &--md {
     --#{$prefix}footer-padding-y: #{rem($footer-padding-md)};
     --#{$prefix}footer-section-margin-bottom: #{rem(2rem)};
+    --#{$prefix}footer-social-gap: #{rem(1rem)};
   }
 
   &--lg {
@@ -684,7 +772,7 @@
     &--#{$color} {
       --#{$prefix}footer-bg: var(--#{$prefix}#{$color}-bg-subtle);
       --#{$prefix}footer-border-color: var(--#{$prefix}#{$color}-border-subtle);
-      --#{$prefix}footer-color: var(--#{$prefix}#{$color}-text);
+      --#{$prefix}footer-color: var(--#{$prefix}#{$color}-text-emphasis);
 
       #{$root}__brand-name h3,
       #{$root}__section-title {
@@ -693,11 +781,11 @@
 
       #{$root}__brand-description,
       #{$root}__copyright {
-        color: var(--#{$prefix}#{$color}-text-muted);
+        color: var(--#{$prefix}gray-6);
       }
 
       #{$root}__link {
-        color: var(--#{$prefix}#{$color}-text);
+        color: var(--#{$prefix}#{$color}-text-emphasis);
 
         &:hover,
         &:focus {
@@ -710,8 +798,12 @@
       }
 
       #{$root}__newsletter {
-        background: linear-gradient(135deg, var(--#{$prefix}#{$color}-bg), rgba(var(--#{$prefix}#{$color}-bg-rgb), 0.8));
-        border-color: var(--#{$prefix}#{$color}-border);
+        background: linear-gradient(
+          135deg,
+          var(--#{$prefix}#{$color}-bg-subtle),
+          rgba(var(--#{$prefix}#{$color}-bg-subtle), 0.8)
+        );
+        border-color: var(--#{$prefix}#{$color}-border-subtle);
 
         &::before {
           background: linear-gradient(90deg, transparent, var(--#{$prefix}#{$color}), transparent);
@@ -728,32 +820,6 @@
     box-shadow: #{$footer-sticky-box-shadow};
     backdrop-filter: blur(10px);
     background-color: rgba(var(--#{$prefix}footer-bg-rgb), 0.95);
-  }
-
-  // Dark Mode Support
-  @media (prefers-color-scheme: dark) {
-    --#{$prefix}footer-bg: #{$footer-bg-dark};
-    --#{$prefix}footer-color: #{$footer-color-dark};
-    --#{$prefix}footer-border-color: #{$footer-border-color-dark};
-  }
-
-  .dark-mode & {
-    --#{$prefix}footer-bg: #{$footer-bg-dark};
-    --#{$prefix}footer-color: #{$footer-color-dark};
-    --#{$prefix}footer-border-color: #{$footer-border-color-dark};
-
-    #{$root}__newsletter {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-      border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    #{$root}__social-link {
-      background-color: rgba(255, 255, 255, 0.1);
-
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-      }
-    }
   }
 
   // Accessibility

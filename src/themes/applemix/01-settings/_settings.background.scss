@@ -1,0 +1,6 @@
+@use '../../../styles/01-settings/settings.background' with (
+  $background-enable-gradient-overlay: false,
+  $background-transparency-enable: true,
+  $background-enable-with-shadow: false,
+  $background-transparency: 0.5,
+);

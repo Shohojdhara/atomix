@@ -1,0 +1,33 @@
+/*!
+ * Applemix Theme
+ * Apple Mac OS 2026 Liquid Glass inspired theme for Atomix Design System
+ *
+ * Features:
+ * - Liquid glass morphism effects
+ * - Apple-inspired color palette
+ * - Chromatic aberration effects
+ * - Smooth animations and transitions
+ * - AtomixGlass component integration
+ * - Light and dark mode support
+ */
+
+// Settings
+@use '01-settings' as settings;
+
+// Tools
+@use '02-tools' as tools;
+
+// Generic
+@use '03-generic' as generic;
+
+// Elements
+@use '04-elements' as elements;
+
+// Objects
+@use '05-objects' as objects;
+
+// Components
+@use '06-components' as components;
+
+// Utilities
+@use '99-utilities' as utilities;

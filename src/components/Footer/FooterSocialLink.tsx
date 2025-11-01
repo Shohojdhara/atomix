@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+import { Icon } from '../Icon/Icon';
 import { FooterSocialLinkProps } from '../../lib/types/components';
 
 /**
@@ -26,29 +27,35 @@ export const FooterSocialLink = forwardRef<HTMLAnchorElement, FooterSocialLinkPr
     ref
   ) => {
     const getPlatformIcon = (platform: string) => {
-      const icons: Record<string, string> = {
-        facebook: '📘',
-        twitter: '🐦',
-        instagram: '📷',
-        linkedin: '💼',
-        youtube: '📺',
-        github: '🐙',
-        discord: '🎮',
-        tiktok: '🎵',
-        pinterest: '📌',
-        snapchat: '👻',
-        whatsapp: '💬',
-        telegram: '✈️',
-        reddit: '🤖',
-        twitch: '🎮',
-        spotify: '🎵',
-        dribbble: '🏀',
-        behance: '🎨',
-        medium: '📝',
-        dev: '👨‍💻',
-        codepen: '✏️',
+      const iconMap: Record<string, string> = {
+        facebook: 'FacebookLogo',
+        twitter: 'TwitterLogo',
+        instagram: 'InstagramLogo',
+        linkedin: 'LinkedinLogo',
+        youtube: 'YoutubeLogo',
+        github: 'GithubLogo',
+        discord: 'DiscordLogo',
+        tiktok: 'TiktokLogo',
+        pinterest: 'PinterestLogo',
+        snapchat: 'SnapchatLogo',
+        whatsapp: 'WhatsappLogo',
+        telegram: 'TelegramLogo',
+        reddit: 'RedditLogo',
+        twitch: 'TwitchLogo',
+        spotify: 'SpotifyLogo',
+        dribbble: 'DribbbleLogo',
+        behance: 'BehanceLogo',
+        medium: 'MediumLogo',
+        dev: 'DevToLogo',
+        codepen: 'CodepenLogo',
       };
-      return icons[platform] || '🔗';
+      
+      const iconName = iconMap[platform];
+      if (iconName) {
+        return <Icon name={iconName as any} />;
+      }
+      
+      return <Icon name="Link" />;
     };
 
     const getPlatformLabel = (platform: string) => {

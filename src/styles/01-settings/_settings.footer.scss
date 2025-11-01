@@ -8,10 +8,10 @@
 $footer-padding-y: 3rem !default;
 $footer-padding-x: 1rem !default;
 $footer-container-max-width: 1200px !default;
-$footer-bg: var(--#{$prefix}surface) !default;
-$footer-color: var(--#{$prefix}text) !default;
+$footer-bg: var(--#{$prefix}primary-bg) !default;
+$footer-color: var(--#{$prefix}primary-text-emphasis) !default;
 $footer-border-width: 1px !default;
-$footer-border-color: var(--#{$prefix}border) !default;
+$footer-border-color: var(--#{$prefix}primary-border-subtle) !default;
 
 // 2. Footer Brand Settings
 $footer-brand-margin-bottom: 1.5rem !default;
@@ -19,28 +19,32 @@ $footer-brand-logo-max-width: 200px !default;
 $footer-brand-logo-max-height: 60px !default;
 $footer-brand-name-font-size: 1.5rem !default;
 $footer-brand-name-font-weight: 600 !default;
-$footer-brand-name-color: var(--#{$prefix}text-emphasis) !default;
+$footer-brand-name-color: var(--#{$prefix}primary-text-emphasis) !default;
 $footer-brand-description-font-size: 0.875rem !default;
-$footer-brand-description-color: var(--#{$prefix}text-muted) !default;
+$footer-brand-description-color: var(--#{$prefix}secondary-text-emphasis) !default;
 $footer-brand-description-margin-top: 0.5rem !default;
+$footer-brand-logo-margin-bottom: 1rem !default;
+$footer-brand-logo-hover-opacity: 0.8 !default;
 
 // 3. Footer Section Settings
 $footer-section-margin-bottom: 2rem !default;
 $footer-section-title-font-size: 1.125rem !default;
 $footer-section-title-font-weight: 600 !default;
-$footer-section-title-color: var(--#{$prefix}text-emphasis) !default;
+$footer-section-title-color: var(--#{$prefix}primary-text-emphasis) !default;
 $footer-section-title-margin-bottom: 1rem !default;
 $footer-section-content-gap: 0.5rem !default;
+$footer-section-header-gap: 0.5rem !default;
+$footer-section-toggle-padding: 0.75rem 0 !default;
 
 // 4. Footer Link Settings
-$footer-link-color: var(--#{$prefix}text) !default;
+$footer-link-color: var(--#{$prefix}primary-text-emphasis) !default;
 $footer-link-hover-color: var(--#{$prefix}primary) !default;
 $footer-link-active-color: var(--#{$prefix}primary) !default;
-$footer-link-disabled-color: var(--#{$prefix}text-disabled) !default;
+$footer-link-disabled-color: var(--#{$prefix}disabled-text-emphasis) !default;
 $footer-link-text-decoration: none !default;
-$footer-link-hover-text-decoration: underline !default;
+$footer-link-hover-text-decoration: none !default;
 $footer-link-padding: 0.25rem 0 !default;
-$footer-link-transition: color 0.15s ease-in-out !default;
+$footer-link-transition: all 0.15s ease-in-out !default;
 
 // 5. Footer Social Settings
 $footer-social-gap: 0.75rem !default;
@@ -48,55 +52,55 @@ $footer-social-margin-top: 1rem !default;
 $footer-social-link-size: 2.5rem !default;
 $footer-social-link-size-sm: 2rem !default;
 $footer-social-link-size-lg: 3rem !default;
-$footer-social-link-bg: var(--#{$prefix}surface-variant) !default;
-$footer-social-link-color: var(--#{$prefix}text) !default;
+$footer-social-link-bg: var(--#{$prefix}secondary-bg-subtle) !default;
+$footer-social-link-color: var(--#{$prefix}primary-text-emphasis) !default;
 $footer-social-link-hover-bg: var(--#{$prefix}primary) !default;
-$footer-social-link-hover-color: var(--#{$prefix}primary-contrast) !default;
+$footer-social-link-hover-color: var(--#{$prefix}component-active-color) !default;
 $footer-social-link-border-radius: 50% !default;
-$footer-social-link-transition: all 0.15s ease-in-out !default;
+$footer-social-link-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !default;
 
 // 6. Footer Newsletter Settings
-$footer-newsletter-bg: var(--#{$prefix}surface-variant) !default;
+$footer-newsletter-bg: var(--#{$prefix}secondary-bg-subtle) !default;
 $footer-newsletter-padding: 1.5rem !default;
 $footer-newsletter-border-radius: 0.5rem !default;
 $footer-newsletter-title-font-size: 1.125rem !default;
 $footer-newsletter-title-font-weight: 600 !default;
-$footer-newsletter-title-color: var(--#{$prefix}text-emphasis) !default;
+$footer-newsletter-title-color: var(--#{$prefix}primary-text-emphasis) !default;
 $footer-newsletter-title-margin-bottom: 0.5rem !default;
 $footer-newsletter-description-font-size: 0.875rem !default;
-$footer-newsletter-description-color: var(--#{$prefix}text-muted) !default;
+$footer-newsletter-description-color: var(--#{$prefix}secondary-text-emphasis) !default;
 $footer-newsletter-description-margin-bottom: 1rem !default;
-$footer-newsletter-input-border: 1px solid var(--#{$prefix}border) !default;
+$footer-newsletter-input-border: 1px solid var(--#{$prefix}primary-border) !default;
 $footer-newsletter-input-border-radius: 0.375rem !default;
 $footer-newsletter-input-padding: 0.75rem 1rem !default;
 $footer-newsletter-input-font-size: 0.875rem !default;
-$footer-newsletter-input-bg: var(--#{$prefix}surface) !default;
-$footer-newsletter-input-color: var(--#{$prefix}text) !default;
+$footer-newsletter-input-bg: var(--#{$prefix}primary-bg-subtle) !default;
+$footer-newsletter-input-color: var(--#{$prefix}primary-text-emphasis) !default;
 $footer-newsletter-input-focus-border-color: var(--#{$prefix}primary) !default;
 $footer-newsletter-input-focus-box-shadow: 0 0 0 0.125rem rgba(var(--#{$prefix}primary-rgb), 0.25) !default;
-$footer-newsletter-button-bg: var(--#{$prefix}primary) !default;
-$footer-newsletter-button-color: var(--#{$prefix}primary-contrast) !default;
-$footer-newsletter-button-hover-bg: var(--#{$prefix}primary-hover) !default;
+$footer-newsletter-button-bg: var(--#{$prefix}brand-bg-subtle) !default;
+$footer-newsletter-button-color: var(--#{$prefix}brand-text-emphasis) !default;
+$footer-newsletter-button-hover-bg: var(--#{$prefix}secondary-bg-subtle) !default;
 $footer-newsletter-button-padding: 0.75rem 1.5rem !default;
 $footer-newsletter-button-border-radius: 0.375rem !default;
 $footer-newsletter-button-font-weight: 500 !default;
-$footer-newsletter-button-transition: background-color 0.15s ease-in-out !default;
+$footer-newsletter-button-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !default;
 
 // 7. Footer Bottom Settings
 $footer-bottom-padding-top: 1.5rem !default;
 $footer-bottom-margin-top: 2rem !default;
-$footer-bottom-border-top: 1px solid var(--#{$prefix}border) !default;
+$footer-bottom-border-top: 1px solid var(--#{$prefix}primary-border-subtle) !default;
 $footer-copyright-font-size: 0.875rem !default;
-$footer-copyright-color: var(--#{$prefix}text-muted) !default;
-$footer-back-to-top-color: var(--#{$prefix}text) !default;
-$footer-back-to-top-hover-color: var(--#{$prefix}primary) !default;
+$footer-copyright-color: var(--#{$prefix}tertiary-text-emphasis) !default;
+$footer-back-to-top-color: var(--#{$prefix}primary-text-emphasis) !default;
+$footer-back-to-top-hover-color: var(--#{$prefix}secondary-text-emphasis) !default;
 $footer-back-to-top-font-size: 0.875rem !default;
 $footer-back-to-top-font-weight: 500 !default;
-$footer-back-to-top-transition: color 0.15s ease-in-out !default;
+$footer-back-to-top-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !default;
 
 // 8. Footer Divider Settings
 $footer-divider-margin: 2rem 0 !default;
-$footer-divider-border: 1px solid var(--#{$prefix}border) !default;
+$footer-divider-border: 1px solid var(--#{$prefix}primary-border-subtle) !default;
 $footer-divider-opacity: 0.5 !default;
 
 // 9. Footer Size Variants
@@ -110,16 +114,5 @@ $footer-mobile-section-margin-bottom: 1.5rem !default;
 $footer-mobile-brand-margin-bottom: 1rem !default;
 
 // 11. Footer Sticky Settings
-$footer-sticky-z-index: 10 !default;
+$footer-sticky-z-index: 100 !default;
 $footer-sticky-box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1) !default;
-
-// 12. Dark Mode Settings
-$footer-bg-dark: var(--#{$prefix}surface-dark) !default;
-$footer-color-dark: var(--#{$prefix}text-dark) !default;
-$footer-border-color-dark: var(--#{$prefix}border-dark) !default;
-$footer-brand-name-color-dark: var(--#{$prefix}text-emphasis-dark) !default;
-$footer-brand-description-color-dark: var(--#{$prefix}text-muted-dark) !default;
-$footer-section-title-color-dark: var(--#{$prefix}text-emphasis-dark) !default;
-$footer-link-color-dark: var(--#{$prefix}text-dark) !default;
-$footer-link-hover-color-dark: var(--#{$prefix}primary-dark) !default;
-$footer-copyright-color-dark: var(--#{$prefix}text-muted-dark) !default;

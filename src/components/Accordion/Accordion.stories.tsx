@@ -321,7 +321,6 @@ export const GlassCustom: Story = {
       displacementScale: 180,
       blurAmount: 3,
       saturation: 60,
-      cornerRadius: 4,
       mode: 'polar',
     } as AtomixGlassProps as any,
   },
@@ -377,7 +376,6 @@ export const GlassGroup: Story = {
       displacementScale: 180,
       blurAmount: 1,
       saturation: 60,
-      cornerRadius: 4,
       mode: 'shader',
       ShaderVariant: 'premiumGlass',
     } as any,
@@ -459,14 +457,7 @@ export const GlassModeStandard: Story = {
         <p>The standard mode provides a refined glass appearance perfect for elegant interfaces.</p>
       </div>
     ),
-    glass: {
-      mode: 'standard',
-      displacementScale: 60,
-      blurAmount: 2,
-      saturation: 160,
-      aberrationIntensity: 2,
-      cornerRadius: 4,
-    } as any,
+    glass: true,
   },
   render: args => (
     <div
@@ -513,7 +504,6 @@ export const GlassModePolar: Story = {
       blurAmount: 1.5,
       saturation: 180,
       aberrationIntensity: 3,
-      cornerRadius: 4,
     } as any,
   },
   render: args => (
@@ -559,7 +549,6 @@ export const GlassModeProminent: Story = {
       blurAmount: 2.5,
       saturation: 200,
       aberrationIntensity: 4,
-      cornerRadius: 4,
     } as any,
   },
   render: args => (
@@ -605,7 +594,6 @@ export const GlassModeShader: Story = {
       displacementScale: 70,
       blurAmount: 1.8,
       saturation: 170,
-      cornerRadius: 4,
     } as any,
   },
   render: args => (
@@ -687,15 +675,7 @@ export const AllGlassModesComparison: Story = {
             </h3>
             <Accordion
               title="Standard Glass"
-              glass={
-                {
-                  mode: 'standard',
-                  displacementScale: 60,
-                  blurAmount: 2,
-                  saturation: 160,
-                  aberrationIntensity: 2,
-                } as any
-              }
+              glass={true}
             >
               <p>Classic blur and displacement effects for a refined glass appearance.</p>
             </Accordion>

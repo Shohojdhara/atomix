@@ -139,20 +139,8 @@
   }
 
   &--glass {
-    background-color: transparent;
-    padding: 0;
-    border: none;
-    display: block;
-    border-radius: 0;
-
-    #{$root}__glass-content {
-      padding: var(--#{$prefix}card-spacer-y) var(--#{$prefix}card-spacer-x);
-      max-width: var(--#{$prefix}card-width);
-      border-radius: var(--#{$prefix}card-border-radius);
-      width: 100%;
-      @include dynamic-background(var(--#{$prefix}card-bg), $background-transparency-enable: true);
-      background-blend-mode: overlay;
-    }
+    max-width: none;
+    @include dynamic-background(var(--#{$prefix}card-bg), $background-transparency-enable: true);
   }
 }
 

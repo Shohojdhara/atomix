@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Footer } from './Footer';
 import { FooterSection } from './FooterSection';
@@ -10,14 +11,14 @@ const meta: Meta<typeof Footer> = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'A modern, comprehensive footer component with enhanced visual effects, accessibility features, responsive design, and multiple layout variants following Atomix design patterns.',
+        component: 'A modern, comprehensive footer component with enhanced visual effects, accessibility features, responsive design, and multiple layout variants. Features include design token integration, improved hover effects, modern gradients, and comprehensive accessibility support following Atomix design patterns.',
       },
     },
   },
   argTypes: {
     layout: {
       control: 'select',
-      options: ['columns', 'centered', 'minimal', 'stacked'],
+      options: ['columns', 'centered', 'minimal', 'stacked', 'flexible', 'sidebar', 'wide'],
       description: 'Footer layout variant',
     },
     variant: {
@@ -77,48 +78,62 @@ const SampleFooterContent = () => (
       <FooterLink href="/blog">Blog</FooterLink>
       <FooterLink href="/contact">Contact</FooterLink>
     </FooterSection>
-    
-    <FooterSection title="Support">
-      <FooterLink href="/help">Help Center</FooterLink>
-      <FooterLink href="/docs">Documentation</FooterLink>
-      <FooterLink href="/community">Community</FooterLink>
-      <FooterLink href="/status">Status</FooterLink>
+
+     
+    <FooterSection title="Company">
+      <FooterLink href="/about">About Us</FooterLink>
+      <FooterLink href="/careers">Careers</FooterLink>
+      <FooterLink href="/blog">Blog</FooterLink>
+      <FooterLink href="/contact">Contact</FooterLink>
     </FooterSection>
-    
-    <FooterSection title="Legal">
-      <FooterLink href="/privacy">Privacy Policy</FooterLink>
-      <FooterLink href="/terms">Terms of Service</FooterLink>
-      <FooterLink href="/cookies">Cookie Policy</FooterLink>
-      <FooterLink href="/licenses">Licenses</FooterLink>
+
+     
+    <FooterSection title="Company">
+      <FooterLink href="/about">About Us</FooterLink>
+      <FooterLink href="/careers">Careers</FooterLink>
+      <FooterLink href="/blog">Blog</FooterLink>
+      <FooterLink href="/contact">Contact</FooterLink>
     </FooterSection>
+  
   </>
 );
 
-export const Default: Story = {
+const LayoutTemplate: Story = {
   args: {
     brand: 'Atomix',
-    brandDescription: 'A modern, accessible design system and component library for building beautiful user interfaces.',
-    copyright: '© 2024 Atomix. All rights reserved.',
+    brandDescription: 'A modern design system for building accessible web applications.',
+    copyright: '© 2024 Atomix UI. All rights reserved.',
     layout: 'columns',
     variant: 'primary',
     size: 'md',
-    socialLinks: sampleSocialLinks,
     showNewsletter: false,
     showBackToTop: false,
     showDivider: true,
     sticky: false,
+    socialLinks: sampleSocialLinks,
   },
   render: (args) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--atomix-surface)' }}>
-        <h1>Page Content</h1>
-        <p>This is sample page content to demonstrate the footer component.</p>
+      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)', padding: '2rem' }}>
+        <h1>Main Content</h1>
+        <p>This is sample page content to demonstrate the footer in context.</p>
       </div>
       <Footer {...args}>
         <SampleFooterContent />
       </Footer>
     </div>
   ),
+};
+
+export const Default: Story = {
+  ...LayoutTemplate,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Default footer configuration with modern styling, design tokens, and enhanced visual effects.',
+      },
+    },
+  },
 };
 
 export const WithNewsletter: Story = {
@@ -148,28 +163,29 @@ export const WithBackToTop: Story = {
 };
 
 export const Centered: Story = {
+  ...LayoutTemplate,
   args: {
-    ...Default.args,
+    ...LayoutTemplate.args,
     layout: 'centered',
     showNewsletter: true,
     showBackToTop: true,
   },
-  render: Default.render,
 };
 
 export const Minimal: Story = {
+  ...LayoutTemplate,
   args: {
-    brand: 'Atomix',
-    copyright: '© 2024 Atomix. All rights reserved.',
+    ...LayoutTemplate.args,
     layout: 'minimal',
     variant: 'light',
     size: 'sm',
     socialLinks: sampleSocialLinks.slice(0, 3),
     showDivider: false,
+    showNewsletter: false,
   },
   render: (args) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--atomix-surface)' }}>
+      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
         <h1>Page Content</h1>
         <p>This is sample page content with a minimal footer.</p>
       </div>
@@ -185,13 +201,13 @@ export const Minimal: Story = {
 };
 
 export const Stacked: Story = {
+  ...LayoutTemplate,
   args: {
-    ...Default.args,
+    ...LayoutTemplate.args,
     layout: 'stacked',
     showNewsletter: true,
     showBackToTop: true,
   },
-  render: Default.render,
 };
 
 export const DarkVariant: Story = {
@@ -266,7 +282,7 @@ export const CollapsibleSections: Story = {
   },
   render: (args) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--atomix-surface)' }}>
+      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
         <h1>Collapsible Footer Sections</h1>
         <p>Resize the window to mobile size to see collapsible sections.</p>
       </div>
@@ -281,12 +297,6 @@ export const CollapsibleSections: Story = {
           <FooterLink href="/about">About Us</FooterLink>
           <FooterLink href="/careers">Careers</FooterLink>
           <FooterLink href="/blog">Blog</FooterLink>
-        </FooterSection>
-        
-        <FooterSection title="Support" collapsible>
-          <FooterLink href="/help">Help Center</FooterLink>
-          <FooterLink href="/docs">Documentation</FooterLink>
-          <FooterLink href="/community">Community</FooterLink>
         </FooterSection>
       </Footer>
     </div>
@@ -305,7 +315,7 @@ export const WithExternalLinks: Story = {
   },
   render: (args) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--atomix-surface)' }}>
+      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
         <h1>Modern Social Links</h1>
         <p>Footer with enhanced social platforms and modern styling.</p>
       </div>
@@ -348,6 +358,54 @@ export const ModernGradients: Story = {
   ),
 };
 
+export const DesignTokensShowcase: Story = {
+  args: {
+    ...Default.args,
+    brand: 'Design Tokens',
+    brandDescription: 'Showcasing consistent design tokens, modern hover effects, and enhanced visual styling throughout the footer component.',
+    showNewsletter: true,
+    showBackToTop: true,
+    socialLinks: sampleSocialLinks,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates the use of design tokens for consistent styling, enhanced hover effects, modern gradients, and improved accessibility features.',
+      },
+    },
+  },
+  render: (args) => (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
+        <h1>Design Token Integration</h1>
+        <p>This footer demonstrates consistent use of design tokens for colors, spacing, shadows, and typography. Hover over elements to see enhanced visual effects.</p>
+        <ul>
+          <li>✨ Global CSS variables for box shadows</li>
+          <li>🎨 Design token-based colors and opacity</li>
+          <li>📏 Consistent spacing using rem() function</li>
+          <li>🔄 Smooth transitions and hover effects</li>
+          <li>♿ Enhanced accessibility features</li>
+        </ul>
+      </div>
+      <Footer {...args}>
+        <FooterSection title="Design System">
+          <FooterLink href="/tokens">Design Tokens</FooterLink>
+          <FooterLink href="/components">Components</FooterLink>
+          <FooterLink href="/guidelines">Guidelines</FooterLink>
+          <FooterLink href="/accessibility">Accessibility</FooterLink>
+        </FooterSection>
+        
+        <FooterSection title="Development">
+          <FooterLink href="/scss">SCSS Architecture</FooterLink>
+          <FooterLink href="/css-vars">CSS Variables</FooterLink>
+          <FooterLink href="/responsive">Responsive Design</FooterLink>
+          <FooterLink href="/performance">Performance</FooterLink>
+        </FooterSection>
+      </Footer>
+    </div>
+  ),
+};
+
 export const AccessibilityFocused: Story = {
   args: {
     ...Default.args,
@@ -356,7 +414,7 @@ export const AccessibilityFocused: Story = {
   },
   render: (args) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--atomix-surface)' }}>
+      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
         <h1>Accessibility Features</h1>
         <p>Tab through the footer elements to see enhanced focus states and keyboard navigation.</p>
       </div>
@@ -376,7 +434,7 @@ export const ResponsiveShowcase: Story = {
   },
   render: (args) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, padding: '2rem', backgroundColor: 'var(--atomix-surface)' }}>
+      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
         <h1>Responsive Design</h1>
         <p>Resize the viewport to see responsive grid layouts and collapsible sections.</p>
       </div>
@@ -385,4 +443,49 @@ export const ResponsiveShowcase: Story = {
       </Footer>
     </div>
   ),
+};
+
+export const Flexible: Story = {
+  ...LayoutTemplate,
+  args: {
+    ...LayoutTemplate.args,
+    layout: 'flexible',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Flexible layout that automatically adapts to content width and screen size. Perfect for dynamic content scenarios.',
+      },
+    },
+  },
+};
+
+export const Sidebar: Story = {
+  ...LayoutTemplate,
+  args: {
+    ...LayoutTemplate.args,
+    layout: 'sidebar',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Sidebar layout with brand and newsletter in a left sidebar and content sections in the main area.',
+      },
+    },
+  },
+};
+
+export const Wide: Story = {
+  ...LayoutTemplate,
+  args: {
+    ...LayoutTemplate.args,
+    layout: 'wide',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Wide layout optimized for large screens with generous spacing and extended content areas.',
+      },
+    },
+  },
 };

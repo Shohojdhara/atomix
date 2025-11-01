@@ -40,6 +40,23 @@ export const themesConfig = {
       tags: ['dark', 'contrast'],
       supportsDarkMode: true
     },
+    'applemix': {
+      name: 'Applemix',
+      description: 'Apple Mac OS 2026 Liquid Glass inspired theme with morphism effects',
+      author: 'Atomix Design System',
+      version: '1.0.0',
+      tags: ['glass', 'apple', 'modern', 'liquid', 'morphism'],
+      supportsDarkMode: true,
+      features: [
+        'Liquid glass morphism effects',
+        'Apple-inspired color palette',
+        'Chromatic aberration effects',
+        'Smooth animations and transitions',
+        'AtomixGlass component integration',
+        'Comprehensive component overrides',
+        'Light and dark mode support'
+      ]
+    },
   },
 
   // Build configuration

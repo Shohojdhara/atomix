@@ -8,6 +8,11 @@ export interface UploadProps {
   disabled?: boolean;
 
   /**
+   * Size variant of the upload component
+   */
+  size?: 'sm' | 'md' | 'lg';
+
+  /**
    * Maximum file size in MB
    */
   maxSizeInMB?: number;
@@ -71,6 +76,11 @@ export interface UploadProps {
    * Additional CSS class
    */
   className?: string;
+
+  /**
+   * Custom style for the upload component
+   */
+  style?: React.CSSProperties;
 }
 
 /**
@@ -83,6 +93,7 @@ type UploadStatus = 'idle' | 'loading' | 'success' | 'error';
  */
 export const Upload: React.FC<UploadProps> = ({
   disabled = false,
+  size = 'md',
   maxSizeInMB = 5,
   acceptedFileTypes = [
     'application/pdf',
@@ -273,16 +284,40 @@ export const Upload: React.FC<UploadProps> = ({
     setSuccessMessage(null);
   };
 
+  // Build CSS classes
+  const uploadClasses = [
+    'c-upload',
+    size !== 'md' && `c-upload--${size}`,
+    isDragging && UPLOAD.CLASSES.DRAGGING,
+    disabled && UPLOAD.CLASSES.DISABLED,
+    status === 'loading' && 'c-upload--loading',
+    status === 'success' && 'c-upload--success',
+    status === 'error' && 'c-upload--error',
+    className
+  ].filter(Boolean).join(' ');
+
   return (
     <div
-      className={`c-upload ${isDragging ? UPLOAD.CLASSES.DRAGGING : ''} ${disabled ? UPLOAD.CLASSES.DISABLED : ''} ${className}`}
+      className={uploadClasses}
       style={style}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <div className="c-upload__inner">
+      <div 
+        className="c-upload__inner"
+        role="button"
+        tabIndex={disabled ? -1 : 0}
+        aria-label={`${title}. ${supportedFilesText}. ${helperText}`}
+        aria-disabled={disabled}
+        onKeyDown={(e) => {
+          if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
+            e.preventDefault();
+            handleButtonClick();
+          }
+        }}
+      >
         {/* Hidden file input */}
         <input
           type="file"
@@ -292,28 +327,28 @@ export const Upload: React.FC<UploadProps> = ({
           disabled={disabled}
           accept={acceptedFileTypes.join(',')}
           multiple={multiple}
+          aria-hidden="true"
         />
 
-        {/* Drag and drop area */}
-        <div className="c-upload__inner">
-          <div className="c-upload__icon">{icon}</div>
-          <h3 className="c-upload__title">{title}</h3>
-          <p className="c-upload__text">{supportedFilesText}</p>
+        {/* Drag and drop area content */}
+        <div className="c-upload__icon">{icon}</div>
+        <h3 className="c-upload__title">{title}</h3>
+        <p className="c-upload__text">{supportedFilesText}</p>
 
-          <button
-            type="button"
-            className="c-upload__btn c-btn"
-            onClick={handleButtonClick}
-            disabled={disabled}
-          >
-            {buttonText}
-          </button>
+        <button
+          type="button"
+          className="c-upload__btn c-btn"
+          onClick={handleButtonClick}
+          disabled={disabled}
+        >
+          {buttonText}
+        </button>
 
-          <p className="c-upload__helper-text">{helperText}</p>
-        </div>
+        <p className="c-upload__helper-text">{helperText}</p>
+      </div>
 
-        {/* Progress and status area */}
-        {status !== 'idle' && (
+      {/* Progress and status area */}
+      {status !== 'idle' && (
           <div
             className="c-upload__loader"
             style={{ '--upload-loader-percentage': uploadProgress } as React.CSSProperties}
@@ -338,8 +373,9 @@ export const Upload: React.FC<UploadProps> = ({
                 </div>
                 <button
                   type="button"
-                  className="c-upload__loader-close c-btn"
+                  className="c-upload__loader-close"
                   onClick={resetUpload}
+                  aria-label="Close upload progress"
                 >
                   <i className="icon-lux-x"></i>
                 </button>
@@ -347,7 +383,6 @@ export const Upload: React.FC<UploadProps> = ({
             )}
           </div>
         )}
-      </div>
     </div>
   );
 };

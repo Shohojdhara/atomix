@@ -140,10 +140,8 @@ export const Accordion: React.FC<AccordionProps> = ({
   if (glass) {
     // Default glass settings for accordions
     const defaultGlassProps = {
-      displacementScale: 60,
-      blurAmount: 1.5,
-      cornerRadius: 4,
-      mode: 'shader' as const,
+      displacementScale: 20,
+      elasticity: 0,
     };
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };

@@ -1,7 +1,8 @@
 import { addons } from '@storybook/preview-api';
 import type { Preview } from '@storybook/react';
 import { useEffect } from 'react';
-import '../src/styles/index.scss';
+// import '../src/styles/index.scss';
+import '../src/themes/applemix/index.scss';
 
 // Theme list
 const themes = [
@@ -9,6 +10,7 @@ const themes = [
   { name: 'Shaj', class: 'shaj-default', color: '#3b82f6' },
   { name: 'BoomDevs', class: 'boomdevs', color: '#8b5cf6' },
   { name: 'None', class: 'none', color: '#ef4444' },
+  { name: 'Applemix', class: 'applemix', color: '#f5f5f5' },
 ];
 
 const preview: Preview = {

@@ -169,7 +169,7 @@ export const BackgroundWrapper = ({
 
   return (
     <div
-      className={`atomix-glass-background ${className}`}
+      className={`c-atomix-glass-background ${className}`}
       style={{
         position: 'relative',
         height: height,

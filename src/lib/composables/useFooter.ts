@@ -82,5 +82,6 @@ export function useFooter(options: UseFooterOptions = {}) {
     handleNewsletterSubmit,
     handleBackToTop,
     socialLinks,
+    showNewsletter,
   };
 }

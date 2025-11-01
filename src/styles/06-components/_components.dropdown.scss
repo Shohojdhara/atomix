@@ -88,7 +88,6 @@
     display: flex;
     opacity: 0;
     visibility: hidden;
-    transform-origin: top center;
     // Improved transitions - shorter and with better easing
     transition:
       opacity var(--#{$prefix}dropdown-animation-duration)
@@ -97,11 +96,15 @@
         var(--#{$prefix}dropdown-animation-timing),
       transform var(--#{$prefix}dropdown-animation-duration)
         var(--#{$prefix}dropdown-animation-timing);
-    transform: translateY(-15px) scale(0.95);
     pointer-events: none;
-    will-change: transform, opacity, visibility;
 
-    &.is-open {
+    &:not(.is-glass) {
+      will-change: transform, opacity, visibility;
+      transform: translateY(-15px) scale(0.95);
+      transform-origin: top center;
+    }
+
+    &.is-open:not(.is-glass) {
       opacity: 1;
       transform: translateY(0) scale(1);
       visibility: visible;
@@ -110,7 +113,13 @@
       pointer-events: auto;
     }
 
-    &:not(.is-open) {
+    &.is-open.is-glass {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    &:not(.is-open):not(.is-glass) {
       animation: #{$prefix}dropdown-fade-out var(--#{$prefix}dropdown-animation-duration)
         var(--#{$prefix}dropdown-animation-timing) forwards;
     }
@@ -177,14 +186,17 @@
     padding: var(--#{$prefix}dropdown-padding-y) var(--#{$prefix}dropdown-padding-x);
     list-style: none;
     @include mb(0);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     @include dynamic-background(var(--#{$prefix}dropdown-bg));
     border-radius: var(--#{$prefix}dropdown-border-radius);
     box-shadow: var(--#{$prefix}dropdown-box-shadow);
     overflow: hidden;
 
     &--glass {
-      @include dynamic-background(var(--#{$prefix}dropdown-bg), $background-transparency-enable: true);
+      @include dynamic-background(
+        var(--#{$prefix}dropdown-bg),
+        $background-transparency-enable: true
+      );
       box-shadow: var(--#{$prefix}dropdown-box-shadow);
     }
   }

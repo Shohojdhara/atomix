@@ -513,14 +513,7 @@ export const DatePicker = forwardRef<DatePickerRef, DatePickerProps>(
                 <AtomixGlass
                   {...(glass === true
                     ? {
-                        displacementScale: 50,
-                        blurAmount: 3,
-                        saturation: 160,
-                        aberrationIntensity: 0,
-                        cornerRadius: 12,
-                        overLight: false,
-                        elasticity: 0,
-                        mode: 'standard' as const,
+                        displacementScale: 20,
                       }
                     : glass)}
                 >
