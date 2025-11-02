@@ -59,10 +59,7 @@ const DemoCard: React.FC<{
         variant === 'secondary' ? 'u-bg-success-subtle' : ''
       } ${variant === 'accent' ? 'u-bg-info-subtle' : ''}`}
     >
-      <div 
-        className="u-d-flex u-flex-column u-h-100"
-        style={{ minHeight: heightStyles[height] }}
-      >
+      <div className="u-d-flex u-flex-column u-h-100" style={{ minHeight: heightStyles[height] }}>
         <div className="u-flex-grow-1 u-d-flex u-align-items-center u-justify-content-center">
           <div className="u-text-center">{children}</div>
         </div>
@@ -170,7 +167,9 @@ export const GettingStarted: Story = {
 export const LayoutPatterns: Story = {
   render: () => (
     <div className="u-mb-8">
-      <h1 className="u-mb-6 u-text-brand-emphasis u-border-bottom u-pb-2">Common Layout Patterns</h1>
+      <h1 className="u-mb-6 u-text-brand-emphasis u-border-bottom u-pb-2">
+        Common Layout Patterns
+      </h1>
 
       {/* Sidebar Layout */}
       <div className="u-mb-8">
@@ -243,9 +242,7 @@ export const LayoutPatterns: Story = {
       {/* Article Layout */}
       <div className="u-mb-8">
         <h2 className="u-mb-4 u-text-brand-emphasis">Article Layout</h2>
-        <p className="u-mb-4 u-text-secondary-emphasis">
-          Centered content with optional sidebar:
-        </p>
+        <p className="u-mb-4 u-text-secondary-emphasis">Centered content with optional sidebar:</p>
 
         <Grid className="u-mb-4">
           <GridCol xs={12} md={8} offsetMd={2}>
@@ -275,9 +272,7 @@ export const ColumnSizing: Story = {
       {/* Fixed Sizes */}
       <div className="u-mb-8">
         <h2 className="u-mb-4 u-text-brand-emphasis">Fixed Column Sizes</h2>
-        <p className="u-mb-4 u-text-secondary-emphasis">
-          Specify exact column widths (1-12):
-        </p>
+        <p className="u-mb-4 u-text-secondary-emphasis">Specify exact column widths (1-12):</p>
 
         <Grid className="u-mb-4">
           <GridCol xs={2}>
@@ -384,9 +379,7 @@ export const ColumnOffsets: Story = {
       {/* Basic Offsets */}
       <div className="u-mb-8">
         <h2 className="u-mb-4 u-text-brand-emphasis">Basic Offsets</h2>
-        <p className="u-mb-4 u-text-secondary-emphasis">
-          Push columns to the right using offsets:
-        </p>
+        <p className="u-mb-4 u-text-secondary-emphasis">Push columns to the right using offsets:</p>
 
         <Grid className="u-mb-4">
           <GridCol xs={4}>
@@ -410,9 +403,7 @@ export const ColumnOffsets: Story = {
       {/* Centering */}
       <div className="u-mb-8">
         <h2 className="u-mb-4 u-text-brand-emphasis">Centering Content</h2>
-        <p className="u-mb-4 u-text-secondary-emphasis">
-          Center columns using equal offsets:
-        </p>
+        <p className="u-mb-4 u-text-secondary-emphasis">Center columns using equal offsets:</p>
 
         <Grid className="u-mb-4">
           <GridCol xs={6} offsetXs={3}>
@@ -484,9 +475,7 @@ export const Containers: Story = {
         <Container type="fluid" className="u-mb-4">
           <DemoCard variant="secondary" height="md">
             <div className="u-fs-lg u-fw-bold">Fluid Container</div>
-            <div className="u-fs-sm u-text-secondary-emphasis u-mt-2">
-              Full viewport width
-            </div>
+            <div className="u-fs-sm u-text-secondary-emphasis u-mt-2">Full viewport width</div>
           </DemoCard>
         </Container>
       </div>
@@ -678,9 +667,7 @@ export const AlignmentAndSpacing: Story = {
       {/* No Gutters */}
       <div className="u-mb-8">
         <h2 className="u-mb-4 u-text-brand-emphasis">No Gutters</h2>
-        <p className="u-mb-4 u-text-secondary-emphasis">
-          Remove spacing between columns:
-        </p>
+        <p className="u-mb-4 u-text-secondary-emphasis">Remove spacing between columns:</p>
 
         <div className="u-mb-6">
           <h3 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">With gutters (default)</h3>

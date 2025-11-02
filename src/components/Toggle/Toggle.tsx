@@ -107,11 +107,7 @@ export const Toggle: React.FC<ToggleProps> = ({
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-    return (
-      <AtomixGlass {...glassProps}>
-        {toggleContent}
-      </AtomixGlass>
-    );
+    return <AtomixGlass {...glassProps}>{toggleContent}</AtomixGlass>;
   }
 
   return toggleContent;

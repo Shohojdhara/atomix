@@ -315,9 +315,9 @@ export const Playground: Story = {
       'standard'
     );
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [selectedShader, setSelectedShader] = useState<'liquidGlass' | 'plasma' | 'waves' | 'noise'>(
-      'liquidGlass'
-    );
+    const [selectedShader, setSelectedShader] = useState<
+      'liquidGlass' | 'plasma' | 'waves' | 'noise'
+    >('liquidGlass');
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [showCode, setShowCode] = useState(false);
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -500,7 +500,7 @@ export const Playground: Story = {
       'https://images.unsplash.com/photo-1653443688877-ff1d74f1e4a0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987',
       'https://images.unsplash.com/photo-1495164678535-ecbd76d9fa7d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2669',
       'https://images.unsplash.com/photo-1742502575383-b908da0fb3ba?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2673',
-      'https://images.unsplash.com/photo-1627057075078-26c7caf11dc2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2674'
+      'https://images.unsplash.com/photo-1627057075078-26c7caf11dc2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2674',
     ];
 
     return (
@@ -508,9 +508,9 @@ export const Playground: Story = {
         <div className="o-container">
           <div className="o-grid">
             <div className="o-grid__col o-grid__col--4">
-            {/* Control Panel */}
+              {/* Control Panel */}
 
-              <AtomixGlass blurAmount={10} elasticity={0} displacementScale={20} padding='20px'>
+              <AtomixGlass blurAmount={10} elasticity={0} displacementScale={20} padding="20px">
                 <div
                   style={{
                     height: '90vh',
@@ -827,7 +827,7 @@ export const Playground: Story = {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: '3rem'
+                  padding: '3rem',
                 }}
               >
                 {showCode ? (
@@ -925,19 +925,41 @@ export const Playground: Story = {
                         {/* Current Configuration */}
                         <div
                           className="u-p-4 u-rounded"
-                          style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}
+                          style={{
+                            background: 'rgba(255,255,255,0.08)',
+                            border: '1px solid rgba(255,255,255,0.15)',
+                          }}
                         >
-                          <div className="u-mb-3 u-fw-semibold u-fs-sm" style={{ color: '#7AFFD7' }}>
+                          <div
+                            className="u-mb-3 u-fw-semibold u-fs-sm"
+                            style={{ color: '#7AFFD7' }}
+                          >
                             📊 Current Configuration
                           </div>
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr', gap: '0.75rem' }}>
+                          <div
+                            style={{
+                              display: 'grid',
+                              gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr',
+                              gap: '0.75rem',
+                            }}
+                          >
                             <div>
                               <div className="u-fs-xs u-opacity-70">Mode</div>
-                              <div className="u-fw-semibold" style={{ textTransform: 'capitalize' }}>{selectedMode}</div>
+                              <div
+                                className="u-fw-semibold"
+                                style={{ textTransform: 'capitalize' }}
+                              >
+                                {selectedMode}
+                              </div>
                             </div>
                             <div>
                               <div className="u-fs-xs u-opacity-70">Shader</div>
-                              <div className="u-fw-semibold" style={{ textTransform: 'capitalize' }}>{selectedShader}</div>
+                              <div
+                                className="u-fw-semibold"
+                                style={{ textTransform: 'capitalize' }}
+                              >
+                                {selectedShader}
+                              </div>
                             </div>
                             <div>
                               <div className="u-fs-xs u-opacity-70">Displacement</div>
@@ -945,7 +967,9 @@ export const Playground: Story = {
                             </div>
                             <div>
                               <div className="u-fs-xs u-opacity-70">Aberration</div>
-                              <div className="u-fw-semibold">{settings.aberrationIntensity.toFixed(1)}</div>
+                              <div className="u-fw-semibold">
+                                {settings.aberrationIntensity.toFixed(1)}
+                              </div>
                             </div>
                             <div>
                               <div className="u-fs-xs u-opacity-70">Blur</div>
@@ -958,14 +982,18 @@ export const Playground: Story = {
                           </div>
                         </div>
 
-                     
-
                         {/* Visual Characteristics */}
                         <div
                           className="u-p-4 u-rounded"
-                          style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}
+                          style={{
+                            background: 'rgba(255,255,255,0.08)',
+                            border: '1px solid rgba(255,255,255,0.15)',
+                          }}
                         >
-                          <div className="u-mb-3 u-fw-semibold u-fs-sm" style={{ color: '#7AFFD7' }}>
+                          <div
+                            className="u-mb-3 u-fw-semibold u-fs-sm"
+                            style={{ color: '#7AFFD7' }}
+                          >
                             🎨 Visual Characteristics
                           </div>
                           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -973,9 +1001,13 @@ export const Playground: Story = {
                               style={{
                                 padding: '4px 12px',
                                 borderRadius: '12px',
-                                background: settings.enableLiquidBlur ? 'rgba(122, 255, 215, 0.2)' : 'rgba(255,255,255,0.1)',
+                                background: settings.enableLiquidBlur
+                                  ? 'rgba(122, 255, 215, 0.2)'
+                                  : 'rgba(255,255,255,0.1)',
                                 fontSize: '0.75rem',
-                                border: settings.enableLiquidBlur ? '1px solid #7AFFD7' : '1px solid transparent',
+                                border: settings.enableLiquidBlur
+                                  ? '1px solid #7AFFD7'
+                                  : '1px solid transparent',
                               }}
                             >
                               {settings.enableLiquidBlur ? '✓' : '○'} Liquid Blur
@@ -984,9 +1016,13 @@ export const Playground: Story = {
                               style={{
                                 padding: '4px 12px',
                                 borderRadius: '12px',
-                                background: settings.enableBorderEffect ? 'rgba(122, 255, 215, 0.2)' : 'rgba(255,255,255,0.1)',
+                                background: settings.enableBorderEffect
+                                  ? 'rgba(122, 255, 215, 0.2)'
+                                  : 'rgba(255,255,255,0.1)',
                                 fontSize: '0.75rem',
-                                border: settings.enableBorderEffect ? '1px solid #7AFFD7' : '1px solid transparent',
+                                border: settings.enableBorderEffect
+                                  ? '1px solid #7AFFD7'
+                                  : '1px solid transparent',
                               }}
                             >
                               {settings.enableBorderEffect ? '✓' : '○'} Border Effect
@@ -995,9 +1031,13 @@ export const Playground: Story = {
                               style={{
                                 padding: '4px 12px',
                                 borderRadius: '12px',
-                                background: settings.reducedMotion ? 'rgba(239, 68, 68, 0.2)' : 'rgba(255,255,255,0.1)',
+                                background: settings.reducedMotion
+                                  ? 'rgba(239, 68, 68, 0.2)'
+                                  : 'rgba(255,255,255,0.1)',
                                 fontSize: '0.75rem',
-                                border: settings.reducedMotion ? '1px solid #EF4444' : '1px solid transparent',
+                                border: settings.reducedMotion
+                                  ? '1px solid #EF4444'
+                                  : '1px solid transparent',
                               }}
                             >
                               {settings.reducedMotion ? '✓' : '○'} Reduced Motion
@@ -1006,9 +1046,13 @@ export const Playground: Story = {
                               style={{
                                 padding: '4px 12px',
                                 borderRadius: '12px',
-                                background: settings.highContrast ? 'rgba(245, 158, 11, 0.2)' : 'rgba(255,255,255,0.1)',
+                                background: settings.highContrast
+                                  ? 'rgba(245, 158, 11, 0.2)'
+                                  : 'rgba(255,255,255,0.1)',
                                 fontSize: '0.75rem',
-                                border: settings.highContrast ? '1px solid #F59E0B' : '1px solid transparent',
+                                border: settings.highContrast
+                                  ? '1px solid #F59E0B'
+                                  : '1px solid transparent',
                               }}
                             >
                               {settings.highContrast ? '✓' : '○'} High Contrast
@@ -1019,27 +1063,46 @@ export const Playground: Story = {
                         {/* Quick Stats */}
                         <div
                           className="u-p-4 u-rounded"
-                          style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}
+                          style={{
+                            background: 'rgba(255,255,255,0.08)',
+                            border: '1px solid rgba(255,255,255,0.15)',
+                          }}
                         >
-                          <div className="u-mb-3 u-fw-semibold u-fs-sm" style={{ color: '#7AFFD7' }}>
+                          <div
+                            className="u-mb-3 u-fw-semibold u-fs-sm"
+                            style={{ color: '#7AFFD7' }}
+                          >
                             📈 Quick Stats
                           </div>
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '0.75rem', fontSize: '0.875rem' }}>
+                          <div
+                            style={{
+                              display: 'grid',
+                              gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                              gap: '0.75rem',
+                              fontSize: '0.875rem',
+                            }}
+                          >
                             <div>
                               <span className="u-opacity-70">Saturation:</span>
                               <span className="u-fw-semibold u-ml-2">{settings.saturation}%</span>
                             </div>
                             <div>
                               <span className="u-opacity-70">Radius:</span>
-                              <span className="u-fw-semibold u-ml-2">{settings.cornerRadius}px</span>
+                              <span className="u-fw-semibold u-ml-2">
+                                {settings.cornerRadius}px
+                              </span>
                             </div>
                             <div>
                               <span className="u-opacity-70">Background:</span>
-                              <span className="u-fw-semibold u-ml-2">{backgroundIndex + 1}/{backgrounds.length}</span>
+                              <span className="u-fw-semibold u-ml-2">
+                                {backgroundIndex + 1}/{backgrounds.length}
+                              </span>
                             </div>
                             <div>
                               <span className="u-opacity-70">Effects:</span>
-                              <span className="u-fw-semibold u-ml-2">{settings.disableEffects ? 'Disabled' : 'Enabled'}</span>
+                              <span className="u-fw-semibold u-ml-2">
+                                {settings.disableEffects ? 'Disabled' : 'Enabled'}
+                              </span>
                             </div>
                           </div>
                         </div>

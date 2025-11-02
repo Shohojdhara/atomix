@@ -139,7 +139,8 @@ export const GlassCustom: Story = {
   render: (args: any) => (
     <div
       style={{
-        background: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)',
+        background:
+          'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         padding: '2rem',
@@ -170,7 +171,14 @@ export const GlassGroup: Story = {
       }}
     >
       <div>
-        <h3 style={{ color: 'white', marginBottom: '2rem', textAlign: 'center', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        <h3
+          style={{
+            color: 'white',
+            marginBottom: '2rem',
+            textAlign: 'center',
+            textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+          }}
+        >
           Glass Radio Group
         </h3>
         <div className="u-d-flex u-flex-column u-gap-2">
@@ -209,7 +217,14 @@ export const GlassStates: Story = {
         `}
       </style>
       <div>
-        <h3 style={{ color: 'white', marginBottom: '2rem', textAlign: 'center', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        <h3
+          style={{
+            color: 'white',
+            marginBottom: '2rem',
+            textAlign: 'center',
+            textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+          }}
+        >
           Glass Radio States
         </h3>
         <div className="u-d-flex u-flex-column u-gap-2">

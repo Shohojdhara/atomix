@@ -273,14 +273,21 @@ export function useBarChart(datasets: ChartDataset[], options: BarChartOptions =
 
   // Bar hover handlers
   const handleBarHover = useCallback(
-    (datasetIndex: number, pointIndex: number, chartX: number, chartY: number, clientX: number, clientY: number) => {
-      setHoveredBar({ 
-        datasetIndex, 
-        pointIndex, 
-        chartX, 
+    (
+      datasetIndex: number,
+      pointIndex: number,
+      chartX: number,
+      chartY: number,
+      clientX: number,
+      clientY: number
+    ) => {
+      setHoveredBar({
+        datasetIndex,
+        pointIndex,
+        chartX,
         chartY,
         clientX,
-        clientY 
+        clientY,
       });
     },
     []

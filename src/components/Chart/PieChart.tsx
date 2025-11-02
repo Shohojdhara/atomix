@@ -64,7 +64,14 @@ const PieChart = memo(
                     }}
                     onMouseEnter={e => {
                       const rect = e.currentTarget.getBoundingClientRect();
-                      handlers.onPointHover(0, index, slice.labelPosition.x, slice.labelPosition.y, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                      handlers.onPointHover(
+                        0,
+                        index,
+                        slice.labelPosition.x,
+                        slice.labelPosition.y,
+                        rect.left + rect.width / 2,
+                        rect.top + rect.height / 2
+                      );
                     }}
                     onMouseLeave={handlers.onPointLeave}
                   />

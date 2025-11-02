@@ -78,7 +78,11 @@ export const Pagination: React.FC<PaginationProps> = ({
   }
 
   const paginationContent = (
-    <nav className={`c-pagination c-pagination--${size} ${className}`} style={style} aria-label={ariaLabel}>
+    <nav
+      className={`c-pagination c-pagination--${size} ${className}`}
+      style={style}
+      aria-label={ariaLabel}
+    >
       <ul className="c-pagination__items">
         {showFirstLastButtons && (
           <PaginationNavButton
@@ -170,11 +174,7 @@ export const Pagination: React.FC<PaginationProps> = ({
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-    return (
-      <AtomixGlass {...glassProps}>
-        {paginationContent}
-      </AtomixGlass>
-    );
+    return <AtomixGlass {...glassProps}>{paginationContent}</AtomixGlass>;
   }
 
   return paginationContent;

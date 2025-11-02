@@ -151,21 +151,24 @@ const ChartToolbar = memo(
       const [showSettingsMenu, setShowSettingsMenu] = useState(false);
 
       // Compute effective defaults based on provided groups
-      const effectiveDefaults = groups && groups.length > 0
-        ? {
-            refresh: defaults.refresh ?? true,
-            export: defaults.export ?? true,
-            fullscreen: defaults.fullscreen ?? true,
-            settings: defaults.settings ?? true,
-            zoom: groups.some(group => group.actions.some(action => action.id === 'zoom-in' || action.id === 'zoom-out')),
-            pan: groups.some(group => group.actions.some(action => action.id === 'pan')),
-            reset: groups.some(group => group.actions.some(action => action.id === 'reset')),
-            grid: defaults.grid ?? true,
-            legend: defaults.legend ?? true,
-            tooltips: defaults.tooltips ?? true,
-            animations: defaults.animations ?? true,
-          }
-        : defaults;
+      const effectiveDefaults =
+        groups && groups.length > 0
+          ? {
+              refresh: defaults.refresh ?? true,
+              export: defaults.export ?? true,
+              fullscreen: defaults.fullscreen ?? true,
+              settings: defaults.settings ?? true,
+              zoom: groups.some(group =>
+                group.actions.some(action => action.id === 'zoom-in' || action.id === 'zoom-out')
+              ),
+              pan: groups.some(group => group.actions.some(action => action.id === 'pan')),
+              reset: groups.some(group => group.actions.some(action => action.id === 'reset')),
+              grid: defaults.grid ?? true,
+              legend: defaults.legend ?? true,
+              tooltips: defaults.tooltips ?? true,
+              animations: defaults.animations ?? true,
+            }
+          : defaults;
 
       // Generate chart-specific default actions
       const getDefaultActions = useCallback((): ChartToolbarGroup[] => {
@@ -327,11 +330,7 @@ const ChartToolbar = memo(
         groups && groups.length > 0
           ? groups
           : enableDefaults
-            ? [
-                ...getDefaultActions(),
-                ...getViewActions(),
-                ...getToolActions(),
-              ]
+            ? [...getDefaultActions(), ...getViewActions(), ...getToolActions()]
             : [];
 
       // Render action button
@@ -374,7 +373,7 @@ const ChartToolbar = memo(
             }
           }
         };
-        
+
         return (
           <button
             key={action.id}

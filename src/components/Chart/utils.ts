@@ -25,7 +25,7 @@ export const getColorFromValue = (
   if (minValue === maxValue) {
     return colorScheme[0];
   }
-  
+
   const normalized = (value - minValue) / (maxValue - minValue);
   const index = Math.floor(normalized * (colorScheme.length - 1));
   return colorScheme[index];
@@ -43,16 +43,7 @@ export const DEFAULT_COLOR_SCHEMES = {
     'var(--atomix-error)',
     'var(--atomix-info)',
   ],
-  rainbow: [
-    '#FF6B6B',
-    '#4ECDC4',
-    '#45B7D1',
-    '#FFA07A',
-    '#98D8C8',
-    '#F7DC6F',
-    '#BB8FCE',
-    '#F8C471',
-  ],
+  rainbow: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#F8C471'],
   monochrome: [
     '#1a1a1a',
     '#333333',

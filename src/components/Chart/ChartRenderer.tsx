@@ -84,7 +84,7 @@ const ChartRenderer = memo(
       } catch (e) {
         // ChartRenderer used outside of Chart component - use internal state only
       }
-      
+
       // Chart composition hooks
       const { calculateScales, getChartColors } = useChart();
       const { processedData, isProcessing } = useChartData(datasets, {
@@ -92,14 +92,11 @@ const ChartRenderer = memo(
         enableDecimation: enablePerformanceOptimization,
         maxDataPoints: 1000,
       });
-      const { isOptimizing, memoizedScales } = useChartPerformance(
-        processedData,
-        {
-          enableVirtualization: false,
-          enableMemoization: enablePerformanceOptimization,
-          debounceMs: 100,
-        }
-      );
+      const { isOptimizing, memoizedScales } = useChartPerformance(processedData, {
+        enableVirtualization: false,
+        enableMemoization: enablePerformanceOptimization,
+        debounceMs: 100,
+      });
       const { announcement, focusedPoint } = useChartAccessibility(processedData, {
         enableScreenReader: enableAccessibility,
         enableKeyboardNavigation: enableAccessibility,
@@ -112,7 +109,7 @@ const ChartRenderer = memo(
         dragStart: { x: 0, y: 0 },
         lastPan: { x: 0, y: 0 },
       });
-      
+
       // Hovered point state
       const [hoveredPoint, setHoveredPoint] = useState<{
         datasetIndex: number;
@@ -122,10 +119,10 @@ const ChartRenderer = memo(
         clientX: number;
         clientY: number;
       } | null>(null);
-      
+
       // Ref for SVG element
       const svgRef = useRef<SVGSVGElement>(null);
-      
+
       // Event handlers
       const handlePointHover = useCallback(
         (
@@ -169,7 +166,7 @@ const ChartRenderer = memo(
 
             const deltaX = x - interactionStateRef.current.dragStart.x;
             const deltaY = y - interactionStateRef.current.dragStart.y;
-            
+
             chartContext.setPanOffset({
               x: interactionStateRef.current.lastPan.x + deltaX,
               y: interactionStateRef.current.lastPan.y + deltaY,
@@ -206,9 +203,9 @@ const ChartRenderer = memo(
       const handleWheel = useCallback(
         (event: React.WheelEvent<SVGSVGElement>) => {
           if (!interactive || !chartContext) return;
-          
+
           event.preventDefault();
-          
+
           const delta = -event.deltaY * 0.001;
           const newZoom = Math.max(0.2, Math.min(5, chartContext.zoomLevel + delta));
           chartContext.setZoomLevel(newZoom);
@@ -327,10 +324,11 @@ const ChartRenderer = memo(
                   className="c-chart__grid c-chart__grid--vertical"
                 />
               ))}
-              
+
               {/* Y-axis grid lines - generate 5 ticks by default */}
               {Array.from({ length: 5 }).map((_: any, index: number) => {
-                const value = chartData.scales.minValue + 
+                const value =
+                  chartData.scales.minValue +
                   (chartData.scales.maxValue - chartData.scales.minValue) * (index / 4);
                 return (
                   <line

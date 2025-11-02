@@ -286,14 +286,20 @@ export function useChart(initialProps?: Partial<ChartProps>) {
       const rect = (event.target as Element).getBoundingClientRect();
 
       // Single touch - pan (only if pan is enabled)
-      if (touches.length === 1 && touches[0] && prev.isDragging && prev.dragStart && prev.panEnabled) {
+      if (
+        touches.length === 1 &&
+        touches[0] &&
+        prev.isDragging &&
+        prev.dragStart &&
+        prev.panEnabled
+      ) {
         const x = touches[0].x - rect.left;
         const y = touches[0].y - rect.top;
-        
+
         // Use previous touch position for delta calculation if available
         const prevTouch = prev.touchState.touches[0];
         let deltaX, deltaY;
-        
+
         if (prevTouch) {
           // Calculate delta from previous touch position
           const prevX = prevTouch.x - rect.left;
@@ -325,7 +331,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
             },
           };
         }
-        
+
         // Update touch state even if no panning occurred
         return {
           ...prev,
@@ -511,11 +517,11 @@ export function useChart(initialProps?: Partial<ChartProps>) {
       datasets: ChartDataset[],
       width: number = CHART.DEFAULT_WIDTH,
       height: number = CHART.DEFAULT_HEIGHT,
-      padding: { top: number; right: number; bottom: number; left: number } = { 
-        top: 20, 
-        right: 20, 
-        bottom: 30, 
-        left: 40 
+      padding: { top: number; right: number; bottom: number; left: number } = {
+        top: 20,
+        right: 20,
+        bottom: 30,
+        left: 40,
       },
       config?: ChartProps['config']
     ): ChartScales | null => {
@@ -541,9 +547,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
 
       const yScale = (value: number) => {
         // Invert Y axis (SVG coordinates start from top)
-        return (
-          padding.top + innerHeight - ((value - minValue) / valueRange) * innerHeight
-        );
+        return padding.top + innerHeight - ((value - minValue) / valueRange) * innerHeight;
       };
 
       return {
@@ -876,7 +880,7 @@ export function useChartPerformance(
     return datasets.map(dataset => {
       const values = dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [];
       const validValues = values.length > 0 ? values : [0];
-      
+
       return {
         label: dataset.label,
         dataLength: dataset.data?.length || 0,

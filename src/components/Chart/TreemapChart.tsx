@@ -433,7 +433,14 @@ const TreemapChart = memo(
                     onMouseEnter={e => {
                       setHoveredNode(node);
                       const rect = e.currentTarget.getBoundingClientRect();
-                      handlers.onPointHover(0, 0, node.x, node.y, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                      handlers.onPointHover(
+                        0,
+                        0,
+                        node.x,
+                        node.y,
+                        rect.left + rect.width / 2,
+                        rect.top + rect.height / 2
+                      );
                     }}
                     onMouseLeave={() => {
                       setHoveredNode(null);

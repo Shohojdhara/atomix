@@ -24,7 +24,7 @@ describe('AtomixGlass Component', () => {
         <div data-testid="test-content">Test Content</div>
       </AtomixGlass>
     );
-    
+
     expect(screen.getByTestId('test-content')).toBeInTheDocument();
     expect(screen.getByText('Test Content')).toBeInTheDocument();
   });
@@ -35,17 +35,17 @@ describe('AtomixGlass Component', () => {
         <div>Content</div>
       </AtomixGlass>
     );
-    
+
     expect(container.querySelector('.c-glass-container')).toHaveClass('custom-class');
   });
 
   test('renders with showHoverEffects enabled', () => {
     render(
-      <AtomixGlass >
+      <AtomixGlass>
         <div>Test Content</div>
       </AtomixGlass>
     );
-    
+
     // Check that hover effects are enabled
     expect(screen.getByTestId('atomix-glass')).toHaveAttribute('data-hover-effects', 'true');
   });
@@ -57,8 +57,10 @@ describe('AtomixGlass Component', () => {
         <div>Content</div>
       </AtomixGlass>
     );
-    
-    expect(container.querySelector('.c-glass-container')).toHaveClass('c-glass-container--clickable');
+
+    expect(container.querySelector('.c-glass-container')).toHaveClass(
+      'c-glass-container--clickable'
+    );
   });
 
   test('calls onClick when clicked', async () => {
@@ -68,7 +70,7 @@ describe('AtomixGlass Component', () => {
         <div>Content</div>
       </AtomixGlass>
     );
-    
+
     await userEvent.click(screen.getByText('Content'));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
@@ -79,8 +81,10 @@ describe('AtomixGlass Component', () => {
         <div>Content</div>
       </AtomixGlass>
     );
-    
-    expect(container.querySelector('.c-glass-container')).toHaveClass('c-glass-container--over-light');
+
+    expect(container.querySelector('.c-glass-container')).toHaveClass(
+      'c-glass-container--over-light'
+    );
   });
 
   test('applies custom style', () => {
@@ -90,7 +94,7 @@ describe('AtomixGlass Component', () => {
         <div>Content</div>
       </AtomixGlass>
     );
-    
+
     const glassContainer = container.querySelector('.c-glass-container');
     expect(glassContainer).toHaveStyle('background-color: red');
   });
@@ -101,7 +105,7 @@ describe('AtomixGlass Component', () => {
         <div>Content</div>
       </AtomixGlass>
     );
-    
+
     // Check if the filter element exists
     expect(container.querySelector('svg')).toBeInTheDocument();
   });
@@ -111,7 +115,7 @@ describe('AtomixGlass Component', () => {
     const handleMouseLeave = vi.fn();
     const handleMouseDown = vi.fn();
     const handleMouseUp = vi.fn();
-    
+
     render(
       <AtomixGlass
         onClick={() => {
@@ -124,19 +128,19 @@ describe('AtomixGlass Component', () => {
         <div>Content</div>
       </AtomixGlass>
     );
-    
+
     const glassContent = screen.getByText('Content').parentElement;
     if (!glassContent) throw new Error('Glass content not found');
-    
+
     await userEvent.hover(glassContent);
     expect(handleMouseEnter).toHaveBeenCalledTimes(1);
-    
+
     await userEvent.unhover(glassContent);
     expect(handleMouseLeave).toHaveBeenCalledTimes(1);
-    
+
     await userEvent.pointer([{ keys: '[MouseLeft>]', target: glassContent }]);
     expect(handleMouseDown).toHaveBeenCalledTimes(1);
-    
+
     await userEvent.pointer([{ keys: '[/MouseLeft]', target: glassContent }]);
     expect(handleMouseUp).toHaveBeenCalledTimes(1);
   });

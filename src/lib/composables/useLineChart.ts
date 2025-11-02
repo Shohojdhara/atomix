@@ -253,7 +253,14 @@ export function useLineChart(datasets: ChartDataset[], options: LineChartOptions
 
   // Point hover handlers
   const handlePointHover = useCallback(
-    (datasetIndex: number, pointIndex: number, x: number, y: number, clientX: number, clientY: number) => {
+    (
+      datasetIndex: number,
+      pointIndex: number,
+      x: number,
+      y: number,
+      clientX: number,
+      clientY: number
+    ) => {
       setHoveredPoint({ datasetIndex, pointIndex, x, y, clientX, clientY });
     },
     []

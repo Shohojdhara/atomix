@@ -4,8 +4,7 @@
  */
 
 @use '../../../styles/01-settings/settings.config' with (
-  $prefix: 'atomix-',
-
+  $prefix: 'atomix-'
 );
 // Environment configuration
 $ENV: 'dev';

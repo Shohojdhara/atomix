@@ -485,17 +485,19 @@ export const Default: Story = {
           and interactive effects.
         </p>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
-          <Button variant="primary" glass>Explore</Button>
-          <Button variant="outline-primary" glass>Learn More</Button>
+          <Button variant="primary" glass>
+            Explore
+          </Button>
+          <Button variant="outline-primary" glass>
+            Learn More
+          </Button>
         </div>
       </div>
     ),
   },
   decorators: [
     Story => (
-      <BackgroundWrapper
-        backgroundImage={backgroundImages[0]}
-      >
+      <BackgroundWrapper backgroundImage={backgroundImages[0]}>
         <Story />
       </BackgroundWrapper>
     ),
@@ -743,7 +745,6 @@ export const Modes: Story = {
   },
 };
 
-
 /**
  * Performance Optimization Dashboard
  *
@@ -760,8 +761,13 @@ export const PerformanceOptimization: Story = {
     },
   },
   render: () => (
-    <BackgroundWrapper backgroundImage={'https://images.unsplash.com/photo-1706705618478-505e088180c4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2532'} padding="60px 20px">
-      <div style={{  margin: '0 auto', width: '100%' }}>
+    <BackgroundWrapper
+      backgroundImage={
+        'https://images.unsplash.com/photo-1706705618478-505e088180c4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2532'
+      }
+      padding="60px 20px"
+    >
+      <div style={{ margin: '0 auto', width: '100%' }}>
         {/* Header Section */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
           <h1

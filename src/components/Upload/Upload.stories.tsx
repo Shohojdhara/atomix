@@ -8,7 +8,8 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: 'A modern file upload component with drag & drop functionality, progress tracking, and multiple size variants.',
+        component:
+          'A modern file upload component with drag & drop functionality, progress tracking, and multiple size variants.',
       },
     },
   },
@@ -95,9 +96,11 @@ export const SizeVariants: StoryFn<typeof Upload> = () => (
         />
       </div>
     </div>
-    
+
     <div style={{ marginBottom: '40px' }}>
-      <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>Medium Size (Default)</h3>
+      <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>
+        Medium Size (Default)
+      </h3>
       <div style={{ maxWidth: '500px' }}>
         <Upload
           size="md"
@@ -108,7 +111,7 @@ export const SizeVariants: StoryFn<typeof Upload> = () => (
         />
       </div>
     </div>
-    
+
     <div>
       <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>Large Size</h3>
       <div style={{ maxWidth: '700px' }}>
@@ -300,7 +303,8 @@ export const WithControls: StoryFn<typeof Upload> = () => <WithStateControls />;
 WithControls.parameters = {
   docs: {
     description: {
-      story: 'Interactive example showing different upload states: default, uploading with progress, success, and error states.',
+      story:
+        'Interactive example showing different upload states: default, uploading with progress, success, and error states.',
     },
   },
 };
@@ -356,10 +360,11 @@ export const DragDropDemo: StoryFn<typeof Upload> = () => {
           Interactive Drag & Drop Demo
         </h3>
         <p style={{ color: '#666', fontSize: '14px', marginBottom: '20px' }}>
-          Try dragging files over the upload area to see the hover effects, or click to select files.
+          Try dragging files over the upload area to see the hover effects, or click to select
+          files.
         </p>
       </div>
-      
+
       <div style={{ maxWidth: '600px', marginBottom: '20px' }}>
         <Upload
           title="Drag files here to see the magic ✨"
@@ -370,15 +375,19 @@ export const DragDropDemo: StoryFn<typeof Upload> = () => {
           multiple={true}
         />
       </div>
-      
+
       {uploadedFiles.length > 0 && (
-        <div style={{ 
-          padding: '16px', 
-          backgroundColor: '#f8f9fa', 
-          borderRadius: '8px',
-          border: '1px solid #e9ecef'
-        }}>
-          <h4 style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#495057' }}>
+        <div
+          style={{
+            padding: '16px',
+            backgroundColor: '#f8f9fa',
+            borderRadius: '8px',
+            border: '1px solid #e9ecef',
+          }}
+        >
+          <h4
+            style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#495057' }}
+          >
             Selected Files:
           </h4>
           <ul style={{ margin: 0, paddingLeft: '20px' }}>
@@ -388,9 +397,9 @@ export const DragDropDemo: StoryFn<typeof Upload> = () => {
               </li>
             ))}
           </ul>
-          <button 
+          <button
             onClick={() => setUploadedFiles([])}
-            style={{ 
+            style={{
               marginTop: '12px',
               padding: '6px 12px',
               fontSize: '12px',
@@ -398,7 +407,7 @@ export const DragDropDemo: StoryFn<typeof Upload> = () => {
               color: 'white',
               border: 'none',
               borderRadius: '4px',
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
           >
             Clear List
@@ -411,7 +420,8 @@ export const DragDropDemo: StoryFn<typeof Upload> = () => {
 DragDropDemo.parameters = {
   docs: {
     description: {
-      story: 'Interactive demonstration of drag & drop functionality with visual feedback and file tracking.',
+      story:
+        'Interactive demonstration of drag & drop functionality with visual feedback and file tracking.',
     },
   },
 };
@@ -432,7 +442,7 @@ export const FileTypeRestrictions: StoryFn<typeof Upload> = () => (
         />
       </div>
     </div>
-    
+
     <div style={{ marginBottom: '40px' }}>
       <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>Documents Only</h3>
       <div style={{ maxWidth: '500px' }}>
@@ -446,7 +456,7 @@ export const FileTypeRestrictions: StoryFn<typeof Upload> = () => (
             'application/msword',
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'application/vnd.ms-excel',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           ]}
         />
       </div>

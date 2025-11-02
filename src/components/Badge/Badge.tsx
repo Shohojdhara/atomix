@@ -40,18 +40,16 @@ export const Badge: React.FC<BadgeProps> = ({
     // Default glass settings for badges
     const defaultGlassProps = {
       displacementScale: 20,
-      cornerRadius: ref.current?.getBoundingClientRect().width ? ref.current?.getBoundingClientRect().width / 2 : 16,
+      cornerRadius: ref.current?.getBoundingClientRect().width
+        ? ref.current?.getBoundingClientRect().width / 2
+        : 16,
       className: 'c-badge--glass',
-       elasticity: 0
+      elasticity: 0,
     };
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-    return (
-      <AtomixGlass {...glassProps}>
-        {badgeElement}
-      </AtomixGlass>
-    );
+    return <AtomixGlass {...glassProps}>{badgeElement}</AtomixGlass>;
   }
 
   return badgeElement;

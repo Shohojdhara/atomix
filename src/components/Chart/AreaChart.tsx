@@ -70,7 +70,8 @@ const AreaChart = memo(
                     const x = scales.xScale(index, data.length);
                     const y = scales.yScale(point.value);
                     const isHovered =
-                      hoveredPoint?.datasetIndex === datasetIndex && hoveredPoint?.pointIndex === index;
+                      hoveredPoint?.datasetIndex === datasetIndex &&
+                      hoveredPoint?.pointIndex === index;
 
                     return (
                       <circle
@@ -85,7 +86,14 @@ const AreaChart = memo(
                         onClick={() => handlers.onDataPointClick?.(point, datasetIndex, index)}
                         onMouseEnter={e => {
                           const rect = e.currentTarget.getBoundingClientRect();
-                          handlers.onPointHover(datasetIndex, index, x, y, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                          handlers.onPointHover(
+                            datasetIndex,
+                            index,
+                            x,
+                            y,
+                            rect.left + rect.width / 2,
+                            rect.top + rect.height / 2
+                          );
                         }}
                         onMouseLeave={handlers.onPointLeave}
                         style={{ cursor: 'pointer' }}

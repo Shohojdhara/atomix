@@ -178,7 +178,7 @@ export const WithCustomGlassEffect: Story = {
       aberrationIntensity: 0,
       cornerRadius: 45,
       mode: 'standard',
-      elasticity: .2,
+      elasticity: 0.2,
       showBorderEffects: true,
       showHoverEffects: true,
       onClick: () => {
@@ -189,7 +189,6 @@ export const WithCustomGlassEffect: Story = {
     actions: primaryActionButtons,
   },
 };
-
 
 /**
  * Hero with left-aligned content and image on right

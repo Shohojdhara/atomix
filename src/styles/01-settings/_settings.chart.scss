@@ -190,7 +190,7 @@ $chart-max-data-points: 500 !default;
 $chart-debounce-delay: 100ms !default;
 
 // Chart Accessibility
-$chart-focus-outline-width: calc(var(--#{$prefix}border-width) * 2) !default;  //2px
+$chart-focus-outline-width: calc(var(--#{$prefix}border-width) * 2) !default; //2px
 $chart-focus-outline-color: var(--atomix-focus-border-color) !default;
 $chart-keyboard-nav-highlight: var(--atomix-primary-bg-subtle) !default;
 

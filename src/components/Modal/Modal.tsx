@@ -193,28 +193,23 @@ export const Modal: React.FC<ModalProps> = ({
     >
       <div ref={backdropRef} className="c-modal__backdrop" onClick={handleBackdropClick} />
       <div ref={dialogRef} className="c-modal__dialog">
-        {glass ? (
-          // Default glass settings for modals
-          (() => {
-            const defaultGlassProps = {
-              displacementScale: 100,
-              blurAmount: 2,
-              aberrationIntensity: 1,
-              cornerRadius: 12,
-              mode: 'shader' as const,
-            };
+        {glass
+          ? // Default glass settings for modals
+            (() => {
+              const defaultGlassProps = {
+                displacementScale: 100,
+                blurAmount: 2,
+                aberrationIntensity: 1,
+                cornerRadius: 12,
+                mode: 'shader' as const,
+              };
 
-            const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+              const glassProps =
+                glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-            return (
-              <AtomixGlass {...glassProps} >
-                {modalContent}
-              </AtomixGlass>
-            );
-          })()
-        ) : (
-          modalContent
-        )}
+              return <AtomixGlass {...glassProps}>{modalContent}</AtomixGlass>;
+            })()
+          : modalContent}
       </div>
     </div>
   );

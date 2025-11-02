@@ -49,12 +49,12 @@ export const FooterSocialLink = forwardRef<HTMLAnchorElement, FooterSocialLinkPr
         dev: 'DevToLogo',
         codepen: 'CodepenLogo',
       };
-      
+
       const iconName = iconMap[platform];
       if (iconName) {
         return <Icon name={iconName as any} />;
       }
-      
+
       return <Icon name="Link" />;
     };
 
@@ -108,12 +108,8 @@ export const FooterSocialLink = forwardRef<HTMLAnchorElement, FooterSocialLinkPr
         aria-disabled={disabled}
         {...props}
       >
-        <span className="c-footer__social-link-icon">
-          {icon || getPlatformIcon(platform)}
-        </span>
-        <span className="c-footer__social-link-label u-visually-hidden">
-          {ariaLabel}
-        </span>
+        <span className="c-footer__social-link-icon">{icon || getPlatformIcon(platform)}</span>
+        <span className="c-footer__social-link-label u-visually-hidden">{ariaLabel}</span>
       </a>
     );
   }

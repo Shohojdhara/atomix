@@ -19,7 +19,17 @@ export interface AnimatedChartProps extends Omit<ChartProps, 'type'> {
 
 const AnimatedChart = memo(
   forwardRef<HTMLDivElement, AnimatedChartProps>(
-    ({ datasets = [], config = {}, chartType = 'line', particleEffects, onDataPointClick, ...props }, ref) => {
+    (
+      {
+        datasets = [],
+        config = {},
+        chartType = 'line',
+        particleEffects,
+        onDataPointClick,
+        ...props
+      },
+      ref
+    ) => {
       const animationRef = useRef<number>(0);
       const timeRef = useRef(0);
       const particlesRef = useRef<
@@ -53,9 +63,9 @@ const AnimatedChart = memo(
               timeRef.current = timestamp;
               animationRef.current = requestAnimationFrame(animateFrame);
             };
-            
+
             animationRef.current = requestAnimationFrame(animateFrame);
-            
+
             return () => {
               if (animationRef.current) {
                 cancelAnimationFrame(animationRef.current);
@@ -74,16 +84,19 @@ const AnimatedChart = memo(
 
           chartDatasets.forEach((dataset: any, datasetIndex: number) => {
             const color = dataset.color || colors[datasetIndex % colors.length];
-            
+
             switch (chartType) {
               case 'bar':
                 // Create animated bars
                 dataset.data.forEach((point: any, pointIndex: number) => {
-                  const barWidth = chartWidth / dataset.data.length * 0.8;
-                  const x = padding + pointIndex * (chartWidth / dataset.data.length) + (chartWidth / dataset.data.length - barWidth) / 2;
+                  const barWidth = (chartWidth / dataset.data.length) * 0.8;
+                  const x =
+                    padding +
+                    pointIndex * (chartWidth / dataset.data.length) +
+                    (chartWidth / dataset.data.length - barWidth) / 2;
                   const height = (point.value / 100) * chartHeight; // Assuming normalized values
                   const y = padding + chartHeight - height;
-                  
+
                   elements.push(
                     <rect
                       key={`bar-${datasetIndex}-${pointIndex}`}
@@ -101,7 +114,7 @@ const AnimatedChart = memo(
                   );
                 });
                 break;
-                
+
               case 'area':
               case 'line':
               default:
@@ -110,10 +123,10 @@ const AnimatedChart = memo(
                   x: padding + (pointIndex / (dataset.data.length - 1)) * chartWidth,
                   y: padding + chartHeight - (point.value / 100) * chartHeight, // Assuming normalized values
                 }));
-                
+
                 if (points.length > 0) {
                   const linePath = `M ${points.map((p: any) => `${p.x},${p.y}`).join(' L ')}`;
-                  
+
                   // Area for area chart
                   if (chartType === 'area') {
                     const areaPath = `${linePath} L ${padding + chartWidth},${padding + chartHeight} L ${padding},${padding + chartHeight} Z`;
@@ -129,7 +142,7 @@ const AnimatedChart = memo(
                       />
                     );
                   }
-                  
+
                   // Line
                   elements.push(
                     <path
@@ -143,7 +156,7 @@ const AnimatedChart = memo(
                       }}
                     />
                   );
-                  
+
                   // Data points
                   points.forEach((point: any, pointIndex: number) => {
                     elements.push(
@@ -156,7 +169,13 @@ const AnimatedChart = memo(
                         style={{
                           transform: `scale(${1 + Math.sin(timeRef.current * 0.01 + pointIndex) * 0.2})`,
                         }}
-                        onClick={() => handlers.onDataPointClick?.(dataset.data[pointIndex], datasetIndex, pointIndex)}
+                        onClick={() =>
+                          handlers.onDataPointClick?.(
+                            dataset.data[pointIndex],
+                            datasetIndex,
+                            pointIndex
+                          )
+                        }
                       />
                     );
                   });

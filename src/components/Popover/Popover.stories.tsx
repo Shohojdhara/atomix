@@ -155,12 +155,14 @@ GlassPopover.args = {
   glass: true,
 };
 GlassPopover.decorators = [
-  (Story) => (
-    <div style={{ 
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
-      minHeight: '100vh',
-      padding: '2rem'
-    }}>
+  Story => (
+    <div
+      style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        minHeight: '100vh',
+        padding: '2rem',
+      }}
+    >
       <Story />
     </div>
   ),
@@ -182,12 +184,14 @@ GlassPopoverCustom.args = {
   },
 };
 GlassPopoverCustom.decorators = [
-  (Story) => (
-    <div style={{ 
-      background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)', 
-      minHeight: '100vh',
-      padding: '2rem'
-    }}>
+  Story => (
+    <div
+      style={{
+        background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)',
+        minHeight: '100vh',
+        padding: '2rem',
+      }}
+    >
       <Story />
     </div>
   ),
@@ -204,12 +208,14 @@ GlassPopoverHover.args = {
   glass: true,
 };
 GlassPopoverHover.decorators = [
-  (Story) => (
-    <div style={{ 
-      background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', 
-      minHeight: '100vh',
-      padding: '2rem'
-    }}>
+  Story => (
+    <div
+      style={{
+        background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+        minHeight: '100vh',
+        padding: '2rem',
+      }}
+    >
       <Story />
     </div>
   ),
@@ -225,12 +231,14 @@ GlassPopoverPositions.args = {
   defaultOpen: true,
 };
 GlassPopoverPositions.decorators = [
-  (Story) => (
-    <div style={{ 
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
-      minHeight: '100vh',
-      padding: '2rem'
-    }}>
+  Story => (
+    <div
+      style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        minHeight: '100vh',
+        padding: '2rem',
+      }}
+    >
       <Story />
     </div>
   ),

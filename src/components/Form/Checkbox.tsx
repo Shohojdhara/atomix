@@ -77,11 +77,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-    return (
-      <AtomixGlass {...glassProps}>
-        {checkboxContent}
-      </AtomixGlass>
-    );
+    return <AtomixGlass {...glassProps}>{checkboxContent}</AtomixGlass>;
   }
 
   return checkboxContent;

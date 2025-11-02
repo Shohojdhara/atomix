@@ -402,15 +402,24 @@ const ToastDemoTemplate = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 0.2,
           zIndex: -1,
         }}
       />
-      
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative', zIndex: 1 }}>
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <Button
             label="Add Info Toast"
@@ -498,7 +507,9 @@ const ToastDemoTemplate = () => {
               }}
             >
               <div>
-                <div style={{ marginBottom: '8px' }}>🎨 Click a button above to show toast notifications here 🎨</div>
+                <div style={{ marginBottom: '8px' }}>
+                  🎨 Click a button above to show toast notifications here 🎨
+                </div>
                 <small style={{ opacity: 0.8 }}>
                   Beautiful colorful backgrounds enhance the visual experience
                 </small>
@@ -575,15 +586,24 @@ const AutoDismissTemplate = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundImage: 'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 0.3,
           zIndex: -1,
         }}
       />
-      
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative', zIndex: 1 }}>
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
         {visible ? (
           <Callout
             title={`Auto-dismissing in ${countdown} seconds`}
@@ -631,7 +651,7 @@ const AllVariantsTemplate = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px'}}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       {variants.map(variant => (
         <Callout
           key={variant}
@@ -702,10 +722,11 @@ export const Glass: Story = {
     },
   },
   decorators: [
-    (Story) => (
+    Story => (
       <div
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '4rem',
@@ -734,10 +755,11 @@ export const GlassSuccess: Story = {
     },
   },
   decorators: [
-    (Story) => (
+    Story => (
       <div
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '4rem',
@@ -767,10 +789,11 @@ export const GlassWarning: Story = {
     },
   },
   decorators: [
-    (Story) => (
+    Story => (
       <div
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '4rem',
@@ -800,10 +823,11 @@ export const GlassError: Story = {
     },
   },
   decorators: [
-    (Story) => (
+    Story => (
       <div
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '4rem',
@@ -832,10 +856,11 @@ export const GlassDark: Story = {
     },
   },
   decorators: [
-    (Story) => (
+    Story => (
       <div
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '4rem',
@@ -871,10 +896,11 @@ export const GlassWithActions: Story = {
     },
   },
   decorators: [
-    (Story) => (
+    Story => (
       <div
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '4rem',
@@ -906,10 +932,11 @@ export const GlassDismissible: Story = {
     },
   },
   decorators: [
-    (Story) => (
+    Story => (
       <div
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '4rem',
@@ -942,10 +969,11 @@ export const GlassToast: Story = {
     },
   },
   decorators: [
-    (Story) => (
+    Story => (
       <div
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '4rem',
@@ -974,10 +1002,11 @@ export const GlassOneLine: Story = {
     },
   },
   decorators: [
-    (Story) => (
+    Story => (
       <div
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '4rem',
@@ -1041,7 +1070,8 @@ const GlassVariantsTemplate = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 0.3,
@@ -1055,7 +1085,8 @@ const GlassVariantsTemplate = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundImage: 'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed',
@@ -1063,8 +1094,16 @@ const GlassVariantsTemplate = () => {
           zIndex: -2,
         }}
       />
-      
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', position: 'relative', zIndex: 1 }}>
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '32px',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
         {variants.map((variant, index) => (
           <div
             key={variant}
@@ -1096,7 +1135,8 @@ const GlassVariantsTemplate = () => {
               icon={getIcon(variant)}
               glass
             >
-              This is an example of the {variant} callout variant with glass morphism effect against a beautiful {index % 2 === 0 ? 'mountain' : 'forest'} background.
+              This is an example of the {variant} callout variant with glass morphism effect against
+              a beautiful {index % 2 === 0 ? 'mountain' : 'forest'} background.
             </Callout>
           </div>
         ))}
@@ -1198,7 +1238,8 @@ const GlassToastDemoTemplate = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundImage: 'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 0.3,
@@ -1206,8 +1247,16 @@ const GlassToastDemoTemplate = () => {
           backgroundAttachment: 'fixed',
         }}
       />
-      
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative', zIndex: 1 }}>
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <Button
             label="Add Glass Info Toast"
@@ -1297,7 +1346,9 @@ const GlassToastDemoTemplate = () => {
               }}
             >
               <div>
-                <div style={{ marginBottom: '8px' }}>✨ Click a button above to show glass toast notifications here ✨</div>
+                <div style={{ marginBottom: '8px' }}>
+                  ✨ Click a button above to show glass toast notifications here ✨
+                </div>
                 <small style={{ opacity: 0.8 }}>
                   Beautiful colorful backgrounds help visualize the glass morphism effect
                 </small>

@@ -8,7 +8,7 @@ interface BaseChartProps extends Omit<ChartProps, 'type'> {
    * The type of chart to render
    */
   type: ChartProps['type'];
-  
+
   /**
    * Function to render the chart content
    */
@@ -26,22 +26,22 @@ interface BaseChartProps extends Omit<ChartProps, 'type'> {
       clientY: number;
     } | null;
   }) => React.ReactNode;
-  
+
   /**
    * Whether the chart is interactive
    */
   interactive?: boolean;
-  
+
   /**
    * Whether to enable real-time updates
    */
   enableRealTime?: boolean;
-  
+
   /**
    * Whether to enable accessibility features
    */
   enableAccessibility?: boolean;
-  
+
   /**
    * Whether to enable performance optimizations
    */

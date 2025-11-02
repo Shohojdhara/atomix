@@ -28,7 +28,12 @@ export const Nav = forwardRef<HTMLUListElement, NavProps>(
     const navClass = generateNavClass({ alignment, variant, className });
 
     const navContent = (
-      <ul ref={ref} className={navClass + (glass ? ' c-nav--glass' : '')} role="menubar" aria-orientation="horizontal">
+      <ul
+        ref={ref}
+        className={navClass + (glass ? ' c-nav--glass' : '')}
+        role="menubar"
+        aria-orientation="horizontal"
+      >
         {React.Children.map(children, child => {
           if (React.isValidElement(child)) {
             const childProps = child.props as any;

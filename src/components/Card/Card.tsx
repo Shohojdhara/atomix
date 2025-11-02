@@ -75,7 +75,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
             {...rest}
             style={{ ...style }}
           >
-           {cardContent}
+            {cardContent}
           </div>
         </AtomixGlass>
       );

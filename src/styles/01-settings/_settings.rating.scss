@@ -3,7 +3,7 @@
 @use 'settings.config' as config;
 
 $rating-star-size: map.get($spacing-sizes, 8) !default; //32px
-$rating-star-size-sm:map.get($spacing-sizes, 4) !default; //16px
+$rating-star-size-sm: map.get($spacing-sizes, 4) !default; //16px
 $rating-star-size-lg: map.get($spacing-sizes, 12) !default; //48px
 $rating-star-bg: var(--#{config.$prefix}primary) !default;
 $rating-star-half-bg: $rating-star-bg !default;

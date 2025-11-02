@@ -113,13 +113,7 @@ interface CandlestickChartProps extends Omit<ChartProps, 'type' | 'datasets' | '
 const CandlestickChart = memo(
   forwardRef<HTMLDivElement, CandlestickChartProps>(
     (
-      {
-        candlestickData = [],
-        config = {},
-        candlestickOptions = {},
-        onDataPointClick,
-        ...props
-      },
+      { candlestickData = [], config = {}, candlestickOptions = {}, onDataPointClick, ...props },
       ref
     ) => {
       const {
@@ -139,7 +133,6 @@ const CandlestickChart = memo(
         showTooltips = true,
       } = candlestickOptions;
 
-
       // Calculate moving averages
       const calculateMovingAverage = (data: CandlestickDataPoint[], period: number): number[] => {
         const result: number[] = [];
@@ -149,9 +142,7 @@ const CandlestickChart = memo(
             continue;
           }
 
-          const sum = data
-            .slice(i - period + 1, i + 1)
-            .reduce((acc, item) => acc + item.close, 0);
+          const sum = data.slice(i - period + 1, i + 1).reduce((acc, item) => acc + item.close, 0);
           result.push(sum / period);
         }
         return result;
@@ -285,14 +276,7 @@ const CandlestickChart = memo(
           return (
             <g key={`candle-${index}`}>
               {/* Wick */}
-              <line
-                x1={x}
-                y1={highY}
-                x2={x}
-                y2={lowY}
-                stroke={wickColor}
-                strokeWidth="1"
-              />
+              <line x1={x} y1={highY} x2={x} y2={lowY} stroke={wickColor} strokeWidth="1" />
               {/* Candle body */}
               <rect
                 x={x - candleWidth / 2}
@@ -305,7 +289,14 @@ const CandlestickChart = memo(
                 className="c-chart__candlestick-candle"
                 onMouseEnter={e => {
                   const rect = e.currentTarget.getBoundingClientRect();
-                  handlers.onPointHover(0, index, x, highY, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                  handlers.onPointHover(
+                    0,
+                    index,
+                    x,
+                    highY,
+                    rect.left + rect.width / 2,
+                    rect.top + rect.height / 2
+                  );
                 }}
                 onMouseLeave={handlers.onPointLeave}
                 onClick={() => handlers.onDataPointClick?.(candle, 0, index)}
@@ -382,17 +373,19 @@ const CandlestickChart = memo(
             {candles}
             {volumeBars}
             {movingAverages}
-            {config?.showTooltips !== false && hoveredPoint && candlestickData[hoveredPoint.pointIndex] && (
-              <ChartTooltip
-                dataPoint={candlestickData[hoveredPoint.pointIndex] as unknown as ChartDataPoint}
-                datasetLabel="Candlestick"
-                position={{
-                  x: hoveredPoint.clientX,
-                  y: hoveredPoint.clientY,
-                }}
-                visible={true}
-              />
-            )}
+            {config?.showTooltips !== false &&
+              hoveredPoint &&
+              candlestickData[hoveredPoint.pointIndex] && (
+                <ChartTooltip
+                  dataPoint={candlestickData[hoveredPoint.pointIndex] as unknown as ChartDataPoint}
+                  datasetLabel="Candlestick"
+                  position={{
+                    x: hoveredPoint.clientX,
+                    y: hoveredPoint.clientY,
+                  }}
+                  visible={true}
+                />
+              )}
           </>
         );
       };
@@ -401,20 +394,22 @@ const CandlestickChart = memo(
         <BaseChart
           ref={ref}
           type="candlestick"
-          datasets={[{ 
-            label: 'Candlestick Data',
-            data: candlestickData.map(candle => ({
-              label: candle.date.toString(),
-              value: candle.close,
-              metadata: {
-                open: candle.open,
-                high: candle.high,
-                low: candle.low,
-                close: candle.close,
-                volume: candle.volume,
-              }
-            })) 
-          }]}
+          datasets={[
+            {
+              label: 'Candlestick Data',
+              data: candlestickData.map(candle => ({
+                label: candle.date.toString(),
+                value: candle.close,
+                metadata: {
+                  open: candle.open,
+                  high: candle.high,
+                  low: candle.low,
+                  close: candle.close,
+                  volume: candle.volume,
+                },
+              })),
+            },
+          ]}
           config={config}
           renderContent={renderContent}
           onDataPointClick={onDataPointClick}

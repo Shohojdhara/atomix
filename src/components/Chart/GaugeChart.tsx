@@ -105,20 +105,12 @@ export interface GaugeChartProps extends Omit<ChartProps, 'type' | 'datasets'> {
 const GaugeChart = memo(
   forwardRef<HTMLDivElement, GaugeChartProps>(
     (
-      {
-        value,
-        min = 0,
-        max = 100,
-        config = {},
-        gaugeOptions = {},
-        onDataPointClick,
-        ...props
-      },
+      { value, min = 0, max = 100, config = {}, gaugeOptions = {}, onDataPointClick, ...props },
       ref
     ) => {
       const {
         startAngle = 180, // Default to left side (180 degrees)
-        endAngle = 0,     // Default to right side (0 degrees)
+        endAngle = 0, // Default to right side (0 degrees)
         thickness = 0.2,
         showNeedle = true,
         needleColor = '#334155',
@@ -161,7 +153,7 @@ const GaugeChart = memo(
         const height = scales.height;
         const centerX = width / 2;
         const centerY = height / 2;
-        const radius = Math.min(width, height) / 2 * 0.9;
+        const radius = (Math.min(width, height) / 2) * 0.9;
 
         // Calculate angles in radians
         // In SVG, y-axis points down, so we need to adjust our angles accordingly
@@ -212,7 +204,7 @@ const GaugeChart = memo(
         for (const zone of colorZones) {
           const zoneStart = startAngleRad + ((zone.from - min) / (max - min)) * angleRange;
           const zoneEnd = startAngleRad + ((zone.to - min) / (max - min)) * angleRange;
-          
+
           zones.push(
             <path
               key={`zone-${zone.from}-${zone.to}`}
@@ -252,7 +244,7 @@ const GaugeChart = memo(
             if (showMinMaxLabels) {
               const labelX = centerX + (tickRadius - tickLength - 10) * Math.cos(tickAngle);
               const labelY = centerY + (tickRadius - tickLength - 10) * Math.sin(tickAngle);
-              
+
               ticks.push(
                 <text
                   key={`label-${i}`}
@@ -305,12 +297,7 @@ const GaugeChart = memo(
               strokeWidth="3"
               strokeLinecap="round"
             />
-            <circle
-              cx={centerX}
-              cy={centerY}
-              r="8"
-              fill={needleColor}
-            />
+            <circle cx={centerX} cy={centerY} r="8" fill={needleColor} />
           </g>
         ) : null;
 
@@ -348,35 +335,28 @@ const GaugeChart = memo(
               d={createArcPath(centerX, centerY, radius, startAngleRad, endAngleRad, thickness)}
               fill="#e2e8f0"
             />
-            
+
             {/* Color zones */}
             {zones}
-            
+
             {/* Value track */}
             <path
-              d={createArcPath(
-                centerX,
-                centerY,
-                radius,
-                startAngleRad,
-                valueAngle,
-                thickness
-              )}
+              d={createArcPath(centerX, centerY, radius, startAngleRad, valueAngle, thickness)}
               fill="#3b82f6"
               style={{
                 transition: animate ? `all ${animationDuration}ms ${animationEasing}` : 'none',
               }}
             />
-            
+
             {/* Ticks */}
             {ticks}
-            
+
             {/* Needle */}
             {needle}
-            
+
             {/* Value text */}
             {valueText}
-            
+
             {/* Label */}
             {labelText}
           </g>

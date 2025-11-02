@@ -128,7 +128,6 @@ export const Hero: React.FC<HeroProps> = ({
               cornerRadius={8}
               overLight={false}
               mode="standard"
-              
             >
               <div className="u-p-4">
                 {subtitle && <p className={HERO.SELECTORS.SUBTITLE.replace('.', '')}>{subtitle}</p>}

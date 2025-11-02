@@ -293,8 +293,10 @@ export const Upload: React.FC<UploadProps> = ({
     status === 'loading' && 'c-upload--loading',
     status === 'success' && 'c-upload--success',
     status === 'error' && 'c-upload--error',
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div
@@ -305,13 +307,13 @@ export const Upload: React.FC<UploadProps> = ({
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      <div 
+      <div
         className="c-upload__inner"
         role="button"
         tabIndex={disabled ? -1 : 0}
         aria-label={`${title}. ${supportedFilesText}. ${helperText}`}
         aria-disabled={disabled}
-        onKeyDown={(e) => {
+        onKeyDown={e => {
           if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
             e.preventDefault();
             handleButtonClick();
@@ -349,40 +351,40 @@ export const Upload: React.FC<UploadProps> = ({
 
       {/* Progress and status area */}
       {status !== 'idle' && (
-          <div
-            className="c-upload__loader"
-            style={{ '--upload-loader-percentage': uploadProgress } as React.CSSProperties}
-          >
-            {currentFile && (
-              <div className="c-upload__loader-status">
-                <h5 className="c-upload__loader-title">{currentFile.name}</h5>
-                <div className="c-upload__loader-progress">
-                  <div className="c-upload__loader-par">{uploadProgress}%</div>
-                  <div className="c-upload__loader-time">{timeLeft}</div>
-                </div>
+        <div
+          className="c-upload__loader"
+          style={{ '--upload-loader-percentage': uploadProgress } as React.CSSProperties}
+        >
+          {currentFile && (
+            <div className="c-upload__loader-status">
+              <h5 className="c-upload__loader-title">{currentFile.name}</h5>
+              <div className="c-upload__loader-progress">
+                <div className="c-upload__loader-par">{uploadProgress}%</div>
+                <div className="c-upload__loader-time">{timeLeft}</div>
               </div>
-            )}
+            </div>
+          )}
 
-            {(status === 'loading' || status === 'error' || status === 'success') && (
-              <div className="c-upload__loader-control">
-                <div className="c-upload__loader-bar">
-                  <svg>
-                    <circle cx="10" cy="10" r="10"></circle>
-                    <circle cx="10" cy="10" r="10"></circle>
-                  </svg>
-                </div>
-                <button
-                  type="button"
-                  className="c-upload__loader-close"
-                  onClick={resetUpload}
-                  aria-label="Close upload progress"
-                >
-                  <i className="icon-lux-x"></i>
-                </button>
+          {(status === 'loading' || status === 'error' || status === 'success') && (
+            <div className="c-upload__loader-control">
+              <div className="c-upload__loader-bar">
+                <svg>
+                  <circle cx="10" cy="10" r="10"></circle>
+                  <circle cx="10" cy="10" r="10"></circle>
+                </svg>
               </div>
-            )}
-          </div>
-        )}
+              <button
+                type="button"
+                className="c-upload__loader-close"
+                onClick={resetUpload}
+                aria-label="Close upload progress"
+              >
+                <i className="icon-lux-x"></i>
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

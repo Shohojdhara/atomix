@@ -90,7 +90,8 @@ export const Popover: React.FC<PopoverProps> = ({
                   mode: 'shader' as const,
                 };
 
-                const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+                const glassProps =
+                  glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
                 return (
                   <AtomixGlass {...glassProps}>

@@ -200,11 +200,7 @@ export const Select: React.FC<SelectProps> = ({
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-    return (
-      <AtomixGlass {...glassProps}>
-        {selectContent}
-      </AtomixGlass>
-    );
+    return <AtomixGlass {...glassProps}>{selectContent}</AtomixGlass>;
   }
 
   return selectContent;

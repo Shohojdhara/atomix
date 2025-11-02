@@ -73,11 +73,7 @@ export const Radio: React.FC<RadioProps> = ({
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-    return (
-      <AtomixGlass {...glassProps}>
-        {radioContent}
-      </AtomixGlass>
-    );
+    return <AtomixGlass {...glassProps}>{radioContent}</AtomixGlass>;
   }
 
   return radioContent;

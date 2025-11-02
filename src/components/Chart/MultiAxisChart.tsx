@@ -213,9 +213,7 @@ const MultiAxisChart = memo(
         // Calculate scales for each axis
         const axisScales: Record<string, { min: number; max: number; scale: number }> = {};
         Object.entries(datasetsByYAxis).forEach(([axisId, axisDatasets]) => {
-          const allValues = axisDatasets.flatMap(dataset =>
-            dataset.data.map((d: any) => d.value)
-          );
+          const allValues = axisDatasets.flatMap(dataset => dataset.data.map((d: any) => d.value));
           const min = Math.min(...allValues);
           const max = Math.max(...allValues);
           const range = max - min || 1; // Avoid division by zero
@@ -254,7 +252,9 @@ const MultiAxisChart = memo(
           // Generate points
           const points = dataset.data.map((point: any, pointIndex: number) => ({
             x: padding + (pointIndex / (dataset.data.length - 1)) * chartWidth,
-            y: axisScale ? padding + chartHeight - (point.value - axisScale.min) * axisScale.scale : 0,
+            y: axisScale
+              ? padding + chartHeight - (point.value - axisScale.min) * axisScale.scale
+              : 0,
           }));
 
           // Generate line path
@@ -342,22 +342,11 @@ const MultiAxisChart = memo(
           datasets.forEach((dataset, index) => {
             const color = dataset.color || colors[index % colors.length];
             const legendX = padding + (index * chartWidth) / datasets.length;
-            
+
             elements.push(
               <g key={`legend-${index}`}>
-                <rect
-                  x={legendX}
-                  y={legendY}
-                  width="12"
-                  height="12"
-                  fill={color}
-                />
-                <text
-                  x={legendX + 16}
-                  y={legendY + 10}
-                  fontSize="12"
-                  fill="#000"
-                >
+                <rect x={legendX} y={legendY} width="12" height="12" fill={color} />
+                <text x={legendX + 16} y={legendY + 10} fontSize="12" fill="#000">
                   {dataset.label}
                 </text>
               </g>

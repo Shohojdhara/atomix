@@ -82,7 +82,12 @@ export const Icon: React.FC<IconProps> = ({
   const pixelSize = typeof size === 'string' ? sizeMap[size as IconSize] || 24 : size;
 
   return (
-    <span className={`c-icon c-icon--${size} ${className}`} style={style} aria-hidden={!alt} title={alt}>
+    <span
+      className={`c-icon c-icon--${size} ${className}`}
+      style={style}
+      aria-hidden={!alt}
+      title={alt}
+    >
       <IconComponent size={pixelSize} weight={weight} color={color} aria-label={alt} />
     </span>
   );

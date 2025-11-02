@@ -33,8 +33,13 @@ export const FooterSection = forwardRef<
   ) => {
     const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
 
-    console.log('FooterSection render - showNewsletter:', showNewsletter, 'Type:', typeof showNewsletter);
-    
+    console.log(
+      'FooterSection render - showNewsletter:',
+      showNewsletter,
+      'Type:',
+      typeof showNewsletter
+    );
+
     const handleToggle = () => {
       if (collapsible) {
         setIsCollapsed(!isCollapsed);
@@ -53,7 +58,9 @@ export const FooterSection = forwardRef<
     return (
       <GridCol xs={12} md={showNewsletter ? 6 : 3} className="c-footer__section-col">
         <div ref={ref} className={sectionClass} {...props}>
-          <div>DEBUG: showNewsletter={String(showNewsletter)}, md={showNewsletter ? 6 : 3}</div>
+          <div>
+            DEBUG: showNewsletter={String(showNewsletter)}, md={showNewsletter ? 6 : 3}
+          </div>
           {title && (
             <div className="c-footer__section-header">
               {collapsible ? (

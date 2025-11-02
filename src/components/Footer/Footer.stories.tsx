@@ -11,7 +11,8 @@ const meta: Meta<typeof Footer> = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'A modern, comprehensive footer component with enhanced visual effects, accessibility features, responsive design, and multiple layout variants. Features include design token integration, improved hover effects, modern gradients, and comprehensive accessibility support following Atomix design patterns.',
+        component:
+          'A modern, comprehensive footer component with enhanced visual effects, accessibility features, responsive design, and multiple layout variants. Features include design token integration, improved hover effects, modern gradients, and comprehensive accessibility support following Atomix design patterns.',
       },
     },
   },
@@ -71,7 +72,7 @@ const SampleFooterContent = () => (
       <FooterLink href="/product3">UI/UX Design</FooterLink>
       <FooterLink href="/product4">Consulting</FooterLink>
     </FooterSection>
-    
+
     <FooterSection title="Company">
       <FooterLink href="/about">About Us</FooterLink>
       <FooterLink href="/careers">Careers</FooterLink>
@@ -79,7 +80,6 @@ const SampleFooterContent = () => (
       <FooterLink href="/contact">Contact</FooterLink>
     </FooterSection>
 
-     
     <FooterSection title="Company">
       <FooterLink href="/about">About Us</FooterLink>
       <FooterLink href="/careers">Careers</FooterLink>
@@ -87,14 +87,12 @@ const SampleFooterContent = () => (
       <FooterLink href="/contact">Contact</FooterLink>
     </FooterSection>
 
-     
     <FooterSection title="Company">
       <FooterLink href="/about">About Us</FooterLink>
       <FooterLink href="/careers">Careers</FooterLink>
       <FooterLink href="/blog">Blog</FooterLink>
       <FooterLink href="/contact">Contact</FooterLink>
     </FooterSection>
-  
   </>
 );
 
@@ -130,7 +128,8 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Default footer configuration with modern styling, design tokens, and enhanced visual effects.',
+        story:
+          'Default footer configuration with modern styling, design tokens, and enhanced visual effects.',
       },
     },
   },
@@ -141,7 +140,8 @@ export const WithNewsletter: Story = {
     ...Default.args,
     showNewsletter: true,
     newsletterTitle: 'Stay in the Loop',
-    newsletterDescription: 'Get the latest updates, articles, and resources delivered to your inbox.',
+    newsletterDescription:
+      'Get the latest updates, articles, and resources delivered to your inbox.',
     onNewsletterSubmit: (email: string) => {
       console.log('Newsletter signup:', email);
       alert(`Thank you for subscribing with ${email}!`);
@@ -262,9 +262,9 @@ export const Sticky: Story = {
         <p>This page is tall enough to demonstrate the sticky footer behavior.</p>
         {Array.from({ length: 20 }, (_, i) => (
           <p key={i}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis 
-            nostrud exercitation ullamco laboris.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+            exercitation ullamco laboris.
           </p>
         ))}
       </div>
@@ -292,7 +292,7 @@ export const CollapsibleSections: Story = {
           <FooterLink href="/product2">Mobile Apps</FooterLink>
           <FooterLink href="/product3">UI/UX Design</FooterLink>
         </FooterSection>
-        
+
         <FooterSection title="Company" collapsible>
           <FooterLink href="/about">About Us</FooterLink>
           <FooterLink href="/careers">Careers</FooterLink>
@@ -321,16 +321,26 @@ export const WithExternalLinks: Story = {
       </div>
       <Footer {...args}>
         <FooterSection title="External Resources">
-          <FooterLink href="https://github.com" external>GitHub</FooterLink>
-          <FooterLink href="https://stackoverflow.com" external>Stack Overflow</FooterLink>
-          <FooterLink href="https://developer.mozilla.org" external>MDN Docs</FooterLink>
+          <FooterLink href="https://github.com" external>
+            GitHub
+          </FooterLink>
+          <FooterLink href="https://stackoverflow.com" external>
+            Stack Overflow
+          </FooterLink>
+          <FooterLink href="https://developer.mozilla.org" external>
+            MDN Docs
+          </FooterLink>
         </FooterSection>
-        
+
         <FooterSection title="Internal Links">
           <FooterLink href="/about">About Us</FooterLink>
           <FooterLink href="/contact">Contact</FooterLink>
-          <FooterLink href="/blog" active>Blog</FooterLink>
-          <FooterLink href="/disabled" disabled>Disabled Link</FooterLink>
+          <FooterLink href="/blog" active>
+            Blog
+          </FooterLink>
+          <FooterLink href="/disabled" disabled>
+            Disabled Link
+          </FooterLink>
         </FooterSection>
       </Footer>
     </div>
@@ -347,7 +357,13 @@ export const ModernGradients: Story = {
   },
   render: (args: any) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, padding: '2rem', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+      <div
+        style={{
+          flex: 1,
+          padding: '2rem',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        }}
+      >
         <h1 style={{ color: 'white' }}>Modern Design</h1>
         <p style={{ color: 'white' }}>Showcasing modern gradients and enhanced visual effects.</p>
       </div>
@@ -362,7 +378,8 @@ export const DesignTokensShowcase: Story = {
   args: {
     ...Default.args,
     brand: 'Design Tokens',
-    brandDescription: 'Showcasing consistent design tokens, modern hover effects, and enhanced visual styling throughout the footer component.',
+    brandDescription:
+      'Showcasing consistent design tokens, modern hover effects, and enhanced visual styling throughout the footer component.',
     showNewsletter: true,
     showBackToTop: true,
     socialLinks: sampleSocialLinks,
@@ -370,7 +387,8 @@ export const DesignTokensShowcase: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates the use of design tokens for consistent styling, enhanced hover effects, modern gradients, and improved accessibility features.',
+        story:
+          'Demonstrates the use of design tokens for consistent styling, enhanced hover effects, modern gradients, and improved accessibility features.',
       },
     },
   },
@@ -378,7 +396,10 @@ export const DesignTokensShowcase: Story = {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
         <h1>Design Token Integration</h1>
-        <p>This footer demonstrates consistent use of design tokens for colors, spacing, shadows, and typography. Hover over elements to see enhanced visual effects.</p>
+        <p>
+          This footer demonstrates consistent use of design tokens for colors, spacing, shadows, and
+          typography. Hover over elements to see enhanced visual effects.
+        </p>
         <ul>
           <li>✨ Global CSS variables for box shadows</li>
           <li>🎨 Design token-based colors and opacity</li>
@@ -394,7 +415,7 @@ export const DesignTokensShowcase: Story = {
           <FooterLink href="/guidelines">Guidelines</FooterLink>
           <FooterLink href="/accessibility">Accessibility</FooterLink>
         </FooterSection>
-        
+
         <FooterSection title="Development">
           <FooterLink href="/scss">SCSS Architecture</FooterLink>
           <FooterLink href="/css-vars">CSS Variables</FooterLink>
@@ -454,7 +475,8 @@ export const Flexible: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Flexible layout that automatically adapts to content width and screen size. Perfect for dynamic content scenarios.',
+        story:
+          'Flexible layout that automatically adapts to content width and screen size. Perfect for dynamic content scenarios.',
       },
     },
   },
@@ -469,7 +491,8 @@ export const Sidebar: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Sidebar layout with brand and newsletter in a left sidebar and content sections in the main area.',
+        story:
+          'Sidebar layout with brand and newsletter in a left sidebar and content sections in the main area.',
       },
     },
   },
@@ -484,7 +507,8 @@ export const Wide: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Wide layout optimized for large screens with generous spacing and extended content areas.',
+        story:
+          'Wide layout optimized for large screens with generous spacing and extended content areas.',
       },
     },
   },

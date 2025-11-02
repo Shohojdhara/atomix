@@ -138,7 +138,6 @@ export function useChartToolbar(
           grid: false,
         };
 
-
       default:
         return baseDefaults;
     }

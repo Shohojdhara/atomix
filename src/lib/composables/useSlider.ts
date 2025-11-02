@@ -84,11 +84,16 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
         autoplayRef.current = null;
       }
       setAutoplayRunning(false);
-      return;
+      return undefined;
     }
 
     const autoplayParams = typeof autoplay === 'boolean' ? { delay: 3000 } : autoplay;
-    const { delay = 3000, pauseOnMouseEnter = false, disableOnInteraction = false, reverseDirection = false } = autoplayParams;
+    const {
+      delay = 3000,
+      pauseOnMouseEnter = false,
+      disableOnInteraction = false,
+      reverseDirection = false,
+    } = autoplayParams;
 
     // Clear any existing interval
     if (autoplayRef.current) {
@@ -100,7 +105,7 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
       // We need to use a functional update to get the latest values
       setRealIndex(prevRealIndex => {
         if (isTransitioning) return prevRealIndex;
-        
+
         // Stop autoplay on interaction if disableOnInteraction is true
         if (disableOnInteraction && autoplayRef.current) {
           clearInterval(autoplayRef.current);
@@ -114,11 +119,15 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
         } else {
           nextIndex = Math.min(prevRealIndex + 1, slides.length - slidesToShow);
         }
-        
+
         // Trigger the slide change
         if (reverseDirection) {
           // For reverse direction, we would go to previous slide
-          const prevIndex = loop ? (prevRealIndex === 0 ? slides.length - 1 : prevRealIndex - 1) : Math.max(prevRealIndex - 1, 0);
+          const prevIndex = loop
+            ? prevRealIndex === 0
+              ? slides.length - 1
+              : prevRealIndex - 1
+            : Math.max(prevRealIndex - 1, 0);
           setInternalIndex(loop ? slides.length + prevIndex : prevIndex);
           setIsTransitioning(true);
           setDragOffset(0);
@@ -127,7 +136,7 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
             setIsTransitioning(false);
             onSlideChange?.(prevIndex);
           }, speed);
-          
+
           return prevIndex;
         } else {
           // Normal direction
@@ -138,7 +147,7 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
           setTimeout(() => {
             setIsTransitioning(false);
             onSlideChange?.(nextIndex);
-            
+
             // Reposition after transition ends for looped sliders
             if (loop && nextIndex >= slides.length * 2) {
               repositioningRef.current = true;
@@ -148,12 +157,12 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
               }, 0);
             }
           }, speed);
-          
+
           return nextIndex;
         }
       });
     }, delay);
-    
+
     setAutoplayRunning(true);
 
     // Handle pause on mouse enter/leave if enabled
@@ -165,24 +174,24 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
         setAutoplayRunning(false);
       }
     };
-    
+
     const handleMouseLeave = () => {
       // Restart autoplay
       if (autoplayRef.current) {
         clearInterval(autoplayRef.current);
       }
-      
+
       autoplayRef.current = setInterval(() => {
         setRealIndex(prevRealIndex => {
           if (isTransitioning) return prevRealIndex;
-          
+
           let nextIndex;
           if (loop) {
             nextIndex = (prevRealIndex + 1) % slides.length;
           } else {
             nextIndex = Math.min(prevRealIndex + 1, slides.length - slidesToShow);
           }
-          
+
           setInternalIndex(loop ? slides.length + nextIndex : nextIndex);
           setIsTransitioning(true);
           setDragOffset(0);
@@ -190,7 +199,7 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
           setTimeout(() => {
             setIsTransitioning(false);
             onSlideChange?.(nextIndex);
-            
+
             if (loop) {
               // Reposition after transition ends
               if (nextIndex >= slides.length * 2) {
@@ -202,11 +211,11 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
               }
             }
           }, speed);
-          
+
           return nextIndex;
         });
       }, delay);
-      
+
       setAutoplayRunning(true);
     };
 
@@ -228,7 +237,16 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
       }
       setAutoplayRunning(false);
     };
-  }, [autoplay, slides.length, loop, slidesToShow, isTransitioning, speed, onSlideChange, repositioningRef]);
+  }, [
+    autoplay,
+    slides.length,
+    loop,
+    slidesToShow,
+    isTransitioning,
+    speed,
+    onSlideChange,
+    repositioningRef,
+  ]);
 
   // Initialize
   useEffect(() => {
@@ -258,7 +276,12 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     if (isTransitioning) return;
 
     // Stop autoplay on interaction if disableOnInteraction is true
-    if (autoplay && typeof autoplay === 'object' && autoplay.disableOnInteraction && autoplayRef.current) {
+    if (
+      autoplay &&
+      typeof autoplay === 'object' &&
+      autoplay.disableOnInteraction &&
+      autoplayRef.current
+    ) {
       clearInterval(autoplayRef.current);
       autoplayRef.current = null;
       setAutoplayRunning(false);
@@ -309,14 +332,19 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     onSlideChange,
     allSlides.length,
     loopedSlides,
-    autoplay
+    autoplay,
   ]);
 
   const slidePrev = useCallback(() => {
     if (isTransitioning) return;
 
     // Stop autoplay on interaction if disableOnInteraction is true
-    if (autoplay && typeof autoplay === 'object' && autoplay.disableOnInteraction && autoplayRef.current) {
+    if (
+      autoplay &&
+      typeof autoplay === 'object' &&
+      autoplay.disableOnInteraction &&
+      autoplayRef.current
+    ) {
       clearInterval(autoplayRef.current);
       autoplayRef.current = null;
       setAutoplayRunning(false);
@@ -366,7 +394,7 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     onSlideChange,
     allSlides.length,
     loopedSlides,
-    autoplay
+    autoplay,
   ]);
 
   const goToSlide = useCallback(
@@ -374,7 +402,12 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
       if (isTransitioning || index === realIndex) return;
 
       // Stop autoplay on interaction if disableOnInteraction is true
-      if (autoplay && typeof autoplay === 'object' && autoplay.disableOnInteraction && autoplayRef.current) {
+      if (
+        autoplay &&
+        typeof autoplay === 'object' &&
+        autoplay.disableOnInteraction &&
+        autoplayRef.current
+      ) {
         clearInterval(autoplayRef.current);
         autoplayRef.current = null;
         setAutoplayRunning(false);
@@ -399,7 +432,12 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
       if (!allowTouchMove) return;
 
       // Stop autoplay on interaction if disableOnInteraction is true
-      if (autoplay && typeof autoplay === 'object' && autoplay.disableOnInteraction && autoplayRef.current) {
+      if (
+        autoplay &&
+        typeof autoplay === 'object' &&
+        autoplay.disableOnInteraction &&
+        autoplayRef.current
+      ) {
         clearInterval(autoplayRef.current);
         autoplayRef.current = null;
         setAutoplayRunning(false);

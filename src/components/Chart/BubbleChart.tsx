@@ -132,8 +132,7 @@ const BubbleChart = memo(
         const bubbles = bubbleData.map((bubble, index) => {
           // Calculate scaled size
           const scaledSize =
-            minBubbleSize +
-            ((bubble.size - minSize) / sizeRange) * (maxBubbleSize - minBubbleSize);
+            minBubbleSize + ((bubble.size - minSize) / sizeRange) * (maxBubbleSize - minBubbleSize);
 
           // Calculate position
           const x = scales.padding.left + (bubble.x / 100) * scales.innerWidth;
@@ -169,7 +168,14 @@ const BubbleChart = memo(
                 onClick={() => handlers.onDataPointClick?.(bubble, 0, index)}
                 onMouseEnter={e => {
                   const rect = e.currentTarget.getBoundingClientRect();
-                  handlers.onPointHover(0, index, x, y, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                  handlers.onPointHover(
+                    0,
+                    index,
+                    x,
+                    y,
+                    rect.left + rect.width / 2,
+                    rect.top + rect.height / 2
+                  );
                 }}
                 onMouseLeave={handlers.onPointLeave}
               />
@@ -182,8 +188,8 @@ const BubbleChart = memo(
                     labelPosition === 'center'
                       ? 'middle'
                       : labelPosition === 'top'
-                      ? 'text-before-edge'
-                      : 'text-after-edge'
+                        ? 'text-before-edge'
+                        : 'text-after-edge'
                   }
                   className="c-chart__bubble-label"
                 >
@@ -197,18 +203,23 @@ const BubbleChart = memo(
         return (
           <>
             {bubbles}
-            {config?.showTooltips !== false && hoveredPoint && hoveredPoint.pointIndex < bubbleData.length && (
-              <ChartTooltip
-                dataPoint={bubbleData[hoveredPoint.pointIndex]}
-                datasetLabel="Bubbles"
-                datasetColor={bubbleData[hoveredPoint.pointIndex]?.color || colorScheme[hoveredPoint.pointIndex % colorScheme.length]}
-                position={{
-                  x: hoveredPoint.clientX,
-                  y: hoveredPoint.clientY,
-                }}
-                visible={true}
-              />
-            )}
+            {config?.showTooltips !== false &&
+              hoveredPoint &&
+              hoveredPoint.pointIndex < bubbleData.length && (
+                <ChartTooltip
+                  dataPoint={bubbleData[hoveredPoint.pointIndex]}
+                  datasetLabel="Bubbles"
+                  datasetColor={
+                    bubbleData[hoveredPoint.pointIndex]?.color ||
+                    colorScheme[hoveredPoint.pointIndex % colorScheme.length]
+                  }
+                  position={{
+                    x: hoveredPoint.clientX,
+                    y: hoveredPoint.clientY,
+                  }}
+                  visible={true}
+                />
+              )}
           </>
         );
       };

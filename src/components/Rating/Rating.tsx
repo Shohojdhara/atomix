@@ -294,11 +294,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
 
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-      return (
-        <AtomixGlass {...glassProps}>
-          {ratingContent}
-        </AtomixGlass>
-      );
+      return <AtomixGlass {...glassProps}>{ratingContent}</AtomixGlass>;
     }
 
     return ratingContent;

@@ -15,7 +15,7 @@ import classNames from 'classnames';
  * - Arrays (including nested arrays)
  * - Objects (keys are class names, values are truthy/falsy conditions)
  * - Mixed types
- * 
+ *
  * @example
  * cn('foo', 'bar'); // 'foo bar'
  * cn('foo', { bar: true }); // 'foo bar'

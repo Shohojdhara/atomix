@@ -159,13 +159,16 @@ export const GlassVariants: Story = {
         <Input placeholder="Large Glass" size="lg" glass />
         <Input placeholder="Primary Glass" variant="primary" glass />
         <Input placeholder="Success Glass" variant="success" glass />
-        <Input placeholder="Custom Glass" glass={{
-          displacementScale: 80,
-          blurAmount: 2,
-          saturation: 200,
-          aberrationIntensity: 2,
-          cornerRadius: 12,
-        }} />
+        <Input
+          placeholder="Custom Glass"
+          glass={{
+            displacementScale: 80,
+            blurAmount: 2,
+            saturation: 200,
+            aberrationIntensity: 2,
+            cornerRadius: 12,
+          }}
+        />
       </div>
     </div>
   ),
@@ -215,9 +218,7 @@ export const GlassShowcase: Story = {
           justifyContent: 'center',
         }}
       >
-        <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
-          Glass Modes
-        </h3>
+        <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>Glass Modes</h3>
         <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
           <Input placeholder="Standard Mode" glass={{ mode: 'standard' }} />
           <Input placeholder="Polar Mode" glass={{ mode: 'polar' }} />

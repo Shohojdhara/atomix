@@ -54,16 +54,16 @@
     max-width: var(--#{$prefix}footer-container-max-width);
     margin-left: auto;
     margin-right: auto;
-    
+
     &--columns {
       // Default grid behavior
     }
-    
+
     &--centered {
       justify-content: center;
       align-items: center;
     }
-    
+
     &--stacked {
       display: flex;
       flex-direction: column;
@@ -720,14 +720,14 @@
       margin-right: auto;
     }
   }
-  
+
   &--flexible {
     #{$root}__section-col {
       flex: 1 1 auto;
       min-width: 250px;
     }
   }
-  
+
   &--sidebar {
     #{$root}__sections {
       &--columns {
@@ -735,7 +735,7 @@
       }
     }
   }
-  
+
   &--wide {
     #{$root}__sections {
       max-width: 100%;

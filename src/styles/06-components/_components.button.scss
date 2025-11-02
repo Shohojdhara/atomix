@@ -135,11 +135,16 @@
 
   // Glass morphism effect styles
   &--glass {
-    @include dynamic-background(var(--#{config.$prefix}btn-bg), $background-transparency-enable: true);
+    @include dynamic-background(
+      var(--#{config.$prefix}btn-bg),
+      $background-transparency-enable: true
+    );
 
     &:hover {
-      @include dynamic-background(var(--#{config.$prefix}btn-hover-bg), $background-transparency-enable: true);
+      @include dynamic-background(
+        var(--#{config.$prefix}btn-hover-bg),
+        $background-transparency-enable: true
+      );
     }
-
   }
 }

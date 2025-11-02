@@ -18,7 +18,10 @@ export function useGlassContainer(props: GlassContainerProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [currentGlassSize, setCurrentGlassSize] = useState(glassSize);
-  const [internalGlobalMousePos, setInternalGlobalMousePos] = useState<MousePosition>({ x: 0, y: 0 });
+  const [internalGlobalMousePos, setInternalGlobalMousePos] = useState<MousePosition>({
+    x: 0,
+    y: 0,
+  });
   const [internalMouseOffset, setInternalMouseOffset] = useState<MousePosition>({ x: 0, y: 0 });
 
   // Use external mouse position if provided, otherwise use internal
@@ -29,7 +32,7 @@ export function useGlassContainer(props: GlassContainerProps) {
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
       const container = mouseContainer?.current || glassRef.current;
-      if (!container) return;
+      if (!container) return undefined;
 
       const rect = container.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
@@ -50,10 +53,10 @@ export function useGlassContainer(props: GlassContainerProps) {
 
   // Set up mouse tracking if no external mouse position is provided
   useEffect(() => {
-    if (externalGlobalMousePos && externalMouseOffset) return;
+    if (externalGlobalMousePos && externalMouseOffset) return undefined;
 
     const container = mouseContainer?.current || glassRef.current;
-    if (!container) return;
+    if (!container) return undefined;
 
     container.addEventListener('mousemove', handleMouseMove);
     return () => container.removeEventListener('mousemove', handleMouseMove);
@@ -89,8 +92,14 @@ export function useGlassContainer(props: GlassContainerProps) {
     const normalizedY = deltaY / centerDistance;
     const stretchIntensity = Math.min(centerDistance / 300, 1) * elasticity * fadeInFactor;
 
-    const scaleX = 1 + Math.abs(normalizedX) * stretchIntensity * 0.3 - Math.abs(normalizedY) * stretchIntensity * 0.15;
-    const scaleY = 1 + Math.abs(normalizedY) * stretchIntensity * 0.3 - Math.abs(normalizedX) * stretchIntensity * 0.15;
+    const scaleX =
+      1 +
+      Math.abs(normalizedX) * stretchIntensity * 0.3 -
+      Math.abs(normalizedY) * stretchIntensity * 0.15;
+    const scaleY =
+      1 +
+      Math.abs(normalizedY) * stretchIntensity * 0.3 -
+      Math.abs(normalizedX) * stretchIntensity * 0.15;
 
     return `scaleX(${Math.max(0.8, scaleX)}) scaleY(${Math.max(0.8, scaleY)})`;
   }, [globalMousePos, elasticity, currentGlassSize]);

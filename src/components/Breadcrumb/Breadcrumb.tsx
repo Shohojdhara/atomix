@@ -109,9 +109,11 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
             <li key={index} className={itemClasses} style={item.style}>
               {item.href && !item.active ? (
                 LinkComponent ? (
-                  <LinkComponent {...linkProps as React.ComponentProps<React.ElementType>}>{linkContent}</LinkComponent>
+                  <LinkComponent {...(linkProps as React.ComponentProps<React.ElementType>)}>
+                    {linkContent}
+                  </LinkComponent>
                 ) : (
-                  <a {...linkProps as React.ComponentProps<'a'>}>{linkContent}</a>
+                  <a {...(linkProps as React.ComponentProps<'a'>)}>{linkContent}</a>
                 )
               ) : (
                 <span className={BREADCRUMB.CLASSES.LINK}>{linkContent}</span>

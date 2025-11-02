@@ -203,8 +203,8 @@ export const BackgroundWrapper = ({
           }}
         />
       )}
-    
-        {children}
+
+      {children}
     </div>
   );
 };
@@ -215,7 +215,11 @@ export const BackgroundWrapper = ({
  * A container that provides mouse tracking and interactive background effects
  * for enhanced storytelling and demonstration purposes.
  */
-export const StoryContainer = ({ children, style = {}, interactive = false }: StoryContainerProps) => {
+export const StoryContainer = ({
+  children,
+  style = {},
+  interactive = false,
+}: StoryContainerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [backgroundPosition, setBackgroundPosition] = useState({ x: 0, y: 0 });
 
@@ -244,6 +248,7 @@ export const StoryContainer = ({ children, style = {}, interactive = false }: St
         currentRef.removeEventListener('mousemove', handleMouseMove);
       };
     }
+    return undefined;
   }, [handleMouseMove, interactive]);
 
   return (

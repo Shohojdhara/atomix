@@ -169,13 +169,17 @@ export const GlassVariants: Story = {
         <Textarea placeholder="Large Glass" size="lg" rows={3} glass />
         <Textarea placeholder="Primary Glass" variant="primary" rows={3} glass />
         <Textarea placeholder="Success Glass" variant="success" rows={3} glass />
-        <Textarea placeholder="Custom Glass" rows={4} glass={{
-          displacementScale: 80,
-          blurAmount: 2,
-          saturation: 200,
-          aberrationIntensity: 2,
-          cornerRadius: 12,
-        }} />
+        <Textarea
+          placeholder="Custom Glass"
+          rows={4}
+          glass={{
+            displacementScale: 80,
+            blurAmount: 2,
+            saturation: 200,
+            aberrationIntensity: 2,
+            cornerRadius: 12,
+          }}
+        />
       </div>
     </div>
   ),
@@ -212,9 +216,7 @@ export const GlassShowcase: Story = {
           borderRadius: '12px',
         }}
       >
-        <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
-          Glass Modes
-        </h3>
+        <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>Glass Modes</h3>
         <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
           <Textarea placeholder="Standard Mode" rows={3} glass={{ mode: 'standard' }} />
           <Textarea placeholder="Polar Mode" rows={3} glass={{ mode: 'polar' }} />

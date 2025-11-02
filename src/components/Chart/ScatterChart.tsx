@@ -76,9 +76,7 @@ const ScatterChart = memo(
 
             const y =
               point.y !== undefined
-                ? scales.padding.top +
-                  scales.innerHeight -
-                  (point.y / 100) * scales.innerHeight
+                ? scales.padding.top + scales.innerHeight - (point.y / 100) * scales.innerHeight
                 : scales.yScale(point.value);
 
             points.push(
@@ -98,7 +96,14 @@ const ScatterChart = memo(
                       );
                     }
                     const rect = e.currentTarget.getBoundingClientRect();
-                    handlers.onPointHover(datasetIndex, pointIndex, x, y, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                    handlers.onPointHover(
+                      datasetIndex,
+                      pointIndex,
+                      x,
+                      y,
+                      rect.left + rect.width / 2,
+                      rect.top + rect.height / 2
+                    );
                   }}
                   onMouseLeave={e => {
                     if (scatterOptions.enableHoverEffects) {
@@ -111,12 +116,7 @@ const ScatterChart = memo(
                   }}
                 />
                 {scatterOptions.showLabels && (
-                  <text
-                    x={x}
-                    y={y - 10}
-                    textAnchor="middle"
-                    className="c-chart__scatter-label"
-                  >
+                  <text x={x} y={y - 10} textAnchor="middle" className="c-chart__scatter-label">
                     {point.label}
                   </text>
                 )}
@@ -130,9 +130,14 @@ const ScatterChart = memo(
             {points}
             {hoveredPoint && (
               <ChartTooltip
-                dataPoint={renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]}
+                dataPoint={
+                  renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]
+                }
                 datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
-                datasetColor={renderedDatasets[hoveredPoint.datasetIndex]?.color || colors[hoveredPoint.datasetIndex]}
+                datasetColor={
+                  renderedDatasets[hoveredPoint.datasetIndex]?.color ||
+                  colors[hoveredPoint.datasetIndex]
+                }
                 position={{
                   x: hoveredPoint.clientX,
                   y: hoveredPoint.clientY,

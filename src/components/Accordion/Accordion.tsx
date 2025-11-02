@@ -112,7 +112,10 @@ export const Accordion: React.FC<AccordionProps> = ({
   );
 
   const accordionContent = (
-    <div className={generateClassNames(className) + (glass ? ' c-accordion--glass' : '')} style={style}>
+    <div
+      className={generateClassNames(className) + (glass ? ' c-accordion--glass' : '')}
+      style={style}
+    >
       <button
         id={buttonId}
         className={generateHeaderClassNames()}
@@ -133,7 +136,10 @@ export const Accordion: React.FC<AccordionProps> = ({
         role="region"
         aria-labelledby={buttonId}
       >
-        <div className={ACCORDION.SELECTORS.BODY.replace('.', '')} ref={contentRef as React.RefObject<HTMLDivElement>}>
+        <div
+          className={ACCORDION.SELECTORS.BODY.replace('.', '')}
+          ref={contentRef as React.RefObject<HTMLDivElement>}
+        >
           {children}
         </div>
       </div>
@@ -149,11 +155,7 @@ export const Accordion: React.FC<AccordionProps> = ({
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-    return (
-      <AtomixGlass {...glassProps}>
-        {accordionContent}
-      </AtomixGlass>
-    );
+    return <AtomixGlass {...glassProps}>{accordionContent}</AtomixGlass>;
   }
 
   return accordionContent;

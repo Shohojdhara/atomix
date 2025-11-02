@@ -152,7 +152,7 @@ export const ModeGallery: Story = {
               saturation={130}
               cornerRadius={20}
               elasticity={0.12}
-              className='u-mb-4 d-inline-block'
+              className="u-mb-4 d-inline-block"
             >
               Four Rendering Modes
             </AtomixGlass>
@@ -185,176 +185,176 @@ export const ModeGallery: Story = {
 
           {/* Modes Grid */}
           <Container>
-          <Grid>
-            {modes.map(mode => {
-              const isSelected = selectedMode === mode.id;
+            <Grid>
+              {modes.map(mode => {
+                const isSelected = selectedMode === mode.id;
 
-              return (
-                <GridCol xs={12} md={6}  className='u-mb-4'>
-                  <AtomixGlass
-                    key={mode.id}
-                    mode={mode.id as any}
-                    displacementScale={mode.settings.displacementScale}
-                    blurAmount={mode.settings.blurAmount}
-                    saturation={mode.settings.saturation}
-                    aberrationIntensity={mode.settings.aberrationIntensity}
-                    shaderVariant={mode.id === 'shader' ? 'premiumGlass' : undefined}
-                    elasticity={0}
-                    cornerRadius={24}
-                    onClick={() => setSelectedMode(isSelected ? null : mode.id)}
-                    style={{
-                      cursor: 'pointer',
-                      transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                      transform: isSelected ? 'scale(1.03)' : 'scale(1)',
-                    }}
-                  >
-                    <div
+                return (
+                  <GridCol xs={12} md={6} className="u-mb-4">
+                    <AtomixGlass
+                      key={mode.id}
+                      mode={mode.id as any}
+                      displacementScale={mode.settings.displacementScale}
+                      blurAmount={mode.settings.blurAmount}
+                      saturation={mode.settings.saturation}
+                      aberrationIntensity={mode.settings.aberrationIntensity}
+                      shaderVariant={mode.id === 'shader' ? 'premiumGlass' : undefined}
+                      elasticity={0}
+                      cornerRadius={24}
+                      onClick={() => setSelectedMode(isSelected ? null : mode.id)}
                       style={{
-                        padding: '32px 28px',
-                        minHeight: '420px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        transition: 'all 0.3s ease',
+                        cursor: 'pointer',
+                        transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                        transform: isSelected ? 'scale(1.03)' : 'scale(1)',
                       }}
                     >
-                      {/* Icon and Badge */}
-                      <div style={{ marginBottom: '24px' }}>
-                        <div
-                          style={{
-                            width: '64px',
-                            height: '64px',
-                            borderRadius: '18px',
-                            background: mode.gradient,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '32px',
-                            marginBottom: '16px',
-                            boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
-                            position: 'relative',
-                          }}
-                        >
-                          <div
-                            style={{
-                              position: 'absolute',
-                              inset: '-3px',
-                              borderRadius: '20px',
-                              background: mode.gradient,
-                              opacity: 0.4,
-                              filter: 'blur(10px)',
-                            }}
-                          />
-                          <span style={{ position: 'relative', zIndex: 1 }}>{mode.icon}</span>
-                        </div>
-                      </div>
-
-                      {/* Content */}
-                      <div style={{ flex: 1 }}>
-                        <h3
-                          style={{
-                            margin: '0 0 12px 0',
-                            fontSize: '26px',
-                            fontWeight: 600,
-                            color: '#fff',
-                            letterSpacing: '-0.5px',
-                          }}
-                        >
-                          {mode.name}
-                        </h3>
-                        <p
-                          style={{
-                            margin: '0 0 20px 0',
-                            fontSize: '14px',
-                            lineHeight: 1.6,
-                            color: 'rgba(255, 255, 255, 0.8)',
-                          }}
-                        >
-                          {mode.description}
-                        </p>
-
-                        {/* Features List */}
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '8px',
-                            marginBottom: '20px',
-                          }}
-                        >
-                          {mode.features.map((feature, idx) => (
-                            <div
-                              key={idx}
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                fontSize: '13px',
-                                color: 'rgba(255, 255, 255, 0.75)',
-                              }}
-                            >
-                              <div
-                                style={{
-                                  width: '4px',
-                                  height: '4px',
-                                  borderRadius: '50%',
-                                  background: mode.gradient,
-                                }}
-                              />
-                              {feature}
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Use Case */}
-                        <div
-                          style={{
-                            padding: '12px 16px',
-                            borderRadius: '12px',
-                            background: 'rgba(255, 255, 255, 0.08)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)',
-                            fontSize: '12px',
-                            lineHeight: 1.5,
-                            color: 'rgba(255, 255, 255, 0.7)',
-                            marginTop: 'auto',
-                          }}
-                        >
-                          <strong style={{ color: '#fff' }}>Use Case:</strong> {mode.useCase}
-                        </div>
-                      </div>
-
-                      {/* Settings Info */}
                       <div
                         style={{
-                          marginTop: '20px',
-                          paddingTop: '16px',
-                          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                          padding: '32px 28px',
+                          minHeight: '420px',
                           display: 'flex',
-                          flexWrap: 'wrap',
-                          gap: '8px',
+                          flexDirection: 'column',
+                          transition: 'all 0.3s ease',
                         }}
                       >
-                        {Object.entries(mode.settings).map(([key, value]) => (
-                          <span
-                            key={key}
+                        {/* Icon and Badge */}
+                        <div style={{ marginBottom: '24px' }}>
+                          <div
                             style={{
-                              padding: '4px 10px',
-                              fontSize: '11px',
-                              borderRadius: '8px',
-                              background: 'rgba(0, 0, 0, 0.2)',
-                              color: 'rgba(255, 255, 255, 0.6)',
-                              fontFamily: 'monospace',
+                              width: '64px',
+                              height: '64px',
+                              borderRadius: '18px',
+                              background: mode.gradient,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '32px',
+                              marginBottom: '16px',
+                              boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
+                              position: 'relative',
                             }}
                           >
-                            {key.replace(/([A-Z])/g, ' $1').trim()}: {value}
-                          </span>
-                        ))}
+                            <div
+                              style={{
+                                position: 'absolute',
+                                inset: '-3px',
+                                borderRadius: '20px',
+                                background: mode.gradient,
+                                opacity: 0.4,
+                                filter: 'blur(10px)',
+                              }}
+                            />
+                            <span style={{ position: 'relative', zIndex: 1 }}>{mode.icon}</span>
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div style={{ flex: 1 }}>
+                          <h3
+                            style={{
+                              margin: '0 0 12px 0',
+                              fontSize: '26px',
+                              fontWeight: 600,
+                              color: '#fff',
+                              letterSpacing: '-0.5px',
+                            }}
+                          >
+                            {mode.name}
+                          </h3>
+                          <p
+                            style={{
+                              margin: '0 0 20px 0',
+                              fontSize: '14px',
+                              lineHeight: 1.6,
+                              color: 'rgba(255, 255, 255, 0.8)',
+                            }}
+                          >
+                            {mode.description}
+                          </p>
+
+                          {/* Features List */}
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: '8px',
+                              marginBottom: '20px',
+                            }}
+                          >
+                            {mode.features.map((feature, idx) => (
+                              <div
+                                key={idx}
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '8px',
+                                  fontSize: '13px',
+                                  color: 'rgba(255, 255, 255, 0.75)',
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    width: '4px',
+                                    height: '4px',
+                                    borderRadius: '50%',
+                                    background: mode.gradient,
+                                  }}
+                                />
+                                {feature}
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Use Case */}
+                          <div
+                            style={{
+                              padding: '12px 16px',
+                              borderRadius: '12px',
+                              background: 'rgba(255, 255, 255, 0.08)',
+                              border: '1px solid rgba(255, 255, 255, 0.1)',
+                              fontSize: '12px',
+                              lineHeight: 1.5,
+                              color: 'rgba(255, 255, 255, 0.7)',
+                              marginTop: 'auto',
+                            }}
+                          >
+                            <strong style={{ color: '#fff' }}>Use Case:</strong> {mode.useCase}
+                          </div>
+                        </div>
+
+                        {/* Settings Info */}
+                        <div
+                          style={{
+                            marginTop: '20px',
+                            paddingTop: '16px',
+                            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: '8px',
+                          }}
+                        >
+                          {Object.entries(mode.settings).map(([key, value]) => (
+                            <span
+                              key={key}
+                              style={{
+                                padding: '4px 10px',
+                                fontSize: '11px',
+                                borderRadius: '8px',
+                                background: 'rgba(0, 0, 0, 0.2)',
+                                color: 'rgba(255, 255, 255, 0.6)',
+                                fontFamily: 'monospace',
+                              }}
+                            >
+                              {key.replace(/([A-Z])/g, ' $1').trim()}: {value}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  </AtomixGlass>
-                </GridCol>
-              );
-            })}
-          </Grid>
+                    </AtomixGlass>
+                  </GridCol>
+                );
+              })}
+            </Grid>
           </Container>
 
           {/* Info Card */}
@@ -365,7 +365,7 @@ export const ModeGallery: Story = {
             saturation={130}
             cornerRadius={20}
             elasticity={0.12}
-            className='u-mt-8'
+            className="u-mt-8"
           >
             <div
               style={{

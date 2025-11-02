@@ -96,7 +96,7 @@ const LineChart = memo(
             {renderedDatasets.map((dataset: any, datasetIndex: number) => {
               const color = dataset.color || colors[datasetIndex];
               const dataLength = dataset.data?.length || 0;
-              
+
               if (dataLength === 0) return null;
 
               // Generate points with proper coordinates
@@ -121,35 +121,47 @@ const LineChart = memo(
                       className="c-chart__area-path"
                     />
                   )}
-                  <path 
-                    d={path} 
+                  <path
+                    d={path}
                     stroke={color}
                     strokeWidth={mergedLineOptions.lineWidth || 2}
                     fill="none"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="c-chart__line-path" 
+                    className="c-chart__line-path"
                   />
                   {mergedLineOptions.showDataPoints &&
                     dataset.data?.map((point: any, i: number) => {
                       const x = scales.xScale(i, dataLength);
                       const y = scales.yScale(point.value);
                       const isHovered =
-                        hoveredPoint?.datasetIndex === datasetIndex && hoveredPoint?.pointIndex === i;
+                        hoveredPoint?.datasetIndex === datasetIndex &&
+                        hoveredPoint?.pointIndex === i;
 
                       return (
                         <g key={`point-${i}`}>
                           <circle
                             cx={x}
                             cy={y}
-                            r={isHovered ? mergedLineOptions.pointRadius! * 1.5 : mergedLineOptions.pointRadius}
+                            r={
+                              isHovered
+                                ? mergedLineOptions.pointRadius! * 1.5
+                                : mergedLineOptions.pointRadius
+                            }
                             fill={color}
                             stroke="white"
                             strokeWidth={isHovered ? 2 : 1}
                             className={`c-chart__data-point ${isHovered ? 'c-chart__data-point--hovered' : ''}`}
                             onMouseEnter={e => {
                               const rect = e.currentTarget.getBoundingClientRect();
-                              handlers.onPointHover(datasetIndex, i, x, y, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                              handlers.onPointHover(
+                                datasetIndex,
+                                i,
+                                x,
+                                y,
+                                rect.left + rect.width / 2,
+                                rect.top + rect.height / 2
+                              );
                             }}
                             onMouseLeave={handlers.onPointLeave}
                             onClick={() => handlers.onDataPointClick?.(point, datasetIndex, i)}
@@ -173,7 +185,8 @@ const LineChart = memo(
                 </g>
               );
             })}
-            {config?.showTooltips !== false && hoveredPoint &&
+            {config?.showTooltips !== false &&
+              hoveredPoint &&
               renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
                 <ChartTooltip
                   dataPoint={

@@ -109,20 +109,23 @@ export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
     const classes = isDefaultAuto ? ['o-grid__col', 'o-grid__col--auto'] : ['o-grid__col'];
 
     // Helper function to process responsive props
-    const processResponsiveProp = (value: number | 'auto' | boolean | undefined, breakpoint: string) => {
+    const processResponsiveProp = (
+      value: number | 'auto' | boolean | undefined,
+      breakpoint: string
+    ) => {
       if (value === undefined) return;
-      
+
       // Handle boolean values
       if (value === true) {
         classes.push(breakpoint === 'xs' ? 'o-grid__col--auto' : `o-grid__col--${breakpoint}-auto`);
         return;
       }
-      
+
       if (value === false) {
         // False means don't apply any class for this breakpoint
         return;
       }
-      
+
       // Handle string/number values
       if (breakpoint === 'xs') {
         if (value === 'auto') {
@@ -159,15 +162,15 @@ export const GridCol = forwardRef<HTMLDivElement, GridColProps>(
     if (grow !== undefined) {
       classes.push(grow ? 'u-flex-grow-1' : 'u-flex-grow-0');
     }
-    
+
     if (shrink !== undefined) {
       classes.push(shrink ? 'u-flex-shrink-1' : 'u-flex-shrink-0');
     }
-    
+
     if (basis) {
       classes.push(`u-flex-basis-${basis}`);
     }
-    
+
     if (align) {
       classes.push(`u-align-self-${align}`);
     }

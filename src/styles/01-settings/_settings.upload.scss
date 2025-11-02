@@ -30,14 +30,14 @@ $upload-icon-bg: var(--#{config.$prefix}body-bg) !default;
 $upload-title-font-size: typography.$font-size-lg !default;
 $upload-title-font-weight: typography.$headings-font-weight !default;
 $upload-title-color: var(--#{config.$prefix}body-color) !default;
-$upload-title-margin-top:  map.get($spacing-sizes, 2) !default; //8px
-$upload-title-margin-bottom:  map.get($spacing-sizes, 2) !default; //8px
+$upload-title-margin-top: map.get($spacing-sizes, 2) !default; //8px
+$upload-title-margin-bottom: map.get($spacing-sizes, 2) !default; //8px
 $upload-text-opacity: 0.8 !default; //0.8 - opacity of the text
 $upload-text-font-size: typography.$font-size-sm !default;
 $upload-text-font-weight: typography.$font-weight-normal !default;
 $upload-text-color: var(--#{config.$prefix}body-color) !default;
-$upload-text-margin-top:  map.get($spacing-sizes, 4) !default; //4px
-$upload-text-margin-bottom:  map.get($spacing-sizes, 4) !default; //16px
+$upload-text-margin-top: map.get($spacing-sizes, 4) !default; //4px
+$upload-text-margin-bottom: map.get($spacing-sizes, 4) !default; //16px
 $upload-btn-margin-top: map.get($spacing-sizes, 5) !default; //20px
 $upload-btn-margin-left: map.get($spacing-sizes, 4) !default; //16px
 

@@ -313,23 +313,27 @@ export const GlassModal: Story = {
           glass={true}
         >
           <p>
-            This modal demonstrates the glass morphism effect with a translucent, frosted appearance.
-            The glass effect creates a modern, elegant look that works well over colorful backgrounds.
+            This modal demonstrates the glass morphism effect with a translucent, frosted
+            appearance. The glass effect creates a modern, elegant look that works well over
+            colorful backgrounds.
           </p>
           <p>
-            The glass effect includes displacement, blur, and chromatic aberration for a premium feel.
+            The glass effect includes displacement, blur, and chromatic aberration for a premium
+            feel.
           </p>
         </Modal>
       </>
     );
   },
   decorators: [
-    (Story) => (
-      <div style={{ 
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
-        minHeight: '100vh',
-        padding: '2rem'
-      }}>
+    Story => (
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          minHeight: '100vh',
+          padding: '2rem',
+        }}
+      >
         <Story />
       </div>
     ),
@@ -359,14 +363,16 @@ export const GlassModalCustom: Story = {
           onOpenChange={setIsOpen}
           title="Custom Glass Modal"
           subtitle="This modal has customized glass effect settings."
-          glass={{
-            displacementScale: 120,
-            blurAmount: 3,
-            saturation: 200,
-            aberrationIntensity: 2,
-            cornerRadius: 20,
-            mode: 'polar',
-          }as any}
+          glass={
+            {
+              displacementScale: 120,
+              blurAmount: 3,
+              saturation: 200,
+              aberrationIntensity: 2,
+              cornerRadius: 20,
+              mode: 'polar',
+            } as any
+          }
           footer={
             <>
               <div
@@ -392,22 +398,26 @@ export const GlassModalCustom: Story = {
           }
         >
           <p>
-            This modal uses custom glass settings with enhanced displacement, blur, and chromatic aberration.
-            The polar mode creates a different visual effect compared to the standard shader mode.
+            This modal uses custom glass settings with enhanced displacement, blur, and chromatic
+            aberration. The polar mode creates a different visual effect compared to the standard
+            shader mode.
           </p>
         </Modal>
       </>
     );
   },
   decorators: [
-    (Story) => (
-      <div style={{ 
-        background: 'url(https://images.unsplash.com/photo-1744872665943-fd335d371059?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)', 
-        height: '100vh',
-        width: '100vw',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}>
+    Story => (
+      <div
+        style={{
+          background:
+            'url(https://images.unsplash.com/photo-1744872665943-fd335d371059?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+          height: '100vh',
+          width: '100vw',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <Story />
       </div>
     ),
@@ -502,18 +512,22 @@ export const GlassModalSizes: Story = {
           }
         >
           <p>This is a {size.toUpperCase()} sized glass modal.</p>
-          <p>The glass effect adapts to different modal sizes while maintaining its visual appeal.</p>
+          <p>
+            The glass effect adapts to different modal sizes while maintaining its visual appeal.
+          </p>
         </Modal>
       </div>
     );
   },
   decorators: [
-    (Story) => (
-      <div style={{ 
-        background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', 
-        minHeight: '100vh',
-        padding: '2rem'
-      }}>
+    Story => (
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+          minHeight: '100vh',
+          padding: '2rem',
+        }}
+      >
         <Story />
       </div>
     ),

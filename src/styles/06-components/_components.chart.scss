@@ -58,7 +58,6 @@
     border-color: var(--#{$prefix}primary-border-subtle);
   }
 
-
   &--loading {
     #{$root}__content {
       position: relative;
@@ -102,7 +101,6 @@
       transform: translateY(-4px);
     }
   }
-
 
   &__header {
     padding: var(--#{$prefix}chart-padding);
@@ -398,7 +396,6 @@
     }
   }
 
-
   &__tooltip {
     position: fixed;
     backdrop-filter: blur($chart-tooltip-backdrop-blur);
@@ -478,7 +475,6 @@
       font-weight: $font-weight-medium;
     }
   }
-
 
   &__grid {
     stroke: $chart-primary-border;

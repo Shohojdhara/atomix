@@ -133,11 +133,7 @@ export const Tab: React.FC<TabProps> = ({
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-    return (
-      <AtomixGlass {...glassProps}>
-        {tabContent}
-      </AtomixGlass>
-    );
+    return <AtomixGlass {...glassProps}>{tabContent}</AtomixGlass>;
   }
 
   return tabContent;

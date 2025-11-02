@@ -129,12 +129,14 @@ GlassTooltip.args = {
   glass: true,
 };
 GlassTooltip.decorators = [
-  (Story) => (
-    <div style={{ 
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
-      minHeight: '100vh',
-      padding: '2rem'
-    }}>
+  Story => (
+    <div
+      style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        minHeight: '100vh',
+        padding: '2rem',
+      }}
+    >
       <Story />
     </div>
   ),
@@ -158,12 +160,14 @@ GlassTooltipCustom.args = {
   },
 };
 GlassTooltipCustom.decorators = [
-  (Story) => (
-    <div style={{ 
-      background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)', 
-      minHeight: '100vh',
-      padding: '2rem'
-    }}>
+  Story => (
+    <div
+      style={{
+        background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)',
+        minHeight: '100vh',
+        padding: '2rem',
+      }}
+    >
       <Story />
     </div>
   ),
@@ -180,12 +184,14 @@ GlassTooltipClick.args = {
   glass: true,
 };
 GlassTooltipClick.decorators = [
-  (Story) => (
-    <div style={{ 
-      background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', 
-      minHeight: '100vh',
-      padding: '2rem'
-    }}>
+  Story => (
+    <div
+      style={{
+        background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+        minHeight: '100vh',
+        padding: '2rem',
+      }}
+    >
       <Story />
     </div>
   ),
@@ -202,12 +208,14 @@ GlassTooltipPositions.args = {
   glass: true,
 };
 GlassTooltipPositions.decorators = [
-  (Story) => (
-    <div style={{ 
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
-      minHeight: '100vh',
-      padding: '2rem'
-    }}>
+  Story => (
+    <div
+      style={{
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        minHeight: '100vh',
+        padding: '2rem',
+      }}
+    >
       <Story />
     </div>
   ),
@@ -234,12 +242,14 @@ GlassTooltipRich.args = {
   glass: true,
 };
 GlassTooltipRich.decorators = [
-  (Story) => (
-    <div style={{ 
-      background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)', 
-      minHeight: '100vh',
-      padding: '2rem'
-    }}>
+  Story => (
+    <div
+      style={{
+        background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)',
+        minHeight: '100vh',
+        padding: '2rem',
+      }}
+    >
       <Story />
     </div>
   ),

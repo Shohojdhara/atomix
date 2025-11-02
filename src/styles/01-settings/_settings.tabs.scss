@@ -23,7 +23,7 @@ $tabs-nav-btn-border-color: transparent !default;
 $tabs-nav-btn-border-active-color: var(--#{config.$prefix}brand-border-subtle) !default;
 $tabs-nav-btn-border-disabled-color: var(--#{config.$prefix}primary-border-subtle) !default;
 $tabs-nav-btns-gap: 0px !default;
-$tabs-nav-btn-inner-gap:map.get($spacing-sizes, 2) !default; //8px
+$tabs-nav-btn-inner-gap: map.get($spacing-sizes, 2) !default; //8px
 $tab-nav-btn-icon-size: map.get($spacing-sizes, 5) !default; //20px
 
 $tabs-panel-padding-x: math.div(grid.$grid-gutter-width, 2) !default;

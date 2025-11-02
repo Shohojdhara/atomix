@@ -87,7 +87,14 @@ const BarChart = memo(
                     }
                     onMouseEnter={e => {
                       const rect = e.currentTarget.getBoundingClientRect();
-                      handlers.onPointHover(bar.datasetIndex, bar.pointIndex, bar.x, bar.y, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                      handlers.onPointHover(
+                        bar.datasetIndex,
+                        bar.pointIndex,
+                        bar.x,
+                        bar.y,
+                        rect.left + rect.width / 2,
+                        rect.top + rect.height / 2
+                      );
                     }}
                     onMouseLeave={handlers.onPointLeave}
                   />
@@ -107,7 +114,9 @@ const BarChart = memo(
             {config?.showTooltips !== false && hoveredPoint && (
               <ChartTooltip
                 dataPoint={
-                  renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] as ChartDataPoint
+                  renderedDatasets[hoveredPoint.datasetIndex]?.data?.[
+                    hoveredPoint.pointIndex
+                  ] as ChartDataPoint
                 }
                 datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
                 datasetColor={renderedDatasets[hoveredPoint.datasetIndex]?.color}

@@ -90,13 +90,73 @@ interface HeatmapChartProps extends Omit<ChartProps, 'type' | 'datasets' | 'vari
 
 // Predefined color schemes
 const colorSchemes: Record<string, string[]> = {
-  viridis: ['#440154', '#482777', '#3f4a8a', '#31678e', '#26838f', '#1f9d8a', '#6cce5a', '#b6de2b', '#fee825'],
+  viridis: [
+    '#440154',
+    '#482777',
+    '#3f4a8a',
+    '#31678e',
+    '#26838f',
+    '#1f9d8a',
+    '#6cce5a',
+    '#b6de2b',
+    '#fee825',
+  ],
   plasma: ['#0d0887', '#5302a3', '#8b0aa5', '#b83289', '#db5c68', '#f48849', '#febd2a', '#f0f921'],
-  inferno: ['#000004', '#1b0c41', '#4b0c6b', '#781c6d', '#a52c60', '#cf4446', '#ed6925', '#fb9b06', '#fcffa4'],
-  magma: ['#000004', '#1c1044', '#4f127b', '#812581', '#b5367a', '#e55964', '#fb8761', '#fec287', '#fcfdbf'],
-  blues: ['#f7fbff', '#deebf7', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b'],
-  reds: ['#fff5f0', '#fee0d2', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#a50f15', '#67000d'],
-  greens: ['#f7fcf5', '#e5f5e0', '#c7e9c0', '#a1d99b', '#74c476', '#41ab5d', '#238b45', '#006d2c', '#00441b'],
+  inferno: [
+    '#000004',
+    '#1b0c41',
+    '#4b0c6b',
+    '#781c6d',
+    '#a52c60',
+    '#cf4446',
+    '#ed6925',
+    '#fb9b06',
+    '#fcffa4',
+  ],
+  magma: [
+    '#000004',
+    '#1c1044',
+    '#4f127b',
+    '#812581',
+    '#b5367a',
+    '#e55964',
+    '#fb8761',
+    '#fec287',
+    '#fcfdbf',
+  ],
+  blues: [
+    '#f7fbff',
+    '#deebf7',
+    '#c6dbef',
+    '#9ecae1',
+    '#6baed6',
+    '#4292c6',
+    '#2171b5',
+    '#08519c',
+    '#08306b',
+  ],
+  reds: [
+    '#fff5f0',
+    '#fee0d2',
+    '#fcbba1',
+    '#fc9272',
+    '#fb6a4a',
+    '#ef3b2c',
+    '#cb181d',
+    '#a50f15',
+    '#67000d',
+  ],
+  greens: [
+    '#f7fcf5',
+    '#e5f5e0',
+    '#c7e9c0',
+    '#a1d99b',
+    '#74c476',
+    '#41ab5d',
+    '#238b45',
+    '#006d2c',
+    '#00441b',
+  ],
   github: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'],
 };
 
@@ -160,9 +220,7 @@ const HeatmapChart = memo(
           let maxValue = colorScale.max;
 
           if (minValue === undefined || maxValue === undefined) {
-            const allValues = data
-              .filter(d => d.value !== undefined)
-              .map(d => d.value);
+            const allValues = data.filter(d => d.value !== undefined).map(d => d.value);
             if (minValue === undefined) minValue = Math.min(...allValues);
             if (maxValue === undefined) maxValue = Math.max(...allValues);
           }

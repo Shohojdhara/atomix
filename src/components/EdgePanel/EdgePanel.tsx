@@ -95,7 +95,7 @@ export const EdgePanel: React.FC<EdgePanelProps> = ({
   if (!isOpenState && isOpen === false) {
     return null;
   }
-  
+
   const defaultGlassProps = {
     elasticity: 0,
   };
@@ -128,9 +128,23 @@ export const EdgePanel: React.FC<EdgePanelProps> = ({
           <AtomixGlass
             {...glassProps}
             className="c-edge-panel__glass-wrapper"
-            style={{ position: 'fixed', width: glassContentRef.current?.offsetWidth, height: glassContentRef.current?.offsetHeight, top: containerRef.current?.offsetTop, left: containerRef.current?.offsetLeft, bottom: containerRef.current?.style.bottom, right: containerRef.current?.style.right }}
+            style={{
+              position: 'fixed',
+              width: glassContentRef.current?.offsetWidth,
+              height: glassContentRef.current?.offsetHeight,
+              top: containerRef.current?.offsetTop,
+              left: containerRef.current?.offsetLeft,
+              bottom: containerRef.current?.style.bottom,
+              right: containerRef.current?.style.right,
+            }}
           >
-            <div ref={glassContentRef} className="c-edge-panel__glass-content" style={{ borderRadius: containerRef.current?.style.borderRadius }}>{panelContent}</div>
+            <div
+              ref={glassContentRef}
+              className="c-edge-panel__glass-content"
+              style={{ borderRadius: containerRef.current?.style.borderRadius }}
+            >
+              {panelContent}
+            </div>
           </AtomixGlass>
         ) : (
           panelContent

@@ -443,7 +443,12 @@ export const ValidationStates: Story = {
         </FormGroup>
 
         <FormGroup invalid={true} helperText="This checkbox is invalid">
-          <Checkbox id="invalid-checkbox" label="Invalid Checkbox" onChange={() => {}} invalid={true} />
+          <Checkbox
+            id="invalid-checkbox"
+            label="Invalid Checkbox"
+            onChange={() => {}}
+            invalid={true}
+          />
         </FormGroup>
       </Form>
     </div>

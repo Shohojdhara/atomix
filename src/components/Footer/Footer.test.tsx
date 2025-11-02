@@ -7,12 +7,12 @@ import { FooterLink } from './FooterLink';
 describe('Footer', () => {
   const defaultProps = {
     brand: 'Atomix',
-    copyright: '© 2024 Atomix UI. All rights reserved.'
+    copyright: '© 2024 Atomix UI. All rights reserved.',
   };
 
   test('renders footer with brand and copyright', () => {
     render(<Footer {...defaultProps} />);
-    
+
     expect(screen.getByText('Atomix')).toBeInTheDocument();
     expect(screen.getByText('© 2024 Atomix UI. All rights reserved.')).toBeInTheDocument();
   });
@@ -25,7 +25,7 @@ describe('Footer', () => {
         </FooterSection>
       </Footer>
     );
-    
+
     const footer = screen.getByRole('contentinfo');
     expect(footer).toHaveClass('c-footer--columns');
   });
@@ -38,7 +38,7 @@ describe('Footer', () => {
         </FooterSection>
       </Footer>
     );
-    
+
     const footer = screen.getByRole('contentinfo');
     expect(footer).toHaveClass('c-footer--centered');
   });
@@ -51,7 +51,7 @@ describe('Footer', () => {
         </FooterSection>
       </Footer>
     );
-    
+
     const footer = screen.getByRole('contentinfo');
     expect(footer).toHaveClass('c-footer--minimal');
   });
@@ -64,7 +64,7 @@ describe('Footer', () => {
         </FooterSection>
       </Footer>
     );
-    
+
     const footer = screen.getByRole('contentinfo');
     expect(footer).toHaveClass('c-footer--stacked');
   });
@@ -77,7 +77,7 @@ describe('Footer', () => {
         </FooterSection>
       </Footer>
     );
-    
+
     const footer = screen.getByRole('contentinfo');
     expect(footer).toHaveClass('c-footer--flexible');
   });
@@ -90,7 +90,7 @@ describe('Footer', () => {
         </FooterSection>
       </Footer>
     );
-    
+
     const footer = screen.getByRole('contentinfo');
     expect(footer).toHaveClass('c-footer--sidebar');
   });
@@ -103,31 +103,31 @@ describe('Footer', () => {
         </FooterSection>
       </Footer>
     );
-    
+
     const footer = screen.getByRole('contentinfo');
     expect(footer).toHaveClass('c-footer--wide');
   });
 
   test('renders newsletter section when showNewsletter is true', () => {
     render(<Footer {...defaultProps} showNewsletter />);
-    
+
     expect(screen.getByText('Stay Updated')).toBeInTheDocument();
   });
 
   test('does not render newsletter section when showNewsletter is false', () => {
     render(<Footer {...defaultProps} showNewsletter={false} />);
-    
+
     expect(screen.queryByText('Stay Updated')).not.toBeInTheDocument();
   });
 
   test('renders social links when provided', () => {
     const socialLinks = [
       { platform: 'twitter', url: 'https://twitter.com/example' },
-      { platform: 'github', url: 'https://github.com/example' }
+      { platform: 'github', url: 'https://github.com/example' },
     ];
-    
+
     render(<Footer {...defaultProps} socialLinks={socialLinks} />);
-    
+
     const socialLinksContainer = screen.getByTestId('footer-social-links');
     expect(socialLinksContainer.children).toHaveLength(2);
   });

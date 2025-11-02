@@ -14,8 +14,6 @@ export interface UseFooterOptions {
   className?: string;
 }
 
-
-
 export function useFooter(options: UseFooterOptions = {}) {
   const {
     layout = FOOTER.DEFAULTS.LAYOUT,

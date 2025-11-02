@@ -72,17 +72,20 @@ const Chart = memo(
     ) => {
       const [isFullscreen, setIsFullscreen] = useState(false);
       const [isExporting, setIsExporting] = useState(false);
-      
+
       // Internal zoom and pan state
       const [zoomLevel, setZoomLevel] = useState(1);
       const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
       const [panEnabled, setPanEnabled] = useState(false);
 
       // Memoize fullscreen handler
-      const handleFullscreenChange = useCallback((fullscreen: boolean) => {
-        setIsFullscreen(fullscreen);
-        onFullscreen?.(fullscreen);
-      }, [onFullscreen]);
+      const handleFullscreenChange = useCallback(
+        (fullscreen: boolean) => {
+          setIsFullscreen(fullscreen);
+          onFullscreen?.(fullscreen);
+        },
+        [onFullscreen]
+      );
 
       // Zoom and pan handlers
       const handleZoomIn = useCallback(() => {
@@ -109,16 +112,28 @@ const Chart = memo(
       }, []);
 
       // Memoize toolbar handlers object to prevent unnecessary re-renders
-      const toolbarHandlersConfig = useMemo(() => ({
-        onRefresh,
-        onExport,
-        onFullscreen: handleFullscreenChange,
-        onZoomIn: handleZoomIn,
-        onZoomOut: handleZoomOut,
-        onZoomReset: handleZoomReset,
-        onPanToggle: handlePanToggle,
-        onReset: handleReset,
-      }), [onRefresh, onExport, handleFullscreenChange, handleZoomIn, handleZoomOut, handleZoomReset, handlePanToggle, handleReset]);
+      const toolbarHandlersConfig = useMemo(
+        () => ({
+          onRefresh,
+          onExport,
+          onFullscreen: handleFullscreenChange,
+          onZoomIn: handleZoomIn,
+          onZoomOut: handleZoomOut,
+          onZoomReset: handleZoomReset,
+          onPanToggle: handlePanToggle,
+          onReset: handleReset,
+        }),
+        [
+          onRefresh,
+          onExport,
+          handleFullscreenChange,
+          handleZoomIn,
+          handleZoomOut,
+          handleZoomReset,
+          handlePanToggle,
+          handleReset,
+        ]
+      );
 
       // Enhanced toolbar with dynamic configuration
       const {
@@ -206,73 +221,88 @@ const Chart = memo(
       const renderToolbar = () => {
         if (!showToolbar) return null;
 
-      // Only pass individual handlers if groups are not provided
-      const shouldPassIndividualHandlers = !toolbarGroups || toolbarGroups.length === 0;
+        // Only pass individual handlers if groups are not provided
+        const shouldPassIndividualHandlers = !toolbarGroups || toolbarGroups.length === 0;
 
-      return (
-        <ChartToolbar
-          chartType={type}
-          groups={toolbarGroups}
-          defaults={{
-            refresh: enableRefresh,
-            export: enableExport,
-            fullscreen: enableFullscreen,
-            zoom: toolbarState.zoomLevel !== undefined,
-            pan: toolbarState.panEnabled !== undefined,
-            reset: true,
-            grid: true,
-            legend: true,
-            tooltips: true,
-            animations: true,
-            settings: true,
-          }}
-          exportFormats={exportFormats}
-          state={{
-            isFullscreen: toolbarState.isFullscreen,
-            isExporting: toolbarState.isExporting,
-            isRefreshing: toolbarState.isRefreshing,
-            zoomLevel: zoomLevel, // Use internal state for accurate display
-            panEnabled: panEnabled, // Use internal state for accurate display
-            showGrid: toolbarState.showGrid,
-            showLegend: toolbarState.showLegend,
-            showTooltips: toolbarState.showTooltips,
-            animationsEnabled: toolbarState.animationsEnabled,
-          }}
-          {...(shouldPassIndividualHandlers ? {
-            onRefresh: toolbarHandlers.onRefresh,
-            onExport: toolbarHandlers.onExport,
-            onFullscreen: toolbarHandlers.onFullscreen,
-            onZoomIn: handleZoomIn,
-            onZoomOut: handleZoomOut,
-            onZoomReset: handleZoomReset,
-            onPanToggle: handlePanToggle,
-            onReset: handleReset,
-            onSettings: toolbarHandlers.onSettings,
-            onGridToggle: toolbarHandlers.onGridToggle,
-            onLegendToggle: toolbarHandlers.onLegendToggle,
-            onTooltipsToggle: toolbarHandlers.onTooltipsToggle,
-            onAnimationsToggle: toolbarHandlers.onAnimationsToggle,
-          } : {})}
-        />
-      );
+        return (
+          <ChartToolbar
+            chartType={type}
+            groups={toolbarGroups}
+            defaults={{
+              refresh: enableRefresh,
+              export: enableExport,
+              fullscreen: enableFullscreen,
+              zoom: toolbarState.zoomLevel !== undefined,
+              pan: toolbarState.panEnabled !== undefined,
+              reset: true,
+              grid: true,
+              legend: true,
+              tooltips: true,
+              animations: true,
+              settings: true,
+            }}
+            exportFormats={exportFormats}
+            state={{
+              isFullscreen: toolbarState.isFullscreen,
+              isExporting: toolbarState.isExporting,
+              isRefreshing: toolbarState.isRefreshing,
+              zoomLevel: zoomLevel, // Use internal state for accurate display
+              panEnabled: panEnabled, // Use internal state for accurate display
+              showGrid: toolbarState.showGrid,
+              showLegend: toolbarState.showLegend,
+              showTooltips: toolbarState.showTooltips,
+              animationsEnabled: toolbarState.animationsEnabled,
+            }}
+            {...(shouldPassIndividualHandlers
+              ? {
+                  onRefresh: toolbarHandlers.onRefresh,
+                  onExport: toolbarHandlers.onExport,
+                  onFullscreen: toolbarHandlers.onFullscreen,
+                  onZoomIn: handleZoomIn,
+                  onZoomOut: handleZoomOut,
+                  onZoomReset: handleZoomReset,
+                  onPanToggle: handlePanToggle,
+                  onReset: handleReset,
+                  onSettings: toolbarHandlers.onSettings,
+                  onGridToggle: toolbarHandlers.onGridToggle,
+                  onLegendToggle: toolbarHandlers.onLegendToggle,
+                  onTooltipsToggle: toolbarHandlers.onTooltipsToggle,
+                  onAnimationsToggle: toolbarHandlers.onAnimationsToggle,
+                }
+              : {})}
+          />
+        );
       };
 
       const fullChartClass = `${chartClass}${isFullscreen ? ` ${CHART.CLASSES.FULLSCREEN}` : ''}`;
 
       // Create context value
-      const chartContextValue = useMemo<ChartContextValue>(() => ({
-        zoomLevel,
-        panOffset,
-        panEnabled,
-        onZoomIn: handleZoomIn,
-        onZoomOut: handleZoomOut,
-        onZoomReset: handleZoomReset,
-        onPanToggle: handlePanToggle,
-        onReset: handleReset,
-        setZoomLevel,
-        setPanOffset,
-        setPanEnabled,
-      }), [zoomLevel, panOffset, panEnabled, handleZoomIn, handleZoomOut, handleZoomReset, handlePanToggle, handleReset, setPanEnabled]);
+      const chartContextValue = useMemo<ChartContextValue>(
+        () => ({
+          zoomLevel,
+          panOffset,
+          panEnabled,
+          onZoomIn: handleZoomIn,
+          onZoomOut: handleZoomOut,
+          onZoomReset: handleZoomReset,
+          onPanToggle: handlePanToggle,
+          onReset: handleReset,
+          setZoomLevel,
+          setPanOffset,
+          setPanEnabled,
+        }),
+        [
+          zoomLevel,
+          panOffset,
+          panEnabled,
+          handleZoomIn,
+          handleZoomOut,
+          handleZoomReset,
+          handlePanToggle,
+          handleReset,
+          setPanEnabled,
+        ]
+      );
 
       return (
         <ChartContext.Provider value={chartContextValue}>
@@ -330,7 +360,9 @@ const Chart = memo(
                 </div>
               )}
 
-              {!loading && !error && children && <div className={CHART.CANVAS_CLASS}>{children}</div>}
+              {!loading && !error && children && (
+                <div className={CHART.CANVAS_CLASS}>{children}</div>
+              )}
             </div>
           </div>
         </ChartContext.Provider>

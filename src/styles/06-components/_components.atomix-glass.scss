@@ -12,19 +12,23 @@
     @extend .c-atomix-glass__layer;
     box-sizing: border-box;
     padding: 1.5px;
-    
+
     // Create border mask effect
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
     mask-composite: exclude;
-    
+
     // Enhanced shadow for glass effect
-    box-shadow: 
+    box-shadow:
       0 0 0 0.5px rgba(255, 255, 255, 0.5) inset,
       0 1px 3px rgba(255, 255, 255, 0.25) inset,
       0 1px 4px rgba(0, 0, 0, 0.35);
-    
+
     transition-property: transform, opacity;
     transition-duration: 0.2s;
     transition-timing-function: ease-out;

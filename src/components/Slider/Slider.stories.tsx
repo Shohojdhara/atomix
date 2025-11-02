@@ -799,10 +799,10 @@ export const Autoplay: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Slider with automatic playback that cycles through slides every 3 seconds.'
-      }
-    }
-  }
+        story: 'Slider with automatic playback that cycles through slides every 3 seconds.',
+      },
+    },
+  },
 };
 
 export const Vertical: Story = {

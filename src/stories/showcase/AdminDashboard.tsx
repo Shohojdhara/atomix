@@ -1861,9 +1861,7 @@ export const AdminDashboard: React.FC = () => {
   return (
     <div className="o-container-fluid">
       {/* Top Navigation */}
-      <Card
-        glass={true}
-      >
+      <Card glass={true}>
         <Container>
           <div className="u-d-flex u-align-items-center u-justify-content-between">
             <AtomixLogo />
@@ -1916,49 +1914,49 @@ export const AdminDashboard: React.FC = () => {
               </text>
             </svg>
           </div>
-          <Card glass >
-          <SideMenu title="Admin Panel" collapsible={false} className="u-h-100 u-bg-transparent">
-            <SideMenuList>
-              <SideMenuItem
-                href="#dashboard"
-                icon={<Icon name="ChartBar" size="sm" />}
-                active={activeView === 'dashboard'}
-                onClick={() => setActiveView('dashboard')}
-              >
-                Dashboard
-              </SideMenuItem>
-              <SideMenuItem
-                href="#users"
-                icon={<Icon name="Users" size="sm" />}
-                active={activeView === 'users'}
-                onClick={() => setActiveView('users')}
-              >
-                Users
-              </SideMenuItem>
-              <SideMenuItem
-                href="#analytics"
-                icon={<Icon name="TrendUp" size="sm" />}
-                active={activeView === 'analytics'}
-                onClick={() => setActiveView('analytics')}
-              >
-                Analytics
-              </SideMenuItem>
-              <SideMenuItem
-                href="#settings"
-                icon={<Icon name="Gear" size="sm" />}
-                onClick={() => setActiveView('settings')}
-              >
-                Settings
-              </SideMenuItem>
-              <SideMenuItem
-                href="#reports"
-                icon={<Icon name="FileText" size="sm" />}
-                onClick={() => setActiveView('reports')}
-              >
-                Reports
-              </SideMenuItem>
-            </SideMenuList>
-          </SideMenu>
+          <Card glass>
+            <SideMenu title="Admin Panel" collapsible={false} className="u-h-100 u-bg-transparent">
+              <SideMenuList>
+                <SideMenuItem
+                  href="#dashboard"
+                  icon={<Icon name="ChartBar" size="sm" />}
+                  active={activeView === 'dashboard'}
+                  onClick={() => setActiveView('dashboard')}
+                >
+                  Dashboard
+                </SideMenuItem>
+                <SideMenuItem
+                  href="#users"
+                  icon={<Icon name="Users" size="sm" />}
+                  active={activeView === 'users'}
+                  onClick={() => setActiveView('users')}
+                >
+                  Users
+                </SideMenuItem>
+                <SideMenuItem
+                  href="#analytics"
+                  icon={<Icon name="TrendUp" size="sm" />}
+                  active={activeView === 'analytics'}
+                  onClick={() => setActiveView('analytics')}
+                >
+                  Analytics
+                </SideMenuItem>
+                <SideMenuItem
+                  href="#settings"
+                  icon={<Icon name="Gear" size="sm" />}
+                  onClick={() => setActiveView('settings')}
+                >
+                  Settings
+                </SideMenuItem>
+                <SideMenuItem
+                  href="#reports"
+                  icon={<Icon name="FileText" size="sm" />}
+                  onClick={() => setActiveView('reports')}
+                >
+                  Reports
+                </SideMenuItem>
+              </SideMenuList>
+            </SideMenu>
           </Card>
         </GridCol>
 

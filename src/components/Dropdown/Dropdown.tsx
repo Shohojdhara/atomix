@@ -353,25 +353,20 @@ export const Dropdown: React.FC<DropdownProps> = ({
         aria-hidden={!isOpen}
         onKeyDown={handleKeyDown}
       >
-        {glass ? (
-          // Default glass settings for dropdowns
-          (() => {
-            const defaultGlassProps = {
-              displacementScale: 20,
-              elasticity: 0,
-            };
+        {glass
+          ? // Default glass settings for dropdowns
+            (() => {
+              const defaultGlassProps = {
+                displacementScale: 20,
+                elasticity: 0,
+              };
 
-            const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+              const glassProps =
+                glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-            return (
-              <AtomixGlass {...glassProps}>
-                {menuContent}
-              </AtomixGlass>
-            );
-          })()
-        ) : (
-          menuContent
-        )}
+              return <AtomixGlass {...glassProps}>{menuContent}</AtomixGlass>;
+            })()
+          : menuContent}
       </div>
     </div>
   );

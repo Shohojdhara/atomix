@@ -440,12 +440,14 @@
     animation: slideInBottom 0.3s ease forwards;
   }
 
-  &.c-edge-panel--bottom .c-edge-panel__container, &.c-edge-panel--top .c-edge-panel__container {
+  &.c-edge-panel--bottom .c-edge-panel__container,
+  &.c-edge-panel--top .c-edge-panel__container {
     width: 100vw;
     height: auto;
   }
 
-  &.c-edge-panel--bottom .c-edge-panel__glass-content, &.c-edge-panel--top .c-edge-panel__glass-content {
+  &.c-edge-panel--bottom .c-edge-panel__glass-content,
+  &.c-edge-panel--top .c-edge-panel__glass-content {
     width: 100vw;
     height: auto;
   }

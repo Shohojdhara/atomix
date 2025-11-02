@@ -98,135 +98,143 @@ export function useEdgePanel(initialProps?: Partial<EdgePanelProps>) {
   /**
    * Open the panel
    */
-  const openPanel = useCallback((useFadeAnimation = false) => {
-    setIsOpen(true);
-    document.body.classList.add('is-edgepanel-open');
+  const openPanel = useCallback(
+    (useFadeAnimation = false) => {
+      setIsOpen(true);
+      document.body.classList.add('is-edgepanel-open');
 
-    if (containerRef.current) {
-      const { mode } = defaultProps;
+      if (containerRef.current) {
+        const { mode } = defaultProps;
 
-      // Only add animation if not in 'none' mode
-      if (mode !== 'none') {
+        // Only add animation if not in 'none' mode
+        if (mode !== 'none') {
+          if (useFadeAnimation) {
+            // Add fade animation class
+            containerRef.current.classList.add('is-fade-animating');
+
+            // Force a reflow before starting the animation
+            void containerRef.current.offsetHeight;
+
+            // Remove animation class after animation completes
+            const container = containerRef.current;
+            setTimeout(() => {
+              if (container) {
+                container.classList.remove('is-fade-animating');
+              }
+            }, EDGE_PANEL.ANIMATION_DURATION);
+          } else {
+            // Add transform animation class
+            containerRef.current.classList.add('is-animating');
+
+            // Force a reflow before starting the animation
+            void containerRef.current.offsetHeight;
+
+            // Remove animation class after animation completes
+            const container = containerRef.current;
+            setTimeout(() => {
+              if (container) {
+                container.classList.remove('is-animating');
+              }
+            }, EDGE_PANEL.ANIMATION_DURATION);
+          }
+        }
+
+        // Set transform or opacity based on animation type
         if (useFadeAnimation) {
-          // Add fade animation class
-          containerRef.current.classList.add('is-fade-animating');
-
-          // Force a reflow before starting the animation
-          void containerRef.current.offsetHeight;
-
-          // Remove animation class after animation completes
-          const container = containerRef.current;
-          setTimeout(() => {
-            if (container) {
-              container.classList.remove('is-fade-animating');
-            }
-          }, EDGE_PANEL.ANIMATION_DURATION);
+          containerRef.current.style.opacity = '1';
+          containerRef.current.style.transform = ''; // Remove transform for fade
         } else {
-          // Add transform animation class
-          containerRef.current.classList.add('is-animating');
+          containerRef.current.style.transform = 'translate(0)';
+        }
 
-          // Force a reflow before starting the animation
-          void containerRef.current.offsetHeight;
-
-          // Remove animation class after animation completes
-          const container = containerRef.current;
-          setTimeout(() => {
-            if (container) {
-              container.classList.remove('is-animating');
-            }
-          }, EDGE_PANEL.ANIMATION_DURATION);
+        // If push mode, adjust body padding
+        if (defaultProps.mode === 'push') {
+          adjustBodyPadding();
         }
       }
 
-      // Set transform or opacity based on animation type
-      if (useFadeAnimation) {
-        containerRef.current.style.opacity = '1';
-        containerRef.current.style.transform = ''; // Remove transform for fade
-      } else {
-        containerRef.current.style.transform = 'translate(0)';
+      if (defaultProps.onOpenChange) {
+        defaultProps.onOpenChange(true);
       }
-
-      // If push mode, adjust body padding
-      if (defaultProps.mode === 'push') {
-        adjustBodyPadding();
-      }
-    }
-
-    if (defaultProps.onOpenChange) {
-      defaultProps.onOpenChange(true);
-    }
-  }, [defaultProps, adjustBodyPadding]);
+    },
+    [defaultProps, adjustBodyPadding]
+  );
 
   /**
    * Close the panel
    */
-  const closePanel = useCallback((useFadeAnimation = false) => {
-    if (containerRef.current) {
-      const { position, mode } = defaultProps;
+  const closePanel = useCallback(
+    (useFadeAnimation = false) => {
+      if (containerRef.current) {
+        const { position, mode } = defaultProps;
 
-      // Only add animation if not in 'none' mode
-      if (mode !== 'none') {
-        if (useFadeAnimation) {
-          // Add fade out animation class
-          containerRef.current.classList.add('is-fade-animating-out');
+        // Only add animation if not in 'none' mode
+        if (mode !== 'none') {
+          if (useFadeAnimation) {
+            // Add fade out animation class
+            containerRef.current.classList.add('is-fade-animating-out');
 
-          // Capture container for setTimeout
-          const container = containerRef.current;
+            // Capture container for setTimeout
+            const container = containerRef.current;
 
-          setTimeout(() => {
-            if (container) {
-              container.classList.remove('is-fade-animating-out');
-            }
-          }, EDGE_PANEL.ANIMATION_DURATION);
-        } else {
-          // Add transform animation class
-          containerRef.current.classList.add('is-animating-out');
+            setTimeout(() => {
+              if (container) {
+                container.classList.remove('is-fade-animating-out');
+              }
+            }, EDGE_PANEL.ANIMATION_DURATION);
+          } else {
+            // Add transform animation class
+            containerRef.current.classList.add('is-animating-out');
 
-          // Capture container for setTimeout
-          const container = containerRef.current;
+            // Capture container for setTimeout
+            const container = containerRef.current;
 
-          setTimeout(() => {
-            if (container) {
-              container.classList.remove('is-animating-out');
-            }
-          }, EDGE_PANEL.ANIMATION_DURATION);
+            setTimeout(() => {
+              if (container) {
+                container.classList.remove('is-animating-out');
+              }
+            }, EDGE_PANEL.ANIMATION_DURATION);
+          }
         }
-      }
 
-      // Set transform or opacity based on animation type
-      if (useFadeAnimation) {
-        containerRef.current.style.opacity = '0';
-        containerRef.current.style.transform = ''; // Remove transform for fade
+        // Set transform or opacity based on animation type
+        if (useFadeAnimation) {
+          containerRef.current.style.opacity = '0';
+          containerRef.current.style.transform = ''; // Remove transform for fade
+        } else {
+          // Then set transform
+          containerRef.current.style.transform = position
+            ? EDGE_PANEL.TRANSFORM_VALUES[position]
+            : '';
+        }
+
+        // Reset body padding if push mode
+        if (defaultProps.mode === 'push') {
+          resetBodyPadding();
+        }
+
+        // Wait for animation to complete before hiding
+        const hideDelay = mode === 'none' ? 0 : EDGE_PANEL.ANIMATION_DURATION;
+
+        setTimeout(() => {
+          setIsOpen(false);
+          document.body.classList.remove('is-edgepanel-open');
+
+          if (defaultProps.onOpenChange) {
+            defaultProps.onOpenChange(false);
+          }
+        }, hideDelay);
       } else {
-        // Then set transform
-        containerRef.current.style.transform = position ? EDGE_PANEL.TRANSFORM_VALUES[position] : '';
-      }
-
-      // Reset body padding if push mode
-      if (defaultProps.mode === 'push') {
-        resetBodyPadding();
-      }
-
-      // Wait for animation to complete before hiding
-      const hideDelay = mode === 'none' ? 0 : EDGE_PANEL.ANIMATION_DURATION;
-
-      setTimeout(() => {
         setIsOpen(false);
         document.body.classList.remove('is-edgepanel-open');
 
         if (defaultProps.onOpenChange) {
           defaultProps.onOpenChange(false);
         }
-      }, hideDelay);
-    } else {
-      setIsOpen(false);
-      document.body.classList.remove('is-edgepanel-open');
-
-      if (defaultProps.onOpenChange) {
-        defaultProps.onOpenChange(false);
       }
-    }
-  }, [defaultProps, resetBodyPadding]);
+    },
+    [defaultProps, resetBodyPadding]
+  );
 
   /**
    * Handle Escape key press

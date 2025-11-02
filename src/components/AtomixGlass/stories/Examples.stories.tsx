@@ -521,9 +521,7 @@ export const ProductCard: Story = {
             </div>
 
             {/* Product Info */}
-            <h2 className="u-m-0 u-mb-1 u-fs-6 u-fw-bold">
-              Premium Cotton T-Shirt
-            </h2>
+            <h2 className="u-m-0 u-mb-1 u-fs-6 u-fw-bold">Premium Cotton T-Shirt</h2>
             <p className="u-m-0 u-mb-2 u-opacity-70 u-fs-7">
               Ultra-soft fabric with a modern fit. Perfect for everyday wear.
             </p>
@@ -531,16 +529,12 @@ export const ProductCard: Story = {
             {/* Price */}
             <div className="u-d-flex u-align-items-center u-gap-2 u-mb-2">
               <span className="u-fs-4 u-fw-bold u-text-success">$49.99</span>
-              <span className="u-fs-4 u-text-decoration-line-through u-opacity-50">
-                $71.99
-              </span>
+              <span className="u-fs-4 u-text-decoration-line-through u-opacity-50">$71.99</span>
             </div>
 
             {/* Size Selection */}
             <div className="u-mb-2">
-              <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">
-                Select Size
-              </label>
+              <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">Select Size</label>
               <div className="u-d-flex u-gap-2">
                 {sizes.map(size => (
                   <Button
@@ -558,9 +552,7 @@ export const ProductCard: Story = {
 
             {/* Quantity */}
             <div className="u-mb-2">
-              <label className="u-d-block u-fs-7 u-fw-semibold u-mb-1 u-text-white">
-                Quantity
-              </label>
+              <label className="u-d-block u-fs-7 u-fw-semibold u-mb-1 u-text-white">Quantity</label>
               <div className="u-d-flex u-align-items-center u-gap-2">
                 <Button onClick={() => setQuantity(Math.max(1, quantity - 1))} glass>
                   −
@@ -673,9 +665,18 @@ export const NotificationCenter: Story = {
         }
       >
         <AtomixGlass displacementScale={70} blurAmount={1} elasticity={0} mode="prominent">
-          <div className="u-rounded-4 u-overflow-hidden u-text-success-emphasis" style={{ background: 'color-mix(in srgb, var(--atomix-success) 10%, transparent)' }}>
+          <div
+            className="u-rounded-4 u-overflow-hidden u-text-success-emphasis"
+            style={{ background: 'color-mix(in srgb, var(--atomix-success) 10%, transparent)' }}
+          >
             {/* Header */}
-            <div className="u-p-4 u-d-flex u-justify-content-between u-align-items-center" style={{ borderBottom: '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)' }}>
+            <div
+              className="u-p-4 u-d-flex u-justify-content-between u-align-items-center"
+              style={{
+                borderBottom:
+                  '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)',
+              }}
+            >
               <div className="u-d-flex u-align-items-center u-gap-2">
                 <h2 className="u-m-0 u-fs-4 u-fw-bold">Notifications</h2>
                 {unreadCount > 0 && (
@@ -733,13 +734,17 @@ export const NotificationCenter: Story = {
                     onClick={() => markAsRead(notification.id)}
                     style={{
                       padding: '16px 24px',
-                      borderBottom: '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)',
+                      borderBottom:
+                        '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)',
                       cursor: 'pointer',
-                      background: notification.read ? 'transparent' : 'color-mix(in srgb, var(--atomix-success) 10%, transparent)',
+                      background: notification.read
+                        ? 'transparent'
+                        : 'color-mix(in srgb, var(--atomix-success) 10%, transparent)',
                       transition: 'background 0.2s ease',
                     }}
                     onMouseEnter={e => {
-                      e.currentTarget.style.background = 'color-mix(in srgb, var(--atomix-success) 10%, transparent)';
+                      e.currentTarget.style.background =
+                        'color-mix(in srgb, var(--atomix-success) 10%, transparent)';
                     }}
                     onMouseLeave={e => {
                       e.currentTarget.style.background = notification.read
@@ -868,20 +873,14 @@ export const LoginForm: Story = {
                 >
                   <Icon name="Lock" />
                 </div>
-                <h2 className="u-m-0 u-mb-2 u-fs-3 u-fw-bold">
-                  Welcome Back
-                </h2>
-                <p className="u-m-0 u-opacity-70 u-fs-7">
-                  Sign in to continue to your account
-                </p>
+                <h2 className="u-m-0 u-mb-2 u-fs-3 u-fw-bold">Welcome Back</h2>
+                <p className="u-m-0 u-opacity-70 u-fs-7">Sign in to continue to your account</p>
               </div>
 
               {/* Form */}
               <form onSubmit={handleSubmit}>
                 <div className="u-mb-3">
-                  <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">
-                    Email Address
-                  </label>
+                  <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">Email Address</label>
                   <Input
                     type="email"
                     value={email}
@@ -895,9 +894,7 @@ export const LoginForm: Story = {
                 </div>
 
                 <div className="u-mb-3">
-                  <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">
-                    Password
-                  </label>
+                  <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">Password</label>
                   <Input
                     type="password"
                     value={password}
@@ -1126,9 +1123,7 @@ export const MusicPlayer: Story = {
             </AtomixGlass>
             {/* Track Info */}
             <div className="u-text-center u-mb-3">
-              <h2 className="u-m-0 u-mb-2 u-fs-3 u-fw-bold">
-                Summer Vibes
-              </h2>
+              <h2 className="u-m-0 u-mb-2 u-fs-3 u-fw-bold">Summer Vibes</h2>
               <p className="u-m-0 u-opacity-70 u-fs-6">The Atomix Band</p>
             </div>
 
@@ -1725,7 +1720,8 @@ export const ChatInterface: Story = {
             <div
               style={{
                 padding: '20px 24px',
-                borderBottom: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                borderBottom:
+                  '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '16px',
@@ -1881,7 +1877,8 @@ export const ChatInterface: Story = {
                     style={{
                       padding: '12px 16px',
                       borderRadius: '16px 16px 16px 4px',
-                      background: 'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                      background:
+                        'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
                       backdropFilter: 'blur(10px)',
                     }}
                   >
@@ -1909,7 +1906,8 @@ export const ChatInterface: Story = {
             <div
               style={{
                 padding: '10px 24px',
-                borderTop: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                borderTop:
+                  '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-evenly',
@@ -2101,7 +2099,8 @@ export const ProfileCard: Story = {
                 justifyContent: 'space-around',
                 marginBottom: '20px',
                 padding: '20px 0',
-                borderTop: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                borderTop:
+                  '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
                 borderBottom: '1px solid rgba(255, 255, 255, 0.21)',
                 background: 'color-mix(in srgb, var(--atomix-success-bg-subtle) 10%, transparent)',
                 backdropFilter: 'blur(10px)',
@@ -3137,8 +3136,10 @@ export const SocialMediaPost: Story = {
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '80px',
-                borderTop: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
-              borderBottom: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+              borderTop:
+                '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+              borderBottom:
+                '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
             }}
           ></div>
 
@@ -3151,7 +3152,8 @@ export const SocialMediaPost: Story = {
               alignItems: 'center',
               fontSize: '14px',
               opacity: 0.8,
-              borderBottom: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+              borderBottom:
+                '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
             }}
           >
             <span>{likes.toLocaleString()} likes</span>
@@ -3167,7 +3169,9 @@ export const SocialMediaPost: Story = {
               padding: '12px 24px',
               display: 'flex',
               gap: '8px',
-              borderBottom: showComments ? '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)' : 'none',
+              borderBottom: showComments
+                ? '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)'
+                : 'none',
             }}
           >
             <Button onClick={handleLike} variant="error" glass>
@@ -3218,7 +3222,8 @@ export const SocialMediaPost: Story = {
                     <div style={{ flex: 1 }}>
                       <div
                         style={{
-                          background: 'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                          background:
+                            'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
                           padding: '12px 16px',
                           borderRadius: '12px 12px 12px 4px',
                         }}
@@ -3284,7 +3289,8 @@ export const SocialMediaPost: Story = {
                       width: '100%',
                       padding: '12px 16px',
                       borderRadius: '20px',
-                      border: '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                      border:
+                        '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
                       background: 'rgba(255,255,255,0.1)',
                       color: 'inherit',
                       fontSize: '14px',
@@ -3826,7 +3832,10 @@ export const PaymentForm: Story = {
           shaderVariant="premiumGlass"
           elasticity={0}
         >
-          <div className="u-p-3 u-position-relative u-rounded-5" style={{ minWidth: '300px', maxWidth: '400px' }}>
+          <div
+            className="u-p-3 u-position-relative u-rounded-5"
+            style={{ minWidth: '300px', maxWidth: '400px' }}
+          >
             <span
               style={{
                 position: 'absolute',
@@ -3837,12 +3846,8 @@ export const PaymentForm: Story = {
                 borderRadius: '28px',
               }}
             ></span>
-            <h2 className="u-m-0 u-mb-1 u-fs-4 u-fw-bold">
-              Payment Details
-            </h2>
-            <p className="u-m-0 u-mb-2 u-fs-7 u-opacity-70">
-              Complete your purchase securely
-            </p>
+            <h2 className="u-m-0 u-mb-1 u-fs-4 u-fw-bold">Payment Details</h2>
+            <p className="u-m-0 u-mb-2 u-fs-7 u-opacity-70">Complete your purchase securely</p>
 
             {/* Card Preview */}
             <AtomixGlass
@@ -3923,9 +3928,7 @@ export const PaymentForm: Story = {
             {/* Form */}
             <div className="u-d-flex u-flex-column u-gap-3">
               <div>
-                <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">
-                  Card Number
-                </label>
+                <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">Card Number</label>
                 <Input
                   variant="primary"
                   glass={
@@ -3942,9 +3945,7 @@ export const PaymentForm: Story = {
               </div>
 
               <div>
-                <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">
-                  Cardholder Name
-                </label>
+                <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">Cardholder Name</label>
                 <Input
                   variant="primary"
                   glass={
@@ -4411,9 +4412,7 @@ export const ProgressTracker: Story = {
           mode="standard"
         >
           <div className="u-p-5" style={{ minWidth: '550px', maxWidth: '700px' }}>
-            <h2 className="u-m-0 u-mb-2 u-fs-2 u-fw-bold">
-              Getting Started
-            </h2>
+            <h2 className="u-m-0 u-mb-2 u-fs-2 u-fw-bold">Getting Started</h2>
             <p className="u-m-0 u-fs-6 u-opacity-70" style={{ marginBottom: '48px' }}>
               Complete the following steps to set up your account
             </p>

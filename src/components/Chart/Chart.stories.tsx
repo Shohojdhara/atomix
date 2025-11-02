@@ -59,13 +59,13 @@ const generateData = (points = 20) =>
     value: Math.floor(Math.random() * 100) + 20,
   }));
 
-const generateTimeSeriesData = (points = 20) => 
+const generateTimeSeriesData = (points = 20) =>
   Array.from({ length: points }, (_, i) => ({
     label: new Date(Date.now() - (points - i) * 24 * 60 * 60 * 1000).toLocaleDateString(),
     value: Math.floor(Math.random() * 1000) + 500,
   }));
 
-const generateCandlestickData = (points = 20) => 
+const generateCandlestickData = (points = 20) =>
   Array.from({ length: points }, (_, i) => {
     const open = Math.floor(Math.random() * 100) + 50;
     const close = Math.floor(Math.random() * 100) + 50;
@@ -81,7 +81,7 @@ const generateCandlestickData = (points = 20) =>
     };
   });
 
-const generateBubbleData = (points = 15) => 
+const generateBubbleData = (points = 15) =>
   Array.from({ length: points }, (_, i) => ({
     label: `Point ${i + 1}`,
     x: Math.floor(Math.random() * 100),
@@ -93,14 +93,16 @@ const generateBubbleData = (points = 15) =>
 const generateHeatmapData = () => {
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`);
-  
-  return days.map(day => 
-    hours.map(hour => ({
-      x: hour,
-      y: day,
-      value: Math.floor(Math.random() * 100),
-    }))
-  ).flat();
+
+  return days
+    .map(day =>
+      hours.map(hour => ({
+        x: hour,
+        y: day,
+        value: Math.floor(Math.random() * 100),
+      }))
+    )
+    .flat();
 };
 
 const datasets = [
@@ -228,14 +230,20 @@ export const ChartGallery: Story = {
           return (
             <div>
               {customToolbar}
-              <PieChart datasets={[{ label: 'Distribution', data: generateData(6) }]} {...commonProps} />
+              <PieChart
+                datasets={[{ label: 'Distribution', data: generateData(6) }]}
+                {...commonProps}
+              />
             </div>
           );
         case 'donut':
           return (
             <div>
               {customToolbar}
-              <DonutChart datasets={[{ label: 'Distribution', data: generateData(6) }]} {...commonProps} />
+              <DonutChart
+                datasets={[{ label: 'Distribution', data: generateData(6) }]}
+                {...commonProps}
+              />
             </div>
           );
         case 'scatter':
@@ -256,39 +264,29 @@ export const ChartGallery: Story = {
           return (
             <div>
               {customToolbar}
-              <BubbleChart 
-                bubbleData={generateBubbleData(dataPoints)} 
-                {...commonProps} 
-              />
+              <BubbleChart bubbleData={generateBubbleData(dataPoints)} {...commonProps} />
             </div>
           );
         case 'gauge':
           return (
             <div>
               {customToolbar}
-              <GaugeChart 
-                value={75}
-                max={100}
-                {...commonProps}
-              />
+              <GaugeChart value={75} max={100} {...commonProps} />
             </div>
           );
         case 'heatmap':
           return (
             <div>
               {customToolbar}
-              <HeatmapChart 
-                data={generateHeatmapData()} 
-                {...commonProps}
-              />
+              <HeatmapChart data={generateHeatmapData()} {...commonProps} />
             </div>
           );
         case 'candlestick':
           return (
             <div>
               {customToolbar}
-              <CandlestickChart 
-                candlestickData={generateCandlestickData(dataPoints)} 
+              <CandlestickChart
+                candlestickData={generateCandlestickData(dataPoints)}
                 {...commonProps}
               />
             </div>
@@ -431,7 +429,7 @@ export const LineChartStory: Story = {
       <Grid>
         <GridCol xs={12}>
           <Card className="u-p-6">
-            <LineChart 
+            <LineChart
               datasets={[
                 { label: 'Sales', data: generateData(12), color: '#3b82f6' },
                 { label: 'Revenue', data: generateData(12), color: '#10b981' },
@@ -454,7 +452,7 @@ export const BarChartStory: Story = {
       <Grid>
         <GridCol xs={12}>
           <Card className="u-p-6">
-            <BarChart 
+            <BarChart
               datasets={[
                 { label: 'Sales', data: generateData(8), color: '#3b82f6' },
                 { label: 'Revenue', data: generateData(8), color: '#10b981' },
@@ -477,7 +475,7 @@ export const PieChartStory: Story = {
       <Grid>
         <GridCol xs={12}>
           <Card className="u-p-6">
-            <PieChart 
+            <PieChart
               datasets={[{ label: 'Market Share', data: generateData(6) }]}
               title="Pie Chart Example"
               config={{ showLegend: true, animate: true }}
@@ -497,7 +495,7 @@ export const DonutChartStory: Story = {
       <Grid>
         <GridCol xs={12}>
           <Card className="u-p-6">
-            <DonutChart 
+            <DonutChart
               datasets={[{ label: 'Market Share', data: generateData(6) }]}
               title="Donut Chart Example"
               config={{ showLegend: true, animate: true }}
@@ -517,7 +515,7 @@ export const CandlestickChartStory: Story = {
       <Grid>
         <GridCol xs={12}>
           <Card className="u-p-6">
-            <CandlestickChart 
+            <CandlestickChart
               candlestickData={generateCandlestickData(20)}
               title="Candlestick Chart Example"
               config={{ showLegend: true, animate: true, showTooltips: true }}
@@ -538,25 +536,25 @@ export const TooltipTestStory: Story = {
       <Grid>
         <GridCol xs={12}>
           <Card className="u-p-6">
-            <LineChart 
+            <LineChart
               datasets={[
-                { 
-                  label: 'Sales', 
+                {
+                  label: 'Sales',
                   data: generateData(12).map((d, i) => ({
                     ...d,
                     metadata: {
                       trend: i % 2 === 0 ? 'Up' : 'Down',
-                      change: `${Math.floor(Math.random() * 10)}%`
-                    }
-                  })), 
-                  color: '#3b82f6' 
+                      change: `${Math.floor(Math.random() * 10)}%`,
+                    },
+                  })),
+                  color: '#3b82f6',
                 },
               ]}
               title="Tooltip Test Chart"
-              config={{ 
-                showLegend: true, 
+              config={{
+                showLegend: true,
                 animate: true,
-                showTooltips: true
+                showTooltips: true,
               }}
               showToolbar
             />

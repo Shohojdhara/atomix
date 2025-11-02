@@ -272,26 +272,26 @@ export const GlassModeStandard: Story = {
         </p>
       </div>
       <div className="u-w-50">
-      <Card
-        title="Standard Glass Card"
-        text="This card uses the standard glass mode with classic blur and displacement effects."
-        image="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800"
-        imageAlt="Standard glass"
-        glass={{
-          mode: 'standard',
-          displacementScale: 60,
-          blurAmount: 2,
-          saturation: 160,
-          aberrationIntensity: 2,
-          elasticity: 0,
-        }}
-        actions={
-          <React.Fragment>
-            <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
-            <button className="c-btn c-btn--secondary c-btn--sm">Details</button>
-          </React.Fragment>
-        }
-      />
+        <Card
+          title="Standard Glass Card"
+          text="This card uses the standard glass mode with classic blur and displacement effects."
+          image="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800"
+          imageAlt="Standard glass"
+          glass={{
+            mode: 'standard',
+            displacementScale: 60,
+            blurAmount: 2,
+            saturation: 160,
+            aberrationIntensity: 2,
+            elasticity: 0,
+          }}
+          actions={
+            <React.Fragment>
+              <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
+              <button className="c-btn c-btn--secondary c-btn--sm">Details</button>
+            </React.Fragment>
+          }
+        />
       </div>
     </div>
   ),
@@ -320,27 +320,27 @@ export const GlassModePolar: Story = {
         <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Polar Glass Mode</h3>
         <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>Radial distortion effect from center</p>
       </div>
-      <div className="u-w-50">  
-      <Card
-        title="Polar Glass Card"
-        text="This card uses the polar glass mode with radial distortion effects emanating from the center."
-        image="https://images.unsplash.com/photo-1557683316-973673baf926?w=800"
-        imageAlt="Polar glass"
-        glass={{
-          mode: 'polar',
-          displacementScale: 80,
-          blurAmount: 1.5,
-          saturation: 180,
-          aberrationIntensity: 3,
-          elasticity: 0,
-        }}
-        actions={
-          <React.Fragment>
-            <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
-            <button className="c-btn c-btn--secondary c-btn--sm">Details</button>
-          </React.Fragment>
-        }
-      />
+      <div className="u-w-50">
+        <Card
+          title="Polar Glass Card"
+          text="This card uses the polar glass mode with radial distortion effects emanating from the center."
+          image="https://images.unsplash.com/photo-1557683316-973673baf926?w=800"
+          imageAlt="Polar glass"
+          glass={{
+            mode: 'polar',
+            displacementScale: 80,
+            blurAmount: 1.5,
+            saturation: 180,
+            aberrationIntensity: 3,
+            elasticity: 0,
+          }}
+          actions={
+            <React.Fragment>
+              <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
+              <button className="c-btn c-btn--secondary c-btn--sm">Details</button>
+            </React.Fragment>
+          }
+        />
       </div>
     </div>
   ),
@@ -369,27 +369,27 @@ export const GlassModeProminent: Story = {
         <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Prominent Glass Mode</h3>
         <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>Enhanced distortion with maximum depth</p>
       </div>
-      <div className="u-w-50">  
-      <Card
-        title="Prominent Glass Card"
-        text="This card uses the prominent glass mode with enhanced distortion and maximum visual depth."
-        image="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800"
-        imageAlt="Prominent glass"
-        glass={{
-          mode: 'prominent',
-          displacementScale: 100,
-          blurAmount: 2.5,
-          saturation: 200,
-          aberrationIntensity: 4,
-          elasticity: 0,
-        }}
-        actions={
-          <React.Fragment>
-            <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
-            <button className="c-btn c-btn--secondary c-btn--sm">Details</button>
-          </React.Fragment>
-        }
-      />
+      <div className="u-w-50">
+        <Card
+          title="Prominent Glass Card"
+          text="This card uses the prominent glass mode with enhanced distortion and maximum visual depth."
+          image="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800"
+          imageAlt="Prominent glass"
+          glass={{
+            mode: 'prominent',
+            displacementScale: 100,
+            blurAmount: 2.5,
+            saturation: 200,
+            aberrationIntensity: 4,
+            elasticity: 0,
+          }}
+          actions={
+            <React.Fragment>
+              <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
+              <button className="c-btn c-btn--secondary c-btn--sm">Details</button>
+            </React.Fragment>
+          }
+        />
       </div>
     </div>
   ),
@@ -418,27 +418,27 @@ export const GlassModeShader: Story = {
         <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Shader Glass Mode</h3>
         <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>GPU-accelerated liquid glass effect</p>
       </div>
-      <div className="u-w-50">  
-      <Card
-        title="Shader Glass Card"
-        text="This card uses the shader glass mode with GPU-accelerated liquid glass effects."
-        image="https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=800"
-        imageAlt="Shader glass"
-        glass={{
-          mode: 'shader',
-          shaderVariant: 'liquidGlass',
-          displacementScale: 70,
-          blurAmount: 1.8,
-          saturation: 170,
-          elasticity: 0,
-        }}
-        actions={
-          <React.Fragment>
-            <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
-            <button className="c-btn c-btn--secondary c-btn--sm">Details</button>
-          </React.Fragment>
-        }
-      />
+      <div className="u-w-50">
+        <Card
+          title="Shader Glass Card"
+          text="This card uses the shader glass mode with GPU-accelerated liquid glass effects."
+          image="https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=800"
+          imageAlt="Shader glass"
+          glass={{
+            mode: 'shader',
+            shaderVariant: 'liquidGlass',
+            displacementScale: 70,
+            blurAmount: 1.8,
+            saturation: 170,
+            elasticity: 0,
+          }}
+          actions={
+            <React.Fragment>
+              <button className="c-btn c-btn--primary c-btn--sm">Learn More</button>
+              <button className="c-btn c-btn--secondary c-btn--sm">Details</button>
+            </React.Fragment>
+          }
+        />
       </div>
     </div>
   ),

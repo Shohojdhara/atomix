@@ -55,7 +55,8 @@ const meta = {
         style={{
           minHeight: '100vh',
           width: '100%',
-          backgroundImage: 'url(https://images.unsplash.com/photo-1605440704530-cd6f40ecf5a9?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2670)',
+          backgroundImage:
+            'url(https://images.unsplash.com/photo-1605440704530-cd6f40ecf5a9?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2670)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           display: 'flex',
@@ -148,9 +149,7 @@ const EdgePanelController = ({
   }, []);
 
   return (
-    <div
-     
-    >
+    <div>
       <Button label={`Open ${position} panel`} variant="primary" onClick={() => setOpen(true)} />
 
       <EdgePanel
@@ -316,12 +315,14 @@ export const GlassStart: Story = {
           isOpen={open}
           onOpenChange={setOpen}
           title="Glass Panel"
-          glass={{
-            mode: 'standard',
-            displacementScale: 50,
-            blurAmount: 2,
-            saturation: 150,
-          } as any}
+          glass={
+            {
+              mode: 'standard',
+              displacementScale: 50,
+              blurAmount: 2,
+              saturation: 150,
+            } as any
+          }
         >
           <DemoPanelContent
             position="start"
@@ -407,8 +408,7 @@ export const GlassCustom: Story = {
     }, []);
 
     return (
-      <div
-      >
+      <div>
         <Button label="Open Custom Glass Panel" variant="primary" onClick={() => setOpen(true)} />
 
         <EdgePanel
@@ -474,9 +474,7 @@ export const GlassPremium: Story = {
     }, []);
 
     return (
-      <div
-      
-      >
+      <div>
         <Button label="Open Premium Glass Panel" variant="primary" onClick={() => setOpen(true)} />
 
         <EdgePanel

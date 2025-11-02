@@ -5056,7 +5056,14 @@ export interface CodeBlockProps extends BaseComponentProps {
 /**
  * Footer layout options
  */
-export type FooterLayout = 'columns' | 'centered' | 'minimal' | 'stacked' | 'flexible' | 'sidebar' | 'wide';
+export type FooterLayout =
+  | 'columns'
+  | 'centered'
+  | 'minimal'
+  | 'stacked'
+  | 'flexible'
+  | 'sidebar'
+  | 'wide';
 
 /**
  * Social media platform types
@@ -5237,7 +5244,7 @@ export interface FooterSectionProps extends BaseComponentProps {
    * Whether section is collapsed by default
    */
   defaultCollapsed?: boolean;
-  
+
   /**
    * Whether newsletter is shown in the footer
    */

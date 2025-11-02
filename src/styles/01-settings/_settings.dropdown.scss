@@ -36,5 +36,5 @@ $dropdown-link-border-radius: border-radius.$border-radius !default;
 $dropdown-header-color: var(--#{config.$prefix}tertiary-text-emphasis) !default;
 $dropdown-header-padding: $dropdown-item-padding-y $dropdown-item-padding-x !default;
 
-$dropdown-divider-margin-y:  map.get($spacing-sizes, 2) !default; //8px
+$dropdown-divider-margin-y: map.get($spacing-sizes, 2) !default; //8px
 $dropdown-divider-bg: var(--#{config.$prefix}primary-border-subtle) !default;

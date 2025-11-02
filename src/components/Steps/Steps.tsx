@@ -138,11 +138,7 @@ export const Steps: React.FC<StepsProps> = ({
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-    return (
-      <AtomixGlass {...glassProps}>
-        {stepsContent}
-      </AtomixGlass>
-    );
+    return <AtomixGlass {...glassProps}>{stepsContent}</AtomixGlass>;
   }
 
   return stepsContent;

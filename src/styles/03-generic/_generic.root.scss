@@ -10,7 +10,6 @@
 @use 'sass:meta';
 @use 'sass:map';
 
-
 :root,
 [data-#{config.$prefix}color-mode='light'] {
   // Note: Custom variable values only support SassScript inside `#{}`.
@@ -65,8 +64,6 @@
   // See https://github.com/sass/sass/issues/2383#issuecomment-336349172
   --#{config.$prefix}font-sans-serif: #{meta.inspect(typography.$font-family-sans-serif)};
   --#{config.$prefix}font-monospace: #{meta.inspect(typography.$font-family-monospace)};
-
-  
 
   // Root and body
   // scss-docs-start root-body-variables
@@ -172,7 +169,7 @@
       --#{config.$prefix}#{$color}-gradient: #{$value};
     }
 
-  --#{config.$prefix}gradient: #{map.get(color-maps.$gradient-colors, dark)};
+    --#{config.$prefix}gradient: #{map.get(color-maps.$gradient-colors, dark)};
 
     --#{config.$prefix}box-shadow: #{box-shadow.$box-shadow-dark};
     --#{config.$prefix}box-shadow-xs: #{box-shadow.$box-shadow-xs-dark};

@@ -371,12 +371,14 @@ export const GlassDropdown: Story = {
   },
   render: args => <InteractiveDropdown {...args} />,
   decorators: [
-    (Story) => (
-      <div style={{ 
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
-        minHeight: '100vh',
-        padding: '2rem'
-      }}>
+    Story => (
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          minHeight: '100vh',
+          padding: '2rem',
+        }}
+      >
         <Story />
       </div>
     ),
@@ -400,12 +402,14 @@ export const GlassDropdownCustom: Story = {
   },
   render: args => <InteractiveDropdown {...args} />,
   decorators: [
-    (Story) => (
-      <div style={{ 
-        background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)', 
-        minHeight: '100vh',
-        padding: '2rem'
-      }}>
+    Story => (
+      <div
+        style={{
+          background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)',
+          minHeight: '100vh',
+          padding: '2rem',
+        }}
+      >
         <Story />
       </div>
     ),
@@ -422,12 +426,14 @@ export const GlassDropdownWithIcons: Story = {
   },
   render: args => <InteractiveDropdown {...args} />,
   decorators: [
-    (Story) => (
-      <div style={{ 
-        background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', 
-        minHeight: '100vh',
-        padding: '2rem'
-      }}>
+    Story => (
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+          minHeight: '100vh',
+          padding: '2rem',
+        }}
+      >
         <Story />
       </div>
     ),
@@ -441,8 +447,7 @@ export const GlassAllVariants: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'Glass morphism effect applied to dropdowns with all color variants.',
+        story: 'Glass morphism effect applied to dropdowns with all color variants.',
       },
     },
   },
@@ -458,11 +463,13 @@ export const GlassAllVariants: Story = {
     };
 
     return (
-      <div style={{ 
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
-        minHeight: '100vh',
-        padding: '2rem'
-      }}>
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          minHeight: '100vh',
+          padding: '2rem',
+        }}
+      >
         <div className="u-d-flex u-flex-wrap u-gap-3">
           {[
             'primary',

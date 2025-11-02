@@ -91,33 +91,33 @@ const validateGlassSize = (size: GlassSize): boolean => {
 const parseBorderRadiusValue = (value: string | number | undefined): number => {
   if (typeof value === 'number') return Math.max(0, value);
   if (typeof value !== 'string' || !value.trim()) return DEFAULT_CORNER_RADIUS;
-  
+
   const trimmedValue = value.trim();
-  
+
   // Handle px values
   if (trimmedValue.endsWith('px')) {
     const parsed = parseFloat(trimmedValue);
     return isNaN(parsed) ? DEFAULT_CORNER_RADIUS : Math.max(0, parsed);
   }
-  
+
   // Handle rem values (assume 16px = 1rem)
   if (trimmedValue.endsWith('rem')) {
     const parsed = parseFloat(trimmedValue);
     return isNaN(parsed) ? DEFAULT_CORNER_RADIUS : Math.max(0, parsed * 16);
   }
-  
+
   // Handle em values (assume 16px = 1em for simplicity)
   if (trimmedValue.endsWith('em')) {
     const parsed = parseFloat(trimmedValue);
     return isNaN(parsed) ? DEFAULT_CORNER_RADIUS : Math.max(0, parsed * 16);
   }
-  
+
   // Handle percentage (convert to approximate px value, assuming 200px container)
   if (trimmedValue.endsWith('%')) {
     const parsed = parseFloat(trimmedValue);
     return isNaN(parsed) ? DEFAULT_CORNER_RADIUS : Math.max(0, (parsed / 100) * 200);
   }
-  
+
   // Handle unitless numbers
   const numValue = parseFloat(trimmedValue);
   return isNaN(numValue) ? DEFAULT_CORNER_RADIUS : Math.max(0, numValue);
@@ -127,19 +127,20 @@ const extractBorderRadiusFromStyle = (style: CSSProperties | undefined): number 
   if (!style) {
     return null;
   }
-  
+
   // Check various border-radius properties
-  const borderRadius = style.borderRadius || 
-                      style.borderTopLeftRadius || 
-                      style.borderTopRightRadius || 
-                      style.borderBottomLeftRadius || 
-                      style.borderBottomRightRadius;
-  
+  const borderRadius =
+    style.borderRadius ||
+    style.borderTopLeftRadius ||
+    style.borderTopRightRadius ||
+    style.borderBottomLeftRadius ||
+    style.borderBottomRightRadius;
+
   if (borderRadius !== undefined) {
     const parsed = parseBorderRadiusValue(borderRadius);
     return parsed;
   }
-  
+
   return null;
 };
 
@@ -148,20 +149,21 @@ const extractBorderRadiusFromDOMElement = (element: HTMLElement | null): number 
   if (!element || typeof window === 'undefined') {
     return null;
   }
-  
+
   try {
     const computedStyles = window.getComputedStyle(element);
-    const borderRadius = computedStyles.borderRadius || 
-                        computedStyles.borderTopLeftRadius || 
-                        computedStyles.borderTopRightRadius || 
-                        computedStyles.borderBottomLeftRadius || 
-                        computedStyles.borderBottomRightRadius;
-    
+    const borderRadius =
+      computedStyles.borderRadius ||
+      computedStyles.borderTopLeftRadius ||
+      computedStyles.borderTopRightRadius ||
+      computedStyles.borderBottomLeftRadius ||
+      computedStyles.borderBottomRightRadius;
+
     if (borderRadius && borderRadius !== '0px' && borderRadius !== 'auto') {
       const parsed = parseBorderRadiusValue(borderRadius);
       return parsed > 0 ? parsed : null;
     }
-    
+
     return null;
   } catch (error) {
     return null;
@@ -180,7 +182,7 @@ const extractBorderRadiusFromElement = (element: React.ReactElement): number | n
       return radiusFromStyle;
     }
   }
-  
+
   // If element has children, recursively check them
   if (element.props.children) {
     const childRadius = extractBorderRadiusFromChildren(element.props.children);
@@ -188,7 +190,7 @@ const extractBorderRadiusFromElement = (element: React.ReactElement): number | n
       return childRadius;
     }
   }
-  
+
   return null;
 };
 
@@ -196,13 +198,13 @@ const extractBorderRadiusFromChildren = (children: React.ReactNode): number => {
   if (!children) {
     return DEFAULT_CORNER_RADIUS;
   }
-  
+
   try {
     const childArray = React.Children.toArray(children);
-    
+
     for (let i = 0; i < childArray.length; i++) {
       const child = childArray[i];
-      
+
       if (React.isValidElement(child)) {
         const radius = extractBorderRadiusFromElement(child);
         if (radius !== null) {
@@ -211,12 +213,10 @@ const extractBorderRadiusFromChildren = (children: React.ReactNode): number => {
       } else {
       }
     }
-  } catch (error) {
-  }
-  
+  } catch (error) {}
+
   return DEFAULT_CORNER_RADIUS;
 };
-
 
 const getDisplacementMap = (mode: DisplacementMode, shaderMapUrl?: string): string => {
   switch (mode) {
@@ -468,10 +468,10 @@ const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContainerProp
     }, [mode, glassSize.width, glassSize.height, shaderVariant]);
 
     useEffect(() => {
-      if (!ref || typeof ref === 'function') return;
+      if (!ref || typeof ref === 'function') return undefined;
 
       const element = (ref as React.RefObject<HTMLDivElement>).current;
-      if (!element) return;
+      if (!element) return undefined;
 
       const timeoutId = setTimeout(() => {
         // Force reflow to ensure proper sizing
@@ -484,9 +484,9 @@ const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContainerProp
     const [rectCache, setRectCache] = useState<DOMRect | null>(null);
 
     useEffect(() => {
-      if (!ref || typeof ref === 'function') return;
+      if (!ref || typeof ref === 'function') return undefined;
       const element = (ref as React.RefObject<HTMLDivElement>).current;
-      if (!element) return;
+      if (!element) return undefined;
       setRectCache(element.getBoundingClientRect());
     }, [ref, glassSize]);
 
@@ -703,7 +703,7 @@ interface AtomixGlassProps {
 
   // Performance monitoring
   enablePerformanceMonitoring?: boolean;
-  
+
   // Debug mode for cornerRadius extraction
   debugCornerRadius?: boolean;
 }
@@ -774,7 +774,7 @@ export function AtomixGlass({
     y: 0,
   });
   const [internalMouseOffset, setInternalMouseOffset] = useState<MousePosition>({ x: 0, y: 0 });
-  
+
   // Dynamic cornerRadius extraction from children
   const [dynamicCornerRadius, setDynamicCornerRadius] = useState<number>(DEFAULT_CORNER_RADIUS);
 
@@ -796,7 +796,7 @@ export function AtomixGlass({
             }
           }
         }
-        
+
         // Fallback to React children inspection
         if (extractedRadius === null) {
           const childRadius = extractBorderRadiusFromChildren(children);
@@ -809,7 +809,7 @@ export function AtomixGlass({
         // Update state if we found a valid radius
         if (extractedRadius !== null && extractedRadius > 0) {
           setDynamicCornerRadius(extractedRadius);
-          
+
           if (debugCornerRadius) {
             console.log('[AtomixGlass] Corner radius extracted:', {
               value: extractedRadius,
@@ -818,7 +818,10 @@ export function AtomixGlass({
             });
           }
         } else if (debugCornerRadius) {
-          console.log('[AtomixGlass] No corner radius found, using default:', DEFAULT_CORNER_RADIUS);
+          console.log(
+            '[AtomixGlass] No corner radius found, using default:',
+            DEFAULT_CORNER_RADIUS
+          );
         }
       } catch (error) {
         if (debugCornerRadius) {
@@ -850,7 +853,7 @@ export function AtomixGlass({
       }
       return result;
     }
-    
+
     // Use dynamic extraction
     const result = Math.max(0, dynamicCornerRadius);
     if (debugCornerRadius) {
@@ -940,7 +943,7 @@ export function AtomixGlass({
 
     if (typeof window.matchMedia !== 'function') {
       console.warn('AtomixGlass: matchMedia not supported, using default preferences');
-      return;
+      return undefined;
     }
 
     try {
@@ -1090,16 +1093,16 @@ export function AtomixGlass({
 
   useEffect(() => {
     if (externalGlobalMousePosition && externalMouseOffset) {
-      return;
+      return undefined;
     }
 
     if (effectiveDisableEffects) {
-      return;
+      return undefined;
     }
 
     const container = mouseContainer?.current || glassRef.current;
     if (!container) {
-      return;
+      return undefined;
     }
 
     container.addEventListener('mousemove', handleMouseMove, { passive: true });
@@ -1222,10 +1225,16 @@ export function AtomixGlass({
       if (rafId !== null) cancelAnimationFrame(rafId);
 
       rafId = requestAnimationFrame(() => {
-        if (!isValidElement(glassRef.current)) return;
+        if (!isValidElement(glassRef.current)) {
+          rafId = null;
+          return;
+        }
 
         const rect = glassRef.current.getBoundingClientRect();
-        if (rect.width <= 0 || rect.height <= 0) return;
+        if (rect.width <= 0 || rect.height <= 0) {
+          rafId = null;
+          return;
+        }
 
         // Use a small offset based on corner radius for better visual alignment
         const cornerRadiusOffset = Math.max(0, Math.min(effectiveCornerRadius * 0.1, 10));
@@ -1236,7 +1245,7 @@ export function AtomixGlass({
 
         const cornerRadiusChanged = lastCornerRadius !== effectiveCornerRadius;
         const dimensionsChanged =
-          Math.abs(newSize.width - lastSize.width) > 1 || 
+          Math.abs(newSize.width - lastSize.width) > 1 ||
           Math.abs(newSize.height - lastSize.height) > 1;
 
         if ((forceUpdate || cornerRadiusChanged || dimensionsChanged) && validateSize(newSize)) {

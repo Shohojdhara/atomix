@@ -14,14 +14,14 @@
 
 // Default config for utilities
 $utility-defaults: (
-        responsive: true,
-        rfs: false,
-        print: false,
-        dark: false,
-        class: null,
-        state: null,
-        local-vars: (),
-        rtl: true,
+  responsive: true,
+  rfs: false,
+  print: false,
+  dark: false,
+  class: null,
+  state: null,
+  local-vars: (),
+  rtl: true,
 ) !default;
 
 // Core function to generate utility classes
@@ -37,7 +37,7 @@ $utility-defaults: (
   @each $key, $value in $values {
     $properties: map.get($utility, property);
     $property-class: map.get($utility, class);
-    
+
     // Handle case where property-class is null
     @if $property-class == null and $properties {
       $property-class: if(
@@ -51,15 +51,23 @@ $utility-defaults: (
     // Create a local copy of infix to avoid affecting other utilities
     $local-infix: $infix;
     $state: map.get($utility, state);
-    $local-infix: if($state, if(meta.type-of($state) == 'string', '#{$state}#{$local-infix}', $local-infix), $local-infix);
+    $local-infix: if(
+      $state,
+      if(meta.type-of($state) == 'string', '#{$state}#{$local-infix}', $local-infix),
+      $local-infix
+    );
 
     // Escape special characters in key for valid CSS class names
     $escaped-key: if($key, _escape-key($key), null);
-    
+
     @if map.get($utility, class) == null {
       // Generate class with property name as class
-      $class-name: if($key, '#{$property-class}-#{$escaped-key}#{$local-infix}', '#{$property-class}#{$local-infix}');
-      
+      $class-name: if(
+        $key,
+        '#{$property-class}-#{$escaped-key}#{$local-infix}',
+        '#{$property-class}#{$local-infix}'
+      );
+
       .#{$class-name} {
         @if $css-var {
           // Handle CSS variable generation
@@ -77,7 +85,7 @@ $utility-defaults: (
       // Generate class with custom class name
       $base-class: map.get($utility, class);
       $modifier: if($key, '-#{$escaped-key}', '');
-      
+
       .#{$base-class}#{$local-infix}#{$modifier} {
         @if $css-var and $properties {
           // Handle CSS variable generation with properties
@@ -126,9 +134,9 @@ $utility-defaults: (
 ) {
   // Set default breakpoint infix generator if not provided
   $breakpoint-infix-generator: if(
-                  $breakpoint-infix-generator,
-                  $breakpoint-infix-generator,
-                  get-breakpoint-infix
+    $breakpoint-infix-generator,
+    $breakpoint-infix-generator,
+    get-breakpoint-infix
   );
 
   @each $utility, $config in $utilities {
@@ -138,19 +146,19 @@ $utility-defaults: (
     // Only process if the utility is not explicitly set to false
     @if map.get($config, generated) != false {
       $utility-map: (
-              property: map.get($config, property),
-              values: map.get($config, values),
-              class: map.get($config, class),
-              state: map.get($config, state),
-              rtl: map.get($config, rtl),
-              css-var: map.get($config, css-var),
-              local-vars: map.get($config, local-vars),
+        property: map.get($config, property),
+        values: map.get($config, values),
+        class: map.get($config, class),
+        state: map.get($config, state),
+        rtl: map.get($config, rtl),
+        css-var: map.get($config, css-var),
+        local-vars: map.get($config, local-vars),
       );
 
       @include generate-responsive-utilities(
-                      $utility-map,
-                      $breakpoints,
-                      $breakpoint-infix-generator
+        $utility-map,
+        $breakpoints,
+        $breakpoint-infix-generator
       );
     }
   }
@@ -182,10 +190,10 @@ $utility-defaults: (
 
   @each $key in $keys {
     $result: map.merge(
-                    $result,
-                    (
-                            $key: if($index <= list.length($values), list.nth($values, $index), null),
-                    )
+      $result,
+      (
+        $key: if($index <= list.length($values), list.nth($values, $index), null),
+      )
     );
     $index: $index + 1;
   }
@@ -196,11 +204,11 @@ $utility-defaults: (
 // Helper function to replace strings
 @function str-replace($string, $search, $replace: '') {
   $index: string.index($string, $search);
-  
+
   @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace + 
+    @return str-slice($string, 1, $index - 1) + $replace +
       str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
   }
-  
+
   @return $string;
 }

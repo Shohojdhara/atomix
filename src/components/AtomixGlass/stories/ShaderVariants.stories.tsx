@@ -31,8 +31,6 @@ const meta: Meta<typeof AtomixGlass> = {
 export default meta;
 type Story = StoryObj<typeof AtomixGlass>;
 
-
-
 /**
  * Liquid Glass Variant
  *

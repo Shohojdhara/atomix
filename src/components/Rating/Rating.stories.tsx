@@ -150,7 +150,8 @@ export const GlassInteractive = {
   render: (args: any) => (
     <div
       style={{
-        background: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)',
+        background:
+          'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         padding: '3rem',
@@ -162,7 +163,9 @@ export const GlassInteractive = {
       }}
     >
       <div style={{ textAlign: 'center' }}>
-        <h3 style={{ color: 'white', marginBottom: '1rem', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        <h3
+          style={{ color: 'white', marginBottom: '1rem', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
+        >
           Interactive Glass Rating
         </h3>
         <Rating {...args} />
@@ -211,7 +214,9 @@ export const GlassCustom = {
         `}
       </style>
       <div style={{ textAlign: 'center' }}>
-        <h3 style={{ color: 'white', marginBottom: '1rem', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+        <h3
+          style={{ color: 'white', marginBottom: '1rem', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}
+        >
           Custom Glass Rating
         </h3>
         <Rating {...args} />

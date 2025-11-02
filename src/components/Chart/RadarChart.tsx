@@ -112,8 +112,8 @@ const RadarChart = memo(
         let maxValue = scaleMax;
 
         if (minValue === undefined || maxValue === undefined) {
-          const allValues = renderedDatasets.flatMap(dataset =>
-            dataset.data?.map((d: any) => d.value) || []
+          const allValues = renderedDatasets.flatMap(
+            dataset => dataset.data?.map((d: any) => d.value) || []
           );
           if (minValue === undefined) minValue = Math.min(scaleMin, ...allValues);
           if (maxValue === undefined) maxValue = Math.max(scaleMax || 0, ...allValues);
@@ -253,10 +253,19 @@ const RadarChart = memo(
                         r={isHovered ? pointRadius * 1.5 : pointRadius}
                         fill={color}
                         className="c-chart__radar-point"
-                        onClick={() => handlers.onDataPointClick?.(point.point, datasetIndex, pointIndex)}
+                        onClick={() =>
+                          handlers.onDataPointClick?.(point.point, datasetIndex, pointIndex)
+                        }
                         onMouseEnter={e => {
                           const rect = e.currentTarget.getBoundingClientRect();
-                          handlers.onPointHover(datasetIndex, pointIndex, point.x, point.y, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                          handlers.onPointHover(
+                            datasetIndex,
+                            pointIndex,
+                            point.x,
+                            point.y,
+                            rect.left + rect.width / 2,
+                            rect.top + rect.height / 2
+                          );
                         }}
                         onMouseLeave={handlers.onPointLeave}
                       />
@@ -276,9 +285,14 @@ const RadarChart = memo(
             </g>
             {hoveredPoint && (
               <ChartTooltip
-                dataPoint={renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]}
+                dataPoint={
+                  renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]
+                }
                 datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
-                datasetColor={renderedDatasets[hoveredPoint.datasetIndex]?.color || colors[hoveredPoint.datasetIndex]}
+                datasetColor={
+                  renderedDatasets[hoveredPoint.datasetIndex]?.color ||
+                  colors[hoveredPoint.datasetIndex]
+                }
                 position={{
                   x: hoveredPoint.clientX,
                   y: hoveredPoint.clientY,

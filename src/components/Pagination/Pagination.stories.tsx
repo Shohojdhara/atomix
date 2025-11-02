@@ -207,7 +207,7 @@ export const Glass = {
       setCurrentPage(page);
       args.onPageChange?.(page);
     };
-    
+
     return (
       <div
         style={{
@@ -255,11 +255,12 @@ export const GlassCustom = {
       setCurrentPage(page);
       args.onPageChange?.(page);
     };
-    
+
     return (
       <div
         style={{
-          background: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)',
+          background:
+            'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           padding: '2rem',
@@ -271,7 +272,13 @@ export const GlassCustom = {
         }}
       >
         <div style={{ textAlign: 'center' }}>
-          <h3 style={{ color: 'white', marginBottom: '2rem', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
+          <h3
+            style={{
+              color: 'white',
+              marginBottom: '2rem',
+              textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+            }}
+          >
             Custom Glass Pagination
           </h3>
           <Pagination {...args} currentPage={currentPage} onPageChange={handlePageChange} />

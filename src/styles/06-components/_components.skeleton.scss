@@ -17,12 +17,14 @@
   display: inline-block;
   width: var(--#{$prefix}skeleton-width);
   min-height: var(--#{$prefix}skeleton-height);
-  @include dynamic-background(linear-gradient(
-    90deg,
-    var(--#{$prefix}skeleton-gradient-from-color) 25%,
-    var(--#{$prefix}skeleton-gradient-to-color) 37%,
-    var(--#{$prefix}skeleton-gradient-from-color) 63%
-  ));
+  @include dynamic-background(
+    linear-gradient(
+      90deg,
+      var(--#{$prefix}skeleton-gradient-from-color) 25%,
+      var(--#{$prefix}skeleton-gradient-to-color) 37%,
+      var(--#{$prefix}skeleton-gradient-from-color) 63%
+    )
+  );
   background-size: 400% 100%;
   border-radius: var(--#{$prefix}skeleton-border-radius);
   animation-name: #{$prefix}-skeleton-loading;

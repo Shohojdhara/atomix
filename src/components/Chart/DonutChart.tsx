@@ -199,7 +199,14 @@ const DonutChart = memo(
                     onClick={() => handlers.onDataPointClick?.(slice.dataPoint, 0, index)}
                     onMouseEnter={e => {
                       const rect = e.currentTarget.getBoundingClientRect();
-                      handlers.onPointHover(0, index, slice.labelPosition.x, slice.labelPosition.y, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                      handlers.onPointHover(
+                        0,
+                        index,
+                        slice.labelPosition.x,
+                        slice.labelPosition.y,
+                        rect.left + rect.width / 2,
+                        rect.top + rect.height / 2
+                      );
                     }}
                     onMouseLeave={handlers.onPointLeave}
                   />
@@ -250,18 +257,20 @@ const DonutChart = memo(
                 </text>
               </g>
             )}
-            {config?.showTooltips !== false && hoveredPoint && hoveredPoint.pointIndex < slices.length && (
-              <ChartTooltip
-                dataPoint={slices[hoveredPoint.pointIndex].dataPoint}
-                datasetLabel={dataset?.label}
-                datasetColor={slices[hoveredPoint.pointIndex]?.color}
-                position={{
-                  x: hoveredPoint.clientX,
-                  y: hoveredPoint.clientY,
-                }}
-                visible={true}
-              />
-            )}
+            {config?.showTooltips !== false &&
+              hoveredPoint &&
+              hoveredPoint.pointIndex < slices.length && (
+                <ChartTooltip
+                  dataPoint={slices[hoveredPoint.pointIndex].dataPoint}
+                  datasetLabel={dataset?.label}
+                  datasetColor={slices[hoveredPoint.pointIndex]?.color}
+                  position={{
+                    x: hoveredPoint.clientX,
+                    y: hoveredPoint.clientY,
+                  }}
+                  visible={true}
+                />
+              )}
           </>
         );
       };

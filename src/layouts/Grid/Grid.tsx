@@ -45,7 +45,10 @@ export interface GridProps extends HTMLAttributes<HTMLDivElement> {
  * ```
  */
 export const Grid = forwardRef<HTMLDivElement, GridProps>(
-  ({ children, className = '', justifyContent, alignItems, noGutters, direction, wrap, ...props }, ref) => {
+  (
+    { children, className = '', justifyContent, alignItems, noGutters, direction, wrap, ...props },
+    ref
+  ) => {
     const classes = ['o-grid'];
 
     if (justifyContent) {
