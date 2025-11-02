@@ -1,8 +1,8 @@
 import { addons } from '@storybook/preview-api';
 import type { Preview } from '@storybook/react';
 import { useEffect } from 'react';
-// import '../src/styles/index.scss';
-import '../src/themes/applemix/index.scss';
+// Base styles for development; in production builds, dist CSS is served via staticDirs
+import '../src/styles/index.scss';
 
 // Theme list
 const themes = [
@@ -110,14 +110,16 @@ const preview: Preview = {
         const link = document.createElement('link');
         link.id = 'storybook-theme';
         link.rel = 'stylesheet';
+        let href = '';
         if (theme === 'atomix') {
-          link.href = `/atomix.css`;
-        } else if (theme === 'none') {
-          link.href = ``;
-        } else {
-          link.href = `/themes/${theme}.css`;
+          href = `/atomix.css`;
+        } else if (theme !== 'none') {
+          href = `/themes/${theme}.css`;
         }
-        document.head.appendChild(link);
+        if (href) {
+          link.href = href;
+          document.head.appendChild(link);
+        }
 
         // Apply color mode to the theme
         const themeStyle = document.getElementById('storybook-theme-vars');

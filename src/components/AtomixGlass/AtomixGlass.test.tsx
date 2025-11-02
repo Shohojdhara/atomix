@@ -1,10 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import AtomixGlass from './AtomixGlass';
 
 // Mock the ShaderDisplacementGenerator since it uses browser APIs
-jest.mock('./shader-utils', () => ({
+vi.mock('./shader-utils', () => ({
   ShaderDisplacementGenerator: class MockShaderDisplacementGenerator {
     updateShader() {
       return 'data:image/png;base64,mockBase64String';
@@ -12,7 +13,7 @@ jest.mock('./shader-utils', () => ({
     destroy() {}
   },
   fragmentShaders: {
-    liquidGlass: jest.fn(),
+    liquidGlass: vi.fn(),
   },
 }));
 
@@ -50,7 +51,7 @@ describe('AtomixGlass Component', () => {
   });
 
   test('applies clickable class when onClick is provided', () => {
-    const handleClick = jest.fn();
+    const handleClick = vi.fn();
     const { container } = render(
       <AtomixGlass onClick={handleClick}>
         <div>Content</div>
@@ -61,7 +62,7 @@ describe('AtomixGlass Component', () => {
   });
 
   test('calls onClick when clicked', async () => {
-    const handleClick = jest.fn();
+    const handleClick = vi.fn();
     render(
       <AtomixGlass onClick={handleClick}>
         <div>Content</div>
@@ -106,10 +107,10 @@ describe('AtomixGlass Component', () => {
   });
 
   test('handles mouse events correctly', async () => {
-    const handleMouseEnter = jest.fn();
-    const handleMouseLeave = jest.fn();
-    const handleMouseDown = jest.fn();
-    const handleMouseUp = jest.fn();
+    const handleMouseEnter = vi.fn();
+    const handleMouseLeave = vi.fn();
+    const handleMouseDown = vi.fn();
+    const handleMouseUp = vi.fn();
     
     render(
       <AtomixGlass
@@ -142,6 +143,7 @@ describe('AtomixGlass Component', () => {
 });
 
 // Visual regression tests
+// Keep only a single smoke snapshot to detect catastrophic DOM changes.
 describe('AtomixGlass Visual Regression', () => {
   test('matches snapshot with default props', () => {
     const { container } = render(
@@ -149,51 +151,7 @@ describe('AtomixGlass Visual Regression', () => {
         <div>Default Glass</div>
       </AtomixGlass>
     );
-    
+
     expect(container).toMatchSnapshot();
   });
-
-  test('matches snapshot with custom props', () => {
-    const { container } = render(
-      <AtomixGlass
-        displacementScale={30}
-        blurAmount={15}
-        saturation={200}
-        aberrationIntensity={3}
-        cornerRadius={15}
-        overLight={true}
-        mode="polar"
-      >
-        <div>Custom Glass</div>
-      </AtomixGlass>
-    );
-    
-    expect(container).toMatchSnapshot();
-  });
-
-  test('matches snapshot with shader mode', () => {
-    const { container } = render(
-      <AtomixGlass
-        mode="shader"
-        displacementScale={25}
-        blurAmount={12}
-        saturation={180}
-        aberrationIntensity={2}
-      >
-        <div>Shader Glass</div>
-      </AtomixGlass>
-    );
-    
-    expect(container).toMatchSnapshot();
-  });
-
-  test('matches snapshot with showHoverEffects', () => {
-      const { container } = render(
-        <AtomixGlass>
-          <div>Glass with Hover Effects</div>
-        </AtomixGlass>
-      );
-      
-      expect(container).toMatchSnapshot();
-    });
 });

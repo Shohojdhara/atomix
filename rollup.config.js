@@ -131,9 +131,9 @@ export default [
           [
             '@babel/preset-env',
             {
-              modules: false, // Keep false for Rollup to handle module conversion
+              modules: 'cjs', // Use CommonJS modules for CJS build
               targets: {
-                node: '16',
+                node: '18',
               },
             },
           ],

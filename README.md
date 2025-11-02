@@ -112,6 +112,25 @@ npm run test:watch
 npm run test:coverage
 ```
 
+### Storybook styles convention
+
+To keep visual docs and any snapshots stable, choose one of the following and stick to it:
+
+- Preferred: load the built CSS from dist.
+  - In your Storybook preview (e.g., .storybook/preview.ts/preview.js), import the bundled CSS once:
+    import '@shohojdhara/atomix/css'
+  - Before taking snapshots or publishing Storybook, ensure styles are compiled:
+    yarn build:styles
+
+- Alternative (for live theming/dev): load the source SCSS.
+  - Import from the SCSS entry point:
+    import '@shohojdhara/atomix/scss'
+  - This relies on your builder's SCSS pipeline; avoid mixing SCSS and built CSS in the same Storybook to prevent drift.
+
+Notes:
+- CSS bundles produced by the styles build are deterministic: dist/atomix.css and dist/atomix.min.css, plus per-theme files under dist/themes/.
+- CI should run yarn attw to validate package exports and types after changes.
+
 ## Components
 
 Atomix provides 40+ production-ready components organized into categories:

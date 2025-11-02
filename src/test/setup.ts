@@ -1,6 +1,6 @@
 // Test setup file for Vitest
 import '@testing-library/jest-dom';
-import { vi } from 'vitest';
+import { vi, afterEach } from 'vitest';
 
 // Mock CSS imports - needed for components that use media queries
 Object.defineProperty(window, 'matchMedia', {
@@ -31,3 +31,8 @@ vi.mock('*.css', () => ({
 vi.mock('*.scss', () => ({
   default: {},
 }));
+
+// Ensure no mocks leak between tests
+afterEach(() => {
+  vi.restoreAllMocks();
+});

@@ -92,7 +92,7 @@ export const Accordion: React.FC<AccordionProps> = ({
 
   // Default icon
   const defaultIcon = (
-    <i className="c-accordion__icon">
+    <i className="c-accordion__icon" aria-hidden="true">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -103,6 +103,8 @@ export const Accordion: React.FC<AccordionProps> = ({
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
+        aria-hidden="true"
+        focusable="false"
       >
         <polyline points="6 9 12 15 18 9"></polyline>
       </svg>
@@ -117,6 +119,7 @@ export const Accordion: React.FC<AccordionProps> = ({
         onClick={toggle}
         aria-expanded={state.isOpen}
         aria-controls={panelId}
+        aria-disabled={disabled}
         disabled={disabled}
         type="button"
       >

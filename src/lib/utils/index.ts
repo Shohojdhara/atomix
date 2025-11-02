@@ -6,18 +6,24 @@ export * from './dom';
 // Export icon utilities
 export * from './icons';
 
+import classNames from 'classnames';
+
 /**
- * Class name utility function to conditionally join classNames together
- * @param {...any} args - Class names or conditional class names
- * @returns {string} - Joined class names
+ * Class name utility function to conditionally join classNames together.
+ * This is a wrapper around the 'classnames' library and supports all its features:
+ * - Strings and numbers
+ * - Arrays (including nested arrays)
+ * - Objects (keys are class names, values are truthy/falsy conditions)
+ * - Mixed types
+ * 
+ * @example
+ * cn('foo', 'bar'); // 'foo bar'
+ * cn('foo', { bar: true }); // 'foo bar'
+ * cn({ 'foo-bar': true }); // 'foo-bar'
+ * cn(['foo', { bar: true }]); // 'foo bar'
  */
 export function cn(...args: any[]): string {
-  return args
-    .filter(Boolean)
-    .flat()
-    .map(arg => String(arg).trim())
-    .filter(Boolean)
-    .join(' ');
+  return classNames(...args);
 }
 
 /**
