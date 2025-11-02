@@ -3,15 +3,7 @@ import type { Preview } from '@storybook/react';
 import { useEffect } from 'react';
 // Base styles for development; in production builds, dist CSS is served via staticDirs
 import '../src/styles/index.scss';
-
-// Theme list
-const themes = [
-  { name: 'Atomix', class: 'atomix', color: '#000000' },
-  { name: 'Shaj', class: 'shaj-default', color: '#3b82f6' },
-  { name: 'BoomDevs', class: 'boomdevs', color: '#8b5cf6' },
-  { name: 'None', class: 'none', color: '#ef4444' },
-  { name: 'Applemix', class: 'applemix', color: '#f5f5f5' },
-];
+import { themes, getThemeClasses } from './themes.config';
 
 const preview: Preview = {
   parameters: {
@@ -85,7 +77,7 @@ const preview: Preview = {
       useEffect(() => {
         // Remove all theme classes
         document.body.classList.forEach(className => {
-          if (themes.map(t => t.class).includes(className)) {
+          if (getThemeClasses().includes(className)) {
             document.body.classList.remove(className);
           }
         });
@@ -182,7 +174,7 @@ if (typeof window !== 'undefined') {
   channel.on('theme-update', (theme: string) => {
     document.body.setAttribute('data-theme', theme);
     document.body.classList.forEach(className => {
-      if (themes.map(t => t.class).includes(className)) {
+      if (getThemeClasses().includes(className)) {
         document.body.classList.remove(className);
       }
     });

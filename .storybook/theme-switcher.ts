@@ -2,14 +2,7 @@
 import type { API } from '@storybook/manager-api';
 import { addons, types } from '@storybook/manager-api';
 import React from 'react';
-
-// Theme options
-const themes = [
-  { name: 'Shaj', class: 'shaj-default', color: '#3b82f6' },
-  { name: 'BoomDevs', class: 'boomdevs', color: '#8b5cf6' },
-  { name: 'Mashroom', class: 'mashroom', color: '#f59e0b' },
-  { name: 'Applemix', class: 'applemix', color: '#f59e0b' },
-];
+import { namedThemes as themes } from './themes.config';
 
 interface ThemeSwitcherProps {
   api: API;

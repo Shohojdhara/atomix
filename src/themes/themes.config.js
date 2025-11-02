@@ -14,7 +14,9 @@ export const themesConfig = {
       author: 'Shohoj Dhara',
       version: '1.0.0',
       tags: ['default', 'light'],
-      supportsDarkMode: true
+      supportsDarkMode: true,
+      status: 'stable',
+      a11y: { contrastTarget: 4.5, modes: ['light', 'dark'] }
     },
     'boomdevs': {
       name: 'BoomDevs',
@@ -22,7 +24,9 @@ export const themesConfig = {
       author: 'BoomDevs Team',
       version: '1.0.0',
       tags: ['dark', 'modern'],
-      supportsDarkMode: true
+      supportsDarkMode: true,
+      status: 'beta',
+      a11y: { contrastTarget: 4.5, modes: ['light', 'dark'] }
     },
     'esrar': {
       name: 'Esrar',
@@ -30,7 +34,9 @@ export const themesConfig = {
       author: 'Esrar Team',
       version: '1.0.0',
       tags: ['light', 'minimal'],
-      supportsDarkMode: true
+      supportsDarkMode: true,
+      status: 'beta',
+      a11y: { contrastTarget: 4.5, modes: ['light', 'dark'] }
     },
     'mashroom': {
       name: 'Mashroom',
@@ -38,7 +44,9 @@ export const themesConfig = {
       author: 'Mashroom Team',
       version: '1.0.0',
       tags: ['dark', 'contrast'],
-      supportsDarkMode: true
+      supportsDarkMode: true,
+      status: 'beta',
+      a11y: { contrastTarget: 4.5, modes: ['light', 'dark'] }
     },
     'applemix': {
       name: 'Applemix',
@@ -55,7 +63,9 @@ export const themesConfig = {
         'AtomixGlass component integration',
         'Comprehensive component overrides',
         'Light and dark mode support'
-      ]
+      ],
+      status: 'experimental',
+      a11y: { contrastTarget: 4.5, modes: ['light', 'dark'] }
     },
   },
 
@@ -88,10 +98,10 @@ export const themesConfig = {
       colorMode: '--storybook-color-mode'
     },
     
-    // Class names used for theme and color mode
+    // Attribute names used for theme and color mode (kept in sync with .storybook/preview.tsx)
     classNames: {
       theme: 'data-theme',
-      colorMode: 'data-color-mode'
+      colorMode: 'data-atomix-color-mode'
     }
   }
 };
