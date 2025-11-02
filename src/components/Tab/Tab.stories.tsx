@@ -151,7 +151,7 @@ export const Glass = {
     activeIndex: 0,
     glass: true,
   },
-  render: (args) => (
+  render: (args: any) => (
     <div
       style={{
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -195,7 +195,7 @@ export const GlassCustom = {
       cornerRadius: 12,
     },
   },
-  render: (args) => (
+  render: (args: any) => (
     <div
       style={{
         background: 'url(https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)',

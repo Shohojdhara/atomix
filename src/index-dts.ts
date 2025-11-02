@@ -7,6 +7,10 @@ export * from './lib';
 // Export layouts
 export * from './layouts';
 
+// Export specific types that need to be named
+export type { AnimatedChartProps } from './components/Chart/AnimatedChart';
+export type { MultiAxisChartProps } from './components/Chart/MultiAxisChart';
+
 // Create a properly typed default export
 import * as components from './components';
 import * as layouts from './layouts';
@@ -21,7 +25,7 @@ const atomix = {
   constants,
   types,
   layouts,
-} as const;
+};
 
 // Default export
 export default atomix;

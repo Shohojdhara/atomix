@@ -133,7 +133,7 @@ export const Glass: Story = {
     rows: 4,
     glass: true,
   },
-  render: (args) => (
+  render: (args: any) => (
     <div
       style={{
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',

@@ -115,7 +115,7 @@ export const Glass: Story = {
     placeholder: 'Glass Input',
     glass: true,
   },
-  render: (args) => (
+  render: (args: any) => (
     <div
       style={{
         background: 'url(https://cdn.pixabay.com/photo/2021/11/13/08/50/athens-6790780_1280.jpg)',

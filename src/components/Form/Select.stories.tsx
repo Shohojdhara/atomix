@@ -161,7 +161,7 @@ export const Glass: Story = {
     placeholder: 'Glass Select',
     glass: true,
   },
-  render: (args) => (
+  render: (args: any) => (
     <div
       style={{
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -193,7 +193,7 @@ export const GlassCustom: Story = {
       cornerRadius: 12,
     },
   },
-  render: (args) => (
+  render: (args: any) => (
     <div
       style={{
         background: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)',
@@ -222,7 +222,7 @@ export const GlassStates: Story = {
   args: {
     options: countries,
   },
-  render: (args) => (
+  render: (args: any) => (
     <div
       style={{
         background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57)',

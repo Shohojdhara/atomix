@@ -112,7 +112,7 @@ const LayoutTemplate: Story = {
     sticky: false,
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: (args: any) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)', padding: '2rem' }}>
         <h1>Main Content</h1>
@@ -183,7 +183,7 @@ export const Minimal: Story = {
     showDivider: false,
     showNewsletter: false,
   },
-  render: (args) => (
+  render: (args: any) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
         <h1>Page Content</h1>
@@ -255,7 +255,7 @@ export const Sticky: Story = {
     size: 'sm',
     layout: 'minimal',
   },
-  render: (args) => (
+  render: (args: any) => (
     <div style={{ height: '200vh', backgroundColor: 'var(--atomix-surface)' }}>
       <div style={{ padding: '2rem' }}>
         <h1>Scroll down to see sticky footer</h1>
@@ -280,7 +280,7 @@ export const CollapsibleSections: Story = {
     ...Default.args,
     showNewsletter: true,
   },
-  render: (args) => (
+  render: (args: any) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
         <h1>Collapsible Footer Sections</h1>
@@ -313,7 +313,7 @@ export const WithExternalLinks: Story = {
       { platform: 'discord' as const, url: 'https://discord.gg/company' },
     ],
   },
-  render: (args) => (
+  render: (args: any) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
         <h1>Modern Social Links</h1>
@@ -345,7 +345,7 @@ export const ModernGradients: Story = {
     showBackToTop: true,
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: (args: any) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1, padding: '2rem', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
         <h1 style={{ color: 'white' }}>Modern Design</h1>
@@ -374,7 +374,7 @@ export const DesignTokensShowcase: Story = {
       },
     },
   },
-  render: (args) => (
+  render: (args: any) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
         <h1>Design Token Integration</h1>
@@ -412,7 +412,7 @@ export const AccessibilityFocused: Story = {
     showNewsletter: true,
     showBackToTop: true,
   },
-  render: (args) => (
+  render: (args: any) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
         <h1>Accessibility Features</h1>
@@ -432,7 +432,7 @@ export const ResponsiveShowcase: Story = {
     showNewsletter: true,
     showBackToTop: true,
   },
-  render: (args) => (
+  render: (args: any) => (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
         <h1>Responsive Design</h1>

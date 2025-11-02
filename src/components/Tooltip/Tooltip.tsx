@@ -38,6 +38,11 @@ export interface TooltipProps {
   className?: string;
 
   /**
+   * Inline style for the component
+   */
+  style?: React.CSSProperties;
+
+  /**
    * Delay before showing the tooltip (in milliseconds)
    */
   delay?: number;

@@ -59,7 +59,7 @@ export const Checked: Story = {
 
 // Checkbox states
 export const States: Story = {
-  render: args => (
+  render: (args: any) => (
     <div className="u-d-flex u-flex-column u-gap-3">
       <Checkbox label="Default checkbox" />
       <Checkbox label="Checked checkbox" checked />
@@ -85,7 +85,7 @@ export const Glass: Story = {
     label: 'Glass Checkbox',
     glass: true,
   },
-  render: (args) => (
+  render: (args: any) => (
     <div
       style={{
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -114,7 +114,7 @@ export const GlassCustom: Story = {
       cornerRadius: 12,
     },
   },
-  render: (args) => (
+  render: (args: any) => (
     <div
       style={{
         background: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80)',

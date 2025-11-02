@@ -201,7 +201,7 @@ export const Glass = {
     size: 'md',
     glass: true,
   },
-  render: (args) => {
+  render: (args: any) => {
     const [currentPage, setCurrentPage] = React.useState(args.currentPage);
     const handlePageChange = (page: number) => {
       setCurrentPage(page);
@@ -249,7 +249,7 @@ export const GlassCustom = {
       cornerRadius: 12,
     },
   },
-  render: (args) => {
+  render: (args: any) => {
     const [currentPage, setCurrentPage] = React.useState(args.currentPage);
     const handlePageChange = (page: number) => {
       setCurrentPage(page);

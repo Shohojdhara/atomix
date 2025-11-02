@@ -1,8 +1,7 @@
 import { forwardRef, memo, useState } from 'react';
 import BaseChart from './BaseChart';
 import ChartTooltip from './ChartTooltip';
-import { ChartProps } from './types';
-import { ScatterDataPoint } from './ScatterChart';
+import { ChartProps, ScatterDataPoint } from './types';
 
 interface ScatterChartProps extends Omit<ChartProps, 'type'> {
   /**
@@ -162,4 +161,4 @@ const ScatterChart = memo(
 
 ScatterChart.displayName = 'ScatterChart';
 export default ScatterChart;
-export type { ScatterChartProps, ScatterDataPoint };
+export type { ScatterChartProps };

@@ -71,6 +71,11 @@ export interface RiverProps {
   className?: string;
 
   /**
+   * Inline style for the component
+   */
+  style?: React.CSSProperties;
+
+  /**
    * Background image source
    */
   backgroundImageSrc?: string;

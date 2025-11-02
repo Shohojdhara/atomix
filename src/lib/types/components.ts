@@ -2195,6 +2195,11 @@ export interface PopoverProps {
   className?: string;
 
   /**
+   * Inline style for the popover
+   */
+  style?: React.CSSProperties;
+
+  /**
    * Delay before showing the popover (in milliseconds)
    */
   delay?: number;

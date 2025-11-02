@@ -2,7 +2,7 @@ import { forwardRef, memo, useCallback, useEffect, useRef } from 'react';
 import BaseChart from './BaseChart';
 import { ChartProps } from './types';
 
-interface AnimatedChartProps extends Omit<ChartProps, 'type'> {
+export interface AnimatedChartProps extends Omit<ChartProps, 'type'> {
   chartType?: 'line' | 'bar' | 'area';
   animationConfig?: {
     duration?: number;

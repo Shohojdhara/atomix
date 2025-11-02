@@ -67,36 +67,8 @@ export default [
       babel({
         babelHelpers: 'runtime',
         exclude: 'node_modules/**',
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        presets: [
-          [
-            '@babel/preset-env', 
-            { 
-              modules: false,
-              targets: {
-                esmodules: true,
-              },
-            }
-          ],
-          [
-            '@babel/preset-react', 
-            {
-              runtime: 'automatic',
-            }
-          ],
-          '@babel/preset-typescript',
-        ],
-        plugins: [
-          [
-            '@babel/plugin-transform-runtime',
-            {
-              corejs: 3,
-              helpers: true,
-              regenerator: true,
-              useESModules: true,
-            },
-          ],
-        ],
+        extensions: ['.js', '.jsx'],
+        configFile: './babel.config.js',
       }),
     ],
   },
@@ -126,31 +98,9 @@ export default [
       babel({
         babelHelpers: 'runtime',
         exclude: 'node_modules/**',
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        presets: [
-          [
-            '@babel/preset-env',
-            {
-              modules: 'cjs', // Use CommonJS modules for CJS build
-              targets: {
-                node: '18',
-              },
-            },
-          ],
-          '@babel/preset-react',
-          '@babel/preset-typescript',
-        ],
-        plugins: [
-          [
-            '@babel/plugin-transform-runtime',
-            {
-              corejs: 3,
-              helpers: true,
-              regenerator: true,
-              useESModules: false,
-            },
-          ],
-        ],
+        extensions: ['.js', '.jsx'],
+        configFile: './babel.config.js',
+        envName: 'cjs',
       }),
     ],
   },
@@ -175,23 +125,9 @@ export default [
       babel({
         babelHelpers: 'runtime',
         exclude: 'node_modules/**',
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        presets: [
-          ['@babel/preset-env', { modules: false }],
-          '@babel/preset-react',
-          '@babel/preset-typescript',
-        ],
-        plugins: [
-          [
-            '@babel/plugin-transform-runtime',
-            {
-              corejs: 3,
-              helpers: true,
-              regenerator: true,
-              useESModules: true,
-            },
-          ],
-        ],
+        extensions: ['.js', '.jsx'],
+        configFile: './babel.config.js',
+        envName: 'production',
       }),
       terser({
         compress: {

@@ -43,6 +43,11 @@ export interface ProductReviewProps {
    * Additional CSS class
    */
   className?: string;
+
+  /**
+   * Inline style for the component
+   */
+  style?: React.CSSProperties;
 }
 
 /**

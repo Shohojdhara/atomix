@@ -2,7 +2,6 @@ import { addons } from '@storybook/preview-api';
 import type { Preview } from '@storybook/react';
 import { useEffect } from 'react';
 // Base styles for development; in production builds, dist CSS is served via staticDirs
-import '../src/styles/index.scss';
 import { themes, getThemeClasses } from './themes.config';
 
 const preview: Preview = {
@@ -21,6 +20,10 @@ const preview: Preview = {
     backgrounds: {
       default: 'none',
       values: [
+        {
+          name: 'none',
+          value: 'transparent',
+        },
         {
           name: 'light',
           value: '#ffffff',

@@ -385,7 +385,7 @@ export const ValidationStates: Story = {
           valid={true}
           helperText="This input is valid"
         >
-          <Input id="valid-input" value="John Doe" valid={true} />
+          <Input id="valid-input" value="John Doe" onChange={() => {}} valid={true} />
         </FormGroup>
 
         <FormGroup
@@ -394,7 +394,7 @@ export const ValidationStates: Story = {
           invalid={true}
           helperText="This input is invalid"
         >
-          <Input id="invalid-input" value="test" invalid={true} />
+          <Input id="invalid-input" value="test" onChange={() => {}} invalid={true} />
         </FormGroup>
 
         <FormGroup
@@ -410,6 +410,7 @@ export const ValidationStates: Story = {
               { value: 'ca', label: 'Canada' },
             ]}
             value="us"
+            onChange={() => {}}
             valid={true}
           />
         </FormGroup>
@@ -426,6 +427,7 @@ export const ValidationStates: Story = {
               { value: 'us', label: 'United States' },
               { value: 'ca', label: 'Canada' },
             ]}
+            onChange={() => {}}
             invalid={true}
           />
         </FormGroup>
@@ -441,7 +443,7 @@ export const ValidationStates: Story = {
         </FormGroup>
 
         <FormGroup invalid={true} helperText="This checkbox is invalid">
-          <Checkbox id="invalid-checkbox" label="Invalid Checkbox" invalid={true} />
+          <Checkbox id="invalid-checkbox" label="Invalid Checkbox" onChange={() => {}} invalid={true} />
         </FormGroup>
       </Form>
     </div>

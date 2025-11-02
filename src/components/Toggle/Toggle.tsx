@@ -30,6 +30,11 @@ export interface ToggleProps {
   className?: string;
 
   /**
+   * Inline style for the component
+   */
+  style?: React.CSSProperties;
+
+  /**
    * Glass morphism effect for the toggle
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */

@@ -35,6 +35,11 @@ const config: StorybookConfig = {
       '@shohojdhara/atomix': resolve(__dirname, '../src/index.ts'),
     };
 
+    // Disable react-docgen plugin to avoid parsing errors
+    config.plugins = config.plugins?.filter(
+      (plugin) => !plugin?.name?.includes('react-docgen')
+    );
+
     return config;
   },
 };

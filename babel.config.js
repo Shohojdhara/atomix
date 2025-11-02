@@ -51,6 +51,36 @@ export default {
       comments: false,
       minified: true,
     },
+    cjs: {
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            targets: { node: '16' },
+            modules: 'commonjs',
+            useBuiltIns: 'usage',
+            corejs: 3,
+          },
+        ],
+        [
+          '@babel/preset-react',
+          {
+            runtime: 'automatic',
+          },
+        ],
+      ],
+      plugins: [
+        [
+          '@babel/plugin-transform-runtime',
+          {
+            corejs: 3,
+            helpers: true,
+            regenerator: true,
+            useESModules: false,
+          },
+        ],
+      ],
+    },
     test: {
       presets: [
         [

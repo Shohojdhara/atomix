@@ -81,7 +81,7 @@ export type { LineChartProps } from './LineChart';
 export type { MultiAxisChartProps } from './MultiAxisChart';
 export type { PieChartProps } from './PieChart';
 export type { RadarChartProps } from './RadarChart';
-export type { ScatterChartProps, ScatterDataPoint } from './ScatterChart';
+export type { ScatterChartProps } from './ScatterChart';
 
 export type { TreemapChartProps, TreemapDataPoint, TreemapNode } from './TreemapChart';
 export type {
@@ -91,6 +91,7 @@ export type {
   ChartProps,
   ChartToolbarConfig,
   ChartType,
+  ScatterDataPoint,
 } from './types';
 export type { WaterfallChartProps, WaterfallDataPoint } from './WaterfallChart';
 

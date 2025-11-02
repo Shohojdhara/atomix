@@ -36,6 +36,15 @@ export interface ChartDataPoint {
 }
 
 /**
+ * Scatter chart data point interface
+ */
+export interface ScatterDataPoint extends ChartDataPoint {
+  x: number;
+  y: number;
+  size?: number;
+}
+
+/**
  * Chart dataset interface
  */
 export interface ChartDataset {

@@ -47,6 +47,11 @@ export interface StepsProps {
   className?: string;
 
   /**
+   * Inline style for the component
+   */
+  style?: React.CSSProperties;
+
+  /**
    * Glass morphism effect for the steps component
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */

@@ -53,7 +53,7 @@ interface MultiAxisDataset extends ChartDataset {
   xAxisId?: string;
 }
 
-interface MultiAxisChartProps extends Omit<ChartProps, 'type'> {
+export interface MultiAxisChartProps extends Omit<ChartProps, 'type'> {
   /**
    * Multi-axis chart datasets
    */
