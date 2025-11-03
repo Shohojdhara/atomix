@@ -63,9 +63,11 @@ export function useVideoPlayer({
         onPlay?.();
       } catch (error) {
         console.error('Error playing video:', error);
+        onError?.(error as Event);
+        setIsPlaying(false);
       }
     }
-  }, [videoRef, onPlay]);
+  }, [videoRef, onPlay, onError]);
 
   const pause = useCallback(() => {
     if (videoRef.current) {
@@ -165,14 +167,18 @@ export function useVideoPlayer({
         const currentTime = videoRef.current.currentTime;
         const wasPlaying = !videoRef.current.paused;
 
-        videoRef.current.src = newQuality.src;
-        videoRef.current.currentTime = currentTime;
+        // Validate and sanitize the source URL
+        const sanitizedSrc = String(newQuality.src).replace(/[<>"']/g, '');
+        if (sanitizedSrc && (sanitizedSrc.startsWith('http://') || sanitizedSrc.startsWith('https://') || sanitizedSrc.startsWith('blob:') || sanitizedSrc.startsWith('data:'))) {
+          videoRef.current.src = sanitizedSrc;
+          videoRef.current.currentTime = currentTime;
 
-        if (wasPlaying) {
-          videoRef.current.play();
+          if (wasPlaying) {
+            videoRef.current.play();
+          }
+
+          setCurrentQuality(newQuality);
         }
-
-        setCurrentQuality(newQuality);
       }
     },
     [videoRef, quality]
@@ -292,69 +298,60 @@ export function useVideoPlayer({
   }, [onFullscreenChange]);
 
   // Keyboard shortcuts
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (!containerRef.current?.contains(document.activeElement)) return;
+
+    switch (e.code) {
+      case 'Space':
+        e.preventDefault();
+        togglePlay();
+        break;
+      case 'ArrowLeft':
+        e.preventDefault();
+        seek(currentTime - 10);
+        break;
+      case 'ArrowRight':
+        e.preventDefault();
+        seek(currentTime + 10);
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setVolume(Math.min(1, volume + 0.1));
+        break;
+      case 'ArrowDown':
+        e.preventDefault();
+        setVolume(Math.max(0, volume - 0.1));
+        break;
+      case 'KeyM':
+        e.preventDefault();
+        toggleMute();
+        break;
+      case 'KeyF':
+        e.preventDefault();
+        toggleFullscreen();
+        break;
+    }
+  }, [togglePlay, seek, currentTime, setVolume, volume, toggleMute, toggleFullscreen, containerRef]);
+
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!containerRef.current?.contains(document.activeElement)) return;
-
-      switch (e.code) {
-        case 'Space':
-          e.preventDefault();
-          togglePlay();
-          break;
-        case 'ArrowLeft':
-          e.preventDefault();
-          seek(currentTime - 10);
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          seek(currentTime + 10);
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          setVolume(Math.min(1, volume + 0.1));
-          break;
-        case 'ArrowDown':
-          e.preventDefault();
-          setVolume(Math.max(0, volume - 0.1));
-          break;
-        case 'KeyM':
-          e.preventDefault();
-          toggleMute();
-          break;
-        case 'KeyF':
-          e.preventDefault();
-          toggleFullscreen();
-          break;
-      }
-    };
-
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [
-    togglePlay,
-    seek,
-    currentTime,
-    setVolume,
-    volume,
-    toggleMute,
-    toggleFullscreen,
-    containerRef,
-  ]);
+  }, [handleKeyDown]);
 
   // Mouse movement for controls
+  const handleMouseMove = useCallback(() => resetControlsTimeout(), [resetControlsTimeout]);
+  const handleMouseLeave = useCallback(() => {
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+    }
+    if (isPlaying) {
+      setShowControls(false);
+    }
+  }, [isPlaying]);
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return undefined;
-
-    const handleMouseMove = () => resetControlsTimeout();
-    const handleMouseLeave = () => {
-      if (controlsTimeoutRef.current) {
-        clearTimeout(controlsTimeoutRef.current);
-      }
-      if (isPlaying) {
-        setShowControls(false);
-      }
-    };
 
     container.addEventListener('mousemove', handleMouseMove);
     container.addEventListener('mouseleave', handleMouseLeave);
@@ -366,7 +363,7 @@ export function useVideoPlayer({
         clearTimeout(controlsTimeoutRef.current);
       }
     };
-  }, [containerRef, resetControlsTimeout, isPlaying]);
+  }, [containerRef, handleMouseMove, handleMouseLeave]);
 
   return {
     isPlaying,

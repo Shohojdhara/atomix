@@ -23,8 +23,9 @@ export const ColorModeToggle: React.FC<ColorModeToggleProps> = ({ className = ''
 
   // Update the document theme attribute when colorMode changes
   useEffect(() => {
-    document.body.setAttribute('data-atomix-color-mode', colorMode);
-    localStorage.setItem('atomix-color-mode', colorMode);
+    const validColorMode = colorMode === 'dark' ? 'dark' : 'light';
+    document.body.setAttribute('data-atomix-color-mode', validColorMode);
+    localStorage.setItem('atomix-color-mode', validColorMode);
   }, [colorMode]);
 
   // Listen for system color scheme changes

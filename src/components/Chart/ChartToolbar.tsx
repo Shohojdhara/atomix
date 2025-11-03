@@ -368,7 +368,7 @@ const ChartToolbar = memo(
                   onRefresh?.();
                   break;
                 default:
-                  console.warn(`No handler found for action: ${action.id}`);
+                  console.warn(`No handler found for action: ${String(action.id).replace(/[\r\n\t]/g, '')}`);
               }
             }
           }

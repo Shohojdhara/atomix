@@ -262,7 +262,7 @@ export const AdminDashboard: React.FC = () => {
 
   const handleDeleteUser = (userId: number) => {
     // In a real app, this would make an API call
-    console.log('Delete user:', userId);
+    console.log('Delete user:', typeof userId === 'number' ? userId : 'invalid_id');
   };
 
   const handleUserSubmit = (event: React.FormEvent<HTMLFormElement>) => {

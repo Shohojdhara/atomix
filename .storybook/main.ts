@@ -11,6 +11,11 @@ const config: StorybookConfig = {
     name: '@storybook/react-vite',
     options: {},
   },
+  managerHead: (head) => `
+    ${head}
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: https:;">
+  `,
+
   stories: [
     '../src/**/*.mdx',
     '../src/**/*.stories.@(js|jsx|ts|tsx)'
@@ -29,10 +34,24 @@ const config: StorybookConfig = {
   viteFinal: async (config, { configType }) => {
     // Align aliases with vitest.config.ts so imports like @ and @shohojdhara/atomix work
     config.resolve = config.resolve || {};
+    const srcPath = resolve(__dirname, '../src');
+    const indexPath = resolve(__dirname, '../src/index.ts');
+    
+    // Validate paths to prevent traversal
+    if (!srcPath.startsWith(resolve(__dirname, '../')) || !indexPath.startsWith(resolve(__dirname, '../'))) {
+      throw new Error('Invalid path detected');
+    }
+    
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
-      '@': resolve(__dirname, '../src'),
-      '@shohojdhara/atomix': resolve(__dirname, '../src/index.ts'),
+      '@': srcPath,
+      '@shohojdhara/atomix': indexPath,
+    };
+
+    // Add CSP headers
+    config.server = config.server || {};
+    config.server.headers = {
+      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' ws: wss:; frame-src 'self';"
     };
 
     // Disable react-docgen plugin to avoid parsing errors

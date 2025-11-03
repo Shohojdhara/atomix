@@ -111,7 +111,8 @@ export const PhotoViewer: React.FC<PhotoViewerProps> = ({
 
     const link = document.createElement('a');
     link.href = currentImage.src;
-    link.download = currentImage.title || `image-${currentIndex + 1}`;
+    const sanitizedTitle = (currentImage.title || `image-${currentIndex + 1}`).replace(/[^a-zA-Z0-9.-]/g, '_');
+    link.download = sanitizedTitle;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

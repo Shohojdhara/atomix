@@ -27,17 +27,21 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci || npm install
 
       - name: Build package
-        run: npm run build
+        run: |
+          npm run build || { echo "Build failed"; exit 1; }
+          echo "Build completed successfully"
 
       - name: Publish to npm
         run: |
+          set -e
           if [ "${{ github.event.inputs.tag }}" = "next" ]; then
-            npm publish --tag next
+            npm publish --tag next || { echo "Failed to publish with next tag"; exit 1; }
           else
-            npm publish
+            npm publish || { echo "Failed to publish package"; exit 1; }
           fi
+          echo "Package published successfully"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

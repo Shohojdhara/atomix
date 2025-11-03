@@ -178,9 +178,15 @@ export function useChartExport() {
       rows.push(row);
     });
 
-    // Convert to CSV string
+    // Convert to CSV string with sanitization
     const csvContent = rows
-      .map(row => row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(','))
+      .map(row => row.map(cell => {
+        // Sanitize cell content to prevent CSV injection
+        const sanitized = String(cell).replace(/[\r\n\t]/g, ' ').replace(/"/g, '""');
+        // Prevent formula injection by prefixing dangerous characters
+        const dangerous = /^[=+\-@]/;
+        return `"${dangerous.test(sanitized) ? `'${sanitized}` : sanitized}"`;
+      }).join(','))
       .join('\n');
 
     // Download
@@ -297,7 +303,34 @@ export function useChartExport() {
             break;
           case 'email':
             window.open(
-              `mailto:?subject=${encodeURIComponent('Chart Share')}&body=${encodeURIComponent(`${message}\n\n${url}`)}`,
+              `mailto:?subject=${encodeURIComponent(message)}&body=${encodeURIComponent(`${message} ${url}`)}`,
+              '_blank'
+            );
+            break;
+          case 'copy-link':
+            if (navigator.clipboard) {
+              await navigator.clipboard.writeText(url);
+            } else {
+              // Fallback for older browsers
+              const textArea = document.createElement('textarea');
+              textArea.value = url;
+              document.body.appendChild(textArea);
+              textArea.select();
+              document.execCommand('copy');
+              document.body.removeChild(textArea);
+            }
+            break;
+        }
+      }
+    },
+    []
+  );
+
+  return {
+    exportChart,
+    shareChart,
+  };
+}odeURIComponent('Chart Share')}&body=${encodeURIComponent(`${message}\n\n${url}`)}`,
               '_blank'
             );
             break;

@@ -171,7 +171,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         const video = videoRef.current;
         if (video) {
           const tracks = video.textTracks;
-          console.log('Setting subtitle:', subtitleLang, 'Available tracks:', tracks.length);
+          console.log('Setting subtitle:', subtitleLang ? 'enabled' : 'disabled', 'Available tracks:', tracks.length);
 
           // Hide all tracks first
           for (let i = 0; i < tracks.length; i++) {
