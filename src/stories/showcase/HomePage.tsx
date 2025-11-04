@@ -142,7 +142,7 @@ const HomePage: React.FC = () => {
         elasticity={0.01}
         mode="standard"
         onClick={() => {}}
-        style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 5 }}
+        style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 1 }}
       >
         <Container>
           <div className="u-d-flex u-align-items-center u-justify-content-between u-py-4">
