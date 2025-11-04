@@ -1,5 +1,46 @@
 import { ReactNode } from 'react';
-import { AtomixGlass } from '../../components/AtomixGlass/AtomixGlass';
+
+// ============================================================================
+// AtomixGlass Types
+// ============================================================================
+
+/**
+ * Displacement mode for glass effect
+ */
+export type DisplacementMode = 'standard' | 'polar' | 'prominent' | 'shader';
+
+/**
+ * Mouse position coordinates
+ */
+export interface MousePosition {
+  x: number;
+  y: number;
+}
+
+/**
+ * Glass component size dimensions
+ */
+export interface GlassSize {
+  width: number;
+  height: number;
+}
+
+/**
+ * OverLight configuration - can be boolean, 'auto', or object with settings
+ */
+export type OverLightConfig =
+  | boolean
+  | 'auto'
+  | { threshold?: number; opacity?: number; contrast?: number };
+
+/**
+ * OverLight object configuration
+ */
+export interface OverLightObjectConfig {
+  threshold?: number;
+  opacity?: number;
+  contrast?: number;
+}
 
 /**
  * AtomixGlass component props interface
@@ -12,14 +53,14 @@ export interface AtomixGlassProps {
   aberrationIntensity?: number;
   elasticity?: number;
   cornerRadius?: number;
-  globalMousePos?: { x: number; y: number };
-  mouseOffset?: { x: number; y: number };
+  globalMousePosition?: MousePosition;
+  mouseOffset?: MousePosition;
   mouseContainer?: React.RefObject<HTMLElement | null> | null;
   className?: string;
   padding?: string;
   style?: React.CSSProperties;
-  overLight?: boolean;
-  mode?: 'standard' | 'polar' | 'prominent' | 'shader';
+  overLight?: OverLightConfig;
+  mode?: DisplacementMode;
   onClick?: () => void;
 
   /**
@@ -41,11 +82,19 @@ export interface AtomixGlassProps {
   reducedMotion?: boolean;
   highContrast?: boolean;
   disableEffects?: boolean;
+  enableLiquidBlur?: boolean;
+  enableBorderEffect?: boolean;
+  enableOverLightLayers?: boolean;
 
   /**
    * Performance monitoring
    */
   enablePerformanceMonitoring?: boolean;
+
+  /**
+   * Debug mode for cornerRadius extraction
+   */
+  debugCornerRadius?: boolean;
 }
 
 /**
@@ -1467,7 +1516,7 @@ export interface InputProps extends BaseComponentProps {
   /**
    * Glass morphism effect
    */
-  glass?: boolean | Omit<React.ComponentProps<typeof AtomixGlass>, 'children'>;
+  glass?: boolean | Omit<AtomixGlassProps, 'children'>;
 }
 
 /**
@@ -1820,7 +1869,7 @@ export interface TextareaProps extends BaseComponentProps {
   /**
    * Glass morphism effect
    */
-  glass?: boolean | Omit<React.ComponentProps<typeof AtomixGlass>, 'children'>;
+  glass?: boolean | Omit<AtomixGlassProps, 'children'>;
 }
 
 /**
@@ -2835,7 +2884,7 @@ export interface CardProps extends BaseComponentProps {
    * Applies a glass morphism effect to the card.
    * Can be a boolean to enable with default settings, or an object with `AtomixGlassProps` to customize the effect.
    */
-  glass?: boolean | Omit<React.ComponentProps<typeof AtomixGlass>, 'children'>;
+  glass?: boolean | Omit<AtomixGlassProps, 'children'>;
 
   cardAppearance?: boolean;
   /**

@@ -10,8 +10,8 @@
  */
 
 import { Meta, StoryObj } from '@storybook/react';
-import AtomixGlass from './AtomixGlass';
-import Button from '../Button/Button';
+import AtomixGlass from '../AtomixGlass';
+import Button from '../../Button/Button';
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import React from 'react';
 import type { RefObject } from 'react';
