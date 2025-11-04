@@ -8,7 +8,6 @@ import { Card } from '../../components/Card/Card';
 import { BarChart, DonutChart, GaugeChart, LineChart, PieChart } from '../../components/Chart';
 import ColorModeToggle from '../../components/ColorModeToggle/ColorModeToggle';
 import { DataTable } from '../../components/DataTable/DataTable';
-import { AtomixGlass } from '../../components/AtomixGlass/AtomixGlass';
 import { AtomixLogo } from '../../components/AtomixLogo/AtomixLogo';
 import { Container } from '../../layouts/';
 import { Icon } from '../../components/Icon/Icon';
