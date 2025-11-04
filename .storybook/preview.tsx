@@ -1,6 +1,7 @@
 import { addons } from '@storybook/preview-api';
 import type { Preview } from '@storybook/react';
 import { useEffect } from 'react';
+import '../src/styles/index.scss';
 // Base styles for development; in production builds, dist CSS is served via staticDirs
 import { themes, getThemeClasses } from './themes.config';
 
