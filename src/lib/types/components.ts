@@ -31,7 +31,7 @@ export interface GlassSize {
 export type OverLightConfig =
   | boolean
   | 'auto'
-  | { threshold?: number; opacity?: number; contrast?: number };
+  | OverLightObjectConfig;
 
 /**
  * OverLight object configuration
@@ -40,6 +40,8 @@ export interface OverLightObjectConfig {
   threshold?: number;
   opacity?: number;
   contrast?: number;
+  brightness?: number;
+  saturationBoost?: number;
 }
 
 /**

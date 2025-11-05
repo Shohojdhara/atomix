@@ -229,9 +229,6 @@ const BackgroundWrapper = ({
   children,
   backgroundImage,
   backgroundIndex,
-  overlay = false,
-  overlayColor = 'rgba(0,0,0,0)',
-  overlayOpacity = 0,
   height = '90vh',
   width = '90vw',
   borderRadius = '12px',
@@ -244,8 +241,6 @@ const BackgroundWrapper = ({
     backgroundIndex !== undefined ? backgroundImages[backgroundIndex] : backgroundImage;
 
   // Apply default overlay settings if overlay flag is true using nullish coalescing
-  const finalOverlayColor = overlay ? 'rgba(0,0,0,0.5)' : (overlayColor ?? 'rgba(0,0,0,0)');
-  const finalOverlayOpacity = overlay ? 0.5 : (overlayOpacity ?? 0);
 
   return (
     <div
@@ -257,7 +252,7 @@ const BackgroundWrapper = ({
         height: '100%',
         backgroundColor: !bgImage ? '#1a1a2e' : undefined, // Fallback color if no image
         background: bgImage
-          ? `url(${bgImage}) ${finalOverlayOpacity && ',' + finalOverlayColor}`
+          ? `url(${bgImage})`
           : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -270,20 +265,6 @@ const BackgroundWrapper = ({
         ...style,
       }}
     >
-      {/* Overlay for better contrast and visual appeal */}
-      {finalOverlayOpacity > 0 && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: finalOverlayColor,
-            opacity: finalOverlayOpacity,
-          }}
-        />
-      )}
       <div
         style={{
           position: 'relative',
@@ -598,7 +579,6 @@ export const Modes: Story = {
     return (
       <BackgroundWrapper
         backgroundImage="https://plus.unsplash.com/premium_photo-1728613098996-af5b4ee51be8?q=80&w=3269&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        overlay={true}
       >
         <div>
           <div

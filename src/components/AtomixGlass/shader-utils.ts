@@ -27,14 +27,36 @@ const DEPTH_LAYERS = 3;
 const ORGANIC_FLOW_SCALE = 12;
 const RADIAL_DISTORTION_STRENGTH = 0.4;
 
+// Enhanced error handling constants
+const MAX_CANVAS_DIMENSION = 4096;
+const MIN_CANVAS_DIMENSION = 1;
+const DEFAULT_CANVAS_WIDTH = 256;
+const DEFAULT_CANVAS_HEIGHT = 256;
+
 // Utility functions
 const smoothStep = (a: number, b: number, t: number): number => {
+  // Add input validation
+  if (typeof a !== 'number' || typeof b !== 'number' || typeof t !== 'number') {
+    return 0;
+  }
+  
   const clamped = Math.max(0, Math.min(1, (t - a) / (b - a)));
   return clamped * clamped * (3 - 2 * clamped);
 };
 
 const calculateLength = (x: number, y: number): number => {
-  return Math.sqrt(x * x + y * y);
+  // Add input validation and error handling
+  if (typeof x !== 'number' || typeof y !== 'number' || isNaN(x) || isNaN(y)) {
+    return 0;
+  }
+  
+  // Prevent potential overflow
+  const maxX = Math.max(Math.abs(x), Math.abs(y));
+  if (maxX === 0) return 0;
+  
+  const scaledX = x / maxX;
+  const scaledY = y / maxX;
+  return maxX * Math.sqrt(scaledX * scaledX + scaledY * scaledY);
 };
 
 const roundedRectSDF = (
@@ -44,12 +66,24 @@ const roundedRectSDF = (
   height: number,
   radius: number
 ): number => {
+  // Add input validation
+  if (typeof x !== 'number' || typeof y !== 'number' || 
+      typeof width !== 'number' || typeof height !== 'number' || 
+      typeof radius !== 'number') {
+    return 0;
+  }
+  
   const qx = Math.abs(x) - width + radius;
   const qy = Math.abs(y) - height + radius;
   return Math.min(Math.max(qx, qy), 0) + calculateLength(Math.max(qx, 0), Math.max(qy, 0)) - radius;
 };
 
-const createTexture = (x: number, y: number): Vec2 => ({ x, y });
+const createTexture = (x: number, y: number): Vec2 => {
+  // Add input validation and clamping
+  const clampedX = typeof x === 'number' && !isNaN(x) ? Math.max(0, Math.min(1, x)) : 0.5;
+  const clampedY = typeof y === 'number' && !isNaN(y) ? Math.max(0, Math.min(1, y)) : 0.5;
+  return { x: clampedX, y: clampedY };
+};
 
 // Validation helpers
 const validateVec2 = (vec: Vec2): boolean => {
@@ -59,20 +93,46 @@ const validateVec2 = (vec: Vec2): boolean => {
 };
 
 const clampValue = (value: number, min: number, max: number): number => {
+  // Add input validation
+  if (typeof value !== 'number' || typeof min !== 'number' || typeof max !== 'number') {
+    return min;
+  }
+  
+  if (isNaN(value)) return min;
+  if (isNaN(min)) return 0;
+  if (isNaN(max)) return 1;
+  
   return Math.max(min, Math.min(max, value));
 };
 
 // Advanced easing functions for Apple-style smooth animations
 const easeInOutCubic = (t: number): number => {
-  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  // Add input validation
+  if (typeof t !== 'number' || isNaN(t)) {
+    return 0;
+  }
+  
+  const clampedT = Math.max(0, Math.min(1, t));
+  return clampedT < 0.5 ? 4 * clampedT * clampedT * clampedT : 1 - Math.pow(-2 * clampedT + 2, 3) / 2;
 };
 
 const easeOutQuart = (t: number): number => {
-  return 1 - Math.pow(1 - t, 4);
+  // Add input validation
+  if (typeof t !== 'number' || isNaN(t)) {
+    return 0;
+  }
+  
+  const clampedT = Math.max(0, Math.min(1, t));
+  return 1 - Math.pow(1 - clampedT, 4);
 };
 
 // Perlin-like noise for organic distortion
 const noise2D = (x: number, y: number): number => {
+  // Add input validation
+  if (typeof x !== 'number' || typeof y !== 'number' || isNaN(x) || isNaN(y)) {
+    return 0;
+  }
+  
   const X = Math.floor(x) & 255;
   const Y = Math.floor(y) & 255;
 
@@ -84,8 +144,15 @@ const noise2D = (x: number, y: number): number => {
 
   // Simple hash-based pseudo-random
   const hash = (i: number, j: number): number => {
+    // Add input validation
+    if (typeof i !== 'number' || typeof j !== 'number') {
+      return 0;
+    }
+    
     const n = i + j * 57;
-    return (Math.sin(n * 12.9898 + 78.233) * 43758.5453) % 1;
+    // Use a more stable hash function
+    const hashed = Math.sin(n * 12.9898 + 78.233) * 43758.5453;
+    return hashed - Math.floor(hashed);
   };
 
   const a = hash(X, Y);
@@ -101,11 +168,19 @@ const noise2D = (x: number, y: number): number => {
 
 // Multi-octave noise for complex organic patterns
 const fbm = (x: number, y: number, octaves: number = 4): number => {
+  // Add input validation
+  if (typeof x !== 'number' || typeof y !== 'number' || isNaN(x) || isNaN(y)) {
+    return 0;
+  }
+  
+  // Clamp octaves to prevent performance issues
+  const clampedOctaves = Math.max(1, Math.min(8, Math.floor(octaves)));
+  
   let value = 0;
   let amplitude = 0.5;
   let frequency = 1;
 
-  for (let i = 0; i < octaves; i++) {
+  for (let i = 0; i < clampedOctaves; i++) {
     value += amplitude * noise2D(x * frequency, y * frequency);
     frequency *= 2;
     amplitude *= 0.5;
@@ -116,8 +191,14 @@ const fbm = (x: number, y: number, octaves: number = 4): number => {
 
 // Radial distortion for glass-like refraction
 const calculateRadialDistortion = (x: number, y: number, strength: number): Vec2 => {
+  // Add input validation
+  if (typeof x !== 'number' || typeof y !== 'number' || typeof strength !== 'number' || 
+      isNaN(x) || isNaN(y) || isNaN(strength)) {
+    return { x: 0, y: 0 };
+  }
+  
   const distance = calculateLength(x, y);
-  const distortion = Math.pow(distance, 2) * strength;
+  const distortion = Math.pow(Math.min(distance, 10), 2) * strength; // Limit distance to prevent extreme values
 
   return {
     x: x * (1 + distortion),
@@ -127,7 +208,18 @@ const calculateRadialDistortion = (x: number, y: number, strength: number): Vec2
 
 // Chromatic aberration calculation
 const calculateChromaticOffset = (x: number, y: number, intensity: number): Vec2 => {
+  // Add input validation
+  if (typeof x !== 'number' || typeof y !== 'number' || typeof intensity !== 'number' || 
+      isNaN(x) || isNaN(y) || isNaN(intensity)) {
+    return { x: 0, y: 0 };
+  }
+  
   const distance = calculateLength(x, y);
+  // Prevent division by zero and extreme values
+  if (distance === 0) {
+    return { x: 0, y: 0 };
+  }
+  
   const angle = Math.atan2(y, x);
 
   return {
@@ -138,6 +230,12 @@ const calculateChromaticOffset = (x: number, y: number, intensity: number): Vec2
 
 // Advanced caustic pattern generator for glass refraction
 const calculateCaustics = (x: number, y: number, time: number, intensity: number = 1): number => {
+  // Add input validation
+  if (typeof x !== 'number' || typeof y !== 'number' || typeof time !== 'number' || 
+      typeof intensity !== 'number' || isNaN(x) || isNaN(y) || isNaN(time) || isNaN(intensity)) {
+    return 0.5; // Return middle value on error
+  }
+  
   const scale = 8;
   const speed = 2;
 
@@ -164,8 +262,18 @@ const calculateSpectralDispersion = (
   angle: number,
   intensity: number
 ): { r: Vec2; g: Vec2; b: Vec2 } => {
+  // Add input validation
+  if (typeof x !== 'number' || typeof y !== 'number' || typeof angle !== 'number' || 
+      typeof intensity !== 'number' || isNaN(x) || isNaN(y) || isNaN(angle) || isNaN(intensity)) {
+    return {
+      r: { x: 0, y: 0 },
+      g: { x: 0, y: 0 },
+      b: { x: 0, y: 0 }
+    };
+  }
+  
   const distance = calculateLength(x, y);
-  const dispersionStrength = distance * intensity;
+  const dispersionStrength = Math.min(distance * intensity, 1); // Limit strength to prevent extreme values
 
   // Different wavelengths refract at different angles (like a prism)
   const redOffset = dispersionStrength * 0.8;
@@ -196,7 +304,14 @@ const calculateParallaxOffset = (
   mouseX: number = 0,
   mouseY: number = 0
 ): Vec2 => {
-  const parallaxStrength = 0.02 * depth;
+  // Add input validation
+  if (typeof x !== 'number' || typeof y !== 'number' || typeof depth !== 'number' || 
+      typeof mouseX !== 'number' || typeof mouseY !== 'number' || 
+      isNaN(x) || isNaN(y) || isNaN(depth) || isNaN(mouseX) || isNaN(mouseY)) {
+    return { x: 0, y: 0 };
+  }
+  
+  const parallaxStrength = Math.min(0.02 * depth, 0.1); // Limit strength to prevent extreme values
 
   // Calculate offset based on view angle (simulated by mouse position)
   const offsetX = (x - mouseX) * parallaxStrength;
@@ -207,19 +322,34 @@ const calculateParallaxOffset = (
 
 // Volumetric density for depth perception and scattering
 const calculateVolumetricDensity = (x: number, y: number, depth: number, time: number): number => {
+  // Add input validation
+  if (typeof x !== 'number' || typeof y !== 'number' || typeof depth !== 'number' || 
+      typeof time !== 'number' || isNaN(x) || isNaN(y) || isNaN(depth) || isNaN(time)) {
+    return 0.5; // Return middle value on error
+  }
+  
   const noiseValue = fbm(x * 5 + time * 0.5, y * 5 - time * 0.5, 3);
-  const depthFalloff = Math.exp(-depth * 2);
+  const depthFalloff = Math.exp(-Math.max(0, depth) * 2); // Ensure depth is not negative
 
   return noiseValue * depthFalloff * 0.5 + 0.5;
 };
 
 // Advanced turbulence for organic glass distortion
 const calculateTurbulence = (x: number, y: number, time: number, octaves: number = 5): number => {
+  // Add input validation
+  if (typeof x !== 'number' || typeof y !== 'number' || typeof time !== 'number' || 
+      typeof octaves !== 'number' || isNaN(x) || isNaN(y) || isNaN(time) || isNaN(octaves)) {
+    return 0;
+  }
+  
+  // Clamp octaves to prevent performance issues
+  const clampedOctaves = Math.max(1, Math.min(8, Math.floor(octaves)));
+  
   let turbulence = 0;
   let amplitude = 1;
   let frequency = 1;
 
-  for (let i = 0; i < octaves; i++) {
+  for (let i = 0; i < clampedOctaves; i++) {
     const noiseVal = Math.abs(noise2D(x * frequency + time, y * frequency - time));
     turbulence += noiseVal * amplitude;
     frequency *= 2;
@@ -231,6 +361,12 @@ const calculateTurbulence = (x: number, y: number, time: number, octaves: number
 
 // Micro-surface detail for high-quality glass texture
 const calculateMicroSurface = (x: number, y: number, time: number): number => {
+  // Add input validation
+  if (typeof x !== 'number' || typeof y !== 'number' || typeof time !== 'number' || 
+      isNaN(x) || isNaN(y) || isNaN(time)) {
+    return 0.5; // Return middle value on error
+  }
+  
   const highFreqNoise = fbm(x * 40 + time * 0.3, y * 40 - time * 0.3, 6);
   const microDetail = fbm(x * 80, y * 80, 4);
 
@@ -363,7 +499,7 @@ export const fragmentShaders = {
 
     // Advanced radial distortion with depth
     const centerDistance = calculateLength(ix, iy);
-    const refractionStrength = Math.pow(centerDistance, 1.5) * 0.3;
+    const refractionStrength = Math.pow(Math.min(centerDistance, 1), 1.5) * 0.3; // Limit centerDistance
     const refractionAngle = Math.atan2(iy, ix);
 
     // Multi-layer depth effect
@@ -513,7 +649,7 @@ export const fragmentShaders = {
     // === ADVANCED RADIAL REFRACTION ===
     // Enhanced glass-like refraction with depth
     const centerDistance = calculateLength(ix, iy);
-    const refractionStrength = Math.pow(centerDistance, 1.8) * 0.35;
+    const refractionStrength = Math.pow(Math.min(centerDistance, 1), 1.8) * 0.35; // Limit centerDistance
     const dynamicRefraction = refractionStrength * (1 + mouseFalloff * mouseDistance * 0.8);
 
     const refractionX = Math.cos(refractionAngle) * dynamicRefraction;
@@ -536,8 +672,8 @@ export const fragmentShaders = {
 
     // === RIPPLE EFFECTS ===
     // Multi-directional wave propagation
-    const ripple1 = Math.sin(centerDistance * 15 - time * 4) * 0.012;
-    const ripple2 = Math.cos(centerDistance * 20 + time * 3) * 0.008;
+    const ripple1 = Math.sin(Math.min(centerDistance, 10) * 15 - time * 4) * 0.012; // Limit centerDistance
+    const ripple2 = Math.cos(Math.min(centerDistance, 10) * 20 + time * 3) * 0.008; // Limit centerDistance
     const rippleEffect = (ripple1 + ripple2) * mouseFalloff;
     const rippleX = Math.cos(refractionAngle) * rippleEffect;
     const rippleY = Math.sin(refractionAngle) * rippleEffect;
@@ -600,8 +736,13 @@ export class ShaderDisplacementGenerator {
     }
 
     this.canvas = document.createElement('canvas');
-    this.canvas.width = Math.max(1, options.width * this.canvasDPI);
-    this.canvas.height = Math.max(1, options.height * this.canvasDPI);
+    // Enhanced validation for canvas dimensions
+    this.canvas.width = Math.max(MIN_CANVAS_DIMENSION, 
+                               Math.min(MAX_CANVAS_DIMENSION, 
+                                       Math.round(options.width * this.canvasDPI || DEFAULT_CANVAS_WIDTH)));
+    this.canvas.height = Math.max(MIN_CANVAS_DIMENSION, 
+                                 Math.min(MAX_CANVAS_DIMENSION, 
+                                         Math.round(options.height * this.canvasDPI || DEFAULT_CANVAS_HEIGHT)));
     this.canvas.style.display = 'none';
 
     const context = this.canvas.getContext('2d');
@@ -612,91 +753,109 @@ export class ShaderDisplacementGenerator {
   }
 
   private validateOptions(options: ShaderOptions): boolean {
-    return (
-      options &&
-      typeof options.width === 'number' &&
-      options.width > 0 &&
-      typeof options.height === 'number' &&
-      options.height > 0 &&
-      typeof options.fragment === 'function'
-    );
+    try {
+      return (
+        options &&
+        typeof options.width === 'number' &&
+        options.width > 0 &&
+        options.width <= MAX_CANVAS_DIMENSION &&
+        typeof options.height === 'number' &&
+        options.height > 0 &&
+        options.height <= MAX_CANVAS_DIMENSION &&
+        typeof options.fragment === 'function'
+      );
+    } catch (e) {
+      // Graceful error handling
+      return false;
+    }
   }
 
   updateShader(mousePosition?: Vec2): string {
-    const w = this.options.width * this.canvasDPI;
-    const h = this.options.height * this.canvasDPI;
+    try {
+      const w = this.options.width * this.canvasDPI;
+      const h = this.options.height * this.canvasDPI;
 
-    let maxScale = 0;
-    const rawValues: number[] = [];
+      let maxScale = 0;
+      const rawValues: number[] = [];
 
-    // Calculate displacement values with enhanced smoothing
-    for (let y = 0; y < h; y++) {
-      for (let x = 0; x < w; x++) {
-        const uv: Vec2 = { x: x / w, y: y / h };
+      // Calculate displacement values with enhanced smoothing
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const uv: Vec2 = { x: x / w, y: y / h };
 
-        const pos = this.options.fragment(uv, mousePosition);
-        let dx = pos.x * w - x;
-        let dy = pos.y * h - y;
+          const pos = this.options.fragment(uv, mousePosition);
+          let dx = pos.x * w - x;
+          let dy = pos.y * h - y;
 
-        // Apply edge smoothing for Apple-like effect
-        const edgeX = Math.min(x / w, (w - x) / w) * 2;
-        const edgeY = Math.min(y / h, (h - y) / h) * 2;
-        const edgeFactor = Math.min(edgeX, edgeY);
+          // Apply edge smoothing for Apple-like effect
+          const edgeX = Math.min(x / w, (w - x) / w) * 2;
+          const edgeY = Math.min(y / h, (h - y) / h) * 2;
+          const edgeFactor = Math.min(edgeX, edgeY);
 
-        dx *= smoothStep(0, EDGE_SMOOTHING_FACTOR, edgeFactor);
-        dy *= smoothStep(0, EDGE_SMOOTHING_FACTOR, edgeFactor);
+          dx *= smoothStep(0, EDGE_SMOOTHING_FACTOR, edgeFactor);
+          dy *= smoothStep(0, EDGE_SMOOTHING_FACTOR, edgeFactor);
 
-        maxScale = Math.max(maxScale, Math.abs(dx), Math.abs(dy));
-        rawValues.push(dx, dy);
+          maxScale = Math.max(maxScale, Math.abs(dx), Math.abs(dy));
+          rawValues.push(dx, dy);
+        }
       }
-    }
 
-    // Improved normalization to prevent artifacts while maintaining intensity
-    maxScale = Math.max(maxScale, MIN_SCALE);
+      // Improved normalization to prevent artifacts while maintaining intensity
+      maxScale = Math.max(maxScale, MIN_SCALE);
 
-    // Create ImageData and fill it
-    const imageData = this.context.createImageData(w, h);
-    const data = imageData.data;
+      // Create ImageData and fill it
+      const imageData = this.context.createImageData(w, h);
+      const data = imageData.data;
 
-    // Convert to image data with smoother normalization
-    let rawIndex = 0;
-    for (let y = 0; y < h; y++) {
-      for (let x = 0; x < w; x++) {
-        const dx = rawValues[rawIndex++] || 0;
-        const dy = rawValues[rawIndex++] || 0;
+      // Convert to image data with smoother normalization
+      let rawIndex = 0;
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const dx = rawValues[rawIndex++] || 0;
+          const dy = rawValues[rawIndex++] || 0;
 
-        // Smooth the displacement values at edges to prevent hard transitions
-        const edgeDistance = Math.min(x, y, w - x - 1, h - y - 1);
-        const edgeFactor = Math.min(1, edgeDistance / EDGE_FADE_PIXELS);
+          // Smooth the displacement values at edges to prevent hard transitions
+          const edgeDistance = Math.min(x, y, w - x - 1, h - y - 1);
+          const edgeFactor = Math.min(1, edgeDistance / EDGE_FADE_PIXELS);
 
-        const smoothedDx = dx * edgeFactor;
-        const smoothedDy = dy * edgeFactor;
+          const smoothedDx = dx * edgeFactor;
+          const smoothedDy = dy * edgeFactor;
 
-        const r = smoothedDx / maxScale + 0.5;
-        const g = smoothedDy / maxScale + 0.5;
+          const r = smoothedDx / maxScale + 0.5;
+          const g = smoothedDy / maxScale + 0.5;
 
-        const pixelIndex = (y * w + x) * 4;
-        data[pixelIndex] = clampValue(r * 255, NORMALIZATION_CLAMP.min, NORMALIZATION_CLAMP.max); // Red channel (X displacement)
-        data[pixelIndex + 1] = clampValue(
-          g * 255,
-          NORMALIZATION_CLAMP.min,
-          NORMALIZATION_CLAMP.max
-        ); // Green channel (Y displacement)
-        data[pixelIndex + 2] = clampValue(
-          g * 255,
-          NORMALIZATION_CLAMP.min,
-          NORMALIZATION_CLAMP.max
-        ); // Blue channel (Y displacement for SVG filter compatibility)
-        data[pixelIndex + 3] = 255; // Alpha channel
+          const pixelIndex = (y * w + x) * 4;
+          data[pixelIndex] = clampValue(r * 255, NORMALIZATION_CLAMP.min, NORMALIZATION_CLAMP.max); // Red channel (X displacement)
+          data[pixelIndex + 1] = clampValue(
+            g * 255,
+            NORMALIZATION_CLAMP.min,
+            NORMALIZATION_CLAMP.max
+          ); // Green channel (Y displacement)
+          data[pixelIndex + 2] = clampValue(
+            g * 255,
+            NORMALIZATION_CLAMP.min,
+            NORMALIZATION_CLAMP.max
+          ); // Blue channel (Y displacement for SVG filter compatibility)
+          data[pixelIndex + 3] = 255; // Alpha channel
+        }
       }
-    }
 
-    this.context.putImageData(imageData, 0, 0);
-    return this.canvas.toDataURL();
+      this.context.putImageData(imageData, 0, 0);
+      return this.canvas.toDataURL();
+    } catch (error) {
+      // Graceful fallback on error
+      console.warn('ShaderDisplacementGenerator: Error generating shader map, using fallback', error);
+      return ''; // Return empty string as fallback
+    }
   }
 
   destroy(): void {
-    this.canvas.remove();
+    try {
+      this.canvas.remove();
+    } catch (e) {
+      // Silently handle cleanup errors
+      console.warn('ShaderDisplacementGenerator: Error during cleanup', e);
+    }
   }
 
   getScale(): number {

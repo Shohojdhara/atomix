@@ -1582,6 +1582,7 @@ export const ATOMIX_GLASS = {
     FILTER: 'c-atomix-glass__filter',
     CONTENT: 'c-atomix-glass__content',
     ACTIVE: 'active',
+    OVER_LIGHT: 'c-atomix-glass__container--over-light',
     // Mode variants
     STANDARD: 'c-atomix-glass--standard',
     POLAR: 'c-atomix-glass--polar',
@@ -1597,7 +1598,8 @@ export const ATOMIX_GLASS = {
     CORNER_RADIUS: 16, // Default border-radius matching design system
     PADDING: '0 0',
     MODE: 'standard' as const,
-    OVER_LIGHT: false,
+    OVER_LIGHT: 'auto' as const,
+    ENABLE_OVER_LIGHT_LAYERS: true,
   },
   CONSTANTS: {
     ACTIVATION_ZONE: 200,

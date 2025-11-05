@@ -36,7 +36,7 @@ describe('AtomixGlass Component', () => {
       </AtomixGlass>
     );
 
-    expect(container.querySelector('.c-glass-container')).toHaveClass('custom-class');
+    expect(container.querySelector('.c-atomix-glass__container')).toHaveClass('custom-class');
   });
 
   test('renders with showHoverEffects enabled', () => {
@@ -58,8 +58,8 @@ describe('AtomixGlass Component', () => {
       </AtomixGlass>
     );
 
-    expect(container.querySelector('.c-glass-container')).toHaveClass(
-      'c-glass-container--clickable'
+    expect(container.querySelector('.c-atomix-glass__container')).toHaveClass(
+      'c-atomix-glass__container--clickable'
     );
   });
 
@@ -82,9 +82,81 @@ describe('AtomixGlass Component', () => {
       </AtomixGlass>
     );
 
-    expect(container.querySelector('.c-glass-container')).toHaveClass(
-      'c-glass-container--over-light'
+    expect(container.querySelector('.c-atomix-glass__container')).toHaveClass(
+      'c-atomix-glass__container--over-light'
     );
+  });
+
+  test('does not apply overLight class when overLight prop is false', () => {
+    const { container } = render(
+      <AtomixGlass overLight={false}>
+        <div>Content</div>
+      </AtomixGlass>
+    );
+
+    expect(container.querySelector('.c-atomix-glass__container')).not.toHaveClass(
+      'c-atomix-glass__container--over-light'
+    );
+  });
+
+  test('handles overLight="auto" mode', () => {
+    // Mock window.getComputedStyle to simulate a light background
+    const originalGetComputedStyle = window.getComputedStyle;
+    window.getComputedStyle = vi.fn(() => ({
+      backgroundColor: 'rgb(255, 255, 255)',
+      backgroundImage: 'none',
+    })) as any;
+
+    const { container } = render(
+      <AtomixGlass overLight="auto">
+        <div>Content</div>
+      </AtomixGlass>
+    );
+
+    // Note: Auto-detection happens asynchronously, so we can't immediately test
+    // but we can verify the component renders without errors
+    expect(container.querySelector('.c-atomix-glass__container')).toBeInTheDocument();
+
+    // Restore original
+    window.getComputedStyle = originalGetComputedStyle;
+  });
+
+  test('handles overLight object config', () => {
+    const { container } = render(
+      <AtomixGlass
+        overLight={{
+          threshold: 0.8,
+          opacity: 0.5,
+          contrast: 1.5,
+          brightness: 1.1,
+          saturationBoost: 1.8,
+        }}
+      >
+        <div>Content</div>
+      </AtomixGlass>
+    );
+
+    // Verify component renders with object config
+    expect(container.querySelector('.c-atomix-glass__container')).toBeInTheDocument();
+  });
+
+  test('handles invalid overLight object config values gracefully', () => {
+    const { container } = render(
+      <AtomixGlass
+        overLight={{
+          threshold: NaN,
+          opacity: -1,
+          contrast: Infinity,
+          brightness: -100,
+          saturationBoost: 'invalid' as any,
+        }}
+      >
+        <div>Content</div>
+      </AtomixGlass>
+    );
+
+    // Should render without errors, using default/validated values
+    expect(container.querySelector('.c-atomix-glass__container')).toBeInTheDocument();
   });
 
   test('applies custom style', () => {
@@ -95,7 +167,7 @@ describe('AtomixGlass Component', () => {
       </AtomixGlass>
     );
 
-    const glassContainer = container.querySelector('.c-glass-container');
+    const glassContainer = container.querySelector('.c-atomix-glass__container');
     expect(glassContainer).toHaveStyle('background-color: red');
   });
 

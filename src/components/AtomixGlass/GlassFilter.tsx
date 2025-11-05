@@ -128,11 +128,11 @@ export const GlassFilter: React.FC<GlassFilterProps> = ({
         <feBlend in="GREEN_CHANNEL" in2="BLUE_CHANNEL" mode="screen" result="GB_COMBINED" />
         <feBlend in="RED_CHANNEL" in2="GB_COMBINED" mode="screen" result="RGB_COMBINED" />
 
-        <feGaussianBlur
+        {/* <feGaussianBlur
           in="RGB_COMBINED"
-          stdDeviation={Math.max(0.1, 0.5 - aberrationIntensity * 0.1)}
+          stdDeviation='0'
           result="ABERRATED_BLURRED"
-        />
+        /> */}
 
         <feComposite
           in="ABERRATED_BLURRED"

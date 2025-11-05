@@ -189,21 +189,7 @@ export const BackgroundWrapper = ({
         ...style,
       }}
     >
-      {/* Overlay for better contrast and visual appeal */}
-      {finalOverlayOpacity > 0 && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: finalOverlayColor,
-            opacity: finalOverlayOpacity,
-          }}
-        />
-      )}
-
+     
       {children}
     </div>
   );

@@ -3043,17 +3043,6 @@ export const SocialMediaPost: Story = {
           style={{ width: '450px' }}
           elasticity={0}
         >
-          <span
-            style={{
-              background: 'var(--atomix-primary-gradient)',
-              position: 'absolute',
-              inset: 0,
-              zIndex: -6,
-              opacity: 0,
-              borderRadius: 24,
-            }}
-          ></span>
-
           {/* Post Header */}
           <div
             style={{
@@ -3621,16 +3610,6 @@ export const SearchResults: Story = {
               position: 'relative',
             }}
           >
-            <span
-              style={{
-                position: 'absolute',
-                inset: 1,
-                background: 'var(--atomix-warning-gradient)',
-                opacity: 0.2,
-                zIndex: -1,
-                borderRadius: '30px',
-              }}
-            ></span>
             {/* Search Header */}
             <h2 style={{ margin: '0 0 20px 0', fontSize: '24px', fontWeight: 700 }}>Search</h2>
 
@@ -3836,16 +3815,6 @@ export const PaymentForm: Story = {
             className="u-p-3 u-position-relative u-rounded-5"
             style={{ minWidth: '300px', maxWidth: '400px' }}
           >
-            <span
-              style={{
-                position: 'absolute',
-                inset: 1,
-                background: 'rgba(var(--atomix-primary-rgb),0.5)',
-                opacity: 0.5,
-                zIndex: -1,
-                borderRadius: '28px',
-              }}
-            ></span>
             <h2 className="u-m-0 u-mb-1 u-fs-4 u-fw-bold">Payment Details</h2>
             <p className="u-m-0 u-mb-2 u-fs-7 u-opacity-70">Complete your purchase securely</p>
 

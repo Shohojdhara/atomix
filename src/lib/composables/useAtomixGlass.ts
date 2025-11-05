@@ -82,7 +82,7 @@ export function useAtomixGlass({
   globalMousePosition: externalGlobalMousePosition,
   mouseOffset: externalMouseOffset,
   mouseContainer,
-  overLight = false,
+  overLight = ATOMIX_GLASS.DEFAULTS.OVER_LIGHT,
   reducedMotion = false,
   highContrast = false,
   disableEffects = false,
@@ -204,45 +204,137 @@ export function useAtomixGlass({
     return () => clearTimeout(timeoutId);
   }, [children, debugCornerRadius, contentRef]);
 
-  // Media query handlers
+  // Media query handlers and background detection
   useEffect(() => {
-    if (overLight === 'auto' && glassRef.current) {
-      try {
-        const element = glassRef.current;
-        let totalLuminance = 0;
-        let validSamples = 0;
+    // Only run auto-detection for 'auto' mode or object config (which uses auto-detection)
+    const shouldDetect = (overLight === 'auto' || (typeof overLight === 'object' && overLight !== null));
+    
+    if (shouldDetect && glassRef.current) {
+      const timeoutId = setTimeout(() => {
+        try {
+          const element = glassRef.current;
+          if (!element) {
+            setDetectedOverLight(false);
+            return;
+          }
+          
+          // Validate window context
+          if (typeof window === 'undefined' || typeof window.getComputedStyle !== 'function') {
+            setDetectedOverLight(false);
+            return;
+          }
+          
+          let totalLuminance = 0;
+          let validSamples = 0;
+          let hasValidBackground = false;
 
-        let currentElement = element.parentElement;
-        while (currentElement && validSamples < 3) {
-          const computedStyle = window.getComputedStyle(currentElement);
-          const bgColor = computedStyle.backgroundColor;
+          let currentElement = element.parentElement;
+          let depth = 0;
+          const maxDepth = 20;
+          const maxSamples = 10;
+          
+          // Limit traversal depth to prevent infinite loops and performance issues
+          while (currentElement && validSamples < maxSamples && depth < maxDepth) {
+            try {
+              const computedStyle = window.getComputedStyle(currentElement);
+              if (!computedStyle) {
+                currentElement = currentElement.parentElement;
+                depth++;
+                continue;
+              }
+              
+              const bgColor = computedStyle.backgroundColor;
+              const bgImage = computedStyle.backgroundImage;
 
-          if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
-            const rgb = bgColor.match(/\d+/g);
-            if (rgb && rgb.length >= 3) {
-              const r = Number(rgb[0]) || 0;
-              const g = Number(rgb[1]) || 0;
-              const b = Number(rgb[2]) || 0;
-              const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-              totalLuminance += luminance;
-              validSamples++;
+              // Check for solid color backgrounds
+              if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent' && bgColor !== 'initial' && bgColor !== 'none') {
+                const rgb = bgColor.match(/\d+/g);
+                if (rgb && rgb.length >= 3) {
+                  const r = Number(rgb[0]);
+                  const g = Number(rgb[1]);
+                  const b = Number(rgb[2]);
+                  
+                  // Validate RGB values are valid numbers
+                  if (!isNaN(r) && !isNaN(g) && !isNaN(b) && 
+                      isFinite(r) && isFinite(g) && isFinite(b) &&
+                      r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
+                    // Only consider if it's not pure black or very dark
+                    if (r > 10 || g > 10 || b > 10) {
+                      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                      if (!isNaN(luminance) && isFinite(luminance)) {
+                        totalLuminance += luminance;
+                        validSamples++;
+                        hasValidBackground = true;
+                      }
+                    }
+                  }
+                }
+              }
+              
+              // Check for image backgrounds
+              if (bgImage && bgImage !== 'none' && bgImage !== 'initial') {
+                // For image backgrounds, assume medium luminance
+                totalLuminance += 0.5;
+                validSamples++;
+                hasValidBackground = true;
+              }
+            } catch (styleError) {
+              // Silently continue if getting computed style fails for this element
+              if (process.env.NODE_ENV === 'development') {
+                console.debug('AtomixGlass: Error getting computed style for element:', styleError);
+              }
+            }
+            
+            // Move to parent element for next iteration
+            if (currentElement) {
+              currentElement = currentElement.parentElement;
+              depth++;
+            } else {
+              break; // Exit loop if currentElement becomes null
             }
           }
-          currentElement = currentElement.parentElement;
-        }
 
-        if (validSamples > 0) {
-          const avgLuminance = totalLuminance / validSamples;
-          let threshold = 0.7;
-          if (typeof overLight === 'object' && overLight !== null && overLight !== 'auto') {
-            const objConfig = overLight as OverLightObjectConfig;
-            threshold = objConfig.threshold || 0.7;
+          // More conservative detection with better error handling
+          if (hasValidBackground && validSamples > 0) {
+            const avgLuminance = totalLuminance / validSamples;
+            if (!isNaN(avgLuminance) && isFinite(avgLuminance)) {
+              let threshold = 0.7; // Conservative threshold for overlight
+              
+              // If overLight is an object, use its threshold property with validation
+              if (typeof overLight === 'object' && overLight !== null) {
+                const objConfig = overLight as OverLightObjectConfig;
+                if (objConfig.threshold !== undefined) {
+                  const configThreshold = typeof objConfig.threshold === 'number' && 
+                                         !isNaN(objConfig.threshold) && 
+                                         isFinite(objConfig.threshold)
+                                         ? objConfig.threshold 
+                                         : 0.7;
+                  threshold = Math.min(0.9, Math.max(0.1, configThreshold));
+                }
+              }
+              
+              setDetectedOverLight(avgLuminance > threshold);
+            } else {
+              // Invalid luminance calculation, default to false
+              setDetectedOverLight(false);
+            }
+          } else {
+            // Default to false if no valid background found
+            setDetectedOverLight(false);
           }
-          setDetectedOverLight(avgLuminance > threshold);
+        } catch (error) {
+          // Enhanced error logging with context
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('AtomixGlass: Error detecting background brightness:', error);
+          }
+          setDetectedOverLight(false);
         }
-      } catch (error) {
-        console.warn('AtomixGlass: Error detecting background brightness:', error);
-      }
+      }, 150);
+      
+      return () => clearTimeout(timeoutId);
+    } else if (typeof overLight === 'boolean') {
+      // For boolean values, disable auto-detection
+      setDetectedOverLight(false);
     }
 
     if (typeof window.matchMedia !== 'function') {
@@ -587,41 +679,86 @@ export function useAtomixGlass({
   }, [effectiveCornerRadius, glassRef]);
 
   // OverLight config
+  /**
+   * Get effective overLight value based on configuration
+   * - boolean: returns the boolean value directly
+   * - 'auto': returns detectedOverLight (auto-detected from background)
+   * - object: returns detectedOverLight (auto-detected, but config object provides customization)
+   */
   const getEffectiveOverLight = useCallback(() => {
-    if (typeof overLight === 'boolean') return overLight;
-    if (overLight === 'auto') return detectedOverLight;
-    return detectedOverLight;
+    if (typeof overLight === 'boolean') {
+      return overLight;
+    }
+    if (overLight === 'auto') {
+      return detectedOverLight;
+    }
+    if (typeof overLight === 'object' && overLight !== null) {
+      return detectedOverLight;
+    }
+    // Default to false for safety when overLight is undefined or invalid
+    return false;
   }, [overLight, detectedOverLight]);
+
+  /**
+   * Validate and clamp a numeric config value
+   * @param value - The value to validate
+   * @param min - Minimum allowed value
+   * @param max - Maximum allowed value
+   * @param defaultValue - Default value if validation fails
+   * @returns Validated and clamped value
+   */
+  const validateConfigValue = useCallback(
+    (value: unknown, min: number, max: number, defaultValue: number): number => {
+      if (typeof value !== 'number' || isNaN(value) || !isFinite(value)) {
+        return defaultValue;
+      }
+      return Math.min(max, Math.max(min, value));
+    },
+    []
+  );
 
   const overLightConfig = useMemo(() => {
     const isOverLight = getEffectiveOverLight();
     const mouseInfluence = calculateMouseInfluence(mouseOffset);
-    const hoverIntensity = isHovered ? 1.3 : 1;
-    const activeIntensity = isActive ? 1.5 : 1;
+    const hoverIntensity = isHovered ? 1.4 : 1;
+    const activeIntensity = isActive ? 1.6 : 1;
 
+    // More robust overlight configuration with better defaults and clamping
+    const baseOpacity = isOverLight ? Math.min(0.6, Math.max(0.2, 0.5 * hoverIntensity * activeIntensity)) : 0;
+    
     const baseConfig = {
       isOverLight,
       threshold: 0.7,
-      opacity: 0.4 * hoverIntensity * activeIntensity,
-      contrast: 1.3 + mouseInfluence * 0.2,
-      brightness: 0.9 + mouseInfluence * 0.1,
-      saturationBoost: 1.2 + mouseInfluence * 0.3,
-      shadowIntensity: 0.8 + mouseInfluence * 0.4,
-      borderOpacity: 0.6 + mouseInfluence * 0.2,
+      opacity: baseOpacity,
+      contrast: Math.min(1.8, Math.max(1.0, 1.4 + mouseInfluence * 0.3)),
+      brightness: Math.min(1.2, Math.max(0.7, 0.85 + mouseInfluence * 0.15)),
+      saturationBoost: Math.min(2.0, Math.max(1.0, 1.3 + mouseInfluence * 0.4)),
+      shadowIntensity: Math.min(1.5, Math.max(0.5, 0.9 + mouseInfluence * 0.5)),
+      borderOpacity: Math.min(1.0, Math.max(0.3, 0.7 + mouseInfluence * 0.3)),
     };
 
     if (typeof overLight === 'object' && overLight !== null) {
       const objConfig = overLight as OverLightObjectConfig;
+      
+      // Validate and apply object config values with proper clamping
+      const validatedThreshold = validateConfigValue(objConfig.threshold, 0.1, 1.0, baseConfig.threshold);
+      const validatedOpacity = validateConfigValue(objConfig.opacity, 0.1, 1.0, baseConfig.opacity);
+      const validatedContrast = validateConfigValue(objConfig.contrast, 0.5, 2.5, baseConfig.contrast);
+      const validatedBrightness = validateConfigValue(objConfig.brightness, 0.5, 2.0, baseConfig.brightness);
+      const validatedSaturationBoost = validateConfigValue(objConfig.saturationBoost, 0.5, 3.0, baseConfig.saturationBoost);
+      
       return {
         ...baseConfig,
-        threshold: objConfig.threshold || baseConfig.threshold,
-        opacity: (objConfig.opacity || 0.4) * hoverIntensity * activeIntensity,
-        contrast: (objConfig.contrast || 1.3) + mouseInfluence * 0.2,
+        threshold: validatedThreshold,
+        opacity: validatedOpacity * hoverIntensity * activeIntensity,
+        contrast: validatedContrast + mouseInfluence * 0.3,
+        brightness: validatedBrightness + mouseInfluence * 0.15,
+        saturationBoost: validatedSaturationBoost + mouseInfluence * 0.4,
       };
     }
 
     return baseConfig;
-  }, [overLight, getEffectiveOverLight, mouseOffset, isHovered, isActive]);
+  }, [overLight, getEffectiveOverLight, mouseOffset, isHovered, isActive, validateConfigValue]);
 
   // Event handlers
   const handleMouseEnter = useCallback(() => setIsHovered(true), []);

@@ -38,26 +38,42 @@ export const calculateElementCenter = (rect: DOMRect | null): MousePosition => {
 };
 
 /**
- * Calculate mouse influence on glass effect
+ * Calculate mouse influence on glass effect with enhanced overlight support
  */
 export const calculateMouseInfluence = (mouseOffset: MousePosition): number => {
   if (!mouseOffset || typeof mouseOffset.x !== 'number' || typeof mouseOffset.y !== 'number') {
     return 0;
   }
-  return (
-    Math.sqrt(mouseOffset.x * mouseOffset.x + mouseOffset.y * mouseOffset.y) /
-    CONSTANTS.MOUSE_INFLUENCE_DIVISOR
-  );
+  // More responsive calculation for overlight effects
+  const influence = Math.sqrt(mouseOffset.x * mouseOffset.x + mouseOffset.y * mouseOffset.y) / CONSTANTS.MOUSE_INFLUENCE_DIVISOR;
+  return Math.min(1.5, influence); // Cap influence for better control
 };
 
 /**
- * Clamp blur value to minimum
+ * Calculate overlight intensity based on background and mouse position
+ */
+export const calculateOverLightIntensity = (
+  mouseOffset: MousePosition,
+  baseIntensity: number
+): number => {
+  if (!mouseOffset || typeof mouseOffset.x !== 'number' || typeof mouseOffset.y !== 'number') {
+    return baseIntensity;
+  }
+  
+  // Calculate additional intensity based on mouse position
+  const mouseInfluence = calculateMouseInfluence(mouseOffset);
+  return Math.min(1.0, baseIntensity * (1 + mouseInfluence * 0.3));
+};
+
+/**
+ * Clamp blur value to minimum and maximum with overlight consideration
  */
 export const clampBlur = (value: number): number => {
   if (typeof value !== 'number' || isNaN(value)) {
     return CONSTANTS.MIN_BLUR;
   }
-  return Math.max(CONSTANTS.MIN_BLUR, value);
+  // Allow slightly higher blur for overlight effects
+  return Math.max(CONSTANTS.MIN_BLUR, Math.min(50, value));
 };
 
 /**
