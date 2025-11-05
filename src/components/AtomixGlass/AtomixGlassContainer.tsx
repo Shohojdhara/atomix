@@ -323,7 +323,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         <div
           className={ATOMIX_GLASS.INNER_CLASS}
           style={{
-            position: 'relative',
             padding: `var(--${scopedId}-padding)`,
             borderRadius: `var(--${scopedId}-radius)`,
           }}
@@ -345,8 +344,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
               style={{
                 backdropFilter: `var(--${scopedId}-backdrop)`,
                 borderRadius: `var(--${scopedId}-radius)`,
-                position: 'absolute',
-                inset: '0',
               }}
             />
 
@@ -354,13 +351,10 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             <div
               className={ATOMIX_GLASS.FILTER_SHADOW_CLASS}
               style={{
-                position: 'absolute',
-                inset: '1.5px',
-                borderRadius: `var(--${scopedId}-radius)`,
-                pointerEvents: 'none',
                 boxShadow: `var(--${scopedId}-shadow)`,
                 opacity: `var(--${scopedId}-shadow-opacity)`,
                 background: `var(--${scopedId}-bg)`,
+                borderRadius: `var(--${scopedId}-radius)`,
               }}
             />
           </div>
@@ -369,7 +363,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             ref={contentRef}
             className={ATOMIX_GLASS.CONTENT_CLASS}
             style={{
-              position: 'relative',
               ...(elasticity !== 0 && elasticity !== undefined && {
                 zIndex: 4,
                 textShadow: `var(--${scopedId}-text-shadow)`,

@@ -107,30 +107,33 @@ export function AtomixGlass({
     [effectiveReducedMotion]
   );
 
-  // Calculate base style with transforms
+  // Calculate base style with transforms (only dynamic values)
   const baseStyle = useMemo(
     () => ({
       ...style,
       ...(elasticity !== 0 && {
         transform: transformStyle,
-        transition: effectiveReducedMotion ? 'none' : `all ${transitionDuration}`,
         willChange: effectiveDisableEffects ? 'auto' : 'transform',
-      }),
-      ...(effectiveHighContrast && {
-        border: 'var(--atomix-spacing-0-5, 2px) solid currentColor',
-        outline: 'var(--atomix-spacing-0-5, 2px) solid transparent',
-        outlineOffset: 'var(--atomix-spacing-0-5, 2px)',
       }),
     }),
     [
       style,
       transformStyle,
-      effectiveReducedMotion,
       effectiveDisableEffects,
-      effectiveHighContrast,
       elasticity,
-      transitionDuration,
     ]
+  );
+
+  // Build className with state modifiers
+  const componentClassName = useMemo(
+    () => [
+      ATOMIX_GLASS.BASE_CLASS,
+      effectiveReducedMotion && `${ATOMIX_GLASS.BASE_CLASS}--reduced-motion`,
+      effectiveHighContrast && `${ATOMIX_GLASS.BASE_CLASS}--high-contrast`,
+      effectiveDisableEffects && `${ATOMIX_GLASS.BASE_CLASS}--disabled-effects`,
+      className,
+    ].filter(Boolean).join(' '),
+    [effectiveReducedMotion, effectiveHighContrast, effectiveDisableEffects, className]
   );
 
   // Calculate position and size styles
@@ -226,7 +229,7 @@ export function AtomixGlass({
     };
   }, [isHovered, isActive, isOverLight, overLightConfig]);
 
-  // Generate CSS variables for layers (optimized with pre-calculated values)
+  // Generate CSS variables for layers (only dynamic values)
   const glassVars = useMemo(() => {
     const {
       isOverLight,
@@ -255,6 +258,11 @@ export function AtomixGlass({
     const blackColor = '0, 0, 0';
 
     return {
+      // Scoped CSS custom properties for dynamic values
+      [`--ag-scoped-radius`]: `var(--${scopedId}-r)`,
+      [`--ag-scoped-transform`]: `var(--${scopedId}-t)`,
+      [`--ag-scoped-transition`]: effectiveReducedMotion ? 'none' : `var(--${scopedId}-tr)`,
+      // Dynamic border positioning (for border layers)
       [`--${scopedId}-pos`]: positionStyles.position,
       [`--${scopedId}-top`]: positionStyles.top !== 'fixed' ? `${positionStyles.top}px` : '0',
       [`--${scopedId}-left`]: positionStyles.left !== 'fixed' ? `${positionStyles.left}px` : '0',
@@ -263,9 +271,10 @@ export function AtomixGlass({
       [`--${scopedId}-h`]:
         baseStyle.position !== 'fixed' ? adjustedSize.height : `${adjustedSize.height}px`,
       [`--${scopedId}-r`]: `${effectiveCornerRadius}px`,
-      [`--${scopedId}-t`]: baseStyle.transform,
-      [`--${scopedId}-tr`]: effectiveReducedMotion ? 'none' : baseStyle.transition,
+      [`--${scopedId}-t`]: baseStyle.transform || 'none',
+      [`--${scopedId}-tr`]: effectiveReducedMotion ? 'none' : transitionDuration,
       [`--${scopedId}-blend`]: isOverLight ? 'multiply' : 'overlay',
+      // Dynamic gradients and backgrounds
       [`--${scopedId}-b1`]: `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${borderOpacity1}) ${borderStop1}%, rgba(${whiteColor}, ${borderOpacity2}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
       [`--${scopedId}-b2`]: `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${borderOpacity3}) ${borderStop1}%, rgba(${whiteColor}, ${borderOpacity4}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
       [`--${scopedId}-h1-o`]: opacityValues.hover1,
@@ -297,14 +306,15 @@ export function AtomixGlass({
     effectiveCornerRadius,
     baseStyle,
     effectiveReducedMotion,
+    transitionDuration,
     gradientCalculations,
     opacityValues,
   ]);
 
   return (
     <div
-      className={`${ATOMIX_GLASS.BASE_CLASS} ${className}`}
-      style={{ ...positionStyles, position: 'relative', ...glassVars }}
+      className={componentClassName}
+      style={glassVars}
       role={role || (onClick ? 'button' : undefined)}
       tabIndex={onClick ? (tabIndex ?? 0) : tabIndex}
       aria-label={ariaLabel}
@@ -317,11 +327,6 @@ export function AtomixGlass({
           <div
             className={ATOMIX_GLASS.HOVER_1_CLASS}
             style={{
-              position: 'absolute',
-              inset: 0,
-              borderRadius: `var(--${scopedId}-r)`,
-              transform: `var(--${scopedId}-t)`,
-              transition: `var(--${scopedId}-tr)`,
               opacity: `var(--${scopedId}-h1-o)`,
               background: `var(--${scopedId}-h1)`,
             }}
@@ -329,11 +334,6 @@ export function AtomixGlass({
           <div
             className={ATOMIX_GLASS.HOVER_2_CLASS}
             style={{
-              position: 'absolute',
-              inset: 0,
-              borderRadius: `var(--${scopedId}-r)`,
-              transform: `var(--${scopedId}-t)`,
-              transition: `var(--${scopedId}-tr)`,
               opacity: `var(--${scopedId}-h2-o)`,
               background: `var(--${scopedId}-h2)`,
             }}
@@ -341,11 +341,6 @@ export function AtomixGlass({
           <div
             className={ATOMIX_GLASS.HOVER_3_CLASS}
             style={{
-              position: 'absolute',
-              inset: 0,
-              borderRadius: `var(--${scopedId}-r)`,
-              transform: `var(--${scopedId}-t)`,
-              transition: `var(--${scopedId}-tr)`,
               opacity: `var(--${scopedId}-h3-o)`,
               background: `var(--${scopedId}-h3)`,
             }}
@@ -357,42 +352,22 @@ export function AtomixGlass({
           <div
             className={ATOMIX_GLASS.BASE_LAYER_CLASS}
             style={{
-              position: 'absolute',
-              inset: 0,
-              borderRadius: `var(--${scopedId}-r)`,
-              transform: `var(--${scopedId}-t)`,
-              transition: `var(--${scopedId}-tr)`,
               opacity: opacityValues.base,
               background: `var(--${scopedId}-base)`,
-              mixBlendMode: 'soft-light',
-              pointerEvents: 'none',
             }}
           />
           <div
             className={ATOMIX_GLASS.OVERLAY_LAYER_CLASS}
             style={{
-              position: 'absolute',
-              inset: 0,
-              borderRadius: `var(--${scopedId}-r)`,
-              transform: `var(--${scopedId}-t)`,
-              transition: `var(--${scopedId}-tr)`,
               opacity: opacityValues.over,
               background: `var(--${scopedId}-over)`,
-              mixBlendMode: 'overlay',
-              pointerEvents: 'none',
             }}
           />
           <div
             className={`${ATOMIX_GLASS.OVERLAY_LAYER_CLASS}-highlight`}
             style={{
-              position: 'absolute',
-              inset: '2px',
-              borderRadius: `var(--${scopedId}-r)`,
-              transform: `var(--${scopedId}-t)`,
-              transition: `var(--${scopedId}-tr)`,
               opacity: opacityValues.over * 0.7,
               background: `radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.4) 0%, transparent 60%)`,
-              mixBlendMode: 'screen',
             }}
           />
         </>
@@ -460,9 +435,6 @@ export function AtomixGlass({
               left: `var(--${scopedId}-left)`,
               width: `var(--${scopedId}-w)`,
               height: `var(--${scopedId}-h)`,
-              borderRadius: `var(--${scopedId}-r)`,
-              transform: `var(--${scopedId}-t)`,
-              transition: `var(--${scopedId}-tr)`,
               background: `var(--${scopedId}-b1)`,
             }}
           />
@@ -474,9 +446,6 @@ export function AtomixGlass({
               left: `var(--${scopedId}-left)`,
               width: `var(--${scopedId}-w)`,
               height: `var(--${scopedId}-h)`,
-              borderRadius: `var(--${scopedId}-r)`,
-              transform: `var(--${scopedId}-t)`,
-              transition: `var(--${scopedId}-tr)`,
               mixBlendMode: `var(--${scopedId}-blend)` as any,
               background: `var(--${scopedId}-b2)`,
             }}
