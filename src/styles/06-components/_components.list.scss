@@ -17,6 +17,7 @@
   --#{config.$prefix}list-item-dash-height: #{rem.rem(list.$list-item-dash-height)};
 
   padding-left: var(--#{config.$prefix}list-padding-left);
+  list-style: none;
 
   &__item {
     color: var(--#{config.$prefix}list-color);
