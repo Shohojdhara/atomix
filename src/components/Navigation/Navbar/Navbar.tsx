@@ -160,6 +160,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
             left: 0,
             right: 0,
             top: 0,
+            zIndex: 1000,
           }}
         >
           <nav
