@@ -1,22 +1,8 @@
-import React, {
-  forwardRef,
-  useId,
-  useRef,
-  useState,
-  useEffect,
-  useMemo,
-} from 'react';
+import React, { forwardRef, useId, useRef, useState, useEffect, useMemo } from 'react';
 import type { CSSProperties } from 'react';
-import type {
-  DisplacementMode,
-  MousePosition,
-  GlassSize,
-} from '../../lib/types/components';
+import type { DisplacementMode, MousePosition, GlassSize } from '../../lib/types/components';
 import type { FragmentShaderType } from './shader-utils';
-import {
-  ShaderDisplacementGenerator,
-  fragmentShaders,
-} from './shader-utils';
+import { ShaderDisplacementGenerator, fragmentShaders } from './shader-utils';
 import { GlassFilter } from './GlassFilter';
 import {
   calculateElementCenter,
@@ -122,7 +108,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
           setShaderMapUrl(''); // Fallback to empty string
         }
       }
-      
+
       // Cleanup function with error handling
       return () => {
         try {
@@ -159,14 +145,14 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       if (!ref || typeof ref === 'function') return undefined;
       const element = (ref as React.RefObject<HTMLDivElement>).current;
       if (!element) return undefined;
-      
+
       try {
         setRectCache(element.getBoundingClientRect());
       } catch (error) {
         console.warn('AtomixGlassContainer: Error getting element bounds', error);
         setRectCache(null);
       }
-      
+
       return undefined;
     }, [ref, glassSize]);
 
@@ -179,12 +165,15 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       };
 
       // Enhanced validation for liquid blur
-      if (!enableLiquidBlur || !rectCache || 
-          !globalMousePosition || 
-          typeof globalMousePosition.x !== 'number' || 
-          typeof globalMousePosition.y !== 'number' ||
-          isNaN(globalMousePosition.x) || 
-          isNaN(globalMousePosition.y)) {
+      if (
+        !enableLiquidBlur ||
+        !rectCache ||
+        !globalMousePosition ||
+        typeof globalMousePosition.x !== 'number' ||
+        typeof globalMousePosition.y !== 'number' ||
+        isNaN(globalMousePosition.x) ||
+        isNaN(globalMousePosition.y)
+      ) {
         return defaultBlur;
       }
 
@@ -229,17 +218,31 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       isHovered,
       isActive,
       rectCache,
+      style,
+      glassSize,
     ]);
 
     const backdropStyle = useMemo(() => {
       try {
         const dynamicSaturation = saturation + (liquidBlur.baseBlur || 0) * 20;
-        
+
         // Validate blur values before using them
-        const validatedBaseBlur = typeof liquidBlur.baseBlur === 'number' && !isNaN(liquidBlur.baseBlur) ? liquidBlur.baseBlur : 0;
-        const validatedEdgeBlur = typeof liquidBlur.edgeBlur === 'number' && !isNaN(liquidBlur.edgeBlur) ? liquidBlur.edgeBlur : 0;
-        const validatedCenterBlur = typeof liquidBlur.centerBlur === 'number' && !isNaN(liquidBlur.centerBlur) ? liquidBlur.centerBlur : 0;
-        const validatedFlowBlur = typeof liquidBlur.flowBlur === 'number' && !isNaN(liquidBlur.flowBlur) ? liquidBlur.flowBlur : 0;
+        const validatedBaseBlur =
+          typeof liquidBlur.baseBlur === 'number' && !isNaN(liquidBlur.baseBlur)
+            ? liquidBlur.baseBlur
+            : 0;
+        const validatedEdgeBlur =
+          typeof liquidBlur.edgeBlur === 'number' && !isNaN(liquidBlur.edgeBlur)
+            ? liquidBlur.edgeBlur
+            : 0;
+        const validatedCenterBlur =
+          typeof liquidBlur.centerBlur === 'number' && !isNaN(liquidBlur.centerBlur)
+            ? liquidBlur.centerBlur
+            : 0;
+        const validatedFlowBlur =
+          typeof liquidBlur.flowBlur === 'number' && !isNaN(liquidBlur.flowBlur)
+            ? liquidBlur.flowBlur
+            : 0;
 
         const blurLayers = [
           `blur(${validatedBaseBlur}px)`,
@@ -262,15 +265,21 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     const containerVars = useMemo(() => {
       try {
         // Safe extraction of mouse offset values
-        const mx = mouseOffset && typeof mouseOffset.x === 'number' && !isNaN(mouseOffset.x) ? mouseOffset.x : 0;
-        const my = mouseOffset && typeof mouseOffset.y === 'number' && !isNaN(mouseOffset.y) ? mouseOffset.y : 0;
-        const scopedId = `gc-${filterId?.replace(/:/g, '') || 'default'}`;
-
+        const mx =
+          mouseOffset && typeof mouseOffset.x === 'number' && !isNaN(mouseOffset.x)
+            ? mouseOffset.x
+            : 0;
+        const my =
+          mouseOffset && typeof mouseOffset.y === 'number' && !isNaN(mouseOffset.y)
+            ? mouseOffset.y
+            : 0;
         return {
-          [`--${scopedId}-padding`]: padding || '0 0',
-          [`--${scopedId}-radius`]: `${typeof cornerRadius === 'number' && !isNaN(cornerRadius) ? cornerRadius : 0}px`,
-          [`--${scopedId}-backdrop`]: backdropStyle?.backdropFilter || 'none',
-          [`--${scopedId}-shadow`]: overLight
+          '--atomix-glass-container-width': `${glassSize?.width}`,
+          '--atomix-glass-container-height': `${glassSize?.height}`,
+          '--atomix-glass-container-padding': padding || '0 0',
+          '--atomix-glass-container-radius': `${typeof cornerRadius === 'number' && !isNaN(cornerRadius) ? cornerRadius : 0}px`,
+          '--atomix-glass-container-backdrop': backdropStyle?.backdropFilter || 'none',
+          '--atomix-glass-container-shadow': overLight
             ? [
                 `inset 0 1px 0 rgba(255, 255, 255, ${0.4 + mx * 0.002})`,
                 `inset 0 -1px 0 rgba(0, 0, 0, ${0.2 + Math.abs(my) * 0.001})`,
@@ -278,31 +287,31 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
                 `0 2px 12px rgba(0, 0, 0, ${0.12 + Math.abs(my) * 0.002})`,
               ].join(', ')
             : '0 0 20px rgba(0, 0, 0, 0.15) inset, 0 4px 8px rgba(0, 0, 0, 0.08) inset',
-          [`--${scopedId}-shadow-opacity`]: effectiveDisableEffects ? 0 : 1,
-          [`--${scopedId}-bg`]: overLight
+          '--atomix-glass-container-shadow-opacity': effectiveDisableEffects ? 0 : 1,
+          '--atomix-glass-container-bg': overLight
             ? `linear-gradient(${180 + mx * 0.5}deg, rgba(255, 255, 255, 0.1) 0%, transparent 20%, transparent 80%, rgba(0, 0, 0, 0.05) 100%)`
             : 'none',
-          [`--${scopedId}-text-shadow`]: overLight
-            ? '0px 1px 3px rgba(0, 0, 0, 0.2), 0px 2px 8px rgba(0, 0, 0, 0.1)'
+          '--atomix-glass-container-text-shadow': overLight
+            ? '0px 2px 12px rgba(0, 0, 0, 0)'
             : '0px 2px 12px rgba(0, 0, 0, 0.4)',
-          '--gc-scoped-id': scopedId,
+          '--atomix-glass-container-box-shadow': overLight
+            ? '0px 16px 70px rgba(0, 0, 0, 0.75)'
+            : '0px 12px 40px rgba(0, 0, 0, 0.25)',
         } as React.CSSProperties;
       } catch (error) {
         console.warn('AtomixGlassContainer: Error generating container variables', error);
-        const fallbackId = `gc-${filterId?.replace(/:/g, '') || 'default'}`;
         return {
-          [`--${fallbackId}-padding`]: '0 0',
-          [`--${fallbackId}-radius`]: '0px',
-          [`--${fallbackId}-backdrop`]: 'none',
-          [`--${fallbackId}-shadow`]: 'none',
-          [`--${fallbackId}-shadow-opacity`]: 1,
-          [`--${fallbackId}-bg`]: 'none',
-          [`--${fallbackId}-text-shadow`]: 'none',
-          '--gc-scoped-id': fallbackId,
+          '--atomix-glass-container-padding': '0 0',
+          '--atomix-glass-container-radius': '0px',
+          '--atomix-glass-container-backdrop': 'none',
+          '--atomix-glass-container-shadow': 'none',
+          '--atomix-glass-container-shadow-opacity': 1,
+          '--atomix-glass-container-bg': 'none',
+          '--atomix-glass-container-text-shadow': 'none',
         } as React.CSSProperties;
       }
     }, [
-      filterId,
+      glassSize,
       padding,
       cornerRadius,
       backdropStyle,
@@ -310,8 +319,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       overLight,
       effectiveDisableEffects,
     ]);
-
-    const scopedId = `gc-${filterId?.replace(/:/g, '') || 'default'}`;
 
     return (
       <div
@@ -323,8 +330,9 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         <div
           className={ATOMIX_GLASS.INNER_CLASS}
           style={{
-            padding: `var(--${scopedId}-padding)`,
-            borderRadius: `var(--${scopedId}-radius)`,
+            padding: `var(--atomix-glass-container-padding)`,
+            borderRadius: `var(--atomix-glass-container-radius)`,
+            transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
           }}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -335,15 +343,23 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             <GlassFilter
               mode={mode}
               id={filterId}
-              displacementScale={typeof displacementScale === 'number' && !isNaN(displacementScale) ? displacementScale : 0}
-              aberrationIntensity={typeof aberrationIntensity === 'number' && !isNaN(aberrationIntensity) ? aberrationIntensity : 0}
+              displacementScale={
+                typeof displacementScale === 'number' && !isNaN(displacementScale)
+                  ? displacementScale
+                  : 0
+              }
+              aberrationIntensity={
+                typeof aberrationIntensity === 'number' && !isNaN(aberrationIntensity)
+                  ? aberrationIntensity
+                  : 0
+              }
               shaderMapUrl={shaderMapUrl}
             />
             <span
               className={ATOMIX_GLASS.FILTER_OVERLAY_CLASS}
               style={{
-                backdropFilter: `var(--${scopedId}-backdrop)`,
-                borderRadius: `var(--${scopedId}-radius)`,
+                backdropFilter: `var(--atomix-glass-container-backdrop)`,
+                borderRadius: `var(--atomix-glass-container-radius)`,
               }}
             />
 
@@ -351,10 +367,10 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             <div
               className={ATOMIX_GLASS.FILTER_SHADOW_CLASS}
               style={{
-                boxShadow: `var(--${scopedId}-shadow)`,
-                opacity: `var(--${scopedId}-shadow-opacity)`,
-                background: `var(--${scopedId}-bg)`,
-                borderRadius: `var(--${scopedId}-radius)`,
+                boxShadow: `var(--atomix-glass-container-shadow)`,
+                opacity: `var(--atomix-glass-container-shadow-opacity)`,
+                background: `var(--atomix-glass-container-bg)`,
+                borderRadius: `var(--atomix-glass-container-radius)`,
               }}
             />
           </div>
@@ -363,10 +379,9 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             ref={contentRef}
             className={ATOMIX_GLASS.CONTENT_CLASS}
             style={{
-              ...(elasticity !== 0 && elasticity !== undefined && {
-                zIndex: 4,
-                textShadow: `var(--${scopedId}-text-shadow)`,
-              }),
+              position: 'relative',
+              zIndex: 1,
+              textShadow: `var(--atomix-glass-container-text-shadow)`,
             }}
           >
             {children}

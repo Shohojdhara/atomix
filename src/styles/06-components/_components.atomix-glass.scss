@@ -5,11 +5,13 @@
   position: relative;
 
   // CSS custom property defaults
-  --ag-scoped-radius: var(--atomix-radius-md, 16px);
-  --ag-scoped-transform: none;
-  --ag-scoped-transition: opacity 0.2s ease-out;
-  --ag-scoped-position: absolute;
-  --ag-scoped-inset: 0;
+  --atomix-glass-radius: var(--atomix-radius-md, 16px);
+  --atomix-glass-transform: none;
+  --atomix-glass-transition: opacity var(--atomix-transition-duration, 0.2s) ease-out;
+  --atomix-glass-position: absolute;
+  --atomix-glass-container-width: 100%;
+  --atomix-glass-container-height: 100%;
+  --atomix-glass-border-width: var(--atomix-spacing-0-5, 0.09375rem);
 
   // Base layer styles for all effect layers (hover, border, overlay)
   &__hover-1,
@@ -20,9 +22,9 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    border-radius: var(--ag-scoped-radius);
-    transform: var(--ag-scoped-transform);
-    transition: var(--ag-scoped-transition);
+    border-radius: var(--atomix-glass-radius);
+    transform: var(--atomix-glass-transform);
+    transition: var(--atomix-glass-transition);
   }
 
   // Interactive hover effects
@@ -30,81 +32,121 @@
   &__hover-2,
   &__hover-3 {
     mix-blend-mode: overlay;
+    // Dynamic opacity and background are set via inline styles using CSS variables
+    opacity: var(--atomix-glass-hover-1-opacity, 0);
+    background: var(--atomix-glass-hover-1-gradient, none);
   }
 
   &__hover-1 {
     transition: opacity 0.2s ease-out;
+    opacity: var(--atomix-glass-hover-1-opacity, 0);
+    background: var(--atomix-glass-hover-1-gradient, none);
   }
 
   &__hover-2 {
     transition: opacity 0.4s ease-out;
+    opacity: var(--atomix-glass-hover-2-opacity, 0);
+    background: var(--atomix-glass-hover-2-gradient, none);
   }
 
   &__hover-3 {
     transition: opacity 0.6s ease-out;
+    opacity: var(--atomix-glass-hover-3-opacity, 0);
+    background: var(--atomix-glass-hover-3-gradient, none);
   }
 
   // Base and overlay layers for over-light mode
   &__base {
     mix-blend-mode: soft-light;
+    // Dynamic opacity and background are set via inline styles using CSS variables
+    opacity: var(--atomix-glass-base-opacity, 0);
+    background: var(--atomix-glass-base-gradient, none);
   }
 
   &__overlay {
     mix-blend-mode: overlay;
+    // Dynamic opacity and background are set via inline styles using CSS variables
+    opacity: var(--atomix-glass-overlay-opacity, 0);
+    background: var(--atomix-glass-overlay-gradient, none);
   }
 
   &__overlay-highlight {
     position: absolute;
-    inset: 2px;
+    inset: var(--atomix-spacing-0-5, 0.125rem);
     pointer-events: none;
-    border-radius: var(--ag-scoped-radius);
-    transform: var(--ag-scoped-transform);
-    transition: var(--ag-scoped-transition);
+    border-radius: var(--atomix-glass-radius);
+    transform: var(--atomix-glass-transform);
+    transition: var(--atomix-glass-transition);
     mix-blend-mode: screen;
+    // Dynamic opacity and background are set via inline styles
+    // Opacity is calculated: opacityValues.over * OVERLAY_HIGHLIGHT.OPACITY_MULTIPLIER
+    // Background gradient uses constants for positioning
   }
 
-  // Border effect layers
+  // Border effect layers - matching old version exactly
   &__border-1,
   &__border-2 {
-    position: var(--ag-scoped-position);
-    padding: var(--atomix-glass-border-width, 1.5px);
+    // Static styles
+    padding: var(--atomix-glass-border-width);
+    box-sizing: border-box;
+    overflow: hidden;
+    pointer-events: none;
     -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
+      linear-gradient(var(--atomix-black, #000000) 0 0) content-box,
+      linear-gradient(var(--atomix-black, #000000) 0 0);
     -webkit-mask-composite: xor;
     mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
+      linear-gradient(var(--atomix-black, #000000) 0 0) content-box,
+      linear-gradient(var(--atomix-black, #000000) 0 0);
     mask-composite: exclude;
-    pointer-events: none;
-    border-radius: var(--ag-scoped-radius);
-    transform: var(--ag-scoped-transform);
-    transition: var(--ag-scoped-transition);
+    
+    // Dynamic values set via inline styles using CSS variables
+    position: var(--atomix-glass-position);
+    top: var(--atomix-glass-top);
+    left: var(--atomix-glass-left);
+    width: var(--atomix-glass-width);
+    height: var(--atomix-glass-height);
+    border-radius: var(--atomix-glass-radius);
+    transform: var(--atomix-glass-transform);
+    transition: var(--atomix-glass-transition);
   }
 
   &__border-1 {
-    opacity: 0.2;
+    opacity: var(--atomix-opacity-20, 0.2);
     mix-blend-mode: screen;
-    box-shadow:
-      0 0 0.5px rgba(255, 255, 255, 0.5) inset,
-      0 1px 3px 0.5px rgba(0, 0, 0, 0.5),
-      0 1px 3px 0.5px rgba(0, 0, 0, 0.5) inset;
+    z-index: var(--atomix-z-index-5, 5);
+    // Dynamic gradient background set via CSS variable
+    background: var(--atomix-glass-border-gradient-1, none);
+    // Note: Box-shadow rgba values use CSS custom properties for colors via CSS variables
+    // These are set dynamically in TypeScript component via --atomix-glass-border-shadow
+    box-shadow: var(--atomix-glass-border-shadow, 0 0 0 0.03125rem rgba(255, 255, 255, 0.5) inset, 0 0.25rem 0.75rem rgba(255, 255, 255, 0.25) inset, 0 0.25rem 1rem rgba(0, 0, 0, 0.35));
   }
 
   &__border-2 {
-    box-shadow:
-      0 0 0.5px rgba(255, 255, 255, 0.5) inset,
-      0 1px 3px 0.5px rgba(0, 0, 0, 0.5);
+    mix-blend-mode: overlay;
+    z-index: var(--atomix-z-index-6, 6);
+    // Dynamic gradient background set via CSS variable
+    background: var(--atomix-glass-border-gradient-2, none);
+    // Note: Box-shadow rgba values use CSS custom properties for colors via CSS variables
+    // These are set dynamically in TypeScript component via --atomix-glass-border-shadow
+    box-shadow: var(--atomix-glass-border-shadow, 0 0 0 0.03125rem rgba(255, 255, 255, 0.5) inset, 0 0.25rem 0.75rem rgba(255, 255, 255, 0.25) inset, 0 0.25rem 1rem rgba(0, 0, 0, 0.35));
   }
 
   // Container styles
   &__container {
+    width: var(--atomix-glass-container-width);
+    height: var(--atomix-glass-container-height);
     position: relative;
+    border-radius: var(--atomix-glass-radius);
+    transition: border-radius 0.25s ease-out;
   }
 
   &__inner {
+    width: var(--atomix-glass-container-width);
+    height: var(--atomix-glass-container-height);
     position: relative;
     // Padding and border-radius are set dynamically via inline styles
+    border-radius: var(--atomix-glass-radius);
   }
 
   &__filter {
@@ -120,23 +162,61 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    // backdrop-filter and border-radius are set dynamically via inline styles
   }
 
   &__filter-shadow {
     position: absolute;
-    inset: 1.5px;
+    inset: var(--atomix-glass-border-width);
     pointer-events: none;
-    // box-shadow, opacity, background, and border-radius are set dynamically via inline styles
   }
 
   &__content {
     position: relative;
+    width: var(--atomix-glass-container-width);
+    height: var(--atomix-glass-container-height);
+  }
+
+  // Background layers for over-light mode
+  &__background-layer {
+    position: absolute;
+    pointer-events: none;
+    border-radius: var(--atomix-glass-radius);
+    transform: var(--atomix-glass-transform);
+    transition: var(--atomix-glass-transition);
+    will-change: transform;
+    // Dynamic values: position, width, height are set via inline styles
+    // Position comes from positionStyles, width/height from adjustedSize
+
+    // Dark background variant
+    &--dark {
+      background-color: var(--atomix-gray-9, #1f2937);
+    }
+
+    // Black background variant
+    &--black {
+      background-color: var(--atomix-black, #000000);
+      mix-blend-mode: overlay;
+    }
+
+    // Over-light state modifier (50% opacity for dark, 25% for black)
+    // When both --dark and --over-light modifiers are present
+    &--dark#{&}--over-light {
+      opacity: var(--atomix-opacity-50, 0.5);
+    }
+
+    &--black#{&}--over-light {
+      opacity: var(--atomix-opacity-25, 0.25);
+    }
+
+    // Hidden state modifier
+    &--hidden {
+      opacity: var(--atomix-opacity-0, 0);
+    }
   }
 
   // State modifiers
   &--reduced-motion {
-    --ag-scoped-transition: none;
+    --atomix-glass-transition: none;
 
     * {
       transition: none !important;
@@ -150,13 +230,13 @@
   }
 
   &--disabled-effects {
-    --ag-scoped-transform: none;
-    --ag-scoped-transition: none;
+    --atomix-glass-transform: none;
+    --atomix-glass-transition: none;
   }
 
   // Responsive and accessibility
   @media (prefers-reduced-motion: reduce) {
-    --ag-scoped-transition: none;
+    --atomix-glass-transition: none;
 
     * {
       transition: none !important;
@@ -164,6 +244,6 @@
   }
 
   @media (prefers-contrast: high) {
-    border-width: 2px;
+    border-width: var(--atomix-spacing-0-5, 0.125rem);
   }
 }
