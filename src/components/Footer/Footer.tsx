@@ -6,6 +6,8 @@ import { Input, Form } from '../Form';
 import { FooterSocialLink } from './FooterSocialLink';
 import { Grid, GridCol } from '../../layouts/Grid';
 import { FooterSection } from './FooterSection';
+import AtomixGlass from '../AtomixGlass/AtomixGlass';
+import { AtomixGlassProps } from '../../lib/types/components';
 
 /**
  * Footer component provides a comprehensive footer section with multiple layout options,
@@ -55,6 +57,7 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(
       children,
       className = '',
       disabled = false,
+      glass,
       ...props
     },
     ref
@@ -144,9 +147,8 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(
       return { xs: 12, md: baseMd };
     };
 
-    return (
-      <footer ref={ref} className={footerClass} {...props}>
-        <div className={containerClass}>
+    const footerContent = (
+      <div className={containerClass}>
           {/* Main Footer Content */}
           <Grid
             className={sectionsClass}
@@ -271,9 +273,22 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(
             </div>
           )}
         </div>
-      </footer>
     );
-  }
+
+    return (
+      <footer ref={ref} className={footerClass + ` c-footer ${glass ? 'c-footer--glass' : ''}`} {...props}>
+    {glass ? (
+      <AtomixGlass {...(glass as unknown as AtomixGlassProps)} elasticity={0}>
+        <div className="c-footer__glass">
+          {footerContent}
+        </div>
+      </AtomixGlass>
+    ) : (
+      footerContent
+    )}
+  </footer>
+);
+}
 );
 
 Footer.displayName = 'Footer';
