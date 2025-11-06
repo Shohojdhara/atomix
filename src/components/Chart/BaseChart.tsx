@@ -1,7 +1,7 @@
 import { forwardRef, memo, useCallback } from 'react';
 import Chart from './Chart';
 import ChartRenderer from './ChartRenderer';
-import { ChartProps } from './types';
+import { ChartProps, ChartRenderContentParams } from './types';
 
 interface BaseChartProps extends Omit<ChartProps, 'type'> {
   /**
@@ -12,20 +12,7 @@ interface BaseChartProps extends Omit<ChartProps, 'type'> {
   /**
    * Function to render the chart content
    */
-  renderContent: (params: {
-    scales: any;
-    colors: string[];
-    datasets: any[];
-    handlers: any;
-    hoveredPoint: {
-      datasetIndex: number;
-      pointIndex: number;
-      x: number;
-      y: number;
-      clientX: number;
-      clientY: number;
-    } | null;
-  }) => React.ReactNode;
+  renderContent: (params: ChartRenderContentParams) => React.ReactNode;
 
   /**
    * Whether the chart is interactive
@@ -66,20 +53,7 @@ const BaseChart = memo(
       ref
     ) => {
       const renderChartContent = useCallback(
-        (params: {
-          scales: any;
-          colors: string[];
-          datasets: any[];
-          handlers: any;
-          hoveredPoint: {
-            datasetIndex: number;
-            pointIndex: number;
-            x: number;
-            y: number;
-            clientX: number;
-            clientY: number;
-          } | null;
-        }) => renderContent(params),
+        (params: ChartRenderContentParams) => renderContent(params),
         [renderContent]
       );
 

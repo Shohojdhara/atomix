@@ -1,6 +1,8 @@
 import { forwardRef, memo } from 'react';
 import BaseChart from './BaseChart';
+import ChartTooltip from './ChartTooltip';
 import { LineChartProps } from './LineChart';
+import { ChartRenderContentParams, ChartDataset, ChartDataPoint } from './types';
 
 interface AreaChartProps extends Omit<LineChartProps, 'lineOptions'> {
   /**
@@ -26,37 +28,29 @@ const AreaChart = memo(
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: string[];
-        datasets: any[];
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
         if (!renderedDatasets.length) return null;
+
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
 
         return (
           <>
-            {renderedDatasets.map((dataset: any, datasetIndex: number) => {
+            {renderedDatasets.map((dataset: ChartDataset, datasetIndex: number) => {
               const color = dataset.color || colors[datasetIndex];
               const data = dataset.data || [];
 
               if (data.length === 0) return null;
 
               // Generate area path
-              const areaPoints = data.map((point: any, index: number) => ({
+              const areaPoints = data.map((point: ChartDataPoint, index: number) => ({
                 x: scales.xScale(index, data.length),
                 y: scales.yScale(point.value),
               }));
 
-              const areaPath = `M ${areaPoints.map((p: any) => `${p.x},${p.y}`).join(' L ')} L ${areaPoints[areaPoints.length - 1]?.x},${scales.height} L ${areaPoints[0]?.x},${scales.height} Z`;
+              const areaPath = `M ${areaPoints.map((p) => `${p.x},${p.y}`).join(' L ')} L ${areaPoints[areaPoints.length - 1]?.x},${scales.height} L ${areaPoints[0]?.x},${scales.height} Z`;
 
               return (
                 <g key={`dataset-${datasetIndex}`}>
@@ -66,7 +60,7 @@ const AreaChart = memo(
                     fillOpacity={enhancedAreaOptions.fillOpacity || 0.3}
                     className="c-chart__area-fill"
                   />
-                  {data.map((point: any, index: number) => {
+                  {data.map((point: ChartDataPoint, index: number) => {
                     const x = scales.xScale(index, data.length);
                     const y = scales.yScale(point.value);
                     const isHovered =
@@ -103,6 +97,23 @@ const AreaChart = memo(
                 </g>
               );
             })}
+            {showTooltips && hoveredPoint && (
+              <ChartTooltip
+                dataPoint={
+                  renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]
+                }
+                datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
+                datasetColor={
+                  renderedDatasets[hoveredPoint.datasetIndex]?.color ||
+                  colors[hoveredPoint.datasetIndex]
+                }
+                position={{
+                  x: hoveredPoint.clientX,
+                  y: hoveredPoint.clientY,
+                }}
+                visible={true}
+              />
+            )}
           </>
         );
       };

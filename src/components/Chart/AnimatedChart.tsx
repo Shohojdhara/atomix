@@ -1,6 +1,6 @@
 import { forwardRef, memo, useCallback, useEffect, useRef } from 'react';
 import BaseChart from './BaseChart';
-import { ChartProps } from './types';
+import { ChartProps, ChartRenderContentParams } from './types';
 
 export interface AnimatedChartProps extends Omit<ChartProps, 'type'> {
   chartType?: 'line' | 'bar' | 'area';
@@ -51,12 +51,12 @@ const AnimatedChart = memo(
           colors,
           datasets: chartDatasets,
           handlers,
-        }: {
-          scales: any;
-          colors: string[];
-          datasets: any[];
-          handlers: any;
-        }) => {
+          hoveredPoint,
+          toolbarState,
+          config: renderConfig,
+        }: ChartRenderContentParams) => {
+          // Use toolbar state if available, fallback to config for backward compatibility
+          const shouldAnimate = toolbarState?.animationsEnabled ?? renderConfig?.animate ?? true;
           // Animation time tracking
           useEffect(() => {
             const animateFrame = (timestamp: number) => {
@@ -150,7 +150,7 @@ const AnimatedChart = memo(
                       d={linePath}
                       stroke={color}
                       fill="none"
-                      strokeWidth="2"
+                      className="c-chart__data-line"
                       style={{
                         transform: `translateY(${Math.sin(timeRef.current * 0.01) * 2}px)`,
                       }}

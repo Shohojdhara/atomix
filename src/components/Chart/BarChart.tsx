@@ -2,7 +2,7 @@ import { forwardRef, memo } from 'react';
 import { BarChartOptions, useBarChart } from '../../lib/composables/useBarChart';
 import BaseChart from './BaseChart';
 import ChartTooltip from './ChartTooltip';
-import { ChartDataPoint, ChartProps } from './types';
+import { ChartDataPoint, ChartProps, ChartRenderContentParams } from './types';
 
 interface BarChartProps extends Omit<ChartProps, 'type'> {
   /**
@@ -38,21 +38,13 @@ const BarChart = memo(
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: any;
-        datasets: any;
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
         if (!renderedDatasets.length) return null;
+
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
 
         const barDimensions = calculateBarDimensions(
           renderedDatasets,
@@ -80,7 +72,6 @@ const BarChart = memo(
                     width={bar.width}
                     height={bar.height}
                     fill={color}
-                    rx={barOptions.cornerRadius || 4}
                     className={`c-chart__bar ${isHovered ? 'c-chart__bar--hovered' : ''}`}
                     onClick={() =>
                       point && handlers.onDataPointClick?.(point, bar.datasetIndex, bar.pointIndex)
@@ -111,7 +102,7 @@ const BarChart = memo(
                 </g>
               );
             })}
-            {config?.showTooltips !== false && hoveredPoint && (
+            {showTooltips && hoveredPoint && (
               <ChartTooltip
                 dataPoint={
                   renderedDatasets[hoveredPoint.datasetIndex]?.data?.[

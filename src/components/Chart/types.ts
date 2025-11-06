@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { BaseComponentProps, Size, Variant } from '../../lib/types/components';
 
 /**
@@ -283,14 +283,9 @@ export interface ChartProps extends BaseComponentProps {
 
 /**
  * Chart scales interface
+ * Imported from useChart for consistency
  */
-export interface ChartScales {
-  xScale: (index: number) => number;
-  yScale: (value: number) => number;
-  width: number;
-  height: number;
-  padding: { top: number; right: number; bottom: number; left: number };
-}
+export type { ChartScales } from '../../lib/composables/useChart';
 
 /**
  * Chart interaction state
@@ -298,6 +293,72 @@ export interface ChartScales {
 export interface ChartInteraction {
   hoveredIndex: number | null;
   selectedIndex: number | null;
+}
+
+/**
+ * Chart hovered point state
+ */
+export interface ChartHoveredPoint {
+  datasetIndex: number;
+  pointIndex: number;
+  x: number;
+  y: number;
+  clientX: number;
+  clientY: number;
+}
+
+/**
+ * Chart event handlers interface
+ */
+export interface ChartHandlers {
+  onDataPointClick?: (dataPoint: ChartDataPoint, datasetIndex: number, pointIndex: number) => void;
+  onPointHover: (
+    datasetIndex: number,
+    pointIndex: number,
+    x: number,
+    y: number,
+    clientX: number,
+    clientY: number
+  ) => void;
+  onPointLeave: () => void;
+  onMouseMove: (event: React.MouseEvent<SVGSVGElement>) => void;
+  onMouseDown: (event: React.MouseEvent<SVGSVGElement>) => void;
+  onMouseUp: () => void;
+  onWheel: (event: React.WheelEvent<SVGSVGElement>) => void;
+}
+
+/**
+ * Chart accessibility interface
+ */
+export interface ChartAccessibility {
+  announcement: string;
+  focusedPoint: { datasetIndex: number; pointIndex: number };
+  getAccessibleDescription: () => string;
+}
+
+/**
+ * Chart toolbar state
+ */
+export interface ChartToolbarState {
+  showTooltips?: boolean;
+  showLegend?: boolean;
+  animationsEnabled?: boolean;
+  showGrid?: boolean;
+}
+
+/**
+ * Chart render content parameters
+ */
+export interface ChartRenderContentParams {
+  scales: ChartScales;
+  colors: string[];
+  datasets: ChartDataset[];
+  interactionState?: ChartInteraction;
+  handlers: ChartHandlers;
+  accessibility: ChartAccessibility;
+  hoveredPoint: ChartHoveredPoint | null;
+  toolbarState?: ChartToolbarState;
+  config?: ChartConfig;
 }
 
 /**

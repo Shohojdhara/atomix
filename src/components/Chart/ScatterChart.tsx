@@ -1,7 +1,7 @@
 import { forwardRef, memo, useState } from 'react';
 import BaseChart from './BaseChart';
 import ChartTooltip from './ChartTooltip';
-import { ChartProps, ScatterDataPoint } from './types';
+import { ChartProps, ScatterDataPoint, ChartRenderContentParams, ChartDataset } from './types';
 
 interface ScatterChartProps extends Omit<ChartProps, 'type'> {
   /**
@@ -47,28 +47,20 @@ const ScatterChart = memo(
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: string[];
-        datasets: any[];
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
         if (!renderedDatasets.length) return null;
+
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
 
         const points: React.ReactNode[] = [];
 
-        renderedDatasets.forEach((dataset: any, datasetIndex: number) => {
+        renderedDatasets.forEach((dataset: ChartDataset, datasetIndex: number) => {
           const color = dataset.color || colors[datasetIndex % colors.length];
 
-          dataset.data?.forEach((point: any, pointIndex: number) => {
+          dataset.data?.forEach((point: ScatterDataPoint, pointIndex: number) => {
             const x =
               point.x !== undefined
                 ? scales.padding.left + (point.x / 100) * scales.innerWidth
@@ -133,7 +125,7 @@ const ScatterChart = memo(
         return (
           <>
             {points}
-            {hoveredPoint && (
+            {showTooltips && hoveredPoint && (
               <ChartTooltip
                 dataPoint={
                   renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]

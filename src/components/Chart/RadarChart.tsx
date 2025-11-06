@@ -2,6 +2,7 @@ import { forwardRef, memo, useState } from 'react';
 import BaseChart from './BaseChart';
 import ChartTooltip from './ChartTooltip';
 import { ChartProps } from '../../lib/types/components';
+import { ChartRenderContentParams, ChartDataset, ChartDataPoint } from './types';
 
 export interface RadarChartProps extends Omit<ChartProps, 'type'> {
   /**
@@ -83,21 +84,13 @@ const RadarChart = memo(
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: string[];
-        datasets: any[];
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
         if (!renderedDatasets.length) return null;
+
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
 
         const centerX = scales.width / 2;
         const centerY = scales.height / 2;
@@ -186,7 +179,7 @@ const RadarChart = memo(
         }
 
         // Generate data paths
-        const dataPaths = renderedDatasets.map((dataset: any, datasetIndex: number) => {
+        const dataPaths = renderedDatasets.map((dataset: ChartDataset, datasetIndex: number) => {
           const color = dataset.color || colors[datasetIndex % colors.length];
           const points = [];
 
@@ -252,7 +245,7 @@ const RadarChart = memo(
                         cy={point.y}
                         r={isHovered ? pointRadius * 1.5 : pointRadius}
                         fill={color}
-                        className="c-chart__radar-point"
+                        className={`c-chart__radar-point ${isHovered ? 'c-chart__radar-point--hovered' : ''}`}
                         onClick={() =>
                           handlers.onDataPointClick?.(point.point, datasetIndex, pointIndex)
                         }
@@ -283,7 +276,7 @@ const RadarChart = memo(
               {dataPaths}
               {axisLabels}
             </g>
-            {hoveredPoint && (
+            {showTooltips && hoveredPoint && (
               <ChartTooltip
                 dataPoint={
                   renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]

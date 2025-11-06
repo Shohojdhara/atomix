@@ -2,7 +2,7 @@ import { forwardRef, memo, useMemo } from 'react';
 import BaseChart from './BaseChart';
 import ChartTooltip from './ChartTooltip';
 import { PieChartProps } from './PieChart';
-import { ChartDataPoint } from './types';
+import { ChartDataPoint, ChartRenderContentParams } from './types';
 
 interface DonutChartProps extends Omit<PieChartProps, 'type'> {
   /**
@@ -65,8 +65,8 @@ const DonutChart = memo(
       // Use the first dataset for donut chart
       const dataset = datasets.length > 0 ? datasets[0] : { label: '', data: [] };
 
-      // Calculate dimensions and generate donut slices
-      const chartContent = useMemo(() => {
+      // Prepare data for donut chart (calculations will be done in renderContent with actual dimensions)
+      const chartData = useMemo(() => {
         if (!dataset?.data?.length) return null;
 
         // Filter out invalid data points
@@ -80,37 +80,55 @@ const DonutChart = memo(
 
         if (!validDataPoints.length) return null;
 
-        // Calculate chart dimensions
-        const width = 800;
-        const height = 400;
+        return { validDataPoints };
+      }, [dataset]);
+
+      const renderContent = ({
+        scales,
+        colors,
+        datasets: renderedDatasets,
+        handlers,
+        hoveredPoint,
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
+        if (!chartData) return null;
+
+        // Use actual container dimensions from scales
+        const width = scales.width;
+        const height = scales.height;
         const outerRadius = (Math.min(width, height) / 2) * 0.8;
         const innerRadius = outerRadius * (donutOptions.innerRadiusRatio ?? 0.6);
         const centerX = width / 2;
         const centerY = height / 2;
 
         // Generate colors if not provided
+        // Using primary color variations for consistent theming
         const defaultColors = [
-          '#7AFFD7',
-          '#1AFFD2',
-          '#00E6C3',
-          '#00CCA3',
-          '#00B383',
-          '#009966',
-          '#00804D',
-          '#006633',
+          'var(--atomix-primary-2)',
+          'var(--atomix-primary-3)',
+          'var(--atomix-primary-4)',
+          'var(--atomix-primary-5)',
+          'var(--atomix-primary-6)',
+          'var(--atomix-primary-7)',
+          'var(--atomix-primary-8)',
+          'var(--atomix-primary-9)',
         ];
 
-        const colors = dataset.color
+        const chartColors = dataset?.color
           ? [dataset.color]
-          : dataset.data?.map((_, i) => defaultColors[i % defaultColors.length]) || defaultColors;
+          : dataset?.data?.map((_, i) => defaultColors[i % defaultColors.length]) || defaultColors;
 
         // Calculate total value
-        const total = validDataPoints.reduce((sum, point) => sum + point.value, 0);
+        const total = chartData.validDataPoints.reduce((sum, point) => sum + point.value, 0);
 
         // Calculate angles for each slice
-        let currentAngle = (pieOptions.startAngle || 0) * (Math.PI / 180);
-        const slices = validDataPoints.map((point, index) => {
-          const sliceAngle = (point.value / total) * (2 * Math.PI);
+        const padAngleRad = ((pieOptions.padAngle || 1) * Math.PI) / 180;
+        let currentAngle = ((pieOptions.startAngle || 0) * Math.PI) / 180;
+        
+        const slices = chartData.validDataPoints.map((point, index) => {
+          const percentage = point.value / total;
+          const sliceAngle = percentage * (2 * Math.PI) - padAngleRad;
           const startAngle = currentAngle;
           const endAngle = currentAngle + sliceAngle;
           const midAngle = (startAngle + endAngle) / 2;
@@ -142,11 +160,11 @@ const DonutChart = memo(
             'Z',
           ].join(' ');
 
-          currentAngle = endAngle;
+          currentAngle = endAngle + padAngleRad;
 
           return {
             path,
-            color: point.color || colors[index],
+            color: point.color || chartColors[index],
             labelPosition: { x: labelX, y: labelY },
             dataPoint: point,
             value: point.value,
@@ -154,31 +172,8 @@ const DonutChart = memo(
           };
         });
 
-        return { slices, total };
-      }, [dataset, pieOptions, donutOptions]);
-
-      const renderContent = ({
-        scales,
-        colors,
-        datasets: renderedDatasets,
-        handlers,
-        hoveredPoint,
-      }: {
-        scales: any;
-        colors: string[];
-        datasets: any[];
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
-        if (!chartContent) return null;
-        const { slices, total } = chartContent;
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
 
         return (
           <>
@@ -191,11 +186,6 @@ const DonutChart = memo(
                     d={slice.path}
                     fill={slice.color}
                     className={`c-chart__donut-slice ${isHovered ? 'c-chart__donut-slice--hovered' : ''}`}
-                    style={{
-                      transition: 'transform 0.2s ease',
-                      transform: isHovered ? 'scale(1.02)' : 'scale(1)',
-                      transformOrigin: 'center',
-                    }}
                     onClick={() => handlers.onDataPointClick?.(slice.dataPoint, 0, index)}
                     onMouseEnter={e => {
                       const rect = e.currentTarget.getBoundingClientRect();
@@ -238,17 +228,19 @@ const DonutChart = memo(
             {donutOptions.showTotal && (
               <g>
                 <text
-                  x={scales.width / 2}
-                  y={scales.height / 2 - 10}
+                  x={centerX}
+                  y={centerY - 10}
                   textAnchor="middle"
+                  dominantBaseline="middle"
                   className="c-chart__donut-center-label"
                 >
                   {donutOptions.centerLabel}
                 </text>
                 <text
-                  x={scales.width / 2}
-                  y={scales.height / 2 + 20}
+                  x={centerX}
+                  y={centerY + 20}
                   textAnchor="middle"
+                  dominantBaseline="middle"
                   className="c-chart__donut-center-value"
                 >
                   {donutOptions.centerValue !== undefined
@@ -257,11 +249,12 @@ const DonutChart = memo(
                 </text>
               </g>
             )}
-            {config?.showTooltips !== false &&
+            {showTooltips &&
               hoveredPoint &&
-              hoveredPoint.pointIndex < slices.length && (
+              hoveredPoint.pointIndex < slices.length &&
+              slices[hoveredPoint.pointIndex] && (
                 <ChartTooltip
-                  dataPoint={slices[hoveredPoint.pointIndex].dataPoint}
+                  dataPoint={slices[hoveredPoint.pointIndex]!.dataPoint}
                   datasetLabel={dataset?.label}
                   datasetColor={slices[hoveredPoint.pointIndex]?.color}
                   position={{

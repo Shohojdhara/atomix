@@ -105,10 +105,61 @@ const generateHeatmapData = () => {
     .flat();
 };
 
+const generateTreemapData = (count = 12) => {
+  const categories = [
+    'Technology',
+    'Finance',
+    'Healthcare',
+    'Education',
+    'Retail',
+    'Manufacturing',
+    'Energy',
+    'Transport',
+    'Media',
+    'Real Estate',
+    'Consulting',
+    'Food & Beverage',
+    'Sports',
+    'Entertainment',
+    'Travel',
+    'Automotive',
+    'Fashion',
+    'Telecom',
+    'Agriculture',
+    'Construction',
+  ];
+  
+  return Array.from({ length: count }, (_, i) => ({
+    id: `category-${i}`,
+    label: categories[i % categories.length] || `Category ${i + 1}`,
+    value: Math.floor(Math.random() * 500) + 50,
+    metadata: {
+      growth: `${(Math.random() * 20 - 10).toFixed(1)}%`,
+      revenue: `$${(Math.random() * 1000 + 100).toFixed(0)}K`,
+    },
+  }));
+};
+
+const generateFunnelData = () => {
+  const stages = [
+    { label: 'Awareness', value: 10000 },
+    { label: 'Interest', value: 5000 },
+    { label: 'Consideration', value: 2500 },
+    { label: 'Intent', value: 1200 },
+    { label: 'Evaluation', value: 600 },
+    { label: 'Purchase', value: 300 },
+  ];
+  
+  return stages.map(stage => ({
+    ...stage,
+    percentage: ((stage.value / stages[0].value) * 100).toFixed(1),
+  }));
+};
+
 const datasets = [
-  { label: 'Sales', data: generateData(), color: '#3b82f6' },
-  { label: 'Revenue', data: generateData(), color: '#10b981' },
-  { label: 'Profit', data: generateData(), color: '#f59e0b' },
+  { label: 'Sales', data: generateData(), color: 'var(--atomix-primary)' },
+  { label: 'Revenue', data: generateData(), color: 'var(--atomix-success)' },
+  { label: 'Profit', data: generateData(), color: 'var(--atomix-warning)' },
 ];
 
 // Modern Chart Gallery
@@ -145,9 +196,9 @@ export const ChartGallery: Story = {
 
     // Generate dynamic data based on dataPoints
     const dynamicDatasets = [
-      { label: 'Sales', data: generateData(dataPoints), color: '#3b82f6' },
-      { label: 'Revenue', data: generateData(dataPoints), color: '#10b981' },
-      { label: 'Profit', data: generateData(dataPoints), color: '#f59e0b' },
+      { label: 'Sales', data: generateData(dataPoints), color: 'var(--atomix-primary)' },
+      { label: 'Revenue', data: generateData(dataPoints), color: 'var(--atomix-success)' },
+      { label: 'Profit', data: generateData(dataPoints), color: 'var(--atomix-warning)' },
     ];
 
     const renderChart = () => {
@@ -312,12 +363,15 @@ export const ChartGallery: Story = {
             <div>
               {customToolbar}
               <FunnelChart
-                funnelData={[
-                  { label: 'Visitors', value: 1000 },
-                  { label: 'Signups', value: 300 },
-                  { label: 'Purchases', value: 150 },
-                  { label: 'Repeat Customers', value: 60 },
-                ]}
+                funnelData={generateFunnelData()}
+                funnelOptions={{
+                  showLabels: true,
+                  showValues: true,
+                  showPercentages: true,
+                  showConversionRates: true,
+                  useGradient: true,
+                  animate: animated,
+                }}
                 {...commonProps}
               />
             </div>
@@ -327,11 +381,15 @@ export const ChartGallery: Story = {
             <div>
               {customToolbar}
               <TreemapChart
-                data={Array.from({ length: dataPoints }, (_, i) => ({
-                  id: `item-${i}`,
-                  label: `Category ${String.fromCharCode(65 + i)}`,
-                  value: Math.random() * 100 + 20,
-                }))}
+                data={generateTreemapData(Math.min(dataPoints, 20))}
+                algorithm="squarified"
+                colorConfig={{ scheme: 'category' }}
+                labelConfig={{
+                  showLabels: true,
+                  minSize: 500,
+                  fontSize: 12,
+                  textColor: 'var(--atomix-text-primary)',
+                }}
                 {...commonProps}
               />
             </div>
@@ -431,8 +489,8 @@ export const LineChartStory: Story = {
           <Card className="u-p-6">
             <LineChart
               datasets={[
-                { label: 'Sales', data: generateData(12), color: '#3b82f6' },
-                { label: 'Revenue', data: generateData(12), color: '#10b981' },
+                { label: 'Sales', data: generateData(12), color: 'var(--atomix-primary)' },
+                { label: 'Revenue', data: generateData(12), color: 'var(--atomix-success)' },
               ]}
               title="Line Chart Example"
               config={{ showLegend: true, animate: true }}
@@ -454,8 +512,8 @@ export const BarChartStory: Story = {
           <Card className="u-p-6">
             <BarChart
               datasets={[
-                { label: 'Sales', data: generateData(8), color: '#3b82f6' },
-                { label: 'Revenue', data: generateData(8), color: '#10b981' },
+                { label: 'Sales', data: generateData(8), color: 'var(--atomix-primary)' },
+                { label: 'Revenue', data: generateData(8), color: 'var(--atomix-success)' },
               ]}
               title="Bar Chart Example"
               config={{ showLegend: true, animate: true }}
@@ -530,6 +588,217 @@ export const CandlestickChartStory: Story = {
   name: 'Candlestick Chart',
 };
 
+export const TreemapChartStory: Story = {
+  render: () => (
+    <Container className="u-py-6">
+      <Grid>
+        <GridCol xs={12}>
+          <Card className="u-p-6">
+            <TreemapChart
+              data={generateTreemapData(15)}
+              title="Treemap Chart Example"
+              algorithm="squarified"
+              colorConfig={{ scheme: 'category' }}
+              labelConfig={{
+                showLabels: true,
+                minSize: 500,
+                fontSize: 12,
+                textColor: 'var(--atomix-text-primary)',
+              }}
+              config={{ showLegend: true, animate: true }}
+              showToolbar
+            />
+          </Card>
+        </GridCol>
+      </Grid>
+    </Container>
+  ),
+  name: 'Treemap Chart',
+};
+
+export const FunnelChartStory: Story = {
+  render: () => (
+    <Container className="u-py-6">
+      <Grid>
+        <GridCol xs={12}>
+          <Card className="u-p-6">
+            <FunnelChart
+              funnelData={generateFunnelData()}
+              title="Funnel Chart Example"
+              funnelOptions={{
+                showLabels: true,
+                showValues: true,
+                showPercentages: true,
+                showConversionRates: true,
+                useGradient: true,
+                animate: true,
+              }}
+              config={{ showLegend: true, animate: true }}
+              showToolbar
+            />
+          </Card>
+        </GridCol>
+      </Grid>
+    </Container>
+  ),
+  name: 'Funnel Chart',
+};
+
+export const HeatmapChartStory: Story = {
+  render: () => (
+    <Container className="u-py-6">
+      <Grid>
+        <GridCol xs={12}>
+          <Card className="u-p-6">
+            <HeatmapChart
+              data={generateHeatmapData()}
+              title="Heatmap Chart Example"
+              colorScale={{
+                scheme: 'viridis',
+                steps: 9,
+              }}
+              cellConfig={{
+                width: 30,
+                height: 30,
+                spacing: 2,
+                borderRadius: 4,
+                showLabels: false,
+              }}
+              showColorLegend={true}
+              showGrid={true}
+              config={{ showLegend: true, animate: true }}
+              showToolbar
+            />
+          </Card>
+        </GridCol>
+      </Grid>
+    </Container>
+  ),
+  name: 'Heatmap Chart',
+};
+
+export const ScatterChartStory: Story = {
+  render: () => (
+    <Container className="u-py-6">
+      <Grid>
+        <GridCol xs={12}>
+          <Card className="u-p-6">
+            <ScatterChart
+              datasets={[
+                { label: 'Sales', data: generateData(15), color: 'var(--atomix-primary)' },
+                { label: 'Revenue', data: generateData(15), color: 'var(--atomix-success)' },
+              ]}
+              title="Scatter Chart Example"
+              scatterOptions={{
+                pointRadius: 5,
+                showLabels: false,
+                enableHoverEffects: true,
+              }}
+              config={{ showLegend: true, animate: true }}
+              showToolbar
+            />
+          </Card>
+        </GridCol>
+      </Grid>
+    </Container>
+  ),
+  name: 'Scatter Chart',
+};
+
+export const BubbleChartStory: Story = {
+  render: () => (
+    <Container className="u-py-6">
+      <Grid>
+        <GridCol xs={12}>
+          <Card className="u-p-6">
+            <BubbleChart
+              bubbleData={generateBubbleData(20)}
+              title="Bubble Chart Example"
+              bubbleOptions={{
+                minBubbleSize: 10,
+                maxBubbleSize: 60,
+                bubbleOpacity: 0.7,
+                showLabels: true,
+                enableAnimations: true,
+              }}
+              config={{ showLegend: true, animate: true }}
+              showToolbar
+            />
+          </Card>
+        </GridCol>
+      </Grid>
+    </Container>
+  ),
+  name: 'Bubble Chart',
+};
+
+export const RadarChartStory: Story = {
+  render: () => (
+    <Container className="u-py-6">
+      <Grid>
+        <GridCol xs={12}>
+          <Card className="u-p-6">
+            <RadarChart
+              datasets={[
+                { label: 'Performance', data: generateData(8), color: 'var(--atomix-primary)' },
+                { label: 'Target', data: generateData(8), color: 'var(--atomix-success)' },
+              ]}
+              title="Radar Chart Example"
+              radarOptions={{
+                gridLevels: 5,
+                showGrid: true,
+                showAxisLabels: true,
+                fillArea: true,
+                fillOpacity: 0.3,
+                showDataPoints: true,
+                pointRadius: 4,
+                lineWidth: 2,
+              }}
+              config={{ showLegend: true, animate: true }}
+              showToolbar
+            />
+          </Card>
+        </GridCol>
+      </Grid>
+    </Container>
+  ),
+  name: 'Radar Chart',
+};
+
+export const WaterfallChartStory: Story = {
+  render: () => (
+    <Container className="u-py-6">
+      <Grid>
+        <GridCol xs={12}>
+          <Card className="u-p-6">
+            <WaterfallChart
+              waterfallData={[
+                { label: 'Starting Balance', value: 1000, type: 'subtotal' },
+                { label: 'Sales', value: 500, type: 'positive' },
+                { label: 'Investment', value: 200, type: 'positive' },
+                { label: 'Expenses', value: -200, type: 'negative' },
+                { label: 'Taxes', value: -100, type: 'negative' },
+                { label: 'Fees', value: -50, type: 'negative' },
+                { label: 'Ending Balance', value: 1350, type: 'total' },
+              ]}
+              title="Waterfall Chart Example"
+              waterfallOptions={{
+                showConnectors: true,
+                showValues: true,
+                showBaseline: true,
+                animate: true,
+              }}
+              config={{ showLegend: true, animate: true }}
+              showToolbar
+            />
+          </Card>
+        </GridCol>
+      </Grid>
+    </Container>
+  ),
+  name: 'Waterfall Chart',
+};
+
 export const TooltipTestStory: Story = {
   render: () => (
     <Container className="u-py-6">
@@ -547,7 +816,7 @@ export const TooltipTestStory: Story = {
                       change: `${Math.floor(Math.random() * 10)}%`,
                     },
                   })),
-                  color: '#3b82f6',
+                  color: 'var(--atomix-primary)',
                 },
               ]}
               title="Tooltip Test Chart"

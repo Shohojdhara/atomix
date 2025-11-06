@@ -107,21 +107,13 @@ const BubbleChart = memo(
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: string[];
-        datasets: any[];
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
         if (!bubbleData.length) return null;
+
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
 
         // Calculate bubble sizes based on data
         const sizeValues = bubbleData.map(b => b.size);
@@ -203,7 +195,7 @@ const BubbleChart = memo(
         return (
           <>
             {bubbles}
-            {config?.showTooltips !== false &&
+            {showTooltips &&
               hoveredPoint &&
               hoveredPoint.pointIndex < bubbleData.length && (
                 <ChartTooltip

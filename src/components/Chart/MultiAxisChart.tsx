@@ -1,7 +1,7 @@
 import { forwardRef, memo } from 'react';
 import { ChartDataset, ChartProps } from '../../lib/types/components';
 import BaseChart from './BaseChart';
-import { ChartDataPoint } from './types';
+import { ChartDataPoint, ChartRenderContentParams } from './types';
 
 interface AxisConfig {
   /**
@@ -159,21 +159,14 @@ const MultiAxisChart = memo(
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: string[];
-        datasets: any[];
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
         if (!datasets.length) return null;
+
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const effectiveShowTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? showTooltips ?? true;
+        const effectiveShowGrid = toolbarState?.showGrid ?? true; // Grid visibility from toolbar
 
         const padding = 60;
         const chartWidth = scales.width - padding * 2;
@@ -228,7 +221,8 @@ const MultiAxisChart = memo(
         const elements: React.ReactNode[] = [];
 
         // Draw grid lines
-        for (let i = 0; i <= 5; i++) {
+        if (effectiveShowGrid) {
+          for (let i = 0; i <= 5; i++) {
           const y = padding + (i / 5) * chartHeight;
           elements.push(
             <line
@@ -237,10 +231,10 @@ const MultiAxisChart = memo(
               y1={y}
               x2={padding + chartWidth}
               y2={y}
-              stroke="#E5E7EB"
-              strokeWidth="1"
+              className="c-chart__grid"
             />
           );
+        }
         }
 
         // Draw datasets
@@ -250,7 +244,7 @@ const MultiAxisChart = memo(
           const color = dataset.color || colors[datasetIndex % colors.length];
 
           // Generate points
-          const points = dataset.data.map((point: any, pointIndex: number) => ({
+          const points = dataset.data.map((point: ChartDataPoint, pointIndex: number) => ({
             x: padding + (pointIndex / (dataset.data.length - 1)) * chartWidth,
             y: axisScale
               ? padding + chartHeight - (point.value - axisScale.min) * axisScale.scale
@@ -260,7 +254,7 @@ const MultiAxisChart = memo(
           // Generate line path
           let linePath = '';
           if (points.length > 0) {
-            linePath = `M ${points.map((p: any) => `${p.x},${p.y}`).join(' L ')}`;
+            linePath = `M ${points.map((p) => `${p.x},${p.y}`).join(' L ')}`;
           }
 
           // Draw area under line
@@ -283,13 +277,13 @@ const MultiAxisChart = memo(
               d={linePath}
               stroke={color}
               fill="none"
-              strokeWidth="2"
+              className="c-chart__data-line"
             />
           );
 
           // Draw data points
           if (showDataPoints) {
-            points.forEach((point: any, pointIndex: number) => {
+            points.forEach((point, pointIndex: number) => {
               const dataPoint = dataset.data[pointIndex];
               if (dataPoint) {
                 elements.push(
@@ -316,8 +310,8 @@ const MultiAxisChart = memo(
               y1={padding}
               x2={padding}
               y2={padding + chartHeight}
-              stroke={axis.color || '#000'}
-              strokeWidth="2"
+              stroke={axis.color || 'var(--atomix-text-primary)'}
+              className="c-chart__axis-line"
             />
           );
         });
@@ -330,8 +324,8 @@ const MultiAxisChart = memo(
               y1={padding + chartHeight}
               x2={padding + chartWidth}
               y2={padding + chartHeight}
-              stroke={axis.color || '#000'}
-              strokeWidth="2"
+              stroke={axis.color || 'var(--atomix-text-primary)'}
+              className="c-chart__axis-line"
             />
           );
         });
@@ -345,8 +339,8 @@ const MultiAxisChart = memo(
 
             elements.push(
               <g key={`legend-${index}`}>
-                <rect x={legendX} y={legendY} width="12" height="12" fill={color} />
-                <text x={legendX + 16} y={legendY + 10} fontSize="12" fill="#000">
+                <rect x={legendX} y={legendY} width="12" height="12" fill={color} className="c-chart__legend-item-color" />
+                <text x={legendX + 16} y={legendY + 10} className="c-chart__legend-item-text">
                   {dataset.label}
                 </text>
               </g>

@@ -1,6 +1,6 @@
 import { forwardRef, memo } from 'react';
 import BaseChart from './BaseChart';
-import { ChartProps } from './types';
+import { ChartProps, ChartRenderContentParams } from './types';
 
 export interface GaugeChartProps extends Omit<ChartProps, 'type' | 'datasets'> {
   /**
@@ -113,7 +113,7 @@ const GaugeChart = memo(
         endAngle = 0, // Default to right side (0 degrees)
         thickness = 0.2,
         showNeedle = true,
-        needleColor = '#334155',
+        needleColor = 'var(--atomix-brand-text-emphasis)',
         showValue = true,
         valueFormatter = (val: number) => val.toFixed(1),
         showMinMaxLabels = true,
@@ -135,21 +135,13 @@ const GaugeChart = memo(
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: string[];
-        datasets: any[];
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
         const width = scales.width;
+
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const shouldAnimate = toolbarState?.animationsEnabled ?? renderConfig?.animate ?? animate;
         const height = scales.height;
         const centerX = width / 2;
         const centerY = height / 2;
@@ -235,7 +227,7 @@ const GaugeChart = memo(
                 y1={y1}
                 x2={x2}
                 y2={y2}
-                stroke="#64748b"
+                stroke="var(--atomix-brand-border-subtle)"
                 strokeWidth="2"
               />
             );
@@ -253,7 +245,7 @@ const GaugeChart = memo(
                   textAnchor="middle"
                   dominantBaseline="middle"
                   fontSize="12"
-                  fill="#64748b"
+                  fill="var(--atomix-brand-text-emphasis)"
                 >
                   {tickValue}
                 </text>
@@ -278,7 +270,7 @@ const GaugeChart = memo(
                 y1={y1}
                 x2={x2}
                 y2={y2}
-                stroke="#94a3b8"
+                stroke="var(--atomix-brand-border-subtle)"
                 strokeWidth="1"
               />
             );
@@ -309,7 +301,7 @@ const GaugeChart = memo(
             textAnchor="middle"
             fontSize="24"
             fontWeight="bold"
-            fill="#1e293b"
+            fill="var(--atomix-primary-text-emphasis)"
           >
             {valueFormatter(clampedValue)}
           </text>
@@ -322,7 +314,7 @@ const GaugeChart = memo(
             y={labelPosition === 'top' ? centerY - radius * 0.7 : centerY + radius * 0.7}
             textAnchor="middle"
             fontSize="16"
-            fill="#64748b"
+            fill="var(--atomix-brand-text-emphasis)"
           >
             {label}
           </text>
@@ -333,7 +325,7 @@ const GaugeChart = memo(
             {/* Background track */}
             <path
               d={createArcPath(centerX, centerY, radius, startAngleRad, endAngleRad, thickness)}
-              fill="#e2e8f0"
+              fill="var(--atomix-secondary-bg-subtle)"
             />
 
             {/* Color zones */}
@@ -342,9 +334,9 @@ const GaugeChart = memo(
             {/* Value track */}
             <path
               d={createArcPath(centerX, centerY, radius, startAngleRad, valueAngle, thickness)}
-              fill="#3b82f6"
+              fill="var(--atomix-brand-bg-subtle)"
               style={{
-                transition: animate ? `all ${animationDuration}ms ${animationEasing}` : 'none',
+                transition: shouldAnimate ? `all ${animationDuration}ms ${animationEasing}` : 'none',
               }}
             />
 

@@ -1,6 +1,7 @@
 import { forwardRef, memo } from 'react';
 import BaseChart from './BaseChart';
-import { ChartProps } from './types';
+import ChartTooltip from './ChartTooltip';
+import { ChartProps, ChartRenderContentParams } from './types';
 
 export interface FunnelDataPoint {
   label: string;
@@ -132,21 +133,14 @@ const FunnelChart = memo(
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: string[];
-        datasets: any[];
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
         if (!funnelData.length) return null;
+
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
+        const shouldAnimate = toolbarState?.animationsEnabled ?? renderConfig?.animate ?? animate;
 
         const padding = 60;
         const chartWidth = scales.width - padding * 2;
@@ -282,7 +276,23 @@ const FunnelChart = memo(
           });
         }
 
-        return <g>{elements}</g>;
+        return (
+          <>
+            <g>{elements}</g>
+            {showTooltips && hoveredPoint && funnelData[hoveredPoint.pointIndex] && (
+              <ChartTooltip
+                dataPoint={funnelData[hoveredPoint.pointIndex]}
+                datasetLabel="Funnel Data"
+                datasetColor={funnelData[hoveredPoint.pointIndex]?.color || colors[hoveredPoint.pointIndex % colors.length]}
+                position={{
+                  x: hoveredPoint.clientX,
+                  y: hoveredPoint.clientY,
+                }}
+                visible={true}
+              />
+            )}
+          </>
+        );
       };
 
       // Convert funnelData to datasets format for BaseChart

@@ -5270,6 +5270,11 @@ export interface FooterProps extends BaseComponentProps {
    * Footer sections content
    */
   children?: ReactNode;
+
+  /**
+   * Whether footer should be glass
+   */
+  glass?: boolean;
 }
 
 /**

@@ -1,6 +1,7 @@
 import { forwardRef, memo, useCallback, useMemo, useState } from 'react';
 import BaseChart from './BaseChart';
-import { ChartProps } from './types';
+import ChartTooltip from './ChartTooltip';
+import { ChartProps, ChartRenderContentParams } from './types';
 
 interface HeatmapDataPoint {
   x: string | number;
@@ -10,7 +11,7 @@ interface HeatmapDataPoint {
   metadata?: Record<string, any>;
 }
 
-interface HeatmapChartProps extends Omit<ChartProps, 'type' | 'datasets' | 'variant'> {
+interface HeatmapChartProps extends Omit<ChartProps, 'type' | 'datasets' | 'variant' | 'data'> {
   /**
    * Heatmap data points
    */
@@ -125,39 +126,45 @@ const colorSchemes: Record<string, string[]> = {
     '#fcfdbf',
   ],
   blues: [
-    '#f7fbff',
-    '#deebf7',
-    '#c6dbef',
-    '#9ecae1',
-    '#6baed6',
-    '#4292c6',
-    '#2171b5',
-    '#08519c',
-    '#08306b',
+    'var(--atomix-blue-1)',
+    'var(--atomix-blue-2)',
+    'var(--atomix-blue-3)',
+    'var(--atomix-blue-4)',
+    'var(--atomix-blue-5)',
+    'var(--atomix-blue-6)',
+    'var(--atomix-blue-7)',
+    'var(--atomix-blue-8)',
+    'var(--atomix-blue-9)',
   ],
   reds: [
-    '#fff5f0',
-    '#fee0d2',
-    '#fcbba1',
-    '#fc9272',
-    '#fb6a4a',
-    '#ef3b2c',
-    '#cb181d',
-    '#a50f15',
-    '#67000d',
+    'var(--atomix-red-1)',
+    'var(--atomix-red-2)',
+    'var(--atomix-red-3)',
+    'var(--atomix-red-4)',
+    'var(--atomix-red-5)',
+    'var(--atomix-red-6)',
+    'var(--atomix-red-7)',
+    'var(--atomix-red-8)',
+    'var(--atomix-red-9)',
   ],
   greens: [
-    '#f7fcf5',
-    '#e5f5e0',
-    '#c7e9c0',
-    '#a1d99b',
-    '#74c476',
-    '#41ab5d',
-    '#238b45',
-    '#006d2c',
-    '#00441b',
+    'var(--atomix-green-1)',
+    'var(--atomix-green-2)',
+    'var(--atomix-green-3)',
+    'var(--atomix-green-4)',
+    'var(--atomix-green-5)',
+    'var(--atomix-green-6)',
+    'var(--atomix-green-7)',
+    'var(--atomix-green-8)',
+    'var(--atomix-green-9)',
   ],
-  github: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'],
+  github: [
+    'var(--atomix-gray-2)',
+    'var(--atomix-green-3)',
+    'var(--atomix-green-4)',
+    'var(--atomix-green-5)',
+    'var(--atomix-green-6)',
+  ],
 };
 
 const HeatmapChart = memo(
@@ -213,7 +220,7 @@ const HeatmapChart = memo(
       // Get color for a value
       const getColorForValue = useCallback(
         (value: number) => {
-          if (!processedData.matrix.length) return '#f0f0f0';
+          if (!processedData.matrix.length) return 'var(--atomix-secondary-bg-subtle)';
 
           // Determine min/max values
           let minValue = colorScale.min;
@@ -230,7 +237,8 @@ const HeatmapChart = memo(
           if (colorScale.scheme === 'custom' && colorScale.colors) {
             colors = colorScale.colors;
           } else {
-            colors = colorSchemes[colorScale.scheme] || colorSchemes.viridis;
+            const schemeKey = colorScale.scheme as keyof typeof colorSchemes;
+            colors = (colorSchemes[schemeKey] || colorSchemes.viridis) as string[];
           }
 
           // Calculate steps
@@ -254,21 +262,13 @@ const HeatmapChart = memo(
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: string[];
-        datasets: any[];
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
         const { matrix, xLabels, yLabels } = processedData;
+
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
         if (!matrix.length) {
           return null;
         }
@@ -289,17 +289,21 @@ const HeatmapChart = memo(
             <g>
               {/* Gradient definitions */}
               <defs>
-                {showColorLegend && (
-                  <linearGradient id="heatmap-legend-gradient" x1="0%" y1="100%" x2="0%" y2="0%">
-                    {colorSchemes[colorScale.scheme].map((color, i) => (
-                      <stop
-                        key={i}
-                        offset={`${(i / (colorSchemes[colorScale.scheme].length - 1)) * 100}%`}
-                        stopColor={color}
-                      />
-                    ))}
-                  </linearGradient>
-                )}
+                {showColorLegend && (() => {
+                  const schemeColors = colorSchemes[colorScale.scheme] || colorSchemes.viridis;
+                  if (!schemeColors || schemeColors.length === 0) return null;
+                  return (
+                    <linearGradient id="heatmap-legend-gradient" x1="0%" y1="100%" x2="0%" y2="0%">
+                      {schemeColors.map((color, i) => (
+                        <stop
+                          key={i}
+                          offset={`${(i / (schemeColors.length - 1)) * 100}%`}
+                          stopColor={color}
+                        />
+                      ))}
+                    </linearGradient>
+                  );
+                })()}
               </defs>
 
               {/* Grid cells */}
@@ -328,7 +332,15 @@ const HeatmapChart = memo(
                           transform: isHovered ? 'scale(1.05)' : 'scale(1)',
                           transformOrigin: 'center',
                         }}
-                        onClick={() => onDataPointClick?.(cell, rowIndex, colIndex)}
+                        onClick={() => {
+                          if (cell) {
+                            handlers.onDataPointClick?.({
+                              ...cell,
+                              label: cell.label || `${cell.x}, ${cell.y}`,
+                              value: cell.value,
+                            } as any, rowIndex, colIndex);
+                          }
+                        }}
                         onMouseEnter={e => {
                           setHoveredCell(cell);
                         }}
@@ -397,7 +409,7 @@ const HeatmapChart = memo(
                     height="200"
                     fill="url(#heatmap-legend-gradient)"
                     stroke="var(--atomix-border-color)"
-                    strokeWidth="1"
+                    className="c-chart__grid"
                   />
                   <text x="-10" y="-10" className="c-chart__heatmap-legend-title">
                     Values
@@ -411,6 +423,23 @@ const HeatmapChart = memo(
                 </g>
               )}
             </g>
+            {showTooltips && hoveredPoint && renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
+              <ChartTooltip
+                dataPoint={
+                  renderedDatasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!
+                }
+                datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
+                datasetColor={
+                  renderedDatasets[hoveredPoint.datasetIndex]?.color ||
+                  colors[hoveredPoint.datasetIndex % colors.length]
+                }
+                position={{
+                  x: hoveredPoint.clientX,
+                  y: hoveredPoint.clientY,
+                }}
+                visible={true}
+              />
+            )}
           </>
         );
       };
@@ -419,7 +448,11 @@ const HeatmapChart = memo(
       const datasets = [
         {
           label: 'Heatmap Data',
-          data: data,
+          data: data.map(d => ({
+            ...d,
+            label: d.label || `${d.x}, ${d.y}`,
+            value: d.value,
+          })),
         },
       ];
 

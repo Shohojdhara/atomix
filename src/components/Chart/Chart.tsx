@@ -20,6 +20,12 @@ interface ChartContextValue {
   setZoomLevel: (level: number) => void;
   setPanOffset: (offset: { x: number; y: number }) => void;
   setPanEnabled: (enabled: boolean) => void;
+  toolbarState: {
+    showTooltips?: boolean;
+    showLegend?: boolean;
+    animationsEnabled?: boolean;
+    showGrid?: boolean;
+  };
 }
 
 export const ChartContext = createContext<ChartContextValue | null>(null);
@@ -290,6 +296,12 @@ const Chart = memo(
           setZoomLevel,
           setPanOffset,
           setPanEnabled,
+          toolbarState: {
+            showTooltips: toolbarState.showTooltips,
+            showLegend: toolbarState.showLegend,
+            animationsEnabled: toolbarState.animationsEnabled,
+            showGrid: toolbarState.showGrid,
+          },
         }),
         [
           zoomLevel,
@@ -301,6 +313,10 @@ const Chart = memo(
           handlePanToggle,
           handleReset,
           setPanEnabled,
+          toolbarState.showTooltips,
+          toolbarState.showLegend,
+          toolbarState.animationsEnabled,
+          toolbarState.showGrid,
         ]
       );
 

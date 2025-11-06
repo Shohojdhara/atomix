@@ -2,7 +2,7 @@ import { forwardRef, memo } from 'react';
 import { PieChartOptions, usePieChart } from '../../lib/composables/usePieChart';
 import BaseChart from './BaseChart';
 import ChartTooltip from './ChartTooltip';
-import { ChartDataPoint, ChartProps } from './types';
+import { ChartDataPoint, ChartProps, ChartRenderContentParams } from './types';
 
 interface PieChartProps extends Omit<ChartProps, 'type'> {
   /**
@@ -31,25 +31,54 @@ const PieChart = memo(
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: any;
-        datasets: any;
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
         if (!slices.length) return null;
+
+        // Use actual container dimensions from scales
+        const width = scales.width;
+        const height = scales.height;
+        const centerX = width / 2;
+        const centerY = height / 2;
+        const outerRadius = (Math.min(width, height) / 2) * 0.8;
+
+        // Recalculate slices with actual dimensions
+        const recalculatedSlices = slices.map(slice => {
+          // Recalculate path with actual center and radius
+          const outerStartX = centerX + outerRadius * Math.cos(slice.startAngle);
+          const outerStartY = centerY + outerRadius * Math.sin(slice.startAngle);
+          const outerEndX = centerX + outerRadius * Math.cos(slice.endAngle);
+          const outerEndY = centerY + outerRadius * Math.sin(slice.endAngle);
+
+          const angle = slice.endAngle - slice.startAngle;
+          const largeArcFlag = angle > Math.PI ? 1 : 0;
+
+          const path = [
+            `M ${centerX},${centerY}`,
+            `L ${outerStartX},${outerStartY}`,
+            `A ${outerRadius},${outerRadius} 0 ${largeArcFlag},1 ${outerEndX},${outerEndY}`,
+            'Z',
+          ].join(' ');
+
+          // Recalculate label position
+          const labelRadius = outerRadius * 0.7;
+          const labelX = centerX + labelRadius * Math.cos(slice.midAngle);
+          const labelY = centerY + labelRadius * Math.sin(slice.midAngle);
+
+          return {
+            ...slice,
+            path,
+            labelPosition: { x: labelX, y: labelY },
+          };
+        });
+
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
 
         return (
           <>
-            {slices.map((slice, index) => {
+            {recalculatedSlices.map((slice, index) => {
               const isHovered = hoveredPoint?.pointIndex === index;
 
               return (
@@ -88,7 +117,7 @@ const PieChart = memo(
                 </g>
               );
             })}
-            {config?.showTooltips !== false && hoveredPoint && data[hoveredPoint.pointIndex] && (
+            {showTooltips && hoveredPoint && data[hoveredPoint.pointIndex] && (
               <ChartTooltip
                 dataPoint={data[hoveredPoint.pointIndex] as ChartDataPoint}
                 datasetLabel={renderedDatasets[0]?.label}

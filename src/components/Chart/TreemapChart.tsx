@@ -1,6 +1,7 @@
 import { forwardRef, memo, useCallback, useMemo, useState } from 'react';
 import BaseChart from './BaseChart';
 import { ChartProps } from '../../lib/types/components';
+import { ChartRenderContentParams } from './types';
 
 interface TreemapDataPoint {
   id: string;
@@ -179,16 +180,16 @@ const TreemapChart = memo(
           const { scheme, palette } = colorConfig;
 
           const defaultPalette = [
-            '#3b82f6',
-            '#ef4444',
-            '#10b981',
-            '#f59e0b',
-            '#8b5cf6',
-            '#06b6d4',
-            '#84cc16',
-            '#f97316',
-            '#ec4899',
-            '#6366f1',
+            'var(--atomix-primary)',
+            'var(--atomix-error)',
+            'var(--atomix-success)',
+            'var(--atomix-warning)',
+            'var(--atomix-primary-5)',
+            'var(--atomix-info)',
+            'var(--atomix-success-5)',
+            'var(--atomix-warning-7)',
+            'var(--atomix-primary-3)',
+            'var(--atomix-primary-7)',
           ];
 
           const colors = palette || defaultPalette;
@@ -197,7 +198,13 @@ const TreemapChart = memo(
             case 'category':
               return colors[index % colors.length];
             case 'depth':
-              const depthColors = ['#1e40af', '#3b82f6', '#60a5fa', '#93c5fd', '#dbeafe'];
+              const depthColors = [
+                'var(--atomix-blue-9)',
+                'var(--atomix-blue-6)',
+                'var(--atomix-blue-5)',
+                'var(--atomix-blue-4)',
+                'var(--atomix-blue-2)',
+              ];
               return depthColors[Math.min(depth, depthColors.length - 1)];
             case 'value':
               if (data.length > 0) {
@@ -349,65 +356,62 @@ const TreemapChart = memo(
         []
       );
 
-      // Build treemap layout
-      const treemapNodes = useMemo(() => {
-        if (!data.length) return [];
-
-        // Simple flat layout for leaf nodes only
-        const leafNodes = data.filter(item => !item.children || item.children.length === 0);
-        const totalValue = leafNodes.reduce((sum, node) => sum + node.value, 0);
-
-        let currentX = 0;
-        let currentY = 0;
-        const nodeWidth = 800 / Math.ceil(Math.sqrt(leafNodes.length));
-        const nodeHeight = 600 / Math.ceil(Math.sqrt(leafNodes.length));
-
-        return leafNodes.map((item, index) => {
-          const node: TreemapNode = {
-            id: item.id,
-            label: item.label,
-            value: item.value,
-            color: generateColor(item, 0, index) || 'transparent',
-            x: currentX,
-            y: currentY,
-            width: nodeWidth,
-            height: nodeHeight,
-            depth: 0,
-            children: [],
-            originalData: item,
-          };
-
-          currentX += nodeWidth;
-          if (currentX >= 800) {
-            currentX = 0;
-            currentY += nodeHeight;
-          }
-
-          return node;
-        });
-      }, [data, generateColor]);
-
       const renderContent = ({
         scales,
         colors,
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: string[];
-        datasets: any[];
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
-        if (!treemapNodes.length) return null;
+      }: ChartRenderContentParams) => {
+        if (!data.length) return null;
+
+        // Calculate available space with padding
+        const padding = 20;
+        const availableWidth = scales.width - padding * 2;
+        const availableHeight = scales.height - padding * 2;
+        const startX = padding;
+        const startY = padding;
+
+        // Get leaf nodes for treemap layout
+        const leafNodes = data.filter(item => !item.children || item.children.length === 0);
+        if (!leafNodes.length) return null;
+
+        const totalValue = leafNodes.reduce((sum, node) => sum + node.value, 0);
+
+        // Create treemap nodes with proper dimensions
+        const treemapNodes: TreemapNode[] = leafNodes.map((item, index) => ({
+          id: item.id,
+          label: item.label,
+          value: item.value,
+          color: generateColor(item, 0, index) || 'transparent',
+          x: 0, // Will be calculated by squarify
+          y: 0, // Will be calculated by squarify
+          width: 0, // Will be calculated by squarify
+          height: 0, // Will be calculated by squarify
+          depth: 0,
+          children: [],
+          originalData: item,
+        }));
+
+        // Apply squarified algorithm to layout nodes proportionally by value
+        if (algorithm === 'squarified' && totalValue > 0) {
+          squarify(treemapNodes, startX, startY, availableWidth, availableHeight);
+        } else {
+          // Fallback: simple grid layout (equal sizes)
+          const cols = Math.ceil(Math.sqrt(leafNodes.length));
+          const rows = Math.ceil(leafNodes.length / cols);
+          const nodeWidth = availableWidth / cols;
+          const nodeHeight = availableHeight / rows;
+
+          treemapNodes.forEach((node, index) => {
+            const col = index % cols;
+            const row = Math.floor(index / cols);
+            node.x = startX + col * nodeWidth;
+            node.y = startY + row * nodeHeight;
+            node.width = nodeWidth;
+            node.height = nodeHeight;
+          });
+        }
 
         return (
           <>

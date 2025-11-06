@@ -1333,7 +1333,6 @@ $chart-gradients: (
 .c-chart__data-point {
   cursor: pointer;
   transition: all $chart-transition-duration $chart-transition-timing !important;
-  transform-origin: center center;
 
   &:hover {
     opacity: 0.8;
@@ -1346,7 +1345,7 @@ $chart-gradients: (
   }
 
   &:active {
-    transform: scale(1.05);
+    transform: none;
   }
 
   // Enhanced interaction states
@@ -2355,14 +2354,6 @@ $chart-gradients: (
     font-size: $font-size-xs;
   }
 
-  // Simplified hover states on mobile
-  .c-chart:hover {
-    transform: none;
-  }
-
-  .c-chart__data-point:hover {
-    transform: scale(1.1);
-  }
 
   .pie-slice:hover,
   .donut-slice:hover {
@@ -2733,26 +2724,6 @@ $chart-gradients: (
   }
 }
 
-// Performance optimizations
-.c-chart {
-  // Enable hardware acceleration
-  will-change: transform, opacity;
-
-  // Optimize rendering
-  &.c-chart--optimized {
-    .c-chart__canvas {
-      transform: translateZ(0);
-      backface-visibility: hidden;
-    }
-
-    .c-chart__data-point,
-    .bar,
-    .pie-slice,
-    .donut-slice {
-      will-change: transform;
-    }
-  }
-}
 
 // CSS Grid support for complex layouts
 .c-chart--grid {

@@ -1,4 +1,4 @@
-import { forwardRef, memo, useCallback, useState } from 'react';
+import { forwardRef, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { CHART } from '../../lib/constants/components';
 import { Icon } from '../Icon';
 import type { PhosphorIconsType } from '../Icon/Icon';
@@ -149,6 +149,10 @@ const ChartToolbar = memo(
     ) => {
       const [showExportMenu, setShowExportMenu] = useState(false);
       const [showSettingsMenu, setShowSettingsMenu] = useState(false);
+      const exportMenuRef = useRef<HTMLDivElement>(null);
+      const settingsMenuRef = useRef<HTMLDivElement>(null);
+      const exportButtonRef = useRef<HTMLButtonElement>(null);
+      const settingsButtonRef = useRef<HTMLButtonElement>(null);
 
       // Compute effective defaults based on provided groups
       const effectiveDefaults =
@@ -169,6 +173,125 @@ const ChartToolbar = memo(
               animations: defaults.animations ?? true,
             }
           : defaults;
+
+      // Close menus when clicking outside
+      useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+          if (
+            exportMenuRef.current &&
+            !exportMenuRef.current.contains(event.target as Node) &&
+            exportButtonRef.current &&
+            !exportButtonRef.current.contains(event.target as Node)
+          ) {
+            setShowExportMenu(false);
+          }
+          if (
+            settingsMenuRef.current &&
+            !settingsMenuRef.current.contains(event.target as Node) &&
+            settingsButtonRef.current &&
+            !settingsButtonRef.current.contains(event.target as Node)
+          ) {
+            setShowSettingsMenu(false);
+          }
+        };
+
+        if (showExportMenu || showSettingsMenu) {
+          document.addEventListener('mousedown', handleClickOutside);
+          return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+          };
+        }
+      }, [showExportMenu, showSettingsMenu]);
+
+      // Handle keyboard shortcuts
+      useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+          // Prevent shortcuts when typing in inputs
+          if (
+            event.target instanceof HTMLInputElement ||
+            event.target instanceof HTMLTextAreaElement ||
+            (event.target instanceof HTMLElement && event.target.isContentEditable)
+          ) {
+            return;
+          }
+
+          // Ctrl/Cmd + R: Refresh
+          if ((event.ctrlKey || event.metaKey) && event.key === 'r') {
+            if (effectiveDefaults.refresh && onRefresh) {
+              event.preventDefault();
+              onRefresh();
+            }
+          }
+
+          // Ctrl/Cmd + E: Export
+          if ((event.ctrlKey || event.metaKey) && event.key === 'e') {
+            if (effectiveDefaults.export && onExport) {
+              event.preventDefault();
+              setShowExportMenu(!showExportMenu);
+            }
+          }
+
+          // F11: Fullscreen
+          if (event.key === 'F11') {
+            if (effectiveDefaults.fullscreen && onFullscreen) {
+              event.preventDefault();
+              onFullscreen(!state.isFullscreen);
+            }
+          }
+
+          // Space: Pan toggle
+          if (event.key === ' ' && effectiveDefaults.pan && onPanToggle) {
+            event.preventDefault();
+            onPanToggle(!state.panEnabled);
+          }
+
+          // R: Reset
+          if (event.key === 'r' || event.key === 'R') {
+            if (!event.ctrlKey && !event.metaKey && effectiveDefaults.reset) {
+              event.preventDefault();
+              onZoomReset?.();
+              onReset?.();
+            }
+          }
+
+          // +/-: Zoom
+          if (event.key === '+' || event.key === '=') {
+            if (effectiveDefaults.zoom && onZoomIn) {
+              event.preventDefault();
+              onZoomIn();
+            }
+          }
+          if (event.key === '-' || event.key === '_') {
+            if (effectiveDefaults.zoom && onZoomOut) {
+              event.preventDefault();
+              onZoomOut();
+            }
+          }
+
+          // Escape: Close menus
+          if (event.key === 'Escape') {
+            setShowExportMenu(false);
+            setShowSettingsMenu(false);
+          }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+          document.removeEventListener('keydown', handleKeyDown);
+        };
+      }, [
+        effectiveDefaults,
+        onRefresh,
+        onExport,
+        onFullscreen,
+        onPanToggle,
+        onZoomReset,
+        onReset,
+        onZoomIn,
+        onZoomOut,
+        state,
+        showExportMenu,
+      ]);
 
       // Generate chart-specific default actions
       const getDefaultActions = useCallback((): ChartToolbarGroup[] => {
@@ -299,6 +422,77 @@ const ChartToolbar = memo(
         state,
       ]);
 
+      // Generate display/visual actions
+      const getDisplayActions = useCallback((): ChartToolbarGroup[] => {
+        const actions: ChartToolbarAction[] = [];
+
+        // Grid toggle
+        if (effectiveDefaults.grid && onGridToggle) {
+          actions.push({
+            id: 'grid',
+            label: 'Grid',
+            icon: 'GridFour',
+            onClick: () => onGridToggle(!state.showGrid),
+            active: state.showGrid,
+            tooltip: 'Toggle grid lines',
+          });
+        }
+
+        // Legend toggle
+        if (effectiveDefaults.legend && onLegendToggle) {
+          actions.push({
+            id: 'legend',
+            label: 'Legend',
+            icon: 'List',
+            onClick: () => onLegendToggle(!state.showLegend),
+            active: state.showLegend,
+            tooltip: 'Toggle legend',
+          });
+        }
+
+        // Tooltips toggle
+        if (effectiveDefaults.tooltips && onTooltipsToggle) {
+          actions.push({
+            id: 'tooltips',
+            label: 'Tooltips',
+            icon: 'CursorText',
+            onClick: () => onTooltipsToggle(!state.showTooltips),
+            active: state.showTooltips,
+            tooltip: 'Toggle tooltips',
+          });
+        }
+
+        // Animations toggle
+        if (effectiveDefaults.animations && onAnimationsToggle) {
+          actions.push({
+            id: 'animations',
+            label: 'Animations',
+            icon: 'Sparkle',
+            onClick: () => onAnimationsToggle(!state.animationsEnabled),
+            active: state.animationsEnabled,
+            tooltip: 'Toggle animations',
+          });
+        }
+
+        return actions.length > 0
+          ? [
+              {
+                id: 'display-actions',
+                label: 'Display',
+                actions,
+                separator: true,
+              },
+            ]
+          : [];
+      }, [
+        effectiveDefaults,
+        onGridToggle,
+        onLegendToggle,
+        onTooltipsToggle,
+        onAnimationsToggle,
+        state,
+      ]);
+
       // Generate chart-specific tool actions
       const getToolActions = useCallback((): ChartToolbarGroup[] => {
         const actions: ChartToolbarAction[] = [];
@@ -310,6 +504,7 @@ const ChartToolbar = memo(
             label: 'Settings',
             icon: 'Gear',
             onClick: () => setShowSettingsMenu(!showSettingsMenu),
+            active: showSettingsMenu,
             tooltip: 'Chart settings',
           });
         }
@@ -330,7 +525,12 @@ const ChartToolbar = memo(
         groups && groups.length > 0
           ? groups
           : enableDefaults
-            ? [...getDefaultActions(), ...getViewActions(), ...getToolActions()]
+            ? [
+                ...getDefaultActions(),
+                ...getViewActions(),
+                ...getDisplayActions(),
+                ...getToolActions(),
+              ]
             : [];
 
       // Render action button
@@ -374,15 +574,21 @@ const ChartToolbar = memo(
           }
         };
 
+        const buttonRef =
+          action.id === 'export' ? exportButtonRef : action.id === 'settings' ? settingsButtonRef : null;
+
         return (
           <button
             key={action.id}
+            ref={buttonRef}
             className={`${CHART.ACTION_CLASS} ${action.variant ? `${CHART.ACTION_CLASS}--${action.variant}` : ''} ${action.active ? 'is-active' : ''}`}
             onClick={handleClick}
             disabled={action.disabled}
             title={action.tooltip}
             type="button"
             aria-label={action.label}
+            aria-pressed={action.active ? 'true' : 'false'}
+            aria-expanded={action.id === 'export' ? showExportMenu : action.id === 'settings' ? showSettingsMenu : undefined}
           >
             <Icon name={action.icon} size="sm" />
             {size === 'lg' && <span className={`${CHART.ACTION_CLASS}-label`}>{action.label}</span>}
@@ -395,7 +601,12 @@ const ChartToolbar = memo(
         if (!showExportMenu || !onExport) return null;
 
         return (
-          <div className={`${CHART.EXPORT_DROPDOWN_CLASS}`}>
+          <div
+            ref={exportMenuRef}
+            className={`${CHART.EXPORT_DROPDOWN_CLASS}`}
+            role="menu"
+            aria-label="Export formats"
+          >
             <div className={`${CHART.EXPORT_DROPDOWN_CLASS}-title`}>Export Formats</div>
             {exportFormats.map(format => (
               <button
@@ -407,6 +618,8 @@ const ChartToolbar = memo(
                 }}
                 disabled={state.isExporting}
                 type="button"
+                role="menuitem"
+                aria-label={`Export as ${format.toUpperCase()}`}
               >
                 {format.toUpperCase()}
               </button>
@@ -420,18 +633,78 @@ const ChartToolbar = memo(
         if (!showSettingsMenu) return null;
 
         return (
-          <div className={`${CHART.SETTINGS_MENU_CLASS}`}>
+          <div
+            ref={settingsMenuRef}
+            className={`${CHART.SETTINGS_MENU_CLASS}`}
+            role="menu"
+            aria-label="Chart settings"
+          >
             <div className={`${CHART.SETTINGS_MENU_CLASS}-title`}>Chart Settings</div>
             <div className={`${CHART.SETTINGS_MENU_CLASS}-content`}>
-              {state.zoomLevel && (
+              {/* Display toggles */}
+              {effectiveDefaults.grid && onGridToggle && (
                 <div className={`${CHART.SETTINGS_MENU_CLASS}-item`}>
+                  <label className={`${CHART.SETTINGS_MENU_CLASS}-toggle`}>
+                    <input
+                      type="checkbox"
+                      checked={state.showGrid ?? false}
+                      onChange={e => onGridToggle(e.target.checked)}
+                      aria-label="Toggle grid lines"
+                    />
+                    <span className={`${CHART.SETTINGS_MENU_CLASS}-label`}>Show Grid</span>
+                  </label>
+                </div>
+              )}
+              {effectiveDefaults.legend && onLegendToggle && (
+                <div className={`${CHART.SETTINGS_MENU_CLASS}-item`}>
+                  <label className={`${CHART.SETTINGS_MENU_CLASS}-toggle`}>
+                    <input
+                      type="checkbox"
+                      checked={state.showLegend ?? false}
+                      onChange={e => onLegendToggle(e.target.checked)}
+                      aria-label="Toggle legend"
+                    />
+                    <span className={`${CHART.SETTINGS_MENU_CLASS}-label`}>Show Legend</span>
+                  </label>
+                </div>
+              )}
+              {effectiveDefaults.tooltips && onTooltipsToggle && (
+                <div className={`${CHART.SETTINGS_MENU_CLASS}-item`}>
+                  <label className={`${CHART.SETTINGS_MENU_CLASS}-toggle`}>
+                    <input
+                      type="checkbox"
+                      checked={state.showTooltips ?? false}
+                      onChange={e => onTooltipsToggle(e.target.checked)}
+                      aria-label="Toggle tooltips"
+                    />
+                    <span className={`${CHART.SETTINGS_MENU_CLASS}-label`}>Show Tooltips</span>
+                  </label>
+                </div>
+              )}
+              {effectiveDefaults.animations && onAnimationsToggle && (
+                <div className={`${CHART.SETTINGS_MENU_CLASS}-item`}>
+                  <label className={`${CHART.SETTINGS_MENU_CLASS}-toggle`}>
+                    <input
+                      type="checkbox"
+                      checked={state.animationsEnabled ?? false}
+                      onChange={e => onAnimationsToggle(e.target.checked)}
+                      aria-label="Toggle animations"
+                    />
+                    <span className={`${CHART.SETTINGS_MENU_CLASS}-label`}>Enable Animations</span>
+                  </label>
+                </div>
+              )}
+
+              {/* Info items */}
+              {state.zoomLevel !== undefined && (
+                <div className={`${CHART.SETTINGS_MENU_CLASS}-item ${CHART.SETTINGS_MENU_CLASS}-item--info`}>
                   <span className={`${CHART.SETTINGS_MENU_CLASS}-label`}>Zoom Level</span>
                   <span className={`${CHART.SETTINGS_MENU_CLASS}-value`}>
                     {Math.round((state.zoomLevel || 1) * 100)}%
                   </span>
                 </div>
               )}
-              <div className={`${CHART.SETTINGS_MENU_CLASS}-item`}>
+              <div className={`${CHART.SETTINGS_MENU_CLASS}-item ${CHART.SETTINGS_MENU_CLASS}-item--info`}>
                 <span className={`${CHART.SETTINGS_MENU_CLASS}-label`}>Chart Type</span>
                 <span className={`${CHART.SETTINGS_MENU_CLASS}-value`}>{chartType}</span>
               </div>

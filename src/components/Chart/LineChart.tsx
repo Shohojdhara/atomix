@@ -2,7 +2,7 @@ import { forwardRef, memo, useState } from 'react';
 import { LineChartOptions, useLineChart } from '../../lib/composables/useLineChart';
 import BaseChart from './BaseChart';
 import ChartTooltip from './ChartTooltip';
-import { ChartProps } from './types';
+import { ChartProps, ChartRenderContentParams, ChartDataset, ChartDataPoint } from './types';
 
 interface LineChartProps extends Omit<ChartProps, 'type'> {
   /**
@@ -75,25 +75,18 @@ const LineChart = memo(
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: any;
-        datasets: any;
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
         if (!renderedDatasets.length) return null;
+
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
+        const shouldAnimate = toolbarState?.animationsEnabled ?? renderConfig?.animate ?? mergedLineOptions.smooth;
 
         return (
           <>
-            {renderedDatasets.map((dataset: any, datasetIndex: number) => {
+            {renderedDatasets.map((dataset: ChartDataset, datasetIndex: number) => {
               const color = dataset.color || colors[datasetIndex];
               const dataLength = dataset.data?.length || 0;
 
@@ -101,7 +94,7 @@ const LineChart = memo(
 
               // Generate points with proper coordinates
               const points =
-                dataset.data?.map((point: any, i: number) => ({
+                dataset.data?.map((point: ChartDataPoint, i: number) => ({
                   x: scales.xScale(i, dataLength),
                   y: scales.yScale(point.value),
                 })) || [];
@@ -109,7 +102,7 @@ const LineChart = memo(
               // Generate line path - ensure proper SVG path format
               const path = mergedLineOptions.smooth
                 ? generateSmoothPath(points)
-                : `M ${points.map((p: any) => `${p.x},${p.y}`).join(' L ')}`;
+                : `M ${points.map((p) => `${p.x},${p.y}`).join(' L ')}`;
 
               return (
                 <g key={`dataset-${datasetIndex}`}>
@@ -185,7 +178,7 @@ const LineChart = memo(
                 </g>
               );
             })}
-            {config?.showTooltips !== false &&
+            {showTooltips &&
               hoveredPoint &&
               renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
                 <ChartTooltip

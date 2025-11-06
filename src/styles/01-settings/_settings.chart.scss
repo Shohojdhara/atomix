@@ -164,8 +164,71 @@ $chart-bar-opacity-hover: 0.85 !default;
 // Chart Candlestick
 $chart-candlestick-wick-stroke-width: 1 !default;
 $chart-candlestick-wick-opacity: 0.8 !default;
+$chart-candlestick-wick-color: var(--atomix-tertiary-text-emphasis) !default;
+$chart-candlestick-candle-border-width: 1 !default;
+$chart-candlestick-candle-border-color: var(--atomix-border-color) !default;
+$chart-candlestick-candle-border-radius: $border-radius-sm !default;
+$chart-candlestick-transition-duration: $chart-transition-duration !default;
 $chart-volume-bar-opacity: 0.3 !default;
 $chart-volume-bar-opacity-hover: 0.6 !default;
+$chart-volume-bar-spacing: map.get($spacing-sizes, 1) !default;
+
+// Chart Treemap
+$chart-treemap-node-border-width: 1 !default;
+$chart-treemap-node-border-color: var(--atomix-border-color) !default;
+$chart-treemap-node-border-radius: $border-radius-sm !default;
+$chart-treemap-node-transition-duration: $chart-transition-duration !default;
+$chart-treemap-node-hover-scale: 1.02 !default;
+$chart-treemap-node-hover-shadow: $box-shadow-md !default;
+$chart-treemap-node-selected-border-width: 2 !default;
+$chart-treemap-node-selected-border-color: var(--atomix-primary-border-subtle) !default;
+$chart-treemap-node-selected-shadow: $box-shadow-lg !default;
+$chart-treemap-label-font-size: $font-size-sm !default;
+$chart-treemap-label-font-weight: $font-weight-medium !default;
+$chart-treemap-label-color: var(--atomix-text-primary) !default;
+$chart-treemap-label-padding: map.get($spacing-sizes, 2) !default;
+$chart-treemap-label-min-size: 1000 !default; // Minimum area to show label
+
+// Chart Funnel
+$chart-funnel-segment-border-width: 1 !default;
+$chart-funnel-segment-border-color: var(--atomix-border-color) !default;
+$chart-funnel-segment-border-radius: $border-radius-sm !default;
+$chart-funnel-segment-transition-duration: $chart-transition-duration !default;
+$chart-funnel-segment-gap: map.get($spacing-sizes, 1) !default;
+$chart-funnel-segment-hover-opacity: 0.9 !default;
+$chart-funnel-segment-hover-shadow: $box-shadow-sm !default;
+$chart-funnel-label-font-size: $font-size-sm !default;
+$chart-funnel-label-font-weight: $font-weight-medium !default;
+$chart-funnel-label-color: var(--atomix-text-primary) !default;
+$chart-funnel-label-padding: map.get($spacing-sizes, 2) !default;
+$chart-funnel-conversion-font-size: $font-size-xs !default;
+$chart-funnel-conversion-font-weight: $font-weight-semibold !default;
+$chart-funnel-conversion-color: var(--atomix-secondary-text-emphasis) !default;
+$chart-funnel-conversion-spacing: map.get($spacing-sizes, 1) !default;
+
+// Chart Heatmap
+$chart-heatmap-cell-border-width: 1 !default;
+$chart-heatmap-cell-border-color: var(--atomix-border-color) !default;
+$chart-heatmap-cell-border-radius: $border-radius-sm !default;
+$chart-heatmap-cell-transition-duration: $chart-transition-duration !default;
+$chart-heatmap-cell-hover-scale: 1.05 !default;
+$chart-heatmap-cell-hover-shadow: $box-shadow-sm !default;
+$chart-heatmap-cell-hover-border-width: 2 !default;
+$chart-heatmap-cell-spacing: map.get($spacing-sizes, 1) !default;
+$chart-heatmap-label-font-size: $font-size-xs !default;
+$chart-heatmap-label-font-weight: $font-weight-normal !default;
+$chart-heatmap-label-color: var(--atomix-text-primary) !default;
+$chart-heatmap-axis-label-font-size: $font-size-xs !default;
+$chart-heatmap-axis-label-font-weight: $font-weight-medium !default;
+$chart-heatmap-axis-label-color: var(--atomix-secondary-text-emphasis) !default;
+$chart-heatmap-axis-label-spacing: map.get($spacing-sizes, 2) !default;
+$chart-heatmap-legend-title-font-size: $font-size-sm !default;
+$chart-heatmap-legend-title-font-weight: $font-weight-semibold !default;
+$chart-heatmap-legend-title-color: var(--atomix-text-primary) !default;
+$chart-heatmap-legend-label-font-size: $font-size-xs !default;
+$chart-heatmap-legend-label-font-weight: $font-weight-normal !default;
+$chart-heatmap-legend-label-color: var(--atomix-secondary-text-emphasis) !default;
+$chart-heatmap-legend-spacing: map.get($spacing-sizes, 3) !default;
 
 // Chart Scatter
 $chart-scatter-point-radius: 4 !default;
@@ -180,7 +243,7 @@ $chart-brush-selection-opacity: 0.3 !default;
 
 // Chart Animations
 $chart-animation-duration: 1s !default;
-$chart-animation-delay: 0.1s !default;
+$chart-animation-delay: 1s !default;
 $chart-animation-easing: ease-out !default;
 $chart-real-time-pulse-duration: 2s !default;
 

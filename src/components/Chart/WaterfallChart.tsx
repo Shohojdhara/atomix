@@ -1,6 +1,7 @@
 import { forwardRef, memo } from 'react';
 import BaseChart from './BaseChart';
 import { ChartProps } from '../../lib/types/components';
+import { ChartRenderContentParams } from './types';
 
 export interface WaterfallDataPoint {
   label: string;
@@ -96,7 +97,7 @@ const WaterfallChart = memo(
     ) => {
       const {
         showConnectors = true,
-        connectorColor = '#f9fafb',
+        connectorColor = 'var(--atomix-gray-1)',
         connectorStyle = 'dashed',
         showValues = true,
         valuePosition = 'top',
@@ -108,13 +109,13 @@ const WaterfallChart = memo(
         },
         barWidth = 0.6,
         showCumulativeLine = false,
-        cumulativeLineColor = '#3b82f6',
+        cumulativeLineColor = 'var(--atomix-primary)',
         animate = true,
         animationDuration = 1000,
         animationDelay = 100,
         valueFormatter = value => value.toLocaleString(),
         showBaseline = true,
-        baselineColor = '#f3f4f6',
+        baselineColor = 'var(--atomix-gray-2)',
       } = waterfallOptions;
 
       const renderContent = ({
@@ -123,21 +124,13 @@ const WaterfallChart = memo(
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: string[];
-        datasets: any[];
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
         if (!waterfallData.length) return null;
+
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const shouldAnimate = toolbarState?.animationsEnabled ?? renderConfig?.animate ?? animate;
 
         const padding = 60;
         const chartWidth = scales.width - padding * 2;
@@ -193,7 +186,7 @@ const WaterfallChart = memo(
               x2={scales.width - padding}
               y2={baselineY}
               stroke={baselineColor}
-              strokeWidth="2"
+              className="c-chart__axis-line"
               opacity="0.7"
             />
           );
@@ -224,12 +217,23 @@ const WaterfallChart = memo(
               width={barWidthPx}
               height={Math.max(barHeight, 2)}
               fill={barColor}
-              rx="4"
-              className={`c-chart__waterfall-bar ${animate ? 'c-chart__waterfall-bar--animated' : ''}`}
+              className={`c-chart__waterfall-bar ${shouldAnimate ? 'c-chart__waterfall-bar--animated' : ''}`}
               style={{
-                animationDelay: animate ? `${index * animationDelay}ms` : '0ms',
+                animationDelay: shouldAnimate ? `${index * animationDelay}ms` : '0ms',
               }}
               onClick={() => handlers.onDataPointClick?.(item as any, 0, index)}
+              onMouseEnter={e => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                handlers.onPointHover(
+                  0,
+                  index,
+                  x,
+                  barTop,
+                  rect.left + rect.width / 2,
+                  rect.top + rect.height / 2
+                );
+              }}
+              onMouseLeave={handlers.onPointLeave}
             />
           );
 
@@ -355,7 +359,7 @@ const WaterfallChart = memo(
             x2={padding}
             y2={scales.height - padding}
             stroke="var(--atomix-gray-4)"
-            strokeWidth="2"
+            className="c-chart__axis-line"
           />
         );
 
@@ -368,7 +372,7 @@ const WaterfallChart = memo(
               x={x}
               y={scales.height - padding + 20}
               textAnchor="middle"
-              fontSize="11"
+              className="c-chart__axis-label"
               fill="var(--atomix-gray-6)"
               transform={`rotate(-45, ${x}, ${scales.height - padding + 20})`}
             >

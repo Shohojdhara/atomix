@@ -2,7 +2,7 @@ import { forwardRef, memo } from 'react';
 import { CHART } from '../../lib/constants/components';
 import BaseChart from './BaseChart';
 import ChartTooltip from './ChartTooltip';
-import { ChartProps, ChartDataPoint } from './types';
+import { ChartProps, ChartDataPoint, ChartRenderContentParams } from './types';
 
 interface CandlestickDataPoint {
   /**
@@ -119,17 +119,17 @@ const CandlestickChart = memo(
       const {
         showVolume = true,
         volumeHeightRatio = 0.2,
-        upColor = '#22c55e',
-        downColor = '#ef4444',
-        wickColor = '#64748b',
-        borderColor = '#e2e8f0',
+        upColor = 'var(--atomix-success-bg-subtle)',
+        downColor = 'var(--atomix-error-bg-subtle)',
+        wickColor = 'var(--atomix-brand-border-subtle)',
+        borderColor = 'var(--atomix-primary-border-subtle)',
         showMovingAverages = false,
         movingAveragePeriods = [7, 21],
-        movingAverageColors = ['#f59e0b', '#8b5cf6'],
+        movingAverageColors = ['var(--atomix-warning-bg-subtle)', 'var(--atomix-warning-border-subtle)'],
         dateFormat = 'short',
         dateFormatter,
         showGrid = true,
-        gridColor = '#e2e8f0',
+        gridColor = 'var(--atomix-brand-text-emphasis)',
         showTooltips = true,
       } = candlestickOptions;
 
@@ -184,21 +184,13 @@ const CandlestickChart = memo(
         datasets: renderedDatasets,
         handlers,
         hoveredPoint,
-      }: {
-        scales: any;
-        colors: string[];
-        datasets: any[];
-        handlers: any;
-        hoveredPoint: {
-          datasetIndex: number;
-          pointIndex: number;
-          x: number;
-          y: number;
-          clientX: number;
-          clientY: number;
-        } | null;
-      }) => {
+        toolbarState,
+        config: renderConfig,
+      }: ChartRenderContentParams) => {
         if (!candlestickData.length) return null;
+
+        // Use toolbar state if available, fallback to config for backward compatibility
+        const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? candlestickOptions.showTooltips ?? true;
 
         const padding = 40;
         const chartWidth = scales.width - padding * 2;
@@ -276,7 +268,15 @@ const CandlestickChart = memo(
           return (
             <g key={`candle-${index}`}>
               {/* Wick */}
-              <line x1={x} y1={highY} x2={x} y2={lowY} stroke={wickColor} strokeWidth="1" />
+              <line
+                x1={x}
+                y1={highY}
+                x2={x}
+                y2={lowY}
+                stroke={wickColor}
+                strokeWidth="1"
+                className="c-chart__candlestick-wick"
+              />
               {/* Candle body */}
               <rect
                 x={x - candleWidth / 2}
@@ -299,7 +299,7 @@ const CandlestickChart = memo(
                   );
                 }}
                 onMouseLeave={handlers.onPointLeave}
-                onClick={() => handlers.onDataPointClick?.(candle, 0, index)}
+                onClick={() => handlers.onDataPointClick?.(candle as unknown as ChartDataPoint, 0, index)}
               />
             </g>
           );
@@ -340,7 +340,7 @@ const CandlestickChart = memo(
         if (showMovingAverages) {
           movingAveragePeriods.forEach((period, periodIndex) => {
             const movingAverage = calculateMovingAverage(candlestickData, period);
-            const color = movingAverageColors?.[periodIndex] || '#f59e0b';
+            const color = movingAverageColors?.[periodIndex] || 'var(--atomix-warning)';
 
             const points = movingAverage
               .map((value, i) => {
@@ -373,7 +373,7 @@ const CandlestickChart = memo(
             {candles}
             {volumeBars}
             {movingAverages}
-            {config?.showTooltips !== false &&
+            {showTooltips &&
               hoveredPoint &&
               candlestickData[hoveredPoint.pointIndex] && (
                 <ChartTooltip
