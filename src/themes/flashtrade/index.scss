@@ -1,0 +1,36 @@
+/*!
+ * Flash Trade Theme
+ * Dark crypto perpetuals trading platform theme for Atomix Design System
+ *
+ * Features:
+ * - Dark trading interface aesthetic
+ * - High contrast for financial data
+ * - Trading-focused color palette (cyan/green for profits, red for losses)
+ * - Glass morphism effects for modern UI
+ * - Optimized typography for trading information
+ * - Fast animations for real-time data
+ * - AtomixGlass component integration
+ * - Light and dark mode support
+ */
+
+// Settings
+@use '01-settings' as settings;
+
+// Tools
+@use '02-tools' as tools;
+
+// Generic
+@use '03-generic' as generic;
+
+// Elements
+@use '04-elements' as elements;
+
+// Objects
+@use '05-objects' as objects;
+
+// Components
+@use '06-components' as components;
+
+// Utilities
+@use '99-utilities' as utilities;
+

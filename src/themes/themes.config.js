@@ -67,6 +67,26 @@ export const themesConfig = {
       status: 'experimental',
       a11y: { contrastTarget: 4.5, modes: ['light', 'dark'] },
     },
+    flashtrade: {
+      name: 'Flash Trade',
+      description: 'Dark crypto perpetuals trading platform theme with glass morphism effects',
+      author: 'Atomix Design System',
+      version: '1.0.0',
+      tags: ['dark', 'crypto', 'trading', 'glass', 'modern', 'decentralized'],
+      supportsDarkMode: true,
+      features: [
+        'Dark trading interface aesthetic',
+        'High contrast for financial data',
+        'Trading-focused color palette (cyan/green for profits, red for losses)',
+        'Glass morphism effects for modern UI',
+        'Optimized typography for trading information',
+        'Fast animations for real-time data',
+        'AtomixGlass component integration',
+        'Light and dark mode support',
+      ],
+      status: 'beta',
+      a11y: { contrastTarget: 4.5, modes: ['light', 'dark'] },
+    },
   },
 
   // Build configuration

@@ -1,7 +1,10 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { AdminDashboard } from './AdminDashboard';
 import CoffeeShop from './CoffeeShop';
 import Ecommerce from './Ecommerce';
+import Fintech from './Fintech';
+import FlashTrade from './FlashTrade';
 import Healthcare from './Healthcare';
 import HomePage from './HomePage';
 import ISP from './ISP';
@@ -70,4 +73,49 @@ export const HealthcareShowcase: Story = {
 
 export const TravelShowcase: Story = {
   render: () => <Travel />,
+};
+
+export const FintechShowcase: Story = {
+  render: () => <Fintech />,
+  decorators: [
+    Story => (
+      <div
+        style={{
+          backgroundImage:
+            'url(https://images.unsplash.com/photo-1641495623770-a5dc919f38d2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1287)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+          position: 'relative',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const FlashTradeShowcase: Story = {
+  render: () => <FlashTrade />,
+  decorators: [
+    Story => (
+      <div
+        style={{
+          background:
+            'url(https://images.unsplash.com/photo-1639762681485-074b7f938ba0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1823), linear-gradient(0deg, rgba(var(--atomix-warning-rgb), 0.8) 0%, rgba(var(--atomix-primary-rgb), 0.5) 60%, rgba(var(--atomix-dark-rgb), 0.2) 100%)',
+          backgroundBlendMode: 'soft-light',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+          position: 'relative',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
 };

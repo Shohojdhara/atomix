@@ -5,6 +5,7 @@ export { ComponentGallery } from './ComponentGallery';
 export { AdminDashboard } from './AdminDashboard';
 export { CoffeeShop } from './CoffeeShop';
 export { Ecommerce } from './Ecommerce';
+export { default as Fintech } from './Fintech';
 export { Healthcare } from './Healthcare';
 export { HomePage } from './HomePage';
 export { ISP } from './ISP';

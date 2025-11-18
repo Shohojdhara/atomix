@@ -1,6 +1,6 @@
 /*!
- * Applemix Theme Configuration
- * Core configuration variables for the Apple-inspired liquid glass theme
+ * Flash Trade Theme Configuration
+ * Core configuration variables for the Flash Trade perpetuals trading platform theme
  */
 
 @use '../../../styles/01-settings/settings.config' with (
@@ -10,6 +10,7 @@
 $ENV: 'dev';
 
 // CSS variable prefix for theme namespacing
-$theme-name: 'applemix';
+$theme-name: 'flashtrade';
 $theme-version: '1.0.0';
 $theme-author: 'Atomix Design System';
+

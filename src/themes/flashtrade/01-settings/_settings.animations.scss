@@ -1,0 +1,11 @@
+/*!
+ * Flash Trade Theme Animations
+ * Smooth, fast animations optimized for trading platform responsiveness
+ */
+
+@use '../../../styles/01-settings/settings.animations' with (
+  $transition-base: 0.15s ease-in-out,
+  $transition-fast: 0.1s ease-in-out,
+  $transition-slow: 0.3s ease-in-out
+);
+

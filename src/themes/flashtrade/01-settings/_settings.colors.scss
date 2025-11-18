@@ -1,0 +1,82 @@
+/*!
+ * Flash Trade Theme Colors
+ * Dark crypto trading platform color palette
+ * Features high contrast, trading-focused colors with glass morphism support
+ */
+
+@use 'sass:color';
+@use '../../../styles/02-tools/tools.to-rgb' as *;
+@use '../../../styles/02-tools/tools.color-functions' as *;
+@use '../../../styles/01-settings/settings.colors' with (
+  $white: #ffffff,
+  $black: #000000,
+  $color-contrast-dark: #0a0a0a,
+  $color-contrast-light: #f5f5f7,
+  // Red palette - for negative trades, errors, stop loss
+  $red-1: #1a0000,
+  $red-2: #330000,
+  $red-3: #4d0000,
+  $red-4: #660000,
+  $red-5: #800000,
+  $red-6: #ff1a1a,
+  $red-7: #ff3333,
+  $red-8: #ff4d4d,
+  $red-9: #ff6666,
+  $red-10: #ff8080,
+  // Green palette - for positive trades, profits, success
+  $green-1: #001a0d,
+  $green-2: #00331a,
+  $green-3: #004d26,
+  $green-4: #006633,
+  $green-5: #008040,
+  $green-6: #00ff80,
+  $green-7: #1aff8c,
+  $green-8: #33ff99,
+  $green-9: #4dffa6,
+  $green-10: #66ffb3,
+  // Yellow palette - for warnings, pending states
+  $yellow-1: #1a1a00,
+  $yellow-2: #333300,
+  $yellow-3: #4d4d00,
+  $yellow-4: #666600,
+  $yellow-5: #808000,
+  $yellow-6: #ffff00,
+  $yellow-7: #ffff1a,
+  $yellow-8: #ffff33,
+  $yellow-9: #ffff4d,
+  $yellow-10: #ffff66,
+  // Blue palette - for info, links, secondary actions
+  $blue-1: #000d1a,
+  $blue-2: #001a33,
+  $blue-3: #00264d,
+  $blue-4: #003366,
+  $blue-5: #004080,
+  $blue-6: #0080ff,
+  $blue-7: #1a8cff,
+  $blue-8: #3399ff,
+  $blue-9: #4da6ff,
+  $blue-10: #66b3ff,
+  // Gray palette - for backgrounds, borders, text
+  $gray-1: #0a0a0a,
+  $gray-2: #141414,
+  $gray-3: #1e1e1e,
+  $gray-4: #282828,
+  $gray-5: #323232,
+  $gray-6: #3c3c3c,
+  $gray-7: #505050,
+  $gray-8: #646464,
+  $gray-9: #787878,
+  $gray-10: #8c8c8c,
+  // Primary palette - Flash Trade brand cyan/green (trading theme)
+  $primary-1: #001a14,
+  $primary-2: #003328,
+  $primary-3: #004d3c,
+  $primary-4: #006650,
+  $primary-5: #008064,
+  $primary-6: #00ffc8,
+  $primary-7: #1affd2,
+  $primary-8: #33ffdc,
+  $primary-9: #4dffe6,
+  $primary-10: #66fff0
+);
+
