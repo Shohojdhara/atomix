@@ -89,6 +89,7 @@ export function useAtomixGlass({
   elasticity = 0.05,
   onClick,
   debugCornerRadius = false,
+  debugOverLight = false,
   enablePerformanceMonitoring = false,
   children,
 }: UseAtomixGlassOptions): UseAtomixGlassReturn {
@@ -313,7 +314,21 @@ export function useAtomixGlass({
                 }
               }
               
-              setDetectedOverLight(avgLuminance > threshold);
+              const isOverLightDetected = avgLuminance > threshold;
+              setDetectedOverLight(isOverLightDetected);
+              
+              // Debug logging
+              if (debugOverLight) {
+                console.log('[AtomixGlass] OverLight Detection:', {
+                  avgLuminance: avgLuminance.toFixed(3),
+                  threshold: threshold.toFixed(3),
+                  detected: isOverLightDetected,
+                  validSamples,
+                  totalLuminance: totalLuminance.toFixed(3),
+                  configType: typeof overLight === 'object' ? 'object' : typeof overLight,
+                  timestamp: new Date().toISOString(),
+                });
+              }
             } else {
               // Invalid luminance calculation, default to false
               setDetectedOverLight(false);
@@ -335,6 +350,15 @@ export function useAtomixGlass({
     } else if (typeof overLight === 'boolean') {
       // For boolean values, disable auto-detection
       setDetectedOverLight(false);
+      
+      // Debug logging for boolean mode
+      if (debugOverLight) {
+        console.log('[AtomixGlass] OverLight Mode: boolean', {
+          value: overLight,
+          autoDetection: false,
+          timestamp: new Date().toISOString(),
+        });
+      }
     }
 
     if (typeof window.matchMedia !== 'function') {
@@ -381,7 +405,7 @@ export function useAtomixGlass({
       console.error('AtomixGlass: Error setting up media queries:', error);
       return undefined;
     }
-  }, [overLight, glassRef]);
+  }, [overLight, glassRef, debugOverLight]);
 
   // Mouse tracking
   const mouseMoveThrottleRef = useRef<number | null>(null);
@@ -747,7 +771,7 @@ export function useAtomixGlass({
       const validatedBrightness = validateConfigValue(objConfig.brightness, 0.5, 2.0, baseConfig.brightness);
       const validatedSaturationBoost = validateConfigValue(objConfig.saturationBoost, 0.5, 3.0, baseConfig.saturationBoost);
       
-      return {
+      const finalConfig = {
         ...baseConfig,
         threshold: validatedThreshold,
         opacity: validatedOpacity * hoverIntensity * activeIntensity,
@@ -755,10 +779,64 @@ export function useAtomixGlass({
         brightness: validatedBrightness + mouseInfluence * 0.15,
         saturationBoost: validatedSaturationBoost + mouseInfluence * 0.4,
       };
+      
+      // Debug logging
+      if (debugOverLight) {
+        console.log('[AtomixGlass] OverLight Config:', {
+          isOverLight,
+          config: {
+            threshold: finalConfig.threshold.toFixed(3),
+            opacity: finalConfig.opacity.toFixed(3),
+            contrast: finalConfig.contrast.toFixed(3),
+            brightness: finalConfig.brightness.toFixed(3),
+            saturationBoost: finalConfig.saturationBoost.toFixed(3),
+            shadowIntensity: finalConfig.shadowIntensity.toFixed(3),
+            borderOpacity: finalConfig.borderOpacity.toFixed(3),
+          },
+          input: {
+            threshold: objConfig.threshold,
+            opacity: objConfig.opacity,
+            contrast: objConfig.contrast,
+            brightness: objConfig.brightness,
+            saturationBoost: objConfig.saturationBoost,
+          },
+          dynamic: {
+            mouseInfluence: mouseInfluence.toFixed(3),
+            hoverIntensity: hoverIntensity.toFixed(3),
+            activeIntensity: activeIntensity.toFixed(3),
+          },
+          timestamp: new Date().toISOString(),
+        });
+      }
+      
+      return finalConfig;
+    }
+
+    // Debug logging for non-object configs
+    if (debugOverLight) {
+      console.log('[AtomixGlass] OverLight Config:', {
+        isOverLight,
+        configType: typeof overLight === 'boolean' ? (overLight ? 'true' : 'false') : overLight,
+        config: {
+          threshold: baseConfig.threshold.toFixed(3),
+          opacity: baseConfig.opacity.toFixed(3),
+          contrast: baseConfig.contrast.toFixed(3),
+          brightness: baseConfig.brightness.toFixed(3),
+          saturationBoost: baseConfig.saturationBoost.toFixed(3),
+          shadowIntensity: baseConfig.shadowIntensity.toFixed(3),
+          borderOpacity: baseConfig.borderOpacity.toFixed(3),
+        },
+        dynamic: {
+          mouseInfluence: mouseInfluence.toFixed(3),
+          hoverIntensity: hoverIntensity.toFixed(3),
+          activeIntensity: activeIntensity.toFixed(3),
+        },
+        timestamp: new Date().toISOString(),
+      });
     }
 
     return baseConfig;
-  }, [overLight, getEffectiveOverLight, mouseOffset, isHovered, isActive, validateConfigValue]);
+  }, [overLight, getEffectiveOverLight, mouseOffset, isHovered, isActive, validateConfigValue, debugOverLight]);
 
   // Event handlers
   const handleMouseEnter = useCallback(() => setIsHovered(true), []);

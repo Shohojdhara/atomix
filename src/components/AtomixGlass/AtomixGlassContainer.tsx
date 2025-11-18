@@ -252,12 +252,12 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         ];
 
         return {
-          backdropFilter: `${blurLayers.join(' ')} saturate(${Math.min(dynamicSaturation, 200)}%) url(#${filterId})`,
+          backdropFilter: `${blurLayers.join(' ')} saturate(${Math.min(dynamicSaturation, 200)}%) `,
         };
       } catch (error) {
         console.warn('AtomixGlassContainer: Error calculating backdrop style', error);
         return {
-          backdropFilter: `blur(${blurAmount}px) saturate(${saturation}%) url(#${filterId})`,
+          backdropFilter: `blur(${blurAmount}px) saturate(${saturation}%)`,
         };
       }
     }, [filterId, liquidBlur, saturation, blurAmount]);
@@ -288,6 +288,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
               ].join(', ')
             : '0 0 20px rgba(0, 0, 0, 0.15) inset, 0 4px 8px rgba(0, 0, 0, 0.08) inset',
           '--atomix-glass-container-shadow-opacity': effectiveDisableEffects ? 0 : 1,
+          // Background and shadow values use design token-aligned RGB values
           '--atomix-glass-container-bg': overLight
             ? `linear-gradient(${180 + mx * 0.5}deg, rgba(255, 255, 255, 0.1) 0%, transparent 20%, transparent 80%, rgba(0, 0, 0, 0.05) 100%)`
             : 'none',
@@ -332,6 +333,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
           style={{
             padding: `var(--atomix-glass-container-padding)`,
             borderRadius: `var(--atomix-glass-container-radius)`,
+            boxShadow: `var(--atomix-glass-container-box-shadow)`,
             transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
           }}
           onMouseEnter={onMouseEnter}
@@ -355,15 +357,17 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
               }
               shaderMapUrl={shaderMapUrl}
             />
+            {/* Enhanced Apple Liquid Glass Inner Shadow Layer */}
+
             <span
               className={ATOMIX_GLASS.FILTER_OVERLAY_CLASS}
               style={{
+                filter: `url(#${filterId})`,
                 backdropFilter: `var(--atomix-glass-container-backdrop)`,
                 borderRadius: `var(--atomix-glass-container-radius)`,
               }}
             />
 
-            {/* Enhanced Apple Liquid Glass Inner Shadow Layer */}
             <div
               className={ATOMIX_GLASS.FILTER_SHADOW_CLASS}
               style={{
@@ -380,8 +384,9 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             className={ATOMIX_GLASS.CONTENT_CLASS}
             style={{
               position: 'relative',
-              zIndex: 1,
+              
               textShadow: `var(--atomix-glass-container-text-shadow)`,
+              ...(elasticity > 0 ? { zIndex: 100 } : {}),
             }}
           >
             {children}

@@ -89,9 +89,38 @@ const meta: Meta<typeof AtomixGlass> = {
       table: { defaultValue: { summary: '"0 0"' } },
     },
     overLight: {
-      control: 'boolean',
-      description: 'Whether the glass is over a light background (default: false)',
-      table: { defaultValue: { summary: 'false' } },
+      control: {
+        type: 'select',
+        labels: {
+          false: 'false (Dark Background)',
+          true: 'true (Light Background)',
+          auto: 'auto (Auto-detect)',
+          object: 'object (Custom Config)',
+        },
+      },
+      options: [false, true, 'auto', 'object'],
+      description: `OverLight configuration mode. Can be:
+- **boolean**: Explicit control (true/false)
+- **'auto'**: Auto-detect background brightness
+- **object**: Auto-detect with custom settings (threshold, opacity, contrast, brightness, saturationBoost)
+
+See documentation for detailed examples of each mode.`,
+      table: { 
+        defaultValue: { summary: '"auto"' },
+        type: { summary: 'boolean | "auto" | OverLightObjectConfig' },
+      },
+      mapping: {
+        false: false,
+        true: true,
+        auto: 'auto',
+        object: {
+          threshold: 0.75,
+          opacity: 0.6,
+          contrast: 1.8,
+          brightness: 1.0,
+          saturationBoost: 1.5,
+        },
+      },
     },
     mode: {
       control: 'select',
@@ -145,6 +174,11 @@ const meta: Meta<typeof AtomixGlass> = {
     enablePerformanceMonitoring: {
       control: 'boolean',
       description: 'Enable performance monitoring (default: false)',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    debugOverLight: {
+      control: 'boolean',
+      description: 'Enable debug logging for overLight detection and configuration (default: false). Logs detailed information to console about auto-detection results and final config values.',
       table: { defaultValue: { summary: 'false' } },
     },
   },

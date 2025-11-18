@@ -11,12 +11,22 @@ import { useAtomixGlass } from '../../lib/composables/useAtomixGlass';
  * - Hardware-accelerated glass effects with SVG filters
  * - Mouse-responsive liquid distortion
  * - Dynamic border-radius extraction from children CSS properties
- * - Automatic light/dark theme detection
+ * - Automatic light/dark theme detection via overLight prop
  * - Accessibility and performance optimizations
  * - Multiple displacement modes (standard, polar, prominent, shader)
+ * - Design token integration for consistent theming
+ * - Focus ring support for keyboard navigation
+ * - Responsive breakpoints for mobile optimization
+ * - Enhanced ARIA attributes for screen readers
+ *
+ * Design System Compliance:
+ * - Uses design tokens for opacity, spacing, and colors
+ * - Follows BEM methodology for class naming
+ * - Implements focus-ring mixin for accessibility
+ * - Supports reduced motion and high contrast preferences
  *
  * @example
- * // Dynamic border-radius extraction
+ * // Basic usage with dynamic border-radius extraction
  * <AtomixGlass>
  *   <div style={{ borderRadius: '12px' }}>Content with 12px radius</div>
  * </AtomixGlass>
@@ -25,6 +35,44 @@ import { useAtomixGlass } from '../../lib/composables/useAtomixGlass';
  * // Manual border-radius override
  * <AtomixGlass cornerRadius={20}>
  *   <div>Content with 20px glass radius</div>
+ * </AtomixGlass>
+ *
+ * @example
+ * // Interactive glass with click handler
+ * <AtomixGlass onClick={() => console.log('Clicked')} aria-label="Glass card">
+ *   <div>Clickable content</div>
+ * </AtomixGlass>
+ *
+ * @example
+ * // OverLight - Boolean mode (explicit control)
+ * <AtomixGlass overLight={true}>
+ *   <div>Content on light background</div>
+ * </AtomixGlass>
+ *
+ * @example
+ * // OverLight - Auto-detection mode
+ * <AtomixGlass overLight="auto">
+ *   <div>Content with auto-detected background</div>
+ * </AtomixGlass>
+ *
+ * @example
+ * // OverLight - Object config with custom settings
+ * <AtomixGlass 
+ *   overLight={{
+ *     threshold: 0.8,
+ *     opacity: 0.6,
+ *     contrast: 1.8,
+ *     brightness: 1.0,
+ *     saturationBoost: 1.5
+ *   }}
+ * >
+ *   <div>Content with custom overLight config</div>
+ * </AtomixGlass>
+ *
+ * @example
+ * // Debug mode for overLight detection
+ * <AtomixGlass overLight="auto" debugOverLight={true}>
+ *   <div>Content with debug logging enabled</div>
  * </AtomixGlass>
  */
 export function AtomixGlass({
@@ -57,6 +105,7 @@ export function AtomixGlass({
   enableOverLightLayers = ATOMIX_GLASS.DEFAULTS.ENABLE_OVER_LIGHT_LAYERS,
   enablePerformanceMonitoring = false,
   debugCornerRadius = false,
+  debugOverLight = false,
 }: AtomixGlassProps) {
   const glassRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -93,6 +142,7 @@ export function AtomixGlass({
     elasticity,
     onClick,
     debugCornerRadius,
+    debugOverLight,
     enablePerformanceMonitoring,
     children,
   });
@@ -108,12 +158,17 @@ export function AtomixGlass({
   );
 
   // Calculate base style with transforms (only dynamic values)
+  // Performance: willChange is set only when transforms are active and effects are enabled
   const baseStyle = useMemo(
     () => ({
       ...style,
-      ...(elasticity !== 0 && {
+      ...(elasticity !== 0 && !effectiveDisableEffects && {
         transform: transformStyle,
-        willChange: effectiveDisableEffects ? 'auto' : 'transform',
+        willChange: 'transform',
+      }),
+      // Reset willChange when effects are disabled to allow browser optimization
+      ...(effectiveDisableEffects && {
+        willChange: 'auto',
       }),
     }),
     [style, transformStyle, effectiveDisableEffects, elasticity]
@@ -247,23 +302,44 @@ export function AtomixGlass({
   // Optimize: extract overLightConfig.opacity to avoid depending on whole object
   const overLightOpacity = overLightConfig.opacity;
 
+  // Read opacity design tokens from CSS custom properties
   const opacityValues = useMemo(() => {
-    // Design token opacity values: 0.5 = opacity-50, 0.4 = opacity-40, 0.8 = opacity-80
-    const OPACITY_50 = 0.5; // var(--atomix-opacity-50, 0.5)
-    const OPACITY_40 = 0.4; // var(--atomix-opacity-40, 0.4)
-    const OPACITY_80 = 0.8; // var(--atomix-opacity-80, 0.8)
-    const OPACITY_0 = 0; // var(--atomix-opacity-0, 0)
-    const BASE_OVER_LIGHT_OPACITY = 0.4; // var(--atomix-opacity-40, 0.4)
+    // Get opacity values from CSS custom properties with fallbacks
+    // These align with design tokens: --atomix-opacity-50, --atomix-opacity-40, etc.
+    let opacity50 = 0.5;
+    let opacity40 = 0.4;
+    let opacity80 = 0.8;
+    let opacity0 = 0;
+
+    // Try to read from CSS custom properties if available (SSR-safe)
+    if (typeof window !== 'undefined' && glassRef.current) {
+      try {
+        const computedStyle = window.getComputedStyle(glassRef.current);
+        const opacity50Value = computedStyle.getPropertyValue('--atomix-opacity-50').trim();
+        const opacity40Value = computedStyle.getPropertyValue('--atomix-opacity-40').trim();
+        const opacity80Value = computedStyle.getPropertyValue('--atomix-opacity-80').trim();
+        const opacity0Value = computedStyle.getPropertyValue('--atomix-opacity-0').trim();
+
+        if (opacity50Value) opacity50 = parseFloat(opacity50Value) || 0.5;
+        if (opacity40Value) opacity40 = parseFloat(opacity40Value) || 0.4;
+        if (opacity80Value) opacity80 = parseFloat(opacity80Value) || 0.8;
+        if (opacity0Value) opacity0 = parseFloat(opacity0Value) || 0;
+      } catch (error) {
+        // Fallback to defaults if reading fails
+      }
+    }
+
+    const BASE_OVER_LIGHT_OPACITY = opacity40; // Uses design token
     const OVER_OPACITY_MULTIPLIER = 1.1; // Dynamic multiplier for overlay
     
     return {
-      hover1: isHovered || isActive ? OPACITY_50 : OPACITY_0,
-      hover2: isActive ? OPACITY_50 : OPACITY_0,
-      hover3: isHovered ? OPACITY_40 : isActive ? OPACITY_80 : OPACITY_0,
-      base: isOverLight ? overLightOpacity || BASE_OVER_LIGHT_OPACITY : OPACITY_0,
-      over: isOverLight ? (overLightOpacity || BASE_OVER_LIGHT_OPACITY) * OVER_OPACITY_MULTIPLIER : OPACITY_0,
+      hover1: isHovered || isActive ? opacity50 : opacity0,
+      hover2: isActive ? opacity50 : opacity0,
+      hover3: isHovered ? opacity40 : isActive ? opacity80 : opacity0,
+      base: isOverLight ? overLightOpacity || BASE_OVER_LIGHT_OPACITY : opacity0,
+      over: isOverLight ? (overLightOpacity || BASE_OVER_LIGHT_OPACITY) * OVER_OPACITY_MULTIPLIER : opacity0,
     };
-  }, [isHovered, isActive, isOverLight, overLightOpacity]);
+  }, [isHovered, isActive, isOverLight, overLightOpacity, glassRef]);
 
   // Generate CSS variables for layers (only dynamic values)
   // Optimize: extract specific properties from objects to minimize dependencies
@@ -301,11 +377,13 @@ export function AtomixGlass({
   const opacityValuesOver = opacityValues.over;
 
   const glassVars = useMemo(() => {
-    // Use CSS custom properties for white/black colors
-    // Note: Dynamic rgba values in gradients use RGB values for glass effect calculations
-    // These align with design tokens: --atomix-white-rgb and --atomix-black-rgb
-    const whiteColor = '255, 255, 255'; // Matches --atomix-white / --atomix-white-rgb
-    const blackColor = '0, 0, 0'; // Matches --atomix-black / --atomix-black-rgb
+    // RGB color values for rgba() functions
+    // Note: CSS doesn't support rgba(var(--rgb), opacity) syntax, so we use direct values
+    // These values align with design tokens: --atomix-white-rgb and --atomix-black-rgb
+    // The actual RGB values are defined in SCSS and should match these fallbacks
+    // TODO: Consider reading from CSS custom properties if browser support improves
+    const whiteColor = '255, 255, 255'; // Matches --atomix-white-rgb design token
+    const blackColor = '0, 0, 0'; // Matches --atomix-black-rgb design token
 
     return {
       // Standard CSS custom properties for dynamic values
@@ -319,10 +397,11 @@ export function AtomixGlass({
         baseStylePosition !== 'fixed' ? adjustedSizeWidth : `${adjustedSizeWidth}px`,
       '--atomix-glass-height':
         baseStylePosition !== 'fixed' ? adjustedSizeHeight : `${adjustedSizeHeight}px`,
-      // Border width: 1.5px (matches original implementation)
-      '--atomix-glass-border-width': '1.5px',
+      // Border width: Use spacing token for consistency
+      '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.09375rem)',
       '--atomix-glass-blend-mode': gradientIsOverLight ? 'multiply' : 'overlay',
       // Dynamic gradients and backgrounds
+      // Note: RGB values use design token-aligned constants (white: 255,255,255; black: 0,0,0)
       '--atomix-glass-border-gradient-1': `linear-gradient(${gradientBorderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${gradientBorderOpacity1}) ${gradientBorderStop1}%, rgba(${whiteColor}, ${gradientBorderOpacity2}) ${gradientBorderStop2}%, rgba(${whiteColor}, 0) 100%)`,
       '--atomix-glass-border-gradient-2': `linear-gradient(${gradientBorderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${gradientBorderOpacity3}) ${gradientBorderStop1}%, rgba(${whiteColor}, ${gradientBorderOpacity4}) ${gradientBorderStop2}%, rgba(${whiteColor}, 0) 100%)`,
       '--atomix-glass-hover-1-opacity': opacityValuesHover1,
@@ -396,10 +475,11 @@ export function AtomixGlass({
       tabIndex={onClick ? (tabIndex ?? 0) : tabIndex}
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedBy}
-      aria-disabled={onClick ? false : undefined}
+      aria-disabled={onClick && effectiveDisableEffects ? true : onClick ? false : undefined}
+      aria-pressed={onClick && isActive ? true : onClick ? false : undefined}
       onKeyDown={onClick ? handleKeyDown : undefined}
     >
-     
+      
 
       <AtomixGlassContainer
         ref={glassRef}
@@ -431,7 +511,7 @@ export function AtomixGlass({
               ? aberrationIntensity * ATOMIX_GLASS.CONSTANTS.MULTIPLIERS.SHADER_ABERRATION
               : aberrationIntensity
         }
-        glassSize={{width: adjustedSizeWidth, height: adjustedSizeHeight} as any}
+        glassSize={glassSize}
         padding={padding}
         mouseOffset={effectiveDisableEffects ? { x: 0, y: 0 } : mouseOffset}
         globalMousePosition={effectiveDisableEffects ? { x: 0, y: 0 } : globalMousePosition}
@@ -454,7 +534,7 @@ export function AtomixGlass({
       >
         {children}
       </AtomixGlassContainer>
-       {Boolean(onClick) && (
+      {Boolean(onClick) && (
         <>
           {/* Hover layers - opacity and background set via CSS variables in SCSS */}
           <div className={ATOMIX_GLASS.HOVER_1_CLASS} />
