@@ -409,7 +409,7 @@
     border-radius: $border-radius-md;
     box-shadow: $box-shadow-lg;
     padding: map.get($spacing-sizes, 1);
-    min-width: calc(map.get($spacing-sizes, 7.5) * 4);
+    min-width: calc(map.get($spacing-sizes, 7) * 4);
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
@@ -465,7 +465,7 @@
     border-radius: $border-radius-md;
     box-shadow: $box-shadow-lg;
     padding: map.get($spacing-sizes, 2);
-    min-width: calc(map.get($spacing-sizes, 7.5) * 5);
+    min-width: calc(map.get($spacing-sizes, 7) * 5);
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
