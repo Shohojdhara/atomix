@@ -158,6 +158,28 @@
     }
   }
 
+  &--glass {
+    // Glass variant specific styles
+    // Background and borders are handled by AtomixGlass
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    // Ensure content is visible through glass
+    #{$root}__content {
+      position: relative;
+    }
+
+    #{$root}__canvas {
+      position: relative;
+    }
+
+    // Toolbar should remain visible
+    #{$root}__toolbar {
+      position: relative;
+    }
+  }
+
   // State Modifiers
   // =============================================================================
   &--disabled {

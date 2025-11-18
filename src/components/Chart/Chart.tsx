@@ -4,6 +4,8 @@ import { useChartToolbar } from '../../lib/composables/useChartToolbar';
 import { CHART } from '../../lib/constants/components';
 import { ChartProps } from './types';
 import ChartToolbar from './ChartToolbar';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import type { AtomixGlassProps } from '../../lib/types/components';
 
 // Create a context to share chart state between Chart and its children
 import { createContext, useContext } from 'react';
@@ -72,12 +74,14 @@ const Chart = memo(
         fullscreen,
         onDataPointClick,
         onLegendItemClick,
+        glass,
         ...props
       },
       ref
     ) => {
       const [isFullscreen, setIsFullscreen] = useState(false);
       const [isExporting, setIsExporting] = useState(false);
+      const chartContainerRef = useRef<HTMLDivElement>(null);
 
       // Internal zoom and pan state
       const [zoomLevel, setZoomLevel] = useState(1);
@@ -280,7 +284,40 @@ const Chart = memo(
         );
       };
 
-      const fullChartClass = `${chartClass}${isFullscreen ? ` ${CHART.CLASSES.FULLSCREEN}` : ''}`;
+      const fullChartClass = `${chartClass}${isFullscreen ? ` ${CHART.CLASSES.FULLSCREEN}` : ''}${glass ? ` c-chart--glass` : ''}`;
+
+      // Default glass settings optimized for charts
+      const defaultChartGlassProps: Partial<AtomixGlassProps> = useMemo(
+        () => ({
+          displacementScale: 25,
+          blurAmount: 0, // Charts need clarity, no blur
+          saturation: 180,
+          aberrationIntensity: 1.5,
+          elasticity: 0, // No elastic effect for charts
+          enableLiquidBlur: false, // Keep it simple
+          enableBorderEffect: true,
+          mode: 'standard' as const,
+          mouseContainer: chartContainerRef,
+          reducedMotion: false,
+        }),
+        []
+      );
+
+      // Determine glass props
+      const glassProps = useMemo(() => {
+        if (!glass) return null;
+        if (glass === true) {
+          return defaultChartGlassProps;
+        }
+        return { ...defaultChartGlassProps, ...glass };
+      }, [glass, defaultChartGlassProps]);
+
+      // Extract border-radius from chart styles (use design token)
+      const chartBorderRadius = useMemo(() => {
+        // Use chart border-radius design token (typically 12px from $border-radius-lg)
+        // AtomixGlass will extract from children if not provided
+        return glassProps?.cornerRadius || undefined;
+      }, [glassProps?.cornerRadius]);
 
       // Create context value
       const chartContextValue = useMemo<ChartContextValue>(
@@ -320,16 +357,16 @@ const Chart = memo(
         ]
       );
 
-      return (
-        <ChartContext.Provider value={chartContextValue}>
-          <div
-            ref={ref}
-            className={fullChartClass}
-            aria-label={ariaLabel || `${type} chart`}
-            role="img"
-            tabIndex={0}
-            {...props}
-          >
+      // Chart content component
+      const chartContent = (
+        <div
+          ref={chartContainerRef}
+          className={fullChartClass}
+          aria-label={ariaLabel || `${type} chart`}
+          role="img"
+          tabIndex={0}
+          {...props}
+        >
             {(title || subtitle || showToolbar) && (
               <div
                 className={`${CHART.HEADER_CLASS} u-d-flex u-justify-between u-align-items-start u-gap-4`}
@@ -380,6 +417,30 @@ const Chart = memo(
                 <div className={CHART.CANVAS_CLASS}>{children}</div>
               )}
             </div>
+          </div>
+      );
+
+      // Wrap with AtomixGlass if glass is enabled
+      const wrappedChart = glassProps ? (
+        <AtomixGlass
+          {...glassProps}
+          cornerRadius={chartBorderRadius}
+          style={{
+            width: '100%',
+            height: '100%',
+            ...glassProps.style,
+          }}
+        >
+          {chartContent}
+        </AtomixGlass>
+      ) : (
+        chartContent
+      );
+
+      return (
+        <ChartContext.Provider value={chartContextValue}>
+          <div ref={ref} style={{ width: '100%', height: '100%' }}>
+            {wrappedChart}
           </div>
         </ChartContext.Provider>
       );

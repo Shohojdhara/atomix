@@ -222,7 +222,7 @@ const MultiAxisChart = memo(
 
         // Draw grid lines
         if (effectiveShowGrid) {
-          for (let i = 0; i <= 5; i++) {
+        for (let i = 0; i <= 5; i++) {
           const y = padding + (i / 5) * chartHeight;
           elements.push(
             <line

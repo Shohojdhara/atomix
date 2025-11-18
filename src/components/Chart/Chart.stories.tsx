@@ -50,6 +50,94 @@ const meta: Meta<typeof Chart> = {
 export default meta;
 type Story = StoryObj<typeof Chart>;
 
+// Glass Variant Story
+export const GlassVariant: Story = {
+  render: () => {
+    const sampleData = [
+      { label: 'Jan', value: 65 },
+      { label: 'Feb', value: 78 },
+      { label: 'Mar', value: 90 },
+      { label: 'Apr', value: 81 },
+      { label: 'May', value: 56 },
+      { label: 'Jun', value: 55 },
+      { label: 'Jul', value: 40 },
+    ];
+
+    const datasets = [
+      {
+        label: 'Sales',
+        data: sampleData,
+        color: 'var(--atomix-primary)',
+      },
+    ];
+
+    return (
+      <div
+        style={{
+          padding: '2rem',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          minHeight: '100vh',
+        }}
+      >
+        <Container>
+          <Grid>
+            <GridCol col={12}>
+              <h2 style={{ color: 'white', marginBottom: '2rem' }}>Chart Glass Variant</h2>
+            </GridCol>
+            <GridCol col={12} md={6}>
+              <LineChart
+                title="Sales Performance"
+                subtitle="Monthly revenue data"
+                datasets={datasets}
+                glass={true}
+                showToolbar={true}
+                config={{
+                  showTooltips: true,
+                  animate: true,
+                }}
+              />
+            </GridCol>
+            <GridCol col={12} md={6}>
+              <BarChart
+                title="Revenue by Month"
+                subtitle="Q1-Q2 comparison"
+                datasets={datasets}
+                glass={{
+                  displacementScale: 30,
+                  saturation: 200,
+                  mode: 'polar',
+                }}
+                showToolbar={true}
+              />
+            </GridCol>
+            <GridCol col={12} md={6}>
+              <PieChart
+                title="Market Share"
+                data={sampleData}
+                glass={true}
+                showToolbar={true}
+              />
+            </GridCol>
+            <GridCol col={12} md={6}>
+              <AreaChart
+                title="Growth Trend"
+                subtitle="Year over year"
+                datasets={datasets}
+                glass={{
+                  blurAmount: 0,
+                  saturation: 180,
+                  enableBorderEffect: true,
+                }}
+                showToolbar={true}
+              />
+            </GridCol>
+          </Grid>
+        </Container>
+      </div>
+    );
+  },
+};
+
 // Data generators
 const generateData = (points = 20) =>
   Array.from({ length: points }, (_, i) => ({

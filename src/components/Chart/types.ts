@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { BaseComponentProps, Size, Variant } from '../../lib/types/components';
+import { BaseComponentProps, Size, Variant, AtomixGlassProps } from '../../lib/types/components';
 
 /**
  * Chart types - comprehensive list
@@ -117,6 +117,12 @@ export interface ChartProps extends BaseComponentProps {
    * Chart variant
    */
   variant?: Variant;
+
+  /**
+   * Glass morphism effect
+   * When true, applies default glass effect. When an object, allows custom glass configuration.
+   */
+  glass?: boolean | AtomixGlassProps;
 
   /**
    * Chart title
