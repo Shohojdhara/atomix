@@ -60,6 +60,20 @@ export function Header() {
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | className | `string` | `''` | Additional CSS class names |
+| style | `React.CSSProperties` | - | Inline styles |
+| value | `'light' \| 'dark'` | - | Controlled mode value |
+| defaultValue | `'light' \| 'dark'` | `'light'` | Default mode (uncontrolled) |
+| onChange | `(mode: ColorMode) => void` | - | Callback when mode changes |
+| lightIcon | `React.ReactNode` | Moon SVG | Custom light mode icon |
+| darkIcon | `React.ReactNode` | Sun SVG | Custom dark mode icon |
+| size | `'sm' \| 'md' \| 'lg'` | `'md'` | Size variant |
+| disabled | `boolean` | `false` | Disable the toggle |
+| storageKey | `string` | `'atomix-color-mode'` | localStorage key for persistence |
+| dataAttribute | `string` | `'data-atomix-color-mode'` | data attribute name for body element |
+| disableStorage | `boolean` | `false` | Disable localStorage persistence |
+| disableSystemPreference | `boolean` | `false` | Disable system preference detection |
+| aria-label | `string` | Auto-generated | Custom aria-label |
+| showTooltip | `boolean` | `true` | Show tooltip on hover |
 
 ## Examples
 
@@ -96,6 +110,106 @@ export function StyledExample() {
       <ColorModeToggle className="custom-theme-toggle" />
     </div>
   );
+}
+```
+
+### Size Variants
+
+```tsx
+import { ColorModeToggle } from '@shohojdhara/atomix';
+
+export function SizeExample() {
+  return (
+    <div style={{ display: 'flex', gap: '1rem' }}>
+      <ColorModeToggle size="sm" />
+      <ColorModeToggle size="md" />
+      <ColorModeToggle size="lg" />
+    </div>
+  );
+}
+```
+
+### Controlled Mode
+
+```tsx
+import { useState } from 'react';
+import { ColorModeToggle, type ColorMode } from '@shohojdhara/atomix';
+
+export function ControlledExample() {
+  const [mode, setMode] = useState<ColorMode>('light');
+
+  return (
+    <div>
+      <ColorModeToggle value={mode} onChange={setMode} />
+      <p>Current mode: {mode}</p>
+    </div>
+  );
+}
+```
+
+### With Callback
+
+```tsx
+import { ColorModeToggle } from '@shohojdhara/atomix';
+
+export function CallbackExample() {
+  const handleModeChange = (mode: ColorMode) => {
+    console.log('Color mode changed to:', mode);
+    // Perform additional actions
+  };
+
+  return <ColorModeToggle onChange={handleModeChange} />;
+}
+```
+
+### Custom Icons
+
+```tsx
+import { ColorModeToggle } from '@shohojdhara/atomix';
+import { Moon, Sun } from '@phosphor-icons/react';
+
+export function CustomIconsExample() {
+  return (
+    <ColorModeToggle
+      lightIcon={<Moon size={24} weight="fill" />}
+      darkIcon={<Sun size={24} weight="fill" />}
+    />
+  );
+}
+```
+
+### Disabled State
+
+```tsx
+import { ColorModeToggle } from '@shohojdhara/atomix';
+
+export function DisabledExample() {
+  return <ColorModeToggle disabled />;
+}
+```
+
+### Custom Storage Key
+
+```tsx
+import { ColorModeToggle } from '@shohojdhara/atomix';
+
+export function CustomStorageExample() {
+  return (
+    <ColorModeToggle
+      storageKey="my-app-theme"
+      dataAttribute="data-theme"
+    />
+  );
+}
+```
+
+### Without Storage
+
+```tsx
+import { ColorModeToggle } from '@shohojdhara/atomix';
+
+export function NoStorageExample() {
+  return <ColorModeToggle disableStorage />;
 }
 ```
 

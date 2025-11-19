@@ -12,26 +12,63 @@
   cursor: pointer;
   padding: rem(8px);
   border-radius: 50%;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
   color: var(--#{$prefix}body-color);
 
-  &:hover {
+  &:hover:not(:disabled) {
     @include dynamic-background(rgba(0, 0, 0, 0.05));
   }
 
-  &:focus {
+  &:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px var(--#{$prefix}primary);
   }
 
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+
   svg {
-    width: rem(24px);
-    height: rem(24px);
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  // Size variants
+  &--sm {
+    padding: rem(6px);
+  }
+
+  &--md {
+    padding: rem(8px);
+  }
+
+  &--lg {
+    padding: rem(10px);
+  }
+
+  // Disabled state
+  &--disabled,
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 
   [data-#{$prefix}theme='dark'] & {
-    &:hover {
+    &:hover:not(:disabled) {
       @include dynamic-background(rgba(255, 255, 255, 0.1));
+    }
+  }
+
+  // Reduced motion support
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    svg {
+      transition: none;
+    }
+
+    &:active:not(:disabled) {
+      transform: none;
     }
   }
 }
