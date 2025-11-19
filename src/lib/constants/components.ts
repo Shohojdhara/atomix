@@ -1604,7 +1604,7 @@ export const ATOMIX_GLASS = {
     CORNER_RADIUS: 16, // Default border-radius matching design system
     PADDING: '0 0',
     MODE: 'standard' as const,
-    OVER_LIGHT: 'auto' as const,
+    OVER_LIGHT: false as const,
     ENABLE_OVER_LIGHT_LAYERS: true,
   },
   CONSTANTS: {

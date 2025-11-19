@@ -334,7 +334,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             padding: `var(--atomix-glass-container-padding)`,
             borderRadius: `var(--atomix-glass-container-radius)`,
             boxShadow: `var(--atomix-glass-container-box-shadow)`,
-            transition: effectiveReducedMotion ? 'none' : 'all 0.2s ease-out',
           }}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}

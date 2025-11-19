@@ -7,7 +7,7 @@
   // CSS custom property defaults
   --atomix-glass-radius: var(--atomix-radius-md, 16px);
   --atomix-glass-transform: none;
-  --atomix-glass-transition: opacity var(--atomix-transition-duration, 0.2s) ease-out;
+  --atomix-glass-transition: all var(--atomix-transition-duration, 0s) ease-out;
   --atomix-glass-position: absolute;
   --atomix-glass-container-width: 100%;
   --atomix-glass-container-height: 100%;
@@ -138,14 +138,13 @@
     height: var(--atomix-glass-container-height);
     position: relative;
     border-radius: var(--atomix-glass-radius);
-    transition: border-radius 0.25s ease-out;
+    transition: var(--atomix-glass-transition);
   }
 
   &__inner {
     width: var(--atomix-glass-container-width);
     height: var(--atomix-glass-container-height);
     position: relative;
-    // Padding and border-radius are set dynamically via inline styles
     border-radius: var(--atomix-glass-radius);
   }
 
@@ -202,10 +201,12 @@
     // When both --dark and --over-light modifiers are present
     &--dark#{&}--over-light {
       opacity: var(--atomix-opacity-50, 0.5);
+      z-index: -1;
     }
 
     &--black#{&}--over-light {
       opacity: var(--atomix-opacity-25, 0.25);
+      
     }
 
     // Hidden state modifier

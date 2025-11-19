@@ -561,7 +561,6 @@ export function AtomixGlass({
           width: adjustedSize.width,
           borderRadius: `${effectiveCornerRadius}px`,
           transform: baseStyle.transform,
-          transition: baseStyle.transition,
         }}
       />
       <div
@@ -580,7 +579,6 @@ export function AtomixGlass({
           width: adjustedSize.width,
           borderRadius: `${effectiveCornerRadius}px`,
           transform: baseStyle.transform,
-          transition: baseStyle.transition,
         }}
       />
       {shouldRenderOverLightLayers && (
