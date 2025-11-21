@@ -75,6 +75,8 @@ function UserProfile() {
 | `disabled` | `boolean` | `false` | Whether the avatar is disabled |
 | `onClick` | `(event: MouseEvent) => void` | - | Click event handler |
 | `className` | `string` | `''` | Additional CSS classes |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | Glass morphism effect for the avatar |
+| `style` | `React.CSSProperties` | - | Custom style for the avatar |
 
 ### AvatarGroup Props
 

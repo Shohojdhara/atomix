@@ -64,6 +64,8 @@ function MyComponent() {
 | `onClick` | `() => void` | - | Click event handler |
 | `as` | `ElementType` | `'button'` | The element type to render as |
 | `className` | `string` | `''` | Additional CSS classes |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | Glass morphism effect for the button |
+| `style` | `React.CSSProperties` | - | Custom style for the button |
 
 ### Variant Options
 

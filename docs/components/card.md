@@ -43,7 +43,7 @@ function ProductCard() {
 
 ### HTML/CSS
 
-```html
+```
 <div class="c-card">
   <div class="c-card__header">
     <img src="https://example.com/product.jpg" alt="Product image" class="c-card__image" />
@@ -79,6 +79,8 @@ function ProductCard() {
 | `children` | `ReactNode` | - | Custom content for the card body |
 | `onClick` | `(event: MouseEvent) => void` | - | Click event handler |
 | `className` | `string` | `''` | Additional CSS classes |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | Applies a glass morphism effect to the card |
+| `style` | `React.CSSProperties` | - | Custom style for the card |
 
 ## Examples
 
@@ -423,7 +425,7 @@ The component uses BEM methodology for CSS classes:
 
 ### Customization Examples
 
-```css
+```
 /* Custom card variant */
 .c-card--featured {
   border: 2px solid var(--atomix-primary);

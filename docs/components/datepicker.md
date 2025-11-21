@@ -77,10 +77,14 @@ function MyComponent() {
 | `showTodayButton` | `boolean` | `true` | Whether to show the "Today" button |
 | `showWeekNumbers` | `boolean` | `false` | Whether to show week numbers |
 | `inline` | `boolean` | `false` | Whether to display inline (always visible) |
-| `placement` | `DatePickerPlacement` | `'bottom-start'` | Placement of the dropdown calendar |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size of the input field |
+| `id` | `string` | - | ID for the input element |
+| `name` | `string` | - | Name for the input element |
 | `className` | `string` | `''` | Additional CSS classes |
+| `placement` | `DatePickerPlacement` | `'bottom-start'` | Placement of the dropdown calendar |
 | `inputClassName` | `string` | `''` | Additional CSS classes for the input |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size of the input field |
+| `style` | `React.CSSProperties` | - | Custom style for the datepicker component |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | Applies a glass morphism effect to the calendar dropdown |
 
 ### DateRange Interface
 

@@ -21,6 +21,8 @@ Callouts are versatile components that help draw attention to important informat
 | `oneLine` | `boolean` | `false` | Display in compact one-line mode |
 | `toast` | `boolean` | `false` | Display as toast notification |
 | `className` | `string` | `''` | Additional CSS classes |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | Glass morphism effect for the callout |
+| `style` | `React.CSSProperties` | `undefined` | Custom style for the callout |
 
 ### Variant Options
 

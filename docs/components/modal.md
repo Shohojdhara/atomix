@@ -25,6 +25,8 @@ Modals are used to focus user attention on a specific task or piece of content w
 | `footer` | `ReactNode` | `undefined` | Footer content |
 | `children` | `ReactNode` | `undefined` | Modal body content |
 | `className` | `string` | `''` | Additional CSS classes |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | Glass morphism effect for the modal |
+| `style` | `React.CSSProperties` | `undefined` | Custom style for the modal |
 
 ## Usage Examples
 

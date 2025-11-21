@@ -19,6 +19,8 @@ Accordions are essential for managing content density and improving user experie
 | `icon` | `ReactNode` | `undefined` | Custom expand/collapse icon |
 | `disabled` | `boolean` | `false` | Disable accordion interaction |
 | `className` | `string` | `''` | Additional CSS classes |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | Glass morphism effect for the accordion |
+| `style` | `React.CSSProperties` | `undefined` | Custom style for the accordion |
 
 ## Usage Examples
 
@@ -371,7 +373,7 @@ function NestedAccordions() {
 
 ## Vanilla JavaScript Usage
 
-```javascript
+```
 // Basic accordion
 const accordion = new Atomix.Accordion('.my-accordion', {
   title: 'Accordion Title',
@@ -393,7 +395,7 @@ Atomix.Accordion.initFromDataAttributes();
 
 ### HTML with Data Attributes
 
-```html
+```
 <!-- Basic accordion -->
 <div 
   class="c-accordion" 
@@ -440,7 +442,7 @@ Atomix.Accordion.initFromDataAttributes();
 
 ### CSS Classes
 
-```css
+```
 /* Base accordion */
 .c-accordion {
   /* Accordion container */
@@ -479,7 +481,7 @@ Atomix.Accordion.initFromDataAttributes();
 
 ### Custom Styling
 
-```css
+```
 /* Custom accordion variant */
 .c-accordion--bordered {
   border: 1px solid var(--color-border);
@@ -569,7 +571,7 @@ Atomix.Accordion.initFromDataAttributes();
 - Don't forget to handle keyboard interactions
 - Don't make accordion headers too small
 
-```jsx
+``jsx
 // Bad: Too much content, unclear purpose
 <Accordion title="Everything">
   <div>
@@ -679,7 +681,7 @@ function HelpDocumentation() {
 - Consider using React.memo for accordion items
 - Optimize animations for smooth performance
 
-```jsx
+``jsx
 // Lazy loading accordion content
 const LazyAccordionContent = React.lazy(() => import('./AccordionContent'));
 

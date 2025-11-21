@@ -45,7 +45,7 @@ function NotificationExample() {
 
 ### HTML/CSS
 
-```html
+```
 <!-- Basic badge -->
 <span class="c-badge c-badge--primary c-badge--md">New</span>
 
@@ -73,6 +73,8 @@ function NotificationExample() {
 | `icon` | `ReactNode` | - | Optional icon element to display |
 | `disabled` | `boolean` | `false` | Whether the badge is disabled |
 | `className` | `string` | `''` | Additional CSS classes |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | Glass morphism effect for the badge |
+| `style` | `React.CSSProperties` | - | Custom style for the badge |
 
 ### Variant Options
 
@@ -497,7 +499,7 @@ The component uses BEM methodology for CSS classes:
 
 ### Customization Examples
 
-```css
+```
 /* Custom badge variant */
 .c-badge--custom {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
