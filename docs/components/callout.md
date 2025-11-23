@@ -529,6 +529,65 @@ The Callout component uses the following CSS class structure:
 }
 ```
 
+## Glass Effect
+
+Callout supports the glass morphism effect for modern, translucent notification designs.
+
+### Basic Glass Effect
+
+```jsx
+function GlassCallout() {
+  return (
+    <Callout
+      title="Information"
+      variant="info"
+      glass={true}
+    >
+      This callout has a glass morphism effect applied.
+    </Callout>
+  );
+}
+```
+
+### Custom Glass Configuration
+
+```jsx
+function CustomGlassCallout() {
+  return (
+    <Callout
+      title="Success"
+      variant="success"
+      glass={{
+        blurAmount: 15,
+        saturation: 180,
+        cornerRadius: 12,
+        displacementScale: 50,
+      }}
+    >
+      Operation completed successfully with custom glass settings.
+    </Callout>
+  );
+}
+```
+
+### Glass Callout in Dark Mode
+
+```jsx
+function DarkModeGlassCallout() {
+  return (
+    <div className="dark-mode" style={{ padding: '2rem', background: '#1a1a1a' }}>
+      <Callout
+        title="Warning"
+        variant="warning"
+        glass={true}
+      >
+        This glass callout works well in dark mode.
+      </Callout>
+    </div>
+  );
+}
+```
+
 ## Accessibility
 
 The Callout component includes comprehensive accessibility features:

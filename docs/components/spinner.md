@@ -17,6 +17,7 @@ Spinners are essential for indicating loading states and ongoing operations. The
 | `fullscreen` | `boolean` | `false` | Fullscreen overlay |
 | `overlay` | `boolean` | `false` | Overlay on parent |
 | `label` | `string` | `undefined` | Accessible label |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | Enable glass morphism effect |
 | `className` | `string` | `''` | Additional CSS classes |
 
 ### Size Options
@@ -597,6 +598,62 @@ Atomix.Spinner.initFromDataAttributes();
 @keyframes spinnerBounce {
   0%, 80%, 100% { transform: scale(0); }
   40% { transform: scale(1); }
+}
+```
+
+## Glass Effect
+
+Spinner supports the glass morphism effect for modern, translucent UI designs.
+
+### Basic Glass Effect
+
+```jsx
+function GlassSpinner() {
+  return (
+    <Spinner 
+      variant="primary" 
+      glass={true}
+      label="Loading..."
+    />
+  );
+}
+```
+
+### Custom Glass Configuration
+
+```jsx
+function CustomGlassSpinner() {
+  return (
+    <Spinner 
+      variant="primary" 
+      size="lg"
+      glass={{
+        blurAmount: 20,
+        saturation: 180,
+        cornerRadius: 16,
+        displacementScale: 50,
+      }}
+      label="Processing..."
+    />
+  );
+}
+```
+
+### Glass Spinner Overlay
+
+```jsx
+function GlassSpinnerOverlay() {
+  return (
+    <div style={{ position: 'relative', minHeight: '200px' }}>
+      <div>Content that will be covered</div>
+      <Spinner 
+        variant="primary" 
+        overlay
+        glass={true}
+        label="Loading content..."
+      />
+    </div>
+  );
 }
 ```
 

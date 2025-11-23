@@ -10,6 +10,8 @@ export { default as Breadcrumb, type BreadcrumbProps } from './Breadcrumb/Breadc
 export { default as Button, type ButtonProps } from './Button/Button';
 export { default as Callout, type CalloutProps } from './Callout/Callout';
 export { default as Card, type CardProps } from './Card/Card';
+// Card sub-components
+export { default as ElevationCard, type ElevationCardProps } from './Card/ElevationCard';
 export {
   AnimatedChart,
   AreaChart,
@@ -29,7 +31,6 @@ export {
   ScatterChart,
   TreemapChart,
   WaterfallChart,
-  type AnimatedChartProps,
   type AreaChartProps,
   type BarChartProps,
   type BubbleChartProps,
@@ -87,6 +88,9 @@ export { default as Textarea, type TextareaProps } from './Form/Textarea';
 export { default as Hero, type HeroProps } from './Hero/Hero';
 export { default as Icon, type IconProps } from './Icon/Icon';
 export { default as List, type ListProps } from './List/List';
+// List sub-components
+export { ListGroup } from './List/ListGroup';
+export type { ListGroupProps } from '../lib/types/components';
 export { default as Messages, type MessagesProps } from './Messages/Messages';
 export { default as Modal, type ModalProps } from './Modal/Modal';
 export { default as Nav, type NavProps } from './Navigation/Nav/Nav';
@@ -101,6 +105,12 @@ export {
   default as SideMenuList,
   type SideMenuListProps,
 } from './Navigation/SideMenu/SideMenuList';
+// Menu components
+export { Menu, MenuItem, MenuDivider, type MenuProps, type MenuItemProps, type MenuDividerProps } from './Navigation/Menu/Menu';
+export { MegaMenu, MegaMenuColumn, MegaMenuLink } from './Navigation/Menu/MegaMenu';
+export type { MegaMenuProps, MegaMenuColumnProps, MegaMenuLinkProps } from '../lib/types/components';
+// Navigation sub-components
+export { NavDropdown, type NavDropdownProps } from './Navigation/Nav/NavDropdown';
 export { default as Pagination, type PaginationProps } from './Pagination/Pagination';
 export { default as PhotoViewer, type PhotoViewerProps } from './PhotoViewer/PhotoViewer';
 export { default as Popover, type PopoverProps } from './Popover/Popover';

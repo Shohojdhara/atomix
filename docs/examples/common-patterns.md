@@ -113,7 +113,7 @@ function SidebarNav({ isOpen, onClose }) {
 ### Contact Form with Validation
 
 ```jsx
-import { Form, FormGroup, Input, Textarea, Button, Alert } from '@shohojdhara/atomix';
+import { Form, FormGroup, Input, Textarea, Button, Callout } from '@shohojdhara/atomix';
 import { useState } from 'react';
 
 function ContactForm() {
@@ -184,9 +184,9 @@ function ContactForm() {
   return (
     <div className="u-max-w-lg u-mx-auto">
       {success && (
-        <Alert variant="success" className="u-mb-6">
+        <Callout variant="success" className="u-mb-6">
           Thank you! Your message has been sent successfully.
-        </Alert>
+        </Callout>
       )}
       
       <Form onSubmit={handleSubmit}>
@@ -268,9 +268,9 @@ function ContactForm() {
         </FormGroup>
 
         {errors.submit && (
-          <Alert variant="error" className="u-mb-4">
+          <Callout variant="error" className="u-mb-4">
             {errors.submit}
-          </Alert>
+          </Callout>
         )}
 
         <div className="u-d-flex u-justify-content-end u-gap-3">

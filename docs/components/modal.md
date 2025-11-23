@@ -481,6 +481,55 @@ Atomix.Modal.initFromDataAttributes();
 }
 ```
 
+## Glass Effect
+
+Modal supports the glass morphism effect for modern, translucent dialog designs.
+
+### Basic Glass Effect
+
+```jsx
+function GlassModal() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <Button label="Open Glass Modal" onClick={() => setIsOpen(true)} />
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={setIsOpen}
+        title="Glass Modal"
+        glass={true}
+      >
+        <p>This modal has a glass morphism effect applied.</p>
+      </Modal>
+    </>
+  );
+}
+```
+
+### Custom Glass Configuration
+
+```jsx
+function CustomGlassModal() {
+  return (
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={setIsOpen}
+      title="Custom Glass Modal"
+      glass={{
+        blurAmount: 20,
+        saturation: 200,
+        cornerRadius: 16,
+        displacementScale: 60,
+        mode: 'shader',
+      }}
+    >
+      <p>Modal with custom glass settings.</p>
+    </Modal>
+  );
+}
+```
+
 ## Accessibility
 
 ### ARIA Attributes

@@ -135,7 +135,7 @@ function AppNavigation() {
 ### Form with Validation
 
 ```jsx
-import { Form, FormGroup, Input, Button, Alert } from '@shohojdhara/atomix';
+import { Form, FormGroup, Input, Button, Callout } from '@shohojdhara/atomix';
 import { useState } from 'react';
 
 function ContactForm() {
@@ -178,9 +178,9 @@ function ContactForm() {
   return (
     <div className="u-max-w-md u-mx-auto">
       {success && (
-        <Alert variant="success" className="u-mb-4">
+        <Callout variant="success" className="u-mb-4">
           Thank you! Your message has been sent successfully.
-        </Alert>
+        </Callout>
       )}
       
       <Form onSubmit={handleSubmit}>
@@ -237,9 +237,9 @@ function ContactForm() {
         </FormGroup>
 
         {errors.submit && (
-          <Alert variant="error" className="u-mb-4">
+          <Callout variant="error" className="u-mb-4">
             {errors.submit}
-          </Alert>
+          </Callout>
         )}
 
         <Button 

@@ -21,6 +21,7 @@ Progress indicators are essential for communicating system status and keeping us
 | `animated` | `boolean` | `false` | Animated stripes |
 | `showLabel` | `boolean` | `false` | Show percentage label |
 | `label` | `string` | `undefined` | Custom label text |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | Enable glass morphism effect |
 | `className` | `string` | `''` | Additional CSS classes |
 
 ## Usage Examples
@@ -550,6 +551,62 @@ Atomix.Progress.initFromDataAttributes();
 
 .c-progress--pulse .c-progress__bar {
   animation: progressPulse 2s infinite;
+}
+```
+
+## Glass Effect
+
+Progress supports the glass morphism effect for modern, translucent UI designs.
+
+### Basic Glass Effect
+
+```jsx
+function GlassProgress() {
+  return (
+    <Progress 
+      value={65} 
+      variant="primary" 
+      glass={true}
+      showLabel
+    />
+  );
+}
+```
+
+### Custom Glass Configuration
+
+```jsx
+function CustomGlassProgress() {
+  return (
+    <Progress 
+      value={80} 
+      variant="success" 
+      glass={{
+        blurAmount: 15,
+        saturation: 200,
+        cornerRadius: 12,
+        displacementScale: 60,
+      }}
+      showLabel
+    />
+  );
+}
+```
+
+### Glass Progress in Dark Mode
+
+```jsx
+function DarkModeGlassProgress() {
+  return (
+    <div className="dark-mode" style={{ padding: '2rem', background: '#1a1a1a' }}>
+      <Progress 
+        value={45} 
+        variant="primary" 
+        glass={true}
+        showLabel
+      />
+    </div>
+  );
 }
 ```
 

@@ -141,7 +141,7 @@ Atomix provides 40+ production-ready components organized into categories:
 - **Forms**: [Checkbox](src/components/Checkbox), [Input](src/components/Input), [Select](src/components/Select)
 - **Navigation**: [Breadcrumb](src/components/Breadcrumb), [Navbar](src/components/Navbar), [Tabs](src/components/Tabs)
 - **Surfaces**: [Accordion](src/components/Accordion), [Callout](src/components/Callout), [Modal](src/components/Modal)
-- **Utilities**: [ColorModeToggle](src/components/ColorModeToggle), [Portal](src/components/Portal), [ThemeProvider](src/components/ThemeProvider)
+- **Utilities**: [ColorModeToggle](src/components/ColorModeToggle), [Icon](src/components/Icon), [AtomixGlass](src/components/AtomixGlass), [AtomixLogo](src/components/AtomixLogo)
 
 ## Design Tokens
 

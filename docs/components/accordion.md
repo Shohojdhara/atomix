@@ -540,6 +540,65 @@ Atomix.Accordion.initFromDataAttributes();
 - Keyboard navigation is fully supported
 - Focus management is handled automatically
 
+## Glass Effect
+
+Accordion supports the glass morphism effect for modern, translucent UI designs.
+
+### Basic Glass Effect
+
+```jsx
+function GlassAccordion() {
+  return (
+    <Accordion
+      title="Glass Accordion"
+      glass={true}
+    >
+      <p>This accordion has a glass morphism effect applied.</p>
+    </Accordion>
+  );
+}
+```
+
+### Custom Glass Configuration
+
+```jsx
+function CustomGlassAccordion() {
+  return (
+    <Accordion
+      title="Custom Glass Accordion"
+      glass={{
+        blurAmount: 18,
+        saturation: 190,
+        cornerRadius: 12,
+        displacementScale: 55,
+      }}
+    >
+      <p>Accordion with custom glass settings.</p>
+    </Accordion>
+  );
+}
+```
+
+### Glass Accordion Group
+
+```jsx
+function GlassAccordionGroup() {
+  return (
+    <div className="u-gap-3">
+      <Accordion title="First Section" glass={true}>
+        <p>First section content with glass effect.</p>
+      </Accordion>
+      <Accordion title="Second Section" glass={true}>
+        <p>Second section content with glass effect.</p>
+      </Accordion>
+      <Accordion title="Third Section" glass={true}>
+        <p>Third section content with glass effect.</p>
+      </Accordion>
+    </div>
+  );
+}
+```
+
 ## Best Practices
 
 ### Do's ✅
