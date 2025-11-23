@@ -100,6 +100,10 @@ const meta = {
       control: 'object',
       description: 'Video background options',
     },
+    backgroundSlider: {
+      control: 'object',
+      description: 'Background slider configuration with multiple images/videos',
+    },
   },
 } satisfies Meta<typeof Hero>;
 
@@ -343,5 +347,298 @@ export const VideoBackgroundWithImage: Story = {
     alignment: 'left',
     imageSrc: 'https://picsum.photos/id/180/712/500',
     imageAlt: 'Product showcase',
+  },
+};
+
+/**
+ * Hero with background image slider (fade transition)
+ */
+export const WithBackgroundSlider: Story = {
+  args: {
+    title: 'Dynamic Background Slider',
+    subtitle: 'Multiple Images with Fade Transition',
+    text: 'This hero features a background slider with multiple images that automatically transition using a smooth fade effect. Perfect for showcasing multiple products or features.',
+    alignment: 'center',
+    showOverlay: true,
+    actions: showcaseActionButtons,
+    contentWidth: '800px',
+    backgroundSlider: {
+      slides: [
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1015/1920/1080',
+          alt: 'Mountain landscape',
+        },
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1018/1920/1080',
+          alt: 'Forest scene',
+        },
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1025/1920/1080',
+          alt: 'Ocean view',
+        },
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1035/1920/1080',
+          alt: 'City skyline',
+        },
+      ],
+      autoplay: {
+        delay: 3000,
+        pauseOnHover: false,
+      },
+      loop: true,
+      transition: 'fade',
+      transitionDuration: 1000,
+    },
+  },
+};
+
+/**
+ * Hero with background slider (mixed images and videos)
+ */
+export const WithMixedMediaSlider: Story = {
+  args: {
+    title: 'Mixed Media Background Slider',
+    subtitle: 'Images & Videos Combined',
+    text: 'This hero demonstrates a background slider that seamlessly transitions between images and videos, creating a rich, dynamic visual experience.',
+    alignment: 'center',
+    showOverlay: true,
+    actions: showcaseActionButtons,
+    contentWidth: '800px',
+    backgroundSlider: {
+      slides: [
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1015/1920/1080',
+          alt: 'Mountain landscape',
+        },
+        {
+          type: 'video',
+          src: 'https://cdn.pixabay.com/video/2021/02/20/65772-515379427_large.mp4',
+          videoOptions: {
+            autoplay: true,
+            loop: true,
+            muted: true,
+            posterUrl: 'https://picsum.photos/id/1018/1920/1080',
+          },
+        },
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1025/1920/1080',
+          alt: 'Ocean view',
+        },
+        {
+          type: 'video',
+          src: 'https://cdn.pixabay.com/video/2023/11/18/189639-886016299_large.mp4',
+          videoOptions: {
+            autoplay: true,
+            loop: true,
+            muted: true,
+            posterUrl: 'https://picsum.photos/id/1035/1920/1080',
+          },
+        },
+      ],
+      autoplay: {
+        delay: 4000,
+        pauseOnHover: false,
+      },
+      loop: true,
+      transition: 'fade',
+      transitionDuration: 1500,
+    },
+  },
+};
+
+/**
+ * Hero with background slider (fast transitions)
+ */
+export const WithFastSlider: Story = {
+  args: {
+    title: 'Fast-Paced Background Slider',
+    subtitle: 'Quick Transitions',
+    text: 'This slider uses faster transition times and shorter delays for a more dynamic, energetic feel.',
+    alignment: 'center',
+    showOverlay: true,
+    actions: primaryActionButtons,
+    contentWidth: '800px',
+    backgroundSlider: {
+      slides: [
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/106/1920/1080',
+          alt: 'Abstract art',
+        },
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/107/1920/1080',
+          alt: 'Nature scene',
+        },
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/108/1920/1080',
+          alt: 'Urban landscape',
+        },
+      ],
+      autoplay: {
+        delay: 2000,
+        pauseOnHover: false,
+      },
+      loop: true,
+      transition: 'fade',
+      transitionDuration: 500,
+    },
+  },
+};
+
+/**
+ * Hero with background slider (pause on hover)
+ */
+export const WithPauseOnHoverSlider: Story = {
+  args: {
+    title: 'Interactive Background Slider',
+    subtitle: 'Pause on Hover',
+    text: 'Hover over this hero to pause the slider. Move your mouse away to resume. Perfect for giving users control over the experience.',
+    alignment: 'center',
+    showOverlay: true,
+    actions: showcaseActionButtons,
+    contentWidth: '800px',
+    backgroundSlider: {
+      slides: [
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1015/1920/1080',
+          alt: 'Mountain landscape',
+        },
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1018/1920/1080',
+          alt: 'Forest scene',
+        },
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1025/1920/1080',
+          alt: 'Ocean view',
+        },
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1035/1920/1080',
+          alt: 'City skyline',
+        },
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1041/1920/1080',
+          alt: 'Desert landscape',
+        },
+      ],
+      autoplay: {
+        delay: 3000,
+        pauseOnHover: true,
+      },
+      loop: true,
+      transition: 'fade',
+      transitionDuration: 1000,
+    },
+  },
+};
+
+/**
+ * Hero with background slider and glass effect
+ */
+export const SliderWithGlassEffect: Story = {
+  args: {
+    title: 'Slider with Glass Effect',
+    subtitle: 'Best of Both Worlds',
+    text: 'Combine the dynamic background slider with the elegant glass effect for a truly modern, sophisticated hero section.',
+    alignment: 'center',
+    showOverlay: true,
+    glass: true,
+    actions: showcaseActionButtons,
+    contentWidth: '800px',
+    backgroundSlider: {
+      slides: [
+        {
+          type: 'video',
+          src: 'https://cdn.pixabay.com/video/2021/02/20/65772-515379427_large.mp4',
+          videoOptions: {
+            autoplay: true,
+            loop: true,
+            muted: true,
+            posterUrl: 'https://picsum.photos/id/1018/1920/1080',
+          },
+        },
+        {
+          type: 'video',
+          src: 'https://cdn.pixabay.com/video/2020/11/09/56026-478239201_large.mp4',
+          videoOptions: {
+            autoplay: true,
+            loop: true,
+            muted: true,
+            posterUrl: 'https://picsum.photos/id/1018/1920/1080',
+          },
+        },
+        {
+          type: 'video',
+          src: 'https://cdn.pixabay.com/video/2023/11/18/189639-886016299_large.mp4',
+          videoOptions: {
+            autoplay: true,
+            loop: true,
+            muted: true,
+            posterUrl: 'https://picsum.photos/id/1018/1920/1080',
+          },
+        },
+      ],
+      autoplay: {
+        delay: 30000,
+        pauseOnHover: false,
+      },
+      loop: true,
+      transition: 'fade',
+      transitionDuration: 1200,
+    },
+  },
+};
+
+/**
+ * Hero with background slider (full viewport height)
+ */
+export const FullHeightSlider: Story = {
+  args: {
+    title: 'Full Height Background Slider',
+    subtitle: 'Immersive Experience',
+    text: 'This hero takes the full viewport height and features a background slider, creating an immersive, full-screen experience.',
+    alignment: 'center',
+    showOverlay: true,
+    fullViewportHeight: true,
+    actions: showcaseActionButtons,
+    contentWidth: '800px',
+    backgroundSlider: {
+      slides: [
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1015/1920/1080',
+          alt: 'Mountain landscape',
+        },
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1018/1920/1080',
+          alt: 'Forest scene',
+        },
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1025/1920/1080',
+          alt: 'Ocean view',
+        },
+      ],
+      autoplay: {
+        delay: 4000,
+        pauseOnHover: false,
+      },
+      loop: true,
+      transition: 'fade',
+      transitionDuration: 1500,
+    },
   },
 };

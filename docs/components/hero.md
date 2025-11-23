@@ -1,10 +1,10 @@
 # Hero
 
-The Hero component creates impactful banner sections for landing pages and feature highlights. It supports various layouts, background options including images and videos, and flexible content positioning.
+The Hero component creates impactful banner sections for landing pages and feature highlights. It supports various layouts, background options including images and videos, background sliders with fade transitions, and flexible content positioning.
 
 ## Overview
 
-The Hero component is designed to make a strong first impression on your users. It provides a flexible foundation for creating engaging landing page headers, product showcases, and call-to-action sections with support for background images, videos, parallax effects, and responsive layouts.
+The Hero component is designed to make a strong first impression on your users. It provides a flexible foundation for creating engaging landing page headers, product showcases, and call-to-action sections with support for background images, videos, background sliders with automatic transitions, parallax effects, and responsive layouts.
 
 ## Props API
 
@@ -29,6 +29,7 @@ The Hero component is designed to make a strong first impression on your users. 
 | `parallaxIntensity` | `number` | `0.5` | Parallax effect intensity (0-1) |
 | `videoBackground` | `string` | `undefined` | Video background source URL |
 | `videoOptions` | `VideoOptions` | `{}` | Video playback options |
+| `backgroundSlider` | `HeroBackgroundSliderConfig` | `undefined` | Background slider configuration with multiple images/videos |
 | `className` | `string` | `''` | Additional CSS classes |
 
 ### VideoOptions Interface
@@ -41,6 +42,60 @@ interface VideoOptions {
   posterUrl?: string;    // Video poster image
 }
 ```
+
+### HeroBackgroundSliderConfig Interface
+
+The background slider allows you to create dynamic hero sections with multiple images and videos that automatically transition.
+
+```typescript
+interface HeroBackgroundSliderConfig {
+  // Array of slides (mixed images and videos)
+  slides: HeroBackgroundSlide[];
+  
+  // Autoplay configuration
+  autoplay?: {
+    delay: number;              // Delay between transitions in milliseconds (default: 3000)
+    pauseOnHover?: boolean;     // Whether to pause autoplay on hover (default: false)
+  };
+  
+  // Whether to loop the slider infinitely (default: true)
+  loop?: boolean;
+  
+  // Transition effect type (default: 'fade')
+  transition?: 'fade' | 'slide' | 'custom';
+  
+  // Transition duration in milliseconds (default: 1000)
+  transitionDuration?: number;
+  
+  // Custom transition function (for custom transition type)
+  customTransition?: (currentIndex: number, nextIndex: number) => string | React.CSSProperties;
+}
+```
+
+### HeroBackgroundSlide Interface
+
+```typescript
+interface HeroBackgroundSlide {
+  // Type of slide - image or video
+  type: 'image' | 'video';
+  
+  // Source URL for the image or video
+  src: string;
+  
+  // Alt text for images (optional)
+  alt?: string;
+  
+  // Video options (only used when type is 'video')
+  videoOptions?: {
+    autoplay?: boolean;    // Default: true
+    loop?: boolean;        // Default: true
+    muted?: boolean;       // Default: true
+    posterUrl?: string;    // Video poster image
+  };
+}
+```
+
+**Note:** When `backgroundSlider` is provided, it takes precedence over `backgroundImageSrc` and `videoBackground` props. The parallax effect is automatically disabled when using a background slider.
 
 ### HeroAlignment Options
 
@@ -166,6 +221,142 @@ function ParallaxHero() {
 }
 ```
 
+### Hero with Background Slider
+
+```jsx
+function SliderHero() {
+  return (
+    <Hero
+      title="Dynamic Background Experience"
+      subtitle="Multiple Visual Stories"
+      text="Showcase multiple products, features, or stories with an automatic background slider."
+      alignment="center"
+      showOverlay={true}
+      actions={
+        <Button variant="primary" label="Explore Now" />
+      }
+      backgroundSlider={{
+        slides: [
+          {
+            type: 'image',
+            src: '/images/slide-1.jpg',
+            alt: 'Product showcase 1',
+          },
+          {
+            type: 'image',
+            src: '/images/slide-2.jpg',
+            alt: 'Product showcase 2',
+          },
+          {
+            type: 'image',
+            src: '/images/slide-3.jpg',
+            alt: 'Product showcase 3',
+          },
+        ],
+        autoplay: {
+          delay: 3000,
+          pauseOnHover: false,
+        },
+        loop: true,
+        transition: 'fade',
+        transitionDuration: 1000,
+      }}
+    />
+  );
+}
+```
+
+### Hero with Mixed Media Slider
+
+```jsx
+function MixedMediaSliderHero() {
+  return (
+    <Hero
+      title="Rich Media Experience"
+      subtitle="Images & Videos Combined"
+      text="Create dynamic backgrounds by mixing images and videos in a seamless slider."
+      alignment="center"
+      showOverlay={true}
+      actions={
+        <Button variant="primary" label="Get Started" />
+      }
+      backgroundSlider={{
+        slides: [
+          {
+            type: 'image',
+            src: '/images/intro-image.jpg',
+            alt: 'Introduction image',
+          },
+          {
+            type: 'video',
+            src: '/videos/demo-video.mp4',
+            videoOptions: {
+              autoplay: true,
+              loop: true,
+              muted: true,
+              posterUrl: '/images/video-poster.jpg',
+            },
+          },
+          {
+            type: 'image',
+            src: '/images/feature-image.jpg',
+            alt: 'Feature showcase',
+          },
+        ],
+        autoplay: {
+          delay: 4000,
+          pauseOnHover: true,
+        },
+        loop: true,
+        transition: 'fade',
+        transitionDuration: 1500,
+      }}
+    />
+  );
+}
+```
+
+### Hero with Background Slider and Glass Effect
+
+```jsx
+function SliderWithGlassHero() {
+  return (
+    <Hero
+      title="Modern Design Combination"
+      subtitle="Slider + Glass Effect"
+      text="Combine the dynamic background slider with the elegant glass effect for a sophisticated look."
+      alignment="center"
+      showOverlay={true}
+      glass={true}
+      actions={
+        <Button variant="primary" label="Learn More" />
+      }
+      backgroundSlider={{
+        slides: [
+          {
+            type: 'image',
+            src: '/images/bg-1.jpg',
+            alt: 'Background 1',
+          },
+          {
+            type: 'image',
+            src: '/images/bg-2.jpg',
+            alt: 'Background 2',
+          },
+        ],
+        autoplay: {
+          delay: 3500,
+          pauseOnHover: true,
+        },
+        loop: true,
+        transition: 'fade',
+        transitionDuration: 1200,
+      }}
+    />
+  );
+}
+```
+
 ### Advanced Layout Configuration
 
 ```jsx
@@ -284,6 +475,14 @@ The Hero component uses the following CSS class structure:
 .c-hero__video { /* Background video */ }
 .c-hero__overlay { /* Background overlay */ }
 
+/* Background slider elements */
+.c-hero__slider { /* Slider container */ }
+.c-hero__slider-item { /* Individual slide item */ }
+.c-hero__slider-item--active { /* Active slide */ }
+.c-hero__slider--fade { /* Fade transition */ }
+.c-hero__slider--slide { /* Slide transition */ }
+.c-hero__slider--custom { /* Custom transition */ }
+
 /* Content elements */
 .c-hero__container { /* Content container */ }
 .c-hero__grid { /* Grid wrapper */ }
@@ -381,6 +580,11 @@ The Hero component includes comprehensive accessibility features:
 - Keep text concise and scannable
 - Use high-contrast colors for readability
 - Test on various screen sizes
+- Use background sliders to showcase multiple products or features
+- Set appropriate autoplay delays (3-5 seconds recommended)
+- Enable pause on hover for better user control
+- Optimize images and videos for web performance
+- Use poster images for video slides to improve loading experience
 
 ```jsx
 // Good: Clear hierarchy and compelling copy
@@ -400,6 +604,11 @@ The Hero component includes comprehensive accessibility features:
 - Don't rely solely on color for important information
 - Don't use low-contrast text over busy backgrounds
 - Don't forget to optimize large background images
+- Don't use too many slides in a slider (3-5 recommended)
+- Don't set autoplay delays too short (< 2 seconds) as it can be distracting
+- Don't use parallax effect with background slider (it's automatically disabled)
+- Don't forget to provide alt text for image slides
+- Don't use unmuted videos in sliders (autoplay requires muted videos)
 
 ```jsx
 // Bad: Too much text, poor contrast
@@ -488,6 +697,55 @@ function EventHero() {
 }
 ```
 
+### Product Showcase with Slider
+
+```jsx
+function ProductShowcaseHero() {
+  return (
+    <Hero
+      title="Our Product Line"
+      subtitle="Multiple Solutions"
+      text="Discover our range of products designed to solve your business challenges."
+      alignment="center"
+      showOverlay={true}
+      fullViewportHeight={true}
+      actions={
+        <div className="product-actions">
+          <Button variant="primary" size="lg" label="View Products" />
+          <Button variant="outline-light" label="Request Demo" />
+        </div>
+      }
+      backgroundSlider={{
+        slides: [
+          {
+            type: 'image',
+            src: '/images/product-1.jpg',
+            alt: 'Product 1 showcase',
+          },
+          {
+            type: 'image',
+            src: '/images/product-2.jpg',
+            alt: 'Product 2 showcase',
+          },
+          {
+            type: 'image',
+            src: '/images/product-3.jpg',
+            alt: 'Product 3 showcase',
+          },
+        ],
+        autoplay: {
+          delay: 4000,
+          pauseOnHover: true,
+        },
+        loop: true,
+        transition: 'fade',
+        transitionDuration: 1500,
+      }}
+    />
+  );
+}
+```
+
 ### App Download Hero
 
 ```jsx
@@ -565,4 +823,35 @@ The main changes:
 - `image` prop renamed to `imageSrc`
 - `position` prop renamed to `alignment`
 - Added support for video backgrounds and parallax effects
+- Added background slider with automatic transitions
 - Improved grid layout system
+
+### Background Slider Feature (v2.1+)
+
+The background slider feature allows you to create dynamic hero sections with multiple images and videos:
+
+```jsx
+// New in v2.1+
+<Hero
+  title="Dynamic Background"
+  backgroundSlider={{
+    slides: [
+      { type: 'image', src: '/img1.jpg', alt: 'Image 1' },
+      { type: 'image', src: '/img2.jpg', alt: 'Image 2' },
+      { type: 'video', src: '/video.mp4', videoOptions: { autoplay: true, loop: true, muted: true } },
+    ],
+    autoplay: { delay: 3000, pauseOnHover: true },
+    loop: true,
+    transition: 'fade',
+    transitionDuration: 1000,
+  }}
+/>
+```
+
+**Key Features:**
+- Automatic transitions between slides
+- Support for mixed images and videos
+- Configurable autoplay with pause on hover
+- Smooth fade transitions (default)
+- Loop mode for continuous playback
+- Custom transition support

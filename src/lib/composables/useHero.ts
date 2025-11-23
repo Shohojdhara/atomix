@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { HeroProps, HeroAlignment } from '../types/components';
 import { HERO } from '../constants/components';
+import { useHeroBackgroundSlider, UseHeroBackgroundSliderResult } from './useHeroBackgroundSlider';
 
 /**
  * Hero hook result interface
@@ -55,6 +56,16 @@ interface UseHeroResult {
    * Remove parallax effect
    */
   removeParallaxEffect: (element: HTMLElement) => void;
+
+  /**
+   * Background slider hook result (if slider is enabled)
+   */
+  backgroundSlider?: UseHeroBackgroundSliderResult;
+
+  /**
+   * Whether background slider is enabled
+   */
+  hasBackgroundSlider: boolean;
 }
 
 /**
@@ -81,9 +92,24 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
   };
 
   /**
-   * Check if the hero has a background image
+   * Check if background slider is enabled
    */
-  const hasBackgroundImage = !!defaultProps.backgroundImageSrc;
+  const hasBackgroundSlider = !!defaultProps.backgroundSlider;
+
+  /**
+   * Initialize background slider hook if enabled
+   */
+  const backgroundSlider = hasBackgroundSlider && defaultProps.backgroundSlider
+    ? useHeroBackgroundSlider(defaultProps.backgroundSlider)
+    : undefined;
+
+  /**
+   * Check if the hero has a background image
+   * Slider takes precedence over single background image
+   */
+  const hasBackgroundImage = hasBackgroundSlider
+    ? true
+    : !!defaultProps.backgroundImageSrc || !!defaultProps.videoBackground;
 
   /**
    * Check if the hero has a foreground image
@@ -151,11 +177,12 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
     }
   };
 
-  // Apply parallax effect if enabled
+  // Apply parallax effect if enabled (disabled when slider is active)
   useEffect(() => {
     const heroElement = heroRef.current;
 
-    if (heroElement && defaultProps.parallax && hasBackgroundImage) {
+    // Disable parallax when slider is active (conflicts with transitions)
+    if (heroElement && defaultProps.parallax && hasBackgroundImage && !hasBackgroundSlider) {
       applyParallaxEffect(heroElement, defaultProps.parallaxIntensity);
     }
 
@@ -164,7 +191,7 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
         removeParallaxEffect(heroElement);
       }
     };
-  }, [defaultProps.parallax, defaultProps.parallaxIntensity, hasBackgroundImage]);
+  }, [defaultProps.parallax, defaultProps.parallaxIntensity, hasBackgroundImage, hasBackgroundSlider]);
 
   /**
    * Generate hero class names based on props
@@ -246,5 +273,7 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
     videoRef,
     applyParallaxEffect,
     removeParallaxEffect,
+    backgroundSlider,
+    hasBackgroundSlider,
   };
 }

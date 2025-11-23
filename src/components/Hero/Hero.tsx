@@ -30,6 +30,7 @@ export const Hero: React.FC<HeroProps> = ({
     loop: true,
     muted: true,
   },
+  backgroundSlider,
 }) => {
   const {
     generateHeroClassNames,
@@ -40,6 +41,8 @@ export const Hero: React.FC<HeroProps> = ({
     useGridLayout,
     heroRef,
     videoRef,
+    backgroundSlider: sliderHook,
+    hasBackgroundSlider,
   } = useHero({
     alignment,
     imageColSize,
@@ -52,6 +55,7 @@ export const Hero: React.FC<HeroProps> = ({
     parallax,
     parallaxIntensity,
     videoBackground,
+    backgroundSlider,
   });
 
   // Create custom style for hero element with content width if provided
@@ -82,6 +86,81 @@ export const Hero: React.FC<HeroProps> = ({
   };
 
   const renderBackground = () => {
+    // Render background slider if configured
+    if (hasBackgroundSlider && backgroundSlider && sliderHook) {
+      const { slides, transition = 'fade', transitionDuration = 1000 } = backgroundSlider;
+      const { currentIndex, slideRefs, videoRefs } = sliderHook;
+
+      // Determine transition class
+      let transitionClass = HERO.CLASSES.SLIDER_FADE;
+      if (transition === 'slide') {
+        transitionClass = HERO.CLASSES.SLIDER_SLIDE;
+      } else if (transition === 'custom') {
+        transitionClass = HERO.CLASSES.SLIDER_CUSTOM;
+      }
+
+      return (
+        <div
+          className={`${HERO.SELECTORS.SLIDER.replace('.', '')} ${transitionClass}`}
+          style={{
+            '--slider-transition-duration': `${transitionDuration}ms`,
+          } as React.CSSProperties}
+          onMouseEnter={() => {
+            if (backgroundSlider.autoplay?.pauseOnHover) {
+              sliderHook.pauseAutoplay();
+            }
+          }}
+          onMouseLeave={() => {
+            if (backgroundSlider.autoplay?.pauseOnHover) {
+              sliderHook.resumeAutoplay();
+            }
+          }}
+        >
+          {slides.map((slide, index) => {
+            const isActive = index === currentIndex;
+            const slideRef = slideRefs[index];
+            const videoRef = videoRefs[index];
+
+            return (
+              <div
+                key={index}
+                ref={slideRef}
+                className={`${HERO.SELECTORS.SLIDER_ITEM.replace('.', '')} ${
+                  isActive ? HERO.CLASSES.SLIDER_ITEM_ACTIVE : ''
+                }`}
+              >
+                {slide.type === 'image' ? (
+                  <img
+                    src={slide.src}
+                    alt={slide.alt || 'Background slide'}
+                    className={HERO.SELECTORS.BG_IMAGE.replace('.', '')}
+                  />
+                ) : (
+                  <video
+                    ref={videoRef as React.LegacyRef<HTMLVideoElement>}
+                    className="c-hero__video"
+                    autoPlay={slide.videoOptions?.autoplay !== false}
+                    loop={slide.videoOptions?.loop !== false}
+                    muted={slide.videoOptions?.muted !== false}
+                    playsInline
+                    poster={slide.videoOptions?.posterUrl}
+                  >
+                    <source
+                      src={slide.src}
+                      type={`video/${slide.src.split('.').pop() || 'mp4'}`}
+                    />
+                    Your browser does not support the video tag.
+                  </video>
+                )}
+              </div>
+            );
+          })}
+          {showOverlay && <div className={HERO.SELECTORS.OVERLAY.replace('.', '')}></div>}
+        </div>
+      );
+    }
+
+    // Fall back to single background image/video
     if (!hasBackgroundImage && !videoBackground) return null;
 
     return (

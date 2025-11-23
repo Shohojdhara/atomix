@@ -60,7 +60,7 @@
     inset: 0;
     @include dynamic-background(var(--#{$prefix}hero-overlay));
     opacity: var(--#{$prefix}hero-overlay-opacity);
-    z-index: 0;
+    z-index: 1;
   }
 
   &__container {
@@ -144,5 +144,55 @@
 
   &--full-vh {
     min-height: 100vh;
+  }
+
+  &__slider {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  &__slider-item {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity var(--slider-transition-duration, 1000ms) ease-in-out;
+    pointer-events: none;
+
+    img,
+    video {
+      @include square(100%);
+      @include object-fit(cover);
+    }
+
+    &--active {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 1;
+    }
+  }
+
+  &__slider--fade {
+    .c-hero__slider-item {
+      transition: opacity var(--slider-transition-duration, 1000ms) ease-in-out;
+    }
+  }
+
+  &__slider--slide {
+    .c-hero__slider-item {
+      transform: translateX(100%);
+      transition: transform var(--slider-transition-duration, 1000ms) ease-in-out;
+
+      &--active {
+        transform: translateX(0);
+      }
+    }
+  }
+
+  &__slider--custom {
+    .c-hero__slider-item {
+      transition: all var(--slider-transition-duration, 1000ms) ease-in-out;
+    }
   }
 }
