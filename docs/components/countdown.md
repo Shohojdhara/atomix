@@ -17,6 +17,7 @@ The Countdown component is perfect for displaying time-sensitive information lik
 | `separator` | `string` | `':'` | String used to separate time units |
 | `focused` | `boolean` | `false` | Enable focused/highlighted styling |
 | `className` | `string` | `''` | Additional CSS classes |
+| `style` | `React.CSSProperties` | `undefined` | Custom styles object |
 | `onComplete` | `() => void` | `undefined` | Callback function when countdown reaches zero |
 
 ### Time Unit Options

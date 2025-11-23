@@ -27,7 +27,7 @@ import {
   SectionIntro,
   Select,
   Steps,
-  Tab,
+  Tabs,
   Testimonial,
   TestimonialProps,
   Textarea,
@@ -454,7 +454,7 @@ const Portfolio: React.FC = () => {
 
                   <div className="u-mb-6">
                     <h4 className="u-font-semibold u-mb-2">Tabs</h4>
-                    <Tab
+                    <Tabs
                       activeIndex={0}
                       items={[
                         { label: 'Tab 1', content: 'Content for Tab 1' },

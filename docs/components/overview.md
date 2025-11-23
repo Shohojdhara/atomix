@@ -20,7 +20,7 @@ For in-depth documentation with complete examples, props, and usage patterns:
 - **[Dropdown Component](./components/dropdown.md)** - Flexible menu system with various triggers and placements
 - **[Accordion Component](./components/accordion.md)** - Collapsible content sections for space-efficient organization
 - **[Tooltip Component](./components/tooltip.md)** - Contextual information on hover with rich content support
-- **[Tab Component](./components/tab.md)** - Tabbed interfaces for organizing content into separate panels
+- **[Tabs Component](./components/tabs.md)** - Tabbed interfaces for organizing content into separate panels
 - **[Toggle Component](./components/toggle.md)** - Switch-like controls for binary states and settings
 
 ### Navigation

@@ -136,8 +136,8 @@ Notes:
 Atomix provides 40+ production-ready components organized into categories:
 
 - **Actions**: [Button](src/components/Button), [Dropdown](src/components/Dropdown), [Pagination](src/components/Pagination)
-- **Data Display**: [Badge](src/components/Badge), [Card](src/components/Card), [Table](src/components/Table)
-- **Feedback**: [Alert](src/components/Alert), [Loader](src/components/Loader), [Progress](src/components/Progress)
+- **Data Display**: [Badge](src/components/Badge), [Card](src/components/Card), [DataTable](src/components/DataTable)
+- **Feedback**: [Callout](src/components/Callout), [Spinner](src/components/Spinner), [Progress](src/components/Progress)
 - **Forms**: [Checkbox](src/components/Checkbox), [Input](src/components/Input), [Select](src/components/Select)
 - **Navigation**: [Breadcrumb](src/components/Breadcrumb), [Navbar](src/components/Navbar), [Tabs](src/components/Tabs)
 - **Surfaces**: [Accordion](src/components/Accordion), [Callout](src/components/Callout), [Modal](src/components/Modal)

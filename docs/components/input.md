@@ -97,34 +97,35 @@ function ContactForm() {
 
 ### Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `type` | `string` | `'text'` | HTML input type (text, email, password, number, etc.) |
-| `value` | `string` | - | Controlled input value |
-| `onChange` | `(event: ChangeEvent) => void` | - | Change event handler |
-| `onBlur` | `(event: FocusEvent) => void` | - | Blur event handler |
-| `onFocus` | `(event: FocusEvent) => void` | - | Focus event handler |
-| `placeholder` | `string` | - | Placeholder text |
-| `disabled` | `boolean` | `false` | Whether the input is disabled |
-| `required` | `boolean` | `false` | Whether the input is required |
-| `readOnly` | `boolean` | `false` | Whether the input is read-only |
-| `size` | `Size` | `'md'` | Size of the input (`'sm'`, `'md'`, `'lg'`) |
-| `variant` | `string` | - | Visual variant of the input |
-| `invalid` | `boolean` | `false` | Whether the input has validation errors |
-| `valid` | `boolean` | `false` | Whether the input has passed validation |
-| `maxLength` | `number` | - | Maximum number of characters |
-| `minLength` | `number` | - | Minimum number of characters |
-| `pattern` | `string` | - | Regular expression pattern for validation |
-| `min` | `string \| number` | - | Minimum value (for number/date inputs) |
-| `max` | `string \| number` | - | Maximum value (for number/date inputs) |
-| `step` | `string \| number` | - | Step value (for number inputs) |
-| `autoComplete` | `string` | - | HTML autocomplete attribute |
-| `autoFocus` | `boolean` | `false` | Whether to auto-focus the input |
-| `id` | `string` | - | HTML id attribute |
-| `name` | `string` | - | HTML name attribute |
-| `className` | `string` | `''` | Additional CSS classes |
-| `ariaLabel` | `string` | - | ARIA label for accessibility |
-| `ariaDescribedBy` | `string` | - | ARIA described-by attribute |
+| Prop | Type | Default | Required | Description |
+|------|------|---------|----------|-------------|
+| `type` | `string` | `'text'` | No | HTML input type (text, email, password, number, etc.) |
+| `value` | `string` | - | No | Controlled input value |
+| `onChange` | `(event: ChangeEvent) => void` | - | No | Change event handler |
+| `onBlur` | `(event: FocusEvent) => void` | - | No | Blur event handler |
+| `onFocus` | `(event: FocusEvent) => void` | - | No | Focus event handler |
+| `placeholder` | `string` | - | No | Placeholder text |
+| `disabled` | `boolean` | `false` | No | Whether the input is disabled |
+| `required` | `boolean` | `false` | No | Whether the input is required |
+| `readOnly` | `boolean` | `false` | No | Whether the input is read-only |
+| `size` | `Size` | `'md'` | No | Size of the input (`'sm'`, `'md'`, `'lg'`) |
+| `variant` | `string` | - | No | Visual variant of the input |
+| `invalid` | `boolean` | `false` | No | Whether the input has validation errors |
+| `valid` | `boolean` | `false` | No | Whether the input has passed validation |
+| `maxLength` | `number` | - | No | Maximum number of characters |
+| `minLength` | `number` | - | No | Minimum number of characters |
+| `pattern` | `string` | - | No | Regular expression pattern for validation |
+| `min` | `string \| number` | - | No | Minimum value (for number/date inputs) |
+| `max` | `string \| number` | - | No | Maximum value (for number/date inputs) |
+| `step` | `string \| number` | - | No | Step value (for number inputs) |
+| `autoComplete` | `string` | - | No | HTML autocomplete attribute |
+| `autoFocus` | `boolean` | `false` | No | Whether to auto-focus the input |
+| `id` | `string` | - | No | HTML id attribute |
+| `name` | `string` | - | No | HTML name attribute |
+| `className` | `string` | `''` | No | Additional CSS classes |
+| `ariaLabel` | `string` | - | No | ARIA label for accessibility |
+| `ariaDescribedBy` | `string` | - | No | ARIA described-by attribute |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | No | Enable glass morphism effect |
 
 ### Size Options
 
@@ -145,6 +146,59 @@ The component supports all HTML input types:
 - `'date'` - Date picker input
 - `'time'` - Time picker input
 - `'datetime-local'` - Date and time input
+
+## Glass Effect
+
+Input supports the glass morphism effect for modern, translucent UI designs.
+
+### Basic Glass Effect
+
+```jsx
+<Input
+  placeholder="Enter text..."
+  glass={true}
+/>
+```
+
+### Custom Glass Configuration
+
+```jsx
+<Input
+  placeholder="Enter text..."
+  glass={{
+    displacementScale: 60,
+    blurAmount: 1,
+    saturation: 180,
+    aberrationIntensity: 0.2,
+    cornerRadius: 12,
+    mode: 'shader'
+  }}
+/>
+```
+
+### Glass Input in Forms
+
+```jsx
+<form className="glass-form">
+  <FormGroup label="Email">
+    <Input
+      type="email"
+      glass={true}
+      placeholder="your@email.com"
+    />
+  </FormGroup>
+  <FormGroup label="Password">
+    <Input
+      type="password"
+      glass={true}
+      placeholder="••••••••"
+    />
+  </FormGroup>
+  <Button variant="primary" glass={true}>
+    Sign In
+  </Button>
+</form>
+```
 
 ## Examples
 

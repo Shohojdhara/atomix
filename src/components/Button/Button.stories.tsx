@@ -315,6 +315,31 @@ export const RoundedVariants: Story = {
   ),
 };
 
+// Content Options - Label vs Children
+export const WithLabel: Story = {
+  args: {
+    label: 'Button with Label',
+    variant: 'primary',
+  },
+};
+
+export const WithChildren: Story = {
+  render: () => (
+    <Button variant="primary">
+      Button with Children
+    </Button>
+  ),
+};
+
+export const WithIconAndText: Story = {
+  render: () => (
+    <Button variant="primary">
+      <Icon />
+      Add Item
+    </Button>
+  ),
+};
+
 // Glass Effect Buttons
 export const GlassEffect: Story = {
   args: {

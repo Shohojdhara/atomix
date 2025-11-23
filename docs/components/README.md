@@ -94,7 +94,7 @@ Elements that respond to user interaction.
 | [Modal](./modal.md) | Dialog overlays | ✅ Stable |
 | [Popover](./popover.md) | Contextual overlays | 🚧 Beta |
 | [Tooltip](./tooltip.md) | Hover information | ✅ Stable |
-| [Tab](./tab.md) | Tabbed interfaces | ✅ Stable |
+| [Tabs](./tabs.md) | Tabbed interfaces | ✅ Stable |
 | [Toggle](./toggle.md) | Switch controls | ✅ Stable |
 
 ### 📊 Data Display Components

@@ -112,7 +112,7 @@ export { default as SectionIntro, type SectionIntroProps } from './SectionIntro/
 export { Slider } from './Slider/Slider';
 export { default as Spinner, type SpinnerProps } from './Spinner/Spinner';
 export { default as Steps, type StepsProps } from './Steps/Steps';
-export { default as Tab, type TabProps } from './Tab/Tab';
+export { default as Tabs, type TabsProps } from './Tabs/Tabs';
 export { default as Testimonial, type TestimonialProps } from './Testimonial/Testimonial';
 export { default as Todo, type TodoProps } from './Todo/Todo';
 export { default as Toggle, type ToggleProps } from './Toggle/Toggle';

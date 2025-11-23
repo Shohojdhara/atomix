@@ -14,7 +14,7 @@ import {
   Progress,
   SectionIntro,
   Steps,
-  Tab,
+  Tabs,
   Testimonial,
   Navbar,
   NavItem,
@@ -360,7 +360,7 @@ const FlashTrade: React.FC = () => {
             alignment="center"
           />
 
-          <Tab
+          <Tabs
             className="u-border u-border-primary"
             style={{
               //   backdropFilter: 'blur(1px)',

@@ -22,7 +22,7 @@ import {
   Rating,
   SectionIntro,
   Steps,
-  Tab,
+  Tabs,
   Toggle,
   Upload,
   VideoPlayer,
@@ -1102,7 +1102,7 @@ const HomePage: React.FC = () => {
                   <Icon name="Terminal" className="u-me-2" size={20} />
                   Interactive Documentation
                 </h4>
-                <Tab
+                <Tabs
                   items={[
                     {
                       label: '🚀 Quick Start',

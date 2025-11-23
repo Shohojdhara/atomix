@@ -1,11 +1,11 @@
 import React from 'react';
 import { StoryFn, Meta } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { Tab } from './Tab';
+import { Tabs } from './Tabs';
 
 export default {
-  title: 'Components/Tab',
-  component: Tab,
+  title: 'Components/Tabs',
+  component: Tabs,
   argTypes: {
     activeIndex: {
       control: { type: 'number' },
@@ -16,11 +16,11 @@ export default {
       description: 'Enable glass morphism effect',
     },
   },
-} as Meta<typeof Tab>;
+} as Meta<typeof Tabs>;
 
-const Template: StoryFn<typeof Tab> = args => (
+const Template: StoryFn<typeof Tabs> = args => (
   <div style={{ maxWidth: '600px', margin: '0 auto', padding: '30px' }}>
-    <Tab {...args} />
+    <Tabs {...args} />
   </div>
 );
 
@@ -164,7 +164,7 @@ export const Glass = {
       }}
     >
       <div style={{ width: '100%', maxWidth: '600px' }}>
-        <Tab {...args} />
+        <Tabs {...args} />
       </div>
     </div>
   ),
@@ -211,7 +211,7 @@ export const GlassCustom = {
       }}
     >
       <div style={{ width: '100%', maxWidth: '600px' }}>
-        <Tab {...args} />
+        <Tabs {...args} />
       </div>
     </div>
   ),

@@ -20,7 +20,6 @@ Accordions are essential for managing content density and improving user experie
 | `disabled` | `boolean` | `false` | Disable accordion interaction |
 | `className` | `string` | `''` | Additional CSS classes |
 | `glass` | `boolean \| AtomixGlassProps` | `false` | Glass morphism effect for the accordion |
-| `style` | `React.CSSProperties` | `undefined` | Custom style for the accordion |
 
 ## Usage Examples
 
@@ -584,7 +583,7 @@ Atomix.Accordion.initFromDataAttributes();
 
 ### Product Features
 
-```jsx
+``jsx
 function ProductFeatures() {
   const features = [
     {
@@ -620,7 +619,7 @@ function ProductFeatures() {
 
 ### Help Documentation
 
-```jsx
+``jsx
 function HelpDocumentation() {
   return (
     <div className="u-mw-100 u-mx-auto">

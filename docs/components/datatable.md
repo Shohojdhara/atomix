@@ -26,6 +26,7 @@ DataTables are essential for displaying structured data in applications. The Ato
 | `onRowClick` | `(row: any) => void` | `undefined` | Row click handler |
 | `onSort` | `(sortConfig: SortConfig) => void` | `undefined` | Sort change handler |
 | `className` | `string` | `''` | Additional CSS classes |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | Glass morphism effect for the data table |
 
 ### DataTableColumn Interface
 
@@ -469,7 +470,7 @@ function LoadingDataTable() {
 
 ## Vanilla JavaScript Usage
 
-```javascript
+```
 // Basic data table
 const dataTable = new Atomix.DataTable('.my-table', {
   data: [
@@ -504,7 +505,7 @@ Atomix.DataTable.initFromDataAttributes();
 
 ### CSS Classes
 
-```css
+```
 /* Base table */
 .c-datatable {
   /* Table container */
@@ -538,7 +539,7 @@ Atomix.DataTable.initFromDataAttributes();
 
 ### Custom Styling
 
-```css
+```
 /* Custom table theme */
 .c-datatable--custom {
   --table-border-color: #e5e7eb;
@@ -681,7 +682,7 @@ function MasterDetailTable() {
 - Optimize custom render functions
 - Consider lazy loading for complex cell content
 
-```jsx
+``jsx
 // Virtual scrolling for large datasets
 import { FixedSizeList as List } from 'react-window';
 

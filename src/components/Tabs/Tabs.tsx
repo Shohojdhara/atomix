@@ -3,7 +3,7 @@ import { TAB } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { AtomixGlassProps } from '../../lib/types/components';
 
-export interface TabItemProps {
+export interface TabsItemProps {
   /**
    * Label for the tab
    */
@@ -25,11 +25,11 @@ export interface TabItemProps {
   className?: string;
 }
 
-export interface TabProps {
+export interface TabsProps {
   /**
    * Array of tab items
    */
-  items: TabItemProps[];
+  items: TabsItemProps[];
 
   /**
    * Initial active tab index
@@ -59,9 +59,9 @@ export interface TabProps {
 }
 
 /**
- * Tab component for switching between different content panels
+ * Tabs component for switching between different content panels
  */
-export const Tab: React.FC<TabProps> = ({
+export const Tabs: React.FC<TabsProps> = ({
   items,
   activeIndex = TAB.DEFAULTS.ACTIVE_INDEX,
   onTabChange,
@@ -139,6 +139,6 @@ export const Tab: React.FC<TabProps> = ({
   return tabContent;
 };
 
-Tab.displayName = 'Tab';
+Tabs.displayName = 'Tabs';
 
-export default Tab;
+export default Tabs;

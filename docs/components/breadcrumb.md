@@ -17,8 +17,7 @@ Breadcrumbs are a secondary navigation aid that helps users understand where the
 | `className` | `string` | `''` | Additional CSS classes |
 | `ariaLabel` | `string` | `'Breadcrumb'` | Accessible label for navigation |
 | `LinkComponent` | `React.ElementType` | `undefined` | Custom link component (e.g., React Router Link) |
-| `style` | `React.CSSProperties` | `undefined` | Custom style for the breadcrumb |
-| `glass` | `boolean \| AtomixGlassProps` | `false` | Glass morphism effect for the breadcrumb |
+| `style` | `React.CSSProperties` | `undefined` | Custom styles object |
 
 ### BreadcrumbItem Interface
 

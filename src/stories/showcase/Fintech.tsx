@@ -26,7 +26,7 @@ import {
   SectionIntro,
   Spinner,
   Steps,
-  Tab,
+  Tabs,
   Testimonial,
   Navbar,
   NavItem,
@@ -797,7 +797,7 @@ const Fintech: React.FC = () => {
             text="Make data-driven decisions with comprehensive financial analytics and real-time reporting."
             alignment="center"
           />
-          <Tab
+          <Tabs
             className="u-bg-transparent"
             items={[
               {

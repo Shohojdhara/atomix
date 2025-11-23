@@ -9,7 +9,7 @@ import {
   Hero,
   Icon,
   SectionIntro,
-  Tab,
+  Tabs,
   Testimonial,
 } from '../../components';
 import { Container, Grid, GridCol, Row } from '../../layouts';
@@ -423,7 +423,7 @@ const Saas: React.FC = () => {
           />
           <Row className="u-justify-content-center">
             <GridCol xs={12} md={8}>
-              <Tab items={faqTabs} />
+              <Tabs items={faqTabs} />
             </GridCol>
           </Row>
         </Container>

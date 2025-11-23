@@ -164,6 +164,7 @@ const datasets = [
 | showLegend | `boolean` | `true` | Whether to show legend |
 | fullscreen | `boolean` | `false` | Fullscreen mode |
 | children | `ReactNode` | `undefined` | Chart content for wrapper usage |
+| glass | `boolean \| AtomixGlassProps` | `false` | Glass morphism effect for the chart |
 
 ### Data Props
 

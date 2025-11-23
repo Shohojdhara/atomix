@@ -26,13 +26,50 @@ import { Button } from '@shohojdhara/atomix';
 function MyComponent() {
   return (
     <div>
+      {/* Using label prop */}
       <Button label="Primary Button" />
       <Button label="Secondary Button" variant="secondary" />
       <Button label="Disabled Button" disabled />
+      
+      {/* Using children */}
+      <Button variant="primary">
+        Button with Children
+      </Button>
     </div>
   );
 }
 ```
+
+## Content Options
+
+The Button component supports two ways to provide content:
+
+### Using Label Prop
+
+```jsx
+<Button label="Click Me" variant="primary" />
+```
+
+### Using Children
+
+```jsx
+<Button variant="primary">
+  Click Me
+</Button>
+```
+
+### With Icon (Children)
+
+```jsx
+import { Button, Icon } from '@shohojdhara/atomix';
+
+<Button variant="primary">
+  <Icon name="plus" />
+  Add Item
+</Button>
+```
+
+**Note:** Use either `label` or `children`, not both. If both are provided, `children` will take precedence.
 
 ### HTML/CSS
 
@@ -51,21 +88,23 @@ function MyComponent() {
 
 ### Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `label` | `string` | - | **Required.** The text content of the button |
-| `children` | `ReactNode` | - | Alternative to label, useful for complex content |
-| `variant` | `Variant` | `'primary'` | Visual style variant of the button |
-| `size` | `Size` | `'md'` | Size of the button (`'sm'`, `'md'`, `'lg'`) |
-| `disabled` | `boolean` | `false` | Whether the button is disabled |
-| `icon` | `ReactNode` | - | Optional icon element to display |
-| `iconOnly` | `boolean` | `false` | Whether to show only the icon (hides label visually) |
-| `rounded` | `boolean` | `false` | Whether to apply fully rounded (pill) styling |
-| `onClick` | `() => void` | - | Click event handler |
-| `as` | `ElementType` | `'button'` | The element type to render as |
-| `className` | `string` | `''` | Additional CSS classes |
-| `glass` | `boolean \| AtomixGlassProps` | `false` | Glass morphism effect for the button |
-| `style` | `React.CSSProperties` | - | Custom style for the button |
+| Prop | Type | Default | Required | Description |
+|------|------|---------|----------|-------------|
+| `label` | `string` | - | No* | The text content of the button (use label OR children) |
+| `children` | `ReactNode` | - | No* | Button content (use label OR children) |
+| `variant` | `Variant` | `'primary'` | No | Visual style variant of the button |
+| `size` | `Size` | `'md'` | No | Size of the button (`'sm'`, `'md'`, `'lg'`) |
+| `disabled` | `boolean` | `false` | No | Whether the button is disabled |
+| `icon` | `ReactNode` | - | No | Optional icon element to display |
+| `iconOnly` | `boolean` | `false` | No | Whether to show only the icon (hides label visually) |
+| `rounded` | `boolean` | `false` | No | Whether to apply fully rounded (pill) styling |
+| `onClick` | `() => void` | - | No | Click event handler |
+| `as` | `ElementType` | `'button'` | No | The element type to render as |
+| `className` | `string` | `''` | No | Additional CSS classes |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | No | Glass morphism effect for the button |
+| `style` | `React.CSSProperties` | - | No | Custom style for the button |
+
+\*Note: Either `label` or `children` must be provided, but not both. If both are provided, `children` will take precedence.
 
 ### Variant Options
 

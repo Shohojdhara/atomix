@@ -88,7 +88,7 @@ Navigation breadcrumb component for showing page hierarchy.
 #### [Pagination](./pagination.mdx)
 Page navigation component for large data sets.
 
-#### [Tab](./tab.mdx)
+#### [Tabs](./tabs.md)
 Tabbed interface component for organizing content into sections.
 
 ### Feedback Components
