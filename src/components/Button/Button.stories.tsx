@@ -56,6 +56,35 @@ const meta = {
       control: { type: 'boolean' },
       description: 'Apply glass morphism effect to the button',
     },
+    loading: {
+      control: 'boolean',
+      description: 'Whether the button is in a loading state',
+    },
+    loadingText: {
+      control: 'text',
+      description: 'Custom text to display during loading',
+    },
+    fullWidth: {
+      control: 'boolean',
+      description: 'Whether the button should take full width',
+    },
+    block: {
+      control: 'boolean',
+      description: 'Whether the button should be block-level',
+    },
+    active: {
+      control: 'boolean',
+      description: 'Whether the button is in active state',
+    },
+    selected: {
+      control: 'boolean',
+      description: 'Whether the button is selected',
+    },
+    iconPosition: {
+      control: { type: 'select' },
+      options: ['start', 'end'],
+      description: 'Position of the icon',
+    },
   },
 } satisfies Meta<typeof Button>;
 
@@ -1156,6 +1185,151 @@ export const GlassStatesShowcase: Story = {
               <Button label="Disabled Outline" variant="outline-primary" disabled glass />
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+// Loading State
+export const Loading: Story = {
+  args: {
+    label: 'Save',
+    variant: 'primary',
+    loading: true,
+  },
+};
+
+export const LoadingWithText: Story = {
+  args: {
+    label: 'Save',
+    variant: 'primary',
+    loading: true,
+    loadingText: 'Saving...',
+  },
+};
+
+export const LoadingStates: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+      <Button label="Loading Primary" variant="primary" loading />
+      <Button label="Loading Secondary" variant="secondary" loading />
+      <Button label="Saving..." variant="success" loading loadingText="Saving..." />
+      <Button label="Deleting..." variant="error" loading loadingText="Deleting..." />
+    </div>
+  ),
+};
+
+// Full Width
+export const FullWidth: Story = {
+  args: {
+    label: 'Full Width Button',
+    variant: 'primary',
+    fullWidth: true,
+  },
+};
+
+export const FullWidthButtons: Story = {
+  render: () => (
+    <div style={{ width: '400px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <Button label="Full Width Primary" variant="primary" fullWidth />
+      <Button label="Full Width Secondary" variant="secondary" fullWidth />
+      <Button label="Full Width Loading" variant="success" fullWidth loading />
+    </div>
+  ),
+};
+
+// Block
+export const Block: Story = {
+  args: {
+    label: 'Block Button',
+    variant: 'primary',
+    block: true,
+  },
+};
+
+// Icon Positioning
+export const IconStart: Story = {
+  args: {
+    label: 'Icon Start',
+    variant: 'primary',
+    icon: <Icon />,
+    iconPosition: 'start',
+  },
+};
+
+export const IconEnd: Story = {
+  args: {
+    label: 'Icon End',
+    variant: 'primary',
+    icon: <Icon />,
+    iconPosition: 'end',
+  },
+};
+
+export const IconPositions: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+      <Button label="Icon Start" variant="primary" icon={<Icon />} iconPosition="start" />
+      <Button label="Icon End" variant="secondary" icon={<Icon />} iconPosition="end" />
+      <Button label="Loading Start" variant="success" loading iconPosition="start" />
+    </div>
+  ),
+};
+
+// Active State
+export const Active: Story = {
+  args: {
+    label: 'Active Button',
+    variant: 'primary',
+    active: true,
+  },
+};
+
+// Selected State
+export const Selected: Story = {
+  args: {
+    label: 'Selected Button',
+    variant: 'primary',
+    selected: true,
+  },
+};
+
+// Comprehensive Example
+export const Comprehensive: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', maxWidth: '600px' }}>
+      <div>
+        <h3 style={{ marginBottom: '1rem' }}>Loading States</h3>
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <Button label="Save" variant="primary" loading />
+          <Button label="Delete" variant="error" loading loadingText="Deleting..." />
+        </div>
+      </div>
+
+      <div>
+        <h3 style={{ marginBottom: '1rem' }}>Layout Variants</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <Button label="Full Width Button" variant="primary" fullWidth />
+          <Button label="Block Button" variant="secondary" block />
+        </div>
+      </div>
+
+      <div>
+        <h3 style={{ marginBottom: '1rem' }}>Icon Positioning</h3>
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <Button label="Icon Start" variant="primary" icon={<Icon />} iconPosition="start" />
+          <Button label="Icon End" variant="secondary" icon={<Icon />} iconPosition="end" />
+        </div>
+      </div>
+
+      <div>
+        <h3 style={{ marginBottom: '1rem' }}>States</h3>
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <Button label="Active" variant="primary" active />
+          <Button label="Selected" variant="success" selected />
+          <Button label="Loading" variant="info" loading />
+          <Button label="Disabled" variant="warning" disabled />
         </div>
       </div>
     </div>

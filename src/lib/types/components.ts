@@ -396,12 +396,12 @@ export interface ButtonProps extends BaseComponentProps {
   /**
    * Button contents
    */
-  label: string;
+  label?: string;
 
   /**
    * Optional click handler
    */
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 
   /**
    * Button variant
@@ -419,6 +419,11 @@ export interface ButtonProps extends BaseComponentProps {
   icon?: ReactNode;
 
   /**
+   * Icon position (start or end)
+   */
+  iconPosition?: 'start' | 'end';
+
+  /**
    * Icon only button
    */
   iconOnly?: boolean;
@@ -429,10 +434,85 @@ export interface ButtonProps extends BaseComponentProps {
   rounded?: boolean;
 
   /**
+   * Full width button (takes 100% of container width)
+   */
+  fullWidth?: boolean;
+
+  /**
+   * Block-level button (full width with block display)
+   */
+  block?: boolean;
+
+  /**
+   * Loading state - shows spinner and disables button
+   */
+  loading?: boolean;
+
+  /**
+   * Custom loading text (replaces label when loading)
+   */
+  loadingText?: string;
+
+  /**
+   * Active state
+   */
+  active?: boolean;
+
+  /**
+   * Selected state
+   */
+  selected?: boolean;
+
+  /**
+   * Button type attribute
+   */
+  type?: 'button' | 'submit' | 'reset';
+
+  /**
    * Glass morphism effect for the button
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;
+
+  /**
+   * Optional hover handler
+   */
+  onHover?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+
+  /**
+   * Optional focus handler
+   */
+  onFocus?: (event: React.FocusEvent<HTMLButtonElement>) => void;
+
+  /**
+   * Optional blur handler
+   */
+  onBlur?: (event: React.FocusEvent<HTMLButtonElement>) => void;
+
+  /**
+   * ARIA label for accessibility
+   */
+  ariaLabel?: string;
+
+  /**
+   * ARIA described by reference
+   */
+  ariaDescribedBy?: string;
+
+  /**
+   * ARIA expanded state (for toggle buttons)
+   */
+  ariaExpanded?: boolean;
+
+  /**
+   * ARIA controls reference
+   */
+  ariaControls?: string;
+
+  /**
+   * Tab index for keyboard navigation
+   */
+  tabIndex?: number;
 
   /**
    * Custom style for the button
@@ -1637,6 +1717,11 @@ export interface FormGroupProps extends BaseComponentProps {
    * Size variant
    */
   size?: Size;
+
+  /**
+   * Error message to display
+   */
+  errorMessage?: string;
 }
 
 /**
@@ -1767,6 +1852,56 @@ export interface InputProps extends BaseComponentProps {
    * Glass morphism effect
    */
   glass?: boolean | Omit<AtomixGlassProps, 'children'>;
+
+  /**
+   * Prefix icon (appears before the input)
+   */
+  prefixIcon?: React.ReactNode;
+
+  /**
+   * Suffix icon (appears after the input)
+   */
+  suffixIcon?: React.ReactNode;
+
+  /**
+   * Whether the input is clearable (shows clear button when value exists)
+   */
+  clearable?: boolean;
+
+  /**
+   * Handler for clear button click
+   */
+  onClear?: () => void;
+
+  /**
+   * Whether to show character counter
+   */
+  showCounter?: boolean;
+
+  /**
+   * Maximum character count for counter (uses maxLength if not provided)
+   */
+  maxCount?: number;
+
+  /**
+   * Whether password visibility toggle is enabled (for password inputs)
+   */
+  showPasswordToggle?: boolean;
+
+  /**
+   * Error message to display
+   */
+  errorMessage?: string;
+
+  /**
+   * Helper text to display
+   */
+  helperText?: string;
+
+  /**
+   * Whether the input should take full width
+   */
+  fullWidth?: boolean;
 }
 
 /**
@@ -1873,6 +2008,21 @@ export interface SelectProps extends BaseComponentProps {
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;
+
+  /**
+   * Error message to display
+   */
+  errorMessage?: string;
+
+  /**
+   * Helper text to display
+   */
+  helperText?: string;
+
+  /**
+   * Whether the select should take full width
+   */
+  fullWidth?: boolean;
 }
 
 /**
@@ -1944,6 +2094,16 @@ export interface CheckboxProps extends BaseComponentProps {
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;
+
+  /**
+   * Error message to display
+   */
+  errorMessage?: string;
+
+  /**
+   * Helper text to display
+   */
+  helperText?: string;
 }
 
 /**
@@ -2010,6 +2170,16 @@ export interface RadioProps extends BaseComponentProps {
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;
+
+  /**
+   * Error message to display
+   */
+  errorMessage?: string;
+
+  /**
+   * Helper text to display
+   */
+  helperText?: string;
 }
 
 /**
@@ -2120,6 +2290,31 @@ export interface TextareaProps extends BaseComponentProps {
    * Glass morphism effect
    */
   glass?: boolean | Omit<AtomixGlassProps, 'children'>;
+
+  /**
+   * Whether to show character counter
+   */
+  showCounter?: boolean;
+
+  /**
+   * Maximum character count for counter (uses maxLength if not provided)
+   */
+  maxCount?: number;
+
+  /**
+   * Error message to display
+   */
+  errorMessage?: string;
+
+  /**
+   * Helper text to display
+   */
+  helperText?: string;
+
+  /**
+   * Whether the textarea should take full width
+   */
+  fullWidth?: boolean;
 }
 
 /**
@@ -3116,6 +3311,26 @@ export interface CardProps extends BaseComponentProps {
   footer?: ReactNode;
 
   /**
+   * Size variant of the card
+   */
+  size?: Size;
+
+  /**
+   * Color variant of the card
+   */
+  variant?: ThemeColor;
+
+  /**
+   * Appearance style of the card
+   */
+  appearance?: 'filled' | 'outlined' | 'ghost' | 'elevated';
+
+  /**
+   * Elevation level (shadow depth)
+   */
+  elevation?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+
+  /**
    * Row layout (horizontal card)
    */
   row?: boolean;
@@ -3131,12 +3346,41 @@ export interface CardProps extends BaseComponentProps {
   active?: boolean;
 
   /**
+   * Disabled state - prevents interactions and shows visual feedback
+   */
+  disabled?: boolean;
+
+  /**
+   * Loading state - shows loading indicator
+   */
+  loading?: boolean;
+
+  /**
+   * Selected state - indicates card is selected
+   */
+  selected?: boolean;
+
+  /**
+   * Interactive state - makes card clickable with proper ARIA attributes
+   */
+  interactive?: boolean;
+
+  /**
    * Applies a glass morphism effect to the card.
    * Can be a boolean to enable with default settings, or an object with `AtomixGlassProps` to customize the effect.
    */
   glass?: boolean | Omit<AtomixGlassProps, 'children'>;
 
-  cardAppearance?: boolean;
+  /**
+   * Link URL - when provided, card renders as an anchor element
+   */
+  href?: string;
+
+  /**
+   * Link target attribute
+   */
+  target?: '_blank' | '_self' | '_parent' | '_top';
+
   /**
    * Card content (body)
    */
@@ -3155,7 +3399,37 @@ export interface CardProps extends BaseComponentProps {
   /**
    * Optional click handler
    */
-  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLDivElement | HTMLAnchorElement>) => void;
+
+  /**
+   * Optional hover handler
+   */
+  onHover?: (event: React.MouseEvent<HTMLDivElement | HTMLAnchorElement>) => void;
+
+  /**
+   * Optional focus handler
+   */
+  onFocus?: (event: React.FocusEvent<HTMLDivElement | HTMLAnchorElement>) => void;
+
+  /**
+   * ARIA role for the card
+   */
+  role?: 'article' | 'button' | 'link' | 'region';
+
+  /**
+   * ARIA label for accessibility
+   */
+  ariaLabel?: string;
+
+  /**
+   * ARIA described by reference
+   */
+  ariaDescribedBy?: string;
+
+  /**
+   * Tab index for keyboard navigation
+   */
+  tabIndex?: number;
 }
 
 /**

@@ -19,9 +19,29 @@ const meta: Meta<typeof Card> = {
     image: { control: 'text' },
     imageAlt: { control: 'text' },
     footer: { control: 'text' },
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+    },
+    variant: {
+      control: 'select',
+      options: ['primary', 'secondary', 'success', 'error', 'warning', 'info', 'light', 'dark'],
+    },
+    appearance: {
+      control: 'select',
+      options: ['filled', 'outlined', 'ghost', 'elevated'],
+    },
+    elevation: {
+      control: 'select',
+      options: ['none', 'sm', 'md', 'lg', 'xl'],
+    },
     row: { control: 'boolean' },
     flat: { control: 'boolean' },
     active: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+    loading: { control: 'boolean' },
+    selected: { control: 'boolean' },
+    interactive: { control: 'boolean' },
     className: { control: 'text' },
   },
 };
@@ -804,5 +824,187 @@ export const GlassCardLayouts: Story = {
         </div>
       </Container>
     </div>
+  ),
+};
+
+// Size Variants
+export const SizeVariants: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+      <Card
+        size="sm"
+        title="Small Card"
+        text="This is a small card with compact spacing."
+        actions={<button className="c-btn c-btn--primary c-btn--sm">Action</button>}
+      />
+      <Card
+        size="md"
+        title="Medium Card"
+        text="This is a medium card with default spacing."
+        actions={<button className="c-btn c-btn--primary c-btn--sm">Action</button>}
+      />
+      <Card
+        size="lg"
+        title="Large Card"
+        text="This is a large card with spacious padding."
+        actions={<button className="c-btn c-btn--primary c-btn--sm">Action</button>}
+      />
+    </div>
+  ),
+};
+
+// Color Variants
+export const ColorVariants: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
+      <Card variant="primary" title="Primary Card" text="Primary variant card." />
+      <Card variant="secondary" title="Secondary Card" text="Secondary variant card." />
+      <Card variant="success" title="Success Card" text="Success variant card." />
+      <Card variant="error" title="Error Card" text="Error variant card." />
+      <Card variant="warning" title="Warning Card" text="Warning variant card." />
+      <Card variant="info" title="Info Card" text="Info variant card." />
+      <Card variant="light" title="Light Card" text="Light variant card." />
+      <Card variant="dark" title="Dark Card" text="Dark variant card." />
+    </div>
+  ),
+};
+
+// Appearance Variants
+export const AppearanceVariants: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
+      <Card appearance="filled" variant="primary" title="Filled Card" text="Filled appearance with solid background." />
+      <Card appearance="outlined" variant="primary" title="Outlined Card" text="Outlined appearance with border only." />
+      <Card appearance="ghost" variant="primary" title="Ghost Card" text="Ghost appearance with minimal styling." />
+      <Card appearance="elevated" variant="primary" title="Elevated Card" text="Elevated appearance with shadow." />
+    </div>
+  ),
+};
+
+// Elevation Levels
+export const ElevationLevels: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+      <Card elevation="none" title="No Elevation" text="Card with no shadow." />
+      <Card elevation="sm" title="Small Elevation" text="Card with small shadow." />
+      <Card elevation="md" title="Medium Elevation" text="Card with medium shadow." />
+      <Card elevation="lg" title="Large Elevation" text="Card with large shadow." />
+      <Card elevation="xl" title="Extra Large Elevation" text="Card with extra large shadow." />
+    </div>
+  ),
+};
+
+// Disabled State
+export const Disabled: Story = {
+  args: {
+    title: 'Disabled Card',
+    text: 'This card is disabled and cannot be interacted with.',
+    disabled: true,
+    actions: (
+      <React.Fragment>
+        <button className="c-btn c-btn--primary c-btn--sm">Action</button>
+      </React.Fragment>
+    ),
+  },
+};
+
+// Loading State
+export const Loading: Story = {
+  args: {
+    title: 'Loading Card',
+    text: 'This card is in a loading state.',
+    loading: true,
+    actions: (
+      <React.Fragment>
+        <button className="c-btn c-btn--primary c-btn--sm">Action</button>
+      </React.Fragment>
+    ),
+  },
+};
+
+// Selected State
+export const Selected: Story = {
+  args: {
+    title: 'Selected Card',
+    text: 'This card is in a selected state.',
+    selected: true,
+    variant: 'primary',
+  },
+};
+
+// Interactive Card
+export const Interactive: Story = {
+  args: {
+    title: 'Interactive Card',
+    text: 'This card is interactive and responds to hover and click.',
+    interactive: true,
+    onClick: () => alert('Interactive card clicked!'),
+    variant: 'primary',
+    elevation: 'md',
+  },
+};
+
+// Link Card
+export const LinkCard: Story = {
+  args: {
+    title: 'Link Card',
+    text: 'This card acts as a link. Click to navigate.',
+    href: 'https://example.com',
+    target: '_blank',
+    variant: 'primary',
+    interactive: true,
+  },
+};
+
+// Comprehensive Example
+export const Comprehensive: Story = {
+  render: () => (
+    <Container>
+      <Grid>
+        <GridCol sm={6} lg={4}>
+          <Card
+            size="lg"
+            variant="primary"
+            appearance="elevated"
+            elevation="lg"
+            title="Premium Feature"
+            text="This is a comprehensive card example with all new features enabled."
+            image="https://placehold.co/400x200"
+            imageAlt="Feature image"
+            interactive
+            onClick={() => alert('Card clicked!')}
+            actions={
+              <React.Fragment>
+                <button className="c-btn c-btn--primary c-btn--sm">Get Started</button>
+                <button className="c-btn c-btn--outline-primary c-btn--sm">Learn More</button>
+              </React.Fragment>
+            }
+          />
+        </GridCol>
+        <GridCol sm={6} lg={4}>
+          <Card
+            size="md"
+            variant="success"
+            appearance="outlined"
+            elevation="md"
+            title="Success Card"
+            text="This card uses the success variant with outlined appearance."
+            selected
+            actions={<button className="c-btn c-btn--success c-btn--sm">Action</button>}
+          />
+        </GridCol>
+        <GridCol sm={6} lg={4}>
+          <Card
+            size="sm"
+            variant="error"
+            appearance="ghost"
+            title="Error Card"
+            text="This is a small error card with ghost appearance."
+            disabled
+            actions={<button className="c-btn c-btn--error c-btn--sm">Action</button>}
+          />
+        </GridCol>
+      </Grid>
+    </Container>
   ),
 };

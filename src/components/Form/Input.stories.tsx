@@ -1,5 +1,7 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Input } from './Input';
+import { MagnifyingGlass, Envelope, Lock, User, Phone, Calendar } from '@phosphor-icons/react';
 
 const meta = {
   title: 'Components/Form/Input',
@@ -20,7 +22,7 @@ const meta = {
     },
     variant: {
       control: { type: 'select' },
-      options: ['primary', 'success', 'danger', 'warning', 'info'],
+      options: ['primary', 'success', 'error', 'warning', 'info'],
       description: 'Color variant of the input',
     },
     disabled: {
@@ -42,6 +44,22 @@ const meta = {
     glass: {
       control: 'boolean',
       description: 'Enable glass morphism effect',
+    },
+    clearable: {
+      control: 'boolean',
+      description: 'Show clear button when input has value',
+    },
+    showCounter: {
+      control: 'boolean',
+      description: 'Show character counter',
+    },
+    showPasswordToggle: {
+      control: 'boolean',
+      description: 'Show password visibility toggle (for password inputs)',
+    },
+    fullWidth: {
+      control: 'boolean',
+      description: 'Input takes full width',
     },
   },
 } satisfies Meta<typeof Input>;
@@ -88,7 +106,6 @@ export const Variants: Story = {
   render: () => (
     <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <Input variant="primary" placeholder="Primary input" />
-      <Input variant="secondary" placeholder="Secondary input" />
       <Input variant="success" placeholder="Success input" />
       <Input variant="error" placeholder="Error input" />
       <Input variant="warning" placeholder="Warning input" />
@@ -107,6 +124,215 @@ export const States: Story = {
       <Input placeholder="Invalid input" invalid />
     </div>
   ),
+};
+
+// Prefix and Suffix Icons
+export const WithIcons: Story = {
+  render: () => (
+    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+      <Input
+        placeholder="Search..."
+        prefixIcon={<MagnifyingGlass size={18} />}
+      />
+      <Input
+        placeholder="Email address"
+        type="email"
+        prefixIcon={<Envelope size={18} />}
+      />
+      <Input
+        placeholder="Username"
+        prefixIcon={<User size={18} />}
+        suffixIcon={<span style={{ color: 'green' }}>✓</span>}
+      />
+      <Input
+        placeholder="Phone number"
+        type="tel"
+        prefixIcon={<Phone size={18} />}
+      />
+    </div>
+  ),
+};
+
+// Clearable Input
+export const Clearable: Story = {
+  render: () => {
+    const [value, setValue] = React.useState('');
+    return (
+      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+        <Input
+          placeholder="Type to see clear button"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          clearable
+        />
+        <Input
+          placeholder="With prefix icon"
+          prefixIcon={<MagnifyingGlass size={18} />}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          clearable
+        />
+      </div>
+    );
+  },
+};
+
+// Character Counter
+export const WithCounter: Story = {
+  render: () => {
+    const [value, setValue] = React.useState('');
+    return (
+      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+        <Input
+          placeholder="Type here (max 50 characters)"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          maxLength={50}
+          showCounter
+        />
+        <Input
+          placeholder="With custom max count"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          maxCount={100}
+          showCounter
+        />
+      </div>
+    );
+  },
+};
+
+// Password Toggle
+export const PasswordToggle: Story = {
+  render: () => {
+    const [password, setPassword] = React.useState('');
+    return (
+      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+        <Input
+          type="password"
+          placeholder="Enter password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          showPasswordToggle
+        />
+        <Input
+          type="password"
+          placeholder="Password with prefix icon"
+          prefixIcon={<Lock size={18} />}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          showPasswordToggle
+        />
+      </div>
+    );
+  },
+};
+
+// Error Messages and Helper Text
+export const WithMessages: Story = {
+  render: () => {
+    const [email, setEmail] = React.useState('');
+    const [username, setUsername] = React.useState('');
+    const isValidEmail = email.includes('@') && email.includes('.');
+    const isInvalidEmail = email.length > 0 && !isValidEmail;
+
+    return (
+      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+        <Input
+          type="email"
+          placeholder="Email address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          invalid={isInvalidEmail}
+          errorMessage={isInvalidEmail ? 'Please enter a valid email address' : undefined}
+          helperText={!isInvalidEmail ? 'We\'ll never share your email' : undefined}
+        />
+        <Input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          helperText="Choose a unique username"
+        />
+        <Input
+          placeholder="Required field"
+          required
+          helperText="This field is required"
+        />
+      </div>
+    );
+  },
+};
+
+// Full Width
+export const FullWidth: Story = {
+  render: () => (
+    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '100%', maxWidth: '500px' }}>
+      <Input placeholder="Full width input" fullWidth />
+      <Input
+        placeholder="Full width with icon"
+        prefixIcon={<MagnifyingGlass size={18} />}
+        fullWidth
+      />
+    </div>
+  ),
+};
+
+// Comprehensive Example
+export const Comprehensive: Story = {
+  render: () => {
+    const [search, setSearch] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [bio, setBio] = React.useState('');
+
+    return (
+      <div className="u-d-flex u-flex-column u-gap-4" style={{ width: '400px' }}>
+        <div>
+          <label style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
+            Search
+          </label>
+          <Input
+            placeholder="Search products..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            prefixIcon={<MagnifyingGlass size={18} />}
+            clearable
+            fullWidth
+          />
+        </div>
+
+        <div>
+          <label style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
+            Password
+          </label>
+          <Input
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            prefixIcon={<Lock size={18} />}
+            showPasswordToggle
+            fullWidth
+            helperText="Must be at least 8 characters"
+          />
+        </div>
+
+        <div>
+          <label style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
+            Bio
+          </label>
+          <Input
+            placeholder="Tell us about yourself"
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            maxLength={200}
+            showCounter
+            fullWidth
+            helperText="Maximum 200 characters"
+          />
+        </div>
+      </div>
+    );
+  },
 };
 
 // Glass Effect

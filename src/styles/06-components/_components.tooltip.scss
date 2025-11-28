@@ -19,16 +19,60 @@
   --#{$prefix}tooltip-border-color: #{$tooltip-border-color};
   --#{$prefix}tooltip-box-shadow: #{$tooltip-box-shadow};
   --#{$prefix}tooltip-arrow-size: #{rem($tooltip-arrow-size)};
+  --#{$prefix}tooltip-offset: #{rem($tooltip-arrow-size)}; // Default offset
 
   position: absolute;
-  bottom: calc(100% + var(--#{$prefix}tooltip-arrow-size));
-  left: 50%;
   width: max-content;
   height: max-content;
   max-width: var(--#{$prefix}tooltip-max-width);
-  transform: translateX(-50%);
-  pointer-events: none;
+  pointer-events: none; // Wrapper shouldn't block clicks, but content might
   z-index: 1000;
+
+  // Base positioning logic
+  &--top,
+  &--top-left,
+  &--top-right {
+    bottom: calc(100% + var(--#{$prefix}tooltip-offset));
+    transform-origin: bottom center;
+  }
+
+  &--bottom,
+  &--bottom-left,
+  &--bottom-right {
+    top: calc(100% + var(--#{$prefix}tooltip-offset));
+    transform-origin: top center;
+  }
+
+  &--left {
+    right: calc(100% + var(--#{$prefix}tooltip-offset));
+    top: 50%;
+    transform: translateY(-50%);
+    transform-origin: right center;
+  }
+
+  &--right {
+    left: calc(100% + var(--#{$prefix}tooltip-offset));
+    top: 50%;
+    transform: translateY(-50%);
+    transform-origin: left center;
+  }
+
+  // Horizontal alignment for top/bottom
+  &--top,
+  &--bottom {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &--top-left,
+  &--bottom-left {
+    left: 0;
+  }
+
+  &--top-right,
+  &--bottom-right {
+    right: 0;
+  }
 
   &__content {
     position: relative;
@@ -38,12 +82,20 @@
     padding: var(--#{$prefix}tooltip-padding-y) var(--#{$prefix}tooltip-padding-x);
     @include dynamic-background(var(--#{$prefix}tooltip-bg));
     border-radius: var(--#{$prefix}tooltip-border-radius);
+    box-shadow: var(--#{$prefix}tooltip-box-shadow);
     z-index: 2;
     opacity: 0;
-    transform: scale(0.95);
+    pointer-events: auto; // Allow interaction with tooltip content
+
+    // Animation
     transition:
-      opacity 0.2s ease-out,
-      transform 0.2s ease-out;
+      opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    // Initial states for animation based on position would be complex to do purely generically here without separate classes
+    // So we stick to a simple scale/fade
+    transform: scale(0.95);
+
     &.is-active {
       opacity: 1;
       transform: scale(1);
@@ -52,81 +104,52 @@
 
   &__arrow {
     position: absolute;
-    bottom: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
-    left: 50%;
-    transform: translateX(-50%) rotate(45deg);
-    @include square(var(--#{$prefix}tooltip-arrow-size));
+    width: var(--#{$prefix}tooltip-arrow-size);
+    height: var(--#{$prefix}tooltip-arrow-size);
     @include dynamic-background(var(--#{$prefix}tooltip-bg));
     z-index: 1;
+    transform: rotate(45deg);
   }
 
-  &--top-left {
-    left: auto;
-    right: calc(100% - var(--#{$prefix}tooltip-arrow-size) * 2);
-    transform: translateX(0);
-
-    #{$root}__arrow {
-      left: auto;
-      right: var(--#{$prefix}tooltip-arrow-size);
-      transform: rotate(45deg);
-    }
+  // Arrow positioning
+  &--top &__arrow,
+  &--top-left &__arrow,
+  &--top-right &__arrow {
+    bottom: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
   }
 
-  &--top-right {
-    left: calc(100% - var(--#{$prefix}tooltip-arrow-size) * 2);
-    transform: translateX(0);
-
-    #{$root}__arrow {
-      left: var(--#{$prefix}tooltip-arrow-size);
-      transform: rotate(45deg);
-    }
+  &--bottom &__arrow,
+  &--bottom-left &__arrow,
+  &--bottom-right &__arrow {
+    top: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
   }
 
-  &--right {
-    left: calc(100% + var(--#{$prefix}tooltip-arrow-size));
+  &--left &__arrow {
+    right: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
     top: 50%;
-    transform: translateY(-50%);
-
-    #{$root}__arrow {
-      left: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
-      top: 50%;
-      bottom: auto;
-      transform: rotate(45deg) translateY(-50%);
-      transform-origin: top;
-    }
+    transform: translateY(-50%) rotate(45deg);
   }
 
-  &--left {
-    left: auto;
-    right: calc(100% + var(--#{$prefix}tooltip-arrow-size));
+  &--right &__arrow {
+    left: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
     top: 50%;
-    transform: translateY(-50%);
-
-    #{$root}__arrow {
-      left: auto;
-      top: 50%;
-      bottom: auto;
-      right: calc(var(--#{$prefix}tooltip-arrow-size) / -5);
-      transform: rotate(45deg) translateY(-50%);
-    }
+    transform: translateY(-50%) rotate(45deg);
   }
 
-  &--bottom {
-    top: calc(100% + var(--#{$prefix}tooltip-arrow-size));
-
-    #{$root}__arrow {
-      top: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
-      bottom: auto;
-    }
+  // Arrow horizontal alignment
+  &--top &__arrow,
+  &--bottom &__arrow {
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
   }
 
-  &--bottom-left {
-    top: calc(100% + var(--#{$prefix}tooltip-arrow-size));
-    left: 0;
+  &--top-left &__arrow,
+  &--bottom-left &__arrow {
+    left: var(--#{$prefix}tooltip-arrow-size);
   }
 
-  &--bottom-right {
-    top: calc(100% + var(--#{$prefix}tooltip-arrow-size));
-    right: 0;
+  &--top-right &__arrow,
+  &--bottom-right &__arrow {
+    right: var(--#{$prefix}tooltip-arrow-size);
   }
 }

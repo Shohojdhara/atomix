@@ -1,4 +1,5 @@
 import { ButtonProps } from '../types/components';
+import { BUTTON } from '../constants/components';
 
 /**
  * Button state and functionality
@@ -12,6 +13,11 @@ export function useButton(initialProps?: Partial<ButtonProps>) {
     size: 'md',
     disabled: false,
     rounded: false,
+    loading: false,
+    fullWidth: false,
+    block: false,
+    active: false,
+    selected: false,
     ...initialProps,
   };
 
@@ -28,6 +34,11 @@ export function useButton(initialProps?: Partial<ButtonProps>) {
       rounded = defaultProps.rounded,
       iconOnly = false,
       glass = defaultProps.glass,
+      loading = defaultProps.loading,
+      fullWidth = defaultProps.fullWidth,
+      block = defaultProps.block,
+      active = defaultProps.active,
+      selected = defaultProps.selected,
       className = '',
     } = props;
 
@@ -36,8 +47,29 @@ export function useButton(initialProps?: Partial<ButtonProps>) {
     const roundedClass = rounded ? 'c-btn--rounded' : '';
     const disabledClass = disabled ? 'c-btn--disabled' : '';
     const glassClass = glass ? 'c-btn--glass' : '';
+    const loadingClass = loading ? BUTTON.CLASSES.LOADING : '';
+    const fullWidthClass = fullWidth ? BUTTON.CLASSES.FULL_WIDTH : '';
+    const blockClass = block ? BUTTON.CLASSES.BLOCK : '';
+    const activeClass = active ? BUTTON.CLASSES.ACTIVE : '';
+    const selectedClass = selected ? BUTTON.CLASSES.SELECTED : '';
 
-    return `c-btn c-btn--${variant} ${sizeClass} ${iconOnlyClass} ${roundedClass} ${disabledClass} ${glassClass} ${className}`.trim();
+    return [
+      BUTTON.BASE_CLASS,
+      `c-btn--${variant}`,
+      sizeClass,
+      iconOnlyClass,
+      roundedClass,
+      disabledClass,
+      glassClass,
+      loadingClass,
+      fullWidthClass,
+      blockClass,
+      activeClass,
+      selectedClass,
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ');
   };
 
   /**
@@ -45,10 +77,10 @@ export function useButton(initialProps?: Partial<ButtonProps>) {
    * @param handler - Click handler function
    * @returns Function that respects disabled state
    */
-  const handleClick = (handler?: () => void) => {
-    return () => {
-      if (!defaultProps.disabled && handler) {
-        handler();
+  const handleClick = (handler?: (event: React.MouseEvent<HTMLButtonElement>) => void) => {
+    return (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (!defaultProps.disabled && !defaultProps.loading && handler) {
+        handler(event);
       }
     };
   };

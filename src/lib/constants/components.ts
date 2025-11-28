@@ -35,7 +35,17 @@ export const CLASS_PREFIX = {
 export const BUTTON = {
   BASE_CLASS: 'c-btn',
   ICON_CLASS: 'c-btn__icon',
+  LABEL_CLASS: 'c-btn__label',
+  SPINNER_CLASS: 'c-btn__spinner',
   VARIANT_PREFIX: 'c-btn--',
+  CLASSES: {
+    BASE: 'c-btn',
+    LOADING: 'c-btn--loading',
+    FULL_WIDTH: 'c-btn--full-width',
+    BLOCK: 'c-btn--block',
+    ACTIVE: 'c-btn--active',
+    SELECTED: 'c-btn--selected',
+  },
 };
 
 /**
@@ -730,6 +740,22 @@ export const INPUT = {
     INVALID: 'is-invalid',
     VALID: 'is-valid',
     DISABLED: 'is-disabled',
+    FULL_WIDTH: 'c-input--full-width',
+    PREFIX_ICON: 'c-input--prefix-icon',
+    SUFFIX_ICON: 'c-input--suffix-icon',
+    CLEARABLE: 'c-input--clearable',
+    WITH_COUNTER: 'c-input--with-counter',
+    PASSWORD_TOGGLE: 'c-input--password-toggle',
+  },
+  ELEMENTS: {
+    WRAPPER: 'c-input-wrapper',
+    PREFIX: 'c-input__prefix',
+    SUFFIX: 'c-input__suffix',
+    CLEAR_BUTTON: 'c-input__clear',
+    PASSWORD_TOGGLE: 'c-input__password-toggle',
+    COUNTER: 'c-input__counter',
+    ERROR_MESSAGE: 'c-input__error',
+    HELPER_TEXT: 'c-input__helper',
   },
 };
 
@@ -772,15 +798,42 @@ export const CARD = {
   },
   CLASSES: {
     BASE: 'c-card',
+    // Size modifiers
+    SM: 'c-card--sm',
+    MD: 'c-card--md',
+    LG: 'c-card--lg',
+    // Layout modifiers
     ROW: 'c-card--row',
     FLAT: 'c-card--flat',
+    // Appearance modifiers
+    FILLED: 'c-card--filled',
+    OUTLINED: 'c-card--outlined',
+    GHOST: 'c-card--ghost',
+    ELEVATED: 'c-card--elevated',
+    // Elevation modifiers
+    ELEVATION_NONE: 'c-card--elevation-none',
+    ELEVATION_SM: 'c-card--elevation-sm',
+    ELEVATION_MD: 'c-card--elevation-md',
+    ELEVATION_LG: 'c-card--elevation-lg',
+    ELEVATION_XL: 'c-card--elevation-xl',
+    // State modifiers
     ACTIVE: 'is-active',
+    DISABLED: 'c-card--disabled',
+    LOADING: 'c-card--loading',
+    SELECTED: 'c-card--selected',
+    INTERACTIVE: 'c-card--interactive',
+    // Other modifiers
     FLIPPED: 'is-flipped',
     FOCUSED: 'is-focused',
     CLICKABLE: 'is-clickable',
+    GLASS: 'c-card--glass',
   },
   DEFAULTS: {
     HOVER: true,
+    SIZE: 'md',
+    VARIANT: 'primary',
+    APPEARANCE: 'filled',
+    ELEVATION: 'none',
   },
 };
 

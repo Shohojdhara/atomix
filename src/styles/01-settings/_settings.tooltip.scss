@@ -11,7 +11,7 @@ $tooltip-bg: var(--#{config.$prefix}invert-bg-subtle) !default;
 
 $tooltip-font-size: typography.$font-size-xs !default;
 $tooltip-font-weight: typography.$font-weight-normal !default;
-$tooltip-color: var(--#{config.$prefix}invert-text-emphasis) !default;
+$tooltip-color: var(--#{config.$prefix}invert-text) !default;
 
 $tooltip-border-radius: borderRadius.$border-radius !default;
 $tooltip-border-width: null !default;

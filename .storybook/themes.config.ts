@@ -1,9 +1,4 @@
-/**
- * Shared Storybook Theme Configuration
- * 
- * This file provides a single source of truth for theme lists used across
- * Storybook preview and addon components to avoid duplication and drift.
- */
+import { themesConfig } from '../src/themes/themes.config';
 
 export interface ThemeConfig {
   name: string;
@@ -11,14 +6,17 @@ export interface ThemeConfig {
   color: string;
 }
 
+// Generate themes from the shared configuration
+const configThemes: ThemeConfig[] = Object.entries(themesConfig.metadata).map(([key, value]: [string, any]) => ({
+  name: value.name,
+  class: key,
+  color: value.color || '#808080', // Fallback color
+}));
+
 // Main theme list - single source of truth
 export const themes: ThemeConfig[] = [
   { name: 'Atomix', class: 'atomix', color: '#000000' },
-  { name: 'Shaj Default', class: 'shaj-default', color: '#3b82f6' },
-  { name: 'BoomDevs', class: 'boomdevs', color: '#8b5cf6' },
-  { name: 'Esrar', class: 'esrar', color: '#10b981' },
-  { name: 'Mashroom', class: 'mashroom', color: '#f59e0b' },
-  { name: 'Applemix', class: 'applemix', color: '#f5f5f5' },
+  ...configThemes,
   { name: 'None', class: 'none', color: '#ef4444' },
 ];
 

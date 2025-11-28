@@ -6,7 +6,14 @@ import { INPUT } from '../constants/components';
  * @param initialProps - Initial input properties
  * @returns Input state and methods
  */
-export function useInput(initialProps?: Partial<InputProps>) {
+export function useInput(initialProps?: Partial<InputProps> & {
+  prefixIcon?: boolean;
+  suffixIcon?: boolean;
+  clearable?: boolean;
+  showCounter?: boolean;
+  showPasswordToggle?: boolean;
+  fullWidth?: boolean;
+}) {
   // Default input properties
   const defaultProps: Partial<InputProps> = {
     size: 'md',
@@ -51,8 +58,39 @@ export function useInput(initialProps?: Partial<InputProps>) {
     return `${INPUT.CLASSES.BASE} ${sizeClass} ${variantClass} ${textareaClass} ${validationClass} ${disabledClass} ${className}`.trim();
   };
 
+  /**
+   * Generate wrapper class based on properties
+   * @param props - Wrapper properties
+   * @returns Class string
+   */
+  const generateWrapperClass = (props: { className?: string }): string => {
+    const { className = '' } = props;
+    const {
+      prefixIcon = false,
+      suffixIcon = false,
+      clearable = false,
+      showCounter = false,
+      showPasswordToggle = false,
+      fullWidth = false,
+    } = initialProps || {};
+
+    const classes = [INPUT.ELEMENTS.WRAPPER];
+
+    if (prefixIcon) classes.push(INPUT.CLASSES.PREFIX_ICON);
+    if (suffixIcon || clearable || showPasswordToggle) classes.push(INPUT.CLASSES.SUFFIX_ICON);
+    if (clearable) classes.push(INPUT.CLASSES.CLEARABLE);
+    if (showCounter) classes.push(INPUT.CLASSES.WITH_COUNTER);
+    if (showPasswordToggle) classes.push(INPUT.CLASSES.PASSWORD_TOGGLE);
+    if (fullWidth) classes.push(INPUT.CLASSES.FULL_WIDTH);
+
+    if (className) classes.push(className);
+
+    return classes.filter(Boolean).join(' ');
+  };
+
   return {
     defaultProps,
     generateInputClass,
+    generateWrapperClass,
   };
 }
