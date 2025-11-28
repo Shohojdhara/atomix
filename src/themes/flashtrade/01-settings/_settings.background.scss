@@ -3,10 +3,7 @@
  * Dark background settings for trading platform
  */
 
-@use '../../../styles/01-settings/settings.background' with (
-  $background-enable-gradient-overlay: false,
+@use '../../../styles/01-settings/settings.background' with ($background-enable-gradient-overlay: true,
   $background-transparency-enable: true,
   $background-enable-with-shadow: true,
-  $background-transparency: 0.7
-);
-
+  $background-transparency: 0.8);

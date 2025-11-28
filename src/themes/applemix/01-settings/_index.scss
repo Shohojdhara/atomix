@@ -16,3 +16,9 @@
 @forward 'settings.typography';
 @forward 'settings.animations';
 @forward 'settings.background';
+
+// Forward core token groups from base theme for proper coverage
+@forward '../../../styles/01-settings/settings.spacing';
+@forward '../../../styles/01-settings/settings.breakpoints';
+@forward '../../../styles/01-settings/settings.border';
+@forward '../../../styles/01-settings/settings.border-radius';

@@ -12,22 +12,22 @@
  */
 
 // Settings
-@use '01-settings' as settings;
+@use '01-settings' as *;
 
 // Tools
-@use '02-tools' as tools;
+@use '02-tools' as *;
 
 // Generic
-@use '03-generic' as generic;
+@use '03-generic' as *;
 
 // Elements
-@use '04-elements' as elements;
+@use '04-elements' as *;
 
 // Objects
-@use '05-objects' as objects;
+@use '05-objects' as *;
 
 // Components
-@use '06-components' as components;
+@use '06-components' as *;
 
 // Utilities
-@use '99-utilities' as utilities;
+@use '99-utilities' as *;

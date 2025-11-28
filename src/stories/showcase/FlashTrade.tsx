@@ -124,16 +124,16 @@ const FlashTrade: React.FC = () => {
   ];
 
   const markets = [
-    { symbol: 'SOL', name: 'Solana', pair: 'SOL/USDC', change: -3.56, price: 156.66 },
-    { symbol: 'BTC', name: 'Bitcoin', pair: 'BTC/USDC', change: -2.68, price: 43250.0 },
-    { symbol: 'ETH', name: 'Ethereum', pair: 'ETH/USDC', change: -2.85, price: 2650.0 },
-    { symbol: 'WIF', name: 'dogwifhat', pair: 'WIF/USDC', change: -1.93, price: 2.45 },
+    { symbol: 'SOL', name: 'Solana', pair: 'SOL/USDC', change: 0.36, price: 139.44 },
+    { symbol: 'BTC', name: 'Bitcoin', pair: 'BTC/USDC', change: 2.15, price: 43250.0 },
+    { symbol: 'ETH', name: 'Ethereum', pair: 'ETH/USDC', change: -0.76, price: 2456.78 },
+    { symbol: 'WIF', name: 'dogwifhat', pair: 'WIF/USDC', change: 5.93, price: 2.45 },
     { symbol: 'BONK', name: 'Bonk', pair: 'BONK/USDC', change: -1.51, price: 0.000012 },
-    { symbol: 'JUP', name: 'Jupiter', pair: 'JUP/USDC', change: -4.03, price: 0.85 },
-    { symbol: 'PYTH', name: 'Pyth Network', pair: 'PYTH/USDC', change: -3.63, price: 0.42 },
-    { symbol: 'JTO', name: 'Jito', pair: 'JTO/USDC', change: -4.47, price: 2.15 },
-    { symbol: 'RAY', name: 'Raydium', pair: 'RAY/USDC', change: -5.53, price: 1.85 },
-    { symbol: 'ZEC', name: 'Zcash', pair: 'ZEC/USDC', change: 9.35, price: 28.5 },
+    { symbol: 'JUP', name: 'Jupiter', pair: 'JUP/USDC', change: 3.42, price: 0.85 },
+    { symbol: 'PYTH', name: 'Pyth Network', pair: 'PYTH/USDC', change: -2.63, price: 0.42 },
+    { symbol: 'JTO', name: 'Jito', pair: 'JTO/USDC', change: 1.47, price: 2.15 },
+    { symbol: 'RAY', name: 'Raydium', pair: 'RAY/USDC', change: -3.53, price: 1.85 },
+    { symbol: 'ORE', name: 'Ore', pair: 'ORE/USDC', change: 5.67, price: 0.0234 },
     { symbol: 'EUR', name: 'Euro', pair: 'EUR/USDC', change: 0.44, price: 1.08 },
     { symbol: 'GBP', name: 'British Pound', pair: 'GBP/USDC', change: 0.63, price: 1.27 },
   ];
@@ -273,7 +273,7 @@ const FlashTrade: React.FC = () => {
 
   return (
     <>
-      
+
       {/* Navigation */}
       <Navbar glass brand={<AtomixLogo />} position="fixed">
         <Nav alignment="start">
@@ -294,12 +294,16 @@ const FlashTrade: React.FC = () => {
       {/* Hero Section */}
       <Hero
         className="u-py-60"
-        title="Trade Perpetuals on Solana"
-        text="Experience the future of decentralized trading with up to 100x leverage, instant execution, and professional-grade charts. Built on Solana for speed and security."
+        title="Trade Perpetuals with Instant Fills"
+        text="Experience the future of decentralized trading with up to 500x leverage, instant execution, and on-demand liquidity. Built on Solana for unmatched speed and security."
         actions={
           <>
-            <Button variant="primary">Start Trading</Button>
-            <Button variant="warning" onClick={() => setIsDemoModalOpen(true)}>
+            <Button variant="primary" size="lg" glass>
+              <Icon name="Wallet" size={20} className="u-me-2" />
+              Connect Wallet
+            </Button>
+            <Button variant="secondary-outline" size="lg" glass onClick={() => setIsDemoModalOpen(true)}>
+              <Icon name="PlayCircle" size={20} className="u-me-2" />
               Watch Demo
             </Button>
           </>
@@ -307,7 +311,7 @@ const FlashTrade: React.FC = () => {
         alignment="center"
         contentWidth="1000px"
         backgroundImageSrc="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3873"
-        glass={{ padding: '5rem 2rem', cornerRadius: 32, elasticity: 0.1, blurAmount: 2 } as any}
+        glass={{ padding: '5rem 2rem', cornerRadius: 32, elasticity: 0.1, blurAmount: 4 } as any}
         parallax={true}
       />
 
@@ -322,16 +326,16 @@ const FlashTrade: React.FC = () => {
           <Grid>
             {stats.map((stat, index) => (
               <GridCol key={index} xs={12} sm={6} md={3} className="u-mb-4">
-                <Card glass={{  }}>
+                <Card glass={{}}>
                   <div className="u-p-4 u-text-center">
                     <div className="u-fs-1 u-fw-bold u-text-primary u-mb-2">{stat.value}</div>
                     <div className="u-fs-5 u-fw-semibold u-mb-1">{stat.label}</div>
                     <div className="u-text-muted u-fs-sm">{stat.description}</div>
-                    <Progress 
-                      value={75 + index * 5} 
-                      variant="primary" 
-                      size="sm" 
-                      className="u-mt-3" 
+                    <Progress
+                      value={75 + index * 5}
+                      variant="primary"
+                      size="sm"
+                      className="u-mt-3"
                     />
                   </div>
                 </Card>
@@ -624,14 +628,14 @@ const FlashTrade: React.FC = () => {
                   <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-4">
                     <div>
                       <h3 className="u-fs-4 u-fw-bold u-mb-1">SOL/USDC</h3>
-                      <div className="u-fs-1 u-fw-bold u-text-primary-emphasis">$156.66</div>
-                      <Badge label="-3.56%" variant="error" size="sm" className="u-mt-2" />
+                      <div className="u-fs-1 u-fw-bold" style={{ color: '#06b6d4' }}>$139.44</div>
+                      <Badge label="+0.36%" variant="success" size="sm" className="u-mt-2" />
                     </div>
                     <div className="u-text-end">
-                      <div className="u-fs-sm u-text-secondary-emphasis  u-mb-1">24h High</div>
-                      <div className="u-fs-5 u-fw-semibold u-text-primary-emphasis">$162.89</div>
+                      <div className="u-fs-sm u-text-secondary-emphasis u-mb-1">24h High</div>
+                      <div className="u-fs-5 u-fw-semibold" style={{ color: '#06b6d4' }}>$142.89</div>
                       <div className="u-fs-sm u-text-secondary-emphasis u-mt-2 u-mb-1">24h Low</div>
-                      <div className="u-fs-5 u-fw-semibold u-text-primary-emphasis">$153.79</div>
+                      <div className="u-fs-5 u-fw-semibold" style={{ color: '#06b6d4' }}>$136.79</div>
                     </div>
                   </div>
                   <LineChart
@@ -654,7 +658,7 @@ const FlashTrade: React.FC = () => {
                       {
                         label: 'Price',
                         data: priceData,
-                        color: '#7AFFD7',
+                        color: '#06b6d4',
                       },
                     ]}
                     config={{
@@ -664,16 +668,16 @@ const FlashTrade: React.FC = () => {
                     }}
                   />
                   <div className="u-d-flex u-gap-2 u-mt-4 u-flex-wrap">
-                    <Badge label="Leverage: Up to 100x" variant="primary" />
+                    <Badge label="Leverage: Up to 500x" variant="primary" />
                     <Badge label="Long/Short" variant="secondary" />
                     <Badge label="Real-time PnL" variant="success" />
-                    <Badge label="Stop Loss / Take Profit" variant="info" />
+                    <Badge label="Instant Fills" variant="info" />
                   </div>
                 </div>
               </AtomixGlass>
             </GridCol>
             <GridCol xs={12} lg={4}>
-              <Card glass={{ blurAmount: 4, displacementScale: 10,}} className="u-mb-4 u-bg-transparent "> 
+              <Card glass={{ blurAmount: 4, displacementScale: 10, }} className="u-mb-4 u-bg-transparent ">
                 <div className="u-p-4">
                   <h4 className="u-fs-5 u-fw-bold u-mb-3">Quick Trade</h4>
                   <Form>
@@ -718,23 +722,23 @@ const FlashTrade: React.FC = () => {
                   </Form>
                 </div>
               </Card>
-              
-              <Card glass={{  }} className="u-mb-4 u-bg-transparent ">
-                  <h4 className="u-fs-5 u-fw-bold u-mb-3">Settings</h4>
-                  <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-3">
-                    <span className="u-fs-sm">Notifications</span>
-                    <Toggle
-                      initialOn={notifications}
-                      onToggleOn={() => setNotifications(true)}
-                      onToggleOff={() => setNotifications(false)}
-                    />
-                  </div>
-                  <Callout
-                    variant="warning"
-                    title="Risk Warning"
-                  >
-                    Trading with leverage involves significant risk. Only trade with funds you can afford to lose.
-                  </Callout>
+
+              <Card glass={{}} className="u-mb-4 u-bg-transparent ">
+                <h4 className="u-fs-5 u-fw-bold u-mb-3">Settings</h4>
+                <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-3">
+                  <span className="u-fs-sm">Notifications</span>
+                  <Toggle
+                    initialOn={notifications}
+                    onToggleOn={() => setNotifications(true)}
+                    onToggleOff={() => setNotifications(false)}
+                  />
+                </div>
+                <Callout
+                  variant="warning"
+                  title="Risk Warning"
+                >
+                  Trading with leverage involves significant risk. Only trade with funds you can afford to lose.
+                </Callout>
               </Card>
             </GridCol>
           </Grid>
@@ -803,7 +807,7 @@ const FlashTrade: React.FC = () => {
               </GridCol>
             ))}
           </Grid>
-          
+
           <div className="u-text-center u-mt-6">
             <div className="u-d-flex u-justify-content-center u-align-items-center u-gap-3 u-mb-4">
               <Rating value={4.8} size="lg" readOnly />
@@ -868,10 +872,10 @@ const FlashTrade: React.FC = () => {
                 elasticity={0}
               >
                 <div className="u-p-6">
+                  <Icon name="Lightning" size={48} className="u-mb-3" style={{ color: '#06b6d4' }} />
                   <h2 className="u-fs-2 u-fw-bold u-mb-3">Ready to start trading?</h2>
-                  <p className="u-fs-5 u-mb-4 u-text-primary-emphasis">
-                    Join thousands of traders and experience the future of decentralized perpetual
-                    trading.
+                  <p className="u-fs-5 u-mb-4" style={{ color: '#a3a3a3' }}>
+                    Join thousands of traders and experience the future of decentralized perpetual trading with instant fills and on-demand liquidity.
                   </p>
                   <div className="u-d-flex u-gap-2 u-justify-content-center">
                     <Button variant="primary" glass>
@@ -907,7 +911,7 @@ const FlashTrade: React.FC = () => {
               Experience the full trading interface, chart tools, and order management features.
             </p>
           </div>
-          
+
           <div className="u-mb-4">
             <Breadcrumb
               items={[
@@ -917,7 +921,7 @@ const FlashTrade: React.FC = () => {
               ]}
             />
           </div>
-          
+
           <Callout
             variant="info"
             title="Demo Mode"
@@ -925,7 +929,7 @@ const FlashTrade: React.FC = () => {
           >
             This is a simulated trading environment. No real funds are at risk.
           </Callout>
-          
+
           <div className="u-mb-4">
             <h4 className="u-fs-5 u-fw-bold u-mb-3">Demo Features</h4>
             <div className="u-d-flex u-flex-column u-gap-2">
@@ -947,7 +951,7 @@ const FlashTrade: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="u-text-center">
             <div className="u-d-flex u-gap-2 u-justify-content-center">
               <Button variant="primary" onClick={() => setIsDemoModalOpen(false)}>
@@ -1013,21 +1017,21 @@ const FlashTrade: React.FC = () => {
 
       {/* Alert Banner */}
       {showAlert && (
-           <Callout  
-        glass
+        <Callout
+          glass
           variant="info"
           title="🎉 New Feature Alert!"
           onClose={() => setShowAlert(false)}
           style={{
             position: 'fixed',
-            bottom  : 0,
+            bottom: 0,
             right: 0,
             left: 0
           }}
         >
           Introducing copy trading - follow top traders and mirror their strategies automatically.
         </Callout>
-       
+
       )}
 
     </>

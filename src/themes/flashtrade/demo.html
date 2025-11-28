@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="flashtrade" data-atomix-color-mode="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flash Trade Theme - Atomix Design System</title>
+  <meta name="description" content="Professional dark crypto perpetuals trading platform theme">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Flash Trade Theme CSS -->
+  <link rel="stylesheet" href="../../dist/themes/flashtrade.css">
+  
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--atomix-gray-1);
+      color: var(--atomix-white);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    .container {
+      max-width: 1920px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+    
+    .demo-section {
+      margin-bottom: 3rem;
+    }
+    
+    .demo-section h2 {
+      color: var(--atomix-primary-6);
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(var(--atomix-gray-6-rgb), 0.2);
+    }
+    
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .badge-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar__container">
+      <div class="navbar__brand">
+        <span class="brand-name">Flash Trade</span>
+      </div>
+      
+      <div class="navbar__nav">
+        <a href="#" class="navbar__link active">Trade</a>
+        <a href="#" class="navbar__link">Markets</a>
+        <a href="#" class="navbar__link">Portfolio</a>
+        <a href="#" class="navbar__link">Analytics</a>
+      </div>
+      
+      <div class="navbar__actions">
+        <button class="navbar__wallet">Connect Wallet</button>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Asset Bar -->
+  <div class="asset-bar">
+    <div class="asset-bar__container">
+      <div class="asset-bar__item active">
+        <div class="asset-name">SOL/USDC</div>
+        <div class="asset-price">$139.44</div>
+        <div class="asset-change positive">+0.36%</div>
+      </div>
+      <div class="asset-bar__item">
+        <div class="asset-name">ETH/USDC</div>
+        <div class="asset-price">$2,456.78</div>
+        <div class="asset-change negative">-0.76%</div>
+      </div>
+      <div class="asset-bar__item">
+        <div class="asset-name">BTC/USDC</div>
+        <div class="asset-price">$43,250.00</div>
+        <div class="asset-change positive">+2.15%</div>
+      </div>
+      <div class="asset-bar__item">
+        <div class="asset-name">ORE/USDC</div>
+        <div class="asset-price">$0.0234</div>
+        <div class="asset-change positive">+5.67%</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Trading Dashboard Demo -->
+    <div class="demo-section">
+      <h2>Trading Dashboard</h2>
+      <div class="trading-dashboard">
+        <div class="chart-section">
+          <div class="chart-container">
+            <div class="chart-header">
+              <h2>SOL/USDC</h2>
+              <div class="price-info">
+                <span class="current-price">$139.44</span>
+                <span class="price-change positive">+0.36%</span>
+              </div>
+            </div>
+            <div class="chart-body" style="display: flex; align-items: center; justify-content: center; color: var(--atomix-gray-7);">
+              <p>Chart visualization would go here</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="trading-panel">
+          <h3>Place Order</h3>
+          <div class="order-type">
+            <button class="btn active">Market</button>
+            <button class="btn">Limit</button>
+          </div>
+          <div class="order-form">
+            <input type="number" placeholder="Amount (USDC)" />
+            <div class="leverage-selector">
+              <span>Leverage: 1x - 500x</span>
+            </div>
+            <div class="order-actions">
+              <button class="btn btn-success">Long</button>
+              <button class="btn btn-danger">Short</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Market Cards Demo -->
+    <div class="demo-section">
+      <h2>Market Cards</h2>
+      <div class="markets-list">
+        <div class="market-card">
+          <div class="market-card__header">
+            <h3>SOL/USDC</h3>
+            <span class="badge badge-success">+0.36%</span>
+          </div>
+          <div class="market-card__body">
+            <p class="price">$139.44</p>
+            <p class="volume">24h Volume: $5.28M</p>
+          </div>
+        </div>
+        
+        <div class="market-card">
+          <div class="market-card__header">
+            <h3>ETH/USDC</h3>
+            <span class="badge badge-danger">-0.76%</span>
+          </div>
+          <div class="market-card__body">
+            <p class="price">$2,456.78</p>
+            <p class="volume">24h Volume: $12.5M</p>
+          </div>
+        </div>
+        
+        <div class="market-card">
+          <div class="market-card__header">
+            <h3>BTC/USDC</h3>
+            <span class="badge badge-success">+2.15%</span>
+          </div>
+          <div class="market-card__body">
+            <p class="price">$43,250.00</p>
+            <p class="volume">24h Volume: $45.2M</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Buttons Demo -->
+    <div class="demo-section">
+      <h2>Buttons</h2>
+      <div class="button-grid">
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-success">Long</button>
+        <button class="btn btn-danger">Short</button>
+        <button class="btn btn-secondary">Cancel</button>
+      </div>
+      <div class="button-grid">
+        <button class="btn btn-outline">Outline</button>
+        <button class="btn btn-outline-success">Outline Long</button>
+        <button class="btn btn-outline-danger">Outline Short</button>
+        <button class="btn btn-secondary">Secondary</button>
+      </div>
+      <div class="button-grid">
+        <button class="btn btn-primary btn-sm">Small</button>
+        <button class="btn btn-primary">Default</button>
+        <button class="btn btn-primary btn-lg">Large</button>
+      </div>
+    </div>
+    
+    <!-- Badges Demo -->
+    <div class="demo-section">
+      <h2>Badges</h2>
+      <div class="badge-grid">
+        <span class="badge badge-primary">Primary</span>
+        <span class="badge badge-success">Profit +5.67%</span>
+        <span class="badge badge-danger">Loss -2.34%</span>
+        <span class="badge badge-warning">Pending</span>
+        <span class="badge badge-info">Info</span>
+        <span class="badge badge-secondary">Secondary</span>
+      </div>
+      <div class="badge-grid">
+        <span class="badge badge-success badge-glow">Glow Success</span>
+        <span class="badge badge-danger badge-glow">Glow Danger</span>
+        <span class="badge badge-primary badge-glow">Glow Primary</span>
+      </div>
+      <div class="badge-grid">
+        <span class="badge badge-primary badge-pill">Pill Shape</span>
+        <span class="badge badge-success badge-sm">Small</span>
+        <span class="badge badge-danger badge-lg">Large</span>
+        <span class="leverage-badge">100</span>
+        <span class="leverage-badge">500</span>
+      </div>
+    </div>
+    
+    <!-- Price Indicators Demo -->
+    <div class="demo-section">
+      <h2>Price Indicators</h2>
+      <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+        <div>
+          <p style="color: var(--atomix-gray-9); margin-bottom: 0.5rem;">Positive Change</p>
+          <p class="price-positive" style="font-size: 1.5rem; margin: 0;">3.56%</p>
+        </div>
+        <div>
+          <p style="color: var(--atomix-gray-9); margin-bottom: 0.5rem;">Negative Change</p>
+          <p class="price-negative" style="font-size: 1.5rem; margin: 0;">-2.34%</p>
+        </div>
+        <div>
+          <p style="color: var(--atomix-gray-9); margin-bottom: 0.5rem;">Neutral</p>
+          <p class="price-neutral" style="font-size: 1.5rem; margin: 0;">0.00%</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Utility Classes Demo -->
+    <div class="demo-section">
+      <h2>Utility Classes</h2>
+      <div style="display: grid; gap: 1rem;">
+        <div class="bg-glass" style="padding: 1rem; border-radius: 8px;">
+          <p style="margin: 0;">Glass Background Effect</p>
+        </div>
+        <div class="bg-glass-dark" style="padding: 1rem; border-radius: 8px;">
+          <p style="margin: 0;">Dark Glass Background Effect</p>
+        </div>
+        <div style="padding: 1rem;">
+          <p class="text-profit">Profit Text Color</p>
+          <p class="text-loss">Loss Text Color</p>
+          <p class="text-primary">Primary Text Color</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

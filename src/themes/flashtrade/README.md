@@ -1,20 +1,28 @@
 # Flash Trade Theme
 
-> Dark crypto perpetuals trading platform theme for the Atomix Design System
+> Professional dark crypto perpetuals trading platform theme for the Atomix Design System, inspired by [flash.trade](https://www.flash.trade)
 
 ## Overview
 
-The Flash Trade theme brings the sleek, professional aesthetic of modern cryptocurrency trading platforms to the Atomix Design System. It features a dark interface optimized for financial data display, high contrast for trading information, and glass morphism effects that create a modern, immersive trading experience.
+The Flash Trade theme brings the sleek, professional aesthetic of the Flash Trade cryptocurrency perpetuals trading platform to the Atomix Design System. Carefully designed to match the actual flash.trade website, it features an ultra-dark interface optimized for financial data display, bright cyan accents for brand consistency, and sophisticated glass morphism effects that create a modern, immersive trading experience.
+
+This theme has been enhanced based on the real Flash Trade website design, ensuring authentic styling and professional trading platform aesthetics.
 
 ## Features
 
-- 🎨 **Trading-Focused Color Palette**: Cyan/green for profits, red for losses, optimized for financial data
-- 🌑 **Dark Interface**: Deep blacks and grays for reduced eye strain during extended trading sessions
-- ✨ **Glass Morphism**: Modern glass effects for cards, modals, and navigation
-- 📊 **High Contrast**: Optimized contrast ratios for financial data readability
-- ⚡ **Fast Animations**: Quick, responsive transitions for real-time trading data
+- 🎨 **Authentic Flash Trade Design**: Color palette and styling directly inspired by flash.trade
+- 💎 **Bright Cyan Primary**: #06b6d4 cyan matching the Flash Trade brand
+- 🌑 **Ultra-Dark Interface**: Deep blacks (#050505, #0a0a0a) for reduced eye strain during extended trading
+- 📊 **Trading Color System**: Green (#22c55e) for long/profit, Red (#ef4444) for short/loss
+- ✨ **Glass Morphism**: Modern glass effects with backdrop blur for cards, modals, and navigation
+- 🔤 **Inter Typography**: Professional Inter font family optimized for financial data
+- ⚡ **Fast Animations**: Quick, responsive transitions (0.15s) for real-time trading data
+- 🧭 **Professional Navbar**: Glass morphism navbar with asset selector bar
+- 💳 **Trading Cards**: Market cards with hover effects and glass backgrounds
+- 🎯 **Action Buttons**: Comprehensive button styles for long/short trading actions
+- 🏷️ **Price Badges**: Profit/loss badges with glow effects and proper color coding
+- 📱 **Responsive Design**: Mobile-first design optimized for all screen sizes
 - 🔧 **AtomixGlass Integration**: Seamless compatibility with existing AtomixGlass components
-- 📱 **Responsive Design**: Optimized for desktop and mobile trading interfaces
 
 ## Installation
 
@@ -99,14 +107,15 @@ The theme enhances components with trading platform styling:
 
 ### Primary Colors
 
-The Flash Trade theme uses cyan/green as the primary color for trading and positive indicators:
+The Flash Trade theme uses bright cyan as the primary color, matching the actual flash.trade brand:
 
 ```scss
 // CSS Custom Properties
 :root {
-  --flashtrade-primary-1: #001a14;   // Darkest cyan
-  --flashtrade-primary-6: #00ffc8;  // Flash Trade brand cyan
-  --flashtrade-primary-10: #66fff0; // Lightest cyan
+  --flashtrade-primary-1: #051414;   // Darkest cyan
+  --flashtrade-primary-6: #06b6d4;   // Flash Trade brand cyan
+  --flashtrade-primary-7: #22d3ee;   // Bright cyan
+  --flashtrade-primary-10: #cffafe;  // Lightest cyan
 }
 ```
 
@@ -114,16 +123,17 @@ The Flash Trade theme uses cyan/green as the primary color for trading and posit
 
 ```scss
 :root {
-  // Positive/Profit colors (green)
-  --flashtrade-green-6: #00ff80;    // Profit indicator
-  --flashtrade-green-7: #1aff8c;    // Hover state
+  // Long/Profit colors (green) - Flash Trade style
+  --flashtrade-green-6: #22c55e;    // Profit indicator
+  --flashtrade-green-7: #4ade80;    // Hover state
   
-  // Negative/Loss colors (red)
-  --flashtrade-red-6: #ff1a1a;      // Loss indicator
-  --flashtrade-red-7: #ff3333;      // Hover state
+  // Short/Loss colors (red) - Flash Trade style
+  --flashtrade-red-6: #ef4444;      // Loss indicator
+  --flashtrade-red-7: #f87171;      // Hover state
   
-  // Warning colors (yellow)
-  --flashtrade-yellow-6: #ffff00;   // Warning/Pending
+  // Warning colors (yellow) - for leverage and pending
+  --flashtrade-yellow-6: #eab308;   // Warning/Pending
+  --flashtrade-yellow-7: #facc15;   // Hover state
 }
 ```
 
@@ -131,10 +141,12 @@ The Flash Trade theme uses cyan/green as the primary color for trading and posit
 
 ```scss
 :root {
-  // Dark backgrounds for trading interface
-  --flashtrade-gray-1: #0a0a0a;      // Deepest background
-  --flashtrade-gray-3: #1e1e1e;     // Card backgrounds
-  --flashtrade-gray-5: #323232;     // Elevated surfaces
+  // Ultra-dark backgrounds for trading interface
+  --flashtrade-gray-1: #050505;     // Deepest background
+  --flashtrade-gray-2: #0a0a0a;     // Main background
+  --flashtrade-gray-3: #141414;     // Card backgrounds
+  --flashtrade-gray-4: #1e1e1e;     // Elevated surfaces
+  --flashtrade-gray-5: #2a2a2a;     // Interactive elements
 }
 ```
 

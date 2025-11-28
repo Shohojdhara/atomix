@@ -4,13 +4,10 @@
  */
 
 // Component overrides with Flash Trade styling
-// @forward 'components.button';
-// @forward 'components.card';
-// @forward 'components.form';
-// @forward 'components.navbar';
-// @forward 'components.modal';
-// @forward 'components.footer';
+@forward 'components.button';
+@forward 'components.card';
+@forward 'components.badge';
+@forward 'components.navbar';
 
 // Forward base component styles from the main design system
 @forward '../../../styles/06-components/index';
-

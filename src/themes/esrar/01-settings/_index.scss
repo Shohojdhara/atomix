@@ -5,3 +5,11 @@
 
 // Import theme-specific settings that override base settings
 @forward 'settings.colors';
+
+// Forward core token groups from base theme for proper coverage
+// These can be overridden by creating local files with the same names
+@forward '../../../styles/01-settings/settings.spacing';
+@forward '../../../styles/01-settings/settings.typography';
+@forward '../../../styles/01-settings/settings.breakpoints';
+@forward '../../../styles/01-settings/settings.border';
+@forward '../../../styles/01-settings/settings.border-radius';
