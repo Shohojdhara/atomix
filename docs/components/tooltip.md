@@ -14,12 +14,13 @@ Tooltips enhance user experience by providing just-in-time information. The Atom
 |------|------|---------|-------------|
 | `content` | `ReactNode` | **required** | Tooltip content |
 | `children` | `ReactNode` | **required** | Element that triggers tooltip |
-| `position` | `'top' \| 'bottom' \| 'left' \| 'right' \| 'auto'` | `'top'` | Tooltip position |
-| `delay` | `number` | `500` | Delay before showing (ms) |
-| `offset` | `number` | `8` | Distance from trigger (pixels) |
-| `disabled` | `boolean` | `false` | Disable tooltip |
-| `className` | `string` | `''` | Additional CSS classes |
-| `id` | `string` | `undefined` | Tooltip ID for accessibility |
+| `position` | `'top' \| 'bottom' \| 'left' \| 'right' \| 'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | `'top'` | Tooltip position relative to trigger |
+| `trigger` | `'hover' \| 'click'` | `'hover'` | How the tooltip is triggered |
+| `delay` | `number` | `200` | Delay before showing (ms) |
+| `offset` | `number` | `10` | Distance from trigger (pixels) |
+| `glass` | `boolean \| AtomixGlassProps` | `false` | Glass morphism effect for the tooltip |
+| `className` | `string` | `''` | Additional CSS class for the tooltip trigger |
+| `style` | `React.CSSProperties` | - | Inline style for the component |
 
 ## Usage Examples
 
@@ -74,10 +75,6 @@ function TooltipPositions() {
         <Button label="Left" variant="outline-primary" />
       </Tooltip>
       
-      <Tooltip content="Auto positioning" position="auto">
-        <Button label="Auto" variant="primary" />
-      </Tooltip>
-      
       <Tooltip content="Right tooltip" position="right">
         <Button label="Right" variant="outline-primary" />
       </Tooltip>
@@ -88,6 +85,60 @@ function TooltipPositions() {
       </Tooltip>
       <div></div>
     </div>
+  );
+}
+```
+
+### Corner Positions
+
+```jsx
+function CornerPositions() {
+  return (
+    <div className="u-d-flex u-gap-4">
+      <Tooltip content="Top left" position="top-left">
+        <Button label="Top Left" variant="outline-primary" />
+      </Tooltip>
+      
+      <Tooltip content="Top right" position="top-right">
+        <Button label="Top Right" variant="outline-primary" />
+      </Tooltip>
+      
+      <Tooltip content="Bottom left" position="bottom-left">
+        <Button label="Bottom Left" variant="outline-primary" />
+      </Tooltip>
+      
+      <Tooltip content="Bottom right" position="bottom-right">
+        <Button label="Bottom Right" variant="outline-primary" />
+      </Tooltip>
+    </div>
+  );
+}
+```
+
+### Click Trigger
+
+```jsx
+function ClickTrigger() {
+  return (
+    <Tooltip content="This tooltip appears on click" trigger="click">
+      <Button label="Click Me" variant="primary" />
+    </Tooltip>
+  );
+}
+```
+
+### Glass Morphism Tooltip
+
+```jsx
+function GlassTooltip() {
+  return (
+    <Tooltip 
+      content="Tooltip with glass morphism effect"
+      glass
+      position="bottom"
+    >
+      <Button label="Glass Tooltip" variant="primary" />
+    </Tooltip>
   );
 }
 ```
@@ -344,99 +395,65 @@ function StatusTooltips() {
 }
 ```
 
-### Disabled Tooltips
+### Custom Delay and Offset
 
 ```jsx
-function DisabledTooltips() {
-  const [tooltipsEnabled, setTooltipsEnabled] = useState(true);
-
+function CustomDelayOffset() {
   return (
-    <div className="u-gap-4">
-      <div className="u-d-flex u-align-items-center u-gap-3">
-        <Checkbox 
-          label="Enable tooltips"
-          checked={tooltipsEnabled}
-          onChange={(e) => setTooltipsEnabled(e.target.checked)}
-        />
-      </div>
+    <div className="u-d-flex u-gap-4">
+      <Tooltip 
+        content="Instant tooltip (no delay)"
+        delay={0}
+      >
+        <Button label="No Delay" variant="primary" />
+      </Tooltip>
 
-      <div className="u-d-flex u-gap-4">
-        <Tooltip 
-          content="This tooltip can be disabled"
-          disabled={!tooltipsEnabled}
-        >
-          <Button label="Conditional Tooltip" variant="primary" />
-        </Tooltip>
+      <Tooltip 
+        content="Quick tooltip"
+        delay={100}
+      >
+        <Button label="100ms Delay" variant="primary" />
+      </Tooltip>
 
-        <Tooltip 
-          content="This tooltip is always disabled"
-          disabled
-        >
-          <Button label="Always Disabled" variant="secondary" />
-        </Tooltip>
+      <Tooltip 
+        content="Standard tooltip"
+        delay={200}
+      >
+        <Button label="200ms Delay" variant="primary" />
+      </Tooltip>
 
-        <Tooltip content="This tooltip is always enabled">
-          <Button label="Always Enabled" variant="success" />
-        </Tooltip>
-      </div>
+      <Tooltip 
+        content="Tooltip with custom offset"
+        offset={20}
+        position="top"
+      >
+        <Button label="Custom Offset" variant="primary" />
+      </Tooltip>
     </div>
   );
 }
 ```
 
-## Vanilla JavaScript Usage
+## Trigger Types
 
-```javascript
-// Basic tooltip
-const tooltip = new Atomix.Tooltip('.my-element', {
-  content: 'This is a tooltip',
-  position: 'top',
-  delay: 500
-});
+The Tooltip component supports two trigger types:
 
-// Tooltip with custom content
-const richTooltip = new Atomix.Tooltip('.rich-element', {
-  content: '<div><strong>Rich Content</strong><br>With HTML</div>',
-  position: 'bottom',
-  delay: 200
-});
+### Hover Trigger (Default)
 
-// Show/hide programmatically
-tooltip.show();
-tooltip.hide();
-
-// Initialize from data attributes
-Atomix.Tooltip.initFromDataAttributes();
+```jsx
+// Tooltip appears on hover and focus
+<Tooltip content="Hover or focus to see tooltip" trigger="hover">
+  <Button label="Hover Me" variant="primary" />
+</Tooltip>
 ```
 
-### HTML with Data Attributes
+### Click Trigger
 
-```html
-<!-- Basic tooltip -->
-<button 
-  class="c-button" 
-  data-atomix="tooltip"
-  data-tooltip-content="This is a tooltip"
-  data-tooltip-position="top">
-  Hover me
-</button>
-
-<!-- Tooltip with custom delay -->
-<span 
-  data-atomix="tooltip"
-  data-tooltip-content="Quick tooltip"
-  data-tooltip-delay="200"
-  data-tooltip-position="bottom">
-  Quick hover
-</span>
-
-<!-- Rich content tooltip -->
-<div 
-  data-atomix="tooltip"
-  data-tooltip-content="<strong>Bold text</strong><br>Line break"
-  data-tooltip-position="right">
-  Rich content
-</div>
+```jsx
+// Tooltip appears on click
+<Tooltip content="Click to toggle tooltip" trigger="click">
+  <Button label="Click Me" variant="primary" />
+</Tooltip>
 ```
 
 ## Styling
@@ -512,15 +529,14 @@ Atomix.Tooltip.initFromDataAttributes();
 ### ARIA Attributes
 
 - `role="tooltip"` - Identifies tooltip content
-- `aria-describedby` - Links trigger to tooltip
-- `aria-hidden` - Hides tooltip when not visible
-- `id` - Unique identifier for tooltip
+- `aria-describedby` - Links trigger to tooltip (automatically set when tooltip is visible)
+- Unique `id` - Automatically generated for each tooltip instance
 
 ### Keyboard Navigation
 
-- **Escape** - Hides visible tooltip
-- **Focus** - Shows tooltip on keyboard focus
-- **Blur** - Hides tooltip when focus leaves
+- **Focus** - Shows tooltip on keyboard focus (hover trigger only)
+- **Blur** - Hides tooltip when focus leaves (hover trigger only)
+- **Enter/Space** - Activates click trigger if child is a button
 
 ### Screen Reader Support
 
@@ -555,7 +571,7 @@ Atomix.Tooltip.initFromDataAttributes();
 - Don't put essential information only in tooltips
 - Don't use tooltips for complex interactions
 - Don't make tooltip content too long
-- Don't use tooltips on mobile-only interfaces
+- Don't rely on hover-only tooltips for critical information on mobile devices
 
 ```jsx
 // Bad: Essential action in tooltip only
@@ -566,6 +582,11 @@ Atomix.Tooltip.initFromDataAttributes();
 // Bad: Too much content
 <Tooltip content="This is way too much content for a tooltip. It should be brief and to the point, not a long explanation that takes up too much space.">
   <Button label="Help" />
+</Tooltip>
+
+// Bad: Using hover trigger for critical mobile information
+<Tooltip content="Important: You must complete this step" trigger="hover">
+  <Button label="Submit" />
 </Tooltip>
 ```
 

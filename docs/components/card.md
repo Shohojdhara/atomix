@@ -73,11 +73,27 @@ function ProductCard() {
 | `actions` | `ReactNode` | - | Action buttons or interactive elements |
 | `icon` | `ReactNode` | - | Icon to display in the header |
 | `footer` | `ReactNode` | - | Footer content |
+| `size` | `Size` | `'md'` | Size variant of the card (`'sm'`, `'md'`, `'lg'`) |
+| `variant` | `ThemeColor` | `'primary'` | Color variant of the card |
+| `appearance` | `'filled' \| 'outlined' \| 'ghost' \| 'elevated'` | `'filled'` | Appearance style of the card |
+| `elevation` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `'none'` | Elevation level (shadow depth) |
 | `row` | `boolean` | `false` | Horizontal layout (image on left, content on right) |
 | `flat` | `boolean` | `false` | Remove padding from image container |
 | `active` | `boolean` | `false` | Apply active/selected styling |
+| `disabled` | `boolean` | `false` | Disabled state - prevents interactions and shows visual feedback |
+| `loading` | `boolean` | `false` | Loading state - shows loading indicator |
+| `selected` | `boolean` | `false` | Selected state - indicates card is selected |
+| `interactive` | `boolean` | `false` | Interactive state - makes card clickable with proper ARIA attributes |
 | `children` | `ReactNode` | - | Custom content for the card body |
 | `onClick` | `(event: MouseEvent) => void` | - | Click event handler |
+| `onHover` | `(event: MouseEvent) => void` | - | Hover event handler |
+| `onFocus` | `(event: FocusEvent) => void` | - | Focus event handler |
+| `href` | `string` | - | Link URL - when provided, card renders as an anchor element |
+| `target` | `'_blank' \| '_self' \| '_parent' \| '_top'` | - | Link target attribute |
+| `role` | `'article' \| 'button' \| 'link' \| 'region'` | - | ARIA role for the card |
+| `ariaLabel` | `string` | - | ARIA label for accessibility |
+| `ariaDescribedBy` | `string` | - | ARIA described by reference |
+| `tabIndex` | `number` | - | Tab index for keyboard navigation |
 | `className` | `string` | `''` | Additional CSS classes |
 | `glass` | `boolean \| AtomixGlassProps` | `false` | Applies a glass morphism effect to the card |
 | `style` | `React.CSSProperties` | - | Custom style for the card |
@@ -159,17 +175,86 @@ import { Icon } from '@shohojdhara/atomix';
 ```jsx
 function InteractiveCard() {
   const [isActive, setIsActive] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
 
   return (
-    <Card
-      title="Selectable Card"
-      text="Click this card to select it."
-      active={isActive}
-      onClick={() => setIsActive(!isActive)}
-      className="cursor-pointer"
-    />
+    <div>
+      <Card
+        title="Clickable Card"
+        text="Click this card to interact with it."
+        interactive
+        onClick={() => setIsActive(!isActive)}
+        active={isActive}
+      />
+      
+      <Card
+        title="Selectable Card"
+        text="Click this card to select it."
+        selected={isSelected}
+        onClick={() => setIsSelected(!isSelected)}
+      />
+    </div>
   );
 }
+```
+
+### Card as Link
+
+```jsx
+<Card
+  href="/product/123"
+  target="_blank"
+  image="https://example.com/product.jpg"
+  imageAlt="Product"
+  title="Product Name"
+  text="Click to view product details"
+/>
+```
+
+### Card Variants and Appearances
+
+```jsx
+// Different appearances
+<Card appearance="filled" title="Filled Card" text="Default filled appearance" />
+<Card appearance="outlined" title="Outlined Card" text="Card with border outline" />
+<Card appearance="ghost" title="Ghost Card" text="Minimal styling card" />
+<Card appearance="elevated" title="Elevated Card" text="Card with shadow elevation" />
+
+// Different elevation levels
+<Card elevation="sm" title="Small Elevation" text="Subtle shadow" />
+<Card elevation="md" title="Medium Elevation" text="Moderate shadow" />
+<Card elevation="lg" title="Large Elevation" text="Prominent shadow" />
+<Card elevation="xl" title="Extra Large Elevation" text="Very prominent shadow" />
+
+// Different sizes
+<Card size="sm" title="Small Card" text="Compact card" />
+<Card size="md" title="Medium Card" text="Default size card" />
+<Card size="lg" title="Large Card" text="Larger card" />
+```
+
+### Card States
+
+```jsx
+// Disabled card
+<Card
+  title="Disabled Card"
+  text="This card is disabled"
+  disabled
+/>
+
+// Loading card
+<Card
+  title="Loading Card"
+  text="Content is being loaded"
+  loading
+/>
+
+// Selected card
+<Card
+  title="Selected Card"
+  text="This card is selected"
+  selected
+/>
 ```
 
 ### Complex Card with Footer

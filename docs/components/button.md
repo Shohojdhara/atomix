@@ -95,14 +95,30 @@ import { Button, Icon } from '@shohojdhara/atomix';
 | `variant` | `Variant` | `'primary'` | No | Visual style variant of the button |
 | `size` | `Size` | `'md'` | No | Size of the button (`'sm'`, `'md'`, `'lg'`) |
 | `disabled` | `boolean` | `false` | No | Whether the button is disabled |
+| `loading` | `boolean` | `false` | No | Loading state - shows spinner and disables button |
+| `loadingText` | `string` | - | No | Custom loading text (replaces label when loading) |
 | `icon` | `ReactNode` | - | No | Optional icon element to display |
+| `iconPosition` | `'start' \| 'end'` | `'start'` | No | Icon position relative to text |
 | `iconOnly` | `boolean` | `false` | No | Whether to show only the icon (hides label visually) |
 | `rounded` | `boolean` | `false` | No | Whether to apply fully rounded (pill) styling |
-| `onClick` | `() => void` | - | No | Click event handler |
+| `fullWidth` | `boolean` | `false` | No | Full width button (takes 100% of container width) |
+| `block` | `boolean` | `false` | No | Block-level button (full width with block display) |
+| `active` | `boolean` | `false` | No | Active state styling |
+| `selected` | `boolean` | `false` | No | Selected state styling |
+| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | No | Button type attribute |
+| `onClick` | `(event: MouseEvent) => void` | - | No | Click event handler |
+| `onHover` | `(event: MouseEvent) => void` | - | No | Hover event handler |
+| `onFocus` | `(event: FocusEvent) => void` | - | No | Focus event handler |
+| `onBlur` | `(event: FocusEvent) => void` | - | No | Blur event handler |
 | `as` | `ElementType` | `'button'` | No | The element type to render as |
 | `className` | `string` | `''` | No | Additional CSS classes |
 | `glass` | `boolean \| AtomixGlassProps` | `false` | No | Glass morphism effect for the button |
 | `style` | `React.CSSProperties` | - | No | Custom style for the button |
+| `ariaLabel` | `string` | - | No | ARIA label for accessibility |
+| `ariaDescribedBy` | `string` | - | No | ARIA described by reference |
+| `ariaExpanded` | `boolean` | - | No | ARIA expanded state (for toggle buttons) |
+| `ariaControls` | `string` | - | No | ARIA controls reference |
+| `tabIndex` | `number` | `0` | No | Tab index for keyboard navigation |
 
 \*Note: Either `label` or `children` must be provided, but not both. If both are provided, `children` will take precedence.
 
@@ -171,11 +187,19 @@ The `variant` prop accepts the following values:
 ```jsx
 import { Icon } from '@shohojdhara/atomix';
 
-// Button with icon and text
+// Button with icon and text (icon at start)
 <Button
   label="Save Document"
   variant="primary"
   icon={<Icon name="Save" />}
+/>
+
+// Button with icon at end
+<Button
+  label="Next"
+  variant="primary"
+  icon={<Icon name="ArrowRight" />}
+  iconPosition="end"
 />
 
 // Icon-only button
@@ -184,6 +208,7 @@ import { Icon } from '@shohojdhara/atomix';
   variant="error"
   icon={<Icon name="Trash" />}
   iconOnly
+  ariaLabel="Delete item"
 />
 ```
 
@@ -217,6 +242,50 @@ import { Icon } from '@shohojdhara/atomix';
   variant="primary"
   as={Link}
   to="/dashboard"
+/>
+```
+
+### Event Handlers
+
+```jsx
+function EventHandlers() {
+  const handleClick = () => console.log('Clicked');
+  const handleHover = () => console.log('Hovered');
+  const handleFocus = () => console.log('Focused');
+  const handleBlur = () => console.log('Blurred');
+
+  return (
+    <Button
+      label="Interactive Button"
+      variant="primary"
+      onClick={handleClick}
+      onHover={handleHover}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+    />
+  );
+}
+```
+
+### Accessibility Features
+
+```jsx
+// Button with ARIA attributes
+<Button
+  label="Toggle Menu"
+  variant="primary"
+  ariaLabel="Toggle navigation menu"
+  ariaExpanded={isOpen}
+  ariaControls="navigation-menu"
+/>
+
+// Icon-only button with proper accessibility
+<Button
+  label="Close"
+  icon={<Icon name="X" />}
+  iconOnly
+  variant="secondary"
+  ariaLabel="Close dialog"
 />
 ```
 
@@ -459,12 +528,56 @@ function LoadingButton() {
 
   return (
     <Button
-      label={loading ? "Saving..." : "Save"}
+      label="Save"
+      loading={loading}
+      loadingText="Saving..."
       onClick={handleClick}
-      disabled={loading}
-      icon={loading ? <Spinner size="sm" /> : <Icon name="Save" />}
       variant="primary"
     />
+  );
+}
+```
+
+### Full Width and Block Buttons
+
+```jsx
+// Full width button (takes 100% of container width)
+<Button
+  label="Full Width Button"
+  variant="primary"
+  fullWidth
+/>
+
+// Block-level button (full width with block display)
+<Button
+  label="Block Button"
+  variant="secondary"
+  block
+/>
+```
+
+### Active and Selected States
+
+```jsx
+function ToggleButton() {
+  const [isActive, setIsActive] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
+
+  return (
+    <div>
+      <Button
+        label="Toggle Active"
+        variant="primary"
+        active={isActive}
+        onClick={() => setIsActive(!isActive)}
+      />
+      <Button
+        label="Toggle Selected"
+        variant="secondary"
+        selected={isSelected}
+        onClick={() => setIsSelected(!isSelected)}
+      />
+    </div>
   );
 }
 ```
