@@ -5,11 +5,11 @@ import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 export const Card = React.memo(
   forwardRef<HTMLDivElement | HTMLAnchorElement, CardProps>(
-      (
+    (
       {
         // Variants
         size = 'md',
-        variant = 'primary',
+        variant = '',
         appearance = 'filled',
         elevation = 'none',
         // Layout

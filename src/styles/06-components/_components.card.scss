@@ -110,7 +110,7 @@
     border-radius: $border-radius-pill;
   }
 
-  @if ($card-hover == true) {
+  @if ($card-hover ==true) {
     &:hover {
       @include dynamic-background(var(--#{$prefix}card-bg-hover));
     }
@@ -162,7 +162,7 @@
     }
   }
 
- 
+
 
   &--sm {
     --#{$prefix}card-spacer-y: #{rem(map.get(spacing.$spacing-sizes, 2))}; // 8px
@@ -185,6 +185,12 @@
     @include dynamic-background(var(--#{$prefix}card-bg));
   }
 
+
+  &--glass {
+    max-width: none;
+    @include dynamic-background(var(--#{$prefix}card-bg), $background-transparency-enable: true);
+  }
+
   &--outlined {
     background-color: transparent;
     border-width: var(--#{$prefix}card-border-width);
@@ -196,7 +202,7 @@
   }
 
   &--elevated {
-    box-shadow: var(--#{$prefix}box-shadow-md, 0 4px 6px rgba(0, 0, 0, 0.1));
+    box-shadow: var(--#{$prefix}box-shadow-md);
   }
 
   &--elevation-none {
@@ -204,19 +210,19 @@
   }
 
   &--elevation-sm {
-    box-shadow: var(--#{$prefix}box-shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+    box-shadow: var(--#{$prefix}box-shadow-sm);
   }
 
   &--elevation-md {
-    box-shadow: var(--#{$prefix}box-shadow-md, 0 4px 6px rgba(0, 0, 0, 0.1));
+    box-shadow: var(--#{$prefix}box-shadow-md);
   }
 
   &--elevation-lg {
-    box-shadow: var(--#{$prefix}box-shadow-lg, 0 10px 15px rgba(0, 0, 0, 0.1));
+    box-shadow: var(--#{$prefix}box-shadow-lg);
   }
 
   &--elevation-xl {
-    box-shadow: var(--#{$prefix}box-shadow-xl, 0 20px 25px rgba(0, 0, 0, 0.1));
+    box-shadow: var(--#{$prefix}box-shadow-xl);
   }
 
   &--disabled {
@@ -236,7 +242,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background-color: rgba(255, 255, 255, 0.7);
+      background-color: var(--#{$prefix}card-bg-hover);
       backdrop-filter: blur(1px);
       z-index: 1;
       border-radius: var(--#{$prefix}card-border-radius);
@@ -254,7 +260,7 @@
   &--selected {
     --#{$prefix}card-border-color: var(--#{$prefix}brand-border-subtle);
     --#{$prefix}card-border-width: 2px;
-    box-shadow: var(--#{$prefix}box-shadow-md, 0 4px 6px rgba(0, 0, 0, 0.1));
+    box-shadow: var(--#{$prefix}box-shadow-md);
   }
 
   &--interactive {
@@ -263,7 +269,7 @@
 
     &:hover:not(&--disabled) {
       transform: translateY(-2px);
-      box-shadow: var(--#{$prefix}box-shadow-lg, 0 10px 15px rgba(0, 0, 0, 0.1));
+      box-shadow: var(--#{$prefix}box-shadow-lg);
     }
 
     &:active:not(&--disabled) {
@@ -273,35 +279,44 @@
 
   @each $color, $value in maps.$theme-colors {
     &--#{$color} {
-      @if ($color == 'primary') {
+      @if ($color =='primary') {
         --#{$prefix}card-bg: var(--#{$prefix}brand-bg-subtle);
         --#{$prefix}card-bg-hover: var(--#{$prefix}brand-bg-subtle);
         --#{$prefix}card-border-color: var(--#{$prefix}brand-border-subtle);
         --#{$prefix}card-title-color: var(--#{$prefix}brand-text-emphasis);
-      } @else if ($color == 'dark') {
+        --#{$prefix}card-icon-bg: var(--#{$prefix}brand-text-emphasis);
+        --#{$prefix}card-icon-color: var(--#{$prefix}brand-bg-subtle);
+      }
+
+      @else if ($color =='dark') {
         --#{$prefix}card-bg: var(--#{$prefix}dark);
         --#{$prefix}card-bg-hover: var(--#{$prefix}dark-hover);
         --#{$prefix}card-border-color: var(--#{$prefix}dark);
         --#{$prefix}card-title-color: var(--#{$prefix}light);
-        --#{$prefix}card-text-color: rgba(255, 255, 255, 0.8);
-      } @else if ($color == 'light') {
+        --#{$prefix}card-text-color: var(--#{$prefix}light);
+        --#{$prefix}card-icon-bg: var(--#{$prefix}light);
+        --#{$prefix}card-icon-color: var(--#{$prefix}dark);
+      }
+
+      @else if ($color =='light') {
         --#{$prefix}card-bg: var(--#{$prefix}light);
         --#{$prefix}card-bg-hover: var(--#{$prefix}light-hover);
         --#{$prefix}card-border-color: var(--#{$prefix}light);
         --#{$prefix}card-title-color: var(--#{$prefix}dark);
-        --#{$prefix}card-text-color: rgba(0, 0, 0, 0.7);
-      } @else {
+        --#{$prefix}card-text-color: var(--#{$prefix}dark);
+        --#{$prefix}card-icon-bg: var(--#{$prefix}dark);
+        --#{$prefix}card-icon-color: var(--#{$prefix}light);
+      }
+
+      @else {
         --#{$prefix}card-bg: var(--#{$prefix}#{$color}-bg-subtle);
         --#{$prefix}card-bg-hover: var(--#{$prefix}#{$color}-bg-subtle);
         --#{$prefix}card-border-color: var(--#{$prefix}#{$color}-border-subtle);
         --#{$prefix}card-title-color: var(--#{$prefix}#{$color}-text-emphasis);
+        --#{$prefix}card-icon-bg: var(--#{$prefix}#{$color}-text-emphasis);
+        --#{$prefix}card-icon-color: var(--#{$prefix}#{$color}-bg-subtle);
       }
     }
-  }
-
-  &--glass {
-    max-width: none;
-    @include dynamic-background(var(--#{$prefix}card-bg), $background-transparency-enable: true);
   }
 
   &__loading {
@@ -320,8 +335,8 @@
     height: 2.5rem;
     border: 4px solid;
     border-color: var(--#{$prefix}border-primary, rgba(0, 0, 0, 0.15));
-    border-top-color: var(--#{$prefix}brand-text-emphasis, var(--#{$prefix}primary, #7c3aed));
-    border-right-color: var(--#{$prefix}brand-text-emphasis, var(--#{$prefix}primary, #7c3aed));
+    border-top-color: var(--#{$prefix}brand-text-emphasis, var(--#{$prefix}primary));
+    border-right-color: var(--#{$prefix}brand-text-emphasis, var(--#{$prefix}primary));
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
     background-color: transparent;
