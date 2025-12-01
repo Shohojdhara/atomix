@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="shaj-default" data-atomix-color-mode="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atomix Theme Manager - Vanilla JavaScript Example</title>
+  
+  <!-- Load Atomix CSS -->
+  <link rel="stylesheet" href="/dist/atomix.css">
+  
+  <!-- Load default theme -->
+  <link rel="stylesheet" href="/dist/themes/shaj-default.css" id="atomix-theme-shaj-default" data-atomix-theme="shaj-default">
+  
+  <style>
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background: var(--atomix-gray-1);
+      color: var(--atomix-gray-10);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--atomix-primary-6);
+    }
+
+    .theme-grid {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .theme-selector {
+      padding: 1.5rem;
+      background: var(--atomix-surface);
+      border: 1px solid var(--atomix-gray-3);
+      border-radius: 8px;
+    }
+
+    .theme-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .theme-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--atomix-primary-6);
+      background: transparent;
+      color: var(--atomix-primary-6);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
+
+    .theme-btn:hover {
+      background: var(--atomix-primary-6);
+      color: white;
+    }
+
+    .theme-btn.active {
+      background: var(--atomix-primary-6);
+      color: white;
+    }
+
+    .theme-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .theme-info {
+      padding: 1.5rem;
+      background: var(--atomix-surface);
+      border: 1px solid var(--atomix-gray-3);
+      border-radius: 8px;
+    }
+
+    .info-grid {
+      display: grid;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .info-item {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .info-label {
+      font-weight: 600;
+      min-width: 100px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .badge-success {
+      background: var(--atomix-green-2);
+      color: var(--atomix-green-8);
+    }
+
+    .badge-warning {
+      background: var(--atomix-yellow-2);
+      color: var(--atomix-yellow-8);
+    }
+
+    .badge-info {
+      background: var(--atomix-blue-2);
+      color: var(--atomix-blue-8);
+    }
+
+    .loading {
+      display: inline-block;
+      margin-left: 0.5rem;
+      color: var(--atomix-primary-6);
+      font-size: 0.875rem;
+    }
+
+    .error {
+      padding: 1rem;
+      background: var(--atomix-red-1);
+      border: 1px solid var(--atomix-red-4);
+      border-radius: 4px;
+      color: var(--atomix-red-9);
+      margin-bottom: 1rem;
+    }
+
+    .showcase {
+      padding: 1.5rem;
+      background: var(--atomix-surface);
+      border: 1px solid var(--atomix-gray-3);
+      border-radius: 8px;
+    }
+
+    .showcase-section {
+      margin-top: 1.5rem;
+    }
+
+    .showcase-section:first-child {
+      margin-top: 1rem;
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--atomix-gray-3);
+      text-align: center;
+      color: var(--atomix-gray-7);
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Atomix Theme Manager</h1>
+        <p>Vanilla JavaScript Example</p>
+      </div>
+      <div id="color-mode-toggle"></div>
+    </header>
+
+    <div id="error-container"></div>
+
+    <div class="theme-grid">
+      <!-- Theme Selector -->
+      <div class="theme-selector">
+        <h2>Theme Switcher</h2>
+        <p>
+          <strong>Current Theme:</strong> 
+          <span id="current-theme">shaj-default</span>
+          <span id="loading-indicator" class="loading" style="display: none;">Loading...</span>
+        </p>
+        <div id="theme-buttons" class="theme-buttons"></div>
+        
+        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--atomix-gray-3);">
+          <h3>Preload Themes</h3>
+          <p style="font-size: 0.875rem; color: var(--atomix-gray-7);">
+            Preload themes for faster switching
+          </p>
+          <div id="preload-buttons" class="theme-buttons"></div>
+        </div>
+      </div>
+
+      <!-- Theme Info -->
+      <div class="theme-info">
+        <h2>Current Theme Details</h2>
+        <div id="theme-details" class="info-grid"></div>
+      </div>
+
+      <!-- Component Showcase -->
+      <div class="showcase">
+        <h2>Component Showcase</h2>
+        <p>See how components look in the current theme</p>
+        
+        <div class="showcase-section">
+          <h3>Colors</h3>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <div style="width: 100px; height: 100px; background: var(--atomix-primary-6); border-radius: 8px;"></div>
+            <div style="width: 100px; height: 100px; background: var(--atomix-green-6); border-radius: 8px;"></div>
+            <div style="width: 100px; height: 100px; background: var(--atomix-red-6); border-radius: 8px;"></div>
+            <div style="width: 100px; height: 100px; background: var(--atomix-yellow-6); border-radius: 8px;"></div>
+            <div style="width: 100px; height: 100px; background: var(--atomix-blue-6); border-radius: 8px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>Atomix Design System - Theme Manager Example</p>
+    </footer>
+  </div>
+
+  <!-- Load theme configuration -->
+  <script type="module">
+    // Import theme manager (in a real app, this would be from the npm package)
+    // For this example, we'll create a simplified version
+    
+    const themesConfig = {
+      metadata: {
+        'shaj-default': {
+          name: 'Shaj Default',
+          description: 'The default theme for the Atomix Design System',
+          author: 'Shohoj Dhara',
+          version: '1.0.0',
+          status: 'stable',
+          supportsDarkMode: true,
+        },
+        'boomdevs': {
+          name: 'BoomDevs',
+          description: 'BoomDevs theme for the Atomix Design System',
+          author: 'BoomDevs Team',
+          version: '1.0.0',
+          status: 'beta',
+          supportsDarkMode: true,
+        },
+        'esrar': {
+          name: 'Esrar',
+          description: 'Esrar theme for the Atomix Design System',
+          author: 'Esrar Team',
+          version: '1.0.0',
+          status: 'beta',
+          supportsDarkMode: true,
+        },
+        'mashroom': {
+          name: 'Mashroom',
+          description: 'Mashroom theme for the Atomix Design System',
+          author: 'Mashroom Team',
+          version: '1.0.0',
+          status: 'beta',
+          supportsDarkMode: true,
+        },
+        'applemix': {
+          name: 'Applemix',
+          description: 'Apple Mac OS 2026 Liquid Glass inspired theme',
+          author: 'Atomix Design System',
+          version: '1.0.0',
+          status: 'experimental',
+          supportsDarkMode: true,
+        },
+        'flashtrade': {
+          name: 'Flash Trade',
+          description: 'Professional dark crypto trading platform theme',
+          author: 'Atomix Design System',
+          version: '1.1.0',
+          status: 'stable',
+          supportsDarkMode: true,
+        },
+      },
+    };
+
+    // Simplified ThemeManager for this example
+    class SimpleThemeManager {
+      constructor(config) {
+        this.themes = config.themes;
+        this.currentTheme = config.defaultTheme || 'shaj-default';
+        this.basePath = config.basePath || '/dist/themes';
+        this.listeners = { themeChange: [], themeLoad: [], themeError: [] };
+        this.loadedThemes = new Set(['shaj-default']); // Default theme is already loaded
+      }
+
+      async setTheme(themeName) {
+        if (!this.themes[themeName]) {
+          throw new Error(`Theme "${themeName}" not found`);
+        }
+
+        const previousTheme = this.currentTheme;
+        
+        // Load theme CSS if not already loaded
+        if (!this.loadedThemes.has(themeName)) {
+          await this.loadThemeCSS(themeName);
+        }
+
+        // Update data attribute
+        document.documentElement.setAttribute('data-theme', themeName);
+        document.body.setAttribute('data-theme', themeName);
+
+        // Update current theme
+        this.currentTheme = themeName;
+
+        // Save to localStorage
+        localStorage.setItem('atomix-theme', themeName);
+
+        // Emit event
+        this.emit('themeChange', { previousTheme, currentTheme: themeName });
+      }
+
+      async loadThemeCSS(themeName) {
+        return new Promise((resolve, reject) => {
+          const linkId = `atomix-theme-${themeName}`;
+          
+          // Check if already loaded
+          if (document.getElementById(linkId)) {
+            this.loadedThemes.add(themeName);
+            resolve();
+            return;
+          }
+
+          const link = document.createElement('link');
+          link.id = linkId;
+          link.rel = 'stylesheet';
+          link.href = `${this.basePath}/${themeName}.css`;
+          link.setAttribute('data-atomix-theme', themeName);
+
+          link.onload = () => {
+            this.loadedThemes.add(themeName);
+            this.emit('themeLoad', themeName);
+            resolve();
+          };
+
+          link.onerror = () => {
+            link.remove();
+            const error = new Error(`Failed to load theme: ${themeName}`);
+            this.emit('themeError', error, themeName);
+            reject(error);
+          };
+
+          document.head.appendChild(link);
+        });
+      }
+
+      async preloadTheme(themeName) {
+        if (this.loadedThemes.has(themeName)) {
+          return;
+        }
+        await this.loadThemeCSS(themeName);
+      }
+
+      getTheme() {
+        return this.currentTheme;
+      }
+
+      getAvailableThemes() {
+        return Object.entries(this.themes).map(([key, metadata]) => ({
+          ...metadata,
+          class: key,
+        }));
+      }
+
+      on(event, callback) {
+        if (this.listeners[event]) {
+          this.listeners[event].push(callback);
+        }
+      }
+
+      emit(event, ...args) {
+        if (this.listeners[event]) {
+          this.listeners[event].forEach(callback => callback(...args));
+        }
+      }
+    }
+
+    // Initialize theme manager
+    const themeManager = new SimpleThemeManager({
+      themes: themesConfig.metadata,
+      defaultTheme: localStorage.getItem('atomix-theme') || 'shaj-default',
+      basePath: '/dist/themes',
+    });
+
+    // UI Elements
+    const currentThemeEl = document.getElementById('current-theme');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const themeButtonsEl = document.getElementById('theme-buttons');
+    const preloadButtonsEl = document.getElementById('preload-buttons');
+    const themeDetailsEl = document.getElementById('theme-details');
+    const errorContainer = document.getElementById('error-container');
+
+    // Render theme buttons
+    function renderThemeButtons() {
+      const themes = themeManager.getAvailableThemes();
+      const currentTheme = themeManager.getTheme();
+
+      themeButtonsEl.innerHTML = themes.map(theme => `
+        <button 
+          class="theme-btn ${currentTheme === theme.class ? 'active' : ''}" 
+          data-theme="${theme.class}"
+        >
+          ${theme.name}
+        </button>
+      `).join('');
+
+      // Add event listeners
+      themeButtonsEl.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const themeName = btn.getAttribute('data-theme');
+          loadingIndicator.style.display = 'inline';
+          
+          try {
+            await themeManager.setTheme(themeName);
+          } catch (error) {
+            showError(error.message);
+          } finally {
+            loadingIndicator.style.display = 'none';
+          }
+        });
+      });
+    }
+
+    // Render preload buttons
+    function renderPreloadButtons() {
+      const themes = themeManager.getAvailableThemes();
+
+      preloadButtonsEl.innerHTML = themes.map(theme => `
+        <button 
+          class="theme-btn" 
+          data-theme="${theme.class}"
+        >
+          Preload ${theme.name}
+        </button>
+      `).join('');
+
+      // Add event listeners
+      preloadButtonsEl.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const themeName = btn.getAttribute('data-theme');
+          btn.disabled = true;
+          btn.textContent = 'Preloading...';
+          
+          try {
+            await themeManager.preloadTheme(themeName);
+            btn.textContent = `✓ ${themeName} loaded`;
+            setTimeout(() => {
+              btn.disabled = false;
+              btn.textContent = `Preload ${themesConfig.metadata[themeName].name}`;
+            }, 2000);
+          } catch (error) {
+            showError(error.message);
+            btn.disabled = false;
+            btn.textContent = `Preload ${themesConfig.metadata[themeName].name}`;
+          }
+        });
+      });
+    }
+
+    // Render theme details
+    function renderThemeDetails() {
+      const currentTheme = themeManager.getTheme();
+      const metadata = themesConfig.metadata[currentTheme];
+
+      const statusBadgeClass = 
+        metadata.status === 'stable' ? 'badge-success' :
+        metadata.status === 'beta' ? 'badge-warning' :
+        'badge-info';
+
+      themeDetailsEl.innerHTML = `
+        <div class="info-item">
+          <span class="info-label">Name:</span>
+          <span>${metadata.name}</span>
+        </div>
+        ${metadata.description ? `
+          <div class="info-item">
+            <span class="info-label">Description:</span>
+            <span>${metadata.description}</span>
+          </div>
+        ` : ''}
+        ${metadata.author ? `
+          <div class="info-item">
+            <span class="info-label">Author:</span>
+            <span>${metadata.author}</span>
+          </div>
+        ` : ''}
+        ${metadata.version ? `
+          <div class="info-item">
+            <span class="info-label">Version:</span>
+            <span>${metadata.version}</span>
+          </div>
+        ` : ''}
+        ${metadata.status ? `
+          <div class="info-item">
+            <span class="info-label">Status:</span>
+            <span class="badge ${statusBadgeClass}">${metadata.status}</span>
+          </div>
+        ` : ''}
+        ${metadata.supportsDarkMode ? `
+          <div class="info-item">
+            <span class="info-label">Dark Mode:</span>
+            <span>Supported</span>
+          </div>
+        ` : ''}
+      `;
+    }
+
+    // Show error
+    function showError(message) {
+      errorContainer.innerHTML = `
+        <div class="error">
+          <strong>Error:</strong> ${message}
+        </div>
+      `;
+      setTimeout(() => {
+        errorContainer.innerHTML = '';
+      }, 5000);
+    }
+
+    // Listen for theme changes
+    themeManager.on('themeChange', (event) => {
+      console.log('Theme changed:', event);
+      currentThemeEl.textContent = event.currentTheme;
+      renderThemeButtons();
+      renderThemeDetails();
+    });
+
+    // Initial render
+    renderThemeButtons();
+    renderPreloadButtons();
+    renderThemeDetails();
+    currentThemeEl.textContent = themeManager.getTheme();
+
+    // Set initial theme
+    themeManager.setTheme(themeManager.getTheme());
+  </script>
+</body>
+</html>

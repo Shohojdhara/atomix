@@ -32,7 +32,6 @@ npm install @shohojdhara/atomix
 
 ### React
 
-```jsx
 import { Button } from '@shohojdhara/atomix';
 import '@shohojdhara/atomix/css';
 
@@ -40,6 +39,46 @@ function App() {
   return <Button variant="primary">Hello World</Button>;
 }
 ```
+
+### Theme Management
+
+Atomix includes a powerful theme manager for dynamic theme switching:
+
+```jsx
+import { ThemeProvider, useTheme } from '@shohojdhara/atomix/theme';
+import { themesConfig } from '@shohojdhara/atomix/themes/config';
+
+function App() {
+  return (
+    <ThemeProvider themes={themesConfig.metadata} defaultTheme="shaj-default">
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+
+function ThemeSwitcher() {
+  const { theme, setTheme, availableThemes } = useTheme();
+  
+  return (
+    <select value={theme} onChange={(e) => setTheme(e.target.value)}>
+      {availableThemes.map(t => (
+        <option key={t.class} value={t.class}>{t.name}</option>
+      ))}
+    </select>
+  );
+}
+```
+
+**Available Themes:**
+- `shaj-default` - Default theme (stable)
+- `flashtrade` - Crypto trading platform theme (stable)
+- `boomdevs` - BoomDevs theme (beta)
+- `esrar` - Esrar theme (beta)
+- `mashroom` - Mashroom theme (beta)
+- `applemix` - Apple-inspired glass morphism theme (experimental)
+
+For detailed theme manager documentation, see [Theme Manager Guide](docs/THEME_MANAGER.md).
+
 
 ## Styles
 

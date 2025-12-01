@@ -7,6 +7,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+#### Theme Manager System
+- **Theme Manager Class**: Core theme management for vanilla JavaScript applications
+  - Dynamic theme loading with CSS file management
+  - Theme persistence using localStorage
+  - Event system for theme changes (`themeChange`, `themeLoad`, `themeError`)
+  - Theme preloading for faster switching
+  - SSR-safe implementation
+  - Comprehensive error handling
+
+- **React Integration**:
+  - `ThemeProvider` component for React applications
+  - `useTheme` hook for accessing theme state
+  - `ThemeContext` for context-based state management
+  - Loading and error states
+  - Automatic cleanup on unmount
+
+- **TypeScript Support**:
+  - Complete type definitions for all theme utilities
+  - `ThemeMetadata`, `ThemeManagerConfig`, `ThemeChangeEvent` interfaces
+  - Type-safe event system
+  - Full IntelliSense support
+
+- **Package Exports**:
+  - `@shohojdhara/atomix/theme` - Theme manager utilities
+  - `@shohojdhara/atomix/themes/config` - Theme configuration
+
+- **Documentation**:
+  - Comprehensive theme manager guide (`docs/THEME_MANAGER.md`)
+  - React usage examples
+  - Vanilla JavaScript examples
+  - API reference
+  - Migration guide
+  - Troubleshooting section
+
+- **Runtime Configuration**:
+  - Added runtime section to `themes.config.js`
+  - Support for CDN paths
+  - Theme preloading configuration
+  - Theme dependencies mapping
+
+### Changed
+- Updated `README.md` with theme manager usage examples
+- Enhanced `themes.config.js` with runtime configuration options
+- Updated `src/lib/index.ts` to export theme utilities
+
+### Features
+- 🎨 Dynamic theme switching without page reload
+- 💾 Automatic theme persistence across sessions
+- ⚡ Theme preloading for instant switching
+- 🔒 Full TypeScript support
+- ♿ SSR compatible (Next.js, Remix, etc.)
+- 🎯 Works with React and vanilla JavaScript
+- 📦 Zero breaking changes to existing API
+
 ## [0.2.8] - 2025-01-28
 
 ## [0.2.7] - 2025-01-27

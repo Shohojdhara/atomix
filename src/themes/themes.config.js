@@ -135,4 +135,33 @@ export const themesConfig = {
       colorMode: 'data-atomix-color-mode',
     },
   },
+
+  // Runtime theme loading configuration
+  runtime: {
+    // Base path for theme CSS files (relative to public directory)
+    basePath: '/themes',
+
+    // Optional CDN path for theme files
+    cdnPath: null,
+
+    // Themes to preload on initialization
+    preload: ['shaj-default'],
+
+    // Enable lazy loading of themes
+    lazy: true,
+
+    // Default theme
+    defaultTheme: 'shaj-default',
+
+    // localStorage key for theme persistence
+    storageKey: 'atomix-theme',
+
+    // Use minified CSS files in production
+    useMinified: process.env.NODE_ENV === 'production',
+  },
+
+  // Theme dependencies (if a theme requires another theme to be loaded)
+  dependencies: {
+    // Example: 'flashtrade': ['shaj-default'],
+  },
 };
