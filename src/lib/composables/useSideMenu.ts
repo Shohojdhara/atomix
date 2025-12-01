@@ -11,76 +11,126 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
   // Default side menu properties
   const defaultProps: Partial<SideMenuProps> = {
     collapsible: true,
+    collapsibleDesktop: false,
+    defaultCollapsedDesktop: false,
     isOpen: false,
     ...initialProps,
   };
 
   // Local open state for when not controlled externally
-  const [isOpenState, setIsOpenState] = useState(defaultProps.isOpen || false);
+  const [isOpenState, setIsOpenState] = useState(
+    defaultProps.defaultCollapsedDesktop !== undefined 
+      ? !defaultProps.defaultCollapsedDesktop 
+      : (defaultProps.isOpen || false)
+  );
 
   // Refs for managing responsive behavior
   const wrapperRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
+  const sideMenuRef = useRef<HTMLDivElement>(null);
 
   // Update local state when external state changes
   useEffect(() => {
     if (typeof defaultProps.isOpen !== 'undefined') {
       setIsOpenState(defaultProps.isOpen);
+    } else if (defaultProps.defaultCollapsedDesktop !== undefined) {
+      setIsOpenState(!defaultProps.defaultCollapsedDesktop);
     }
-  }, [defaultProps.isOpen]);
+  }, [defaultProps.isOpen, defaultProps.defaultCollapsedDesktop]);
 
-  // Handle responsive behavior - auto-open on desktop, controlled on mobile
+  // Set initial height on mount
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    const shouldCollapse = isMobile ? defaultProps.collapsible : defaultProps.collapsibleDesktop;
+    const currentOpen = typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
+
+    if (shouldCollapse && wrapperRef.current && innerRef.current) {
+      // Use setTimeout to ensure DOM is fully rendered
+      const timeoutId = setTimeout(() => {
+        if (wrapperRef.current && innerRef.current) {
+          if (currentOpen) {
+            wrapperRef.current.style.height = `${innerRef.current.scrollHeight}px`;
+          } else {
+            wrapperRef.current.style.height = '0px';
+          }
+        }
+      }, 0);
+
+      return () => clearTimeout(timeoutId);
+    } else if (!shouldCollapse && wrapperRef.current) {
+      wrapperRef.current.style.height = 'auto';
+    }
+  }, []); // Only run on mount
+
+  // Handle responsive behavior - vertical collapse for both mobile and desktop
   useEffect(() => {
     const handleResize = () => {
       const isMobile = window.innerWidth < 768; // MD breakpoint
+      const shouldCollapse = isMobile ? defaultProps.collapsible : defaultProps.collapsibleDesktop;
 
-      if (!isMobile && defaultProps.collapsible) {
-        // Auto-open on desktop
-        if (typeof defaultProps.onToggle === 'function') {
-          defaultProps.onToggle(true);
-        } else {
-          setIsOpenState(true);
-        }
-
-        // Reset wrapper height on desktop
+      if (!shouldCollapse) {
+        // Not collapsible - always show content
         if (wrapperRef.current) {
           wrapperRef.current.style.height = 'auto';
         }
-      } else if (isMobile && wrapperRef.current && innerRef.current) {
-        // Set proper height for mobile animation
+      } else if (wrapperRef.current && innerRef.current) {
+        // Set proper height for vertical animation (both mobile and desktop)
         const currentOpen =
           typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
-        if (currentOpen) {
-          wrapperRef.current.style.height = `${innerRef.current.scrollHeight}px`;
-        } else {
-          wrapperRef.current.style.height = '0px';
-        }
+        
+        // Use requestAnimationFrame to ensure DOM is ready
+        requestAnimationFrame(() => {
+          if (wrapperRef.current && innerRef.current) {
+            if (currentOpen) {
+              wrapperRef.current.style.height = `${innerRef.current.scrollHeight}px`;
+            } else {
+              wrapperRef.current.style.height = '0px';
+            }
+          }
+        });
       }
     };
 
-    handleResize(); // Initial call
+    // Initial call with a small delay to ensure DOM is ready
+    const timeoutId = setTimeout(handleResize, 0);
     window.addEventListener('resize', handleResize);
 
     return () => {
+      clearTimeout(timeoutId);
       window.removeEventListener('resize', handleResize);
     };
-  }, [defaultProps.collapsible, defaultProps.isOpen, defaultProps.onToggle, isOpenState]);
+  }, [
+    defaultProps.collapsible,
+    defaultProps.collapsibleDesktop,
+    defaultProps.isOpen,
+    defaultProps.onToggle,
+    isOpenState,
+  ]);
 
-  // Update wrapper height when open state changes on mobile
+  // Update wrapper height when open state changes (both mobile and desktop)
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
+    const shouldCollapse = isMobile ? defaultProps.collapsible : defaultProps.collapsibleDesktop;
 
-    if (isMobile && wrapperRef.current && innerRef.current && defaultProps.collapsible) {
+    if (shouldCollapse && wrapperRef.current && innerRef.current) {
       const currentOpen =
         typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
 
-      if (currentOpen) {
-        wrapperRef.current.style.height = `${innerRef.current.scrollHeight}px`;
-      } else {
-        wrapperRef.current.style.height = '0px';
-      }
+      // Use requestAnimationFrame to ensure DOM is ready
+      requestAnimationFrame(() => {
+        if (wrapperRef.current && innerRef.current) {
+          if (currentOpen) {
+            wrapperRef.current.style.height = `${innerRef.current.scrollHeight}px`;
+          } else {
+            wrapperRef.current.style.height = '0px';
+          }
+        }
+      });
+    } else if (!shouldCollapse && wrapperRef.current) {
+      // Not collapsible - always show content
+      wrapperRef.current.style.height = 'auto';
     }
-  }, [defaultProps.isOpen, isOpenState, defaultProps.collapsible]);
+  }, [defaultProps.isOpen, isOpenState, defaultProps.collapsible, defaultProps.collapsibleDesktop]);
 
   /**
    * Generate side menu class based on properties
@@ -104,7 +154,7 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
   };
 
   /**
-   * Handle toggle click
+   * Handle toggle click (mobile)
    */
   const handleToggle = () => {
     if (defaultProps.disabled) return;
@@ -122,6 +172,13 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
   };
 
   /**
+   * Handle desktop collapse toggle (uses same toggle as mobile)
+   */
+  const handleDesktopCollapse = () => {
+    handleToggle();
+  };
+
+  /**
    * Get current open state
    * @returns Current open state
    */
@@ -134,9 +191,11 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
     isOpenState: getCurrentOpenState(),
     wrapperRef,
     innerRef,
+    sideMenuRef,
     generateSideMenuClass,
     generateWrapperClass,
     handleToggle,
+    handleDesktopCollapse,
     getCurrentOpenState,
   };
 }

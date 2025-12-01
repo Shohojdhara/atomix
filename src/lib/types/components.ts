@@ -1218,6 +1218,21 @@ export interface SideMenuProps extends BaseComponentProps {
   children: ReactNode;
 
   /**
+   * Menu items
+   */
+  menuItems?: {
+    title?: ReactNode;
+    toggleIcon?: ReactNode;
+    items?: {
+      title?: ReactNode;
+      icon?: ReactNode;
+      href?: string;
+      onClick?: (event: React.MouseEvent) => void;
+      active?: boolean;
+      disabled?: boolean;
+    }[];
+  }[];
+  /**
    * Whether the menu is open (for controlled component)
    */
   isOpen?: boolean;
@@ -1231,6 +1246,17 @@ export interface SideMenuProps extends BaseComponentProps {
    * Whether the menu is collapsible on mobile
    */
   collapsible?: boolean;
+
+  /**
+   * Whether the menu can be collapsed on desktop (vertical collapse)
+   * When true, adds a toggle button and supports collapsed/expanded states on desktop
+   */
+  collapsibleDesktop?: boolean;
+
+  /**
+   * Whether the menu starts collapsed on desktop (only applies when collapsibleDesktop is true)
+   */
+  defaultCollapsedDesktop?: boolean;
 
   /**
    * Custom toggle icon

@@ -20,6 +20,7 @@ The SideMenu component provides a collapsible navigation menu with title and men
 
 - **Responsive Design**: Automatically collapses on mobile devices
 - **Collapsible**: Can be toggled open/closed with smooth animations
+- **Nested Menu Items**: Support for collapsible nested sections with independent toggle functionality
 - **Accessibility**: Full keyboard navigation and screen reader support
 - **Active States**: Support for active menu items
 - **Icon Support**: Menu items can include Phosphor icons
@@ -50,6 +51,26 @@ The SideMenu component provides a collapsible navigation menu with title and men
     </SideMenuItem>
   </SideMenuList>
 </SideMenu>
+\`\`\`
+
+### With Nested Menu Items
+\`\`\`tsx
+<SideMenu title="Navigation" menuItems={[
+  {
+    title: 'Dashboard',
+    items: [
+      { title: 'Overview', href: '/dashboard', icon: <Icon name="ChartBar" />, active: true },
+      { title: 'Analytics', href: '/dashboard/analytics', icon: <Icon name="TrendUp" /> },
+    ],
+  },
+  {
+    title: 'Users',
+    items: [
+      { title: 'All Users', href: '/users', icon: <Icon name="Users" /> },
+      { title: 'Roles', href: '/users/roles', icon: <Icon name="Shield" /> },
+    ],
+  },
+]} />
 \`\`\`
 
 ### Vanilla JavaScript
@@ -369,7 +390,6 @@ export const DisabledMenu: Story = {
 // Complex Navigation
 export const ComplexNavigation: Story = {
   args: {
-    title: 'Admin Panel',
     children: (
       <>
         <SideMenuList>
@@ -435,8 +455,8 @@ export const ComplexNavigation: Story = {
 // Responsive Demo
 export const ResponsiveDemo: Story = {
   render: args => (
-    <div style={{ maxWidth: '300px' }}>
-      <p style={{ marginBottom: '1rem', fontSize: '0.875rem', color: '#666' }}>
+    <div style={{ maxWidth: '300px', margin: '0 auto' }}>
+      <p style={{ marginBottom: '1rem', fontSize: '0.875rem', color: 'var(--atomix-secondary-text-emphasis, #666)' }}>
         Resize your browser window to see the responsive behavior. On mobile (less than 768px), the
         menu becomes collapsible.
       </p>
@@ -521,6 +541,273 @@ export const EcommerceNavigation: Story = {
   },
 };
 
+// Desktop Collapsible SideMenu (Vertical Collapse)
+export const DesktopCollapsible: Story = {
+  render: args => {
+    const [isOpen, setIsOpen] = React.useState(true);
+
+    return (
+      <div style={{ maxWidth: '300px', padding: '2rem', margin: '0 auto' }}>
+        <p style={{ marginBottom: '1rem', fontSize: '0.875rem', color: 'var(--atomix-secondary-text-emphasis, #666)' }}>
+          Desktop vertical collapse - click the toggle button to expand/collapse the menu vertically.
+          Each section can also be toggled independently.
+        </p>
+        <SideMenu
+          {...args}
+          title="Navigation"
+          collapsibleDesktop
+          defaultCollapsedDesktop={false}
+          isOpen={isOpen}
+          onToggle={setIsOpen}
+          menuItems={[
+            {
+              title: 'Navigation',
+              items: [
+                { title: 'Home', href: '/', icon: <Icon name="House" size="sm" />, active: true },
+                { title: 'Dashboard', href: '/dashboard', icon: <Icon name="ChartBar" size="sm" /> },
+                { title: 'Analytics', href: '/analytics', icon: <Icon name="TrendUp" size="sm" /> },
+                { title: 'Users', href: '/users', icon: <Icon name="Users" size="sm" /> },
+                { title: 'Settings', href: '/settings', icon: <Icon name="Gear" size="sm" /> },
+              ],
+            },
+            {
+              title: 'Products',
+              items: [
+                { title: 'All Products', href: '/products', icon: <Icon name="Package" size="sm" /> },
+                { title: 'Categories', href: '/products/categories', icon: <Icon name="Tag" size="sm" /> },
+                { title: 'Inventory', href: '/products/inventory', icon: <Icon name="Warehouse" size="sm" /> },
+              ],
+            },
+            {
+              title: 'Services',
+              items: [
+                { title: 'Service List', href: '/services', icon: <Icon name="Gear" size="sm" /> },
+                { title: 'Service Requests', href: '/services/requests', icon: <Icon name="Clipboard" size="sm" /> },
+              ],
+            },
+            {
+              title: 'About Us',
+              items: [
+                { title: 'About Us', href: '/about-us', icon: <Icon name="Info" size="sm" /> },
+                { title: 'Contact', href: '/contact', icon: <Icon name="Envelope" size="sm" /> },
+              ],
+            },
+          ]}
+        />
+        <div style={{ marginTop: '1rem', padding: '0.75rem', backgroundColor: 'var(--atomix-secondary-bg-subtle, rgba(0,0,0,0.05))', borderRadius: '6px', fontSize: '0.875rem' }}>
+          <strong>Current state:</strong> {isOpen ? 'Expanded' : 'Collapsed'}
+        </div>
+      </div>
+    );
+  },
+  args: {
+    onToggle: fn(),
+  },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        story:
+          'Desktop collapsible sidebar with vertical collapse. The menu collapses vertically (height-based) on desktop, similar to mobile behavior. Each nested section can be toggled independently. Use EdgePanel for horizontal slide-in panels.',
+      },
+    },
+  },
+};
+
+// Nested Menu Items with Toggle
+export const NestedMenuItems: Story = {
+  args: {
+    menuItems: [
+      {
+        title: 'Dashboard',
+        items: [
+          { title: 'Overview', href: '/dashboard', icon: <Icon name="ChartBar" size="sm" />, active: true },
+          { title: 'Analytics', href: '/dashboard/analytics', icon: <Icon name="TrendUp" size="sm" /> },
+          { title: 'Reports', href: '/dashboard/reports', icon: <Icon name="FileText" size="sm" /> },
+        ],
+      },
+      {
+        title: 'User Management',
+        items: [
+          { title: 'Users', href: '/users', icon: <Icon name="Users" size="sm" /> },
+          { title: 'Roles', href: '/users/roles', icon: <Icon name="Shield" size="sm" /> },
+          { title: 'Permissions', href: '/users/permissions', icon: <Icon name="Lock" size="sm" /> },
+        ],
+      },
+      {
+        title: 'Content',
+        items: [
+          { title: 'Pages', href: '/content/pages', icon: <Icon name="Article" size="sm" /> },
+          { title: 'Media', href: '/content/media', icon: <Icon name="Image" size="sm" /> },
+          { title: 'Blog', href: '/content/blog', icon: <Icon name="Pencil" size="sm" /> },
+        ],
+      },
+      {
+        title: 'Settings',
+        items: [
+          { title: 'General', href: '/settings/general', icon: <Icon name="Gear" size="sm" /> },
+          { title: 'Notifications', href: '/settings/notifications', icon: <Icon name="Bell" size="sm" /> },
+          { title: 'Security', href: '/settings/security', icon: <Icon name="Lock" size="sm" />, disabled: true },
+        ],
+      },
+    ],
+    collapsible: true,
+    onToggle: fn(),
+  },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        story:
+          'SideMenu with nested menu items. Each section can be collapsed/expanded independently by clicking on the section title. The toggle icon rotates when sections are open.',
+      },
+    },
+  },
+};
+
+// Nested Menu Items with Children
+export const NestedMenuItemsWithChildren: Story = {
+  args: {
+    title: 'Navigation',
+    children: (
+      <SideMenuList>
+        <SideMenuItem href="/" icon={<Icon name="House" size="sm" />} active>
+          Home
+        </SideMenuItem>
+        <SideMenuItem href="/about" icon={<Icon name="Info" size="sm" />}>
+          About
+        </SideMenuItem>
+      </SideMenuList>
+    ),
+    menuItems: [
+      {
+        title: 'Products',
+        items: [
+          { title: 'All Products', href: '/products', icon: <Icon name="Package" size="sm" /> },
+          { title: 'Categories', href: '/products/categories', icon: <Icon name="Tag" size="sm" /> },
+          { title: 'Inventory', href: '/products/inventory', icon: <Icon name="Warehouse" size="sm" /> },
+        ],
+      },
+      {
+        title: 'Services',
+        items: [
+          { title: 'Service List', href: '/services', icon: <Icon name="Gear" size="sm" /> },
+          { title: 'Service Requests', href: '/services/requests', icon: <Icon name="Clipboard" size="sm" /> },
+        ],
+      },
+    ],
+    collapsible: true,
+    onToggle: fn(),
+  },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        story:
+          'SideMenu combining both children (static items) and menuItems (collapsible sections). The children appear first, followed by the collapsible menu item sections.',
+      },
+    },
+  },
+};
+
+// Nested Menu Items with Custom Toggle Icons
+export const NestedMenuItemsCustomIcons: Story = {
+  args: {
+    title: 'Settings',
+    menuItems: [
+      {
+        title: 'Account Settings',
+        toggleIcon: <Icon name="CaretDown" size="xs" />,
+        items: [
+          { title: 'Profile', href: '/settings/profile', icon: <Icon name="User" size="sm" /> },
+          { title: 'Security', href: '/settings/security', icon: <Icon name="Lock" size="sm" /> },
+          { title: 'Privacy', href: '/settings/privacy', icon: <Icon name="Eye" size="sm" /> },
+        ],
+      },
+      {
+        title: 'Preferences',
+        toggleIcon: <Icon name="CaretDown" size="xs" />,
+        items: [
+          { title: 'Notifications', href: '/settings/notifications', icon: <Icon name="Bell" size="sm" /> },
+          { title: 'Appearance', href: '/settings/appearance', icon: <Icon name="PaintBrush" size="sm" /> },
+          { title: 'Language', href: '/settings/language', icon: <Icon name="Globe" size="sm" /> },
+        ],
+      },
+      {
+        title: 'Billing',
+        toggleIcon: <Icon name="CaretDown" size="xs" />,
+        items: [
+          { title: 'Subscription', href: '/settings/billing', icon: <Icon name="CreditCard" size="sm" /> },
+          { title: 'Invoices', href: '/settings/invoices', icon: <Icon name="Receipt" size="sm" /> },
+        ],
+      },
+    ],
+    collapsible: true,
+    onToggle: fn(),
+  },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        story:
+          'Nested menu items with custom toggle icons. Each section can have its own toggle icon, which rotates when the section is expanded.',
+      },
+    },
+  },
+};
+
+// Desktop Collapsible - Starting Collapsed
+export const DesktopCollapsibleStartCollapsed: Story = {
+  render: args => {
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    return (
+      <div style={{ maxWidth: '300px', padding: '2rem', margin: '0 auto' }}>
+        <p style={{ marginBottom: '1rem', fontSize: '0.875rem', color: 'var(--atomix-secondary-text-emphasis, #666)' }}>
+          Sidebar starts collapsed on desktop.
+        </p>
+        <SideMenu
+          {...args}
+          title="Navigation"
+          collapsibleDesktop
+          defaultCollapsedDesktop={true}
+          isOpen={isOpen}
+          onToggle={setIsOpen}
+        >
+          <SideMenuList>
+            <SideMenuItem href="/" icon={<Icon name="House" size="sm" />} active>
+              Home
+            </SideMenuItem>
+            <SideMenuItem href="/dashboard" icon={<Icon name="ChartBar" size="sm" />}>
+              Dashboard
+            </SideMenuItem>
+            <SideMenuItem href="/analytics" icon={<Icon name="TrendUp" size="sm" />}>
+              Analytics
+            </SideMenuItem>
+            <SideMenuItem href="/users" icon={<Icon name="Users" size="sm" />}>
+              Users
+            </SideMenuItem>
+            <SideMenuItem href="/settings" icon={<Icon name="Gear" size="sm" />}>
+              Settings
+            </SideMenuItem>
+          </SideMenuList>
+        </SideMenu>
+      </div>
+    );
+  },
+  args: {
+    onToggle: fn(),
+  },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        story: 'Desktop collapsible sidebar that starts in a collapsed state.',
+      },
+    },
+  },
+};
+
 // Interactive Demo with Actions
 export const InteractiveDemo: Story = {
   render: args => {
@@ -539,13 +826,14 @@ export const InteractiveDemo: Story = {
     };
 
     return (
-      <div>
+      <div style={{ maxWidth: '300px', margin: '0 auto' }}>
         <div
           style={{
             marginBottom: '1rem',
-            padding: '0.5rem',
-            backgroundColor: '#f5f5f5',
-            borderRadius: '4px',
+            padding: '0.75rem',
+            backgroundColor: 'var(--atomix-secondary-bg-subtle, rgba(0,0,0,0.05))',
+            borderRadius: '6px',
+            fontSize: '0.875rem',
           }}
         >
           <strong>Current Page:</strong> {activeItem} | <strong>Menu:</strong>{' '}
@@ -697,7 +985,7 @@ export const Glass: Story = {
           </SideMenuList>
         </SideMenu>
       </div>
-      <div style={{ position: 'relative', zIndex: 1, flex: 1, maxWidth: '600px' }}>
+      <div style={{ position: 'relative', flex: 1, maxWidth: '600px' }}>
         <h2
           style={{
             color: 'white',
@@ -746,7 +1034,7 @@ export const GlassCustom: Story = {
       backgroundImage="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2940&auto=format&fit=crop"
       overlay
     >
-      <div style={{ position: 'relative', width: '320px' }}>
+      <div style={{ position: 'relative', width: '320px',}}>
         <SideMenu
           title="Nature Explorer"
           glass={{
@@ -831,7 +1119,7 @@ export const GlassThemeShowcase: Story = {
         backgroundImage="https://images.unsplash.com/photo-1505142468610-359e7d316be0?q=80&w=2940&auto=format&fit=crop"
         height="70vh"
       >
-        <div style={{ position: 'relative', width: '300px' }}>
+        <div style={{ position: 'relative', width: '300px',}}>
           <SideMenu title="Ocean Explorer" glass>
             <SideMenuList>
               <SideMenuItem href="/" icon={<Icon name="House" size="sm" />} active>
@@ -865,8 +1153,8 @@ export const GlassThemeShowcase: Story = {
         backgroundImage="https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=2940&auto=format&fit=crop"
         height="70vh"
       >
-        <div style={{ position: 'relative', width: '300px' }}>
-          <SideMenu title="Admin Panel" glass>
+        <div style={{ position: 'relative', width: '300px',}}>
+          <SideMenu glass>
             <SideMenuList>
               <SideMenuItem href="/dashboard" icon={<Icon name="ChartBar" size="sm" />} active>
                 Dashboard
@@ -899,7 +1187,7 @@ export const GlassThemeShowcase: Story = {
         backgroundImage="https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?q=80&w=2940&auto=format&fit=crop"
         height="70vh"
       >
-        <div style={{ position: 'relative', width: '320px' }}>
+        <div style={{ position: 'relative', width: '320px',}}>
           <SideMenu
             title="Travel Hub"
             glass={{

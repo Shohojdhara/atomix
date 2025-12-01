@@ -64,30 +64,33 @@
 
   // 4. Element Styles (BEM Elements)
   &__wrapper {
-    @include media-breakpoint-down(md) {
-      height: 0px;
-      overflow: hidden;
-      user-select: none;
-      transition: var(--#{config.$prefix}side-menu-wrapper-transition);
-    }
+    overflow: hidden;
+    user-select: none;
+    transition: var(--#{config.$prefix}side-menu-wrapper-transition);
+    // Height is managed dynamically by JavaScript
+    height: 0px;
   }
 
   &__inner {
-    @include media-breakpoint-down(md) {
-      padding-top: var(--#{config.$prefix}side-menu-inner-padding-top);
-    }
+    padding-top: var(--#{config.$prefix}side-menu-inner-padding-top);
   }
 
   &__title {
     color: var(--#{config.$prefix}side-menu-title-color);
     font-size: var(--#{config.$prefix}side-menu-title-font-size);
     font-weight: var(--#{config.$prefix}side-menu-title-font-weight);
+    margin: 0;
     margin-bottom: var(--#{config.$prefix}side-menu-title-spacer-y);
-    margin: 0 0 var(--#{config.$prefix}side-menu-title-spacer-y) 0;
+    
+    // When title is inside toggler, remove bottom margin
+    #{$root}__toggler & {
+      margin-bottom: 0;
+      flex: 1;
+    }
   }
 
   &__toggler {
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
@@ -100,18 +103,19 @@
     user-select: none;
     transition: var(--#{config.$prefix}side-menu-toggler-transition);
     text-align: left;
-
-    @include media-breakpoint-down(md) {
-      display: flex;
-    }
+    margin: 0;
 
     &:hover {
       @include dynamic-background(var(--#{config.$prefix}side-menu-toggler-hover-bg));
     }
 
-    &:focus {
+    &:focus-visible {
       outline: 2px solid var(--#{config.$prefix}focus-ring-color);
       outline-offset: 2px;
+    }
+
+    &:focus:not(:focus-visible) {
+      outline: none;
     }
 
     &:active {
@@ -128,6 +132,28 @@
   &__toggler-icon {
     transition: var(--#{config.$prefix}side-menu-toggler-transition);
     font-size: 0.875em;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: center;
+  }
+
+  &__toggler--nested {
+    margin-bottom: var(--#{config.$prefix}side-menu-item-gap);
+  }
+
+  &__nested-wrapper {
+    overflow: hidden;
+    transition: var(--#{config.$prefix}side-menu-wrapper-transition);
+    height: 0px;
+    margin: 0;
+  }
+
+  &__nested-inner {
+    // Inner content wrapper for nested items
+    // Height is managed dynamically via JavaScript
+    display: block;
   }
 
   &__list {
@@ -144,7 +170,8 @@
   }
 
   &__item {
-    // List item wrapper - no specific styles needed
+    // List item wrapper
+    display: block;
   }
 
   &__link {
@@ -163,6 +190,7 @@
     text-decoration: none;
     cursor: pointer;
     transition: var(--#{config.$prefix}side-menu-item-transition);
+    position: relative;
 
     &:hover {
       color: var(--#{config.$prefix}side-menu-item-hover-color);
@@ -170,9 +198,13 @@
       text-decoration: none;
     }
 
-    &:focus {
+    &:focus-visible {
       outline: 2px solid var(--#{config.$prefix}focus-ring-color);
       outline-offset: 2px;
+    }
+
+    &:focus:not(:focus-visible) {
+      outline: none;
     }
 
     &:active {
@@ -212,9 +244,22 @@
 
   // 6. State Classes
   &.is-open {
+    // Toggler icon rotation when menu is open
+    #{$root}__toggler #{$root}__toggler-icon {
+      transform: rotate(90deg);
+    }
+  }
+
+  // Nested toggler open state
+  &__toggler--nested.is-open {
     #{$root}__toggler-icon {
       transform: rotate(90deg);
     }
+  }
+  
+  // Nested wrapper open state (when nested toggler is open)
+  &__toggler--nested.is-open + #{$root}__nested-wrapper {
+    height: auto;
   }
 
   // 7. Dark Mode Support
@@ -235,6 +280,22 @@
 
     #{$root}__toggler-icon {
       transition: none;
+    }
+    
+    #{$root}__toggler:active {
+      transform: none;
+    }
+    
+    #{$root}__link:active {
+      transform: none;
+    }
+  }
+  
+  // High contrast mode support
+  @media (prefers-contrast: high) {
+    #{$root}__toggler:focus-visible,
+    #{$root}__link:focus-visible {
+      outline-width: 3px;
     }
   }
 }
