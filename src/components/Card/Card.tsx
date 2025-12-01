@@ -203,7 +203,7 @@ export const Card = React.memo(
 
       // Common props for both div and anchor
       const commonProps = {
-        ref: ref as React.Ref<HTMLDivElement | HTMLAnchorElement>,
+        // ref is applied individually to ensure correct typing for polymorphic behavior
         className: cardClasses,
         style,
         role: cardRole,
@@ -223,6 +223,7 @@ export const Card = React.memo(
         const anchorElement = (
           <a
             {...commonProps}
+            ref={ref as React.Ref<HTMLAnchorElement>}
             href={href}
             target={target}
             rel={target === '_blank' ? 'noopener noreferrer' : undefined}
@@ -244,7 +245,11 @@ export const Card = React.memo(
       }
 
       // Render as div
-      const divElement = <div {...commonProps}>{cardContent}</div>;
+      const divElement = (
+        <div {...commonProps} ref={ref as React.Ref<HTMLDivElement>}>
+          {cardContent}
+        </div>
+      );
 
       if (glass) {
         const glassProps = glass === true ? {} : glass;
