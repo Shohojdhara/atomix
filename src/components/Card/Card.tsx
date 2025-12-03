@@ -12,6 +12,8 @@ export const Card = React.memo(
         variant = '',
         appearance = 'filled',
         elevation = 'none',
+        hoverable = false,
+        hoverElevation = 'md',
         // Layout
         row = false,
         flat = false,
@@ -77,6 +79,9 @@ export const Card = React.memo(
             elevation === 'md' ? CARD.CLASSES.ELEVATION_MD : '',
             elevation === 'lg' ? CARD.CLASSES.ELEVATION_LG : '',
             elevation === 'xl' ? CARD.CLASSES.ELEVATION_XL : '',
+            // Hoverable modifier
+            hoverable ? 'c-card--hoverable' : '',
+            hoverable && hoverElevation ? `c-card--hover-elevation-${hoverElevation}` : '',
             // Layout modifiers
             row ? CARD.CLASSES.ROW : '',
             flat ? CARD.CLASSES.FLAT : '',
@@ -91,7 +96,7 @@ export const Card = React.memo(
           ]
             .filter(Boolean)
             .join(' '),
-        [size, variant, appearance, elevation, row, flat, active, disabled, loading, selected, interactive, isClickable, glass, className]
+        [size, variant, appearance, elevation, hoverable, hoverElevation, row, flat, active, disabled, loading, selected, interactive, isClickable, glass, className]
       );
 
       // Determine ARIA role
@@ -266,6 +271,103 @@ export const Card = React.memo(
 );
 
 Card.displayName = 'Card';
+
+// Card subcomponents for structured content
+export interface CardHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
+  /**
+   * Header title
+   */
+  title?: React.ReactNode;
+  /**
+   * Header subtitle
+   */
+  subtitle?: React.ReactNode;
+  /**
+   * Action element (e.g., button) to display in header
+   */
+  action?: React.ReactNode;
+  /**
+   * Icon to display in header
+   */
+  icon?: React.ReactNode;
+}
+
+export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
+  ({ title, subtitle, action, icon, children, className = '', ...props }, ref) => {
+    const headerClasses = `${CARD.SELECTORS.HEADER.substring(1)} ${className}`.trim();
+
+    return (
+      <div ref={ref} className={headerClasses} {...props}>
+        {icon && <div className={CARD.SELECTORS.ICON.substring(1)}>{icon}</div>}
+        {(title || subtitle) && (
+          <div>
+            {title && <h3 className={CARD.SELECTORS.TITLE.substring(1)}>{title}</h3>}
+            {subtitle && <p className={CARD.SELECTORS.TEXT.substring(1)}>{subtitle}</p>}
+          </div>
+        )}
+        {action && <div className={CARD.SELECTORS.ACTIONS.substring(1)}>{action}</div>}
+        {children}
+      </div>
+    );
+  }
+);
+
+CardHeader.displayName = 'CardHeader';
+
+export interface CardBodyProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * Make body scrollable
+   */
+  scrollable?: boolean;
+  /**
+   * Maximum height for scrollable body
+   */
+  maxHeight?: string | number;
+}
+
+export const CardBody = forwardRef<HTMLDivElement, CardBodyProps>(
+  ({ scrollable = false, maxHeight, children, className = '', style, ...props }, ref) => {
+    const bodyClasses = `${CARD.SELECTORS.BODY.substring(1)} ${scrollable ? 'c-card__body--scrollable' : ''} ${className}`.trim();
+    const bodyStyle: React.CSSProperties = {
+      ...style,
+      ...(scrollable && maxHeight ? { maxHeight: typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight, overflowY: 'auto' } : {}),
+    };
+
+    return (
+      <div ref={ref} className={bodyClasses} style={bodyStyle} {...props}>
+        {children}
+      </div>
+    );
+  }
+);
+
+CardBody.displayName = 'CardBody';
+
+export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * Footer alignment
+   */
+  align?: 'start' | 'center' | 'end' | 'between';
+}
+
+export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
+  ({ align, children, className = '', style, ...props }, ref) => {
+    const footerClasses = `${CARD.SELECTORS.FOOTER.substring(1)} ${align ? `c-card__footer--align-${align}` : ''} ${className}`.trim();
+
+    return (
+      <div ref={ref} className={footerClasses} style={style} {...props}>
+        {children}
+      </div>
+    );
+  }
+);
+
+CardFooter.displayName = 'CardFooter';
+
+// Attach subcomponents to Card
+(Card as any).Header = CardHeader;
+(Card as any).Body = CardBody;
+(Card as any).Footer = CardFooter;
 
 export type { CardProps };
 

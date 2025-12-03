@@ -3,6 +3,7 @@ import { useButton } from '../../lib/composables/useButton';
 import { ButtonProps } from '../../lib/types/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { Spinner } from '../Spinner/Spinner';
+import { Icon, type PhosphorIconsType } from '../Icon/Icon';
 import { BUTTON } from '../../lib/constants/components';
 
 export type ButtonAsProp = {
@@ -13,7 +14,7 @@ export type ButtonAsProp = {
 };
 
 export const Button = React.memo(
-  forwardRef<HTMLButtonElement, ButtonProps & ButtonAsProp>(
+  forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps & ButtonAsProp>(
     (
       {
         label,
@@ -25,6 +26,8 @@ export const Button = React.memo(
         loading = false,
         loadingText,
         icon,
+        iconName,
+        iconSize = 'sm',
         iconPosition = 'start',
         iconOnly = false,
         rounded = false,
@@ -35,6 +38,8 @@ export const Button = React.memo(
         type = 'button',
         className = '',
         as: Component = 'button',
+        href,
+        target,
         glass,
         onHover,
         onFocus,
@@ -50,6 +55,18 @@ export const Button = React.memo(
       ref
     ) => {
       const isDisabled = disabled || loading;
+
+      // Determine if we should render as a link
+      const shouldRenderAsLink = Boolean(href && !isDisabled);
+
+      // Resolve icon element - support both icon (ReactNode) and iconName (string)
+      const iconElement = useMemo(() => {
+        if (loading) return null;
+        if (iconName) {
+          return <Icon name={iconName as PhosphorIconsType} size={iconSize} />;
+        }
+        return icon;
+      }, [icon, iconName, iconSize, loading]);
 
       const { generateButtonClass, handleClick } = useButton({
         variant,
@@ -85,21 +102,21 @@ export const Button = React.memo(
 
       // Handle click with loading check
       const handleClickEvent = useCallback(
-        (event: React.MouseEvent<HTMLButtonElement>) => {
+        (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
           if (isDisabled) {
             event.preventDefault();
             return;
           }
-          onClick?.(event);
+          onClick?.(event as React.MouseEvent<HTMLButtonElement>);
         },
         [isDisabled, onClick]
       );
 
       // Handle hover
       const handleMouseEnter = useCallback(
-        (event: React.MouseEvent<HTMLButtonElement>) => {
+        (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
           if (!isDisabled) {
-            onHover?.(event);
+            onHover?.(event as React.MouseEvent<HTMLButtonElement>);
           }
         },
         [isDisabled, onHover]
@@ -107,9 +124,9 @@ export const Button = React.memo(
 
       // Handle focus
       const handleFocusEvent = useCallback(
-        (event: React.FocusEvent<HTMLButtonElement>) => {
+        (event: React.FocusEvent<HTMLButtonElement | HTMLAnchorElement>) => {
           if (!isDisabled) {
-            onFocus?.(event);
+            onFocus?.(event as React.FocusEvent<HTMLButtonElement>);
           }
         },
         [isDisabled, onFocus]
@@ -117,9 +134,9 @@ export const Button = React.memo(
 
       // Handle blur
       const handleBlurEvent = useCallback(
-        (event: React.FocusEvent<HTMLButtonElement>) => {
+        (event: React.FocusEvent<HTMLButtonElement | HTMLAnchorElement>) => {
           if (!isDisabled) {
-            onBlur?.(event);
+            onBlur?.(event as React.FocusEvent<HTMLButtonElement>);
           }
         },
         [isDisabled, onBlur]
@@ -141,9 +158,9 @@ export const Button = React.memo(
 
       // Button content with icon positioning
       const buttonContent = useMemo(() => {
-        const iconElement = icon && !loading && (
+        const iconSpan = iconElement && (
           <span className={BUTTON.ICON_CLASS} aria-hidden="true">
-            {icon}
+            {iconElement}
           </span>
         );
 
@@ -169,7 +186,7 @@ export const Button = React.memo(
             <>
               {labelElement}
               {spinnerElement}
-              {iconElement}
+              {iconSpan}
             </>
           );
         }
@@ -177,23 +194,23 @@ export const Button = React.memo(
         return (
           <>
             {spinnerElement}
-            {iconElement}
+            {iconSpan}
             {labelElement}
           </>
         );
-      }, [icon, iconPosition, iconOnly, buttonText, loading, spinnerSize, variant]);
+      }, [iconElement, iconPosition, iconOnly, buttonText, loading, spinnerSize, variant]);
 
       // Button props
       const buttonProps = useMemo(
         () => ({
           ref,
           className: buttonClass,
-          type: Component === 'button' ? type : undefined,
+          type: Component === 'button' && !shouldRenderAsLink ? type : undefined,
           onClick: handleClickEvent,
           onMouseEnter: onHover ? handleMouseEnter : undefined,
           onFocus: onFocus ? handleFocusEvent : undefined,
           onBlur: onBlur ? handleBlurEvent : undefined,
-          disabled: isDisabled && Component === 'button',
+          disabled: isDisabled && Component === 'button' && !shouldRenderAsLink,
           'aria-disabled': isDisabled,
           'aria-busy': loading,
           'aria-label': ariaLabel || (iconOnly ? label || children : undefined),
@@ -228,8 +245,36 @@ export const Button = React.memo(
         ]
       );
 
+      // Render as anchor if href is provided
+      if (shouldRenderAsLink) {
+        const { ref: _, ...buttonPropsWithoutRef } = buttonProps;
+        const anchorButtonProps = {
+          ...buttonPropsWithoutRef,
+          type: undefined, 
+          disabled: undefined,
+        };
+        const anchorElement = (
+          <a {...anchorButtonProps} ref={ref as React.Ref<HTMLAnchorElement>} href={href} target={target} rel={target === '_blank' ? 'noopener noreferrer' : undefined}>
+            {buttonContent}
+          </a>
+        );
+
+        if (glass) {
+          const defaultGlassProps = {
+            displacementScale: 20,
+            blurAmount: 0,
+            saturation: 200,
+            elasticity: 0,
+          };
+          const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+          return <AtomixGlass {...glassProps}>{anchorElement}</AtomixGlass>;
+        }
+
+        return anchorElement;
+      }
+
+      // Default button rendering
       if (glass) {
-        // Default glass settings for buttons
         const defaultGlassProps = {
           displacementScale: 20,
           blurAmount: 0,

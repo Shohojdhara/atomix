@@ -414,9 +414,21 @@ export interface ButtonProps extends BaseComponentProps {
   size?: Size;
 
   /**
-   * Optional icon
+   * Optional icon (ReactNode)
    */
   icon?: ReactNode;
+
+  /**
+   * Icon name from Phosphor Icons (simplified icon prop)
+   * When provided, automatically creates an Icon component
+   * @example iconName="Rocket" iconSize="sm"
+   */
+  iconName?: string;
+
+  /**
+   * Icon size (used with iconName prop)
+   */
+  iconSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
   /**
    * Icon position (start or end)
@@ -513,6 +525,17 @@ export interface ButtonProps extends BaseComponentProps {
    * Tab index for keyboard navigation
    */
   tabIndex?: number;
+
+  /**
+   * Link URL - when provided, button renders as Next.js Link or anchor element
+   * Automatically wraps with Next.js Link if available, otherwise uses anchor
+   */
+  href?: string;
+
+  /**
+   * Link target attribute (used with href)
+   */
+  target?: '_blank' | '_self' | '_parent' | '_top';
 
   /**
    * Custom style for the button
@@ -1275,10 +1298,33 @@ export interface SideMenuProps extends BaseComponentProps {
   glass?: boolean | Omit<AtomixGlassProps, 'children'>;
 
   /**
-   * Optional custom link component (e.g., Next.js Link)
+   * Optional custom link component (e.g., Next.js Link, React Router Link)
    * Will be passed to all SideMenuItem components
+   * 
+   * @example
+   * ```tsx
+   * // Next.js
+   * import Link from 'next/link';
+   * <SideMenu LinkComponent={Link} />
+   * 
+   * // React Router
+   * import { Link } from 'react-router-dom';
+   * <SideMenu LinkComponent={Link} />
+   * ```
    */
-  LinkComponent?: React.ElementType;
+  LinkComponent?: React.ComponentType<{
+    href?: string;
+    to?: string;
+    children: React.ReactNode;
+    className?: string;
+    onClick?: (event: React.MouseEvent) => void;
+    target?: string;
+    rel?: string;
+    'aria-disabled'?: boolean;
+    'aria-current'?: string;
+    tabIndex?: number;
+    ref?: React.Ref<HTMLAnchorElement>;
+  }>;
 }
 
 /**
@@ -1331,9 +1377,33 @@ export interface SideMenuItemProps extends BaseComponentProps {
   rel?: string;
 
   /**
-   * Optional custom link component
+   * Optional custom link component (e.g., Next.js Link, React Router Link)
+   * If not provided, will use LinkComponent from parent SideMenu context
+   * 
+   * @example
+   * ```tsx
+   * // Next.js
+   * import Link from 'next/link';
+   * <SideMenuItem href="/about" LinkComponent={Link}>About</SideMenuItem>
+   * 
+   * // React Router
+   * import { Link } from 'react-router-dom';
+   * <SideMenuItem href="/about" LinkComponent={Link}>About</SideMenuItem>
+   * ```
    */
-  LinkComponent?: React.ElementType;
+  LinkComponent?: React.ComponentType<{
+    href?: string;
+    to?: string;
+    children: React.ReactNode;
+    className?: string;
+    onClick?: (event: React.MouseEvent) => void;
+    target?: string;
+    rel?: string;
+    'aria-disabled'?: boolean;
+    'aria-current'?: string;
+    tabIndex?: number;
+    ref?: React.Ref<HTMLAnchorElement>;
+  }>;
 }
 
 /**
@@ -3361,6 +3431,16 @@ export interface CardProps extends BaseComponentProps {
    * Elevation level (shadow depth)
    */
   elevation?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+
+  /**
+   * Enable hover effects (adds hover elevation and transition)
+   */
+  hoverable?: boolean;
+
+  /**
+   * Elevation level on hover (only applies when hoverable is true)
+   */
+  hoverElevation?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
 
   /**
    * Row layout (horizontal card)

@@ -4,7 +4,7 @@ The SideMenu component provides a collapsible sidebar navigation menu with suppo
 
 ## Overview
 
-The SideMenu component is designed for sidebar navigation in applications. It supports collapsible behavior, icons, active states, and can be used in both controlled and uncontrolled modes. It automatically handles responsive behavior and provides smooth animations.
+The SideMenu component is designed for sidebar navigation in applications. It supports collapsible behavior, icons, active states, nested menu items, and can be used in both controlled and uncontrolled modes. It automatically handles responsive behavior and provides smooth animations for both mobile and desktop views.
 
 ## Installation
 
@@ -64,27 +64,50 @@ function MySideMenu() {
 |------|------|---------|----------|-------------|
 | `title` | `ReactNode` | - | No | Menu title displayed at the top |
 | `children` | `ReactNode` | - | Yes | Menu content (typically SideMenuList components) |
+| `menuItems` | `MenuItems[]` | `[]` | No | Nested menu items with collapsible sections (see below) |
 | `isOpen` | `boolean` | - | No | Whether the menu is open (controlled) |
 | `onToggle` | `(isOpen: boolean) => void` | - | No | Callback when menu open state changes |
 | `collapsible` | `boolean` | `true` | No | Whether the menu is collapsible on mobile |
+| `collapsibleDesktop` | `boolean` | `false` | No | Whether the menu can be collapsed on desktop (vertical collapse) |
+| `defaultCollapsedDesktop` | `boolean` | `false` | No | Whether the menu starts collapsed on desktop (only applies when `collapsibleDesktop` is true) |
 | `toggleIcon` | `ReactNode` | - | No | Custom toggle icon |
 | `id` | `string` | - | No | Menu ID (used for accessibility) |
 | `glass` | `boolean \| AtomixGlassProps` | `false` | No | Enable glass morphism effect |
+| `LinkComponent` | `React.ComponentType` | - | No | Custom link component (e.g., Next.js Link, React Router Link) - passed to all SideMenuItem children |
 | `className` | `string` | `''` | No | Additional CSS classes |
 | `style` | `React.CSSProperties` | - | No | Custom style object |
 | `disabled` | `boolean` | `false` | No | Whether the menu is disabled |
+
+#### MenuItems Type
+
+The `menuItems` prop accepts an array of objects with the following structure:
+
+```typescript
+interface MenuItem {
+  title?: ReactNode;           // Section title
+  toggleIcon?: ReactNode;      // Custom toggle icon for this section
+  items?: {                    // Nested menu items
+    title?: ReactNode;
+    icon?: ReactNode;
+    href?: string;
+    onClick?: (event: React.MouseEvent) => void;
+    active?: boolean;
+    disabled?: boolean;
+  }[];
+}
+```
 
 ### SideMenuItem Props
 
 | Prop | Type | Default | Required | Description |
 |------|------|---------|----------|-------------|
 | `children` | `ReactNode` | - | Yes | Item content |
-| `href` | `string` | - | No | Link URL |
-| `onClick` | `() => void` | - | No | Click handler (for button behavior) |
+| `href` | `string` | - | No | Link URL (renders as link when provided) |
+| `onClick` | `(event: React.MouseEvent) => void` | - | No | Click handler (renders as button if no href) |
 | `active` | `boolean` | `false` | No | Active state |
 | `disabled` | `boolean` | `false` | No | Whether the item is disabled |
 | `icon` | `ReactNode` | - | No | Icon element |
-| `LinkComponent` | `React.ElementType` | - | No | Custom link component (e.g., React Router Link) |
+| `LinkComponent` | `React.ComponentType` | - | No | Custom link component (e.g., Next.js Link, React Router Link). If not provided, uses LinkComponent from parent SideMenu context |
 | `target` | `string` | - | No | Link target attribute |
 | `rel` | `string` | - | No | Link rel attribute |
 | `className` | `string` | `''` | No | Additional CSS classes |
@@ -287,6 +310,37 @@ function SideMenuWithActions() {
 }
 ```
 
+### Next.js Integration
+
+For Next.js applications, pass the Next.js `Link` component to enable client-side navigation:
+
+```jsx
+'use client'; // Required for App Router
+
+import Link from 'next/link';
+import { SideMenu, SideMenuList, SideMenuItem } from '@shohojdhara/atomix';
+
+function NextJSSideMenu() {
+  return (
+    <SideMenu title="Navigation" LinkComponent={Link}>
+      <SideMenuList>
+        <SideMenuItem href="/" active>Home</SideMenuItem>
+        <SideMenuItem href="/about">About</SideMenuItem>
+        <SideMenuItem href="/products">Products</SideMenuItem>
+        <SideMenuItem href="/contact">Contact</SideMenuItem>
+      </SideMenuList>
+    </SideMenu>
+  );
+}
+```
+
+**Important Notes:**
+- The `LinkComponent` prop on `SideMenu` will be automatically passed to all `SideMenuItem` children via React Context
+- This enables client-side navigation without full page reloads
+- Works with both Next.js App Router and Pages Router
+- Make sure to add `'use client'` directive when using in App Router
+- Individual `SideMenuItem` components can override the context `LinkComponent` by passing their own `LinkComponent` prop
+
 ### Glass Effect
 
 ```jsx
@@ -295,6 +349,70 @@ function GlassSideMenu() {
     <SideMenu
       title="Navigation"
       glass={true}
+    >
+      <SideMenuList>
+        <SideMenuItem href="/" active>Home</SideMenuItem>
+        <SideMenuItem href="/products">Products</SideMenuItem>
+        <SideMenuItem href="/about">About</SideMenuItem>
+      </SideMenuList>
+    </SideMenu>
+  );
+}
+```
+
+### Nested Menu Items
+
+The `menuItems` prop allows you to create collapsible sections with nested items:
+
+```jsx
+import { SideMenu, SideMenuList, SideMenuItem, Icon } from '@shohojdhara/atomix';
+
+function NestedSideMenu() {
+  return (
+    <SideMenu
+      title="Dashboard"
+      menuItems={[
+        {
+          title: 'Dashboard',
+          items: [
+            { title: 'Overview', href: '/dashboard', icon: <Icon name="ChartBar" size="sm" />, active: true },
+            { title: 'Analytics', href: '/dashboard/analytics', icon: <Icon name="TrendUp" size="sm" /> },
+            { title: 'Reports', href: '/dashboard/reports', icon: <Icon name="FileText" size="sm" /> },
+          ],
+        },
+        {
+          title: 'User Management',
+          items: [
+            { title: 'Users', href: '/users', icon: <Icon name="Users" size="sm" /> },
+            { title: 'Roles', href: '/users/roles', icon: <Icon name="Shield" size="sm" /> },
+            { title: 'Permissions', href: '/users/permissions', icon: <Icon name="Lock" size="sm" /> },
+          ],
+        },
+      ]}
+    >
+      <SideMenuList>
+        <SideMenuItem href="/" icon={<Icon name="House" size="sm" />} active>
+          Home
+        </SideMenuItem>
+      </SideMenuList>
+    </SideMenu>
+  );
+}
+```
+
+**Note:** You can combine both `children` (static items) and `menuItems` (collapsible sections) in the same SideMenu. Each section in `menuItems` can be independently collapsed/expanded.
+
+### Desktop Collapsible
+
+Enable collapsible behavior on desktop as well:
+
+```jsx
+function DesktopCollapsibleMenu() {
+  return (
+    <SideMenu
+      title="Navigation"
+      collapsibleDesktop={true}
+      defaultCollapsedDesktop={false}
     >
       <SideMenuList>
         <SideMenuItem href="/" active>Home</SideMenuItem>
@@ -315,19 +433,17 @@ function SideMenuWithRouter() {
   const location = useLocation();
 
   return (
-    <SideMenu title="Navigation">
+    <SideMenu title="Navigation" LinkComponent={Link}>
       <SideMenuList>
         <SideMenuItem
           href="/"
           active={location.pathname === '/'}
-          LinkComponent={Link}
         >
           Home
         </SideMenuItem>
         <SideMenuItem
           href="/products"
           active={location.pathname === '/products'}
-          LinkComponent={Link}
         >
           Products
         </SideMenuItem>
@@ -336,6 +452,8 @@ function SideMenuWithRouter() {
   );
 }
 ```
+
+**Note:** When `LinkComponent` is provided to `SideMenu`, it's automatically passed to all `SideMenuItem` children via React Context, so you don't need to pass it to each item individually.
 
 ## Accessibility
 

@@ -1,10 +1,31 @@
-import React, { useState, useEffect, useRef, forwardRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef, createContext, useContext } from 'react';
 import { SideMenuProps } from '../../../lib/types/components';
 import { useSideMenu } from '../../../lib/composables/useSideMenu';
 import { Icon } from '../../Icon';
 import { AtomixGlass } from '../../AtomixGlass/AtomixGlass';
+import useForkRef from '../../../lib/utils/useForkRef';
 import SideMenuList from './SideMenuList';
 import SideMenuItem from './SideMenuItem';
+
+// Context for passing LinkComponent to SideMenuItem children
+const SideMenuContext = createContext<{
+  LinkComponent?: React.ComponentType<{
+    href?: string;
+    to?: string;
+    children: React.ReactNode;
+    className?: string;
+    onClick?: (event: React.MouseEvent) => void;
+    target?: string;
+    rel?: string;
+    'aria-disabled'?: boolean;
+    'aria-current'?: string;
+    tabIndex?: number;
+    ref?: React.Ref<HTMLAnchorElement>;
+  }>;
+}>({});
+
+// Hook to use SideMenu context
+export const useSideMenuContext = () => useContext(SideMenuContext);
 
 /**
  * SideMenu component provides a collapsible navigation menu with title and menu items.
@@ -38,6 +59,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       toggleIcon,
       id,
       glass,
+      LinkComponent,
     },
     ref
   ) => {
@@ -49,7 +71,6 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       generateSideMenuClass,
       generateWrapperClass,
       handleToggle,
-      handleDesktopCollapse,
     } = useSideMenu({
       isOpen,
       onToggle,
@@ -59,6 +80,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       disabled,
     });
 
+    // Mobile breakpoint matches md breakpoint (768px)
     const MOBILE_BREAKPOINT = 768;
 
     // Track mobile state
@@ -116,23 +138,23 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       });
     }, [menuItems?.length]);
 
+    // Helper function to update nested wrapper height
+    const updateNestedHeight = (index: number, isOpen: boolean) => {
+      const wrapper = nestedWrapperRefs.current[index];
+      const inner = nestedInnerRefs.current[index];
+      if (wrapper && inner) {
+        wrapper.style.height = isOpen ? `${inner.scrollHeight}px` : '0px';
+      }
+    };
+
     // Set initial heights for nested wrappers on mount and when menuItems change
     useEffect(() => {
       if (!menuItems?.length) return;
 
       const timeoutId = setTimeout(() => {
         menuItems.forEach((_, index) => {
-          const wrapper = nestedWrapperRefs.current[index];
-          const inner = nestedInnerRefs.current[index];
           const isOpen = nestedItemStates[index] ?? true;
-
-          if (wrapper && inner) {
-            if (isOpen) {
-              wrapper.style.height = `${inner.scrollHeight}px`;
-            } else {
-              wrapper.style.height = '0px';
-            }
-          }
+          updateNestedHeight(index, isOpen);
         });
       }, 0);
 
@@ -149,22 +171,12 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
 
       Object.keys(nestedItemStates).forEach(key => {
         const index = Number(key);
-        const wrapper = nestedWrapperRefs.current[index];
-        const inner = nestedInnerRefs.current[index];
-        const isOpen = nestedItemStates[index];
+        const isOpen = nestedItemStates[index] ?? true;
 
-        if (wrapper && inner) {
-          const frameId = requestAnimationFrame(() => {
-            if (wrapper && inner) {
-              if (isOpen) {
-                wrapper.style.height = `${inner.scrollHeight}px`;
-              } else {
-                wrapper.style.height = '0px';
-              }
-            }
-          });
-          frameIds.push(frameId);
-        }
+        const frameId = requestAnimationFrame(() => {
+          updateNestedHeight(index, isOpen);
+        });
+        frameIds.push(frameId);
       });
 
       return () => {
@@ -172,15 +184,8 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       };
     }, [nestedItemStates, menuItems?.length]);
 
-    // Combine refs
-    const combinedRef = (node: HTMLDivElement | null) => {
-      (sideMenuRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
-      if (typeof ref === 'function') {
-        ref(node);
-      } else if (ref) {
-        (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
-      }
-    };
+    // Combine refs using utility
+    const combinedRef = useForkRef(sideMenuRef, ref);
 
     const sideMenuClass = generateSideMenuClass({
       className,
@@ -230,8 +235,9 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
           id={id ? `${id}-content` : undefined}
           aria-hidden={shouldShowToggler ? !isOpenState : false}
         >
-          <div ref={innerRef} className="c-side-menu__inner">
-            {children && children}
+          <SideMenuContext.Provider value={{ LinkComponent }}>
+            <div ref={innerRef} className="c-side-menu__inner">
+              {children}
             {menuItems?.map((item, index) => {
               const isNestedItemOpen = nestedItemStates[index] ?? true;
               const hasItems = item.items && item.items.length > 0;
@@ -302,6 +308,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
                               active={subItem.active}
                               disabled={subItem.disabled}
                               icon={subItem.icon}
+                              LinkComponent={LinkComponent}
                             >
                               {subItem.title}
                             </SideMenuItem>
@@ -313,7 +320,8 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
                 </div>
               );
             })}
-          </div>
+            </div>
+          </SideMenuContext.Provider>
         </div>
       </>
     );
@@ -330,7 +338,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
         <AtomixGlass {...glassProps}>
           <div
             ref={combinedRef}
-            className={sideMenuClass + ' c-side-menu--glass'}
+            className={`${sideMenuClass} c-side-menu--glass`}
             id={id}
             style={style}
           >

@@ -110,6 +110,43 @@
     border-radius: $border-radius-pill;
   }
 
+  &__footer {
+    margin-top: var(--#{$prefix}card-spacer-y);
+    padding-top: var(--#{$prefix}card-spacer-y);
+    border-top: 1px solid var(--#{$prefix}card-border-color);
+
+    // Footer alignment modifiers
+    &--align-start {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    &--align-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &--align-end {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    &--align-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  // Body scrollable modifier
+  &__body--scrollable {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
   @if ($card-hover ==true) {
     &:hover {
       @include dynamic-background(var(--#{$prefix}card-bg-hover));
@@ -277,6 +314,40 @@
     }
   }
 
+  &--hoverable {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover:not(&--disabled) {
+      transform: translateY(-2px);
+    }
+
+    &:active:not(&--disabled) {
+      transform: translateY(0);
+    }
+
+    // Hover elevation modifiers
+    &--hover-elevation-none:hover:not(&--disabled) {
+      box-shadow: none;
+    }
+
+    &--hover-elevation-sm:hover:not(&--disabled) {
+      box-shadow: var(--#{$prefix}box-shadow-sm);
+    }
+
+    &--hover-elevation-md:hover:not(&--disabled) {
+      box-shadow: var(--#{$prefix}box-shadow-md);
+    }
+
+    &--hover-elevation-lg:hover:not(&--disabled) {
+      box-shadow: var(--#{$prefix}box-shadow-lg);
+    }
+
+    &--hover-elevation-xl:hover:not(&--disabled) {
+      box-shadow: var(--#{$prefix}box-shadow-xl);
+    }
+  }
+
   @each $color, $value in maps.$theme-colors {
     &--#{$color} {
       @if ($color =='primary') {
@@ -353,7 +424,8 @@
   @media (prefers-reduced-motion: reduce) {
     transition: none;
 
-    &--interactive:hover:not(&--disabled) {
+    &--interactive:hover:not(&--disabled),
+    &--hoverable:hover:not(&--disabled) {
       transform: none;
     }
 

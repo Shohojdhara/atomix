@@ -4,7 +4,9 @@ The Button component is a fundamental interactive element that allows users to t
 
 ## Overview
 
-The Button component provides a consistent and accessible way to create clickable elements. It can be rendered as a native `button` element or as other elements like links using the `as` prop for maximum flexibility.
+The Button component provides a consistent and accessible way to create clickable elements. It can be rendered as a native `button` element or automatically as an anchor element when the `href` prop is provided. For maximum flexibility, you can also use the `as` prop to render as custom components (e.g., React Router's `Link`).
+
+The component supports `forwardRef` with both `HTMLButtonElement` and `HTMLAnchorElement` types, allowing you to access the underlying DOM element regardless of how it's rendered.
 
 ## Installation
 
@@ -111,6 +113,8 @@ import { Button, Icon } from '@shohojdhara/atomix';
 | `onFocus` | `(event: FocusEvent) => void` | - | No | Focus event handler |
 | `onBlur` | `(event: FocusEvent) => void` | - | No | Blur event handler |
 | `as` | `ElementType` | `'button'` | No | The element type to render as |
+| `href` | `string` | - | No | When provided, automatically renders as an anchor element |
+| `target` | `string` | - | No | Target attribute for anchor elements (e.g., `'_blank'`) |
 | `className` | `string` | `''` | No | Additional CSS classes |
 | `glass` | `boolean \| AtomixGlassProps` | `false` | No | Glass morphism effect for the button |
 | `style` | `React.CSSProperties` | - | No | Custom style for the button |
@@ -226,17 +230,25 @@ import { Icon } from '@shohojdhara/atomix';
 
 ### Button as Link
 
+The Button component automatically renders as an anchor element when the `href` prop is provided. This is the recommended way to create button-styled links:
+
 ```jsx
-// Render as an anchor tag
+// Simple link button (automatically renders as <a>)
 <Button
   label="Visit Website"
-  variant="link"
-  as="a"
+  variant="primary"
   href="https://example.com"
   target="_blank"
 />
 
-// Render with React Router Link (requires React Router)
+// Link button with different variant
+<Button
+  label="Learn More"
+  variant="outline-primary"
+  href="/about"
+/>
+
+// Using the 'as' prop for custom link components (e.g., React Router)
 <Button
   label="Go to Dashboard"
   variant="primary"
@@ -244,6 +256,12 @@ import { Icon } from '@shohojdhara/atomix';
   to="/dashboard"
 />
 ```
+
+**Note:** When `href` is provided, the component automatically:
+- Renders as an `<a>` element instead of a `<button>`
+- Removes the `type` and `disabled` attributes (not valid for anchors)
+- Adds `rel="noopener noreferrer"` when `target="_blank"` is used
+- Supports ref forwarding with `HTMLAnchorElement` type
 
 ### Event Handlers
 
@@ -266,6 +284,46 @@ function EventHandlers() {
   );
 }
 ```
+
+### Ref Forwarding
+
+The Button component supports ref forwarding for both button and anchor elements:
+
+```jsx
+import { useRef } from 'react';
+
+function ButtonWithRef() {
+  // Ref works for both button and anchor elements
+  const buttonRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
+
+  const handleFocus = () => {
+    buttonRef.current?.focus();
+  };
+
+  return (
+    <>
+      {/* Button element - ref type is HTMLButtonElement */}
+      <Button
+        ref={buttonRef}
+        label="Click Me"
+        variant="primary"
+      />
+      
+      {/* Anchor element - ref type is HTMLAnchorElement */}
+      <Button
+        ref={buttonRef}
+        label="Visit Site"
+        variant="primary"
+        href="https://example.com"
+      />
+      
+      <Button label="Focus First" onClick={handleFocus} />
+    </>
+  );
+}
+```
+
+**Note:** The ref type is `HTMLButtonElement | HTMLAnchorElement` to support both rendering modes. TypeScript will correctly infer the type based on whether `href` is provided.
 
 ### Accessibility Features
 
