@@ -205,11 +205,6 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(
                   {React.Children.map(children, child => {
                     // Check if the child is a valid React element
                     if (React.isValidElement(child)) {
-                      console.log(
-                        'Footer - passing showNewsletter:',
-                        showNewsletter,
-                        typeof showNewsletter
-                      );
                       // Clone the element and pass the showNewsletter prop
                       return React.cloneElement(child, { showNewsletter } as any);
                     }

@@ -148,9 +148,14 @@ export const NavItem = forwardRef<HTMLLIElement, NavItemProps>(
     return (
       <li ref={ref} className={navItemClass} role="menuitem" aria-haspopup={dropdown || megaMenu}>
         {LinkComponent ? (
-          <LinkComponent {...linkProps}>
-            {dropdown || megaMenu ? childContent[0] : children}
-          </LinkComponent>
+          (() => {
+            const Component = LinkComponent as React.ComponentType<any>;
+            return (
+              <Component {...linkProps}>
+                {dropdown || megaMenu ? childContent[0] : children}
+              </Component>
+            );
+          })()
         ) : (
           <a {...linkProps}>{dropdown || megaMenu ? childContent[0] : children}</a>
         )}

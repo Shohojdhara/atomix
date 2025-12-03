@@ -143,7 +143,6 @@ export const WithNewsletter: Story = {
     newsletterDescription:
       'Get the latest updates, articles, and resources delivered to your inbox.',
     onNewsletterSubmit: (email: string) => {
-      console.log('Newsletter signup:', email);
       alert(`Thank you for subscribing with ${email}!`);
     },
   },
@@ -156,7 +155,7 @@ export const WithBackToTop: Story = {
     showBackToTop: true,
     backToTopText: 'Back to Top',
     onBackToTop: () => {
-      console.log('Back to top clicked');
+      // Back to top functionality
     },
   },
   render: Default.render,

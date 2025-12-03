@@ -48,12 +48,13 @@ export const FooterLink = forwardRef<HTMLAnchorElement, FooterLinkProps>(
     };
 
     if (LinkComponent) {
+      const Component = LinkComponent as React.ComponentType<any>;
       return (
-        <LinkComponent ref={ref} to={href} {...linkProps}>
+        <Component ref={ref} to={href} {...linkProps}>
           {icon && <span className="c-footer__link-icon">{icon}</span>}
           <span className="c-footer__link-text">{children}</span>
           {external && <span className="c-footer__link-external">↗</span>}
-        </LinkComponent>
+        </Component>
       );
     }
 

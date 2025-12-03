@@ -33,13 +33,6 @@ export const FooterSection = forwardRef<
   ) => {
     const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
 
-    console.log(
-      'FooterSection render - showNewsletter:',
-      showNewsletter,
-      'Type:',
-      typeof showNewsletter
-    );
-
     const handleToggle = () => {
       if (collapsible) {
         setIsCollapsed(!isCollapsed);

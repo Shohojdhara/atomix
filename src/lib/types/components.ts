@@ -1273,6 +1273,12 @@ export interface SideMenuProps extends BaseComponentProps {
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: boolean | Omit<AtomixGlassProps, 'children'>;
+
+  /**
+   * Optional custom link component (e.g., Next.js Link)
+   * Will be passed to all SideMenuItem components
+   */
+  LinkComponent?: React.ElementType;
 }
 
 /**

@@ -66,10 +66,15 @@ export const SideMenuItem = forwardRef<HTMLAnchorElement | HTMLButtonElement, Si
     // Render as link if href is provided
     if (href) {
       return LinkComponent ? (
-        <LinkComponent {...linkProps}>
-          {icon && <span className="c-side-menu__link-icon">{icon}</span>}
-          <span className="c-side-menu__link-text">{children}</span>
-        </LinkComponent>
+        (() => {
+          const Component = LinkComponent as React.ComponentType<any>;
+          return (
+            <Component {...linkProps}>
+              {icon && <span className="c-side-menu__link-icon">{icon}</span>}
+              <span className="c-side-menu__link-text">{children}</span>
+            </Component>
+          );
+        })()
       ) : (
         <a {...linkProps}>
           {icon && <span className="c-side-menu__link-icon">{icon}</span>}
