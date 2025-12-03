@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2025-12-03
+
 ### Added
 
 #### Theme Manager System
@@ -62,6 +64,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ♿ SSR compatible (Next.js, Remix, etc.)
 - 🎯 Works with React and vanilla JavaScript
 - 📦 Zero breaking changes to existing API
+
+## [0.2.9] - 2025-01-29
 
 ## [0.2.8] - 2025-01-28
 
