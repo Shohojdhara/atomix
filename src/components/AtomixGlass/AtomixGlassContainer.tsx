@@ -121,23 +121,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       };
     }, [mode, glassSize, shaderVariant]);
 
-    useEffect(() => {
-      if (!ref || typeof ref === 'function') return undefined;
-
-      const element = (ref as React.RefObject<HTMLDivElement>).current;
-      if (!element) return undefined;
-
-      const timeoutId = setTimeout(() => {
-        try {
-          // Force reflow to ensure proper sizing
-          element.offsetHeight;
-        } catch (error) {
-          console.warn('AtomixGlassContainer: Error during reflow', error);
-        }
-      }, 0);
-
-      return () => clearTimeout(timeoutId);
-    }, [cornerRadius, glassSize?.width, glassSize?.height, ref]);
+    // Removed forced reflow to avoid layout thrash and potential feedback sizing loops
 
     const [rectCache, setRectCache] = useState<DOMRect | null>(null);
 
@@ -244,23 +228,54 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             ? liquidBlur.flowBlur
             : 0;
 
-        const blurLayers = [
-          `blur(${validatedBaseBlur}px)`,
-          `blur(${validatedEdgeBlur}px)`,
-          `blur(${validatedCenterBlur}px)`,
-          `blur(${validatedFlowBlur}px)`,
-        ];
+        // Adaptive strategy: prefer single-pass blur for large areas or when effects are reduced
+        const area = rectCache ? rectCache.width * rectCache.height : 0;
+        const areaIsLarge = area > 180000; // ~600x300 threshold; tune as needed
+        const devicePrefersPerformance = effectiveReducedMotion || effectiveDisableEffects;
+        const useMultiPass = enableLiquidBlur && !devicePrefersPerformance && !areaIsLarge;
+
+        if (useMultiPass) {
+          const blurLayers = [
+            `blur(${validatedBaseBlur}px)`,
+            `blur(${validatedEdgeBlur}px)`,
+            `blur(${validatedCenterBlur}px)`,
+            `blur(${validatedFlowBlur}px)`,
+          ];
+
+          return {
+            backdropFilter: `${blurLayers.join(' ')} saturate(${Math.min(dynamicSaturation, 200)}%) contrast(1.05) brightness(1.05)`,
+          };
+        }
+
+        // Single-pass fallback: stronger radius to match perceived blur of multi-pass
+        const effectiveBlur = clampBlur(
+          Math.max(
+            validatedBaseBlur,
+            validatedEdgeBlur * 0.8,
+            validatedCenterBlur * 1.1,
+            validatedFlowBlur * 0.9
+          )
+        );
 
         return {
-          backdropFilter: `${blurLayers.join(' ')} saturate(${Math.min(dynamicSaturation, 200)}%) `,
+          backdropFilter: `blur(${effectiveBlur}px) saturate(${Math.min(dynamicSaturation, 200)}%) contrast(1.05) brightness(1.05)`,
         };
       } catch (error) {
         console.warn('AtomixGlassContainer: Error calculating backdrop style', error);
         return {
-          backdropFilter: `blur(${blurAmount}px) saturate(${saturation}%)`,
+          backdropFilter: `blur(${blurAmount}px) saturate(${saturation}%) contrast(1.05) brightness(1.05)`,
         };
       }
-    }, [filterId, liquidBlur, saturation, blurAmount]);
+    }, [
+      filterId,
+      liquidBlur,
+      saturation,
+      blurAmount,
+      rectCache,
+      effectiveReducedMotion,
+      effectiveDisableEffects,
+      enableLiquidBlur,
+    ]);
 
     const containerVars = useMemo(() => {
       try {
@@ -332,7 +347,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
           className={ATOMIX_GLASS.INNER_CLASS}
           style={{
             padding: `var(--atomix-glass-container-padding)`,
-            borderRadius: `var(--atomix-glass-container-radius)`,
             boxShadow: `var(--atomix-glass-container-box-shadow)`,
           }}
           onMouseEnter={onMouseEnter}
@@ -342,6 +356,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         >
           <div className={ATOMIX_GLASS.FILTER_CLASS}>
             <GlassFilter
+              blurAmount={blurAmount}
               mode={mode}
               id={filterId}
               displacementScale={
@@ -358,23 +373,23 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             />
             {/* Enhanced Apple Liquid Glass Inner Shadow Layer */}
 
-            <span
+            <div
               className={ATOMIX_GLASS.FILTER_OVERLAY_CLASS}
-              style={{
-                filter: `url(#${filterId})`,
-                backdropFilter: `var(--atomix-glass-container-backdrop)`,
-                borderRadius: `var(--atomix-glass-container-radius)`,
-              }}
+            style={{
+              filter: `url(#${filterId})`,
+              backdropFilter: `var(--atomix-glass-container-backdrop)`,
+              borderRadius: `var(--atomix-glass-radius)`,
+            }}
             />
 
             <div
               className={ATOMIX_GLASS.FILTER_SHADOW_CLASS}
-              style={{
-                boxShadow: `var(--atomix-glass-container-shadow)`,
-                opacity: `var(--atomix-glass-container-shadow-opacity)`,
-                background: `var(--atomix-glass-container-bg)`,
-                borderRadius: `var(--atomix-glass-container-radius)`,
-              }}
+            style={{
+              boxShadow: `var(--atomix-glass-container-shadow)`,
+              opacity: `var(--atomix-glass-container-shadow-opacity)`,
+              background: `var(--atomix-glass-container-bg)`,
+              borderRadius: `var(--atomix-glass-radius)`,
+            }}
             />
           </div>
 

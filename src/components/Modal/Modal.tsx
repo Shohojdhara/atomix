@@ -197,11 +197,11 @@ export const Modal: React.FC<ModalProps> = ({
           ? // Default glass settings for modals
             (() => {
               const defaultGlassProps = {
-                displacementScale: 100,
-                blurAmount: 2,
-                aberrationIntensity: 1,
-                cornerRadius: 12,
+                displacementScale: document.querySelector('.c-modal---glass .c-modal__content')?.clientHeight,
+                blurAmount: 2.2,
+                elasticity: 0,
                 mode: 'shader' as const,
+                shaderMode: 'premiumGlass'
               };
 
               const glassProps =

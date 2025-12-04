@@ -18,7 +18,7 @@ $modal-sub-margin-top: map.get($spacing-sizes, 1) !default; //4px
 $modal-sub-font-size: $font-size-sm !default;
 $modal-sub-color: var(--#{$prefix}tertiary-text-emphasis) !default;
 
-$modal-footer-items-gap: map.get($spacing-sizes, 8) !default; //8px
+$modal-footer-items-gap: map.get($spacing-sizes, 2) !default; //8px
 
 $modal-backdrop-bg: var(--#{$prefix}invert-bg-subtle) !default;
 $modal-backdrop-opacity: 0.5 !default;

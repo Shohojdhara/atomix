@@ -317,6 +317,7 @@ export const GlassModal: Story = {
             appearance. The glass effect creates a modern, elegant look that works well over
             colorful backgrounds.
           </p>
+          <img src="https://picsum.photos/800/410" alt="desert" style={{ maxWidth: '100%' }} />
           <p>
             The glass effect includes displacement, blur, and chromatic aberration for a premium
             feel.
@@ -329,9 +330,14 @@ export const GlassModal: Story = {
     Story => (
       <div
         style={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          minHeight: '100vh',
-          padding: '2rem',
+          background: 'url(https://picsum.photos/1920/1080)',
+          height: '100vh',
+          width: '100vw',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <Story />
@@ -375,23 +381,10 @@ export const GlassModalCustom: Story = {
           }
           footer={
             <>
-              <div
-                className="c-btn c-btn--outline-secondary"
-                onClick={() => setIsOpen(false)}
-                style={{
-                  cursor: 'pointer',
-                  padding: '8px 16px',
-                  display: 'inline-block',
-                  marginRight: '8px',
-                }}
-              >
+              <div className="c-btn c-btn--outline-secondary" onClick={() => setIsOpen(false)}>
                 Cancel
               </div>
-              <div
-                className="c-btn c-btn--primary"
-                onClick={() => setIsOpen(false)}
-                style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
-              >
+              <div className="c-btn c-btn--primary" onClick={() => setIsOpen(false)}>
                 Confirm
               </div>
             </>
@@ -402,6 +395,7 @@ export const GlassModalCustom: Story = {
             aberration. The polar mode creates a different visual effect compared to the standard
             shader mode.
           </p>
+          <img src="https://picsum.photos/800/410" alt="desert" style={{ maxWidth: '100%' }} />
         </Modal>
       </>
     );
@@ -410,12 +404,14 @@ export const GlassModalCustom: Story = {
     Story => (
       <div
         style={{
-          background:
-            'url(https://images.unsplash.com/photo-1744872665943-fd335d371059?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+          background: 'url(https://picsum.photos/1920/1080)',
           height: '100vh',
           width: '100vw',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <Story />
@@ -489,23 +485,10 @@ export const GlassModalSizes: Story = {
           glass={true}
           footer={
             <>
-              <div
-                className="c-btn c-btn--outline-secondary"
-                onClick={() => setIsOpen(false)}
-                style={{
-                  cursor: 'pointer',
-                  padding: '8px 16px',
-                  display: 'inline-block',
-                  marginRight: '8px',
-                }}
-              >
+              <div className="c-btn c-btn--outline-secondary" onClick={() => setIsOpen(false)}>
                 Cancel
               </div>
-              <div
-                className="c-btn c-btn--primary"
-                onClick={() => setIsOpen(false)}
-                style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
-              >
+              <div className="c-btn c-btn--primary" onClick={() => setIsOpen(false)}>
                 Confirm
               </div>
             </>
@@ -515,6 +498,9 @@ export const GlassModalSizes: Story = {
           <p>
             The glass effect adapts to different modal sizes while maintaining its visual appeal.
           </p>
+          <p>
+            The glass effect enhances the modal's appearance, making it visually appealing and  easier to read.
+          </p>
         </Modal>
       </div>
     );
@@ -523,9 +509,14 @@ export const GlassModalSizes: Story = {
     Story => (
       <div
         style={{
-          background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-          minHeight: '100vh',
-          padding: '2rem',
+          background: 'url(https://picsum.photos/1920/1080)',
+          height: '100vh',
+          width: '100vw',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <Story />

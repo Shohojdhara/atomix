@@ -266,6 +266,12 @@
     }
   }
 
+  &--glass {
+    .c-dropdown__menu-inner {
+      box-shadow: none;
+    }
+  }
+
   &.is-open {
     #{$root}__toggle-icon {
       transform: rotate(-180deg);

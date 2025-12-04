@@ -920,7 +920,6 @@ import {
         ...style,
         transform: transformStyle,
         transition: effectiveReducedMotion ? 'none' : 'all ease-out 0.2s',
-        willChange: effectiveDisableEffects ? 'auto' : 'transform',
         ...(effectiveHighContrast && {
           border: '2px solid currentColor',
           outline: '2px solid transparent',
@@ -1196,7 +1195,6 @@ import {
             borderRadius: `${cornerRadius}px`,
             transform: baseStyle.transform,
             transition: baseStyle.transition,
-            willChange: 'transform',
           }}
         />
         <div
@@ -1210,7 +1208,6 @@ import {
             transition: baseStyle.transition,
             mixBlendMode: 'overlay',
             pointerEvents: 'none',
-            willChange: 'transform',
           }}
         />
   

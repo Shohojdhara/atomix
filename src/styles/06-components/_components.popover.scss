@@ -92,6 +92,16 @@
     }
   }
 
+  &--glass {
+    #{$root}__content-inner {
+      @include dynamic-background(
+        var(--#{$prefix}popover-bg),
+        $background-transparency-enable: true
+      );
+      box-shadow: none;
+    }
+  }
+
   // Auto position automatically selects the best position
   // and will dynamically apply one of the position classes above
   &--auto {

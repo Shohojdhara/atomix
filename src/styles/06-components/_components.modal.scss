@@ -146,11 +146,16 @@
 
   &--glass {
     #{$root} {
-      & &__content {
+      &__content {
         @include dynamic-background(
           var(--#{config.$prefix}modal-content-bg),
           $background-transparency-enable: true
         );
+        box-shadow: none;
+        border-radius: inherit;
+
+        width: var(--#{config.$prefix}modal-width);
+        height: 100%;
       }
     }
   }

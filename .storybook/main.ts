@@ -1,10 +1,11 @@
 import type { StorybookConfig } from '@storybook/react-vite';
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const getDirname = () => {
+  if (typeof __dirname !== 'undefined') return __dirname;
+  return dirname(fileURLToPath(import.meta.url));
+};
 
 const config: StorybookConfig = {
   framework: {
@@ -34,11 +35,12 @@ const config: StorybookConfig = {
   viteFinal: async (config, { configType }) => {
     // Align aliases with vitest.config.ts so imports like @ and @shohojdhara/atomix work
     config.resolve = config.resolve || {};
-    const srcPath = resolve(__dirname, '../src');
-    const indexPath = resolve(__dirname, '../src/index.ts');
+    const dirPath = getDirname();
+    const srcPath = resolve(dirPath, '../src');
+    const indexPath = resolve(dirPath, '../src/index.ts');
     
     // Validate paths to prevent traversal
-    if (!srcPath.startsWith(resolve(__dirname, '../')) || !indexPath.startsWith(resolve(__dirname, '../'))) {
+    if (!srcPath.startsWith(resolve(dirPath, '../')) || !indexPath.startsWith(resolve(dirPath, '../'))) {
       throw new Error('Invalid path detected');
     }
     

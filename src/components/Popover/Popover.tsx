@@ -94,7 +94,7 @@ export const Popover: React.FC<PopoverProps> = ({
                   glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
                 return (
-                  <AtomixGlass {...glassProps}>
+                  <AtomixGlass {...glassProps} style={style}>
                     <div className="c-popover__content">
                       <div className="c-popover__content-inner">{content}</div>
                     </div>

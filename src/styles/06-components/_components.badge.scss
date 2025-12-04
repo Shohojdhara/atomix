@@ -49,7 +49,7 @@
       $background-transparency-enable: true,
       $transparency: 0.2
     );
-    border: 1px solid color-mix(in srgb, var(--#{$prefix}tag-color) 90%, transparent);
+    border: 1px solid color-mix(in srgb, var(--#{$prefix}tag-color) 50%, transparent);
 
     // // Outer depth and glass effect
     // 0 1px 3px rgba(0, 0, 0, 0.2),

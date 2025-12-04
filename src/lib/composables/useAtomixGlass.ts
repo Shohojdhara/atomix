@@ -632,10 +632,10 @@ export function useAtomixGlass({
           return;
         }
 
-        const cornerRadiusOffset = Math.max(0, Math.min(effectiveCornerRadius * 0.1, 10));
+        // Measure actual rendered size without artificial offsets to avoid feedback loops
         const newSize: GlassSize = {
-          width: Math.round(rect.width + cornerRadiusOffset),
-          height: Math.round(rect.height + cornerRadiusOffset),
+          width: Math.round(rect.width),
+          height: Math.round(rect.height),
         };
 
         const cornerRadiusChanged = lastCornerRadius !== effectiveCornerRadius;
@@ -885,4 +885,3 @@ export function useAtomixGlass({
     handleKeyDown,
   };
 }
-

@@ -151,24 +151,13 @@ export function AtomixGlass({
   const isOverLight = overLightConfig.isOverLight;
   const shouldRenderOverLightLayers = enableOverLightLayers && isOverLight;
 
-  // Memoize transition duration using design token pattern
-  const transitionDuration = useMemo(
-    () => (effectiveReducedMotion ? 'none' : 'var(--atomix-transition-duration, 0.2s) ease-out'),
-    [effectiveReducedMotion]
-  );
 
   // Calculate base style with transforms (only dynamic values)
-  // Performance: willChange is set only when transforms are active and effects are enabled
   const baseStyle = useMemo(
     () => ({
       ...style,
       ...(elasticity !== 0 && !effectiveDisableEffects && {
         transform: transformStyle,
-        willChange: 'transform',
-      }),
-      // Reset willChange when effects are disabled to allow browser optimization
-      ...(effectiveDisableEffects && {
-        willChange: 'auto',
       }),
     }),
     [style, transformStyle, effectiveDisableEffects, elasticity]
@@ -389,7 +378,6 @@ export function AtomixGlass({
       // Standard CSS custom properties for dynamic values
       '--atomix-glass-radius': `${effectiveCornerRadius}px`,
       '--atomix-glass-transform': baseStyleTransform || 'none',
-      '--atomix-glass-transition': effectiveReducedMotion ? 'none' : transitionDuration,
       '--atomix-glass-position': positionStylesPosition,
       '--atomix-glass-top': positionStylesTop !== 'fixed' ? `${positionStylesTop}px` : '0',
       '--atomix-glass-left': positionStylesLeft !== 'fixed' ? `${positionStylesLeft}px` : '0',
@@ -439,7 +427,6 @@ export function AtomixGlass({
     // Other values
     effectiveCornerRadius,
     effectiveReducedMotion,
-    transitionDuration,
     // Gradient calculations - extracted properties
     gradientIsOverLight,
     gradientMx,

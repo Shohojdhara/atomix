@@ -10,6 +10,7 @@ interface GlassFilterProps {
   aberrationIntensity: number;
   mode: DisplacementMode;
   shaderMapUrl?: string;
+  blurAmount: number;
 }
 
 /**
@@ -22,6 +23,7 @@ export const GlassFilter: React.FC<GlassFilterProps> = ({
   aberrationIntensity,
   mode,
   shaderMapUrl,
+  blurAmount,
 }) => (
   <svg
     style={{
@@ -29,8 +31,6 @@ export const GlassFilter: React.FC<GlassFilterProps> = ({
       width: '100%',
       height: '100%',
       inset: 0,
-      visibility: 'hidden',
-      opacity: 0,
     }}
     aria-hidden="true"
   >
@@ -128,11 +128,11 @@ export const GlassFilter: React.FC<GlassFilterProps> = ({
         <feBlend in="GREEN_CHANNEL" in2="BLUE_CHANNEL" mode="screen" result="GB_COMBINED" />
         <feBlend in="RED_CHANNEL" in2="GB_COMBINED" mode="screen" result="RGB_COMBINED" />
 
-        {/* <feGaussianBlur
+        <feGaussianBlur
           in="RGB_COMBINED"
-          stdDeviation='0'
           result="ABERRATED_BLURRED"
-        /> */}
+          stdDeviation={blurAmount * aberrationIntensity * 0.05}
+        />
 
         <feComposite
           in="ABERRATED_BLURRED"
