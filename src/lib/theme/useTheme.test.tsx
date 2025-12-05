@@ -60,7 +60,7 @@ describe('useTheme', () => {
             await result.current.setTheme('new-theme');
         });
 
-        expect(mockSetTheme).toHaveBeenCalledWith('new-theme');
+        expect(mockSetTheme).toHaveBeenCalledWith('new-theme', undefined);
         expect(onChangeSpy).toHaveBeenCalledWith('new-theme');
     });
 });

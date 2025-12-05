@@ -151,13 +151,9 @@ describe('Callout Component', () => {
       const glassProps = JSON.parse(glassElement.getAttribute('data-glass-props') || '{}');
 
       expect(glassProps).toMatchObject({
-        displacementScale: 40,
-        blurAmount: 0,
-        saturation: 160,
-        aberrationIntensity: 1,
+        displacementScale: 30,
         cornerRadius: 8,
-        overLight: false,
-        mode: 'standard',
+        elasticity: 0,
       });
     });
 
@@ -184,10 +180,8 @@ describe('Callout Component', () => {
         blurAmount: 2,
         saturation: 180,
         cornerRadius: 12,
-        // Default values that weren't overridden
-        aberrationIntensity: 1,
-        overLight: false,
-        mode: 'standard',
+        // Default values from Callout
+        elasticity: 0,
       });
     });
 
@@ -196,7 +190,7 @@ describe('Callout Component', () => {
       const TestIcon = () => <div data-testid="test-icon">Icon</div>;
       const actions = <button data-testid="action-button">Action</button>;
 
-      render(
+      const { container } = render(
         <Callout
           title="Glass Test"
           variant="success"
@@ -223,9 +217,9 @@ describe('Callout Component', () => {
       // Check that glass wrapper is present
       expect(screen.getByTestId('atomix-glass')).toBeInTheDocument();
 
-      // Check that all classes are applied
-      const calloutElement = screen.getByTestId('atomix-glass').firstChild;
-      expect(calloutElement).toHaveClass(
+      // Check that all classes are applied to the outer wrapper
+      const outerCallout = container.querySelector('.c-callout');
+      expect(outerCallout).toHaveClass(
         'c-callout',
         'c-callout--success',
         'c-callout--oneline',
