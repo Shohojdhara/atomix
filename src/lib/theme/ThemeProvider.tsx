@@ -208,7 +208,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
                 setError(error);
 
                 // If fallback is enabled and it's safe to fallback
-                if (options?.fallbackOnError) {
+                if (options?.fallbackOnError && defaultTheme) {
                     // Avoid infinite loops if fallback is same as current attempt
                     const targetName = isJSTheme(themeOrName) ? themeOrName.name : themeOrName;
                     const defName = isJSTheme(defaultTheme) ? defaultTheme.name : defaultTheme;
@@ -281,12 +281,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
             return;
         }
 
+        // Mark this themeManager as initialized synchronously before async work
+        // This prevents race conditions where the effect runs again before async completes
+        initializedManagerRef.current = themeManager;
+
         let isMounted = true;
 
         const loadInitialTheme = async () => {
-            // Mark this themeManager as initialized
-            initializedManagerRef.current = themeManager;
-
             setIsLoading(true);
             try {
                 // If currentTheme is set (from config/storage), use it.

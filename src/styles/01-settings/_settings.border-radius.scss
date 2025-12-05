@@ -4,7 +4,7 @@
 $border-radius: map.get($spacing-sizes, 2) !default; //8px
 $border-radius-sm: map.get($spacing-sizes, 1) !default; //4px
 $border-radius-md: map.get($spacing-sizes, 1) !default; //4px
-$border-radius-lg: map.get($spacing-sizes, 2.5) !default; //10px
+$border-radius-lg: map.get($spacing-sizes, 'px-10') !default; //10px
 $border-radius-xl: map.get($spacing-sizes, 3) !default; //12px
 $border-radius-xxl: map.get($spacing-sizes, 4) !default; //16px
 $border-radius-3xl: map.get($spacing-sizes, 6) !default; //24px
