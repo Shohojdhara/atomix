@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import { ThemeProvider, useTheme } from './index';
-import { themesConfig } from '@/themes/themes.config';
-import { Button } from '@/components/Button/Button';
-import { Card } from '@/components/Card/Card';
-import { ColorModeToggle } from '@/components/ColorModeToggle/ColorModeToggle';
+import { ThemeMetadata, ThemeProvider, useTheme } from './index';
+import { themesConfig } from '../../themes/themes.config';
+import { Button } from '../../components/button/Button';
+import { Card } from '../../components/card/Card';
+import { ColorModeToggle } from '../../components/ColorModeToggle/ColorModeToggle';
 
 /**
  * Theme Manager
@@ -111,7 +111,7 @@ function ThemeInfo() {
 export const BasicThemeSwitching: Story = {
     render: () => (
         <ThemeProvider
-            themes={themesConfig.metadata}
+            themes={themesConfig.metadata as Record<string, ThemeMetadata>}
             defaultTheme="shaj-default"
             enablePersistence={false}
         >
@@ -133,7 +133,7 @@ export const BasicThemeSwitching: Story = {
 export const WithPersistence: Story = {
     render: () => (
         <ThemeProvider
-            themes={themesConfig.metadata}
+            themes={themesConfig.metadata as Record<string, ThemeMetadata>}
             defaultTheme="shaj-default"
             enablePersistence={true}
             storageKey="storybook-theme-demo"
@@ -161,7 +161,7 @@ export const WithPersistence: Story = {
 export const ThemeInfoDisplay: Story = {
     render: () => (
         <ThemeProvider
-            themes={themesConfig.metadata}
+            themes={themesConfig.metadata as Record<string, ThemeMetadata>}
             defaultTheme="shaj-default"
         >
             <div style={{ padding: '2rem', display: 'grid', gap: '1.5rem' }}>
@@ -237,7 +237,7 @@ export const WithPreloading: Story = {
 
         return (
             <ThemeProvider
-                themes={themesConfig.metadata}
+                themes={themesConfig.metadata as Record<string, ThemeMetadata>}
                 defaultTheme="shaj-default"
                 preload={['shaj-default']}
             >
@@ -257,7 +257,7 @@ export const WithPreloading: Story = {
 export const WithColorModeToggle: Story = {
     render: () => (
         <ThemeProvider
-            themes={themesConfig.metadata}
+            themes={themesConfig.metadata as Record<string, ThemeMetadata>}
             defaultTheme="shaj-default"
         >
             <div style={{ padding: '2rem' }}>
@@ -289,7 +289,7 @@ export const WithColorModeToggle: Story = {
 export const ComponentShowcase: Story = {
     render: () => (
         <ThemeProvider
-            themes={themesConfig.metadata}
+            themes={themesConfig.metadata as Record<string, ThemeMetadata>}
             defaultTheme="shaj-default"
         >
             <div style={{ padding: '2rem', display: 'grid', gap: '1.5rem' }}>
@@ -391,7 +391,7 @@ export const ErrorHandling: Story = {
 
         return (
             <ThemeProvider
-                themes={themesConfig.metadata}
+                themes={themesConfig.metadata as Record<string, ThemeMetadata>}
                 defaultTheme="shaj-default"
                 onError={(error, themeName) => {
                     console.error(`Failed to load theme "${themeName}":`, error);
@@ -421,7 +421,7 @@ export const CustomCallbacks: Story = {
 
             return (
                 <ThemeProvider
-                    themes={themesConfig.metadata}
+                    themes={themesConfig.metadata as Record<string, ThemeMetadata>}
                     defaultTheme="shaj-default"
                     onThemeChange={(theme) => {
                         addLog(`Theme changed to: ${theme}`);
