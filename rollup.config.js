@@ -70,6 +70,18 @@ export default [
         extensions: ['.js', '.jsx'],
         configFile: './babel.config.js',
       }),
+      terser({
+        compress: {
+          drop_console: ['log', 'debug'], // Remove console.log and console.debug, keep warn/error
+          pure_funcs: ['console.log', 'console.debug'],
+          passes: 2,
+        },
+        mangle: false, // Don't mangle names in non-minified build for better debugging
+        format: {
+          comments: 'all', // Preserve comments
+          beautify: true, // Keep code readable
+        },
+      }),
     ],
   },
   // CommonJS build
@@ -102,6 +114,18 @@ export default [
         configFile: './babel.config.js',
         envName: 'cjs',
       }),
+      terser({
+        compress: {
+          drop_console: ['log', 'debug'], // Remove console.log and console.debug, keep warn/error
+          pure_funcs: ['console.log', 'console.debug'],
+          passes: 2,
+        },
+        mangle: false, // Don't mangle names in non-minified build for better debugging
+        format: {
+          comments: 'all', // Preserve comments
+          beautify: true, // Keep code readable
+        },
+      }),
     ],
   },
   // Minified ES build for production
@@ -131,9 +155,19 @@ export default [
       }),
       terser({
         compress: {
-          drop_console: true,
+          drop_console: true, // Remove ALL console statements in minified build
+          pure_funcs: ['console.log', 'console.debug', 'console.info'],
+          passes: 3, // More aggressive optimization
+          unsafe: true,
+          unsafe_comps: true,
+          warnings: false,
         },
-        mangle: {},
+        mangle: {
+          safari10: true, // Fix Safari 10 bugs
+        },
+        format: {
+          comments: false, // Remove all comments in minified build
+        },
       }),
     ],
   },

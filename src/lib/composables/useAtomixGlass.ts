@@ -44,7 +44,7 @@ interface UseAtomixGlassReturn {
   detectedOverLight: boolean;
   globalMousePosition: MousePosition;
   mouseOffset: MousePosition;
-  
+
   // OverLight config
   overLightConfig: {
     isOverLight: boolean;
@@ -56,12 +56,12 @@ interface UseAtomixGlassReturn {
     shadowIntensity: number;
     borderOpacity: number;
   };
-  
+
   // Transform calculations
   elasticTranslation: { x: number; y: number };
   directionalScale: string;
   transformStyle: string;
-  
+
   // Event handlers
   handleMouseEnter: () => void;
   handleMouseLeave: () => void;
@@ -113,14 +113,14 @@ export function useAtomixGlass({
   const effectiveCornerRadius = useMemo(() => {
     if (cornerRadius !== undefined) {
       const result = Math.max(0, cornerRadius);
-      if (debugCornerRadius) {
+      if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
         console.log('[AtomixGlass] Using manual cornerRadius prop:', result);
       }
       return result;
     }
 
     const result = Math.max(0, dynamicCornerRadius);
-    if (debugCornerRadius) {
+    if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
       console.log('[AtomixGlass] Using dynamic cornerRadius:', result);
     }
     return result;
@@ -180,21 +180,21 @@ export function useAtomixGlass({
         if (extractedRadius !== null && extractedRadius > 0) {
           setDynamicCornerRadius(extractedRadius);
 
-          if (debugCornerRadius) {
+          if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
             console.log('[AtomixGlass] Corner radius extracted:', {
               value: extractedRadius,
               source: extractionSource,
               timestamp: new Date().toISOString(),
             });
           }
-        } else if (debugCornerRadius) {
+        } else if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
           console.log(
             '[AtomixGlass] No corner radius found, using default:',
             CONSTANTS.DEFAULT_CORNER_RADIUS
           );
         }
       } catch (error) {
-        if (debugCornerRadius) {
+        if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
           console.error('[AtomixGlass] Error extracting corner radius:', error);
         }
       }
@@ -209,7 +209,7 @@ export function useAtomixGlass({
   useEffect(() => {
     // Only run auto-detection for 'auto' mode or object config (which uses auto-detection)
     const shouldDetect = (overLight === 'auto' || (typeof overLight === 'object' && overLight !== null));
-    
+
     if (shouldDetect && glassRef.current) {
       const timeoutId = setTimeout(() => {
         try {
@@ -218,13 +218,13 @@ export function useAtomixGlass({
             setDetectedOverLight(false);
             return;
           }
-          
+
           // Validate window context
           if (typeof window === 'undefined' || typeof window.getComputedStyle !== 'function') {
             setDetectedOverLight(false);
             return;
           }
-          
+
           let totalLuminance = 0;
           let validSamples = 0;
           let hasValidBackground = false;
@@ -233,7 +233,7 @@ export function useAtomixGlass({
           let depth = 0;
           const maxDepth = 20;
           const maxSamples = 10;
-          
+
           // Limit traversal depth to prevent infinite loops and performance issues
           while (currentElement && validSamples < maxSamples && depth < maxDepth) {
             try {
@@ -243,7 +243,7 @@ export function useAtomixGlass({
                 depth++;
                 continue;
               }
-              
+
               const bgColor = computedStyle.backgroundColor;
               const bgImage = computedStyle.backgroundImage;
 
@@ -254,11 +254,11 @@ export function useAtomixGlass({
                   const r = Number(rgb[0]);
                   const g = Number(rgb[1]);
                   const b = Number(rgb[2]);
-                  
+
                   // Validate RGB values are valid numbers
-                  if (!isNaN(r) && !isNaN(g) && !isNaN(b) && 
-                      isFinite(r) && isFinite(g) && isFinite(b) &&
-                      r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
+                  if (!isNaN(r) && !isNaN(g) && !isNaN(b) &&
+                    isFinite(r) && isFinite(g) && isFinite(b) &&
+                    r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
                     // Only consider if it's not pure black or very dark
                     if (r > 10 || g > 10 || b > 10) {
                       const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
@@ -271,7 +271,7 @@ export function useAtomixGlass({
                   }
                 }
               }
-              
+
               // Check for image backgrounds
               if (bgImage && bgImage !== 'none' && bgImage !== 'initial') {
                 // For image backgrounds, assume medium luminance
@@ -285,7 +285,7 @@ export function useAtomixGlass({
                 console.debug('AtomixGlass: Error getting computed style for element:', styleError);
               }
             }
-            
+
             // Move to parent element for next iteration
             if (currentElement) {
               currentElement = currentElement.parentElement;
@@ -300,25 +300,25 @@ export function useAtomixGlass({
             const avgLuminance = totalLuminance / validSamples;
             if (!isNaN(avgLuminance) && isFinite(avgLuminance)) {
               let threshold = 0.7; // Conservative threshold for overlight
-              
+
               // If overLight is an object, use its threshold property with validation
               if (typeof overLight === 'object' && overLight !== null) {
                 const objConfig = overLight as OverLightObjectConfig;
                 if (objConfig.threshold !== undefined) {
-                  const configThreshold = typeof objConfig.threshold === 'number' && 
-                                         !isNaN(objConfig.threshold) && 
-                                         isFinite(objConfig.threshold)
-                                         ? objConfig.threshold 
-                                         : 0.7;
+                  const configThreshold = typeof objConfig.threshold === 'number' &&
+                    !isNaN(objConfig.threshold) &&
+                    isFinite(objConfig.threshold)
+                    ? objConfig.threshold
+                    : 0.7;
                   threshold = Math.min(0.9, Math.max(0.1, configThreshold));
                 }
               }
-              
+
               const isOverLightDetected = avgLuminance > threshold;
               setDetectedOverLight(isOverLightDetected);
-              
+
               // Debug logging
-              if (debugOverLight) {
+              if (process.env.NODE_ENV !== 'production' && debugOverLight) {
                 console.log('[AtomixGlass] OverLight Detection:', {
                   avgLuminance: avgLuminance.toFixed(3),
                   threshold: threshold.toFixed(3),
@@ -345,14 +345,14 @@ export function useAtomixGlass({
           setDetectedOverLight(false);
         }
       }, 150);
-      
+
       return () => clearTimeout(timeoutId);
     } else if (typeof overLight === 'boolean') {
       // For boolean values, disable auto-detection
       setDetectedOverLight(false);
-      
+
       // Debug logging for boolean mode
-      if (debugOverLight) {
+      if (process.env.NODE_ENV !== 'production' && debugOverLight) {
         console.log('[AtomixGlass] OverLight Mode: boolean', {
           value: overLight,
           autoDetection: false,
@@ -449,7 +449,7 @@ export function useAtomixGlass({
             y: event.clientY,
           });
 
-          if (enablePerformanceMonitoring) {
+          if (process.env.NODE_ENV !== 'production' && enablePerformanceMonitoring) {
             const endTime = performance.now();
             const duration = endTime - startTime;
             if (duration > 5) {
@@ -749,7 +749,7 @@ export function useAtomixGlass({
 
     // More robust overlight configuration with better defaults and clamping
     const baseOpacity = isOverLight ? Math.min(0.6, Math.max(0.2, 0.5 * hoverIntensity * activeIntensity)) : 0;
-    
+
     const baseConfig = {
       isOverLight,
       threshold: 0.7,
@@ -763,14 +763,14 @@ export function useAtomixGlass({
 
     if (typeof overLight === 'object' && overLight !== null) {
       const objConfig = overLight as OverLightObjectConfig;
-      
+
       // Validate and apply object config values with proper clamping
       const validatedThreshold = validateConfigValue(objConfig.threshold, 0.1, 1.0, baseConfig.threshold);
       const validatedOpacity = validateConfigValue(objConfig.opacity, 0.1, 1.0, baseConfig.opacity);
       const validatedContrast = validateConfigValue(objConfig.contrast, 0.5, 2.5, baseConfig.contrast);
       const validatedBrightness = validateConfigValue(objConfig.brightness, 0.5, 2.0, baseConfig.brightness);
       const validatedSaturationBoost = validateConfigValue(objConfig.saturationBoost, 0.5, 3.0, baseConfig.saturationBoost);
-      
+
       const finalConfig = {
         ...baseConfig,
         threshold: validatedThreshold,
@@ -779,9 +779,9 @@ export function useAtomixGlass({
         brightness: validatedBrightness + mouseInfluence * 0.15,
         saturationBoost: validatedSaturationBoost + mouseInfluence * 0.4,
       };
-      
+
       // Debug logging
-      if (debugOverLight) {
+      if (process.env.NODE_ENV !== 'production' && debugOverLight) {
         console.log('[AtomixGlass] OverLight Config:', {
           isOverLight,
           config: {
@@ -808,12 +808,12 @@ export function useAtomixGlass({
           timestamp: new Date().toISOString(),
         });
       }
-      
+
       return finalConfig;
     }
 
     // Debug logging for non-object configs
-    if (debugOverLight) {
+    if (process.env.NODE_ENV !== 'production' && debugOverLight) {
       console.log('[AtomixGlass] OverLight Config:', {
         isOverLight,
         configType: typeof overLight === 'boolean' ? (overLight ? 'true' : 'false') : overLight,
