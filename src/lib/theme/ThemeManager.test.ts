@@ -90,6 +90,10 @@ describe('ThemeManager', () => {
         });
 
         it('should not reload if theme is already active', async () => {
+            // Wait for init to potentially settle
+            await new Promise(resolve => setTimeout(resolve, 0));
+            vi.clearAllMocks();
+
             await themeManager.setTheme('theme-1');
             expect(utils.loadThemeCSS).not.toHaveBeenCalled();
         });

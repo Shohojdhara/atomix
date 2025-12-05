@@ -12,6 +12,7 @@ describe('useTheme', () => {
 
     const mockContextValue: ThemeContextValue = {
         theme: 'default-theme',
+        activeTheme: null,
         setTheme: mockSetTheme,
         availableThemes: [{ name: 'Default', class: 'default-theme' }],
         isLoading: false,

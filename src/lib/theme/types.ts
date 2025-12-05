@@ -48,7 +48,7 @@ export interface ThemeManagerConfig {
     /** Available themes metadata */
     themes: Record<string, ThemeMetadata>;
     /** Default theme to use */
-    defaultTheme?: string;
+    defaultTheme?: string | Theme;
     /** Base path for theme CSS files */
     basePath?: string;
     /** CDN path for theme CSS files (optional) */
@@ -68,7 +68,7 @@ export interface ThemeManagerConfig {
     /** Use minified CSS files */
     useMinified?: boolean;
     /** Callback when theme changes */
-    onThemeChange?: (theme: string) => void;
+    onThemeChange?: (theme: string | Theme) => void;
     /** Callback when theme load fails */
     onError?: (error: Error, themeName: string) => void;
 }
@@ -81,6 +81,8 @@ export interface ThemeChangeEvent {
     previousTheme: string | null;
     /** New theme name */
     currentTheme: string;
+    /** Theme object (for JS themes) */
+    themeObject?: Theme | null;
     /** Timestamp of the change */
     timestamp: number;
     /** Whether the change was from user action or system */
@@ -155,7 +157,7 @@ export interface UseThemeOptions {
     /** Custom storage key */
     storageKey?: string;
     /** Callback when theme changes */
-    onChange?: (theme: string) => void;
+    onChange?: (theme: string | Theme) => void;
 }
 
 /**
@@ -164,8 +166,10 @@ export interface UseThemeOptions {
 export interface UseThemeReturn {
     /** Current theme name */
     theme: string;
+    /** Current active theme object (for JS themes) */
+    activeTheme: Theme | null;
     /** Function to change theme */
-    setTheme: (theme: string, options?: ThemeLoadOptions) => Promise<void>;
+    setTheme: (theme: string | Theme, options?: ThemeLoadOptions) => Promise<void>;
     /** Available themes */
     availableThemes: ThemeMetadata[];
     /** Whether a theme is currently loading */
@@ -185,7 +189,7 @@ export interface ThemeProviderProps {
     /** Child components */
     children: React.ReactNode;
     /** Default theme */
-    defaultTheme?: string;
+    defaultTheme?: string | Theme;
     /** Available themes */
     themes?: Record<string, ThemeMetadata>;
     /** Base path for theme CSS */
@@ -205,7 +209,7 @@ export interface ThemeProviderProps {
     /** Use minified CSS */
     useMinified?: boolean;
     /** Callback when theme changes */
-    onThemeChange?: (theme: string) => void;
+    onThemeChange?: (theme: string | Theme) => void;
     /** Callback on error */
     onError?: (error: Error, themeName: string) => void;
 }
@@ -214,10 +218,12 @@ export interface ThemeProviderProps {
  * Theme context value
  */
 export interface ThemeContextValue {
-    /** Current theme */
+    /** Current theme name */
     theme: string;
+    /** Current active theme object (for JS themes) */
+    activeTheme: Theme | null;
     /** Set theme function */
-    setTheme: (theme: string, options?: ThemeLoadOptions) => Promise<void>;
+    setTheme: (theme: string | Theme, options?: ThemeLoadOptions) => Promise<void>;
     /** Available themes */
     availableThemes: ThemeMetadata[];
     /** Loading state */
@@ -230,6 +236,329 @@ export interface ThemeContextValue {
     preloadTheme: (themeName: string) => Promise<void>;
     /** Theme manager instance */
     themeManager: ThemeManagerType;
+}
+
+// ============================================================================
+// createTheme System Types
+// ============================================================================
+
+/**
+ * Color palette configuration for a single color
+ */
+export interface PaletteColor {
+    /** Main color value */
+    main: string;
+    /** Light variant (auto-generated if not provided) */
+    light?: string;
+    /** Dark variant (auto-generated if not provided) */
+    dark?: string;
+    /** Contrast text color (auto-generated if not provided) */
+    contrastText?: string;
+}
+
+/**
+ * Palette configuration options for createTheme
+ */
+export interface PaletteOptions {
+    /** Primary color configuration */
+    primary?: Partial<PaletteColor> | string;
+    /** Secondary color configuration */
+    secondary?: Partial<PaletteColor> | string;
+    /** Error color configuration */
+    error?: Partial<PaletteColor> | string;
+    /** Warning color configuration */
+    warning?: Partial<PaletteColor> | string;
+    /** Info color configuration */
+    info?: Partial<PaletteColor> | string;
+    /** Success color configuration */
+    success?: Partial<PaletteColor> | string;
+    /** Background colors */
+    background?: {
+        default?: string;
+        paper?: string;
+        subtle?: string;
+    };
+    /** Text colors */
+    text?: {
+        primary?: string;
+        secondary?: string;
+        disabled?: string;
+    };
+    /** Additional custom colors */
+    [key: string]: any;
+}
+
+/**
+ * Typography configuration options for createTheme
+ */
+export interface TypographyOptions {
+    /** Font family */
+    fontFamily?: string;
+    /** Base font size in pixels */
+    fontSize?: number;
+    /** Font weight scale */
+    fontWeightLight?: number;
+    fontWeightRegular?: number;
+    fontWeightMedium?: number;
+    fontWeightSemiBold?: number;
+    fontWeightBold?: number;
+    /** Heading configurations */
+    h1?: {
+        fontSize?: string | number;
+        fontWeight?: number;
+        lineHeight?: number | string;
+        letterSpacing?: string;
+    };
+    h2?: {
+        fontSize?: string | number;
+        fontWeight?: number;
+        lineHeight?: number | string;
+        letterSpacing?: string;
+    };
+    h3?: {
+        fontSize?: string | number;
+        fontWeight?: number;
+        lineHeight?: number | string;
+        letterSpacing?: string;
+    };
+    h4?: {
+        fontSize?: string | number;
+        fontWeight?: number;
+        lineHeight?: number | string;
+        letterSpacing?: string;
+    };
+    h5?: {
+        fontSize?: string | number;
+        fontWeight?: number;
+        lineHeight?: number | string;
+        letterSpacing?: string;
+    };
+    h6?: {
+        fontSize?: string | number;
+        fontWeight?: number;
+        lineHeight?: number | string;
+        letterSpacing?: string;
+    };
+    /** Body text configurations */
+    body1?: {
+        fontSize?: string | number;
+        fontWeight?: number;
+        lineHeight?: number | string;
+    };
+    body2?: {
+        fontSize?: string | number;
+        fontWeight?: number;
+        lineHeight?: number | string;
+    };
+    /** Additional custom typography */
+    [key: string]: any;
+}
+
+/**
+ * Spacing function type
+ */
+export type SpacingFunction = (...values: number[]) => string;
+
+/**
+ * Spacing configuration options for createTheme
+ */
+export type SpacingOptions = number | number[] | SpacingFunction;
+
+/**
+ * Breakpoint values configuration
+ */
+export interface BreakpointValues {
+    xs?: number;
+    sm?: number;
+    md?: number;
+    lg?: number;
+    xl?: number;
+    [key: string]: number | undefined;
+}
+
+/**
+ * Breakpoints configuration options for createTheme
+ */
+export interface BreakpointsOptions {
+    /** Breakpoint values in pixels */
+    values?: BreakpointValues;
+    /** Unit for breakpoints (default: 'px') */
+    unit?: string;
+}
+
+/**
+ * Shadow configuration
+ */
+export interface ShadowOptions {
+    xs?: string;
+    sm?: string;
+    md?: string;
+    lg?: string;
+    xl?: string;
+    [key: string]: string | undefined;
+}
+
+/**
+ * Transition configuration
+ */
+export interface TransitionOptions {
+    /** Transition duration values */
+    duration?: {
+        shortest?: number;
+        shorter?: number;
+        short?: number;
+        standard?: number;
+        complex?: number;
+        enteringScreen?: number;
+        leavingScreen?: number;
+    };
+    /** Easing functions */
+    easing?: {
+        easeInOut?: string;
+        easeOut?: string;
+        easeIn?: string;
+        sharp?: string;
+    };
+}
+
+/**
+ * Z-index configuration
+ */
+export interface ZIndexOptions {
+    mobileStepper?: number;
+    speedDial?: number;
+    appBar?: number;
+    drawer?: number;
+    modal?: number;
+    snackbar?: number;
+    tooltip?: number;
+    [key: string]: number | undefined;
+}
+
+/**
+ * Border radius configuration
+ */
+export interface BorderRadiusOptions {
+    /** Base border radius */
+    base?: string | number;
+    /** Small border radius */
+    sm?: string | number;
+    /** Medium border radius */
+    md?: string | number;
+    /** Large border radius */
+    lg?: string | number;
+    /** Extra large border radius */
+    xl?: string | number;
+    /** 2X large border radius */
+    xxl?: string | number;
+    /** 3X large border radius */
+    '3xl'?: string | number;
+    /** 4X large border radius */
+    '4xl'?: string | number;
+    /** Pill shape (fully rounded) */
+    pill?: string | number;
+    [key: string]: string | number | undefined;
+}
+
+/**
+ * Custom theme properties for extension
+ * Users can augment this interface via module augmentation
+ */
+export interface ThemeCustomProperties {
+    [key: string]: any;
+}
+
+/**
+ * Theme configuration options for createTheme
+ * Extends ThemeMetadata to support both CSS and JS theme properties
+ */
+export interface ThemeOptions extends Partial<ThemeMetadata> {
+    /** Color palette configuration */
+    palette?: PaletteOptions;
+    /** Typography configuration */
+    typography?: TypographyOptions;
+    /** Spacing configuration */
+    spacing?: SpacingOptions;
+    /** Breakpoints configuration */
+    breakpoints?: BreakpointsOptions;
+    /** Shadow configuration */
+    shadows?: ShadowOptions;
+    /** Transition configuration */
+    transitions?: TransitionOptions;
+    /** Z-index configuration */
+    zIndex?: ZIndexOptions;
+    /** Border radius configuration */
+    borderRadius?: BorderRadiusOptions;
+    /** Custom properties */
+    custom?: ThemeCustomProperties;
+}
+
+/**
+ * Complete theme object with computed values
+ * Generated by createTheme function
+ */
+export interface Theme extends ThemeMetadata {
+    /** Color palette with computed values */
+    palette: {
+        primary: PaletteColor;
+        secondary: PaletteColor;
+        error: PaletteColor;
+        warning: PaletteColor;
+        info: PaletteColor;
+        success: PaletteColor;
+        background: {
+            default: string;
+            paper: string;
+            subtle: string;
+        };
+        text: {
+            primary: string;
+            secondary: string;
+            disabled: string;
+        };
+        [key: string]: any;
+    };
+    /** Typography with computed values */
+    typography: {
+        fontFamily: string;
+        fontSize: number;
+        fontWeightLight: number;
+        fontWeightRegular: number;
+        fontWeightMedium: number;
+        fontWeightSemiBold: number;
+        fontWeightBold: number;
+        h1: Required<NonNullable<TypographyOptions['h1']>>;
+        h2: Required<NonNullable<TypographyOptions['h2']>>;
+        h3: Required<NonNullable<TypographyOptions['h3']>>;
+        h4: Required<NonNullable<TypographyOptions['h4']>>;
+        h5: Required<NonNullable<TypographyOptions['h5']>>;
+        h6: Required<NonNullable<TypographyOptions['h6']>>;
+        body1: Required<NonNullable<TypographyOptions['body1']>>;
+        body2: Required<NonNullable<TypographyOptions['body2']>>;
+        [key: string]: any;
+    };
+    /** Spacing function */
+    spacing: SpacingFunction;
+    /** Breakpoints with computed values */
+    breakpoints: {
+        values: Required<BreakpointValues>;
+        unit: string;
+        up: (key: keyof BreakpointValues | number) => string;
+        down: (key: keyof BreakpointValues | number) => string;
+        between: (start: keyof BreakpointValues | number, end: keyof BreakpointValues | number) => string;
+    };
+    /** Shadows */
+    shadows: Required<ShadowOptions>;
+    /** Transitions */
+    transitions: Required<TransitionOptions>;
+    /** Z-index values */
+    zIndex: Required<ZIndexOptions>;
+    /** Border radius values */
+    borderRadius: Required<BorderRadiusOptions>;
+    /** Custom properties */
+    custom: ThemeCustomProperties;
+    /** Indicates this is a JS theme (not CSS-only) */
+    __isJSTheme: true;
 }
 
 /**

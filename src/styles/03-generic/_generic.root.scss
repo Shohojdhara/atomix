@@ -226,6 +226,10 @@
     --#{config.$prefix}#{$color}: #{$value};
   }
 
+  @each $color, $value in color-maps.$theme-colors-dark {
+    --#{config.$prefix}#{$color}-rgb: #{to-rgb($value)};
+  }
+
   @each $color, $value in color-maps.$theme-colors-text-dark {
     --#{config.$prefix}#{$color}-text-emphasis: #{$value};
   }
@@ -259,6 +263,7 @@
   --#{config.$prefix}link-color: #{colors.$link-color-dark};
   --#{config.$prefix}link-color-rgb: #{to-rgb(colors.$link-color-dark)};
   --#{config.$prefix}link-hover-color: #{colors.$link-hover-color-dark};
+  --#{config.$prefix}link-hover-color-rgb: #{to-rgb(colors.$link-hover-color-dark)};
 
   --#{config.$prefix}code-color: #{colors.$code-color-dark};
 

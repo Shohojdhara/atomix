@@ -6,31 +6,13 @@
 
 import { useContext, useCallback } from 'react';
 import { ThemeContext } from './ThemeContext';
-import type { UseThemeReturn, UseThemeOptions, ThemeLoadOptions } from './types';
+import type { UseThemeReturn, UseThemeOptions, ThemeLoadOptions, Theme } from './types';
 
 /**
  * useTheme hook
  * 
  * Access theme context and manage theme state in React components.
  * Must be used within a ThemeProvider.
- * 
- * @param options - Hook options
- * @returns Theme state and methods
- * 
- * @example
- * ```tsx
- * function ThemeSwitcher() {
- *   const { theme, setTheme, availableThemes, isLoading } = useTheme();
- * 
- *   return (
- *     <select value={theme} onChange={(e) => setTheme(e.target.value)}>
- *       {availableThemes.map(t => (
- *         <option key={t.class} value={t.class}>{t.name}</option>
- *       ))}
- *     </select>
- *   );
- * }
- * ```
  */
 export const useTheme = (options: UseThemeOptions = {}): UseThemeReturn => {
     const context = useContext(ThemeContext);
@@ -44,6 +26,7 @@ export const useTheme = (options: UseThemeOptions = {}): UseThemeReturn => {
 
     const {
         theme,
+        activeTheme,
         setTheme: contextSetTheme,
         availableThemes,
         isLoading,
@@ -57,10 +40,10 @@ export const useTheme = (options: UseThemeOptions = {}): UseThemeReturn => {
 
     // Wrap setTheme to call onChange callback if provided
     const setTheme = useCallback(
-        async (themeName: string, themeOptions?: ThemeLoadOptions): Promise<void> => {
-            await contextSetTheme(themeName, themeOptions);
+        async (themeOrName: string | Theme, themeOptions?: ThemeLoadOptions): Promise<void> => {
+            await contextSetTheme(themeOrName, themeOptions);
             if (onChange) {
-                onChange(themeName);
+                onChange(themeOrName);
             }
         },
         [contextSetTheme, onChange]
@@ -68,6 +51,7 @@ export const useTheme = (options: UseThemeOptions = {}): UseThemeReturn => {
 
     return {
         theme,
+        activeTheme,
         setTheme,
         availableThemes,
         isLoading,

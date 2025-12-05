@@ -3,6 +3,7 @@
  * 
  * Core theme management class for the Atomix Design System.
  * Handles theme loading, switching, persistence, and events.
+ * Supports both CSS-based themes and JavaScript-based themes.
  */
 
 import type {
@@ -15,6 +16,7 @@ import type {
     ThemeLoadCallback,
     ThemeErrorCallback,
     StorageAdapter,
+    Theme,
 } from './types';
 
 import {
@@ -31,6 +33,9 @@ import {
     createLocalStorageAdapter,
 } from './utils';
 
+import { isJSTheme } from './themeUtils';
+import { generateCSSVariables, injectCSS, removeInjectedCSS } from './generateCSSVariables';
+
 /**
  * Default configuration values
  */
@@ -44,6 +49,9 @@ const DEFAULT_CONFIG: Partial<ThemeManagerConfig> = {
     useMinified: false,
     preload: [],
 };
+
+// ID for injected JS theme styles
+const JS_THEME_STYLE_ID = 'atomix-js-theme-styles';
 
 /**
  * ThemeManager class
@@ -61,13 +69,15 @@ const DEFAULT_CONFIG: Partial<ThemeManagerConfig> = {
  * ```
  */
 export class ThemeManager {
-    private config: Required<Omit<ThemeManagerConfig, 'onThemeChange' | 'onError' | 'cdnPath'>> & {
+    private config: Required<Omit<ThemeManagerConfig, 'onThemeChange' | 'onError' | 'cdnPath' | 'defaultTheme'>> & {
+        defaultTheme?: string | Theme;
         cdnPath: string | null;
-        onThemeChange?: (theme: string) => void;
+        onThemeChange?: (theme: string | Theme) => void;
         onError?: (error: Error, themeName: string) => void;
     };
 
     private currentTheme: string | null = null;
+    private activeTheme: Theme | null = null;
     private loadedThemes: Set<string> = new Set();
     private loadingThemes: Map<string, Promise<void>> = new Map();
     private eventListeners: ThemeEventListeners = {
@@ -85,7 +95,11 @@ export class ThemeManager {
      */
     constructor(config: ThemeManagerConfig) {
         // Validate required config
-        if (!config.themes || Object.keys(config.themes).length === 0) {
+        const hasThemes = config.themes && Object.keys(config.themes).length > 0;
+        const hasDefaultThemeObject = config.defaultTheme && typeof config.defaultTheme !== 'string';
+
+        if (!hasThemes && !hasDefaultThemeObject) {
+            // For backward compatibility: require themes if no JS theme object is provided
             throw new Error('ThemeManager: themes configuration is required');
         }
 
@@ -93,17 +107,21 @@ export class ThemeManager {
         this.config = {
             ...DEFAULT_CONFIG,
             ...config,
-            themes: config.themes,
-            defaultTheme: config.defaultTheme || Object.keys(config.themes)[0],
-        } as Required<Omit<ThemeManagerConfig, 'onThemeChange' | 'onError' | 'cdnPath'>> & {
-            cdnPath: string | null;
-            onThemeChange?: (theme: string) => void;
-            onError?: (error: Error, themeName: string) => void;
-        };
+            themes: config.themes || {},
+            defaultTheme: config.defaultTheme || (config.themes && Object.keys(config.themes)[0]),
+        } as any;
 
-        // Validate default theme exists
-        if (!this.config.themes[this.config.defaultTheme]) {
-            throw new Error(`ThemeManager: default theme "${this.config.defaultTheme}" not found in themes configuration`);
+        // Default theme required if provided
+        if (!this.config.defaultTheme) {
+            console.warn('ThemeManager: No default theme provided.');
+        }
+
+        // Validate default theme exists (if string)
+        if (typeof this.config.defaultTheme === 'string') {
+            const defName = this.config.defaultTheme;
+            if (!this.config.themes[defName]) {
+                throw new Error(`ThemeManager: default theme "${defName}" not found in themes configuration`);
+            }
         }
 
         // Initialize storage adapter
@@ -126,19 +144,53 @@ export class ThemeManager {
 
         if (this.config.enablePersistence && this.storageAdapter.isAvailable()) {
             const storedTheme = this.storageAdapter.getItem(this.config.storageKey);
-            if (storedTheme && this.config.themes[storedTheme]) {
-                initialTheme = storedTheme;
+            if (storedTheme) {
+                // If stored theme is a name in config.themes, use it
+                if (typeof storedTheme === 'string' && this.config.themes[storedTheme]) {
+                    initialTheme = storedTheme;
+                } else if (typeof storedTheme === 'string') {
+                    // Check if stored theme name matches a JS theme (defaultTheme as Theme object)
+                    // This handles persistence of JS themes that aren't in config.themes
+                    if (isJSTheme(this.config.defaultTheme)) {
+                        const defaultThemeName = this.config.defaultTheme.name || 'custom-theme';
+                        if (storedTheme === defaultThemeName) {
+                            initialTheme = this.config.defaultTheme;
+                        }
+                    }
+                }
             }
         }
 
-        // Check if theme is already set in DOM
+        // Check if theme is already set in DOM (CSS themes)
         const domTheme = getCurrentThemeFromDOM(this.config.dataAttribute);
         if (domTheme && this.config.themes[domTheme]) {
             initialTheme = domTheme;
         }
 
-        // Set initial theme
-        this.currentTheme = initialTheme;
+        // Set initial theme synchronously
+        if (initialTheme) {
+            if (isJSTheme(initialTheme)) {
+                // JS Theme
+                this.activeTheme = initialTheme;
+                this.currentTheme = initialTheme.name || 'custom-theme';
+                try {
+                    const css = generateCSSVariables(initialTheme);
+                    injectCSS(css, JS_THEME_STYLE_ID);
+                    applyThemeAttributes(this.currentTheme, this.config.dataAttribute);
+                } catch (e) {
+                    console.warn('Failed to apply initial JS theme:', e);
+                }
+            } else {
+                // CSS Theme string
+                this.currentTheme = initialTheme as string;
+                applyThemeAttributes(this.currentTheme, this.config.dataAttribute);
+
+                // Trigger load async
+                this.preloadTheme(this.currentTheme).catch(err => {
+                    console.warn('Failed to preload initial theme:', err);
+                });
+            }
+        }
 
         // Preload themes if configured
         if (this.config.preload && this.config.preload.length > 0) {
@@ -160,7 +212,14 @@ export class ThemeManager {
      * @returns Current theme name
      */
     public getTheme(): string {
-        return this.currentTheme || this.config.defaultTheme;
+        return this.currentTheme || (typeof this.config.defaultTheme === 'string' ? this.config.defaultTheme : 'unknown');
+    }
+
+    /**
+     * Get the current active theme object (for JS themes)
+     */
+    public getActiveTheme(): Theme | null {
+        return this.activeTheme;
     }
 
     /**
@@ -279,69 +338,136 @@ export class ThemeManager {
     /**
      * Set the current theme
      * 
-     * @param themeName - Name of the theme to set
+     * @param themeOrName - Name of the theme or Theme object to set
      * @param options - Load options
      * @returns Promise that resolves when theme is applied
      */
     public async setTheme(
-        themeName: string,
+        themeOrName: string | Theme,
         options: ThemeLoadOptions = {}
     ): Promise<void> {
         if (isServer()) {
             return Promise.resolve();
         }
 
-        // Validate theme name format to prevent path injection
-        if (!isValidThemeName(themeName)) {
-            const error = new Error(`Invalid theme name: "${themeName}". Theme names must be lowercase alphanumeric with hyphens.`);
-            this.emitError(error, themeName);
-            throw error;
-        }
+        const isJS = isJSTheme(themeOrName);
+        let themeName: string;
+        let themeObject: Theme | null = null;
 
-        // Validate theme exists
-        if (!this.config.themes[themeName]) {
-            const error = new Error(`Theme "${themeName}" not found`);
-            this.emitError(error, themeName);
-            throw error;
-        }
-
-        // Check if already current theme
-        if (themeName === this.currentTheme && !options.force) {
-            return Promise.resolve();
+        if (isJS) {
+            themeObject = themeOrName as Theme;
+            themeName = themeObject.name || 'custom-theme';
+        } else {
+            themeName = themeOrName as string;
+            // Validate theme name format
+            if (!isValidThemeName(themeName)) {
+                const error = new Error(`Invalid theme name: "${themeName}". Theme names must be lowercase alphanumeric with hyphens.`);
+                this.emitError(error, themeName);
+                throw error;
+            }
+            // Validate theme exists in config
+            if (!this.config.themes[themeName]) {
+                const error = new Error(`Theme "${themeName}" not found`);
+                this.emitError(error, themeName);
+                throw error;
+            }
         }
 
         const previousTheme = this.currentTheme;
+        const isCurrentlyJS = this.activeTheme !== null;
+
+        // Check if already current theme (and not forced)
+        // Only return early if:
+        // 1. Names match
+        // 2. Not forced
+        // 3. Both are the same type (both CSS or both JS)
+        //    - If switching from JS to CSS or CSS to JS with same name, we need to proceed
+        if (themeName === this.currentTheme && !options.force) {
+            // If both are CSS themes, return early
+            if (!isJS && !isCurrentlyJS) {
+                return Promise.resolve();
+            }
+            // If both are JS themes with the same name, return early
+            // (Note: We can't easily compare JS theme objects, but if name matches and both are JS, assume same)
+            if (isJS && isCurrentlyJS) {
+                return Promise.resolve();
+            }
+            // If switching between JS and CSS with same name, continue to switch implementations
+        }
 
         try {
-            // Load theme CSS if not already loaded
-            if (!this.isThemeLoaded(themeName) || options.force) {
-                await this.preloadTheme(themeName);
+            if (isJS && themeObject) {
+                // Handle JS Theme
+
+                // 1. Generate CSS Variables
+                const css = generateCSSVariables(themeObject);
+
+                // 2. Inject CSS
+                injectCSS(css, JS_THEME_STYLE_ID);
+
+                // 3. Remove previous theme attribute? 
+                // We might want to keep data-theme attribute if it helps selectors, 
+                // but if the theme name matches, good.
+                applyThemeAttributes(themeName, this.config.dataAttribute);
+
+                const wasJS = !!this.activeTheme;
+                // 4. Set active theme object
+                this.activeTheme = themeObject;
+
+                // 5. If we had a previous CSS theme loaded (and it wasn't a JS theme)
+                if (previousTheme && !wasJS && options.removePrevious) {
+                    // If previously we had a CSS theme, we should remove it.
+                    // We can check if previousTheme was in availableThemes.
+                    if (this.config.themes[previousTheme]) {
+                        removeThemeCSS(previousTheme);
+                        this.loadedThemes.delete(previousTheme);
+                    }
+                }
+
+            } else {
+                // Handle CSS Theme
+
+                // 1. Clear any active JS theme
+                if (this.activeTheme) {
+                    removeInjectedCSS(JS_THEME_STYLE_ID);
+                    this.activeTheme = null;
+                }
+
+                // 2. Load CSS if needed
+                if (!this.isThemeLoaded(themeName) || options.force) {
+                    await this.preloadTheme(themeName);
+                }
+
+                // 3. Remove previous theme CSS
+                if (options.removePrevious && previousTheme && previousTheme !== themeName) {
+                    removeThemeCSS(previousTheme);
+                    this.loadedThemes.delete(previousTheme);
+                }
+
+                // 4. Apply attributes
+                applyThemeAttributes(themeName, this.config.dataAttribute);
             }
 
-            // Remove previous theme CSS if requested
-            if (options.removePrevious && previousTheme && previousTheme !== themeName) {
-                removeThemeCSS(previousTheme);
-                this.loadedThemes.delete(previousTheme);
-            }
-
-            // Apply theme attributes
-            applyThemeAttributes(themeName, this.config.dataAttribute);
-
-            // Update current theme
+            // Update current theme name
             this.currentTheme = themeName;
 
-            // Persist to storage
+            // Persist (only if string name and in config?)
+            // If it's a JS theme, we can't persist the object, but if it has a name, we might persist that
+            // and expect the app to restore it (e.g. by re-creating it).
             if (this.config.enablePersistence && this.storageAdapter.isAvailable()) {
+                // Only persist if it's a known theme string or we accept persisting names of JS custom themes
+                // For now, let's persist whatever string we have.
                 this.storageAdapter.setItem(this.config.storageKey, themeName);
             }
 
-            // Emit theme change event
-            this.emitThemeChange(previousTheme, themeName);
+            // Emit change event
+            this.emitThemeChange(previousTheme, themeName, this.activeTheme);
 
-            // Call config callback
+            // Callback
             if (this.config.onThemeChange) {
-                this.config.onThemeChange(themeName);
+                this.config.onThemeChange(isJS ? (themeObject || themeName) : themeName);
             }
+
         } catch (error) {
             const err = error instanceof Error ? error : new Error(String(error));
             this.emitError(err, themeName);
@@ -350,10 +476,24 @@ export class ThemeManager {
                 this.config.onError(err, themeName);
             }
 
-            // Fallback to default theme if requested
-            if (options.fallbackOnError && themeName !== this.config.defaultTheme) {
-                console.warn(`Failed to load theme "${themeName}", falling back to default theme "${this.config.defaultTheme}"`);
-                return this.setTheme(this.config.defaultTheme, { ...options, fallbackOnError: false });
+            // Fallback
+            if (options.fallbackOnError && this.config.defaultTheme) {
+                // Extract theme names consistently to avoid comparing string to Theme object
+                const targetName = themeName; // themeName is already a string at this point
+                const defName = isJSTheme(this.config.defaultTheme)
+                    ? this.config.defaultTheme.name
+                    : this.config.defaultTheme;
+
+                // Only fallback if target theme is different from default theme
+                if (targetName !== defName) {
+                    const def = this.config.defaultTheme;
+                    if (def && typeof def !== 'string') {
+                        // recursively call set theme with default object
+                        return this.setTheme(def, { ...options, fallbackOnError: false });
+                    } else if (typeof def === 'string') {
+                        return this.setTheme(def, { ...options, fallbackOnError: false });
+                    }
+                }
             }
 
             throw err;
@@ -398,8 +538,10 @@ export class ThemeManager {
         }
 
         removeAllThemeCSS();
+        removeInjectedCSS(JS_THEME_STYLE_ID);
         this.loadedThemes.clear();
         this.loadingThemes.clear();
+        this.activeTheme = null;
     }
 
     /**
@@ -443,10 +585,11 @@ export class ThemeManager {
     /**
      * Emit theme change event
      */
-    private emitThemeChange(previousTheme: string | null, currentTheme: string): void {
+    private emitThemeChange(previousTheme: string | null, currentTheme: string, themeObject?: Theme | null): void {
         const event: ThemeChangeEvent = {
             previousTheme,
             currentTheme,
+            themeObject,
             timestamp: Date.now(),
             source: 'user',
         };
@@ -495,6 +638,7 @@ export class ThemeManager {
         this.eventListeners.themeLoad = [];
         this.eventListeners.themeError = [];
         this.initialized = false;
+        this.activeTheme = null;
     }
 }
 

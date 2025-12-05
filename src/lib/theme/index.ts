@@ -16,6 +16,58 @@ export { default as useThemeDefault } from './useTheme';
 export { ThemeContext } from './ThemeContext';
 export { default as ThemeContextDefault } from './ThemeContext';
 
+// createTheme System
+export { createTheme } from './createTheme';
+export { default as createThemeDefault } from './createTheme';
+
+// CSS Variable Generation
+export {
+    generateCSSVariables,
+    injectCSS,
+    removeInjectedCSS,
+    generateSectionVariables,
+} from './generateCSSVariables';
+export type { GenerateCSSVariablesOptions } from './generateCSSVariables';
+
+// Theme Composition
+export {
+    deepMerge,
+    mergeTheme,
+    extendTheme,
+    createThemeVariants,
+    overrideTheme,
+    composeThemes,
+    createThemePreset,
+} from './composeTheme';
+
+// Theme Utilities
+export {
+    hexToRgb,
+    rgbToHex,
+    getLuminance,
+    getContrastRatio,
+    getContrastText,
+    lighten,
+    darken,
+    alpha,
+    emphasize,
+    createSpacing,
+    spacing,
+    getThemeValue,
+    isJSTheme,
+    breakpointUp,
+    breakpointDown,
+    breakpointBetween,
+    getTypography,
+    remToPx,
+    pxToRem,
+    getShadow,
+    createTransition,
+    getTransitionDuration,
+    getTransitionEasing,
+    getZIndex,
+} from './themeUtils';
+
 // Types
 export type {
     ThemeMetadata,
@@ -33,6 +85,20 @@ export type {
     ThemeProviderProps,
     ThemeContextValue,
     StorageAdapter,
+    // createTheme System Types
+    PaletteColor,
+    PaletteOptions,
+    TypographyOptions,
+    SpacingOptions,
+    SpacingFunction,
+    BreakpointValues,
+    BreakpointsOptions,
+    ShadowOptions,
+    TransitionOptions,
+    ZIndexOptions,
+    ThemeCustomProperties,
+    ThemeOptions,
+    Theme,
 } from './types';
 
 // Utilities
@@ -54,3 +120,4 @@ export {
     createLocalStorageAdapter,
     debounce,
 } from './utils';
+
