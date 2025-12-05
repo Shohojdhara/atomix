@@ -1,5 +1,5 @@
 @use 'sass:map';
-@use '../01-settings/settings.maps' as color-maps;
+@use '../01-settings/settings.design-tokens' as color-maps;
 @use '../01-settings/settings.config' as config;
 @use '../01-settings/settings.colors' as colors;
 @use '../02-tools/tools.to-rgb' as *;

@@ -3,7 +3,7 @@
 @use '../01-settings/settings.breakpoints' as breakpoints;
 @use '../02-tools/tools.rem' as *;
 @use '../02-tools/tools.media-queries' as media;
-@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.design-tokens' as maps;
 @use '../02-tools/tools.background' as *;
 
 .c-navbar {

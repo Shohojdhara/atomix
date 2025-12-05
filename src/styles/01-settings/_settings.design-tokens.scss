@@ -1,7 +1,12 @@
 @use 'sass:map';
 @use 'settings.colors' as *;
 @use 'settings.typography' as *;
+@use 'settings.spacing' as spacing;
+@use 'settings.animations' as animations;
+@use 'settings.z-layers' as z-layers;
+@use 'settings.breakpoints' as breakpoints;
 @use 'settings.config' as config;
+
 
 // Color maps
 
@@ -18,7 +23,7 @@ $theme-colors-text: (
   'info': $info-text,
   'light': $light-text,
   'dark': $dark-text,
-) !default;
+  ) !default;
 
 $theme-colors-text-dark: (
   'primary': $primary-text-dark,
@@ -33,7 +38,7 @@ $theme-colors-text-dark: (
   'info': $info-text-dark,
   'light': $light-text-dark,
   'dark': $dark-text-dark,
-) !default;
+  ) !default;
 
 $theme-colors-bg-subtle: (
   'primary': $primary-bg,
@@ -47,7 +52,7 @@ $theme-colors-bg-subtle: (
   'info': $info-bg,
   'light': $light-bg,
   'dark': $dark-bg,
-) !default;
+  ) !default;
 
 $theme-colors-bg-subtle-dark: (
   'primary': $primary-bg-dark,
@@ -61,7 +66,7 @@ $theme-colors-bg-subtle-dark: (
   'info': $info-bg-dark,
   'light': $light-bg-dark,
   'dark': $dark-bg-dark,
-) !default;
+  ) !default;
 
 $theme-colors-border-subtle: (
   'primary': $primary-border,
@@ -73,7 +78,7 @@ $theme-colors-border-subtle: (
   'brand': $brand-border,
   'light': $light-border,
   'dark': $dark-border,
-) !default;
+  ) !default;
 
 $theme-colors-border-subtle-dark: (
   'primary': $primary-border-dark,
@@ -85,7 +90,7 @@ $theme-colors-border-subtle-dark: (
   'brand': $brand-border-dark,
   'light': $light-border-dark,
   'dark': $dark-border-dark,
-) !default;
+  ) !default;
 
 // Main theme colors map
 $theme-colors: (
@@ -97,7 +102,7 @@ $theme-colors: (
   'error': $error,
   'light': $light,
   'dark': $dark,
-) !default;
+  ) !default;
 
 $theme-colors-dark: (
   'primary': $primary-dark,
@@ -108,7 +113,7 @@ $theme-colors-dark: (
   'success': $success-dark,
   'warning': $warning-dark,
   'info': $info-dark,
-) !default;
+  ) !default;
 
 $theme-colors-hover: (
   'primary': $primary-hover,
@@ -119,7 +124,7 @@ $theme-colors-hover: (
   'success': $success-hover,
   'warning': $warning-hover,
   'info': $info-hover,
-) !default;
+  ) !default;
 
 $theme-colors-hover-dark: (
   'primary': $primary-hover-dark,
@@ -130,7 +135,7 @@ $theme-colors-hover-dark: (
   'success': $success-hover-dark,
   'warning': $warning-hover-dark,
   'info': $info-hover-dark,
-) !default;
+  ) !default;
 
 $grays: (
   '1': $gray-1,
@@ -143,7 +148,7 @@ $grays: (
   '8': $gray-8,
   '9': $gray-9,
   '10': $gray-10,
-) !default;
+  ) !default;
 
 $primarys: (
   '1': $primary-1,
@@ -156,7 +161,7 @@ $primarys: (
   '8': $primary-8,
   '9': $primary-9,
   '10': $primary-10,
-) !default;
+  ) !default;
 
 // Typography Maps
 
@@ -172,7 +177,7 @@ $theme-font-size: (
   'h4': $h4-font-size,
   'h5': $h5-font-size,
   'h6': $h6-font-size,
-) !default;
+  ) !default;
 
 $theme-font-weight: (
   'light': $font-weight-light,
@@ -182,7 +187,7 @@ $theme-font-weight: (
   'bold': $font-weight-bold,
   'heavy': $font-weight-heavy,
   'black': $font-weight-black,
-) !default;
+  ) !default;
 
 // Utilities maps
 //
@@ -194,14 +199,11 @@ $theme-font-weight: (
 
 $utilities-colors: $theme-colors !default;
 
-$utilities-text-colors: map.merge(
-  $utilities-colors,
-  (
-    'black': $black,
-    'white': $white,
-    'body': $body-color,
-  )
-) !default;
+$utilities-text-colors: map.merge($utilities-colors,
+    ('black': $black,
+      'white': $white,
+      'body': $body-color,
+    )) !default;
 
 $utilities-text-emphasis-colors: (
   'primary-emphasis': var(--#{config.$prefix}primary-text-emphasis),
@@ -216,17 +218,14 @@ $utilities-text-emphasis-colors: (
   'error-emphasis': var(--#{config.$prefix}error-text-emphasis),
   'light-emphasis': var(--#{config.$prefix}light-text-emphasis),
   'dark-emphasis': var(--#{config.$prefix}dark-text-emphasis),
-) !default;
+  ) !default;
 
 // scss-docs-start utilities-bg-colors
-$utilities-bg-colors: map.merge(
-  $utilities-colors,
-  (
-    'black': $black,
-    'white': $white,
-    'body': var(--#{config.$prefix}body-bg),
-  )
-) !default;
+$utilities-bg-colors: map.merge($utilities-colors,
+    ('black': $black,
+      'white': $white,
+      'body': var(--#{config.$prefix}body-bg),
+    )) !default;
 
 $utilities-bg-subtle: (
   'primary-subtle': var(--#{config.$prefix}primary-bg-subtle),
@@ -240,16 +239,13 @@ $utilities-bg-subtle: (
   'error-subtle': var(--#{config.$prefix}error-bg-subtle),
   'light-subtle': var(--#{config.$prefix}light-bg-subtle),
   'dark-subtle': var(--#{config.$prefix}dark-bg-subtle),
-) !default;
+  ) !default;
 
 // scss-docs-start utilities-border-colors
-$utilities-border-colors: map.merge(
-  $utilities-colors,
-  (
-    'black': $black,
-    'white': $white,
-  )
-) !default;
+$utilities-border-colors: map.merge($utilities-colors,
+    ('black': $black,
+      'white': $white,
+    )) !default;
 
 $utilities-border-subtle: (
   'primary-subtle': var(--#{config.$prefix}primary-border-subtle),
@@ -261,16 +257,13 @@ $utilities-border-subtle: (
   'brand-subtle': var(--#{config.$prefix}brand-border-subtle),
   'light-subtle': var(--#{config.$prefix}light-border-subtle),
   'dark-subtle': var(--#{config.$prefix}dark-border-subtle),
-) !default;
+  ) !default;
 
 // scss-docs-start utilities-links-underline
-$utilities-links-underline: map.merge(
-  $utilities-colors,
-  (
-    'black': $black,
-    'white': $white,
-  )
-) !default;
+$utilities-links-underline: map.merge($utilities-colors,
+    ('black': $black,
+      'white': $white,
+    )) !default;
 
 $shadows: (
   'shadow': var(--#{config.$prefix}box-shadow),
@@ -279,7 +272,7 @@ $shadows: (
   'shadow-lg': var(--#{config.$prefix}box-shadow-lg),
   'shadow-xl': var(--#{config.$prefix}box-shadow-xl),
   'shadow-inset': var(--#{config.$prefix}box-shadow-inset),
-) !default;
+  ) !default;
 
 $shadows-dark: (
   'shadow': var(--#{config.$prefix}box-shadow-dark),
@@ -288,7 +281,7 @@ $shadows-dark: (
   'shadow-lg': var(--#{config.$prefix}box-shadow-lg-dark),
   'shadow-xl': var(--#{config.$prefix}box-shadow-xl-dark),
   'shadow-inset': var(--#{config.$prefix}box-shadow-inset-dark),
-) !default;
+  ) !default;
 
 $gradient-colors: (
   'primary': $gradient-primary,
@@ -311,3 +304,124 @@ $gradient-colors-dark: (
   'warning': $gradient-warning-dark,
   'error': $gradient-error-dark,
 );
+
+// Full Color Palette Maps
+// Red scale (1-10)
+$reds: (
+  '1': $red-1,
+  '2': $red-2,
+  '3': $red-3,
+  '4': $red-4,
+  '5': $red-5,
+  '6': $red-6,
+  '7': $red-7,
+  '8': $red-8,
+  '9': $red-9,
+  '10': $red-10,
+  ) !default;
+
+// Green scale (1-10)
+$greens: (
+  '1': $green-1,
+  '2': $green-2,
+  '3': $green-3,
+  '4': $green-4,
+  '5': $green-5,
+  '6': $green-6,
+  '7': $green-7,
+  '8': $green-8,
+  '9': $green-9,
+  '10': $green-10,
+  ) !default;
+
+// Blue scale (1-10)
+$blues: (
+  '1': $blue-1,
+  '2': $blue-2,
+  '3': $blue-3,
+  '4': $blue-4,
+  '5': $blue-5,
+  '6': $blue-6,
+  '7': $blue-7,
+  '8': $blue-8,
+  '9': $blue-9,
+  '10': $blue-10,
+  ) !default;
+
+// Yellow scale (1-10)
+$yellows: (
+  '1': $yellow-1,
+  '2': $yellow-2,
+  '3': $yellow-3,
+  '4': $yellow-4,
+  '5': $yellow-5,
+  '6': $yellow-6,
+  '7': $yellow-7,
+  '8': $yellow-8,
+  '9': $yellow-9,
+  '10': $yellow-10,
+  ) !default;
+
+// Line Height Maps
+$line-heights: (
+  'base': $line-height-base,
+  'sm': $line-height-sm,
+  'lg': $line-height-lg,
+  ) !default;
+
+// Extended Font Size Map
+$font-sizes-extended: (
+  'xs': $font-size-xs,
+  'sm': $font-size-sm,
+  'base': $font-size-base,
+  'md': $font-size-md,
+  'lg': $font-size-lg,
+  'xl': $font-size-xl,
+  '2xl': $font-size-2xl,
+  'h1': $h1-font-size,
+  'h2': $h2-font-size,
+  'h3': $h3-font-size,
+  'h4': $h4-font-size,
+  'h5': $h5-font-size,
+  'h6': $h6-font-size,
+  'display-1': $display-1,
+  ) !default;
+
+// Letter Spacing Map
+$letter-spacings: (
+  'h1': $h1-letter-spaceing,
+  'h2': $h2-letter-spaceing,
+  'h3': $h3-letter-spaceing,
+  'h4': $h4-letter-spaceing,
+  'h5': $h5-letter-spaceing,
+  'h6': $h6-letter-spaceing,
+  ) !default;
+
+// Transition & Animation Maps
+$transitions: (
+  'fast': animations.$transition-fast,
+  'base': animations.$transition-base,
+  'slow': animations.$transition-slow,
+  ) !default;
+
+$transition-durations: (
+  'fast': 0.15s,
+  'base': 0.3s,
+  'slow': 0.5s,
+  'slower': 0.7s,
+  ) !default;
+
+$easings: (
+  'base': animations.$easing,
+  'ease-in-out': cubic-bezier(0.4, 0, 0.2, 1),
+  'ease-out': cubic-bezier(0.0, 0, 0.2, 1),
+  'ease-in': cubic-bezier(0.4, 0, 1, 1),
+  'ease-linear': linear,
+  ) !default;
+
+// Focus Ring Tokens
+$focus-ring: (
+  'width': 3px,
+  'offset': 2px,
+  'opacity': 0.25,
+  ) !default;

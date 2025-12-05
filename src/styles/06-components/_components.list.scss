@@ -1,6 +1,6 @@
 @use '../01-settings/settings.config' as config;
 @use '../01-settings/settings.colors' as *;
-@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.design-tokens' as maps;
 @use '../01-settings/settings.list' as list;
 @use '../02-tools/tools.rem' as rem;
 @use '../02-tools/tools.background' as *;

@@ -4,12 +4,17 @@
 @use '../01-settings/settings.border-radius' as border-radius;
 @use '../01-settings/settings.border' as border;
 @use '../01-settings/settings.colors' as colors;
-@use '../01-settings/settings.maps' as color-maps;
+@use '../01-settings/settings.design-tokens' as color-maps;
 @use '../01-settings/settings.box-shadow' as box-shadow;
 @use '../01-settings/settings.typography' as typography;
+@use '../01-settings/settings.spacing' as spacing;
+@use '../01-settings/settings.animations' as animations;
+@use '../01-settings/settings.z-layers' as z-layers;
+@use '../01-settings/settings.breakpoints' as breakpoints;
 @use 'sass:meta';
 @use 'sass:map';
 
+// Root custom properties
 :root,
 [data-#{config.$prefix}color-mode='light'] {
   // Note: Custom variable values only support SassScript inside `#{}`.
@@ -67,14 +72,16 @@
 
   // Root and body
   // scss-docs-start root-body-variables
-  @if typography.$font-size-root != null {
+  @if typography.$font-size-root !=null {
     --#{config.$prefix}root-font-size: #{typography.$font-size-root};
   }
+
   --#{config.$prefix}body-font-family: #{meta.inspect(typography.$font-family-base)};
   --#{config.$prefix}body-font-size: #{typography.$font-size-base};
   --#{config.$prefix}body-font-weight: #{typography.$font-weight-base};
   --#{config.$prefix}body-line-height: #{typography.$line-height-base};
-  @if typography.$body-text-align != null {
+
+  @if typography.$body-text-align !=null {
     --#{config.$prefix}body-text-align: #{typography.$body-text-align};
   }
 
@@ -92,11 +99,11 @@
   --#{config.$prefix}link-hover-color: #{colors.$link-hover-color};
   --#{config.$prefix}link-hover-color-rgb: #{to-rgb(colors.$link-hover-color)};
 
-  @if colors.$link-hover-decoration != null {
+  @if colors.$link-hover-decoration !=null {
     --#{config.$prefix}link-hover-decoration: #{colors.$link-hover-decoration};
   }
 
-  --#{config.$prefix}code-color: #{colors.$code-color};
+  // Code tokens
   --#{config.$prefix}highlight-bg: #{colors.$mark-bg};
 
   // scss-docs-start root-border-var
@@ -110,9 +117,7 @@
   --#{config.$prefix}border-radius-lg: #{border-radius.$border-radius-lg};
   --#{config.$prefix}border-radius-xl: #{border-radius.$border-radius-xl};
   --#{config.$prefix}border-radius-xxl: #{border-radius.$border-radius-xxl};
-  --#{config.$prefix}border-radius-2xl: var(
-    --#{config.$prefix}border-radius-xxl
-  ); // Deprecated in v5.3.0 for consistency
+  --#{config.$prefix}border-radius-2xl: var(--#{config.$prefix}border-radius-xxl); // Deprecated in v5.3.0 for consistency
   --#{config.$prefix}border-radius-3xl: #{border-radius.$border-radius-3xl};
   --#{config.$prefix}border-radius-4xl: #{border-radius.$border-radius-4xl};
   --#{config.$prefix}border-radius-pill: #{border-radius.$border-radius-pill};
@@ -136,63 +141,134 @@
   --#{config.$prefix}form-invalid-color: #{colors.$form-invalid-color};
   --#{config.$prefix}form-invalid-border-color: #{colors.$form-invalid-border-color};
   // scss-docs-end root-form-validation-variables
+
+  // Spacing tokens
+  @each $size, $value in spacing.$spacing-sizes {
+    --#{config.$prefix}spacing-#{$size}: #{$value};
+  }
+
+  // Full color palette scales
+
+  @each $color, $value in color-maps.$reds {
+    --#{config.$prefix}red-#{$color}: #{$value};
+  }
+
+  @each $color, $value in color-maps.$greens {
+    --#{config.$prefix}green-#{$color}: #{$value};
+  }
+
+  @each $color, $value in color-maps.$blues {
+    --#{config.$prefix}blue-#{$color}: #{$value};
+  }
+
+  @each $color, $value in color-maps.$yellows {
+    --#{config.$prefix}yellow-#{$color}: #{$value};
+  }
+
+  // Typography - Font weights
+  @each $weight, $value in color-maps.$theme-font-weight {
+    --#{config.$prefix}font-weight-#{$weight}: #{$value};
+  }
+
+  // Typography - Line heights
+  @each $name, $value in color-maps.$line-heights {
+    --#{config.$prefix}line-height-#{$name}: #{$value};
+  }
+
+  // Typography - Extended font sizes
+  --#{config.$prefix}font-size-xl: #{typography.$font-size-xl};
+  --#{config.$prefix}font-size-2xl: #{typography.$font-size-2xl};
+  --#{config.$prefix}display-1: #{typography.$display-1};
+
+  // Typography - Letter spacing
+  @each $heading, $value in color-maps.$letter-spacings {
+    --#{config.$prefix}letter-spacing-#{$heading}: #{$value};
+  }
+
+  // Transitions & Animations
+  @each $name, $value in color-maps.$transition-durations {
+    --#{config.$prefix}transition-duration-#{$name}: #{$value};
+  }
+
+  @each $name, $value in color-maps.$easings {
+    --#{config.$prefix}easing-#{$name}: #{$value};
+  }
+
+  --#{config.$prefix}transition-fast: #{animations.$transition-fast};
+  --#{config.$prefix}transition-base: #{animations.$transition-base};
+  --#{config.$prefix}transition-slow: #{animations.$transition-slow};
+
+  // Z-index layers
+  @each $layer, $value in z-layers.$z-layers {
+    --#{config.$prefix}z-#{$layer}: #{$value};
+  }
+
+  // Breakpoints
+  @each $breakpoint, $value in breakpoints.$grid-breakpoints {
+    --#{config.$prefix}breakpoint-#{$breakpoint}: #{$value};
+  }
+
+  // Focus ring tokens
+  @each $property, $value in color-maps.$focus-ring {
+    --#{config.$prefix}focus-ring-#{$property}: #{$value};
+  }
+
 }
 
-@if color-mode.$enable-dark-mode {
-  @include color-mode(dark, true) {
-    color-scheme: dark;
+// Dark mode overrides
+@include color-mode(dark, true) {
+  color-scheme: dark;
 
-    --#{config.$prefix}body-color: #{colors.$body-color-dark};
-    --#{config.$prefix}body-bg: #{colors.$body-bg-dark};
+  --#{config.$prefix}body-color: #{colors.$body-color-dark};
+  --#{config.$prefix}body-bg: #{colors.$body-bg-dark};
 
-    @each $color, $value in color-maps.$theme-colors-dark {
-      --#{config.$prefix}#{$color}: #{$value};
-    }
-
-    @each $color, $value in color-maps.$theme-colors-text-dark {
-      --#{config.$prefix}#{$color}-text-emphasis: #{$value};
-    }
-
-    @each $color, $value in color-maps.$theme-colors-bg-subtle-dark {
-      --#{config.$prefix}#{$color}-bg-subtle: #{$value};
-    }
-
-    @each $color, $value in color-maps.$theme-colors-border-subtle-dark {
-      --#{config.$prefix}#{$color}-border-subtle: #{$value};
-    }
-
-    @each $color, $value in color-maps.$theme-colors-hover-dark {
-      --#{config.$prefix}#{$color}-hover: #{$value};
-    }
-
-    @each $color, $value in color-maps.$gradient-colors-dark {
-      --#{config.$prefix}#{$color}-gradient: #{$value};
-    }
-
-    --#{config.$prefix}gradient: #{map.get(color-maps.$gradient-colors, dark)};
-
-    --#{config.$prefix}box-shadow: #{box-shadow.$box-shadow-dark};
-    --#{config.$prefix}box-shadow-xs: #{box-shadow.$box-shadow-xs-dark};
-    --#{config.$prefix}box-shadow-sm: #{box-shadow.$box-shadow-sm-dark};
-    --#{config.$prefix}box-shadow-lg: #{box-shadow.$box-shadow-lg-dark};
-    --#{config.$prefix}box-shadow-xl: #{box-shadow.$box-shadow-xl-dark};
-
-    --#{config.$prefix}heading-color: #{colors.$headings-color-dark};
-
-    --#{config.$prefix}link-color: #{colors.$link-color-dark};
-    --#{config.$prefix}link-color-rgb: #{to-rgb(colors.$link-color-dark)};
-    --#{config.$prefix}link-hover-color: #{colors.$link-hover-color-dark};
-
-    --#{config.$prefix}code-color: #{colors.$code-color-dark};
-
-    --#{config.$prefix}border-color: #{border.$border-color-dark};
-    --#{config.$prefix}border-color-translucent: #{colors.$border-color-translucent-dark};
-
-    --#{config.$prefix}focus-border-color: #{colors.$focus-border-color-dark};
-
-    --#{config.$prefix}form-valid-color: #{colors.$form-valid-color-dark};
-    --#{config.$prefix}form-valid-border-color: #{colors.$form-valid-border-color-dark};
-    --#{config.$prefix}form-invalid-color: #{colors.$form-invalid-color-dark};
-    --#{config.$prefix}form-invalid-border-color: #{colors.$form-invalid-border-color-dark};
+  @each $color, $value in color-maps.$theme-colors-dark {
+    --#{config.$prefix}#{$color}: #{$value};
   }
+
+  @each $color, $value in color-maps.$theme-colors-text-dark {
+    --#{config.$prefix}#{$color}-text-emphasis: #{$value};
+  }
+
+  @each $color, $value in color-maps.$theme-colors-bg-subtle-dark {
+    --#{config.$prefix}#{$color}-bg-subtle: #{$value};
+  }
+
+  @each $color, $value in color-maps.$theme-colors-border-subtle-dark {
+    --#{config.$prefix}#{$color}-border-subtle: #{$value};
+  }
+
+  @each $color, $value in color-maps.$theme-colors-hover-dark {
+    --#{config.$prefix}#{$color}-hover: #{$value};
+  }
+
+  @each $color, $value in color-maps.$gradient-colors-dark {
+    --#{config.$prefix}#{$color}-gradient: #{$value};
+  }
+
+  --#{config.$prefix}gradient: #{map.get(color-maps.$gradient-colors, dark)};
+
+  --#{config.$prefix}box-shadow: #{box-shadow.$box-shadow-dark};
+  --#{config.$prefix}box-shadow-xs: #{box-shadow.$box-shadow-xs-dark};
+  --#{config.$prefix}box-shadow-sm: #{box-shadow.$box-shadow-sm-dark};
+  --#{config.$prefix}box-shadow-lg: #{box-shadow.$box-shadow-lg-dark};
+  --#{config.$prefix}box-shadow-xl: #{box-shadow.$box-shadow-xl-dark};
+
+  --#{config.$prefix}heading-color: #{colors.$headings-color-dark};
+
+  --#{config.$prefix}link-color: #{colors.$link-color-dark};
+  --#{config.$prefix}link-color-rgb: #{to-rgb(colors.$link-color-dark)};
+  --#{config.$prefix}link-hover-color: #{colors.$link-hover-color-dark};
+
+  --#{config.$prefix}code-color: #{colors.$code-color-dark};
+
+  --#{config.$prefix}border-color: #{border.$border-color-dark};
+  --#{config.$prefix}border-color-translucent: #{colors.$border-color-translucent-dark};
+
+  --#{config.$prefix}focus-border-color: #{colors.$focus-border-color-dark};
+
+  --#{config.$prefix}form-valid-color: #{colors.$form-valid-color-dark};
+  --#{config.$prefix}form-valid-border-color: #{colors.$form-valid-border-color-dark};
+  --#{config.$prefix}form-invalid-color: #{colors.$form-invalid-color-dark};
+  --#{config.$prefix}form-invalid-border-color: #{colors.$form-invalid-border-color-dark};
 }

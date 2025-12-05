@@ -1,7 +1,7 @@
 @use '../01-settings/settings.block' as settings;
 @use '../01-settings/settings.config' as *;
 @use '../02-tools/tools.breakpoints' as *;
-@use '../01-settings/settings.maps' as *;
+@use '../01-settings/settings.design-tokens' as *;
 
 // Block Objects Styles
 // Provides flexible section layout with customizable spacing and backgrounds

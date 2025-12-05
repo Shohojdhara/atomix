@@ -1,6 +1,6 @@
 @use '../01-settings/settings.config' as config;
 @use '../01-settings/settings.colors' as *;
-@use '../01-settings/settings.maps' as maps;
+@use '../01-settings/settings.design-tokens' as maps;
 @use '../01-settings/settings.messages' as messages;
 @use '../01-settings/settings.border-radius' as border;
 @use '../01-settings/settings.typography' as typo;
