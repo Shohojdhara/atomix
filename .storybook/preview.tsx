@@ -7,19 +7,39 @@ import { themes, getThemeClasses } from './themes.config';
 
 const preview: Preview = {
   parameters: {
+    // Layout configuration - default to centered, but allow fullscreen overrides
+    layout: 'centered',
+    
+    // Actions configuration for event handlers
     actions: { argTypesRegex: '^on[A-Z].*' },
+    
+    // Enhanced controls configuration
     controls: {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/,
       },
       expanded: true,
+      sort: 'requiredFirst',
+      hideNoControlsWarning: true,
     },
+    
+    // Enhanced docs configuration
     docs: {
       toc: false,
+      source: {
+        type: 'code',
+        state: 'open',
+      },
+      canvas: {
+        sourceState: 'shown',
+      },
     },
+    
+    // Background configuration
     backgrounds: {
       default: 'none',
+      disable: false,
       values: [
         {
           name: 'none',
@@ -37,8 +57,14 @@ const preview: Preview = {
           name: 'gray',
           value: '#f8f9fa',
         },
+        {
+          name: 'gradient',
+          value: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        },
       ],
     },
+    
+    // Enhanced viewport configuration
     viewport: {
       viewports: {
         mobile: {
@@ -48,11 +74,25 @@ const preview: Preview = {
             height: '640px',
           },
         },
+        mobileLandscape: {
+          name: 'Mobile Landscape',
+          styles: {
+            width: '640px',
+            height: '360px',
+          },
+        },
         tablet: {
           name: 'Tablet',
           styles: {
             width: '768px',
             height: '1024px',
+          },
+        },
+        tabletLandscape: {
+          name: 'Tablet Landscape',
+          styles: {
+            width: '1024px',
+            height: '768px',
           },
         },
         desktop: {
@@ -62,6 +102,13 @@ const preview: Preview = {
             height: '768px',
           },
         },
+        desktopLarge: {
+          name: 'Desktop Large',
+          styles: {
+            width: '1440px',
+            height: '900px',
+          },
+        },
         large: {
           name: 'Large Screen',
           styles: {
@@ -69,7 +116,19 @@ const preview: Preview = {
             height: '1080px',
           },
         },
+        ultrawide: {
+          name: 'Ultrawide',
+          styles: {
+            width: '2560px',
+            height: '1080px',
+          },
+        },
       },
+    },
+    
+    // Performance and rendering options
+    chromatic: {
+      viewports: [360, 768, 1366, 1920],
     },
   },
 
@@ -123,12 +182,41 @@ const preview: Preview = {
           themeStyle.remove();
         }
 
-        // Create dynamic style for theme variables
+        // Create dynamic style for theme variables and fullscreen support
         const style = document.createElement('style');
         style.id = 'storybook-theme-vars';
         style.textContent = `
           :root {
             --storybook-color-mode: ${colorMode};
+          }
+          
+          /* Enhanced fullscreen story support */
+          .sb-show-main.sb-main-padded[data-layout="fullscreen"],
+          .sb-show-main.sb-main-padded[data-layout="fullscreen"] .sb-main-padded {
+            padding: 0 !important;
+            margin: 0 !important;
+          }
+          
+          /* Ensure fullscreen stories take full viewport */
+          [data-layout="fullscreen"] .os-host,
+          [data-layout="fullscreen"] .os-host-overflow,
+          [data-layout="fullscreen"] .os-host-resize-disabled {
+            height: 100vh !important;
+            width: 100vw !important;
+          }
+          
+          /* Improve canvas rendering for fullscreen */
+          [data-layout="fullscreen"] .docs-story,
+          [data-layout="fullscreen"] .sb-story {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+          }
+          
+          /* Better background handling for glass components */
+          .c-atomix-glass-background {
+            position: relative;
+            overflow: hidden;
           }
         `;
         document.head.appendChild(style);

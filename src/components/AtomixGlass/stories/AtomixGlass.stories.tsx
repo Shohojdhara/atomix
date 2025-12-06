@@ -493,19 +493,94 @@ const backgrounds = {
 export const Default: Story = {
   args: {
     children: (
-      <div style={{ padding: '30px', textAlign: 'center', maxWidth: '400px' }}>
-        <h2 style={{ margin: '0 0 16px 0', fontSize: '24px', fontWeight: 600 }}>AtomixGlass</h2>
-        <p style={{ margin: '0 0 20px 0', fontSize: '16px', lineHeight: 1.6 }}>
+      <div style={{ padding: '40px', textAlign: 'center', maxWidth: '500px' }}>
+        <div
+          style={{
+            width: '80px',
+            height: '80px',
+            margin: '0 auto 24px',
+            borderRadius: '20px',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '40px',
+            boxShadow: '0 12px 32px rgba(102, 126, 234, 0.4)',
+          }}
+        >
+          ✨
+        </div>
+        <h2
+          style={{
+            margin: '0 0 16px 0',
+            fontSize: '32px',
+            fontWeight: 700,
+            background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            letterSpacing: '-0.5px',
+          }}
+        >
+          AtomixGlass
+        </h2>
+        <p
+          style={{
+            margin: '0 0 28px 0',
+            fontSize: '17px',
+            lineHeight: 1.7,
+            color: 'rgba(255, 255, 255, 0.9)',
+          }}
+        >
           A premium glass morphism component with realistic light refraction, chromatic aberration,
-          and interactive effects.
+          and interactive effects. Perfect for modern, elegant UI designs.
         </p>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '12px',
+            flexWrap: 'wrap',
+            marginBottom: '24px',
+          }}
+        >
           <Button variant="primary" glass>
-            Explore
+            Get Started
           </Button>
           <Button variant="outline-primary" glass>
-            Learn More
+            View Docs
           </Button>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '16px',
+            flexWrap: 'wrap',
+            marginTop: '24px',
+            paddingTop: '24px',
+            borderTop: '1px solid rgba(255,255,255,0.1)',
+          }}
+        >
+          {[
+            { label: 'Performance', value: '⚡ Optimized' },
+            { label: 'Quality', value: '💎 Premium' },
+            { label: 'Compatibility', value: '🌐 Universal' },
+          ].map((item, idx) => (
+            <div
+              key={idx}
+              style={{
+                textAlign: 'center',
+                padding: '8px 16px',
+                borderRadius: '12px',
+                background: 'rgba(255,255,255,0.08)',
+                backdropFilter: 'blur(8px)',
+              }}
+            >
+              <div style={{ fontSize: '12px', opacity: 0.7, marginBottom: '4px' }}>{item.label}</div>
+              <div style={{ fontSize: '14px', fontWeight: 600 }}>{item.value}</div>
+            </div>
+          ))}
         </div>
       </div>
     ),
@@ -521,7 +596,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          'The default configuration of AtomixGlass with optimal parameters for a realistic glass effect. This component mimics the Apple-style liquid glass UI with chromatic aberration and displacement effects.',
+          'The default configuration of AtomixGlass with optimal parameters for a realistic glass effect. This component mimics the Apple-style liquid glass UI with chromatic aberration and displacement effects. Perfect for cards, modals, and premium UI elements.',
       },
     },
   },
@@ -617,139 +692,256 @@ export const Modes: Story = {
         <div>
           <div
             style={{
-              padding: '20px 0',
+              padding: '40px 20px',
               textAlign: 'center',
-              marginBottom: '20px',
+              marginBottom: '60px',
             }}
           >
-            <h2
+            <AtomixGlass
+              mode="standard"
+              displacementScale={60}
+              blurAmount={1}
+              saturation={130}
+              cornerRadius={24}
+              elasticity={0.1}
+              style={{ marginBottom: '24px', display: 'inline-block' }}
+            >
+              <div
+                style={{
+                  padding: '12px 24px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  color: 'rgba(255, 255, 255, 0.9)',
+                }}
+              >
+                <span>🎨</span>
+                <span>Four Rendering Modes</span>
+              </div>
+            </AtomixGlass>
+            <h1
               style={{
-                margin: '0 0 10px 0',
-                fontSize: '32px',
-                fontWeight: 500,
-                color: '#ffffff',
-                textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                margin: '0 0 20px 0',
+                fontSize: '56px',
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                letterSpacing: '-1.5px',
+                textShadow: '0 4px 12px rgba(0,0,0,0.1)',
               }}
             >
               AtomixGlass Modes
-            </h2>
+            </h1>
             <p
               style={{
-                fontSize: '16px',
-                maxWidth: '500px',
+                fontSize: '18px',
+                maxWidth: '680px',
                 margin: '0 auto',
-                color: '#ffffff',
-                textShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                color: 'rgba(255, 255, 255, 0.9)',
+                lineHeight: 1.7,
+                textShadow: '0 2px 4px rgba(0,0,0,0.2)',
               }}
             >
-              Hover over each card to see how different modes affect the appearance and behavior of
-              the glass effect.
+              Explore four distinct rendering modes, each optimized for different visual styles and
+              performance requirements. Click or hover over each card to see the mode in action.
             </p>
           </div>
 
           <div
             style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-              alignContent: 'center',
-              gap: '24px',
-              width: '70vw',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '28px',
+              width: '100%',
+              maxWidth: '1400px',
             }}
           >
             {modes.map(mode => {
               const settings = modeSettings[mode];
               const isActive = activeMode === mode;
+              const modeIcons = {
+                standard: '✨',
+                polar: '🌀',
+                prominent: '💫',
+                shader: '🔮',
+              };
 
               return (
-                <AtomixGlass
-                  key={mode}
-                  mode={mode}
-                  displacementScale={settings.displacementScale}
-                  blurAmount={settings.blurAmount}
-                  saturation={settings.saturation}
-                  shaderVariant={settings.shaderVariant as any}
-                  elasticity={0.2}
-                  cornerRadius={40}
-                  onClick={() => handleMouseEnter(mode)}
-                  overLight={false}
+                <div
+                  onMouseEnter={() => handleMouseEnter(mode)}
+                  onMouseLeave={handleMouseLeave}
+                  style={{ cursor: 'pointer' }}
                 >
-                  <div
+                  <AtomixGlass
+                    key={mode}
+                    mode={mode}
+                    displacementScale={isActive ? settings.displacementScale * 1.2 : settings.displacementScale}
+                    blurAmount={settings.blurAmount}
+                    saturation={isActive ? settings.saturation + 20 : settings.saturation}
+                    shaderVariant={settings.shaderVariant as any}
+                    elasticity={0.2}
+                    cornerRadius={32}
+                    onClick={() => handleMouseEnter(mode)}
+                    overLight={false}
                     style={{
-                      padding: '20px 40px',
-                      textAlign: 'center',
-                      maxWidth: '350px',
-                      minHeight: '200px',
-                      width: '100%',
-                      textShadow: '1px 2px 6px rgba(0,0,0,0.7)',
+                      transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                      transform: isActive ? 'scale(1.05) translateY(-8px)' : 'scale(1)',
+                      boxShadow: isActive
+                        ? '0 20px 60px rgba(0,0,0,0.4)'
+                        : '0 8px 24px rgba(0,0,0,0.2)',
                     }}
                   >
-                    <h3
-                      style={{
-                        margin: '0 0 12px 0',
-                        fontSize: '20px',
-                        fontWeight: 500,
-                        color: settings.color,
-                      }}
-                    >
-                      {mode.charAt(0).toUpperCase() + mode.slice(1)} Mode
-                    </h3>
-                    <p
-                      style={{
-                        margin: '0 0 16px 0',
-                        fontSize: '14px',
-                        lineHeight: 1.5,
-                        color: settings.color,
-                      }}
-                    >
-                      {settings.description}
-                    </p>
+                  <div
+                    style={{
+                      padding: '32px 28px',
+                      textAlign: 'center',
+                      minHeight: '320px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <div>
+                      <div
+                        style={{
+                          width: '72px',
+                          height: '72px',
+                          margin: '0 auto 20px',
+                          borderRadius: '20px',
+                          background: `linear-gradient(135deg, ${
+                            mode === 'standard'
+                              ? '#667eea, #764ba2'
+                              : mode === 'polar'
+                                ? '#f093fb, #f5576c'
+                                : mode === 'prominent'
+                                  ? '#4facfe, #00f2fe'
+                                  : '#fa709a, #fee140'
+                          })`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '36px',
+                          boxShadow: `0 12px 32px ${
+                            mode === 'standard'
+                              ? 'rgba(102, 126, 234, 0.4)'
+                              : mode === 'polar'
+                                ? 'rgba(245, 87, 108, 0.4)'
+                                : mode === 'prominent'
+                                  ? 'rgba(79, 172, 254, 0.4)'
+                                  : 'rgba(250, 112, 154, 0.4)'
+                          }`,
+                          position: 'relative',
+                          transition: 'transform 0.3s ease',
+                          transform: isActive ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
+                        }}
+                      >
+                        <div
+                          style={{
+                            position: 'absolute',
+                            inset: '-4px',
+                            borderRadius: '24px',
+                            background: `linear-gradient(135deg, ${
+                              mode === 'standard'
+                                ? '#667eea, #764ba2'
+                                : mode === 'polar'
+                                  ? '#f093fb, #f5576c'
+                                  : mode === 'prominent'
+                                    ? '#4facfe, #00f2fe'
+                                    : '#fa709a, #fee140'
+                            })`,
+                            opacity: 0.4,
+                            filter: 'blur(16px)',
+                          }}
+                        />
+                        <span style={{ position: 'relative', zIndex: 1 }}>
+                          {modeIcons[mode as keyof typeof modeIcons]}
+                        </span>
+                      </div>
+                      <h3
+                        style={{
+                          margin: '0 0 12px 0',
+                          fontSize: '24px',
+                          fontWeight: 700,
+                          color: '#fff',
+                          letterSpacing: '-0.5px',
+                        }}
+                      >
+                        {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                      </h3>
+                      <p
+                        style={{
+                          margin: '0 0 20px 0',
+                          fontSize: '15px',
+                          lineHeight: 1.6,
+                          color: 'rgba(255, 255, 255, 0.85)',
+                        }}
+                      >
+                        {settings.description}
+                      </p>
+                    </div>
                     <div
                       style={{
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
                         gap: '8px',
-                        marginTop: '12px',
                         flexWrap: 'wrap',
+                        paddingTop: '20px',
+                        borderTop: '1px solid rgba(255,255,255,0.1)',
                       }}
                     >
                       <span
                         style={{
-                          fontSize: '12px',
-                          padding: '4px 8px',
-                          borderRadius: '4px',
-                          backdropFilter: 'blur(2px)',
-                          background: 'rgba(255,255,255,0.2)',
+                          fontSize: '11px',
+                          padding: '6px 12px',
+                          borderRadius: '8px',
+                          backdropFilter: 'blur(8px)',
+                          background: 'rgba(255,255,255,0.15)',
+                          border: '1px solid rgba(255,255,255,0.2)',
+                          fontFamily: 'monospace',
+                          fontWeight: 600,
                         }}
                       >
-                        Displacement: {settings.displacementScale}
+                        Disp: {settings.displacementScale}
                       </span>
                       <span
                         style={{
-                          fontSize: '12px',
-                          padding: '4px 8px',
-                          borderRadius: '4px',
-                          background: 'rgba(255,255,255,0.2)',
-                          backdropFilter: 'blur(2px)',
+                          fontSize: '11px',
+                          padding: '6px 12px',
+                          borderRadius: '8px',
+                          background: 'rgba(255,255,255,0.15)',
+                          backdropFilter: 'blur(8px)',
+                          border: '1px solid rgba(255,255,255,0.2)',
+                          fontFamily: 'monospace',
+                          fontWeight: 600,
                         }}
                       >
                         Blur: {settings.blurAmount}
                       </span>
                       <span
                         style={{
-                          fontSize: '12px',
-                          padding: '4px 8px',
-                          borderRadius: '4px',
-                          backdropFilter: 'blur(2px)',
-                          background: 'rgba(255,255,255,0.2)',
+                          fontSize: '11px',
+                          padding: '6px 12px',
+                          borderRadius: '8px',
+                          backdropFilter: 'blur(8px)',
+                          background: 'rgba(255,255,255,0.15)',
+                          border: '1px solid rgba(255,255,255,0.2)',
+                          fontFamily: 'monospace',
+                          fontWeight: 600,
                         }}
                       >
-                        Aberration: {settings.aberrationIntensity}
+                        Aber: {settings.aberrationIntensity}
                       </span>
                     </div>
                   </div>
                 </AtomixGlass>
+                </div>
               );
             })}
           </div>
@@ -784,27 +976,58 @@ export const PerformanceOptimization: Story = {
       <div style={{ margin: '0 auto', width: '100%' }}>
         {/* Header Section */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <AtomixGlass
+            mode="standard"
+            displacementScale={60}
+            blurAmount={1}
+            saturation={130}
+            cornerRadius={24}
+            elasticity={0.1}
+            style={{ marginBottom: '24px', display: 'inline-block' }}
+          >
+            <div
+              style={{
+                padding: '12px 24px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
+                color: 'rgba(255, 255, 255, 0.9)',
+              }}
+            >
+              <span>⚡</span>
+              <span>Performance Guide</span>
+            </div>
+          </AtomixGlass>
           <h1
             style={{
               color: '#fff',
-              fontSize: '3rem',
-              fontWeight: '700',
-              marginBottom: '16px',
+              fontSize: '3.5rem',
+              fontWeight: '800',
+              marginBottom: '20px',
               letterSpacing: '-0.02em',
+              background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
             }}
           >
             Performance Optimization
           </h1>
           <p
             style={{
-              color: 'rgba(255,255,255,0.85)',
+              color: 'rgba(255,255,255,0.9)',
               fontSize: '1.25rem',
-              maxWidth: '700px',
+              maxWidth: '720px',
               margin: '0 auto',
-              lineHeight: '1.6',
+              lineHeight: '1.7',
             }}
           >
-            Fine-tune AtomixGlass for optimal performance across different device capabilities
+            Fine-tune AtomixGlass for optimal performance across different device capabilities and
+            use cases
           </p>
         </div>
 
@@ -820,17 +1043,37 @@ export const PerformanceOptimization: Story = {
           style={{ marginBottom: '48px' }}
         >
           <div style={{ padding: '32px' }}>
-            <h2
-              style={{
-                color: '#fff',
-                fontSize: '1.75rem',
-                fontWeight: '600',
-                marginBottom: '24px',
-                marginTop: 0,
-              }}
-            >
-              Best Practices & Guidelines
-            </h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '14px',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '24px',
+                  boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
+                }}
+              >
+                💡
+              </div>
+              <h2
+                style={{
+                  color: '#fff',
+                  fontSize: '1.75rem',
+                  fontWeight: '700',
+                  margin: 0,
+                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                Best Practices & Guidelines
+              </h2>
+            </div>
             <div
               style={{
                 display: 'grid',

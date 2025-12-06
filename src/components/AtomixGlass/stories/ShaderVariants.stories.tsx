@@ -71,7 +71,7 @@ export const LiquidGlass: Story = {
         <h2
           style={{
             margin: '0 0 16px 0',
-            fontSize: '36px',
+            fontSize: '38px',
             fontWeight: 700,
             background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
             WebkitBackgroundClip: 'text',
@@ -84,14 +84,14 @@ export const LiquidGlass: Story = {
         </h2>
         <p
           style={{
-            margin: '0 0 28px 0',
-            fontSize: '17px',
-            lineHeight: 1.7,
-            color: 'rgba(255, 255, 255, 0.85)',
+            margin: '0 0 32px 0',
+            fontSize: '18px',
+            lineHeight: 1.8,
+            color: 'rgba(255, 255, 255, 0.9)',
           }}
         >
           Experience fluid, time-based animations with multi-layered organic distortion and
-          chromatic aberration effects that create living glass.
+          chromatic aberration effects that create living, breathing glass.
         </p>
         <div
           style={{
@@ -192,7 +192,7 @@ export const AppleFluid: Story = {
         <h2
           style={{
             margin: '0 0 16px 0',
-            fontSize: '36px',
+            fontSize: '38px',
             fontWeight: 700,
             background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
             WebkitBackgroundClip: 'text',
@@ -205,14 +205,14 @@ export const AppleFluid: Story = {
         </h2>
         <p
           style={{
-            margin: '0 0 28px 0',
-            fontSize: '17px',
-            lineHeight: 1.7,
-            color: 'rgba(255, 255, 255, 0.85)',
+            margin: '0 0 32px 0',
+            fontSize: '18px',
+            lineHeight: 1.8,
+            color: 'rgba(255, 255, 255, 0.9)',
           }}
         >
           Apple-inspired fluid dynamics with vortex effects and high-quality 5-octave noise. Mouse
-          interactions create mesmerizing flow patterns.
+          interactions create mesmerizing, organic flow patterns.
         </p>
         <div
           style={{
@@ -313,7 +313,7 @@ export const PremiumGlass: Story = {
         <h2
           style={{
             margin: '0 0 16px 0',
-            fontSize: '36px',
+            fontSize: '38px',
             fontWeight: 700,
             background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
             WebkitBackgroundClip: 'text',
@@ -326,14 +326,14 @@ export const PremiumGlass: Story = {
         </h2>
         <p
           style={{
-            margin: '0 0 28px 0',
-            fontSize: '17px',
-            lineHeight: 1.7,
-            color: 'rgba(255, 255, 255, 0.85)',
+            margin: '0 0 32px 0',
+            fontSize: '18px',
+            lineHeight: 1.8,
+            color: 'rgba(255, 255, 255, 0.9)',
           }}
         >
           Advanced refraction with multi-layer depth effects and edge-aware rendering. The optimal
-          balance of quality and performance.
+          balance of quality and performance for production applications.
         </p>
         <div
           style={{

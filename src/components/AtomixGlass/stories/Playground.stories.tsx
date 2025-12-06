@@ -520,12 +520,50 @@ export const Playground: Story = {
                   }}
                 >
                   <div className="u-mb-8">
-                    <h2 className="u-mb-2 u-text-white u-fw-bold" style={{ fontSize: '2rem' }}>
-                      Advanced Playground
-                    </h2>
-                    <p className="u-text-white u-opacity-70 u-fs-sm">
-                      Fine-tune every parameter with live preview
-                    </p>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        marginBottom: '16px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '48px',
+                          height: '48px',
+                          borderRadius: '14px',
+                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '24px',
+                          boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
+                        }}
+                      >
+                        🎮
+                      </div>
+                      <div>
+                        <h2
+                          className="u-m-0 u-text-white u-fw-bold"
+                          style={{
+                            fontSize: '1.75rem',
+                            background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                          }}
+                        >
+                          Advanced Playground
+                        </h2>
+                        <p
+                          className="u-m-0 u-text-white u-opacity-80"
+                          style={{ fontSize: '13px', marginTop: '4px' }}
+                        >
+                          Fine-tune every parameter with live preview
+                        </p>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Performance Indicator */}
@@ -574,8 +612,11 @@ export const Playground: Story = {
 
                   {/* Quick Presets */}
                   <div className="u-mb-6">
-                    <label className="u-d-block u-mb-3 u-text-white u-fw-semibold">
-                      Quick Presets
+                    <label
+                      className="u-d-block u-mb-3 u-text-white u-fw-semibold"
+                      style={{ fontSize: '14px', letterSpacing: '0.5px' }}
+                    >
+                      ⚡ Quick Presets
                     </label>
                     <div
                       style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}
@@ -585,28 +626,48 @@ export const Playground: Story = {
                           key={key}
                           onClick={() => applyPreset(key as keyof typeof presets)}
                           style={{
-                            padding: '12px',
-                            background: 'rgba(255,255,255,0.1)',
-                            border: '1px solid rgba(255,255,255,0.2)',
-                            borderRadius: '12px',
+                            padding: '16px 12px',
+                            background: 'rgba(255,255,255,0.08)',
+                            border: '2px solid rgba(255,255,255,0.15)',
+                            borderRadius: '16px',
                             color: 'white',
                             cursor: 'pointer',
-                            transition: 'all 0.2s',
+                            transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
                             textAlign: 'center',
+                            position: 'relative',
+                            overflow: 'hidden',
                           }}
                           onMouseEnter={e => {
                             e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
                             e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+                            e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                            e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.2)';
                           }}
                           onMouseLeave={e => {
-                            e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-                            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+                            e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+                            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
+                            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                            e.currentTarget.style.boxShadow = 'none';
                           }}
                         >
-                          <div style={{ fontSize: '1.5rem', marginBottom: '4px' }}>
+                          <div
+                            style={{
+                              fontSize: '2rem',
+                              marginBottom: '8px',
+                              filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
+                            }}
+                          >
                             {preset.icon}
                           </div>
-                          <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{preset.name}</div>
+                          <div
+                            style={{
+                              fontSize: '0.875rem',
+                              fontWeight: 700,
+                              letterSpacing: '0.3px',
+                            }}
+                          >
+                            {preset.name}
+                          </div>
                         </button>
                       ))}
                     </div>
@@ -838,25 +899,62 @@ export const Playground: Story = {
                       cornerRadius={16}
                       saturation={120}
                     >
-                      <div style={{ padding: '2rem' }}>
-                        <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-4">
-                          <h3 className="u-text-white u-fw-semibold" style={{ fontSize: '1.5rem' }}>
-                            Generated Code
-                          </h3>
-                          <Button variant="primary" size="sm" onClick={copyCode}>
-                            {copiedCode ? '✓ Copied' : 'Copy'}
+                      <div style={{ padding: '2.5rem' }}>
+                        <div
+                          className="u-d-flex u-justify-content-between u-align-items-center u-mb-4"
+                          style={{ marginBottom: '24px' }}
+                        >
+                          <div>
+                            <h3
+                              className="u-m-0 u-fw-bold"
+                              style={{
+                                fontSize: '1.75rem',
+                                background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                backgroundClip: 'text',
+                                marginBottom: '8px',
+                              }}
+                            >
+                              💻 Generated Code
+                            </h3>
+                            <p
+                              className="u-m-0"
+                              style={{
+                                fontSize: '13px',
+                                color: 'rgba(255, 255, 255, 0.7)',
+                              }}
+                            >
+                              Copy this code to use in your project
+                            </p>
+                          </div>
+                          <Button
+                            variant="primary"
+                            size="md"
+                            onClick={copyCode}
+                            style={{
+                              minWidth: '120px',
+                              boxShadow: copiedCode
+                                ? '0 4px 16px rgba(122, 255, 215, 0.4)'
+                                : 'none',
+                            }}
+                          >
+                            {copiedCode ? '✓ Copied!' : '📋 Copy Code'}
                           </Button>
                         </div>
                         <pre
                           style={{
-                            background: 'rgba(0,0,0,0.5)',
-                            padding: '1.5rem',
-                            borderRadius: '8px',
+                            background: 'rgba(0,0,0,0.6)',
+                            padding: '1.75rem',
+                            borderRadius: '12px',
                             overflow: 'auto',
                             maxHeight: '500px',
                             color: '#7AFFD7',
                             fontSize: '0.875rem',
-                            lineHeight: 1.6,
+                            lineHeight: 1.7,
+                            border: '1px solid rgba(122, 255, 215, 0.2)',
+                            fontFamily: 'Monaco, "Courier New", monospace',
+                            boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.3)',
                           }}
                         >
                           <code>{generateCode()}</code>
@@ -882,28 +980,65 @@ export const Playground: Story = {
                     enableBorderEffect={settings.enableBorderEffect}
                     style={{ width: '100%' }}
                   >
-                    <div style={{ padding: '2rem', textAlign: 'center' }}>
+                    <div style={{ padding: '2.5rem', textAlign: 'center' }}>
                       <div
                         style={{
                           display: 'inline-flex',
                           alignItems: 'center',
-                          padding: '8px 20px',
-                          borderRadius: '24px',
-                          background: 'rgba(122, 255, 215, 0.2)',
+                          gap: '8px',
+                          padding: '10px 24px',
+                          borderRadius: '28px',
+                          background: 'linear-gradient(135deg, rgba(122, 255, 215, 0.25) 0%, rgba(102, 126, 234, 0.25) 100%)',
+                          border: '1px solid rgba(122, 255, 215, 0.3)',
                           color: '#7AFFD7',
                           fontSize: '0.875rem',
-                          fontWeight: 600,
-                          marginBottom: '1.5rem',
+                          fontWeight: 700,
+                          letterSpacing: '0.5px',
+                          marginBottom: '2rem',
+                          boxShadow: '0 4px 16px rgba(122, 255, 215, 0.2)',
                         }}
                       >
-                        ✨ LIVE PREVIEW
+                        <span style={{ fontSize: '18px' }}>✨</span>
+                        <span>LIVE PREVIEW</span>
                       </div>
-                      <h2 className="u-mb-4 u-text-white u-fw-bold" style={{ fontSize: '2.5rem' }}>
+                      <div
+                        style={{
+                          width: '96px',
+                          height: '96px',
+                          margin: '0 auto 24px',
+                          borderRadius: '24px',
+                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '48px',
+                          boxShadow: '0 12px 32px rgba(102, 126, 234, 0.4)',
+                        }}
+                      >
+                        ✨
+                      </div>
+                      <h2
+                        className="u-mb-4 u-fw-bold"
+                        style={{
+                          fontSize: '2.75rem',
+                          background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          backgroundClip: 'text',
+                          letterSpacing: '-1px',
+                        }}
+                      >
                         AtomixGlass
                       </h2>
                       <p
-                        className="u-mb-6 u-opacity-90"
-                        style={{ fontSize: '1.125rem', lineHeight: 1.6 }}
+                        className="u-mb-6"
+                        style={{
+                          fontSize: '1.125rem',
+                          lineHeight: 1.7,
+                          color: 'rgba(255, 255, 255, 0.9)',
+                          maxWidth: '600px',
+                          margin: '0 auto 2rem',
+                        }}
                       >
                         Adjust the controls on the left to see real-time changes. Each parameter
                         affects the visual appearance and performance characteristics of the glass

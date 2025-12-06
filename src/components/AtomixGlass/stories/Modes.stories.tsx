@@ -150,20 +150,38 @@ export const ModeGallery: Story = {
               displacementScale={80}
               blurAmount={1}
               saturation={130}
-              cornerRadius={20}
+              cornerRadius={24}
               elasticity={0.12}
-              className="u-mb-4 d-inline-block"
+              style={{ marginBottom: '24px', display: 'inline-block' }}
             >
-              Four Rendering Modes
+              <div
+                style={{
+                  padding: '12px 24px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  color: 'rgba(255, 255, 255, 0.9)',
+                }}
+              >
+                <span>🎨</span>
+                <span>Four Rendering Modes</span>
+              </div>
             </AtomixGlass>
             <h1
               style={{
-                margin: '0 0 16px 0',
-                fontSize: '48px',
+                margin: '0 0 20px 0',
+                fontSize: '56px',
                 fontWeight: 700,
-                color: '#fff',
-                letterSpacing: '-1px',
-                textShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                letterSpacing: '-1.5px',
+                textShadow: '0 4px 12px rgba(0,0,0,0.1)',
               }}
             >
               AtomixGlass Modes
@@ -171,15 +189,15 @@ export const ModeGallery: Story = {
             <p
               style={{
                 fontSize: '18px',
-                color: 'rgba(255, 255, 255, 0.85)',
-                maxWidth: '680px',
+                color: 'rgba(255, 255, 255, 0.9)',
+                maxWidth: '720px',
                 margin: '0 auto',
-                lineHeight: 1.6,
+                lineHeight: 1.7,
                 textShadow: '0 2px 4px rgba(0,0,0,0.2)',
               }}
             >
               Choose from four distinct rendering modes, each optimized for different visual styles
-              and performance requirements.
+              and performance requirements. Click any card to explore the mode in detail.
             </p>
           </div>
 

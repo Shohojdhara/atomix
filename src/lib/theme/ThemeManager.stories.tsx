@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { ThemeMetadata, ThemeProvider, useTheme } from './index';
 import { themesConfig } from '../../themes/themes.config';
-import { Button } from '../../components/button/Button';
-import { Card } from '../../components/card/Card';
+import { Button } from '../../components/Button/Button';
+import { Card } from '../../components/Card/Card';
 import { ColorModeToggle } from '../../components/ColorModeToggle/ColorModeToggle';
 
 /**

@@ -175,9 +175,7 @@ export const BackgroundWrapper = ({
         height: height,
         width: width,
         backgroundColor: !bgImage ? '#1a1a2e' : undefined, // Fallback color if no image
-        background: bgImage
-          ? `url(${bgImage}) ${finalOverlayOpacity && ',' + finalOverlayColor}`
-          : undefined,
+        background: bgImage ? `url(${bgImage})` : undefined,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
@@ -189,8 +187,32 @@ export const BackgroundWrapper = ({
         ...style,
       }}
     >
-     
-      {children}
+      {/* Overlay */}
+      {(finalOverlayOpacity > 0 || overlay) && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: finalOverlayColor,
+            opacity: finalOverlayOpacity,
+            borderRadius: borderRadius,
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 };

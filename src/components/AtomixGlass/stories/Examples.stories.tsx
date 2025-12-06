@@ -68,15 +68,58 @@ export const HeroExample: Story = {
             style={{ maxWidth: '900px' }}
             onClick={() => {}}
           >
-            <div className="u-p-6 u-text-white">
-              <h1 className="u-mt-0 u-fs-1 u-fw-bold">Modern Glass UI</h1>
-              <p className="u-fs-4 u-mb-4">
+            <div className="u-p-6 u-text-white" style={{ padding: '48px 40px', textAlign: 'center' }}>
+              <div
+                style={{
+                  width: '96px',
+                  height: '96px',
+                  margin: '0 auto 32px',
+                  borderRadius: '24px',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '48px',
+                  boxShadow: '0 16px 40px rgba(102, 126, 234, 0.5)',
+                }}
+              >
+                ✨
+              </div>
+              <h1
+                className="u-mt-0 u-fs-1 u-fw-bold"
+                style={{
+                  fontSize: '48px',
+                  marginBottom: '20px',
+                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  letterSpacing: '-1px',
+                }}
+              >
+                Modern Glass UI
+              </h1>
+              <p
+                className="u-fs-4 u-mb-4"
+                style={{
+                  fontSize: '18px',
+                  lineHeight: 1.7,
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  maxWidth: '600px',
+                  margin: '0 auto 32px',
+                }}
+              >
                 Create stunning interfaces with the AtomixGlass component. Perfect for modern, sleek
                 designs that stand out.
               </p>
-              <div className="u-d-flex u-gap-3 u-justify-content-center u-flex-wrap">
-                <Button glass>Get Started</Button>
-                <Button glass variant={'light'}>
+              <div
+                className="u-d-flex u-gap-3 u-justify-content-center u-flex-wrap"
+                style={{ gap: '16px' }}
+              >
+                <Button glass size="lg">
+                  Get Started
+                </Button>
+                <Button glass variant={'light'} size="lg">
                   Learn More
                 </Button>
               </div>
@@ -363,12 +406,49 @@ export const DashboardCards: Story = {
             saturation={140}
             cornerRadius={20}
             mode="standard"
-            padding="20px 30px"
+            padding="24px 32px"
           >
-            <h1 className="u-m-0 u-fs-2 u-fw-bold">Analytics Dashboard</h1>
-            <p className="u-mt-2 u-mb-0 u-opacity-80 u-fs-6">
-              Real-time performance metrics and insights
-            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div
+                style={{
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '16px',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '28px',
+                  boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
+                }}
+              >
+                📊
+              </div>
+              <div>
+                <h1
+                  className="u-m-0 u-fs-2 u-fw-bold"
+                  style={{
+                    fontSize: '28px',
+                    marginBottom: '6px',
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Analytics Dashboard
+                </h1>
+                <p
+                  className="u-m-0 u-opacity-80 u-fs-6"
+                  style={{
+                    fontSize: '15px',
+                    color: 'rgba(255, 255, 255, 0.85)',
+                  }}
+                >
+                  Real-time performance metrics and insights
+                </p>
+              </div>
+            </div>
           </AtomixGlass>
 
           <Grid className="u-mt-10">
@@ -860,21 +940,53 @@ export const LoginForm: Story = {
               <div className="u-text-center u-mb-5">
                 <div
                   style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '16px',
+                    width: '72px',
+                    height: '72px',
+                    borderRadius: '20px',
                     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '24px',
-                    margin: '0 auto 16px',
+                    fontSize: '32px',
+                    margin: '0 auto 24px',
+                    boxShadow: '0 12px 32px rgba(102, 126, 234, 0.4)',
+                    position: 'relative',
                   }}
                 >
-                  <Icon name="Lock" />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: '-4px',
+                      borderRadius: '24px',
+                      background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                      opacity: 0.4,
+                      filter: 'blur(16px)',
+                    }}
+                  />
+                  <Icon name="Lock" style={{ position: 'relative', zIndex: 1 }} />
                 </div>
-                <h2 className="u-m-0 u-mb-2 u-fs-3 u-fw-bold">Welcome Back</h2>
-                <p className="u-m-0 u-opacity-70 u-fs-7">Sign in to continue to your account</p>
+                <h2
+                  className="u-m-0 u-mb-2 u-fs-3 u-fw-bold"
+                  style={{
+                    fontSize: '32px',
+                    marginBottom: '12px',
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Welcome Back
+                </h2>
+                <p
+                  className="u-m-0 u-opacity-70 u-fs-7"
+                  style={{
+                    fontSize: '15px',
+                    color: 'rgba(255, 255, 255, 0.85)',
+                  }}
+                >
+                  Sign in to continue to your account
+                </p>
               </div>
 
               {/* Form */}
@@ -1123,8 +1235,22 @@ export const MusicPlayer: Story = {
             </AtomixGlass>
             {/* Track Info */}
             <div className="u-text-center u-mb-3">
-              <h2 className="u-m-0 u-mb-2 u-fs-3 u-fw-bold">Summer Vibes</h2>
-              <p className="u-m-0 u-opacity-70 u-fs-6">The Atomix Band</p>
+              <h2
+                className="u-m-0 u-mb-2 u-fs-3 u-fw-bold"
+                style={{
+                  fontSize: '28px',
+                  marginBottom: '8px',
+                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                Summer Vibes
+              </h2>
+              <p className="u-m-0 u-opacity-70 u-fs-6" style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.85)' }}>
+                The Atomix Band
+              </p>
             </div>
 
             {/* Progress Bar */}
@@ -1395,11 +1521,40 @@ export const PricingTable: Story = {
       >
         <Container className="u-py-6 u-text-white">
           {/* Header */}
-          <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-            <h1 style={{ fontSize: '40px', fontWeight: 800, margin: '0 0 8px 0' }}>
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <div
+              style={{
+                display: 'inline-block',
+                padding: '10px 24px',
+                borderRadius: '24px',
+                background: 'rgba(255, 255, 255, 0.12)',
+                backdropFilter: 'blur(12px)',
+                marginBottom: '24px',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
+                color: 'rgba(255, 255, 255, 0.9)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+              }}
+            >
+              💎 Pricing Plans
+            </div>
+            <h1
+              style={{
+                fontSize: '48px',
+                fontWeight: 800,
+                margin: '0 0 16px 0',
+                background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                letterSpacing: '-1px',
+              }}
+            >
               Choose Your Plan
             </h1>
-            <p style={{ fontSize: '16px', opacity: 0.8, marginBottom: '12px' }}>
+            <p style={{ fontSize: '18px', opacity: 0.9, marginBottom: '20px', lineHeight: 1.6 }}>
               Start free, then scale as you grow
             </p>
 
@@ -1719,60 +1874,96 @@ export const ChatInterface: Story = {
             {/* Chat Header */}
             <div
               style={{
-                padding: '20px 24px',
+                padding: '24px 28px',
                 borderBottom:
                   '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '16px',
+                background: 'rgba(255, 255, 255, 0.05)',
               }}
             >
               <div style={{ position: 'relative' }}>
                 <div
                   style={{
-                    width: '48px',
-                    height: '48px',
+                    width: '56px',
+                    height: '56px',
                     borderRadius: '50%',
                     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '24px',
-                    opacity: '0.8',
+                    fontSize: '28px',
+                    boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
+                    position: 'relative',
                   }}
                 >
-                  👤
+                  <div
+                    style={{
+                      position: 'absolute',
+                      inset: '-4px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                      opacity: 0.4,
+                      filter: 'blur(12px)',
+                    }}
+                  />
+                  <span style={{ position: 'relative', zIndex: 1 }}>👤</span>
                 </div>
                 <div
                   style={{
                     position: 'absolute',
                     bottom: '2px',
                     right: '2px',
-                    width: '14px',
-                    height: '14px',
+                    width: '16px',
+                    height: '16px',
                     borderRadius: '50%',
                     background: onlineStatus ? '#10b981' : '#6b7280',
-                    border: '2px solid rgba(0,0,0,0.2)',
+                    border: '3px solid rgba(0,0,0,0.3)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
                   }}
                 />
               </div>
               <div style={{ flex: 1 }}>
-                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700 }}>Alex Johnson</h3>
-                <p style={{ margin: 0, fontSize: '14px', opacity: 0.7 }}>
+                <h3
+                  style={{
+                    margin: 0,
+                    fontSize: '20px',
+                    fontWeight: 700,
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    marginBottom: '4px',
+                  }}
+                >
+                  Alex Johnson
+                </h3>
+                <p style={{ margin: 0, fontSize: '14px', opacity: 0.8, color: 'rgba(255, 255, 255, 0.85)' }}>
                   {onlineStatus ? 'Active now' : 'Offline'}
                 </p>
               </div>
               <button
                 onClick={() => setOnlineStatus(!onlineStatus)}
                 style={{
-                  width: '40px',
-                  height: '40px',
+                  width: '44px',
+                  height: '44px',
                   borderRadius: '50%',
                   border: 'none',
-                  background: 'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                  background: 'rgba(255,255,255,0.1)',
+                  backdropFilter: 'blur(8px)',
                   color: 'inherit',
                   cursor: 'pointer',
-                  fontSize: '18px',
+                  fontSize: '20px',
+                  transition: 'all 0.2s ease',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+                  e.currentTarget.style.transform = 'scale(1.1)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                  e.currentTarget.style.transform = 'scale(1)';
                 }}
               >
                 ⋮
@@ -2069,12 +2260,24 @@ export const ProfileCard: Story = {
             </div>
 
             {/* Name & Title */}
-            <div style={{ marginBottom: '20px' }}>
-              <h2 style={{ margin: '0 0 4px 0', fontSize: '24px', fontWeight: 700 }}>Limon Khan</h2>
-              <p style={{ margin: '0 0 8px 0', fontSize: '14px', opacity: 0.8 }}>
+            <div style={{ marginBottom: '24px' }}>
+              <h2
+                style={{
+                  margin: '0 0 8px 0',
+                  fontSize: '28px',
+                  fontWeight: 700,
+                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                Limon Khan
+              </h2>
+              <p style={{ margin: '0 0 10px 0', fontSize: '15px', opacity: 0.9, color: 'rgba(255, 255, 255, 0.9)' }}>
                 Senior Frontend Developer
               </p>
-              <p style={{ margin: 0, fontSize: '14px', opacity: 0.7 }}>
+              <p style={{ margin: 0, fontSize: '14px', opacity: 0.8, color: 'rgba(255, 255, 255, 0.85)' }}>
                 <Icon name="Globe" /> BANGLADESH, Dhaka • <Icon name="Clock" /> GMT+5
               </p>
             </div>
@@ -2304,8 +2507,36 @@ export const SettingsPanel: Story = {
           <div style={{ padding: '32px' }}>
             {/* Header */}
             <div className="u-mb-5">
-              <h2 className="u-m-0 u-mb-2 u-fs-2 u-fw-bold">Settings</h2>
-              <p className="u-m-0 u-fs-6 u-opacity-70">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                <div
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '14px',
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '24px',
+                    boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
+                  }}
+                >
+                  ⚙️
+                </div>
+                <h2
+                  className="u-m-0 u-fs-2 u-fw-bold"
+                  style={{
+                    fontSize: '28px',
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Settings
+                </h2>
+              </div>
+              <p className="u-m-0 u-fs-6 u-opacity-70" style={{ fontSize: '15px', color: 'rgba(255, 255, 255, 0.85)' }}>
                 Manage your account preferences and settings
               </p>
             </div>
@@ -2738,7 +2969,17 @@ export const EventCard: Story = {
             </div>
 
             {/* Event Title */}
-            <h2 style={{ margin: '0 0 12px 0', fontSize: '28px', fontWeight: 700 }}>
+            <h2
+              style={{
+                margin: '0 0 12px 0',
+                fontSize: '32px',
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
               Design Systems Meetup
             </h2>
 
@@ -3070,8 +3311,20 @@ export const SocialMediaPost: Story = {
               }}
             ></div>
             <div style={{ flex: 1 }}>
-              <h3 style={{ margin: '0 0 2px 0', fontSize: '16px', fontWeight: 700 }}>Limon Khan</h3>
-              <p style={{ margin: 0, fontSize: '14px', opacity: 0.7 }}>
+              <h3
+                style={{
+                  margin: '0 0 4px 0',
+                  fontSize: '18px',
+                  fontWeight: 700,
+                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                Limon Khan
+              </h3>
+              <p style={{ margin: 0, fontSize: '14px', opacity: 0.8, color: 'rgba(255, 255, 255, 0.85)' }}>
                 Frontend Developer • 6 hours ago
               </p>
             </div>
@@ -3390,32 +3643,70 @@ export const WeatherWidget: Story = {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: '10px',
+                marginBottom: '20px',
+                paddingBottom: '20px',
+                borderBottom: '1px solid rgba(255,255,255,0.1)',
               }}
             >
               <div>
-                <h2 style={{ margin: 0, fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>
+                <h2
+                  style={{
+                    margin: 0,
+                    fontSize: '28px',
+                    fontWeight: 700,
+                    marginBottom: '6px',
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
                   Weather
                 </h2>
-                <p style={{ margin: 0, fontSize: '14px', opacity: 0.7 }}>
+                <p style={{ margin: 0, fontSize: '14px', opacity: 0.8, color: 'rgba(255, 255, 255, 0.85)' }}>
                   📍 {currentWeather.location}
                 </p>
               </div>
-              <Button onClick={() => setUnit(unit === 'C' ? 'F' : 'C')}>°{unit}</Button>
+              <Button
+                onClick={() => setUnit(unit === 'C' ? 'F' : 'C')}
+                glass
+                style={{
+                  minWidth: '60px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                }}
+              >
+                °{unit}
+              </Button>
             </div>
 
             {/* Current Weather */}
-            <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-              <div style={{ fontSize: '50px', marginBottom: '10px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+              <div
+                style={{
+                  fontSize: '64px',
+                  marginBottom: '16px',
+                  filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.2))',
+                }}
+              >
                 <Icon name="Cloud" />
               </div>
-              <div style={{ fontSize: '48px', fontWeight: 700, marginBottom: '8px' }}>
+              <div
+                style={{
+                  fontSize: '56px',
+                  fontWeight: 700,
+                  marginBottom: '12px',
+                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
                 {currentWeather.temp}°{unit}
               </div>
-              <div style={{ fontSize: '18px', opacity: 0.8, marginBottom: '8px' }}>
+              <div style={{ fontSize: '20px', opacity: 0.9, marginBottom: '8px', fontWeight: 600 }}>
                 {currentWeather.condition}
               </div>
-              <div style={{ fontSize: '14px', opacity: 0.6 }}>
+              <div style={{ fontSize: '15px', opacity: 0.7, color: 'rgba(255, 255, 255, 0.85)' }}>
                 Feels like {currentWeather.feelsLike}°
               </div>
             </div>
@@ -3464,7 +3755,18 @@ export const WeatherWidget: Story = {
 
             {/* 5-Day Forecast */}
             <div>
-              <h3 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px', opacity: 0.8 }}>
+              <h3
+                style={{
+                  fontSize: '18px',
+                  fontWeight: 700,
+                  marginBottom: '20px',
+                  opacity: 0.9,
+                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
                 5-Day Forecast
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -3611,7 +3913,36 @@ export const SearchResults: Story = {
             }}
           >
             {/* Search Header */}
-            <h2 style={{ margin: '0 0 20px 0', fontSize: '24px', fontWeight: 700 }}>Search</h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '14px',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '24px',
+                  boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
+                }}
+              >
+                🔍
+              </div>
+              <h2
+                style={{
+                  margin: 0,
+                  fontSize: '28px',
+                  fontWeight: 700,
+                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                Search
+              </h2>
+            </div>
 
             {/* Search Input */}
             <div style={{ position: 'relative', marginBottom: '20px' }}>
@@ -3815,8 +4146,41 @@ export const PaymentForm: Story = {
             className="u-p-3 u-position-relative u-rounded-5"
             style={{ minWidth: '300px', maxWidth: '400px' }}
           >
-            <h2 className="u-m-0 u-mb-1 u-fs-4 u-fw-bold">Payment Details</h2>
-            <p className="u-m-0 u-mb-2 u-fs-7 u-opacity-70">Complete your purchase securely</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '14px',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '24px',
+                  boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
+                }}
+              >
+                💳
+              </div>
+              <div>
+                <h2
+                  className="u-m-0 u-fs-4 u-fw-bold"
+                  style={{
+                    fontSize: '24px',
+                    marginBottom: '4px',
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Payment Details
+                </h2>
+                <p className="u-m-0 u-fs-7 u-opacity-70" style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.85)' }}>
+                  Complete your purchase securely
+                </p>
+              </div>
+            </div>
 
             {/* Card Preview */}
             <AtomixGlass
@@ -4161,12 +4525,22 @@ export const NewsletterSubscription: Story = {
                   <div style={{ fontSize: '50px', marginBottom: '10px' }}>
                     <Icon name="Chats" />
                   </div>
-                  <h2 style={{ margin: '0 0 10px 0', fontSize: '32px', fontWeight: 700 }}>
-                    Join Our Newsletter
-                  </h2>
-                  <p style={{ margin: 0, fontSize: '16px', opacity: 0.8, lineHeight: 1.6 }}>
-                    Subscribe to get exclusive content, tips, and updates delivered to your inbox
-                  </p>
+                <h2
+                  style={{
+                    margin: '0 0 16px 0',
+                    fontSize: '36px',
+                    fontWeight: 700,
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Join Our Newsletter
+                </h2>
+                <p style={{ margin: 0, fontSize: '17px', opacity: 0.9, lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.9)' }}>
+                  Subscribe to get exclusive content, tips, and updates delivered to your inbox
+                </p>
                 </div>
 
                 {/* Email Input */}
@@ -4273,11 +4647,27 @@ export const NewsletterSubscription: Story = {
                 <div style={{ fontSize: '80px', marginBottom: '24px' }}>
                   <Icon name="Confetti" />
                 </div>
-                <h2 style={{ margin: '0 0 16px 0', fontSize: '32px', fontWeight: 700 }}>
+                <h2
+                  style={{
+                    margin: '0 0 16px 0',
+                    fontSize: '36px',
+                    fontWeight: 700,
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
                   Welcome Aboard!
                 </h2>
                 <p
-                  style={{ margin: '0 0 32px 0', fontSize: '16px', opacity: 0.8, lineHeight: 1.6 }}
+                  style={{
+                    margin: '0 0 32px 0',
+                    fontSize: '17px',
+                    opacity: 0.9,
+                    lineHeight: 1.7,
+                    color: 'rgba(255, 255, 255, 0.9)',
+                  }}
                 >
                   Thank you for subscribing! Check your inbox for a confirmation email.
                 </p>
@@ -4381,8 +4771,39 @@ export const ProgressTracker: Story = {
           mode="standard"
         >
           <div className="u-p-5" style={{ minWidth: '550px', maxWidth: '700px' }}>
-            <h2 className="u-m-0 u-mb-2 u-fs-2 u-fw-bold">Getting Started</h2>
-            <p className="u-m-0 u-fs-6 u-opacity-70" style={{ marginBottom: '48px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '14px',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '24px',
+                  boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
+                }}
+              >
+                🚀
+              </div>
+              <h2
+                className="u-m-0 u-fs-2 u-fw-bold"
+                style={{
+                  fontSize: '28px',
+                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                Getting Started
+              </h2>
+            </div>
+            <p
+              className="u-m-0 u-fs-6 u-opacity-70"
+              style={{ marginBottom: '48px', fontSize: '16px', color: 'rgba(255, 255, 255, 0.85)' }}
+            >
               Complete the following steps to set up your account
             </p>
 
@@ -5111,29 +5532,61 @@ export const MobileUIExample: Story = {
           }}
         >
           <div style={{ maxWidth: '300px' }}>
-            <h2
-              style={{
-                margin: '0 0 20px 0',
-                fontSize: '28px',
-                fontWeight: 500,
-                color: '#ffffff',
-                textShadow: '0 2px 4px rgba(0,0,0,0.2)',
-              }}
-            >
-              Mobile UI Example
-            </h2>
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <AtomixGlass
+                mode="standard"
+                displacementScale={60}
+                blurAmount={1}
+                saturation={130}
+                cornerRadius={24}
+                elasticity={0.1}
+                style={{ marginBottom: '24px', display: 'inline-block' }}
+              >
+                <div
+                  style={{
+                    padding: '12px 24px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    letterSpacing: '1px',
+                    textTransform: 'uppercase',
+                    color: 'rgba(255, 255, 255, 0.9)',
+                  }}
+                >
+                  <span>📱</span>
+                  <span>Mobile Optimized</span>
+                </div>
+              </AtomixGlass>
+              <h2
+                style={{
+                  margin: '0 0 20px 0',
+                  fontSize: '40px',
+                  fontWeight: 700,
+                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  letterSpacing: '-1px',
+                }}
+              >
+                Mobile UI Example
+              </h2>
 
-            <p
-              style={{
-                fontSize: '16px',
-                maxWidth: '600px',
-                margin: '0 auto 30px',
-                color: '#ffffff',
-                textShadow: '0 1px 2px rgba(0,0,0,0.2)',
-              }}
-            >
-              AtomixGlass components optimized for mobile interfaces with touch-friendly controls
-            </p>
+              <p
+                style={{
+                  fontSize: '18px',
+                  maxWidth: '680px',
+                  margin: '0 auto',
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  lineHeight: 1.7,
+                }}
+              >
+                AtomixGlass components optimized for mobile interfaces with touch-friendly controls
+                and responsive design
+              </p>
+            </div>
           </div>
           {/* Phone frame */}
           <div style={phoneFrameStyle}>
@@ -5513,16 +5966,35 @@ export const AppleInspiredUI: Story = {
             elasticity={0}
           >
             <div style={{ padding: '30px' }}>
+              <div
+                style={{
+                  display: 'inline-block',
+                  padding: '10px 24px',
+                  borderRadius: '24px',
+                  background: 'rgba(255, 255, 255, 0.12)',
+                  backdropFilter: 'blur(12px)',
+                  marginBottom: '24px',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  border: '1px solid rgba(255, 255, 255, 0.15)',
+                }}
+              >
+                🍎 Apple-Inspired Design
+              </div>
               <h2
                 style={{
                   marginTop: 0,
-                  fontSize: '26px',
-                  fontWeight: 600,
+                  fontSize: '32px',
+                  fontWeight: 700,
                   marginBottom: '24px',
                   textAlign: 'center',
-                  background: 'linear-gradient(135deg, #007AFF, #5AC8FA)',
+                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
+                  letterSpacing: '-0.5px',
                 }}
               >
                 Welcome to Atomix OS
@@ -5589,21 +6061,38 @@ export const AppleInspiredUI: Story = {
                     }}
                   >
                     <div
-                      style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        fontWeight: 700,
+                        fontSize: '16px',
+                      }}
                     >
-                      <span style={{ fontSize: '16px' }}>
+                      <span style={{ fontSize: '18px' }}>
                         <Icon name="BellRinging" />
                       </span>
-                      <span>Notifications</span>
+                      <span
+                        style={{
+                          background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          backgroundClip: 'text',
+                        }}
+                      >
+                        Notifications
+                      </span>
                     </div>
                     <span
                       style={{
                         fontSize: '12px',
-                        padding: '2px 8px',
-                        borderRadius: '10px',
-                        background: 'rgba(255,45,85,0.2)',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        background: 'rgba(255,45,85,0.25)',
+                        border: '1px solid rgba(255,45,85,0.4)',
                         color: '#FF2D55',
-                        fontWeight: 600,
+                        fontWeight: 700,
+                        boxShadow: '0 2px 8px rgba(255,45,85,0.3)',
                       }}
                     >
                       {notificationCount} New
@@ -5620,10 +6109,17 @@ export const AppleInspiredUI: Story = {
                     }}
                   >
                     <div>
-                      <div style={{ fontWeight: 500, marginBottom: '4px' }}>
+                      <div
+                        style={{
+                          fontWeight: 600,
+                          marginBottom: '6px',
+                          fontSize: '15px',
+                          color: 'rgba(255, 255, 255, 0.95)',
+                        }}
+                      >
                         New Atomix Glass Component
                       </div>
-                      <div style={{ fontSize: '12px', opacity: 0.8 }}>
+                      <div style={{ fontSize: '13px', opacity: 0.85, color: 'rgba(255, 255, 255, 0.85)' }}>
                         Experience the next generation of UI effects
                       </div>
                     </div>
