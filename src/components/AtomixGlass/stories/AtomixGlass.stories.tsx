@@ -774,12 +774,12 @@ export const Modes: Story = {
 
               return (
                 <div
+                  key={mode}
                   onMouseEnter={() => handleMouseEnter(mode)}
                   onMouseLeave={handleMouseLeave}
                   style={{ cursor: 'pointer' }}
                 >
                   <AtomixGlass
-                    key={mode}
                     mode={mode}
                     displacementScale={isActive ? settings.displacementScale * 1.2 : settings.displacementScale}
                     blurAmount={settings.blurAmount}
