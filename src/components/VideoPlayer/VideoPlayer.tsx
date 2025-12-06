@@ -463,15 +463,10 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
           <div className={VIDEO_PLAYER.CLASSES.GLASS_OVERLAY}>
             <AtomixGlass
               {...(typeof glass === 'boolean' ? {} : glass)}
-              style={{
-                borderRadius: 'inherit',
-              }}
               mouseContainer={containerRef}
-              displacementScale={30}
+              displacementScale={100}
               blurAmount={0}
               saturation={100}
-              aberrationIntensity={0}
-              cornerRadius={containerBorderRadius}
               elasticity={0}
             >
               {!glassContent && (

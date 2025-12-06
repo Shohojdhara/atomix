@@ -190,90 +190,6 @@ interface BackgroundWrapperProps {
   interactive?: boolean;
 }
 
-const backgroundImages = [
-  // 0: Tech gradient - modern, professional
-  'https://images.unsplash.com/photo-1636690636968-4568d7e94fe7?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  // 1: Purple cosmic - entertainment focused
-  'https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2071&auto=format&fit=crop',
-  // 2: Cinematic landscape - movie/video theme
-  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2070&auto=format&fit=crop',
-  // 3: Abstract waves - fluid, dynamic
-  'https://images.unsplash.com/photo-1614850715649-1d0106293bd1?q=80&w=2070&auto=format&fit=crop',
-  // 4: Gaming/streaming setup
-  'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?q=80&w=2070&auto=format&fit=crop',
-];
-
-const BackgroundWrapper = ({
-  children,
-  backgroundImage,
-  backgroundIndex,
-  overlay = false,
-  overlayColor = 'rgba(0,0,0,0)',
-  overlayOpacity = 1,
-  height = '90vh',
-  width = '90vw',
-  borderRadius = '12px',
-  padding = '24px',
-  className = '',
-  style = {},
-}: BackgroundWrapperProps) => {
-  const bgImage =
-    backgroundIndex !== undefined ? backgroundImages[backgroundIndex] : backgroundImage;
-  const finalOverlayColor = overlay ? 'rgba(0,0,0,0.5)' : overlayColor;
-  const finalOverlayOpacity = overlay ? 0.5 : overlayOpacity;
-
-  return (
-    <div
-      className={`atomix-video-background ${className}`}
-      style={{
-        position: 'relative',
-        width: width,
-        minHeight: height,
-        height: '100%',
-        backgroundImage: bgImage ? `url(${bgImage})` : undefined,
-        backgroundColor: !bgImage ? '#0f0f23' : undefined,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: borderRadius,
-        padding: padding,
-        ...style,
-      }}
-    >
-      {finalOverlayOpacity > 0 && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: finalOverlayColor,
-            opacity: finalOverlayOpacity,
-            zIndex: 1,
-          }}
-        />
-      )}
-      <div
-        style={{
-          position: 'relative',
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 2,
-        }}
-      >
-        {children}
-      </div>
-    </div>
-  );
-};
-
 /**
  * Sample video URLs and configurations
  */
@@ -318,6 +234,10 @@ const videoSources = {
     poster:
       'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/WeAreGoingOnBullrun.jpg',
   },
+  snow: {
+    src: 'https://cdn.pixabay.com/video/2025/10/22/311442_large.mp4',
+    poster: 'https://cdn.pixabay.com/video/2025/10/22/311442_large.jpg',
+  },
 };
 
 const sampleVideo = videoSources.sintel.src;
@@ -361,8 +281,9 @@ const sampleSubtitles = [
 ];
 
 /**
- * Default VideoPlayer showcase
+ * 🎬 Hero Showcase - Default VideoPlayer
  *
+ * A stunning showcase of the VideoPlayer component with premium design.
  * Demonstrates the component with balanced settings suitable for most use cases.
  * Features clean, modern controls and responsive design.
  */
@@ -370,11 +291,14 @@ export const Default: Story = {
   args: {
     src: videoSources.sintel.src,
     poster: videoSources.sintel.poster,
-    width: '800px',
-    height: '450px',
+    width: '900px',
+    height: '506px',
     controls: true,
     showSettings: true,
+    showDownload: true,
+    showShare: true,
     quality: sampleQualities,
+    subtitles: sampleSubtitles,
     onPlay: fn(),
     onPause: fn(),
     onEnded: fn(),
@@ -385,15 +309,59 @@ export const Default: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper
-        backgroundIndex={0}
-        height="70vh"
-        width="90vw"
-        overlayOpacity={0.1}
-        overlayColor="rgba(0,0,0,0.3)"
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '30px',
+          width: '100%',
+        }}
       >
-        <Story />
-      </BackgroundWrapper>
+        <div style={{ textAlign: 'center', maxWidth: '800px' }}>
+          <h1
+            style={{
+              margin: '0 0 16px 0',
+              fontSize: '48px',
+              fontWeight: '700',
+              color: 'white',
+              textShadow: '0 4px 20px rgba(0,0,0,0.5)',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            🎥 VideoPlayer
+          </h1>
+          <p
+            style={{
+              margin: '0 0 8px 0',
+              fontSize: '20px',
+              color: 'rgba(255,255,255,0.9)',
+              textShadow: '0 2px 10px rgba(0,0,0,0.4)',
+              fontWeight: '400',
+            }}
+          >
+            Premium video player with advanced features
+          </p>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '16px',
+              color: 'rgba(255,255,255,0.7)',
+              textShadow: '0 1px 5px rgba(0,0,0,0.3)',
+            }}
+          >
+            Modern controls • Quality selection • Multi-language subtitles • Glass effects
+          </p>
+        </div>
+        <div
+          style={{
+            borderRadius: '16px',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1)',
+          }}
+        >
+          <Story />
+        </div>
+      </div>
     ),
   ],
   parameters: {
@@ -407,14 +375,17 @@ export const Default: Story = {
 };
 
 /**
- * YouTube Integration Examples
+ * 📺 YouTube Integration - ID Method
+ *
+ * Seamless YouTube integration using the youtubeId prop.
+ * Automatically uses YouTube's native player with all standard features.
  */
 export const YouTubeEmbed: Story = {
   args: {
     type: 'youtube',
     youtubeId: 'eIho2S0ZahI',
-    width: '800px',
-    height: '450px',
+    width: '900px',
+    height: '506px',
     autoplay: false,
     muted: false,
     onPlay: fn(),
@@ -423,9 +394,47 @@ export const YouTubeEmbed: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper backgroundIndex={1} height="60vh" width="85vw" overlayOpacity={0.2}>
-        <Story />
-      </BackgroundWrapper>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '24px',
+          width: '100%',
+        }}
+      >
+        <div style={{ textAlign: 'center' }}>
+          <h2
+            style={{
+              margin: '0 0 12px 0',
+              fontSize: '36px',
+              fontWeight: '700',
+              color: 'white',
+              textShadow: '0 4px 20px rgba(0,0,0,0.5)',
+            }}
+          >
+            📺 YouTube Integration
+          </h2>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '18px',
+              color: 'rgba(255,255,255,0.85)',
+              textShadow: '0 2px 10px rgba(0,0,0,0.4)',
+            }}
+          >
+            Native YouTube player with seamless embedding
+          </p>
+        </div>
+        <div
+          style={{
+            borderRadius: '16px',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)',
+          }}
+        >
+          <Story />
+        </div>
+      </div>
     ),
   ],
   parameters: {
@@ -441,8 +450,8 @@ export const YouTubeEmbed: Story = {
 export const YouTubeURL: Story = {
   args: {
     src: 'https://www.youtube.com/watch?v=eIho2S0ZahI',
-    width: '800px',
-    height: '450px',
+    width: '900px',
+    height: '506px',
     autoplay: false,
     muted: false,
     onPlay: fn(),
@@ -451,9 +460,47 @@ export const YouTubeURL: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper backgroundIndex={1} height="60vh" width="85vw" overlayOpacity={0.2}>
-        <Story />
-      </BackgroundWrapper>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '24px',
+          width: '100%',
+        }}
+      >
+        <div style={{ textAlign: 'center' }}>
+          <h2
+            style={{
+              margin: '0 0 12px 0',
+              fontSize: '36px',
+              fontWeight: '700',
+              color: 'white',
+              textShadow: '0 4px 20px rgba(0,0,0,0.5)',
+            }}
+          >
+            🔗 YouTube URL Detection
+          </h2>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '18px',
+              color: 'rgba(255,255,255,0.85)',
+              textShadow: '0 2px 10px rgba(0,0,0,0.4)',
+            }}
+          >
+            Automatic YouTube URL detection and embedding
+          </p>
+        </div>
+        <div
+          style={{
+            borderRadius: '16px',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)',
+          }}
+        >
+          <Story />
+        </div>
+      </div>
     ),
   ],
   parameters: {
@@ -467,14 +514,17 @@ export const YouTubeURL: Story = {
 };
 
 /**
- * Advanced Features Showcase
+ * ⚡ Advanced Features Showcase
+ *
+ * Complete showcase of all VideoPlayer features including quality selection,
+ * subtitles, playback speed controls, download/share buttons, and comprehensive settings menu.
  */
 export const AdvancedFeatures: Story = {
   args: {
     src: videoSources.bigBuckBunny.src,
     poster: videoSources.bigBuckBunny.poster,
-    width: '900px',
-    height: '506px',
+    width: '1000px',
+    height: '562px',
     controls: true,
     showDownload: true,
     showShare: true,
@@ -493,9 +543,84 @@ export const AdvancedFeatures: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper backgroundIndex={0} height="75vh" width="95vw" overlayOpacity={0.15}>
-        <Story />
-      </BackgroundWrapper>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '40px',
+          width: '100%',
+        }}
+      >
+        <div style={{ textAlign: 'center', maxWidth: '900px' }}>
+          <h2
+            style={{
+              margin: '0 0 16px 0',
+              fontSize: '42px',
+              fontWeight: '700',
+              color: 'white',
+              textShadow: '0 4px 20px rgba(0,0,0,0.6)',
+            }}
+          >
+            ⚡ Advanced Features
+          </h2>
+          <p
+            style={{
+              margin: '0 0 12px 0',
+              fontSize: '20px',
+              color: 'rgba(255,255,255,0.95)',
+              textShadow: '0 2px 10px rgba(0,0,0,0.4)',
+              fontWeight: '500',
+            }}
+          >
+            Everything you need for professional video playback
+          </p>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '12px',
+              justifyContent: 'center',
+              marginTop: '20px',
+            }}
+          >
+            {[
+              'Quality Selection',
+              'Multi-language Subtitles',
+              'Playback Speed Control',
+              'Download & Share',
+              'Settings Menu',
+              'Keyboard Shortcuts',
+            ].map(feature => (
+              <span
+                key={feature}
+                style={{
+                  background: 'rgba(255,255,255,0.15)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: '20px',
+                  padding: '8px 16px',
+                  fontSize: '14px',
+                  color: 'white',
+                  fontWeight: '500',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.3)',
+                }}
+              >
+                ✨ {feature}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div
+          style={{
+            borderRadius: '20px',
+            boxShadow: '0 25px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.15)',
+            transform: 'perspective(1000px) rotateX(2deg)',
+          }}
+        >
+          <Story />
+        </div>
+      </div>
     ),
   ],
   parameters: {
@@ -509,14 +634,17 @@ export const AdvancedFeatures: Story = {
 };
 
 /**
- * Ambient Mode Example
+ * 🌈 Ambient Mode - YouTube-Style Glow
+ *
+ * Ambient mode creates a YouTube-style background glow effect that extends
+ * the video colors beyond the player boundaries, creating an immersive viewing experience.
  */
 export const AmbientMode: Story = {
   args: {
     src: videoSources.elephantsDream.src,
     poster: samplePoster,
-    width: '800px',
-    height: '450px',
+    width: '900px',
+    height: '506px',
     ambientMode: true,
     autoplay: true,
     muted: true,
@@ -531,16 +659,60 @@ export const AmbientMode: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper
-        backgroundIndex={2}
-        height="80vh"
-        width="95vw"
-        overlayOpacity={0.6}
-        overlayColor="rgba(0,0,0,0.7)"
-        padding="60px"
-      >
-        <Story />
-      </BackgroundWrapper>
+      <div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '30px',
+            width: '100%',
+          }}
+        >
+          <div style={{ textAlign: 'center', maxWidth: '800px' }}>
+            <h2
+              style={{
+                margin: '0 0 16px 0',
+                fontSize: '42px',
+                fontWeight: '700',
+                color: 'white',
+                textShadow: '0 4px 20px rgba(0,0,0,0.7)',
+              }}
+            >
+              🌈 Ambient Mode
+            </h2>
+            <p
+              style={{
+                margin: '0 0 8px 0',
+                fontSize: '20px',
+                color: 'rgba(255,255,255,0.95)',
+                textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+                fontWeight: '500',
+              }}
+            >
+              YouTube-style immersive viewing experience
+            </p>
+            <p
+              style={{
+                margin: 0,
+                fontSize: '16px',
+                color: 'rgba(255,255,255,0.75)',
+                textShadow: '0 1px 5px rgba(0,0,0,0.4)',
+              }}
+            >
+              Watch how the video colors extend beyond the player boundaries
+            </p>
+          </div>
+          <div
+            style={{
+              borderRadius: '20px',
+              boxShadow: '0 30px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1)',
+            }}
+          >
+            <Story />
+          </div>
+        </div>
+      </div>
     ),
   ],
   parameters: {
@@ -554,14 +726,17 @@ export const AmbientMode: Story = {
 };
 
 /**
- * Glass Morphism Variants
+ * ✨ Glass Morphism Effect
+ *
+ * VideoPlayer with glass morphism effects overlay. The translucent glass layer
+ * adds visual depth and modern aesthetics while maintaining full functionality.
  */
 export const GlassEffect: Story = {
   args: {
     src: videoSources.forBiggerBlazes.src,
     poster: videoSources.forBiggerBlazes.poster,
-    width: '800px',
-    height: '450px',
+    width: '900px',
+    height: '506px',
     glass: true,
     glassOpacity: 0.4,
     controls: true,
@@ -579,9 +754,58 @@ export const GlassEffect: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper backgroundIndex={3} height="70vh" width="90vw" overlayOpacity={0.1}>
-        <Story />
-      </BackgroundWrapper>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '30px',
+          width: '100%',
+        }}
+      >
+        <div style={{ textAlign: 'center', maxWidth: '800px' }}>
+          <h2
+            style={{
+              margin: '0 0 16px 0',
+              fontSize: '42px',
+              fontWeight: '700',
+              color: 'white',
+              textShadow: '0 4px 20px rgba(0,0,0,0.6)',
+            }}
+          >
+            ✨ Glass Morphism
+          </h2>
+          <p
+            style={{
+              margin: '0 0 8px 0',
+              fontSize: '20px',
+              color: 'rgba(255,255,255,0.95)',
+              textShadow: '0 2px 10px rgba(0,0,0,0.4)',
+              fontWeight: '500',
+            }}
+          >
+            Modern frosted glass effect overlay
+          </p>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '16px',
+              color: 'rgba(255,255,255,0.75)',
+              textShadow: '0 1px 5px rgba(0,0,0,0.4)',
+            }}
+          >
+            Translucent glass layer with blur and depth effects
+          </p>
+        </div>
+        <div
+          style={{
+            borderRadius: '20px',
+            boxShadow: '0 25px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.15)',
+          }}
+        >
+          <Story />
+        </div>
+      </div>
     ),
   ],
   parameters: {
@@ -598,8 +822,8 @@ export const GlassCustom: Story = {
   args: {
     src: videoSources.tearsOfSteel.src,
     poster: videoSources.tearsOfSteel.poster,
-    width: '800px',
-    height: '450px',
+    width: '900px',
+    height: '506px',
     glass: {
       displacementScale: 35,
       blurAmount: 0.25,
@@ -627,16 +851,58 @@ export const GlassCustom: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper
+      <div
         style={{
-          background: 'radial-gradient(circle at 50% 50%, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '30px',
+          width: '100%',
         }}
-        height="75vh"
-        width="90vw"
-        padding="60px"
       >
-        <Story />
-      </BackgroundWrapper>
+        <div style={{ textAlign: 'center', maxWidth: '800px' }}>
+          <h2
+            style={{
+              margin: '0 0 16px 0',
+              fontSize: '42px',
+              fontWeight: '700',
+              color: 'white',
+              textShadow: '0 4px 20px rgba(0,0,0,0.7)',
+            }}
+          >
+            🎨 Custom Glass Configuration
+          </h2>
+          <p
+            style={{
+              margin: '0 0 8px 0',
+              fontSize: '20px',
+              color: 'rgba(255,255,255,0.95)',
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+              fontWeight: '500',
+            }}
+          >
+            Fully customizable glass morphism effects
+          </p>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '16px',
+              color: 'rgba(255,255,255,0.85)',
+              textShadow: '0 1px 5px rgba(0,0,0,0.4)',
+            }}
+          >
+            Advanced displacement, blur, saturation, and aberration settings
+          </p>
+        </div>
+        <div
+          style={{
+            borderRadius: '20px',
+            boxShadow: '0 30px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.2)',
+          }}
+        >
+          <Story />
+        </div>
+      </div>
     ),
   ],
   parameters: {
@@ -655,128 +921,160 @@ export const GlassWithInteractiveContent: Story = {
     const [showOverlay, setShowOverlay] = useState(true);
 
     return (
-      <BackgroundWrapper
+      <div
         style={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '30px',
+          width: '100%',
         }}
-        height="80vh"
-        width="90vw"
-        padding="60px"
       >
-        <VideoPlayer
-          {...args}
-          glassContent={
-            showOverlay ? (
-              <div
-                style={{
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  backdropFilter: 'blur(20px)',
-                  borderRadius: '20px',
-                  padding: '40px',
-                  textAlign: 'center',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                  maxWidth: '500px',
-                  boxShadow: '0 12px 40px rgba(0, 0, 0, 0.3)',
-                }}
-              >
-                <h2
-                  style={{
-                    margin: '0 0 20px 0',
-                    color: 'white',
-                    fontSize: '28px',
-                    fontWeight: '600',
-                    textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)',
-                  }}
-                >
-                  🎬 Premium Cinema Experience
-                </h2>
-                <p
-                  style={{
-                    margin: '0 0 30px 0',
-                    color: 'rgba(255, 255, 255, 0.9)',
-                    fontSize: '18px',
-                    lineHeight: '1.6',
-                    textShadow: '0 1px 4px rgba(0, 0, 0, 0.5)',
-                  }}
-                >
-                  Immerse yourself in a cinematic journey with our advanced glass morphism effects,
-                  premium video quality, and interactive features designed for the ultimate viewing
-                  experience.
-                </p>
+        <div style={{ textAlign: 'center', maxWidth: '800px' }}>
+          <h2
+            style={{
+              margin: '0 0 16px 0',
+              fontSize: '42px',
+              fontWeight: '700',
+              color: 'white',
+              textShadow: '0 4px 20px rgba(0,0,0,0.7)',
+            }}
+          >
+            🎭 Interactive Glass Content
+          </h2>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '18px',
+              color: 'rgba(255,255,255,0.9)',
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+            }}
+          >
+            Custom interactive overlays with call-to-action elements
+          </p>
+        </div>
+        <div
+          style={{
+            borderRadius: '20px',
+            boxShadow: '0 30px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.2)',
+          }}
+        >
+          <VideoPlayer
+            {...args}
+            glassContent={
+              showOverlay ? (
                 <div
                   style={{
-                    display: 'flex',
-                    gap: '16px',
-                    justifyContent: 'center',
-                    flexWrap: 'wrap',
+                    background: 'rgba(255, 255, 255, 0.15)',
+                    backdropFilter: 'blur(20px)',
+                    borderRadius: '24px',
+                    padding: '50px',
+                    textAlign: 'center',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    maxWidth: '550px',
+                    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4)',
                   }}
                 >
-                  <button
-                    onClick={() => setShowOverlay(false)}
+                  <h2
                     style={{
-                      background:
-                        'linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15))',
-                      border: '1px solid rgba(255, 255, 255, 0.4)',
-                      borderRadius: '14px',
+                      margin: '0 0 24px 0',
                       color: 'white',
-                      padding: '14px 28px',
-                      cursor: 'pointer',
-                      fontSize: '16px',
-                      fontWeight: '600',
-                      transition: 'all 0.3s ease',
-                      textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)',
-                      boxShadow: '0 6px 20px rgba(0, 0, 0, 0.2)',
-                      transform: 'translateY(0)',
-                    }}
-                    onMouseOver={e => {
-                      const target = e.target as HTMLButtonElement;
-                      target.style.background =
-                        'linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.25))';
-                      target.style.transform = 'translateY(-2px)';
-                      target.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.3)';
-                    }}
-                    onMouseOut={e => {
-                      const target = e.target as HTMLButtonElement;
-                      target.style.background =
-                        'linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15))';
-                      target.style.transform = 'translateY(0)';
-                      target.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.2)';
+                      fontSize: '32px',
+                      fontWeight: '700',
+                      textShadow: '0 4px 12px rgba(0, 0, 0, 0.6)',
+                      letterSpacing: '-0.02em',
                     }}
                   >
-                    ▶ Start Watching
-                  </button>
-                  <button
+                    🎬 Premium Cinema Experience
+                  </h2>
+                  <p
                     style={{
-                      background: 'rgba(255, 255, 255, 0.1)',
-                      border: '1px solid rgba(255, 255, 255, 0.3)',
-                      borderRadius: '14px',
-                      color: 'white',
-                      padding: '14px 28px',
-                      cursor: 'pointer',
-                      fontSize: '16px',
-                      fontWeight: '500',
-                      transition: 'all 0.3s ease',
-                      textShadow: '0 1px 2px rgba(0, 0, 0, 0.5)',
-                    }}
-                    onMouseOver={e => {
-                      const target = e.target as HTMLButtonElement;
-                      target.style.background = 'rgba(255, 255, 255, 0.2)';
-                      target.style.transform = 'translateY(-1px)';
-                    }}
-                    onMouseOut={e => {
-                      const target = e.target as HTMLButtonElement;
-                      target.style.background = 'rgba(255, 255, 255, 0.1)';
-                      target.style.transform = 'translateY(0)';
+                      margin: '0 0 36px 0',
+                      color: 'rgba(255, 255, 255, 0.95)',
+                      fontSize: '18px',
+                      lineHeight: '1.7',
+                      textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)',
                     }}
                   >
-                    Learn More
-                  </button>
+                    Immerse yourself in a cinematic journey with our advanced glass morphism
+                    effects, premium video quality, and interactive features designed for the
+                    ultimate viewing experience.
+                  </p>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '20px',
+                      justifyContent: 'center',
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    <button
+                      onClick={() => setShowOverlay(false)}
+                      style={{
+                        background:
+                          'linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2))',
+                        border: '1px solid rgba(255, 255, 255, 0.4)',
+                        borderRadius: '16px',
+                        color: 'white',
+                        padding: '16px 32px',
+                        cursor: 'pointer',
+                        fontSize: '17px',
+                        fontWeight: '600',
+                        transition: 'all 0.3s ease',
+                        textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
+                        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+                        transform: 'translateY(0)',
+                      }}
+                      onMouseOver={e => {
+                        const target = e.target as HTMLButtonElement;
+                        target.style.background =
+                          'linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3))';
+                        target.style.transform = 'translateY(-3px)';
+                        target.style.boxShadow = '0 12px 32px rgba(0, 0, 0, 0.4)';
+                      }}
+                      onMouseOut={e => {
+                        const target = e.target as HTMLButtonElement;
+                        target.style.background =
+                          'linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2))';
+                        target.style.transform = 'translateY(0)';
+                        target.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.3)';
+                      }}
+                    >
+                      ▶ Start Watching
+                    </button>
+                    <button
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.15)',
+                        border: '1px solid rgba(255, 255, 255, 0.35)',
+                        borderRadius: '16px',
+                        color: 'white',
+                        padding: '16px 32px',
+                        cursor: 'pointer',
+                        fontSize: '17px',
+                        fontWeight: '500',
+                        transition: 'all 0.3s ease',
+                        textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
+                      }}
+                      onMouseOver={e => {
+                        const target = e.target as HTMLButtonElement;
+                        target.style.background = 'rgba(255, 255, 255, 0.25)';
+                        target.style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseOut={e => {
+                        const target = e.target as HTMLButtonElement;
+                        target.style.background = 'rgba(255, 255, 255, 0.15)';
+                        target.style.transform = 'translateY(0)';
+                      }}
+                    >
+                      Learn More
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ) : null
-          }
-        />
-      </BackgroundWrapper>
+              ) : null
+            }
+          />
+        </div>
+      </div>
     );
   },
   args: {
@@ -818,7 +1116,10 @@ export const GlassWithInteractiveContent: Story = {
 };
 
 /**
- * Responsive and Layout Examples
+ * 📱 Responsive Player - Fluid Layout
+ *
+ * Fully responsive video player that adapts to container width while maintaining aspect ratio.
+ * Perfect for content management systems and responsive layouts.
  */
 export const ResponsivePlayer: Story = {
   args: {
@@ -844,28 +1145,60 @@ export const ResponsivePlayer: Story = {
       <div
         style={{
           width: '100%',
-          maxWidth: '1200px',
+          maxWidth: '1400px',
           margin: '0 auto',
-          padding: '20px',
-          background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
-          borderRadius: '16px',
+          padding: '40px',
+          background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%)',
+          borderRadius: '24px',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
         }}
       >
         <div
           style={{
-            marginBottom: '20px',
+            marginBottom: '30px',
             textAlign: 'center',
             color: 'white',
           }}
         >
-          <h3 style={{ margin: '0 0 10px 0', fontSize: '24px', fontWeight: '600' }}>
-            Responsive Video Player
-          </h3>
-          <p style={{ margin: 0, fontSize: '16px', opacity: 0.9 }}>
+          <h2
+            style={{
+              margin: '0 0 12px 0',
+              fontSize: '36px',
+              fontWeight: '700',
+              textShadow: '0 4px 12px rgba(0,0,0,0.4)',
+            }}
+          >
+            📱 Responsive Video Player
+          </h2>
+          <p
+            style={{
+              margin: '0 0 8px 0',
+              fontSize: '18px',
+              opacity: 0.95,
+              textShadow: '0 2px 6px rgba(0,0,0,0.3)',
+            }}
+          >
             Adapts to any screen size with fluid width and maintained aspect ratio
           </p>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '14px',
+              opacity: 0.8,
+              textShadow: '0 1px 3px rgba(0,0,0,0.3)',
+            }}
+          >
+            Resize your browser window to see the responsive behavior
+          </p>
         </div>
-        <Story />
+        <div
+          style={{
+            borderRadius: '16px',
+            boxShadow: '0 15px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)',
+          }}
+        >
+          <Story />
+        </div>
       </div>
     ),
   ],
@@ -884,8 +1217,9 @@ export const SquareFormat: Story = {
     src: videoSources.weAreGoingOnBullrun.src,
     poster: videoSources.weAreGoingOnBullrun.poster,
     aspectRatio: '1:1',
-    width: '500px',
+    width: '600px',
     controls: true,
+    showSettings: true,
     onPlay: fn(),
     onPause: fn(),
     onEnded: fn(),
@@ -896,17 +1230,57 @@ export const SquareFormat: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper backgroundIndex={4} height="60vh" width="80vw" overlayOpacity={0.3}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '30px',
+          width: '100%',
+        }}
+      >
         <div style={{ textAlign: 'center', color: 'white' }}>
-          <h3 style={{ margin: '0 0 20px 0', fontSize: '22px', fontWeight: '600' }}>
-            Square Format Video
-          </h3>
-          <p style={{ margin: '0 0 30px 0', fontSize: '16px', opacity: 0.9 }}>
+          <h2
+            style={{
+              margin: '0 0 16px 0',
+              fontSize: '36px',
+              fontWeight: '700',
+              textShadow: '0 4px 20px rgba(0,0,0,0.6)',
+            }}
+          >
+            ⬜ Square Format
+          </h2>
+          <p
+            style={{
+              margin: '0 0 8px 0',
+              fontSize: '18px',
+              opacity: 0.95,
+              textShadow: '0 2px 10px rgba(0,0,0,0.4)',
+              fontWeight: '500',
+            }}
+          >
             Perfect for social media content and mobile-first designs
           </p>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '14px',
+              opacity: 0.8,
+              textShadow: '0 1px 5px rgba(0,0,0,0.3)',
+            }}
+          >
+            Instagram-style videos optimized for mobile viewing
+          </p>
+        </div>
+        <div
+          style={{
+            borderRadius: '20px',
+            boxShadow: '0 25px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.15)',
+          }}
+        >
           <Story />
         </div>
-      </BackgroundWrapper>
+      </div>
     ),
   ],
   parameters: {
@@ -924,7 +1298,7 @@ export const VerticalFormat: Story = {
     src: videoSources.bigBuckBunny.src,
     poster: videoSources.bigBuckBunny.poster,
     aspectRatio: '9:16',
-    width: '360px',
+    width: '400px',
     controls: true,
     showSettings: true,
     onPlay: fn(),
@@ -937,17 +1311,57 @@ export const VerticalFormat: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper backgroundIndex={1} height="90vh" width="70vw" overlayOpacity={0.2}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '30px',
+          width: '100%',
+        }}
+      >
         <div style={{ textAlign: 'center', color: 'white' }}>
-          <h3 style={{ margin: '0 0 20px 0', fontSize: '22px', fontWeight: '600' }}>
-            Vertical/Portrait Format
-          </h3>
-          <p style={{ margin: '0 0 30px 0', fontSize: '16px', opacity: 0.9 }}>
+          <h2
+            style={{
+              margin: '0 0 16px 0',
+              fontSize: '36px',
+              fontWeight: '700',
+              textShadow: '0 4px 20px rgba(0,0,0,0.6)',
+            }}
+          >
+            📱 Vertical/Portrait Format
+          </h2>
+          <p
+            style={{
+              margin: '0 0 8px 0',
+              fontSize: '18px',
+              opacity: 0.95,
+              textShadow: '0 2px 10px rgba(0,0,0,0.4)',
+              fontWeight: '500',
+            }}
+          >
             Optimized for mobile viewing and story-style content
           </p>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '14px',
+              opacity: 0.8,
+              textShadow: '0 1px 5px rgba(0,0,0,0.3)',
+            }}
+          >
+            TikTok-style videos and story formats
+          </p>
+        </div>
+        <div
+          style={{
+            borderRadius: '20px',
+            boxShadow: '0 25px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.15)',
+          }}
+        >
           <Story />
         </div>
-      </BackgroundWrapper>
+      </div>
     ),
   ],
   parameters: {
@@ -961,14 +1375,14 @@ export const VerticalFormat: Story = {
 };
 
 /**
- * Specialized Configurations
+ * 🎯 Specialized Configurations
  */
 export const MinimalPlayer: Story = {
   args: {
     src: videoSources.elephantsDream.src,
     poster: videoSources.elephantsDream.poster,
-    width: '600px',
-    height: '338px',
+    width: '700px',
+    height: '394px',
     controls: true,
     showDownload: false,
     showShare: false,
@@ -983,17 +1397,57 @@ export const MinimalPlayer: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper backgroundIndex={0} height="60vh" width="80vw" overlayOpacity={0.1}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '30px',
+          width: '100%',
+        }}
+      >
         <div style={{ textAlign: 'center', color: 'white' }}>
-          <h3 style={{ margin: '0 0 20px 0', fontSize: '22px', fontWeight: '600' }}>
-            Minimal Configuration
-          </h3>
-          <p style={{ margin: '0 0 30px 0', fontSize: '16px', opacity: 0.9 }}>
+          <h2
+            style={{
+              margin: '0 0 16px 0',
+              fontSize: '36px',
+              fontWeight: '700',
+              textShadow: '0 4px 20px rgba(0,0,0,0.6)',
+            }}
+          >
+            🎯 Minimal Configuration
+          </h2>
+          <p
+            style={{
+              margin: '0 0 8px 0',
+              fontSize: '18px',
+              opacity: 0.95,
+              textShadow: '0 2px 10px rgba(0,0,0,0.4)',
+              fontWeight: '500',
+            }}
+          >
             Clean, distraction-free video playback with essential controls only
           </p>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '14px',
+              opacity: 0.8,
+              textShadow: '0 1px 5px rgba(0,0,0,0.3)',
+            }}
+          >
+            Perfect for situations where simplicity and focus are priorities
+          </p>
+        </div>
+        <div
+          style={{
+            borderRadius: '16px',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)',
+          }}
+        >
           <Story />
         </div>
-      </BackgroundWrapper>
+      </div>
     ),
   ],
   parameters: {
@@ -1013,8 +1467,8 @@ export const AutoplayMuted: Story = {
     autoplay: true,
     muted: true,
     loop: true,
-    width: '700px',
-    height: '394px',
+    width: '800px',
+    height: '450px',
     controls: true,
     onPlay: fn(),
     onPause: fn(),
@@ -1026,17 +1480,57 @@ export const AutoplayMuted: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper backgroundIndex={2} height="60vh" width="85vw" overlayOpacity={0.2}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '30px',
+          width: '100%',
+        }}
+      >
         <div style={{ textAlign: 'center', color: 'white' }}>
-          <h3 style={{ margin: '0 0 20px 0', fontSize: '22px', fontWeight: '600' }}>
-            Autoplay & Loop Configuration
-          </h3>
-          <p style={{ margin: '0 0 30px 0', fontSize: '16px', opacity: 0.9 }}>
+          <h2
+            style={{
+              margin: '0 0 16px 0',
+              fontSize: '36px',
+              fontWeight: '700',
+              textShadow: '0 4px 20px rgba(0,0,0,0.6)',
+            }}
+          >
+            🔄 Autoplay & Loop
+          </h2>
+          <p
+            style={{
+              margin: '0 0 8px 0',
+              fontSize: '18px',
+              opacity: 0.95,
+              textShadow: '0 2px 10px rgba(0,0,0,0.4)',
+              fontWeight: '500',
+            }}
+          >
             Perfect for background videos and promotional content
           </p>
+          <p
+            style={{
+              margin: 0,
+              fontSize: '14px',
+              opacity: 0.8,
+              textShadow: '0 1px 5px rgba(0,0,0,0.3)',
+            }}
+          >
+            Ideal for hero sections and promotional displays
+          </p>
+        </div>
+        <div
+          style={{
+            borderRadius: '16px',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)',
+          }}
+        >
           <Story />
         </div>
-      </BackgroundWrapper>
+      </div>
     ),
   ],
   parameters: {
@@ -1050,14 +1544,14 @@ export const AutoplayMuted: Story = {
 };
 
 /**
- * Accessibility and Internationalization
+ * 🌍 Accessibility and Internationalization
  */
 export const WithSubtitles: Story = {
   args: {
     src: videoSources.tearsOfSteel.src,
     poster: videoSources.tearsOfSteel.poster,
-    width: '800px',
-    height: '450px',
+    width: '900px',
+    height: '506px',
     subtitles: sampleSubtitles,
     controls: true,
     showSettings: true,
@@ -1071,17 +1565,75 @@ export const WithSubtitles: Story = {
   },
   decorators: [
     Story => (
-      <BackgroundWrapper backgroundIndex={3} height="70vh" width="90vw" overlayOpacity={0.15}>
-        <div style={{ textAlign: 'center', color: 'white', marginBottom: '30px' }}>
-          <h3 style={{ margin: '0 0 10px 0', fontSize: '22px', fontWeight: '600' }}>
-            Multi-Language Subtitles
-          </h3>
-          <p style={{ margin: 0, fontSize: '16px', opacity: 0.9 }}>
-            Accessibility support with English, Spanish, and Bengali subtitle options
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '30px',
+          width: '100%',
+        }}
+      >
+        <div style={{ textAlign: 'center', color: 'white', maxWidth: '800px' }}>
+          <h2
+            style={{
+              margin: '0 0 16px 0',
+              fontSize: '36px',
+              fontWeight: '700',
+              textShadow: '0 4px 20px rgba(0,0,0,0.6)',
+            }}
+          >
+            🌍 Multi-Language Subtitles
+          </h2>
+          <p
+            style={{
+              margin: '0 0 12px 0',
+              fontSize: '18px',
+              opacity: 0.95,
+              textShadow: '0 2px 10px rgba(0,0,0,0.4)',
+              fontWeight: '500',
+            }}
+          >
+            Accessibility support with multiple language options
           </p>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '10px',
+              justifyContent: 'center',
+              marginTop: '16px',
+            }}
+          >
+            {['English', 'Español', 'বাংলা'].map(lang => (
+              <span
+                key={lang}
+                style={{
+                  background: 'rgba(255,255,255,0.15)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: '16px',
+                  padding: '6px 14px',
+                  fontSize: '13px',
+                  color: 'white',
+                  fontWeight: '500',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.3)',
+                }}
+              >
+                {lang}
+              </span>
+            ))}
+          </div>
         </div>
-        <Story />
-      </BackgroundWrapper>
+        <div
+          style={{
+            borderRadius: '20px',
+            boxShadow: '0 25px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.15)',
+          }}
+        >
+          <Story />
+        </div>
+      </div>
     ),
   ],
   parameters: {
@@ -1095,7 +1647,10 @@ export const WithSubtitles: Story = {
 };
 
 /**
- * Interactive Playground with Dynamic Controls
+ * 🎮 Interactive Playground - Live Customization
+ *
+ * Interactive playground allowing real-time experimentation with all VideoPlayer properties.
+ * Use the control panel to adjust settings and see how they affect the player appearance and behavior.
  */
 export const InteractivePlayground: Story = {
   render: () => {
@@ -1112,7 +1667,6 @@ export const InteractivePlayground: Story = {
       ambientMode: false,
       glass: false,
       glassOpacity: 0.4,
-      backgroundIndex: 0,
     });
 
     const handleChange = (property: string, value: any) => {
@@ -1125,135 +1679,158 @@ export const InteractivePlayground: Story = {
     const aspectRatios = ['16:9', '4:3', '21:9', '1:1', '9:16'] as const;
 
     return (
-      <BackgroundWrapper
-        backgroundIndex={settings.backgroundIndex}
-        height="90vh"
-        width="95vw"
-        style={{ position: 'relative' }}
-      >
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '80px' }}>
         {/* Control Panel */}
         <div
           style={{
-            position: 'absolute',
-            top: '20px',
-            left: '20px',
-            width: '300px',
-            padding: '20px',
-            borderRadius: '12px',
-            background: 'rgba(0,0,0,0.8)',
-            backdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255,255,255,0.2)',
+            width: '320px',
+            padding: '24px',
+            borderRadius: '16px',
+            background: 'rgba(0,0,0,0.85)',
+            backdropFilter: 'blur(30px)',
+            border: '1px solid rgba(255,255,255,0.25)',
             color: 'white',
             fontSize: '14px',
             zIndex: 10,
+            boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
           }}
         >
-          <h3 style={{ margin: '0 0 20px 0', fontSize: '18px', textAlign: 'center' }}>
-            VideoPlayer Controls
+          <h3
+            style={{
+              margin: '0 0 24px 0',
+              fontSize: '20px',
+              textAlign: 'center',
+              fontWeight: '700',
+              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+            }}
+          >
+            🎮 Live Controls
           </h3>
 
           {/* Aspect Ratio */}
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>
-              Aspect Ratio
+          <div style={{ marginBottom: '18px' }}>
+            <label
+              style={{
+                display: 'block',
+                marginBottom: '8px',
+                fontWeight: '600',
+                fontSize: '13px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+                opacity: 0.9,
+              }}
+            >
+              📐 Aspect Ratio
             </label>
             <select
               value={settings.aspectRatio}
               onChange={e => handleChange('aspectRatio', e.target.value)}
               style={{
                 width: '100%',
-                padding: '8px',
-                backgroundColor: 'rgba(255,255,255,0.1)',
+                padding: '10px 12px',
+                backgroundColor: 'rgba(255,255,255,0.12)',
                 color: 'white',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: '4px',
+                border: '1px solid rgba(255,255,255,0.25)',
+                borderRadius: '8px',
+                fontSize: '14px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseOver={e => {
+                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.18)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
+              }}
+              onMouseOut={e => {
+                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.12)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
               }}
             >
               {aspectRatios.map(ratio => (
-                <option key={ratio} value={ratio} style={{ backgroundColor: '#333' }}>
+                <option
+                  key={ratio}
+                  value={ratio}
+                  style={{ backgroundColor: '#1a1a2e', color: 'white' }}
+                >
                   {ratio}
                 </option>
               ))}
             </select>
           </div>
 
-          {/* Background */}
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>
-              Background ({settings.backgroundIndex + 1}/5)
-            </label>
-            <input
-              type="range"
-              min="0"
-              max="4"
-              value={settings.backgroundIndex}
-              onChange={e => handleChange('backgroundIndex', parseInt(e.target.value))}
-              style={{ width: '100%', accentColor: '#6366f1' }}
-            />
-          </div>
-
-          {/* Glass Opacity */}
-          {settings.glass && (
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>
-                Glass Opacity ({settings.glassOpacity})
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.05"
-                value={settings.glassOpacity}
-                onChange={e => handleChange('glassOpacity', parseFloat(e.target.value))}
-                style={{ width: '100%', accentColor: '#6366f1' }}
-              />
-            </div>
-          )}
+          {/* Divider */}
+          <div
+            style={{
+              height: '1px',
+              background: 'rgba(255,255,255,0.15)',
+              margin: '20px 0',
+            }}
+          />
 
           {/* Checkboxes */}
-          {[
-            { key: 'autoplay', label: 'Autoplay' },
-            { key: 'muted', label: 'Muted' },
-            { key: 'loop', label: 'Loop' },
-            { key: 'controls', label: 'Controls' },
-            { key: 'showDownload', label: 'Download Button' },
-            { key: 'showShare', label: 'Share Button' },
-            { key: 'showSettings', label: 'Settings Menu' },
-            { key: 'ambientMode', label: 'Ambient Mode' },
-            { key: 'glass', label: 'Glass Effect' },
-          ].map(({ key, label }) => (
-            <div
-              key={key}
-              style={{ display: 'flex', alignItems: 'center', marginBottom: '12px', gap: '8px' }}
-            >
-              <input
-                type="checkbox"
-                id={key}
-                checked={settings[key as keyof typeof settings] as boolean}
-                onChange={e => handleChange(key, e.target.checked)}
-                style={{ width: '16px', height: '16px' }}
-              />
-              <label htmlFor={key} style={{ fontSize: '13px' }}>
-                {label}
-              </label>
-            </div>
-          ))}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {[
+              { key: 'autoplay', label: '▶️ Autoplay', emoji: '▶️' },
+              { key: 'muted', label: '🔇 Muted', emoji: '🔇' },
+              { key: 'loop', label: '🔁 Loop', emoji: '🔁' },
+              { key: 'controls', label: '🎛️ Controls', emoji: '🎛️' },
+              { key: 'showDownload', label: '⬇️ Download Button', emoji: '⬇️' },
+              { key: 'showShare', label: '🔗 Share Button', emoji: '🔗' },
+              { key: 'showSettings', label: '⚙️ Settings Menu', emoji: '⚙️' },
+              { key: 'ambientMode', label: '🌈 Ambient Mode', emoji: '🌈' },
+              { key: 'glass', label: '✨ Glass Effect', emoji: '✨' },
+            ].map(({ key, label }) => (
+              <div
+                key={key}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '8px',
+                  borderRadius: '8px',
+                  transition: 'background 0.2s ease',
+                  cursor: 'pointer',
+                }}
+                onMouseOver={e => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+                }}
+                onMouseOut={e => {
+                  e.currentTarget.style.background = 'transparent';
+                }}
+              >
+                <input
+                  type="checkbox"
+                  id={key}
+                  checked={settings[key as keyof typeof settings] as boolean}
+                  onChange={e => handleChange(key, e.target.checked)}
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    cursor: 'pointer',
+                    accentColor: '#7AFFD7',
+                  }}
+                />
+                <label
+                  htmlFor={key}
+                  style={{
+                    fontSize: '13px',
+                    cursor: 'pointer',
+                    fontWeight: '500',
+                    flex: 1,
+                  }}
+                >
+                  {label}
+                </label>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Video Player */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100%',
-            paddingLeft: '340px',
-          }}
-        >
+        <div>
           <VideoPlayer
-            src={videoSources.subaru.src}
-            poster={videoSources.subaru.poster}
-            width="700px"
+            src={videoSources.snow.src}
+            poster={videoSources.snow.poster}
+            width="800px"
             aspectRatio={settings.aspectRatio}
             autoplay={settings.autoplay}
             muted={settings.muted}
@@ -1276,14 +1853,14 @@ export const InteractivePlayground: Story = {
             onError={fn()}
           />
         </div>
-      </BackgroundWrapper>
+      </div>
     );
   },
   parameters: {
     docs: {
       description: {
         story:
-          'Interactive playground allowing real-time experimentation with all VideoPlayer properties. Use the control panel to adjust settings and see how they affect the player appearance and behavior.',
+          'Interactive playground allowing real-time experimentation with all VideoPlayer properties. Use the control panel to adjust settings and see how they affect the player appearance and behavior. Perfect for developers to explore all features and configurations.',
       },
     },
   },
