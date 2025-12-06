@@ -6,8 +6,8 @@
 $badge-font-size: fonts.$font-size-xs !default;
 $badge-font-weight: fonts.$font-weight-normal !default;
 
-$badge-padding-x: map.get($spacing-sizes, 2.5) !default; //10px
-$badge-padding-y: map.get($spacing-sizes, 1.5) !default; //6px
+$badge-padding-x: map.get($spacing-sizes, 'px-10') !default; //10px
+$badge-padding-y: map.get($spacing-sizes, 'px-6') !default; //6px
 $badge-padding-y-sm: map.get($spacing-sizes, 1) !default; //4px
 $badge-padding-y-lg: map.get($spacing-sizes, 2) !default; //8px
 
