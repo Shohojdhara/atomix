@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import type { DisplacementMode } from '../../lib/types/components';
 import type { FragmentShaderType } from './shader-utils';
 import { getDisplacementMap } from './glass-utils';
@@ -17,7 +17,7 @@ interface GlassFilterProps {
  * GlassFilter - SVG filter component for glass morphism effects
  * Creates chromatic aberration and edge distortion effects using SVG filters
  */
-export const GlassFilter: React.FC<GlassFilterProps> = ({
+const GlassFilterComponent: React.FC<GlassFilterProps> = ({
   id,
   displacementScale,
   aberrationIntensity,
@@ -153,5 +153,18 @@ export const GlassFilter: React.FC<GlassFilterProps> = ({
   </svg>
 );
 
-GlassFilter.displayName = 'GlassFilter';
+GlassFilterComponent.displayName = 'GlassFilter';
+
+// Memoize component to prevent unnecessary re-renders
+export const GlassFilter = memo(GlassFilterComponent, (prevProps, nextProps) => {
+  // Custom comparison: only re-render if props actually changed
+  return (
+    prevProps.id === nextProps.id &&
+    prevProps.displacementScale === nextProps.displacementScale &&
+    prevProps.aberrationIntensity === nextProps.aberrationIntensity &&
+    prevProps.mode === nextProps.mode &&
+    prevProps.shaderMapUrl === nextProps.shaderMapUrl &&
+    prevProps.blurAmount === nextProps.blurAmount
+  );
+});
 

@@ -851,6 +851,14 @@ export class ShaderDisplacementGenerator {
 
   destroy(): void {
     try {
+      // Clear canvas data to free memory
+      if (this.context) {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+      // Reduce memory footprint by setting dimensions to 0
+      this.canvas.width = 0;
+      this.canvas.height = 0;
+      // Remove from DOM
       this.canvas.remove();
     } catch (e) {
       // Silently handle cleanup errors

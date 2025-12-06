@@ -14,6 +14,7 @@ import type {
   OverLightObjectConfig,
 } from '../types/components';
 import { ATOMIX_GLASS } from '../constants/components';
+import { globalMouseTracker } from './shared-mouse-tracker';
 import {
   calculateDistance,
   calculateElementCenter,
@@ -24,6 +25,59 @@ import {
 } from '../../components/AtomixGlass/glass-utils';
 
 const { CONSTANTS } = ATOMIX_GLASS;
+
+// Module-level shared background detection cache using WeakMap
+// Automatically cleaned up when elements are removed from DOM
+interface BackgroundDetectionCacheEntry {
+  result: boolean;
+  timestamp: number;
+  config: OverLightConfig;
+  threshold: number;
+}
+
+const backgroundDetectionCache = new WeakMap<HTMLElement, BackgroundDetectionCacheEntry>();
+
+/**
+ * Get cached background detection result
+ */
+const getCachedBackgroundDetection = (
+  parentElement: HTMLElement | null,
+  overLightConfig: OverLightConfig
+): boolean | null => {
+  if (!parentElement) {
+    return null;
+  }
+  
+  const cached = backgroundDetectionCache.get(parentElement);
+  if (cached && cached.config === overLightConfig) {
+    // Update timestamp for LRU-like behavior (though WeakMap doesn't support LRU)
+    cached.timestamp = Date.now();
+    return cached.result;
+  }
+  
+  return null;
+};
+
+/**
+ * Set cached background detection result
+ */
+const setCachedBackgroundDetection = (
+  parentElement: HTMLElement | null,
+  overLightConfig: OverLightConfig,
+  result: boolean,
+  threshold: number
+): void => {
+  if (!parentElement) {
+    return;
+  }
+  
+  backgroundDetectionCache.set(parentElement, {
+    result,
+    timestamp: Date.now(),
+    config: overLightConfig,
+    threshold,
+  });
+};
 
 interface UseAtomixGlassOptions extends Omit<AtomixGlassProps, 'children'> {
   glassRef: React.RefObject<HTMLDivElement>;
@@ -108,6 +162,8 @@ export function useAtomixGlass({
   const [userPrefersReducedMotion, setUserPrefersReducedMotion] = useState(false);
   const [userPrefersHighContrast, setUserPrefersHighContrast] = useState(false);
   const [detectedOverLight, setDetectedOverLight] = useState(false);
+  
+  // Use shared module-level cache (no per-instance cache needed)
 
   // Memoized derived values
   const effectiveCornerRadius = useMemo(() => {
@@ -211,9 +267,18 @@ export function useAtomixGlass({
     const shouldDetect = (overLight === 'auto' || (typeof overLight === 'object' && overLight !== null));
 
     if (shouldDetect && glassRef.current) {
+      const element = glassRef.current;
+      const parentElement = element.parentElement;
+      
+      // Check shared cache: skip detection if parent unchanged and config unchanged
+      const cachedResult = getCachedBackgroundDetection(parentElement, overLight);
+      if (cachedResult !== null) {
+        setDetectedOverLight(cachedResult);
+        return;
+      }
+
       const timeoutId = setTimeout(() => {
         try {
-          const element = glassRef.current;
           if (!element) {
             setDetectedOverLight(false);
             return;
@@ -315,6 +380,10 @@ export function useAtomixGlass({
               }
 
               const isOverLightDetected = avgLuminance > threshold;
+              
+              // Cache the result in shared cache
+              setCachedBackgroundDetection(element.parentElement, overLight, isOverLightDetected, threshold);
+              
               setDetectedOverLight(isOverLightDetected);
 
               // Debug logging
@@ -331,24 +400,42 @@ export function useAtomixGlass({
               }
             } else {
               // Invalid luminance calculation, default to false
-              setDetectedOverLight(false);
+              const result = false;
+              const threshold = typeof overLight === 'object' && overLight !== null
+                ? (overLight as OverLightObjectConfig).threshold || 0.7
+                : 0.7;
+              setCachedBackgroundDetection(element.parentElement, overLight, result, threshold);
+              setDetectedOverLight(result);
             }
           } else {
             // Default to false if no valid background found
-            setDetectedOverLight(false);
+            const result = false;
+            const threshold = typeof overLight === 'object' && overLight !== null
+              ? (overLight as OverLightObjectConfig).threshold || 0.7
+              : 0.7;
+            setCachedBackgroundDetection(element.parentElement, overLight, result, threshold);
+            setDetectedOverLight(result);
           }
         } catch (error) {
           // Enhanced error logging with context
           if (process.env.NODE_ENV === 'development') {
             console.warn('AtomixGlass: Error detecting background brightness:', error);
           }
-          setDetectedOverLight(false);
+          const result = false;
+          if (element && element.parentElement) {
+            const threshold = typeof overLight === 'object' && overLight !== null
+              ? (overLight as OverLightObjectConfig).threshold || 0.7
+              : 0.7;
+            setCachedBackgroundDetection(element.parentElement, overLight, result, threshold);
+          }
+          setDetectedOverLight(result);
         }
       }, 150);
 
       return () => clearTimeout(timeoutId);
     } else if (typeof overLight === 'boolean') {
       // For boolean values, disable auto-detection
+      // Cache is automatically managed by WeakMap (no manual clearing needed)
       setDetectedOverLight(false);
 
       // Debug logging for boolean mode
@@ -407,88 +494,121 @@ export function useAtomixGlass({
     }
   }, [overLight, glassRef, debugOverLight]);
 
-  // Mouse tracking
-  const mouseMoveThrottleRef = useRef<number | null>(null);
-  const lastMouseEventRef = useRef<MouseEvent | null>(null);
+  // Mouse tracking using shared global tracker
+  // Cache bounding rect to avoid repeated getBoundingClientRect calls
+  const cachedRectRef = useRef<DOMRect | null>(null);
+  const updateRectRef = useRef<number | null>(null);
 
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-      lastMouseEventRef.current = e;
+  // Handle mouse position updates from shared tracker
+  const handleGlobalMousePosition = useCallback(
+    (globalPos: MousePosition) => {
+      if (externalGlobalMousePosition && externalMouseOffset) {
+        // External mouse position provided, skip internal tracking
+        return;
+      }
 
-      if (mouseMoveThrottleRef.current === null) {
-        mouseMoveThrottleRef.current = requestAnimationFrame(() => {
-          const event = lastMouseEventRef.current;
-          if (!event) {
-            mouseMoveThrottleRef.current = null;
-            return;
-          }
+      if (effectiveDisableEffects) {
+        return;
+      }
 
-          const container = mouseContainer?.current || glassRef.current;
-          if (!container) {
-            mouseMoveThrottleRef.current = null;
-            return;
-          }
+      const container = mouseContainer?.current || glassRef.current;
+      if (!container) {
+        return;
+      }
 
-          const startTime = enablePerformanceMonitoring ? performance.now() : 0;
+      const startTime = enablePerformanceMonitoring ? performance.now() : 0;
 
-          const rect = container.getBoundingClientRect();
-          if (rect.width === 0 || rect.height === 0) {
-            mouseMoveThrottleRef.current = null;
-            return;
-          }
+      // Use cached rect if available, otherwise get new one
+      let rect = cachedRectRef.current;
+      if (!rect || rect.width === 0 || rect.height === 0) {
+        rect = container.getBoundingClientRect();
+        cachedRectRef.current = rect;
+      }
 
-          const center = calculateElementCenter(rect);
+      if (rect.width === 0 || rect.height === 0) {
+        return;
+      }
 
-          setInternalMouseOffset({
-            x: ((event.clientX - center.x) / rect.width) * 100,
-            y: ((event.clientY - center.y) / rect.height) * 100,
-          });
+      const center = calculateElementCenter(rect);
 
-          setInternalGlobalMousePosition({
-            x: event.clientX,
-            y: event.clientY,
-          });
+      // Calculate offset relative to this container
+      const newOffset = {
+        x: ((globalPos.x - center.x) / rect.width) * 100,
+        y: ((globalPos.y - center.y) / rect.height) * 100,
+      };
 
-          if (process.env.NODE_ENV !== 'production' && enablePerformanceMonitoring) {
-            const endTime = performance.now();
-            const duration = endTime - startTime;
-            if (duration > 5) {
-              console.warn(`AtomixGlass: Mouse tracking took ${duration.toFixed(2)}ms`);
-            }
-          }
+      // React 18 automatically batches these updates
+      setInternalMouseOffset(newOffset);
+      setInternalGlobalMousePosition(globalPos);
 
-          mouseMoveThrottleRef.current = null;
-        });
+      if (process.env.NODE_ENV !== 'production' && enablePerformanceMonitoring) {
+        const endTime = performance.now();
+        const duration = endTime - startTime;
+        if (duration > 5) {
+          console.warn(`AtomixGlass: Mouse tracking took ${duration.toFixed(2)}ms`);
+        }
       }
     },
-    [mouseContainer, glassRef, enablePerformanceMonitoring]
+    [
+      mouseContainer,
+      glassRef,
+      externalGlobalMousePosition,
+      externalMouseOffset,
+      effectiveDisableEffects,
+      enablePerformanceMonitoring,
+    ]
   );
 
+  // Subscribe to shared mouse tracker
   useEffect(() => {
     if (externalGlobalMousePosition && externalMouseOffset) {
+      // External mouse position provided, don't subscribe
       return undefined;
     }
 
     if (effectiveDisableEffects) {
+      // Effects disabled, don't subscribe
       return undefined;
     }
 
+    // Subscribe to shared tracker
+    const unsubscribe = globalMouseTracker.subscribe(handleGlobalMousePosition);
+
+    // Update cached rect when container size changes
+    const updateRect = () => {
+      if (updateRectRef.current !== null) {
+        cancelAnimationFrame(updateRectRef.current);
+      }
+      updateRectRef.current = requestAnimationFrame(() => {
+        const container = mouseContainer?.current || glassRef.current;
+        if (container) {
+          cachedRectRef.current = container.getBoundingClientRect();
+        }
+        updateRectRef.current = null;
+      });
+    };
+
+    // Use ResizeObserver to update cached rect when container size changes
     const container = mouseContainer?.current || glassRef.current;
-    if (!container) {
-      return undefined;
+    let resizeObserver: ResizeObserver | null = null;
+    
+    if (container && typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(updateRect);
+      resizeObserver.observe(container);
     }
-
-    container.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     return () => {
-      container.removeEventListener('mousemove', handleMouseMove);
-      if (mouseMoveThrottleRef.current) {
-        cancelAnimationFrame(mouseMoveThrottleRef.current);
-        mouseMoveThrottleRef.current = null;
+      unsubscribe();
+      if (updateRectRef.current !== null) {
+        cancelAnimationFrame(updateRectRef.current);
+        updateRectRef.current = null;
+      }
+      if (resizeObserver) {
+        resizeObserver.disconnect();
       }
     };
   }, [
-    handleMouseMove,
+    handleGlobalMousePosition,
     mouseContainer,
     glassRef,
     externalGlobalMousePosition,
@@ -662,32 +782,29 @@ export function useAtomixGlass({
     const initialTimeoutId = setTimeout(() => updateGlassSize(true), 0);
 
     let resizeObserver: ResizeObserver | null = null;
-    let fallbackInterval: NodeJS.Timeout | null = null;
+    let resizeDebounceTimeout: NodeJS.Timeout | null = null;
 
-    const hasResizeObserver = typeof ResizeObserver !== 'undefined';
-
-    if (hasResizeObserver && isValidElement(glassRef.current)) {
+    // ResizeObserver has 98%+ browser support, no need for fallback
+    if (typeof ResizeObserver !== 'undefined' && isValidElement(glassRef.current)) {
       try {
         resizeObserver = new ResizeObserver(entries => {
           for (const entry of entries) {
             if (entry.target === glassRef.current) {
-              updateGlassSize(false);
+              // Update cached rect when size changes
+              if (glassRef.current) {
+                cachedRectRef.current = glassRef.current.getBoundingClientRect();
+              }
+              // Debounce resize updates to match RAF timing (16ms)
+              if (resizeDebounceTimeout) clearTimeout(resizeDebounceTimeout);
+              resizeDebounceTimeout = setTimeout(() => updateGlassSize(false), 16);
               break;
             }
           }
         });
         resizeObserver.observe(glassRef.current);
-      } catch {
-        fallbackInterval = setInterval(
-          () => isValidElement(glassRef.current) && updateGlassSize(false),
-          100
-        );
+      } catch (error) {
+        console.warn('AtomixGlass: ResizeObserver not available, using window resize only', error);
       }
-    } else {
-      fallbackInterval = setInterval(
-        () => isValidElement(glassRef.current) && updateGlassSize(false),
-        100
-      );
     }
 
     window.addEventListener('resize', debouncedResizeHandler, { passive: true });
@@ -696,7 +813,7 @@ export function useAtomixGlass({
       clearTimeout(initialTimeoutId);
       if (rafId !== null) cancelAnimationFrame(rafId);
       if (resizeTimeoutId) clearTimeout(resizeTimeoutId);
-      if (fallbackInterval) clearInterval(fallbackInterval);
+      if (resizeDebounceTimeout) clearTimeout(resizeDebounceTimeout);
       window.removeEventListener('resize', debouncedResizeHandler);
       resizeObserver?.disconnect();
     };
@@ -853,6 +970,12 @@ export function useAtomixGlass({
     },
     [onClick]
   );
+
+  // No-op handler for backward compatibility (mouse tracking now handled by shared tracker)
+  const handleMouseMove = useCallback((_e: MouseEvent) => {
+    // Mouse tracking is now handled by shared global tracker
+    // This handler is kept for backward compatibility with existing code
+  }, []);
 
   return {
     // State

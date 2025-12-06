@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import type { AtomixGlassProps, GlassSize } from '../../lib/types/components';
 import { ATOMIX_GLASS } from '../../lib/constants/components';
 import { AtomixGlassContainer } from './AtomixGlassContainer';
@@ -109,6 +109,14 @@ export function AtomixGlass({
 }: AtomixGlassProps) {
   const glassRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  
+  // Cache CSS custom property values to avoid reading on every render
+  const opacityCacheRef = useRef<{
+    opacity50: number;
+    opacity40: number;
+    opacity80: number;
+    opacity0: number;
+  } | null>(null);
 
   // Use composable hook for all state and logic
   const {
@@ -150,6 +158,34 @@ export function AtomixGlass({
   // Use consistent overLight state from hook
   const isOverLight = overLightConfig.isOverLight;
   const shouldRenderOverLightLayers = enableOverLightLayers && isOverLight;
+
+  // Read CSS custom properties once on mount and cache them
+  useEffect(() => {
+    if (typeof window !== 'undefined' && glassRef.current && !opacityCacheRef.current) {
+      try {
+        const computedStyle = window.getComputedStyle(glassRef.current);
+        const opacity50Value = computedStyle.getPropertyValue('--atomix-opacity-50').trim();
+        const opacity40Value = computedStyle.getPropertyValue('--atomix-opacity-40').trim();
+        const opacity80Value = computedStyle.getPropertyValue('--atomix-opacity-80').trim();
+        const opacity0Value = computedStyle.getPropertyValue('--atomix-opacity-0').trim();
+
+        opacityCacheRef.current = {
+          opacity50: opacity50Value ? parseFloat(opacity50Value) || 0.5 : 0.5,
+          opacity40: opacity40Value ? parseFloat(opacity40Value) || 0.4 : 0.4,
+          opacity80: opacity80Value ? parseFloat(opacity80Value) || 0.8 : 0.8,
+          opacity0: opacity0Value ? parseFloat(opacity0Value) || 0 : 0,
+        };
+      } catch (error) {
+        // Fallback to defaults if reading fails
+        opacityCacheRef.current = {
+          opacity50: 0.5,
+          opacity40: 0.4,
+          opacity80: 0.8,
+          opacity0: 0,
+        };
+      }
+    }
+  }, []);
 
 
   // Calculate base style with transforms (only dynamic values)
@@ -224,10 +260,12 @@ export function AtomixGlass({
   const mouseOffsetX = mouseOffset.x;
   const mouseOffsetY = mouseOffset.y;
 
+  // Extract constants outside useMemo to avoid recreating on every render
+  const GRADIENT = ATOMIX_GLASS.CONSTANTS.GRADIENT;
+
   const gradientCalculations = useMemo(() => {
     const mx = mouseOffsetX;
     const my = mouseOffsetY;
-    const { GRADIENT } = ATOMIX_GLASS.CONSTANTS;
 
     // Calculate gradient angles and stops (optimized)
     const borderGradientAngle =
@@ -285,38 +323,19 @@ export function AtomixGlass({
       baseX,
       baseY,
     };
-  }, [mouseOffsetX, mouseOffsetY, isOverLight]);
+  }, [mouseOffsetX, mouseOffsetY, isOverLight]); // GRADIENT is constant, no need to include
 
   // Memoize opacity values separately - using design token values where applicable
   // Optimize: extract overLightConfig.opacity to avoid depending on whole object
   const overLightOpacity = overLightConfig.opacity;
 
-  // Read opacity design tokens from CSS custom properties
+  // Use cached opacity values from CSS custom properties (read once on mount)
   const opacityValues = useMemo(() => {
-    // Get opacity values from CSS custom properties with fallbacks
-    // These align with design tokens: --atomix-opacity-50, --atomix-opacity-40, etc.
-    let opacity50 = 0.5;
-    let opacity40 = 0.4;
-    let opacity80 = 0.8;
-    let opacity0 = 0;
-
-    // Try to read from CSS custom properties if available (SSR-safe)
-    if (typeof window !== 'undefined' && glassRef.current) {
-      try {
-        const computedStyle = window.getComputedStyle(glassRef.current);
-        const opacity50Value = computedStyle.getPropertyValue('--atomix-opacity-50').trim();
-        const opacity40Value = computedStyle.getPropertyValue('--atomix-opacity-40').trim();
-        const opacity80Value = computedStyle.getPropertyValue('--atomix-opacity-80').trim();
-        const opacity0Value = computedStyle.getPropertyValue('--atomix-opacity-0').trim();
-
-        if (opacity50Value) opacity50 = parseFloat(opacity50Value) || 0.5;
-        if (opacity40Value) opacity40 = parseFloat(opacity40Value) || 0.4;
-        if (opacity80Value) opacity80 = parseFloat(opacity80Value) || 0.8;
-        if (opacity0Value) opacity0 = parseFloat(opacity0Value) || 0;
-      } catch (error) {
-        // Fallback to defaults if reading fails
-      }
-    }
+    // Use cached values if available, otherwise fallback to defaults
+    const opacity50 = opacityCacheRef.current?.opacity50 ?? 0.5;
+    const opacity40 = opacityCacheRef.current?.opacity40 ?? 0.4;
+    const opacity80 = opacityCacheRef.current?.opacity80 ?? 0.8;
+    const opacity0 = opacityCacheRef.current?.opacity0 ?? 0;
 
     const BASE_OVER_LIGHT_OPACITY = opacity40; // Uses design token
     const OVER_OPACITY_MULTIPLIER = 1.1; // Dynamic multiplier for overlay
@@ -328,7 +347,7 @@ export function AtomixGlass({
       base: isOverLight ? overLightOpacity || BASE_OVER_LIGHT_OPACITY : opacity0,
       over: isOverLight ? (overLightOpacity || BASE_OVER_LIGHT_OPACITY) * OVER_OPACITY_MULTIPLIER : opacity0,
     };
-  }, [isHovered, isActive, isOverLight, overLightOpacity, glassRef]);
+  }, [isHovered, isActive, isOverLight, overLightOpacity]);
 
   // Generate CSS variables for layers (only dynamic values)
   // Optimize: extract specific properties from objects to minimize dependencies

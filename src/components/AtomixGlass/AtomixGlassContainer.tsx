@@ -2,7 +2,6 @@ import React, { forwardRef, useId, useRef, useState, useEffect, useMemo } from '
 import type { CSSProperties } from 'react';
 import type { DisplacementMode, MousePosition, GlassSize } from '../../lib/types/components';
 import type { FragmentShaderType } from './shader-utils';
-import { ShaderDisplacementGenerator, fragmentShaders } from './shader-utils';
 import { GlassFilter } from './GlassFilter';
 import {
   calculateElementCenter,
@@ -14,6 +13,52 @@ import {
 import { ATOMIX_GLASS } from '../../lib/constants/components';
 
 const { CONSTANTS } = ATOMIX_GLASS;
+
+// Module-level shared shader cache with LRU eviction
+const MAX_CACHE_SIZE = 15;
+interface ShaderCacheEntry {
+  url: string;
+  timestamp: number;
+}
+const sharedShaderCache = new Map<string, ShaderCacheEntry>();
+
+/**
+ * Get cached shader URL, updating access timestamp
+ */
+const getCachedShader = (key: string): string | null => {
+  const entry = sharedShaderCache.get(key);
+  if (entry) {
+    // Update access timestamp for LRU
+    entry.timestamp = Date.now();
+    return entry.url;
+  }
+  return null;
+};
+
+/**
+ * Set cached shader URL with LRU eviction
+ */
+const setCachedShader = (key: string, url: string): void => {
+  // Evict oldest entries if at capacity
+  if (sharedShaderCache.size >= MAX_CACHE_SIZE) {
+    const entries = Array.from(sharedShaderCache.entries());
+    // Sort by timestamp (oldest first)
+    entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
+    // Remove oldest entry
+    const oldestEntry = entries[0];
+    if (oldestEntry) {
+      sharedShaderCache.delete(oldestEntry[0]);
+    }
+  }
+  sharedShaderCache.set(key, { url, timestamp: Date.now() });
+  
+  // Development mode: log cache size
+  if (process.env.NODE_ENV !== 'production') {
+    if (sharedShaderCache.size >= MAX_CACHE_SIZE * 0.8) {
+      console.log(`AtomixGlass: Shader cache size: ${sharedShaderCache.size}/${MAX_CACHE_SIZE}`);
+    }
+  }
+};
 
 interface AtomixGlassContainerProps {
   className?: string;
@@ -91,30 +136,102 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     const filterId = useId();
     
     const [shaderMapUrl, setShaderMapUrl] = useState<string>('');
-    const shaderGeneratorRef = useRef<ShaderDisplacementGenerator | null>(null);
+    const shaderGeneratorRef = useRef<any>(null);
+    const shaderUtilsRef = useRef<{
+      ShaderDisplacementGenerator: any;
+      fragmentShaders: any;
+    } | null>(null);
+    
+    // Use shared module-level cache (no per-instance cache needed)
+    const shaderDebounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    // Generate initial shader map when mode/size/variant changes
+    // Lazy load shader utilities only when shader mode is needed
+    useEffect(() => {
+      if (mode === 'shader') {
+        // Dynamic import shader utilities
+        import('./shader-utils').then((shaderUtils) => {
+          shaderUtilsRef.current = {
+            ShaderDisplacementGenerator: shaderUtils.ShaderDisplacementGenerator,
+            fragmentShaders: shaderUtils.fragmentShaders,
+          };
+        }).catch((error) => {
+          console.warn('AtomixGlassContainer: Error loading shader utilities', error);
+        });
+      } else {
+        // Clear shader utils when not in shader mode to free memory
+        shaderUtilsRef.current = null;
+      }
+    }, [mode]);
+
+    // Generate shader map with debouncing and caching
     useEffect(() => {
       // Enhanced validation for shader mode
-      if (mode === 'shader' && glassSize && validateGlassSize(glassSize)) {
-        try {
-          shaderGeneratorRef.current?.destroy();
-          const selectedShader = fragmentShaders[shaderVariant] || fragmentShaders.liquidGlass;
-          shaderGeneratorRef.current = new ShaderDisplacementGenerator({
-            width: glassSize.width,
-            height: glassSize.height,
-            fragment: selectedShader,
-          });
-          const url = shaderGeneratorRef.current.updateShader();
-          setShaderMapUrl(url);
-        } catch (error) {
-          console.warn('AtomixGlassContainer: Error generating shader map', error);
-          setShaderMapUrl(''); // Fallback to empty string
+      if (mode === 'shader' && glassSize && validateGlassSize(glassSize) && shaderUtilsRef.current) {
+        // Create cache key from size and variant
+        const cacheKey = `${glassSize.width}x${glassSize.height}-${shaderVariant}`;
+        
+        // Check shared cache first
+        const cachedUrl = getCachedShader(cacheKey);
+        if (cachedUrl) {
+          setShaderMapUrl(cachedUrl);
+          return;
         }
+
+        // Clear any pending debounce
+        if (shaderDebounceTimeoutRef.current) {
+          clearTimeout(shaderDebounceTimeoutRef.current);
+        }
+
+        // Debounce shader generation to avoid blocking on rapid size changes
+        const generateShader = () => {
+          if (!shaderUtilsRef.current) {
+            // Shader utils not loaded yet, retry after a short delay
+            shaderDebounceTimeoutRef.current = setTimeout(generateShader, 100);
+            return;
+          }
+
+          try {
+            const { ShaderDisplacementGenerator, fragmentShaders } = shaderUtilsRef.current;
+            shaderGeneratorRef.current?.destroy();
+            const selectedShader = fragmentShaders[shaderVariant] || fragmentShaders.liquidGlass;
+            shaderGeneratorRef.current = new ShaderDisplacementGenerator({
+              width: glassSize.width,
+              height: glassSize.height,
+              fragment: selectedShader,
+            });
+            
+            // Use requestIdleCallback if available for non-blocking generation
+            const generate = () => {
+              const url = shaderGeneratorRef.current?.updateShader() || '';
+              setCachedShader(cacheKey, url);
+              setShaderMapUrl(url);
+            };
+
+            if (typeof requestIdleCallback !== 'undefined') {
+              requestIdleCallback(generate, { timeout: 1000 });
+            } else {
+              // Fallback to setTimeout for browsers without requestIdleCallback
+              setTimeout(generate, 0);
+            }
+          } catch (error) {
+            console.warn('AtomixGlassContainer: Error generating shader map', error);
+            setShaderMapUrl(''); // Fallback to empty string
+          }
+        };
+
+        // Debounce with 300ms delay
+        shaderDebounceTimeoutRef.current = setTimeout(generateShader, 300);
+      } else {
+        // Not in shader mode, clear URL
+        setShaderMapUrl('');
       }
 
       // Cleanup function with error handling
       return () => {
+        if (shaderDebounceTimeoutRef.current) {
+          clearTimeout(shaderDebounceTimeoutRef.current);
+          shaderDebounceTimeoutRef.current = null;
+        }
         try {
           shaderGeneratorRef.current?.destroy();
         } catch (error) {
@@ -144,12 +261,22 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       return undefined;
     }, [ref, glassSize]);
 
+    // Pre-calculate static multipliers outside useMemo
+    const EDGE_BLUR_MULTIPLIER = 1.25;
+    const CENTER_BLUR_MULTIPLIER = 1.1;
+    const FLOW_BLUR_MULTIPLIER = 1.2;
+    const MOUSE_INFLUENCE_BLUR_FACTOR = 0.4;
+    const EDGE_INTENSITY_MULTIPLIER = 1.5;
+    const EDGE_INTENSITY_MOUSE_FACTOR = 0.3;
+    const CENTER_INTENSITY_DISTANCE_FACTOR = 0.3;
+    const CENTER_INTENSITY_MOUSE_FACTOR = 0.2;
+
     const liquidBlur = useMemo(() => {
       const defaultBlur = {
         baseBlur: blurAmount,
-        edgeBlur: blurAmount * 1.25,
-        centerBlur: blurAmount * 1.1,
-        flowBlur: blurAmount * 1.2,
+        edgeBlur: blurAmount * EDGE_BLUR_MULTIPLIER,
+        centerBlur: blurAmount * CENTER_BLUR_MULTIPLIER,
+        flowBlur: blurAmount * FLOW_BLUR_MULTIPLIER,
       };
 
       // Enhanced validation for liquid blur
@@ -166,6 +293,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       }
 
       try {
+        // Cache center and distance calculations
         const center = calculateElementCenter(rectCache);
         const distance = calculateDistance(globalMousePosition, center);
         const maxDistance =
@@ -173,10 +301,10 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         const normalizedDistance = Math.min(distance / maxDistance, 1);
         const mouseInfluence = calculateMouseInfluence(mouseOffset);
 
-        const baseBlur = blurAmount + mouseInfluence * blurAmount * 0.4;
-        const edgeIntensity = normalizedDistance * 1.5 + mouseInfluence * 0.3;
+        const baseBlur = blurAmount + mouseInfluence * blurAmount * MOUSE_INFLUENCE_BLUR_FACTOR;
+        const edgeIntensity = normalizedDistance * EDGE_INTENSITY_MULTIPLIER + mouseInfluence * EDGE_INTENSITY_MOUSE_FACTOR;
         const edgeBlur = baseBlur * (0.8 + edgeIntensity * 0.6);
-        const centerIntensity = (1 - normalizedDistance) * 0.3 + mouseInfluence * 0.2;
+        const centerIntensity = (1 - normalizedDistance) * CENTER_INTENSITY_DISTANCE_FACTOR + mouseInfluence * CENTER_INTENSITY_MOUSE_FACTOR;
         const centerBlur = baseBlur * (0.3 + centerIntensity * 0.4);
         const deltaX = globalMousePosition.x - center.x;
         const deltaY = globalMousePosition.y - center.y;
