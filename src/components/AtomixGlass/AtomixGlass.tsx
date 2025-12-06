@@ -169,11 +169,18 @@ export function AtomixGlass({
         const opacity80Value = computedStyle.getPropertyValue('--atomix-opacity-80').trim();
         const opacity0Value = computedStyle.getPropertyValue('--atomix-opacity-0').trim();
 
+        // Parse opacity values, handling 0 correctly (use NaN check instead of falsy check)
+        const parseOpacity = (value: string, defaultValue: number): number => {
+          if (!value) return defaultValue;
+          const parsed = parseFloat(value);
+          return isNaN(parsed) ? defaultValue : parsed;
+        };
+
         opacityCacheRef.current = {
-          opacity50: opacity50Value ? parseFloat(opacity50Value) || 0.5 : 0.5,
-          opacity40: opacity40Value ? parseFloat(opacity40Value) || 0.4 : 0.4,
-          opacity80: opacity80Value ? parseFloat(opacity80Value) || 0.8 : 0.8,
-          opacity0: opacity0Value ? parseFloat(opacity0Value) || 0 : 0,
+          opacity50: parseOpacity(opacity50Value, 0.5),
+          opacity40: parseOpacity(opacity40Value, 0.4),
+          opacity80: parseOpacity(opacity80Value, 0.8),
+          opacity0: parseOpacity(opacity0Value, 0),
         };
       } catch (error) {
         // Fallback to defaults if reading fails

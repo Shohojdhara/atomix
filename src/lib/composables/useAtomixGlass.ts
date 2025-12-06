@@ -38,6 +38,72 @@ interface BackgroundDetectionCacheEntry {
 const backgroundDetectionCache = new WeakMap<HTMLElement, BackgroundDetectionCacheEntry>();
 
 /**
+ * Compare two OverLightConfig values for equality
+ * Handles primitives (boolean, 'auto') and objects with deep comparison
+ */
+const compareOverLightConfig = (
+  config1: OverLightConfig,
+  config2: OverLightConfig
+): boolean => {
+  // Primitive comparison for boolean and 'auto'
+  if (typeof config1 !== 'object' || config1 === null) {
+    return config1 === config2;
+  }
+
+  // Both must be objects at this point
+  if (typeof config2 !== 'object' || config2 === null) {
+    return false;
+  }
+
+  const obj1 = config1 as OverLightObjectConfig;
+  const obj2 = config2 as OverLightObjectConfig;
+
+  // Deep comparison of object properties
+  // Compare all defined properties (threshold, opacity, contrast, brightness, saturationBoost)
+  const props: (keyof OverLightObjectConfig)[] = [
+    'threshold',
+    'opacity',
+    'contrast',
+    'brightness',
+    'saturationBoost',
+  ];
+
+  for (const prop of props) {
+    const val1 = obj1[prop];
+    const val2 = obj2[prop];
+
+    // If both are undefined, they're equal for this property
+    if (val1 === undefined && val2 === undefined) {
+      continue;
+    }
+
+    // If one is undefined and the other isn't, they're different
+    if (val1 === undefined || val2 === undefined) {
+      return false;
+    }
+
+    // Compare numeric values (handle NaN and floating point precision)
+    if (typeof val1 === 'number' && typeof val2 === 'number') {
+      // Use Number.isNaN for proper NaN comparison
+      if (Number.isNaN(val1) && Number.isNaN(val2)) {
+        continue;
+      }
+      if (Number.isNaN(val1) || Number.isNaN(val2)) {
+        return false;
+      }
+      // Compare with small epsilon for floating point numbers
+      if (Math.abs(val1 - val2) > Number.EPSILON) {
+        return false;
+      }
+    } else if (val1 !== val2) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+/**
  * Get cached background detection result
  */
 const getCachedBackgroundDetection = (
@@ -49,7 +115,7 @@ const getCachedBackgroundDetection = (
   }
   
   const cached = backgroundDetectionCache.get(parentElement);
-  if (cached && cached.config === overLightConfig) {
+  if (cached && compareOverLightConfig(cached.config, overLightConfig)) {
     // Update timestamp for LRU-like behavior (though WeakMap doesn't support LRU)
     cached.timestamp = Date.now();
     return cached.result;
