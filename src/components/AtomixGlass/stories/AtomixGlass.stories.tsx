@@ -12,6 +12,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import AtomixGlass from '../AtomixGlass';
 import Button from '../../Button/Button';
+import Badge from '../../Badge/Badge';
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import React from 'react';
 import type { RefObject } from 'react';
@@ -976,32 +977,7 @@ export const PerformanceOptimization: Story = {
       <div style={{ margin: '0 auto', width: '100%' }}>
         {/* Header Section */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-          <AtomixGlass
-            mode="standard"
-            displacementScale={60}
-            blurAmount={1}
-            saturation={130}
-            cornerRadius={24}
-            elasticity={0.1}
-            style={{ marginBottom: '24px', display: 'inline-block' }}
-          >
-            <div
-              style={{
-                padding: '12px 24px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontSize: '13px',
-                fontWeight: 700,
-                letterSpacing: '1px',
-                textTransform: 'uppercase',
-                color: 'rgba(255, 255, 255, 0.9)',
-              }}
-            >
-              <span>⚡</span>
-              <span>Performance Guide</span>
-            </div>
-          </AtomixGlass>
+          <Badge variant="primary" label="Performance Guide" glass={{className: 'u-d-inline-block', children:<></>}} />
           <h1
             style={{
               color: '#fff',

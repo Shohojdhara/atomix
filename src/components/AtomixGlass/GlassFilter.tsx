@@ -33,6 +33,7 @@ export const GlassFilter: React.FC<GlassFilterProps> = ({
       inset: 0,
     }}
     aria-hidden="true"
+    suppressHydrationWarning
   >
     <defs>
       <radialGradient id={`${id}-edge-mask`} cx="50%" cy="50%" r="50%">

@@ -85,7 +85,11 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     },
     ref
   ) => {
+    // Use React's useId() for SSR compatibility
+    // Note: In Next.js, IDs may differ between server and client
+    // We'll suppress hydration warnings on elements that use this ID
     const filterId = useId();
+    
     const [shaderMapUrl, setShaderMapUrl] = useState<string>('');
     const shaderGeneratorRef = useRef<ShaderDisplacementGenerator | null>(null);
 
@@ -375,11 +379,12 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
 
             <div
               className={ATOMIX_GLASS.FILTER_OVERLAY_CLASS}
-            style={{
-              filter: `url(#${filterId})`,
-              backdropFilter: `var(--atomix-glass-container-backdrop)`,
-              borderRadius: `var(--atomix-glass-radius)`,
-            }}
+              suppressHydrationWarning
+              style={{
+                filter: `url(#${filterId})`,
+                backdropFilter: `var(--atomix-glass-container-backdrop)`,
+                borderRadius: `var(--atomix-glass-container-radius)`,
+              }}
             />
 
             <div
@@ -388,7 +393,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
               boxShadow: `var(--atomix-glass-container-shadow)`,
               opacity: `var(--atomix-glass-container-shadow-opacity)`,
               background: `var(--atomix-glass-container-bg)`,
-              borderRadius: `var(--atomix-glass-radius)`,
+              borderRadius: `var(--atomix-glass-container-radius)`,
             }}
             />
           </div>
