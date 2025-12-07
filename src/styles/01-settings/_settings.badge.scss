@@ -15,4 +15,4 @@ $badge-border-radius: radius.$border-radius-pill !default;
 
 $badge-icon-size: map.get($spacing-sizes, 4) !default; //16px
 
-$badge-inner-items-gap: map.get($spacing-sizes, 1.5) !default; //6px
+$badge-inner-items-gap: map.get($spacing-sizes, 'px-6') !default; //6px

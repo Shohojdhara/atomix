@@ -64,7 +64,7 @@ $upload-loader-text-color: var(--#{config.$prefix}tertiary-text-emphasis) !defau
 $upload-loader-text-font-size: typography.$font-size-sm !default;
 $upload-loader-text-margin-top: 5px !default;
 $upload-loader-bar-height: 10px !default;
-$upload-loader-bar-margin-top: map.get($spacing-sizes, 2.5) !default; //10px
+$upload-loader-bar-margin-top: map.get($spacing-sizes, 'px-10') !default; //10px
 $upload-loader-control-icon-size: map.get($spacing-sizes, 5) !default; //20px
 $upload-loader-contorl-color: var(--#{config.$prefix}body-color) !default;
 

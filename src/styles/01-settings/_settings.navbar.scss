@@ -18,7 +18,7 @@ $navbar-border-color: var(--#{$prefix}primary-border-subtle) !default;
 $navbar-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !default;
 
 // Brand/logo
-$navbar-brand-margin-end: map.get($spacing-sizes, 7.5) !default; //30px
+$navbar-brand-margin-end: map.get($spacing-sizes, 'px-30') !default; //30px
 $navbar-brand-font-size: $font-size-lg !default;
 $navbar-brand-font-weight: $font-weight-bold !default;
 $navbar-brand-color: var(--#{$prefix}body-color) !default;

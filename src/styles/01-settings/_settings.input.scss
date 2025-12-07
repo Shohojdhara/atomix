@@ -16,7 +16,7 @@ $input-line-height-sm: 20px !default;
 $input-line-height-lg: 24px !default;
 
 $input-padding-x: map.get($spacing-sizes, 3) !default; //12px
-$input-padding-y: map.get($spacing-sizes, 2.5) !default; //10px
+$input-padding-y: map.get($spacing-sizes, 'px-10') !default; //10px
 $input-padding-x-sm: map.get($spacing-sizes, 3) !default; //12px
 $input-padding-y-sm: map.get($spacing-sizes, 1.5) !default; //6px
 $input-padding-x-lg: map.get($spacing-sizes, 3) !default; //12px

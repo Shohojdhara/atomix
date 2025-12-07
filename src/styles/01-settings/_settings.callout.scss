@@ -29,7 +29,7 @@ $callout-title-font-size: map.get($spacing-sizes, 4) !default; //16px
 $callout-title-font-weight: 600 !default;
 $callout-title-color: var(--#{config.$prefix}body-color) !default;
 
-$callout-text-font-size: map.get($spacing-sizes, 3.5) !default; //14px
+$callout-text-font-size: map.get($spacing-sizes, 'px-14') !default; //14px
 $callout-text-font-weight: 400 !default;
 $callout-text-color: var(--#{config.$prefix}body-color) !default;
 

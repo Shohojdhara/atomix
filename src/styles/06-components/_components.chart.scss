@@ -313,7 +313,7 @@
     transition: all $chart-transition-duration $chart-transition-timing;
     position: relative;
     overflow: hidden;
-    font-size: map.get($spacing-sizes, 3.5);
+    font-size: map.get($spacing-sizes, 'px-14');
 
     &::before {
       content: '';
@@ -492,7 +492,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: map.get($spacing-sizes, 1.5) 0;
+      padding: map.get($spacing-sizes, 'px-6') 0;
       gap: map.get($spacing-sizes, 3);
 
       &--info {
