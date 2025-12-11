@@ -7,12 +7,13 @@
 // Runtime system
 export { ThemeManager } from './runtime/ThemeManager';
 export { ThemeProvider } from './runtime/ThemeProvider';
+export { ThemeErrorBoundary } from './runtime/ThemeErrorBoundary';
 export { useTheme } from './runtime/useTheme';
 export { ThemeContext } from './ThemeContext';
+export type { ThemeErrorBoundaryProps } from './runtime/ThemeErrorBoundary';
 
 // createTheme System
 export { createTheme } from './createTheme';
-export { default as createThemeDefault } from './createTheme';
 
 // CSS Variable Generation
 export {
@@ -118,8 +119,6 @@ export {
     ThemeValidator,
 } from './core';
 export type {
-    ThemeChangeEvent,
-    ThemeLoadOptions,
     ThemeChangeListener,
     ThemeLoadListener,
     ThemeErrorListener,
@@ -157,18 +156,44 @@ export type {
     ThemeInspectorProps,
 } from './devtools';
 
-// Font System
+
+// Error handling
 export {
-    generateGoogleFontsUrl,
-    preloadThemeFonts,
-    loadThemeFonts,
-    getFontFallbackStack,
-    themeFontConfigs,
-} from './font-loader';
+    ThemeError,
+    ThemeErrorCode,
+    ThemeLogger,
+    LogLevel,
+    getLogger,
+    setLogger,
+    createLogger,
+} from './errors';
 export type {
-    FontConfig,
-    ThemeFonts,
-} from './font-loader';
+    LoggerConfig,
+} from './errors';
+
+// Constants
+export {
+    DEFAULT_STORAGE_KEY,
+    DEFAULT_DATA_ATTRIBUTE,
+    DEFAULT_BASE_PATH,
+    DEFAULT_STYLE_ID,
+    DEFAULT_CACHE_CONFIG,
+    DEFAULT_ENGINE_CACHE_CONFIG,
+    THEME_LINK_ID_PREFIX,
+    CSS_EXTENSIONS,
+    DEFAULT_CONFIG_PATH,
+    VALIDATION_THRESHOLDS,
+    DEFAULT_THEME_METADATA,
+    RTL_LOCALES,
+    DEFAULT_RTL_CONFIG,
+    DEFAULT_ANALYTICS_CONFIG,
+    DEFAULT_LOGGER_CONFIG,
+    ENV_DEFAULTS,
+    DEFAULT_INTEGRATION_CLASS_NAMES,
+    DEFAULT_INTEGRATION_CSS_VARIABLES,
+    DEFAULT_BUILD_OUTPUT_DIR,
+    DEFAULT_SASS_CONFIG,
+} from './constants';
 
 // Utilities
 export {
@@ -189,4 +214,54 @@ export {
     createLocalStorageAdapter,
     debounce,
 } from './utils';
+
+// Internationalization (i18n)
+export {
+    RTLManager,
+    createRTLManager,
+    isRTLLocale,
+    getDirectionFromLocale,
+    rtlCSS,
+} from './i18n';
+export type { RTLConfig } from './i18n';
+
+// Theme Studio
+export { ThemeStudio } from './studio';
+export type { ThemeStudioProps } from './studio';
+
+// Monitoring and Analytics
+export {
+    ThemeAnalytics,
+    createThemeAnalytics,
+    getGlobalAnalytics,
+    setGlobalAnalytics,
+} from './monitoring';
+export type {
+    ThemeAnalyticsEvent,
+    ThemeAnalyticsEventData,
+    PerformanceMetric,
+    AnalyticsConfig,
+} from './monitoring';
+
+// Component Overrides
+export {
+    ComponentOverrideManager,
+    createComponentOverrideManager,
+    createComponentOverride,
+} from './overrides';
+export type {
+    ComponentOverride,
+    ComponentOverrides,
+    OverrideOptions,
+} from './overrides';
+
+// White Label
+export {
+    WhiteLabelManager,
+    createWhiteLabelManager,
+} from './whitelabel';
+export type {
+    BrandConfig,
+    WhiteLabelConfig,
+} from './whitelabel';
 

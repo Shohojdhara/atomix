@@ -48,7 +48,31 @@ export class ThemeRegistry {
 
     // Load config if not provided
     if (!config) {
-      this.config = loadThemeConfig();
+      try {
+        this.config = loadThemeConfig();
+      } catch (error) {
+        // In browser environments, config loading will fail
+        // Use empty config as fallback
+        this.config = {
+          themes: {},
+          build: {
+            output: { directory: 'themes', formats: { expanded: '.css', compressed: '.min.css' } },
+            sass: { style: 'expanded', sourceMap: true, loadPaths: ['src'] },
+          },
+          runtime: {
+            basePath: '',
+            defaultTheme: undefined, // No default - use built-in styles
+          },
+          integration: {
+            cssVariables: { colorMode: '--color-mode' },
+            classNames: { theme: 'data-theme', colorMode: 'data-color-mode' },
+          },
+          dependencies: {},
+          validated: false,
+          errors: [],
+          warnings: [],
+        };
+      }
     } else {
       this.config = config;
     }

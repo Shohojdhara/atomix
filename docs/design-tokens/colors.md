@@ -100,6 +100,30 @@ $gray-9: #1f2937;    // Primary text dark
 $gray-10: #111827;   // Primary text
 ```
 
+### Light & Dark Colors
+Special semantic colors for light and dark theme variants.
+
+```scss
+// Light color (typically used for light backgrounds)
+$light: #f9fafb;     // Light background color
+
+// Dark color (typically used for dark backgrounds)
+$dark: #1f2937;      // Dark background color
+```
+
+**CSS Variables:**
+```css
+--atomix-light: #f9fafb;
+--atomix-dark: #1f2937;
+--atomix-light-rgb: 249, 250, 251;
+--atomix-dark-rgb: 31, 41, 55;
+```
+
+**Usage:**
+- `--atomix-light` - For light theme backgrounds and surfaces
+- `--atomix-dark` - For dark theme backgrounds and surfaces
+- Both have corresponding hover, text-emphasis, bg-subtle, and border-subtle variants
+
 ## Semantic Tokens
 
 ### Text Colors
@@ -343,35 +367,110 @@ $primary-border, $secondary-border
 
 ### CSS Custom Properties
 
-```scss
-// Text colors
---atomix-text-primary
---atomix-text-secondary
---atomix-text-tertiary
---atomix-text-brand
---atomix-text-error
---atomix-text-success
---atomix-text-warning
---atomix-text-info
+#### Base Colors
+```css
+/* Primary colors */
+--atomix-primary
+--atomix-secondary
+--atomix-success
+--atomix-error
+--atomix-warning
+--atomix-info
+--atomix-light
+--atomix-dark
 
-// Background colors
---atomix-bg-primary
---atomix-bg-secondary
---atomix-bg-tertiary
---atomix-bg-brand
---atomix-bg-error
---atomix-bg-success
---atomix-bg-warning
---atomix-bg-info
+/* RGB variants for transparency */
+--atomix-primary-rgb
+--atomix-secondary-rgb
+--atomix-success-rgb
+--atomix-error-rgb
+--atomix-warning-rgb
+--atomix-info-rgb
+--atomix-light-rgb
+--atomix-dark-rgb
+```
 
-// Border colors
---atomix-border-primary
---atomix-border-secondary
---atomix-border-brand
---atomix-border-error
---atomix-border-success
---atomix-border-warning
---atomix-border-info
+#### Text Emphasis Colors
+```css
+--atomix-primary-text-emphasis
+--atomix-secondary-text-emphasis
+--atomix-tertiary-text-emphasis
+--atomix-disabled-text-emphasis
+--atomix-invert-text-emphasis
+--atomix-brand-text-emphasis
+--atomix-error-text-emphasis
+--atomix-success-text-emphasis
+--atomix-warning-text-emphasis
+--atomix-info-text-emphasis
+--atomix-light-text-emphasis
+--atomix-dark-text-emphasis
+```
+
+#### Background Subtle Colors
+```css
+--atomix-primary-bg-subtle
+--atomix-secondary-bg-subtle
+--atomix-tertiary-bg-subtle
+--atomix-invert-bg-subtle
+--atomix-brand-bg-subtle
+--atomix-error-bg-subtle
+--atomix-success-bg-subtle
+--atomix-warning-bg-subtle
+--atomix-info-bg-subtle
+--atomix-light-bg-subtle
+--atomix-dark-bg-subtle
+```
+
+#### Border Subtle Colors
+```css
+--atomix-primary-border-subtle
+--atomix-secondary-border-subtle
+--atomix-success-border-subtle
+--atomix-error-border-subtle
+--atomix-warning-border-subtle
+--atomix-info-border-subtle
+--atomix-brand-border-subtle
+--atomix-light-border-subtle
+--atomix-dark-border-subtle
+```
+
+#### Hover Colors
+```css
+--atomix-primary-hover
+--atomix-secondary-hover
+--atomix-light-hover
+--atomix-dark-hover
+--atomix-error-hover
+--atomix-success-hover
+--atomix-warning-hover
+--atomix-info-hover
+```
+
+#### Gradient Tokens
+```css
+/* Color gradients */
+--atomix-primary-gradient
+--atomix-secondary-gradient
+--atomix-success-gradient
+--atomix-info-gradient
+--atomix-warning-gradient
+--atomix-error-gradient
+--atomix-light-gradient
+--atomix-dark-gradient
+
+/* Default gradient */
+--atomix-gradient
+```
+
+**Usage Example:**
+```css
+.hero-section {
+  background: var(--atomix-primary-gradient);
+}
+
+.card {
+  background: var(--atomix-gradient);
+}
 ```
 
 ## Customization

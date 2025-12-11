@@ -49,7 +49,7 @@ import { ThemeProvider, useTheme } from '@shohojdhara/atomix/theme';
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="shaj-default">
+    <ThemeProvider>
       <YourApp />
     </ThemeProvider>
   );
@@ -69,7 +69,7 @@ function ThemeSwitcher() {
 ```
 
 **Available Themes:**
-- `shaj-default` - Default theme (stable)
+- Built-in styles are used by default (no theme CSS loaded)
 - `flashtrade` - Crypto trading platform theme (stable)
 - `boomdevs` - BoomDevs theme (beta)
 - `esrar` - Esrar theme (beta)

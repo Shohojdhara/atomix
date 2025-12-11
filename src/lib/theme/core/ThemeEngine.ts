@@ -12,6 +12,13 @@ import { ThemeValidator } from './ThemeValidator';
 import { isBrowser, isServer, loadThemeCSS, removeThemeCSS, applyThemeAttributes } from '../utils';
 import { generateCSSVariables, injectCSS, removeInjectedCSS } from '../generateCSSVariables';
 import { isJSTheme } from '../themeUtils';
+import { ThemeError, ThemeErrorCode, getLogger } from '../errors';
+import {
+  DEFAULT_BASE_PATH,
+  DEFAULT_DATA_ATTRIBUTE,
+  DEFAULT_STYLE_ID,
+  DEFAULT_ENGINE_CACHE_CONFIG,
+} from '../constants';
 
 /**
  * Theme change event
@@ -46,11 +53,26 @@ export interface ThemeLoadOptions {
 }
 
 /**
+ * Theme revert event
+ */
+export interface ThemeRevertEvent {
+  /** Theme ID that was attempted */
+  attemptedTheme: string;
+  /** Theme ID that was reverted to (null if no previous theme) */
+  revertedToTheme: string | null;
+  /** Error that caused the revert */
+  error: Error;
+  /** Timestamp */
+  timestamp: number;
+}
+
+/**
  * Event listener types
  */
 export type ThemeChangeListener = (event: ThemeChangeEvent) => void;
 export type ThemeLoadListener = (themeId: string) => void;
 export type ThemeErrorListener = (error: Error, themeId: string) => void;
+export type ThemeRevertListener = (event: ThemeRevertEvent) => void;
 
 /**
  * Theme Engine Configuration
@@ -71,6 +93,8 @@ export interface ThemeEngineConfig {
     maxSize?: number;
     ttl?: number;
   };
+  /** Custom style ID for JS theme CSS injection */
+  styleId?: string;
 }
 
 /**
@@ -82,18 +106,22 @@ export class ThemeEngine {
   private registry: ThemeRegistry;
   private cache: ThemeCache;
   private validator: ThemeValidator;
-  private config: Required<Omit<ThemeEngineConfig, 'cdnPath'>> & {
+  private config: Required<Omit<ThemeEngineConfig, 'cdnPath' | 'styleId'>> & {
     cdnPath: string | null;
+    styleId: string;
   };
 
   private currentTheme: string | null = null;
   private activeTheme: Theme | null = null;
   private loadedThemes: Set<string> = new Set();
   private loadingThemes: Map<string, Promise<void>> = new Map();
+  private failedThemes: Set<string> = new Set(); // Track failed themes to prevent infinite retries
 
   private changeListeners: ThemeChangeListener[] = [];
   private loadListeners: ThemeLoadListener[] = [];
   private errorListeners: ThemeErrorListener[] = [];
+  private revertListeners: ThemeRevertListener[] = [];
+  private logger = getLogger();
 
   constructor(config: ThemeEngineConfig = {}) {
     this.registry = new ThemeRegistry();
@@ -101,15 +129,13 @@ export class ThemeEngine {
     this.validator = new ThemeValidator();
 
     this.config = {
-      basePath: config.basePath || '/themes',
+      basePath: config.basePath || DEFAULT_BASE_PATH,
       cdnPath: config.cdnPath ?? null,
       useMinified: config.useMinified ?? false,
-      dataAttribute: config.dataAttribute || 'data-theme',
+      dataAttribute: config.dataAttribute || DEFAULT_DATA_ATTRIBUTE,
       enableCache: config.enableCache ?? true,
-      cacheConfig: config.cacheConfig ?? {
-        maxSize: 10,
-        ttl: 0,
-      },
+      cacheConfig: config.cacheConfig ?? DEFAULT_ENGINE_CACHE_CONFIG,
+      styleId: config.styleId || DEFAULT_STYLE_ID,
     };
   }
 
@@ -164,10 +190,36 @@ export class ThemeEngine {
 
     // Check if theme exists
     if (!this.registry.has(themeId)) {
-      const error = new Error(`Theme "${themeId}" not found in registry`);
+      const error = new ThemeError(
+        `Theme "${themeId}" not found in registry`,
+        ThemeErrorCode.THEME_NOT_FOUND,
+        { themeId }
+      );
+      // Mark as failed to prevent infinite retries
+      this.failedThemes.add(themeId);
       this.emitError(error, themeId);
       if (fallbackOnError && this.currentTheme) {
-        // Try to revert to current theme
+        // Emit revert event
+        this.emitRevert({
+          attemptedTheme: themeId,
+          revertedToTheme: this.currentTheme,
+          error,
+          timestamp: Date.now(),
+        });
+        return;
+      }
+      throw error;
+    }
+
+    // Check if theme has previously failed (unless forcing)
+    if (!force && this.failedThemes.has(themeId)) {
+      const error = new ThemeError(
+        `Theme "${themeId}" previously failed to load. Use force: true to retry.`,
+        ThemeErrorCode.THEME_LOAD_FAILED,
+        { themeId, previouslyFailed: true }
+      );
+      this.emitError(error, themeId);
+      if (fallbackOnError && this.currentTheme) {
         return;
       }
       throw error;
@@ -198,15 +250,37 @@ export class ThemeEngine {
     try {
       await loadPromise;
       this.loadingThemes.delete(themeId);
+      // Remove from failed themes if it successfully loads
+      this.failedThemes.delete(themeId);
 
       if (!preload) {
         await this.applyTheme(themeId, removePrevious);
       }
     } catch (error) {
       this.loadingThemes.delete(themeId);
-      this.emitError(error instanceof Error ? error : new Error(String(error)), themeId);
+      const errorObj = error instanceof Error ? error : new Error(String(error));
+      
+      // Only emit error and mark as failed if not already failed (prevent infinite logging)
+      const wasAlreadyFailed = this.failedThemes.has(themeId);
+      if (!wasAlreadyFailed || force) {
+        // Mark theme as failed to prevent infinite retries
+        this.failedThemes.add(themeId);
+        // Emit error only on first failure
+        if (!wasAlreadyFailed) {
+          this.emitError(errorObj, themeId);
+        }
+      }
+      
       if (fallbackOnError && this.currentTheme) {
-        // Try to revert
+        // Emit revert event only on first failure
+        if (!wasAlreadyFailed) {
+          this.emitRevert({
+            attemptedTheme: themeId,
+            revertedToTheme: this.currentTheme,
+            error: errorObj,
+            timestamp: Date.now(),
+          });
+        }
         return;
       }
       throw error;
@@ -273,6 +347,7 @@ export class ThemeEngine {
       if (this.config.enableCache) {
         this.cache.delete(themeId);
       }
+      // Re-throw error to be handled by setTheme
       throw error;
     }
   }
@@ -305,7 +380,11 @@ export class ThemeEngine {
     });
 
     if (!validation.valid && validation.errors.length > 0) {
-      console.warn(`Theme validation errors for "${themeId}":`, validation.errors);
+      this.logger.warn(`Theme validation errors for "${themeId}"`, {
+        themeId,
+        errors: validation.errors,
+        warnings: validation.warnings,
+      });
     }
 
     // Cache and register
@@ -375,7 +454,7 @@ export class ThemeEngine {
 
     // Remove previous JS theme CSS
     if (removePrevious) {
-      removeInjectedCSS('atomix-js-theme-styles');
+      removeInjectedCSS(this.config.styleId);
     }
 
     // Generate and inject CSS variables
@@ -384,7 +463,7 @@ export class ThemeEngine {
       prefix: 'atomix',
     });
 
-    injectCSS(css, 'atomix-js-theme-styles');
+    injectCSS(css, this.config.styleId);
 
     // Apply data attribute
     const themeId = theme.name || 'js-theme';
@@ -409,7 +488,7 @@ export class ThemeEngine {
       }
     } else {
       if (isBrowser()) {
-        removeInjectedCSS('atomix-js-theme-styles');
+        removeInjectedCSS(this.config.styleId);
       }
     }
   }
@@ -436,18 +515,45 @@ export class ThemeEngine {
   }
 
   /**
+   * Clear failed theme tracking (allows retry of previously failed themes)
+   */
+  clearFailedThemes(): void {
+    this.failedThemes.clear();
+  }
+
+  /**
+   * Clear specific failed theme (allows retry of a specific theme)
+   */
+  clearFailedTheme(themeId: string): void {
+    this.failedThemes.delete(themeId);
+  }
+
+  /**
+   * Check if theme has failed to load
+   */
+  hasFailedTheme(themeId: string): boolean {
+    return this.failedThemes.has(themeId);
+  }
+
+  /**
    * Add change listener
    */
   on(event: 'change', listener: ThemeChangeListener): void;
   on(event: 'load', listener: ThemeLoadListener): void;
   on(event: 'error', listener: ThemeErrorListener): void;
-  on(event: string, listener: any): void {
+  on(event: 'revert', listener: ThemeRevertListener): void;
+  on(
+    event: 'change' | 'load' | 'error' | 'revert',
+    listener: ThemeChangeListener | ThemeLoadListener | ThemeErrorListener | ThemeRevertListener
+  ): void {
     if (event === 'change') {
-      this.changeListeners.push(listener);
+      this.changeListeners.push(listener as ThemeChangeListener);
     } else if (event === 'load') {
-      this.loadListeners.push(listener);
+      this.loadListeners.push(listener as ThemeLoadListener);
     } else if (event === 'error') {
-      this.errorListeners.push(listener);
+      this.errorListeners.push(listener as ThemeErrorListener);
+    } else if (event === 'revert') {
+      this.revertListeners.push(listener as ThemeRevertListener);
     }
   }
 
@@ -457,13 +563,19 @@ export class ThemeEngine {
   off(event: 'change', listener: ThemeChangeListener): void;
   off(event: 'load', listener: ThemeLoadListener): void;
   off(event: 'error', listener: ThemeErrorListener): void;
-  off(event: string, listener: any): void {
+  off(event: 'revert', listener: ThemeRevertListener): void;
+  off(
+    event: 'change' | 'load' | 'error' | 'revert',
+    listener: ThemeChangeListener | ThemeLoadListener | ThemeErrorListener | ThemeRevertListener
+  ): void {
     if (event === 'change') {
       this.changeListeners = this.changeListeners.filter(l => l !== listener);
     } else if (event === 'load') {
       this.loadListeners = this.loadListeners.filter(l => l !== listener);
     } else if (event === 'error') {
       this.errorListeners = this.errorListeners.filter(l => l !== listener);
+    } else if (event === 'revert') {
+      this.revertListeners = this.revertListeners.filter(l => l !== listener);
     }
   }
 
@@ -475,7 +587,11 @@ export class ThemeEngine {
       try {
         listener(event);
       } catch (error) {
-        console.error('Error in theme change listener:', error);
+        this.logger.error(
+          'Error in theme change listener',
+          error instanceof Error ? error : new Error(String(error)),
+          { event }
+        );
       }
     }
   }
@@ -488,20 +604,46 @@ export class ThemeEngine {
       try {
         listener(themeId);
       } catch (error) {
-        console.error('Error in theme load listener:', error);
+        this.logger.error(
+          'Error in theme load listener',
+          error instanceof Error ? error : new Error(String(error)),
+          { themeId }
+        );
       }
     }
   }
 
   /**
    * Emit error event
+   * Emits error to listeners (error emission is controlled at call site)
    */
   private emitError(error: Error, themeId: string): void {
     for (const listener of this.errorListeners) {
       try {
         listener(error, themeId);
       } catch (err) {
-        console.error('Error in theme error listener:', err);
+        this.logger.error(
+          'Error in theme error listener',
+          err instanceof Error ? err : new Error(String(err)),
+          { themeId, originalError: error.message }
+        );
+      }
+    }
+  }
+
+  /**
+   * Emit revert event
+   */
+  private emitRevert(event: ThemeRevertEvent): void {
+    for (const listener of this.revertListeners) {
+      try {
+        listener(event);
+      } catch (error) {
+        this.logger.error(
+          'Error in theme revert listener',
+          error instanceof Error ? error : new Error(String(error)),
+          { event }
+        );
       }
     }
   }

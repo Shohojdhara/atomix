@@ -5,6 +5,7 @@
  */
 
 import type { Theme } from '../types';
+import { DEFAULT_CACHE_CONFIG } from '../constants';
 
 /**
  * Cache entry for CSS theme
@@ -47,8 +48,7 @@ interface CacheConfig {
  * Default cache configuration
  */
 const DEFAULT_CONFIG: Required<CacheConfig> = {
-  maxSize: 50,
-  ttl: 0, // No expiration by default
+  ...DEFAULT_CACHE_CONFIG,
   enabled: true,
 };
 

@@ -11,7 +11,7 @@ import { ThemeProvider, useTheme } from '@shohojdhara/atomix/theme';
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="shaj-default">
+    <ThemeProvider>
       <YourApp />
     </ThemeProvider>
   );
@@ -70,10 +70,18 @@ const customTheme = createTheme({
   palette: {
     primary: { main: '#7AFFD7' },
     secondary: { main: '#FF5733' },
+    // Optional: Add light and dark colors
+    light: { main: '#F9FAFB' },
+    dark: { main: '#1F2937' },
     background: {
       default: '#FAFAFA',
       paper: '#FFFFFF',
       subtle: '#F5F5F5',
+    },
+    text: {
+      primary: '#111827',
+      secondary: '#6B7280',
+      disabled: '#9CA3AF',
     },
   },
   typography: {
@@ -81,6 +89,15 @@ const customTheme = createTheme({
     fontSize: 16,
   },
 });
+```
+
+**Note:** When you create a JavaScript theme, all CSS variables are automatically generated including:
+- Color scales (1-10 steps) for primary, secondary, error, warning, info, success
+- RGB variants for transparency support
+- Text emphasis variants (primary, secondary, tertiary, disabled, invert, brand)
+- Background and border subtle variants
+- Gradient tokens for all colors
+- Hover state colors
 
 // Use in component
 function MyComponent() {
@@ -110,12 +127,48 @@ The theme system automatically generates CSS variables that you can use in your 
 
 ### Available CSS Variables
 
-- **Colors**: `--atomix-primary`, `--atomix-secondary`, `--atomix-error`, etc.
-- **Typography**: `--atomix-font-family`, `--atomix-font-size-*`, etc.
-- **Spacing**: `--atomix-spacing-*` (0-200)
-- **Shadows**: `--atomix-box-shadow-*` (xs, sm, md, lg, xl)
-- **Border Radius**: `--atomix-border-radius-*` (sm, md, lg, xl, etc.)
-- **Transitions**: `--atomix-transition-duration-*`, `--atomix-easing-*`
+#### Color Tokens
+- **Base Colors**: `--atomix-primary`, `--atomix-secondary`, `--atomix-error`, `--atomix-success`, `--atomix-warning`, `--atomix-info`, `--atomix-light`, `--atomix-dark`
+- **RGB Variants**: `--atomix-primary-rgb`, `--atomix-secondary-rgb`, etc. (for transparency support)
+- **Text Emphasis**: `--atomix-primary-text-emphasis`, `--atomix-secondary-text-emphasis`, `--atomix-tertiary-text-emphasis`, `--atomix-disabled-text-emphasis`, `--atomix-invert-text-emphasis`, `--atomix-brand-text-emphasis`
+- **Background Subtle**: `--atomix-primary-bg-subtle`, `--atomix-secondary-bg-subtle`, `--atomix-tertiary-bg-subtle`, `--atomix-invert-bg-subtle`, `--atomix-brand-bg-subtle`, etc.
+- **Border Subtle**: `--atomix-primary-border-subtle`, `--atomix-brand-border-subtle`, etc.
+- **Hover States**: `--atomix-primary-hover`, `--atomix-secondary-hover`, etc.
+- **Gradients**: `--atomix-primary-gradient`, `--atomix-secondary-gradient`, `--atomix-success-gradient`, `--atomix-info-gradient`, `--atomix-warning-gradient`, `--atomix-error-gradient`, `--atomix-light-gradient`, `--atomix-dark-gradient`, `--atomix-gradient`
+
+#### Typography Tokens
+- **Font Families**: `--atomix-font-sans-serif`, `--atomix-font-monospace`, `--atomix-body-font-family`
+- **Font Sizes**: `--atomix-font-size-xs`, `--atomix-font-size-sm`, `--atomix-font-size-md`, `--atomix-font-size-lg`, `--atomix-font-size-xl`, `--atomix-font-size-2xl`, `--atomix-display-1`
+- **Font Weights**: `--atomix-font-weight-light`, `--atomix-font-weight-normal`, `--atomix-font-weight-medium`, `--atomix-font-weight-semibold`, `--atomix-font-weight-bold`, `--atomix-font-weight-heavy`, `--atomix-font-weight-black`
+- **Line Heights**: `--atomix-line-height-base`, `--atomix-line-height-sm`, `--atomix-line-height-lg`
+- **Letter Spacing**: `--atomix-letter-spacing-h1` through `--atomix-letter-spacing-h6`
+
+#### Spacing Tokens
+- **Spacing Scale**: `--atomix-spacing-0` through `--atomix-spacing-200`
+- **Special Spacing**: `--atomix-spacing-px-6`, `--atomix-spacing-px-10`, `--atomix-spacing-px-14`, `--atomix-spacing-px-22`, `--atomix-spacing-px-30`
+
+#### Shadow Tokens
+- **Box Shadows**: `--atomix-box-shadow`, `--atomix-box-shadow-xs`, `--atomix-box-shadow-sm`, `--atomix-box-shadow-lg`, `--atomix-box-shadow-xl`, `--atomix-box-shadow-inset`
+
+#### Border Tokens
+- **Border Radius**: `--atomix-border-radius`, `--atomix-border-radius-sm`, `--atomix-border-radius-lg`, `--atomix-border-radius-xl`, `--atomix-border-radius-xxl`, `--atomix-border-radius-2xl`, `--atomix-border-radius-3xl`, `--atomix-border-radius-4xl`, `--atomix-border-radius-pill`
+- **Border Colors**: `--atomix-border-color`, `--atomix-border-color-translucent`
+- **Link Decoration**: `--atomix-link-decoration` (default: `none`)
+
+#### Transition Tokens
+- **Durations**: `--atomix-transition-duration-fast`, `--atomix-transition-duration-base`, `--atomix-transition-duration-slow`, `--atomix-transition-duration-slower`
+- **Easing**: `--atomix-easing-base`, `--atomix-easing-ease-in-out`, `--atomix-easing-ease-out`, `--atomix-easing-ease-in`, `--atomix-easing-ease-linear`
+- **Full Transitions**: `--atomix-transition-fast`, `--atomix-transition-base`, `--atomix-transition-slow`
+
+#### Z-Index Tokens
+- **Scale**: `--atomix-z-n1`, `--atomix-z-0`, `--atomix-z-1`, `--atomix-z-2`, `--atomix-z-3`, `--atomix-z-4`, `--atomix-z-5`
+- **Semantic**: `--atomix-z-dropdown`, `--atomix-z-sticky`, `--atomix-z-fixed`, `--atomix-z-modal`, `--atomix-z-popover`, `--atomix-z-tooltip`, `--atomix-z-drawer`
+
+#### Breakpoint Tokens
+- **Breakpoints**: `--atomix-breakpoint-xs`, `--atomix-breakpoint-sm`, `--atomix-breakpoint-md`, `--atomix-breakpoint-lg`, `--atomix-breakpoint-xl`, `--atomix-breakpoint-xxl`
+
+#### Focus Ring Tokens
+- **Focus Ring**: `--atomix-focus-ring-width`, `--atomix-focus-ring-offset`, `--atomix-focus-ring-opacity`
 
 ## Theme Configuration
 

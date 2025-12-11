@@ -58,7 +58,16 @@ const config: StorybookConfig = {
 
     // Disable react-docgen plugin to avoid parsing errors
     config.plugins = config.plugins?.filter(
-      (plugin) => plugin && typeof plugin === 'object' && 'name' in plugin && !plugin.name?.includes('react-docgen')
+      (plugin) => {
+        // Preserve falsy plugins (null, undefined) - they may be placeholders
+        if (!plugin) return true;
+        // Preserve non-object plugins
+        if (typeof plugin !== 'object') return true;
+        // Preserve plugins without name property
+        if (!('name' in plugin)) return true;
+        // Filter out react-docgen plugins
+        return !plugin.name?.includes('react-docgen');
+      }
     );
 
     return config;

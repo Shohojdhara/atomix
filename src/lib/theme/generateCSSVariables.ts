@@ -96,8 +96,8 @@ function generateColorScale(baseColor: string, prefix: string, colorName: string
 function generatePaletteVariables(palette: Theme['palette'], prefix: string): Record<string, string> {
     const vars: Record<string, string> = {};
 
-    // Primary, secondary, error, warning, info, success
-    const colorKeys = ['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const;
+    // Primary, secondary, error, warning, info, success, light, dark
+    const colorKeys = ['primary', 'secondary', 'error', 'warning', 'info', 'success', 'light', 'dark'] as const;
     colorKeys.forEach((key) => {
         const color = palette[key];
         if (color && typeof color === 'object') {
@@ -125,9 +125,11 @@ function generatePaletteVariables(palette: Theme['palette'], prefix: string): Re
             // Border subtle: light version for borders
             vars[`${prefix}-${key}-border-subtle`] = alpha(color.main, 0.2);
 
-            // Generate full color scale (1-10)
-            const colorScale = generateColorScale(color.main, prefix, key);
-            Object.assign(vars, colorScale);
+            // Generate full color scale (1-10) - only for primary, not for light/dark
+            if (key !== 'light' && key !== 'dark') {
+                const colorScale = generateColorScale(color.main, prefix, key);
+                Object.assign(vars, colorScale);
+            }
         }
     });
 
@@ -160,11 +162,62 @@ function generatePaletteVariables(palette: Theme['palette'], prefix: string): Re
     // Background mappings to SCSS body variables
     if (palette.background) {
         vars[`${prefix}-body-bg`] = palette.background.default;
+        
+        // Generate background subtle variants
+        if (palette.background.default) {
+            vars[`${prefix}-primary-bg-subtle`] = palette.background.default;
+        }
+        if (palette.background.paper) {
+            vars[`${prefix}-secondary-bg-subtle`] = palette.background.paper;
+            vars[`${prefix}-tertiary-bg-subtle`] = palette.background.paper;
+        }
+        if (palette.background.subtle) {
+            vars[`${prefix}-invert-bg-subtle`] = palette.background.subtle;
+        }
+        
+        // Brand bg subtle (uses primary color with alpha)
+        if (palette.primary) {
+            vars[`${prefix}-brand-bg-subtle`] = alpha(palette.primary.main, 0.1);
+        }
     }
 
     // Text mappings to SCSS body variables
     if (palette.text) {
         vars[`${prefix}-body-color`] = palette.text.primary;
+        
+        // Generate text emphasis variants
+        if (palette.text.primary) {
+            vars[`${prefix}-primary-text-emphasis`] = palette.text.primary;
+        }
+        if (palette.text.secondary) {
+            vars[`${prefix}-secondary-text-emphasis`] = palette.text.secondary;
+            vars[`${prefix}-tertiary-text-emphasis`] = palette.text.secondary;
+        }
+        if (palette.text.disabled) {
+            vars[`${prefix}-disabled-text-emphasis`] = palette.text.disabled;
+        }
+        
+        // Invert text emphasis (opposite of primary)
+        if (palette.text.primary) {
+            // Invert would be the opposite - for light themes, use dark; for dark themes, use light
+            // This is a simplified approach - actual inversion depends on theme mode
+            vars[`${prefix}-invert-text-emphasis`] = palette.text.primary;
+        }
+    }
+
+    // Brand text emphasis (uses primary color)
+    if (palette.primary) {
+        vars[`${prefix}-brand-text-emphasis`] = palette.primary.main;
+        // Brand border subtle
+        vars[`${prefix}-brand-border-subtle`] = alpha(palette.primary.main, 0.2);
+    }
+    
+    // Light and dark border subtle (if light/dark colors exist)
+    if (palette.light && typeof palette.light === 'object') {
+        vars[`${prefix}-light-border-subtle`] = alpha(palette.light.main, 0.2);
+    }
+    if (palette.dark && typeof palette.dark === 'object') {
+        vars[`${prefix}-dark-border-subtle`] = alpha(palette.dark.main, 0.2);
     }
 
     // Heading color (defaults to text primary)
@@ -185,9 +238,8 @@ function generatePaletteVariables(palette: Theme['palette'], prefix: string): Re
         if (linkHoverRgb) {
             vars[`${prefix}-link-hover-color-rgb`] = `${linkHoverRgb.r}, ${linkHoverRgb.g}, ${linkHoverRgb.b}`;
         }
-        // Link decoration (default: underline)
-        vars[`${prefix}-link-decoration`] = 'underline';
-        vars[`${prefix}-link-hover-decoration`] = 'none';
+        // Link decoration (default: none, matching tokens list)
+        vars[`${prefix}-link-decoration`] = 'none';
     }
 
     // Border color (defaults to subtle gray)
@@ -222,6 +274,29 @@ function generatePaletteVariables(palette: Theme['palette'], prefix: string): Re
     // Code color (defaults to text secondary)
     if (palette.text) {
         vars[`${prefix}-code-color`] = palette.text.secondary;
+    }
+
+    // Generate gradient tokens for all colors
+    // Gradients use the color scale (lighter to darker variations)
+    const gradientColors = ['primary', 'secondary', 'error', 'warning', 'info', 'success', 'light', 'dark'] as const;
+    gradientColors.forEach((key) => {
+        const color = palette[key];
+        if (color && typeof color === 'object') {
+            // Generate gradient using color scale steps
+            // Use steps 1, 3, 5 from the color scale for a smooth gradient
+            const color1 = lighten(color.main, 0.6);
+            const color2 = lighten(color.main, 0.3);
+            const color3 = color.main;
+            vars[`${prefix}-${key}-gradient`] = `linear-gradient(135deg, ${color1}, ${color2}, ${color3})`;
+        }
+    });
+    
+    // Default gradient (uses gray scale)
+    if (palette.text?.primary) {
+        const gray1 = lighten(palette.text.primary, 0.8);
+        const gray2 = lighten(palette.text.primary, 0.6);
+        const gray3 = lighten(palette.text.primary, 0.4);
+        vars[`${prefix}-gradient`] = `linear-gradient(135deg, ${gray1}, ${gray2}, ${gray3})`;
     }
 
     return vars;
@@ -379,7 +454,16 @@ function generateTransitionVariables(
 function generateZIndexVariables(zIndex: Theme['zIndex'], prefix: string): Record<string, string> {
     const vars: Record<string, string> = {};
 
-    // Map to SCSS z-layers
+    // Generate z-index scale (matching tokens list)
+    vars[`${prefix}-z-n1`] = '-1';
+    vars[`${prefix}-z-0`] = '0';
+    vars[`${prefix}-z-1`] = '1';
+    vars[`${prefix}-z-2`] = '2';
+    vars[`${prefix}-z-3`] = '3';
+    vars[`${prefix}-z-4`] = '4';
+    vars[`${prefix}-z-5`] = '5';
+
+    // Map to SCSS z-layers (semantic z-index values)
     if (zIndex.mobileStepper) vars[`${prefix}-z-dropdown`] = String(zIndex.mobileStepper);
     if (zIndex.appBar) vars[`${prefix}-z-sticky`] = String(zIndex.appBar);
     vars[`${prefix}-z-fixed`] = '1030'; // Default fixed

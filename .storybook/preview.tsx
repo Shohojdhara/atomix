@@ -1,11 +1,43 @@
 import { addons } from '@storybook/preview-api';
 import type { Preview } from '@storybook/react';
 import { useEffect } from 'react';
-// import '../src/styles/index.scss';
-// Base styles for development; in production builds, dist CSS is served via staticDirs
-import { themes, getThemeClasses } from './themes.config';
+import '../src/styles/index.scss';
 
 const preview: Preview = {
+  globalTypes: {
+    theme: {
+      description: 'Theme selector',
+      defaultValue: 'atomix',
+      toolbar: {
+        title: 'Theme',
+        icon: 'paintbrush',
+        items: [
+          { value: 'atomix', title: 'Atomix (Base)' },
+          { value: 'shaj-default', title: 'Shaj Default' },
+          { value: 'boomdevs', title: 'BoomDevs' },
+          { value: 'esrar', title: 'Esrar' },
+          { value: 'mashroom', title: 'Mashroom' },
+          { value: 'applemix', title: 'Applemix' },
+          { value: 'flashtrade', title: 'Flash Trade' },
+          { value: 'none', title: 'None' },
+        ],
+        dynamicTitle: true,
+      },
+    },
+    colorMode: {
+      description: 'Color mode selector',
+      defaultValue: 'light',
+      toolbar: {
+        title: 'Color Mode',
+        icon: 'circlehollow',
+        items: [
+          { value: 'light', title: 'Light' },
+          { value: 'dark', title: 'Dark' },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
   parameters: {
     // Layout configuration - default to centered, but allow fullscreen overrides
     layout: 'centered',
@@ -138,15 +170,7 @@ const preview: Preview = {
       const colorMode = context.globals?.colorMode || 'light';
 
       useEffect(() => {
-        // Remove all theme classes
-        document.body.classList.forEach(className => {
-          if (getThemeClasses().includes(className)) {
-            document.body.classList.remove(className);
-          }
-        });
 
-        // Add the selected theme class
-        document.body.classList.add(theme);
 
         // Update data-theme attribute
         document.body.setAttribute('data-theme', theme);
@@ -229,49 +253,7 @@ const preview: Preview = {
     },
   ],
 
-  globalTypes: {
-    theme: {
-      name: 'Theme',
-      description: 'Global theme for components',
-      defaultValue: 'atomix',
-      toolbar: {
-        title: 'Theme',
-        icon: 'paintbrush',
-        items: themes.map(theme => ({
-          value: theme.class,
-          title: theme.name,
-          left: `🎨`,
-        })),
-      },
-    },
-    colorMode: {
-      name: 'Color Mode',
-      description: 'Color mode for components',
-      defaultValue: 'dark',
-      toolbar: {
-        title: 'Color',
-        icon: 'mirror',
-        items: [
-          { value: 'light', title: 'Light', left: '⚪' },
-          { value: 'dark', title: 'Dark', left: '⚫' },
-        ],
-      },
-    },
-  },
 };
 
-// Listen for theme updates
-if (typeof window !== 'undefined') {
-  const channel = addons.getChannel();
-  channel.on('theme-update', (theme: string) => {
-    document.body.setAttribute('data-theme', theme);
-    document.body.classList.forEach(className => {
-      if (getThemeClasses().includes(className)) {
-        document.body.classList.remove(className);
-      }
-    });
-    document.body.classList.add(theme);
-  });
-}
 
 export default preview;

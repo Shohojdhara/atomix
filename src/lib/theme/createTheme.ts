@@ -431,6 +431,13 @@ export function createTheme(...options: ThemeOptions[]): Theme {
         warning: createPaletteColor(mergedOptions.palette?.warning || DEFAULT_PALETTE.warning),
         info: createPaletteColor(mergedOptions.palette?.info || DEFAULT_PALETTE.info),
         success: createPaletteColor(mergedOptions.palette?.success || DEFAULT_PALETTE.success),
+        // Handle light and dark colors if provided
+        ...(mergedOptions.palette?.light && {
+            light: createPaletteColor(mergedOptions.palette.light),
+        }),
+        ...(mergedOptions.palette?.dark && {
+            dark: createPaletteColor(mergedOptions.palette.dark),
+        }),
         background: {
             default: mergedOptions.palette?.background?.default || DEFAULT_PALETTE.background.default,
             paper: mergedOptions.palette?.background?.paper || DEFAULT_PALETTE.background.paper,

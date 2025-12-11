@@ -29,16 +29,23 @@ import {
 import { ThemeEngine, type ThemeEngineConfig } from '../core/ThemeEngine';
 import { loadThemeConfig } from '../config/loader';
 import { isJSTheme } from '../themeUtils';
+import { RTLManager, type RTLConfig } from '../i18n/rtl';
+import { ThemeError, ThemeErrorCode, getLogger } from '../errors';
+import {
+  DEFAULT_STORAGE_KEY,
+  DEFAULT_DATA_ATTRIBUTE,
+  DEFAULT_BASE_PATH,
+} from '../constants';
 
 /**
  * Default configuration values
  */
 const DEFAULT_CONFIG: Partial<ThemeManagerConfig> = {
-  basePath: '/themes',
+  basePath: DEFAULT_BASE_PATH,
   cdnPath: null,
   lazy: true,
-  storageKey: 'atomix-theme',
-  dataAttribute: 'data-theme',
+  storageKey: DEFAULT_STORAGE_KEY,
+  dataAttribute: DEFAULT_DATA_ATTRIBUTE,
   enablePersistence: true,
   useMinified: false,
   preload: [],
@@ -53,7 +60,7 @@ const DEFAULT_CONFIG: Partial<ThemeManagerConfig> = {
  * @example
  * ```typescript
  * const themeManager = new ThemeManager({
- *   defaultTheme: 'shaj-default',
+ *   // No defaultTheme - uses built-in styles
  * });
  * 
  * await themeManager.setTheme('flashtrade');
@@ -77,6 +84,8 @@ export class ThemeManager {
   };
   private storageAdapter: StorageAdapter;
   private initialized: boolean = false;
+  private rtlManager?: RTLManager;
+  private logger = getLogger();
 
   /**
    * Create a new ThemeManager instance
@@ -90,7 +99,12 @@ export class ThemeManager {
       ...config,
       themes: config.themes || {},
       defaultTheme: config.defaultTheme,
-    } as any;
+    } as Required<Omit<ThemeManagerConfig, 'onThemeChange' | 'onError' | 'cdnPath' | 'defaultTheme'>> & {
+      defaultTheme?: string | Theme;
+      cdnPath: string | null;
+      onThemeChange?: (theme: string | Theme) => void;
+      onError?: (error: Error, themeName: string) => void;
+    };
 
     // Initialize storage adapter
     this.storageAdapter = createLocalStorageAdapter();
@@ -105,6 +119,11 @@ export class ThemeManager {
     };
 
     this.engine = new ThemeEngine(engineConfig);
+
+    // Initialize RTL manager if configured
+    if (config.rtl) {
+      this.rtlManager = new RTLManager(config.rtl);
+    }
 
     // Set up engine event listeners
     this.engine.on('change', (event) => {
@@ -163,13 +182,29 @@ export class ThemeManager {
         }
       }
 
-      // Load default theme
+      // Load default theme only if specified
       const defaultTheme = this.getDefaultTheme();
       if (defaultTheme) {
-        this.setTheme(defaultTheme, { removePrevious: false }).catch((error) => {
-          console.error('Failed to load default theme:', error);
-        });
+        // Check if theme exists in registry before attempting to load
+        const themeId = typeof defaultTheme === 'string' ? defaultTheme : (defaultTheme.name || '');
+        if (this.engine.getRegistry().has(themeId)) {
+          this.setTheme(defaultTheme, { removePrevious: false, fallbackOnError: true }).catch((error) => {
+            // Only log error once, don't spam console
+            if (error instanceof Error && !error.message.includes('previously failed')) {
+              this.logger.warn(`Failed to load default theme "${themeId}"`, {
+                themeId,
+                error: error.message,
+              });
+            }
+          });
+        } else {
+          // Theme not in registry, log warning but don't try to load
+          this.logger.warn(`Default theme "${themeId}" not found in registry. Using built-in styles.`, {
+            themeId,
+          });
+        }
       }
+      // If no default theme, use built-in styles (no theme CSS loaded)
     });
 
     this.initialized = true;
@@ -220,7 +255,7 @@ export class ThemeManager {
    * Get current theme
    */
   getTheme(): string {
-    return this.currentTheme || this.config.defaultTheme as string || '';
+    return this.currentTheme || (typeof this.config.defaultTheme === 'string' ? this.config.defaultTheme : '');
   }
 
   /**
@@ -257,13 +292,13 @@ export class ThemeManager {
   on(event: 'themeChange', callback: ThemeChangeCallback): void;
   on(event: 'themeLoad', callback: ThemeLoadCallback): void;
   on(event: 'themeError', callback: ThemeErrorCallback): void;
-  on(event: ThemeManagerEvent, callback: any): void {
+  on(event: ThemeManagerEvent, callback: ThemeChangeCallback | ThemeLoadCallback | ThemeErrorCallback): void {
     if (event === 'themeChange') {
-      this.eventListeners.themeChange.push(callback);
+      this.eventListeners.themeChange.push(callback as ThemeChangeCallback);
     } else if (event === 'themeLoad') {
-      this.eventListeners.themeLoad.push(callback);
+      this.eventListeners.themeLoad.push(callback as ThemeLoadCallback);
     } else if (event === 'themeError') {
-      this.eventListeners.themeError.push(callback);
+      this.eventListeners.themeError.push(callback as ThemeErrorCallback);
     }
   }
 
@@ -273,7 +308,7 @@ export class ThemeManager {
   off(event: 'themeChange', callback: ThemeChangeCallback): void;
   off(event: 'themeLoad', callback: ThemeLoadCallback): void;
   off(event: 'themeError', callback: ThemeErrorCallback): void;
-  off(event: ThemeManagerEvent, callback: any): void {
+  off(event: ThemeManagerEvent, callback: ThemeChangeCallback | ThemeLoadCallback | ThemeErrorCallback): void {
     if (event === 'themeChange') {
       this.eventListeners.themeChange = this.eventListeners.themeChange.filter(cb => cb !== callback);
     } else if (event === 'themeLoad') {
@@ -286,20 +321,16 @@ export class ThemeManager {
   /**
    * Emit theme change event
    */
-  private emitThemeChange(event: any): void {
-    const themeChangeEvent: ThemeChangeEvent = {
-      previousTheme: event.previousTheme,
-      currentTheme: event.currentTheme,
-      themeObject: event.themeObject,
-      timestamp: event.timestamp,
-      source: event.source,
-    };
-
+  private emitThemeChange(event: ThemeChangeEvent): void {
     for (const callback of this.eventListeners.themeChange) {
       try {
-        callback(themeChangeEvent);
+        callback(event);
       } catch (error) {
-        console.error('Error in theme change callback:', error);
+        this.logger.error(
+          'Error in theme change callback',
+          error instanceof Error ? error : new Error(String(error)),
+          { event }
+        );
       }
     }
   }
@@ -312,7 +343,11 @@ export class ThemeManager {
       try {
         callback(themeName);
       } catch (error) {
-        console.error('Error in theme load callback:', error);
+        this.logger.error(
+          'Error in theme load callback',
+          error instanceof Error ? error : new Error(String(error)),
+          { themeName }
+        );
       }
     }
   }
@@ -321,15 +356,35 @@ export class ThemeManager {
    * Emit theme error event
    */
   private emitThemeError(error: Error, themeName: string): void {
+    const themeError = error instanceof ThemeError 
+      ? error 
+      : new ThemeError(
+          error.message,
+          ThemeErrorCode.THEME_LOAD_FAILED,
+          { themeName, originalError: error.message }
+        );
+
     if (this.config.onError) {
-      this.config.onError(error, themeName);
+      try {
+        this.config.onError(error, themeName);
+      } catch (err) {
+        this.logger.error(
+          'Error in onError callback',
+          err instanceof Error ? err : new Error(String(err)),
+          { themeName }
+        );
+      }
     }
 
     for (const callback of this.eventListeners.themeError) {
       try {
         callback(error, themeName);
       } catch (err) {
-        console.error('Error in theme error callback:', err);
+        this.logger.error(
+          'Error in theme error callback',
+          err instanceof Error ? err : new Error(String(err)),
+          { themeName }
+        );
       }
     }
   }
@@ -339,6 +394,27 @@ export class ThemeManager {
    */
   getEngine(): ThemeEngine {
     return this.engine;
+  }
+
+  /**
+   * Get RTL manager
+   */
+  getRTLManager(): RTLManager | undefined {
+    return this.rtlManager;
+  }
+
+  /**
+   * Set RTL direction
+   */
+  setDirection(direction: 'ltr' | 'rtl'): void {
+    this.rtlManager?.setDirection(direction);
+  }
+
+  /**
+   * Get current direction
+   */
+  getDirection(): 'ltr' | 'rtl' {
+    return this.rtlManager?.getDirection() || 'ltr';
   }
 
   /**
@@ -352,8 +428,10 @@ export class ThemeManager {
       themeError: [],
     };
 
+    // Destroy RTL manager
+    this.rtlManager?.destroy();
+
     // Clear engine listeners
-    // Note: ThemeEngine doesn't have a destroy method yet, but we can add one if needed
     this.initialized = false;
   }
 }

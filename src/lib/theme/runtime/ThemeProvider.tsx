@@ -8,8 +8,9 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { ThemeManager } from './ThemeManager';
 import { ThemeContext } from '../ThemeContext';
-import type { ThemeProviderProps, ThemeMetadata, Theme } from '../types';
+import type { ThemeProviderProps, ThemeMetadata, Theme, ThemeLoadOptions } from '../types';
 import { isJSTheme } from '../themeUtils';
+import { getLogger } from '../errors';
 
 /**
  * ThemeProvider component
@@ -23,7 +24,7 @@ import { isJSTheme } from '../themeUtils';
  * 
  * function App() {
  *   return (
- *     <ThemeProvider defaultTheme="shaj-default">
+ *     <ThemeProvider>
  *       <YourApp />
  *     </ThemeProvider>
  *   );
@@ -32,7 +33,7 @@ import { isJSTheme } from '../themeUtils';
  */
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     children,
-    defaultTheme = 'shaj-default',
+    defaultTheme,
     themes = {},
     basePath = '/themes',
     cdnPath = null,
@@ -85,6 +86,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         return themesRef.current;
     }, [themes]);
 
+    const logger = useMemo(() => getLogger(), []);
+
     // Initialize theme manager (only recreate when config changes, not callbacks)
     const themeManager = useMemo(() => {
         try {
@@ -103,11 +106,15 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
                 onError: handleError,
             });
         } catch (error) {
-            console.error('Failed to create ThemeManager:', error);
+            logger.error(
+                'Failed to create ThemeManager',
+                error instanceof Error ? error : new Error(String(error)),
+                { themes: Object.keys(themesStable), defaultTheme }
+            );
             // Return a minimal manager that won't crash
             return new ThemeManager({
                 themes: {},
-                defaultTheme: typeof defaultTheme === 'string' ? defaultTheme : 'shaj-default',
+                defaultTheme,
                 basePath,
                 storageKey,
                 enablePersistence: false,
@@ -126,6 +133,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         useMinified,
         handleThemeChange,
         handleError,
+        logger,
     ]);
 
     // State for React re-renders
@@ -136,7 +144,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         if (isJSTheme(defaultTheme)) {
             return defaultTheme.name || 'js-theme';
         }
-        return 'shaj-default';
+        return ''; // No default theme - use built-in styles
     });
 
     const [activeTheme, setActiveTheme] = useState<Theme | null>(() => {
@@ -158,17 +166,28 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     const themeLoadHandlerRef = useRef<() => void>();
     const themeErrorHandlerRef = useRef<(err: Error) => void>();
 
+    // Track if we've initialized to prevent loops
+    const initializedRef = useRef(false);
+
     // Update state when theme changes
     useEffect(() => {
+        let isMounted = true;
+
         // Create stable handlers that use the current themeManager
         themeChangeHandlerRef.current = () => {
+            if (!isMounted) return;
             setCurrentTheme(prev => {
                 const current = themeManager.getTheme();
-                return current !== prev ? current : prev;
+                // Prevent unnecessary updates
+                if (current === prev) return prev;
+                return current;
             });
             setActiveTheme(prev => {
                 const current = themeManager.getActiveTheme();
-                return current !== prev ? current : prev;
+                // Prevent unnecessary updates by comparing references
+                if (current === prev) return prev;
+                if (!current && !prev) return prev;
+                return current;
             });
             setAvailableThemes(prev => {
                 const current = themeManager.getAvailableThemes();
@@ -181,17 +200,22 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         };
 
         themeLoadHandlerRef.current = () => {
+            if (!isMounted) return;
             setCurrentTheme(prev => {
                 const current = themeManager.getTheme();
-                return current !== prev ? current : prev;
+                if (current === prev) return prev;
+                return current;
             });
             setActiveTheme(prev => {
                 const current = themeManager.getActiveTheme();
-                return current !== prev ? current : prev;
+                if (current === prev) return prev;
+                if (!current && !prev) return prev;
+                return current;
             });
         };
 
         themeErrorHandlerRef.current = (err: Error) => {
+            if (!isMounted) return;
             setError(err);
             setIsLoading(false);
         };
@@ -201,19 +225,26 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         const onThemeLoadEvent = () => themeLoadHandlerRef.current?.();
         const onThemeErrorEvent = (err: Error) => themeErrorHandlerRef.current?.(err);
 
-        // Set initial state only once (synchronously, don't trigger events)
-        const initialTheme = themeManager.getTheme();
-        const initialActiveTheme = themeManager.getActiveTheme();
-        const initialAvailableThemes = themeManager.getAvailableThemes();
-        
-        // Only set if different from current state to avoid unnecessary updates
-        setCurrentTheme(prev => prev !== initialTheme ? initialTheme : prev);
-        setActiveTheme(prev => prev !== initialActiveTheme ? initialActiveTheme : prev);
-        setAvailableThemes(prev => {
-            if (prev.length !== initialAvailableThemes.length) return initialAvailableThemes;
-            const hasChanged = initialAvailableThemes.some((t, i) => t.name !== prev[i]?.name || t.class !== prev[i]?.class);
-            return hasChanged ? initialAvailableThemes : prev;
-        });
+        // Set initial state only once on first mount
+        // Use functional updates to avoid stale closures
+        if (!initializedRef.current) {
+            initializedRef.current = true;
+            // Use functional updates to get current state and compare
+            setCurrentTheme(prev => {
+                const current = themeManager.getTheme();
+                return current !== prev ? current : prev;
+            });
+            setActiveTheme(prev => {
+                const current = themeManager.getActiveTheme();
+                return current !== prev ? current : prev;
+            });
+            setAvailableThemes(prev => {
+                const current = themeManager.getAvailableThemes();
+                if (current.length !== prev.length) return current;
+                const hasChanged = current.some((t, i) => t.name !== prev[i]?.name || t.class !== prev[i]?.class);
+                return hasChanged ? current : prev;
+            });
+        }
 
         // Register event listeners
         themeManager.on('themeChange', onThemeChangeEvent);
@@ -221,6 +252,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         themeManager.on('themeError', onThemeErrorEvent);
 
         return () => {
+            isMounted = false;
             themeManager.off('themeChange', onThemeChangeEvent);
             themeManager.off('themeLoad', onThemeLoadEvent);
             themeManager.off('themeError', onThemeErrorEvent);
@@ -238,13 +270,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     const contextValue = useMemo(() => ({
         theme: currentTheme,
         activeTheme,
-        setTheme: async (theme: string | Theme, options?: any) => {
+        setTheme: async (theme: string | Theme, options?: ThemeLoadOptions) => {
             setIsLoading(true);
             setError(null);
             try {
                 await themeManager.setTheme(theme, options);
             } catch (err) {
-                setError(err instanceof Error ? err : new Error(String(err)));
+                const error = err instanceof Error ? err : new Error(String(err));
+                setError(error);
                 throw err;
             } finally {
                 setIsLoading(false);
@@ -259,12 +292,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
             try {
                 await themeManager.preloadTheme(themeName);
             } catch (err) {
-                setError(err instanceof Error ? err : new Error(String(err)));
+                const error = err instanceof Error ? err : new Error(String(err));
+                setError(error);
             } finally {
                 setIsLoading(false);
             }
         },
-        themeManager: themeManager as any as import('../types').ThemeContextValue['themeManager'], // Type compatibility
+        themeManager: themeManager,
     }), [
         currentTheme,
         activeTheme,

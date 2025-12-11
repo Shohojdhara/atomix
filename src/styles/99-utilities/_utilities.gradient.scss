@@ -1,0 +1,12 @@
+@use 'sass:map';
+@use '../01-settings/settings.design-tokens' as color-maps;
+@use '../01-settings/settings.config' as config;
+
+// Define utilities for gradient backgrounds
+$utilities-gradient: (
+  'background-image': (
+    property: background-image,
+    class: u-bg-gradient,
+    values: color-maps.$gradient-colors,
+  ),
+);

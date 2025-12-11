@@ -31,7 +31,13 @@ Complete color system with semantic meaning and accessibility compliance.
 ```
 
 **Features:**
-- 10-step color scales for each hue
+- 10-step color scales for each hue (primary, secondary, error, success, warning, info, red, green, blue, yellow, gray)
+- Light and dark color tokens (`--atomix-light`, `--atomix-dark`)
+- Gradient tokens for all colors
+- Text emphasis variants (primary, secondary, tertiary, disabled, invert, brand)
+- Background and border subtle variants
+- Hover state colors
+- RGB variants for transparency support
 - Light and dark theme support
 - WCAG 2.1 AA compliance
 - Semantic color tokens
@@ -256,10 +262,17 @@ Use our Sketch library with pre-configured tokens:
 
 | Category | Count | Examples |
 |----------|-------|----------|
-| Colors | 50+ | `primary`, `success`, `error` |
-| Spacing | 20+ | `1`, `4`, `8`, `16` |
-| Typography | 30+ | `sm`, `base`, `lg`, `xl` |
-| Shadows | 8 | `sm`, `md`, `lg`, `xl` |
+| Colors | 100+ | `primary`, `success`, `error`, `light`, `dark` |
+| Color Scales | 80+ | `primary-1` through `primary-10`, `gray-1` through `gray-10` |
+| Text Emphasis | 12+ | `primary-text-emphasis`, `tertiary-text-emphasis`, `brand-text-emphasis` |
+| Background Subtle | 10+ | `primary-bg-subtle`, `tertiary-bg-subtle`, `brand-bg-subtle` |
+| Border Subtle | 9+ | `primary-border-subtle`, `brand-border-subtle` |
+| Gradients | 9 | `primary-gradient`, `secondary-gradient`, `success-gradient` |
+| Hover States | 8+ | `primary-hover`, `secondary-hover`, `light-hover`, `dark-hover` |
+| Spacing | 30+ | `0`, `1`, `px-6`, `2`, `4`, `8`, `16`, `200` |
+| Typography | 30+ | `sm`, `base`, `lg`, `xl`, `2xl`, `display-1` |
+| Shadows | 6 | `xs`, `sm`, `md`, `lg`, `xl`, `inset` |
+| Z-Index | 13 | `z-n1`, `z-0`, `z-1` through `z-5`, `z-modal`, `z-tooltip` |
 | Breakpoints | 6 | `xs`, `sm`, `md`, `lg`, `xl`, `xxl` |
 
 ### Complete References

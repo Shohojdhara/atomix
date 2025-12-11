@@ -9,6 +9,7 @@
 @use 'utilities.border' as border;
 @use 'utilities.display' as display;
 @use 'utilities.flex' as flex;
+@use 'utilities.gradient' as gradient;
 @use 'utilities.link' as link;
 @use 'utilities.object-fit' as obj-fit;
 @use 'utilities.opacity' as opacity;
@@ -27,6 +28,7 @@ $utilities: map.merge($utilities, bg.$utilities-bg);
 $utilities: map.merge($utilities, border.$utilities-border);
 $utilities: map.merge($utilities, display.$utilities-display);
 $utilities: map.merge($utilities, flex.$utilities-flex);
+$utilities: map.merge($utilities, gradient.$utilities-gradient);
 $utilities: map.merge($utilities, link.$utilities-link);
 $utilities: map.merge($utilities, obj-fit.$utilities-object-fit);
 $utilities: map.merge($utilities, opacity.$utilities-opacity);

@@ -1,159 +1,564 @@
-import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '../components/Button/Button';
-import { Card } from '../components/Card/Card';
-import { Badge } from '../components/Badge/Badge';
-import { Input } from '../components/Form';
-import themeConfig from '../../theme.config';
+/**
+ * Theme System Stories
+ * 
+ * Comprehensive Storybook stories demonstrating the Atomix Theme System
+ */
 
-const ThemeShowcase: React.FC = () => {
-  const themes = Object.entries(themeConfig.themes);
+import type { Meta, StoryObj } from '@storybook/react';
+import React, { useState } from 'react';
+import {
+  ThemeProvider,
+  useTheme,
+  createTheme,
+  createRTLManager,
+} from '../lib/theme';
+import { ThemeStudio as ThemeStudioComponent } from '../lib/theme/studio';
+
+// Example theme metadata
+const exampleThemes = {
+  'boomdevs': {
+    name: 'BoomDevs',
+    description: 'BoomDevs theme',
+    status: 'beta' as const,
+  },
+  'esrar': {
+    name: 'Esrar',
+    description: 'Esrar theme',
+    status: 'beta' as const,
+  },
+};
+
+// Basic Theme Switcher Component
+const ThemeSwitcher: React.FC = () => {
+  const { theme, setTheme, availableThemes, isLoading } = useTheme();
+
+  const handleThemeChange = async (themeName: string) => {
+    try {
+      await setTheme(themeName);
+    } catch (error) {
+      console.error('Failed to switch theme:', error);
+    }
+  };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1 style={{ marginBottom: '2rem' }}>Atomix Theme System</h1>
-      
-      <section style={{ marginBottom: '3rem' }}>
-        <h2>Available Themes</h2>
-        <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
-          {themes.map(([id, theme]) => (
-            <Card key={id} style={{ padding: '1.5rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                <div style={{ 
-                  width: '24px', 
-                  height: '24px', 
-                  borderRadius: '4px', 
-                  backgroundColor: theme.color || '#ccc' 
-                }} />
-                <h3 style={{ margin: 0 }}>{theme.name}</h3>
-                <Badge 
-                  label={theme.status || 'unknown'}
-                  variant={theme.status === 'stable' ? 'success' : theme.status === 'beta' ? 'warning' : 'info'}
-                />
-              </div>
-              <p style={{ fontSize: '0.875rem', color: 'var(--atomix-text-secondary)', marginBottom: '0.75rem' }}>
-                {theme.description}
-              </p>
-              <div style={{ fontSize: '0.75rem', color: 'var(--atomix-text-tertiary)' }}>
-                <div>Type: {theme.type}</div>
-                <div>Dark Mode: {theme.supportsDarkMode ? '✓' : '✗'}</div>
-                {theme.tags && <div>Tags: {theme.tags.join(', ')}</div>}
-              </div>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      <section style={{ marginBottom: '3rem' }}>
-        <h2>Component Examples</h2>
-        <Card style={{ padding: '2rem' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            <div>
-              <h3>Buttons</h3>
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                <Button variant="primary">Primary</Button>
-                <Button variant="secondary">Secondary</Button>
-                <Button variant="success">Success</Button>
-                <Button variant="danger">Danger</Button>
-                <Button variant="outline-primary">Outline</Button>
-              </div>
-            </div>
-
-            <div>
-              <h3>Badges</h3>
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                <Badge label="Primary" variant="primary" />
-                <Badge label="Secondary" variant="secondary" />
-                <Badge label="Success" variant="success" />
-                <Badge label="Warning" variant="warning" />
-                <Badge label="Danger" variant="error" />
-              </div>
-            </div>
-
-            <div>
-              <h3>Input</h3>
-              <Input placeholder="Enter text..." style={{ maxWidth: '300px' }} />
-            </div>
-          </div>
-        </Card>
-      </section>
-
-      <section>
-        <h2>Theme Configuration</h2>
-        <Card style={{ padding: '1.5rem' }}>
-          <pre style={{ 
-            fontSize: '0.875rem', 
-            overflow: 'auto',
-            backgroundColor: 'var(--atomix-bg-secondary)',
-            padding: '1rem',
-            borderRadius: '4px'
-          }}>
-            {JSON.stringify({
-              defaultTheme: themeConfig.runtime.defaultTheme,
-              totalThemes: Object.keys(themeConfig.themes).length,
-              basePath: themeConfig.runtime.basePath,
-              storageKey: themeConfig.runtime.storageKey,
-            }, null, 2)}
-          </pre>
-        </Card>
-      </section>
+    <div style={{ 
+      padding: '1rem', 
+      border: '1px solid #e0e0e0', 
+      borderRadius: '8px',
+      marginBottom: '1rem',
+    }}>
+      <h3 style={{ marginTop: 0 }}>Theme Switcher</h3>
+      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        {availableThemes.length > 0 ? (
+          availableThemes.map((themeMetadata) => (
+            <button
+              key={themeMetadata.class || themeMetadata.name}
+              onClick={() => handleThemeChange(themeMetadata.class || themeMetadata.name)}
+              disabled={isLoading}
+              style={{
+                padding: '0.5rem 1rem',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                backgroundColor: theme === (themeMetadata.class || themeMetadata.name) ? '#007bff' : 'white',
+                color: theme === (themeMetadata.class || themeMetadata.name) ? 'white' : 'black',
+                cursor: isLoading ? 'not-allowed' : 'pointer',
+                opacity: isLoading ? 0.6 : 1,
+              }}
+            >
+              {themeMetadata.name}
+            </button>
+          ))
+        ) : (
+          <p style={{ color: '#666', fontSize: '0.875rem' }}>No themes available</p>
+        )}
+      </div>
+      <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.875rem', color: '#666' }}>
+        Current Theme: <strong>{String(theme || 'None')}</strong>
+        {isLoading && ' (Loading...)'}
+      </p>
     </div>
   );
 };
 
-const meta: Meta<typeof ThemeShowcase> = {
-  title: 'Design System/Theme System',
-  component: ThemeShowcase,
+// Component Preview
+const ComponentPreview: React.FC = () => {
+  return (
+    <div style={{
+      padding: '1rem',
+      border: '1px solid #e0e0e0',
+      borderRadius: '8px',
+      marginBottom: '1rem',
+    }}>
+      <h3 style={{ marginTop: 0 }}>Component Preview</h3>
+      
+      {/* Buttons */}
+      <div style={{ marginBottom: '1rem' }}>
+        <h4>Buttons</h4>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <button
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: 'var(--atomix-primary, #7AFFD7)',
+              color: 'var(--atomix-primary-contrast-text, #000)',
+              border: 'none',
+              borderRadius: 'var(--atomix-border-radius, 4px)',
+              cursor: 'pointer',
+            }}
+          >
+            Primary Button
+          </button>
+          <button
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: 'var(--atomix-secondary, #FF5733)',
+              color: 'var(--atomix-secondary-contrast-text, #fff)',
+              border: 'none',
+              borderRadius: 'var(--atomix-border-radius, 4px)',
+              cursor: 'pointer',
+            }}
+          >
+            Secondary Button
+          </button>
+        </div>
+      </div>
+
+      {/* Card */}
+      <div style={{ marginBottom: '1rem' }}>
+        <h4>Card</h4>
+        <div
+          style={{
+            padding: '1rem',
+            backgroundColor: 'var(--atomix-background-paper, #fff)',
+            border: '1px solid var(--atomix-border-color, #e0e0e0)',
+            borderRadius: 'var(--atomix-border-radius-lg, 8px)',
+            boxShadow: 'var(--atomix-box-shadow-md, 0 2px 4px rgba(0,0,0,0.1))',
+            maxWidth: '300px',
+          }}
+        >
+          <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--atomix-text-primary, #000)' }}>
+            Card Title
+          </h5>
+          <p style={{
+            margin: 0,
+            color: 'var(--atomix-text-secondary, #666)',
+            fontSize: 'var(--atomix-font-size-sm, 14px)',
+          }}>
+            This card demonstrates theme variables in action.
+          </p>
+        </div>
+      </div>
+
+      {/* Typography */}
+      <div>
+        <h4>Typography</h4>
+        <h1 style={{
+          fontSize: 'var(--atomix-typography-h1-font-size, 2rem)',
+          fontWeight: 'var(--atomix-typography-h1-font-weight, 700)',
+          color: 'var(--atomix-text-primary, #000)',
+          margin: '0.5rem 0',
+        }}>
+          Heading 1
+        </h1>
+        <h2 style={{
+          fontSize: 'var(--atomix-typography-h2-font-size, 1.5rem)',
+          fontWeight: 'var(--atomix-typography-h2-font-weight, 600)',
+          color: 'var(--atomix-text-primary, #000)',
+          margin: '0.5rem 0',
+        }}>
+          Heading 2
+        </h2>
+        <p style={{
+          fontSize: 'var(--atomix-typography-body1-font-size, 1rem)',
+          color: 'var(--atomix-text-primary, #000)',
+          lineHeight: 'var(--atomix-typography-body1-line-height, 1.5)',
+        }}>
+          Body text with theme typography styles applied.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// RTL Demo Component
+const RTLDemo: React.FC = () => {
+  const [rtlEnabled, setRTLEnabled] = useState(false);
+  const [direction, setDirection] = useState<'ltr' | 'rtl'>('ltr');
+  
+  // Create RTL manager once and store in ref to prevent re-creation
+  const rtlManagerRef = React.useRef<ReturnType<typeof createRTLManager> | null>(null);
+  
+  if (!rtlManagerRef.current) {
+    rtlManagerRef.current = createRTLManager({
+      enabled: false, // Start disabled, we'll control it manually
+      direction: 'ltr',
+      autoDetect: false,
+    });
+  }
+
+  // Update direction when rtlEnabled changes, but don't include rtlManager in deps
+  React.useEffect(() => {
+    if (!rtlManagerRef.current) return;
+    const newDirection = rtlEnabled ? 'rtl' : 'ltr';
+    // Only update if direction actually changed
+    if (rtlManagerRef.current.getDirection() !== newDirection) {
+      rtlManagerRef.current.setDirection(newDirection);
+    }
+    // Update local state only if different
+    setDirection(prev => prev !== newDirection ? newDirection : prev);
+  }, [rtlEnabled]); // Only depend on rtlEnabled
+
+  // Cleanup on unmount
+  React.useEffect(() => {
+    return () => {
+      if (rtlManagerRef.current) {
+        rtlManagerRef.current.destroy();
+        rtlManagerRef.current = null;
+      }
+    };
+  }, []);
+
+  return (
+    <div style={{
+      padding: '1rem',
+      border: '1px solid #e0e0e0',
+      borderRadius: '8px',
+      marginBottom: '1rem',
+    }}>
+      <h3 style={{ marginTop: 0 }}>RTL Support</h3>
+      <button
+        onClick={() => {
+          setRTLEnabled(prev => !prev);
+        }}
+        style={{
+          padding: '0.5rem 1rem',
+          backgroundColor: rtlEnabled ? '#28a745' : '#6c757d',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          marginBottom: '1rem',
+        }}
+      >
+        {rtlEnabled ? 'Disable RTL' : 'Enable RTL'}
+      </button>
+      <div style={{
+        padding: '1rem',
+        backgroundColor: '#f5f5f5',
+        borderRadius: '4px',
+        direction: direction,
+      }}>
+        <p style={{ textAlign: direction === 'rtl' ? 'right' : 'left' }}>
+          This text will align based on the current direction setting.
+          {direction === 'rtl' && ' (RTL Mode Active)'}
+        </p>
+        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: direction === 'rtl' ? 'flex-end' : 'flex-start' }}>
+          <span>←</span>
+          <span>Direction: {direction.toUpperCase()}</span>
+          <span>→</span>
+        </div>
+        <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.875rem', color: '#666' }}>
+          Current Direction: <strong>{direction.toUpperCase()}</strong>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// Main Demo Component
+const ThemeSystemDemo: React.FC = () => {
+  const { theme } = useTheme();
+  const [showStudio, setShowStudio] = useState(false);
+
+  return (
+    <div style={{
+      padding: '2rem',
+      fontFamily: 'var(--atomix-font-family, Inter, sans-serif)',
+      backgroundColor: 'var(--atomix-background-default, #fff)',
+      color: 'var(--atomix-text-primary, #000)',
+      minHeight: '100vh',
+    }}>
+      <h1 style={{ marginTop: 0 }}>Atomix Theme System</h1>
+      <p>Comprehensive theme management system with CSS and JavaScript theme support.</p>
+
+      <ThemeSwitcher />
+      <ComponentPreview />
+      <RTLDemo />
+
+      <div style={{
+        padding: '1rem',
+        border: '1px solid #e0e0e0',
+        borderRadius: '8px',
+        marginBottom: '1rem',
+      }}>
+        <h3 style={{ marginTop: 0 }}>Theme Studio</h3>
+        <button
+          onClick={() => setShowStudio(!showStudio)}
+          style={{
+            padding: '0.5rem 1rem',
+            backgroundColor: '#6f42c1',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            marginBottom: '1rem',
+          }}
+        >
+          {showStudio ? 'Hide' : 'Show'} Theme Studio
+        </button>
+        {showStudio && (
+          <div style={{ marginTop: '1rem' }}>
+            <ThemeStudioComponent
+              onThemeChange={(newTheme) => {
+                console.log('Theme changed:', newTheme);
+              }}
+              onSave={(savedTheme) => {
+                console.log('Theme saved:', savedTheme);
+                if (typeof window !== 'undefined') {
+                  alert('Theme saved! Check console for details.');
+                }
+              }}
+              showPreview={true}
+              showCSS={true}
+              showCode={false}
+            />
+          </div>
+        )}
+      </div>
+
+      <div style={{
+        padding: '1rem',
+        border: '1px solid #e0e0e0',
+        borderRadius: '8px',
+        backgroundColor: '#f8f9fa',
+      }}>
+        <h3 style={{ marginTop: 0 }}>Current Theme Info</h3>
+        <pre style={{
+          backgroundColor: '#fff',
+          padding: '1rem',
+          borderRadius: '4px',
+          overflow: 'auto',
+          fontSize: '0.875rem',
+        }}>
+          {JSON.stringify({ currentTheme: String(theme || 'Unknown') }, null, 2)}
+        </pre>
+      </div>
+    </div>
+  );
+};
+
+// Meta configuration
+const meta: Meta<typeof ThemeSystemDemo> = {
+  title: 'Theme System/Overview',
+  component: ThemeSystemDemo,
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component: `
+# Atomix Theme System
+
+The Atomix Theme System provides comprehensive theming capabilities including:
+
+- **CSS Theme Support**: Load themes from CSS files
+- **JavaScript Theme Support**: Create themes programmatically
+- **RTL Support**: Right-to-left language support
+- **Theme Studio**: Visual theme editor
+- **Component Overrides**: Component-level customization
+- **White Labeling**: Brand customization
+- **Analytics**: Performance monitoring
+
+## Basic Usage
+
+\`\`\`tsx
+import { ThemeProvider, useTheme } from '@shohojdhara/atomix/theme';
+
+function App() {
+  return (
+    <ThemeProvider>
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+
+function MyComponent() {
+  const { theme, setTheme } = useTheme();
+  return <button onClick={() => setTheme('dark-theme')}>Switch Theme</button>;
+}
+\`\`\`
+
+## Creating JavaScript Themes
+
+\`\`\`tsx
+import { createTheme } from '@shohojdhara/atomix/theme';
+
+const customTheme = createTheme({
+  palette: {
+    primary: { main: '#7AFFD7' },
+    secondary: { main: '#FF5733' },
   },
+  typography: {
+    fontFamily: 'Inter, sans-serif',
+  },
+});
+\`\`\`
+        `,
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <ThemeProvider
+        themes={exampleThemes}
+        basePath="/themes"
+      >
+        <Story />
+      </ThemeProvider>
+    ),
+  ],
 };
 
 export default meta;
-type Story = StoryObj<typeof ThemeShowcase>;
+type Story = StoryObj<typeof ThemeSystemDemo>;
 
-export const Overview: Story = {
-  render: () => <ThemeShowcase />,
+// Stories
+export const Default: Story = {
+  name: 'Basic Theme System',
 };
 
-export const ShajDefault: Story = {
-  render: () => <ThemeShowcase />,
-  parameters: {
-    theme: 'shaj-default',
+export const WithRTL: Story = {
+  name: 'With RTL Support',
+  decorators: [
+    (Story) => {
+      const [rtlEnabled, setRTLEnabled] = useState(false);
+      const [direction, setDirection] = useState<'ltr' | 'rtl'>('ltr');
+      
+      // Create RTL manager once and store in ref to prevent re-creation
+      const rtlManagerRef = React.useRef<ReturnType<typeof createRTLManager> | null>(null);
+      
+      if (!rtlManagerRef.current) {
+        rtlManagerRef.current = createRTLManager({
+          enabled: false,
+          direction: 'ltr',
+          autoDetect: false,
+        });
+      }
+
+      // Update direction when rtlEnabled changes, but don't include rtlManager in deps
+      React.useEffect(() => {
+        if (!rtlManagerRef.current) return;
+        const newDirection = rtlEnabled ? 'rtl' : 'ltr';
+        // Only update if direction actually changed
+        if (rtlManagerRef.current.getDirection() !== newDirection) {
+          rtlManagerRef.current.setDirection(newDirection);
+        }
+        // Update local state only if different
+        setDirection(prev => prev !== newDirection ? newDirection : prev);
+      }, [rtlEnabled]); // Only depend on rtlEnabled
+
+      // Cleanup on unmount
+      React.useEffect(() => {
+        return () => {
+          if (rtlManagerRef.current) {
+            rtlManagerRef.current.destroy();
+            rtlManagerRef.current = null;
+          }
+        };
+      }, []);
+
+      return (
+        <ThemeProvider
+          themes={exampleThemes}
+        >
+          <div>
+            <div style={{ marginBottom: '1rem', padding: '1rem', backgroundColor: '#f0f0f0', borderRadius: '4px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <input
+                  type="checkbox"
+                  checked={rtlEnabled}
+                  onChange={(e) => setRTLEnabled(e.target.checked)}
+                />
+                <span>Enable RTL Mode</span>
+              </label>
+              <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.875rem', color: '#666' }}>
+                Current Direction: <strong>{direction.toUpperCase()}</strong>
+              </p>
+            </div>
+            <div style={{ direction: direction }}>
+              <Story />
+            </div>
+          </div>
+        </ThemeProvider>
+      );
+    },
+  ],
+};
+
+export const ThemeStudioEditor: Story = {
+  name: 'Theme Studio Editor',
+  render: () => {
+    const [theme, setTheme] = useState(createTheme({
+      name: 'Custom Theme',
+      palette: {
+        primary: { main: '#7AFFD7' },
+        secondary: { main: '#FF5733' },
+      },
+    }));
+
+    return (
+      <div style={{ padding: '2rem' }}>
+        <h1>Theme Studio</h1>
+        <p>Visual theme editor for creating and customizing themes.</p>
+        <ThemeStudioComponent
+          initialTheme={theme}
+          onThemeChange={(newTheme) => {
+            setTheme(newTheme);
+          }}
+          onSave={(savedTheme) => {
+            console.log('Theme saved:', savedTheme);
+            if (typeof window !== 'undefined') {
+              alert('Theme saved! Check console.');
+            }
+          }}
+          showPreview={true}
+          showCSS={true}
+          showCode={true}
+        />
+      </div>
+    );
   },
+  decorators: [
+    (Story) => (
+      <ThemeProvider themes={exampleThemes}>
+        <Story />
+      </ThemeProvider>
+    ),
+  ],
 };
 
-export const BoomDevs: Story = {
-  render: () => <ThemeShowcase />,
-  parameters: {
-    theme: 'boomdevs',
-  },
-};
+export const JavaScriptTheme: Story = {
+  name: 'JavaScript Theme Example',
+  render: () => {
+    const jsTheme = createTheme({
+      name: 'Custom JS Theme',
+      palette: {
+        primary: { main: '#7AFFD7' },
+        secondary: { main: '#FF5733' },
+        background: {
+          default: '#FAFAFA',
+          paper: '#FFFFFF',
+          subtle: '#F5F5F5',
+        },
+      },
+      typography: {
+        fontFamily: 'Inter, sans-serif',
+        fontSize: 16,
+      },
+    });
 
-export const Esrar: Story = {
-  render: () => <ThemeShowcase />,
-  parameters: {
-    theme: 'esrar',
-  },
-};
-
-export const Mashroom: Story = {
-  render: () => <ThemeShowcase />,
-  parameters: {
-    theme: 'mashroom',
-  },
-};
-
-export const FlashTrade: Story = {
-  render: () => <ThemeShowcase />,
-  parameters: {
-    theme: 'flashtrade',
-  },
-};
-
-export const Applemix: Story = {
-  render: () => <ThemeShowcase />,
-  parameters: {
-    theme: 'applemix',
+    return (
+      <ThemeProvider defaultTheme={jsTheme} themes={exampleThemes}>
+        <ThemeSystemDemo />
+      </ThemeProvider>
+    );
   },
 };

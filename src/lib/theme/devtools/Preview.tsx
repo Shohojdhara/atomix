@@ -286,7 +286,7 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
         </div>
       )}
 
-      <style jsx>{`
+      <style >{`
         .atomix-theme-preview {
           padding: 24px;
           font-family: ${theme.typography.fontFamily};

@@ -6,6 +6,7 @@
  */
 
 import type { ThemeMetadata, ThemeValidationResult } from './types';
+import { THEME_LINK_ID_PREFIX } from './constants';
 
 /**
  * Check if code is running in a browser environment
@@ -25,7 +26,7 @@ export const isServer = (): boolean => {
  * Generate a unique ID for theme link elements
  */
 export const getThemeLinkId = (themeName: string): string => {
-    return `atomix-theme-${themeName}`;
+    return `${THEME_LINK_ID_PREFIX}${themeName}`;
 };
 
 /**

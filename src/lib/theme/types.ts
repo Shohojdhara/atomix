@@ -4,7 +4,7 @@
  * TypeScript types and interfaces for the Atomix Design System theme management system.
  */
 
-import type { ThemeManager as ThemeManagerType } from './ThemeManager';
+import type { ThemeManager as ThemeManagerType } from './runtime/ThemeManager';
 
 /**
  * Theme metadata interface matching themes.config.js structure
@@ -71,6 +71,8 @@ export interface ThemeManagerConfig {
     onThemeChange?: (theme: string | Theme) => void;
     /** Callback when theme load fails */
     onError?: (error: Error, themeName: string) => void;
+    /** RTL configuration */
+    rtl?: import('./i18n/rtl').RTLConfig;
 }
 
 /**
