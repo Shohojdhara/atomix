@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="/dist/atomix.css">
   
   <!-- Load default theme -->
-  <link rel="stylesheet" href="/dist/themes/shaj-default.css" id="atomix-theme-shaj-default" data-atomix-theme="shaj-default">
+  <link rel="stylesheet" href="/themes/shaj-default.css" id="atomix-theme-shaj-default" data-atomix-theme="shaj-default">
   
   <style>
     body {
@@ -291,7 +291,7 @@
       constructor(config) {
         this.themes = config.themes;
         this.currentTheme = config.defaultTheme || 'shaj-default';
-        this.basePath = config.basePath || '/dist/themes';
+        this.basePath = config.basePath || '/themes';
         this.listeners = { themeChange: [], themeLoad: [], themeError: [] };
         this.loadedThemes = new Set(['shaj-default']); // Default theme is already loaded
       }
@@ -391,7 +391,7 @@
     const themeManager = new SimpleThemeManager({
       themes: themesConfig.metadata,
       defaultTheme: localStorage.getItem('atomix-theme') || 'shaj-default',
-      basePath: '/dist/themes',
+      basePath: '/themes',
     });
 
     // UI Elements

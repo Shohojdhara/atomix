@@ -46,11 +46,10 @@ Atomix includes a powerful theme manager for dynamic theme switching:
 
 ```jsx
 import { ThemeProvider, useTheme } from '@shohojdhara/atomix/theme';
-import { themesConfig } from '@shohojdhara/atomix/themes/config';
 
 function App() {
   return (
-    <ThemeProvider themes={themesConfig.metadata} defaultTheme="shaj-default">
+    <ThemeProvider defaultTheme="shaj-default">
       <YourApp />
     </ThemeProvider>
   );
@@ -120,7 +119,6 @@ This command will:
 1. Build the main JavaScript library (ESM and CJS formats)
 2. Generate TypeScript definitions
 3. Build the main CSS styles (`dist/atomix.css` and `dist/atomix.min.css`)
-4. Build all themes in `dist/themes/`
 
 ### Individual Builds
 
@@ -167,7 +165,7 @@ To keep visual docs and any snapshots stable, choose one of the following and st
   - This relies on your builder's SCSS pipeline; avoid mixing SCSS and built CSS in the same Storybook to prevent drift.
 
 Notes:
-- CSS bundles produced by the styles build are deterministic: dist/atomix.css and dist/atomix.min.css, plus per-theme files under dist/themes/.
+- CSS bundles produced by the styles build are deterministic: dist/atomix.css and dist/atomix.min.css.
 - CI should run yarn attw to validate package exports and types after changes.
 
 ## Components

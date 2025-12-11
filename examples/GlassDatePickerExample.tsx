@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
-import { DatePicker } from '../src/components/DatePicker/DatePicker';
-import { DateRange } from '../src/components/DatePicker/types';
-import { formatDateRange } from '../src/components/DatePicker/utils';
+import { DatePicker } from '@shohojdhara/atomix';
+
+/**
+ * Date range type for date range selection
+ */
+interface DateRange {
+  startDate: Date | null;
+  endDate: Date | null;
+}
 
 /**
  * Example showcasing the DatePicker component with glass morphism effects
+ * 
+ * This example demonstrates:
+ * - Single date selection with glass effect
+ * - Date range selection with custom glass configuration
+ * - Inline calendar with glass morphism
  */
 export const GlassDatePickerExample: React.FC = () => {
   const [singleDate, setSingleDate] = useState<Date | null>(null);
@@ -15,6 +26,11 @@ export const GlassDatePickerExample: React.FC = () => {
 
   const handleRangeChange = (range: DateRange) => {
     setDateRange(range);
+  };
+
+  // Helper function to format date range
+  const formatDateRange = (start: Date, end: Date): string => {
+    return `${start.toLocaleDateString()} - ${end.toLocaleDateString()}`;
   };
 
   return (
@@ -104,12 +120,12 @@ export const GlassDatePickerExample: React.FC = () => {
             cornerRadius: 16,
             overLight: false,
             mode: 'polar',
-          }}
+          } as any}
           size="md"
         />
         {dateRange.startDate && dateRange.endDate && (
           <p style={{ color: 'white', marginTop: '1rem', fontSize: '0.875rem' }}>
-            Range: {formatDateRange(dateRange.startDate, dateRange.endDate, 'MM/dd/yyyy')}
+            Range: {formatDateRange(dateRange.startDate, dateRange.endDate)}
           </p>
         )}
       </div>
@@ -144,7 +160,7 @@ export const GlassDatePickerExample: React.FC = () => {
             cornerRadius: 14,
             overLight: false,
             mode: 'prominent',
-          }}
+          } as any}
           selectionMode="single"
         />
       </div>

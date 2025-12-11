@@ -5,8 +5,7 @@
  */
 
 import React, { useState } from 'react';
-import { ThemeProvider, useTheme } from '@shohojdhara/atomix/theme';
-import { themesConfig } from '@shohojdhara/atomix/themes/config';
+import { ThemeProvider, useTheme } from '@shohojdhara/atomix';
 import { ColorModeToggle } from '@shohojdhara/atomix';
 import { Button } from '@shohojdhara/atomix';
 import { Card } from '@shohojdhara/atomix';
@@ -300,7 +299,6 @@ function AppContent() {
 export default function App() {
     return (
         <ThemeProvider
-            themes={themesConfig.metadata}
             defaultTheme="shaj-default"
             basePath="/themes"
             enablePersistence={true}

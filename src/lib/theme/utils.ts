@@ -65,28 +65,24 @@ export const buildThemePath = (
     return `${cleanBasePath}/${cleanFileName}`;
 };
 
+
+
 /**
- * Load theme CSS file dynamically
+ * Load theme CSS from a full path
  * 
- * @param themeName - Name of the theme to load
- * @param basePath - Base path for theme files
- * @param useMinified - Whether to use minified CSS
- * @param cdnPath - Optional CDN path
+ * @param fullPath - Full path to the CSS file
+ * @param linkId - ID for the link element
  * @returns Promise that resolves when CSS is loaded
  */
 export const loadThemeCSS = (
-    themeName: string,
-    basePath: string = '/themes',
-    useMinified: boolean = false,
-    cdnPath: string | null = null
+    fullPath: string,
+    linkId: string
 ): Promise<void> => {
     if (isServer()) {
         return Promise.resolve();
     }
 
     return new Promise((resolve, reject) => {
-        const linkId = getThemeLinkId(themeName);
-
         // Check if theme is already loaded
         const existingLink = document.getElementById(linkId);
         if (existingLink) {
@@ -99,10 +95,10 @@ export const loadThemeCSS = (
         link.id = linkId;
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = buildThemePath(themeName, basePath, useMinified, cdnPath);
+        link.href = fullPath;
 
         // Add data attribute for tracking
-        link.setAttribute('data-atomix-theme', themeName);
+        link.setAttribute('data-atomix-theme', 'true');
 
         // Handle load success
         link.onload = () => {
@@ -113,7 +109,7 @@ export const loadThemeCSS = (
         link.onerror = () => {
             // Remove failed link element
             link.remove();
-            reject(new Error(`Failed to load theme: ${themeName}`));
+            reject(new Error(`Failed to load theme CSS: ${fullPath}`));
         };
 
         // Append to head
@@ -124,15 +120,19 @@ export const loadThemeCSS = (
 /**
  * Remove theme CSS from the DOM
  * 
- * @param themeName - Name of the theme to remove
+ * @param themeNameOrLinkId - Name of the theme or link ID to remove
  */
-export const removeThemeCSS = (themeName: string): void => {
+export const removeThemeCSS = (themeNameOrLinkId: string): void => {
     if (isServer()) {
         return;
     }
 
-    const linkId = getThemeLinkId(themeName);
-    const link = document.getElementById(linkId);
+    // Try as link ID first, then as theme name
+    let link = document.getElementById(themeNameOrLinkId);
+    if (!link) {
+        const linkId = getThemeLinkId(themeNameOrLinkId);
+        link = document.getElementById(linkId);
+    }
 
     if (link) {
         link.remove();
@@ -154,12 +154,12 @@ export const removeAllThemeCSS = (): void => {
 /**
  * Apply theme data attributes to the document
  * 
- * @param themeName - Name of the theme
  * @param dataAttribute - Data attribute name (default: 'data-theme')
+ * @param themeName - Name of the theme
  */
 export const applyThemeAttributes = (
-    themeName: string,
-    dataAttribute: string = 'data-theme'
+    dataAttribute: string,
+    themeName: string
 ): void => {
     if (isServer()) {
         return;

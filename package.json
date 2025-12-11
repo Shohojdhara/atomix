@@ -72,21 +72,11 @@
       "require": "./src/styles/99-utilities/_index.scss",
       "default": "./src/styles/99-utilities/_index.scss"
     },
-    "./themes/*": {
-      "import": "./dist/themes/*",
-      "require": "./dist/themes/*",
-      "default": "./dist/themes/*"
-    },
     "./theme": {
       "types": "./dist/lib/theme/index.d.ts",
       "import": "./dist/lib/theme/index.js",
       "require": "./dist/lib/theme/index.js",
       "default": "./dist/lib/theme/index.js"
-    },
-    "./themes/config": {
-      "import": "./src/themes/themes.config.js",
-      "require": "./src/themes/themes.config.js",
-      "default": "./src/themes/themes.config.js"
     },
     "./package.json": "./package.json"
   },

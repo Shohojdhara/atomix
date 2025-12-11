@@ -11,6 +11,3 @@ export const utils: typeof utilsImport = utilsImport;
 export const types: typeof typesImport = typesImport;
 export const constants: typeof constantsImport = constantsImport;
 export const theme: typeof themeImport = themeImport;
-
-// Also export theme utilities directly for convenience
-export * from './theme';

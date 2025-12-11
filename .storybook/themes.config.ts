@@ -1,4 +1,4 @@
-import { themesConfig } from '../src/themes/themes.config';
+import themeConfig from '../theme.config';
 
 export interface ThemeConfig {
   name: string;
@@ -6,8 +6,8 @@ export interface ThemeConfig {
   color: string;
 }
 
-// Generate themes from the shared configuration
-const configThemes: ThemeConfig[] = Object.entries(themesConfig.metadata).map(([key, value]: [string, any]) => ({
+// Generate themes from the new theme configuration
+const configThemes: ThemeConfig[] = Object.entries(themeConfig.themes).map(([key, value]) => ({
   name: value.name,
   class: key,
   color: value.color || '#808080', // Fallback color

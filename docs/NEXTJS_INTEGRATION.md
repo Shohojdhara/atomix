@@ -68,11 +68,18 @@ import '@shohojdhara/atomix/scss/settings';
 import '@shohojdhara/atomix/scss/components';
 ```
 
-### Option 3: Import specific theme
+### Option 3: Use ThemeProvider
 
-```javascript
-// Import a specific theme
-import '@shohojdhara/atomix/themes/boomdevs.css';
+```jsx
+import { ThemeProvider } from '@shohojdhara/atomix/theme';
+
+export default function RootLayout({ children }) {
+  return (
+    <ThemeProvider defaultTheme="boomdevs">
+      {children}
+    </ThemeProvider>
+  );
+}
 ```
 
 ## Component Usage

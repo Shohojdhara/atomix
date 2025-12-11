@@ -35,7 +35,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Package Exports**:
   - `@shohojdhara/atomix/theme` - Theme manager utilities
-  - `@shohojdhara/atomix/themes/config` - Theme configuration
 
 - **Documentation**:
   - Comprehensive theme manager guide (`docs/THEME_MANAGER.md`)
