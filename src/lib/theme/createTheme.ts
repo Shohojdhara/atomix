@@ -39,116 +39,119 @@ import type {
 
 const DEFAULT_PALETTE: Theme['palette'] = {
     primary: {
-        main: '#7AFFD7',
-        light: '#A3FFE5',
-        dark: '#00E6C3',
-        contrastText: '#000000',
+        main: '#7c3aed', // Primary-6
+        light: '#d0b2f5', // Primary-3
+        dark: '#3c1583', // Primary-9
+        contrastText: '#ffffff',
     },
     secondary: {
-        main: '#FF5733',
-        light: '#FF8A65',
-        dark: '#C62828',
-        contrastText: '#FFFFFF',
+        main: '#f3f4f6', // Gray-2
+        light: '#ffffff', // Gray-1
+        dark: '#e5e7eb', // Gray-3
+        contrastText: '#1f2937', // Gray-9
     },
     error: {
-        main: '#F44336',
-        light: '#E57373',
-        dark: '#D32F2F',
-        contrastText: '#FFFFFF',
+        main: '#ef4444', // Red-6
+        light: '#fca5a5', // Red-4
+        dark: '#991b1b', // Red-9
+        contrastText: '#ffffff',
     },
     warning: {
-        main: '#FF9800',
-        light: '#FFB74D',
-        dark: '#F57C00',
+        main: '#eab308', // Yellow-6
+        light: '#fde047', // Yellow-4
+        dark: '#854d0e', // Yellow-9
         contrastText: '#000000',
     },
     info: {
-        main: '#2196F3',
-        light: '#64B5F6',
-        dark: '#1976D2',
-        contrastText: '#FFFFFF',
+        main: '#3b82f6', // Blue-6
+        light: '#93c5fd', // Blue-4
+        dark: '#1e40af', // Blue-9
+        contrastText: '#ffffff',
     },
     success: {
-        main: '#4CAF50',
-        light: '#81C784',
-        dark: '#388E3C',
-        contrastText: '#FFFFFF',
+        main: '#22c55e', // Green-6
+        light: '#86efac', // Green-4
+        dark: '#166534', // Green-9
+        contrastText: '#ffffff',
     },
     background: {
-        default: '#FFFFFF',
-        paper: '#F5F5F5',
-        subtle: '#FAFAFA',
+        default: '#ffffff', // Primary-bg
+        paper: '#f3f4f6', // Secondary-bg
+        subtle: '#d1d5db', // Gray-4 (Tertiary-bg)
     },
     text: {
-        primary: 'rgba(0, 0, 0, 0.87)',
-        secondary: 'rgba(0, 0, 0, 0.6)',
-        disabled: 'rgba(0, 0, 0, 0.38)',
+        primary: '#111827', // Gray-10
+        secondary: '#374151', // Gray-8
+        disabled: '#9ca3af', // Gray-5
     },
 };
 
 const DEFAULT_TYPOGRAPHY: Theme['typography'] = {
-    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-    fontSize: 14,
+    fontFamily: '"Roboto", "Helvetica Neue", "Helvetica", "Arial", sans-serif',
+    fontSize: 16, // 1rem
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
     fontWeightSemiBold: 600,
     fontWeightBold: 700,
+    fontWeightHeavy: 800,
+    fontWeightBlack: 900,
     h1: {
-        fontSize: '2.5rem',
-        fontWeight: 700,
-        lineHeight: 1.2,
-        letterSpacing: '-0.01562em',
-    },
-    h2: {
-        fontSize: '2rem',
+        fontSize: '2.5rem', // 40px
         fontWeight: 700,
         lineHeight: 1.3,
-        letterSpacing: '-0.00833em',
+        letterSpacing: '-1px',
+    },
+    h2: {
+        fontSize: '2rem', // 32px
+        fontWeight: 700,
+        lineHeight: 1.3,
+        letterSpacing: '-1px',
     },
     h3: {
-        fontSize: '1.75rem',
-        fontWeight: 600,
-        lineHeight: 1.4,
-        letterSpacing: '0em',
+        fontSize: '1.5rem', // 24px
+        fontWeight: 700,
+        lineHeight: 1.3,
+        letterSpacing: '-1px',
     },
     h4: {
-        fontSize: '1.5rem',
-        fontWeight: 600,
-        lineHeight: 1.4,
-        letterSpacing: '0.00735em',
+        fontSize: '1.25rem', // 20px
+        fontWeight: 700,
+        lineHeight: 1.3,
+        letterSpacing: '-0.5px',
     },
     h5: {
-        fontSize: '1.25rem',
-        fontWeight: 600,
-        lineHeight: 1.5,
-        letterSpacing: '0em',
+        fontSize: '1.125rem', // 18px
+        fontWeight: 700,
+        lineHeight: 1.3,
+        letterSpacing: '-0.5px',
     },
     h6: {
-        fontSize: '1rem',
-        fontWeight: 600,
-        lineHeight: 1.6,
-        letterSpacing: '0.0075em',
+        fontSize: '1rem', // 16px
+        fontWeight: 700,
+        lineHeight: 1.3,
+        letterSpacing: '-0.5px',
     },
     body1: {
-        fontSize: '1rem',
+        fontSize: '1rem', // 16px
         fontWeight: 400,
-        lineHeight: 1.5,
+        lineHeight: 1.2,
     },
     body2: {
-        fontSize: '0.875rem',
+        fontSize: '0.875rem', // 14px
         fontWeight: 400,
-        lineHeight: 1.43,
+        lineHeight: 1.2,
     },
 };
 
 const DEFAULT_BREAKPOINTS: Theme['breakpoints'] = {
     values: {
         xs: 0,
-        sm: 600,
-        md: 960,
-        lg: 1280,
-        xl: 1920,
+        sm: 576,
+        md: 768,
+        lg: 992,
+        xl: 1200,
+        xxl: 1440,
     },
     unit: 'px',
     up: (key) => {
@@ -167,12 +170,12 @@ const DEFAULT_BREAKPOINTS: Theme['breakpoints'] = {
 };
 
 const DEFAULT_SHADOWS: Theme['shadows'] = {
-    xs: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-    sm: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-    xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-    inset: 'inset 0 1px 3px 0 rgba(0, 0, 0, 0.1), inset 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+    xs: '0px 1px 2px 0px rgba(45, 54, 67, 0.04), 0px 2px 4px 0px rgba(45, 54, 67, 0.08)',
+    sm: '0 2px 4px rgba(0, 0, 0, 0.075)',
+    md: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    lg: '0 16px 48px rgba(0, 0, 0, 0.175)',
+    xl: '0px 16px 64px -8px rgba(45, 54, 67, 0.14)',
+    inset: 'inset 0 1px 2px rgba(0, 0, 0, 0.075)',
 };
 
 const DEFAULT_TRANSITIONS: Theme['transitions'] = {
@@ -381,10 +384,11 @@ function createSpacing(spacingInput: SpacingOptions = 4): SpacingFunction {
 function createBreakpoints(breakpointsInput?: BreakpointsOptions): Theme['breakpoints'] {
     const values = {
         xs: 0,
-        sm: 600,
-        md: 960,
-        lg: 1280,
-        xl: 1920,
+        sm: 576,
+        md: 768,
+        lg: 992,
+        xl: 1200,
+        xxl: 1440,
         ...breakpointsInput?.values,
     };
 
