@@ -1,91 +1,72 @@
 @use 'sass:map';
-@use '../01-settings/settings.typography' as *;
+
 @use '../01-settings/settings.config' as config;
 @use '../01-settings/settings.design-tokens' as color-maps;
 @use '../01-settings/settings.colors' as colors;
 
 // Define utilities for text
 $utilities-text: (
-  'font-size': (
-    rfs: true,
+  'font-size': (rfs: true,
     property: font-size,
     class: u-fs,
-    values: $font-sizes,
+    values: map.merge(color-maps.$font-sizes-extended,
+      (1: map.get(color-maps.$font-sizes-extended, 'h1'),
+        2: map.get(color-maps.$font-sizes-extended, 'h2'),
+        3: map.get(color-maps.$font-sizes-extended, 'h3'),
+        4: map.get(color-maps.$font-sizes-extended, 'h4'),
+        5: map.get(color-maps.$font-sizes-extended, 'h5'),
+        6: map.get(color-maps.$font-sizes-extended, 'h6'),
+      )),
   ),
-  'font-style': (
-    property: font-style,
+  'font-style': (property: font-style,
     class: u-fst,
-    values: (
-      italic: italic,
+    values: (italic: italic,
       normal: normal,
     ),
   ),
-  'font-weight': (
-    property: font-weight,
+  'font-weight': (property: font-weight,
     class: u-fw,
-    values: (
-      light: $font-weight-light,
-      normal: $font-weight-normal,
-      medium: $font-weight-medium,
-      semibold: $font-weight-semibold,
-      bold: $font-weight-bold,
-      heavy: $font-weight-heavy,
-      black: $font-weight-black,
-    ),
+    values: color-maps.$theme-font-weight,
   ),
-  'line-height': (
-    property: line-height,
+  'line-height': (property: line-height,
     class: u-lh,
-    values: (
-      1: 1,
-      sm: $line-height-sm,
-      base: $line-height-base,
-      lg: $line-height-lg,
-    ),
+    values: map.merge(color-maps.$line-heights,
+      (1: 1,
+      )),
   ),
-  'text-align': (
-    responsive: true,
+  'text-align': (responsive: true,
     property: text-align,
     class: u-text,
-    values: (
-      start: left,
-      end: right,
+    values: (start: start,
+      end: end,
       center: center,
     ),
   ),
-  'text-decoration': (
-    class: u-td,
+  'text-decoration': (class: u-td,
     property: text-decoration,
     values: none underline line-through,
   ),
-  'text-transform': (
-    property: text-transform,
+  'text-transform': (property: text-transform,
     class: u-text,
     values: lowercase uppercase capitalize,
   ),
-  'white-space': (
-    property: white-space,
+  'white-space': (property: white-space,
     class: u-text,
-    values: (
-      wrap: normal,
+    values: (wrap: normal,
       nowrap: nowrap,
     ),
   ),
-  'word-wrap': (
-    property: word-wrap word-break,
+  'word-wrap': (property: word-wrap word-break,
     class: u-text,
-    values: (
-      break: break-word,
+    values: (break: break-word,
     ),
     rtl: false,
   ),
-  'color': (
-    property: color,
+  'color': (property: color,
     class: u-text,
     values: color-maps.$utilities-text-colors,
   ),
-  'text-emphasis-color': (
-    property: color,
+  'text-emphasis-color': (property: color,
     class: u-text,
     values: color-maps.$utilities-text-emphasis-colors,
   ),

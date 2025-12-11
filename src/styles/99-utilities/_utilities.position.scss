@@ -3,36 +3,29 @@
 
 // Define utilities for position
 $utilities-position: (
-  'position': (
-    property: position,
+  'position': (property: position,
     class: u-position,
     values: static relative absolute fixed sticky,
   ),
-  'top': (
-    property: top,
+  'top': (property: top,
     class: u-top,
     values: $position-values,
   ),
-  'bottom': (
-    property: bottom,
+  'bottom': (property: bottom,
     class: u-bottom,
     values: $position-values,
   ),
-  'start': (
-    property: left,
+  'start': (property: inset-inline-start,
     class: u-start,
     values: $position-values,
   ),
-  'end': (
-    property: right,
+  'end': (property: inset-inline-end,
     class: u-end,
     values: $position-values,
   ),
-  'translate-middle': (
-    property: transform,
+  'translate-middle': (property: transform,
     class: u-translate-middle,
-    values: (
-      null: translate(-50%, -50%),
+    values: (null: translate(-50%, -50%),
       x: translateX(-50%),
       y: translateY(-50%),
     ),
