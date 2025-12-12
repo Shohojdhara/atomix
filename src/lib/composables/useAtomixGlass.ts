@@ -113,14 +113,14 @@ const getCachedBackgroundDetection = (
   if (!parentElement) {
     return null;
   }
-  
+
   const cached = backgroundDetectionCache.get(parentElement);
   if (cached && compareOverLightConfig(cached.config, overLightConfig)) {
     // Update timestamp for LRU-like behavior (though WeakMap doesn't support LRU)
     cached.timestamp = Date.now();
     return cached.result;
   }
-  
+
   return null;
 };
 
@@ -136,7 +136,7 @@ const setCachedBackgroundDetection = (
   if (!parentElement) {
     return;
   }
-  
+
   backgroundDetectionCache.set(parentElement, {
     result,
     timestamp: Date.now(),
@@ -228,23 +228,23 @@ export function useAtomixGlass({
   const [userPrefersReducedMotion, setUserPrefersReducedMotion] = useState(false);
   const [userPrefersHighContrast, setUserPrefersHighContrast] = useState(false);
   const [detectedOverLight, setDetectedOverLight] = useState(false);
-  
+
   // Use shared module-level cache (no per-instance cache needed)
 
   // Memoized derived values
   const effectiveCornerRadius = useMemo(() => {
     if (cornerRadius !== undefined) {
       const result = Math.max(0, cornerRadius);
-      if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
-        console.log('[AtomixGlass] Using manual cornerRadius prop:', result);
-      }
+      // if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
+      //   console.log('[AtomixGlass] Using manual cornerRadius prop:', result);
+      // }
       return result;
     }
 
     const result = Math.max(0, dynamicCornerRadius);
-    if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
-      console.log('[AtomixGlass] Using dynamic cornerRadius:', result);
-    }
+    // if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
+    //   console.log('[AtomixGlass] Using dynamic cornerRadius:', result);
+    // }
     return result;
   }, [cornerRadius, dynamicCornerRadius, debugCornerRadius]);
 
@@ -302,18 +302,18 @@ export function useAtomixGlass({
         if (extractedRadius !== null && extractedRadius > 0) {
           setDynamicCornerRadius(extractedRadius);
 
-          if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
-            console.log('[AtomixGlass] Corner radius extracted:', {
-              value: extractedRadius,
-              source: extractionSource,
-              timestamp: new Date().toISOString(),
-            });
-          }
+          // if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
+          //   console.log('[AtomixGlass] Corner radius extracted:', {
+          //     value: extractedRadius,
+          //     source: extractionSource,
+          //     timestamp: new Date().toISOString(),
+          //   });
+          // }
         } else if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
-          console.log(
-            '[AtomixGlass] No corner radius found, using default:',
-            CONSTANTS.DEFAULT_CORNER_RADIUS
-          );
+          //   console.log(
+          //     '[AtomixGlass] No corner radius found, using default:',
+          //     CONSTANTS.DEFAULT_CORNER_RADIUS
+          //   );
         }
       } catch (error) {
         if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
@@ -335,7 +335,7 @@ export function useAtomixGlass({
     if (shouldDetect && glassRef.current) {
       const element = glassRef.current;
       const parentElement = element.parentElement;
-      
+
       // Check shared cache: skip detection if parent unchanged and config unchanged
       const cachedResult = getCachedBackgroundDetection(parentElement, overLight);
       if (cachedResult !== null) {
@@ -446,24 +446,24 @@ export function useAtomixGlass({
               }
 
               const isOverLightDetected = avgLuminance > threshold;
-              
+
               // Cache the result in shared cache
               setCachedBackgroundDetection(element.parentElement, overLight, isOverLightDetected, threshold);
-              
+
               setDetectedOverLight(isOverLightDetected);
 
               // Debug logging
-              if (process.env.NODE_ENV !== 'production' && debugOverLight) {
-                console.log('[AtomixGlass] OverLight Detection:', {
-                  avgLuminance: avgLuminance.toFixed(3),
-                  threshold: threshold.toFixed(3),
-                  detected: isOverLightDetected,
-                  validSamples,
-                  totalLuminance: totalLuminance.toFixed(3),
-                  configType: typeof overLight === 'object' ? 'object' : typeof overLight,
-                  timestamp: new Date().toISOString(),
-                });
-              }
+              // if (process.env.NODE_ENV !== 'production' && debugOverLight) {
+              //   console.log('[AtomixGlass] OverLight Detection:', {
+              //     avgLuminance: avgLuminance.toFixed(3),
+              //     threshold: threshold.toFixed(3),
+              //     detected: isOverLightDetected,
+              //     validSamples,
+              //     totalLuminance: totalLuminance.toFixed(3),
+              //     configType: typeof overLight === 'object' ? 'object' : typeof overLight,
+              //     timestamp: new Date().toISOString(),
+              //   });
+              // }
             } else {
               // Invalid luminance calculation, default to false
               const result = false;
@@ -505,13 +505,13 @@ export function useAtomixGlass({
       setDetectedOverLight(false);
 
       // Debug logging for boolean mode
-      if (process.env.NODE_ENV !== 'production' && debugOverLight) {
-        console.log('[AtomixGlass] OverLight Mode: boolean', {
-          value: overLight,
-          autoDetection: false,
-          timestamp: new Date().toISOString(),
-        });
-      }
+      // if (process.env.NODE_ENV !== 'production' && debugOverLight) {
+      //   console.log('[AtomixGlass] OverLight Mode: boolean', {
+      //     value: overLight,
+      //     autoDetection: false,
+      //     timestamp: new Date().toISOString(),
+      //   });
+      // }
     }
 
     if (typeof window.matchMedia !== 'function') {
@@ -610,9 +610,9 @@ export function useAtomixGlass({
       if (process.env.NODE_ENV !== 'production' && enablePerformanceMonitoring) {
         const endTime = performance.now();
         const duration = endTime - startTime;
-        if (duration > 5) {
-          console.warn(`AtomixGlass: Mouse tracking took ${duration.toFixed(2)}ms`);
-        }
+        // if (duration > 5) {
+        //   console.warn(`AtomixGlass: Mouse tracking took ${duration.toFixed(2)}ms`);
+        // }
       }
     },
     [
@@ -657,7 +657,7 @@ export function useAtomixGlass({
     // Use ResizeObserver to update cached rect when container size changes
     const container = mouseContainer?.current || glassRef.current;
     let resizeObserver: ResizeObserver | null = null;
-    
+
     if (container && typeof ResizeObserver !== 'undefined') {
       resizeObserver = new ResizeObserver(updateRect);
       resizeObserver.observe(container);
