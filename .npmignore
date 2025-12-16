@@ -1,6 +1,14 @@
-# Source files (only ship built files)
-src/
-!src/styles/index.scss
+# Source files - Include styles, components, lib, layouts, and themes for customization
+# Exclude only test files and stories
+src/**/*.test.ts
+src/**/*.test.tsx
+src/**/*.spec.ts
+src/**/*.spec.tsx
+src/**/*.stories.ts
+src/**/*.stories.tsx
+src/stories/
+src/test/
+src/htmlComponentsEntry.ts
 
 # Development and build configuration
 .storybook/
@@ -9,13 +17,25 @@ docs/
 storybook-static/
 deploy/
 public/
-scripts/
+audit/
+plans/
+examples/
 webpack.config.js
 babel.config.js
+postcss.config.cjs
 postcss.config.js
 tsconfig.json
+tsconfig.build.json
+tsconfig.dts.json
 tsconfig.node.json
+rollup.config.js
+rollup.styles.config.js
+vite.config.ts
+vitest.config.ts
+eslint.config.js
+next.config.example.js
 package-lock.json
+yarn.lock
 
 # Configuration files
 .eslintrc*
@@ -67,10 +87,8 @@ node_modules/
 .parcel-cache/
 ..amazonq
 
-# Source maps (exclude from npm package)
-**/*.map
-*.map
-dist/**/*.map
+# Source maps - INCLUDED for better debugging
+# (Removed exclusion to allow source maps in package)
 
 # Documentation (except README and LICENSE)
 *.md
@@ -96,6 +114,7 @@ PUBLISHING.md
 # Package files
 *.tgz
 *.tar.gz
+shohojdhara-atomix-*.tgz
 
 # Git files
 .git/

@@ -3,7 +3,6 @@
  * 
  * Demonstrates all the new features:
  * - RTL Support
- * - Theme Studio
  * - Component Overrides
  * - White Labeling
  * - Analytics and Monitoring
@@ -14,7 +13,6 @@ import {
   ThemeProvider, 
   useTheme,
   createTheme,
-  ThemeStudio,
   RTLManager,
   createRTLManager,
   ComponentOverrideManager,
@@ -42,7 +40,6 @@ const analytics = createThemeAnalytics({
 const EnhancedThemeExample: React.FC = () => {
   const { theme, setTheme, availableThemes } = useTheme();
   const [rtlEnabled, setRTLEnabled] = useState(false);
-  const [showStudio, setShowStudio] = useState(false);
 
   // Create RTL manager
   const rtlManager = React.useMemo(() => {
@@ -209,40 +206,6 @@ const EnhancedThemeExample: React.FC = () => {
         >
           Export Config
         </button>
-      </div>
-
-      {/* Theme Studio */}
-      <div style={{ marginBottom: '2rem', padding: '1rem', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
-        <h2>Theme Studio</h2>
-        <button
-          onClick={() => setShowStudio(!showStudio)}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#6f42c1',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            marginBottom: '1rem',
-          }}
-        >
-          {showStudio ? 'Hide' : 'Show'} Theme Studio
-        </button>
-        {showStudio && (
-          <ThemeStudio
-            onThemeChange={(newTheme) => {
-              console.log('Theme changed:', newTheme);
-              analytics.trackThemeSwitch(theme, newTheme.name);
-            }}
-            onSave={(savedTheme) => {
-              console.log('Theme saved:', savedTheme);
-              alert('Theme saved! Check console for details.');
-            }}
-            showPreview={true}
-            showCSS={true}
-            showCode={true}
-          />
-        )}
       </div>
 
       {/* Analytics */}

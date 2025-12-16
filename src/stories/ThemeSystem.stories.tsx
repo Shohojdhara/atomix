@@ -10,9 +10,7 @@ import {
   ThemeProvider,
   useTheme,
   createTheme,
-  createRTLManager,
 } from '../lib/theme';
-import { ThemeStudio as ThemeStudioComponent } from '../lib/theme/studio';
 
 // Example theme metadata
 const exampleThemes = {
@@ -267,7 +265,6 @@ const RTLDemo: React.FC = () => {
 // Main Demo Component
 const ThemeSystemDemo: React.FC = () => {
   const { theme } = useTheme();
-  const [showStudio, setShowStudio] = useState(false);
 
   return (
     <div style={{
@@ -283,47 +280,6 @@ const ThemeSystemDemo: React.FC = () => {
       <ThemeSwitcher />
       <ComponentPreview />
       <RTLDemo />
-
-      <div style={{
-        padding: '1rem',
-        border: '1px solid #e0e0e0',
-        borderRadius: '8px',
-        marginBottom: '1rem',
-      }}>
-        <h3 style={{ marginTop: 0 }}>Theme Studio</h3>
-        <button
-          onClick={() => setShowStudio(!showStudio)}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#6f42c1',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            marginBottom: '1rem',
-          }}
-        >
-          {showStudio ? 'Hide' : 'Show'} Theme Studio
-        </button>
-        {showStudio && (
-          <div style={{ marginTop: '1rem' }}>
-            <ThemeStudioComponent
-              onThemeChange={(newTheme) => {
-                console.log('Theme changed:', newTheme);
-              }}
-              onSave={(savedTheme) => {
-                console.log('Theme saved:', savedTheme);
-                if (typeof window !== 'undefined') {
-                  alert('Theme saved! Check console for details.');
-                }
-              }}
-              showPreview={true}
-              showCSS={true}
-              showCode={false}
-            />
-          </div>
-        )}
-      </div>
 
       <div style={{
         padding: '1rem',
@@ -362,7 +318,6 @@ The Atomix Theme System provides comprehensive theming capabilities including:
 - **CSS Theme Support**: Load themes from CSS files
 - **JavaScript Theme Support**: Create themes programmatically
 - **RTL Support**: Right-to-left language support
-- **Theme Studio**: Visual theme editor
 - **Component Overrides**: Component-level customization
 - **White Labeling**: Brand customization
 - **Analytics**: Performance monitoring
@@ -490,48 +445,6 @@ export const WithRTL: Story = {
         </ThemeProvider>
       );
     },
-  ],
-};
-
-export const ThemeStudioEditor: Story = {
-  name: 'Theme Studio Editor',
-  render: () => {
-    const [theme, setTheme] = useState(createTheme({
-      name: 'Custom Theme',
-      palette: {
-        primary: { main: '#7AFFD7' },
-        secondary: { main: '#FF5733' },
-      },
-    }));
-
-    return (
-      <div style={{ padding: '2rem' }}>
-        <h1>Theme Studio</h1>
-        <p>Visual theme editor for creating and customizing themes.</p>
-        <ThemeStudioComponent
-          initialTheme={theme}
-          onThemeChange={(newTheme) => {
-            setTheme(newTheme);
-          }}
-          onSave={(savedTheme) => {
-            console.log('Theme saved:', savedTheme);
-            if (typeof window !== 'undefined') {
-              alert('Theme saved! Check console.');
-            }
-          }}
-          showPreview={true}
-          showCSS={true}
-          showCode={true}
-        />
-      </div>
-    );
-  },
-  decorators: [
-    (Story) => (
-      <ThemeProvider themes={exampleThemes}>
-        <Story />
-      </ThemeProvider>
-    ),
   ],
 };
 

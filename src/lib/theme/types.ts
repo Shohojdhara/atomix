@@ -5,6 +5,7 @@
  */
 
 import type { ThemeManager as ThemeManagerType } from './runtime/ThemeManager';
+import type { PartStyleProps } from '../types/partProps';
 
 /**
  * Theme metadata interface matching themes.config.js structure
@@ -182,6 +183,62 @@ export interface UseThemeReturn {
     isThemeLoaded: (themeName: string) => boolean;
     /** Preload a theme */
     preloadTheme: (themeName: string) => Promise<void>;
+}
+
+/**
+ * Component-level theme override configuration
+ */
+export interface ComponentThemeOverride {
+  /** CSS variable overrides for the component */
+  cssVars?: Record<string, string | number>;
+  
+  /** Default prop overrides */
+  defaultProps?: Record<string, any>;
+  
+  /** Part-specific overrides */
+  parts?: Record<string, {
+    cssVars?: Record<string, string | number>;
+    className?: string;
+  }>;
+  
+  /** Variant overrides */
+  variants?: Record<string, {
+    cssVars?: Record<string, string | number>;
+    className?: string;
+  }>;
+  
+  /** Additional className for the component */
+  className?: string;
+}
+
+/**
+ * Theme component overrides for all components
+ */
+export interface ThemeComponentOverrides {
+  Button?: ComponentThemeOverride;
+  Card?: ComponentThemeOverride;
+  Input?: ComponentThemeOverride;
+  Modal?: ComponentThemeOverride;
+  Dropdown?: ComponentThemeOverride;
+  Badge?: ComponentThemeOverride;
+  Tabs?: ComponentThemeOverride;
+  Progress?: ComponentThemeOverride;
+  Tooltip?: ComponentThemeOverride;
+  Select?: ComponentThemeOverride;
+  Checkbox?: ComponentThemeOverride;
+  Radio?: ComponentThemeOverride;
+  Textarea?: ComponentThemeOverride;
+  FormGroup?: ComponentThemeOverride;
+  Navbar?: ComponentThemeOverride;
+  Accordion?: ComponentThemeOverride;
+  DataTable?: ComponentThemeOverride;
+  Avatar?: ComponentThemeOverride;
+  List?: ComponentThemeOverride;
+  Popover?: ComponentThemeOverride;
+  Messages?: ComponentThemeOverride;
+  Callout?: ComponentThemeOverride;
+  Spinner?: ComponentThemeOverride;
+  [key: string]: ComponentThemeOverride | undefined;
 }
 
 /**
@@ -559,6 +616,8 @@ export interface Theme extends ThemeMetadata {
     borderRadius: Required<BorderRadiusOptions>;
     /** Custom properties */
     custom: ThemeCustomProperties;
+    /** Global CSS variables to apply */
+    cssVars?: Record<string, string | number>;
     /** Indicates this is a JS theme (not CSS-only) */
     __isJSTheme: true;
 }

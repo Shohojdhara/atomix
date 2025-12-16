@@ -5,7 +5,7 @@
  * spacing helpers, and theme value accessors.
  */
 
-import type { Theme, SpacingFunction } from './types';
+import type { Theme, SpacingFunction, SpacingOptions } from './types';
 
 // ============================================================================
 // Color Manipulation Utilities
@@ -150,15 +150,37 @@ export function emphasize(color: string, coefficient: number = 0.15): string {
 // ============================================================================
 
 /**
- * Create a spacing function with a given base unit
+ * Create a spacing function from various input types
  * 
- * @param base - Base spacing unit in pixels, default 4
+ * @param spacingInput - Spacing configuration (number, array, or function), default 4
  * @returns Spacing function
  */
-export function createSpacing(base: number = 4): SpacingFunction {
+export function createSpacing(spacingInput: SpacingOptions = 4): SpacingFunction {
+    // If it's already a function, return it
+    if (typeof spacingInput === 'function') {
+        return spacingInput;
+    }
+
+    // If it's a number, create a function that multiplies by that number
+    if (typeof spacingInput === 'number') {
+        return (...values: number[]) => {
+            if (values.length === 0) return '0px';
+            return values.map((value) => `${value * spacingInput}px`).join(' ');
+        };
+    }
+
+    // If it's an array, use it as a scale
+    if (Array.isArray(spacingInput)) {
+        return (...values: number[]) => {
+            if (values.length === 0) return '0px';
+            return values.map((value) => `${spacingInput[value] || value}px`).join(' ');
+        };
+    }
+
+    // Default to 4px base
     return (...values: number[]) => {
         if (values.length === 0) return '0px';
-        return values.map((value) => `${value * base}px`).join(' ');
+        return values.map((value) => `${value * 4}px`).join(' ');
     };
 }
 

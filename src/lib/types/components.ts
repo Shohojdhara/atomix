@@ -1,4 +1,7 @@
 import { ReactNode } from 'react';
+import type { ButtonParts, CardParts, InputParts, ModalParts, DropdownParts, BadgeParts, ProgressParts, CheckboxParts, RadioParts } from './partProps';
+import type { SlotProps, ButtonRootSlotProps, ButtonIconSlotProps, ButtonLabelSlotProps, ButtonSpinnerSlotProps, BadgeRootSlotProps, BadgeIconSlotProps, BadgeLabelSlotProps, ProgressRootSlotProps, ProgressBarSlotProps, CheckboxRootSlotProps, CheckboxInputSlotProps, CheckboxLabelSlotProps, RadioRootSlotProps, RadioInputSlotProps, RadioLabelSlotProps } from '../patterns/slots';
+import type { ButtonCSSVariable, CardCSSVariable, InputCSSVariable, ModalCSSVariable, DropdownCSSVariable, BadgeCSSVariable, ProgressCSSVariable, CheckboxCSSVariable, RadioCSSVariable } from '../constants/cssVariables';
 
 // ============================================================================
 // AtomixGlass Types
@@ -409,6 +412,29 @@ export interface ButtonProps extends BaseComponentProps {
    * Button size
    */
   size?: Size;
+  
+  /**
+   * Part-based styling (NEW)
+   * Allows styling individual button parts
+   */
+  parts?: ButtonParts;
+  
+  /**
+   * CSS variable overrides (NEW)
+   * Runtime CSS custom property overrides
+   */
+  cssVars?: Partial<Record<ButtonCSSVariable, string | number>>;
+  
+  /**
+   * Slot-based customization (NEW)
+   * Complete control over rendering
+   */
+  slots?: {
+    root?: SlotProps<ButtonRootSlotProps>;
+    icon?: SlotProps<ButtonIconSlotProps>;
+    label?: SlotProps<ButtonLabelSlotProps>;
+    spinner?: SlotProps<ButtonSpinnerSlotProps>;
+  };
 
   /**
    * Optional icon (ReactNode)
@@ -574,6 +600,41 @@ export interface BadgeProps extends BaseComponentProps {
    * Custom style for the badge
    */
   style?: React.CSSProperties;
+
+  /**
+   * Part-based styling for granular customization
+   * @example
+   * parts={{
+   *   root: { className: 'custom-badge', style: { boxShadow: '0 2px 8px rgba(0,0,0,0.1)' } },
+   *   icon: { style: { fontSize: '18px' } },
+   *   label: { className: 'badge-label' }
+   * }}
+   */
+  parts?: BadgeParts;
+
+  /**
+   * CSS variable overrides for runtime customization
+   * @example
+   * cssVars={{
+   *   '--atomix-badge-bg': '#FF0000',
+   *   '--atomix-badge-border-radius': '20px'
+   * }}
+   */
+  cssVars?: Partial<Record<BadgeCSSVariable, string | number>>;
+
+  /**
+   * Slot-based customization for complete control
+   * @example
+   * slots={{
+   *   root: { render: (props) => <motion.span {...props} /> },
+   *   icon: { component: CustomIcon }
+   * }}
+   */
+  slots?: {
+    root?: SlotProps<BadgeRootSlotProps>;
+    icon?: SlotProps<BadgeIconSlotProps>;
+    label?: SlotProps<BadgeLabelSlotProps>;
+  };
 }
 
 /**
@@ -2215,6 +2276,42 @@ export interface CheckboxProps extends BaseComponentProps {
    * Helper text to display
    */
   helperText?: string;
+
+  /**
+   * Part-based styling for granular customization
+   * @example
+   * parts={{
+   *   root: { className: 'custom-checkbox', style: { margin: '8px' } },
+   *   input: { style: { accentColor: '#7AFFD7' } },
+   *   label: { className: 'checkbox-label' }
+   * }}
+   */
+  parts?: CheckboxParts;
+
+  /**
+   * CSS variable overrides for runtime customization
+   * @example
+   * cssVars={{
+   *   '--atomix-checkbox-size': '20px',
+   *   '--atomix-checkbox-checked-bg': '#7AFFD7'
+   * }}
+   */
+  cssVars?: Partial<Record<CheckboxCSSVariable, string | number>>;
+
+  /**
+   * Slot-based customization for complete control
+   * @example
+   * slots={{
+   *   root: { render: (props) => <motion.div {...props} /> },
+   *   input: { component: CustomInput },
+   *   label: { component: CustomLabel }
+   * }}
+   */
+  slots?: {
+    root?: SlotProps<CheckboxRootSlotProps>;
+    input?: SlotProps<CheckboxInputSlotProps>;
+    label?: SlotProps<CheckboxLabelSlotProps>;
+  };
 }
 
 /**
@@ -2291,6 +2388,42 @@ export interface RadioProps extends BaseComponentProps {
    * Helper text to display
    */
   helperText?: string;
+
+  /**
+   * Part-based styling for granular customization
+   * @example
+   * parts={{
+   *   root: { className: 'custom-radio', style: { margin: '8px' } },
+   *   input: { style: { accentColor: '#7AFFD7' } },
+   *   label: { className: 'radio-label' }
+   * }}
+   */
+  parts?: RadioParts;
+
+  /**
+   * CSS variable overrides for runtime customization
+   * @example
+   * cssVars={{
+   *   '--atomix-radio-size': '20px',
+   *   '--atomix-radio-checked-bg': '#7AFFD7'
+   * }}
+   */
+  cssVars?: Partial<Record<RadioCSSVariable, string | number>>;
+
+  /**
+   * Slot-based customization for complete control
+   * @example
+   * slots={{
+   *   root: { render: (props) => <motion.div {...props} /> },
+   *   input: { component: CustomInput },
+   *   label: { component: CustomLabel }
+   * }}
+   */
+  slots?: {
+    root?: SlotProps<RadioRootSlotProps>;
+    input?: SlotProps<RadioInputSlotProps>;
+    label?: SlotProps<RadioLabelSlotProps>;
+  };
 }
 
 /**
@@ -3049,6 +3182,39 @@ export interface ProgressProps extends BaseComponentProps {
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;
+
+  /**
+   * Part-based styling for granular customization
+   * @example
+   * parts={{
+   *   root: { className: 'custom-progress', style: { height: '12px' } },
+   *   bar: { style: { background: 'linear-gradient(...)' } }
+   * }}
+   */
+  parts?: ProgressParts;
+
+  /**
+   * CSS variable overrides for runtime customization
+   * @example
+   * cssVars={{
+   *   '--atomix-progress-bg': '#E0E0E0',
+   *   '--atomix-progress-bar-bg': '#7AFFD7'
+   * }}
+   */
+  cssVars?: Partial<Record<ProgressCSSVariable, string | number>>;
+
+  /**
+   * Slot-based customization for complete control
+   * @example
+   * slots={{
+   *   root: { render: (props) => <motion.div {...props} /> },
+   *   bar: { component: CustomBar }
+   * }}
+   */
+  slots?: {
+    root?: SlotProps<ProgressRootSlotProps>;
+    bar?: SlotProps<ProgressBarSlotProps>;
+  };
 }
 
 /**
@@ -3551,6 +3717,34 @@ export interface CardProps extends BaseComponentProps {
    * Tab index for keyboard navigation
    */
   tabIndex?: number;
+
+  /**
+   * CSS variable overrides
+   * Runtime CSS custom property overrides
+   * @example
+   * cssVars={{
+   *   '--atomix-card-bg': 'rgba(255, 255, 255, 0.1)',
+   *   '--atomix-card-border-radius': '24px'
+   * }}
+   */
+  cssVars?: Partial<Record<CardCSSVariable, string | number>>;
+
+  /**
+   * Part-based styling
+   * Allows styling individual card parts
+   */
+  parts?: CardParts;
+
+  /**
+   * Slot-based customization
+   * Complete control over rendering
+   */
+  slots?: {
+    root?: (props: SlotProps) => ReactNode;
+    header?: (props: SlotProps) => ReactNode;
+    body?: (props: SlotProps) => ReactNode;
+    footer?: (props: SlotProps) => ReactNode;
+  };
 }
 
 /**

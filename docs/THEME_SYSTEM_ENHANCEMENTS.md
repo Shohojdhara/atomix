@@ -45,40 +45,7 @@ const margin = rtlManager.getValue('margin-left', 'margin-right');
 - Automatically applies direction to DOM
 - Supports CSS custom properties
 
-### 2. Theme Studio (Visual Theme Editor) ✅
-
-**Location:** `src/lib/theme/studio/ThemeStudio.tsx`
-
-**Features:**
-- Visual color palette editor
-- Typography customization
-- Real-time preview
-- CSS variable generation
-- Theme code export
-- Save/load functionality
-
-**Usage:**
-```tsx
-import { ThemeStudio } from '@shohojdhara/atomix/theme';
-
-<ThemeStudio
-  initialTheme={myTheme}
-  onThemeChange={(theme) => console.log('Theme changed:', theme)}
-  onSave={(theme) => console.log('Theme saved:', theme)}
-  showPreview={true}
-  showCSS={true}
-  showCode={true}
-/>
-```
-
-**Features:**
-- Interactive color pickers for all palette colors
-- Typography controls
-- Live preview of theme changes
-- Generated CSS output
-- JSON export for theme configuration
-
-### 3. Component Override System ✅
+### 2. Component Override System ✅
 
 **Location:** `src/lib/theme/overrides/ComponentOverrides.ts`
 
@@ -245,7 +212,6 @@ See `examples/theme-system-enhanced.tsx` for a complete example demonstrating al
 These enhancements address the following roadmap items:
 
 - ✅ **RTL Support** - Full RTL infrastructure with locale detection
-- ✅ **Theme Editor and Generator** - Visual Theme Studio component
 - ✅ **White Labeling** - Complete white label management system
 - ✅ **Component Override System** - Comprehensive override API
 - ✅ **Performance Monitoring** - Analytics and performance tracking
@@ -282,11 +248,6 @@ None. All new features are additive and backward compatible.
 - `isRTLLocale(locale)` - Check if locale is RTL
 - `getDirectionFromLocale(locale)` - Get direction from locale
 - `rtlCSS(ltrCSS, rtlCSS, direction)` - Get RTL-aware CSS
-
-### Theme Studio
-
-- `ThemeStudio` - React component for visual theme editing
-- Props: `initialTheme`, `onThemeChange`, `onSave`, `showPreview`, `showCSS`, `showCode`
 
 ### Component Overrides
 

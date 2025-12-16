@@ -32,6 +32,8 @@ import type {
     ZIndexOptions,
     BorderRadiusOptions,
 } from './types';
+import { hexToRgb, getLuminance, getContrastText, lighten, darken, createSpacing } from './themeUtils';
+import { deepMerge } from './composeTheme';
 
 // ============================================================================
 // Default Theme Values
@@ -223,109 +225,6 @@ const DEFAULT_BORDER_RADIUS: Theme['borderRadius'] = {
 // ============================================================================
 
 /**
- * Deep merge two objects
- */
-function deepMerge<T extends Record<string, any>>(target: T, ...sources: Partial<T>[]): T {
-    if (!sources.length) return target;
-    const source = sources.shift();
-
-    if (isObject(target) && isObject(source)) {
-        for (const key in source) {
-            if (!source.hasOwnProperty(key)) continue;
-            const sourceValue = source[key];
-            if (isObject(sourceValue)) {
-                if (!target[key]) Object.assign(target, { [key]: {} });
-                deepMerge(target[key] as any, sourceValue as any);
-            } else {
-                Object.assign(target, { [key]: sourceValue });
-            }
-        }
-    }
-
-    return deepMerge(target, ...sources);
-}
-
-/**
- * Check if value is an object
- */
-function isObject(item: any): item is Record<string, any> {
-    return item && typeof item === 'object' && !Array.isArray(item);
-}
-
-/**
- * Convert hex color to RGB
- */
-function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    if (!result || !result[1] || !result[2] || !result[3]) {
-        return null;
-    }
-    return {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-    };
-}
-
-/**
- * Calculate relative luminance
- */
-function getLuminance(color: string): number {
-    const rgb = hexToRgb(color);
-    if (!rgb) return 0;
-
-    const { r, g, b } = rgb;
-    const [rs, gs, bs] = [r ?? 0, g ?? 0, b ?? 0].map((c) => {
-        const val = c / 255;
-        return val <= 0.03928 ? val / 12.92 : Math.pow((val + 0.055) / 1.055, 2.4);
-    });
-
-    return 0.2126 * (rs ?? 0) + 0.7152 * (gs ?? 0) + 0.0722 * (bs ?? 0);
-}
-
-/**
- * Get contrast text color (black or white) based on background
- */
-function getContrastText(background: string): string {
-    const luminance = getLuminance(background);
-    return luminance > 0.5 ? '#000000' : '#FFFFFF';
-}
-
-/**
- * Lighten a color
- */
-function lighten(color: string, amount: number = 0.2): string {
-    const rgb = hexToRgb(color);
-    if (!rgb) return color;
-
-    const { r, g, b } = rgb;
-    const lightenValue = (val: number) => Math.min(255, Math.round(val + (255 - val) * amount));
-
-    const newR = lightenValue(r ?? 0).toString(16).padStart(2, '0');
-    const newG = lightenValue(g ?? 0).toString(16).padStart(2, '0');
-    const newB = lightenValue(b ?? 0).toString(16).padStart(2, '0');
-
-    return `#${newR}${newG}${newB}`;
-}
-
-/**
- * Darken a color
- */
-function darken(color: string, amount: number = 0.2): string {
-    const rgb = hexToRgb(color);
-    if (!rgb) return color;
-
-    const { r, g, b } = rgb;
-    const darkenValue = (val: number) => Math.max(0, Math.round(val * (1 - amount)));
-
-    const newR = darkenValue(r ?? 0).toString(16).padStart(2, '0');
-    const newG = darkenValue(g ?? 0).toString(16).padStart(2, '0');
-    const newB = darkenValue(b ?? 0).toString(16).padStart(2, '0');
-
-    return `#${newR}${newG}${newB}`;
-}
-
-/**
  * Create a complete palette color from partial configuration
  */
 function createPaletteColor(color: Partial<PaletteColor> | string): PaletteColor {
@@ -346,37 +245,6 @@ function createPaletteColor(color: Partial<PaletteColor> | string): PaletteColor
     };
 }
 
-/**
- * Create spacing function
- */
-function createSpacing(spacingInput: SpacingOptions = 4): SpacingFunction {
-    // If it's already a function, return it
-    if (typeof spacingInput === 'function') {
-        return spacingInput;
-    }
-
-    // If it's a number, create a function that multiplies by that number
-    if (typeof spacingInput === 'number') {
-        return (...values: number[]) => {
-            if (values.length === 0) return '0px';
-            return values.map((value) => `${value * spacingInput}px`).join(' ');
-        };
-    }
-
-    // If it's an array, use it as a scale
-    if (Array.isArray(spacingInput)) {
-        return (...values: number[]) => {
-            if (values.length === 0) return '0px';
-            return values.map((value) => `${spacingInput[value] || value}px`).join(' ');
-        };
-    }
-
-    // Default to 4px base
-    return (...values: number[]) => {
-        if (values.length === 0) return '0px';
-        return values.map((value) => `${value * 4}px`).join(' ');
-    };
-}
 
 /**
  * Create breakpoints object

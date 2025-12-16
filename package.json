@@ -1,6 +1,6 @@
 {
   "name": "@shohojdhara/atomix",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Atomix Design System - A modern component library for web applications",
   "type": "module",
   "sideEffects": false,
@@ -9,6 +9,9 @@
   "types": "dist/index.d.ts",
   "style": "dist/atomix.css",
   "sass": "src/styles/index.scss",
+  "bin": {
+    "atomix": "./scripts/atomix-cli.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -78,11 +81,79 @@
       "require": "./dist/lib/theme/index.js",
       "default": "./dist/lib/theme/index.js"
     },
+    "./themes/shaj-default": {
+      "import": "./dist/themes/shaj-default.css",
+      "require": "./dist/themes/shaj-default.css",
+      "default": "./dist/themes/shaj-default.css"
+    },
+    "./themes/shaj-default.min": {
+      "import": "./dist/themes/shaj-default.min.css",
+      "require": "./dist/themes/shaj-default.min.css",
+      "default": "./dist/themes/shaj-default.min.css"
+    },
+    "./themes/flashtrade": {
+      "import": "./dist/themes/flashtrade.css",
+      "require": "./dist/themes/flashtrade.css",
+      "default": "./dist/themes/flashtrade.css"
+    },
+    "./themes/flashtrade.min": {
+      "import": "./dist/themes/flashtrade.min.css",
+      "require": "./dist/themes/flashtrade.min.css",
+      "default": "./dist/themes/flashtrade.min.css"
+    },
+    "./themes/boomdevs": {
+      "import": "./dist/themes/boomdevs.css",
+      "require": "./dist/themes/boomdevs.css",
+      "default": "./dist/themes/boomdevs.css"
+    },
+    "./themes/boomdevs.min": {
+      "import": "./dist/themes/boomdevs.min.css",
+      "require": "./dist/themes/boomdevs.min.css",
+      "default": "./dist/themes/boomdevs.min.css"
+    },
+    "./themes/esrar": {
+      "import": "./dist/themes/esrar.css",
+      "require": "./dist/themes/esrar.css",
+      "default": "./dist/themes/esrar.css"
+    },
+    "./themes/esrar.min": {
+      "import": "./dist/themes/esrar.min.css",
+      "require": "./dist/themes/esrar.min.css",
+      "default": "./dist/themes/esrar.min.css"
+    },
+    "./themes/mashroom": {
+      "import": "./dist/themes/mashroom.css",
+      "require": "./dist/themes/mashroom.css",
+      "default": "./dist/themes/mashroom.css"
+    },
+    "./themes/mashroom.min": {
+      "import": "./dist/themes/mashroom.min.css",
+      "require": "./dist/themes/mashroom.min.css",
+      "default": "./dist/themes/mashroom.min.css"
+    },
+    "./themes/applemix": {
+      "import": "./dist/themes/applemix.css",
+      "require": "./dist/themes/applemix.css",
+      "default": "./dist/themes/applemix.css"
+    },
+    "./themes/applemix.min": {
+      "import": "./dist/themes/applemix.min.css",
+      "require": "./dist/themes/applemix.min.css",
+      "default": "./dist/themes/applemix.min.css"
+    },
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@phosphor-icons/react": "2.1.10",
-    "classnames": "^2.3.0"
+    "autoprefixer": "^10.4.21",
+    "boxen": "^7.1.0",
+    "chalk": "^5.3.0",
+    "chokidar": "^3.5.3",
+    "commander": "^11.0.0",
+    "cssnano": "^6.0.0",
+    "inquirer": "^9.2.0",
+    "ora": "^6.3.0",
+    "postcss": "^8.4.31",
+    "sass": "^1.69.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.0",
@@ -119,16 +190,13 @@
     "@testing-library/jest-dom": "^5.16.0",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.0.0",
-    "@types/classnames": "^2.3.0",
     "@types/node": "^20.0.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.0",
-    "autoprefixer": "^10.4.21",
     "concurrently": "^8.0.0",
-    "cssnano": "^6.0.0",
     "eslint": "^8.0.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-jsx-a11y": "^6.7.0",
@@ -136,7 +204,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "identity-obj-proxy": "^3.0.0",
     "jsdom": "^22.0.0",
-    "postcss": "^8.4.31",
     "postcss-flexbugs-fixes": "^5.0.0",
     "postcss-import": "^15.0.0",
     "postcss-preset-env": "^9.0.0",
@@ -148,7 +215,6 @@
     "rollup-plugin-dts": "^6.0.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.0",
-    "sass": "^1.69.0",
     "storybook": "^8.6.14",
     "storybook-theme-switch-addon": "^1.0.2",
     "ts-node": "^10.9.0",
@@ -159,9 +225,9 @@
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "build": "rollup -c && rollup -c rollup.styles.config.js",
+    "build": "rollup -c && rollup -c rollup.styles.config.js && node scripts/build-themes.js",
     "build:styles": "rollup -c rollup.styles.config.js",
-    "build:themes": "rollup -c rollup.styles.config.js",
+    "build:themes": "node scripts/build-themes.js",
     "build:storybook": "storybook build",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
@@ -173,14 +239,25 @@
     "release": "changeset publish",
     "changeset": "changeset",
     "typecheck": "tsc --noEmit",
-    "attw": "attw --pack"
+    "attw": "attw --pack",
+    "sync:config": "npx ts-node scripts/sync-theme-config-ts.ts",
+    "prebuild": "npm run sync:config",
+    "prepublishOnly": "npm run clean && npm run build && npm run attw",
+    "prepack": "echo 'Preparing package for publishing...'"
   },
   "files": [
-    "dist",
-    "src/styles",
-    "src/components/",
-    "src/lib",
-    "src/layouts",
+    "dist/**/*",
+    "dist/themes/**/*",
+    "src/styles/**/*",
+    "src/components/**/*",
+    "src/lib/**/*",
+    "src/layouts/**/*",
+    "src/themes/**/*",
+    "scripts/atomix-cli.js",
+    "scripts/build-themes.js",
+    "scripts/sync-theme-config.js",
+    "scripts/cli/**/*",
+    "theme.config.ts",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"

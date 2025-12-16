@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { ListGroupProps } from '../../lib/types/components';
 import { LIST_GROUP } from '../../lib/constants/components';
 import { List } from './List';
@@ -11,7 +10,7 @@ export const ListGroup: React.FC<ListGroupProps> = ({
   variant = 'default',
 }) => {
   // Generate CSS classes
-  const listGroupClasses = classNames(LIST_GROUP.BASE_CLASS, className);
+  const listGroupClasses = [LIST_GROUP.BASE_CLASS, className].filter(Boolean).join(' ');
 
   // Get valid List children
   const validLists = React.Children.toArray(children).filter(

@@ -389,6 +389,76 @@ const theme = createTheme({
 
 ## Configuration
 
+### ⚠️ Important: Configuration Files
+
+The Atomix theme system uses two configuration files that serve different purposes:
+
+1. **`theme.config.ts`** (Root directory)
+   - **Purpose:** Runtime configuration for the theme system
+   - **Used by:** ThemeManager, ThemeProvider, and runtime theme loading
+   - **Format:** TypeScript
+   - **When loaded:** At runtime when themes are initialized
+
+2. **`src/themes/themes.config.js`** (Themes directory)
+   - **Purpose:** Build-time configuration and theme metadata
+   - **Used by:** Build scripts for compiling SCSS themes to CSS
+   - **Format:** JavaScript (CommonJS)
+   - **When loaded:** During the build process
+
+> **Note:** Currently, these files contain duplicate information and must be kept in sync manually. A future update will consolidate these into a single source of truth.
+
+### Browser Environment Limitations
+
+⚠️ **Important:** The `theme.config.ts` file cannot be dynamically loaded in browser environments due to module resolution limitations. In browser/client-side applications:
+
+1. **Fallback Behavior:** The theme system will use a default empty configuration
+2. **Manual Registration Required:** Themes must be explicitly provided to the ThemeManager or ThemeProvider
+
+#### Browser Environment Setup
+
+```typescript
+// In browser environments, provide themes directly to ThemeProvider
+import { ThemeProvider } from '@shohojdhara/atomix/theme';
+
+const themes = {
+  'my-theme': {
+    type: 'css',
+    name: 'My Theme',
+    class: 'my-theme',
+  },
+};
+
+function App() {
+  return (
+    <ThemeProvider 
+      themes={themes}
+      defaultTheme="my-theme"
+      basePath="/themes"
+    >
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+```
+
+Or with ThemeManager directly:
+
+```typescript
+import { ThemeManager } from '@shohojdhara/atomix/theme';
+
+const themeManager = new ThemeManager({
+  themes: {
+    'my-theme': {
+      type: 'css',
+      name: 'My Theme',
+      class: 'my-theme',
+    },
+  },
+  defaultTheme: 'my-theme',
+  basePath: '/themes',
+});
+```
+
 ### Theme Configuration File
 
 Create `theme.config.ts` in your project root:
@@ -898,7 +968,9 @@ export type { Theme, ThemeMetadata, ThemeManagerConfig }
 ## Resources
 
 - [Theme System Usage Guide](./THEME_SYSTEM_USAGE.md)
-- [API Reference](./api/react.md)
+- [Theme API Reference](./THEME_API_REFERENCE.md)
+- [Theme Build Process](./THEME_BUILD_PROCESS.md)
+- [Theme System Enhancements](./THEME_SYSTEM_ENHANCEMENTS.md)
 - [Configuration Guide](./guides/theming.md)
 - [Examples](./examples/)
 

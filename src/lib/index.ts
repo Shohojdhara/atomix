@@ -11,3 +11,15 @@ export const utils: typeof utilsImport = utilsImport;
 export const types: typeof typesImport = typesImport;
 export const constants: typeof constantsImport = constantsImport;
 export const theme: typeof themeImport = themeImport;
+
+// NEW: Export individual modules for direct imports
+export * from './composables';
+export * from './constants';
+export * from './constants/cssVariables';
+export * from './types';
+export * from './types/partProps';
+export * from './utils';
+export * from './utils/componentUtils';
+export * from './theme';
+export * from './patterns';
+export * from './hooks';

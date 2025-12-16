@@ -40,11 +40,17 @@ function App() {
 }
 ```
 
-### Theme Management
+### 🎨 Theme Management
 
-Atomix includes a powerful theme manager for dynamic theme switching:
+Atomix provides a powerful, developer-friendly theming system with multiple options:
+
+#### Quick Start with Pre-built Themes
 
 ```jsx
+// Option 1: Import a pre-built theme
+import '@shohojdhara/atomix/themes/flashtrade.css';
+
+// Option 2: Dynamic theme switching
 import { ThemeProvider, useTheme } from '@shohojdhara/atomix/theme';
 
 function App() {
@@ -54,29 +60,42 @@ function App() {
     </ThemeProvider>
   );
 }
-
-function ThemeSwitcher() {
-  const { theme, setTheme, availableThemes } = useTheme();
-  
-  return (
-    <select value={theme} onChange={(e) => setTheme(e.target.value)}>
-      {availableThemes.map(t => (
-        <option key={t.class} value={t.class}>{t.name}</option>
-      ))}
-    </select>
-  );
-}
 ```
 
-**Available Themes:**
-- Built-in styles are used by default (no theme CSS loaded)
-- `flashtrade` - Crypto trading platform theme (stable)
-- `boomdevs` - BoomDevs theme (beta)
-- `esrar` - Esrar theme (beta)
-- `mashroom` - Mashroom theme (beta)
-- `applemix` - Apple-inspired glass morphism theme (experimental)
+#### Create Custom Themes
 
-For detailed theme manager documentation, see [Theme Manager Guide](docs/THEME_MANAGER.md).
+```bash
+# Use the CLI to create a new theme
+npx atomix create-theme my-theme
+
+# Build your theme
+npx atomix build-theme my-theme
+
+# List available themes
+npx atomix list-themes
+```
+
+#### Programmatic Theme Creation
+
+```jsx
+import { quickTheme, ThemeProvider } from '@shohojdhara/atomix/theme-tools';
+
+const myTheme = quickTheme('My Brand', '#FF5733', '#33FF57');
+
+<ThemeProvider defaultTheme={myTheme}>
+  <App />
+</ThemeProvider>
+```
+
+**📦 Pre-built Themes:**
+- `shaj-default` - Default theme with light/dark modes (stable)
+- `flashtrade` - Crypto trading platform theme (stable)
+- `boomdevs` - Modern dark theme (beta)
+- `esrar` - Minimal light theme (beta)
+- `mashroom` - Psychedelic colorful theme (beta)
+- `applemix` - Apple-inspired glass morphism (experimental)
+
+For complete documentation, see [Developer Guide](docs/DEVELOPER_GUIDE.md) and [Theme System Guide](docs/THEME_SYSTEM.md).
 
 
 ## Styles
