@@ -219,6 +219,7 @@
     "storybook-theme-switch-addon": "^1.0.2",
     "ts-node": "^10.9.0",
     "tslib": "^2.6.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.0.0",
     "vite": "^4.0.0",
     "vitest": "^0.34.0"
@@ -240,7 +241,7 @@
     "changeset": "changeset",
     "typecheck": "tsc --noEmit",
     "attw": "attw --pack",
-    "sync:config": "npx ts-node scripts/sync-theme-config-ts.ts",
+    "sync:config": "npx tsx scripts/sync-theme-config-ts.ts",
     "prebuild": "npm run sync:config",
     "prepublishOnly": "npm run clean && npm run build && npm run attw",
     "prepack": "echo 'Preparing package for publishing...'"

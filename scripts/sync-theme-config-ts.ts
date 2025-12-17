@@ -11,8 +11,15 @@
 
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// ESM compatibility: Get __dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Import the actual theme config
+// Note: With ESM, we use .js extension even though the file is .ts
 import themeConfig from '../theme.config.js';
 
 /**
