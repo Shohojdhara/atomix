@@ -50,6 +50,22 @@ const config: StorybookConfig = {
       '@shohojdhara/atomix': indexPath,
     };
 
+    // Configure build options to handle peer dependencies
+    config.build = config.build || {};
+    config.build.rollupOptions = config.build.rollupOptions || {};
+    config.build.rollupOptions.external = [
+      ...(Array.isArray(config.build.rollupOptions.external) 
+        ? config.build.rollupOptions.external 
+        : []),
+    ];
+
+    // Optimize dependencies - include peer dependencies that should be bundled
+    config.optimizeDeps = config.optimizeDeps || {};
+    config.optimizeDeps.include = [
+      ...(config.optimizeDeps.include || []),
+      '@phosphor-icons/react',
+    ];
+
     // Add CSP headers
     config.server = config.server || {};
     config.server.headers = {
