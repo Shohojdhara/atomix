@@ -71,7 +71,7 @@ export const Popover: React.FC<PopoverProps> = ({
       {typeof document !== 'undefined' &&
         createPortal(
           <div
-            ref={popoverRef}
+            ref={popoverRef as React.RefObject<HTMLDivElement>}
             className={`c-popover c-popover--${currentPosition} ${isOpen ? POPOVER.CLASSES.IS_OPEN : ''} ${glass ? 'c-popover--glass' : ''} ${className}`}
             style={style}
             id={popoverId}
@@ -106,7 +106,7 @@ export const Popover: React.FC<PopoverProps> = ({
                 <div className="c-popover__content-inner">{content}</div>
               </div>
             )}
-            <div ref={arrowRef} className="c-popover__arrow"></div>
+            <div ref={arrowRef as React.RefObject<HTMLDivElement>} className="c-popover__arrow"></div>
           </div>,
           document.body
         )}

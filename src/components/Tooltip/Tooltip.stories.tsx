@@ -5,6 +5,9 @@ import { Tooltip } from './Tooltip';
 export default {
   title: 'Components/Tooltip',
   component: Tooltip,
+  parameters: {
+    layout: 'fullscreen',
+  },
   argTypes: {
     position: {
       control: { type: 'select' },
@@ -132,9 +135,13 @@ GlassTooltip.decorators = [
   Story => (
     <div
       style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        minHeight: '100vh',
-        padding: '2rem',
+        backgroundImage:
+          'url(https://images.unsplash.com/photo-1764066183840-9afb28867988?q=80&w=3135&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100dvh',
+        width: '100dvw',
+        margin: 0,
       }}
     >
       <Story />
@@ -163,9 +170,15 @@ GlassTooltipCustom.decorators = [
   Story => (
     <div
       style={{
-        background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)',
-        minHeight: '100vh',
-        padding: '2rem',
+        background:
+          'url(https://images.unsplash.com/photo-1758843412266-e8661a80ada2?q=80&w=2128&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100dvh',
+        width: '100dvw',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <Story />
@@ -187,9 +200,17 @@ GlassTooltipClick.decorators = [
   Story => (
     <div
       style={{
-        background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-        minHeight: '100vh',
+        background:
+          'url(https://images.unsplash.com/photo-1658937364065-60f3f6818724?q=80&w=2093&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100dvh',
+        width: '100dvw',
+        margin: 0,
         padding: '2rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <Story />
@@ -211,9 +232,17 @@ GlassTooltipPositions.decorators = [
   Story => (
     <div
       style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        minHeight: '100vh',
+        background:
+          'url(https://images.unsplash.com/photo-1657617053432-09e4adf998bb?q=80&w=2532&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100dvh',
+        width: '100dvw',
+        margin: 0,
         padding: '2rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <Story />
@@ -245,9 +274,17 @@ GlassTooltipRich.decorators = [
   Story => (
     <div
       style={{
-        background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)',
-        minHeight: '100vh',
+        background:
+          'url(https://images.unsplash.com/photo-1685334466570-6c6162e242b6?q=80&w=2534&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100dvh',
+        width: '100dvw',
+        margin: 0,
         padding: '2rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <Story />

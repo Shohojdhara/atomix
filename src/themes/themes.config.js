@@ -5,7 +5,7 @@
  * DO NOT EDIT MANUALLY - Edit theme.config.ts instead
  * Run 'npm run sync:config' to regenerate
  * 
- * Generated on: 2025-12-17T04:25:59.583Z
+ * Generated on: 2025-12-18T00:53:32.051Z
  */
 
 export const themesConfig = {

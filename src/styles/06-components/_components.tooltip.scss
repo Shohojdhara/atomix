@@ -3,6 +3,7 @@
 @use '../02-tools/tools.rem' as *;
 @use '../02-tools/tools.size' as *;
 @use '../02-tools/tools.background' as *;
+@use '../01-settings/settings.z-layers' as *;
 
 .c-tooltip {
   $root: &;
@@ -20,59 +21,14 @@
   --#{$prefix}tooltip-box-shadow: #{$tooltip-box-shadow};
   --#{$prefix}tooltip-arrow-size: #{rem($tooltip-arrow-size)};
   --#{$prefix}tooltip-offset: #{rem($tooltip-arrow-size)}; // Default offset
+  --#{$prefix}z-index-tooltip: #{$z-index-tooltip};
 
   position: absolute;
   width: max-content;
   height: max-content;
   max-width: var(--#{$prefix}tooltip-max-width);
   pointer-events: none; // Wrapper shouldn't block clicks, but content might
-  z-index: 1000;
-
-  // Base positioning logic
-  &--top,
-  &--top-left,
-  &--top-right {
-    bottom: calc(100% + var(--#{$prefix}tooltip-offset));
-    transform-origin: bottom center;
-  }
-
-  &--bottom,
-  &--bottom-left,
-  &--bottom-right {
-    top: calc(100% + var(--#{$prefix}tooltip-offset));
-    transform-origin: top center;
-  }
-
-  &--left {
-    right: calc(100% + var(--#{$prefix}tooltip-offset));
-    top: 50%;
-    transform: translateY(-50%);
-    transform-origin: right center;
-  }
-
-  &--right {
-    left: calc(100% + var(--#{$prefix}tooltip-offset));
-    top: 50%;
-    transform: translateY(-50%);
-    transform-origin: left center;
-  }
-
-  // Horizontal alignment for top/bottom
-  &--top,
-  &--bottom {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  &--top-left,
-  &--bottom-left {
-    left: 0;
-  }
-
-  &--top-right,
-  &--bottom-right {
-    right: 0;
-  }
+  z-index: var(--#{$prefix}z-index-tooltip);
 
   &__content {
     position: relative;
@@ -106,50 +62,44 @@
     position: absolute;
     width: var(--#{$prefix}tooltip-arrow-size);
     height: var(--#{$prefix}tooltip-arrow-size);
+    border-radius: calc(
+      (var(--#{$prefix}tooltip-arrow-size) - var(--#{$prefix}tooltip-border-radius)) / 2
+    );
     @include dynamic-background(var(--#{$prefix}tooltip-bg));
     z-index: 1;
     transform: rotate(45deg);
   }
 
-  // Arrow positioning
-  &--top &__arrow,
-  &--top-left &__arrow,
-  &--top-right &__arrow {
-    bottom: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
-  }
-
-  &--bottom &__arrow,
-  &--bottom-left &__arrow,
-  &--bottom-right &__arrow {
-    top: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
-  }
-
-  &--left &__arrow {
-    right: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
-  }
-
+  &--left &__arrow,
   &--right &__arrow {
-    left: calc(var(--#{$prefix}tooltip-arrow-size) / -2);
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
+    transform: rotate(45deg);
   }
 
-  // Arrow horizontal alignment
-  &--top &__arrow,
+  &--top &__arrow {
+    transform: rotate(45deg);
+  }
+
   &--bottom &__arrow {
-    left: 50%;
-    transform: translateX(-50%) rotate(45deg);
+    transform: rotate(225deg);
   }
 
-  &--top-left &__arrow,
-  &--bottom-left &__arrow {
-    left: var(--#{$prefix}tooltip-arrow-size);
-  }
-
-  &--top-right &__arrow,
-  &--bottom-right &__arrow {
-    right: var(--#{$prefix}tooltip-arrow-size);
+  &--glass {
+    z-index: unset;
+    #{$root}__content {
+      @include dynamic-background(
+        var(--#{$prefix}tooltip-bg),
+        $background-transparency-enable: true,
+        $transparency: 0.4
+      );
+    }
+    #{$root}__arrow {
+      @include dynamic-background(
+        var(--#{$prefix}tooltip-bg),
+        $background-transparency-enable: true,
+        $transparency: 0.4
+      );
+      clip-path: polygon(0 100%, 100% 100%, 100% 0);
+      backdrop-filter: var(--atomix-glass-container-backdrop);
+    }
   }
 }
