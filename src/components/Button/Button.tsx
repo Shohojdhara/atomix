@@ -10,6 +10,7 @@ export type ButtonAsProp = {
   as?: ElementType;
   to?: string;
   href?: string;
+  LinkComponent?: React.ComponentType<any>;
   [key: string]: any;
 };
 
@@ -50,6 +51,7 @@ export const Button = React.memo(
         ariaControls,
         tabIndex,
         style,
+        LinkComponent,
         ...props
       },
       ref
@@ -253,6 +255,39 @@ export const Button = React.memo(
           type: undefined, 
           disabled: undefined,
         };
+        
+        // Use custom LinkComponent if provided (e.g., Next.js Link)
+        if (LinkComponent) {
+          const LinkComp = LinkComponent as React.ComponentType<any>;
+          const linkProps = {
+            ...anchorButtonProps,
+            ref: ref as React.Ref<HTMLAnchorElement>,
+            href,
+            target,
+            rel: target === '_blank' ? 'noopener noreferrer' : undefined,
+          };
+          
+          const linkElement = (
+            <LinkComp {...linkProps}>
+              {buttonContent}
+            </LinkComp>
+          );
+
+          if (glass) {
+            const defaultGlassProps = {
+              displacementScale: 20,
+              blurAmount: 0,
+              saturation: 200,
+              elasticity: 0,
+            };
+            const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+            return <AtomixGlass {...glassProps}>{linkElement}</AtomixGlass>;
+          }
+
+          return linkElement;
+        }
+
+        // Fallback to regular anchor tag
         const anchorElement = (
           <a {...anchorButtonProps} ref={ref as React.Ref<HTMLAnchorElement>} href={href} target={target} rel={target === '_blank' ? 'noopener noreferrer' : undefined}>
             {buttonContent}
