@@ -13,7 +13,9 @@ import { validateConfig } from './validator';
 import { ThemeError, ThemeErrorCode, getLogger } from '../errors';
 import {
   DEFAULT_CONFIG_PATH,
+  DEFAULT_ATOMIX_CONFIG_PATH,
   DEFAULT_CONFIG_RELATIVE_PATH,
+  DEFAULT_LEGACY_CONFIG_RELATIVE_PATH,
   DEFAULT_BASE_PATH,
   DEFAULT_STORAGE_KEY,
   DEFAULT_DATA_ATTRIBUTE,
@@ -50,7 +52,7 @@ export function loadThemeConfig(
   options: ConfigLoaderOptions = {}
 ): LoadedThemeConfig {
   const {
-    configPath = DEFAULT_CONFIG_PATH,
+    configPath = DEFAULT_ATOMIX_CONFIG_PATH,
     validate = true,
     env = typeof process !== 'undefined' && process.env ? (process.env.NODE_ENV === 'production' ? 'production' : 'development') : 'development',
   } = options;
@@ -62,67 +64,99 @@ export function loadThemeConfig(
 
   // Try to load config dynamically
   let config: LoadedThemeConfig;
-  
+
   try {
-    // In browser/Vite environment, we can't load theme.config.ts dynamically
-    // This is expected and we'll use the fallback config
+    // In browser/Vite environment, we can't load config dynamically
     if (typeof window !== 'undefined') {
       throw new Error('Theme config loading not supported in browser environment');
     }
-    
-    // In Node.js/bundler environment, try require (CommonJS) first
-    // Check if we're in a browser environment first
-    if (typeof window !== 'undefined' || typeof require === 'undefined') {
-      throw new Error('Theme config loading not supported in browser environment');
+
+    // In ESM environments, require might be undefined.
+    let nodeRequire: any;
+    try {
+      nodeRequire = require;
+    } catch {
+      // require is not defined
     }
-    
-    // Type for theme config module
-    interface ThemeConfigModule {
-      default?: LoadedThemeConfig;
+
+    if (!nodeRequire) {
+      throw new Error('Theme config loading not supported in this environment (require is undefined)');
+    }
+
+    // Type for config module
+    interface ConfigModule {
+      default?: any;
       [key: string]: unknown;
     }
-    
-    let themeConfigModule: ThemeConfigModule;
-    
-    // Try require (Node.js/CommonJS) - works in Node.js environments
+
+    let configModule: ConfigModule;
+
+    // Try require (Node.js/CommonJS)
     try {
-      // Try relative path first (for build tools)
+      // Try relative path first
       try {
-        themeConfigModule = require(DEFAULT_CONFIG_RELATIVE_PATH) as ThemeConfigModule;
+        configModule = nodeRequire(DEFAULT_CONFIG_RELATIVE_PATH) as ConfigModule;
       } catch {
-        // If relative path fails, try to resolve from process.cwd()
-        const path = require('path') as typeof import('path');
-        const fs = require('fs') as typeof import('fs');
-        const configFilePath = path.resolve(process.cwd(), configPath);
-        
-        // Check if file exists
-        if (fs.existsSync(configFilePath)) {
-          // Delete from cache to force reload
-          const resolvedPath = require.resolve(configFilePath);
-          if (require.cache && require.cache[resolvedPath]) {
-            delete require.cache[resolvedPath];
+        // Try fallback to legacy relative path
+        try {
+          configModule = nodeRequire(DEFAULT_LEGACY_CONFIG_RELATIVE_PATH) as ConfigModule;
+        } catch {
+          // If relative paths fail, try to resolve from process.cwd()
+          const path = nodeRequire('path') as typeof import('path');
+          const fs = nodeRequire('fs') as typeof import('fs');
+
+          let configFilePath = path.resolve(process.cwd(), configPath);
+
+          // Fallback if atomix.config.ts not found
+          if (!fs.existsSync(configFilePath) && configPath === DEFAULT_ATOMIX_CONFIG_PATH) {
+            configFilePath = path.resolve(process.cwd(), DEFAULT_CONFIG_PATH);
           }
-          themeConfigModule = require(configFilePath) as ThemeConfigModule;
-        } else {
-          throw new Error(`Config file not found: ${configFilePath}`);
+
+          if (fs.existsSync(configFilePath)) {
+            const resolvedPath = nodeRequire.resolve(configFilePath);
+            if (nodeRequire.cache && nodeRequire.cache[resolvedPath]) {
+              delete nodeRequire.cache[resolvedPath];
+            }
+            configModule = nodeRequire(configFilePath) as ConfigModule;
+          } else {
+            throw new Error(`Config file not found: ${configFilePath}`);
+          }
         }
       }
     } catch (requireError) {
-      // If require fails, throw to fall through to error handling
-      const errorMessage = requireError instanceof Error 
-        ? requireError.message 
+      const errorMessage = requireError instanceof Error
+        ? requireError.message
         : String(requireError);
       throw new ThemeError(
-        `Cannot load theme config: ${errorMessage}`,
+        `Cannot load config: ${errorMessage}`,
         ThemeErrorCode.CONFIG_LOAD_FAILED,
         { configPath, error: errorMessage }
       );
     }
-    
-    const rawConfig = (themeConfigModule.default || themeConfigModule) as LoadedThemeConfig;
+
+    const rawConfig = configModule.default || configModule;
+
+    // Handle new AtomixConfig structure vs legacy ThemeConfig
+    let processedConfig: any;
+    if (rawConfig.theme && (rawConfig.theme.themes || rawConfig.theme.tokens || rawConfig.theme.extend)) {
+      // New AtomixConfig structure
+      processedConfig = {
+        themes: rawConfig.theme.themes || {},
+        build: rawConfig.build || {},
+        runtime: rawConfig.runtime || {},
+        integration: rawConfig.integration || {},
+        dependencies: rawConfig.dependencies || {},
+        // Store tokens for generator
+        __tokens: rawConfig.theme.tokens,
+        __extend: rawConfig.theme.extend,
+      };
+    } else {
+      // Legacy ThemeConfig structure
+      processedConfig = { ...rawConfig };
+    }
 
     // Apply environment-specific overrides
-    const processedConfig = applyEnvOverrides(rawConfig, env);
+    processedConfig = applyEnvOverrides(processedConfig, env);
 
     // Validate if requested
     let validationResult: ConfigValidationResult | null = null;
@@ -143,7 +177,7 @@ export function loadThemeConfig(
       configPath,
       error: errorMessage,
     });
-    
+
     config = {
       themes: {},
       build: {

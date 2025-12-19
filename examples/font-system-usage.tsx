@@ -4,12 +4,12 @@
  */
 
 import React, { useEffect } from 'react';
-import { 
-  ThemeProvider, 
-  useTheme, 
-  loadThemeFonts, 
+import {
+  ThemeProvider,
+  useTheme,
+  loadThemeFonts,
   preloadThemeFonts,
-  getFontFallbackStack 
+  getFontFallbackStack
 } from '@shohojdhara/atomix/theme';
 
 // Example 1: Basic font loading with theme switching
@@ -19,7 +19,7 @@ function FontLoadingExample() {
   useEffect(() => {
     // Preload fonts for better performance
     preloadThemeFonts(theme);
-    
+
     // Load all theme fonts
     loadThemeFonts(theme).catch(console.error);
   }, [theme]);
@@ -28,22 +28,22 @@ function FontLoadingExample() {
     <div>
       <h2>Font Loading Example</h2>
       <p>Current theme: {theme}</p>
-      
+
       <select value={theme} onChange={(e) => setTheme(e.target.value)}>
         {availableThemes.map(t => (
           <option key={t.class || t.name} value={t.class || t.name}>{t.name}</option>
         ))}
       </select>
-      
-      <div style={{ 
+
+      <div style={{
         fontFamily: getFontFallbackStack(theme, 'primary'),
         marginTop: '1rem'
       }}>
         <h3>Primary Font Sample</h3>
         <p>This text uses the primary font for the {theme} theme.</p>
       </div>
-      
-      <div style={{ 
+
+      <div style={{
         fontFamily: getFontFallbackStack(theme, 'monospace'),
         marginTop: '1rem'
       }}>
@@ -57,21 +57,9 @@ function FontLoadingExample() {
 // Example 2: Theme-specific typography showcase
 function TypographyShowcase() {
   const { theme } = useTheme();
-  
+
   const getThemeDescription = (themeId: string) => {
     switch (themeId) {
-      case 'shaj-default':
-        return 'Clean, modern typography with Inter font family';
-      case 'flashtrade':
-        return 'Optimized for trading interfaces with compact sizing';
-      case 'boomdevs':
-        return 'Professional development agency branding';
-      case 'esrar':
-        return 'Luxury serif typography with Big Caslon FB';
-      case 'mashroom':
-        return 'Creative typography with Space Grotesk';
-      case 'applemix':
-        return 'Apple-inspired typography with system fonts';
       default:
         return 'Default typography configuration';
     }
@@ -81,7 +69,7 @@ function TypographyShowcase() {
     <div className={`atomix-theme-${theme}`}>
       <h1>Typography Showcase</h1>
       <p className="theme-description">{getThemeDescription(theme)}</p>
-      
+
       <div className="typography-samples">
         <h1>Heading 1 - Display Text</h1>
         <h2>Heading 2 - Section Title</h2>
@@ -89,20 +77,20 @@ function TypographyShowcase() {
         <h4>Heading 4 - Component Title</h4>
         <h5>Heading 5 - Small Title</h5>
         <h6>Heading 6 - Caption</h6>
-        
+
         <p className="body-large">
           Large body text for important content and introductions.
         </p>
-        
+
         <p className="body-base">
-          Regular body text for general content and descriptions. This is the most 
+          Regular body text for general content and descriptions. This is the most
           commonly used text size throughout the interface.
         </p>
-        
+
         <p className="body-small">
           Small body text for secondary information and captions.
         </p>
-        
+
         <code className="code-sample">
           const example = 'Monospace text for code samples';
         </code>
@@ -119,17 +107,17 @@ function OptimizedFontLoading() {
 
   useEffect(() => {
     let mounted = true;
-    
+
     const loadFonts = async () => {
       try {
         setLoadingError(null);
-        
+
         // Preload critical fonts first
         preloadThemeFonts(theme);
-        
+
         // Load all fonts with error handling
         await loadThemeFonts(theme);
-        
+
         if (mounted) {
           setFontsLoaded(true);
         }
@@ -141,7 +129,7 @@ function OptimizedFontLoading() {
     };
 
     loadFonts();
-    
+
     return () => {
       mounted = false;
     };
@@ -150,21 +138,21 @@ function OptimizedFontLoading() {
   return (
     <div>
       <h2>Font Loading Status</h2>
-      
+
       {loadingError && (
         <div className="error-message">
           Error loading fonts: {loadingError}
         </div>
       )}
-      
+
       <div className="loading-status">
         <p>Theme: {theme}</p>
         <p>Fonts loaded: {fontsLoaded ? '✅ Yes' : '⏳ Loading...'}</p>
       </div>
-      
-      <div 
+
+      <div
         className="font-sample"
-        style={{ 
+        style={{
           opacity: fontsLoaded ? 1 : 0.5,
           transition: 'opacity 0.3s ease'
         }}
@@ -179,20 +167,20 @@ function OptimizedFontLoading() {
 // Main App component
 export default function FontSystemExample() {
   return (
-    <ThemeProvider 
-      defaultTheme="shaj-default"
+    <ThemeProvider
+      defaultTheme=""
     >
       <div className="font-system-examples">
         <h1>Atomix Font System Examples</h1>
-        
+
         <section>
           <FontLoadingExample />
         </section>
-        
+
         <section>
           <TypographyShowcase />
         </section>
-        
+
         <section>
           <OptimizedFontLoading />
         </section>

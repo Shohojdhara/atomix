@@ -1,3 +1,6 @@
+// Design tokens generated from atomix.config.ts
+@forward '../00-tokens/generated-tokens';
+
 // Base colors and variables that everything depends on
 @forward './settings.colors';
 

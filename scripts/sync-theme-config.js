@@ -25,7 +25,7 @@ const THEMES_CONFIG_JS = join(__dirname, '../src/themes/themes.config.js');
 async function parseThemeConfigTS() {
   try {
     const content = await readFile(THEME_CONFIG_TS, 'utf8');
-    
+
     // Extract themes object
     const themesMatch = content.match(/themes:\s*{([^}]+(?:{[^}]*}[^}]*)*[^}]+)}/s);
     if (!themesMatch) {
@@ -36,10 +36,10 @@ async function parseThemeConfigTS() {
     const themes = {};
     const themeRegex = /['"]([^'"]+)['"]\s*:\s*{([^}]+(?:{[^}]*}[^}]*)*[^}]+)}/gs;
     let match;
-    
+
     while ((match = themeRegex.exec(themesMatch[1])) !== null) {
       const [, themeName, themeConfig] = match;
-      
+
       // Parse theme properties
       const theme = {
         name: extractValue(themeConfig, 'name'),
@@ -51,7 +51,7 @@ async function parseThemeConfigTS() {
         status: extractValue(themeConfig, 'status'),
         color: extractValue(themeConfig, 'color'),
       };
-      
+
       // Parse features if present
       const featuresMatch = themeConfig.match(/features:\s*\[([^\]]*)\]/s);
       if (featuresMatch) {
@@ -60,7 +60,7 @@ async function parseThemeConfigTS() {
           .map(f => f.trim().replace(/['"]/g, ''))
           .filter(f => f.length > 0);
       }
-      
+
       // Parse a11y if present
       const a11yMatch = themeConfig.match(/a11y:\s*{([^}]*)}/);
       if (a11yMatch) {
@@ -69,28 +69,28 @@ async function parseThemeConfigTS() {
           modes: extractArray(a11yMatch[1], 'modes'),
         };
       }
-      
+
       themes[themeName] = theme;
     }
-    
+
     // Extract build configuration
     const buildMatch = content.match(/build:\s*(defaultBuildConfig|{[^}]+})/);
-    const build = buildMatch && buildMatch[1] === 'defaultBuildConfig' 
-      ? getDefaultBuildConfig() 
+    const build = buildMatch && buildMatch[1] === 'defaultBuildConfig'
+      ? getDefaultBuildConfig()
       : parseBuildConfig(buildMatch?.[1]);
-    
+
     // Extract runtime configuration  
     const runtimeMatch = content.match(/runtime:\s*(defaultRuntimeConfig|{[^}]+})/);
     const runtime = runtimeMatch && runtimeMatch[1] === 'defaultRuntimeConfig'
       ? getDefaultRuntimeConfig()
       : parseRuntimeConfig(runtimeMatch?.[1]);
-    
+
     // Extract integration configuration
     const integrationMatch = content.match(/integration:\s*(defaultIntegrationConfig|{[^}]+})/);
     const integration = integrationMatch && integrationMatch[1] === 'defaultIntegrationConfig'
       ? getDefaultIntegrationConfig()
       : parseIntegrationConfig(integrationMatch?.[1]);
-    
+
     return {
       themes,
       build,
@@ -138,7 +138,7 @@ function extractArray(text, key) {
   const regex = new RegExp(`${key}:\\s*\\[([^\\]]*)\\]`);
   const match = text.match(regex);
   if (!match) return undefined;
-  
+
   return match[1]
     .split(',')
     .map(item => item.trim().replace(/['"]/g, ''))
@@ -172,9 +172,9 @@ function getDefaultRuntimeConfig() {
   return {
     basePath: '/themes',
     cdnPath: null,
-    preload: ['shaj-default'],
+    preload: [],
     lazy: true,
-    defaultTheme: 'shaj-default',
+    defaultTheme: '',
     storageKey: 'atomix-theme',
     useMinified: "process.env.NODE_ENV === 'production'",
   };
@@ -230,7 +230,7 @@ function parseIntegrationConfig(configText) {
  */
 function generateThemesConfigJS(config) {
   const { themes, build, runtime, integration, dependencies } = config;
-  
+
   // Convert themes to metadata format
   const metadata = {};
   for (const [key, theme] of Object.entries(themes)) {
@@ -242,7 +242,7 @@ function generateThemesConfigJS(config) {
       }
     });
   }
-  
+
   return `/**
  * Theme Configuration
  *
@@ -281,24 +281,24 @@ export const themesConfig = {
  */
 async function main() {
   console.log('🔄 Syncing theme configuration...\n');
-  
+
   try {
     // Parse theme.config.ts
     console.log('📖 Reading theme.config.ts...');
     const config = await parseThemeConfigTS();
     console.log(`  ✅ Found ${Object.keys(config.themes).length} themes`);
-    
+
     // Generate themes.config.js
     console.log('\n📝 Generating themes.config.js...');
     const jsContent = generateThemesConfigJS(config);
-    
+
     // Write to file
     await writeFile(THEMES_CONFIG_JS, jsContent, 'utf8');
     console.log('  ✅ Written to src/themes/themes.config.js');
-    
+
     console.log('\n✨ Configuration sync complete!');
     console.log('   themes.config.js has been updated from theme.config.ts');
-    
+
   } catch (error) {
     console.error('\n💥 Sync failed:', error.message);
     process.exit(1);

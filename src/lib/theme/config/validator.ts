@@ -5,7 +5,7 @@
  */
 
 import type {
-  ThemeConfig,
+  AtomixConfig,
   ThemeDefinition,
   CSSThemeDefinition,
   JSThemeDefinition,

@@ -54,14 +54,24 @@ export const CSS_EXTENSIONS = {
 } as const;
 
 /**
- * Default config file path
+ * Default Atomix config file path
+ */
+export const DEFAULT_ATOMIX_CONFIG_PATH = 'atomix.config.ts';
+
+/**
+ * Default config file path (legacy)
  */
 export const DEFAULT_CONFIG_PATH = 'theme.config.ts';
 
 /**
  * Default config file path (relative)
  */
-export const DEFAULT_CONFIG_RELATIVE_PATH = '../../../../theme.config';
+export const DEFAULT_CONFIG_RELATIVE_PATH = '../../../../atomix.config';
+
+/**
+ * Default legacy config file path (relative)
+ */
+export const DEFAULT_LEGACY_CONFIG_RELATIVE_PATH = '../../../../theme.config';
 
 /**
  * Validation thresholds

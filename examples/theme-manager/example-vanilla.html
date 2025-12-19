@@ -1,15 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="shaj-default" data-atomix-color-mode="light">
+<html lang="en" data-theme="default" data-atomix-color-mode="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Atomix Theme Manager - Vanilla JavaScript Example</title>
   
-  <!-- Load Atomix CSS -->
+  <!-- Built-in styles -->
   <link rel="stylesheet" href="/dist/atomix.css">
-  
-  <!-- Load default theme -->
-  <link rel="stylesheet" href="/themes/shaj-default.css" id="atomix-theme-shaj-default" data-atomix-theme="shaj-default">
   
   <style>
     body {
@@ -185,7 +182,7 @@
         <h2>Theme Switcher</h2>
         <p>
           <strong>Current Theme:</strong> 
-          <span id="current-theme">shaj-default</span>
+          <span id="current-theme">default</span>
           <span id="loading-indicator" class="loading" style="display: none;">Loading...</span>
         </p>
         <div id="theme-buttons" class="theme-buttons"></div>
@@ -235,51 +232,11 @@
     
     const themesConfig = {
       metadata: {
-        'shaj-default': {
-          name: 'Shaj Default',
-          description: 'The default theme for the Atomix Design System',
-          author: 'Shohoj Dhara',
+        'default': {
+          name: 'Default Theme',
+          description: 'The built-in default theme',
+          author: 'Atomix',
           version: '1.0.0',
-          status: 'stable',
-          supportsDarkMode: true,
-        },
-        'boomdevs': {
-          name: 'BoomDevs',
-          description: 'BoomDevs theme for the Atomix Design System',
-          author: 'BoomDevs Team',
-          version: '1.0.0',
-          status: 'beta',
-          supportsDarkMode: true,
-        },
-        'esrar': {
-          name: 'Esrar',
-          description: 'Esrar theme for the Atomix Design System',
-          author: 'Esrar Team',
-          version: '1.0.0',
-          status: 'beta',
-          supportsDarkMode: true,
-        },
-        'mashroom': {
-          name: 'Mashroom',
-          description: 'Mashroom theme for the Atomix Design System',
-          author: 'Mashroom Team',
-          version: '1.0.0',
-          status: 'beta',
-          supportsDarkMode: true,
-        },
-        'applemix': {
-          name: 'Applemix',
-          description: 'Apple Mac OS 2026 Liquid Glass inspired theme',
-          author: 'Atomix Design System',
-          version: '1.0.0',
-          status: 'experimental',
-          supportsDarkMode: true,
-        },
-        'flashtrade': {
-          name: 'Flash Trade',
-          description: 'Professional dark crypto trading platform theme',
-          author: 'Atomix Design System',
-          version: '1.1.0',
           status: 'stable',
           supportsDarkMode: true,
         },
@@ -290,10 +247,10 @@
     class SimpleThemeManager {
       constructor(config) {
         this.themes = config.themes;
-        this.currentTheme = config.defaultTheme || 'shaj-default';
+        this.currentTheme = config.defaultTheme || 'default';
         this.basePath = config.basePath || '/themes';
         this.listeners = { themeChange: [], themeLoad: [], themeError: [] };
-        this.loadedThemes = new Set(['shaj-default']); // Default theme is already loaded
+        this.loadedThemes = new Set(['default']); // Default theme is already loaded
       }
 
       async setTheme(themeName) {
@@ -390,7 +347,7 @@
     // Initialize theme manager
     const themeManager = new SimpleThemeManager({
       themes: themesConfig.metadata,
-      defaultTheme: localStorage.getItem('atomix-theme') || 'shaj-default',
+      defaultTheme: localStorage.getItem('atomix-theme') || 'default',
       basePath: '/themes',
     });
 

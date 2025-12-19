@@ -261,13 +261,7 @@ export type Size = 'sm' | 'md' | 'lg';
 /**
  * Available theme variants in the Shaj theme system
  */
-export type ThemeName =
-  | 'shaj-default'
-  | 'shaj-ocean'
-  | 'shaj-sunset'
-  | 'shaj-forest'
-  | 'shaj-midnight'
-  | 'shaj-pastel';
+export type ThemeName = string;
 
 // ============================================================================
 // END THEME SYSTEM TYPES
@@ -412,19 +406,19 @@ export interface ButtonProps extends BaseComponentProps {
    * Button size
    */
   size?: Size;
-  
+
   /**
    * Part-based styling (NEW)
    * Allows styling individual button parts
    */
   parts?: ButtonParts;
-  
+
   /**
    * CSS variable overrides (NEW)
    * Runtime CSS custom property overrides
    */
   cssVars?: Partial<Record<ButtonCSSVariable, string | number>>;
-  
+
   /**
    * Slot-based customization (NEW)
    * Complete control over rendering
@@ -1383,16 +1377,16 @@ export interface SideMenuProps extends BaseComponentProps {
       active?: boolean | undefined;
       disabled?: boolean | undefined;
       as?:
-        | React.ComponentType<{
-            href?: string;
-            to?: string;
-            children: React.ReactNode;
-            className?: string;
-            onClick?: (event: React.MouseEvent) => void;
-            target?: string;
-            rel?: string;
-          }>
-        | undefined;
+      | React.ComponentType<{
+        href?: string;
+        to?: string;
+        children: React.ReactNode;
+        className?: string;
+        onClick?: (event: React.MouseEvent) => void;
+        target?: string;
+        rel?: string;
+      }>
+      | undefined;
     }>;
   }>;
 }
@@ -3418,17 +3412,17 @@ export interface VideoPlayerProps extends BaseComponentProps {
    * - object: Custom glass configuration
    */
   glass?:
-    | boolean
-    | {
-        displacementScale?: number;
-        blurAmount?: number;
-        saturation?: number;
-        aberrationIntensity?: number;
-        elasticity?: number;
-        cornerRadius?: number;
-        mode?: 'standard' | 'polar' | 'prominent' | 'shader';
-        overLight?: boolean;
-      };
+  | boolean
+  | {
+    displacementScale?: number;
+    blurAmount?: number;
+    saturation?: number;
+    aberrationIntensity?: number;
+    elasticity?: number;
+    cornerRadius?: number;
+    mode?: 'standard' | 'polar' | 'prominent' | 'shader';
+    overLight?: boolean;
+  };
 
   /**
    * Glass overlay opacity (0-1) when glass variant is enabled
@@ -4816,23 +4810,23 @@ export interface SliderProps extends BaseComponentProps {
    * Whether to enable mouse wheel control
    */
   mousewheel?:
-    | boolean
-    | {
-        forceToAxis?: boolean;
-        sensitivity?: number;
-        releaseOnEdges?: boolean;
-      };
+  | boolean
+  | {
+    forceToAxis?: boolean;
+    sensitivity?: number;
+    releaseOnEdges?: boolean;
+  };
 
   /**
    * Whether to enable keyboard control
    */
   keyboard?:
-    | boolean
-    | {
-        enabled?: boolean;
-        onlyInViewport?: boolean;
-        pageUpDown?: boolean;
-      };
+  | boolean
+  | {
+    enabled?: boolean;
+    onlyInViewport?: boolean;
+    pageUpDown?: boolean;
+  };
 
   /**
    * Whether to grab cursor on hover (default: true)
@@ -4895,16 +4889,16 @@ export interface SliderProps extends BaseComponentProps {
    * Whether to free mode (no snap to slides)
    */
   freeMode?:
-    | boolean
-    | {
-        enabled?: boolean;
-        sticky?: boolean;
-        momentumRatio?: number;
-        momentumVelocityRatio?: number;
-        momentumBounce?: boolean;
-        momentumBounceRatio?: number;
-        minimumVelocity?: number;
-      };
+  | boolean
+  | {
+    enabled?: boolean;
+    sticky?: boolean;
+    momentumRatio?: number;
+    momentumVelocityRatio?: number;
+    momentumBounce?: boolean;
+    momentumBounceRatio?: number;
+    minimumVelocity?: number;
+  };
 
   /**
    * Whether to watch for slides and wrapper size changes
@@ -4940,23 +4934,23 @@ export interface SliderProps extends BaseComponentProps {
    * Hash navigation
    */
   hashNavigation?:
-    | boolean
-    | {
-        watchState?: boolean;
-        replaceState?: boolean;
-      };
+  | boolean
+  | {
+    watchState?: boolean;
+    replaceState?: boolean;
+  };
 
   /**
    * History navigation
    */
   history?:
-    | boolean
-    | {
-        enabled?: boolean;
-        root?: string;
-        replaceState?: boolean;
-        key?: string;
-      };
+  | boolean
+  | {
+    enabled?: boolean;
+    root?: string;
+    replaceState?: boolean;
+    key?: string;
+  };
 
   /**
    * Controller configuration
@@ -4971,16 +4965,16 @@ export interface SliderProps extends BaseComponentProps {
    * A11y configuration
    */
   a11y?:
-    | boolean
-    | {
-        enabled?: boolean;
-        prevSlideMessage?: string;
-        nextSlideMessage?: string;
-        firstSlideMessage?: string;
-        lastSlideMessage?: string;
-        paginationBulletMessage?: string;
-        notificationClass?: string;
-      };
+  | boolean
+  | {
+    enabled?: boolean;
+    prevSlideMessage?: string;
+    nextSlideMessage?: string;
+    firstSlideMessage?: string;
+    lastSlideMessage?: string;
+    paginationBulletMessage?: string;
+    notificationClass?: string;
+  };
 
   /**
    * Slide change callback

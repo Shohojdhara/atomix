@@ -1,9 +1,0 @@
-/*!
- * Boomdevs Theme Callout Settings
- * Custom callout styles for the Boomdevs theme
- */
-
-@use '../../../styles/01-settings/settings.callout' with (
-  $callout-border-radius: 6px,
-  $callout-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)
-);

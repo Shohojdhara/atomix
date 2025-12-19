@@ -1,9 +1,0 @@
-/*!
- * Boomdevs Theme Button Settings
- * Custom button styles for the Boomdevs theme
- */
-
-@use '../../../styles/01-settings/settings.button' with (
-  $btn-border-radius: 6px,
-  $btn-font-weight: 600
-);

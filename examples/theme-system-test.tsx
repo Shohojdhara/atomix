@@ -65,10 +65,10 @@ const ThemeSwitcher: React.FC = () => {
           Custom JS Theme
         </button>
       </div>
-      
+
       {isLoading && <p>Loading theme...</p>}
       {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
-      
+
       <div style={{ marginTop: '1rem' }}>
         <strong>Current Theme:</strong> {theme}
       </div>
@@ -81,12 +81,12 @@ const SampleComponents: React.FC = () => {
   return (
     <div>
       <h3>Sample Components</h3>
-      
+
       {/* Buttons */}
       <div style={{ marginBottom: '1rem' }}>
         <h4>Buttons</h4>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <button 
+          <button
             style={{
               padding: '0.5rem 1rem',
               backgroundColor: 'var(--atomix-primary)',
@@ -98,7 +98,7 @@ const SampleComponents: React.FC = () => {
           >
             Primary Button
           </button>
-          <button 
+          <button
             style={{
               padding: '0.5rem 1rem',
               backgroundColor: 'var(--atomix-secondary)',
@@ -116,7 +116,7 @@ const SampleComponents: React.FC = () => {
       {/* Card */}
       <div style={{ marginBottom: '1rem' }}>
         <h4>Card</h4>
-        <div 
+        <div
           style={{
             padding: '1rem',
             backgroundColor: 'var(--atomix-background-paper, white)',
@@ -129,8 +129,8 @@ const SampleComponents: React.FC = () => {
           <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--atomix-text-primary)' }}>
             Card Title
           </h5>
-          <p style={{ 
-            margin: 0, 
+          <p style={{
+            margin: 0,
             color: 'var(--atomix-text-secondary)',
             fontSize: 'var(--atomix-font-size-sm, 14px)',
           }}>
@@ -142,7 +142,7 @@ const SampleComponents: React.FC = () => {
       {/* Typography */}
       <div style={{ marginBottom: '1rem' }}>
         <h4>Typography</h4>
-        <h1 style={{ 
+        <h1 style={{
           fontSize: 'var(--atomix-typography-h1-font-size, 2rem)',
           fontWeight: 'var(--atomix-typography-h1-font-weight, 700)',
           color: 'var(--atomix-text-primary)',
@@ -150,7 +150,7 @@ const SampleComponents: React.FC = () => {
         }}>
           Heading 1
         </h1>
-        <h2 style={{ 
+        <h2 style={{
           fontSize: 'var(--atomix-typography-h2-font-size, 1.5rem)',
           fontWeight: 'var(--atomix-typography-h2-font-weight, 600)',
           color: 'var(--atomix-text-primary)',
@@ -158,7 +158,7 @@ const SampleComponents: React.FC = () => {
         }}>
           Heading 2
         </h2>
-        <p style={{ 
+        <p style={{
           fontSize: 'var(--atomix-typography-body1-font-size, 1rem)',
           color: 'var(--atomix-text-primary)',
           lineHeight: 'var(--atomix-typography-body1-line-height, 1.5)',
@@ -173,11 +173,11 @@ const SampleComponents: React.FC = () => {
 // Main app component
 const ThemeSystemTestApp: React.FC = () => {
   return (
-    <ThemeProvider 
-      defaultTheme="shaj-default"
+    <ThemeProvider
+      defaultTheme=""
       basePath="/themes"
     >
-      <div style={{ 
+      <div style={{
         padding: '2rem',
         fontFamily: 'var(--atomix-font-family, Inter, sans-serif)',
         backgroundColor: 'var(--atomix-background-default, white)',
@@ -193,7 +193,7 @@ const ThemeSystemTestApp: React.FC = () => {
           <li>Theme persistence</li>
           <li>React hooks and context</li>
         </ul>
-        
+
         <ThemeSwitcher />
         <SampleComponents />
       </div>

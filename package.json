@@ -81,66 +81,6 @@
       "require": "./dist/lib/theme/index.js",
       "default": "./dist/lib/theme/index.js"
     },
-    "./themes/shaj-default": {
-      "import": "./dist/themes/shaj-default.css",
-      "require": "./dist/themes/shaj-default.css",
-      "default": "./dist/themes/shaj-default.css"
-    },
-    "./themes/shaj-default.min": {
-      "import": "./dist/themes/shaj-default.min.css",
-      "require": "./dist/themes/shaj-default.min.css",
-      "default": "./dist/themes/shaj-default.min.css"
-    },
-    "./themes/flashtrade": {
-      "import": "./dist/themes/flashtrade.css",
-      "require": "./dist/themes/flashtrade.css",
-      "default": "./dist/themes/flashtrade.css"
-    },
-    "./themes/flashtrade.min": {
-      "import": "./dist/themes/flashtrade.min.css",
-      "require": "./dist/themes/flashtrade.min.css",
-      "default": "./dist/themes/flashtrade.min.css"
-    },
-    "./themes/boomdevs": {
-      "import": "./dist/themes/boomdevs.css",
-      "require": "./dist/themes/boomdevs.css",
-      "default": "./dist/themes/boomdevs.css"
-    },
-    "./themes/boomdevs.min": {
-      "import": "./dist/themes/boomdevs.min.css",
-      "require": "./dist/themes/boomdevs.min.css",
-      "default": "./dist/themes/boomdevs.min.css"
-    },
-    "./themes/esrar": {
-      "import": "./dist/themes/esrar.css",
-      "require": "./dist/themes/esrar.css",
-      "default": "./dist/themes/esrar.css"
-    },
-    "./themes/esrar.min": {
-      "import": "./dist/themes/esrar.min.css",
-      "require": "./dist/themes/esrar.min.css",
-      "default": "./dist/themes/esrar.min.css"
-    },
-    "./themes/mashroom": {
-      "import": "./dist/themes/mashroom.css",
-      "require": "./dist/themes/mashroom.css",
-      "default": "./dist/themes/mashroom.css"
-    },
-    "./themes/mashroom.min": {
-      "import": "./dist/themes/mashroom.min.css",
-      "require": "./dist/themes/mashroom.min.css",
-      "default": "./dist/themes/mashroom.min.css"
-    },
-    "./themes/applemix": {
-      "import": "./dist/themes/applemix.css",
-      "require": "./dist/themes/applemix.css",
-      "default": "./dist/themes/applemix.css"
-    },
-    "./themes/applemix.min": {
-      "import": "./dist/themes/applemix.min.css",
-      "require": "./dist/themes/applemix.min.css",
-      "default": "./dist/themes/applemix.min.css"
-    },
     "./package.json": "./package.json"
   },
   "dependencies": {
@@ -243,7 +183,8 @@
     "typecheck": "tsc --noEmit",
     "attw": "attw --pack",
     "sync:config": "npx tsx scripts/sync-theme-config-ts.ts",
-    "prebuild": "npm run sync:config",
+    "sync:tokens": "npx tsx scripts/generate-tokens.ts",
+    "prebuild": "npm run sync:config && npm run sync:tokens",
     "prepublishOnly": "npm run clean && npm run build && npm run attw",
     "prepack": "echo 'Preparing package for publishing...'"
   },

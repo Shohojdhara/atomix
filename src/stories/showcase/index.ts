@@ -1,15 +1,11 @@
 // Export all showcase components for easy importing
-export { AtomixGlassShowcase } from './AtomixGlassShowcase';
-export { ComponentGallery } from './ComponentGallery';
-// Re-export existing showcase components
-export { AdminDashboard } from './AdminDashboard';
-export { CoffeeShop } from './CoffeeShop';
-export { Ecommerce } from './Ecommerce';
+export { default as AdminDashboard } from './AdminDashboard';
+export { default as CoffeeShop } from './CoffeeShop';
+export { default as Ecommerce } from './Ecommerce';
 export { default as Fintech } from './Fintech';
-export { Healthcare } from './Healthcare';
-export { HomePage } from './HomePage';
-export { ISP } from './ISP';
-export { Portfolio } from './Portfolio';
-export { Saas } from './Saas';
-export { Travel } from './Travel';
-export { YopillLanding } from './YopillLanding';
+export { default as Healthcare } from './Healthcare';
+export { default as HomePage } from './HomePage';
+export { default as ISP } from './ISP';
+export { default as Portfolio } from './Portfolio';
+export { default as Saas } from './Saas';
+export { default as Travel } from './Travel';

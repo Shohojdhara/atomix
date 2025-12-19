@@ -59,8 +59,8 @@ function ThemeSwitcher() {
                     {theme}
                 </span>
                 {isLoading && (
-                    <Badge 
-                        variant="info" 
+                    <Badge
+                        variant="info"
                         style={{ marginLeft: '0.5rem' }}
                         aria-label="Loading theme"
                     >
@@ -69,8 +69,8 @@ function ThemeSwitcher() {
                 )}
             </div>
 
-            <div 
-                role="group" 
+            <div
+                role="group"
                 aria-label="Theme selection"
                 style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}
             >
@@ -94,8 +94,8 @@ function ThemeSwitcher() {
                 <p style={{ fontSize: '0.875rem', color: 'var(--atomix-gray-7)' }}>
                     Preload themes for faster switching
                 </p>
-                <div 
-                    role="group" 
+                <div
+                    role="group"
                     aria-label="Theme preloading"
                     style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}
                 >
@@ -299,10 +299,10 @@ function AppContent() {
 export default function App() {
     return (
         <ThemeProvider
-            defaultTheme="shaj-default"
+            defaultTheme=""
             basePath="/themes"
             enablePersistence={true}
-            preload={['shaj-default']}
+            preload={[]}
             onThemeChange={(theme) => {
                 console.log('Theme changed to:', theme);
             }}

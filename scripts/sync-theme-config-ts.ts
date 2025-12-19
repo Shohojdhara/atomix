@@ -18,9 +18,18 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Import the actual theme config
+// Import the actual atomix config
 // Note: With ESM, we use .js extension even though the file is .ts
-import themeConfig from '../theme.config.js';
+import atomixConfig from '../atomix.config.js';
+
+// Alias for compatibility with existing script logic
+const themeConfig = {
+  themes: atomixConfig.theme?.themes || {},
+  build: atomixConfig.build || {},
+  runtime: atomixConfig.runtime || {},
+  integration: atomixConfig.integration || {},
+  dependencies: atomixConfig.dependencies || {},
+};
 
 /**
  * Generate themes.config.js content
@@ -28,7 +37,7 @@ import themeConfig from '../theme.config.js';
 function generateThemesConfigJS() {
   // Extract metadata from themes
   const metadata: Record<string, any> = {};
-  
+
   for (const [key, theme] of Object.entries(themeConfig.themes)) {
     if (theme.type === 'css') {
       metadata[key] = {
@@ -43,7 +52,7 @@ function generateThemesConfigJS() {
         color: theme.color,
         features: theme.features,
       };
-      
+
       // Remove undefined values
       Object.keys(metadata[key]).forEach(k => {
         if (metadata[key][k] === undefined) {
@@ -52,7 +61,7 @@ function generateThemesConfigJS() {
       });
     }
   }
-  
+
   return `/**
  * Theme Configuration
  *
@@ -81,8 +90,8 @@ export const themesConfig = {
 
   // Runtime theme loading configuration
   runtime: ${JSON.stringify(themeConfig.runtime, null, 4)
-    .replace(/"([^"]+)":/g, '$1:')
-    .replace(/false/g, 'process.env.NODE_ENV === \'production\'')},
+      .replace(/"([^"]+)":/g, '$1:')
+      .replace(/false/g, 'process.env.NODE_ENV === \'production\'')},
 
   // Theme dependencies (if a theme requires another theme to be loaded)
   dependencies: ${JSON.stringify(themeConfig.dependencies || {}, null, 4).replace(/"([^"]+)":/g, '$1:')},
@@ -94,23 +103,23 @@ export const themesConfig = {
  */
 async function main() {
   console.log('🔄 Syncing theme configuration...\n');
-  
+
   try {
     // Generate themes.config.js
     console.log('📖 Reading theme.config.ts...');
     console.log(`  ✅ Found ${Object.keys(themeConfig.themes).length} themes`);
-    
+
     console.log('\n📝 Generating themes.config.js...');
     const jsContent = generateThemesConfigJS();
-    
+
     // Write to file
     const outputPath = path.join(__dirname, '../src/themes/themes.config.js');
     await fs.writeFile(outputPath, jsContent, 'utf8');
     console.log('  ✅ Written to src/themes/themes.config.js');
-    
+
     console.log('\n✨ Configuration sync complete!');
     console.log('   themes.config.js has been updated from theme.config.ts');
-    
+
   } catch (error: any) {
     console.error('\n💥 Sync failed:', error.message);
     process.exit(1);

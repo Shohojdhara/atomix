@@ -13,18 +13,7 @@ import {
 } from '../lib/theme';
 
 // Example theme metadata
-const exampleThemes = {
-  'boomdevs': {
-    name: 'BoomDevs',
-    description: 'BoomDevs theme',
-    status: 'beta' as const,
-  },
-  'esrar': {
-    name: 'Esrar',
-    description: 'Esrar theme',
-    status: 'beta' as const,
-  },
-};
+const exampleThemes = {};
 
 // Basic Theme Switcher Component
 const ThemeSwitcher: React.FC = () => {
@@ -39,9 +28,9 @@ const ThemeSwitcher: React.FC = () => {
   };
 
   return (
-    <div style={{ 
-      padding: '1rem', 
-      border: '1px solid #e0e0e0', 
+    <div style={{
+      padding: '1rem',
+      border: '1px solid #e0e0e0',
       borderRadius: '8px',
       marginBottom: '1rem',
     }}>
@@ -88,7 +77,7 @@ const ComponentPreview: React.FC = () => {
       marginBottom: '1rem',
     }}>
       <h3 style={{ marginTop: 0 }}>Component Preview</h3>
-      
+
       {/* Buttons */}
       <div style={{ marginBottom: '1rem' }}>
         <h4>Buttons</h4>
@@ -181,10 +170,10 @@ const ComponentPreview: React.FC = () => {
 const RTLDemo: React.FC = () => {
   const [rtlEnabled, setRTLEnabled] = useState(false);
   const [direction, setDirection] = useState<'ltr' | 'rtl'>('ltr');
-  
+
   // Create RTL manager once and store in ref to prevent re-creation
   const rtlManagerRef = React.useRef<ReturnType<typeof createRTLManager> | null>(null);
-  
+
   if (!rtlManagerRef.current) {
     rtlManagerRef.current = createRTLManager({
       enabled: false, // Start disabled, we'll control it manually
@@ -386,10 +375,10 @@ export const WithRTL: Story = {
     (Story) => {
       const [rtlEnabled, setRTLEnabled] = useState(false);
       const [direction, setDirection] = useState<'ltr' | 'rtl'>('ltr');
-      
+
       // Create RTL manager once and store in ref to prevent re-creation
       const rtlManagerRef = React.useRef<ReturnType<typeof createRTLManager> | null>(null);
-      
+
       if (!rtlManagerRef.current) {
         rtlManagerRef.current = createRTLManager({
           enabled: false,

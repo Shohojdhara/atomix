@@ -11,7 +11,7 @@ export type {
   LoadedThemeConfig,
   ConfigValidationResult,
   ThemeMetadata,
-  ThemeConfig,
+  AtomixConfig,
   ThemeDefinition,
   CSSThemeDefinition,
   JSThemeDefinition,

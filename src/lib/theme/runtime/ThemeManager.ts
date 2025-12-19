@@ -63,7 +63,7 @@ const DEFAULT_CONFIG: Partial<ThemeManagerConfig> = {
  *   // No defaultTheme - uses built-in styles
  * });
  * 
- * await themeManager.setTheme('flashtrade');
+ * await themeManager.setTheme('my-custom-theme');
  * ```
  */
 export class ThemeManager {
@@ -356,13 +356,13 @@ export class ThemeManager {
    * Emit theme error event
    */
   private emitThemeError(error: Error, themeName: string): void {
-    const themeError = error instanceof ThemeError 
-      ? error 
+    const themeError = error instanceof ThemeError
+      ? error
       : new ThemeError(
-          error.message,
-          ThemeErrorCode.THEME_LOAD_FAILED,
-          { themeName, originalError: error.message }
-        );
+        error.message,
+        ThemeErrorCode.THEME_LOAD_FAILED,
+        { themeName, originalError: error.message }
+      );
 
     if (this.config.onError) {
       try {

@@ -44,13 +44,9 @@ function App() {
 
 Atomix provides a powerful, developer-friendly theming system with multiple options:
 
-#### Quick Start with Pre-built Themes
+#### Quick Start with Themes
 
 ```jsx
-// Option 1: Import a pre-built theme
-import '@shohojdhara/atomix/themes/flashtrade.css';
-
-// Option 2: Dynamic theme switching
 import { ThemeProvider, useTheme } from '@shohojdhara/atomix/theme';
 
 function App() {
@@ -86,14 +82,6 @@ const myTheme = quickTheme('My Brand', '#FF5733', '#33FF57');
   <App />
 </ThemeProvider>
 ```
-
-**📦 Pre-built Themes:**
-- `shaj-default` - Default theme with light/dark modes (stable)
-- `flashtrade` - Crypto trading platform theme (stable)
-- `boomdevs` - Modern dark theme (beta)
-- `esrar` - Minimal light theme (beta)
-- `mashroom` - Psychedelic colorful theme (beta)
-- `applemix` - Apple-inspired glass morphism (experimental)
 
 For complete documentation, see [Developer Guide](docs/DEVELOPER_GUIDE.md) and [Theme System Guide](docs/THEME_SYSTEM.md).
 

@@ -9,8 +9,8 @@
  */
 
 import React, { useState } from 'react';
-import { 
-  ThemeProvider, 
+import {
+  ThemeProvider,
   useTheme,
   createTheme,
   RTLManager,
@@ -53,7 +53,7 @@ const EnhancedThemeExample: React.FC = () => {
   // Create component override manager
   const overrideManager = React.useMemo(() => {
     const manager = createComponentOverrideManager();
-    
+
     // Add some example overrides
     manager.addOverride('Button', {
       styleOverrides: {
@@ -72,7 +72,7 @@ const EnhancedThemeExample: React.FC = () => {
   // Create white label manager
   const whiteLabelManager = React.useMemo(() => {
     const manager = createWhiteLabelManager();
-    
+
     manager.configure({
       brand: {
         name: 'My Brand',
@@ -217,7 +217,7 @@ const EnhancedThemeExample: React.FC = () => {
             const metrics = analytics.getMetrics();
             console.log('All Events:', events);
             console.log('All Metrics:', metrics);
-            
+
             const avgLoadTime = analytics.getAverageMetric('theme_load_time');
             console.log('Average Load Time:', avgLoadTime, 'ms');
           }}
@@ -240,8 +240,8 @@ const EnhancedThemeExample: React.FC = () => {
 // Main App
 const App: React.FC = () => {
   return (
-    <ThemeProvider 
-      defaultTheme="shaj-default"
+    <ThemeProvider
+      defaultTheme=""
       basePath="/themes"
       rtl={{
         enabled: false,

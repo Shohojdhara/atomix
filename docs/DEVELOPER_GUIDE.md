@@ -42,21 +42,13 @@ function App() {
 
 ## 🎨 Using Themes
 
-### Option 1: Use Pre-built Themes
+### Option 1: Custom CSS Themes
+
+You can create and load your own CSS themes using the Atomix Theme System.
 
 ```tsx
-// Import a pre-built theme CSS
-import '@shohojdhara/atomix/themes/flashtrade.css';
-// or minified
-import '@shohojdhara/atomix/themes/flashtrade.min.css';
-
-// Available themes:
-// - shaj-default (default theme)
-// - flashtrade (crypto trading theme)
-// - boomdevs (modern dark theme)
-// - esrar (minimal light theme)  
-// - mashroom (psychedelic theme)
-// - applemix (Apple-inspired glass theme)
+// Import your custom theme CSS
+import './themes/my-custom-theme.css';
 ```
 
 ### Option 2: Dynamic Theme Loading
@@ -136,7 +128,7 @@ function App() {
 
 ```typescript
 import { extendTheme } from '@shohojdhara/atomix/theme';
-import baseTheme from '@shohojdhara/atomix/themes/shaj-default';
+import baseTheme from './my-base-theme';
 
 const myTheme = extendTheme(baseTheme, {
   palette: {

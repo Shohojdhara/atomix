@@ -1,9 +1,0 @@
-/*!
- * Shaj Default Theme Maps Settings
- * Modern color and utility maps with clean aesthetics
- * Overrides Atomix default maps settings
- */
-
-// Forward the maps settings as-is since they contain color and utility maps
-// that are already properly configured in our color settings
-@forward '../../../styles/01-settings/settings.design-tokens';

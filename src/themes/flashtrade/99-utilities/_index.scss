@@ -1,9 +1,0 @@
-/*!
- * Flash Trade Theme Utilities Index
- * Utility classes for the trading platform
- */
-// Flash Trade specific utilities
-@forward 'utilities.trading';
-
-// Forward base utility styles from the main design system
-@forward '../../../styles/99-utilities/index';

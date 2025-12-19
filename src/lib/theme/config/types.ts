@@ -5,14 +5,14 @@
  */
 
 import type {
-  ThemeConfig,
-  ThemeDefinition,
-  CSSThemeDefinition,
-  JSThemeDefinition,
+  AtomixConfig,
   BuildConfig,
   RuntimeConfig,
   IntegrationConfig,
-} from '../../../../theme.config';
+  ThemeDefinition,
+  CSSThemeDefinition,
+  JSThemeDefinition,
+} from '../../config';
 
 /**
  * Configuration loader options
@@ -29,13 +29,27 @@ export interface ConfigLoaderOptions {
 /**
  * Loaded and validated theme configuration
  */
-export interface LoadedThemeConfig extends ThemeConfig {
+export interface LoadedThemeConfig {
+  /** Registered themes */
+  themes: Record<string, ThemeDefinition>;
+  /** Build configuration */
+  build: BuildConfig;
+  /** Runtime configuration */
+  runtime: RuntimeConfig;
+  /** Integration settings */
+  integration: IntegrationConfig;
+  /** Theme dependencies mapping */
+  dependencies: Record<string, string[]>;
   /** Whether config was validated */
   validated: boolean;
   /** Validation errors (if any) */
   errors?: string[];
   /** Validation warnings (if any) */
   warnings?: string[];
+  /** Internal tokens (for generator) */
+  __tokens?: any;
+  /** Internal extensions (for generator) */
+  __extend?: any;
 }
 
 /**
@@ -88,7 +102,7 @@ export interface ConfigValidationResult {
 }
 
 export type {
-  ThemeConfig,
+  AtomixConfig,
   ThemeDefinition,
   CSSThemeDefinition,
   JSThemeDefinition,
