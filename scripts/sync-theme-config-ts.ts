@@ -3,10 +3,15 @@
 /**
  * Sync Theme Configuration (TypeScript Version)
  * 
- * This script generates src/themes/themes.config.js from theme.config.ts
+ * This script generates src/themes/themes.config.js from atomix.config.ts
  * to maintain a single source of truth for theme configuration.
  * 
- * Run with: npx ts-node scripts/sync-theme-config-ts.ts
+ * This ensures:
+ * - Build-time config (themes.config.js) stays in sync with runtime config (atomix.config.ts)
+ * - Prefix configuration is consistent across all systems
+ * - Theme metadata is automatically extracted
+ * 
+ * Run with: npm run sync:config
  */
 
 import * as fs from 'fs/promises';
@@ -22,6 +27,9 @@ const __dirname = dirname(__filename);
 // Note: With ESM, we use .js extension even though the file is .ts
 import atomixConfig from '../atomix.config.js';
 
+// Get prefix from config (default: 'atomix')
+const prefix = atomixConfig.prefix || 'atomix';
+
 // Alias for compatibility with existing script logic
 const themeConfig = {
   themes: atomixConfig.theme?.themes || {},
@@ -29,6 +37,7 @@ const themeConfig = {
   runtime: atomixConfig.runtime || {},
   integration: atomixConfig.integration || {},
   dependencies: atomixConfig.dependencies || {},
+  prefix: prefix, // Include prefix in config
 };
 
 /**
@@ -65,14 +74,17 @@ function generateThemesConfigJS() {
   return `/**
  * Theme Configuration
  *
- * This file is auto-generated from theme.config.ts
- * DO NOT EDIT MANUALLY - Edit theme.config.ts instead
+ * This file is auto-generated from atomix.config.ts
+ * DO NOT EDIT MANUALLY - Edit atomix.config.ts instead
  * Run 'npm run sync:config' to regenerate
  * 
  * Generated on: ${new Date().toISOString()}
  */
 
 export const themesConfig = {
+  // CSS variable prefix (from atomix.config.ts)
+  prefix: '${prefix}',
+  
   // Theme metadata
   metadata: ${JSON.stringify(metadata, null, 4).replace(/"([^"]+)":/g, '$1:')},
 
@@ -118,7 +130,8 @@ async function main() {
     console.log('  ✅ Written to src/themes/themes.config.js');
 
     console.log('\n✨ Configuration sync complete!');
-    console.log('   themes.config.js has been updated from theme.config.ts');
+    console.log(`   themes.config.js has been updated from atomix.config.ts`);
+    console.log(`   Prefix: ${prefix}`);
 
   } catch (error: any) {
     console.error('\n💥 Sync failed:', error.message);

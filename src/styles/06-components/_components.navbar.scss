@@ -48,6 +48,12 @@
     max-width: var(--#{$prefix}navbar-container-max-width);
     padding: 0 var(--#{$prefix}navbar-padding-x);
     margin: 0 auto;
+    gap: var(--#{$prefix}navbar-padding-x);
+
+    @include media.media-down('md') {
+      flex-wrap: nowrap;
+      gap: 0.5rem;
+    }
   }
 
   // 3. Element Styles (BEM Elements)
@@ -72,6 +78,7 @@
   }
 
   &__toggler {
+    position: relative;
     display: none;
     align-items: center;
     justify-content: center;
@@ -99,17 +106,13 @@
 
     &-icon {
       position: relative;
-      display: inline-block;
-      width: 1.5em;
-      height: 1.5em;
-      vertical-align: middle;
 
       &::before,
       &::after,
       & {
         position: absolute;
         height: 2px;
-        width: 100%;
+        width: var(--#{$prefix}navbar-toggler-size);
         background-color: var(--#{$prefix}navbar-toggler-color);
         border-radius: 1px;
         transition: transform 0.15s ease;
@@ -227,6 +230,10 @@
     @include media.media-up('md') {
       #{$root}__collapse {
         display: flex !important;
+      }
+
+      #{$root}__toggler {
+        display: none !important;
       }
     }
   }

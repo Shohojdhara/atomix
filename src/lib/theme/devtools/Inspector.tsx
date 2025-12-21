@@ -46,17 +46,32 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
   // Validation results
   const validationResult = useMemo(() => {
     if (!showValidation) return null;
-    const validator = new ThemeValidator();
-    return validator.validate(theme);
+    try {
+      const validator = new ThemeValidator();
+      return validator.validate(theme);
+    } catch (error) {
+      console.error('Theme validation error:', error);
+      return {
+        valid: false,
+        errors: ['Failed to validate theme: ' + (error instanceof Error ? error.message : String(error))],
+        warnings: [],
+        a11yIssues: [],
+      };
+    }
   }, [theme, showValidation]);
 
   // CSS variables
   const cssVariables = useMemo(() => {
     if (!showCSSVariables) return '';
-    return generateCSSVariables(theme, {
-      selector: ':root',
-      prefix: 'atomix',
-    });
+    try {
+      return generateCSSVariables(theme, {
+        selector: ':root',
+        prefix: 'atomix',
+      });
+    } catch (error) {
+      console.error('CSS variable generation error:', error);
+      return `/* Error generating CSS variables: ${error instanceof Error ? error.message : String(error)} */`;
+    }
   }, [theme, showCSSVariables]);
 
   const toggleSection = (section: string) => {

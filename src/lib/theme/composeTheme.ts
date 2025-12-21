@@ -185,7 +185,6 @@ export function createThemeVariants(baseTheme: ThemeOptions): {
             ...baseTheme.palette,
             background: {
                 default: '#121212',
-                paper: '#1E1E1E',
                 subtle: '#2A2A2A',
                 ...baseTheme.palette?.background,
             },
@@ -304,7 +303,6 @@ export function createThemePreset(
                 secondary: { main: '#FFFFFF' },
                 background: {
                     default: '#FFFFFF',
-                    paper: '#F5F5F5',
                     subtle: '#FAFAFA',
                 },
             },
@@ -319,7 +317,6 @@ export function createThemePreset(
                 secondary: { main: '#FF5733' },
                 background: {
                     default: '#FAFAFA',
-                    paper: '#FFFFFF',
                     subtle: '#F5F5F5',
                 },
             },
@@ -334,7 +331,6 @@ export function createThemePreset(
                 secondary: { main: '#DC004E' },
                 background: {
                     default: '#FFFFFF',
-                    paper: '#F5F5F5',
                     subtle: '#EEEEEE',
                 },
             },
@@ -349,7 +345,6 @@ export function createThemePreset(
                 secondary: { main: '#4ECDC4' },
                 background: {
                     default: '#FFF8F0',
-                    paper: '#FFFFFF',
                     subtle: '#FFF0E0',
                 },
             },

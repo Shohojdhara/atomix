@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { ThemeProvider, useTheme, createTheme } from '../src/lib/theme';
+import { ThemeProvider, useTheme, createTheme } from '@shohojdhara/atomix/theme';
 
 // Create a custom theme using createTheme
 const customTheme = createTheme({

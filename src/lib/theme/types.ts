@@ -189,56 +189,56 @@ export interface UseThemeReturn {
  * Component-level theme override configuration
  */
 export interface ComponentThemeOverride {
-  /** CSS variable overrides for the component */
-  cssVars?: Record<string, string | number>;
-  
-  /** Default prop overrides */
-  defaultProps?: Record<string, any>;
-  
-  /** Part-specific overrides */
-  parts?: Record<string, {
+    /** CSS variable overrides for the component */
     cssVars?: Record<string, string | number>;
+
+    /** Default prop overrides */
+    defaultProps?: Record<string, any>;
+
+    /** Part-specific overrides */
+    parts?: Record<string, {
+        cssVars?: Record<string, string | number>;
+        className?: string;
+    }>;
+
+    /** Variant overrides */
+    variants?: Record<string, {
+        cssVars?: Record<string, string | number>;
+        className?: string;
+    }>;
+
+    /** Additional className for the component */
     className?: string;
-  }>;
-  
-  /** Variant overrides */
-  variants?: Record<string, {
-    cssVars?: Record<string, string | number>;
-    className?: string;
-  }>;
-  
-  /** Additional className for the component */
-  className?: string;
 }
 
 /**
  * Theme component overrides for all components
  */
 export interface ThemeComponentOverrides {
-  Button?: ComponentThemeOverride;
-  Card?: ComponentThemeOverride;
-  Input?: ComponentThemeOverride;
-  Modal?: ComponentThemeOverride;
-  Dropdown?: ComponentThemeOverride;
-  Badge?: ComponentThemeOverride;
-  Tabs?: ComponentThemeOverride;
-  Progress?: ComponentThemeOverride;
-  Tooltip?: ComponentThemeOverride;
-  Select?: ComponentThemeOverride;
-  Checkbox?: ComponentThemeOverride;
-  Radio?: ComponentThemeOverride;
-  Textarea?: ComponentThemeOverride;
-  FormGroup?: ComponentThemeOverride;
-  Navbar?: ComponentThemeOverride;
-  Accordion?: ComponentThemeOverride;
-  DataTable?: ComponentThemeOverride;
-  Avatar?: ComponentThemeOverride;
-  List?: ComponentThemeOverride;
-  Popover?: ComponentThemeOverride;
-  Messages?: ComponentThemeOverride;
-  Callout?: ComponentThemeOverride;
-  Spinner?: ComponentThemeOverride;
-  [key: string]: ComponentThemeOverride | undefined;
+    Button?: ComponentThemeOverride;
+    Card?: ComponentThemeOverride;
+    Input?: ComponentThemeOverride;
+    Modal?: ComponentThemeOverride;
+    Dropdown?: ComponentThemeOverride;
+    Badge?: ComponentThemeOverride;
+    Tabs?: ComponentThemeOverride;
+    Progress?: ComponentThemeOverride;
+    Tooltip?: ComponentThemeOverride;
+    Select?: ComponentThemeOverride;
+    Checkbox?: ComponentThemeOverride;
+    Radio?: ComponentThemeOverride;
+    Textarea?: ComponentThemeOverride;
+    FormGroup?: ComponentThemeOverride;
+    Navbar?: ComponentThemeOverride;
+    Accordion?: ComponentThemeOverride;
+    DataTable?: ComponentThemeOverride;
+    Avatar?: ComponentThemeOverride;
+    List?: ComponentThemeOverride;
+    Popover?: ComponentThemeOverride;
+    Messages?: ComponentThemeOverride;
+    Callout?: ComponentThemeOverride;
+    Spinner?: ComponentThemeOverride;
+    [key: string]: ComponentThemeOverride | undefined;
 }
 
 /**
@@ -334,7 +334,6 @@ export interface PaletteOptions {
     /** Background colors */
     background?: {
         default?: string;
-        paper?: string;
         subtle?: string;
     };
     /** Text colors */

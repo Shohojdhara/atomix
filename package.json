@@ -1,6 +1,6 @@
 {
   "name": "@shohojdhara/atomix",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Atomix Design System - A modern component library for web applications",
   "type": "module",
   "sideEffects": false,
@@ -80,6 +80,12 @@
       "import": "./dist/lib/theme/index.js",
       "require": "./dist/lib/theme/index.js",
       "default": "./dist/lib/theme/index.js"
+    },
+    "./config": {
+      "types": "./dist/lib/config/index.d.ts",
+      "import": "./dist/lib/config/index.js",
+      "require": "./dist/lib/config/index.js",
+      "default": "./dist/lib/config/index.js"
     },
     "./package.json": "./package.json"
   },
@@ -184,7 +190,9 @@
     "attw": "attw --pack",
     "sync:config": "npx tsx scripts/sync-theme-config-ts.ts",
     "sync:tokens": "npx tsx scripts/generate-tokens.ts",
-    "prebuild": "npm run sync:config && npm run sync:tokens",
+    "validate:config": "npx tsx scripts/validate-config-sync.ts",
+    "prebuild": "npm run sync:config && npm run validate:config",
+    "prebuild:with-tokens": "npm run sync:config && npm run sync:tokens && npm run validate:config",
     "prepublishOnly": "npm run clean && npm run build && npm run attw",
     "prepack": "echo 'Preparing package for publishing...'"
   },

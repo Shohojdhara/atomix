@@ -24,7 +24,7 @@ $navbar-brand-font-weight: $font-weight-bold !default;
 $navbar-brand-color: var(--#{$prefix}body-color) !default;
 
 // Mobile toggler
-$navbar-toggler-size: 30px !default;
+$navbar-toggler-size: 2rem !default; 
 $navbar-toggler-color: var(--#{$prefix}body-color) !default;
 $navbar-toggler-bg: transparent !default;
 $navbar-toggler-border: 0 !default;

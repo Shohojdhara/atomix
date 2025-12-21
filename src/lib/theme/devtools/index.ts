@@ -1,21 +1,22 @@
 /**
  * Theme DevTools Module
  * 
- * Developer tools for theme management
+ * Developer tools for theme management and debugging
  */
 
+// CLI Tools
 export { ThemeCLI, createCLI, runCLI } from './CLI';
+export type { CLICommand } from './CLI';
+
+// React Components
 export { ThemePreview } from './Preview';
+export type { ThemePreviewProps } from './Preview';
+
 export { ThemeInspector } from './Inspector';
+export type { ThemeInspectorProps } from './Inspector';
 
-export type {
-  CLICommand,
-} from './CLI';
+export { ThemeComparator } from './Comparator';
+export type { ThemeComparatorProps } from './Comparator';
 
-export type {
-  ThemePreviewProps,
-} from './Preview';
-
-export type {
-  ThemeInspectorProps,
-} from './Inspector';
+export { ThemeLiveEditor } from './LiveEditor';
+export type { ThemeLiveEditorProps } from './LiveEditor';

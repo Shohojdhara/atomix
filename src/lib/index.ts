@@ -23,3 +23,4 @@ export * from './utils/componentUtils';
 export * from './theme';
 export * from './patterns';
 export * from './hooks';
+export * from './config';

@@ -2,7 +2,18 @@
  * CSS Variable Generator
  * 
  * Generates CSS custom properties from theme objects and injects them into the DOM.
- * Follows the existing --atomix- prefix convention.
+ * 
+ * **Token Naming Alignment:**
+ * This generator produces CSS variables that match the SCSS token naming pattern exactly:
+ * - Colors: --atomix-primary, --atomix-primary-1 through --atomix-primary-10
+ * - Spacing: --atomix-spacing-1, --atomix-spacing-4, etc.
+ * - Typography: --atomix-font-size-base, --atomix-font-weight-normal, etc.
+ * - Shadows: --atomix-box-shadow, --atomix-box-shadow-sm, etc.
+ * 
+ * All tokens follow the flat structure pattern used in SCSS (not nested like --atomix-palette-primary-main).
+ * This ensures compatibility between SCSS themes and JavaScript themes.
+ * 
+ * @see src/styles/03-generic/_generic.root.scss for SCSS token definitions
  */
 
 import type { Theme } from './types';
@@ -92,6 +103,13 @@ function generateColorScale(baseColor: string, prefix: string, colorName: string
 
 /**
  * Generate CSS variables from theme palette
+ * 
+ * Matches SCSS token naming pattern:
+ * - --atomix-primary (main color)
+ * - --atomix-primary-1 through --atomix-primary-10 (color scale)
+ * - --atomix-primary-main (alias for primary-6)
+ * - --atomix-primary-light (alias for primary-3)
+ * - --atomix-primary-dark (alias for primary-9)
  */
 function generatePaletteVariables(palette: Theme['palette'], prefix: string): Record<string, string> {
     const vars: Record<string, string> = {};
@@ -101,46 +119,60 @@ function generatePaletteVariables(palette: Theme['palette'], prefix: string): Re
     colorKeys.forEach((key) => {
         const color = palette[key];
         if (color && typeof color === 'object') {
-            // Main color
+            // Main color (flat structure, matches SCSS: --atomix-primary)
             vars[`${prefix}-${key}`] = color.main;
 
-            // Generate RGB for transparency support
+            // Generate RGB for transparency support (matches SCSS: --atomix-primary-rgb)
             const rgb = hexToRgb(color.main);
             if (rgb) {
                 vars[`${prefix}-${key}-rgb`] = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
             }
 
-            // Map dark variant to hover (closest SCSS equivalent)
+            // Generate full color scale (1-10) - matches SCSS: --atomix-primary-1 through --atomix-primary-10
+            // Only for primary, secondary, error, warning, info, success (not for light/dark)
+            if (key !== 'light' && key !== 'dark') {
+                const colorScale = generateColorScale(color.main, prefix, key);
+                Object.assign(vars, colorScale);
+                
+                // Add semantic aliases that map to scale steps (for backward compatibility)
+                // primary-main → primary-6 (main color)
+                vars[`${prefix}-${key}-main`] = colorScale[`${prefix}-${key}-6`] || color.main;
+                // primary-light → primary-3 (light variant)
+                vars[`${prefix}-${key}-light`] = colorScale[`${prefix}-${key}-3`] || color.light || color.main;
+                // primary-dark → primary-9 (dark variant)
+                vars[`${prefix}-${key}-dark`] = colorScale[`${prefix}-${key}-9`] || color.dark || color.main;
+            } else {
+                // For light/dark, use the provided values directly
+                vars[`${prefix}-${key}-main`] = color.main;
+                if (color.light) vars[`${prefix}-${key}-light`] = color.light;
+                if (color.dark) vars[`${prefix}-${key}-dark`] = color.dark;
+            }
+
+            // Map dark variant to hover (matches SCSS: --atomix-primary-hover)
             if (color.dark) {
                 vars[`${prefix}-${key}-hover`] = color.dark;
             }
 
-            // Generate semantic color variants
-            // Text emphasis: emphasized version of the color for text
+            // Generate semantic color variants (matches SCSS patterns)
+            // Text emphasis: emphasized version of the color for text (--atomix-primary-text-emphasis)
             vars[`${prefix}-${key}-text-emphasis`] = emphasize(color.main, 0.15);
 
-            // Background subtle: very light version for backgrounds
+            // Background subtle: very light version for backgrounds (--atomix-primary-bg-subtle)
             vars[`${prefix}-${key}-bg-subtle`] = alpha(color.main, 0.1);
 
-            // Border subtle: light version for borders
+            // Border subtle: light version for borders (--atomix-primary-border-subtle)
             vars[`${prefix}-${key}-border-subtle`] = alpha(color.main, 0.2);
-
-            // Generate full color scale (1-10) - only for primary, not for light/dark
-            if (key !== 'light' && key !== 'dark') {
-                const colorScale = generateColorScale(color.main, prefix, key);
-                Object.assign(vars, colorScale);
-            }
         }
     });
 
-    // Generate gray scale from text colors
+    // Generate gray scale from text colors (matches SCSS: --atomix-gray-1 through --atomix-gray-10)
     // Use text.primary as base for gray scale
     if (palette.text?.primary) {
         const grayScale = generateColorScale(palette.text.primary, prefix, 'gray');
         Object.assign(vars, grayScale);
     }
 
-    // Generate red, green, blue, yellow scales if available
+    // Generate red, green, blue, yellow scales (matches SCSS: --atomix-red-1 through --atomix-red-10, etc.)
     // These are typically used for semantic colors but can be extended
     if (palette.error && typeof palette.error === 'object' && palette.error.main) {
         const redScale = generateColorScale(palette.error.main, prefix, 'red');
@@ -159,11 +191,11 @@ function generatePaletteVariables(palette: Theme['palette'], prefix: string): Re
         Object.assign(vars, yellowScale);
     }
 
-    // Background mappings to SCSS body variables
+    // Background mappings to SCSS body variables (matches SCSS: --atomix-body-bg)
     if (palette.background) {
         vars[`${prefix}-body-bg`] = palette.background.default;
         
-        // Generate background subtle variants
+        // Generate background subtle variants (matches SCSS: --atomix-primary-bg-subtle, etc.)
         if (palette.background.default) {
             vars[`${prefix}-primary-bg-subtle`] = palette.background.default;
         }
@@ -181,11 +213,11 @@ function generatePaletteVariables(palette: Theme['palette'], prefix: string): Re
         }
     }
 
-    // Text mappings to SCSS body variables
+    // Text mappings to SCSS body variables (matches SCSS: --atomix-body-color, --atomix-primary-text-emphasis, etc.)
     if (palette.text) {
         vars[`${prefix}-body-color`] = palette.text.primary;
         
-        // Generate text emphasis variants
+        // Generate text emphasis variants (matches SCSS pattern)
         if (palette.text.primary) {
             vars[`${prefix}-primary-text-emphasis`] = palette.text.primary;
         }
@@ -205,14 +237,14 @@ function generatePaletteVariables(palette: Theme['palette'], prefix: string): Re
         }
     }
 
-    // Brand text emphasis (uses primary color)
+    // Brand text emphasis (uses primary color) - matches SCSS: --atomix-brand-text-emphasis
     if (palette.primary) {
         vars[`${prefix}-brand-text-emphasis`] = palette.primary.main;
-        // Brand border subtle
+        // Brand border subtle - matches SCSS: --atomix-brand-border-subtle
         vars[`${prefix}-brand-border-subtle`] = alpha(palette.primary.main, 0.2);
     }
     
-    // Light and dark border subtle (if light/dark colors exist)
+    // Light and dark border subtle (if light/dark colors exist) - matches SCSS pattern
     if (palette.light && typeof palette.light === 'object') {
         vars[`${prefix}-light-border-subtle`] = alpha(palette.light.main, 0.2);
     }
@@ -220,7 +252,7 @@ function generatePaletteVariables(palette: Theme['palette'], prefix: string): Re
         vars[`${prefix}-dark-border-subtle`] = alpha(palette.dark.main, 0.2);
     }
 
-    // Heading color (defaults to text primary)
+    // Heading color (defaults to text primary) - matches SCSS: --atomix-heading-color
     if (palette.text) {
         vars[`${prefix}-heading-color`] = palette.text.primary;
     }
@@ -304,6 +336,12 @@ function generatePaletteVariables(palette: Theme['palette'], prefix: string): Re
 
 /**
  * Generate CSS variables from theme typography
+ * 
+ * Matches SCSS token naming pattern:
+ * - --atomix-body-font-family
+ * - --atomix-body-font-size
+ * - --atomix-font-weight-normal
+ * - --atomix-line-height-base
  */
 function generateTypographyVariables(
     typography: Theme['typography'],
@@ -311,25 +349,24 @@ function generateTypographyVariables(
 ): Record<string, string> {
     const vars: Record<string, string> = {};
 
-    // Font family (SCSS: --atomix-body-font-family)
+    // Font family (matches SCSS: --atomix-body-font-family, --atomix-font-sans-serif, --atomix-font-monospace)
     vars[`${prefix}-body-font-family`] = typography.fontFamily;
-    // Additional font family tokens
     vars[`${prefix}-font-sans-serif`] = typography.fontFamily;
     vars[`${prefix}-font-monospace`] = 'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
 
-    // Root font size (SCSS: --atomix-root-font-size)
+    // Root font size (matches SCSS: --atomix-root-font-size)
     // Typically 16px, but can be customized
     const rootFontSize = typography.fontSize || 16;
     vars[`${prefix}-root-font-size`] = `${rootFontSize}px`;
 
-    // Base font size (SCSS: --atomix-body-font-size)
+    // Base font size (matches SCSS: --atomix-body-font-size)
     const baseFontSize = typography.fontSize;
     vars[`${prefix}-body-font-size`] = `${baseFontSize}px`;
 
-    // Base font weight (SCSS: --atomix-body-font-weight)
+    // Base font weight (matches SCSS: --atomix-body-font-weight)
     vars[`${prefix}-body-font-weight`] = String(typography.fontWeightRegular);
 
-    // Font weight scale
+    // Font weight scale (matches SCSS: --atomix-font-weight-light, --atomix-font-weight-normal, etc.)
     vars[`${prefix}-font-weight-light`] = String(typography.fontWeightLight ?? 300);
     vars[`${prefix}-font-weight-normal`] = String(typography.fontWeightRegular ?? 400);
     vars[`${prefix}-font-weight-medium`] = String(typography.fontWeightMedium ?? 500);
@@ -343,18 +380,18 @@ function generateTypographyVariables(
         vars[`${prefix}-font-weight-black`] = String((typography as any).fontWeightBlack || 900);
     }
 
-    // Base line height (SCSS: --atomix-body-line-height)
+    // Base line height (matches SCSS: --atomix-body-line-height)
     const baseLineHeight = typeof typography.body1?.lineHeight === 'number'
         ? typography.body1.lineHeight
         : parseFloat(String(typography.body1?.lineHeight || 1.2));
     vars[`${prefix}-body-line-height`] = String(baseLineHeight);
 
-    // Line height scale (using calculated defaults based on design tokens)
+    // Line height scale (matches SCSS: --atomix-line-height-base, --atomix-line-height-sm, --atomix-line-height-lg)
     vars[`${prefix}-line-height-base`] = String(baseLineHeight);
     vars[`${prefix}-line-height-sm`] = String(1.43);
     vars[`${prefix}-line-height-lg`] = String(1.56);
 
-    // Extended font size scale (matching design system tokens)
+    // Extended font size scale (matches SCSS: --atomix-font-size-xs, --atomix-font-size-sm, etc.)
     const fontSizeXs = baseFontSize * 0.75; // 12px if base is 16px
     const fontSizeSm = baseFontSize * 0.875; // 14px if base is 16px
     const fontSizeMd = baseFontSize * 1; // 16px if base is 16px (same as base)
@@ -369,13 +406,13 @@ function generateTypographyVariables(
     vars[`${prefix}-font-size-xl`] = `${fontSizeXl}px`;
     vars[`${prefix}-font-size-2xl`] = `${fontSize2xl}px`;
 
-    // Display font size (optional, may not be in theme)
+    // Display font size (matches SCSS: --atomix-display-1)
     if ('display1' in typography) {
         const display1 = (typography as any).display1;
         vars[`${prefix}-display-1`] = typeof display1 === 'string' ? display1 : `${display1}px`;
     }
 
-    // Letter spacing for headings (from typography config)
+    // Letter spacing for headings (matches SCSS: --atomix-letter-spacing-h1, etc.)
     const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const;
     headings.forEach((heading) => {
         const headingConfig = typography[heading];
@@ -389,19 +426,23 @@ function generateTypographyVariables(
 
 /**
  * Generate CSS variables from theme shadows
+ * 
+ * Matches SCSS token naming pattern:
+ * - --atomix-box-shadow (base, mapped from md)
+ * - --atomix-box-shadow-xs, --atomix-box-shadow-sm, --atomix-box-shadow-lg, --atomix-box-shadow-xl
+ * - --atomix-box-shadow-inset
  */
 function generateShadowVariables(shadows: Theme['shadows'], prefix: string): Record<string, string> {
     const vars: Record<string, string> = {};
 
-    // Map JS shadow keys to SCSS variables
-    // SCSS uses --atomix-box-shadow (base) and --atomix-box-shadow-{size}
+    // Map JS shadow keys to SCSS variables (matches SCSS pattern exactly)
     if (shadows.md) vars[`${prefix}-box-shadow`] = shadows.md; // Map md to base
     if (shadows.xs) vars[`${prefix}-box-shadow-xs`] = shadows.xs;
     if (shadows.sm) vars[`${prefix}-box-shadow-sm`] = shadows.sm;
     if (shadows.lg) vars[`${prefix}-box-shadow-lg`] = shadows.lg;
     if (shadows.xl) vars[`${prefix}-box-shadow-xl`] = shadows.xl;
 
-    // Inset shadow (generate from base shadow if not provided)
+    // Inset shadow (matches SCSS: --atomix-box-shadow-inset)
     if (shadows.inset) {
         vars[`${prefix}-box-shadow-inset`] = shadows.inset;
     } else if (shadows.sm) {

@@ -312,7 +312,6 @@ export function createTheme(...options: ThemeOptions[]): Theme {
         }),
         background: {
             default: mergedOptions.palette?.background?.default || DEFAULT_PALETTE.background.default,
-            paper: mergedOptions.palette?.background?.paper || DEFAULT_PALETTE.background.paper,
             subtle: mergedOptions.palette?.background?.subtle || DEFAULT_PALETTE.background.subtle,
         },
         text: {

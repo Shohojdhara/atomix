@@ -14,27 +14,10 @@ import {
   useTheme,
   createTheme,
   RTLManager,
-  createRTLManager,
-  ComponentOverrideManager,
-  createComponentOverrideManager,
-  WhiteLabelManager,
-  createWhiteLabelManager,
-  ThemeAnalytics,
-  createThemeAnalytics,
-} from '../src/lib/theme';
+} from '@shohojdhara/atomix/theme';
 
-// Create analytics instance
-const analytics = createThemeAnalytics({
-  enabled: true,
-  trackPerformance: true,
-  trackErrors: true,
-  onEvent: (event) => {
-    console.log('Theme Event:', event);
-  },
-  onPerformance: (metric) => {
-    console.log('Performance Metric:', metric);
-  },
-});
+// Note: Advanced features like ComponentOverrideManager, WhiteLabelManager, and ThemeAnalytics
+// are documented but not yet implemented. This example focuses on core theme features.
 
 // Example: Enhanced Theme System Usage
 const EnhancedThemeExample: React.FC = () => {
@@ -43,55 +26,16 @@ const EnhancedThemeExample: React.FC = () => {
 
   // Create RTL manager
   const rtlManager = React.useMemo(() => {
-    return createRTLManager({
+    return new RTLManager({
       enabled: rtlEnabled,
+      direction: rtlEnabled ? 'rtl' : 'ltr',
       autoDetect: true,
       locale: 'en',
     });
   }, [rtlEnabled]);
 
-  // Create component override manager
-  const overrideManager = React.useMemo(() => {
-    const manager = createComponentOverrideManager();
-
-    // Add some example overrides
-    manager.addOverride('Button', {
-      styleOverrides: {
-        borderRadius: '8px',
-        padding: '12px 24px',
-      },
-      cssVariableOverrides: {
-        'button-primary-bg': 'var(--atomix-primary)',
-        'button-primary-text': 'var(--atomix-primary-contrast-text)',
-      },
-    });
-
-    return manager;
-  }, []);
-
-  // Create white label manager
-  const whiteLabelManager = React.useMemo(() => {
-    const manager = createWhiteLabelManager();
-
-    manager.configure({
-      brand: {
-        name: 'My Brand',
-        primaryColor: '#7AFFD7',
-        secondaryColor: '#FF5733',
-        logo: '/logo.png',
-        fonts: {
-          primary: 'Inter, sans-serif',
-        },
-      },
-      themeOverrides: {
-        palette: {
-          primary: { main: '#7AFFD7' },
-        },
-      },
-    });
-
-    return manager;
-  }, []);
+  // Note: Component Override Manager and White Label Manager are not yet implemented
+  // These features are documented but will be added in future releases
 
   // Toggle RTL
   const toggleRTL = () => {
@@ -112,11 +56,7 @@ const EnhancedThemeExample: React.FC = () => {
             <button
               key={themeMetadata.class || themeMetadata.name}
               onClick={() => {
-                const startTime = performance.now();
-                setTheme(themeMetadata.class || themeMetadata.name).then(() => {
-                  const loadTime = performance.now() - startTime;
-                  analytics.trackThemeSwitch(theme || 'none', themeMetadata.class || themeMetadata.name, loadTime);
-                });
+                setTheme(themeMetadata.class || themeMetadata.name);
               }}
               style={{
                 padding: '0.5rem 1rem',
@@ -162,76 +102,16 @@ const EnhancedThemeExample: React.FC = () => {
         </div>
       </div>
 
-      {/* Component Overrides */}
+      {/* Note: Advanced Features */}
       <div style={{ marginBottom: '2rem', padding: '1rem', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
-        <h2>Component Overrides</h2>
-        <p>Component overrides are configured. Check console for details.</p>
-        <button
-          onClick={() => {
-            const overrides = overrideManager.getAllOverrides();
-            console.log('Component Overrides:', overrides);
-            const cssVars = overrideManager.getAllCSSVariables();
-            console.log('CSS Variables:', cssVars);
-          }}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#17a2b8',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
-        >
-          Log Overrides
-        </button>
-      </div>
-
-      {/* White Label */}
-      <div style={{ marginBottom: '2rem', padding: '1rem', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
-        <h2>White Label</h2>
-        <p>White label configuration is active. Brand: {whiteLabelManager.getConfig()?.brand.name}</p>
-        <button
-          onClick={() => {
-            const config = whiteLabelManager.exportConfig();
-            console.log('White Label Config:', config);
-          }}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#ffc107',
-            color: 'black',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
-        >
-          Export Config
-        </button>
-      </div>
-
-      {/* Analytics */}
-      <div style={{ marginBottom: '2rem', padding: '1rem', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
-        <h2>Analytics</h2>
-        <button
-          onClick={() => {
-            const events = analytics.getEvents();
-            const metrics = analytics.getMetrics();
-            console.log('All Events:', events);
-            console.log('All Metrics:', metrics);
-
-            const avgLoadTime = analytics.getAverageMetric('theme_load_time');
-            console.log('Average Load Time:', avgLoadTime, 'ms');
-          }}
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#dc3545',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
-        >
-          View Analytics
-        </button>
+        <h2>Advanced Features</h2>
+        <p>Component Overrides, White Label, and Analytics features are documented but not yet implemented.</p>
+        <p>These features will be added in future releases. For now, this example demonstrates:</p>
+        <ul>
+          <li>Theme switching</li>
+          <li>RTL support</li>
+          <li>CSS variable usage</li>
+        </ul>
       </div>
     </div>
   );

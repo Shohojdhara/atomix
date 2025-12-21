@@ -1,146 +1,56 @@
-# Atomix Theme System Documentation
+# Atomix Theme System - Complete Guide
 
-**Version:** 2.0  
-**Last Updated:** 2024-12-19
+**Version:** 2.1  
+**Last Updated:** 2025-01-27
 
 ---
 
 ## Table of Contents
 
-1. [Overview](#overview)
-2. [Architecture](#architecture)
-3. [Getting Started](#getting-started)
-4. [Core Concepts](#core-concepts)
+1. [Quick Start](#quick-start)
+2. [For External Developers](#for-external-developers)
+3. [For Library Developers](#for-library-developers)
+4. [Theme Types](#theme-types)
 5. [API Reference](#api-reference)
 6. [Configuration](#configuration)
-7. [Error Handling](#error-handling)
-8. [Best Practices](#best-practices)
-9. [Advanced Topics](#advanced-topics)
-10. [Troubleshooting](#troubleshooting)
+7. [CSS Variables & Tokens](#css-variables--tokens)
+8. [Advanced Topics](#advanced-topics)
+9. [Troubleshooting](#troubleshooting)
 
 ---
 
-## Overview
-
-The Atomix Theme System is a comprehensive theme management solution that supports both CSS-based and JavaScript-based themes. It provides a unified API for theme loading, switching, persistence, and composition.
-
-### Key Features
-
-- ✅ **Dual Theme Support**: CSS themes and JavaScript themes
-- ✅ **Type-Safe**: Full TypeScript support with comprehensive types
-- ✅ **Error Resilient**: Centralized error handling with error boundaries
-- ✅ **Performance Optimized**: Built-in caching and lazy loading
-- ✅ **React Integration**: Hooks and providers for React applications
-- ✅ **RTL Support**: Built-in right-to-left language support
-- ✅ **Accessibility**: Theme validation with contrast checking
-- ✅ **Developer Tools**: CLI, inspector, and preview tools
-
-### Architecture Overview
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Application Layer                     │
-│  (ThemeProvider, useTheme, ThemeErrorBoundary)          │
-└────────────────────┬────────────────────────────────────┘
-                     │
-┌────────────────────▼────────────────────────────────────┐
-│                  Runtime Layer                           │
-│              (ThemeManager)                              │
-└────────────────────┬────────────────────────────────────┘
-                     │
-┌────────────────────▼────────────────────────────────────┐
-│                   Core Layer                             │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐ │
-│  │ ThemeEngine  │  │ ThemeRegistry│  │ ThemeCache   │ │
-│  └──────────────┘  └──────────────┘  └──────────────┘ │
-│  ┌──────────────┐  ┌──────────────┐                   │
-│  │ThemeValidator│  │ ConfigLoader │                   │
-│  └──────────────┘  └──────────────┘                   │
-└─────────────────────────────────────────────────────────┘
-```
-
----
-
-## Architecture
-
-### Core Components
-
-#### 1. ThemeEngine
-The core engine that manages theme loading, switching, and application. Supports both CSS and JS themes.
-
-**Responsibilities:**
-- Theme loading and caching
-- CSS injection for JS themes
-- Theme switching logic
-- Event emission
-
-#### 2. ThemeRegistry
-Central registry for all available themes with dependency management.
-
-**Features:**
-- Theme discovery
-- Dependency resolution
-- Circular dependency detection
-- Metadata management
-
-#### 3. ThemeCache
-Performance optimization layer with LRU eviction.
-
-**Features:**
-- CSS theme caching
-- JS theme caching
-- Configurable TTL
-- Size limits
-
-#### 4. ThemeValidator
-Runtime validation including accessibility checks.
-
-**Validates:**
-- Color contrast ratios
-- Typography settings
-- Spacing functions
-- Breakpoint configurations
-- Accessibility compliance
-
-### Runtime Components
-
-#### ThemeManager
-High-level API for theme management.
-
-#### ThemeProvider
-React context provider for theme state.
-
-#### ThemeErrorBoundary
-React error boundary for graceful error handling.
-
----
-
-## Getting Started
+## Quick Start
 
 ### Installation
-
-The theme system is included with Atomix. No additional installation required.
 
 ```bash
 npm install @shohojdhara/atomix
 ```
 
-### Basic Usage
-
-#### React (Recommended)
+### Basic Setup (React)
 
 ```tsx
-import { ThemeProvider, useTheme } from '@shohojdhara/atomix/theme';
+import { ThemeProvider, useTheme, createTheme } from '@shohojdhara/atomix/theme';
+
+// Create a theme
+const myTheme = createTheme({
+  name: 'My Theme',
+  palette: {
+    primary: { main: '#7AFFD7' },
+    secondary: { main: '#FF5733' },
+  },
+});
 
 function App() {
   return (
-    <ThemeProvider>
+    <ThemeProvider defaultTheme={myTheme}>
       <YourApp />
     </ThemeProvider>
   );
 }
 
-function YourComponent() {
+// Use theme in components
+function MyComponent() {
   const { theme, setTheme, availableThemes } = useTheme();
   
   return (
@@ -154,38 +64,310 @@ function YourComponent() {
 }
 ```
 
-#### Vanilla JavaScript
+### Basic Setup (Vanilla JavaScript)
 
 ```typescript
-import { ThemeManager } from '@shohojdhara/atomix/theme';
+import { ThemeManager, createTheme } from '@shohojdhara/atomix/theme';
 
 const themeManager = new ThemeManager({
   themes: {
-    'light-theme': { name: 'Light Theme' },
-    'dark-theme': { name: 'Dark Theme' },
+    'light': { name: 'Light', type: 'css' },
+    'dark': { name: 'Dark', type: 'css' },
   },
-  defaultTheme: 'light-theme',
+  defaultTheme: 'light',
 });
 
 // Switch theme
-await themeManager.setTheme('dark-theme');
-
-// Get current theme
-const currentTheme = themeManager.getTheme();
+await themeManager.setTheme('dark');
 ```
 
 ---
 
-## Core Concepts
+## For External Developers
 
-### Theme Types
+> **This section is for developers using Atomix in their own projects.**
 
-#### CSS Themes
-Themes loaded from CSS files. Applied via CSS classes.
+### ✅ What You Should Use
+
+#### 1. JavaScript Themes (Recommended)
+
+The easiest way to create themes - no build step required:
+
+```tsx
+import { createTheme, ThemeProvider } from '@shohojdhara/atomix/theme';
+
+const myTheme = createTheme({
+  name: 'My Brand Theme',
+  palette: {
+    primary: { main: '#7AFFD7' },
+    secondary: { main: '#FF5733' },
+  },
+  typography: {
+    fontFamily: 'Inter, sans-serif',
+  },
+});
+
+function App() {
+  return (
+    <ThemeProvider defaultTheme={myTheme}>
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+```
+
+**Why this is great:**
+- ✅ No build step required
+- ✅ Works at runtime
+- ✅ TypeScript autocomplete
+- ✅ Generates all CSS variables automatically
+
+#### 2. Quick Theme Helper
+
+Fastest way to get started:
+
+```tsx
+import { quickTheme, ThemeProvider } from '@shohojdhara/atomix/theme';
+
+// Create a theme from just brand colors
+const myTheme = quickTheme('My Brand', '#7AFFD7', '#FF5733');
+
+function App() {
+  return (
+    <ThemeProvider defaultTheme={myTheme}>
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+```
+
+#### 3. CSS Theme Loading
+
+Use your existing CSS files:
+
+```tsx
+import { ThemeProvider } from '@shohojdhara/atomix/theme';
+import './my-custom-theme.css';
+
+const themes = {
+  'my-theme': {
+    type: 'css',
+    name: 'My Theme',
+    class: 'my-theme-class',
+  },
+};
+
+function App() {
+  return (
+    <ThemeProvider themes={themes} defaultTheme="my-theme">
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+```
+
+### ❌ What You Should NOT Use
+
+1. **`atomix.config.ts`** - This is for library developers only. Use `createTheme()` directly instead.
+2. **SCSS Theme Structure** - Only needed if contributing themes to Atomix.
+3. **Build Scripts** (`sync:config`, `generate:tokens`) - These are for library development only.
+
+### Common Use Cases
+
+#### Brand Colors
+
+```tsx
+const brandTheme = createTheme({
+  palette: {
+    primary: { main: '#YOUR_BRAND_COLOR' },
+  },
+});
+```
+
+#### Dark Mode
+
+```tsx
+const darkTheme = createTheme({
+  palette: {
+    background: { default: '#111827' },
+    text: { primary: '#f9fafb' },
+  },
+});
+```
+
+#### Multiple Themes with Switching
+
+```tsx
+import { createTheme, ThemeProvider, useTheme } from '@shohojdhara/atomix/theme';
+
+const lightTheme = createTheme({
+  name: 'Light',
+  palette: {
+    primary: { main: '#3b82f6' },
+    background: { default: '#ffffff' },
+  },
+});
+
+const darkTheme = createTheme({
+  name: 'Dark',
+  palette: {
+    primary: { main: '#60a5fa' },
+    background: { default: '#111827' },
+  },
+});
+
+function ThemeSwitcher() {
+  const { setTheme } = useTheme();
+  
+  return (
+    <div>
+      <button onClick={() => setTheme(lightTheme)}>Light</button>
+      <button onClick={() => setTheme(darkTheme)}>Dark</button>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider defaultTheme={lightTheme}>
+      <ThemeSwitcher />
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+```
+
+### Quick Start Checklist
+
+- [ ] Install: `npm install @shohojdhara/atomix`
+- [ ] Import: `import { createTheme, ThemeProvider } from '@shohojdhara/atomix/theme'`
+- [ ] Create theme: `const theme = createTheme({ palette: {...} })`
+- [ ] Wrap app: `<ThemeProvider defaultTheme={theme}>`
+- [ ] Use CSS variables: `var(--atomix-primary)`
+
+**That's it! No config files needed, no build steps, no complexity.**
+
+---
+
+## For Library Developers
+
+> **This section is for developers contributing themes to the Atomix library.**
+
+### Configuration File
+
+Create `atomix.config.ts` in the project root:
 
 ```typescript
-// theme.config.ts
-export default {
+import { defineConfig } from '@shohojdhara/atomix/config';
+
+export default defineConfig({
+  // CSS variable prefix
+  prefix: 'atomix',
+  
+  theme: {
+    // Extend default tokens
+    extend: {
+      colors: {
+        primary: { main: '#7AFFD7' },
+        secondary: { main: '#FF5733' },
+      },
+      spacing: {
+        '18': '4.5rem',
+      },
+      typography: {
+        fontFamilies: {
+          sans: ['Inter', 'sans-serif'],
+        },
+      },
+    },
+    
+    // Register themes
+  themes: {
+      'my-theme': {
+        type: 'css',
+        name: 'My Theme',
+        description: 'A custom theme',
+        version: '1.0.0',
+        status: 'stable',
+      },
+    },
+  },
+  
+  // Build configuration (internal)
+  build: {
+    output: {
+      directory: 'themes',
+      formats: {
+        expanded: '.css',
+        compressed: '.min.css',
+      },
+    },
+  },
+});
+```
+
+### Build Process
+
+```bash
+# Sync configuration
+npm run sync:config
+
+# Generate tokens
+npm run sync:tokens
+
+# Validate configuration
+npm run validate:config
+
+# Build themes
+npm run build:themes
+```
+
+### SCSS Theme Structure
+
+For library developers creating SCSS themes:
+
+```
+src/themes/my-theme/
+├── index.scss
+├── 01-settings/
+│   └── _settings.colors.scss
+├── 06-components/
+│   └── _components.button.scss
+└── 99-utilities/
+```
+
+**Create `index.scss`:**
+```scss
+@use '01-settings/index' as *;
+@use '../../styles/02-tools/index' as tools;
+@use '../../styles/03-generic/index' as generic;
+@use '../../styles/04-elements/index' as elements;
+@use '../../styles/05-objects/index' as objects;
+@use '../../styles/06-components/index' as components;
+@use '../../styles/99-utilities/index' as utilities;
+```
+
+**Override settings:**
+```scss
+// 01-settings/_settings.colors.scss
+@use '../../../styles/01-settings/settings.colors' with (
+  $primary-6: #0ea5e9,
+  $gray-1: #f9fafb,
+);
+```
+
+---
+
+## Theme Types
+
+### CSS Themes
+
+Themes loaded from CSS files, applied via CSS classes:
+
+```typescript
+// In atomix.config.ts (library developers)
+export default defineConfig({
+  theme: {
   themes: {
     'my-theme': {
       type: 'css',
@@ -194,11 +376,13 @@ export default {
       cssPath: '/themes/my-theme.css',
     },
   },
-};
+  },
+});
 ```
 
-#### JavaScript Themes
-Themes created programmatically using `createTheme`.
+### JavaScript Themes
+
+Themes created programmatically using `createTheme()`:
 
 ```typescript
 import { createTheme } from '@shohojdhara/atomix/theme';
@@ -216,87 +400,21 @@ const theme = createTheme({
 });
 ```
 
-### Theme Configuration
-
-Themes are configured in `theme.config.ts`:
-
-```typescript
-import type { ThemeConfig } from '@shohojdhara/atomix/theme';
-
-const config: ThemeConfig = {
-  themes: {
-    'theme-id': {
-      type: 'css', // or 'js'
-      name: 'Theme Name',
-      // ... other metadata
-    },
-  },
-  runtime: {
-    basePath: '/themes',
-    defaultTheme: 'theme-id',
-    enablePersistence: true,
-  },
-};
-
-export default config;
-```
+**Note:** JavaScript themes automatically generate all CSS variables including:
+- Color scales (1-10 steps)
+- RGB variants for transparency
+- Text emphasis variants
+- Background and border subtle variants
+- Gradient tokens
+- Hover state colors
 
 ---
 
 ## API Reference
 
-### ThemeManager
-
-Main class for theme management.
-
-#### Constructor
-
-```typescript
-new ThemeManager(config: ThemeManagerConfig)
-```
-
-**Config Options:**
-- `themes`: Record of theme metadata
-- `defaultTheme`: Default theme name or Theme object
-- `basePath`: Base path for CSS themes (default: `/themes`)
-- `storageKey`: localStorage key (default: `atomix-theme`)
-- `enablePersistence`: Enable theme persistence (default: `true`)
-- `onThemeChange`: Callback when theme changes
-- `onError`: Error callback
-
-#### Methods
-
-```typescript
-// Set theme
-await themeManager.setTheme(theme: string | Theme, options?: ThemeLoadOptions): Promise<void>
-
-// Get current theme
-const theme: string = themeManager.getTheme()
-
-// Get active theme object (for JS themes)
-const activeTheme: Theme | null = themeManager.getActiveTheme()
-
-// Get available themes
-const themes: ThemeMetadata[] = themeManager.getAvailableThemes()
-
-// Check if theme is loaded
-const isLoaded: boolean = themeManager.isThemeLoaded(themeName: string)
-
-// Preload theme
-await themeManager.preloadTheme(themeName: string): Promise<void>
-
-// Event listeners
-themeManager.on('themeChange', (event: ThemeChangeEvent) => {})
-themeManager.on('themeLoad', (themeName: string) => {})
-themeManager.on('themeError', (error: Error, themeName: string) => {})
-
-// Cleanup
-themeManager.destroy()
-```
-
 ### ThemeProvider
 
-React context provider for theme state.
+React context provider for theme state:
 
 ```tsx
 <ThemeProvider
@@ -312,7 +430,7 @@ React context provider for theme state.
 
 ### useTheme Hook
 
-React hook for accessing theme context.
+React hook for accessing theme context:
 
 ```typescript
 const {
@@ -327,26 +445,41 @@ const {
 } = useTheme()
 ```
 
-### ThemeErrorBoundary
+### ThemeManager
 
-React error boundary for theme errors.
+High-level API for theme management (vanilla JS):
 
-```tsx
-<ThemeErrorBoundary
-  fallback={(error, errorInfo) => <CustomErrorUI />}
-  onError={(error, errorInfo) => {
-    // Send to error tracking
-  }}
->
-  <ThemeProvider>
-    <App />
-  </ThemeProvider>
-</ThemeErrorBoundary>
+```typescript
+import { ThemeManager } from '@shohojdhara/atomix/theme';
+
+const themeManager = new ThemeManager({
+  themes: {
+    'light': { name: 'Light', type: 'css' },
+    'dark': { name: 'Dark', type: 'css' },
+  },
+  defaultTheme: 'light',
+  basePath: '/themes',
+  enablePersistence: true,
+});
+
+// Set theme
+await themeManager.setTheme('dark');
+
+// Get current theme
+const currentTheme = themeManager.getTheme();
+
+// Get available themes
+const themes = themeManager.getAvailableThemes();
+
+// Event listeners
+themeManager.on('themeChange', (event) => {
+  console.log('Theme changed:', event.currentTheme);
+});
 ```
 
 ### createTheme
 
-Create a JavaScript theme.
+Create a JavaScript theme:
 
 ```typescript
 import { createTheme } from '@shohojdhara/atomix/theme';
@@ -358,320 +491,260 @@ const theme = createTheme({
       main: '#7AFFD7',
       light: '#9AFFE7',
       dark: '#5ADFC7',
-      contrastText: '#000000',
     },
     secondary: {
       main: '#FF5733',
+    },
+    background: {
+      default: '#FAFAFA',
+      paper: '#FFFFFF',
+    },
+    text: {
+      primary: '#111827',
+      secondary: '#6B7280',
     },
   },
   typography: {
     fontFamily: 'Inter, sans-serif',
     fontSize: 16,
-    h1: {
-      fontSize: '2.5rem',
-      fontWeight: 700,
-    },
   },
-  spacing: 8, // Base spacing unit
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
+  components: {
+    Button: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+        },
+      },
     },
   },
 });
+```
+
+### Theme Composition
+
+```typescript
+import { extendTheme, mergeTheme, composeThemes } from '@shohojdhara/atomix/theme';
+
+// Extend an existing theme
+const extendedTheme = extendTheme(baseTheme, {
+  palette: {
+    primary: { main: '#FF0000' },
+  },
+});
+
+// Merge multiple theme options
+const merged = mergeTheme(
+  { palette: { primary: { main: '#000' } } },
+  { typography: { fontSize: 18 } }
+);
+
+// Compose multiple themes
+const composed = composeThemes(theme1, theme2, theme3);
+```
+
+### Theme Utilities
+
+```typescript
+import { 
+  quickTheme,
+  createDarkVariant,
+  validateTheme,
+  generateCSSVariables,
+} from '@shohojdhara/atomix/theme';
+
+// Quick theme from colors
+const theme = quickTheme('My Theme', '#7AFFD7', '#FF5733');
+
+// Create dark variant
+const darkTheme = createDarkVariant(lightTheme);
+
+// Validate theme
+const result = validateTheme(theme);
+if (!result.valid) {
+  console.error('Errors:', result.errors);
+}
+
+// Generate CSS variables
+const css = generateCSSVariables(theme, {
+  selector: ':root',
+  prefix: 'atomix',
+});
+```
+
+### ThemeErrorBoundary
+
+React error boundary for theme errors:
+
+```tsx
+import { ThemeErrorBoundary } from '@shohojdhara/atomix/theme';
+
+<ThemeErrorBoundary
+  fallback={(error, errorInfo) => <CustomErrorUI />}
+  onError={(error, errorInfo) => {
+    // Send to error tracking
+  }}
+>
+  <ThemeProvider>
+    <App />
+    </ThemeProvider>
+</ThemeErrorBoundary>
+```
+
+### RTL Support
+
+```typescript
+import { RTLManager } from '@shohojdhara/atomix/theme';
+
+const rtlManager = new RTLManager({
+  enabled: true,
+  autoDetect: true,
+  locale: 'ar-SA',
+});
+
+// Set direction
+rtlManager.setDirection('rtl');
+
+// Get RTL-aware values
+const margin = rtlManager.getValue('margin-left', 'margin-right');
 ```
 
 ---
 
 ## Configuration
 
-### ⚠️ Important: Configuration Files
+### atomix.config.ts
 
-The Atomix theme system uses two configuration files that serve different purposes:
-
-1. **`theme.config.ts`** (Root directory)
-   - **Purpose:** Runtime configuration for the theme system
-   - **Used by:** ThemeManager, ThemeProvider, and runtime theme loading
-   - **Format:** TypeScript
-   - **When loaded:** At runtime when themes are initialized
-
-2. **`src/themes/themes.config.js`** (Themes directory)
-   - **Purpose:** Build-time configuration and theme metadata
-   - **Used by:** Build scripts for compiling SCSS themes to CSS
-   - **Format:** JavaScript (CommonJS)
-   - **When loaded:** During the build process
-
-> **Note:** Currently, these files contain duplicate information and must be kept in sync manually. A future update will consolidate these into a single source of truth.
-
-### Browser Environment Limitations
-
-⚠️ **Important:** The `theme.config.ts` file cannot be dynamically loaded in browser environments due to module resolution limitations. In browser/client-side applications:
-
-1. **Fallback Behavior:** The theme system will use a default empty configuration
-2. **Manual Registration Required:** Themes must be explicitly provided to the ThemeManager or ThemeProvider
-
-#### Browser Environment Setup
+The central configuration file (for library developers):
 
 ```typescript
-// In browser environments, provide themes directly to ThemeProvider
-import { ThemeProvider } from '@shohojdhara/atomix/theme';
+import { defineConfig } from '@shohojdhara/atomix/config';
 
-const themes = {
-  'my-theme': {
-    type: 'css',
-    name: 'My Theme',
-    class: 'my-theme',
-  },
-};
-
-function App() {
-  return (
-    <ThemeProvider 
-      themes={themes}
-      defaultTheme="my-theme"
-      basePath="/themes"
-    >
-      <YourApp />
-    </ThemeProvider>
-  );
-}
-```
-
-Or with ThemeManager directly:
-
-```typescript
-import { ThemeManager } from '@shohojdhara/atomix/theme';
-
-const themeManager = new ThemeManager({
-  themes: {
-    'my-theme': {
-      type: 'css',
-      name: 'My Theme',
-      class: 'my-theme',
-    },
-  },
-  defaultTheme: 'my-theme',
-  basePath: '/themes',
-});
-```
-
-### Theme Configuration File
-
-Create `theme.config.ts` in your project root:
-
-```typescript
-import type { ThemeConfig } from '@shohojdhara/atomix/theme';
-
-const config: ThemeConfig = {
-  themes: {
-    'light-theme': {
-      type: 'css',
-      name: 'Light Theme',
-      class: 'light-theme',
-      description: 'Default light theme',
-      status: 'stable',
-    },
-    'dark-theme': {
-      type: 'css',
-      name: 'Dark Theme',
-      class: 'dark-theme',
-      description: 'Default dark theme',
-      status: 'stable',
-    },
-  },
-  runtime: {
-    basePath: '/themes',
-    defaultTheme: 'light-theme',
-    storageKey: 'atomix-theme',
-    enablePersistence: true,
-    useMinified: process.env.NODE_ENV === 'production',
-  },
-  build: {
-    output: {
-      directory: 'themes',
-      formats: {
-        expanded: '.css',
-        compressed: '.min.css',
+export default defineConfig({
+  // CSS variable prefix
+  prefix: 'atomix',
+  
+  theme: {
+    // Extend default tokens
+    extend: {
+      colors: {
+        primary: { main: '#3b82f6' },
+      },
+      spacing: {
+        '18': '4.5rem',
+      },
+      typography: {
+        fontFamilies: {
+          sans: ['Inter', 'sans-serif'],
+        },
       },
     },
-    sass: {
-      style: 'expanded',
-      sourceMap: true,
-      loadPaths: ['src'],
+    
+    // Register themes
+    themes: {
+      'my-theme': {
+        type: 'css',
+        name: 'My Theme',
+      },
     },
-  },
-};
-
-export default config;
-```
-
-### Environment-Specific Configuration
-
-The config loader automatically applies environment-specific overrides:
-
-- **Development**: Source maps enabled, unminified CSS
-- **Production**: Minified CSS, optimized settings
-- **Test**: Persistence disabled
-
----
-
-## Error Handling
-
-### ThemeError
-
-Custom error class with error codes and context.
-
-```typescript
-import { ThemeError, ThemeErrorCode } from '@shohojdhara/atomix/theme';
-
-throw new ThemeError(
-  'Theme not found',
-  ThemeErrorCode.THEME_NOT_FOUND,
-  { themeId: 'my-theme' }
-);
-```
-
-### Error Codes
-
-- `THEME_NOT_FOUND`: Theme not in registry
-- `THEME_LOAD_FAILED`: Theme failed to load
-- `THEME_VALIDATION_FAILED`: Theme validation failed
-- `CONFIG_LOAD_FAILED`: Configuration loading failed
-- `CIRCULAR_DEPENDENCY`: Circular dependency detected
-- `MISSING_DEPENDENCY`: Missing theme dependency
-- `STORAGE_ERROR`: Storage operation failed
-- `INVALID_THEME_NAME`: Invalid theme name
-- `CSS_INJECTION_FAILED`: CSS injection failed
-- `UNKNOWN_ERROR`: Unknown error
-
-### Logging
-
-```typescript
-import { getLogger, LogLevel } from '@shohojdhara/atomix/theme';
-
-const logger = getLogger();
-
-logger.error('Error message', error, { context: 'data' });
-logger.warn('Warning message', { context: 'data' });
-logger.info('Info message', { context: 'data' });
-logger.debug('Debug message', { context: 'data' });
-
-// Custom logger
-import { createLogger } from '@shohojdhara/atomix/theme';
-
-const customLogger = createLogger({
-  level: LogLevel.WARN,
-  enableConsole: true,
-  onError: (error, context) => {
-    // Send to error tracking service
   },
 });
 ```
 
-### Error Boundary
+### Configuration Options
 
-Always wrap ThemeProvider with ThemeErrorBoundary:
+- **`prefix`**: CSS variable prefix (default: `'atomix'`)
+- **`theme.extend`**: Extend default design tokens
+- **`theme.tokens`**: Override entire token system (advanced)
+- **`theme.themes`**: Register CSS or JS themes
+- **`build`**: Build configuration (internal)
+- **`runtime`**: Runtime configuration (internal)
 
-```tsx
-<ThemeErrorBoundary
-  onError={(error, errorInfo) => {
-    // Log to error tracking service
-    errorTracking.capture(error);
-  }}
->
-  <ThemeProvider>
-    <App />
-  </ThemeProvider>
-</ThemeErrorBoundary>
+### Auto-Generated Files
+
+From `atomix.config.ts`, these files are automatically generated:
+
+1. **`src/themes/themes.config.js`** - Build-time theme configuration
+2. **`src/styles/00-tokens/_generated-tokens.scss`** - Optional SCSS variable overrides
+3. **`src/styles/03-generic/_generated-root.css`** - CSS variables from config
+
+**Note:** `_settings.config.scss` is NOT auto-generated - it's standalone for SCSS builds.
+
+### Sync Scripts
+
+```bash
+# Sync theme configuration
+npm run sync:config
+
+# Generate tokens
+npm run sync:tokens
+
+# Validate configuration sync
+npm run validate:config
+
+# Both sync and validate (runs automatically before build)
+npm run prebuild
 ```
 
 ---
 
-## Best Practices
+## CSS Variables & Tokens
 
-### 1. Use ThemeProvider
+### Using CSS Variables
 
-Always use ThemeProvider for React applications:
+The theme system generates CSS variables you can use in your styles:
 
-```tsx
-// ✅ Good
-<ThemeProvider>
-  <App />
-</ThemeProvider>
-
-// ❌ Bad - Direct ThemeManager usage in React
-const manager = new ThemeManager({...});
-```
-
-### 2. Error Boundaries
-
-Wrap ThemeProvider with error boundary:
-
-```tsx
-// ✅ Good
-<ThemeErrorBoundary>
-  <ThemeProvider>
-    <App />
-  </ThemeProvider>
-</ThemeErrorBoundary>
-```
-
-### 3. Theme Preloading
-
-Preload themes for better performance:
-
-```typescript
-// Preload on app initialization
-useEffect(() => {
-  themeManager.preloadTheme('dark-theme');
-}, []);
-```
-
-### 4. Type Safety
-
-Use TypeScript types:
-
-```typescript
-// ✅ Good
-import type { Theme, ThemeMetadata } from '@shohojdhara/atomix/theme';
-
-// ❌ Bad
-const theme: any = themeManager.getActiveTheme();
-```
-
-### 5. Error Handling
-
-Handle errors gracefully:
-
-```typescript
-try {
-  await themeManager.setTheme('my-theme');
-} catch (error) {
-  if (error instanceof ThemeError) {
-    console.error('Theme error:', error.code, error.context);
-  }
-  // Fallback to default theme
-  await themeManager.setTheme('default-theme');
+```css
+.my-component {
+  background-color: var(--atomix-primary);
+  color: var(--atomix-primary-contrast-text);
+  padding: var(--atomix-spacing-4);
+  border-radius: var(--atomix-border-radius);
+  box-shadow: var(--atomix-box-shadow-md);
 }
 ```
 
-### 6. Performance
+### Available CSS Variables
 
-- Enable caching (default: enabled)
-- Use lazy loading for themes
-- Preload critical themes
-- Use minified CSS in production
+#### Color Tokens
 
-### 7. Accessibility
+- **Base Colors**: `--atomix-primary`, `--atomix-secondary`, `--atomix-error`, `--atomix-success`, `--atomix-warning`, `--atomix-info`, `--atomix-light`, `--atomix-dark`
+- **RGB Variants**: `--atomix-primary-rgb`, `--atomix-secondary-rgb`, etc. (for transparency)
+- **Color Scales**: `--atomix-primary-1` through `--atomix-primary-10`
+- **Text Emphasis**: `--atomix-primary-text-emphasis`, `--atomix-secondary-text-emphasis`, etc.
+- **Background Subtle**: `--atomix-primary-bg-subtle`, `--atomix-secondary-bg-subtle`, etc.
+- **Border Subtle**: `--atomix-primary-border-subtle`, etc.
+- **Hover States**: `--atomix-primary-hover`, `--atomix-secondary-hover`, etc.
+- **Gradients**: `--atomix-primary-gradient`, `--atomix-secondary-gradient`, etc.
 
-- Validate themes for contrast ratios
-- Test with screen readers
-- Ensure keyboard navigation works
-- Check color blindness compatibility
+#### Typography Tokens
+
+- **Font Families**: `--atomix-font-sans-serif`, `--atomix-font-monospace`, `--atomix-body-font-family`
+- **Font Sizes**: `--atomix-font-size-xs`, `--atomix-font-size-sm`, `--atomix-font-size-md`, `--atomix-font-size-lg`, `--atomix-font-size-xl`, `--atomix-font-size-2xl`
+- **Font Weights**: `--atomix-font-weight-light`, `--atomix-font-weight-normal`, `--atomix-font-weight-medium`, `--atomix-font-weight-semibold`, `--atomix-font-weight-bold`
+- **Line Heights**: `--atomix-line-height-base`, `--atomix-line-height-sm`, `--atomix-line-height-lg`
+
+#### Spacing Tokens
+
+- **Spacing Scale**: `--atomix-spacing-0` through `--atomix-spacing-200`
+- **Special Spacing**: `--atomix-spacing-px-6`, `--atomix-spacing-px-10`, etc.
+
+#### Shadow Tokens
+
+- **Box Shadows**: `--atomix-box-shadow`, `--atomix-box-shadow-xs`, `--atomix-box-shadow-sm`, `--atomix-box-shadow-lg`, `--atomix-box-shadow-xl`, `--atomix-box-shadow-inset`
+
+#### Border Tokens
+
+- **Border Radius**: `--atomix-border-radius`, `--atomix-border-radius-sm`, `--atomix-border-radius-lg`, `--atomix-border-radius-xl`, `--atomix-border-radius-xxl`, `--atomix-border-radius-pill`
+- **Border Colors**: `--atomix-border-color`, `--atomix-border-color-translucent`
+
+#### Other Tokens
+
+- **Transitions**: `--atomix-transition-fast`, `--atomix-transition-base`, `--atomix-transition-slow`
+- **Z-Index**: `--atomix-z-dropdown`, `--atomix-z-modal`, `--atomix-z-tooltip`, etc.
+- **Breakpoints**: `--atomix-breakpoint-xs`, `--atomix-breakpoint-sm`, etc.
+- **Focus Ring**: `--atomix-focus-ring-width`, `--atomix-focus-ring-offset`, `--atomix-focus-ring-opacity`
+
+For a complete list, see [Design Tokens Documentation](./design-tokens/README.md).
 
 ---
 
@@ -695,72 +768,113 @@ const extended = extendTheme(baseTheme, {
 });
 ```
 
-### Custom Storage Adapter
+### Component Overrides
 
-Implement custom storage:
+Customize component styles per theme:
 
 ```typescript
-import type { StorageAdapter } from '@shohojdhara/atomix/theme';
-
-const customStorage: StorageAdapter = {
-  getItem: (key) => localStorage.getItem(key),
-  setItem: (key, value) => localStorage.setItem(key, value),
-  removeItem: (key) => localStorage.removeItem(key),
-  isAvailable: () => typeof localStorage !== 'undefined',
-};
+const theme = createTheme({
+  components: {
+    Button: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+          padding: '12px 24px',
+        },
+      },
+      defaultProps: {
+        variant: 'primary',
+        size: 'lg',
+      },
+    },
+  },
+});
 ```
+
+**Note:** ComponentOverrideManager as a separate class is planned for a future release. For now, use `createTheme()` with `components` property.
 
 ### RTL Support
 
 Enable RTL for right-to-left languages:
 
 ```typescript
-const themeManager = new ThemeManager({
-  themes: {...},
-  rtl: {
+import { RTLManager } from '@shohojdhara/atomix/theme';
+
+const rtlManager = new RTLManager({
     enabled: true,
-    direction: 'rtl',
     autoDetect: true,
-    locale: 'ar',
-  },
+  locale: 'ar-SA',
 });
 
 // Set direction
-themeManager.setDirection('rtl');
+rtlManager.setDirection('rtl');
 ```
 
-### Theme Analytics
+Or with ThemeProvider:
 
-Track theme usage:
-
-```typescript
-import { ThemeAnalytics } from '@shohojdhara/atomix/theme';
-
-const analytics = new ThemeAnalytics({
-  enabled: true,
-  trackPerformance: true,
-  onEvent: (event) => {
-    // Send to analytics service
-  },
-});
+```tsx
+<ThemeProvider
+  rtl={{
+    enabled: true,
+    autoDetect: true,
+  }}
+>
+  <App />
+</ThemeProvider>
 ```
 
-### Component Overrides
+### CSS Variable Generation
 
-Override component styles per theme:
+Generate CSS variables programmatically:
 
 ```typescript
-import { ComponentOverrideManager } from '@shohojdhara/atomix/theme';
+import { generateCSSVariables } from '@shohojdhara/atomix/theme';
 
-const overrideManager = new ComponentOverrideManager();
-
-overrideManager.addOverride('Button', {
-  styleOverrides: {
-    root: {
-      borderRadius: '8px',
-    },
-  },
+const css = generateCSSVariables(myTheme, {
+  selector: ':root',
+  prefix: 'atomix',
 });
+
+// Inject into DOM
+document.head.appendChild(
+  Object.assign(document.createElement('style'), {
+    textContent: css,
+  })
+);
+```
+
+### Theme Validation
+
+Validate themes during development:
+
+```typescript
+import { validateTheme } from '@shohojdhara/atomix/theme';
+
+const result = validateTheme(myTheme);
+
+if (!result.valid) {
+  console.error('Theme validation errors:', result.errors);
+}
+```
+
+### Development Tools
+
+```tsx
+import { ThemePreview, ThemeInspector } from '@shohojdhara/atomix/theme';
+
+// Preview theme
+<ThemePreview
+  theme={myTheme}
+  showPalette={true}
+  showTypography={true}
+/>
+
+// Inspect theme
+<ThemeInspector
+  theme={myTheme}
+  showValidation={true}
+  showCSSVariables={true}
+/>
 ```
 
 ---
@@ -785,12 +899,19 @@ overrideManager.addOverride('Button', {
    });
    ```
 
-3. Verify CSS path:
-   ```typescript
-   // Check if CSS file exists at the expected path
-   ```
+3. Verify CSS path exists
 
-### Type Errors
+### CSS Variables Not Working
+
+**Problem:** CSS variables not found
+
+**Solutions:**
+1. Ensure theme is loaded (SCSS or JS)
+2. Check prefix matches config
+3. Verify token name follows conventions
+4. Check browser DevTools for actual CSS variable names
+
+### TypeScript Errors
 
 **Problem:** TypeScript errors with theme types
 
@@ -802,36 +923,98 @@ overrideManager.addOverride('Button', {
 
 2. Use type guards:
    ```typescript
-   import { isJSTheme } from '@shohojdhara/atomix/theme';
    if (isJSTheme(theme)) {
      // theme is now typed as Theme
    }
    ```
 
-### Performance Issues
+### Configuration Not Syncing
 
-**Problem:** Slow theme switching
+**Problem:** Generated files don't match `atomix.config.ts`
 
-**Solutions:**
-1. Enable caching:
+**Solution:**
+```bash
+npm run sync:config
+npm run sync:tokens
+npm run validate:config
+```
+
+### Prefix Not Updating
+
+**Problem:** Prefix changes in config but not in generated files
+
+**Solution:**
+1. Check `atomix.config.ts` has `prefix` field
+2. Run `npm run sync:config && npm run sync:tokens`
+3. Verify with `npm run validate:config`
+
+### Browser Environment Limitations
+
+⚠️ **Important:** The `atomix.config.ts` file cannot be dynamically loaded in browser environments. In browser/client-side applications:
+
+1. **Fallback Behavior:** The theme system will use a default empty configuration
+2. **Manual Registration Required:** Themes must be explicitly provided to the ThemeManager or ThemeProvider
+
    ```typescript
-   const engine = themeManager.getEngine();
-   engine.getCache().clear(); // Clear if needed
-   ```
+// In browser environments, provide themes directly
+import { ThemeProvider } from '@shohojdhara/atomix/theme';
 
-2. Preload themes:
-   ```typescript
-   await themeManager.preloadTheme('theme-name');
-   ```
+const themes = {
+  'my-theme': {
+    type: 'css',
+    name: 'My Theme',
+    class: 'my-theme',
+  },
+};
 
-3. Use minified CSS in production
+function App() {
+  return (
+    <ThemeProvider 
+      themes={themes}
+      defaultTheme="my-theme"
+      basePath="/themes"
+    >
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+```
 
-### Error Boundary Not Catching Errors
+---
 
-**Problem:** Errors still crash the app
+## Best Practices
 
-**Solutions:**
-1. Ensure ThemeErrorBoundary wraps ThemeProvider:
+### 1. Always Use CSS Variables
+
+✅ **Good:**
+```scss
+.component {
+  color: var(--atomix-primary);
+  padding: var(--atomix-spacing-4);
+}
+```
+
+❌ **Bad:**
+```scss
+.component {
+  color: #3b82f6; // Hardcoded value
+  padding: 16px; // Hardcoded value
+}
+```
+
+### 2. Use ThemeProvider for React Apps
+
+✅ **Good:**
+```tsx
+<ThemeProvider>
+  <App />
+</ThemeProvider>
+```
+
+### 3. Error Boundaries
+
+Always wrap ThemeProvider with error boundary:
+
    ```tsx
    <ThemeErrorBoundary>
      <ThemeProvider>
@@ -840,9 +1023,27 @@ overrideManager.addOverride('Button', {
    </ThemeErrorBoundary>
    ```
 
-2. Check error is thrown from theme system:
-   - ThemeErrorBoundary only catches theme-related errors
-   - Use React ErrorBoundary for other errors
+### 4. Type Safety
+
+Use TypeScript types:
+
+```typescript
+import type { Theme, ThemeMetadata } from '@shohojdhara/atomix/theme';
+```
+
+### 5. Performance
+
+- Enable caching (default: enabled)
+- Use lazy loading for themes
+- Preload critical themes
+- Use minified CSS in production
+
+### 6. Accessibility
+
+- Validate themes for contrast ratios
+- Test with screen readers
+- Ensure keyboard navigation works
+- Check color blindness compatibility
 
 ---
 
@@ -856,18 +1057,32 @@ import {
   ThemeProvider,
   ThemeErrorBoundary,
   useTheme,
+  createTheme,
 } from '@shohojdhara/atomix/theme';
 
+const lightTheme = createTheme({
+  name: 'Light',
+  palette: {
+    primary: { main: '#3b82f6' },
+    background: { default: '#ffffff' },
+  },
+});
+
+const darkTheme = createTheme({
+  name: 'Dark',
+  palette: {
+    primary: { main: '#60a5fa' },
+    background: { default: '#111827' },
+  },
+});
+
 function ThemeSelector() {
-  const { theme, setTheme, availableThemes } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   return (
     <select value={theme} onChange={(e) => setTheme(e.target.value)}>
-      {availableThemes.map((t) => (
-        <option key={t.id} value={t.id}>
-          {t.name}
-        </option>
-      ))}
+      <option value={lightTheme}>Light</option>
+      <option value={darkTheme}>Dark</option>
     </select>
   );
 }
@@ -880,7 +1095,7 @@ function App() {
       }}
     >
       <ThemeProvider
-        defaultTheme="light-theme"
+        defaultTheme={lightTheme}
         enablePersistence={true}
       >
         <ThemeSelector />
@@ -910,69 +1125,14 @@ export default function RootLayout({ children }) {
 }
 ```
 
-### Vanilla JavaScript Example
-
-```typescript
-import { ThemeManager } from '@shohojdhara/atomix/theme';
-
-const themeManager = new ThemeManager({
-  themes: {
-    'light': { name: 'Light', type: 'css' },
-    'dark': { name: 'Dark', type: 'css' },
-  },
-  defaultTheme: 'light',
-  enablePersistence: true,
-});
-
-// Listen for theme changes
-themeManager.on('themeChange', (event) => {
-  console.log('Theme changed:', event.currentTheme);
-});
-
-// Switch theme
-document.getElementById('theme-toggle').addEventListener('click', () => {
-  const current = themeManager.getTheme();
-  const next = current === 'light' ? 'dark' : 'light';
-  themeManager.setTheme(next);
-});
-```
-
 ---
 
-## API Summary
+## Related Documentation
 
-### Exports
-
-```typescript
-// Runtime
-export { ThemeManager, ThemeProvider, ThemeErrorBoundary, useTheme }
-
-// Theme Creation
-export { createTheme }
-
-// Composition
-export { mergeTheme, extendTheme, composeThemes }
-
-// Utilities
-export { generateCSSVariables, hexToRgb, getContrastRatio }
-
-// Error Handling
-export { ThemeError, ThemeErrorCode, ThemeLogger, getLogger }
-
-// Types
-export type { Theme, ThemeMetadata, ThemeManagerConfig }
-```
-
----
-
-## Resources
-
-- [Theme System Usage Guide](./THEME_SYSTEM_USAGE.md)
-- [Theme API Reference](./THEME_API_REFERENCE.md)
-- [Theme Build Process](./THEME_BUILD_PROCESS.md)
-- [Theme System Enhancements](./THEME_SYSTEM_ENHANCEMENTS.md)
-- [Configuration Guide](./guides/theming.md)
-- [Examples](./examples/)
+- [Design Tokens Reference](./design-tokens/README.md) - Complete token list
+- [Styles Architecture](./styles/architecture.md) - ITCSS structure
+- [Component Documentation](./components/README.md) - Component library
+- [Getting Started Guide](./getting-started/README.md) - Installation and setup
 
 ---
 
@@ -984,5 +1144,6 @@ For issues, questions, or contributions:
 
 ---
 
-**Last Updated:** 2024-12-19  
-**Version:** 2.0
+**Last Updated:** 2025-01-27  
+**Version:** 2.1  
+**Maintained by:** Atomix Design System Team

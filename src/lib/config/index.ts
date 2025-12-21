@@ -1,8 +1,26 @@
 /**
  * Atomix Configuration System
  * 
- * Centralized configuration schema for the Atomix Design System.
- * Supports Tailwind-like token definitions and theme registration.
+ * Tailwind-like configuration for customizing the Atomix Design System.
+ * 
+ * External developers can create `atomix.config.ts` in their project root
+ * to customize design tokens, similar to Tailwind's tailwind.config.js
+ * 
+ * @example
+ * ```typescript
+ * // atomix.config.ts (in your project)
+ * import { defineConfig } from '@shohojdhara/atomix/config';
+ * 
+ * export default defineConfig({
+ *   theme: {
+ *     extend: {
+ *       colors: {
+ *         primary: { main: '#7AFFD7' },
+ *       },
+ *     },
+ *   },
+ * });
+ * ```
  */
 
 import type { Theme } from '../theme/types';
@@ -162,24 +180,59 @@ export interface IntegrationConfig {
 
 /**
  * Atomix Configuration Interface
+ * 
+ * Tailwind-like configuration for external developers.
+ * Focus on theme customization - build/runtime configs are internal only.
  */
 export interface AtomixConfig {
-    /** Theme configuration and registration */
+    /** 
+     * CSS variable prefix (default: 'atomix')
+     * 
+     * Change this to customize all CSS variable names.
+     * Example: prefix: 'myapp' → --myapp-primary instead of --atomix-primary
+     */
+    prefix?: string;
+    
+    /** 
+     * Theme customization (Tailwind-like)
+     * 
+     * Use `extend` to add or override design tokens.
+     * Use `tokens` to completely replace the default token system (advanced).
+     */
     theme?: {
-        /** Extend the default tokens */
+        /** 
+         * Extend the default design tokens
+         * 
+         * This is the recommended way to customize Atomix.
+         * Your values will override or extend the base tokens.
+         */
         extend?: ThemeTokens;
-        /** Override the default tokens entirely */
+        
+        /** 
+         * Override the default tokens entirely (advanced)
+         * 
+         * Use with caution - this replaces the entire token system.
+         * Most users should use `extend` instead.
+         */
         tokens?: ThemeTokens;
-        /** Registered themes (migrated from theme.config.ts) */
+        
+        /** 
+         * Register custom themes (optional)
+         * 
+         * Define CSS or JavaScript themes that can be loaded dynamically.
+         */
         themes?: Record<string, ThemeDefinition>;
     };
-    /** Build configuration (migrated from theme.config.ts) */
+    
+    // Internal configurations (for library development only)
+    // These are not needed for external developers
+    /** @internal Build configuration (internal use only) */
     build?: BuildConfig;
-    /** Runtime configuration (migrated from theme.config.ts) */
+    /** @internal Runtime configuration (internal use only) */
     runtime?: RuntimeConfig;
-    /** Integration settings (migrated from theme.config.ts) */
+    /** @internal Integration settings (internal use only) */
     integration?: IntegrationConfig;
-    /** Theme dependencies mapping (migrated from theme.config.ts) */
+    /** @internal Theme dependencies mapping (internal use only) */
     dependencies?: Record<string, string[]>;
 }
 
@@ -189,8 +242,34 @@ export interface AtomixConfig {
  * @param config - Atomix configuration object
  * @returns The configuration object
  */
+/**
+ * Helper function to define Atomix configuration with type safety
+ * 
+ * Similar to Tailwind's defineConfig, provides autocomplete and type checking.
+ * 
+ * @param config - Atomix configuration object
+ * @returns The configuration object
+ * 
+ * @example
+ * ```typescript
+ * import { defineConfig } from '@shohojdhara/atomix/config';
+ * 
+ * export default defineConfig({
+ *   theme: {
+ *     extend: {
+ *       colors: {
+ *         primary: { main: '#7AFFD7' },
+ *       },
+ *     },
+ *   },
+ * });
+ * ```
+ */
 export function defineConfig(config: AtomixConfig): AtomixConfig {
     return config;
 }
+
+// Export loader functions
+export { loadAtomixConfig, resolveConfigPath } from './loader';
 
 export default AtomixConfig;

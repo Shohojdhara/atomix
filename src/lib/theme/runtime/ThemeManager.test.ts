@@ -10,7 +10,23 @@ import { ThemeError, ThemeErrorCode } from '../errors';
 import type { ThemeMetadata } from '../types';
 
 // Mock dependencies
-vi.mock('../core/ThemeEngine');
+vi.mock('../core/ThemeEngine', () => {
+  return {
+    ThemeEngine: class {
+      initialize = vi.fn().mockResolvedValue(undefined);
+      on = vi.fn();
+      getRegistry = vi.fn().mockReturnValue({
+        has: vi.fn().mockReturnValue(false),
+        register: vi.fn(),
+        getAllMetadata: vi.fn().mockReturnValue([]),
+      });
+      setTheme = vi.fn().mockResolvedValue(undefined);
+      getActiveTheme = vi.fn().mockReturnValue(null);
+      isThemeLoaded = vi.fn().mockReturnValue(false);
+      preloadTheme = vi.fn().mockResolvedValue(undefined);
+    },
+  };
+});
 vi.mock('../config/loader');
 vi.mock('../utils', () => ({
   isBrowser: () => true,

@@ -1,34 +1,22 @@
 /**
  * Theme Configuration
  *
- * This file is auto-generated from theme.config.ts
- * DO NOT EDIT MANUALLY - Edit theme.config.ts instead
+ * This file is auto-generated from atomix.config.ts
+ * DO NOT EDIT MANUALLY - Edit atomix.config.ts instead
  * Run 'npm run sync:config' to regenerate
  * 
- * Generated on: 2025-12-19T14:40:54.807Z
+ * Generated on: 2025-12-20T13:34:47.669Z
  */
 
 export const themesConfig = {
+  // CSS variable prefix (from atomix.config.ts)
+  prefix: 'atomix',
+  
   // Theme metadata
   metadata: {},
 
   // Build configuration
-  build: {
-    output: {
-        directory: "themes",
-        formats: {
-            expanded: ".css",
-            compressed: ".min.css"
-        }
-    },
-    sass: {
-        style: "expanded",
-        sourceMap: true,
-        loadPaths: [
-            "src"
-        ]
-    }
-},
+  build: {},
 
   // Export configuration for package.json
   exports: {
@@ -37,28 +25,10 @@ export const themesConfig = {
   },
 
   // Theme integration settings
-  integration: {
-    cssVariables: {
-        colorMode: "--storybook-color-mode"
-    },
-    classNames: {
-        theme: "data-theme",
-        colorMode: "data-atomix-color-mode"
-    }
-},
+  integration: {},
 
   // Runtime theme loading configuration
-  runtime: {
-    basePath: "/themes",
-    cdnPath: null,
-    preload: [],
-    lazy: true,
-    defaultTheme: "",
-    storageKey: "atomix-theme",
-    dataAttribute: "data-theme",
-    enablePersistence: true,
-    useMinified: process.env.NODE_ENV === 'production'
-},
+  runtime: {},
 
   // Theme dependencies (if a theme requires another theme to be loaded)
   dependencies: {},

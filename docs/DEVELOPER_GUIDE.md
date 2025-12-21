@@ -243,55 +243,54 @@ import { ThemeProvider } from '@shohojdhara/atomix/theme';
 ### Component Overrides
 
 ```tsx
-import { ComponentOverrideManager } from '@shohojdhara/atomix/theme';
+// Note: ComponentOverrideManager is not yet implemented as a separate class
+// Use theme.components in createTheme() instead:
+import { createTheme } from '@shohojdhara/atomix/theme';
 
-const overrideManager = new ComponentOverrideManager();
-
-overrideManager.addOverride('Button', {
-  styleOverrides: {
-    borderRadius: '8px',
-    padding: '12px 24px',
-  },
-  defaultProps: {
-    variant: 'primary',
-    size: 'lg',
+const customTheme = createTheme({
+  components: {
+    Button: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+          padding: '12px 24px',
+        },
+      },
+      defaultProps: {
+        variant: 'primary',
+        size: 'lg',
+      },
+    },
   },
 });
-
-const customTheme = overrideManager.getThemeWithOverrides();
 ```
 
 ### White Labeling
 
 ```tsx
-import { WhiteLabelManager } from '@shohojdhara/atomix/theme';
+// Note: WhiteLabelManager is not yet implemented as a separate class
+// For now, customize branding through theme configuration:
+import { createTheme } from '@shohojdhara/atomix/theme';
 
-const whiteLabel = new WhiteLabelManager();
-
-whiteLabel.configure({
-  brand: {
-    name: 'Your Brand',
-    logo: '/your-logo.svg',
-    primaryColor: '#007bff',
-    favicon: '/your-favicon.ico',
+const brandedTheme = createTheme({
+  name: 'Your Brand',
+  palette: {
+    primary: { main: '#007bff' },
   },
+  // Apply custom CSS for logo, favicon, etc. separately
 });
-
-whiteLabel.applyBrand();
 ```
 
 ### Theme Analytics
 
 ```tsx
-import { createThemeAnalytics } from '@shohojdhara/atomix/theme';
-
-const analytics = createThemeAnalytics({
-  enabled: true,
-  onEvent: (event) => {
-    // Send to your analytics service
-    console.log('Theme event:', event);
-  },
-});
+// Note: ThemeAnalytics is not yet implemented as a separate class
+// For now, track theme events manually:
+const trackThemeEvent = (event: string, data?: any) => {
+  // Send to your analytics service
+  console.log('Theme event:', event, data);
+  // Example: analytics.track('theme_change', data);
+};
 ```
 
 ---
@@ -586,7 +585,7 @@ npm install sass postcss autoprefixer
 ### Documentation
 - [Component Documentation](../docs/components/)
 - [Theme System Guide](./THEME_SYSTEM.md)
-- [API Reference](./THEME_API_REFERENCE.md)
+- [Theme System Guide](./THEME_SYSTEM.md)
 - [Examples](../examples/)
 
 ### Support

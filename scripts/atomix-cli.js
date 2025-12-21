@@ -32,6 +32,7 @@ import {
   exportTokens,
   importTokens
 } from './cli/token-manager.js';
+import { createThemeCLIBridge } from './cli/theme-bridge.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -1329,6 +1330,326 @@ program
   });
 
 /**
+ * Theme Command Group - NEW (Integrated with Theme Devtools)
+ */
+const themeCommand = program
+  .command('theme')
+  .description('Theme management commands');
+
+// Theme validate
+themeCommand
+  .command('validate')
+  .description('Validate theme configuration')
+  .option('--config <path>', 'Path to theme config file')
+  .option('--strict', 'Enable strict validation')
+  .action(async (options) => {
+    try {
+      const themeCLI = createThemeCLIBridge();
+      await themeCLI.validate(options);
+    } catch (error) {
+      handleError(error);
+    }
+  });
+
+// Theme list
+themeCommand
+  .command('list')
+  .alias('ls')
+  .description('List all available themes')
+  .action(async () => {
+    try {
+      const themeCLI = createThemeCLIBridge();
+      await themeCLI.list();
+    } catch (error) {
+      handleError(error);
+    }
+  });
+
+// Theme inspect
+themeCommand
+  .command('inspect <name>')
+  .description('Inspect a specific theme')
+  .option('--json', 'Output as JSON')
+  .action(async (name, options) => {
+    try {
+      const themeCLI = createThemeCLIBridge();
+      await themeCLI.inspect(name, options);
+    } catch (error) {
+      handleError(error);
+    }
+  });
+
+// Theme compare
+themeCommand
+  .command('compare <theme1> <theme2>')
+  .description('Compare two themes')
+  .action(async (theme1, theme2) => {
+    try {
+      const themeCLI = createThemeCLIBridge();
+      await themeCLI.compare(theme1, theme2);
+    } catch (error) {
+      handleError(error);
+    }
+  });
+
+// Theme export
+themeCommand
+  .command('export <name>')
+  .description('Export theme to JSON')
+  .option('-o, --output <path>', 'Output file path')
+  .action(async (name, options) => {
+    try {
+      const themeCLI = createThemeCLIBridge();
+      await themeCLI.export(name, options);
+    } catch (error) {
+      handleError(error);
+    }
+  });
+
+// Theme create - NEW
+themeCommand
+  .command('create <name>')
+  .description('Create a new theme')
+  .option('-t, --type <type>', 'Theme type (css|js)', 'css')
+  .option('--template <name>', 'Use template (dark|light|high-contrast)')
+  .option('--interactive', 'Interactive mode', false)
+  .option('-o, --output <path>', 'Output directory', './themes')
+  .action(async (name, options) => {
+    const spinner = ora('Creating theme...').start();
+    
+    try {
+      debug(`Creating theme: ${name}`, options);
+      
+      // Validate name
+      if (!/^[a-z][a-z0-9-]*$/.test(name)) {
+        throw new AtomixCLIError(
+          'Theme name must be lowercase and use hyphens (e.g., my-theme)',
+          'INVALID_NAME',
+          [
+            'Use lowercase letters, numbers, and hyphens',
+            'Start with a letter',
+            'Example: dark-theme, light-mode, custom-theme'
+          ]
+        );
+      }
+      
+      const themePath = join(options.output, name);
+      
+      // Check if theme already exists
+      if (existsSync(themePath)) {
+        throw new AtomixCLIError(
+          `Theme ${name} already exists`,
+          'THEME_EXISTS',
+          [
+            `Delete the existing theme at ${themePath}`,
+            'Choose a different theme name',
+            'Use --force flag to overwrite (not yet implemented)'
+          ]
+        );
+      }
+      
+      // Create theme directory
+      await mkdir(themePath, { recursive: true });
+      
+      // Generate theme files based on type
+      if (options.type === 'css') {
+        // Create SCSS theme
+        const scssContent = `// Theme: ${name}
+// =============================================================================
+
+@import '../../src/styles/01-settings';
+@import '../../src/styles/02-tools';
+
+// Theme Variables
+// =============================================================================
+:root[data-theme="${name}"] {
+  // Colors
+  --atomix-color-primary: #7AFFD7;
+  --atomix-color-secondary: #FF5733;
+  --atomix-color-success: #4DFF9F;
+  --atomix-color-error: #FF1A1A;
+  --atomix-color-warning: #FFB84D;
+  
+  // Background
+  --atomix-color-background: #000000;
+  --atomix-color-surface: #212121;
+  
+  // Text
+  --atomix-color-text: #FFFFFF;
+  --atomix-color-text-secondary: rgba(255, 255, 255, 0.8);
+  
+  // Border
+  --atomix-color-border: rgba(255, 255, 255, 0.1);
+  
+  // Spacing (if needed)
+  // --atomix-space-base: 16px;
+  
+  // Typography (if needed)
+  // --atomix-font-family-base: 'Inter', sans-serif;
+}
+
+// Theme-specific Component Overrides
+// =============================================================================
+[data-theme="${name}"] {
+  // Add component-specific overrides here
+  
+  .c-button {
+    // Button overrides
+  }
+  
+  .c-card {
+    // Card overrides
+  }
+}
+`;
+        
+        await writeFile(join(themePath, 'index.scss'), scssContent, 'utf8');
+        spinner.succeed(chalk.green(`✓ Created ${name}/index.scss`));
+        
+      } else if (options.type === 'js') {
+        // Create JavaScript theme
+        const jsContent = `/**
+ * Theme: ${name}
+ */
+
+import { createTheme } from '@shohojdhara/atomix/theme';
+
+export const ${name.replace(/-([a-z])/g, (_, c) => c.toUpperCase())}Theme = createTheme({
+  name: '${name}',
+  palette: {
+    primary: {
+      main: '#7AFFD7',
+      light: '#A0FFE6',
+      dark: '#00E6C3',
+      contrastText: '#000000',
+    },
+    secondary: {
+      main: '#FF5733',
+      light: '#FF8A65',
+      dark: '#E64A19',
+      contrastText: '#FFFFFF',
+    },
+    success: {
+      main: '#4DFF9F',
+      light: '#80FFB8',
+      dark: '#00E66B',
+      contrastText: '#000000',
+    },
+    error: {
+      main: '#FF1A1A',
+      light: '#FF5252',
+      dark: '#E60000',
+      contrastText: '#FFFFFF',
+    },
+    warning: {
+      main: '#FFB84D',
+      light: '#FFCC80',
+      dark: '#FF9800',
+      contrastText: '#000000',
+    },
+    background: {
+      default: '#000000',
+      paper: '#212121',
+    },
+    text: {
+      primary: '#FFFFFF',
+      secondary: 'rgba(255, 255, 255, 0.8)',
+      disabled: 'rgba(255, 255, 255, 0.5)',
+    },
+  },
+  typography: {
+    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    fontSize: 16,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+    fontWeightBold: 700,
+  },
+  spacing: {
+    unit: 8,
+  },
+  shape: {
+    borderRadius: 6,
+  },
+});
+
+export default ${name.replace(/-([a-z])/g, (_, c) => c.toUpperCase())}Theme;
+`;
+        
+        await writeFile(join(themePath, 'index.ts'), jsContent, 'utf8');
+        spinner.succeed(chalk.green(`✓ Created ${name}/index.ts`));
+      }
+      
+      // Create README
+      const readmeContent = `# ${name} Theme
+
+## Description
+
+A custom theme for Atomix Design System.
+
+## Usage
+
+### CSS Theme
+
+\`\`\`scss
+@import 'themes/${name}';
+\`\`\`
+
+### JavaScript Theme
+
+\`\`\`typescript
+import { ${name.replace(/-([a-z])/g, (_, c) => c.toUpperCase())}Theme } from './themes/${name}';
+import { ThemeProvider } from '@shohojdhara/atomix/theme';
+
+function App() {
+  return (
+    <ThemeProvider theme={${name.replace(/-([a-z])/g, (_, c) => c.toUpperCase())}Theme}>
+      {/* Your app */}
+    </ThemeProvider>
+  );
+}
+\`\`\`
+
+## Customization
+
+Edit the theme variables in \`index.${options.type === 'css' ? 'scss' : 'ts'}\` to customize colors, typography, spacing, and more.
+
+## Build
+
+\`\`\`bash
+atomix build-theme themes/${name}
+\`\`\`
+`;
+      
+      await writeFile(join(themePath, 'README.md'), readmeContent, 'utf8');
+      console.log(chalk.green(`  ✓ Created ${name}/README.md`));
+      
+      // Success message
+      console.log(boxen(
+        chalk.bold.green(`🎨 Theme "${name}" created successfully!\n\n`) +
+        chalk.cyan('Next steps:\n') +
+        chalk.gray(`1. Customize your theme:\n`) +
+        chalk.white(`   Edit ${themePath}/index.${options.type === 'css' ? 'scss' : 'ts'}\n\n`) +
+        (options.type === 'css' 
+          ? chalk.gray(`2. Build your theme:\n`) + chalk.white(`   atomix build-theme ${themePath}\n\n`)
+          : chalk.gray(`2. Use in your app:\n`) + chalk.white(`   import theme from './themes/${name}';\n\n`)
+        ) +
+        chalk.gray(`3. Apply your theme:\n`) +
+        chalk.white(`   <ThemeProvider theme="${name}">...</ThemeProvider>`),
+        {
+          padding: 1,
+          margin: 1,
+          borderStyle: 'round',
+          borderColor: 'green'
+        }
+      ));
+      
+    } catch (error) {
+      handleError(error, spinner);
+    }
+  });
+
+/**
  * Doctor Command - NEW
  */
 program
@@ -1375,11 +1696,13 @@ program
       }
       
       // Check for configuration files
-      const configFiles = ['.atomixrc', 'atomix.config.js', 'atomix.config.json'];
+      const configFiles = ['.atomixrc', 'atomix.config.js', 'atomix.config.json', 'theme.config.ts'];
       let hasConfig = false;
+      let configFile = null;
       for (const file of configFiles) {
         if (existsSync(join(process.cwd(), file))) {
           hasConfig = true;
+          configFile = file;
           break;
         }
       }
@@ -1388,8 +1711,21 @@ program
         name: 'Configuration File',
         status: hasConfig ? '✅' : '💡',
         message: hasConfig
-          ? 'Configuration found'
+          ? `Configuration found (${configFile})`
           : 'No config file (using defaults)',
+      });
+      
+      // Check theme CLI availability
+      const themeCLIAvailable = await import('./cli/theme-bridge.js')
+        .then(m => m.isThemeCLIAvailable())
+        .catch(() => false);
+      
+      checks.push({
+        name: 'Theme CLI',
+        status: themeCLIAvailable ? '✅' : '⚠️',
+        message: themeCLIAvailable
+          ? 'Available'
+          : 'Theme devtools not found',
       });
       
       spinner.stop();

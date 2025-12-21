@@ -7,8 +7,6 @@
 import { Theme, ThemeMetadata } from './theme/types';
 import { createTheme } from './theme/createTheme';
 import { extendTheme, mergeTheme } from './theme/composeTheme';
-import { ComponentOverrideManager } from './theme/overrides/ComponentOverrides';
-import { WhiteLabelManager } from './theme/whitelabel/WhiteLabelManager';
 import { generateCSSVariables } from './theme/generateCSSVariables';
 
 /**
@@ -49,19 +47,19 @@ export function createDarkVariant(lightTheme: Theme): Theme {
  */
 export function validateTheme(theme: Theme): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
-  
+
   if (!theme.name) {
     errors.push('Theme must have a name');
   }
-  
+
   if (!theme.palette) {
     errors.push('Theme must have a palette');
   }
-  
+
   if (theme.palette && !theme.palette.primary) {
     errors.push('Theme palette must have a primary color');
   }
-  
+
   return {
     valid: errors.length === 0,
     errors,
@@ -76,61 +74,6 @@ export function themeToCSS(theme: Theme, selector = ':root'): string {
     selector,
     prefix: 'atomix',
   });
-}
-
-/**
- * Apply overrides to theme easily
- */
-export function applyOverrides(
-  theme: Theme,
-  overrides: Record<string, any>
-): Theme {
-  const manager = new ComponentOverrideManager(theme);
-  
-  Object.entries(overrides).forEach(([component, override]) => {
-    manager.addOverride(component, override);
-  });
-  
-  const overriddenTheme = manager.getThemeWithOverrides();
-  if (!overriddenTheme) {
-    throw new Error('Failed to get theme with overrides: theme was not set');
-  }
-  
-  return overriddenTheme;
-}
-
-/**
- * Apply white label configuration
- */
-export function applyWhiteLabel(
-  theme: Theme,
-  brand: {
-    name: string;
-    primaryColor: string;
-    logo?: string;
-  }
-): Theme {
-  const manager = new WhiteLabelManager(theme);
-  
-  manager.configure({
-    brand: {
-      name: brand.name,
-      primaryColor: brand.primaryColor,
-      logo: brand.logo,
-    },
-    themeOverrides: {
-      palette: {
-        primary: { main: brand.primaryColor },
-      },
-    },
-  });
-  
-  const whiteLabeledTheme = manager.getWhiteLabeledTheme();
-  if (!whiteLabeledTheme) {
-    throw new Error('Failed to get white labeled theme: theme was not set');
-  }
-  
-  return whiteLabeledTheme;
 }
 
 /**
@@ -153,9 +96,9 @@ export function getThemeMetadata(theme: Theme): ThemeMetadata {
  * Check if theme supports dark mode
  */
 export function supportsDarkMode(theme: Theme): boolean {
-  return theme.palette?.mode === 'dark' || 
-         theme.supportsDarkMode === true ||
-         Boolean(theme.a11y?.modes?.includes('dark'));
+  return theme.palette?.mode === 'dark' ||
+    theme.supportsDarkMode === true ||
+    Boolean(theme.a11y?.modes?.includes('dark'));
 }
 
 /**
@@ -179,7 +122,4 @@ export function importTheme(json: string): Theme {
 // Re-export commonly used functions
 export { createTheme, extendTheme, mergeTheme };
 export { generateCSSVariables };
-export { ComponentOverrideManager } from './theme/overrides/ComponentOverrides';
-export { WhiteLabelManager } from './theme/whitelabel/WhiteLabelManager';
 export { RTLManager } from './theme/i18n/rtl';
-export { ThemeAnalytics } from './theme/monitoring/ThemeAnalytics';

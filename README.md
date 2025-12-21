@@ -42,7 +42,44 @@ function App() {
 
 ### 🎨 Theme Management
 
-Atomix provides a powerful, developer-friendly theming system with multiple options:
+Atomix provides a powerful, developer-friendly theming system with **Tailwind-like configuration**:
+
+#### Tailwind-like Configuration (Recommended)
+
+Create `atomix.config.ts` in your project root:
+
+```typescript
+import { defineConfig } from '@shohojdhara/atomix/config';
+
+export default defineConfig({
+  theme: {
+    extend: {
+      colors: {
+        primary: { main: '#7AFFD7' },
+        secondary: { main: '#FF5733' },
+      },
+    },
+  },
+});
+```
+
+Use it in your app:
+
+```tsx
+import { loadAtomixConfig } from '@shohojdhara/atomix/config';
+import { createThemeFromConfig, ThemeProvider } from '@shohojdhara/atomix/theme';
+
+const config = loadAtomixConfig();
+const theme = createThemeFromConfig(config);
+
+function App() {
+  return (
+    <ThemeProvider defaultTheme={theme}>
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+```
 
 #### Quick Start with Themes
 
@@ -58,32 +95,25 @@ function App() {
 }
 ```
 
-#### Create Custom Themes
-
-```bash
-# Use the CLI to create a new theme
-npx atomix create-theme my-theme
-
-# Build your theme
-npx atomix build-theme my-theme
-
-# List available themes
-npx atomix list-themes
-```
-
 #### Programmatic Theme Creation
 
 ```jsx
-import { quickTheme, ThemeProvider } from '@shohojdhara/atomix/theme-tools';
+import { createTheme, ThemeProvider } from '@shohojdhara/atomix/theme';
 
-const myTheme = quickTheme('My Brand', '#FF5733', '#33FF57');
+const myTheme = createTheme({
+  palette: {
+    primary: { main: '#7AFFD7' },
+  },
+});
 
 <ThemeProvider defaultTheme={myTheme}>
   <App />
 </ThemeProvider>
 ```
 
-For complete documentation, see [Developer Guide](docs/DEVELOPER_GUIDE.md) and [Theme System Guide](docs/THEME_SYSTEM.md).
+For complete documentation, see:
+- [Getting Started - Theme System](docs/getting-started/theme-system.md) - Quick start guide
+- [Theme System Guide](docs/THEME_SYSTEM.md) - Complete reference (includes guides for both external developers and library developers)
 
 
 ## Styles

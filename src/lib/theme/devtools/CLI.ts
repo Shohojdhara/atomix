@@ -4,9 +4,6 @@
  * Command-line interface for theme management
  */
 
-import { generateConfigTemplate } from '../generators/ConfigGenerator';
-import { generateCSS } from '../generators/CSSGenerator';
-import { generateTypes } from '../generators/TypeGenerator';
 import { loadThemeConfig } from '../config/loader';
 import { validateConfig } from '../config/validator';
 
@@ -37,39 +34,49 @@ export class ThemeCLI {
    */
   private registerDefaultCommands(): void {
     this.register({
-      name: 'init',
-      description: 'Initialize theme configuration',
-      options: {
-        '--format': 'Output format (typescript, javascript, json)',
-        '--examples': 'Include example themes',
-      },
-      handler: this.handleInit.bind(this),
-    });
-
-    this.register({
       name: 'validate',
       description: 'Validate theme configuration',
+      options: {
+        '--config': 'Path to config file',
+        '--strict': 'Enable strict validation',
+      },
       handler: this.handleValidate.bind(this),
     });
 
     this.register({
-      name: 'build',
-      description: 'Build theme CSS files',
-      options: {
-        '--output': 'Output directory',
-        '--minify': 'Minify output',
-      },
-      handler: this.handleBuild.bind(this),
+      name: 'list',
+      description: 'List all available themes',
+      handler: this.handleList.bind(this),
     });
 
     this.register({
-      name: 'types',
-      description: 'Generate TypeScript types',
+      name: 'inspect',
+      description: 'Inspect a specific theme',
       options: {
-        '--output': 'Output file',
-        '--module': 'Module name',
+        '--theme': 'Theme name to inspect',
+        '--json': 'Output as JSON',
       },
-      handler: this.handleTypes.bind(this),
+      handler: this.handleInspect.bind(this),
+    });
+
+    this.register({
+      name: 'compare',
+      description: 'Compare two themes',
+      options: {
+        '--theme1': 'First theme name',
+        '--theme2': 'Second theme name',
+      },
+      handler: this.handleCompare.bind(this),
+    });
+
+    this.register({
+      name: 'export',
+      description: 'Export theme to JSON',
+      options: {
+        '--theme': 'Theme name to export',
+        '--output': 'Output file path',
+      },
+      handler: this.handleExport.bind(this),
     });
 
     this.register({
@@ -140,29 +147,6 @@ export class ThemeCLI {
   }
 
   /**
-   * Handle init command
-   */
-  private handleInit(args: string[], options: Record<string, any>): void {
-    const format = options.format || 'typescript';
-    const includeExamples = options.examples !== false;
-
-    const config = generateConfigTemplate({
-      format: format as any,
-      includeExamples,
-      includeComments: true,
-    });
-
-    const filename = format === 'json' ? 'theme.config.json' : 
-                    format === 'javascript' ? 'theme.config.js' : 
-                    'theme.config.ts';
-
-    console.log(`Generating ${filename}...`);
-    console.log(config);
-    console.log(`\\nTheme configuration template generated!`);
-    console.log(`Save this content to ${filename} in your project root.`);
-  }
-
-  /**
    * Handle validate command
    */
   private handleValidate(args: string[], options: Record<string, any>): void {
@@ -173,16 +157,16 @@ export class ThemeCLI {
       if (result.valid) {
         console.log('✅ Theme configuration is valid');
         if (result.warnings.length > 0) {
-          console.log('\\n⚠️  Warnings:');
+          console.log('\n⚠️  Warnings:');
           result.warnings.forEach(warning => console.log(`  - ${warning}`));
         }
       } else {
         console.log('❌ Theme configuration is invalid');
-        console.log('\\nErrors:');
+        console.log('\nErrors:');
         result.errors.forEach(error => console.log(`  - ${error}`));
-        
+
         if (result.warnings.length > 0) {
-          console.log('\\nWarnings:');
+          console.log('\nWarnings:');
           result.warnings.forEach(warning => console.log(`  - ${warning}`));
         }
         process.exit(1);
@@ -194,49 +178,150 @@ export class ThemeCLI {
   }
 
   /**
-   * Handle build command
+   * Handle list command
    */
-  private handleBuild(args: string[], options: Record<string, any>): void {
-    console.log('Building themes...');
-    console.log('Note: This is a placeholder. Implement actual build logic based on your needs.');
-    
+  private handleList(args: string[], options: Record<string, any>): void {
     try {
       const config = loadThemeConfig();
-      console.log(`Found ${Object.keys(config.themes).length} themes to build`);
+      const themes = config.themes || {};
       
-      // This would typically:
-      // 1. Load each theme
-      // 2. Generate CSS for CSS themes
-      // 3. Execute createTheme for JS themes and generate CSS
-      // 4. Write files to output directory
+      console.log('Available Themes:\n');
       
-      console.log('✅ Build completed');
+      if (Object.keys(themes).length === 0) {
+        console.log('No themes found in configuration.');
+        return;
+      }
+
+      for (const [id, theme] of Object.entries(themes)) {
+        console.log(`  ${id}`);
+        console.log(`    Name: ${theme.name}`);
+        if (theme.description) {
+          console.log(`    Description: ${theme.description}`);
+        }
+        if (theme.version) {
+          console.log(`    Version: ${theme.version}`);
+        }
+        if (theme.status) {
+          console.log(`    Status: ${theme.status}`);
+        }
+        console.log();
+      }
     } catch (error) {
-      console.error('Build failed:', error);
+      console.error('Failed to list themes:', error);
       process.exit(1);
     }
   }
 
   /**
-   * Handle types command
+   * Handle inspect command
    */
-  private handleTypes(args: string[], options: Record<string, any>): void {
-    console.log('Generating TypeScript types...');
-    console.log('Note: This is a placeholder. Implement actual type generation logic.');
+  private handleInspect(args: string[], options: Record<string, any>): void {
+    const themeName = options.theme || args[0];
     
+    if (!themeName) {
+      console.error('Error: Theme name is required');
+      console.error('Usage: atomix-theme inspect --theme <theme-name>');
+      process.exit(1);
+    }
+
     try {
       const config = loadThemeConfig();
-      const moduleName = options.module || 'CustomTheme';
-      
-      // This would typically:
-      // 1. Load themes
-      // 2. Generate TypeScript definitions
-      // 3. Write to output file
-      
-      console.log(`Generated types for module: ${moduleName}`);
-      console.log('✅ Type generation completed');
+      const theme = config.themes?.[themeName];
+
+      if (!theme) {
+        console.error(`Error: Theme "${themeName}" not found`);
+        process.exit(1);
+      }
+
+      if (options.json) {
+        console.log(JSON.stringify(theme, null, 2));
+      } else {
+        console.log(`Theme: ${themeName}\n`);
+        console.log(JSON.stringify(theme, null, 2));
+      }
     } catch (error) {
-      console.error('Type generation failed:', error);
+      console.error('Failed to inspect theme:', error);
+      process.exit(1);
+    }
+  }
+
+  /**
+   * Handle compare command
+   */
+  private handleCompare(args: string[], options: Record<string, any>): void {
+    const theme1 = options.theme1 || args[0];
+    const theme2 = options.theme2 || args[1];
+
+    if (!theme1 || !theme2) {
+      console.error('Error: Two theme names are required');
+      console.error('Usage: atomix-theme compare --theme1 <name1> --theme2 <name2>');
+      process.exit(1);
+    }
+
+    try {
+      const config = loadThemeConfig();
+      const themeA = config.themes?.[theme1];
+      const themeB = config.themes?.[theme2];
+
+      if (!themeA) {
+        console.error(`Error: Theme "${theme1}" not found`);
+        process.exit(1);
+      }
+
+      if (!themeB) {
+        console.error(`Error: Theme "${theme2}" not found`);
+        process.exit(1);
+      }
+
+      console.log(`Comparing: ${theme1} vs ${theme2}\n`);
+      console.log('Differences:');
+      
+      // Simple comparison (could be enhanced)
+      const keys = new Set([...Object.keys(themeA), ...Object.keys(themeB)]);
+      
+      for (const key of keys) {
+        const valueA = (themeA as any)[key];
+        const valueB = (themeB as any)[key];
+        
+        if (JSON.stringify(valueA) !== JSON.stringify(valueB)) {
+          console.log(`\n  ${key}:`);
+          console.log(`    ${theme1}: ${JSON.stringify(valueA)}`);
+          console.log(`    ${theme2}: ${JSON.stringify(valueB)}`);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to compare themes:', error);
+      process.exit(1);
+    }
+  }
+
+  /**
+   * Handle export command
+   */
+  private handleExport(args: string[], options: Record<string, any>): void {
+    const themeName = options.theme || args[0];
+    const outputPath = options.output || `${themeName}.json`;
+
+    if (!themeName) {
+      console.error('Error: Theme name is required');
+      console.error('Usage: atomix-theme export --theme <theme-name> [--output <path>]');
+      process.exit(1);
+    }
+
+    try {
+      const config = loadThemeConfig();
+      const theme = config.themes?.[themeName];
+
+      if (!theme) {
+        console.error(`Error: Theme "${themeName}" not found`);
+        process.exit(1);
+      }
+
+      const fs = require('fs');
+      fs.writeFileSync(outputPath, JSON.stringify(theme, null, 2));
+      console.log(`✅ Theme exported to: ${outputPath}`);
+    } catch (error) {
+      console.error('Failed to export theme:', error);
       process.exit(1);
     }
   }
@@ -245,13 +330,13 @@ export class ThemeCLI {
    * Handle help command
    */
   private handleHelp(args: string[], options: Record<string, any>): void {
-    console.log('Atomix Theme CLI\\n');
-    console.log('Usage: atomix-theme <command> [options]\\n');
+    console.log('Atomix Theme CLI\n');
+    console.log('Usage: atomix-theme <command> [options]\n');
     console.log('Commands:');
 
     for (const [name, command] of this.commands.entries()) {
       console.log(`  ${name.padEnd(12)} ${command.description}`);
-      
+
       if (command.options) {
         for (const [option, description] of Object.entries(command.options)) {
           console.log(`    ${option.padEnd(16)} ${description}`);

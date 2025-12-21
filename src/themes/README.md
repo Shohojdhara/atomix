@@ -1,8 +1,7 @@
-# Atomix Design System Themes
 
 # Atomix Design System Themes
 
-This guide documents how to build SCSS-based themes for the Atomix Design System, using the existing `shaj-default` theme as the reference implementation. It covers the architecture, creation process, best practices, testing and validation, and maintenance guidelines. Real code excerpts are taken from `./src/themes/shaj-default` to ensure your new themes align with the established patterns.
+This guide documents how to build SCSS-based themes for the Atomix Design System
 
 ## Theme Architecture
 

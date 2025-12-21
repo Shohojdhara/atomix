@@ -1,7 +1,9 @@
 # Atomix CLI Reference Guide
 
-**Version:** Enhanced Edition  
+**Version:** Enhanced Edition v2.0  
 **Date:** December 2024
+
+> **📢 NEW:** The Atomix CLI has been significantly enhanced with integrated theme management, improved error handling, and comprehensive documentation. See the [Enhanced CLI Reference](./CLI_ENHANCED_REFERENCE.md) for complete details.
 
 ---
 
@@ -27,16 +29,57 @@ npx atomix --help
 # Initialize a new project with interactive wizard
 npx atomix init
 
-# Create and build a custom theme
-npx atomix create-theme my-theme
-npx atomix build-theme my-theme --watch
+# Create a new theme (NEW!)
+npx atomix theme create my-theme --type css
+
+# Build and watch a theme
+npx atomix build-theme themes/my-theme --watch
+
+# List all available themes (NEW!)
+npx atomix theme list
 
 # Generate a new component
 npx atomix generate component Button --typescript --story
 
 # Migrate from other frameworks
 npx atomix migrate tailwind --source ./src
+
+# Run diagnostics (ENHANCED!)
+npx atomix doctor
 ```
+
+---
+
+## 🆕 What's New in v2.0
+
+### Integrated Theme Management
+- `atomix theme validate` - Validate theme configuration
+- `atomix theme list` - List all themes
+- `atomix theme inspect` - Inspect theme details
+- `atomix theme compare` - Compare two themes
+- `atomix theme export` - Export theme to JSON
+- **`atomix theme create`** - Create new theme with scaffolding
+
+### Enhanced Features
+- Better error messages with actionable suggestions
+- Improved `doctor` command with theme CLI checks
+- Debug mode for detailed troubleshooting
+- Comprehensive documentation
+
+### Documentation
+- [Enhanced CLI Reference](./CLI_ENHANCED_REFERENCE.md) - Complete command reference
+- [CLI Improvements Plan](../scripts/CLI_IMPROVEMENTS.md) - Roadmap and future features
+- [CLI Enhancements Summary](../scripts/CLI_ENHANCEMENTS_SUMMARY.md) - Overview of changes
+
+---
+
+## 📚 Documentation
+
+For complete documentation, see:
+- **[Enhanced CLI Reference](./CLI_ENHANCED_REFERENCE.md)** - Comprehensive guide with examples
+- [Theme System Guide](./THEME_SYSTEM.md) - Theme development guide
+- [Developer Guide](./DEVELOPER_GUIDE.md) - Component development
+- [Migration Guide](./scss-migration-guide.md) - Migration from other frameworks
 
 ---
 
@@ -626,6 +669,8 @@ npx atomix migrate tailwind --create-backup
 
 **Version:** 0.3.2-enhanced  
 **Last Updated:** December 2024
+
+
 
 
 
