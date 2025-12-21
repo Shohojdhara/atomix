@@ -48,12 +48,6 @@
     max-width: var(--#{$prefix}navbar-container-max-width);
     padding: 0 var(--#{$prefix}navbar-padding-x);
     margin: 0 auto;
-    gap: var(--#{$prefix}navbar-padding-x);
-
-    @include media.media-down('md') {
-      flex-wrap: nowrap;
-      gap: 0.5rem;
-    }
   }
 
   // 3. Element Styles (BEM Elements)
