@@ -57,7 +57,7 @@ export default {
           '@babel/preset-env',
           {
             targets: { node: '18' },
-            modules: false,
+            modules: 'commonjs',
             useBuiltIns: 'usage',
             corejs: 3,
           },
@@ -76,7 +76,7 @@ export default {
             corejs: 3,
             helpers: true,
             regenerator: true,
-            useESModules: true,
+            useESModules: false,
           },
         ],
       ],
