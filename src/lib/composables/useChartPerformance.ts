@@ -137,22 +137,39 @@ export function useChartPerformance() {
 
   /**
    * Debounced data updates for real-time charts
-   * Returns a debounced function - caller should use useCallback/useMemo as needed
+   * Returns a debounced function that maintains timeout state across calls
+   * Uses a closure to maintain state - each call to useDebouncedUpdates creates
+   * a new debounced function with its own persistent timeout state
    */
   const useDebouncedUpdates = useCallback((updateFunction: () => void, delay: number = 100) => {
-    // Return a function that can be called to debounce updates
-    // The actual debouncing logic should be handled by the caller using useRef
+    // Use a closure variable to maintain timeout state across multiple calls to the returned function
+    // This variable is created once when useDebouncedUpdates is called and persists
+    // across all invocations of the returned debounced function
     let timeoutId: NodeJS.Timeout | null = null;
 
-    return () => {
-      if (timeoutId) {
+    const debouncedFn: (() => void) & { cancel: () => void } = () => {
+      // Clear any existing timeout before setting a new one
+      if (timeoutId !== null) {
         clearTimeout(timeoutId);
+        timeoutId = null;
       }
 
+      // Set new timeout and store the ID
       timeoutId = setTimeout(() => {
         updateFunction();
+        timeoutId = null;
       }, delay);
     };
+
+    // Add cleanup method to cancel pending debounced calls
+    debouncedFn.cancel = () => {
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+    };
+
+    return debouncedFn;
   }, []);
 
   /**
@@ -191,10 +208,14 @@ export function useChartPerformance() {
 
   /**
    * Optimized animation frame handling
-   * Returns animation control functions - caller should manage refs
+   * Returns animation control functions that maintain state across calls
+   * Uses closures to maintain state - each call to useAnimationFrame creates
+   * a new animation controller with its own persistent state
    */
   const useAnimationFrame = useCallback((callback: () => void) => {
-    // Return functions that can be used with refs managed by the caller
+    // Use closure variables to maintain animation state across multiple calls
+    // These variables are created once when useAnimationFrame is called and persist
+    // across all invocations of the returned animation control functions
     let requestId: number | null = null;
     let previousTime: number | null = null;
 
@@ -208,7 +229,10 @@ export function useChartPerformance() {
     };
 
     const startAnimation = () => {
-      requestId = requestAnimationFrame(animate);
+      // Only start if not already running
+      if (requestId === null) {
+        requestId = requestAnimationFrame(animate);
+      }
     };
 
     const stopAnimation = () => {
@@ -216,6 +240,7 @@ export function useChartPerformance() {
         cancelAnimationFrame(requestId);
         requestId = null;
       }
+      previousTime = null;
     };
 
     return { startAnimation, stopAnimation };
