@@ -1,59 +1,8 @@
 import React, { ReactNode, useId } from 'react';
 import { ACCORDION } from '../../lib/constants/components';
 import { useAccordion } from '../../lib/composables/useAccordion';
-import { BaseComponentProps, IconPosition, AtomixGlassProps } from '../../lib/types/components';
+import type { AccordionProps, AtomixGlassProps } from '../../lib/types/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
-
-/**
- * Accordion component for showing/hiding content panels
- */
-export interface AccordionProps extends BaseComponentProps {
-  /**
-   * Title of the accordion
-   */
-  title: string;
-
-  /**
-   * Content to be shown when accordion is expanded
-   */
-  children: ReactNode;
-
-  /**
-   * Whether the accordion is initially open
-   */
-  defaultOpen?: boolean;
-
-  /**
-   * Position of the icon (right or left)
-   */
-  iconPosition?: IconPosition;
-
-  /**
-   * Custom icon for the accordion
-   */
-  icon?: ReactNode;
-
-  /**
-   * Controlled open state (overrides defaultOpen)
-   */
-  isOpen?: boolean;
-
-  /**
-   * Callback when open state changes (for controlled mode)
-   */
-  onOpenChange?: (open: boolean) => void;
-
-  /**
-   * Glass morphism effect for the accordion
-   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
-   */
-  glass?: AtomixGlassProps | boolean;
-
-  /**
-   * Custom style for the accordion
-   */
-  style?: React.CSSProperties;
-}
 
 export const Accordion: React.FC<AccordionProps> = ({
   title,

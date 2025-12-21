@@ -1,10 +1,13 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from 'eslint-plugin-storybook';
+// ESLint flat config for Atomix Design System
+import js from '@eslint/js';
+import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import importPlugin from 'eslint-plugin-import';
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 
-const js = require('@eslint/js');
-const tsParser = require('@typescript-eslint/parser');
-
-module.exports = [
+export default [
   js.configs.recommended,
   {
     files: ['**/*.{js,jsx}'],
@@ -58,10 +61,47 @@ module.exports = [
         JSX: 'readonly',
       },
     },
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+      react: reactPlugin,
+      'react-hooks': reactHooksPlugin,
+      import: importPlugin,
+      'jsx-a11y': jsxA11yPlugin,
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
     rules: {
       'no-unused-vars': 'off', // TypeScript handles this
       'no-console': 'off',
       'no-undef': 'off', // TypeScript handles this
+      '@typescript-eslint/no-require-imports': 'warn',
+      '@typescript-eslint/no-var-requires': 'warn',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/rules-of-hooks': 'error',
+      'react/react-in-jsx-scope': 'off', // Not needed with React 17+
+      'react/prop-types': 'off', // TypeScript handles prop validation
+    },
+  },
+  {
+    files: ['**/*.{jsx,tsx}'],
+    plugins: {
+      react: reactPlugin,
+      'react-hooks': reactHooksPlugin,
+      'jsx-a11y': jsxA11yPlugin,
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+    rules: {
+      ...reactPlugin.configs.recommended.rules,
+      ...reactHooksPlugin.configs.recommended.rules,
+      'react/react-in-jsx-scope': 'off', // Not needed with React 17+
+      'react/prop-types': 'off', // TypeScript handles prop validation
     },
   },
   {
@@ -73,6 +113,16 @@ module.exports = [
       '**/*.d.ts',
       'storybook-static/',
       'docs/',
+      '**/*.stories.tsx',
+      '**/*.stories.ts',
+      '**/*.test.tsx',
+      '**/*.test.ts',
+      '**/*.spec.tsx',
+      '**/*.spec.ts',
+      '.storybook/**/*',
+      'src/stories/**/*',
+      '**/*.old.tsx',
+      '**/*.old.ts',
     ],
   },
 ];

@@ -385,22 +385,6 @@ export function mergePartStyles(
 }
 
 /**
- * Utility function to apply part styles to props
- */
-export function applyPartStyles<T extends Record<string, any>>(
-  props: T,
-  part?: PartStyleProps
-): T {
-  if (!part) return props;
-
-  return {
-    ...props,
-    className: [props.className, part.className].filter(Boolean).join(' '),
-    style: { ...props.style, ...part.style },
-  };
-}
-
-/**
  * Map of component names to their part types
  */
 export type ComponentPartsMap = {

@@ -76,26 +76,68 @@ export function loadAtomixConfig(
  * Resolve config path
  * 
  * Finds atomix.config.ts in the project, checking common locations.
+ * Returns null in browser environments where file system access is not available.
+ * 
+ * This function is designed to work in Node.js environments only.
+ * In browser builds, it will always return null without attempting to access Node.js modules.
+ * 
+ * @internal This function uses Node.js modules and should not be called in browser environments.
  */
 export function resolveConfigPath(): string | null {
-    if (typeof process === 'undefined' || !process.cwd) {
+    // Early return for browser environments - prevents any Node.js module access
+    // This check happens before any require() calls, preventing bundlers from analyzing them
+    if (typeof window !== 'undefined' || typeof process === 'undefined' || !process.cwd) {
         return null;
     }
 
-    const fs = require('fs');
-    const path = require('path');
-    
-    const cwd = process.cwd();
-    const possiblePaths = [
-        path.join(cwd, 'atomix.config.ts'),
-        path.join(cwd, 'atomix.config.js'),
-        path.join(cwd, 'atomix.config.mjs'),
-    ];
+    // Only attempt to load Node.js modules in Node.js runtime
+    // Use a lazy-loading pattern that prevents static analysis by bundlers
+    try {
+        // Create a function that only executes in Node.js runtime
+        // Use string-based module names to prevent static analysis by bundlers
+        const loadNodeModules = () => {
+            // These requires are only executed at runtime in Node.js environments
+            // They are marked as external in Rollup config and should not be bundled
+            // Using string concatenation and computed property access to prevent static analysis
+            if (typeof require === 'undefined') {
+                return null;
+            }
+            
+            // Use a try-catch wrapper to safely access require
+            try {
+                // Build module names dynamically to prevent static analysis
+                const moduleNames: [string, string] = ['f' + 's', 'p' + 'a' + 't' + 'h'];
+                // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+                const fs = require(moduleNames[0]);
+                // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+                const path = require(moduleNames[1]);
+                return { fs, path };
+            } catch {
+                return null;
+            }
+        };
 
-    for (const configPath of possiblePaths) {
-        if (fs.existsSync(configPath)) {
-            return configPath;
+        const modules = loadNodeModules();
+        if (!modules) {
+            return null;
         }
+
+        const { fs, path } = modules;
+        const cwd = process.cwd();
+        const possiblePaths = [
+            path.join(cwd, 'atomix.config.ts'),
+            path.join(cwd, 'atomix.config.js'),
+            path.join(cwd, 'atomix.config.mjs'),
+        ];
+
+        for (const configPath of possiblePaths) {
+            if (fs.existsSync(configPath)) {
+                return configPath;
+            }
+        }
+    } catch (error) {
+        // Silently fail in browser environments or when modules are unavailable
+        return null;
     }
 
     return null;

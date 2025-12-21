@@ -1,5 +1,6 @@
 export type { SliderProps, VideoPlayerProps } from '../lib/types/components';
-export { default as Accordion, type AccordionProps } from './Accordion/Accordion';
+export { default as Accordion } from './Accordion/Accordion';
+export type { AccordionProps } from '../lib/types/components';
 export { default as AtomixLogo, type AtomixLogoProps } from './AtomixLogo/AtomixLogo';
 export { default as AtomixGlass, type AtomixGlassProps } from './AtomixGlass';
 export { default as Avatar, type AvatarProps } from './Avatar/Avatar';
@@ -37,7 +38,7 @@ export {
   type BubbleDataPoint,
   type CandlestickChartProps,
   type CandlestickDataPoint,
-  type ChartProps,
+  // ChartProps exported separately from lib/types/components to avoid conflict
   type DonutChartProps,
   type FunnelChartProps,
   type FunnelDataPoint,
@@ -56,6 +57,8 @@ export {
   type WaterfallChartProps,
   type WaterfallDataPoint,
 } from './Chart';
+// Export ChartProps from lib/types/components to avoid duplicate export conflict
+export type { ChartProps } from '../lib/types/components';
 export {
   default as ColorModeToggle,
   type ColorModeToggleProps,

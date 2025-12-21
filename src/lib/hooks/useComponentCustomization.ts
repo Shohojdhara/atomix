@@ -11,6 +11,7 @@ import type { ComponentPartsMap } from '../types/partProps';
 import type { ComponentCSSVariables } from '../constants/cssVariables';
 import { mergeCSSVars } from '../theme/cssVariableMapper';
 import { mergePartStyles } from '../types/partProps';
+import { mergeClassNames } from '../utils/componentUtils';
 
 /**
  * Component names that support customization
@@ -150,13 +151,6 @@ export function useMergedProps<T extends Record<string, any>>(
   return useMemo(() => {
     return { ...defaultProps, ...props };
   }, [defaultProps, props]);
-}
-
-/**
- * Utility to create className from parts
- */
-export function mergeClassNames(...classNames: Array<string | undefined | null | false>): string {
-  return classNames.filter(Boolean).join(' ');
 }
 
 /**

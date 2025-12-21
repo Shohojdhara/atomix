@@ -8,7 +8,6 @@ export {
   useComponentCustomization,
   useComponentDefaultProps,
   useMergedProps,
-  mergeClassNames,
   applyCSSVarsToStyle,
 } from './useComponentCustomization';
 

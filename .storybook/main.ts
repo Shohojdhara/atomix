@@ -24,7 +24,6 @@ const config: StorybookConfig = {
   addons: [
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
-    '@storybook/addon-a11y',
   ],
   docs: {
     autodocs: 'tag',
@@ -65,6 +64,16 @@ const config: StorybookConfig = {
       ...(config.optimizeDeps.include || []),
       '@phosphor-icons/react',
     ];
+
+    // Configure Sass to use modern API and silence deprecation warnings
+    config.css = config.css || {};
+    config.css.preprocessorOptions = {
+      ...(config.css.preprocessorOptions || {}),
+      scss: {
+        api: 'modern-compiler',
+        silenceDeprecations: ['legacy-js-api'],
+      },
+    };
 
     // Add CSP headers
     config.server = config.server || {};

@@ -717,6 +717,27 @@ export interface AccordionProps extends BaseComponentProps {
   icon?: ReactNode;
 
   /**
+   * Whether the accordion is open
+   */
+  isOpen?: boolean;
+
+  /**
+   * Whether the accordion is disabled
+   */
+  disabled?: boolean;
+
+  onOpenChange?: (open: boolean) => void;
+
+  /**
+   * Optional open handler
+   */
+  onOpen?: () => void;
+
+  /**
+   * Optional close handler
+   */
+  onClose?: () => void;
+  /**
    * Glass morphism effect for the accordion
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */

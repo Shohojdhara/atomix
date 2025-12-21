@@ -12,14 +12,14 @@
 
     /* Strictness */
     "strict": true,
+    "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
 
     /* For library builds with Rollup: */
     "module": "ESNext",
     "moduleResolution": "node",
-    "declaration": true,
-    "declarationMap": true,
+    /* Note: declaration settings removed - noEmit: true means no output */
     "sourceMap": true,
 
     /* Library specific */
@@ -33,10 +33,6 @@
       "@/*": ["./src/*"]
     },
 
-    /* Output Configuration */
-    "declarationDir": "./dist/types",
-    "outDir": "./dist",
-
     /* Type Definitions */
     "typeRoots": ["./node_modules/@types", "./src/types", "./types"],
 
@@ -49,7 +45,13 @@
     "dist",
     "**/*.stories.tsx",
     "**/*.stories.ts",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
     "**/scripts/**",
-    "src/htmlComponentsEntry.ts"
+    "src/htmlComponentsEntry.ts",
+    ".storybook/**/*",
+    "src/stories/**/*"
   ]
 }

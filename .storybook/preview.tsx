@@ -5,25 +5,6 @@ import '../src/styles/index.scss';
 
 const preview: Preview = {
   globalTypes: {
-    theme: {
-      description: 'Theme selector',
-      defaultValue: 'atomix',
-      toolbar: {
-        title: 'Theme',
-        icon: 'paintbrush',
-        items: [
-          { value: 'atomix', title: 'Atomix (Base)' },
-          { value: 'shaj-default', title: 'Shaj Default' },
-          { value: 'boomdevs', title: 'BoomDevs' },
-          { value: 'esrar', title: 'Esrar' },
-          { value: 'mashroom', title: 'Mashroom' },
-          { value: 'applemix', title: 'Applemix' },
-          { value: 'flashtrade', title: 'Flash Trade' },
-          { value: 'none', title: 'None' },
-        ],
-        dynamicTitle: true,
-      },
-    },
     colorMode: {
       description: 'Color mode selector',
       defaultValue: 'light',
@@ -166,39 +147,19 @@ const preview: Preview = {
 
   decorators: [
     (Story, context) => {
-      const theme = context.globals?.theme || 'atomix';
       const colorMode = context.globals?.colorMode || 'light';
 
       useEffect(() => {
-
-
-        // Update data-theme attribute
-        document.body.setAttribute('data-theme', theme);
+        // Set default theme
+        document.body.setAttribute('data-theme', 'atomix');
 
         // Handle color mode
         document.body.classList.remove('light', 'dark');
         document.body.classList.add(colorMode);
         document.body.setAttribute('data-atomix-color-mode', colorMode);
 
-        // Load theme CSS
-        const themeLink = document.getElementById('storybook-theme');
-        if (themeLink) {
-          themeLink.remove();
-        }
-
-        const link = document.createElement('link');
-        link.id = 'storybook-theme';
-        link.rel = 'stylesheet';
-        let href = '';
-        if (theme === 'atomix') {
-          href = `/atomix.css`;
-        } else if (theme !== 'none') {
-          href = `/themes/${theme}.css`;
-        }
-        if (href) {
-          link.href = href;
-          document.head.appendChild(link);
-        }
+        // Load base theme CSS (atomix.css is already loaded via import)
+        // No need to dynamically load theme CSS since we're using the base theme only
 
         // Apply color mode to the theme
         const themeStyle = document.getElementById('storybook-theme-vars');
@@ -247,7 +208,7 @@ const preview: Preview = {
 
         // Also update the color mode attribute that the components use
         document.documentElement.setAttribute('data-atomix-color-mode', colorMode);
-      }, [theme, colorMode]);
+      }, [colorMode]);
 
       return Story();
     },

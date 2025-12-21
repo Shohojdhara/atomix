@@ -5,13 +5,13 @@ export default {
       {
         targets: {
           browsers: ['last 2 versions', 'not dead', 'not IE 11', '> 1%'],
-          node: '16',
+          node: '18',
         },
         useBuiltIns: 'usage',
         corejs: 3,
         bugfixes: true,
         loose: false,
-        modules: false, // Keep ES modules for Rollup/bundlers
+        modules: false,
         debug: process.env.NODE_ENV === 'development',
       },
     ],
@@ -41,7 +41,7 @@ export default {
         corejs: 3,
         helpers: true,
         regenerator: true,
-        useESModules: true, // Align with Rollup ESM build
+        useESModules: true,
       },
     ],
   ],
@@ -56,8 +56,8 @@ export default {
         [
           '@babel/preset-env',
           {
-            targets: { node: '16' },
-            modules: 'commonjs',
+            targets: { node: '18' },
+            modules: false,
             useBuiltIns: 'usage',
             corejs: 3,
           },
@@ -76,7 +76,7 @@ export default {
             corejs: 3,
             helpers: true,
             regenerator: true,
-            useESModules: false,
+            useESModules: true,
           },
         ],
       ],
@@ -87,7 +87,7 @@ export default {
           '@babel/preset-env',
           {
             targets: { node: 'current' },
-            modules: 'commonjs', // Use CommonJS for tests
+            modules: 'commonjs',
           },
         ],
       ],
@@ -98,7 +98,7 @@ export default {
             corejs: 3,
             helpers: true,
             regenerator: true,
-            useESModules: false, // Use CommonJS for tests
+            useESModules: false,
           },
         ],
       ],
