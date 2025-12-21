@@ -44,8 +44,8 @@ const ListItems = ({ variant }: { variant: string }) => (
   </>
 );
 
-const createListSection = (title: string, variant: string) => (
-  <div style={sectionStyle}>
+const createListSection = (title: string, variant: string, key?: string) => (
+  <div key={key} style={sectionStyle}>
     <h3 style={titleStyle}>{title}</h3>
     <List variant={variant as any}>
       <ListItems variant={variant} />
@@ -67,7 +67,7 @@ export const VariantsShowcase: Story = {
       <div className="u-d-flex u-flex-column u-gap-8">
         {['Default', 'Dash', 'Number', 'Text'].map((title, index) => {
           const variant = index === 0 ? 'default' : title.toLowerCase();
-          return createListSection(`${title} List`, variant);
+          return createListSection(`${title} List`, variant, variant);
         })}
       </div>
     );

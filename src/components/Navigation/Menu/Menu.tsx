@@ -2,7 +2,7 @@ import React, { forwardRef, ReactNode } from 'react';
 import { MenuProps, MenuItemProps } from '../../../lib/types/components';
 import { Icon } from '../../Icon/Icon';
 
-export const Menu: React.FC<MenuProps> = forwardRef<HTMLDivElement, MenuProps>(
+export const Menu = forwardRef<HTMLDivElement, MenuProps>(
   ({ children, className = '', style, disabled = false }, ref) => {
     return (
       <div ref={ref} className={`c-menu ${className}`} style={style}>
@@ -24,6 +24,8 @@ export const Menu: React.FC<MenuProps> = forwardRef<HTMLDivElement, MenuProps>(
   }
 );
 
+Menu.displayName = 'Menu';
+
 export type { MenuProps, MenuItemProps, MenuDividerProps };
 
 export default Menu;
@@ -35,7 +37,7 @@ interface MenuDividerProps {
   className?: string;
 }
 
-export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuItemProps>(
+export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>(
   (
     { children, href = '#', icon, active = false, disabled = false, onClick, className = '' },
     ref
@@ -83,6 +85,8 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
   }
 );
 
+MenuItem.displayName = 'MenuItem';
+
 // Map icon-lux names to Phosphor icon names
 export const mapIconName = (luxIconName: string): any => {
   const iconMap: Record<string, any> = {
@@ -104,8 +108,10 @@ export const mapIconName = (luxIconName: string): any => {
   return iconMap[luxIconName] || 'Circle'; // Default to Circle if no mapping found
 };
 
-export const MenuDivider: React.FC<MenuDividerProps> = forwardRef<HTMLLIElement, MenuDividerProps>(
+export const MenuDivider = forwardRef<HTMLLIElement, MenuDividerProps>(
   ({ className = '' }, ref) => {
     return <li ref={ref} className={`c-menu__divider ${className}`} role="separator"></li>;
   }
 );
+
+MenuDivider.displayName = 'MenuDivider';

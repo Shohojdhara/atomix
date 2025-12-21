@@ -25,16 +25,9 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
     ...rest
   } = props;
 
-  if (!slides || slides.length === 0) {
-    return (
-      <div className="c-slider c-slider--empty" style={{ height, width, ...style }}>
-        <div className="c-slider__empty-message">No slides available</div>
-      </div>
-    );
-  }
-
+  // Hooks must be called unconditionally - before early return
   const slider = useSlider({
-    slides,
+    slides: slides || [],
     slidesToShow,
     spaceBetween,
     loop,
@@ -71,6 +64,14 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
     if (slideWidth === 0) return 0;
     return allSlides.length * (slideWidth + spaceBetween) - spaceBetween;
   }, [allSlides.length, slideWidth, spaceBetween]);
+
+  if (!slides || slides.length === 0) {
+    return (
+      <div className="c-slider c-slider--empty" style={{ height, width, ...style }}>
+        <div className="c-slider__empty-message">No slides available</div>
+      </div>
+    );
+  }
 
   const containerClasses = [
     'c-slider',

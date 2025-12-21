@@ -97,10 +97,14 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
   const hasBackgroundSlider = !!defaultProps.backgroundSlider;
 
   /**
-   * Initialize background slider hook if enabled
+   * Initialize background slider hook - always call hook, conditionally use result
    */
+  const backgroundSliderResult = useHeroBackgroundSlider(
+    defaultProps.backgroundSlider || { slides: [], autoplay: false, interval: 5000 }
+  );
+  
   const backgroundSlider = hasBackgroundSlider && defaultProps.backgroundSlider
-    ? useHeroBackgroundSlider(defaultProps.backgroundSlider)
+    ? backgroundSliderResult
     : undefined;
 
   /**

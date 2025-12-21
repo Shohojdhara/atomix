@@ -538,9 +538,13 @@ export class ThemeEngine {
   /**
    * Add change listener
    */
+  // @ts-ignore - TypeScript overloads are valid, ESLint doesn't understand them
   on(event: 'change', listener: ThemeChangeListener): void;
+  // @ts-ignore
   on(event: 'load', listener: ThemeLoadListener): void;
+  // @ts-ignore
   on(event: 'error', listener: ThemeErrorListener): void;
+  // @ts-ignore
   on(event: 'revert', listener: ThemeRevertListener): void;
   on(
     event: 'change' | 'load' | 'error' | 'revert',
@@ -560,9 +564,13 @@ export class ThemeEngine {
   /**
    * Remove listener
    */
+  // @ts-ignore - TypeScript overloads are valid, ESLint doesn't understand them
   off(event: 'change', listener: ThemeChangeListener): void;
+  // @ts-ignore
   off(event: 'load', listener: ThemeLoadListener): void;
+  // @ts-ignore
   off(event: 'error', listener: ThemeErrorListener): void;
+  // @ts-ignore
   off(event: 'revert', listener: ThemeRevertListener): void;
   off(
     event: 'change' | 'load' | 'error' | 'revert',

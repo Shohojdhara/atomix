@@ -6249,36 +6249,6 @@ export interface FooterSocialLinkProps extends BaseComponentProps {
 export type GlassMode = 'standard' | 'polar' | 'prominent' | 'shader';
 
 /**
- * Glass container size configuration
- */
-export interface GlassSize {
-  /**
-   * Width of the glass container
-   */
-  width: number;
-
-  /**
-   * Height of the glass container
-   */
-  height: number;
-}
-
-/**
- * Mouse position coordinates
- */
-export interface MousePosition {
-  /**
-   * X coordinate
-   */
-  x: number;
-
-  /**
-   * Y coordinate
-   */
-  y: number;
-}
-
-/**
  * Glass container component properties
  */
 export interface GlassContainerProps extends BaseComponentProps {

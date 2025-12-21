@@ -47,7 +47,7 @@ function flattenObject(
     result: Record<string, string> = {}
 ): Record<string, string> {
     for (const key in obj) {
-        if (!obj.hasOwnProperty(key)) continue;
+        if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
 
         const value = obj[key];
         const newKey = prefix ? `${prefix}-${key}` : key;

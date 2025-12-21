@@ -90,7 +90,7 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
     }
 
     if (typeof value === 'string') {
-      return <span className="value-string">"{value}"</span>;
+      return <span className="value-string">&quot;{value}&quot;</span>;
     }
 
     if (typeof value === 'number') {

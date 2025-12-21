@@ -7,7 +7,7 @@ import {
 import { Icon } from '../../Icon/Icon';
 import { mapIconName } from './Menu'; // Import the mapping function
 
-export const MegaMenu: React.FC<MegaMenuProps> = forwardRef<HTMLDivElement, MegaMenuProps>(
+export const MegaMenu = forwardRef<HTMLDivElement, MegaMenuProps>(
   ({ children, className = '', style, disabled = false }, ref) => {
     return (
       <div ref={ref} className={`c-menu c-menu--mega ${className}`} style={style}>
@@ -31,7 +31,9 @@ export const MegaMenu: React.FC<MegaMenuProps> = forwardRef<HTMLDivElement, Mega
   }
 );
 
-export const MegaMenuColumn: React.FC<MegaMenuColumnProps> = forwardRef<
+MegaMenu.displayName = 'MegaMenu';
+
+export const MegaMenuColumn = forwardRef<
   HTMLDivElement,
   MegaMenuColumnProps
 >(({ title, icon, children, width = 'auto', className = '', disabled = false }, ref) => {
@@ -80,7 +82,9 @@ export const MegaMenuColumn: React.FC<MegaMenuColumnProps> = forwardRef<
   );
 });
 
-export const MegaMenuLink: React.FC<MegaMenuLinkProps> = forwardRef<
+MegaMenuColumn.displayName = 'MegaMenuColumn';
+
+export const MegaMenuLink = forwardRef<
   HTMLAnchorElement,
   MegaMenuLinkProps
 >(({ href, children, className = '', disabled = false, onClick }, ref) => {
@@ -107,3 +111,5 @@ export const MegaMenuLink: React.FC<MegaMenuLinkProps> = forwardRef<
     </a>
   );
 });
+
+MegaMenuLink.displayName = 'MegaMenuLink';

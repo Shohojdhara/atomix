@@ -289,9 +289,11 @@ export class ThemeManager {
   /**
    * Add event listener
    */
+  /* eslint-disable no-dupe-class-members */
   on(event: 'themeChange', callback: ThemeChangeCallback): void;
   on(event: 'themeLoad', callback: ThemeLoadCallback): void;
   on(event: 'themeError', callback: ThemeErrorCallback): void;
+  /* eslint-enable no-dupe-class-members */
   on(event: ThemeManagerEvent, callback: ThemeChangeCallback | ThemeLoadCallback | ThemeErrorCallback): void {
     if (event === 'themeChange') {
       this.eventListeners.themeChange.push(callback as ThemeChangeCallback);
@@ -305,9 +307,11 @@ export class ThemeManager {
   /**
    * Remove event listener
    */
+  /* eslint-disable no-dupe-class-members */
   off(event: 'themeChange', callback: ThemeChangeCallback): void;
   off(event: 'themeLoad', callback: ThemeLoadCallback): void;
   off(event: 'themeError', callback: ThemeErrorCallback): void;
+  /* eslint-enable no-dupe-class-members */
   off(event: ThemeManagerEvent, callback: ThemeChangeCallback | ThemeLoadCallback | ThemeErrorCallback): void {
     if (event === 'themeChange') {
       this.eventListeners.themeChange = this.eventListeners.themeChange.filter(cb => cb !== callback);

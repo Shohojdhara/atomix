@@ -45,6 +45,22 @@ const AnimatedChart = memo(
         }>
       >([]);
 
+      // Animation time tracking - moved outside callback
+      useEffect(() => {
+        const animateFrame = (timestamp: number) => {
+          timeRef.current = timestamp;
+          animationRef.current = requestAnimationFrame(animateFrame);
+        };
+
+        animationRef.current = requestAnimationFrame(animateFrame);
+
+        return () => {
+          if (animationRef.current) {
+            cancelAnimationFrame(animationRef.current);
+          }
+        };
+      }, []);
+
       const renderContent = useCallback(
         ({
           scales,
@@ -57,21 +73,6 @@ const AnimatedChart = memo(
         }: ChartRenderContentParams) => {
           // Use toolbar state if available, fallback to config for backward compatibility
           const shouldAnimate = toolbarState?.animationsEnabled ?? renderConfig?.animate ?? true;
-          // Animation time tracking
-          useEffect(() => {
-            const animateFrame = (timestamp: number) => {
-              timeRef.current = timestamp;
-              animationRef.current = requestAnimationFrame(animateFrame);
-            };
-
-            animationRef.current = requestAnimationFrame(animateFrame);
-
-            return () => {
-              if (animationRef.current) {
-                cancelAnimationFrame(animationRef.current);
-              }
-            };
-          }, []);
 
           if (!chartDatasets.length) return null;
 
@@ -117,7 +118,7 @@ const AnimatedChart = memo(
 
               case 'area':
               case 'line':
-              default:
+              default: {
                 // Create animated line/area
                 const points = dataset.data.map((point: any, pointIndex: number) => ({
                   x: padding + (pointIndex / (dataset.data.length - 1)) * chartWidth,
@@ -181,6 +182,7 @@ const AnimatedChart = memo(
                   });
                 }
                 break;
+              }
             }
           });
 

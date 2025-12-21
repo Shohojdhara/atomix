@@ -70,35 +70,33 @@ export function useChartPerformance() {
       height: number,
       padding: { top: number; right: number; bottom: number; left: number }
     ) => {
-      return useMemo(() => {
-        if (!datasets.length) return null;
+      if (!datasets.length) return null;
 
-        const innerWidth = width - padding.left - padding.right;
-        const innerHeight = height - padding.top - padding.bottom;
+      const innerWidth = width - padding.left - padding.right;
+      const innerHeight = height - padding.top - padding.bottom;
 
-        // Calculate bounds efficiently
-        const allValues = datasets.flatMap(dataset => dataset.data.map(d => d.value));
-        const minValue = Math.min(...allValues);
-        const maxValue = Math.max(...allValues);
-        const valueRange = maxValue - minValue;
+      // Calculate bounds efficiently
+      const allValues = datasets.flatMap(dataset => dataset.data.map(d => d.value));
+      const minValue = Math.min(...allValues);
+      const maxValue = Math.max(...allValues);
+      const valueRange = maxValue - minValue;
 
-        // Pre-calculate scale functions for better performance
-        const xScale = (i: number, dataLength: number) =>
-          padding.left + (i / (dataLength - 1)) * innerWidth;
+      // Pre-calculate scale functions for better performance
+      const xScale = (i: number, dataLength: number) =>
+        padding.left + (i / (dataLength - 1)) * innerWidth;
 
-        const yScale = (value: number) =>
-          padding.top + innerHeight - ((value - minValue) / valueRange) * innerHeight;
+      const yScale = (value: number) =>
+        padding.top + innerHeight - ((value - minValue) / valueRange) * innerHeight;
 
-        return {
-          xScale,
-          yScale,
-          minValue,
-          maxValue,
-          valueRange,
-          innerWidth,
-          innerHeight,
-        };
-      }, [datasets, width, height, padding.top, padding.right, padding.bottom, padding.left]);
+      return {
+        xScale,
+        yScale,
+        minValue,
+        maxValue,
+        valueRange,
+        innerWidth,
+        innerHeight,
+      };
     },
     []
   );
@@ -113,47 +111,48 @@ export function useChartPerformance() {
       viewportEnd: number,
       bufferSize: number = 50
     ) => {
-      return useMemo(() => {
-        if (data.length <= 1000) {
-          // No virtualization needed for small datasets
-          return {
-            visibleData: data,
-            startIndex: 0,
-            endIndex: data.length - 1,
-            isVirtualized: false,
-          };
-        }
-
-        const start = Math.max(0, viewportStart - bufferSize);
-        const end = Math.min(data.length - 1, viewportEnd + bufferSize);
-
+      if (data.length <= 1000) {
+        // No virtualization needed for small datasets
         return {
-          visibleData: data.slice(start, end + 1),
-          startIndex: start,
-          endIndex: end,
-          isVirtualized: true,
-          totalLength: data.length,
+          visibleData: data,
+          startIndex: 0,
+          endIndex: data.length - 1,
+          isVirtualized: false,
         };
-      }, [data, viewportStart, viewportEnd, bufferSize]);
+      }
+
+      const start = Math.max(0, viewportStart - bufferSize);
+      const end = Math.min(data.length - 1, viewportEnd + bufferSize);
+
+      return {
+        visibleData: data.slice(start, end + 1),
+        startIndex: start,
+        endIndex: end,
+        isVirtualized: true,
+        totalLength: data.length,
+      };
     },
     []
   );
 
   /**
    * Debounced data updates for real-time charts
+   * Returns a debounced function - caller should use useCallback/useMemo as needed
    */
   const useDebouncedUpdates = useCallback((updateFunction: () => void, delay: number = 100) => {
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    // Return a function that can be called to debounce updates
+    // The actual debouncing logic should be handled by the caller using useRef
+    let timeoutId: NodeJS.Timeout | null = null;
 
-    return useCallback(() => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
       }
 
-      timeoutRef.current = setTimeout(() => {
+      timeoutId = setTimeout(() => {
         updateFunction();
       }, delay);
-    }, [updateFunction, delay]);
+    };
   }, []);
 
   /**
@@ -192,32 +191,32 @@ export function useChartPerformance() {
 
   /**
    * Optimized animation frame handling
+   * Returns animation control functions - caller should manage refs
    */
   const useAnimationFrame = useCallback((callback: () => void) => {
-    const requestRef = useRef<number | null>(null);
-    const previousTimeRef = useRef<number | null>(null);
+    // Return functions that can be used with refs managed by the caller
+    let requestId: number | null = null;
+    let previousTime: number | null = null;
 
-    const animate = useCallback(
-      (time: number) => {
-        if (previousTimeRef.current !== undefined) {
-          const deltaTime = time - (previousTimeRef.current || 0);
-          callback();
-        }
-        previousTimeRef.current = time;
-        requestRef.current = requestAnimationFrame(animate);
-      },
-      [callback]
-    );
-
-    const startAnimation = useCallback(() => {
-      requestRef.current = requestAnimationFrame(animate);
-    }, [animate]);
-
-    const stopAnimation = useCallback(() => {
-      if (requestRef.current) {
-        cancelAnimationFrame(requestRef.current);
+    const animate = (time: number) => {
+      if (previousTime !== null && previousTime !== undefined) {
+        const deltaTime = time - previousTime;
+        callback();
       }
-    }, []);
+      previousTime = time;
+      requestId = requestAnimationFrame(animate);
+    };
+
+    const startAnimation = () => {
+      requestId = requestAnimationFrame(animate);
+    };
+
+    const stopAnimation = () => {
+      if (requestId !== null) {
+        cancelAnimationFrame(requestId);
+        requestId = null;
+      }
+    };
 
     return { startAnimation, stopAnimation };
   }, []);

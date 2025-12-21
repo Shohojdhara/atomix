@@ -77,6 +77,7 @@ export default [
       'no-unused-vars': 'off', // TypeScript handles this
       'no-console': 'off',
       'no-undef': 'off', // TypeScript handles this
+      'no-dupe-class-members': 'off', // TypeScript method overloads trigger this incorrectly
       '@typescript-eslint/no-require-imports': 'warn',
       '@typescript-eslint/no-var-requires': 'warn',
       'react-hooks/exhaustive-deps': 'warn',

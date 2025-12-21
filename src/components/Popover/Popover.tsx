@@ -117,10 +117,8 @@ export const Popover: React.FC<PopoverProps> = ({
 /**
  * PopoverTrigger component to wrap the element that triggers the popover
  */
-export const PopoverTrigger: React.FC<PopoverTriggerProps> = forwardRef<
-  HTMLElement,
-  PopoverTriggerProps
->(({ children, trigger: triggerProp }, ref) => {
+export const PopoverTrigger = forwardRef<HTMLElement, PopoverTriggerProps>(
+  ({ children, trigger: triggerProp }, ref) => {
   const { isOpen, setIsOpen, triggerRef, popoverId, triggerType } =
     React.useContext(PopoverContext);
 
@@ -158,6 +156,8 @@ export const PopoverTrigger: React.FC<PopoverTriggerProps> = forwardRef<
 
   return React.cloneElement(child, triggerProps);
 });
+
+PopoverTrigger.displayName = 'PopoverTrigger';
 
 export type { PopoverProps, PopoverTriggerProps };
 

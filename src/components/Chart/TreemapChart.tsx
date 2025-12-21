@@ -197,7 +197,7 @@ const TreemapChart = memo(
           switch (scheme) {
             case 'category':
               return colors[index % colors.length];
-            case 'depth':
+            case 'depth': {
               const depthColors = [
                 'var(--atomix-blue-9)',
                 'var(--atomix-blue-6)',
@@ -206,6 +206,7 @@ const TreemapChart = memo(
                 'var(--atomix-blue-2)',
               ];
               return depthColors[Math.min(depth, depthColors.length - 1)];
+            }
             case 'value':
               if (data.length > 0) {
                 const maxValue = Math.max(...data.map(d => d.value));
