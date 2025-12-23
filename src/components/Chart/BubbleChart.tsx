@@ -8,7 +8,7 @@ export interface BubbleDataPoint {
   x: number;
   y: number;
   size: number;
-  value?: number;
+  value: number;
   color?: string;
   metadata?: Record<string, any>;
 }
@@ -109,7 +109,7 @@ const BubbleChart = memo(
         hoveredPoint,
         toolbarState,
         config: renderConfig,
-      }: ChartRenderContentParams) => {
+      }: any) => {
         if (!bubbleData.length) return null;
 
         // Use toolbar state if available, fallback to config for backward compatibility
@@ -197,9 +197,10 @@ const BubbleChart = memo(
             {bubbles}
             {showTooltips &&
               hoveredPoint &&
-              hoveredPoint.pointIndex < bubbleData.length && (
+              hoveredPoint.pointIndex < bubbleData.length &&
+              bubbleData[hoveredPoint.pointIndex] && (
                 <ChartTooltip
-                  dataPoint={bubbleData[hoveredPoint.pointIndex]}
+                  dataPoint={bubbleData[hoveredPoint.pointIndex]!}
                   datasetLabel="Bubbles"
                   datasetColor={
                     bubbleData[hoveredPoint.pointIndex]?.color ||
@@ -220,7 +221,7 @@ const BubbleChart = memo(
         <BaseChart
           ref={ref}
           type="bubble"
-          datasets={datasets}
+          datasets={datasets as any}
           config={config}
           renderContent={renderContent}
           onDataPointClick={onDataPointClick}

@@ -30,6 +30,13 @@ export const INPUT_FILES = {
   main: 'src/index.ts',
   types: 'src/index-dts.ts',
   styles: 'src/styles/index.scss',
+  // Entry points for code-split chunks
+  theme: 'src/entries/theme.ts',
+  charts: 'src/entries/charts.ts',
+  forms: 'src/entries/forms.ts',
+  layout: 'src/entries/layout.ts',
+  heavy: 'src/entries/heavy.ts',
+  core: 'src/entries/core.ts',
 };
 
 // Output files from package.json

@@ -24,7 +24,7 @@ export const ElevationCard: React.FC<ElevationCardProps> = ({
   return (
     <div
       className={`${className} ${cardProps.className}`}
-      ref={cardProps.ref}
+      ref={cardProps.ref as React.LegacyRef<HTMLDivElement>}
       style={style}
       tabIndex={cardProps.tabIndex}
       role={cardProps.role}

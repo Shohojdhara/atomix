@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, memo } from 'react';
 import { InputProps } from '../../lib/types/components';
 import { useInput } from '../../lib/composables/useInput';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
@@ -6,7 +6,8 @@ import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 /**
  * Input - A component for text input fields
  */
-export const Input = forwardRef<HTMLInputElement, InputProps>(
+export const Input = memo(
+  forwardRef<HTMLInputElement, InputProps>(
   (
     {
       type = 'text',
@@ -109,6 +110,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     return inputElement;
   }
+  )
 );
 
 Input.displayName = 'Input';

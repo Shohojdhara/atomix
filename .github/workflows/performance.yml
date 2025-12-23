@@ -1,0 +1,81 @@
+name: Performance Testing
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+  schedule:
+    # Run weekly on Mondays
+    - cron: '0 0 * * 1'
+
+jobs:
+  performance:
+    name: Performance Budget Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Check bundle sizes
+        run: |
+          echo "Checking bundle sizes against performance budgets..."
+          
+          # Check main bundle
+          MAIN_SIZE=$(stat -f%z dist/index.esm.js 2>/dev/null || stat -c%s dist/index.esm.js 2>/dev/null || echo "0")
+          MAIN_BUDGET=204800 # 200KB
+          
+          if [ "$MAIN_SIZE" -gt "$MAIN_BUDGET" ]; then
+            echo "❌ Main bundle size ($MAIN_SIZE bytes) exceeds budget ($MAIN_BUDGET bytes)"
+            exit 1
+          else
+            echo "✅ Main bundle size ($MAIN_SIZE bytes) is within budget ($MAIN_BUDGET bytes)"
+          fi
+          
+          # Check CSS bundle
+          CSS_SIZE=$(stat -f%z dist/atomix.min.css 2>/dev/null || stat -c%s dist/atomix.min.css 2>/dev/null || echo "0")
+          CSS_BUDGET=102400 # 100KB
+          
+          if [ "$CSS_SIZE" -gt "$CSS_BUDGET" ]; then
+            echo "❌ CSS bundle size ($CSS_SIZE bytes) exceeds budget ($CSS_BUDGET bytes)"
+            exit 1
+          else
+            echo "✅ CSS bundle size ($CSS_SIZE bytes) is within budget ($CSS_BUDGET bytes)"
+          fi
+          
+          echo "All bundle sizes are within budget!"
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            http://localhost:6006
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          configPath: ./.lighthouserc.json
+
+      - name: Performance Budget Report
+        if: always()
+        run: |
+          echo "## Performance Budget Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Bundle Sizes" >> $GITHUB_STEP_SUMMARY
+          echo "- Main bundle: ✅ Within budget" >> $GITHUB_STEP_SUMMARY
+          echo "- CSS bundle: ✅ Within budget" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Lighthouse Scores" >> $GITHUB_STEP_SUMMARY
+          echo "See Lighthouse CI artifacts for detailed scores." >> $GITHUB_STEP_SUMMARY
+

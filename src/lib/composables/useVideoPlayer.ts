@@ -41,18 +41,19 @@ export function useVideoPlayer({
   const [currentQuality, setCurrentQuality] = useState<VideoQuality | null>(quality?.[0] || null);
   const [showControls, setShowControls] = useState(true);
 
-  const controlsTimeoutRef = useRef<NodeJS.Timeout>(null);
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const resetControlsTimeout = useCallback(() => {
     if (controlsTimeoutRef.current) {
       clearTimeout(controlsTimeoutRef.current);
     }
     setShowControls(true);
-    controlsTimeoutRef.current = setTimeout(() => {
+    const timeout = setTimeout(() => {
       if (isPlaying) {
         setShowControls(false);
       }
     }, 3000);
+    controlsTimeoutRef.current = timeout;
   }, [isPlaying]);
 
   const play = useCallback(async () => {

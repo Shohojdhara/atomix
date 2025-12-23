@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { ListProps } from '../../lib/types/components';
 import { LIST } from '../../lib/constants/components';
 
-export const List: React.FC<ListProps> = ({
+export const List: React.FC<ListProps> = memo(({
   children,
   variant = 'default',
   className = '',
@@ -27,7 +27,7 @@ export const List: React.FC<ListProps> = ({
       })}
     </ListElement>
   );
-};
+});
 
 export type { ListProps };
 

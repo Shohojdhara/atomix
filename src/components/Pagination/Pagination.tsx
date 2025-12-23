@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { PaginationProps } from '../../lib/types/components';
 import { usePagination, DOTS } from '../../lib/composables/usePagination';
 import { PAGINATION_DEFAULTS } from '../../lib/constants/components';
@@ -26,7 +26,7 @@ interface PaginationNavButtonProps {
 /**
  * PaginationNavButton component for rendering first, previous, next, and last buttons
  */
-export const PaginationNavButton: React.FC<PaginationNavButtonProps> = ({
+export const PaginationNavButton: React.FC<PaginationNavButtonProps> = memo(({
   type,
   onClick,
   disabled,
@@ -47,12 +47,12 @@ export const PaginationNavButton: React.FC<PaginationNavButtonProps> = ({
       <Icon name={iconName} size="sm" aria-hidden="true" />
     </button>
   </li>
-);
+));
 
 /**
  * Pagination component
  */
-export const Pagination: React.FC<PaginationProps> = ({
+export const Pagination: React.FC<PaginationProps> = memo(({
   currentPage = PAGINATION_DEFAULTS.currentPage,
   totalPages = PAGINATION_DEFAULTS.totalPages,
   onPageChange,
@@ -178,10 +178,11 @@ export const Pagination: React.FC<PaginationProps> = ({
   }
 
   return paginationContent;
-};
+});
 
 export type { PaginationProps };
 
 Pagination.displayName = 'Pagination';
+PaginationNavButton.displayName = 'PaginationNavButton';
 
 export default Pagination;

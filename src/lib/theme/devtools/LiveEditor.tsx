@@ -59,19 +59,25 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
     }
   }, [onChange]);
 
-  const handleColorChange = useCallback((path: string, value: string) => {
+  const handleColorChange = useCallback((path: string, value: string | number) => {
     const newTheme = { ...theme };
     const keys = path.split('.');
     let current: any = newTheme;
     
     for (let i = 0; i < keys.length - 1; i++) {
-      if (!current[keys[i]]) {
-        current[keys[i]] = {};
+      const key = keys[i];
+      if (key && !current[key]) {
+        current[key] = {};
       }
-      current = current[keys[i]];
+      if (key) {
+        current = current[key];
+      }
     }
     
-    current[keys[keys.length - 1]] = value;
+    const lastKey = keys[keys.length - 1];
+    if (lastKey) {
+      current[lastKey] = value;
+    }
     updateTheme(createTheme(newTheme));
   }, [theme, updateTheme]);
 

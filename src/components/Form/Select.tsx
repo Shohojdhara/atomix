@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, memo } from 'react';
 import { SelectProps } from '../../lib/types/components';
 import { useSelect } from '../../lib/composables';
 import { SELECT } from '../../lib/constants/components';
@@ -7,7 +7,7 @@ import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 /**
  * Select - A component for dropdown selection
  */
-export const Select: React.FC<SelectProps> = ({
+export const Select: React.FC<SelectProps> = memo(({
   options = [],
   value,
   onChange,
@@ -204,7 +204,7 @@ export const Select: React.FC<SelectProps> = ({
   }
 
   return selectContent;
-};
+});
 
 export type { SelectProps };
 

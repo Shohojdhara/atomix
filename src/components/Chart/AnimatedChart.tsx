@@ -215,7 +215,7 @@ const AnimatedChart = memo(
       return (
         <BaseChart
           ref={ref}
-          type="animated"
+          type="line"
           datasets={datasets}
           config={config}
           renderContent={renderContent}

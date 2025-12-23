@@ -1,10 +1,12 @@
-import React, { ReactNode, useId } from 'react';
+import React, { ReactNode, useId, memo } from 'react';
 import { ACCORDION } from '../../lib/constants/components';
 import { useAccordion } from '../../lib/composables/useAccordion';
-import type { AccordionProps, AtomixGlassProps } from '../../lib/types/components';
+import type { AccordionProps as AccordionPropsType, AtomixGlassProps } from '../../lib/types/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
-export const Accordion: React.FC<AccordionProps> = ({
+export type AccordionProps = AccordionPropsType;
+
+export const Accordion: React.FC<AccordionProps> = memo(({
   title,
   children,
   defaultOpen = false,
@@ -108,7 +110,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   }
 
   return accordionContent;
-};
+});
 
 // Set display name for debugging
 Accordion.displayName = 'Accordion';

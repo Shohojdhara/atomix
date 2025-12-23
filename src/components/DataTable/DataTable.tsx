@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo } from 'react';
 import { DataTableProps } from '../../lib/types/components';
 import { useDataTable } from '../../lib/composables/useDataTable';
 import { DATA_TABLE_CLASSES } from '../../lib/constants/components';
@@ -19,7 +19,7 @@ import { Pagination } from '../Pagination/Pagination';
  * />
  * ```
  */
-export const DataTable: React.FC<DataTableProps> = ({
+export const DataTable: React.FC<DataTableProps> = memo(({
   data,
   columns,
   className,
@@ -205,7 +205,7 @@ export const DataTable: React.FC<DataTableProps> = ({
       {renderPagination()}
     </div>
   );
-};
+});
 
 export type { DataTableProps };
 

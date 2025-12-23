@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { SpinnerProps } from '../../lib/types/components';
 import { useSpinner } from '../../lib/composables/useSpinner';
 import { SPINNER } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
-export const Spinner: React.FC<SpinnerProps> = ({
+export const Spinner: React.FC<SpinnerProps> = memo(({
   size = 'md',
   variant = 'primary',
   fullscreen = false,
@@ -43,7 +43,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
   }
 
   return spinnerContent;
-};
+});
 
 export type { SpinnerProps };
 

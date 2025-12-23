@@ -409,4 +409,3 @@ const WaterfallChart = memo(
 
 WaterfallChart.displayName = 'WaterfallChart';
 export default WaterfallChart;
-export type { WaterfallChartProps, WaterfallDataPoint };

@@ -47,8 +47,8 @@ export class ThemeApplicator {
     }
 
     // Apply component overrides
-    if (theme.components) {
-      this.applyComponentOverrides(theme.components);
+    if ((theme as any).components) {
+      this.applyComponentOverrides((theme as any).components);
     }
   }
 
@@ -76,19 +76,25 @@ export class ThemeApplicator {
 
     if (typography.fontSize) {
       Object.entries(typography.fontSize).forEach(([key, value]) => {
-        vars[`--atomix-font-size-${key}`] = value;
+        if (typeof value === 'string' || typeof value === 'number') {
+          vars[`--atomix-font-size-${key}`] = value;
+        }
       });
     }
 
     if (typography.fontWeight) {
       Object.entries(typography.fontWeight).forEach(([key, value]) => {
-        vars[`--atomix-font-weight-${key}`] = value;
+        if (typeof value === 'string' || typeof value === 'number') {
+          vars[`--atomix-font-weight-${key}`] = value;
+        }
       });
     }
 
     if (typography.lineHeight) {
       Object.entries(typography.lineHeight).forEach(([key, value]) => {
-        vars[`--atomix-line-height-${key}`] = value;
+        if (typeof value === 'string' || typeof value === 'number') {
+          vars[`--atomix-line-height-${key}`] = value;
+        }
       });
     }
 
@@ -98,12 +104,23 @@ export class ThemeApplicator {
   /**
    * Apply spacing system
    */
-  private applySpacing(spacing: Record<string, string | number>): void {
+  private applySpacing(spacing: any): void {
     const vars: Record<string, string | number> = {};
 
-    Object.entries(spacing).forEach(([key, value]) => {
-      vars[`--atomix-space-${key}`] = value;
-    });
+    // Handle spacing function or object
+    if (typeof spacing === 'function') {
+      // If spacing is a function, we can't iterate it directly
+      // Just skip for now as it's a special case
+      return;
+    }
+
+    if (typeof spacing === 'object' && spacing !== null) {
+      Object.entries(spacing).forEach(([key, value]) => {
+        if (typeof value === 'string' || typeof value === 'number') {
+          vars[`--atomix-space-${key}`] = value;
+        }
+      });
+    }
 
     this.applyGlobalCSSVars(vars);
   }
@@ -117,9 +134,9 @@ export class ThemeApplicator {
     const vars: Record<string, string | number> = {};
 
     Object.entries(palette).forEach(([colorName, colorScale]) => {
-      if (colorScale) {
+      if (colorScale && typeof colorScale === 'object') {
         Object.entries(colorScale).forEach(([shade, value]) => {
-          if (value) {
+          if (value && (typeof value === 'string' || typeof value === 'number')) {
             vars[`--atomix-color-${colorName}-${shade}`] = value;
           }
         });

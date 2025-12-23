@@ -1,10 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo } from 'react';
 import { useBadge } from '../../lib/composables/useBadge';
 import { BADGE } from '../../lib/constants/components';
 import { BadgeProps } from '../../lib/types/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
-export const Badge: React.FC<BadgeProps> = ({
+export const Badge: React.FC<BadgeProps> = memo(({
   label,
   variant = 'primary',
   size = 'md',
@@ -53,7 +53,7 @@ export const Badge: React.FC<BadgeProps> = ({
   }
 
   return badgeElement;
-};
+});
 
 Badge.displayName = 'Badge';
 

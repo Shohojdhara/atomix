@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, memo } from 'react';
 import { ModalProps } from '../../lib/types/components';
 import { MODAL } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
@@ -76,7 +76,7 @@ function useModal({
 /**
  * Modal component for displaying overlay content
  */
-export const Modal: React.FC<ModalProps> = ({
+export const Modal: React.FC<ModalProps> = memo(({
   children,
   isOpen = false,
   onOpenChange,
@@ -213,7 +213,7 @@ export const Modal: React.FC<ModalProps> = ({
       </div>
     </div>
   );
-};
+});
 
 Modal.displayName = 'Modal';
 

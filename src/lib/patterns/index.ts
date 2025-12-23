@@ -11,7 +11,7 @@ export {
   createSlotComponent,
   useSlot,
   createSlotProps,
-} from './slots.tsx';
+} from './slots';
 
 export type {
   SlotProps,
@@ -32,4 +32,4 @@ export type {
   DropdownRootSlotProps,
   DropdownToggleSlotProps,
   DropdownMenuSlotProps,
-} from './slots.tsx';
+} from './slots';

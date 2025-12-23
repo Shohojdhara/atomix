@@ -100,7 +100,10 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
    * Initialize background slider hook - always call hook, conditionally use result
    */
   const backgroundSliderResult = useHeroBackgroundSlider(
-    defaultProps.backgroundSlider || { slides: [], autoplay: false, interval: 5000 }
+    defaultProps.backgroundSlider || { 
+      slides: [], 
+      autoplay: { delay: 5000, pauseOnHover: true } 
+    }
   );
   
   const backgroundSlider = hasBackgroundSlider && defaultProps.backgroundSlider

@@ -201,6 +201,7 @@ const ChartToolbar = memo(
             document.removeEventListener('mousedown', handleClickOutside);
           };
         }
+        return undefined;
       }, [showExportMenu, showSettingsMenu]);
 
       // Handle keyboard shortcuts

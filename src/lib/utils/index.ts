@@ -19,3 +19,14 @@ export {
 export type {
   MergePropsOptions,
 } from './componentUtils';
+
+export {
+  createFontPreloadLink,
+  preloadFonts,
+  generateFontPreloadTags,
+  DEFAULT_ATOMIX_FONTS,
+} from './fontPreloader';
+
+export type {
+  FontPreloadConfig,
+} from './fontPreloader';

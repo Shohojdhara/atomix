@@ -20,6 +20,39 @@ To get started with development, you'll need to have Node.js and yarn installed 
 3. **Install dependencies**: Run `npm install` or `yarn install` to install the project dependencies.
 4. **Start the development server**: Run `npm run dev` or `yarn dev` to start the Storybook development server.
 
+## Build System
+
+Atomix uses Rollup for building the library. For detailed information about the build system, see [BUILD_SYSTEM.md](docs/BUILD_SYSTEM.md).
+
+### Testing Builds Locally
+
+Before submitting a pull request, ensure your changes build correctly:
+
+```bash
+# Clean previous builds
+npm run clean
+
+# Run the build
+npm run build
+
+# Or use parallel builds for faster execution
+npm run build:parallel
+
+# Verify build outputs
+npm run verify:build
+
+# Run build tests
+npm run test:build
+```
+
+### Build Configuration
+
+- Build configurations are in `rollup/config/`
+- TypeScript configurations extend `tsconfig.base.json`
+- PostCSS plugins are configured in `rollup/config/postcss.js`
+
+For more details, see the [Build System Documentation](docs/BUILD_SYSTEM.md).
+
 ## Pull Request Guidelines
 
 When submitting a pull request, please ensure that:

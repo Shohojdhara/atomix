@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, memo } from 'react';
 import { TextareaProps } from '../../lib/types/components';
 import { useTextarea } from '../../lib/composables/useTextarea';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
@@ -6,7 +6,8 @@ import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 /**
  * Textarea - A component for multiline text input
  */
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+export const Textarea = memo(
+  forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
     {
       value,
@@ -100,6 +101,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     return textareaElement;
   }
+  )
 );
 
 Textarea.displayName = 'Textarea';

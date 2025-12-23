@@ -1,10 +1,11 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, memo } from 'react';
 import { ProgressProps } from '../../lib/types/components';
 import { useProgress } from '../../lib/composables/useProgress';
 import { PROGRESS } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
-export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
+export const Progress = memo(
+  forwardRef<HTMLDivElement, ProgressProps>(
   (
     {
       value,
@@ -54,6 +55,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(
 
     return progressContent;
   }
+  )
 );
 
 Progress.displayName = 'Progress';

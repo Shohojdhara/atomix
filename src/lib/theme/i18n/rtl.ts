@@ -93,7 +93,8 @@ export class RTLManager {
 
     // Try navigator.language first
     const lang: string = navigator.language || (navigator.languages && navigator.languages[0]) || 'en';
-    return String(lang).split('-')[0].toLowerCase();
+    const langParts = String(lang).split('-');
+    return langParts[0] ? langParts[0].toLowerCase() : 'en';
   }
 
   /**

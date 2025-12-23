@@ -289,9 +289,19 @@ export interface ChartProps extends BaseComponentProps {
 
 /**
  * Chart scales interface
- * Imported from useChart for consistency
  */
-export type { ChartScales } from '../../lib/composables/useChart';
+export interface ChartScales {
+  xScale: (index: number, dataLength?: number) => number;
+  yScale: (value: number) => number;
+  minValue: number;
+  maxValue: number;
+  valueRange: number;
+  innerWidth: number;
+  innerHeight: number;
+  width: number;
+  height: number;
+  padding: { top: number; right: number; bottom: number; left: number };
+}
 
 /**
  * Chart interaction state

@@ -60,7 +60,7 @@ const ScatterChart = memo(
         renderedDatasets.forEach((dataset: ChartDataset, datasetIndex: number) => {
           const color = dataset.color || colors[datasetIndex % colors.length];
 
-          dataset.data?.forEach((point: ScatterDataPoint, pointIndex: number) => {
+          dataset.data?.forEach((point: any, pointIndex: number) => {
             const x =
               point.x !== undefined
                 ? scales.padding.left + (point.x / 100) * scales.innerWidth
@@ -125,10 +125,10 @@ const ScatterChart = memo(
         return (
           <>
             {points}
-            {showTooltips && hoveredPoint && (
+            {showTooltips && hoveredPoint && renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
               <ChartTooltip
                 dataPoint={
-                  renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]
+                  renderedDatasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!
                 }
                 datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
                 datasetColor={

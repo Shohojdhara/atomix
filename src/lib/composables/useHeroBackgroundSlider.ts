@@ -89,8 +89,9 @@ export function useHeroBackgroundSlider(
 
       // Play video if it's a video slide
       const currentVideo = videoRefs[nextIndex]?.current;
-      if (currentVideo && slides[nextIndex].type === 'video') {
-        const videoOptions = slides[nextIndex].videoOptions || {};
+      const nextSlide = slides[nextIndex];
+      if (currentVideo && nextSlide && nextSlide.type === 'video') {
+        const videoOptions = nextSlide.videoOptions || {};
         if (videoOptions.autoplay !== false) {
           currentVideo.play().catch(() => {
             // Ignore autoplay errors
@@ -100,7 +101,8 @@ export function useHeroBackgroundSlider(
 
       // Pause previous video if it exists
       const prevVideo = videoRefs[currentIndex]?.current;
-      if (prevVideo && slides[currentIndex].type === 'video') {
+      const currentSlide = slides[currentIndex];
+      if (prevVideo && currentSlide && currentSlide.type === 'video') {
         prevVideo.pause();
       }
 

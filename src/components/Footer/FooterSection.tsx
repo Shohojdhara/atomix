@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
-import { FooterSectionProps } from '@/lib/types/components';
-import { GridCol } from '@/layouts';
-import { useFooter } from '@/lib/composables/useFooter';
+import { FooterSectionProps } from '../../lib/types/components';
+import { GridCol } from '../../layouts';
+import { useFooter } from '../../lib/composables/useFooter';
 
 /**
  * FooterSection component provides a section within the footer for organizing links and content.

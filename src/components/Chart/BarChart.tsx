@@ -58,6 +58,7 @@ const BarChart = memo(
           <>
             {barDimensions.map((bar, index) => {
               const dataset = renderedDatasets[bar.datasetIndex];
+              if (!dataset) return null;
               const point = dataset.data?.[bar.pointIndex];
               const color = dataset.color || colors[bar.datasetIndex];
               const isHovered =

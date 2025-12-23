@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { CheckboxProps } from '../../lib/types/components';
 import { useCheckbox } from '../../lib/composables/useCheckbox';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
@@ -6,7 +6,7 @@ import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 /**
  * Checkbox - A component for checkbox inputs
  */
-export const Checkbox: React.FC<CheckboxProps> = ({
+export const Checkbox: React.FC<CheckboxProps> = memo(({
   label,
   checked = false,
   onChange,
@@ -81,7 +81,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   }
 
   return checkboxContent;
-};
+});
 
 export type { CheckboxProps };
 

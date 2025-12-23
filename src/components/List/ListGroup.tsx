@@ -1,7 +1,9 @@
 import React from 'react';
-import { ListGroupProps } from '../../lib/types/components';
+import { ListGroupProps as ListGroupPropsType } from '../../lib/types/components';
 import { LIST_GROUP } from '../../lib/constants/components';
 import { List } from './List';
+
+export type ListGroupProps = ListGroupPropsType;
 
 export const ListGroup: React.FC<ListGroupProps> = ({
   children,

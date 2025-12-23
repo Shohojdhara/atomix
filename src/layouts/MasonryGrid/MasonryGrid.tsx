@@ -374,7 +374,7 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
           const position = positions[index];
           if (!position) {
             return (
-              <div key={item.id} ref={item.ref} style={{ opacity: 0, position: 'absolute' }}>
+              <div key={item.id} ref={item.ref as React.LegacyRef<HTMLDivElement>} style={{ opacity: 0, position: 'absolute' }}>
                 {item.element}
               </div>
             );
@@ -382,7 +382,7 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
           return (
             <div
               key={item.id}
-              ref={item.ref}
+              ref={item.ref as React.LegacyRef<HTMLDivElement>}
               className="o-masonry-grid__item"
               style={{
                 position: 'absolute',

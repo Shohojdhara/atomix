@@ -5,7 +5,8 @@
  * @returns Color string
  */
 export const getColorFromScheme = (colorScheme: string[], index: number): string => {
-  return colorScheme[index % colorScheme.length];
+  const color = colorScheme[index % colorScheme.length];
+  return color || colorScheme[0] || '#000000';
 };
 
 /**
@@ -23,12 +24,12 @@ export const getColorFromValue = (
   colorScheme: string[]
 ): string => {
   if (minValue === maxValue) {
-    return colorScheme[0];
+    return colorScheme[0] || '#000000';
   }
 
   const normalized = (value - minValue) / (maxValue - minValue);
   const index = Math.floor(normalized * (colorScheme.length - 1));
-  return colorScheme[index];
+  return colorScheme[index] || colorScheme[0] || '#000000';
 };
 
 /**

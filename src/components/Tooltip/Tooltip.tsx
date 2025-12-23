@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, memo } from 'react';
 import { TOOLTIP } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { AtomixGlassProps } from '../../lib/types/components';
@@ -60,7 +60,7 @@ export interface TooltipProps {
   glass?: AtomixGlassProps | boolean;
 }
 
-export const Tooltip: React.FC<TooltipProps> = ({
+export const Tooltip: React.FC<TooltipProps> = memo(({
   content,
   children,
   position = TOOLTIP.DEFAULTS.POSITION,
@@ -162,7 +162,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       )}
     </div>
   );
-};
+});
 
 Tooltip.displayName = 'Tooltip';
 

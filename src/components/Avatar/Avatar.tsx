@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { AvatarProps } from '../../lib/types/components';
 import { AVATAR } from '../../lib/constants/components';
 import { Icon } from '../Icon/Icon';
 
-export const Avatar: React.FC<AvatarProps> = ({
+export const Avatar: React.FC<AvatarProps> = memo(({
   src,
   alt = 'Avatar',
   initials,
@@ -62,7 +62,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       )}
     </div>
   );
-};
+});
 
 Avatar.displayName = 'Avatar';
 

@@ -3,7 +3,13 @@
   "version": "0.3.4",
   "description": "Atomix Design System - A modern component library for web applications",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss",
+    "**/*.sass",
+    "src/styles/**/*",
+    "src/lib/theme/**/*"
+  ],
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -76,16 +82,34 @@
       "default": "./src/styles/99-utilities/_index.scss"
     },
     "./theme": {
-      "types": "./dist/lib/theme/index.d.ts",
-      "import": "./dist/lib/theme/index.js",
-      "require": "./dist/lib/theme/index.js",
-      "default": "./dist/lib/theme/index.js"
+      "types": "./dist/theme.d.ts",
+      "import": "./dist/theme.js",
+      "default": "./dist/theme.js"
     },
-    "./config": {
-      "types": "./dist/lib/config/index.d.ts",
-      "import": "./dist/lib/config/index.js",
-      "require": "./dist/lib/config/index.js",
-      "default": "./dist/lib/config/index.js"
+    "./charts": {
+      "types": "./dist/charts.d.ts",
+      "import": "./dist/charts.js",
+      "default": "./dist/charts.js"
+    },
+    "./forms": {
+      "types": "./dist/forms.d.ts",
+      "import": "./dist/forms.js",
+      "default": "./dist/forms.js"
+    },
+    "./layout": {
+      "types": "./dist/layout.d.ts",
+      "import": "./dist/layout.js",
+      "default": "./dist/layout.js"
+    },
+    "./core": {
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.js",
+      "default": "./dist/core.js"
+    },
+    "./heavy": {
+      "types": "./dist/heavy.d.ts",
+      "import": "./dist/heavy.js",
+      "default": "./dist/heavy.js"
     },
     "./package.json": "./package.json"
   },
@@ -117,6 +141,7 @@
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/plugin-terser": "^0.4.0",
     "@rollup/plugin-typescript": "^11.0.0",
+    "rollup-plugin-visualizer": "^5.12.0",
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/addon-interactions": "^8.6.14",
     "@storybook/addon-links": "^8.6.14",
@@ -174,7 +199,13 @@
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "build": "rollup -c",
+    "build": "npm run prebuild && npm run build:parallel",
+    "build:sequential": "rollup -c",
+    "build:js": "rollup -c rollup.config.build.js",
+    "build:types": "rollup -c rollup.config.types.js",
+    "build:styles": "rollup -c rollup.config.styles.js",
+    "build:parallel": "concurrently \"npm:build:js\" \"npm:build:types\" \"npm:build:styles\"",
+    "build:analyze": "ANALYZE=true rollup -c",
     "build:storybook": "storybook build",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
@@ -192,6 +223,8 @@
     "validate:config": "npx tsx scripts/validate-config-sync.ts",
     "prebuild": "npm run sync:config && npm run validate:config",
     "prebuild:with-tokens": "npm run sync:config && npm run sync:tokens && npm run validate:config",
+    "verify:build": "node scripts/verify-build.js",
+    "test:build": "node scripts/test-build.js",
     "prepublishOnly": "npm run clean && npm run build && npm run attw",
     "prepack": "echo 'Preparing package for publishing...'"
   },

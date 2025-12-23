@@ -97,6 +97,7 @@ const RadarChart = memo(
         const radius = Math.min(centerX, centerY) * 0.8;
 
         const firstDataset = renderedDatasets[0];
+        if (!firstDataset) return null;
         const dataPoints = firstDataset.data || [];
         const angleStep = (2 * Math.PI) / dataPoints.length;
 
@@ -195,24 +196,28 @@ const RadarChart = memo(
             points.push({ x, y, value, point: dataset.data[i] });
           }
 
-          if (points.length === 0) return null;
+          if (points.length === 0 || !points[0]) return null;
 
           // Generate path
           let path = '';
           if (smooth && points.length > 2) {
             // For smooth curves, we would implement a more complex algorithm
             // For now, we'll just connect the points with straight lines
-            path = `M ${points[0].x},${points[0].y}`;
+            path = `M ${points[0]!.x},${points[0]!.y}`;
             for (let i = 1; i < points.length; i++) {
-              path += ` L ${points[i].x},${points[i].y}`;
+              if (points[i]) {
+                path += ` L ${points[i]!.x},${points[i]!.y}`;
+              }
             }
-            path += ` L ${points[0].x},${points[0].y} Z`;
+            path += ` L ${points[0]!.x},${points[0]!.y} Z`;
           } else {
-            path = `M ${points[0].x},${points[0].y}`;
+            path = `M ${points[0]!.x},${points[0]!.y}`;
             for (let i = 1; i < points.length; i++) {
-              path += ` L ${points[i].x},${points[i].y}`;
+              if (points[i]) {
+                path += ` L ${points[i]!.x},${points[i]!.y}`;
+              }
             }
-            path += ` L ${points[0].x},${points[0].y} Z`;
+            path += ` L ${points[0]!.x},${points[0]!.y} Z`;
           }
 
           return (
@@ -246,9 +251,11 @@ const RadarChart = memo(
                         r={isHovered ? pointRadius * 1.5 : pointRadius}
                         fill={color}
                         className={`c-chart__radar-point ${isHovered ? 'c-chart__radar-point--hovered' : ''}`}
-                        onClick={() =>
-                          handlers.onDataPointClick?.(point.point, datasetIndex, pointIndex)
-                        }
+                        onClick={() => {
+                          if (point.point) {
+                            handlers.onDataPointClick?.(point.point, datasetIndex, pointIndex);
+                          }
+                        }}
                         onMouseEnter={e => {
                           const rect = e.currentTarget.getBoundingClientRect();
                           handlers.onPointHover(
@@ -276,10 +283,10 @@ const RadarChart = memo(
               {dataPaths}
               {axisLabels}
             </g>
-            {showTooltips && hoveredPoint && (
+            {showTooltips && hoveredPoint && renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
               <ChartTooltip
                 dataPoint={
-                  renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]
+                  renderedDatasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!
                 }
                 datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
                 datasetColor={

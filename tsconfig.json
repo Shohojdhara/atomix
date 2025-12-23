@@ -1,43 +1,11 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    /* Base Options: */
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "target": "ES2020", // Align with build config
-    "allowJs": true,
-    "resolveJsonModule": true,
-    "moduleDetection": "force",
-    "isolatedModules": true,
-    "verbatimModuleSyntax": false,
-
-    /* Strictness */
-    "strict": true,
-    "strictNullChecks": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-
-    /* For library builds with Rollup: */
-    "module": "ESNext",
-    "moduleResolution": "node",
-    /* Note: declaration settings removed - noEmit: true means no output */
-    "sourceMap": true,
-
-    /* Library specific */
-    "lib": ["DOM", "DOM.Iterable", "ESNext"], // Align with build config
-    "jsx": "react-jsx",
-
-    /* Path mapping */
-    "baseUrl": ".",
-    "paths": {
-      "@shohojdhara/atomix": ["./src/index.ts"],
-      "@/*": ["./src/*"]
-    },
-
-    /* Type Definitions */
-    "typeRoots": ["./node_modules/@types", "./src/types", "./types"],
-
     /* For linting only (since Rollup handles compilation) */
-    "noEmit": true
+    "noEmit": true,
+    "sourceMap": true,
+    "moduleDetection": "force",
+    "verbatimModuleSyntax": false
   },
   "include": ["src/**/*", "types/**/*", "vitest.config.ts"],
   "exclude": [

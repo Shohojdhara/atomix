@@ -281,7 +281,7 @@ const FunnelChart = memo(
             <g>{elements}</g>
             {showTooltips && hoveredPoint && funnelData[hoveredPoint.pointIndex] && (
               <ChartTooltip
-                dataPoint={funnelData[hoveredPoint.pointIndex]}
+                dataPoint={funnelData[hoveredPoint.pointIndex]!}
                 datasetLabel="Funnel Data"
                 datasetColor={funnelData[hoveredPoint.pointIndex]?.color || colors[hoveredPoint.pointIndex % colors.length]}
                 position={{

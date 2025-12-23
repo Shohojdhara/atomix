@@ -632,6 +632,69 @@ export interface BadgeProps extends BaseComponentProps {
 }
 
 /**
+ * Block component properties (legacy - use BlockProps from component instead)
+ * @deprecated Use BlockProps from '@atomix/components/Block' instead
+ */
+export interface LegacyBlockProps extends BaseComponentProps {
+  /**
+   * The content to be rendered within the block
+   */
+  children: ReactNode;
+
+  /**
+   * The HTML element to render as
+   * @default 'section'
+   */
+  as?: 'section' | 'div' | 'article' | 'aside' | 'main';
+
+  /**
+   * Spacing size for vertical padding
+   * @default 'md'
+   */
+  spacing?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'none';
+
+  /**
+   * Container configuration
+   */
+  container?: {
+    /**
+     * Container type for content width
+     */
+    type?: 'sm' | 'md' | 'lg' | 'xl' | 'fluid';
+    /**
+     * Additional container classes
+     */
+    className?: string;
+  };
+
+  /**
+   * Whether to enable full-width content
+   * @default false
+   */
+  fullWidth?: boolean;
+
+  /**
+   * Background color variant
+   */
+  background?:
+    | 'primary'
+    | 'secondary'
+    | 'tertiary'
+    | 'invert'
+    | 'brand'
+    | 'error'
+    | 'success'
+    | 'warning'
+    | 'info'
+    | 'light';
+
+  /**
+   * Custom style for the block
+   */
+  style?: React.CSSProperties;
+}
+
+/**
  * Callout component properties
  */
 export interface CalloutProps extends BaseComponentProps {
@@ -1015,6 +1078,60 @@ export interface SpinnerProps extends BaseComponentProps {
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;
+}
+
+/**
+ * Icon size options
+ */
+export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
+/**
+ * Icon weight/style options
+ */
+export type IconWeight = 'thin' | 'light' | 'regular' | 'bold' | 'fill' | 'duotone';
+
+/**
+ * Phosphor icon type - excludes internal Phosphor exports
+ */
+export type PhosphorIconsType = Exclude<
+  keyof typeof import('@phosphor-icons/react'),
+  'IconContext' | 'IconBase' | 'createIcon' | 'default' | 'SSR'
+>;
+
+/**
+ * Icon component properties (legacy - use IconProps from component instead)
+ * @deprecated Use IconProps from '@atomix/components/Icon' instead
+ */
+export interface LegacyIconProps extends BaseComponentProps {
+  /**
+   * Icon name from Phosphor Icons
+   */
+  name: PhosphorIconsType;
+
+  /**
+   * Icon size
+   */
+  size?: IconSize | number;
+
+  /**
+   * Icon weight/style
+   */
+  weight?: IconWeight;
+
+  /**
+   * Icon color
+   */
+  color?: string;
+
+  /**
+   * Alt text for accessibility
+   */
+  alt?: string;
+
+  /**
+   * Custom style
+   */
+  style?: React.CSSProperties;
 }
 
 /**
@@ -2749,18 +2866,59 @@ export interface BreadcrumbItem {
   active?: boolean;
 
   /**
-   * Icon name from Phosphor Icons
+   * Icon name from Phosphor Icons or ReactNode
    */
-  icon?: string;
+  icon?: string | ReactNode;
 
   /**
    * Optional click handler
    */
-  onClick?: (event: MouseEvent) => void;
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+
+  /**
+   * Custom style for the breadcrumb item
+   */
+  style?: React.CSSProperties;
+
+  /**
+   * Additional className
+   */
+  className?: string;
 }
 
 /**
- * Breadcrumb options interface
+ * Breadcrumb component properties (legacy - use BreadcrumbProps from component instead)
+ * @deprecated Use BreadcrumbProps from '@atomix/components/Breadcrumb' instead
+ */
+export interface LegacyBreadcrumbProps extends BaseComponentProps {
+  /**
+   * Array of breadcrumb items
+   */
+  items: BreadcrumbItem[];
+
+  /**
+   * Custom divider character or element
+   */
+  divider?: ReactNode;
+
+  /**
+   * Aria label for the navigation
+   */
+  ariaLabel?: string;
+
+  /**
+   * Optional custom link component
+   */
+  LinkComponent?: React.ElementType;
+
+  /**
+   * Custom style for the breadcrumb
+   */
+  style?: React.CSSProperties;
+}
+
+/**
+ * Breadcrumb options interface (for vanilla JS)
  */
 export interface BreadcrumbOptions {
   /**

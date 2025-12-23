@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { RadioProps } from '../../lib/types/components';
 import { useRadio } from '../../lib/composables/useRadio';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
@@ -6,7 +6,7 @@ import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 /**
  * Radio - A component for radio button inputs
  */
-export const Radio: React.FC<RadioProps> = ({
+export const Radio: React.FC<RadioProps> = memo(({
   label,
   checked = false,
   onChange,
@@ -77,7 +77,7 @@ export const Radio: React.FC<RadioProps> = ({
   }
 
   return radioContent;
-};
+});
 
 export type { RadioProps };
 

@@ -59,7 +59,7 @@ export function renderSlot<T>(
     // Priority 2: component
     if (slotObj.component) {
       const Component = slotObj.component;
-      return <Component {...props} />;
+      return <Component {...(props as any)} />;
     }
 
     // Priority 3: children
@@ -133,7 +133,7 @@ export function createSlotComponent<T>(
       return <Element {...(props as any)}>{children}</Element>;
     }
 
-    const Component = defaultElement;
+    const Component = defaultElement as React.ComponentType<any>;
     return <Component {...slotProps}>{children}</Component>;
   };
 }

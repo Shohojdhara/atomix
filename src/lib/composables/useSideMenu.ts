@@ -60,6 +60,7 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
     } else if (!shouldCollapse && wrapperRef.current) {
       wrapperRef.current.style.height = 'auto';
     }
+    return undefined;
   }, []); // Only run on mount
 
   // Handle responsive behavior - vertical collapse for both mobile and desktop

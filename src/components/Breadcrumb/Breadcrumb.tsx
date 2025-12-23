@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, memo } from 'react';
 import { BREADCRUMB } from '../../lib/constants/components';
 
 export interface BreadcrumbItem {
@@ -69,7 +69,7 @@ export interface BreadcrumbProps {
    */
   style?: React.CSSProperties;
 }
-export const Breadcrumb: React.FC<BreadcrumbProps> = ({
+export const Breadcrumb: React.FC<BreadcrumbProps> = memo(({
   items,
   divider,
   className = '',
@@ -129,7 +129,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({
       </ol>
     </nav>
   );
-};
+});
 
 Breadcrumb.displayName = 'Breadcrumb';
 

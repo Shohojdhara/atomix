@@ -100,7 +100,11 @@ const AreaChart = memo(
             {showTooltips && hoveredPoint && (
               <ChartTooltip
                 dataPoint={
-                  renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex]
+                  renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] ?? {
+                    label: '',
+                    value: 0,
+                    color: '',
+                  }
                 }
                 datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
                 datasetColor={

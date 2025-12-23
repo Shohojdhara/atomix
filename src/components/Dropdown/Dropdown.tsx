@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, createContext, useContext, useEffect } from 'react';
+import React, { useRef, useState, useCallback, createContext, useContext, useEffect, memo } from 'react';
 import { DROPDOWN } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import type {
@@ -27,7 +27,7 @@ const DropdownContext = createContext<DropdownContextType>({
 /**
  * DropdownItem component for menu items
  */
-export const DropdownItem: React.FC<DropdownItemProps> = ({
+export const DropdownItem: React.FC<DropdownItemProps> = memo(({
   children,
   href,
   active = false,
@@ -111,26 +111,26 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({
       </button>
     </li>
   );
-};
+});
 
 /**
  * DropdownDivider component for separating groups of items
  */
-export const DropdownDivider: React.FC<DropdownDividerProps> = ({ className = '' }) => {
+export const DropdownDivider: React.FC<DropdownDividerProps> = memo(({ className = '' }) => {
   return <li className={`c-dropdown__divider ${className}`} role="separator" />;
-};
+});
 
 /**
  * DropdownHeader component for section headers
  */
-export const DropdownHeader: React.FC<DropdownHeaderProps> = ({ children, className = '' }) => {
+export const DropdownHeader: React.FC<DropdownHeaderProps> = memo(({ children, className = '' }) => {
   return <li className={`c-dropdown__header ${className}`}>{children}</li>;
-};
+});
 
 /**
  * Dropdown component for creating dropdown menus
  */
-export const Dropdown: React.FC<DropdownProps> = ({
+export const Dropdown: React.FC<DropdownProps> = memo(({
   children,
   menu,
   placement = 'bottom-start',
@@ -370,10 +370,13 @@ export const Dropdown: React.FC<DropdownProps> = ({
       </div>
     </div>
   );
-};
+});
 
 export type { DropdownProps, DropdownItemProps, DropdownDividerProps, DropdownHeaderProps };
 
 Dropdown.displayName = 'Dropdown';
+DropdownItem.displayName = 'DropdownItem';
+DropdownDivider.displayName = 'DropdownDivider';
+DropdownHeader.displayName = 'DropdownHeader';
 
 export default Dropdown;

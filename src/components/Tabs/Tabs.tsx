@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, memo } from 'react';
 import { TAB } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { AtomixGlassProps } from '../../lib/types/components';
@@ -61,7 +61,7 @@ export interface TabsProps {
 /**
  * Tabs component for switching between different content panels
  */
-export const Tabs: React.FC<TabsProps> = ({
+export const Tabs: React.FC<TabsProps> = memo(({
   items,
   activeIndex = TAB.DEFAULTS.ACTIVE_INDEX,
   onTabChange,
@@ -137,7 +137,7 @@ export const Tabs: React.FC<TabsProps> = ({
   }
 
   return tabContent;
-};
+});
 
 Tabs.displayName = 'Tabs';
 

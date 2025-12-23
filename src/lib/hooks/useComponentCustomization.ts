@@ -23,7 +23,9 @@ export type ComponentName = keyof ComponentPartsMap;
  */
 export interface CustomizableComponentProps<T extends ComponentName> {
   /** CSS variable overrides */
-  cssVars?: Partial<Record<ComponentCSSVariables[T], string | number>>;
+  cssVars?: T extends keyof ComponentCSSVariables 
+    ? Partial<Record<ComponentCSSVariables[T], string | number>>
+    : Record<string, string | number>;
   /** Part-based styling */
   parts?: ComponentPartsMap[T];
   /** Additional className */
@@ -73,17 +75,17 @@ export function useComponentCustomization<T extends ComponentName>(
 
   // Merge CSS variables
   const cssVars = useMemo(() => {
-    const themeVars = theme?.components?.[component]?.cssVars || {};
+    const themeVars = (theme as any)?.components?.[component]?.cssVars || {};
     const propVars = props.cssVars || {};
     return mergeCSSVars(themeVars, propVars as any);
   }, [theme, component, props.cssVars]);
 
   // Merge parts
   const parts = useMemo(() => {
-    const themeParts = theme?.components?.[component]?.parts || {};
-    const propParts = props.parts || {};
+    const themeParts = (theme as any)?.components?.[component]?.parts || {};
+    const propParts = (props.parts || {}) as Record<string, any>;
     
-    const merged: any = {};
+    const merged: Record<string, any> = {};
     const allPartNames = new Set([
       ...Object.keys(themeParts),
       ...Object.keys(propParts),
@@ -101,7 +103,7 @@ export function useComponentCustomization<T extends ComponentName>(
 
   // Merge className
   const className = useMemo(() => {
-    const themeClassName = theme?.components?.[component]?.className || '';
+    const themeClassName = (theme as any)?.components?.[component]?.className || '';
     const propClassName = props.className || '';
     return [themeClassName, propClassName].filter(Boolean).join(' ');
   }, [theme, component, props.className]);
@@ -137,7 +139,7 @@ export function useComponentDefaultProps<T extends ComponentName>(
   const { theme } = useTheme();
   
   return useMemo(() => {
-    return theme?.components?.[component]?.defaultProps || {};
+    return (theme as any)?.components?.[component]?.defaultProps || {};
   }, [theme, component]);
 }
 

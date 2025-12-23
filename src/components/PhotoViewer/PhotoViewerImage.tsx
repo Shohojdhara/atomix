@@ -5,7 +5,7 @@ import React, { useRef, useEffect, useState } from 'react';
  */
 export interface PhotoViewerImageProps {
   /** Ref to the image element */
-  imageRef: React.RefObject<HTMLImageElement | null>;
+  imageRef: React.RefObject<HTMLImageElement>;
   /** Ref to the container element */
   containerRef?: React.RefObject<HTMLDivElement | null>;
   /** Image source URL */
@@ -134,7 +134,7 @@ export const PhotoViewerImage: React.FC<PhotoViewerImageProps> = ({
 
   return (
     <div
-      ref={effectiveContainerRef}
+      ref={effectiveContainerRef as React.LegacyRef<HTMLDivElement>}
       className={`c-photo-viewer__image-container ${isTransitioning ? 'is-transitioning' : ''}`}
       style={{
         cursor: isDragging ? 'grabbing' : zoomLevel > 1 ? 'grab' : 'default',

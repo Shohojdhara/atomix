@@ -18,6 +18,11 @@ export function useChartScale(
       return {
         xScale: () => padding.left,
         yScale: () => padding.top + innerHeight,
+        minValue: 0,
+        maxValue: 0,
+        valueRange: 0,
+        innerWidth,
+        innerHeight,
         width,
         height,
         padding,
@@ -40,6 +45,11 @@ export function useChartScale(
     return {
       xScale,
       yScale,
+      minValue,
+      maxValue,
+      valueRange,
+      innerWidth,
+      innerHeight,
       width,
       height,
       padding,

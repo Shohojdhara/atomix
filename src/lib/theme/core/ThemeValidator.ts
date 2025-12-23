@@ -392,8 +392,11 @@ export class ThemeValidator {
 
     for (let i = 0; i < numericEntries.length; i++) {
       for (let j = i + 1; j < numericEntries.length; j++) {
-        const [keyA, valueA] = numericEntries[i];
-        const [keyB, valueB] = numericEntries[j];
+        const entryA = numericEntries[i];
+        const entryB = numericEntries[j];
+        if (!entryA || !entryB) continue;
+        const [keyA, valueA] = entryA;
+        const [keyB, valueB] = entryB;
         const diff = Math.abs(valueA - valueB);
         if (diff < 10 && diff > 0) {
           warnings.push(
