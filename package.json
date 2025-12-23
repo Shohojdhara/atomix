@@ -1,6 +1,6 @@
 {
   "name": "@shohojdhara/atomix",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Atomix Design System - A modern component library for web applications",
   "type": "module",
   "sideEffects": [
@@ -86,6 +86,16 @@
       "import": "./dist/theme.js",
       "default": "./dist/theme.js"
     },
+    "./themes/*": {
+      "import": "./dist/themes/*.css",
+      "require": "./dist/themes/*.css",
+      "default": "./dist/themes/*.css"
+    },
+    "./themes/*.min": {
+      "import": "./dist/themes/*.min.css",
+      "require": "./dist/themes/*.min.css",
+      "default": "./dist/themes/*.min.css"
+    },
     "./charts": {
       "types": "./dist/charts.d.ts",
       "import": "./dist/charts.js",
@@ -123,7 +133,8 @@
     "inquirer": "^9.2.0",
     "ora": "^6.3.0",
     "postcss": "^8.4.31",
-    "sass": "^1.69.0"
+    "sass": "^1.69.0",
+    "ts-node": "^10.9.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.15.0",
@@ -204,11 +215,15 @@
     "build:js": "rollup -c rollup.config.build.js",
     "build:types": "rollup -c rollup.config.types.js",
     "build:styles": "rollup -c rollup.config.styles.js",
+    "build:themes": "rollup -c rollup/config/themes.js",
     "build:parallel": "concurrently \"npm:build:js\" \"npm:build:types\" \"npm:build:styles\"",
     "build:analyze": "ANALYZE=true rollup -c",
     "build:storybook": "storybook build",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
+    "test:cli": "vitest run scripts/cli/__tests__",
+    "test:cli:watch": "vitest scripts/cli/__tests__",
+    "test:cli:coverage": "vitest run --coverage scripts/cli/__tests__",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "prettier": "prettier --write 'src/**/*.{ts,tsx,js,jsx,json,css,scss}'",

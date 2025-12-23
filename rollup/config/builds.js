@@ -15,6 +15,7 @@ import {
 } from './postcss.js';
 import { terserConfigNonMinified, terserConfigMinified } from './terser.js';
 import { cleanup } from '../plugins/cleanup.js';
+import generateThemeBuilds from './themes.js';
 
 /**
  * JavaScript/TypeScript build configurations
@@ -326,11 +327,18 @@ export const jsBuildsWithChunks = [...jsBuilds, esmBuildChunked];
 export const allBuilds = [...jsBuilds, ...stylesBuilds];
 
 /**
+ * Theme builds
+ * Generated from themes.config.js - only includes themes that have SCSS files
+ */
+export const themeBuilds = generateThemeBuilds();
+
+/**
  * All builds with hybrid strategy (recommended for production)
  * 
  * Hybrid Build Strategy:
  * - Single-file ESM/CJS/minified builds for main entry point (index.js, index.esm.js, index.min.js)
  * - Separate entry point builds for code organization (theme.js, charts.js, forms.js, etc.)
+ * - Theme CSS builds for individual theme files (dist/themes/*.css)
  * - No automatic chunking to avoid duplicate chunks
  * 
  * This approach:
@@ -338,9 +346,10 @@ export const allBuilds = [...jsBuilds, ...stylesBuilds];
  * - Avoids duplicate chunks that were created by esmBuildChunked
  * - Reduces bundle size while keeping build output clean
  * - Follows performance audit recommendations for bundle size optimization
+ * - Enables individual theme CSS imports
  * 
  * Note: esmBuildChunked is available but not included by default to prevent duplicates.
  * If you need automatic code splitting, use it separately.
  */
-export const allBuildsWithChunks = [...jsBuilds, ...stylesBuilds, ...entryBuilds];
+export const allBuildsWithChunks = [...jsBuilds, ...stylesBuilds, ...entryBuilds, ...themeBuilds];
 

@@ -166,11 +166,68 @@ function App() {
 }
 ```
 
+#### 4. Customize Design Tokens via Config (New!)
+
+You can now customize design tokens using `atomix.config.ts`:
+
+```typescript
+// atomix.config.ts (in your project root)
+import { defineConfig } from '@shohojdhara/atomix/config';
+
+export default defineConfig({
+  prefix: 'atomix', // Optional: customize CSS variable prefix
+  
+  theme: {
+    extend: {
+      // Customize colors - generates full color scales automatically
+      colors: {
+        primary: { main: '#7AFFD7' }, // Generates primary-1 through primary-10
+        secondary: { main: '#FF5733' },
+        error: { main: '#ef4444' },
+      },
+      
+      // Customize typography
+      typography: {
+        fontFamilies: {
+          sans: ['Inter', 'sans-serif'],
+        },
+        fontSizes: {
+          '2xl': '1.5rem',
+        },
+      },
+      
+      // Customize spacing
+      spacing: {
+        '18': '4.5rem',
+        '72': '18rem',
+      },
+      
+      // Customize border radius
+      borderRadius: {
+        'xl': '0.75rem',
+      },
+    },
+  },
+});
+```
+
+After creating your config, run:
+```bash
+npm run sync:config
+```
+
+This generates CSS custom properties in `src/styles/03-generic/_generated-root.css` that you can import in your project. The generated tokens include:
+- Full color scales (1-10 steps) from a single color
+- RGB variants for transparency support
+- Semantic tokens (text-emphasis, bg-subtle, border-subtle, hover)
+- Typography, spacing, and border-radius tokens
+
+**Note:** This feature generates tokens at build time. For runtime theme customization, use `createTheme()` instead.
+
 ### ❌ What You Should NOT Use
 
-1. **`atomix.config.ts`** - This is for library developers only. Use `createTheme()` directly instead.
-2. **SCSS Theme Structure** - Only needed if contributing themes to Atomix.
-3. **Build Scripts** (`sync:config`, `generate:tokens`) - These are for library development only.
+1. **SCSS Theme Structure** - Only needed if contributing themes to Atomix.
+2. **Build Scripts** (`sync:tokens`, `generate:tokens`) - These are for library development only.
 
 ### Common Use Cases
 
@@ -614,28 +671,54 @@ const margin = rtlManager.getValue('margin-left', 'margin-right');
 
 ### atomix.config.ts
 
-The central configuration file (for library developers):
+The central configuration file for customizing design tokens and registering themes:
 
 ```typescript
 import { defineConfig } from '@shohojdhara/atomix/config';
 
 export default defineConfig({
-  // CSS variable prefix
+  // CSS variable prefix (default: 'atomix')
   prefix: 'atomix',
   
   theme: {
     // Extend default tokens
     extend: {
+      // Colors - generates full color scales (1-10) automatically
       colors: {
-        primary: { main: '#3b82f6' },
+        primary: { main: '#3b82f6' }, // Generates:
+        // --atomix-primary-1 through --atomix-primary-10
+        // --atomix-primary (main color)
+        // --atomix-primary-rgb (for transparency)
+        // --atomix-primary-text-emphasis
+        // --atomix-primary-bg-subtle
+        // --atomix-primary-border-subtle
+        // --atomix-primary-hover
+        secondary: { main: '#10b981' },
+        error: { main: '#ef4444' },
       },
-      spacing: {
-        '18': '4.5rem',
-      },
+      
+      // Typography customization
       typography: {
         fontFamilies: {
           sans: ['Inter', 'sans-serif'],
         },
+        fontSizes: {
+          '2xl': '1.5rem',
+        },
+        fontWeights: {
+          bold: 700,
+        },
+      },
+      
+      // Spacing customization
+      spacing: {
+        '18': '4.5rem',
+        '72': '18rem',
+      },
+      
+      // Border radius customization
+      borderRadius: {
+        'xl': '0.75rem',
       },
     },
     
@@ -664,18 +747,65 @@ export default defineConfig({
 From `atomix.config.ts`, these files are automatically generated:
 
 1. **`src/themes/themes.config.js`** - Build-time theme configuration
-2. **`src/styles/00-tokens/_generated-tokens.scss`** - Optional SCSS variable overrides
-3. **`src/styles/03-generic/_generated-root.css`** - CSS variables from config
+   - Theme metadata (name, description, version, status, etc.)
+   - Build settings (output directory, formats, SASS options)
+   - Runtime configuration (basePath, storage, persistence)
+   - Integration settings (CSS variables, class names)
+   - Theme dependencies
+
+2. **`src/styles/03-generic/_generated-root.css`** - CSS custom properties from config
+   - Generated from `theme.extend` colors, typography, spacing, etc.
+   - Includes full color scales (1-10 steps) from a single color
+   - Includes semantic tokens (text-emphasis, bg-subtle, border-subtle, hover)
+   - Includes RGB variants for transparency support
+   - Typography, spacing, and border-radius tokens
 
 **Note:** `_settings.config.scss` is NOT auto-generated - it's standalone for SCSS builds.
+
+### Token Generation Details
+
+When you customize colors in `theme.extend.colors`, the sync script automatically generates:
+
+**For each color (e.g., `primary: { main: '#3b82f6' }`):**
+- Full color scale: `--atomix-primary-1` through `--atomix-primary-10`
+- Main color: `--atomix-primary` (maps to primary-6)
+- RGB variant: `--atomix-primary-rgb` (for `rgba()` usage)
+- Semantic tokens:
+  - `--atomix-primary-text-emphasis` (for text)
+  - `--atomix-primary-bg-subtle` (for backgrounds)
+  - `--atomix-primary-border-subtle` (for borders)
+  - `--atomix-primary-hover` (for hover states)
+
+**Example Output:**
+```css
+/* _generated-root.css */
+:root {
+  --atomix-primary-1: #eff6ff;
+  --atomix-primary-2: #dbeafe;
+  --atomix-primary-3: #bfdbfe;
+  --atomix-primary-4: #93c5fd;
+  --atomix-primary-5: #60a5fa;
+  --atomix-primary-6: #3b82f6; /* main */
+  --atomix-primary-7: #2563eb;
+  --atomix-primary-8: #1d4ed8;
+  --atomix-primary-9: #1e40af;
+  --atomix-primary-10: #1e3a8a;
+  --atomix-primary: #3b82f6;
+  --atomix-primary-rgb: 59, 130, 246;
+  --atomix-primary-text-emphasis: #1e40af;
+  --atomix-primary-bg-subtle: rgba(59, 130, 246, 0.1);
+  --atomix-primary-border-subtle: rgba(59, 130, 246, 0.2);
+  --atomix-primary-hover: #2563eb;
+}
+```
 
 ### Sync Scripts
 
 ```bash
-# Sync theme configuration
+# Sync theme configuration (generates themes.config.js and _generated-root.css)
 npm run sync:config
 
-# Generate tokens
+# Generate tokens (alternative token generation)
 npm run sync:tokens
 
 # Validate configuration sync
@@ -684,6 +814,12 @@ npm run validate:config
 # Both sync and validate (runs automatically before build)
 npm run prebuild
 ```
+
+**What `sync:config` does:**
+1. Reads `atomix.config.ts`
+2. Generates `themes.config.js` with theme metadata and configuration
+3. Generates `_generated-root.css` with CSS custom properties from `theme.extend`
+4. Updates package.json exports (if themes are registered)
 
 ---
 
@@ -727,6 +863,50 @@ The theme system generates CSS variables you can use in your styles:
 
 - **Spacing Scale**: `--atomix-spacing-0` through `--atomix-spacing-200`
 - **Special Spacing**: `--atomix-spacing-px-6`, `--atomix-spacing-px-10`, etc.
+- **Common Values**: `--atomix-spacing-1` (4px), `--atomix-spacing-2` (8px), `--atomix-spacing-4` (16px), etc.
+
+#### Border Radius Tokens
+
+- **Base**: `--atomix-border-radius`, `--atomix-border-radius-sm`, `--atomix-border-radius-md`, `--atomix-border-radius-lg`, `--atomix-border-radius-xl`
+- **Extended**: `--atomix-border-radius-xxl`, `--atomix-border-radius-3xl`, `--atomix-border-radius-4xl`, `--atomix-border-radius-pill`
+
+#### Shadow Tokens
+
+- **Base**: `--atomix-box-shadow`, `--atomix-box-shadow-xs`, `--atomix-box-shadow-sm`, `--atomix-box-shadow-lg`, `--atomix-box-shadow-xl`, `--atomix-box-shadow-inset`
+
+### Importing Theme CSS Files
+
+Individual theme CSS files can be imported separately:
+
+```typescript
+// Import a specific theme CSS file
+import '@shohojdhara/atomix/themes/light';
+// or minified version
+import '@shohojdhara/atomix/themes/light.min';
+```
+
+**Available Theme Imports:**
+- `@shohojdhara/atomix/themes/{theme-name}` - Expanded CSS
+- `@shohojdhara/atomix/themes/{theme-name}.min` - Minified CSS
+
+**Note:** Theme CSS files are only available if themes are registered in `atomix.config.ts` and built with `npm run build:themes`.
+
+### Using Generated Tokens
+
+If you've customized tokens via `atomix.config.ts`, import the generated CSS:
+
+```typescript
+// Import generated tokens
+import '@shohojdhara/atomix/styles/03-generic/_generated-root.css';
+```
+
+Or if using SCSS:
+
+```scss
+@import '@shohojdhara/atomix/scss/generic';
+```
+
+The generated tokens will be available as CSS custom properties in your application.
 
 #### Shadow Tokens
 
@@ -910,6 +1090,37 @@ import { ThemePreview, ThemeInspector } from '@shohojdhara/atomix/theme';
 2. Check prefix matches config
 3. Verify token name follows conventions
 4. Check browser DevTools for actual CSS variable names
+5. If using config-generated tokens, ensure `_generated-root.css` is imported
+
+### Token Generation Issues
+
+**Problem:** Generated tokens don't match config
+
+**Solutions:**
+1. Run `npm run sync:config` to regenerate
+2. Check `atomix.config.ts` syntax is correct
+3. Verify color values are valid hex colors
+4. Check `src/styles/03-generic/_generated-root.css` exists and has content
+5. Ensure `_generated-root.css` is imported in your styles
+
+**Problem:** Only 1 CSS variable generated instead of full scale
+
+**Solutions:**
+1. Ensure you're using `theme.extend.colors` (not `theme.tokens.colors`)
+2. Check color format: `{ main: '#3b82f6' }` (not just `'#3b82f6'`)
+3. Run `npm run sync:config` again
+4. Check console output for errors during sync
+
+### Theme CSS Import Issues
+
+**Problem:** Cannot import theme CSS files
+
+**Solutions:**
+1. Ensure themes are built: `npm run build:themes`
+2. Check `dist/themes/` directory exists
+3. Verify package.json exports include theme paths
+4. Use correct import path: `@shohojdhara/atomix/themes/light`
+5. Check theme is registered in `atomix.config.ts`
 
 ### TypeScript Errors
 

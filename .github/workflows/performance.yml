@@ -31,29 +31,58 @@ jobs:
         run: npm run build
 
       - name: Check bundle sizes
+        id: bundle_check
         run: |
           echo "Checking bundle sizes against performance budgets..."
           
           # Check main bundle
-          MAIN_SIZE=$(stat -f%z dist/index.esm.js 2>/dev/null || stat -c%s dist/index.esm.js 2>/dev/null || echo "0")
+          if [ ! -f "dist/index.esm.js" ]; then
+            echo "❌ Main bundle file not found: dist/index.esm.js"
+            echo "main_status=❌ Build failed - file not found" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          MAIN_SIZE=$(stat -f%z dist/index.esm.js 2>/dev/null || stat -c%s dist/index.esm.js 2>/dev/null)
           MAIN_BUDGET=204800 # 200KB
+          
+          if [ "$MAIN_SIZE" -eq 0 ]; then
+            echo "❌ Main bundle has zero size - build may have failed"
+            echo "main_status=❌ Zero-sized bundle" >> $GITHUB_OUTPUT
+            exit 1
+          fi
           
           if [ "$MAIN_SIZE" -gt "$MAIN_BUDGET" ]; then
             echo "❌ Main bundle size ($MAIN_SIZE bytes) exceeds budget ($MAIN_BUDGET bytes)"
+            echo "main_status=❌ Exceeds budget ($MAIN_SIZE bytes > $MAIN_BUDGET bytes)" >> $GITHUB_OUTPUT
             exit 1
           else
             echo "✅ Main bundle size ($MAIN_SIZE bytes) is within budget ($MAIN_BUDGET bytes)"
+            echo "main_status=✅ Within budget ($MAIN_SIZE bytes / $MAIN_BUDGET bytes)" >> $GITHUB_OUTPUT
           fi
           
           # Check CSS bundle
-          CSS_SIZE=$(stat -f%z dist/atomix.min.css 2>/dev/null || stat -c%s dist/atomix.min.css 2>/dev/null || echo "0")
+          if [ ! -f "dist/atomix.min.css" ]; then
+            echo "❌ CSS bundle file not found: dist/atomix.min.css"
+            echo "css_status=❌ Build failed - file not found" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          CSS_SIZE=$(stat -f%z dist/atomix.min.css 2>/dev/null || stat -c%s dist/atomix.min.css 2>/dev/null)
           CSS_BUDGET=102400 # 100KB
+          
+          if [ "$CSS_SIZE" -eq 0 ]; then
+            echo "❌ CSS bundle has zero size - build may have failed"
+            echo "css_status=❌ Zero-sized bundle" >> $GITHUB_OUTPUT
+            exit 1
+          fi
           
           if [ "$CSS_SIZE" -gt "$CSS_BUDGET" ]; then
             echo "❌ CSS bundle size ($CSS_SIZE bytes) exceeds budget ($CSS_BUDGET bytes)"
+            echo "css_status=❌ Exceeds budget ($CSS_SIZE bytes > $CSS_BUDGET bytes)" >> $GITHUB_OUTPUT
             exit 1
           else
             echo "✅ CSS bundle size ($CSS_SIZE bytes) is within budget ($CSS_BUDGET bytes)"
+            echo "css_status=✅ Within budget ($CSS_SIZE bytes / $CSS_BUDGET bytes)" >> $GITHUB_OUTPUT
           fi
           
           echo "All bundle sizes are within budget!"
@@ -73,8 +102,8 @@ jobs:
           echo "## Performance Budget Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Bundle Sizes" >> $GITHUB_STEP_SUMMARY
-          echo "- Main bundle: ✅ Within budget" >> $GITHUB_STEP_SUMMARY
-          echo "- CSS bundle: ✅ Within budget" >> $GITHUB_STEP_SUMMARY
+          echo "- Main bundle: ${{ steps.bundle_check.outputs.main_status || '⚠️ Check did not complete' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- CSS bundle: ${{ steps.bundle_check.outputs.css_status || '⚠️ Check did not complete' }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Lighthouse Scores" >> $GITHUB_STEP_SUMMARY
           echo "See Lighthouse CI artifacts for detailed scores." >> $GITHUB_STEP_SUMMARY

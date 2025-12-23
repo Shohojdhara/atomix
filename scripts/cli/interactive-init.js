@@ -4,7 +4,7 @@
 
 import inquirer from 'inquirer';
 import chalk from 'chalk';
-import { writeFile, mkdir } from 'fs/promises';
+import { readFile, writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import boxen from 'boxen';

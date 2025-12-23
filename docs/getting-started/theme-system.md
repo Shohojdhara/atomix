@@ -180,6 +180,81 @@ All themes automatically generate CSS variables that you can use in your styles:
 
 ---
 
+## Customizing Design Tokens via Config
+
+You can customize design tokens at build time using `atomix.config.ts`:
+
+### 1. Create Configuration File
+
+Create `atomix.config.ts` in your project root:
+
+```typescript
+import { defineConfig } from '@shohojdhara/atomix/config';
+
+export default defineConfig({
+  prefix: 'atomix', // Optional: customize CSS variable prefix
+  
+  theme: {
+    extend: {
+      // Customize colors - generates full color scales automatically
+      colors: {
+        primary: { main: '#7AFFD7' }, // Generates primary-1 through primary-10
+        secondary: { main: '#FF5733' },
+      },
+      
+      // Customize typography
+      typography: {
+        fontFamilies: {
+          sans: ['Inter', 'sans-serif'],
+        },
+        fontSizes: {
+          '2xl': '1.5rem',
+        },
+      },
+      
+      // Customize spacing
+      spacing: {
+        '18': '4.5rem',
+      },
+    },
+  },
+});
+```
+
+### 2. Generate Tokens
+
+Run the sync script to generate CSS custom properties:
+
+```bash
+npm run sync:config
+```
+
+This generates `src/styles/03-generic/_generated-root.css` with all your custom tokens, including:
+- Full color scales (1-10 steps) from a single color
+- RGB variants for transparency support
+- Semantic tokens (text-emphasis, bg-subtle, border-subtle, hover)
+- Typography, spacing, and border-radius tokens
+
+### 3. Import Generated Tokens
+
+Import the generated CSS in your project:
+
+```tsx
+// In your main entry file
+import '@shohojdhara/atomix/styles/03-generic/_generated-root.css';
+```
+
+Or if you're using the Atomix SCSS source:
+
+```scss
+// In your main SCSS file
+@import '@shohojdhara/atomix/scss/generic';
+```
+
+**Note:** Token customization via config is a build-time feature. For runtime theme customization, use `createTheme()` instead.
+
+---
+
 ## Common Use Cases
 
 ### 1. Brand Colors

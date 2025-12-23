@@ -433,13 +433,38 @@ export async function importTokens(filePath, options = {}) {
         
       case 'js':
       case 'ts':
-        // Extract tokens from JS/TS export
-        const match = content.match(/export\s+(?:const|default)\s+\w*\s*=\s*({[\s\S]*})/);
-        if (match) {
-          // Simple eval (be careful in production)
-          tokens = eval(`(${match[1]})`);
-        } else {
-          throw new Error('Could not parse JavaScript/TypeScript tokens');
+        // Parse tokens safely without eval
+        try {
+          // Try to parse as JSON first (common case)
+          const jsonMatch = content.match(/export\s+(?:const|default)\s+\w*\s*=\s*({[\s\S]*})/);
+          if (jsonMatch) {
+            // Extract the object literal and clean it up
+            let objectStr = jsonMatch[1];
+            
+            // Remove trailing semicolon if present
+            objectStr = objectStr.replace(/;\s*$/, '');
+            
+            // Try direct JSON parsing first
+            try {
+              tokens = JSON.parse(objectStr);
+            } catch {
+              // If that fails, try to convert JS object to JSON
+              // This handles single quotes and unquoted keys
+              objectStr = objectStr
+                // Replace single quotes with double quotes
+                .replace(/'/g, '"')
+                // Add quotes to unquoted keys
+                .replace(/(\s*)([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:/g, '$1"$2":')
+                // Handle trailing commas
+                .replace(/,(\s*[}\]])/g, '$1');
+              
+              tokens = JSON.parse(objectStr);
+            }
+          } else {
+            throw new Error('Could not find token export in JavaScript/TypeScript file');
+          }
+        } catch (error) {
+          throw new Error(`Could not parse JavaScript/TypeScript tokens: ${error.message}`);
         }
         break;
         
