@@ -29,7 +29,7 @@ function loadThemesConfig() {
     // Extract themes metadata using regex (since we can't easily eval ESM)
     // This is a simplified approach - in production, you might want to use a proper ESM loader
     const metadataMatch = configContent.match(/metadata:\s*({[\s\S]*?}),/);
-    const themes: Record<string, any> = {};
+    const themes = {};
     
     if (metadataMatch) {
       try {
@@ -59,7 +59,7 @@ function loadThemesConfig() {
  * Resolve theme SCSS entry file path
  * Tries multiple possible locations
  */
-function resolveThemeEntry(themeName: string): string | null {
+function resolveThemeEntry(themeName) {
   const possiblePaths = [
     // Standard theme directory structure
     `src/themes/${themeName}/index.scss`,
@@ -87,7 +87,7 @@ function resolveThemeEntry(themeName: string): string | null {
  * @param {boolean} minify - Whether to minify the output
  * @returns {Object|null} Rollup build configuration or null if theme file not found
  */
-function createThemeBuild(themeName: string, themeMetadata: any, minify: boolean = false) {
+function createThemeBuild(themeName, themeMetadata, minify = false) {
   // Try to resolve theme entry file
   const themeEntry = resolveThemeEntry(themeName);
   
@@ -144,8 +144,8 @@ export function generateThemeBuilds() {
 }
 
 /**
- * Default export: all theme builds
+ * Default export: the function itself
  * This is used by rollup.config.build.js
  */
-export default generateThemeBuilds();
+export default generateThemeBuilds;
 

@@ -434,3 +434,4 @@ We take security seriously and will respond within 48 hours.
 
 **Last Updated:** December 2024  
 **Security Contact:** security@atomix.design
+

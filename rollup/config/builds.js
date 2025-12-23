@@ -1,5 +1,5 @@
 import terser from '@rollup/plugin-terser';
-import dts from 'rollup-plugin-dts';
+import { dts } from 'rollup-plugin-dts';
 import postcss from 'rollup-plugin-postcss';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { INPUT_FILES, OUTPUT_FILES } from './constants.js';

@@ -201,3 +201,4 @@ Contributions are welcome! Please read our [Contributing Guide](../CONTRIBUTING.
 **Version:** 0.3.4  
 **Last Updated:** December 2024  
 **License:** MIT
+
