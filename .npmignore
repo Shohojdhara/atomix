@@ -13,6 +13,7 @@ src/htmlComponentsEntry.ts
 # Development and build configuration
 .storybook/
 .github/
+.lingma/
 docs/
 storybook-static/
 deploy/

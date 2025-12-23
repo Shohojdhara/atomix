@@ -91,6 +91,7 @@
     box-sizing: border-box;
     overflow: hidden;
     pointer-events: none;
+    /* postcss-ignore-start */
     -webkit-mask:
       linear-gradient(var(--atomix-black, #000000) 0 0) content-box,
       linear-gradient(var(--atomix-black, #000000) 0 0);
@@ -99,6 +100,7 @@
       linear-gradient(var(--atomix-black, #000000) 0 0) content-box,
       linear-gradient(var(--atomix-black, #000000) 0 0);
     mask-composite: exclude;
+    /* postcss-ignore-end */
 
     position: var(--atomix-glass-position);
     top: var(--atomix-glass-top);
