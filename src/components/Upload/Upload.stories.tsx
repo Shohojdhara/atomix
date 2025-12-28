@@ -158,9 +158,10 @@ export const Disabled: Story = {
     disabled: true,
   },
   parameters: {
-  docs: {
-    description: {
-      story: 'Upload component in disabled state with reduced opacity and no interactions.',
+    docs: {
+      description: {
+        story: 'Upload component in disabled state with reduced opacity and no interactions.',
+      },
     },
   },
 };
@@ -451,7 +452,6 @@ export const DragDropDemo: Story = {
     </div>
     );
   },
-};
   parameters: {
     docs: {
       description: {

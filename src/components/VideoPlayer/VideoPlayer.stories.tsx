@@ -10,6 +10,7 @@
  */
 
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import React from 'react';
 import { VideoPlayerProps } from '../../lib/types/components';
@@ -29,12 +30,8 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'The VideoPlayer component provides an advanced, modern video player with comprehensive features including custom controls, YouTube integration, glass morphism effects, and full accessibility support. It supports both regular video files and YouTube embeds with seamless auto-detection and provides a rich, interactive viewing experience.',
-      },
-    },
-  },
-  tags: ['autodocs'],
+        component: `The VideoPlayer component provides an advanced, modern video player with comprehensive features including custom controls, YouTube integration, glass morphism effects, and full accessibility support. It supports both regular video files and YouTube embeds with seamless auto-detection and provides a rich, interactive viewing experience.
+
 - **Quality Selection**: Multiple video resolution options
 - **Playback Speed**: Adjustable speed controls (0.25x to 4x)
 - **Subtitle Support**: Multi-language subtitle tracks with WebVTT
@@ -56,8 +53,7 @@ const meta = {
 ### 📱 **Multi-Platform**
 - **Cross-Browser**: Works on all modern browsers
 - **Mobile Optimized**: Touch-friendly controls and responsive layout
-- **Performance**: Optimized for smooth playback and effects
-        `,
+- **Performance**: Optimized for smooth playback and effects`,
       },
     },
   },

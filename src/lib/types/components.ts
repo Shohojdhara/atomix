@@ -1772,6 +1772,16 @@ export interface PaginationProps extends BaseComponentProps {
   showPrevNextButtons?: boolean;
 
   /**
+   * Whether to show search input for jumping to a specific page
+   */
+  showSearch?: boolean;
+
+  /**
+   * Placeholder text for the search input
+   */
+  searchPlaceholder?: string;
+
+  /**
    * Custom class for the pagination container
    */
   className?: string;

@@ -195,7 +195,10 @@ $theme-font-weight: (
 
 // scss-docs-start utilities-colors
 
-// @TODO: Replace $theme-colors with css var
+// Note: Future enhancement - Consider using CSS custom properties (--atomix-*)
+// generated from $theme-colors instead of SCSS maps for utilities generation.
+// This would enable runtime theme switching for utility classes.
+// Current implementation uses SCSS maps which is correct for build-time generation.
 
 $utilities-colors: $theme-colors !default;
 

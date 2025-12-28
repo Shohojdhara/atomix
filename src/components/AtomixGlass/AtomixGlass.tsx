@@ -118,6 +118,12 @@ export function AtomixGlass({
     opacity0: number;
   } | null>(null);
 
+  // Cache RGB color values from design tokens
+  const rgbCacheRef = useRef<{
+    whiteRgb: string;
+    blackRgb: string;
+  } | null>(null);
+
   // Use composable hook for all state and logic
   const {
     isHovered,
@@ -161,35 +167,63 @@ export function AtomixGlass({
 
   // Read CSS custom properties once on mount and cache them
   useEffect(() => {
-    if (typeof window !== 'undefined' && glassRef.current && !opacityCacheRef.current) {
+    if (typeof window !== 'undefined' && glassRef.current) {
       try {
         const computedStyle = window.getComputedStyle(glassRef.current);
-        const opacity50Value = computedStyle.getPropertyValue('--atomix-opacity-50').trim();
-        const opacity40Value = computedStyle.getPropertyValue('--atomix-opacity-40').trim();
-        const opacity80Value = computedStyle.getPropertyValue('--atomix-opacity-80').trim();
-        const opacity0Value = computedStyle.getPropertyValue('--atomix-opacity-0').trim();
+        
+        // Cache opacity values
+        if (!opacityCacheRef.current) {
+          const opacity50Value = computedStyle.getPropertyValue('--atomix-opacity-50').trim();
+          const opacity40Value = computedStyle.getPropertyValue('--atomix-opacity-40').trim();
+          const opacity80Value = computedStyle.getPropertyValue('--atomix-opacity-80').trim();
+          const opacity0Value = computedStyle.getPropertyValue('--atomix-opacity-0').trim();
 
-        // Parse opacity values, handling 0 correctly (use NaN check instead of falsy check)
-        const parseOpacity = (value: string, defaultValue: number): number => {
-          if (!value) return defaultValue;
-          const parsed = parseFloat(value);
-          return isNaN(parsed) ? defaultValue : parsed;
-        };
+          // Parse opacity values, handling 0 correctly (use NaN check instead of falsy check)
+          const parseOpacity = (value: string, defaultValue: number): number => {
+            if (!value) return defaultValue;
+            const parsed = parseFloat(value);
+            return isNaN(parsed) ? defaultValue : parsed;
+          };
 
-        opacityCacheRef.current = {
-          opacity50: parseOpacity(opacity50Value, 0.5),
-          opacity40: parseOpacity(opacity40Value, 0.4),
-          opacity80: parseOpacity(opacity80Value, 0.8),
-          opacity0: parseOpacity(opacity0Value, 0),
-        };
+          opacityCacheRef.current = {
+            opacity50: parseOpacity(opacity50Value, 0.5),
+            opacity40: parseOpacity(opacity40Value, 0.4),
+            opacity80: parseOpacity(opacity80Value, 0.8),
+            opacity0: parseOpacity(opacity0Value, 0),
+          };
+        }
+
+        // Cache RGB color values from design tokens
+        if (!rgbCacheRef.current) {
+          // Try to read from design tokens, fallback to defaults
+          const whiteRgbValue = computedStyle.getPropertyValue('--atomix-light-rgb').trim() ||
+                                computedStyle.getPropertyValue('--atomix-white-rgb').trim() ||
+                                '';
+          const blackRgbValue = computedStyle.getPropertyValue('--atomix-dark-rgb').trim() ||
+                               computedStyle.getPropertyValue('--atomix-black-rgb').trim() ||
+                               '';
+
+          rgbCacheRef.current = {
+            whiteRgb: whiteRgbValue || '255, 255, 255', // Fallback to white RGB
+            blackRgb: blackRgbValue || '0, 0, 0', // Fallback to black RGB
+          };
+        }
       } catch (error) {
         // Fallback to defaults if reading fails
-        opacityCacheRef.current = {
-          opacity50: 0.5,
-          opacity40: 0.4,
-          opacity80: 0.8,
-          opacity0: 0,
-        };
+        if (!opacityCacheRef.current) {
+          opacityCacheRef.current = {
+            opacity50: 0.5,
+            opacity40: 0.4,
+            opacity80: 0.8,
+            opacity0: 0,
+          };
+        }
+        if (!rgbCacheRef.current) {
+          rgbCacheRef.current = {
+            whiteRgb: '255, 255, 255',
+            blackRgb: '0, 0, 0',
+          };
+        }
       }
     }
   }, []);
@@ -393,12 +427,12 @@ export function AtomixGlass({
 
   const glassVars = useMemo(() => {
     // RGB color values for rgba() functions
-    // Note: CSS doesn't support rgba(var(--rgb), opacity) syntax, so we use direct values
-    // These values align with design tokens: --atomix-white-rgb and --atomix-black-rgb
-    // The actual RGB values are defined in SCSS and should match these fallbacks
-    // TODO: Consider reading from CSS custom properties if browser support improves
-    const whiteColor = '255, 255, 255'; // Matches --atomix-white-rgb design token
-    const blackColor = '0, 0, 0'; // Matches --atomix-black-rgb design token
+    // Note: CSS doesn't support rgba(var(--rgb), opacity) syntax - this is a CSS specification
+    // limitation, not a browser support issue. We read RGB values from design tokens at mount
+    // and cache them for performance. Falls back to defaults if tokens are not available.
+    // Uses design tokens: --atomix-light-rgb / --atomix-white-rgb and --atomix-dark-rgb / --atomix-black-rgb
+    const whiteColor = rgbCacheRef.current?.whiteRgb || '255, 255, 255';
+    const blackColor = rgbCacheRef.current?.blackRgb || '0, 0, 0';
 
     return {
       // Standard CSS custom properties for dynamic values

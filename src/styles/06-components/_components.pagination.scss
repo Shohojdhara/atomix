@@ -153,4 +153,92 @@
   &__icon-skip-forward::before {
     content: '⏭';
   }
+
+  // Search functionality
+  &__search {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__search-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__search-label-text {
+    font-size: var(--#{config.$prefix}pagination-font-size);
+    color: var(--#{config.$prefix}pagination-color);
+    white-space: nowrap;
+  }
+
+  &__search-input {
+    width: 80px;
+    padding: var(--#{config.$prefix}pagination-padding-y)
+      var(--#{config.$prefix}pagination-padding-x);
+    font-size: var(--#{config.$prefix}pagination-font-size);
+    text-align: center;
+    border: 1px solid var(--#{config.$prefix}pagination-color);
+    border-radius: var(--#{config.$prefix}pagination-border-radius);
+    @include dynamic-background(var(--#{config.$prefix}pagination-bg));
+    color: var(--#{config.$prefix}pagination-color);
+    transition: all 0.2s ease-in-out;
+
+    &:focus {
+      outline: none;
+      border-color: var(--#{config.$prefix}pagination-focus-border-color);
+      border-width: var(--#{config.$prefix}pagination-focus-border-width);
+    }
+
+    &.is-error {
+      border-color: var(--#{config.$prefix}error-color, #dc3545);
+      background-color: var(--#{config.$prefix}error-bg-subtle, rgba(220, 53, 69, 0.1));
+    }
+  }
+
+  &__search-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include size.square(var(--#{config.$prefix}pagination-size));
+    padding: var(--#{config.$prefix}pagination-padding-y)
+      var(--#{config.$prefix}pagination-padding-x);
+    @include dynamic-background(var(--#{config.$prefix}pagination-bg));
+    border: 1px solid var(--#{config.$prefix}pagination-color);
+    border-radius: var(--#{config.$prefix}pagination-border-radius);
+    color: var(--#{config.$prefix}pagination-color);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      --#{config.$prefix}pagination-color: var(--#{config.$prefix}pagination-hover-color);
+      --#{config.$prefix}pagination-bg: var(--#{config.$prefix}pagination-hover-bg);
+    }
+
+    &:focus-visible {
+      outline: none;
+      border-color: var(--#{config.$prefix}pagination-focus-border-color);
+      border-width: var(--#{config.$prefix}pagination-focus-border-width);
+    }
+
+    .c-icon {
+      color: inherit;
+    }
+  }
+
+  &__search-error {
+    font-size: 0.75rem;
+    color: var(--#{config.$prefix}error-color, #dc3545);
+    text-align: center;
+    margin-top: 0.25rem;
+  }
 }

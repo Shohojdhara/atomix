@@ -42,6 +42,16 @@ const meta = {
       description: 'Whether to show previous/next page buttons',
       defaultValue: true,
     },
+    showSearch: {
+      control: 'boolean',
+      description: 'Whether to show search input for jumping to a specific page',
+      defaultValue: false,
+    },
+    searchPlaceholder: {
+      control: 'text',
+      description: 'Placeholder text for the search input',
+      defaultValue: 'Go to page',
+    },
     size: {
       control: { type: 'select' },
       options: SIZES,
@@ -315,6 +325,48 @@ export const GlassCustom: Story = {
     docs: {
       description: {
         story: 'Pagination with custom glass morphism settings against a scenic background.',
+      },
+    },
+  },
+};
+
+export const WithSearch: Story = {
+  render: args => <ControlledPagination {...args} />,
+  args: {
+    currentPage: 5,
+    totalPages: 50,
+    siblingCount: 2,
+    showFirstLastButtons: true,
+    showPrevNextButtons: true,
+    showSearch: true,
+    searchPlaceholder: 'Go to page',
+    size: 'md',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pagination with search functionality to quickly jump to a specific page. Users can type a page number and submit to navigate directly.',
+      },
+    },
+  },
+};
+
+export const WithSearchLargeDataset: Story = {
+  render: args => <ControlledPagination {...args} />,
+  args: {
+    currentPage: 250,
+    totalPages: 1000,
+    siblingCount: 2,
+    showFirstLastButtons: true,
+    showPrevNextButtons: true,
+    showSearch: true,
+    searchPlaceholder: 'Enter page number',
+    size: 'md',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pagination with search functionality for large datasets. The search feature is especially useful when dealing with many pages.',
       },
     },
   },

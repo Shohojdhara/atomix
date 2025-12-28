@@ -1,11 +1,9 @@
-import React, { memo } from 'react';
+import React, { memo, useState, FormEvent } from 'react';
 import { PaginationProps } from '../../lib/types/components';
 import { usePagination, DOTS } from '../../lib/composables/usePagination';
 import { PAGINATION_DEFAULTS } from '../../lib/constants/components';
 import { Icon, IconProps } from '../Icon/Icon';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
-
-// @TODO: Add Search functionality for pagination
 
 /**
  * Navigation button types for pagination
@@ -59,6 +57,8 @@ export const Pagination: React.FC<PaginationProps> = memo(({
   siblingCount = PAGINATION_DEFAULTS.siblingCount,
   showFirstLastButtons = PAGINATION_DEFAULTS.showFirstLastButtons,
   showPrevNextButtons = PAGINATION_DEFAULTS.showPrevNextButtons,
+  showSearch = false,
+  searchPlaceholder = 'Go to page',
   size = PAGINATION_DEFAULTS.size,
   className = '',
   style,
@@ -72,10 +72,47 @@ export const Pagination: React.FC<PaginationProps> = memo(({
     onPageChange,
   });
 
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [searchError, setSearchError] = useState<string>('');
+
   // Don't render pagination with a single page or no pages
   if (currentPage === 0 || paginationRange.length < 2) {
     return null;
   }
+
+  const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSearchError('');
+
+    const pageNumber = parseInt(searchValue, 10);
+
+    if (isNaN(pageNumber)) {
+      setSearchError('Please enter a valid page number');
+      return;
+    }
+
+    if (pageNumber < 1 || pageNumber > totalPages) {
+      setSearchError(`Page must be between 1 and ${totalPages}`);
+      return;
+    }
+
+    if (pageNumber === currentPage) {
+      setSearchError('You are already on this page');
+      return;
+    }
+
+    goToPage(pageNumber);
+    setSearchValue('');
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Only allow numbers
+    if (value === '' || /^\d+$/.test(value)) {
+      setSearchValue(value);
+      setSearchError('');
+    }
+  };
 
   const paginationContent = (
     <nav
@@ -158,6 +195,49 @@ export const Pagination: React.FC<PaginationProps> = memo(({
           />
         )}
       </ul>
+
+      {showSearch && (
+        <form
+          className="c-pagination__search"
+          onSubmit={handleSearchSubmit}
+          aria-label="Jump to page"
+        >
+          <div className="c-pagination__search-wrapper">
+            <label htmlFor={`pagination-search-${currentPage}`} className="c-pagination__search-label">
+              <span className="c-pagination__search-label-text">Go to page:</span>
+              <input
+                id={`pagination-search-${currentPage}`}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                className={`c-pagination__search-input ${searchError ? 'is-error' : ''}`}
+                placeholder={searchPlaceholder}
+                value={searchValue}
+                onChange={handleSearchChange}
+                aria-label="Page number"
+                aria-invalid={searchError ? 'true' : 'false'}
+                aria-describedby={searchError ? `pagination-error-${currentPage}` : undefined}
+              />
+            </label>
+            <button
+              type="submit"
+              className="c-pagination__search-button"
+              aria-label="Go to page"
+            >
+              <Icon name="ArrowRight" size="sm" aria-hidden="true" />
+            </button>
+          </div>
+          {searchError && (
+            <div
+              id={`pagination-error-${currentPage}`}
+              className="c-pagination__search-error"
+              role="alert"
+            >
+              {searchError}
+            </div>
+          )}
+        </form>
+      )}
     </nav>
   );
 

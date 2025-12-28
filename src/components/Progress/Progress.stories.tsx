@@ -16,6 +16,13 @@ const meta = {
     },
   },
   tags: ['autodocs'],
+  decorators: [
+    Story => (
+      <div style={{ width: '50%' }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     value: {
       control: { type: 'range', min: 0, max: 100 },

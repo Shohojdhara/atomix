@@ -404,17 +404,15 @@ This phase focuses on enhancing the core devtools components (`ThemeLiveEditor`,
 
 ### Completed ✅
 - [x] IMPROVEMENTS.md documentation
-- [ ] useHistory hook implementation
-- [ ] LiveEditor enhancements
-- [ ] Preview enhancements
-- [ ] Inspector enhancements
-- [ ] Comparator enhancements
+- [x] useHistory hook implementation (`src/lib/theme/devtools/useHistory.ts`)
+- [x] LiveEditor enhancements (undo/redo, keyboard shortcuts, resizable layout, enhanced color pickers)
+- [x] Preview enhancements (interactive components, viewport controls, dark mode toggle)
+- [x] Inspector enhancements (search/filter, copy path functionality)
+- [x] Comparator enhancements (search/filter, improved visual diff styling)
+- [x] CLI enhancements (list, inspect, compare, export commands)
 
-### In Progress 🚧
+### Remaining Tasks 🚧
 - [ ] Testing and validation
-- [ ] Documentation updates
-
-### Planned 📋
 - [ ] Storybook stories for new features
 - [ ] Performance optimization
 - [ ] Accessibility audit

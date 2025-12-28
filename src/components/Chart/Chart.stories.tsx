@@ -47,7 +47,6 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-type Story = StoryObj<typeof Chart>;
 
 // Glass Variant Story
 export const GlassVariant: Story = {

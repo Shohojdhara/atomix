@@ -124,7 +124,7 @@ See documentation for detailed examples of each mode.`,
       },
     },
     mode: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['standard', 'polar', 'prominent', 'shader'],
       description: 'Glass effect mode (default: "standard")',
       table: { defaultValue: { summary: '"standard"' } },
