@@ -86,16 +86,6 @@
       "import": "./dist/theme.js",
       "default": "./dist/theme.js"
     },
-    "./themes/*": {
-      "import": "./dist/themes/*.css",
-      "require": "./dist/themes/*.css",
-      "default": "./dist/themes/*.css"
-    },
-    "./themes/*.min": {
-      "import": "./dist/themes/*.min.css",
-      "require": "./dist/themes/*.min.css",
-      "default": "./dist/themes/*.min.css"
-    },
     "./charts": {
       "types": "./dist/charts.d.ts",
       "import": "./dist/charts.js",
@@ -233,11 +223,10 @@
     "changeset": "changeset",
     "typecheck": "tsc --noEmit",
     "attw": "attw --pack",
-    "sync:config": "npx tsx scripts/sync-theme-config-ts.ts",
     "sync:tokens": "npx tsx scripts/generate-tokens.ts",
     "validate:config": "npx tsx scripts/validate-config-sync.ts",
-    "prebuild": "npm run sync:config && npm run validate:config",
-    "prebuild:with-tokens": "npm run sync:config && npm run sync:tokens && npm run validate:config",
+    "prebuild": "npm run validate:config",
+    "prebuild:with-tokens": "npm run sync:tokens && npm run validate:config",
     "verify:build": "node scripts/verify-build.js",
     "test:build": "node scripts/test-build.js",
     "prepublishOnly": "npm run clean && npm run build && npm run attw",
@@ -245,16 +234,13 @@
   },
   "files": [
     "dist/**/*",
-    "dist/themes/**/*",
     "src/styles/**/*",
     "src/components/**/*",
     "src/lib/**/*",
     "src/layouts/**/*",
-    "src/themes/**/*",
     "scripts/atomix-cli.js",
-    "scripts/sync-theme-config.js",
     "scripts/cli/**/*",
-    "theme.config.ts",
+    "atomix.config.ts",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
@@ -296,7 +282,7 @@
   },
   "engines": {
     "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "npm": ">=8.0.0 <11.0.0 || >=11.7.0"
   },
   "publishConfig": {
     "access": "public"

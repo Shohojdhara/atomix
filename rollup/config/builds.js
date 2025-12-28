@@ -15,6 +15,7 @@ import {
 } from './postcss.js';
 import { terserConfigNonMinified, terserConfigMinified } from './terser.js';
 import { cleanup } from '../plugins/cleanup.js';
+// Theme builds removed - import kept for compatibility
 import generateThemeBuilds from './themes.js';
 
 /**
@@ -328,7 +329,7 @@ export const allBuilds = [...jsBuilds, ...stylesBuilds];
 
 /**
  * Theme builds
- * Generated from themes.config.js - only includes themes that have SCSS files
+ * Themes have been removed - returns empty array
  */
 export const themeBuilds = generateThemeBuilds();
 
@@ -338,7 +339,7 @@ export const themeBuilds = generateThemeBuilds();
  * Hybrid Build Strategy:
  * - Single-file ESM/CJS/minified builds for main entry point (index.js, index.esm.js, index.min.js)
  * - Separate entry point builds for code organization (theme.js, charts.js, forms.js, etc.)
- * - Theme CSS builds for individual theme files (dist/themes/*.css)
+ * - Theme builds removed
  * - No automatic chunking to avoid duplicate chunks
  * 
  * This approach:

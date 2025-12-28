@@ -1,24 +1,10 @@
 /**
- * Theme Core Module
+ * Core Theme Engine
  * 
- * Core engine components for theme management
+ * Core theme creation, composition, and registry functionality
  */
 
-export { ThemeEngine } from './ThemeEngine';
+export { createTheme } from './createTheme';
+export { createThemeObject } from './createThemeObject';
+export { deepMerge, mergeTheme, extendTheme } from './composeTheme';
 export { ThemeRegistry } from './ThemeRegistry';
-export { ThemeCache } from './ThemeCache';
-export { ThemeValidator } from './ThemeValidator';
-
-export type {
-  ThemeChangeEvent,
-  ThemeLoadOptions,
-  ThemeChangeListener,
-  ThemeLoadListener,
-  ThemeErrorListener,
-  ThemeEngineConfig,
-} from './ThemeEngine';
-
-export type {
-  ValidationResult,
-  A11yIssue,
-} from './ThemeValidator';

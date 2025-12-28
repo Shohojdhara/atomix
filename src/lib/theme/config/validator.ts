@@ -4,13 +4,7 @@
  * Validates theme configuration structure and values
  */
 
-import type {
-  AtomixConfig,
-  ThemeDefinition,
-  CSSThemeDefinition,
-  JSThemeDefinition,
-  ConfigValidationResult,
-} from './types';
+import type { ConfigValidationResult } from './types';
 
 /**
  * Validate theme configuration
@@ -37,31 +31,25 @@ export function validateConfig(config: any): ConfigValidationResult {
     warnings.push(...themeErrors.warnings);
   }
 
-  // Validate build config
+  // Validate build config (only if provided)
   if (config.build) {
     const buildErrors = validateBuildConfig(config.build);
     errors.push(...buildErrors.errors);
     warnings.push(...buildErrors.warnings);
-  } else {
-    warnings.push('No build configuration provided, using defaults');
   }
 
-  // Validate runtime config
+  // Validate runtime config (only if provided)
   if (config.runtime) {
     const runtimeErrors = validateRuntimeConfig(config.runtime);
     errors.push(...runtimeErrors.errors);
     warnings.push(...runtimeErrors.warnings);
-  } else {
-    warnings.push('No runtime configuration provided, using defaults');
   }
 
-  // Validate integration config
+  // Validate integration config (only if provided)
   if (config.integration) {
     const integrationErrors = validateIntegrationConfig(config.integration);
     errors.push(...integrationErrors.errors);
     warnings.push(...integrationErrors.warnings);
-  } else {
-    warnings.push('No integration configuration provided, using defaults');
   }
 
   // Validate dependencies
@@ -127,23 +115,9 @@ function validateThemes(themes: Record<string, any>): ConfigValidationResult {
       warnings.push(...jsErrors.warnings);
     }
 
-    // Validate metadata
-    if (theme.version && !isValidSemver(theme.version)) {
-      warnings.push(`Theme "${themeId}" has invalid version format: ${theme.version}`);
-    }
-
-    if (theme.status && !['stable', 'beta', 'experimental', 'deprecated'].includes(theme.status)) {
-      warnings.push(`Theme "${themeId}" has invalid status: ${theme.status}`);
-    }
-
-    // Validate color format
-    if (theme.color && !isValidColor(theme.color)) {
-      warnings.push(`Theme "${themeId}" has invalid color format: ${theme.color}`);
-    }
-
-    // Validate accessibility
-    if (theme.a11y) {
-      if (theme.a11y.contrastTarget && (theme.a11y.contrastTarget < 1 || theme.a11y.contrastTarget > 21)) {
+    // Validate accessibility (only critical checks)
+    if (theme.a11y?.contrastTarget) {
+      if (typeof theme.a11y.contrastTarget !== 'number' || theme.a11y.contrastTarget < 1 || theme.a11y.contrastTarget > 21) {
         warnings.push(`Theme "${themeId}" has invalid contrast target: ${theme.a11y.contrastTarget}`);
       }
     }
@@ -187,23 +161,13 @@ function validateBuildConfig(build: any): ConfigValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
 
-  if (!build.output || typeof build.output !== 'object') {
-    errors.push('Build config must have an "output" object');
-  } else {
-    if (!build.output.directory || typeof build.output.directory !== 'string') {
-      errors.push('Build output must have a "directory" string');
-    }
-    if (!build.output.formats || typeof build.output.formats !== 'object') {
-      errors.push('Build output must have a "formats" object');
-    }
+  // Only validate structure if provided
+  if (build.output && typeof build.output !== 'object') {
+    errors.push('Build output must be an object');
   }
 
-  if (!build.sass || typeof build.sass !== 'object') {
-    errors.push('Build config must have a "sass" object');
-  } else {
-    if (build.sass.style && !['expanded', 'compressed', 'compact', 'nested'].includes(build.sass.style)) {
-      warnings.push(`Invalid Sass style: ${build.sass.style}`);
-    }
+  if (build.sass && typeof build.sass !== 'object') {
+    errors.push('Build sass config must be an object');
   }
 
   return { valid: errors.length === 0, errors, warnings };
@@ -242,15 +206,9 @@ function validateIntegrationConfig(integration: any): ConfigValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
 
-  if (!integration.classNames || typeof integration.classNames !== 'object') {
-    errors.push('Integration config must have a "classNames" object');
-  } else {
-    if (!integration.classNames.theme || typeof integration.classNames.theme !== 'string') {
-      errors.push('Integration classNames must have a "theme" string');
-    }
-    if (!integration.classNames.colorMode || typeof integration.classNames.colorMode !== 'string') {
-      errors.push('Integration classNames must have a "colorMode" string');
-    }
+  // Only validate structure if provided
+  if (integration.classNames && typeof integration.classNames !== 'object') {
+    errors.push('Integration classNames must be an object');
   }
 
   return { valid: errors.length === 0, errors, warnings };
@@ -290,37 +248,3 @@ function validateDependencies(
   return { valid: errors.length === 0, errors, warnings };
 }
 
-/**
- * Check if string is valid semver
- */
-function isValidSemver(version: string): boolean {
-  const semverRegex = /^\d+\.\d+\.\d+(-[\w.]+)?(\+[\w.]+)?$/;
-  return semverRegex.test(version);
-}
-
-/**
- * Check if string is valid color
- */
-function isValidColor(color: string): boolean {
-  // Hex color
-  if (/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(color)) {
-    return true;
-  }
-  // RGB/RGBA
-  if (/^rgba?\(/.test(color)) {
-    return true;
-  }
-  // HSL/HSLA
-  if (/^hsla?\(/.test(color)) {
-    return true;
-  }
-  // Named colors (basic check)
-  const namedColors = [
-    'black', 'white', 'red', 'green', 'blue', 'yellow', 'cyan', 'magenta',
-    'transparent', 'currentColor',
-  ];
-  if (namedColors.includes(color.toLowerCase())) {
-    return true;
-  }
-  return false;
-}

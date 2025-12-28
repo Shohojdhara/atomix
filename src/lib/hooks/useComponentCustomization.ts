@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 import { useTheme } from '../theme/runtime/useTheme';
 import type { ComponentPartsMap } from '../types/partProps';
 import type { ComponentCSSVariables } from '../constants/cssVariables';
-import { mergeCSSVars } from '../theme/cssVariableMapper';
+import { mergeCSSVars } from '../theme/adapters/cssVariableMapper';
 import { mergePartStyles } from '../types/partProps';
 import { mergeClassNames } from '../utils/componentUtils';
 

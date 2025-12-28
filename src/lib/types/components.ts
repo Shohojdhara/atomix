@@ -632,69 +632,6 @@ export interface BadgeProps extends BaseComponentProps {
 }
 
 /**
- * Block component properties (legacy - use BlockProps from component instead)
- * @deprecated Use BlockProps from '@atomix/components/Block' instead
- */
-export interface LegacyBlockProps extends BaseComponentProps {
-  /**
-   * The content to be rendered within the block
-   */
-  children: ReactNode;
-
-  /**
-   * The HTML element to render as
-   * @default 'section'
-   */
-  as?: 'section' | 'div' | 'article' | 'aside' | 'main';
-
-  /**
-   * Spacing size for vertical padding
-   * @default 'md'
-   */
-  spacing?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'none';
-
-  /**
-   * Container configuration
-   */
-  container?: {
-    /**
-     * Container type for content width
-     */
-    type?: 'sm' | 'md' | 'lg' | 'xl' | 'fluid';
-    /**
-     * Additional container classes
-     */
-    className?: string;
-  };
-
-  /**
-   * Whether to enable full-width content
-   * @default false
-   */
-  fullWidth?: boolean;
-
-  /**
-   * Background color variant
-   */
-  background?:
-    | 'primary'
-    | 'secondary'
-    | 'tertiary'
-    | 'invert'
-    | 'brand'
-    | 'error'
-    | 'success'
-    | 'warning'
-    | 'info'
-    | 'light';
-
-  /**
-   * Custom style for the block
-   */
-  style?: React.CSSProperties;
-}
-
-/**
  * Callout component properties
  */
 export interface CalloutProps extends BaseComponentProps {
@@ -1097,42 +1034,6 @@ export type PhosphorIconsType = Exclude<
   keyof typeof import('@phosphor-icons/react'),
   'IconContext' | 'IconBase' | 'createIcon' | 'default' | 'SSR'
 >;
-
-/**
- * Icon component properties (legacy - use IconProps from component instead)
- * @deprecated Use IconProps from '@atomix/components/Icon' instead
- */
-export interface LegacyIconProps extends BaseComponentProps {
-  /**
-   * Icon name from Phosphor Icons
-   */
-  name: PhosphorIconsType;
-
-  /**
-   * Icon size
-   */
-  size?: IconSize | number;
-
-  /**
-   * Icon weight/style
-   */
-  weight?: IconWeight;
-
-  /**
-   * Icon color
-   */
-  color?: string;
-
-  /**
-   * Alt text for accessibility
-   */
-  alt?: string;
-
-  /**
-   * Custom style
-   */
-  style?: React.CSSProperties;
-}
 
 /**
  * Navbar position options
@@ -2884,37 +2785,6 @@ export interface BreadcrumbItem {
    * Additional className
    */
   className?: string;
-}
-
-/**
- * Breadcrumb component properties (legacy - use BreadcrumbProps from component instead)
- * @deprecated Use BreadcrumbProps from '@atomix/components/Breadcrumb' instead
- */
-export interface LegacyBreadcrumbProps extends BaseComponentProps {
-  /**
-   * Array of breadcrumb items
-   */
-  items: BreadcrumbItem[];
-
-  /**
-   * Custom divider character or element
-   */
-  divider?: ReactNode;
-
-  /**
-   * Aria label for the navigation
-   */
-  ariaLabel?: string;
-
-  /**
-   * Optional custom link component
-   */
-  LinkComponent?: React.ElementType;
-
-  /**
-   * Custom style for the breadcrumb
-   */
-  style?: React.CSSProperties;
 }
 
 /**

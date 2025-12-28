@@ -18,56 +18,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 /**
- * Validate that themes.config.js is in sync with atomix.config.ts
+ * Validate themes.config.js (removed - themes directory has been removed)
  */
 async function validateThemesConfig(): Promise<boolean> {
-  try {
-    // Read source config
-    const configPath = path.join(__dirname, '../atomix.config.ts');
-    const configUrl = `file://${configPath}?update=${Date.now()}`;
-    const configModule = await import(configUrl);
-    const sourceConfig = configModule.default || configModule;
-
-    // Read generated config
-    const generatedPath = path.join(__dirname, '../src/themes/themes.config.js');
-    const generatedContent = await fs.readFile(generatedPath, 'utf8');
-
-    // Extract prefix from source
-    const sourcePrefix = sourceConfig.prefix || 'atomix';
-    
-    // Extract prefix from generated (look for prefix: '...')
-    const prefixMatch = generatedContent.match(/prefix:\s*['"]([^'"]+)['"]/);
-    const generatedPrefix = prefixMatch ? prefixMatch[1] : null;
-
-    // Validate prefix match
-    if (generatedPrefix !== sourcePrefix) {
-      console.error(`❌ Prefix mismatch:`);
-      console.error(`   Source (atomix.config.ts): ${sourcePrefix}`);
-      console.error(`   Generated (themes.config.js): ${generatedPrefix || 'not found'}`);
-      return false;
-    }
-
-    // Validate build config (allow empty objects)
-    const buildMatch = generatedContent.match(/build:\s*(\{[^}]*\})/s);
-    if (!buildMatch) {
-      console.error('❌ Could not find build config in generated file');
-      return false;
-    }
-
-    // Validate runtime config (allow empty objects)
-    const runtimeMatch = generatedContent.match(/runtime:\s*(\{[^}]*\})/s);
-    if (!runtimeMatch) {
-      console.error('❌ Could not find runtime config in generated file');
-      return false;
-    }
-
-    console.log('✅ themes.config.js is in sync with atomix.config.ts');
-    console.log(`   Prefix: ${sourcePrefix}`);
-    return true;
-  } catch (error: any) {
-    console.error('❌ Validation failed:', error.message);
-    return false;
-  }
+  // Themes have been removed, skip validation
+  console.log('ℹ️  Theme validation skipped (themes directory removed)');
+  return true;
 }
 
 /**
@@ -104,13 +60,13 @@ async function validateSCSSConfig(): Promise<boolean> {
 async function main() {
   console.log('🔍 Validating configuration sync...\n');
 
-  const themesValid = await validateThemesConfig();
+  await validateThemesConfig();
   console.log('');
   const scssValid = await validateSCSSConfig();
 
   console.log('');
 
-  if (themesValid && scssValid) {
+  if (scssValid) {
     console.log('✨ All configurations are in sync!');
     process.exit(0);
   } else {

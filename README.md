@@ -1,250 +1,152 @@
 # Atomix Design System
 
-> A modern, accessible design system and component library for building beautiful user interfaces.
+> A modern, extensible design system for building scalable web applications
 
-[![npm version](https://img.shields.io/npm/v/@shohojdhara/atomix)](https://www.npmjs.com/package/@shohojdhara/atomix)
-[![License](https://img.shields.io/npm/l/@shohojdhara/atomix)](https://github.com/Shohojdhara/atomix/blob/main/LICENSE)
-[![Downloads](https://img.shields.io/npm/dm/@shohojdhara/atomix)](https://www.npmjs.com/package/@shohojdhara/atomix)
+[![npm version](https://img.shields.io/npm/v/@shohojdhara/atomix.svg)](https://www.npmjs.com/package/@shohojdhara/atomix)
+[![License](https://img.shields.io/npm/l/@shohojdhara/atomix.svg)](LICENSE)
+[![Downloads](https://img.shields.io/npm/dm/@shohojdhara/atomix.svg)](https://www.npmjs.com/package/@shohojdhara/atomix)
 
-## Overview
+## Table of Contents
 
-Atomix is a modern, accessible design system and component library for building beautiful user interfaces. It provides a comprehensive set of 40+ production-ready components with consistent design language, accessibility compliance, and performance optimization.
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Basic Usage](#basic-usage)
+  - [Theming](#theming)
+  - [React Integration](#react-integration)
+- [Components](#components)
+- [API](#api)
+- [Contributing](#contributing)
+- [License](#license)
 
-### Key Features
+## Features
 
-- **40+ Production-Ready Components**: Buttons, cards, forms, navigation, and more
-- **Design System Compliance**: Consistent design language with design tokens
-- **Accessibility First**: WCAG 2.1 AA compliant components
-- **TypeScript Support**: Full TypeScript definitions for all components
-- **Responsive Design**: Mobile-first responsive components
-- **Dark Mode Support**: Built-in dark mode support for all components
-- **Tree-Shaking Support**: Optimized for modern bundlers
-- **Multiple Themes**: Multiple built-in themes with easy customization
-- **React & Vanilla JavaScript**: Support for both React and vanilla JavaScript
+- 🚀 **Fast & Lightweight** - Tree-shaking ready with minimal bundle impact
+- 🎨 **Themeable** - Advanced theme system with CSS variable support
+- ♿ **Accessible** - Built with WCAG accessibility standards in mind
+- 📱 **Responsive** - Mobile-first responsive design
+- 🔧 **Customizable** - Easy to customize and extend
+- 🧩 **Modular** - Pick only the components you need
+- 🔒 **TypeScript** - Full TypeScript support with definitions
+- 🛠 **Framework Agnostic** - Works with React, Vue, vanilla JS, etc.
 
 ## Installation
 
 ```bash
 npm install @shohojdhara/atomix
+# or
+yarn add @shohojdhara/atomix
+# or
+pnpm add @shohojdhara/atomix
 ```
 
 ## Usage
 
-### React
+### Basic Usage
 
-import { Button } from '@shohojdhara/atomix';
-import '@shohojdhara/atomix/css';
+```tsx
+import { Button } from '@shohojdhara/atomix/components';
+import '@shohojdhara/atomix/styles/index.css';
 
 function App() {
-  return <Button variant="primary">Hello World</Button>;
+  return (
+    <Button variant="primary" onClick={() => console.log('Hello Atomix!')}>
+      Click me
+    </Button>
+  );
 }
 ```
 
-### 🎨 Theme Management
+### Theming
 
-Atomix provides a powerful, developer-friendly theming system with **Tailwind-like configuration**:
+Atomix provides a flexible theme system that supports both CSS and JavaScript themes:
 
-#### Tailwind-like Configuration (Recommended)
+```tsx
+import { ThemeProvider, createTheme } from '@shohojdhara/atomix/theme';
 
-Create `atomix.config.ts` in your project root:
-
-```typescript
-import { defineConfig } from '@shohojdhara/atomix/config';
-
-export default defineConfig({
-  theme: {
-    extend: {
-      colors: {
-        primary: { main: '#7AFFD7' },
-        secondary: { main: '#FF5733' },
-      },
+// Create a custom theme
+const customTheme = createTheme({
+  palette: {
+    primary: { main: '#7AFFD7' },
+    secondary: { main: '#FF5733' },
+  },
+  spacing: 8,
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
     },
   },
 });
+
+function App() {
+  return (
+    <ThemeProvider 
+      themes={{ 
+        'custom-theme': { name: 'Custom Theme', class: 'custom-theme' } 
+      }}
+      defaultTheme="custom-theme"
+    >
+      <YourApp />
+    </ThemeProvider>
+  );
+}
 ```
 
-Use it in your app:
+### React Integration
+
+For React applications, we provide a complete set of hooks and context providers:
 
 ```tsx
-import { loadAtomixConfig } from '@shohojdhara/atomix/config';
-import { createThemeFromConfig, ThemeProvider } from '@shohojdhara/atomix/theme';
+import { useTheme } from '@shohojdhara/atomix/theme';
 
-const config = loadAtomixConfig();
-const theme = createThemeFromConfig(config);
-
-function App() {
+function MyComponent() {
+  const { theme, setTheme, availableThemes } = useTheme();
+  
   return (
-    <ThemeProvider defaultTheme={theme}>
-      <YourApp />
-    </ThemeProvider>
+    <div>
+      <p>Current theme: {theme}</p>
+      <select 
+        value={theme} 
+        onChange={(e) => setTheme(e.target.value)}
+      >
+        {availableThemes.map(t => (
+          <option key={t.class} value={t.class}>
+            {t.name}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }
 ```
-
-#### Quick Start with Themes
-
-```jsx
-import { ThemeProvider, useTheme } from '@shohojdhara/atomix/theme';
-
-function App() {
-  return (
-    <ThemeProvider>
-      <YourApp />
-    </ThemeProvider>
-  );
-}
-```
-
-#### Programmatic Theme Creation
-
-```jsx
-import { createTheme, ThemeProvider } from '@shohojdhara/atomix/theme';
-
-const myTheme = createTheme({
-  palette: {
-    primary: { main: '#7AFFD7' },
-  },
-});
-
-<ThemeProvider defaultTheme={myTheme}>
-  <App />
-</ThemeProvider>
-```
-
-For complete documentation, see:
-- [Getting Started - Theme System](docs/getting-started/theme-system.md) - Quick start guide
-- [Theme System Guide](docs/THEME_SYSTEM.md) - Complete reference (includes guides for both external developers and library developers)
-
-
-## Styles
-
-Atomix provides comprehensive styling through CSS or SCSS:
-
-### CSS
-
-```js
-// Import the main CSS file
-import '@shohojdhara/atomix/css';
-
-// Or import the minified version
-import '@shohojdhara/atomix/css/min';
-```
-
-### SCSS
-
-```scss
-// Import the main SCSS file
-@use '~@shohojdhara/atomix/scss' as atomix;
-
-// Or import individual modules
-@use '~@shohojdhara/atomix/scss/settings' as settings;
-@use '~@shohojdhara/atomix/scss/tools' as tools;
-@use '~@shohojdhara/atomix/scss/components' as components;
-```
-
-## Build Process
-
-The Atomix Design System uses a comprehensive build process to generate optimized assets:
-
-### Main Build
-
-```bash
-npm run build
-```
-
-This command will:
-1. Build the main JavaScript library (ESM and CJS formats)
-2. Generate TypeScript definitions
-3. Build the main CSS styles (`dist/atomix.css` and `dist/atomix.min.css`)
-
-### Individual Builds
-
-```bash
-# Build only the main styles
-npm run build:styles
-
-# Build only the themes
-npm run build:themes
-
-# Build only the main library
-npm run rollup -c
-```
-
-### Development
-
-```bash
-# Start Storybook for component development
-npm run dev
-
-# Run tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Generate test coverage
-npm run test:coverage
-```
-
-### Storybook styles convention
-
-To keep visual docs and any snapshots stable, choose one of the following and stick to it:
-
-- Preferred: load the built CSS from dist.
-  - In your Storybook preview (e.g., .storybook/preview.ts/preview.js), import the bundled CSS once:
-    import '@shohojdhara/atomix/css'
-  - Before taking snapshots or publishing Storybook, ensure styles are compiled:
-    yarn build:styles
-
-- Alternative (for live theming/dev): load the source SCSS.
-  - Import from the SCSS entry point:
-    import '@shohojdhara/atomix/scss'
-  - This relies on your builder's SCSS pipeline; avoid mixing SCSS and built CSS in the same Storybook to prevent drift.
-
-Notes:
-- CSS bundles produced by the styles build are deterministic: dist/atomix.css and dist/atomix.min.css.
-- CI should run yarn attw to validate package exports and types after changes.
 
 ## Components
 
-Atomix provides 40+ production-ready components organized into categories:
+The library includes over 50+ components including:
 
-- **Actions**: [Button](src/components/Button), [Dropdown](src/components/Dropdown), [Pagination](src/components/Pagination)
-- **Data Display**: [Badge](src/components/Badge), [Card](src/components/Card), [DataTable](src/components/DataTable)
-- **Feedback**: [Callout](src/components/Callout), [Spinner](src/components/Spinner), [Progress](src/components/Progress)
-- **Forms**: [Checkbox](src/components/Checkbox), [Input](src/components/Input), [Select](src/components/Select)
-- **Navigation**: [Breadcrumb](src/components/Breadcrumb), [Navbar](src/components/Navbar), [Tabs](src/components/Tabs)
-- **Surfaces**: [Accordion](src/components/Accordion), [Callout](src/components/Callout), [Modal](src/components/Modal)
-- **Utilities**: [ColorModeToggle](src/components/ColorModeToggle), [Icon](src/components/Icon), [AtomixGlass](src/components/AtomixGlass), [AtomixLogo](src/components/AtomixLogo)
+- **Layout**: Grid, Container, Section
+- **Navigation**: Navbar, Breadcrumb, Pagination
+- **Forms**: Input, Button, Select, Checkbox, Radio
+- **Feedback**: Alert, Modal, Tooltip, Toast
+- **Data Display**: Table, Card, Badge, Avatar
+- **Surfaces**: Accordion, Tabs, Expansion Panel
 
-## Design Tokens
+For a complete list, see [components documentation](./src/components/).
 
-Atomix uses design tokens for consistent design language:
+## API
 
-- **Colors**: Consistent color palette with light and dark mode variants
-- **Spacing**: Consistent spacing scale based on 4px grid
-- **Typography**: Consistent typography scale with responsive adjustments
-- **Borders**: Consistent border radius and width system
-- **Shadows**: Consistent shadow system for depth and elevation
-
-## Accessibility
-
-All Atomix components are built with accessibility in mind:
-
-- **WCAG 2.1 AA Compliant**: All components meet WCAG 2.1 AA standards
-- **Keyboard Navigation**: Full keyboard navigation support
-- **Screen Reader Support**: Proper ARIA attributes and semantic HTML
-- **Focus Management**: Consistent focus indicators and management
-- **Color Contrast**: Proper color contrast ratios for readability
-
-## Browser Support
-
-Atomix supports all modern browsers:
+- [Components API](./docs/COMPONENTS_API.md)
+- [Theme API](./docs/THEME_API.md)
+- [Configuration](./docs/CONFIGURATION.md)
 
 ## Contributing
 
-Contributions are welcome! Please read our [contributing guidelines](CONTRIBUTING.md) for details on our code of conduct and development process.
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for more details.
 
 ## License
 
-Apache 2.0 © [Shohojdhara](https://github.com/Shohojdhara)
+MIT © [Shohojdhara](https://github.com/shohojdhara)

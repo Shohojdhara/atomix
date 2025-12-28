@@ -66,19 +66,15 @@ function MyComponent() {
 
 ### Basic Setup (Vanilla JavaScript)
 
+For vanilla JavaScript applications, you can use the theme utilities directly:
+
 ```typescript
-import { ThemeManager, createTheme } from '@shohojdhara/atomix/theme';
+import { loadThemeCSS, applyThemeAttributes, buildThemePath } from '@shohojdhara/atomix/theme';
 
-const themeManager = new ThemeManager({
-  themes: {
-    'light': { name: 'Light', type: 'css' },
-    'dark': { name: 'Dark', type: 'css' },
-  },
-  defaultTheme: 'light',
-});
-
-// Switch theme
-await themeManager.setTheme('dark');
+// Load and apply a theme
+const themePath = buildThemePath('dark', '/themes');
+await loadThemeCSS(themePath, 'atomix-theme-dark');
+applyThemeAttributes('data-theme', 'dark');
 ```
 
 ---
@@ -166,9 +162,11 @@ function App() {
 }
 ```
 
-#### 4. Customize Design Tokens via Config (New!)
+#### 4. Customize Design Tokens via Config (Automatic Loading!)
 
-You can now customize design tokens using `atomix.config.ts`:
+**✨ Config-First Approach**: The theme system loads from `atomix.config.ts` when using `createTheme()` or `<ThemeProvider>` without explicit themes. Config file is required.
+
+You can customize design tokens using `atomix.config.ts`:
 
 ```typescript
 // atomix.config.ts (in your project root)
@@ -211,7 +209,23 @@ export default defineConfig({
 });
 ```
 
-After creating your config, run:
+**Automatic Usage (Recommended):**
+
+```tsx
+// ThemeProvider automatically loads config
+<ThemeProvider>
+  <YourApp />
+</ThemeProvider>
+
+// Or use createTheme() directly
+import { createTheme, injectTheme } from '@shohojdhara/atomix/theme';
+const css = createTheme(); // Automatically loads from config
+injectTheme(css);
+```
+
+**Build-Time Token Generation (Optional):**
+
+For build-time token generation, run:
 ```bash
 npm run sync:config
 ```
@@ -222,7 +236,7 @@ This generates CSS custom properties in `src/styles/03-generic/_generated-root.c
 - Semantic tokens (text-emphasis, bg-subtle, border-subtle, hover)
 - Typography, spacing, and border-radius tokens
 
-**Note:** This feature generates tokens at build time. For runtime theme customization, use `createTheme()` instead.
+**Note:** Config loading works at runtime (Node.js/SSR environments). Config file is required - errors will be thrown if config is not found.
 
 ### ❌ What You Should NOT Use
 
@@ -471,9 +485,15 @@ const theme = createTheme({
 
 ### ThemeProvider
 
-React context provider for theme state:
+React context provider for theme state. **Automatically loads from `atomix.config.ts` if `defaultTheme` is not provided.**
 
 ```tsx
+// Automatic: Loads from atomix.config.ts
+<ThemeProvider>
+  {children}
+</ThemeProvider>
+
+// Manual: Provide explicit theme
 <ThemeProvider
   defaultTheme="my-theme"
   themes={themes}
@@ -484,6 +504,13 @@ React context provider for theme state:
   {children}
 </ThemeProvider>
 ```
+
+**Config-First Approach:**
+- If `defaultTheme` is not provided, `ThemeProvider` loads from `atomix.config.ts` (required)
+- Config tokens are applied as DesignTokens
+- Works in Node.js/SSR environments
+- Config file must exist - errors will be thrown if not found
+- Theme is persisted to localStorage if `enablePersistence` is true
 
 ### useTheme Hook
 
@@ -502,45 +529,58 @@ const {
 } = useTheme()
 ```
 
-### ThemeManager
+### Theme Utilities (Vanilla JavaScript)
 
-High-level API for theme management (vanilla JS):
+For vanilla JavaScript applications, use the theme utilities directly:
 
 ```typescript
-import { ThemeManager } from '@shohojdhara/atomix/theme';
+import { 
+  loadThemeCSS, 
+  removeThemeCSS, 
+  applyThemeAttributes,
+  buildThemePath,
+  isThemeLoaded,
+  createLocalStorageAdapter
+} from '@shohojdhara/atomix/theme';
 
-const themeManager = new ThemeManager({
-  themes: {
-    'light': { name: 'Light', type: 'css' },
-    'dark': { name: 'Dark', type: 'css' },
-  },
-  defaultTheme: 'light',
-  basePath: '/themes',
-  enablePersistence: true,
-});
+// Storage adapter for persistence
+const storage = createLocalStorageAdapter();
 
-// Set theme
-await themeManager.setTheme('dark');
+// Load and apply a theme
+async function setTheme(themeName: string) {
+  const themePath = buildThemePath(themeName, '/themes');
+  const linkId = `atomix-theme-${themeName}`;
+  
+  // Remove previous theme
+  const previousTheme = storage.getItem('atomix-theme');
+  if (previousTheme) {
+    removeThemeCSS(previousTheme);
+  }
+  
+  // Load new theme
+  await loadThemeCSS(themePath, linkId);
+  applyThemeAttributes('data-theme', themeName);
+  
+  // Persist
+  storage.setItem('atomix-theme', themeName);
+}
 
-// Get current theme
-const currentTheme = themeManager.getTheme();
-
-// Get available themes
-const themes = themeManager.getAvailableThemes();
-
-// Event listeners
-themeManager.on('themeChange', (event) => {
-  console.log('Theme changed:', event.currentTheme);
-});
+// Check if theme is loaded
+const isLoaded = isThemeLoaded('dark');
 ```
 
 ### createTheme
 
-Create a JavaScript theme:
+Create a JavaScript theme. **Automatically loads from `atomix.config.ts` if no input is provided.**
 
 ```typescript
-import { createTheme } from '@shohojdhara/atomix/theme';
+import { createTheme, injectTheme } from '@shohojdhara/atomix/theme';
 
+// Automatic: Loads from atomix.config.ts
+const css = createTheme();
+injectTheme(css);
+
+// Manual: Provide explicit theme
 const theme = createTheme({
   name: 'My Theme',
   palette: {
@@ -575,12 +615,24 @@ const theme = createTheme({
     },
   },
 });
+
+// Or use DesignTokens (flat structure)
+const cssFromTokens = createTheme({
+  'primary': '#7AFFD7',
+  'spacing-4': '1rem',
+});
 ```
+
+**Key Features:**
+- ✅ Automatically loads from `atomix.config.ts` when no input provided
+- ✅ Automatically reads `prefix` from config
+- ✅ Supports both Theme objects and DesignTokens (flat structure)
+- ✅ Works in Node.js/SSR environments (browser gracefully falls back)
 
 ### Theme Composition
 
 ```typescript
-import { extendTheme, mergeTheme, composeThemes } from '@shohojdhara/atomix/theme';
+import { extendTheme, mergeTheme } from '@shohojdhara/atomix/theme';
 
 // Extend an existing theme
 const extendedTheme = extendTheme(baseTheme, {
@@ -595,8 +647,14 @@ const merged = mergeTheme(
   { typography: { fontSize: 18 } }
 );
 
-// Compose multiple themes
-const composed = composeThemes(theme1, theme2, theme3);
+// Compose multiple themes by merging them
+const composed = createTheme(
+  mergeTheme(
+    extractThemeOptions(theme1),
+    extractThemeOptions(theme2),
+    extractThemeOptions(theme3)
+  )
+);
 ```
 
 ### Theme Utilities
@@ -937,8 +995,8 @@ Combine and extend themes:
 ```typescript
 import { mergeTheme, extendTheme } from '@shohojdhara/atomix/theme';
 
-// Merge two themes
-const merged = mergeTheme(baseTheme, overrideTheme);
+// Merge two theme options
+const merged = mergeTheme(baseThemeOptions, additionalThemeOptions);
 
 // Extend theme
 const extended = extendTheme(baseTheme, {
@@ -1066,17 +1124,18 @@ import { ThemePreview, ThemeInspector } from '@shohojdhara/atomix/theme';
 **Problem:** Theme fails to load
 
 **Solutions:**
-1. Check theme exists in registry:
+1. Check theme exists in registry (using ThemeProvider):
    ```typescript
-   const themes = themeManager.getAvailableThemes();
-   console.log(themes);
+   const { availableThemes } = useTheme();
+   console.log(availableThemes);
    ```
 
-2. Check for errors:
+2. Check for errors (using ThemeProvider):
    ```typescript
-   themeManager.on('themeError', (error, themeName) => {
-     console.error('Theme error:', error, themeName);
-   });
+   const { error } = useTheme();
+   if (error) {
+     console.error('Theme error:', error);
+   }
    ```
 
 3. Verify CSS path exists
@@ -1164,7 +1223,7 @@ npm run validate:config
 ⚠️ **Important:** The `atomix.config.ts` file cannot be dynamically loaded in browser environments. In browser/client-side applications:
 
 1. **Fallback Behavior:** The theme system will use a default empty configuration
-2. **Manual Registration Required:** Themes must be explicitly provided to the ThemeManager or ThemeProvider
+2. **Manual Registration Required:** Themes must be explicitly provided to the ThemeProvider
 
    ```typescript
 // In browser environments, provide themes directly

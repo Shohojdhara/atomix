@@ -71,6 +71,8 @@ export class ThemeRegistry {
           validated: false,
           errors: [],
           warnings: [],
+          __tokens: {},
+          __extend: {},
         };
       }
     } else {
@@ -160,21 +162,32 @@ export class ThemeRegistry {
   }
 
   /**
-   * Get theme object (for JS themes)
+   * Check if a theme is loaded
    */
-  getTheme(themeId: string): Theme | undefined {
-    return this.entries.get(themeId)?.theme;
+  isThemeLoaded(themeId: string): boolean {
+    const entry = this.entries.get(themeId);
+    return entry ? entry.loaded : false;
   }
 
   /**
-   * Set theme object (for JS themes)
+   * Mark a theme as loaded
    */
-  setTheme(themeId: string, theme: Theme): void {
+  markLoaded(themeId: string, theme?: Theme): void {
     const entry = this.entries.get(themeId);
     if (entry) {
-      entry.theme = theme;
       entry.loaded = true;
+      if (theme) {
+        entry.theme = theme;
+      }
     }
+  }
+
+  /**
+   * Get theme object (for JS themes)
+   */
+  getTheme(themeId: string): Theme | undefined {
+    const entry = this.entries.get(themeId);
+    return entry?.loaded ? entry.theme : undefined;
   }
 
   /**

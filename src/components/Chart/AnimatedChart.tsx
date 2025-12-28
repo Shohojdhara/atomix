@@ -71,7 +71,6 @@ const AnimatedChart = memo(
           toolbarState,
           config: renderConfig,
         }: ChartRenderContentParams) => {
-          // Use toolbar state if available, fallback to config for backward compatibility
           const shouldAnimate = toolbarState?.animationsEnabled ?? renderConfig?.animate ?? true;
 
           if (!chartDatasets.length) return null;

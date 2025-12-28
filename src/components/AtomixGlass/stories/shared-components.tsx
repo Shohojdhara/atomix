@@ -107,37 +107,6 @@ export const backgroundImages = [
 ];
 
 /**
- * Legacy backgrounds object for backward compatibility
- * @deprecated Use backgroundImages array instead
- */
-export const backgrounds = {
-  // Office and workspace environments
-  blueGradient: backgroundImages[0], // Modern office interior
-  purpleGradient: backgroundImages[1], // Mountain landscape
-  greenGradient: backgroundImages[3], // Forest path
-
-  // Apple-inspired natural scenes
-  macosWallpaper: backgroundImages[1], // Mountain landscape
-  iosWallpaper: backgroundImages[4], // Ocean waves
-
-  // Nature scenes
-  mountains: backgroundImages[1], // Mountain landscape
-  ocean: backgroundImages[4], // Ocean waves
-
-  // Urban environments
-  cityNight: backgroundImages[2], // Urban cityscape
-  cityDay: backgroundImages[5], // Modern architecture
-
-  // Interior spaces
-  abstract1: backgroundImages[6], // Cozy café interior
-  abstract2: backgroundImages[9], // Modern library
-
-  // Video backgrounds
-  videoBackground:
-    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-};
-
-/**
  * BackgroundWrapper Component Implementation
  *
  * Renders a container with a background image and optional overlay,

@@ -140,7 +140,6 @@ const GaugeChart = memo(
       }: ChartRenderContentParams) => {
         const width = scales.width;
 
-        // Use toolbar state if available, fallback to config for backward compatibility
         const shouldAnimate = toolbarState?.animationsEnabled ?? renderConfig?.animate ?? animate;
         const height = scales.height;
         const centerX = width / 2;

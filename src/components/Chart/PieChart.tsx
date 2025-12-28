@@ -73,7 +73,6 @@ const PieChart = memo(
           };
         });
 
-        // Use toolbar state if available, fallback to config for backward compatibility
         const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
 
         return (

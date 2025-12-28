@@ -11,7 +11,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import AtomixGlass from '../AtomixGlass';
-import { BackgroundWrapper, backgrounds, backgroundImages } from './shared-components';
+import { BackgroundWrapper, backgroundImages } from './shared-components';
 
 import { Button } from '../../Button';
 import { Badge } from '../../Badge';
@@ -181,7 +181,7 @@ export const VideoBackground: Story = {
             zIndex: -1,
           }}
         >
-          <source src={backgrounds.videoBackground} type="video/mp4" />
+          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
         </video>
 
         <div

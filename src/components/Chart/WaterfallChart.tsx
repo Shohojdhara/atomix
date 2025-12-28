@@ -129,7 +129,6 @@ const WaterfallChart = memo(
       }: ChartRenderContentParams) => {
         if (!waterfallData.length) return null;
 
-        // Use toolbar state if available, fallback to config for backward compatibility
         const shouldAnimate = toolbarState?.animationsEnabled ?? renderConfig?.animate ?? animate;
 
         const padding = 60;

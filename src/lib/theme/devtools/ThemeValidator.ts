@@ -5,7 +5,7 @@
  */
 
 import type { Theme, ThemeMetadata } from '../types';
-import { getContrastRatio, getLuminance } from '../themeUtils';
+import { getContrastRatio, getLuminance } from '../utils/themeUtils';
 
 /**
  * Validation result

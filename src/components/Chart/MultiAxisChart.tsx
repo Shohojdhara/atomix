@@ -164,7 +164,6 @@ const MultiAxisChart = memo(
       }: ChartRenderContentParams) => {
         if (!datasets.length) return null;
 
-        // Use toolbar state if available, fallback to config for backward compatibility
         const effectiveShowTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? showTooltips ?? true;
         const effectiveShowGrid = toolbarState?.showGrid ?? true; // Grid visibility from toolbar
 

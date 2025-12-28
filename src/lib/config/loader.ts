@@ -19,9 +19,10 @@ import type { AtomixConfig } from './index';
  * @example
  * ```typescript
  * import { loadAtomixConfig } from '@shohojdhara/atomix/config';
+ * import { createTheme } from '@shohojdhara/atomix/theme';
  * 
  * const config = loadAtomixConfig();
- * const theme = createThemeFromConfig(config);
+ * const theme = createTheme(config.theme?.tokens || {});
  * ```
  */
 export function loadAtomixConfig(

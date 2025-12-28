@@ -54,8 +54,6 @@ Deep dive into advanced customization techniques and patterns.
 - Plugin development
 - Build system integration
 
-### 🚀 [Migration Guide](./migration.md)
-Step-by-step guides for migrating from other design systems.
 
 **What you'll learn:**
 - Migrating from Bootstrap

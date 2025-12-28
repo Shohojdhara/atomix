@@ -401,7 +401,6 @@ import {
 import type {
   Theme,
   ThemeMetadata,
-  ThemeManagerConfig,
   ButtonProps,
   CardProps,
   // ... etc

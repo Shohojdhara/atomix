@@ -6,7 +6,7 @@
 
 import React from 'react';
 import type { PartStyleProps } from '../types/partProps';
-import { cssVarsToStyle } from '../theme/cssVariableMapper';
+import { cssVarsToStyle } from '../theme/adapters/cssVariableMapper';
 
 /**
  * Merge multiple class names

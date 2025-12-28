@@ -4,7 +4,8 @@
  * Provides utilities for managing RTL text direction in themes
  */
 
-import { getLogger } from '../errors';
+import { getLogger } from '../errors/errors';
+import { DEFAULT_RTL_CONFIG as BASE_RTL_CONFIG } from '../constants/constants';
 
 /**
  * RTL configuration options
@@ -38,14 +39,12 @@ const RTL_LOCALES = new Set([
   'sd', // Sindhi
 ]);
 
+
 /**
- * Default RTL configuration
+ * Default RTL configuration (extends base config with locale)
  */
 const DEFAULT_RTL_CONFIG: Required<Omit<RTLConfig, 'locale'>> & { locale?: string } = {
-  enabled: false,
-  direction: 'ltr',
-  dataAttribute: 'data-direction',
-  autoDetect: false,
+  ...BASE_RTL_CONFIG,
   locale: undefined,
 };
 

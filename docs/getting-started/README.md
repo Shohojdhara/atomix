@@ -17,7 +17,6 @@ Before you begin, ensure you have:
 
 1. **[Installation Guide](./installation.md)** - Complete setup and installation instructions
 2. **[Quick Start Tutorial](./quick-start.md)** - Get started in 5 minutes
-3. **[Migration Guide](./migration.md)** - Migrate from other design systems
 
 ## ⚡ 5-Minute Quick Start
 

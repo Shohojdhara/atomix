@@ -5,15 +5,15 @@
  */
 
 import { Theme, ThemeMetadata } from './theme/types';
-import { createTheme } from './theme/createTheme';
-import { extendTheme, mergeTheme } from './theme/composeTheme';
-import { generateCSSVariables } from './theme/generateCSSVariables';
+import { createThemeObject } from './theme/core/createThemeObject';
+import { extendTheme, mergeTheme } from './theme/core/composeTheme';
+import { generateCSSVariables } from './theme/generators/generateCSSVariables';
 
 /**
  * Quick theme creator with sensible defaults
  */
 export function quickTheme(name: string, primaryColor: string, secondaryColor?: string): Theme {
-  return createTheme({
+  return createThemeObject({
     name,
     palette: {
       primary: { main: primaryColor },
@@ -119,7 +119,6 @@ export function importTheme(json: string): Theme {
   }
 }
 
-// Re-export commonly used functions
-export { createTheme, extendTheme, mergeTheme };
-export { generateCSSVariables };
-export { RTLManager } from './theme/i18n/rtl';
+// Note: createTheme, extendTheme, mergeTheme, and generateCSSVariables
+// are already exported from './theme' module. Import them directly from there.
+// This file only exports theme-tools specific utilities.

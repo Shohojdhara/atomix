@@ -1,12 +1,16 @@
 /**
- * createTheme - Create a theme object with computed values
+ * createThemeObject - Create a theme object with computed values
  * 
  * Similar to Material-UI's createTheme, this function accepts theme configuration
  * options and returns a complete theme object with computed values.
  * 
+ * NOTE: For most use cases, use the simple theme system's `createTheme` instead,
+ * which generates CSS from DesignTokens. This function is for advanced use cases
+ * that need the full Theme object structure.
+ * 
  * @example
  * ```typescript
- * const theme = createTheme({
+ * const theme = createThemeObject({
  *   palette: {
  *     primary: { main: '#7AFFD7' },
  *     secondary: { main: '#FF5733' },
@@ -31,8 +35,8 @@ import type {
     TransitionOptions,
     ZIndexOptions,
     BorderRadiusOptions,
-} from './types';
-import { hexToRgb, getLuminance, getContrastText, lighten, darken, createSpacing } from './themeUtils';
+} from '../types';
+import { hexToRgb, getLuminance, getContrastText, lighten, darken, createSpacing } from '../utils/themeUtils';
 import { deepMerge } from './composeTheme';
 
 // ============================================================================
@@ -291,7 +295,7 @@ function createBreakpoints(breakpointsInput?: BreakpointsOptions): Theme['breakp
  * @param options - Theme configuration options
  * @returns Complete theme object
  */
-export function createTheme(...options: ThemeOptions[]): Theme {
+export function createThemeObject(...options: ThemeOptions[]): Theme {
     // Merge all options
     const mergedOptions = options.reduce((acc, option) => deepMerge(acc, option), {} as ThemeOptions);
 
@@ -385,4 +389,4 @@ export function createTheme(...options: ThemeOptions[]): Theme {
     return theme;
 }
 
-export default createTheme;
+export default createThemeObject;

@@ -25,14 +25,6 @@ export const DEFAULT_BASE_PATH = '/themes';
 export const DEFAULT_STYLE_ID = 'atomix-js-theme-styles';
 
 /**
- * Default cache configuration
- */
-export const DEFAULT_CACHE_CONFIG = {
-  maxSize: 50,
-  ttl: 0, // No expiration by default
-} as const;
-
-/**
  * Default engine cache configuration
  */
 export const DEFAULT_ENGINE_CACHE_CONFIG = {
@@ -59,19 +51,9 @@ export const CSS_EXTENSIONS = {
 export const DEFAULT_ATOMIX_CONFIG_PATH = 'atomix.config.ts';
 
 /**
- * Default config file path (legacy)
- */
-export const DEFAULT_CONFIG_PATH = 'theme.config.ts';
-
-/**
  * Default config file path (relative)
  */
 export const DEFAULT_CONFIG_RELATIVE_PATH = '../../../../atomix.config';
-
-/**
- * Default legacy config file path (relative)
- */
-export const DEFAULT_LEGACY_CONFIG_RELATIVE_PATH = '../../../../theme.config';
 
 /**
  * Validation thresholds

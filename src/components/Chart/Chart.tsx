@@ -205,22 +205,6 @@ const Chart = memo(
         panEnabled,
       });
 
-      // Legacy handlers for backward compatibility
-      const handleFullscreen = useCallback(() => {
-        toolbarHandlers.onFullscreen(!toolbarState.isFullscreen);
-      }, [toolbarHandlers, toolbarState.isFullscreen]);
-
-      const handleExport = useCallback(
-        async (format: string) => {
-          await toolbarHandlers.onExport(format);
-        },
-        [toolbarHandlers]
-      );
-
-      const handleRefresh = useCallback(() => {
-        toolbarHandlers.onRefresh();
-      }, [toolbarHandlers]);
-
       // Sync all toolbar state with component state
       useEffect(() => {
         setIsFullscreen(toolbarState.isFullscreen);

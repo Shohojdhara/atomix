@@ -73,7 +73,8 @@ Atomix provides multiple levels of theming customization:
 ### Theme Switching JavaScript
 
 ```javascript
-class ThemeManager {
+// Simple theme switching utility
+class ThemeSwitcher {
   constructor() {
     this.themes = ['light', 'dark', 'auto'];
     this.currentTheme = this.getStoredTheme() || 'auto';
@@ -141,11 +142,11 @@ class ThemeManager {
 }
 
 // Usage
-const themeManager = new ThemeManager();
+const themeSwitcher = new ThemeSwitcher();
 
 // Theme toggle button
 document.getElementById('theme-toggle').addEventListener('click', () => {
-  themeManager.toggleTheme();
+  themeSwitcher.toggleTheme();
 });
 
 // Listen for theme changes

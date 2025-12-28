@@ -16,9 +16,9 @@
  * @see src/styles/03-generic/_generic.root.scss for SCSS token definitions
  */
 
-import type { Theme } from './types';
-import { isBrowser } from './utils';
-import { hexToRgb, alpha, lighten, darken, emphasize } from './themeUtils';
+import type { Theme } from '../types';
+import { isBrowser } from '../utils/domUtils';
+import { hexToRgb, alpha, lighten, darken, emphasize } from '../utils/themeUtils';
 
 // ============================================================================
 // CSS Variable Generation
@@ -133,14 +133,6 @@ function generatePaletteVariables(palette: Theme['palette'], prefix: string): Re
             if (key !== 'light' && key !== 'dark') {
                 const colorScale = generateColorScale(color.main, prefix, key);
                 Object.assign(vars, colorScale);
-                
-                // Add semantic aliases that map to scale steps (for backward compatibility)
-                // primary-main → primary-6 (main color)
-                vars[`${prefix}-${key}-main`] = colorScale[`${prefix}-${key}-6`] || color.main;
-                // primary-light → primary-3 (light variant)
-                vars[`${prefix}-${key}-light`] = colorScale[`${prefix}-${key}-3`] || color.light || color.main;
-                // primary-dark → primary-9 (dark variant)
-                vars[`${prefix}-${key}-dark`] = colorScale[`${prefix}-${key}-9`] || color.dark || color.main;
             } else {
                 // For light/dark, use the provided values directly
                 vars[`${prefix}-${key}-main`] = color.main;
@@ -658,8 +650,6 @@ function generateBorderRadiusVariables(
 
     // 2X large border radius (maps to spacing-4 = 16px)
     vars[`${prefix}-border-radius-xxl`] = formatValue(borderRadius.xxl, '1rem');
-    // Also add deprecated 2xl alias for consistency
-    vars[`${prefix}-border-radius-2xl`] = formatValue(borderRadius.xxl, '1rem');
 
     // 3X large border radius (maps to spacing-6 = 24px)
     vars[`${prefix}-border-radius-3xl`] = formatValue(borderRadius['3xl'], '1.5rem');

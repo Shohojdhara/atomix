@@ -18,7 +18,7 @@ import type {
  * Configuration loader options
  */
 export interface ConfigLoaderOptions {
-  /** Path to theme config file (default: 'theme.config.ts') */
+  /** Path to theme config file (default: 'atomix.config.ts') */
   configPath?: string;
   /** Enable validation */
   validate?: boolean;

@@ -89,7 +89,6 @@ const RadarChart = memo(
       }: ChartRenderContentParams) => {
         if (!renderedDatasets.length) return null;
 
-        // Use toolbar state if available, fallback to config for backward compatibility
         const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
 
         const centerX = scales.width / 2;

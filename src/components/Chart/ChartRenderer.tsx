@@ -238,7 +238,7 @@ const ChartRenderer = memo(
           onMouseUp: handleMouseUp,
           onWheel: () => {
             // Wheel handling is done via native event listener (non-passive)
-            // This is kept for API compatibility but not used
+            // Wheel handling is done via native event listener (non-passive)
           },
         }),
         [

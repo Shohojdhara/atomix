@@ -138,7 +138,6 @@ const FunnelChart = memo(
       }: ChartRenderContentParams) => {
         if (!funnelData.length) return null;
 
-        // Use toolbar state if available, fallback to config for backward compatibility
         const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
         const shouldAnimate = toolbarState?.animationsEnabled ?? renderConfig?.animate ?? animate;
 

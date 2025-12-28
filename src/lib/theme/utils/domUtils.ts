@@ -5,8 +5,8 @@
  * and theme validation.
  */
 
-import type { ThemeMetadata, ThemeValidationResult } from './types';
-import { THEME_LINK_ID_PREFIX } from './constants';
+import type { ThemeMetadata, ThemeValidationResult } from '../types';
+import { THEME_LINK_ID_PREFIX } from '../constants/constants';
 
 /**
  * Check if code is running in a browser environment

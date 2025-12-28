@@ -4,7 +4,6 @@
  * TypeScript types and interfaces for the Atomix Design System theme management system.
  */
 
-import type { ThemeManager as ThemeManagerType } from './runtime/ThemeManager';
 import type { PartStyleProps } from '../types/partProps';
 
 /**
@@ -42,39 +41,6 @@ export interface ThemeMetadata {
     dependencies?: string[];
 }
 
-/**
- * Theme manager configuration options
- */
-export interface ThemeManagerConfig {
-    /** Available themes metadata */
-    themes: Record<string, ThemeMetadata>;
-    /** Default theme to use */
-    defaultTheme?: string | Theme;
-    /** Base path for theme CSS files */
-    basePath?: string;
-    /** CDN path for theme CSS files (optional) */
-    cdnPath?: string | null;
-    /** Themes to preload on initialization */
-    preload?: string[];
-    /** Enable lazy loading of themes */
-    lazy?: boolean;
-    /** localStorage key for persistence */
-    storageKey?: string;
-    /** Data attribute name for theme */
-    dataAttribute?: string;
-    /** Enable persistence */
-    enablePersistence?: boolean;
-    /** Custom CSS file extension */
-    cssExtension?: string;
-    /** Use minified CSS files */
-    useMinified?: boolean;
-    /** Callback when theme changes */
-    onThemeChange?: (theme: string | Theme) => void;
-    /** Callback when theme load fails */
-    onError?: (error: Error, themeName: string) => void;
-    /** RTL configuration */
-    rtl?: import('./i18n/rtl').RTLConfig;
-}
 
 /**
  * Theme change event payload
@@ -160,7 +126,7 @@ export interface UseThemeOptions {
     /** Custom storage key */
     storageKey?: string;
     /** Callback when theme changes */
-    onChange?: (theme: string | Theme) => void;
+    onChange?: (theme: string | Theme | import('./tokens').DesignTokens) => void;
 }
 
 /**
@@ -171,8 +137,8 @@ export interface UseThemeReturn {
     theme: string;
     /** Current active theme object (for JS themes) */
     activeTheme: Theme | null;
-    /** Function to change theme */
-    setTheme: (theme: string | Theme, options?: ThemeLoadOptions) => Promise<void>;
+    /** Function to change theme (supports string, Theme, or DesignTokens) */
+    setTheme: (theme: string | Theme | import('./tokens').DesignTokens | Partial<import('./tokens').DesignTokens>, options?: ThemeLoadOptions) => Promise<void>;
     /** Available themes */
     availableThemes: ThemeMetadata[];
     /** Whether a theme is currently loading */
@@ -268,7 +234,7 @@ export interface ThemeProviderProps {
     /** Use minified CSS */
     useMinified?: boolean;
     /** Callback when theme changes */
-    onThemeChange?: (theme: string | Theme) => void;
+    onThemeChange?: (theme: string | Theme | import('./tokens').DesignTokens) => void;
     /** Callback on error */
     onError?: (error: Error, themeName: string) => void;
 }
@@ -281,8 +247,8 @@ export interface ThemeContextValue {
     theme: string;
     /** Current active theme object (for JS themes) */
     activeTheme: Theme | null;
-    /** Set theme function */
-    setTheme: (theme: string | Theme, options?: ThemeLoadOptions) => Promise<void>;
+    /** Set theme function (supports string, Theme, or DesignTokens) */
+    setTheme: (theme: string | Theme | import('./tokens').DesignTokens | Partial<import('./tokens').DesignTokens>, options?: ThemeLoadOptions) => Promise<void>;
     /** Available themes */
     availableThemes: ThemeMetadata[];
     /** Loading state */
@@ -293,8 +259,6 @@ export interface ThemeContextValue {
     isThemeLoaded: (themeName: string) => boolean;
     /** Preload theme */
     preloadTheme: (themeName: string) => Promise<void>;
-    /** Theme manager instance */
-    themeManager: ThemeManagerType;
 }
 
 // ============================================================================

@@ -112,7 +112,6 @@ const BubbleChart = memo(
       }: any) => {
         if (!bubbleData.length) return null;
 
-        // Use toolbar state if available, fallback to config for backward compatibility
         const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
 
         // Calculate bubble sizes based on data

@@ -1037,10 +1037,9 @@ export function useAtomixGlass({
     [onClick]
   );
 
-  // No-op handler for backward compatibility (mouse tracking now handled by shared tracker)
+  // Mouse tracking is now handled by shared global tracker
   const handleMouseMove = useCallback((_e: MouseEvent) => {
-    // Mouse tracking is now handled by shared global tracker
-    // This handler is kept for backward compatibility with existing code
+    // Mouse tracking handled by shared global tracker
   }, []);
 
   return {

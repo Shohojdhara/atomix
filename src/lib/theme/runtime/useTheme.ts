@@ -2,11 +2,10 @@
  * useTheme Hook
  * 
  * React hook for accessing theme context
- * Updated to work with new ThemeEngine architecture
  */
 
 import { useContext } from 'react';
-import { ThemeContext } from '../ThemeContext';
+import { ThemeContext } from './ThemeContext';
 import type { UseThemeReturn } from '../types';
 
 /**

@@ -267,7 +267,6 @@ const HeatmapChart = memo(
       }: ChartRenderContentParams) => {
         const { matrix, xLabels, yLabels } = processedData;
 
-        // Use toolbar state if available, fallback to config for backward compatibility
         const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
         if (!matrix.length) {
           return null;

@@ -249,44 +249,6 @@ import {
 
 ---
 
-## Migration Guide
-
-### For Existing Users
-
-No breaking changes! All existing code continues to work.
-
-**Before:**
-```tsx
-import { ThemeInspector } from '@shohojdhara/atomix/theme/devtools';
-```
-
-**After (still works):**
-```tsx
-import { ThemeInspector } from '@shohojdhara/atomix/theme/devtools';
-```
-
-**New (also works):**
-```tsx
-import { ThemeInspector } from '@shohojdhara/atomix/theme';
-```
-
-### New Features
-
-Simply import and use the new components:
-
-```tsx
-import {
-  ThemeComparator,
-  ThemeLiveEditor,
-} from '@shohojdhara/atomix/theme';
-
-// Use them immediately
-<ThemeComparator themeA={theme1} themeB={theme2} />
-<ThemeLiveEditor initialTheme={theme} />
-```
-
----
-
 ## Future Enhancements
 
 ### Planned Features
@@ -315,6 +277,147 @@ import {
    - Screenshot comparison
    - Automated testing
    - CI/CD integration
+
+---
+
+## Phase 2: Enhanced DevTools Features (2025-01-27)
+
+### Overview
+
+This phase focuses on enhancing the core devtools components (`ThemeLiveEditor`, `ThemePreview`, `ThemeInspector`, `ThemeComparator`) with advanced features inspired by professional theme studio implementations.
+
+### Phase 1: Enhanced ThemeLiveEditor
+
+**New Features:**
+
+1. **Undo/Redo System**
+   - History stack for theme changes
+   - Keyboard shortcuts (Ctrl+Z / Ctrl+Shift+Z)
+   - Visual history indicator
+   - Maximum history size (50 entries)
+
+2. **Keyboard Shortcuts**
+   - `Ctrl+Z` / `Cmd+Z` - Undo
+   - `Ctrl+Shift+Z` / `Cmd+Shift+Z` - Redo
+   - `Ctrl+S` / `Cmd+S` - Save/Export theme
+   - `Ctrl+/` / `Cmd+/` - Toggle edit mode
+   - `Escape` - Clear errors
+
+3. **Resizable Layout**
+   - Drag-to-resize split between editor and preview
+   - Persistent layout preferences (localStorage)
+   - Minimum panel sizes enforced
+   - Smooth resize animations
+
+4. **Enhanced Color Pickers**
+   - Alpha channel support (RGBA)
+   - Multiple format support (hex, rgb, hsl)
+   - Color format conversion
+   - Color history/palette
+   - Contrast checker integration
+
+**Implementation Details:**
+- Custom `useHistory` hook for undo/redo
+- Resizable panels using mouse drag events
+- Enhanced color input with format detection
+- Keyboard event listeners with proper cleanup
+
+### Phase 2: Enhanced ThemePreview
+
+**New Features:**
+
+1. **Interactive Components**
+   - Hover states on all interactive elements
+   - Focus states for accessibility
+   - Active/pressed states for buttons
+   - Click interactions with visual feedback
+
+2. **Viewport Controls**
+   - Mobile viewport simulation (375px, 414px)
+   - Tablet viewport simulation (768px, 1024px)
+   - Desktop viewport simulation (1280px, 1920px)
+   - Custom viewport size input
+   - Responsive breakpoint indicators
+
+3. **Dark Mode Toggle**
+   - Independent dark mode preview (separate from system)
+   - Smooth theme transition
+   - Preview-specific theme override
+   - Toggle button with visual indicator
+
+**Implementation Details:**
+- Interactive state management for preview components
+- Viewport wrapper with responsive controls
+- Theme mode state independent of system preferences
+- CSS transitions for smooth mode switching
+
+### Phase 3: Enhanced ThemeInspector
+
+**New Features:**
+
+1. **Search/Filter**
+   - Real-time search across all theme properties
+   - Filter by property type (color, typography, spacing, etc.)
+   - Highlight matching results
+   - Search history
+   - Clear search button
+
+2. **Copy Path Functionality**
+   - Click property names to copy dot-notation path
+   - Visual feedback on copy
+   - Copy button for each property
+   - Path format: `palette.primary.main`
+   - Toast notification on successful copy
+
+**Implementation Details:**
+- Debounced search input
+- Recursive property path generation
+- Clipboard API with fallback
+- Highlight matching text in results
+
+### Phase 4: Enhanced ThemeComparator
+
+**New Features:**
+
+1. **Search/Filter**
+   - Filter differences by type (added/removed/changed)
+   - Search within difference paths
+   - Filter by property category
+   - Clear filters button
+
+2. **Improved Visual Diff**
+   - Green background for added properties
+   - Red background for removed properties
+   - Yellow/orange background for changed properties
+   - Side-by-side value highlighting
+   - Diff statistics with breakdown
+
+**Implementation Details:**
+- Filter state management
+- Enhanced diff styling with better contrast
+- Improved value comparison visualization
+- Category-based filtering
+
+---
+
+## Implementation Status
+
+### Completed ✅
+- [x] IMPROVEMENTS.md documentation
+- [ ] useHistory hook implementation
+- [ ] LiveEditor enhancements
+- [ ] Preview enhancements
+- [ ] Inspector enhancements
+- [ ] Comparator enhancements
+
+### In Progress 🚧
+- [ ] Testing and validation
+- [ ] Documentation updates
+
+### Planned 📋
+- [ ] Storybook stories for new features
+- [ ] Performance optimization
+- [ ] Accessibility audit
 
 ---
 

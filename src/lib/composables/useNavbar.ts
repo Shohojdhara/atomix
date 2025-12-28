@@ -269,20 +269,10 @@ export function useNavDropdown(initialProps?: Partial<NavDropdownProps>) {
     return isFixedBottom ? 'CaretUp' : 'CaretDown';
   };
 
-  // Keeping this for backward compatibility
-  const getIconClass = (isMegaMenu: boolean = false): string => {
-    console.warn(
-      'getIconClass is deprecated. Please use the Icon component directly with the getIconName function.'
-    );
-    const isFixedBottom = isInFixedBottomNavbar();
-    return `c-nav__icon ${isFixedBottom ? 'icon-lux-caret-up' : 'icon-lux-caret-down'}`;
-  };
-
   return {
     defaultProps,
     generateDropdownMenuClass,
     isInFixedBottomNavbar,
-    getIconClass,
     getIconName,
   };
 }

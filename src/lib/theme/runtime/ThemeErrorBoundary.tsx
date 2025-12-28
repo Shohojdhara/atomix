@@ -6,7 +6,7 @@
  */
 
 import React, { Component, type ReactNode, type ErrorInfo } from 'react';
-import { ThemeError, ThemeErrorCode, getLogger } from '../errors';
+import { ThemeError, ThemeErrorCode, getLogger } from '../errors/errors';
 
 /**
  * Error boundary state

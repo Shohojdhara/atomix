@@ -189,7 +189,6 @@ const CandlestickChart = memo(
       }: ChartRenderContentParams) => {
         if (!candlestickData.length) return null;
 
-        // Use toolbar state if available, fallback to config for backward compatibility
         const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? candlestickOptions.showTooltips ?? true;
 
         const padding = 40;

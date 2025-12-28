@@ -4,10 +4,6 @@
  * Developer tools for theme management and debugging
  */
 
-// CLI Tools
-export { ThemeCLI, createCLI, runCLI } from './CLI';
-export type { CLICommand } from './CLI';
-
 // React Components
 export { ThemePreview } from './Preview';
 export type { ThemePreviewProps } from './Preview';
@@ -20,3 +16,17 @@ export type { ThemeComparatorProps } from './Comparator';
 
 export { ThemeLiveEditor } from './LiveEditor';
 export type { ThemeLiveEditorProps } from './LiveEditor';
+
+// Validator (devtools only)
+export { ThemeValidator } from './ThemeValidator';
+export type {
+  ValidationResult,
+  A11yIssue,
+} from './ThemeValidator';
+
+// Hooks
+export { useHistory } from './useHistory';
+export type {
+  UseHistoryOptions,
+  UseHistoryReturn,
+} from './useHistory';

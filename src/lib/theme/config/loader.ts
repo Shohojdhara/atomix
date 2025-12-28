@@ -1,7 +1,7 @@
 /**
  * Theme Configuration Loader
  * 
- * Loads and validates the theme configuration from theme.config.ts
+ * Loads and validates the theme configuration from atomix.config.ts
  */
 
 import type {
@@ -10,12 +10,10 @@ import type {
   ConfigValidationResult,
 } from './types';
 import { validateConfig } from './validator';
-import { ThemeError, ThemeErrorCode, getLogger } from '../errors';
+import { ThemeError, ThemeErrorCode, getLogger } from '../errors/errors';
 import {
-  DEFAULT_CONFIG_PATH,
   DEFAULT_ATOMIX_CONFIG_PATH,
   DEFAULT_CONFIG_RELATIVE_PATH,
-  DEFAULT_LEGACY_CONFIG_RELATIVE_PATH,
   DEFAULT_BASE_PATH,
   DEFAULT_STORAGE_KEY,
   DEFAULT_DATA_ATTRIBUTE,
@@ -24,7 +22,7 @@ import {
   DEFAULT_BUILD_OUTPUT_DIR,
   DEFAULT_SASS_CONFIG,
   ENV_DEFAULTS,
-} from '../constants';
+} from '../constants/constants';
 
 /**
  * Cache for loaded configuration
@@ -37,7 +35,7 @@ let cachedConfig: LoadedThemeConfig | null = null;
 const logger = getLogger();
 
 /**
- * Load theme configuration from theme.config.ts
+ * Load theme configuration from atomix.config.ts
  * 
  * @param options - Loader options
  * @returns Loaded and validated theme configuration
@@ -97,30 +95,25 @@ export function loadThemeConfig(
       try {
         configModule = nodeRequire(DEFAULT_CONFIG_RELATIVE_PATH) as ConfigModule;
       } catch {
-        // Try fallback to legacy relative path
-        try {
-          configModule = nodeRequire(DEFAULT_LEGACY_CONFIG_RELATIVE_PATH) as ConfigModule;
-        } catch {
-          // If relative paths fail, try to resolve from process.cwd()
-          const path = nodeRequire('path') as typeof import('path');
-          const fs = nodeRequire('fs') as typeof import('fs');
+        // If relative path fails, try to resolve from process.cwd()
+        const path = nodeRequire('path') as typeof import('path');
+        const fs = nodeRequire('fs') as typeof import('fs');
 
-          let configFilePath = path.resolve(process.cwd(), configPath);
+        let configFilePath = path.resolve(process.cwd(), configPath);
 
-          // Fallback if atomix.config.ts not found
-          if (!fs.existsSync(configFilePath) && configPath === DEFAULT_ATOMIX_CONFIG_PATH) {
-            configFilePath = path.resolve(process.cwd(), DEFAULT_CONFIG_PATH);
+        // If atomix.config.ts not found at the root, use the default path
+        if (!fs.existsSync(configFilePath) && configPath === DEFAULT_ATOMIX_CONFIG_PATH) {
+          configFilePath = path.resolve(process.cwd(), DEFAULT_ATOMIX_CONFIG_PATH);
+        }
+
+        if (fs.existsSync(configFilePath)) {
+          const resolvedPath = nodeRequire.resolve(configFilePath);
+          if (nodeRequire.cache && nodeRequire.cache[resolvedPath]) {
+            delete nodeRequire.cache[resolvedPath];
           }
-
-          if (fs.existsSync(configFilePath)) {
-            const resolvedPath = nodeRequire.resolve(configFilePath);
-            if (nodeRequire.cache && nodeRequire.cache[resolvedPath]) {
-              delete nodeRequire.cache[resolvedPath];
-            }
-            configModule = nodeRequire(configFilePath) as ConfigModule;
-          } else {
-            throw new Error(`Config file not found: ${configFilePath}`);
-          }
+          configModule = nodeRequire(configFilePath) as ConfigModule;
+        } else {
+          throw new Error(`Config file not found: ${configFilePath}`);
         }
       }
     } catch (requireError) {
@@ -136,36 +129,30 @@ export function loadThemeConfig(
 
     const rawConfig = configModule.default || configModule;
 
-    // Handle new AtomixConfig structure vs legacy ThemeConfig
-    let processedConfig: any;
-    if (rawConfig.theme && (rawConfig.theme.themes || rawConfig.theme.tokens || rawConfig.theme.extend)) {
-      // New AtomixConfig structure
-      processedConfig = {
-        themes: rawConfig.theme.themes || {},
-        build: rawConfig.build || {},
-        runtime: rawConfig.runtime || {},
-        integration: rawConfig.integration || {},
-        dependencies: rawConfig.dependencies || {},
-        // Store tokens for generator
-        __tokens: rawConfig.theme.tokens,
-        __extend: rawConfig.theme.extend,
-      };
-    } else {
-      // Legacy ThemeConfig structure
-      processedConfig = { ...rawConfig };
-    }
+    // Process the AtomixConfig structure
+    const processedConfig: LoadedThemeConfig = {
+      themes: rawConfig.theme?.themes || {},
+      build: rawConfig.build || {},
+      runtime: rawConfig.runtime || {},
+      integration: rawConfig.integration || {},
+      dependencies: rawConfig.dependencies || {},
+      validated: false, // Will be set after validation
+      // Store tokens for generator
+      __tokens: rawConfig.theme?.tokens,
+      __extend: rawConfig.theme?.extend,
+    };
 
     // Apply environment-specific overrides
-    processedConfig = applyEnvOverrides(processedConfig, env);
+    const finalConfig = applyEnvOverrides(processedConfig, env);
 
     // Validate if requested
     let validationResult: ConfigValidationResult | null = null;
     if (validate) {
-      validationResult = validateConfig(processedConfig);
+      validationResult = validateConfig(finalConfig);
     }
 
     config = {
-      ...processedConfig,
+      ...finalConfig,
       validated: validate,
       errors: validationResult?.errors,
       warnings: validationResult?.warnings,
@@ -212,6 +199,8 @@ export function loadThemeConfig(
       validated: false,
       errors: [`Failed to load config: ${error instanceof Error ? error.message : String(error)}`],
       warnings: [],
+      __tokens: {},
+      __extend: {},
     };
   }
 

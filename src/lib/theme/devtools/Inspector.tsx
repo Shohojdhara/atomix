@@ -2,12 +2,13 @@
  * Theme Inspector Component
  * 
  * React component for inspecting and debugging themes
+ * Enhanced with search/filter and copy path functionality
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import type { Theme } from '../types';
-import { generateCSSVariables } from '../generateCSSVariables';
-import { ThemeValidator } from '../core/ThemeValidator';
+import { generateCSSVariables } from '../generators/generateCSSVariables';
+import { ThemeValidator } from './ThemeValidator';
 
 /**
  * Theme inspector props
@@ -28,6 +29,15 @@ export interface ThemeInspectorProps {
 }
 
 /**
+ * Property path information
+ */
+interface PropertyPath {
+  path: string;
+  value: any;
+  matches: boolean;
+}
+
+/**
  * Theme Inspector Component
  * 
  * Provides detailed inspection and debugging information for themes
@@ -42,6 +52,27 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'overview' | 'validation' | 'css' | 'structure'>('overview');
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['palette']));
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('');
+  const [copiedPath, setCopiedPath] = useState<string | null>(null);
+  const searchTimeoutRef = useRef<NodeJS.Timeout>();
+
+  // Debounce search query
+  useEffect(() => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    searchTimeoutRef.current = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 300);
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, [searchQuery]);
 
   // Validation results
   const validationResult = useMemo(() => {
@@ -74,6 +105,52 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
     }
   }, [theme, showCSSVariables]);
 
+  // Generate all property paths for search
+  const allPropertyPaths = useMemo(() => {
+    const paths: PropertyPath[] = [];
+    
+    const traverse = (obj: any, path: string = '', depth: number = 0): void => {
+      if (depth > 10) return; // Prevent infinite recursion
+      
+      if (obj === null || obj === undefined) {
+        paths.push({ path, value: obj, matches: false });
+        return;
+      }
+
+      if (typeof obj === 'object' && !Array.isArray(obj)) {
+        Object.entries(obj).forEach(([key, value]) => {
+          if (key === '__isJSTheme') return;
+          
+          const currentPath = path ? `${path}.${key}` : key;
+          const pathLower = currentPath.toLowerCase();
+          const queryLower = debouncedSearchQuery.toLowerCase();
+          const matches = debouncedSearchQuery ? pathLower.includes(queryLower) : true;
+          
+          if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+            paths.push({ path: currentPath, value: null, matches });
+            traverse(value, currentPath, depth + 1);
+          } else {
+            const valueStr = typeof value === 'string' ? value.toLowerCase() : String(value).toLowerCase();
+            const valueMatches = debouncedSearchQuery ? valueStr.includes(queryLower) : true;
+            paths.push({ 
+              path: currentPath, 
+              value, 
+              matches: matches || valueMatches 
+            });
+          }
+        });
+      } else {
+        const pathLower = path.toLowerCase();
+        const queryLower = debouncedSearchQuery.toLowerCase();
+        const matches = debouncedSearchQuery ? pathLower.includes(queryLower) : true;
+        paths.push({ path, value: obj, matches });
+      }
+    };
+
+    traverse(theme);
+    return paths;
+  }, [theme, debouncedSearchQuery]);
+
   const toggleSection = (section: string) => {
     const newExpanded = new Set(expandedSections);
     if (newExpanded.has(section)) {
@@ -84,13 +161,50 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
     setExpandedSections(newExpanded);
   };
 
-  const renderValue = (value: any, depth = 0): React.ReactNode => {
+  const copyPath = useCallback(async (path: string) => {
+    try {
+      await navigator.clipboard.writeText(path);
+      setCopiedPath(path);
+      setTimeout(() => setCopiedPath(null), 2000);
+    } catch (err) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = path;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        setCopiedPath(path);
+        setTimeout(() => setCopiedPath(null), 2000);
+      } catch {
+        // Copy failed
+      }
+      document.body.removeChild(textArea);
+    }
+  }, []);
+
+  const highlightText = (text: string, query: string): React.ReactNode => {
+    if (!query) return text;
+    
+    const parts = text.split(new RegExp(`(${query})`, 'gi'));
+    return parts.map((part, index) => 
+      part.toLowerCase() === query.toLowerCase() ? (
+        <mark key={index} className="search-highlight">{part}</mark>
+      ) : (
+        part
+      )
+    );
+  };
+
+  const renderValue = (value: any, depth = 0, path = ''): React.ReactNode => {
     if (value === null || value === undefined) {
       return <span className="value-null">null</span>;
     }
 
     if (typeof value === 'string') {
-      return <span className="value-string">&quot;{value}&quot;</span>;
+      return <span className="value-string">&quot;{highlightText(value, debouncedSearchQuery)}&quot;</span>;
     }
 
     if (typeof value === 'number') {
@@ -110,7 +224,7 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
         <div className="value-array">
           [{value.map((item, index) => (
             <div key={index} className="array-item">
-              {renderValue(item, depth + 1)}
+              {renderValue(item, depth + 1, `${path}[${index}]`)}
               {index < value.length - 1 && ','}
             </div>
           ))}]
@@ -122,12 +236,24 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
       return (
         <div className="value-object" style={{ marginLeft: depth * 16 }}>
           {'{'}
-          {Object.entries(value).map(([key, val]) => (
-            <div key={key} className="object-property">
-              <span className="property-key">{key}:</span>{' '}
-              {renderValue(val, depth + 1)}
-            </div>
-          ))}
+          {Object.entries(value).map(([key, val]) => {
+            const currentPath = path ? `${path}.${key}` : key;
+            return (
+              <div key={key} className="object-property">
+                <span 
+                  className="property-key clickable"
+                  onClick={() => copyPath(currentPath)}
+                  title={`Click to copy: ${currentPath}`}
+                >
+                  {highlightText(key, debouncedSearchQuery)}:
+                </span>{' '}
+                {renderValue(val, depth + 1, currentPath)}
+                {copiedPath === currentPath && (
+                  <span className="copy-feedback">✓ Copied!</span>
+                )}
+              </div>
+            );
+          })}
           {'}'}
         </div>
       );
@@ -282,48 +408,103 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
     </div>
   );
 
-  const renderStructure = () => (
-    <div className="inspector-structure">
-      <h3>Theme Structure</h3>
-      <div className="structure-tree">
-        {Object.entries(theme).map(([key, value]) => {
-          if (key === '__isJSTheme') return null;
-          
-          const isExpanded = expandedSections.has(key);
-          const hasChildren = typeof value === 'object' && value !== null && !Array.isArray(value);
+  const renderStructure = () => {
+    const filteredPaths = debouncedSearchQuery
+      ? allPropertyPaths.filter(p => p.matches)
+      : allPropertyPaths;
 
-          return (
-            <div key={key} className="structure-node">
-              <div 
-                className="structure-header"
-                onClick={() => hasChildren && toggleSection(key)}
+    return (
+      <div className="inspector-structure">
+        <div className="structure-header-controls">
+          <h3>Theme Structure</h3>
+          <div className="search-controls">
+            <input
+              type="text"
+              placeholder="Search properties..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="search-input"
+            />
+            {searchQuery && (
+              <button
+                className="clear-search"
+                onClick={() => setSearchQuery('')}
+                title="Clear search"
               >
-                {hasChildren && (
-                  <span className={`expand-icon ${isExpanded ? 'expanded' : ''}`}>
-                    ▶
+                ×
+              </button>
+            )}
+            {debouncedSearchQuery && (
+              <span className="search-results-count">
+                {filteredPaths.length} result{filteredPaths.length !== 1 ? 's' : ''}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {debouncedSearchQuery && filteredPaths.length === 0 && (
+          <div className="no-results">
+            No properties found matching &quot;{debouncedSearchQuery}&quot;
+          </div>
+        )}
+
+        <div className="structure-tree">
+          {Object.entries(theme).map(([key, value]) => {
+            if (key === '__isJSTheme') return null;
+            
+            const isExpanded = expandedSections.has(key);
+            const hasChildren = typeof value === 'object' && value !== null && !Array.isArray(value);
+            const pathMatches = debouncedSearchQuery
+              ? allPropertyPaths.some(p => p.path.startsWith(key) && p.matches)
+              : true;
+
+            if (debouncedSearchQuery && !pathMatches) return null;
+
+            return (
+              <div key={key} className="structure-node">
+                <div 
+                  className="structure-header"
+                  onClick={() => hasChildren && toggleSection(key)}
+                >
+                  {hasChildren && (
+                    <span className={`expand-icon ${isExpanded ? 'expanded' : ''}`}>
+                      ▶
+                    </span>
+                  )}
+                  <span 
+                    className="property-name clickable"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      copyPath(key);
+                    }}
+                    title={`Click to copy: ${key}`}
+                  >
+                    {highlightText(key, debouncedSearchQuery)}
                   </span>
+                  {copiedPath === key && (
+                    <span className="copy-feedback">✓ Copied!</span>
+                  )}
+                  <span className="property-type">
+                    {Array.isArray(value) ? 'array' : typeof value}
+                  </span>
+                </div>
+                {hasChildren && isExpanded && (
+                  <div className="structure-children">
+                    {renderValue(value, 0, key)}
+                  </div>
                 )}
-                <span className="property-name">{key}</span>
-                <span className="property-type">
-                  {Array.isArray(value) ? 'array' : typeof value}
-                </span>
+                {!hasChildren && (
+                  <div className="structure-value">
+                    {renderValue(value, 0, key)}
+                  </div>
+                )}
               </div>
-              {hasChildren && isExpanded && (
-                <div className="structure-children">
-                  {renderValue(value)}
-                </div>
-              )}
-              {!hasChildren && (
-                <div className="structure-value">
-                  {renderValue(value)}
-                </div>
-              )}
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className={`atomix-theme-inspector ${className || ''}`} style={style}>
@@ -372,7 +553,7 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
         {activeTab === 'structure' && renderStructure()}
       </div>
 
-      <style >{`
+      <style>{`
         .atomix-theme-inspector {
           border: 1px solid #e0e0e0;
           border-radius: 8px;
@@ -529,6 +710,10 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
           cursor: pointer;
         }
 
+        .copy-button:hover {
+          background: #1976d2;
+        }
+
         .css-code {
           background: #f5f5f5;
           padding: 16px;
@@ -537,6 +722,78 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
           font-family: 'Monaco', 'Menlo', monospace;
           font-size: 12px;
           line-height: 1.4;
+        }
+
+        .structure-header-controls {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 16px;
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+
+        .structure-header-controls h3 {
+          margin: 0;
+        }
+
+        .search-controls {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .search-input {
+          padding: 8px 12px;
+          border: 1px solid #e0e0e0;
+          border-radius: 4px;
+          font-size: 14px;
+          width: 250px;
+        }
+
+        .search-input:focus {
+          outline: none;
+          border-color: #2196f3;
+        }
+
+        .clear-search {
+          background: #f44336;
+          color: white;
+          border: none;
+          border-radius: 50%;
+          width: 24px;
+          height: 24px;
+          cursor: pointer;
+          font-size: 18px;
+          line-height: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .clear-search:hover {
+          background: #d32f2f;
+        }
+
+        .search-results-count {
+          font-size: 12px;
+          color: #666;
+          padding: 4px 8px;
+          background: #f5f5f5;
+          border-radius: 4px;
+        }
+
+        .no-results {
+          padding: 24px;
+          text-align: center;
+          color: #666;
+          font-style: italic;
+        }
+
+        .search-highlight {
+          background: #fff59d;
+          padding: 2px 4px;
+          border-radius: 2px;
         }
 
         .structure-node {
@@ -568,6 +825,23 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
         .property-name {
           font-weight: bold;
           color: #1976d2;
+        }
+
+        .property-name.clickable {
+          cursor: pointer;
+          text-decoration: underline;
+          text-decoration-style: dotted;
+        }
+
+        .property-name.clickable:hover {
+          color: #0d47a1;
+        }
+
+        .copy-feedback {
+          font-size: 12px;
+          color: #4caf50;
+          margin-left: 8px;
+          font-weight: normal;
         }
 
         .property-type {
@@ -602,6 +876,16 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
         .property-key {
           color: #1976d2;
           font-weight: bold;
+        }
+
+        .property-key.clickable {
+          cursor: pointer;
+          text-decoration: underline;
+          text-decoration-style: dotted;
+        }
+
+        .property-key.clickable:hover {
+          color: #0d47a1;
         }
       `}</style>
     </div>

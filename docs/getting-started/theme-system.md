@@ -6,9 +6,44 @@
 
 ## Quick Start (5 Minutes)
 
-The Atomix theme system lets you customize colors, typography, spacing, and more using a simple JavaScript API. No configuration files needed!
+The Atomix theme system lets you customize colors, typography, spacing, and more using a simple JavaScript API. **Automatic config loading** means you can use `atomix.config.ts` for zero-configuration setup!
 
-### Basic Example
+### Option 1: Automatic Config Loading (Easiest)
+
+**Step 1:** Create `atomix.config.ts` in your project root:
+
+```typescript
+import { defineConfig } from '@shohojdhara/atomix/config';
+
+export default defineConfig({
+  theme: {
+    extend: {
+      colors: {
+        primary: { main: '#7AFFD7' },
+        secondary: { main: '#FF5733' },
+      },
+    },
+  },
+});
+```
+
+**Step 2:** Use ThemeProvider (automatically loads config):
+
+```tsx
+import { ThemeProvider } from '@shohojdhara/atomix/theme';
+
+function App() {
+  return (
+    <ThemeProvider>
+      <YourApp />
+    </ThemeProvider>
+  );
+}
+```
+
+That's it! Your config is automatically loaded and applied.
+
+### Option 2: Manual Theme Creation
 
 ```tsx
 import { createTheme, ThemeProvider } from '@shohojdhara/atomix/theme';
@@ -32,7 +67,15 @@ function App() {
 }
 ```
 
-That's it! Your entire app now uses your custom theme.
+### Option 3: Automatic createTheme()
+
+```typescript
+import { createTheme, injectTheme } from '@shohojdhara/atomix/theme';
+
+// Automatically loads from atomix.config.ts
+const css = createTheme();
+injectTheme(css);
+```
 
 ---
 
@@ -95,6 +138,18 @@ Wrap your app with `ThemeProvider` to make the theme available everywhere:
 ```tsx
 import { ThemeProvider } from '@shohojdhara/atomix/theme';
 
+// Automatic: Loads from atomix.config.ts
+function App() {
+  return (
+    <ThemeProvider>
+      <Header />
+      <MainContent />
+      <Footer />
+    </ThemeProvider>
+  );
+}
+
+// Manual: Provide explicit theme
 function App() {
   return (
     <ThemeProvider defaultTheme={myTheme}>
@@ -105,6 +160,8 @@ function App() {
   );
 }
 ```
+
+**✨ Config-First Approach:** If you don't provide `defaultTheme`, `ThemeProvider` loads from `atomix.config.ts` (config file required).
 
 ### Using the Theme Hook
 

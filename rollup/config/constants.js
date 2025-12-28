@@ -21,7 +21,6 @@ export const external = [
 // Output directories
 export const OUTPUT_DIRS = {
   dist: 'dist',
-  themes: 'dist/themes',
   storybook: 'storybook-static',
 };
 
@@ -49,9 +48,5 @@ export const OUTPUT_FILES = {
   minified: 'dist/index.min.js',
 };
 
-// Theme directories
-export const THEME_DIRS = {
-  source: 'src/themes',
-  output: 'dist/themes',
-};
+// Theme directories removed
 

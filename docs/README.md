@@ -8,7 +8,6 @@ Welcome to the comprehensive documentation for the Atomix Design System. This do
 Everything you need to get up and running with Atomix quickly.
 - [Installation Guide](./getting-started/installation.md) - Complete setup instructions
 - [Quick Start Tutorial](./getting-started/quick-start.md) - 5-minute tutorial
-- [Migration Guide](./getting-started/migration.md) - Migrate from other systems
 
 ### 🎨 [Design Tokens](./design-tokens/README.md)
 The foundation of the Atomix Design System - colors, spacing, typography, and more.

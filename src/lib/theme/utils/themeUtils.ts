@@ -5,7 +5,7 @@
  * spacing helpers, and theme value accessors.
  */
 
-import type { Theme, SpacingFunction, SpacingOptions } from './types';
+import type { Theme, SpacingFunction, SpacingOptions } from '../types';
 
 // ============================================================================
 // Color Manipulation Utilities
