@@ -130,10 +130,17 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     },
     ref
   ) => {
-    // Use React's useId() for SSR compatibility
-    // Note: In Next.js, IDs may differ between server and client
-    // We'll suppress hydration warnings on elements that use this ID
-    const filterId = useId();
+    // Generate a stable, deterministic ID for SSR compatibility
+    // React's useId() should produce the same ID on server and client for the same
+    // component position in the tree. We use useState to ensure the ID is only
+    // generated once and remains stable across renders.
+    const baseId = useId();
+    const [filterId] = useState(() => {
+      // Normalize the ID to ensure it's valid and consistent
+      // Remove colons (which useId() uses) and ensure it starts with a letter
+      const normalizedId = baseId.replace(/:/g, '-').replace(/^[^a-z]/i, 'atomix-');
+      return `atomix-glass-filter-${normalizedId}`;
+    });
     
     const [shaderMapUrl, setShaderMapUrl] = useState<string>('');
     const shaderGeneratorRef = useRef<any>(null);

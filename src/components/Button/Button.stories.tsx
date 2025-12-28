@@ -38,11 +38,13 @@ const meta = {
         'link',
       ],
       description: 'The visual style of the button',
+      defaultValue: 'primary',
     },
     size: {
       control: { type: 'select' },
       options: SIZES,
       description: 'The size of the button',
+      defaultValue: 'md',
     },
     disabled: {
       control: 'boolean',
@@ -116,7 +118,9 @@ const Icon = () => (
   </svg>
 );
 
-// Primary Buttons
+/**
+ * Primary button variant - the main call-to-action style.
+ */
 export const Primary: Story = {
   args: {
     label: 'Primary Button',
@@ -125,6 +129,9 @@ export const Primary: Story = {
   },
 };
 
+/**
+ * Secondary button variant - used for secondary actions.
+ */
 export const Secondary: Story = {
   args: {
     label: 'Secondary Button',
@@ -133,6 +140,9 @@ export const Secondary: Story = {
   },
 };
 
+/**
+ * Success button variant - indicates successful or positive actions.
+ */
 export const Success: Story = {
   args: {
     label: 'Success Button',
@@ -141,6 +151,9 @@ export const Success: Story = {
   },
 };
 
+/**
+ * Info button variant - used for informational actions.
+ */
 export const Info: Story = {
   args: {
     label: 'Info Button',
@@ -149,6 +162,9 @@ export const Info: Story = {
   },
 };
 
+/**
+ * Warning button variant - indicates caution or warning actions.
+ */
 export const Warning: Story = {
   args: {
     label: 'Warning Button',
@@ -157,6 +173,9 @@ export const Warning: Story = {
   },
 };
 
+/**
+ * Error button variant - indicates destructive or error actions.
+ */
 export const Error: Story = {
   args: {
     label: 'Error Button',
@@ -165,7 +184,9 @@ export const Error: Story = {
   },
 };
 
-// Outline Buttons
+/**
+ * Outline primary button variant - outlined style with primary color.
+ */
 export const OutlinePrimary: Story = {
   args: {
     label: 'Outline Primary',
@@ -174,6 +195,9 @@ export const OutlinePrimary: Story = {
   },
 };
 
+/**
+ * Outline secondary button variant - outlined style with secondary color.
+ */
 export const OutlineSecondary: Story = {
   args: {
     label: 'Outline Secondary',
@@ -182,7 +206,9 @@ export const OutlineSecondary: Story = {
   },
 };
 
-// Link Button
+/**
+ * Link button variant - styled as a text link.
+ */
 export const LinkButton: Story = {
   args: {
     label: 'Link Button',
@@ -191,7 +217,9 @@ export const LinkButton: Story = {
   },
 };
 
-// Button Sizes
+/**
+ * Small size button variant.
+ */
 export const Small: Story = {
   args: {
     label: 'Small Button',
@@ -200,6 +228,9 @@ export const Small: Story = {
   },
 };
 
+/**
+ * Medium size button variant (default).
+ */
 export const Medium: Story = {
   args: {
     label: 'Medium Button',
@@ -208,6 +239,9 @@ export const Medium: Story = {
   },
 };
 
+/**
+ * Large size button variant.
+ */
 export const Large: Story = {
   args: {
     label: 'Large Button',
@@ -216,7 +250,9 @@ export const Large: Story = {
   },
 };
 
-// States
+/**
+ * Disabled button state - non-interactive button.
+ */
 export const Disabled: Story = {
   args: {
     label: 'Disabled Button',
@@ -226,7 +262,9 @@ export const Disabled: Story = {
   },
 };
 
-// With Icon
+/**
+ * Button with icon - displays an icon alongside the label.
+ */
 export const WithIcon: Story = {
   args: {
     label: 'Button with Icon',
@@ -236,6 +274,9 @@ export const WithIcon: Story = {
   },
 };
 
+/**
+ * Icon-only button - displays only an icon without text.
+ */
 export const IconOnly: Story = {
   args: {
     label: 'Add',
@@ -246,11 +287,20 @@ export const IconOnly: Story = {
   },
 };
 
-// Group of Button Variants
+/**
+ * Showcase of all button color variants in a single view.
+ */
 export const AllVariants: Story = {
   args: {
     label: 'Button',
     variant: 'success',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Displays all available button color variants side by side for easy comparison.',
+      },
+    },
   },
   render: () => (
     <div className="u-d-flex u-flex-wrap u-gap-2">
@@ -266,11 +316,20 @@ export const AllVariants: Story = {
   ),
 };
 
-// Group of Outline Button Variants
+/**
+ * Showcase of all outline button variants in a single view.
+ */
 export const AllOutlineVariants: Story = {
   args: {
     label: 'Button',
     variant: 'outline-primary',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Displays all available outline button variants with transparent backgrounds and colored borders.',
+      },
+    },
   },
   render: () => (
     <div className="u-d-flex u-flex-wrap u-gap-2">
@@ -286,11 +345,20 @@ export const AllOutlineVariants: Story = {
   ),
 };
 
-// Group of Button Sizes
+/**
+ * Showcase of all button sizes (small, medium, large) in a single view.
+ */
 export const AllSizes: Story = {
   args: {
     label: 'Button',
     variant: 'primary',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Compares all available button sizes to help choose the appropriate size for your use case.',
+      },
+    },
   },
   render: () => (
     <div className="u-d-flex u-align-items-center u-gap-2">
@@ -301,7 +369,9 @@ export const AllSizes: Story = {
   ),
 };
 
-// Icon Buttons
+/**
+ * Showcase of button icon variants and icon-only buttons.
+ */
 export const IconButtonVariants: Story = {
   args: {
     label: 'Button',
@@ -321,7 +391,9 @@ export const IconButtonVariants: Story = {
   ),
 };
 
-// Rounded Button
+/**
+ * Rounded button - fully rounded (pill-shaped) button style.
+ */
 export const Rounded: Story = {
   args: {
     label: 'Rounded Button',
@@ -331,7 +403,9 @@ export const Rounded: Story = {
   },
 };
 
-// Group of Rounded Buttons
+/**
+ * Showcase of all button variants with rounded (pill) shape.
+ */
 export const RoundedVariants: Story = {
   args: {
     label: 'Button',
@@ -352,7 +426,9 @@ export const RoundedVariants: Story = {
   ),
 };
 
-// Content Options - Label vs Children
+/**
+ * Button using the label prop for text content.
+ */
 export const WithLabel: Story = {
   args: {
     label: 'Button with Label',
@@ -360,6 +436,9 @@ export const WithLabel: Story = {
   },
 };
 
+/**
+ * Button using children prop for text content.
+ */
 export const WithChildren: Story = {
   render: () => (
     <Button variant="primary">
@@ -368,6 +447,9 @@ export const WithChildren: Story = {
   ),
 };
 
+/**
+ * Button with icon and text content as children.
+ */
 export const WithIconAndText: Story = {
   render: () => (
     <Button variant="primary">
@@ -377,7 +459,9 @@ export const WithIconAndText: Story = {
   ),
 };
 
-// Glass Effect Buttons
+/**
+ * Button with glass morphism effect enabled.
+ */
 export const GlassEffect: Story = {
   args: {
     label: 'Glass Button',
@@ -1199,7 +1283,9 @@ export const GlassStatesShowcase: Story = {
   ),
 };
 
-// Loading State
+/**
+ * Button in loading state - shows loading spinner.
+ */
 export const Loading: Story = {
   args: {
     label: 'Save',
@@ -1208,6 +1294,9 @@ export const Loading: Story = {
   },
 };
 
+/**
+ * Button in loading state with custom loading text.
+ */
 export const LoadingWithText: Story = {
   args: {
     label: 'Save',
@@ -1228,7 +1317,9 @@ export const LoadingStates: Story = {
   ),
 };
 
-// Full Width
+/**
+ * Full-width button - takes the full width of its container.
+ */
 export const FullWidth: Story = {
   args: {
     label: 'Full Width Button',
@@ -1247,7 +1338,9 @@ export const FullWidthButtons: Story = {
   ),
 };
 
-// Block
+/**
+ * Block-level button - displays as a block element.
+ */
 export const Block: Story = {
   args: {
     label: 'Block Button',
@@ -1256,7 +1349,9 @@ export const Block: Story = {
   },
 };
 
-// Icon Positioning
+/**
+ * Button with icon positioned at the start (left side).
+ */
 export const IconStart: Story = {
   args: {
     label: 'Icon Start',
@@ -1266,6 +1361,9 @@ export const IconStart: Story = {
   },
 };
 
+/**
+ * Button with icon positioned at the end (right side).
+ */
 export const IconEnd: Story = {
   args: {
     label: 'Icon End',
@@ -1285,7 +1383,9 @@ export const IconPositions: Story = {
   ),
 };
 
-// Active State
+/**
+ * Button in active state - visually indicates active/pressed state.
+ */
 export const Active: Story = {
   args: {
     label: 'Active Button',
@@ -1294,7 +1394,9 @@ export const Active: Story = {
   },
 };
 
-// Selected State
+/**
+ * Button in selected state - visually indicates selected state.
+ */
 export const Selected: Story = {
   args: {
     label: 'Selected Button',
@@ -1303,8 +1405,17 @@ export const Selected: Story = {
   },
 };
 
-// Comprehensive Example
+/**
+ * Comprehensive example showcasing multiple button features and states.
+ */
 export const Comprehensive: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'A comprehensive example demonstrating various button features including loading states, layout variants, icon positioning, and different states all in one view.',
+      },
+    },
+  },
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', maxWidth: '600px' }}>
       <div>

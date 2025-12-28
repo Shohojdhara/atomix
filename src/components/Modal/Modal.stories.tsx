@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import type { AtomixGlassProps } from '../../lib/types/components';
 import Modal from './Modal';
+
+// Helper type for glass props in stories (without children requirement)
+type GlassProps = boolean | Omit<AtomixGlassProps, 'children'>;
 
 const meta = {
   title: 'Components/Modal',
@@ -17,7 +21,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     size: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['sm', 'md', 'lg', 'xl'],
       description: 'Size of the modal',
       defaultValue: 'md',
@@ -384,7 +388,7 @@ export const GlassModalCustom: Story = {
               aberrationIntensity: 2,
               cornerRadius: 20,
               mode: 'polar',
-            } as any
+            } as GlassProps
           }
           footer={
             <>

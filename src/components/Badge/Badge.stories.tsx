@@ -25,11 +25,13 @@ const meta = {
       control: { type: 'select' },
       options: THEME_COLORS,
       description: 'The visual style of the badge',
+      defaultValue: 'primary',
     },
     size: {
       control: { type: 'select' },
       options: SIZES,
       description: 'The size of the badge',
+      defaultValue: 'md',
     },
     disabled: {
       control: 'boolean',
@@ -68,7 +70,9 @@ const Icon = () => (
   </svg>
 );
 
-// Basic Badges
+/**
+ * Primary badge variant - the main badge style.
+ */
 export const Primary: Story = {
   args: {
     label: 'Primary',
@@ -77,6 +81,9 @@ export const Primary: Story = {
   },
 };
 
+/**
+ * Secondary badge variant - used for secondary information.
+ */
 export const Secondary: Story = {
   args: {
     label: 'Secondary',
@@ -85,6 +92,9 @@ export const Secondary: Story = {
   },
 };
 
+/**
+ * Success badge variant - indicates successful or positive status.
+ */
 export const Success: Story = {
   args: {
     label: 'Success',
@@ -93,6 +103,9 @@ export const Success: Story = {
   },
 };
 
+/**
+ * Info badge variant - used for informational status.
+ */
 export const Info: Story = {
   args: {
     label: 'Info',
@@ -101,6 +114,9 @@ export const Info: Story = {
   },
 };
 
+/**
+ * Warning badge variant - indicates caution or warning status.
+ */
 export const Warning: Story = {
   args: {
     label: 'Warning',
@@ -109,6 +125,9 @@ export const Warning: Story = {
   },
 };
 
+/**
+ * Error badge variant - indicates error or critical status.
+ */
 export const Error: Story = {
   args: {
     label: 'Error',
@@ -117,6 +136,9 @@ export const Error: Story = {
   },
 };
 
+/**
+ * Light badge variant - light color scheme.
+ */
 export const Light: Story = {
   args: {
     label: 'Light',
@@ -125,6 +147,9 @@ export const Light: Story = {
   },
 };
 
+/**
+ * Dark badge variant - dark color scheme.
+ */
 export const Dark: Story = {
   args: {
     label: 'Dark',
@@ -133,7 +158,9 @@ export const Dark: Story = {
   },
 };
 
-// Badge Sizes
+/**
+ * Small size badge variant.
+ */
 export const Small: Story = {
   args: {
     label: 'Small',
@@ -142,6 +169,9 @@ export const Small: Story = {
   },
 };
 
+/**
+ * Medium size badge variant (default).
+ */
 export const Medium: Story = {
   args: {
     label: 'Medium',
@@ -150,6 +180,9 @@ export const Medium: Story = {
   },
 };
 
+/**
+ * Large size badge variant.
+ */
 export const Large: Story = {
   args: {
     label: 'Large',
@@ -158,7 +191,9 @@ export const Large: Story = {
   },
 };
 
-// States
+/**
+ * Disabled badge state - non-interactive badge.
+ */
 export const Disabled: Story = {
   args: {
     label: 'Disabled',
@@ -168,7 +203,9 @@ export const Disabled: Story = {
   },
 };
 
-// With Icon
+/**
+ * Badge with icon - displays an icon alongside the label.
+ */
 export const WithIcon: Story = {
   args: {
     label: 'With Icon',
@@ -178,11 +215,20 @@ export const WithIcon: Story = {
   },
 };
 
-// Group of Badge Variants
+/**
+ * Showcase of all badge color variants in a single view.
+ */
 export const AllVariants: Story = {
   args: {
     label: 'Badge',
     variant: 'primary',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Displays all available badge color variants for easy comparison and selection.',
+      },
+    },
   },
   render: () => (
     <div className="u-d-flex u-flex-wrap u-gap-2">
@@ -193,11 +239,20 @@ export const AllVariants: Story = {
   ),
 };
 
-// Group of Badge Sizes
+/**
+ * Showcase of all badge sizes (small, medium, large) in a single view.
+ */
 export const AllSizes: Story = {
   args: {
     label: 'Badge',
     variant: 'primary',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Compares all available badge sizes to help choose the appropriate size for your use case.',
+      },
+    },
   },
   render: () => (
     <div className="u-d-flex u-align-items-center u-gap-2">
@@ -208,7 +263,9 @@ export const AllSizes: Story = {
   ),
 };
 
-// With different content
+/**
+ * Badge examples with different content types (numeric, status, with icons).
+ */
 export const WithDifferentContent: Story = {
   args: {
     label: 'Badge with different content',
@@ -249,10 +306,19 @@ export const WithDifferentContent: Story = {
   ),
 };
 
-// Usage examples
+/**
+ * Real-world usage examples showing badges in navigation, cards, and lists.
+ */
 export const UsageExamples: Story = {
   args: {
     label: 'Usage examples',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Practical examples demonstrating how badges can be used in real-world scenarios such as navigation menus, product cards, and task lists.',
+      },
+    },
   },
   render: () => (
     <div className="u-d-flex u-flex-column u-gap-6 u-max-width-80">
@@ -316,7 +382,9 @@ export const UsageExamples: Story = {
   ),
 };
 
-// Theme-aware demo showing badges in both light and dark mode side by side
+/**
+ * Theme-aware badges demonstrating how they adapt to different theme modes.
+ */
 export const ThemeAwareBadges: Story = {
   args: {
     label: 'Badge',
@@ -383,7 +451,9 @@ export const ThemeAwareBadges: Story = {
   ),
 };
 
-// Glass Variants
+/**
+ * Badge with glass morphism effect - primary variant.
+ */
 export const GlassPrimary: Story = {
   args: {
     label: 'Glass Primary',

@@ -1,6 +1,10 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import type { AtomixGlassProps } from '../../lib/types/components';
 import { Tooltip } from './Tooltip';
+
+// Helper type for glass props in stories (without children requirement)
+type GlassProps = boolean | Omit<AtomixGlassProps, 'children'>;
 
 const meta = {
   title: 'Components/Tooltip',
@@ -253,7 +257,7 @@ export const GlassTooltipCustom: Story = {
       aberrationIntensity: 1,
       cornerRadius: 12,
       mode: 'polar',
-    } as any,
+    } as GlassProps,
   } as any,
   decorators: [
     Story => (

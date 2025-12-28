@@ -4,6 +4,9 @@ import { Accordion } from './Accordion';
 import { ACCORDION } from '../../lib/constants/components';
 import type { AtomixGlassProps } from '../../lib/types/components';
 
+// Helper type for glass props in stories (without children requirement)
+type GlassProps = boolean | Omit<AtomixGlassProps, 'children'>;
+
 // Extract class names without the leading dots
 const ACCORDION_CLASS = ACCORDION.SELECTORS.ACCORDION.replace('.', '');
 const HEADER_CLASS = ACCORDION.SELECTORS.HEADER.replace('.', '');
@@ -30,10 +33,12 @@ const meta = {
       control: { type: 'radio' },
       options: ['right', 'left'],
       description: 'Position of the icon',
+      defaultValue: 'right',
     },
     defaultOpen: {
       control: 'boolean',
       description: 'Whether the accordion is initially open',
+      defaultValue: false,
     },
     disabled: {
       control: 'boolean',
@@ -57,7 +62,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Default Accordion (Closed)
+/**
+ * Default accordion in closed state.
+ */
 export const Default: Story = {
   args: {
     title: 'Accordion Title',
@@ -65,7 +72,9 @@ export const Default: Story = {
   },
 };
 
-// Open Accordion
+/**
+ * Accordion in open state by default.
+ */
 export const Open: Story = {
   args: {
     title: 'Open Accordion',
@@ -74,7 +83,9 @@ export const Open: Story = {
   },
 };
 
-// Disabled Accordion
+/**
+ * Disabled accordion - non-interactive state.
+ */
 export const Disabled: Story = {
   args: {
     title: 'Disabled Accordion',
@@ -83,7 +94,9 @@ export const Disabled: Story = {
   },
 };
 
-// Icon on Left
+/**
+ * Accordion with icon positioned on the left side.
+ */
 export const IconLeft: Story = {
   args: {
     title: 'Icon on Left',
@@ -92,7 +105,9 @@ export const IconLeft: Story = {
   },
 };
 
-// Custom Icon
+/**
+ * Accordion with custom icon instead of default chevron.
+ */
 export const CustomIcon: Story = {
   args: {
     title: 'Custom Icon',
@@ -119,7 +134,9 @@ export const CustomIcon: Story = {
   },
 };
 
-// Accordion Group
+/**
+ * Multiple accordions grouped together.
+ */
 export const AccordionGroup: Story = {
   args: {
     title: 'Accordion Group',
@@ -151,11 +168,20 @@ export const AccordionGroup: Story = {
   ),
 };
 
-// All Variants
+/**
+ * Showcase of all accordion variants and states.
+ */
 export const AllVariants: Story = {
   args: {
     title: 'All Variants',
     children: <p>See render function for all variants</p>,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Comprehensive showcase of all accordion variants including default, open, disabled, icon positions, and custom icons.',
+      },
+    },
   },
   render: () => (
     <div>
@@ -247,7 +273,9 @@ export const AllVariants: Story = {
   ),
 };
 
-// Controlled Accordion
+/**
+ * Controlled accordion using external state management.
+ */
 export const Controlled: Story = {
   args: {
     title: 'Controlled Accordion',
@@ -276,7 +304,9 @@ export const Controlled: Story = {
   },
 };
 
-// Glass Variant
+/**
+ * Accordion with glass morphism effect enabled.
+ */
 export const Glass: Story = {
   args: {
     title: 'Glass Accordion',
@@ -313,7 +343,9 @@ export const Glass: Story = {
   },
 };
 
-// Glass with Custom Settings
+/**
+ * Accordion with custom glass morphism settings.
+ */
 export const GlassCustom: Story = {
   args: {
     title: 'Custom Glass Accordion',
@@ -323,7 +355,7 @@ export const GlassCustom: Story = {
       blurAmount: 3,
       saturation: 60,
       mode: 'polar',
-    } as AtomixGlassProps as any,
+    } as GlassProps,
   },
   render: args => (
     <div
@@ -506,7 +538,7 @@ export const GlassModePolar: Story = {
       blurAmount: 1.5,
       saturation: 180,
       aberrationIntensity: 3,
-    } as any,
+    } as GlassProps,
   },
   render: args => (
     <div
@@ -551,7 +583,7 @@ export const GlassModeProminent: Story = {
       blurAmount: 2.5,
       saturation: 200,
       aberrationIntensity: 4,
-    } as any,
+    } as GlassProps,
   },
   render: args => (
     <div
@@ -596,7 +628,7 @@ export const GlassModeShader: Story = {
       displacementScale: 70,
       blurAmount: 1.8,
       saturation: 170,
-    } as any,
+    } as GlassProps,
   },
   render: args => (
     <div
@@ -701,7 +733,7 @@ export const AllGlassModesComparison: Story = {
                   blurAmount: 1.5,
                   saturation: 180,
                   aberrationIntensity: 3,
-                } as any
+                } as GlassProps
               }
             >
               <p>Radial distortion effects emanating from the center point.</p>
@@ -729,7 +761,7 @@ export const AllGlassModesComparison: Story = {
                   blurAmount: 2.5,
                   saturation: 200,
                   aberrationIntensity: 4,
-                } as any
+                } as GlassProps
               }
             >
               <p>Enhanced distortion with maximum depth and visual impact.</p>
@@ -757,7 +789,7 @@ export const AllGlassModesComparison: Story = {
                   displacementScale: 70,
                   blurAmount: 1.8,
                   saturation: 170,
-                } as any
+                } as GlassProps
               }
             >
               <p>GPU-accelerated liquid glass with smooth animations.</p>

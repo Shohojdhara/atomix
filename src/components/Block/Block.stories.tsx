@@ -20,12 +20,12 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     as: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['section', 'div', 'article', 'aside', 'main'],
       description: 'The HTML element to render as',
     },
     spacing: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg', 'xl', 'none'],
       description: 'Vertical padding size',
     },
@@ -38,7 +38,7 @@ const meta = {
       description: 'Content to render within the block',
     },
   },
-};
+} satisfies Meta<typeof Block>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

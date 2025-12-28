@@ -20,7 +20,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     placement: {
-      control: 'select',
+      control: { type: 'select' },
       options: [
         'bottom-start',
         'bottom-end',
@@ -34,12 +34,12 @@ const meta = {
       description: 'The placement of the dropdown menu relative to the trigger element',
     },
     trigger: {
-      control: 'radio',
+      control: { type: 'radio' },
       options: ['click', 'hover'],
       description: 'How the dropdown is triggered - by click or hover',
     },
     variant: {
-      control: 'select',
+      control: { type: 'select' },
       options: THEME_COLORS,
       description: 'The color variant of the dropdown',
     },

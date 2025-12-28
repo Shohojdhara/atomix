@@ -27,22 +27,26 @@ const meta = {
     imageAlt: { control: 'text', description: 'Alt text for the card image' },
     footer: { control: 'text', description: 'Footer content for the card' },
     size: {
-      control: 'select',
+      control: { type: 'select' },
       options: SIZES,
       description: 'Size of the card',
+      defaultValue: 'md',
     },
     variant: {
-      control: 'select',
+      control: { type: 'select' },
       options: THEME_COLORS,
       description: 'Color variant of the card',
+      defaultValue: 'secondary',
     },
     appearance: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['filled', 'outlined', 'ghost', 'elevated'],
+      defaultValue: 'filled',
     },
     elevation: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['none', 'sm', 'md', 'lg', 'xl'],
+      defaultValue: 'none',
     },
     row: { control: 'boolean' },
     flat: { control: 'boolean' },
@@ -58,7 +62,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Basic Card
+/**
+ * Basic card with title and text content.
+ */
 export const Basic: Story = {
   args: {
     title: 'Card Title',
@@ -67,7 +73,9 @@ export const Basic: Story = {
   },
 };
 
-// Card with Image
+/**
+ * Card with an image displayed above the content.
+ */
 export const WithImage: Story = {
   args: {
     title: 'Card with Image',
@@ -77,7 +85,9 @@ export const WithImage: Story = {
   },
 };
 
-// Card with Actions
+/**
+ * Card with action buttons in the footer.
+ */
 export const WithActions: Story = {
   args: {
     title: 'Card with Actions',
@@ -91,7 +101,9 @@ export const WithActions: Story = {
   },
 };
 
-// Row Card
+/**
+ * Card with horizontal (row) layout - image on the left, content on the right.
+ */
 export const Row: Story = {
   args: {
     title: 'Row Layout Card',
@@ -102,7 +114,9 @@ export const Row: Story = {
   },
 };
 
-// Flat Card
+/**
+ * Flat style card with image extending to the edges.
+ */
 export const Flat: Story = {
   args: {
     title: 'Flat Style Card',
@@ -113,7 +127,9 @@ export const Flat: Story = {
   },
 };
 
-// Clickable Card
+/**
+ * Clickable card with onClick handler.
+ */
 export const Clickable: Story = {
   args: {
     title: 'Clickable Card',
@@ -122,7 +138,9 @@ export const Clickable: Story = {
   },
 };
 
-// Elevation Card
+/**
+ * Card with elevation effect that responds to hover.
+ */
 export const WithElevation: Story = {
   render: args => (
     <div style={{ padding: '20px', width: '300px' }}>
@@ -137,8 +155,17 @@ export const WithElevation: Story = {
   },
 };
 
-// Card with Glass Effect
+/**
+ * Card with glass morphism effect enabled.
+ */
 export const WithGlassEffect: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates a card with glass morphism effect applied, creating a translucent, frosted appearance that works well over colorful backgrounds.',
+      },
+    },
+  },
   render: args => (
     <div
       style={{
@@ -473,8 +500,17 @@ export const GlassModeShader: Story = {
   ),
 };
 
-// All Glass Modes Comparison
+/**
+ * Comparison of all glass morphism modes side by side.
+ */
 export const AllGlassModesComparison: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Side-by-side comparison of all available glass morphism modes (standard, polar, prominent, shader) to help you choose the right effect for your design.',
+      },
+    },
+  },
   render: () => (
     <div
       style={{
@@ -965,8 +1001,17 @@ export const LinkCard: Story = {
   },
 };
 
-// Comprehensive Example
+/**
+ * Comprehensive example showcasing multiple card features and variants.
+ */
 export const Comprehensive: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'A comprehensive example demonstrating various card features including sizes, variants, appearances, elevations, and states in a grid layout.',
+      },
+    },
+  },
   render: () => (
     <Container>
       <Grid>

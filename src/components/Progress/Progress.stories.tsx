@@ -20,16 +20,19 @@ const meta = {
     value: {
       control: { type: 'range', min: 0, max: 100 },
       description: 'The progress value as a percentage (0-100)',
+      defaultValue: 50,
     },
     variant: {
       control: { type: 'select' },
       options: THEME_COLORS,
       description: 'The color variant of the progress bar',
+      defaultValue: 'primary',
     },
     size: {
       control: { type: 'select' },
       options: SIZES,
       description: 'The size of the progress bar',
+      defaultValue: 'md',
     },
   },
 } satisfies Meta<typeof Progress>;

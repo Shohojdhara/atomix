@@ -1,6 +1,10 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import type { AtomixGlassProps } from '../../lib/types/components';
 import { Tabs } from './Tabs';
+
+// Helper type for glass props in stories (without children requirement)
+type GlassProps = boolean | Omit<AtomixGlassProps, 'children'>;
 
 const meta = {
   title: 'Components/Tabs',
@@ -31,7 +35,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Default Tabs
+/**
+ * Default tabs component with three tabs.
+ */
 export const Default: Story = {
   render: args => (
     <div style={{ maxWidth: '600px', margin: '0 auto', padding: '30px' }}>
@@ -57,6 +63,9 @@ export const Default: Story = {
   },
 };
 
+/**
+ * Tabs with a different tab initially active (Tab 2).
+ */
 export const WithDifferentActiveTab: Story = {
   render: args => (
     <div style={{ maxWidth: '600px', margin: '0 auto', padding: '30px' }}>
@@ -82,7 +91,17 @@ export const WithDifferentActiveTab: Story = {
   },
 };
 
+/**
+ * Tabs with rich content including headings, lists, and tables.
+ */
 export const WithRichContent: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates tabs containing rich HTML content including headings, lists, and tables, showing the flexibility of the tabs component.',
+      },
+    },
+  },
   render: args => (
     <div style={{ maxWidth: '600px', margin: '0 auto', padding: '30px' }}>
       <Tabs {...args} />
@@ -158,6 +177,9 @@ export const WithRichContent: Story = {
   },
 };
 
+/**
+ * Tabs with glass morphism effect enabled.
+ */
 export const Glass: Story = {
   args: {
     items: [
@@ -196,6 +218,9 @@ export const Glass: Story = {
   ),
 };
 
+/**
+ * Tabs with custom glass morphism settings.
+ */
 export const GlassCustom: Story = {
   args: {
     items: [
@@ -219,9 +244,9 @@ export const GlassCustom: Story = {
       saturation: 200,
       aberrationIntensity: 0.8,
       cornerRadius: 12,
-    } as any,
+    } as GlassProps,
   },
-  render: (args: any) => (
+  render: args => (
     <div
       style={{
         background:

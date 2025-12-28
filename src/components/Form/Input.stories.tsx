@@ -22,16 +22,19 @@ const meta = {
       control: { type: 'select' },
       options: ['text', 'email', 'password', 'number', 'search', 'tel', 'url'],
       description: 'Input type',
+      defaultValue: 'text',
     },
     size: {
       control: { type: 'select' },
       options: SIZES,
       description: 'Size of the input',
+      defaultValue: 'md',
     },
     variant: {
       control: { type: 'select' },
       options: THEME_COLORS,
       description: 'Color variant of the input',
+      defaultValue: 'secondary',
     },
     disabled: {
       control: 'boolean',
@@ -75,7 +78,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Basic text input
+/**
+ * Basic text input with placeholder.
+ */
 export const Basic: Story = {
   args: {
     placeholder: 'Enter text here',
@@ -83,7 +88,9 @@ export const Basic: Story = {
   },
 };
 
-// Input sizes
+/**
+ * Showcase of all input sizes (small, medium, large).
+ */
 export const Sizes: Story = {
   render: () => (
     <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
@@ -94,7 +101,9 @@ export const Sizes: Story = {
   ),
 };
 
-// Input types
+/**
+ * Showcase of different input types (text, email, password, number, search, tel, url).
+ */
 export const Types: Story = {
   render: () => (
     <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
@@ -109,7 +118,9 @@ export const Types: Story = {
   ),
 };
 
-// Input variants
+/**
+ * Showcase of input color variants (primary, success, error, warning, info).
+ */
 export const Variants: Story = {
   render: () => (
     <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
@@ -122,7 +133,9 @@ export const Variants: Story = {
   ),
 };
 
-// States
+/**
+ * Showcase of input states (default, disabled, valid, invalid).
+ */
 export const States: Story = {
   render: () => (
     <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
@@ -134,7 +147,9 @@ export const States: Story = {
   ),
 };
 
-// Prefix and Suffix Icons
+/**
+ * Input with prefix and suffix icons for enhanced UX.
+ */
 export const WithIcons: Story = {
   render: () => (
     <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
@@ -161,7 +176,9 @@ export const WithIcons: Story = {
   ),
 };
 
-// Clearable Input
+/**
+ * Input with clear button that appears when there's a value.
+ */
 export const Clearable: Story = {
   render: () => {
     const [value, setValue] = React.useState('');
@@ -185,7 +202,9 @@ export const Clearable: Story = {
   },
 };
 
-// Character Counter
+/**
+ * Input with character counter showing remaining characters.
+ */
 export const WithCounter: Story = {
   render: () => {
     const [value, setValue] = React.useState('');
@@ -210,7 +229,9 @@ export const WithCounter: Story = {
   },
 };
 
-// Password Toggle
+/**
+ * Password input with visibility toggle button.
+ */
 export const PasswordToggle: Story = {
   render: () => {
     const [password, setPassword] = React.useState('');
@@ -236,7 +257,9 @@ export const PasswordToggle: Story = {
   },
 };
 
-// Error Messages and Helper Text
+/**
+ * Input with error messages and helper text for validation feedback.
+ */
 export const WithMessages: Story = {
   render: () => {
     const [email, setEmail] = React.useState('');
@@ -271,7 +294,9 @@ export const WithMessages: Story = {
   },
 };
 
-// Full Width
+/**
+ * Full-width input that takes the full width of its container.
+ */
 export const FullWidth: Story = {
   render: () => (
     <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '100%', maxWidth: '500px' }}>
@@ -285,8 +310,17 @@ export const FullWidth: Story = {
   ),
 };
 
-// Comprehensive Example
+/**
+ * Comprehensive example showcasing multiple input features together.
+ */
 export const Comprehensive: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'A comprehensive example demonstrating multiple input features including icons, clearable functionality, password toggle, character counter, and helper text in a form-like layout.',
+      },
+    },
+  },
   render: () => {
     const [search, setSearch] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -343,7 +377,9 @@ export const Comprehensive: Story = {
   },
 };
 
-// Glass Effect
+/**
+ * Input with glass morphism effect enabled.
+ */
 export const Glass: Story = {
   args: {
     placeholder: 'Glass Input',
@@ -408,8 +444,17 @@ export const GlassVariants: Story = {
   ),
 };
 
-// Glass Showcase
+/**
+ * Comprehensive showcase of glass morphism effects on inputs.
+ */
 export const GlassShowcase: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates glass morphism effects on inputs with different modes and configurations, showing how inputs look over colorful backgrounds.',
+      },
+    },
+  },
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       {/* Basic Glass */}

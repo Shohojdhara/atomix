@@ -20,27 +20,33 @@ const meta = {
     currentPage: {
       control: 'number',
       description: 'Current active page',
+      defaultValue: 1,
     },
     totalPages: {
       control: 'number',
       description: 'Total number of pages',
+      defaultValue: 10,
     },
     siblingCount: {
       control: 'number',
       description: 'Number of page links to show before and after current page',
+      defaultValue: 1,
     },
     showFirstLastButtons: {
       control: 'boolean',
       description: 'Whether to show first/last page buttons',
+      defaultValue: true,
     },
     showPrevNextButtons: {
       control: 'boolean',
       description: 'Whether to show previous/next page buttons',
+      defaultValue: true,
     },
     size: {
-      control: 'select',
+      control: { type: 'select' },
       options: SIZES,
       description: 'Size variant for pagination',
+      defaultValue: 'md',
     },
     ariaLabel: {
       control: 'text',
