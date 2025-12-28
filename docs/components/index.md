@@ -18,7 +18,7 @@ npm install @shohojdhara/atomix
 
 ### Core Components
 
-#### [Button](./button.mdx)
+#### [Button](./button.md)
 Interactive button component with multiple variants, sizes, and states. Supports icons and can be rendered as different HTML elements.
 
 **Key Features:**
@@ -27,6 +27,16 @@ Interactive button component with multiple variants, sizes, and states. Supports
 - Icon support
 - Rounded styling option
 - Accessible keyboard navigation
+
+#### [ButtonGroup](./button-group.md)
+Component for grouping multiple buttons together with proper border radius handling and visual connection.
+
+**Key Features:**
+- Automatic border radius handling
+- Shared borders between buttons
+- Supports all Button variants and sizes
+- Accessible with ARIA group role
+- Perfect for toolbars and action groups
 
 #### [Avatar](./avatar.mdx)
 Display user profile images, initials, or icons with consistent sizing and fallback mechanisms.

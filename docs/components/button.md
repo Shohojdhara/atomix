@@ -642,13 +642,19 @@ function ToggleButton() {
 
 ### Button Groups
 
+For grouping related buttons together with proper visual connection, use the [ButtonGroup](./button-group.md) component:
+
 ```jsx
-<div className="button-group">
+import { ButtonGroup, Button } from '@shohojdhara/atomix';
+
+<ButtonGroup>
   <Button label="Option 1" variant="outline-primary" />
   <Button label="Option 2" variant="outline-primary" />
   <Button label="Option 3" variant="outline-primary" />
-</div>
+</ButtonGroup>
 ```
+
+See the [ButtonGroup documentation](./button-group.md) for more details and examples.
 
 ### Confirmation Patterns
 
@@ -702,6 +708,7 @@ For older browser support, ensure you have appropriate polyfills for:
 
 ## Related Components
 
+- **[ButtonGroup](./button-group.md)** - For grouping related buttons together
 - **[Icon](./icon.mdx)** - For adding icons to buttons
 - **[Spinner](./spinner.mdx)** - For loading states
 - **[Tooltip](./tooltip.mdx)** - For additional button context
