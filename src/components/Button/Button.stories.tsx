@@ -1,12 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
+import { SIZES } from '../../lib/constants/components';
 
 const meta = {
   title: 'Components/Button',
   component: Button,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Button component is a versatile interactive element used to trigger actions throughout the application. It supports multiple variants, sizes, states, and can include icons. Buttons are essential for user interactions and provide clear visual feedback for clickable actions.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: { type: 'select' },
@@ -33,7 +41,7 @@ const meta = {
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: SIZES,
       description: 'The size of the button',
     },
     disabled: {

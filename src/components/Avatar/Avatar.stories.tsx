@@ -8,7 +8,14 @@ const meta = {
   component: Avatar,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Avatar component displays user profile images, initials, or icons. It provides a consistent way to represent users throughout the application. Avatars support various sizes, can be circular or square, and gracefully handle missing images by showing initials or icons.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     src: {
       control: 'text',

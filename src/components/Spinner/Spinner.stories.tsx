@@ -1,21 +1,30 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Spinner } from './Spinner';
+import { THEME_COLORS, SIZES } from '../../lib/constants/components';
 
 const meta = {
   title: 'Components/Spinner',
   component: Spinner,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Spinner component provides visual feedback during loading states. It displays an animated loading indicator that can be customized with different variants and sizes. Use spinners to indicate that content is being loaded or processed.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'],
+      options: THEME_COLORS,
       description: 'The color variant of the spinner',
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: SIZES,
       description: 'The size of the spinner',
     },
     fullscreen: {
@@ -52,14 +61,9 @@ export const Sizes: Story = {
 export const ColorVariants: Story = {
   render: () => (
     <div className="u-d-flex u-flex-wrap u-gap-3 u-align-items-center">
-      <Spinner variant="primary" />
-      <Spinner variant="secondary" />
-      <Spinner variant="success" />
-      <Spinner variant="info" />
-      <Spinner variant="warning" />
-      <Spinner variant="error" />
-      <Spinner variant="light" />
-      <Spinner variant="dark" />
+      {THEME_COLORS.map(color => (
+        <Spinner key={color} variant={color} />
+      ))}
     </div>
   ),
 };

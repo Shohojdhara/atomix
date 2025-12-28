@@ -561,6 +561,36 @@ export interface ButtonProps extends BaseComponentProps {
 }
 
 /**
+ * ButtonGroup component properties
+ */
+export interface ButtonGroupProps extends BaseComponentProps {
+  /**
+   * ButtonGroup children (should be Button components)
+   */
+  children?: ReactNode;
+
+  /**
+   * Additional CSS class names
+   */
+  className?: string;
+
+  /**
+   * Inline style for the component root element
+   */
+  style?: React.CSSProperties;
+
+  /**
+   * ARIA label for accessibility
+   */
+  'aria-label'?: string;
+
+  /**
+   * ARIA role for the button group
+   */
+  role?: string;
+}
+
+/**
  * Badge component properties
  */
 export interface BadgeProps extends BaseComponentProps {

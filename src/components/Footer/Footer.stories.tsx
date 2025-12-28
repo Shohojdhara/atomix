@@ -3,8 +3,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Footer } from './Footer';
 import { FooterSection } from './FooterSection';
 import { FooterLink } from './FooterLink';
+import { THEME_COLORS, SIZES } from '../../lib/constants/components';
 
-const meta: Meta<typeof Footer> = {
+const meta = {
   title: 'Components/Footer',
   component: Footer,
   parameters: {
@@ -12,10 +13,11 @@ const meta: Meta<typeof Footer> = {
     docs: {
       description: {
         component:
-          'A modern, comprehensive footer component with enhanced visual effects, accessibility features, responsive design, and multiple layout variants. Features include design token integration, improved hover effects, modern gradients, and comprehensive accessibility support following Atomix design patterns.',
+          'The Footer component provides a comprehensive footer section for websites with multiple layout variants, sections, links, and optional features like newsletter signup and back-to-top buttons. Footers support various color variants, sizes, and can be sticky. Essential for site navigation, branding, and additional information display.',
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     layout: {
       control: 'select',
@@ -24,12 +26,12 @@ const meta: Meta<typeof Footer> = {
     },
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'],
+      options: THEME_COLORS,
       description: 'Color variant',
     },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
+      options: SIZES,
       description: 'Size variant',
     },
     showNewsletter: {
@@ -49,10 +51,10 @@ const meta: Meta<typeof Footer> = {
       description: 'Whether footer should be sticky',
     },
   },
-};
+} satisfies Meta<typeof Footer>;
 
 export default meta;
-type Story = StoryObj<typeof Footer>;
+type Story = StoryObj<typeof meta>;
 
 // Sample social links
 const sampleSocialLinks = [

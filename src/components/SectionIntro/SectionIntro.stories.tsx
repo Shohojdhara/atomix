@@ -1,36 +1,46 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '../Button';
 import { SectionIntro } from './SectionIntro';
+import { SIZES } from '../../lib/constants/components';
 
-const meta: Meta<typeof SectionIntro> = {
+const meta = {
   title: 'Components/SectionIntro',
   component: SectionIntro,
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'The SectionIntro component provides a prominent introduction section for pages or content areas. It supports titles, labels, text content, images, background images, and call-to-action buttons. SectionIntros are ideal for page headers, section introductions, or any area requiring prominent content presentation.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
-    title: { control: 'text' },
-    label: { control: 'text' },
-    text: { control: 'text' },
+    title: { control: 'text', description: 'Main title text' },
+    label: { control: 'text', description: 'Label text displayed above the title' },
+    text: { control: 'text', description: 'Description text content' },
     alignment: {
       control: { type: 'select' },
       options: ['left', 'center', 'right'],
+      description: 'Text alignment',
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: SIZES,
+      description: 'Size variant',
     },
     skeleton: { control: 'boolean' },
     showOverlay: { control: 'boolean' },
     actions: { control: false },
     backgroundImageSrc: { control: 'text' },
     imageSrc: { control: 'text' },
-    imageAlt: { control: 'text' },
+    imageAlt: { control: 'text', description: 'Alt text for the image' },
   },
-};
+} satisfies Meta<typeof SectionIntro>;
 
 export default meta;
-type Story = StoryObj<typeof SectionIntro>;
+type Story = StoryObj<typeof meta>;
 
 // Default SectionIntro
 export const Default: Story = {

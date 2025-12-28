@@ -5,35 +5,19 @@ import { Button } from '../Button/Button';
 import { Card } from '../Card/Card';
 import { Block } from './Block';
 
-const meta: Meta<typeof Block> = {
+const meta = {
   title: 'Components/Block',
   component: Block,
   parameters: {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: `
-The Block component is a flexible layout container designed for creating consistent section layouts.
-It provides standardized spacing, background variants, and container behavior for organizing content
-into distinct sections or blocks.
-
-## Key Features
-- **Flexible spacing**: Multiple spacing sizes (xs, sm, md, lg, xl, none)
-- **Background variants**: Transparent, subtle, muted, primary, secondary, accent
-- **Container integration**: Built-in Container support for responsive layouts
-- **Semantic HTML**: Configurable as section, div, article, aside, or main
-- **Full-width support**: Option for edge-to-edge content
-
-## Usage Guidelines
-Use Block components to:
-- Create consistent section spacing across pages
-- Group related content with appropriate backgrounds
-- Build hero sections, content areas, and feature blocks
-- Maintain visual hierarchy and rhythm in layouts
-        `,
+        component:
+          'The Block component is a flexible layout container designed for creating consistent section layouts. It provides standardized spacing, background variants, and container behavior for organizing content into distinct sections or blocks. Blocks are ideal for hero sections, content areas, feature blocks, and maintaining visual hierarchy.',
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     as: {
       control: 'select',

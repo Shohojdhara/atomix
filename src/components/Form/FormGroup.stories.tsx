@@ -5,13 +5,21 @@ import { Input } from './Input';
 import { Radio } from './Radio';
 import { Select } from './Select';
 import { Textarea } from './Textarea';
+import { SIZES } from '../../lib/constants/components';
 
 const meta = {
   title: 'Components/Form/FormGroup',
   component: FormGroup,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The FormGroup component provides a structured wrapper for form fields, including labels, inputs, helper text, and error messages. It ensures proper accessibility, consistent spacing, and validation state display. FormGroups are essential for creating well-organized and accessible forms.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     label: {
       control: 'text',
@@ -39,7 +47,7 @@ const meta = {
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: SIZES,
       description: 'Size variant',
     },
   },

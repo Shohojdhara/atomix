@@ -9,10 +9,9 @@
  * @component VideoPlayer
  */
 
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import React from 'react';
-import { fn } from '@storybook/test';
 import { VideoPlayerProps } from '../../lib/types/components';
 import { VideoPlayer } from './VideoPlayer';
 import type { RefObject } from 'react';
@@ -23,31 +22,19 @@ import type { RefObject } from 'react';
  * This defines the component's metadata, documentation, and controls
  * for the Storybook interface.
  */
-const meta: Meta<typeof VideoPlayer> = {
+const meta = {
   title: 'Components/VideoPlayer',
   component: VideoPlayer,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
-        component: `
-# VideoPlayer Component
-
-An advanced, modern video player with comprehensive features, accessibility support, and optional glass morphism effects. Supports both regular video files and YouTube embeds with seamless integration.
-
-## Key Features
-
-### 🎥 **Dual Video Support**
-- **Regular Videos**: Native HTML5 video with custom controls
-- **YouTube Integration**: Seamless YouTube embedding with auto-detection
-
-### ✨ **Glass Morphism Effects**
-- **Configurable Glass Overlay**: Optional frosted glass effects with AtomixGlass integration
-- **Custom Content Support**: Interactive overlays and call-to-action elements
-- **Multiple Glass Modes**: Standard, polar, prominent, and shader effects
-
-### 🎛️ **Advanced Controls**
-- **Custom UI**: Modern, responsive control interface
+        component:
+          'The VideoPlayer component provides an advanced, modern video player with comprehensive features including custom controls, YouTube integration, glass morphism effects, and full accessibility support. It supports both regular video files and YouTube embeds with seamless auto-detection and provides a rich, interactive viewing experience.',
+      },
+    },
+  },
+  tags: ['autodocs'],
 - **Quality Selection**: Multiple video resolution options
 - **Playback Speed**: Adjustable speed controls (0.25x to 4x)
 - **Subtitle Support**: Multi-language subtitle tracks with WebVTT
@@ -164,10 +151,10 @@ An advanced, modern video player with comprehensive features, accessibility supp
       description: 'Additional CSS class names',
     },
   },
-};
+} satisfies Meta<typeof VideoPlayer>;
 
 export default meta;
-type Story = StoryObj<VideoPlayerProps>;
+type Story = StoryObj<typeof meta>;
 
 /**
  * Background Wrapper Component

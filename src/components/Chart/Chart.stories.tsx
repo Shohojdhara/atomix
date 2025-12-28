@@ -30,7 +30,7 @@ import {
   WaterfallChart,
 } from './index';
 
-const meta: Meta<typeof Chart> = {
+const meta = {
   title: 'Components/Chart',
   component: Chart,
   parameters: {
@@ -38,16 +38,15 @@ const meta: Meta<typeof Chart> = {
     docs: {
       description: {
         component:
-          'Modern chart library with 20+ chart types, real-time updates, animations, and advanced interactions.',
-      },
-      source: {
-        code: `<Icon name="Rocket" /> Modern chart library with 20+ chart types, real-time updates, animations, and advanced interactions.`,
+          'The Chart component provides a comprehensive charting library with 20+ chart types including line, bar, pie, area, and more. Charts support real-time data updates, animations, interactive tooltips, and advanced customization options. Ideal for dashboards, analytics, data visualization, and any application requiring graphical data representation.',
       },
     },
   },
-};
+  tags: ['autodocs'],
+} satisfies Meta<typeof Chart>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 type Story = StoryObj<typeof Chart>;
 
 // Glass Variant Story

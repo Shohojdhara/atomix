@@ -1,18 +1,29 @@
 import React from 'react';
-import { StoryFn, Meta } from '@storybook/react';
-import { fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Toggle } from './Toggle';
 
-export default {
+const meta = {
   title: 'Components/Toggle',
   component: Toggle,
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Toggle component provides an on/off switch control for binary choices. It offers a more visually distinct alternative to checkboxes for settings, preferences, or feature toggles. Toggles support disabled states and can include glass morphism effects.',
+      },
+    },
+  },
+  tags: ['autodocs'],
   argTypes: {
     initialOn: {
       control: { type: 'boolean' },
+      description: 'Whether the toggle is initially on',
       defaultValue: false,
     },
     disabled: {
       control: { type: 'boolean' },
+      description: 'Whether the toggle is disabled',
       defaultValue: false,
     },
     glass: {
@@ -20,39 +31,60 @@ export default {
       description: 'Enable glass morphism effect',
     },
   },
-} as Meta<typeof Toggle>;
+} satisfies Meta<typeof Toggle>;
 
-const Template: StoryFn<typeof Toggle> = args => (
-  <div style={{ display: 'flex', justifyContent: 'center', padding: '30px' }}>
-    <Toggle {...args} />
-  </div>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
-Default.args = {
-  initialOn: false,
-  disabled: false,
+export const Default: Story = {
+  render: args => (
+    <div style={{ display: 'flex', justifyContent: 'center', padding: '30px' }}>
+      <Toggle {...args} />
+    </div>
+  ),
+  args: {
+    initialOn: false,
+    disabled: false,
+  },
 };
 
-export const InitiallyOn = Template.bind({});
-InitiallyOn.args = {
-  initialOn: true,
-  disabled: false,
+export const InitiallyOn: Story = {
+  render: args => (
+    <div style={{ display: 'flex', justifyContent: 'center', padding: '30px' }}>
+      <Toggle {...args} />
+    </div>
+  ),
+  args: {
+    initialOn: true,
+    disabled: false,
+  },
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-  initialOn: false,
-  disabled: true,
+export const Disabled: Story = {
+  render: args => (
+    <div style={{ display: 'flex', justifyContent: 'center', padding: '30px' }}>
+      <Toggle {...args} />
+    </div>
+  ),
+  args: {
+    initialOn: false,
+    disabled: true,
+  },
 };
 
-export const DisabledOn = Template.bind({});
-DisabledOn.args = {
-  initialOn: true,
-  disabled: true,
+export const DisabledOn: Story = {
+  render: args => (
+    <div style={{ display: 'flex', justifyContent: 'center', padding: '30px' }}>
+      <Toggle {...args} />
+    </div>
+  ),
+  args: {
+    initialOn: true,
+    disabled: true,
+  },
 };
 
-export const Glass = {
+export const Glass: Story = {
   args: {
     initialOn: false,
     disabled: false,
@@ -75,7 +107,7 @@ export const Glass = {
   ),
 };
 
-export const GlassOn = {
+export const GlassOn: Story = {
   args: {
     initialOn: true,
     disabled: false,
@@ -101,7 +133,7 @@ export const GlassOn = {
   ),
 };
 
-export const GlassCustom = {
+export const GlassCustom: Story = {
   args: {
     initialOn: false,
     disabled: false,
@@ -111,6 +143,7 @@ export const GlassCustom = {
       saturation: 200,
       aberrationIntensity: 0.8,
       cornerRadius: 12,
+      children: <div>Custom glass</div>,
     },
   },
   render: (args: any) => (

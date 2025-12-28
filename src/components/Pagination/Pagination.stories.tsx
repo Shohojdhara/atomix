@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
-import { Meta, StoryFn } from '@storybook/react';
-import { fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Pagination } from './Pagination';
-import { PaginationProps } from '../../lib/types/components';
+import { SIZES } from '../../lib/constants/components';
 
-export default {
+const meta = {
   title: 'Components/Pagination',
   component: Pagination,
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Pagination component provides navigation controls for moving through multiple pages of content. It displays page numbers, ellipsis for large page ranges, and optional first/last and previous/next buttons. Pagination supports keyboard navigation and is fully accessible.',
+      },
+    },
+  },
+  tags: ['autodocs'],
   argTypes: {
     currentPage: {
       control: 'number',
@@ -16,7 +25,6 @@ export default {
       control: 'number',
       description: 'Total number of pages',
     },
-
     siblingCount: {
       control: 'number',
       description: 'Number of page links to show before and after current page',
@@ -31,7 +39,7 @@ export default {
     },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
+      options: SIZES,
       description: 'Size variant for pagination',
     },
     ariaLabel: {
@@ -47,19 +55,14 @@ export default {
       description: 'Enable glass morphism effect',
     },
   },
-  parameters: {
-    docs: {
-      description: {
-        component:
-          'A Pagination component for navigating through pages of content with enhanced accessibility, configurable sizes, and icons for navigation buttons.',
-      },
-    },
-  },
-} as Meta<typeof Pagination>;
+} satisfies Meta<typeof Pagination>;
 
-// Template with controlled state
-const ControlledTemplate: StoryFn<PaginationProps> = args => {
-  const [currentPage, setCurrentPage] = useState(args.currentPage);
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+// Helper component for controlled pagination
+const ControlledPagination = (args: React.ComponentProps<typeof Pagination>) => {
+  const [currentPage, setCurrentPage] = useState(args.currentPage || 1);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -69,129 +72,145 @@ const ControlledTemplate: StoryFn<PaginationProps> = args => {
   return <Pagination {...args} currentPage={currentPage} onPageChange={handlePageChange} />;
 };
 
-export const Default = ControlledTemplate.bind({});
-Default.args = {
-  currentPage: 1,
-  totalPages: 10,
-  siblingCount: 1,
-  showFirstLastButtons: true,
-  showPrevNextButtons: true,
-  size: 'md',
-  ariaLabel: 'Pagination',
-};
-Default.parameters = {
-  docs: {
-    description: {
-      story: 'Default pagination with first/last and previous/next navigation buttons using icons.',
+export const Default: Story = {
+  render: args => <ControlledPagination {...args} />,
+  args: {
+    currentPage: 1,
+    totalPages: 10,
+    siblingCount: 1,
+    showFirstLastButtons: true,
+    showPrevNextButtons: true,
+    size: 'md',
+    ariaLabel: 'Pagination',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Default pagination with first/last and previous/next navigation buttons using icons.',
+      },
     },
   },
 };
 
-export const WithMorePages = ControlledTemplate.bind({});
-WithMorePages.args = {
-  currentPage: 25,
-  totalPages: 50,
-  siblingCount: 2,
-  size: 'md',
-};
-WithMorePages.parameters = {
-  docs: {
-    description: {
-      story: 'Pagination with many pages, showing the ellipsis (dots) for page ranges.',
+export const WithMorePages: Story = {
+  render: args => <ControlledPagination {...args} />,
+  args: {
+    currentPage: 25,
+    totalPages: 50,
+    siblingCount: 2,
+    size: 'md',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pagination with many pages, showing the ellipsis (dots) for page ranges.',
+      },
     },
   },
 };
 
-export const SmallSize = ControlledTemplate.bind({});
-SmallSize.args = {
-  currentPage: 4,
-  totalPages: 10,
-  siblingCount: 1,
-  size: 'sm',
-};
-SmallSize.parameters = {
-  docs: {
-    description: {
-      story: 'Small-sized pagination component with smaller icons and buttons.',
+export const SmallSize: Story = {
+  render: args => <ControlledPagination {...args} />,
+  args: {
+    currentPage: 4,
+    totalPages: 10,
+    siblingCount: 1,
+    size: 'sm',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Small-sized pagination component with smaller icons and buttons.',
+      },
     },
   },
 };
 
-export const LargeSize = ControlledTemplate.bind({});
-LargeSize.args = {
-  currentPage: 4,
-  totalPages: 10,
-  siblingCount: 1,
-  size: 'lg',
-};
-LargeSize.parameters = {
-  docs: {
-    description: {
-      story: 'Large-sized pagination component with larger icons and buttons.',
+export const LargeSize: Story = {
+  render: args => <ControlledPagination {...args} />,
+  args: {
+    currentPage: 4,
+    totalPages: 10,
+    siblingCount: 1,
+    size: 'lg',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Large-sized pagination component with larger icons and buttons.',
+      },
     },
   },
 };
 
-export const FewPages = ControlledTemplate.bind({});
-FewPages.args = {
-  currentPage: 2,
-  totalPages: 3,
-  siblingCount: 1,
-};
-FewPages.parameters = {
-  docs: {
-    description: {
-      story: 'Pagination with only a few pages, showing all page numbers without ellipsis.',
+export const FewPages: Story = {
+  render: args => <ControlledPagination {...args} />,
+  args: {
+    currentPage: 2,
+    totalPages: 3,
+    siblingCount: 1,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pagination with only a few pages, showing all page numbers without ellipsis.',
+      },
     },
   },
 };
 
-export const NoFirstLastButtons = ControlledTemplate.bind({});
-NoFirstLastButtons.args = {
-  currentPage: 5,
-  totalPages: 15,
-  showFirstLastButtons: false,
-  showPrevNextButtons: true,
-};
-NoFirstLastButtons.parameters = {
-  docs: {
-    description: {
-      story: 'Pagination with only previous/next navigation buttons (no skip to first/last).',
+export const NoFirstLastButtons: Story = {
+  render: args => <ControlledPagination {...args} />,
+  args: {
+    currentPage: 5,
+    totalPages: 15,
+    showFirstLastButtons: false,
+    showPrevNextButtons: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pagination with only previous/next navigation buttons (no skip to first/last).',
+      },
     },
   },
 };
 
-export const OnlyPageNumbers = ControlledTemplate.bind({});
-OnlyPageNumbers.args = {
-  currentPage: 5,
-  totalPages: 15,
-  showFirstLastButtons: false,
-  showPrevNextButtons: false,
-};
-OnlyPageNumbers.parameters = {
-  docs: {
-    description: {
-      story: 'Pagination with only page numbers, no navigation buttons.',
+export const OnlyPageNumbers: Story = {
+  render: args => <ControlledPagination {...args} />,
+  args: {
+    currentPage: 5,
+    totalPages: 15,
+    showFirstLastButtons: false,
+    showPrevNextButtons: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pagination with only page numbers, no navigation buttons.',
+      },
     },
   },
 };
 
-export const CustomStyling = ControlledTemplate.bind({});
-CustomStyling.args = {
-  currentPage: 5,
-  totalPages: 15,
-  className: 'custom-pagination-class',
-  showFirstLastButtons: false,
-};
-CustomStyling.parameters = {
-  docs: {
-    description: {
-      story: 'Pagination with custom CSS class for additional styling.',
+export const CustomStyling: Story = {
+  render: args => <ControlledPagination {...args} />,
+  args: {
+    currentPage: 5,
+    totalPages: 15,
+    className: 'custom-pagination-class',
+    showFirstLastButtons: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pagination with custom CSS class for additional styling.',
+      },
     },
   },
 };
 
-export const Glass = {
+export const Glass: Story = {
   args: {
     currentPage: 5,
     totalPages: 15,
@@ -233,7 +252,7 @@ export const Glass = {
   },
 };
 
-export const GlassCustom = {
+export const GlassCustom: Story = {
   args: {
     currentPage: 5,
     totalPages: 15,

@@ -18,7 +18,14 @@ const meta = {
   component: Form,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Form component provides a semantic HTML form wrapper with enhanced functionality. It supports form validation, submission handling, and can be disabled as a whole. Forms work seamlessly with FormGroup and all form input components to create complete, accessible form experiences.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     disabled: {
       control: 'boolean',

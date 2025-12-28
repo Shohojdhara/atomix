@@ -1,37 +1,46 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import DatePicker from './DatePicker';
 import { DateRange } from './types';
 import { formatDateRange } from './utils';
+import { SIZES } from '../../lib/constants/components';
 
-const meta: Meta<typeof DatePicker> = {
+const meta = {
   title: 'Components/DatePicker',
   component: DatePicker,
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'The DatePicker component provides a user-friendly interface for selecting dates or date ranges. It supports single date selection, date range selection, custom date formatting, and various display options. DatePickers are essential for forms requiring date input and provide calendar-based selection with keyboard navigation.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
-    value: { control: 'date' },
-    startDate: { control: 'date' },
-    endDate: { control: 'date' },
+    value: { control: 'date', description: 'Selected date value' },
+    startDate: { control: 'date', description: 'Start date for range selection' },
+    endDate: { control: 'date', description: 'End date for range selection' },
     selectionMode: {
       control: { type: 'radio' },
       options: ['single', 'range'],
       description: 'Selection mode - single date or date range',
     },
-    minDate: { control: 'date' },
-    maxDate: { control: 'date' },
-    format: { control: 'text' },
-    placeholder: { control: 'text' },
-    disabled: { control: 'boolean' },
-    readOnly: { control: 'boolean' },
-    clearable: { control: 'boolean' },
-    showTodayButton: { control: 'boolean' },
-    showWeekNumbers: { control: 'boolean' },
-    inline: { control: 'boolean' },
+    minDate: { control: 'date', description: 'Minimum selectable date' },
+    maxDate: { control: 'date', description: 'Maximum selectable date' },
+    format: { control: 'text', description: 'Date format string' },
+    placeholder: { control: 'text', description: 'Placeholder text' },
+    disabled: { control: 'boolean', description: 'Whether the date picker is disabled' },
+    readOnly: { control: 'boolean', description: 'Whether the date picker is read-only' },
+    clearable: { control: 'boolean', description: 'Whether the date can be cleared' },
+    showTodayButton: { control: 'boolean', description: 'Whether to show a "Today" button' },
+    showWeekNumbers: { control: 'boolean', description: 'Whether to show week numbers' },
+    inline: { control: 'boolean', description: 'Whether to display inline (always visible)' },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: SIZES,
+      description: 'Size of the date picker',
     },
     placement: {
       control: { type: 'select' },
@@ -51,11 +60,10 @@ const meta: Meta<typeof DatePicker> = {
       description: 'Apply glass morphism effect to the calendar dropdown',
     },
   },
-};
+} satisfies Meta<typeof DatePicker>;
 
 export default meta;
-
-type Story = StoryObj<typeof DatePicker>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {

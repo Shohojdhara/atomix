@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Radio } from './Radio';
 
@@ -6,7 +7,14 @@ const meta = {
   component: Radio,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Radio component allows users to select a single option from a group of mutually exclusive options. Radio buttons are typically used in groups where only one selection is allowed. They provide clear visual feedback and support keyboard navigation.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     label: {
       control: 'text',
@@ -134,7 +142,7 @@ export const GlassCustom: Story = {
       saturation: 200,
       aberrationIntensity: 0.8,
       cornerRadius: 12,
-    },
+    } as any,
   },
   render: (args: any) => (
     <div

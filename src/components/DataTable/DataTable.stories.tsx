@@ -1,31 +1,38 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { DataTableColumn } from '../../lib/types/components';
 import { DataTable } from './DataTable';
 
-const meta: Meta<typeof DataTable> = {
+const meta = {
   title: 'Components/DataTable',
   component: DataTable,
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'The DataTable component provides a powerful and flexible way to display structured data in rows and columns. It supports sorting, filtering, pagination, selection, and various display options. DataTables are ideal for displaying large datasets, user lists, product catalogs, or any tabular information requiring advanced data manipulation.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
-    data: { control: 'object' },
-    columns: { control: 'object' },
-    sortable: { control: 'boolean' },
-    filterable: { control: 'boolean' },
-    paginated: { control: 'boolean' },
-    pageSize: { control: 'number' },
-    striped: { control: 'boolean' },
-    bordered: { control: 'boolean' },
-    dense: { control: 'boolean' },
-    loading: { control: 'boolean' },
-    emptyMessage: { control: 'text' },
+    data: { control: 'object', description: 'Array of data objects to display' },
+    columns: { control: 'object', description: 'Column definitions for the table' },
+    sortable: { control: 'boolean', description: 'Whether columns are sortable' },
+    filterable: { control: 'boolean', description: 'Whether the table is filterable' },
+    paginated: { control: 'boolean', description: 'Whether to enable pagination' },
+    pageSize: { control: 'number', description: 'Number of rows per page' },
+    striped: { control: 'boolean', description: 'Whether to apply striped row styling' },
+    bordered: { control: 'boolean', description: 'Whether to show table borders' },
+    dense: { control: 'boolean', description: 'Whether to use dense row spacing' },
+    loading: { control: 'boolean', description: 'Whether the table is in loading state' },
+    emptyMessage: { control: 'text', description: 'Message to display when table is empty' },
   },
-};
+} satisfies Meta<typeof DataTable>;
 
 export default meta;
-type Story = StoryObj<typeof DataTable>;
+type Story = StoryObj<typeof meta>;
 
 // Generate more sample data for better pagination testing
 const generateUsers = (count: number) => {

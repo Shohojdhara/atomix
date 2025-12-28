@@ -7,7 +7,14 @@ const meta = {
   component: Breadcrumb,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Breadcrumb component provides navigation context by showing the current page location within a site hierarchy. It helps users understand where they are and provides quick navigation to parent pages. Breadcrumbs support custom dividers, icons, and are fully accessible.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     items: { control: 'object' },
     divider: { control: 'text' },

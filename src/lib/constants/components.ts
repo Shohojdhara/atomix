@@ -49,6 +49,16 @@ export const BUTTON = {
 };
 
 /**
+ * ButtonGroup-specific constants
+ */
+export const BUTTON_GROUP = {
+  BASE_CLASS: 'c-btn-group',
+  CLASSES: {
+    BASE: 'c-btn-group',
+  },
+};
+
+/**
  * Callout-specific constants
  */
 export const CALLOUT = {

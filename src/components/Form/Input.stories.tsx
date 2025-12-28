@@ -2,13 +2,21 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { Input } from './Input';
 import { MagnifyingGlass, Envelope, Lock, User, Phone, Calendar } from '@phosphor-icons/react';
+import { SIZES, THEME_COLORS } from '../../lib/constants/components';
 
 const meta = {
   title: 'Components/Form/Input',
   component: Input,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Input component provides a text input field for user data entry. It supports various input types, sizes, validation states, and can include icons and clear buttons. Inputs are essential form elements for collecting user information and can be customized to match your design system.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     type: {
       control: { type: 'select' },
@@ -17,12 +25,12 @@ const meta = {
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: SIZES,
       description: 'Size of the input',
     },
     variant: {
       control: { type: 'select' },
-      options: ['primary', 'success', 'error', 'warning', 'info'],
+      options: THEME_COLORS,
       description: 'Color variant of the input',
     },
     disabled: {

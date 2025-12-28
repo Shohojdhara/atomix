@@ -1,118 +1,143 @@
 import React, { useState } from 'react';
-import { StoryFn, Meta } from '@storybook/react';
-import { fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Rating } from './Rating';
-import type { RatingProps } from '../../lib/types/components';
+import { THEME_COLORS, SIZES } from '../../lib/constants/components';
 
-export default {
+const meta = {
   title: 'Components/Rating',
   component: Rating,
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Rating component allows users to display and interact with star-based ratings. It supports whole and half-star ratings, customizable maximum values, and can be used in both interactive and read-only modes. Ratings are ideal for product reviews, user feedback, or any scenario requiring visual rating input.',
+      },
+    },
+  },
+  tags: ['autodocs'],
   argTypes: {
-    value: { control: { type: 'number', min: 0, max: 5, step: 0.5 } },
-    maxValue: { control: { type: 'number', min: 1, max: 10 } },
-    allowHalf: { control: 'boolean' },
-    readOnly: { control: 'boolean' },
+    value: {
+      control: { type: 'number', min: 0, max: 5, step: 0.5 },
+      description: 'The current rating value',
+    },
+    maxValue: {
+      control: { type: 'number', min: 1, max: 10 },
+      description: 'The maximum rating value',
+    },
+    allowHalf: {
+      control: 'boolean',
+      description: 'Whether to allow half-star ratings',
+    },
+    readOnly: {
+      control: 'boolean',
+      description: 'Whether the rating is read-only',
+    },
     size: {
-      control: { type: 'select', options: ['sm', 'md', 'lg'] },
+      control: { type: 'select' },
+      options: SIZES,
+      description: 'The size of the rating stars',
     },
     color: {
-      control: {
-        type: 'select',
-        options: ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'],
-      },
+      control: { type: 'select' },
+      options: THEME_COLORS,
+      description: 'The color variant of the rating',
     },
     glass: {
       control: 'boolean',
       description: 'Enable glass morphism effect',
     },
   },
-  parameters: {
-    docs: {
-      description: {
-        component: 'Rating component for displaying and collecting star ratings',
-      },
-    },
+} satisfies Meta<typeof Rating>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+// Default Rating
+export const Default: Story = {
+  args: {
+    value: 3,
+    maxValue: 5,
+    allowHalf: false,
+    readOnly: false,
+    size: 'md',
   },
-} as Meta;
-
-const Template: StoryFn<RatingProps> = (args: RatingProps) => <Rating {...args} />;
-
-export const Default = Template.bind({});
-Default.args = {
-  value: 3,
-  maxValue: 5,
-  allowHalf: false,
-  readOnly: false,
-  size: 'md',
 };
 
-export const ReadOnly = Template.bind({});
-ReadOnly.args = {
-  value: 4,
-  maxValue: 5,
-  allowHalf: false,
-  readOnly: true,
-  size: 'md',
+export const ReadOnly: Story = {
+  args: {
+    value: 4,
+    maxValue: 5,
+    allowHalf: false,
+    readOnly: true,
+    size: 'md',
+  },
 };
 
-export const HalfStars = Template.bind({});
-HalfStars.args = {
-  value: 3.5,
-  maxValue: 5,
-  allowHalf: true,
-  readOnly: true,
-  size: 'md',
+export const HalfStars: Story = {
+  args: {
+    value: 3.5,
+    maxValue: 5,
+    allowHalf: true,
+    readOnly: true,
+    size: 'md',
+  },
 };
 
-export const Small = Template.bind({});
-Small.args = {
-  value: 4,
-  maxValue: 5,
-  allowHalf: false,
-  readOnly: true,
-  size: 'sm',
+export const Small: Story = {
+  args: {
+    value: 4,
+    maxValue: 5,
+    allowHalf: false,
+    readOnly: true,
+    size: 'sm',
+  },
 };
 
-export const Large = Template.bind({});
-Large.args = {
-  value: 4,
-  maxValue: 5,
-  allowHalf: false,
-  readOnly: true,
-  size: 'lg',
+export const Large: Story = {
+  args: {
+    value: 4,
+    maxValue: 5,
+    allowHalf: false,
+    readOnly: true,
+    size: 'lg',
+  },
 };
 
-export const CustomColor = Template.bind({});
-CustomColor.args = {
-  value: 4,
-  maxValue: 5,
-  allowHalf: false,
-  readOnly: true,
-  size: 'md',
-  color: 'warning',
+export const CustomColor: Story = {
+  args: {
+    value: 4,
+    maxValue: 5,
+    allowHalf: false,
+    readOnly: true,
+    size: 'md',
+    color: 'warning',
+  },
 };
 
-export const Interactive: StoryFn<RatingProps> = () => {
-  const [rating, setRating] = useState(3);
-
-  return (
-    <div>
-      <p>Selected rating: {rating}</p>
-      <Rating value={rating} onChange={setRating} allowHalf={true} />
-    </div>
-  );
+export const Interactive: Story = {
+  render: () => {
+    const [rating, setRating] = useState(3);
+    return (
+      <div>
+        <p>Selected rating: {rating}</p>
+        <Rating value={rating} onChange={setRating} allowHalf={true} />
+      </div>
+    );
+  },
 };
 
-export const CustomMaxValue = Template.bind({});
-CustomMaxValue.args = {
-  value: 7,
-  maxValue: 10,
-  allowHalf: false,
-  readOnly: true,
-  size: 'md',
+export const CustomMaxValue: Story = {
+  args: {
+    value: 7,
+    maxValue: 10,
+    allowHalf: false,
+    readOnly: true,
+    size: 'md',
+  },
 };
 
-export const Glass = {
+export const Glass: Story = {
   args: {
     value: 4,
     maxValue: 5,
@@ -138,7 +163,7 @@ export const Glass = {
   ),
 };
 
-export const GlassInteractive = {
+export const GlassInteractive: Story = {
   args: {
     value: 3,
     maxValue: 5,
@@ -174,7 +199,7 @@ export const GlassInteractive = {
   ),
 };
 
-export const GlassCustom = {
+export const GlassCustom: Story = {
   args: {
     value: 4.5,
     maxValue: 5,

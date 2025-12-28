@@ -1,19 +1,29 @@
 import React from 'react';
-import { StoryFn, Meta } from '@storybook/react';
-import { fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Steps } from './Steps';
-import type { StepsProps } from './Steps';
 
-export default {
+const meta = {
   title: 'Components/Steps',
   component: Steps,
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'The Steps component displays a sequence of steps in a process or workflow. It provides visual progress indication and can be displayed horizontally or vertically. Steps are ideal for multi-step forms, onboarding flows, or any process that requires clear progress visualization.',
+      },
+    },
+  },
+  tags: ['autodocs'],
   argTypes: {
     activeIndex: {
       control: { type: 'number' },
+      description: 'The index of the currently active step',
       defaultValue: 1,
     },
     vertical: {
       control: { type: 'boolean' },
+      description: 'Whether to display steps vertically',
       defaultValue: false,
     },
     glass: {
@@ -21,103 +31,124 @@ export default {
       description: 'Enable glass morphism effect',
     },
   },
-} as Meta<typeof Steps>;
+} satisfies Meta<typeof Steps>;
 
-const Template: StoryFn<typeof Steps> = args => (
-  <div style={{ padding: '30px' }}>
-    <Steps {...args} />
-  </div>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 // Default horizontal steps
-export const Default = Template.bind({});
-Default.args = {
-  items: [
-    { number: 1, text: 'Step 1' },
-    { number: 2, text: 'Step 2' },
-    { number: 3, text: 'Step 3' },
-    { number: 4, text: 'Step 4' },
-    { number: 5, text: 'Step 5' },
-  ],
-  activeIndex: 1,
-  vertical: false,
+export const Default: Story = {
+  render: args => (
+    <div style={{ padding: '30px' }}>
+      <Steps {...args} />
+    </div>
+  ),
+  args: {
+    items: [
+      { number: 1, text: 'Step 1' },
+      { number: 2, text: 'Step 2' },
+      { number: 3, text: 'Step 3' },
+      { number: 4, text: 'Step 4' },
+      { number: 5, text: 'Step 5' },
+    ],
+    activeIndex: 1,
+    vertical: false,
+  },
 };
 
 // Vertical steps
-export const Vertical = Template.bind({});
-Vertical.args = {
-  items: [
-    { number: 1, text: 'Step 1' },
-    { number: 2, text: 'Step 2' },
-    { number: 3, text: 'Step 3' },
-    { number: 4, text: 'Step 4' },
-    { number: 5, text: 'Step 5' },
-  ],
-  activeIndex: 1,
-  vertical: true,
+export const Vertical: Story = {
+  render: args => (
+    <div style={{ padding: '30px' }}>
+      <Steps {...args} />
+    </div>
+  ),
+  args: {
+    items: [
+      { number: 1, text: 'Step 1' },
+      { number: 2, text: 'Step 2' },
+      { number: 3, text: 'Step 3' },
+      { number: 4, text: 'Step 4' },
+      { number: 5, text: 'Step 5' },
+    ],
+    activeIndex: 1,
+    vertical: true,
+  },
 };
 
 // Steps with custom content
-export const WithCustomContent = Template.bind({});
-WithCustomContent.args = {
-  items: [
-    {
-      number: 1,
-      text: 'Registration',
-      content: <p style={{ marginTop: '10px', fontSize: '0.85em' }}>Create your account</p>,
-    },
-    {
-      number: 2,
-      text: 'Personal Info',
-      content: <p style={{ marginTop: '10px', fontSize: '0.85em' }}>Tell us about yourself</p>,
-    },
-    {
-      number: 3,
-      text: 'Preferences',
-      content: <p style={{ marginTop: '10px', fontSize: '0.85em' }}>Select your preferences</p>,
-    },
-    {
-      number: 4,
-      text: 'Payment',
-      content: <p style={{ marginTop: '10px', fontSize: '0.85em' }}>Add payment information</p>,
-    },
-    {
-      number: 5,
-      text: 'Confirmation',
-      content: <p style={{ marginTop: '10px', fontSize: '0.85em' }}>Complete your signup</p>,
-    },
-  ],
-  activeIndex: 1,
-  vertical: false,
+export const WithCustomContent: Story = {
+  render: args => (
+    <div style={{ padding: '30px' }}>
+      <Steps {...args} />
+    </div>
+  ),
+  args: {
+    items: [
+      {
+        number: 1,
+        text: 'Registration',
+        content: <p style={{ marginTop: '10px', fontSize: '0.85em' }}>Create your account</p>,
+      },
+      {
+        number: 2,
+        text: 'Personal Info',
+        content: <p style={{ marginTop: '10px', fontSize: '0.85em' }}>Tell us about yourself</p>,
+      },
+      {
+        number: 3,
+        text: 'Preferences',
+        content: <p style={{ marginTop: '10px', fontSize: '0.85em' }}>Select your preferences</p>,
+      },
+      {
+        number: 4,
+        text: 'Payment',
+        content: <p style={{ marginTop: '10px', fontSize: '0.85em' }}>Add payment information</p>,
+      },
+      {
+        number: 5,
+        text: 'Confirmation',
+        content: <p style={{ marginTop: '10px', fontSize: '0.85em' }}>Complete your signup</p>,
+      },
+    ],
+    activeIndex: 1,
+    vertical: false,
+  },
 };
 
 // Steps with custom icons instead of numbers
-export const WithIcons = Template.bind({});
-WithIcons.args = {
-  items: [
-    {
-      number: <i className="icon-lux-user" style={{ fontSize: '16px' }}></i>,
-      text: 'Account',
-    },
-    {
-      number: <i className="icon-lux-settings" style={{ fontSize: '16px' }}></i>,
-      text: 'Settings',
-    },
-    {
-      number: <i className="icon-lux-calendar" style={{ fontSize: '16px' }}></i>,
-      text: 'Schedule',
-    },
-    {
-      number: <i className="icon-lux-card" style={{ fontSize: '16px' }}></i>,
-      text: 'Payment',
-    },
-    {
-      number: <i className="icon-lux-check" style={{ fontSize: '16px' }}></i>,
-      text: 'Complete',
-    },
-  ],
-  activeIndex: 1,
-  vertical: false,
+export const WithIcons: Story = {
+  render: args => (
+    <div style={{ padding: '30px' }}>
+      <Steps {...args} />
+    </div>
+  ),
+  args: {
+    items: [
+      {
+        number: <i className="icon-lux-user" style={{ fontSize: '16px' }}></i>,
+        text: 'Account',
+      },
+      {
+        number: <i className="icon-lux-settings" style={{ fontSize: '16px' }}></i>,
+        text: 'Settings',
+      },
+      {
+        number: <i className="icon-lux-calendar" style={{ fontSize: '16px' }}></i>,
+        text: 'Schedule',
+      },
+      {
+        number: <i className="icon-lux-card" style={{ fontSize: '16px' }}></i>,
+        text: 'Payment',
+      },
+      {
+        number: <i className="icon-lux-check" style={{ fontSize: '16px' }}></i>,
+        text: 'Complete',
+      },
+    ],
+    activeIndex: 1,
+    vertical: false,
+  },
 };
 
 // Interactive steps with buttons for navigation
@@ -155,13 +186,16 @@ const InteractiveSteps: React.FC = () => {
   );
 };
 
-export const Interactive: StoryFn<typeof Steps> = () => (
-  <div style={{ padding: '30px' }}>
-    <InteractiveSteps />
-  </div>
-);
+export const Interactive: Story = {
+  args: {} as any,
+  render: () => (
+    <div style={{ padding: '30px' }}>
+      <InteractiveSteps />
+    </div>
+  ),
+};
 
-export const Glass = {
+export const Glass: Story = {
   args: {
     items: [
       { number: 1, text: 'Glass Step 1' },
@@ -193,7 +227,7 @@ export const Glass = {
   ),
 };
 
-export const GlassVertical = {
+export const GlassVertical: Story = {
   args: {
     items: [
       { number: 1, text: 'Glass Step 1' },
@@ -228,7 +262,7 @@ export const GlassVertical = {
   ),
 };
 
-export const GlassCustom = {
+export const GlassCustom: Story = {
   args: {
     items: [
       { number: 1, text: 'Custom Glass Step 1' },
@@ -245,7 +279,7 @@ export const GlassCustom = {
       saturation: 200,
       aberrationIntensity: 0.8,
       cornerRadius: 12,
-    },
+    } as any,
   },
   render: (args: any) => (
     <div

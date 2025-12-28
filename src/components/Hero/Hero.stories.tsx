@@ -27,7 +27,14 @@ const meta = {
   component: Hero,
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'The Hero component creates prominent banner sections typically used at the top of pages. It provides a flexible layout for titles, subtitles, text content, call-to-action buttons, and images. Heroes are ideal for landing pages, marketing sections, or any area requiring prominent visual presentation.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     title: {
       control: 'text',

@@ -1,30 +1,56 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { generateUUID } from '../../lib/utils';
 import { Todo } from './Todo';
+import { SIZES } from '../../lib/constants/components';
 
-const meta: Meta<typeof Todo> = {
+const meta = {
   title: 'Components/Todo',
   component: Todo,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Todo component provides a complete todo list interface with the ability to add, complete, and manage tasks. It supports multiple sizes, can show or hide completed items, and provides a clean interface for task management. Ideal for task tracking, project management, or any scenario requiring a simple todo list.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
-    items: { control: 'object' },
-    title: { control: 'text' },
-
+    items: {
+      control: 'object',
+      description: 'Array of todo items',
+    },
+    title: {
+      control: 'text',
+      description: 'Title of the todo list',
+    },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: SIZES,
+      description: 'Size of the todo component',
     },
-    placeholder: { control: 'text' },
-    showCompleted: { control: 'boolean' },
-    className: { control: 'text' },
-    disabled: { control: 'boolean' },
+    placeholder: {
+      control: 'text',
+      description: 'Placeholder text for the input field',
+    },
+    showCompleted: {
+      control: 'boolean',
+      description: 'Whether to show completed items',
+    },
+    className: {
+      control: 'text',
+      description: 'Additional CSS class names',
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Whether the todo list is disabled',
+    },
   },
-};
+} satisfies Meta<typeof Todo>;
 
 export default meta;
-type Story = StoryObj<typeof Todo>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {

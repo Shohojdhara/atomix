@@ -1,103 +1,145 @@
 import React from 'react';
-import { StoryFn, Meta } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Testimonial } from './Testimonial';
-import type { TestimonialProps } from './Testimonial';
 
-export default {
+const meta = {
   title: 'Components/Testimonial',
   component: Testimonial,
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Testimonial component displays customer reviews, quotes, or endorsements with author information and avatars. It supports multiple sizes, skeleton loading states, and can display rich content. Testimonials are ideal for showcasing social proof, customer feedback, or featured quotes on landing pages and marketing sites.',
+      },
+    },
+  },
+  tags: ['autodocs'],
   argTypes: {
     size: {
       control: { type: 'select', options: ['', 'sm', 'lg'] },
-      defaultValue: '',
+      description: 'Size variant of the testimonial',
     },
     skeleton: {
-      control: { type: 'boolean' },
-      defaultValue: false,
+      control: 'boolean',
+      description: 'Whether to show skeleton loading state',
     },
   },
-} as Meta<typeof Testimonial>;
+} satisfies Meta<typeof Testimonial>;
 
-const Template: StoryFn<typeof Testimonial> = args => (
-  <div style={{ padding: '30px' }}>
-    <Testimonial {...args} />
-  </div>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 // Default testimonial
-export const Default = Template.bind({});
-Default.args = {
-  quote:
-    'The intuitive interface, seamless syncing across devices, and helpful features have made me more productive than ever before.',
-  author: {
-    name: 'Emily Rodriguez',
-    role: 'Software Engineer, Acme',
-    avatarSrc:
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    avatarAlt: 'Emily Rodriguez',
+export const Default: Story = {
+  render: args => (
+    <div style={{ padding: '30px' }}>
+      <Testimonial {...args} />
+    </div>
+  ),
+  args: {
+    quote:
+      'The intuitive interface, seamless syncing across devices, and helpful features have made me more productive than ever before.',
+    author: {
+      name: 'Emily Rodriguez',
+      role: 'Software Engineer, Acme',
+      avatarSrc:
+        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      avatarAlt: 'Emily Rodriguez',
+    },
+    size: '',
   },
-  size: '',
 };
 
 // Large testimonial
-export const Large = Template.bind({});
-Large.args = {
-  quote:
-    'The intuitive interface, seamless syncing across devices, and helpful features have made me more productive than ever before.',
-  author: {
-    name: 'Emily Rodriguez',
-    role: 'Software Engineer, Acme',
-    avatarSrc:
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    avatarAlt: 'Emily Rodriguez',
+export const Large: Story = {
+  render: args => (
+    <div style={{ padding: '30px' }}>
+      <Testimonial {...args} />
+    </div>
+  ),
+  args: {
+    quote:
+      'The intuitive interface, seamless syncing across devices, and helpful features have made me more productive than ever before.',
+    author: {
+      name: 'Emily Rodriguez',
+      role: 'Software Engineer, Acme',
+      avatarSrc:
+        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      avatarAlt: 'Emily Rodriguez',
+    },
+    size: 'lg',
   },
-  size: 'lg',
 };
 
 // Small testimonial
-export const Small = Template.bind({});
-Small.args = {
-  quote:
-    'The intuitive interface, seamless syncing across devices, and helpful features have made me more productive than ever before.',
-  author: {
-    name: 'Emily Rodriguez',
-    role: 'Software Engineer, Acme',
-    avatarSrc:
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    avatarAlt: 'Emily Rodriguez',
+export const Small: Story = {
+  render: args => (
+    <div style={{ padding: '30px' }}>
+      <Testimonial {...args} />
+    </div>
+  ),
+  args: {
+    quote:
+      'The intuitive interface, seamless syncing across devices, and helpful features have made me more productive than ever before.',
+    author: {
+      name: 'Emily Rodriguez',
+      role: 'Software Engineer, Acme',
+      avatarSrc:
+        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      avatarAlt: 'Emily Rodriguez',
+    },
+    size: 'sm',
   },
-  size: 'sm',
 };
 
 // Skeleton loading state
-export const Skeleton = Template.bind({});
-Skeleton.args = {
-  skeleton: true,
-  size: '',
+export const Skeleton: Story = {
+  render: args => (
+    <div style={{ padding: '30px' }}>
+      <Testimonial {...args} />
+    </div>
+  ),
+  args: {
+    skeleton: true,
+    size: '',
+  },
 };
 
 // Large skeleton
-export const LargeSkeleton = Template.bind({});
-LargeSkeleton.args = {
-  skeleton: true,
-  size: 'lg',
+export const LargeSkeleton: Story = {
+  render: args => (
+    <div style={{ padding: '30px' }}>
+      <Testimonial {...args} />
+    </div>
+  ),
+  args: {
+    skeleton: true,
+    size: 'lg',
+  },
 };
 
 // With rich content in quote
-export const RichContent = Template.bind({});
-RichContent.args = {
-  quote: (
-    <>
-      <p>"I feel more in charge of my schedule and less overwhelmed. Highly recommended for</p>
-      <p>professionals and anyone aiming to enhance their productivity."</p>
-    </>
+export const RichContent: Story = {
+  render: args => (
+    <div style={{ padding: '30px' }}>
+      <Testimonial {...args} />
+    </div>
   ),
-  author: {
-    name: 'John Smith',
-    role: 'Product Manager, XYZ Corp',
-    avatarSrc:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3',
-    avatarAlt: 'John Smith',
+  args: {
+    quote: (
+      <>
+        <p>"I feel more in charge of my schedule and less overwhelmed. Highly recommended for</p>
+        <p>professionals and anyone aiming to enhance their productivity."</p>
+      </>
+    ),
+    author: {
+      name: 'John Smith',
+      role: 'Product Manager, XYZ Corp',
+      avatarSrc:
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3',
+      avatarAlt: 'John Smith',
+    },
   },
 };
 
@@ -150,7 +192,9 @@ const TestimonialGrid: React.FC = () => {
   );
 };
 
-export const TestimonialGridLayout: StoryFn<typeof Testimonial> = () => <TestimonialGrid />;
+export const TestimonialGridLayout: Story = {
+  render: () => <TestimonialGrid />,
+};
 
 // Testimonial with image
 const TestimonialWithImage: React.FC = () => {
@@ -177,4 +221,6 @@ const TestimonialWithImage: React.FC = () => {
   );
 };
 
-export const WithImage: StoryFn<typeof Testimonial> = () => <TestimonialWithImage />;
+export const WithImage: Story = {
+  render: () => <TestimonialWithImage />,
+};

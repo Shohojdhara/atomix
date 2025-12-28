@@ -9,6 +9,7 @@ export { default as Badge, type BadgeProps } from './Badge/Badge';
 export { default as Block, type BlockProps } from './Block';
 export { default as Breadcrumb, type BreadcrumbProps } from './Breadcrumb/Breadcrumb';
 export { default as Button, type ButtonProps } from './Button/Button';
+export { default as ButtonGroup, type ButtonGroupProps } from './Button/ButtonGroup';
 export { default as Callout, type CalloutProps } from './Callout/Callout';
 export { default as Card, type CardProps } from './Card/Card';
 // Card sub-components

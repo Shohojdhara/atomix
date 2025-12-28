@@ -9,7 +9,14 @@ const meta = {
   component: Nav,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Nav component provides a horizontal navigation bar for organizing links and menu items. It supports various alignment options, can include dropdowns, and provides a clean interface for site navigation. Nav components are essential for primary site navigation and work seamlessly with NavItem and NavDropdown components.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     alignment: {
       control: { type: 'select' },

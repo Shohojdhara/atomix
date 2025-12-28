@@ -1,11 +1,11 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { ImageType } from '../../lib/types/components';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { PhotoViewer } from './PhotoViewer';
 
-const meta: Meta<typeof PhotoViewer> = {
+const meta = {
   title: 'Components/PhotoViewer',
   component: PhotoViewer,
   parameters: {
@@ -13,29 +13,34 @@ const meta: Meta<typeof PhotoViewer> = {
     docs: {
       description: {
         component:
-          'A modern, fully-featured photo viewer component with zoom, pan, navigation, and metadata display capabilities.',
+          'The PhotoViewer component provides a modern, fully-featured image viewing experience with zoom, pan, navigation, and metadata display. It supports image galleries, keyboard navigation, touch gestures, and fullscreen mode. Ideal for photo galleries, media libraries, or any application requiring detailed image viewing capabilities.',
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     thumbnailPosition: {
       control: 'select',
       options: ['bottom', 'top', 'left', 'right', 'none'],
+      description: 'Position of the thumbnail navigation',
     },
     enableKeyboardNavigation: {
       control: 'boolean',
+      description: 'Whether to enable keyboard navigation',
     },
     enableGestures: {
       control: 'boolean',
+      description: 'Whether to enable touch gestures',
     },
     enableFullscreen: {
       control: 'boolean',
+      description: 'Whether to enable fullscreen mode',
     },
   },
-};
+} satisfies Meta<typeof PhotoViewer>;
 
 export default meta;
-type Story = StoryObj<typeof PhotoViewer>;
+type Story = StoryObj<typeof meta>;
 
 // Sample images with rich metadata
 const sampleImages: ImageType[] = [

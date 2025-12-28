@@ -6,7 +6,14 @@ const meta = {
   component: Menu,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Menu component provides a vertical list of menu items, typically used in dropdowns, sidebars, or context menus. It supports dividers, icons, and can be nested. Menus are ideal for organizing navigation options, actions, or any hierarchical list of choices.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     disabled: {
       control: 'boolean',

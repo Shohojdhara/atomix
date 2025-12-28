@@ -71,6 +71,7 @@ The Navbar component provides a responsive navigation header with brand, navigat
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     position: {
       control: { type: 'select' },

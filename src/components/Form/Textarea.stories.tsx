@@ -1,12 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Textarea } from './Textarea';
+import { SIZES, THEME_COLORS } from '../../lib/constants/components';
 
 const meta = {
   title: 'Components/Form/Textarea',
   component: Textarea,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Textarea component provides a multi-line text input field for longer content. It supports various sizes, validation states, and can be customized with different variants. Textareas are ideal for comments, descriptions, or any content requiring multiple lines of input.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     value: {
       control: 'text',
@@ -26,12 +34,12 @@ const meta = {
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: SIZES,
       description: 'Size of the textarea',
     },
     variant: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'success', 'error', 'warning', 'info'],
+      options: THEME_COLORS,
       description: 'Color variant of the textarea',
     },
     disabled: {

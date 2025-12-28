@@ -138,7 +138,7 @@ The SideMenu component provides a collapsible navigation menu with title and men
 } satisfies Meta<typeof SideMenu>;
 
 export default meta;
-type Story = StoryObj<typeof SideMenu>;
+type Story = StoryObj<typeof meta>;
 
 // Default SideMenu
 export const Default: Story = {

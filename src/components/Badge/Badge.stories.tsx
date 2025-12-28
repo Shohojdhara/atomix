@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { BADGE, SIZES, THEME_COLORS } from '../../lib/constants/components';
@@ -11,7 +12,14 @@ const meta = {
   component: Badge,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Badge component displays small pieces of information, status indicators, or labels. It supports multiple variants, sizes, and can include icons. Badges are ideal for highlighting important information or showing status.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: { type: 'select' },
@@ -101,7 +109,7 @@ export const Warning: Story = {
   },
 };
 
-export const error: Story = {
+export const Error: Story = {
   args: {
     label: 'Error',
     variant: 'error',
@@ -359,7 +367,7 @@ export const ThemeAwareBadges: Story = {
           </div>
           <div className="u-d-flex u-align-items-center u-gap-2">
             <span className="u-d-inline-block" style={{ width: '120px' }}>
-              error:
+              Error:
             </span>
             <Badge label="Failed" variant="error" />
           </div>
@@ -540,7 +548,7 @@ export const GlassCustomSettings: Story = {
       aberrationIntensity: 1,
       cornerRadius: 16,
       mode: 'polar',
-    },
+    } as any,
   },
   decorators: [
     Story => (

@@ -1,31 +1,40 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Card, ElevationCard } from './index';
 import { Grid, GridCol } from '../../layouts';
 import { Container } from '../../layouts/';
-
 import Icon from '../Icon';
+import { SIZES, THEME_COLORS } from '../../lib/constants/components';
 
-const meta: Meta<typeof Card> = {
+const meta = {
   title: 'Components/Card',
   component: Card,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Card component provides a flexible container for displaying content with optional headers, images, and footers. Cards are ideal for grouping related information, showcasing products, or presenting content in a structured format. They support multiple variants, sizes, and can be interactive.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
-    header: { control: 'text' },
-    title: { control: 'text' },
-    text: { control: 'text' },
-    image: { control: 'text' },
-    imageAlt: { control: 'text' },
-    footer: { control: 'text' },
+    header: { control: 'text', description: 'Header content for the card' },
+    title: { control: 'text', description: 'Title of the card' },
+    text: { control: 'text', description: 'Main text content of the card' },
+    image: { control: 'text', description: 'Image URL for the card' },
+    imageAlt: { control: 'text', description: 'Alt text for the card image' },
+    footer: { control: 'text', description: 'Footer content for the card' },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
+      options: SIZES,
+      description: 'Size of the card',
     },
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'error', 'warning', 'info', 'light', 'dark'],
+      options: THEME_COLORS,
+      description: 'Color variant of the card',
     },
     appearance: {
       control: 'select',
@@ -42,12 +51,12 @@ const meta: Meta<typeof Card> = {
     loading: { control: 'boolean' },
     selected: { control: 'boolean' },
     interactive: { control: 'boolean' },
-    className: { control: 'text' },
+    className: { control: 'text', description: 'Additional CSS class names' },
   },
-};
+} satisfies Meta<typeof Card>;
 
 export default meta;
-type Story = StoryObj<typeof Card>;
+type Story = StoryObj<typeof meta>;
 
 // Basic Card
 export const Basic: Story = {

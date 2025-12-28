@@ -1,13 +1,22 @@
 import React from 'react';
-import { StoryFn, Meta } from '@storybook/react';
-import { fn } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Popover, PopoverTrigger } from './Popover';
 import { Toggle } from '../Toggle/Toggle';
 import { Button } from '../Button/Button';
 
-export default {
+const meta = {
   title: 'Components/Popover',
   component: Popover,
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        component:
+          'The Popover component displays floating content relative to a trigger element. It provides a flexible way to show additional information, actions, or controls without navigating away from the current context. Popovers support multiple positions, click or hover triggers, and can include rich interactive content.',
+      },
+    },
+  },
+  tags: ['autodocs'],
   argTypes: {
     position: {
       control: { type: 'select' },
@@ -47,10 +56,13 @@ export default {
       description: 'Enable glass morphism effect',
     },
   },
-} as Meta<typeof Popover>;
+} satisfies Meta<typeof Popover>;
 
-// Default template
-const Template: StoryFn<typeof Popover> = args => {
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+// Helper component for interactive stories
+const InteractivePopover = (args: React.ComponentProps<typeof Popover>) => {
   const selectOptions = [
     { value: '1', label: 'Option 1' },
     { value: '2', label: 'Option 2' },
@@ -103,143 +115,207 @@ const Template: StoryFn<typeof Popover> = args => {
   );
 };
 
-export const Default = Template.bind({});
-Default.args = {
-  position: 'top',
-  trigger: 'click',
-  offset: 12,
-  delay: 0,
-  defaultOpen: false,
-  closeOnClickOutside: true,
-  closeOnEscape: true,
+export const Default: Story = {
+  render: args => <InteractivePopover {...args} />,
+  args: {
+    position: 'top',
+    trigger: 'click',
+    offset: 12,
+    delay: 0,
+    defaultOpen: false,
+    closeOnClickOutside: true,
+    closeOnEscape: true,
+  } as any,
 };
 
-export const Hover = Template.bind({});
-Hover.args = {
-  ...Default.args,
-  trigger: 'hover',
-  delay: 200,
+export const Hover: Story = {
+  render: args => <InteractivePopover {...args} />,
+  args: {
+    position: 'top',
+    trigger: 'hover',
+    offset: 12,
+    delay: 200,
+    defaultOpen: false,
+    closeOnClickOutside: true,
+    closeOnEscape: true,
+  } as any,
 };
 
-export const BottomPosition = Template.bind({});
-BottomPosition.args = {
-  ...Default.args,
-  position: 'bottom',
+export const BottomPosition: Story = {
+  render: args => <InteractivePopover {...args} />,
+  args: {
+    position: 'bottom',
+    trigger: 'click',
+    offset: 12,
+    delay: 0,
+    defaultOpen: false,
+    closeOnClickOutside: true,
+    closeOnEscape: true,
+  } as any,
 };
 
-export const LeftPosition = Template.bind({});
-LeftPosition.args = {
-  ...Default.args,
-  position: 'left',
+export const LeftPosition: Story = {
+  render: args => <InteractivePopover {...args} />,
+  args: {
+    position: 'left',
+    trigger: 'click',
+    offset: 12,
+    delay: 0,
+    defaultOpen: false,
+    closeOnClickOutside: true,
+    closeOnEscape: true,
+  } as any,
 };
 
-export const RightPosition = Template.bind({});
-RightPosition.args = {
-  ...Default.args,
-  position: 'right',
+export const RightPosition: Story = {
+  render: args => <InteractivePopover {...args} />,
+  args: {
+    position: 'right',
+    trigger: 'click',
+    offset: 12,
+    delay: 0,
+    defaultOpen: false,
+    closeOnClickOutside: true,
+    closeOnEscape: true,
+  } as any,
 };
 
-export const AutoPosition = Template.bind({});
-AutoPosition.args = {
-  ...Default.args,
-  position: 'auto',
-  defaultOpen: true, // Open by default to showcase auto-positioning
+export const AutoPosition: Story = {
+  render: args => <InteractivePopover {...args} />,
+  args: {
+    position: 'auto',
+    trigger: 'click',
+    offset: 12,
+    delay: 0,
+    defaultOpen: true, // Open by default to showcase auto-positioning
+    closeOnClickOutside: true,
+    closeOnEscape: true,
+  } as any,
 };
 
 /**
  * Glass morphism popover example.
  */
-export const GlassPopover = Template.bind({});
-GlassPopover.args = {
-  ...Default.args,
-  glass: true,
+export const GlassPopover: Story = {
+  render: args => <InteractivePopover {...args} />,
+  args: {
+    position: 'top',
+    trigger: 'click',
+    offset: 12,
+    delay: 0,
+    defaultOpen: false,
+    closeOnClickOutside: true,
+    closeOnEscape: true,
+    glass: true,
+  } as any,
+  decorators: [
+    Story => (
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          minHeight: '100vh',
+          padding: '2rem',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
 };
-GlassPopover.decorators = [
-  Story => (
-    <div
-      style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        minHeight: '100vh',
-        padding: '2rem',
-      }}
-    >
-      <Story />
-    </div>
-  ),
-];
 
 /**
  * Glass popover with custom settings.
  */
-export const GlassPopoverCustom = Template.bind({});
-GlassPopoverCustom.args = {
-  ...Default.args,
-  glass: {
-    displacementScale: 80,
-    blurAmount: 2,
-    saturation: 200,
-    aberrationIntensity: 1,
-    cornerRadius: 16,
-    mode: 'polar',
-  },
+export const GlassPopoverCustom: Story = {
+  render: args => <InteractivePopover {...args} />,
+  args: {
+    position: 'top',
+    trigger: 'click',
+    offset: 12,
+    delay: 0,
+    defaultOpen: false,
+    closeOnClickOutside: true,
+    closeOnEscape: true,
+    glass: {
+      displacementScale: 80,
+      blurAmount: 2,
+      saturation: 200,
+      aberrationIntensity: 1,
+      cornerRadius: 16,
+      mode: 'polar',
+    } as any,
+  } as any,
+  decorators: [
+    Story => (
+      <div
+        style={{
+          background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)',
+          minHeight: '100vh',
+          padding: '2rem',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
 };
-GlassPopoverCustom.decorators = [
-  Story => (
-    <div
-      style={{
-        background: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)',
-        minHeight: '100vh',
-        padding: '2rem',
-      }}
-    >
-      <Story />
-    </div>
-  ),
-];
 
 /**
  * Glass popover with hover trigger.
  */
-export const GlassPopoverHover = Template.bind({});
-GlassPopoverHover.args = {
-  ...Default.args,
-  trigger: 'hover',
-  delay: 200,
-  glass: true,
+export const GlassPopoverHover: Story = {
+  render: args => <InteractivePopover {...args} />,
+  args: {
+    position: 'top',
+    trigger: 'hover',
+    offset: 12,
+    delay: 200,
+    defaultOpen: false,
+    closeOnClickOutside: true,
+    closeOnEscape: true,
+    glass: true,
+  } as any,
+  decorators: [
+    Story => (
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+          minHeight: '100vh',
+          padding: '2rem',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
 };
-GlassPopoverHover.decorators = [
-  Story => (
-    <div
-      style={{
-        background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-        minHeight: '100vh',
-        padding: '2rem',
-      }}
-    >
-      <Story />
-    </div>
-  ),
-];
 
 /**
  * Glass popover with different positions.
  */
-export const GlassPopoverPositions = Template.bind({});
-GlassPopoverPositions.args = {
-  ...Default.args,
-  glass: true,
-  defaultOpen: true,
+export const GlassPopoverPositions: Story = {
+  render: args => <InteractivePopover {...args} />,
+  args: {
+    position: 'top',
+    trigger: 'click',
+    offset: 12,
+    delay: 0,
+    defaultOpen: true,
+    closeOnClickOutside: true,
+    closeOnEscape: true,
+    glass: true,
+  } as any,
+  decorators: [
+    Story => (
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          minHeight: '100vh',
+          padding: '2rem',
+        }}
+      >
+        <Story />
+      </div>
+    ),
+  ],
 };
-GlassPopoverPositions.decorators = [
-  Story => (
-    <div
-      style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        minHeight: '100vh',
-        padding: '2rem',
-      }}
-    >
-      <Story />
-    </div>
-  ),
-];

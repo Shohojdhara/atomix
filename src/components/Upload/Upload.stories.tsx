@@ -1,22 +1,25 @@
-import { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { Upload } from './Upload';
+import { SIZES } from '../../lib/constants/components';
 
-export default {
+const meta = {
   title: 'Components/Upload',
   component: Upload,
   parameters: {
+    layout: 'centered',
     docs: {
       description: {
         component:
-          'A modern file upload component with drag & drop functionality, progress tracking, and multiple size variants.',
+          'The Upload component provides a modern file upload interface with drag & drop functionality, progress tracking, file preview, and validation. It supports single and multiple file uploads, custom file size limits, and provides visual feedback throughout the upload process. Ideal for forms requiring file attachments or media uploads.',
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: SIZES,
       defaultValue: 'md',
       description: 'Size variant of the upload component',
     },
@@ -56,33 +59,37 @@ export default {
       description: 'Helper text displayed below the button',
     },
   },
-} as Meta<typeof Upload>;
+} satisfies Meta<typeof Upload>;
 
-const Template: StoryFn<typeof Upload> = args => (
-  <div style={{ padding: '30px', maxWidth: '600px' }}>
-    <Upload {...args} />
-  </div>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 // Default upload component
-export const Default = Template.bind({});
-Default.args = {
-  size: 'md',
-  title: 'Drag and Drop files here',
-  supportedFilesText: 'Files supported: PDF, XSLS, JPEG, PNG, Scanner',
-  buttonText: 'Choose File',
-  helperText: 'Maximum size: 5MB',
-};
-Default.parameters = {
-  docs: {
-    description: {
-      story: 'The default upload component with medium size and standard styling.',
+export const Default: Story = {
+  render: args => (
+    <div style={{ padding: '30px', maxWidth: '600px' }}>
+      <Upload {...args} />
+    </div>
+  ),
+  args: {
+    size: 'md',
+    title: 'Drag and Drop files here',
+    supportedFilesText: 'Files supported: PDF, XSLS, JPEG, PNG, Scanner',
+    buttonText: 'Choose File',
+    helperText: 'Maximum size: 5MB',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'The default upload component with medium size and standard styling.',
+      },
     },
   },
 };
 
 // Size Variants
-export const SizeVariants: StoryFn<typeof Upload> = () => (
+export const SizeVariants: Story = {
+  render: () => (
   <div style={{ padding: '30px' }}>
     <div style={{ marginBottom: '40px' }}>
       <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>Small Size</h3>
@@ -125,22 +132,32 @@ export const SizeVariants: StoryFn<typeof Upload> = () => (
       </div>
     </div>
   </div>
-);
-SizeVariants.parameters = {
-  docs: {
-    description: {
-      story: 'Upload component in different sizes: small (sm), medium (md), and large (lg).',
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Upload component in different sizes: small (sm), medium (md), and large (lg).',
+      },
     },
   },
 };
 
 // Disabled state
-export const Disabled = Template.bind({});
-Disabled.args = {
-  ...Default.args,
-  disabled: true,
-};
-Disabled.parameters = {
+export const Disabled: Story = {
+  render: args => (
+    <div style={{ padding: '30px', maxWidth: '600px' }}>
+      <Upload {...args} />
+    </div>
+  ),
+  args: {
+    size: 'md',
+    title: 'Drag and Drop files here',
+    supportedFilesText: 'Files supported: PDF, XSLS, JPEG, PNG, Scanner',
+    buttonText: 'Choose File',
+    helperText: 'Maximum size: 5MB',
+    disabled: true,
+  },
+  parameters: {
   docs: {
     description: {
       story: 'Upload component in disabled state with reduced opacity and no interactions.',
@@ -299,54 +316,71 @@ const WithStateControls: React.FC = () => {
   );
 };
 
-export const WithControls: StoryFn<typeof Upload> = () => <WithStateControls />;
-WithControls.parameters = {
-  docs: {
-    description: {
-      story:
-        'Interactive example showing different upload states: default, uploading with progress, success, and error states.',
+export const WithControls: Story = {
+  render: () => <WithStateControls />,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Interactive example showing different upload states: default, uploading with progress, success, and error states.',
+      },
     },
   },
 };
 
 // Custom Icon
-export const CustomIcon = Template.bind({});
-CustomIcon.args = {
-  ...Default.args,
-  icon: <i className="icon-lux-upload-cloud"></i>,
-  title: 'Upload your documents',
-  supportedFilesText: 'Drag files here or click to browse',
-};
-CustomIcon.parameters = {
-  docs: {
-    description: {
-      story: 'Upload component with a custom icon and personalized text content.',
+export const CustomIcon: Story = {
+  render: args => (
+    <div style={{ padding: '30px', maxWidth: '600px' }}>
+      <Upload {...args} />
+    </div>
+  ),
+  args: {
+    size: 'md',
+    title: 'Upload your documents',
+    supportedFilesText: 'Drag files here or click to browse',
+    buttonText: 'Choose File',
+    helperText: 'Maximum size: 5MB',
+    icon: <i className="icon-lux-upload-cloud"></i>,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Upload component with a custom icon and personalized text content.',
+      },
     },
   },
 };
 
 // Multiple file upload
-export const MultipleFiles = Template.bind({});
-MultipleFiles.args = {
-  ...Default.args,
-  multiple: true,
-  buttonText: 'Choose Files',
-  title: 'Upload multiple files',
-  supportedFilesText: 'Select multiple files at once',
-  helperText: 'Maximum size: 5MB per file',
-};
-MultipleFiles.parameters = {
-  docs: {
-    description: {
-      story: 'Upload component configured to accept multiple files at once.',
+export const MultipleFiles: Story = {
+  render: args => (
+    <div style={{ padding: '30px', maxWidth: '600px' }}>
+      <Upload {...args} />
+    </div>
+  ),
+  args: {
+    size: 'md',
+    multiple: true,
+    buttonText: 'Choose Files',
+    title: 'Upload multiple files',
+    supportedFilesText: 'Select multiple files at once',
+    helperText: 'Maximum size: 5MB per file',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Upload component configured to accept multiple files at once.',
+      },
     },
   },
 };
 
 // Drag and Drop Demo
-export const DragDropDemo: StoryFn<typeof Upload> = () => {
-  const [dragState, setDragState] = useState<'idle' | 'dragging'>('idle');
-  const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
+export const DragDropDemo: Story = {
+  render: () => {
+    const [dragState, setDragState] = useState<'idle' | 'dragging'>('idle');
+    const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
 
   const handleFileSelect = (files: File[]) => {
     const fileNames = files.map(file => file.name);
@@ -415,20 +449,23 @@ export const DragDropDemo: StoryFn<typeof Upload> = () => {
         </div>
       )}
     </div>
-  );
+    );
+  },
 };
-DragDropDemo.parameters = {
-  docs: {
-    description: {
-      story:
-        'Interactive demonstration of drag & drop functionality with visual feedback and file tracking.',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Interactive demonstration of drag & drop functionality with visual feedback and file tracking.',
+      },
     },
   },
 };
 
 // Different File Types
-export const FileTypeRestrictions: StoryFn<typeof Upload> = () => (
-  <div style={{ padding: '30px' }}>
+export const FileTypeRestrictions: Story = {
+  render: () => (
+    <div style={{ padding: '30px' }}>
     <div style={{ marginBottom: '40px' }}>
       <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>Images Only</h3>
       <div style={{ maxWidth: '500px' }}>
@@ -462,11 +499,12 @@ export const FileTypeRestrictions: StoryFn<typeof Upload> = () => (
       </div>
     </div>
   </div>
-);
-FileTypeRestrictions.parameters = {
-  docs: {
-    description: {
-      story: 'Upload components configured for specific file types with appropriate messaging.',
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Upload components configured for specific file types with appropriate messaging.',
+      },
     },
   },
 };

@@ -10,7 +10,14 @@ const meta = {
   component: Slider,
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'The Slider component provides a carousel/slideshow interface for displaying multiple items in a scrollable container. It supports horizontal and vertical orientations, navigation controls, pagination, autoplay, and various transition effects. Sliders are ideal for showcasing images, cards, testimonials, or any collection of content.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     slides: { control: 'object' },
     slidesToShow: { control: { type: 'number', min: 1, max: 5 } },

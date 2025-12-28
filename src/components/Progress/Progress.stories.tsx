@@ -1,75 +1,95 @@
 import React from 'react';
-import { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Progress } from './Progress';
-import { ProgressProps } from '../../lib/types/components';
+import { THEME_COLORS, SIZES } from '../../lib/constants/components';
 
-export default {
+const meta = {
   title: 'Components/Progress',
   component: Progress,
-  argTypes: {
-    value: { control: { type: 'range', min: 0, max: 100 } },
-    variant: {
-      control: {
-        type: 'select',
-        options: ['primary', 'secondary', 'success', 'warning', 'error', 'info', 'light', 'dark'],
-      },
-    },
-    size: {
-      control: {
-        type: 'select',
-        options: ['sm', 'md', 'lg'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Progress component displays the completion status of a task or process. It provides visual feedback on progress through a horizontal bar that fills based on a percentage value. Progress bars support multiple variants, sizes, and can be used to show loading states, form completion, or any incremental process.',
       },
     },
   },
-} as Meta<typeof Progress>;
+  tags: ['autodocs'],
+  argTypes: {
+    value: {
+      control: { type: 'range', min: 0, max: 100 },
+      description: 'The progress value as a percentage (0-100)',
+    },
+    variant: {
+      control: { type: 'select' },
+      options: THEME_COLORS,
+      description: 'The color variant of the progress bar',
+    },
+    size: {
+      control: { type: 'select' },
+      options: SIZES,
+      description: 'The size of the progress bar',
+    },
+  },
+} satisfies Meta<typeof Progress>;
 
-const Template: StoryFn<ProgressProps> = (args: ProgressProps) => <Progress {...args} />;
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
-Default.args = {
-  value: 50,
-  variant: 'primary',
-  size: 'md',
+// Default Progress
+export const Default: Story = {
+  args: {
+    value: 50,
+    variant: 'primary',
+    size: 'md',
+  },
 };
 
-export const Secondary = Template.bind({});
-Secondary.args = {
-  value: 75,
-  variant: 'secondary',
-  size: 'md',
+export const Secondary: Story = {
+  args: {
+    value: 75,
+    variant: 'secondary',
+    size: 'md',
+  },
 };
 
-export const Success = Template.bind({});
-Success.args = {
-  value: 100,
-  variant: 'success',
-  size: 'md',
+export const Success: Story = {
+  args: {
+    value: 100,
+    variant: 'success',
+    size: 'md',
+  },
 };
 
-export const Warning = Template.bind({});
-Warning.args = {
-  value: 25,
-  variant: 'warning',
-  size: 'md',
+export const Warning: Story = {
+  args: {
+    value: 25,
+    variant: 'warning',
+    size: 'md',
+  },
 };
 
-export const Error = Template.bind({});
-Error.args = {
-  value: 10,
-  variant: 'error',
-  size: 'md',
+export const Error: Story = {
+  args: {
+    value: 10,
+    variant: 'error',
+    size: 'md',
+  },
 };
 
-export const Small = Template.bind({});
-Small.args = {
-  value: 60,
-  variant: 'primary',
-  size: 'sm',
+export const Small: Story = {
+  args: {
+    value: 60,
+    variant: 'primary',
+    size: 'sm',
+  },
 };
 
-export const Large = Template.bind({});
-Large.args = {
-  value: 80,
-  variant: 'primary',
-  size: 'lg',
+export const Large: Story = {
+  args: {
+    value: 80,
+    variant: 'primary',
+    size: 'lg',
+  },
 };

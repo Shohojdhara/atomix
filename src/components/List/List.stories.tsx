@@ -8,7 +8,14 @@ const meta = {
   component: List,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The List component provides a flexible way to display ordered or unordered lists of items. It supports multiple style variants including default, dashed, numbered, and text styles. Lists can be used for navigation, content organization, or any scenario requiring structured item display.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: { type: 'select' },

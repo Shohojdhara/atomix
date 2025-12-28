@@ -6,7 +6,14 @@ const meta = {
   component: Checkbox,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Checkbox component allows users to select one or more options from a set. It supports checked, unchecked, and indeterminate states, and can be used in forms or as standalone controls. Checkboxes provide clear visual feedback and support keyboard navigation.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     label: {
       control: 'text',

@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { MessageItem } from '../../lib/types/components';
 import { Messages } from './Messages';
 
-const meta: Meta<typeof Messages> = {
+const meta = {
   title: 'Components/Messages',
   component: Messages,
   parameters: {
@@ -11,10 +11,11 @@ const meta: Meta<typeof Messages> = {
     docs: {
       description: {
         component:
-          'Messages component for displaying chat conversations with support for text messages, images, and file attachments.',
+          'The Messages component provides a complete chat interface for displaying conversations. It supports text messages, images, file attachments, timestamps, and user avatars. Messages are ideal for chat applications, support systems, or any scenario requiring real-time or historical message display.',
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     messages: { control: 'object' },
     width: { control: 'text' },
@@ -23,13 +24,13 @@ const meta: Meta<typeof Messages> = {
     otherName: { control: 'text' },
     otherAvatar: { control: 'text' },
     selfAvatar: { control: 'text' },
-    placeholder: { control: 'text' },
-    disabled: { control: 'boolean' },
+    placeholder: { control: 'text', description: 'Placeholder text for the input field' },
+    disabled: { control: 'boolean', description: 'Whether the messages component is disabled' },
   },
-};
+} satisfies Meta<typeof Messages>;
 
 export default meta;
-type Story = StoryObj<typeof Messages>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {

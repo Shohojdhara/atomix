@@ -8,7 +8,14 @@ const meta = {
   component: ColorModeToggle,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The ColorModeToggle component provides a user-friendly switch for toggling between light and dark color modes. It automatically detects system preferences, persists user choices, and provides visual feedback. Essential for applications supporting theme customization and accessibility preferences.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     size: {
       control: 'select',

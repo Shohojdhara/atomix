@@ -24,6 +24,7 @@ const meta = {
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     iconPosition: {
       control: { type: 'radio' },

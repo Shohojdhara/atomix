@@ -1,13 +1,20 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import Modal from './Modal';
 
-const meta: Meta<typeof Modal> = {
+const meta = {
   title: 'Components/Modal',
   component: Modal,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Modal component displays content in a focused overlay dialog. It provides a way to present important information or actions that require user attention. Modals support various sizes, can include headers and footers, and support glass morphism effects.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     size: {
       control: 'select',
@@ -35,10 +42,10 @@ const meta: Meta<typeof Modal> = {
       description: 'Enable glass morphism effect',
     },
   },
-};
+} satisfies Meta<typeof Modal>;
 
 export default meta;
-type Story = StoryObj<typeof Modal>;
+type Story = StoryObj<typeof meta>;
 
 /**
  * Basic modal example with a button to trigger opening.

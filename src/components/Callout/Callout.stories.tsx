@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from '../Button/Button';
 import { Callout } from './Callout';
+import { THEME_COLORS } from '../../lib/constants/components';
 
-const meta: Meta<typeof Callout> = {
+const meta = {
   title: 'Components/Callout',
   component: Callout,
   parameters: {
@@ -11,14 +12,15 @@ const meta: Meta<typeof Callout> = {
     docs: {
       description: {
         component:
-          'Callout components are used to display important messages, notifications, or alerts to users. They can be used to provide feedback, warnings, errors, or general information.',
+          'Callout components are used to display important messages, notifications, or alerts to users. They can be used to provide feedback, warnings, errors, or general information. Callouts support multiple variants, can include icons, and can be dismissible.',
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'],
+      options: THEME_COLORS,
       description: 'The color variant of the callout',
       table: {
         defaultValue: { summary: 'primary' },
@@ -86,10 +88,10 @@ const meta: Meta<typeof Callout> = {
       },
     },
   },
-};
+} satisfies Meta<typeof Callout>;
 
 export default meta;
-type Story = StoryObj<typeof Callout>;
+type Story = StoryObj<typeof meta>;
 
 // Icon components for different callout types
 const InfoIcon = () => (

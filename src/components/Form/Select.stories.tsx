@@ -1,17 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Select } from './Select';
+import { SIZES } from '../../lib/constants/components';
 
 const meta = {
   title: 'Components/Form/Select',
   component: Select,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The Select component provides a dropdown menu for selecting one or more options from a list. It supports single and multiple selection modes, validation states, and can be customized with different sizes. Select components are essential for forms requiring user choice from predefined options.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: SIZES,
       description: 'Size of the select',
     },
     disabled: {

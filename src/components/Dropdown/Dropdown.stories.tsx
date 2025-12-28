@@ -1,10 +1,11 @@
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { ThemeColor } from '../../lib/types/components';
 import { Icon } from '../Icon';
 import { Dropdown, DropdownDivider, DropdownHeader, DropdownItem } from './index';
+import { THEME_COLORS } from '../../lib/constants/components';
 
-const meta: Meta<typeof Dropdown> = {
+const meta = {
   title: 'Components/Dropdown',
   component: Dropdown,
   parameters: {
@@ -12,10 +13,11 @@ const meta: Meta<typeof Dropdown> = {
     docs: {
       description: {
         component:
-          'Dropdown component with a toggleable menu. The dropdown menu appears on click or hover, depending on the trigger prop.',
+          'The Dropdown component provides a toggleable menu that appears relative to a trigger element. It supports multiple placement options, click or hover triggers, and can include dividers, headers, and icons. Dropdowns are ideal for navigation menus, action menus, or any context where options need to be revealed on demand.',
       },
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     placement: {
       control: 'select',
@@ -38,17 +40,7 @@ const meta: Meta<typeof Dropdown> = {
     },
     variant: {
       control: 'select',
-      options: [
-        'primary',
-        'secondary',
-        'tertiary',
-        'success',
-        'info',
-        'warning',
-        'error',
-        'light',
-        'dark',
-      ],
+      options: THEME_COLORS,
       description: 'The color variant of the dropdown',
     },
     minWidth: {
@@ -72,10 +64,10 @@ const meta: Meta<typeof Dropdown> = {
       description: 'Enable glass morphism effect',
     },
   },
-};
+} satisfies Meta<typeof Dropdown>;
 
 export default meta;
-type Story = StoryObj<typeof Dropdown>;
+type Story = StoryObj<typeof meta>;
 
 /**
  * Interactive dropdown component that can be used in Storybook
