@@ -114,7 +114,7 @@ export function hasCustomization(props: {
  * Create data attributes for debugging
  */
 export function createDebugAttrs(componentName: string, variant?: string): Record<string, string> {
-  if (process.env.NODE_ENV !== 'development') return {};
+  if (typeof process === 'undefined' || process.env?.NODE_ENV !== 'development') return {};
   
   return {
     'data-component': componentName,

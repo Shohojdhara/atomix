@@ -77,7 +77,7 @@ export interface UsePerformanceMonitorOptions {
 export function usePerformanceMonitor(options: UsePerformanceMonitorOptions) {
   const {
     componentName,
-    logToConsole = process.env.NODE_ENV === 'development',
+    logToConsole = (typeof process === 'undefined' || process.env?.NODE_ENV === 'development'),
     warnThreshold = 16,
     onMetrics,
   } = options;

@@ -34,7 +34,7 @@ export function isMemoryMonitoringAvailable(): boolean {
   return (
     typeof performance !== 'undefined' &&
     'memory' in performance &&
-    process.env.NODE_ENV === 'development'
+    (typeof process === 'undefined' || process.env?.NODE_ENV === 'development')
   );
 }
 
@@ -133,7 +133,7 @@ export function monitorMemoryUsage(
     if (snapshot) {
       if (callback) {
         callback(snapshot);
-      } else if (process.env.NODE_ENV === 'development') {
+      } else if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'development') {
         console.log('[Memory Monitor]', {
           used: formatBytes(snapshot.usedJSHeapSize),
           total: formatBytes(snapshot.totalJSHeapSize),
@@ -175,7 +175,7 @@ export function trackComponentMemory(componentName: string) {
       const after = getMemorySnapshot();
       if (before && after) {
         const leakInfo = detectMemoryLeak(before, after);
-        if (leakInfo.hasLeak && process.env.NODE_ENV === 'development') {
+        if (leakInfo.hasLeak && (typeof process === 'undefined' || process.env?.NODE_ENV === 'development')) {
           console.warn(
             `[Memory Monitor] Potential memory leak detected in ${componentName}:`,
             leakInfo

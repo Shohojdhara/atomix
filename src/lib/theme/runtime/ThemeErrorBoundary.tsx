@@ -83,7 +83,7 @@ const DefaultFallback: React.FC<{ error: Error; errorInfo: ErrorInfo }> = ({ err
           </pre>
         </details>
       )}
-      {process.env.NODE_ENV === 'development' && errorInfo && (
+      {(typeof process === 'undefined' || process.env?.NODE_ENV === 'development') && errorInfo && (
         <details style={{ marginTop: '1rem' }}>
           <summary style={{ cursor: 'pointer', fontWeight: 'bold' }}>
             Stack Trace (Development Only)

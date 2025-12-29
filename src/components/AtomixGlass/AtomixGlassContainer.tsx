@@ -53,7 +53,7 @@ const setCachedShader = (key: string, url: string): void => {
   sharedShaderCache.set(key, { url, timestamp: Date.now() });
   
   // Development mode: log cache size
-  if (process.env.NODE_ENV !== 'production') {
+  if (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') {
     if (sharedShaderCache.size >= MAX_CACHE_SIZE * 0.8) {
       console.log(`AtomixGlass: Shader cache size: ${sharedShaderCache.size}/${MAX_CACHE_SIZE}`);
     }

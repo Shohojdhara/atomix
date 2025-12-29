@@ -120,7 +120,7 @@ export class ThemeLogger {
 
   constructor(config: LoggerConfig = {}) {
     this.config = {
-      level: config.level ?? (process.env.NODE_ENV === 'production' ? LogLevel.WARN : LogLevel.INFO),
+      level: config.level ?? (typeof process !== 'undefined' && process.env?.NODE_ENV === 'production' ? LogLevel.WARN : LogLevel.INFO),
       enableConsole: config.enableConsole ?? true,
       onError: config.onError,
       onWarn: config.onWarn,

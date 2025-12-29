@@ -121,7 +121,7 @@ export const DEFAULT_ANALYTICS_CONFIG = {
  * Logger default configuration
  */
 export const DEFAULT_LOGGER_CONFIG = {
-  level: process.env.NODE_ENV === 'production' ? 1 : 2, // WARN in prod, INFO in dev
+  level: (typeof process !== 'undefined' && process.env?.NODE_ENV === 'production') ? 1 : 2, // WARN in prod, INFO in dev
   enableConsole: true,
 } as const;
 

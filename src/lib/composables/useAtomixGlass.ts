@@ -309,14 +309,14 @@ export function useAtomixGlass({
           //     timestamp: new Date().toISOString(),
           //   });
           // }
-        } else if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
+        } else if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && debugCornerRadius) {
           //   console.log(
           //     '[AtomixGlass] No corner radius found, using default:',
           //     CONSTANTS.DEFAULT_CORNER_RADIUS
           //   );
         }
       } catch (error) {
-        if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
+        if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && debugCornerRadius) {
           console.error('[AtomixGlass] Error extracting corner radius:', error);
         }
       }
@@ -412,7 +412,7 @@ export function useAtomixGlass({
               }
             } catch (styleError) {
               // Silently continue if getting computed style fails for this element
-              if (process.env.NODE_ENV === 'development') {
+              if (typeof process === 'undefined' || process.env?.NODE_ENV === 'development') {
                 console.debug('AtomixGlass: Error getting computed style for element:', styleError);
               }
             }
@@ -484,7 +484,7 @@ export function useAtomixGlass({
           }
         } catch (error) {
           // Enhanced error logging with context
-          if (process.env.NODE_ENV === 'development') {
+          if (typeof process === 'undefined' || process.env?.NODE_ENV === 'development') {
             console.warn('AtomixGlass: Error detecting background brightness:', error);
           }
           const result = false;
@@ -607,7 +607,7 @@ export function useAtomixGlass({
       setInternalMouseOffset(newOffset);
       setInternalGlobalMousePosition(globalPos);
 
-      if (process.env.NODE_ENV !== 'production' && enablePerformanceMonitoring) {
+      if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && enablePerformanceMonitoring) {
         const endTime = performance.now();
         const duration = endTime - startTime;
         // if (duration > 5) {
@@ -964,7 +964,7 @@ export function useAtomixGlass({
       };
 
       // Debug logging
-      if (process.env.NODE_ENV !== 'production' && debugOverLight) {
+      if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && debugOverLight) {
         console.log('[AtomixGlass] OverLight Config:', {
           isOverLight,
           config: {
@@ -996,7 +996,7 @@ export function useAtomixGlass({
     }
 
     // Debug logging for non-object configs
-    if (process.env.NODE_ENV !== 'production' && debugOverLight) {
+    if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && debugOverLight) {
       console.log('[AtomixGlass] OverLight Config:', {
         isOverLight,
         configType: typeof overLight === 'boolean' ? (overLight ? 'true' : 'false') : overLight,
