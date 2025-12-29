@@ -13,6 +13,7 @@ import { createTokens } from '../tokens/tokens';
 import { generateCSSVariables } from '../generators/generateCSS';
 import { themeToDesignTokens } from '../adapters/themeAdapter';
 import { loadThemeFromConfigSync } from '../config/configLoader';
+import { loadAtomixConfig } from '../../config/loader';
 
 /**
  * Create theme CSS from tokens or Theme object
@@ -57,8 +58,7 @@ export function createTheme(
     
     // Get prefix from config
     try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const { loadAtomixConfig } = require('../../config/loader');
+      // Use the imported function directly instead of require to avoid bundling issues
       const config = loadAtomixConfig({ configPath: 'atomix.config.ts', required: true });
       configPrefix = config?.prefix;
     } catch (error) {

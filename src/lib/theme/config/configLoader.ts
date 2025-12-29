@@ -6,6 +6,7 @@
 
 import type { DesignTokens } from '../tokens/tokens';
 import type { AtomixConfig, ThemeTokens } from '../../config';
+import { loadAtomixConfig } from '../../config/loader';
 
 /**
  * Convert nested config tokens to flat DesignTokens format
@@ -196,8 +197,17 @@ export async function loadThemeFromConfig(
   }
 
   // Load config using the existing loader (required)
-  const { loadAtomixConfig } = await import('../../config/loader');
-  const config = loadAtomixConfig({ configPath, required: true });
+  // Use the imported function directly (already imported at top of file)
+  let config: AtomixConfig;
+  try {
+    config = loadAtomixConfig({ configPath, required: true });
+  } catch (error) {
+    // If loadAtomixConfig is not available (e.g., in browser bundle), provide helpful error
+    if (error instanceof Error && error.message.includes('Cannot find module')) {
+      throw new Error('loadThemeFromConfig: Config loader not available. This function requires Node.js/SSR environment.');
+    }
+    throw error;
+  }
 
   if (!config || !config.theme) {
     throw new Error(`Config file ${configPath} does not contain theme configuration.`);
@@ -233,9 +243,19 @@ export function loadThemeFromConfigSync(
     throw new Error('loadThemeFromConfigSync: Not available in browser environment. Config loading requires Node.js/SSR environment.');
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { loadAtomixConfig } = require('../../config/loader');
-  const config = loadAtomixConfig({ configPath, required: true });
+  // Use the imported function directly instead of require to avoid bundling issues
+  // The function is imported at the top of the file, but we need to handle cases
+  // where it might not be available in the bundle
+  let config: AtomixConfig;
+  try {
+    config = loadAtomixConfig({ configPath, required: true });
+  } catch (error) {
+    // If loadAtomixConfig is not available (e.g., in browser bundle), provide helpful error
+    if (error instanceof Error && error.message.includes('Cannot find module')) {
+      throw new Error('loadThemeFromConfigSync: Config loader not available. This function requires Node.js/SSR environment.');
+    }
+    throw error;
+  }
 
   if (!config || !config.theme) {
     throw new Error(`Config file ${configPath} does not contain theme configuration.`);

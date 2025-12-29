@@ -13,7 +13,6 @@ import { validateConfig } from './validator';
 import { ThemeError, ThemeErrorCode, getLogger } from '../errors/errors';
 import {
   DEFAULT_ATOMIX_CONFIG_PATH,
-  DEFAULT_CONFIG_RELATIVE_PATH,
   DEFAULT_BASE_PATH,
   DEFAULT_STORAGE_KEY,
   DEFAULT_DATA_ATTRIBUTE,
@@ -90,31 +89,26 @@ export function loadThemeConfig(
     let configModule: ConfigModule;
 
     // Try require (Node.js/CommonJS)
+    // Use process.cwd() to resolve config path - avoids bundling issues with relative paths
     try {
-      // Try relative path first
-      try {
-        configModule = nodeRequire(DEFAULT_CONFIG_RELATIVE_PATH) as ConfigModule;
-      } catch {
-        // If relative path fails, try to resolve from process.cwd()
-        const path = nodeRequire('path') as typeof import('path');
-        const fs = nodeRequire('fs') as typeof import('fs');
+      const path = nodeRequire('path') as typeof import('path');
+      const fs = nodeRequire('fs') as typeof import('fs');
 
-        let configFilePath = path.resolve(process.cwd(), configPath);
+      let configFilePath = path.resolve(process.cwd(), configPath);
 
-        // If atomix.config.ts not found at the root, use the default path
-        if (!fs.existsSync(configFilePath) && configPath === DEFAULT_ATOMIX_CONFIG_PATH) {
-          configFilePath = path.resolve(process.cwd(), DEFAULT_ATOMIX_CONFIG_PATH);
+      // If atomix.config.ts not found at the root, use the default path
+      if (!fs.existsSync(configFilePath) && configPath === DEFAULT_ATOMIX_CONFIG_PATH) {
+        configFilePath = path.resolve(process.cwd(), DEFAULT_ATOMIX_CONFIG_PATH);
+      }
+
+      if (fs.existsSync(configFilePath)) {
+        const resolvedPath = nodeRequire.resolve(configFilePath);
+        if (nodeRequire.cache && nodeRequire.cache[resolvedPath]) {
+          delete nodeRequire.cache[resolvedPath];
         }
-
-        if (fs.existsSync(configFilePath)) {
-          const resolvedPath = nodeRequire.resolve(configFilePath);
-          if (nodeRequire.cache && nodeRequire.cache[resolvedPath]) {
-            delete nodeRequire.cache[resolvedPath];
-          }
-          configModule = nodeRequire(configFilePath) as ConfigModule;
-        } else {
-          throw new Error(`Config file not found: ${configFilePath}`);
-        }
+        configModule = nodeRequire(configFilePath) as ConfigModule;
+      } else {
+        throw new Error(`Config file not found: ${configFilePath}`);
       }
     } catch (requireError) {
       const errorMessage = requireError instanceof Error
