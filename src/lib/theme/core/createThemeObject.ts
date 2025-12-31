@@ -327,8 +327,8 @@ export function createThemeObject(...options: ThemeOptions[]): Theme {
 
     // Create typography
     const typography: Theme['typography'] = deepMerge(
-        { ...DEFAULT_TYPOGRAPHY } as any,
-        (mergedOptions.typography || {}) as any
+        { ...DEFAULT_TYPOGRAPHY } as Partial<Theme['typography']>,
+        (mergedOptions.typography || {}) as Partial<Theme['typography']>
     ) as Theme['typography'];
 
     // Create spacing

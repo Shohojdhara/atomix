@@ -198,7 +198,7 @@ export function getThemeApplicator(): ThemeApplicator {
 /**
  * Apply theme using global applicator
  */
-export function applyTheme(theme: Theme): void {
+export function applyTheme(theme: Theme | DesignTokens): void {
   getThemeApplicator().applyTheme(theme);
 }
 

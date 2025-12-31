@@ -46,7 +46,7 @@ export function loadAtomixConfig(
     // In browser environments, config loading is not supported
     if (typeof window !== 'undefined') {
         if (required) {
-            throw new Error('Config loading not supported in browser environment');
+            throw new Error('loadAtomixConfig: Not available in browser environment. Config loading requires Node.js/SSR environment.');
         }
         return defaultConfig;
     }
@@ -145,4 +145,3 @@ export function resolveConfigPath(): string | null {
 }
 
 export default loadAtomixConfig;
-

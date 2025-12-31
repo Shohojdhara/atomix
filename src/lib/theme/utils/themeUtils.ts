@@ -207,13 +207,13 @@ export function spacing(theme: Theme, ...values: number[]): string {
  * @param fallback - Fallback value if path not found
  * @returns Theme value or fallback
  */
-export function getThemeValue<T = any>(theme: Theme, path: string, fallback?: T): T {
+export function getThemeValue<T = unknown>(theme: Theme, path: string, fallback?: T): T {
     const keys = path.split('.');
-    let value: any = theme;
+    let value: unknown = theme;
 
     for (const key of keys) {
         if (value && typeof value === 'object' && key in value) {
-            value = value[key];
+            value = (value as Record<string, unknown>)[key];
         } else {
             return fallback as T;
         }
@@ -225,8 +225,8 @@ export function getThemeValue<T = any>(theme: Theme, path: string, fallback?: T)
 /**
  * Check if a theme is a JS theme (created with createTheme)
  */
-export function isJSTheme(theme: any): theme is Theme {
-    return theme && typeof theme === 'object' && theme.__isJSTheme === true;
+export function isJSTheme(theme: unknown): theme is Theme {
+    return typeof theme === 'object' && theme !== null && '__isJSTheme' in theme && theme.__isJSTheme === true;
 }
 
 // ============================================================================
@@ -265,7 +265,7 @@ export function breakpointBetween(
 /**
  * Get typography variant styles
  */
-export function getTypography(theme: Theme, variant: keyof Theme['typography']): any {
+export function getTypography(theme: Theme, variant: keyof Theme['typography']): Theme['typography'][keyof Theme['typography']] {
     return theme.typography[variant] ?? {};
 }
 

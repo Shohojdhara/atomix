@@ -139,9 +139,9 @@ For a complete list, see [components documentation](./src/components/).
 
 ## API
 
-- [Components API](./docs/COMPONENTS_API.md)
-- [Theme API](./docs/THEME_API.md)
-- [Configuration](./docs/CONFIGURATION.md)
+- [Components API](./docs/components/README.md)
+- [Theme System](./docs/THEME_SYSTEM.md)
+- [CLI Reference](./docs/CLI_API_REFERENCE.md)
 
 ## Contributing
 

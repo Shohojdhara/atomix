@@ -31,8 +31,18 @@ export { createThemeObject } from './core';
 // Theme composition
 export { deepMerge, mergeTheme, extendTheme } from './core';
 
-// Theme registry
-export { ThemeRegistry } from './core';
+// Simplified Theme Registry
+export { 
+  createThemeRegistry,
+  registerTheme,
+  unregisterTheme,
+  hasTheme,
+  getTheme,
+  getAllThemes,
+  getThemeIds,
+  clearThemes,
+  getThemeCount,
+} from './core';
 
 // ============================================================================
 // Theme Injection and Management
@@ -79,16 +89,32 @@ export {
 } from './generators';
 
 // ============================================================================
+// Naming and Component Theming Utilities
+// ============================================================================
+
+export {
+  generateClassName,
+  generateCSSVariableName,
+  normalizeThemeTokens,
+  camelToKebab,
+  themePropertyToCSSVar,
+  type NamingOptions,
+} from './utils/naming';
+
+export {
+  getComponentThemeValue,
+  generateComponentCSSVars,
+  applyComponentTheme,
+  useComponentTheme,
+  type ComponentThemeOptions,
+} from './utils/componentTheming';
+
+// ============================================================================
 // Injection Utilities
 // ============================================================================
 
 export { injectCSS, removeCSS, isCSSInjected } from './utils/injectCSS';
 
-// ============================================================================
-// File Utilities
-// ============================================================================
-
-export { saveCSSFile, saveCSSFileSync } from './generators/cssFile';
 
 // ============================================================================
 // Config Loader
@@ -106,6 +132,7 @@ export {
 // Core React components and hooks
 export { ThemeProvider } from './runtime/ThemeProvider';
 export { useTheme } from './runtime/useTheme';
+export { useThemeTokens } from './runtime/useThemeTokens';
 export { ThemeContext } from './runtime/ThemeContext';
 export { ThemeErrorBoundary } from './runtime/ThemeErrorBoundary';
 
@@ -132,8 +159,6 @@ export {
 
 // CSS variable utilities
 export {
-  generateCSSVariableName,
-  generateComponentCSSVars,
   mapSCSSTokensToCSSVars,
   applyCSSVariables,
   removeCSSVariables,
@@ -147,10 +172,10 @@ export {
 // RTL Support
 export { RTLManager } from './i18n/rtl';
 
+
 // Types
 export type {
   Theme,
-  ThemeMetadata,
   ThemeChangeEvent,
   ThemeLoadOptions,
   ThemeValidationResult,

@@ -10,6 +10,12 @@ export {
   type GenerateCSSVariablesOptions,
 } from './generateCSS';
 
+export {
+  generateNestedCSSVariables,
+  generateNestedCSSVariablesForSelector,
+  type GenerateNestedCSSVariablesOptions,
+} from './generateCSSNested';
+
 export { generateCSSVariables as generateCSSVariablesFromTheme } from './generateCSSVariables';
 
 export {

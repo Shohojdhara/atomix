@@ -16,6 +16,21 @@ export const external = [
   '@babel/runtime-corejs3',
   'fs',
   'path',
+  // Add Node.js modules that should not be bundled
+  'crypto',
+  'stream',
+  'util',
+  'events',
+  'buffer',
+  // Config loader modules that should not be bundled in browser builds
+  '../../config/loader',
+  '../config/loader',
+  '../config/configLoader',
+  '../../config/configLoader',
+  '@shohojdhara/atomix/config',
+  '@shohojdhara/atomix/config/loader',
+  '@shohojdhara/atomix/theme/config',
+  '@shohojdhara/atomix/theme/config/configLoader',
 ];
 
 // Output directories
@@ -49,4 +64,3 @@ export const OUTPUT_FILES = {
 };
 
 // Theme directories removed
-

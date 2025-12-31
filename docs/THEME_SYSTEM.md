@@ -529,6 +529,198 @@ const {
 } = useTheme()
 ```
 
+### Theme Utilities
+
+The theme system provides comprehensive utility functions for color manipulation, spacing calculations, typography helpers, and more.
+
+#### Color Manipulation Utilities
+
+```typescript
+import {
+  hexToRgb,
+  rgbToHex,
+  getLuminance,
+  getContrastRatio,
+  getContrastText,
+  lighten,
+  darken,
+  alpha,
+  emphasize
+} from '@shohojdhara/atomix/theme/utils';
+
+// Convert hex to RGB
+const rgb = hexToRgb('#3b82f6'); // { r: 59, g: 130, b: 246 }
+
+// Convert RGB to hex
+const hex = rgbToHex(59, 130, 246); // '#3b82f6'
+
+// Calculate luminance (for accessibility)
+const lum = getLuminance('#3b82f6'); // Returns value between 0-1
+
+// Calculate contrast ratio between two colors
+const ratio = getContrastRatio('#3b82f6', '#ffffff'); // Returns WCAG contrast ratio
+
+// Get appropriate contrast text color (black or white)
+const textColor = getContrastText('#3b82f6', 3); // Returns '#ffffff' or '#000000'
+
+// Lighten a color
+const lighter = lighten('#3b82f6', 0.2); // Lighten by 20%
+
+// Darken a color
+const darker = darken('#3b82f6', 0.2); // Darken by 20%
+
+// Add transparency to a color
+const transparent = alpha('#3b82f6', 0.5); // Returns 'rgba(59, 130, 246, 0.5)'
+
+// Emphasize a color (lighten if dark, darken if light)
+const emphasized = emphasize('#3b82f6', 0.15); // Emphasize by 15%
+```
+
+**Color Manipulation Use Cases:**
+
+1. **Accessibility Compliance:**
+```typescript
+function ensureAccessibleContrast(foreground: string, background: string): string {
+  const ratio = getContrastRatio(foreground, background);
+  if (ratio < 4.5) {
+    // Adjust foreground color for better contrast
+    return getContrastText(background);
+  }
+  return foreground;
+}
+```
+
+2. **Dynamic Theme Colors:**
+```typescript
+function createColorScale(baseColor: string): {
+  light: string;
+  base: string;
+  dark: string;
+  transparent: string;
+} {
+  return {
+    light: lighten(baseColor, 0.2),
+    base: baseColor,
+    dark: darken(baseColor, 0.2),
+    transparent: alpha(baseColor, 0.5),
+  };
+}
+```
+
+#### Spacing Utilities
+
+```typescript
+import { createSpacing, spacing } from '@shohojdhara/atomix/theme/utils';
+
+// Create a spacing function
+const spacingFn = createSpacing(4); // 4px base unit
+spacingFn(1); // '4px'
+spacingFn(2); // '8px'
+spacingFn(1, 2); // '4px 8px'
+spacingFn(1, 2, 3, 4); // '4px 8px 12px 16px'
+
+// Use custom spacing scale
+const customSpacing = createSpacing([0, 4, 8, 16, 24, 32]);
+customSpacing(1); // '4px'
+customSpacing(2); // '8px'
+
+// Use spacing with theme
+const margin = spacing(theme, 2, 4); // '8px 16px'
+```
+
+#### Theme Value Accessors
+
+```typescript
+import { getThemeValue, isJSTheme } from '@shohojdhara/atomix/theme/utils';
+
+// Safely access nested theme values
+const primaryColor = getThemeValue(theme, 'palette.primary.main');
+const fontSize = getThemeValue(theme, 'typography.fontSize', 16);
+
+// Type guard for JS themes
+if (isJSTheme(theme)) {
+  // theme is now typed as Theme
+  console.log(theme.palette.primary.main);
+}
+```
+
+#### Responsive Utilities
+
+```typescript
+import {
+  breakpointUp,
+  breakpointDown,
+  breakpointBetween
+} from '@shohojdhara/atomix/theme/utils';
+
+// Get media query for breakpoint
+const mediaUp = breakpointUp(theme, 'md'); // '@media (min-width: 768px)'
+const mediaDown = breakpointDown(theme, 'sm'); // '@media (max-width: 639px)'
+const mediaBetween = breakpointBetween(theme, 'sm', 'lg');
+// '@media (min-width: 640px) and (max-width: 1023px)'
+```
+
+#### Typography Utilities
+
+```typescript
+import {
+  getTypography,
+  remToPx,
+  pxToRem
+} from '@shohojdhara/atomix/theme/utils';
+
+// Get typography variant styles
+const h1Styles = getTypography(theme, 'h1');
+
+// Convert between rem and px
+const pixels = remToPx(theme, 1.5); // Returns pixels based on theme font size
+const rems = pxToRem(theme, 24); // Returns '1.5rem'
+```
+
+#### Shadow Utilities
+
+```typescript
+import { getShadow } from '@shohojdhara/atomix/theme/utils';
+
+const shadow = getShadow(theme, 'md'); // Returns medium shadow value
+```
+
+#### Transition Utilities
+
+```typescript
+import {
+  createTransition,
+  getTransitionDuration,
+  getTransitionEasing
+} from '@shohojdhara/atomix/theme/utils';
+
+// Create transition string
+const transition = createTransition(
+  theme,
+  ['color', 'background-color'],
+  {
+    duration: 'standard',
+    easing: 'easeInOut',
+    delay: 100
+  }
+);
+// Returns: 'color 300ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 100ms'
+
+// Get transition duration
+const duration = getTransitionDuration(theme, 'standard'); // Returns milliseconds
+
+// Get transition easing
+const easing = getTransitionEasing(theme, 'easeInOut');
+```
+
+#### Z-Index Utilities
+
+```typescript
+import { getZIndex } from '@shohojdhara/atomix/theme/utils';
+
+const zIndex = getZIndex(theme, 'modal'); // Returns modal z-index value
+```
+
 ### Theme Utilities (Vanilla JavaScript)
 
 For vanilla JavaScript applications, use the theme utilities directly:

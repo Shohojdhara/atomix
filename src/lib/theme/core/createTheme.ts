@@ -1,7 +1,7 @@
 /**
  * Core Theme Functions
- * 
- * Unified theme system that handles both DesignTokens and Theme objects.
+ *
+ * Simplified theme system that handles both DesignTokens and Theme objects.
  * Config-first approach: loads from atomix.config.ts when no input is provided.
  * Config file is required for automatic loading.
  */
@@ -12,35 +12,33 @@ import type { GenerateCSSVariablesOptions } from '../generators/generateCSS';
 import { createTokens } from '../tokens/tokens';
 import { generateCSSVariables } from '../generators/generateCSS';
 import { themeToDesignTokens } from '../adapters/themeAdapter';
-import { loadThemeFromConfigSync } from '../config/configLoader';
-import { loadAtomixConfig } from '../../config/loader';
 
 /**
  * Create theme CSS from tokens or Theme object
- * 
+ *
  * **Config-First Approach**: If no input is provided, loads from `atomix.config.ts`.
  * Config file is required for automatic loading.
- * 
+ *
  * @param input - DesignTokens (partial), Theme object, or undefined (loads from config)
  * @param options - CSS generation options (prefix is automatically read from config if not provided)
  * @returns CSS string with custom properties
  * @throws Error if config loading fails when no input is provided
- * 
+ *
  * @example
  * ```typescript
  * // Loads from atomix.config.ts (config file required)
  * const css = createTheme();
- * 
+ *
  * // Using DesignTokens
  * const css = createTheme({
  *   'primary': '#7c3aed',
  *   'spacing-4': '1rem',
  * });
- * 
+ *
  * // Using Theme object
  * const theme = createThemeObject({ palette: { primary: { main: '#7c3aed' } } });
  * const css = createTheme(theme);
- * 
+ *
  * // With custom options
  * const css = createTheme(undefined, { prefix: 'myapp', selector: ':root' });
  * ```
@@ -49,46 +47,62 @@ export function createTheme(
   input?: Partial<DesignTokens> | Theme,
   options?: GenerateCSSVariablesOptions
 ): string {
+  // Determine tokens based on input
   let tokens: Partial<DesignTokens>;
-  let configPrefix: string | undefined;
-
-  // If no input provided, load from config (required)
+  
   if (!input) {
-    const configTokens = loadThemeFromConfigSync();
+    // Check if we're in a browser environment
+    if (typeof window !== 'undefined') {
+      throw new Error('createTheme: No input provided and config loading is not available in browser environment. Please provide tokens explicitly or use Node.js/SSR environment.');
+    }
     
-    // Get prefix from config
+    // Load from config when no input provided
+    // Using dynamic import in a way that's more compatible with bundlers
+    let loadThemeFromConfigSync: any;
+    let loadAtomixConfig: any;
+    
     try {
-      // Use the imported function directly instead of require to avoid bundling issues
-      const config = loadAtomixConfig({ configPath: 'atomix.config.ts', required: true });
-      configPrefix = config?.prefix;
+      // Use dynamic require but only in Node.js environments
+      // This approach allows bundlers to properly handle external dependencies
+      const configLoaderModule = require('../config/configLoader');
+      const loaderModule = require('../../config/loader');
+      
+      loadThemeFromConfigSync = configLoaderModule.loadThemeFromConfigSync;
+      loadAtomixConfig = loaderModule.loadAtomixConfig;
+      
+      tokens = loadThemeFromConfigSync();
+      
+      // Get prefix from config if needed
+      if (!options?.prefix) {
+        try {
+          const config = loadAtomixConfig({ configPath: 'atomix.config.ts', required: false });
+          options = { ...options, prefix: config?.prefix || 'atomix' };
+        } catch (error) {
+          // If config loading fails, use default prefix
+          options = { ...options, prefix: 'atomix' };
+        }
+      }
     } catch (error) {
-      // Prefix loading failed, but tokens were loaded, so continue
+      throw new Error('createTheme: No input provided and config loading is not available in this environment. Please provide tokens explicitly.');
     }
-    
-    tokens = configTokens;
+  } else if (isThemeObject(input)) {
+    // Convert Theme object to DesignTokens
+    tokens = themeToDesignTokens(input);
   } else {
-    // Check if it's a Theme object
-    const isThemeObject = (input as any).__isJSTheme === true || 
-      ((input as any).palette && (input as any).typography);
-
-    if (isThemeObject) {
-      // Convert Theme to DesignTokens
-      tokens = themeToDesignTokens(input as Theme);
-    } else {
-      // Already DesignTokens
-      tokens = input as Partial<DesignTokens>;
-    }
+    // Use DesignTokens directly
+    tokens = input;
   }
 
   // Merge with defaults and generate CSS
   const allTokens = createTokens(tokens);
-  
-  // Use prefix from config if not provided in options
-  const finalOptions: GenerateCSSVariablesOptions = {
-    ...options,
-    prefix: options?.prefix ?? configPrefix ?? 'atomix',
-  };
-  
-  return generateCSSVariables(allTokens, finalOptions);
+
+  // Get prefix from options or use default
+  const prefix = options?.prefix ?? 'atomix';
+
+  return generateCSSVariables(allTokens, { ...options, prefix });
 }
 
+// Helper functions to simplify main function
+function isThemeObject(input: any): input is Theme {
+  return input?.__isJSTheme === true || (input?.palette && input?.typography);
+}

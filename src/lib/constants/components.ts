@@ -32,6 +32,13 @@ export const CLASS_PREFIX = {
 /**
  * Button-specific constants
  */
+export const THEME_NAMING = {
+  BUTTON_PREFIX: 'btn',
+  ICON_ELEMENT: 'icon',
+  LABEL_ELEMENT: 'label',
+  SPINNER_ELEMENT: 'spinner',
+};
+
 export const BUTTON = {
   BASE_CLASS: 'c-btn',
   ICON_CLASS: 'c-btn__icon',

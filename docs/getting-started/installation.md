@@ -29,14 +29,22 @@ Atomix is a modern, component-based design system built with scalability and fle
 
 ## Installation
 
+### Peer Dependencies
+
+Atomix requires the following peer dependencies:
+
+- **React 16.8+** (Hooks support required)
+- **React DOM 16.8+**
+- **TypeScript 4.0+** (if using TypeScript)
+
 ### NPM/Yarn Installation
 
 ```bash
 # Using npm
-npm install atomix
+npm install @shohojdhara/atomix
 
 # Using yarn
-yarn add atomix
+yarn add @shohojdhara/atomix
 ```
 
 ### Manual Installation
@@ -123,7 +131,7 @@ Import and use Atomix components in your React applications:
 
 ```jsx
 import React from 'react';
-import { Button, Card, Avatar, AvatarGroup } from 'atomix/react';
+import { Button, Card, Avatar, AvatarGroup } from '@shohojdhara/atomix';
 
 function MyComponent() {
   return (

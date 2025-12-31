@@ -7,4 +7,18 @@
 export { createTheme } from './createTheme';
 export { createThemeObject } from './createThemeObject';
 export { deepMerge, mergeTheme, extendTheme } from './composeTheme';
-export { ThemeRegistry } from './ThemeRegistry';
+
+// Simplified Theme Registry API
+export { 
+  createThemeRegistry,
+  registerTheme,
+  unregisterTheme,
+  hasTheme,
+  getTheme,
+  getAllThemes,
+  getThemeIds,
+  clearThemes,
+  getThemeCount,
+  type ThemeRegistry,
+  type ThemeMetadata
+} from './ThemeRegistry';

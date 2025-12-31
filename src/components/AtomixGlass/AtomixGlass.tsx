@@ -110,20 +110,6 @@ export function AtomixGlass({
   const glassRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   
-  // Cache CSS custom property values to avoid reading on every render
-  const opacityCacheRef = useRef<{
-    opacity50: number;
-    opacity40: number;
-    opacity80: number;
-    opacity0: number;
-  } | null>(null);
-
-  // Cache RGB color values from design tokens
-  const rgbCacheRef = useRef<{
-    whiteRgb: string;
-    blackRgb: string;
-  } | null>(null);
-
   // Use composable hook for all state and logic
   const {
     isHovered,
@@ -165,354 +151,142 @@ export function AtomixGlass({
   const isOverLight = overLightConfig.isOverLight;
   const shouldRenderOverLightLayers = enableOverLightLayers && isOverLight;
 
-  // Read CSS custom properties once on mount and cache them
-  useEffect(() => {
-    if (typeof window !== 'undefined' && glassRef.current) {
-      try {
-        const computedStyle = window.getComputedStyle(glassRef.current);
-        
-        // Cache opacity values
-        if (!opacityCacheRef.current) {
-          const opacity50Value = computedStyle.getPropertyValue('--atomix-opacity-50').trim();
-          const opacity40Value = computedStyle.getPropertyValue('--atomix-opacity-40').trim();
-          const opacity80Value = computedStyle.getPropertyValue('--atomix-opacity-80').trim();
-          const opacity0Value = computedStyle.getPropertyValue('--atomix-opacity-0').trim();
-
-          // Parse opacity values, handling 0 correctly (use NaN check instead of falsy check)
-          const parseOpacity = (value: string, defaultValue: number): number => {
-            if (!value) return defaultValue;
-            const parsed = parseFloat(value);
-            return isNaN(parsed) ? defaultValue : parsed;
-          };
-
-          opacityCacheRef.current = {
-            opacity50: parseOpacity(opacity50Value, 0.5),
-            opacity40: parseOpacity(opacity40Value, 0.4),
-            opacity80: parseOpacity(opacity80Value, 0.8),
-            opacity0: parseOpacity(opacity0Value, 0),
-          };
-        }
-
-        // Cache RGB color values from design tokens
-        if (!rgbCacheRef.current) {
-          // Try to read from design tokens, fallback to defaults
-          const whiteRgbValue = computedStyle.getPropertyValue('--atomix-light-rgb').trim() ||
-                                computedStyle.getPropertyValue('--atomix-white-rgb').trim() ||
-                                '';
-          const blackRgbValue = computedStyle.getPropertyValue('--atomix-dark-rgb').trim() ||
-                               computedStyle.getPropertyValue('--atomix-black-rgb').trim() ||
-                               '';
-
-          rgbCacheRef.current = {
-            whiteRgb: whiteRgbValue || '255, 255, 255', // Fallback to white RGB
-            blackRgb: blackRgbValue || '0, 0, 0', // Fallback to black RGB
-          };
-        }
-      } catch (error) {
-        // Fallback to defaults if reading fails
-        if (!opacityCacheRef.current) {
-          opacityCacheRef.current = {
-            opacity50: 0.5,
-            opacity40: 0.4,
-            opacity80: 0.8,
-            opacity0: 0,
-          };
-        }
-        if (!rgbCacheRef.current) {
-          rgbCacheRef.current = {
-            whiteRgb: '255, 255, 255',
-            blackRgb: '0, 0, 0',
-          };
-        }
-      }
-    }
-  }, []);
-
-
-  // Calculate base style with transforms (only dynamic values)
-  const baseStyle = useMemo(
-    () => ({
-      ...style,
-      ...(elasticity !== 0 && !effectiveDisableEffects && {
-        transform: transformStyle,
-      }),
+  // Calculate base style with transforms
+  const baseStyle = {
+    ...style,
+    ...(elasticity !== 0 && !effectiveDisableEffects && {
+      transform: transformStyle,
     }),
-    [style, transformStyle, effectiveDisableEffects, elasticity]
-  );
+  };
 
   // Build className with state modifiers
-  const componentClassName = useMemo(
-    () =>
-      [
-        ATOMIX_GLASS.BASE_CLASS,
-        effectiveReducedMotion && `${ATOMIX_GLASS.BASE_CLASS}--reduced-motion`,
-        effectiveHighContrast && `${ATOMIX_GLASS.BASE_CLASS}--high-contrast`,
-        effectiveDisableEffects && `${ATOMIX_GLASS.BASE_CLASS}--disabled-effects`,
-        className,
-      ]
-        .filter(Boolean)
-        .join(' '),
-    [effectiveReducedMotion, effectiveHighContrast, effectiveDisableEffects, className]
-  );
+  const componentClassName = [
+    ATOMIX_GLASS.BASE_CLASS,
+    effectiveReducedMotion && `${ATOMIX_GLASS.BASE_CLASS}--reduced-motion`,
+    effectiveHighContrast && `${ATOMIX_GLASS.BASE_CLASS}--high-contrast`,
+    effectiveDisableEffects && `${ATOMIX_GLASS.BASE_CLASS}--disabled-effects`,
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   // Calculate position and size styles
-  // Optimize: only depend on specific baseStyle properties used
-  const baseStylePosition = baseStyle.position;
-  const baseStyleTop = baseStyle.top;
-  const baseStyleLeft = baseStyle.left;
+  const positionStyles = {
+    position: (style.position || 'absolute') as React.CSSProperties['position'],
+    top: style.top || 0,
+    left: style.left || 0,
+  };
 
-  const positionStyles = useMemo(
-    () => ({
-      position: (baseStylePosition || 'absolute') as React.CSSProperties['position'],
-      top: baseStyleTop || 0,
-      left: baseStyleLeft || 0,
-    }),
-    [baseStylePosition, baseStyleTop, baseStyleLeft]
-  );
+  const adjustedSize = {
+    width:
+      style.position !== 'fixed'
+        ? '100%'
+        : style.width
+          ? style.width
+          : Math.max(glassSize.width, 0),
+    height:
+      style.position !== 'fixed'
+        ? '100%'
+        : style.height
+          ? style.height
+          : Math.max(glassSize.height, 0),
+  };
 
-  // Optimize: only depend on specific baseStyle properties used
-  const baseStyleWidth = baseStyle.width;
-  const baseStyleHeight = baseStyle.height;
-  const glassSizeWidth = glassSize.width;
-  const glassSizeHeight = glassSize.height;
+  // Calculate gradient values directly without excessive memoization
+  const mx = mouseOffset.x;
+  const my = mouseOffset.y;
 
-  const adjustedSize = useMemo(
-    () => ({
-      width:
-        baseStylePosition !== 'fixed'
-          ? '100%'
-          : baseStyleWidth
-            ? baseStyleWidth
-            : Math.max(glassSizeWidth, 0),
-      height:
-        baseStylePosition !== 'fixed'
-          ? '100%'
-          : baseStyleHeight
-            ? baseStyleHeight
-            : Math.max(glassSizeHeight, 0),
-    }),
-    [baseStylePosition, baseStyleWidth, baseStyleHeight, glassSizeWidth, glassSizeHeight]
-  );
-
-
-
-  // Memoize gradient calculations separately for better performance
-  // Extract mouse position values for dependency optimization
-  const mouseOffsetX = mouseOffset.x;
-  const mouseOffsetY = mouseOffset.y;
-
-  // Extract constants outside useMemo to avoid recreating on every render
+  // Calculate gradient angles and stops
   const GRADIENT = ATOMIX_GLASS.CONSTANTS.GRADIENT;
+  const borderGradientAngle = GRADIENT.BASE_ANGLE + mx * GRADIENT.ANGLE_MULTIPLIER;
+  const borderStop1 = Math.max(
+    GRADIENT.BORDER_STOP_1.MIN,
+    GRADIENT.BORDER_STOP_1.BASE + my * GRADIENT.BORDER_STOP_1.MULTIPLIER
+  );
+  const borderStop2 = Math.min(
+    GRADIENT.BORDER_STOP_2.MAX,
+    GRADIENT.BORDER_STOP_2.BASE + my * GRADIENT.BORDER_STOP_2.MULTIPLIER
+  );
+  const borderOpacity1 =
+    GRADIENT.BORDER_OPACITY.BASE_1 +
+    Math.abs(mx) * GRADIENT.BORDER_OPACITY.MULTIPLIER_LOW;
+  const borderOpacity2 =
+    GRADIENT.BORDER_OPACITY.BASE_2 +
+    Math.abs(mx) * GRADIENT.BORDER_OPACITY.MULTIPLIER_HIGH;
+  const borderOpacity3 =
+    GRADIENT.BORDER_OPACITY.BASE_3 +
+    Math.abs(mx) * GRADIENT.BORDER_OPACITY.MULTIPLIER_LOW;
+  const borderOpacity4 =
+    GRADIENT.BORDER_OPACITY.BASE_4 +
+    Math.abs(mx) * GRADIENT.BORDER_OPACITY.MULTIPLIER_HIGH;
 
-  const gradientCalculations = useMemo(() => {
-    const mx = mouseOffsetX;
-    const my = mouseOffsetY;
+  // Hover gradient positions
+  const hover1X = GRADIENT.CENTER_POSITION + mx / GRADIENT.HOVER_POSITION.DIVISOR_1;
+  const hover1Y = GRADIENT.CENTER_POSITION + my / GRADIENT.HOVER_POSITION.DIVISOR_1;
+  const hover2X = GRADIENT.CENTER_POSITION + mx / GRADIENT.HOVER_POSITION.DIVISOR_2;
+  const hover2Y = GRADIENT.CENTER_POSITION + my / GRADIENT.HOVER_POSITION.DIVISOR_2;
+  const hover3X = GRADIENT.CENTER_POSITION + mx * GRADIENT.HOVER_POSITION.MULTIPLIER_3;
+  const hover3Y = GRADIENT.CENTER_POSITION + my * GRADIENT.HOVER_POSITION.MULTIPLIER_3;
 
-    // Calculate gradient angles and stops (optimized)
-    const borderGradientAngle =
-      GRADIENT.BASE_ANGLE + mx * GRADIENT.ANGLE_MULTIPLIER;
-    const borderStop1 = Math.max(
-      GRADIENT.BORDER_STOP_1.MIN,
-      GRADIENT.BORDER_STOP_1.BASE + my * GRADIENT.BORDER_STOP_1.MULTIPLIER
-    );
-    const borderStop2 = Math.min(
-      GRADIENT.BORDER_STOP_2.MAX,
-      GRADIENT.BORDER_STOP_2.BASE + my * GRADIENT.BORDER_STOP_2.MULTIPLIER
-    );
-    const borderOpacity1 =
-      GRADIENT.BORDER_OPACITY.BASE_1 +
-      Math.abs(mx) * GRADIENT.BORDER_OPACITY.MULTIPLIER_LOW;
-    const borderOpacity2 =
-      GRADIENT.BORDER_OPACITY.BASE_2 +
-      Math.abs(mx) * GRADIENT.BORDER_OPACITY.MULTIPLIER_HIGH;
-    const borderOpacity3 =
-      GRADIENT.BORDER_OPACITY.BASE_3 +
-      Math.abs(mx) * GRADIENT.BORDER_OPACITY.MULTIPLIER_LOW;
-    const borderOpacity4 =
-      GRADIENT.BORDER_OPACITY.BASE_4 +
-      Math.abs(mx) * GRADIENT.BORDER_OPACITY.MULTIPLIER_HIGH;
+  // Base layer positions
+  const baseX = GRADIENT.CENTER_POSITION + mx * GRADIENT.BASE_LAYER_MULTIPLIER;
+  const baseY = GRADIENT.CENTER_POSITION + my * GRADIENT.BASE_LAYER_MULTIPLIER;
 
-    // Hover gradient positions
-    const hover1X = GRADIENT.CENTER_POSITION + mx / GRADIENT.HOVER_POSITION.DIVISOR_1;
-    const hover1Y = GRADIENT.CENTER_POSITION + my / GRADIENT.HOVER_POSITION.DIVISOR_1;
-    const hover2X = GRADIENT.CENTER_POSITION + mx / GRADIENT.HOVER_POSITION.DIVISOR_2;
-    const hover2Y = GRADIENT.CENTER_POSITION + my / GRADIENT.HOVER_POSITION.DIVISOR_2;
-    const hover3X = GRADIENT.CENTER_POSITION + mx * GRADIENT.HOVER_POSITION.MULTIPLIER_3;
-    const hover3Y = GRADIENT.CENTER_POSITION + my * GRADIENT.HOVER_POSITION.MULTIPLIER_3;
-
-    // Base layer positions
-    const baseX = GRADIENT.CENTER_POSITION + mx * GRADIENT.BASE_LAYER_MULTIPLIER;
-    const baseY = GRADIENT.CENTER_POSITION + my * GRADIENT.BASE_LAYER_MULTIPLIER;
-
-    return {
-      isOverLight,
-      mx,
-      my,
-      borderGradientAngle,
-      borderStop1,
-      borderStop2,
-      borderOpacity1,
-      borderOpacity2,
-      borderOpacity3,
-      borderOpacity4,
-      hover1X,
-      hover1Y,
-      hover2X,
-      hover2Y,
-      hover3X,
-      hover3Y,
-      baseX,
-      baseY,
-    };
-  }, [mouseOffsetX, mouseOffsetY, isOverLight]); // GRADIENT is constant, no need to include
-
-  // Memoize opacity values separately - using design token values where applicable
-  // Optimize: extract overLightConfig.opacity to avoid depending on whole object
+  // Calculate opacity values
   const overLightOpacity = overLightConfig.opacity;
+  const BASE_OVER_LIGHT_OPACITY = 0.4; // Default opacity value
+  const OVER_OPACITY_MULTIPLIER = 1.1; // Dynamic multiplier for overlay
 
-  // Use cached opacity values from CSS custom properties (read once on mount)
-  const opacityValues = useMemo(() => {
-    // Use cached values if available, otherwise fallback to defaults
-    const opacity50 = opacityCacheRef.current?.opacity50 ?? 0.5;
-    const opacity40 = opacityCacheRef.current?.opacity40 ?? 0.4;
-    const opacity80 = opacityCacheRef.current?.opacity80 ?? 0.8;
-    const opacity0 = opacityCacheRef.current?.opacity0 ?? 0;
+  const opacityValues = {
+    hover1: isHovered || isActive ? 0.5 : 0,
+    hover2: isActive ? 0.5 : 0,
+    hover3: isHovered ? 0.4 : isActive ? 0.8 : 0,
+    base: isOverLight ? overLightOpacity || BASE_OVER_LIGHT_OPACITY : 0,
+    over: isOverLight ? (overLightOpacity || BASE_OVER_LIGHT_OPACITY) * OVER_OPACITY_MULTIPLIER : 0,
+  };
 
-    const BASE_OVER_LIGHT_OPACITY = opacity40; // Uses design token
-    const OVER_OPACITY_MULTIPLIER = 1.1; // Dynamic multiplier for overlay
-    
-    return {
-      hover1: isHovered || isActive ? opacity50 : opacity0,
-      hover2: isActive ? opacity50 : opacity0,
-      hover3: isHovered ? opacity40 : isActive ? opacity80 : opacity0,
-      base: isOverLight ? overLightOpacity || BASE_OVER_LIGHT_OPACITY : opacity0,
-      over: isOverLight ? (overLightOpacity || BASE_OVER_LIGHT_OPACITY) * OVER_OPACITY_MULTIPLIER : opacity0,
-    };
-  }, [isHovered, isActive, isOverLight, overLightOpacity]);
+  // Generate CSS variables for layers
+  const whiteColor = '255, 255, 255'; // Default white RGB
+  const blackColor = '0, 0, 0'; // Default black RGB
 
-  // Generate CSS variables for layers (only dynamic values)
-  // Optimize: extract specific properties from objects to minimize dependencies
-  const gradientIsOverLight = gradientCalculations.isOverLight;
-  const gradientMx = gradientCalculations.mx;
-  const gradientMy = gradientCalculations.my;
-  const gradientBorderGradientAngle = gradientCalculations.borderGradientAngle;
-  const gradientBorderStop1 = gradientCalculations.borderStop1;
-  const gradientBorderStop2 = gradientCalculations.borderStop2;
-  const gradientBorderOpacity1 = gradientCalculations.borderOpacity1;
-  const gradientBorderOpacity2 = gradientCalculations.borderOpacity2;
-  const gradientBorderOpacity3 = gradientCalculations.borderOpacity3;
-  const gradientBorderOpacity4 = gradientCalculations.borderOpacity4;
-  const gradientHover1X = gradientCalculations.hover1X;
-  const gradientHover1Y = gradientCalculations.hover1Y;
-  const gradientHover2X = gradientCalculations.hover2X;
-  const gradientHover2Y = gradientCalculations.hover2Y;
-  const gradientHover3X = gradientCalculations.hover3X;
-  const gradientHover3Y = gradientCalculations.hover3Y;
-  const gradientBaseX = gradientCalculations.baseX;
-  const gradientBaseY = gradientCalculations.baseY;
-
-  const positionStylesPosition = positionStyles.position;
-  const positionStylesTop = positionStyles.top;
-  const positionStylesLeft = positionStyles.left;
-
-  const adjustedSizeWidth = adjustedSize.width;
-  const adjustedSizeHeight = adjustedSize.height;
-
-  const baseStyleTransform = baseStyle.transform;
-  const opacityValuesHover1 = opacityValues.hover1;
-  const opacityValuesHover2 = opacityValues.hover2;
-  const opacityValuesHover3 = opacityValues.hover3;
-  const opacityValuesBase = opacityValues.base;
-  const opacityValuesOver = opacityValues.over;
-
-  const glassVars = useMemo(() => {
-    // RGB color values for rgba() functions
-    // Note: CSS doesn't support rgba(var(--rgb), opacity) syntax - this is a CSS specification
-    // limitation, not a browser support issue. We read RGB values from design tokens at mount
-    // and cache them for performance. Falls back to defaults if tokens are not available.
-    // Uses design tokens: --atomix-light-rgb / --atomix-white-rgb and --atomix-dark-rgb / --atomix-black-rgb
-    const whiteColor = rgbCacheRef.current?.whiteRgb || '255, 255, 255';
-    const blackColor = rgbCacheRef.current?.blackRgb || '0, 0, 0';
-
-    return {
-      // Standard CSS custom properties for dynamic values
-      '--atomix-glass-radius': `${effectiveCornerRadius}px`,
-      '--atomix-glass-transform': baseStyleTransform || 'none',
-      '--atomix-glass-position': positionStylesPosition,
-      '--atomix-glass-top': positionStylesTop !== 'fixed' ? `${positionStylesTop}px` : '0',
-      '--atomix-glass-left': positionStylesLeft !== 'fixed' ? `${positionStylesLeft}px` : '0',
-      '--atomix-glass-width':
-        baseStylePosition !== 'fixed' ? adjustedSizeWidth : `${adjustedSizeWidth}px`,
-      '--atomix-glass-height':
-        baseStylePosition !== 'fixed' ? adjustedSizeHeight : `${adjustedSizeHeight}px`,
-      // Border width: Use spacing token for consistency
-      '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.09375rem)',
-      '--atomix-glass-blend-mode': gradientIsOverLight ? 'multiply' : 'overlay',
-      // Dynamic gradients and backgrounds
-      // Note: RGB values use design token-aligned constants (white: 255,255,255; black: 0,0,0)
-      '--atomix-glass-border-gradient-1': `linear-gradient(${gradientBorderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${gradientBorderOpacity1}) ${gradientBorderStop1}%, rgba(${whiteColor}, ${gradientBorderOpacity2}) ${gradientBorderStop2}%, rgba(${whiteColor}, 0) 100%)`,
-      '--atomix-glass-border-gradient-2': `linear-gradient(${gradientBorderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${gradientBorderOpacity3}) ${gradientBorderStop1}%, rgba(${whiteColor}, ${gradientBorderOpacity4}) ${gradientBorderStop2}%, rgba(${whiteColor}, 0) 100%)`,
-      '--atomix-glass-hover-1-opacity': opacityValuesHover1,
-      '--atomix-glass-hover-1-gradient': gradientIsOverLight
-        ? `radial-gradient(circle at ${gradientHover1X}% ${gradientHover1Y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_END}%)`
-        : `radial-gradient(circle at ${gradientHover1X}% ${gradientHover1Y}%, rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.WHITE_START}) 0%, rgba(${whiteColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.WHITE_STOP}%)`,
-      '--atomix-glass-hover-2-opacity': opacityValuesHover2,
-      '--atomix-glass-hover-2-gradient': gradientIsOverLight
-        ? `radial-gradient(circle at ${gradientHover2X}% ${gradientHover2Y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_END}%)`
-        : `radial-gradient(circle at ${gradientHover2X}% ${gradientHover2Y}%, rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.WHITE_START}) 0%, rgba(${whiteColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.WHITE_STOP}%)`,
-      '--atomix-glass-hover-3-opacity': opacityValuesHover3,
-      '--atomix-glass-hover-3-gradient': gradientIsOverLight
-        ? `radial-gradient(circle at ${gradientHover3X}% ${gradientHover3Y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_END}%)`
-        : `radial-gradient(circle at ${gradientHover3X}% ${gradientHover3Y}%, rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.WHITE_START}) 0%, rgba(${whiteColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.WHITE_STOP}%)`,
-      '--atomix-glass-base-opacity': opacityValuesBase,
-      '--atomix-glass-base-gradient': gradientIsOverLight
-        ? `linear-gradient(${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.ANGLE}deg, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_START_BASE + gradientMx * ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_START_MULTIPLIER}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_MID_BASE + gradientMy * ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_MID_MULTIPLIER}) ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_MID_STOP}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_END_BASE + Math.abs(gradientMx) * ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_END_MULTIPLIER}) 100%)`
-        : `rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.WHITE_OPACITY})`,
-      '--atomix-glass-overlay-opacity': opacityValuesOver,
-      '--atomix-glass-overlay-gradient': gradientIsOverLight
-        ? `radial-gradient(circle at ${gradientBaseX}% ${gradientBaseY}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_START_BASE + Math.abs(gradientMx) * ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_START_MULTIPLIER}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_MID_STOP}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_END_BASE + Math.abs(gradientMy) * ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_END_MULTIPLIER}) 100%)`
-        : `rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.WHITE_OPACITY})`,
-    } as React.CSSProperties;
-  }, [
-    // Position styles - only specific properties
-    positionStylesPosition,
-    positionStylesTop,
-    positionStylesLeft,
-    // Adjusted size - only specific properties
-    adjustedSizeWidth,
-    adjustedSizeHeight,
-    // Base style - only transform property
-    baseStyleTransform,
-    baseStylePosition,
-    // Other values
-    effectiveCornerRadius,
-    effectiveReducedMotion,
-    // Gradient calculations - extracted properties
-    gradientIsOverLight,
-    gradientMx,
-    gradientMy,
-    gradientBorderGradientAngle,
-    gradientBorderStop1,
-    gradientBorderStop2,
-    gradientBorderOpacity1,
-    gradientBorderOpacity2,
-    gradientBorderOpacity3,
-    gradientBorderOpacity4,
-    gradientHover1X,
-    gradientHover1Y,
-    gradientHover2X,
-    gradientHover2Y,
-    gradientHover3X,
-    gradientHover3Y,
-    gradientBaseX,
-    gradientBaseY,
-    // Opacity values - extracted properties
-    opacityValuesHover1,
-    opacityValuesHover2,
-    opacityValuesHover3,
-    opacityValuesBase,
-    opacityValuesOver,
-  ]);
+  const glassVars = {
+    // Standard CSS custom properties for dynamic values
+    '--atomix-glass-radius': `${effectiveCornerRadius}px`,
+    '--atomix-glass-transform': transformStyle || 'none',
+    '--atomix-glass-position': positionStyles.position,
+    '--atomix-glass-top': positionStyles.top !== 'fixed' ? `${positionStyles.top}px` : '0',
+    '--atomix-glass-left': positionStyles.left !== 'fixed' ? `${positionStyles.left}px` : '0',
+    '--atomix-glass-width':
+      style.position !== 'fixed' ? adjustedSize.width : `${adjustedSize.width}px`,
+    '--atomix-glass-height':
+      style.position !== 'fixed' ? adjustedSize.height : `${adjustedSize.height}px`,
+    // Border width: Use spacing token for consistency
+    '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.09375rem)',
+    '--atomix-glass-blend-mode': isOverLight ? 'multiply' : 'overlay',
+    // Dynamic gradients and backgrounds
+    '--atomix-glass-border-gradient-1': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${borderOpacity1}) ${borderStop1}%, rgba(${whiteColor}, ${borderOpacity2}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
+    '--atomix-glass-border-gradient-2': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${borderOpacity3}) ${borderStop1}%, rgba(${whiteColor}, ${borderOpacity4}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
+    '--atomix-glass-hover-1-opacity': opacityValues.hover1,
+    '--atomix-glass-hover-1-gradient': isOverLight
+      ? `radial-gradient(circle at ${hover1X}% ${hover1Y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_END}%)`
+      : `radial-gradient(circle at ${hover1X}% ${hover1Y}%, rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.WHITE_START}) 0%, rgba(${whiteColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.WHITE_STOP}%)`,
+    '--atomix-glass-hover-2-opacity': opacityValues.hover2,
+    '--atomix-glass-hover-2-gradient': isOverLight
+      ? `radial-gradient(circle at ${hover2X}% ${hover2Y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_END}%)`
+      : `radial-gradient(circle at ${hover2X}% ${hover2Y}%, rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.WHITE_START}) 0%, rgba(${whiteColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.WHITE_STOP}%)`,
+    '--atomix-glass-hover-3-opacity': opacityValues.hover3,
+    '--atomix-glass-hover-3-gradient': isOverLight
+      ? `radial-gradient(circle at ${hover3X}% ${hover3Y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_END}%)`
+      : `radial-gradient(circle at ${hover3X}% ${hover3Y}%, rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.WHITE_START}) 0%, rgba(${whiteColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.WHITE_STOP}%)`,
+    '--atomix-glass-base-opacity': opacityValues.base,
+    '--atomix-glass-base-gradient': isOverLight
+      ? `linear-gradient(${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.ANGLE}deg, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_START_BASE + mx * ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_START_MULTIPLIER}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_MID_BASE + my * ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_MID_MULTIPLIER}) ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_MID_STOP}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_END_BASE + Math.abs(mx) * ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_END_MULTIPLIER}) 100%)`
+      : `rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.WHITE_OPACITY})`,
+    '--atomix-glass-overlay-opacity': opacityValues.over,
+    '--atomix-glass-overlay-gradient': isOverLight
+      ? `radial-gradient(circle at ${baseX}% ${baseY}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_START_BASE + Math.abs(mx) * ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_START_MULTIPLIER}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_MID_STOP}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_END_BASE + Math.abs(my) * ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_END_MULTIPLIER}) 100%)`
+      : `rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.WHITE_OPACITY})`,
+  } as React.CSSProperties;
 
   return (
     <div
@@ -526,8 +300,6 @@ export function AtomixGlass({
       aria-pressed={onClick && isActive ? true : onClick ? false : undefined}
       onKeyDown={onClick ? handleKeyDown : undefined}
     >
-      
-
       <AtomixGlassContainer
         ref={glassRef}
         contentRef={contentRef}
