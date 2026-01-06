@@ -23,7 +23,7 @@ export const NavDropdown: React.FC<NavDropdownProps> = forwardRef<HTMLLIElement,
     });
 
     const [isActive, setIsActive] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    const dropdownRef = useRef<HTMLElement>(null);
 
     const dropdownMenuClass = generateDropdownMenuClass({
       alignment,
@@ -82,11 +82,15 @@ export const NavDropdown: React.FC<NavDropdownProps> = forwardRef<HTMLLIElement,
       </>
     );
 
-    // Create the dropdown/mega menu content
+    const MenuTag = megaMenu ? 'div' : 'ul';
     const menuContent = (
-      <div className={dropdownMenuClass} ref={dropdownRef} aria-hidden={!isActive}>
+      <MenuTag
+        className={dropdownMenuClass}
+        ref={dropdownRef as any}
+        aria-hidden={!isActive}
+      >
         {children}
-      </div>
+      </MenuTag>
     );
 
     return (

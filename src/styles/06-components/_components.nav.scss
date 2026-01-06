@@ -92,6 +92,9 @@
     visibility: hidden;
     opacity: 0;
     white-space: nowrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
     @include transition.basic-transition();
 
     &--center {
