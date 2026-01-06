@@ -9,19 +9,20 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { ThemeContext } from './ThemeContext';
 import type { ThemeProviderProps, ThemeLoadOptions } from '../types';
 import type { DesignTokens } from '../tokens/tokens';
+import { createTokens } from '../tokens/tokens';
 import { getLogger } from '../errors';
 import { createTheme } from '../core';
 import { injectCSS, removeCSS } from '../utils/injectCSS';
 import {
-    isServer,
-    createLocalStorageAdapter,
-    applyThemeAttributes,
-    buildThemePath,
+  isServer,
+  createLocalStorageAdapter,
+  applyThemeAttributes,
+  buildThemePath,
 } from '../utils/domUtils';
 import {
-    DEFAULT_STORAGE_KEY,
-    DEFAULT_DATA_ATTRIBUTE,
-    DEFAULT_BASE_PATH,
+  DEFAULT_STORAGE_KEY,
+  DEFAULT_DATA_ATTRIBUTE,
+  DEFAULT_BASE_PATH,
 } from '../constants/constants';
 
 /**
@@ -114,11 +115,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     // If it's DesignTokens, we'll handle it in useEffect
     return 'tokens-theme';
   });
-  
+
   const [activeTokens, setActiveTokens] = useState<DesignTokens | null>(() => {
     // If defaultTheme is DesignTokens, store them
     if (defaultTheme && typeof defaultTheme !== 'string') {
-      const { createTokens } = require('../tokens/tokens');
       return createTokens(defaultTheme);
     }
     return null;
@@ -163,7 +163,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         abortControllerRef.current.abort();
         abortControllerRef.current = null;
       }
-      
+
       // Clean up completed promises (keep only pending ones)
       // In practice, completed promises are automatically garbage collected,
       // but we can clear the ref to be explicit
@@ -187,17 +187,17 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
-    
+
     // Create new AbortController for this theme load
     const abortController = new AbortController();
     abortControllerRef.current = abortController;
-    
+
     setIsLoading(true);
     setError(null);
-    
+
     try {
       let themeName: string;
-      
+
       if (typeof theme === 'string') {
         themeName = theme;
       } else {
@@ -205,32 +205,31 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         if (abortController.signal.aborted) {
           return;
         }
-        
+
         // For DesignTokens, create CSS and inject it
         const { createTheme } = await import('../core');
         const css = createTheme(theme);
         const themeId = 'tokens-theme';
-        
+
         // Check if aborted after async operation
         if (abortController.signal.aborted) {
           return;
         }
-        
+
         // Remove any previously loaded theme CSS
         removeCSS(`theme-${currentTheme}`);
-        
+
         // Inject new theme CSS
         injectCSS(css, `theme-${themeId}`);
-        
+
         // Store tokens for reference
-        const { createTokens } = await import('../tokens/tokens');
         const fullTokens = createTokens(theme);
-        
+
         // Check if aborted before state update
         if (abortController.signal.aborted) {
           return;
         }
-        
+
         setActiveTokens(fullTokens);
         setCurrentTheme(themeId);
         handleThemeChange(fullTokens);
@@ -266,9 +265,9 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
               resolve();
               return;
             }
-            
+
             const themeMetadata = themes[theme];
-            
+
             if (themeMetadata) {
               // Build CSS path using utility function
               const cssPath = buildThemePath(
@@ -277,28 +276,28 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
                 useMinified,
                 cdnPath
               );
-              
+
               // Check if aborted
               if (abortController.signal.aborted) {
                 resolve();
                 return;
               }
-              
+
               // Load CSS file (using loadThemeCSS from domUtils)
               const { loadThemeCSS } = await import('../utils/domUtils');
               await loadThemeCSS(cssPath, `theme-${theme}`);
-              
+
               // Check if aborted after async operation
               if (abortController.signal.aborted) {
                 resolve();
                 return;
               }
-              
+
               // Remove any previously loaded theme CSS
               removeCSS(`theme-${String(currentTheme)}`);
-              
+
               loadedThemesRef.current.add(theme);
-              
+
               setCurrentTheme(theme);
               setActiveTokens(null);
               handleThemeChange(theme);
@@ -312,7 +311,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
               resolve();
               return;
             }
-            
+
             const error = err instanceof Error ? err : new Error(String(err));
             setError(error);
             handleError(error, String(theme));
@@ -321,13 +320,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         });
 
         themePromisesRef.current[theme] = themeLoadPromise;
-        
+
         try {
           await themeLoadPromise;
         } catch {
           // Error already handled in promise
         }
-        
+
         // Clean up completed promise after a delay to prevent memory leak
         setTimeout(() => {
           if (themePromisesRef.current[theme] === themeLoadPromise) {
@@ -339,7 +338,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         if (abortController.signal.aborted) {
           return;
         }
-        
+
         // For string theme that isn't in our themes record, just set the name
         setCurrentTheme(themeName);
         setActiveTokens(null);
@@ -350,7 +349,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
       if (abortController.signal.aborted) {
         return;
       }
-      
+
       const error = err instanceof Error ? err : new Error(String(err));
       setError(error);
       handleError(error, String(theme));
@@ -382,7 +381,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         useMinified,
         cdnPath
       );
-      
+
       // Preload CSS by fetching it
       await fetch(cssPath);
       loadedThemesRef.current.add(themeName);
@@ -401,11 +400,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     // For now, we'll create a mock implementation that satisfies the type
     return {
       // Mock implementation - in a real app this would be a full ThemeManager
-    } ;
+    };
   }, []);
 
   // Memoize available themes to prevent unnecessary recalculations
-  const availableThemes = useMemo(() => 
+  const availableThemes = useMemo(() =>
     Object.entries(themes).map(([name, metadata]) => ({
       ...metadata,
       name: name, // Ensure name is set from the key
@@ -425,13 +424,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     preloadTheme,
     themeManager,
   }), [
-    currentTheme, 
-    activeTokens, 
-    setTheme, 
+    currentTheme,
+    activeTokens,
+    setTheme,
     availableThemes, // Use memoized value
-    isLoading, 
-    error, 
-    isThemeLoaded, 
+    isLoading,
+    error,
+    isThemeLoaded,
     preloadTheme,
     themeManager
   ]);
