@@ -248,6 +248,22 @@ export function useDatePicker({
     [currentMonth]
   );
 
+  // Decade navigation handlers
+  const handlePrevDecade = useCallback(() => {
+    // Move back 12 years (since generateYears shows 12 years)
+    setViewDate(new Date(currentYear - 12, currentMonth, 1));
+  }, [currentYear, currentMonth]);
+
+  const handleNextDecade = useCallback(() => {
+    // Move forward 12 years (since generateYears shows 12 years)
+    setViewDate(new Date(currentYear + 12, currentMonth, 1));
+  }, [currentYear, currentMonth]);
+
+  // Switch from year view back to day view
+  const switchToDayView = useCallback(() => {
+    setViewMode('days');
+  }, []);
+
   // Handle today button click
   const handleTodayClick = useCallback(() => {
     const todayDate = new Date();
@@ -546,8 +562,11 @@ export function useDatePicker({
     // View mode handlers
     switchToMonthView,
     switchToYearView,
+    switchToDayView,
     selectMonth,
     selectYear,
+    handlePrevDecade,
+    handleNextDecade,
 
     // Data generators
     generateDays,

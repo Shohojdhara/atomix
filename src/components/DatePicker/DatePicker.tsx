@@ -73,8 +73,11 @@ export const DatePicker = forwardRef<DatePickerRef, DatePickerProps>(
       // View mode handlers
       switchToMonthView,
       switchToYearView,
+      switchToDayView,
       selectMonth,
       selectYear,
+      handlePrevDecade,
+      handleNextDecade,
 
       // Utility methods
       generateDays,
@@ -186,21 +189,6 @@ export const DatePicker = forwardRef<DatePickerRef, DatePickerProps>(
       return weeks;
     };
 
-    const handlePrevDecade = () => {
-      // This would need to be implemented in the hook or handled differently
-      // For now, we'll work with what we have
-    };
-
-    const handleNextDecade = () => {
-      // This would need to be implemented in the hook or handled differently
-      // For now, we'll work with what we have
-    };
-
-    const switchToDayView = () => {
-      // This would need to be implemented in the hook or handled differently
-      // For now, we'll work with what we have
-    };
-
     // Helper function to render calendar content
     const renderCalendarContent = () => (
       <>
@@ -279,29 +267,32 @@ export const DatePicker = forwardRef<DatePickerRef, DatePickerProps>(
             </>
           )}
 
-          {viewMode === 'years' && (
-            <>
-              <button
-                type="button"
-                className="c-datepicker__nav-button c-datepicker__nav-button--prev-decade"
-                onClick={handlePrevDecade}
-                aria-label="Previous decade"
-              >
-                <Icon name="CaretDoubleLeft" size="sm" />
-              </button>
-              <button type="button" className="c-datepicker__view-switch" onClick={switchToDayView}>
-                {generateYears()[0]} - {generateYears()[generateYears().length - 1]}
-              </button>
-              <button
-                type="button"
-                className="c-datepicker__nav-button c-datepicker__nav-button--next-decade"
-                onClick={handleNextDecade}
-                aria-label="Next decade"
-              >
-                <Icon name="CaretDoubleRight" size="sm" />
-              </button>
-            </>
-          )}
+          {viewMode === 'years' && (() => {
+            const years = generateYears();
+            return (
+              <>
+                <button
+                  type="button"
+                  className="c-datepicker__nav-button c-datepicker__nav-button--prev-decade"
+                  onClick={handlePrevDecade}
+                  aria-label="Previous decade"
+                >
+                  <Icon name="CaretDoubleLeft" size="sm" />
+                </button>
+                <button type="button" className="c-datepicker__view-switch" onClick={switchToDayView}>
+                  {years[0]} - {years[years.length - 1]}
+                </button>
+                <button
+                  type="button"
+                  className="c-datepicker__nav-button c-datepicker__nav-button--next-decade"
+                  onClick={handleNextDecade}
+                  aria-label="Next decade"
+                >
+                  <Icon name="CaretDoubleRight" size="sm" />
+                </button>
+              </>
+            );
+          })()}
         </div>
 
         <div className="c-datepicker__body">
