@@ -1,11 +1,14 @@
 # Changelog
 
-## 0.3.9
+## [0.3.10] - 2026-01-06
 
-### Patch Changes
+### Fixed
+- Fixed `Module not found: Can't resolve './lib/config/loader'` by bundling `loadAtomixConfig` instead of treating it as external.
 
+## [0.3.9] - 2026-01-06
+
+### Fixed
 - Fixed `Module not found` error by replacing dynamic `require` with static import in `ThemeProvider`. This resolves build issues in external projects (e.g. Next.js).
-
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),

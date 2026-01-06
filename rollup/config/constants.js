@@ -22,15 +22,6 @@ export const external = [
   'util',
   'events',
   'buffer',
-  // Config loader modules that should not be bundled in browser builds
-  '../../config/loader',
-  '../config/loader',
-  '../config/configLoader',
-  '../../config/configLoader',
-  '@shohojdhara/atomix/config',
-  '@shohojdhara/atomix/config/loader',
-  '@shohojdhara/atomix/theme/config',
-  '@shohojdhara/atomix/theme/config/configLoader',
 ];
 
 // Output directories
