@@ -64,6 +64,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
+  }
+
+  &__header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   &__sort-icon {
@@ -73,6 +80,55 @@
 
     .c-data-table__header-cell[aria-sort] & {
       color: data-table.$data-table-sort-icon-active-color;
+    }
+  }
+
+  &__column-filter {
+    width: 120px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border: 1px solid var(--#{config.$prefix}border-color);
+    border-radius: 4px;
+    background-color: var(--#{config.$prefix}white);
+    color: var(--#{config.$prefix}body-color);
+
+    &:focus {
+      outline: none;
+      border-color: var(--#{config.$prefix}primary);
+    }
+  }
+
+  &__resize-handle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    cursor: col-resize;
+    background-color: transparent;
+    z-index: 1;
+
+    &:hover {
+      background-color: var(--#{config.$prefix}primary);
+      opacity: 0.5;
+    }
+
+    &:active {
+      background-color: var(--#{config.$prefix}primary);
+      opacity: 1;
+    }
+  }
+
+  &__header-cell {
+    position: relative;
+
+    &--dragging {
+      opacity: 0.5;
+      cursor: move;
+    }
+
+    &--drag-over {
+      border-left: 2px solid var(--#{config.$prefix}primary);
     }
   }
 
@@ -95,6 +151,21 @@
     &[role='button'] {
       cursor: pointer;
     }
+
+    &--selected {
+      @include dynamic-background(rgba(var(--#{config.$prefix}primary-rgb), 0.1));
+    }
+  }
+
+  // Selection cell
+  &__cell--selection {
+    width: 48px;
+    text-align: center;
+    padding: data-table.$data-table-cell-padding-y 0.5rem;
+  }
+
+  &__radio {
+    cursor: pointer;
   }
 
   // Loading state
@@ -143,6 +214,15 @@
   &--loading {
     opacity: 0.7;
   }
+
+  &--sticky-header {
+    thead {
+      position: sticky;
+      top: var(--sticky-header-offset, 0);
+      z-index: 10;
+      @include dynamic-background(var(--#{config.$prefix}data-table-header-bg));
+    }
+  }
 }
 
 // Toolbar
@@ -151,6 +231,21 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 }
 
 // Search

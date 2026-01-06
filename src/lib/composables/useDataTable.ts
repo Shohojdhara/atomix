@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { DataTableColumn, SortConfig } from '../types/components';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { DataTableColumn, SortConfig, SelectionMode } from '../types/components';
 
 export interface UseDataTableProps {
   /**
@@ -36,6 +36,46 @@ export interface UseDataTableProps {
    * Initial sort configuration
    */
   initialSortConfig?: SortConfig;
+
+  /**
+   * Row selection mode
+   */
+  selectionMode?: SelectionMode;
+
+  /**
+   * Selected row IDs (controlled)
+   */
+  selectedRowIds?: (string | number)[];
+
+  /**
+   * Callback when selection changes
+   */
+  onSelectionChange?: (selectedRows: any[], selectedIds: (string | number)[]) => void;
+
+  /**
+   * Key to use as unique identifier for rows
+   */
+  rowKey?: string | ((row: any) => string | number);
+
+  /**
+   * Column-specific filters
+   */
+  columnFilters?: boolean;
+
+  /**
+   * Whether columns can be reordered
+   */
+  reorderable?: boolean;
+
+  /**
+   * Callback when column order changes
+   */
+  onColumnReorder?: (columnKeys: string[]) => void;
+
+  /**
+   * Callback when column visibility changes
+   */
+  onColumnVisibilityChange?: (visibleColumns: string[]) => void;
 }
 
 export interface UseDataTableReturn {
@@ -73,6 +113,84 @@ export interface UseDataTableReturn {
    * Handle search input
    */
   handleSearch: (query: string) => void;
+
+  /**
+   * Selected row IDs
+   */
+  selectedRowIds: (string | number)[];
+
+  /**
+   * Selected rows data
+   */
+  selectedRows: any[];
+
+  /**
+   * Handle row selection
+   */
+  handleRowSelect: (rowId: string | number, selected: boolean) => void;
+
+  /**
+   * Handle select all
+   */
+  handleSelectAll: (selected: boolean) => void;
+
+  /**
+   * Whether all rows are selected
+   */
+  isAllSelected: boolean;
+
+  /**
+   * Whether some rows are selected
+   */
+  isIndeterminate: boolean;
+
+  /**
+   * Column order
+   */
+  columnOrder: string[];
+
+  /**
+   * Visible columns
+   */
+  visibleColumns: DataTableColumn[];
+
+  /**
+   * Column visibility map
+   */
+  columnVisibility: Record<string, boolean>;
+
+  /**
+   * Handle column visibility toggle
+   */
+  handleColumnVisibilityToggle: (columnKey: string) => void;
+
+  /**
+   * Column-specific filter values
+   */
+  columnFilterValues: Record<string, string>;
+
+  /**
+   * Handle column filter change
+   */
+  handleColumnFilterChange: (columnKey: string, value: string) => void;
+
+  /**
+   * Clear all column filters
+   */
+  clearColumnFilters: () => void;
+}
+
+/**
+ * Get unique row ID
+ */
+function getRowId(row: any, rowKey?: string | ((row: any) => string | number)): string | number {
+  if (typeof rowKey === 'function') {
+    return rowKey(row);
+  }
+  if (typeof rowKey === 'string') {
+    return row[rowKey];
+  }
+  return row.id ?? row.key ?? JSON.stringify(row);
 }
 
 /**
@@ -86,6 +204,14 @@ export function useDataTable({
   pageSize = 10,
   onSort,
   initialSortConfig,
+  selectionMode = 'none',
+  selectedRowIds: controlledSelectedRowIds,
+  onSelectionChange,
+  rowKey,
+  columnFilters = false,
+  reorderable = false,
+  onColumnReorder,
+  onColumnVisibilityChange,
 }: UseDataTableProps): UseDataTableReturn {
   // Sort state
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(initialSortConfig || null);
@@ -95,6 +221,61 @@ export function useDataTable({
 
   // Search state
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  // Selection state
+  const [internalSelectedRowIds, setInternalSelectedRowIds] = useState<(string | number)[]>([]);
+  const selectedRowIds = controlledSelectedRowIds ?? internalSelectedRowIds;
+
+  // Column order state
+  const [columnOrder, setColumnOrder] = useState<string[]>(() => columns.map(col => col.key));
+
+  // Column visibility state
+  const [columnVisibility, setColumnVisibility] = useState<Record<string, boolean>>(() => {
+    const visibility: Record<string, boolean> = {};
+    columns.forEach(col => {
+      visibility[col.key] = col.visible !== false;
+    });
+    return visibility;
+  });
+
+  // Column-specific filter values
+  const [columnFilterValues, setColumnFilterValues] = useState<Record<string, string>>({});
+
+  // Update column order when columns prop changes
+  useEffect(() => {
+    const newOrder = columns.map(col => col.key);
+    const currentOrderSet = new Set(columnOrder);
+    const newOrderSet = new Set(newOrder);
+
+    // Only update if there are actual differences
+    if (
+      newOrder.length !== columnOrder.length ||
+      !newOrder.every(key => currentOrderSet.has(key)) ||
+      !columnOrder.every(key => newOrderSet.has(key))
+    ) {
+      setColumnOrder(newOrder);
+    }
+  }, [columns]);
+
+  // Update column visibility when columns prop changes
+  useEffect(() => {
+    setColumnVisibility(prev => {
+      const updated: Record<string, boolean> = { ...prev };
+      columns.forEach(col => {
+        if (!(col.key in updated)) {
+          updated[col.key] = col.visible !== false;
+        }
+      });
+      return updated;
+    });
+  }, [columns]);
+
+  // Visible columns based on order and visibility
+  const visibleColumns = useMemo(() => {
+    return columnOrder
+      .map(key => columns.find(col => col.key === key))
+      .filter((col): col is DataTableColumn => col !== undefined && columnVisibility[col.key] !== false);
+  }, [columns, columnOrder, columnVisibility]);
 
   // Handle sorting
   const handleSort = useCallback(
@@ -120,10 +301,10 @@ export function useDataTable({
   // Handle page change
   const handlePageChange = useCallback(
     (page: number) => {
-      if (page < 1 || page > Math.ceil(data.length / pageSize)) return;
+      if (page < 1) return;
       setCurrentPage(page);
     },
-    [data.length, pageSize]
+    []
   );
 
   // Handle search
@@ -132,20 +313,62 @@ export function useDataTable({
     setCurrentPage(1); // Reset to first page when searching
   }, []);
 
-  // Filter data based on search query
+  // Handle column filter change
+  const handleColumnFilterChange = useCallback((columnKey: string, value: string) => {
+    setColumnFilterValues(prev => ({
+      ...prev,
+      [columnKey]: value,
+    }));
+    setCurrentPage(1); // Reset to first page when filtering
+  }, []);
+
+  // Clear all column filters
+  const clearColumnFilters = useCallback(() => {
+    setColumnFilterValues({});
+    setCurrentPage(1);
+  }, []);
+
+  // Filter data based on search query and column filters
   const filteredData = useMemo(() => {
-    if (!searchQuery) return data;
+    let result = data;
 
-    const lowercaseQuery = searchQuery.toLowerCase();
-
-    return data.filter(row => {
-      return columns.some(column => {
-        const value = row[column.key];
-        if (value == null) return false;
-        return String(value).toLowerCase().includes(lowercaseQuery);
+    // Apply global search
+    if (searchQuery) {
+      const lowercaseQuery = searchQuery.toLowerCase();
+      result = result.filter(row => {
+        return visibleColumns.some(column => {
+          const value = row[column.key];
+          if (value == null) return false;
+          return String(value).toLowerCase().includes(lowercaseQuery);
+        });
       });
-    });
-  }, [data, columns, searchQuery]);
+    }
+
+    // Apply column-specific filters
+    if (columnFilters) {
+      result = result.filter(row => {
+        return Object.entries(columnFilterValues).every(([columnKey, filterValue]) => {
+          if (!filterValue) return true;
+
+          const column = columns.find(col => col.key === columnKey);
+          if (!column || !column.filterable) return true;
+
+          const cellValue = row[columnKey];
+          if (cellValue == null) return false;
+
+          // Use custom filter function if provided
+          if (column.filterFunction) {
+            return column.filterFunction(cellValue, filterValue);
+          }
+
+          // Default text filter
+          return String(cellValue).toLowerCase().includes(filterValue.toLowerCase());
+        });
+      });
+    }
+
+    return result;
+  }, [data, visibleColumns, searchQuery, columnFilterValues, columnFilters, columns]);
 
   // Sort data
   const sortedData = useMemo(() => {
@@ -182,6 +405,110 @@ export function useDataTable({
     return Math.max(1, Math.ceil(sortedData.length / pageSize));
   }, [sortedData.length, paginated, pageSize]);
 
+  // Selected rows data
+  const selectedRows = useMemo(() => {
+    if (selectionMode === 'none' || selectedRowIds.length === 0) return [];
+    return sortedData.filter(row => selectedRowIds.includes(getRowId(row, rowKey)));
+  }, [sortedData, selectedRowIds, selectionMode, rowKey]);
+
+  // Handle row selection
+  const handleRowSelect = useCallback(
+    (rowId: string | number, selected: boolean) => {
+      if (selectionMode === 'none') return;
+
+      let newSelectedIds: (string | number)[];
+
+      if (selectionMode === 'single') {
+        newSelectedIds = selected ? [rowId] : [];
+      } else {
+        // multiple
+        if (selected) {
+          newSelectedIds = [...selectedRowIds, rowId];
+        } else {
+          newSelectedIds = selectedRowIds.filter(id => id !== rowId);
+        }
+      }
+
+      if (!controlledSelectedRowIds) {
+        setInternalSelectedRowIds(newSelectedIds);
+      }
+
+      if (onSelectionChange) {
+        const selectedRowsData = sortedData.filter(row => newSelectedIds.includes(getRowId(row, rowKey)));
+        onSelectionChange(selectedRowsData, newSelectedIds);
+      }
+    },
+    [selectionMode, selectedRowIds, controlledSelectedRowIds, onSelectionChange, sortedData, rowKey]
+  );
+
+  // Handle select all
+  const handleSelectAll = useCallback(
+    (selected: boolean) => {
+      if (selectionMode !== 'multiple') return;
+
+      const newSelectedIds = selected
+        ? paginatedData.map(row => getRowId(row, rowKey))
+        : [];
+
+      if (!controlledSelectedRowIds) {
+        setInternalSelectedRowIds(newSelectedIds);
+      }
+
+      if (onSelectionChange) {
+        const selectedRowsData = sortedData.filter(row => newSelectedIds.includes(getRowId(row, rowKey)));
+        onSelectionChange(selectedRowsData, newSelectedIds);
+      }
+    },
+    [selectionMode, paginatedData, sortedData, controlledSelectedRowIds, onSelectionChange, rowKey]
+  );
+
+  // Check if all rows are selected
+  const isAllSelected = useMemo(() => {
+    if (selectionMode !== 'multiple' || paginatedData.length === 0) return false;
+    return paginatedData.every(row => selectedRowIds.includes(getRowId(row, rowKey)));
+  }, [selectionMode, paginatedData, selectedRowIds, rowKey]);
+
+  // Check if some rows are selected (indeterminate)
+  const isIndeterminate = useMemo(() => {
+    if (selectionMode !== 'multiple' || paginatedData.length === 0) return false;
+    const selectedCount = paginatedData.filter(row => selectedRowIds.includes(getRowId(row, rowKey))).length;
+    return selectedCount > 0 && selectedCount < paginatedData.length;
+  }, [selectionMode, paginatedData, selectedRowIds, rowKey]);
+
+  // Handle column visibility toggle
+  const handleColumnVisibilityToggle = useCallback(
+    (columnKey: string) => {
+      setColumnVisibility(prev => {
+        const updated = { ...prev, [columnKey]: !prev[columnKey] };
+        if (onColumnVisibilityChange) {
+          const visibleKeys = Object.entries(updated)
+            .filter(([, visible]) => visible)
+            .map(([key]) => key);
+          onColumnVisibilityChange(visibleKeys);
+        }
+        return updated;
+      });
+    },
+    [onColumnVisibilityChange]
+  );
+
+  // Handle column reorder
+  const handleColumnReorder = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      const newOrder = [...columnOrder];
+      const [removed] = newOrder.splice(fromIndex, 1);
+      if (removed) {
+        newOrder.splice(toIndex, 0, removed);
+        setColumnOrder(newOrder);
+
+        if (onColumnReorder) {
+          onColumnReorder(newOrder);
+        }
+      }
+    },
+    [columnOrder, onColumnReorder]
+  );
+
   // Reset to first page when data changes
   useEffect(() => {
     setCurrentPage(1);
@@ -189,7 +516,7 @@ export function useDataTable({
 
   // Reset current page if it's out of bounds
   useEffect(() => {
-    if (currentPage > totalPages) {
+    if (currentPage > totalPages && totalPages > 0) {
       setCurrentPage(Math.max(1, totalPages));
     }
   }, [currentPage, totalPages]);
@@ -202,6 +529,19 @@ export function useDataTable({
     handleSort,
     handlePageChange,
     handleSearch,
+    selectedRowIds,
+    selectedRows,
+    handleRowSelect,
+    handleSelectAll,
+    isAllSelected,
+    isIndeterminate,
+    columnOrder,
+    visibleColumns,
+    columnVisibility,
+    handleColumnVisibilityToggle,
+    columnFilterValues,
+    handleColumnFilterChange,
+    clearColumnFilters,
   };
 }
 

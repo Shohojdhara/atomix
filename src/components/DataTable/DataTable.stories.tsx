@@ -253,3 +253,241 @@ export const Interactive: Story = {
     sortable: true,
   },
 };
+
+// Row selection - multiple
+export const RowSelectionMultiple: Story = {
+  render: args => {
+    const [selectedRows, setSelectedRows] = useState<any[]>([]);
+
+    return (
+      <div>
+        <DataTable
+          {...args}
+          selectionMode="multiple"
+          onSelectionChange={(rows, ids) => setSelectedRows(rows)}
+        />
+        {selectedRows.length > 0 && (
+          <div style={{ marginTop: '1rem', padding: '1rem', background: '#f5f5f5', borderRadius: '4px' }}>
+            <strong>Selected: {selectedRows.length} row(s)</strong>
+            <pre style={{ marginTop: '0.5rem', fontSize: '0.875rem' }}>
+              {JSON.stringify(selectedRows.map(r => r.name), null, 2)}
+            </pre>
+          </div>
+        )}
+      </div>
+    );
+  },
+  args: {
+    data: users,
+    columns,
+    sortable: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with multiple row selection enabled. Select rows using checkboxes.',
+      },
+    },
+  },
+};
+
+// Row selection - single
+export const RowSelectionSingle: Story = {
+  render: args => {
+    const [selectedRow, setSelectedRow] = useState<any>(null);
+
+    return (
+      <div>
+        <DataTable
+          {...args}
+          selectionMode="single"
+          onSelectionChange={(rows) => setSelectedRow(rows[0] || null)}
+        />
+        {selectedRow && (
+          <div style={{ marginTop: '1rem', padding: '1rem', background: '#f5f5f5', borderRadius: '4px' }}>
+            <strong>Selected:</strong>
+            <pre style={{ marginTop: '0.5rem', fontSize: '0.875rem' }}>
+              {JSON.stringify(selectedRow, null, 2)}
+            </pre>
+          </div>
+        )}
+      </div>
+    );
+  },
+  args: {
+    data: users,
+    columns,
+    sortable: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with single row selection enabled. Select a row using radio buttons.',
+      },
+    },
+  },
+};
+
+// Column-specific filtering
+export const ColumnFilters: Story = {
+  args: {
+    data: users,
+    columns: columns.map(col => ({
+      ...col,
+      filterable: ['name', 'role', 'email'].includes(col.key),
+    })),
+    columnFilters: true,
+    sortable: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with column-specific filters. Each filterable column has its own filter input.',
+      },
+    },
+  },
+};
+
+// Column resizing
+export const ResizableColumns: Story = {
+  args: {
+    data: users,
+    columns: columns.map(col => ({
+      ...col,
+      resizable: true,
+      minWidth: '100px',
+    })),
+    resizable: true,
+    sortable: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with resizable columns. Drag the right edge of column headers to resize.',
+      },
+    },
+  },
+};
+
+// Column reordering
+export const ReorderableColumns: Story = {
+  args: {
+    data: users,
+    columns,
+    reorderable: true,
+    sortable: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with reorderable columns. Drag column headers to reorder them.',
+      },
+    },
+  },
+};
+
+// Column visibility toggle
+export const ColumnVisibility: Story = {
+  args: {
+    data: users,
+    columns,
+    showColumnVisibility: true,
+    sortable: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with column visibility toggle. Use the Columns button to show/hide columns.',
+      },
+    },
+  },
+};
+
+// Export functionality
+export const Exportable: Story = {
+  args: {
+    data: users,
+    columns,
+    exportable: true,
+    exportFormats: ['csv', 'excel', 'json'],
+    exportFilename: 'users',
+    sortable: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with export functionality. Export data as CSV, Excel, or JSON.',
+      },
+    },
+  },
+};
+
+// Sticky headers
+export const StickyHeaders: Story = {
+  args: {
+    data: largeDataSet,
+    columns,
+    stickyHeader: true,
+    stickyHeaderOffset: '0px',
+    sortable: true,
+    paginated: true,
+    pageSize: 20,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with sticky headers. Headers remain visible when scrolling.',
+      },
+    },
+  },
+};
+
+// All advanced features
+export const AllAdvancedFeatures: Story = {
+  render: args => {
+    const [selectedRows, setSelectedRows] = useState<any[]>([]);
+
+    return (
+      <div>
+        <DataTable
+          {...args}
+          selectionMode="multiple"
+          onSelectionChange={(rows) => setSelectedRows(rows)}
+        />
+        {selectedRows.length > 0 && (
+          <div style={{ marginTop: '1rem', padding: '1rem', background: '#f5f5f5', borderRadius: '4px' }}>
+            <strong>Selected: {selectedRows.length} row(s)</strong>
+          </div>
+        )}
+      </div>
+    );
+  },
+  args: {
+    data: largeDataSet,
+    columns: columns.map(col => ({
+      ...col,
+      filterable: ['name', 'role'].includes(col.key),
+      resizable: true,
+    })),
+    sortable: true,
+    filterable: true,
+    columnFilters: true,
+    paginated: true,
+    pageSize: 10,
+    striped: true,
+    bordered: true,
+    resizable: true,
+    reorderable: true,
+    showColumnVisibility: true,
+    exportable: true,
+    exportFormats: ['csv', 'excel', 'json'],
+    stickyHeader: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with all advanced features enabled: selection, filtering, resizing, reordering, visibility toggle, export, and sticky headers.',
+      },
+    },
+  },
+};
