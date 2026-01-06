@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { UPLOAD } from '../../lib/constants/components';
 
 export interface UploadProps {
@@ -53,6 +53,46 @@ export interface UploadProps {
   icon?: React.ReactNode;
 
   /**
+   * Upload endpoint URL. If not provided, upload will be simulated.
+   */
+  uploadEndpoint?: string;
+
+  /**
+   * HTTP method for upload request
+   */
+  uploadMethod?: 'POST' | 'PUT' | 'PATCH';
+
+  /**
+   * Additional headers to include in upload request
+   */
+  uploadHeaders?: Record<string, string>;
+
+  /**
+   * Additional form data fields to include in upload
+   */
+  uploadData?: Record<string, string>;
+
+  /**
+   * Chunk size in MB for chunked uploads (0 = no chunking)
+   */
+  chunkSizeInMB?: number;
+
+  /**
+   * Maximum number of retry attempts for failed uploads
+   */
+  maxRetries?: number;
+
+  /**
+   * Delay in milliseconds between retry attempts
+   */
+  retryDelay?: number;
+
+  /**
+   * Whether to automatically upload files after selection
+   */
+  autoUpload?: boolean;
+
+  /**
    * Called when files are selected
    */
   onFileSelect?: (files: File[]) => void;
@@ -65,12 +105,17 @@ export interface UploadProps {
   /**
    * Called when file upload is complete
    */
-  onFileUploadComplete?: (file: File) => void;
+  onFileUploadComplete?: (file: File, response?: any) => void;
 
   /**
    * Called on file upload errors
    */
   onFileUploadError?: (file: File, error: string) => void;
+
+  /**
+   * Called when upload is cancelled
+   */
+  onUploadCancel?: (file: File) => void;
 
   /**
    * Additional CSS class
@@ -87,6 +132,18 @@ export interface UploadProps {
  * Upload status type
  */
 type UploadStatus = 'idle' | 'loading' | 'success' | 'error';
+
+/**
+ * Upload request state
+ */
+interface UploadRequest {
+  xhr: XMLHttpRequest | null;
+  abortController: AbortController;
+  file: File;
+  retryCount: number;
+  chunkXhrs?: XMLHttpRequest[];
+  intervalId?: NodeJS.Timeout;
+}
 
 /**
  * Upload component for file uploads with drag and drop
@@ -108,14 +165,25 @@ export const Upload: React.FC<UploadProps> = ({
   buttonText = 'Choose File',
   helperText = `Maximum size: ${maxSizeInMB}MB`,
   icon = <i className="icon-lux-cloud-arrow-up-fill"></i>,
+  uploadEndpoint,
+  uploadMethod = 'POST',
+  uploadHeaders = {},
+  uploadData = {},
+  chunkSizeInMB = 0,
+  maxRetries = 3,
+  retryDelay = 1000,
+  autoUpload = true,
   onFileSelect,
   onFileUpload,
   onFileUploadComplete,
   onFileUploadError,
+  onUploadCancel,
   className = '',
   style,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const uploadRequestRef = useRef<UploadRequest | null>(null);
+  const startTimeRef = useRef<number | null>(null);
 
   const [status, setStatus] = useState<UploadStatus>('idle');
   const [isDragging, setIsDragging] = useState(false);
@@ -206,9 +274,12 @@ export const Upload: React.FC<UploadProps> = ({
 
     // Process the first valid file
     if (validFiles.length) {
-      setCurrentFile(validFiles[0] || null);
-      if (validFiles[0]) {
-        simulateUpload(validFiles[0]);
+      const fileToUpload = validFiles[0];
+      if (fileToUpload) {
+        setCurrentFile(fileToUpload);
+        if (autoUpload) {
+          uploadFile(fileToUpload);
+        }
       }
     }
   };
@@ -245,44 +316,433 @@ export const Upload: React.FC<UploadProps> = ({
     return true;
   };
 
-  // Simulate upload (in a real component, this would be an actual upload)
-  const simulateUpload = (file: File) => {
+  // Calculate time remaining based on upload speed
+  const calculateTimeRemaining = useCallback((progress: number, elapsedTime: number): string => {
+    if (progress <= 0 || elapsedTime <= 0) return '';
+    
+    const estimatedTotalTime = (elapsedTime / progress) * 100;
+    const remainingTime = estimatedTotalTime - elapsedTime;
+    
+    if (remainingTime <= 0) return 'Almost done...';
+    
+    const seconds = Math.ceil(remainingTime / 1000);
+    if (seconds < 60) {
+      return `${seconds} second${seconds !== 1 ? 's' : ''} left`;
+    }
+    
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}m ${remainingSeconds}s left`;
+  }, []);
+
+  // Upload file chunk
+  const uploadChunk = useCallback((
+    file: File,
+    chunkIndex: number,
+    totalChunks: number,
+    chunkSize: number,
+    chunkXhrs: XMLHttpRequest[]
+  ): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      const start = chunkIndex * chunkSize;
+      const end = Math.min(start + chunkSize, file.size);
+      const chunk = file.slice(start, end);
+
+      const formData = new FormData();
+      formData.append('file', chunk, file.name);
+      formData.append('chunkIndex', chunkIndex.toString());
+      formData.append('totalChunks', totalChunks.toString());
+      formData.append('fileName', file.name);
+      formData.append('fileSize', file.size.toString());
+
+      // Add additional form data
+      Object.entries(uploadData).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+
+      const xhr = new XMLHttpRequest();
+      
+      // Store XHR for cancellation
+      chunkXhrs[chunkIndex] = xhr;
+
+      // Set up progress tracking for this chunk
+      xhr.upload.addEventListener('progress', (e) => {
+        if (e.lengthComputable && uploadRequestRef.current) {
+          const chunkProgress = (e.loaded / e.total) * 100;
+          const overallProgress = ((chunkIndex * chunkSize + e.loaded) / file.size) * 100;
+          
+          setUploadProgress(Math.min(overallProgress, 100));
+          
+          const elapsedTime = startTimeRef.current ? Date.now() - startTimeRef.current : 0;
+          const timeRemaining = calculateTimeRemaining(overallProgress, elapsedTime);
+          setTimeLeft(timeRemaining);
+
+          if (onFileUpload) {
+            onFileUpload(file, overallProgress);
+          }
+        }
+      });
+
+      xhr.addEventListener('load', () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const response = xhr.responseText ? JSON.parse(xhr.responseText) : {};
+            resolve(response);
+          } catch {
+            resolve({});
+          }
+        } else {
+          reject(new Error(`Upload failed with status ${xhr.status}: ${xhr.statusText}`));
+        }
+      });
+
+      xhr.addEventListener('error', () => {
+        reject(new Error('Network error occurred during upload'));
+      });
+
+      xhr.addEventListener('abort', () => {
+        reject(new Error('Upload was cancelled'));
+      });
+
+      xhr.open(uploadMethod, uploadEndpoint!);
+
+      // Set headers
+      Object.entries(uploadHeaders).forEach(([key, value]) => {
+        xhr.setRequestHeader(key, value);
+      });
+
+      xhr.send(formData);
+    });
+  }, [uploadEndpoint, uploadMethod, uploadHeaders, uploadData, onFileUpload, calculateTimeRemaining]);
+
+  // Upload file (with chunking support)
+  const uploadFile = useCallback(async (file: File, retryCount: number = 0) => {
+    // If no endpoint is provided, simulate upload for backward compatibility
+    if (!uploadEndpoint) {
+      setStatus('loading');
+      setUploadProgress(0);
+      startTimeRef.current = Date.now();
+
+      // Simulate progress updates
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 5;
+
+        if (progress < 100) {
+          setUploadProgress(progress);
+          const elapsedTime = Date.now() - (startTimeRef.current || Date.now());
+          const timeRemaining = calculateTimeRemaining(progress, elapsedTime);
+          setTimeLeft(timeRemaining);
+
+          if (onFileUpload) {
+            onFileUpload(file, progress);
+          }
+        } else {
+          clearInterval(interval);
+          setStatus('success');
+          setSuccessMessage('Upload successful');
+          startTimeRef.current = null;
+
+          if (onFileUploadComplete) {
+            onFileUploadComplete(file);
+          }
+          
+          uploadRequestRef.current = null;
+        }
+      }, 500);
+
+      // Store interval for cleanup
+      uploadRequestRef.current = {
+        xhr: null,
+        abortController: new AbortController(),
+        file,
+        retryCount,
+        intervalId: interval,
+      };
+
+      return;
+    }
+
     setStatus('loading');
     setUploadProgress(0);
+    setErrorMessage(null);
+    setSuccessMessage(null);
+    startTimeRef.current = Date.now();
 
-    // Simulate progress updates
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += 5;
+    try {
+      const chunkSize = chunkSizeInMB > 0 ? chunkSizeInMB * 1024 * 1024 : file.size;
+      const totalChunks = chunkSizeInMB > 0 ? Math.ceil(file.size / chunkSize) : 1;
 
-      if (progress < 100) {
-        setUploadProgress(progress);
-        setTimeLeft(`${Math.ceil((100 - progress) / 5)} seconds left`);
+      if (totalChunks > 1) {
+        // Chunked upload
+        const chunkXhrs: XMLHttpRequest[] = [];
+        
+        // Initialize upload request with chunk array
+        uploadRequestRef.current = {
+          xhr: null,
+          abortController: new AbortController(),
+          file,
+          retryCount,
+          chunkXhrs,
+        };
 
-        if (onFileUpload) {
-          onFileUpload(file, progress);
+        try {
+          const chunkResults = [];
+          for (let i = 0; i < totalChunks; i++) {
+            // Check if upload was cancelled
+            if (!uploadRequestRef.current) {
+              throw new Error('Upload was cancelled');
+            }
+            
+            const result = await uploadChunk(file, i, totalChunks, chunkSize, chunkXhrs);
+            chunkResults.push(result);
+          }
+
+          setStatus('success');
+          setSuccessMessage('Upload successful');
+          setUploadProgress(100);
+          setTimeLeft(null);
+          startTimeRef.current = null;
+
+          if (onFileUploadComplete) {
+            onFileUploadComplete(file, chunkResults);
+          }
+
+          uploadRequestRef.current = null;
+        } catch (error) {
+          // Abort all remaining chunks
+          chunkXhrs.forEach(xhr => {
+            if (xhr && xhr.readyState !== XMLHttpRequest.DONE) {
+              xhr.abort();
+            }
+          });
+          throw error;
         }
       } else {
-        clearInterval(interval);
-        setStatus('success');
-        setSuccessMessage('Upload successful');
+        // Single upload - wrap in Promise for proper error handling
+        await new Promise<void>((resolve, reject) => {
+          const formData = new FormData();
+          formData.append('file', file);
 
-        if (onFileUploadComplete) {
-          onFileUploadComplete(file);
+          // Add additional form data
+          Object.entries(uploadData).forEach(([key, value]) => {
+            formData.append(key, value);
+          });
+
+          const xhr = new XMLHttpRequest();
+          const abortController = new AbortController();
+
+          // Set up progress tracking
+          xhr.upload.addEventListener('progress', (e) => {
+            if (e.lengthComputable) {
+              const progress = (e.loaded / e.total) * 100;
+              setUploadProgress(progress);
+
+              const elapsedTime = startTimeRef.current ? Date.now() - startTimeRef.current : 0;
+              const timeRemaining = calculateTimeRemaining(progress, elapsedTime);
+              setTimeLeft(timeRemaining);
+
+              if (onFileUpload) {
+                onFileUpload(file, progress);
+              }
+            }
+          });
+
+          xhr.addEventListener('load', () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              setStatus('success');
+              setSuccessMessage('Upload successful');
+              setUploadProgress(100);
+              setTimeLeft(null);
+              startTimeRef.current = null;
+
+              try {
+                const response = xhr.responseText ? JSON.parse(xhr.responseText) : {};
+                if (onFileUploadComplete) {
+                  onFileUploadComplete(file, response);
+                }
+              } catch {
+                if (onFileUploadComplete) {
+                  onFileUploadComplete(file);
+                }
+              }
+
+              uploadRequestRef.current = null;
+              resolve();
+            } else {
+              reject(new Error(`Upload failed with status ${xhr.status}: ${xhr.statusText}`));
+            }
+          });
+
+          xhr.addEventListener('error', () => {
+            reject(new Error('Network error occurred during upload'));
+          });
+
+          xhr.addEventListener('abort', () => {
+            setStatus('idle');
+            setUploadProgress(0);
+            setTimeLeft(null);
+            startTimeRef.current = null;
+            uploadRequestRef.current = null;
+
+            if (onUploadCancel) {
+              onUploadCancel(file);
+            }
+            
+            reject(new Error('Upload was cancelled'));
+          });
+
+          xhr.open(uploadMethod, uploadEndpoint);
+
+          // Set headers
+          Object.entries(uploadHeaders).forEach(([key, value]) => {
+            xhr.setRequestHeader(key, value);
+          });
+
+          // Store request for cancellation
+          uploadRequestRef.current = {
+            xhr,
+            abortController,
+            file,
+            retryCount,
+          };
+
+          xhr.send(formData);
+        });
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+      
+      // Retry logic
+      if (retryCount < maxRetries && !errorMessage.includes('cancelled')) {
+        setStatus('loading');
+        setErrorMessage(`Upload failed. Retrying... (${retryCount + 1}/${maxRetries})`);
+        
+        setTimeout(() => {
+          uploadFile(file, retryCount + 1);
+        }, retryDelay);
+      } else {
+        setStatus('error');
+        setErrorMessage(errorMessage);
+        setUploadProgress(0);
+        setTimeLeft(null);
+        startTimeRef.current = null;
+        uploadRequestRef.current = null;
+
+        if (onFileUploadError) {
+          onFileUploadError(file, errorMessage);
         }
       }
-    }, 500);
-  };
+    }
+  }, [
+    uploadEndpoint,
+    uploadMethod,
+    uploadHeaders,
+    uploadData,
+    chunkSizeInMB,
+    maxRetries,
+    retryDelay,
+    onFileUpload,
+    onFileUploadComplete,
+    onFileUploadError,
+    onUploadCancel,
+    uploadChunk,
+    calculateTimeRemaining,
+  ]);
 
   // Reset upload
-  const resetUpload = () => {
+  const resetUpload = useCallback(() => {
+    // Cancel any ongoing upload
+    if (uploadRequestRef.current) {
+      // Cancel single XHR request
+      if (uploadRequestRef.current.xhr) {
+        uploadRequestRef.current.xhr.abort();
+      }
+      
+      // Cancel all chunk XHR requests
+      if (uploadRequestRef.current.chunkXhrs) {
+        uploadRequestRef.current.chunkXhrs.forEach(xhr => {
+          if (xhr && xhr.readyState !== XMLHttpRequest.DONE) {
+            xhr.abort();
+          }
+        });
+      }
+      
+      // Clear interval if it exists
+      if (uploadRequestRef.current.intervalId) {
+        clearInterval(uploadRequestRef.current.intervalId);
+      }
+      
+      uploadRequestRef.current = null;
+    }
+
     setStatus('idle');
     setCurrentFile(null);
     setUploadProgress(0);
     setTimeLeft(null);
     setErrorMessage(null);
     setSuccessMessage(null);
-  };
+    startTimeRef.current = null;
+  }, []);
+
+  // Cancel upload
+  const cancelUpload = useCallback(() => {
+    if (uploadRequestRef.current) {
+      // Cancel single XHR request
+      if (uploadRequestRef.current.xhr) {
+        uploadRequestRef.current.xhr.abort();
+      }
+      
+      // Cancel all chunk XHR requests
+      if (uploadRequestRef.current.chunkXhrs) {
+        uploadRequestRef.current.chunkXhrs.forEach(xhr => {
+          if (xhr && xhr.readyState !== XMLHttpRequest.DONE) {
+            xhr.abort();
+          }
+        });
+      }
+      
+      // Clear interval if it exists (for simulated uploads)
+      if (uploadRequestRef.current.intervalId) {
+        clearInterval(uploadRequestRef.current.intervalId);
+      }
+      
+      uploadRequestRef.current.abortController.abort();
+      
+      if (onUploadCancel && uploadRequestRef.current.file) {
+        onUploadCancel(uploadRequestRef.current.file);
+      }
+    }
+    
+    uploadRequestRef.current = null;
+    resetUpload();
+  }, [onUploadCancel, resetUpload]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (uploadRequestRef.current) {
+        // Cancel single XHR request
+        if (uploadRequestRef.current.xhr) {
+          uploadRequestRef.current.xhr.abort();
+        }
+        
+        // Cancel all chunk XHR requests
+        if (uploadRequestRef.current.chunkXhrs) {
+          uploadRequestRef.current.chunkXhrs.forEach(xhr => {
+            if (xhr && xhr.readyState !== XMLHttpRequest.DONE) {
+              xhr.abort();
+            }
+          });
+        }
+        
+        // Clear interval if it exists
+        if (uploadRequestRef.current.intervalId) {
+          clearInterval(uploadRequestRef.current.intervalId);
+        }
+      }
+    };
+  }, []);
 
   // Build CSS classes
   const uploadClasses = [
@@ -367,20 +827,59 @@ export const Upload: React.FC<UploadProps> = ({
 
           {(status === 'loading' || status === 'error' || status === 'success') && (
             <div className="c-upload__loader-control">
-              <div className="c-upload__loader-bar">
-                <svg>
-                  <circle cx="10" cy="10" r="10"></circle>
-                  <circle cx="10" cy="10" r="10"></circle>
-                </svg>
-              </div>
-              <button
-                type="button"
-                className="c-upload__loader-close"
-                onClick={resetUpload}
-                aria-label="Close upload progress"
-              >
-                <i className="icon-lux-x"></i>
-              </button>
+              {status === 'loading' && (
+                <div className="c-upload__loader-bar">
+                  <svg>
+                    <circle cx="10" cy="10" r="10"></circle>
+                    <circle cx="10" cy="10" r="10"></circle>
+                  </svg>
+                </div>
+              )}
+              {status === 'loading' && (
+                <button
+                  type="button"
+                  className="c-upload__loader-cancel"
+                  onClick={cancelUpload}
+                  aria-label="Cancel upload"
+                >
+                  <i className="icon-lux-x"></i>
+                </button>
+              )}
+              {(status === 'error' || status === 'success') && (
+                <button
+                  type="button"
+                  className="c-upload__loader-close"
+                  onClick={resetUpload}
+                  aria-label="Close upload progress"
+                >
+                  <i className="icon-lux-x"></i>
+                </button>
+              )}
+            </div>
+          )}
+          
+          {errorMessage && status === 'error' && (
+            <div className="c-upload__error-message">
+              {errorMessage}
+              {uploadRequestRef.current && uploadRequestRef.current.retryCount < maxRetries && (
+                <button
+                  type="button"
+                  className="c-upload__retry-btn"
+                  onClick={() => {
+                    if (currentFile) {
+                      uploadFile(currentFile, uploadRequestRef.current?.retryCount || 0);
+                    }
+                  }}
+                >
+                  Retry
+                </button>
+              )}
+            </div>
+          )}
+          
+          {successMessage && status === 'success' && (
+            <div className="c-upload__success-message">
+              {successMessage}
             </div>
           )}
         </div>
