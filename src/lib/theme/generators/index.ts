@@ -18,8 +18,5 @@ export {
 
 export { generateCSSVariables as generateCSSVariablesFromTheme } from './generateCSSVariables';
 
-export {
-  saveCSSFile,
-  saveCSSFileSync,
-} from './cssFile';
+
 

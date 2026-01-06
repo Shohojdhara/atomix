@@ -192,7 +192,7 @@ export interface AtomixConfig {
      * Example: prefix: 'myapp' → --myapp-primary instead of --atomix-primary
      */
     prefix?: string;
-    
+
     /** 
      * Theme customization (Tailwind-like)
      * 
@@ -207,7 +207,7 @@ export interface AtomixConfig {
          * Your values will override or extend the base tokens.
          */
         extend?: ThemeTokens;
-        
+
         /** 
          * Override the default tokens entirely (advanced)
          * 
@@ -215,7 +215,7 @@ export interface AtomixConfig {
          * Most users should use `extend` instead.
          */
         tokens?: ThemeTokens;
-        
+
         /** 
          * Register custom themes (optional)
          * 
@@ -223,7 +223,7 @@ export interface AtomixConfig {
          */
         themes?: Record<string, ThemeDefinition>;
     };
-    
+
     // Internal configurations (for library development only)
     // These are not needed for external developers
     /** @internal Build configuration (internal use only) */
@@ -270,6 +270,6 @@ export function defineConfig(config: AtomixConfig): AtomixConfig {
 }
 
 // Export loader functions
-export { loadAtomixConfig, resolveConfigPath } from './loader';
+// Loader functions removed to prevent bundling Node.js modules in browser
 
 export default AtomixConfig;

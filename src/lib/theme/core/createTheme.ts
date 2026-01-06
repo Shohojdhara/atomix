@@ -66,47 +66,18 @@ export function createTheme(
 
   // Determine tokens based on input
   let tokens: Partial<DesignTokens>;
-  
+
   if (!input) {
-    // Check if we're in a browser environment
-    if (typeof window !== 'undefined') {
-      throw new ThemeError(
-        'No input provided and config loading is not available in browser environment. Please provide tokens explicitly or use Node.js/SSR environment.',
-        ThemeErrorCode.CONFIG_LOAD_FAILED,
-        { environment: 'browser' }
-      );
+    // Auto-loading config from file system is removed for browser compatibility.
+    // If no input is provided, we return an empty theme (using defaults only) or user must provide tokens.
+    // This allows createTheme to be isomorphic.
+
+    // Warn in development if no input provided
+    if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
+      console.warn('Atomix: createTheme() called without tokens. Using default tokens only.');
     }
-    
-    // Load from config when no input provided
-    let loadThemeFromConfigSync: any;
-    let loadAtomixConfig: any;
-    
-    try {
-      const configLoaderModule = require('../config/configLoader');
-      const loaderModule = require('../../config/loader');
-      
-      loadThemeFromConfigSync = configLoaderModule.loadThemeFromConfigSync;
-      loadAtomixConfig = loaderModule.loadAtomixConfig;
-      
-      tokens = loadThemeFromConfigSync();
-      
-      // Get prefix from config if needed
-      if (!options?.prefix) {
-        try {
-          const config = loadAtomixConfig({ configPath: 'atomix.config.ts', required: false });
-          options = { ...options, prefix: config?.prefix || 'atomix' };
-        } catch (error) {
-          // If config loading fails, use default prefix
-          options = { ...options, prefix: 'atomix' };
-        }
-      }
-    } catch (error) {
-      throw new ThemeError(
-        'No input provided and config loading is not available in this environment. Please provide tokens explicitly.',
-        ThemeErrorCode.CONFIG_LOAD_FAILED,
-        { error: error instanceof Error ? error.message : String(error) }
-      );
-    }
+
+    tokens = {};
   } else {
     // Validate input tokens structure
     if (typeof input !== 'object' || input === null || Array.isArray(input)) {
@@ -116,7 +87,7 @@ export function createTheme(
         { inputType: typeof input }
       );
     }
-    
+
     // Use DesignTokens directly
     tokens = input;
   }

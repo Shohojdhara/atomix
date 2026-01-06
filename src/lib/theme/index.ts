@@ -29,7 +29,7 @@ export { createTheme } from './core';
 export { deepMerge, mergeTheme, extendTheme } from './core';
 
 // Simplified Theme Registry
-export { 
+export {
   createThemeRegistry,
   registerTheme,
   unregisterTheme,
@@ -46,7 +46,7 @@ export {
 // ============================================================================
 
 import { injectCSS, removeCSS, isCSSInjected } from './utils/injectCSS';
-import { saveCSSFile, saveCSSFileSync } from './generators/cssFile';
+// File saving utilities removed to prevent bundling Node.js modules in browser
 
 /**
  * Inject theme CSS into DOM
@@ -62,12 +62,7 @@ export function removeTheme(id: string = 'atomix-theme'): void {
   removeCSS(id);
 }
 
-/**
- * Save theme to CSS file
- */
-export async function saveTheme(css: string, filePath: string): Promise<void> {
-  await saveCSSFile(css, filePath);
-}
+
 
 // ============================================================================
 // Token Utilities
@@ -113,14 +108,7 @@ export {
 export { injectCSS, removeCSS, isCSSInjected } from './utils/injectCSS';
 
 
-// ============================================================================
-// Config Loader
-// ============================================================================
-
-export {
-  loadThemeFromConfig,
-  loadThemeFromConfigSync,
-} from './config/configLoader';
+// Config loader removed to prevent bundling Node.js modules in browser
 
 // ============================================================================
 // React Integration

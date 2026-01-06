@@ -4,7 +4,7 @@
  * Exports for theme configuration loading and validation
  */
 
-export { loadThemeConfig, clearConfigCache, getCachedConfig, reloadThemeConfig } from './loader';
+// Loader exports removed
 export { validateConfig } from './validator';
 export type {
   ConfigLoaderOptions,

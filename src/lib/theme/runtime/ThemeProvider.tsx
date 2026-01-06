@@ -86,22 +86,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
       return defaultTheme;
     }
 
-    // Try to load from atomix.config.ts as fallback, but only in Node.js/SSR environments
-    if (typeof window === 'undefined') {
-      try {
-        // Dynamically import the config loader to avoid bundling issues in browser
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const { loadThemeFromConfigSync } = require('../config/configLoader');
 
-        const configTokens = loadThemeFromConfigSync();
-        if (configTokens && Object.keys(configTokens).length > 0) {
-          // For simplicity, we'll treat config tokens as a special theme name
-          return 'config-theme';
-        }
-      } catch (error) {
-        // Failed to load theme from config, using default
-      }
-    }
 
     // Default fallback
     return 'default';
