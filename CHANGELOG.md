@@ -1,15 +1,23 @@
 # Changelog
 
+## 0.3.11
+
+### Patch Changes
+
+- 7dbaeb5: patchFix fs/promises module resolution error by removing server-side only functions (saveTheme, saveCSSFile, loadThemeFromConfig) from the browser bundle. This makes the library fully compatible with Next.js App Router and other browser environments. Breaking Change: Removed Node.js specific file-system utilities from main exports.
+
 ## [0.3.10] - 2026-01-06
 
 ### Fixed
+
 - Fixed `Module not found: Can't resolve './lib/config/loader'` by bundling `loadAtomixConfig` instead of treating it as external.
 
 ## [0.3.9] - 2026-01-06
 
 ### Fixed
+
 - Fixed `Module not found` error by replacing dynamic `require` with static import in `ThemeProvider`. This resolves build issues in external projects (e.g. Next.js).
-All notable changes to this project will be documented in this file.
+  All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
