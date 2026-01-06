@@ -7,6 +7,7 @@
 
 import type { ThemeMetadata, ThemeValidationResult } from '../types';
 import { THEME_LINK_ID_PREFIX } from '../constants/constants';
+import { ThemeError, ThemeErrorCode } from '../errors/errors';
 
 /**
  * Check if code is running in a browser environment
@@ -30,6 +31,20 @@ export const getThemeLinkId = (themeName: string): string => {
 };
 
 /**
+ * Sanitize path to prevent path injection attacks
+ * 
+ * @param path - Path to sanitize
+ * @returns Sanitized path
+ */
+const sanitizePath = (path: string): string => {
+    return path
+        .replace(/[<>"']/g, '') // Remove dangerous characters
+        .replace(/\.\./g, '') // Remove path traversal attempts
+        .replace(/\/+/g, '/') // Normalize multiple slashes
+        .replace(/^\/+|\/+$/g, ''); // Trim leading/trailing slashes
+};
+
+/**
  * Build the CSS file path for a theme
  * 
  * @param themeName - Name of the theme
@@ -37,6 +52,7 @@ export const getThemeLinkId = (themeName: string): string => {
  * @param useMinified - Whether to use minified CSS
  * @param cdnPath - Optional CDN path
  * @returns Full path to the theme CSS file
+ * @throws Error if theme name is invalid
  */
 export const buildThemePath = (
     themeName: string,
@@ -46,21 +62,24 @@ export const buildThemePath = (
 ): string => {
     // Validate theme name to prevent path injection
     if (!isValidThemeName(themeName)) {
-        throw new Error(`Invalid theme name: "${themeName}". Theme names must be lowercase alphanumeric with hyphens.`);
+        throw new ThemeError(
+            `Invalid theme name: "${themeName}". Theme names must be lowercase alphanumeric with hyphens (e.g., "my-theme").`,
+            ThemeErrorCode.INVALID_THEME_NAME,
+            { themeName, pattern: /^[a-z0-9]+(-[a-z0-9]+)*$/ }
+        );
     }
 
     const extension = useMinified ? '.min.css' : '.css';
     const fileName = `${themeName}${extension}`;
 
     if (cdnPath) {
-        // Validate CDN path doesn't contain dangerous characters
-        const cleanCdnPath = cdnPath.replace(/[<>"']/g, '');
+        // Sanitize CDN path to prevent path injection
+        const cleanCdnPath = sanitizePath(cdnPath);
         return `${cleanCdnPath}/${fileName}`;
     }
 
-    // Ensure basePath doesn't end with slash and fileName doesn't start with slash
-    // Also sanitize basePath to prevent path injection
-    const cleanBasePath = basePath.replace(/\/$/, '').replace(/[<>"']/g, '');
+    // Sanitize basePath to prevent path injection
+    const cleanBasePath = sanitizePath(basePath);
     const cleanFileName = fileName.replace(/^\//, '');
 
     return `${cleanBasePath}/${cleanFileName}`;
@@ -110,7 +129,11 @@ export const loadThemeCSS = (
         link.onerror = () => {
             // Remove failed link element
             link.remove();
-            reject(new Error(`Failed to load theme CSS: ${fullPath}`));
+            reject(new ThemeError(
+                `Failed to load theme CSS from: ${fullPath}. Please check that the file exists and is accessible.`,
+                ThemeErrorCode.THEME_LOAD_FAILED,
+                { fullPath, linkId }
+            ));
         };
 
         // Append to head
@@ -166,8 +189,10 @@ export const applyThemeAttributes = (
         return;
     }
 
-    // Set data attribute on body
-    document.body.setAttribute(dataAttribute, themeName);
+    // Set data attribute on body (with null check)
+    if (document.body) {
+        document.body.setAttribute(dataAttribute, themeName);
+    }
 
     // Also set on documentElement for broader compatibility
     document.documentElement.setAttribute(dataAttribute, themeName);
@@ -185,7 +210,12 @@ export const removeThemeAttributes = (
         return;
     }
 
-    document.body.removeAttribute(dataAttribute);
+    // Remove from body (with null check)
+    if (document.body) {
+        document.body.removeAttribute(dataAttribute);
+    }
+
+    // Remove from documentElement
     document.documentElement.removeAttribute(dataAttribute);
 };
 
@@ -202,8 +232,10 @@ export const getCurrentThemeFromDOM = (
         return null;
     }
 
-    return document.body.getAttribute(dataAttribute) ||
-        document.documentElement.getAttribute(dataAttribute);
+    // Add null checks for SSR safety
+    const bodyTheme = document.body?.getAttribute(dataAttribute);
+    const htmlTheme = document.documentElement?.getAttribute(dataAttribute);
+    return bodyTheme || htmlTheme || null;
 };
 
 /**
@@ -377,15 +409,15 @@ export const createLocalStorageAdapter = () => {
  * 
  * @param func - Function to debounce
  * @param wait - Wait time in milliseconds
- * @returns Debounced function
+ * @returns Debounced function with cancel method
  */
 export const debounce = <T extends (...args: any[]) => any>(
     func: T,
     wait: number
-): ((...args: Parameters<T>) => void) => {
+): ((...args: Parameters<T>) => void) & { cancel: () => void } => {
     let timeout: ReturnType<typeof setTimeout> | null = null;
 
-    return function executedFunction(...args: Parameters<T>) {
+    const debounced = function executedFunction(...args: Parameters<T>) {
         const later = () => {
             timeout = null;
             func(...args);
@@ -396,4 +428,14 @@ export const debounce = <T extends (...args: any[]) => any>(
         }
         timeout = setTimeout(later, wait);
     };
+
+    // Add cancel method for cleanup
+    debounced.cancel = () => {
+        if (timeout !== null) {
+            clearTimeout(timeout);
+            timeout = null;
+        }
+    };
+
+    return debounced;
 };

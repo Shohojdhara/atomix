@@ -1,13 +1,13 @@
 /**
  * Theme System Exports
  * 
- * Unified theme system - handles both DesignTokens and Theme objects.
+ * Simplified theme system using DesignTokens only.
  * 
  * @example
  * ```typescript
  * import { createTheme, injectTheme } from '@shohojdhara/atomix/theme';
  * 
- * // Using DesignTokens (recommended - flat structure)
+ * // Using DesignTokens
  * const css = createTheme({ 'primary': '#7AFFD7', 'spacing-4': '1rem' });
  * injectTheme(css);
  * 
@@ -22,11 +22,8 @@
 // Core Theme Functions
 // ============================================================================
 
-// Unified createTheme (handles both DesignTokens and Theme objects)
+// Create theme CSS from DesignTokens
 export { createTheme } from './core';
-
-// Theme object creation
-export { createThemeObject } from './core';
 
 // Theme composition
 export { deepMerge, mergeTheme, extendTheme } from './core';
@@ -142,19 +139,12 @@ export { ThemeApplicator, getThemeApplicator, applyTheme } from './runtime/Theme
 // DevTools (for development and debugging)
 export * from './devtools';
 
-// Theme adapter (converts between Theme and DesignTokens)
-export {
-  themeToDesignTokens,
-  designTokensToCSSVars,
-  createDesignTokensFromTheme,
-  designTokensToTheme,
-} from './adapters';
+// CSS variable utilities
+export { designTokensToCSSVars } from './adapters';
 
-// Theme helpers (utilities for working with themes and DesignTokens)
+// Theme helpers (utilities for working with DesignTokens)
 export {
-  getDesignTokensFromTheme,
   isDesignTokens,
-  isThemeObject,
 } from './utils/themeHelpers';
 
 // CSS variable utilities
@@ -175,7 +165,6 @@ export { RTLManager } from './i18n/rtl';
 
 // Types
 export type {
-  Theme,
   ThemeChangeEvent,
   ThemeLoadOptions,
   ThemeValidationResult,
@@ -185,6 +174,10 @@ export type {
   ComponentThemeOverride,
   ThemeComponentOverrides,
 } from './types';
+
+// Note: Theme type is deprecated - use DesignTokens instead
+// Keeping for backward compatibility with devtools and internal use only
+export type { Theme } from './types';
 
 export type { ThemeErrorBoundaryProps } from './runtime/ThemeErrorBoundary';
 

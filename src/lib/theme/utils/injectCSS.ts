@@ -34,7 +34,6 @@ export function injectCSS(
   id: string = 'atomix-theme'
 ): void {
   if (!isBrowser()) {
-    console.warn('injectCSS: Not in browser environment, CSS not injected');
     return;
   }
 

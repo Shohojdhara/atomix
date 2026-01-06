@@ -1,11 +1,8 @@
 /**
  * Theme Composition Utilities
  *
- * Simplified utilities for composing, merging, and extending themes.
+ * Simplified utilities for composing and merging DesignTokens.
  */
-
-import type { Theme, ThemeOptions } from '../types';
-import { createThemeObject } from './createThemeObject';
 
 // ============================================================================
 // Deep Merge Utility
@@ -52,50 +49,45 @@ export function deepMerge<T extends Record<string, unknown>>(...objects: Partial
 }
 
 // ============================================================================
-// Theme Merging
+// DesignTokens Merging
 // ============================================================================
 
+import type { DesignTokens } from '../tokens/tokens';
+
 /**
- * Merge multiple theme options into a single theme options object
+ * Merge multiple DesignTokens objects into a single DesignTokens object
  *
- * @param themes - Theme options to merge
- * @returns Merged theme options
+ * @param tokens - DesignTokens objects to merge
+ * @returns Merged DesignTokens object
  *
  * @example
  * ```typescript
- * const baseTheme = { palette: { primary: { main: '#000' } } };
- * const customTheme = { palette: { secondary: { main: '#fff' } } };
- * const merged = mergeTheme(baseTheme, customTheme);
+ * const baseTokens = { 'primary': '#000', 'spacing-4': '1rem' };
+ * const customTokens = { 'secondary': '#fff', 'spacing-4': '1.5rem' };
+ * const merged = mergeTheme(baseTokens, customTokens);
+ * // Returns: { 'primary': '#000', 'secondary': '#fff', 'spacing-4': '1.5rem' }
  * ```
  */
-export function mergeTheme(...themes: ThemeOptions[]): ThemeOptions {
-    return deepMerge({}, ...themes);
+export function mergeTheme(...tokens: Partial<DesignTokens>[]): Partial<DesignTokens> {
+    return deepMerge({}, ...tokens);
 }
 
 /**
- * Extend an existing theme with new options
+ * Extend DesignTokens with additional tokens
  *
- * @param baseTheme - Base theme to extend (can be Theme or ThemeOptions)
- * @param extension - Theme options to extend with
- * @returns New theme with extended options
+ * @param baseTokens - Base DesignTokens to extend
+ * @param extension - Additional DesignTokens to merge
+ * @returns Extended DesignTokens object
  *
  * @example
  * ```typescript
- * const base = createTheme({ palette: { primary: { main: '#000' } } });
- * const extended = extendTheme(base, {
- *   palette: { secondary: { main: '#fff' } }
- * });
+ * const base = { 'primary': '#000' };
+ * const extended = extendTheme(base, { 'secondary': '#fff' });
+ * // Returns: { 'primary': '#000', 'secondary': '#fff' }
  * ```
  */
-export function extendTheme(baseTheme: Theme | ThemeOptions, extension: ThemeOptions): Theme {
-    // Convert baseTheme to ThemeOptions if it's a complete Theme
-    const baseOptions: ThemeOptions = (baseTheme as Theme & { __isJSTheme?: boolean }).__isJSTheme
-        ? { ...baseTheme } as ThemeOptions
-        : baseTheme;
-
-    // Merge and create new theme
-    const merged = mergeTheme(baseOptions, extension);
-    return createThemeObject(merged);
+export function extendTheme(baseTokens: Partial<DesignTokens>, extension: Partial<DesignTokens>): Partial<DesignTokens> {
+    return mergeTheme(baseTokens, extension);
 }
 
 export default {

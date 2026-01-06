@@ -2,15 +2,16 @@
  * Component Theming Utilities
  * 
  * Provides consistent patterns for applying theme values to components
+ * using DesignTokens and CSS variables
  */
 
-import type { Theme } from '../types';
+import type { DesignTokens } from '../tokens/tokens';
 
 export interface ComponentThemeOptions {
   component: string;
   variant?: string;
   size?: string;
-  theme: Theme;
+  tokens?: Partial<DesignTokens>;
 }
 
 /**
@@ -44,18 +45,18 @@ export function getComponentThemeValue(
 }
 
 /**
- * Generate component-specific CSS variables from theme
+ * Generate component-specific CSS variables from DesignTokens
  */
 export function generateComponentCSSVars(
   component: string,
-  theme: Theme,
+  tokens?: Partial<DesignTokens>,
   variant?: string,
   size?: string
 ): Record<string, string> {
   const vars: Record<string, string> = {};
   
-  // This is a simplified implementation - in a real system you'd have more
-  // sophisticated logic to extract component-specific values from the theme
+  if (!tokens) return vars;
+  
   const prefixParts = ['atomix', component];
   
   if (variant) {
@@ -68,47 +69,54 @@ export function generateComponentCSSVars(
   
   const prefix = prefixParts.join('-');
   
-  // Add common component properties
-  if (theme.palette) {
-    vars[`--${prefix}-color`] = theme.palette.primary?.main || '#7c3aed';
-    vars[`--${prefix}-color-hover`] = theme.palette.primary?.dark || '#5b21b6';
-    vars[`--${prefix}-color-active`] = theme.palette.primary?.main || '#7c3aed';
-    vars[`--${prefix}-color-disabled`] = theme.palette.text?.disabled || '#9ca3af';
+  // Map common DesignTokens to component-specific CSS variables
+  if (tokens.primary) {
+    vars[`--${prefix}-color`] = tokens.primary;
+  }
+  if (tokens['primary-9']) {
+    vars[`--${prefix}-color-hover`] = tokens['primary-9'];
+  }
+  if (tokens['body-color']) {
+    vars[`--${prefix}-color-disabled`] = tokens['body-color'];
   }
   
-  if (theme.typography) {
-    vars[`--${prefix}-font-family`] = theme.typography.fontFamily || 'Inter, sans-serif';
-    vars[`--${prefix}-font-size`] = theme.typography.fontSize ? `${theme.typography.fontSize}px` : '16px';
+  if (tokens['body-font-family']) {
+    vars[`--${prefix}-font-family`] = tokens['body-font-family'];
+  }
+  if (tokens['body-font-size']) {
+    vars[`--${prefix}-font-size`] = tokens['body-font-size'];
   }
   
-  if (theme.spacing) {
-    const spacing = typeof theme.spacing === 'function' ? theme.spacing : (val: number) => val * 8;
-    vars[`--${prefix}-spacing-unit`] = `${spacing(1)}px`;
-    vars[`--${prefix}-spacing-sm`] = `${spacing(0.5)}px`;
-    vars[`--${prefix}-spacing-md`] = `${spacing(1)}px`;
-    vars[`--${prefix}-spacing-lg`] = `${spacing(2)}px`;
+  if (tokens['spacing-1']) {
+    vars[`--${prefix}-spacing-sm`] = tokens['spacing-1'];
+  }
+  if (tokens['spacing-2']) {
+    vars[`--${prefix}-spacing-md`] = tokens['spacing-2'];
+  }
+  if (tokens['spacing-4']) {
+    vars[`--${prefix}-spacing-lg`] = tokens['spacing-4'];
   }
   
   return vars;
 }
 
 /**
- * Apply consistent theme to component style object
+ * Apply consistent theme to component style object using DesignTokens
  */
 export function applyComponentTheme(
   component: string,
   style: React.CSSProperties = {},
   variant?: string,
   size?: string,
-  theme?: Theme
+  tokens?: Partial<DesignTokens>
 ): React.CSSProperties {
-  // If no theme provided, return original style
-  if (!theme) {
+  // If no tokens provided, return original style
+  if (!tokens) {
     return style;
   }
   
   // Generate component-specific CSS variables
-  const componentVars = generateComponentCSSVars(component, theme, variant, size);
+  const componentVars = generateComponentCSSVars(component, tokens, variant, size);
   
   // Merge with existing style
   return {
@@ -124,7 +132,7 @@ export function useComponentTheme(
   component: string,
   variant?: string,
   size?: string,
-  theme?: Theme
+  tokens?: Partial<DesignTokens>
 ): (property: string) => string {
   return (property: string) => {
     return getComponentThemeValue(component, property, variant, size);

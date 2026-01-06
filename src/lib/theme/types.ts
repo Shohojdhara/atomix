@@ -50,8 +50,8 @@ export interface ThemeChangeEvent {
     previousTheme: string | null;
     /** New theme name */
     currentTheme: string;
-    /** Theme object (for JS themes) */
-    themeObject?: Theme | null;
+    /** DesignTokens if using tokens-based theme */
+    tokens?: import('./tokens').DesignTokens | null;
     /** Timestamp of the change */
     timestamp: number;
     /** Whether the change was from user action or system */
@@ -126,7 +126,7 @@ export interface UseThemeOptions {
     /** Custom storage key */
     storageKey?: string;
     /** Callback when theme changes */
-    onChange?: (theme: string | Theme | import('./tokens').DesignTokens) => void;
+    onChange?: (theme: string | import('./tokens').DesignTokens) => void;
 }
 
 /**
@@ -135,10 +135,10 @@ export interface UseThemeOptions {
 export interface UseThemeReturn {
     /** Current theme name */
     theme: string;
-    /** Current active theme object (for JS themes) */
-    activeTheme: Theme | null;
-    /** Function to change theme (supports string, Theme, or DesignTokens) */
-    setTheme: (theme: string | Theme | import('./tokens').DesignTokens | Partial<import('./tokens').DesignTokens>, options?: ThemeLoadOptions) => Promise<void>;
+    /** Current active DesignTokens (if using tokens-based theme) */
+    activeTokens: import('./tokens').DesignTokens | null;
+    /** Function to change theme (supports string or DesignTokens) */
+    setTheme: (theme: string | import('./tokens').DesignTokens | Partial<import('./tokens').DesignTokens>, options?: ThemeLoadOptions) => Promise<void>;
     /** Available themes */
     availableThemes: ThemeMetadata[];
     /** Whether a theme is currently loading */
@@ -213,8 +213,8 @@ export interface ThemeComponentOverrides {
 export interface ThemeProviderProps {
     /** Child components */
     children: React.ReactNode;
-    /** Default theme */
-    defaultTheme?: string | Theme;
+    /** Default theme (string name or DesignTokens) */
+    defaultTheme?: string | import('./tokens').DesignTokens | Partial<import('./tokens').DesignTokens>;
     /** Available themes */
     themes?: Record<string, ThemeMetadata>;
     /** Base path for theme CSS */
@@ -234,7 +234,7 @@ export interface ThemeProviderProps {
     /** Use minified CSS */
     useMinified?: boolean;
     /** Callback when theme changes */
-    onThemeChange?: (theme: string | Theme | import('./tokens').DesignTokens) => void;
+    onThemeChange?: (theme: string | import('./tokens').DesignTokens) => void;
     /** Callback on error */
     onError?: (error: Error, themeName: string) => void;
 }
@@ -245,10 +245,10 @@ export interface ThemeProviderProps {
 export interface ThemeContextValue {
     /** Current theme name */
     theme: string;
-    /** Current active theme object (for JS themes) */
-    activeTheme: Theme | null;
-    /** Set theme function (supports string, Theme, or DesignTokens) */
-    setTheme: (theme: string | Theme | import('./tokens').DesignTokens | Partial<import('./tokens').DesignTokens>, options?: ThemeLoadOptions) => Promise<void>;
+    /** Current active DesignTokens (if using tokens-based theme) */
+    activeTokens: import('./tokens').DesignTokens | null;
+    /** Set theme function (supports string or DesignTokens) */
+    setTheme: (theme: string | import('./tokens').DesignTokens | Partial<import('./tokens').DesignTokens>, options?: ThemeLoadOptions) => Promise<void>;
     /** Available themes */
     availableThemes: ThemeMetadata[];
     /** Loading state */

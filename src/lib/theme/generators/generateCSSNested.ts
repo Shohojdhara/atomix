@@ -69,7 +69,8 @@ export function generateNestedCSSVariables(
   const flattened = flatten ? flattenTokens(tokens, separator) : tokens;
 
   // Generate CSS variables using the original function
-  return generateCSSVariables(flattened, { selector, prefix });
+  // Cast to DesignTokens since generateCSSVariables filters out undefined values
+  return generateCSSVariables(flattened as DesignTokens, { selector, prefix });
 }
 
 /**
@@ -79,8 +80,8 @@ export function generateNestedCSSVariables(
  * @param separator - Separator for nested keys
  * @returns Flattened token object
  */
-function flattenTokens(tokens: DesignTokens, separator: string): DesignTokens {
-  const result: DesignTokens = {};
+function flattenTokens(tokens: DesignTokens, separator: string): Partial<DesignTokens> {
+  const result: Partial<DesignTokens> = {};
 
   for (const [key, value] of Object.entries(tokens)) {
     if (value && typeof value === 'object' && !Array.isArray(value)) {

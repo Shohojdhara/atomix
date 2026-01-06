@@ -1,32 +1,29 @@
 /**
  * Core Theme Functions
  *
- * Simplified theme system that handles both DesignTokens and Theme objects.
+ * Simplified theme system using DesignTokens only.
  * Config-first approach: loads from atomix.config.ts when no input is provided.
- * Config file is required for automatic loading.
  */
 
 import type { DesignTokens } from '../tokens/tokens';
-import type { Theme } from '../types';
 import type { GenerateCSSVariablesOptions } from '../generators/generateCSS';
 import { createTokens } from '../tokens/tokens';
 import { generateCSSVariables } from '../generators/generateCSS';
-import { themeToDesignTokens } from '../adapters/themeAdapter';
+import { ThemeError, ThemeErrorCode } from '../errors/errors';
 
 /**
- * Create theme CSS from tokens or Theme object
+ * Create theme CSS from DesignTokens
  *
  * **Config-First Approach**: If no input is provided, loads from `atomix.config.ts`.
- * Config file is required for automatic loading.
  *
- * @param input - DesignTokens (partial), Theme object, or undefined (loads from config)
+ * @param input - DesignTokens (partial) or undefined (loads from config)
  * @param options - CSS generation options (prefix is automatically read from config if not provided)
  * @returns CSS string with custom properties
  * @throws Error if config loading fails when no input is provided
  *
  * @example
  * ```typescript
- * // Loads from atomix.config.ts (config file required)
+ * // Loads from atomix.config.ts
  * const css = createTheme();
  *
  * // Using DesignTokens
@@ -35,35 +32,56 @@ import { themeToDesignTokens } from '../adapters/themeAdapter';
  *   'spacing-4': '1rem',
  * });
  *
- * // Using Theme object
- * const theme = createThemeObject({ palette: { primary: { main: '#7c3aed' } } });
- * const css = createTheme(theme);
- *
  * // With custom options
  * const css = createTheme(undefined, { prefix: 'myapp', selector: ':root' });
  * ```
  */
 export function createTheme(
-  input?: Partial<DesignTokens> | Theme,
+  input?: Partial<DesignTokens>,
   options?: GenerateCSSVariablesOptions
 ): string {
+  // Validate options if provided
+  if (options?.prefix) {
+    const prefixPattern = /^[a-z][a-z0-9-]*$/;
+    if (!prefixPattern.test(options.prefix)) {
+      throw new ThemeError(
+        `Invalid CSS variable prefix: "${options.prefix}". Prefix must start with a lowercase letter and contain only lowercase letters, numbers, and hyphens (e.g., "atomix", "my-app").`,
+        ThemeErrorCode.THEME_VALIDATION_FAILED,
+        { prefix: options.prefix, pattern: prefixPattern.toString() }
+      );
+    }
+  }
+
+  // Validate selector if provided
+  if (options?.selector) {
+    // Basic validation - selector should be a valid CSS selector
+    if (typeof options.selector !== 'string' || options.selector.trim().length === 0) {
+      throw new ThemeError(
+        `Invalid CSS selector: "${options.selector}". Selector must be a non-empty string (e.g., ":root", ".my-theme").`,
+        ThemeErrorCode.THEME_VALIDATION_FAILED,
+        { selector: options.selector }
+      );
+    }
+  }
+
   // Determine tokens based on input
   let tokens: Partial<DesignTokens>;
   
   if (!input) {
     // Check if we're in a browser environment
     if (typeof window !== 'undefined') {
-      throw new Error('createTheme: No input provided and config loading is not available in browser environment. Please provide tokens explicitly or use Node.js/SSR environment.');
+      throw new ThemeError(
+        'No input provided and config loading is not available in browser environment. Please provide tokens explicitly or use Node.js/SSR environment.',
+        ThemeErrorCode.CONFIG_LOAD_FAILED,
+        { environment: 'browser' }
+      );
     }
     
     // Load from config when no input provided
-    // Using dynamic import in a way that's more compatible with bundlers
     let loadThemeFromConfigSync: any;
     let loadAtomixConfig: any;
     
     try {
-      // Use dynamic require but only in Node.js environments
-      // This approach allows bundlers to properly handle external dependencies
       const configLoaderModule = require('../config/configLoader');
       const loaderModule = require('../../config/loader');
       
@@ -83,12 +101,22 @@ export function createTheme(
         }
       }
     } catch (error) {
-      throw new Error('createTheme: No input provided and config loading is not available in this environment. Please provide tokens explicitly.');
+      throw new ThemeError(
+        'No input provided and config loading is not available in this environment. Please provide tokens explicitly.',
+        ThemeErrorCode.CONFIG_LOAD_FAILED,
+        { error: error instanceof Error ? error.message : String(error) }
+      );
     }
-  } else if (isThemeObject(input)) {
-    // Convert Theme object to DesignTokens
-    tokens = themeToDesignTokens(input);
   } else {
+    // Validate input tokens structure
+    if (typeof input !== 'object' || input === null || Array.isArray(input)) {
+      throw new ThemeError(
+        `Invalid tokens input. Expected an object with DesignTokens, but received: ${typeof input}.`,
+        ThemeErrorCode.THEME_VALIDATION_FAILED,
+        { inputType: typeof input }
+      );
+    }
+    
     // Use DesignTokens directly
     tokens = input;
   }
@@ -100,9 +128,4 @@ export function createTheme(
   const prefix = options?.prefix ?? 'atomix';
 
   return generateCSSVariables(allTokens, { ...options, prefix });
-}
-
-// Helper functions to simplify main function
-function isThemeObject(input: any): input is Theme {
-  return input?.__isJSTheme === true || (input?.palette && input?.typography);
 }

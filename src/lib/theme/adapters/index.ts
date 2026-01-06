@@ -1,14 +1,11 @@
 /**
  * Theme Adapters
  * 
- * Adapters for converting between Theme objects and DesignTokens
+ * Adapters for working with DesignTokens and CSS variables
  */
 
 export {
-  themeToDesignTokens,
   designTokensToCSSVars,
-  createDesignTokensFromTheme,
-  designTokensToTheme,
 } from './themeAdapter';
 
 export {

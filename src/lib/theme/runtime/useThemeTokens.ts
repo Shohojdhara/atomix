@@ -1,18 +1,17 @@
 import { useCallback } from 'react';
 import { useTheme } from './useTheme';
-import type { Theme } from '../types';
+import type { DesignTokens } from '../tokens/tokens';
 
 /**
  * Standardized hook for accessing theme tokens in components
  *
- * Provides consistent access to theme values across all components
- * using either CSS custom properties or theme object values.
+ * Provides consistent access to theme values using CSS custom properties
+ * and DesignTokens.
  */
 type ThemeTokens = {
     theme: string;
-    activeTheme: Theme | null;
+    activeTokens: DesignTokens | null;
     getToken: (tokenName: string, fallback?: string) => string;
-    getThemeValue: (path: string, fallback?: any) => any;
     colors: {
       primary: string;
       secondary: string;
@@ -35,7 +34,7 @@ type ThemeTokens = {
   };
 
 export function useThemeTokens(): ThemeTokens {
-  const { theme, activeTheme } = useTheme();
+  const { theme, activeTokens } = useTheme();
 
   // Helper function to get CSS variable value
   const getToken = useCallback((tokenName: string, fallback?: string) => {
@@ -46,20 +45,12 @@ export function useThemeTokens(): ThemeTokens {
     return computedStyle.getPropertyValue(cssVarName).trim() || fallback || '';
   }, []);
 
-  // Helper function to get theme object value
-  const getThemeValue = useCallback((path: string, fallback?: any) => {
-    if (!activeTheme) return fallback;
-
-    // Navigate through nested theme object using dot notation
-    return path.split('.').reduce((obj, key) => obj?.[key], activeTheme) || fallback;
-  }, [activeTheme]);
-
   // Return unified API for accessing theme values
+  // Note: For SSR or direct token access, use activeTokens directly
   return <ThemeTokens>{
     theme,
-    activeTheme,
+    activeTokens,
     getToken,
-    getThemeValue,
     // Commonly used tokens with fallbacks
     colors: {
       primary: getToken('primary', '#3b82f6'),

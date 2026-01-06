@@ -40,28 +40,36 @@ export interface GenerateCSSVariablesOptions {
 
 /**
  * Convert a nested object to flat CSS variable declarations
+ * Uses iterative approach for better performance with large objects
  */
 function flattenObject(
     obj: Record<string, any>,
     prefix: string = '',
     result: Record<string, string> = {}
 ): Record<string, string> {
-    for (const key in obj) {
-        if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+    // Use iterative approach with stack to avoid deep recursion
+    const stack: Array<{ obj: Record<string, any>; prefix: string }> = [{ obj, prefix }];
+    
+    while (stack.length > 0) {
+        const { obj: currentObj, prefix: currentPrefix } = stack.pop()!;
+        
+        for (const key in currentObj) {
+            if (!Object.prototype.hasOwnProperty.call(currentObj, key)) continue;
 
-        const value = obj[key];
-        const newKey = prefix ? `${prefix}-${key}` : key;
+            const value = currentObj[key];
+            const newKey = currentPrefix ? `${currentPrefix}-${key}` : key;
 
-        if (value && typeof value === 'object' && !Array.isArray(value)) {
-            // Skip special objects like functions
-            if (typeof value === 'function') continue;
+            if (value && typeof value === 'object' && !Array.isArray(value)) {
+                // Skip special objects like functions
+                if (typeof value === 'function') continue;
 
-            // Recursively flatten nested objects
-            flattenObject(value, newKey, result);
-        } else if (typeof value === 'string' || typeof value === 'number') {
-            // Convert camelCase to kebab-case
-            const kebabKey = newKey.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-            result[kebabKey] = String(value);
+                // Add to stack for iterative processing
+                stack.push({ obj: value, prefix: newKey });
+            } else if (typeof value === 'string' || typeof value === 'number') {
+                // Convert camelCase to kebab-case
+                const kebabKey = newKey.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+                result[kebabKey] = String(value);
+            }
         }
     }
 

@@ -164,16 +164,21 @@ export function mapSCSSTokensToCSSVars(
 /**
  * Apply CSS variables to an element
  * 
- * @param element - Target element (defaults to document.documentElement)
  * @param vars - CSS variables to apply
+ * @param element - Target element (defaults to document.documentElement)
  */
 export function applyCSSVariables(
-  vars: Record<string, string | number>,
-  element: HTMLElement = document.documentElement
+    vars: Record<string, string | number>,
+    element?: HTMLElement
 ): void {
-  Object.entries(vars).forEach(([key, value]) => {
-    element.style.setProperty(key, String(value));
-  });
+    if (typeof window === 'undefined') {
+        return; // SSR safety
+    }
+    
+    const target = element || document.documentElement;
+    Object.entries(vars).forEach(([key, value]) => {
+        target.style.setProperty(key, String(value));
+    });
 }
 
 /**
@@ -183,12 +188,17 @@ export function applyCSSVariables(
  * @param element - Target element (defaults to document.documentElement)
  */
 export function removeCSSVariables(
-  varNames: string[],
-  element: HTMLElement = document.documentElement
+    varNames: string[],
+    element?: HTMLElement
 ): void {
-  varNames.forEach((varName) => {
-    element.style.removeProperty(varName);
-  });
+    if (typeof window === 'undefined') {
+        return; // SSR safety
+    }
+    
+    const target = element || document.documentElement;
+    varNames.forEach((varName) => {
+        target.style.removeProperty(varName);
+    });
 }
 
 /**
@@ -199,10 +209,15 @@ export function removeCSSVariables(
  * @returns Variable value or null if not found
  */
 export function getCSSVariable(
-  varName: string,
-  element: HTMLElement = document.documentElement
+    varName: string,
+    element?: HTMLElement
 ): string | null {
-  return getComputedStyle(element).getPropertyValue(varName).trim() || null;
+    if (typeof window === 'undefined') {
+        return null; // SSR safety
+    }
+    
+    const target = element || document.documentElement;
+    return getComputedStyle(target).getPropertyValue(varName).trim() || null;
 }
 
 /**

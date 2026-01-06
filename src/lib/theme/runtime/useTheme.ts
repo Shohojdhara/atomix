@@ -38,7 +38,7 @@ export function useTheme(): UseThemeReturn {
 
     return {
         theme: context.theme,
-        activeTheme: context.activeTheme,
+        activeTokens: context.activeTokens,
         setTheme: context.setTheme,
         availableThemes: context.availableThemes,
         isLoading: context.isLoading,

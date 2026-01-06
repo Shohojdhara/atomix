@@ -5,7 +5,6 @@
  */
 
 export { createTheme } from './createTheme';
-export { createThemeObject } from './createThemeObject';
 export { deepMerge, mergeTheme, extendTheme } from './composeTheme';
 
 // Simplified Theme Registry API

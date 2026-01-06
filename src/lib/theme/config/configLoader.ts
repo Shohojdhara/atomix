@@ -6,10 +6,9 @@
  * Includes both sync and async versions, with automatic fallbacks
  */
 
-import type { Theme } from '../types';
 import type { DesignTokens } from '../tokens/tokens';
 import { createTokens } from '../tokens/tokens';
-import { themeToDesignTokens, createDesignTokensFromTheme } from '../adapters/themeAdapter';
+import { loadAtomixConfig as loadAtomixConfigStatic } from '../../config/loader';
 
 /**
  * Load theme from config file (synchronous, Node.js only)
@@ -23,14 +22,14 @@ export function loadThemeFromConfigSync(options?: { configPath?: string; require
     throw new Error('loadThemeFromConfigSync: Not available in browser environment. Config loading requires Node.js/SSR environment.');
   }
 
-  // Use dynamic import to load the config loader
-  // This allows bundlers to handle external dependencies properly
-  let loadAtomixConfig: any;
+  // Use static import - the function handles browser environment checks internally
+  let config;
   
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { loadAtomixConfig: loader } = require('../../config/loader');
-    loadAtomixConfig = loader;
+    config = loadAtomixConfigStatic({
+      configPath: options?.configPath || 'atomix.config.ts',
+      required: options?.required !== false,
+    });
   } catch (error) {
     if (options?.required !== false) {
       throw new Error('Config loader module not available');
@@ -39,20 +38,26 @@ export function loadThemeFromConfigSync(options?: { configPath?: string; require
     return createTokens({});
   }
 
-  const config = loadAtomixConfig({
-    configPath: options?.configPath || 'atomix.config.ts',
-    required: options?.required !== false,
-  });
-
   if (!config?.theme) {
     return createTokens({});
   }
 
-  if (isThemeObject(config.theme)) {
-    return createDesignTokensFromTheme(config.theme);
+  // Extract tokens from config.theme structure
+  // config.theme can have: { extend?: ThemeTokens, tokens?: ThemeTokens, themes?: ... }
+  // We need to extract the actual DesignTokens (flat structure)
+  const themeConfig = config.theme;
+  
+  // Check if theme is directly a flat object (DesignTokens format)
+  // This handles the case where config.theme might be passed as DesignTokens directly
+  if (themeConfig && typeof themeConfig === 'object' && !('extend' in themeConfig) && !('tokens' in themeConfig) && !('themes' in themeConfig)) {
+    // It's likely already a flat DesignTokens object
+    return createTokens(themeConfig as Partial<DesignTokens>);
   }
-
-  return createTokens(config.theme);
+  
+  // If theme has nested structure (extend/tokens/themes), we can't directly use it
+  // Return empty tokens - the theme system will use defaults
+  // TODO: Add proper conversion from ThemeTokens to DesignTokens if needed
+  return createTokens({});
 }
 
 /**
@@ -66,30 +71,43 @@ export async function loadThemeFromConfig(options?: { configPath?: string; requi
     throw new Error('loadThemeFromConfig: Not available in browser environment. Config loading requires Node.js/SSR environment.');
   }
 
-  // Dynamic import for config loader
-  const { loadAtomixConfig } = await import('../../config/loader');
+  // Use static import with runtime check
+  // The function will handle browser environment checks internally
+  let config;
   
-  const config = await loadAtomixConfig({
-    configPath: options?.configPath || 'atomix.config.ts',
-    required: options?.required !== false,
-  });
+  try {
+    // loadAtomixConfig is synchronous, not async
+    config = loadAtomixConfigStatic({
+      configPath: options?.configPath || 'atomix.config.ts',
+      required: options?.required !== false,
+    });
+  } catch (error) {
+    if (options?.required !== false) {
+      throw new Error('Config loader module not available');
+    }
+    // Return empty tokens if config is not required
+    return createTokens({});
+  }
 
   if (!config?.theme) {
     return createTokens({});
   }
 
-  if (isThemeObject(config.theme)) {
-    return createDesignTokensFromTheme(config.theme);
+  // Extract tokens from config.theme structure
+  // config.theme can have: { extend?: ThemeTokens, tokens?: ThemeTokens, themes?: ... }
+  // We need to extract the actual DesignTokens (flat structure)
+  const themeConfig = config.theme;
+  
+  // Check if theme is directly a flat object (DesignTokens format)
+  // This handles the case where config.theme might be passed as DesignTokens directly
+  if (themeConfig && typeof themeConfig === 'object' && !('extend' in themeConfig) && !('tokens' in themeConfig) && !('themes' in themeConfig)) {
+    // It's likely already a flat DesignTokens object
+    return createTokens(themeConfig as Partial<DesignTokens>);
   }
-
-  return createTokens(config.theme);
+  
+  // If theme has nested structure (extend/tokens/themes), we can't directly use it
+  // Return empty tokens - the theme system will use defaults
+  // TODO: Add proper conversion from ThemeTokens to DesignTokens if needed
+  return createTokens({});
 }
 
-/**
- * Check if the provided object is a Theme object
- * @param theme - Object to check
- * @returns True if the object is a Theme object, false otherwise
- */
-function isThemeObject(theme: any): theme is Theme {
-  return typeof theme === 'object' && theme !== null;
-}

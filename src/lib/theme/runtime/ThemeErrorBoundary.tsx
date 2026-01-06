@@ -148,7 +148,7 @@ export class ThemeErrorBoundary extends Component<
     };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+  override componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // Log error
     const themeError = error instanceof ThemeError
       ? error
@@ -187,7 +187,7 @@ export class ThemeErrorBoundary extends Component<
     }
   }
 
-  componentDidUpdate(prevProps: ThemeErrorBoundaryProps): void {
+  override componentDidUpdate(prevProps: ThemeErrorBoundaryProps): void {
     // Reset error if resetOnPropsChange is true and children changed
     if (
       this.props.resetOnPropsChange &&
@@ -202,7 +202,7 @@ export class ThemeErrorBoundary extends Component<
     }
   }
 
-  render(): ReactNode {
+  override render(): ReactNode {
     if (this.state.hasError && this.state.error && this.state.errorInfo) {
       // Use custom fallback if provided
       if (this.props.fallback) {

@@ -270,7 +270,8 @@ export function createTestThemeObject(): Theme {
  */
 export function generateTestThemeCSSFromObject(): string {
   const theme = createTestThemeObject();
-  return createTheme(theme); // createTheme accepts both formats
+  const tokens = themeToDesignTokens(theme);
+  return createTheme(tokens);
 }
 
 // ============================================================================
