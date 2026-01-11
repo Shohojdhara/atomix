@@ -1,7 +1,6 @@
 import React, { forwardRef } from 'react';
 import { SideMenuItemProps } from '../../../lib/types/components';
 import { useSideMenuItem } from '../../../lib/composables/useSideMenu';
-import { useSideMenuContext } from './SideMenu';
 
 /**
  * SideMenuItem component represents a single navigation item in a side menu.
@@ -17,7 +16,13 @@ import { useSideMenuContext } from './SideMenu';
  *   Click me
  * </SideMenuItem>
  *
- * // With icon
+ * // With icon and custom link component
+ * import Link from 'next/link';
+ * <SideMenuItem href="/settings" icon={<Icon name="Settings" />} LinkComponent={Link}>
+ *   Settings
+ * </SideMenuItem>
+ *
+ * // With icon and custom link component
  * <SideMenuItem href="/settings" icon={<Icon name="Settings" />}>
  *   Settings
  * </SideMenuItem>
@@ -44,9 +49,6 @@ export const SideMenuItem = forwardRef<HTMLAnchorElement | HTMLButtonElement, Si
     },
     ref
   ) => {
-    const { LinkComponent: LinkComponentFromContext } = useSideMenuContext();
-    // Use LinkComponent from props first, then fall back to context
-    const LinkComponent = LinkComponentProp ?? LinkComponentFromContext;
     
     const { generateSideMenuItemClass, handleClick } = useSideMenuItem({
       active,
@@ -58,12 +60,8 @@ export const SideMenuItem = forwardRef<HTMLAnchorElement | HTMLButtonElement, Si
 
     // Render as link if href is provided
     if (href) {
-      // When using a custom LinkComponent (e.g., Next.js Link, React Router Link)
-      if (LinkComponent) {
-        const Component = LinkComponent;
-        
-        // Build link props - support both 'href' (Next.js) and 'to' (React Router)
-        // The Link component will use whichever prop it needs
+      if (LinkComponentProp) {
+        const LinkComp = LinkComponentProp as React.ComponentType<any>;
         const linkProps: {
           ref?: React.Ref<HTMLAnchorElement>;
           className?: string;
@@ -88,16 +86,14 @@ export const SideMenuItem = forwardRef<HTMLAnchorElement | HTMLButtonElement, Si
           target: target,
           rel: rel,
           tabIndex: disabled ? -1 : 0,
-          // Support both Next.js (href) and React Router (to) Link components
-          // Pass both props - the Link component will use whichever it needs
           ...(disabled ? {} : { href, to: href }),
         };
         
         return (
-          <Component {...linkProps}>
+            <LinkComp {...linkProps}>
             {icon && <span className="c-side-menu__link-icon">{icon}</span>}
             <span className="c-side-menu__link-text">{children}</span>
-          </Component>
+          </LinkComp>
         );
       }
       

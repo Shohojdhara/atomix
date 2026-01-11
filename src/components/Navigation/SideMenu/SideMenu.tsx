@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef, createContext, useContext } from 'react';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { SideMenuProps } from '../../../lib/types/components';
 import { useSideMenu } from '../../../lib/composables/useSideMenu';
 import { Icon } from '../../Icon';
@@ -7,25 +7,7 @@ import useForkRef from '../../../lib/utils/useForkRef';
 import SideMenuList from './SideMenuList';
 import SideMenuItem from './SideMenuItem';
 
-// Context for passing LinkComponent to SideMenuItem children
-const SideMenuContext = createContext<{
-  LinkComponent?: React.ComponentType<{
-    href?: string;
-    to?: string;
-    children: React.ReactNode;
-    className?: string;
-    onClick?: (event: React.MouseEvent) => void;
-    target?: string;
-    rel?: string;
-    'aria-disabled'?: boolean;
-    'aria-current'?: string;
-    tabIndex?: number;
-    ref?: React.Ref<HTMLAnchorElement>;
-  }>;
-}>({});
 
-// Hook to use SideMenu context
-export const useSideMenuContext = () => useContext(SideMenuContext);
 
 /**
  * SideMenu component provides a collapsible navigation menu with title and menu items.
@@ -235,7 +217,6 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
           id={id ? `${id}-content` : undefined}
           aria-hidden={shouldShowToggler ? !isOpenState : false}
         >
-          <SideMenuContext.Provider value={{ LinkComponent }}>
             <div ref={innerRef} className="c-side-menu__inner">
               {children}
             {menuItems?.map((item, index) => {
@@ -321,7 +302,6 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
               );
             })}
             </div>
-          </SideMenuContext.Provider>
         </div>
       </>
     );

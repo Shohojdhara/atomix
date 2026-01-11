@@ -1418,19 +1418,7 @@ export interface SideMenuProps extends BaseComponentProps {
    * <SideMenu LinkComponent={Link} />
    * ```
    */
-  LinkComponent?: React.ComponentType<{
-    href?: string;
-    to?: string;
-    children: React.ReactNode;
-    className?: string;
-    onClick?: (event: React.MouseEvent) => void;
-    target?: string;
-    rel?: string;
-    'aria-disabled'?: boolean;
-    'aria-current'?: string;
-    tabIndex?: number;
-    ref?: React.Ref<HTMLAnchorElement>;
-  }>;
+  LinkComponent?: React.ElementType;
 
   /**
    * Menu items
@@ -1524,19 +1512,7 @@ export interface SideMenuItemProps extends BaseComponentProps {
    * <SideMenuItem href="/about" LinkComponent={Link}>About</SideMenuItem>
    * ```
    */
-  LinkComponent?: React.ComponentType<{
-    href?: string;
-    to?: string;
-    children: React.ReactNode;
-    className?: string;
-    onClick?: (event: React.MouseEvent) => void;
-    target?: string;
-    rel?: string;
-    'aria-disabled'?: boolean;
-    'aria-current'?: string;
-    tabIndex?: number;
-    ref?: React.Ref<HTMLAnchorElement>;
-  }>;
+  LinkComponent?: React.ElementType;
 }
 
 /**
