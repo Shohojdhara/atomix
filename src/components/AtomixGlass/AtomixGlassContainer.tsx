@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useState, useEffect, useMemo } from 'react';
+import React, { forwardRef, useRef, useState, useEffect, useMemo, useId } from 'react';
 import type { CSSProperties } from 'react';
 import type { DisplacementMode, MousePosition, GlassSize } from '../../lib/types/components';
 import type { FragmentShaderType } from './shader-utils';
@@ -130,17 +130,10 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     },
     ref
   ) => {
-    // Generate a stable, deterministic ID for SSR compatibility
-    // Use a counter-based approach to avoid hydration mismatches
-    const [filterId] = useState(() => {
-      // Use a simple counter for deterministic IDs
-      if (typeof window === 'undefined') {
-        // Server-side: use a predictable pattern
-        return `atomix-glass-filter-ssr-${Math.random().toString(36).substring(2, 11)}`;
-      }
-      // Client-side: use timestamp + random for uniqueness
-      return `atomix-glass-filter-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
-    });
+    // Generate a stable, deterministic ID for SSR compatibility using React 18's useId
+    // This ensures the same ID is generated on both server and client
+    const reactId = useId();
+    const filterId = `atomix-glass-filter${reactId.replace(/:/g, '-')}`;
 
     const [shaderMapUrl, setShaderMapUrl] = useState<string>('');
     const shaderGeneratorRef = useRef<any>(null);
@@ -484,10 +477,12 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       >
         <div
           className={ATOMIX_GLASS.INNER_CLASS}
-          style={{
-            padding: `var(--atomix-glass-container-padding)`,
-            boxShadow: `var(--atomix-glass-container-box-shadow)`,
-          }}
+          style={
+            {
+              padding: `var(--atomix-glass-container-padding)`,
+              boxShadow: `var(--atomix-glass-container-box-shadow)`,
+            } as CSSProperties
+          }
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
           onMouseDown={onMouseDown}
@@ -513,31 +508,37 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             {/* Enhanced Apple Liquid Glass Inner Shadow Layer */}
             <div
               className={ATOMIX_GLASS.FILTER_OVERLAY_CLASS}
-              style={{
-                filter: `url(#${filterId})`,
-                backdropFilter: `var(--atomix-glass-container-backdrop)`,
-                borderRadius: `var(--atomix-glass-container-radius)`,
-              }}
+              style={
+                {
+                  filter: `url(#${filterId})`,
+                  backdropFilter: `var(--atomix-glass-container-backdrop)`,
+                  borderRadius: `var(--atomix-glass-container-radius)`,
+                } as CSSProperties
+              }
             />
             <div
               className={ATOMIX_GLASS.FILTER_SHADOW_CLASS}
-              style={{
-                boxShadow: `var(--atomix-glass-container-shadow)`,
-                opacity: `var(--atomix-glass-container-shadow-opacity)`,
-                background: `var(--atomix-glass-container-bg)`,
-                borderRadius: `var(--atomix-glass-container-radius)`,
-              }}
+              style={
+                {
+                  boxShadow: `var(--atomix-glass-container-shadow)`,
+                  opacity: `var(--atomix-glass-container-shadow-opacity)`,
+                  background: `var(--atomix-glass-container-bg)`,
+                  borderRadius: `var(--atomix-glass-container-radius)`,
+                } as CSSProperties
+              }
             />
           </div>
 
           <div
             ref={contentRef}
             className={ATOMIX_GLASS.CONTENT_CLASS}
-            style={{
-              position: 'relative',
-              textShadow: `var(--atomix-glass-container-text-shadow)`,
-              ...(elasticity > 0 ? { zIndex: 100 } : {}),
-            }}
+            style={
+              {
+                position: 'relative',
+                textShadow: `var(--atomix-glass-container-text-shadow)`,
+                ...(elasticity > 0 ? { zIndex: 100 } : {}),
+              } as CSSProperties
+            }
           >
             {children}
           </div>
