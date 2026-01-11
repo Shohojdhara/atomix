@@ -52,6 +52,7 @@ export const Basic: Story = {
     label: 'Option 1',
     name: 'option',
     value: 'option1',
+    onChange: () => {},
   },
 };
 
@@ -62,38 +63,98 @@ export const Checked: Story = {
     name: 'option',
     value: 'option1',
     checked: true,
+    onChange: () => {},
   },
 };
 
 // Radio button group
 export const RadioGroup: Story = {
-  render: (args: any) => (
-    <div className="u-d-flex u-flex-column u-gap-2">
-      <Radio label="Option 1" name="radioGroup" value="option1" checked />
-      <Radio label="Option 2" name="radioGroup" value="option2" />
-      <Radio label="Option 3" name="radioGroup" value="option3" />
-    </div>
-  ),
+  render: (args: any) => {
+    const [selectedValue, setSelectedValue] = React.useState('option1');
+    
+    return (
+      <div className="u-d-flex u-flex-column u-gap-2">
+        <Radio 
+          label="Option 1" 
+          name="radioGroup" 
+          value="option1" 
+          checked={selectedValue === 'option1'}
+          onChange={() => setSelectedValue('option1')}
+        />
+        <Radio 
+          label="Option 2" 
+          name="radioGroup" 
+          value="option2" 
+          checked={selectedValue === 'option2'}
+          onChange={() => setSelectedValue('option2')}
+        />
+        <Radio 
+          label="Option 3" 
+          name="radioGroup" 
+          value="option3" 
+          checked={selectedValue === 'option3'}
+          onChange={() => setSelectedValue('option3')}
+        />
+      </div>
+    );
+  },
 };
 
 // Radio button states
 export const States: Story = {
-  render: (args: any) => (
-    <div className="u-d-flex u-flex-column u-gap-2">
-      <Radio label="Default radio" name="states" value="default" />
-      <Radio label="Checked radio" name="states" value="checked" checked />
-      <Radio label="Disabled radio" name="states" value="disabled" disabled />
-      <Radio
-        label="Disabled and checked radio"
-        name="states"
-        value="disabledChecked"
-        disabled
-        checked
-      />
-      <Radio label="Valid radio" name="states" value="valid" valid checked />
-      <Radio label="Invalid radio" name="states" value="invalid" invalid />
-    </div>
-  ),
+  render: (args: any) => {
+    const [selectedValue, setSelectedValue] = React.useState('default');
+    
+    return (
+      <div className="u-d-flex u-flex-column u-gap-2">
+        <Radio 
+          label="Default radio" 
+          name="states" 
+          value="default" 
+          checked={selectedValue === 'default'}
+          onChange={() => setSelectedValue('default')} 
+        />
+        <Radio 
+          label="Checked radio" 
+          name="states" 
+          value="checked" 
+          checked={selectedValue === 'checked'}
+          onChange={() => setSelectedValue('checked')} 
+        />
+        <Radio 
+          label="Disabled radio" 
+          name="states" 
+          value="disabled" 
+          disabled
+          onChange={() => {}}
+        />
+        <Radio
+          label="Disabled and checked radio"
+          name="states"
+          value="disabledChecked"
+          disabled
+          checked
+          onChange={() => {}}
+        />
+        <Radio 
+          label="Valid radio" 
+          name="states" 
+          value="valid" 
+          valid 
+          checked={selectedValue === 'valid'}
+          onChange={() => setSelectedValue('valid')}
+        />
+        <Radio 
+          label="Invalid radio" 
+          name="states" 
+          value="invalid" 
+          invalid 
+          checked={selectedValue === 'invalid'}
+          onChange={() => setSelectedValue('invalid')}
+        />
+      </div>
+    );
+  },
 };
 
 // Without label
@@ -102,6 +163,7 @@ export const WithoutLabel: Story = {
     name: 'noLabel',
     value: 'noLabel',
     ariaLabel: 'Radio button without visible label',
+    onChange: () => {},
   },
 };
 
@@ -112,6 +174,7 @@ export const Glass: Story = {
     name: 'glass',
     value: 'glass',
     glass: true,
+    onChange: () => {},
   },
   render: (args: any) => (
     <div
@@ -143,6 +206,7 @@ export const GlassCustom: Story = {
       aberrationIntensity: 0.8,
       cornerRadius: 12,
     } as any,
+    onChange: () => {},
   },
   render: (args: any) => (
     <div
@@ -166,91 +230,159 @@ export const GlassCustom: Story = {
 
 // Glass radio group
 export const GlassGroup: Story = {
-  render: () => (
-    <div
-      style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        padding: '2rem',
-        borderRadius: '12px',
-        minHeight: '300px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <div>
-        <h3
-          style={{
-            color: 'white',
-            marginBottom: '2rem',
-            textAlign: 'center',
-            textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-          }}
-        >
-          Glass Radio Group
-        </h3>
-        <div className="u-d-flex u-flex-column u-gap-2">
-          <Radio label="Glass Option 1" name="glassGroup" value="option1" checked glass />
-          <Radio label="Glass Option 2" name="glassGroup" value="option2" glass />
-          <Radio label="Glass Option 3" name="glassGroup" value="option3" glass />
+  render: () => {
+    const [selectedValue, setSelectedValue] = React.useState('option1');
+    
+    return (
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          padding: '2rem',
+          borderRadius: '12px',
+          minHeight: '300px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div>
+          <h3
+            style={{
+              color: 'white',
+              marginBottom: '2rem',
+              textAlign: 'center',
+              textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+            }}
+          >
+            Glass Radio Group
+          </h3>
+          <div className="u-d-flex u-flex-column u-gap-2">
+            <Radio 
+              label="Glass Option 1" 
+              name="glassGroup" 
+              value="option1" 
+              checked={selectedValue === 'option1'}
+              onChange={() => setSelectedValue('option1')}
+              glass 
+            />
+            <Radio 
+              label="Glass Option 2" 
+              name="glassGroup" 
+              value="option2" 
+              checked={selectedValue === 'option2'}
+              onChange={() => setSelectedValue('option2')}
+              glass 
+            />
+            <Radio 
+              label="Glass Option 3" 
+              name="glassGroup" 
+              value="option3" 
+              checked={selectedValue === 'option3'}
+              onChange={() => setSelectedValue('option3')}
+              glass 
+            />
+          </div>
         </div>
       </div>
-    </div>
-  ),
+    );
+  },
 };
 
 // Glass states
 export const GlassStates: Story = {
-  render: () => (
-    <div
-      style={{
-        background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57)',
-        backgroundSize: '400% 400%',
-        animation: 'gradient 15s ease infinite',
-        padding: '2rem',
-        borderRadius: '12px',
-        minHeight: '500px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <style>
-        {`
-          @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-        `}
-      </style>
-      <div>
-        <h3
-          style={{
-            color: 'white',
-            marginBottom: '2rem',
-            textAlign: 'center',
-            textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-          }}
-        >
-          Glass Radio States
-        </h3>
-        <div className="u-d-flex u-flex-column u-gap-2">
-          <Radio label="Glass Default" name="glassStates" value="default" glass />
-          <Radio label="Glass Checked" name="glassStates" value="checked" checked glass />
-          <Radio label="Glass Disabled" name="glassStates" value="disabled" disabled glass />
-          <Radio
-            label="Glass Disabled and Checked"
-            name="glassStates"
-            value="disabledChecked"
-            disabled
-            checked
-            glass
-          />
-          <Radio label="Glass Valid" name="glassStates" value="valid" valid checked glass />
-          <Radio label="Glass Invalid" name="glassStates" value="invalid" invalid glass />
+  render: () => {
+    const [selectedValue, setSelectedValue] = React.useState('default');
+    
+    return (
+      <div
+        style={{
+          background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57)',
+          backgroundSize: '400% 400%',
+          animation: 'gradient 15s ease infinite',
+          padding: '2rem',
+          borderRadius: '12px',
+          minHeight: '500px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <style>
+          {`
+            @keyframes gradient {
+              0% { background-position: 0% 50%; }
+              50% { background-position: 100% 50%; }
+              100% { background-position: 0% 50%; }
+            }
+          `}
+        </style>
+        <div>
+          <h3
+            style={{
+              color: 'white',
+              marginBottom: '2rem',
+              textAlign: 'center',
+              textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+            }}
+          >
+            Glass Radio States
+          </h3>
+          <div className="u-d-flex u-flex-column u-gap-2">
+            <Radio 
+              label="Glass Default" 
+              name="glassStates" 
+              value="default" 
+              checked={selectedValue === 'default'}
+              onChange={() => setSelectedValue('default')}
+              glass 
+            />
+            <Radio 
+              label="Glass Checked" 
+              name="glassStates" 
+              value="checked" 
+              checked={selectedValue === 'checked'}
+              onChange={() => setSelectedValue('checked')}
+              glass 
+            />
+            <Radio 
+              label="Glass Disabled" 
+              name="glassStates" 
+              value="disabled" 
+              disabled
+              checked={selectedValue === 'disabled'}
+              onChange={() => setSelectedValue('disabled')}
+              glass 
+            />
+            <Radio
+              label="Glass Disabled and Checked"
+              name="glassStates"
+              value="disabledChecked"
+              disabled
+              checked={selectedValue === 'disabledChecked'}
+              onChange={() => setSelectedValue('disabledChecked')}
+              glass
+            />
+            <Radio 
+              label="Glass Valid" 
+              name="glassStates" 
+              value="valid" 
+              valid 
+              checked={selectedValue === 'valid'}
+              onChange={() => setSelectedValue('valid')}
+              glass 
+            />
+            <Radio 
+              label="Glass Invalid" 
+              name="glassStates" 
+              value="invalid" 
+              invalid 
+              checked={selectedValue === 'invalid'}
+              onChange={() => setSelectedValue('invalid')}
+              glass 
+            />
+          </div>
         </div>
       </div>
-    </div>
-  ),
+    );
+  },
 };

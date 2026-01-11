@@ -504,14 +504,12 @@ export const GlassPremium: Story = {
             <Card
               title="Enhanced Visuals"
               text="Premium glass shader provides the most refined appearance."
-              glass
               className="u-mb-3"
             />
 
             <Card
               title="Perfect for Modern Apps"
               text="Ideal for applications requiring sophisticated UI design."
-              glass
               className="u-mb-3"
             />
 
@@ -598,7 +596,7 @@ export const GlassShowcase: Story = {
               <p className="u-mb-4">
                 Classic glass morphism with balanced displacement and blur for general use.
               </p>
-              <Card title="Balanced Design" text="Perfect for everyday applications." glass />
+              <Card title="Balanced Design" text="Perfect for everyday applications." />
             </div>
           </EdgePanel>
 
@@ -630,7 +628,6 @@ export const GlassShowcase: Story = {
               <Card
                 title="Radial Distortion"
                 text="Creates circular displacement patterns."
-                glass
               />
             </div>
           </EdgePanel>
@@ -660,7 +657,7 @@ export const GlassShowcase: Story = {
               <p className="u-mb-4">
                 Stronger displacement and blur for bold, eye-catching interfaces.
               </p>
-              <Card title="Bold Appearance" text="Maximum visual impact and depth." glass />
+              <Card title="Bold Appearance" text="Maximum visual impact and depth." />
             </div>
           </EdgePanel>
 
@@ -693,7 +690,6 @@ export const GlassShowcase: Story = {
               <Card
                 title="Premium Quality"
                 text="Smooth, flowing distortions powered by WebGL shaders."
-                glass
               />
             </div>
           </EdgePanel>
@@ -727,7 +723,6 @@ export const GlassShowcase: Story = {
               <Card
                 title="Elite Design"
                 text="The pinnacle of glass morphism for luxury applications."
-                glass
               />
             </div>
           </EdgePanel>

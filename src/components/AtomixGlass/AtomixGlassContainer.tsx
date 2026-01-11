@@ -1,4 +1,4 @@
-import React, { forwardRef, useId, useRef, useState, useEffect, useMemo } from 'react';
+import React, { forwardRef, useRef, useState, useEffect, useMemo } from 'react';
 import type { CSSProperties } from 'react';
 import type { DisplacementMode, MousePosition, GlassSize } from '../../lib/types/components';
 import type { FragmentShaderType } from './shader-utils';
@@ -51,11 +51,11 @@ const setCachedShader = (key: string, url: string): void => {
     }
   }
   sharedShaderCache.set(key, { url, timestamp: Date.now() });
-  
+
   // Development mode: log cache size
   if (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') {
     if (sharedShaderCache.size >= MAX_CACHE_SIZE * 0.8) {
-      console.log(`AtomixGlass: Shader cache size: ${sharedShaderCache.size}/${MAX_CACHE_SIZE}`);
+      console.log(`AtomixGlass: Shader cache size: ${String(sharedShaderCache.size).replace(/[\r\n]/g, '')}/${String(MAX_CACHE_SIZE).replace(/[\r\n]/g, '')}`);
     }
   }
 };
@@ -131,26 +131,26 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     ref
   ) => {
     // Generate a stable, deterministic ID for SSR compatibility
-    // React's useId() should produce the same ID on server and client for the same
-    // component position in the tree. We use useState to ensure the ID is only
-    // generated once and remains stable across renders.
-    const baseId = useId();
+    // Use a counter-based approach to avoid hydration mismatches
     const [filterId] = useState(() => {
-      // Normalize the ID to ensure it's valid and consistent
-      // Remove colons (which useId() uses) and ensure it starts with a letter
-      const normalizedId = baseId.replace(/:/g, '-').replace(/^[^a-z]/i, 'atomix-');
-      return `atomix-glass-filter-${normalizedId}`;
+      // Use a simple counter for deterministic IDs
+      if (typeof window === 'undefined') {
+        // Server-side: use a predictable pattern
+        return `atomix-glass-filter-ssr-${Math.random().toString(36).substring(2, 11)}`;
+      }
+      // Client-side: use timestamp + random for uniqueness
+      return `atomix-glass-filter-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
     });
-    
+
     const [shaderMapUrl, setShaderMapUrl] = useState<string>('');
     const shaderGeneratorRef = useRef<any>(null);
     const shaderUtilsRef = useRef<{
       ShaderDisplacementGenerator: any;
       fragmentShaders: any;
     } | null>(null);
-    
+
     // Use shared module-level cache (no per-instance cache needed)
-    const shaderDebounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const shaderDebounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     // Lazy load shader utilities only when shader mode is needed
     useEffect(() => {
@@ -162,7 +162,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             fragmentShaders: shaderUtils.fragmentShaders,
           };
         }).catch((error) => {
-          console.warn('AtomixGlassContainer: Error loading shader utilities', error);
+          console.warn('AtomixGlassContainer: Error loading shader utilities', String(error).replace(/[\r\n]/g, ''));
         });
       } else {
         // Clear shader utils when not in shader mode to free memory
@@ -176,7 +176,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       if (mode === 'shader' && glassSize && validateGlassSize(glassSize) && shaderUtilsRef.current) {
         // Create cache key from size and variant
         const cacheKey = `${glassSize.width}x${glassSize.height}-${shaderVariant}`;
-        
+
         // Check shared cache first
         const cachedUrl = getCachedShader(cacheKey);
         if (cachedUrl) {
@@ -206,7 +206,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
               height: glassSize.height,
               fragment: selectedShader,
             });
-            
+
             // Use requestIdleCallback if available for non-blocking generation
             const generate = () => {
               const url = shaderGeneratorRef.current?.updateShader() || '';
@@ -435,11 +435,11 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
           '--atomix-glass-container-backdrop': backdropStyle?.backdropFilter || 'none',
           '--atomix-glass-container-shadow': overLight
             ? [
-                `inset 0 1px 0 rgba(255, 255, 255, ${0.4 + mx * 0.002})`,
-                `inset 0 -1px 0 rgba(0, 0, 0, ${0.2 + Math.abs(my) * 0.001})`,
-                `inset 0 0 20px rgba(0, 0, 0, ${0.08 + Math.abs(mx + my) * 0.001})`,
-                `0 2px 12px rgba(0, 0, 0, ${0.12 + Math.abs(my) * 0.002})`,
-              ].join(', ')
+              `inset 0 1px 0 rgba(255, 255, 255, ${0.4 + mx * 0.002})`,
+              `inset 0 -1px 0 rgba(0, 0, 0, ${0.2 + Math.abs(my) * 0.001})`,
+              `inset 0 0 20px rgba(0, 0, 0, ${0.08 + Math.abs(mx + my) * 0.001})`,
+              `0 2px 12px rgba(0, 0, 0, ${0.12 + Math.abs(my) * 0.002})`,
+            ].join(', ')
             : '0 0 20px rgba(0, 0, 0, 0.15) inset, 0 4px 8px rgba(0, 0, 0, 0.08) inset',
           '--atomix-glass-container-shadow-opacity': effectiveDisableEffects ? 0 : 1,
           // Background and shadow values use design token-aligned RGB values
@@ -511,25 +511,22 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
               shaderMapUrl={shaderMapUrl}
             />
             {/* Enhanced Apple Liquid Glass Inner Shadow Layer */}
-
             <div
               className={ATOMIX_GLASS.FILTER_OVERLAY_CLASS}
-              suppressHydrationWarning
               style={{
                 filter: `url(#${filterId})`,
                 backdropFilter: `var(--atomix-glass-container-backdrop)`,
                 borderRadius: `var(--atomix-glass-container-radius)`,
               }}
             />
-
             <div
               className={ATOMIX_GLASS.FILTER_SHADOW_CLASS}
-            style={{
-              boxShadow: `var(--atomix-glass-container-shadow)`,
-              opacity: `var(--atomix-glass-container-shadow-opacity)`,
-              background: `var(--atomix-glass-container-bg)`,
-              borderRadius: `var(--atomix-glass-container-radius)`,
-            }}
+              style={{
+                boxShadow: `var(--atomix-glass-container-shadow)`,
+                opacity: `var(--atomix-glass-container-shadow-opacity)`,
+                background: `var(--atomix-glass-container-bg)`,
+                borderRadius: `var(--atomix-glass-container-radius)`,
+              }}
             />
           </div>
 
@@ -538,7 +535,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             className={ATOMIX_GLASS.CONTENT_CLASS}
             style={{
               position: 'relative',
-              
               textShadow: `var(--atomix-glass-container-text-shadow)`,
               ...(elasticity > 0 ? { zIndex: 100 } : {}),
             }}

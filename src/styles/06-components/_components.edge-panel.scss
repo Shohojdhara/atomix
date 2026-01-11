@@ -416,7 +416,7 @@
   }
 
   // Remove borders for glass variant on all positions
-  &.c-edge-panel--start .c-edge-panel__glass-wrapper {
+  &.c-edge-panel--start .c-edge-panel__glass-content {
     animation: slideInStart 0.3s ease forwards;
 
     &.is-animating-out {
@@ -424,7 +424,7 @@
     }
   }
 
-  &.c-edge-panel--end .c-edge-panel__glass-wrapper {
+  &.c-edge-panel--end .c-edge-panel__glass-content {
     animation: slideInEnd 0.3s ease forwards;
 
     &.is-animating-out {
@@ -432,11 +432,11 @@
     }
   }
 
-  &.c-edge-panel--top .c-edge-panel__glass-wrapper {
+  &.c-edge-panel--top .c-edge-panel__glass-content{
     animation: slideInTop 0.3s ease forwards;
   }
 
-  &.c-edge-panel--bottom .c-edge-panel__glass-wrapper {
+  &.c-edge-panel--bottom .c-edge-panel__glass-content {
     animation: slideInBottom 0.3s ease forwards;
   }
 

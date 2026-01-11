@@ -127,16 +127,6 @@ export const EdgePanel: React.FC<EdgePanelProps> = ({
         {glass ? (
           <AtomixGlass
             {...glassProps}
-            className="c-edge-panel__glass-wrapper"
-            style={{
-              position: 'fixed',
-              width: glassContentRef.current?.offsetWidth,
-              height: glassContentRef.current?.offsetHeight,
-              top: containerRef.current?.offsetTop,
-              left: containerRef.current?.offsetLeft,
-              bottom: containerRef.current?.style.bottom,
-              right: containerRef.current?.style.right,
-            }}
           >
             <div
               ref={glassContentRef}
