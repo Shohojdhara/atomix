@@ -132,8 +132,12 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
   ) => {
     // Generate a stable, deterministic ID for SSR compatibility using React 18's useId
     // This ensures the same ID is generated on both server and client
+    // useMemo ensures the string concatenation only happens once, preventing unnecessary re-renders
     const reactId = useId();
-    const filterId = `atomix-glass-filter${reactId.replace(/:/g, '-')}`;
+    const filterId = useMemo(
+      () => `atomix-glass-filter${reactId.replace(/:/g, '-')}`,
+      [reactId]
+    );
 
     const [shaderMapUrl, setShaderMapUrl] = useState<string>('');
     const shaderGeneratorRef = useRef<any>(null);
@@ -399,7 +403,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         };
       }
     }, [
-      filterId,
       liquidBlur,
       saturation,
       blurAmount,
