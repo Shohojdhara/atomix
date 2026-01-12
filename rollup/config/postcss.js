@@ -9,6 +9,25 @@ import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
 
 /**
+ * Base plugins used for both JS and styles builds
+ */
+const basePlugins = [
+  postcssImport(),
+  postcssFlexbugsFixes(),
+  postcssPresetEnv({
+    autoprefixer: {
+      flexbox: 'no-2009',
+      grid: 'autoplace',
+    },
+    stage: 3,
+    features: {
+      'custom-properties': false, // We use CSS custom properties, don't transform them
+      'nesting-rules': true,
+    },
+  }),
+];
+
+/**
  * PostCSS config for JavaScript builds (no CSS extraction)
  * Used when processing JS/TS files that may import CSS
  */
@@ -16,6 +35,7 @@ export const jsPostcssConfig = {
   extract: false,
   minimize: false,
   sourceMap: true,
+  plugins: basePlugins,
   use: {
     sass: {
       api: 'modern',
@@ -47,32 +67,19 @@ export const createStylesPostcssConfig = (outputFile, minimize = false) => {
       },
     },
     plugins: [
-      postcssImport(),
-      postcssFlexbugsFixes(),
-      postcssPresetEnv({
-        autoprefixer: {
-          flexbox: 'no-2009',
-          grid: 'autoplace',
-        },
-        stage: 3,
-        features: {
-          'custom-properties': false, // We use CSS custom properties, don't transform them
-          'nesting-rules': true,
-        },
-      }),
-      autoprefixer(),
+      ...basePlugins,
       ...(minimize
         ? [
-            cssnano({
-              preset: [
-                'default',
-                {
-                  discardComments: { removeAll: true },
-                  normalizeWhitespace: false,
-                },
-              ],
-            }),
-          ]
+          cssnano({
+            preset: [
+              'default',
+              {
+                discardComments: { removeAll: true },
+                normalizeWhitespace: true,
+              },
+            ],
+          }),
+        ]
         : []),
     ],
     extensions: ['.css', '.scss', '.sass'],
