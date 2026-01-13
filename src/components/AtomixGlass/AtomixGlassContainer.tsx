@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useState, useEffect, useMemo, useId } from 'react';
+import React, { forwardRef, useRef, useState, useEffect, useMemo } from 'react';
 import type { CSSProperties } from 'react';
 import type { DisplacementMode, MousePosition, GlassSize } from '../../lib/types/components';
 import type { FragmentShaderType } from './shader-utils';
@@ -13,6 +13,9 @@ import {
 import { ATOMIX_GLASS } from '../../lib/constants/components';
 
 const { CONSTANTS } = ATOMIX_GLASS;
+
+// Module-level counter for deterministic ID generation
+let idCounter = 0;
 
 // Module-level shared shader cache with LRU eviction
 const MAX_CACHE_SIZE = 15;
@@ -130,14 +133,11 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     },
     ref
   ) => {
-    // Generate a stable, deterministic ID for SSR compatibility using React 18's useId
-    // This ensures the same ID is generated on both server and client
-    // useMemo ensures the string concatenation only happens once, preventing unnecessary re-renders
-    const reactId = useId();
-    const filterId = useMemo(
-      () => `atomix-glass-filter${reactId.replace(/:/g, '-')}`,
-      [reactId]
-    );
+    // Generate a stable, deterministic ID for SSR compatibility
+    // Use a module-level counter that's consistent across server and client
+    const filterId = useMemo(() => {
+      return `atomix-glass-filter-${++idCounter}`;
+    }, []);
 
     const [shaderMapUrl, setShaderMapUrl] = useState<string>('');
     const shaderGeneratorRef = useRef<any>(null);
@@ -204,27 +204,20 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
               fragment: selectedShader,
             });
 
-            // Use requestIdleCallback if available for non-blocking generation
-            const generate = () => {
+            // Defer shader generation with longer delay to avoid blocking
+            setTimeout(() => {
               const url = shaderGeneratorRef.current?.updateShader() || '';
               setCachedShader(cacheKey, url);
               setShaderMapUrl(url);
-            };
-
-            if (typeof requestIdleCallback !== 'undefined') {
-              requestIdleCallback(generate, { timeout: 1000 });
-            } else {
-              // Fallback to setTimeout for browsers without requestIdleCallback
-              setTimeout(generate, 0);
-            }
+            }, 100);
           } catch (error) {
             console.warn('AtomixGlassContainer: Error generating shader map', error);
             setShaderMapUrl(''); // Fallback to empty string
           }
         };
 
-        // Debounce with 300ms delay
-        shaderDebounceTimeoutRef.current = setTimeout(generateShader, 300);
+        // Debounce with 500ms delay to reduce frequency
+        shaderDebounceTimeoutRef.current = setTimeout(generateShader, 500);
       } else {
         // Not in shader mode, clear URL
         setShaderMapUrl('');

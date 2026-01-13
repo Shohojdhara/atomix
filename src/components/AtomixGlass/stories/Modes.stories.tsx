@@ -208,9 +208,8 @@ export const ModeGallery: Story = {
                 const isSelected = selectedMode === mode.id;
 
                 return (
-                  <GridCol xs={12} md={6} className="u-mb-4">
+                  <GridCol key={mode.id} xs={12} md={6} className="u-mb-4">
                     <AtomixGlass
-                      key={mode.id}
                       mode={mode.id as any}
                       displacementScale={mode.settings.displacementScale}
                       blurAmount={mode.settings.blurAmount}
