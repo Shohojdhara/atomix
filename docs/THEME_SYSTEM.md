@@ -162,65 +162,27 @@ function App() {
 }
 ```
 
-#### 4. Customize Design Tokens via Config (Automatic Loading!)
+#### 4. Customize Design Tokens (Tokens-First)
 
-**✨ Config-First Approach**: The theme system loads from `atomix.config.ts` when using `createTheme()` or `<ThemeProvider>` without explicit themes. Config file is required.
-
-You can customize design tokens using `atomix.config.ts`:
-
-```typescript
-// atomix.config.ts (in your project root)
-import { defineConfig } from '@shohojdhara/atomix/config';
-
-export default defineConfig({
-  prefix: 'atomix', // Optional: customize CSS variable prefix
-  
-  theme: {
-    extend: {
-      // Customize colors - generates full color scales automatically
-      colors: {
-        primary: { main: '#7AFFD7' }, // Generates primary-1 through primary-10
-        secondary: { main: '#FF5733' },
-        error: { main: '#ef4444' },
-      },
-      
-      // Customize typography
-      typography: {
-        fontFamilies: {
-          sans: ['Inter', 'sans-serif'],
-        },
-        fontSizes: {
-          '2xl': '1.5rem',
-        },
-      },
-      
-      // Customize spacing
-      spacing: {
-        '18': '4.5rem',
-        '72': '18rem',
-      },
-      
-      // Customize border radius
-      borderRadius: {
-        'xl': '0.75rem',
-      },
-    },
-  },
-});
-```
-
-**Automatic Usage (Recommended):**
+Provide DesignTokens directly to generate CSS or to initialize the provider.
 
 ```tsx
-// ThemeProvider automatically loads config
-<ThemeProvider>
+import { ThemeProvider, createTheme, injectTheme } from '@shohojdhara/atomix/theme';
+
+// Option A: Initialize ThemeProvider with tokens
+const tokens = {
+  'primary': '#7c3aed',
+  'secondary': '#FF5733',
+  'font-family': 'Inter, sans-serif',
+};
+
+<ThemeProvider defaultTheme={tokens}>
   <YourApp />
 </ThemeProvider>
 
-// Or use createTheme() directly
-import { createTheme, injectTheme } from '@shohojdhara/atomix/theme';
-const css = createTheme(); // Automatically loads from config
-injectTheme(css);
+// Option B: Generate CSS and inject globally
+const css = createTheme(tokens, { selector: ':root', prefix: 'atomix' });
+injectTheme(css, 'atomix-theme');
 ```
 
 **Build-Time Token Generation (Optional):**
@@ -236,7 +198,7 @@ This generates CSS custom properties in `src/styles/03-generic/_generated-root.c
 - Semantic tokens (text-emphasis, bg-subtle, border-subtle, hover)
 - Typography, spacing, and border-radius tokens
 
-**Note:** Config loading works at runtime (Node.js/SSR environments). Config file is required - errors will be thrown if config is not found.
+**Note:** There is no automatic config loading. When `createTheme()` is called without tokens, it generates CSS using defaults only. Provide tokens to customize the output.
 
 ### ❌ What You Should NOT Use
 
@@ -485,32 +447,30 @@ const theme = createTheme({
 
 ### ThemeProvider
 
-React context provider for theme state. **Automatically loads from `atomix.config.ts` if `defaultTheme` is not provided.**
+React context provider for theme state. Manages string-based CSS themes and token-based dynamic themes. Persists the current theme to `localStorage` when enabled and falls back to `'default'` if no theme is provided.
 
 ```tsx
-// Automatic: Loads from atomix.config.ts
-<ThemeProvider>
-  {children}
-</ThemeProvider>
-
-// Manual: Provide explicit theme
 <ThemeProvider
   defaultTheme="my-theme"
   themes={themes}
   basePath="/themes"
+  cdnPath={null}
+  useMinified={false}
+  storageKey="atomix-theme"
+  dataAttribute="data-theme"
   enablePersistence={true}
   onThemeChange={(theme) => console.log('Theme changed:', theme)}
+  onError={(error, name) => console.error('Theme error', name, error)}
 >
   {children}
 </ThemeProvider>
 ```
 
-**Config-First Approach:**
-- If `defaultTheme` is not provided, `ThemeProvider` loads from `atomix.config.ts` (required)
-- Config tokens are applied as DesignTokens
-- Works in Node.js/SSR environments
-- Config file must exist - errors will be thrown if not found
-- Theme is persisted to localStorage if `enablePersistence` is true
+- Supports CSS themes by name via `themes` and `basePath`/`cdnPath`.
+- Supports token-based themes by passing DesignTokens to `defaultTheme` or `setTheme`.
+- Persists the selected theme when `enablePersistence` is `true` using `storageKey`.
+- Applies the theme name to the root element using `dataAttribute`.
+- Uses minified CSS when `useMinified` is `true`.
 
 ### useTheme Hook
 
@@ -519,7 +479,7 @@ React hook for accessing theme context:
 ```typescript
 const {
   theme,              // Current theme name
-  activeTheme,        // Active theme object (for JS themes)
+  activeTokens,       // Active DesignTokens (for token-based themes)
   setTheme,           // Function to change theme
   availableThemes,    // List of available themes
   isLoading,          // Loading state
