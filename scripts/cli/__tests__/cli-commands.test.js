@@ -180,6 +180,23 @@ describe('Atomix CLI Commands', () => {
   });
 });
 
+describe('Security Validation', () => {
+  it('should reject build-theme paths outside project', () => {
+    expect(() => {
+      execSync(`node ${CLI_PATH} build-theme ../../etc/passwd`, {
+        cwd: process.cwd()
+      });
+    }).toThrow();
+  });
+  
+  it('should reject migrate source paths outside project', () => {
+    expect(() => {
+      execSync(`node ${CLI_PATH} migrate tailwind --source ../../etc`, {
+        cwd: process.cwd()
+      });
+    }).toThrow();
+  });
+});
 describe('CLI Error Handling', () => {
   it('should show suggestions for invalid commands', () => {
     try {
@@ -197,8 +214,7 @@ describe('CLI Error Handling', () => {
   });
 
   it('should respect --debug flag', () => {
-    const output = execSync(`node ${CLI_PATH} --debug --help`).toString();
-    // Debug mode should be enabled
-    expect(process.env.ATOMIX_DEBUG).toBe('true');
+    const output = execSync(`node ${CLI_PATH} generate component DebugFlag --path ${TEST_DIR} --debug`).toString();
+    expect(output).toContain('[DEBUG] Generating component');
   });
 });

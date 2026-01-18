@@ -18,20 +18,26 @@ const __dirname = dirname(__filename);
  */
 export async function executeThemeCommand(command, args = [], options = {}) {
   const spinner = options.spinner || ora(`Running theme ${command}...`).start();
-  
+
   try {
     // Path to the theme CLI
     const themeCliPath = join(__dirname, '../../src/lib/theme/devtools/CLI.ts');
-    
+
     // Use ts-node to execute TypeScript CLI
     const tsNodePath = join(__dirname, '../../node_modules/.bin/ts-node');
-    
+
     return new Promise((resolve, reject) => {
-      const child = spawn(tsNodePath, [themeCliPath, command, ...args], {
+      const child = spawn(tsNodePath, [
+        '--esm',
+        '--experimental-specifier-resolution=node',
+        themeCliPath,
+        command,
+        ...args
+      ], {
         stdio: 'inherit',
         cwd: process.cwd(),
       });
-      
+
       child.on('close', (code) => {
         if (code === 0) {
           spinner.succeed(chalk.green(`✓ Theme ${command} completed`));
@@ -41,7 +47,7 @@ export async function executeThemeCommand(command, args = [], options = {}) {
           reject(new Error(`Theme command failed with code ${code}`));
         }
       });
-      
+
       child.on('error', (error) => {
         spinner.fail(chalk.red(`✗ Theme ${command} failed`));
         reject(error);
@@ -65,43 +71,43 @@ export function createThemeCLIBridge() {
       const args = [];
       if (options.config) args.push('--config', options.config);
       if (options.strict) args.push('--strict');
-      
+
       return executeThemeCommand('validate', args, options);
     },
-    
+
     /**
      * List all themes
      */
     async list(options = {}) {
       return executeThemeCommand('list', [], options);
     },
-    
+
     /**
      * Inspect a theme
      */
     async inspect(themeName, options = {}) {
       const args = ['--theme', themeName];
       if (options.json) args.push('--json');
-      
+
       return executeThemeCommand('inspect', args, options);
     },
-    
+
     /**
      * Compare two themes
      */
     async compare(theme1, theme2, options = {}) {
       const args = ['--theme1', theme1, '--theme2', theme2];
-      
+
       return executeThemeCommand('compare', args, options);
     },
-    
+
     /**
      * Export a theme
      */
     async export(themeName, options = {}) {
       const args = ['--theme', themeName];
       if (options.output) args.push('--output', options.output);
-      
+
       return executeThemeCommand('export', args, options);
     },
   };

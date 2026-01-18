@@ -12,7 +12,7 @@ export default [
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
-      ecmaVersion: 2020, // Align with TypeScript target ES2020
+      ecmaVersion: 2022, // Support top-level await
       sourceType: 'module',
       globals: {
         window: 'readonly',

@@ -1,0 +1,47 @@
+// Theme: test-theme
+// =============================================================================
+
+@import '../../src/styles/01-settings';
+@import '../../src/styles/02-tools';
+
+// Theme Variables
+// =============================================================================
+:root[data-theme="test-theme"] {
+  // Colors
+  --atomix-color-primary: #7AFFD7;
+  --atomix-color-secondary: #FF5733;
+  --atomix-color-success: #4DFF9F;
+  --atomix-color-error: #FF1A1A;
+  --atomix-color-warning: #FFB84D;
+  
+  // Background
+  --atomix-color-background: #000000;
+  --atomix-color-surface: #212121;
+  
+  // Text
+  --atomix-color-text: #FFFFFF;
+  --atomix-color-text-secondary: rgba(255, 255, 255, 0.8);
+  
+  // Border
+  --atomix-color-border: rgba(255, 255, 255, 0.1);
+  
+  // Spacing (if needed)
+  // --atomix-space-base: 16px;
+  
+  // Typography (if needed)
+  // --atomix-font-family-base: 'Inter', sans-serif;
+}
+
+// Theme-specific Component Overrides
+// =============================================================================
+[data-theme="test-theme"] {
+  // Add component-specific overrides here
+  
+  .c-button {
+    // Button overrides
+  }
+  
+  .c-card {
+    // Card overrides
+  }
+}
