@@ -7,12 +7,11 @@
  * Component templates for design system
  */
 export const componentTemplates = {
-    react: {
-        component: (name, options = {}) => `import React, { forwardRef, memo } from 'react';
-${options.scssModule ? `import styles from './${name}.module.scss';` : ''}
-${options.types ? `import type { ${name}Props } from '../../lib/types/components';` : ''}
+  react: {
+    component: (name, options = {}) => `import React, { forwardRef, memo } from 'react';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
-${options.types ? '' : `export interface ${name}Props {
+export interface ${name}Props {
   /**
    * Content to be rendered
    */
@@ -37,38 +36,67 @@ ${options.types ? '' : `export interface ${name}Props {
    * Disabled state
    */
   disabled?: boolean;
-}`}
+
+  /**
+   * Glass effect options
+   */
+  glass?: boolean | object;
+
+  /**
+   * Inline styles
+   */
+  style?: React.CSSProperties;
+}
 
 /**
  * ${name} component
- * 
- * @component
- * @example
- * <${name} variant="primary" size="md">
- *   Content
- * </${name}>
  */
 export const ${name} = memo(
   forwardRef<HTMLDivElement, ${name}Props>(
-    ({ children, className = '', size = 'md', variant = 'primary', disabled = false, ...props }, ref) => {
-      ${options.scssModule ? `const componentClasses = [
-        styles.${name.toLowerCase()},
-        styles[\`${name.toLowerCase()}--\${size}\`],
-        styles[\`${name.toLowerCase()}--\${variant}\`],
-        disabled && styles['${name.toLowerCase()}--disabled'],
-        className
-      ].filter(Boolean).join(' ');` : `const componentClasses = \`c-${name.toLowerCase()} c-${name.toLowerCase()}--\${size} c-${name.toLowerCase()}--\${variant} \${disabled ? 'c-${name.toLowerCase()}--disabled' : ''} \${className}\`.trim();`}
+    ({ 
+      children, 
+      className = '', 
+      size = 'md', 
+      variant = 'primary', 
+      disabled = false, 
+      glass,
+      style,
+      ...props 
+    }, ref) => {
       
-      return (
+      const componentClass = [
+        'c-${name.toLowerCase()}',
+        \`c-${name.toLowerCase()}--\${size}\`,
+        \`c-${name.toLowerCase()}--\${variant}\`,
+        disabled && 'is-disabled',
+        glass && \`c-${name.toLowerCase()}--glass\`,
+        className
+      ].filter(Boolean).join(' ');
+      
+      const content = (
         <div
           ref={ref}
-          className={componentClasses}
+          className={componentClass}
           aria-disabled={disabled}
+          style={style}
           {...props}
         >
           {children}
         </div>
       );
+
+      if (glass) {
+        return (
+          <AtomixGlass 
+            className={\`c-${name.toLowerCase()}--glass\`} 
+            {...(typeof glass === 'object' ? glass : {})}
+          >
+            {content}
+          </AtomixGlass>
+        );
+      }
+
+      return content;
     }
   )
 );
@@ -77,10 +105,10 @@ ${name}.displayName = '${name}';
 
 export default ${name};`,
 
-        index: (name) => `export { default as ${name} } from './${name}';
+    index: (name) => `export { default as ${name} } from './${name}';
 export type { ${name}Props } from './${name}';`,
 
-        story: (name) => `import type { Meta, StoryObj } from '@storybook/react';
+    story: (name) => `import type { Meta, StoryObj } from '@storybook/react';
 import { ${name} } from './${name}';
 
 const meta: Meta<typeof ${name}> = {
@@ -100,6 +128,9 @@ const meta: Meta<typeof ${name}> = {
       options: ['primary', 'secondary', 'success', 'error'],
     },
     disabled: {
+      control: 'boolean',
+    },
+    glass: {
       control: 'boolean',
     },
   },
@@ -130,35 +161,15 @@ export const Large: Story = {
   },
 };
 
-export const Secondary: Story = {
+export const Glass: Story = {
   args: {
     ...Default.args,
-    variant: 'secondary',
+    glass: true,
   },
 };
+`,
 
-export const Success: Story = {
-  args: {
-    ...Default.args,
-    variant: 'success',
-  },
-};
-
-export const Error: Story = {
-  args: {
-    ...Default.args,
-    variant: 'error',
-  },
-};
-
-export const Disabled: Story = {
-  args: {
-    ...Default.args,
-    disabled: true,
-  },
-};`,
-
-        test: (name) => `import { describe, it, expect } from 'vitest';
+    test: (name) => `import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { ${name} } from './${name}';
 
@@ -174,17 +185,11 @@ describe('${name}', () => {
     expect(element).toHaveClass('c-${name.toLowerCase()}--lg');
   });
   
-  it('applies variant classes', () => {
-    const { container } = render(<${name} variant="success">Content</${name}>);
-    const element = container.firstChild;
-    expect(element).toHaveClass('c-${name.toLowerCase()}--success');
-  });
-  
   it('handles disabled state', () => {
     const { container } = render(<${name} disabled>Content</${name}>);
     const element = container.firstChild;
     expect(element).toHaveAttribute('aria-disabled', 'true');
-    expect(element).toHaveClass('c-${name.toLowerCase()}--disabled');
+    expect(element).toHaveClass('is-disabled');
   });
   
   it('forwards ref correctly', () => {
@@ -194,15 +199,10 @@ describe('${name}', () => {
   });
 });`,
 
-        scss: (name) => `// Component: ${name}
+    scss: (name) => `// =============================================================================
+// ${name.toUpperCase()}
 // =============================================================================
-// Design system component following ITCSS architecture
 
-@import '../../styles/01-settings';
-@import '../../styles/02-tools';
-
-// Block: Base component
-// =============================================================================
 .c-${name.toLowerCase()} {
   // Layout
   display: flex;
@@ -210,276 +210,68 @@ describe('${name}', () => {
   justify-content: center;
   
   // Spacing
-  padding: var(--atomix-space-3) var(--atomix-space-4);
-  gap: var(--atomix-space-2);
+  padding: spacing(3) spacing(4);
+  gap: spacing(2);
+  
+  // Theme
+  background-color: var(--atomix-bg-surface);
+  color: var(--atomix-text-primary);
+  border: 1px solid var(--atomix-border-default);
+  border-radius: radius('md');
   
   // Typography
-  font-family: var(--atomix-font-family-base);
-  font-size: var(--atomix-font-size-base);
-  font-weight: var(--atomix-font-weight-normal);
-  line-height: var(--atomix-line-height-base);
+  @include font-size('base');
   
-  // Appearance
-  background-color: var(--atomix-color-background);
-  color: var(--atomix-color-text);
-  border: 1px solid var(--atomix-color-border);
-  border-radius: var(--atomix-radius-md);
+  // Interactions
+  transition: all 0.2s ease;
   
-  // Interaction
-  cursor: default;
-  user-select: none;
-  transition: all 0.2s ease-in-out;
+  // Themes
+  &--primary {
+    background-color: var(--atomix-primary);
+    color: var(--atomix-primary-content);
+    border-color: var(--atomix-primary-dark);
+  }
   
-  // Focus
-  &:focus-visible {
-    @include focus-ring;
+  &--secondary {
+    background-color: var(--atomix-secondary);
+    color: var(--atomix-secondary-content);
+    border-color: var(--atomix-secondary-dark);
+  }
+  
+  // Sizes
+  &--sm {
+    padding: spacing(2) spacing(3);
+    @include font-size('sm');
+  }
+  
+  &--lg {
+    padding: spacing(4) spacing(5);
+    @include font-size('lg');
+  }
+  
+  // State
+  &.is-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+  
+  // Glass variant
+  &--glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
 }
+`,
 
-// Size Modifiers
-// =============================================================================
-.c-${name.toLowerCase()}--sm {
-  padding: var(--atomix-space-2) var(--atomix-space-3);
-  font-size: var(--atomix-font-size-sm);
-  gap: var(--atomix-space-1);
-}
-
-.c-${name.toLowerCase()}--md {
-  // Default size - explicitly defined for clarity
-  padding: var(--atomix-space-3) var(--atomix-space-4);
-  font-size: var(--atomix-font-size-base);
-  gap: var(--atomix-space-2);
-}
-
-.c-${name.toLowerCase()}--lg {
-  padding: var(--atomix-space-4) var(--atomix-space-5);
-  font-size: var(--atomix-font-size-lg);
-  gap: var(--atomix-space-3);
-}
-
-// Color/Variant Modifiers
-// =============================================================================
-.c-${name.toLowerCase()}--primary {
-  background-color: var(--atomix-color-primary);
-  color: var(--atomix-color-primary-text);
-  border-color: var(--atomix-color-primary-dark);
-  
-  &:hover:not(:disabled) {
-    background-color: var(--atomix-color-primary-dark);
+    scssModule: (name) => `` // Disabled/Empty as we prefer global SCSS
   }
-}
-
-.c-${name.toLowerCase()}--secondary {
-  background-color: var(--atomix-color-secondary);
-  color: var(--atomix-color-secondary-text);
-  border-color: var(--atomix-color-secondary-dark);
-  
-  &:hover:not(:disabled) {
-    background-color: var(--atomix-color-secondary-dark);
-  }
-}
-
-.c-${name.toLowerCase()}--success {
-  background-color: var(--atomix-color-success);
-  color: var(--atomix-color-success-text);
-  border-color: var(--atomix-color-success-dark);
-  
-  &:hover:not(:disabled) {
-    background-color: var(--atomix-color-success-dark);
-  }
-}
-
-.c-${name.toLowerCase()}--error {
-  background-color: var(--atomix-color-error);
-  color: var(--atomix-color-error-text);
-  border-color: var(--atomix-color-error-dark);
-  
-  &:hover:not(:disabled) {
-    background-color: var(--atomix-color-error-dark);
-  }
-}
-
-// State Modifiers
-// =============================================================================
-.c-${name.toLowerCase()}--disabled {
-  @include disabled;
-  cursor: not-allowed;
-  
-  &:hover {
-    transform: none;
-  }
-}
-
-// Elements (if component has child elements)
-// =============================================================================
-.c-${name.toLowerCase()}__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.c-${name.toLowerCase()}__content {
-  flex: 1;
-}
-
-// Responsive Design
-// =============================================================================
-@include respond-to('tablet') {
-  .c-${name.toLowerCase()} {
-    // Tablet adjustments
-  }
-}
-
-@include respond-to('mobile') {
-  .c-${name.toLowerCase()} {
-    // Mobile adjustments
-    padding: var(--atomix-space-2) var(--atomix-space-3);
-  }
-}
-
-// Accessibility
-// =============================================================================
-@media (prefers-reduced-motion: reduce) {
-  .c-${name.toLowerCase()} {
-    transition: none;
-  }
-}
-
-@media (prefers-contrast: high) {
-  .c-${name.toLowerCase()} {
-    border-width: 2px;
-  }
-}
-
-// Dark Mode Support
-// =============================================================================
-[data-theme="dark"] {
-  .c-${name.toLowerCase()} {
-    background-color: var(--atomix-color-background-dark);
-    color: var(--atomix-color-text-dark);
-    border-color: var(--atomix-color-border-dark);
-  }
-}`,
-
-        scssModule: (name) => `// Component: ${name}
-// =============================================================================
-// Design system component using CSS Modules
-
-@import '../../styles/01-settings';
-@import '../../styles/02-tools';
-
-// Block: Base component
-// =============================================================================
-.${name.toLowerCase()} {
-  // Layout
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  // Spacing
-  padding: var(--atomix-space-3) var(--atomix-space-4);
-  gap: var(--atomix-space-2);
-  
-  // Typography
-  font-family: var(--atomix-font-family-base);
-  font-size: var(--atomix-font-size-base);
-  font-weight: var(--atomix-font-weight-normal);
-  line-height: var(--atomix-line-height-base);
-  
-  // Appearance
-  background-color: var(--atomix-color-background);
-  color: var(--atomix-color-text);
-  border: 1px solid var(--atomix-color-border);
-  border-radius: var(--atomix-radius-md);
-  
-  // Interaction
-  cursor: default;
-  user-select: none;
-  transition: all 0.2s ease-in-out;
-  
-  // Focus
-  &:focus-visible {
-    outline: 2px solid var(--atomix-color-focus);
-    outline-offset: 2px;
-  }
-}
-
-// Size Modifiers
-// =============================================================================
-.${name.toLowerCase()}--sm {
-  composes: ${name.toLowerCase()};
-  padding: var(--atomix-space-2) var(--atomix-space-3);
-  font-size: var(--atomix-font-size-sm);
-  gap: var(--atomix-space-1);
-}
-
-.${name.toLowerCase()}--md {
-  composes: ${name.toLowerCase()};
-}
-
-.${name.toLowerCase()}--lg {
-  composes: ${name.toLowerCase()};
-  padding: var(--atomix-space-4) var(--atomix-space-5);
-  font-size: var(--atomix-font-size-lg);
-  gap: var(--atomix-space-3);
-}
-
-// Color/Variant Modifiers
-// =============================================================================
-.${name.toLowerCase()}--primary {
-  background-color: var(--atomix-color-primary);
-  color: var(--atomix-color-primary-text);
-  border-color: var(--atomix-color-primary-dark);
-  
-  &:hover:not([aria-disabled="true"]) {
-    background-color: var(--atomix-color-primary-dark);
-  }
-}
-
-.${name.toLowerCase()}--secondary {
-  background-color: var(--atomix-color-secondary);
-  color: var(--atomix-color-secondary-text);
-  border-color: var(--atomix-color-secondary-dark);
-  
-  &:hover:not([aria-disabled="true"]) {
-    background-color: var(--atomix-color-secondary-dark);
-  }
-}
-
-.${name.toLowerCase()}--success {
-  background-color: var(--atomix-color-success);
-  color: var(--atomix-color-success-text);
-  border-color: var(--atomix-color-success-dark);
-  
-  &:hover:not([aria-disabled="true"]) {
-    background-color: var(--atomix-color-success-dark);
-  }
-}
-
-.${name.toLowerCase()}--error {
-  background-color: var(--atomix-color-error);
-  color: var(--atomix-color-error-text);
-  border-color: var(--atomix-color-error-dark);
-  
-  &:hover:not([aria-disabled="true"]) {
-    background-color: var(--atomix-color-error-dark);
-  }
-}
-
-// State Modifiers
-// =============================================================================
-.${name.toLowerCase()}--disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}`
-    }
 };
 
 // Token generation functions
 export function generateColorTokens() {
-    return `// Custom Color Tokens
+  return `// Custom Color Tokens
 // Generated by Atomix CLI
 // =============================================================================
 
@@ -549,7 +341,7 @@ $border-color-dark: $custom-border-color-dark !default;
 }
 
 export function generateSpacingTokens() {
-    return `// Custom Spacing Tokens
+  return `// Custom Spacing Tokens
 // Generated by Atomix CLI
 // =============================================================================
 
@@ -623,7 +415,7 @@ $spacing-sizes: (
 }
 
 export function generateTypographyTokens() {
-    return `// Custom Typography Tokens
+  return `// Custom Typography Tokens
 // Generated by Atomix CLI
 // =============================================================================
 
@@ -696,7 +488,7 @@ $h6-font-size: $custom-h6-font-size !default;
 }
 
 export function generateShadowTokens() {
-    return `// Custom Box Shadow Tokens
+  return `// Custom Box Shadow Tokens
 // Generated by Atomix CLI
 // =============================================================================
 
@@ -749,7 +541,7 @@ $box-shadow-xl-dark: $custom-shadow-xl-dark !default;
 }
 
 export function generateRadiusTokens() {
-    return `// Custom Border Radius Tokens
+  return `// Custom Border Radius Tokens
 // Generated by Atomix CLI
 // =============================================================================
 
@@ -801,7 +593,7 @@ $badge-border-radius: $custom-badge-radius !default;
 }
 
 export function generateAnimationTokens() {
-    return `// Custom Animation Tokens
+  return `// Custom Animation Tokens
 // Generated by Atomix CLI
 // =============================================================================
 

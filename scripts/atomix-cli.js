@@ -412,17 +412,48 @@ program
         console.log(chalk.green(`  ✓ Created index.ts`));
 
         // Generate SCSS file
-        const scssContent = options.scssModule
-          ? componentTemplates.react.scssModule(safeName)
-          : componentTemplates.react.scss(safeName);
+        if (!options.scssModule) {
+          const scssContent = componentTemplates.react.scss(safeName);
+          const scssPath = join(process.cwd(), 'src/styles/06-components');
+          const scssFilename = `_components.${safeName.toLowerCase()}.scss`;
+          const scssFilePath = join(scssPath, scssFilename);
 
-        const scssFilename = options.scssModule ? `${safeName}.module.scss` : `_${safeName.toLowerCase()}.scss`;
-        await writeFile(
-          join(componentPath, scssFilename),
-          scssContent,
-          'utf8'
-        );
-        console.log(chalk.green(`  ✓ Created ${scssFilename}`));
+          // Ensure styles directory exists
+          if (existsSync(scssPath)) {
+            // Check if SCSS file already exists
+            if (!existsSync(scssFilePath) || options.force) {
+              await writeFile(scssFilePath, scssContent, 'utf8');
+              console.log(chalk.green(`  ✓ Created ${scssFilename} in src/styles/06-components`));
+
+              // Update _index.scss
+              const indexPath = join(scssPath, '_index.scss');
+              if (existsSync(indexPath)) {
+                let indexContent = await readFile(indexPath, 'utf8');
+                const forwardStatement = `@forward 'components.${safeName.toLowerCase()}';`;
+
+                if (!indexContent.includes(forwardStatement)) {
+                  // Append to end of file, ensuring newline
+                  if (!indexContent.endsWith('\n')) indexContent += '\n';
+                  indexContent += `${forwardStatement}\n`;
+                  await writeFile(indexPath, indexContent, 'utf8');
+                  console.log(chalk.green(`  ✓ Updated _index.scss`));
+                }
+              }
+            } else {
+              console.log(chalk.yellow(`  ⚠️  SCSS file already exists: ${scssFilename}`));
+            }
+          } else {
+            console.log(chalk.yellow(`  ⚠️  Styles directory not found: ${scssPath}`));
+          }
+        } else {
+          // Fallback for modules if strictly requested (though we discourage it)
+          const scssContent = componentTemplates.react.scssModule(safeName);
+          await writeFile(
+            join(componentPath, `${safeName}.module.scss`),
+            scssContent,
+            'utf8'
+          );
+        }
 
         // Generate Storybook story
         if (options.story) {
