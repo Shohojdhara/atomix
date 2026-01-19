@@ -5,246 +5,11 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import { readFile, writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { join, dirname, basename } from 'path';
 import { existsSync } from 'fs';
 import boxen from 'boxen';
 
-/**
- * Project Templates
- */
-const projectTemplates = {
-  react: {
-    dependencies: [
-      '@shohojdhara/atomix',
-      'react',
-      'react-dom'
-    ],
-    devDependencies: [
-      '@types/react',
-      '@types/react-dom',
-      'typescript',
-      'vite',
-      '@vitejs/plugin-react'
-    ],
-    files: {
-      'vite.config.ts': `import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-
-export default defineConfig({
-  plugins: [react()],
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: \`@import '@shohojdhara/atomix/scss/settings';\`
-      }
-    }
-  }
-});`,
-      'src/App.tsx': `import React from 'react';
-import { Button, Card } from '@shohojdhara/atomix';
-import '@shohojdhara/atomix/css';
-
-function App() {
-  return (
-    <div className="app">
-      <Card>
-        <h1>Welcome to Atomix Design System</h1>
-        <Button variant="primary">Get Started</Button>
-      </Card>
-    </div>
-  );
-}
-
-export default App;`,
-      'src/main.tsx': `import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css';
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);`,
-      'src/index.css': `/* Custom styles */
-body {
-  margin: 0;
-  font-family: var(--atomix-font-family-base);
-}`
-    }
-  },
-
-  nextjs: {
-    dependencies: [
-      '@shohojdhara/atomix',
-      'next',
-      'react',
-      'react-dom'
-    ],
-    devDependencies: [
-      '@types/react',
-      '@types/react-dom',
-      'typescript',
-      'eslint',
-      'eslint-config-next'
-    ],
-    files: {
-      'next.config.js': `/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  sassOptions: {
-    includePaths: ['./src/styles'],
-    prependData: \`@import '@shohojdhara/atomix/scss/settings';\`
-  }
-};
-
-module.exports = nextConfig;`,
-      'src/pages/_app.tsx': `import type { AppProps } from 'next/app';
-import '@shohojdhara/atomix/css';
-import '../styles/globals.css';
-
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
-}`,
-      'src/pages/index.tsx': `import { Button, Card } from '@shohojdhara/atomix';
-
-export default function Home() {
-  return (
-    <main>
-      <Card>
-        <h1>Welcome to Atomix + Next.js</h1>
-        <Button variant="primary">Get Started</Button>
-      </Card>
-    </main>
-  );
-}`,
-      'src/styles/globals.css': `/* Global styles */
-body {
-  margin: 0;
-  padding: 0;
-}`
-    }
-  },
-
-  vanilla: {
-    dependencies: [
-      '@shohojdhara/atomix'
-    ],
-    devDependencies: [
-      'vite',
-      'sass'
-    ],
-    files: {
-      'vite.config.js': `import { defineConfig } from 'vite';
-
-export default defineConfig({
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: \`@import '@shohojdhara/atomix/scss/settings';\`
-      }
-    }
-  }
-});`,
-      'index.html': `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Atomix Design System</title>
-  <link rel="stylesheet" href="/node_modules/@shohojdhara/atomix/dist/atomix.css">
-  <link rel="stylesheet" href="/src/styles/main.scss">
-</head>
-<body>
-  <div class="c-card">
-    <h1>Welcome to Atomix Design System</h1>
-    <button class="c-btn c-btn-primary">Get Started</button>
-  </div>
-  
-  <script type="module" src="/src/main.js"></script>
-</body>
-</html>`,
-      'src/main.js': `// Initialize Atomix components
-import { initializeComponents } from '@shohojdhara/atomix/vanilla';
-
-document.addEventListener('DOMContentLoaded', () => {
-  initializeComponents();
-  
-  // Your custom code here
-  console.log('Atomix Design System initialized');
-});`,
-      'src/styles/main.scss': `// Import Atomix
-@import '@shohojdhara/atomix/scss';
-
-// Your custom styles
-.app {
-  padding: 2rem;
-}`
-    }
-  }
-};
-
-/**
- * Configuration templates
- */
-const configTemplates = {
-  basic: {
-    '.atomixrc.json': {
-      theme: {
-        name: 'custom',
-        outputDir: './dist/themes',
-        minify: true,
-        sourceMaps: false
-      },
-      components: {
-        style: 'scss',
-        typescript: true,
-        stories: true
-      }
-    }
-  },
-
-  advanced: {
-    'atomix.config.js': `module.exports = {
-  // Theme configuration
-  theme: {
-    name: process.env.ATOMIX_THEME || 'custom',
-    outputDir: './dist/themes',
-    minify: process.env.NODE_ENV === 'production',
-    sourceMaps: process.env.NODE_ENV === 'development',
-    watch: process.env.NODE_ENV === 'development'
-  },
-  
-  // Component generation
-  components: {
-    path: './src/components',
-    style: 'scss-module', // scss | scss-module | css-in-js
-    typescript: true,
-    stories: true,
-    tests: true
-  },
-  
-  // Design tokens
-  tokens: {
-    colors: {
-      custom: true,
-      validate: true
-    },
-    typography: {
-      scale: '1.25', // Major third
-      baseSize: '16px'
-    }
-  },
-  
-  // Build options
-  build: {
-    clean: true,
-    analyze: false,
-    report: true
-  }
-};`
-  }
-};
+import { projectTemplates, configTemplates } from './templates.js';
 
 /**
  * Run the interactive init wizard
@@ -345,18 +110,95 @@ export async function runInitWizard() {
       }
     ]);
 
-    // Generate files
-    console.log(chalk.cyan('\n📦 Generating project files...\n'));
-
     // Create project structure
     if (projectType !== 'custom') {
       const template = projectTemplates[projectType];
+
+      // Step 6: Create/Update package.json
+      const packageJsonPath = join(process.cwd(), 'package.json');
+      let packageJson = {};
+
+      if (existsSync(packageJsonPath)) {
+        packageJson = JSON.parse(await readFile(packageJsonPath, 'utf8'));
+      } else {
+        // Create basic package.json
+        packageJson = {
+          name: basename(process.cwd()),
+          version: '0.1.0',
+          private: true,
+          scripts: {},
+          dependencies: {},
+          devDependencies: {}
+        };
+      }
+
+      // Merge dependencies
+      const packageJsonVersion = packageJson.version || '0.1.0';
+
+      template.dependencies.forEach(dep => {
+        if (!packageJson.dependencies[dep]) {
+          // Use a default compatible version if not specified
+          const defaultVersions = {
+            'react': '^18.0.0',
+            'react-dom': '^18.0.0',
+            'next': '^14.0.0',
+            'sass': '^1.70.0'
+          };
+          packageJson.dependencies[dep] = defaultVersions[dep] || 'latest';
+        }
+      });
+
+      template.devDependencies.forEach(dep => {
+        if (!packageJson.devDependencies[dep]) {
+          const defaultDevVersions = {
+            'typescript': '^5.0.0',
+            'vite': '^5.0.0',
+            '@shohojdhara/atomix': `^${packageJsonVersion}` // Self-reference for templates
+          };
+          packageJson.devDependencies[dep] = defaultDevVersions[dep] || 'latest';
+        }
+      });
+
+      // Merge scripts carefully
+      const newScripts = {
+        'dev': projectType === 'nextjs' ? 'next dev' : 'vite',
+        'build': projectType === 'nextjs' ? 'next build' : 'vite build',
+        'build:theme': 'atomix build-theme themes/custom',
+        'generate:component': 'atomix generate component',
+        'validate': 'atomix validate --tokens --theme'
+      };
+
+      if (features.includes('storybook')) {
+        newScripts['storybook'] = 'storybook dev -p 6006';
+        newScripts['build:storybook'] = 'storybook build';
+      }
+
+      if (features.includes('testing')) {
+        newScripts['test'] = 'vitest';
+        newScripts['test:watch'] = 'vitest --watch';
+      }
+
+      // Add new scripts without overwriting user's existing scripts
+      for (const [key, value] of Object.entries(newScripts)) {
+        if (!packageJson.scripts[key]) {
+          packageJson.scripts[key] = value;
+        } else if (packageJson.scripts[key] !== value) {
+          // Suggest renamed script if conflict exists
+          const suggestedKey = `atomix:${key}`;
+          if (!packageJson.scripts[suggestedKey]) {
+            packageJson.scripts[suggestedKey] = value;
+            console.log(chalk.yellow(`  ⚠️  Script conflict for "${key}". Added as "${suggestedKey}" instead.`));
+          }
+        }
+      }
+
+      await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf8');
+      console.log(chalk.green('  ✓ Updated package.json'));
 
       // Create directories
       await mkdir('src', { recursive: true });
       if (projectType === 'nextjs') {
         await mkdir('src/pages', { recursive: true });
-        await mkdir('src/styles', { recursive: true });
       } else if (projectType === 'react') {
         await mkdir('src/components', { recursive: true });
       } else if (projectType === 'vanilla') {
@@ -366,7 +208,7 @@ export async function runInitWizard() {
       // Write template files
       for (const [path, content] of Object.entries(template.files)) {
         const filePath = join(process.cwd(), path);
-        const dir = join(process.cwd(), path.substring(0, path.lastIndexOf('/')));
+        const dir = dirname(filePath);
 
         if (!existsSync(dir)) {
           await mkdir(dir, { recursive: true });
@@ -426,52 +268,6 @@ export async function runInitWizard() {
         'utf8'
       );
       console.log(chalk.green('  ✓ Created custom theme'));
-    }
-
-    // Generate package.json scripts
-    const scripts = {
-      'dev': projectType === 'nextjs' ? 'next dev' : 'vite',
-      'build': projectType === 'nextjs' ? 'next build' : 'vite build',
-      'build:theme': 'atomix build-theme themes/custom',
-      'generate:component': 'atomix generate component',
-      'validate': 'atomix validate --tokens --theme'
-    };
-
-    if (features.includes('storybook')) {
-      scripts['storybook'] = 'storybook dev -p 6006';
-      scripts['build:storybook'] = 'storybook build';
-    }
-
-    if (features.includes('testing')) {
-      scripts['test'] = 'vitest';
-      scripts['test:watch'] = 'vitest --watch';
-      scripts['test:coverage'] = 'vitest --coverage';
-    }
-
-    if (features.includes('linting')) {
-      scripts['lint'] = 'eslint . --ext .ts,.tsx,.js,.jsx';
-      scripts['lint:fix'] = 'eslint . --ext .ts,.tsx,.js,.jsx --fix';
-      scripts['format'] = 'prettier --write "src/**/*.{ts,tsx,js,jsx,json,css,scss}"';
-    }
-
-    // Update package.json if it exists
-    const packageJsonPath = join(process.cwd(), 'package.json');
-    if (existsSync(packageJsonPath)) {
-      const { addScripts } = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'addScripts',
-          message: 'Add Atomix scripts to package.json?',
-          default: true
-        }
-      ]);
-
-      if (addScripts) {
-        const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf8'));
-        packageJson.scripts = { ...packageJson.scripts, ...scripts };
-        await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf8');
-        console.log(chalk.green('  ✓ Updated package.json scripts'));
-      }
     }
 
     // Success message

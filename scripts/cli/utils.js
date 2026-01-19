@@ -8,6 +8,18 @@ import { existsSync } from 'fs';
 import { access } from 'fs/promises';
 
 /**
+ * Enhanced Error Class for CLI
+ */
+export class AtomixCLIError extends Error {
+  constructor(message, code, suggestions = []) {
+    super(message);
+    this.name = 'AtomixCLIError';
+    this.code = code;
+    this.suggestions = suggestions;
+  }
+}
+
+/**
  * Validates and sanitizes file paths to prevent directory traversal attacks
  * @param {string} inputPath - The path to validate
  * @param {string} basePath - The base directory (defaults to process.cwd())
@@ -17,13 +29,13 @@ export function validatePath(inputPath, basePath = process.cwd()) {
   try {
     // Normalize the paths to remove any '..' or '.' segments
     const normalizedBase = normalize(resolve(basePath));
-    const normalizedInput = normalize(isAbsolute(inputPath) 
-      ? inputPath 
+    const normalizedInput = normalize(isAbsolute(inputPath)
+      ? inputPath
       : resolve(basePath, inputPath));
-    
+
     // Check if the resolved path is within the base directory
     const relativePath = relative(normalizedBase, normalizedInput);
-    
+
     // If the relative path starts with '..', it's outside the base directory
     if (relativePath.startsWith('..')) {
       return {
@@ -32,7 +44,7 @@ export function validatePath(inputPath, basePath = process.cwd()) {
         error: 'Path is outside the project directory'
       };
     }
-    
+
     // Additional checks for sensitive paths
     const sensitivePatterns = [
       /^\.git/,
@@ -43,7 +55,7 @@ export function validatePath(inputPath, basePath = process.cwd()) {
       /private/i,
       /secret/i
     ];
-    
+
     for (const pattern of sensitivePatterns) {
       if (pattern.test(relativePath)) {
         return {
@@ -53,7 +65,7 @@ export function validatePath(inputPath, basePath = process.cwd()) {
         };
       }
     }
-    
+
     return {
       isValid: true,
       safePath: normalizedInput,
@@ -80,7 +92,7 @@ export function validateComponentName(name) {
       error: 'Component name must be a non-empty string'
     };
   }
-  
+
   // Check PascalCase: starts with uppercase, only contains letters and numbers
   if (!/^[A-Z][a-zA-Z0-9]*$/.test(name)) {
     return {
@@ -88,20 +100,20 @@ export function validateComponentName(name) {
       error: 'Component name must be in PascalCase (e.g., Button, CardHeader)'
     };
   }
-  
+
   // Check for reserved words
   const reservedWords = [
     'Component', 'React', 'Fragment', 'Suspense', 'StrictMode',
     'Error', 'Loading', 'App', 'Root', 'Document', 'Html'
   ];
-  
+
   if (reservedWords.includes(name)) {
     return {
       isValid: false,
       error: `"${name}" is a reserved word. Please choose a different name.`
     };
   }
-  
+
   // Check minimum length
   if (name.length < 2) {
     return {
@@ -109,7 +121,7 @@ export function validateComponentName(name) {
       error: 'Component name must be at least 2 characters long'
     };
   }
-  
+
   return { isValid: true };
 }
 
@@ -125,7 +137,7 @@ export function validateThemeName(name) {
       error: 'Theme name must be a non-empty string'
     };
   }
-  
+
   // Check kebab-case: lowercase letters, numbers, and hyphens
   if (!/^[a-z][a-z0-9-]*$/.test(name)) {
     return {
@@ -133,7 +145,7 @@ export function validateThemeName(name) {
       error: 'Theme name must be lowercase and use hyphens (e.g., dark-theme)'
     };
   }
-  
+
   // Check for consecutive hyphens
   if (/--/.test(name)) {
     return {
@@ -141,7 +153,7 @@ export function validateThemeName(name) {
       error: 'Theme name cannot contain consecutive hyphens'
     };
   }
-  
+
   // Check for trailing hyphen
   if (name.endsWith('-')) {
     return {
@@ -149,7 +161,7 @@ export function validateThemeName(name) {
       error: 'Theme name cannot end with a hyphen'
     };
   }
-  
+
   return { isValid: true };
 }
 
@@ -162,7 +174,7 @@ export function sanitizeInput(input) {
   if (typeof input !== 'string') {
     return String(input);
   }
-  
+
   // Remove any shell metacharacters that could be dangerous
   return input
     .replace(/[;&|`$<>\\]/g, '')
@@ -190,7 +202,7 @@ export async function fileExists(filePath) {
  */
 export function isCI() {
   return !!(
-    process.env.CI || 
+    process.env.CI ||
     process.env.CONTINUOUS_INTEGRATION ||
     process.env.GITHUB_ACTIONS ||
     process.env.GITLAB_CI ||
@@ -205,9 +217,9 @@ export function isCI() {
  * @returns {boolean}
  */
 export function isDebug() {
-  return process.env.ATOMIX_DEBUG === 'true' || 
-         process.argv.includes('--debug') ||
-         process.argv.includes('-d');
+  return process.env.ATOMIX_DEBUG === 'true' ||
+    process.argv.includes('--debug') ||
+    process.argv.includes('-d');
 }
 
 /**
@@ -271,7 +283,7 @@ export function isValidColor(color) {
     /^hsla\(/i,                // hsla()
     /^var\(--/                 // CSS custom property
   ];
-  
+
   return patterns.some(pattern => pattern.test(color));
 }
 
@@ -284,7 +296,7 @@ export function isValidColor(color) {
 export function validateNpmScripts(packageJson, requiredScripts = []) {
   const scripts = packageJson.scripts || {};
   const missing = requiredScripts.filter(script => !scripts[script]);
-  
+
   return {
     valid: missing.length === 0,
     missing
@@ -311,7 +323,7 @@ export function checkNodeVersion(requiredVersion = '18.0.0') {
   const currentVersion = process.version.substring(1); // Remove 'v' prefix
   const current = currentVersion.split('.').map(Number);
   const required = requiredVersion.split('.').map(Number);
-  
+
   let compatible = true;
   for (let i = 0; i < required.length; i++) {
     if (current[i] < required[i]) {
@@ -321,7 +333,7 @@ export function checkNodeVersion(requiredVersion = '18.0.0') {
       break;
     }
   }
-  
+
   return {
     compatible,
     current: currentVersion,

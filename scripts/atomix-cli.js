@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Atomix CLI - Enhanced Version
+ * Atomix CLI
  * Design System Development Tools
  */
 
@@ -30,7 +30,8 @@ import {
   listTokens,
   validateTokens,
   exportTokens,
-  importTokens
+  importTokens,
+  fixTokens
 } from './cli/token-manager.js';
 import { createThemeCLIBridge } from './cli/theme-bridge.js';
 import {
@@ -40,7 +41,8 @@ import {
   sanitizeInput,
   fileExists,
   isDebug as checkDebugMode,
-  checkNodeVersion
+  checkNodeVersion,
+  AtomixCLIError
 } from './cli/utils.js';
 import {
   componentTemplates,
@@ -62,18 +64,6 @@ const packageJson = JSON.parse(
 
 // CLI Configuration
 const DEBUG = process.env.ATOMIX_DEBUG === 'true' || process.argv.includes('--debug');
-
-/**
- * Enhanced Error Class
- */
-class AtomixCLIError extends Error {
-  constructor(message, code, suggestions = []) {
-    super(message);
-    this.name = 'AtomixCLIError';
-    this.code = code;
-    this.suggestions = suggestions;
-  }
-}
 
 /**
  * Debug logger
@@ -495,6 +485,57 @@ program
           }
         ));
 
+      } else if (type === 'hook' || type === 'h') {
+        const componentPath = join(options.path, `use${safeName}`);
+        await mkdir(componentPath, { recursive: true });
+
+        const hookContent = componentTemplates.hook.hook(safeName);
+        await writeFile(join(componentPath, `use${safeName}.ts`), hookContent, 'utf8');
+
+        if (options.test) {
+          const testContent = componentTemplates.hook.test(safeName);
+          await writeFile(join(componentPath, `use${safeName}.test.ts`), testContent, 'utf8');
+        }
+
+        spinner.succeed(chalk.green(`✓ Created hook use${safeName}`));
+
+      } else if (type === 'layout' || type === 'l') {
+        const layoutPath = join(options.path, safeName);
+        await mkdir(layoutPath, { recursive: true });
+
+        const componentContent = componentTemplates.layout.component(safeName);
+        await writeFile(join(layoutPath, `${safeName}.tsx`), componentContent, 'utf8');
+
+        const scssContent = componentTemplates.layout.scss(safeName);
+        const scssFilename = `_layouts.${safeName.toLowerCase()}.scss`;
+        const scssPath = join(process.cwd(), 'src/styles/05-layouts');
+
+        if (existsSync(scssPath)) {
+          await writeFile(join(scssPath, scssFilename), scssContent, 'utf8');
+
+          // Update layouts index
+          const indexPath = join(scssPath, '_index.scss');
+          if (existsSync(indexPath)) {
+            let indexContent = await readFile(indexPath, 'utf8');
+            const forwardStatement = `@forward 'layouts.${safeName.toLowerCase()}';`;
+            if (!indexContent.includes(forwardStatement)) {
+              indexContent += `\n${forwardStatement}`;
+              await writeFile(indexPath, indexContent, 'utf8');
+            }
+          }
+        }
+
+        spinner.succeed(chalk.green(`✓ Created layout ${safeName}`));
+
+      } else if (type === 'context' || type === 'ctx') {
+        const contextPath = join(options.path, `${safeName}Context`);
+        await mkdir(contextPath, { recursive: true });
+
+        const contextContent = componentTemplates.context.context(safeName);
+        await writeFile(join(contextPath, `${safeName}Context.tsx`), contextContent, 'utf8');
+
+        spinner.succeed(chalk.green(`✓ Created context ${safeName}Context`));
+
       } else if (type === 'token' || type === 't') {
         // Token generation
         const validCategories = ['colors', 'spacing', 'typography', 'shadows', 'radius', 'animations'];
@@ -775,35 +816,21 @@ program
 
           let fixedCount = 0;
 
-          // Fix missing !default flags
-          const defaultFlagIssues = warnings.filter(w => w.issue === 'Some variables missing !default flag');
-          for (const warning of defaultFlagIssues) {
-            const filePath = join(process.cwd(), warning.file);
-            if (existsSync(filePath)) {
-              try {
-                let content = await readFile(filePath, 'utf8');
-                // Add !default to variables that don't have it
-                const newContent = content.replace(/(\$[a-z-]+:\s*[^;!]+)(;)/gi, '$1 !default$2');
-
-                if (content !== newContent) {
-                  await writeFile(filePath, newContent, 'utf8');
-                  console.log(chalk.green(`  ✓ Fixed missing !default flags in ${warning.file}`));
-                  fixedCount++;
-                }
-              } catch (err) {
-                console.error(chalk.red(`  ✗ Failed to fix ${warning.file}: ${err.message}`));
-              }
-            }
+          // Run token fixes
+          if (options.tokens || target === 'tokens' || !target) {
+            const tokenFixResult = await fixTokens(options);
+            fixedCount += tokenFixResult.totalFixed;
           }
 
           if (fixedCount > 0) {
-            console.log(chalk.green(`\n✨ Fixed ${fixedCount} file(s). Please run validate again to verify.`));
+            console.log(chalk.green(`\n✨ Fixed ${fixedCount} issue(s). Please run validate again to verify.`));
           } else {
-            console.log(chalk.yellow('\nCould not automatically fix reported issues. Manual intervention required.'));
+            console.log(chalk.yellow('\nCould not automatically fix all reported issues. Manual intervention required.'));
           }
+        } else {
+          console.log(chalk.yellow('\nCould not automatically fix reported issues. Manual intervention required.'));
         }
       }
-
     } catch (error) {
       handleError(error, spinner);
     }

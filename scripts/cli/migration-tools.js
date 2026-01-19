@@ -7,7 +7,7 @@ import { readFile, writeFile, readdir, stat } from 'fs/promises';
 import { join, extname, relative } from 'path';
 import chalk from 'chalk';
 import ora from 'ora';
-import { validatePath, sanitizeInput } from './utils.js';
+import { validatePath, sanitizeInput, AtomixCLIError } from './utils.js';
 import {
   tailwindToAtomix,
   bootstrapToAtomix,
@@ -23,7 +23,11 @@ export async function migrateTailwind(sourcePath, options = {}) {
   const sanitizedSource = sanitizeInput(sourcePath);
   const sourceValidation = validatePath(sanitizedSource);
   if (!sourceValidation.isValid) {
-    throw new Error(sourceValidation.error);
+    throw new AtomixCLIError(
+      sourceValidation.error,
+      'INVALID_PATH',
+      ['Provide a valid path within the project', 'Check for typos']
+    );
   }
   const safeSource = sourceValidation.safePath;
   const spinner = ora('Migrating from Tailwind CSS...').start();
@@ -131,7 +135,11 @@ export async function migrateBootstrap(sourcePath, options = {}) {
   const sanitizedSource = sanitizeInput(sourcePath);
   const sourceValidation = validatePath(sanitizedSource);
   if (!sourceValidation.isValid) {
-    throw new Error(sourceValidation.error);
+    throw new AtomixCLIError(
+      sourceValidation.error,
+      'INVALID_PATH',
+      ['Provide a valid path within the project', 'Check for typos']
+    );
   }
   const safeSource = sourceValidation.safePath;
   const spinner = ora('Migrating from Bootstrap...').start();
@@ -232,7 +240,11 @@ export async function migrateSCSSVariables(sourcePath, options = {}) {
   const sanitizedSource = sanitizeInput(sourcePath);
   const sourceValidation = validatePath(sanitizedSource);
   if (!sourceValidation.isValid) {
-    throw new Error(sourceValidation.error);
+    throw new AtomixCLIError(
+      sourceValidation.error,
+      'INVALID_PATH',
+      ['Provide a valid path within the project', 'Check for typos']
+    );
   }
   const safeSource = sourceValidation.safePath;
   const spinner = ora('Migrating SCSS variables to design tokens...').start();
