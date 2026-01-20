@@ -460,10 +460,10 @@ export const Playground: Story = {
       Math.min(
         100,
         100 -
-          settings.displacementScale * 0.15 -
-          Math.abs(settings.blurAmount) * 2 -
-          settings.aberrationIntensity * 3 -
-          settings.elasticity * 20
+        settings.displacementScale * 0.15 -
+        Math.abs(settings.blurAmount) * 2 -
+        settings.aberrationIntensity * 3 -
+        settings.elasticity * 20
       )
     );
 
@@ -690,20 +690,19 @@ export const Playground: Story = {
                               : 'Off'
                             : typeof value === 'number'
                               ? value.toFixed(
-                                  key.includes('Amount') ||
-                                    key.includes('elasticity') ||
-                                    key.includes('aberration')
-                                    ? 2
-                                    : 0
-                                )
+                                key.includes('Amount') ||
+                                  key.includes('elasticity') ||
+                                  key.includes('aberration')
+                                  ? 2
+                                  : 0
+                              )
                               : value}
                         </span>
                       </div>
                       {typeof value === 'boolean' ? (
                         <Toggle
-                          initialOn={value}
-                          onToggleOn={() => setSettings(prev => ({ ...prev, [key]: true }))}
-                          onToggleOff={() => setSettings(prev => ({ ...prev, [key]: false }))}
+                          checked={value as boolean}
+                          onChange={checked => setSettings(prev => ({ ...prev, [key]: checked }))}
                         />
                       ) : (
                         <input
@@ -724,8 +723,8 @@ export const Playground: Story = {
                           }
                           step={
                             key === 'aberrationIntensity' ||
-                            key === 'elasticity' ||
-                            key === 'blurAmount'
+                              key === 'elasticity' ||
+                              key === 'blurAmount'
                               ? 0.01
                               : 1
                           }

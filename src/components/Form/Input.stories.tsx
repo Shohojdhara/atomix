@@ -72,6 +72,10 @@ const meta = {
       control: 'boolean',
       description: 'Input takes full width',
     },
+    defaultValue: {
+      control: 'text',
+      description: 'Initial value for uncontrolled input',
+    },
   },
 } satisfies Meta<typeof Input>;
 
@@ -85,6 +89,16 @@ export const Basic: Story = {
   args: {
     placeholder: 'Enter text here',
     type: 'text',
+  },
+};
+
+/**
+ * Input using defaultValue for uncontrolled component pattern.
+ */
+export const Uncontrolled: Story = {
+  args: {
+    defaultValue: 'Initial value',
+    placeholder: 'Type something...',
   },
 };
 
@@ -465,8 +479,6 @@ export const GlassShowcase: Story = {
           backgroundPosition: 'center',
           padding: '2rem',
           borderRadius: '12px',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
           minHeight: '200px',
           display: 'flex',
           alignItems: 'center',

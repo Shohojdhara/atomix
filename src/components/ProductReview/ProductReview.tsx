@@ -135,7 +135,7 @@ export const ProductReview: React.FC<ProductReviewProps> = ({
               allowHalf={allowHalf}
               maxValue={maxRating}
               size="lg"
-              color={ratingColor}
+              variant={ratingColor}
             />
             <span className="c-rating__value">
               {rating > 0 ? rating.toFixed(1) : 'Select a rating'}

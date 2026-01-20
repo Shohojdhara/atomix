@@ -35,7 +35,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
       backdrop = false,
       closeOnOutsideClick = true,
       closeOnEscape = true,
-      ariaLabel = 'Main navigation',
+      'aria-label': ariaLabel = 'Main navigation',
       id,
       glass,
     },

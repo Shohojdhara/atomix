@@ -13,8 +13,8 @@ import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
  * <Rating value={3} onChange={handleRatingChange} />
  *
  * @example
- * // Read-only with custom color
- * <Rating value={4.5} readOnly color="warning" />
+ * // Read-only with custom variant
+ * <Rating value={4.5} readOnly variant="warning" />
  *
  * @example
  * // With half-star support
@@ -29,7 +29,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
       allowHalf = false,
       readOnly = false,
       size = 'md',
-      color,
+      variant,
       onChange,
       className = '',
       style,
@@ -142,7 +142,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
       allowHalf,
       readOnly,
       size,
-      color,
+      variant,
       onChange,
     ]);
 
@@ -156,16 +156,16 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
         allowHalf,
         readOnly,
         size,
-        color,
+        variant,
       });
-    }, [useVanillaJS, valueProp, defaultValue, maxValue, allowHalf, readOnly, size, color]);
+    }, [useVanillaJS, valueProp, defaultValue, maxValue, allowHalf, readOnly, size, variant]);
 
     // Determine CSS classes
     const ratingClasses = [
       'c-rating',
       size === 'sm' ? RATING.CLASSES.SMALL : '',
       size === 'lg' ? RATING.CLASSES.LARGE : '',
-      color ? `c-rating--${color}` : '',
+      variant ? `c-rating--${variant}` : '',
       className,
     ]
       .filter(Boolean)
@@ -201,7 +201,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
           'c-rating__star',
           isFullStar ? RATING.CLASSES.FULL : '',
           isHalfStar ? RATING.CLASSES.HALF : '',
-          color ? `c-rating__star--${color}` : '',
+          variant ? `c-rating__star--${variant}` : '',
           focusedIndex === i ? 'c-rating__star--focused' : '',
         ]
           .filter(Boolean)

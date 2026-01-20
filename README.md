@@ -16,6 +16,7 @@
   - [React Integration](#react-integration)
 - [Components](#components)
 - [API](#api)
+- [Migration Guide](#migration-guide)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -139,6 +140,7 @@ For a complete list, see [components documentation](./src/components/).
 
 ## API
 
+- [v2.0.0 Migration Guide](./MIGRATION_V2.md)
 - [Components API](./docs/components/README.md)
 - [Theme System](./docs/THEME_SYSTEM.md)
 - [CLI Reference](./docs/CLI_API_REFERENCE.md)

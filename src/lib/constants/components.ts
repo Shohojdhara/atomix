@@ -79,7 +79,7 @@ export const CALLOUT = {
   CLOSE_BTN_CLASS: 'c-callout__close-btn',
   VARIANT_PREFIX: 'c-callout--',
   CLASSES: {
-    ONELINE: 'c-callout--oneline',
+    COMPACT: 'c-callout--compact',
     TOAST: 'c-callout--toast',
     HIDE: 'is-hide',
   },

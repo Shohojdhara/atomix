@@ -9,8 +9,8 @@ export function useCallout(initialProps?: Partial<CalloutProps>) {
   // Default callout properties
   const defaultProps: Partial<CalloutProps> = {
     variant: 'primary',
-    oneLine: false,
-    toast: false,
+    compact: false,
+    isToast: false,
     glass: false,
     ...initialProps,
   };
@@ -23,18 +23,18 @@ export function useCallout(initialProps?: Partial<CalloutProps>) {
   const generateCalloutClass = (props: Partial<CalloutProps>): string => {
     const {
       variant = defaultProps.variant,
-      oneLine = defaultProps.oneLine,
-      toast = defaultProps.toast,
+      compact = defaultProps.compact,
+      isToast = defaultProps.isToast,
       glass = defaultProps.glass,
       className = '',
     } = props;
 
-    const oneLineClass = oneLine ? 'c-callout--oneline' : '';
-    const toastClass = toast ? 'c-callout--toast' : '';
+    const compactClass = compact ? 'c-callout--compact' : '';
+    const toastClass = isToast ? 'c-callout--toast' : '';
     const variantClass = variant ? `c-callout--${variant}` : '';
     const glassClass = glass ? 'c-callout--glass' : '';
 
-    return `c-callout ${variantClass} ${oneLineClass} ${toastClass} ${glassClass} ${className}`.trim();
+    return `c-callout ${variantClass} ${compactClass} ${toastClass} ${glassClass} ${className}`.trim();
   };
 
   /**

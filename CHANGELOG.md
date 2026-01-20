@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.0.0] - 2026-01-20
+
+### Added
+- **Spinner**: Added `aria-label` (default "Loading") and `role` (default "status") props for improved accessibility.
+- **Badge**: Added `onRemove` callback and `aria-label` support. Providing `onRemove` automatically renders a close button.
+- **Input/Textarea**: Added `defaultValue` prop for uncontrolled component support.
+- **JSDoc**: Added `@default` tags to many component props for better developer experience and documentation.
+
+### Changed (Breaking)
+- **Standardized ARIA Props**: All ARIA-related props have been renamed from camelCase to kebab-case (e.g., `ariaLabel` -> `aria-label`) to align with native React/HTML standards.
+- **Toggle Component**: Refactored API to follow standard React form patterns. Removed `initialOn`, `onToggleOn`, and `onToggleOff`. Added `checked`, `defaultChecked`, and `onChange`.
+- **Rating Component**: Renamed `color` prop to `variant` for consistency with other components.
+- **Accordion Component**: Consolidated `onOpen` and `onClose` into a single `onOpenChange` handler.
+- **Callout Component**: Renamed `oneLine` to `compact` and `toast` to `isToast`.
+
+### Fixed
+- Fixed several accessibility issues across navigation components.
+- Improved focus management in `Modal` component.
+
 ## 0.3.11
 
 ### Patch Changes

@@ -17,7 +17,7 @@ export function useNavbar(initialProps?: Partial<NavbarProps>) {
     backdrop: false,
     closeOnOutsideClick: true,
     closeOnEscape: true,
-    ariaLabel: 'Main navigation',
+    'aria-label': 'Main navigation',
     ...initialProps,
   };
 

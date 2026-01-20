@@ -16,10 +16,18 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    initialOn: {
+    defaultChecked: {
       control: { type: 'boolean' },
-      description: 'Whether the toggle is initially on',
+      description: 'Whether the toggle is initially on (uncontrolled)',
       defaultValue: false,
+    },
+    checked: {
+      control: { type: 'boolean' },
+      description: 'Whether the toggle is on (controlled)',
+    },
+    onChange: {
+      action: 'changed',
+      description: 'Callback when the toggle state changes',
     },
     disabled: {
       control: { type: 'boolean' },
@@ -43,8 +51,23 @@ export const Default: Story = {
     </div>
   ),
   args: {
-    initialOn: false,
+    defaultChecked: false,
     disabled: false,
+  },
+};
+
+/**
+ * Controlled Toggle using checked and onChange.
+ */
+export const Controlled: Story = {
+  render: () => {
+    const [isChecked, setIsChecked] = React.useState(false);
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+        <p>Checked: {isChecked ? 'Yes' : 'No'}</p>
+        <Toggle checked={isChecked} onChange={setIsChecked} />
+      </div>
+    );
   },
 };
 
@@ -55,7 +78,7 @@ export const InitiallyOn: Story = {
     </div>
   ),
   args: {
-    initialOn: true,
+    defaultChecked: true,
     disabled: false,
   },
 };
@@ -67,7 +90,7 @@ export const Disabled: Story = {
     </div>
   ),
   args: {
-    initialOn: false,
+    defaultChecked: false,
     disabled: true,
   },
 };
@@ -79,14 +102,14 @@ export const DisabledOn: Story = {
     </div>
   ),
   args: {
-    initialOn: true,
+    defaultChecked: true,
     disabled: true,
   },
 };
 
 export const Glass: Story = {
   args: {
-    initialOn: false,
+    defaultChecked: false,
     disabled: false,
     glass: true,
   },
@@ -109,7 +132,7 @@ export const Glass: Story = {
 
 export const GlassOn: Story = {
   args: {
-    initialOn: true,
+    defaultChecked: true,
     disabled: false,
     glass: true,
   },
@@ -135,7 +158,7 @@ export const GlassOn: Story = {
 
 export const GlassCustom: Story = {
   args: {
-    initialOn: false,
+    defaultChecked: false,
     disabled: false,
     glass: {
       displacementScale: 80,

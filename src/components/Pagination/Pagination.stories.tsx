@@ -58,7 +58,7 @@ const meta = {
       description: 'Size variant for pagination',
       defaultValue: 'md',
     },
-    ariaLabel: {
+    'aria-label': {
       control: 'text',
       description: 'Accessible label for the navigation element',
     },
@@ -70,6 +70,9 @@ const meta = {
       control: 'boolean',
       description: 'Enable glass morphism effect',
     },
+  },
+  args: {
+    onPageChange: () => { },
   },
 } satisfies Meta<typeof Pagination>;
 
@@ -97,7 +100,7 @@ export const Default: Story = {
     showFirstLastButtons: true,
     showPrevNextButtons: true,
     size: 'md',
-    ariaLabel: 'Pagination',
+    'aria-label': 'Pagination',
   },
   parameters: {
     docs: {

@@ -5,7 +5,7 @@ interface BreadcrumbOptions {
   items: BreadcrumbItem[];
   divider?: React.ReactNode;
   className?: string;
-  ariaLabel?: string;
+  'aria-label'?: string;
 }
 
 /**
@@ -19,7 +19,7 @@ export function useBreadcrumb(initialOptions?: Partial<BreadcrumbOptions>) {
     items: [],
     divider: BREADCRUMB.DEFAULTS.DIVIDER,
     className: '',
-    ariaLabel: 'Breadcrumb',
+    'aria-label': 'Breadcrumb',
     ...initialOptions,
   };
 

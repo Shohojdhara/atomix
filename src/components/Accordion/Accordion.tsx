@@ -12,6 +12,8 @@ export const Accordion: React.FC<AccordionProps> = memo(({
   defaultOpen = false,
   isOpen: controlledOpen,
   onOpenChange,
+  onOpen,
+  onClose,
   disabled = false,
   iconPosition = 'right',
   icon,
@@ -39,6 +41,8 @@ export const Accordion: React.FC<AccordionProps> = memo(({
     iconPosition,
     isOpen: controlledOpen,
     onOpenChange,
+    onOpen,
+    onClose,
   });
 
   // Default icon

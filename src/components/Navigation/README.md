@@ -223,7 +223,7 @@ document.querySelector('.c-navbar').addEventListener('navbar:collapsed', (event)
 | `backdrop` | `boolean` | `false` | Show backdrop on mobile |
 | `closeOnOutsideClick` | `boolean` | `true` | Close on outside click |
 | `closeOnEscape` | `boolean` | `true` | Close on escape key |
-| `ariaLabel` | `string` | `'Main navigation'` | Accessible label |
+| `aria-label` | `string` | `'Main navigation'` | Accessible label |
 | `className` | `string` | - | Additional CSS classes |
 | `disabled` | `boolean` | `false` | Disable the navbar |
 

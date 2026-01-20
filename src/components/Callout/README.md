@@ -46,8 +46,8 @@ import { Callout } from '@atomix/react';
 | `variant` | `ThemeColor` | `'primary'` | Color variant |
 | `onClose` | `() => void` | - | Close handler function |
 | `actions` | `ReactNode` | - | Optional action buttons |
-| `oneLine` | `boolean` | `false` | Display in one line mode |
-| `toast` | `boolean` | `false` | Display as toast notification |
+| `compact` | `boolean` | `false` | Display in compact mode |
+| `isToast` | `boolean` | `false` | Display as toast notification |
 | `glass` | `AtomixGlassProps \| boolean` | `false` | Glass morphism effect |
 | `className` | `string` | - | Additional CSS classes |
 
@@ -121,14 +121,14 @@ When `glass={true}`, these default settings are used:
 
 ## Layout Options
 
-### One Line Mode
+### Compact Mode
 
 ```tsx
 <Callout
   title="Quick notification"
   variant="info"
   icon={<InfoIcon />}
-  oneLine={true}
+  compact={true}
 />
 ```
 
@@ -139,7 +139,7 @@ When `glass={true}`, these default settings are used:
   title="Toast Message"
   variant="success"
   icon={<SuccessIcon />}
-  toast={true}
+  isToast={true}
   onClose={() => handleClose()}
 >
   This appears as a toast notification
@@ -222,7 +222,7 @@ function ToastManager() {
           key={toast.id}
           title={toast.variant}
           variant={toast.variant}
-          toast={true}
+          isToast={true}
           glass={true}
           onClose={() => removeToast(toast.id)}
         >
@@ -368,7 +368,7 @@ function NotificationSystem() {
         variant="error"
         title="Error"
         icon={<X />}
-        toast={true}
+        isToast={true}
         glass={true}
         onClose={() => handleErrorClose()}
       >
@@ -384,7 +384,8 @@ function NotificationSystem() {
 ### From v1.x to v2.x
 
 - Glass prop added as optional feature
-- No breaking changes to existing props
+- **Prop Rename**: `oneLine` is now `compact`
+- **Prop Rename**: `toast` is now `isToast`
 - Enhanced accessibility attributes
 - Improved TypeScript definitions
 

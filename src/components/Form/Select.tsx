@@ -24,8 +24,8 @@ export const Select: React.FC<SelectProps> = memo(({
   invalid = false,
   valid = false,
   multiple = false,
-  ariaLabel,
-  ariaDescribedBy,
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
   glass,
 }) => {
   const { generateSelectClass } = useSelect({

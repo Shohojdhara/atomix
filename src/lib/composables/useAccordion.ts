@@ -59,10 +59,19 @@ export function useAccordion(
    */
   const toggle = (): void => {
     if (!defaultProps.disabled) {
-      if (isControlled) {
-        defaultProps.onOpenChange && defaultProps.onOpenChange(!isOpen);
+      const nextOpen = !isOpen;
+
+      if (!isControlled) {
+        setInternalOpen(nextOpen);
+      }
+
+      defaultProps.onOpenChange?.(nextOpen);
+
+      // Call legacy handlers
+      if (nextOpen) {
+        defaultProps.onOpen?.();
       } else {
-        setInternalOpen(prev => !prev);
+        defaultProps.onClose?.();
       }
     }
   };

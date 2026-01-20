@@ -11,6 +11,8 @@ export const Spinner: React.FC<SpinnerProps> = memo(({
   className = '',
   style,
   glass,
+  'aria-label': ariaLabel,
+  role = 'status',
 }) => {
   const { generateSpinnerClass } = useSpinner({
     size,
@@ -26,8 +28,13 @@ export const Spinner: React.FC<SpinnerProps> = memo(({
   });
 
   const spinnerContent = (
-    <div className={spinnerClass} style={style} role="status">
-      <span className={SPINNER.VISUALLY_HIDDEN}>Loading...</span>
+    <div
+      className={spinnerClass}
+      style={style}
+      role={role}
+      aria-label={ariaLabel || 'Loading'}
+    >
+      <span className={SPINNER.VISUALLY_HIDDEN}>{ariaLabel || 'Loading...'}</span>
     </div>
   );
 

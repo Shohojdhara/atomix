@@ -43,8 +43,8 @@ export const Card = React.memo(
         glass,
         // Accessibility
         role,
-        ariaLabel,
-        ariaDescribedBy,
+        'aria-label': ariaLabel,
+        'aria-describedby': ariaDescribedBy,
         tabIndex,
         // Styling
         className = '',

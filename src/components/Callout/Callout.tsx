@@ -14,8 +14,8 @@ export const Callout: React.FC<CalloutProps> = ({
   variant = 'primary',
   onClose,
   actions,
-  oneLine = false,
-  toast = false,
+  compact = false,
+  isToast = false,
   glass,
   className,
   style,
@@ -23,8 +23,8 @@ export const Callout: React.FC<CalloutProps> = ({
 }) => {
   const { generateCalloutClass, handleClose } = useCallout({
     variant,
-    oneLine,
-    toast,
+    compact,
+    isToast,
     glass,
     className,
     style,
@@ -37,7 +37,7 @@ export const Callout: React.FC<CalloutProps> = ({
     };
 
     // For toast notifications or alerts, use appropriate role and live region
-    if (toast) {
+    if (isToast) {
       baseAttributes.role = 'alert';
       baseAttributes['aria-live'] = 'polite';
     } else if (['warning', 'error'].includes(variant)) {
@@ -83,7 +83,7 @@ export const Callout: React.FC<CalloutProps> = ({
 
     return (
       <div
-        className={generateCalloutClass({ variant, oneLine, toast, glass, className })}
+        className={generateCalloutClass({ variant, compact, isToast, glass, className })}
         {...getAriaAttributes()}
         {...props}
         style={style}
@@ -102,7 +102,7 @@ export const Callout: React.FC<CalloutProps> = ({
 
   return (
     <div
-      className={generateCalloutClass({ variant, oneLine, toast, glass, className })}
+      className={generateCalloutClass({ variant, compact, isToast, glass, className })}
       {...getAriaAttributes()}
       {...props}
       style={style}

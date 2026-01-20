@@ -19,7 +19,7 @@ const meta = {
     items: { control: 'object' },
     divider: { control: 'text' },
     className: { control: 'text' },
-    ariaLabel: { control: 'text' },
+    'aria-label': { control: 'text' },
   },
 } satisfies Meta<typeof Breadcrumb>;
 

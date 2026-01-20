@@ -10,6 +10,8 @@ export const Badge: React.FC<BadgeProps> = memo(({
   size = 'md',
   disabled = false,
   icon,
+  onRemove,
+  'aria-label': ariaLabel,
   className = '',
   glass,
   style,
@@ -30,9 +32,26 @@ export const Badge: React.FC<BadgeProps> = memo(({
   });
 
   const badgeElement = (
-    <span className={badgeClass} aria-disabled={disabled} ref={ref} style={style}>
+    <span
+      className={badgeClass}
+      aria-disabled={disabled}
+      aria-label={ariaLabel}
+      ref={ref}
+      style={style}
+    >
       {icon && <span className={BADGE.ICON_CLASS}>{icon}</span>}
       <span>{label}</span>
+      {onRemove && (
+        <button
+          type="button"
+          className="c-badge__close"
+          onClick={onRemove}
+          aria-label="Remove badge"
+          disabled={disabled}
+        >
+          ×
+        </button>
+      )}
     </span>
   );
 

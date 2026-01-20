@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { TOGGLE } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
-import { AtomixGlassProps } from '../../lib/types/components';
+import { AtomixGlassProps, BaseComponentProps } from '../../lib/types/components';
 
-export interface ToggleProps {
+export interface ToggleProps extends BaseComponentProps {
   /**
-   * Whether the toggle is initially on
+   * Whether the toggle is checked (controlled)
    */
-  initialOn?: boolean;
-
-  /**
-   * Callback when the toggle is turned on
-   */
-  onToggleOn?: () => void;
+  checked?: boolean;
 
   /**
-   * Callback when the toggle is turned off
+   * Whether the toggle is initially checked (uncontrolled)
+   * @default false
    */
-  onToggleOff?: () => void;
+  defaultChecked?: boolean;
+
+  /**
+   * Callback when the toggle state changes
+   */
+  onChange?: (checked: boolean) => void;
 
   /**
    * Whether the toggle is disabled
@@ -25,14 +26,14 @@ export interface ToggleProps {
   disabled?: boolean;
 
   /**
-   * Additional CSS class for the toggle
+   * Accessibility label
    */
-  className?: string;
+  'aria-label'?: string;
 
   /**
-   * Inline style for the component
+   * Accessibility description
    */
-  style?: React.CSSProperties;
+  'aria-describedby'?: string;
 
   /**
    * Glass morphism effect for the toggle
@@ -45,29 +46,36 @@ export interface ToggleProps {
  * Toggle component for switching between two states
  */
 export const Toggle: React.FC<ToggleProps> = ({
-  initialOn = false,
-  onToggleOn,
-  onToggleOff,
+  checked: controlledChecked,
+  defaultChecked = false,
+  onChange,
   disabled = false,
   className = '',
   style,
   glass,
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
 }) => {
-  const [isOn, setIsOn] = useState(initialOn);
+  const isControlled = controlledChecked !== undefined;
+  const [internalChecked, setInternalChecked] = useState(defaultChecked);
+  const isChecked = isControlled ? controlledChecked : internalChecked;
+
+  // Sync internal state with defaultChecked if it changes (standard uncontrolled behavior)
+  // Actually, standard behavior is only using defaultChecked on mount, but sometimes syncing is needed.
+  // For now, let's keep it simple.
 
   // Handle toggle click
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (disabled) return;
 
-    const newState = !isOn;
-    setIsOn(newState);
+    const nextChecked = !isChecked;
 
-    if (newState) {
-      if (onToggleOn) onToggleOn();
-    } else {
-      if (onToggleOff) onToggleOff();
+    if (!isControlled) {
+      setInternalChecked(nextChecked);
     }
-  };
+
+    onChange?.(nextChecked);
+  }, [disabled, isChecked, isControlled, onChange]);
 
   // Handle key down events
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -79,16 +87,25 @@ export const Toggle: React.FC<ToggleProps> = ({
     }
   };
 
+  const toggleClass = [
+    'c-toggle',
+    isChecked && TOGGLE.CLASSES.IS_ON,
+    disabled && 'is-disabled',
+    className,
+  ].filter(Boolean).join(' ');
+
   const toggleContent = (
     <div
-      className={`c-toggle ${isOn ? TOGGLE.CLASSES.IS_ON : ''} ${disabled ? 'is-disabled' : ''} ${className}`}
+      className={toggleClass}
       style={style}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       role="switch"
-      aria-checked={isOn}
+      aria-checked={isChecked}
       tabIndex={disabled ? -1 : 0}
       aria-disabled={disabled}
+      aria-label={ariaLabel}
+      aria-describedby={ariaDescribedBy}
     >
       <div className="c-toggle__switch"></div>
     </div>

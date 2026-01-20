@@ -137,26 +137,26 @@ export const DataTable: React.FC<DataTableProps> = memo(({
     e.preventDefault();
     e.stopPropagation();
     setResizingColumn(columnKey);
-    
+
     const startX = e.clientX;
     const startWidth = columnWidths[columnKey] || 100;
-    
+
     const handleMouseMove = (moveEvent: MouseEvent) => {
       const diff = moveEvent.clientX - startX;
       const newWidth = Math.max(50, startWidth + diff); // Minimum width of 50px
-      
+
       setColumnWidths(prev => ({
         ...prev,
         [columnKey]: newWidth,
       }));
     };
-    
+
     const handleMouseUp = () => {
       setResizingColumn(null);
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-    
+
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
   }, [columnWidths]);
@@ -178,8 +178,10 @@ export const DataTable: React.FC<DataTableProps> = memo(({
     if (dragStartIndex !== null && dragStartIndex !== dropIndex && onColumnReorder) {
       const newOrder = [...visibleColumns.map(col => col.key)];
       const [removed] = newOrder.splice(dragStartIndex, 1);
-      newOrder.splice(dropIndex, 0, removed);
-      onColumnReorder(newOrder);
+      if (removed) {
+        newOrder.splice(dropIndex, 0, removed);
+        onColumnReorder(newOrder);
+      }
     }
     setDragStartIndex(null);
     setDragOverIndex(null);
@@ -246,7 +248,7 @@ export const DataTable: React.FC<DataTableProps> = memo(({
           {visibleColumns.map((column, index) => {
             const isDragging = dragStartIndex === index;
             const isDragOver = dragOverIndex === index;
-            
+
             return (
               <th
                 key={`header-${column.key}`}
@@ -363,8 +365,8 @@ export const DataTable: React.FC<DataTableProps> = memo(({
                   {selectionMode === 'multiple' ? (
                     <Checkbox
                       checked={isSelected}
-                      onChange={(e) => handleRowSelect(rowId, e.target.checked)}
-                      onClick={(e) => e.stopPropagation()}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleRowSelect(rowId, e.target.checked)}
+                      onClick={(e: React.MouseEvent<HTMLInputElement>) => e.stopPropagation()}
                       aria-label={`Select row ${rowIndex + 1}`}
                     />
                   ) : (
@@ -411,7 +413,7 @@ export const DataTable: React.FC<DataTableProps> = memo(({
           showFirstLastButtons={true}
           showPrevNextButtons={true}
           size="sm"
-          ariaLabel="Data table pagination"
+          aria-label="Data table pagination"
           className="c-data-table__pagination"
         />
       </div>
@@ -466,7 +468,7 @@ export const DataTable: React.FC<DataTableProps> = memo(({
                         <Checkbox
                           checked={columnVisibility[column.key] !== false}
                           onChange={() => handleColumnVisibilityToggle(column.key)}
-                          onClick={(e) => e.stopPropagation()}
+                          onClick={(e: React.MouseEvent<HTMLInputElement>) => e.stopPropagation()}
                         />
                         <span style={{ marginLeft: '0.5rem' }}>{column.title}</span>
                       </label>

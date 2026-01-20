@@ -179,7 +179,7 @@ export interface OverLightObjectConfig {
  * AtomixGlass component props interface
  */
 export interface AtomixGlassProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   displacementScale?: number;
   blurAmount?: number;
   saturation?: number;
@@ -349,6 +349,7 @@ export interface ListProps extends BaseComponentProps {
 
   /**
    * List size
+   * @default 'md'
    */
   size?: Size;
 
@@ -399,11 +400,13 @@ export interface ButtonProps extends BaseComponentProps {
 
   /**
    * Button variant
+   * @default 'solid'
    */
   variant?: Variant;
 
   /**
    * Button size
+   * @default 'md'
    */
   size?: Size;
 
@@ -521,22 +524,22 @@ export interface ButtonProps extends BaseComponentProps {
   /**
    * ARIA label for accessibility
    */
-  ariaLabel?: string;
+  'aria-label'?: string;
 
   /**
    * ARIA described by reference
    */
-  ariaDescribedBy?: string;
+  'aria-describedby'?: string;
 
   /**
    * ARIA expanded state (for toggle buttons)
    */
-  ariaExpanded?: boolean;
+  'aria-expanded'?: boolean;
 
   /**
    * ARIA controls reference
    */
-  ariaControls?: string;
+  'aria-controls'?: string;
 
   /**
    * Tab index for keyboard navigation
@@ -601,11 +604,13 @@ export interface BadgeProps extends BaseComponentProps {
 
   /**
    * Badge color variant
+   * @default 'primary'
    */
   variant?: ThemeColor;
 
   /**
    * Badge size
+   * @default 'md'
    */
   size?: Size;
 
@@ -613,6 +618,16 @@ export interface BadgeProps extends BaseComponentProps {
    * Optional icon
    */
   icon?: ReactNode;
+
+  /**
+   * Callback for dismissible badges (shows close button when provided)
+   */
+  onRemove?: () => void;
+
+  /**
+   * Accessible label for the badge
+   */
+  'aria-label'?: string;
 
   /**
    * Glass morphism effect for the badge
@@ -696,14 +711,14 @@ export interface CalloutProps extends BaseComponentProps {
   actions?: ReactNode;
 
   /**
-   * Display in one line mode
+   * Display in compact (one-line) mode
    */
-  oneLine?: boolean;
+  compact?: boolean;
 
   /**
    * Display as toast notification
    */
-  toast?: boolean;
+  isToast?: boolean;
 
   /**
    * Glass morphism effect for the callout
@@ -756,14 +771,19 @@ export interface AccordionProps extends BaseComponentProps {
    */
   disabled?: boolean;
 
+  /**
+   * Callback called when the open state changes
+   */
   onOpenChange?: (open: boolean) => void;
 
   /**
+   * @deprecated Use onOpenChange instead
    * Optional open handler
    */
   onOpen?: () => void;
 
   /**
+   * @deprecated Use onOpenChange instead
    * Optional close handler
    */
   onClose?: () => void;
@@ -1027,11 +1047,13 @@ export interface HeroProps extends BaseComponentProps {
 export interface SpinnerProps extends BaseComponentProps {
   /**
    * Spinner color variant
+   * @default 'primary'
    */
   variant?: ThemeColor;
 
   /**
    * Spinner size
+   * @default 'md'
    */
   size?: Size;
 
@@ -1039,6 +1061,18 @@ export interface SpinnerProps extends BaseComponentProps {
    * Whether the spinner should be displayed fullscreen
    */
   fullscreen?: boolean;
+
+  /**
+   * Accessible label for screen readers
+   * @default 'Loading'
+   */
+  'aria-label'?: string;
+
+  /**
+   * ARIA role for the spinner
+   * @default 'status'
+   */
+  role?: 'status' | 'alert';
 
   /**
    * Glass morphism effect for the spinner
@@ -1142,7 +1176,7 @@ export interface NavbarProps extends BaseComponentProps {
   /**
    * Custom aria-label for the navigation
    */
-  ariaLabel?: string;
+  'aria-label'?: string;
 
   /**
    * ID for the navbar (used for accessibility)
@@ -1909,13 +1943,14 @@ export interface PaginationProps extends BaseComponentProps {
 
   /**
    * Size variant for the pagination component
+   * @default 'md'
    */
   size?: Size;
 
   /**
    * Accessible label for the navigation element
    */
-  ariaLabel?: string;
+  'aria-label'?: string;
 
   /**
    * Glass morphism effect for the pagination component
@@ -2096,6 +2131,7 @@ export interface FormGroupProps extends BaseComponentProps {
 export interface InputProps extends BaseComponentProps {
   /**
    * Input type
+   * @default 'text'
    */
   type?: string;
 
@@ -2103,6 +2139,11 @@ export interface InputProps extends BaseComponentProps {
    * Input value
    */
   value?: string | number;
+
+  /**
+   * Default value for uncontrolled input
+   */
+  defaultValue?: string | number;
 
   /**
    * Change handler
@@ -2156,6 +2197,7 @@ export interface InputProps extends BaseComponentProps {
 
   /**
    * Size variant
+   * @default 'md'
    */
   size?: Size;
 
@@ -2207,12 +2249,12 @@ export interface InputProps extends BaseComponentProps {
   /**
    * Accessible label (if no visible label)
    */
-  ariaLabel?: string;
+  'aria-label'?: string;
 
   /**
    * ID of element that describes this input
    */
-  ariaDescribedBy?: string;
+  'aria-describedby'?: string;
 
   /**
    * Glass morphism effect
@@ -2341,6 +2383,7 @@ export interface SelectProps extends BaseComponentProps {
 
   /**
    * Size variant
+   * @default 'md'
    */
   size?: Size;
 
@@ -2362,12 +2405,12 @@ export interface SelectProps extends BaseComponentProps {
   /**
    * Accessible label (if no visible label)
    */
-  ariaLabel?: string;
+  'aria-label'?: string;
 
   /**
    * ID of element that describes this select
    */
-  ariaDescribedBy?: string;
+  'aria-describedby'?: string;
 
   /**
    * Glass morphism effect for the select
@@ -2448,18 +2491,23 @@ export interface CheckboxProps extends BaseComponentProps {
   /**
    * Accessible label (if no visible label)
    */
-  ariaLabel?: string;
+  'aria-label'?: string;
 
   /**
    * ID of element that describes this checkbox
    */
-  ariaDescribedBy?: string;
+  'aria-describedby'?: string;
 
   /**
    * Glass morphism effect for the checkbox
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;
+
+  /**
+   * Click handler
+   */
+  onClick?: (event: React.MouseEvent<HTMLInputElement>) => void;
 
   /**
    * Error message to display
@@ -2560,12 +2608,12 @@ export interface RadioProps extends BaseComponentProps {
   /**
    * Accessible label (if no visible label)
    */
-  ariaLabel?: string;
+  'aria-label'?: string;
 
   /**
    * ID of element that describes this radio
    */
-  ariaDescribedBy?: string;
+  'aria-describedby'?: string;
 
   /**
    * Glass morphism effect for the radio button
@@ -2630,6 +2678,11 @@ export interface TextareaProps extends BaseComponentProps {
   value?: string;
 
   /**
+   * Default value for uncontrolled textarea
+   */
+  defaultValue?: string;
+
+  /**
    * Change handler
    */
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -2671,6 +2724,7 @@ export interface TextareaProps extends BaseComponentProps {
 
   /**
    * Number of rows
+   * @default 4
    */
   rows?: number;
 
@@ -2691,6 +2745,7 @@ export interface TextareaProps extends BaseComponentProps {
 
   /**
    * Size variant
+   * @default 'md'
    */
   size?: Size;
 
@@ -2717,12 +2772,12 @@ export interface TextareaProps extends BaseComponentProps {
   /**
    * Accessible label (if no visible label)
    */
-  ariaLabel?: string;
+  'aria-label'?: string;
 
   /**
    * ID of element that describes this textarea
    */
-  ariaDescribedBy?: string;
+  'aria-describedby'?: string;
 
   /**
    * Glass morphism effect
@@ -2970,7 +3025,7 @@ export interface BreadcrumbOptions {
   /**
    * Accessible label for the breadcrumb navigation
    */
-  ariaLabel?: string;
+  'aria-label'?: string;
 
   /**
    * Glass morphism effect for the breadcrumb
@@ -3379,7 +3434,7 @@ export interface ProgressProps extends BaseComponentProps {
   /**
    * Accessible label for screen readers
    */
-  ariaLabel?: string;
+  'aria-label'?: string;
 
   /**
    * Glass morphism effect for the progress bar
@@ -3456,9 +3511,9 @@ export interface RatingProps extends BaseComponentProps {
   size?: Size;
 
   /**
-   * Color theme
+   * Color variant
    */
-  color?: ThemeColor;
+  variant?: ThemeColor;
 
   /**
    * Optional callback when rating changes
@@ -3910,12 +3965,12 @@ export interface CardProps extends BaseComponentProps {
   /**
    * ARIA label for accessibility
    */
-  ariaLabel?: string;
+  'aria-label'?: string;
 
   /**
    * ARIA described by reference
    */
-  ariaDescribedBy?: string;
+  'aria-describedby'?: string;
 
   /**
    * Tab index for keyboard navigation

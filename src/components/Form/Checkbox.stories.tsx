@@ -82,7 +82,7 @@ export const States: Story = {
 // Without label
 export const WithoutLabel: Story = {
   args: {
-    ariaLabel: 'Checkbox without visible label',
+    'aria-label': 'Checkbox without visible label',
   },
 };
 

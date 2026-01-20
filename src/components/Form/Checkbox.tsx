@@ -20,8 +20,9 @@ export const Checkbox: React.FC<CheckboxProps> = memo(({
   invalid = false,
   valid = false,
   indeterminate = false,
-  ariaLabel,
-  ariaDescribedBy,
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
+  onClick,
   glass,
 }) => {
   const { generateCheckboxClass, checkboxRef } = useCheckbox({
@@ -47,6 +48,7 @@ export const Checkbox: React.FC<CheckboxProps> = memo(({
         className="c-checkbox__input"
         checked={checked}
         onChange={onChange}
+        onClick={onClick}
         disabled={disabled}
         required={required}
         id={id}

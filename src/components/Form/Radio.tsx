@@ -19,8 +19,8 @@ export const Radio: React.FC<RadioProps> = memo(({
   value,
   invalid = false,
   valid = false,
-  ariaLabel,
-  ariaDescribedBy,
+  'aria-label': ariaLabel,
+  'aria-describedby': ariaDescribedBy,
   glass,
 }) => {
   const { generateRadioClass } = useRadio({

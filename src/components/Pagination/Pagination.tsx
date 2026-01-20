@@ -62,7 +62,7 @@ export const Pagination: React.FC<PaginationProps> = memo(({
   size = PAGINATION_DEFAULTS.size,
   className = '',
   style,
-  ariaLabel = 'Pagination',
+  'aria-label': ariaLabel = 'Pagination',
   glass,
 }) => {
   const { paginationRange, goToPage, nextPage, prevPage, firstPage, lastPage } = usePagination({

@@ -11,12 +11,12 @@
   --#{config.$prefix}callout-width: #{callout.$callout-width};
   --#{config.$prefix}callout-padding-x: #{rem.rem(callout.$callout-padding-x)};
   --#{config.$prefix}callout-padding-y: #{rem.rem(callout.$callout-padding-y)};
-  --#{config.$prefix}callout-tost-padding-x: #{rem.rem(callout.$callout-tost-padding-x)};
-  --#{config.$prefix}callout-tost-padding-y: #{rem.rem(callout.$callout-tost-padding-y)};
+  --#{config.$prefix}callout-toast-padding-x: #{rem.rem(callout.$callout-tost-padding-x)};
+  --#{config.$prefix}callout-toast-padding-y: #{rem.rem(callout.$callout-tost-padding-y)};
   --#{config.$prefix}callout-bg: #{callout.$callout-bg};
   --#{config.$prefix}callout-border-radius: #{callout.$callout-border-radius};
   --#{config.$prefix}callout-border-color: #{callout.$callout-border-color};
-  --#{config.$prefix}callout-border-witdh: #{callout.$callout-border-width};
+  --#{config.$prefix}callout-border-width: #{callout.$callout-border-width};
   --#{config.$prefix}callout-title-font-size: #{callout.$callout-title-font-size};
   --#{config.$prefix}callout-title-font-weight: #{callout.$callout-title-font-weight};
   --#{config.$prefix}callout-title-color: #{callout.$callout-title-color};
@@ -43,13 +43,9 @@
   padding: var(--#{config.$prefix}callout-padding-y) var(--#{config.$prefix}callout-padding-x);
   @include dynamic-background(var(--#{config.$prefix}callout-bg));
   border-radius: var(--#{config.$prefix}callout-border-radius);
-  border: var(--#{config.$prefix}callout-border-witdh) solid
-    var(--#{config.$prefix}callout-border-color);
-  transition:
-    opacity var(--#{config.$prefix}callout-transition-duration)
-      var(--#{config.$prefix}callout-transition-timing),
-    transform var(--#{config.$prefix}callout-transition-duration)
-      var(--#{config.$prefix}callout-transition-timing);
+  border: var(--#{config.$prefix}callout-border-witdh) solid var(--#{config.$prefix}callout-border-color);
+  transition: opacity var(--#{config.$prefix}callout-transition-duration) var(--#{config.$prefix}callout-transition-timing),
+  transform var(--#{config.$prefix}callout-transition-duration) var(--#{config.$prefix}callout-transition-timing);
 
   &__content {
     width: 100%;
@@ -124,7 +120,7 @@
     }
   }
 
-  &--oneline {
+  &--compact {
     #{$root} {
       &__message {
         display: flex;
@@ -139,8 +135,7 @@
     position: relative;
     max-width: rem.rem(350px);
     width: 100%;
-    padding: var(--#{config.$prefix}callout-tost-padding-y)
-      var(--#{config.$prefix}callout-tost-padding-x);
+    padding: var(--#{config.$prefix}callout-tost-padding-y) var(--#{config.$prefix}callout-tost-padding-x);
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
@@ -156,16 +151,14 @@
       }
 
       &__actions {
-        padding-left: calc(
-          var(--#{config.$prefix}callout-icon-size) + var(--#{config.$prefix}callout-message-spacer)
-        );
+        padding-left: calc(var(--#{config.$prefix}callout-icon-size) + var(--#{config.$prefix}callout-message-spacer));
         margin-top: var(--#{config.$prefix}callout-actions-spacer-y);
       }
 
       &__close-btn {
         position: absolute;
-        top: var(--#{config.$prefix}callout-tost-padding-y);
-        right: var(--#{config.$prefix}callout-tost-padding-x);
+        top: var(--#{config.$prefix}callout-toast-padding-y);
+        right: var(--#{config.$prefix}callout-toast-padding-x);
       }
     }
 
@@ -177,23 +170,29 @@
 
   @each $color, $value in maps.$theme-colors {
     &--#{$color} {
-      @if ($color == 'primary') {
+      @if ($color =='primary') {
         --#{config.$prefix}callout-bg: var(--#{config.$prefix}brand-bg-subtle);
         --#{config.$prefix}callout-border-color: var(--#{config.$prefix}brand-border-subtle);
         --#{config.$prefix}callout-icon-color: var(--#{config.$prefix}brand-text-emphasis);
-      } @else if($color == 'light') {
+      }
+
+      @else if($color =='light') {
         --#{config.$prefix}callout-title-color: var(--#{config.$prefix}dark);
         --#{config.$prefix}callout-text-color: var(--#{config.$prefix}dark);
         --#{config.$prefix}callout-bg: var(--#{config.$prefix}light);
         --#{config.$prefix}callout-border-color: var(--#{config.$prefix}primary-border-subtle);
         --#{config.$prefix}callout-icon-color: var(--#{config.$prefix}tertiary-text-emphasis);
-      } @else if($color == 'dark') {
+      }
+
+      @else if($color =='dark') {
         --#{config.$prefix}callout-title-color: var(--#{config.$prefix}light);
         --#{config.$prefix}callout-text-color: #{$gray-4};
         --#{config.$prefix}callout-bg: var(--#{config.$prefix}dark);
         --#{config.$prefix}callout-border-color: var(--#{config.$prefix}dark-border-subtle);
         --#{config.$prefix}callout-icon-color: var(--#{config.$prefix}light);
-      } @else {
+      }
+
+      @else {
         --#{config.$prefix}callout-bg: var(--#{config.$prefix}#{$color}-bg-subtle);
         --#{config.$prefix}callout-border-color: var(--#{config.$prefix}#{$color}-border-subtle);
         --#{config.$prefix}callout-icon-color: var(--#{config.$prefix}#{$color}-text-emphasis);
@@ -213,15 +212,12 @@
       justify-content: center;
       align-items: center;
       padding: var(--#{config.$prefix}callout-padding-y) var(--#{config.$prefix}callout-padding-x);
-      border: var(--#{config.$prefix}callout-border-witdh) solid
-        color-mix(in srgb, var(--#{config.$prefix}callout-border-color) 20%, transparent);
+      border: var(--#{config.$prefix}callout-border-width) solid color-mix(in srgb, var(--#{config.$prefix}callout-border-color) 20%, transparent);
       max-width: var(--#{config.$prefix}callout-width);
       border-radius: var(--#{config.$prefix}callout-border-radius);
       width: 100%;
-      @include dynamic-background(
-        var(--#{config.$prefix}callout-bg),
-        $background-transparency-enable: true
-      );
+      @include dynamic-background(var(--#{config.$prefix}callout-bg),
+        $background-transparency-enable: true);
     }
 
     // Adjust text colors for glass effect
@@ -235,10 +231,8 @@
 
     // Glass effect for toast variant
     &#{$root}--toast {
-      @include dynamic-background(
-        var(--#{config.$prefix}callout-bg),
-        $background-transparency-enable: true
-      );
+      @include dynamic-background(var(--#{config.$prefix}callout-bg),
+        $background-transparency-enable: true);
       box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.1),
         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
@@ -300,6 +294,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -311,6 +306,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

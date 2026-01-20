@@ -57,7 +57,7 @@ export interface BreadcrumbProps {
   /**
    * Aria label for the navigation
    */
-  ariaLabel?: string;
+  'aria-label'?: string;
 
   /**
    * Optional custom link component
@@ -73,7 +73,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = memo(({
   items,
   divider,
   className = '',
-  ariaLabel = 'Breadcrumb',
+  'aria-label': ariaLabel = 'Breadcrumb',
   LinkComponent,
   style,
 }) => {

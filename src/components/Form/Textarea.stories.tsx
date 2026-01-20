@@ -58,6 +58,10 @@ const meta = {
       control: 'boolean',
       description: 'Enable glass morphism effect',
     },
+    defaultValue: {
+      control: 'text',
+      description: 'Initial value for uncontrolled textarea',
+    },
   },
 } satisfies Meta<typeof Textarea>;
 
@@ -68,6 +72,17 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
   args: {
     placeholder: 'Enter text here',
+    rows: 4,
+  },
+};
+
+/**
+ * Textarea using defaultValue for uncontrolled component pattern.
+ */
+export const Uncontrolled: Story = {
+  args: {
+    defaultValue: 'Initial value',
+    placeholder: 'Type something...',
     rows: 4,
   },
 };

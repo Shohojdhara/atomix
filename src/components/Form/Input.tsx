@@ -8,108 +8,110 @@ import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
  */
 export const Input = memo(
   forwardRef<HTMLInputElement, InputProps>(
-  (
-    {
-      type = 'text',
-      value,
-      onChange,
-      onBlur,
-      onFocus,
-      placeholder,
-      className = '',
-      style,
-      disabled = false,
-      required = false,
-      readOnly = false,
-      id,
-      name,
-      autoComplete,
-      autoFocus = false,
-      size = 'md',
-      variant,
-      invalid = false,
-      valid = false,
-      maxLength,
-      minLength,
-      pattern,
-      min,
-      max,
-      step,
-      ariaLabel,
-      ariaDescribedBy,
-      glass,
-    },
-    ref
-  ) => {
-    const { generateInputClass } = useInput({
-      size,
-      variant,
-      disabled,
-      invalid,
-      valid,
-    });
+    (
+      {
+        type = 'text',
+        value,
+        defaultValue,
+        onChange,
+        onBlur,
+        onFocus,
+        placeholder,
+        className = '',
+        style,
+        disabled = false,
+        required = false,
+        readOnly = false,
+        id,
+        name,
+        autoComplete,
+        autoFocus = false,
+        size = 'md',
+        variant,
+        invalid = false,
+        valid = false,
+        maxLength,
+        minLength,
+        pattern,
+        min,
+        max,
+        step,
+        'aria-label': ariaLabel,
+        'aria-describedby': ariaDescribedBy,
+        glass,
+      },
+      ref
+    ) => {
+      const { generateInputClass } = useInput({
+        size,
+        variant,
+        disabled,
+        invalid,
+        valid,
+      });
 
-    const inputClass = generateInputClass({
-      className: `${className} ${glass ? 'c-input--glass' : ''}`.trim(),
-      size,
-      variant,
-      disabled,
-      invalid,
-      valid,
-      type,
-    });
+      const inputClass = generateInputClass({
+        className: `${className} ${glass ? 'c-input--glass' : ''}`.trim(),
+        size,
+        variant,
+        disabled,
+        invalid,
+        valid,
+        type,
+      });
 
-    // Custom styles for glass effect
-    const glassStyles = glass ? {} : {};
+      // Custom styles for glass effect
+      const glassStyles = glass ? {} : {};
 
-    const inputElement = (
-      <input
-        ref={ref}
-        type={type}
-        className={inputClass}
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        placeholder={placeholder}
-        disabled={disabled}
-        required={required}
-        readOnly={readOnly}
-        id={id}
-        name={name}
-        autoComplete={autoComplete}
-        autoFocus={autoFocus}
-        maxLength={maxLength}
-        minLength={minLength}
-        pattern={pattern}
-        min={min}
-        max={max}
-        step={step}
-        aria-label={ariaLabel}
-        aria-describedby={ariaDescribedBy}
-        aria-invalid={invalid}
-        style={glass ? { ...glassStyles, ...style } : style}
-      />
-    );
+      const inputElement = (
+        <input
+          ref={ref}
+          type={type}
+          className={inputClass}
+          value={value}
+          defaultValue={defaultValue}
+          onChange={onChange}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          placeholder={placeholder}
+          disabled={disabled}
+          required={required}
+          readOnly={readOnly}
+          id={id}
+          name={name}
+          autoComplete={autoComplete}
+          autoFocus={autoFocus}
+          maxLength={maxLength}
+          minLength={minLength}
+          pattern={pattern}
+          min={min}
+          max={max}
+          step={step}
+          aria-label={ariaLabel}
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={invalid}
+          style={glass ? { ...glassStyles, ...style } : style}
+        />
+      );
 
-    if (glass) {
-      // Default glass settings for inputs
-      const defaultGlassProps = {
-        displacementScale: 60,
-        blurAmount: 1,
-        saturation: 180,
-        aberrationIntensity: 0.2,
-        cornerRadius: 12,
-        mode: 'shader' as const,
-      };
+      if (glass) {
+        // Default glass settings for inputs
+        const defaultGlassProps = {
+          displacementScale: 60,
+          blurAmount: 1,
+          saturation: 180,
+          aberrationIntensity: 0.2,
+          cornerRadius: 12,
+          mode: 'shader' as const,
+        };
 
-      const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+        const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
-      return <AtomixGlass {...glassProps}>{inputElement}</AtomixGlass>;
+        return <AtomixGlass {...glassProps}>{inputElement}</AtomixGlass>;
+      }
+
+      return inputElement;
     }
-
-    return inputElement;
-  }
   )
 );
 

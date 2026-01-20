@@ -46,19 +46,19 @@ describe('Callout Component', () => {
       expect(container.firstChild).toHaveClass('c-callout--success');
     });
 
-    it('applies oneLine class when enabled', () => {
+    it('applies compact class when enabled', () => {
       const { container } = render(
-        <Callout title="Test" variant="primary" oneLine>
+        <Callout title="Test" variant="primary" compact>
           Content
         </Callout>
       );
 
-      expect(container.firstChild).toHaveClass('c-callout--oneline');
+      expect(container.firstChild).toHaveClass('c-callout--compact');
     });
 
     it('applies toast class when enabled', () => {
       const { container } = render(
-        <Callout title="Test" variant="primary" toast>
+        <Callout title="Test" variant="primary" isToast>
           Content
         </Callout>
       );
@@ -198,8 +198,8 @@ describe('Callout Component', () => {
           glass={true}
           onClose={handleClose}
           actions={actions}
-          oneLine
-          toast
+          compact
+          isToast
         >
           Glass content
         </Callout>
@@ -222,7 +222,7 @@ describe('Callout Component', () => {
       expect(outerCallout).toHaveClass(
         'c-callout',
         'c-callout--success',
-        'c-callout--oneline',
+        'c-callout--compact',
         'c-callout--toast',
         'c-callout--glass'
       );
@@ -270,7 +270,7 @@ describe('Callout Component', () => {
 
     it('applies alert role and assertive live region for toast alerts', () => {
       render(
-        <Callout title="Toast Error" variant="error" toast>
+        <Callout title="Toast Error" variant="error" isToast>
           Toast error message
         </Callout>
       );
@@ -281,7 +281,7 @@ describe('Callout Component', () => {
 
     it('applies polite live region for toast notifications', () => {
       render(
-        <Callout title="Toast Info" variant="info" toast>
+        <Callout title="Toast Info" variant="info" isToast>
           Toast info message
         </Callout>
       );
@@ -292,7 +292,7 @@ describe('Callout Component', () => {
 
     it('maintains accessibility with glass effect', () => {
       render(
-        <Callout title="Glass Error" variant="error" glass={true} toast>
+        <Callout title="Glass Error" variant="error" glass={true} isToast>
           Glass error message
         </Callout>
       );

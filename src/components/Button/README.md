@@ -97,6 +97,11 @@ const GlassVariantsExample = () => (
 | `className` | `string` | - | Additional CSS classes |
 | `as` | `ElementType` | `'button'` | HTML element or component to render as |
 | `glass` | `boolean \| AtomixGlassProps` | `false` | Glass morphism effect |
+| `aria-label` | `string` | - | Accessible label for the button |
+| `aria-describedby` | `string` | - | ID of the element that describes the button |
+| `aria-expanded` | `boolean` | - | Indicates if the button controls an expandable element |
+| `aria-controls` | `string` | - | ID of the element controlled by the button |
+| `tabIndex` | `number` | `0` | Tab index for keyboard navigation |
 
 ### Glass Props
 

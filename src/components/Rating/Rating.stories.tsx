@@ -38,7 +38,7 @@ const meta = {
       options: SIZES,
       description: 'The size of the rating stars',
     },
-    color: {
+    variant: {
       control: { type: 'select' },
       options: THEME_COLORS,
       description: 'The color variant of the rating',
@@ -104,14 +104,14 @@ export const Large: Story = {
   },
 };
 
-export const CustomColor: Story = {
+export const CustomVariant: Story = {
   args: {
     value: 4,
     maxValue: 5,
     allowHalf: false,
     readOnly: true,
     size: 'md',
-    color: 'warning',
+    variant: 'warning',
   },
 };
 
@@ -206,7 +206,7 @@ export const GlassCustom: Story = {
     allowHalf: true,
     readOnly: true,
     size: 'lg',
-    color: 'warning',
+    variant: 'warning',
     glass: {
       displacementScale: 80,
       blurAmount: 2,

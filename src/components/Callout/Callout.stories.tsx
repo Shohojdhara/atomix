@@ -48,15 +48,15 @@ const meta = {
         type: { summary: 'ReactNode' },
       },
     },
-    oneLine: {
+    compact: {
       control: 'boolean',
-      description: 'Display the callout in one line',
+      description: 'Display the callout in compact mode',
       table: {
         defaultValue: { summary: 'false' },
         type: { summary: 'boolean' },
       },
     },
-    toast: {
+    isToast: {
       control: 'boolean',
       description: 'Display the callout as a toast notification',
       table: {
@@ -250,18 +250,18 @@ export const Dismissible: Story = {
   },
 };
 
-export const OneLine: Story = {
+export const Compact: Story = {
   args: {
     title: 'Quick notification',
     variant: 'info',
     icon: <InfoIcon />,
-    oneLine: true,
+    compact: true,
   },
   parameters: {
     docs: {
       description: {
         story:
-          'One-line callouts are more compact and display the title and icon in a single line.',
+          'Compact callouts are more space-efficient and display the title and icon in a single line.',
       },
     },
   },
@@ -273,7 +273,7 @@ export const Toast: Story = {
     children: 'This callout is styled as a toast notification.',
     variant: 'success',
     icon: <SuccessIcon />,
-    toast: true,
+    isToast: true,
     onClose: () => console.log('Toast closed'),
   },
   parameters: {
@@ -487,7 +487,7 @@ const ToastDemoTemplate = () => {
                 title={getTitle(toast.variant)}
                 variant={toast.variant as any}
                 icon={getIcon(toast.variant)}
-                toast={true}
+                isToast={true}
                 onClose={() => removeToast(toast.id)}
               >
                 {getMessage(toast.variant)}
@@ -958,7 +958,7 @@ export const GlassToast: Story = {
       'This glass toast notification combines the elegance of glass morphism with toast functionality.',
     variant: 'success',
     icon: <SuccessIcon />,
-    toast: true,
+    isToast: true,
     glass: true,
     onClose: () => console.log('Glass toast closed'),
   },
@@ -993,7 +993,7 @@ export const GlassOneLine: Story = {
     title: 'Glass one-line notification',
     variant: 'info',
     icon: <InfoIcon />,
-    oneLine: true,
+    compact: true,
     glass: true,
   },
   parameters: {
@@ -1325,7 +1325,7 @@ const GlassToastDemoTemplate = () => {
                 title={getTitle(toast.variant)}
                 variant={toast.variant as any}
                 icon={getIcon(toast.variant)}
-                toast={true}
+                isToast={true}
                 glass
                 onClose={() => removeToast(toast.id)}
               >

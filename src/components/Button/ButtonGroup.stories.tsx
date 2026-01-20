@@ -150,8 +150,8 @@ export const WithIcons: Story = {
 export const IconOnly: Story = {
   render: () => (
     <ButtonGroup>
-      <Button iconName="CaretLeft" iconOnly ariaLabel="Previous" />
-      <Button iconName="CaretRight" iconOnly ariaLabel="Next" />
+      <Button iconName="CaretLeft" iconOnly aria-label="Previous" />
+      <Button iconName="CaretRight" iconOnly aria-label="Next" />
     </ButtonGroup>
   ),
 };
