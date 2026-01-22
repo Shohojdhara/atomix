@@ -379,10 +379,78 @@ program
         // Create component directory
         await mkdir(componentPath, { recursive: true });
 
+        // Generate composable hook
+        const hookPath = join(process.cwd(), 'src/lib/composables');
+        if (existsSync(hookPath)) {
+          const hookContent = componentTemplates.composable.hook(safeName);
+          const hookFilePath = join(hookPath, `use${safeName}.ts`);
+          
+          if (!existsSync(hookFilePath) || options.force) {
+            await writeFile(hookFilePath, hookContent, 'utf8');
+            console.log(chalk.green(`  ✓ Created use${safeName}.ts in src/lib/composables`));
+          } else {
+            console.log(chalk.yellow(`  ⚠️  Hook file already exists: use${safeName}.ts`));
+          }
+        } else {
+          console.log(chalk.yellow(`  ⚠️  Composables directory not found: ${hookPath}`));
+        }
+
+        // Generate types in lib/types/components.ts
+        const typesPath = join(process.cwd(), 'src/lib/types');
+        if (existsSync(typesPath)) {
+          const componentsTypesPath = join(typesPath, 'components.ts');
+          if (existsSync(componentsTypesPath)) {
+            let typesContent = await readFile(componentsTypesPath, 'utf8');
+            const newTypeContent = componentTemplates.react.types(safeName);
+            
+            // Check if type already exists
+            if (!typesContent.includes(`interface ${safeName}Props`)) {
+              // Insert before the last export
+              const lastExportIndex = typesContent.lastIndexOf('export');
+              const insertionPoint = typesContent.lastIndexOf('\n\n', lastExportIndex) + 2;
+              typesContent = 
+                typesContent.slice(0, insertionPoint) + 
+                '\n' + newTypeContent + '\n' +
+                typesContent.slice(insertionPoint);
+              
+              await writeFile(componentsTypesPath, typesContent, 'utf8');
+              console.log(chalk.green(`  ✓ Added ${safeName}Props to src/lib/types/components.ts`));
+            } else {
+              console.log(chalk.yellow(`  ⚠️  ${safeName}Props already exists in types`));
+            }
+          }
+        }
+
+        // Generate constants in lib/constants/components.ts
+        const constantsPath = join(process.cwd(), 'src/lib/constants');
+        if (existsSync(constantsPath)) {
+          const constantsFilePath = join(constantsPath, 'components.ts');
+          if (existsSync(constantsFilePath)) {
+            let constantsContent = await readFile(constantsFilePath, 'utf8');
+            const newConstantsContent = componentTemplates.react.constants(safeName);
+            
+            // Check if constants already exist
+            if (!constantsContent.includes(`export const ${safeName.toUpperCase()}`)) {
+              // Insert before the last export
+              const lastExportIndex = constantsContent.lastIndexOf('export');
+              const insertionPoint = constantsContent.lastIndexOf('\n\n', lastExportIndex) + 2;
+              constantsContent = 
+                constantsContent.slice(0, insertionPoint) + 
+                '\n' + newConstantsContent + '\n' +
+                constantsContent.slice(insertionPoint);
+              
+              await writeFile(constantsFilePath, constantsContent, 'utf8');
+              console.log(chalk.green(`  ✓ Added ${safeName.toUpperCase()} constants to src/lib/constants/components.ts`));
+            } else {
+              console.log(chalk.yellow(`  ⚠️  ${safeName.toUpperCase()} constants already exist`));
+            }
+          }
+        }
+
         // Generate component file
         const componentContent = componentTemplates.react.component(safeName, {
           scssModule: options.scssModule,
-          types: false // We'll generate inline types for now
+          types: false // Using central types now
         });
 
         await writeFile(
@@ -401,8 +469,38 @@ program
         );
         console.log(chalk.green(`  ✓ Created index.ts`));
 
-        // Generate SCSS file
+        // Generate SCSS files
         if (!options.scssModule) {
+          // Generate settings file first
+          const settingsPath = join(process.cwd(), 'src/styles/01-settings');
+          if (existsSync(settingsPath)) {
+            const settingsContent = componentTemplates.react.scssSettings(safeName);
+            const settingsFilename = `_settings.${safeName.toLowerCase()}.scss`;
+            const settingsFilePath = join(settingsPath, settingsFilename);
+            
+            if (!existsSync(settingsFilePath) || options.force) {
+              await writeFile(settingsFilePath, settingsContent, 'utf8');
+              console.log(chalk.green(`  ✓ Created ${settingsFilename} in src/styles/01-settings`));
+              
+              // Update _index.scss in settings
+              const settingsIndexPath = join(settingsPath, '_index.scss');
+              if (existsSync(settingsIndexPath)) {
+                let indexContent = await readFile(settingsIndexPath, 'utf8');
+                const forwardStatement = `@forward 'settings.${safeName.toLowerCase()}';`;
+                
+                if (!indexContent.includes(forwardStatement)) {
+                  if (!indexContent.endsWith('\n')) indexContent += '\n';
+                  indexContent += `${forwardStatement}\n`;
+                  await writeFile(settingsIndexPath, indexContent, 'utf8');
+                  console.log(chalk.green(`  ✓ Updated settings _index.scss`));
+                }
+              }
+            } else {
+              console.log(chalk.yellow(`  ⚠️  Settings file already exists: ${settingsFilename}`));
+            }
+          }
+
+          // Generate component SCSS file
           const scssContent = componentTemplates.react.scss(safeName);
           const scssPath = join(process.cwd(), 'src/styles/06-components');
           const scssFilename = `_components.${safeName.toLowerCase()}.scss`;
@@ -447,7 +545,7 @@ program
 
         // Generate Storybook story
         if (options.story) {
-          const storyContent = componentTemplates.react.story(safeName);
+          const storyContent = componentTemplates.react.storyEnhanced(safeName);
           await writeFile(
             join(componentPath, `${safeName}.stories.tsx`),
             storyContent,
