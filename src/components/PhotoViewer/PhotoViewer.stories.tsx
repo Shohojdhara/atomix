@@ -110,7 +110,7 @@ const PhotoViewerDemo: React.FC<{ images: ImageType[]; startIndex?: number }> = 
         <p className="u-mb-4 u-text-secondary">
           Click on any image to open the PhotoViewer with full functionality.
         </p>
-        <div className="u-d-flex u-gap-4 u-mb-4">
+        <div className="u-flex u-gap-4 u-mb-4">
           <Badge variant="primary" label="Zoom & Pan" />
           <Badge variant="secondary" label="Keyboard Navigation" />
           <Badge variant="success" label="Touch Gestures" />
@@ -119,7 +119,7 @@ const PhotoViewerDemo: React.FC<{ images: ImageType[]; startIndex?: number }> = 
       </div>
 
       <div
-        className="u-d-grid"
+        className="u-grid"
         style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}
       >
         {images.map((image, index) => (
@@ -132,8 +132,8 @@ const PhotoViewerDemo: React.FC<{ images: ImageType[]; startIndex?: number }> = 
               onClick={() => openViewer(index)}
             />
             <div className="u-position-absolute u-bottom-0 u-start-0 u-end-0 u-bg-dark u-bg-opacity-75 u-p-3">
-              <h4 className="u-text-white u-fs-sm u-fw-medium u-mb-1">{image.title}</h4>
-              <p className="u-text-white u-fs-xs u-opacity-75 u-mb-0">{image.author}</p>
+              <h4 className="u-text-white u-text-sm u-font-medium u-mb-1">{image.title}</h4>
+              <p className="u-text-white u-text-xs u-opacity-75 u-mb-0">{image.author}</p>
             </div>
           </div>
         ))}
@@ -249,7 +249,7 @@ export const ThumbnailPositions: Story = {
             Choose a thumbnail position and click "Open Viewer" to see the layout.
           </p>
 
-          <div className="u-d-flex u-gap-3 u-mb-4">
+          <div className="u-flex u-gap-3 u-mb-4">
             {(['bottom', 'top', 'left', 'right', 'none'] as const).map(pos => (
               <Button
                 key={pos}
@@ -306,8 +306,8 @@ export const FeatureControls: Story = {
             Toggle features on/off to see how they affect the PhotoViewer behavior.
           </p>
 
-          <div className="u-d-flex u-gap-4 u-mb-4">
-            <label className="u-d-flex u-align-items-center u-gap-2">
+          <div className="u-flex u-gap-4 u-mb-4">
+            <label className="u-flex u-items-center u-gap-2">
               <input
                 type="checkbox"
                 checked={features.keyboard}
@@ -315,7 +315,7 @@ export const FeatureControls: Story = {
               />
               <span>Keyboard Navigation</span>
             </label>
-            <label className="u-d-flex u-align-items-center u-gap-2">
+            <label className="u-flex u-items-center u-gap-2">
               <input
                 type="checkbox"
                 checked={features.gestures}
@@ -323,7 +323,7 @@ export const FeatureControls: Story = {
               />
               <span>Touch Gestures</span>
             </label>
-            <label className="u-d-flex u-align-items-center u-gap-2">
+            <label className="u-flex u-items-center u-gap-2">
               <input
                 type="checkbox"
                 checked={features.fullscreen}
@@ -386,7 +386,7 @@ export const MobileOptimized: Story = {
           <li>Responsive controls and thumbnails</li>
           <li>Full-screen info panel on mobile</li>
         </ul>
-        <p className="u-text-tertiary u-fs-sm">
+        <p className="u-text-tertiary u-text-sm">
           Try this on a mobile device or use browser dev tools to simulate mobile viewport.
         </p>
       </div>

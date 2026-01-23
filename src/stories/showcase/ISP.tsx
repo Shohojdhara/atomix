@@ -123,18 +123,18 @@ const ISP: React.FC = () => {
         style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 1 }}
       >
         <Container>
-          <div className="u-d-flex u-align-items-center u-justify-content-between u-py-4">
-            <div className="u-d-flex u-align-items-center u-gap-2">
+          <div className="u-flex u-items-center u-justify-between u-py-4">
+            <div className="u-flex u-items-center u-gap-2">
               <AtomixLogo />
-              <span className="u-text-xl u-fw-bold">Atomix</span>
+              <span className="u-text-xl u-font-bold">Atomix</span>
             </div>
-            <nav className="u-d-none u-d-md-flex u-align-items-center u-gap-6">
+            <nav className="u-none u-md-flex u-items-center u-gap-6">
               <a href="#features">Features</a>
               <a href="#components">Components</a>
               <a href="#testimonials">Testimonials</a>
               <a href="#pricing">Pricing</a>
             </nav>
-            <div className="u-d-flex u-align-items-center u-gap-3">
+            <div className="u-flex u-items-center u-gap-3">
               <ColorModeToggle />
               <Button variant="outline" size="sm">
                 Documentation
@@ -190,9 +190,9 @@ const ISP: React.FC = () => {
                     />
                   )}
                   <div className="u-text-center u-mb-6">
-                    <h3 className="u-text-xl u-fw-bold">{plan.name}</h3>
+                    <h3 className="u-text-xl u-font-bold">{plan.name}</h3>
                     <div className="u-mt-4 u-mb-2">
-                      <span className="u-text-3xl u-fw-bold">${plan.price}</span>
+                      <span className="u-text-3xl u-font-bold">${plan.price}</span>
                       <span className="u-text-muted">/month</span>
                     </div>
                     <div className="u-mb-1">
@@ -205,7 +205,7 @@ const ISP: React.FC = () => {
                     {plan.features.map((feature, featureIndex) => (
                       <li
                         key={featureIndex}
-                        className="u-d-flex u-align-items-center u-gap-2 u-mb-3"
+                        className="u-flex u-items-center u-gap-2 u-mb-3"
                       >
                         <Icon name="Check" size={16} className="u-text-success" />
                         <span>{feature}</span>
@@ -229,7 +229,7 @@ const ISP: React.FC = () => {
       {/* Coverage Section */}
       <section className="u-py-20">
         <Container>
-          <Row className="u-align-items-center">
+          <Row className="u-items-center">
             <GridCol xs={12} lg={6}>
               <div className="u-position-relative u-mb-8 u-mb-lg-0">
                 <div
@@ -258,7 +258,7 @@ const ISP: React.FC = () => {
               />
 
               <div className="u-mt-6">
-                <div className="u-d-flex u-align-items-center u-mb-4">
+                <div className="u-flex u-items-center u-mb-4">
                   <Icon name="MapPin" size={24} className="u-text-primary u-me-3" />
                   <div>
                     <h4 className="u-mb-1">Urban Centers</h4>
@@ -266,7 +266,7 @@ const ISP: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="u-d-flex u-align-items-center u-mb-4">
+                <div className="u-flex u-items-center u-mb-4">
                   <Icon name="MapPin" size={24} className="u-text-primary u-me-3" />
                   <div>
                     <h4 className="u-mb-1">Suburban Areas</h4>
@@ -274,7 +274,7 @@ const ISP: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="u-d-flex u-align-items-center">
+                <div className="u-flex u-items-center">
                   <Icon name="MapPin" size={24} className="u-text-primary u-me-3" />
                   <div>
                     <h4 className="u-mb-1">Rural Development</h4>
@@ -326,7 +326,7 @@ const ISP: React.FC = () => {
             {features.map((feature, index) => (
               <GridCol key={index} xs={12} md={6} lg={3}>
                 <Card className="u-h-100 u-text-center u-border-0 u-shadow-sm">
-                  <div className="u-d-inline-flex u-align-items-center u-justify-content-center u-p-3 u-bg-primary u-text-white u-rounded u-mb-4">
+                  <div className="u-inline-flex u-items-center u-justify-center u-p-3 u-bg-primary u-text-white u-rounded u-mb-4">
                     {feature.icon}
                   </div>
                   <h4 className="u-mb-3">{feature.title}</h4>
@@ -369,13 +369,13 @@ const ISP: React.FC = () => {
       <section className="u-py-20 u-bg-primary u-text-white">
         <Container>
           <div className="u-text-center u-max-w-3xl u-mx-auto">
-            <h2 className="u-text-3xl u-text-md-4xl u-fw-bold u-mb-4 u-text-white">
+            <h2 className="u-text-3xl u-text-md-4xl u-font-bold u-mb-4 u-text-white">
               Ready to Experience Lightning-Fast Internet?
             </h2>
             <p className="u-text-xl u-mb-8 u-opacity-90">
               Join thousands of satisfied customers across Bangladesh
             </p>
-            <div className="u-d-flex u-flex-sm-row u-gap-4 u-justify-content-center">
+            <div className="u-flex u-flex-sm-row u-gap-4 u-justify-center">
               <Button size="lg" variant="secondary" className="u-text-primary">
                 Sign Up Now
                 <Icon name="ArrowRight" className="u-ml-2" size={16} />
@@ -393,15 +393,15 @@ const ISP: React.FC = () => {
         <Container>
           <Row className="u-mb-12">
             <GridCol xs={12} md={4} className="u-mb-8 u-mb-md-0">
-              <div className="u-d-flex u-align-items-center u-gap-2 u-mb-4">
+              <div className="u-flex u-items-center u-gap-2 u-mb-4">
                 <AtomixLogo />
-                <span className="u-text-xl u-fw-bold">BCN</span>
+                <span className="u-text-xl u-font-bold">BCN</span>
               </div>
               <p className="u-mb-4 u-text-muted">
                 Bangladesh's leading internet service provider, delivering high-speed connectivity
                 to homes and businesses nationwide.
               </p>
-              <div className="u-d-flex u-gap-4">
+              <div className="u-flex u-gap-4">
                 <a href="#" className="u-text-white u-opacity-75 u-hover-opacity-100 u-transition">
                   <Icon name="FacebookLogo" size={20} />
                 </a>
@@ -418,7 +418,7 @@ const ISP: React.FC = () => {
             </GridCol>
 
             <GridCol xs={6} sm={4} md={2} className="u-mb-8 u-mb-md-0">
-              <h4 className="u-fw-semibold u-mb-4 u-text-uppercase u-text-sm">Product</h4>
+              <h4 className="u-font-semibold u-mb-4 u-text-uppercase u-text-sm">Product</h4>
               <ul className="u-list-unstyled u-text-muted">
                 <li className="u-mb-3">
                   <a
@@ -456,7 +456,7 @@ const ISP: React.FC = () => {
             </GridCol>
 
             <GridCol xs={6} sm={4} md={2} className="u-mb-8 u-mb-md-0">
-              <h4 className="u-fw-semibold u-mb-4 u-text-uppercase u-text-sm">Company</h4>
+              <h4 className="u-font-semibold u-mb-4 u-text-uppercase u-text-sm">Company</h4>
               <ul className="u-list-unstyled u-text-muted">
                 <li className="u-mb-3">
                   <a
@@ -494,7 +494,7 @@ const ISP: React.FC = () => {
             </GridCol>
 
             <GridCol xs={6} sm={4} md={2} className="u-mb-8 u-mb-md-0">
-              <h4 className="u-fw-semibold u-mb-4 u-text-uppercase u-text-sm">Support</h4>
+              <h4 className="u-font-semibold u-mb-4 u-text-uppercase u-text-sm">Support</h4>
               <ul className="u-list-unstyled u-text-muted">
                 <li className="u-mb-3">
                   <a
@@ -532,7 +532,7 @@ const ISP: React.FC = () => {
             </GridCol>
 
             <GridCol xs={6} sm={4} md={2}>
-              <h4 className="u-fw-semibold u-mb-4 u-text-uppercase u-text-sm">Legal</h4>
+              <h4 className="u-font-semibold u-mb-4 u-text-uppercase u-text-sm">Legal</h4>
               <ul className="u-list-unstyled u-text-muted">
                 <li className="u-mb-3">
                   <a
@@ -571,12 +571,12 @@ const ISP: React.FC = () => {
           </Row>
 
           <div className="u-border-top u-border-light-subtle u-pt-8 u-text-center u-text-md-start">
-            <Row className="u-align-items-center">
+            <Row className="u-items-center">
               <GridCol xs={12} md={6} className="u-mb-4 u-mb-md-0">
                 <p className="u-mb-0 u-text-muted">&copy; 2024 BCN ISP. All rights reserved.</p>
               </GridCol>
               <GridCol xs={12} md={6}>
-                <div className="u-d-flex u-justify-content-center u-justify-content-md-end u-gap-6">
+                <div className="u-flex u-justify-center u-justify-md-end u-gap-6">
                   <a href="#" className="u-text-muted u-hover-text-white u-transition">
                     Privacy Policy
                   </a>

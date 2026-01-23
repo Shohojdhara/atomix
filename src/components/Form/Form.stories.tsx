@@ -127,14 +127,14 @@ export const CompleteForm: Story = {
         </FormGroup>
 
         <FormGroup label="Preferred contact method">
-          <div className="u-d-flex u-flex-column u-gap-2">
+          <div className="u-flex u-flex-column u-gap-2">
             <Radio id="contact-email" name="contactMethod" value="email" label="Email" checked />
             <Radio id="contact-phone" name="contactMethod" value="phone" label="Phone" />
             <Radio id="contact-mail" name="contactMethod" value="mail" label="Mail" />
           </div>
         </FormGroup>
 
-        <div className="u-d-flex u-gap-3 u-mt-4">
+        <div className="u-flex u-gap-3 u-mt-4">
           <button type="submit" className="c-btn c-btn--primary">
             Register
           </button>
@@ -306,7 +306,7 @@ export const Interactive: Story = {
             />
           </FormGroup>
 
-          <div className="u-d-flex u-gap-3 u-mt-4">
+          <div className="u-flex u-gap-3 u-mt-4">
             <button type="submit" className="c-btn c-btn--primary">
               Submit
             </button>

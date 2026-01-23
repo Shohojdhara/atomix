@@ -353,7 +353,7 @@ const Chart = memo(
         >
             {(title || subtitle || showToolbar) && (
               <div
-                className={`${CHART.HEADER_CLASS} u-d-flex u-justify-between u-align-items-start u-gap-4`}
+                className={`${CHART.HEADER_CLASS} u-flex u-justify-between u-items-start u-gap-4`}
               >
                 <div className={`${CHART.HEADER_CONTENT_CLASS} u-flex-1`}>
                   {title && <h3 className={`${CHART.TITLE_CLASS} u-mb-1`}>{title}</h3>}

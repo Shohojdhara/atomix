@@ -351,16 +351,16 @@ Complete reference for CSS classes, custom properties, and styling utilities in 
 ### Display Utilities
 
 ```css
-.u-d-none { display: none !important; }
-.u-d-inline { display: inline !important; }
-.u-d-inline-block { display: inline-block !important; }
-.u-d-block { display: block !important; }
-.u-d-grid { display: grid !important; }
-.u-d-table { display: table !important; }
-.u-d-table-row { display: table-row !important; }
-.u-d-table-cell { display: table-cell !important; }
-.u-d-flex { display: flex !important; }
-.u-d-inline-flex { display: inline-flex !important; }
+.u-none { display: none !important; }
+.u-inline { display: inline !important; }
+.u-inline-block { display: inline-block !important; }
+.u-block { display: block !important; }
+.u-grid { display: grid !important; }
+.u-table { display: table !important; }
+.u-table-row { display: table-row !important; }
+.u-table-cell { display: table-cell !important; }
+.u-flex { display: flex !important; }
+.u-inline-flex { display: inline-flex !important; }
 ```
 
 ### Flexbox Utilities
@@ -378,19 +378,19 @@ Complete reference for CSS classes, custom properties, and styling utilities in 
 .u-flex-wrap-reverse { flex-wrap: wrap-reverse !important; }
 
 /* Justify content */
-.u-justify-content-start { justify-content: flex-start !important; }
-.u-justify-content-end { justify-content: flex-end !important; }
-.u-justify-content-center { justify-content: center !important; }
-.u-justify-content-between { justify-content: space-between !important; }
-.u-justify-content-around { justify-content: space-around !important; }
-.u-justify-content-evenly { justify-content: space-evenly !important; }
+.u-justify-start { justify-content: flex-start !important; }
+.u-justify-end { justify-content: flex-end !important; }
+.u-justify-center { justify-content: center !important; }
+.u-justify-between { justify-content: space-between !important; }
+.u-justify-around { justify-content: space-around !important; }
+.u-justify-evenly { justify-content: space-evenly !important; }
 
 /* Align items */
-.u-align-items-start { align-items: flex-start !important; }
-.u-align-items-end { align-items: flex-end !important; }
-.u-align-items-center { align-items: center !important; }
-.u-align-items-baseline { align-items: baseline !important; }
-.u-align-items-stretch { align-items: stretch !important; }
+.u-items-start { align-items: flex-start !important; }
+.u-items-end { align-items: flex-end !important; }
+.u-items-center { align-items: center !important; }
+.u-items-baseline { align-items: baseline !important; }
+.u-items-stretch { align-items: stretch !important; }
 
 /* Flex grow/shrink */
 .u-flex-fill { flex: 1 1 auto !important; }
@@ -404,21 +404,21 @@ Complete reference for CSS classes, custom properties, and styling utilities in 
 
 ```css
 /* Font sizes */
-.u-fs-xs { font-size: var(--atomix-font-size-xs) !important; }
-.u-fs-sm { font-size: var(--atomix-font-size-sm) !important; }
-.u-fs-base { font-size: var(--atomix-font-size-base) !important; }
-.u-fs-lg { font-size: var(--atomix-font-size-lg) !important; }
-.u-fs-xl { font-size: var(--atomix-font-size-xl) !important; }
-.u-fs-2xl { font-size: var(--atomix-font-size-2xl) !important; }
-.u-fs-3xl { font-size: var(--atomix-font-size-3xl) !important; }
-.u-fs-4xl { font-size: var(--atomix-font-size-4xl) !important; }
+.u-text-xs { font-size: var(--atomix-font-size-xs) !important; }
+.u-text-sm { font-size: var(--atomix-font-size-sm) !important; }
+.u-text-base { font-size: var(--atomix-font-size-base) !important; }
+.u-text-lg { font-size: var(--atomix-font-size-lg) !important; }
+.u-text-xl { font-size: var(--atomix-font-size-xl) !important; }
+.u-text-2xl { font-size: var(--atomix-font-size-2xl) !important; }
+.u-text-3xl { font-size: var(--atomix-font-size-3xl) !important; }
+.u-text-4xl { font-size: var(--atomix-font-size-4xl) !important; }
 
 /* Font weights */
-.u-fw-light { font-weight: var(--atomix-font-weight-light) !important; }
-.u-fw-normal { font-weight: var(--atomix-font-weight-normal) !important; }
-.u-fw-medium { font-weight: var(--atomix-font-weight-medium) !important; }
-.u-fw-semibold { font-weight: var(--atomix-font-weight-semibold) !important; }
-.u-fw-bold { font-weight: var(--atomix-font-weight-bold) !important; }
+.u-font-light { font-weight: var(--atomix-font-weight-light) !important; }
+.u-font-normal { font-weight: var(--atomix-font-weight-normal) !important; }
+.u-font-medium { font-weight: var(--atomix-font-weight-medium) !important; }
+.u-font-semibold { font-weight: var(--atomix-font-weight-semibold) !important; }
+.u-font-bold { font-weight: var(--atomix-font-weight-bold) !important; }
 
 /* Text alignment */
 .u-text-start { text-align: left !important; }
@@ -473,7 +473,7 @@ All utility classes have responsive variants:
 @media (min-width: 768px) {
   .u-d-md-none { display: none !important; }
   .u-d-md-flex { display: flex !important; }
-  .u-d-md-block { display: block !important; }
+  .u-md-block { display: block !important; }
 }
 
 @media (min-width: 992px) {
@@ -490,7 +490,7 @@ All utility classes have responsive variants:
 
 /* Responsive typography utilities */
 @media (min-width: 768px) {
-  .u-fs-md-lg { font-size: var(--atomix-font-size-lg) !important; }
+  .u-text-md-lg { font-size: var(--atomix-font-size-lg) !important; }
   .u-text-md-start { text-align: left !important; }
 }
 ```

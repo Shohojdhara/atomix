@@ -132,7 +132,7 @@ export const Tooltip: React.FC<TooltipProps> = memo(({
 
   return (
     <div
-      className="u-position-relative u-d-inline-block"
+      className="u-position-relative u-inline-block"
       style={style}
       {...wrapperProps}
     >

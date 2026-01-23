@@ -19,19 +19,19 @@ $utilities-flex: (
   'flex-grow': (
     responsive: true,
     property: flex-grow,
-    class: u-flex,
+    class: u-flex-grow,
     values: (
-      grow-0: 0,
-      grow-1: 1,
+      '0': 0,
+      '1': 1,
     ),
   ),
   'flex-shrink': (
     responsive: true,
     property: flex-shrink,
-    class: u-flex,
+    class: u-flex-shrink,
     values: (
-      shrink-0: 0,
-      shrink-1: 1,
+      '0': 0,
+      '1': 1,
     ),
   ),
   'flex-wrap': (
@@ -43,7 +43,7 @@ $utilities-flex: (
   'justify-content': (
     responsive: true,
     property: justify-content,
-    class: u-justify-content,
+    class: u-justify,
     values: (
       start: flex-start,
       end: flex-end,
@@ -56,7 +56,7 @@ $utilities-flex: (
   'align-items': (
     responsive: true,
     property: align-items,
-    class: u-align-items,
+    class: u-items,
     values: (
       start: flex-start,
       end: flex-end,
@@ -68,7 +68,7 @@ $utilities-flex: (
   'align-content': (
     responsive: true,
     property: align-content,
-    class: u-align-content,
+    class: u-content,
     values: (
       start: flex-start,
       end: flex-end,
@@ -81,7 +81,7 @@ $utilities-flex: (
   'align-self': (
     responsive: true,
     property: align-self,
-    class: u-align-self,
+    class: u-self,
     values: (
       auto: auto,
       start: flex-start,

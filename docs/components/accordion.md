@@ -90,7 +90,7 @@ function FAQSection() {
 
   return (
     <div className="u-mw-100 u-mx-auto">
-      <h2 className="u-fs-2 u-fw-bold u-mb-6">Frequently Asked Questions</h2>
+      <h2 className="u-text-2 u-font-bold u-mb-6">Frequently Asked Questions</h2>
       <div className="u-gap-2">
         {faqs.map((faq) => (
           <Accordion key={faq.id} title={faq.question}>
@@ -117,7 +117,7 @@ function SettingsPanel() {
 
   return (
     <div className="u-mw-100 u-mx-auto u-gap-4">
-      <h2 className="u-fs-xl u-fw-semibold u-mb-4">Settings</h2>
+      <h2 className="u-text-xl u-font-semibold u-mb-4">Settings</h2>
       
       <Accordion title="Account Settings" defaultOpen>
         <div className="u-gap-4">
@@ -197,12 +197,12 @@ function CustomIconAccordion() {
         icon={<Icon name="User" />}
         iconPosition="left"
       >
-        <div className="u-d-flex u-align-items-center u-gap-4">
+        <div className="u-flex u-items-center u-gap-4">
           <Avatar src="/user-avatar.jpg" size="lg" circle />
           <div>
-            <h3 className="u-fw-semibold">John Doe</h3>
+            <h3 className="u-font-semibold">John Doe</h3>
             <p className="u-text-secondary">Software Engineer</p>
-            <p className="u-fs-sm u-text-secondary">Last seen 2 hours ago</p>
+            <p className="u-text-sm u-text-secondary">Last seen 2 hours ago</p>
           </div>
         </div>
       </Accordion>
@@ -213,11 +213,11 @@ function CustomIconAccordion() {
         iconPosition="left"
       >
         <div className="u-gap-3">
-          <div className="u-d-flex u-justify-content-between u-align-items-center">
+          <div className="u-flex u-justify-between u-items-center">
             <span>Two-factor authentication</span>
             <Badge label="Enabled" variant="success" />
           </div>
-          <div className="u-d-flex u-justify-content-between u-align-items-center">
+          <div className="u-flex u-justify-between u-items-center">
             <span>Login alerts</span>
             <Toggle checked />
           </div>
@@ -232,11 +232,11 @@ function CustomIconAccordion() {
       >
         <div className="u-gap-3">
           <div className="u-p-3 u-bg-light u-rounded">
-            <div className="u-d-flex u-justify-content-between">
+            <div className="u-flex u-justify-between">
               <span>Current Plan</span>
-              <span className="u-fw-semibold">Pro Plan</span>
+              <span className="u-font-semibold">Pro Plan</span>
             </div>
-            <div className="u-d-flex u-justify-content-between">
+            <div className="u-flex u-justify-between">
               <span>Next billing</span>
               <span>March 15, 2024</span>
             </div>
@@ -306,7 +306,7 @@ function ControlledAccordionGroup() {
 
   return (
     <div className="u-mw-100 u-mx-auto">
-      <h2 className="u-fs-xl u-fw-semibold u-mb-4">Company Setup</h2>
+      <h2 className="u-text-xl u-font-semibold u-mb-4">Company Setup</h2>
       <div className="u-gap-2">
         {sections.map((section) => (
           <Accordion
@@ -613,7 +613,7 @@ function GlassAccordionGroup() {
 // Good: Clear structure and meaningful content
 <Accordion title="Account Security Settings">
   <div className="u-gap-4">
-    <div className="u-d-flex u-justify-content-between u-align-items-center">
+    <div className="u-flex u-justify-between u-items-center">
       <span>Two-factor authentication</span>
       <Badge label="Enabled" variant="success" />
     </div>
@@ -682,11 +682,11 @@ function ProductFeatures() {
 function HelpDocumentation() {
   return (
     <div className="u-mw-100 u-mx-auto">
-      <h1 className="u-fs-1 u-fw-bold u-mb-8">Help Center</h1>
+      <h1 className="u-text-1 u-font-bold u-mb-8">Help Center</h1>
 
       <div className="u-gap-6">
         <section>
-          <h2 className="u-fs-xl u-fw-semibold u-mb-4">Getting Started</h2>
+          <h2 className="u-text-xl u-font-semibold u-mb-4">Getting Started</h2>
           <div className="u-gap-2">
             <Accordion title="How to create an account">
               <div className="u-prose">
@@ -707,7 +707,7 @@ function HelpDocumentation() {
         </section>
 
         <section>
-          <h2 className="u-fs-xl u-fw-semibold u-mb-4">Troubleshooting</h2>
+          <h2 className="u-text-xl u-font-semibold u-mb-4">Troubleshooting</h2>
           <div className="u-gap-2">
             <Accordion title="I can't log in">
               <p>If you're having trouble logging in, try these steps...</p>

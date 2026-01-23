@@ -47,7 +47,7 @@ import { Icon } from '@shohojdhara/atomix';
 
 function BasicIcons() {
   return (
-    <div className="u-d-flex u-gap-4 u-align-items-center">
+    <div className="u-flex u-gap-4 u-items-center">
       {/* Basic icon */}
       <Icon name="Heart" />
       
@@ -72,7 +72,7 @@ function BasicIcons() {
 ```jsx
 function IconSizes() {
   return (
-    <div className="u-d-flex u-gap-4 u-align-items-center">
+    <div className="u-flex u-gap-4 u-items-center">
       <Icon name="Heart" size="xs" />
       <Icon name="Heart" size="sm" />
       <Icon name="Heart" size="md" />
@@ -91,7 +91,7 @@ function IconSizes() {
 ```jsx
 function IconWeights() {
   return (
-    <div className="u-d-flex u-gap-4 u-align-items-center">
+    <div className="u-flex u-gap-4 u-items-center">
       <Icon name="Star" weight="thin" />
       <Icon name="Star" weight="light" />
       <Icon name="Star" weight="regular" />
@@ -108,7 +108,7 @@ function IconWeights() {
 ```jsx
 function ColoredIcons() {
   return (
-    <div className="u-d-flex u-gap-4 u-align-items-center">
+    <div className="u-flex u-gap-4 u-items-center">
       {/* CSS color values */}
       <Icon name="Heart" color="#ef4444" />
       <Icon name="CheckCircle" color="#22c55e" />
@@ -133,7 +133,7 @@ function InteractiveIcons() {
   const [liked, setLiked] = useState(false);
   
   return (
-    <div className="u-d-flex u-gap-4">
+    <div className="u-flex u-gap-4">
       {/* Clickable icon */}
       <button 
         className="u-btn-reset u-cursor-pointer"
@@ -345,7 +345,7 @@ The Icon component includes comprehensive accessibility features:
 ```jsx
 function IconWithText() {
   return (
-    <div className="u-d-flex u-align-items-center u-gap-2">
+    <div className="u-flex u-items-center u-gap-2">
       <Icon name="CheckCircle" color="#22c55e" />
       <span>Task completed successfully</span>
     </div>
@@ -372,18 +372,18 @@ function LoadingSpinner() {
 ```jsx
 function StatusIndicators() {
   return (
-    <div className="u-d-flex u-gap-4">
-      <div className="u-d-flex u-align-items-center u-gap-1">
+    <div className="u-flex u-gap-4">
+      <div className="u-flex u-items-center u-gap-1">
         <Icon name="CheckCircle" color="#22c55e" size="sm" />
         <span>Online</span>
       </div>
 
-      <div className="u-d-flex u-align-items-center u-gap-1">
+      <div className="u-flex u-items-center u-gap-1">
         <Icon name="Warning" color="#f59e0b" size="sm" />
         <span>Warning</span>
       </div>
 
-      <div className="u-d-flex u-align-items-center u-gap-1">
+      <div className="u-flex u-items-center u-gap-1">
         <Icon name="XCircle" color="#ef4444" size="sm" />
         <span>Error</span>
       </div>
@@ -397,7 +397,7 @@ function StatusIndicators() {
 ```jsx
 function IconButtons() {
   return (
-    <div className="u-d-flex u-gap-2">
+    <div className="u-flex u-gap-2">
       <button
         className="u-btn-reset u-p-2 u-rounded hover:u-bg-gray-100"
         aria-label="Edit"

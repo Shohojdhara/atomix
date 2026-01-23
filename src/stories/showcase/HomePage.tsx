@@ -145,18 +145,18 @@ const HomePage: React.FC = () => {
         style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 1 }}
       >
         <Container>
-          <div className="u-d-flex u-align-items-center u-justify-content-between u-py-4">
-            <div className="u-d-flex u-align-items-center u-gap-2">
+          <div className="u-flex u-items-center u-justify-between u-py-4">
+            <div className="u-flex u-items-center u-gap-2">
               <AtomixLogo />
-              <span className="u-text-xl u-fw-bold">Atomix</span>
+              <span className="u-text-xl u-font-bold">Atomix</span>
             </div>
-            <nav className="u-d-none u-d-md-flex u-align-items-center u-gap-6">
+            <nav className="u-none u-md-flex u-items-center u-gap-6">
               <a href="#features">Features</a>
               <a href="#components">Components</a>
               <a href="#testimonials">Testimonials</a>
               <a href="#pricing">Pricing</a>
             </nav>
-            <div className="u-d-flex u-align-items-center u-gap-3">
+            <div className="u-flex u-items-center u-gap-3">
               <ColorModeToggle />
               <Button variant="outline" size="sm">
                 Documentation
@@ -215,7 +215,7 @@ const HomePage: React.FC = () => {
             {stats.map((stat, index) => (
               <GridCol key={index} xs={6} md={3}>
                 <div className="u-text-center">
-                  <div className="u-text-3xl u-fw-bold u-text-primary u-mb-2">{stat.value}</div>
+                  <div className="u-text-3xl u-font-bold u-text-primary u-mb-2">{stat.value}</div>
                   <div className="u-mb-3">{stat.label}</div>
                   <Progress value={stat.progress} size="sm" />
                 </div>
@@ -240,7 +240,7 @@ const HomePage: React.FC = () => {
                 <Card
                   className="u-h-100 u-text-center"
                   icon={<>{feature.icon}</>}
-                  title={<h3 className="u-text-lg u-fw-semibold">{feature.title}</h3>}
+                  title={<h3 className="u-text-lg u-font-semibold">{feature.title}</h3>}
                   text={<p>{feature.description}</p>}
                 />
               </GridCol>
@@ -351,7 +351,7 @@ const HomePage: React.FC = () => {
                       className="u-w-100 u-h-auto u-rounded"
                     />
                   </div>
-                  <h4 className="u-fw-semibold u-mb-2">{component.name}</h4>
+                  <h4 className="u-font-semibold u-mb-2">{component.name}</h4>
                   <p className="u-text-sm">{component.description}</p>
                 </Card>
               </GridCol>
@@ -362,19 +362,19 @@ const HomePage: React.FC = () => {
           <Row className="u-mt-16">
             <GridCol xs={12} md={4}>
               <div className="u-text-center">
-                <div className="u-text-4xl u-fw-bold u-text-primary u-mb-2">40+</div>
+                <div className="u-text-4xl u-font-bold u-text-primary u-mb-2">40+</div>
                 <p>UI Components</p>
               </div>
             </GridCol>
             <GridCol xs={12} md={4}>
               <div className="u-text-center">
-                <div className="u-text-4xl u-fw-bold u-text-primary u-mb-2">2</div>
+                <div className="u-text-4xl u-font-bold u-text-primary u-mb-2">2</div>
                 <p>Implementations (React & JS)</p>
               </div>
             </GridCol>
             <GridCol xs={12} md={4}>
               <div className="u-text-center">
-                <div className="u-text-4xl u-fw-bold u-text-primary u-mb-2">100%</div>
+                <div className="u-text-4xl u-font-bold u-text-primary u-mb-2">100%</div>
                 <p>Accessible (WCAG 2.1 AA)</p>
               </div>
             </GridCol>
@@ -383,7 +383,7 @@ const HomePage: React.FC = () => {
           {/* All Components */}
           <div className="u-text-center u-mt-16">
             <h3 className="u-mb-4">Explore All Components</h3>
-            <AvatarGroup max={12} className="u-justify-content-center">
+            <AvatarGroup max={12} className="u-justify-center">
               <Avatar initials="Bt" />
               <Avatar initials="Cr" />
               <Avatar initials="Md" />
@@ -422,8 +422,8 @@ const HomePage: React.FC = () => {
 
           {/* Company Logos */}
           <div className="u-text-center u-mt-12">
-            <p className="u-mb-6 u-fw-medium">Used by innovative teams</p>
-            <Row className="u-align-items-center">
+            <p className="u-mb-6 u-font-medium">Used by innovative teams</p>
+            <Row className="u-items-center">
               {[
                 { name: 'TechCorp', logo: '🏢' },
                 { name: 'StartupXYZ', logo: '🚀' },
@@ -435,7 +435,7 @@ const HomePage: React.FC = () => {
                 <GridCol key={index} xs={6} md={2}>
                   <div className="u-text-center u-p-3">
                     <div className="u-text-4xl u-mb-2">{company.logo}</div>
-                    <p className="u-text-sm u-fw-medium">{company.name}</p>
+                    <p className="u-text-sm u-font-medium">{company.name}</p>
                   </div>
                 </GridCol>
               ))}
@@ -447,7 +447,7 @@ const HomePage: React.FC = () => {
             {testimonials.map((testimonial, index) => (
               <GridCol key={index} xs={12} md={4}>
                 <Card className="u-h-100">
-                  <div className="u-d-flex u-align-items-center u-mb-3">
+                  <div className="u-flex u-items-center u-mb-3">
                     <Avatar
                       src={testimonial.avatar}
                       alt={testimonial.name}
@@ -455,7 +455,7 @@ const HomePage: React.FC = () => {
                       className="u-me-3"
                     />
                     <div>
-                      <h5 className="u-mb-1 u-fw-semibold">{testimonial.name}</h5>
+                      <h5 className="u-mb-1 u-font-semibold">{testimonial.name}</h5>
                       <p className="u-text-sm u-mb-0">{testimonial.role}</p>
                     </div>
                   </div>
@@ -472,19 +472,19 @@ const HomePage: React.FC = () => {
           <Row className="u-mt-16">
             <GridCol xs={12} md={3}>
               <div className="u-text-center">
-                <div className="u-text-3xl u-fw-bold u-text-primary u-mb-2">2K+</div>
+                <div className="u-text-3xl u-font-bold u-text-primary u-mb-2">2K+</div>
                 <p>GitHub Stars</p>
               </div>
             </GridCol>
             <GridCol xs={12} md={3}>
               <div className="u-text-center">
-                <div className="u-text-3xl u-fw-bold u-text-primary u-mb-2">500+</div>
+                <div className="u-text-3xl u-font-bold u-text-primary u-mb-2">500+</div>
                 <p>Downloads/Month</p>
               </div>
             </GridCol>
             <GridCol xs={12} md={3}>
               <div className="u-text-center">
-                <div className="u-text-3xl u-fw-bold u-text-primary u-mb-2">99%</div>
+                <div className="u-text-3xl u-font-bold u-text-primary u-mb-2">99%</div>
                 <p>Satisfaction Rate</p>
               </div>
             </GridCol>
@@ -502,7 +502,7 @@ const HomePage: React.FC = () => {
               <p className="u-mb-4">
                 Connect with other developers using Atomix and share your experiences
               </p>
-              <div className="u-d-flex u-gap-3 u-justify-content-center">
+              <div className="u-flex u-gap-3 u-justify-center">
                 <Button variant="primary" size="sm">
                   <Icon name="Users" className="u-me-2" size={16} />
                   Join Community
@@ -528,7 +528,7 @@ const HomePage: React.FC = () => {
 
           {/* Pricing Toggle */}
           <div className="u-text-center u-mb-8">
-            <div className="u-d-inline-flex u-align-items-center u-gap-3 u-bg-white u-p-2 u-rounded-pill u-shadow-sm">
+            <div className="u-inline-flex u-items-center u-gap-3 u-bg-white u-p-2 u-rounded-pill u-shadow-sm">
               <span className="u-px-3 u-py-1">Monthly</span>
               <Toggle />
               <span className="u-px-3 u-py-1">
@@ -553,10 +553,10 @@ const HomePage: React.FC = () => {
                     />
                   )}
                   <div className="u-text-center">
-                    <h3 className="u-text-xl u-fw-semibold u-mb-2">{plan.name}</h3>
-                    <div className="u-text-4xl u-fw-bold u-mb-2">
+                    <h3 className="u-text-xl u-font-semibold u-mb-2">{plan.name}</h3>
+                    <div className="u-text-4xl u-font-bold u-mb-2">
                       {plan.price}
-                      <span className="u-text-lg u-fw-normal u-text-muted">{plan.period}</span>
+                      <span className="u-text-lg u-font-normal u-text-muted">{plan.period}</span>
                     </div>
                     <p className="u-text-sm u-text-muted u-mb-0">
                       {plan.name === 'Open Source' && 'Perfect for individuals and hobby projects'}
@@ -569,7 +569,7 @@ const HomePage: React.FC = () => {
                       {plan.features.map((feature, featureIndex) => (
                         <li
                           key={featureIndex}
-                          className="u-d-flex u-align-items-center u-gap-3 u-mb-3"
+                          className="u-flex u-items-center u-gap-3 u-mb-3"
                         >
                           <Icon
                             name="CheckCircle"
@@ -603,7 +603,7 @@ const HomePage: React.FC = () => {
           {/* Pricing Features Comparison */}
           <div className="u-mt-16">
             <div className="u-text-center u-mb-8">
-              <h3 className="u-text-2xl u-fw-semibold u-mb-3">Compare All Plans</h3>
+              <h3 className="u-text-2xl u-font-semibold u-mb-3">Compare All Plans</h3>
               <p className="u-text-muted">See what's included in each plan</p>
             </div>
 
@@ -678,11 +678,11 @@ const HomePage: React.FC = () => {
           <Row className="u-mt-16">
             <GridCol xs={12} md={8} className="u-mx-auto">
               <div className="u-text-center u-mb-8">
-                <h3 className="u-text-2xl u-fw-semibold u-mb-3">Pricing FAQ</h3>
+                <h3 className="u-text-2xl u-font-semibold u-mb-3">Pricing FAQ</h3>
                 <p className="u-text-muted">Common questions about our pricing</p>
               </div>
 
-              <div className="u-d-flex u-flex-column u-gap-3">
+              <div className="u-flex u-flex-column u-gap-3">
                 <Accordion title="Is the open source version really free?">
                   <p>
                     Yes! The open source version is completely free with no limitations on usage. It
@@ -721,16 +721,16 @@ const HomePage: React.FC = () => {
               <p className="u-mb-4">
                 Not satisfied with Atomix Pro? Get a full refund within 30 days, no questions asked.
               </p>
-              <div className="u-d-flex u-justify-content-center u-gap-4 u-text-sm">
-                <div className="u-d-flex u-align-items-center u-gap-2">
+              <div className="u-flex u-justify-center u-gap-4 u-text-sm">
+                <div className="u-flex u-items-center u-gap-2">
                   <Icon name="Shield" size={16} />
                   <span>Secure payments</span>
                 </div>
-                <div className="u-d-flex u-align-items-center u-gap-2">
+                <div className="u-flex u-items-center u-gap-2">
                   <Icon name="Clock" size={16} />
                   <span>Cancel anytime</span>
                 </div>
-                <div className="u-d-flex u-align-items-center u-gap-2">
+                <div className="u-flex u-items-center u-gap-2">
                   <Icon name="Users" size={16} />
                   <span>24/7 support</span>
                 </div>
@@ -751,7 +751,7 @@ const HomePage: React.FC = () => {
 
           <Row className="u-mt-16">
             <GridCol xs={12} md={8}>
-              <div className="u-d-flex u-flex-column u-gap-3">
+              <div className="u-flex u-flex-column u-gap-3">
                 <Accordion title="What is Atomix exactly?">
                   <p>
                     Atomix is a modern design system and component library for building beautiful
@@ -832,7 +832,7 @@ const HomePage: React.FC = () => {
                   <p className="u-mb-4 u-text-sm">
                     Can't find what you're looking for? Our community and team are here to help.
                   </p>
-                  <div className="u-d-grid u-gap-2">
+                  <div className="u-grid u-gap-2">
                     <Button variant="primary" size="sm">
                       <Icon name="ChatCircle" className="u-me-2" size={16} />
                       Community Chat
@@ -851,25 +851,25 @@ const HomePage: React.FC = () => {
                   </h4>
                   <ul className="u-list-unstyled u-text-sm">
                     <li className="u-mb-2">
-                      <a href="#" className="u-d-flex u-align-items-center">
+                      <a href="#" className="u-flex u-items-center">
                         <Icon name="FileText" className="u-me-2" size={14} />
                         Documentation
                       </a>
                     </li>
                     <li className="u-mb-2">
-                      <a href="#" className="u-d-flex u-align-items-center">
+                      <a href="#" className="u-flex u-items-center">
                         <Icon name="PlayCircle" className="u-me-2" size={14} />
                         Video Tutorials
                       </a>
                     </li>
                     <li className="u-mb-2">
-                      <a href="#" className="u-d-flex u-align-items-center">
+                      <a href="#" className="u-flex u-items-center">
                         <Icon name="Code" className="u-me-2" size={14} />
                         Code Examples
                       </a>
                     </li>
                     <li className="u-mb-2">
-                      <a href="#" className="u-d-flex u-align-items-center">
+                      <a href="#" className="u-flex u-items-center">
                         <Icon name="Users" className="u-me-2" size={14} />
                         Community Forum
                       </a>
@@ -989,28 +989,28 @@ const HomePage: React.FC = () => {
           <Row className="u-mt-6">
             <GridCol xs={6} md={3}>
               <Card className="u-text-center">
-                <div className="u-text-3xl u-fw-bold u-text-primary u-mb-2">40+</div>
+                <div className="u-text-3xl u-font-bold u-text-primary u-mb-2">40+</div>
                 <div className="u-text-sm u-mb-2">Components</div>
                 <Badge variant="success" size="sm" label="+5%" />
               </Card>
             </GridCol>
             <GridCol xs={6} md={3}>
               <Card className="u-text-center">
-                <div className="u-text-3xl u-fw-bold u-text-success u-mb-2">2.5K+</div>
+                <div className="u-text-3xl u-font-bold u-text-success u-mb-2">2.5K+</div>
                 <div className="u-text-sm u-mb-2">GitHub Stars</div>
                 <Badge variant="success" size="sm" label="+12%" />
               </Card>
             </GridCol>
             <GridCol xs={6} md={3}>
               <Card className="u-text-center">
-                <div className="u-text-3xl u-fw-bold u-text-warning u-mb-2">99%</div>
+                <div className="u-text-3xl u-font-bold u-text-warning u-mb-2">99%</div>
                 <div className="u-text-sm u-mb-2">Accessibility</div>
                 <Badge variant="success" size="sm" label="AA" />
               </Card>
             </GridCol>
             <GridCol xs={6} md={3}>
               <Card className="u-text-center">
-                <div className="u-text-3xl u-fw-bold u-text-info u-mb-2">120+</div>
+                <div className="u-text-3xl u-font-bold u-text-info u-mb-2">120+</div>
                 <div className="u-text-sm u-mb-2">Adopters</div>
                 <Badge variant="success" size="sm" label="+8%" />
               </Card>
@@ -1032,7 +1032,7 @@ const HomePage: React.FC = () => {
           <Row className="u-mt-16">
             <GridCol xs={12} md={4}>
               <Card className="u-h-100 u-text-center u-hover-shadow-lg u-transition-all">
-                <div className="u-d-inline-flex u-align-items-center u-justify-content-center u-w-16 u-h-16 u-bg-primary u-text-white u-rounded u-mb-4">
+                <div className="u-inline-flex u-items-center u-justify-center u-w-16 u-h-16 u-bg-primary u-text-white u-rounded u-mb-4">
                   <Icon name="BookOpen" size={24} />
                 </div>
                 <h4 className="u-mb-3">Documentation</h4>
@@ -1053,7 +1053,7 @@ const HomePage: React.FC = () => {
 
             <GridCol xs={12} md={4}>
               <Card className="u-h-100 u-text-center u-hover-shadow-lg u-transition-all">
-                <div className="u-d-inline-flex u-align-items-center u-justify-content-center u-w-16 u-h-16 u-bg-success u-text-white u-rounded u-mb-4">
+                <div className="u-inline-flex u-items-center u-justify-center u-w-16 u-h-16 u-bg-success u-text-white u-rounded u-mb-4">
                   <Icon name="Code" size={24} />
                 </div>
                 <h4 className="u-mb-3">Code Examples</h4>
@@ -1074,7 +1074,7 @@ const HomePage: React.FC = () => {
 
             <GridCol xs={12} md={4}>
               <Card className="u-h-100 u-text-center u-hover-shadow-lg u-transition-all">
-                <div className="u-d-inline-flex u-align-items-center u-justify-content-center u-w-16 u-h-16 u-bg-warning u-text-white u-rounded u-mb-4">
+                <div className="u-inline-flex u-items-center u-justify-center u-w-16 u-h-16 u-bg-warning u-text-white u-rounded u-mb-4">
                   <Icon name="PlayCircle" size={24} />
                 </div>
                 <h4 className="u-mb-3">Video Tutorials</h4>
@@ -1118,7 +1118,7 @@ const HomePage: React.FC = () => {
                                   text: 'Install Package',
                                   content: (
                                     <div className="u-mt-2">
-                                      <code className="u-bg-light u-p-2 u-rounded u-d-block u-text-sm">
+                                      <code className="u-bg-light u-p-2 u-rounded u-block u-text-sm">
                                         npm install @shohojdhara/atomix
                                       </code>
                                     </div>
@@ -1129,7 +1129,7 @@ const HomePage: React.FC = () => {
                                   text: 'Import Components',
                                   content: (
                                     <div className="u-mt-2">
-                                      <code className="u-bg-light u-p-2 u-rounded u-d-block u-text-sm">
+                                      <code className="u-bg-light u-p-2 u-rounded u-block u-text-sm">
                                         import {`{ Button, Card }`} from '@shohojdhara/atomix'
                                       </code>
                                     </div>
@@ -1140,7 +1140,7 @@ const HomePage: React.FC = () => {
                                   text: 'Start Building',
                                   content: (
                                     <div className="u-mt-2">
-                                      <code className="u-bg-light u-p-2 u-rounded u-d-block u-text-sm">
+                                      <code className="u-bg-light u-p-2 u-rounded u-block u-text-sm">
                                         {`<Button variant="primary">Hello World</Button>`}
                                       </code>
                                     </div>
@@ -1149,7 +1149,7 @@ const HomePage: React.FC = () => {
                               ]}
                             />
                           </div>
-                          <div className="u-d-flex u-gap-3">
+                          <div className="u-flex u-gap-3">
                             <Button variant="primary" size="sm">
                               <Icon name="BookOpen" className="u-me-2" size={14} />
                               Full Guide
@@ -1172,15 +1172,15 @@ const HomePage: React.FC = () => {
                             playground.
                           </p>
                           <div className="u-mb-4">
-                            <div className="u-d-flex u-align-items-center u-gap-2 u-mb-2">
+                            <div className="u-flex u-items-center u-gap-2 u-mb-2">
                               <Icon name="CheckCircle" size={16} className="u-text-success" />
                               <span className="u-text-sm">40+ Components documented</span>
                             </div>
-                            <div className="u-d-flex u-align-items-center u-gap-2 u-mb-2">
+                            <div className="u-flex u-items-center u-gap-2 u-mb-2">
                               <Icon name="CheckCircle" size={16} className="u-text-success" />
                               <span className="u-text-sm">TypeScript definitions included</span>
                             </div>
-                            <div className="u-d-flex u-align-items-center u-gap-2">
+                            <div className="u-flex u-items-center u-gap-2">
                               <Icon name="CheckCircle" size={16} className="u-text-success" />
                               <span className="u-text-sm">Interactive code examples</span>
                             </div>
@@ -1208,7 +1208,7 @@ const HomePage: React.FC = () => {
                               title="Drop your project files here to get started"
                             />
                           </div>
-                          <div className="u-d-flex u-gap-2 u-flex-wrap u-mb-4">
+                          <div className="u-flex u-gap-2 u-flex-wrap u-mb-4">
                             <Badge variant="primary" size="sm" label="Dashboard" />
                             <Badge variant="success" size="sm" label="E-commerce" />
                             <Badge variant="warning" size="sm" label="Landing Page" />
@@ -1229,7 +1229,7 @@ const HomePage: React.FC = () => {
             <GridCol xs={12} lg={4}>
               {/* Enhanced Support Chat */}
               <Card className="u-h-100">
-                <div className="u-d-flex u-align-items-center u-gap-2 u-mb-4">
+                <div className="u-flex u-items-center u-gap-2 u-mb-4">
                   <div className="u-w-3 u-h-3 u-bg-success u-rounded-circle"></div>
                   <h4 className="u-mb-0">Community Support</h4>
                   <Badge variant="success" size="sm" label="Online" className="u-ml-auto" />
@@ -1334,13 +1334,13 @@ const HomePage: React.FC = () => {
       <section className="u-py-20 u-bg-primary u-text-white">
         <Container>
           <div className="u-text-center u-max-w-3xl u-mx-auto">
-            <h2 className="u-text-3xl u-text-md-4xl u-fw-bold u-mb-4">
+            <h2 className="u-text-3xl u-text-md-4xl u-font-bold u-mb-4">
               Ready to Transform Your UI Development?
             </h2>
             <p className="u-text-xl u-mb-8 u-opacity-90">
               Join thousands of developers who are already building stunning interfaces with Atomix.
             </p>
-            <div className="u-d-flex  u-flex-sm-row u-gap-4 u-justify-content-center u-mb-6">
+            <div className="u-flex  u-flex-sm-row u-gap-4 u-justify-center u-mb-6">
               <Button variant="secondary" size="md">
                 Get Started Free
                 <Icon name="ArrowRight" className="u-ml-2" size={16} />
@@ -1349,12 +1349,12 @@ const HomePage: React.FC = () => {
                 View Documentation
               </Button>
             </div>
-            <div className="u-d-flex u-flex-column u-flex-md-row u-align-items-center u-justify-content-center u-gap-4 u-text-sm u-opacity-80">
-              <div className="u-d-flex u-align-items-center u-gap-2">
+            <div className="u-flex u-flex-column u-flex-md-row u-items-center u-justify-center u-gap-4 u-text-sm u-opacity-80">
+              <div className="u-flex u-items-center u-gap-2">
                 <Icon name="CheckCircle" size={14} />
                 <span>Free and open source</span>
               </div>
-              <div className="u-d-flex u-align-items-center u-gap-2">
+              <div className="u-flex u-items-center u-gap-2">
                 <Icon name="CreditCard" size={14} />
                 <span>Paid plans for advanced features</span>
               </div>
@@ -1368,14 +1368,14 @@ const HomePage: React.FC = () => {
         <Container>
           <Row className="u-mb-12">
             <GridCol xs={12} md={4} className="u-mb-8 u-mb-md-0">
-              <div className="u-d-flex u-align-items-center u-gap-2 u-mb-4">
+              <div className="u-flex u-items-center u-gap-2 u-mb-4">
                 <AtomixLogo />
-                <span className="u-text-xl u-fw-bold">Atomix</span>
+                <span className="u-text-xl u-font-bold">Atomix</span>
               </div>
               <p className="u-mb-4 u-text-muted">
                 A modern design system and component library for building beautiful user interfaces.
               </p>
-              <div className="u-d-flex u-gap-4">
+              <div className="u-flex u-gap-4">
                 <a href="#" className="u-text-white u-opacity-75 u-hover-opacity-100 u-transition">
                   <Icon name="GithubLogo" size={20} />
                 </a>
@@ -1389,7 +1389,7 @@ const HomePage: React.FC = () => {
             </GridCol>
 
             <GridCol xs={6} sm={4} md={2} className="u-mb-8 u-mb-md-0">
-              <h4 className="u-fw-semibold u-mb-4 u-text-uppercase u-text-sm">Product</h4>
+              <h4 className="u-font-semibold u-mb-4 u-text-uppercase u-text-sm">Product</h4>
               <ul className="u-list-unstyled u-text-muted">
                 <li className="u-mb-3">
                   <a
@@ -1427,7 +1427,7 @@ const HomePage: React.FC = () => {
             </GridCol>
 
             <GridCol xs={6} sm={4} md={2} className="u-mb-8 u-mb-md-0">
-              <h4 className="u-fw-semibold u-mb-4 u-text-uppercase u-text-sm">Company</h4>
+              <h4 className="u-font-semibold u-mb-4 u-text-uppercase u-text-sm">Company</h4>
               <ul className="u-list-unstyled u-text-muted">
                 <li className="u-mb-3">
                   <a
@@ -1465,7 +1465,7 @@ const HomePage: React.FC = () => {
             </GridCol>
 
             <GridCol xs={6} sm={4} md={2} className="u-mb-8 u-mb-md-0">
-              <h4 className="u-fw-semibold u-mb-4 u-text-uppercase u-text-sm">Resources</h4>
+              <h4 className="u-font-semibold u-mb-4 u-text-uppercase u-text-sm">Resources</h4>
               <ul className="u-list-unstyled u-text-muted">
                 <li className="u-mb-3">
                   <a
@@ -1503,7 +1503,7 @@ const HomePage: React.FC = () => {
             </GridCol>
 
             <GridCol xs={6} sm={4} md={2}>
-              <h4 className="u-fw-semibold u-mb-4 u-text-uppercase u-text-sm">Legal</h4>
+              <h4 className="u-font-semibold u-mb-4 u-text-uppercase u-text-sm">Legal</h4>
               <ul className="u-list-unstyled u-text-muted">
                 <li className="u-mb-3">
                   <a
@@ -1542,7 +1542,7 @@ const HomePage: React.FC = () => {
           </Row>
 
           <div className="u-border-top u-border-light-subtle u-pt-8 u-text-center u-text-md-start">
-            <Row className="u-align-items-center">
+            <Row className="u-items-center">
               <GridCol xs={12} md={6} className="u-mb-4 u-mb-md-0">
                 <p className="u-mb-0 u-text-muted">
                   &copy; 2024 Atomix Design System. All rights reserved. Open source under MIT
@@ -1550,7 +1550,7 @@ const HomePage: React.FC = () => {
                 </p>
               </GridCol>
               <GridCol xs={12} md={6}>
-                <div className="u-d-flex u-justify-content-center u-justify-content-md-end u-gap-6">
+                <div className="u-flex u-justify-center u-justify-md-end u-gap-6">
                   <a href="#" className="u-text-muted u-hover-text-white u-transition">
                     Privacy Policy
                   </a>

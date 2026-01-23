@@ -107,7 +107,7 @@ export const Uncontrolled: Story = {
  */
 export const Sizes: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <Input size="sm" placeholder="Small input" />
       <Input size="md" placeholder="Medium input (default)" />
       <Input size="lg" placeholder="Large input" />
@@ -120,7 +120,7 @@ export const Sizes: Story = {
  */
 export const Types: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <Input type="text" placeholder="Text input" />
       <Input type="email" placeholder="Email input" />
       <Input type="password" placeholder="Password input" />
@@ -137,7 +137,7 @@ export const Types: Story = {
  */
 export const Variants: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <Input variant="primary" placeholder="Primary input" />
       <Input variant="success" placeholder="Success input" />
       <Input variant="error" placeholder="Error input" />
@@ -152,7 +152,7 @@ export const Variants: Story = {
  */
 export const States: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <Input placeholder="Default input" />
       <Input placeholder="Disabled input" disabled />
       <Input placeholder="Valid input" valid />
@@ -166,7 +166,7 @@ export const States: Story = {
  */
 export const WithIcons: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <Input
         placeholder="Search..."
         prefixIcon={<MagnifyingGlass size={18} />}
@@ -197,7 +197,7 @@ export const Clearable: Story = {
   render: () => {
     const [value, setValue] = React.useState('');
     return (
-      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+      <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
         <Input
           placeholder="Type to see clear button"
           value={value}
@@ -223,7 +223,7 @@ export const WithCounter: Story = {
   render: () => {
     const [value, setValue] = React.useState('');
     return (
-      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+      <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
         <Input
           placeholder="Type here (max 50 characters)"
           value={value}
@@ -250,7 +250,7 @@ export const PasswordToggle: Story = {
   render: () => {
     const [password, setPassword] = React.useState('');
     return (
-      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+      <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
         <Input
           type="password"
           placeholder="Enter password"
@@ -282,7 +282,7 @@ export const WithMessages: Story = {
     const isInvalidEmail = email.length > 0 && !isValidEmail;
 
     return (
-      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+      <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
         <Input
           type="email"
           placeholder="Email address"
@@ -313,7 +313,7 @@ export const WithMessages: Story = {
  */
 export const FullWidth: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '100%', maxWidth: '500px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '100%', maxWidth: '500px' }}>
       <Input placeholder="Full width input" fullWidth />
       <Input
         placeholder="Full width with icon"
@@ -341,7 +341,7 @@ export const Comprehensive: Story = {
     const [bio, setBio] = React.useState('');
 
     return (
-      <div className="u-d-flex u-flex-column u-gap-4" style={{ width: '400px' }}>
+      <div className="u-flex u-flex-column u-gap-4" style={{ width: '400px' }}>
         <div>
           <label style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
             Search
@@ -437,7 +437,7 @@ export const GlassVariants: Story = {
       <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
         Glass Input Variants
       </h3>
-      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+      <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
         <Input placeholder="Small Glass" size="sm" glass />
         <Input placeholder="Medium Glass" size="md" glass />
         <Input placeholder="Large Glass" size="lg" glass />
@@ -488,7 +488,7 @@ export const GlassShowcase: Story = {
         <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
           Glass Input on Background
         </h3>
-        <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+        <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
           <Input placeholder="Enter your name" glass />
           <Input type="email" placeholder="Enter your email" glass />
           <Input type="password" placeholder="Enter password" glass />
@@ -510,7 +510,7 @@ export const GlassShowcase: Story = {
         }}
       >
         <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>Glass Modes</h3>
-        <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+        <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
           <Input placeholder="Standard Mode" glass={{ mode: 'standard' }} />
           <Input placeholder="Polar Mode" glass={{ mode: 'polar' }} />
           <Input placeholder="Prominent Mode" glass={{ mode: 'prominent' }} />

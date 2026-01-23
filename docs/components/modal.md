@@ -70,7 +70,7 @@ function ConfirmationModal({ isOpen, onConfirm, onCancel, title, message }) {
       title={title}
       size="sm"
       footer={
-        <div className="u-d-flex u-gap-3 u-justify-content-end">
+        <div className="u-flex u-gap-3 u-justify-end">
           <Button 
             label="Cancel" 
             variant="secondary" 
@@ -152,7 +152,7 @@ function FormModal({ isOpen, onClose, onSubmit }) {
       subtitle="Send us a message"
       size="md"
       footer={
-        <div className="u-d-flex u-gap-3 u-justify-content-end">
+        <div className="u-flex u-gap-3 u-justify-end">
           <Button 
             label="Cancel" 
             variant="secondary" 
@@ -233,7 +233,7 @@ function ImageGallery({ images }) {
 
   return (
     <>
-      <div className="u-d-grid u-grid-cols-3 u-gap-4">
+      <div className="u-grid u-grid-cols-3 u-gap-4">
         {images.map((image, index) => (
           <img
             key={index}
@@ -301,14 +301,14 @@ function MultiStepModal({ isOpen, onClose }) {
       title={`Setup Wizard - Step ${currentStep} of ${totalSteps}`}
       size="md"
       footer={
-        <div className="u-d-flex u-justify-content-between u-w-100">
+        <div className="u-flex u-justify-between u-w-100">
           <Button
             label="Previous"
             variant="secondary"
             onClick={prevStep}
             disabled={currentStep === 1}
           />
-          <div className="u-d-flex u-gap-2">
+          <div className="u-flex u-gap-2">
             <Button 
               label="Cancel" 
               variant="link" 
@@ -325,7 +325,7 @@ function MultiStepModal({ isOpen, onClose }) {
     >
       <div className="u-gap-4">
         {/* Progress indicator */}
-        <div className="u-d-flex u-justify-content-between u-mb-6">
+        <div className="u-flex u-justify-between u-mb-6">
           {Array.from({ length: totalSteps }, (_, i) => (
             <div
               key={i}
@@ -572,7 +572,7 @@ function CustomGlassModal() {
   title="Delete Account"
   subtitle="This action cannot be undone"
   footer={
-    <div className="u-d-flex u-gap-3">
+    <div className="u-flex u-gap-3">
       <Button label="Cancel" variant="secondary" onClick={onCancel} />
       <Button label="Delete Account" variant="error" onClick={onConfirm} />
     </div>
@@ -616,7 +616,7 @@ function LoadingModal({ isOpen, message = "Loading..." }) {
       keyboard={false}
       closeButton={false}
     >
-      <div className="u-d-flex u-align-items-center u-justify-content-center u-py-4">
+      <div className="u-flex u-items-center u-justify-center u-py-4">
         <Spinner size="lg" />
       </div>
     </Modal>
@@ -642,7 +642,7 @@ function AlertModal({ isOpen, onClose, type, title, message }) {
       isOpen={isOpen}
       onOpenChange={onClose}
       title={
-        <div className="u-d-flex u-align-items-center u-gap-3">
+        <div className="u-flex u-items-center u-gap-3">
           <Icon name={variant.icon} className={`u-text-${variant.color}`} />
           {title}
         </div>

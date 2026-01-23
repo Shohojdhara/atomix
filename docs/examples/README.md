@@ -45,7 +45,7 @@ function ProductCard({ product }) {
   return (
     <Card className="u-h-100">
       <Card.Header>
-        <div className="u-d-flex u-justify-content-between u-align-items-start">
+        <div className="u-flex u-justify-between u-items-start">
           <Badge variant={product.status === 'new' ? 'success' : 'secondary'}>
             {product.status}
           </Badge>
@@ -63,11 +63,11 @@ function ProductCard({ product }) {
         />
         <h3 className="u-mb-2">{product.name}</h3>
         <p className="u-text-secondary u-mb-4">{product.description}</p>
-        <div className="u-d-flex u-justify-content-between u-align-items-center">
-          <span className="u-fw-bold u-fs-lg">${product.price}</span>
-          <div className="u-d-flex u-align-items-center u-gap-2">
+        <div className="u-flex u-justify-between u-items-center">
+          <span className="u-font-bold u-text-lg">${product.price}</span>
+          <div className="u-flex u-items-center u-gap-2">
             <Avatar size="sm" src={product.seller.avatar} />
-            <span className="u-fs-sm u-text-tertiary">{product.seller.name}</span>
+            <span className="u-text-sm u-text-tertiary">{product.seller.name}</span>
           </div>
         </div>
       </Card.Body>
@@ -117,7 +117,7 @@ function AppNavigation() {
             </Dropdown>
           </Nav>
           
-          <div className="u-d-flex u-gap-2">
+          <div className="u-flex u-gap-2">
             <Button variant="ghost" href="/login">
               Sign In
             </Button>
@@ -265,7 +265,7 @@ function Dashboard() {
   return (
     <div className="o-container u-py-6">
       {/* Header */}
-      <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-6">
+      <div className="u-flex u-justify-between u-items-center u-mb-6">
         <div>
           <h1 className="u-mb-2">Dashboard</h1>
           <p className="u-text-secondary">Welcome back, Sarah!</p>
@@ -277,7 +277,7 @@ function Dashboard() {
       <div className="o-grid u-mb-6" style={{ '--grid-columns': 'repeat(auto-fit, minmax(250px, 1fr))' }}>
         <Card>
           <Card.Body>
-            <div className="u-d-flex u-justify-content-between u-align-items-start u-mb-3">
+            <div className="u-flex u-justify-between u-items-start u-mb-3">
               <div>
                 <p className="u-text-secondary u-mb-1">Total Revenue</p>
                 <h3 className="u-mb-0">$45,231</h3>
@@ -290,7 +290,7 @@ function Dashboard() {
 
         <Card>
           <Card.Body>
-            <div className="u-d-flex u-justify-content-between u-align-items-start u-mb-3">
+            <div className="u-flex u-justify-between u-items-start u-mb-3">
               <div>
                 <p className="u-text-secondary u-mb-1">Active Users</p>
                 <h3 className="u-mb-0">2,350</h3>
@@ -303,7 +303,7 @@ function Dashboard() {
 
         <Card>
           <Card.Body>
-            <div className="u-d-flex u-justify-content-between u-align-items-start u-mb-3">
+            <div className="u-flex u-justify-between u-items-start u-mb-3">
               <div>
                 <p className="u-text-secondary u-mb-1">Conversion Rate</p>
                 <h3 className="u-mb-0">3.24%</h3>
@@ -329,13 +329,13 @@ function Dashboard() {
                 { user: 'Sarah Smith', action: 'added new team member', time: '4 hours ago' },
                 { user: 'Mike Johnson', action: 'updated project timeline', time: '6 hours ago' }
               ].map((activity, index) => (
-                <div key={index} className="u-d-flex u-gap-3">
+                <div key={index} className="u-flex u-gap-3">
                   <Avatar size="sm" name={activity.user} />
                   <div className="u-flex-1">
                     <p className="u-mb-1">
                       <strong>{activity.user}</strong> {activity.action}
                     </p>
-                    <p className="u-text-secondary u-fs-sm u-mb-0">{activity.time}</p>
+                    <p className="u-text-secondary u-text-sm u-mb-0">{activity.time}</p>
                   </div>
                 </div>
               ))}
@@ -350,16 +350,16 @@ function Dashboard() {
           </Card.Header>
           <Card.Body>
             <div className="u-space-y-3">
-              <Button variant="outline-primary" className="u-w-100 u-justify-content-start">
+              <Button variant="outline-primary" className="u-w-100 u-justify-start">
                 📊 View Analytics
               </Button>
-              <Button variant="outline-primary" className="u-w-100 u-justify-content-start">
+              <Button variant="outline-primary" className="u-w-100 u-justify-start">
                 👥 Manage Team
               </Button>
-              <Button variant="outline-primary" className="u-w-100 u-justify-content-start">
+              <Button variant="outline-primary" className="u-w-100 u-justify-start">
                 ⚙️ Settings
               </Button>
-              <Button variant="outline-primary" className="u-w-100 u-justify-content-start">
+              <Button variant="outline-primary" className="u-w-100 u-justify-start">
                 📝 Create Report
               </Button>
             </div>
@@ -401,11 +401,11 @@ function Dashboard() {
 ```html
 <!-- Mobile-first responsive design -->
 <div class="u-p-4 u-p-md-6 u-p-lg-8">
-  <h1 class="u-fs-xl u-fs-md-2xl u-fs-lg-3xl u-text-center u-text-md-start">
+  <h1 class="u-text-xl u-text-md-2xl u-text-lg-3xl u-text-center u-text-md-start">
     Responsive Heading
   </h1>
   
-  <div class="u-d-flex u-flex-column u-flex-md-row u-gap-4 u-gap-md-6">
+  <div class="u-flex u-flex-column u-flex-md-row u-gap-4 u-gap-md-6">
     <div class="u-flex-1">Main content</div>
     <div class="u-w-md-25 u-w-lg-20">Sidebar</div>
   </div>

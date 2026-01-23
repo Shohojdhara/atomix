@@ -209,7 +209,7 @@ Atomix extensively uses CSS custom properties for theming:
 
 ### Layout
 ```html
-<div class="u-d-flex u-justify-content-between u-align-items-center">
+<div class="u-flex u-justify-between u-items-center">
   <h3>Title</h3>
   <button class="c-btn c-btn--primary">Action</button>
 </div>

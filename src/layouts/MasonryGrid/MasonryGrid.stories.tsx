@@ -275,7 +275,7 @@ export const ProgressiveImageLoading: Story = {
           <h4 className="u-mb-2">Loading Progress</h4>
           {totalCount > 0 && (
             <div className="u-mb-2">
-              <div className="u-d-flex u-justify-content-between u-mb-1">
+              <div className="u-flex u-justify-between u-mb-1">
                 <span>
                   Loading images: {loadedCount} of {totalCount}
                 </span>
@@ -356,7 +356,7 @@ export const MixedContent: Story = {
           <div className="u-p-4 u-border u-rounded u-bg-brand-subtle u-h-100">
             <h4 className="u-mb-3">Custom Content</h4>
             <p>This is a custom content block using utility classes.</p>
-            <div className="u-d-flex u-justify-content-between u-mt-3">
+            <div className="u-flex u-justify-between u-mt-3">
               <span className="u-badge u-badge-primary">New</span>
               <span className="u-badge u-badge-secondary">Featured</span>
             </div>

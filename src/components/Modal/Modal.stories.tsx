@@ -213,8 +213,8 @@ export const Sizes: Story = {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-      <div className="u-d-flex u-flex-column u-gap-4">
-        <div className="u-d-flex u-gap-4">
+      <div className="u-flex u-flex-column u-gap-4">
+        <div className="u-flex u-gap-4">
           <div
             className={`c-btn ${size === 'sm' ? 'c-btn--primary' : 'c-btn--secondary'}`}
             onClick={() => {
@@ -440,8 +440,8 @@ export const GlassModalSizes: Story = {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-      <div className="u-d-flex u-flex-column u-gap-4">
-        <div className="u-d-flex u-gap-4">
+      <div className="u-flex u-flex-column u-gap-4">
+        <div className="u-flex u-gap-4">
           <div
             className={`c-btn ${size === 'sm' ? 'c-btn--primary' : 'c-btn--secondary'}`}
             onClick={() => {

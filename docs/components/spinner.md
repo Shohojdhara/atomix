@@ -40,8 +40,8 @@ function BasicSpinners() {
   return (
     <div className="u-gap-6">
       <div className="u-gap-4">
-        <h3 className="u-fw-semibold">Color Variants</h3>
-        <div className="u-d-flex u-align-items-center u-gap-4">
+        <h3 className="u-font-semibold">Color Variants</h3>
+        <div className="u-flex u-items-center u-gap-4">
           <Spinner variant="primary" />
           <Spinner variant="secondary" />
           <Spinner variant="success" />
@@ -52,8 +52,8 @@ function BasicSpinners() {
       </div>
 
       <div className="u-gap-4">
-        <h3 className="u-fw-semibold">Sizes</h3>
-        <div className="u-d-flex u-align-items-center u-gap-4">
+        <h3 className="u-font-semibold">Sizes</h3>
+        <div className="u-flex u-items-center u-gap-4">
           <Spinner size="xs" variant="primary" />
           <Spinner size="sm" variant="primary" />
           <Spinner size="md" variant="primary" />
@@ -82,7 +82,7 @@ function LoadingButtons() {
   };
 
   return (
-    <div className="u-d-flex u-flex-wrap u-gap-4">
+    <div className="u-flex u-flex-wrap u-gap-4">
       <Button 
         label={loading.save ? "Saving..." : "Save"}
         icon={loading.save ? <Spinner size="sm" /> : <Icon name="FloppyDisk" />}
@@ -130,21 +130,21 @@ function CardLoadingStates() {
   };
 
   return (
-    <div className="u-d-grid u-grid-cols-1 u-md-grid-cols-3 u-gap-4">
+    <div className="u-grid u-grid-cols-1 u-md-grid-cols-3 u-gap-4">
       <Card>
         <div className="u-position-relative u-min-h-32">
           {loadingStates.users ? (
-            <div className="u-position-absolute u-inset-0 u-d-flex u-align-items-center u-justify-content-center">
+            <div className="u-position-absolute u-inset-0 u-flex u-items-center u-justify-center">
               <div className="u-text-center">
                 <Spinner variant="primary" size="lg" />
-                <div className="u-mt-2 u-fs-sm u-text-secondary">Loading users...</div>
+                <div className="u-mt-2 u-text-sm u-text-secondary">Loading users...</div>
               </div>
             </div>
           ) : (
             <div>
-              <h3 className="u-fw-semibold u-mb-3">Users</h3>
-              <div className="u-fs-2 u-fw-bold">1,234</div>
-              <div className="u-fs-sm u-text-secondary">Active users</div>
+              <h3 className="u-font-semibold u-mb-3">Users</h3>
+              <div className="u-text-2 u-font-bold">1,234</div>
+              <div className="u-text-sm u-text-secondary">Active users</div>
               <Button
                 label="Refresh"
                 size="sm"
@@ -160,14 +160,14 @@ function CardLoadingStates() {
       <Card>
         <div className="u-position-relative u-min-h-32">
           {loadingStates.analytics ? (
-            <div className="u-position-absolute u-inset-0 u-d-flex u-align-items-center u-justify-content-center">
+            <div className="u-position-absolute u-inset-0 u-flex u-items-center u-justify-center">
               <Spinner variant="success" size="lg" label="Loading analytics data" />
             </div>
           ) : (
             <div>
-              <h3 className="u-fw-semibold u-mb-3">Analytics</h3>
-              <div className="u-fs-2 u-fw-bold">5,678</div>
-              <div className="u-fs-sm u-text-secondary">Page views</div>
+              <h3 className="u-font-semibold u-mb-3">Analytics</h3>
+              <div className="u-text-2 u-font-bold">5,678</div>
+              <div className="u-text-sm u-text-secondary">Page views</div>
               <Button
                 label="Refresh"
                 size="sm"
@@ -183,17 +183,17 @@ function CardLoadingStates() {
       <Card>
         <div className="u-position-relative u-min-h-32">
           {loadingStates.reports ? (
-            <div className="u-position-absolute u-inset-0 u-d-flex u-align-items-center u-justify-content-center u-bg-white u-opacity-75">
+            <div className="u-position-absolute u-inset-0 u-flex u-items-center u-justify-center u-bg-white u-opacity-75">
               <div className="u-text-center">
                 <Spinner variant="info" />
-                <div className="u-mt-2 u-fs-sm u-text-secondary">Generating report...</div>
+                <div className="u-mt-2 u-text-sm u-text-secondary">Generating report...</div>
               </div>
             </div>
           ) : (
             <div>
-              <h3 className="u-fw-semibold u-mb-3">Reports</h3>
-              <div className="u-fs-2 u-fw-bold">42</div>
-              <div className="u-fs-sm u-text-secondary">Generated today</div>
+              <h3 className="u-font-semibold u-mb-3">Reports</h3>
+              <div className="u-text-2 u-font-bold">42</div>
+              <div className="u-text-sm u-text-secondary">Generated today</div>
               <Button
                 label="Generate"
                 size="sm"
@@ -280,7 +280,7 @@ function DataLoadingStates() {
 
   return (
     <div className="u-gap-4">
-      <div className="u-d-flex u-gap-3">
+      <div className="u-flex u-gap-3">
         <Button 
           label="Fetch Data"
           onClick={fetchData}
@@ -300,37 +300,37 @@ function DataLoadingStates() {
       <Card>
         <div className="u-min-h-48">
           {loading ? (
-            <div className="u-d-flex u-align-items-center u-justify-content-center u-h-100">
+            <div className="u-flex u-items-center u-justify-center u-h-100">
               <div className="u-text-center">
                 <Spinner variant="primary" size="lg" />
                 <div className="u-mt-3 u-text-secondary">Fetching data...</div>
               </div>
             </div>
           ) : error ? (
-            <div className="u-d-flex u-align-items-center u-justify-content-center u-h-100 u-text-center">
+            <div className="u-flex u-items-center u-justify-center u-h-100 u-text-center">
               <div>
-                <Icon name="Warning" className="u-text-error u-fs-2 u-mb-2" />
-                <div className="u-text-error u-fw-medium">Error loading data</div>
-                <div className="u-fs-sm u-text-secondary u-mt-1">{error}</div>
+                <Icon name="Warning" className="u-text-error u-text-2 u-mb-2" />
+                <div className="u-text-error u-font-medium">Error loading data</div>
+                <div className="u-text-sm u-text-secondary u-mt-1">{error}</div>
               </div>
             </div>
           ) : data ? (
             <div>
-              <h3 className="u-fw-semibold u-mb-3">User Data</h3>
+              <h3 className="u-font-semibold u-mb-3">User Data</h3>
               <div className="u-gap-2">
                 {data.map(user => (
-                  <div key={user.id} className="u-d-flex u-align-items-center u-gap-3 u-p-2 u-border u-rounded">
+                  <div key={user.id} className="u-flex u-items-center u-gap-3 u-p-2 u-border u-rounded">
                     <Avatar initials={user.name.split(' ').map(n => n[0]).join('')} size="sm" circle />
                     <div>
-                      <div className="u-fw-medium">{user.name}</div>
-                      <div className="u-fs-sm u-text-secondary">{user.email}</div>
+                      <div className="u-font-medium">{user.name}</div>
+                      <div className="u-text-sm u-text-secondary">{user.email}</div>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
           ) : (
-            <div className="u-d-flex u-align-items-center u-justify-content-center u-h-100 u-text-secondary">
+            <div className="u-flex u-items-center u-justify-center u-h-100 u-text-secondary">
               No data loaded. Click "Fetch Data" to load.
             </div>
           )}
@@ -356,7 +356,7 @@ function InlineSpinners() {
 
   return (
     <div className="u-gap-4">
-      <div className="u-d-flex u-align-items-center u-gap-2">
+      <div className="u-flex u-items-center u-gap-2">
         <span>Processing your request</span>
         {inlineLoading.request && <Spinner size="sm" variant="primary" />}
         <Button 
@@ -367,7 +367,7 @@ function InlineSpinners() {
         />
       </div>
 
-      <div className="u-d-flex u-align-items-center u-gap-2">
+      <div className="u-flex u-items-center u-gap-2">
         <span>Syncing data</span>
         {inlineLoading.sync && <Spinner size="sm" variant="success" />}
         <Button 
@@ -378,7 +378,7 @@ function InlineSpinners() {
         />
       </div>
 
-      <div className="u-d-flex u-align-items-center u-gap-2">
+      <div className="u-flex u-items-center u-gap-2">
         <span>Uploading files</span>
         {inlineLoading.upload && <Spinner size="sm" variant="info" />}
         <Button 
@@ -417,7 +417,7 @@ function FormSubmissionLoading() {
   return (
     <Card>
       <form onSubmit={handleSubmit} className="u-gap-4">
-        <h3 className="u-fs-lg u-fw-semibold">Contact Form</h3>
+        <h3 className="u-text-lg u-font-semibold">Contact Form</h3>
         
         <FormGroup label="Name">
           <Input placeholder="Your name" disabled={submitting} />
@@ -431,7 +431,7 @@ function FormSubmissionLoading() {
           <Textarea placeholder="Your message..." rows={4} disabled={submitting} />
         </FormGroup>
         
-        <div className="u-d-flex u-align-items-center u-gap-3">
+        <div className="u-flex u-items-center u-gap-3">
           <Button 
             type="submit"
             label={submitting ? "Submitting..." : "Submit"}
@@ -441,7 +441,7 @@ function FormSubmissionLoading() {
           />
           
           {submitted && (
-            <div className="u-d-flex u-align-items-center u-gap-2 u-text-success">
+            <div className="u-flex u-items-center u-gap-2 u-text-success">
               <Icon name="CheckCircle" />
               <span>Form submitted successfully!</span>
             </div>
@@ -685,7 +685,7 @@ function GlassSpinnerOverlay() {
 
 ```jsx
 // Good: Clear context and appropriate sizing
-<div className="u-d-flex u-align-items-center u-gap-2">
+<div className="u-flex u-items-center u-gap-2">
   <Spinner size="sm" variant="primary" />
   <span>Saving your changes...</span>
 </div>
@@ -713,7 +713,7 @@ function LoadingOverlay({ loading, children }) {
     <div className="u-position-relative">
       {children}
       {loading && (
-        <div className="u-position-absolute u-inset-0 u-bg-white u-opacity-75 u-d-flex u-align-items-center u-justify-content-center">
+        <div className="u-position-absolute u-inset-0 u-bg-white u-opacity-75 u-flex u-items-center u-justify-center">
           <Spinner variant="primary" size="lg" />
         </div>
       )}
@@ -738,8 +738,8 @@ function ConditionalLoading({ loading, error, data, onRetry }) {
   if (error) {
     return (
       <div className="u-text-center u-py-8">
-        <Icon name="Warning" className="u-text-error u-fs-2 u-mb-2" />
-        <div className="u-text-error u-fw-medium">Error loading data</div>
+        <Icon name="Warning" className="u-text-error u-text-2 u-mb-2" />
+        <div className="u-text-error u-font-medium">Error loading data</div>
         <Button label="Retry" onClick={onRetry} className="u-mt-3" />
       </div>
     );

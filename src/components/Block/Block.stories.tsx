@@ -346,25 +346,25 @@ export const ContentPreview: Story = {
         <Grid>
           <GridCol xs={12} md={6} lg={3}>
             <div className="u-text-center u-p-3">
-              <h3 className="u-fs-h4">Consistency</h3>
+              <h3 className="u-text-h4">Consistency</h3>
               <p className="u-mb-0">Unified design language across all products</p>
             </div>
           </GridCol>
           <GridCol xs={12} md={6} lg={3}>
             <div className="u-text-center u-p-3">
-              <h3 className="u-fs-h4">Accessibility</h3>
+              <h3 className="u-text-h4">Accessibility</h3>
               <p className="u-mb-0">WCAG 2.1 AA compliant components</p>
             </div>
           </GridCol>
           <GridCol xs={12} md={6} lg={3}>
             <div className="u-text-center u-p-3">
-              <h3 className="u-fs-h4">Responsive</h3>
+              <h3 className="u-text-h4">Responsive</h3>
               <p className="u-mb-0">Mobile-first approach for all devices</p>
             </div>
           </GridCol>
           <GridCol xs={12} md={6} lg={3}>
             <div className="u-text-center u-p-3">
-              <h3 className="u-fs-h4">Customizable</h3>
+              <h3 className="u-text-h4">Customizable</h3>
               <p className="u-mb-0">Easily extend and modify components</p>
             </div>
           </GridCol>
@@ -372,7 +372,7 @@ export const ContentPreview: Story = {
       </Block>
 
       <Block spacing="xl">
-        <div className="u-d-flex u-flex-column u-align-items-center u-text-center">
+        <div className="u-flex u-flex-column u-items-center u-text-center">
           <h2 className="u-mb-3">Ready to Get Started?</h2>
           <p className="u-mb-4" style={{ maxWidth: '600px' }}>
             Join thousands of developers and designers building with Atomix Design System

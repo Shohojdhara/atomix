@@ -96,7 +96,7 @@ Deep dive into advanced customization techniques and patterns.
 
 #### Creating Responsive Layouts
 ```jsx
-<div className="u-d-flex u-flex-column u-flex-md-row u-gap-4">
+<div className="u-flex u-flex-column u-flex-md-row u-gap-4">
   <div className="u-flex-1">Main content</div>
   <div className="u-w-md-25">Sidebar</div>
 </div>

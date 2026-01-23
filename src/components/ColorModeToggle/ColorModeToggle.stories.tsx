@@ -127,7 +127,7 @@ export const WithoutStorage: Story = {
 export const InHeader: Story = {
   render: () => (
     <div
-      className="u-p-5 u-shadow u-d-flex u-justify-content-between u-align-items-center"
+      className="u-p-5 u-shadow u-flex u-justify-between u-items-center"
       style={{ width: '400px', borderRadius: '8px' }}
     >
       <span style={{ fontWeight: 600 }}>Toggle Theme</span>

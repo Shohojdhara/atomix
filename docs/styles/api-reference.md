@@ -550,16 +550,16 @@ $md-infix: breakpoint-infix(md); // Returns '-md'
 ### Display Utilities
 
 ```scss
-.u-d-none          // display: none
-.u-d-inline        // display: inline
-.u-d-inline-block  // display: inline-block
-.u-d-block         // display: block
-.u-d-grid          // display: grid
-.u-d-table         // display: table
-.u-d-table-row     // display: table-row
-.u-d-table-cell    // display: table-cell
-.u-d-flex          // display: flex
-.u-d-inline-flex   // display: inline-flex
+.u-none          // display: none
+.u-inline        // display: inline
+.u-inline-block  // display: inline-block
+.u-block         // display: block
+.u-grid          // display: grid
+.u-table         // display: table
+.u-table-row     // display: table-row
+.u-table-cell    // display: table-cell
+.u-flex          // display: flex
+.u-inline-flex   // display: inline-flex
 
 // Responsive variants
 .u-d-{breakpoint}-{value} // Responsive display utilities
@@ -580,19 +580,19 @@ $md-infix: breakpoint-infix(md); // Returns '-md'
 .u-flex-wrap-reverse // flex-wrap: wrap-reverse
 
 // Justify content
-.u-justify-content-start    // justify-content: flex-start
-.u-justify-content-end      // justify-content: flex-end
-.u-justify-content-center   // justify-content: center
-.u-justify-content-between  // justify-content: space-between
-.u-justify-content-around   // justify-content: space-around
-.u-justify-content-evenly   // justify-content: space-evenly
+.u-justify-start    // justify-content: flex-start
+.u-justify-end      // justify-content: flex-end
+.u-justify-center   // justify-content: center
+.u-justify-between  // justify-content: space-between
+.u-justify-around   // justify-content: space-around
+.u-justify-evenly   // justify-content: space-evenly
 
 // Align items
-.u-align-items-start     // align-items: flex-start
-.u-align-items-end       // align-items: flex-end
-.u-align-items-center    // align-items: center
-.u-align-items-baseline  // align-items: baseline
-.u-align-items-stretch   // align-items: stretch
+.u-items-start     // align-items: flex-start
+.u-items-end       // align-items: flex-end
+.u-items-center    // align-items: center
+.u-items-baseline  // align-items: baseline
+.u-items-stretch   // align-items: stretch
 
 // Align self
 .u-align-self-auto       // align-self: auto
@@ -625,24 +625,24 @@ $md-infix: breakpoint-infix(md); // Returns '-md'
 .u-text-capitalize // text-transform: capitalize
 
 // Font weight
-.u-fw-light        // font-weight: 300
-.u-fw-normal       // font-weight: 400
-.u-fw-medium       // font-weight: 500
-.u-fw-semibold     // font-weight: 600
-.u-fw-bold         // font-weight: 700
-.u-fw-extrabold    // font-weight: 800
+.u-font-light        // font-weight: 300
+.u-font-normal       // font-weight: 400
+.u-font-medium       // font-weight: 500
+.u-font-semibold     // font-weight: 600
+.u-font-bold         // font-weight: 700
+.u-font-extrabold    // font-weight: 800
 
 // Font size
-.u-fs-xs           // font-size: 0.75rem
-.u-fs-sm           // font-size: 0.875rem
-.u-fs-base         // font-size: 1rem
-.u-fs-lg           // font-size: 1.125rem
-.u-fs-xl           // font-size: 1.25rem
-.u-fs-2xl          // font-size: 1.5rem
-.u-fs-3xl          // font-size: 1.875rem
-.u-fs-4xl          // font-size: 2.25rem
-.u-fs-5xl          // font-size: 3rem
-.u-fs-6xl          // font-size: 3.75rem
+.u-text-xs           // font-size: 0.75rem
+.u-text-sm           // font-size: 0.875rem
+.u-text-base         // font-size: 1rem
+.u-text-lg           // font-size: 1.125rem
+.u-text-xl           // font-size: 1.25rem
+.u-text-2xl          // font-size: 1.5rem
+.u-text-3xl          // font-size: 1.875rem
+.u-text-4xl          // font-size: 2.25rem
+.u-text-5xl          // font-size: 3rem
+.u-text-6xl          // font-size: 3.75rem
 
 // Line height
 .u-lh-1            // line-height: 1
@@ -987,7 +987,7 @@ $md-infix: breakpoint-infix(md); // Returns '-md'
 </div>
 
 <!-- Flexbox utilities -->
-<div class="u-d-flex u-justify-content-between u-align-items-center u-p-4">
+<div class="u-flex u-justify-between u-items-center u-p-4">
   <h3>Title</h3>
   <button class="c-btn c-btn--primary">Action</button>
 </div>
@@ -1045,8 +1045,8 @@ $md-infix: breakpoint-infix(md); // Returns '-md'
 .container → .o-container
 .row → .o-grid
 .col-8 → .o-grid__item--span-8
-.d-flex → .u-d-flex
-.justify-content-center → .u-justify-content-center
+.d-flex → .u-flex
+.justify-content-center → .u-justify-center
 .text-center → .u-text-center
 .mb-4 → .u-mb-4
 .p-3 → .u-p-3
@@ -1060,13 +1060,13 @@ $md-infix: breakpoint-infix(md); // Returns '-md'
 .text-gray-900 → .u-text-primary
 .p-4 → .u-p-4
 .mb-6 → .u-mb-6
-.flex → .u-d-flex
-.justify-center → .u-justify-content-center
-.items-center → .u-align-items-center
+.flex → .u-flex
+.justify-center → .u-justify-center
+.items-center → .u-items-center
 .rounded-lg → .u-rounded-lg
 .shadow-md → .u-shadow
-.hidden → .u-d-none
-.block → .u-d-block
+.hidden → .u-none
+.block → .u-block
 ```
 
 ## Performance Considerations

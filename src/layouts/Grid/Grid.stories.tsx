@@ -59,8 +59,8 @@ const DemoCard: React.FC<{
         variant === 'secondary' ? 'u-bg-success-subtle' : ''
       } ${variant === 'accent' ? 'u-bg-info-subtle' : ''}`}
     >
-      <div className="u-d-flex u-flex-column u-h-100" style={{ minHeight: heightStyles[height] }}>
-        <div className="u-flex-grow-1 u-d-flex u-align-items-center u-justify-content-center">
+      <div className="u-flex u-flex-column u-h-100" style={{ minHeight: heightStyles[height] }}>
+        <div className="u-flex-grow-1 u-flex u-items-center u-justify-center">
           <div className="u-text-center">{children}</div>
         </div>
       </div>
@@ -71,7 +71,7 @@ const DemoCard: React.FC<{
 const CodeSnippet: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Card className="u-mb-4">
     <pre
-      className="u-bg-dark u-text-light u-p-3 u-rounded u-fs-sm u-fw-normal u-overflow-auto"
+      className="u-bg-dark u-text-light u-p-3 u-rounded u-text-sm u-font-normal u-overflow-auto"
       style={{ fontFamily: 'monospace' }}
     >
       {children}
@@ -90,7 +90,7 @@ export const GettingStarted: Story = {
     <div className="u-mb-8">
       <div className="u-mb-6">
         <h1 className="u-mb-3 u-text-brand-emphasis">Grid System</h1>
-        <p className="u-mb-4 u-text-secondary-emphasis u-fs-lg">
+        <p className="u-mb-4 u-text-secondary-emphasis u-text-lg">
           A responsive 12-column grid system for creating flexible layouts.
         </p>
         <Callout variant="info" className="u-mb-4">
@@ -181,20 +181,20 @@ export const LayoutPatterns: Story = {
         <Grid className="u-mb-4">
           <GridCol xs={12} md={3}>
             <DemoCard variant="accent" height="lg">
-              <div className="u-fs-lg u-fw-bold">Sidebar</div>
-              <div className="u-fs-sm u-mt-2">Navigation, filters, etc.</div>
+              <div className="u-text-lg u-font-bold">Sidebar</div>
+              <div className="u-text-sm u-mt-2">Navigation, filters, etc.</div>
             </DemoCard>
           </GridCol>
           <GridCol xs={12} md={9}>
             <DemoCard height="lg">
-              <div className="u-fs-lg u-fw-bold">Main Content</div>
-              <div className="u-fs-sm u-mt-2">Primary content area</div>
+              <div className="u-text-lg u-font-bold">Main Content</div>
+              <div className="u-text-sm u-mt-2">Primary content area</div>
             </DemoCard>
           </GridCol>
         </Grid>
 
         <Card className="u-mb-6">
-          <div className="u-d-flex u-flex-wrap u-gap-2">
+          <div className="u-flex u-flex-wrap u-gap-2">
             <Button variant="primary">Save Changes</Button>
             <Button variant="secondary">Cancel</Button>
           </div>
@@ -211,8 +211,8 @@ export const LayoutPatterns: Story = {
         <Grid className="u-mb-4">
           <GridCol xs={12}>
             <DemoCard variant="accent" height="md">
-              <div className="u-fs-lg u-fw-bold">Hero Section</div>
-              <div className="u-fs-sm u-mt-2">Full-width banner</div>
+              <div className="u-text-lg u-font-bold">Hero Section</div>
+              <div className="u-text-sm u-mt-2">Full-width banner</div>
             </DemoCard>
           </GridCol>
         </Grid>
@@ -220,20 +220,20 @@ export const LayoutPatterns: Story = {
         <Grid className="u-mb-4">
           <GridCol xs={12} sm={6} lg={4}>
             <DemoCard variant="secondary">
-              <div className="u-fs-md u-fw-bold">Feature 1</div>
-              <div className="u-fs-sm u-mt-2">Description of feature 1</div>
+              <div className="u-text-md u-font-bold">Feature 1</div>
+              <div className="u-text-sm u-mt-2">Description of feature 1</div>
             </DemoCard>
           </GridCol>
           <GridCol xs={12} sm={6} lg={4}>
             <DemoCard variant="secondary">
-              <div className="u-fs-md u-fw-bold">Feature 2</div>
-              <div className="u-fs-sm u-mt-2">Description of feature 2</div>
+              <div className="u-text-md u-font-bold">Feature 2</div>
+              <div className="u-text-sm u-mt-2">Description of feature 2</div>
             </DemoCard>
           </GridCol>
           <GridCol xs={12} sm={12} lg={4}>
             <DemoCard variant="secondary">
-              <div className="u-fs-md u-fw-bold">Feature 3</div>
-              <div className="u-fs-sm u-mt-2">Description of feature 3</div>
+              <div className="u-text-md u-font-bold">Feature 3</div>
+              <div className="u-text-sm u-mt-2">Description of feature 3</div>
             </DemoCard>
           </GridCol>
         </Grid>
@@ -247,8 +247,8 @@ export const LayoutPatterns: Story = {
         <Grid className="u-mb-4">
           <GridCol xs={12} md={8} offsetMd={2}>
             <DemoCard height="lg">
-              <div className="u-fs-lg u-fw-bold">Article Content</div>
-              <div className="u-fs-sm u-text-secondary-emphasis u-mt-2">
+              <div className="u-text-lg u-font-bold">Article Content</div>
+              <div className="u-text-sm u-text-secondary-emphasis u-mt-2">
                 Centered, readable width
               </div>
             </DemoCard>
@@ -345,19 +345,19 @@ export const ColumnSizing: Story = {
           <GridCol xs={12} sm={6} md={4} lg="auto">
             <DemoCard variant="secondary">
               <div>Responsive</div>
-              <div className="u-fs-sm u-mt-2">xs=12, sm=6, md=4, lg=auto</div>
+              <div className="u-text-sm u-mt-2">xs=12, sm=6, md=4, lg=auto</div>
             </DemoCard>
           </GridCol>
           <GridCol xs={12} sm={6} md={4} lg="auto">
             <DemoCard variant="secondary">
               <div>Responsive</div>
-              <div className="u-fs-sm u-mt-2">xs=12, sm=6, md=4, lg=auto</div>
+              <div className="u-text-sm u-mt-2">xs=12, sm=6, md=4, lg=auto</div>
             </DemoCard>
           </GridCol>
           <GridCol xs={12} sm={12} md={4} lg="auto">
             <DemoCard variant="secondary">
               <div>Responsive</div>
-              <div className="u-fs-sm u-mt-2">xs=12, sm=12, md=4, lg=auto</div>
+              <div className="u-text-sm u-mt-2">xs=12, sm=12, md=4, lg=auto</div>
             </DemoCard>
           </GridCol>
         </Grid>
@@ -428,8 +428,8 @@ export const ColumnOffsets: Story = {
         <Grid className="u-mb-4">
           <GridCol xs={12} sm={6} offsetSm={3} md={4} offsetMd={4} lg={3} offsetLg={3}>
             <DemoCard variant="secondary">
-              <div className="u-fs-md u-fw-bold">Responsive Offsets</div>
-              <div className="u-fs-sm u-mt-2">Changes at each breakpoint</div>
+              <div className="u-text-md u-font-bold">Responsive Offsets</div>
+              <div className="u-text-sm u-mt-2">Changes at each breakpoint</div>
             </DemoCard>
           </GridCol>
         </Grid>
@@ -457,8 +457,8 @@ export const Containers: Story = {
 
         <Container className="u-mb-4">
           <DemoCard variant="accent" height="md">
-            <div className="u-fs-lg u-fw-bold">Default Container</div>
-            <div className="u-fs-sm u-text-secondary-emphasis u-mt-2">
+            <div className="u-text-lg u-font-bold">Default Container</div>
+            <div className="u-text-sm u-text-secondary-emphasis u-mt-2">
               Responsive max-width, centered
             </div>
           </DemoCard>
@@ -474,8 +474,8 @@ export const Containers: Story = {
 
         <Container type="fluid" className="u-mb-4">
           <DemoCard variant="secondary" height="md">
-            <div className="u-fs-lg u-fw-bold">Fluid Container</div>
-            <div className="u-fs-sm u-text-secondary-emphasis u-mt-2">Full viewport width</div>
+            <div className="u-text-lg u-font-bold">Fluid Container</div>
+            <div className="u-text-sm u-text-secondary-emphasis u-mt-2">Full viewport width</div>
           </DemoCard>
         </Container>
       </div>
@@ -549,7 +549,7 @@ export const AlignmentAndSpacing: Story = {
         </p>
 
         <div className="u-mb-6">
-          <h3 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">justify-content="start"</h3>
+          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">justify-content="start"</h3>
           <Row justifyContent="start" className="u-mb-4 u-p-3 u-bg-brand-subtle u-rounded">
             <GridCol xs={3}>
               <DemoCard variant="secondary">Col 1</DemoCard>
@@ -561,7 +561,7 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-6">
-          <h3 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">justify-content="center"</h3>
+          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">justify-content="center"</h3>
           <Row justifyContent="center" className="u-mb-4 u-p-3 u-bg-brand-subtle u-rounded">
             <GridCol xs={3}>
               <DemoCard variant="secondary">Col 1</DemoCard>
@@ -573,7 +573,7 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-6">
-          <h3 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">
+          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">
             justify-content="between"
           </h3>
           <Row justifyContent="between" className="u-mb-4 u-p-3 u-bg-brand-subtle u-rounded">
@@ -587,7 +587,7 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-6">
-          <h3 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">justify-content="around"</h3>
+          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">justify-content="around"</h3>
           <Row justifyContent="around" className="u-mb-4 u-p-3 u-bg-brand-subtle u-rounded">
             <GridCol xs={3}>
               <DemoCard variant="secondary">Col 1</DemoCard>
@@ -607,7 +607,7 @@ export const AlignmentAndSpacing: Story = {
         </p>
 
         <div className="u-mb-6">
-          <h3 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">align-items="start"</h3>
+          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">align-items="start"</h3>
           <Row
             alignItems="start"
             className="u-mb-4 u-bg-brand-subtle u-rounded u-p-3"
@@ -626,7 +626,7 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-6">
-          <h3 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">align-items="center"</h3>
+          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">align-items="center"</h3>
           <Row
             alignItems="center"
             className="u-mb-4 u-bg-brand-subtle u-rounded u-p-3"
@@ -645,7 +645,7 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-6">
-          <h3 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">align-items="end"</h3>
+          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">align-items="end"</h3>
           <Row
             alignItems="end"
             className="u-mb-4 u-bg-brand-subtle u-rounded u-p-3"
@@ -670,7 +670,7 @@ export const AlignmentAndSpacing: Story = {
         <p className="u-mb-4 u-text-secondary-emphasis">Remove spacing between columns:</p>
 
         <div className="u-mb-6">
-          <h3 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">With gutters (default)</h3>
+          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">With gutters (default)</h3>
           <Row className="u-mb-4 u-p-3 u-bg-brand-subtle u-rounded">
             <GridCol xs={4}>
               <DemoCard variant="secondary">Column 1</DemoCard>
@@ -685,7 +685,7 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-6">
-          <h3 className="u-mb-3 u-text-secondary-emphasis u-fw-medium">No gutters</h3>
+          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">No gutters</h3>
           <Row noGutters className="u-mb-4 u-p-3 u-bg-brand-subtle u-rounded">
             <GridCol xs={4}>
               <DemoCard variant="accent">Column 1</DemoCard>
@@ -867,38 +867,38 @@ export const BreakpointReference: Story = {
       <Grid className="u-mb-6">
         <GridCol xs={12} sm={6} md={4} lg={3} xl={2}>
           <DemoCard variant="secondary">
-            <div className="u-fw-bold">Column 1</div>
-            <div className="u-fs-sm u-mt-2">xs=12, sm=6, md=4, lg=3, xl=2</div>
+            <div className="u-font-bold">Column 1</div>
+            <div className="u-text-sm u-mt-2">xs=12, sm=6, md=4, lg=3, xl=2</div>
           </DemoCard>
         </GridCol>
         <GridCol xs={12} sm={6} md={4} lg={3} xl={2}>
           <DemoCard variant="secondary">
-            <div className="u-fw-bold">Column 2</div>
-            <div className="u-fs-sm u-mt-2">xs=12, sm=6, md=4, lg=3, xl=2</div>
+            <div className="u-font-bold">Column 2</div>
+            <div className="u-text-sm u-mt-2">xs=12, sm=6, md=4, lg=3, xl=2</div>
           </DemoCard>
         </GridCol>
         <GridCol xs={12} sm={6} md={4} lg={3} xl={2}>
           <DemoCard variant="secondary">
-            <div className="u-fw-bold">Column 3</div>
-            <div className="u-fs-sm u-mt-2">xs=12, sm=6, md=4, lg=3, xl=2</div>
+            <div className="u-font-bold">Column 3</div>
+            <div className="u-text-sm u-mt-2">xs=12, sm=6, md=4, lg=3, xl=2</div>
           </DemoCard>
         </GridCol>
         <GridCol xs={12} sm={6} md={4} lg={3} xl={2}>
           <DemoCard variant="secondary">
-            <div className="u-fw-bold">Column 4</div>
-            <div className="u-fs-sm u-mt-2">xs=12, sm=6, md=4, lg=3, xl=2</div>
+            <div className="u-font-bold">Column 4</div>
+            <div className="u-text-sm u-mt-2">xs=12, sm=6, md=4, lg=3, xl=2</div>
           </DemoCard>
         </GridCol>
         <GridCol xs={12} sm={6} md={4} lg={3} xl={2}>
           <DemoCard variant="secondary">
-            <div className="u-fw-bold">Column 5</div>
-            <div className="u-fs-sm u-mt-2">xs=12, sm=6, md=4, lg=3, xl=2</div>
+            <div className="u-font-bold">Column 5</div>
+            <div className="u-text-sm u-mt-2">xs=12, sm=6, md=4, lg=3, xl=2</div>
           </DemoCard>
         </GridCol>
         <GridCol xs={12} sm={6} md={4} lg={3} xl={2}>
           <DemoCard variant="secondary">
-            <div className="u-fw-bold">Column 6</div>
-            <div className="u-fs-sm u-mt-2">xs=12, sm=6, md=4, lg=3, xl=2</div>
+            <div className="u-font-bold">Column 6</div>
+            <div className="u-text-sm u-mt-2">xs=12, sm=6, md=4, lg=3, xl=2</div>
           </DemoCard>
         </GridCol>
       </Grid>

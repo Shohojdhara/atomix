@@ -32,7 +32,7 @@ import { Tooltip, Button, Icon } from '@shohojdhara/atomix';
 
 function BasicTooltips() {
   return (
-    <div className="u-d-flex u-gap-4">
+    <div className="u-flex u-gap-4">
       <Tooltip content="This is a helpful tooltip">
         <Button label="Hover me" variant="primary" />
       </Tooltip>
@@ -64,7 +64,7 @@ function BasicTooltips() {
 ```jsx
 function TooltipPositions() {
   return (
-    <div className="u-d-grid u-grid-cols-3 u-gap-8 u-place-items-center u-p-8">
+    <div className="u-grid u-grid-cols-3 u-gap-8 u-place-items-center u-p-8">
       <div></div>
       <Tooltip content="Top tooltip" position="top">
         <Button label="Top" variant="outline-primary" />
@@ -94,7 +94,7 @@ function TooltipPositions() {
 ```jsx
 function CornerPositions() {
   return (
-    <div className="u-d-flex u-gap-4">
+    <div className="u-flex u-gap-4">
       <Tooltip content="Top left" position="top-left">
         <Button label="Top Left" variant="outline-primary" />
       </Tooltip>
@@ -149,14 +149,14 @@ function GlassTooltip() {
 function RichContentTooltips() {
   const userTooltip = (
     <div className="u-max-w-xs">
-      <div className="u-d-flex u-align-items-center u-gap-3 u-mb-2">
+      <div className="u-flex u-items-center u-gap-3 u-mb-2">
         <Avatar src="/user-avatar.jpg" size="sm" circle />
         <div>
-          <div className="u-fw-semibold">John Doe</div>
-          <div className="u-fs-sm u-text-secondary">Software Engineer</div>
+          <div className="u-font-semibold">John Doe</div>
+          <div className="u-text-sm u-text-secondary">Software Engineer</div>
         </div>
       </div>
-      <p className="u-fs-sm">
+      <p className="u-text-sm">
         Passionate about creating amazing user experiences and building scalable applications.
       </p>
     </div>
@@ -164,28 +164,28 @@ function RichContentTooltips() {
 
   const statsTooltip = (
     <div className="u-gap-2">
-      <div className="u-fw-semibold">Performance Stats</div>
-      <div className="u-d-grid u-grid-cols-2 u-gap-4 u-fs-sm">
+      <div className="u-font-semibold">Performance Stats</div>
+      <div className="u-grid u-grid-cols-2 u-gap-4 u-text-sm">
         <div>
           <div className="u-text-secondary">Response Time</div>
-          <div className="u-fw-medium">245ms</div>
+          <div className="u-font-medium">245ms</div>
         </div>
         <div>
           <div className="u-text-secondary">Uptime</div>
-          <div className="u-fw-medium">99.9%</div>
+          <div className="u-font-medium">99.9%</div>
         </div>
       </div>
     </div>
   );
 
   return (
-    <div className="u-d-flex u-gap-4">
+    <div className="u-flex u-gap-4">
       <Tooltip content={userTooltip} position="bottom">
         <Avatar src="/user-avatar.jpg" circle className="u-cursor-help" />
       </Tooltip>
 
       <Tooltip content={statsTooltip} position="bottom">
-        <div className="u-d-flex u-align-items-center u-gap-2 u-cursor-help">
+        <div className="u-flex u-items-center u-gap-2 u-cursor-help">
           <Icon name="ChartBar" />
           <span>Performance</span>
         </div>
@@ -203,7 +203,7 @@ function FormFieldTooltips() {
     <Form className="u-max-w-md u-gap-4">
       <FormGroup
         label={
-          <div className="u-d-flex u-align-items-center u-gap-2">
+          <div className="u-flex u-items-center u-gap-2">
             Password
             <Tooltip
               content="Password must be at least 8 characters long and include uppercase, lowercase, numbers, and special characters"
@@ -220,13 +220,13 @@ function FormFieldTooltips() {
 
       <FormGroup 
         label={
-          <div className="u-d-flex u-align-items-center u-gap-2">
+          <div className="u-flex u-items-center u-gap-2">
             API Key
             <Tooltip
               content={
                 <div className="u-gap-2">
                   <div>Find your API key in the developer settings.</div>
-                  <div className="u-fs-xs u-text-secondary">
+                  <div className="u-text-xs u-text-secondary">
                     Keep this key secure and don't share it publicly.
                   </div>
                 </div>
@@ -243,7 +243,7 @@ function FormFieldTooltips() {
 
       <FormGroup 
         label={
-          <div className="u-d-flex u-align-items-center u-gap-2">
+          <div className="u-flex u-items-center u-gap-2">
             Webhook URL
             <Tooltip
               content="This URL will receive POST requests when events occur"
@@ -269,15 +269,15 @@ function InteractiveTooltips() {
 
   const advancedTooltip = (
     <div className="u-gap-3">
-      <div className="u-fw-semibold">Advanced Settings</div>
+      <div className="u-font-semibold">Advanced Settings</div>
       <div className="u-gap-2">
-        <label className="u-d-flex u-align-items-center u-gap-2">
+        <label className="u-flex u-items-center u-gap-2">
           <input type="checkbox" />
-          <span className="u-fs-sm">Enable debug mode</span>
+          <span className="u-text-sm">Enable debug mode</span>
         </label>
-        <label className="u-d-flex u-align-items-center u-gap-2">
+        <label className="u-flex u-items-center u-gap-2">
           <input type="checkbox" />
-          <span className="u-fs-sm">Auto-save changes</span>
+          <span className="u-text-sm">Auto-save changes</span>
         </label>
       </div>
       <Button 
@@ -291,7 +291,7 @@ function InteractiveTooltips() {
 
   return (
     <div className="u-gap-4">
-      <div className="u-d-flex u-align-items-center u-gap-4">
+      <div className="u-flex u-items-center u-gap-4">
         <span>Hover delay examples:</span>
         
         <Tooltip content="Instant tooltip" delay={0}>
@@ -311,7 +311,7 @@ function InteractiveTooltips() {
         </Tooltip>
       </div>
 
-      <div className="u-d-flex u-align-items-center u-gap-4">
+      <div className="u-flex u-items-center u-gap-4">
         <span>Interactive content:</span>
         
         <Tooltip 
@@ -352,20 +352,20 @@ function StatusTooltips() {
 
   const getStatusTooltip = (server) => (
     <div className="u-gap-2">
-      <div className="u-fw-semibold">{server.name}</div>
-      <div className="u-d-grid u-grid-cols-2 u-gap-4 u-fs-sm">
+      <div className="u-font-semibold">{server.name}</div>
+      <div className="u-grid u-grid-cols-2 u-gap-4 u-text-sm">
         <div>
           <div className="u-text-secondary">Status</div>
-          <div className={`u-fw-medium u-text-capitalize ${getStatusColor(server.status)}`}>
+          <div className={`u-font-medium u-text-capitalize ${getStatusColor(server.status)}`}>
             {server.status}
           </div>
         </div>
         <div>
           <div className="u-text-secondary">Uptime</div>
-          <div className="u-fw-medium">{server.uptime}</div>
+          <div className="u-font-medium">{server.uptime}</div>
         </div>
       </div>
-      <div className="u-fs-xs u-text-secondary">
+      <div className="u-text-xs u-text-secondary">
         Last checked: {server.lastCheck}
       </div>
     </div>
@@ -373,18 +373,18 @@ function StatusTooltips() {
 
   return (
     <div className="u-gap-3">
-      <h3 className="u-fw-semibold">Server Status</h3>
+      <h3 className="u-font-semibold">Server Status</h3>
       <div className="u-gap-2">
         {servers.map((server, index) => (
-          <div key={index} className="u-d-flex u-align-items-center u-gap-3 u-p-3 u-border u-rounded">
+          <div key={index} className="u-flex u-items-center u-gap-3 u-p-3 u-border u-rounded">
             <Tooltip content={getStatusTooltip(server)} position="right">
               <div className={`u-w-3 u-h-3 u-rounded-circle u-cursor-help ${
                 server.status === 'online' ? 'u-bg-success' :
                 server.status === 'warning' ? 'u-bg-warning' : 'u-bg-error'
               }`} />
             </Tooltip>
-            <span className="u-fw-medium">{server.name}</span>
-            <span className={`u-fs-sm u-text-capitalize ${getStatusColor(server.status)}`}>
+            <span className="u-font-medium">{server.name}</span>
+            <span className={`u-text-sm u-text-capitalize ${getStatusColor(server.status)}`}>
               {server.status}
             </span>
           </div>
@@ -400,7 +400,7 @@ function StatusTooltips() {
 ```jsx
 function CustomDelayOffset() {
   return (
-    <div className="u-d-flex u-gap-4">
+    <div className="u-flex u-gap-4">
       <Tooltip 
         content="Instant tooltip (no delay)"
         delay={0}
@@ -600,7 +600,7 @@ function HelpIcons() {
     <div className="u-gap-4">
       <FormGroup
         label={
-          <div className="u-d-flex u-align-items-center u-gap-2">
+          <div className="u-flex u-items-center u-gap-2">
             Username
             <Tooltip content="Choose a unique username between 3-20 characters">
               <Icon name="Question" className="u-text-secondary u-cursor-help" />
@@ -613,7 +613,7 @@ function HelpIcons() {
 
       <FormGroup
         label={
-          <div className="u-d-flex u-align-items-center u-gap-2">
+          <div className="u-flex u-items-center u-gap-2">
             Email
             <Tooltip content="We'll use this email for account notifications">
               <Icon name="Info" className="u-text-info u-cursor-help" />
@@ -633,7 +633,7 @@ function HelpIcons() {
 ```jsx
 function ActionConfirmations() {
   return (
-    <div className="u-d-flex u-gap-2">
+    <div className="u-flex u-gap-2">
       <Tooltip content="Save your current progress">
         <Button 
           icon={<Icon name="FloppyDisk" />}
@@ -676,13 +676,13 @@ function DataVisualization() {
   ];
 
   return (
-    <div className="u-d-grid u-grid-cols-3 u-gap-4">
+    <div className="u-grid u-grid-cols-3 u-gap-4">
       {data.map((item, index) => (
         <Tooltip
           key={index}
           content={
             <div className="u-gap-1">
-              <div className="u-fw-semibold">{item.label}</div>
+              <div className="u-font-semibold">{item.label}</div>
               <div>Current: {item.value.toLocaleString()}</div>
               <div className={item.change.startsWith('+') ? 'u-text-success' : 'u-text-error'}>
                 Change: {item.change}
@@ -692,8 +692,8 @@ function DataVisualization() {
           position="top"
         >
           <Card className="u-text-center u-cursor-help">
-            <div className="u-fs-2 u-fw-bold">{item.value.toLocaleString()}</div>
-            <div className="u-fs-sm u-text-secondary">{item.label}</div>
+            <div className="u-text-2 u-font-bold">{item.value.toLocaleString()}</div>
+            <div className="u-text-sm u-text-secondary">{item.label}</div>
           </Card>
         </Tooltip>
       ))}

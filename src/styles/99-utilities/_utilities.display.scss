@@ -6,8 +6,19 @@ $utilities-display: (
     responsive: true,
     print: true,
     property: display,
-    class: u-d,
-    values: inline inline-block block grid inline-grid table table-row table-cell flex inline-flex
-      none,
+    class: u,
+    values: (
+      inline: inline,
+      'inline-block': inline-block, 
+      block: block,
+      grid: grid,
+      'inline-grid': inline-grid,
+      table: table,
+      'table-row': table-row,
+      'table-cell': table-cell,
+      flex: flex,
+      'inline-flex': inline-flex,
+      none: none,
+    ),
   ),
 );

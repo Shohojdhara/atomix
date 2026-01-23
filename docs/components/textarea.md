@@ -125,7 +125,7 @@ function TextareaWithCount() {
     <FormGroup
       label="Description"
       helperText={
-        <div className="u-d-flex u-justify-content-between">
+        <div className="u-flex u-justify-between">
           <span>Tell us about yourself</span>
           <span style={{ color: remaining < 20 ? 'red' : 'inherit' }}>
             {remaining} characters remaining
@@ -150,7 +150,7 @@ function TextareaWithCount() {
 ```jsx
 function TextareaSizes() {
   return (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
       <FormGroup label="Small">
         <Textarea size="sm" rows={3} placeholder="Small textarea" />
       </FormGroup>
@@ -219,7 +219,7 @@ function ValidationStates() {
 ```jsx
 function DisabledStates() {
   return (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
       <FormGroup label="Disabled Textarea">
         <Textarea
           value="This textarea is disabled"

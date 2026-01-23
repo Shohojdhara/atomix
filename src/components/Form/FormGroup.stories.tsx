@@ -88,7 +88,7 @@ export const ValidationStates: Story = {
     required: true,
   },
   render: args => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <FormGroup label="Username" htmlFor="username" helperText="Username is available" valid>
         <Input id="username" value="johndoe" valid />
       </FormGroup>

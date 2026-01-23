@@ -73,7 +73,7 @@ export const RadioGroup: Story = {
     const [selectedValue, setSelectedValue] = React.useState('option1');
 
     return (
-      <div className="u-d-flex u-flex-column u-gap-2">
+      <div className="u-flex u-flex-column u-gap-2">
         <Radio
           label="Option 1"
           name="radioGroup"
@@ -106,7 +106,7 @@ export const States: Story = {
     const [selectedValue, setSelectedValue] = React.useState('default');
 
     return (
-      <div className="u-d-flex u-flex-column u-gap-2">
+      <div className="u-flex u-flex-column u-gap-2">
         <Radio
           label="Default radio"
           name="states"
@@ -256,7 +256,7 @@ export const GlassGroup: Story = {
           >
             Glass Radio Group
           </h3>
-          <div className="u-d-flex u-flex-column u-gap-2">
+          <div className="u-flex u-flex-column u-gap-2">
             <Radio
               label="Glass Option 1"
               name="glassGroup"
@@ -327,7 +327,7 @@ export const GlassStates: Story = {
           >
             Glass Radio States
           </h3>
-          <div className="u-d-flex u-flex-column u-gap-2">
+          <div className="u-flex u-flex-column u-gap-2">
             <Radio
               label="Glass Default"
               name="glassStates"

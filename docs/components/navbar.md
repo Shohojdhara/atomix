@@ -118,9 +118,9 @@ function NavbarWithLogo() {
   return (
     <Navbar
       brand={
-        <div className="u-d-flex u-align-items-center u-gap-2">
+        <div className="u-flex u-items-center u-gap-2">
           <img src="/logo.svg" alt="Logo" className="u-h-8" />
-          <span className="u-fw-bold u-fs-xl">My App</span>
+          <span className="u-font-bold u-text-xl">My App</span>
         </div>
       }
     >
@@ -464,7 +464,7 @@ function EcommerceNavbar() {
   return (
     <Navbar
       brand={
-        <div className="u-d-flex u-align-items-center u-gap-2">
+        <div className="u-flex u-items-center u-gap-2">
           <img src="/logo.svg" alt="Store" />
           <span>My Store</span>
         </div>

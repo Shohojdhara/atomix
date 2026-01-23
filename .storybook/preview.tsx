@@ -2,6 +2,7 @@ import { addons } from '@storybook/preview-api';
 import type { Preview } from '@storybook/react';
 import { useEffect } from 'react';
 import '../src/styles/index.scss';
+import './storybook-previews.css';
 
 const preview: Preview = {
   globalTypes: {

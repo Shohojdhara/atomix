@@ -51,7 +51,7 @@ function BasicProgress() {
   return (
     <div className="u-gap-6">
       <div className="u-gap-4">
-        <h3 className="u-fw-semibold">Color Variants</h3>
+        <h3 className="u-font-semibold">Color Variants</h3>
         <Progress value={25} variant="primary" showLabel />
         <Progress value={50} variant="success" showLabel />
         <Progress value={75} variant="warning" showLabel />
@@ -60,7 +60,7 @@ function BasicProgress() {
       </div>
 
       <div className="u-gap-4">
-        <h3 className="u-fw-semibold">Animated Progress</h3>
+        <h3 className="u-font-semibold">Animated Progress</h3>
         <Progress value={progress} variant="primary" showLabel />
         <Button 
           label="Start Progress" 
@@ -80,17 +80,17 @@ function ProgressSizes() {
   return (
     <div className="u-gap-4">
       <div>
-        <label className="u-d-block u-fs-sm u-fw-medium u-mb-2">Small</label>
+        <label className="u-block u-text-sm u-font-medium u-mb-2">Small</label>
         <Progress value={30} size="sm" variant="primary" />
       </div>
       
       <div>
-        <label className="u-d-block u-fs-sm u-fw-medium u-mb-2">Medium (Default)</label>
+        <label className="u-block u-text-sm u-font-medium u-mb-2">Medium (Default)</label>
         <Progress value={60} size="md" variant="primary" />
       </div>
       
       <div>
-        <label className="u-d-block u-fs-sm u-fw-medium u-mb-2">Large</label>
+        <label className="u-block u-text-sm u-font-medium u-mb-2">Large</label>
         <Progress value={80} size="lg" variant="primary" />
       </div>
     </div>
@@ -105,17 +105,17 @@ function StripedProgress() {
   return (
     <div className="u-gap-4">
       <div>
-        <label className="u-d-block u-fs-sm u-fw-medium u-mb-2">Striped</label>
+        <label className="u-block u-text-sm u-font-medium u-mb-2">Striped</label>
         <Progress value={45} variant="primary" striped />
       </div>
       
       <div>
-        <label className="u-d-block u-fs-sm u-fw-medium u-mb-2">Animated Stripes</label>
+        <label className="u-block u-text-sm u-font-medium u-mb-2">Animated Stripes</label>
         <Progress value={65} variant="success" striped animated />
       </div>
       
       <div>
-        <label className="u-d-block u-fs-sm u-fw-medium u-mb-2">Indeterminate</label>
+        <label className="u-block u-text-sm u-font-medium u-mb-2">Indeterminate</label>
         <Progress indeterminate variant="info" />
       </div>
     </div>
@@ -161,7 +161,7 @@ function FileUploadProgress() {
 
   return (
     <div className="u-gap-4">
-      <div className="u-d-flex u-gap-3">
+      <div className="u-flex u-gap-3">
         <Button 
           label="Upload Document.pdf"
           onClick={() => simulateUpload('Document.pdf')}
@@ -177,12 +177,12 @@ function FileUploadProgress() {
       <div className="u-gap-3">
         {uploads.map(upload => (
           <Card key={upload.id} className="u-p-4">
-            <div className="u-d-flex u-align-items-center u-justify-content-between u-mb-2">
-              <div className="u-d-flex u-align-items-center u-gap-3">
+            <div className="u-flex u-items-center u-justify-between u-mb-2">
+              <div className="u-flex u-items-center u-gap-3">
                 <Icon name="File" />
-                <span className="u-fw-medium">{upload.fileName}</span>
+                <span className="u-font-medium">{upload.fileName}</span>
               </div>
-              <div className="u-d-flex u-align-items-center u-gap-2">
+              <div className="u-flex u-items-center u-gap-2">
                 {upload.status === 'completed' ? (
                   <Badge label="Completed" variant="success" size="sm" />
                 ) : (
@@ -205,7 +205,7 @@ function FileUploadProgress() {
               size="sm"
             />
             
-            <div className="u-fs-sm u-text-secondary u-mt-1">
+            <div className="u-text-sm u-text-secondary u-mt-1">
               {upload.status === 'completed' 
                 ? 'Upload completed' 
                 : `${Math.round(upload.progress)}% uploaded`
@@ -256,14 +256,14 @@ function MultiStepProcess() {
   return (
     <div className="u-mw-100 u-mx-auto u-gap-6">
       <div>
-        <h3 className="u-fs-lg u-fw-semibold u-mb-2">Setup Progress</h3>
+        <h3 className="u-text-lg u-font-semibold u-mb-2">Setup Progress</h3>
         <Progress 
           value={overallProgress}
           variant="primary"
           size="lg"
           showLabel
         />
-        <div className="u-fs-sm u-text-secondary u-mt-1">
+        <div className="u-text-sm u-text-secondary u-mt-1">
           Step {currentStep} of {totalSteps}
         </div>
       </div>
@@ -276,8 +276,8 @@ function MultiStepProcess() {
           const progress = stepProgress[step.id] || 0;
 
           return (
-            <div key={step.id} className="u-d-flex u-align-items-center u-gap-4 u-p-3 u-border u-rounded">
-              <div className={`u-w-8 u-h-8 u-rounded-circle u-d-flex u-align-items-center u-justify-content-center u-fs-sm u-fw-medium ${
+            <div key={step.id} className="u-flex u-items-center u-gap-4 u-p-3 u-border u-rounded">
+              <div className={`u-w-8 u-h-8 u-rounded-circle u-flex u-items-center u-justify-center u-text-sm u-font-medium ${
                 isCompleted ? 'bg-green-500 text-white' :
                 isActive ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'
               }`}>
@@ -285,8 +285,8 @@ function MultiStepProcess() {
               </div>
               
               <div className="u-flex-grow-1">
-                <div className="u-fw-medium">{step.name}</div>
-                <div className="u-fs-sm u-text-secondary">{step.description}</div>
+                <div className="u-font-medium">{step.name}</div>
+                <div className="u-text-sm u-text-secondary">{step.description}</div>
 
                 {isActive && progress > 0 && progress < 100 && (
                   <div className="u-mt-2">
@@ -332,13 +332,13 @@ function SkillProgress() {
   return (
     <Card>
       <div className="u-gap-4">
-        <h3 className="u-fs-lg u-fw-semibold">Technical Skills</h3>
+        <h3 className="u-text-lg u-font-semibold">Technical Skills</h3>
         <div className="u-gap-4">
           {skills.map((skill, index) => (
             <div key={index}>
-              <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-1">
-                <span className="u-fw-medium">{skill.name}</span>
-                <span className="u-fs-sm u-text-secondary">{skill.level}%</span>
+              <div className="u-flex u-justify-between u-items-center u-mb-1">
+                <span className="u-font-medium">{skill.name}</span>
+                <span className="u-text-sm u-text-secondary">{skill.level}%</span>
               </div>
               <Progress 
                 value={skill.level}
@@ -394,13 +394,13 @@ function DashboardMetrics() {
   ];
 
   return (
-    <div className="u-d-grid u-grid-cols-1 u-md-grid-cols-2 u-gap-4">
+    <div className="u-grid u-grid-cols-1 u-md-grid-cols-2 u-gap-4">
       {metrics.map((metric, index) => (
         <Card key={index}>
           <div className="u-gap-3">
-            <div className="u-d-flex u-justify-content-between u-align-items-center">
-              <h4 className="u-fw-semibold">{metric.title}</h4>
-              <span className="u-fs-2 u-fw-bold">
+            <div className="u-flex u-justify-between u-items-center">
+              <h4 className="u-font-semibold">{metric.title}</h4>
+              <span className="u-text-2 u-font-bold">
                 {metric.value}{metric.unit}
               </span>
             </div>
@@ -411,7 +411,7 @@ function DashboardMetrics() {
               showLabel
             />
             
-            <div className="u-fs-sm u-text-secondary">
+            <div className="u-text-sm u-text-secondary">
               {metric.description}
             </div>
           </div>
@@ -640,7 +640,7 @@ function DarkModeGlassProgress() {
 ```jsx
 // Good: Clear context and appropriate styling
 <div className="u-gap-2">
-  <div className="u-d-flex u-justify-content-between">
+  <div className="u-flex u-justify-between">
     <span>Uploading document...</span>
     <span>75%</span>
   </div>
@@ -723,9 +723,9 @@ function FormValidationProgress() {
   return (
     <div className="u-gap-4">
       <div>
-        <div className="u-d-flex u-justify-content-between u-mb-2">
-          <span className="u-fw-medium">Form Completion</span>
-          <span className="u-fs-sm">{validFields}/{validationRules.length} fields</span>
+        <div className="u-flex u-justify-between u-mb-2">
+          <span className="u-font-medium">Form Completion</span>
+          <span className="u-text-sm">{validFields}/{validationRules.length} fields</span>
         </div>
         <Progress 
           value={progress}

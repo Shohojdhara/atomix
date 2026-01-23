@@ -303,7 +303,7 @@ export const AllVariants: Story = {
     },
   },
   render: () => (
-    <div className="u-d-flex u-flex-wrap u-gap-2">
+    <div className="u-flex u-flex-wrap u-gap-2">
       <Button label="Primary" variant="primary" />
       <Button label="Secondary" variant="secondary" />
       <Button label="Success" variant="success" />
@@ -332,7 +332,7 @@ export const AllOutlineVariants: Story = {
     },
   },
   render: () => (
-    <div className="u-d-flex u-flex-wrap u-gap-2">
+    <div className="u-flex u-flex-wrap u-gap-2">
       <Button label="Outline Primary" variant="outline-primary" />
       <Button label="Outline Secondary" variant="outline-secondary" />
       <Button label="Outline Success" variant="outline-success" />
@@ -361,7 +361,7 @@ export const AllSizes: Story = {
     },
   },
   render: () => (
-    <div className="u-d-flex u-align-items-center u-gap-2">
+    <div className="u-flex u-items-center u-gap-2">
       <Button label="Small" variant="primary" size="sm" />
       <Button label="Medium" variant="primary" size="md" />
       <Button label="Large" variant="primary" size="lg" />
@@ -380,7 +380,7 @@ export const IconButtonVariants: Story = {
     iconOnly: true,
   },
   render: () => (
-    <div className="u-d-flex u-flex-wrap u-gap-2">
+    <div className="u-flex u-flex-wrap u-gap-2">
       <Button label="Add" variant="primary" icon={<Icon />} />
       <Button label="Add" variant="secondary" icon={<Icon />} />
       <Button label="Add" variant="success" icon={<Icon />} />
@@ -413,7 +413,7 @@ export const RoundedVariants: Story = {
     rounded: true,
   },
   render: () => (
-    <div className="u-d-flex u-flex-wrap u-gap-2">
+    <div className="u-flex u-flex-wrap u-gap-2">
       <Button label="Primary" variant="primary" rounded />
       <Button label="Secondary" variant="secondary" rounded />
       <Button label="Success" variant="success" rounded />
@@ -535,7 +535,7 @@ export const GlassVariants: Story = {
         borderRadius: '12px',
       }}
     >
-      <div className="u-d-flex u-flex-wrap u-gap-2">
+      <div className="u-flex u-flex-wrap u-gap-2">
         <Button label="Primary" variant="primary" glass />
         <Button label="Secondary" variant="secondary" glass />
         <Button label="Success" variant="success" glass />
@@ -566,7 +566,7 @@ export const GlassOutlineVariants: Story = {
         borderRadius: '12px',
       }}
     >
-      <div className="u-d-flex u-flex-wrap u-gap-2">
+      <div className="u-flex u-flex-wrap u-gap-2">
         <Button label="Outline Primary" variant="outline-primary" glass />
         <Button label="Outline Secondary" variant="outline-secondary" glass />
         <Button label="Outline Success" variant="outline-success" glass />
@@ -596,7 +596,7 @@ export const GlassSizes: Story = {
         borderRadius: '12px',
       }}
     >
-      <div className="u-d-flex u-align-items-center u-gap-2">
+      <div className="u-flex u-items-center u-gap-2">
         <Button label="Small Glass" variant="primary" size="sm" glass={{ cornerRadius: 8 }} />
         <Button label="Medium Glass" variant="primary" size="md" glass />
         <Button label="Large Glass" variant="primary" size="lg" glass />
@@ -622,7 +622,7 @@ export const GlassWithIcons: Story = {
         borderRadius: '12px',
       }}
     >
-      <div className="u-d-flex u-flex-wrap u-gap-2">
+      <div className="u-flex u-flex-wrap u-gap-2">
         <Button label="With Icon" variant="primary" icon={<Icon />} glass={{ cornerRadius: 12 }} />
         <Button
           label="Icon Only"
@@ -699,7 +699,7 @@ export const GlassShowcase: Story = {
         <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
           Primary Glass Variants
         </h3>
-        <div className="u-d-flex u-flex-wrap u-gap-2 u-align-items-center">
+        <div className="u-flex u-flex-wrap u-gap-2 u-items-center">
           <Button label="Small Glass" variant="primary" size="sm" glass={{ cornerRadius: 8 }} />
           <Button label="Medium Glass" variant="primary" size="md" glass />
           <Button label="Large Glass" variant="primary" size="lg" glass />
@@ -723,7 +723,7 @@ export const GlassShowcase: Story = {
         <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
           Outline Glass Variants
         </h3>
-        <div className="u-d-flex u-flex-wrap u-gap-2">
+        <div className="u-flex u-flex-wrap u-gap-2">
           <Button label="Outline Primary" variant="outline-primary" glass />
           <Button label="Outline Success" variant="outline-success" glass />
           <Button label="Outline Warning" variant="outline-warning" glass />
@@ -744,7 +744,7 @@ export const GlassShowcase: Story = {
         <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
           Custom Glass Effects
         </h3>
-        <div className="u-d-flex u-flex-wrap u-gap-2">
+        <div className="u-flex u-flex-wrap u-gap-2">
           <Button
             label="Polar Mode"
             variant="secondary"
@@ -797,7 +797,7 @@ export const GlassShowcase: Story = {
         <h3 style={{ color: '#333', marginBottom: '1rem', fontSize: '1.2rem' }}>
           Light Background
         </h3>
-        <div className="u-d-flex u-flex-wrap u-gap-2">
+        <div className="u-flex u-flex-wrap u-gap-2">
           <Button label="Light Variant" variant="light" glass />
           <Button label="Outline Light" variant="outline-light" glass />
           <Button label="Dark on Light" variant="dark" glass />

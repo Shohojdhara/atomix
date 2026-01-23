@@ -132,11 +132,11 @@ function AdvancedDataTable() {
       key: 'user',
       title: 'User',
       render: (_, row) => (
-        <div className="u-d-flex u-align-items-center u-gap-3">
+        <div className="u-flex u-items-center u-gap-3">
           <Avatar src={row.avatar} alt={row.name} size="sm" circle />
           <div>
-            <div className="u-fw-medium">{row.name}</div>
-            <div className="u-fs-sm u-text-secondary">{row.email}</div>
+            <div className="u-font-medium">{row.name}</div>
+            <div className="u-text-sm u-text-secondary">{row.email}</div>
           </div>
         </div>
       ),
@@ -158,7 +158,7 @@ function AdvancedDataTable() {
       title: 'Status',
       sortable: true,
       render: (value) => (
-        <div className="u-d-flex u-align-items-center u-gap-2">
+        <div className="u-flex u-items-center u-gap-2">
           <div className={`w-2 h-2 rounded-full ${
             value === 'Active' ? 'bg-green-500' : 'bg-gray-400'
           }`} />
@@ -176,7 +176,7 @@ function AdvancedDataTable() {
       key: 'actions',
       title: 'Actions',
       render: (_, row) => (
-        <div className="u-d-flex u-gap-2">
+        <div className="u-flex u-gap-2">
           <Button 
             icon={<Icon name="PencilSimple" />}
             iconOnly
@@ -249,10 +249,10 @@ function PaginatedDataTable() {
 
   return (
     <div className="u-gap-4">
-      <div className="u-d-flex u-justify-content-between u-align-items-center">
-        <h3 className="u-fs-lg u-fw-semibold">Employee Directory</h3>
-        <div className="u-d-flex u-align-items-center u-gap-2">
-          <span className="u-fs-sm">Rows per page:</span>
+      <div className="u-flex u-justify-between u-items-center">
+        <h3 className="u-text-lg u-font-semibold">Employee Directory</h3>
+        <div className="u-flex u-items-center u-gap-2">
+          <span className="u-text-sm">Rows per page:</span>
           <Select 
             options={[
               { value: '5', label: '5' },
@@ -338,7 +338,7 @@ function FilterableDataTable() {
       title: 'Rating', 
       sortable: true,
       render: (value) => (
-        <div className="u-d-flex u-align-items-center u-gap-1">
+        <div className="u-flex u-items-center u-gap-1">
           <Icon name="Star" className="u-text-warning" />
           <span>{value}</span>
         </div>
@@ -350,7 +350,7 @@ function FilterableDataTable() {
     <div className="u-gap-4">
       {/* Filters */}
       <Card>
-        <div className="u-d-grid u-grid-cols-1 u-md-grid-cols-4 u-gap-4">
+        <div className="u-grid u-grid-cols-1 u-md-grid-cols-4 u-gap-4">
           <FormGroup label="Category">
             <Select 
               options={[
@@ -396,7 +396,7 @@ function FilterableDataTable() {
       </Card>
 
       {/* Results */}
-      <div className="u-fs-sm u-text-secondary">
+      <div className="u-text-sm u-text-secondary">
         Showing {filteredData.length} of {data.length} products
       </div>
 
@@ -442,7 +442,7 @@ function LoadingDataTable() {
 
   return (
     <div className="u-gap-4">
-      <div className="u-d-flex u-gap-3">
+      <div className="u-flex u-gap-3">
         <Button 
           label="Load Data" 
           variant="primary"
@@ -636,9 +636,9 @@ function MasterDetailTable() {
   const [selectedRow, setSelectedRow] = useState(null);
 
   return (
-    <div className="u-d-grid u-grid-cols-1 u-lg-grid-cols-2 u-gap-6">
+    <div className="u-grid u-grid-cols-1 u-lg-grid-cols-2 u-gap-6">
       <div>
-        <h3 className="u-fw-semibold u-mb-4">Users</h3>
+        <h3 className="u-font-semibold u-mb-4">Users</h3>
         <DataTable 
           data={users}
           columns={columns}
@@ -648,7 +648,7 @@ function MasterDetailTable() {
       </div>
       
       <div>
-        <h3 className="u-fw-semibold u-mb-4">Details</h3>
+        <h3 className="u-font-semibold u-mb-4">Details</h3>
         {selectedRow ? (
           <Card>
             <div className="u-gap-3">

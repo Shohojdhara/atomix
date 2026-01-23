@@ -558,7 +558,7 @@ function CompleteForm() {
 
   return (
     <Form onSubmit={handleSubmit} className="u-max-w-md u-mx-auto u-gap-4">
-      <div className="u-d-grid u-grid-cols-2 u-gap-4">
+      <div className="u-grid u-grid-cols-2 u-gap-4">
         <FormGroup 
           label="First Name" 
           required
@@ -657,7 +657,7 @@ function CompleteForm() {
         />
       </FormGroup>
 
-      <div className="u-d-flex u-gap-3">
+      <div className="u-flex u-gap-3">
         <Button type="submit" label="Submit" variant="primary" />
         <Button type="reset" label="Reset" variant="secondary" />
       </div>

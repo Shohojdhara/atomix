@@ -341,9 +341,9 @@ function ThemeToggle() {
 .u-gap-6                   /* Gap 1.5rem */
 
 /* Display utilities */
-.u-d-flex                  /* Flexbox */
-.u-d-grid                  /* Grid */
-.u-d-none                  /* Hidden */
+.u-flex                  /* Flexbox */
+.u-grid                  /* Grid */
+.u-none                  /* Hidden */
 .u-visually-hidden         /* Visually hidden */
 ```
 

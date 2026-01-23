@@ -303,10 +303,10 @@ export const ChartGallery: Story = {
 
       // Custom toolbar with chart controls
       const customToolbar = (
-        <div className="u-d-flex u-gap-2 u-align-items-center u-flex-wrap u-mb-5">
-          <div className="u-border-start u-ps-2 u-d-flex u-gap-2 u-align-items-center">
+        <div className="u-flex u-gap-2 u-items-center u-flex-wrap u-mb-5">
+          <div className="u-border-start u-ps-2 u-flex u-gap-2 u-items-center">
             {/* Data Points Control */}
-            <div className="u-d-flex u-align-items-center u-gap-1">
+            <div className="u-flex u-items-center u-gap-1">
               <Icon name="Database" size="sm" />
               <input
                 type="range"
@@ -515,14 +515,14 @@ export const ChartGallery: Story = {
     return (
       <Container className="u-py-6">
         <Card className="u-mb-6 u-p-6 u-text-center">
-          <h1 className="u-mb-3 u-d-flex u-align-items-center u-justify-content-center u-gap-2">
+          <h1 className="u-mb-3 u-flex u-items-center u-justify-center u-gap-2">
             <Icon name="ChartBar" size="lg" />
             Atomix Chart Gallery
           </h1>
           <p className="u-mb-4 u-text-muted">
             Explore 20+ modern chart types with integrated toolbar controls
           </p>
-          <div className="u-d-flex u-gap-2 u-justify-content-center u-flex-wrap">
+          <div className="u-flex u-gap-2 u-justify-center u-flex-wrap">
             <Badge label="20+ Types" variant="primary" />
             <Badge label="Real-time" variant="success" />
             <Badge label="Interactive" variant="info" />
@@ -542,7 +542,7 @@ export const ChartGallery: Story = {
                       onClick={() => setSelectedType(key)}
                       active={selectedType === key}
                     >
-                      <div className="u-d-flex u-align-items-center u-gap-2">
+                      <div className="u-flex u-items-center u-gap-2">
                         <Icon name={icon as any} size="sm" />
                         <div>
                           <div>{label}</div>

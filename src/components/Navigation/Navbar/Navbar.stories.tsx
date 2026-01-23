@@ -209,7 +209,7 @@ export const FixedBottom: Story = {
 // Navbar with different variants
 export const Variants: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3">
+    <div className="u-flex u-flex-column u-gap-3">
       <Navbar brand={<LogoBrand />} variant="primary">
         <Nav alignment="end">
           <NavItem>Link 1</NavItem>
@@ -293,7 +293,7 @@ export const Variants: Story = {
 // Navbar with different nav alignments
 export const NavAlignments: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3">
+    <div className="u-flex u-flex-column u-gap-3">
       <Navbar brand={<LogoBrand />}>
         <Nav alignment="start">
           <NavItem>Link 1</NavItem>
@@ -386,8 +386,8 @@ export const WithSearchField: Story = {
         <NavItem>Link 2</NavItem>
         <NavItem>Link 3</NavItem>
       </Nav>
-      <div className="u-ms-auto u-d-flex u-align-items-center">
-        <div className="c-search-form u-d-flex u-gap-2">
+      <div className="u-ms-auto u-flex u-items-center">
+        <div className="c-search-form u-flex u-gap-2">
           <input type="text" className="c-input c-input--sm" placeholder="Search..." />
           <button className="c-btn c-btn--primary c-btn--sm">
             <Icon name="MagnifyingGlass" size="sm" />
@@ -528,7 +528,7 @@ export const ResponsiveNavbar: Story = {
 // Mega Menu vs Dropdown Comparison
 export const MegaMenuVsDropdown: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3">
+    <div className="u-flex u-flex-column u-gap-3">
       <div>
         <h4 className="u-mb-3">Regular Dropdown</h4>
         <Navbar brand={<LogoBrand />}>

@@ -200,7 +200,7 @@ export const TestimonialGridLayout: Story = {
 const TestimonialWithImage: React.FC = () => {
   return (
     <div className="o-container">
-      <div className="o-grid u-align-items-center">
+      <div className="o-grid u-items-center">
         <div className="o-grid__col o-grid__col--6">
           <Testimonial
             quote="The intuitive interface, seamless syncing across devices, and helpful features have made me more productive than ever before."

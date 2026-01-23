@@ -98,7 +98,7 @@ export const WithValue: Story = {
 // Textarea sizes
 export const Sizes: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <Textarea size="sm" placeholder="Small textarea" rows={3} />
       <Textarea size="md" placeholder="Medium textarea (default)" rows={3} />
       <Textarea size="lg" placeholder="Large textarea" rows={3} />
@@ -109,7 +109,7 @@ export const Sizes: Story = {
 // Textarea rows
 export const Rows: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <Textarea placeholder="2 rows" rows={2} />
       <Textarea placeholder="4 rows" rows={4} />
       <Textarea placeholder="6 rows" rows={6} />
@@ -120,7 +120,7 @@ export const Rows: Story = {
 // Textarea variants
 export const Variants: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <Textarea variant="primary" placeholder="Primary textarea" rows={2} />
       <Textarea variant="secondary" placeholder="Secondary textarea" rows={2} />
       <Textarea variant="success" placeholder="Success textarea" rows={2} />
@@ -134,7 +134,7 @@ export const Variants: Story = {
 // States
 export const States: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <Textarea placeholder="Default textarea" rows={2} />
       <Textarea placeholder="Disabled textarea" disabled rows={2} />
       <Textarea placeholder="Valid textarea" valid rows={2} />
@@ -186,7 +186,7 @@ export const GlassVariants: Story = {
       <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
         Glass Textarea Variants
       </h3>
-      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
+      <div className="u-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
         <Textarea placeholder="Small Glass" size="sm" rows={3} glass />
         <Textarea placeholder="Medium Glass" size="md" rows={3} glass />
         <Textarea placeholder="Large Glass" size="lg" rows={3} glass />
@@ -225,7 +225,7 @@ export const GlassShowcase: Story = {
         <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>
           Glass Textarea on Background
         </h3>
-        <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
+        <div className="u-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
           <Textarea placeholder="Write your message..." rows={4} glass />
           <Textarea placeholder="Additional notes..." rows={3} glass />
         </div>
@@ -240,7 +240,7 @@ export const GlassShowcase: Story = {
         }}
       >
         <h3 style={{ color: 'white', marginBottom: '1rem', fontSize: '1.2rem' }}>Glass Modes</h3>
-        <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
+        <div className="u-flex u-flex-column u-gap-3" style={{ width: '400px' }}>
           <Textarea placeholder="Standard Mode" rows={3} glass={{ mode: 'standard' }} />
           <Textarea placeholder="Polar Mode" rows={3} glass={{ mode: 'polar' }} />
           <Textarea placeholder="Prominent Mode" rows={3} glass={{ mode: 'prominent' }} />

@@ -268,15 +268,15 @@ const CoffeeShop: React.FC = () => {
               <Card>
                 <h3 className="u-text-xl u-font-semibold u-mb-4">Hours</h3>
                 <ul className="u-list-unstyled">
-                  <li className="u-d-flex u-justify-content-between u-py-2 u-border-b u-border-gray-200">
+                  <li className="u-flex u-justify-between u-py-2 u-border-b u-border-gray-200">
                     <span>Monday - Friday</span>
                     <span>6:00 AM - 8:00 PM</span>
                   </li>
-                  <li className="u-d-flex u-justify-content-between u-py-2 u-border-b u-border-gray-200">
+                  <li className="u-flex u-justify-between u-py-2 u-border-b u-border-gray-200">
                     <span>Saturday</span>
                     <span>7:00 AM - 9:00 PM</span>
                   </li>
-                  <li className="u-d-flex u-justify-content-between u-py-2">
+                  <li className="u-flex u-justify-between u-py-2">
                     <span>Sunday</span>
                     <span>7:00 AM - 6:00 PM</span>
                   </li>
@@ -305,7 +305,7 @@ const CoffeeShop: React.FC = () => {
             <p className="u-text-white u-mb-6 u-mx-auto" style={{ maxWidth: '600px' }}>
               Join us for a memorable coffee experience in our cozy café
             </p>
-            <div className="u-d-flex u-gap-3 u-justify-content-center">
+            <div className="u-flex u-gap-3 u-justify-center">
               <Button size="large" label="Order Online" />
               <Button size="large" variant="secondary" label="Book a Table" />
             </div>

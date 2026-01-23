@@ -270,7 +270,7 @@ Atomix uses a consistent spacing scale:
 <div class="u-px-6">Padding left and right 6 (1.5rem)</div>
 
 <!-- Gap examples for flex/grid layouts -->
-<div class="u-d-flex u-gap-4">
+<div class="u-flex u-gap-4">
   <div>Item 1</div>
   <div>Item 2</div>
 </div>
@@ -292,30 +292,30 @@ Atomix includes a comprehensive set of utility classes for quick styling without
 ### Display Utilities
 
 ```html
-<div class="u-d-block">Display block</div>
-<div class="u-d-flex">Display flex</div>
-<div class="u-d-grid">Display grid</div>
-<div class="u-d-none u-d-md-block">Hidden on mobile, visible on medium screens and up</div>
+<div class="u-block">Display block</div>
+<div class="u-flex">Display flex</div>
+<div class="u-grid">Display grid</div>
+<div class="u-none u-md-block">Hidden on mobile, visible on medium screens and up</div>
 ```
 
 ### Flex Utilities
 
 ```html
 <!-- Flex container with items aligned and justified -->
-<div class="u-d-flex u-justify-content-between u-align-items-center">
+<div class="u-flex u-justify-between u-items-center">
   <div>Left content</div>
   <div>Right content</div>
 </div>
 
 <!-- Flex column layout with gap -->
-<div class="u-d-flex u-flex-column u-gap-4">
+<div class="u-flex u-flex-column u-gap-4">
   <div>Item 1</div>
   <div>Item 2</div>
   <div>Item 3</div>
 </div>
 
 <!-- Flex grow/shrink -->
-<div class="u-d-flex">
+<div class="u-flex">
   <div class="u-flex-grow-1">Grows to fill space</div>
   <div class="u-flex-shrink-0">Won't shrink</div>
 </div>
@@ -325,8 +325,8 @@ Atomix includes a comprehensive set of utility classes for quick styling without
 
 ```html
 <p class="u-text-center">Centered text</p>
-<p class="u-fw-bold">Bold text</p>
-<p class="u-fs-4">Font size 4</p>
+<p class="u-font-bold">Bold text</p>
+<p class="u-text-4">Font size 4</p>
 <p class="u-text-primary">Primary text color</p>
 ```
 
@@ -343,7 +343,7 @@ Many utilities include responsive variants:
 
 ```html
 <!-- Visible only on medium screens and up -->
-<div class="u-d-none u-d-md-block">Shown on medium screens and up</div>
+<div class="u-none u-md-block">Shown on medium screens and up</div>
 
 <!-- Different text alignment based on screen size -->
 <p class="u-text-center u-text-md-start u-text-lg-end">

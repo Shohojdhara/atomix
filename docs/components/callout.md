@@ -163,7 +163,7 @@ function CalloutWithActions() {
       variant="info"
       icon={<Icon name="Download" />}
       actions={
-        <div className="u-d-flex u-gap-2">
+        <div className="u-flex u-gap-2">
           <Button 
             label="Update Now" 
             variant="primary" 
@@ -238,7 +238,7 @@ function ToastNotifications() {
 
   return (
     <div>
-      <div className="u-d-flex u-gap-2 u-mb-4">
+      <div className="u-flex u-gap-2 u-mb-4">
         <Button 
           label="Success Toast"
           variant="success"

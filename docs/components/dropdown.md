@@ -127,8 +127,8 @@ function HoverDropdown() {
       placement="bottom-start"
       menu={
         <div className="u-p-4 u-max-w-xs">
-          <h4 className="u-fw-semibold u-mb-2">Quick Info</h4>
-          <p className="u-fs-sm u-text-secondary">
+          <h4 className="u-font-semibold u-mb-2">Quick Info</h4>
+          <p className="u-text-sm u-text-secondary">
             This content appears when you hover over the trigger.
           </p>
         </div>
@@ -203,7 +203,7 @@ function FormDropdown() {
       closeOnClickOutside={false}
       menu={
         <div className="u-p-4 u-min-w-80">
-          <h4 className="u-fw-semibold u-mb-3">Quick Contact</h4>
+          <h4 className="u-font-semibold u-mb-3">Quick Contact</h4>
           <form onSubmit={handleSubmit} className="u-gap-3">
             <FormGroup label="Name">
               <Input 
@@ -226,7 +226,7 @@ function FormDropdown() {
                 placeholder="your@email.com"
               />
             </FormGroup>
-            <div className="u-d-flex u-gap-2">
+            <div className="u-flex u-gap-2">
               <Button type="submit" label="Submit" variant="primary" size="sm" />
               <Button type="button" label="Cancel" variant="secondary" size="sm" />
             </div>
@@ -351,7 +351,7 @@ function MultiLevelDropdown() {
 <DropdownHeader>Account Settings</DropdownHeader>
 
 // With custom styling
-<DropdownHeader className="u-text-primary u-fw-bold">
+<DropdownHeader className="u-text-primary u-font-bold">
   Quick Actions
 </DropdownHeader>
 ```
@@ -574,11 +574,11 @@ function UserAccountMenu({ user }) {
       menu={
         <div>
           <div className="u-px-4 u-py-3 u-border-b">
-            <div className="u-d-flex u-align-items-center u-gap-3">
+            <div className="u-flex u-items-center u-gap-3">
               <Avatar src={user.avatar} size="sm" circle />
               <div>
-                <div className="u-fw-medium">{user.name}</div>
-                <div className="u-fs-sm u-text-secondary">{user.email}</div>
+                <div className="u-font-medium">{user.name}</div>
+                <div className="u-text-sm u-text-secondary">{user.email}</div>
               </div>
             </div>
           </div>
@@ -619,7 +619,7 @@ function FilterDropdown({ filters, onFilterChange }) {
       trigger="click"
       menu={
         <div className="u-p-4 u-min-w-64">
-          <h4 className="u-fw-semibold u-mb-3">Filters</h4>
+          <h4 className="u-font-semibold u-mb-3">Filters</h4>
           
           <FormGroup label="Status">
             <Select 
@@ -640,7 +640,7 @@ function FilterDropdown({ filters, onFilterChange }) {
             />
           </FormGroup>
           
-          <div className="u-d-flex u-gap-2 u-mt-4">
+          <div className="u-flex u-gap-2 u-mt-4">
             <Button label="Apply" variant="primary" size="sm" />
             <Button label="Reset" variant="secondary" size="sm" />
           </div>

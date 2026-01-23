@@ -946,7 +946,7 @@ export const PerformanceOptimization: Story = {
       <div style={{ margin: '0 auto', width: '100%' }}>
         {/* Header Section */}
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-          <Badge variant="primary" label="Performance Guide" glass={{className: 'u-d-inline-block', children:<></>}} />
+          <Badge variant="primary" label="Performance Guide" glass={{className: 'u-inline-block', children:<></>}} />
           <h1
             style={{
               color: '#fff',

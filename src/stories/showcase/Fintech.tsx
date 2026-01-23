@@ -464,10 +464,10 @@ const Fintech: React.FC = () => {
             glass={{ blurAmount: 4, displacementScale: 100, elasticity: 0, cornerRadius: 32 } as any}
             className="u-mb-4"
           >
-            <div className="u-d-flex u-flex-column u-align-items-center u-gap-3">
-              <div className="u-d-flex u-flex-column u-align-items-center u-gap-2">
+            <div className="u-flex u-flex-column u-items-center u-gap-3">
+              <div className="u-flex u-flex-column u-items-center u-gap-2">
                 <Icon name="Sparkle" size={24} className="u-text-primary" />
-                <h3 className="u-fs-2 u-fw-bold u-mb-2">Limited Time Offer</h3>
+                <h3 className="u-text-2 u-font-bold u-mb-2">Limited Time Offer</h3>
               </div>
               <p className="u-mb-0 u-text-center">
                 Get 3 months free when you sign up for an annual plan. Offer ends in:
@@ -514,9 +514,9 @@ const Fintech: React.FC = () => {
                   elasticity={0}
                   className="u-h-100"
                 >
-                  <div className="u-p-4 u-h-100 u-d-flex u-flex-column">
+                  <div className="u-p-4 u-h-100 u-flex u-flex-column">
                     <div className="u-mb-3 u-text-primary">{feature.icon}</div>
-                    <h3 className="u-fs-5 u-fw-bold u-mb-2">{feature.title}</h3>
+                    <h3 className="u-text-5 u-font-bold u-mb-2">{feature.title}</h3>
                     <p className="u-text-muted u-mb-0 u-flex-grow-1">{feature.description}</p>
                   </div>
                 </AtomixGlass>
@@ -544,9 +544,9 @@ const Fintech: React.FC = () => {
                   elasticity={0}
                 >
                   <div className="u-p-4 u-text-center">
-                    <div className="u-fs-1 u-fw-bold u-text-primary u-mb-2">{stat.value}</div>
-                    <div className="u-fs-5 u-fw-semibold u-mb-1">{stat.label}</div>
-                    <div className="u-text-muted u-fs-sm">{stat.description}</div>
+                    <div className="u-text-1 u-font-bold u-text-primary u-mb-2">{stat.value}</div>
+                    <div className="u-text-5 u-font-semibold u-mb-1">{stat.label}</div>
+                    <div className="u-text-muted u-text-sm">{stat.description}</div>
                   </div>
                 </AtomixGlass>
               </GridCol>
@@ -583,9 +583,9 @@ const Fintech: React.FC = () => {
                   elasticity={0}
                   className="u-h-100"
                 >
-                  <div className="u-p-4 u-h-100 u-d-flex u-flex-column">
+                  <div className="u-p-4 u-h-100 u-flex u-flex-column">
                     <div className="u-mb-3 u-text-primary">{service.icon}</div>
-                    <h3 className="u-fs-4 u-fw-bold u-mb-2">{service.title}</h3>
+                    <h3 className="u-text-4 u-font-bold u-mb-2">{service.title}</h3>
                     <p className="u-text-muted u-mb-3">{service.description}</p>
                     <ul className="c-list u-mb-3 u-flex-grow-1">
                       {service.features.map((feature, featureIndex) => (
@@ -595,7 +595,7 @@ const Fintech: React.FC = () => {
                         </li>
                       ))}
                     </ul>
-                    <div className="u-d-flex u-justify-content-center">
+                    <div className="u-flex u-justify-center">
                       <Button
                         variant="outline-primary"
                         glass={{ blurAmount: 2, displacementScale: 18, elasticity: 0 }}
@@ -677,9 +677,9 @@ const Fintech: React.FC = () => {
             alignment="center"
           />
 
-          <div className="u-text-center u-mb-6 u-d-flex u-flex-column u-align-items-center">
+          <div className="u-text-center u-mb-6 u-flex u-flex-column u-items-center">
             <Badge label="Save 20% with annual billing" variant="primary" className="u-mb-4" />
-            <div className="u-d-flex u-gap-2">
+            <div className="u-flex u-gap-2">
               <Button
                 variant={isAnnual ? 'error' : 'outline-primary'}
                 onClick={() => setIsAnnual(true)}
@@ -697,11 +697,11 @@ const Fintech: React.FC = () => {
             </div>
           </div>
 
-          <Grid className="u-align-items-stretch u-justify-content-start">
+          <Grid className="u-items-stretch u-justify-start">
             {pricingPlans.map((plan, index) => (
               <GridCol key={index} xs={12} md={4} className="u-mb-4">
                 <Card
-                  className={`${plan.popular ? 'u-border-success u-border-2' : ''} u-h-100 u-d-flex u-flex-column u-justify-content-between`}
+                  className={`${plan.popular ? 'u-border-success u-border-2' : ''} u-h-100 u-flex u-flex-column u-justify-between`}
                   glass={{
                     blurAmount: 2,
                     displacementScale: 40,
@@ -723,12 +723,12 @@ const Fintech: React.FC = () => {
                     </Button>
                   }
                   header={
-                    <div className="u-d-flex u-flex-column u-align-items-start">
+                    <div className="u-flex u-flex-column u-items-start">
                       {plan.popular && <Badge label="Most Popular" variant="primary" glass />}
-                      <h3 className="u-fs-4 u-fw-bold u-my-2">{plan.name}</h3>
+                      <h3 className="u-text-4 u-font-bold u-my-2">{plan.name}</h3>
                       <p className="u-text-muted u-mb-3">{plan.description}</p>
                       <div className="u-mb-3">
-                        <span className="u-fs-1 u-fw-bold">
+                        <span className="u-text-1 u-font-bold">
                           ${isAnnual ? plan.annualPrice : plan.monthlyPrice}
                         </span>
                         <span className="u-text-muted">/{plan.priceSuffix}</span>
@@ -1033,9 +1033,9 @@ const Fintech: React.FC = () => {
                   padding="1rem"
                 >
                   <div className="u-p-4">
-                    <div className="u-d-flex u-justify-content-between u-mb-2">
-                      <span className="u-fs-sm u-text-muted">{metric.label}</span>
-                      <span className="u-fs-sm u-fw-bold">{metric.value}%</span>
+                    <div className="u-flex u-justify-between u-mb-2">
+                      <span className="u-text-sm u-text-muted">{metric.label}</span>
+                      <span className="u-text-sm u-font-bold">{metric.value}%</span>
                     </div>
                     <Progress
                       value={metric.value}
@@ -1079,17 +1079,17 @@ const Fintech: React.FC = () => {
                   padding="1rem"
                   className="u-h-100"
                 >
-                  <div className="u-p-4 u-h-100 u-d-flex u-flex-column">
-                    <div className="u-d-flex u-align-items-center u-mb-3">
+                  <div className="u-p-4 u-h-100 u-flex u-flex-column">
+                    <div className="u-flex u-items-center u-mb-3">
                       <Avatar src={review.avatar} alt={review.name} size="md" className="u-me-3" />
                       <div className="u-flex-grow-1">
-                        <div className="u-fw-bold">{review.name}</div>
-                        <div className="u-fs-sm u-text-muted">{review.role}</div>
+                        <div className="u-font-bold">{review.name}</div>
+                        <div className="u-text-sm u-text-muted">{review.role}</div>
                       </div>
                     </div>
                     <Rating value={review.rating} maxValue={5} readOnly className="u-mb-3" />
                     <p className="u-text-muted u-flex-grow-1 u-mb-3">{review.comment}</p>
-                    <div className="u-fs-sm u-text-muted">{review.date}</div>
+                    <div className="u-text-sm u-text-muted">{review.date}</div>
                   </div>
                 </AtomixGlass>
               </GridCol>
@@ -1138,9 +1138,9 @@ const Fintech: React.FC = () => {
                   mode="standard"
                   className="u-h-100"
                 >
-                  <div className="u-p-4 u-d-flex u-align-items-center u-justify-content-center u-h-100">
+                  <div className="u-p-4 u-flex u-items-center u-justify-center u-h-100">
                     <div className="u-text-center">
-                      <div className="u-fs-sm u-fw-semibold">{partner.name}</div>
+                      <div className="u-text-sm u-font-semibold">{partner.name}</div>
                     </div>
                   </div>
                 </AtomixGlass>
@@ -1208,8 +1208,8 @@ const Fintech: React.FC = () => {
               padding="1rem"
             >
               <div className="u-p-4">
-                <h2 className="u-fs-2 u-fw-bold u-mb-3">Trusted by industry leaders</h2>
-                <p className="u-fs-5 u-mb-4 u-text-primary-emphasis">
+                <h2 className="u-text-2 u-font-bold u-mb-3">Trusted by industry leaders</h2>
+                <p className="u-text-5 u-mb-4 u-text-primary-emphasis">
                   Join thousands of businesses that rely on FinPay for their financial operations. Our platform is trusted by Fortune 500 companies and startups alike.
                 </p>
               </div>
@@ -1224,8 +1224,8 @@ const Fintech: React.FC = () => {
               padding="1rem"
             >
               <div className="u-p-4">
-                <h2 className="u-fs-2 u-fw-bold u-mb-3">Trusted by industry leaders</h2>
-                <p className="u-fs-5 u-mb-4 u-text-primary-emphasis">
+                <h2 className="u-text-2 u-font-bold u-mb-3">Trusted by industry leaders</h2>
+                <p className="u-text-5 u-mb-4 u-text-primary-emphasis">
                   Join thousands of businesses that rely on FinPay for their financial operations. Our platform is trusted by Fortune 500 companies and startups alike.
                 </p>
               </div>
@@ -1248,11 +1248,11 @@ const Fintech: React.FC = () => {
                 elasticity={0}
               >
                 <div className="u-p-6">
-                  <h2 className="u-fs-2 u-fw-bold u-mb-3">Ready to get started?</h2>
-                  <p className="u-fs-5 u-mb-4 u-text-primary-emphasis">
+                  <h2 className="u-text-2 u-font-bold u-mb-3">Ready to get started?</h2>
+                  <p className="u-text-5 u-mb-4 u-text-primary-emphasis">
                     Join millions of users worldwide and experience the future of banking today.
                   </p>
-                  <div className="u-d-flex u-gap-2 u-justify-content-center">
+                  <div className="u-flex u-gap-2 u-justify-center">
                     <Button variant="success" glass>
                       Open Free Account
                     </Button>

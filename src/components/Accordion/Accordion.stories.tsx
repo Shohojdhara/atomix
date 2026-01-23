@@ -145,7 +145,7 @@ export const AccordionGroup: Story = {
   render: () => (
     <div>
       <h2>Accordion Group</h2>
-      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '500px' }}>
+      <div className="u-flex u-flex-column u-gap-3" style={{ width: '500px' }}>
         <Accordion title="First Accordion" defaultOpen={true}>
           <p>Content of the first accordion.</p>
         </Accordion>
@@ -186,7 +186,7 @@ export const AllVariants: Story = {
   render: () => (
     <div>
       <h2>All Accordion Variants</h2>
-      <div className="u-d-flex u-flex-column u-gap-5">
+      <div className="u-flex u-flex-column u-gap-5">
         <div>
           <h3>Default</h3>
           <Accordion title="Default Accordion">
@@ -445,7 +445,7 @@ export const GlassGroup: Story = {
         Glass Accordion Group
       </h2>
       <div
-        className="u-d-flex u-flex-column u-gap-3"
+        className="u-flex u-flex-column u-gap-3"
         style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}
       >
         <Accordion title="First Glass Accordion" defaultOpen={true} glass>
@@ -835,7 +835,7 @@ export const GlassInteractiveShowcase: Story = {
             Interactive Glass Accordion Showcase
           </h2>
 
-          <div className="u-d-flex u-flex-column u-gap-3">
+          <div className="u-flex u-flex-column u-gap-3">
             <Accordion
               title="Features & Benefits"
               isOpen={openIndex === 0}
@@ -975,7 +975,7 @@ export const GlassRichContent: Story = {
           Glass Accordion with Rich Content
         </h2>
 
-        <div className="u-d-flex u-flex-column u-gap-3">
+        <div className="u-flex u-flex-column u-gap-3">
           <Accordion title="Design Philosophy" defaultOpen={true} glass={true}>
             <div>
               <p style={{ marginBottom: '1rem' }}>

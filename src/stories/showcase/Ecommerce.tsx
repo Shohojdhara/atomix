@@ -148,18 +148,18 @@ const Ecommerce: React.FC = () => {
         style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 1}}
       >
         <Container>
-          <div className="u-d-flex u-align-items-center u-justify-content-between u-py-4">
-            <div className="u-d-flex u-align-items-center u-gap-2">
+          <div className="u-flex u-items-center u-justify-between u-py-4">
+            <div className="u-flex u-items-center u-gap-2">
               <AtomixLogo />
-              <span className="u-text-xl u-fw-bold">Atomix</span>
+              <span className="u-text-xl u-font-bold">Atomix</span>
             </div>
-            <nav className="u-d-none u-d-md-flex u-align-items-center u-gap-6">
+            <nav className="u-none u-md-flex u-items-center u-gap-6">
               <a href="#features">Features</a>
               <a href="#components">Components</a>
               <a href="#testimonials">Testimonials</a>
               <a href="#pricing">Pricing</a>
             </nav>
-            <div className="u-d-flex u-align-items-center u-gap-3">
+            <div className="u-flex u-items-center u-gap-3">
               <ColorModeToggle />
               <Button variant="outline" size="sm">
                 Documentation
@@ -171,9 +171,9 @@ const Ecommerce: React.FC = () => {
       </AtomixGlass>
 
       {/* Top Announcement Bar */}
-      <div className="u-bg-warning u-text-center u-py-2 u-fs-sm u-mt-20">
-        <Container className="u-d-flex u-justify-content-between u-gap-4">
-          <div className="u-d-flex u-align-items-center u-gap-2">
+      <div className="u-bg-warning u-text-center u-py-2 u-text-sm u-mt-20">
+        <Container className="u-flex u-justify-between u-gap-4">
+          <div className="u-flex u-items-center u-gap-2">
             <Icon name="Lightning" />
             Flash Sale! 30% off on selected items.
           </div>
@@ -185,12 +185,12 @@ const Ecommerce: React.FC = () => {
       {/* Navigation */}
       <header className="u-bg-body u-shadow-sm">
         <Container>
-          <Row className="u-align-items-center u-py-3">
+          <Row className="u-items-center u-py-3">
             <GridCol xs={4} md={2}>
               <AtomixLogo />
             </GridCol>
             <GridCol xs={4} md={6}>
-              <div className="u-d-none u-d-md-flex u-align-items-center u-gap-4">
+              <div className="u-none u-md-flex u-items-center u-gap-4">
                 <a href="#">Home</a>
                 <a href="#">Categories</a>
                 <a href="#">New Arrivals</a>
@@ -198,7 +198,7 @@ const Ecommerce: React.FC = () => {
                 <a href="#">Brands</a>
               </div>
             </GridCol>
-            <GridCol xs={4} md={4} className="u-d-flex u-justify-content-end">
+            <GridCol xs={4} md={4} className="u-flex u-justify-end">
               <Button variant="link" className="u-position-relative u-me-3">
                 <Icon name="Heart" size={20} />
               </Button>
@@ -215,7 +215,7 @@ const Ecommerce: React.FC = () => {
                   />
                 )}
               </Button>
-              <Button variant="primary" className="u-d-md-none">
+              <Button variant="primary" className="u-md-none">
                 <Icon name="List" size={20} />
               </Button>
             </GridCol>
@@ -253,7 +253,7 @@ const Ecommerce: React.FC = () => {
                     <img src={category.image} className="u-w-100 u-rounded" alt={category.name} />
                     <div className="u-position-absolute u-bottom-0 u-start-0 u-w-100 u-p-3 u-bg-gradient-dark">
                       <h3 className="u-text-secondry-emphasis u-mb-1">{category.name}</h3>
-                      <p className="u-text-secondry-emphasis u-mb-0 u-fs-sm">
+                      <p className="u-text-secondry-emphasis u-mb-0 u-text-sm">
                         {category.itemCount} items
                       </p>
                     </div>
@@ -288,16 +288,16 @@ const Ecommerce: React.FC = () => {
                     <img src={product.image} alt={product.name} className="u-w-100" />
                   </div>
                   <div className="c-card__body u-p-4">
-                    <h3 className="u-fs-5 u-mb-2">{product.name}</h3>
-                    <div className="u-d-flex u-align-items-center u-mb-2">
+                    <h3 className="u-text-5 u-mb-2">{product.name}</h3>
+                    <div className="u-flex u-items-center u-mb-2">
                       <div className="u-text-warning u-me-1">
                         {'★'.repeat(Math.floor(product.rating))}
                         {'☆'.repeat(5 - Math.floor(product.rating))}
                       </div>
-                      <span className="u-text-muted u-fs-sm">({product.reviewCount})</span>
+                      <span className="u-text-muted u-text-sm">({product.reviewCount})</span>
                     </div>
                     <div className="u-mb-3">
-                      <span className="u-fs-4 u-fw-bold">${product.price}</span>
+                      <span className="u-text-4 u-font-bold">${product.price}</span>
                       {product.originalPrice && (
                         <span className="u-text-muted u-text-decoration-line-through u-ms-2">
                           ${product.originalPrice}
@@ -325,7 +325,7 @@ const Ecommerce: React.FC = () => {
             {features.map((feature, index) => (
               <GridCol key={index} xs={12} sm={6} md={3} className="u-mb-4">
                 <div className="c-feature u-text-center">
-                  <div className="c-feature__icon u-mb-3 u-d-inline-flex u-align-items-center u-justify-content-center u-bg-primary-subtle u-text-primary u-rounded-circle u-p-3">
+                  <div className="c-feature__icon u-mb-3 u-inline-flex u-items-center u-justify-center u-bg-primary-subtle u-text-primary u-rounded-circle u-p-3">
                     {feature.icon}
                   </div>
                   <h3 className="c-feature__title u-mb-2">{feature.title}</h3>
@@ -340,13 +340,13 @@ const Ecommerce: React.FC = () => {
       {/* Deal of the Day */}
       <section className="u-py-8 u-bg-brand-subtle u-text-secondry-emphasis">
         <Container>
-          <Row className="u-align-items-center">
+          <Row className="u-items-center">
             <GridCol xs={12} md={6} className="u-mb-5 u-mb-md-0">
               <h2 className="u-mb-3">Deal of the Day</h2>
               <h3 className="u-mb-3">Premium Wireless Headphones</h3>
               <div className="u-mb-4">
-                <span className="u-fs-1 u-fw-bold u-me-2">$149.99</span>
-                <span className="u-fs-5 u-text-decoration-line-through u-text-primary-emphasis">
+                <span className="u-text-1 u-font-bold u-me-2">$149.99</span>
+                <span className="u-text-5 u-text-decoration-line-through u-text-primary-emphasis">
                   $199.99
                 </span>
                 <Badge label="25% OFF" variant="light" className="u-ms-3" />
@@ -400,14 +400,14 @@ const Ecommerce: React.FC = () => {
       {/* Newsletter */}
       <section className="u-py-8 u-bg-dark-subtle u-text-light-emphasis">
         <Container>
-          <Row className="u-justify-content-center">
+          <Row className="u-justify-center">
             <GridCol xs={12} md={8} className="u-text-center">
               <h2 className="u-mb-3">Stay in the Loop</h2>
               <p className="u-mb-4 u-text-muted">
                 Subscribe to our newsletter and be the first to know about new arrivals, special
                 offers and exclusive deals.
               </p>
-              <div className="u-d-flex u-gap-2 u-justify-content-center u-align-items-center">
+              <div className="u-flex u-gap-2 u-justify-center u-items-center">
                 <input
                   type="email"
                   placeholder="Enter your email"
@@ -432,7 +432,7 @@ const Ecommerce: React.FC = () => {
                 Your one-stop destination for all your shopping needs. Quality products at
                 competitive prices.
               </p>
-              <div className="u-d-flex u-gap-2">
+              <div className="u-flex u-gap-2">
                 <Button variant="outline-dark" size="sm" className="u-rounded-circle">
                   <Icon name="FacebookLogo" />
                 </Button>

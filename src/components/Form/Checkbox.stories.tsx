@@ -67,7 +67,7 @@ export const Checked: Story = {
 // Checkbox states
 export const States: Story = {
   render: (args: any) => (
-    <div className="u-d-flex u-flex-column u-gap-3">
+    <div className="u-flex u-flex-column u-gap-3">
       <Checkbox label="Default checkbox" />
       <Checkbox label="Checked checkbox" checked />
       <Checkbox label="Disabled checkbox" disabled />
@@ -177,7 +177,7 @@ export const GlassStates: Story = {
         >
           Glass Checkbox States
         </h3>
-        <div className="u-d-flex u-flex-column u-gap-3">
+        <div className="u-flex u-flex-column u-gap-3">
           <Checkbox label="Glass Checkbox" glass />
           <Checkbox label="Glass Checked" checked glass />
           <Checkbox label="Glass Disabled" disabled glass />

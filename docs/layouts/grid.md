@@ -167,7 +167,7 @@ The Grid component creates a flex container for organizing columns with optional
 </div>
 
 <!-- Grid with alignment -->
-<div class="o-grid u-justify-content-between u-align-items-center">
+<div class="o-grid u-justify-between u-items-center">
   <div class="o-grid__col o-grid__col--12 o-grid__col--md-6">Left Column</div>
   <div class="o-grid__col o-grid__col--12 o-grid__col--md-6">Right Column</div>
 </div>

@@ -545,7 +545,7 @@ export const Playground: Story = {
                       </div>
                       <div>
                         <h2
-                          className="u-m-0 u-text-white u-fw-bold"
+                          className="u-m-0 u-text-white u-font-bold"
                           style={{
                             fontSize: '1.75rem',
                             background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
@@ -574,9 +574,9 @@ export const Playground: Story = {
                       border: `2px solid ${getPerformanceColor()}`,
                     }}
                   >
-                    <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-2">
-                      <span className="u-text-white u-fw-semibold">Performance Score</span>
-                      <span className="u-fw-bold" style={{ color: getPerformanceColor() }}>
+                    <div className="u-flex u-justify-between u-items-center u-mb-2">
+                      <span className="u-text-white u-font-semibold">Performance Score</span>
+                      <span className="u-font-bold" style={{ color: getPerformanceColor() }}>
                         {Math.round(performanceScore)}/100
                       </span>
                     </div>
@@ -598,7 +598,7 @@ export const Playground: Story = {
                       />
                     </div>
                     <div
-                      className="u-mt-2 u-text-center u-fs-xs"
+                      className="u-mt-2 u-text-center u-text-xs"
                       style={{ color: getPerformanceColor() }}
                     >
                       {getPerformanceLabel()} -{' '}
@@ -613,7 +613,7 @@ export const Playground: Story = {
                   {/* Quick Presets */}
                   <div className="u-mb-6">
                     <label
-                      className="u-d-block u-mb-3 u-text-white u-fw-semibold"
+                      className="u-block u-mb-3 u-text-white u-font-semibold"
                       style={{ fontSize: '14px', letterSpacing: '0.5px' }}
                     >
                       ⚡ Quick Presets
@@ -676,14 +676,14 @@ export const Playground: Story = {
                   {/* Controls */}
                   {Object.entries(settings).map(([key, value]) => (
                     <div key={key} className="u-mb-5">
-                      <div className="u-d-flex u-justify-content-between u-align-items-center u-mb-2">
+                      <div className="u-flex u-justify-between u-items-center u-mb-2">
                         <label
-                          className="u-text-white u-fs-sm u-fw-medium"
+                          className="u-text-white u-text-sm u-font-medium"
                           style={{ textTransform: 'capitalize' }}
                         >
                           {key.replace(/([A-Z])/g, ' $1').trim()}
                         </label>
-                        <span className="u-text-white u-opacity-80 u-fs-sm u-fw-semibold">
+                        <span className="u-text-white u-opacity-80 u-text-sm u-font-semibold">
                           {typeof value === 'boolean'
                             ? value
                               ? 'On'
@@ -740,7 +740,7 @@ export const Playground: Story = {
 
                   {/* Mode Selector */}
                   <div className="u-mb-5">
-                    <label className="u-d-block u-mb-2 u-text-white u-fw-semibold">
+                    <label className="u-block u-mb-2 u-text-white u-font-semibold">
                       Glass Mode
                     </label>
                     <select
@@ -774,7 +774,7 @@ export const Playground: Story = {
                   {/* Shader Variant Selector */}
                   {selectedMode === 'shader' && (
                     <div className="u-mb-5">
-                      <label className="u-d-block u-mb-2 u-text-white u-fw-semibold">
+                      <label className="u-block u-mb-2 u-text-white u-font-semibold">
                         Shader Variant
                       </label>
                       <select
@@ -808,7 +808,7 @@ export const Playground: Story = {
 
                   {/* Background Control */}
                   <div className="u-mb-6">
-                    <label className="u-d-block u-mb-2 u-text-white u-fw-semibold">
+                    <label className="u-block u-mb-2 u-text-white u-font-semibold">
                       Background Image
                     </label>
                     <input
@@ -820,7 +820,7 @@ export const Playground: Story = {
                       onChange={e => setBackgroundIndex(parseInt(e.target.value))}
                       style={{ width: '100%', height: '6px', accentColor: '#7AFFD7' }}
                     />
-                    <div className="u-mt-2 u-text-center u-text-white u-opacity-70 u-fs-xs">
+                    <div className="u-mt-2 u-text-center u-text-white u-opacity-70 u-text-xs">
                       Background {backgroundIndex + 1} of {backgrounds.length}
                     </div>
                   </div>
@@ -900,12 +900,12 @@ export const Playground: Story = {
                     >
                       <div style={{ padding: '2.5rem' }}>
                         <div
-                          className="u-d-flex u-justify-content-between u-align-items-center u-mb-4"
+                          className="u-flex u-justify-between u-items-center u-mb-4"
                           style={{ marginBottom: '24px' }}
                         >
                           <div>
                             <h3
-                              className="u-m-0 u-fw-bold"
+                              className="u-m-0 u-font-bold"
                               style={{
                                 fontSize: '1.75rem',
                                 background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
@@ -1017,7 +1017,7 @@ export const Playground: Story = {
                         ✨
                       </div>
                       <h2
-                        className="u-mb-4 u-fw-bold"
+                        className="u-mb-4 u-font-bold"
                         style={{
                           fontSize: '2.75rem',
                           background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
@@ -1044,7 +1044,7 @@ export const Playground: Story = {
                         effect.
                       </p>
                       <div
-                        className="u-d-flex u-justify-content-center u-flex-wrap"
+                        className="u-flex u-justify-center u-flex-wrap"
                         style={{ gap: '1rem' }}
                       >
                         <Button variant="primary" size="lg">
@@ -1065,7 +1065,7 @@ export const Playground: Story = {
                           }}
                         >
                           <div
-                            className="u-mb-3 u-fw-semibold u-fs-sm"
+                            className="u-mb-3 u-font-semibold u-text-sm"
                             style={{ color: '#7AFFD7' }}
                           >
                             📊 Current Configuration
@@ -1078,40 +1078,40 @@ export const Playground: Story = {
                             }}
                           >
                             <div>
-                              <div className="u-fs-xs u-opacity-70">Mode</div>
+                              <div className="u-text-xs u-opacity-70">Mode</div>
                               <div
-                                className="u-fw-semibold"
+                                className="u-font-semibold"
                                 style={{ textTransform: 'capitalize' }}
                               >
                                 {selectedMode}
                               </div>
                             </div>
                             <div>
-                              <div className="u-fs-xs u-opacity-70">Shader</div>
+                              <div className="u-text-xs u-opacity-70">Shader</div>
                               <div
-                                className="u-fw-semibold"
+                                className="u-font-semibold"
                                 style={{ textTransform: 'capitalize' }}
                               >
                                 {selectedShader}
                               </div>
                             </div>
                             <div>
-                              <div className="u-fs-xs u-opacity-70">Displacement</div>
-                              <div className="u-fw-semibold">{settings.displacementScale}px</div>
+                              <div className="u-text-xs u-opacity-70">Displacement</div>
+                              <div className="u-font-semibold">{settings.displacementScale}px</div>
                             </div>
                             <div>
-                              <div className="u-fs-xs u-opacity-70">Aberration</div>
-                              <div className="u-fw-semibold">
+                              <div className="u-text-xs u-opacity-70">Aberration</div>
+                              <div className="u-font-semibold">
                                 {settings.aberrationIntensity.toFixed(1)}
                               </div>
                             </div>
                             <div>
-                              <div className="u-fs-xs u-opacity-70">Blur</div>
-                              <div className="u-fw-semibold">{settings.blurAmount.toFixed(2)}</div>
+                              <div className="u-text-xs u-opacity-70">Blur</div>
+                              <div className="u-font-semibold">{settings.blurAmount.toFixed(2)}</div>
                             </div>
                             <div>
-                              <div className="u-fs-xs u-opacity-70">Elasticity</div>
-                              <div className="u-fw-semibold">{settings.elasticity.toFixed(2)}</div>
+                              <div className="u-text-xs u-opacity-70">Elasticity</div>
+                              <div className="u-font-semibold">{settings.elasticity.toFixed(2)}</div>
                             </div>
                           </div>
                         </div>
@@ -1125,7 +1125,7 @@ export const Playground: Story = {
                           }}
                         >
                           <div
-                            className="u-mb-3 u-fw-semibold u-fs-sm"
+                            className="u-mb-3 u-font-semibold u-text-sm"
                             style={{ color: '#7AFFD7' }}
                           >
                             🎨 Visual Characteristics
@@ -1203,7 +1203,7 @@ export const Playground: Story = {
                           }}
                         >
                           <div
-                            className="u-mb-3 u-fw-semibold u-fs-sm"
+                            className="u-mb-3 u-font-semibold u-text-sm"
                             style={{ color: '#7AFFD7' }}
                           >
                             📈 Quick Stats
@@ -1218,23 +1218,23 @@ export const Playground: Story = {
                           >
                             <div>
                               <span className="u-opacity-70">Saturation:</span>
-                              <span className="u-fw-semibold u-ml-2">{settings.saturation}%</span>
+                              <span className="u-font-semibold u-ml-2">{settings.saturation}%</span>
                             </div>
                             <div>
                               <span className="u-opacity-70">Radius:</span>
-                              <span className="u-fw-semibold u-ml-2">
+                              <span className="u-font-semibold u-ml-2">
                                 {settings.cornerRadius}px
                               </span>
                             </div>
                             <div>
                               <span className="u-opacity-70">Background:</span>
-                              <span className="u-fw-semibold u-ml-2">
+                              <span className="u-font-semibold u-ml-2">
                                 {backgroundIndex + 1}/{backgrounds.length}
                               </span>
                             </div>
                             <div>
                               <span className="u-opacity-70">Effects:</span>
-                              <span className="u-fw-semibold u-ml-2">
+                              <span className="u-font-semibold u-ml-2">
                                 {settings.disableEffects ? 'Disabled' : 'Enabled'}
                               </span>
                             </div>

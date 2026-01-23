@@ -291,16 +291,16 @@ $line-height-loose: 2 !default;
 
 ```html
 <!-- Font sizes -->
-<p class="u-fs-sm">Small text</p>
-<p class="u-fs-base">Normal text</p>
-<p class="u-fs-lg">Large text</p>
-<h1 class="u-fs-4xl">Display heading</h1>
+<p class="u-text-sm">Small text</p>
+<p class="u-text-base">Normal text</p>
+<p class="u-text-lg">Large text</p>
+<h1 class="u-text-4xl">Display heading</h1>
 
 <!-- Font weights -->
-<p class="u-fw-light">Light text</p>
-<p class="u-fw-normal">Normal text</p>
-<p class="u-fw-medium">Medium text</p>
-<p class="u-fw-bold">Bold text</p>
+<p class="u-font-light">Light text</p>
+<p class="u-font-normal">Normal text</p>
+<p class="u-font-medium">Medium text</p>
+<p class="u-font-bold">Bold text</p>
 
 <!-- Line heights -->
 <p class="u-lh-tight">Tight line height</p>
@@ -308,7 +308,7 @@ $line-height-loose: 2 !default;
 <p class="u-lh-relaxed">Relaxed line height</p>
 
 <!-- Responsive typography -->
-<h1 class="u-fs-2xl u-fs-md-3xl u-fs-lg-4xl">
+<h1 class="u-text-2xl u-text-md-3xl u-text-lg-4xl">
   Responsive heading
 </h1>
 ```

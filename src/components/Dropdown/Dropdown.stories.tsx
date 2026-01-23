@@ -250,7 +250,7 @@ export const AllPlacements: Story = {
     return (
       <div className="u-p-5" style={{ height: '650px' }}>
         <div
-          className="u-d-grid"
+          className="u-grid"
           style={{
             gridTemplateColumns: 'repeat(4, 1fr)',
             gridTemplateRows: 'repeat(2, 1fr)',
@@ -261,7 +261,7 @@ export const AllPlacements: Story = {
           {placements.map(placement => (
             <div
               key={placement.value}
-              className="u-d-flex u-align-items-center u-justify-content-center"
+              className="u-flex u-items-center u-justify-center"
             >
               <Dropdown
                 trigger="click"
@@ -316,7 +316,7 @@ export const AllVariants: Story = {
 
     return (
       <div className="u-p-4" style={{ minHeight: '300px' }}>
-        <div className="u-d-flex u-flex-wrap u-gap-3">
+        <div className="u-flex u-flex-wrap u-gap-3">
           {[
             'primary',
             'secondary',
@@ -462,7 +462,7 @@ export const GlassAllVariants: Story = {
           padding: '2rem',
         }}
       >
-        <div className="u-d-flex u-flex-wrap u-gap-3">
+        <div className="u-flex u-flex-wrap u-gap-3">
           {[
             'primary',
             'secondary',

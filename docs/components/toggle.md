@@ -45,7 +45,7 @@ function BasicToggles() {
   return (
     <div className="u-gap-6">
       <div className="u-gap-4">
-        <h3 className="u-fw-semibold">Basic Toggles</h3>
+        <h3 className="u-font-semibold">Basic Toggles</h3>
         <div className="u-gap-3">
           <Toggle 
             checked={settings.notifications}
@@ -98,9 +98,9 @@ function ToggleSizesVariants() {
   return (
     <div className="u-gap-6">
       <div className="u-gap-4">
-        <h3 className="u-fw-semibold">Sizes</h3>
+        <h3 className="u-font-semibold">Sizes</h3>
         <div className="u-gap-3">
-          <div className="u-d-flex u-align-items-center u-gap-3">
+          <div className="u-flex u-items-center u-gap-3">
             <Toggle 
               size="sm"
               checked={toggleStates.small}
@@ -109,7 +109,7 @@ function ToggleSizesVariants() {
             <span>Small toggle</span>
           </div>
           
-          <div className="u-d-flex u-align-items-center u-gap-3">
+          <div className="u-flex u-items-center u-gap-3">
             <Toggle 
               size="md"
               checked={toggleStates.medium}
@@ -118,7 +118,7 @@ function ToggleSizesVariants() {
             <span>Medium toggle (default)</span>
           </div>
           
-          <div className="u-d-flex u-align-items-center u-gap-3">
+          <div className="u-flex u-items-center u-gap-3">
             <Toggle 
               size="lg"
               checked={toggleStates.large}
@@ -130,8 +130,8 @@ function ToggleSizesVariants() {
       </div>
 
       <div className="u-gap-4">
-        <h3 className="u-fw-semibold">Color Variants</h3>
-        <div className="u-d-grid u-grid-cols-2 u-gap-3">
+        <h3 className="u-font-semibold">Color Variants</h3>
+        <div className="u-grid u-grid-cols-2 u-gap-3">
           <Toggle checked variant="primary" label="Primary" />
           <Toggle checked variant="success" label="Success" />
           <Toggle checked variant="warning" label="Warning" />
@@ -231,18 +231,18 @@ function SettingsPanel() {
 
   return (
     <div className="u-mw-100 u-mx-auto u-gap-6">
-      <h2 className="u-fs-2 u-fw-bold">Settings</h2>
+      <h2 className="u-text-2 u-font-bold">Settings</h2>
       
       {settingsGroups.map((group, groupIndex) => (
         <Card key={groupIndex}>
           <div className="u-gap-4">
-            <h3 className="u-fs-lg u-fw-semibold">{group.title}</h3>
+            <h3 className="u-text-lg u-font-semibold">{group.title}</h3>
             <div className="u-gap-4">
               {group.settings.map((setting) => (
-                <div key={setting.key} className="u-d-flex u-align-items-start u-justify-content-between">
+                <div key={setting.key} className="u-flex u-items-start u-justify-between">
                   <div className="u-flex-grow-1 u-me-4">
-                    <div className="u-fw-medium">{setting.label}</div>
-                    <div className="u-fs-sm u-text-secondary u-mt-1">
+                    <div className="u-font-medium">{setting.label}</div>
+                    <div className="u-text-sm u-text-secondary u-mt-1">
                       {setting.description}
                     </div>
                   </div>
@@ -316,17 +316,17 @@ function FeatureToggles() {
   return (
     <Card>
       <div className="u-gap-4">
-        <div className="u-d-flex u-align-items-center u-justify-content-between">
-          <h3 className="u-fs-lg u-fw-semibold">Feature Toggles</h3>
+        <div className="u-flex u-items-center u-justify-between">
+          <h3 className="u-text-lg u-font-semibold">Feature Toggles</h3>
           <Badge label={`${Object.values(features).filter(Boolean).length} enabled`} variant="primary" />
         </div>
         
         <div className="u-gap-4">
           {featureList.map((feature) => (
-            <div key={feature.key} className="u-d-flex u-align-items-start u-justify-content-between u-p-3 u-border u-rounded">
+            <div key={feature.key} className="u-flex u-items-start u-justify-between u-p-3 u-border u-rounded">
               <div className="u-flex-grow-1 u-me-4">
-                <div className="u-d-flex u-align-items-center u-gap-2">
-                  <span className="u-fw-medium">{feature.name}</span>
+                <div className="u-flex u-items-center u-gap-2">
+                  <span className="u-font-medium">{feature.name}</span>
                   {feature.badge && (
                     <Badge 
                       label={feature.badge} 
@@ -335,7 +335,7 @@ function FeatureToggles() {
                     />
                   )}
                 </div>
-                <div className="u-fs-sm u-text-secondary u-mt-1">
+                <div className="u-text-sm u-text-secondary u-mt-1">
                   {feature.description}
                 </div>
               </div>
@@ -436,7 +436,7 @@ function PermissionToggles() {
         <div className="space-y-3">
           {permissionList.map((permission) => (
             <div key={permission.key} className="flex items-center justify-between p-3 border rounded">
-              <div className="u-d-flex u-align-items-center u-gap-3">
+              <div className="u-flex u-items-center u-gap-3">
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                   permissions[permission.key] 
                     ? 'bg-green-100 text-green-600' 

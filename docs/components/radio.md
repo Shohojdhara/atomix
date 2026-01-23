@@ -122,7 +122,7 @@ function HorizontalRadioGroup() {
   const [selected, setSelected] = useState('small');
 
   return (
-    <div className="u-d-flex u-gap-4">
+    <div className="u-flex u-gap-4">
       <Radio
         name="size"
         label="Small"
@@ -486,7 +486,7 @@ function SizeSelector() {
 
   return (
     <FormGroup label="Size" required>
-      <div className="u-d-flex u-gap-4">
+      <div className="u-flex u-gap-4">
         <Radio
           name="size"
           label="Small"

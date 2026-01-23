@@ -161,18 +161,18 @@ const Travel: React.FC = () => {
         style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 1 }}
       >
         <Container>
-          <div className="u-d-flex u-align-items-center u-justify-content-between u-py-4">
-            <div className="u-d-flex u-align-items-center u-gap-2">
+          <div className="u-flex u-items-center u-justify-between u-py-4">
+            <div className="u-flex u-items-center u-gap-2">
               <AtomixLogo />
-              <span className="u-text-xl u-fw-bold">Atomix</span>
+              <span className="u-text-xl u-font-bold">Atomix</span>
             </div>
-            <nav className="u-d-none u-d-md-flex u-align-items-center u-gap-6">
+            <nav className="u-none u-md-flex u-items-center u-gap-6">
               <a href="#features">Features</a>
               <a href="#components">Components</a>
               <a href="#testimonials">Testimonials</a>
               <a href="#pricing">Pricing</a>
             </nav>
-            <div className="u-d-flex u-align-items-center u-gap-3">
+            <div className="u-flex u-items-center u-gap-3">
               <ColorModeToggle />
               <Button variant="outline" size="sm">
                 Documentation
@@ -280,19 +280,19 @@ const Travel: React.FC = () => {
         <Container>
           <Grid>
             <GridCol xs={12} sm={6} md={3} className="u-text-center u-mb-4">
-              <div className="u-fs-2 u-fw-bold u-text-primary">500+</div>
+              <div className="u-text-2 u-font-bold u-text-primary">500+</div>
               <div className="u-text-brand-emphasis">Destinations</div>
             </GridCol>
             <GridCol xs={12} sm={6} md={3} className="u-text-center u-mb-4">
-              <div className="u-fs-2 u-fw-bold u-text-primary">10K+</div>
+              <div className="u-text-2 u-font-bold u-text-primary">10K+</div>
               <div className="u-text-brand-emphasis">Happy Travelers</div>
             </GridCol>
             <GridCol xs={12} sm={6} md={3} className="u-text-center u-mb-4">
-              <div className="u-fs-2 u-fw-bold u-text-primary">4.8/5</div>
+              <div className="u-text-2 u-font-bold u-text-primary">4.8/5</div>
               <div className="u-text-brand-emphasis">Average Rating</div>
             </GridCol>
             <GridCol xs={12} sm={6} md={3} className="u-text-center u-mb-4">
-              <div className="u-fs-2 u-fw-bold u-text-primary">24/7</div>
+              <div className="u-text-2 u-font-bold u-text-primary">24/7</div>
               <div className="u-text-brand-emphasis">Support</div>
             </GridCol>
           </Grid>
@@ -317,9 +317,9 @@ const Travel: React.FC = () => {
                   text={destination.description}
                   className="u-h-100"
                 >
-                  <div className="u-d-flex u-justify-content-between u-align-items-start u-mb-2">
+                  <div className="u-flex u-justify-between u-items-start u-mb-2">
                     <div>
-                      <div className="u-d-flex u-align-items-center u-mb-2">
+                      <div className="u-flex u-items-center u-mb-2">
                         <Rating value={destination.rating} readOnly />
                         <span className="u-text-brand-emphasis u-ms-2">{destination.rating}</span>
                       </div>
@@ -368,7 +368,7 @@ const Travel: React.FC = () => {
                 <Card className="u-h-100">
                   <div className="c-card__body u-p-4 u-text-center">
                     <h3 className="u-mb-4">{pkg.title}</h3>
-                    <div className="u-fs-1 u-fw-bold u-mb-4">{pkg.price}</div>
+                    <div className="u-text-1 u-font-bold u-mb-4">{pkg.price}</div>
                     <List className="u-mb-4">
                       {pkg.features.map((feature, i) => (
                         <li key={i} className="u-mb-2">
@@ -416,7 +416,7 @@ const Travel: React.FC = () => {
       <section className="u-py-8">
         <Container>
           <Callout variant="success">
-            <Row className="u-align-items-center">
+            <Row className="u-items-center">
               <GridCol xs={12} md={8} className="u-mb-4 u-mb-md-0">
                 <h3 className="u-mb-2">Ready for Your Next Adventure?</h3>
                 <p className="u-mb-0">
@@ -444,7 +444,7 @@ const Travel: React.FC = () => {
               <p className="u-text-brand-emphasis u-mb-3">
                 Your trusted partner for unforgettable travel experiences around the globe.
               </p>
-              <div className="u-d-flex u-gap-2">
+              <div className="u-flex u-gap-2">
                 <Button variant="outline-light" size="sm" className="u-rounded-circle">
                   <Icon name="FacebookLogo" />
                 </Button>

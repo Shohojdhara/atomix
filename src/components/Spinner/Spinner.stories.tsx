@@ -49,7 +49,7 @@ export const Default: Story = {
 // Size Variants
 export const Sizes: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-wrap u-gap-3 u-align-items-center">
+    <div className="u-flex u-flex-wrap u-gap-3 u-items-center">
       <Spinner size="sm" />
       <Spinner size="md" />
       <Spinner size="lg" />
@@ -60,7 +60,7 @@ export const Sizes: Story = {
 // Color Variants
 export const ColorVariants: Story = {
   render: () => (
-    <div className="u-d-flex u-flex-wrap u-gap-3 u-align-items-center">
+    <div className="u-flex u-flex-wrap u-gap-3 u-items-center">
       {THEME_COLORS.map(color => (
         <Spinner key={color} variant={color} />
       ))}

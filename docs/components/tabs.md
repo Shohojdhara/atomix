@@ -46,7 +46,7 @@ function BasicTabs() {
       label: 'Overview',
       content: (
         <div className="u-p-4">
-          <h3 className="u-fs-lg u-fw-semibold">Project Overview</h3>
+          <h3 className="u-text-lg u-font-semibold">Project Overview</h3>
           <p>This is the main overview of your project with key metrics and information.</p>
         </div>
       )
@@ -55,7 +55,7 @@ function BasicTabs() {
       label: 'Analytics',
       content: (
         <div className="u-p-4">
-          <h3 className="u-fs-lg u-fw-semibold">Analytics Dashboard</h3>
+          <h3 className="u-text-lg u-font-semibold">Analytics Dashboard</h3>
           <p>Detailed analytics and performance metrics for your application.</p>
         </div>
       )
@@ -64,7 +64,7 @@ function BasicTabs() {
       label: 'Settings',
       content: (
         <div className="u-p-4">
-          <h3 className="u-fs-lg u-fw-semibold">Project Settings</h3>
+          <h3 className="u-text-lg u-font-semibold">Project Settings</h3>
           <p>Configure your project settings here.</p>
         </div>
       )
@@ -249,8 +249,8 @@ function DynamicTabs() {
 
   return (
     <div className="u-gap-4">
-      <div className="u-d-flex u-justify-content-between u-align-items-center">
-        <h3 className="u-fs-lg u-fw-semibold">Dynamic Tabs</h3>
+      <div className="u-flex u-justify-between u-items-center">
+        <h3 className="u-text-lg u-font-semibold">Dynamic Tabs</h3>
         <Button 
           label="Add Tab"
           variant="primary"

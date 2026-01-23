@@ -60,8 +60,8 @@ const basicSlides: SliderSlide[] = [
         }}
       >
         <div className="u-text-center">
-          <h2 className="u-fs-3 u-c-white u-mb-3">Welcome to Atomix</h2>
-          <p className="u-fs-base u-c-white u-mb-4">
+          <h2 className="u-text-3 u-c-white u-mb-3">Welcome to Atomix</h2>
+          <p className="u-text-base u-c-white u-mb-4">
             A modern design system for building responsive interfaces
           </p>
           <Button variant="primary">Get Started</Button>
@@ -84,8 +84,8 @@ const basicSlides: SliderSlide[] = [
         }}
       >
         <div className="u-text-center">
-          <h2 className="u-fs-3 u-c-white u-mb-3">Flexible Components</h2>
-          <p className="u-fs-base u-c-white u-mb-4">
+          <h2 className="u-text-3 u-c-white u-mb-3">Flexible Components</h2>
+          <p className="u-text-base u-c-white u-mb-4">
             Build with reusable and customizable components
           </p>
           <Button variant="light">Learn More</Button>
@@ -108,8 +108,8 @@ const basicSlides: SliderSlide[] = [
         }}
       >
         <div className="u-text-center">
-          <h2 className="u-fs-3 u-c-white u-mb-3">Easy to Use</h2>
-          <p className="u-fs-base u-c-white u-mb-4">Simple API and comprehensive documentation</p>
+          <h2 className="u-text-3 u-c-white u-mb-3">Easy to Use</h2>
+          <p className="u-text-base u-c-white u-mb-4">Simple API and comprehensive documentation</p>
           <Button variant="light">View Docs</Button>
         </div>
       </div>
@@ -130,8 +130,8 @@ const basicSlides: SliderSlide[] = [
         }}
       >
         <div className="u-text-center">
-          <h2 className="u-fs-3 u-c-white u-mb-3">Fully Responsive</h2>
-          <p className="u-fs-base u-c-white u-mb-4">
+          <h2 className="u-text-3 u-c-white u-mb-3">Fully Responsive</h2>
+          <p className="u-text-base u-c-white u-mb-4">
             Works on all device sizes from mobile to desktop
           </p>
           <Button variant="dark">See Demo</Button>
@@ -154,8 +154,8 @@ const basicSlides: SliderSlide[] = [
         }}
       >
         <div className="u-text-center">
-          <h2 className="u-fs-3 u-c-white u-mb-3">Accessible Design</h2>
-          <p className="u-fs-base u-c-white u-mb-4">WCAG 2.1 AA compliant for all users</p>
+          <h2 className="u-text-3 u-c-white u-mb-3">Accessible Design</h2>
+          <p className="u-text-base u-c-white u-mb-4">WCAG 2.1 AA compliant for all users</p>
           <Button variant="info">Learn More</Button>
         </div>
       </div>
@@ -176,8 +176,8 @@ const basicSlides: SliderSlide[] = [
         }}
       >
         <div className="u-text-center">
-          <h2 className="u-fs-3 u-c-white u-mb-3">Themeable</h2>
-          <p className="u-fs-base u-c-white u-mb-4">
+          <h2 className="u-text-3 u-c-white u-mb-3">Themeable</h2>
+          <p className="u-text-base u-c-white u-mb-4">
             Easily customize colors, spacing and typography
           </p>
           <Button variant="warning">View Themes</Button>
@@ -200,8 +200,8 @@ const basicSlides: SliderSlide[] = [
         }}
       >
         <div className="u-text-center">
-          <h2 className="u-fs-3 u-c-white u-mb-3">Performance Focused</h2>
-          <p className="u-fs-base u-c-white u-mb-4">
+          <h2 className="u-text-3 u-c-white u-mb-3">Performance Focused</h2>
+          <p className="u-text-base u-c-white u-mb-4">
             Optimized for fast loading and smooth interactions
           </p>
           <Button variant="success">See Benchmarks</Button>
@@ -224,8 +224,8 @@ const basicSlides: SliderSlide[] = [
         }}
       >
         <div className="u-text-center">
-          <h2 className="u-fs-3 u-c-white u-mb-3">Developer Friendly</h2>
-          <p className="u-fs-base u-c-white u-mb-4">Well documented with clear APIs and examples</p>
+          <h2 className="u-text-3 u-c-white u-mb-3">Developer Friendly</h2>
+          <p className="u-text-base u-c-white u-mb-4">Well documented with clear APIs and examples</p>
           <Button variant="primary">View Docs</Button>
         </div>
       </div>
@@ -246,8 +246,8 @@ const basicSlides: SliderSlide[] = [
         }}
       >
         <div className="u-text-center">
-          <h2 className="u-fs-3 u-c-white u-mb-3">Modular Components</h2>
-          <p className="u-fs-base u-c-white u-mb-4">
+          <h2 className="u-text-3 u-c-white u-mb-3">Modular Components</h2>
+          <p className="u-text-base u-c-white u-mb-4">
             Import only what you need to reduce bundle size
           </p>
           <Button variant="dark">See Components</Button>
@@ -270,8 +270,8 @@ const basicSlides: SliderSlide[] = [
         }}
       >
         <div className="u-text-center">
-          <h2 className="u-fs-3 u-c-white u-mb-3">Cross Browser</h2>
-          <p className="u-fs-base u-c-white u-mb-4">
+          <h2 className="u-text-3 u-c-white u-mb-3">Cross Browser</h2>
+          <p className="u-text-base u-c-white u-mb-4">
             Consistent experience across all modern browsers
           </p>
           <Button variant="secondary">View Support</Button>
@@ -294,8 +294,8 @@ const basicSlides: SliderSlide[] = [
         }}
       >
         <div className="u-text-center">
-          <h2 className="u-fs-3 u-c-white u-mb-3">RTL Support</h2>
-          <p className="u-fs-base u-c-white u-mb-4">Full right-to-left language support built-in</p>
+          <h2 className="u-text-3 u-c-white u-mb-3">RTL Support</h2>
+          <p className="u-text-base u-c-white u-mb-4">Full right-to-left language support built-in</p>
           <Button variant="info">Learn More</Button>
         </div>
       </div>
@@ -316,8 +316,8 @@ const basicSlides: SliderSlide[] = [
         }}
       >
         <div className="u-text-center">
-          <h2 className="u-fs-3 u-c-white u-mb-3">Open Source</h2>
-          <p className="u-fs-base u-c-white u-mb-4">Free to use and contribute to the community</p>
+          <h2 className="u-text-3 u-c-white u-mb-3">Open Source</h2>
+          <p className="u-text-base u-c-white u-mb-4">Free to use and contribute to the community</p>
           <Button variant="success">View on GitHub</Button>
         </div>
       </div>
@@ -341,11 +341,11 @@ const productSlides: SliderSlide[] = [
               borderRadius: '4px',
             }}
           />
-          <h3 className="u-fs-4 u-fw-bold u-mb-2">Premium Plan</h3>
-          <p className="u-fs-sm u-c-muted u-mb-3">Perfect for small teams and growing businesses</p>
+          <h3 className="u-text-4 u-font-bold u-mb-2">Premium Plan</h3>
+          <p className="u-text-sm u-c-muted u-mb-3">Perfect for small teams and growing businesses</p>
           <div className="u-mb-4">
-            <span className="u-fs-1 u-fw-bold">$29</span>
-            <span className="u-fs-sm u-c-muted">/month</span>
+            <span className="u-text-1 u-font-bold">$29</span>
+            <span className="u-text-sm u-c-muted">/month</span>
           </div>
           <Button variant="primary" className="u-w-100">
             Get Started
@@ -368,11 +368,11 @@ const productSlides: SliderSlide[] = [
               borderRadius: '4px',
             }}
           />
-          <h3 className="u-fs-4 u-fw-bold u-mb-2">Business Plan</h3>
-          <p className="u-fs-sm u-c-muted u-mb-3">For established teams with advanced needs</p>
+          <h3 className="u-text-4 u-font-bold u-mb-2">Business Plan</h3>
+          <p className="u-text-sm u-c-muted u-mb-3">For established teams with advanced needs</p>
           <div className="u-mb-4">
-            <span className="u-fs-1 u-fw-bold">$79</span>
-            <span className="u-fs-sm u-c-muted">/month</span>
+            <span className="u-text-1 u-font-bold">$79</span>
+            <span className="u-text-sm u-c-muted">/month</span>
           </div>
           <Button variant="secondary" className="u-w-100">
             Get Started
@@ -395,10 +395,10 @@ const productSlides: SliderSlide[] = [
               borderRadius: '4px',
             }}
           />
-          <h3 className="u-fs-4 u-fw-bold u-mb-2">Enterprise Plan</h3>
-          <p className="u-fs-sm u-c-muted u-mb-3">Custom solutions for large organizations</p>
+          <h3 className="u-text-4 u-font-bold u-mb-2">Enterprise Plan</h3>
+          <p className="u-text-sm u-c-muted u-mb-3">Custom solutions for large organizations</p>
           <div className="u-mb-4">
-            <span className="u-fs-1 u-fw-bold">Custom</span>
+            <span className="u-text-1 u-font-bold">Custom</span>
           </div>
           <Button variant="dark" className="u-w-100">
             Contact Sales
@@ -421,11 +421,11 @@ const productSlides: SliderSlide[] = [
               borderRadius: '4px',
             }}
           />
-          <h3 className="u-fs-4 u-fw-bold u-mb-2">Developer Plan</h3>
-          <p className="u-fs-sm u-c-muted u-mb-3">For developers and technical teams</p>
+          <h3 className="u-text-4 u-font-bold u-mb-2">Developer Plan</h3>
+          <p className="u-text-sm u-c-muted u-mb-3">For developers and technical teams</p>
           <div className="u-mb-4">
-            <span className="u-fs-1 u-fw-bold">$49</span>
-            <span className="u-fs-sm u-c-muted">/month</span>
+            <span className="u-text-1 u-font-bold">$49</span>
+            <span className="u-text-sm u-c-muted">/month</span>
           </div>
           <Button variant="info" className="u-w-100">
             Get Started
@@ -443,7 +443,7 @@ const testimonialSlides: SliderSlide[] = [
     content: (
       <Card className="u-h-100">
         <div className="u-p-5 u-text-center">
-          <div className="u-mb-4 u-d-flex u-justify-content-center">
+          <div className="u-mb-4 u-flex u-justify-center">
             <div
               style={{
                 width: '60px',
@@ -453,12 +453,12 @@ const testimonialSlides: SliderSlide[] = [
               }}
             />
           </div>
-          <p className="u-fs-base u-fst-italic u-mb-4">
+          <p className="u-text-base u-fst-italic u-mb-4">
             "Atomix has completely transformed how we build our user interfaces. The components are
             intuitive and the design system is consistent across all our products."
           </p>
-          <h4 className="u-fs-4 u-fw-bold">Jane Cooper</h4>
-          <p className="u-fs-sm u-c-muted">Product Designer, TechCorp</p>
+          <h4 className="u-text-4 u-font-bold">Jane Cooper</h4>
+          <p className="u-text-sm u-c-muted">Product Designer, TechCorp</p>
         </div>
       </Card>
     ),
@@ -468,7 +468,7 @@ const testimonialSlides: SliderSlide[] = [
     content: (
       <Card className="u-h-100">
         <div className="u-p-5 u-text-center">
-          <div className="u-mb-4 u-d-flex u-justify-content-center">
+          <div className="u-mb-4 u-flex u-justify-center">
             <div
               style={{
                 width: '60px',
@@ -478,12 +478,12 @@ const testimonialSlides: SliderSlide[] = [
               }}
             />
           </div>
-          <p className="u-fs-base u-fst-italic u-mb-4">
+          <p className="u-text-base u-fst-italic u-mb-4">
             "Implementing Atomix reduced our development time by 40%. The documentation is excellent
             and the components are highly customizable."
           </p>
-          <h4 className="u-fs-4 u-fw-bold">John Doe</h4>
-          <p className="u-fs-sm u-c-muted">Frontend Developer, StartupX</p>
+          <h4 className="u-text-4 u-font-bold">John Doe</h4>
+          <p className="u-text-sm u-c-muted">Frontend Developer, StartupX</p>
         </div>
       </Card>
     ),
@@ -493,7 +493,7 @@ const testimonialSlides: SliderSlide[] = [
     content: (
       <Card className="u-h-100">
         <div className="u-p-5 u-text-center">
-          <div className="u-mb-4 u-d-flex u-justify-content-center">
+          <div className="u-mb-4 u-flex u-justify-center">
             <div
               style={{
                 width: '60px',
@@ -503,12 +503,12 @@ const testimonialSlides: SliderSlide[] = [
               }}
             />
           </div>
-          <p className="u-fs-base u-fst-italic u-mb-4">
+          <p className="u-text-base u-fst-italic u-mb-4">
             "The accessibility features in Atomix are impressive. Our products now meet WCAG 2.1 AA
             standards with minimal effort."
           </p>
-          <h4 className="u-fs-4 u-fw-bold">Sarah Johnson</h4>
-          <p className="u-fs-sm u-c-muted">Accessibility Lead, InclusiveTech</p>
+          <h4 className="u-text-4 u-font-bold">Sarah Johnson</h4>
+          <p className="u-text-sm u-c-muted">Accessibility Lead, InclusiveTech</p>
         </div>
       </Card>
     ),
@@ -522,9 +522,9 @@ const featureSlides: SliderSlide[] = [
     content: (
       <div className="u-h-100" style={{ display: 'flex', alignItems: 'center' }}>
         <div className="o-grid u-w-100">
-          <div className="o-grid__col u-col-12 u-col-md-6 u-d-flex u-flex-column u-justify-content-center u-p-5">
-            <h2 className="u-fs-3 u-fw-bold u-mb-3">Responsive Design</h2>
-            <p className="u-fs-base u-c-muted u-mb-4">
+          <div className="o-grid__col u-col-12 u-col-md-6 u-flex u-flex-column u-justify-center u-p-5">
+            <h2 className="u-text-3 u-font-bold u-mb-3">Responsive Design</h2>
+            <p className="u-text-base u-c-muted u-mb-4">
               All components are built with mobile-first responsive design principles, ensuring your
               interfaces look great on any device.
             </p>
@@ -532,7 +532,7 @@ const featureSlides: SliderSlide[] = [
               <Button variant="primary">Learn More</Button>
             </div>
           </div>
-          <div className="o-grid__col u-col-12 u-col-md-6 u-d-flex u-align-items-center u-justify-content-center u-p-5">
+          <div className="o-grid__col u-col-12 u-col-md-6 u-flex u-items-center u-justify-center u-p-5">
             <div
               className="u-w-100 u-h-100"
               style={{
@@ -558,9 +558,9 @@ const featureSlides: SliderSlide[] = [
     content: (
       <div className="u-h-100" style={{ display: 'flex', alignItems: 'center' }}>
         <div className="o-grid u-w-100">
-          <div className="o-grid__col u-col-12 u-col-md-6 u-d-flex u-flex-column u-justify-content-center u-p-5">
-            <h2 className="u-fs-3 u-fw-bold u-mb-3">Accessibility</h2>
-            <p className="u-fs-base u-c-muted u-mb-4">
+          <div className="o-grid__col u-col-12 u-col-md-6 u-flex u-flex-column u-justify-center u-p-5">
+            <h2 className="u-text-3 u-font-bold u-mb-3">Accessibility</h2>
+            <p className="u-text-base u-c-muted u-mb-4">
               Built with WCAG 2.1 AA compliance in mind, ensuring your applications are usable by
               everyone, including people with disabilities.
             </p>
@@ -568,7 +568,7 @@ const featureSlides: SliderSlide[] = [
               <Button variant="secondary">Accessibility Guide</Button>
             </div>
           </div>
-          <div className="o-grid__col u-col-12 u-col-md-6 u-d-flex u-align-items-center u-justify-content-center u-p-5">
+          <div className="o-grid__col u-col-12 u-col-md-6 u-flex u-items-center u-justify-center u-p-5">
             <div
               className="u-w-100 u-h-100"
               style={{
@@ -594,9 +594,9 @@ const featureSlides: SliderSlide[] = [
     content: (
       <div className="u-h-100" style={{ display: 'flex', alignItems: 'center' }}>
         <div className="o-grid u-w-100">
-          <div className="o-grid__col u-col-12 u-col-md-6 u-d-flex u-flex-column u-justify-content-center u-p-5">
-            <h2 className="u-fs-3 u-fw-bold u-mb-3">Customizable</h2>
-            <p className="u-fs-base u-c-muted u-mb-4">
+          <div className="o-grid__col u-col-12 u-col-md-6 u-flex u-flex-column u-justify-center u-p-5">
+            <h2 className="u-text-3 u-font-bold u-mb-3">Customizable</h2>
+            <p className="u-text-base u-c-muted u-mb-4">
               Easily customize colors, spacing, typography and more through CSS variables or SCSS
               mixins to match your brand identity.
             </p>
@@ -604,7 +604,7 @@ const featureSlides: SliderSlide[] = [
               <Button variant="success">Customization Guide</Button>
             </div>
           </div>
-          <div className="o-grid__col u-col-12 u-col-md-6 u-d-flex u-align-items-center u-justify-content-center u-p-5">
+          <div className="o-grid__col u-col-12 u-col-md-6 u-flex u-items-center u-justify-center u-p-5">
             <div
               className="u-w-100 u-h-100"
               style={{

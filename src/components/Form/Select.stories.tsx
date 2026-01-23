@@ -93,7 +93,7 @@ export const Interactive: Story = {
     };
 
     return (
-      <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+      <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
         <Select
           options={countries}
           placeholder="Select a country"
@@ -116,7 +116,7 @@ export const Sizes: Story = {
     options: countries,
   },
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <Select size="sm" options={countries} placeholder="Small select" />
       <Select size="md" options={countries} placeholder="Medium select (default)" />
       <Select size="lg" options={countries} placeholder="Large select" />
@@ -130,7 +130,7 @@ export const States: Story = {
     options: countries,
   },
   render: () => (
-    <div className="u-d-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
+    <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
       <Select options={countries} placeholder="Default select" />
       <Select options={countries} placeholder="Disabled select" disabled />
       <Select options={countries} placeholder="Valid select" valid value="us" />
@@ -272,7 +272,7 @@ export const GlassStates: Story = {
         >
           Glass Select States
         </h3>
-        <div className="u-d-flex u-flex-column u-gap-3">
+        <div className="u-flex u-flex-column u-gap-3">
           <Select options={args.options} placeholder="Glass Select" glass />
           <Select options={args.options} placeholder="Glass Disabled" disabled glass />
           <Select options={args.options} placeholder="Glass Valid" valid value="us" glass />

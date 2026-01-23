@@ -140,18 +140,18 @@ const Portfolio: React.FC = () => {
         style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 1 }}
       >
         <Container>
-          <div className="u-d-flex u-align-items-center u-justify-content-between u-py-4">
-            <div className="u-d-flex u-align-items-center u-gap-2">
+          <div className="u-flex u-items-center u-justify-between u-py-4">
+            <div className="u-flex u-items-center u-gap-2">
               <AtomixLogo />
-              <span className="u-text-xl u-fw-bold">Atomix</span>
+              <span className="u-text-xl u-font-bold">Atomix</span>
             </div>
-            <nav className="u-d-none u-d-md-flex u-align-items-center u-gap-6">
+            <nav className="u-none u-md-flex u-items-center u-gap-6">
               <a href="#features">Features</a>
               <a href="#components">Components</a>
               <a href="#testimonials">Testimonials</a>
               <a href="#pricing">Pricing</a>
             </nav>
-            <div className="u-d-flex u-align-items-center u-gap-3">
+            <div className="u-flex u-items-center u-gap-3">
               <ColorModeToggle />
               <Button variant="outline" size="sm">
                 Documentation
@@ -244,7 +244,7 @@ const Portfolio: React.FC = () => {
                     <h3 className="u-text-xl u-font-semibold u-mb-3">Skills & Expertise</h3>
                     {skills.map((skill, index) => (
                       <div key={index} className="u-mb-3">
-                        <div className="u-d-flex u-justify-between u-mb-1">
+                        <div className="u-flex u-justify-between u-mb-1">
                           <span>{skill.name}</span>
                           <span>{skill.level}%</span>
                         </div>
@@ -260,25 +260,25 @@ const Portfolio: React.FC = () => {
               <GridCol lg={6}>
                 <div className="u-py-8">
                   <Card>
-                    <div className="u-d-flex u-flex-column u-h-100">
+                    <div className="u-flex u-flex-column u-h-100">
                       <div className="u-flex-grow-1">
                         <h3 className="u-text-xl u-font-semibold u-mb-4">Component Showcase</h3>
 
                         <div className="u-mb-4">
-                          <div className="u-d-flex u-gap-2 u-mb-3">
+                          <div className="u-flex u-gap-2 u-mb-3">
                             <Badge label="Primary" variant="primary" />
                             <Badge label="Secondary" variant="secondary" />
                             <Badge label="Success" variant="success" />
                             <Badge label="Warning" variant="warning" />
                           </div>
 
-                          <div className="u-d-flex u-gap-2 u-mb-3">
+                          <div className="u-flex u-gap-2 u-mb-3">
                             <Button size="small" label="Small" />
                             <Button label="Medium" />
                             <Button size="large" label="Large" />
                           </div>
 
-                          <div className="u-d-flex u-gap-2 u-mb-3">
+                          <div className="u-flex u-gap-2 u-mb-3">
                             <Button variant="secondary" label="Secondary" />
                             <Button variant="ghost" label="Ghost" />
                             <Button variant="link" label="Link" />
@@ -305,8 +305,8 @@ const Portfolio: React.FC = () => {
                       </div>
 
                       <div className="u-pt-4 u-border-t u-border-gray-200 dark:u-border-gray-700">
-                        <div className="u-d-flex u-justify-between u-items-center">
-                          <div className="u-d-flex u-items-center u-gap-2">
+                        <div className="u-flex u-justify-between u-items-center">
+                          <div className="u-flex u-items-center u-gap-2">
                             <Avatar
                               src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&h=100&q=80"
                               alt="User"
@@ -347,19 +347,19 @@ const Portfolio: React.FC = () => {
                   {projects.map((project, index) => (
                     <GridCol md={6} lg={4} key={index}>
                       <Card>
-                        <div className="u-mb-4 u-h-48 u-bg-gray-200 dark:u-bg-gray-700 u-rounded u-d-flex u-items-center u-justify-center">
+                        <div className="u-mb-4 u-h-48 u-bg-gray-200 dark:u-bg-gray-700 u-rounded u-flex u-items-center u-justify-center">
                           <Icon name="FigmaLogo" size={48} />
                         </div>
                         <h3 className="u-text-xl u-font-semibold u-mb-2">{project.title}</h3>
                         <p className="u-text-gray-700 dark:u-text-gray-300 u-mb-4">
                           {project.description}
                         </p>
-                        <div className="u-d-flex u-gap-2 u-flex-wrap u-mb-4">
+                        <div className="u-flex u-gap-2 u-flex-wrap u-mb-4">
                           {project.tags.map((tag, tagIndex) => (
                             <Badge key={tagIndex} label={tag} variant="secondary" />
                           ))}
                         </div>
-                        <div className="u-d-flex u-gap-2">
+                        <div className="u-flex u-gap-2">
                           <Button size="small" label="View Details" />
                           <Button size="small" variant="secondary" label="Source Code" />
                         </div>
@@ -439,7 +439,7 @@ const Portfolio: React.FC = () => {
                       <Textarea placeholder="Enter your message" rows={4} />
                     </FormGroup>
 
-                    <div className="u-d-flex u-gap-2 u-mt-4">
+                    <div className="u-flex u-gap-2 u-mt-4">
                       <Button label="Submit" />
                       <Button variant="secondary" label="Reset" />
                     </div>
@@ -488,7 +488,7 @@ const Portfolio: React.FC = () => {
                         { number: '4', text: 'Deploy' },
                       ]}
                     />
-                    <div className="u-d-flex u-gap-2 u-mt-3">
+                    <div className="u-flex u-gap-2 u-mt-3">
                       <Button
                         size="small"
                         label="Previous"
@@ -504,7 +504,7 @@ const Portfolio: React.FC = () => {
 
                   <div>
                     <h4 className="u-font-semibold u-mb-2">Other Components</h4>
-                    <div className="u-d-flex u-gap-2 u-flex-wrap">
+                    <div className="u-flex u-gap-2 u-flex-wrap">
                       <Button label="Open Modal" onClick={() => setIsModalOpen(true)} />
                       <Button label="Photo Viewer" onClick={() => setIsPhotoViewerOpen(true)} />
                       <Button label="Messages" onClick={() => setIsMessagesOpen(true)} />
@@ -572,7 +572,7 @@ const Portfolio: React.FC = () => {
               <p className="u-text-gray-400 u-mb-4">
                 Stay updated with the latest releases and features.
               </p>
-              <div className="u-d-flex">
+              <div className="u-flex">
                 <Input placeholder="Your email" className="u-flex-grow-1" />
                 <Button className="u-ml-2" label="Subscribe" />
               </div>

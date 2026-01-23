@@ -177,18 +177,18 @@ const Saas: React.FC = () => {
         style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 1 }}
       >
         <Container>
-          <div className="u-d-flex u-align-items-center u-justify-content-between u-py-4">
-            <div className="u-d-flex u-align-items-center u-gap-2">
+          <div className="u-flex u-items-center u-justify-between u-py-4">
+            <div className="u-flex u-items-center u-gap-2">
               <AtomixLogo />
-              <span className="u-text-xl u-fw-bold">Atomix</span>
+              <span className="u-text-xl u-font-bold">Atomix</span>
             </div>
-            <nav className="u-d-none u-d-md-flex u-align-items-center u-gap-6">
+            <nav className="u-none u-md-flex u-items-center u-gap-6">
               <a href="#features">Features</a>
               <a href="#components">Components</a>
               <a href="#testimonials">Testimonials</a>
               <a href="#pricing">Pricing</a>
             </nav>
-            <div className="u-d-flex u-align-items-center u-gap-3">
+            <div className="u-flex u-items-center u-gap-3">
               <ColorModeToggle />
               <Button variant="outline" size="sm">
                 Documentation
@@ -219,9 +219,9 @@ const Saas: React.FC = () => {
       {/* Logo Cloud */}
       <section className="u-py-5 u-bg-light-subtle">
         <Container>
-          <Row className="u-justify-content-center">
+          <Row className="u-justify-center">
             <GridCol xs={12} className="u-text-center u-mb-4">
-              <h3 className="u-text-muted u-fw-normal u-mb-0">Trusted by industry leaders</h3>
+              <h3 className="u-text-muted u-font-normal u-mb-0">Trusted by industry leaders</h3>
             </GridCol>
             <GridCol xs={2} className="u-text-center">
               <div className="u-bg-secondary u-rounded u-p-3">Logo</div>
@@ -269,19 +269,19 @@ const Saas: React.FC = () => {
         <Container>
           <Grid>
             <GridCol xs={12} sm={6} md={3} className="u-text-center u-mb-4">
-              <div className="u-fs-2 u-fw-bold">10K+</div>
+              <div className="u-text-2 u-font-bold">10K+</div>
               <div className="u-text-primary-emphasis">Active Users</div>
             </GridCol>
             <GridCol xs={12} sm={6} md={3} className="u-text-center u-mb-4">
-              <div className="u-fs-2 u-fw-bold">99.9%</div>
+              <div className="u-text-2 u-font-bold">99.9%</div>
               <div className="u-text-primary-emphasis">Uptime</div>
             </GridCol>
             <GridCol xs={12} sm={6} md={3} className="u-text-center u-mb-4">
-              <div className="u-fs-2 u-fw-bold">4.9/5</div>
+              <div className="u-text-2 u-font-bold">4.9/5</div>
               <div className="u-text-primary-emphasis">Customer Rating</div>
             </GridCol>
             <GridCol xs={12} sm={6} md={3} className="u-text-center u-mb-4">
-              <div className="u-fs-2 u-fw-bold">24/7</div>
+              <div className="u-text-2 u-font-bold">24/7</div>
               <div className="u-text-primary-emphasis">Support</div>
             </GridCol>
           </Grid>
@@ -384,7 +384,7 @@ const Saas: React.FC = () => {
                     <h3 className="u-mb-2">{plan.name}</h3>
                     <p className="u-text-muted u-mb-3">{plan.description}</p>
                     <div className="u-mb-3">
-                      <span className="u-fs-1 u-fw-bold">
+                      <span className="u-text-1 u-font-bold">
                         ${isAnnual ? plan.annualPrice : plan.monthlyPrice}
                       </span>
                       <span className="u-text-muted">/{plan.priceSuffix}</span>
@@ -421,7 +421,7 @@ const Saas: React.FC = () => {
             text="Everything you need to know about the platform."
             className="u-text-center u-mb-6"
           />
-          <Row className="u-justify-content-center">
+          <Row className="u-justify-center">
             <GridCol xs={12} md={8}>
               <Tabs items={faqTabs} />
             </GridCol>
@@ -516,7 +516,7 @@ const Saas: React.FC = () => {
             <GridCol xs={12} md={4} className="u-mb-4">
               <h5 className="u-mb-3">Subscribe to our newsletter</h5>
               <p className="u-text-muted u-mb-3">Get the latest news and updates.</p>
-              <div className="u-d-flex">
+              <div className="u-flex">
                 <input
                   type="email"
                   placeholder="Enter your email"

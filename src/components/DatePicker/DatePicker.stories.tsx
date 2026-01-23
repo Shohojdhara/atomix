@@ -135,7 +135,7 @@ export const DateRangeSelection: Story = {
     return (
       <div
         style={{ width: '300px' }}
-        className="u-d-flex u-flex-column u-gap-4 u-mt-20 u-mx-auto u-items-center"
+        className="u-flex u-flex-column u-gap-4 u-mt-20 u-mx-auto u-items-center"
       >
         <DatePicker
           {...args}
@@ -875,9 +875,9 @@ export const DateRangeWithLimits: Story = {
     return (
       <div
         style={{ width: '400px' }}
-        className="u-d-flex u-flex-column u-gap-4 u-mt-20 u-mx-auto u-items-center"
+        className="u-flex u-flex-column u-gap-4 u-mt-20 u-mx-auto u-items-center"
       >
-        <p className="u-text-info u-px-2 u-py-4 u-bg-info-subtle u-fs-xs u-text-center">
+        <p className="u-text-info u-px-2 u-py-4 u-bg-info-subtle u-text-xs u-text-center">
           Select a date range between {minDate.toLocaleDateString()} and{' '}
           {maxDate.toLocaleDateString()}
         </p>
@@ -913,7 +913,7 @@ export const InlineRangeSelection: Story = {
     return (
       <div
         style={{ width: '300px' }}
-        className="u-d-flex u-flex-column u-gap-4 u-mt-20 u-mx-auto u-items-center"
+        className="u-flex u-flex-column u-gap-4 u-mt-20 u-mx-auto u-items-center"
       >
         <DatePicker
           {...args}
@@ -950,7 +950,7 @@ export const Sizes: Story = {
     return (
       <div
         style={{ width: '300px' }}
-        className={'u-d-flex u-flex-column u-gap-4 u-mt-20 u-mx-auto u-items-center'}
+        className={'u-flex u-flex-column u-gap-4 u-mt-20 u-mx-auto u-items-center'}
       >
         <DatePicker {...args} size="sm" placeholder="Small (sm)" value={date} onChange={setDate} />
         <DatePicker {...args} size="md" placeholder="Medium (md)" value={date} onChange={setDate} />
@@ -1003,7 +1003,7 @@ export const DifferentFormats: Story = {
     const [date3, setDate3] = useState<Date | null>(initialDate);
 
     return (
-      <div className="u-w-75 u-mx-auto u-mt-20 u-d-flex u-gap-3">
+      <div className="u-w-75 u-mx-auto u-mt-20 u-flex u-gap-3">
         <DatePicker
           {...args}
           format="MM/dd/yyyy"

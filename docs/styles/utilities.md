@@ -18,8 +18,8 @@ Examples:
 - `.u-m-4` - Margin 1rem (4 * 0.25rem)
 - `.u-p-8` - Padding 2rem (8 * 0.25rem)
 - `.u-text-center` - Center text alignment
-- `.u-d-flex` - Display flex
-- `.u-justify-content-center` - Justify content center
+- `.u-flex` - Display flex
+- `.u-justify-center` - Justify content center
 
 ## Spacing Utilities
 
@@ -107,13 +107,13 @@ Examples:
 ### Display Classes
 
 ```css
-.u-d-block
-.u-d-inline
-.u-d-inline-block
-.u-d-flex
-.u-d-inline-flex
-.u-d-grid
-.u-d-none
+.u-block
+.u-inline
+.u-inline-block
+.u-flex
+.u-inline-flex
+.u-grid
+.u-none
 .u-visually-hidden    /* visually hidden but accessible */
 ```
 
@@ -121,8 +121,8 @@ Examples:
 
 ```css
 /* Flex container */
-.u-d-flex
-.u-d-inline-flex
+.u-flex
+.u-inline-flex
 
 /* Direction */
 .u-flex-row
@@ -136,19 +136,19 @@ Examples:
 .u-flex-wrap-reverse
 
 /* Justify content */
-.u-justify-content-start
-.u-justify-content-end
-.u-justify-content-center
-.u-justify-content-between
-.u-justify-content-around
-.u-justify-content-evenly
+.u-justify-start
+.u-justify-end
+.u-justify-center
+.u-justify-between
+.u-justify-around
+.u-justify-evenly
 
 /* Align items */
-.u-align-items-start
-.u-align-items-end
-.u-align-items-center
-.u-align-items-baseline
-.u-align-items-stretch
+.u-items-start
+.u-items-end
+.u-items-center
+.u-items-baseline
+.u-items-stretch
 
 /* Align content */
 .u-align-content-start
@@ -233,20 +233,20 @@ Examples:
 
 ```html
 <!-- Flex layout -->
-<div class="u-d-flex u-justify-content-between u-align-items-center u-p-4">
+<div class="u-flex u-justify-between u-items-center u-p-4">
   <h2>Page Title</h2>
   <button class="c-button c-button--primary">Action</button>
 </div>
 
 <!-- Grid layout -->
-<div class="u-d-grid u-grid-cols-3 u-gap-4">
+<div class="u-grid u-grid-cols-3 u-gap-4">
   <div class="c-card">Card 1</div>
   <div class="c-card">Card 2</div>
   <div class="c-card u-col-span-2">Wide Card</div>
 </div>
 
 <!-- Centered content -->
-<div class="u-d-flex u-justify-content-center u-align-items-center u-min-vh-100">
+<div class="u-flex u-justify-center u-items-center u-min-vh-100">
   <div class="c-card u-p-8">
     <h2 class="u-text-center">Centered Card</h2>
   </div>
@@ -266,13 +266,13 @@ Examples:
 ### Font Weight
 
 ```css
-.u-fw-light      /* 300 */
-.u-fw-normal     /* 400 */
-.u-fw-medium     /* 500 */
-.u-fw-semibold   /* 600 */
-.u-fw-bold       /* 700 */
+.u-font-light      /* 300 */
+.u-font-normal     /* 400 */
+.u-font-medium     /* 500 */
+.u-font-semibold   /* 600 */
+.u-font-bold       /* 700 */
 .u-fw-heavy      /* 800 */
-.u-fw-black      /* 900 */
+.u-font-black      /* 900 */
 ```
 
 ### Font Style
@@ -286,19 +286,19 @@ Examples:
 
 ```css
 /* Heading sizes */
-.u-fs-1         /* 2.5rem */
-.u-fs-2         /* 2rem */
-.u-fs-3         /* 1.5rem */
-.u-fs-4         /* 1.25rem */
-.u-fs-5         /* 1.125rem */
-.u-fs-6         /* 1rem */
+.u-text-1         /* 2.5rem */
+.u-text-2         /* 2rem */
+.u-text-3         /* 1.5rem */
+.u-text-4         /* 1.25rem */
+.u-text-5         /* 1.125rem */
+.u-text-6         /* 1rem */
 
 /* Named sizes */
-.u-fs-xs        /* 0.75rem */
-.u-fs-sm        /* 0.875rem */
-.u-fs-base      /* 1rem */
-.u-fs-md        /* 1.125rem */
-.u-fs-lg        /* 1.25rem */
+.u-text-xs        /* 0.75rem */
+.u-text-sm        /* 0.875rem */
+.u-text-base      /* 1rem */
+.u-text-md        /* 1.125rem */
+.u-text-lg        /* 1.25rem */
 ```
 
 ### Line Height
@@ -339,15 +339,15 @@ Examples:
 ```html
 <!-- Typography hierarchy -->
 <article class="u-p-6">
-  <h1 class="u-fs-1 u-fw-bold u-mb-4">Article Title</h1>
-  <p class="u-fs-lg u-text-secondary u-mb-6">Article subtitle</p>
-  <p class="u-fs-base u-lh-lg">Article content with good readability.</p>
+  <h1 class="u-text-1 u-font-bold u-mb-4">Article Title</h1>
+  <p class="u-text-lg u-text-secondary u-mb-6">Article subtitle</p>
+  <p class="u-text-base u-lh-lg">Article content with good readability.</p>
 </article>
 
 <!-- Text utilities -->
 <div class="u-text-center">
-  <h2 class="u-fs-2 u-fw-semibold u-text-uppercase">Centered Title</h2>
-  <p class="u-fs-sm u-fw-light u-text-secondary">Subtitle text</p>
+  <h2 class="u-text-2 u-font-semibold u-text-uppercase">Centered Title</h2>
+  <p class="u-text-sm u-font-light u-text-secondary">Subtitle text</p>
 </div>
 ```
 
@@ -429,13 +429,13 @@ Examples:
 ```html
 <!-- Status indicators -->
 <div class="u-bg-success-50 u-c-success u-p-md u-border u-bc-success-200">
-  <p class="u-fw-medium">Success message</p>
+  <p class="u-font-medium">Success message</p>
 </div>
 
 <!-- Card with colored header -->
 <div class="c-card">
   <div class="u-bg-primary u-c-white u-p-md">
-    <h3 class="u-fw-semibold">Card Header</h3>
+    <h3 class="u-font-semibold">Card Header</h3>
   </div>
   <div class="u-p-md">
     <p class="u-c-gray-600">Card content</p>
@@ -588,7 +588,7 @@ All utilities can be applied at specific breakpoints:
 
 ```html
 <!-- Responsive grid -->
-<div class="u-d-grid u-grid-cols-1 u-md-grid-cols-2 u-lg-grid-cols-3 u-gap-4">
+<div class="u-grid u-grid-cols-1 u-md-grid-cols-2 u-lg-grid-cols-3 u-gap-4">
   <div class="c-card">Card 1</div>
   <div class="c-card">Card 2</div>
   <div class="c-card">Card 3</div>
@@ -596,11 +596,11 @@ All utilities can be applied at specific breakpoints:
 
 <!-- Responsive spacing -->
 <div class="u-p-2 u-md-p-4 u-lg-p-6">
-  <h2 class="u-fs-lg u-md-fs-4 u-lg-fs-2">Responsive Title</h2>
+  <h2 class="u-text-lg u-md-fs-4 u-lg-fs-2">Responsive Title</h2>
 </div>
 
 <!-- Responsive visibility -->
-<div class="u-d-none u-md-d-block">
+<div class="u-none u-md-d-block">
   Hidden on mobile, visible on tablet and up
 </div>
 ```
@@ -789,12 +789,12 @@ All utilities can be applied at specific breakpoints:
 
 ```html
 <div class="c-card u-p-lg u-mb-md u-shadow-md u-br-lg">
-  <div class="u-d-flex u-jc-between u-ai-center u-mb-md">
-    <h3 class="u-fs-lg u-fw-semibold">Card Title</h3>
-    <span class="u-fs-sm u-c-gray-500">Status</span>
+  <div class="u-flex u-jc-between u-ai-center u-mb-md">
+    <h3 class="u-text-lg u-font-semibold">Card Title</h3>
+    <span class="u-text-sm u-c-gray-500">Status</span>
   </div>
   <p class="u-c-gray-600 u-mb-lg">Card content goes here.</p>
-  <div class="u-d-flex u-gap-sm">
+  <div class="u-flex u-gap-sm">
     <button class="c-button c-button--primary">Primary</button>
     <button class="c-button c-button--secondary">Secondary</button>
   </div>
@@ -806,11 +806,11 @@ All utilities can be applied at specific breakpoints:
 ```html
 <form class="u-max-w-md u-mx-auto u-p-lg">
   <div class="u-mb-md">
-    <label class="u-d-block u-fw-medium u-mb-xs">Email</label>
+    <label class="u-block u-font-medium u-mb-xs">Email</label>
     <input class="c-input u-w-full" type="email">
   </div>
   <div class="u-mb-lg">
-    <label class="u-d-block u-fw-medium u-mb-xs">Password</label>
+    <label class="u-block u-font-medium u-mb-xs">Password</label>
     <input class="c-input u-w-full" type="password">
   </div>
   <button class="c-button c-button--primary u-w-full">Sign In</button>
@@ -820,12 +820,12 @@ All utilities can be applied at specific breakpoints:
 ### Navigation Layout
 
 ```html
-<nav class="u-d-flex u-jc-between u-ai-center u-px-lg u-py-md u-bg-white u-shadow-sm">
-  <div class="u-d-flex u-ai-center u-gap-md">
+<nav class="u-flex u-jc-between u-ai-center u-px-lg u-py-md u-bg-white u-shadow-sm">
+  <div class="u-flex u-ai-center u-gap-md">
     <img class="u-h-8" src="/logo.svg" alt="Logo">
-    <span class="u-fw-semibold u-fs-lg">Brand</span>
+    <span class="u-font-semibold u-text-lg">Brand</span>
   </div>
-  <div class="u-d-flex u-gap-sm">
+  <div class="u-flex u-gap-sm">
     <button class="c-button c-button--link">Sign In</button>
     <button class="c-button c-button--primary">Sign Up</button>
   </div>
@@ -967,7 +967,7 @@ All utilities can be applied at specific breakpoints:
 </nav>
 
 <!-- Show print-only content -->
-<div class="u-d-none u-print-d-block">
+<div class="u-none u-print-d-block">
   <p>This content only appears when printing</p>
 </div>
 ```
@@ -996,13 +996,13 @@ All utilities can be applied at specific breakpoints:
 <section class="u-bg-primary u-text-white u-py-20">
   <div class="u-mw-100 u-mx-auto u-px-6">
     <div class="u-text-center">
-      <h1 class="u-fs-1 u-fw-bold u-mb-4">
+      <h1 class="u-text-1 u-font-bold u-mb-4">
         Welcome to Atomix
       </h1>
-      <p class="u-fs-lg u-mb-8 u-mw-100 u-mx-auto">
+      <p class="u-text-lg u-mb-8 u-mw-100 u-mx-auto">
         Build amazing interfaces with our comprehensive design system
       </p>
-      <div class="u-d-flex u-justify-content-center u-gap-4">
+      <div class="u-flex u-justify-center u-gap-4">
         <button class="c-button c-button--white c-button--lg">Get Started</button>
         <button class="c-button c-button--outline-white c-button--lg">Learn More</button>
       </div>
@@ -1016,13 +1016,13 @@ All utilities can be applied at specific breakpoints:
 ```html
 <section class="u-py-16">
   <div class="u-mw-100 u-mx-auto u-px-6">
-    <h2 class="u-fs-2 u-fw-bold u-text-center u-mb-16">Features</h2>
-    <div class="u-d-grid u-grid-cols-1 u-md-grid-cols-2 u-lg-grid-cols-3 u-gap-8">
+    <h2 class="u-text-2 u-font-bold u-text-center u-mb-16">Features</h2>
+    <div class="u-grid u-grid-cols-1 u-md-grid-cols-2 u-lg-grid-cols-3 u-gap-8">
       <div class="u-text-center u-p-6">
-        <div class="u-w-100 u-h-100 u-bg-primary-subtle u-rounded-circle u-d-flex u-justify-content-center u-align-items-center u-mx-auto u-mb-4">
+        <div class="u-w-100 u-h-100 u-bg-primary-subtle u-rounded-circle u-flex u-justify-center u-items-center u-mx-auto u-mb-4">
           <svg class="u-w-50 u-h-50 u-text-primary">...</svg>
         </div>
-        <h3 class="u-fs-lg u-fw-semibold u-mb-2">Fast</h3>
+        <h3 class="u-text-lg u-font-semibold u-mb-2">Fast</h3>
         <p class="u-text-secondary">Lightning fast performance</p>
       </div>
       <!-- More feature cards... -->
@@ -1038,21 +1038,21 @@ All utilities can be applied at specific breakpoints:
   <!-- Sidebar -->
   <aside class="u-position-fixed u-top-0 u-start-0 u-w-100 u-h-100 u-bg-white u-shadow-lg u-z-fixed">
     <div class="u-p-6">
-      <h2 class="u-fw-bold u-fs-lg u-mb-6">Dashboard</h2>
+      <h2 class="u-font-bold u-text-lg u-mb-6">Dashboard</h2>
       <nav class="u-gap-2">
-        <a href="#" class="u-d-block u-p-2 u-rounded u-hover-bg-light">Overview</a>
-        <a href="#" class="u-d-block u-p-2 u-rounded u-hover-bg-light">Analytics</a>
-        <a href="#" class="u-d-block u-p-2 u-rounded u-hover-bg-light">Settings</a>
+        <a href="#" class="u-block u-p-2 u-rounded u-hover-bg-light">Overview</a>
+        <a href="#" class="u-block u-p-2 u-rounded u-hover-bg-light">Analytics</a>
+        <a href="#" class="u-block u-p-2 u-rounded u-hover-bg-light">Settings</a>
       </nav>
     </div>
   </aside>
 
   <!-- Main content -->
   <main class="u-ms-100 u-p-6">
-    <div class="u-d-grid u-grid-cols-1 u-md-grid-cols-2 u-lg-grid-cols-3 u-gap-6">
+    <div class="u-grid u-grid-cols-1 u-md-grid-cols-2 u-lg-grid-cols-3 u-gap-6">
       <div class="c-card u-p-6">
-        <h3 class="u-fw-semibold u-mb-2">Metric 1</h3>
-        <p class="u-fs-2 u-fw-bold u-text-primary">1,234</p>
+        <h3 class="u-font-semibold u-mb-2">Metric 1</h3>
+        <p class="u-text-2 u-font-bold u-text-primary">1,234</p>
       </div>
       <!-- More cards... -->
     </div>
@@ -1063,17 +1063,17 @@ All utilities can be applied at specific breakpoints:
 ### Modal Overlay
 
 ```html
-<div class="u-position-fixed u-top-0 u-start-0 u-end-0 u-bottom-0 u-bg-black u-opacity-50 u-d-flex u-justify-content-center u-align-items-center u-z-modal">
+<div class="u-position-fixed u-top-0 u-start-0 u-end-0 u-bottom-0 u-bg-black u-opacity-50 u-flex u-justify-center u-items-center u-z-modal">
   <div class="u-bg-white u-rounded-lg u-shadow-xl u-mw-100 u-w-100 u-mx-6">
     <div class="u-p-6">
-      <div class="u-d-flex u-justify-content-between u-align-items-center u-mb-4">
-        <h3 class="u-fs-lg u-fw-semibold">Modal Title</h3>
+      <div class="u-flex u-justify-between u-items-center u-mb-4">
+        <h3 class="u-text-lg u-font-semibold">Modal Title</h3>
         <button class="u-text-secondary u-hover-text-dark">
           <svg class="u-w-25 u-h-25">...</svg>
         </button>
       </div>
       <p class="u-text-secondary u-mb-6">Modal content goes here.</p>
-      <div class="u-d-flex u-justify-content-end u-gap-2">
+      <div class="u-flex u-justify-end u-gap-2">
         <button class="c-button c-button--secondary">Cancel</button>
         <button class="c-button c-button--primary">Confirm</button>
       </div>
@@ -1090,10 +1090,10 @@ All utilities can be applied at specific breakpoints:
 |----------|--------|----------|
 | Margin | `u-m-`, `u-mt-`, `u-mx-` | `u-m-4`, `u-mt-6`, `u-mx-auto` |
 | Padding | `u-p-`, `u-pt-`, `u-px-` | `u-p-2`, `u-px-4`, `u-py-6` |
-| Display | `u-d-` | `u-d-flex`, `u-d-none`, `u-d-block` |
-| Flexbox | `u-flex-`, `u-justify-content-`, `u-align-items-` | `u-flex-column`, `u-justify-content-center` |
+| Display | `u-d-` | `u-flex`, `u-none`, `u-block` |
+| Flexbox | `u-flex-`, `u-justify-content-`, `u-align-items-` | `u-flex-column`, `u-justify-center` |
 | Gap | `u-gap-`, `u-row-gap-`, `u-column-gap-` | `u-gap-4`, `u-row-gap-2` |
-| Text | `u-text-`, `u-fs-`, `u-fw-` | `u-text-center`, `u-fs-lg`, `u-fw-bold` |
+| Text | `u-text-`, `u-fs-`, `u-fw-` | `u-text-center`, `u-text-lg`, `u-font-bold` |
 | Colors | `u-text-`, `u-bg-`, `u-border-` | `u-text-primary`, `u-bg-white`, `u-border-success` |
 | Borders | `u-border-`, `u-rounded-` | `u-border-2`, `u-rounded-lg` |
 | Sizing | `u-w-`, `u-h-` | `u-w-100`, `u-h-50`, `u-mw-100` |
@@ -1122,7 +1122,7 @@ All utilities can be applied at specific breakpoints:
 
 <!-- Card with custom spacing -->
 <div class="c-card u-p-8 u-mb-6 u-border-2 u-border-primary">
-  <h3 class="u-fs-lg u-fw-bold u-mb-4">Custom Card</h3>
+  <h3 class="u-text-lg u-font-bold u-mb-4">Custom Card</h3>
   <p class="u-text-secondary">Card with enhanced styling</p>
 </div>
 ```
@@ -1132,15 +1132,15 @@ All utilities can be applied at specific breakpoints:
 ```html
 <!-- Success alert using utilities -->
 <div class="c-alert u-bg-success-subtle u-border u-border-success-subtle u-text-success">
-  <div class="u-d-flex u-align-items-center u-gap-2">
+  <div class="u-flex u-items-center u-gap-2">
     <svg class="u-w-25 u-h-25">...</svg>
-    <span class="u-fw-medium">Success message</span>
+    <span class="u-font-medium">Success message</span>
   </div>
 </div>
 
 <!-- Warning notification -->
 <div class="c-notification u-bg-warning-subtle u-border-s-4 u-border-warning u-p-4">
-  <p class="u-text-warning u-fw-medium">Warning notification</p>
+  <p class="u-text-warning u-font-medium">Warning notification</p>
 </div>
 ```
 

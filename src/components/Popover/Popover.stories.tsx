@@ -83,7 +83,7 @@ const InteractivePopover = (args: React.ComponentProps<typeof Popover>) => {
 
   const content = (
     <>
-      <div className="u-d-flex u-align-items-center u-gap-7">
+      <div className="u-flex u-items-center u-gap-7">
         <span className="u-text-nowrap">Sort by</span>
         <div className="c-select">
           <select value={selectedOption} onChange={handleSelectChange}>

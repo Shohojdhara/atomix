@@ -71,7 +71,7 @@ export const Basic: Story = {
 export const VariantsShowcase: Story = {
   render: () => {
     return (
-      <div className="u-d-flex u-flex-column u-gap-8">
+      <div className="u-flex u-flex-column u-gap-8">
         {['Default', 'Dash', 'Number', 'Text'].map((title, index) => {
           const variant = index === 0 ? 'default' : title.toLowerCase();
           return createListSection(`${title} List`, variant, variant);
@@ -91,7 +91,7 @@ export const ListGroupShowcase: Story = {
     ];
 
     return (
-      <div className="u-d-flex u-flex-column u-gap-8">
+      <div className="u-flex u-flex-column u-gap-8">
         <div>
           <h3 style={titleStyle}>Mixed Variants ListGroup</h3>
           <ListGroup>

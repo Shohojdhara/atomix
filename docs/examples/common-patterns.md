@@ -14,9 +14,9 @@ function AppHeader() {
     <Navbar expand="lg" className="u-bg-white u-shadow-sm">
       <div className="o-container">
         {/* Brand */}
-        <Navbar.Brand href="/" className="u-d-flex u-align-items-center u-gap-2">
+        <Navbar.Brand href="/" className="u-flex u-items-center u-gap-2">
           <img src="/logo.svg" alt="Company" className="u-h-8" />
-          <span className="u-fw-bold u-fs-lg">Atomix</span>
+          <span className="u-font-bold u-text-lg">Atomix</span>
         </Navbar.Brand>
         
         {/* Mobile toggle */}
@@ -44,7 +44,7 @@ function AppHeader() {
           </Nav>
           
           {/* Actions */}
-          <div className="u-d-flex u-align-items-center u-gap-3">
+          <div className="u-flex u-items-center u-gap-3">
             <Button variant="ghost" size="sm">
               🔍
             </Button>
@@ -71,7 +71,7 @@ function SidebarNav({ isOpen, onClose }) {
   return (
     <div className={`sidebar ${isOpen ? 'sidebar--open' : ''}`}>
       <div className="sidebar__header u-p-4 u-border-bottom">
-        <div className="u-d-flex u-justify-content-between u-align-items-center">
+        <div className="u-flex u-justify-between u-items-center">
           <h3 className="u-mb-0">Menu</h3>
           <Button variant="ghost" size="sm" onClick={onClose}>
             ✕
@@ -81,7 +81,7 @@ function SidebarNav({ isOpen, onClose }) {
       
       <div className="sidebar__content u-p-4">
         <Nav vertical>
-          <Nav.Link href="/dashboard" className="u-d-flex u-justify-content-between">
+          <Nav.Link href="/dashboard" className="u-flex u-justify-between">
             Dashboard
             <Badge variant="primary">3</Badge>
           </Nav.Link>
@@ -273,7 +273,7 @@ function ContactForm() {
           </Callout>
         )}
 
-        <div className="u-d-flex u-justify-content-end u-gap-3">
+        <div className="u-flex u-justify-end u-gap-3">
           <Button 
             type="button" 
             variant="secondary"
@@ -351,15 +351,15 @@ function MultiStepForm() {
     <div className="u-max-w-md u-mx-auto">
       {/* Progress indicator */}
       <div className="u-mb-6">
-        <div className="u-d-flex u-justify-content-between u-mb-2">
-          <span className="u-fs-sm u-text-secondary">Step {currentStep} of {totalSteps}</span>
+        <div className="u-flex u-justify-between u-mb-2">
+          <span className="u-text-sm u-text-secondary">Step {currentStep} of {totalSteps}</span>
           <Badge variant="primary">{Math.round(progress)}% Complete</Badge>
         </div>
         <Progress value={progress} />
       </div>
 
       {/* Step indicators */}
-      <div className="u-d-flex u-justify-content-center u-mb-6">
+      <div className="u-flex u-justify-center u-mb-6">
         {[1, 2, 3].map(step => (
           <div 
             key={step}
@@ -515,7 +515,7 @@ function MultiStepForm() {
         )}
 
         {/* Navigation buttons */}
-        <div className="u-d-flex u-justify-content-between u-mt-6">
+        <div className="u-flex u-justify-between u-mt-6">
           <Button
             type="button"
             variant="secondary"
@@ -581,9 +581,9 @@ function DataTable({ data, onEdit, onDelete }) {
   return (
     <Card>
       <Card.Header>
-        <div className="u-d-flex u-justify-content-between u-align-items-center">
+        <div className="u-flex u-justify-between u-items-center">
           <h3>Users</h3>
-          <div className="u-d-flex u-gap-3">
+          <div className="u-flex u-gap-3">
             <Input
               type="search"
               placeholder="Search users..."
@@ -620,9 +620,9 @@ function DataTable({ data, onEdit, onDelete }) {
               {paginatedData.map(user => (
                 <tr key={user.id}>
                   <td>
-                    <div className="u-d-flex u-align-items-center u-gap-3">
+                    <div className="u-flex u-items-center u-gap-3">
                       <Avatar src={user.avatar} name={user.name} size="sm" />
-                      <span className="u-fw-medium">{user.name}</span>
+                      <span className="u-font-medium">{user.name}</span>
                     </div>
                   </td>
                   <td>{user.email}</td>
@@ -659,7 +659,7 @@ function DataTable({ data, onEdit, onDelete }) {
       </Card.Body>
 
       <Card.Footer>
-        <div className="u-d-flex u-justify-content-between u-align-items-center">
+        <div className="u-flex u-justify-between u-items-center">
           <span className="u-text-secondary">
             Showing {startIndex + 1}-{Math.min(startIndex + itemsPerPage, filteredData.length)} of {filteredData.length} users
           </span>

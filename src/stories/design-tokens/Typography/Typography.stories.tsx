@@ -51,11 +51,11 @@ const TypographyPreview = () => {
     { name: 'Heading 4', className: 'h4' },
     { name: 'Heading 5', className: 'h5' },
     { name: 'Heading 6', className: 'h6' },
-    { name: 'Large', className: 'u-fs-lg' },
-    { name: 'Base', className: 'u-fs-base' },
-    { name: 'Medium', className: 'u-fs-md' },
-    { name: 'Small', className: 'u-fs-sm' },
-    { name: 'Extra Small', className: 'u-fs-xs' },
+    { name: 'Large', className: 'u-text-lg' },
+    { name: 'Base', className: 'u-text-base' },
+    { name: 'Medium', className: 'u-text-md' },
+    { name: 'Small', className: 'u-text-sm' },
+    { name: 'Extra Small', className: 'u-text-xs' },
   ];
 
   const sampleText = 'The quick brown fox jumps over the lazy dog.';
@@ -137,10 +137,10 @@ const TypographyPreview = () => {
           <TypographyScale name="Uppercase" className="u-text-uppercase">
             {sampleTextLong}
           </TypographyScale>
-          <TypographyScale name="Underline" className="u-td-underline">
+          <TypographyScale name="Underline" className="u-underline">
             {sampleTextLong}
           </TypographyScale>
-          <TypographyScale name="Line Through" className="u-td-line-through">
+          <TypographyScale name="Line Through" className="u-line-through">
             {sampleTextLong}
           </TypographyScale>
         </div>

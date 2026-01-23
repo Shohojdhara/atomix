@@ -204,7 +204,7 @@ function DataTableWithPagination() {
       </div>
 
       {/* Pagination info */}
-      <div className="u-d-flex u-justify-content-between u-align-items-center">
+      <div className="u-flex u-justify-between u-items-center">
         <span className="u-text-sm u-text-secondary">
           Showing {startIndex + 1} to {Math.min(startIndex + pageSize, allData.length)} of {allData.length} entries
         </span>
@@ -280,7 +280,7 @@ function SearchResultsPagination() {
       </div>
 
       {/* Pagination */}
-      <div className="u-d-flex u-justify-content-center">
+      <div className="u-flex u-justify-center">
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

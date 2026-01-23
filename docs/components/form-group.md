@@ -211,7 +211,7 @@ function ValidState() {
 ```jsx
 function DifferentControls() {
   return (
-    <div className="u-d-flex u-flex-column u-gap-4" style={{ width: '400px' }}>
+    <div className="u-flex u-flex-column u-gap-4" style={{ width: '400px' }}>
       <FormGroup label="Text Input" htmlFor="text">
         <Input id="text" type="text" placeholder="Enter text" />
       </FormGroup>
@@ -251,7 +251,7 @@ function DifferentControls() {
 ```jsx
 function FormGroupSizes() {
   return (
-    <div className="u-d-flex u-flex-column u-gap-4" style={{ width: '400px' }}>
+    <div className="u-flex u-flex-column u-gap-4" style={{ width: '400px' }}>
       <FormGroup label="Small" size="sm" htmlFor="small">
         <Input id="small" size="sm" placeholder="Small input" />
       </FormGroup>

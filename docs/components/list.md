@@ -105,19 +105,19 @@ import { Icon, Badge } from '@shohojdhara/atomix';
 function ComplexListItems() {
   return (
     <List variant="dash">
-      <div className="u-d-flex u-align-items-center u-gap-2">
+      <div className="u-flex u-items-center u-gap-2">
         <Icon name="CheckCircle" color="#22c55e" size="sm" />
         <span>Completed task</span>
         <Badge label="Done" variant="success" size="sm" />
       </div>
       
-      <div className="u-d-flex u-align-items-center u-gap-2">
+      <div className="u-flex u-items-center u-gap-2">
         <Icon name="Clock" color="#f59e0b" size="sm" />
         <span>In progress task</span>
         <Badge label="Working" variant="warning" size="sm" />
       </div>
       
-      <div className="u-d-flex u-align-items-center u-gap-2">
+      <div className="u-flex u-items-center u-gap-2">
         <Icon name="Circle" color="#6b7280" size="sm" />
         <span>Pending task</span>
         <Badge label="Todo" variant="secondary" size="sm" />
@@ -242,7 +242,7 @@ function InteractiveList() {
       {items.map((item, index) => (
         <div 
           key={index}
-          className={`u-d-flex u-align-items-center u-gap-2 u-cursor-pointer ${
+          className={`u-flex u-items-center u-gap-2 u-cursor-pointer ${
             selectedItems.includes(index) ? 'u-text-success' : ''
           }`}
           onClick={() => toggleItem(index)}
@@ -551,11 +551,11 @@ The List component includes comprehensive accessibility features:
 
 // Good: Consistent item structure
 <List variant="dash">
-  <div className="u-d-flex u-align-items-center u-gap-2">
+  <div className="u-flex u-items-center u-gap-2">
     <Icon name="CheckCircle" size="sm" />
     <span>Task completed</span>
   </div>
-  <div className="u-d-flex u-align-items-center u-gap-2">
+  <div className="u-flex u-items-center u-gap-2">
     <Icon name="Clock" size="sm" />
     <span>Task in progress</span>
   </div>
@@ -602,7 +602,7 @@ function FeatureList() {
       <h3>Key Features</h3>
       <List variant="dash">
         {features.map(feature => (
-          <div key={feature} className="u-d-flex u-align-items-center u-gap-2">
+          <div key={feature} className="u-flex u-items-center u-gap-2">
             <Icon name="CheckCircle" color="#22c55e" size="sm" />
             <span>{feature}</span>
           </div>
@@ -655,7 +655,7 @@ function NavigationList() {
         <a
           key={item.label}
           href={item.href}
-          className="u-d-flex u-align-items-center u-gap-3 u-text-decoration-none u-p-2 u-rounded hover:u-bg-gray-100"
+          className="u-flex u-items-center u-gap-3 u-text-decoration-none u-p-2 u-rounded hover:u-bg-gray-100"
         >
           <Icon name={item.icon} size="sm" />
           <span>{item.label}</span>
@@ -727,7 +727,7 @@ function StatusList() {
       {tasks.map(task => {
         const { icon, color } = getStatusIcon(task.status);
         return (
-          <div key={task.name} className="u-d-flex u-align-items-center u-gap-2">
+          <div key={task.name} className="u-flex u-items-center u-gap-2">
             <Icon name={icon} color={color} size="sm" />
             <span>{task.name}</span>
             <Badge
@@ -770,7 +770,7 @@ The List component supports all modern browsers:
 // Optimized list item with memoization
 const OptimizedListItem = React.memo(({ children, icon }) => {
   return (
-    <div className="u-d-flex u-align-items-center u-gap-2">
+    <div className="u-flex u-items-center u-gap-2">
       {icon && <Icon name={icon} size="sm" />}
       <span>{children}</span>
     </div>

@@ -86,7 +86,7 @@ export const HeroExample: Story = {
                 ✨
               </div>
               <h1
-                className="u-mt-0 u-fs-1 u-fw-bold"
+                className="u-mt-0 u-text-1 u-font-bold"
                 style={{
                   fontSize: '48px',
                   marginBottom: '20px',
@@ -100,7 +100,7 @@ export const HeroExample: Story = {
                 Modern Glass UI
               </h1>
               <p
-                className="u-fs-4 u-mb-4"
+                className="u-text-4 u-mb-4"
                 style={{
                   fontSize: '18px',
                   lineHeight: 1.7,
@@ -113,7 +113,7 @@ export const HeroExample: Story = {
                 designs that stand out.
               </p>
               <div
-                className="u-d-flex u-gap-3 u-justify-content-center u-flex-wrap"
+                className="u-flex u-gap-3 u-justify-center u-flex-wrap"
                 style={{ gap: '16px' }}
               >
                 <Button glass size="lg">
@@ -426,7 +426,7 @@ export const DashboardCards: Story = {
               </div>
               <div>
                 <h1
-                  className="u-m-0 u-fs-2 u-fw-bold"
+                  className="u-m-0 u-text-2 u-font-bold"
                   style={{
                     fontSize: '28px',
                     marginBottom: '6px',
@@ -439,7 +439,7 @@ export const DashboardCards: Story = {
                   Analytics Dashboard
                 </h1>
                 <p
-                  className="u-m-0 u-opacity-80 u-fs-6"
+                  className="u-m-0 u-opacity-80 u-text-6"
                   style={{
                     fontSize: '15px',
                     color: 'rgba(255, 255, 255, 0.85)',
@@ -601,21 +601,21 @@ export const ProductCard: Story = {
             </div>
 
             {/* Product Info */}
-            <h2 className="u-m-0 u-mb-1 u-fs-6 u-fw-bold">Premium Cotton T-Shirt</h2>
-            <p className="u-m-0 u-mb-2 u-opacity-70 u-fs-7">
+            <h2 className="u-m-0 u-mb-1 u-text-6 u-font-bold">Premium Cotton T-Shirt</h2>
+            <p className="u-m-0 u-mb-2 u-opacity-70 u-text-7">
               Ultra-soft fabric with a modern fit. Perfect for everyday wear.
             </p>
 
             {/* Price */}
-            <div className="u-d-flex u-align-items-center u-gap-2 u-mb-2">
-              <span className="u-fs-4 u-fw-bold u-text-success">$49.99</span>
-              <span className="u-fs-4 u-text-decoration-line-through u-opacity-50">$71.99</span>
+            <div className="u-flex u-items-center u-gap-2 u-mb-2">
+              <span className="u-text-4 u-font-bold u-text-success">$49.99</span>
+              <span className="u-text-4 u-text-decoration-line-through u-opacity-50">$71.99</span>
             </div>
 
             {/* Size Selection */}
             <div className="u-mb-2">
-              <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">Select Size</label>
-              <div className="u-d-flex u-gap-2">
+              <label className="u-block u-text-7 u-font-semibold u-mb-2">Select Size</label>
+              <div className="u-flex u-gap-2">
                 {sizes.map(size => (
                   <Button
                     key={size}
@@ -632,8 +632,8 @@ export const ProductCard: Story = {
 
             {/* Quantity */}
             <div className="u-mb-2">
-              <label className="u-d-block u-fs-7 u-fw-semibold u-mb-1 u-text-white">Quantity</label>
-              <div className="u-d-flex u-align-items-center u-gap-2">
+              <label className="u-block u-text-7 u-font-semibold u-mb-1 u-text-white">Quantity</label>
+              <div className="u-flex u-items-center u-gap-2">
                 <Button onClick={() => setQuantity(Math.max(1, quantity - 1))} glass>
                   −
                 </Button>
@@ -751,14 +751,14 @@ export const NotificationCenter: Story = {
           >
             {/* Header */}
             <div
-              className="u-p-4 u-d-flex u-justify-content-between u-align-items-center"
+              className="u-p-4 u-flex u-justify-between u-items-center"
               style={{
                 borderBottom:
                   '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)',
               }}
             >
-              <div className="u-d-flex u-align-items-center u-gap-2">
-                <h2 className="u-m-0 u-fs-4 u-fw-bold">Notifications</h2>
+              <div className="u-flex u-items-center u-gap-2">
+                <h2 className="u-m-0 u-text-4 u-font-bold">Notifications</h2>
                 {unreadCount > 0 && (
                   <span
                     style={{
@@ -966,7 +966,7 @@ export const LoginForm: Story = {
                   <Icon name="Lock" style={{ position: 'relative', zIndex: 1 }} />
                 </div>
                 <h2
-                  className="u-m-0 u-mb-2 u-fs-3 u-fw-bold"
+                  className="u-m-0 u-mb-2 u-text-3 u-font-bold"
                   style={{
                     fontSize: '32px',
                     marginBottom: '12px',
@@ -979,7 +979,7 @@ export const LoginForm: Story = {
                   Welcome Back
                 </h2>
                 <p
-                  className="u-m-0 u-opacity-70 u-fs-7"
+                  className="u-m-0 u-opacity-70 u-text-7"
                   style={{
                     fontSize: '15px',
                     color: 'rgba(255, 255, 255, 0.85)',
@@ -992,7 +992,7 @@ export const LoginForm: Story = {
               {/* Form */}
               <form onSubmit={handleSubmit}>
                 <div className="u-mb-3">
-                  <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">Email Address</label>
+                  <label className="u-block u-text-7 u-font-semibold u-mb-2">Email Address</label>
                   <Input
                     type="email"
                     value={email}
@@ -1006,7 +1006,7 @@ export const LoginForm: Story = {
                 </div>
 
                 <div className="u-mb-3">
-                  <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">Password</label>
+                  <label className="u-block u-text-7 u-font-semibold u-mb-2">Password</label>
                   <Input
                     type="password"
                     value={password}
@@ -1064,7 +1064,7 @@ export const LoginForm: Story = {
                   glass={{
                     elasticity: 0,
                   }}
-                  className="u-d-block u-w-100"
+                  className="u-block u-w-100"
                 >
                   {isLoading ? 'Signing in...' : 'Sign In'}
                 </Button>
@@ -1236,7 +1236,7 @@ export const MusicPlayer: Story = {
             {/* Track Info */}
             <div className="u-text-center u-mb-3">
               <h2
-                className="u-m-0 u-mb-2 u-fs-3 u-fw-bold"
+                className="u-m-0 u-mb-2 u-text-3 u-font-bold"
                 style={{
                   fontSize: '28px',
                   marginBottom: '8px',
@@ -1248,7 +1248,7 @@ export const MusicPlayer: Story = {
               >
                 Summer Vibes
               </h2>
-              <p className="u-m-0 u-opacity-70 u-fs-6" style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.85)' }}>
+              <p className="u-m-0 u-opacity-70 u-text-6" style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.85)' }}>
                 The Atomix Band
               </p>
             </div>
@@ -2524,7 +2524,7 @@ export const SettingsPanel: Story = {
                   ⚙️
                 </div>
                 <h2
-                  className="u-m-0 u-fs-2 u-fw-bold"
+                  className="u-m-0 u-text-2 u-font-bold"
                   style={{
                     fontSize: '28px',
                     background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
@@ -2536,7 +2536,7 @@ export const SettingsPanel: Story = {
                   Settings
                 </h2>
               </div>
-              <p className="u-m-0 u-fs-6 u-opacity-70" style={{ fontSize: '15px', color: 'rgba(255, 255, 255, 0.85)' }}>
+              <p className="u-m-0 u-text-6 u-opacity-70" style={{ fontSize: '15px', color: 'rgba(255, 255, 255, 0.85)' }}>
                 Manage your account preferences and settings
               </p>
             </div>
@@ -2802,7 +2802,7 @@ export const SettingsPanel: Story = {
             </div>
 
             {/* Action Buttons */}
-            <div className="u-d-flex u-gap-2">
+            <div className="u-flex u-gap-2">
               <button
                 onClick={handleSave}
                 style={{
@@ -4164,7 +4164,7 @@ export const PaymentForm: Story = {
               </div>
               <div>
                 <h2
-                  className="u-m-0 u-fs-4 u-fw-bold"
+                  className="u-m-0 u-text-4 u-font-bold"
                   style={{
                     fontSize: '24px',
                     marginBottom: '4px',
@@ -4176,7 +4176,7 @@ export const PaymentForm: Story = {
                 >
                   Payment Details
                 </h2>
-                <p className="u-m-0 u-fs-7 u-opacity-70" style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.85)' }}>
+                <p className="u-m-0 u-text-7 u-opacity-70" style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.85)' }}>
                   Complete your purchase securely
                 </p>
               </div>
@@ -4259,9 +4259,9 @@ export const PaymentForm: Story = {
               </div>
             </AtomixGlass>
             {/* Form */}
-            <div className="u-d-flex u-flex-column u-gap-3">
+            <div className="u-flex u-flex-column u-gap-3">
               <div>
-                <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">Card Number</label>
+                <label className="u-block u-text-7 u-font-semibold u-mb-2">Card Number</label>
                 <Input
                   variant="primary"
                   glass={
@@ -4278,7 +4278,7 @@ export const PaymentForm: Story = {
               </div>
 
               <div>
-                <label className="u-d-block u-fs-7 u-fw-semibold u-mb-2">Cardholder Name</label>
+                <label className="u-block u-text-7 u-font-semibold u-mb-2">Cardholder Name</label>
                 <Input
                   variant="primary"
                   glass={
@@ -4293,7 +4293,7 @@ export const PaymentForm: Story = {
                 />
               </div>
 
-              <div className="u-d-grid u-gap-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
+              <div className="u-grid u-gap-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
                 <div>
                   <label
                     style={{
@@ -4547,7 +4547,7 @@ export const NewsletterSubscription: Story = {
                 <div style={{ marginBottom: '20px' }}>
                   <div
                     style={{ position: 'relative' }}
-                    className="u-d-flex u-gap-2 u-align-items-center"
+                    className="u-flex u-gap-2 u-items-center"
                   >
                     <div className="u-w-100">
                       <Input
@@ -4788,7 +4788,7 @@ export const ProgressTracker: Story = {
                 🚀
               </div>
               <h2
-                className="u-m-0 u-fs-2 u-fw-bold"
+                className="u-m-0 u-text-2 u-font-bold"
                 style={{
                   fontSize: '28px',
                   background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
@@ -4801,7 +4801,7 @@ export const ProgressTracker: Story = {
               </h2>
             </div>
             <p
-              className="u-m-0 u-fs-6 u-opacity-70"
+              className="u-m-0 u-text-6 u-opacity-70"
               style={{ marginBottom: '48px', fontSize: '16px', color: 'rgba(255, 255, 255, 0.85)' }}
             >
               Complete the following steps to set up your account
@@ -4968,7 +4968,7 @@ export const ProgressTracker: Story = {
             </div>
 
             {/* Navigation Buttons */}
-            <div className="u-d-flex u-justify-content-between u-gap-3">
+            <div className="u-flex u-justify-between u-gap-3">
               <button
                 onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
                 disabled={currentStep === 1}

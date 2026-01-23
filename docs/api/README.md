@@ -98,7 +98,7 @@ Atomix.init(['Button', 'Modal', 'Dropdown']);
 </div>
 
 <!-- Responsive utilities -->
-<div class="u-d-flex u-flex-column u-flex-md-row u-gap-4">
+<div class="u-flex u-flex-column u-flex-md-row u-gap-4">
   Responsive layout
 </div>
 ```
