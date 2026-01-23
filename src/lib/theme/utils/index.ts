@@ -6,6 +6,7 @@
 
 export * from './themeHelpers';
 export * from './themeUtils';
+export * from './themeValidation';
 export * from './domUtils';
 export * from './injectCSS';
 

@@ -1,0 +1,158 @@
+// Theme: dark-complementary
+// =============================================================================
+
+@import '../../src/styles/01-settings';
+@import '../../src/styles/02-tools';
+
+// Theme Variables
+// =============================================================================
+:root[data-theme="dark-complementary"] {
+  // Colors (complementary to light theme)
+  --atomix-color-primary: #4dabf7; // Lighter blue for dark background
+  --atomix-color-primary-light: #74c0fc;
+  --atomix-color-primary-dark: #228be6;
+  --atomix-color-secondary: #868e96; // Lighter gray
+  --atomix-color-secondary-light: #adb5bd;
+  --atomix-color-secondary-dark: #495057;
+  --atomix-color-success: #51cf66; // Brighter green
+  --atomix-color-success-light: #8ce99a;
+  --atomix-color-success-dark: #40c057;
+  --atomix-color-error: #ff6b6b; // Brighter red
+  --atomix-color-error-light: #ff8787;
+  --atomix-color-error-dark: #fa5252;
+  --atomix-color-warning: #ffd43b; // Brighter yellow
+  --atomix-color-warning-light: #ffe066;
+  --atomix-color-warning-dark: #fab005;
+  --atomix-color-info: #74c0fc; // Brighter cyan
+  --atomix-color-info-light: #a5d8ff;
+  --atomix-color-info-dark: #339af0;
+
+  // Background (dark)
+  --atomix-color-background: #1a1a1a;
+  --atomix-color-background-paper: #2d2d2d;
+  --atomix-color-background-subtle: #404040;
+
+  // Text (light)
+  --atomix-color-text: #ffffff;
+  --atomix-color-text-secondary: #cccccc;
+  --atomix-color-text-disabled: #888888;
+
+  // Border (dark theme borders)
+  --atomix-color-border: #404040;
+  --atomix-color-border-light: #555555;
+  --atomix-color-border-dark: #1a1a1a;
+
+  // Spacing (same as light theme)
+  --atomix-space-0: 0;
+  --atomix-space-1: 0.25rem;
+  --atomix-space-2: 0.5rem;
+  --atomix-space-3: 0.75rem;
+  --atomix-space-4: 1rem;
+  --atomix-space-5: 1.25rem;
+  --atomix-space-6: 1.5rem;
+  --atomix-space-8: 2rem;
+  --atomix-space-10: 2.5rem;
+  --atomix-space-12: 3rem;
+  --atomix-space-16: 4rem;
+  --atomix-space-20: 5rem;
+  --atomix-space-24: 6rem;
+  --atomix-space-32: 8rem;
+  --atomix-space-base: 1rem;
+
+  // Typography (same as light theme)
+  --atomix-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --atomix-font-family-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --atomix-font-family-mono: 'Fira Code', 'Monaco', 'Consolas', monospace;
+
+  --atomix-font-size-xs: 0.75rem;
+  --atomix-font-size-sm: 0.875rem;
+  --atomix-font-size-base: 1rem;
+  --atomix-font-size-lg: 1.125rem;
+  --atomix-font-size-xl: 1.25rem;
+  --atomix-font-size-2xl: 1.5rem;
+  --atomix-font-size-3xl: 1.875rem;
+  --atomix-font-size-4xl: 2.25rem;
+  --atomix-font-size-5xl: 3rem;
+
+  --atomix-font-weight-light: 300;
+  --atomix-font-weight-normal: 400;
+  --atomix-font-weight-medium: 500;
+  --atomix-font-weight-semibold: 600;
+  --atomix-font-weight-bold: 700;
+  --atomix-font-weight-extrabold: 800;
+
+  --atomix-line-height-tight: 1.25;
+  --atomix-line-height-snug: 1.375;
+  --atomix-line-height-normal: 1.5;
+  --atomix-line-height-relaxed: 1.625;
+  --atomix-line-height-loose: 2;
+
+  // Shadows (adjusted for dark theme)
+  --atomix-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --atomix-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --atomix-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --atomix-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  --atomix-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  --atomix-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  --atomix-shadow-inner: inset 0 2px 4px 0 rgba(255, 255, 255, 0.1);
+  --atomix-shadow-outline: 0 0 0 3px rgba(77, 144, 254, 0.6);
+
+  // Animations/Transitions (same as light theme)
+  --atomix-transition-fast: 150ms ease-in-out;
+  --atomix-transition-base: 200ms ease-in-out;
+  --atomix-transition-slow: 300ms ease-in-out;
+
+  --atomix-animation-duration-fast: 150ms;
+  --atomix-animation-duration-base: 200ms;
+  --atomix-animation-duration-slow: 300ms;
+
+  --atomix-animation-easing-ease: ease;
+  --atomix-animation-easing-ease-in: ease-in;
+  --atomix-animation-easing-ease-out: ease-out;
+  --atomix-animation-easing-ease-in-out: ease-in-out;
+
+  // Border Radius (same as light theme)
+  --atomix-radius-none: 0;
+  --atomix-radius-sm: 0.125rem;
+  --atomix-radius-base: 0.25rem;
+  --atomix-radius-md: 0.375rem;
+  --atomix-radius-lg: 0.5rem;
+  --atomix-radius-xl: 0.75rem;
+  --atomix-radius-2xl: 1rem;
+  --atomix-radius-full: 9999px;
+}
+
+// Theme-specific Component Overrides
+// =============================================================================
+[data-theme="dark-complementary"] {
+  // Button overrides
+  .c-button {
+    border-radius: var(--atomix-radius-base);
+    transition: all var(--atomix-transition-base);
+    background-color: var(--atomix-color-background-paper);
+    border: 1px solid var(--atomix-color-border);
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--atomix-shadow-md);
+      background-color: var(--atomix-color-background-subtle);
+    }
+
+    &:focus {
+      box-shadow: var(--atomix-shadow-outline);
+    }
+  }
+
+  // Card overrides
+  .c-card {
+    border: 1px solid var(--atomix-color-border);
+    border-radius: var(--atomix-radius-lg);
+    box-shadow: var(--atomix-shadow-sm);
+    background-color: var(--atomix-color-background-paper);
+
+    &:hover {
+      box-shadow: var(--atomix-shadow-md);
+      background-color: var(--atomix-color-background-subtle);
+    }
+  }
+}

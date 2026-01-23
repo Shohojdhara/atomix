@@ -17,6 +17,9 @@ export type { ThemeComparatorProps } from './Comparator';
 export { ThemeLiveEditor } from './LiveEditor';
 export type { ThemeLiveEditorProps } from './LiveEditor';
 
+export { DesignTokensCustomizer } from './DesignTokensCustomizer';
+export type { DesignTokensCustomizerProps } from './DesignTokensCustomizer';
+
 // Validator (devtools only)
 export { ThemeValidator } from './ThemeValidator';
 export type {

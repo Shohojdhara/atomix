@@ -13,10 +13,10 @@ const ShadowExample = ({ name, size, shadow, isDark = false, darkShadow }: Shado
 
   return (
     <div className="o-grid__col o-grid__col--xs-12 o-grid__col--md-4 o-grid__col--lg-3">
-      <div className="u-d-flex u-flex-column u-gap-2">
-        <span className="u-fs-sm u-fw-semibold">{name}</span>
+      <div className="u-flex u-flex-column u-gap-2">
+        <span className="u-text-sm u-font-semibold">{name}</span>
         <code
-          className="u-py-2 u-px-4 u-bg-body-subtle u-rounded-md u-fs-xs u-shadow-inset u-border u-border-primary-subtle"
+          className="u-py-2 u-px-4 u-bg-body-subtle u-rounded-md u-text-xs u-shadow-inset u-border u-border-primary-subtle"
           style={{ minHeight: '50px' }}
         >
           {currentShadow}

@@ -26,20 +26,49 @@ export function quickTheme(name: string, primaryColor: string, secondaryColor?: 
  * Create a dark theme variant from a light theme
  */
 export function createDarkVariant(lightTheme: Theme): Theme {
-  return extendTheme(lightTheme, {
+  // We'll extend the theme by merging the new properties with the existing theme
+  const darkVariant: Partial<Theme> = {
     name: `${lightTheme.name} Dark`,
     palette: {
       mode: 'dark',
+      primary: lightTheme.palette?.primary, // Preserve original primary
+      secondary: lightTheme.palette?.secondary, // Preserve original secondary
+      error: lightTheme.palette?.error, // Preserve original error
+      warning: lightTheme.palette?.warning, // Preserve original warning
+      info: lightTheme.palette?.info, // Preserve original info
+      success: lightTheme.palette?.success, // Preserve original success
       background: {
         default: '#121212',
+        paper: '#1e1e1e', // Added missing paper property
         subtle: '#1e1e1e',
       },
       text: {
         primary: '#ffffff',
         secondary: 'rgba(255, 255, 255, 0.7)',
+        disabled: 'rgba(255, 255, 255, 0.38)', // Added missing disabled property
       },
     },
-  });
+  };
+  
+  // Create a new theme by extending the light theme with the dark variant
+  const extendedTheme: Theme = {
+    ...lightTheme,
+    ...darkVariant,
+    palette: {
+      ...lightTheme.palette,
+      ...darkVariant.palette,
+      background: {
+        ...lightTheme.palette?.background,
+        ...darkVariant.palette?.background,
+      },
+      text: {
+        ...lightTheme.palette?.text,
+        ...darkVariant.palette?.text,
+      },
+    },
+  };
+  
+  return extendedTheme;
 }
 
 /**

@@ -1,0 +1,172 @@
+// Theme: high-contrast
+// =============================================================================
+
+@import '../../src/styles/01-settings';
+@import '../../src/styles/02-tools';
+
+// Theme Variables
+// =============================================================================
+:root[data-theme="high-contrast"] {
+  // Colors (high contrast - pure black/white with bright accents)
+  --atomix-color-primary: #0066cc; // Bright blue for high visibility
+  --atomix-color-primary-light: #3399ff;
+  --atomix-color-primary-dark: #004d99;
+  --atomix-color-secondary: #666666; // Medium gray
+  --atomix-color-secondary-light: #999999;
+  --atomix-color-secondary-dark: #333333;
+  --atomix-color-success: #008000; // Pure green
+  --atomix-color-success-light: #00cc00;
+  --atomix-color-success-dark: #004d00;
+  --atomix-color-error: #cc0000; // Bright red
+  --atomix-color-error-light: #ff3333;
+  --atomix-color-error-dark: #990000;
+  --atomix-color-warning: #ffcc00; // Bright yellow
+  --atomix-color-warning-light: #ffff66;
+  --atomix-color-warning-dark: #cc9900;
+  --atomix-color-info: #0099cc; // Bright cyan
+  --atomix-color-info-light: #33ccff;
+  --atomix-color-info-dark: #006699;
+
+  // Background (pure white/black)
+  --atomix-color-background: #ffffff;
+  --atomix-color-background-paper: #ffffff;
+  --atomix-color-background-subtle: #f0f0f0;
+
+  // Text (pure black/white)
+  --atomix-color-text: #000000;
+  --atomix-color-text-secondary: #333333;
+  --atomix-color-text-disabled: #666666;
+
+  // Border (thick black borders for maximum visibility)
+  --atomix-color-border: #000000;
+  --atomix-color-border-light: #333333;
+  --atomix-color-border-dark: #000000;
+
+  // Spacing (same as other themes)
+  --atomix-space-0: 0;
+  --atomix-space-1: 0.25rem;
+  --atomix-space-2: 0.5rem;
+  --atomix-space-3: 0.75rem;
+  --atomix-space-4: 1rem;
+  --atomix-space-5: 1.25rem;
+  --atomix-space-6: 1.5rem;
+  --atomix-space-8: 2rem;
+  --atomix-space-10: 2.5rem;
+  --atomix-space-12: 3rem;
+  --atomix-space-16: 4rem;
+  --atomix-space-20: 5rem;
+  --atomix-space-24: 6rem;
+  --atomix-space-32: 8rem;
+  --atomix-space-base: 1rem;
+
+  // Typography (high contrast fonts)
+  --atomix-font-family-base: 'Arial', 'Helvetica', sans-serif; // More readable fonts
+  --atomix-font-family-heading: 'Arial Black', 'Arial', 'Helvetica', sans-serif;
+  --atomix-font-family-mono: 'Courier New', 'Monaco', 'Consolas', monospace;
+
+  --atomix-font-size-xs: 0.875rem; // Slightly larger for better readability
+  --atomix-font-size-sm: 1rem;
+  --atomix-font-size-base: 1.125rem;
+  --atomix-font-size-lg: 1.25rem;
+  --atomix-font-size-xl: 1.375rem;
+  --atomix-font-size-2xl: 1.625rem;
+  --atomix-font-size-3xl: 2rem;
+  --atomix-font-size-4xl: 2.5rem;
+  --atomix-font-size-5xl: 3.25rem;
+
+  --atomix-font-weight-light: 400; // No light fonts for better readability
+  --atomix-font-weight-normal: 400;
+  --atomix-font-weight-medium: 600;
+  --atomix-font-weight-semibold: 700;
+  --atomix-font-weight-bold: 700;
+  --atomix-font-weight-extrabold: 900;
+
+  --atomix-line-height-tight: 1.4;
+  --atomix-line-height-snug: 1.5;
+  --atomix-line-height-normal: 1.6;
+  --atomix-line-height-relaxed: 1.7;
+  --atomix-line-height-loose: 2;
+
+  // Shadows (minimal for high contrast)
+  --atomix-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --atomix-shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  --atomix-shadow-md: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+  --atomix-shadow-lg: 0 8px 16px 0 rgba(0, 0, 0, 0.5);
+  --atomix-shadow-xl: 0 16px 32px 0 rgba(0, 0, 0, 0.5);
+  --atomix-shadow-2xl: 0 24px 48px 0 rgba(0, 0, 0, 0.5);
+  --atomix-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  --atomix-shadow-outline: 0 0 0 4px #0066cc; // Thick focus ring
+
+  // Animations/Transitions (reduced for accessibility)
+  --atomix-transition-fast: 100ms ease-in-out;
+  --atomix-transition-base: 150ms ease-in-out;
+  --atomix-transition-slow: 200ms ease-in-out;
+
+  --atomix-animation-duration-fast: 100ms;
+  --atomix-animation-duration-base: 150ms;
+  --atomix-animation-duration-slow: 200ms;
+
+  --atomix-animation-easing-ease: ease;
+  --atomix-animation-easing-ease-in: ease-in;
+  --atomix-animation-easing-ease-out: ease-out;
+  --atomix-animation-easing-ease-in-out: ease-in-out;
+
+  // Border Radius (minimal for high contrast)
+  --atomix-radius-none: 0;
+  --atomix-radius-sm: 0.125rem;
+  --atomix-radius-base: 0.25rem;
+  --atomix-radius-md: 0.25rem;
+  --atomix-radius-lg: 0.25rem;
+  --atomix-radius-xl: 0.5rem;
+  --atomix-radius-2xl: 0.5rem;
+  --atomix-radius-full: 9999px;
+}
+
+// Theme-specific Component Overrides
+// =============================================================================
+[data-theme="high-contrast"] {
+  // Button overrides (high contrast)
+  .c-button {
+    border: 2px solid var(--atomix-color-border);
+    border-radius: var(--atomix-radius-sm);
+    transition: all var(--atomix-transition-fast);
+    font-weight: var(--atomix-font-weight-bold);
+    background-color: var(--atomix-color-background);
+
+    &:hover {
+      background-color: var(--atomix-color-background-subtle);
+      border-color: var(--atomix-color-primary);
+      color: var(--atomix-color-primary);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: var(--atomix-shadow-outline);
+      border-color: var(--atomix-color-primary);
+    }
+
+    &:active {
+      background-color: var(--atomix-color-primary);
+      color: var(--atomix-color-background);
+      border-color: var(--atomix-color-primary);
+    }
+  }
+
+  // Card overrides (high contrast)
+  .c-card {
+    border: 3px solid var(--atomix-color-border);
+    border-radius: var(--atomix-radius-sm);
+    box-shadow: var(--atomix-shadow-sm);
+    background-color: var(--atomix-color-background);
+
+    &:hover {
+      border-color: var(--atomix-color-primary);
+      box-shadow: var(--atomix-shadow-md);
+    }
+
+    &:focus-within {
+      border-color: var(--atomix-color-primary);
+      box-shadow: var(--atomix-shadow-outline);
+    }
+  }
+}

@@ -29,6 +29,14 @@ export enum ThemeErrorCode {
   INVALID_THEME_NAME = 'INVALID_THEME_NAME',
   /** CSS injection failed */
   CSS_INJECTION_FAILED = 'CSS_INJECTION_FAILED',
+  /** Invalid color format */
+  INVALID_COLOR_FORMAT = 'INVALID_COLOR_FORMAT',
+  /** Missing required token */
+  MISSING_REQUIRED_TOKEN = 'MISSING_REQUIRED_TOKEN',
+  /** Accessibility contrast violation */
+  CONTRAST_VIOLATION = 'CONTRAST_VIOLATION',
+  /** Invalid token type */
+  INVALID_TOKEN_TYPE = 'INVALID_TOKEN_TYPE',
   /** Unknown error */
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }

@@ -296,8 +296,12 @@ function createBreakpoints(breakpointsInput?: BreakpointsOptions): Theme['breakp
  * @returns Complete theme object
  */
 export function createThemeObject(...options: ThemeOptions[]): Theme {
-    // Merge all options
-    const mergedOptions = options.reduce((acc, option) => deepMerge(acc, option), {} as ThemeOptions);
+    // Merge all options by spreading them into a single object
+    const mergedOptions = options.reduce((acc, option) => {
+        // Cast option to any to avoid strict typing during merge
+        const opt = option as any;
+        return deepMerge(acc, opt || {}) as any;
+    }, {} as any);
 
     // Create palette
     const palette: Theme['palette'] = {
@@ -342,9 +346,9 @@ export function createThemeObject(...options: ThemeOptions[]): Theme {
 
     // Create transitions
     const transitions: Theme['transitions'] = deepMerge(
-        { ...DEFAULT_TRANSITIONS },
-        mergedOptions.transitions || {}
-    );
+        { ...DEFAULT_TRANSITIONS } as Partial<Theme['transitions']>,
+        (mergedOptions.transitions || {}) as Partial<Theme['transitions']>
+    ) as Theme['transitions'];
 
     // Create z-index
     const zIndex: Theme['zIndex'] = deepMerge({ ...DEFAULT_ZINDEX }, mergedOptions.zIndex || {});

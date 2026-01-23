@@ -13,6 +13,9 @@ import { createTokens } from '../tokens/tokens';
 import { getLogger } from '../errors';
 import { createTheme } from '../core';
 import { injectCSS, removeCSS } from '../utils/injectCSS';
+import { validateAndMergeTokens } from '../utils/themeValidation';
+
+const logger = getLogger();
 import {
   isServer,
   createLocalStorageAdapter,
@@ -102,9 +105,18 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   });
 
   const [activeTokens, setActiveTokens] = useState<DesignTokens | null>(() => {
-    // If defaultTheme is DesignTokens, store them
+    // If defaultTheme is DesignTokens, validate and store them
     if (defaultTheme && typeof defaultTheme !== 'string') {
-      return createTokens(defaultTheme);
+      const { tokens, validation } = validateAndMergeTokens(defaultTheme);
+      if (validation.valid) {
+        return tokens;
+      } else {
+        logger.warn('Invalid default theme tokens, using defaults', {
+          errors: validation.errors,
+          warnings: validation.warnings,
+        });
+        return createTokens({}); // Use defaults if validation fails
+      }
     }
     return null;
   });
@@ -120,8 +132,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   // Handle initial DesignTokens defaultTheme
   useEffect(() => {
     if (defaultTheme && typeof defaultTheme !== 'string' && activeTokens && !isServer()) {
-      // If defaultTheme is DesignTokens, inject CSS on mount
-      const css = createTheme(defaultTheme);
+      // If defaultTheme is DesignTokens, inject CSS on mount (tokens are already validated)
+      const css = createTheme(activeTokens);
       injectCSS(css, 'theme-tokens-theme');
     }
   }, [defaultTheme, activeTokens]); // Run when defaultTheme or activeTokens change
@@ -191,9 +203,52 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
           return;
         }
 
-        // For DesignTokens, create CSS and inject it
-        const { createTheme } = await import('../core');
-        const css = createTheme(theme);
+        // Validate and merge DesignTokens
+        const { tokens: validatedTokens, validation } = validateAndMergeTokens(theme);
+
+        if (!validation.valid) {
+          const errorMsg = `Invalid DesignTokens provided: ${validation.errors.join(', ')}`;
+          const validationError = new Error(errorMsg);
+          logger.error('Theme validation failed', validationError, {
+            errors: validation.errors,
+            warnings: validation.warnings,
+          });
+
+          // Check if we should fallback to default theme
+          const shouldFallback = options?.fallbackOnError !== false; // Default to true
+          if (shouldFallback) {
+            logger.warn('Falling back to default theme due to validation errors');
+            // Use default tokens instead
+            const { tokens: defaultTokens } = validateAndMergeTokens({});
+            const css = createTheme(defaultTokens);
+            const themeId = 'tokens-theme-fallback';
+
+            // Check if aborted before state update
+            if (abortController.signal.aborted) {
+              return;
+            }
+
+            // Remove any previously loaded theme CSS
+            removeCSS(`theme-${currentTheme}`);
+
+            // Inject new theme CSS
+            injectCSS(css, `theme-${themeId}`);
+
+            // Store default tokens
+            setActiveTokens(defaultTokens);
+            setCurrentTheme(themeId);
+            handleThemeChange(defaultTokens);
+            handleError(validationError, themeId);
+            setIsLoading(false);
+            return;
+          } else {
+            // No fallback, throw the error
+            throw validationError;
+          }
+        }
+
+        // For valid DesignTokens, create CSS and inject it
+        const css = createTheme(validatedTokens);
         const themeId = 'tokens-theme';
 
         // Check if aborted after async operation
@@ -207,17 +262,16 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         // Inject new theme CSS
         injectCSS(css, `theme-${themeId}`);
 
-        // Store tokens for reference
-        const fullTokens = createTokens(theme);
+        // Store validated tokens for reference
 
         // Check if aborted before state update
         if (abortController.signal.aborted) {
           return;
         }
 
-        setActiveTokens(fullTokens);
+        setActiveTokens(validatedTokens);
         setCurrentTheme(themeId);
-        handleThemeChange(fullTokens);
+        handleThemeChange(validatedTokens);
         setIsLoading(false);
         return;
       }
