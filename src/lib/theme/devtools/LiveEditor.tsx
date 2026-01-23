@@ -68,12 +68,13 @@ function convertColorFormat(color: string, format: ColorFormat): string {
     case 'rgba':
       return `rgba(${r}, ${g}, ${b}, ${a})`;
     case 'hsl':
-    case 'hsla':
+    case 'hsla': {
       // Convert RGB to HSL (simplified)
       const hsl = rgbToHsl(r, g, b);
       return format === 'hsl' 
         ? `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`
         : `hsla(${hsl.h}, ${hsl.s}%, ${hsl.l}%, ${a})`;
+    }
     default:
       return color;
   }

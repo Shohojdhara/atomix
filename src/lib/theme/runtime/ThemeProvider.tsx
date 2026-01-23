@@ -297,65 +297,71 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         }
 
         // Load CSS theme
-        const themeLoadPromise = new Promise<void>(async (resolve, reject) => {
-          try {
-            // Check if aborted
-            if (abortController.signal.aborted) {
-              resolve();
-              return;
-            }
-
-            const themeMetadata = themes[theme];
-
-            if (themeMetadata) {
-              // Build CSS path using utility function
-              const cssPath = buildThemePath(
-                theme,
-                basePath,
-                useMinified,
-                cdnPath
-              );
-
+        const themeLoadPromise = new Promise<void>((resolve, reject) => {
+          // Handle the async operations inside the promise without making the executor async
+          const loadTheme = async () => {
+            try {
               // Check if aborted
               if (abortController.signal.aborted) {
                 resolve();
                 return;
               }
 
-              // Load CSS file (using loadThemeCSS from domUtils)
-              const { loadThemeCSS } = await import('../utils/domUtils');
-              await loadThemeCSS(cssPath, `theme-${theme}`);
+              const themeMetadata = themes[theme];
 
-              // Check if aborted after async operation
+              if (themeMetadata) {
+                // Build CSS path using utility function
+                const cssPath = buildThemePath(
+                  theme,
+                  basePath,
+                  useMinified,
+                  cdnPath
+                );
+
+                // Check if aborted
+                if (abortController.signal.aborted) {
+                  resolve();
+                  return;
+                }
+
+                // Load CSS file (using loadThemeCSS from domUtils)
+                const { loadThemeCSS } = await import('../utils/domUtils');
+                await loadThemeCSS(cssPath, `theme-${theme}`);
+
+                // Check if aborted after async operation
+                if (abortController.signal.aborted) {
+                  resolve();
+                  return;
+                }
+
+                // Remove any previously loaded theme CSS
+                removeCSS(`theme-${String(currentTheme)}`);
+
+                loadedThemesRef.current.add(theme);
+
+                setCurrentTheme(theme);
+                setActiveTokens(null);
+                handleThemeChange(theme);
+                resolve();
+              } else {
+                throw new Error(`Theme metadata not found for theme: ${theme}`);
+              }
+            } catch (err) {
+              // Don't reject if aborted
               if (abortController.signal.aborted) {
                 resolve();
                 return;
               }
 
-              // Remove any previously loaded theme CSS
-              removeCSS(`theme-${String(currentTheme)}`);
-
-              loadedThemesRef.current.add(theme);
-
-              setCurrentTheme(theme);
-              setActiveTokens(null);
-              handleThemeChange(theme);
-              resolve();
-            } else {
-              throw new Error(`Theme metadata not found for theme: ${theme}`);
+              const error = err instanceof Error ? err : new Error(String(err));
+              setError(error);
+              handleError(error, String(theme));
+              reject(error);
             }
-          } catch (err) {
-            // Don't reject if aborted
-            if (abortController.signal.aborted) {
-              resolve();
-              return;
-            }
+          };
 
-            const error = err instanceof Error ? err : new Error(String(err));
-            setError(error);
-            handleError(error, String(theme));
-            reject(error);
-          }
+          // Start the async operation
+          loadTheme();
         });
 
         themePromisesRef.current[theme] = themeLoadPromise;

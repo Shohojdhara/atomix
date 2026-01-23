@@ -1,3 +1,4 @@
+
 import type { StorybookConfig } from '@storybook/react-vite';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -24,6 +25,9 @@ const config: StorybookConfig = {
   addons: [
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
+    '@storybook/addon-a11y',
+    '@storybook/addon-backgrounds',
+    '@storybook/addon-viewport',
   ],
   docs: {
     autodocs: 'tag',
