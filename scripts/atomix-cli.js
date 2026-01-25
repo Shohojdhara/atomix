@@ -53,6 +53,19 @@ import {
   generateRadiusTokens,
   generateAnimationTokens
 } from './cli/templates.js';
+import {
+  COMPLEXITY_LEVELS,
+  COMPONENT_FEATURES,
+  generateComponentByComplexity,
+  interactiveComponentGeneration,
+  validateGeneratedComponent,
+  displayValidationReport
+} from './cli/component-generator.js';
+import {
+  syncDocumentation,
+  validateDocumentation,
+  generateCLIDocumentation
+} from './cli/documentation-sync.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -72,7 +85,7 @@ function debug(message, data = null) {
   if (DEBUG) {
     console.log(chalk.gray(`[DEBUG] ${message}`));
     if (data) {
-      console.log(chalk.gray(JSON.stringify(data, null, 2)));
+      console.log(chalk.gray(JSON.stringify(data, null, 2),));
     }
   }
 }
@@ -325,6 +338,9 @@ program
   .option('--scss-module', 'Use SCSS modules', false)
   .option('--path <path>', 'Custom output path', './src/components')
   .option('-f, --force', 'Overwrite existing files', false)
+  .option('-i, --interactive', 'Interactive component generation', false)
+  .option('--complexity <level>', 'Component complexity level (simple|medium|complex)', 'medium')
+  .option('--validate', 'Validate component after generation', true)
   .action(async (type, name, options) => {
     const spinner = ora(`Generating ${type}: ${name}...`).start();
 
@@ -333,6 +349,16 @@ program
       const safeName = sanitizeInput(name);
 
       if (type === 'component' || type === 'c') {
+        // Handle interactive generation
+        if (options.interactive) {
+          const interactiveResult = await interactiveComponentGeneration();
+          if (!interactiveResult) {
+            return; // User cancelled
+          }
+          // Update options with interactive results
+          Object.assign(options, interactiveResult.options);
+        }
+
         const nameValidation = validateComponentName(safeName);
         if (!nameValidation.isValid) {
           throw new AtomixCLIError(
@@ -448,10 +474,7 @@ program
         }
 
         // Generate component file
-        const componentContent = componentTemplates.react.component(safeName, {
-          scssModule: options.scssModule,
-          types: false // Using central types now
-        });
+        const componentContent = componentTemplates.react.component(safeName);
 
         await writeFile(
           join(componentPath, `${safeName}.tsx`),
@@ -565,6 +588,16 @@ program
           console.log(chalk.green(`  ✓ Created ${safeName}.test.tsx`));
         }
 
+        // Post-generation validation if requested
+        if (options.validate) {
+          const validationResult = await validateGeneratedComponent(safeName, componentPath);
+          const isValid = displayValidationReport(validationResult.issues, validationResult.warnings, safeName);
+          
+          if (!isValid) {
+            console.log(chalk.yellow('\n💡 Some issues were found. Consider addressing them for better component quality.'));
+          }
+        }
+
         // Success message with next steps
         console.log(boxen(
           chalk.bold.green(`🎉 Component ${safeName} created successfully!\n\n`) +
@@ -574,7 +607,9 @@ program
           chalk.gray(`2. Add to design system exports:\n`) +
           chalk.white(`   export { ${safeName} } from './${safeName}';\n\n`) +
           chalk.gray(`3. Run Storybook to see your component:\n`) +
-          chalk.white(`   npm run storybook`),
+          chalk.white(`   npm run storybook\n\n`) +
+          chalk.gray(`4. Validate component quality:\n`) +
+          chalk.white(`   atomix validate component ${safeName}`),
           {
             padding: 1,
             margin: 1,
@@ -754,9 +789,10 @@ program
  */
 program
   .command('validate [target]')
-  .description('Validate themes, design tokens, or accessibility')
+  .description('Validate themes, design tokens, components, or accessibility')
   .option('--tokens', 'Validate design tokens', false)
   .option('--theme <path>', 'Validate specific theme', '')
+  .option('--component <name>', 'Validate specific component', '')
   .option('--a11y, --accessibility', 'Check accessibility compliance', false)
   .option('--fix', 'Attempt to fix issues automatically', false)
   .action(async (target, options) => {
@@ -812,6 +848,31 @@ program
             });
           }
         }
+      }
+
+      // Component validation
+      if (options.component) {
+        spinner.text = `Validating component: ${options.component}...`;
+        
+        const componentPath = join('./src/components', options.component);
+        const validationResult = await validateGeneratedComponent(options.component, componentPath);
+        
+        // Convert validation results to issue/warning format
+        validationResult.issues.forEach(issue => {
+          issues.push({
+            file: options.component,
+            issue: issue,
+            suggestion: 'Check component structure and implementation'
+          });
+        });
+        
+        validationResult.warnings.forEach(warning => {
+          warnings.push({
+            file: options.component,
+            issue: warning,
+            suggestion: 'Improve component quality by addressing warnings'
+          });
+        });
       }
 
       // Theme validation
@@ -1554,6 +1615,61 @@ atomix build-theme themes/${name}
         }
       ));
 
+    } catch (error) {
+      handleError(error, spinner);
+    }
+  });
+
+/**
+ * Docs Command Group - NEW (Documentation Management)
+ */
+const docsCommand = program
+  .command('docs')
+  .description('Documentation management commands');
+
+// Docs sync
+docsCommand
+  .command('sync')
+  .description('Sync documentation with component guidelines')
+  .option('--validate', 'Validate documentation after sync', true)
+  .action(async (options) => {
+    const spinner = ora('Syncing documentation...').start();
+
+    try {
+      await syncDocumentation();
+      spinner.stop();
+
+      if (options.validate) {
+        await validateDocumentation();
+      }
+    } catch (error) {
+      handleError(error, spinner);
+    }
+  });
+
+// Docs validate
+docsCommand
+  .command('validate')
+  .description('Validate documentation completeness')
+  .action(async () => {
+    try {
+      await validateDocumentation();
+    } catch (error) {
+      handleError(error);
+    }
+  });
+
+// Docs generate CLI
+docsCommand
+  .command('generate-cli')
+  .description('Generate CLI documentation from commands')
+  .action(async () => {
+    const spinner = ora('Generating CLI documentation...').start();
+
+    try {
+      const result = await generateCLIDocumentation();
+      spinner.succeed(chalk.green('CLI documentation generated'));
+      console.log(chalk.gray(`  → ${result.file}`));
     } catch (error) {
       handleError(error, spinner);
     }
