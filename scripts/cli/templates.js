@@ -7,7 +7,7 @@
  */
 
 // Import the modular templates
-import templates from './cli/templates/index.js';
+import templates from './templates/index.js';
 
 /**
  * Export all templates to maintain backward compatibility
