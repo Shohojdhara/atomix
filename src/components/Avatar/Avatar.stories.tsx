@@ -20,31 +20,77 @@ const meta = {
     src: {
       control: 'text',
       description: 'Avatar image source URL',
+      table: {
+        category: 'Main',
+      },
     },
     alt: {
       control: 'text',
       description: 'Alt text for the avatar image',
+      table: {
+        category: 'Main',
+      },
     },
     initials: {
       control: 'text',
       description: 'Initials to display when no image is available',
+      table: {
+        category: 'Main',
+      },
     },
     icon: {
       control: { disable: true },
       description: 'Icon to display when no image or initials are available',
+      table: {
+        category: 'Main',
+      },
     },
     size: {
       control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
       description: 'Size variant for the avatar',
+      table: {
+        category: 'Style',
+        defaultValue: { summary: 'md' },
+      },
     },
     circle: {
       control: 'boolean',
       description: 'Whether to make the avatar circular',
+      table: {
+        category: 'Style',
+        defaultValue: { summary: 'false' },
+      },
     },
     disabled: {
       control: 'boolean',
       description: 'Whether the avatar is disabled',
+      table: {
+        category: 'State',
+        defaultValue: { summary: 'false' },
+      },
+    },
+    className: {
+      control: 'text',
+      description: 'Additional CSS classes',
+      table: {
+        category: 'Misc',
+      },
+    },
+    style: {
+      control: 'object',
+      description: 'Inline styles',
+      table: {
+        category: 'Misc',
+      },
+    },
+    glass: {
+      control: 'boolean',
+      description: 'Apply glassmorphism effect',
+      table: {
+        category: 'Style',
+        defaultValue: { summary: 'false' },
+      },
     },
   },
 } satisfies Meta<typeof Avatar>;
@@ -60,6 +106,158 @@ export const Basic: Story = {
     size: 'md',
     circle: false,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic avatar with an image source'
+      }
+    }
+  }
+};
+
+// Avatar with Initials
+export const WithInitials: Story = {
+  args: {
+    initials: 'JD',
+    size: 'md',
+    circle: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Avatar displaying user initials when no image is available'
+      }
+    }
+  }
+};
+
+// Avatar with Icon
+export const WithIcon: Story = {
+  args: {
+    icon: <Icon name="User" size="md" />,
+    size: 'md',
+    circle: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Avatar displaying an icon when no image or initials are available'
+      }
+    }
+  }
+};
+
+// Avatar Sizes
+export const Sizes: Story = {
+  render: () => {
+    const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+
+    return (
+      <div className="u-flex u-gap-4 u-flex-wrap u-items-center">
+        {sizes.map(size => (
+          <div key={size} className="u-flex u-flex-col u-items-center u-gap-2">
+            <Avatar 
+              src={`https://i.pravatar.cc/150?img=${size === 'xs' ? 1 : size === 'sm' ? 2 : size === 'md' ? 3 : size === 'lg' ? 4 : 5}`} 
+              size={size} 
+              circle 
+            />
+            <span className="u-text-xs u-capitalize">{size}</span>
+          </div>
+        ))}
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Different avatar sizes from extra-small to extra-large'
+      }
+    }
+  }
+};
+
+// Avatar Shapes
+export const Shapes: Story = {
+  render: () => {
+    return (
+      <div className="u-flex u-gap-6 u-items-center">
+        <div className="u-flex u-flex-col u-items-center u-gap-2">
+          <Avatar 
+            src="https://i.pravatar.cc/150?img=6" 
+            size="md" 
+            circle={false}
+          />
+          <span className="u-text-xs">Square</span>
+        </div>
+        <div className="u-flex u-flex-col u-items-center u-gap-2">
+          <Avatar 
+            src="https://i.pravatar.cc/150?img=7" 
+            size="md" 
+            circle={true}
+          />
+          <span className="u-text-xs">Circle</span>
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Avatar shapes: square and circle'
+      }
+    }
+  }
+};
+
+// Avatar States
+export const States: Story = {
+  render: () => {
+    return (
+      <div className="u-flex u-gap-6 u-items-center">
+        <div className="u-flex u-flex-col u-items-center u-gap-2">
+          <Avatar 
+            src="https://i.pravatar.cc/150?img=8" 
+            size="md" 
+            circle
+          />
+          <span className="u-text-xs">Default</span>
+        </div>
+        <div className="u-flex u-flex-col u-items-center u-gap-2">
+          <Avatar 
+            src="https://i.pravatar.cc/150?img=9" 
+            size="md" 
+            circle
+            disabled
+          />
+          <span className="u-text-xs">Disabled</span>
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Avatar states: default and disabled'
+      }
+    }
+  }
+};
+
+// Avatar with Glass Effect
+export const WithGlassEffect: Story = {
+  args: {
+    src: 'https://i.pravatar.cc/150?img=10',
+    size: 'md',
+    circle: true,
+    glass: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Avatar with glassmorphism effect'
+      }
+    }
+  }
 };
 
 // Avatar Variants Showcase
@@ -156,6 +354,13 @@ export const VariantsShowcase: Story = {
       </div>
     );
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Comprehensive showcase of avatar variants across all sizes'
+      }
+    }
+  }
 };
 
 // Avatar Group Showcase
@@ -261,4 +466,11 @@ export const AvatarGroupShowcase: Story = {
       </div>
     );
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Various configurations of AvatarGroup component'
+      }
+    }
+  }
 };

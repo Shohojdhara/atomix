@@ -72,7 +72,6 @@ const meta = {
         type: { summary: 'AtomixGlassProps | boolean' },
       },
     },
-
     actions: {
       control: false,
       description: 'Optional action buttons to display in the callout',
@@ -85,6 +84,13 @@ const meta = {
       description: 'Additional CSS class names',
       table: {
         type: { summary: 'string' },
+      },
+    },
+    onClose: {
+      action: 'closed',
+      description: 'Callback when callout is dismissed',
+      table: {
+        type: { summary: '() => void' },
       },
     },
   },
@@ -321,386 +327,43 @@ export const Light: Story = {
   },
 };
 
-// Interactive examples
-const ToastDemoTemplate = () => {
-  const [toasts, setToasts] = useState<{ id: string; variant: string }[]>([]);
-
-  const addToast = (variant: string) => {
-    const id = Math.random().toString(36).substring(2, 9);
-    setToasts([...toasts, { id, variant }]);
-
-    // Auto-remove after 5 seconds
-    setTimeout(() => {
-      setToasts(current => current.filter(toast => toast.id !== id));
-    }, 5000);
-  };
-
-  const removeToast = (id: string) => {
-    setToasts(current => current.filter(toast => toast.id !== id));
-  };
-
-  const getIcon = (variant: string) => {
-    switch (variant) {
-      case 'success':
-        return <SuccessIcon />;
-      case 'warning':
-        return <WarningIcon />;
-      case 'error':
-        return <ErrorIcon />;
-      default:
-        return <InfoIcon />;
-    }
-  };
-
-  const getTitle = (variant: string) => {
-    switch (variant) {
-      case 'success':
-        return 'Success';
-      case 'warning':
-        return 'Warning';
-      case 'error':
-        return 'Error';
-      default:
-        return 'Information';
-    }
-  };
-
-  const getMessage = (variant: string) => {
-    switch (variant) {
-      case 'success':
-        return 'Operation completed successfully!';
-      case 'warning':
-        return 'Please review before continuing.';
-      case 'error':
-        return 'An error occurred. Please try again.';
-      default:
-        return 'This is an informational message.';
-    }
-  };
-
-  return (
-    <div
-      style={{
-        background: `linear-gradient(135deg, 
-          rgba(255, 107, 107, 0.15) 0%, 
-          rgba(255, 142, 83, 0.15) 25%, 
-          rgba(255, 193, 7, 0.15) 50%, 
-          rgba(76, 175, 80, 0.15) 75%, 
-          rgba(33, 150, 243, 0.15) 100%),
-          url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")`,
-        backgroundSize: 'cover, cover',
-        backgroundPosition: 'center, center',
-        backgroundBlendMode: 'overlay, normal',
-        padding: '2rem',
-        minHeight: '90vh',
-        position: 'relative',
-      }}
-    >
-      {/* Additional background layer for depth */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.2,
-          zIndex: -1,
-        }}
-      />
-
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <Button
-            label="Add Info Toast"
-            variant="primary"
-            size="sm"
-            onClick={() => addToast('info')}
-          />
-          <Button
-            label="Add Success Toast"
-            variant="success"
-            size="sm"
-            onClick={() => addToast('success')}
-          />
-          <Button
-            label="Add Warning Toast"
-            variant="warning"
-            size="sm"
-            onClick={() => addToast('warning')}
-          />
-          <Button
-            label="Add Error Toast"
-            variant="error"
-            size="sm"
-            onClick={() => addToast('error')}
-          />
-        </div>
-
-        <div
-          style={{
-            position: 'relative',
-            height: '400px',
-            border: '2px solid rgba(255, 255, 255, 0.2)',
-            borderRadius: '16px',
-            padding: '20px',
-            overflow: 'hidden',
-            background: `linear-gradient(45deg, 
-              rgba(255, 107, 107, 0.1) 0%, 
-              rgba(255, 142, 83, 0.1) 25%, 
-              rgba(255, 193, 7, 0.1) 50%, 
-              rgba(76, 175, 80, 0.1) 75%, 
-              rgba(33, 150, 243, 0.1) 100%),
-              url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")`,
-            backgroundSize: 'cover, cover',
-            backgroundPosition: 'center, center',
-            backgroundBlendMode: 'overlay, normal',
-            backdropFilter: 'blur(1px)',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              top: '20px',
-              right: '20px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px',
-              maxWidth: '350px',
-            }}
-          >
-            {toasts.map(toast => (
-              <Callout
-                key={toast.id}
-                title={getTitle(toast.variant)}
-                variant={toast.variant as any}
-                icon={getIcon(toast.variant)}
-                isToast={true}
-                onClose={() => removeToast(toast.id)}
-              >
-                {getMessage(toast.variant)}
-              </Callout>
-            ))}
-          </div>
-          {toasts.length === 0 && (
-            <div
-              style={{
-                display: 'flex',
-                height: '100%',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                textAlign: 'center',
-                textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
-                fontSize: '18px',
-                fontWeight: '500',
-              }}
-            >
-              <div>
-                <div style={{ marginBottom: '8px' }}>
-                  🎨 Click a button above to show toast notifications here 🎨
-                </div>
-                <small style={{ opacity: 0.8 }}>
-                  Beautiful colorful backgrounds enhance the visual experience
-                </small>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export const ToastDemo: Story = {
-  render: () => <ToastDemoTemplate />,
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Interactive demo showing how toast notifications can be triggered and displayed in different variants.',
-      },
-    },
-  },
-};
-
-const AutoDismissTemplate = () => {
-  const [visible, setVisible] = useState(true);
-  const [countdown, setCountdown] = useState(5);
-
-  useEffect(() => {
-    if (!visible) return;
-
-    const timer = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          setVisible(false);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [visible]);
-
-  const resetCallout = () => {
-    setVisible(true);
-    setCountdown(5);
-  };
-
-  return (
-    <div
-      style={{
-        background: `linear-gradient(135deg, 
-          rgba(255, 107, 107, 0.2) 0%, 
-          rgba(255, 142, 83, 0.2) 25%, 
-          rgba(255, 193, 7, 0.2) 50%, 
-          rgba(76, 175, 80, 0.2) 75%, 
-          rgba(33, 150, 243, 0.2) 100%),
-          url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")`,
-        backgroundSize: 'cover, cover',
-        backgroundPosition: 'center, center',
-        backgroundBlendMode: 'overlay, normal',
-        padding: '4rem',
-        minHeight: '400px',
-        position: 'relative',
-      }}
-    >
-      {/* Additional background layer for depth */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.3,
-          zIndex: -1,
-        }}
-      />
-
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
-        {visible ? (
-          <Callout
-            title={`Auto-dismissing in ${countdown} seconds`}
-            variant="warning"
-            icon={<WarningIcon />}
-            glass
-            onClose={() => setVisible(false)}
-          >
-            This callout will automatically dismiss after the countdown. You can also dismiss it
-            manually. The glass effect looks beautiful against this colorful background!
-          </Callout>
-        ) : (
-          <Button label="Show Auto-dismiss Callout" variant="primary" onClick={resetCallout} />
-        )}
-      </div>
-    </div>
-  );
-};
-
-export const AutoDismiss: Story = {
-  render: () => <AutoDismissTemplate />,
-  parameters: {
-    docs: {
-      description: {
-        story: 'Example of a callout that automatically dismisses after a countdown.',
-      },
-    },
-  },
-};
-
-const AllVariantsTemplate = () => {
-  const variants = ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'];
-
-  const getIcon = (variant: string) => {
-    switch (variant) {
-      case 'success':
-        return <SuccessIcon />;
-      case 'warning':
-        return <WarningIcon />;
-      case 'error':
-        return <ErrorIcon />;
-      default:
-        return <InfoIcon />;
-    }
-  };
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      {variants.map(variant => (
-        <Callout
-          key={variant}
-          title={`${variant.charAt(0).toUpperCase() + variant.slice(1)} Variant`}
-          variant={variant as any}
-          icon={getIcon(variant)}
-        >
-          This is an example of the {variant} callout variant.
-        </Callout>
-      ))}
-    </div>
-  );
-};
-
+// All Variants
 export const AllVariants: Story = {
-  render: () => <AllVariantsTemplate />,
+  render: () => {
+    const variants = ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'];
+
+    const getIcon = (variant: string) => {
+      switch (variant) {
+        case 'success':
+          return <SuccessIcon />;
+        case 'warning':
+          return <WarningIcon />;
+        case 'error':
+          return <ErrorIcon />;
+        default:
+          return <InfoIcon />;
+      }
+    };
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {variants.map(variant => (
+          <Callout
+            key={variant}
+            title={`${variant.charAt(0).toUpperCase() + variant.slice(1)} Variant`}
+            variant={variant as any}
+            icon={getIcon(variant)}
+          >
+            This is an example of the {variant} callout variant.
+          </Callout>
+        ))}
+      </div>
+    );
+  },
   parameters: {
     docs: {
       description: {
         story: 'Overview of all available callout color variants.',
-      },
-    },
-  },
-};
-
-const CalloutWithCustomContentTemplate = () => (
-  <Callout title="Custom Content Example" variant="primary" icon={<InfoIcon />}>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-      <p>Callouts can contain rich content including:</p>
-      <ul style={{ margin: 0, paddingLeft: '20px' }}>
-        <li>Lists of items</li>
-        <li>Formatted text</li>
-        <li>Custom components</li>
-      </ul>
-      <div style={{ backgroundColor: 'rgba(0,0,0,0.05)', padding: '8px', borderRadius: '4px' }}>
-        <code>This is a code example</code>
-      </div>
-    </div>
-  </Callout>
-);
-
-export const CustomContent: Story = {
-  render: () => <CalloutWithCustomContentTemplate />,
-  parameters: {
-    docs: {
-      description: {
-        story: 'Callouts can contain rich, custom content beyond simple text.',
       },
     },
   },
@@ -1019,6 +682,348 @@ export const GlassOneLine: Story = {
       </div>
     ),
   ],
+};
+
+// Interactive examples
+const ToastDemoTemplate = () => {
+  const [toasts, setToasts] = useState<{ id: string; variant: string }[]>([]);
+
+  const addToast = (variant: string) => {
+    const id = Math.random().toString(36).substring(2, 9);
+    setToasts([...toasts, { id, variant }]);
+
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      setToasts(current => current.filter(toast => toast.id !== id));
+    }, 5000);
+  };
+
+  const removeToast = (id: string) => {
+    setToasts(current => current.filter(toast => toast.id !== id));
+  };
+
+  const getIcon = (variant: string) => {
+    switch (variant) {
+      case 'success':
+        return <SuccessIcon />;
+      case 'warning':
+        return <WarningIcon />;
+      case 'error':
+        return <ErrorIcon />;
+      default:
+        return <InfoIcon />;
+    }
+  };
+
+  const getTitle = (variant: string) => {
+    switch (variant) {
+      case 'success':
+        return 'Success';
+      case 'warning':
+        return 'Warning';
+      case 'error':
+        return 'Error';
+      default:
+        return 'Information';
+    }
+  };
+
+  const getMessage = (variant: string) => {
+    switch (variant) {
+      case 'success':
+        return 'Operation completed successfully!';
+      case 'warning':
+        return 'Please review before continuing.';
+      case 'error':
+        return 'An error occurred. Please try again.';
+      default:
+        return 'This is an informational message.';
+    }
+  };
+
+  return (
+    <div
+      style={{
+        background: `linear-gradient(135deg, 
+          rgba(255, 107, 107, 0.15) 0%, 
+          rgba(255, 142, 83, 0.15) 25%, 
+          rgba(255, 193, 7, 0.15) 50%, 
+          rgba(76, 175, 80, 0.15) 75%, 
+          rgba(33, 150, 243, 0.15) 100%),
+          url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")`,
+        backgroundSize: 'cover, cover',
+        backgroundPosition: 'center, center',
+        backgroundBlendMode: 'overlay, normal',
+        padding: '2rem',
+        minHeight: '90vh',
+        position: 'relative',
+      }}
+    >
+      {/* Additional background layer for depth */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.2,
+          zIndex: -1,
+        }}
+      />
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <Button
+            label="Add Info Toast"
+            variant="primary"
+            size="sm"
+            onClick={() => addToast('info')}
+          />
+          <Button
+            label="Add Success Toast"
+            variant="success"
+            size="sm"
+            onClick={() => addToast('success')}
+          />
+          <Button
+            label="Add Warning Toast"
+            variant="warning"
+            size="sm"
+            onClick={() => addToast('warning')}
+          />
+          <Button
+            label="Add Error Toast"
+            variant="error"
+            size="sm"
+            onClick={() => addToast('error')}
+          />
+        </div>
+
+        <div
+          style={{
+            position: 'relative',
+            height: '400px',
+            border: '2px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: '16px',
+            padding: '20px',
+            overflow: 'hidden',
+            background: `linear-gradient(45deg, 
+              rgba(255, 107, 107, 0.1) 0%, 
+              rgba(255, 142, 83, 0.1) 25%, 
+              rgba(255, 193, 7, 0.1) 50%, 
+              rgba(76, 175, 80, 0.1) 75%, 
+              rgba(33, 150, 243, 0.1) 100%),
+              url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")`,
+            backgroundSize: 'cover, cover',
+            backgroundPosition: 'center, center',
+            backgroundBlendMode: 'overlay, normal',
+            backdropFilter: 'blur(1px)',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              maxWidth: '350px',
+            }}
+          >
+            {toasts.map(toast => (
+              <Callout
+                key={toast.id}
+                title={getTitle(toast.variant)}
+                variant={toast.variant as any}
+                icon={getIcon(toast.variant)}
+                isToast={true}
+                onClose={() => removeToast(toast.id)}
+              >
+                {getMessage(toast.variant)}
+              </Callout>
+            ))}
+          </div>
+          {toasts.length === 0 && (
+            <div
+              style={{
+                display: 'flex',
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                textAlign: 'center',
+                textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
+                fontSize: '18px',
+                fontWeight: '500',
+              }}
+            >
+              <div>
+                <div style={{ marginBottom: '8px' }}>
+                  🎨 Click a button above to show toast notifications here 🎨
+                </div>
+                <small style={{ opacity: 0.8 }}>
+                  Beautiful colorful backgrounds enhance the visual experience
+                </small>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const ToastDemo: Story = {
+  render: () => <ToastDemoTemplate />,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Interactive demo showing how toast notifications can be triggered and displayed in different variants.',
+      },
+    },
+  },
+};
+
+const AutoDismissTemplate = () => {
+  const [visible, setVisible] = useState(true);
+  const [countdown, setCountdown] = useState(5);
+
+  useEffect(() => {
+    if (!visible) return;
+
+    const timer = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setVisible(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [visible]);
+
+  const resetCallout = () => {
+    setVisible(true);
+    setCountdown(5);
+  };
+
+  return (
+    <div
+      style={{
+        background: `linear-gradient(135deg, 
+          rgba(255, 107, 107, 0.2) 0%, 
+          rgba(255, 142, 83, 0.2) 25%, 
+          rgba(255, 193, 7, 0.2) 50%, 
+          rgba(76, 175, 80, 0.2) 75%, 
+          rgba(33, 150, 243, 0.2) 100%),
+          url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")`,
+        backgroundSize: 'cover, cover',
+        backgroundPosition: 'center, center',
+        backgroundBlendMode: 'overlay, normal',
+        padding: '4rem',
+        minHeight: '400px',
+        position: 'relative',
+      }}
+    >
+      {/* Additional background layer for depth */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.3,
+          zIndex: -1,
+        }}
+      />
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
+        {visible ? (
+          <Callout
+            title={`Auto-dismissing in ${countdown} seconds`}
+            variant="warning"
+            icon={<WarningIcon />}
+            glass
+            onClose={() => setVisible(false)}
+          >
+            This callout will automatically dismiss after the countdown. You can also dismiss it
+            manually. The glass effect looks beautiful against this colorful background!
+          </Callout>
+        ) : (
+          <Button label="Show Auto-dismiss Callout" variant="primary" onClick={resetCallout} />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export const AutoDismiss: Story = {
+  render: () => <AutoDismissTemplate />,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Example of a callout that automatically dismisses after a countdown.',
+      },
+    },
+  },
+};
+
+const CalloutWithCustomContentTemplate = () => (
+  <Callout title="Custom Content Example" variant="primary" icon={<InfoIcon />}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <p>Callouts can contain rich content including:</p>
+      <ul style={{ margin: 0, paddingLeft: '20px' }}>
+        <li>Lists of items</li>
+        <li>Formatted text</li>
+        <li>Custom components</li>
+      </ul>
+      <div style={{ backgroundColor: 'rgba(0,0,0,0.05)', padding: '8px', borderRadius: '4px' }}>
+        <code>This is a code example</code>
+      </div>
+    </div>
+  </Callout>
+);
+
+export const CustomContent: Story = {
+  render: () => <CalloutWithCustomContentTemplate />,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Callouts can contain rich, custom content beyond simple text.',
+      },
+    },
+  },
 };
 
 const GlassVariantsTemplate = () => {

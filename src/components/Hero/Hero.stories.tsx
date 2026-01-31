@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { HERO } from '../../lib/constants/components';
 import { Button } from '../Button/Button';
 import { Hero } from './Hero';
@@ -22,6 +23,33 @@ const RIGHT_CLASS = HERO.CLASSES.RIGHT;
 const LEFT_CLASS = HERO.CLASSES.LEFT;
 const FULL_VH_CLASS = HERO.CLASSES.FULL_VH;
 
+// Define missing variables
+const demoText = 'Our design system helps you build beautiful, consistent, and accessible user interfaces faster than ever before. With a carefully crafted collection of components and guidelines, you can easily create stunning UIs that stand out.';
+
+const showcaseText = 'This is an example of showcase text demonstrating the capabilities of the Atomix design system. Create beautiful interfaces with ease and consistency.';
+
+const primaryActionButtons = (
+  <>
+    <Button variant="primary" size="lg" className="u-mr-3" onClick={fn()}>
+      Get Started
+    </Button>
+    <Button variant="secondary" size="lg" onClick={fn()}>
+      Learn More
+    </Button>
+  </>
+);
+
+const showcaseActionButtons = (
+  <>
+    <Button variant="primary" size="lg" className="u-mr-3" onClick={fn()}>
+      View Demo
+    </Button>
+    <Button variant="outline" size="lg" onClick={fn()}>
+      Contact Us
+    </Button>
+  </>
+);
+
 const meta = {
   title: 'Components/Hero',
   component: Hero,
@@ -29,8 +57,78 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'The Hero component creates prominent banner sections typically used at the top of pages. It provides a flexible layout for titles, subtitles, text content, call-to-action buttons, and images. Heroes are ideal for landing pages, marketing sections, or any area requiring prominent visual presentation.',
+        component: `
+# Hero
+
+## Overview
+
+Hero creates prominent banner sections typically used at the top of pages. It provides a flexible layout for titles, subtitles, text content, call-to-action buttons, and images. Heroes are ideal for landing pages, marketing sections, or any area requiring prominent visual presentation.
+
+## Features
+
+- Flexible content layout
+- Customizable alignment (left, center, right)
+- Background image support
+- Overlay options
+- Full viewport height option
+- Parallax effect
+- Video background support
+- Responsive design
+- Customizable column sizing
+- Content width control
+
+## Accessibility
+
+- Screen reader: Title and content announced properly
+- ARIA support: Proper roles and properties for hero components
+- Keyboard support: Accessible via keyboard navigation
+- Focus management: Maintains focus on interactive elements
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Hero 
+  title="Hero Title" 
+  subtitle="Hero Subtitle" 
+  text="Hero text content" 
+/>
+\`\`\`
+
+### With Image
+
+\`\`\`tsx
+<Hero 
+  title="Hero Title" 
+  text="Hero text content" 
+  imageSrc="/path/to/image.jpg"
+  imageAlt="Description of image"
+/>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| title | string | - | Hero title |
+| subtitle | string | - | Hero subtitle |
+| text | string | - | Hero text content |
+| imageSrc | string | - | Image source URL |
+| imageAlt | string | - | Image alt text |
+| alignment | 'left' \\| 'center' \\| 'right' | 'left' | Content alignment |
+| backgroundImageSrc | string | - | Background image source URL |
+| showOverlay | boolean | false | Show background overlay |
+| fullViewportHeight | boolean | false | Make hero full viewport height |
+| imageColSize | number | 6 | Image column size (1-12) |
+| contentColSize | number | 6 | Content column size (1-12) |
+| contentWidth | string | '536px' | Custom width for the hero content |
+| parallax | boolean | false | Enable parallax effect on background image |
+| parallaxIntensity | number | 0.5 | Parallax effect intensity (0-1) |
+| videoBackground | string | - | Video background URL |
+        `,
       },
     },
   },
@@ -39,77 +137,122 @@ const meta = {
     title: {
       control: 'text',
       description: 'Hero title',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     subtitle: {
       control: 'text',
       description: 'Hero subtitle',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     text: {
       control: 'text',
       description: 'Hero text content',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     imageSrc: {
       control: 'text',
       description: 'Image source URL',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     imageAlt: {
       control: 'text',
       description: 'Image alt text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     alignment: {
       control: { type: 'select', options: ['left', 'center', 'right'] },
       description: 'Content alignment',
+      table: {
+        type: { summary: '"left" | "center" | "right"' },
+        defaultValue: { summary: 'left' },
+      },
     },
     backgroundImageSrc: {
       control: 'text',
       description: 'Background image source URL',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     showOverlay: {
       control: 'boolean',
       description: 'Show background overlay',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     fullViewportHeight: {
       control: 'boolean',
       description: 'Make hero full viewport height',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     imageColSize: {
       control: { type: 'range', min: 1, max: 12, step: 1 },
       description: 'Image column size (1-12)',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: 6 },
+      },
     },
     contentColSize: {
       control: { type: 'range', min: 1, max: 12, step: 1 },
       description: 'Content column size (1-12)',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: 6 },
+      },
     },
     contentWidth: {
       control: 'text',
       description: 'Custom width for the hero content (e.g., "800px", "50%")',
       table: {
+        type: { summary: 'string' },
         defaultValue: { summary: '536px' },
       },
     },
     parallax: {
       control: 'boolean',
       description: 'Enable parallax effect on background image',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     parallaxIntensity: {
       control: { type: 'range', min: 0, max: 1, step: 0.1 },
       description: 'Parallax effect intensity (0-1)',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: 0.5 },
+      },
     },
     videoBackground: {
       control: 'text',
       description: 'Video background URL',
-    },
-    glass: {
-      control: 'object',
-      description: 'Glass effect properties or boolean to enable/disable',
-    },
-    videoOptions: {
-      control: 'object',
-      description: 'Video background options',
-    },
-    backgroundSlider: {
-      control: 'object',
-      description: 'Background slider configuration with multiple images/videos',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
   },
 } satisfies Meta<typeof Hero>;
@@ -117,26 +260,84 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Helper for button actions
-const primaryActionButtons = (
-  <>
-    <Button label="Get Started" variant="primary" />
-    <Button label="Learn More" variant="outline-secondary" />
-  </>
-);
+export const BasicUsage: Story = {
+  args: {
+    title: 'Discover Amazing Things',
+    subtitle: 'With Atomix Design System',
+    text: 'Our design system helps you build beautiful, consistent, and accessible user interfaces faster than ever before.',
+    alignment: 'center',
+    fullViewportHeight: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic hero section with centered content and full viewport height.',
+      },
+    },
+  },
+};
 
-const showcaseActionButtons = (
-  <>
-    <Button label="Explore Components" variant="primary" />
-    <Button label="View Documentation" variant="outline-secondary" />
-  </>
-);
+export const WithImage: Story = {
+  args: {
+    title: 'Beautiful Interfaces',
+    subtitle: 'Crafted with Atomix',
+    text: 'Create stunning user experiences with our carefully designed components and guidelines.',
+    imageSrc: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+    imageAlt: 'Laptop with design interface',
+    alignment: 'left',
+    fullViewportHeight: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Hero section with accompanying image on the side.',
+      },
+    },
+  },
+};
 
-const demoText =
-  'Build modern, responsive interfaces with a clean, consistent design language. Our component library helps you create beautiful user experiences with minimal effort.';
+export const WithBackgroundImage: Story = {
+  args: {
+    title: 'Adventure Awaits',
+    subtitle: 'Begin Your Journey',
+    text: 'Explore new possibilities and create amazing products with our design system.',
+    backgroundImageSrc: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+    showOverlay: true,
+    alignment: 'center',
+    fullViewportHeight: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Hero section with background image and overlay.',
+      },
+    },
+  },
+};
 
-const showcaseText =
-  'Atomix provides a complete design system with powerful, flexible components that follow best practices for accessibility, performance, and user experience.';
+export const WithActions: Story = {
+  render: (args) => (
+    <Hero {...args}>
+      <div className={ACTIONS_CLASS}>
+        <Button variant="primary" size="lg" className="u-mr-3">Get Started</Button>
+        <Button variant="secondary" size="lg">Learn More</Button>
+      </div>
+    </Hero>
+  ),
+  args: {
+    title: 'Ready to Get Started?',
+    text: 'Join thousands of satisfied users who have transformed their design workflow.',
+    alignment: 'center',
+    fullViewportHeight: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Hero section with call-to-action buttons.',
+      },
+    },
+  },
+};
 
 /**
  * Default Hero component with right-aligned content and image
@@ -229,7 +430,7 @@ export const CenterAligned: Story = {
 /**
  * Hero with background image
  */
-export const WithBackgroundImage: Story = {
+export const UniqueWithBackgroundImage: Story = {
   args: {
     ...Default.args,
     title: 'Powerful Design System',
@@ -646,6 +847,106 @@ export const FullHeightSlider: Story = {
       loop: true,
       transition: 'fade',
       transitionDuration: 1500,
+    },
+  },
+};
+
+// Enhanced preview examples showcasing the most impressive capabilities
+/**
+ * Premium showcase combining multiple advanced features
+ */
+export const PremiumShowcase: Story = {
+  args: {
+    title: 'Premium Hero Experience',
+    subtitle: 'Advanced Capabilities Combined',
+    text: 'This hero combines multiple advanced features: glass effect, background slider with videos, full viewport height, and interactive elements for a premium user experience.',
+    alignment: 'center',
+    showOverlay: true,
+    fullViewportHeight: true,
+    glass: {
+      displacementScale: 50,
+      blurAmount: 2,
+      saturation: 150,
+      aberrationIntensity: 0.5,
+      cornerRadius: 20,
+      overLight: true,
+      mode: 'advanced',
+    },
+    actions: (
+      <>
+        <Button variant="primary" size="lg" className="u-mr-3" onClick={fn()}>
+          Explore Features
+        </Button>
+        <Button variant="secondary" size="lg" onClick={fn()}>
+          Get Started Now
+        </Button>
+      </>
+    ),
+    contentWidth: '900px',
+    backgroundSlider: {
+      slides: [
+        {
+          type: 'video',
+          src: 'https://cdn.pixabay.com/video/2023/08/17/173860-844114591_large.mp4',
+          videoOptions: {
+            autoplay: true,
+            loop: true,
+            muted: true,
+            posterUrl: 'https://picsum.photos/id/1015/1920/1080',
+          },
+        },
+        {
+          type: 'image',
+          src: 'https://picsum.photos/id/1018/1920/1080',
+          alt: 'Stunning landscape',
+        },
+        {
+          type: 'video',
+          src: 'https://cdn.pixabay.com/video/2023/11/18/189639-886016299_large.mp4',
+          videoOptions: {
+            autoplay: true,
+            loop: true,
+            muted: true,
+            posterUrl: 'https://picsum.photos/id/1025/1920/1080',
+          },
+        },
+      ],
+      autoplay: {
+        delay: 6000,
+        pauseOnHover: true,
+      },
+      loop: true,
+      transition: 'slide',
+      transitionDuration: 2000,
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Premium showcase combining multiple advanced features: glass effect, background slider with videos, full viewport height, and interactive elements.',
+      },
+    },
+  },
+};
+
+/**
+ * Minimalist design focusing on typography and content
+ */
+export const MinimalistDesign: Story = {
+  args: {
+    title: 'Focus on What Matters',
+    subtitle: 'Clean & Minimal Approach',
+    text: 'Sometimes simplicity speaks louder than complexity. This minimalist hero focuses purely on your content with subtle animations and refined typography.',
+    alignment: 'center',
+    fullViewportHeight: true,
+    showOverlay: false,
+    contentWidth: '700px',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Minimalist design focusing on typography and content, with subtle animations and refined aesthetics.',
+      },
     },
   },
 };

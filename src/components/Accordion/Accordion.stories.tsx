@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Accordion } from './Accordion';
 import { ACCORDION } from '../../lib/constants/components';
 import type { AtomixGlassProps } from '../../lib/types/components';
@@ -15,6 +16,43 @@ const BODY_CLASS = ACCORDION.SELECTORS.BODY.replace('.', '');
 const IS_OPEN_CLASS = ACCORDION.CLASSES.IS_OPEN;
 const IS_DISABLED_CLASS = ACCORDION.CLASSES.IS_DISABLED;
 
+// ============================================================================
+// SHARED UTILITIES & CONSTANTS
+// ============================================================================
+
+const mockHandlers = {
+  onOpenChange: fn(() => {}),
+  onOpen: fn(() => {}),
+  onClose: fn(() => {}),
+};
+
+// Sample content for stories
+const sampleContent = (
+  <div>
+    <p>
+      This accordion contains rich HTML content including headings, paragraphs, and lists.
+    </p>
+    <ul>
+      <li>
+        List item with <a href="#">link</a>
+      </li>
+      <li>
+        List item with <strong>bold text</strong>
+      </li>
+      <li>
+        List item with <em>italic text</em>
+      </li>
+    </ul>
+    <div className="u-p-3 u-mt-3 u-bg-light u-border-radius-1">
+      <code>This is a code block inside the accordion</code>
+    </div>
+  </div>
+);
+
+// ============================================================================
+// META CONFIGURATION
+// ============================================================================
+
 const meta = {
   title: 'Components/Accordion',
   component: Accordion,
@@ -22,8 +60,88 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'The Accordion component follows Atomix guidelines for accessibility, styling, and state. It supports both controlled and uncontrolled modes, custom icons, and full keyboard navigation.',
+        component: `
+# Accordion
+
+## Overview
+
+The Accordion component provides an expandable/collapsible container for content. It follows Atomix guidelines for accessibility, styling, and state management. The component supports both controlled and uncontrolled modes, custom icons, and full keyboard navigation.
+
+## Features
+
+- Accessible with proper ARIA attributes
+- Supports controlled and uncontrolled states
+- Customizable icons and positioning
+- Glass morphism effect support
+- Keyboard navigation support
+- Disabled state handling
+
+## Accessibility
+
+- Keyboard support: Space/Enter to toggle accordion
+- Screen reader: Proper ARIA labels and roles
+- ARIA support: aria-expanded, aria-controls, aria-disabled
+- Focus management: Maintains focus within component
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Accordion title="Section Title">
+  <p>Content goes here</p>
+</Accordion>
+\`\`\`
+
+### With Custom Icon
+
+\`\`\`tsx
+<Accordion 
+  title="Custom Icon" 
+  icon={<CustomIcon />}
+>
+  <p>Content with custom icon</p>
+</Accordion>
+\`\`\`
+
+### Controlled State
+
+\`\`\`tsx
+<Accordion 
+  title="Controlled Accordion" 
+  isOpen={isOpen}
+  onOpenChange={setIsOpen}
+>
+  <p>Controlled content</p>
+</Accordion>
+\`\`\`
+
+## API Reference
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| title | string | - | Title of the accordion |
+| children | ReactNode | - | Content to be shown when accordion is expanded |
+| defaultOpen | boolean | false | Whether the accordion is initially open |
+| iconPosition | 'right' \| 'left' | 'right' | Position of the icon |
+| icon | ReactNode | - | Custom icon for the accordion |
+| isOpen | boolean | - | Whether the accordion is open (controlled) |
+| disabled | boolean | false | Whether the accordion is disabled |
+| onOpenChange | (open: boolean) => void | - | Callback when open state changes |
+| glass | AtomixGlassProps \| boolean | - | Glass morphism effect configuration |
+
+## Design Tokens
+
+Used design tokens:
+
+- \`--atomix-accordion-padding\`: Padding of the accordion
+- \`--atomix-accordion-border\`: Border of the accordion
+- \`--atomix-accordion-background\`: Background of the accordion
+
+## Notes
+
+The Accordion component supports both controlled and uncontrolled usage patterns. Use [defaultOpen] for uncontrolled behavior and [isOpen]/[onOpenChange] for controlled behavior.
+        `,
       },
     },
   },
@@ -33,28 +151,75 @@ const meta = {
       control: { type: 'radio' },
       options: ['right', 'left'],
       description: 'Position of the icon',
-      defaultValue: 'right',
+      table: {
+        type: { summary: 'IconPosition' },
+        defaultValue: { summary: 'right' },
+      },
     },
     defaultOpen: {
       control: 'boolean',
       description: 'Whether the accordion is initially open',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     disabled: {
       control: 'boolean',
       description: 'Whether the accordion is disabled',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     title: {
       control: 'text',
       description: 'Title of the accordion',
+      table: {
+        type: { summary: 'string' },
+      },
     },
     children: {
       control: 'text',
       description: 'Content inside the accordion',
+      table: {
+        type: { summary: 'ReactNode' },
+      },
     },
     glass: {
-      control: 'boolean',
+      control: 'object',
       description: 'Enable glass morphism effect',
+      table: {
+        type: { summary: 'AtomixGlassProps | boolean' },
+      },
+    },
+    isOpen: {
+      control: 'boolean',
+      description: 'Controlled open state of the accordion',
+      table: {
+        type: { summary: 'boolean' },
+      },
+    },
+    onOpenChange: {
+      action: 'onOpenChange',
+      description: 'Callback when the open state changes',
+      table: {
+        type: { summary: '(open: boolean) => void' },
+      },
+    },
+    onOpen: {
+      action: 'onOpen',
+      description: 'Callback when accordion opens',
+      table: {
+        type: { summary: '() => void' },
+      },
+    },
+    onClose: {
+      action: 'onClose',
+      description: 'Callback when accordion closes',
+      table: {
+        type: { summary: '() => void' },
+      },
     },
   },
 } satisfies Meta<typeof Accordion>;
@@ -62,53 +227,131 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/**
- * Default accordion in closed state.
- */
-export const Default: Story = {
+// ============================================================================
+// BASIC USAGE STORIES
+// ============================================================================
+
+export const BasicUsage: Story = {
   args: {
     title: 'Accordion Title',
     children: <p>This is the content of the accordion that appears when expanded.</p>,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic usage of the Accordion component with minimal props.',
+      },
+    },
+  },
 };
 
-/**
- * Accordion in open state by default.
- */
-export const Open: Story = {
+export const WithAllProps: Story = {
+  args: {
+    title: 'Fully Configured Accordion',
+    children: sampleContent,
+    defaultOpen: true,
+    iconPosition: 'left',
+    disabled: false,
+    onOpenChange: mockHandlers.onOpenChange,
+    onOpen: mockHandlers.onOpen,
+    onClose: mockHandlers.onClose,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Accordion with all major props configured.',
+      },
+    },
+  },
+};
+
+// ============================================================================
+// VARIANTS & STATES STORIES
+// ============================================================================
+
+export const DefaultState: Story = {
+  args: {
+    title: 'Default Accordion',
+    children: <p>This is the default state of the accordion.</p>,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Accordion in its default, closed state.',
+      },
+    },
+  },
+};
+
+export const OpenState: Story = {
   args: {
     title: 'Open Accordion',
     children: <p>This accordion is open, showing its content.</p>,
     defaultOpen: true,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Accordion in the open state by default.',
+      },
+    },
+  },
 };
 
-/**
- * Disabled accordion - non-interactive state.
- */
-export const Disabled: Story = {
+export const DisabledState: Story = {
   args: {
     title: 'Disabled Accordion',
-    children: <p>This accordion is disabled.</p>,
+    children: <p>This accordion is disabled and cannot be interacted with.</p>,
     disabled: true,
   },
-};
-
-/**
- * Accordion with icon positioned on the left side.
- */
-export const IconLeft: Story = {
-  args: {
-    title: 'Icon on Left',
-    children: <p>This accordion has the icon on the left side.</p>,
-    iconPosition: 'left',
+  parameters: {
+    docs: {
+      description: {
+        story: 'Accordion in the disabled state, non-interactive.',
+      },
+    },
   },
 };
 
-/**
- * Accordion with custom icon instead of default chevron.
- */
-export const CustomIcon: Story = {
+export const LoadingState: Story = {
+  args: {
+    title: 'Loading Content',
+    children: (
+      <div>
+        <p>Loading content...</p>
+        <div className="c-spinner c-spinner--sm">Loading...</div>
+      </div>
+    ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Accordion showing loading state with spinner.',
+      },
+    },
+  },
+};
+
+// ============================================================================
+// ICON CONFIGURATIONS
+// ============================================================================
+
+export const WithIconLeft: Story = {
+  args: {
+    title: 'Icon on Left',
+    children: <p>This accordion has the icon positioned on the left side.</p>,
+    iconPosition: 'left',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Accordion with icon positioned on the left side.',
+      },
+    },
+  },
+};
+
+export const WithCustomIcon: Story = {
   args: {
     title: 'Custom Icon',
     children: <p>This accordion uses a custom plus icon.</p>,
@@ -132,11 +375,69 @@ export const CustomIcon: Story = {
       </i>
     ),
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Accordion with a custom icon instead of the default chevron.',
+      },
+    },
+  },
 };
 
-/**
- * Multiple accordions grouped together.
- */
+// ============================================================================
+// ADVANCED CONFIGURATIONS
+// ============================================================================
+
+export const ControlledState: Story = {
+  args: {
+    title: 'Controlled Accordion',
+    children: <p>This accordion is controlled by external state.</p>,
+  },
+  render: (args) => {
+    const [open, setOpen] = React.useState(false);
+    return (
+      <div>
+        <button 
+          className="c-btn c-btn--primary u-mb-3" 
+          onClick={() => setOpen(prev => !prev)}
+        >
+          Toggle Accordion (Controlled)
+        </button>
+        <Accordion 
+          {...args} 
+          isOpen={open} 
+          onOpenChange={setOpen}
+        />
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'This story demonstrates a controlled Accordion using the `isOpen` and `onOpenChange` props.',
+      },
+    },
+  },
+};
+
+export const WithRichContent: Story = {
+  args: {
+    title: 'Rich Content',
+    children: sampleContent,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Accordion containing rich HTML content with headings, paragraphs, and lists.',
+      },
+    },
+  },
+};
+
+// ============================================================================
+// INTEGRATION EXAMPLES
+// ============================================================================
+
 export const AccordionGroup: Story = {
   args: {
     title: 'Accordion Group',
@@ -166,154 +467,26 @@ export const AccordionGroup: Story = {
       </div>
     </div>
   ),
-};
-
-/**
- * Showcase of all accordion variants and states.
- */
-export const AllVariants: Story = {
-  args: {
-    title: 'All Variants',
-    children: <p>See render function for all variants</p>,
-  },
   parameters: {
     docs: {
       description: {
-        story: 'Comprehensive showcase of all accordion variants including default, open, disabled, icon positions, and custom icons.',
-      },
-    },
-  },
-  render: () => (
-    <div>
-      <h2>All Accordion Variants</h2>
-      <div className="u-flex u-flex-column u-gap-5">
-        <div>
-          <h3>Default</h3>
-          <Accordion title="Default Accordion">
-            <p>This is the default accordion.</p>
-          </Accordion>
-        </div>
-
-        <div>
-          <h3>Initially Open</h3>
-          <Accordion title="Initially Open Accordion" defaultOpen={true}>
-            <p>This accordion starts in the open state.</p>
-          </Accordion>
-        </div>
-
-        <div>
-          <h3>Disabled</h3>
-          <Accordion title="Disabled Accordion" disabled={true}>
-            <p>This accordion is disabled and cannot be interacted with.</p>
-          </Accordion>
-        </div>
-
-        <div>
-          <h3>Icon on Left</h3>
-          <Accordion title="Icon on Left" iconPosition="left">
-            <p>This accordion has its icon positioned on the left.</p>
-          </Accordion>
-        </div>
-
-        <div>
-          <h3>Custom Icon</h3>
-          <Accordion
-            title="Custom Icon"
-            icon={
-              <i className="c-accordion__icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="12" y1="8" x2="12" y2="16" />
-                  <line x1="8" y1="12" x2="16" y2="12" />
-                </svg>
-              </i>
-            }
-          >
-            <p>This accordion uses a custom plus icon.</p>
-          </Accordion>
-        </div>
-
-        <div>
-          <h3>With Rich Content</h3>
-          <Accordion title="Rich Content">
-            <div>
-              <h4>Section Title</h4>
-              <p>
-                This accordion contains rich HTML content including headings, paragraphs, and lists.
-              </p>
-              <ul>
-                <li>
-                  List item with <a href="#">link</a>
-                </li>
-                <li>
-                  List item with <strong>bold text</strong>
-                </li>
-                <li>
-                  List item with <em>italic text</em>
-                </li>
-              </ul>
-              <div className="u-p-3 u-mt-3 u-bg-light u-border-radius-1">
-                <code>This is a code block inside the accordion</code>
-              </div>
-            </div>
-          </Accordion>
-        </div>
-      </div>
-    </div>
-  ),
-};
-
-/**
- * Controlled accordion using external state management.
- */
-export const Controlled: Story = {
-  args: {
-    title: 'Controlled Accordion',
-    children: <p>This accordion is controlled by external state.</p>,
-  },
-  render: () => {
-    const [open, setOpen] = React.useState(false);
-    return (
-      <div>
-        <button className="c-btn c-btn--primary u-mb-3" onClick={() => setOpen(prev => !prev)}>
-          Toggle Accordion (Controlled)
-        </button>
-        <Accordion title="Controlled Accordion" isOpen={open} onOpenChange={setOpen}>
-          <p>This accordion is controlled by external state.</p>
-        </Accordion>
-      </div>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'This story demonstrates a controlled Accordion using the `isOpen` and `onOpenChange` props.',
+        story: 'Multiple accordions grouped together in a vertical layout.',
       },
     },
   },
 };
 
-/**
- * Accordion with glass morphism effect enabled.
- */
-export const Glass: Story = {
+// ============================================================================
+// GLASS EFFECT STORIES
+// ============================================================================
+
+export const GlassEffect: Story = {
   args: {
     title: 'Glass Accordion',
     children: <p>This accordion has a glass morphism effect applied.</p>,
     glass: true,
   },
-  render: args => (
+  render: (args) => (
     <div
       style={{
         background:
@@ -336,16 +509,12 @@ export const Glass: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'This story demonstrates an Accordion with glass morphism effect enabled against a gradient background.',
+        story: 'This story demonstrates an Accordion with glass morphism effect enabled against a gradient background.',
       },
     },
   },
 };
 
-/**
- * Accordion with custom glass morphism settings.
- */
 export const GlassCustom: Story = {
   args: {
     title: 'Custom Glass Accordion',
@@ -357,7 +526,7 @@ export const GlassCustom: Story = {
       mode: 'polar',
     } as GlassProps,
   },
-  render: args => (
+  render: (args) => (
     <div
       style={{
         background:
@@ -393,690 +562,44 @@ export const GlassCustom: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          'This story demonstrates an Accordion with custom glass morphism settings against a scenic background image.',
+        story: 'This story demonstrates an Accordion with custom glass morphism settings against a scenic background image.',
       },
     },
   },
 };
 
-// Glass Accordion Group
-export const GlassGroup: Story = {
+// ============================================================================
+// ACCESSIBILITY STORIES
+// ============================================================================
+
+export const WithAriaLabels: Story = {
   args: {
-    title: 'Glass Accordion Group',
-    children: <p>Group example with glass effect - see render function</p>,
-    glass: {
-      displacementScale: 180,
-      blurAmount: 1,
-      saturation: 60,
-      mode: 'shader',
-      ShaderVariant: 'premiumGlass',
-    } as any,
+    title: 'Accessible Accordion',
+    children: <p>This accordion includes proper ARIA labels for screen readers.</p>,
   },
-  render: () => (
-    <div
-      style={{
-        background:
-          'url(https://images.unsplash.com/photo-1623237353316-417116e040a5?q=80&w=3307&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
-        backgroundSize: '150%',
-        animation: 'gradient 15s ease infinite',
-        padding: '2rem',
-        borderRadius: '12px',
-        minHeight: '97vh',
-      }}
-    >
-      <style>
-        {`
-          @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-        `}
-      </style>
-      <h2
-        style={{
-          color: 'white',
-          textAlign: 'center',
-          marginBottom: '2rem',
-          textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-        }}
-      >
-        Glass Accordion Group
-      </h2>
-      <div
-        className="u-flex u-flex-column u-gap-3"
-        style={{ width: '100%', maxWidth: '600px', margin: '0 auto' }}
-      >
-        <Accordion title="First Glass Accordion" defaultOpen={true} glass>
-          <p>Content of the first glass accordion with beautiful glass morphism effect.</p>
-        </Accordion>
-
-        <Accordion title="Second Glass Accordion" glass>
-          <p>Content of the second glass accordion showcasing the glass effect.</p>
-        </Accordion>
-
-        <Accordion title="Third Glass Accordion" glass>
-          <p>Content of the third glass accordion with more content.</p>
-          <p>Additional paragraph to demonstrate scrolling and glass effects.</p>
-          <ul>
-            <li>Glass effect item 1</li>
-            <li>Glass effect item 2</li>
-            <li>Glass effect item 3</li>
-          </ul>
-        </Accordion>
-      </div>
-    </div>
-  ),
   parameters: {
     docs: {
       description: {
-        story:
-          'This story demonstrates multiple Accordions with glass morphism effects against an animated gradient background.',
+        story: 'Accordion with proper ARIA attributes for screen reader accessibility.',
       },
     },
   },
 };
 
-// Glass Mode Variants - Standard
-export const GlassModeStandard: Story = {
+export const KeyboardNavigation: Story = {
   args: {
-    title: 'Standard Glass Mode Accordion',
+    title: 'Keyboard Accessible',
     children: (
-      <div>
-        <p>
-          This accordion uses the standard glass mode with classic blur and displacement effects.
-        </p>
-        <p>The standard mode provides a refined glass appearance perfect for elegant interfaces.</p>
-      </div>
+      <p>
+        This accordion is fully operable via keyboard navigation. Press Tab to focus and Enter/Space to toggle.
+      </p>
     ),
-    glass: true,
   },
-  render: args => (
-    <div
-      style={{
-        background:
-          'url(https://images.unsplash.com/photo-1689960159745-fbc6434d4434?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1335)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '3rem',
-        borderRadius: '12px',
-        minHeight: '95vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '2rem',
-      }}
-    >
-      <div style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
-        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Standard Glass Mode</h3>
-        <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>
-          Classic glass morphism with blur and displacement
-        </p>
-      </div>
-      <div style={{ width: '100%', maxWidth: '600px' }}>
-        <Accordion {...args} />
-      </div>
-    </div>
-  ),
-};
-
-// Glass Mode Variants - Polar
-export const GlassModePolar: Story = {
-  args: {
-    title: 'Polar Glass Mode Accordion',
-    children: (
-      <div>
-        <p>This accordion uses the polar glass mode with radial distortion effects.</p>
-        <p>The polar mode creates unique distortion patterns emanating from the center point.</p>
-      </div>
-    ),
-    glass: {
-      mode: 'polar',
-      displacementScale: 80,
-      blurAmount: 1.5,
-      saturation: 180,
-      aberrationIntensity: 3,
-    } as GlassProps,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates keyboard navigation support for the accordion component.',
+      },
+    },
   },
-  render: args => (
-    <div
-      style={{
-        background: 'url(https://images.unsplash.com/photo-1557683316-973673baf926?w=1920)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '3rem',
-        borderRadius: '12px',
-        minHeight: '95vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '2rem',
-      }}
-    >
-      <div style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
-        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Polar Glass Mode</h3>
-        <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>Radial distortion effect from center</p>
-      </div>
-      <div style={{ width: '100%', maxWidth: '600px' }}>
-        <Accordion {...args} />
-      </div>
-    </div>
-  ),
-};
-
-// Glass Mode Variants - Prominent
-export const GlassModeProminent: Story = {
-  args: {
-    title: 'Prominent Glass Mode Accordion',
-    children: (
-      <div>
-        <p>This accordion uses the prominent glass mode with enhanced distortion effects.</p>
-        <p>The prominent mode delivers maximum depth and visual impact for striking designs.</p>
-      </div>
-    ),
-    glass: {
-      mode: 'prominent',
-      displacementScale: 100,
-      blurAmount: 2.5,
-      saturation: 200,
-      aberrationIntensity: 4,
-    } as GlassProps,
-  },
-  render: args => (
-    <div
-      style={{
-        background: 'url(https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1920)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '3rem',
-        borderRadius: '12px',
-        minHeight: '95vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '2rem',
-      }}
-    >
-      <div style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
-        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Prominent Glass Mode</h3>
-        <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>Enhanced distortion with maximum depth</p>
-      </div>
-      <div style={{ width: '100%', maxWidth: '600px' }}>
-        <Accordion {...args} />
-      </div>
-    </div>
-  ),
-};
-
-// Glass Mode Variants - Shader
-export const GlassModeShader: Story = {
-  args: {
-    title: 'Shader Glass Mode Accordion',
-    children: (
-      <div>
-        <p>This accordion uses the shader glass mode with GPU-accelerated liquid glass effects.</p>
-        <p>The shader mode provides smooth, performant animations with liquid glass dynamics.</p>
-      </div>
-    ),
-    glass: {
-      mode: 'shader',
-      shaderVariant: 'liquidGlass',
-      displacementScale: 70,
-      blurAmount: 1.8,
-      saturation: 170,
-    } as GlassProps,
-  },
-  render: args => (
-    <div
-      style={{
-        background: 'url(https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=1920)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '3rem',
-        borderRadius: '12px',
-        minHeight: '95vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '2rem',
-      }}
-    >
-      <div style={{ textAlign: 'center', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
-        <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Shader Glass Mode</h3>
-        <p style={{ fontSize: '0.875rem', opacity: 0.9 }}>GPU-accelerated liquid glass effect</p>
-      </div>
-      <div style={{ width: '100%', maxWidth: '600px' }}>
-        <Accordion {...args} />
-      </div>
-    </div>
-  ),
-};
-
-// All Glass Modes Comparison
-export const AllGlassModesComparison: Story = {
-  args: {
-    title: 'Glass Modes Comparison',
-    children: <p>Comparison example</p>,
-  },
-  render: () => (
-    <div
-      style={{
-        background: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '3rem',
-        borderRadius: '12px',
-        minHeight: '95vh',
-        overflow: 'auto',
-      }}
-    >
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <h2
-          style={{
-            textAlign: 'center',
-            color: 'white',
-            marginBottom: '3rem',
-            fontSize: '2rem',
-            textShadow: '0 2px 8px rgba(0,0,0,0.5)',
-          }}
-        >
-          Glass Mode Accordions Comparison
-        </h2>
-
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '2rem',
-          }}
-        >
-          {/* Standard Mode */}
-          <div>
-            <h3
-              style={{
-                color: 'white',
-                marginBottom: '1rem',
-                fontSize: '1.25rem',
-                textAlign: 'center',
-              }}
-            >
-              Standard Mode
-            </h3>
-            <Accordion title="Standard Glass" glass={true}>
-              <p>Classic blur and displacement effects for a refined glass appearance.</p>
-            </Accordion>
-          </div>
-
-          {/* Polar Mode */}
-          <div>
-            <h3
-              style={{
-                color: 'white',
-                marginBottom: '1rem',
-                fontSize: '1.25rem',
-                textAlign: 'center',
-              }}
-            >
-              Polar Mode
-            </h3>
-            <Accordion
-              title="Polar Glass"
-              glass={
-                {
-                  mode: 'polar',
-                  displacementScale: 80,
-                  blurAmount: 1.5,
-                  saturation: 180,
-                  aberrationIntensity: 3,
-                } as GlassProps
-              }
-            >
-              <p>Radial distortion effects emanating from the center point.</p>
-            </Accordion>
-          </div>
-
-          {/* Prominent Mode */}
-          <div>
-            <h3
-              style={{
-                color: 'white',
-                marginBottom: '1rem',
-                fontSize: '1.25rem',
-                textAlign: 'center',
-              }}
-            >
-              Prominent Mode
-            </h3>
-            <Accordion
-              title="Prominent Glass"
-              glass={
-                {
-                  mode: 'prominent',
-                  displacementScale: 100,
-                  blurAmount: 2.5,
-                  saturation: 200,
-                  aberrationIntensity: 4,
-                } as GlassProps
-              }
-            >
-              <p>Enhanced distortion with maximum depth and visual impact.</p>
-            </Accordion>
-          </div>
-
-          {/* Shader Mode */}
-          <div>
-            <h3
-              style={{
-                color: 'white',
-                marginBottom: '1rem',
-                fontSize: '1.25rem',
-                textAlign: 'center',
-              }}
-            >
-              Shader Mode
-            </h3>
-            <Accordion
-              title="Shader Glass"
-              glass={
-                {
-                  mode: 'shader',
-                  shaderVariant: 'liquidGlass',
-                  displacementScale: 70,
-                  blurAmount: 1.8,
-                  saturation: 170,
-                } as GlassProps
-              }
-            >
-              <p>GPU-accelerated liquid glass with smooth animations.</p>
-            </Accordion>
-          </div>
-        </div>
-      </div>
-    </div>
-  ),
-};
-
-// Glass Accordion Interactive Showcase
-export const GlassInteractiveShowcase: Story = {
-  args: {
-    title: 'Interactive Glass Accordion',
-    children: <p>Interactive showcase</p>,
-  },
-  render: () => {
-    const [openIndex, setOpenIndex] = React.useState<number | null>(0);
-
-    return (
-      <div
-        style={{
-          background: 'url(https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '3rem',
-          borderRadius: '12px',
-          minHeight: '95vh',
-          overflow: 'auto',
-        }}
-      >
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <h2
-            style={{
-              textAlign: 'center',
-              color: 'white',
-              marginBottom: '3rem',
-              fontSize: '2rem',
-              textShadow: '0 2px 8px rgba(0,0,0,0.5)',
-            }}
-          >
-            Interactive Glass Accordion Showcase
-          </h2>
-
-          <div className="u-flex u-flex-column u-gap-3">
-            <Accordion
-              title="Features & Benefits"
-              isOpen={openIndex === 0}
-              onOpenChange={open => setOpenIndex(open ? 0 : null)}
-              glass={
-                {
-                  mode: 'standard',
-                  displacementScale: 60,
-                  blurAmount: 2,
-                } as any
-              }
-            >
-              <div>
-                <h4 style={{ marginBottom: '0.5rem' }}>Premium Glass Effects</h4>
-                <ul style={{ paddingLeft: '1.5rem' }}>
-                  <li>Hardware-accelerated rendering</li>
-                  <li>Smooth mouse-responsive animations</li>
-                  <li>Multiple distortion modes</li>
-                  <li>Customizable parameters</li>
-                </ul>
-              </div>
-            </Accordion>
-
-            <Accordion
-              title="Technical Specifications"
-              isOpen={openIndex === 1}
-              onOpenChange={open => setOpenIndex(open ? 1 : null)}
-              glass={
-                {
-                  mode: 'polar',
-                  displacementScale: 70,
-                  blurAmount: 1.8,
-                } as any
-              }
-            >
-              <div>
-                <h4 style={{ marginBottom: '0.5rem' }}>Performance & Compatibility</h4>
-                <p>Optimized for modern browsers with WebGL support.</p>
-                <ul style={{ paddingLeft: '1.5rem', marginTop: '0.5rem' }}>
-                  <li>60 FPS animations</li>
-                  <li>Responsive design</li>
-                  <li>Accessibility compliant</li>
-                  <li>Mobile-friendly</li>
-                </ul>
-              </div>
-            </Accordion>
-
-            <Accordion
-              title="Customization Options"
-              isOpen={openIndex === 2}
-              onOpenChange={open => setOpenIndex(open ? 2 : null)}
-              glass={
-                {
-                  mode: 'prominent',
-                  displacementScale: 80,
-                  blurAmount: 2.2,
-                } as any
-              }
-            >
-              <div>
-                <h4 style={{ marginBottom: '0.5rem' }}>Flexible Configuration</h4>
-                <p>Customize every aspect of the glass effect:</p>
-                <ul style={{ paddingLeft: '1.5rem', marginTop: '0.5rem' }}>
-                  <li>Blur amount and saturation</li>
-                  <li>Displacement scale</li>
-                  <li>Aberration intensity</li>
-                  <li>Corner radius</li>
-                  <li>Mode selection</li>
-                </ul>
-              </div>
-            </Accordion>
-
-            <Accordion
-              title="Integration Guide"
-              isOpen={openIndex === 3}
-              onOpenChange={open => setOpenIndex(open ? 3 : null)}
-              glass={
-                {
-                  mode: 'shader',
-                  shaderVariant: 'liquidGlass',
-                  displacementScale: 65,
-                } as any
-              }
-            >
-              <div>
-                <h4 style={{ marginBottom: '0.5rem' }}>Easy Implementation</h4>
-                <p>Simple to integrate with your existing components:</p>
-                <div
-                  style={{
-                    background: 'rgba(0,0,0,0.3)',
-                    padding: '1rem',
-                    borderRadius: '4px',
-                    marginTop: '0.5rem',
-                  }}
-                >
-                  <code style={{ color: '#fff', fontSize: '0.875rem' }}>
-                    {'<Accordion glass={true} />'}
-                  </code>
-                </div>
-              </div>
-            </Accordion>
-          </div>
-        </div>
-      </div>
-    );
-  },
-};
-
-// Glass Accordion with Rich Content
-export const GlassRichContent: Story = {
-  args: {
-    title: 'Glass Accordion with Rich Content',
-    children: <p>Rich content example</p>,
-  },
-  render: () => (
-    <div
-      style={{
-        background: 'url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '3rem',
-        borderRadius: '12px',
-        minHeight: '95vh',
-        overflow: 'auto',
-      }}
-    >
-      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <h2
-          style={{
-            textAlign: 'center',
-            color: 'white',
-            marginBottom: '3rem',
-            fontSize: '2rem',
-            textShadow: '0 2px 8px rgba(0,0,0,0.5)',
-          }}
-        >
-          Glass Accordion with Rich Content
-        </h2>
-
-        <div className="u-flex u-flex-column u-gap-3">
-          <Accordion title="Design Philosophy" defaultOpen={true} glass={true}>
-            <div>
-              <p style={{ marginBottom: '1rem' }}>
-                Our glass morphism design combines modern aesthetics with practical functionality.
-                The translucent effects create depth and visual hierarchy while maintaining
-                readability.
-              </p>
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <div
-                  style={{
-                    flex: 1,
-                    background: 'rgba(255,255,255,0.1)',
-                    padding: '1rem',
-                    borderRadius: '8px',
-                  }}
-                >
-                  <h5 style={{ marginBottom: '0.5rem' }}>Aesthetic</h5>
-                  <p style={{ fontSize: '0.875rem' }}>Beautiful, modern design</p>
-                </div>
-                <div
-                  style={{
-                    flex: 1,
-                    background: 'rgba(255,255,255,0.1)',
-                    padding: '1rem',
-                    borderRadius: '8px',
-                  }}
-                >
-                  <h5 style={{ marginBottom: '0.5rem' }}>Functional</h5>
-                  <p style={{ fontSize: '0.875rem' }}>Practical and usable</p>
-                </div>
-              </div>
-            </div>
-          </Accordion>
-
-          <Accordion
-            title="Component Features"
-            glass={
-              {
-                mode: 'polar',
-                displacementScale: 70,
-              } as any
-            }
-          >
-            <div>
-              <p style={{ marginBottom: '1rem' }}>
-                Explore the comprehensive features available in our glass accordion component:
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                <div>✨ Glass morphism effects</div>
-                <div>🎨 Multiple visual modes</div>
-                <div>⚡ High performance</div>
-                <div>♿ Accessibility ready</div>
-                <div>📱 Mobile responsive</div>
-                <div>🎯 Easy customization</div>
-              </div>
-            </div>
-          </Accordion>
-
-          <Accordion
-            title="Implementation Examples"
-            glass={
-              {
-                mode: 'shader',
-                shaderVariant: 'liquidGlass',
-              } as any
-            }
-          >
-            <div>
-              <p style={{ marginBottom: '1rem' }}>
-                Multiple ways to implement glass effects in your application:
-              </p>
-              <div
-                style={{
-                  background: 'rgba(0,0,0,0.3)',
-                  padding: '1rem',
-                  borderRadius: '8px',
-                  marginBottom: '1rem',
-                }}
-              >
-                <code
-                  style={{
-                    color: '#fff',
-                    fontSize: '0.875rem',
-                    display: 'block',
-                    whiteSpace: 'pre',
-                  }}
-                >
-                  {`// Basic usage
-<Accordion glass={true} />
-
-// Custom configuration
-<Accordion glass={{
-  mode: 'polar',
-  displacementScale: 70
-}} />`}
-                </code>
-              </div>
-            </div>
-          </Accordion>
-        </div>
-      </div>
-    </div>
-  ),
 };

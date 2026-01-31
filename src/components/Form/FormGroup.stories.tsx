@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Checkbox } from './Checkbox';
 import { FormGroup } from './FormGroup';
 import { Input } from './Input';
@@ -14,8 +15,73 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'The FormGroup component provides a structured wrapper for form fields, including labels, inputs, helper text, and error messages. It ensures proper accessibility, consistent spacing, and validation state display. FormGroups are essential for creating well-organized and accessible forms.',
+        component: `
+# FormGroup
+
+## Overview
+
+FormGroup component provides a structured wrapper for form fields, including labels, inputs, helper text, and error messages. It ensures proper accessibility, consistent spacing, and validation state display. FormGroups are essential for creating well-organized and accessible forms.
+
+## Features
+
+- Structured form field wrapper
+- Label support
+- Helper text display
+- Validation states (valid/invalid)
+- Required field indicator
+- Consistent spacing
+- Accessible design
+- Responsive behavior
+
+## Accessibility
+
+- Screen reader: Labels and form controls announced properly
+- ARIA support: Proper associations between labels and controls
+- Keyboard support: Navigate form with keyboard
+- Focus management: Maintains focus on interactive elements
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<FormGroup 
+  label="Field Label" 
+  htmlFor="fieldId"
+  helperText="Helper text"
+>
+  <Input id="fieldId" placeholder="Placeholder" />
+</FormGroup>
+\`\`\`
+
+### With Validation
+
+\`\`\`tsx
+<FormGroup 
+  label="Field Label" 
+  htmlFor="fieldId"
+  required={true}
+  valid={isValid}
+>
+  <Input id="fieldId" placeholder="Placeholder" />
+</FormGroup>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| label | string | - | Label for the form group |
+| helperText | string | - | Helper text displayed below the input |
+| htmlFor | string | - | ID of the form control this label is for |
+| required | boolean | false | Whether the field is required |
+| invalid | boolean | false | Whether the field is invalid |
+| valid | boolean | false | Whether the field is valid |
+| size | 'sm' \\| 'md' \\| 'lg' | 'md' | Size variant |
+| children | ReactNode | - | Form control element to wrap |
+        `,
       },
     },
   },
@@ -24,31 +90,67 @@ const meta = {
     label: {
       control: 'text',
       description: 'Label for the form group',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     helperText: {
       control: 'text',
       description: 'Helper text displayed below the input',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     htmlFor: {
       control: 'text',
       description: 'ID of the form control this label is for',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     required: {
       control: 'boolean',
       description: 'Whether the field is required',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     invalid: {
       control: 'boolean',
       description: 'Whether the field is invalid',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     valid: {
       control: 'boolean',
       description: 'Whether the field is valid',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     size: {
       control: { type: 'select' },
       options: SIZES,
       description: 'Size variant',
+      table: {
+        type: { summary: '"sm" | "md" | "lg"' },
+        defaultValue: { summary: 'md' },
+      },
+    },
+    children: {
+      control: 'object',
+      description: 'Form control element to wrap',
+      table: {
+        type: { summary: 'ReactNode' },
+        defaultValue: { summary: '-' },
+      },
     },
   },
 } satisfies Meta<typeof FormGroup>;
@@ -57,13 +159,20 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Basic form group with text
-export const Basic: Story = {
+export const BasicUsage: Story = {
   args: {
     label: 'Username',
     htmlFor: 'username',
     helperText: 'Enter your username',
     required: true,
     children: <Input id="username" placeholder="Enter username" />,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic form group with label, helper text and required indicator.',
+      },
+    },
   },
 };
 
@@ -75,6 +184,13 @@ export const Required: Story = {
     required: true,
     helperText: 'We will never share your email',
     children: <Input id="email" type="email" placeholder="name@example.com" required />,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Form group with required field indicator.',
+      },
+    },
   },
 };
 
@@ -99,10 +215,17 @@ export const ValidationStates: Story = {
         helperText="Password must be at least 8 characters"
         invalid
       >
-        <Input id="password" type="password" value="1234" invalid />
+        <Input id="password" type="password" value="123" invalid />
       </FormGroup>
     </div>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Form group with different validation states.',
+      },
+    },
+  },
 };
 
 // Different form control types

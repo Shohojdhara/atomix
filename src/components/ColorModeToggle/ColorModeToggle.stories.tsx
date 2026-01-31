@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { useState } from 'react';
 import { ColorModeToggle, type ColorMode } from './ColorModeToggle';
 import { Moon, Sun } from '@phosphor-icons/react';
@@ -10,33 +11,132 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'The ColorModeToggle component provides a user-friendly switch for toggling between light and dark color modes. It automatically detects system preferences, persists user choices, and provides visual feedback. Essential for applications supporting theme customization and accessibility preferences.',
+        component: `
+# ColorModeToggle
+
+## Overview
+
+The ColorModeToggle component provides a user-friendly switch for toggling between light and dark color modes. It automatically detects system preferences, persists user choices, and provides visual feedback. Essential for applications supporting theme customization and accessibility preferences.
+
+## Features
+
+- Automatic detection of system preference
+- Local storage persistence
+- Multiple size options
+- Customizable icons
+- Accessible design
+- Controlled/uncontrolled modes
+
+## Accessibility
+
+- Keyboard support: Toggle can be activated using Space or Enter keys
+- Screen reader: Announces current mode and change events
+- ARIA support: Proper roles and properties for assistive technologies
+- Focus management: Maintains visible focus indicator
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<ColorModeToggle />
+\`\`\`
+
+### Controlled Mode
+
+\`\`\`tsx
+<ColorModeToggle value={mode} onChange={setMode} />
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| size | 'sm' \\| 'md' \\| 'lg' | 'md' | Size variant of the toggle |
+| disabled | boolean | false | Whether the toggle is disabled |
+| showTooltip | boolean | false | Whether to show tooltip on hover |
+| disableStorage | boolean | false | Whether to disable localStorage persistence |
+| disableSystemPreference | boolean | false | Whether to disable system preference detection |
+| value | 'light' \\| 'dark' \\| 'system' | - | Controlled value of the toggle |
+| onChange | (mode: ColorMode) => void | - | Callback when mode changes |
+| lightIcon | ReactNode | Default sun icon | Custom icon for light mode |
+| darkIcon | ReactNode | Default moon icon | Custom icon for dark mode |
+        `,
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
     size: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
       description: 'Size variant',
+      table: {
+        type: { summary: '"sm" | "md" | "lg"' },
+        defaultValue: { summary: 'md' },
+      },
     },
     disabled: {
       control: 'boolean',
       description: 'Disable the toggle',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     showTooltip: {
       control: 'boolean',
       description: 'Show tooltip on hover',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     disableStorage: {
       control: 'boolean',
       description: 'Disable localStorage persistence',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     disableSystemPreference: {
       control: 'boolean',
       description: 'Disable system preference detection',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    value: {
+      control: { type: 'radio', options: ['light', 'dark', 'system'] },
+      description: 'Controlled value of the toggle',
+      table: {
+        type: { summary: '"light" | "dark" | "system"' },
+        defaultValue: { summary: '-' },
+      },
+    },
+    onChange: {
+      action: 'mode changed',
+      description: 'Callback when mode changes',
+    },
+    lightIcon: {
+      control: 'object',
+      description: 'Custom icon for light mode',
+      table: {
+        type: { summary: 'ReactNode' },
+        defaultValue: { summary: 'Default sun icon' },
+      },
+    },
+    darkIcon: {
+      control: 'object',
+      description: 'Custom icon for dark mode',
+      table: {
+        type: { summary: 'ReactNode' },
+        defaultValue: { summary: 'Default moon icon' },
+      },
     },
   },
 } satisfies Meta<typeof ColorModeToggle>;
@@ -44,13 +144,18 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Default Color Mode Toggle
-export const Default: Story = {
+export const BasicUsage: Story = {
   args: {},
+  parameters: {
+    docs: {
+      description: {
+        story: 'Default Color Mode Toggle with automatic system preference detection.',
+      },
+    },
+  },
 };
 
-// Size Variants
-export const Sizes: Story = {
+export const AllSizes: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
       <ColorModeToggle size="sm" />
@@ -58,17 +163,29 @@ export const Sizes: Story = {
       <ColorModeToggle size="lg" />
     </div>
   ),
-};
-
-// Disabled State
-export const Disabled: Story = {
-  args: {
-    disabled: true,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Color Mode Toggle in all available sizes.',
+      },
+    },
   },
 };
 
-// Controlled Mode
-export const Controlled: Story = {
+export const DisabledState: Story = {
+  args: {
+    disabled: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Disabled state of the Color Mode Toggle.',
+      },
+    },
+  },
+};
+
+export const ControlledMode: Story = {
   render: () => {
     const [mode, setMode] = useState<ColorMode>('light');
     return (
@@ -81,9 +198,15 @@ export const Controlled: Story = {
       </div>
     );
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Controlled mode example with external state management.',
+      },
+    },
+  },
 };
 
-// Custom Icons
 export const CustomIcons: Story = {
   render: () => (
     <ColorModeToggle
@@ -91,71 +214,30 @@ export const CustomIcons: Story = {
       darkIcon={<Sun size={24} weight="fill" />}
     />
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Color Mode Toggle with custom icons.',
+      },
+    },
+  },
 };
 
-// With Callback
 export const WithCallback: Story = {
   render: () => {
     const [lastChanged, setLastChanged] = useState<string>('');
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
-        <ColorModeToggle
-          onChange={(mode) => setLastChanged(`Changed to ${mode} at ${new Date().toLocaleTimeString()}`)}
-        />
-        {lastChanged && <p style={{ fontSize: '0.875rem' }}>{lastChanged}</p>}
+        <ColorModeToggle onChange={(mode) => setLastChanged(`Mode changed to ${mode} at ${new Date().toLocaleTimeString()}`)} />
+        {lastChanged && <p>Last changed: {lastChanged}</p>}
       </div>
     );
   },
-};
-
-// Custom Storage Key
-export const CustomStorageKey: Story = {
-  args: {
-    storageKey: 'my-app-theme',
-    dataAttribute: 'data-theme',
+  parameters: {
+    docs: {
+      description: {
+        story: 'Color Mode Toggle with change callback.',
+      },
+    },
   },
-};
-
-// Without Storage
-export const WithoutStorage: Story = {
-  args: {
-    disableStorage: true,
-  },
-};
-
-// Example Usage in Header
-export const InHeader: Story = {
-  render: () => (
-    <div
-      className="u-p-5 u-shadow u-flex u-justify-between u-items-center"
-      style={{ width: '400px', borderRadius: '8px' }}
-    >
-      <span style={{ fontWeight: 600 }}>Toggle Theme</span>
-      <ColorModeToggle />
-    </div>
-  ),
-};
-
-// Multiple Toggles
-export const MultipleToggles: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '2rem' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'center' }}>
-        <ColorModeToggle size="sm" />
-        <span style={{ fontSize: '0.75rem' }}>Small</span>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'center' }}>
-        <ColorModeToggle size="md" />
-        <span style={{ fontSize: '0.75rem' }}>Medium</span>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'center' }}>
-        <ColorModeToggle size="lg" />
-        <span style={{ fontSize: '0.75rem' }}>Large</span>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'center' }}>
-        <ColorModeToggle disabled />
-        <span style={{ fontSize: '0.75rem' }}>Disabled</span>
-      </div>
-    </div>
-  ),
 };

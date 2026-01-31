@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { BADGE, SIZES, THEME_COLORS } from '../../lib/constants/components';
 import { Badge } from './Badge';
@@ -25,25 +26,56 @@ const meta = {
       control: { type: 'select' },
       options: THEME_COLORS,
       description: 'The visual style of the badge',
-      defaultValue: 'primary',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'primary' },
+      },
     },
     size: {
       control: { type: 'select' },
       options: SIZES,
       description: 'The size of the badge',
-      defaultValue: 'md',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'md' },
+      },
     },
     disabled: {
       control: 'boolean',
       description: 'Whether the badge is disabled',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     icon: {
-      control: 'text',
+      control: 'object',
       description: 'Optional icon element to display in the badge',
+      table: {
+        type: { summary: 'ReactNode' },
+      },
     },
     glass: {
-      control: 'boolean',
+      control: 'object',
       description: 'Enable glass morphism effect',
+      table: {
+        type: { summary: 'boolean | GlassConfig' },
+        defaultValue: { summary: false },
+      },
+    },
+    label: {
+      control: 'text',
+      description: 'The text content of the badge',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    onClick: {
+      action: 'clicked',
+      description: 'Click event handler',
+      table: {
+        type: { summary: '(event: React.MouseEvent) => void' },
+      },
     },
   },
 } satisfies Meta<typeof Badge>;
@@ -71,89 +103,12 @@ const Icon = () => (
 );
 
 /**
- * Primary badge variant - the main badge style.
+ * Basic badge usage with minimal props
  */
-export const Primary: Story = {
+export const BasicUsage: Story = {
   args: {
-    label: 'Primary',
+    label: 'Badge',
     variant: 'primary',
-    size: 'md',
-  },
-};
-
-/**
- * Secondary badge variant - used for secondary information.
- */
-export const Secondary: Story = {
-  args: {
-    label: 'Secondary',
-    variant: 'secondary',
-    size: 'md',
-  },
-};
-
-/**
- * Success badge variant - indicates successful or positive status.
- */
-export const Success: Story = {
-  args: {
-    label: 'Success',
-    variant: 'success',
-    size: 'md',
-  },
-};
-
-/**
- * Info badge variant - used for informational status.
- */
-export const Info: Story = {
-  args: {
-    label: 'Info',
-    variant: 'info',
-    size: 'md',
-  },
-};
-
-/**
- * Warning badge variant - indicates caution or warning status.
- */
-export const Warning: Story = {
-  args: {
-    label: 'Warning',
-    variant: 'warning',
-    size: 'md',
-  },
-};
-
-/**
- * Error badge variant - indicates error or critical status.
- */
-export const Error: Story = {
-  args: {
-    label: 'Error',
-    variant: 'error',
-    size: 'md',
-  },
-};
-
-/**
- * Light badge variant - light color scheme.
- */
-export const Light: Story = {
-  args: {
-    label: 'Light',
-    variant: 'light',
-    size: 'md',
-  },
-};
-
-/**
- * Dark badge variant - dark color scheme.
- */
-export const Dark: Story = {
-  args: {
-    label: 'Dark',
-    variant: 'dark',
     size: 'md',
   },
 };
@@ -192,44 +147,33 @@ export const Large: Story = {
 };
 
 /**
- * Disabled badge state - non-interactive badge.
+ * Shows all badge states (default, disabled)
  */
-export const Disabled: Story = {
-  args: {
-    label: 'Disabled',
-    variant: 'primary',
-    size: 'md',
-    disabled: true,
-  },
+export const AllStates: Story = {
+  render: () => (
+    <div className="u-flex u-flex-wrap u-gap-2">
+      <Badge label="Default" variant="primary" />
+      <Badge label="Disabled" variant="primary" disabled={true} />
+    </div>
+  ),
 };
 
 /**
- * Badge with icon - displays an icon alongside the label.
+ * Shows badges with icons in different positions
  */
-export const WithIcon: Story = {
-  args: {
-    label: 'With Icon',
-    variant: 'primary',
-    size: 'md',
-    icon: <Icon />,
-  },
+export const WithIcons: Story = {
+  render: () => (
+    <div className="u-flex u-flex-wrap u-gap-2">
+      <Badge label="With Icon" variant="primary" icon={<Icon />} />
+      <Badge label="Icon Only" variant="secondary" icon={<Icon />} />
+    </div>
+  ),
 };
 
 /**
- * Showcase of all badge color variants in a single view.
+ * Shows all available badge color variants
  */
 export const AllVariants: Story = {
-  args: {
-    label: 'Badge',
-    variant: 'primary',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Displays all available badge color variants for easy comparison and selection.',
-      },
-    },
-  },
   render: () => (
     <div className="u-flex u-flex-wrap u-gap-2">
       {THEME_COLORS.map(color => (
@@ -240,20 +184,9 @@ export const AllVariants: Story = {
 };
 
 /**
- * Showcase of all badge sizes (small, medium, large) in a single view.
+ * Shows all available badge sizes
  */
 export const AllSizes: Story = {
-  args: {
-    label: 'Badge',
-    variant: 'primary',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Compares all available badge sizes to help choose the appropriate size for your use case.',
-      },
-    },
-  },
   render: () => (
     <div className="u-flex u-items-center u-gap-2">
       <Badge label="Small" variant="primary" size="sm" />
@@ -264,44 +197,32 @@ export const AllSizes: Story = {
 };
 
 /**
- * Badge examples with different content types (numeric, status, with icons).
+ * Shows numeric badges commonly used for notifications
  */
-export const WithDifferentContent: Story = {
-  args: {
-    label: 'Badge with different content',
-  },
+export const NumericBadges: Story = {
   render: () => (
-    <div className="u-flex u-flex-column u-gap-4">
-      <div>
-        <h3 className="u-mt-0 u-mb-2">Numeric Badges</h3>
-        <div className="u-flex u-gap-2">
-          <Badge label="1" variant="primary" />
-          <Badge label="2" variant="secondary" />
-          <Badge label="3" variant="success" />
-          <Badge label="4" variant="error" />
-          <Badge label="5" variant="warning" />
-          <Badge label="6" variant="info" />
-        </div>
-      </div>
-      <div>
-        <h3 className="u-mt-0 u-mb-2">Status Badges</h3>
-        <div className="u-flex u-gap-2">
-          <Badge label="New" variant="primary" />
-          <Badge label="Active" variant="success" />
-          <Badge label="Pending" variant="warning" />
-          <Badge label="Failed" variant="error" />
-          <Badge label="Blocked" variant="secondary" />
-        </div>
-      </div>
-      <div>
-        <h3 className="u-mt-0 u-mb-2">Badges with Icons</h3>
-        <div className="u-flex u-gap-2">
-          <Badge label="Info" variant="info" icon={<Icon />} />
-          <Badge label="Warning" variant="warning" icon={<Icon />} />
-          <Badge label="Success" variant="success" icon={<Icon />} />
-          <Badge label="Error" variant="error" icon={<Icon />} />
-        </div>
-      </div>
+    <div className="u-flex u-gap-2">
+      <Badge label="1" variant="primary" />
+      <Badge label="2" variant="secondary" />
+      <Badge label="9+" variant="success" />
+      <Badge label="12" variant="error" />
+      <Badge label="5" variant="warning" />
+      <Badge label="42" variant="info" />
+    </div>
+  ),
+};
+
+/**
+ * Shows status badges with different semantic meanings
+ */
+export const StatusBadges: Story = {
+  render: () => (
+    <div className="u-flex u-flex-wrap u-gap-2">
+      <Badge label="New" variant="primary" />
+      <Badge label="Active" variant="success" />
+      <Badge label="Pending" variant="warning" />
+      <Badge label="Failed" variant="error" />
+      <Badge label="Archived" variant="secondary" />
     </div>
   ),
 };
@@ -383,183 +304,46 @@ export const UsageExamples: Story = {
 };
 
 /**
- * Theme-aware badges demonstrating how they adapt to different theme modes.
+ * Shows badge accessibility features
  */
-export const ThemeAwareBadges: Story = {
-  args: {
-    label: 'Badge',
-    variant: 'primary',
+export const AccessibilityFeatures: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Examples of accessible badge implementations with proper ARIA labels and keyboard navigation support.',
+      },
+    },
   },
   render: () => (
-    <div className="u-flex u-flex-column u-gap-6">
+    <div className="u-flex u-flex-column u-gap-4">
       <div>
-        <h3 className="u-mt-0 u-mb-2">Theme Aware Badges</h3>
-        <p className="u-mb-4">
-          The badges below demonstrate how they adapt to different theme modes.
-        </p>
-        <div className="u-flex u-gap-5 u-mt-4">
-          <div className="u-p-5 u-shadow u-flex-1">
-            <h4 className="u-mt-0">Current Theme</h4>
-            <div className="u-flex u-flex-wrap u-gap-2">
-              {THEME_COLORS.map(color => (
-                <Badge key={color} label={color} variant={color} />
-              ))}
-            </div>
-          </div>
+        <h3 className="u-mt-0 u-mb-2">With ARIA Labels</h3>
+        <div className="u-flex u-gap-2">
+          <Badge label="Inbox" variant="primary" aria-label="3 new messages" />
+          <Badge label="Alert" variant="error" aria-label="Critical notification" />
         </div>
       </div>
-
+      
       <div>
-        <h3 className="u-mt-2 u-mb-2">Accessibility Considerations</h3>
-        <p className="u-mb-2">
-          Our badges are designed to maintain proper contrast in both light and dark modes.
-        </p>
-        <div className="u-flex u-flex-column u-gap-2 u-mt-2">
-          <div className="u-flex u-items-center u-gap-2">
-            <span className="u-inline-block" style={{ width: '120px' }}>
-              Primary:
-            </span>
-            <Badge label="New Feature" variant="primary" />
-          </div>
-          <div className="u-flex u-items-center u-gap-2">
-            <span className="u-inline-block" style={{ width: '120px' }}>
-              Success:
-            </span>
-            <Badge label="Completed" variant="success" />
-          </div>
-          <div className="u-flex u-items-center u-gap-2">
-            <span className="u-inline-block" style={{ width: '120px' }}>
-              Warning:
-            </span>
-            <Badge label="In Progress" variant="warning" />
-          </div>
-          <div className="u-flex u-items-center u-gap-2">
-            <span className="u-inline-block" style={{ width: '120px' }}>
-              Error:
-            </span>
-            <Badge label="Failed" variant="error" />
-          </div>
+        <h3 className="u-mt-0 u-mb-2">Interactive Badges</h3>
+        <div className="u-flex u-gap-2">
+          <Badge 
+            label="Closable Tag" 
+            variant="info" 
+            onClick={fn()} 
+            role="button" 
+            tabIndex={0}
+          />
         </div>
-      </div>
-
-      <div className="u-mt-4">
-        <p>
-          Use the Color Mode toggle in the Storybook toolbar to switch between light and dark mode!
-        </p>
       </div>
     </div>
   ),
 };
 
 /**
- * Badge with glass morphism effect - primary variant.
+ * Shows badges with glass effect enabled
  */
-export const GlassPrimary: Story = {
-  args: {
-    label: 'Glass Primary',
-    variant: 'primary',
-    size: 'md',
-    glass: true,
-  },
-  decorators: [
-    Story => (
-      <div
-        style={{
-          background:
-            'url(https://cdn.pixabay.com/photo/2021/06/14/22/46/milky-way-6337038_1280.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '10rem 25rem',
-          borderRadius: '8px',
-        }}
-      >
-        <Story />
-      </div>
-    ),
-  ],
-};
-
-export const GlassSecondary: Story = {
-  args: {
-    label: 'Glass Secondary',
-    variant: 'secondary',
-    size: 'md',
-    glass: true,
-  },
-  decorators: [
-    Story => (
-      <div
-        style={{
-          background:
-            'url(https://images.unsplash.com/photo-1584384689201-e0bcbe2c7f1d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1287)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '10rem 25rem',
-          borderRadius: '8px',
-        }}
-      >
-        <Story />
-      </div>
-    ),
-  ],
-};
-
-export const GlassSuccess: Story = {
-  args: {
-    label: 'Glass Success',
-    variant: 'success',
-    size: 'md',
-    glass: true,
-  },
-  decorators: [
-    Story => (
-      <div
-        style={{
-          background: 'url(https://cdn.pixabay.com/photo/2025/07/29/15/55/mantis-9742906_1280.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '10rem 25rem',
-          borderRadius: '8px',
-        }}
-      >
-        <Story />
-      </div>
-    ),
-  ],
-};
-
-export const GlassWithIcon: Story = {
-  args: {
-    label: 'Glass with Icon',
-    variant: 'primary',
-    size: 'md',
-    icon: <Icon />,
-    glass: true,
-  },
-  decorators: [
-    Story => (
-      <div
-        style={{
-          background:
-            'url(https://cdn.pixabay.com/photo/2023/07/07/20/42/grasshopper-8113345_1280.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '10rem 25rem',
-          borderRadius: '8px',
-        }}
-      >
-        <Story />
-      </div>
-    ),
-  ],
-};
-
-export const GlassAllVariants: Story = {
-  args: {
-    label: 'Glass Badge',
-    variant: 'primary',
-    glass: true,
-  },
+export const WithGlassEffect: Story = {
   render: () => (
     <div
       style={{
@@ -580,33 +364,10 @@ export const GlassAllVariants: Story = {
   ),
 };
 
-export const GlassAllSizes: Story = {
-  args: {
-    label: 'Glass Badge',
-    variant: 'primary',
-    glass: true,
-  },
-  render: () => (
-    <div
-      style={{
-        background:
-          'url(https://cdn.pixabay.com/photo/2025/07/18/15/17/grasshopper-9721629_1280.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '10rem 25rem',
-        borderRadius: '8px',
-      }}
-    >
-      <div className="u-flex u-items-center u-gap-2">
-        <Badge label="Small" variant="primary" size="sm" glass={true} />
-        <Badge label="Medium" variant="primary" size="md" glass={true} />
-        <Badge label="Large" variant="primary" size="lg" glass={true} />
-      </div>
-    </div>
-  ),
-};
-
-export const GlassCustomSettings: Story = {
+/**
+ * Shows badges with custom glass settings
+ */
+export const WithCustomGlassSettings: Story = {
   args: {
     label: 'Custom Glass',
     variant: 'primary',
@@ -618,7 +379,7 @@ export const GlassCustomSettings: Story = {
       aberrationIntensity: 1,
       cornerRadius: 16,
       mode: 'polar',
-    } as any,
+    },
   },
   decorators: [
     Story => (

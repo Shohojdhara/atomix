@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { useState } from 'react';
 import { Select } from './Select';
 import { SIZES } from '../../lib/constants/components';
@@ -10,41 +11,155 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'The Select component provides a dropdown menu for selecting one or more options from a list. It supports single and multiple selection modes, validation states, and can be customized with different sizes. Select components are essential for forms requiring user choice from predefined options.',
+        component: `
+# Select
+
+## Overview
+
+Select component provides a dropdown menu for selecting one or more options from a list. It supports single and multiple selection modes, validation states, and can be customized with different sizes. Select components are essential for forms requiring user choice from predefined options.
+
+## Features
+
+- Single and multiple selection modes
+- Various size options
+- Validation states (valid/invalid)
+- Placeholder support
+- Disabled state
+- Glass morphism effect
+- Accessible design
+- Responsive behavior
+
+## Accessibility
+
+- Keyboard support: Navigate and select options with keyboard
+- Screen reader: Options and selection announced properly
+- ARIA support: Proper roles and properties for select components
+- Focus management: Visible focus indicators maintained
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Select 
+  options={[
+    { value: 'option1', label: 'Option 1' },
+    { value: 'option2', label: 'Option 2' },
+  ]}
+  placeholder="Select an option"
+  onChange={handleChange}
+/>
+\`\`\`
+
+### Multiple Selection
+
+\`\`\`tsx
+<Select 
+  options={options}
+  multiple={true}
+  placeholder="Select options"
+  onChange={handleChange}
+/>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| options | Option[] | [] | Array of options to select from |
+| size | 'sm' \\| 'md' \\| 'lg' | 'md' | Size of the select |
+| disabled | boolean | false | Whether the select is disabled |
+| invalid | boolean | false | Whether the select is invalid |
+| valid | boolean | false | Whether the select is valid |
+| placeholder | string | - | Placeholder text |
+| multiple | boolean | false | Whether multiple options can be selected |
+| glass | boolean | false | Enable glass morphism effect |
+| value | string \\| string[] | - | Selected value(s) |
+| onChange | (event: ChangeEvent) => void | - | Callback when selection changes |
+        `,
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
+    options: {
+      control: 'object',
+      description: 'Array of options to select from',
+      table: {
+        type: { summary: 'Option[]' },
+        defaultValue: { summary: '[]' },
+      },
+    },
     size: {
       control: { type: 'select' },
       options: SIZES,
       description: 'Size of the select',
+      table: {
+        type: { summary: '"sm" | "md" | "lg"' },
+        defaultValue: { summary: 'md' },
+      },
     },
     disabled: {
       control: 'boolean',
       description: 'Whether the select is disabled',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     invalid: {
       control: 'boolean',
       description: 'Whether the select is invalid',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     valid: {
       control: 'boolean',
       description: 'Whether the select is valid',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     placeholder: {
       control: 'text',
       description: 'Placeholder text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     multiple: {
       control: 'boolean',
       description: 'Whether multiple options can be selected',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     glass: {
       control: 'boolean',
       description: 'Enable glass morphism effect',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    value: {
+      control: 'text',
+      description: 'Selected value(s)',
+      table: {
+        type: { summary: 'string | string[]' },
+        defaultValue: { summary: '-' },
+      },
+    },
+    onChange: {
+      action: 'changed',
+      description: 'Callback when selection changes',
     },
   },
 } satisfies Meta<typeof Select>;
@@ -64,10 +179,17 @@ const countries = [
 ];
 
 // Basic select
-export const Basic: Story = {
+export const BasicUsage: Story = {
   args: {
     options: countries,
     placeholder: 'Select a country',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic select component with placeholder.',
+      },
+    },
   },
 };
 
@@ -77,6 +199,13 @@ export const WithValue: Story = {
     options: countries,
     value: 'ca',
     placeholder: 'Select a country',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Select component with a pre-selected value.',
+      },
+    },
   },
 };
 
@@ -100,13 +229,16 @@ export const Interactive: Story = {
           value={selectedValue}
           onChange={handleChange}
         />
-        {selectedValue && (
-          <div className="u-mt-3">
-            Selected value: <strong>{selectedValue}</strong>
-          </div>
-        )}
+        <div>Selected: {selectedValue || 'Nothing selected'}</div>
       </div>
     );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Interactive select component with state management.',
+      },
+    },
   },
 };
 

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import React from 'react';
 import { useState } from 'react';
 import { Container, Grid, GridCol } from '../../layouts/Grid';
@@ -37,9 +38,138 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component:
-          'The Chart component provides a comprehensive charting library with 20+ chart types including line, bar, pie, area, and more. Charts support real-time data updates, animations, interactive tooltips, and advanced customization options. Ideal for dashboards, analytics, data visualization, and any application requiring graphical data representation.',
+        component: `
+# Chart
+
+## Overview
+
+Charts provide a comprehensive charting library with 20+ chart types including line, bar, pie, area, and more. Charts support real-time data updates, animations, interactive tooltips, and advanced customization options. Ideal for dashboards, analytics, data visualization, and any application requiring graphical data representation.
+
+## Features
+
+- Multiple chart types (Line, Bar, Pie, Area, etc.)
+- Real-time data updates
+- Interactive tooltips and annotations
+- Animation capabilities
+- Glass morphism effects
+- Toolbar with export options
+- Multi-axis support
+- Advanced analytics integration
+
+## Accessibility
+
+- Keyboard support: Charts can be navigated using Tab key and arrow keys
+- Screen reader: Data points and chart information announced appropriately
+- ARIA support: Roles and properties ensure chart accessibility
+- Focus management: Maintains focus on interactive chart elements
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<LineChart 
+  title="Sales Performance" 
+  datasets={[{ label: 'Sales', data: data, color: 'var(--atomix-primary)' }]} 
+/>
+\`\`\`
+
+### With Glass Effect
+
+\`\`\`tsx
+<BarChart 
+  title="Revenue by Month" 
+  datasets={datasets}
+  glass={true}
+  showToolbar={true}
+/>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| title | string | - | Title of the chart |
+| subtitle | string | - | Subtitle of the chart |
+| datasets | Dataset[] | [] | Array of datasets to plot |
+| width | string \\| number | 100% | Width of the chart |
+| height | string \\| number | 400px | Height of the chart |
+| glass | boolean | false | Whether to apply glass effect |
+| showToolbar | boolean | false | Whether to show the toolbar |
+| config | ChartConfig | {} | Additional configuration options |
+| onPointClick | (point) => void | - | Callback when a data point is clicked |
+| onPointHover | (point) => void | - | Callback when hovering over a data point |
+        `,
       },
+    },
+  },
+  tags: ['autodocs'],
+  argTypes: {
+    title: {
+      control: 'text',
+      description: 'Title of the chart',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
+    },
+    subtitle: {
+      control: 'text',
+      description: 'Subtitle of the chart',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
+    },
+    width: {
+      control: 'text',
+      description: 'Width of the chart',
+      table: {
+        type: { summary: 'string | number' },
+        defaultValue: { summary: '100%' },
+      },
+    },
+    height: {
+      control: 'text',
+      description: 'Height of the chart',
+      table: {
+        type: { summary: 'string | number' },
+        defaultValue: { summary: '400px' },
+      },
+    },
+    glass: {
+      control: 'boolean',
+      description: 'Whether to apply glass effect',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    showToolbar: {
+      control: 'boolean',
+      description: 'Whether to show the toolbar',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    config: {
+      control: 'object',
+      description: 'Additional configuration options',
+      table: {
+        type: { summary: 'ChartConfig' },
+        defaultValue: { summary: '{}' },
+      },
+    },
+    onPointClick: {
+      action: 'point clicked',
+      description: 'Callback when a data point is clicked',
+    },
+    onPointHover: {
+      action: 'point hovered',
+      description: 'Callback when hovering over a data point',
     },
   },
   tags: ['autodocs'],
@@ -50,7 +180,7 @@ type Story = StoryObj<typeof meta>;
 
 // Glass Variant Story
 export const GlassVariant: Story = {
-  render: () => {
+  render: (args) => {
     const sampleData = [
       { label: 'Jan', value: 65 },
       { label: 'Feb', value: 78 },
@@ -84,6 +214,7 @@ export const GlassVariant: Story = {
             </GridCol>
             <GridCol col={12} md={6}>
               <LineChart
+                {...args}
                 title="Sales Performance"
                 subtitle="Monthly revenue data"
                 datasets={datasets}
@@ -97,15 +228,16 @@ export const GlassVariant: Story = {
             </GridCol>
             <GridCol col={12} md={6}>
               <BarChart
+                {...args}
                 title="Revenue by Month"
                 subtitle="Q1-Q2 comparison"
                 datasets={datasets}
-                glass={{
-                  displacementScale: 30,
-                  saturation: 200,
-                  mode: 'polar',
-                }}
+                glass={true}
                 showToolbar={true}
+                config={{
+                  showTooltips: true,
+                  animate: true,
+                }}
               />
             </GridCol>
             <GridCol col={12} md={6}>
@@ -133,6 +265,17 @@ export const GlassVariant: Story = {
         </Container>
       </div>
     );
+  },
+  args: {
+    onPointClick: fn(),
+    onPointHover: fn(),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Chart with glass effect applied to demonstrate aesthetic enhancement.',
+      },
+    },
   },
 };
 

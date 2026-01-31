@@ -1,9 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Grid } from '../../layouts/Grid/Grid';
 import GridCol from '../../layouts/Grid/GridCol';
 import { Button } from '../Button/Button';
 import { Card } from '../Card/Card';
 import { Block } from './Block';
+
+// ============================================================================
+// META CONFIGURATION
+// ============================================================================
 
 const meta = {
   title: 'Components/Block',
@@ -43,8 +48,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// ============================================================================
+// STORY IMPLEMENTATIONS
+// ============================================================================
+
 // Basic usage
-export const Default: Story = {
+export const BasicUsage: Story = {
   args: {
     children: (
       <div>
@@ -100,7 +109,7 @@ export const HeroSection: Story = {
       <div className="u-text-center">
         <h1>Welcome to Our Platform</h1>
         <p>Experience the power of modern web development with our comprehensive design system.</p>
-        <Button size="lg" variant="secondary">
+        <Button size="lg" variant="secondary" onClick={fn()}>
           Get Started
         </Button>
       </div>
@@ -169,7 +178,7 @@ export const ArticleLayout: Story = {
       <Block spacing="md" container={{ type: 'sm' }} background="secondary">
         <h3>Ready to get started?</h3>
         <p>Join thousands of developers building with our design system.</p>
-        <Button variant="primary">Start Building</Button>
+        <Button variant="primary" onClick={fn()}>Start Building</Button>
       </Block>
     </div>
   ),
@@ -292,10 +301,10 @@ export const ContentPreview: Story = {
             A comprehensive design system with reusable components and consistent design patterns
           </p>
           <div className="u-mb-4">
-            <Button size="lg" variant="secondary" className="u-me-2">
+            <Button size="lg" variant="secondary" className="u-me-2" onClick={fn()}>
               Get Started
             </Button>
-            <Button size="lg" variant="invert" className="u-ms-2">
+            <Button size="lg" variant="invert" className="u-ms-2" onClick={fn()}>
               Learn More
             </Button>
           </div>
@@ -311,10 +320,10 @@ export const ContentPreview: Story = {
               text="Multiple variants and sizes for all use cases"
               actions={
                 <div>
-                  <Button variant="primary" size="sm" className="u-me-1">
+                  <Button variant="primary" size="sm" className="u-me-1" onClick={fn()}>
                     Primary
                   </Button>
-                  <Button variant="secondary" size="sm">
+                  <Button variant="secondary" size="sm" onClick={fn()}>
                     Secondary
                   </Button>
                 </div>
@@ -325,14 +334,14 @@ export const ContentPreview: Story = {
             <Card
               title="Cards"
               text="Flexible content containers with multiple options"
-              actions={<Button variant="primary">View Details</Button>}
+              actions={<Button variant="primary" onClick={fn()}>View Details</Button>}
             />
           </GridCol>
           <GridCol xs={12} md={6} lg={4}>
             <Card
               title="Blocks"
               text="Layout containers with consistent spacing and backgrounds"
-              actions={<Button variant="primary">Learn More</Button>}
+              actions={<Button variant="primary" onClick={fn()}>Learn More</Button>}
             />
           </GridCol>
         </Grid>
@@ -378,10 +387,10 @@ export const ContentPreview: Story = {
             Join thousands of developers and designers building with Atomix Design System
           </p>
           <div>
-            <Button size="lg" variant="primary" className="u-me-2">
+            <Button size="lg" variant="primary" className="u-me-2" onClick={fn()}>
               Documentation
             </Button>
-            <Button size="lg" variant="secondary" className="u-ms-2">
+            <Button size="lg" variant="secondary" className="u-ms-2" onClick={fn()}>
               Examples
             </Button>
           </div>

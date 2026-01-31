@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import React, { useState } from 'react';
 import { Upload } from './Upload';
 import { SIZES } from '../../lib/constants/components';
@@ -10,8 +11,68 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'The Upload component provides a modern file upload interface with drag & drop functionality, progress tracking, file preview, and validation. It supports single and multiple file uploads, custom file size limits, and provides visual feedback throughout the upload process. Ideal for forms requiring file attachments or media uploads.',
+        component: `
+# Upload
+
+## Overview
+
+Upload provides a modern file upload interface with drag & drop functionality, progress tracking, file preview, and validation. It supports single and multiple file uploads, custom file size limits, and provides visual feedback throughout the upload process. Ideal for forms requiring file attachments or media uploads.
+
+## Features
+
+- Drag & drop file upload
+- Progress tracking
+- File preview
+- Validation
+- Multiple file support
+- Customizable size limits
+- Accessible design
+- Responsive behavior
+
+## Accessibility
+
+- Keyboard support: Upload via keyboard navigation
+- Screen reader: File selection and status announced appropriately
+- ARIA support: Proper roles and properties for upload components
+- Focus management: Visible focus indicators maintained
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Upload 
+  title="Drag and Drop files here" 
+  onFileSelect={(files) => console.log(files)} 
+/>
+\`\`\`
+
+### Multiple Files
+
+\`\`\`tsx
+<Upload 
+  multiple={true}
+  title="Drag and Drop files here" 
+  onFileSelect={(files) => console.log(files)} 
+/>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| size | 'sm' \\| 'md' \\| 'lg' | 'md' | Size variant of the upload component |
+| disabled | boolean | false | Whether the upload component is disabled |
+| maxSizeInMB | number | 5 | Maximum file size in MB |
+| multiple | boolean | false | Whether multiple files can be selected |
+| title | string | 'Drag and Drop files here' | Text for the drag and drop section |
+| supportedFilesText | string | 'Files supported: PDF, XSLS, JPEG, PNG, Scanner' | Text describing supported file types |
+| buttonText | string | 'Choose File' | Text for the upload button |
+| helperText | string | 'Maximum size: 5MB' | Helper text displayed below the button |
+| onFileSelect | (files: File[]) => void | - | Callback when files are selected |
+        `,
       },
     },
   },
@@ -20,43 +81,71 @@ const meta = {
     size: {
       control: { type: 'select' },
       options: SIZES,
-      defaultValue: 'md',
       description: 'Size variant of the upload component',
+      table: {
+        type: { summary: '"sm" | "md" | "lg"' },
+        defaultValue: { summary: 'md' },
+      },
     },
     disabled: {
       control: { type: 'boolean' },
-      defaultValue: false,
       description: 'Whether the upload component is disabled',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     maxSizeInMB: {
       control: { type: 'number' },
-      defaultValue: 5,
       description: 'Maximum file size in MB',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: 5 },
+      },
     },
     multiple: {
       control: { type: 'boolean' },
-      defaultValue: false,
       description: 'Whether multiple files can be selected',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     title: {
       control: { type: 'text' },
-      defaultValue: 'Drag and Drop files here',
       description: 'Text for the drag and drop section',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Drag and Drop files here' },
+      },
     },
     supportedFilesText: {
       control: { type: 'text' },
-      defaultValue: 'Files supported: PDF, XSLS, JPEG, PNG, Scanner',
       description: 'Text describing supported file types',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Files supported: PDF, XSLS, JPEG, PNG, Scanner' },
+      },
     },
     buttonText: {
       control: { type: 'text' },
-      defaultValue: 'Choose File',
       description: 'Text for the upload button',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Choose File' },
+      },
     },
     helperText: {
       control: { type: 'text' },
-      defaultValue: 'Maximum size: 5MB',
       description: 'Helper text displayed below the button',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Maximum size: 5MB' },
+      },
+    },
+    onFileSelect: {
+      action: 'file selected',
+      description: 'Callback when files are selected',
     },
   },
 } satisfies Meta<typeof Upload>;
@@ -64,8 +153,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Default upload component
-export const Default: Story = {
+export const BasicUsage: Story = {
   render: args => (
     <div style={{ padding: '30px', maxWidth: '600px' }}>
       <Upload {...args} />
@@ -77,6 +165,7 @@ export const Default: Story = {
     supportedFilesText: 'Files supported: PDF, XSLS, JPEG, PNG, Scanner',
     buttonText: 'Choose File',
     helperText: 'Maximum size: 5MB',
+    onFileSelect: fn(),
   },
   parameters: {
     docs: {
@@ -142,8 +231,7 @@ export const SizeVariants: Story = {
   },
 };
 
-// Disabled state
-export const Disabled: Story = {
+export const DisabledState: Story = {
   render: args => (
     <div style={{ padding: '30px', maxWidth: '600px' }}>
       <Upload {...args} />
@@ -151,16 +239,17 @@ export const Disabled: Story = {
   ),
   args: {
     size: 'md',
-    title: 'Drag and Drop files here',
-    supportedFilesText: 'Files supported: PDF, XSLS, JPEG, PNG, Scanner',
-    buttonText: 'Choose File',
-    helperText: 'Maximum size: 5MB',
     disabled: true,
+    title: 'Upload Disabled',
+    supportedFilesText: 'PDF, JPEG, PNG',
+    buttonText: 'Choose File',
+    helperText: 'This upload component is disabled',
+    onFileSelect: fn(),
   },
   parameters: {
     docs: {
       description: {
-        story: 'Upload component in disabled state with reduced opacity and no interactions.',
+        story: 'Upload component in disabled state.',
       },
     },
   },
@@ -353,7 +442,6 @@ export const CustomIcon: Story = {
   },
 };
 
-// Multiple file upload
 export const MultipleFiles: Story = {
   render: args => (
     <div style={{ padding: '30px', maxWidth: '600px' }}>
@@ -363,15 +451,16 @@ export const MultipleFiles: Story = {
   args: {
     size: 'md',
     multiple: true,
+    title: 'Drag and Drop files here',
+    supportedFilesText: 'PDF, JPEG, PNG, DOCX',
     buttonText: 'Choose Files',
-    title: 'Upload multiple files',
-    supportedFilesText: 'Select multiple files at once',
-    helperText: 'Maximum size: 5MB per file',
+    helperText: 'Multiple files supported, max size: 5MB each',
+    onFileSelect: fn(),
   },
   parameters: {
     docs: {
       description: {
-        story: 'Upload component configured to accept multiple files at once.',
+        story: 'Upload component configured to allow multiple file selections.',
       },
     },
   },

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { useState } from 'react';
 import { DataTableColumn } from '../../lib/types/components';
 import { DataTable } from './DataTable';
@@ -10,24 +11,174 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'The DataTable component provides a powerful and flexible way to display structured data in rows and columns. It supports sorting, filtering, pagination, selection, and various display options. DataTables are ideal for displaying large datasets, user lists, product catalogs, or any tabular information requiring advanced data manipulation.',
+        component: `
+# DataTable
+
+## Overview
+
+DataTable provides a powerful and flexible way to display structured data in rows and columns. It supports sorting, filtering, pagination, selection, and various display options. DataTables are ideal for displaying large datasets, user lists, product catalogs, or any tabular information requiring advanced data manipulation.
+
+## Features
+
+- Sorting capability for columns
+- Filtering functionality
+- Pagination with configurable page size
+- Row selection options
+- Custom cell rendering
+- Responsive design
+- Loading states
+- Empty state handling
+
+## Accessibility
+
+- Keyboard support: Navigate with arrow keys, select with Space/Enter
+- Screen reader: Table headers and data cells announced properly
+- ARIA support: Appropriate roles and properties for tables
+- Focus management: Maintains focus within the table controls
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<DataTable 
+  data={data} 
+  columns={columns} 
+/>
+\`\`\`
+
+### With Pagination
+
+\`\`\`tsx
+<DataTable 
+  data={data} 
+  columns={columns} 
+  paginated={true} 
+  pageSize={10}
+/>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| data | T[] | [] | Array of data objects to display |
+| columns | DataTableColumn[] | [] | Column definitions for the table |
+| sortable | boolean | false | Whether columns are sortable |
+| filterable | boolean | false | Whether the table is filterable |
+| paginated | boolean | false | Whether to enable pagination |
+| pageSize | number | 10 | Number of rows per page |
+| striped | boolean | false | Whether to apply striped row styling |
+| bordered | boolean | false | Whether to show table borders |
+| dense | boolean | false | Whether to use dense row spacing |
+| loading | boolean | false | Whether the table is in loading state |
+| emptyMessage | string | 'No records found' | Message to display when table is empty |
+| onRowClick | (row: T) => void | - | Callback when a row is clicked |
+| onSelectionChange | (selected: T[]) => void | - | Callback when selection changes |
+        `,
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
-    data: { control: 'object', description: 'Array of data objects to display' },
-    columns: { control: 'object', description: 'Column definitions for the table' },
-    sortable: { control: 'boolean', description: 'Whether columns are sortable' },
-    filterable: { control: 'boolean', description: 'Whether the table is filterable' },
-    paginated: { control: 'boolean', description: 'Whether to enable pagination' },
-    pageSize: { control: 'number', description: 'Number of rows per page' },
-    striped: { control: 'boolean', description: 'Whether to apply striped row styling' },
-    bordered: { control: 'boolean', description: 'Whether to show table borders' },
-    dense: { control: 'boolean', description: 'Whether to use dense row spacing' },
-    loading: { control: 'boolean', description: 'Whether the table is in loading state' },
-    emptyMessage: { control: 'text', description: 'Message to display when table is empty' },
+    data: { 
+      control: 'object', 
+      description: 'Array of data objects to display',
+      table: {
+        type: { summary: 'T[]' },
+        defaultValue: { summary: '[]' },
+      },
+    },
+    columns: { 
+      control: 'object', 
+      description: 'Column definitions for the table',
+      table: {
+        type: { summary: 'DataTableColumn[]' },
+        defaultValue: { summary: '[]' },
+      },
+    },
+    sortable: { 
+      control: 'boolean', 
+      description: 'Whether columns are sortable',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    filterable: { 
+      control: 'boolean', 
+      description: 'Whether the table is filterable',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    paginated: { 
+      control: 'boolean', 
+      description: 'Whether to enable pagination',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    pageSize: { 
+      control: 'number', 
+      description: 'Number of rows per page',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: 10 },
+      },
+    },
+    striped: { 
+      control: 'boolean', 
+      description: 'Whether to apply striped row styling',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    bordered: { 
+      control: 'boolean', 
+      description: 'Whether to show table borders',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    dense: { 
+      control: 'boolean', 
+      description: 'Whether to use dense row spacing',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    loading: { 
+      control: 'boolean', 
+      description: 'Whether the table is in loading state',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    emptyMessage: { 
+      control: 'text', 
+      description: 'Message to display when table is empty',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'No records found' },
+      },
+    },
+    onRowClick: {
+      action: 'row clicked',
+      description: 'Callback when a row is clicked',
+    },
+    onSelectionChange: {
+      action: 'selection changed',
+      description: 'Callback when selection changes',
+    },
   },
 } satisfies Meta<typeof DataTable>;
 
@@ -97,6 +248,66 @@ const columns: DataTableColumn[] = [
     },
   },
 ];
+
+export const BasicUsage: Story = {
+  args: {
+    data: users,
+    columns: columns,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic DataTable component with sample user data.',
+      },
+    },
+  },
+};
+
+export const WithPagination: Story = {
+  args: {
+    data: largeDataSet,
+    columns: columns,
+    paginated: true,
+    pageSize: 5,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with pagination enabled to handle large datasets.',
+      },
+    },
+  },
+};
+
+export const WithSorting: Story = {
+  args: {
+    data: users,
+    columns: columns,
+    sortable: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with column sorting functionality enabled.',
+      },
+    },
+  },
+};
+
+export const WithStripedRows: Story = {
+  args: {
+    data: users,
+    columns: columns,
+    striped: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with striped row styling for improved readability.',
+      },
+    },
+  },
+};
 
 // Basic example
 export const Basic: Story = {

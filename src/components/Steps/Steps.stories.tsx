@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Steps } from './Steps';
 
 const meta = {
@@ -9,26 +10,105 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'The Steps component displays a sequence of steps in a process or workflow. It provides visual progress indication and can be displayed horizontally or vertically. Steps are ideal for multi-step forms, onboarding flows, or any process that requires clear progress visualization.',
+        component: `
+# Steps
+
+## Overview
+
+Steps component displays a sequence of steps in a process or workflow. It provides visual progress indication and can be displayed horizontally or vertically. Steps are ideal for multi-step forms, onboarding flows, or any process that requires clear progress visualization.
+
+## Features
+
+- Horizontal and vertical orientations
+- Active step indication
+- Customizable step content
+- Glass morphism effect
+- Accessible design
+- Responsive behavior
+
+## Accessibility
+
+- Screen reader: Step status and progress announced appropriately
+- ARIA support: Proper roles and properties for step components
+- Keyboard support: Accessible via keyboard navigation
+- Focus management: Maintains focus on interactive elements
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Steps 
+  items={[
+    { number: 1, text: 'Step 1' },
+    { number: 2, text: 'Step 2' },
+    { number: 3, text: 'Step 3' },
+  ]}
+  activeIndex={1}
+/>
+\`\`\`
+
+### Vertical Orientation
+
+\`\`\`tsx
+<Steps 
+  items={[
+    { number: 1, text: 'Step 1' },
+    { number: 2, text: 'Step 2' },
+    { number: 3, text: 'Step 3' },
+  ]}
+  activeIndex={1}
+  vertical={true}
+/>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| activeIndex | number | 1 | The index of the currently active step |
+| vertical | boolean | false | Whether to display steps vertically |
+| glass | boolean | false | Enable glass morphism effect |
+| items | StepItem[] | [] | Array of step items with number and text |
+        `,
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
     activeIndex: {
-      control: { type: 'number' },
+      control: { type: 'number', min: 0 },
       description: 'The index of the currently active step',
-      defaultValue: 1,
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: 1 },
+      },
     },
     vertical: {
       control: { type: 'boolean' },
       description: 'Whether to display steps vertically',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     glass: {
       control: 'boolean',
       description: 'Enable glass morphism effect',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    items: {
+      control: { type: 'object' },
+      description: 'Array of step items with number and text',
+      table: {
+        type: { summary: 'StepItem[]' },
+        defaultValue: { summary: '[]' },
+      },
     },
   },
 } satisfies Meta<typeof Steps>;
@@ -36,13 +116,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Default horizontal steps
-export const Default: Story = {
-  render: args => (
-    <div style={{ padding: '30px' }}>
-      <Steps {...args} />
-    </div>
-  ),
+// Basic horizontal steps
+export const BasicHorizontal: Story = {
   args: {
     items: [
       { number: 1, text: 'Step 1' },
@@ -54,15 +129,22 @@ export const Default: Story = {
     activeIndex: 1,
     vertical: false,
   },
-};
-
-// Vertical steps
-export const Vertical: Story = {
-  render: args => (
+  render: (args) => (
     <div style={{ padding: '30px' }}>
       <Steps {...args} />
     </div>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Default horizontal steps with basic configuration.',
+      },
+    },
+  },
+};
+
+// Vertical steps
+export const BasicVertical: Story = {
   args: {
     items: [
       { number: 1, text: 'Step 1' },
@@ -73,6 +155,18 @@ export const Vertical: Story = {
     ],
     activeIndex: 1,
     vertical: true,
+  },
+  render: (args) => (
+    <div style={{ padding: '30px' }}>
+      <Steps {...args} />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Steps displayed in vertical orientation.',
+      },
+    },
   },
 };
 
@@ -100,19 +194,16 @@ export const WithCustomContent: Story = {
         text: 'Preferences',
         content: <p style={{ marginTop: '10px', fontSize: '0.85em' }}>Select your preferences</p>,
       },
-      {
-        number: 4,
-        text: 'Payment',
-        content: <p style={{ marginTop: '10px', fontSize: '0.85em' }}>Add payment information</p>,
-      },
-      {
-        number: 5,
-        text: 'Confirmation',
-        content: <p style={{ marginTop: '10px', fontSize: '0.85em' }}>Complete your signup</p>,
-      },
     ],
     activeIndex: 1,
     vertical: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Steps with custom content in each step.',
+      },
+    },
   },
 };
 
@@ -152,8 +243,15 @@ export const WithIcons: Story = {
 };
 
 // Interactive steps with buttons for navigation
-const InteractiveSteps: React.FC = () => {
+const InteractiveStepsTemplate: React.FC<{ onStepChange?: (index: number) => void }> = ({ onStepChange }) => {
   const [activeStep, setActiveStep] = React.useState(0);
+
+  const handleStepChange = (stepIndex: number) => {
+    setActiveStep(stepIndex);
+    if (onStepChange) {
+      onStepChange(stepIndex);
+    }
+  };
 
   const items = [
     { number: 1, text: 'Step 1' },
@@ -165,37 +263,47 @@ const InteractiveSteps: React.FC = () => {
 
   return (
     <div>
-      <Steps items={items} activeIndex={activeStep} onStepChange={setActiveStep} />
-      <div style={{ marginTop: '30px', display: 'flex', gap: '10px' }}>
+      <Steps items={items} activeIndex={activeStep} onStepChange={handleStepChange} />
+      <div style={{ marginTop: '30px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
         <button
           className="c-btn c-btn--primary"
-          onClick={() => setActiveStep(Math.max(0, activeStep - 1))}
+          onClick={() => handleStepChange(Math.max(0, activeStep - 1))}
           disabled={activeStep === 0}
         >
           Previous
         </button>
         <button
           className="c-btn c-btn--primary"
-          onClick={() => setActiveStep(Math.min(items.length - 1, activeStep + 1))}
+          onClick={() => handleStepChange(Math.min(items.length - 1, activeStep + 1))}
           disabled={activeStep === items.length - 1}
         >
           Next
         </button>
+        <span style={{ marginLeft: '15px', alignSelf: 'center' }}>
+          Current step: {activeStep + 1} of {items.length}
+        </span>
       </div>
     </div>
   );
 };
 
 export const Interactive: Story = {
-  args: {} as any,
   render: () => (
     <div style={{ padding: '30px' }}>
-      <InteractiveSteps />
+      <InteractiveStepsTemplate />
     </div>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Interactive steps with navigation controls to demonstrate state management.',
+      },
+    },
+  },
 };
 
-export const Glass: Story = {
+// Glass effect horizontal
+export const GlassHorizontal: Story = {
   args: {
     items: [
       { number: 1, text: 'Glass Step 1' },
@@ -208,7 +316,7 @@ export const Glass: Story = {
     vertical: false,
     glass: true,
   },
-  render: (args: any) => (
+  render: (args) => (
     <div
       style={{
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -225,8 +333,16 @@ export const Glass: Story = {
       </div>
     </div>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Horizontal steps with glass morphism effect applied.',
+      },
+    },
+  },
 };
 
+// Glass effect vertical
 export const GlassVertical: Story = {
   args: {
     items: [
@@ -240,7 +356,7 @@ export const GlassVertical: Story = {
     vertical: true,
     glass: true,
   },
-  render: (args: any) => (
+  render: (args) => (
     <div
       style={{
         background:
@@ -260,8 +376,16 @@ export const GlassVertical: Story = {
       </div>
     </div>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Vertical steps with glass morphism effect applied.',
+      },
+    },
+  },
 };
 
+// Glass effect with custom configuration
 export const GlassCustom: Story = {
   args: {
     items: [
@@ -279,9 +403,9 @@ export const GlassCustom: Story = {
       saturation: 200,
       aberrationIntensity: 0.8,
       cornerRadius: 12,
-    } as any,
+    },
   },
-  render: (args: any) => (
+  render: (args) => (
     <div
       style={{
         background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57)',
@@ -295,18 +419,23 @@ export const GlassCustom: Story = {
         justifyContent: 'center',
       }}
     >
-      <style>
-        {`
+      <style>{`
           @keyframes gradient {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
           }
-        `}
-      </style>
+        `}</style>
       <div style={{ width: '100%', maxWidth: '800px' }}>
         <Steps {...args} />
       </div>
     </div>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Horizontal steps with custom glass morphism effect parameters.',
+      },
+    },
+  },
 };

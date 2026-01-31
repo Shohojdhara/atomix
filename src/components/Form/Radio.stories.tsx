@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Radio } from './Radio';
 
 const meta = {
@@ -9,8 +10,79 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'The Radio component allows users to select a single option from a group of mutually exclusive options. Radio buttons are typically used in groups where only one selection is allowed. They provide clear visual feedback and support keyboard navigation.',
+        component: `
+# Radio
+
+## Overview
+
+Radio component allows users to select a single option from a group of mutually exclusive options. Radio buttons are typically used in groups where only one selection is allowed. They provide clear visual feedback and support keyboard navigation.
+
+## Features
+
+- Single selection from mutually exclusive options
+- Label support
+- Disabled state
+- Validation states (valid/invalid)
+- Glass morphism effect
+- Accessible design
+- Responsive behavior
+
+## Accessibility
+
+- Keyboard support: Navigate and toggle with keyboard
+- Screen reader: State and label announced properly
+- ARIA support: Proper roles and properties for radio components
+- Focus management: Visible focus indicators maintained
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Radio 
+  label="Option label" 
+  name="groupName"
+  value="optionValue"
+  checked={isSelected}
+  onChange={setSelected}
+/>
+\`\`\`
+
+### Radio Group
+
+\`\`\`tsx
+<Radio 
+  label="Option 1" 
+  name="group" 
+  value="opt1"
+  checked={selected === 'opt1'}
+  onChange={() => setSelected('opt1')}
+/>
+<Radio 
+  label="Option 2" 
+  name="group" 
+  value="opt2"
+  checked={selected === 'opt2'}
+  onChange={() => setSelected('opt2')}
+/>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| label | string | - | Radio button label text |
+| checked | boolean | false | Whether the radio button is checked |
+| disabled | boolean | false | Whether the radio button is disabled |
+| invalid | boolean | false | Whether the radio button is invalid |
+| valid | boolean | false | Whether the radio button is valid |
+| glass | boolean | false | Enable glass morphism effect |
+| name | string | - | Name of the radio button group |
+| value | string | - | Value of the radio button |
+| onChange | (value: string) => void | - | Callback when radio button state changes |
+        `,
       },
     },
   },
@@ -19,26 +91,70 @@ const meta = {
     label: {
       control: 'text',
       description: 'Radio button label text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     checked: {
       control: 'boolean',
       description: 'Whether the radio button is checked',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     disabled: {
       control: 'boolean',
       description: 'Whether the radio button is disabled',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     invalid: {
       control: 'boolean',
       description: 'Whether the radio button is invalid',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     valid: {
       control: 'boolean',
       description: 'Whether the radio button is valid',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     glass: {
       control: 'boolean',
       description: 'Enable glass morphism effect',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    name: {
+      control: 'text',
+      description: 'Name of the radio button group',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
+    },
+    value: {
+      control: 'text',
+      description: 'Value of the radio button',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
+    },
+    onChange: {
+      action: 'changed',
+      description: 'Callback when radio button state changes',
     },
   },
 } satisfies Meta<typeof Radio>;
@@ -47,12 +163,18 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Basic radio button
-export const Basic: Story = {
+export const BasicUsage: Story = {
   args: {
     label: 'Option 1',
     name: 'option',
     value: 'option1',
-    onChange: () => { },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic radio button with label.',
+      },
+    },
   },
 };
 
@@ -63,7 +185,13 @@ export const Checked: Story = {
     name: 'option',
     value: 'option1',
     checked: true,
-    onChange: () => { },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Checked radio button state.',
+      },
+    },
   },
 };
 
@@ -97,6 +225,13 @@ export const RadioGroup: Story = {
         />
       </div>
     );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Group of radio buttons demonstrating mutual exclusivity.',
+      },
+    },
   },
 };
 

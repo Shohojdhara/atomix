@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Popover, PopoverTrigger } from './Popover';
 import { Toggle } from '../Toggle/Toggle';
 import { Button } from '../Button/Button';
@@ -11,8 +12,79 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component:
-          'The Popover component displays floating content relative to a trigger element. It provides a flexible way to show additional information, actions, or controls without navigating away from the current context. Popovers support multiple positions, click or hover triggers, and can include rich interactive content.',
+        component: `
+# Popover
+
+## Overview
+
+Popover displays floating content relative to a trigger element. It provides a flexible way to show additional information, actions, or controls without navigating away from the current context. Popovers support multiple positions, click or hover triggers, and can include rich interactive content.
+
+## Features
+
+- Multiple position options (top, bottom, left, right, auto)
+- Click or hover triggers
+- Configurable delays and offsets
+- Click outside and escape key closing
+- Glass morphism effect
+- Rich content support
+- Accessible design
+- Responsive behavior
+
+## Accessibility
+
+- Keyboard support: Navigate and activate with keyboard
+- Screen reader: Popover content and purpose announced appropriately
+- ARIA support: Proper roles and properties for popover components
+- Focus management: Traps focus within the popover when open
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Popover 
+  position="top"
+  trigger="click"
+>
+  <PopoverTrigger>
+    <button>Trigger</button>
+  </PopoverTrigger>
+  <div>Popover content</div>
+</Popover>
+\`\`\`
+
+### With Configuration
+
+\`\`\`tsx
+<Popover 
+  position="right"
+  trigger="hover"
+  delay={200}
+  offset={10}
+>
+  <PopoverTrigger>
+    <button>Trigger</button>
+  </PopoverTrigger>
+  <div>Popover content</div>
+</Popover>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| position | 'top' \\| 'bottom' \\| 'left' \\| 'right' \\| 'auto' | 'top' | Position of the popover relative to the trigger |
+| trigger | 'click' \\| 'hover' | 'click' | How the popover is triggered |
+| delay | number | 0 | Delay in milliseconds before showing the popover |
+| offset | number | 12 | Offset distance from the trigger element |
+| defaultOpen | boolean | false | Whether the popover is initially open |
+| closeOnClickOutside | boolean | true | Whether to close the popover when clicking outside |
+| closeOnEscape | boolean | true | Whether to close the popover when pressing Escape key |
+| glass | boolean | false | Enable glass morphism effect |
+| className | string | - | Additional CSS classes for the component |
+        `,
       },
     },
   },
@@ -21,39 +93,76 @@ const meta = {
     position: {
       control: { type: 'select' },
       options: ['top', 'bottom', 'left', 'right', 'auto'],
-      defaultValue: 'top',
+      description: 'Position of the popover relative to the trigger',
+      table: {
+        type: { summary: '"top" | "bottom" | "left" | "right" | "auto"' },
+        defaultValue: { summary: 'top' },
+      },
     },
     trigger: {
       control: { type: 'select' },
       options: ['click', 'hover'],
-      defaultValue: 'click',
+      description: 'How the popover is triggered',
+      table: {
+        type: { summary: '"click" | "hover"' },
+        defaultValue: { summary: 'click' },
+      },
     },
     delay: {
       control: { type: 'number' },
-      defaultValue: 0,
+      description: 'Delay in milliseconds before showing the popover',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: 0 },
+      },
     },
     offset: {
       control: { type: 'number' },
-      defaultValue: 12,
+      description: 'Offset distance from the trigger element',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: 12 },
+      },
     },
     defaultOpen: {
       control: { type: 'boolean' },
-      defaultValue: false,
+      description: 'Whether the popover is initially open',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     closeOnClickOutside: {
       control: { type: 'boolean' },
-      defaultValue: true,
+      description: 'Whether to close the popover when clicking outside',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: true },
+      },
     },
     closeOnEscape: {
       control: { type: 'boolean' },
-      defaultValue: true,
+      description: 'Whether to close the popover when pressing Escape key',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: true },
+      },
     },
     className: {
       control: { type: 'text' },
+      description: 'Additional CSS classes for the component',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     glass: {
       control: { type: 'boolean' },
       description: 'Enable glass morphism effect',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
   },
 } satisfies Meta<typeof Popover>;
@@ -103,94 +212,162 @@ const InteractivePopover = (args: React.ComponentProps<typeof Popover>) => {
   );
 
   return (
-    <div
-      style={{ padding: '80px', display: 'flex', justifyContent: 'center', background: '#f5f5f5' }}
-    >
-      <Popover {...args} content={content}>
-        <PopoverTrigger trigger={args.trigger}>
-          <Button variant="primary" label="Open Popover" />
+    <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
+      <Popover {...args}>
+        <PopoverTrigger>
+          <Button variant="primary">Open Popover</Button>
         </PopoverTrigger>
+        {content}
       </Popover>
     </div>
   );
 };
 
-export const Default: Story = {
-  render: args => <InteractivePopover {...args} />,
+export const BasicUsage: Story = {
+  render: (args) => <InteractivePopover {...args} />,
   args: {
     position: 'top',
     trigger: 'click',
-    offset: 12,
-    delay: 0,
-    defaultOpen: false,
     closeOnClickOutside: true,
     closeOnEscape: true,
-  } as any,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic popover with top position and click trigger.',
+      },
+    },
+  },
 };
 
-export const Hover: Story = {
-  render: args => <InteractivePopover {...args} />,
+export const AllPositions: Story = {
+  render: () => {
+    const content = <div style={{ padding: '20px' }}>Popover Content</div>;
+    
+    return (
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(3, 1fr)', 
+        gap: '20px', 
+        padding: '50px',
+        alignItems: 'center',
+        justifyItems: 'center',
+        height: '500px'
+      }}>
+        <div>
+          <Popover position="top-start">
+            <PopoverTrigger>
+              <Button variant="primary">Top Start</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        <div>
+          <Popover position="top">
+            <PopoverTrigger>
+              <Button variant="primary">Top</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        <div>
+          <Popover position="top-end">
+            <PopoverTrigger>
+              <Button variant="primary">Top End</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        
+        <div>
+          <Popover position="left">
+            <PopoverTrigger>
+              <Button variant="primary">Left</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        
+        <div style={{ textAlign: 'center' }}>
+          <p>All popover positions</p>
+        </div>
+        
+        <div>
+          <Popover position="right">
+            <PopoverTrigger>
+              <Button variant="primary">Right</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        
+        <div>
+          <Popover position="bottom-start">
+            <PopoverTrigger>
+              <Button variant="primary">Bottom Start</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        <div>
+          <Popover position="bottom">
+            <PopoverTrigger>
+              <Button variant="primary">Bottom</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        <div>
+          <Popover position="bottom-end">
+            <PopoverTrigger>
+              <Button variant="primary">Bottom End</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'All available popover positions demonstrated.',
+      },
+    },
+  },
+};
+
+export const WithGlassEffect: Story = {
+  render: (args) => (
+    <div style={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      padding: '100px',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      minHeight: '300px'
+    }}>
+      <Popover {...args}>
+        <PopoverTrigger>
+          <Button variant="primary">Open Glass Popover</Button>
+        </PopoverTrigger>
+        <div style={{ padding: '20px' }}>Glass Effect Popover Content</div>
+      </Popover>
+    </div>
+  ),
   args: {
     position: 'top',
-    trigger: 'hover',
-    offset: 12,
-    delay: 200,
-    defaultOpen: false,
-    closeOnClickOutside: true,
-    closeOnEscape: true,
-  } as any,
-};
-
-export const BottomPosition: Story = {
-  render: args => <InteractivePopover {...args} />,
-  args: {
-    position: 'bottom',
     trigger: 'click',
-    offset: 12,
-    delay: 0,
-    defaultOpen: false,
+    glass: true,
     closeOnClickOutside: true,
     closeOnEscape: true,
-  } as any,
-};
-
-export const LeftPosition: Story = {
-  render: args => <InteractivePopover {...args} />,
-  args: {
-    position: 'left',
-    trigger: 'click',
-    offset: 12,
-    delay: 0,
-    defaultOpen: false,
-    closeOnClickOutside: true,
-    closeOnEscape: true,
-  } as any,
-};
-
-export const RightPosition: Story = {
-  render: args => <InteractivePopover {...args} />,
-  args: {
-    position: 'right',
-    trigger: 'click',
-    offset: 12,
-    delay: 0,
-    defaultOpen: false,
-    closeOnClickOutside: true,
-    closeOnEscape: true,
-  } as any,
-};
-
-export const AutoPosition: Story = {
-  render: args => <InteractivePopover {...args} />,
-  args: {
-    position: 'auto',
-    trigger: 'click',
-    offset: 12,
-    delay: 0,
-    defaultOpen: true, // Open by default to showcase auto-positioning
-    closeOnClickOutside: true,
-    closeOnEscape: true,
-  } as any,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Popover with glass morphism effect applied.',
+      },
+    },
+  },
 };
 
 /**

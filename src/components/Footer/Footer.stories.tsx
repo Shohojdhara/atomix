@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Footer } from './Footer';
 import { FooterSection } from './FooterSection';
 import { FooterLink } from './FooterLink';
@@ -12,43 +13,226 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component:
-          'The Footer component provides a comprehensive footer section for websites with multiple layout variants, sections, links, and optional features like newsletter signup and back-to-top buttons. Footers support various color variants, sizes, and can be sticky. Essential for site navigation, branding, and additional information display.',
+        component: `
+# Footer
+
+## Overview
+
+Footer provides a comprehensive footer section for websites with multiple layout variants, sections, links, and optional features like newsletter signup and back-to-top buttons. Footers support various color variants, sizes, and can be sticky. Essential for site navigation, branding, and additional information display.
+
+## Features
+
+- Multiple layout variants (columns, centered, minimal, stacked, flexible, sidebar, wide)
+- Color and size variants
+- Newsletter signup option
+- Back-to-top button
+- Social media links
+- Divider options
+- Sticky positioning
+- Responsive design
+- Glass effect option
+
+## Accessibility
+
+- Screen reader: Footer content and links announced properly
+- ARIA support: Proper landmarks and roles for footer section
+- Keyboard support: All interactive elements accessible via keyboard
+- Focus management: Visible focus indicators for navigation
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Footer>
+  <FooterSection title="Products">
+    <FooterLink href="/products">Our Products</FooterLink>
+  </FooterSection>
+</Footer>
+\`\`\`
+
+### With Newsletter
+
+\`\`\`tsx
+<Footer showNewsletter={true}>
+  <FooterSection title="Products">
+    <FooterLink href="/products">Our Products</FooterLink>
+  </FooterSection>
+</Footer>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| layout | 'columns' \\| 'centered' \\| 'minimal' \\| 'stacked' \\| 'flexible' \\| 'sidebar' \\| 'wide' | 'columns' | Footer layout variant |
+| variant | ThemeColor | 'secondary' | Color variant |
+| size | 'sm' \\| 'md' \\| 'lg' | 'md' | Size variant |
+| showNewsletter | boolean | false | Whether to show newsletter signup |
+| showBackToTop | boolean | false | Whether to show back to top button |
+| showDivider | boolean | false | Whether to show divider above bottom section |
+| sticky | boolean | false | Whether footer should be sticky |
+| socialLinks | SocialLink[] | [] | Array of social media links |
+| onBackToTopClick | () => void | - | Callback when back to top button is clicked |
+| brand | ReactNode | - | Brand name or logo |
+| brandLogo | string \\| ReactNode | - | Brand logo (image URL or React element) |
+| brandDescription | ReactNode | - | Brand description text |
+| copyright | ReactNode | - | Copyright text |
+| newsletterTitle | string | 'Stay Updated' | Newsletter section title |
+| newsletterDescription | string | 'Subscribe...' | Newsletter section description |
+| newsletterPlaceholder | string | 'Enter your email' | Newsletter input placeholder |
+| newsletterButtonText | string | 'Subscribe' | Newsletter submit button text |
+| onNewsletterSubmit | (email: string) => void | - | Newsletter submit handler |
+| glass | boolean | - | Whether footer should have glass effect |
+        `,
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
     layout: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['columns', 'centered', 'minimal', 'stacked', 'flexible', 'sidebar', 'wide'],
       description: 'Footer layout variant',
+      table: {
+        type: { summary: '"columns" | "centered" | "minimal" | "stacked" | "flexible" | "sidebar" | "wide"' },
+        defaultValue: { summary: 'columns' },
+      },
     },
     variant: {
-      control: 'select',
+      control: { type: 'select' },
       options: THEME_COLORS,
       description: 'Color variant',
+      table: {
+        type: { summary: 'ThemeColor' },
+        defaultValue: { summary: 'primary' },
+      },
     },
     size: {
-      control: 'select',
+      control: { type: 'select' },
       options: SIZES,
       description: 'Size variant',
+      table: {
+        type: { summary: '"sm" | "md" | "lg"' },
+        defaultValue: { summary: 'md' },
+      },
     },
     showNewsletter: {
       control: 'boolean',
       description: 'Whether to show newsletter signup',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     showBackToTop: {
       control: 'boolean',
       description: 'Whether to show back to top button',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     showDivider: {
       control: 'boolean',
       description: 'Whether to show divider above bottom section',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: true },
+      },
     },
     sticky: {
       control: 'boolean',
       description: 'Whether footer should be sticky',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    socialLinks: {
+      control: 'object',
+      description: 'Array of social media links',
+      table: {
+        type: { summary: 'SocialLink[]' },
+        defaultValue: { summary: '[]' },
+      },
+    },
+    onBackToTop: {
+      action: 'back to top clicked',
+      description: 'Callback when back to top button is clicked',
+    },
+    onNewsletterSubmit: {
+      action: 'newsletter submitted',
+      description: 'Callback when newsletter is submitted',
+    },
+    brand: {
+      control: 'text',
+      description: 'Brand name',
+      table: {
+        type: { summary: 'ReactNode' },
+      },
+    },
+    brandLogo: {
+      control: 'text',
+      description: 'Brand logo URL',
+      table: {
+        type: { summary: 'string | ReactNode' },
+      },
+    },
+    brandDescription: {
+      control: 'text',
+      description: 'Brand description',
+      table: {
+        type: { summary: 'ReactNode' },
+      },
+    },
+    copyright: {
+      control: 'text',
+      description: 'Copyright text',
+      table: {
+        type: { summary: 'ReactNode' },
+      },
+    },
+    newsletterTitle: {
+      control: 'text',
+      description: 'Title for newsletter section',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Stay Updated' },
+      },
+    },
+    newsletterDescription: {
+      control: 'text',
+      description: 'Description for newsletter section',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Subscribe to our newsletter for the latest updates.' },
+      },
+    },
+    newsletterPlaceholder: {
+      control: 'text',
+      description: 'Placeholder for newsletter input',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Enter your email' },
+      },
+    },
+    newsletterButtonText: {
+      control: 'text',
+      description: 'Text for newsletter button',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Subscribe' },
+      },
+    },
+    glass: {
+      control: 'boolean',
+      description: 'Whether to apply glass effect',
+      table: {
+        type: { summary: 'boolean' },
+      },
     },
   },
 } satisfies Meta<typeof Footer>;
@@ -82,56 +266,38 @@ const SampleFooterContent = () => (
       <FooterLink href="/contact">Contact</FooterLink>
     </FooterSection>
 
-    <FooterSection title="Company">
-      <FooterLink href="/about">About Us</FooterLink>
-      <FooterLink href="/careers">Careers</FooterLink>
-      <FooterLink href="/blog">Blog</FooterLink>
-      <FooterLink href="/contact">Contact</FooterLink>
+    <FooterSection title="Resources">
+      <FooterLink href="/docs">Documentation</FooterLink>
+      <FooterLink href="/tutorials">Tutorials</FooterLink>
+      <FooterLink href="/support">Support</FooterLink>
+      <FooterLink href="/community">Community</FooterLink>
     </FooterSection>
 
-    <FooterSection title="Company">
-      <FooterLink href="/about">About Us</FooterLink>
-      <FooterLink href="/careers">Careers</FooterLink>
-      <FooterLink href="/blog">Blog</FooterLink>
-      <FooterLink href="/contact">Contact</FooterLink>
+    <FooterSection title="Legal">
+      <FooterLink href="/privacy">Privacy Policy</FooterLink>
+      <FooterLink href="/terms">Terms of Service</FooterLink>
+      <FooterLink href="/cookies">Cookie Policy</FooterLink>
+      <FooterLink href="/gdpr">GDPR Compliance</FooterLink>
     </FooterSection>
   </>
 );
 
-const LayoutTemplate: Story = {
+export const BasicUsage: Story = {
   args: {
     brand: 'Atomix',
-    brandDescription: 'A modern design system for building accessible web applications.',
-    copyright: '© 2024 Atomix UI. All rights reserved.',
-    layout: 'columns',
-    variant: 'primary',
-    size: 'md',
-    showNewsletter: false,
-    showBackToTop: false,
-    showDivider: true,
-    sticky: false,
+    brandDescription: 'A modern design system for building beautiful, accessible websites.',
+    copyright: '© 2024 Atomix. All rights reserved.',
     socialLinks: sampleSocialLinks,
   },
-  render: (args: any) => (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)', padding: '2rem' }}>
-        <h1>Main Content</h1>
-        <p>This is sample page content to demonstrate the footer in context.</p>
-      </div>
-      <Footer {...args}>
-        <SampleFooterContent />
-      </Footer>
-    </div>
+  render: (args) => (
+    <Footer {...args}>
+      <SampleFooterContent />
+    </Footer>
   ),
-};
-
-export const Default: Story = {
-  ...LayoutTemplate,
   parameters: {
     docs: {
       description: {
-        story:
-          'Default footer configuration with modern styling, design tokens, and enhanced visual effects.',
+        story: 'Basic footer with sample content and default layout.',
       },
     },
   },
@@ -139,377 +305,275 @@ export const Default: Story = {
 
 export const WithNewsletter: Story = {
   args: {
-    ...Default.args,
+    brand: 'Atomix',
+    brandDescription: 'A modern design system for building beautiful, accessible websites.',
+    copyright: '© 2024 Atomix. All rights reserved.',
     showNewsletter: true,
-    newsletterTitle: 'Stay in the Loop',
-    newsletterDescription:
-      'Get the latest updates, articles, and resources delivered to your inbox.',
-    onNewsletterSubmit: (email: string) => {
-      alert(`Thank you for subscribing with ${email}!`);
+    newsletterTitle: 'Stay Updated',
+    newsletterDescription: 'Subscribe to our newsletter for the latest updates and news.',
+    newsletterPlaceholder: 'Enter your email address',
+    newsletterButtonText: 'Subscribe Now',
+    onNewsletterSubmit: fn(),
+    socialLinks: sampleSocialLinks,
+  },
+  render: (args) => (
+    <Footer {...args}>
+      <SampleFooterContent />
+    </Footer>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Footer with newsletter signup form.',
+      },
     },
   },
-  render: Default.render,
 };
 
 export const WithBackToTop: Story = {
   args: {
-    ...Default.args,
+    brand: 'Atomix',
+    brandDescription: 'A modern design system for building beautiful, accessible websites.',
+    copyright: '© 2024 Atomix. All rights reserved.',
     showBackToTop: true,
     backToTopText: 'Back to Top',
-    onBackToTop: () => {
-      // Back to top functionality
+    onBackToTop: fn(),
+    socialLinks: sampleSocialLinks,
+  },
+  render: (args) => (
+    <Footer {...args}>
+      <SampleFooterContent />
+    </Footer>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Footer with back to top button and social links.',
+      },
     },
   },
-  render: Default.render,
 };
 
-export const Centered: Story = {
-  ...LayoutTemplate,
+export const CenteredLayout: Story = {
   args: {
-    ...LayoutTemplate.args,
     layout: 'centered',
-    showNewsletter: true,
-    showBackToTop: true,
+    brand: 'Atomix',
+    brandDescription: 'A modern design system for building beautiful, accessible websites.',
+    copyright: '© 2024 Atomix. All rights reserved.',
+    socialLinks: sampleSocialLinks,
   },
-};
-
-export const Minimal: Story = {
-  ...LayoutTemplate,
-  args: {
-    ...LayoutTemplate.args,
-    layout: 'minimal',
-    variant: 'light',
-    size: 'sm',
-    socialLinks: sampleSocialLinks.slice(0, 3),
-    showDivider: false,
-    showNewsletter: false,
-  },
-  render: (args: any) => (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
-        <h1>Page Content</h1>
-        <p>This is sample page content with a minimal footer.</p>
-      </div>
-      <Footer {...args}>
-        <FooterSection title="Quick Links">
-          <FooterLink href="/about">About</FooterLink>
-          <FooterLink href="/contact">Contact</FooterLink>
-          <FooterLink href="/privacy">Privacy</FooterLink>
-        </FooterSection>
-      </Footer>
-    </div>
+  render: (args) => (
+    <Footer {...args}>
+      <SampleFooterContent />
+    </Footer>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Footer with centered layout variant.',
+      },
+    },
+  },
 };
 
-export const Stacked: Story = {
-  ...LayoutTemplate,
+export const MinimalLayout: Story = {
   args: {
-    ...LayoutTemplate.args,
+    layout: 'minimal',
+    brand: 'Atomix',
+    brandLogo: 'https://via.placeholder.com/150x50.png?text=LOGO',
+    copyright: '© 2024 Atomix. All rights reserved.',
+    socialLinks: sampleSocialLinks,
+  },
+  render: (args) => (
+    <Footer {...args}>
+      <SampleFooterContent />
+    </Footer>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Footer with minimal layout variant.',
+      },
+    },
+  },
+};
+
+export const StackedLayout: Story = {
+  args: {
     layout: 'stacked',
-    showNewsletter: true,
-    showBackToTop: true,
+    brand: 'Atomix',
+    brandDescription: 'A modern design system for building beautiful, accessible websites.',
+    copyright: '© 2024 Atomix. All rights reserved.',
+    socialLinks: sampleSocialLinks,
+  },
+  render: (args) => (
+    <Footer {...args}>
+      <SampleFooterContent />
+    </Footer>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Footer with stacked layout variant.',
+      },
+    },
+  },
+};
+
+export const FlexibleLayout: Story = {
+  args: {
+    layout: 'flexible',
+    brand: 'Atomix',
+    brandDescription: 'A modern design system for building beautiful, accessible websites.',
+    copyright: '© 2024 Atomix. All rights reserved.',
+    socialLinks: sampleSocialLinks,
+  },
+  render: (args) => (
+    <Footer {...args}>
+      <SampleFooterContent />
+    </Footer>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Footer with flexible layout variant.',
+      },
+    },
+  },
+};
+
+export const SidebarLayout: Story = {
+  args: {
+    layout: 'sidebar',
+    brand: 'Atomix',
+    brandDescription: 'A modern design system for building beautiful, accessible websites.',
+    copyright: '© 2024 Atomix. All rights reserved.',
+    socialLinks: sampleSocialLinks,
+  },
+  render: (args) => (
+    <Footer {...args}>
+      <SampleFooterContent />
+    </Footer>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Footer with sidebar layout variant.',
+      },
+    },
+  },
+};
+
+export const WideLayout: Story = {
+  args: {
+    layout: 'wide',
+    brand: 'Atomix',
+    brandDescription: 'A modern design system for building beautiful, accessible websites.',
+    copyright: '© 2024 Atomix. All rights reserved.',
+    socialLinks: sampleSocialLinks,
+  },
+  render: (args) => (
+    <Footer {...args}>
+      <SampleFooterContent />
+    </Footer>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Footer with wide layout variant.',
+      },
+    },
   },
 };
 
 export const DarkVariant: Story = {
   args: {
-    ...Default.args,
     variant: 'dark',
-    showNewsletter: true,
-    showBackToTop: true,
+    brand: 'Atomix',
+    brandDescription: 'A modern design system for building beautiful, accessible websites.',
+    copyright: '© 2024 Atomix. All rights reserved.',
+    socialLinks: sampleSocialLinks,
   },
-  render: Default.render,
+  render: (args) => (
+    <Footer {...args}>
+      <SampleFooterContent />
+    </Footer>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Footer with dark color variant.',
+      },
+    },
+  },
 };
 
 export const LargeSize: Story = {
   args: {
-    ...Default.args,
     size: 'lg',
-    showNewsletter: true,
-    showBackToTop: true,
+    brand: 'Atomix',
+    brandDescription: 'A modern design system for building beautiful, accessible websites.',
+    copyright: '© 2024 Atomix. All rights reserved.',
+    socialLinks: sampleSocialLinks,
   },
-  render: Default.render,
+  render: (args) => (
+    <Footer {...args}>
+      <SampleFooterContent />
+    </Footer>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Footer with large size variant.',
+      },
+    },
+  },
 };
 
-export const SmallSize: Story = {
+export const WithGlassEffect: Story = {
   args: {
-    ...Default.args,
-    size: 'sm',
-    layout: 'minimal',
+    brand: 'Atomix',
+    brandDescription: 'A modern design system for building beautiful, accessible websites.',
+    copyright: '© 2024 Atomix. All rights reserved.',
+    socialLinks: sampleSocialLinks,
+    glass: true,
   },
-  render: Default.render,
+  render: (args) => (
+    <Footer {...args}>
+      <SampleFooterContent />
+    </Footer>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Footer with glass effect enabled.',
+      },
+    },
+  },
 };
 
-export const WithBrandLogo: Story = {
+export const StickyFooter: Story = {
   args: {
-    ...Default.args,
-    brandLogo: 'https://via.placeholder.com/150x50/007bff/ffffff?text=LOGO',
-    showNewsletter: true,
-  },
-  render: Default.render,
-};
-
-export const Sticky: Story = {
-  args: {
-    ...Default.args,
     sticky: true,
-    size: 'sm',
-    layout: 'minimal',
-  },
-  render: (args: any) => (
-    <div style={{ height: '200vh', backgroundColor: 'var(--atomix-surface)' }}>
-      <div style={{ padding: '2rem' }}>
-        <h1>Scroll down to see sticky footer</h1>
-        <p>This page is tall enough to demonstrate the sticky footer behavior.</p>
-        {Array.from({ length: 20 }, (_, i) => (
-          <p key={i}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris.
-          </p>
-        ))}
-      </div>
-      <Footer {...args}>
-        <SampleFooterContent />
-      </Footer>
-    </div>
-  ),
-};
-
-export const CollapsibleSections: Story = {
-  args: {
-    ...Default.args,
-    showNewsletter: true,
-  },
-  render: (args: any) => (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
-        <h1>Collapsible Footer Sections</h1>
-        <p>Resize the window to mobile size to see collapsible sections.</p>
-      </div>
-      <Footer {...args}>
-        <FooterSection title="Products" collapsible defaultCollapsed>
-          <FooterLink href="/product1">Web Development</FooterLink>
-          <FooterLink href="/product2">Mobile Apps</FooterLink>
-          <FooterLink href="/product3">UI/UX Design</FooterLink>
-        </FooterSection>
-
-        <FooterSection title="Company" collapsible>
-          <FooterLink href="/about">About Us</FooterLink>
-          <FooterLink href="/careers">Careers</FooterLink>
-          <FooterLink href="/blog">Blog</FooterLink>
-        </FooterSection>
-      </Footer>
-    </div>
-  ),
-};
-
-export const WithExternalLinks: Story = {
-  args: {
-    ...Default.args,
-    socialLinks: [
-      ...sampleSocialLinks,
-      { platform: 'tiktok' as const, url: 'https://tiktok.com/@company' },
-      { platform: 'whatsapp' as const, url: 'https://wa.me/1234567890' },
-      { platform: 'discord' as const, url: 'https://discord.gg/company' },
-    ],
-  },
-  render: (args: any) => (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
-        <h1>Modern Social Links</h1>
-        <p>Footer with enhanced social platforms and modern styling.</p>
-      </div>
-      <Footer {...args}>
-        <FooterSection title="External Resources">
-          <FooterLink href="https://github.com" external>
-            GitHub
-          </FooterLink>
-          <FooterLink href="https://stackoverflow.com" external>
-            Stack Overflow
-          </FooterLink>
-          <FooterLink href="https://developer.mozilla.org" external>
-            MDN Docs
-          </FooterLink>
-        </FooterSection>
-
-        <FooterSection title="Internal Links">
-          <FooterLink href="/about">About Us</FooterLink>
-          <FooterLink href="/contact">Contact</FooterLink>
-          <FooterLink href="/blog" active>
-            Blog
-          </FooterLink>
-          <FooterLink href="/disabled" disabled>
-            Disabled Link
-          </FooterLink>
-        </FooterSection>
-      </Footer>
-    </div>
-  ),
-};
-
-export const ModernGradients: Story = {
-  args: {
-    ...Default.args,
-    variant: 'primary',
-    showNewsletter: true,
-    showBackToTop: true,
+    brand: 'Atomix',
+    brandDescription: 'A modern design system for building beautiful, accessible websites.',
+    copyright: '© 2024 Atomix. All rights reserved.',
     socialLinks: sampleSocialLinks,
   },
-  render: (args: any) => (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div
-        style={{
-          flex: 1,
-          padding: '2rem',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        }}
-      >
-        <h1 style={{ color: 'white' }}>Modern Design</h1>
-        <p style={{ color: 'white' }}>Showcasing modern gradients and enhanced visual effects.</p>
+  render: (args) => (
+    <div style={{ minHeight: '200vh' }}>
+      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p>Scroll down to see the sticky footer</p>
       </div>
       <Footer {...args}>
         <SampleFooterContent />
       </Footer>
     </div>
   ),
-};
-
-export const DesignTokensShowcase: Story = {
-  args: {
-    ...Default.args,
-    brand: 'Design Tokens',
-    brandDescription:
-      'Showcasing consistent design tokens, modern hover effects, and enhanced visual styling throughout the footer component.',
-    showNewsletter: true,
-    showBackToTop: true,
-    socialLinks: sampleSocialLinks,
-  },
   parameters: {
     docs: {
       description: {
-        story:
-          'Demonstrates the use of design tokens for consistent styling, enhanced hover effects, modern gradients, and improved accessibility features.',
-      },
-    },
-  },
-  render: (args: any) => (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
-        <h1>Design Token Integration</h1>
-        <p>
-          This footer demonstrates consistent use of design tokens for colors, spacing, shadows, and
-          typography. Hover over elements to see enhanced visual effects.
-        </p>
-        <ul>
-          <li>✨ Global CSS variables for box shadows</li>
-          <li>🎨 Design token-based colors and opacity</li>
-          <li>📏 Consistent spacing using rem() function</li>
-          <li>🔄 Smooth transitions and hover effects</li>
-          <li>♿ Enhanced accessibility features</li>
-        </ul>
-      </div>
-      <Footer {...args}>
-        <FooterSection title="Design System">
-          <FooterLink href="/tokens">Design Tokens</FooterLink>
-          <FooterLink href="/components">Components</FooterLink>
-          <FooterLink href="/guidelines">Guidelines</FooterLink>
-          <FooterLink href="/accessibility">Accessibility</FooterLink>
-        </FooterSection>
-
-        <FooterSection title="Development">
-          <FooterLink href="/scss">SCSS Architecture</FooterLink>
-          <FooterLink href="/css-vars">CSS Variables</FooterLink>
-          <FooterLink href="/responsive">Responsive Design</FooterLink>
-          <FooterLink href="/performance">Performance</FooterLink>
-        </FooterSection>
-      </Footer>
-    </div>
-  ),
-};
-
-export const AccessibilityFocused: Story = {
-  args: {
-    ...Default.args,
-    showNewsletter: true,
-    showBackToTop: true,
-  },
-  render: (args: any) => (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
-        <h1>Accessibility Features</h1>
-        <p>Tab through the footer elements to see enhanced focus states and keyboard navigation.</p>
-      </div>
-      <Footer {...args}>
-        <SampleFooterContent />
-      </Footer>
-    </div>
-  ),
-};
-
-export const ResponsiveShowcase: Story = {
-  args: {
-    ...Default.args,
-    layout: 'columns',
-    showNewsletter: true,
-    showBackToTop: true,
-  },
-  render: (args: any) => (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ flex: 1, backgroundColor: 'var(--atomix-brand-bg-subtle)' }}>
-        <h1>Responsive Design</h1>
-        <p>Resize the viewport to see responsive grid layouts and collapsible sections.</p>
-      </div>
-      <Footer {...args}>
-        <SampleFooterContent />
-      </Footer>
-    </div>
-  ),
-};
-
-export const Flexible: Story = {
-  ...LayoutTemplate,
-  args: {
-    ...LayoutTemplate.args,
-    layout: 'flexible',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Flexible layout that automatically adapts to content width and screen size. Perfect for dynamic content scenarios.',
-      },
-    },
-  },
-};
-
-export const Sidebar: Story = {
-  ...LayoutTemplate,
-  args: {
-    ...LayoutTemplate.args,
-    layout: 'sidebar',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Sidebar layout with brand and newsletter in a left sidebar and content sections in the main area.',
-      },
-    },
-  },
-};
-
-export const Wide: Story = {
-  ...LayoutTemplate,
-  args: {
-    ...LayoutTemplate.args,
-    layout: 'wide',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Wide layout optimized for large screens with generous spacing and extended content areas.',
+        story: 'Sticky footer that stays at the bottom of the viewport.',
       },
     },
   },

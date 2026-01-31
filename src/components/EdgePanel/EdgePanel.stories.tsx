@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { useEffect, useState } from 'react';
 import React from 'react';
 import { Button } from '../Button/Button';
@@ -12,8 +13,76 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component:
-          'EdgePanel is a versatile sliding panel that can appear from any edge of the screen. Commonly used for mobile navigation, filters, chat windows, or contextual actions.',
+        component: `
+# EdgePanel
+
+## Overview
+
+EdgePanel is a versatile sliding panel that can appear from any edge of the screen. Commonly used for mobile navigation, filters, chat windows, or contextual actions.
+
+## Features
+
+- Multiple position options (start, end, top, bottom)
+- Different animation modes (slide, push, none)
+- Backdrop with optional click-to-close
+- Keyboard support (Escape to close)
+- Title support
+- Controlled and uncontrolled usage
+- Accessible design
+- Responsive behavior
+
+## Accessibility
+
+- Keyboard support: Close with Escape key
+- Screen reader: Panel content and purpose announced appropriately
+- ARIA support: Proper roles and properties for panel components
+- Focus management: Traps focus within the panel when open
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<EdgePanel 
+  isOpen={isOpen} 
+  onOpenChange={setIsOpen}
+  position="start"
+  title="Panel Title"
+>
+  <p>Panel content</p>
+</EdgePanel>
+\`\`\`
+
+### With Configuration
+
+\`\`\`tsx
+<EdgePanel 
+  position="end"
+  mode="slide"
+  backdrop={true}
+  closeOnBackdropClick={true}
+  closeOnEscape={true}
+  title="Configured Panel"
+>
+  <p>Panel content</p>
+</EdgePanel>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| position | 'start' \\| 'end' \\| 'top' \\| 'bottom' | 'start' | Position of the edge panel |
+| mode | 'slide' \\| 'push' \\| 'none' | 'slide' | Animation mode of the panel |
+| backdrop | boolean | true | Show backdrop behind the panel |
+| closeOnBackdropClick | boolean | true | Close the panel when clicking on backdrop |
+| closeOnEscape | boolean | true | Close the panel when pressing Escape key |
+| title | string | - | Panel title |
+| isOpen | boolean | false | Whether the panel is open (controlled component) |
+| onOpenChange | (open: boolean) => void | - | Callback when open state changes |
+        `,
       },
     },
   },
@@ -23,31 +92,63 @@ const meta = {
       control: { type: 'select' },
       options: ['start', 'end', 'top', 'bottom'],
       description: 'Position of the edge panel',
+      table: {
+        type: { summary: '"start" | "end" | "top" | "bottom"' },
+        defaultValue: { summary: 'start' },
+      },
     },
     mode: {
       control: { type: 'select' },
       options: ['slide', 'push', 'none'],
       description: 'Animation mode of the panel',
+      table: {
+        type: { summary: '"slide" | "push" | "none"' },
+        defaultValue: { summary: 'slide' },
+      },
     },
     backdrop: {
       control: 'boolean',
       description: 'Show backdrop behind the panel',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: true },
+      },
     },
     closeOnBackdropClick: {
       control: 'boolean',
       description: 'Close the panel when clicking on backdrop',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: true },
+      },
     },
     closeOnEscape: {
       control: 'boolean',
       description: 'Close the panel when pressing Escape key',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: true },
+      },
     },
     title: {
       control: 'text',
       description: 'Panel title',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     isOpen: {
       control: 'boolean',
       description: 'Whether the panel is open (controlled component)',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    onOpenChange: {
+      action: 'open state changed',
+      description: 'Callback when open state changes',
     },
   },
   decorators: [
@@ -101,34 +202,142 @@ const DemoPanelContent = ({
           <strong>Mode:</strong> {mode}
         </li>
         <li className="u-mb-1">
-          <strong>Backdrop:</strong> {backdrop ? 'Visible' : 'Hidden'}
+          <strong>Backdrop:</strong> {backdrop ? 'Yes' : 'No'}
         </li>
         <li className="u-mb-1">
-          <strong>Close on backdrop:</strong> {closeOnBackdropClick ? 'Yes' : 'No'}
+          <strong>Close on backdrop click:</strong> {closeOnBackdropClick ? 'Yes' : 'No'}
         </li>
-        <li>
-          <strong>Close on ESC key:</strong> {closeOnEscape ? 'Yes' : 'No'}
+        <li className="u-mb-1">
+          <strong>Close on escape:</strong> {closeOnEscape ? 'Yes' : 'No'}
         </li>
       </ul>
     </div>
 
-    <p className="u-mb-3">Common uses include:</p>
-    <ul>
-      <li>
-        <strong>Start:</strong> Navigation menu, filters
-      </li>
-      <li>
-        <strong>End:</strong> Notifications, chat windows
-      </li>
-      <li>
-        <strong>Top:</strong> Alerts, confirmation messages
-      </li>
-      <li>
-        <strong>Bottom:</strong> Action sheets, mobile keyboards
-      </li>
-    </ul>
+    <p className="u-mb-3">
+      You can put any content inside the Edge Panel. This could be navigation links, filter options,
+      notifications, or any other UI elements that need to slide in from the edge.
+    </p>
+
+    <div className="u-flex u-gap-2">
+      <Button variant="primary" size="sm">
+        Primary Action
+      </Button>
+      <Button variant="secondary" size="sm">
+        Secondary
+      </Button>
+    </div>
   </>
 );
+
+export const BasicUsage: Story = {
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <>
+        <Button onClick={() => setIsOpen(true)}>Open Edge Panel</Button>
+        <EdgePanel
+          {...args}
+          isOpen={isOpen}
+          onOpenChange={setIsOpen}
+          title="Basic Edge Panel"
+        >
+          <DemoPanelContent {...args} />
+        </EdgePanel>
+      </>
+    );
+  },
+  args: {
+    position: 'start',
+    mode: 'slide',
+    backdrop: true,
+    closeOnBackdropClick: true,
+    closeOnEscape: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic Edge Panel with default configuration.',
+      },
+    },
+  },
+};
+
+export const AllPositions: Story = {
+  render: () => {
+    const [position, setPosition] = useState<'start' | 'end' | 'top' | 'bottom'>('start');
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <>
+        <div className="u-flex u-gap-2 u-flex-wrap">
+          {(['start', 'end', 'top', 'bottom'] as const).map((pos) => (
+            <Button
+              key={pos}
+              variant={position === pos ? 'primary' : 'secondary'}
+              onClick={() => {
+                setPosition(pos);
+                setIsOpen(true);
+              }}
+            >
+              {pos.charAt(0).toUpperCase() + pos.slice(1)} Panel
+            </Button>
+          ))}
+        </div>
+
+        <EdgePanel
+          position={position}
+          isOpen={isOpen}
+          onOpenChange={setIsOpen}
+          title={`${position} Edge Panel`}
+        >
+          <DemoPanelContent position={position} />
+        </EdgePanel>
+      </>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Edge Panel in all available positions.',
+      },
+    },
+  },
+};
+
+export const WithSlideMode: Story = {
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <>
+        <Button onClick={() => setIsOpen(true)}>Open Slide Mode Panel</Button>
+        <EdgePanel
+          {...args}
+          isOpen={isOpen}
+          onOpenChange={setIsOpen}
+          title="Slide Mode Panel"
+        >
+          <DemoPanelContent {...args} />
+        </EdgePanel>
+      </>
+    );
+  },
+  args: {
+    position: 'start',
+    mode: 'slide',
+    backdrop: true,
+    closeOnBackdropClick: true,
+    closeOnEscape: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Edge Panel with slide animation mode.',
+      },
+    },
+  },
+};
 
 // Controller component to demonstrate the EdgePanel
 const EdgePanelController = ({

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import React from 'react';
 import { Card, ElevationCard } from './index';
 import { Grid, GridCol } from '../../layouts';
@@ -13,8 +14,73 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'The Card component provides a flexible container for displaying content with optional headers, images, and footers. Cards are ideal for grouping related information, showcasing products, or presenting content in a structured format. They support multiple variants, sizes, and can be interactive.',
+        component: `
+# Card
+
+## Overview
+
+Cards are flexible containers for displaying content with optional headers, images, and footers. They are ideal for grouping related information, showcasing products, or presenting content in a structured format. Cards support multiple variants, sizes, and can be interactive.
+
+## Features
+
+- Multiple appearance options (filled, outlined, ghost, elevated)
+- Various elevation levels
+- Support for headers, images, and footers
+- Different color variants and sizes
+- Interactive states (active, disabled, loading)
+- Responsive design
+
+## Accessibility
+
+- Keyboard support: Cards can be navigated using Tab key
+- Screen reader: Proper semantic markup ensures content is accessible
+- ARIA support: Appropriate roles and properties are automatically applied
+- Focus management: Maintains focus within the card when activated
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Card title="Card Title" text="This is a basic card" />
+\`\`\`
+
+### With Image
+
+\`\`\`tsx
+<Card 
+  title="Card with Image" 
+  text="This card includes an image" 
+  image="https://example.com/image.jpg"
+  imageAlt="Description of image"
+/>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| header | string | - | Header content for the card |
+| title | string | - | Title of the card |
+| text | string | - | Main text content of the card |
+| image | string | - | Image URL for the card |
+| imageAlt | string | - | Alt text for the card image |
+| footer | string | - | Footer content for the card |
+| size | 'sm' \\| 'md' \\| 'lg' | 'md' | Size of the card |
+| variant | string | 'secondary' | Color variant of the card |
+| appearance | 'filled' \\| 'outlined' \\| 'ghost' \\| 'elevated' | 'filled' | Visual style of the card |
+| elevation | 'none' \\| 'sm' \\| 'md' \\| 'lg' \\| 'xl' | 'none' | Shadow depth of the card |
+| row | boolean | false | Whether to arrange content horizontally |
+| flat | boolean | false | Whether to remove border radius |
+| active | boolean | false | Whether the card is in active state |
+| disabled | boolean | false | Whether the card is disabled |
+| loading | boolean | false | Whether the card is in loading state |
+| selected | boolean | false | Whether the card is selected |
+| interactive | boolean | false | Whether the card responds to interactions |
+| className | string | - | Additional CSS class names |
+        `,
       },
     },
   },
@@ -31,51 +97,130 @@ const meta = {
       options: SIZES,
       description: 'Size of the card',
       defaultValue: 'md',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'md' },
+      },
     },
     variant: {
       control: { type: 'select' },
       options: THEME_COLORS,
       description: 'Color variant of the card',
       defaultValue: 'secondary',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'secondary' },
+      },
     },
     appearance: {
       control: { type: 'select' },
       options: ['filled', 'outlined', 'ghost', 'elevated'],
+      description: 'Visual style of the card',
       defaultValue: 'filled',
+      table: {
+        type: { summary: '"filled" | "outlined" | "ghost" | "elevated"' },
+        defaultValue: { summary: 'filled' },
+      },
     },
     elevation: {
       control: { type: 'select' },
       options: ['none', 'sm', 'md', 'lg', 'xl'],
+      description: 'Shadow depth of the card',
       defaultValue: 'none',
+      table: {
+        type: { summary: '"none" | "sm" | "md" | "lg" | "xl"' },
+        defaultValue: { summary: 'none' },
+      },
     },
-    row: { control: 'boolean' },
-    flat: { control: 'boolean' },
-    active: { control: 'boolean' },
-    disabled: { control: 'boolean' },
-    loading: { control: 'boolean' },
-    selected: { control: 'boolean' },
-    interactive: { control: 'boolean' },
-    className: { control: 'text', description: 'Additional CSS class names' },
+    row: { 
+      control: 'boolean', 
+      description: 'Whether to arrange content horizontally',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    flat: { 
+      control: 'boolean', 
+      description: 'Whether to remove border radius',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    active: { 
+      control: 'boolean', 
+      description: 'Whether the card is in active state',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    disabled: { 
+      control: 'boolean', 
+      description: 'Whether the card is disabled',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    loading: { 
+      control: 'boolean', 
+      description: 'Whether the card is in loading state',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    selected: { 
+      control: 'boolean', 
+      description: 'Whether the card is selected',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    interactive: { 
+      control: 'boolean', 
+      description: 'Whether the card responds to interactions',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    className: { 
+      control: 'text', 
+      description: 'Additional CSS class names',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
+    },
+    onClick: {
+      action: 'clicked',
+      description: 'Callback when card is clicked',
+    },
   },
 } satisfies Meta<typeof Card>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/**
- * Basic card with title and text content.
- */
-export const Basic: Story = {
+export const BasicUsage: Story = {
   args: {
     title: 'Card Title',
     text: 'This is a basic card with title and text content.',
     className: 'custom-card',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic card with title and text content.',
+      },
+    },
+  },
 };
 
-/**
- * Card with an image displayed above the content.
- */
 export const WithImage: Story = {
   args: {
     title: 'Card with Image',
@@ -83,11 +228,15 @@ export const WithImage: Story = {
     image: 'https://placehold.co/600x400',
     imageAlt: 'Placeholder image',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Card with an image displayed above the content.',
+      },
+    },
+  },
 };
 
-/**
- * Card with action buttons in the footer.
- */
 export const WithActions: Story = {
   args: {
     title: 'Card with Actions',
@@ -98,6 +247,13 @@ export const WithActions: Story = {
         <button className="c-btn c-btn--secondary c-btn--sm">Cancel</button>
       </React.Fragment>
     ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Card with action buttons in the footer.',
+      },
+    },
   },
 };
 

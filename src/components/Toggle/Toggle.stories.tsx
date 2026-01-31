@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Toggle } from './Toggle';
 
 const meta = {
@@ -9,8 +10,61 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'The Toggle component provides an on/off switch control for binary choices. It offers a more visually distinct alternative to checkboxes for settings, preferences, or feature toggles. Toggles support disabled states and can include glass morphism effects.',
+        component: `
+# Toggle
+
+## Overview
+
+Toggle provides an on/off switch control for binary choices. It offers a more visually distinct alternative to checkboxes for settings, preferences, or feature toggles. Toggles support disabled states and can include glass morphism effects.
+
+## Features
+
+- On/off state control
+- Uncontrolled and controlled usage
+- Disabled state
+- Glass morphism effect
+- Accessible design
+- Responsive behavior
+
+## Accessibility
+
+- Keyboard support: Toggle with Space or Enter key
+- Screen reader: State changes announced appropriately
+- ARIA support: Proper roles and properties for toggle components
+- Focus management: Visible focus indicators maintained
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Toggle 
+  defaultChecked={false} 
+  onChange={(checked) => console.log(checked)} 
+/>
+\`\`\`
+
+### Controlled Usage
+
+\`\`\`tsx
+<Toggle 
+  checked={isEnabled} 
+  onChange={setEnabled} 
+/>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| defaultChecked | boolean | false | Whether the toggle is initially on (uncontrolled) |
+| checked | boolean | - | Whether the toggle is on (controlled) |
+| onChange | (checked: boolean) => void | - | Callback when the toggle state changes |
+| disabled | boolean | false | Whether the toggle is disabled |
+| glass | boolean | false | Enable glass morphism effect |
+        `,
       },
     },
   },
@@ -19,11 +73,18 @@ const meta = {
     defaultChecked: {
       control: { type: 'boolean' },
       description: 'Whether the toggle is initially on (uncontrolled)',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     checked: {
       control: { type: 'boolean' },
       description: 'Whether the toggle is on (controlled)',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: '-' },
+      },
     },
     onChange: {
       action: 'changed',
@@ -32,11 +93,18 @@ const meta = {
     disabled: {
       control: { type: 'boolean' },
       description: 'Whether the toggle is disabled',
-      defaultValue: false,
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     glass: {
       control: 'boolean',
       description: 'Enable glass morphism effect',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
   },
 } satisfies Meta<typeof Toggle>;
@@ -44,7 +112,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const BasicUsage: Story = {
   render: args => (
     <div style={{ display: 'flex', justifyContent: 'center', padding: '30px' }}>
       <Toggle {...args} />
@@ -54,11 +122,15 @@ export const Default: Story = {
     defaultChecked: false,
     disabled: false,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic toggle with default settings.',
+      },
+    },
+  },
 };
 
-/**
- * Controlled Toggle using checked and onChange.
- */
 export const Controlled: Story = {
   render: () => {
     const [isChecked, setIsChecked] = React.useState(false);
@@ -68,6 +140,13 @@ export const Controlled: Story = {
         <Toggle checked={isChecked} onChange={setIsChecked} />
       </div>
     );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Controlled toggle using checked and onChange.',
+      },
+    },
   },
 };
 
@@ -81,53 +160,61 @@ export const InitiallyOn: Story = {
     defaultChecked: true,
     disabled: false,
   },
-};
-
-export const Disabled: Story = {
-  render: args => (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '30px' }}>
-      <Toggle {...args} />
-    </div>
-  ),
-  args: {
-    defaultChecked: false,
-    disabled: true,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Toggle that starts in the "on" position.',
+      },
+    },
   },
 };
 
-export const DisabledOn: Story = {
-  render: args => (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '30px' }}>
-      <Toggle {...args} />
+export const DisabledStates: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', padding: '30px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <Toggle disabled={true} checked={false} />
+        <span>Disabled Off</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <Toggle disabled={true} checked={true} />
+        <span>Disabled On</span>
+      </div>
     </div>
   ),
-  args: {
-    defaultChecked: true,
-    disabled: true,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Toggle in both disabled states (off and on).',
+      },
+    },
   },
 };
 
-export const Glass: Story = {
+export const WithGlassEffect: Story = {
+  render: args => (
+    <div style={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      padding: '30px',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      minHeight: '200px'
+    }}>
+      <Toggle {...args} />
+    </div>
+  ),
   args: {
     defaultChecked: false,
     disabled: false,
     glass: true,
   },
-  render: (args: any) => (
-    <div
-      style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        padding: '3rem',
-        borderRadius: '12px',
-        minHeight: '200px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Toggle {...args} />
-    </div>
-  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Toggle with glass morphism effect applied.',
+      },
+    },
+  },
 };
 
 export const GlassOn: Story = {

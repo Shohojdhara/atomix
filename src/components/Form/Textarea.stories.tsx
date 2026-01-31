@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Textarea } from './Textarea';
 import { SIZES, THEME_COLORS } from '../../lib/constants/components';
 
@@ -9,8 +10,74 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'The Textarea component provides a multi-line text input field for longer content. It supports various sizes, validation states, and can be customized with different variants. Textareas are ideal for comments, descriptions, or any content requiring multiple lines of input.',
+        component: `
+# Textarea
+
+## Overview
+
+Textarea component provides a multi-line text input field for longer content. It supports various sizes, validation states, and can be customized with different variants. Textareas are ideal for comments, descriptions, or any content requiring multiple lines of input.
+
+## Features
+
+- Multi-line text input
+- Various size options
+- Color variants
+- Validation states (valid/invalid)
+- Placeholder support
+- Disabled state
+- Glass morphism effect
+- Accessible design
+- Responsive behavior
+
+## Accessibility
+
+- Keyboard support: Navigate and input text with keyboard
+- Screen reader: Label and content announced properly
+- ARIA support: Proper roles and properties for textarea components
+- Focus management: Visible focus indicators maintained
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Textarea 
+  placeholder="Enter your text here"
+  rows={4}
+  onChange={handleChange}
+/>
+\`\`\`
+
+### With Value
+
+\`\`\`tsx
+<Textarea 
+  value={textValue}
+  placeholder="Enter your text here"
+  rows={6}
+  onChange={handleChange}
+/>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| value | string | - | Textarea value |
+| placeholder | string | - | Placeholder text |
+| rows | number | 2 | Number of visible text lines |
+| cols | number | - | Number of average character widths |
+| size | 'sm' \\| 'md' \\| 'lg' | 'md' | Size of the textarea |
+| variant | ThemeColor | 'secondary' | Color variant of the textarea |
+| disabled | boolean | false | Whether the textarea is disabled |
+| invalid | boolean | false | Whether the textarea is invalid |
+| valid | boolean | false | Whether the textarea is valid |
+| glass | boolean | false | Enable glass morphism effect |
+| defaultValue | string | - | Initial value for uncontrolled textarea |
+| onChange | (event: ChangeEvent) => void | - | Callback when textarea value changes |
+        `,
       },
     },
   },
@@ -19,48 +86,96 @@ const meta = {
     value: {
       control: 'text',
       description: 'Textarea value',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     placeholder: {
       control: 'text',
       description: 'Placeholder text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     rows: {
       control: 'number',
       description: 'Number of visible text lines',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: 2 },
+      },
     },
     cols: {
       control: 'number',
       description: 'Number of average character widths',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: '-' },
+      },
     },
     size: {
       control: { type: 'select' },
       options: SIZES,
       description: 'Size of the textarea',
+      table: {
+        type: { summary: '"sm" | "md" | "lg"' },
+        defaultValue: { summary: 'md' },
+      },
     },
     variant: {
       control: { type: 'select' },
       options: THEME_COLORS,
       description: 'Color variant of the textarea',
+      table: {
+        type: { summary: 'ThemeColor' },
+        defaultValue: { summary: 'secondary' },
+      },
     },
     disabled: {
       control: 'boolean',
       description: 'Whether the textarea is disabled',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     invalid: {
       control: 'boolean',
       description: 'Whether the textarea is invalid',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     valid: {
       control: 'boolean',
       description: 'Whether the textarea is valid',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     glass: {
       control: 'boolean',
       description: 'Enable glass morphism effect',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     defaultValue: {
       control: 'text',
       description: 'Initial value for uncontrolled textarea',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
+    },
+    onChange: {
+      action: 'changed',
+      description: 'Callback when textarea value changes',
     },
   },
 } satisfies Meta<typeof Textarea>;
@@ -69,10 +184,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Basic textarea
-export const Basic: Story = {
+export const BasicUsage: Story = {
   args: {
     placeholder: 'Enter text here',
     rows: 4,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic textarea with placeholder and 4 rows.',
+      },
+    },
   },
 };
 
@@ -85,6 +207,13 @@ export const Uncontrolled: Story = {
     placeholder: 'Type something...',
     rows: 4,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Uncontrolled textarea with initial value.',
+      },
+    },
+  },
 };
 
 // With value
@@ -93,17 +222,31 @@ export const WithValue: Story = {
     value: 'This is some sample text in the textarea.',
     rows: 4,
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Textarea with pre-filled value.',
+      },
+    },
+  },
 };
 
 // Textarea sizes
 export const Sizes: Story = {
   render: () => (
     <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
-      <Textarea size="sm" placeholder="Small textarea" rows={3} />
-      <Textarea size="md" placeholder="Medium textarea (default)" rows={3} />
-      <Textarea size="lg" placeholder="Large textarea" rows={3} />
+      <Textarea placeholder="Small textarea" size="sm" rows={2} />
+      <Textarea placeholder="Medium textarea" size="md" rows={3} />
+      <Textarea placeholder="Large textarea" size="lg" rows={4} />
     </div>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Textarea in all available sizes.',
+      },
+    },
+  },
 };
 
 // Textarea rows

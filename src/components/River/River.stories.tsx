@@ -199,7 +199,7 @@ export const CustomTitle: Story = {
     </div>
   ),
   args: {
-    title: <h1 className="c-river__title u-text-gradient">Custom Title with Gradient</h1>,
+    title: <h1 className="c-river__title u-text-gradient-primary">Custom Title with Gradient</h1>,
     text: 'The sun had set, leaving the sky painted in shades of orange and pink as the stars twinkled above. The air was filled with the sound of crickets and the rustle of leaves in the gentle breeze.',
     actions: (
       <a href="#" className="c-btn u-pl-0">

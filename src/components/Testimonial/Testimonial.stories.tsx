@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Testimonial } from './Testimonial';
 
 const meta = {
@@ -9,20 +10,108 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'The Testimonial component displays customer reviews, quotes, or endorsements with author information and avatars. It supports multiple sizes, skeleton loading states, and can display rich content. Testimonials are ideal for showcasing social proof, customer feedback, or featured quotes on landing pages and marketing sites.',
+        component: `
+# Testimonial
+
+## Overview
+
+Testimonial component displays customer reviews, quotes, or endorsements with author information and avatars. It supports multiple sizes, skeleton loading states, and can display rich content. Testimonials are ideal for showcasing social proof, customer feedback, or featured quotes on landing pages and marketing sites.
+
+## Features
+
+- Customer quotes with author information
+- Avatar display with author details
+- Multiple size variants
+- Skeleton loading states
+- Responsive design
+- Accessible markup
+- Customizable styling
+
+## Accessibility
+
+- Screen reader: Quote and author information announced properly
+- ARIA support: Proper roles and properties for testimonial components
+- Keyboard support: Accessible via keyboard navigation
+- Focus management: Maintains focus on interactive elements
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Testimonial 
+  quote="Great product!"
+  author={{
+    name: 'John Doe',
+    role: 'Customer',
+    avatarSrc: '/path/to/avatar.jpg',
+    avatarAlt: 'John Doe'
+  }}
+/>
+\`\`\`
+
+### With Size Variant
+
+\`\`\`tsx
+<Testimonial 
+  quote="Great product!"
+  author={{
+    name: 'John Doe',
+    role: 'Customer',
+    avatarSrc: '/path/to/avatar.jpg',
+    avatarAlt: 'John Doe'
+  }}
+  size="lg"
+/>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| quote | string | - | The testimonial quote text |
+| author | AuthorInfo | - | Information about the testimonial author |
+| size | '' \\| 'sm' \\| 'lg' | '' | Size variant of the testimonial |
+| skeleton | boolean | false | Whether to show skeleton loading state |
+        `,
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
+    quote: {
+      control: 'text',
+      description: 'The testimonial quote text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
+    },
+    author: {
+      control: 'object',
+      description: 'Information about the testimonial author',
+      table: {
+        type: { summary: 'AuthorInfo' },
+        defaultValue: { summary: '-' },
+      },
+    },
     size: {
       control: { type: 'select', options: ['', 'sm', 'lg'] },
       description: 'Size variant of the testimonial',
+      table: {
+        type: { summary: '"" | "sm" | "lg"' },
+        defaultValue: { summary: '' },
+      },
     },
     skeleton: {
       control: 'boolean',
       description: 'Whether to show skeleton loading state',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
   },
 } satisfies Meta<typeof Testimonial>;
@@ -31,7 +120,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Default testimonial
-export const Default: Story = {
+export const BasicUsage: Story = {
   render: args => (
     <div style={{ padding: '30px' }}>
       <Testimonial {...args} />
@@ -48,6 +137,13 @@ export const Default: Story = {
       avatarAlt: 'Emily Rodriguez',
     },
     size: '',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic testimonial with default size.',
+      },
+    },
   },
 };
 
@@ -70,6 +166,13 @@ export const Large: Story = {
     },
     size: 'lg',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Large testimonial with expanded size.',
+      },
+    },
+  },
 };
 
 // Small testimonial
@@ -91,6 +194,13 @@ export const Small: Story = {
     },
     size: 'sm',
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Small testimonial with compact size.',
+      },
+    },
+  },
 };
 
 // Skeleton loading state
@@ -103,6 +213,13 @@ export const Skeleton: Story = {
   args: {
     skeleton: true,
     size: '',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Testimonial showing skeleton loading state.',
+      },
+    },
   },
 };
 

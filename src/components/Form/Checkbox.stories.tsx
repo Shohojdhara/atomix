@@ -1,5 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { Checkbox } from './Checkbox';
+
+// Mock onChange handler
+const handleChange = fn();
 
 const meta = {
   title: 'Components/Form/Checkbox',
@@ -8,8 +12,66 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'The Checkbox component allows users to select one or more options from a set. It supports checked, unchecked, and indeterminate states, and can be used in forms or as standalone controls. Checkboxes provide clear visual feedback and support keyboard navigation.',
+        component: `
+# Checkbox
+
+## Overview
+
+Checkbox component allows users to select one or more options from a set. It supports checked, unchecked, and indeterminate states, and can be used in forms or as standalone controls. Checkboxes provide clear visual feedback and support keyboard navigation.
+
+## Features
+
+- Checked, unchecked, and indeterminate states
+- Label support
+- Disabled state
+- Validation states (valid/invalid)
+- Glass morphism effect
+- Accessible design
+- Responsive behavior
+
+## Accessibility
+
+- Keyboard support: Navigate and toggle with keyboard
+- Screen reader: State and label announced properly
+- ARIA support: Proper roles and properties for checkbox components
+- Focus management: Visible focus indicators maintained
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Checkbox 
+  label="Option label" 
+  checked={isChecked}
+  onChange={setChecked}
+/>
+\`\`\`
+
+### Indeterminate State
+
+\`\`\`tsx
+<Checkbox 
+  label="Option label" 
+  indeterminate={true}
+/>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| label | string | - | Checkbox label text |
+| checked | boolean | false | Whether the checkbox is checked |
+| disabled | boolean | false | Whether the checkbox is disabled |
+| invalid | boolean | false | Whether the checkbox is invalid |
+| valid | boolean | false | Whether the checkbox is valid |
+| indeterminate | boolean | false | Whether the checkbox is in indeterminate state |
+| glass | boolean | false | Enable glass morphism effect |
+| onChange | (checked: boolean) => void | - | Callback when checkbox state changes |
+        `,
       },
     },
   },
@@ -18,30 +80,62 @@ const meta = {
     label: {
       control: 'text',
       description: 'Checkbox label text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     checked: {
       control: 'boolean',
       description: 'Whether the checkbox is checked',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     disabled: {
       control: 'boolean',
       description: 'Whether the checkbox is disabled',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     invalid: {
       control: 'boolean',
       description: 'Whether the checkbox is invalid',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     valid: {
       control: 'boolean',
       description: 'Whether the checkbox is valid',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     indeterminate: {
       control: 'boolean',
       description: 'Whether the checkbox is in indeterminate state',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     glass: {
       control: 'boolean',
       description: 'Enable glass morphism effect',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    onChange: {
+      action: 'changed',
+      description: 'Callback when checkbox state changes',
     },
   },
 } satisfies Meta<typeof Checkbox>;
@@ -50,9 +144,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Basic checkbox
-export const Basic: Story = {
+export const BasicUsage: Story = {
   args: {
     label: 'Accept terms and conditions',
+    onChange: handleChange,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic checkbox with label.',
+      },
+    },
   },
 };
 
@@ -61,11 +163,19 @@ export const Checked: Story = {
   args: {
     label: 'Accept terms and conditions',
     checked: true,
+    onChange: handleChange,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Checked checkbox state.',
+      },
+    },
   },
 };
 
 // Checkbox states
-export const States: Story = {
+export const AllStates: Story = {
   render: (args: any) => (
     <div className="u-flex u-flex-column u-gap-3">
       <Checkbox label="Default checkbox" />
@@ -77,12 +187,27 @@ export const States: Story = {
       <Checkbox label="Indeterminate checkbox" indeterminate />
     </div>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Checkbox in all available states.',
+      },
+    },
+  },
 };
 
 // Without label
 export const WithoutLabel: Story = {
   args: {
     'aria-label': 'Checkbox without visible label',
+    onChange: handleChange,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Checkbox without visible label, using aria-label.',
+      },
+    },
   },
 };
 
@@ -91,6 +216,7 @@ export const Glass: Story = {
   args: {
     label: 'Glass Checkbox',
     glass: true,
+    onChange: handleChange,
   },
   render: (args: any) => (
     <div
@@ -107,6 +233,13 @@ export const Glass: Story = {
       <Checkbox {...args} />
     </div>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Checkbox with glass morphism effect.',
+      },
+    },
+  },
 };
 
 // Glass with custom settings

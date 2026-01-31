@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import type { AtomixGlassProps } from '../../lib/types/components';
 import { Tooltip } from './Tooltip';
 
@@ -13,8 +14,69 @@ const meta = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component:
-          'The Tooltip component displays contextual information when users hover over or click on an element. It supports multiple positions, triggers, and can include rich content. Tooltips are useful for providing additional context without cluttering the interface.',
+        component: `
+# Tooltip
+
+## Overview
+
+Tooltip displays contextual information when users hover over or click on an element. It supports multiple positions, triggers, and can include rich content. Tooltips are useful for providing additional context without cluttering the interface.
+
+## Features
+
+- Multiple position options (top, bottom, left, right with corners)
+- Hover and click triggers
+- Configurable delays and offsets
+- Glass morphism effect
+- Rich content support
+- Accessible design
+- Responsive behavior
+
+## Accessibility
+
+- Screen reader: Tooltip content announced appropriately
+- ARIA support: Proper roles and properties for tooltip components
+- Keyboard support: Accessible via keyboard navigation
+- Focus management: Maintains focus on trigger element
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Tooltip 
+  content="Tooltip text"
+  position="top"
+>
+  <button>Hover me</button>
+</Tooltip>
+\`\`\`
+
+### With Glass Effect
+
+\`\`\`tsx
+<Tooltip 
+  content="Tooltip text"
+  position="top"
+  glass={true}
+>
+  <button>Hover me</button>
+</Tooltip>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| position | Position | 'top' | Position of the tooltip relative to the trigger |
+| trigger | 'hover' \\| 'click' | 'hover' | How the tooltip is triggered |
+| delay | number | 200 | Delay in milliseconds before showing tooltip |
+| offset | number | 10 | Offset distance from the trigger element |
+| glass | boolean \\| GlassProps | false | Enable glass morphism effect |
+| content | ReactNode | - | Content to display in the tooltip |
+| children | ReactNode | - | Trigger element for the tooltip |
+        `,
       },
     },
   },
@@ -32,24 +94,52 @@ const meta = {
         'bottom-left',
         'bottom-right',
       ],
-      defaultValue: 'top',
+      description: 'Position of the tooltip relative to the trigger',
+      table: {
+        type: { summary: 'Position' },
+        defaultValue: { summary: 'top' },
+      },
     },
     trigger: {
       control: { type: 'select' },
       options: ['hover', 'click'],
-      defaultValue: 'hover',
+      description: 'How the tooltip is triggered',
+      table: {
+        type: { summary: '"hover" | "click"' },
+        defaultValue: { summary: 'hover' },
+      },
     },
     delay: {
       control: { type: 'number' },
-      defaultValue: 200,
+      description: 'Delay in milliseconds before showing tooltip',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: 200 },
+      },
     },
     offset: {
       control: { type: 'number' },
-      defaultValue: 10,
+      description: 'Offset distance from the trigger element',
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: 10 },
+      },
     },
     glass: {
       control: { type: 'boolean' },
       description: 'Enable glass morphism effect',
+      table: {
+        type: { summary: 'boolean | GlassProps' },
+        defaultValue: { summary: false },
+      },
+    },
+    content: {
+      control: 'object',
+      description: 'Content to display in the tooltip',
+      table: {
+        type: { summary: 'ReactNode' },
+        defaultValue: { summary: '-' },
+      },
     },
   },
 } satisfies Meta<typeof Tooltip>;
@@ -57,8 +147,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Default Tooltip
-export const Default: Story = {
+export const BasicUsage: Story = {
   render: args => (
     <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
       <Tooltip {...args}>
@@ -71,6 +160,13 @@ export const Default: Story = {
     position: 'top',
     trigger: 'hover',
   } as any,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Default tooltip with top position and hover trigger.',
+      },
+    },
+  },
 };
 
 export const ClickTrigger: Story = {
@@ -86,117 +182,111 @@ export const ClickTrigger: Story = {
     position: 'top',
     trigger: 'click',
   } as any,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tooltip with click trigger instead of hover.',
+      },
+    },
+  },
 };
 
-export const BottomPosition: Story = {
-  render: args => (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
-      <Tooltip {...args}>
-        <button className="c-btn c-btn--primary">Hover me</button>
-      </Tooltip>
-    </div>
-  ),
-  args: {
-    content: <p className="u-mb-0">This tooltip appears below the trigger</p>,
-    position: 'bottom',
-  } as any,
-};
-
-export const LeftPosition: Story = {
-  render: args => (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
-      <Tooltip {...args}>
-        <button className="c-btn c-btn--primary">Hover me</button>
-      </Tooltip>
-    </div>
-  ),
-  args: {
-    content: <p className="u-mb-0">This tooltip appears to the left</p>,
-    position: 'left',
-  } as any,
-};
-
-export const RightPosition: Story = {
-  render: args => (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
-      <Tooltip {...args}>
-        <button className="c-btn c-btn--primary">Hover me</button>
-      </Tooltip>
-    </div>
-  ),
-  args: {
-    content: <p className="u-mb-0">This tooltip appears to the right</p>,
-    position: 'right',
-  } as any,
-};
-
-export const WithIcon: Story = {
-  render: args => (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
-      <Tooltip {...args}>
-        <i className="icon-lux-info" style={{ fontSize: '24px', cursor: 'pointer' }}></i>
-      </Tooltip>
-    </div>
-  ),
-  args: {
-    content: <p className="u-mb-0">Tooltips work great with icons</p>,
-    position: 'top',
-  } as any,
-};
-
-export const CustomDelay: Story = {
-  render: args => (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
-      <Tooltip {...args}>
-        <button className="c-btn c-btn--primary">Hover me (500ms delay)</button>
-      </Tooltip>
-    </div>
-  ),
-  args: {
-    content: <p className="u-mb-0">This tooltip has a longer delay</p>,
-    position: 'top',
-    delay: 500,
-  } as any,
-};
-
-export const CustomOffset: Story = {
-  render: args => (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
-      <Tooltip {...args}>
-        <button className="c-btn c-btn--primary">Hover me</button>
-      </Tooltip>
-    </div>
-  ),
-  args: {
-    content: <p className="u-mb-0">This tooltip has a larger offset from the trigger</p>,
-    position: 'top',
-    offset: 20,
-  } as any,
-};
-
-export const RichContent: Story = {
-  render: args => (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
-      <Tooltip {...args}>
-        <button className="c-btn c-btn--primary">Click for rich content</button>
-      </Tooltip>
-    </div>
-  ),
-  args: {
-    content: (
+export const AllPositions: Story = {
+  render: () => (
+    <div style={{ 
+      display: 'grid', 
+      gridTemplateColumns: 'repeat(3, 1fr)', 
+      gap: '20px', 
+      padding: '50px',
+      alignItems: 'center',
+      justifyItems: 'center',
+      height: '500px'
+    }}>
       <div>
-        <h4 style={{ marginTop: 0, marginBottom: '8px' }}>Rich Tooltip Content</h4>
-        <ul style={{ margin: 0, paddingLeft: '16px' }}>
-          <li>Supports HTML content</li>
-          <li>Can include multiple elements</li>
-          <li>Helpful for complex information</li>
-        </ul>
+        <Tooltip content="Top Left Tooltip">
+          <button className="c-btn c-btn--primary">Top Left</button>
+        </Tooltip>
       </div>
-    ),
-    position: 'bottom',
-    trigger: 'click',
-    offset: 15,
+      <div>
+        <Tooltip content="Top Tooltip" position="top">
+          <button className="c-btn c-btn--primary">Top</button>
+        </Tooltip>
+      </div>
+      <div>
+        <Tooltip content="Top Right Tooltip" position="top-right">
+          <button className="c-btn c-btn--primary">Top Right</button>
+        </Tooltip>
+      </div>
+      
+      <div>
+        <Tooltip content="Left Tooltip" position="left">
+          <button className="c-btn c-btn--primary">Left</button>
+        </Tooltip>
+      </div>
+      
+      <div style={{ textAlign: 'center' }}>
+        <p>All tooltip positions</p>
+      </div>
+      
+      <div>
+        <Tooltip content="Right Tooltip" position="right">
+          <button className="c-btn c-btn--primary">Right</button>
+        </Tooltip>
+      </div>
+      
+      <div>
+        <Tooltip content="Bottom Left Tooltip" position="bottom-left">
+          <button className="c-btn c-btn--primary">Bottom Left</button>
+        </Tooltip>
+      </div>
+      <div>
+        <Tooltip content="Bottom Tooltip" position="bottom">
+          <button className="c-btn c-btn--primary">Bottom</button>
+        </Tooltip>
+      </div>
+      <div>
+        <Tooltip content="Bottom Right Tooltip" position="bottom-right">
+          <button className="c-btn c-btn--primary">Bottom Right</button>
+        </Tooltip>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'All available tooltip positions demonstrated.',
+      },
+    },
+  },
+};
+
+export const WithGlassEffect: Story = {
+  render: args => (
+    <div style={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      padding: '100px',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      minHeight: '300px'
+    }}>
+      <Tooltip {...args}>
+        <button className="c-btn c-btn--primary">Hover me</button>
+      </Tooltip>
+    </div>
+  ),
+  args: {
+    content: <p className="u-mb-0">Tooltip with glass effect applied</p>,
+    position: 'top',
+    trigger: 'hover',
+    glass: true,
   } as any,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Tooltip with glass morphism effect applied.',
+      },
+    },
+  },
 };
 
 /**

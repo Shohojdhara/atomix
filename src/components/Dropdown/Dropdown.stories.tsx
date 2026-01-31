@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import React, { useState } from 'react';
 import { ThemeColor } from '../../lib/types/components';
 import { Icon } from '../Icon';
@@ -12,8 +13,72 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'The Dropdown component provides a toggleable menu that appears relative to a trigger element. It supports multiple placement options, click or hover triggers, and can include dividers, headers, and icons. Dropdowns are ideal for navigation menus, action menus, or any context where options need to be revealed on demand.',
+        component: `
+# Dropdown
+
+## Overview
+
+Dropdown provides a toggleable menu that appears relative to a trigger element. It supports multiple placement options, click or hover triggers, and can include dividers, headers, and icons. Dropdowns are ideal for navigation menus, action menus, or any context where options need to be revealed on demand.
+
+## Features
+
+- Multiple placement options (top, bottom, left, right with start/end variations)
+- Click or hover trigger modes
+- Color variants
+- Glass morphism effect
+- Customizable dimensions
+- Auto-close behaviors
+- Rich content support (headers, dividers, icons)
+
+## Accessibility
+
+- Keyboard support: Navigate with arrow keys, activate with Enter/Space
+- Screen reader: Menu items and structure announced properly
+- ARIA support: Proper roles and properties for dropdown components
+- Focus management: Maintains focus within the dropdown menu
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Dropdown 
+  trigger="click"
+  placement="bottom-start"
+  children={<button>Dropdown</button>}
+  menu={<div>Menu content</div>}
+/>
+\`\`\`
+
+### With Glass Effect
+
+\`\`\`tsx
+<Dropdown 
+  trigger="click"
+  placement="bottom-start"
+  glass={true}
+  children={<button>Dropdown</button>}
+  menu={<div>Menu content</div>}
+/>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| placement | Placement | 'bottom-start' | The placement of the dropdown menu relative to the trigger element |
+| trigger | 'click' \\| 'hover' | 'click' | How the dropdown is triggered - by click or hover |
+| variant | ThemeColor | 'secondary' | The color variant of the dropdown |
+| minWidth | string | - | Minimum width of the dropdown menu |
+| maxHeight | string | - | Maximum height of the dropdown menu |
+| closeOnClickOutside | boolean | true | Whether to close the dropdown when clicking outside |
+| closeOnEscape | boolean | true | Whether to close the dropdown when pressing the Escape key |
+| glass | boolean | false | Enable glass morphism effect |
+| isOpen | boolean | - | Controlled open state of the dropdown |
+| onOpenChange | (open: boolean) => void | - | Callback when open state changes |
+        `,
       },
     },
   },
@@ -32,36 +97,80 @@ const meta = {
         'right-end',
       ],
       description: 'The placement of the dropdown menu relative to the trigger element',
+      table: {
+        type: { summary: 'Placement' },
+        defaultValue: { summary: 'bottom-start' },
+      },
     },
     trigger: {
       control: { type: 'radio' },
       options: ['click', 'hover'],
       description: 'How the dropdown is triggered - by click or hover',
+      table: {
+        type: { summary: '"click" | "hover"' },
+        defaultValue: { summary: 'click' },
+      },
     },
     variant: {
       control: { type: 'select' },
       options: THEME_COLORS,
       description: 'The color variant of the dropdown',
+      table: {
+        type: { summary: 'ThemeColor' },
+        defaultValue: { summary: 'secondary' },
+      },
     },
     minWidth: {
       control: 'text',
       description: 'Minimum width of the dropdown menu',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     maxHeight: {
       control: 'text',
       description: 'Maximum height of the dropdown menu',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     closeOnClickOutside: {
       control: 'boolean',
       description: 'Whether to close the dropdown when clicking outside',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: true },
+      },
     },
     closeOnEscape: {
       control: 'boolean',
       description: 'Whether to close the dropdown when pressing the Escape key',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: true },
+      },
     },
     glass: {
       control: 'boolean',
       description: 'Enable glass morphism effect',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    isOpen: {
+      control: 'boolean',
+      description: 'Controlled open state of the dropdown',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: '-' },
+      },
+    },
+    onOpenChange: {
+      action: 'open state changed',
+      description: 'Callback when open state changes',
     },
   },
 } satisfies Meta<typeof Dropdown>;
@@ -85,10 +194,7 @@ const InteractiveDropdown = (args: React.ComponentProps<typeof Dropdown>) => {
   );
 };
 
-/**
- * Basic dropdown example with default settings
- */
-export const Default: Story = {
+export const BasicUsage: Story = {
   args: {
     trigger: 'click',
     placement: 'bottom-start',
@@ -99,35 +205,49 @@ export const Default: Story = {
     ),
     menu: (
       <>
-        <DropdownItem>Menu item 1</DropdownItem>
-        <DropdownItem>Menu item 2</DropdownItem>
-        <DropdownItem>Menu item 3</DropdownItem>
+        <DropdownHeader>Dropdown Header</DropdownHeader>
+        <DropdownDivider />
+        <DropdownItem>Option 1</DropdownItem>
+        <DropdownItem>Option 2</DropdownItem>
+        <DropdownItem>Option 3</DropdownItem>
+        <DropdownDivider />
+        <DropdownItem disabled>Disabled Option</DropdownItem>
       </>
     ),
   },
-  render: args => <InteractiveDropdown {...args} />,
-};
-
-/**
- * Dropdown that opens on click
- */
-export const ClickTrigger: Story = {
-  args: {
-    ...Default.args,
-    trigger: 'click',
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic dropdown with default settings and menu items.',
+      },
+    },
   },
-  render: args => <InteractiveDropdown {...args} />,
 };
 
-/**
- * Dropdown that opens on hover
- */
 export const HoverTrigger: Story = {
   args: {
-    ...Default.args,
     trigger: 'hover',
+    placement: 'bottom-start',
+    children: (
+      <button className="c-btn c-btn--secondary">
+        Hover Dropdown <Icon name="CaretDown" className="c-dropdown__toggle-icon" size="sm" />
+      </button>
+    ),
+    menu: (
+      <>
+        <DropdownItem>Hover Option 1</DropdownItem>
+        <DropdownItem>Hover Option 2</DropdownItem>
+        <DropdownItem>Hover Option 3</DropdownItem>
+      </>
+    ),
   },
-  render: args => <InteractiveDropdown {...args} />,
+  parameters: {
+    docs: {
+      description: {
+        story: 'Dropdown that opens on hover instead of click.',
+      },
+    },
+  },
 };
 
 /**
@@ -135,7 +255,7 @@ export const HoverTrigger: Story = {
  */
 export const WithIcons: Story = {
   args: {
-    ...Default.args,
+    ...BasicUsage.args,
     menu: (
       <>
         <DropdownItem icon={<Icon name="House" size="sm" />}>Home</DropdownItem>
@@ -153,7 +273,7 @@ export const WithIcons: Story = {
  */
 export const WithLinks: Story = {
   args: {
-    ...Default.args,
+    ...BasicUsage.args,
     menu: (
       <>
         <DropdownItem href="#home">Home</DropdownItem>
@@ -171,7 +291,7 @@ export const WithLinks: Story = {
  */
 export const WithHeader: Story = {
   args: {
-    ...Default.args,
+    ...BasicUsage.args,
     menu: (
       <>
         <DropdownHeader>Account Options</DropdownHeader>
@@ -192,7 +312,7 @@ export const WithHeader: Story = {
  */
 export const ActiveItem: Story = {
   args: {
-    ...Default.args,
+    ...BasicUsage.args,
     menu: (
       <>
         <DropdownItem active>Active Item</DropdownItem>
@@ -209,7 +329,7 @@ export const ActiveItem: Story = {
  */
 export const DisabledItem: Story = {
   args: {
-    ...Default.args,
+    ...BasicUsage.args,
     menu: (
       <>
         <DropdownItem>Regular Item</DropdownItem>
@@ -358,7 +478,7 @@ export const AllVariants: Story = {
  */
 export const GlassDropdown: Story = {
   args: {
-    ...Default.args,
+    ...BasicUsage.args,
     glass: true,
   },
   render: args => <InteractiveDropdown {...args} />,
@@ -382,7 +502,7 @@ export const GlassDropdown: Story = {
  */
 export const GlassDropdownCustom: Story = {
   args: {
-    ...Default.args,
+    ...BasicUsage.args,
     glass: {
       displacementScale: 80,
       blurAmount: 2,

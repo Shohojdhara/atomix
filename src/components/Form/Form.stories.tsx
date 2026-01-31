@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import { useState } from 'react';
 import { Checkbox } from './Checkbox';
 import { Form } from './Form';
@@ -20,8 +21,69 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'The Form component provides a semantic HTML form wrapper with enhanced functionality. It supports form validation, submission handling, and can be disabled as a whole. Forms work seamlessly with FormGroup and all form input components to create complete, accessible form experiences.',
+        component: `
+# Form
+
+## Overview
+
+Form component provides a semantic HTML form wrapper with enhanced functionality. It supports form validation, submission handling, and can be disabled as a whole. Forms work seamlessly with FormGroup and all form input components to create complete, accessible form experiences.
+
+## Features
+
+- Semantic HTML form wrapper
+- Form validation support
+- Submission handling
+- Disabled state
+- Auto-complete control
+- Method selection (GET/POST)
+- Accessible design
+- Responsive behavior
+
+## Accessibility
+
+- Screen reader: Form structure and labels announced properly
+- ARIA support: Proper roles and properties for form components
+- Keyboard support: Navigate and submit forms with keyboard
+- Focus management: Maintains focus on interactive elements
+
+## Usage Examples
+
+### Basic Usage
+
+\`\`\`tsx
+<Form onSubmit={handleSubmit}>
+  <FormGroup label="Name" htmlFor="name">
+    <Input id="name" placeholder="Enter your name" />
+  </FormGroup>
+  <button type="submit">Submit</button>
+</Form>
+\`\`\`
+
+### With Validation
+
+\`\`\`tsx
+<Form 
+  onSubmit={handleSubmit}
+  noValidate={false}
+  autoComplete="on"
+>
+  {/* Form fields */}
+</Form>
+\`\`\`
+
+## API Reference
+
+### Props
+
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| disabled | boolean | false | Whether the form is disabled |
+| method | 'get' \\| 'post' | 'get' | Form submission method |
+| noValidate | boolean | false | Whether to disable browser validation |
+| autoComplete | string | 'on' | Form autocomplete setting |
+| className | string | - | Additional CSS class names |
+| onSubmit | (event: FormEvent) => void | - | Callback when form is submitted |
+        `,
       },
     },
   },
@@ -30,23 +92,47 @@ const meta = {
     disabled: {
       control: 'boolean',
       description: 'Whether the form is disabled',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     className: {
       control: 'text',
       description: 'Additional CSS class names',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: '-' },
+      },
     },
     method: {
       control: { type: 'select' },
       options: ['get', 'post'],
       description: 'Form submission method',
+      table: {
+        type: { summary: '"get" | "post"' },
+        defaultValue: { summary: 'get' },
+      },
     },
     noValidate: {
       control: 'boolean',
       description: 'Whether to disable browser validation',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
     },
     autoComplete: {
       control: 'text',
       description: 'Form autocomplete setting',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'on' },
+      },
+    },
+    onSubmit: {
+      action: 'submitted',
+      description: 'Callback when form is submitted',
     },
   },
 } satisfies Meta<FormWithOptionalChildren>;
@@ -55,10 +141,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Basic form
-export const Basic: Story = {
+export const BasicUsage: Story = {
   args: { children: undefined },
   render: args => (
-    <Form {...args}>
+    <Form {...args} onSubmit={fn()}>
       <FormGroup label="Name" htmlFor="name">
         <Input id="name" placeholder="Enter your name" />
       </FormGroup>
@@ -70,6 +156,13 @@ export const Basic: Story = {
       </button>
     </Form>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Basic form with name and email fields.',
+      },
+    },
+  },
 };
 
 // Complete form with all input types
@@ -77,7 +170,7 @@ export const CompleteForm: Story = {
   args: { children: undefined },
   render: () => (
     <div style={{ width: '500px' }}>
-      <Form>
+      <Form onSubmit={fn()}>
         <h2 className="u-mb-4">Registration Form</h2>
 
         <FormGroup label="Full Name" htmlFor="fullName" required>
@@ -109,42 +202,48 @@ export const CompleteForm: Story = {
             id="country"
             name="country"
             options={[
+              { value: '', label: 'Select a country' },
               { value: 'us', label: 'United States' },
               { value: 'ca', label: 'Canada' },
-              { value: 'mx', label: 'Mexico' },
               { value: 'uk', label: 'United Kingdom' },
             ]}
-            placeholder="Select your country"
           />
         </FormGroup>
 
-        <FormGroup label="About yourself" htmlFor="bio">
-          <Textarea id="bio" name="bio" placeholder="Tell us about yourself" rows={4} />
+        <FormGroup label="Bio" htmlFor="bio">
+          <Textarea
+            id="bio"
+            name="bio"
+            placeholder="Tell us about yourself"
+            rows={4}
+          />
         </FormGroup>
 
-        <FormGroup>
-          <Checkbox id="terms" name="terms" label="I agree to the Terms and Conditions" required />
-        </FormGroup>
-
-        <FormGroup label="Preferred contact method">
-          <div className="u-flex u-flex-column u-gap-2">
-            <Radio id="contact-email" name="contactMethod" value="email" label="Email" checked />
-            <Radio id="contact-phone" name="contactMethod" value="phone" label="Phone" />
-            <Radio id="contact-mail" name="contactMethod" value="mail" label="Mail" />
-          </div>
+        <FormGroup label="Subscribe to newsletter">
+          <Checkbox
+            name="newsletter"
+            label="Yes, I would like to receive updates"
+          />
         </FormGroup>
 
         <div className="u-flex u-gap-3 u-mt-4">
           <button type="submit" className="c-btn c-btn--primary">
             Register
           </button>
-          <button type="reset" className="c-btn c-btn--outline-secondary">
+          <button type="reset" className="c-btn c-btn--secondary">
             Reset
           </button>
         </div>
       </Form>
     </div>
   ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Complete registration form with various input types.',
+      },
+    },
+  },
 };
 
 // Interactive form
