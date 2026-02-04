@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gap Utilities Example - Atomix</title>
+  <link rel="stylesheet" href="../dist/css/index.css">
+  <style>
+    body {
+      font-family: var(--atomix-font-family-base);
+      padding: 1rem;
+      background-color: var(--atomix-bg-primary);
+      color: var(--atomix-text-primary);
+    }
+    
+    .demo-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .demo-box {
+      background: var(--atomix-bg-secondary);
+      border: 1px solid var(--atomix-border-primary);
+      border-radius: var(--atomix-border-radius);
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .grid-item {
+      background: var(--atomix-primary-50);
+      border: 1px solid var(--atomix-primary-200);
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: var(--atomix-border-radius-sm);
+    }
+    
+    .flex-item {
+      background: var(--atomix-success-50);
+      border: 1px solid var(--atomix-success-200);
+      padding: 1rem 1.5rem;
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: var(--atomix-border-radius-sm);
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <h1>Gap Utilities Examples</h1>
+    
+    <div class="demo-box">
+      <h2>Basic Grid with Gap</h2>
+      <div class="u-grid u-gap-4">
+        <div class="grid-item">Item 1</div>
+        <div class="grid-item">Item 2</div>
+        <div class="grid-item">Item 3</div>
+        <div class="grid-item">Item 4</div>
+      </div>
+    </div>
+    
+    <div class="demo-box">
+      <h2>Flex Container with Gap</h2>
+      <div class="u-flex u-gap-6">
+        <div class="flex-item">Button 1</div>
+        <div class="flex-item">Button 2</div>
+        <div class="flex-item">Button 3</div>
+      </div>
+    </div>
+    
+    <div class="demo-box">
+      <h2>Responsive Gaps</h2>
+      <div class="u-grid u-gap-2 u-md-gap-4 u-lg-gap-8">
+        <div class="grid-item">Item 1</div>
+        <div class="grid-item">Item 2</div>
+        <div class="grid-item">Item 3</div>
+        <div class="grid-item">Item 4</div>
+      </div>
+    </div>
+    
+    <div class="demo-box">
+      <h2>Separate Row and Column Gaps</h2>
+      <div class="u-grid u-row-gap-4 u-column-gap-8">
+        <div class="grid-item">Item 1</div>
+        <div class="grid-item">Item 2</div>
+        <div class="grid-item">Item 3</div>
+        <div class="grid-item">Item 4</div>
+      </div>
+    </div>
+    
+    <div class="demo-box">
+      <h2>Different Gap Sizes</h2>
+      <div class="u-flex u-flex-column u-gap-1">
+        <div class="u-grid u-gap-1">
+          <div class="grid-item">Gap 1</div>
+          <div class="grid-item">Gap 1</div>
+          <div class="grid-item">Gap 1</div>
+        </div>
+        <div class="u-grid u-gap-3">
+          <div class="grid-item">Gap 3</div>
+          <div class="grid-item">Gap 3</div>
+          <div class="grid-item">Gap 3</div>
+        </div>
+        <div class="u-grid u-gap-6">
+          <div class="grid-item">Gap 6</div>
+          <div class="grid-item">Gap 6</div>
+          <div class="grid-item">Gap 6</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

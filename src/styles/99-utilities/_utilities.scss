@@ -19,6 +19,7 @@
 @use 'utilities.sizes' as sizes;
 @use 'utilities.spacing' as spacing;
 @use 'utilities.text' as text;
+@use 'utilities.text-gradient' as textGradient;
 @use 'utilities.visibility' as visibility;
 @use 'utilities.z-index' as z-index;
 
@@ -40,6 +41,7 @@ $utilities: map.merge($utilities, spacing.$utilities-spacing);
 $utilities: map.merge($utilities, text.$utilities-text);
 $utilities: map.merge($utilities, visibility.$utilities-visibility);
 $utilities: map.merge($utilities, z-index.$utilities-z-index);
+$utilities: map.merge($utilities, textGradient.$utilities-text-gradient);
 
 // Generate all utility classes
 @include util-api.generate-utilities($utilities, breakpoints.$grid-breakpoints);

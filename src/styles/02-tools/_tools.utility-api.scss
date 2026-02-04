@@ -80,6 +80,13 @@ $utility-defaults: (
         } @else {
           #{$property-class}: $value if(map.get($utility, rtl), null, !important);
         }
+        
+        // Add local CSS variables if specified
+        @if map.get($utility, local-vars) {
+          @each $local-var-name, $local-var-value in map.get($utility, local-vars) {
+            --#{$local-var-name}: #{$local-var-value};
+          }
+        }
       }
     } @else {
       // Generate class with custom class name
@@ -103,6 +110,13 @@ $utility-defaults: (
           }
         } @else {
           #{$base-class}: $value if(map.get($utility, rtl), null, !important);
+        }
+        
+        // Add local CSS variables if specified
+        @if map.get($utility, local-vars) {
+          @each $local-var-name, $local-var-value in map.get($utility, local-vars) {
+            --#{$local-var-name}: #{$local-var-value};
+          }
         }
       }
     }
