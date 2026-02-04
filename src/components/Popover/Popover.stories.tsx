@@ -404,7 +404,57 @@ export const GlassPopover: Story = {
  * Glass popover with custom settings.
  */
 export const GlassPopoverCustom: Story = {
-  render: args => <InteractivePopover {...args} />,
+  render: (args) => {
+    const selectOptions = [
+      { value: '1', label: 'Option 1' },
+      { value: '2', label: 'Option 2' },
+      { value: '3', label: 'Option 3' },
+      { value: '4', label: 'Option 4' },
+    ];
+
+    const [selectedOption, setSelectedOption] = React.useState('1');
+    const [showInternalOnly, setShowInternalOnly] = React.useState(false);
+
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedOption(e.target.value);
+    };
+
+    const handleToggleChange = () => {
+      setShowInternalOnly(!showInternalOnly);
+    };
+
+    const content = (
+      <>
+        <div className="u-flex u-items-center u-gap-7">
+          <span className="u-text-nowrap">Sort by</span>
+          <div className="c-select">
+            <select value={selectedOption} onChange={handleSelectChange}>
+              {selectOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="c-toggle" onClick={handleToggleChange}>
+          <div className="c-toggle__label">Show internal comments only</div>
+          <div className="c-toggle__switch"></div>
+        </div>
+      </>
+    );
+
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
+        <Popover {...args}>
+          <PopoverTrigger>
+            <Button variant="primary">Open Popover</Button>
+          </PopoverTrigger>
+          {content}
+        </Popover>
+      </div>
+    );
+  },
   args: {
     position: 'top',
     trigger: 'click',
@@ -421,7 +471,7 @@ export const GlassPopoverCustom: Story = {
       cornerRadius: 16,
       mode: 'polar',
     } as any,
-  } as any,
+  },
   decorators: [
     Story => (
       <div
@@ -441,7 +491,57 @@ export const GlassPopoverCustom: Story = {
  * Glass popover with hover trigger.
  */
 export const GlassPopoverHover: Story = {
-  render: args => <InteractivePopover {...args} />,
+  render: (args) => {
+    const selectOptions = [
+      { value: '1', label: 'Option 1' },
+      { value: '2', label: 'Option 2' },
+      { value: '3', label: 'Option 3' },
+      { value: '4', label: 'Option 4' },
+    ];
+
+    const [selectedOption, setSelectedOption] = React.useState('1');
+    const [showInternalOnly, setShowInternalOnly] = React.useState(false);
+
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedOption(e.target.value);
+    };
+
+    const handleToggleChange = () => {
+      setShowInternalOnly(!showInternalOnly);
+    };
+
+    const content = (
+      <>
+        <div className="u-flex u-items-center u-gap-7">
+          <span className="u-text-nowrap">Sort by</span>
+          <div className="c-select">
+            <select value={selectedOption} onChange={handleSelectChange}>
+              {selectOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="c-toggle" onClick={handleToggleChange}>
+          <div className="c-toggle__label">Show internal comments only</div>
+          <div className="c-toggle__switch"></div>
+        </div>
+      </>
+    );
+
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
+        <Popover {...args}>
+          <PopoverTrigger>
+            <Button variant="primary">Open Popover</Button>
+          </PopoverTrigger>
+          {content}
+        </Popover>
+      </div>
+    );
+  },
   args: {
     position: 'top',
     trigger: 'hover',
@@ -451,7 +551,7 @@ export const GlassPopoverHover: Story = {
     closeOnClickOutside: true,
     closeOnEscape: true,
     glass: true,
-  } as any,
+  },
   decorators: [
     Story => (
       <div
@@ -471,9 +571,95 @@ export const GlassPopoverHover: Story = {
  * Glass popover with different positions.
  */
 export const GlassPopoverPositions: Story = {
-  render: args => <InteractivePopover {...args} />,
+  render: (args) => {
+    const content = <div style={{ padding: '20px' }}>Popover Content</div>;
+    
+    return (
+      <div style={{
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(3, 1fr)', 
+        gap: '20px', 
+        padding: '50px',
+        alignItems: 'center',
+        justifyItems: 'center',
+        height: '500px',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+      }}>
+        <div>
+          <Popover {...args} position="top-start">
+            <PopoverTrigger>
+              <Button variant="primary">Top Start</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        <div>
+          <Popover {...args} position="top">
+            <PopoverTrigger>
+              <Button variant="primary">Top</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        <div>
+          <Popover {...args} position="top-end">
+            <PopoverTrigger>
+              <Button variant="primary">Top End</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        
+        <div>
+          <Popover {...args} position="left">
+            <PopoverTrigger>
+              <Button variant="primary">Left</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        
+        <div style={{ textAlign: 'center' }}>
+          <p>All popover positions</p>
+        </div>
+        
+        <div>
+          <Popover {...args} position="right">
+            <PopoverTrigger>
+              <Button variant="primary">Right</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        
+        <div>
+          <Popover {...args} position="bottom-start">
+            <PopoverTrigger>
+              <Button variant="primary">Bottom Start</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        <div>
+          <Popover {...args} position="bottom">
+            <PopoverTrigger>
+              <Button variant="primary">Bottom</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+        <div>
+          <Popover {...args} position="bottom-end">
+            <PopoverTrigger>
+              <Button variant="primary">Bottom End</Button>
+            </PopoverTrigger>
+            {content}
+          </Popover>
+        </div>
+      </div>
+    );
+  },
   args: {
-    position: 'top',
     trigger: 'click',
     offset: 12,
     delay: 0,
@@ -481,18 +667,5 @@ export const GlassPopoverPositions: Story = {
     closeOnClickOutside: true,
     closeOnEscape: true,
     glass: true,
-  } as any,
-  decorators: [
-    Story => (
-      <div
-        style={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          minHeight: '100vh',
-          padding: '2rem',
-        }}
-      >
-        <Story />
-      </div>
-    ),
-  ],
+  },
 };

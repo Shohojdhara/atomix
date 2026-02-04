@@ -246,7 +246,7 @@ export const BasicUsage: Story = {
   render: args => {
     const [date, setDate] = useState<Date | null>(null);
     return (
-      <div style={{ width: '300px' }} className="u-mt-20 u-mx-auto u-items-center">
+      <div className="u-w-xs u-mt-20 u-mx-auto u-flex u-items-center">
         <DatePicker {...args} value={date} onChange={setDate} />
       </div>
     );
@@ -268,7 +268,7 @@ export const WithInitialDate: Story = {
     const initialDate = new Date();
     const [date, setDate] = useState<Date | null>(initialDate);
     return (
-      <div style={{ width: '300px' }} className="u-mt-20 u-mx-auto u-items-center">
+      <div className="u-w-xs u-mt-20 u-mx-auto u-flex u-items-center">
         <DatePicker {...args} value={date} onChange={setDate} />
       </div>
     );
@@ -295,7 +295,7 @@ export const DateRangeSelection: Story = {
   render: args => {
     const [range, setRange] = useState<DateRange | null>(null);
     return (
-      <div style={{ width: '300px' }} className="u-mt-20 u-mx-auto u-items-center">
+      <div className="u-w-xs u-mt-20 u-mx-auto u-flex u-items-center">
         <DatePicker {...args} value={range} onChange={setRange} />
       </div>
     );
@@ -323,15 +323,7 @@ export const WithGlassEffect: Story = {
   render: args => {
     const [date, setDate] = useState<Date | null>(null);
     return (
-      <div style={{ 
-        width: '300px',
-        padding: '2rem',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        minHeight: '300px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }} className="u-mt-20 u-mx-auto u-items-center">
+      <div className="u-w-xs u-p-8 u-bg-gradient-to-br u-from-indigo-500 u-via-purple-500 u-to-pink-500 u-min-h-80 u-flex u-items-center u-justify-center u-mt-20 u-mx-auto u-flex u-items-center">
         <DatePicker {...args} value={date} onChange={setDate} />
       </div>
     );
@@ -359,7 +351,7 @@ export const WithMinMaxDates: Story = {
   render: args => {
     const [date, setDate] = useState<Date | null>(null);
     return (
-      <div style={{ width: '300px' }} className="u-mt-20 u-mx-auto u-items-center">
+      <div className="u-w-xs u-mt-20 u-mx-auto u-flex u-items-center">
         <DatePicker {...args} value={date} onChange={setDate} />
       </div>
     );
@@ -384,7 +376,7 @@ export const WithWeekNumbers: Story = {
   render: args => {
     const [date, setDate] = useState<Date | null>(null);
     return (
-      <div style={{ width: '300px' }} className="u-mt-20 u-mx-auto u-items-center">
+      <div className="u-w-xs u-mt-20 u-mx-auto u-flex u-items-center">
         <DatePicker {...args} value={date} onChange={setDate} />
       </div>
     );
@@ -403,7 +395,7 @@ export const DifferentSizes: Story = {
     const [date, setDate] = useState<Date | null>(null);
     return (
       <div className="u-mt-20 u-mx-auto u-flex u-flex-col u-gap-4">
-        <div style={{ width: '300px' }}>
+        <div className="u-w-xs">
           <label className="u-block u-mb-2 u-text-sm u-font-medium">Small</label>
           <DatePicker 
             value={date} 
@@ -412,7 +404,7 @@ export const DifferentSizes: Story = {
             placeholder="Select date..."
           />
         </div>
-        <div style={{ width: '300px' }}>
+        <div className="u-w-xs">
           <label className="u-block u-mb-2 u-text-sm u-font-medium">Medium</label>
           <DatePicker 
             value={date} 
@@ -421,7 +413,7 @@ export const DifferentSizes: Story = {
             placeholder="Select date..."
           />
         </div>
-        <div style={{ width: '300px' }}>
+        <div className="u-w-xs">
           <label className="u-block u-mb-2 u-text-sm u-font-medium">Large</label>
           <DatePicker 
             value={date} 
@@ -447,7 +439,7 @@ export const DisabledAndReadOnly: Story = {
     const [date, setDate] = useState<Date | null>(new Date());
     return (
       <div className="u-mt-20 u-mx-auto u-flex u-flex-col u-gap-4">
-        <div style={{ width: '300px' }}>
+        <div className="u-w-xs">
           <label className="u-block u-mb-2 u-text-sm u-font-medium">Disabled</label>
           <DatePicker 
             value={date} 
@@ -456,7 +448,7 @@ export const DisabledAndReadOnly: Story = {
             placeholder="Select date..."
           />
         </div>
-        <div style={{ width: '300px' }}>
+        <div className="u-w-xs">
           <label className="u-block u-mb-2 u-text-sm u-font-medium">Read Only</label>
           <DatePicker 
             value={date} 

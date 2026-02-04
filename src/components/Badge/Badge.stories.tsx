@@ -45,7 +45,7 @@ const meta = {
       description: 'Whether the badge is disabled',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     icon: {
@@ -60,7 +60,7 @@ const meta = {
       description: 'Enable glass morphism effect',
       table: {
         type: { summary: 'boolean | GlassConfig' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     label: {
@@ -70,15 +70,8 @@ const meta = {
         type: { summary: 'string' },
       },
     },
-    onClick: {
-      action: 'clicked',
-      description: 'Click event handler',
-      table: {
-        type: { summary: '(event: React.MouseEvent) => void' },
-      },
-    },
   },
-} satisfies Meta<typeof Badge>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -150,6 +143,10 @@ export const Large: Story = {
  * Shows all badge states (default, disabled)
  */
 export const AllStates: Story = {
+  args: {
+    label: 'All States',
+    variant: 'primary',
+  },
   render: () => (
     <div className="u-flex u-flex-wrap u-gap-2">
       <Badge label="Default" variant="primary" />
@@ -162,6 +159,10 @@ export const AllStates: Story = {
  * Shows badges with icons in different positions
  */
 export const WithIcons: Story = {
+  args: {
+    label: 'With Icons',
+    variant: 'primary',
+  },
   render: () => (
     <div className="u-flex u-flex-wrap u-gap-2">
       <Badge label="With Icon" variant="primary" icon={<Icon />} />
@@ -174,6 +175,10 @@ export const WithIcons: Story = {
  * Shows all available badge color variants
  */
 export const AllVariants: Story = {
+  args: {
+    label: 'All Variants',
+    variant: 'primary',
+  },
   render: () => (
     <div className="u-flex u-flex-wrap u-gap-2">
       {THEME_COLORS.map(color => (
@@ -187,6 +192,10 @@ export const AllVariants: Story = {
  * Shows all available badge sizes
  */
 export const AllSizes: Story = {
+  args: {
+    label: 'All Sizes',
+    variant: 'primary',
+  },
   render: () => (
     <div className="u-flex u-items-center u-gap-2">
       <Badge label="Small" variant="primary" size="sm" />
@@ -200,6 +209,10 @@ export const AllSizes: Story = {
  * Shows numeric badges commonly used for notifications
  */
 export const NumericBadges: Story = {
+  args: {
+    label: 'Numeric Badges',
+    variant: 'primary',
+  },
   render: () => (
     <div className="u-flex u-gap-2">
       <Badge label="1" variant="primary" />
@@ -216,6 +229,10 @@ export const NumericBadges: Story = {
  * Shows status badges with different semantic meanings
  */
 export const StatusBadges: Story = {
+  args: {
+    label: 'Status Badges',
+    variant: 'primary',
+  },
   render: () => (
     <div className="u-flex u-flex-wrap u-gap-2">
       <Badge label="New" variant="primary" />
@@ -263,7 +280,7 @@ export const UsageExamples: Story = {
 
       <div>
         <h3 className="u-mt-0 u-mb-2">In cards</h3>
-        <div className="u-p-4 u-shadow u-flex u-flex-column u-gap-2">
+        <div className="u-p-4 u-rounded-lg u-shadow-md u-bg-white u-flex u-flex-column u-gap-2">
           <div className="u-flex u-justify-between">
             <h4 className="u-m-0">Product Title</h4>
             <Badge label="Sale" variant="error" />
@@ -278,18 +295,12 @@ export const UsageExamples: Story = {
 
       <div>
         <h3 className="u-mt-0 u-mb-2">In lists</h3>
-        <ul className="u-p-0 u-m-0" style={{ listStyle: 'none' }}>
-          <li
-            className="u-py-2 u-flex u-justify-between"
-            style={{ borderBottom: '1px solid #e0e0e0' }}
-          >
+        <ul className="u-p-0 u-m-0 u-list-none">
+          <li className="u-py-2 u-flex u-justify-between u-border-b u-border-gray-200">
             <span>Task 1</span>
             <Badge label="Completed" variant="success" size="sm" />
           </li>
-          <li
-            className="u-py-2 u-flex u-justify-between"
-            style={{ borderBottom: '1px solid #e0e0e0' }}
-          >
+          <li className="u-py-2 u-flex u-justify-between u-border-b u-border-gray-200">
             <span>Task 2</span>
             <Badge label="In Progress" variant="warning" size="sm" />
           </li>
@@ -307,6 +318,10 @@ export const UsageExamples: Story = {
  * Shows badge accessibility features
  */
 export const AccessibilityFeatures: Story = {
+  args: {
+    label: 'Accessibility Features',
+    variant: 'primary',
+  },
   parameters: {
     docs: {
       description: {
@@ -330,9 +345,6 @@ export const AccessibilityFeatures: Story = {
           <Badge 
             label="Closable Tag" 
             variant="info" 
-            onClick={fn()} 
-            role="button" 
-            tabIndex={0}
           />
         </div>
       </div>
@@ -344,17 +356,12 @@ export const AccessibilityFeatures: Story = {
  * Shows badges with glass effect enabled
  */
 export const WithGlassEffect: Story = {
+  args: {
+    label: 'Glass Effect',
+    variant: 'primary',
+  },
   render: () => (
-    <div
-      style={{
-        background:
-          'url(https://cdn.pixabay.com/photo/2023/07/07/20/42/grasshopper-8113345_1280.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '10rem 25rem',
-        borderRadius: '8px',
-      }}
-    >
+    <div className="u-bg-cover u-bg-center u-rounded-xl u-p-24" style={{backgroundImage: 'url(https://cdn.pixabay.com/photo/2023/07/07/20/42/grasshopper-8113345_1280.jpg)'}}>
       <div className="u-flex u-flex-wrap u-gap-2">
         {THEME_COLORS.map(color => (
           <Badge key={color} label={color} variant={color} glass={true} />
@@ -383,16 +390,7 @@ export const WithCustomGlassSettings: Story = {
   },
   decorators: [
     Story => (
-      <div
-        style={{
-          background:
-            'url(https://cdn.pixabay.com/photo/2021/06/14/22/46/milky-way-6337038_1280.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '10rem 25rem',
-          borderRadius: '8px',
-        }}
-      >
+      <div className="u-bg-cover u-bg-center u-rounded-xl u-p-24" style={{backgroundImage: 'url(https://cdn.pixabay.com/photo/2021/06/14/22/46/milky-way-6337038_1280.jpg)'}}>
         <Story />
       </div>
     ),

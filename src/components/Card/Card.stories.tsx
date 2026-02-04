@@ -86,12 +86,10 @@ Cards are flexible containers for displaying content with optional headers, imag
   },
   tags: ['autodocs'],
   argTypes: {
-    header: { control: 'text', description: 'Header content for the card' },
     title: { control: 'text', description: 'Title of the card' },
     text: { control: 'text', description: 'Main text content of the card' },
     image: { control: 'text', description: 'Image URL for the card' },
     imageAlt: { control: 'text', description: 'Alt text for the card image' },
-    footer: { control: 'text', description: 'Footer content for the card' },
     size: {
       control: { type: 'select' },
       options: SIZES,
@@ -199,6 +197,71 @@ Cards are flexible containers for displaying content with optional headers, imag
     onClick: {
       action: 'clicked',
       description: 'Callback when card is clicked',
+    },
+    header: {
+      control: 'boolean',
+      description: 'Whether to show the header',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    footer: {
+      control: 'boolean',
+      description: 'Whether to show the footer',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    glass: {
+      control: 'boolean',
+      description: 'Enable glass morphism effect',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    rounded: {
+      control: 'boolean',
+      description: 'Whether the card has rounded corners',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    border: {
+      control: 'boolean',
+      description: 'Whether the card has a border',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    shadow: {
+      control: 'boolean',
+      description: 'Whether the card has a shadow',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    hoverable: {
+      control: 'boolean',
+      description: 'Whether the card has hover effects',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: false },
+      },
+    },
+    mode: {
+      control: 'radio',
+      options: ['cartesian', 'polar', 'bipolar'],
+      description: 'The displacement mode for the glass effect',
+      table: {
+        type: { summary: '"cartesian" | "polar" | "bipolar"' },
+        defaultValue: { summary: 'polar' },
+      },
     },
   },
 } satisfies Meta<typeof Card>;
@@ -323,15 +386,9 @@ export const WithGlassEffect: Story = {
     },
   },
   render: args => (
-    <div
+    <div className="u-bg-cover u-h-80vh u-w-90vw u-grid u-rounded-xl u-overflow-hidden"
       style={{
         backgroundImage: `url(https://picsum.photos/id/128/1920/1024)`,
-        backgroundSize: 'cover',
-        height: '80vh',
-        width: '90vw',
-        display: 'grid',
-        borderRadius: '12px',
-        placeItems: 'center',
       }}
     >
       <Card {...args} style={{ ['--atomix-card-width' as string]: '300px' }} />
@@ -909,41 +966,20 @@ export const GlassCardGallery: Story = {
 // Glass Card Layouts
 export const GlassCardLayouts: Story = {
   render: () => (
-    <div
+    <div className="u-bg-cover u-bg-center u-p-12 u-rounded-xl u-min-h-95vh u-min-w-95vw u-overflow-auto"
       style={{
         backgroundImage: 'url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '3rem',
-        borderRadius: '12px',
-        minHeight: '95vh',
-        minWidth: '95vw',
-        overflow: 'auto',
       }}
     >
       <Container>
-        <h2
-          style={{
-            textAlign: 'center',
-            color: 'white',
-            marginBottom: '3rem',
-            fontSize: '2rem',
-            textShadow: '0 2px 8px rgba(0,0,0,0.5)',
-          }}
-        >
+        <h2 className="u-text-center u-text-white u-mb-12 u-text-2xl u-text-shadow">
           Glass Card Layouts
         </h2>
 
-        <div style={{ display: 'flex', gap: '2rem' }}>
+        <div className="u-flex u-gap-8">
           {/* Standard Layout */}
           <div className="u-w-50">
-            <h3
-              style={{
-                color: 'white',
-                marginBottom: '1rem',
-                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-              }}
-            >
+            <h3 className="u-text-white u-mb-4 u-text-shadow">
               Standard Layout
             </h3>
             <Card
@@ -963,13 +999,7 @@ export const GlassCardLayouts: Story = {
 
           {/* Row Layout */}
           <div className="u-w-50">
-            <h3
-              style={{
-                color: 'white',
-                marginBottom: '1rem',
-                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-              }}
-            >
+            <h3 className="u-text-white u-mb-4 u-text-shadow">
               Row Layout
             </h3>
             <Card
@@ -994,13 +1024,7 @@ export const GlassCardLayouts: Story = {
 
           {/* Flat Layout */}
           <div className="u-w-50">
-            <h3
-              style={{
-                color: 'white',
-                marginBottom: '1rem',
-                textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-              }}
-            >
+            <h3 className="u-text-white u-mb-4 u-text-shadow">
               Flat Layout
             </h3>
             <Card

@@ -95,16 +95,23 @@ The ButtonGroup component groups multiple buttons together, creating a visually 
 
 ### Props
 
-| Prop     | Type           | Default   | Description             |
-| -------- | -------------- | --------- | ----------------------- |
-| className | string         | ''        | Additional CSS classes |
-| 'aria-label' | string         | undefined | ARIA label for accessibility |
-| role | string         | 'group'        | ARIA role for the button group |
+| Prop | Type | Default | Description |
+| ---- | ---- | ------- | ----------- |
+| vertical | boolean | false | Whether to stack buttons vertically |
+| className | string | - | Additional CSS classes |
+| children | ReactNode | - | Button elements to group |
+
+## Design Tokens
+
+Used design tokens:
+
+- \`--atomix-btn-group-gap\`: Gap between buttons in group
+- \`--atomix-btn-group-border-radius\`: Border radius for button groups
 
 ## Notes
 
-The ButtonGroup component ensures buttons are visually connected with shared borders and appropriate border-radius adjustments for the first and last buttons.
-`,
+When using ButtonGroup, ensure that all child buttons are of the same size for consistent appearance.
+        `,
       },
     },
   },
@@ -112,23 +119,9 @@ The ButtonGroup component ensures buttons are visually connected with shared bor
   argTypes: {
     className: {
       control: 'text',
-      description: 'Additional CSS class names',
+      description: 'Additional CSS classes for the button group',
       table: {
-        category: 'Styling',
-      },
-    },
-    'aria-label': {
-      control: 'text',
-      description: 'ARIA label for accessibility',
-      table: {
-        category: 'Accessibility',
-      },
-    },
-    role: {
-      control: 'text',
-      description: 'ARIA role for the button group',
-      table: {
-        category: 'Accessibility',
+        type: { summary: 'string' },
       },
     },
   },
@@ -142,40 +135,14 @@ type Story = StoryObj<typeof meta>;
 // ============================================================================
 
 export const BasicUsage: Story = {
-  args: {},
-  render: (args) => (
-    <ButtonGroup {...args}>
-      <Button label="Left" />
-      <Button label="Middle" />
-      <Button label="Right" />
-    </ButtonGroup>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Basic ButtonGroup with three buttons.',
-      },
-    },
-  },
-};
-
-export const WithAllProps: Story = {
   args: {
-    'aria-label': 'Navigation controls',
-    className: 'custom-button-group',
-  },
-  render: (args) => (
-    <ButtonGroup {...args}>
-      <Button label="Previous" />
-      <Button label="Next" />
-    </ButtonGroup>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup with all available props configured.',
-      },
-    },
+    children: (
+      <>
+        <Button label="Left" variant="primary" />
+        <Button label="Middle" variant="primary" />
+        <Button label="Right" variant="primary" />
+      </>
+    ),
   },
 };
 
@@ -183,316 +150,62 @@ export const WithAllProps: Story = {
 // VARIANTS & STATES STORIES
 // ============================================================================
 
-export const WithVariants: Story = {
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <div>
-        <h4>Primary Group</h4>
-        <ButtonGroup>
-          <Button label="One" variant="primary" />
-          <Button label="Two" variant="primary" />
-          <Button label="Three" variant="primary" />
-        </ButtonGroup>
-      </div>
-      
-      <div>
-        <h4>Secondary Group</h4>
-        <ButtonGroup>
-          <Button label="One" variant="secondary" />
-          <Button label="Two" variant="secondary" />
-          <Button label="Three" variant="secondary" />
-        </ButtonGroup>
-      </div>
-      
-      <div>
-        <h4>Outline Group</h4>
-        <ButtonGroup>
-          <Button label="One" variant="outline-primary" />
-          <Button label="Two" variant="outline-primary" />
-          <Button label="Three" variant="outline-primary" />
-        </ButtonGroup>
-      </div>
-      
-      <div>
-        <h4>Mixed Variants</h4>
-        <ButtonGroup>
-          <Button label="Cancel" variant="secondary" />
-          <Button label="Save Draft" variant="outline-primary" />
-          <Button label="Publish" variant="primary" />
-        </ButtonGroup>
-      </div>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Different variant combinations for ButtonGroup.',
-      },
-    },
-  },
-};
-
-export const LoadingState: Story = {
+export const HorizontalGroup: Story = {
   render: () => (
     <ButtonGroup>
-      <Button label="Normal" />
-      <Button label="Loading" loading />
-      <Button label="Normal" />
+      <Button label="Left" variant="primary" />
+      <Button label="Middle" variant="secondary" />
+      <Button label="Right" variant="success" />
     </ButtonGroup>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup with a loading button.',
-      },
-    },
-  },
 };
 
-export const ErrorState: Story = {
+export const VerticalGroup: Story = {
+  render: () => (
+    <ButtonGroup vertical={true}>
+      <Button label="Top" variant="primary" />
+      <Button label="Middle" variant="secondary" />
+      <Button label="Bottom" variant="success" />
+    </ButtonGroup>
+  ),
+};
+
+export const GroupWithSizes: Story = {
   render: () => (
     <ButtonGroup>
-      <Button label="Normal" />
-      <Button label="Error" variant="error" />
-      <Button label="Normal" />
+      <Button label="Small" variant="primary" size="sm" />
+      <Button label="Medium" variant="primary" size="md" />
+      <Button label="Large" variant="primary" size="lg" />
     </ButtonGroup>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup with an error state button.',
-      },
-    },
-  },
 };
 
-export const DisabledState: Story = {
-  render: () => (
-    <ButtonGroup>
-      <Button label="Enabled" />
-      <Button label="Disabled" disabled />
-      <Button label="Enabled" />
-    </ButtonGroup>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup with a disabled button.',
-      },
-    },
-  },
-};
-
-export const ActiveState: Story = {
-  render: () => (
-    <ButtonGroup>
-      <Button label="Inactive" />
-      <Button label="Active" active />
-      <Button label="Inactive" />
-    </ButtonGroup>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup with an active button.',
-      },
-    },
-  },
-};
-
-export const SelectedState: Story = {
-  render: () => (
-    <ButtonGroup>
-      <Button label="Option 1" selected />
-      <Button label="Option 2" />
-      <Button label="Option 3" />
-    </ButtonGroup>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup with a selected button.',
-      },
-    },
-  },
-};
-
-// ============================================================================
-// SIZE VARIANTS
-// ============================================================================
-
-export const AllSizes: Story = {
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <div>
-        <h4>Small Size</h4>
-        <ButtonGroup>
-          <Button label="Small" size="sm" />
-          <Button label="Buttons" size="sm" />
-          <Button label="Group" size="sm" />
-        </ButtonGroup>
-      </div>
-      
-      <div>
-        <h4>Medium Size</h4>
-        <ButtonGroup>
-          <Button label="Medium" size="md" />
-          <Button label="Buttons" size="md" />
-          <Button label="Group" size="md" />
-        </ButtonGroup>
-      </div>
-      
-      <div>
-        <h4>Large Size</h4>
-        <ButtonGroup>
-          <Button label="Large" size="lg" />
-          <Button label="Buttons" size="lg" />
-          <Button label="Group" size="lg" />
-        </ButtonGroup>
-      </div>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup with different button sizes.',
-      },
-    },
-  },
-};
-
-// ============================================================================
-// WITH FEATURES
-// ============================================================================
-
-export const WithIcon: Story = {
-  render: () => (
-    <ButtonGroup>
-      <Button label="Previous" iconName="ArrowLeft" iconPosition="start" />
-      <Button label="Next" iconName="ArrowRight" iconPosition="end" />
-    </ButtonGroup>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup with icons in buttons.',
-      },
-    },
-  },
-};
-
-export const WithIconPosition: Story = {
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <div>
-        <h4>Icons at Start</h4>
-        <ButtonGroup>
-          <Button label="Home" iconName="House" iconPosition="start" />
-          <Button label="Settings" iconName="Gear" iconPosition="start" />
-          <Button label="Profile" iconName="User" iconPosition="start" />
-        </ButtonGroup>
-      </div>
-      
-      <div>
-        <h4>Icons at End</h4>
-        <ButtonGroup>
-          <Button label="Home" iconName="House" iconPosition="end" />
-          <Button label="Settings" iconName="Gear" iconPosition="end" />
-          <Button label="Profile" iconName="User" iconPosition="end" />
-        </ButtonGroup>
-      </div>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup showing different icon positions.',
-      },
-    },
-  },
-};
-
-export const WithIconOnly: Story = {
-  render: () => (
-    <ButtonGroup>
-      <Button iconName="CaretLeft" iconOnly aria-label="Previous" />
-      <Button iconName="CaretRight" iconOnly aria-label="Next" />
-    </ButtonGroup>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup with icon-only buttons.',
-      },
-    },
-  },
-};
-
-export const WithHelperText: Story = {
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <div>
-        <p>Navigation Controls:</p>
-        <ButtonGroup>
-          <Button label="Previous" variant="outline-secondary" />
-          <Button label="Next" variant="outline-secondary" />
-        </ButtonGroup>
-      </div>
-      
-      <div>
-        <p>Actions:</p>
-        <ButtonGroup>
-          <Button label="Delete" variant="danger" />
-          <Button label="Edit" variant="warning" />
-          <Button label="View" variant="info" />
-        </ButtonGroup>
-      </div>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup with helper text labels.',
-      },
-    },
-  },
-};
-
-// ============================================================================
-// ADVANCED CONFIGURATION
-// ============================================================================
-
-export const CustomStyling: Story = {
-  render: () => (
-    <ButtonGroup style={{ background: '#f0f0f0', padding: '0.5rem', borderRadius: '8px' }}>
-      <Button label="Custom" style={{ background: '#e0e0e0', color: '#333' }} />
-      <Button label="Styled" style={{ background: '#d0d0d0', color: '#333' }} />
-      <Button label="Group" style={{ background: '#c0c0c0', color: '#333' }} />
-    </ButtonGroup>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup with custom styling applied.',
-      },
-    },
-  },
-};
-
-export const WithClassName: Story = {
-  render: () => (
-    <ButtonGroup className="custom-button-group">
-      <Button label="Custom" className="custom-btn" />
-      <Button label="Styled" className="custom-btn" />
-      <Button label="Group" className="custom-btn" />
-    </ButtonGroup>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup with custom CSS classes.',
-      },
-    },
+export const GroupWithIcons: Story = {
+  render: () => {
+    const Icon = () => (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 8v4M12 16h.01" />
+      </svg>
+    );
+    
+    return (
+      <ButtonGroup>
+        <Button label="First" icon={<Icon />} variant="primary" />
+        <Button label="Second" icon={<Icon />} variant="secondary" />
+        <Button label="Third" icon={<Icon />} variant="success" />
+      </ButtonGroup>
+    );
   },
 };
 
@@ -500,96 +213,94 @@ export const WithClassName: Story = {
 // INTEGRATION EXAMPLES
 // ============================================================================
 
-export const InForm: Story = {
-  render: () => {
-    const [activeIndex, setActiveIndex] = useState(0);
-    
-    const buttons = ['Draft', 'Published', 'Archived'];
-    
-    return (
-      <form>
-        <label htmlFor="status-group">Post Status:</label>
-        <ButtonGroup id="status-group" role="radiogroup" aria-label="Post status selection">
-          {buttons.map((label, index) => (
-            <Button 
-              key={index}
-              label={label}
-              selected={index === activeIndex}
-              onClick={() => setActiveIndex(index)}
-              aria-checked={index === activeIndex}
-              role="radio"
-            />
-          ))}
-        </ButtonGroup>
-      </form>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup used as a radio button group in a form.',
-      },
-    },
-  },
+export const InFormIntegration: Story = {
+  render: () => (
+    <form className="u-flex u-flex-col u-gap-4">
+      <input 
+        type="text" 
+        placeholder="Username" 
+        className="u-p-2 u-mb-2 u-border u-border-gray-300 u-rounded u-w-full" 
+      />
+      <input 
+        type="password" 
+        placeholder="Password" 
+        className="u-p-2 u-mb-2 u-border u-border-gray-300 u-rounded u-w-full" 
+      />
+      <ButtonGroup className="u-justify-end">
+        <Button label="Cancel" variant="secondary" />
+        <Button label="Submit" variant="primary" />
+      </ButtonGroup>
+    </form>
+  ),
 };
 
-export const InCard: Story = {
+export const InCardIntegration: Story = {
   render: () => (
-    <div style={{ 
-      border: '1px solid #ddd', 
-      borderRadius: '8px', 
-      padding: '1rem', 
-      maxWidth: '400px',
-      background: 'white'
-    }}>
-      <h3>Confirmation</h3>
-      <p>Are you sure you want to delete this item?</p>
+    <div className="u-p-6 u-bg-white u-rounded-lg u-shadow-lg u-w-80">
+      <h3 className="u-mt-0 u-mb-3">Confirm Action</h3>
+      <p className="u-mb-4">Are you sure you want to perform this action?</p>
       <ButtonGroup>
-        <Button label="Cancel" variant="secondary" />
-        <Button label="Delete" variant="danger" />
+        <Button label="No" variant="secondary" size="sm" />
+        <Button label="Yes" variant="danger" size="sm" />
       </ButtonGroup>
     </div>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup inside a card component.',
-      },
-    },
-  },
 };
 
 export const WithOtherComponents: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
-      <div>
-        <h4>Filter Options</h4>
+    <div className="u-flex u-flex-col u-gap-4 u-w-full">
+      <div className="u-flex u-items-center u-gap-2 u-mb-4">
+        <h4 className="u-m-0">Filters:</h4>
         <ButtonGroup>
-          <Button label="All" selected />
-          <Button label="Active" />
-          <Button label="Completed" />
+          <Button label="All" variant="outline-primary" />
+          <Button label="Active" variant="outline-primary" />
+          <Button label="Inactive" variant="outline-primary" />
         </ButtonGroup>
       </div>
       
-      <div>
-        <h4>Pagination</h4>
+      <div className="u-flex u-justify-between u-items-center">
+        <div className="u-text-sm u-text-gray-600">Showing 1-10 of 42 results</div>
         <ButtonGroup>
-          <Button label="Previous" variant="outline-secondary" />
-          <Button label="1" />
-          <Button label="2" />
-          <Button label="3" />
+          <Button label="Prev" variant="outline-secondary" />
           <Button label="Next" variant="outline-secondary" />
         </ButtonGroup>
       </div>
     </div>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'ButtonGroup combined with other components.',
-      },
-    },
-  },
+};
+
+// ============================================================================
+// RESPONSIVE EXAMPLES
+// ============================================================================
+
+export const ResponsiveButtonGroup: Story = {
+  render: () => (
+    <div className="u-w-full">
+      <ButtonGroup className="u-flex-col md:u-flex-row u-gap-0">
+        <Button 
+          label="Home" 
+          variant="outline-primary" 
+          className="u-w-full md:u-w-auto u-rounded-none md:u-rounded-l md:u-rounded-r-none"
+        />
+        <Button 
+          label="About" 
+          variant="outline-primary" 
+          className="u-w-full md:u-w-auto u-rounded-none"
+        />
+        <Button 
+          label="Services" 
+          variant="outline-primary" 
+          className="u-w-full md:u-w-auto u-rounded-none"
+        />
+        <Button 
+          label="Contact" 
+          variant="outline-primary" 
+          className="u-w-full md:u-w-auto u-rounded-none md:u-rounded-r md:u-rounded-l-none"
+        />
+      </ButtonGroup>
+    </div>
+  ),
 };
 
 // ============================================================================
@@ -677,35 +388,83 @@ export const WithAriaLabels: Story = {
   },
 };
 
+export const VerticalLayout: Story = {
+  render: () => (
+    <div className="u-flex u-flex-col u-gap-3">
+      <div className="u-flex u-flex-col u-gap-0 u-items-start">
+        <Button label="Button 1" variant="primary" className="u-w-full u-rounded-b-none" />
+        <Button label="Button 2" variant="secondary" className="u-w-full u-rounded-none" />
+        <Button label="Button 3" variant="outline-primary" className="u-w-full u-rounded-t-none" />
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Vertical layout using flex-direction column.',
+      },
+    },
+  },
+};
+
 export const WithKeyboardNavigation: Story = {
   render: () => {
-    const [activeIndex, setActiveIndex] = useState(1);
+    const [activeIndex, setActiveIndex] = useState(0);
     
+    const buttons = [
+      { label: "Button 1", variant: "primary" },
+      { label: "Button 2", variant: "secondary" },
+      { label: "Button 3", variant: "outline-primary" },
+      { label: "Button 4", variant: "success" },
+    ];
+
     const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        setActiveIndex(index);
+      let newIndex = index;
+      
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+          newIndex = (index + 1) % buttons.length;
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          newIndex = (index - 1 + buttons.length) % buttons.length;
+          break;
+        case 'Home':
+          newIndex = 0;
+          break;
+        case 'End':
+          newIndex = buttons.length - 1;
+          break;
+        default:
+          return;
       }
+      
+      e.preventDefault();
+      setActiveIndex(newIndex);
     };
-    
+
     return (
-      <ButtonGroup role="toolbar" aria-label="Toolbar with 3 buttons">
-        {['Button 1', 'Button 2', 'Button 3'].map((label, idx) => (
-          <Button
-            key={idx}
-            label={label}
-            active={idx === activeIndex}
-            onKeyDown={(e) => handleKeyDown(idx, e)}
-            tabIndex={0}
-            aria-pressed={idx === activeIndex}
-          />
-        ))}
-      </ButtonGroup>
+      <div className="u-flex u-flex-col u-gap-3">
+        <div className="u-flex u-gap-0">
+          {buttons.map((btn, idx) => (
+            <Button
+              key={idx}
+              label={btn.label}
+              variant={btn.variant}
+              active={activeIndex === idx}
+              onKeyDown={(e: React.KeyboardEvent) => handleKeyDown(idx, e)}
+              className={idx === 0 ? 'u-rounded-r-none' : idx === buttons.length - 1 ? 'u-rounded-l-none' : 'u-rounded-none'}
+            />
+          ))}
+        </div>
+      </div>
     );
   },
   parameters: {
     docs: {
       description: {
-        story: 'ButtonGroup with keyboard navigation support.',
+        story: 'Button group with keyboard navigation support using arrow keys.',
       },
     },
   },

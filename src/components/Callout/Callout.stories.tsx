@@ -52,7 +52,7 @@ const meta = {
       control: 'boolean',
       description: 'Display the callout in compact mode',
       table: {
-        defaultValue: { summary: 'false' },
+        defaultValue: { summary: false },
         type: { summary: 'boolean' },
       },
     },
@@ -60,7 +60,7 @@ const meta = {
       control: 'boolean',
       description: 'Display the callout as a toast notification',
       table: {
-        defaultValue: { summary: 'false' },
+        defaultValue: { summary: false },
         type: { summary: 'boolean' },
       },
     },
@@ -68,7 +68,7 @@ const meta = {
       control: 'boolean',
       description: 'Enable glass morphism effect',
       table: {
-        defaultValue: { summary: 'false' },
+        defaultValue: { summary: false },
         type: { summary: 'AtomixGlassProps | boolean' },
       },
     },
@@ -346,7 +346,7 @@ export const AllVariants: Story = {
     };
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div className="u-flex u-flex-col u-gap-4">
         {variants.map(variant => (
           <Callout
             key={variant}
@@ -388,16 +388,7 @@ export const Glass: Story = {
   },
   decorators: [
     Story => (
-      <div
-        style={{
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '4rem',
-          minHeight: '300px',
-        }}
-      >
+      <div className="u-bg-cover u-bg-center u-p-16" style={{backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")'}}>
         <Story />
       </div>
     ),
@@ -421,16 +412,7 @@ export const GlassSuccess: Story = {
   },
   decorators: [
     Story => (
-      <div
-        style={{
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '4rem',
-          minHeight: '300px',
-        }}
-      >
+      <div className="u-bg-cover u-bg-center u-p-16" style={{backgroundImage: 'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")'}}>
         <Story />
       </div>
     ),
@@ -455,16 +437,7 @@ export const GlassWarning: Story = {
   },
   decorators: [
     Story => (
-      <div
-        style={{
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '4rem',
-          minHeight: '300px',
-        }}
-      >
+      <div className="u-bg-cover u-bg-center u-p-16" style={{backgroundImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}}>
         <Story />
       </div>
     ),
@@ -489,16 +462,7 @@ export const GlassError: Story = {
   },
   decorators: [
     Story => (
-      <div
-        style={{
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '4rem',
-          minHeight: '300px',
-        }}
-      >
+      <div className="u-bg-cover u-bg-center u-p-16" style={{backgroundImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}}>
         <Story />
       </div>
     ),
@@ -522,16 +486,7 @@ export const GlassDark: Story = {
   },
   decorators: [
     Story => (
-      <div
-        style={{
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '4rem',
-          minHeight: '300px',
-        }}
-      >
+      <div className="u-bg-cover u-bg-center u-p-16" style={{backgroundImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}}>
         <Story />
       </div>
     ),
@@ -562,16 +517,7 @@ export const GlassWithActions: Story = {
   },
   decorators: [
     Story => (
-      <div
-        style={{
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '4rem',
-          minHeight: '300px',
-        }}
-      >
+      <div className="u-bg-cover u-bg-center u-p-16" style={{backgroundImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}}>
         <Story />
       </div>
     ),
@@ -598,16 +544,7 @@ export const GlassDismissible: Story = {
   },
   decorators: [
     Story => (
-      <div
-        style={{
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '4rem',
-          minHeight: '300px',
-        }}
-      >
+      <div className="u-bg-cover u-bg-center u-p-16" style={{backgroundImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}}>
         <Story />
       </div>
     ),
@@ -635,16 +572,7 @@ export const GlassToast: Story = {
   },
   decorators: [
     Story => (
-      <div
-        style={{
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '4rem',
-          minHeight: '300px',
-        }}
-      >
+      <div className="u-bg-cover u-bg-center u-p-16" style={{backgroundImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}}>
         <Story />
       </div>
     ),
@@ -668,16 +596,7 @@ export const GlassOneLine: Story = {
   },
   decorators: [
     Story => (
-      <div
-        style={{
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          padding: '4rem',
-          minHeight: '300px',
-        }}
-      >
+      <div className="u-bg-cover u-bg-center u-p-16" style={{backgroundImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}}>
         <Story />
       </div>
     ),
@@ -742,50 +661,12 @@ const ToastDemoTemplate = () => {
   };
 
   return (
-    <div
-      style={{
-        background: `linear-gradient(135deg, 
-          rgba(255, 107, 107, 0.15) 0%, 
-          rgba(255, 142, 83, 0.15) 25%, 
-          rgba(255, 193, 7, 0.15) 50%, 
-          rgba(76, 175, 80, 0.15) 75%, 
-          rgba(33, 150, 243, 0.15) 100%),
-          url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")`,
-        backgroundSize: 'cover, cover',
-        backgroundPosition: 'center, center',
-        backgroundBlendMode: 'overlay, normal',
-        padding: '2rem',
-        minHeight: '90vh',
-        position: 'relative',
-      }}
-    >
+    <div className="u-relative u-min-h-90vh u-p-8 u-bg-gradient-to-br u-from-red-500/[0.15] u-via-orange-500/[0.15] u-to-blue-500/[0.15] u-overflow-hidden">
       {/* Additional background layer for depth */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.2,
-          zIndex: -1,
-        }}
-      />
+      <div className="u-absolute u-inset-0 u-bg-cover u-bg-center u-opacity-20" style={{backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")'}} />
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+      <div className="u-relative u-z-10 u-flex u-flex-col u-gap-4">
+        <div className="u-flex u-gap-2 u-flex-wrap">
           <Button
             label="Add Info Toast"
             variant="primary"
@@ -812,38 +693,8 @@ const ToastDemoTemplate = () => {
           />
         </div>
 
-        <div
-          style={{
-            position: 'relative',
-            height: '400px',
-            border: '2px solid rgba(255, 255, 255, 0.2)',
-            borderRadius: '16px',
-            padding: '20px',
-            overflow: 'hidden',
-            background: `linear-gradient(45deg, 
-              rgba(255, 107, 107, 0.1) 0%, 
-              rgba(255, 142, 83, 0.1) 25%, 
-              rgba(255, 193, 7, 0.1) 50%, 
-              rgba(76, 175, 80, 0.1) 75%, 
-              rgba(33, 150, 243, 0.1) 100%),
-              url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")`,
-            backgroundSize: 'cover, cover',
-            backgroundPosition: 'center, center',
-            backgroundBlendMode: 'overlay, normal',
-            backdropFilter: 'blur(1px)',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              top: '20px',
-              right: '20px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px',
-              maxWidth: '350px',
-            }}
-          >
+        <div className="u-relative u-h-96 u-border-2 u-border-white/[0.2] u-rounded-xl u-p-5 u-overflow-hidden u-bg-gradient-to-tr u-from-red-500/[0.1] u-via-yellow-500/[0.1] u-to-blue-500/[0.1] u-backdrop-blur-sm">
+          <div className="u-absolute u-top-5 u-right-5 u-flex u-flex-col u-gap-3 u-max-w-xs">
             {toasts.map(toast => (
               <Callout
                 key={toast.id}
@@ -858,24 +709,12 @@ const ToastDemoTemplate = () => {
             ))}
           </div>
           {toasts.length === 0 && (
-            <div
-              style={{
-                display: 'flex',
-                height: '100%',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                textAlign: 'center',
-                textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
-                fontSize: '18px',
-                fontWeight: '500',
-              }}
-            >
+            <div className="u-flex u-h-full u-items-center u-justify-center u-text-white u-text-center u-leading-tight u-font-medium">
               <div>
-                <div style={{ marginBottom: '8px' }}>
+                <div className="u-mb-2">
                   🎨 Click a button above to show toast notifications here 🎨
                 </div>
-                <small style={{ opacity: 0.8 }}>
+                <small className="u-opacity-80">
                   Beautiful colorful backgrounds enhance the visual experience
                 </small>
               </div>
@@ -926,49 +765,11 @@ const AutoDismissTemplate = () => {
   };
 
   return (
-    <div
-      style={{
-        background: `linear-gradient(135deg, 
-          rgba(255, 107, 107, 0.2) 0%, 
-          rgba(255, 142, 83, 0.2) 25%, 
-          rgba(255, 193, 7, 0.2) 50%, 
-          rgba(76, 175, 80, 0.2) 75%, 
-          rgba(33, 150, 243, 0.2) 100%),
-          url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")`,
-        backgroundSize: 'cover, cover',
-        backgroundPosition: 'center, center',
-        backgroundBlendMode: 'overlay, normal',
-        padding: '4rem',
-        minHeight: '400px',
-        position: 'relative',
-      }}
-    >
+    <div className="u-relative u-min-h-90 u-p-16 u-bg-gradient-to-br u-from-red-500/[0.2] u-via-orange-500/[0.2] u-to-blue-500/[0.2]">
       {/* Additional background layer for depth */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.3,
-          zIndex: -1,
-        }}
-      />
+      <div className="u-absolute u-inset-0 u-bg-cover u-bg-center u-opacity-30" style={{backgroundImage: 'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")'}} />
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
+      <div className="u-relative u-z-10 u-flex u-flex-col u-gap-4">
         {visible ? (
           <Callout
             title={`Auto-dismissing in ${countdown} seconds`}
@@ -1001,14 +802,14 @@ export const AutoDismiss: Story = {
 
 const CalloutWithCustomContentTemplate = () => (
   <Callout title="Custom Content Example" variant="primary" icon={<InfoIcon />}>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+    <div className="u-flex u-flex-col u-gap-3">
       <p>Callouts can contain rich content including:</p>
-      <ul style={{ margin: 0, paddingLeft: '20px' }}>
+      <ul className="u-m-0 u-pl-5">
         <li>Lists of items</li>
         <li>Formatted text</li>
         <li>Custom components</li>
       </ul>
-      <div style={{ backgroundColor: 'rgba(0,0,0,0.05)', padding: '8px', borderRadius: '4px' }}>
+      <div className="u-bg-black/[0.05] u-p-2 u-rounded u-text-sm">
         <code>This is a code example</code>
       </div>
     </div>
@@ -1054,88 +855,19 @@ const GlassVariantsTemplate = () => {
   ];
 
   return (
-    <div
-      style={{
-        background: `linear-gradient(135deg, 
-          rgba(255, 107, 107, 0.1) 0%, 
-          rgba(255, 142, 83, 0.1) 25%, 
-          rgba(255, 193, 7, 0.1) 50%, 
-          rgba(76, 175, 80, 0.1) 75%, 
-          rgba(33, 150, 243, 0.1) 100%)`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '4rem',
-        minHeight: '100vh',
-        position: 'relative',
-      }}
-    >
+    <div className="u-relative u-min-h-screen u-p-16 u-bg-gradient-to-br u-from-red-500/[0.1] u-via-orange-500/[0.1] u-to-blue-500/[0.1]">
       {/* Multiple background layers for depth */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.3,
-          zIndex: -1,
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-          opacity: 0.2,
-          zIndex: -2,
-        }}
-      />
+      <div className="u-absolute u-inset-0 u-bg-cover u-bg-center u-opacity-30" style={{backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")'}} />
+      <div className="u-absolute u-inset-0 u-bg-cover u-bg-center u-opacity-20" style={{backgroundImage: 'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")'}} />
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '32px',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
+      <div className="u-relative u-z-10 u-flex u-flex-col u-gap-8">
         {variants.map((variant, index) => (
           <div
             key={variant}
-            style={{
-              backgroundImage: `url("${backgrounds[index % backgrounds.length]}")`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              padding: '2rem',
-              borderRadius: '16px',
-              position: 'relative',
-              overflow: 'hidden',
-              backgroundAttachment: 'fixed',
-            }}
+            className="u-bg-cover u-bg-center u-p-8 u-rounded-xl u-relative u-overflow-hidden"
+            style={{backgroundImage: `url("${backgrounds[index % backgrounds.length]}")`}}
           >
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'rgba(0, 0, 0, 0.1)',
-                zIndex: -1,
-              }}
-            />
+            <div className="u-absolute u-inset-0 u-bg-black/[0.1] u-z-n1" />
             <Callout
               title={`${variant.charAt(0).toUpperCase() + variant.slice(1)} Glass Variant`}
               variant={variant as any}
@@ -1220,51 +952,12 @@ const GlassToastDemoTemplate = () => {
   };
 
   return (
-    <div
-      style={{
-        background: `linear-gradient(135deg, 
-          rgba(255, 107, 107, 0.2) 0%, 
-          rgba(255, 142, 83, 0.2) 25%, 
-          rgba(255, 193, 7, 0.2) 50%, 
-          rgba(76, 175, 80, 0.2) 75%, 
-          rgba(33, 150, 243, 0.2) 100%),
-          url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")`,
-        backgroundSize: 'cover, cover',
-        backgroundPosition: 'center, center',
-        backgroundBlendMode: 'overlay, normal',
-        padding: '2rem',
-        minHeight: '100vh',
-        position: 'relative',
-      }}
-    >
+    <div className="u-relative u-min-h-screen u-p-8 u-bg-gradient-to-br u-from-red-500/[0.2] u-via-orange-500/[0.2] u-to-blue-500/[0.2]">
       {/* Additional background layers for depth */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.3,
-          zIndex: -1,
-          backgroundAttachment: 'fixed',
-        }}
-      />
+      <div className="u-absolute u-inset-0 u-bg-cover u-bg-center u-opacity-30" style={{backgroundImage: 'url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80")'}} />
 
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          position: 'relative',
-          zIndex: 1,
-        }}
-      >
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+      <div className="u-relative u-z-10 u-flex u-flex-col u-gap-4">
+        <div className="u-flex u-gap-2 u-flex-wrap">
           <Button
             label="Add Glass Info Toast"
             variant="primary"
@@ -1291,39 +984,8 @@ const GlassToastDemoTemplate = () => {
           />
         </div>
 
-        <div
-          style={{
-            position: 'relative',
-            height: '400px',
-            border: '2px solid rgba(255, 255, 255, 0.2)',
-            borderRadius: '16px',
-            padding: '20px',
-            overflow: 'hidden',
-            background: `linear-gradient(45deg, 
-              rgba(255, 107, 107, 0.1) 0%, 
-              rgba(255, 142, 83, 0.1) 25%, 
-              rgba(255, 193, 7, 0.1) 50%, 
-              rgba(76, 175, 80, 0.1) 75%, 
-              rgba(33, 150, 243, 0.1) 100%),
-              url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80")`,
-            backgroundSize: 'cover, cover',
-            backgroundPosition: 'center, center',
-            backgroundBlendMode: 'overlay, normal',
-            backdropFilter: 'blur(2px)',
-            backgroundAttachment: 'fixed',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              top: '20px',
-              right: '20px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px',
-              maxWidth: '350px',
-            }}
-          >
+        <div className="u-relative u-h-96 u-border-2 u-border-white/[0.2] u-rounded-xl u-p-5 u-overflow-hidden u-bg-gradient-to-tr u-from-red-500/[0.1] u-via-yellow-500/[0.1] u-to-blue-500/[0.1] u-backdrop-blur-sm">
+          <div className="u-absolute u-top-5 u-right-5 u-flex u-flex-col u-gap-3 u-max-w-xs">
             {toasts.map(toast => (
               <Callout
                 key={toast.id}
@@ -1339,24 +1001,12 @@ const GlassToastDemoTemplate = () => {
             ))}
           </div>
           {toasts.length === 0 && (
-            <div
-              style={{
-                display: 'flex',
-                height: '100%',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                textAlign: 'center',
-                textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
-                fontSize: '18px',
-                fontWeight: '500',
-              }}
-            >
+            <div className="u-flex u-h-full u-items-center u-justify-center u-text-white u-text-center u-leading-tight u-font-medium">
               <div>
-                <div style={{ marginBottom: '8px' }}>
+                <div className="u-mb-2">
                   ✨ Click a button above to show glass toast notifications here ✨
                 </div>
-                <small style={{ opacity: 0.8 }}>
+                <small className="u-opacity-80">
                   Beautiful colorful backgrounds help visualize the glass morphism effect
                 </small>
               </div>

@@ -15,6 +15,7 @@ import type { RefObject } from 'react';
 import AtomixGlass from '../AtomixGlass';
 import Button from '../../Button/Button';
 import Badge from '../../Badge/Badge';
+import Card from '../../Card/Card';
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -35,27 +36,25 @@ type AtomixGlassStoryProps = Omit<React.ComponentProps<typeof AtomixGlass>, 'chi
  * Reusable decorators for common story patterns
  */
 const withBackground = (image: string) => (Story: any) => (
-  <div style={{
-    backgroundImage: `url(${image})`,
-    backgroundSize: 'cover',
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }}>
-    <Story />
+  <div
+    className="u-bg-cover u-min-h-screen u-w-full u-flex u-items-center u-justify-center"
+    style={{
+      backgroundImage: `url(${image})`,
+    }}
+  >
+    <div className="u-w-full u-h-full">
+      <Story />
+    </div>
   </div>
 );
 
 const withGlassBackground = (Story: any) => (
-  <div style={{
-    background: 'linear-gradient(135deg, #667eea, #764ba2)',
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }}>
-    <Story />
+  <div
+    className="u-bg-gradient-to-br u-from-indigo-500 u-via-purple-500 u-to-blue-500 u-min-h-screen u-w-full u-flex u-items-center u-justify-center"
+  >
+    <div className="u-w-full u-h-full">
+      <Story />
+    </div>
   </div>
 );
 
@@ -86,7 +85,7 @@ const meta: Meta<typeof AtomixGlass> = {
   title: 'Components/AtomixGlass',
   component: AtomixGlass,
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
     docs: {
       description: {
         component: `
@@ -173,36 +172,58 @@ This component is performance-intensive. Use sparingly and consider performance 
     children: {
       control: 'text',
       description: 'Content to display inside the glass effect',
+      table: {
+        category: 'Content',
+        defaultValue: { summary: '-' },
+      },
     },
     displacementScale: {
       control: { type: 'range', min: 0, max: 100, step: 1 },
       description: 'Displacement scale for the glass effect (default: 70)',
-      table: { defaultValue: { summary: '70' } },
+      table: {
+        category: 'Visual',
+        defaultValue: { summary: '70' },
+      },
     },
     blurAmount: {
       control: { type: 'range', min: 0, max: 10, step: 0.5 },
       description: 'Blur amount for the backdrop (default: 0.0625)',
-      table: { defaultValue: { summary: '0.0625' } },
+      table: {
+        category: 'Visual',
+        defaultValue: { summary: '0.0625' },
+      },
     },
     saturation: {
       control: { type: 'range', min: 100, max: 300, step: 5 },
       description: 'Saturation percentage for the backdrop (default: 140)',
-      table: { defaultValue: { summary: '140' } },
+      table: {
+        category: 'Visual',
+        defaultValue: { summary: '140' },
+      },
     },
     aberrationIntensity: {
       control: { type: 'range', min: 0, max: 10, step: 0.1 },
       description: 'Chromatic aberration intensity (default: 2)',
-      table: { defaultValue: { summary: '2' } },
+      table: {
+        category: 'Visual',
+        defaultValue: { summary: '2' },
+      },
     },
     elasticity: {
       control: { type: 'range', min: 0, max: 1, step: 0.01 },
       description: 'Elasticity factor for mouse interactions (default: 0.15)',
-      table: { defaultValue: { summary: '0.15' } },
+      table: {
+        category: 'Interaction',
+        defaultValue: { summary: '0.15' },
+      },
     },
     cornerRadius: {
       control: { type: 'range', min: 0, max: 50, step: 1 },
       description: 'Corner radius in pixels (default: 20)',
-      table: { defaultValue: { summary: '20' } },
+      table: {
+        category: 'Visual',
+        defaultValue: { summary: '20' },
+      },
     },
     overLight: {
       control: {
@@ -215,37 +236,67 @@ This component is performance-intensive. Use sparingly and consider performance 
       },
       options: [false, true, 'auto'],
       description: 'OverLight configuration mode',
-      table: { 
+      table: {
+        category: 'Visual',
         defaultValue: { summary: '"auto"' },
         type: { summary: 'boolean | "auto"' },
       },
     },
     mode: {
-      control: { type: 'select' },
-      options: ['standard', 'polar', 'prominent', 'shader'],
+      control: { type: 'inline-radio', options: ['standard', 'polar', 'prominent', 'shader'] },
       description: 'Glass effect mode (default: "standard")',
-      table: { defaultValue: { summary: '"standard"' } },
+      table: {
+        category: 'Visual',
+        defaultValue: { summary: '"standard"' },
+      },
     },
     onClick: {
       action: 'clicked',
       description: 'Click event handler',
+      table: {
+        category: 'Events',
+        defaultValue: { summary: '-' },
+      },
+    },
+    padding: {
+      control: { type: 'text' },
+      description: 'Padding for the glass component',
+      table: {
+        category: 'Style',
+        defaultValue: { summary: '24px' },
+      },
     },
     className: {
       control: 'text',
       description: 'Additional CSS class names',
+      table: {
+        category: 'Style',
+        defaultValue: { summary: '-' },
+      },
     },
     style: {
       control: 'object',
       description: 'CSS style object',
+      table: {
+        category: 'Style',
+        defaultValue: { summary: '{}' },
+      },
     },
     'aria-label': {
       control: 'text',
       description: 'ARIA label for accessibility',
+      table: {
+        category: 'Accessibility',
+        defaultValue: { summary: '-' },
+      },
     },
     reducedMotion: {
       control: 'boolean',
       description: 'Override for reduced motion preference (default: false)',
-      table: { defaultValue: { summary: 'false' } },
+      table: {
+        category: 'Accessibility',
+        defaultValue: { summary: 'false' },
+      },
     },
   },
 } satisfies Meta<typeof AtomixGlass>;
@@ -260,36 +311,43 @@ type Story = StoryObj<typeof meta>;
 export const BasicUsage: Story = {
   args: {
     children: (
-      <div style={{ padding: '40px', textAlign: 'center' }}>
-        <h2 style={{ margin: '0 0 16px 0', color: 'white' }}>Basic Glass Effect</h2>
-        <p style={{ margin: '0 0 20px 0', color: 'rgba(255,255,255,0.9)' }}>
+      <div className="u-text-center">
+        <h2 className="u-mb-4 u-mt-0 u-text-white u-text-28">Basic Glass Effect</h2>
+        <p className="u-mb-6 u-mt-0 u-text-white u-opacity-90">
           This is a basic AtomixGlass component with default settings.
         </p>
-        <Button variant="primary" glass>Click Me</Button>
+        <Button variant="primary" glass>
+          Click Me
+        </Button>
       </div>
     ),
+    padding: '32px', // Increased padding for better visual appearance
   },
   decorators: [withGlassBackground],
   parameters: {
     docs: {
       description: {
-        story: 'The basic usage of the AtomixGlass component with default configuration.'
-      }
-    }
-  }
+        story: 'The basic usage of the AtomixGlass component with default configuration.',
+      },
+    },
+  },
 };
 
 export const WithAllProps: Story = {
   args: {
     children: (
-      <div style={{ padding: '30px', textAlign: 'center' }}>
-        <h2 style={{ margin: '0 0 16px 0', color: 'white', fontSize: '24px' }}>Fully Configured Glass</h2>
-        <p style={{ margin: '0 0 20px 0', color: 'rgba(255,255,255,0.9)', fontSize: '16px' }}>
+      <div className="u-text-center">
+        <h2 className="u-mb-4 u-mt-0 u-text-white u-text-24">Fully Configured Glass</h2>
+        <p className="u-mb-6 u-mt-0 u-text-white u-opacity-90 u-text-16">
           This glass component uses all configurable properties.
         </p>
-        <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-          <Button variant="primary" glass>Primary</Button>
-          <Button variant="outline-primary" glass>Outline</Button>
+        <div className="u-flex u-gap-4 u-justify-center">
+          <Button variant="primary" glass>
+            Primary
+          </Button>
+          <Button variant="outline-primary" glass>
+            Outline
+          </Button>
         </div>
       </div>
     ),
@@ -301,16 +359,17 @@ export const WithAllProps: Story = {
     cornerRadius: 24,
     mode: 'standard',
     overLight: true,
+    padding: '32px', // Increased padding for better visual appearance
     onClick: mockHandlers.onClick,
   },
   decorators: [withBackground(backgroundImages[0])],
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates AtomixGlass with all configurable props set to custom values.'
-      }
-    }
-  }
+        story: 'Demonstrates AtomixGlass with all configurable props set to custom values.',
+      },
+    },
+  },
 };
 
 // ============================================================================
@@ -321,34 +380,39 @@ export const WithDifferentModes: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Showcases the different rendering modes available in the AtomixGlass component.'
-      }
-    }
+        story: 'Showcases the different rendering modes available in the AtomixGlass component.',
+      },
+    },
   },
   render: () => {
     const modes = ['standard', 'polar', 'prominent', 'shader'] as const;
 
     return (
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', width: '100%', maxWidth: '1200px' }}>
-        {modes.map(mode => (
-          <AtomixGlass 
-            key={mode} 
-            mode={mode as any}
-            displacementScale={60}
-            blurAmount={0.3}
-            saturation={140}
-            cornerRadius={20}
-            style={{ padding: '24px', textAlign: 'center' }}
-          >
-            <h3 style={{ margin: '0 0 12px 0', color: 'white' }}>{mode.charAt(0).toUpperCase() + mode.slice(1)} Mode</h3>
-            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px' }}>
-              {mode === 'standard' && 'Balanced displacement and aberration'}
-              {mode === 'polar' && 'Circular refraction pattern'}
-              {mode === 'prominent' && 'Enhanced displacement with stronger edge effects'}
-              {mode === 'shader' && 'Advanced shader-based displacement'}
-            </p>
-          </AtomixGlass>
-        ))}
+      <div className="u-w-full u-min-h-screen">
+        <div className="u-grid u-grid-cols-1 u_md-grid-cols-2 u_xl-grid-cols-4 u-gap-6 u-w-full u-max-w-7xl u-mx-auto u-p-4">
+          {modes.map(mode => (
+            <AtomixGlass
+              key={mode}
+              mode={mode}
+              displacementScale={60}
+              blurAmount={0.3}
+              saturation={140}
+              cornerRadius={20}
+              padding="32px" // Increased padding for better visual appearance
+              className="u-text-center u-h-full"
+            >
+              <h3 className="u-m-0 u-text-white u-text-lg u-font-semibold u-mb-2">
+                {mode.charAt(0).toUpperCase() + mode.slice(1)} Mode
+              </h3>
+              <p className="u-m-0 u-text-white u-opacity-80 u-text-sm">
+                {mode === 'standard' && 'Balanced displacement and aberration'}
+                {mode === 'polar' && 'Circular refraction pattern'}
+                {mode === 'prominent' && 'Enhanced displacement with stronger edge effects'}
+                {mode === 'shader' && 'Advanced shader-based displacement'}
+              </p>
+            </AtomixGlass>
+          ))}
+        </div>
       </div>
     );
   },
@@ -362,12 +426,16 @@ export const WithDifferentModes: Story = {
 export const WithCustomStyling: Story = {
   args: {
     children: (
-      <div style={{ padding: '30px', textAlign: 'center' }}>
-        <h2 style={{ margin: '0 0 16px 0', color: 'white', fontSize: '24px' }}>Custom Styled Glass</h2>
-        <p style={{ margin: '0 0 20px 0', color: 'rgba(255,255,255,0.9)', fontSize: '16px' }}>
-          This glass uses custom styling properties.
-        </p>
-        <Badge variant="primary" label="Premium Effect" glass />
+      <div className="u-text-center">
+        <h2 className="u-text-4 u-font-semibold u-mb-4 u-text-white">Custom Styled Glass</h2>
+        <p className="u-text-base u-mb-6 u-text-white">This glass uses custom styling properties.</p>
+        <Button
+          variant="primary"
+          className="u-rounded-lg u-py-3 u-px-6"
+          style={{ boxShadow: '0 5px 15px rgba(0,0,0,0.2)' }}
+        >
+          Premium Effect
+        </Button>
       </div>
     ),
     displacementScale: 70,
@@ -375,21 +443,26 @@ export const WithCustomStyling: Story = {
     saturation: 160,
     aberrationIntensity: 1.8,
     cornerRadius: 30,
+    padding: '40px', // Increased padding for better visual appearance
     style: {
-      width: '400px',
-      height: '300px',
+      width: '100%',
+      maxWidth: '400px',
+      margin: '0 auto',
       boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-    }
+      transition: 'transform 0.3s ease-in-out',
+    },
   },
   decorators: [withBackground(backgroundImages[2])],
   parameters: {
     docs: {
       description: {
-        story: 'Shows how to customize the AtomixGlass component with additional CSS styles.'
-      }
-    }
-  }
+        story:
+          'Shows how to customize the AtomixGlass component with additional CSS styles and enhanced interactivity.',
+      },
+    },
+  },
 };
+
 
 // ============================================================================
 // INTEGRATION STORIES
@@ -399,36 +472,48 @@ export const WithOtherComponents: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates how AtomixGlass integrates with other components in the design system.'
-      }
-    }
+        story:
+          'Demonstrates how AtomixGlass integrates with other components in the design system.',
+      },
+    },
   },
   render: () => {
     return (
-      <AtomixGlass
-        displacementScale={85}
-        blurAmount={0.6}
-        saturation={170}
-        aberrationIntensity={2.2}
-        elasticity={0.18}
-        cornerRadius={28}
-        style={{ padding: '40px', maxWidth: '500px', textAlign: 'center' }}
-      >
-        <div style={{ marginBottom: '24px' }}>
-          <h2 style={{ margin: '0 0 12px 0', color: 'white', fontSize: '28px' }}>Integrated UI</h2>
-          <p style={{ margin: '0', color: 'rgba(255,255,255,0.9)' }}>Glass effect with multiple components</p>
-        </div>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center' }}>
-          <Button variant="primary" glass style={{ width: '100%' }}>Primary Action</Button>
-          <Button variant="secondary" glass style={{ width: '100%' }}>Secondary Action</Button>
-          
-          <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
-            <Badge variant="success" label="Success" glass />
-            <Badge variant="warning" label="Warning" glass />
+      <div className="u-w-full u-h-screen u-flex u-items-center u-justify-center">
+        <AtomixGlass
+          displacementScale={85}
+          blurAmount={0.6}
+          saturation={170}
+          aberrationIntensity={2.2}
+          elasticity={0.18}
+          cornerRadius={28}
+          padding="36px" // Increased padding for better visual appearance
+          className="u-w-11/12 u-max-w-2xl"
+        >
+          <div className="u-mb-6">
+            <h2 className="u-m-0 u-text-white u-text-28 u-mb-2">
+              Integrated UI
+            </h2>
+            <p className="u-m-0 u-text-white u-opacity-90">
+              Glass effect with multiple components
+            </p>
           </div>
-        </div>
-      </AtomixGlass>
+
+          <div className="u-flex u-flex-col u-gap-4 u-items-center">
+            <Button variant="primary" glass className="u-w-full">
+              Primary Action
+            </Button>
+            <Button variant="secondary" glass className="u-w-full">
+              Secondary Action
+            </Button>
+
+            <div className="u-flex u-gap-3 u-mt-4">
+              <Badge variant="success" label="Success" glass />
+              <Badge variant="warning" label="Warning" glass />
+            </div>
+          </div>
+        </AtomixGlass>
+      </div>
     );
   },
   decorators: [withBackground(backgroundImages[0])],
@@ -441,9 +526,9 @@ export const WithOtherComponents: Story = {
 export const OptimizedForMobile: Story = {
   args: {
     children: (
-      <div style={{ padding: '24px', textAlign: 'center' }}>
-        <h3 style={{ margin: '0 0 12px 0', color: 'white', fontSize: '20px' }}>Mobile Optimized</h3>
-        <p style={{ margin: '0', color: 'rgba(255,255,255,0.9)', fontSize: '14px' }}>
+      <div className="u-text-center">
+        <h3 className="u-m-0 u-text-white u-text-20 u-mb-3">Mobile Optimized</h3>
+        <p className="u-m-0 u-text-white u-opacity-90 u-text-14">
           Lower intensity settings for better mobile performance
         </p>
       </div>
@@ -454,29 +539,31 @@ export const OptimizedForMobile: Story = {
     aberrationIntensity: 1.0,
     elasticity: 0.1,
     cornerRadius: 16,
+    padding: '28px', // Increased padding for better visual appearance
   },
   decorators: [withGlassBackground],
   parameters: {
     docs: {
       description: {
-        story: 'Optimized configuration for mobile devices with reduced performance impact.'
-      }
-    }
-  }
+        story: 'Optimized configuration for mobile devices with reduced performance impact.',
+      },
+    },
+  },
 };
 
 export const WithManyInstances: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Shows multiple instances of AtomixGlass in a single view - useful for performance testing.'
-      }
-    }
+        story:
+          'Shows multiple instances of AtomixGlass in a single view - useful for performance testing.',
+      },
+    },
   },
   render: () => {
     return (
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', width: '100%', maxWidth: '1000px' }}>
-        {[1, 2, 3, 4].map((index) => (
+      <div className="u-flex u-flex-wrap u-gap-6 u-w-full u-py-60 u-max-w-7xl u-mx-auto u-p-4">
+        {[1, 2, 3, 4].map(index => (
           <AtomixGlass
             key={index}
             displacementScale={40}
@@ -485,10 +572,13 @@ export const WithManyInstances: Story = {
             aberrationIntensity={1.2}
             elasticity={0.1}
             cornerRadius={16}
-            style={{ padding: '20px', textAlign: 'center' }}
+            padding="28px" // Increased padding for better visual appearance
+            className="u-text-center u-h-full"
           >
-            <h4 style={{ margin: '0 0 10px 0', color: 'white', fontSize: '18px' }}>Glass #{index}</h4>
-            <p style={{ margin: '0', color: 'rgba(255,255,255,0.8)', fontSize: '14px' }}>
+            <h4 className="u-m-0 u-text-white u-text-18 u-mb-2">
+              Glass #{index}
+            </h4>
+            <p className="u-m-0 u-text-white u-opacity-80 u-text-14">
               Instance #{index} of AtomixGlass
             </p>
           </AtomixGlass>

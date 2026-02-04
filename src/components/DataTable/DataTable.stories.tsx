@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { DataTableColumn } from '../../lib/types/components';
 import { DataTable } from './DataTable';
 
-const meta = {
+const meta: Meta<typeof DataTable> = {
   title: 'Components/DataTable',
   component: DataTable,
   parameters: {
@@ -104,7 +104,7 @@ DataTable provides a powerful and flexible way to display structured data in row
       description: 'Whether columns are sortable',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     filterable: { 
@@ -112,7 +112,7 @@ DataTable provides a powerful and flexible way to display structured data in row
       description: 'Whether the table is filterable',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     paginated: { 
@@ -120,7 +120,7 @@ DataTable provides a powerful and flexible way to display structured data in row
       description: 'Whether to enable pagination',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     pageSize: { 
@@ -128,7 +128,7 @@ DataTable provides a powerful and flexible way to display structured data in row
       description: 'Number of rows per page',
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 10 },
+        defaultValue: { summary: '10' },
       },
     },
     striped: { 
@@ -136,7 +136,7 @@ DataTable provides a powerful and flexible way to display structured data in row
       description: 'Whether to apply striped row styling',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     bordered: { 
@@ -144,7 +144,7 @@ DataTable provides a powerful and flexible way to display structured data in row
       description: 'Whether to show table borders',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     dense: { 
@@ -152,7 +152,7 @@ DataTable provides a powerful and flexible way to display structured data in row
       description: 'Whether to use dense row spacing',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     loading: { 
@@ -160,7 +160,7 @@ DataTable provides a powerful and flexible way to display structured data in row
       description: 'Whether the table is in loading state',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     emptyMessage: { 
@@ -229,25 +229,31 @@ const columns: DataTableColumn[] = [
     title: 'Status',
     sortable: true,
     render: (value, row) => {
-      let color = '';
+      let statusClass = '';
       switch (value) {
         case 'Active':
-          color = 'green';
+          statusClass = 'u-text-success';
           break;
         case 'Inactive':
-          color = 'red';
+          statusClass = 'u-text-error';
           break;
         case 'Pending':
-          color = 'orange';
+          statusClass = 'u-text-warning';
           break;
         case 'Suspended':
-          color = 'gray';
+          statusClass = 'u-text-gray';
           break;
+        default:
+          statusClass = 'u-text-gray';
       }
-      return <span style={{ color }}>{value}</span>;
+      return <span className={statusClass}>{value}</span>;
     },
   },
 ];
+
+// ========================================
+// BASIC USAGE STORIES
+// ========================================
 
 export const BasicUsage: Story = {
   args: {
@@ -263,34 +269,23 @@ export const BasicUsage: Story = {
   },
 };
 
-export const WithPagination: Story = {
+// ========================================
+// VARIANTS & STATES STORIES
+// ========================================
+
+export const LoadingState: Story = {
   args: {
-    data: largeDataSet,
-    columns: columns,
-    paginated: true,
-    pageSize: 5,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'DataTable with pagination enabled to handle large datasets.',
-      },
-    },
+    data: users,
+    columns,
+    loading: true,
   },
 };
 
-export const WithSorting: Story = {
+export const EmptyState: Story = {
   args: {
-    data: users,
-    columns: columns,
-    sortable: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'DataTable with column sorting functionality enabled.',
-      },
-    },
+    data: [],
+    columns,
+    emptyMessage: 'No users found',
   },
 };
 
@@ -309,101 +304,15 @@ export const WithStripedRows: Story = {
   },
 };
 
-// Basic example
-export const Basic: Story = {
+export const WithBorderedTable: Story = {
   args: {
     data: users,
     columns,
-  },
-};
-
-// Sortable example
-export const Sortable: Story = {
-  args: {
-    data: users,
-    columns,
-    sortable: true,
-  },
-};
-
-// Filterable example
-export const Filterable: Story = {
-  args: {
-    data: users,
-    columns,
-    filterable: true,
-  },
-};
-
-// Paginated example
-export const Paginated: Story = {
-  args: {
-    data: users,
-    columns,
-    paginated: true,
-    pageSize: 5,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'A paginated table with standard pagination controls below the table.',
-      },
-    },
-  },
-};
-
-// Paginated with larger dataset
-export const PaginatedLargeDataset: Story = {
-  args: {
-    data: largeDataSet,
-    columns,
-    paginated: true,
-    pageSize: 10,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Pagination with a large dataset (100 items) demonstrating first/last buttons and ellipsis.',
-      },
-    },
-  },
-};
-
-// Complete example with all features
-export const CompleteFeatures: Story = {
-  args: {
-    data: largeDataSet,
-    columns,
-    sortable: true,
-    filterable: true,
-    paginated: true,
-    pageSize: 10,
-    striped: true,
-    bordered: true,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'A complete data table with sorting, filtering, and pagination enabled.',
-      },
-    },
-  },
-};
-
-// Styled example
-export const Styled: Story = {
-  args: {
-    data: users,
-    columns,
-    sortable: true,
-    striped: true,
     bordered: true,
   },
 };
 
-// Dense example
-export const Dense: Story = {
+export const DenseSpacing: Story = {
   args: {
     data: users,
     columns,
@@ -412,112 +321,73 @@ export const Dense: Story = {
   },
 };
 
-// Empty example
-export const Empty: Story = {
-  args: {
-    data: [],
-    columns,
-    emptyMessage: 'No users found',
-  },
-};
+// ========================================
+// SORTING & FILTERING STORIES
+// ========================================
 
-// Loading example
-export const Loading: Story = {
+export const WithSorting: Story = {
   args: {
     data: users,
-    columns,
-    loading: true,
-  },
-};
-
-// Interactive example with row click handler
-export const Interactive: Story = {
-  render: args => {
-    const [selectedUser, setSelectedUser] = useState<any>(null);
-
-    const handleRowClick = (row: any) => {
-      setSelectedUser(row);
-    };
-
-    return (
-      <div>
-        <DataTable {...args} onRowClick={handleRowClick} />
-        {selectedUser && (
-          <div
-            style={{
-              marginTop: '1rem',
-              padding: '1rem',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-            }}
-          >
-            <h3>Selected User:</h3>
-            <pre>{JSON.stringify(selectedUser, null, 2)}</pre>
-          </div>
-        )}
-      </div>
-    );
-  },
-  args: {
-    data: users,
-    columns,
-    sortable: true,
-  },
-};
-
-// Row selection - multiple
-export const RowSelectionMultiple: Story = {
-  render: args => {
-    const [selectedRows, setSelectedRows] = useState<any[]>([]);
-
-    return (
-      <div>
-        <DataTable
-          {...args}
-          selectionMode="multiple"
-          onSelectionChange={(rows, ids) => setSelectedRows(rows)}
-        />
-        {selectedRows.length > 0 && (
-          <div style={{ marginTop: '1rem', padding: '1rem', background: '#f5f5f5', borderRadius: '4px' }}>
-            <strong>Selected: {selectedRows.length} row(s)</strong>
-            <pre style={{ marginTop: '0.5rem', fontSize: '0.875rem' }}>
-              {JSON.stringify(selectedRows.map(r => r.name), null, 2)}
-            </pre>
-          </div>
-        )}
-      </div>
-    );
-  },
-  args: {
-    data: users,
-    columns,
+    columns: columns,
     sortable: true,
   },
   parameters: {
     docs: {
       description: {
-        story: 'DataTable with multiple row selection enabled. Select rows using checkboxes.',
+        story: 'DataTable with column sorting functionality enabled.',
       },
     },
   },
 };
 
-// Row selection - single
-export const RowSelectionSingle: Story = {
-  render: args => {
+export const WithFiltering: Story = {
+  args: {
+    data: users,
+    columns,
+    filterable: true,
+  },
+};
+
+export const WithColumnFilters: Story = {
+  args: {
+    data: users,
+    columns: columns.map(col => ({
+      ...col,
+      filterable: ['name', 'role', 'email'].includes(col.key),
+    })),
+    columnFilters: true,
+    sortable: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with column-specific filters. Each filterable column has its own filter input.',
+      },
+    },
+  },
+};
+
+// ========================================
+// ROW SELECTION STORIES
+// ========================================
+
+export const WithRowSelectionSingle: Story = {
+  render: (args) => {
     const [selectedRow, setSelectedRow] = useState<any>(null);
 
     return (
       <div>
         <DataTable
           {...args}
+          data={args.data || users}
+          columns={args.columns || columns}
           selectionMode="single"
           onSelectionChange={(rows) => setSelectedRow(rows[0] || null)}
         />
         {selectedRow && (
-          <div style={{ marginTop: '1rem', padding: '1rem', background: '#f5f5f5', borderRadius: '4px' }}>
+          <div className="u-mt-4 u-p-4 u-bg-gray-100 u-rounded u-text-sm">
             <strong>Selected:</strong>
-            <pre style={{ marginTop: '0.5rem', fontSize: '0.875rem' }}>
+            <pre className="u-mt-2 u-text-xs">
               {JSON.stringify(selectedRow, null, 2)}
             </pre>
           </div>
@@ -539,28 +409,122 @@ export const RowSelectionSingle: Story = {
   },
 };
 
-// Column-specific filtering
-export const ColumnFilters: Story = {
+export const WithRowSelectionMultiple: Story = {
+  render: (args) => {
+    const [selectedRows, setSelectedRows] = useState<any[]>([]);
+
+    return (
+      <div>
+        <DataTable
+          {...args}
+          data={args.data || users}
+          columns={args.columns || columns}
+          selectionMode="multiple"
+          onSelectionChange={(rows, ids) => setSelectedRows(rows)}
+        />
+        {selectedRows.length > 0 && (
+          <div className="u-mt-4 u-p-4 u-bg-gray-100 u-rounded u-text-sm">
+            <strong>Selected: {selectedRows.length} row(s)</strong>
+            <pre className="u-mt-2 u-text-xs">
+              {JSON.stringify(selectedRows.map(r => r.name), null, 2)}
+            </pre>
+          </div>
+        )}
+      </div>
+    );
+  },
   args: {
     data: users,
-    columns: columns.map(col => ({
-      ...col,
-      filterable: ['name', 'role', 'email'].includes(col.key),
-    })),
-    columnFilters: true,
+    columns,
     sortable: true,
   },
   parameters: {
     docs: {
       description: {
-        story: 'DataTable with column-specific filters. Each filterable column has its own filter input.',
+        story: 'DataTable with multiple row selection enabled. Select rows using checkboxes.',
       },
     },
   },
 };
 
-// Column resizing
-export const ResizableColumns: Story = {
+// ========================================
+// ADVANCED FEATURES STORIES
+// ========================================
+
+export const WithInteractiveRows: Story = {
+  render: (args) => {
+    const [selectedUser, setSelectedUser] = useState<any>(null);
+
+    const handleRowClick = (row: any) => {
+      setSelectedUser(row);
+    };
+
+    return (
+      <div>
+        <DataTable 
+          {...args} 
+          data={args.data || users}
+          columns={args.columns || columns}
+          onRowClick={handleRowClick} 
+        />
+        {selectedUser && (
+          <div className="u-mt-4 u-p-4 u-border u-border-gray-300 u-rounded u-bg-white">
+            <h3 className="u-m-0">Selected User:</h3>
+            <pre className="u-m-0">{JSON.stringify(selectedUser, null, 2)}</pre>
+          </div>
+        )}
+      </div>
+    );
+  },
+  args: {
+    data: users,
+    columns,
+    sortable: true,
+  },
+};
+
+// ========================================
+// PAGINATION STORIES
+// ========================================
+
+export const WithPagination: Story = {
+  args: {
+    data: largeDataSet,
+    columns: columns,
+    paginated: true,
+    pageSize: 5,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'DataTable with pagination enabled to handle large datasets.',
+      },
+    },
+  },
+};
+
+export const WithPaginationLargeDataset: Story = {
+  args: {
+    data: largeDataSet,
+    columns,
+    paginated: true,
+    pageSize: 10,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Pagination with a large dataset (100 items) demonstrating first/last buttons and ellipsis.',
+      },
+    },
+  },
+};
+
+// ========================================
+// COLUMN CONFIGURATION STORIES
+// ========================================
+
+export const WithResizableColumns: Story = {
   args: {
     data: users,
     columns: columns.map(col => ({
@@ -580,8 +544,7 @@ export const ResizableColumns: Story = {
   },
 };
 
-// Column reordering
-export const ReorderableColumns: Story = {
+export const WithReorderableColumns: Story = {
   args: {
     data: users,
     columns,
@@ -597,8 +560,7 @@ export const ReorderableColumns: Story = {
   },
 };
 
-// Column visibility toggle
-export const ColumnVisibility: Story = {
+export const WithColumnVisibilityToggle: Story = {
   args: {
     data: users,
     columns,
@@ -614,8 +576,11 @@ export const ColumnVisibility: Story = {
   },
 };
 
-// Export functionality
-export const Exportable: Story = {
+// ========================================
+// EXPORT & CUSTOMIZATION STORIES
+// ========================================
+
+export const WithExportFunctionality: Story = {
   args: {
     data: users,
     columns,
@@ -633,8 +598,7 @@ export const Exportable: Story = {
   },
 };
 
-// Sticky headers
-export const StickyHeaders: Story = {
+export const WithStickyHeaders: Story = {
   args: {
     data: largeDataSet,
     columns,
@@ -653,20 +617,45 @@ export const StickyHeaders: Story = {
   },
 };
 
-// All advanced features
+// ========================================
+// COMPREHENSIVE EXAMPLES
+// ========================================
+
+export const CompleteFeatures: Story = {
+  args: {
+    data: largeDataSet,
+    columns,
+    sortable: true,
+    filterable: true,
+    paginated: true,
+    pageSize: 10,
+    striped: true,
+    bordered: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'A complete data table with sorting, filtering, and pagination enabled.',
+      },
+    },
+  },
+};
+
 export const AllAdvancedFeatures: Story = {
-  render: args => {
+  render: (args) => {
     const [selectedRows, setSelectedRows] = useState<any[]>([]);
 
     return (
       <div>
         <DataTable
           {...args}
+          data={args.data || largeDataSet}
+          columns={args.columns || columns}
           selectionMode="multiple"
           onSelectionChange={(rows) => setSelectedRows(rows)}
         />
         {selectedRows.length > 0 && (
-          <div style={{ marginTop: '1rem', padding: '1rem', background: '#f5f5f5', borderRadius: '4px' }}>
+          <div className="u-mt-4 u-p-4 u-bg-gray-100 u-rounded">
             <strong>Selected: {selectedRows.length} row(s)</strong>
           </div>
         )}

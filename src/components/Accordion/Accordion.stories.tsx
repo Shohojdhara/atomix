@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { Accordion } from './Accordion';
+import { Accordion } from './Accordion'; 
 import { ACCORDION } from '../../lib/constants/components';
 import type { AtomixGlassProps } from '../../lib/types/components';
 
@@ -49,18 +49,8 @@ const sampleContent = (
   </div>
 );
 
-// ============================================================================
-// META CONFIGURATION
-// ============================================================================
-
-const meta = {
-  title: 'Components/Accordion',
-  component: Accordion,
-  parameters: {
-    layout: 'padded',
-    docs: {
-      description: {
-        component: `
+// Component documentation
+const accordionDocumentation = `
 # Accordion
 
 ## Overview
@@ -141,7 +131,20 @@ Used design tokens:
 ## Notes
 
 The Accordion component supports both controlled and uncontrolled usage patterns. Use [defaultOpen] for uncontrolled behavior and [isOpen]/[onOpenChange] for controlled behavior.
-        `,
+`;
+
+// ============================================================================
+// META CONFIGURATION
+// ============================================================================
+
+const meta = {
+  title: 'Components/Accordion',
+  component: Accordion,
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component: accordionDocumentation,
       },
     },
   },
@@ -446,7 +449,7 @@ export const AccordionGroup: Story = {
   render: () => (
     <div>
       <h2>Accordion Group</h2>
-      <div className="u-flex u-flex-column u-gap-3" style={{ width: '500px' }}>
+      <div className="u-flex u-flex-col u-gap-3 u-w-md">
         <Accordion title="First Accordion" defaultOpen={true}>
           <p>Content of the first accordion.</p>
         </Accordion>
@@ -487,21 +490,8 @@ export const GlassEffect: Story = {
     glass: true,
   },
   render: (args) => (
-    <div
-      style={{
-        background:
-          'url(https://images.unsplash.com/photo-1759915995309-404c743bfbf9?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '2rem',
-        borderRadius: '12px',
-        height: '97vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <div style={{ width: '100%', maxWidth: '500px' }}>
+    <div className="u-bg-cover u-bg-center u-p-8 u-rounded-xl u-min-h-97vh u-flex u-items-center u-justify-center" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1759915995309-404c743bfbf9?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'}}>
+      <div className="u-w-full u-max-w-md">
         <Accordion {...args} />
       </div>
     </div>
@@ -527,21 +517,7 @@ export const GlassCustom: Story = {
     } as GlassProps,
   },
   render: (args) => (
-    <div
-      style={{
-        background:
-          'url(https://images.unsplash.com/photo-1754147965582-edcb63324a81?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
-        backgroundSize: '120%',
-        backgroundPosition: 'center',
-        padding: '2rem',
-        borderRadius: '12px',
-        minHeight: '97vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        animation: 'gradient 15s ease infinite',
-      }}
-    >
+    <div className="u-bg-cover u-bg-center u-p-8 u-rounded-xl u-min-h-97vh u-flex u-items-center u-justify-center" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1754147965582-edcb63324a81?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)', backgroundSize: '120%', animation: 'gradient 15s ease infinite'}}>
       <style>
         {`
           @keyframes gradient {
@@ -554,7 +530,7 @@ export const GlassCustom: Story = {
           }
         `}
       </style>
-      <div style={{ width: '100%', maxWidth: '500px' }}>
+      <div className="u-w-full u-max-w-md">
         <Accordion {...args} />
       </div>
     </div>

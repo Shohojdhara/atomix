@@ -24,12 +24,9 @@ type ButtonStoryProps = Omit<React.ComponentProps<typeof Button>, 'children'> & 
  */
 const withBackground = (bgUrl: string) => (Story: any) => (
   <div
+    className="u-bg-cover u-bg-center u-p-10 u-rounded-xl"
     style={{
-      background: `url(${bgUrl})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      padding: '10rem 25rem',
-      borderRadius: '12px',
+      backgroundImage: `url(${bgUrl})`,
     }}
   >
     <Story />
@@ -169,7 +166,7 @@ Buttons are essential for user interactions and should be used consistently thro
       description: 'Whether the button is disabled',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     icon: {
@@ -184,7 +181,7 @@ Buttons are essential for user interactions and should be used consistently thro
       description: 'Whether the button should only display an icon',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     rounded: {
@@ -192,7 +189,7 @@ Buttons are essential for user interactions and should be used consistently thro
       description: 'Whether the button should have a fully rounded (pill) shape',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     glass: {
@@ -200,7 +197,7 @@ Buttons are essential for user interactions and should be used consistently thro
       description: 'Apply glass morphism effect to the button',
       table: {
         type: { summary: 'boolean | GlassConfig' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     loading: {
@@ -208,7 +205,7 @@ Buttons are essential for user interactions and should be used consistently thro
       description: 'Whether the button is in a loading state',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     loadingText: {
@@ -223,7 +220,7 @@ Buttons are essential for user interactions and should be used consistently thro
       description: 'Whether the button should take full width',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     block: {
@@ -231,7 +228,7 @@ Buttons are essential for user interactions and should be used consistently thro
       description: 'Whether the button should be block-level',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     active: {
@@ -239,7 +236,7 @@ Buttons are essential for user interactions and should be used consistently thro
       description: 'Whether the button is in active state',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     selected: {
@@ -247,7 +244,7 @@ Buttons are essential for user interactions and should be used consistently thro
       description: 'Whether the button is selected',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     iconPosition: {
@@ -611,7 +608,7 @@ export const WithAsyncAction: Story = {
 export const InForm: Story = {
   render: () => (
     <form className="u-flex u-flex-column u-gap-2">
-      <input type="text" placeholder="Enter name" className="u-p-2 u-mb-2" />
+      <input type="text" placeholder="Enter name" className="u-p-2 u-mb-2 u-border u-rounded" />
       <Button label="Submit Form" variant="primary" />
     </form>
   ),
@@ -622,9 +619,9 @@ export const InForm: Story = {
  */
 export const InCard: Story = {
   render: () => (
-    <div className="u-p-4 u-shadow u-w-64">
-      <h3 className="u-mt-0">Sample Card</h3>
-      <p>Card content goes here...</p>
+    <div className="u-p-4 u-bg-white u-rounded-lg u-shadow u-w-64">
+      <h3 className="u-mt-0 u-mb-2">Sample Card</h3>
+      <p className="u-mb-2">Card content goes here...</p>
       <div className="u-mt-2">
         <Button label="Learn More" variant="primary" size="sm" />
       </div>
@@ -638,9 +635,9 @@ export const InCard: Story = {
 export const InModal: Story = {
   render: () => (
     <div className="u-relative">
-      <div className="u-p-6 u-bg-white u-rounded u-shadow-lg u-w-96">
-        <h3 className="u-mt-0">Confirmation</h3>
-        <p>Are you sure you want to proceed?</p>
+      <div className="u-p-6 u-bg-white u-rounded-lg u-shadow-lg u-w-96">
+        <h3 className="u-mt-0 u-mb-2">Confirmation</h3>
+        <p className="u-mb-4">Are you sure you want to proceed?</p>
         <div className="u-flex u-justify-end u-gap-2 u-mt-4">
           <Button label="Cancel" variant="secondary" />
           <Button label="Confirm" variant="primary" />
@@ -657,7 +654,7 @@ export const WithOtherComponents: Story = {
   render: () => (
     <div className="u-flex u-items-center u-gap-2">
       <Button label="Previous" variant="secondary" />
-      <span>Page 1 of 10</span>
+      <span className="u-text-sm">Page 1 of 10</span>
       <Button label="Next" variant="primary" />
     </div>
   ),
@@ -759,13 +756,9 @@ export const WithManyInstances: Story = {
 export const WithGlassEffect: Story = {
   render: () => (
     <div
+      className="u-bg-cover u-bg-center u-p-10 u-rounded-xl"
       style={{
-        background:
-          'url(https://cdn.pixabay.com/photo/2022/10/02/17/23/mushroom-7494046_1280.jpg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '10rem 25rem',
-        borderRadius: '12px',
+        backgroundImage: 'url(https://cdn.pixabay.com/photo/2022/10/02/17/23/mushroom-7494046_1280.jpg)',
       }}
     >
       <div className="u-flex u-flex-wrap u-gap-2">
