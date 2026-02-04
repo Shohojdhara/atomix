@@ -26,6 +26,7 @@
   --#{$prefix}checkbox-border-color-hover: #{$checkbox-border-color-hover};
   --#{$prefix}checkbox-border-color-disabled: #{$checkbox-border-color-disabled};
   --#{$prefix}checkbox-border-color-error: #{$checkbox-border-color-error};
+  --#{$prefix}checkbox-checked-border-color: #{$checkbox-checked-bg};
 
   display: flex;
   gap: var(--#{$prefix}checkbox-spacer);
@@ -48,16 +49,22 @@
 
     &::before {
       position: absolute;
-      top: -7px;
-      left: -4px;
-      font-family: 'Lux Icon';
-      color: var(--#{$prefix}checkbox-checked-bg);
-      content: '\ef10';
-      font-size: rem(26px);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--#{$prefix}checkbox-checked-text-color);
+      background: var(--#{$prefix}checkbox-checked-bg);
+      content: '';
       transform: scale(0);
-      display: block;
-      transform-origin: center;
-      transition: 120ms transform ease-in-out;
+      opacity: 0;
+      transition: transform 120ms ease-in-out, opacity 120ms ease-in-out;
+      font-size: 0.65em;
+      line-height: 1;
+      font-family: 'Lux Icon';
     }
 
     &:hover {
@@ -65,22 +72,20 @@
     }
 
     &:checked {
-      border-color: var(--#{$prefix}checkbox-checked-bg);
+      border-color: var(--#{$prefix}checkbox-checked-border-color);
 
       &::before {
+        content: '\ef10';
         transform: scale(1);
+        opacity: 1;
       }
 
       &:hover {
         border-color: var(--#{$prefix}checkbox-checked-bg-hover);
 
         &::before {
-          color: var(--#{$prefix}checkbox-checked-bg-hover);
+          background: var(--#{$prefix}checkbox-checked-bg-hover);
         }
-      }
-
-      & + #{$root} {
-        color: red;
       }
     }
 
@@ -93,7 +98,7 @@
       cursor: not-allowed;
 
       &::before {
-        color: var(--#{$prefix}checkbox-checked-text-color-disabled) !important;
+        background: var(--#{$prefix}checkbox-checked-bg-disabled) !important;
       }
     }
   }
@@ -112,7 +117,7 @@
         cursor: not-allowed;
 
         &::before {
-          color: var(--#{$prefix}checkbox-checked-text-color-disabled) !important;
+          background: var(--#{$prefix}checkbox-checked-bg-disabled) !important;
         }
       }
     }
@@ -130,6 +135,7 @@
     #{$root} {
       &__input::before {
         content: '\f0d6';
+        background: var(--#{$prefix}checkbox-checked-bg);
       }
     }
   }

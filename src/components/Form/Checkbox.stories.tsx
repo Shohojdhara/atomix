@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
+import { useState } from 'react';
 import { Checkbox } from './Checkbox';
 
-// Mock onChange handler
-const handleChange = fn();
+// Mock event handlers
+const mockOnChange = fn();
 
 const meta = {
   title: 'Components/Form/Checkbox',
@@ -63,14 +64,14 @@ Checkbox component allows users to select one or more options from a set. It sup
 
 | Prop | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
-| label | string | - | Checkbox label text |
+| label | ReactNode | - | Checkbox label text or element |
 | checked | boolean | false | Whether the checkbox is checked |
 | disabled | boolean | false | Whether the checkbox is disabled |
 | invalid | boolean | false | Whether the checkbox is invalid |
 | valid | boolean | false | Whether the checkbox is valid |
 | indeterminate | boolean | false | Whether the checkbox is in indeterminate state |
-| glass | boolean | false | Enable glass morphism effect |
-| onChange | (checked: boolean) => void | - | Callback when checkbox state changes |
+| glass | boolean \| AtomixGlassProps | false | Enable glass morphism effect |
+| onChange | (event: ChangeEvent<HTMLInputElement>) => void | - | Callback when checkbox state changes |
         `,
       },
     },
@@ -79,9 +80,9 @@ Checkbox component allows users to select one or more options from a set. It sup
   argTypes: {
     label: {
       control: 'text',
-      description: 'Checkbox label text',
+      description: 'Checkbox label text or element',
       table: {
-        type: { summary: 'string' },
+        type: { summary: 'ReactNode' },
         defaultValue: { summary: '-' },
       },
     },
@@ -90,7 +91,7 @@ Checkbox component allows users to select one or more options from a set. It sup
       description: 'Whether the checkbox is checked',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     disabled: {
@@ -98,7 +99,7 @@ Checkbox component allows users to select one or more options from a set. It sup
       description: 'Whether the checkbox is disabled',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     invalid: {
@@ -106,7 +107,7 @@ Checkbox component allows users to select one or more options from a set. It sup
       description: 'Whether the checkbox is invalid',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     valid: {
@@ -114,7 +115,7 @@ Checkbox component allows users to select one or more options from a set. It sup
       description: 'Whether the checkbox is valid',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     indeterminate: {
@@ -122,15 +123,15 @@ Checkbox component allows users to select one or more options from a set. It sup
       description: 'Whether the checkbox is in indeterminate state',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     glass: {
-      control: 'boolean',
+      control: { type: 'boolean' },
       description: 'Enable glass morphism effect',
       table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        type: { summary: 'boolean | AtomixGlassProps' },
+        defaultValue: { summary: 'false' },
       },
     },
     onChange: {
@@ -147,7 +148,7 @@ type Story = StoryObj<typeof meta>;
 export const BasicUsage: Story = {
   args: {
     label: 'Accept terms and conditions',
-    onChange: handleChange,
+    onChange: mockOnChange,
   },
   parameters: {
     docs: {
@@ -163,7 +164,7 @@ export const Checked: Story = {
   args: {
     label: 'Accept terms and conditions',
     checked: true,
-    onChange: handleChange,
+    onChange: mockOnChange,
   },
   parameters: {
     docs: {
@@ -200,7 +201,7 @@ export const AllStates: Story = {
 export const WithoutLabel: Story = {
   args: {
     'aria-label': 'Checkbox without visible label',
-    onChange: handleChange,
+    onChange: mockOnChange,
   },
   parameters: {
     docs: {
@@ -216,7 +217,7 @@ export const Glass: Story = {
   args: {
     label: 'Glass Checkbox',
     glass: true,
-    onChange: handleChange,
+    onChange: mockOnChange,
   },
   render: (args: any) => (
     <div
