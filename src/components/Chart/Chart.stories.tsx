@@ -172,7 +172,6 @@ Charts provide a comprehensive charting library with 20+ chart types including l
       description: 'Callback when hovering over a data point',
     },
   },
-  tags: ['autodocs'],
 } satisfies Meta<typeof Chart>;
 
 export default meta;
