@@ -25,6 +25,12 @@
   --#{config.$prefix}accordion-icon-color: #{accordion.$accordion-icon-color};
   --#{config.$prefix}accordion-icon-transform: #{accordion.$accordion-icon-transform};
   --#{config.$prefix}accordion-disable-color: #{accordion.$accordion-disable-color};
+  --#{config.$prefix}accordion-focus-border-color: #{accordion.$accordion-focus-border-color};
+  --#{config.$prefix}accordion-header-font-size: #{accordion.$accordion-header-font-size};
+  --#{config.$prefix}accordion-header-font-weight: #{accordion.$accordion-header-font-weight};
+  --#{config.$prefix}accordion-header-inner-gap: #{rem(accordion.$accordion-header-inner-gap)};
+  --#{config.$prefix}accordion-transition: #{accordion.$accordion-transition};
+  --#{config.$prefix}accordion-panel-transition: #{accordion.$accordion-panel-transition};
   --panel-height: 0px;
 
   width: 100%;
@@ -33,6 +39,7 @@
     var(--#{config.$prefix}accordion-border-color);
   border-radius: var(--#{config.$prefix}accordion-border-radius);
   overflow: hidden;
+  transition: var(--#{config.$prefix}accordion-transition);
 
   &__header {
     display: flex;
@@ -45,6 +52,9 @@
     border: none;
     outline: none;
     cursor: pointer;
+    font-size: var(--#{config.$prefix}accordion-header-font-size);
+    font-weight: var(--#{config.$prefix}accordion-header-font-weight);
+    gap: var(--#{config.$prefix}accordion-header-inner-gap);
     @include basic-transition(background);
 
     @include dynamic-background(var(--#{config.$prefix}accordion-header-bg));
@@ -52,22 +62,32 @@
     &--icon-left {
       flex-direction: row-reverse;
       justify-content: flex-end;
-      gap: var(--#{config.$prefix}accordion-header-padding-x);
     }
 
     &:hover {
       --#{config.$prefix}accordion-header-bg: var(--#{config.$prefix}accordion-header-bg-hover);
     }
+
+    @if accordion.$accordion-enable-focus-ring {
+      &:focus-visible {
+        outline: 2px solid var(--#{config.$prefix}accordion-focus-border-color);
+        outline-offset: 2px;
+      }
+    }
   }
 
   &__title {
-    margin-right: rem(20px);
+    flex: 1;
   }
 
   &__icon {
     color: var(--#{config.$prefix}accordion-icon-color);
     font-size: var(--#{config.$prefix}accordion-icon-size);
     will-change: transform;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
     @include basic-transition();
   }
@@ -76,6 +96,10 @@
     height: var(--panel-height);
     overflow: hidden;
     will-change: height;
+
+    @if accordion.$accordion-enable-smooth-scroll {
+      scroll-behavior: smooth;
+    }
 
     @include basic-transition();
   }
@@ -107,25 +131,43 @@
 
   &.is-disabled {
     pointer-events: none;
+    cursor: not-allowed;
 
     --#{config.$prefix}accordion-header-color: var(--#{config.$prefix}accordion-disable-color);
     --#{config.$prefix}accordion-body-color: var(--#{config.$prefix}accordion-disable-color);
     --#{config.$prefix}accordion-icon-color: var(--#{config.$prefix}accordion-disable-color);
+
+    #{$root}__header {
+      cursor: not-allowed;
+    }
   }
 
-  &--glass {
-    border-color: transparent;
-    #{$root}__header {
-      @include dynamic-background(
-        var(--#{config.$prefix}accordion-header-bg),
-        $background-transparency-enable: true
-      );
+  @if accordion.$accordion-enable-glass {
+    &--glass {
+      border-color: transparent;
+      #{$root}__header {
+        @include dynamic-background(
+          var(--#{config.$prefix}accordion-header-bg),
+          $background-transparency-enable: true
+        );
+      }
+      #{$root}__body {
+        @include dynamic-background(
+          var(--#{config.$prefix}accordion-header-bg),
+          $background-transparency-enable: true
+        );
+      }
     }
-    #{$root}__body {
-      @include dynamic-background(
-        var(--#{config.$prefix}accordion-header-bg),
-        $background-transparency-enable: true
-      );
+  }
+
+  // Reduced motion support
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    #{$root}__icon,
+    #{$root}__panel,
+    #{$root}__header {
+      transition: none;
     }
   }
 }

@@ -3,30 +3,51 @@
 @use './settings.config' as config;
 @use './settings.spacing' as *;
 @use './settings.colors' as *;
+@use './settings.typography' as *;
 
+// Accordion dimensions
 $accordion-width: 100% !default;
-$accordion-padding-x: map.get($spacing-sizes, 5) !default;
-$accordion-padding-y: map.get($spacing-sizes, 4) !default;
+$accordion-padding-x: map.get($spacing-sizes, 5) !default; //20px
+$accordion-padding-y: map.get($spacing-sizes, 4) !default; //16px
 
+// Accordion borders
 $accordion-border-width: calc(var(--#{config.$prefix}border-width) * 2) !default;
-$accordion-border-color: transparent !default;
+$accordion-border-color: var(--#{config.$prefix}primary-border-subtle) !default;
 $accordion-border-radius: radius.$border-radius-sm !default;
 
+// Accordion body
 $accordion-body-padding-x: $accordion-padding-x !default;
-$accordion-body-padding-y: map.get($spacing-sizes, 2) !default;
+$accordion-body-padding-y: map.get($spacing-sizes, 2) !default; //8px
 $accordion-body-color: var(--#{config.$prefix}body-color) !default;
 $accordion-body-bg: var(--#{config.$prefix}body-bg) !default;
 
+// Accordion header
 $accordion-header-padding-x: $accordion-padding-x !default;
 $accordion-header-padding-y: $accordion-padding-y !default;
 $accordion-header-color: var(--#{config.$prefix}body-color) !default;
 $accordion-header-bg: var(--#{config.$prefix}body-bg) !default;
-
 $accordion-header-bg-hover: var(--#{config.$prefix}body-bg) !default;
+$accordion-header-font-size: $font-size-base !default;
+$accordion-header-font-weight: $font-weight-normal !default;
 
-$accordion-icon-size: map.get($spacing-sizes, 5) !default;
+// Accordion icon
+$accordion-icon-size: map.get($spacing-sizes, 5) !default; //20px
 $accordion-icon-color: var(--#{config.$prefix}body-color) !default;
-
 $accordion-icon-transform: 180deg !default;
 
+// Accordion states
 $accordion-disable-color: var(--#{config.$prefix}tertiary-text-emphasis) !default;
+$accordion-focus-border-color: var(--#{config.$prefix}focus-border-color) !default;
+
+// Accordion transitions
+$accordion-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !default;
+$accordion-panel-transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1) !default;
+
+// Accordion spacing
+$accordion-item-gap: 0px !default;
+$accordion-header-inner-gap: map.get($spacing-sizes, 2) !default; //8px
+
+// Enable features
+$accordion-enable-glass: true !default;
+$accordion-enable-smooth-scroll: true !default;
+$accordion-enable-focus-ring: true !default;
