@@ -1,0 +1,37 @@
+{
+  "name": "@shohojdhara/atomix-build-tools",
+  "version": "1.0.0",
+  "description": "Build tool integrations for the Atomix design system",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "peerDependencies": {
+    "vite": "^4.0.0 || ^5.0.0",
+    "webpack": "^5.0.0",
+    "rollup": "^3.0.0"
+  },
+  "keywords": [
+    "atomix",
+    "design-system",
+    "vite",
+    "webpack",
+    "rollup",
+    "plugin",
+    "loader",
+    "ui",
+    "framework"
+  ],
+  "author": "Limon Khan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Shohojdhara/atomix.git",
+    "directory": "build-tools"
+  },
+  "bugs": {
+    "url": "https://github.com/Shohojdhara/atomix/issues"
+  },
+  "homepage": "https://github.com/Shohojdhara/atomix#readme"
+}
