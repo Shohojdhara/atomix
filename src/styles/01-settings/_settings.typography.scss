@@ -3,7 +3,7 @@
 // Font, line-height, and color for body text, headings, and more.
 
 // Font stacks with appropriate fallbacks
-$Roboto: 'Roboto', sans-serif !default;
+$roboto: 'Roboto', sans-serif !default;
 
 $helvetica-neue:
   'Helvetica Neue',
@@ -26,11 +26,11 @@ $system-font-stack:
   Arial,
   sans-serif !default;
 
-$font-family-base: $Roboto !default;
-$font-family-sans-serif: $Roboto !default;
+$font-family-base: $roboto !default;
+$font-family-sans-serif: $roboto !default;
 $font-family-monospace:
   SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !default;
-$headings-font-family: $Roboto !default;
+$headings-font-family: $roboto !default;
 
 $font-weight-light: 300 !default;
 $font-weight-normal: 400 !default;
