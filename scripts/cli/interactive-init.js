@@ -8,8 +8,10 @@ import { readFile, writeFile, mkdir } from 'fs/promises';
 import { join, dirname, basename } from 'path';
 import { existsSync } from 'fs';
 import boxen from 'boxen';
+import ora from 'ora';
 
 import { projectTemplates, configTemplates } from './templates.js';
+import { commonTemplates } from './templates/common-templates.js';
 
 /**
  * Run the interactive init wizard
@@ -57,16 +59,14 @@ export async function runInitWizard() {
       }
     ]);
 
-    let selectedTheme = null;
     if (themeChoice === 'prebuilt') {
-      const { theme } = await inquirer.prompt([
+      await inquirer.prompt([
         {
           type: 'input',
           name: 'theme',
           message: 'Enter the name of the pre-built theme:',
         }
       ]);
-      selectedTheme = theme;
     }
 
     // Step 3: Features
@@ -206,6 +206,10 @@ export async function runInitWizard() {
       }
 
       // Write template files
+      const spinner = ora('Creating project files...').start();
+      let filesCreated = 0;
+      const totalFiles = Object.keys(template.files).length;
+      
       for (const [path, content] of Object.entries(template.files)) {
         const filePath = join(process.cwd(), path);
         const dir = dirname(filePath);
@@ -215,8 +219,27 @@ export async function runInitWizard() {
         }
 
         await writeFile(filePath, content, 'utf8');
-        console.log(chalk.green(`  ✓ Created ${path}`));
+        filesCreated++;
+        spinner.text = `Creating project files... (${filesCreated}/${totalFiles})`;
       }
+      
+      spinner.succeed(chalk.green(`✓ Created ${filesCreated} files`));
+      
+      // Generate README
+      const readmeSpinner = ora('Generating README...').start();
+      const projectName = basename(process.cwd());
+      const readmeTemplate = projectType === 'react' 
+        ? commonTemplates.readme.react(projectName)
+        : projectType === 'nextjs'
+        ? commonTemplates.readme.nextjs(projectName)
+        : commonTemplates.readme.vanilla(projectName);
+      
+      await writeFile(
+        join(process.cwd(), 'README.md'),
+        readmeTemplate,
+        'utf8'
+      );
+      readmeSpinner.succeed(chalk.green('✓ Generated README.md'));
     }
 
     // Create configuration file

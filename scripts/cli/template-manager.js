@@ -6,8 +6,6 @@
  */
 
 import templates from './templates/index.js';
-import { readFileSync, writeFileSync } from 'fs';
-import { resolve } from 'path';
 
 const commands = {
   list: () => {

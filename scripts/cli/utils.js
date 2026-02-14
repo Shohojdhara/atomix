@@ -4,7 +4,6 @@
  */
 
 import { resolve, relative, isAbsolute, normalize } from 'path';
-import { existsSync } from 'fs';
 import { access } from 'fs/promises';
 
 /**

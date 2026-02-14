@@ -1,261 +1,331 @@
+// Creating react-templates.js since it doesn't exist yet but is referenced in the modular templates
+
 /**
  * React Component Templates
- * Different complexity levels for React components
+ * Templates for React component generation
  */
 
 /**
- * Simple React component template
- * Basic presentational component with minimal state
+ * Default component template that matches existing components
  */
-export const simpleTemplate = (name) => `import React, { memo, forwardRef } from 'react';
-import { cn } from '../../lib/utils';
-import { ACCORDION } from '../../lib/constants/components';
+export const componentTemplate = (name) => {
+  const componentPrefix = name.toLowerCase().replace(/([A-Z])/g, '-$1').toLowerCase().replace(/^-/, '');
+  
+  return `import React, { forwardRef, useCallback, memo } from 'react';
+import { use${name} } from '../../lib/composables/use${name}';
+import { ${name.toUpperCase()}, THEME_NAMING } from '../../lib/constants/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import { ThemeNaming } from '../../lib/utils/themeNaming';
 import type { ${name}Props } from '../../lib/types/components';
 
-/**
- * ${name} component - Simple variant
- * Basic presentational component with minimal state
- * 
- * @example
- * \`\`\`tsx
- * <${name}>Hello World</${name}>
- * \`\`\`
- */
-export const ${name} = memo(
+export const ${name} = React.memo(
   forwardRef<HTMLDivElement, ${name}Props>(
-    ({ 
-      children, 
-      className, 
-      ...props 
-    }, ref) => {
-      const componentClass = cn(
-        ACCORDION.SELECTORS.ACCORDION.replace('.', ''),
-        className
-      );
-
-      return (
-        <div
-          ref={ref}
-          className={componentClass}
-          {...props}
-        >
-          {children}
-        </div>
-      );
-    }
-  )
-);
-
-${name}.displayName = '${name}';`;
-
-/**
- * Medium React component template
- * Component with state management and interactions
- */
-export const mediumTemplate = (name) => `import React, { memo, forwardRef } from 'react';
-import { cn } from '../../lib/utils';
-import { ACCORDION } from '../../lib/constants/components';
-import type { ${name}Props } from '../../lib/types/components';
-import { use${name} } from '../../lib/composables/use${name}';
-
-/**
- * ${name} component - Medium variant
- * Component with state management and interactions
- * 
- * @example
- * \`\`\`tsx
- * <${name}>Hello World</${name}>
- * \`\`\`
- */
-export const ${name} = memo(
-  forwardRef<HTMLDivElement, ${name}Props>(
-    ({ 
-      children, 
-      className, 
-      ...props 
-    }, ref) => {
-      const { 
-        state, 
-        toggle, 
-        isOpen, 
-        setIsOpen,
-        getTriggerProps,
-        getPanelProps
-      } = use${name}({
-        // Initial props can be passed here
+    (
+      {
+        children,
+        className = '',
+        disabled = false,
+        variant = 'primary',
+        size = 'md',
+        glass,
+        onClick,
+        onHover,
+        onFocus,
+        onBlur,
+        'aria-label': ariaLabel,
+        'aria-describedby': ariaDescribedBy,
+        tabIndex,
+        style,
+        ...props
+      },
+      ref
+    ) => {
+      const { generateClassNames, handleClick } = use${name}({
+        variant,
+        size,
+        disabled,
+        glass,
       });
 
-      const componentClass = cn(
-        ACCORDION.SELECTORS.ACCORDION.replace('.', ''),
-        className
-      );
+      const componentClass = [
+        ${name.toUpperCase()}.BASE_CLASS,
+        ThemeNaming.variantClass('${componentPrefix}', variant),
+        size !== 'md' ? ThemeNaming.sizeClass('${componentPrefix}', size) : '',
+        disabled ? ThemeNaming.stateClass('${componentPrefix}', 'disabled') : '',
+        glass ? ThemeNaming.stateClass('${componentPrefix}', 'glass') : '',
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ');
 
-      return (
-        <div
-          ref={ref}
-          className={componentClass}
-          data-state={state}
-          {...props}
-        >
-          {children}
-        </div>
-      );
-    }
-  )
-);
-
-${name}.displayName = '${name}';`;
-
-/**
- * Complex React component template
- * Advanced component with validation, accessibility, and state management
- */
-export const complexTemplate = (name) => `import React, { memo, forwardRef } from 'react';
-import { cn } from '../../lib/utils';
-import { ACCORDION } from '../../lib/constants/components';
-import type { ${name}Props, ${name}State } from '../../lib/types/components';
-import { use${name} } from '../../lib/composables/use${name}';
-
-/**
- * ${name} component - Complex variant
- * Advanced component with validation, accessibility, and state management
- * 
- * @example
- * \`\`\`tsx
- * <${name} validationRules={rules}>
- *   Trigger content
- *  <${name}.Panel>Panel content</${name}.Panel>
- * </${name}>
- * \`\`\`
- */
-export const ${name} = memo(
-  forwardRef<HTMLDivElement, ${name}Props>(
-    ({ 
-      children, 
-      className,
-      validationRules,
-      onValidationChange,
-      ...props 
-    }, ref) => {
-      const { 
-        state, 
-        toggle, 
-        isOpen, 
-        setIsOpen,
-        isControlled,
-        isValid,
-        validationMessage,
-        getTriggerProps,
-        getPanelProps,
-        getHeaderProps,
-        getContentProps
-      } = use${name}({
-        validationRules,
-        onValidationChange
-      });
-
-      const componentClass = cn(
-        ACCORDION.SELECTORS.ACCORDION.replace('.', ''),
-        {
-          'is-valid': isValid,
-          'is-invalid': !isValid && validationMessage,
-          'is-controlled': isControlled
+      // Handle click event
+      const handleClickEvent = useCallback(
+        (event: React.MouseEvent<HTMLDivElement>) => {
+          if (disabled) {
+            event.preventDefault();
+            return;
+          }
+          onClick?.(event);
         },
-        className
+        [disabled, onClick]
       );
 
-      return (
-        <div
-          ref={ref}
-          className={componentClass}
-          data-state={state}
-          data-valid={isValid}
-          {...getTriggerProps()}
-        >
+      // Handle hover
+      const handleMouseEnter = useCallback(
+        (event: React.MouseEvent<HTMLDivElement>) => {
+          if (!disabled) {
+            onHover?.(event);
+          }
+        },
+        [disabled, onHover]
+      );
+
+      // Handle focus
+      const handleFocusEvent = useCallback(
+        (event: React.FocusEvent<HTMLDivElement>) => {
+          if (!disabled) {
+            onFocus?.(event);
+          }
+        },
+        [disabled, onFocus]
+      );
+
+      // Handle blur
+      const handleBlurEvent = useCallback(
+        (event: React.FocusEvent<HTMLDivElement>) => {
+          if (!disabled) {
+            onBlur?.(event);
+          }
+        },
+        [disabled, onBlur]
+      );
+
+      // Component props
+      const componentProps = {
+        ref,
+        className: componentClass,
+        onClick: handleClickEvent,
+        onMouseEnter: onHover ? handleMouseEnter : undefined,
+        onFocus: onFocus ? handleFocusEvent : undefined,
+        onBlur: onBlur ? handleBlurEvent : undefined,
+        'aria-disabled': disabled,
+        'aria-label': ariaLabel,
+        'aria-describedby': ariaDescribedBy,
+        tabIndex: tabIndex !== undefined ? tabIndex : (disabled ? -1 : 0),
+        style,
+        ...props,
+      };
+
+      // Default glass props
+      const defaultGlassProps = {
+        displacementScale: 20,
+        blurAmount: 0,
+        saturation: 200,
+        elasticity: 0,
+      };
+      const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+      // Component content
+      const componentContent = (
+        <div {...componentProps}>
           {children}
-          
-          {!isValid && validationMessage && (
-            <div 
-              id={\`${name.toLowerCase()}-error\`}
-              className="c-${name.toLowerCase()}__error"
-              role="alert"
-              aria-live="polite"
-            >
-              {validationMessage}
-            </div>
-          )}
         </div>
       );
+
+      return glass ? <AtomixGlass {...glassProps}>{componentContent}</AtomixGlass> : componentContent;
     }
   )
 );
 
-${name}.displayName = '${name}';`;
+${name}.displayName = '${name}';
+
+export default ${name};`;
+};
 
 /**
- * Default React component template (backward compatibility)
+ * Simple component template
  */
-export const defaultTemplate = (name) => `import React, { memo, forwardRef } from 'react';
-import { cn } from '../../lib/utils';
-import { ACCORDION } from '../../lib/constants/components';
-import type { ${name}Props } from '../../lib/types/components';
-import { use${name} } from '../../lib/composables/use${name}';
+export const simpleTemplate = (name) => `import React, { forwardRef } from 'react';
+import type { ${name}Props } from './${name}.types';
 
 /**
- * ${name} component
+ * ${name} - Simple Presentational Component
  * 
- * @example
- * \`\`\`tsx
- * <${name}>Hello World</${name}>
- * \`\`\`
+ * A basic component for rendering content with minimal overhead.
  */
-export const ${name} = memo(
-  forwardRef<HTMLDivElement, ${name}Props>(
-    ({ 
-      children, 
-      className, 
-      ...props 
-    }, ref) => {
-      const { 
-        state, 
-        toggle, 
-        isOpen, 
-        setIsOpen,
-        getTriggerProps,
-        getPanelProps,
-        getHeaderProps,
-        getContentProps
-      } = use${name}({
-        // Initial props can be passed here
-      });
-
-      const componentClass = cn(
-        ACCORDION.SELECTORS.ACCORDION.replace('.', ''),
-        className
-      );
-
-      return (
-        <div
-          ref={ref}
-          className={componentClass}
-          data-state={state}
-          {...props}
-        >
-          {children}
-        </div>
-      );
-    }
-  )
+export const ${name} = forwardRef<HTMLDivElement, ${name}Props>(
+  ({ children, className, ...props }, ref) => {
+    return (
+      <div ref={ref} className={\`c-${name.toLowerCase()} \${className || ''}\`} {...props}>
+        {children}
+      </div>
+    );
+  }
 );
 
-${name}.displayName = '${name}';`;
+${name}.displayName = '${name}';
+`;
 
 /**
- * React component templates object
+ * Medium complexity template
  */
+export const mediumTemplate = (name) => `import React, { forwardRef, useId, memo } from 'react';
+import { ${name.toUpperCase()} } from '../../lib/constants/components';
+import { use${name} } from '../../lib/composables/use${name}';
+import type { ${name}Props, ${name}State } from '../../lib/types/components';
+
+export interface ${name}Props {
+  /**
+   * Content to be rendered
+   */
+  children?: React.ReactNode;
+  
+  /**
+   * Additional CSS classes
+   */
+  className?: string;
+  
+  /**
+   * Disabled state
+   */
+  disabled?: boolean;
+
+  /**
+   * Inline styles
+   */
+  style?: React.CSSProperties;
+  
+  /**
+   * Other component-specific props would go here
+   */
+}
+
+export interface ${name}State {
+  // Define state interface for the component
+}
+
+export const ${name}: React.FC<${name}Props> = memo(({
+  children,
+  className = '',
+  disabled = false,
+  style,
+  ...props
+}) => {
+  const instanceId = useId();
+  const { generateClassNames } = use${name}({ disabled });
+  
+  return (
+    <div
+      className={generateClassNames(className)}
+      style={style}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+});
+
+${name}.displayName = '${name}';
+
+export default ${name};
+`;
+
+/**
+ * Complex template
+ */
+export const complexTemplate = (name) => `import React, { forwardRef, useId, memo } from 'react';
+import { ${name.toUpperCase()} } from '../../lib/constants/components';
+import { use${name} } from '../../lib/composables/use${name}';
+import type { ${name}Props, ${name}State } from '../../lib/types/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import type { AtomixGlassProps } from '../AtomixGlass/AtomixGlass';
+
+export interface ${name}Props {
+  /**
+   * Content to be rendered
+   */
+  children?: React.ReactNode;
+  
+  /**
+   * Additional CSS classes
+   */
+  className?: string;
+  
+  /**
+   * Disabled state
+   */
+  disabled?: boolean;
+
+  /**
+   * Glass effect options
+   */
+  glass?: boolean | AtomixGlassProps;
+
+  /**
+   * Inline styles
+   */
+  style?: React.CSSProperties;
+  
+  /**
+   * Callback when component state changes
+   */
+  onStateChange?: (state: ${name}State) => void;
+}
+
+export interface ${name}State {
+  // Define state interface for the component
+}
+
+export const ${name}: React.FC<${name}Props> = memo(({
+  children,
+  className = '',
+  disabled = false,
+  glass,
+  style,
+  onStateChange,
+  ...props
+}) => {
+  const instanceId = useId();
+  const { generateClassNames } = use${name}({ disabled, onStateChange });
+  
+  const componentContent = (
+    <div
+      className={generateClassNames(className)}
+      style={style}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+
+  if (glass) {
+    const defaultGlassProps = {
+      // Default glass settings specific to this component
+    };
+
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+    return <AtomixGlass {...glassProps}>{componentContent}</AtomixGlass>;
+  }
+
+  return componentContent;
+});
+
+${name}.displayName = '${name}';
+
+export default ${name};
+`;
+
+/**
+ * Index template
+ */
+export const indexTemplate = (name) => `export { default as ${name} } from './${name}';
+export type { ${name}Props } from './${name}';`;
+
 export const reactTemplates = {
+  component: componentTemplate,
   simple: simpleTemplate,
   medium: mediumTemplate,
   complex: complexTemplate,
-  component: defaultTemplate,
+  index: indexTemplate,
 };

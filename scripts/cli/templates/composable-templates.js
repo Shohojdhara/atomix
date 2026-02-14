@@ -1,149 +1,171 @@
 /**
- * Composable Templates
- * Templates for custom hooks and composables
+ * Composable Hook Templates
+ * Templates for React custom hooks generation
  */
 
 /**
- * Custom hook template for React components
+ * Default composable hook template that matches existing patterns
  */
-export const hookTemplate = (name) => `import { useState, useCallback, useRef, useEffect } from 'react';
-import type { ${name}Props } from '../../lib/types/components';
+export const composableTemplate = (name) => {
+  const componentPrefix = name.toLowerCase().replace(/([A-Z])/g, '-$1').toLowerCase().replace(/^-/, '');
+  
+  return `import { ${name}Props } from '../types/components';
+import { ${name.toUpperCase()} } from '../constants/components';
 
 /**
- * Custom hook for ${name.toLowerCase()} component
- * Provides controlled/uncontrolled state management and accessibility
+ * ${name} state and functionality
+ * @param initialProps - Initial ${name.toLowerCase()} properties
+ * @returns ${name} state and methods
  */
 export function use${name}(initialProps?: Partial<${name}Props>) {
-  const {
-    isOpen: controlledIsOpen,
-    defaultIsOpen = false,
-    onToggle,
-    ...props
-  } = initialProps || {};
-
-  // State management for controlled/uncontrolled pattern
-  const [internalIsOpen, setInternalIsOpen] = useState(defaultIsOpen);
-  const isControlled = typeof controlledIsOpen === 'boolean';
-  const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
-
-  // Refs for DOM elements
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
-
-  // Toggle function with controlled support
-  const toggle = useCallback(() => {
-    if (isControlled) {
-      onToggle?.(!isOpen);
-    } else {
-      setInternalIsOpen(!isOpen);
-      onToggle?.(!isOpen);
-    }
-  }, [isOpen, isControlled, onToggle]);
-
-  // Open function
-  const open = useCallback(() => {
-    if (isControlled) {
-      onToggle?.(true);
-    } else {
-      setInternalIsOpen(true);
-      onToggle?.(true);
-    }
-  }, [isControlled, onToggle]);
-
-  // Close function
-  const close = useCallback(() => {
-    if (isControlled) {
-      onToggle?.(false);
-    } else {
-      setInternalIsOpen(false);
-      onToggle?.(false);
-    }
-  }, [isControlled, onToggle]);
-
-  // Keyboard navigation
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    switch (event.key) {
-      case 'Enter':
-      case ' ':
-        event.preventDefault();
-        toggle();
-        break;
-      case 'Escape':
-        if (isOpen) {
-          close();
-          triggerRef.current?.focus();
-        }
-        break;
-    }
-  }, [isOpen, toggle, close]);
-
-  // Accessibility helpers
-  const getTriggerProps = useCallback(() => ({
-    ref: triggerRef,
-    'aria-expanded': isOpen,
-    'aria-controls': panelRef.current?.id,
-    onKeyDown: handleKeyDown,
-    onClick: toggle,
-  }), [isOpen, handleKeyDown, toggle]);
-
-  const getPanelProps = useCallback(() => ({
-    ref: panelRef,
-    'aria-hidden': !isOpen,
-    role: 'region',
-  }), [isOpen]);
-
-  const getHeaderProps = useCallback(() => ({
-    role: 'heading',
-    'aria-level': 3,
-  }), []);
-
-  const getContentProps = useCallback(() => ({
-    // Content-specific props
-  }), []);
-
-  // State object for external access
-  const state = {
-    isOpen,
-    isControlled,
+  // Default ${name.toLowerCase()} properties
+  const defaultProps: Partial<${name}Props> = {
+    variant: 'primary',
+    size: 'md',
+    disabled: false,
+    ...initialProps,
   };
 
-  // Set controlled state from external updates
-  const setIsOpen = useCallback((newIsOpen: boolean) => {
-    if (!isControlled) {
-      setInternalIsOpen(newIsOpen);
-    }
-  }, [isControlled]);
+  /**
+   * Generate ${name.toLowerCase()} class based on properties
+   * @param props - ${name} properties
+   * @returns Class string
+   */
+  const generateClassNames = (props: Partial<${name}Props> = {}): string => {
+    const {
+      variant = defaultProps.variant,
+      size = defaultProps.size,
+      disabled = defaultProps.disabled,
+      glass = defaultProps.glass,
+      className = '',
+    } = props;
+
+    const sizeClass = size === 'md' ? '' : \`c-${componentPrefix}--\${size}\`;
+    const disabledClass = disabled ? 'c-${componentPrefix}--disabled' : '';
+    const glassClass = glass ? 'c-${componentPrefix}--glass' : '';
+
+    return [
+      ${name.toUpperCase()}.BASE_CLASS,
+      \`c-${componentPrefix}--\${variant}\`,
+      sizeClass,
+      disabledClass,
+      glassClass,
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ');
+  };
+
+  /**
+   * Handle ${name.toLowerCase()} click with disabled check
+   * @param handler - Click handler function
+   * @returns Function that respects disabled state
+   */
+  const handleClick = (handler?: (event: React.MouseEvent<HTMLDivElement>) => void) => {
+    return (event: React.MouseEvent<HTMLDivElement>) => {
+      if (!defaultProps.disabled && handler) {
+        handler(event);
+      }
+    };
+  };
 
   return {
-    // State
-    state,
-    isOpen,
-    isControlled,
-    
-    // Actions
-    toggle,
-    open,
-    close,
-    setIsOpen,
-    
-    // Props helpers
-    getTriggerProps,
-    getPanelProps,
-    getHeaderProps,
-    getContentProps,
-    
-    // Refs
-    triggerRef,
-    panelRef,
+    defaultProps,
+    generateClassNames,
+    handleClick,
   };
 }
+`;
+};
 
-export default use${name};
+/**
+ * Simple composable template
+ */
+export const simpleComposableTemplate = (name) => `import { useState } from 'react';
+import type { ${name}Props } from '../types/components';
+
+export function use${name}(props: ${name}Props) {
+  const [isReady, setIsReady] = useState(false);
+  
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  const generateClassNames = (baseClassName = '') => {
+    return \`c-${name.toLowerCase()} \${baseClassName}\`.trim();
+  };
+
+  return {
+    isReady,
+    generateClassNames,
+  };
+}
 `;
 
 /**
- * Composable templates object
+ * Complex composable template
  */
+export const complexComposableTemplate = (name) => `import { useState, useEffect, useRef } from 'react';
+import { ${name.toUpperCase()} } from '../constants/components';
+import type { ${name}Props, ${name}State, ElementRefs } from '../types/components';
+
+interface Use${name}Result {
+  state: ${name}State;
+  refs: ElementRefs;
+  methods: {
+    // Define methods for complex interactions
+    updateState: (newState: Partial<${name}State>) => void;
+    reset: () => void;
+  };
+  generateClassNames: (baseClassName?: string) => string;
+}
+
+export function use${name}(
+  initialProps?: Partial<${name}Props>
+): Use${name}Result {
+  const defaultProps: Partial<${name}Props> = {
+    disabled: false,
+    ...initialProps,
+  };
+
+  const [state, setState] = useState<${name}State>({
+    // Complex state definition
+  });
+
+  const panelRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const updateState = (newState: Partial<${name}State>) => {
+    setState(prev => ({ ...prev, ...newState }));
+  };
+
+  const reset = () => {
+    // Reset to initial state
+  };
+
+  const generateClassNames = (baseClassName = ''): string => {
+    const baseClasses = [
+      ${name.toUpperCase()}.SELECTORS.${name.toUpperCase()}.replace('.', ''),
+      state.isOpen ? ${name.toUpperCase()}.CLASSES.IS_OPEN : '',
+      defaultProps.disabled ? ${name.toUpperCase()}.CLASSES.IS_DISABLED : '',
+      baseClassName
+    ].filter(Boolean).join(' ');
+
+    return baseClasses;
+  };
+
+  return {
+    state,
+    refs: { panelRef, contentRef, buttonRef },
+    methods: { updateState, reset },
+    generateClassNames,
+  };
+}
+`;
+
 export const composableTemplates = {
-  hook: hookTemplate,
+  useHook: composableTemplate,
+  simpleHook: simpleComposableTemplate,
+  complexHook: complexComposableTemplate,
 };

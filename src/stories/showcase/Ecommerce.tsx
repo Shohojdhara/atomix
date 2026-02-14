@@ -139,8 +139,8 @@ const Ecommerce: React.FC = () => {
     <>
       {/* Navigation */}
       <AtomixGlass
-        blurAmount={0.1}
-        displacementScale={200}
+        blurAmount={2}
+        displacementScale={60}
         aberrationIntensity={0}
         cornerRadius={10}
         elasticity={0.01}

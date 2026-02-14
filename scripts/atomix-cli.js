@@ -9,7 +9,7 @@ import { program } from 'commander';
 import { readFile, writeFile, mkdir, access, stat, rm } from 'fs/promises';
 import { join, dirname, basename, relative, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { existsSync } from 'fs';
+import { existsSync, cpSync } from 'fs';
 import * as sass from 'sass';
 import postcss from 'postcss';
 import autoprefixer from 'autoprefixer';
@@ -20,6 +20,11 @@ import chokidar from 'chokidar';
 import inquirer from 'inquirer';
 import boxen from 'boxen';
 import { runInitWizard } from './cli/interactive-init.js';
+import { 
+  checkDependencies, 
+  validateProjectStructure, 
+  validateFrameworkConfig 
+} from './cli/dependency-checker.js';
 import {
   migrateTailwind,
   migrateBootstrap,
@@ -39,8 +44,6 @@ import {
   validateComponentName,
   validateThemeName,
   sanitizeInput,
-  fileExists,
-  isDebug as checkDebugMode,
   checkNodeVersion,
   AtomixCLIError
 } from './cli/utils.js';
@@ -54,9 +57,6 @@ import {
   generateAnimationTokens
 } from './cli/templates.js';
 import {
-  COMPLEXITY_LEVELS,
-  COMPONENT_FEATURES,
-  generateComponentByComplexity,
   interactiveComponentGeneration,
   validateGeneratedComponent,
   displayValidationReport
@@ -346,17 +346,19 @@ program
 
     try {
       debug(`Generating ${type} with name: ${name}`, options);
-      const safeName = sanitizeInput(name);
+      let safeName = sanitizeInput(name);
 
       if (type === 'component' || type === 'c') {
         // Handle interactive generation
         if (options.interactive) {
           const interactiveResult = await interactiveComponentGeneration();
           if (!interactiveResult) {
+            spinner.stop();
             return; // User cancelled
           }
-          // Update options with interactive results
-          Object.assign(options, interactiveResult.options);
+          // Update options with interactive results (name, complexity, features, outputPath)
+          Object.assign(options, interactiveResult);
+          safeName = sanitizeInput(options.name);
         }
 
         const nameValidation = validateComponentName(safeName);
@@ -408,7 +410,7 @@ program
         // Generate composable hook
         const hookPath = join(process.cwd(), 'src/lib/composables');
         if (existsSync(hookPath)) {
-          const hookContent = componentTemplates.composable.hook(safeName);
+          const hookContent = componentTemplates.composable.useHook(safeName);
           const hookFilePath = join(hookPath, `use${safeName}.ts`);
           
           if (!existsSync(hookFilePath) || options.force) {
@@ -497,7 +499,7 @@ program
           // Generate settings file first
           const settingsPath = join(process.cwd(), 'src/styles/01-settings');
           if (existsSync(settingsPath)) {
-            const settingsContent = componentTemplates.react.scssSettings(safeName);
+            const settingsContent = componentTemplates.react.settings(safeName);
             const settingsFilename = `_settings.${safeName.toLowerCase()}.scss`;
             const settingsFilePath = join(settingsPath, settingsFilename);
             
@@ -524,7 +526,7 @@ program
           }
 
           // Generate component SCSS file
-          const scssContent = componentTemplates.react.scss(safeName);
+          const scssContent = componentTemplates.scss.component(safeName);
           const scssPath = join(process.cwd(), 'src/styles/06-components');
           const scssFilename = `_components.${safeName.toLowerCase()}.scss`;
           const scssFilePath = join(scssPath, scssFilename);
@@ -568,7 +570,7 @@ program
 
         // Generate Storybook story
         if (options.story) {
-          const storyContent = componentTemplates.react.storyEnhanced(safeName);
+          const storyContent = componentTemplates.storybook.story(safeName);
           await writeFile(
             join(componentPath, `${safeName}.stories.tsx`),
             storyContent,
@@ -591,7 +593,7 @@ program
         // Post-generation validation if requested
         if (options.validate) {
           const validationResult = await validateGeneratedComponent(safeName, componentPath);
-          const isValid = displayValidationReport(validationResult.issues, validationResult.warnings, safeName);
+          const isValid = displayValidationReport(validationResult);
           
           if (!isValid) {
             console.log(chalk.yellow('\n💡 Some issues were found. Consider addressing them for better component quality.'));
@@ -619,7 +621,19 @@ program
         ));
 
       } else if (type === 'hook' || type === 'h') {
-        const componentPath = join(options.path, `use${safeName}`);
+        const hookPathValidation = validatePath(sanitizeInput(options.path));
+        if (!hookPathValidation.isValid) {
+          throw new AtomixCLIError(
+            hookPathValidation.error,
+            'INVALID_PATH',
+            [
+              'Ensure the path is within the project directory',
+              'Avoid using ".." to navigate outside the project',
+              'Example: --path ./src/components'
+            ]
+          );
+        }
+        const componentPath = join(hookPathValidation.safePath, `use${safeName}`);
         await mkdir(componentPath, { recursive: true });
 
         const hookContent = componentTemplates.hook.hook(safeName);
@@ -633,7 +647,19 @@ program
         spinner.succeed(chalk.green(`✓ Created hook use${safeName}`));
 
       } else if (type === 'layout' || type === 'l') {
-        const layoutPath = join(options.path, safeName);
+        const layoutPathValidation = validatePath(sanitizeInput(options.path));
+        if (!layoutPathValidation.isValid) {
+          throw new AtomixCLIError(
+            layoutPathValidation.error,
+            'INVALID_PATH',
+            [
+              'Ensure the path is within the project directory',
+              'Avoid using ".." to navigate outside the project',
+              'Example: --path ./src/layouts'
+            ]
+          );
+        }
+        const layoutPath = join(layoutPathValidation.safePath, safeName);
         await mkdir(layoutPath, { recursive: true });
 
         const componentContent = componentTemplates.layout.component(safeName);
@@ -661,7 +687,19 @@ program
         spinner.succeed(chalk.green(`✓ Created layout ${safeName}`));
 
       } else if (type === 'context' || type === 'ctx') {
-        const contextPath = join(options.path, `${safeName}Context`);
+        const contextPathValidation = validatePath(sanitizeInput(options.path));
+        if (!contextPathValidation.isValid) {
+          throw new AtomixCLIError(
+            contextPathValidation.error,
+            'INVALID_PATH',
+            [
+              'Ensure the path is within the project directory',
+              'Avoid using ".." to navigate outside the project',
+              'Example: --path ./src/contexts'
+            ]
+          );
+        }
+        const contextPath = join(contextPathValidation.safePath, `${safeName}Context`);
         await mkdir(contextPath, { recursive: true });
 
         const contextContent = componentTemplates.context.context(safeName);
@@ -1118,14 +1156,13 @@ program
         }
       }
 
-      // Create backup if requested
+      // Create backup if requested (cross-platform: fs.cpSync works on Windows and Unix)
       if (options.createBackup && !options.dryRun) {
         const backupSpinner = ora('Creating backup...').start();
         const backupDir = `${sourcePath}.backup.${Date.now()}`;
 
         try {
-          const { execSync } = await import('child_process');
-          execSync(`cp -r "${sourcePath}" "${backupDir}"`, { stdio: 'ignore' });
+          cpSync(sourcePath, backupDir, { recursive: true });
           backupSpinner.succeed(chalk.green(`✓ Backup created: ${backupDir}`));
         } catch (error) {
           backupSpinner.warn(chalk.yellow('Could not create backup, continuing anyway...'));
@@ -1680,100 +1717,142 @@ docsCommand
  */
 program
   .command('doctor')
+  .alias('audit')
   .description('Diagnose common issues with your Atomix setup')
   .action(async () => {
     const spinner = ora('Running diagnostics...').start();
 
     try {
-      const checks = [];
+      const results = {
+        system: [],
+        dependencies: [],
+        structure: [],
+        framework: [],
+        theme: []
+      };
 
-      // Check Node version
-      const versionCheck = checkNodeVersion('18.0.0');
-      checks.push({
-        name: 'Node.js Version',
-        status: versionCheck.compatible ? '✅' : '❌',
-        message: versionCheck.compatible
-          ? `v${versionCheck.current} (supported)`
-          : `v${versionCheck.current} (requires Node ${versionCheck.required}+)`,
+      // 1. System Checks
+      const nodeVersion = checkNodeVersion('18.0.0');
+      results.system.push({
+        name: 'Node.js',
+        status: nodeVersion.compatible ? '✅' : '❌',
+        message: nodeVersion.compatible
+          ? `v${nodeVersion.current} (supported)`
+          : `v${nodeVersion.current} (requires Node ${nodeVersion.required}+)`,
       });
 
-      // Check Atomix installation
+      // 2. Dependency Checks
       const atomixPath = join(process.cwd(), 'node_modules', '@shohojdhara', 'atomix');
-      checks.push({
-        name: 'Atomix Installation',
+      results.dependencies.push({
+        name: 'Atomix Package',
         status: existsSync(atomixPath) ? '✅' : '❌',
         message: existsSync(atomixPath)
           ? 'Installed correctly'
           : 'Not found - run: npm install @shohojdhara/atomix',
       });
 
-      // Check for required dependencies
-      const requiredDeps = ['react', 'react-dom', 'sass'];
-      for (const dep of requiredDeps) {
-        const depPath = join(process.cwd(), 'node_modules', dep);
-        checks.push({
-          name: `Dependency: ${dep}`,
-          status: existsSync(depPath) ? '✅' : '⚠️',
-          message: existsSync(depPath)
-            ? 'Installed'
-            : 'Missing (may be required for some features)',
+      const peerDeps = [
+        { name: 'react', required: '>= 18.0.0' },
+        { name: 'react-dom', required: '>= 18.0.0' },
+        { name: 'sass', required: 'installed' }
+      ];
+
+      for (const dep of peerDeps) {
+        const depPath = join(process.cwd(), 'node_modules', dep.name);
+        const exists = existsSync(depPath);
+        results.dependencies.push({
+          name: dep.name,
+          status: exists ? '✅' : '⚠️',
+          message: exists ? 'Installed' : `Missing (required: ${dep.required})`,
         });
       }
 
-      // Check for configuration files
-      const configFiles = ['.atomixrc', 'atomix.config.js', 'atomix.config.json', 'theme.config.ts'];
-      let hasConfig = false;
-      let configFile = null;
+      // 3. Project Structure Checks
+      const structureChecks = validateProjectStructure();
+      
+      structureChecks.forEach(check => {
+        let statusIcon = '✅';
+        if (!check.valid && check.required) statusIcon = '❌';
+        else if (!check.message.includes('exists') && !check.required) statusIcon = '⚠️';
+
+        results.structure.push({
+          name: check.name,
+          status: statusIcon,
+          message: check.message.replace(/✓ |✗ |⚠ /, '')
+        });
+      });
+
+      // 4. Framework & Config Checks
+      const frameworkChecks = validateFrameworkConfig();
+
+      frameworkChecks.forEach(check => {
+        results.framework.push({
+          name: check.name,
+          status: check.valid ? '✅' : '💡',
+          message: check.message.replace(/✓ |• /, '')
+        });
+      });
+
+      const configFiles = ['.atomixrc', 'atomix.config.js', 'atomix.config.json', 'theme.config.ts', 'atomix.config.ts'];
+      let foundConfig = null;
       for (const file of configFiles) {
         if (existsSync(join(process.cwd(), file))) {
-          hasConfig = true;
-          configFile = file;
+          foundConfig = file;
           break;
         }
       }
-
-      checks.push({
-        name: 'Configuration File',
-        status: hasConfig ? '✅' : '💡',
-        message: hasConfig
-          ? `Configuration found (${configFile})`
-          : 'No config file (using defaults)',
+      results.framework.push({
+        name: 'Atomix Config',
+        status: foundConfig ? '✅' : '💡',
+        message: foundConfig ? `Found (${foundConfig})` : 'No config file (using defaults)',
       });
 
-      // Check theme CLI availability
+      // 5. Theme CLI Checks
       const themeCLIAvailable = await import('./cli/theme-bridge.js')
         .then(m => m.isThemeCLIAvailable())
         .catch(() => false);
 
-      checks.push({
-        name: 'Theme CLI',
+      results.theme.push({
+        name: 'Theme Devtools',
         status: themeCLIAvailable ? '✅' : '⚠️',
-        message: themeCLIAvailable
-          ? 'Available'
-          : 'Theme devtools not found',
+        message: themeCLIAvailable ? 'Available' : 'Theme devtools not found',
       });
 
       spinner.stop();
 
       // Display results
-      console.log(chalk.bold('\n🏥 Atomix Doctor Report\n'));
-      console.log(chalk.gray('='.repeat(50)));
+      console.log(chalk.bold('\n🏥 Atomix Doctor / Audit Report\n'));
+      
+      const categories = [
+        { key: 'system', label: '💻 System environment' },
+        { key: 'dependencies', label: '📦 Core dependencies' },
+        { key: 'structure', label: '🏗️ Project structure' },
+        { key: 'framework', label: '⚙️ Configuration & Framework' },
+        { key: 'theme', label: '🎨 Design System tools' }
+      ];
 
-      checks.forEach(check => {
-        console.log(`${check.status} ${chalk.bold(check.name)}`);
-        console.log(`   ${chalk.gray(check.message)}\n`);
+      categories.forEach(cat => {
+        console.log(chalk.cyan.bold(`\n${cat.label}`));
+        console.log(chalk.gray('-'.repeat(40)));
+        results[cat.key].forEach(check => {
+          console.log(`  ${check.status} ${chalk.bold(check.name.padEnd(20))} ${chalk.gray(check.message)}`);
+        });
       });
 
-      const hasIssues = checks.some(c => c.status === '❌');
-      const hasWarnings = checks.some(c => c.status === '⚠️');
+      const hasIssues = Object.values(results).flat().some(c => c.status === '❌');
+      const hasWarnings = Object.values(results).flat().some(c => c.status === '⚠️');
 
+      console.log('\n' + chalk.gray('='.repeat(60)));
       if (hasIssues) {
-        console.log(chalk.red('\n❌ Some issues need attention'));
+        console.log(chalk.red.bold('\n❌ Some critical issues need attention.'));
+        console.log(chalk.gray('Check the report above and follow the suggested fixes.'));
       } else if (hasWarnings) {
-        console.log(chalk.yellow('\n⚠️  Some optional improvements available'));
+        console.log(chalk.yellow.bold('\n⚠️  Your setup is functional but could be improved.'));
+        console.log(chalk.gray('Recommended directories or scripts are missing.'));
       } else {
-        console.log(chalk.green('\n✅ Everything looks good!'));
+        console.log(chalk.green.bold('\n✨ Everything looks great! Your project is Atomix-ready.'));
       }
+      console.log(chalk.gray('='.repeat(60)) + '\n');
 
     } catch (error) {
       handleError(error, spinner);
@@ -1781,6 +1860,24 @@ program
   });
 
 
+
+// Check dependencies before execution (except for doctor command)
+const args = process.argv.slice(2);
+const command = args[0];
+
+// Skip dependency check for doctor command or help
+if (command !== 'doctor' && command !== '--help' && command !== '-h' && !args.includes('--help') && !args.includes('-h') && !process.env.ATOMIX_SKIP_DEP_CHECK) {
+  try {
+    const depResult = await checkDependencies();
+    if (!depResult.success) {
+      console.log(chalk.yellow('\n⚠️  Some dependencies are missing. Run `atomix doctor` for detailed information.'));
+      // Don't exit - allow users to see help or run doctor
+    }
+  } catch (error) {
+    // Silently continue if dependency check fails
+    debug('Dependency check failed:', error.message);
+  }
+}
 
 // Parse arguments
 program.parse(process.argv);

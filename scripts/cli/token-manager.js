@@ -2,48 +2,207 @@
  * Design Token Manager for Atomix Design System
  */
 
-import { readFile, writeFile, readdir } from 'fs/promises';
-import { join, basename } from 'path';
+import { readFile, writeFile } from 'fs/promises';
+import { resolve, basename } from 'path';
 import { existsSync } from 'fs';
 import chalk from 'chalk';
 import ora from 'ora';
 import boxen from 'boxen';
 
 /**
+ * Utility function to safely call spinner methods
+ */
+function safeSpinnerCall(spinner, method, ...args) {
+  if (typeof spinner[method] === 'function') {
+    return spinner[method](...args);
+  }
+}
+
+/**
+ * Utility function to safely call chalk methods
+ */
+function safeChalkCall(chalkObj, methodChain, text) {
+  try {
+    // Split method chain like 'bold.cyan' into ['bold', 'cyan']
+    const methods = methodChain.split('.');
+    let result = chalkObj;
+    
+    for (const method of methods) {
+      if (typeof result[method] === 'function') {
+        result = result[method];
+      } else {
+        // If any method in the chain doesn't exist, return the text as-is
+        return text;
+      }
+    }
+    
+    return result(text);
+  } catch (e) {
+    // If anything goes wrong, return the text as-is
+    return text;
+  }
+}
+
+/**
  * Token categories in the design system
  */
+let projectRoot = '';
+
+export function setProjectRoot(path) {
+  projectRoot = path;
+}
+
 const tokenCategories = {
   colors: {
-    path: 'src/styles/01-settings/_settings.colors.scss',
+    get path() { return resolve(projectRoot, 'src/styles/01-settings/_settings.colors.scss'); },
     prefix: '--atomix-color',
     description: 'Color palette tokens'
   },
   typography: {
-    path: 'src/styles/01-settings/_settings.typography.scss',
+    get path() { return resolve(projectRoot, 'src/styles/01-settings/_settings.typography.scss'); },
     prefix: '--atomix-font',
     description: 'Typography scale tokens'
   },
   spacing: {
-    path: 'src/styles/01-settings/_settings.spacing.scss',
+    get path() { return resolve(projectRoot, 'src/styles/01-settings/_settings.spacing.scss'); },
     prefix: '--atomix-space',
     description: 'Spacing scale tokens'
   },
   radius: {
-    path: 'src/styles/01-settings/_settings.radius.scss',
+    get path() { return resolve(projectRoot, 'src/styles/01-settings/_settings.border-radius.scss'); },
     prefix: '--atomix-radius',
     description: 'Border radius tokens'
   },
   shadows: {
-    path: 'src/styles/01-settings/_settings.shadows.scss',
+    get path() { return resolve(projectRoot, 'src/styles/01-settings/_settings.box-shadow.scss'); },
     prefix: '--atomix-shadow',
     description: 'Box shadow tokens'
   },
   breakpoints: {
-    path: 'src/styles/01-settings/_settings.breakpoints.scss',
+    get path() { return resolve(projectRoot, 'src/styles/01-settings/_settings.breakpoints.scss'); },
     prefix: '--atomix-breakpoint',
     description: 'Responsive breakpoint tokens'
   }
 };
+
+/**
+ * Parse tokens from content based on category
+ */
+function parseTokens(content, category) {
+  const tokens = {};
+  let count = 0;
+  
+  // Extract SCSS variables
+  const scssVarPattern = /\$([a-z0-9-]+):\s*(.+?);/gi;
+  let match;
+  while ((match = scssVarPattern.exec(content)) !== null) {
+    const name = `$${match[1]}`;
+    let value = match[2].trim();
+    
+    // Check for !default flag in value
+    if (value.endsWith('!default')) {
+      value = value.replace(/\s*!default$/i, '').trim();
+    }
+    
+    tokens[name] = value;
+    count++;
+  }
+  
+  // Extract CSS custom properties
+  const cssVarPattern = /(--[a-z0-9-]+):\s*(.+?);/gi;
+  while ((match = cssVarPattern.exec(content)) !== null) {
+    const name = match[1];
+    const value = match[2].trim();
+    tokens[name] = value;
+    count++;
+  }
+
+  return {
+    tokens,
+    count,
+    description: tokenCategories[category]?.description || 'Unknown category',
+    path: tokenCategories[category]?.path || 'Unknown path'
+  };
+}
+
+/**
+ * Validate a token file for common issues
+ */
+function validateTokenFile(content, category, filePath) {
+  const issues = [];
+  const warnings = [];
+  let count = 0;
+
+  // Special handling for breakpoints which uses a map structure
+  if (category === 'breakpoints') {
+    // Count map entries in breakpoints
+    const mapPattern = /\$[a-z0-9_-]+:\s*\(([\s\S]*?)\)/gi;
+    let match;
+    while ((match = mapPattern.exec(content)) !== null) {
+      // Count entries inside the map
+      const mapContent = match[1];
+      const entryMatches = mapContent.match(/[\w-]+:\s*[^,}]+/g);
+      count += entryMatches ? entryMatches.length : 0;
+    }
+    
+    return { issues, warnings, count };
+  }
+
+  // Count tokens for non-breakpoint categories
+  const scssVarPattern = /\$([a-z0-9-]+):\s*(.+?);/gi;
+  let match;
+  while ((match = scssVarPattern.exec(content)) !== null) {
+    count++;
+    
+    let value = match[2].trim();
+    let hasDefault = false;
+    
+    // Check for !default flag in value
+    if (value.toLowerCase().endsWith('!default')) {
+      hasDefault = true;
+      value = value.replace(/\s*!default$/i, '').trim();
+    }
+
+    // Check for missing !default flag
+    if (!hasDefault) {  // !default is not present
+      issues.push({
+        category: 'missing-default',
+        issue: `Missing !default flag for variable $${match[1]}`,
+        file: filePath,
+        fix: `Add !default to the variable: $${match[1]}: ${value} !default;`
+      });
+    }
+    
+    // Check for hardcoded values that should be tokens
+    if (/#[0-9a-fA-F]{3,6}|rgb\(|rgba\(|hsl\(|hsla\(/.test(value)) {
+      warnings.push({
+        category: 'hardcoded-value',
+        issue: `Hardcoded color value detected in $${match[1]}`,
+        file: filePath,
+        values: [value],
+        fix: `Consider using a token instead of hardcoded value`
+      });
+    }
+  }
+
+  // Check for naming conventions
+  const namingPattern = /\$([a-z0-9-]+)/gi;
+  while ((match = namingPattern.exec(content)) !== null) {
+    const varName = match[1];
+    
+    // Check if name contains uppercase letters
+    if (/[A-Z]/.test(varName)) {
+      issues.push({
+        category: 'naming-convention',
+        issue: `Variable name $${varName} contains uppercase letters`,
+        file: filePath,
+        fix: `Use lowercase and hyphens: $${varName.toLowerCase()}`
+      });
+    }
+  }
+
+  return { issues, warnings, count };
+}
 
 /**
  * Extract tokens from SCSS file
@@ -57,7 +216,7 @@ async function extractTokensFromFile(filePath) {
   const tokens = {};
 
   // Extract SCSS variables
-  const scssVarPattern = /\$([a-z-]+):\s*([^;!]+)(?:\s*!default)?;/gi;
+  const scssVarPattern = /\$([a-z0-9-]+):\s*([^;!]+)(?:\s*!default)?;/gi;
   let match;
   while ((match = scssVarPattern.exec(content)) !== null) {
     tokens[`$${match[1]}`] = {
@@ -83,217 +242,167 @@ async function extractTokensFromFile(filePath) {
 }
 
 /**
- * List all design tokens
+ * Load all design tokens from SCSS files
  */
-export async function listTokens(category = null) {
-  const spinner = ora('Loading design tokens...').start();
+export async function listTokens(categories = Object.keys(tokenCategories)) {
+  const spinner = ora('Loading design tokens...');
+  safeSpinnerCall(spinner, 'start');
 
   try {
-    const results = {};
-
-    // Get tokens from specified category or all categories
-    const categories = category
-      ? [category]
-      : Object.keys(tokenCategories);
+    const tokens = {};
+    let categoryCount = 0;
+    let tokenCount = 0;
 
     for (const cat of categories) {
       if (!tokenCategories[cat]) {
-        spinner.warn(chalk.yellow(`Unknown category: ${cat}`));
+        safeSpinnerCall(spinner, 'warn', safeChalkCall(chalk, 'yellow', `Unknown category: ${cat}`));
         continue;
       }
 
-      const { path, description } = tokenCategories[cat];
-      const fullPath = join(process.cwd(), path);
-      const tokens = await extractTokensFromFile(fullPath);
+      const fullPath = tokenCategories[cat].path;
+      
+      if (!existsSync(fullPath)) {
+        continue;
+      }
 
-      if (tokens) {
-        results[cat] = {
-          description,
-          path: path,
-          tokens: tokens,
-          count: Object.keys(tokens).length
-        };
+      const content = await readFile(fullPath, 'utf8');
+      const categoryTokens = parseTokens(content, cat);
+      
+      if (Object.keys(categoryTokens).length > 0) {
+        tokens[cat] = categoryTokens;
+        categoryCount++;
+        tokenCount += Object.keys(categoryTokens).length;
       }
     }
 
-    spinner.stop();
+    safeSpinnerCall(spinner, 'succeed', safeChalkCall(chalk, 'green', 'Tokens loaded successfully'));
+    
+    // Show summary
+    if (categoryCount === 0) {
+      console.log(safeChalkCall(chalk, 'yellow', '\n⚠️  No design tokens found'));
+      console.log(safeChalkCall(chalk, 'gray', 'Make sure you are in an Atomix project directory'));
+    } else {
+      console.log(safeChalkCall(chalk, 'bold.cyan', '\n📐 Design Tokens\n'));
 
-    // Display results
-    if (Object.keys(results).length === 0) {
-      console.log(chalk.yellow('\n⚠️  No design tokens found'));
-      console.log(chalk.gray('Make sure you are in an Atomix project directory'));
-      return;
-    }
+      for (const [category, data] of Object.entries(tokens)) {
+        console.log(boxen(
+          safeChalkCall(chalk, 'bold', category.toUpperCase()) + '\n' +
+          safeChalkCall(chalk, 'gray', data.description) + '\n\n' +
+          safeChalkCall(chalk, 'cyan', `Tokens: ${data.count}\n`) +
+          safeChalkCall(chalk, 'gray', `File: ${data.path}`),
+          { padding: 1, borderColor: 'blue', borderStyle: 'round' }
+        ));
 
-    console.log(chalk.bold.cyan('\n📐 Design Tokens\n'));
-
-    for (const [category, data] of Object.entries(results)) {
-      console.log(boxen(
-        chalk.bold(category.toUpperCase()) + '\n' +
-        chalk.gray(data.description) + '\n\n' +
-        chalk.cyan(`Tokens: ${data.count}\n`) +
-        chalk.gray(`File: ${data.path}`),
-        {
-          padding: 1,
-          margin: { top: 0, bottom: 1, left: 0, right: 0 },
-          borderStyle: 'round',
-          borderColor: 'gray'
+        // Log first 5 tokens as examples
+        const tokenEntries = Object.entries(data.tokens).slice(0, 5);
+        for (const [name, value] of tokenEntries) {
+          console.log(`  ${safeChalkCall(chalk, 'green', name)}: ${safeChalkCall(chalk, 'white', value)}`);
         }
-      ));
-
-      // Show first 5 tokens as examples
-      const tokenEntries = Object.entries(data.tokens).slice(0, 5);
-      tokenEntries.forEach(([name, info]) => {
-        const value = info.value.length > 30
-          ? info.value.substring(0, 30) + '...'
-          : info.value;
-        console.log(`  ${chalk.green(name)}: ${chalk.white(value)}`);
-      });
-
-      if (Object.keys(data.tokens).length > 5) {
-        console.log(chalk.gray(`  ... and ${Object.keys(data.tokens).length - 5} more\n`));
-      } else {
-        console.log();
+        
+        if (Object.keys(data.tokens).length > 5) {
+          console.log(safeChalkCall(chalk, 'gray', `  ... and ${Object.keys(data.tokens).length - 5} more\n`));
+        }
       }
     }
 
-    return results;
+    return { tokens, categoryCount, tokenCount };
 
   } catch (error) {
-    spinner.fail(chalk.red('Failed to load tokens'));
+    safeSpinnerCall(spinner, 'fail', safeChalkCall(chalk, 'red', 'Failed to load tokens'));
     throw error;
   }
 }
 
 /**
- * Validate design tokens
+ * Validate tokens according to design system standards
  */
-export async function validateTokens(options = {}) {
-  const spinner = ora('Validating design tokens...').start();
+export async function validateTokens(categories = Object.keys(tokenCategories), options = {}) {
+  const spinner = ora('Validating design tokens...');
+  safeSpinnerCall(spinner, 'start');
 
   try {
-    const issues = [];
-    const warnings = [];
+    let issues = [];
+    let warnings = [];
     let totalTokens = 0;
 
-    for (const [category, config] of Object.entries(tokenCategories)) {
-      const fullPath = join(process.cwd(), config.path);
+    for (const cat of categories) {
+      if (!tokenCategories[cat]) continue;
 
-      if (!existsSync(fullPath)) {
-        issues.push({
-          category,
-          issue: 'Token file missing',
-          file: config.path,
-          fix: `Create file: ${config.path}`
-        });
-        continue;
-      }
+      const fullPath = tokenCategories[cat].path;
+      
+      if (!existsSync(fullPath)) continue;
 
-      const tokens = await extractTokensFromFile(fullPath);
-      if (tokens) {
-        totalTokens += Object.keys(tokens).length;
-
-        // Check for hardcoded values
-        const content = await readFile(fullPath, 'utf8');
-
-        // Check for hardcoded colors
-        if (category === 'colors') {
-          const hardcodedColors = content.match(/#[0-9a-fA-F]{3,8}(?![0-9a-fA-F])/g);
-          if (hardcodedColors) {
-            const uniqueColors = [...new Set(hardcodedColors)];
-            warnings.push({
-              category,
-              issue: `Found ${uniqueColors.length} hardcoded color values`,
-              values: uniqueColors.slice(0, 3),
-              fix: 'Use color tokens or CSS custom properties'
-            });
-          }
-        }
-
-        // Check for hardcoded pixel values
-        if (category === 'spacing' || category === 'typography') {
-          const hardcodedPixels = content.match(/\d+px/g);
-          if (hardcodedPixels) {
-            const uniquePixels = [...new Set(hardcodedPixels)];
-            warnings.push({
-              category,
-              issue: `Found ${uniquePixels.length} hardcoded pixel values`,
-              values: uniquePixels.slice(0, 3),
-              fix: 'Use spacing tokens or rem units'
-            });
-          }
-        }
-
-        // Check for missing !default flags
-        const scssVars = content.match(/\$[a-z-]+:\s*[^;]+;/gi);
-        const defaultFlags = content.match(/!default/g);
-        if (scssVars && (!defaultFlags || defaultFlags.length < scssVars.length)) {
-          warnings.push({
-            category,
-            issue: 'Some SCSS variables missing !default flag',
-            fix: 'Add !default to allow theme overrides'
-          });
-        }
-
-        // Check naming conventions
-        for (const [name, info] of Object.entries(tokens)) {
-          if (info.type === 'css' && !name.startsWith(config.prefix)) {
-            warnings.push({
-              category,
-              issue: `Token "${name}" doesn't follow naming convention`,
-              fix: `Should start with "${config.prefix}"`
-            });
-          }
-        }
-      }
+      const content = await readFile(fullPath, 'utf8');
+      const { issues: catIssues, warnings: catWarnings, count: catCount } = validateTokenFile(content, cat, fullPath);
+      
+      issues = [...issues, ...catIssues];
+      warnings = [...warnings, ...catWarnings];
+      totalTokens += catCount;
     }
-
-    spinner.stop();
-
-    // Display validation results
-    console.log(chalk.bold.cyan('\n🔍 Token Validation Report\n'));
 
     if (issues.length === 0 && warnings.length === 0) {
-      console.log(boxen(
-        chalk.bold.green('✅ All tokens valid!\n\n') +
-        chalk.gray(`Total tokens: ${totalTokens}\n`) +
-        chalk.gray('All naming conventions followed\n') +
-        chalk.gray('No hardcoded values found'),
-        {
-          padding: 1,
-          borderStyle: 'round',
-          borderColor: 'green'
-        }
-      ));
+      safeSpinnerCall(spinner, 'succeed', safeChalkCall(chalk, 'green', 'All tokens are valid!'));
+      
+      console.log(safeChalkCall(chalk, 'bold.cyan', '\n🔍 Token Validation Report\n'));
+      console.log(
+        safeChalkCall(chalk, 'bold.green', '✅ All tokens valid!\n\n') +
+        safeChalkCall(chalk, 'gray', `Total tokens: ${totalTokens}\n`) +
+        safeChalkCall(chalk, 'gray', 'All naming conventions followed\n') +
+        safeChalkCall(chalk, 'gray', 'No hardcoded values found')
+      );
+      
+      console.log(safeChalkCall(chalk, 'gray', '─'.repeat(50)));
+      
+      return { isValid: true, issues: [], warnings: [] };
     } else {
+      const status = issues.length > 0 ? 'fail' : 'warn';
+      safeSpinnerCall(spinner, status, safeChalkCall(chalk, 'red', `Found ${issues.length} issues and ${warnings.length} warnings`));
+      
+      console.log(safeChalkCall(chalk, 'bold.cyan', '\n🔍 Token Validation Report\n'));
+      
       if (issues.length > 0) {
-        console.log(chalk.bold.red(`❌ Issues (${issues.length}):\n`));
-        issues.forEach((issue, i) => {
-          console.log(chalk.red(`  ${i + 1}. [${issue.category}] ${issue.issue}`));
-          console.log(chalk.gray(`     File: ${issue.file}`));
-          console.log(chalk.yellow(`     Fix: ${issue.fix}\n`));
-        });
+        console.log(safeChalkCall(chalk, 'bold.red', `❌ Issues (${issues.length}):\n`));
+        
+        for (let i = 0; i < Math.min(issues.length, 5); i++) {
+          const issue = issues[i];
+          console.log(safeChalkCall(chalk, 'red', `  ${i + 1}. [${issue.category}] ${issue.issue}`));
+          console.log(safeChalkCall(chalk, 'gray', `     File: ${issue.file}`));
+          console.log(safeChalkCall(chalk, 'yellow', `     Fix: ${issue.fix}\n`));
+        }
+        
+        if (issues.length > 5) {
+          console.log(safeChalkCall(chalk, 'gray', `... and ${issues.length - 5} more\n`));
+        }
       }
-
+      
       if (warnings.length > 0) {
-        console.log(chalk.bold.yellow(`⚠️  Warnings (${warnings.length}):\n`));
-        warnings.forEach((warning, i) => {
-          console.log(chalk.yellow(`  ${i + 1}. [${warning.category}] ${warning.issue}`));
-          if (warning.values) {
-            console.log(chalk.gray(`     Examples: ${warning.values.join(', ')}`));
+        console.log(safeChalkCall(chalk, 'bold.yellow', `⚠️  Warnings (${warnings.length}):\n`));
+        
+        for (let i = 0; i < Math.min(warnings.length, 5); i++) {
+          const warning = warnings[i];
+          console.log(safeChalkCall(chalk, 'yellow', `  ${i + 1}. [${warning.category}] ${warning.issue}`));
+          console.log(safeChalkCall(chalk, 'gray', `     File: ${warning.file}`));
+          if (warning.values && warning.values.length > 0) {
+            console.log(safeChalkCall(chalk, 'gray', `     Examples: ${warning.values.join(', ')}`));
           }
-          console.log(chalk.cyan(`     Fix: ${warning.fix}\n`));
-        });
+          console.log(safeChalkCall(chalk, 'cyan', `     Fix: ${warning.fix}\n`));
+        }
+        
+        if (warnings.length > 5) {
+          console.log(safeChalkCall(chalk, 'gray', `... and ${warnings.length - 5} more\n`));
+        }
       }
-
-      console.log(chalk.gray('─'.repeat(50)));
-      console.log(chalk.cyan('\n💡 Run with --fix to attempt automatic fixes'));
+      
+      console.log(safeChalkCall(chalk, 'gray', '─'.repeat(50)));
+      
+      if (options.fix) {
+        console.log(safeChalkCall(chalk, 'yellow', '\n💡 Run with --fix to automatically fix some issues'));
+      }
+      
+      return { isValid: false, issues, warnings };
     }
-
-    return { issues, warnings, totalTokens };
-
   } catch (error) {
-    spinner.fail(chalk.red('Validation failed'));
+    safeSpinnerCall(spinner, 'fail', safeChalkCall(chalk, 'red', 'Validation failed'));
     throw error;
   }
 }
@@ -302,14 +411,15 @@ export async function validateTokens(options = {}) {
  * Export tokens to different formats
  */
 export async function exportTokens(format = 'json', outputPath = null) {
-  const spinner = ora(`Exporting tokens as ${format.toUpperCase()}...`).start();
+  const spinner = ora(`Exporting tokens as ${format.toUpperCase()}...`);
+  safeSpinnerCall(spinner, 'start');
 
   try {
     const allTokens = {};
 
     // Collect all tokens
     for (const [category, config] of Object.entries(tokenCategories)) {
-      const fullPath = join(process.cwd(), config.path);
+      const fullPath = config.path;
       const tokens = await extractTokensFromFile(fullPath);
 
       if (tokens) {
@@ -388,7 +498,7 @@ export async function exportTokens(format = 'json', outputPath = null) {
     const finalPath = outputPath || filename;
     await writeFile(finalPath, output, 'utf8');
 
-    spinner.succeed(chalk.green(`✓ Exported tokens to ${finalPath}`));
+    safeSpinnerCall(spinner, 'succeed', safeChalkCall(chalk, 'green', `✓ Exported tokens to ${finalPath}`));
 
     // Show summary
     const categoryCount = Object.keys(allTokens).length;
@@ -397,14 +507,14 @@ export async function exportTokens(format = 'json', outputPath = null) {
       0
     );
 
-    console.log(chalk.gray(`\n  Categories: ${categoryCount}`));
-    console.log(chalk.gray(`  Total tokens: ${tokenCount}`));
-    console.log(chalk.gray(`  Format: ${format.toUpperCase()}`));
+    console.log(safeChalkCall(chalk, 'gray', `\n  Categories: ${categoryCount}`));
+    console.log(safeChalkCall(chalk, 'gray', `  Total tokens: ${tokenCount}`));
+    console.log(safeChalkCall(chalk, 'gray', `  Format: ${format.toUpperCase()}`));
 
     return { path: finalPath, tokens: allTokens };
 
   } catch (error) {
-    spinner.fail(chalk.red('Export failed'));
+    safeSpinnerCall(spinner, 'fail', safeChalkCall(chalk, 'red', 'Export failed'));
     throw error;
   }
 }
@@ -413,7 +523,8 @@ export async function exportTokens(format = 'json', outputPath = null) {
  * Import tokens from file
  */
 export async function importTokens(filePath, options = {}) {
-  const spinner = ora('Importing design tokens...').start();
+  const spinner = ora('Importing design tokens...');
+  safeSpinnerCall(spinner, 'start');
 
   try {
     if (!existsSync(filePath)) {
@@ -472,17 +583,17 @@ export async function importTokens(filePath, options = {}) {
         throw new Error(`Unsupported file type: ${extension}`);
     }
 
-    spinner.text = 'Updating token files...';
+    safeSpinnerCall(spinner, 'text', 'Updating token files...');
 
     // Update token files
     for (const [category, categoryTokens] of Object.entries(tokens)) {
       if (!tokenCategories[category]) {
-        console.warn(chalk.yellow(`\n⚠️  Unknown category: ${category} (skipped)`));
+        console.warn(safeChalkCall(chalk, 'yellow', `\n⚠️  Unknown category: ${category} (skipped)`));
         continue;
       }
 
       const config = tokenCategories[category];
-      const fullPath = join(process.cwd(), config.path);
+      const fullPath = config.path;
 
       // Generate SCSS content
       let scssContent = `// ${config.description}\n`;
@@ -501,15 +612,15 @@ export async function importTokens(filePath, options = {}) {
       }
 
       if (options.dryRun) {
-        console.log(chalk.yellow(`\n  Would update: ${config.path}`));
-        console.log(chalk.gray(scssContent.substring(0, 200) + '...'));
+        console.log(safeChalkCall(chalk, 'yellow', `\n  Would update: ${config.path}`));
+        console.log(safeChalkCall(chalk, 'gray', scssContent.substring(0, 200) + '...'));
       } else {
         await writeFile(fullPath, scssContent, 'utf8');
-        console.log(chalk.green(`  ✓ Updated ${config.path}`));
+        console.log(safeChalkCall(chalk, 'green', `  ✓ Updated ${config.path}`));
       }
     }
 
-    spinner.succeed(chalk.green('✓ Tokens imported successfully'));
+    safeSpinnerCall(spinner, 'succeed', safeChalkCall(chalk, 'green', '✓ Tokens imported successfully'));
 
     // Show summary
     const categoryCount = Object.keys(tokens).length;
@@ -518,20 +629,20 @@ export async function importTokens(filePath, options = {}) {
       0
     );
 
-    console.log(chalk.gray(`\n  Categories imported: ${categoryCount}`));
-    console.log(chalk.gray(`  Total tokens: ${tokenCount}`));
+    console.log(safeChalkCall(chalk, 'gray', `\n  Categories imported: ${categoryCount}`));
+    console.log(safeChalkCall(chalk, 'gray', `  Total tokens: ${tokenCount}`));
 
     if (!options.dryRun) {
-      console.log(chalk.cyan('\n💡 Next steps:'));
-      console.log(chalk.gray('  1. Review the updated token files'));
-      console.log(chalk.gray('  2. Rebuild your themes: atomix build-theme <theme>'));
-      console.log(chalk.gray('  3. Test your components with new tokens'));
+      console.log(safeChalkCall(chalk, 'cyan', '\n💡 Next steps:'));
+      console.log(safeChalkCall(chalk, 'gray', '  1. Review the updated token files'));
+      console.log(safeChalkCall(chalk, 'gray', '  2. Rebuild your themes: atomix build-theme <theme>'));
+      console.log(safeChalkCall(chalk, 'gray', '  3. Test your components with new tokens'));
     }
 
     return { tokens, categoryCount, tokenCount };
 
   } catch (error) {
-    spinner.fail(chalk.red('Import failed'));
+    safeSpinnerCall(spinner, 'fail', safeChalkCall(chalk, 'red', 'Import failed'));
     throw error;
   }
 }
@@ -540,12 +651,13 @@ export async function importTokens(filePath, options = {}) {
  * Automatically fix issues in token files
  */
 export async function fixTokens(options = {}) {
-  const spinner = ora('Attempting to fix design tokens...').start();
+  const spinner = ora('Attempting to fix design tokens...');
+  safeSpinnerCall(spinner, 'start');
   let totalFixed = 0;
 
   try {
     for (const [category, config] of Object.entries(tokenCategories)) {
-      const fullPath = join(process.cwd(), config.path);
+      const fullPath = config.path;
 
       if (!existsSync(fullPath)) continue;
 
@@ -554,7 +666,7 @@ export async function fixTokens(options = {}) {
       let fileFixedCount = 0;
 
       // 1. Fix missing !default flags
-      const defaultFixed = content.replace(/(\$[a-z-]+:\s*[^;!]+)(;)/gi, (match, p1, p2) => {
+      const defaultFixed = content.replace(/(\$[a-z-]+:\s*[^;!\n]+)(;\s*)(?!\s*!default)/gi, (match, p1, p2) => {
         fileFixedCount++;
         return `${p1} !default${p2}`;
       });
@@ -595,15 +707,15 @@ export async function fixTokens(options = {}) {
           await writeFile(fullPath, content, 'utf8');
         }
         totalFixed += fileFixedCount;
-        console.log(chalk.green(`  ✓ Fixed ${fileFixedCount} issues in ${config.path}`));
+        console.log(safeChalkCall(chalk, 'green', `  ✓ Fixed ${fileFixedCount} issues in ${config.path}`));
       }
     }
 
-    spinner.succeed(chalk.green(`✓ Successfully fixed ${totalFixed} issues!`));
+    safeSpinnerCall(spinner, 'succeed', safeChalkCall(chalk, 'green', `✓ Successfully fixed ${totalFixed} issues!`));
     return { totalFixed };
 
   } catch (error) {
-    spinner.fail(chalk.red('Fix operation failed'));
+    safeSpinnerCall(spinner, 'fail', safeChalkCall(chalk, 'red', 'Fix operation failed'));
     throw error;
   }
 }

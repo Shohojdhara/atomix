@@ -13,6 +13,7 @@ import { composableTemplates } from './composable-templates.js';
 import * as tokenTemplates from './token-templates.js';
 import { projectTemplates } from './project-templates.js';
 import { configTemplates } from './config-templates.js';
+import { commonTemplates } from './common-templates.js';
 
 /**
  * Main templates object that maintains backward compatibility
@@ -20,27 +21,33 @@ import { configTemplates } from './config-templates.js';
  */
 export const componentTemplates = {
   react: {
-    ...reactTemplates,
-    ...storybookTemplates,
-    ...testingTemplates,
-    ...scssTemplates,
-    ...typesTemplates,
+    component: reactTemplates.component,
+    simple: reactTemplates.simple,
+    medium: reactTemplates.medium,
+    complex: reactTemplates.complex,
+    index: reactTemplates.index,
+    story: storybookTemplates.story,
+    test: testingTemplates.test,
+    scss: scssTemplates.full,
+    settings: scssTemplates.settings,
+    componentStyles: scssTemplates.component,
+    types: typesTemplates.types,
+    constants: typesTemplates.constants,
   },
   composable: composableTemplates,
+  storybook: storybookTemplates,
+  testing: testingTemplates,
+  scss: scssTemplates,
+  types: typesTemplates,
 };
 
-// Re-export token generation functions
+// Export everything for flexibility
 export {
-  generateColorTokens,
-  generateSpacingTokens,
-  generateTypographyTokens,
-  generateShadowTokens,
-  generateRadiusTokens,
-  generateAnimationTokens,
-} from './token-templates.js';
-
-// Re-export project and config templates
-export { projectTemplates, configTemplates };
+  tokenTemplates,
+  projectTemplates,
+  configTemplates,
+  commonTemplates
+};
 
 /**
  * Get template by name and type

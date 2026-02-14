@@ -14,6 +14,11 @@ export default [
     languageOptions: {
       ecmaVersion: 2022, // Support top-level await
       sourceType: 'module',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
       globals: {
         window: 'readonly',
         document: 'readonly',
@@ -26,11 +31,31 @@ export default [
         __filename: 'readonly',
         global: 'readonly',
         Buffer: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        URL: 'readonly',
+        Element: 'readonly',
+        Event: 'readonly',
       },
     },
     rules: {
       'no-unused-vars': 'warn',
       'no-console': 'off',
+    },
+  },
+  {
+    files: ['scripts/**/__tests__/**/*.js', 'scripts/**/*.test.js', 'scripts/cli/templates/testing-utils.js'],
+    languageOptions: {
+      globals: {
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        vi: 'readonly',
+      },
     },
   },
   {
@@ -43,7 +68,7 @@ export default [
         ecmaFeatures: {
           jsx: true,
         },
-        project: './tsconfig.json', // Use main tsconfig for linting
+        project: './tsconfig.eslint.json', // Use eslint-specific tsconfig for linting
       },
       globals: {
         window: 'readonly',

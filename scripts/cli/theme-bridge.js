@@ -1,7 +1,13 @@
 /**
  * Theme CLI Bridge
- * 
- * Bridges the TypeScript theme devtools CLI with the main JavaScript CLI
+ *
+ * Bridges the TypeScript theme devtools CLI (src/lib/theme/devtools/CLI.ts) with the main JavaScript CLI.
+ *
+ * @dependency ts-node
+ * Theme subcommands (atomix theme validate|list|inspect|compare|export|create) run the TypeScript
+ * theme CLI via ts-node. Ensure ts-node is installed in the project when using these commands:
+ *   npm install --save-dev ts-node
+ * If ts-node is missing, theme subcommands will fail; run `atomix doctor` to check availability.
  */
 
 import { spawn } from 'child_process';

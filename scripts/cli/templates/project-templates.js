@@ -3,13 +3,35 @@
  * Templates for different project types and configurations
  */
 
+import { commonTemplates } from './common-templates.js';
+
 /**
  * React project templates
  */
 export const reactProjectTemplates = {
   dependencies: ['react', 'react-dom'],
-  devDependencies: ['@vitejs/plugin-react', 'vite', 'typescript'],
+  devDependencies: ['@vitejs/plugin-react', 'vite', 'typescript', '@types/react', '@types/react-dom', 'sass'],
   files: {
+    // TypeScript Configuration
+    'tsconfig.json': commonTemplates.typescript.react,
+    'tsconfig.node.json': commonTemplates.typescript.reactNode,
+    
+    // Git Configuration
+    '.gitignore': commonTemplates.git.gitignore,
+    '.gitattributes': commonTemplates.git.gitattributes,
+    
+    // Code Quality
+    '.prettierrc': commonTemplates.prettier.prettierrc,
+    '.prettierignore': commonTemplates.prettier.prettierignore,
+    '.eslintrc.cjs': commonTemplates.eslint.react,
+    
+    // Environment
+    '.env.example': commonTemplates.env,
+    
+    // Vite Environment Types
+    'src/vite-env.d.ts': commonTemplates.viteEnv,
+    
+    // Main Application Files
     'src/App.tsx': `import React from 'react';
 import './App.css';
 
@@ -27,22 +49,19 @@ function App() {
 }
 
 export default App;`,
+    
     'src/main.tsx': `import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import './styles/index.scss';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
 );`,
-    'src/App.css': `/* Import Atomix styles */
-@use '@shohojdhara/atomix/scss/settings' with (
-  // Your custom theme overrides here
-);
-@use '@shohojdhara/atomix/scss/components';
-
-.App {
+    
+    'src/App.css': `.App {
   text-align: center;
 }
 
@@ -57,6 +76,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   justify-content: center;
   font-size: calc(10px + 2vmin);
 }`,
+    
     'index.html': `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -70,11 +90,21 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>`,
+    
     'vite.config.ts': `import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+      '@components': resolve(__dirname, './src/components'),
+      '@lib': resolve(__dirname, './src/lib'),
+      '@styles': resolve(__dirname, './src/styles'),
+    },
+  },
   css: {
     preprocessorOptions: {
       scss: {
@@ -82,7 +112,28 @@ export default defineConfig({
       }
     }
   }
-});`
+});`,
+
+    // ITCSS Structure
+    'src/styles/index.scss': commonTemplates.itcss.main,
+    'src/styles/01-settings/_index.scss': commonTemplates.itcss.settings,
+    'src/styles/02-tools/_index.scss': commonTemplates.itcss.tools,
+    'src/styles/03-generic/_index.scss': commonTemplates.itcss.generic,
+    'src/styles/04-elements/_index.scss': commonTemplates.itcss.elements,
+    'src/styles/05-objects/_index.scss': commonTemplates.itcss.objects,
+    'src/styles/06-components/_index.scss': commonTemplates.itcss.components,
+    'src/styles/99-utilities/_index.scss': commonTemplates.itcss.utilities,
+    
+    // Library Structure
+    'src/lib/types/index.ts': commonTemplates.lib.types,
+    'src/lib/types/components.ts': `// Component type definitions\n`,
+    'src/lib/constants/index.ts': commonTemplates.lib.constants,
+    'src/lib/composables/index.ts': commonTemplates.lib.composables,
+    'src/lib/utils/index.ts': commonTemplates.lib.utils,
+    
+    // Placeholder files
+    'src/components/.gitkeep': '',
+    'src/assets/.gitkeep': '',
   }
 };
 
@@ -91,14 +142,31 @@ export default defineConfig({
  */
 export const nextjsProjectTemplates = {
   dependencies: ['next', 'react', 'react-dom'],
-  devDependencies: ['typescript', '@types/node', '@types/react', '@types/react-dom', 'sass'],
+  devDependencies: ['typescript', '@types/node', '@types/react', '@types/react-dom', 'sass', 'eslint', 'eslint-config-next'],
   files: {
+    // TypeScript Configuration
+    'tsconfig.json': commonTemplates.typescript.nextjs,
+    
+    // Git Configuration
+    '.gitignore': commonTemplates.git.gitignore,
+    '.gitattributes': commonTemplates.git.gitattributes,
+    
+    // Code Quality
+    '.prettierrc': commonTemplates.prettier.prettierrc,
+    '.prettierignore': commonTemplates.prettier.prettierignore,
+    '.eslintrc.json': commonTemplates.eslint.nextjs,
+    
+    // Environment
+    '.env.example': commonTemplates.env,
+    
+    // Next.js Pages
     'src/pages/_app.tsx': `import '../styles/globals.scss';
 import type { AppProps } from 'next/app';
 
 export default function App({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;
 }`,
+    
     'src/pages/index.tsx': `import Head from 'next/head';
 
 export default function Home() {
@@ -116,11 +184,8 @@ export default function Home() {
     </>
   );
 }`,
-    'src/styles/globals.scss': `/* Import Atomix styles */
-@use '@shohojdhara/atomix/scss/settings' with (
-  // Your custom theme overrides here
-);
-@use '@shohojdhara/atomix/scss/components';
+    
+    'src/styles/globals.scss': `@use './index.scss';
 
 html,
 body {
@@ -134,6 +199,7 @@ main {
   padding: 2rem;
   text-align: center;
 }`,
+    
     'next.config.js': `/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -142,7 +208,27 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;`
+module.exports = nextConfig;`,
+
+    // ITCSS Structure
+    'src/styles/index.scss': commonTemplates.itcss.main,
+    'src/styles/01-settings/_index.scss': commonTemplates.itcss.settings,
+    'src/styles/02-tools/_index.scss': commonTemplates.itcss.tools,
+    'src/styles/03-generic/_index.scss': commonTemplates.itcss.generic,
+    'src/styles/04-elements/_index.scss': commonTemplates.itcss.elements,
+    'src/styles/05-objects/_index.scss': commonTemplates.itcss.objects,
+    'src/styles/06-components/_index.scss': commonTemplates.itcss.components,
+    'src/styles/99-utilities/_index.scss': commonTemplates.itcss.utilities,
+    
+    // Library Structure
+    'src/lib/types/index.ts': commonTemplates.lib.types,
+    'src/lib/types/components.ts': `// Component type definitions\n`,
+    'src/lib/constants/index.ts': commonTemplates.lib.constants,
+    'src/lib/utils/index.ts': commonTemplates.lib.utils,
+    
+    // Placeholder files
+    'src/components/.gitkeep': '',
+    'src/public/.gitkeep': '',
   }
 };
 
@@ -151,8 +237,26 @@ module.exports = nextConfig;`
  */
 export const vanillaProjectTemplates = {
   dependencies: [],
-  devDependencies: ['vite', 'typescript'],
+  devDependencies: ['vite', 'typescript', 'sass'],
   files: {
+    // TypeScript Configuration
+    'tsconfig.json': commonTemplates.typescript.vanilla,
+    
+    // Git Configuration
+    '.gitignore': commonTemplates.git.gitignore,
+    '.gitattributes': commonTemplates.git.gitattributes,
+    
+    // Code Quality
+    '.prettierrc': commonTemplates.prettier.prettierrc,
+    '.prettierignore': commonTemplates.prettier.prettierignore,
+    
+    // Environment
+    '.env.example': commonTemplates.env,
+    
+    // Vite Environment Types
+    'src/vite-env.d.ts': commonTemplates.viteEnv,
+    
+    // Main Application Files
     'index.html': `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -171,14 +275,12 @@ export const vanillaProjectTemplates = {
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>`,
+    
     'src/main.ts': `import './styles/main.scss';
 
 console.log('Atomix Vanilla JavaScript App Initialized');`,
-    'src/styles/main.scss': `/* Import Atomix styles */
-@use '@shohojdhara/atomix/scss/settings' with (
-  // Your custom theme overrides here
-);
-@use '@shohojdhara/atomix/scss/components';
+    
+    'src/styles/main.scss': `@use './index.scss';
 
 #app {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -190,9 +292,18 @@ header {
   padding: 2rem;
   border-bottom: 1px solid #dee2e6;
 }`,
+    
     'vite.config.ts': `import { defineConfig } from 'vite';
+import { resolve } from 'path';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+      '@lib': resolve(__dirname, './src/lib'),
+      '@styles': resolve(__dirname, './src/styles'),
+    },
+  },
   css: {
     preprocessorOptions: {
       scss: {
@@ -200,7 +311,24 @@ export default defineConfig({
       }
     }
   }
-});`
+});`,
+
+    // ITCSS Structure
+    'src/styles/index.scss': commonTemplates.itcss.main,
+    'src/styles/01-settings/_index.scss': commonTemplates.itcss.settings,
+    'src/styles/02-tools/_index.scss': commonTemplates.itcss.tools,
+    'src/styles/03-generic/_index.scss': commonTemplates.itcss.generic,
+    'src/styles/04-elements/_index.scss': commonTemplates.itcss.elements,
+    'src/styles/05-objects/_index.scss': commonTemplates.itcss.objects,
+    'src/styles/06-components/_index.scss': commonTemplates.itcss.components,
+    'src/styles/99-utilities/_index.scss': commonTemplates.itcss.utilities,
+    
+    // Library Structure
+    'src/lib/types/index.ts': commonTemplates.lib.types,
+    'src/lib/utils/index.ts': commonTemplates.lib.utils,
+    
+    // Placeholder files
+    'src/assets/.gitkeep': '',
   }
 };
 
