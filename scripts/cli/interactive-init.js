@@ -59,14 +59,17 @@ export async function runInitWizard() {
       }
     ]);
 
+    let prebuiltThemeName = null;
     if (themeChoice === 'prebuilt') {
-      await inquirer.prompt([
+      const { theme } = await inquirer.prompt([
         {
           type: 'input',
           name: 'theme',
           message: 'Enter the name of the pre-built theme:',
+          default: 'default'
         }
       ]);
+      prebuiltThemeName = (theme && String(theme).trim()) || 'default';
     }
 
     // Step 3: Features
@@ -160,10 +163,13 @@ export async function runInitWizard() {
       });
 
       // Merge scripts carefully
+      const themePath = themeChoice === 'prebuilt' && prebuiltThemeName
+        ? `themes/${prebuiltThemeName}`
+        : 'themes/custom';
       const newScripts = {
         'dev': projectType === 'nextjs' ? 'next dev' : 'vite',
         'build': projectType === 'nextjs' ? 'next build' : 'vite build',
-        'build:theme': 'atomix build-theme themes/custom',
+        'build:theme': `atomix build-theme ${themePath}`,
         'generate:component': 'atomix generate component',
         'validate': 'atomix validate --tokens --theme'
       };
@@ -247,11 +253,23 @@ export async function runInitWizard() {
       const configTemplate = configType === 'json'
         ? configTemplates.basic
         : configTemplates.advanced;
+      const themePathForConfig = themeChoice === 'prebuilt' && prebuiltThemeName
+        ? `themes/${prebuiltThemeName}`
+        : 'themes/custom';
 
       for (const [filename, content] of Object.entries(configTemplate)) {
-        const configContent = typeof content === 'object'
+        let configContent = typeof content === 'object'
           ? JSON.stringify(content, null, 2)
           : content;
+
+        if (themeChoice === 'prebuilt' && prebuiltThemeName) {
+          if (typeof content === 'object' && content.theme) {
+            const merged = { ...content, theme: { ...content.theme, path: themePathForConfig } };
+            configContent = JSON.stringify(merged, null, 2);
+          } else if (typeof content === 'string') {
+            configContent = content.replace(/path:\s*['"]themes\/custom['"]/g, `path: '${themePathForConfig}'`);
+          }
+        }
 
         await writeFile(
           join(process.cwd(), filename),
