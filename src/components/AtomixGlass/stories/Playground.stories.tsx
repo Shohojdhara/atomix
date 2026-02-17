@@ -316,7 +316,7 @@ export const Playground: Story = {
     );
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [selectedShader, setSelectedShader] = useState<
-      'liquidGlass' | 'plasma' | 'waves' | 'noise'
+      'liquidGlass' | 'plasma' | 'waves' | 'noise' | 'appleFluid' | 'liquidMetal'
     >('liquidGlass');
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [showCode, setShowCode] = useState(false);
@@ -436,6 +436,19 @@ export const Playground: Story = {
 </AtomixGlass>`;
     };
 
+    // ... rest of the component
+
+    const options = [
+      { value: 'liquidGlass', label: 'Liquid Glass (Standard)' },
+      { value: 'premiumGlass', label: 'Premium Glass' },
+      { value: 'appleFluid', label: 'Apple Fluid' },
+      { value: 'liquidMetal', label: 'Liquid Metal' },
+      { value: 'basiBasi', label: 'Expert (BasiBasi)' },
+      { value: 'plasma', label: 'Plasma (Legacy)' },
+      { value: 'waves', label: 'Waves (Legacy)' },
+      { value: 'noise', label: 'Noise (Legacy)' },
+    ];
+
     const copyCode = () => {
       navigator.clipboard.writeText(generateCode());
       setCopiedCode(true);
@@ -460,10 +473,10 @@ export const Playground: Story = {
       Math.min(
         100,
         100 -
-        settings.displacementScale * 0.15 -
-        Math.abs(settings.blurAmount) * 2 -
-        settings.aberrationIntensity * 3 -
-        settings.elasticity * 20
+          settings.displacementScale * 0.15 -
+          Math.abs(settings.blurAmount) * 2 -
+          settings.aberrationIntensity * 3 -
+          settings.elasticity * 20
       )
     );
 
@@ -548,7 +561,8 @@ export const Playground: Story = {
                           className="u-m-0 u-text-white u-font-bold"
                           style={{
                             fontSize: '1.75rem',
-                            background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+                            background:
+                              'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                             backgroundClip: 'text',
@@ -690,12 +704,12 @@ export const Playground: Story = {
                               : 'Off'
                             : typeof value === 'number'
                               ? value.toFixed(
-                                key.includes('Amount') ||
-                                  key.includes('elasticity') ||
-                                  key.includes('aberration')
-                                  ? 2
-                                  : 0
-                              )
+                                  key.includes('Amount') ||
+                                    key.includes('elasticity') ||
+                                    key.includes('aberration')
+                                    ? 2
+                                    : 0
+                                )
                               : value}
                         </span>
                       </div>
@@ -723,8 +737,8 @@ export const Playground: Story = {
                           }
                           step={
                             key === 'aberrationIntensity' ||
-                              key === 'elasticity' ||
-                              key === 'blurAmount'
+                            key === 'elasticity' ||
+                            key === 'blurAmount'
                               ? 0.01
                               : 1
                           }
@@ -790,18 +804,15 @@ export const Playground: Story = {
                           fontSize: '1rem',
                         }}
                       >
-                        <option value="liquidGlass" style={{ background: '#1a1a1a' }}>
-                          Liquid Glass
-                        </option>
-                        <option value="plasma" style={{ background: '#1a1a1a' }}>
-                          Plasma
-                        </option>
-                        <option value="waves" style={{ background: '#1a1a1a' }}>
-                          Waves
-                        </option>
-                        <option value="noise" style={{ background: '#1a1a1a' }}>
-                          Noise
-                        </option>
+                        {options.map(opt => (
+                          <option
+                            key={opt.value}
+                            value={opt.value}
+                            style={{ background: '#1a1a1a' }}
+                          >
+                            {opt.label}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   )}
@@ -908,7 +919,8 @@ export const Playground: Story = {
                               className="u-m-0 u-font-bold"
                               style={{
                                 fontSize: '1.75rem',
-                                background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+                                background:
+                                  'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',
                                 backgroundClip: 'text',
@@ -987,7 +999,8 @@ export const Playground: Story = {
                           gap: '8px',
                           padding: '10px 24px',
                           borderRadius: '28px',
-                          background: 'linear-gradient(135deg, rgba(122, 255, 215, 0.25) 0%, rgba(102, 126, 234, 0.25) 100%)',
+                          background:
+                            'linear-gradient(135deg, rgba(122, 255, 215, 0.25) 0%, rgba(102, 126, 234, 0.25) 100%)',
                           border: '1px solid rgba(122, 255, 215, 0.3)',
                           color: '#7AFFD7',
                           fontSize: '0.875rem',
@@ -1020,7 +1033,8 @@ export const Playground: Story = {
                         className="u-mb-4 u-font-bold"
                         style={{
                           fontSize: '2.75rem',
-                          background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+                          background:
+                            'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
                           WebkitBackgroundClip: 'text',
                           WebkitTextFillColor: 'transparent',
                           backgroundClip: 'text',
@@ -1043,10 +1057,7 @@ export const Playground: Story = {
                         affects the visual appearance and performance characteristics of the glass
                         effect.
                       </p>
-                      <div
-                        className="u-flex u-justify-center u-flex-wrap"
-                        style={{ gap: '1rem' }}
-                      >
+                      <div className="u-flex u-justify-center u-flex-wrap" style={{ gap: '1rem' }}>
                         <Button variant="primary" size="lg">
                           Primary Action
                         </Button>
@@ -1107,11 +1118,15 @@ export const Playground: Story = {
                             </div>
                             <div>
                               <div className="u-text-xs u-opacity-70">Blur</div>
-                              <div className="u-font-semibold">{settings.blurAmount.toFixed(2)}</div>
+                              <div className="u-font-semibold">
+                                {settings.blurAmount.toFixed(2)}
+                              </div>
                             </div>
                             <div>
                               <div className="u-text-xs u-opacity-70">Elasticity</div>
-                              <div className="u-font-semibold">{settings.elasticity.toFixed(2)}</div>
+                              <div className="u-font-semibold">
+                                {settings.elasticity.toFixed(2)}
+                              </div>
                             </div>
                           </div>
                         </div>

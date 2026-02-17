@@ -1523,37 +1523,6 @@ export const BLOCK = {
 };
 
 /**
- * GlassContainer-specific constants
- */
-export const GLASS_CONTAINER = {
-  CLASSES: {
-    BASE: 'c-glass-container',
-    GLASS: 'c-glass-container__glass',
-    WARP: 'c-glass-container__warp',
-    CONTENT: 'c-glass-container__content',
-    OVERLAY: 'c-glass-container__overlay',
-    OVERLAY_VISIBLE: 'c-glass-container__overlay--visible',
-    OVERLAY_HIDDEN: 'c-glass-container__overlay--hidden',
-    OVERLAY_BLEND: 'c-glass-container__overlay-blend',
-    BORDER: 'c-glass-container__border',
-    BORDER_OVERLAY: 'c-glass-container__border-overlay',
-    HOVER_EFFECT: 'c-glass-container__hover-effect',
-    ACTIVE_EFFECT: 'c-glass-container__active-effect',
-    INTERACTION_EFFECT: 'c-glass-container__interaction-effect',
-    ACTIVE: 'c-glass-container--active',
-    CLICKABLE: 'c-glass-container--clickable',
-  },
-  DISPLACEMENT_MAPS: {
-    STANDARD:
-      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjcwIiBoZWlnaHQ9IjY5IiB2aWV3Qm94PSIwIDAgMjcwIDY5IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0iZ3JhZGllbnQiIGN4PSI1MCUiIGN5PSI1MCUiIHI9IjUwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzgwODA4MCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzgwODA4MCIvPjwvcmFkaWFsR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZGllbnQpIi8+PC9zdmc+',
-    POLAR:
-      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjcwIiBoZWlnaHQ9IjY5IiB2aWV3Qm94PSIwIDAgMjcwIDY5IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxyYWRpYWxHcmFkaWVudCBpZD0icG9sYXIiIGN4PSI1MCUiIGN5PSI1MCUiIHI9IjUwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzQwNDA0MCIvPjxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjODA4MDgwIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNDA0MDQwIi8+PC9yYWRpYWxHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwb2xhcikiLz48L3N2Zz4=',
-    PROMINENT:
-      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjcwIiBoZWlnaHQ9IjY5IiB2aWV3Qm94PSIwIDAgMjcwIDY5IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0icHJvbWluZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNDA0MDQwIi8+PHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiNjMGMwYzAiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0MDQwNDAiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3Byb21pbmVudCkiLz48L3N2Zz4=',
-  },
-};
-
-/**
  * Footer-specific constants
  */
 export const FOOTER = {
@@ -1698,8 +1667,16 @@ export const ATOMIX_GLASS = {
     MIN_BLUR: 0.1,
     MOUSE_INFLUENCE_DIVISOR: 100,
     EDGE_FADE_PIXELS: 2,
-    DEFAULT_CORNER_RADIUS: 16, // Fallback value matching design system
+    // Note: This default must match the SCSS variable --atomix-radius-md
+    // @see src/styles/01-settings/_settings.global.scss
+    DEFAULT_CORNER_RADIUS: 16,
     MAX_SIZE: 4096, // Maximum width/height for glass size
+
+    // Palette for internal calculations (matches design system base colors)
+    PALETTE: {
+      WHITE: '255, 255, 255',
+      BLACK: '0, 0, 0',
+    },
 
     // Gradient calculation constants
     GRADIENT: {

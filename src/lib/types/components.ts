@@ -199,7 +199,7 @@ export interface AtomixGlassProps {
   /**
    * Shader variant for shader mode
    */
-  shaderVariant?: 'liquidGlass' | 'premiumGlass';
+  shaderVariant?: 'liquidGlass' | 'premiumGlass' | 'appleFluid' | 'liquidMetal' | 'plasma' | 'waves' | 'noise';
 
   /**
    * Accessibility props

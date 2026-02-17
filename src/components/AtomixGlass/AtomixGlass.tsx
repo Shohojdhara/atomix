@@ -57,7 +57,7 @@ import { useAtomixGlass } from '../../lib/composables/useAtomixGlass';
  *
  * @example
  * // OverLight - Object config with custom settings
- * <AtomixGlass 
+ * <AtomixGlass
  *   overLight={{
  *     threshold: 0.8,
  *     opacity: 0.6,
@@ -147,14 +147,16 @@ export function AtomixGlass({
     children,
   });
 
-  // Use consistent overLight state from hook
-  const isOverLight = overLightConfig.isOverLight;
+  // Calculate isOverLight independently from overLightConfig to prevent displacement changes on hover
+  // overLightConfig recalculates with hover/active states, but displacement should remain stable
+  const isOverLight = useMemo(() => overLightConfig?.isOverLight, [overLight]);
+
   const shouldRenderOverLightLayers = enableOverLightLayers && isOverLight;
 
   // Calculate base style with transforms
   const baseStyle = {
     ...style,
-    ...(elasticity !== 0 && !effectiveDisableEffects && {
+    ...(!effectiveDisableEffects && {
       transform: transformStyle,
     }),
   };
@@ -171,26 +173,32 @@ export function AtomixGlass({
     .join(' ');
 
   // Calculate position and size styles
-  const positionStyles = {
-    position: (style.position || 'absolute') as React.CSSProperties['position'],
-    top: style.top || 0,
-    left: style.left || 0,
-  };
+  const positionStyles = useMemo(
+    () => ({
+      position: (style.position || 'absolute') as React.CSSProperties['position'],
+      top: style.top || 0,
+      left: style.left || 0,
+    }),
+    [style.position, style.top, style.left]
+  );
 
-  const adjustedSize = {
-    width:
-      style.position !== 'fixed'
-        ? '100%'
-        : style.width
-          ? style.width
-          : Math.max(glassSize.width, 0),
-    height:
-      style.position !== 'fixed'
-        ? '100%'
-        : style.height
-          ? style.height
-          : Math.max(glassSize.height, 0),
-  };
+  const adjustedSize = useMemo(
+    () => ({
+      width:
+        style.position !== 'fixed'
+          ? '100%'
+          : style.width
+            ? style.width
+            : Math.max(glassSize.width, 0),
+      height:
+        style.position !== 'fixed'
+          ? '100%'
+          : style.height
+            ? style.height
+            : Math.max(glassSize.height, 0),
+    }),
+    [style.position, style.width, style.height, glassSize.width, glassSize.height]
+  );
 
   // Memoize expensive gradient calculations
   const gradientValues = useMemo(() => {
@@ -252,15 +260,30 @@ export function AtomixGlass({
       hover2: isActive ? 0.5 : 0,
       hover3: isHovered ? 0.4 : isActive ? 0.8 : 0,
       base: isOverLight ? overLightOpacity || BASE_OVER_LIGHT_OPACITY : 0,
-      over: isOverLight ? (overLightOpacity || BASE_OVER_LIGHT_OPACITY) * OVER_OPACITY_MULTIPLIER : 0,
+      over: isOverLight
+        ? (overLightOpacity || BASE_OVER_LIGHT_OPACITY) * OVER_OPACITY_MULTIPLIER
+        : 0,
     };
   }, [isHovered, isActive, isOverLight, overLightConfig.opacity]);
 
   // Memoize CSS variables object
   const glassVars = useMemo(() => {
-    const whiteColor = '255, 255, 255';
-    const blackColor = '0, 0, 0';
-    const { borderGradientAngle, borderStop1, borderStop2, borderOpacities, hoverPositions, basePosition, mx, my, absMx, absMy } = gradientValues;
+    const whiteColor = ATOMIX_GLASS.CONSTANTS.PALETTE.WHITE;
+    const blackColor = ATOMIX_GLASS.CONSTANTS.PALETTE.BLACK;
+    const {
+      borderGradientAngle,
+      borderStop1,
+      borderStop2,
+      borderOpacities,
+      hoverPositions,
+      basePosition,
+      mx,
+      my,
+      absMx,
+      absMy,
+    } = gradientValues;
+
+    const configBorderOpacity = overLightConfig?.borderOpacity ?? 1;
 
     return {
       '--atomix-glass-radius': `${effectiveCornerRadius}px`,
@@ -268,12 +291,14 @@ export function AtomixGlass({
       '--atomix-glass-position': positionStyles.position,
       '--atomix-glass-top': positionStyles.top !== 'fixed' ? `${positionStyles.top}px` : '0',
       '--atomix-glass-left': positionStyles.left !== 'fixed' ? `${positionStyles.left}px` : '0',
-      '--atomix-glass-width': style.position !== 'fixed' ? adjustedSize.width : `${adjustedSize.width}px`,
-      '--atomix-glass-height': style.position !== 'fixed' ? adjustedSize.height : `${adjustedSize.height}px`,
+      '--atomix-glass-width':
+        style.position !== 'fixed' ? adjustedSize.width : `${adjustedSize.width}px`,
+      '--atomix-glass-height':
+        style.position !== 'fixed' ? adjustedSize.height : `${adjustedSize.height}px`,
       '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.09375rem)',
       '--atomix-glass-blend-mode': isOverLight ? 'multiply' : 'overlay',
-      '--atomix-glass-border-gradient-1': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${borderOpacities[0]}) ${borderStop1}%, rgba(${whiteColor}, ${borderOpacities[1]}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
-      '--atomix-glass-border-gradient-2': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${borderOpacities[2]}) ${borderStop1}%, rgba(${whiteColor}, ${borderOpacities[3]}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
+      '--atomix-glass-border-gradient-1': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[0] ?? 1) * configBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[1] ?? 1) * configBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
+      '--atomix-glass-border-gradient-2': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[2] ?? 1) * configBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[3] ?? 1) * configBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
       '--atomix-glass-hover-1-opacity': opacityValues.hover1,
       '--atomix-glass-hover-1-gradient': isOverLight
         ? `radial-gradient(circle at ${hoverPositions.hover1.x}% ${hoverPositions.hover1.y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_END}%)`
@@ -295,14 +320,26 @@ export function AtomixGlass({
         ? `radial-gradient(circle at ${basePosition.x}% ${basePosition.y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_START_BASE + absMx * ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_START_MULTIPLIER}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_MID_STOP}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_END_BASE + absMy * ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_END_MULTIPLIER}) 100%)`
         : `rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.WHITE_OPACITY})`,
     } as React.CSSProperties;
-  }, [gradientValues, opacityValues, effectiveCornerRadius, transformStyle, positionStyles, adjustedSize, style.position, isOverLight]);
+  }, [
+    gradientValues,
+    opacityValues,
+    effectiveCornerRadius,
+    transformStyle,
+    positionStyles,
+    adjustedSize,
+    style.position,
+    isOverLight,
+    overLightConfig.borderOpacity,
+  ]);
 
   // Helper function to render background layers
   const renderBackgroundLayer = (layerType: 'dark' | 'black') => (
     <div
       className={[
         ATOMIX_GLASS.BACKGROUND_LAYER_CLASS,
-        layerType === 'dark' ? ATOMIX_GLASS.BACKGROUND_LAYER_DARK_CLASS : ATOMIX_GLASS.BACKGROUND_LAYER_BLACK_CLASS,
+        layerType === 'dark'
+          ? ATOMIX_GLASS.BACKGROUND_LAYER_DARK_CLASS
+          : ATOMIX_GLASS.BACKGROUND_LAYER_BLACK_CLASS,
         isOverLight
           ? ATOMIX_GLASS.BACKGROUND_LAYER_OVER_LIGHT_CLASS
           : ATOMIX_GLASS.BACKGROUND_LAYER_HIDDEN_CLASS,
@@ -342,7 +379,7 @@ export function AtomixGlass({
             ? 0
             : mode === 'shader'
               ? displacementScale * ATOMIX_GLASS.CONSTANTS.MULTIPLIERS.SHADER_DISPLACEMENT
-              : overLightConfig.isOverLight
+              : isOverLight
                 ? displacementScale * ATOMIX_GLASS.CONSTANTS.MULTIPLIERS.OVER_LIGHT_DISPLACEMENT
                 : displacementScale
         }
@@ -350,7 +387,7 @@ export function AtomixGlass({
         saturation={
           effectiveHighContrast
             ? ATOMIX_GLASS.CONSTANTS.SATURATION.HIGH_CONTRAST
-            : overLightConfig.isOverLight
+            : isOverLight
               ? saturation * overLightConfig.saturationBoost
               : saturation
         }
@@ -369,10 +406,15 @@ export function AtomixGlass({
         onMouseLeave={handleMouseLeave}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
-        active={isActive}
         isHovered={isHovered}
         isActive={isActive}
-        overLight={overLightConfig.isOverLight}
+        overLight={isOverLight}
+        overLightConfig={{
+          contrast: overLightConfig.contrast,
+          brightness: overLightConfig.brightness,
+          shadowIntensity: overLightConfig.shadowIntensity,
+          borderOpacity: overLightConfig.borderOpacity,
+        }}
         onClick={onClick}
         mode={mode}
         transform={baseStyle.transform}
@@ -407,8 +449,7 @@ export function AtomixGlass({
             className={ATOMIX_GLASS.OVERLAY_HIGHLIGHT_CLASS}
             style={{
               opacity:
-                opacityValues.over *
-                ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.OPACITY_MULTIPLIER,
+                opacityValues.over * ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.OPACITY_MULTIPLIER,
               background: `radial-gradient(circle at ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.POSITION_X}% ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.POSITION_Y}%, rgba(255, 255, 255, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.WHITE_OPACITY}) 0%, transparent ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.STOP}%)`,
             }}
           />

@@ -59,8 +59,8 @@ export const BackgroundWrapper: React.FC<BackgroundWrapperProps> = ({
   overlay = false,
   overlayColor = 'rgba(0, 0, 0, 0.5)',
   overlayOpacity = 0.5,
-  height = '98vh',
-  width = '98vw',
+  height = '100vh',
+  width = '100vw',
   borderRadius = '0',
   padding = '0',
   className = '',
@@ -69,35 +69,35 @@ export const BackgroundWrapper: React.FC<BackgroundWrapperProps> = ({
   'aria-hidden': ariaHidden,
 }) => {
   // Use the background image if provided, otherwise use the indexed one from backgroundImages
-  const bgImage = backgroundImage || (backgroundIndex !== undefined ? backgroundImages[backgroundIndex] : backgroundImages[0]);
-  
+  const bgImage =
+    backgroundImage ||
+    (backgroundIndex !== undefined ? backgroundImages[backgroundIndex] : backgroundImages[0]);
+
   const bgStyle = {
     backgroundImage: bgImage ? `url(${bgImage})` : undefined,
     height,
     width,
     borderRadius,
     padding,
-    ...style
+    ...style,
   };
 
   return (
-    <div 
+    <div
       className={`u-relative u-overflow-hidden ${className}`}
       style={bgStyle}
       aria-hidden={ariaHidden}
     >
       {overlay && (
-        <div 
+        <div
           className="u-absolute u-inset-0"
-          style={{ 
-            backgroundColor: overlayColor, 
-            opacity: overlayOpacity 
-          }} 
+          style={{
+            backgroundColor: overlayColor,
+            opacity: overlayOpacity,
+          }}
         />
       )}
-      <div className="u-relative u-z-10">
-        {children}
-      </div>
+      <div className="u-relative u-z-10">{children}</div>
     </div>
   );
 };
@@ -124,31 +124,34 @@ export const StoryContainer: React.FC<StoryContainerProps> = ({
   parallaxStrength = 20,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!containerRef.current || !parallax) return;
-    
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    const moveX = ((x - centerX) / centerX) * parallaxStrength;
-    const moveY = ((y - centerY) / centerY) * parallaxStrength;
-    
-    setPosition({ x: -moveX, y: -moveY });
-  }, [parallax, parallaxStrength]);
+
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!containerRef.current || !parallax) return;
+
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const moveX = ((x - centerX) / centerX) * parallaxStrength;
+      const moveY = ((y - centerY) / centerY) * parallaxStrength;
+
+      setPosition({ x: -moveX, y: -moveY });
+    },
+    [parallax, parallaxStrength]
+  );
 
   useEffect(() => {
     if (!parallax) return;
-    
+
     const container = containerRef.current;
     if (!container) return;
-    
+
     container.addEventListener('mousemove', handleMouseMove as any);
     return () => {
       container.removeEventListener('mousemove', handleMouseMove as any);
@@ -156,17 +159,17 @@ export const StoryContainer: React.FC<StoryContainerProps> = ({
   }, [handleMouseMove, parallax]);
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className={`u-relative u-overflow-hidden u-w-full u-h-screen ${className}`}
       style={style}
     >
       {parallax ? (
-        <div 
+        <div
           className="u-absolute u-inset-0 u-transition-transform u-duration-100 u-ease-linear"
-          style={{ 
+          style={{
             transform: `translate(${position.x}px, ${position.y}px)`,
-            zIndex: -1
+            zIndex: -1,
           }}
         >
           {children}

@@ -24,7 +24,7 @@ const meta: Meta<typeof AtomixGlass> = {
   title: 'Components/AtomixGlass/Examples',
   component: AtomixGlass,
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
     docs: {
       description: {
         component:
@@ -51,24 +51,19 @@ export const HeroExample: Story = {
       }
     >
       <div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            textAlign: 'center',
-          }}
-        >
+        <div style={{ maxWidth: '900px' }} className="u-mx-auto">
           <AtomixGlass
             displacementScale={100}
             blurAmount={1}
             cornerRadius={30}
             mode="shader"
             shaderVariant="premiumGlass"
-            style={{ maxWidth: '900px' }}
             onClick={() => {}}
           >
-            <div className="u-p-6 u-text-white" style={{ padding: '48px 40px', textAlign: 'center' }}>
+            <div
+              className="u-p-6 u-text-white"
+              style={{ padding: '48px 40px', textAlign: 'center' }}
+            >
               <div
                 style={{
                   width: '96px',
@@ -112,10 +107,7 @@ export const HeroExample: Story = {
                 Create stunning interfaces with the AtomixGlass component. Perfect for modern, sleek
                 designs that stand out.
               </p>
-              <div
-                className="u-flex u-gap-3 u-justify-center u-flex-wrap"
-                style={{ gap: '16px' }}
-              >
+              <div className="u-flex u-gap-3 u-justify-center u-flex-wrap" style={{ gap: '16px' }}>
                 <Button glass size="lg">
                   Get Started
                 </Button>
@@ -164,7 +156,7 @@ export const VideoBackground: Story = {
     };
 
     return (
-      <div style={{ position: 'relative', height: '80vh', width: '90vw', overflow: 'hidden' }}>
+      <div style={{ position: 'relative', height: '100vh', width: '100vw', overflow: 'hidden' }}>
         {/* Video Background */}
         <video
           autoPlay
@@ -181,7 +173,10 @@ export const VideoBackground: Story = {
             zIndex: -1,
           }}
         >
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+          <source
+            src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+            type="video/mp4"
+          />
         </video>
 
         <div
@@ -396,7 +391,6 @@ export const DashboardCards: Story = {
         backgroundImage={
           'https://images.unsplash.com/photo-1614188973043-4ed7d383de37?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1470'
         }
-        height="90vh"
         style={{ padding: '40px' }}
       >
         <div style={{ maxWidth: '1200px', margin: '0 auto', color: 'white' }}>
@@ -562,8 +556,9 @@ export const ProductCard: Story = {
           'https://images.unsplash.com/photo-1711779321812-59cdf38ab31f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132'
         }
       >
-        <AtomixGlass displacementScale={50} blurAmount={1.5} mode="standard" elasticity={0}>
-          <div className="u-p-3" style={{ width: '300px' }}>
+        <div style={{ width: '300px' }} className="u-mx-auto">
+          <AtomixGlass displacementScale={50} blurAmount={1.5} mode="standard" elasticity={0}>
+            <div className="u-p-3">
             {/* Product Image */}
             <div
               className="u-w-100 u-rounded-3"
@@ -632,7 +627,9 @@ export const ProductCard: Story = {
 
             {/* Quantity */}
             <div className="u-mb-2">
-              <label className="u-block u-text-7 u-font-semibold u-mb-1 u-text-white">Quantity</label>
+              <label className="u-block u-text-7 u-font-semibold u-mb-1 u-text-white">
+                Quantity
+              </label>
               <div className="u-flex u-items-center u-gap-2">
                 <Button onClick={() => setQuantity(Math.max(1, quantity - 1))} glass>
                   −
@@ -666,6 +663,7 @@ export const ProductCard: Story = {
             </Button>
           </div>
         </AtomixGlass>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -744,11 +742,12 @@ export const NotificationCenter: Story = {
           'https://images.unsplash.com/photo-1712230983973-6bf75ad1476e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132'
         }
       >
-        <AtomixGlass displacementScale={70} blurAmount={1} elasticity={0} mode="prominent">
-          <div
-            className="u-rounded-4 u-overflow-hidden u-text-success-emphasis"
-            style={{ background: 'color-mix(in srgb, var(--atomix-success) 10%, transparent)' }}
-          >
+        <div style={{ maxWidth: '400px', width: '100%' }} className="u-mx-auto">
+          <AtomixGlass displacementScale={70} blurAmount={1} elasticity={0} mode="prominent">
+            <div
+              className="u-rounded-4 u-overflow-hidden u-text-success-emphasis"
+              style={{ background: 'color-mix(in srgb, var(--atomix-success) 10%, transparent)' }}
+            >
             {/* Header */}
             <div
               className="u-p-4 u-flex u-justify-between u-items-center"
@@ -881,8 +880,9 @@ export const NotificationCenter: Story = {
                 ))
               )}
             </div>
-          </div>
-        </AtomixGlass>
+            </div>
+          </AtomixGlass>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -927,15 +927,16 @@ export const LoginForm: Story = {
         style={{ overflow: 'auto' }}
       >
         <div className="u-py-6 u-text-white">
-          <AtomixGlass
-            displacementScale={50}
-            blurAmount={1}
-            saturation={130}
-            aberrationIntensity={2}
-            cornerRadius={24}
-            mode="standard"
-          >
-            <div className="u-p-4" style={{ width: '350px' }}>
+          <div style={{ maxWidth: '380px' }} className="u-mx-auto">
+            <AtomixGlass
+              displacementScale={50}
+              blurAmount={1}
+              saturation={130}
+              aberrationIntensity={2}
+              cornerRadius={24}
+              mode="standard"
+            >
+              <div className="u-p-4">
               {/* Logo/Header */}
               <div className="u-text-center u-mb-5">
                 <div
@@ -1206,14 +1207,15 @@ export const MusicPlayer: Story = {
           'https://images.unsplash.com/photo-1586057281167-6a28377c4023?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987'
         }
       >
-        <AtomixGlass
-          displacementScale={55}
-          blurAmount={3}
-          cornerRadius={28}
-          elasticity={0.01}
-          mode="standard"
-        >
-          <div className="u-p-3" style={{ width: '350px' }}>
+        <div style={{ maxWidth: '380px' }} className="u-mx-auto">
+          <AtomixGlass
+            displacementScale={55}
+            blurAmount={3}
+            cornerRadius={28}
+            elasticity={0.01}
+            mode="standard"
+          >
+            <div className="u-p-3">
             {/* Album Art */}
             <AtomixGlass displacementScale={0} blurAmount={0} cornerRadius={20} mode="standard">
               <div
@@ -1248,7 +1250,10 @@ export const MusicPlayer: Story = {
               >
                 Summer Vibes
               </h2>
-              <p className="u-m-0 u-opacity-70 u-text-6" style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.85)' }}>
+              <p
+                className="u-m-0 u-opacity-70 u-text-6"
+                style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.85)' }}
+              >
                 The Atomix Band
               </p>
             </div>
@@ -1432,8 +1437,9 @@ export const MusicPlayer: Story = {
               />
               <span style={{ fontSize: '14px', opacity: 0.6, minWidth: '35px' }}>{volume}%</span>
             </div>
-          </div>
-        </AtomixGlass>
+            </div>
+          </AtomixGlass>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -1509,9 +1515,8 @@ export const PricingTable: Story = {
     return (
       <div
         style={{
-          height: '95vh',
-          width: '97vw',
-          borderRadius: '12px',
+          height: '100vh',
+          width: '100vw',
           overflow: 'auto',
           backgroundImage: `url('https://images.unsplash.com/photo-1658852528450-35115f3c01f3?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1740')`,
           backgroundSize: 'cover',
@@ -1853,13 +1858,14 @@ export const ChatInterface: Story = {
           'https://images.unsplash.com/photo-1671509774803-1640e8853b50?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1364'
         }
       >
-        <AtomixGlass
-          displacementScale={100}
-          blurAmount={1}
-          cornerRadius={24}
-          elasticity={0.1}
-          mode="prominent"
-        >
+        <div style={{ maxWidth: '450px', width: '100%' }} className="u-mx-auto">
+          <AtomixGlass
+            displacementScale={100}
+            blurAmount={1}
+            cornerRadius={24}
+            elasticity={0.1}
+            mode="prominent"
+          >
           <span
             style={{
               background: 'var(--atomix-body-bg)',
@@ -1939,7 +1945,14 @@ export const ChatInterface: Story = {
                 >
                   Alex Johnson
                 </h3>
-                <p style={{ margin: 0, fontSize: '14px', opacity: 0.8, color: 'rgba(255, 255, 255, 0.85)' }}>
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: '14px',
+                    opacity: 0.8,
+                    color: 'rgba(255, 255, 255, 0.85)',
+                  }}
+                >
                   {onlineStatus ? 'Active now' : 'Offline'}
                 </p>
               </div>
@@ -2128,7 +2141,8 @@ export const ChatInterface: Story = {
               />
             </div>
           </div>
-        </AtomixGlass>
+          </AtomixGlass>
+        </div>
 
         <style>{`
           @keyframes slideIn {
@@ -2200,15 +2214,15 @@ export const ProfileCard: Story = {
         overlayOpacity={0.3}
         overlayColor="var(--atomix-body-bg)"
       >
-        <AtomixGlass
-          displacementScale={45}
-          blurAmount={5}
-          cornerRadius={24}
-          mode="standard"
-          style={{ width: '420px' }}
-          elasticity={0.05}
-          onClick={() => {}}
-        >
+        <div style={{ width: '420px', maxWidth: '100%' }} className="u-mx-auto">
+          <AtomixGlass
+            displacementScale={45}
+            blurAmount={5}
+            cornerRadius={24}
+            mode="standard"
+            elasticity={0.05}
+            onClick={() => {}}
+          >
           {/* Cover Image */}
           <div
             style={{
@@ -2274,10 +2288,24 @@ export const ProfileCard: Story = {
               >
                 Limon Khan
               </h2>
-              <p style={{ margin: '0 0 10px 0', fontSize: '15px', opacity: 0.9, color: 'rgba(255, 255, 255, 0.9)' }}>
+              <p
+                style={{
+                  margin: '0 0 10px 0',
+                  fontSize: '15px',
+                  opacity: 0.9,
+                  color: 'rgba(255, 255, 255, 0.9)',
+                }}
+              >
                 Senior Frontend Developer
               </p>
-              <p style={{ margin: 0, fontSize: '14px', opacity: 0.8, color: 'rgba(255, 255, 255, 0.85)' }}>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: '14px',
+                  opacity: 0.8,
+                  color: 'rgba(255, 255, 255, 0.85)',
+                }}
+              >
                 <Icon name="Globe" /> BANGLADESH, Dhaka • <Icon name="Clock" /> GMT+5
               </p>
             </div>
@@ -2450,6 +2478,7 @@ export const ProfileCard: Story = {
             )}
           </div>
         </AtomixGlass>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -2495,19 +2524,20 @@ export const SettingsPanel: Story = {
           'https://images.unsplash.com/photo-1589083564233-216e84045fc0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2670'
         }
         height="90vh"
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}
       >
-        <AtomixGlass
-          displacementScale={45}
-          blurAmount={1}
-          cornerRadius={24}
-          mode="standard"
-          style={{ width: '550px' }}
-        >
+        <div className="u-mx-auto u-py-6" style={{ maxWidth: '550px' }}>
+          <AtomixGlass
+            displacementScale={45}
+            blurAmount={1}
+            cornerRadius={24}
+            mode="standard"
+          >
           <div style={{ padding: '32px' }}>
             {/* Header */}
             <div className="u-mb-5">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}
+              >
                 <div
                   style={{
                     width: '48px',
@@ -2536,7 +2566,10 @@ export const SettingsPanel: Story = {
                   Settings
                 </h2>
               </div>
-              <p className="u-m-0 u-text-6 u-opacity-70" style={{ fontSize: '15px', color: 'rgba(255, 255, 255, 0.85)' }}>
+              <p
+                className="u-m-0 u-text-6 u-opacity-70"
+                style={{ fontSize: '15px', color: 'rgba(255, 255, 255, 0.85)' }}
+              >
                 Manage your account preferences and settings
               </p>
             </div>
@@ -2838,7 +2871,8 @@ export const SettingsPanel: Story = {
               </button>
             </div>
           </div>
-        </AtomixGlass>
+          </AtomixGlass>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -2895,15 +2929,14 @@ export const EventCard: Story = {
           'https://images.unsplash.com/photo-1748365335261-8c87bc861af1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2832'
         }
         height="90vh"
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       >
-        <AtomixGlass
-          displacementScale={45}
-          blurAmount={4}
-          cornerRadius={24}
-          mode="standard"
-          style={{ width: '480px' }}
-        >
+        <div className="u-mx-auto u-py-6" style={{ maxWidth: '480px' }}>
+          <AtomixGlass
+            displacementScale={45}
+            blurAmount={4}
+            cornerRadius={24}
+            mode="standard"
+          >
           {/* Event Image */}
           <div
             style={{
@@ -3216,7 +3249,8 @@ export const EventCard: Story = {
               </button>
             </div>
           </div>
-        </AtomixGlass>
+          </AtomixGlass>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -3276,14 +3310,14 @@ export const SocialMediaPost: Story = {
         }
         overlay={true}
       >
-        <AtomixGlass
-          displacementScale={200}
-          blurAmount={5}
-          cornerRadius={24}
-          mode="standard"
-          style={{ width: '450px' }}
-          elasticity={0}
-        >
+        <div className="u-mx-auto u-py-6" style={{ maxWidth: '450px' }}>
+          <AtomixGlass
+            displacementScale={200}
+            blurAmount={5}
+            cornerRadius={24}
+            mode="standard"
+            elasticity={0}
+          >
           {/* Post Header */}
           <div
             style={{
@@ -3324,7 +3358,14 @@ export const SocialMediaPost: Story = {
               >
                 Limon Khan
               </h3>
-              <p style={{ margin: 0, fontSize: '14px', opacity: 0.8, color: 'rgba(255, 255, 255, 0.85)' }}>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: '14px',
+                  opacity: 0.8,
+                  color: 'rgba(255, 255, 255, 0.85)',
+                }}
+              >
                 Frontend Developer • 6 hours ago
               </p>
             </div>
@@ -3550,7 +3591,8 @@ export const SocialMediaPost: Story = {
               </div>
             </div>
           )}
-        </AtomixGlass>
+          </AtomixGlass>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -3628,14 +3670,15 @@ export const WeatherWidget: Story = {
           'https://images.unsplash.com/photo-1671521739306-65c98fe91cf8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2071'
         }
       >
-        <AtomixGlass
-          displacementScale={60}
-          blurAmount={1.1}
-          saturation={190}
-          cornerRadius={32}
-          mode="standard"
-          elasticity={0}
-        >
+        <div className="u-mx-auto u-py-6" style={{ maxWidth: '500px' }}>
+          <AtomixGlass
+            displacementScale={60}
+            blurAmount={1.1}
+            saturation={190}
+            cornerRadius={32}
+            mode="standard"
+            elasticity={0}
+          >
           <div style={{ padding: '20px', minWidth: '380px', maxWidth: '500px' }}>
             {/* Header */}
             <div
@@ -3663,7 +3706,14 @@ export const WeatherWidget: Story = {
                 >
                   Weather
                 </h2>
-                <p style={{ margin: 0, fontSize: '14px', opacity: 0.8, color: 'rgba(255, 255, 255, 0.85)' }}>
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: '14px',
+                    opacity: 0.8,
+                    color: 'rgba(255, 255, 255, 0.85)',
+                  }}
+                >
                   📍 {currentWeather.location}
                 </p>
               </div>
@@ -3803,7 +3853,8 @@ export const WeatherWidget: Story = {
               </div>
             </div>
           </div>
-        </AtomixGlass>
+          </AtomixGlass>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -3894,14 +3945,15 @@ export const SearchResults: Story = {
           'https://images.unsplash.com/photo-1751624534511-63da274d9e15?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2376'
         }
       >
-        <AtomixGlass
-          displacementScale={30}
-          blurAmount={2}
-          cornerRadius={30}
-          mode="standard"
-          onClick={() => {}}
-          elasticity={0}
-        >
+        <div className="u-mx-auto u-py-6" style={{ maxWidth: '900px' }}>
+          <AtomixGlass
+            displacementScale={30}
+            blurAmount={2}
+            cornerRadius={30}
+            mode="standard"
+            onClick={() => {}}
+            elasticity={0}
+          >
           <div
             className=""
             style={{
@@ -3913,7 +3965,9 @@ export const SearchResults: Story = {
             }}
           >
             {/* Search Header */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+            <div
+              style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}
+            >
               <div
                 style={{
                   width: '48px',
@@ -4070,7 +4124,8 @@ export const SearchResults: Story = {
               ))}
             </div>
           </div>
-        </AtomixGlass>
+          </AtomixGlass>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -4133,310 +4188,326 @@ export const PaymentForm: Story = {
         width="90vw"
         height="97vh"
       >
-        <AtomixGlass
-          displacementScale={120}
-          blurAmount={2}
-          saturation={180}
-          cornerRadius={28}
-          mode="standard"
-          shaderVariant="premiumGlass"
-          elasticity={0}
-        >
-          <div
-            className="u-p-3 u-position-relative u-rounded-5"
-            style={{ minWidth: '300px', maxWidth: '400px' }}
+        <div style={{ minWidth: '300px', maxWidth: '400px' }} className="u-mx-auto">
+          <AtomixGlass
+            displacementScale={120}
+            blurAmount={2}
+            saturation={180}
+            cornerRadius={28}
+            mode="standard"
+            shaderVariant="premiumGlass"
+            elasticity={0}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+            <div className="u-p-3 u-position-relative u-rounded-5">
               <div
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '14px',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                  boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
-                }}
-              >
-                💳
-              </div>
-              <div>
-                <h2
-                  className="u-m-0 u-text-4 u-font-bold"
-                  style={{
-                    fontSize: '24px',
-                    marginBottom: '4px',
-                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                >
-                  Payment Details
-                </h2>
-                <p className="u-m-0 u-text-7 u-opacity-70" style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.85)' }}>
-                  Complete your purchase securely
-                </p>
-              </div>
-            </div>
-
-            {/* Card Preview */}
-            <AtomixGlass
-              mode="standard"
-              displacementScale={0}
-              blurAmount={0}
-              saturation={200}
-              elasticity={0}
-            >
-              <div
-                style={{
-                  padding: '20px',
-                  borderRadius: '16px',
-                  marginBottom: '16px',
-                  minHeight: '200px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  position: 'relative',
-                  background: 'var(--atomix-dark-gradient)',
-                  overflow: 'hidden',
-                  opacity: 0.9,
-                }}
+                style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}
               >
                 <div
                   style={{
-                    position: 'absolute',
-                    top: '-50px',
-                    right: '-50px',
-                    width: '200px',
-                    height: '200px',
-                    borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.7)',
-                  }}
-                />
-                <div
-                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}
-                >
-                  <div style={{ fontSize: '14px', fontWeight: 600, opacity: 0.9 }}>CREDIT CARD</div>
-                  <div style={{ fontSize: '32px' }}>💳</div>
-                </div>
-                <div>
-                  <div
-                    style={{
-                      fontSize: '24px',
-                      fontWeight: 600,
-                      marginBottom: '10px',
-                      letterSpacing: '2px',
-                    }}
-                  >
-                    {cardNumber || '•••• •••• •••• ••••'}
-                  </div>
-                  <div
-                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end' }}
-                  >
-                    <div>
-                      <div style={{ fontSize: '10px', opacity: 0.7, marginBottom: '4px' }}>
-                        CARD HOLDER
-                      </div>
-                      <div
-                        style={{ fontSize: '14px', fontWeight: 600, textTransform: 'uppercase' }}
-                      >
-                        {cardName || 'YOUR NAME'}
-                      </div>
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '10px', opacity: 0.7, marginBottom: '4px' }}>
-                        EXPIRES
-                      </div>
-                      <div style={{ fontSize: '14px', fontWeight: 600 }}>
-                        {expiryDate || 'MM/YY'}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </AtomixGlass>
-            {/* Form */}
-            <div className="u-flex u-flex-column u-gap-3">
-              <div>
-                <label className="u-block u-text-7 u-font-semibold u-mb-2">Card Number</label>
-                <Input
-                  variant="primary"
-                  glass={
-                    {
-                      elasticity: 0,
-                    } as any
-                  }
-                  type="text"
-                  value={cardNumber}
-                  onChange={e => setCardNumber(formatCardNumber(e.target.value))}
-                  placeholder="1234 5678 9012 3456"
-                  maxLength={19}
-                />
-              </div>
-
-              <div>
-                <label className="u-block u-text-7 u-font-semibold u-mb-2">Cardholder Name</label>
-                <Input
-                  variant="primary"
-                  glass={
-                    {
-                      elasticity: 0,
-                    } as any
-                  }
-                  type="text"
-                  value={cardName}
-                  onChange={e => setCardName(e.target.value)}
-                  placeholder="John Doe"
-                />
-              </div>
-
-              <div className="u-grid u-gap-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
-                <div>
-                  <label
-                    style={{
-                      display: 'block',
-                      fontSize: '14px',
-                      fontWeight: 600,
-                      marginBottom: '8px',
-                    }}
-                  >
-                    Expiry Date
-                  </label>
-                  <Input
-                    variant="primary"
-                    glass={
-                      {
-                        elasticity: 0,
-                      } as any
-                    }
-                    type="text"
-                    value={expiryDate}
-                    onChange={e => setExpiryDate(formatExpiry(e.target.value))}
-                    placeholder="MM/YY"
-                    maxLength={5}
-                  />
-                </div>
-                <div>
-                  <label
-                    style={{
-                      display: 'block',
-                      fontSize: '14px',
-                      fontWeight: 600,
-                      marginBottom: '8px',
-                    }}
-                  >
-                    CVV
-                  </label>
-                  <Input
-                    variant="primary"
-                    glass={
-                      {
-                        elasticity: 0,
-                      } as any
-                    }
-                    type="text"
-                    value={cvv}
-                    onChange={e => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                    placeholder="123"
-                    maxLength={4}
-                  />
-                </div>
-              </div>
-
-              {/* Save Card Option */}
-              <div
-                onClick={() => setSaveCard(!saveCard)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  padding: '8px',
-                  borderRadius: '12px',
-                  background: 'rgba(var(--atomix-primary-rgb),0.5)',
-                  cursor: 'pointer',
-                }}
-              >
-                <div
-                  style={{
-                    width: '20px',
-                    height: '20px',
-                    borderRadius: '6px',
-                    border: '2px solid rgba(255,255,255,0.3)',
-                    background: saveCard
-                      ? 'linear-gradient(135deg, var(--atomix-primary) 0%, var(--atomix-primary-hover) 100%)'
-                      : 'rgba(255,255,255,0.1)',
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '14px',
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '12px',
+                    fontSize: '24px',
+                    boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
                   }}
                 >
-                  {saveCard && '✓'}
+                  💳
                 </div>
-                <span style={{ fontSize: '14px' }}>Save card for future purchases</span>
+                <div>
+                  <h2
+                    className="u-m-0 u-text-4 u-font-bold"
+                    style={{
+                      fontSize: '24px',
+                      marginBottom: '4px',
+                      background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
+                  >
+                    Payment Details
+                  </h2>
+                  <p
+                    className="u-m-0 u-text-7 u-opacity-70"
+                    style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.85)' }}
+                  >
+                    Complete your purchase securely
+                  </p>
+                </div>
               </div>
 
-              {/* Amount Summary */}
-              <div
-                style={{
-                  padding: '14px',
-                  borderRadius: '16px',
-                  background: 'rgba(var(--atomix-primary-rgb),0.3)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                }}
+              {/* Card Preview */}
+              <AtomixGlass
+                mode="standard"
+                displacementScale={0}
+                blurAmount={0}
+                saturation={200}
+                elasticity={0}
               >
                 <div
                   style={{
+                    padding: '20px',
+                    borderRadius: '16px',
+                    marginBottom: '16px',
+                    minHeight: '200px',
                     display: 'flex',
+                    flexDirection: 'column',
                     justifyContent: 'space-between',
-                    marginBottom: '12px',
-                    fontSize: '14px',
+                    position: 'relative',
+                    background: 'var(--atomix-dark-gradient)',
+                    overflow: 'hidden',
+                    opacity: 0.9,
                   }}
                 >
-                  <span style={{ opacity: 0.7 }}>Subtotal</span>
-                  <span style={{ fontWeight: 600 }}>$129.00</span>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '-50px',
+                      right: '-50px',
+                      width: '200px',
+                      height: '200px',
+                      borderRadius: '50%',
+                      background: 'rgba(255,255,255,0.7)',
+                    }}
+                  />
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'start',
+                    }}
+                  >
+                    <div style={{ fontSize: '14px', fontWeight: 600, opacity: 0.9 }}>
+                      CREDIT CARD
+                    </div>
+                    <div style={{ fontSize: '32px' }}>💳</div>
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: 600,
+                        marginBottom: '10px',
+                        letterSpacing: '2px',
+                      }}
+                    >
+                      {cardNumber || '•••• •••• •••• ••••'}
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'end',
+                      }}
+                    >
+                      <div>
+                        <div style={{ fontSize: '10px', opacity: 0.7, marginBottom: '4px' }}>
+                          CARD HOLDER
+                        </div>
+                        <div
+                          style={{ fontSize: '14px', fontWeight: 600, textTransform: 'uppercase' }}
+                        >
+                          {cardName || 'YOUR NAME'}
+                        </div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '10px', opacity: 0.7, marginBottom: '4px' }}>
+                          EXPIRES
+                        </div>
+                        <div style={{ fontSize: '14px', fontWeight: 600 }}>
+                          {expiryDate || 'MM/YY'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </AtomixGlass>
+              {/* Form */}
+              <div className="u-flex u-flex-column u-gap-3">
+                <div>
+                  <label className="u-block u-text-7 u-font-semibold u-mb-2">Card Number</label>
+                  <Input
+                    variant="primary"
+                    glass={
+                      {
+                        elasticity: 0,
+                      } as any
+                    }
+                    type="text"
+                    value={cardNumber}
+                    onChange={e => setCardNumber(formatCardNumber(e.target.value))}
+                    placeholder="1234 5678 9012 3456"
+                    maxLength={19}
+                  />
+                </div>
+
+                <div>
+                  <label className="u-block u-text-7 u-font-semibold u-mb-2">Cardholder Name</label>
+                  <Input
+                    variant="primary"
+                    glass={
+                      {
+                        elasticity: 0,
+                      } as any
+                    }
+                    type="text"
+                    value={cardName}
+                    onChange={e => setCardName(e.target.value)}
+                    placeholder="John Doe"
+                  />
+                </div>
+
+                <div className="u-grid u-gap-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
+                  <div>
+                    <label
+                      style={{
+                        display: 'block',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        marginBottom: '8px',
+                      }}
+                    >
+                      Expiry Date
+                    </label>
+                    <Input
+                      variant="primary"
+                      glass={
+                        {
+                          elasticity: 0,
+                        } as any
+                      }
+                      type="text"
+                      value={expiryDate}
+                      onChange={e => setExpiryDate(formatExpiry(e.target.value))}
+                      placeholder="MM/YY"
+                      maxLength={5}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      style={{
+                        display: 'block',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        marginBottom: '8px',
+                      }}
+                    >
+                      CVV
+                    </label>
+                    <Input
+                      variant="primary"
+                      glass={
+                        {
+                          elasticity: 0,
+                        } as any
+                      }
+                      type="text"
+                      value={cvv}
+                      onChange={e => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                      placeholder="123"
+                      maxLength={4}
+                    />
+                  </div>
+                </div>
+
+                {/* Save Card Option */}
                 <div
+                  onClick={() => setSaveCard(!saveCard)}
                   style={{
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    marginBottom: '12px',
-                    fontSize: '14px',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '8px',
+                    borderRadius: '12px',
+                    background: 'rgba(var(--atomix-primary-rgb),0.5)',
+                    cursor: 'pointer',
                   }}
                 >
-                  <span style={{ opacity: 0.7 }}>Tax</span>
-                  <span style={{ fontWeight: 600 }}>$12.90</span>
+                  <div
+                    style={{
+                      width: '20px',
+                      height: '20px',
+                      borderRadius: '6px',
+                      border: '2px solid rgba(255,255,255,0.3)',
+                      background: saveCard
+                        ? 'linear-gradient(135deg, var(--atomix-primary) 0%, var(--atomix-primary-hover) 100%)'
+                        : 'rgba(255,255,255,0.1)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '12px',
+                    }}
+                  >
+                    {saveCard && '✓'}
+                  </div>
+                  <span style={{ fontSize: '14px' }}>Save card for future purchases</span>
                 </div>
+
+                {/* Amount Summary */}
                 <div
                   style={{
-                    height: '1px',
-                    background: 'rgba(255,255,255,0.2)',
-                    margin: '12px 0',
+                    padding: '14px',
+                    borderRadius: '16px',
+                    background: 'rgba(var(--atomix-primary-rgb),0.3)',
+                    border: '1px solid rgba(255,255,255,0.1)',
                   }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      marginBottom: '12px',
+                      fontSize: '14px',
+                    }}
+                  >
+                    <span style={{ opacity: 0.7 }}>Subtotal</span>
+                    <span style={{ fontWeight: 600 }}>$129.00</span>
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      marginBottom: '12px',
+                      fontSize: '14px',
+                    }}
+                  >
+                    <span style={{ opacity: 0.7 }}>Tax</span>
+                    <span style={{ fontWeight: 600 }}>$12.90</span>
+                  </div>
+                  <div
+                    style={{
+                      height: '1px',
+                      background: 'rgba(255,255,255,0.2)',
+                      margin: '12px 0',
+                    }}
+                  />
+                  <div
+                    style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px' }}
+                  >
+                    <span style={{ fontWeight: 700 }}>Total</span>
+                    <span style={{ fontWeight: 700 }}>$141.90</span>
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <Button
+                  label="Pay 41.90"
+                  variant="primary"
+                  className="u-w-100"
+                  glass={{ elasticity: 0 }}
                 />
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px' }}>
-                  <span style={{ fontWeight: 700 }}>Total</span>
-                  <span style={{ fontWeight: 700 }}>$141.90</span>
+
+                <div style={{ textAlign: 'center', fontSize: '12px', opacity: 0.6 }}>
+                  🔒 Secured by 256-bit SSL encryption
                 </div>
-              </div>
-
-              {/* Submit Button */}
-              <Button
-                label="Pay 41.90"
-                variant="primary"
-                className="u-w-100"
-                glass={{ elasticity: 0 }}
-              />
-
-              <div style={{ textAlign: 'center', fontSize: '12px', opacity: 0.6 }}>
-                🔒 Secured by 256-bit SSL encryption
               </div>
             </div>
-          </div>
-        </AtomixGlass>
+          </AtomixGlass>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -4502,13 +4573,14 @@ export const NewsletterSubscription: Story = {
         }
         overlay={false}
       >
-        <AtomixGlass
-          displacementScale={100}
-          blurAmount={3}
-          cornerRadius={32}
-          mode="standard"
-          elasticity={0}
-        >
+        <div className="u-mx-auto u-py-6" style={{ maxWidth: '500px' }}>
+          <AtomixGlass
+            displacementScale={100}
+            blurAmount={3}
+            cornerRadius={32}
+            mode="standard"
+            elasticity={0}
+          >
           <div
             style={{
               padding: '30px',
@@ -4525,30 +4597,35 @@ export const NewsletterSubscription: Story = {
                   <div style={{ fontSize: '50px', marginBottom: '10px' }}>
                     <Icon name="Chats" />
                   </div>
-                <h2
-                  style={{
-                    margin: '0 0 16px 0',
-                    fontSize: '36px',
-                    fontWeight: 700,
-                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                >
-                  Join Our Newsletter
-                </h2>
-                <p style={{ margin: 0, fontSize: '17px', opacity: 0.9, lineHeight: 1.7, color: 'rgba(255, 255, 255, 0.9)' }}>
-                  Subscribe to get exclusive content, tips, and updates delivered to your inbox
-                </p>
+                  <h2
+                    style={{
+                      margin: '0 0 16px 0',
+                      fontSize: '36px',
+                      fontWeight: 700,
+                      background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
+                  >
+                    Join Our Newsletter
+                  </h2>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: '17px',
+                      opacity: 0.9,
+                      lineHeight: 1.7,
+                      color: 'rgba(255, 255, 255, 0.9)',
+                    }}
+                  >
+                    Subscribe to get exclusive content, tips, and updates delivered to your inbox
+                  </p>
                 </div>
 
                 {/* Email Input */}
                 <div style={{ marginBottom: '20px' }}>
-                  <div
-                    style={{ position: 'relative' }}
-                    className="u-flex u-gap-2 u-items-center"
-                  >
+                  <div style={{ position: 'relative' }} className="u-flex u-gap-2 u-items-center">
                     <div className="u-w-100">
                       <Input
                         variant="brand"
@@ -4698,7 +4775,8 @@ export const NewsletterSubscription: Story = {
               </div>
             )}
           </div>
-        </AtomixGlass>
+          </AtomixGlass>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -4763,15 +4841,18 @@ export const ProgressTracker: Story = {
           'https://images.unsplash.com/photo-1656873186004-f53c335fa348?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2532'
         }
       >
-        <AtomixGlass
-          displacementScale={28}
-          blurAmount={18}
-          saturation={1.15}
-          cornerRadius={30}
-          mode="standard"
-        >
+        <div className="u-mx-auto u-py-6" style={{ maxWidth: '700px' }}>
+          <AtomixGlass
+            displacementScale={28}
+            blurAmount={18}
+            saturation={1.15}
+            cornerRadius={30}
+            mode="standard"
+          >
           <div className="u-p-5" style={{ minWidth: '550px', maxWidth: '700px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+            <div
+              style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}
+            >
               <div
                 style={{
                   width: '48px',
@@ -5010,7 +5091,8 @@ export const ProgressTracker: Story = {
               </button>
             </div>
           </div>
-        </AtomixGlass>
+          </AtomixGlass>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -6074,7 +6156,8 @@ export const AppleInspiredUI: Story = {
                       </span>
                       <span
                         style={{
-                          background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                          background:
+                            'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
                           WebkitBackgroundClip: 'text',
                           WebkitTextFillColor: 'transparent',
                           backgroundClip: 'text',
@@ -6119,7 +6202,13 @@ export const AppleInspiredUI: Story = {
                       >
                         New Atomix Glass Component
                       </div>
-                      <div style={{ fontSize: '13px', opacity: 0.85, color: 'rgba(255, 255, 255, 0.85)' }}>
+                      <div
+                        style={{
+                          fontSize: '13px',
+                          opacity: 0.85,
+                          color: 'rgba(255, 255, 255, 0.85)',
+                        }}
+                      >
                         Experience the next generation of UI effects
                       </div>
                     </div>

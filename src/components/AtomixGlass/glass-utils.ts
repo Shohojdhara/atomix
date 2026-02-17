@@ -44,9 +44,9 @@ export const calculateMouseInfluence = (mouseOffset: MousePosition): number => {
   if (!mouseOffset || typeof mouseOffset.x !== 'number' || typeof mouseOffset.y !== 'number') {
     return 0;
   }
-  // More responsive calculation for overlight effects
+  // Bounded calculation — keeps the glass effect subtle and stable
   const influence = Math.sqrt(mouseOffset.x * mouseOffset.x + mouseOffset.y * mouseOffset.y) / CONSTANTS.MOUSE_INFLUENCE_DIVISOR;
-  return Math.min(1.5, influence); // Cap influence for better control
+  return Math.min(0.8, influence); // Tighter cap to prevent blur/filter blow-out
 };
 
 /**

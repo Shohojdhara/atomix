@@ -684,6 +684,16 @@ export function useAtomixGlass({
 
   // Transform calculations
   const calculateDirectionalScale = useCallback(() => {
+    // Disable directional scaling if overLight is active (to prevent zooming/distorting the premium glass effect)
+    const isOverLightActive =
+      overLight === true ||
+      (overLight === 'auto' && detectedOverLight) ||
+      (typeof overLight === 'object' && overLight !== null && detectedOverLight);
+
+    if (isOverLightActive) {
+      return 'scale(1)';
+    }
+
     if (
       !globalMousePosition.x ||
       !globalMousePosition.y ||
@@ -727,7 +737,14 @@ export function useAtomixGlass({
       Math.abs(normalizedX) * stretchIntensity * 0.15;
 
     return `scaleX(${Math.max(0.8, scaleX)}) scaleY(${Math.max(0.8, scaleY)})`;
-  }, [globalMousePosition, elasticity, glassSize, glassRef]);
+  }, [
+    globalMousePosition,
+    elasticity,
+    glassSize,
+    glassRef,
+    overLight,
+    detectedOverLight,
+  ]);
 
   const calculateFadeInFactor = useCallback(() => {
     if (
@@ -937,11 +954,11 @@ export function useAtomixGlass({
       isOverLight,
       threshold: 0.7,
       opacity: baseOpacity,
-      contrast: Math.min(1.8, Math.max(1.0, 1.4 + mouseInfluence * 0.3)),
-      brightness: Math.min(1.2, Math.max(0.7, 0.85 + mouseInfluence * 0.15)),
-      saturationBoost: Math.min(2.0, Math.max(1.0, 1.3 + mouseInfluence * 0.4)),
-      shadowIntensity: Math.min(1.5, Math.max(0.5, 0.9 + mouseInfluence * 0.5)),
-      borderOpacity: Math.min(1.0, Math.max(0.3, 0.7 + mouseInfluence * 0.3)),
+      contrast: Math.min(1.6, Math.max(1.0, 1.4 + mouseInfluence * 0.1)),
+      brightness: Math.min(1.1, Math.max(0.8, 0.9 + mouseInfluence * 0.05)),
+      saturationBoost: 1.3, // Fixed value — dynamic saturation amplifies perceived displacement
+      shadowIntensity: Math.min(1.2, Math.max(0.5, 0.9 + mouseInfluence * 0.2)),
+      borderOpacity: Math.min(1.0, Math.max(0.3, 0.7 + mouseInfluence * 0.1)),
     };
 
     if (typeof overLight === 'object' && overLight !== null) {
@@ -958,9 +975,9 @@ export function useAtomixGlass({
         ...baseConfig,
         threshold: validatedThreshold,
         opacity: validatedOpacity * hoverIntensity * activeIntensity,
-        contrast: validatedContrast + mouseInfluence * 0.3,
-        brightness: validatedBrightness + mouseInfluence * 0.15,
-        saturationBoost: validatedSaturationBoost + mouseInfluence * 0.4,
+        contrast: Math.min(1.6, validatedContrast + mouseInfluence * 0.1),
+        brightness: Math.min(1.1, validatedBrightness + mouseInfluence * 0.05),
+        saturationBoost: validatedSaturationBoost, // Use validated value directly, no mouse influence
       };
 
       // Debug logging

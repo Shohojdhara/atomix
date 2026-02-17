@@ -15,7 +15,7 @@ import React, { useState } from 'react';
 import { Grid, GridCol, Container } from '../../../layouts/Grid';
 
 const meta: Meta<typeof AtomixGlass> = {
-  title: 'Components/AtomixGlass/Modes',
+  title: 'Components/AtomixGlass/Features/Modes',
   component: AtomixGlass,
   parameters: {
     layout: 'fullscreen',

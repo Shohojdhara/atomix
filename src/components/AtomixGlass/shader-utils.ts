@@ -721,6 +721,11 @@ export const fragmentShaders = {
 
     return createTexture(clampValue(finalX + 0.5, 0, 1), clampValue(finalY + 0.5, 0, 1));
   },
+
+  // Aliases for compatibility
+  plasma: (uv: Vec2, mousePosition?: Vec2): Vec2 => fragmentShaders.premiumGlass(uv, mousePosition),
+  waves: (uv: Vec2, mousePosition?: Vec2): Vec2 => fragmentShaders.liquidMetal(uv, mousePosition),
+  noise: (uv: Vec2, mousePosition?: Vec2): Vec2 => fragmentShaders.appleFluid(uv, mousePosition),
 };
 
 export type FragmentShaderType = keyof typeof fragmentShaders;

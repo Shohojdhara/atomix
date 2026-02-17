@@ -14,7 +14,7 @@ import AtomixGlass from '../AtomixGlass';
 import { BackgroundWrapper } from './shared-components';
 
 const meta: Meta<typeof AtomixGlass> = {
-  title: 'Components/AtomixGlass/Shader Variants',
+  title: 'Components/AtomixGlass/Features/Shaders',
   component: AtomixGlass,
   parameters: {
     layout: 'fullscreen',

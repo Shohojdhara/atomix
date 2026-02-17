@@ -1,7 +1,7 @@
 /**
- * AtomixGlass.stories.tsx
+ * Overview.stories.tsx
  *
- * Comprehensive Storybook stories for AtomixGlass
+ * Overview and basic usage for AtomixGlass
  *
  * @package Atomix
  * @component AtomixGlass
@@ -9,13 +9,10 @@
 
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { useState, useEffect, useCallback, useRef } from 'react';
 import React from 'react';
-import type { RefObject } from 'react';
 import AtomixGlass from '../AtomixGlass';
 import Button from '../../Button/Button';
-import Badge from '../../Badge/Badge';
-import Card from '../../Card/Card';
+import { BackgroundWrapper, backgroundImages } from './shared-components';
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -29,44 +26,8 @@ type AtomixGlassStoryProps = Omit<React.ComponentProps<typeof AtomixGlass>, 'chi
 };
 
 // ============================================================================
-// SHARED UTILITIES & CONSTANTS
+// EVENT HANDLERS
 // ============================================================================
-
-/**
- * Reusable decorators for common story patterns
- */
-const withBackground = (image: string) => (Story: any) => (
-  <div
-    className="u-bg-cover u-min-h-screen u-w-full u-flex u-items-center u-justify-center"
-    style={{
-      backgroundImage: `url(${image})`,
-    }}
-  >
-    <div className="u-w-full u-h-full">
-      <Story />
-    </div>
-  </div>
-);
-
-const withGlassBackground = (Story: any) => (
-  <div
-    className="u-bg-gradient-to-br u-from-indigo-500 u-via-purple-500 u-to-blue-500 u-min-h-screen u-w-full u-flex u-items-center u-justify-center"
-  >
-    <div className="u-w-full u-h-full">
-      <Story />
-    </div>
-  </div>
-);
-
-/**
- * Collection of high-quality background images for different moods and scenarios
- */
-const backgroundImages = [
-  'https://images.unsplash.com/photo-1637825891028-564f672aa42c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2670',
-  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2670',
-  'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-];
 
 /**
  * Event handlers for documentation
@@ -323,7 +284,15 @@ export const BasicUsage: Story = {
     ),
     padding: '32px', // Increased padding for better visual appearance
   },
-  decorators: [withGlassBackground],
+  render: args => (
+    <div className="u-bg-gradient-to-br u-from-indigo-500 u-via-purple-500 u-to-blue-500 u-min-h-screen u-w-full u-flex u-items-center u-justify-center">
+      <div className="u-w-full u-h-full">
+        <div className="u-flex u-justify-center u-items-center u-h-full">
+          <AtomixGlass {...args} />
+        </div>
+      </div>
+    </div>
+  ),
   parameters: {
     docs: {
       description: {
@@ -362,7 +331,13 @@ export const WithAllProps: Story = {
     padding: '32px', // Increased padding for better visual appearance
     onClick: mockHandlers.onClick,
   },
-  decorators: [withBackground(backgroundImages[0])],
+  render: args => (
+    <BackgroundWrapper backgroundImage={backgroundImages[0]}>
+      <div className="u-flex u-justify-center u-items-center u-h-full">
+        <AtomixGlass {...args} />
+      </div>
+    </BackgroundWrapper>
+  ),
   parameters: {
     docs: {
       description: {
@@ -370,221 +345,4 @@ export const WithAllProps: Story = {
       },
     },
   },
-};
-
-// ============================================================================
-// VARIANTS & STATES STORIES
-// ============================================================================
-
-export const WithDifferentModes: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Showcases the different rendering modes available in the AtomixGlass component.',
-      },
-    },
-  },
-  render: () => {
-    const modes = ['standard', 'polar', 'prominent', 'shader'] as const;
-
-    return (
-      <div className="u-w-full u-min-h-screen">
-        <div className="u-grid u-grid-cols-1 u_md-grid-cols-2 u_xl-grid-cols-4 u-gap-6 u-w-full u-max-w-7xl u-mx-auto u-p-4">
-          {modes.map(mode => (
-            <AtomixGlass
-              key={mode}
-              mode={mode}
-              displacementScale={60}
-              blurAmount={0.3}
-              saturation={140}
-              cornerRadius={20}
-              padding="32px" // Increased padding for better visual appearance
-              className="u-text-center u-h-full"
-            >
-              <h3 className="u-m-0 u-text-white u-text-lg u-font-semibold u-mb-2">
-                {mode.charAt(0).toUpperCase() + mode.slice(1)} Mode
-              </h3>
-              <p className="u-m-0 u-text-white u-opacity-80 u-text-sm">
-                {mode === 'standard' && 'Balanced displacement and aberration'}
-                {mode === 'polar' && 'Circular refraction pattern'}
-                {mode === 'prominent' && 'Enhanced displacement with stronger edge effects'}
-                {mode === 'shader' && 'Advanced shader-based displacement'}
-              </p>
-            </AtomixGlass>
-          ))}
-        </div>
-      </div>
-    );
-  },
-  decorators: [withBackground(backgroundImages[1])],
-};
-
-// ============================================================================
-// ADVANCED CONFIGURATION STORIES
-// ============================================================================
-
-export const WithCustomStyling: Story = {
-  args: {
-    children: (
-      <div className="u-text-center">
-        <h2 className="u-text-4 u-font-semibold u-mb-4 u-text-white">Custom Styled Glass</h2>
-        <p className="u-text-base u-mb-6 u-text-white">This glass uses custom styling properties.</p>
-        <Button
-          variant="primary"
-          className="u-rounded-lg u-py-3 u-px-6"
-          style={{ boxShadow: '0 5px 15px rgba(0,0,0,0.2)' }}
-        >
-          Premium Effect
-        </Button>
-      </div>
-    ),
-    displacementScale: 70,
-    blurAmount: 0.4,
-    saturation: 160,
-    aberrationIntensity: 1.8,
-    cornerRadius: 30,
-    padding: '40px', // Increased padding for better visual appearance
-    style: {
-      width: '100%',
-      maxWidth: '400px',
-      margin: '0 auto',
-      boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-      transition: 'transform 0.3s ease-in-out',
-    },
-  },
-  decorators: [withBackground(backgroundImages[2])],
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Shows how to customize the AtomixGlass component with additional CSS styles and enhanced interactivity.',
-      },
-    },
-  },
-};
-
-
-// ============================================================================
-// INTEGRATION STORIES
-// ============================================================================
-
-export const WithOtherComponents: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Demonstrates how AtomixGlass integrates with other components in the design system.',
-      },
-    },
-  },
-  render: () => {
-    return (
-      <div className="u-w-full u-h-screen u-flex u-items-center u-justify-center">
-        <AtomixGlass
-          displacementScale={85}
-          blurAmount={0.6}
-          saturation={170}
-          aberrationIntensity={2.2}
-          elasticity={0.18}
-          cornerRadius={28}
-          padding="36px" // Increased padding for better visual appearance
-          className="u-w-11/12 u-max-w-2xl"
-        >
-          <div className="u-mb-6">
-            <h2 className="u-m-0 u-text-white u-text-28 u-mb-2">
-              Integrated UI
-            </h2>
-            <p className="u-m-0 u-text-white u-opacity-90">
-              Glass effect with multiple components
-            </p>
-          </div>
-
-          <div className="u-flex u-flex-col u-gap-4 u-items-center">
-            <Button variant="primary" glass className="u-w-full">
-              Primary Action
-            </Button>
-            <Button variant="secondary" glass className="u-w-full">
-              Secondary Action
-            </Button>
-
-            <div className="u-flex u-gap-3 u-mt-4">
-              <Badge variant="success" label="Success" glass />
-              <Badge variant="warning" label="Warning" glass />
-            </div>
-          </div>
-        </AtomixGlass>
-      </div>
-    );
-  },
-  decorators: [withBackground(backgroundImages[0])],
-};
-
-// ============================================================================
-// PERFORMANCE STORIES
-// ============================================================================
-
-export const OptimizedForMobile: Story = {
-  args: {
-    children: (
-      <div className="u-text-center">
-        <h3 className="u-m-0 u-text-white u-text-20 u-mb-3">Mobile Optimized</h3>
-        <p className="u-m-0 u-text-white u-opacity-90 u-text-14">
-          Lower intensity settings for better mobile performance
-        </p>
-      </div>
-    ),
-    displacementScale: 30, // Lower for performance
-    blurAmount: 0.2,
-    saturation: 120,
-    aberrationIntensity: 1.0,
-    elasticity: 0.1,
-    cornerRadius: 16,
-    padding: '28px', // Increased padding for better visual appearance
-  },
-  decorators: [withGlassBackground],
-  parameters: {
-    docs: {
-      description: {
-        story: 'Optimized configuration for mobile devices with reduced performance impact.',
-      },
-    },
-  },
-};
-
-export const WithManyInstances: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Shows multiple instances of AtomixGlass in a single view - useful for performance testing.',
-      },
-    },
-  },
-  render: () => {
-    return (
-      <div className="u-flex u-flex-wrap u-gap-6 u-w-full u-py-60 u-max-w-7xl u-mx-auto u-p-4">
-        {[1, 2, 3, 4].map(index => (
-          <AtomixGlass
-            key={index}
-            displacementScale={40}
-            blurAmount={0.25}
-            saturation={130}
-            aberrationIntensity={1.2}
-            elasticity={0.1}
-            cornerRadius={16}
-            padding="28px" // Increased padding for better visual appearance
-            className="u-text-center u-h-full"
-          >
-            <h4 className="u-m-0 u-text-white u-text-18 u-mb-2">
-              Glass #{index}
-            </h4>
-            <p className="u-m-0 u-text-white u-opacity-80 u-text-14">
-              Instance #{index} of AtomixGlass
-            </p>
-          </AtomixGlass>
-        ))}
-      </div>
-    );
-  },
-  decorators: [withBackground(backgroundImages[3])],
 };

@@ -3,13 +3,7 @@ import type { CSSProperties } from 'react';
 import type { DisplacementMode, MousePosition, GlassSize } from '../../lib/types/components';
 import type { FragmentShaderType } from './shader-utils';
 import { GlassFilter } from './GlassFilter';
-import {
-  calculateElementCenter,
-  calculateDistance,
-  calculateMouseInfluence,
-  clampBlur,
-  validateGlassSize,
-} from './glass-utils';
+import { calculateMouseInfluence, clampBlur, validateGlassSize } from './glass-utils';
 import { ATOMIX_GLASS } from '../../lib/constants/components';
 
 const { CONSTANTS } = ATOMIX_GLASS;
@@ -58,7 +52,9 @@ const setCachedShader = (key: string, url: string): void => {
   // Development mode: log cache size
   if (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') {
     if (sharedShaderCache.size >= MAX_CACHE_SIZE * 0.8) {
-      console.log(`AtomixGlass: Shader cache size: ${String(sharedShaderCache.size).replace(/[\r\n]/g, '')}/${String(MAX_CACHE_SIZE).replace(/[\r\n]/g, '')}`);
+      console.log(
+        `AtomixGlass: Shader cache size: ${String(sharedShaderCache.size).replace(/[\r\n]/g, '')}/${String(MAX_CACHE_SIZE).replace(/[\r\n]/g, '')}`
+      );
     }
   }
 };
@@ -76,10 +72,15 @@ interface AtomixGlassContainerProps {
   onMouseEnter?: () => void;
   onMouseDown?: () => void;
   onMouseUp?: () => void;
-  active?: boolean;
   isHovered?: boolean;
   isActive?: boolean;
   overLight?: boolean;
+  overLightConfig?: {
+    contrast?: number;
+    brightness?: number;
+    shadowIntensity?: number;
+    borderOpacity?: number;
+  };
   cornerRadius?: number;
   padding?: string;
   glassSize?: GlassSize;
@@ -115,10 +116,10 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       onMouseLeave,
       onMouseDown,
       onMouseUp,
-      active = false,
       isHovered = false,
       isActive = false,
       overLight = false,
+      overLightConfig = {},
       cornerRadius = 0,
       padding = '0 0',
       glassSize = { width: 0, height: 0 },
@@ -153,14 +154,19 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     useEffect(() => {
       if (mode === 'shader') {
         // Dynamic import shader utilities
-        import('./shader-utils').then((shaderUtils) => {
-          shaderUtilsRef.current = {
-            ShaderDisplacementGenerator: shaderUtils.ShaderDisplacementGenerator,
-            fragmentShaders: shaderUtils.fragmentShaders,
-          };
-        }).catch((error) => {
-          console.warn('AtomixGlassContainer: Error loading shader utilities', String(error).replace(/[\r\n]/g, ''));
-        });
+        import('./shader-utils')
+          .then(shaderUtils => {
+            shaderUtilsRef.current = {
+              ShaderDisplacementGenerator: shaderUtils.ShaderDisplacementGenerator,
+              fragmentShaders: shaderUtils.fragmentShaders,
+            };
+          })
+          .catch(error => {
+            console.warn(
+              'AtomixGlassContainer: Error loading shader utilities',
+              String(error).replace(/[\r\n]/g, '')
+            );
+          });
       } else {
         // Clear shader utils when not in shader mode to free memory
         shaderUtilsRef.current = null;
@@ -170,7 +176,12 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     // Generate shader map with debouncing and caching
     useEffect(() => {
       // Enhanced validation for shader mode
-      if (mode === 'shader' && glassSize && validateGlassSize(glassSize) && shaderUtilsRef.current) {
+      if (
+        mode === 'shader' &&
+        glassSize &&
+        validateGlassSize(glassSize) &&
+        shaderUtilsRef.current
+      ) {
         // Create cache key from size and variant
         const cacheKey = `${glassSize.width}x${glassSize.height}-${shaderVariant}`;
 
@@ -262,11 +273,13 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     const EDGE_BLUR_MULTIPLIER = 1.25;
     const CENTER_BLUR_MULTIPLIER = 1.1;
     const FLOW_BLUR_MULTIPLIER = 1.2;
-    const MOUSE_INFLUENCE_BLUR_FACTOR = 0.4;
+    const MOUSE_INFLUENCE_BLUR_FACTOR = 0.15;
     const EDGE_INTENSITY_MULTIPLIER = 1.5;
-    const EDGE_INTENSITY_MOUSE_FACTOR = 0.3;
+    const EDGE_INTENSITY_MOUSE_FACTOR = 0.15;
     const CENTER_INTENSITY_DISTANCE_FACTOR = 0.3;
-    const CENTER_INTENSITY_MOUSE_FACTOR = 0.2;
+    const CENTER_INTENSITY_MOUSE_FACTOR = 0.1;
+    // Maximum blur multiplier relative to base — prevents runaway blur
+    const MAX_BLUR_RELATIVE = 2;
 
     const liquidBlur = useMemo(() => {
       const defaultBlur = {
@@ -280,60 +293,42 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       if (
         !enableLiquidBlur ||
         !rectCache ||
-        !globalMousePosition ||
-        typeof globalMousePosition.x !== 'number' ||
-        typeof globalMousePosition.y !== 'number' ||
-        isNaN(globalMousePosition.x) ||
-        isNaN(globalMousePosition.y)
+        !mouseOffset ||
+        typeof mouseOffset.x !== 'number' ||
+        typeof mouseOffset.y !== 'number' ||
+        isNaN(mouseOffset.x) ||
+        isNaN(mouseOffset.y)
       ) {
         return defaultBlur;
       }
 
       try {
-        // Cache center and distance calculations
-        const center = calculateElementCenter(rectCache);
-        const distance = calculateDistance(globalMousePosition, center);
-        const maxDistance =
-          Math.sqrt(rectCache.width * rectCache.width + rectCache.height * rectCache.height) / 2;
-        const normalizedDistance = Math.min(distance / maxDistance, 1);
         const mouseInfluence = calculateMouseInfluence(mouseOffset);
+        const maxBlur = blurAmount * MAX_BLUR_RELATIVE;
 
-        const baseBlur = blurAmount + mouseInfluence * blurAmount * MOUSE_INFLUENCE_BLUR_FACTOR;
-        const edgeIntensity = normalizedDistance * EDGE_INTENSITY_MULTIPLIER + mouseInfluence * EDGE_INTENSITY_MOUSE_FACTOR;
-        const edgeBlur = baseBlur * (0.8 + edgeIntensity * 0.6);
-        const centerIntensity = (1 - normalizedDistance) * CENTER_INTENSITY_DISTANCE_FACTOR + mouseInfluence * CENTER_INTENSITY_MOUSE_FACTOR;
-        const centerBlur = baseBlur * (0.3 + centerIntensity * 0.4);
-        const deltaX = globalMousePosition.x - center.x;
-        const deltaY = globalMousePosition.y - center.y;
-        const flowDirection = Math.atan2(deltaY, deltaX);
-        const flowIntensity = Math.sin(flowDirection + mouseInfluence * Math.PI) * 0.5 + 0.5;
-        const flowBlur = baseBlur * (0.4 + flowIntensity * 0.6);
+        const baseBlur = Math.min(
+          maxBlur,
+          blurAmount + mouseInfluence * blurAmount * MOUSE_INFLUENCE_BLUR_FACTOR
+        );
+        const edgeIntensity = mouseInfluence * EDGE_INTENSITY_MOUSE_FACTOR;
+        const edgeBlur = Math.min(maxBlur, baseBlur * (0.8 + edgeIntensity * 0.4));
+        const centerIntensity = mouseInfluence * CENTER_INTENSITY_MOUSE_FACTOR;
+        const centerBlur = Math.min(maxBlur, baseBlur * (0.3 + centerIntensity * 0.3));
+        const flowBlur = Math.min(maxBlur, baseBlur * FLOW_BLUR_MULTIPLIER);
 
-        const hoverMultiplier = isHovered ? 1.2 : 1;
-        const activeMultiplier = isActive ? 1.4 : 1;
-        const stateMultiplier = hoverMultiplier * activeMultiplier;
-
+        // NOTE: hover/active multipliers intentionally omitted here —
+        // they belong on opacity layers, not the blur filter itself.
         return {
-          baseBlur: clampBlur(baseBlur * stateMultiplier),
-          edgeBlur: clampBlur(edgeBlur * stateMultiplier),
-          centerBlur: clampBlur(centerBlur * stateMultiplier),
-          flowBlur: clampBlur(flowBlur * stateMultiplier),
+          baseBlur: clampBlur(baseBlur),
+          edgeBlur: clampBlur(edgeBlur),
+          centerBlur: clampBlur(centerBlur),
+          flowBlur: clampBlur(flowBlur),
         };
       } catch (error) {
         console.warn('AtomixGlassContainer: Error calculating liquid blur', error);
         return defaultBlur;
       }
-    }, [
-      enableLiquidBlur,
-      blurAmount,
-      globalMousePosition,
-      mouseOffset,
-      isHovered,
-      isActive,
-      rectCache,
-      style,
-      glassSize,
-    ]);
+    }, [enableLiquidBlur, blurAmount, mouseOffset, rectCache]);
 
     const backdropStyle = useMemo(() => {
       try {
@@ -364,15 +359,18 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         const useMultiPass = enableLiquidBlur && !devicePrefersPerformance && !areaIsLarge;
 
         if (useMultiPass) {
-          const blurLayers = [
-            `blur(${validatedBaseBlur}px)`,
-            `blur(${validatedEdgeBlur}px)`,
-            `blur(${validatedCenterBlur}px)`,
-            `blur(${validatedFlowBlur}px)`,
-          ];
+          // Use a single weighted-average blur instead of stacking multiple
+          // blur() calls. CSS blur() is additive — stacking 4 passes
+          // causes the perceived blur to compound far beyond any single value.
+          const weightedBlur = clampBlur(
+            validatedBaseBlur * 0.4 +
+              validatedEdgeBlur * 0.25 +
+              validatedCenterBlur * 0.15 +
+              validatedFlowBlur * 0.2
+          );
 
           return {
-            backdropFilter: `${blurLayers.join(' ')} saturate(${Math.min(dynamicSaturation, 200)}%) contrast(1.05) brightness(1.05)`,
+            backdropFilter: `blur(${weightedBlur}px) saturate(${Math.min(dynamicSaturation, 200)}%) contrast(${overLightConfig?.contrast || 1.05}) brightness(${overLightConfig?.brightness || 1.05})`,
           };
         }
 
@@ -387,7 +385,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         );
 
         return {
-          backdropFilter: `blur(${effectiveBlur}px) saturate(${Math.min(dynamicSaturation, 200)}%) contrast(1.05) brightness(1.05)`,
+          backdropFilter: `blur(${effectiveBlur}px) saturate(${Math.min(dynamicSaturation, 200)}%) contrast(${overLightConfig?.contrast || 1.05}) brightness(${overLightConfig?.brightness || 1.05})`,
         };
       } catch (error) {
         console.warn('AtomixGlassContainer: Error calculating backdrop style', error);
@@ -424,11 +422,11 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
           '--atomix-glass-container-backdrop': backdropStyle?.backdropFilter || 'none',
           '--atomix-glass-container-shadow': overLight
             ? [
-              `inset 0 1px 0 rgba(255, 255, 255, ${0.4 + mx * 0.002})`,
-              `inset 0 -1px 0 rgba(0, 0, 0, ${0.2 + Math.abs(my) * 0.001})`,
-              `inset 0 0 20px rgba(0, 0, 0, ${0.08 + Math.abs(mx + my) * 0.001})`,
-              `0 2px 12px rgba(0, 0, 0, ${0.12 + Math.abs(my) * 0.002})`,
-            ].join(', ')
+                `inset 0 1px 0 rgba(255, 255, 255, ${(0.4 + mx * 0.002) * (overLightConfig?.shadowIntensity || 1)})`,
+                `inset 0 -1px 0 rgba(0, 0, 0, ${(0.2 + Math.abs(my) * 0.001) * (overLightConfig?.shadowIntensity || 1)})`,
+                `inset 0 0 20px rgba(0, 0, 0, ${(0.08 + Math.abs(mx + my) * 0.001) * (overLightConfig?.shadowIntensity || 1)})`,
+                `0 2px 12px rgba(0, 0, 0, ${(0.12 + Math.abs(my) * 0.002) * (overLightConfig?.shadowIntensity || 1)})`,
+              ].join(', ')
             : '0 0 20px rgba(0, 0, 0, 0.15) inset, 0 4px 8px rgba(0, 0, 0, 0.08) inset',
           '--atomix-glass-container-shadow-opacity': effectiveDisableEffects ? 0 : 1,
           // Background and shadow values use design token-aligned RGB values
@@ -464,10 +462,29 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       effectiveDisableEffects,
     ]);
 
+    // Helper to force no transition/animation overrides with !important
+    const setForceNoTransition = (el: HTMLElement | null) => {
+      if (el) {
+        el.style.setProperty('transition-duration', '0s', 'important');
+        el.style.setProperty('animation-duration', '0s', 'important');
+        el.style.setProperty('transition-delay', '0s', 'important');
+      }
+    };
+
     return (
       <div
-        ref={ref}
-        className={`${ATOMIX_GLASS.CONTAINER_CLASS} ${className} ${active ? ATOMIX_GLASS.CLASSES.ACTIVE : ''} ${overLight ? ATOMIX_GLASS.CLASSES.OVER_LIGHT : ''}`}
+        ref={el => {
+          // Apply force no-transition
+          setForceNoTransition(el);
+
+          // Handle forwarded ref
+          if (typeof ref === 'function') {
+            ref(el);
+          } else if (ref) {
+            (ref as React.MutableRefObject<HTMLDivElement | null>).current = el;
+          }
+        }}
+        className={`${ATOMIX_GLASS.CONTAINER_CLASS} ${className} ${isActive ? ATOMIX_GLASS.CLASSES.ACTIVE : ''} ${overLight ? ATOMIX_GLASS.CLASSES.OVER_LIGHT : ''}`}
         style={{ ...style, ...containerVars }}
         onClick={onClick}
       >
@@ -484,7 +501,10 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
         >
-          <div className={ATOMIX_GLASS.FILTER_CLASS}>
+          <div
+            className={ATOMIX_GLASS.FILTER_CLASS}
+            style={{ zIndex: 1, position: 'absolute', inset: 0 }}
+          >
             <GlassFilter
               blurAmount={blurAmount}
               mode={mode}
@@ -503,6 +523,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             />
             {/* Enhanced Apple Liquid Glass Inner Shadow Layer */}
             <div
+              ref={setForceNoTransition}
               className={ATOMIX_GLASS.FILTER_OVERLAY_CLASS}
               style={
                 {
@@ -532,7 +553,8 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
               {
                 position: 'relative',
                 textShadow: `var(--atomix-glass-container-text-shadow)`,
-                ...(elasticity > 0 ? { zIndex: 100 } : {}),
+                // Ensure content is always above the filter layer (zIndex 1)
+                zIndex: elasticity > 0 ? 100 : 2,
               } as CSSProperties
             }
           >
