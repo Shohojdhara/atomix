@@ -42,10 +42,10 @@ src/
 Composables are reusable pieces of component logic that can be shared across components.
 
 ```typescript
-import { useButton } from '../lib/composables/useButton';
+import { useAccordion } from '../lib/composables/useAccordion';
 
 // In your component
-const { generateButtonClass, handleClick } = useButton();
+const { generateAccordionClass, handleToggle } = useAccordion();
 ```
 
 ### Component Interactions

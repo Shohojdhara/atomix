@@ -1,5 +1,4 @@
 import React, { ElementType, forwardRef, useCallback } from 'react';
-import { useButton } from '../../lib/composables/useButton';
 import { ButtonProps } from '../../lib/types/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { Spinner } from '../Spinner/Spinner';
@@ -60,23 +59,13 @@ export const Button = React.memo(
       const isDisabled = disabled || loading;
 
       // Determine if we should render as a link
+      // If disabled, we still check href, but we might want to render as button or anchor with aria-disabled
+      // The previous logic was Boolean(href && !isDisabled). This meant if disabled, it renders as <button>.
+      // This is a safe fallback for disabled links.
       const shouldRenderAsLink = Boolean(href && !isDisabled);
 
       // Resolve icon element - support both icon (ReactNode) and iconName (string)
       const iconElement = iconName ? <Icon name={iconName as PhosphorIconsType} size={iconSize} /> : icon;
-
-      const { generateButtonClass, handleClick } = useButton({
-        variant,
-        size,
-        disabled: isDisabled,
-        rounded,
-        glass,
-        loading,
-        fullWidth,
-        block,
-        active,
-        selected,
-      });
 
       const buttonClass = [
         BUTTON.BASE_CLASS,
@@ -144,6 +133,9 @@ export const Button = React.memo(
       // Determine spinner size based on button size
       const spinnerSize = size === 'sm' ? 'sm' : size === 'lg' ? 'md' : 'sm';
 
+      // Safe Aria Label
+      const safeAriaLabel = ariaLabel || (iconOnly ? (typeof label === 'string' ? label : (typeof children === 'string' ? children : undefined)) : undefined);
+
       // Button content with icon positioning
       const buttonContent = (
         <>
@@ -172,17 +164,14 @@ export const Button = React.memo(
 
       // Button props
       const buttonProps = {
-        ref,
         className: buttonClass,
-        type: Component === 'button' && !shouldRenderAsLink ? type : undefined,
         onClick: handleClickEvent,
         onMouseEnter: onHover ? handleMouseEnter : undefined,
         onFocus: onFocus ? handleFocusEvent : undefined,
         onBlur: onBlur ? handleBlurEvent : undefined,
-        disabled: isDisabled && Component === 'button' && !shouldRenderAsLink,
         'aria-disabled': isDisabled,
         'aria-busy': loading,
-        'aria-label': ariaLabel || (iconOnly ? label || children : undefined),
+        'aria-label': safeAriaLabel,
         'aria-describedby': ariaDescribedBy,
         'aria-expanded': ariaExpanded,
         'aria-controls': ariaControls,
@@ -191,60 +180,67 @@ export const Button = React.memo(
         ...props,
       };
 
-      // Default glass props
-      const defaultGlassProps = {
-        displacementScale: 20,
-        blurAmount: 0,
-        saturation: 200,
-        elasticity: 0,
-      };
-      const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+      let content: React.ReactElement;
 
       // Render as anchor if href is provided
       if (shouldRenderAsLink) {
-        const { ref: _, ...buttonPropsWithoutRef } = buttonProps;
-        const anchorButtonProps = {
-          ...buttonPropsWithoutRef,
-          type: undefined,
-          disabled: undefined,
-        };
-
         // Use custom LinkComponent if provided (e.g., Next.js Link)
         if (LinkComponent) {
           const LinkComp = LinkComponent as React.ComponentType<any>;
           const linkProps = {
-            ...anchorButtonProps,
-            ref: ref as React.Ref<HTMLAnchorElement>,
+            ...buttonProps,
+            ref: ref as any, // LinkComponent usually forwards ref to anchor
             href,
             target,
             rel: target === '_blank' ? 'noopener noreferrer' : undefined,
           };
 
-          const linkElement = (
+          content = (
             <LinkComp {...linkProps}>
               {buttonContent}
             </LinkComp>
           );
-
-          return glass ? <AtomixGlass {...glassProps}>{linkElement}</AtomixGlass> : linkElement;
+        } else {
+          // Fallback to regular anchor tag
+          content = (
+            <a
+              {...buttonProps}
+              ref={ref as React.Ref<HTMLAnchorElement>}
+              href={href}
+              target={target}
+              rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+            >
+              {buttonContent}
+            </a>
+          );
         }
-
-        // Fallback to regular anchor tag
-        const anchorElement = (
-          <a {...anchorButtonProps} ref={ref as React.Ref<HTMLAnchorElement>} href={href} target={target} rel={target === '_blank' ? 'noopener noreferrer' : undefined}>
+      } else {
+        // Default button rendering
+        content = (
+          <Component
+            {...buttonProps}
+            ref={ref}
+            type={Component === 'button' ? type : undefined}
+            disabled={isDisabled}
+          >
             {buttonContent}
-          </a>
+          </Component>
         );
-
-        return glass ? <AtomixGlass {...glassProps}>{anchorElement}</AtomixGlass> : anchorElement;
       }
 
-      // Default button rendering
-      const buttonElement = (
-        <Component {...buttonProps}>{buttonContent}</Component>
-      );
+      if (glass) {
+        // Default glass props
+        const defaultGlassProps = {
+          displacementScale: 20,
+          blurAmount: 0,
+          saturation: 200,
+          elasticity: 0,
+        };
+        const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+        return <AtomixGlass {...glassProps}>{content}</AtomixGlass>;
+      }
 
-      return glass ? <AtomixGlass {...glassProps}>{buttonElement}</AtomixGlass> : buttonElement;
+      return content;
     }
   )
 );

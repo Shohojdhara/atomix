@@ -1,14 +1,18 @@
-import React, { memo } from 'react';
+import React, { memo, forwardRef, useRef, useEffect, useImperativeHandle } from 'react';
 import { CheckboxProps } from '../../lib/types/components';
-import { useCheckbox } from '../../lib/composables/useCheckbox';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
-/**
- * Checkbox - A component for checkbox inputs
- */
-export const Checkbox: React.FC<CheckboxProps> = memo(({
+const CHECKBOX_CLASSES = {
+  BASE: 'c-checkbox',
+  INVALID: 'is-error',
+  VALID: 'is-valid',
+  DISABLED: 'is-disabled',
+  MIXED: 'c-checkbox--mixed',
+};
+
+export const Checkbox = React.memo(forwardRef<HTMLInputElement, CheckboxProps>(({
   label,
-  checked = false,
+  checked,
   onChange,
   className = '',
   style,
@@ -24,50 +28,84 @@ export const Checkbox: React.FC<CheckboxProps> = memo(({
   'aria-describedby': ariaDescribedBy,
   onClick,
   glass,
-}) => {
-  const { generateCheckboxClass, checkboxRef } = useCheckbox({
-    indeterminate,
-    disabled,
-    invalid,
-    valid,
-  });
+  ...props
+}, ref) => {
+  // Local ref to handle indeterminate state
+  const localRef = useRef<HTMLInputElement>(null);
 
-  const checkboxClass = generateCheckboxClass({
-    className: `${className} ${glass ? 'c-checkbox--glass' : ''}`.trim(),
-    disabled,
-    invalid,
-    valid,
-    indeterminate,
-  });
+  // Merge refs
+  useImperativeHandle(ref, () => localRef.current as HTMLInputElement);
 
-  const checkboxContent = (
-    <div className={checkboxClass} style={style}>
-      <input
-        ref={checkboxRef}
-        type="checkbox"
-        className="c-checkbox__input"
-        checked={checked}
-        onChange={onChange}
-        onClick={onClick}
-        disabled={disabled}
-        required={required}
-        id={id}
-        name={name}
-        value={value}
-        aria-label={!label ? ariaLabel : undefined}
-        aria-describedby={ariaDescribedBy}
-        aria-invalid={invalid}
-      />
-      {label && (
+  // Handle indeterminate
+  useEffect(() => {
+    if (localRef.current) {
+      localRef.current.indeterminate = Boolean(indeterminate);
+    }
+  }, [indeterminate]);
+
+  // Generate classes
+  let validationClass = '';
+  if (invalid) {
+    validationClass = CHECKBOX_CLASSES.INVALID;
+  } else if (valid) {
+    validationClass = CHECKBOX_CLASSES.VALID;
+  }
+
+  const disabledClass = disabled ? CHECKBOX_CLASSES.DISABLED : '';
+  const indeterminateClass = indeterminate ? CHECKBOX_CLASSES.MIXED : '';
+  const glassClass = glass ? 'c-checkbox--glass' : '';
+
+  const checkboxClass = `${CHECKBOX_CLASSES.BASE} ${validationClass} ${disabledClass} ${indeterminateClass} ${glassClass} ${className}`.trim();
+
+  const inputElement = (
+    <input
+      ref={localRef}
+      type="checkbox"
+      className="c-checkbox__input"
+      checked={checked}
+      onChange={onChange}
+      onClick={onClick}
+      disabled={disabled}
+      required={required}
+      id={id}
+      name={name}
+      value={value}
+      aria-label={!label ? ariaLabel : undefined}
+      aria-describedby={ariaDescribedBy}
+      aria-invalid={invalid}
+      {...props}
+    />
+  );
+
+  let content: React.ReactNode;
+
+  if (id && label) {
+    content = (
+      <div className={checkboxClass} style={style}>
+        {inputElement}
         <label className="c-checkbox__label" htmlFor={id}>
           {label}
         </label>
-      )}
-    </div>
-  );
+      </div>
+    );
+  } else if (label) {
+    // Wrap input in label for accessibility when no ID is provided
+    content = (
+      <label className={checkboxClass} style={style}>
+         {inputElement}
+         <span className="c-checkbox__label">{label}</span>
+      </label>
+    );
+  } else {
+    // No label
+    content = (
+      <div className={checkboxClass} style={style}>
+        {inputElement}
+      </div>
+    );
+  }
 
   if (glass) {
-    // Default glass settings for checkboxes
     const defaultGlassProps = {
       displacementScale: 40,
       blurAmount: 1,
@@ -76,17 +114,15 @@ export const Checkbox: React.FC<CheckboxProps> = memo(({
       cornerRadius: 6,
       mode: 'shader' as const,
     };
-
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
-
-    return <AtomixGlass {...glassProps}>{checkboxContent}</AtomixGlass>;
+    return <AtomixGlass {...glassProps}>{content}</AtomixGlass>;
   }
 
-  return checkboxContent;
-});
-
-export type { CheckboxProps };
+  return content;
+}));
 
 Checkbox.displayName = 'Checkbox';
+
+export type { CheckboxProps };
 
 export default Checkbox;
