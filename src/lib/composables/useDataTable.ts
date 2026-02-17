@@ -328,47 +328,64 @@ export function useDataTable({
     setCurrentPage(1);
   }, []);
 
+  // Pre-process column filters to avoid redundant lookups and transformations
+  const activeColumnFilters = useMemo(() => {
+    if (!columnFilters) return [];
+
+    return Object.entries(columnFilterValues)
+      .filter(([, value]) => value !== undefined && value !== null && value !== '')
+      .map(([columnKey, value]) => {
+        const column = columns.find(col => col.key === columnKey);
+        if (!column || !column.filterable) return null;
+
+        return {
+          key: columnKey,
+          value,
+          lowercaseValue: typeof value === 'string' ? value.toLowerCase() : String(value).toLowerCase(),
+          column,
+        };
+      })
+      .filter((f): f is NonNullable<typeof f> => f !== null);
+  }, [columnFilters, columnFilterValues, columns]);
+
   // Filter data based on search query and column filters
   const filteredData = useMemo(() => {
-    let result = data;
+    if (!searchQuery && activeColumnFilters.length === 0) {
+      return data;
+    }
 
-    // Apply global search
-    if (searchQuery) {
-      const lowercaseQuery = searchQuery.toLowerCase();
-      result = result.filter(row => {
-        return visibleColumns.some(column => {
+    const lowercaseQuery = searchQuery ? searchQuery.toLowerCase() : '';
+
+    return data.filter(row => {
+      // Apply global search
+      if (searchQuery) {
+        const matchesGlobal = visibleColumns.some(column => {
           const value = row[column.key];
           if (value == null) return false;
           return String(value).toLowerCase().includes(lowercaseQuery);
         });
-      });
-    }
+        if (!matchesGlobal) return false;
+      }
 
-    // Apply column-specific filters
-    if (columnFilters) {
-      result = result.filter(row => {
-        return Object.entries(columnFilterValues).every(([columnKey, filterValue]) => {
-          if (!filterValue) return true;
+      // Apply column-specific filters
+      for (let i = 0; i < activeColumnFilters.length; i++) {
+        const { key, value, lowercaseValue, column } = activeColumnFilters[i];
+        const cellValue = row[key];
 
-          const column = columns.find(col => col.key === columnKey);
-          if (!column || !column.filterable) return true;
+        if (cellValue == null) return false;
 
-          const cellValue = row[columnKey];
-          if (cellValue == null) return false;
-
-          // Use custom filter function if provided
-          if (column.filterFunction) {
-            return column.filterFunction(cellValue, filterValue);
-          }
-
+        // Use custom filter function if provided
+        if (column.filterFunction) {
+          if (!column.filterFunction(cellValue, value)) return false;
+        } else {
           // Default text filter
-          return String(cellValue).toLowerCase().includes(filterValue.toLowerCase());
-        });
-      });
-    }
+          if (!String(cellValue).toLowerCase().includes(lowercaseValue)) return false;
+        }
+      }
 
-    return result;
-  }, [data, visibleColumns, searchQuery, columnFilterValues, columnFilters, columns]);
+      return true;
+    });
+  }, [data, visibleColumns, searchQuery, activeColumnFilters]);
 
   // Sort data
   const sortedData = useMemo(() => {
