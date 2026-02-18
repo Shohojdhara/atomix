@@ -235,16 +235,10 @@ export function useAtomixGlass({
   const effectiveCornerRadius = useMemo(() => {
     if (cornerRadius !== undefined) {
       const result = Math.max(0, cornerRadius);
-      // if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
-      //   console.log('[AtomixGlass] Using manual cornerRadius prop:', result);
-      // }
       return result;
     }
 
     const result = Math.max(0, dynamicCornerRadius);
-    // if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
-    //   console.log('[AtomixGlass] Using dynamic cornerRadius:', result);
-    // }
     return result;
   }, [cornerRadius, dynamicCornerRadius, debugCornerRadius]);
 
@@ -301,19 +295,6 @@ export function useAtomixGlass({
 
         if (extractedRadius !== null && extractedRadius > 0) {
           setDynamicCornerRadius(extractedRadius);
-
-          // if (process.env.NODE_ENV !== 'production' && debugCornerRadius) {
-          //   console.log('[AtomixGlass] Corner radius extracted:', {
-          //     value: extractedRadius,
-          //     source: extractionSource,
-          //     timestamp: new Date().toISOString(),
-          //   });
-          // }
-        } else if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && debugCornerRadius) {
-          //   console.log(
-          //     '[AtomixGlass] No corner radius found, using default:',
-          //     CONSTANTS.DEFAULT_CORNER_RADIUS
-          //   );
         }
       } catch (error) {
         if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && debugCornerRadius) {
@@ -451,19 +432,6 @@ export function useAtomixGlass({
               setCachedBackgroundDetection(element.parentElement, overLight, isOverLightDetected, threshold);
 
               setDetectedOverLight(isOverLightDetected);
-
-              // Debug logging
-              // if (process.env.NODE_ENV !== 'production' && debugOverLight) {
-              //   console.log('[AtomixGlass] OverLight Detection:', {
-              //     avgLuminance: avgLuminance.toFixed(3),
-              //     threshold: threshold.toFixed(3),
-              //     detected: isOverLightDetected,
-              //     validSamples,
-              //     totalLuminance: totalLuminance.toFixed(3),
-              //     configType: typeof overLight === 'object' ? 'object' : typeof overLight,
-              //     timestamp: new Date().toISOString(),
-              //   });
-              // }
             } else {
               // Invalid luminance calculation, default to false
               const result = false;
@@ -503,15 +471,6 @@ export function useAtomixGlass({
       // For boolean values, disable auto-detection
       // Cache is automatically managed by WeakMap (no manual clearing needed)
       setDetectedOverLight(false);
-
-      // Debug logging for boolean mode
-      // if (process.env.NODE_ENV !== 'production' && debugOverLight) {
-      //   console.log('[AtomixGlass] OverLight Mode: boolean', {
-      //     value: overLight,
-      //     autoDetection: false,
-      //     timestamp: new Date().toISOString(),
-      //   });
-      // }
     }
 
     if (typeof window.matchMedia !== 'function') {
@@ -582,8 +541,6 @@ export function useAtomixGlass({
         return;
       }
 
-      const startTime = enablePerformanceMonitoring ? performance.now() : 0;
-
       // Use cached rect if available, otherwise get new one
       let rect = cachedRectRef.current;
       if (!rect || rect.width === 0 || rect.height === 0) {
@@ -606,14 +563,6 @@ export function useAtomixGlass({
       // React 18 automatically batches these updates
       setInternalMouseOffset(newOffset);
       setInternalGlobalMousePosition(globalPos);
-
-      if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && enablePerformanceMonitoring) {
-        const endTime = performance.now();
-        const duration = endTime - startTime;
-        // if (duration > 5) {
-        //   console.warn(`AtomixGlass: Mouse tracking took ${duration.toFixed(2)}ms`);
-        // }
-      }
     },
     [
       mouseContainer,
