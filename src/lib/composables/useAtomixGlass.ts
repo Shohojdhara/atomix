@@ -161,6 +161,10 @@ export function useAtomixGlass({
   saturation = ATOMIX_GLASS.DEFAULTS.SATURATION,
   padding = ATOMIX_GLASS.DEFAULTS.PADDING,
   children,
+  blurAmount,
+  saturation,
+  padding,
+  enableLiquidBlur,
 }: UseAtomixGlassOptions): UseAtomixGlassReturn {
   // State
   const [isHovered, setIsHovered] = useState(false);

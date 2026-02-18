@@ -36,6 +36,10 @@ export function AtomixGlass({
   debugCornerRadius = false,
   debugOverLight = false,
 }: AtomixGlassProps) {
+  // Ref for the outer wrapper div to apply CSS variables imperatively
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // Refs for internal elements
   const glassRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -78,6 +82,10 @@ export function AtomixGlass({
     saturation,
     padding,
     children,
+    blurAmount,
+    saturation,
+    padding,
+    enableLiquidBlur,
   });
 
   const isOverLight = overLightConfig.isOverLight;
@@ -169,11 +177,29 @@ export function AtomixGlass({
     />
   );
 
+  // Initial CSS variables (static values for initial render, updated imperatively by hook)
+  // We can leave them empty or set minimal defaults, as the hook updates them on mount.
+  // However, setting them here ensures SSR/initial render looks somewhat correct before hydration.
+  // For simplicity and performance, we rely on the hook's initial effect.
+
+  // We apply base CSS variables for layout that don't depend on mouse
+  const staticVars = {
+    '--atomix-glass-radius': `${effectiveCornerRadius}px`,
+    '--atomix-glass-position': positionStyles.position,
+    '--atomix-glass-top': positionStyles.top !== 'fixed' ? `${positionStyles.top}px` : '0',
+    '--atomix-glass-left': positionStyles.left !== 'fixed' ? `${positionStyles.left}px` : '0',
+    '--atomix-glass-width':
+        style.position !== 'fixed' ? adjustedSize.width : `${adjustedSize.width}px`,
+    '--atomix-glass-height':
+        style.position !== 'fixed' ? adjustedSize.height : `${adjustedSize.height}px`,
+    '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.09375rem)',
+  } as React.CSSProperties;
+
   return (
     <div
       ref={wrapperRef}
       className={componentClassName}
-      style={glassVars}
+      style={staticVars}
       role={role || (onClick ? 'button' : undefined)}
       tabIndex={onClick ? (tabIndex ?? 0) : tabIndex}
       aria-label={ariaLabel}
