@@ -4,9 +4,6 @@ import { ATOMIX_GLASS } from '../../lib/constants/components';
 import { AtomixGlassContainer } from './AtomixGlassContainer';
 import { useAtomixGlass } from '../../lib/composables/useAtomixGlass';
 
-/**
- * AtomixGlass - A high-performance glass morphism component with liquid distortion effects
- */
 export function AtomixGlass({
   children,
   displacementScale = ATOMIX_GLASS.DEFAULTS.DISPLACEMENT_SCALE,
@@ -45,6 +42,7 @@ export function AtomixGlass({
   // Refs for internal elements
   const glassRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   // Use composable hook for all state and logic
   const {
@@ -55,9 +53,8 @@ export function AtomixGlass({
     effectiveReducedMotion,
     effectiveHighContrast,
     effectiveDisableEffects,
-    overLightConfig, // This is now static/base config
-    globalMousePosition, // Static (unless prop changes)
-    mouseOffset, // Static (unless prop changes)
+    overLightConfig,
+    detectedOverLight,
     handleMouseEnter,
     handleMouseLeave,
     handleMouseDown,
@@ -66,7 +63,7 @@ export function AtomixGlass({
   } = useAtomixGlass({
     glassRef,
     contentRef,
-    wrapperRef, // Pass wrapperRef to hook
+    wrapperRef,
     cornerRadius,
     globalMousePosition: externalGlobalMousePosition,
     mouseOffset: externalMouseOffset,
@@ -80,6 +77,10 @@ export function AtomixGlass({
     debugCornerRadius,
     debugOverLight,
     enablePerformanceMonitoring,
+    enableLiquidBlur,
+    blurAmount,
+    saturation,
+    padding,
     children,
     blurAmount,
     saturation,
@@ -87,33 +88,10 @@ export function AtomixGlass({
     enableLiquidBlur,
   });
 
-  // Calculate isOverLight independently from overLightConfig to prevent displacement changes on hover
-  // overLightConfig recalculates with hover/active states, but displacement should remain stable
-  const isOverLight = useMemo(() => overLightConfig?.isOverLight, [overLightConfig]);
-
+  const isOverLight = overLightConfig.isOverLight;
   const shouldRenderOverLightLayers = enableOverLightLayers && isOverLight;
 
-  // Calculate base style with transforms
-  // Use CSS variable for transform to allow imperative updates
-  const baseStyle = {
-    ...style,
-    ...(!effectiveDisableEffects && {
-      transform: 'var(--atomix-glass-transform)',
-    }),
-  };
-
-  // Build className with state modifiers
-  const componentClassName = [
-    ATOMIX_GLASS.BASE_CLASS,
-    effectiveReducedMotion && `${ATOMIX_GLASS.BASE_CLASS}--reduced-motion`,
-    effectiveHighContrast && `${ATOMIX_GLASS.BASE_CLASS}--high-contrast`,
-    effectiveDisableEffects && `${ATOMIX_GLASS.BASE_CLASS}--disabled-effects`,
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
-
-  // Calculate position and size styles
+  // Calculate base style for layout
   const positionStyles = useMemo(
     () => ({
       position: (style.position || 'absolute') as React.CSSProperties['position'],
@@ -141,6 +119,40 @@ export function AtomixGlass({
     [style.position, style.width, style.height, glassSize.width, glassSize.height]
   );
 
+  // Memoize static CSS variables (layout related)
+  // Dynamic vars (gradients, opacity, transform) are handled imperatively by useAtomixGlass
+  const glassVars = useMemo(() => {
+    return {
+      '--atomix-glass-position': positionStyles.position,
+      '--atomix-glass-top': positionStyles.top !== 'fixed' ? `${positionStyles.top}px` : '0',
+      '--atomix-glass-left': positionStyles.left !== 'fixed' ? `${positionStyles.left}px` : '0',
+      '--atomix-glass-width':
+        style.position !== 'fixed' ? adjustedSize.width : `${adjustedSize.width}px`,
+      '--atomix-glass-height':
+        style.position !== 'fixed' ? adjustedSize.height : `${adjustedSize.height}px`,
+      // Initial values for dynamic vars to avoid flash of unstyled content
+      '--atomix-glass-radius': `${effectiveCornerRadius}px`,
+      '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.09375rem)',
+      // Initialize other vars to defaults or empty
+    } as React.CSSProperties;
+  }, [
+    positionStyles,
+    adjustedSize,
+    style.position,
+    effectiveCornerRadius,
+  ]);
+
+  // Build className with state modifiers
+  const componentClassName = [
+    ATOMIX_GLASS.BASE_CLASS,
+    effectiveReducedMotion && `${ATOMIX_GLASS.BASE_CLASS}--reduced-motion`,
+    effectiveHighContrast && `${ATOMIX_GLASS.BASE_CLASS}--high-contrast`,
+    effectiveDisableEffects && `${ATOMIX_GLASS.BASE_CLASS}--disabled-effects`,
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   // Helper function to render background layers
   const renderBackgroundLayer = (layerType: 'dark' | 'black') => (
     <div
@@ -160,7 +172,7 @@ export function AtomixGlass({
         height: adjustedSize.height,
         width: adjustedSize.width,
         borderRadius: `${effectiveCornerRadius}px`,
-        transform: baseStyle.transform,
+        transform: 'var(--atomix-glass-transform, none)',
       }}
     />
   );
@@ -200,7 +212,7 @@ export function AtomixGlass({
         ref={glassRef}
         contentRef={contentRef}
         className={className}
-        style={baseStyle}
+        style={style}
         cornerRadius={effectiveCornerRadius}
         displacementScale={
           effectiveDisableEffects
@@ -228,8 +240,9 @@ export function AtomixGlass({
         }
         glassSize={glassSize}
         padding={padding}
-        mouseOffset={effectiveDisableEffects ? { x: 0, y: 0 } : mouseOffset}
-        globalMousePosition={effectiveDisableEffects ? { x: 0, y: 0 } : globalMousePosition}
+        // Pass dummy mouse offset to satisfy types, but component should not use it for rendering logic
+        mouseOffset={{ x: 0, y: 0 }}
+        globalMousePosition={{ x: 0, y: 0 }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseDown={handleMouseDown}
@@ -237,10 +250,11 @@ export function AtomixGlass({
         isHovered={isHovered}
         isActive={isActive}
         overLight={isOverLight}
-        overLightConfig={overLightConfig} // Pass base config
+        overLightConfig={overLightConfig}
         onClick={onClick}
         mode={mode}
-        transform={baseStyle.transform} // Passes 'var(--atomix-glass-transform)'
+        // transform prop is deprecated/unused in new logic as we set it imperatively
+        transform="var(--atomix-glass-transform, none)"
         effectiveDisableEffects={effectiveDisableEffects}
         effectiveReducedMotion={effectiveReducedMotion}
         shaderVariant={shaderVariant}
@@ -251,27 +265,22 @@ export function AtomixGlass({
       </AtomixGlassContainer>
       {Boolean(onClick) && (
         <>
-          {/* Hover layers - opacity and background set via CSS variables in SCSS */}
           <div className={ATOMIX_GLASS.HOVER_1_CLASS} />
           <div className={ATOMIX_GLASS.HOVER_2_CLASS} />
           <div className={ATOMIX_GLASS.HOVER_3_CLASS} />
         </>
       )}
 
-      {/* Background layers for over-light mode */}
-      {/* Static styles (pointer-events, will-change) are in SCSS */}
       {renderBackgroundLayer('dark')}
       {renderBackgroundLayer('black')}
       {shouldRenderOverLightLayers && (
         <>
-          {/* Base and overlay layers - opacity and background set via CSS variables in SCSS */}
           <div className={ATOMIX_GLASS.BASE_LAYER_CLASS} />
           <div className={ATOMIX_GLASS.OVERLAY_LAYER_CLASS} />
-          {/* Overlay highlight - opacity and background are dynamic, calculated inline */}
           <div
             className={ATOMIX_GLASS.OVERLAY_HIGHLIGHT_CLASS}
             style={{
-              opacity: `var(--atomix-glass-overlay-highlight-opacity, 0)`,
+              opacity: `calc(var(--atomix-glass-overlay-opacity, 0) * ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.OPACITY_MULTIPLIER})`,
               background: `radial-gradient(circle at ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.POSITION_X}% ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.POSITION_Y}%, rgba(255, 255, 255, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.WHITE_OPACITY}) 0%, transparent ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.STOP}%)`,
             }}
           />
@@ -279,8 +288,6 @@ export function AtomixGlass({
       )}
       {enableBorderEffect && (
         <>
-          {/* Border elements - all styles (static and dynamic via CSS variables) are in SCSS */}
-          {/* Position, size, transform, transition, border-radius all use CSS variables set in glassVars */}
           <span className={ATOMIX_GLASS.BORDER_1_CLASS} />
           <span className={ATOMIX_GLASS.BORDER_2_CLASS} />
         </>
