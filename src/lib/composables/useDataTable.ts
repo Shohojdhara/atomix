@@ -369,7 +369,9 @@ export function useDataTable({
 
       // Apply column-specific filters
       for (let i = 0; i < activeColumnFilters.length; i++) {
-        const { key, value, lowercaseValue, column } = activeColumnFilters[i];
+        const filter = activeColumnFilters[i];
+        if (!filter) continue;
+        const { key, value, lowercaseValue, column } = filter;
         const cellValue = row[key];
 
         if (cellValue == null) return false;

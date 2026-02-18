@@ -20,11 +20,10 @@ describe('Chart Scale Calculation', () => {
   bench('Original (medium)', () => {
     const datasets = mediumDatasets;
     const allDataPoints = datasets.flatMap(dataset => dataset.data);
-    if (allDataPoints.length === 0) return null;
+    if (allDataPoints.length === 0) return;
 
-    const minValue = Math.min(...allDataPoints.map(point => point.value));
-    const maxValue = Math.max(...allDataPoints.map(point => point.value));
-    return { minValue, maxValue };
+    Math.min(...allDataPoints.map(point => point.value));
+    Math.max(...allDataPoints.map(point => point.value));
   });
 
   bench('Optimized (medium)', () => {
@@ -40,19 +39,15 @@ describe('Chart Scale Calculation', () => {
         hasData = true;
       }
     }
-
-    if (!hasData) return null;
-    return { minValue, maxValue };
   });
 
   bench('Original (large)', () => {
     const datasets = largeDatasets;
     const allDataPoints = datasets.flatMap(dataset => dataset.data);
-    if (allDataPoints.length === 0) return null;
+    if (allDataPoints.length === 0) return;
 
-    const minValue = Math.min(...allDataPoints.map(point => point.value));
-    const maxValue = Math.max(...allDataPoints.map(point => point.value));
-    return { minValue, maxValue };
+    Math.min(...allDataPoints.map(point => point.value));
+    Math.max(...allDataPoints.map(point => point.value));
   });
 
   bench('Optimized (large)', () => {
@@ -68,8 +63,5 @@ describe('Chart Scale Calculation', () => {
         hasData = true;
       }
     }
-
-    if (!hasData) return null;
-    return { minValue, maxValue };
   });
 });
