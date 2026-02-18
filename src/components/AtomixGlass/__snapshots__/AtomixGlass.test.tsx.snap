@@ -205,11 +205,11 @@ exports[`AtomixGlass Visual Regression > matches snapshot with default props 1`]
     </div>
     <div
       class="c-atomix-glass__background-layer c-atomix-glass__background-layer--dark c-atomix-glass__background-layer--hidden"
-      style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; border-radius: 16px; transform: translate(0px, 0px) scale(1);"
+      style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; border-radius: 16px; transform: var(--atomix-glass-transform);"
     />
     <div
       class="c-atomix-glass__background-layer c-atomix-glass__background-layer--black c-atomix-glass__background-layer--hidden"
-      style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; border-radius: 16px; transform: translate(0px, 0px) scale(1);"
+      style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; border-radius: 16px; transform: var(--atomix-glass-transform);"
     />
     <span
       class="c-atomix-glass__border-1"

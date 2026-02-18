@@ -12,6 +12,7 @@ import { useGlassTransforms } from './atomix-glass/useGlassTransforms';
 interface UseAtomixGlassOptions extends Omit<AtomixGlassProps, 'children'> {
   glassRef: React.RefObject<HTMLDivElement>;
   contentRef: React.RefObject<HTMLDivElement>;
+  wrapperRef?: React.RefObject<HTMLDivElement>;
   children?: React.ReactNode;
 }
 
@@ -62,6 +63,7 @@ interface UseAtomixGlassReturn {
 export function useAtomixGlass({
   glassRef,
   contentRef,
+  wrapperRef,
   cornerRadius,
   globalMousePosition: externalGlobalMousePosition,
   mouseOffset: externalMouseOffset,
@@ -76,6 +78,10 @@ export function useAtomixGlass({
   debugOverLight = false,
   enablePerformanceMonitoring = false,
   children,
+  blurAmount,
+  saturation,
+  padding,
+  enableLiquidBlur,
 }: UseAtomixGlassOptions): UseAtomixGlassReturn {
   // State
   const [isHovered, setIsHovered] = useState(false);
@@ -164,6 +170,10 @@ export function useAtomixGlass({
   const handleMouseDown = useCallback(() => setIsActive(true), []);
   const handleMouseUp = useCallback(() => setIsActive(false), []);
 
+  const handleMouseMove = useCallback((_e: MouseEvent) => {
+    // Mouse tracking handled by shared global tracker
+  }, []);
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (onClick && (e.key === 'Enter' || e.key === ' ')) {
@@ -174,13 +184,7 @@ export function useAtomixGlass({
     [onClick]
   );
 
-  // Mouse tracking is now handled by shared global tracker
-  const handleMouseMove = useCallback((_e: MouseEvent) => {
-    // Mouse tracking handled by shared global tracker
-  }, []);
-
   return {
-    // State
     isHovered,
     isActive,
     glassSize,
@@ -190,18 +194,12 @@ export function useAtomixGlass({
     effectiveHighContrast,
     effectiveDisableEffects,
     detectedOverLight,
-    globalMousePosition,
-    mouseOffset,
-
-    // OverLight config
+    globalMousePosition, // This is now static (refs or props) unless prop changes
+    mouseOffset,         // This is now static (refs or props) unless prop changes
     overLightConfig,
-
-    // Transform calculations
     elasticTranslation,
     directionalScale,
     transformStyle,
-
-    // Event handlers
     handleMouseEnter,
     handleMouseLeave,
     handleMouseDown,
