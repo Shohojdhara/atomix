@@ -118,5 +118,5 @@ jobs:
           echo "- CSS bundle: ${{ steps.bundle_check.outputs.css_status || '⚠️ Check did not complete' }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Lighthouse Scores" >> $GITHUB_STEP_SUMMARY
-          echo "See Lighthouse CI artifacts for detailed scores." >> $GITHUB_STEP_SUMMARY
+          echo "Check the 'Run Lighthouse CI' step logs for detailed scores." >> $GITHUB_STEP_SUMMARY
 
