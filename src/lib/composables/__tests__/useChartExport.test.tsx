@@ -5,11 +5,19 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 describe('useChartExport', () => {
   let originalCreateObjectURL: typeof URL.createObjectURL;
   let originalRevokeObjectURL: typeof URL.revokeObjectURL;
+  let originalXMLSerializer: typeof global.XMLSerializer;
+  let originalImage: typeof global.Image;
+  let originalGetContext: typeof HTMLCanvasElement.prototype.getContext;
 
   beforeEach(() => {
-    // Mock URL.createObjectURL and URL.revokeObjectURL
+    // Store original values
     originalCreateObjectURL = URL.createObjectURL;
     originalRevokeObjectURL = URL.revokeObjectURL;
+    originalXMLSerializer = global.XMLSerializer;
+    originalImage = global.Image;
+    originalGetContext = HTMLCanvasElement.prototype.getContext;
+
+    // Mock URL.createObjectURL and URL.revokeObjectURL
     URL.createObjectURL = vi.fn(() => 'mock-url');
     URL.revokeObjectURL = vi.fn();
 
@@ -43,8 +51,12 @@ describe('useChartExport', () => {
   });
 
   afterEach(() => {
+    // Restore original values
     URL.createObjectURL = originalCreateObjectURL;
     URL.revokeObjectURL = originalRevokeObjectURL;
+    global.XMLSerializer = originalXMLSerializer;
+    global.Image = originalImage;
+    HTMLCanvasElement.prototype.getContext = originalGetContext;
     vi.restoreAllMocks();
   });
 
