@@ -883,6 +883,7 @@ export const NotificationCenter: Story = {
             </div>
           </AtomixGlass>
         </div>
+        </div>
       </BackgroundWrapper>
     );
   },
@@ -1161,6 +1162,7 @@ export const LoginForm: Story = {
               </div>
             </div>
           </AtomixGlass>
+        </div>
         </div>
       </BackgroundWrapper>
     );
