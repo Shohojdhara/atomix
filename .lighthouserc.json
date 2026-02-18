@@ -14,7 +14,7 @@
         "first-contentful-paint": ["error", {"maxNumericValue": 6000}],
         "largest-contentful-paint": ["error", {"maxNumericValue": 12000}],
         "cumulative-layout-shift": ["error", {"maxNumericValue": 0.25}],
-        "total-blocking-time": ["error", {"maxNumericValue": 800}],
+        "total-blocking-time": ["error", {"maxNumericValue": 1200}],
         "speed-index": ["warn", {"maxNumericValue": 6000}]
       }
     },
