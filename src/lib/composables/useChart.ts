@@ -527,12 +527,24 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     ): ChartScales | null => {
       if (!datasets || datasets.length === 0) return null;
 
-      // Flatten all data points to find min/max values
-      const allDataPoints = datasets.flatMap(dataset => dataset.data);
-      if (allDataPoints.length === 0) return null;
+      // Calculate min/max and total points in a single pass
+      let minValue = Infinity;
+      let maxValue = -Infinity;
+      let totalPoints = 0;
+      let hasData = false;
 
-      const minValue = Math.min(...allDataPoints.map(point => point.value));
-      const maxValue = Math.max(...allDataPoints.map(point => point.value));
+      for (const dataset of datasets) {
+        if (!dataset.data) continue;
+        for (const point of dataset.data) {
+          if (point.value < minValue) minValue = point.value;
+          if (point.value > maxValue) maxValue = point.value;
+          totalPoints++;
+          hasData = true;
+        }
+      }
+
+      if (!hasData) return null;
+
       const valueRange = maxValue - minValue || 1; // Avoid division by zero
 
       // Apply padding
@@ -540,7 +552,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
       const innerHeight = height - padding.top - padding.bottom;
 
       // Create scale functions
-      const xScale = (index: number, dataLength: number = allDataPoints.length) => {
+      const xScale = (index: number, dataLength: number = totalPoints) => {
         if (dataLength <= 1) return padding.left + innerWidth / 2;
         return padding.left + (index / (dataLength - 1)) * innerWidth;
       };
