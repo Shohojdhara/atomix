@@ -28,13 +28,29 @@ export function useAmbientMode({
 
     if (!ctx) return undefined;
 
+    const updateSize = () => {
+      const rect = video.getBoundingClientRect();
+      const newWidth = rect.width * scale;
+      const newHeight = rect.height * scale;
+
+      // Only update if dimensions actually changed to avoid clearing canvas
+      if (canvas.width !== newWidth || canvas.height !== newHeight) {
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+      }
+    };
+
+    // Initial size update
+    updateSize();
+
+    // Watch for video resize
+    const resizeObserver = new ResizeObserver(() => {
+      updateSize();
+    });
+    resizeObserver.observe(video);
+
     const updateAmbientEffect = () => {
       if (!video || !canvas || !ctx) return;
-
-      // Set canvas size to match container
-      const rect = video.getBoundingClientRect();
-      canvas.width = rect.width * scale;
-      canvas.height = rect.height * scale;
 
       // Draw video frame to canvas
       ctx.filter = `blur(${blur}px)`;
@@ -77,6 +93,7 @@ export function useAmbientMode({
       video.removeEventListener('play', handlePlay);
       video.removeEventListener('pause', handlePause);
       video.removeEventListener('ended', handlePause);
+      resizeObserver.disconnect();
 
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
