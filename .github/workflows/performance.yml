@@ -102,7 +102,7 @@ jobs:
         with:
           urls: |
             http://localhost:6006
-          uploadArtifacts: true
+          uploadArtifacts: false
           temporaryPublicStorage: true
           configPath: ./.lighthouserc.json
 
