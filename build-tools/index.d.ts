@@ -1,11 +1,11 @@
 // Import types
-import type { 
-  AtomixBuildToolOptions, 
+import type {
+  AtomixBuildToolOptions,
   BuildTool,
   AtomixVitePluginOptions,
   AtomixLoaderOptions,
-  AtomixRollupPluginOptions
-} from './types';
+  AtomixRollupPluginOptions,
+} from './types.js';
 
 // Declare exactly what index.js exports
 
@@ -32,7 +32,7 @@ export declare function rollupPlugin(options?: AtomixRollupPluginOptions): any;
  * Defined directly in index.js
  */
 export declare function getIntegration(
-  buildTool: BuildTool, 
+  buildTool: BuildTool,
   options?: AtomixBuildToolOptions
 ): any | null;
 
