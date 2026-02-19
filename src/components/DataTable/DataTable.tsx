@@ -9,7 +9,6 @@ import { Checkbox } from '../Form/Checkbox';
 import { Dropdown, DropdownItem, DropdownDivider } from '../Dropdown/Dropdown';
 import { exportData } from '../../lib/utils/dataTableExport';
 import { Button } from '../Button/Button';
-import { DataTableRow } from './DataTableRow';
 
 /**
  * Get unique row ID
@@ -351,18 +350,51 @@ export const DataTable: React.FC<DataTableProps> = memo(({
           const isSelected = selectedRowIds.includes(rowId);
 
           return (
-            <DataTableRow
+            <tr
               key={`row-${rowId}`}
-              row={row}
-              rowIndex={rowIndex}
-              rowId={rowId}
-              isSelected={isSelected}
-              visibleColumns={visibleColumns}
-              columnWidths={columnWidths}
-              selectionMode={selectionMode}
-              onRowClick={onRowClick}
-              onRowSelect={handleRowSelect}
-            />
+              className={[
+                DATA_TABLE_CLASSES.row,
+                isSelected ? DATA_TABLE_CLASSES.rowSelected : '',
+              ].filter(Boolean).join(' ')}
+              onClick={onRowClick ? () => onRowClick(row) : undefined}
+              tabIndex={onRowClick ? 0 : undefined}
+              role={onRowClick ? 'button' : undefined}
+            >
+              {selectionMode !== 'none' && (
+                <td className={`${DATA_TABLE_CLASSES.cell} ${DATA_TABLE_CLASSES.selectionCell}`}>
+                  {selectionMode === 'multiple' ? (
+                    <Checkbox
+                      checked={isSelected}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleRowSelect(rowId, e.target.checked)}
+                      onClick={(e: React.MouseEvent<HTMLInputElement>) => e.stopPropagation()}
+                      aria-label={`Select row ${rowIndex + 1}`}
+                    />
+                  ) : (
+                    <input
+                      type="radio"
+                      checked={isSelected}
+                      onChange={() => handleRowSelect(rowId, true)}
+                      onClick={(e) => e.stopPropagation()}
+                      name="data-table-row-selection"
+                      aria-label={`Select row ${rowIndex + 1}`}
+                      className="c-data-table__radio"
+                    />
+                  )}
+                </td>
+              )}
+              {visibleColumns.map((column) => (
+                <td
+                  key={`cell-${rowId}-${column.key}`}
+                  className={DATA_TABLE_CLASSES.cell}
+                  style={{
+                    ...(columnWidths[column.key] && { width: `${columnWidths[column.key]}px` }),
+                    ...(column.width && !columnWidths[column.key] && { width: column.width }),
+                  }}
+                >
+                  {column.render ? column.render(row[column.key], row) : row[column.key]}
+                </td>
+              ))}
+            </tr>
           );
         })}
       </tbody>

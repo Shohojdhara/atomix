@@ -4,7 +4,7 @@ import { ChartDataPoint } from '../../components/Chart/types';
 /**
  * Simplified hook for chart data processing
  */
-export function useSimpleChartData(data: ChartDataPoint[]) {
+export function useChartData(data: ChartDataPoint[]) {
   const processedData = useMemo(() => {
     if (!data.length) return [];
 

@@ -23,7 +23,7 @@ import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 export const Rating = forwardRef<HTMLDivElement, RatingProps>(
   (
     {
-      value: valueProp,
+      value: valueProp = 0,
       defaultValue,
       maxValue = 5,
       allowHalf = false,
@@ -45,16 +45,9 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
     const ratingInstance = useRef<any>(null);
 
     // Use the rating hook for React-based implementation
-    const {
-      currentValue,
-      hoverValue,
-      focusedIndex,
-      setHoverValue,
-      setFocused,
-      handleKeyDown,
-      handleClick: handleRatingChange,
-    } = useRating({
-      value: valueProp !== undefined ? valueProp : defaultValue,
+    const { currentValue, hoverValue, focusedIndex, setHoverValue, setFocused, handleKeyDown } =
+      useRating({
+        value: valueProp !== undefined ? valueProp : defaultValue,
         maxValue,
         allowHalf,
         readOnly,
@@ -126,9 +119,9 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
           newValue = Math.max(0.5, newValue); // Ensure minimum of 0.5
         }
 
-        handleRatingChange(newValue);
+        onChange?.(newValue);
       },
-      [readOnly, handleRatingChange, allowHalf]
+      [readOnly, onChange, allowHalf]
     );
 
     // Use vanilla JS implementation if specified
@@ -222,7 +215,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
             id={starId}
             className={starClass}
             data-value={i}
-            role={readOnly ? 'presentation' : 'radio'}
+            role={readOnly ? 'presentation' : 'button'}
             tabIndex={readOnly ? -1 : 0}
             aria-label={`${i} ${i === 1 ? 'star' : 'stars'}`}
             aria-checked={i <= roundedValue}

@@ -52,7 +52,7 @@ export * from './usePagination';
 export * from './useSlider';
 
 // Chart composables - simplified
-export * from './useSimpleChartData';
+export * from './useChartData';
 export * from './useChartScale';
 export * from './useChartInteraction';
 
