@@ -23,7 +23,10 @@ export function useForm(initialProps?: Partial<FormProps>) {
 
     const disabledClass = disabled ? FORM.CLASSES.DISABLED : '';
 
-    return `${FORM.CLASSES.BASE} ${disabledClass} ${className}`.trim();
+    return [FORM.CLASSES.BASE, disabledClass, className]
+      .filter(Boolean)
+      .join(' ')
+      .trim();
   };
 
   /**

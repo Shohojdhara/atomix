@@ -95,6 +95,7 @@ export function useAmbientMode({
       video.removeEventListener('play', handlePlay);
       video.removeEventListener('pause', handlePause);
       video.removeEventListener('ended', handlePause);
+      resizeObserver.disconnect();
 
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
