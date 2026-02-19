@@ -112,6 +112,7 @@
       "default": "./dist/heavy.js"
     },
     "./build-tools": {
+      "types": "./build-tools/index.d.ts",
       "import": "./build-tools/index.js",
       "require": "./build-tools/index.js",
       "default": "./build-tools/index.js"
@@ -251,6 +252,7 @@
     "scripts/atomix-cli.js",
     "scripts/cli/**/*",
     "build-tools/**/*",
+    "build-tools/**/*.d.ts",
     "atomix.config.ts",
     "README.md",
     "LICENSE",
