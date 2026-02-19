@@ -39,11 +39,11 @@ const options: AtomixVitePluginOptions = {
   components: ['Button', 'Card'],
   optimizeCss: true,
   includeAtoms: false,
-  verbose: true
+  verbose: true,
 };
 
 export default defineConfig({
-  plugins: [atomixPlugin(options)]
+  plugins: [atomixPlugin(options)],
 });
 ```
 
@@ -52,17 +52,17 @@ export default defineConfig({
 ```js
 // vite.config.js
 import { defineConfig } from 'vite';
-import atomixPlugin from './node_modules/@shohojdhara/atomix/build-tools/vite-plugin.js';
+import { vitePlugin as atomixPlugin } from '@shohojdhara/atomix/build-tools';
 
 export default defineConfig({
   plugins: [
     atomixPlugin({
-      theme: 'dark',           // Specify theme ('default', 'dark', 'light')
-      components: ['Button', 'Card'],  // Specific components to optimize
-      optimizeCss: true,       // Enable CSS optimization
-      includeAtoms: false      // Include atomic styles
-    })
-  ]
+      theme: 'dark', // Specify theme ('default', 'dark', 'light')
+      components: ['Button', 'Card'], // Specific components to optimize
+      optimizeCss: true, // Enable CSS optimization
+      includeAtoms: false, // Include atomic styles
+    }),
+  ],
 });
 ```
 
@@ -95,7 +95,7 @@ const atomixLoaderOptions: AtomixLoaderOptions = {
   includeAtoms: false,
   components: ['Button', 'Input'],
   excludeUnnecessaryStyles: true,
-  verbose: true
+  verbose: true,
 };
 ```
 
@@ -108,20 +108,18 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        include: [
-          path.resolve(__dirname, 'node_modules/@shohojdhara/atomix')
-        ],
+        include: [path.resolve(__dirname, 'node_modules/@shohojdhara/atomix')],
         use: {
-          loader: path.resolve('./node_modules/@shohojdhara/atomix/build-tools/webpack-loader.js'),
+          loader: require.resolve('@shohojdhara/atomix/build-tools/webpack-loader'),
           options: {
-            includeAtoms: false,              // Include atomic styles
-            components: ['Button', 'Input'],  // Specific components to include
-            excludeUnnecessaryStyles: true    // Remove unused styles
-          }
-        }
-      }
-    ]
-  }
+            includeAtoms: false, // Include atomic styles
+            components: ['Button', 'Input'], // Specific components to include
+            excludeUnnecessaryStyles: true, // Remove unused styles
+          },
+        },
+      },
+    ],
+  },
 };
 ```
 
@@ -155,7 +153,7 @@ const atomixOptions: AtomixRollupPluginOptions = {
   components: [],
   optimize: true,
   includeAtoms: false,
-  verbose: false
+  verbose: false,
 };
 ```
 
@@ -163,23 +161,23 @@ const atomixOptions: AtomixRollupPluginOptions = {
 
 ```js
 // rollup.config.js
-import atomixPlugin from './node_modules/@shohojdhara/atomix/build-tools/rollup-plugin.js';
+import { rollupPlugin as atomixPlugin } from '@shohojdhara/atomix/build-tools';
 
 export default {
   input: 'src/index.js',
   output: {
     dir: 'dist',
-    format: 'es'
+    format: 'es',
   },
   plugins: [
     atomixPlugin({
-      theme: 'default',         // Specify theme
-      components: [],           // Specific components to include
-      optimize: true,           // Enable optimizations
-      includeAtoms: false,      // Include atomic styles
-      verbose: false            // Enable verbose logging
-    })
-  ]
+      theme: 'default', // Specify theme
+      components: [], // Specific components to include
+      optimize: true, // Enable optimizations
+      includeAtoms: false, // Include atomic styles
+      verbose: false, // Enable verbose logging
+    }),
+  ],
 };
 ```
 
@@ -208,7 +206,7 @@ All plugins include comprehensive error handling with custom error types:
 try {
   const plugin = atomixPlugin({
     theme: 'nonexistent-theme', // This will throw a validation error
-    components: ['Button']
+    components: ['Button'],
   });
 } catch (error) {
   if (error.code === 'THEME_NOT_FOUND') {
@@ -219,6 +217,7 @@ try {
 ```
 
 Common error codes:
+
 - `INVALID_THEME_TYPE`: Theme option is not a string
 - `EMPTY_THEME`: Theme option is empty
 - `THEME_NOT_FOUND`: Specified theme doesn't exist

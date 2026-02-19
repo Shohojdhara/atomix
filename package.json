@@ -254,6 +254,7 @@
     "scripts/cli/**/*",
     "build-tools/**/*",
     "build-tools/**/*.d.ts",
+    "themes/**/*",
     "atomix.config.ts",
     "README.md",
     "LICENSE",

@@ -123,7 +123,8 @@ export function generateThemeModule(themeName, atomixRoot) {
  * @returns {string} Transformed source code.
  */
 export function filterComponents(code, selectedComponents, includeAtoms) {
-  const componentImportRegex = /import\s+{([^}]+)}\s+from\s+['"]@shohojdhara\/atomix\/components['"]/g;
+  // Matches both '@shohojdhara/atomix/components' and '@shohojdhara/atomix'
+  const componentImportRegex = /import\s+{([^}]+)}\s+from\s+['"]@shohojdhara\/atomix(?:\/components)?['"]/g;
 
   return code.replace(componentImportRegex, (match, importList) => {
     const imports = importList.split(',').map(i => i.trim()).filter(Boolean);
@@ -136,7 +137,11 @@ export function filterComponents(code, selectedComponents, includeAtoms) {
       return '';
     }
 
-    return `import { ${filteredImports.join(', ')} } from '@shohojdhara/atomix/components'`;
+    // Always rewrite to the root import for consistency, or keep as is if we want to be safe.
+    // But since /components doesn't exist in exports, we should probably rewrite to root.
+    // However, if the user wrote /components, they might have a reason (aliases?).
+    // Given the audit finding that /components isn't exported, let's standardize on the root import.
+    return `import { ${filteredImports.join(', ')} } from '@shohojdhara/atomix'`;
   });
 }
 
