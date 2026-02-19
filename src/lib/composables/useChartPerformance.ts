@@ -21,46 +21,24 @@ export function useChartPerformance() {
     const startTime = performance.now();
 
     // Process datasets with optimizations
-    const processedDatasets = datasets.map(dataset => {
-      let min = Infinity;
-      let max = -Infinity;
-      let sum = 0;
-      const count = dataset.data.length;
-
-      const processedData = dataset.data.map((point, index) => {
-        const value = point.value;
-        if (value < min) min = value;
-        if (value > max) max = value;
-        sum += value;
-
-        return {
-          ...point,
-          // Add index for efficient lookups
-          _index: index,
-          // Pre-calculate commonly used values
-          _stringValue: point.value.toString(),
-          _hasMetadata: Boolean(point.metadata && Object.keys(point.metadata).length > 0),
-        };
-      });
-
-      // Handle empty dataset case
-      if (count === 0) {
-        min = 0;
-        max = 0;
-      }
-
-      return {
-        ...dataset,
-        data: processedData,
-        // Pre-calculate dataset statistics
-        _stats: {
-          min,
-          max,
-          average: count > 0 ? sum / count : 0,
-          count,
-        },
-      };
-    });
+    const processedDatasets = datasets.map(dataset => ({
+      ...dataset,
+      data: dataset.data.map((point, index) => ({
+        ...point,
+        // Add index for efficient lookups
+        _index: index,
+        // Pre-calculate commonly used values
+        _stringValue: point.value.toString(),
+        _hasMetadata: Boolean(point.metadata && Object.keys(point.metadata).length > 0),
+      })),
+      // Pre-calculate dataset statistics
+      _stats: {
+        min: Math.min(...dataset.data.map(p => p.value)),
+        max: Math.max(...dataset.data.map(p => p.value)),
+        average: dataset.data.reduce((sum, p) => sum + p.value, 0) / dataset.data.length,
+        count: dataset.data.length,
+      },
+    }));
 
     const endTime = performance.now();
     const processingTime = endTime - startTime;
@@ -98,23 +76,9 @@ export function useChartPerformance() {
       const innerHeight = height - padding.top - padding.bottom;
 
       // Calculate bounds efficiently
-      let minValue = Infinity;
-      let maxValue = -Infinity;
-      let hasData = false;
-
-      for (const dataset of datasets) {
-        for (const d of dataset.data) {
-          const value = d.value;
-          if (value < minValue) minValue = value;
-          if (value > maxValue) maxValue = value;
-          hasData = true;
-        }
-      }
-
-      if (!hasData) {
-        minValue = 0;
-        maxValue = 0;
-      }
+      const allValues = datasets.flatMap(dataset => dataset.data.map(d => d.value));
+      const minValue = Math.min(...allValues);
+      const maxValue = Math.max(...allValues);
       const valueRange = maxValue - minValue;
 
       // Pre-calculate scale functions for better performance

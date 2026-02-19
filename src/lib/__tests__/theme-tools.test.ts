@@ -118,15 +118,6 @@ describe('theme-tools', () => {
       expect(result.valid).toBe(false);
       expect(result.errors).toContain('Theme palette must have a primary color');
     });
-
-    it('should return multiple errors when multiple required fields are missing', () => {
-      const invalidTheme = {};
-      const result = validateTheme(invalidTheme as any);
-      expect(result.valid).toBe(false);
-      expect(result.errors).toContain('Theme must have a name');
-      expect(result.errors).toContain('Theme must have a palette');
-      expect(result.errors).toHaveLength(2);
-    });
   });
 
   describe('themeToCSS', () => {

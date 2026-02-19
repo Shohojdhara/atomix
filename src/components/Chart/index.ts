@@ -55,9 +55,9 @@ export { ChartContext, useChartContext } from './Chart';
 export { useBarChart } from '../../lib/composables/useBarChart';
 export {
   useChart,
-  useChartA11y,
-  useChartProcessing,
-  useChartOptimization,
+  useChartAccessibility,
+  useChartData,
+  useChartPerformance,
 } from '../../lib/composables/useChart';
 export { useChartAnalytics } from '../../lib/composables/useChartAnalytics';
 export { useChartExport } from '../../lib/composables/useChartExport';

@@ -5,7 +5,6 @@
 
 import { resolve, relative, isAbsolute, normalize } from 'path';
 import { access } from 'fs/promises';
-import { randomBytes } from 'crypto';
 
 /**
  * Enhanced Error Class for CLI
@@ -310,10 +309,7 @@ export function validateNpmScripts(packageJson, requiredScripts = []) {
  */
 export function generateId(prefix = 'atomix') {
   const timestamp = Date.now().toString(36);
-  const random = parseInt(randomBytes(4).toString('hex'), 16)
-    .toString(36)
-    .padStart(5, '0')
-    .slice(-5);
+  const random = Math.random().toString(36).substring(2, 7);
   return `${prefix}-${timestamp}-${random}`;
 }
 

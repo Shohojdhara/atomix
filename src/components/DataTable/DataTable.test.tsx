@@ -276,7 +276,7 @@ describe('DataTable Component', () => {
       const checkboxes = screen.getAllByTestId('checkbox');
       // Click the first row checkbox (skip select all if present)
       const rowCheckbox = checkboxes[checkboxes.length > sampleData.length ? 1 : 0];
-      fireEvent.click(rowCheckbox);
+      fireEvent.change(rowCheckbox, { target: { checked: true } });
 
       expect(handleSelectionChange).toHaveBeenCalled();
     });
