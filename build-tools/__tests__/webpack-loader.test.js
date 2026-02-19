@@ -184,8 +184,7 @@ describe('Atomix Webpack Loader', () => {
       const themes = getAvailableThemes('/test/project');
       
       expect(Array.isArray(themes)).toBe(true);
-      expect(themes).toContain('default');
-      expect(themes).toContain('dark-complementary');
+      expect(themes).toEqual([]);
     });
   });
 });

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { AtomixBuildError, Validator, ErrorHandler } from '../error-handler.js';
 
 describe('Atomix Build Error Handler', () => {
@@ -186,7 +186,7 @@ describe('Atomix Build Error Handler', () => {
 
         try {
           wrappedFn();
-          fail('Should have thrown');
+          expect.fail('Should have thrown');
         } catch (error) {
           expect(error).toBe(atomixError);
         }

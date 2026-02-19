@@ -4,16 +4,20 @@
  * @module @shohojdhara/atomix/build-tools
  */
 
+import fs from 'fs';
+import path from 'path';
+
 /** @typedef {import('./types').AtomixBuildToolOptions} AtomixBuildToolOptions */
 /** @typedef {import('./types').BuildTool} BuildTool */
 
+import vitePluginFn from './vite-plugin.js';
+import webpackLoaderFn from './webpack-loader.js';
+import rollupPluginFn from './rollup-plugin.js';
+
+// Named re-exports
 export { default as vitePlugin } from './vite-plugin.js';
 export { default as webpackLoader } from './webpack-loader.js';
 export { default as rollupPlugin } from './rollup-plugin.js';
-
-/**
- * Utility functions for build tool integration
- */
 
 /**
  * Gets the appropriate plugin/loader based on the detected build tool
@@ -22,16 +26,16 @@ export { default as rollupPlugin } from './rollup-plugin.js';
  * @returns {Function|null} The appropriate plugin/loader function or null if not found
  */
 export function getIntegration(buildTool, options = {}) {
-  switch (buildTool.toLowerCase()) {
+  switch (buildTool?.toLowerCase()) {
     case 'vite':
-      return vitePlugin(options);
+      return vitePluginFn(options);
     case 'webpack':
-      // Note: webpack loaders work differently than plugins
-      return webpackLoader;
+      // Webpack loaders work differently — return the loader function itself
+      return webpackLoaderFn;
     case 'rollup':
-      return rollupPlugin(options);
+      return rollupPluginFn(options);
     default:
-      console.warn(`Unsupported build tool: ${buildTool}`);
+      console.warn(`[Atomix Build Tools] Unsupported build tool: ${buildTool}`);
       return null;
   }
 }
@@ -42,45 +46,24 @@ export function getIntegration(buildTool, options = {}) {
  */
 export function detectBuildTool() {
   try {
-    // Check for package.json to determine build tool
-    const fs = require('fs');
-    const path = require('path');
-    
-    // Get package.json from current working directory
     const pkgPath = path.join(process.cwd(), 'package.json');
     if (!fs.existsSync(pkgPath)) {
       return null;
     }
-    
+
     const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-    
-    // Check for vite dependency
-    if (
-      (pkg.devDependencies && pkg.devDependencies.vite) || 
-      (pkg.dependencies && pkg.dependencies.vite)
-    ) {
-      return 'vite';
-    }
-    
-    // Check for webpack dependency
-    if (
-      (pkg.devDependencies && pkg.devDependencies.webpack) || 
-      (pkg.dependencies && pkg.dependencies.webpack)
-    ) {
-      return 'webpack';
-    }
-    
-    // Check for rollup dependency
-    if (
-      (pkg.devDependencies && pkg.devDependencies.rollup) || 
-      (pkg.dependencies && pkg.dependencies.rollup)
-    ) {
-      return 'rollup';
-    }
-    
+    const allDeps = {
+      ...pkg.dependencies,
+      ...pkg.devDependencies,
+    };
+
+    if (allDeps.vite) return 'vite';
+    if (allDeps.webpack) return 'webpack';
+    if (allDeps.rollup) return 'rollup';
+
     return null;
   } catch (e) {
-    console.error('Error detecting build tool:', e);
+    console.error('[Atomix Build Tools] Error detecting build tool:', e.message);
     return null;
   }
 }
@@ -93,15 +76,13 @@ export function detectBuildTool() {
 export function initAutoIntegration(options = {}) {
   const buildTool = detectBuildTool();
   if (!buildTool) {
-    console.warn('Could not detect build tool, please use specific integration');
+    console.warn('[Atomix Build Tools] Could not detect build tool, please use specific integration');
     return null;
   }
-  
-  console.log(`Detected build tool: ${buildTool}, initializing integration...`);
+
+  console.log(`[Atomix Build Tools] Detected build tool: ${buildTool}, initializing integration...`);
   return getIntegration(buildTool, options);
 }
 
 // Export helpers
-export { 
-  getAvailableThemes 
-} from './rollup-plugin.js';
+export { getAvailableThemes } from './utils.js';

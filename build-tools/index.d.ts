@@ -5,51 +5,39 @@ import type {
   AtomixVitePluginOptions,
   AtomixLoaderOptions,
   AtomixRollupPluginOptions,
+  VitePluginResult,
+  RollupPluginResult,
 } from './types.js';
 
-// Declare exactly what index.js exports
+// ─── Plugin Exports ──────────────────────────────────────────────────────────
+
+/** Vite plugin for Atomix integration */
+export declare function vitePlugin(options?: AtomixVitePluginOptions): VitePluginResult;
+
+/** Webpack loader for Atomix integration (exported as the loader function itself) */
+export declare const webpackLoader: (source: string) => string;
+
+/** Rollup plugin for Atomix integration */
+export declare function rollupPlugin(options?: AtomixRollupPluginOptions): RollupPluginResult;
+
+// ─── Utility Exports ─────────────────────────────────────────────────────────
 
 /**
- * Vite plugin for Atomix integration
- * Exported as default from ./vite-plugin.js and re-exported as named export
- */
-export declare function vitePlugin(options?: AtomixVitePluginOptions): any;
-
-/**
- * Webpack loader for Atomix integration
- * Exported as default from ./webpack-loader.js and re-exported as named export
- */
-export declare const webpackLoader: any;
-
-/**
- * Rollup plugin for Atomix integration
- * Exported as default from ./rollup-plugin.js and re-exported as named export
- */
-export declare function rollupPlugin(options?: AtomixRollupPluginOptions): any;
-
-/**
- * Gets the appropriate plugin/loader based on the detected build tool
- * Defined directly in index.js
+ * Gets the appropriate plugin/loader based on the detected build tool.
+ * Returns the instantiated plugin for Vite/Rollup, or the loader function for Webpack.
  */
 export declare function getIntegration(
   buildTool: BuildTool,
   options?: AtomixBuildToolOptions
-): any | null;
+): VitePluginResult | RollupPluginResult | typeof webpackLoader | null;
 
-/**
- * Detects the build tool used in the current project
- * Defined directly in index.js
- */
+/** Detects the build tool used in the current project by reading package.json */
 export declare function detectBuildTool(): BuildTool;
 
-/**
- * Initialize the appropriate integration based on detected build tool
- * Defined directly in index.js
- */
-export declare function initAutoIntegration(options?: AtomixBuildToolOptions): any | null;
+/** Initialize the appropriate integration based on detected build tool */
+export declare function initAutoIntegration(
+  options?: AtomixBuildToolOptions
+): VitePluginResult | RollupPluginResult | typeof webpackLoader | null;
 
-/**
- * Get available themes from Atomix installation
- * Re-exported from ./rollup-plugin.js
- */
-export declare function getAvailableThemes(atomixPath?: string): string[];
+/** Get available themes from Atomix installation */
+export declare function getAvailableThemes(atomixPath?: string | null): string[];

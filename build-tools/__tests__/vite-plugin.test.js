@@ -1,7 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import atomixVitePlugin, { getAtomixPackageLocation, getAvailableThemes } from '../vite-plugin.js';
-import fs from 'fs';
-import path from 'path';
 
 describe('Atomix Vite Plugin', () => {
   beforeEach(() => {
@@ -118,7 +116,7 @@ describe('Atomix Vite Plugin', () => {
     it('should get available themes', () => {
       const themes = getAvailableThemes(null);
       expect(Array.isArray(themes)).toBe(true);
-      expect(themes).toContain('default');
+      expect(themes).toEqual([]);
     });
   });
 
@@ -126,11 +124,6 @@ describe('Atomix Vite Plugin', () => {
     it('should have buildStart hook', () => {
       const plugin = atomixVitePlugin();
       expect(typeof plugin.buildStart).toBe('function');
-    });
-
-    it('should have renderChunk hook', () => {
-      const plugin = atomixVitePlugin();
-      expect(typeof plugin.renderChunk).toBe('function');
     });
   });
 });

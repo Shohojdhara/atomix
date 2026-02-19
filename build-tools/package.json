@@ -2,15 +2,45 @@
   "name": "@shohojdhara/atomix-build-tools",
   "version": "1.0.0",
   "description": "Build tool integrations for the Atomix design system",
-  "main": "index.js",
   "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    },
+    "./vite-plugin": {
+      "types": "./index.d.ts",
+      "import": "./vite-plugin.js"
+    },
+    "./rollup-plugin": {
+      "types": "./index.d.ts",
+      "import": "./rollup-plugin.js"
+    },
+    "./webpack-loader": {
+      "types": "./index.d.ts",
+      "import": "./webpack-loader.js"
+    },
+    "./types": {
+      "types": "./types.d.ts"
+    }
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run __tests__/"
   },
   "peerDependencies": {
-    "vite": "^4.0.0 || ^5.0.0",
+    "vite": "^4.0.0 || ^5.0.0 || ^6.0.0",
     "webpack": "^5.0.0",
-    "rollup": "^3.0.0"
+    "rollup": "^3.0.0 || ^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "vite": { "optional": true },
+    "webpack": { "optional": true },
+    "rollup": { "optional": true }
   },
   "keywords": [
     "atomix",
