@@ -1,3 +1,10 @@
+
+
+/**
+ * Checkbox-specific constants - extend existing checkbox constants
+ */
+// Update existing CHECKBOX constants if needed
+
 /**
  * Card-specific constants
  */

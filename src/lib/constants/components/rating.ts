@@ -1,4 +1,7 @@
 /**
+ * EdgePanel-specific constants
+ */
+/**
  * Rating-specific constants
  */
 export const RATING = {

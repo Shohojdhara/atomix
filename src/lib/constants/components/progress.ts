@@ -1,4 +1,7 @@
 /**
+ * DatePicker-specific constants
+ */
+/**
  * Progress-specific constants
  */
 export const PROGRESS = {
