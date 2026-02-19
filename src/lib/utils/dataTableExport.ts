@@ -63,10 +63,32 @@ export function exportToJSON(
 }
 
 /**
- * Export data as Excel (XLSX) - simplified version using CSV with .xlsx extension
- * Note: For true Excel format, you would need a library like xlsx or exceljs
+ * Export data as CSV but with .xlsx extension and Excel MIME type.
+ *
+ * @deprecated Use `exportToCsvWithXlsxExtension` instead.
+ * This function is misleading as it does not produce a valid Excel file, but a CSV file.
+ * This can cause warnings in Excel. Consider using `exportToCSV` or implementing a proper Excel export using a library.
  */
 export function exportToExcel(
+  data: any[],
+  columns: DataTableColumn[],
+  filename: string = 'data-table.xlsx'
+): void {
+  exportToCsvWithXlsxExtension(data, columns, filename);
+}
+
+/**
+ * Export data as CSV but with .xlsx extension and Excel MIME type.
+ *
+ * @remarks
+ * This function creates a CSV file but gives it an .xlsx extension and
+ * application/vnd.openxmlformats-officedocument.spreadsheetml.sheet MIME type.
+ * This trick allows opening the file in Excel, but Excel will warn about the file format mismatch.
+ *
+ * Ideally, this should be replaced with a proper Excel export using a library like `xlsx` or `exceljs`,
+ * or simply use `exportToCSV`.
+ */
+export function exportToCsvWithXlsxExtension(
   data: any[],
   columns: DataTableColumn[],
   filename: string = 'data-table.xlsx'
@@ -122,7 +144,7 @@ export function exportData(
       exportToCSV(data, columns, defaultFilename);
       break;
     case 'excel':
-      exportToExcel(data, columns, defaultFilename);
+      exportToCsvWithXlsxExtension(data, columns, defaultFilename);
       break;
     case 'json':
       exportToJSON(data, defaultFilename);
