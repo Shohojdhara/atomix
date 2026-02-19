@@ -559,110 +559,110 @@ export const ProductCard: Story = {
         <div style={{ width: '300px' }} className="u-mx-auto">
           <AtomixGlass displacementScale={50} blurAmount={1.5} mode="standard" elasticity={0}>
             <div className="u-p-3">
-            {/* Product Image */}
-            <div
-              className="u-w-100 u-rounded-3"
-              style={{
-                height: '200px',
-                background:
-                  'linear-gradient(135deg,rgba(102, 126, 234, 0.42) 0%, rgba(118, 75, 162, 0.6) 100%)',
-                marginBottom: '24px',
-                backdropFilter: 'blur(10px)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '80px',
-                position: 'relative',
-                overflow: 'hidden',
-                opacity: 0.85,
-              }}
-            >
-              👕
+              {/* Product Image */}
               <div
+                className="u-w-100 u-rounded-3"
                 style={{
-                  position: 'absolute',
-                  top: '16px',
-                  right: '16px',
-                  background: 'rgba(239, 68, 68, 0.85)',
-                  color: 'white',
-                  padding: '6px 12px',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  fontWeight: 600,
+                  height: '200px',
+                  background:
+                    'linear-gradient(135deg,rgba(102, 126, 234, 0.42) 0%, rgba(118, 75, 162, 0.6) 100%)',
+                  marginBottom: '24px',
+                  backdropFilter: 'blur(10px)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '80px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  opacity: 0.85,
                 }}
               >
-                -30% OFF
-              </div>
-            </div>
-
-            {/* Product Info */}
-            <h2 className="u-m-0 u-mb-1 u-text-6 u-font-bold">Premium Cotton T-Shirt</h2>
-            <p className="u-m-0 u-mb-2 u-opacity-70 u-text-7">
-              Ultra-soft fabric with a modern fit. Perfect for everyday wear.
-            </p>
-
-            {/* Price */}
-            <div className="u-flex u-items-center u-gap-2 u-mb-2">
-              <span className="u-text-4 u-font-bold u-text-success">$49.99</span>
-              <span className="u-text-4 u-text-decoration-line-through u-opacity-50">$71.99</span>
-            </div>
-
-            {/* Size Selection */}
-            <div className="u-mb-2">
-              <label className="u-block u-text-7 u-font-semibold u-mb-2">Select Size</label>
-              <div className="u-flex u-gap-2">
-                {sizes.map(size => (
-                  <Button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    variant={selectedSize === size ? 'success' : 'outline-success'}
-                    glass
-                    size="sm"
-                  >
-                    {size}
-                  </Button>
-                ))}
-              </div>
-            </div>
-
-            {/* Quantity */}
-            <div className="u-mb-2">
-              <label className="u-block u-text-7 u-font-semibold u-mb-1 u-text-white">
-                Quantity
-              </label>
-              <div className="u-flex u-items-center u-gap-2">
-                <Button onClick={() => setQuantity(Math.max(1, quantity - 1))} glass>
-                  −
-                </Button>
-                <span
+                👕
+                <div
                   style={{
-                    fontSize: '18px',
+                    position: 'absolute',
+                    top: '16px',
+                    right: '16px',
+                    background: 'rgba(239, 68, 68, 0.85)',
+                    color: 'white',
+                    padding: '6px 12px',
+                    borderRadius: '8px',
+                    fontSize: '14px',
                     fontWeight: 600,
-                    minWidth: '30px',
-                    textAlign: 'center',
                   }}
                 >
-                  {quantity}
-                </span>
-                <Button onClick={() => setQuantity(Math.min(10, quantity + 1))} glass>
-                  +
-                </Button>
+                  -30% OFF
+                </div>
               </div>
-            </div>
 
-            {/* Add to Cart Button */}
-            <Button
-              onClick={handleAddToCart}
-              variant="primary"
-              glass={{ cornerRadius: 8 }}
-              size="sm"
-              style={{ width: '100%' }}
-              icon={addedToCart ? <Icon name="Check" /> : <Icon name="ShoppingCart" />}
-            >
-              {addedToCart ? 'Added to Cart!' : 'Add to Cart'}
-            </Button>
-          </div>
-        </AtomixGlass>
+              {/* Product Info */}
+              <h2 className="u-m-0 u-mb-1 u-text-6 u-font-bold">Premium Cotton T-Shirt</h2>
+              <p className="u-m-0 u-mb-2 u-opacity-70 u-text-7">
+                Ultra-soft fabric with a modern fit. Perfect for everyday wear.
+              </p>
+
+              {/* Price */}
+              <div className="u-flex u-items-center u-gap-2 u-mb-2">
+                <span className="u-text-4 u-font-bold u-text-success">$49.99</span>
+                <span className="u-text-4 u-text-decoration-line-through u-opacity-50">$71.99</span>
+              </div>
+
+              {/* Size Selection */}
+              <div className="u-mb-2">
+                <label className="u-block u-text-7 u-font-semibold u-mb-2">Select Size</label>
+                <div className="u-flex u-gap-2">
+                  {sizes.map(size => (
+                    <Button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      variant={selectedSize === size ? 'success' : 'outline-success'}
+                      glass
+                      size="sm"
+                    >
+                      {size}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quantity */}
+              <div className="u-mb-2">
+                <label className="u-block u-text-7 u-font-semibold u-mb-1 u-text-white">
+                  Quantity
+                </label>
+                <div className="u-flex u-items-center u-gap-2">
+                  <Button onClick={() => setQuantity(Math.max(1, quantity - 1))} glass>
+                    −
+                  </Button>
+                  <span
+                    style={{
+                      fontSize: '18px',
+                      fontWeight: 600,
+                      minWidth: '30px',
+                      textAlign: 'center',
+                    }}
+                  >
+                    {quantity}
+                  </span>
+                  <Button onClick={() => setQuantity(Math.min(10, quantity + 1))} glass>
+                    +
+                  </Button>
+                </div>
+              </div>
+
+              {/* Add to Cart Button */}
+              <Button
+                onClick={handleAddToCart}
+                variant="primary"
+                glass={{ cornerRadius: 8 }}
+                size="sm"
+                style={{ width: '100%' }}
+                icon={addedToCart ? <Icon name="Check" /> : <Icon name="ShoppingCart" />}
+              >
+                {addedToCart ? 'Added to Cart!' : 'Add to Cart'}
+              </Button>
+            </div>
+          </AtomixGlass>
         </div>
       </BackgroundWrapper>
     );
@@ -748,140 +748,143 @@ export const NotificationCenter: Story = {
               className="u-rounded-4 u-overflow-hidden u-text-success-emphasis"
               style={{ background: 'color-mix(in srgb, var(--atomix-success) 10%, transparent)' }}
             >
-            {/* Header */}
-            <div
-              className="u-p-4 u-flex u-justify-between u-items-center"
-              style={{
-                borderBottom:
-                  '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)',
-              }}
-            >
-              <div className="u-flex u-items-center u-gap-2">
-                <h2 className="u-m-0 u-text-4 u-font-bold">Notifications</h2>
-                {unreadCount > 0 && (
-                  <span
+              {/* Header */}
+              <div
+                className="u-p-4 u-flex u-justify-between u-items-center"
+                style={{
+                  borderBottom:
+                    '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)',
+                }}
+              >
+                <div className="u-flex u-items-center u-gap-2">
+                  <h2 className="u-m-0 u-text-4 u-font-bold">Notifications</h2>
+                  {unreadCount > 0 && (
+                    <span
+                      style={{
+                        background: 'var(--atomix-error)',
+                        color: 'white',
+                        padding: '2px 8px',
+                        borderRadius: '10px',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                      }}
+                    >
+                      {unreadCount}
+                    </span>
+                  )}
+                </div>
+                {notifications.length > 0 && (
+                  <button
+                    onClick={clearAll}
                     style={{
-                      background: 'var(--atomix-error)',
-                      color: 'white',
-                      padding: '2px 8px',
-                      borderRadius: '10px',
-                      fontSize: '12px',
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--atomix-error-color-text-emphasis)',
+                      fontSize: '13px',
                       fontWeight: 600,
+                      cursor: 'pointer',
+                      padding: '4px 8px',
                     }}
                   >
-                    {unreadCount}
-                  </span>
+                    Clear All
+                  </button>
                 )}
               </div>
-              {notifications.length > 0 && (
-                <button
-                  onClick={clearAll}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: 'var(--atomix-error-color-text-emphasis)',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    padding: '4px 8px',
-                  }}
-                >
-                  Clear All
-                </button>
-              )}
-            </div>
 
-            {/* Notifications List */}
-            <div className="u-overflow-y-auto" style={{ maxHeight: '500px' }}>
-              {notifications.length === 0 ? (
-                <div
-                  style={{
-                    padding: '60px 24px',
-                    textAlign: 'center',
-                    opacity: 0.6,
-                  }}
-                >
-                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>
-                    <Icon name="Bell" />
-                  </div>
-                  <div style={{ fontSize: '16px' }}>No notifications</div>
-                </div>
-              ) : (
-                notifications.map(notification => (
+              {/* Notifications List */}
+              <div className="u-overflow-y-auto" style={{ maxHeight: '500px' }}>
+                {notifications.length === 0 ? (
                   <div
-                    key={notification.id}
-                    onClick={() => markAsRead(notification.id)}
                     style={{
-                      padding: '16px 24px',
-                      borderBottom:
-                        '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)',
-                      cursor: 'pointer',
-                      background: notification.read
-                        ? 'transparent'
-                        : 'color-mix(in srgb, var(--atomix-success) 10%, transparent)',
-                      transition: 'background 0.2s ease',
-                    }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.background =
-                        'color-mix(in srgb, var(--atomix-success) 10%, transparent)';
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.background = notification.read
-                        ? 'transparent'
-                        : 'color-mix(in srgb, var(--atomix-success) 10%, transparent)';
+                      padding: '60px 24px',
+                      textAlign: 'center',
+                      opacity: 0.6,
                     }}
                   >
-                    <div style={{ display: 'flex', gap: '12px' }}>
-                      <div style={{ fontSize: '24px', flexShrink: 0 }}>{notification.icon}</div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'flex-start',
-                            marginBottom: '4px',
-                          }}
-                        >
-                          <span
+                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>
+                      <Icon name="Bell" />
+                    </div>
+                    <div style={{ fontSize: '16px' }}>No notifications</div>
+                  </div>
+                ) : (
+                  notifications.map(notification => (
+                    <div
+                      key={notification.id}
+                      onClick={() => markAsRead(notification.id)}
+                      style={{
+                        padding: '16px 24px',
+                        borderBottom:
+                          '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)',
+                        cursor: 'pointer',
+                        background: notification.read
+                          ? 'transparent'
+                          : 'color-mix(in srgb, var(--atomix-success) 10%, transparent)',
+                        transition: 'background 0.2s ease',
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.background =
+                          'color-mix(in srgb, var(--atomix-success) 10%, transparent)';
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = notification.read
+                          ? 'transparent'
+                          : 'color-mix(in srgb, var(--atomix-success) 10%, transparent)';
+                      }}
+                    >
+                      <div style={{ display: 'flex', gap: '12px' }}>
+                        <div style={{ fontSize: '24px', flexShrink: 0 }}>{notification.icon}</div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div
                             style={{
-                              fontSize: '15px',
-                              fontWeight: notification.read ? 500 : 700,
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'flex-start',
+                              marginBottom: '4px',
                             }}
                           >
-                            {notification.title}
-                          </span>
-                          {!notification.read && (
-                            <div
+                            <span
                               style={{
-                                width: '8px',
-                                height: '8px',
-                                borderRadius: '50%',
-                                background: 'var(--atomix-success)',
-                                flexShrink: 0,
-                                marginTop: '4px',
+                                fontSize: '15px',
+                                fontWeight: notification.read ? 500 : 700,
                               }}
-                            />
-                          )}
+                            >
+                              {notification.title}
+                            </span>
+                            {!notification.read && (
+                              <div
+                                style={{
+                                  width: '8px',
+                                  height: '8px',
+                                  borderRadius: '50%',
+                                  background: 'var(--atomix-success)',
+                                  flexShrink: 0,
+                                  marginTop: '4px',
+                                }}
+                              />
+                            )}
+                          </div>
+                          <p
+                            style={{
+                              margin: '0 0 6px 0',
+                              fontSize: '13px',
+                              opacity: 0.7,
+                              lineHeight: 1.4,
+                            }}
+                          >
+                            {notification.message}
+                          </p>
+                          <span style={{ fontSize: '12px', opacity: 0.5 }}>
+                            {notification.time}
+                          </span>
                         </div>
-                        <p
-                          style={{
-                            margin: '0 0 6px 0',
-                            fontSize: '13px',
-                            opacity: 0.7,
-                            lineHeight: 1.4,
-                          }}
-                        >
-                          {notification.message}
-                        </p>
-                        <span style={{ fontSize: '12px', opacity: 0.5 }}>{notification.time}</span>
                       </div>
                     </div>
-                  </div>
-                ))
-              )}
-            </div>
+                  ))
+                )}
+              </div>
             </div>
           </AtomixGlass>
+        </div>
         </div>
       </BackgroundWrapper>
     );
@@ -937,230 +940,232 @@ export const LoginForm: Story = {
               mode="standard"
             >
               <div className="u-p-4">
-              {/* Logo/Header */}
-              <div className="u-text-center u-mb-5">
-                <div
-                  style={{
-                    width: '72px',
-                    height: '72px',
-                    borderRadius: '20px',
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '32px',
-                    margin: '0 auto 24px',
-                    boxShadow: '0 12px 32px rgba(102, 126, 234, 0.4)',
-                    position: 'relative',
-                  }}
-                >
+                {/* Logo/Header */}
+                <div className="u-text-center u-mb-5">
                   <div
                     style={{
-                      position: 'absolute',
-                      inset: '-4px',
-                      borderRadius: '24px',
-                      background: 'linear-gradient(135deg, #667eea, #764ba2)',
-                      opacity: 0.4,
-                      filter: 'blur(16px)',
-                    }}
-                  />
-                  <Icon name="Lock" style={{ position: 'relative', zIndex: 1 }} />
-                </div>
-                <h2
-                  className="u-m-0 u-mb-2 u-text-3 u-font-bold"
-                  style={{
-                    fontSize: '32px',
-                    marginBottom: '12px',
-                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                >
-                  Welcome Back
-                </h2>
-                <p
-                  className="u-m-0 u-opacity-70 u-text-7"
-                  style={{
-                    fontSize: '15px',
-                    color: 'rgba(255, 255, 255, 0.85)',
-                  }}
-                >
-                  Sign in to continue to your account
-                </p>
-              </div>
-
-              {/* Form */}
-              <form onSubmit={handleSubmit}>
-                <div className="u-mb-3">
-                  <label className="u-block u-text-7 u-font-semibold u-mb-2">Email Address</label>
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    placeholder="you@example.com"
-                    required
-                    glass={{
-                      elasticity: 0,
-                    }}
-                  />
-                </div>
-
-                <div className="u-mb-3">
-                  <label className="u-block u-text-7 u-font-semibold u-mb-2">Password</label>
-                  <Input
-                    type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    required
-                    glass={{
-                      elasticity: 0,
-                    }}
-                  />
-                </div>
-
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: '20px',
-                  }}
-                >
-                  <label
-                    style={{
+                      width: '72px',
+                      height: '72px',
+                      borderRadius: '20px',
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '8px',
-                      fontSize: '12px',
-                      cursor: 'pointer',
+                      justifyContent: 'center',
+                      fontSize: '32px',
+                      margin: '0 auto 24px',
+                      boxShadow: '0 12px 32px rgba(102, 126, 234, 0.4)',
+                      position: 'relative',
                     }}
                   >
-                    <input
-                      type="checkbox"
-                      checked={rememberMe}
-                      onChange={e => setRememberMe(e.target.checked)}
-                      style={{ accentColor: '#667eea' }}
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: '-4px',
+                        borderRadius: '24px',
+                        background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                        opacity: 0.4,
+                        filter: 'blur(16px)',
+                      }}
                     />
-                    Remember me
-                  </label>
+                    <Icon name="Lock" style={{ position: 'relative', zIndex: 1 }} />
+                  </div>
+                  <h2
+                    className="u-m-0 u-mb-2 u-text-3 u-font-bold"
+                    style={{
+                      fontSize: '32px',
+                      marginBottom: '12px',
+                      background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
+                  >
+                    Welcome Back
+                  </h2>
+                  <p
+                    className="u-m-0 u-opacity-70 u-text-7"
+                    style={{
+                      fontSize: '15px',
+                      color: 'rgba(255, 255, 255, 0.85)',
+                    }}
+                  >
+                    Sign in to continue to your account
+                  </p>
+                </div>
+
+                {/* Form */}
+                <form onSubmit={handleSubmit}>
+                  <div className="u-mb-3">
+                    <label className="u-block u-text-7 u-font-semibold u-mb-2">Email Address</label>
+                    <Input
+                      type="email"
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
+                      placeholder="you@example.com"
+                      required
+                      glass={{
+                        elasticity: 0,
+                      }}
+                    />
+                  </div>
+
+                  <div className="u-mb-3">
+                    <label className="u-block u-text-7 u-font-semibold u-mb-2">Password</label>
+                    <Input
+                      type="password"
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                      required
+                      glass={{
+                        elasticity: 0,
+                      }}
+                    />
+                  </div>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '20px',
+                    }}
+                  >
+                    <label
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        fontSize: '12px',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={rememberMe}
+                        onChange={e => setRememberMe(e.target.checked)}
+                        style={{ accentColor: '#667eea' }}
+                      />
+                      Remember me
+                    </label>
+                    <a
+                      href="#"
+                      style={{
+                        fontSize: '12px',
+                        color: '#667eea',
+                        textDecoration: 'none',
+                        fontWeight: 600,
+                      }}
+                    >
+                      Forgot password?
+                    </a>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={isLoading}
+                    variant="primary"
+                    glass={{
+                      elasticity: 0,
+                    }}
+                    className="u-block u-w-100"
+                  >
+                    {isLoading ? 'Signing in...' : 'Sign In'}
+                  </Button>
+                </form>
+
+                {/* Social Login */}
+                <div style={{ marginTop: '20px' }}>
+                  <div
+                    style={{
+                      position: 'relative',
+                      textAlign: 'center',
+                      marginBottom: '20px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: 0,
+                        right: 0,
+                        height: '1px',
+                        background: 'rgba(255,255,255,0.1)',
+                      }}
+                    />
+                    <span
+                      style={{
+                        position: 'relative',
+                        padding: '0 16px',
+                        background: 'inherit',
+                        fontSize: '12px',
+                        opacity: 0.6,
+                      }}
+                    >
+                      Or continue with
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                    <button
+                      style={{
+                        flex: 1,
+                        padding: '10px',
+                        borderRadius: '10px',
+                        border: '1px solid rgba(255,255,255,0.2)',
+                        background: 'rgba(255,255,255,0.05)',
+                        color: 'inherit',
+                        cursor: 'pointer',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                      }}
+                    >
+                      <span>🔵</span> Google
+                    </button>
+                    <button
+                      style={{
+                        flex: 1,
+                        padding: '10px',
+                        borderRadius: '10px',
+                        border: '1px solid rgba(255,255,255,0.2)',
+                        background: 'rgba(255,255,255,0.05)',
+                        color: 'inherit',
+                        cursor: 'pointer',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '8px',
+                      }}
+                    >
+                      <span>⚫</span> GitHub
+                    </button>
+                  </div>
+                </div>
+
+                {/* Sign Up Link */}
+                <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '12px' }}>
+                  Don't have an account?{' '}
                   <a
                     href="#"
                     style={{
-                      fontSize: '12px',
                       color: '#667eea',
                       textDecoration: 'none',
                       fontWeight: 600,
                     }}
                   >
-                    Forgot password?
+                    Sign up
                   </a>
                 </div>
-
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  variant="primary"
-                  glass={{
-                    elasticity: 0,
-                  }}
-                  className="u-block u-w-100"
-                >
-                  {isLoading ? 'Signing in...' : 'Sign In'}
-                </Button>
-              </form>
-
-              {/* Social Login */}
-              <div style={{ marginTop: '20px' }}>
-                <div
-                  style={{
-                    position: 'relative',
-                    textAlign: 'center',
-                    marginBottom: '20px',
-                  }}
-                >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '50%',
-                      left: 0,
-                      right: 0,
-                      height: '1px',
-                      background: 'rgba(255,255,255,0.1)',
-                    }}
-                  />
-                  <span
-                    style={{
-                      position: 'relative',
-                      padding: '0 16px',
-                      background: 'inherit',
-                      fontSize: '12px',
-                      opacity: 0.6,
-                    }}
-                  >
-                    Or continue with
-                  </span>
-                </div>
-
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <button
-                    style={{
-                      flex: 1,
-                      padding: '10px',
-                      borderRadius: '10px',
-                      border: '1px solid rgba(255,255,255,0.2)',
-                      background: 'rgba(255,255,255,0.05)',
-                      color: 'inherit',
-                      cursor: 'pointer',
-                      fontSize: '12px',
-                      fontWeight: 600,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                    }}
-                  >
-                    <span>🔵</span> Google
-                  </button>
-                  <button
-                    style={{
-                      flex: 1,
-                      padding: '10px',
-                      borderRadius: '10px',
-                      border: '1px solid rgba(255,255,255,0.2)',
-                      background: 'rgba(255,255,255,0.05)',
-                      color: 'inherit',
-                      cursor: 'pointer',
-                      fontSize: '12px',
-                      fontWeight: 600,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                    }}
-                  >
-                    <span>⚫</span> GitHub
-                  </button>
-                </div>
               </div>
-
-              {/* Sign Up Link */}
-              <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '12px' }}>
-                Don't have an account?{' '}
-                <a
-                  href="#"
-                  style={{
-                    color: '#667eea',
-                    textDecoration: 'none',
-                    fontWeight: 600,
-                  }}
-                >
-                  Sign up
-                </a>
-              </div>
-            </div>
-          </AtomixGlass>
+            </AtomixGlass>
+          </div>
+        </div>
         </div>
       </BackgroundWrapper>
     );
@@ -1216,227 +1221,227 @@ export const MusicPlayer: Story = {
             mode="standard"
           >
             <div className="u-p-3">
-            {/* Album Art */}
-            <AtomixGlass displacementScale={0} blurAmount={0} cornerRadius={20} mode="standard">
-              <div
-                style={{
-                  aspectRatio: '1:2',
-                  borderRadius: '20px',
-                  background:
-                    'linear-gradient(135deg, rgba(var(--atomix-primary-rgb),0.5) 0%, rgba(var(--atomix-secondary-rgb),0.5) 100%)',
-                  marginBottom: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '120px',
-                  boxShadow: '0 20px 40px rgba(var(--atomix-primary-rgb),0.3)',
-                }}
-              >
-                <Icon name="MusicNotes" />
-              </div>
-            </AtomixGlass>
-            {/* Track Info */}
-            <div className="u-text-center u-mb-3">
-              <h2
-                className="u-m-0 u-mb-2 u-text-3 u-font-bold"
-                style={{
-                  fontSize: '28px',
-                  marginBottom: '8px',
-                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                Summer Vibes
-              </h2>
-              <p
-                className="u-m-0 u-opacity-70 u-text-6"
-                style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.85)' }}
-              >
-                The Atomix Band
-              </p>
-            </div>
-
-            {/* Progress Bar */}
-            <div style={{ marginBottom: '8px' }}>
-              <div
-                style={{
-                  height: '6px',
-                  background: 'rgba(255,255,255,0.1)',
-                  borderRadius: '3px',
-                  overflow: 'hidden',
-                  cursor: 'pointer',
-                }}
-                onClick={e => {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  const x = e.clientX - rect.left;
-                  const percentage = x / rect.width;
-                  setCurrentTime(Math.floor(totalDuration * percentage));
-                }}
-              >
+              {/* Album Art */}
+              <AtomixGlass displacementScale={0} blurAmount={0} cornerRadius={20} mode="standard">
                 <div
                   style={{
-                    height: '100%',
-                    width: `${(currentTime / totalDuration) * 100}%`,
+                    aspectRatio: '1:2',
+                    borderRadius: '20px',
                     background:
-                      'linear-gradient(90deg, rgba(var(--atomix-primary-rgb),0.5) 0%, rgba(var(--atomix-secondary-rgb),0.5) 100%)',
-                    transition: 'width 0.1s ease',
+                      'linear-gradient(135deg, rgba(var(--atomix-primary-rgb),0.5) 0%, rgba(var(--atomix-secondary-rgb),0.5) 100%)',
+                    marginBottom: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '120px',
+                    boxShadow: '0 20px 40px rgba(var(--atomix-primary-rgb),0.3)',
                   }}
-                />
+                >
+                  <Icon name="MusicNotes" />
+                </div>
+              </AtomixGlass>
+              {/* Track Info */}
+              <div className="u-text-center u-mb-3">
+                <h2
+                  className="u-m-0 u-mb-2 u-text-3 u-font-bold"
+                  style={{
+                    fontSize: '28px',
+                    marginBottom: '8px',
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Summer Vibes
+                </h2>
+                <p
+                  className="u-m-0 u-opacity-70 u-text-6"
+                  style={{ fontSize: '16px', color: 'rgba(255, 255, 255, 0.85)' }}
+                >
+                  The Atomix Band
+                </p>
               </div>
+
+              {/* Progress Bar */}
+              <div style={{ marginBottom: '8px' }}>
+                <div
+                  style={{
+                    height: '6px',
+                    background: 'rgba(255,255,255,0.1)',
+                    borderRadius: '3px',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                  }}
+                  onClick={e => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const percentage = x / rect.width;
+                    setCurrentTime(Math.floor(totalDuration * percentage));
+                  }}
+                >
+                  <div
+                    style={{
+                      height: '100%',
+                      width: `${(currentTime / totalDuration) * 100}%`,
+                      background:
+                        'linear-gradient(90deg, rgba(var(--atomix-primary-rgb),0.5) 0%, rgba(var(--atomix-secondary-rgb),0.5) 100%)',
+                      transition: 'width 0.1s ease',
+                    }}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginTop: '8px',
+                    fontSize: '13px',
+                    opacity: 0.6,
+                  }}
+                >
+                  <span>{formatTime(currentTime)}</span>
+                  <span>{formatTime(totalDuration)}</span>
+                </div>
+              </div>
+
+              {/* Controls */}
               <div
                 style={{
                   display: 'flex',
-                  justifyContent: 'space-between',
-                  marginTop: '8px',
-                  fontSize: '13px',
-                  opacity: 0.6,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '20px',
+                  marginBottom: '16px',
                 }}
               >
-                <span>{formatTime(currentTime)}</span>
-                <span>{formatTime(totalDuration)}</span>
+                <button
+                  onClick={() => setIsShuffle(!isShuffle)}
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background: isShuffle
+                      ? 'rgba(var(--atomix-primary-rgb),0.3)'
+                      : 'rgba(255,255,255,0.1)',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Icon name="Shuffle" />
+                </button>
+
+                <button
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background: 'rgba(255,255,255,0.1)',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    fontSize: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Icon name="Rewind" />
+                </button>
+
+                <button
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  style={{
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background:
+                      'linear-gradient(135deg, rgba(var(--atomix-primary-rgb),0.5) 0%, rgba(var(--atomix-secondary-rgb),0.5) 100%)',
+                    color: 'white',
+                    cursor: 'pointer',
+                    fontSize: '28px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 8px 20px rgba(var(--atomix-primary-rgb),0.4)',
+                  }}
+                >
+                  {isPlaying ? <Icon name="Pause" /> : <Icon name="Play" />}
+                </button>
+
+                <button
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background: 'rgba(255,255,255,0.1)',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    fontSize: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Icon name="FastForward" />
+                </button>
+
+                <button
+                  onClick={() => {
+                    const modes: Array<'off' | 'all' | 'one'> = ['off', 'all', 'one'];
+                    const currentIndex = modes.indexOf(repeatMode);
+                    setRepeatMode(modes[(currentIndex + 1) % modes.length]);
+                  }}
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background:
+                      repeatMode !== 'off' ? 'rgba(102, 126, 234, 0.3)' : 'rgba(255,255,255,0.1)',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {repeatMode === 'one' ? <Icon name="RepeatOnce" /> : <Icon name="Repeat" />}
+                </button>
               </div>
-            </div>
 
-            {/* Controls */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '20px',
-                marginBottom: '16px',
-              }}
-            >
-              <button
-                onClick={() => setIsShuffle(!isShuffle)}
-                style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '50%',
-                  border: 'none',
-                  background: isShuffle
-                    ? 'rgba(var(--atomix-primary-rgb),0.3)'
-                    : 'rgba(255,255,255,0.1)',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Icon name="Shuffle" />
-              </button>
-
-              <button
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '50%',
-                  border: 'none',
-                  background: 'rgba(255,255,255,0.1)',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  fontSize: '20px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Icon name="Rewind" />
-              </button>
-
-              <button
-                onClick={() => setIsPlaying(!isPlaying)}
-                style={{
-                  width: '64px',
-                  height: '64px',
-                  borderRadius: '50%',
-                  border: 'none',
-                  background:
-                    'linear-gradient(135deg, rgba(var(--atomix-primary-rgb),0.5) 0%, rgba(var(--atomix-secondary-rgb),0.5) 100%)',
-                  color: 'white',
-                  cursor: 'pointer',
-                  fontSize: '28px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 8px 20px rgba(var(--atomix-primary-rgb),0.4)',
-                }}
-              >
-                {isPlaying ? <Icon name="Pause" /> : <Icon name="Play" />}
-              </button>
-
-              <button
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '50%',
-                  border: 'none',
-                  background: 'rgba(255,255,255,0.1)',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  fontSize: '20px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Icon name="FastForward" />
-              </button>
-
-              <button
-                onClick={() => {
-                  const modes: Array<'off' | 'all' | 'one'> = ['off', 'all', 'one'];
-                  const currentIndex = modes.indexOf(repeatMode);
-                  setRepeatMode(modes[(currentIndex + 1) % modes.length]);
-                }}
-                style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '50%',
-                  border: 'none',
-                  background:
-                    repeatMode !== 'off' ? 'rgba(102, 126, 234, 0.3)' : 'rgba(255,255,255,0.1)',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  fontSize: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {repeatMode === 'one' ? <Icon name="RepeatOnce" /> : <Icon name="Repeat" />}
-              </button>
-            </div>
-
-            {/* Volume Control */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '18px', opacity: 0.7 }}>
-                {volume === 0 ? (
-                  <Icon name="SpeakerLow" />
-                ) : volume < 50 ? (
-                  <Icon name="SpeakerX" />
-                ) : (
-                  <Icon name="SpeakerHigh" />
-                )}
-              </span>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={volume}
-                onChange={e => setVolume(parseInt(e.target.value))}
-                style={{
-                  flex: 1,
-                  accentColor: '#667eea',
-                  cursor: 'pointer',
-                }}
-              />
-              <span style={{ fontSize: '14px', opacity: 0.6, minWidth: '35px' }}>{volume}%</span>
-            </div>
+              {/* Volume Control */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <span style={{ fontSize: '18px', opacity: 0.7 }}>
+                  {volume === 0 ? (
+                    <Icon name="SpeakerLow" />
+                  ) : volume < 50 ? (
+                    <Icon name="SpeakerX" />
+                  ) : (
+                    <Icon name="SpeakerHigh" />
+                  )}
+                </span>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={volume}
+                  onChange={e => setVolume(parseInt(e.target.value))}
+                  style={{
+                    flex: 1,
+                    accentColor: '#667eea',
+                    cursor: 'pointer',
+                  }}
+                />
+                <span style={{ fontSize: '14px', opacity: 0.6, minWidth: '35px' }}>{volume}%</span>
+              </div>
             </div>
           </AtomixGlass>
         </div>
@@ -1866,145 +1871,203 @@ export const ChatInterface: Story = {
             elasticity={0.1}
             mode="prominent"
           >
-          <span
-            style={{
-              background: 'var(--atomix-body-bg)',
-              position: 'absolute',
-              inset: 0,
-              zIndex: -1,
-              opacity: 0.5,
-              borderRadius: 24,
-            }}
-          ></span>
-          <div className="u-text-brand-emphasis">
-            {/* Chat Header */}
-            <div
+            <span
               style={{
-                padding: '24px 28px',
-                borderBottom:
-                  '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                background: 'rgba(255, 255, 255, 0.05)',
+                background: 'var(--atomix-body-bg)',
+                position: 'absolute',
+                inset: 0,
+                zIndex: -1,
+                opacity: 0.5,
+                borderRadius: 24,
               }}
-            >
-              <div style={{ position: 'relative' }}>
-                <div
-                  style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '28px',
-                    boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
-                    position: 'relative',
-                  }}
-                >
+            ></span>
+            <div className="u-text-brand-emphasis">
+              {/* Chat Header */}
+              <div
+                style={{
+                  padding: '24px 28px',
+                  borderBottom:
+                    '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                }}
+              >
+                <div style={{ position: 'relative' }}>
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '28px',
+                      boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
+                      position: 'relative',
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: '-4px',
+                        borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                        opacity: 0.4,
+                        filter: 'blur(12px)',
+                      }}
+                    />
+                    <span style={{ position: 'relative', zIndex: 1 }}>👤</span>
+                  </div>
                   <div
                     style={{
                       position: 'absolute',
-                      inset: '-4px',
+                      bottom: '2px',
+                      right: '2px',
+                      width: '16px',
+                      height: '16px',
                       borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #667eea, #764ba2)',
-                      opacity: 0.4,
-                      filter: 'blur(12px)',
+                      background: onlineStatus ? '#10b981' : '#6b7280',
+                      border: '3px solid rgba(0,0,0,0.3)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
                     }}
                   />
-                  <span style={{ position: 'relative', zIndex: 1 }}>👤</span>
                 </div>
-                <div
+                <div style={{ flex: 1 }}>
+                  <h3
+                    style={{
+                      margin: 0,
+                      fontSize: '20px',
+                      fontWeight: 700,
+                      background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    Alex Johnson
+                  </h3>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: '14px',
+                      opacity: 0.8,
+                      color: 'rgba(255, 255, 255, 0.85)',
+                    }}
+                  >
+                    {onlineStatus ? 'Active now' : 'Offline'}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setOnlineStatus(!onlineStatus)}
                   style={{
-                    position: 'absolute',
-                    bottom: '2px',
-                    right: '2px',
-                    width: '16px',
-                    height: '16px',
+                    width: '44px',
+                    height: '44px',
                     borderRadius: '50%',
-                    background: onlineStatus ? '#10b981' : '#6b7280',
-                    border: '3px solid rgba(0,0,0,0.3)',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-                  }}
-                />
-              </div>
-              <div style={{ flex: 1 }}>
-                <h3
-                  style={{
-                    margin: 0,
+                    border: 'none',
+                    background: 'rgba(255,255,255,0.1)',
+                    backdropFilter: 'blur(8px)',
+                    color: 'inherit',
+                    cursor: 'pointer',
                     fontSize: '20px',
-                    fontWeight: 700,
-                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    marginBottom: '4px',
+                    transition: 'all 0.2s ease',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
+                    e.currentTarget.style.transform = 'scale(1.1)';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                    e.currentTarget.style.transform = 'scale(1)';
                   }}
                 >
-                  Alex Johnson
-                </h3>
-                <p
-                  style={{
-                    margin: 0,
-                    fontSize: '14px',
-                    opacity: 0.8,
-                    color: 'rgba(255, 255, 255, 0.85)',
-                  }}
-                >
-                  {onlineStatus ? 'Active now' : 'Offline'}
-                </p>
+                  ⋮
+                </button>
               </div>
-              <button
-                onClick={() => setOnlineStatus(!onlineStatus)}
+
+              {/* Messages Area */}
+              <div
                 style={{
-                  width: '44px',
-                  height: '44px',
-                  borderRadius: '50%',
-                  border: 'none',
-                  background: 'rgba(255,255,255,0.1)',
-                  backdropFilter: 'blur(8px)',
-                  color: 'inherit',
-                  cursor: 'pointer',
-                  fontSize: '20px',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
-                  e.currentTarget.style.transform = 'scale(1.1)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-                  e.currentTarget.style.transform = 'scale(1)';
+                  flex: 1,
+                  padding: '24px',
+                  overflowY: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
                 }}
               >
-                ⋮
-              </button>
-            </div>
+                {messages.map(message => (
+                  <div
+                    key={message.id}
+                    style={{
+                      display: 'flex',
+                      justifyContent: message.sender === 'me' ? 'flex-end' : 'flex-start',
+                      gap: '12px',
+                      animation: 'slideIn 0.3s ease',
+                    }}
+                  >
+                    {message.sender === 'other' && (
+                      <div
+                        style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '50%',
+                          background: 'var(--atomix-brand-bg-subtle)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '16px',
+                          flexShrink: 0,
+                          opacity: 0.8,
+                        }}
+                      >
+                        {message.avatar}
+                      </div>
+                    )}
+                    <div
+                      style={{
+                        maxWidth: '70%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: message.sender === 'me' ? 'flex-end' : 'flex-start',
+                      }}
+                    >
+                      <div
+                        style={{
+                          padding: '12px 16px',
+                          borderRadius:
+                            message.sender === 'me' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                          background:
+                            message.sender === 'me'
+                              ? 'var(--atomix-brand-bg-subtle)'
+                              : 'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                          backdropFilter: 'blur(10px)',
+                        }}
+                      >
+                        <p style={{ margin: 0, fontSize: '15px', lineHeight: '1.5' }}>
+                          {message.text}
+                        </p>
+                      </div>
+                      <span
+                        style={{
+                          fontSize: '12px',
+                          opacity: 0.6,
+                          marginTop: '4px',
+                          padding: '0 4px',
+                        }}
+                      >
+                        {message.time}
+                      </span>
+                    </div>
+                  </div>
+                ))}
 
-            {/* Messages Area */}
-            <div
-              style={{
-                flex: 1,
-                padding: '24px',
-                overflowY: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px',
-              }}
-            >
-              {messages.map(message => (
-                <div
-                  key={message.id}
-                  style={{
-                    display: 'flex',
-                    justifyContent: message.sender === 'me' ? 'flex-end' : 'flex-start',
-                    gap: '12px',
-                    animation: 'slideIn 0.3s ease',
-                  }}
-                >
-                  {message.sender === 'other' && (
+                {/* Typing Indicator */}
+                {isTyping && (
+                  <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                     <div
                       style={{
                         width: '32px',
@@ -2015,132 +2078,74 @@ export const ChatInterface: Story = {
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontSize: '16px',
-                        flexShrink: 0,
-                        opacity: 0.8,
                       }}
                     >
-                      {message.avatar}
+                      👤
                     </div>
-                  )}
-                  <div
-                    style={{
-                      maxWidth: '70%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: message.sender === 'me' ? 'flex-end' : 'flex-start',
-                    }}
-                  >
                     <div
                       style={{
                         padding: '12px 16px',
-                        borderRadius:
-                          message.sender === 'me' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                        borderRadius: '16px 16px 16px 4px',
                         background:
-                          message.sender === 'me'
-                            ? 'var(--atomix-brand-bg-subtle)'
-                            : 'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                          'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
                         backdropFilter: 'blur(10px)',
                       }}
                     >
-                      <p style={{ margin: 0, fontSize: '15px', lineHeight: '1.5' }}>
-                        {message.text}
-                      </p>
-                    </div>
-                    <span
-                      style={{
-                        fontSize: '12px',
-                        opacity: 0.6,
-                        marginTop: '4px',
-                        padding: '0 4px',
-                      }}
-                    >
-                      {message.time}
-                    </span>
-                  </div>
-                </div>
-              ))}
-
-              {/* Typing Indicator */}
-              {isTyping && (
-                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                  <div
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '50%',
-                      background: 'var(--atomix-brand-bg-subtle)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '16px',
-                    }}
-                  >
-                    👤
-                  </div>
-                  <div
-                    style={{
-                      padding: '12px 16px',
-                      borderRadius: '16px 16px 16px 4px',
-                      background:
-                        'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
-                      backdropFilter: 'blur(10px)',
-                    }}
-                  >
-                    <div style={{ display: 'flex', gap: '4px' }}>
-                      {[0, 1, 2].map(i => (
-                        <div
-                          key={i}
-                          style={{
-                            width: '8px',
-                            height: '8px',
-                            borderRadius: '50%',
-                            background: 'currentColor',
-                            opacity: 0.6,
-                            animation: `pulse 1.4s ease-in-out ${i * 0.2}s infinite`,
-                          }}
-                        />
-                      ))}
+                      <div style={{ display: 'flex', gap: '4px' }}>
+                        {[0, 1, 2].map(i => (
+                          <div
+                            key={i}
+                            style={{
+                              width: '8px',
+                              height: '8px',
+                              borderRadius: '50%',
+                              background: 'currentColor',
+                              opacity: 0.6,
+                              animation: `pulse 1.4s ease-in-out ${i * 0.2}s infinite`,
+                            }}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
 
-            {/* Message Input */}
-            <div
-              style={{
-                padding: '10px 24px',
-                borderTop:
-                  '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-evenly',
-                gap: '12px',
-              }}
-            >
-              <Button size="md" glass={{}} icon={<Icon name="Paperclip" />} iconOnly />
-
-              <Input
-                glass
-                variant="light"
-                size="md"
-                type="text"
-                value={inputText}
-                onChange={e => setInputText(e.target.value)}
-                placeholder="Type a message..."
-              />
-              <Button
-                onClick={handleSend}
-                size="md"
-                iconOnly
-                glass={{
-                  cornerRadius: 100,
+              {/* Message Input */}
+              <div
+                style={{
+                  padding: '10px 24px',
+                  borderTop:
+                    '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-evenly',
+                  gap: '12px',
                 }}
-                rounded
-                icon={<Icon name="PaperPlaneTilt" />}
-              />
+              >
+                <Button size="md" glass={{}} icon={<Icon name="Paperclip" />} iconOnly />
+
+                <Input
+                  glass
+                  variant="light"
+                  size="md"
+                  type="text"
+                  value={inputText}
+                  onChange={e => setInputText(e.target.value)}
+                  placeholder="Type a message..."
+                />
+                <Button
+                  onClick={handleSend}
+                  size="md"
+                  iconOnly
+                  glass={{
+                    cornerRadius: 100,
+                  }}
+                  rounded
+                  icon={<Icon name="PaperPlaneTilt" />}
+                />
+              </div>
             </div>
-          </div>
           </AtomixGlass>
         </div>
 
@@ -2223,261 +2228,262 @@ export const ProfileCard: Story = {
             elasticity={0.05}
             onClick={() => {}}
           >
-          {/* Cover Image */}
-          <div
-            style={{
-              height: '130px',
-              background: 'var(--atomix-primary-gradient)',
-              borderRadius: '24px 24px 0 0',
-              position: 'relative',
-              opacity: 0.5,
-            }}
-          >
+            {/* Cover Image */}
             <div
               style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background:
-                  'url(data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E)',
-              }}
-            />
-          </div>
-
-          <div style={{ padding: '0 20px 20px' }}>
-            {/* Profile Picture */}
-            <div
-              style={{
-                marginTop: '-40px',
-                marginBottom: '10px',
+                height: '130px',
+                background: 'var(--atomix-primary-gradient)',
+                borderRadius: '24px 24px 0 0',
                 position: 'relative',
-                display: 'inline-block',
+                opacity: 0.5,
               }}
             >
-              <div
-                style={{
-                  width: '70px',
-                  height: '70px',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  border: '4px solid rgba(0,0,0,0.2)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
-              >
-                <img src="https://avatars.githubusercontent.com/u/26011051?v=4" alt="Profile" />
-              </div>
-            </div>
-
-            {/* Name & Title */}
-            <div style={{ marginBottom: '24px' }}>
-              <h2
-                style={{
-                  margin: '0 0 8px 0',
-                  fontSize: '28px',
-                  fontWeight: 700,
-                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                Limon Khan
-              </h2>
-              <p
-                style={{
-                  margin: '0 0 10px 0',
-                  fontSize: '15px',
-                  opacity: 0.9,
-                  color: 'rgba(255, 255, 255, 0.9)',
-                }}
-              >
-                Senior Frontend Developer
-              </p>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: '14px',
-                  opacity: 0.8,
-                  color: 'rgba(255, 255, 255, 0.85)',
-                }}
-              >
-                <Icon name="Globe" /> BANGLADESH, Dhaka • <Icon name="Clock" /> GMT+5
-              </p>
-            </div>
-
-            {/* Bio */}
-            <p
-              style={{
-                fontSize: '13px',
-                lineHeight: '1.6',
-                opacity: 0.9,
-                marginBottom: '20px',
-              }}
-            >
-              Passionate about creating beautiful, intuitive user experiences. Coffee enthusiast ☕
-              and design systems advocate. Always learning, always growing.
-            </p>
-
-            {/* Stats */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-around',
-                marginBottom: '20px',
-                padding: '20px 0',
-                borderTop:
-                  '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.21)',
-                background: 'color-mix(in srgb, var(--atomix-success-bg-subtle) 10%, transparent)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '10px',
-              }}
-            >
-              {stats.map((stat, index) => (
-                <div key={index} style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '18px', fontWeight: 700, marginBottom: '4px' }}>
-                    {stat.value}
-                  </div>
-                  <div style={{ fontSize: '13px', opacity: 0.7 }}>{stat.label}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* Action Buttons */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '10px',
-                marginBottom: '20px',
-              }}
-            >
-              <Button
-                onClick={() => setIsFollowing(!isFollowing)}
-                glass={{
-                  elasticity: 0,
-                  style: {
-                    width: '100%',
-                  },
-                }}
-                variant="info"
-                style={{
-                  width: '100%',
-                  padding: '14px 40px',
-                }}
-              >
-                {isFollowing ? '✓ Following' : '+ Follow'}
-              </Button>
-              <Button
-                onClick={() => setShowShareMenu(!showShareMenu)}
-                glass={{
-                  elasticity: 0,
-                }}
-                variant="outline-info"
-                style={{
-                  width: '100%',
-                  position: 'relative',
-                }}
-              >
-                <Icon name="Share" />
-              </Button>
-            </div>
-
-            {/* Social Links */}
-            <div
-              style={{
-                background: 'color-mix(in srgb, var(--atomix-brand-bg-subtle) 50%, transparent)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '10px',
-                padding: '10px 20px',
-              }}
-            >
-              <p
-                style={{
-                  fontSize: '13px',
-                  textTransform: 'uppercase',
-                  fontWeight: 700,
-                  letterSpacing: '0.5px',
-                  marginBottom: '10px',
-                  opacity: 0.7,
-                }}
-              >
-                Connect
-              </p>
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: '8px',
-                  width: '100%',
-                  position: 'relative',
-                }}
-              >
-                {socialLinks.map((link, index) => (
-                  <Button
-                    key={index}
-                    glass={{
-                      elasticity: 0,
-                    }}
-                    variant="primary"
-                    style={{
-                      width: '100%',
-                    }}
-                  >
-                    {link.icon}
-                    <span>{link.name}</span>
-                  </Button>
-                ))}
-              </div>
-            </div>
-
-            {/* Share Menu */}
-            {showShareMenu && (
               <div
                 style={{
                   position: 'absolute',
-                  top: '60%',
-                  right: '0%',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  background:
+                    'url(data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E)',
+                }}
+              />
+            </div>
+
+            <div style={{ padding: '0 20px 20px' }}>
+              {/* Profile Picture */}
+              <div
+                style={{
+                  marginTop: '-40px',
+                  marginBottom: '10px',
+                  position: 'relative',
+                  display: 'inline-block',
                 }}
               >
-                <AtomixGlass
-                  blurAmount={0.8}
-                  cornerRadius={16}
-                  elasticity={0}
-                  mode="standard"
+                <div
                   style={{
-                    position: 'absolute',
-                    width: '160xp',
+                    width: '70px',
+                    height: '70px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: '4px solid rgba(0,0,0,0.2)',
+                    position: 'relative',
+                    overflow: 'hidden',
                   }}
                 >
-                  {['Copy Link', 'Share via Email', 'Download vCard'].map((option, idx) => (
-                    <div key={idx} style={{ marginTop: '6px' }}>
-                      <Button
-                        key={idx}
-                        variant="outline-success"
-                        onClick={() => setShowShareMenu(false)}
-                        glass={{
-                          elasticity: 0,
-                        }}
-                        style={{
-                          width: '100%',
-                        }}
-                      >
-                        {option}
-                      </Button>
-                    </div>
-                  ))}
-                </AtomixGlass>
+                  <img src="https://avatars.githubusercontent.com/u/26011051?v=4" alt="Profile" />
+                </div>
               </div>
-            )}
-          </div>
-        </AtomixGlass>
+
+              {/* Name & Title */}
+              <div style={{ marginBottom: '24px' }}>
+                <h2
+                  style={{
+                    margin: '0 0 8px 0',
+                    fontSize: '28px',
+                    fontWeight: 700,
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Limon Khan
+                </h2>
+                <p
+                  style={{
+                    margin: '0 0 10px 0',
+                    fontSize: '15px',
+                    opacity: 0.9,
+                    color: 'rgba(255, 255, 255, 0.9)',
+                  }}
+                >
+                  Senior Frontend Developer
+                </p>
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: '14px',
+                    opacity: 0.8,
+                    color: 'rgba(255, 255, 255, 0.85)',
+                  }}
+                >
+                  <Icon name="Globe" /> BANGLADESH, Dhaka • <Icon name="Clock" /> GMT+5
+                </p>
+              </div>
+
+              {/* Bio */}
+              <p
+                style={{
+                  fontSize: '13px',
+                  lineHeight: '1.6',
+                  opacity: 0.9,
+                  marginBottom: '20px',
+                }}
+              >
+                Passionate about creating beautiful, intuitive user experiences. Coffee enthusiast
+                ☕ and design systems advocate. Always learning, always growing.
+              </p>
+
+              {/* Stats */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-around',
+                  marginBottom: '20px',
+                  padding: '20px 0',
+                  borderTop:
+                    '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.21)',
+                  background:
+                    'color-mix(in srgb, var(--atomix-success-bg-subtle) 10%, transparent)',
+                  backdropFilter: 'blur(10px)',
+                  borderRadius: '10px',
+                }}
+              >
+                {stats.map((stat, index) => (
+                  <div key={index} style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: '18px', fontWeight: 700, marginBottom: '4px' }}>
+                      {stat.value}
+                    </div>
+                    <div style={{ fontSize: '13px', opacity: 0.7 }}>{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Action Buttons */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '10px',
+                  marginBottom: '20px',
+                }}
+              >
+                <Button
+                  onClick={() => setIsFollowing(!isFollowing)}
+                  glass={{
+                    elasticity: 0,
+                    style: {
+                      width: '100%',
+                    },
+                  }}
+                  variant="info"
+                  style={{
+                    width: '100%',
+                    padding: '14px 40px',
+                  }}
+                >
+                  {isFollowing ? '✓ Following' : '+ Follow'}
+                </Button>
+                <Button
+                  onClick={() => setShowShareMenu(!showShareMenu)}
+                  glass={{
+                    elasticity: 0,
+                  }}
+                  variant="outline-info"
+                  style={{
+                    width: '100%',
+                    position: 'relative',
+                  }}
+                >
+                  <Icon name="Share" />
+                </Button>
+              </div>
+
+              {/* Social Links */}
+              <div
+                style={{
+                  background: 'color-mix(in srgb, var(--atomix-brand-bg-subtle) 50%, transparent)',
+                  backdropFilter: 'blur(10px)',
+                  borderRadius: '10px',
+                  padding: '10px 20px',
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: '13px',
+                    textTransform: 'uppercase',
+                    fontWeight: 700,
+                    letterSpacing: '0.5px',
+                    marginBottom: '10px',
+                    opacity: 0.7,
+                  }}
+                >
+                  Connect
+                </p>
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '8px',
+                    width: '100%',
+                    position: 'relative',
+                  }}
+                >
+                  {socialLinks.map((link, index) => (
+                    <Button
+                      key={index}
+                      glass={{
+                        elasticity: 0,
+                      }}
+                      variant="primary"
+                      style={{
+                        width: '100%',
+                      }}
+                    >
+                      {link.icon}
+                      <span>{link.name}</span>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Share Menu */}
+              {showShareMenu && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '60%',
+                    right: '0%',
+                  }}
+                >
+                  <AtomixGlass
+                    blurAmount={0.8}
+                    cornerRadius={16}
+                    elasticity={0}
+                    mode="standard"
+                    style={{
+                      position: 'absolute',
+                      width: '160xp',
+                    }}
+                  >
+                    {['Copy Link', 'Share via Email', 'Download vCard'].map((option, idx) => (
+                      <div key={idx} style={{ marginTop: '6px' }}>
+                        <Button
+                          key={idx}
+                          variant="outline-success"
+                          onClick={() => setShowShareMenu(false)}
+                          glass={{
+                            elasticity: 0,
+                          }}
+                          style={{
+                            width: '100%',
+                          }}
+                        >
+                          {option}
+                        </Button>
+                      </div>
+                    ))}
+                  </AtomixGlass>
+                </div>
+              )}
+            </div>
+          </AtomixGlass>
         </div>
       </BackgroundWrapper>
     );
@@ -2526,351 +2532,355 @@ export const SettingsPanel: Story = {
         height="90vh"
       >
         <div className="u-mx-auto u-py-6" style={{ maxWidth: '550px' }}>
-          <AtomixGlass
-            displacementScale={45}
-            blurAmount={1}
-            cornerRadius={24}
-            mode="standard"
-          >
-          <div style={{ padding: '32px' }}>
-            {/* Header */}
-            <div className="u-mb-5">
-              <div
-                style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}
-              >
+          <AtomixGlass displacementScale={45} blurAmount={1} cornerRadius={24} mode="standard">
+            <div style={{ padding: '32px' }}>
+              {/* Header */}
+              <div className="u-mb-5">
                 <div
                   style={{
-                    width: '48px',
-                    height: '48px',
-                    borderRadius: '14px',
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '24px',
-                    boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
+                    gap: '12px',
+                    marginBottom: '12px',
                   }}
                 >
-                  ⚙️
+                  <div
+                    style={{
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '14px',
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '24px',
+                      boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
+                    }}
+                  >
+                    ⚙️
+                  </div>
+                  <h2
+                    className="u-m-0 u-text-2 u-font-bold"
+                    style={{
+                      fontSize: '28px',
+                      background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
+                  >
+                    Settings
+                  </h2>
                 </div>
-                <h2
-                  className="u-m-0 u-text-2 u-font-bold"
-                  style={{
-                    fontSize: '28px',
-                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
+                <p
+                  className="u-m-0 u-text-6 u-opacity-70"
+                  style={{ fontSize: '15px', color: 'rgba(255, 255, 255, 0.85)' }}
                 >
-                  Settings
-                </h2>
+                  Manage your account preferences and settings
+                </p>
               </div>
-              <p
-                className="u-m-0 u-text-6 u-opacity-70"
-                style={{ fontSize: '15px', color: 'rgba(255, 255, 255, 0.85)' }}
-              >
-                Manage your account preferences and settings
-              </p>
-            </div>
 
-            {/* General Section */}
-            <div className="u-mb-5">
-              <h3
-                style={{
-                  fontSize: '14px',
-                  textTransform: 'uppercase',
-                  fontWeight: 700,
-                  letterSpacing: '0.5px',
-                  marginBottom: '16px',
-                  opacity: 0.7,
-                }}
-              >
-                General
-              </h3>
-
-              {/* Language Select */}
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '16px 0',
-                  borderBottom: '1px solid rgba(255,255,255,0.1)',
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
-                    Language
-                  </div>
-                  <div style={{ fontSize: '14px', opacity: 0.7 }}>
-                    Choose your preferred language
-                  </div>
-                </div>
-                <select
-                  value={language}
-                  onChange={e => setLanguage(e.target.value)}
+              {/* General Section */}
+              <div className="u-mb-5">
+                <h3
                   style={{
-                    padding: '10px 16px',
-                    borderRadius: '10px',
+                    fontSize: '14px',
+                    textTransform: 'uppercase',
+                    fontWeight: 700,
+                    letterSpacing: '0.5px',
+                    marginBottom: '16px',
+                    opacity: 0.7,
+                  }}
+                >
+                  General
+                </h3>
+
+                {/* Language Select */}
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '16px 0',
+                    borderBottom: '1px solid rgba(255,255,255,0.1)',
+                  }}
+                >
+                  <div>
+                    <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
+                      Language
+                    </div>
+                    <div style={{ fontSize: '14px', opacity: 0.7 }}>
+                      Choose your preferred language
+                    </div>
+                  </div>
+                  <select
+                    value={language}
+                    onChange={e => setLanguage(e.target.value)}
+                    style={{
+                      padding: '10px 16px',
+                      borderRadius: '10px',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      background: 'rgba(255,255,255,0.1)',
+                      color: 'inherit',
+                      fontSize: '14px',
+                      cursor: 'pointer',
+                      outline: 'none',
+                    }}
+                  >
+                    <option value="en" style={{ background: '#1a1a1a', color: 'white' }}>
+                      English
+                    </option>
+                    <option value="es" style={{ background: '#1a1a1a', color: 'white' }}>
+                      Español
+                    </option>
+                    <option value="fr" style={{ background: '#1a1a1a', color: 'white' }}>
+                      Français
+                    </option>
+                    <option value="de" style={{ background: '#1a1a1a', color: 'white' }}>
+                      Deutsch
+                    </option>
+                  </select>
+                </div>
+
+                {/* Dark Mode Toggle */}
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '16px 0',
+                    borderBottom: '1px solid rgba(255,255,255,0.1)',
+                  }}
+                >
+                  <div>
+                    <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
+                      🌙 Dark Mode
+                    </div>
+                    <div style={{ fontSize: '14px', opacity: 0.7 }}>
+                      Enable dark theme across the app
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setDarkMode(!darkMode)}
+                    style={{
+                      width: '56px',
+                      height: '32px',
+                      borderRadius: '16px',
+                      border: 'none',
+                      background: darkMode ? '#667eea' : 'rgba(255,255,255,0.2)',
+                      cursor: 'pointer',
+                      position: 'relative',
+                      transition: 'background 0.3s ease',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '24px',
+                        height: '24px',
+                        borderRadius: '50%',
+                        background: 'white',
+                        position: 'absolute',
+                        top: '4px',
+                        left: darkMode ? '28px' : '4px',
+                        transition: 'left 0.3s ease',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                      }}
+                    />
+                  </button>
+                </div>
+
+                {/* Auto Save Toggle */}
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '16px 0',
+                    borderBottom: '1px solid rgba(255,255,255,0.1)',
+                  }}
+                >
+                  <div>
+                    <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
+                      💾 Auto-Save
+                    </div>
+                    <div style={{ fontSize: '14px', opacity: 0.7 }}>
+                      Automatically save your work
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setAutoSave(!autoSave)}
+                    style={{
+                      width: '56px',
+                      height: '32px',
+                      borderRadius: '16px',
+                      border: 'none',
+                      background: autoSave ? '#667eea' : 'rgba(255,255,255,0.2)',
+                      cursor: 'pointer',
+                      position: 'relative',
+                      transition: 'background 0.3s ease',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '24px',
+                        height: '24px',
+                        borderRadius: '50%',
+                        background: 'white',
+                        position: 'absolute',
+                        top: '4px',
+                        left: autoSave ? '28px' : '4px',
+                        transition: 'left 0.3s ease',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                      }}
+                    />
+                  </button>
+                </div>
+              </div>
+
+              {/* Notifications Section */}
+              <div className="u-mb-5">
+                <h3
+                  style={{
+                    fontSize: '14px',
+                    textTransform: 'uppercase',
+                    fontWeight: 700,
+                    letterSpacing: '0.5px',
+                    marginBottom: '16px',
+                    opacity: 0.7,
+                  }}
+                >
+                  Notifications
+                </h3>
+
+                {/* Enable Notifications */}
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '16px 0',
+                    borderBottom: '1px solid rgba(255,255,255,0.1)',
+                  }}
+                >
+                  <div>
+                    <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
+                      🔔 Push Notifications
+                    </div>
+                    <div style={{ fontSize: '14px', opacity: 0.7 }}>Receive push notifications</div>
+                  </div>
+                  <button
+                    onClick={() => setNotifications(!notifications)}
+                    style={{
+                      width: '56px',
+                      height: '32px',
+                      borderRadius: '16px',
+                      border: 'none',
+                      background: notifications ? '#667eea' : 'rgba(255,255,255,0.2)',
+                      cursor: 'pointer',
+                      position: 'relative',
+                      transition: 'background 0.3s ease',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '24px',
+                        height: '24px',
+                        borderRadius: '50%',
+                        background: 'white',
+                        position: 'absolute',
+                        top: '4px',
+                        left: notifications ? '28px' : '4px',
+                        transition: 'left 0.3s ease',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                      }}
+                    />
+                  </button>
+                </div>
+
+                {/* Email Frequency */}
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '16px 0',
+                  }}
+                >
+                  <div>
+                    <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
+                      <Icon name="Envelope" /> Email Frequency
+                    </div>
+                    <div style={{ fontSize: '14px', opacity: 0.7 }}>
+                      How often to receive emails
+                    </div>
+                  </div>
+                  <select
+                    value={emailFrequency}
+                    onChange={e => setEmailFrequency(e.target.value)}
+                    style={{
+                      padding: '10px 16px',
+                      borderRadius: '10px',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      background: 'rgba(255,255,255,0.1)',
+                      color: 'inherit',
+                      fontSize: '14px',
+                      cursor: 'pointer',
+                      outline: 'none',
+                    }}
+                  >
+                    <option value="realtime" style={{ background: '#1a1a1a', color: 'white' }}>
+                      Real-time
+                    </option>
+                    <option value="daily" style={{ background: '#1a1a1a', color: 'white' }}>
+                      Daily
+                    </option>
+                    <option value="weekly" style={{ background: '#1a1a1a', color: 'white' }}>
+                      Weekly
+                    </option>
+                    <option value="never" style={{ background: '#1a1a1a', color: 'white' }}>
+                      Never
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="u-flex u-gap-2">
+                <button
+                  onClick={handleSave}
+                  style={{
+                    flex: 1,
+                    padding: '16px',
+                    borderRadius: '12px',
+                    border: 'none',
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    color: 'white',
+                    fontSize: '16px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s ease',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
+                  onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+                >
+                  {showSaveConfirm ? '✓ Saved!' : 'Save Changes'}
+                </button>
+                <button
+                  style={{
+                    padding: '16px 24px',
+                    borderRadius: '12px',
                     border: '1px solid rgba(255,255,255,0.2)',
                     background: 'rgba(255,255,255,0.1)',
                     color: 'inherit',
-                    fontSize: '14px',
+                    fontSize: '16px',
+                    fontWeight: 600,
                     cursor: 'pointer',
-                    outline: 'none',
                   }}
                 >
-                  <option value="en" style={{ background: '#1a1a1a', color: 'white' }}>
-                    English
-                  </option>
-                  <option value="es" style={{ background: '#1a1a1a', color: 'white' }}>
-                    Español
-                  </option>
-                  <option value="fr" style={{ background: '#1a1a1a', color: 'white' }}>
-                    Français
-                  </option>
-                  <option value="de" style={{ background: '#1a1a1a', color: 'white' }}>
-                    Deutsch
-                  </option>
-                </select>
-              </div>
-
-              {/* Dark Mode Toggle */}
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '16px 0',
-                  borderBottom: '1px solid rgba(255,255,255,0.1)',
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
-                    🌙 Dark Mode
-                  </div>
-                  <div style={{ fontSize: '14px', opacity: 0.7 }}>
-                    Enable dark theme across the app
-                  </div>
-                </div>
-                <button
-                  onClick={() => setDarkMode(!darkMode)}
-                  style={{
-                    width: '56px',
-                    height: '32px',
-                    borderRadius: '16px',
-                    border: 'none',
-                    background: darkMode ? '#667eea' : 'rgba(255,255,255,0.2)',
-                    cursor: 'pointer',
-                    position: 'relative',
-                    transition: 'background 0.3s ease',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '24px',
-                      height: '24px',
-                      borderRadius: '50%',
-                      background: 'white',
-                      position: 'absolute',
-                      top: '4px',
-                      left: darkMode ? '28px' : '4px',
-                      transition: 'left 0.3s ease',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                    }}
-                  />
-                </button>
-              </div>
-
-              {/* Auto Save Toggle */}
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '16px 0',
-                  borderBottom: '1px solid rgba(255,255,255,0.1)',
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
-                    💾 Auto-Save
-                  </div>
-                  <div style={{ fontSize: '14px', opacity: 0.7 }}>Automatically save your work</div>
-                </div>
-                <button
-                  onClick={() => setAutoSave(!autoSave)}
-                  style={{
-                    width: '56px',
-                    height: '32px',
-                    borderRadius: '16px',
-                    border: 'none',
-                    background: autoSave ? '#667eea' : 'rgba(255,255,255,0.2)',
-                    cursor: 'pointer',
-                    position: 'relative',
-                    transition: 'background 0.3s ease',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '24px',
-                      height: '24px',
-                      borderRadius: '50%',
-                      background: 'white',
-                      position: 'absolute',
-                      top: '4px',
-                      left: autoSave ? '28px' : '4px',
-                      transition: 'left 0.3s ease',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                    }}
-                  />
+                  Reset
                 </button>
               </div>
             </div>
-
-            {/* Notifications Section */}
-            <div className="u-mb-5">
-              <h3
-                style={{
-                  fontSize: '14px',
-                  textTransform: 'uppercase',
-                  fontWeight: 700,
-                  letterSpacing: '0.5px',
-                  marginBottom: '16px',
-                  opacity: 0.7,
-                }}
-              >
-                Notifications
-              </h3>
-
-              {/* Enable Notifications */}
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '16px 0',
-                  borderBottom: '1px solid rgba(255,255,255,0.1)',
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
-                    🔔 Push Notifications
-                  </div>
-                  <div style={{ fontSize: '14px', opacity: 0.7 }}>Receive push notifications</div>
-                </div>
-                <button
-                  onClick={() => setNotifications(!notifications)}
-                  style={{
-                    width: '56px',
-                    height: '32px',
-                    borderRadius: '16px',
-                    border: 'none',
-                    background: notifications ? '#667eea' : 'rgba(255,255,255,0.2)',
-                    cursor: 'pointer',
-                    position: 'relative',
-                    transition: 'background 0.3s ease',
-                  }}
-                >
-                  <div
-                    style={{
-                      width: '24px',
-                      height: '24px',
-                      borderRadius: '50%',
-                      background: 'white',
-                      position: 'absolute',
-                      top: '4px',
-                      left: notifications ? '28px' : '4px',
-                      transition: 'left 0.3s ease',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-                    }}
-                  />
-                </button>
-              </div>
-
-              {/* Email Frequency */}
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '16px 0',
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
-                    <Icon name="Envelope" /> Email Frequency
-                  </div>
-                  <div style={{ fontSize: '14px', opacity: 0.7 }}>How often to receive emails</div>
-                </div>
-                <select
-                  value={emailFrequency}
-                  onChange={e => setEmailFrequency(e.target.value)}
-                  style={{
-                    padding: '10px 16px',
-                    borderRadius: '10px',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'rgba(255,255,255,0.1)',
-                    color: 'inherit',
-                    fontSize: '14px',
-                    cursor: 'pointer',
-                    outline: 'none',
-                  }}
-                >
-                  <option value="realtime" style={{ background: '#1a1a1a', color: 'white' }}>
-                    Real-time
-                  </option>
-                  <option value="daily" style={{ background: '#1a1a1a', color: 'white' }}>
-                    Daily
-                  </option>
-                  <option value="weekly" style={{ background: '#1a1a1a', color: 'white' }}>
-                    Weekly
-                  </option>
-                  <option value="never" style={{ background: '#1a1a1a', color: 'white' }}>
-                    Never
-                  </option>
-                </select>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="u-flex u-gap-2">
-              <button
-                onClick={handleSave}
-                style={{
-                  flex: 1,
-                  padding: '16px',
-                  borderRadius: '12px',
-                  border: 'none',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  color: 'white',
-                  fontSize: '16px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  transition: 'transform 0.2s ease',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.02)')}
-                onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
-              >
-                {showSaveConfirm ? '✓ Saved!' : 'Save Changes'}
-              </button>
-              <button
-                style={{
-                  padding: '16px 24px',
-                  borderRadius: '12px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'rgba(255,255,255,0.1)',
-                  color: 'inherit',
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
-                Reset
-              </button>
-            </div>
-          </div>
           </AtomixGlass>
         </div>
       </BackgroundWrapper>
@@ -2931,324 +2941,319 @@ export const EventCard: Story = {
         height="90vh"
       >
         <div className="u-mx-auto u-py-6" style={{ maxWidth: '480px' }}>
-          <AtomixGlass
-            displacementScale={45}
-            blurAmount={4}
-            cornerRadius={24}
-            mode="standard"
-          >
-          {/* Event Image */}
-          <div
-            style={{
-              height: '220px',
-              background:
-                'url(https://images.unsplash.com/photo-1646784208071-7f35325e10cb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              borderRadius: '24px 24px 0 0',
-              position: 'relative',
-              overflow: 'hidden',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <div style={{ fontSize: '80px' }}>
-              <Icon name="Confetti" />
-            </div>
+          <AtomixGlass displacementScale={45} blurAmount={4} cornerRadius={24} mode="standard">
+            {/* Event Image */}
             <div
               style={{
-                position: 'absolute',
-                top: '16px',
-                right: '16px',
-                background: 'rgba(0,0,0,0.4)',
-                backdropFilter: 'blur(10px)',
-                padding: '8px 16px',
-                borderRadius: '20px',
+                height: '220px',
+                background:
+                  'url(https://images.unsplash.com/photo-1646784208071-7f35325e10cb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                borderRadius: '24px 24px 0 0',
+                position: 'relative',
+                overflow: 'hidden',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
-                fontSize: '14px',
-                fontWeight: 600,
-                color: 'white',
+                justifyContent: 'center',
               }}
             >
-              <span style={{ fontSize: '18px' }}>
-                <Icon name="Sparkle" />
-              </span>
-              Trending
-            </div>
-          </div>
-
-          <div style={{ padding: '28px' }}>
-            {/* Date Badge */}
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                background: 'rgba(102, 126, 234, 0.2)',
-                padding: '8px 16px',
-                borderRadius: '12px',
-                marginBottom: '16px',
-                fontSize: '14px',
-                fontWeight: 600,
-              }}
-            >
-              <span style={{ fontSize: '18px' }}>
-                <Icon name="CalendarBlank" />
-              </span>
-              Saturday, Dec 16, 2024 • 7:00 PM
+              <div style={{ fontSize: '80px' }}>
+                <Icon name="Confetti" />
+              </div>
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '16px',
+                  right: '16px',
+                  background: 'rgba(0,0,0,0.4)',
+                  backdropFilter: 'blur(10px)',
+                  padding: '8px 16px',
+                  borderRadius: '20px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  color: 'white',
+                }}
+              >
+                <span style={{ fontSize: '18px' }}>
+                  <Icon name="Sparkle" />
+                </span>
+                Trending
+              </div>
             </div>
 
-            {/* Event Title */}
-            <h2
-              style={{
-                margin: '0 0 12px 0',
-                fontSize: '32px',
-                fontWeight: 700,
-                background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              Design Systems Meetup
-            </h2>
+            <div style={{ padding: '28px' }}>
+              {/* Date Badge */}
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: 'rgba(102, 126, 234, 0.2)',
+                  padding: '8px 16px',
+                  borderRadius: '12px',
+                  marginBottom: '16px',
+                  fontSize: '14px',
+                  fontWeight: 600,
+                }}
+              >
+                <span style={{ fontSize: '18px' }}>
+                  <Icon name="CalendarBlank" />
+                </span>
+                Saturday, Dec 16, 2024 • 7:00 PM
+              </div>
 
-            {/* Location */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                marginBottom: '8px',
-                fontSize: '15px',
-                opacity: 0.9,
-              }}
-            >
-              <span style={{ fontSize: '18px' }}>
-                <Icon name="MapPinLine" />
-              </span>
-              <span>Innovation Hub, 123 Tech Street, SF</span>
-            </div>
+              {/* Event Title */}
+              <h2
+                style={{
+                  margin: '0 0 12px 0',
+                  fontSize: '32px',
+                  fontWeight: 700,
+                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                Design Systems Meetup
+              </h2>
 
-            {/* Host */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                marginBottom: '20px',
-                fontSize: '15px',
-                opacity: 0.9,
-              }}
-            >
-              <span style={{ fontSize: '18px' }}>
-                <Icon name="UserCircle" />
-              </span>
-              <span>Hosted by Design Community SF</span>
-            </div>
-
-            {/* Description */}
-            <p
-              style={{
-                fontSize: '15px',
-                lineHeight: '1.6',
-                opacity: 0.9,
-                marginBottom: '24px',
-              }}
-            >
-              Join us for an evening of talks, workshops, and networking with fellow designers and
-              developers. Learn about the latest trends in design systems and component libraries.
-            </p>
-
-            {/* Attendees */}
-            <div style={{ marginBottom: '24px' }}>
+              {/* Location */}
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: '12px',
+                  gap: '8px',
+                  marginBottom: '8px',
+                  fontSize: '15px',
+                  opacity: 0.9,
                 }}
               >
-                <span style={{ fontSize: '14px', fontWeight: 600, opacity: 0.8 }}>
-                  {interestedCount} people interested
+                <span style={{ fontSize: '18px' }}>
+                  <Icon name="MapPinLine" />
                 </span>
-                <button
-                  onClick={() => setShowShareOptions(!showShareOptions)}
+                <span>Innovation Hub, 123 Tech Street, SF</span>
+              </div>
+
+              {/* Host */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginBottom: '20px',
+                  fontSize: '15px',
+                  opacity: 0.9,
+                }}
+              >
+                <span style={{ fontSize: '18px' }}>
+                  <Icon name="UserCircle" />
+                </span>
+                <span>Hosted by Design Community SF</span>
+              </div>
+
+              {/* Description */}
+              <p
+                style={{
+                  fontSize: '15px',
+                  lineHeight: '1.6',
+                  opacity: 0.9,
+                  marginBottom: '24px',
+                }}
+              >
+                Join us for an evening of talks, workshops, and networking with fellow designers and
+                developers. Learn about the latest trends in design systems and component libraries.
+              </p>
+
+              {/* Attendees */}
+              <div style={{ marginBottom: '24px' }}>
+                <div
                   style={{
-                    padding: '6px 12px',
-                    borderRadius: '8px',
-                    border: 'none',
-                    background: 'rgba(255,255,255,0.1)',
-                    color: 'inherit',
-                    cursor: 'pointer',
-                    fontSize: '14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '12px',
                   }}
                 >
-                  Share
-                </button>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '-8px' }}>
-                {attendees.map((attendee, idx) => (
+                  <span style={{ fontSize: '14px', fontWeight: 600, opacity: 0.8 }}>
+                    {interestedCount} people interested
+                  </span>
+                  <button
+                    onClick={() => setShowShareOptions(!showShareOptions)}
+                    style={{
+                      padding: '6px 12px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      background: 'rgba(255,255,255,0.1)',
+                      color: 'inherit',
+                      cursor: 'pointer',
+                      fontSize: '14px',
+                    }}
+                  >
+                    Share
+                  </button>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '-8px' }}>
+                  {attendees.map((attendee, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                        border: '2px solid rgba(0,0,0,0.2)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '20px',
+                        marginLeft: idx > 0 ? '-8px' : '0',
+                        position: 'relative',
+                        zIndex: attendees.length - idx,
+                      }}
+                      title={attendee.name}
+                    >
+                      {attendee.avatar}
+                    </div>
+                  ))}
                   <div
-                    key={idx}
                     style={{
                       width: '40px',
                       height: '40px',
                       borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                      background: 'rgba(255,255,255,0.15)',
                       border: '2px solid rgba(0,0,0,0.2)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '20px',
-                      marginLeft: idx > 0 ? '-8px' : '0',
-                      position: 'relative',
-                      zIndex: attendees.length - idx,
+                      fontSize: '12px',
+                      fontWeight: 700,
+                      marginLeft: '-8px',
                     }}
-                    title={attendee.name}
                   >
-                    {attendee.avatar}
+                    +{interestedCount - attendees.length}
                   </div>
-                ))}
-                <div
+                </div>
+              </div>
+
+              {/* RSVP Buttons */}
+              <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
+                <button
+                  onClick={() => handleRSVP('going')}
                   style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.15)',
-                    border: '2px solid rgba(0,0,0,0.2)',
+                    flex: 1,
+                    padding: '14px',
+                    borderRadius: '12px',
+                    border: rsvpStatus === 'going' ? '2px solid #667eea' : 'none',
+                    background:
+                      rsvpStatus === 'going'
+                        ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                        : 'rgba(255,255,255,0.1)',
+                    color: 'white',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '12px',
-                    fontWeight: 700,
-                    marginLeft: '-8px',
+                    gap: '8px',
                   }}
                 >
-                  +{interestedCount - attendees.length}
-                </div>
+                  <span style={{ fontSize: '18px' }}>
+                    <Icon name="Check" />
+                  </span>
+                  Going
+                </button>
+                <button
+                  onClick={() => handleRSVP('maybe')}
+                  style={{
+                    flex: 1,
+                    padding: '14px',
+                    borderRadius: '12px',
+                    border: rsvpStatus === 'maybe' ? '2px solid #f59e0b' : 'none',
+                    background:
+                      rsvpStatus === 'maybe' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(255,255,255,0.1)',
+                    color: 'white',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                  }}
+                >
+                  <span style={{ fontSize: '18px' }}>
+                    <Icon name="Smiley" />
+                  </span>
+                  Maybe
+                </button>
+                <button
+                  onClick={() => handleRSVP('not')}
+                  style={{
+                    flex: 1,
+                    padding: '14px',
+                    borderRadius: '12px',
+                    border: rsvpStatus === 'not' ? '2px solid #ef4444' : 'none',
+                    background:
+                      rsvpStatus === 'not' ? 'rgba(239, 68, 68, 0.3)' : 'rgba(255,255,255,0.1)',
+                    color: 'white',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                  }}
+                >
+                  <span style={{ fontSize: '18px' }}>
+                    <Icon name="X" />
+                  </span>
+                  Can't Go
+                </button>
+              </div>
+
+              {/* Additional Actions */}
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button
+                  style={{
+                    flex: 1,
+                    padding: '12px',
+                    borderRadius: '10px',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    background: 'rgba(255,255,255,0.1)',
+                    color: 'inherit',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Icon name="Calendar" /> Add to Calendar
+                </button>
+                <button
+                  style={{
+                    flex: 1,
+                    padding: '12px',
+                    borderRadius: '10px',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    background: 'rgba(255,255,255,0.1)',
+                    color: 'inherit',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Icon name="MapPin" /> Get Directions
+                </button>
               </div>
             </div>
-
-            {/* RSVP Buttons */}
-            <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
-              <button
-                onClick={() => handleRSVP('going')}
-                style={{
-                  flex: 1,
-                  padding: '14px',
-                  borderRadius: '12px',
-                  border: rsvpStatus === 'going' ? '2px solid #667eea' : 'none',
-                  background:
-                    rsvpStatus === 'going'
-                      ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                      : 'rgba(255,255,255,0.1)',
-                  color: 'white',
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                }}
-              >
-                <span style={{ fontSize: '18px' }}>
-                  <Icon name="Check" />
-                </span>
-                Going
-              </button>
-              <button
-                onClick={() => handleRSVP('maybe')}
-                style={{
-                  flex: 1,
-                  padding: '14px',
-                  borderRadius: '12px',
-                  border: rsvpStatus === 'maybe' ? '2px solid #f59e0b' : 'none',
-                  background:
-                    rsvpStatus === 'maybe' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(255,255,255,0.1)',
-                  color: 'white',
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                }}
-              >
-                <span style={{ fontSize: '18px' }}>
-                  <Icon name="Smiley" />
-                </span>
-                Maybe
-              </button>
-              <button
-                onClick={() => handleRSVP('not')}
-                style={{
-                  flex: 1,
-                  padding: '14px',
-                  borderRadius: '12px',
-                  border: rsvpStatus === 'not' ? '2px solid #ef4444' : 'none',
-                  background:
-                    rsvpStatus === 'not' ? 'rgba(239, 68, 68, 0.3)' : 'rgba(255,255,255,0.1)',
-                  color: 'white',
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                }}
-              >
-                <span style={{ fontSize: '18px' }}>
-                  <Icon name="X" />
-                </span>
-                Can't Go
-              </button>
-            </div>
-
-            {/* Additional Actions */}
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <button
-                style={{
-                  flex: 1,
-                  padding: '12px',
-                  borderRadius: '10px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'rgba(255,255,255,0.1)',
-                  color: 'inherit',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
-                <Icon name="Calendar" /> Add to Calendar
-              </button>
-              <button
-                style={{
-                  flex: 1,
-                  padding: '12px',
-                  borderRadius: '10px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'rgba(255,255,255,0.1)',
-                  color: 'inherit',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
-                <Icon name="MapPin" /> Get Directions
-              </button>
-            </div>
-          </div>
           </AtomixGlass>
         </div>
       </BackgroundWrapper>
@@ -3318,279 +3323,281 @@ export const SocialMediaPost: Story = {
             mode="standard"
             elasticity={0}
           >
-          {/* Post Header */}
-          <div
-            style={{
-              padding: '20px 24px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              borderRadius: '24px',
-              borderBottom: '1px solid rgba(255,255,255,0.2)',
-            }}
-          >
+            {/* Post Header */}
             <div
               style={{
-                width: '48px',
-                height: '48px',
-                borderRadius: '50%',
-                background: 'url(https://avatars.githubusercontent.com/u/26011051?v=4)',
+                padding: '20px 24px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                borderRadius: '24px',
+                borderBottom: '1px solid rgba(255,255,255,0.2)',
+              }}
+            >
+              <div
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '50%',
+                  background: 'url(https://avatars.githubusercontent.com/u/26011051?v=4)',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '24px',
+                  color: 'white',
+                }}
+              ></div>
+              <div style={{ flex: 1 }}>
+                <h3
+                  style={{
+                    margin: '0 0 4px 0',
+                    fontSize: '18px',
+                    fontWeight: 700,
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Limon Khan
+                </h3>
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: '14px',
+                    opacity: 0.8,
+                    color: 'rgba(255, 255, 255, 0.85)',
+                  }}
+                >
+                  Frontend Developer • 6 hours ago
+                </p>
+              </div>
+              <Button
+                glass={{
+                  cornerRadius: 8,
+                }}
+                size="sm"
+                icon={<Icon name="DotsThree" />}
+              />
+            </div>
+
+            {/* Post Content */}
+            <div style={{ padding: '20px 24px' }}>
+              <p
+                style={{
+                  fontSize: '15px',
+                  lineHeight: '1.6',
+                  marginBottom: '20px',
+                }}
+              >
+                Just wrapped up this new landing page design for a fintech startup! 🚀 Really proud
+                of how the glassmorphism effects turned out. What do you all think?
+              </p>
+
+              {/* Tags */}
+              <div
+                style={{
+                  display: 'flex',
+                  gap: '8px',
+                  marginBottom: '20px',
+                  flexWrap: 'wrap',
+                  borderRadius: '10px',
+                }}
+              >
+                {['#design', '#ui', '#glassmorphism', '#webdesign'].map((tag, idx) => (
+                  <Badge key={idx} label={tag} glass variant="primary" />
+                ))}
+              </div>
+            </div>
+
+            {/* Post Image */}
+            <div
+              style={{
+                height: '280px',
+                background:
+                  'url(https://images.unsplash.com/photo-1732912567466-26580df08084?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '24px',
-                color: 'white',
+                fontSize: '80px',
+                borderTop:
+                  '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                borderBottom:
+                  '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
               }}
             ></div>
-            <div style={{ flex: 1 }}>
-              <h3
-                style={{
-                  margin: '0 0 4px 0',
-                  fontSize: '18px',
-                  fontWeight: 700,
-                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                Limon Khan
-              </h3>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: '14px',
-                  opacity: 0.8,
-                  color: 'rgba(255, 255, 255, 0.85)',
-                }}
-              >
-                Frontend Developer • 6 hours ago
-              </p>
-            </div>
-            <Button
-              glass={{
-                cornerRadius: 8,
-              }}
-              size="sm"
-              icon={<Icon name="DotsThree" />}
-            />
-          </div>
 
-          {/* Post Content */}
-          <div style={{ padding: '20px 24px' }}>
-            <p
-              style={{
-                fontSize: '15px',
-                lineHeight: '1.6',
-                marginBottom: '20px',
-              }}
-            >
-              Just wrapped up this new landing page design for a fintech startup! 🚀 Really proud of
-              how the glassmorphism effects turned out. What do you all think?
-            </p>
-
-            {/* Tags */}
+            {/* Engagement Stats */}
             <div
               style={{
+                padding: '16px 24px',
                 display: 'flex',
-                gap: '8px',
-                marginBottom: '20px',
-                flexWrap: 'wrap',
-                borderRadius: '10px',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                fontSize: '14px',
+                opacity: 0.8,
+                borderBottom:
+                  '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
               }}
             >
-              {['#design', '#ui', '#glassmorphism', '#webdesign'].map((tag, idx) => (
-                <Badge key={idx} label={tag} glass variant="primary" />
-              ))}
+              <span>{likes.toLocaleString()} likes</span>
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <span>{comments.length + 12} comments</span>
+                <span>34 shares</span>
+              </div>
             </div>
-          </div>
 
-          {/* Post Image */}
-          <div
-            style={{
-              height: '280px',
-              background:
-                'url(https://images.unsplash.com/photo-1732912567466-26580df08084?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '80px',
-              borderTop:
-                '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
-              borderBottom:
-                '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
-            }}
-          ></div>
-
-          {/* Engagement Stats */}
-          <div
-            style={{
-              padding: '16px 24px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              fontSize: '14px',
-              opacity: 0.8,
-              borderBottom:
-                '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
-            }}
-          >
-            <span>{likes.toLocaleString()} likes</span>
-            <div style={{ display: 'flex', gap: '16px' }}>
-              <span>{comments.length + 12} comments</span>
-              <span>34 shares</span>
+            {/* Action Buttons */}
+            <div
+              style={{
+                padding: '12px 24px',
+                display: 'flex',
+                gap: '8px',
+                borderBottom: showComments
+                  ? '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)'
+                  : 'none',
+              }}
+            >
+              <Button onClick={handleLike} variant="error" glass>
+                <span style={{ fontSize: '18px' }}>
+                  {liked ? <Icon name="Heart" /> : <Icon name="HeartStraight" />}
+                </span>
+                {liked ? 'Liked' : 'Like'}
+              </Button>
+              <Button onClick={() => setShowComments(!showComments)} variant="info" glass>
+                <span style={{ fontSize: '18px' }}>
+                  <Icon name="Chats" />
+                </span>
+                {showComments ? 'Comments' : 'Comment'}
+              </Button>
+              <Button onClick={() => setSaved(!saved)} variant="success" glass>
+                <span style={{ fontSize: '18px' }}>
+                  {saved ? <Icon name="Bookmark" /> : <Icon name="FilePlus" />}
+                </span>
+                {saved ? 'Saved' : 'Save'}
+              </Button>
+              <Button variant="success" glass>
+                <Icon name="UploadSimple" />
+              </Button>
             </div>
-          </div>
 
-          {/* Action Buttons */}
-          <div
-            style={{
-              padding: '12px 24px',
-              display: 'flex',
-              gap: '8px',
-              borderBottom: showComments
-                ? '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)'
-                : 'none',
-            }}
-          >
-            <Button onClick={handleLike} variant="error" glass>
-              <span style={{ fontSize: '18px' }}>
-                {liked ? <Icon name="Heart" /> : <Icon name="HeartStraight" />}
-              </span>
-              {liked ? 'Liked' : 'Like'}
-            </Button>
-            <Button onClick={() => setShowComments(!showComments)} variant="info" glass>
-              <span style={{ fontSize: '18px' }}>
-                <Icon name="Chats" />
-              </span>
-              {showComments ? 'Comments' : 'Comment'}
-            </Button>
-            <Button onClick={() => setSaved(!saved)} variant="success" glass>
-              <span style={{ fontSize: '18px' }}>
-                {saved ? <Icon name="Bookmark" /> : <Icon name="FilePlus" />}
-              </span>
-              {saved ? 'Saved' : 'Save'}
-            </Button>
-            <Button variant="success" glass>
-              <Icon name="UploadSimple" />
-            </Button>
-          </div>
-
-          {/* Comments Section */}
-          {showComments && (
-            <div style={{ padding: '20px 24px' }}>
-              {/* Existing Comments */}
-              <div style={{ marginBottom: '20px' }}>
-                {comments.map((comment, idx) => (
-                  <div key={idx} style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
-                    <div
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '50%',
-                        background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '18px',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {comment.avatar}
-                    </div>
-                    <div style={{ flex: 1 }}>
+            {/* Comments Section */}
+            {showComments && (
+              <div style={{ padding: '20px 24px' }}>
+                {/* Existing Comments */}
+                <div style={{ marginBottom: '20px' }}>
+                  {comments.map((comment, idx) => (
+                    <div key={idx} style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
                       <div
                         style={{
-                          background:
-                            'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
-                          padding: '12px 16px',
-                          borderRadius: '12px 12px 12px 4px',
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '50%',
+                          background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '18px',
+                          flexShrink: 0,
                         }}
                       >
-                        <h4
+                        {comment.avatar}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div
                           style={{
-                            margin: '0 0 4px 0',
-                            fontSize: '14px',
-                            fontWeight: 700,
+                            background:
+                              'color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                            padding: '12px 16px',
+                            borderRadius: '12px 12px 12px 4px',
                           }}
                         >
-                          {comment.user}
-                        </h4>
-                        <p style={{ margin: 0, fontSize: '14px', lineHeight: '1.5' }}>
-                          {comment.text}
-                        </p>
-                      </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          gap: '16px',
-                          marginTop: '6px',
-                          paddingLeft: '16px',
-                        }}
-                      >
-                        <Button variant="error" glass>
-                          Like
-                        </Button>
-                        <Button variant="outline-info" glass>
-                          Reply
-                        </Button>
-                        <span style={{ fontSize: '13px', opacity: 0.6 }}>{comment.time}</span>
+                          <h4
+                            style={{
+                              margin: '0 0 4px 0',
+                              fontSize: '14px',
+                              fontWeight: 700,
+                            }}
+                          >
+                            {comment.user}
+                          </h4>
+                          <p style={{ margin: 0, fontSize: '14px', lineHeight: '1.5' }}>
+                            {comment.text}
+                          </p>
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            gap: '16px',
+                            marginTop: '6px',
+                            paddingLeft: '16px',
+                          }}
+                        >
+                          <Button variant="error" glass>
+                            Like
+                          </Button>
+                          <Button variant="outline-info" glass>
+                            Reply
+                          </Button>
+                          <span style={{ fontSize: '13px', opacity: 0.6 }}>{comment.time}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
-              {/* Comment Input */}
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                <div
-                  style={{
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '18px',
-                    flexShrink: 0,
-                  }}
-                >
-                  <Icon name="UserCircle" />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <input
-                    type="text"
-                    value={commentText}
-                    onChange={e => setCommentText(e.target.value)}
-                    placeholder="Write a comment..."
+                {/* Comment Input */}
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                  <div
                     style={{
-                      width: '100%',
-                      padding: '12px 16px',
-                      borderRadius: '20px',
-                      border:
-                        '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
-                      background: 'rgba(255,255,255,0.1)',
-                      color: 'inherit',
-                      fontSize: '14px',
-                      outline: 'none',
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '18px',
+                      flexShrink: 0,
                     }}
-                  />
-                  {commentText && (
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
-                      <Button onClick={() => setCommentText('')} variant="success">
-                        <Icon name="PaperPlaneTilt" />
-                      </Button>
-                    </div>
-                  )}
+                  >
+                    <Icon name="UserCircle" />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <input
+                      type="text"
+                      value={commentText}
+                      onChange={e => setCommentText(e.target.value)}
+                      placeholder="Write a comment..."
+                      style={{
+                        width: '100%',
+                        padding: '12px 16px',
+                        borderRadius: '20px',
+                        border:
+                          '1px solid color-mix(in srgb, var(--atomix-brand-bg-subtle) 10%, transparent)',
+                        background: 'rgba(255,255,255,0.1)',
+                        color: 'inherit',
+                        fontSize: '14px',
+                        outline: 'none',
+                      }}
+                    />
+                    {commentText && (
+                      <div
+                        style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}
+                      >
+                        <Button onClick={() => setCommentText('')} variant="success">
+                          <Icon name="PaperPlaneTilt" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
           </AtomixGlass>
         </div>
       </BackgroundWrapper>
@@ -3679,180 +3686,184 @@ export const WeatherWidget: Story = {
             mode="standard"
             elasticity={0}
           >
-          <div style={{ padding: '20px', minWidth: '380px', maxWidth: '500px' }}>
-            {/* Header */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '20px',
-                paddingBottom: '20px',
-                borderBottom: '1px solid rgba(255,255,255,0.1)',
-              }}
-            >
-              <div>
-                <h2
+            <div style={{ padding: '20px', minWidth: '380px', maxWidth: '500px' }}>
+              {/* Header */}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '20px',
+                  paddingBottom: '20px',
+                  borderBottom: '1px solid rgba(255,255,255,0.1)',
+                }}
+              >
+                <div>
+                  <h2
+                    style={{
+                      margin: 0,
+                      fontSize: '28px',
+                      fontWeight: 700,
+                      marginBottom: '6px',
+                      background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
+                  >
+                    Weather
+                  </h2>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: '14px',
+                      opacity: 0.8,
+                      color: 'rgba(255, 255, 255, 0.85)',
+                    }}
+                  >
+                    📍 {currentWeather.location}
+                  </p>
+                </div>
+                <Button
+                  onClick={() => setUnit(unit === 'C' ? 'F' : 'C')}
+                  glass
                   style={{
-                    margin: 0,
-                    fontSize: '28px',
+                    minWidth: '60px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                  }}
+                >
+                  °{unit}
+                </Button>
+              </div>
+
+              {/* Current Weather */}
+              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                <div
+                  style={{
+                    fontSize: '64px',
+                    marginBottom: '16px',
+                    filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.2))',
+                  }}
+                >
+                  <Icon name="Cloud" />
+                </div>
+                <div
+                  style={{
+                    fontSize: '56px',
                     fontWeight: 700,
-                    marginBottom: '6px',
+                    marginBottom: '12px',
                     background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
                   }}
                 >
-                  Weather
-                </h2>
-                <p
+                  {currentWeather.temp}°{unit}
+                </div>
+                <div
+                  style={{ fontSize: '20px', opacity: 0.9, marginBottom: '8px', fontWeight: 600 }}
+                >
+                  {currentWeather.condition}
+                </div>
+                <div style={{ fontSize: '15px', opacity: 0.7, color: 'rgba(255, 255, 255, 0.85)' }}>
+                  Feels like {currentWeather.feelsLike}°
+                </div>
+              </div>
+
+              {/* Weather Details */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '16px',
+                  marginBottom: '24px',
+                  padding: '10px',
+                  borderRadius: '20px',
+                  background: 'rgba(0,0,0,0.2)',
+                  border: '1px solid rgba(255,255,255,0.4)',
+                }}
+              >
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '20px', marginBottom: '4px' }}>
+                    <Icon name="Drop" />
+                  </div>
+                  <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
+                    {currentWeather.humidity}%
+                  </div>
+                  <div style={{ fontSize: '12px', opacity: 0.6 }}>Humidity</div>
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '20px', marginBottom: '4px' }}>
+                    <Icon name="Wind" />
+                  </div>
+                  <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
+                    {currentWeather.windSpeed} km/h
+                  </div>
+                  <div style={{ fontSize: '12px', opacity: 0.6 }}>Wind</div>
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '20px', marginBottom: '4px' }}>
+                    <Icon name="CloudRain" />
+                  </div>
+                  <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
+                    {currentWeather.precipitation}%
+                  </div>
+                  <div style={{ fontSize: '12px', opacity: 0.6 }}>Rain</div>
+                </div>
+              </div>
+
+              {/* 5-Day Forecast */}
+              <div>
+                <h3
                   style={{
-                    margin: 0,
-                    fontSize: '14px',
-                    opacity: 0.8,
-                    color: 'rgba(255, 255, 255, 0.85)',
+                    fontSize: '18px',
+                    fontWeight: 700,
+                    marginBottom: '20px',
+                    opacity: 0.9,
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
                   }}
                 >
-                  📍 {currentWeather.location}
-                </p>
-              </div>
-              <Button
-                onClick={() => setUnit(unit === 'C' ? 'F' : 'C')}
-                glass
-                style={{
-                  minWidth: '60px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
-                }}
-              >
-                °{unit}
-              </Button>
-            </div>
-
-            {/* Current Weather */}
-            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-              <div
-                style={{
-                  fontSize: '64px',
-                  marginBottom: '16px',
-                  filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.2))',
-                }}
-              >
-                <Icon name="Cloud" />
-              </div>
-              <div
-                style={{
-                  fontSize: '56px',
-                  fontWeight: 700,
-                  marginBottom: '12px',
-                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                {currentWeather.temp}°{unit}
-              </div>
-              <div style={{ fontSize: '20px', opacity: 0.9, marginBottom: '8px', fontWeight: 600 }}>
-                {currentWeather.condition}
-              </div>
-              <div style={{ fontSize: '15px', opacity: 0.7, color: 'rgba(255, 255, 255, 0.85)' }}>
-                Feels like {currentWeather.feelsLike}°
-              </div>
-            </div>
-
-            {/* Weather Details */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
-                gap: '16px',
-                marginBottom: '24px',
-                padding: '10px',
-                borderRadius: '20px',
-                background: 'rgba(0,0,0,0.2)',
-                border: '1px solid rgba(255,255,255,0.4)',
-              }}
-            >
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '20px', marginBottom: '4px' }}>
-                  <Icon name="Drop" />
-                </div>
-                <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
-                  {currentWeather.humidity}%
-                </div>
-                <div style={{ fontSize: '12px', opacity: 0.6 }}>Humidity</div>
-              </div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '20px', marginBottom: '4px' }}>
-                  <Icon name="Wind" />
-                </div>
-                <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
-                  {currentWeather.windSpeed} km/h
-                </div>
-                <div style={{ fontSize: '12px', opacity: 0.6 }}>Wind</div>
-              </div>
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '20px', marginBottom: '4px' }}>
-                  <Icon name="CloudRain" />
-                </div>
-                <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>
-                  {currentWeather.precipitation}%
-                </div>
-                <div style={{ fontSize: '12px', opacity: 0.6 }}>Rain</div>
-              </div>
-            </div>
-
-            {/* 5-Day Forecast */}
-            <div>
-              <h3
-                style={{
-                  fontSize: '18px',
-                  fontWeight: 700,
-                  marginBottom: '20px',
-                  opacity: 0.9,
-                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                5-Day Forecast
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {forecast.map((day, index) => (
-                  <div
-                    key={day.day}
-                    onClick={() => setSelectedDay(index)}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '8px 16px',
-                      borderRadius: '16px',
-                      background:
-                        selectedDay === index ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.05)',
-                      border: `1px solid ${selectedDay === index ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.1)'}`,
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease',
-                    }}
-                  >
-                    <div style={{ fontSize: '12px', fontWeight: 600, width: '50px' }}>
-                      {day.day}
+                  5-Day Forecast
+                </h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {forecast.map((day, index) => (
+                    <div
+                      key={day.day}
+                      onClick={() => setSelectedDay(index)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '8px 16px',
+                        borderRadius: '16px',
+                        background:
+                          selectedDay === index
+                            ? 'rgba(255,255,255,0.5)'
+                            : 'rgba(255,255,255,0.05)',
+                        border: `1px solid ${selectedDay === index ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.1)'}`,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      <div style={{ fontSize: '12px', fontWeight: 600, width: '50px' }}>
+                        {day.day}
+                      </div>
+                      <div style={{ fontSize: '20px' }}>{day.icon}</div>
+                      <div style={{ fontSize: '13px', opacity: 0.7, flex: 1, textAlign: 'center' }}>
+                        {day.condition}
+                      </div>
+                      <div style={{ display: 'flex', gap: '12px', fontSize: '14px' }}>
+                        <span style={{ fontWeight: 600 }}>{day.high}°</span>
+                        <span style={{ opacity: 0.5 }}>{day.low}°</span>
+                      </div>
                     </div>
-                    <div style={{ fontSize: '20px' }}>{day.icon}</div>
-                    <div style={{ fontSize: '13px', opacity: 0.7, flex: 1, textAlign: 'center' }}>
-                      {day.condition}
-                    </div>
-                    <div style={{ display: 'flex', gap: '12px', fontSize: '14px' }}>
-                      <span style={{ fontWeight: 600 }}>{day.high}°</span>
-                      <span style={{ opacity: 0.5 }}>{day.low}°</span>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
           </AtomixGlass>
         </div>
       </BackgroundWrapper>
@@ -3954,176 +3965,176 @@ export const SearchResults: Story = {
             onClick={() => {}}
             elasticity={0}
           >
-          <div
-            className=""
-            style={{
-              padding: '24px',
-              minWidth: '800px',
-              maxWidth: '900px',
-              borderRadius: '30px',
-              position: 'relative',
-            }}
-          >
-            {/* Search Header */}
             <div
-              style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}
-            >
-              <div
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '14px',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                  boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
-                }}
-              >
-                🔍
-              </div>
-              <h2
-                style={{
-                  margin: 0,
-                  fontSize: '28px',
-                  fontWeight: 700,
-                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                Search
-              </h2>
-            </div>
-
-            {/* Search Input */}
-            <div style={{ position: 'relative', marginBottom: '20px' }}>
-              <Input
-                type="text"
-                variant="info"
-                glass={
-                  {
-                    displacementScale: 0,
-                    elasticity: 0,
-                  } as any
-                }
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search for anything..."
-              />
-              <div
-                style={{
-                  position: 'absolute',
-                  right: '16px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  fontSize: '20px',
-                }}
-              >
-                <Icon name="MagnifyingGlass" />
-              </div>
-            </div>
-
-            {/* Filters */}
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
-              {filters.map(filter => (
-                <Button
-                  key={filter}
-                  variant={selectedFilter === filter ? 'warning' : 'light'}
-                  glass={{
-                    displacementScale: 0,
-                    blurAmount: 0,
-                  }}
-                  onClick={() => setSelectedFilter(filter)}
-                >
-                  {filter}
-                </Button>
-              ))}
-            </div>
-
-            {/* Results Count */}
-            <div style={{ marginBottom: '10px', fontSize: '14px', opacity: 0.7 }}>
-              Found {filteredResults.length} results for "{searchQuery}"
-            </div>
-
-            {/* Results List */}
-            <div
+              className=""
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '10px',
-                maxHeight: '400px',
-                overflowY: 'auto',
+                padding: '24px',
+                minWidth: '800px',
+                maxWidth: '900px',
+                borderRadius: '30px',
+                position: 'relative',
               }}
             >
-              {filteredResults.map((result, index) => (
-                <Callout
-                  key={index}
-                  variant="success"
-                  title={result.title}
-                  icon={result.icon}
+              {/* Search Header */}
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}
+              >
+                <div
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '14px',
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '24px',
+                    boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
+                  }}
+                >
+                  🔍
+                </div>
+                <h2
+                  style={{
+                    margin: 0,
+                    fontSize: '28px',
+                    fontWeight: 700,
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Search
+                </h2>
+              </div>
+
+              {/* Search Input */}
+              <div style={{ position: 'relative', marginBottom: '20px' }}>
+                <Input
+                  type="text"
+                  variant="info"
                   glass={
                     {
                       displacementScale: 0,
-                      blurAmount: 0,
+                      elasticity: 0,
                     } as any
                   }
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  placeholder="Search for anything..."
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    right: '16px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontSize: '20px',
+                  }}
                 >
-                  <div style={{ display: 'flex', gap: '16px' }}>
-                    <div style={{ flex: 1 }}>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                        }}
-                      >
-                        {result.duration && (
-                          <span
-                            style={{
-                              padding: '2px 4px',
-                              borderRadius: '6px',
-                              background: 'rgba(255,255,255,0.15)',
-                              fontSize: '11px',
-                              fontWeight: 600,
-                            }}
-                          >
-                            {result.duration}
-                          </span>
-                        )}
-                      </div>
-                      <p
-                        style={{
-                          margin: '0 0 12px 0',
-                          fontSize: '14px',
-                          opacity: 0.8,
-                        }}
-                      >
-                        {result.description}
-                      </p>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '12px',
-                          fontSize: '13px',
-                          opacity: 0.6,
-                        }}
-                      >
-                        <span>{result.url}</span>
-                        <span>•</span>
-                        <span>{result.author}</span>
-                        <span>•</span>
-                        <span>{result.date}</span>
+                  <Icon name="MagnifyingGlass" />
+                </div>
+              </div>
+
+              {/* Filters */}
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+                {filters.map(filter => (
+                  <Button
+                    key={filter}
+                    variant={selectedFilter === filter ? 'warning' : 'light'}
+                    glass={{
+                      displacementScale: 0,
+                      blurAmount: 0,
+                    }}
+                    onClick={() => setSelectedFilter(filter)}
+                  >
+                    {filter}
+                  </Button>
+                ))}
+              </div>
+
+              {/* Results Count */}
+              <div style={{ marginBottom: '10px', fontSize: '14px', opacity: 0.7 }}>
+                Found {filteredResults.length} results for "{searchQuery}"
+              </div>
+
+              {/* Results List */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '10px',
+                  maxHeight: '400px',
+                  overflowY: 'auto',
+                }}
+              >
+                {filteredResults.map((result, index) => (
+                  <Callout
+                    key={index}
+                    variant="success"
+                    title={result.title}
+                    icon={result.icon}
+                    glass={
+                      {
+                        displacementScale: 0,
+                        blurAmount: 0,
+                      } as any
+                    }
+                  >
+                    <div style={{ display: 'flex', gap: '16px' }}>
+                      <div style={{ flex: 1 }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                          }}
+                        >
+                          {result.duration && (
+                            <span
+                              style={{
+                                padding: '2px 4px',
+                                borderRadius: '6px',
+                                background: 'rgba(255,255,255,0.15)',
+                                fontSize: '11px',
+                                fontWeight: 600,
+                              }}
+                            >
+                              {result.duration}
+                            </span>
+                          )}
+                        </div>
+                        <p
+                          style={{
+                            margin: '0 0 12px 0',
+                            fontSize: '14px',
+                            opacity: 0.8,
+                          }}
+                        >
+                          {result.description}
+                        </p>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            fontSize: '13px',
+                            opacity: 0.6,
+                          }}
+                        >
+                          <span>{result.url}</span>
+                          <span>•</span>
+                          <span>{result.author}</span>
+                          <span>•</span>
+                          <span>{result.date}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Callout>
-              ))}
+                  </Callout>
+                ))}
+              </div>
             </div>
-          </div>
           </AtomixGlass>
         </div>
       </BackgroundWrapper>
@@ -4581,21 +4592,148 @@ export const NewsletterSubscription: Story = {
             mode="standard"
             elasticity={0}
           >
-          <div
-            style={{
-              padding: '30px',
-              minWidth: '450px',
-              maxWidth: '500px',
-              width: '100%',
-              height: '100%',
-            }}
-          >
-            {!subscribed ? (
-              <>
-                {/* Header */}
-                <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                  <div style={{ fontSize: '50px', marginBottom: '10px' }}>
-                    <Icon name="Chats" />
+            <div
+              style={{
+                padding: '30px',
+                minWidth: '450px',
+                maxWidth: '500px',
+                width: '100%',
+                height: '100%',
+              }}
+            >
+              {!subscribed ? (
+                <>
+                  {/* Header */}
+                  <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                    <div style={{ fontSize: '50px', marginBottom: '10px' }}>
+                      <Icon name="Chats" />
+                    </div>
+                    <h2
+                      style={{
+                        margin: '0 0 16px 0',
+                        fontSize: '36px',
+                        fontWeight: 700,
+                        background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                      }}
+                    >
+                      Join Our Newsletter
+                    </h2>
+                    <p
+                      style={{
+                        margin: 0,
+                        fontSize: '17px',
+                        opacity: 0.9,
+                        lineHeight: 1.7,
+                        color: 'rgba(255, 255, 255, 0.9)',
+                      }}
+                    >
+                      Subscribe to get exclusive content, tips, and updates delivered to your inbox
+                    </p>
+                  </div>
+
+                  {/* Email Input */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <div style={{ position: 'relative' }} className="u-flex u-gap-2 u-items-center">
+                      <div className="u-w-100">
+                        <Input
+                          variant="brand"
+                          glass={
+                            {
+                              elasticity: 0,
+                            } as any
+                          }
+                          type="email"
+                          value={email}
+                          onChange={e => setEmail(e.target.value)}
+                          placeholder="Enter your email address"
+                        />
+                      </div>
+
+                      <Button
+                        onClick={handleSubscribe}
+                        disabled={!email || isLoading}
+                        variant="primary"
+                        glass={
+                          {
+                            elasticity: 0,
+                          } as any
+                        }
+                        className="u-w-100"
+                      >
+                        {isLoading ? 'Subscribing...' : 'Subscribe'}
+                      </Button>
+                    </div>
+                    <p style={{ margin: '10px 0 0 0', fontSize: '13px', opacity: 0.6 }}>
+                      No spam. Unsubscribe anytime.
+                    </p>
+                  </div>
+
+                  {/* Benefits Grid */}
+                  <div
+                    style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}
+                  >
+                    {benefits.map((benefit, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          padding: '10px',
+                          borderRadius: '16px',
+                          background: 'rgba(255,255,255,0.08)',
+                          border: '1px solid rgba(255,255,255,0.1)',
+                        }}
+                      >
+                        <div style={{ fontSize: '32px', marginBottom: '12px' }}>{benefit.icon}</div>
+                        <h4 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 600 }}>
+                          {benefit.title}
+                        </h4>
+                        <p style={{ margin: 0, fontSize: '13px', opacity: 0.7, lineHeight: 1.5 }}>
+                          {benefit.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Stats */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-around',
+                      marginTop: '20px',
+                      padding: '20px',
+                      borderRadius: '16px',
+                      background: 'rgba(255,255,255,0.05)',
+                    }}
+                  >
+                    <div style={{ textAlign: 'center' }}>
+                      <div style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>
+                        50K+
+                      </div>
+                      <div style={{ fontSize: '13px', opacity: 0.6 }}>Subscribers</div>
+                    </div>
+                    <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)' }} />
+                    <div style={{ textAlign: 'center' }}>
+                      <div style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>
+                        4.9★
+                      </div>
+                      <div style={{ fontSize: '13px', opacity: 0.6 }}>Rating</div>
+                    </div>
+                    <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)' }} />
+                    <div style={{ textAlign: 'center' }}>
+                      <div style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>
+                        Weekly
+                      </div>
+                      <div style={{ fontSize: '13px', opacity: 0.6 }}>Delivery</div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                /* Success State */
+                <div style={{ textAlign: 'center', padding: '30px 20px' }}>
+                  <div style={{ fontSize: '80px', marginBottom: '24px' }}>
+                    <Icon name="Confetti" />
                   </div>
                   <h2
                     style={{
@@ -4608,173 +4746,46 @@ export const NewsletterSubscription: Story = {
                       backgroundClip: 'text',
                     }}
                   >
-                    Join Our Newsletter
+                    Welcome Aboard!
                   </h2>
                   <p
                     style={{
-                      margin: 0,
+                      margin: '0 0 32px 0',
                       fontSize: '17px',
                       opacity: 0.9,
                       lineHeight: 1.7,
                       color: 'rgba(255, 255, 255, 0.9)',
                     }}
                   >
-                    Subscribe to get exclusive content, tips, and updates delivered to your inbox
+                    Thank you for subscribing! Check your inbox for a confirmation email.
                   </p>
-                </div>
-
-                {/* Email Input */}
-                <div style={{ marginBottom: '20px' }}>
-                  <div style={{ position: 'relative' }} className="u-flex u-gap-2 u-items-center">
-                    <div className="u-w-100">
-                      <Input
-                        variant="brand"
-                        glass={
-                          {
-                            elasticity: 0,
-                          } as any
-                        }
-                        type="email"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                        placeholder="Enter your email address"
-                      />
+                  <div
+                    style={{
+                      padding: '10px',
+                      borderRadius: '16px',
+                      background: 'rgba(100,200,100,0.15)',
+                      border: '1px solid rgba(100,200,100,0.3)',
+                      marginBottom: '20px',
+                    }}
+                  >
+                    <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
+                      ✓ Subscription Confirmed
                     </div>
-
-                    <Button
-                      onClick={handleSubscribe}
-                      disabled={!email || isLoading}
-                      variant="primary"
-                      glass={
-                        {
-                          elasticity: 0,
-                        } as any
-                      }
-                      className="u-w-100"
-                    >
-                      {isLoading ? 'Subscribing...' : 'Subscribe'}
-                    </Button>
+                    <div style={{ fontSize: '14px', opacity: 0.8 }}>{email}</div>
                   </div>
-                  <p style={{ margin: '10px 0 0 0', fontSize: '13px', opacity: 0.6 }}>
-                    No spam. Unsubscribe anytime.
-                  </p>
+                  <Button
+                    onClick={() => {
+                      setSubscribed(false);
+                      setEmail('');
+                    }}
+                    glass
+                    variant="primary"
+                  >
+                    Subscribe Another Email
+                  </Button>
                 </div>
-
-                {/* Benefits Grid */}
-                <div
-                  style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}
-                >
-                  {benefits.map((benefit, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        padding: '10px',
-                        borderRadius: '16px',
-                        background: 'rgba(255,255,255,0.08)',
-                        border: '1px solid rgba(255,255,255,0.1)',
-                      }}
-                    >
-                      <div style={{ fontSize: '32px', marginBottom: '12px' }}>{benefit.icon}</div>
-                      <h4 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 600 }}>
-                        {benefit.title}
-                      </h4>
-                      <p style={{ margin: 0, fontSize: '13px', opacity: 0.7, lineHeight: 1.5 }}>
-                        {benefit.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Stats */}
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-around',
-                    marginTop: '20px',
-                    padding: '20px',
-                    borderRadius: '16px',
-                    background: 'rgba(255,255,255,0.05)',
-                  }}
-                >
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>
-                      50K+
-                    </div>
-                    <div style={{ fontSize: '13px', opacity: 0.6 }}>Subscribers</div>
-                  </div>
-                  <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)' }} />
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>
-                      4.9★
-                    </div>
-                    <div style={{ fontSize: '13px', opacity: 0.6 }}>Rating</div>
-                  </div>
-                  <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)' }} />
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: '24px', fontWeight: 700, marginBottom: '4px' }}>
-                      Weekly
-                    </div>
-                    <div style={{ fontSize: '13px', opacity: 0.6 }}>Delivery</div>
-                  </div>
-                </div>
-              </>
-            ) : (
-              /* Success State */
-              <div style={{ textAlign: 'center', padding: '30px 20px' }}>
-                <div style={{ fontSize: '80px', marginBottom: '24px' }}>
-                  <Icon name="Confetti" />
-                </div>
-                <h2
-                  style={{
-                    margin: '0 0 16px 0',
-                    fontSize: '36px',
-                    fontWeight: 700,
-                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                >
-                  Welcome Aboard!
-                </h2>
-                <p
-                  style={{
-                    margin: '0 0 32px 0',
-                    fontSize: '17px',
-                    opacity: 0.9,
-                    lineHeight: 1.7,
-                    color: 'rgba(255, 255, 255, 0.9)',
-                  }}
-                >
-                  Thank you for subscribing! Check your inbox for a confirmation email.
-                </p>
-                <div
-                  style={{
-                    padding: '10px',
-                    borderRadius: '16px',
-                    background: 'rgba(100,200,100,0.15)',
-                    border: '1px solid rgba(100,200,100,0.3)',
-                    marginBottom: '20px',
-                  }}
-                >
-                  <div style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
-                    ✓ Subscription Confirmed
-                  </div>
-                  <div style={{ fontSize: '14px', opacity: 0.8 }}>{email}</div>
-                </div>
-                <Button
-                  onClick={() => {
-                    setSubscribed(false);
-                    setEmail('');
-                  }}
-                  glass
-                  variant="primary"
-                >
-                  Subscribe Another Email
-                </Button>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
           </AtomixGlass>
         </div>
       </BackgroundWrapper>
@@ -4849,248 +4860,254 @@ export const ProgressTracker: Story = {
             cornerRadius={30}
             mode="standard"
           >
-          <div className="u-p-5" style={{ minWidth: '550px', maxWidth: '700px' }}>
-            <div
-              style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}
-            >
+            <div className="u-p-5" style={{ minWidth: '550px', maxWidth: '700px' }}>
               <div
-                style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '14px',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                  boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
-                }}
-              >
-                🚀
-              </div>
-              <h2
-                className="u-m-0 u-text-2 u-font-bold"
-                style={{
-                  fontSize: '28px',
-                  background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
-              >
-                Getting Started
-              </h2>
-            </div>
-            <p
-              className="u-m-0 u-text-6 u-opacity-70"
-              style={{ marginBottom: '48px', fontSize: '16px', color: 'rgba(255, 255, 255, 0.85)' }}
-            >
-              Complete the following steps to set up your account
-            </p>
-
-            {/* Progress Bar */}
-            <div style={{ marginBottom: '48px' }}>
-              <div
-                style={{
-                  position: 'relative',
-                  height: '4px',
-                  background: 'rgba(255,255,255,0.1)',
-                  borderRadius: '2px',
-                  overflow: 'hidden',
-                }}
+                style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}
               >
                 <div
                   style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    height: '100%',
-                    width: `${((currentStep - 1) / (steps.length - 1)) * 100}%`,
-                    background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
-                    transition: 'width 0.5s ease',
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '14px',
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '24px',
+                    boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
                   }}
-                />
+                >
+                  🚀
+                </div>
+                <h2
+                  className="u-m-0 u-text-2 u-font-bold"
+                  style={{
+                    fontSize: '28px',
+                    background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Getting Started
+                </h2>
               </div>
+              <p
+                className="u-m-0 u-text-6 u-opacity-70"
+                style={{
+                  marginBottom: '48px',
+                  fontSize: '16px',
+                  color: 'rgba(255, 255, 255, 0.85)',
+                }}
+              >
+                Complete the following steps to set up your account
+              </p>
+
+              {/* Progress Bar */}
+              <div style={{ marginBottom: '48px' }}>
+                <div
+                  style={{
+                    position: 'relative',
+                    height: '4px',
+                    background: 'rgba(255,255,255,0.1)',
+                    borderRadius: '2px',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      height: '100%',
+                      width: `${((currentStep - 1) / (steps.length - 1)) * 100}%`,
+                      background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+                      transition: 'width 0.5s ease',
+                    }}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginTop: '8px',
+                    fontSize: '13px',
+                    opacity: 0.6,
+                  }}
+                >
+                  <span>
+                    Step {currentStep} of {steps.length}
+                  </span>
+                  <span>
+                    {Math.round(((currentStep - 1) / (steps.length - 1)) * 100)}% Complete
+                  </span>
+                </div>
+              </div>
+
+              {/* Steps List */}
               <div
                 style={{
                   display: 'flex',
-                  justifyContent: 'space-between',
-                  marginTop: '8px',
-                  fontSize: '13px',
-                  opacity: 0.6,
+                  flexDirection: 'column',
+                  gap: '20px',
+                  marginBottom: '40px',
                 }}
               >
-                <span>
-                  Step {currentStep} of {steps.length}
-                </span>
-                <span>{Math.round(((currentStep - 1) / (steps.length - 1)) * 100)}% Complete</span>
-              </div>
-            </div>
+                {steps.map(step => {
+                  const status = getStepStatus(step.id);
+                  const isCompleted = status === 'completed';
+                  const isCurrent = status === 'current';
+                  const isUpcoming = status === 'upcoming';
 
-            {/* Steps List */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '20px',
-                marginBottom: '40px',
-              }}
-            >
-              {steps.map(step => {
-                const status = getStepStatus(step.id);
-                const isCompleted = status === 'completed';
-                const isCurrent = status === 'current';
-                const isUpcoming = status === 'upcoming';
-
-                return (
-                  <div
-                    key={step.id}
-                    onClick={() => step.id <= currentStep && setCurrentStep(step.id)}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '20px',
-                      padding: '24px',
-                      borderRadius: '20px',
-                      background: isCurrent
-                        ? 'rgba(102,126,234,0.15)'
-                        : isCompleted
-                          ? 'rgba(100,200,100,0.1)'
-                          : 'rgba(255,255,255,0.05)',
-                      border: `2px solid ${
-                        isCurrent
-                          ? 'rgba(102,126,234,0.5)'
-                          : isCompleted
-                            ? 'rgba(100,200,100,0.3)'
-                            : 'rgba(255,255,255,0.1)'
-                      }`,
-                      cursor: step.id <= currentStep ? 'pointer' : 'default',
-                      opacity: isUpcoming ? 0.6 : 1,
-                      transition: 'all 0.3s ease',
-                    }}
-                  >
-                    {/* Step Number/Icon */}
+                  return (
                     <div
+                      key={step.id}
+                      onClick={() => step.id <= currentStep && setCurrentStep(step.id)}
                       style={{
-                        width: '60px',
-                        height: '60px',
-                        borderRadius: '16px',
-                        background: isCurrent
-                          ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                          : isCompleted
-                            ? 'linear-gradient(135deg, #50c878 0%, #3cb371 100%)'
-                            : 'rgba(255,255,255,0.1)',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '28px',
-                        flexShrink: 0,
+                        gap: '20px',
+                        padding: '24px',
+                        borderRadius: '20px',
+                        background: isCurrent
+                          ? 'rgba(102,126,234,0.15)'
+                          : isCompleted
+                            ? 'rgba(100,200,100,0.1)'
+                            : 'rgba(255,255,255,0.05)',
+                        border: `2px solid ${
+                          isCurrent
+                            ? 'rgba(102,126,234,0.5)'
+                            : isCompleted
+                              ? 'rgba(100,200,100,0.3)'
+                              : 'rgba(255,255,255,0.1)'
+                        }`,
+                        cursor: step.id <= currentStep ? 'pointer' : 'default',
+                        opacity: isUpcoming ? 0.6 : 1,
+                        transition: 'all 0.3s ease',
                       }}
                     >
-                      {isCompleted ? <Icon name="Check" /> : step.icon}
-                    </div>
-
-                    {/* Step Content */}
-                    <div style={{ flex: 1 }}>
+                      {/* Step Number/Icon */}
                       <div
                         style={{
+                          width: '60px',
+                          height: '60px',
+                          borderRadius: '16px',
+                          background: isCurrent
+                            ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                            : isCompleted
+                              ? 'linear-gradient(135deg, #50c878 0%, #3cb371 100%)'
+                              : 'rgba(255,255,255,0.1)',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '12px',
-                          marginBottom: '6px',
+                          justifyContent: 'center',
+                          fontSize: '28px',
+                          flexShrink: 0,
                         }}
                       >
-                        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>
-                          {step.title}
-                        </h3>
-                        {isCompleted && (
-                          <span
-                            style={{
-                              padding: '4px 10px',
-                              borderRadius: '8px',
-                              background: 'rgba(100,200,100,0.2)',
-                              fontSize: '11px',
-                              fontWeight: 700,
-                              color: '#50c878',
-                            }}
-                          >
-                            COMPLETED
-                          </span>
-                        )}
-                        {isCurrent && (
-                          <span
-                            style={{
-                              padding: '4px 10px',
-                              borderRadius: '8px',
-                              background: 'rgba(102,126,234,0.2)',
-                              fontSize: '11px',
-                              fontWeight: 700,
-                              color: '#667eea',
-                            }}
-                          >
-                            IN PROGRESS
-                          </span>
-                        )}
+                        {isCompleted ? <Icon name="Check" /> : step.icon}
                       </div>
-                      <p style={{ margin: 0, fontSize: '14px', opacity: 0.7 }}>
-                        {step.description}
-                      </p>
+
+                      {/* Step Content */}
+                      <div style={{ flex: 1 }}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            marginBottom: '6px',
+                          }}
+                        >
+                          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>
+                            {step.title}
+                          </h3>
+                          {isCompleted && (
+                            <span
+                              style={{
+                                padding: '4px 10px',
+                                borderRadius: '8px',
+                                background: 'rgba(100,200,100,0.2)',
+                                fontSize: '11px',
+                                fontWeight: 700,
+                                color: '#50c878',
+                              }}
+                            >
+                              COMPLETED
+                            </span>
+                          )}
+                          {isCurrent && (
+                            <span
+                              style={{
+                                padding: '4px 10px',
+                                borderRadius: '8px',
+                                background: 'rgba(102,126,234,0.2)',
+                                fontSize: '11px',
+                                fontWeight: 700,
+                                color: '#667eea',
+                              }}
+                            >
+                              IN PROGRESS
+                            </span>
+                          )}
+                        </div>
+                        <p style={{ margin: 0, fontSize: '14px', opacity: 0.7 }}>
+                          {step.description}
+                        </p>
+                      </div>
+
+                      {/* Arrow */}
+                      {step.id <= currentStep && (
+                        <div style={{ fontSize: '20px', opacity: 0.5 }}>
+                          <Icon name="ArrowRight" />
+                        </div>
+                      )}
                     </div>
+                  );
+                })}
+              </div>
 
-                    {/* Arrow */}
-                    {step.id <= currentStep && (
-                      <div style={{ fontSize: '20px', opacity: 0.5 }}>
-                        <Icon name="ArrowRight" />
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+              {/* Navigation Buttons */}
+              <div className="u-flex u-justify-between u-gap-3">
+                <button
+                  onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
+                  disabled={currentStep === 1}
+                  style={{
+                    padding: '16px 32px',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    background: 'rgba(255,255,255,0.1)',
+                    color: 'inherit',
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    cursor: currentStep === 1 ? 'not-allowed' : 'pointer',
+                    opacity: currentStep === 1 ? 0.5 : 1,
+                  }}
+                >
+                  <Icon name="ArrowLeft" /> Previous
+                </button>
+                <button
+                  onClick={() => setCurrentStep(Math.min(steps.length, currentStep + 1))}
+                  disabled={currentStep === steps.length}
+                  style={{
+                    padding: '16px 32px',
+                    borderRadius: '12px',
+                    border: 'none',
+                    background:
+                      currentStep === steps.length
+                        ? 'rgba(255,255,255,0.2)'
+                        : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    color: 'white',
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    cursor: currentStep === steps.length ? 'not-allowed' : 'pointer',
+                    opacity: currentStep === steps.length ? 0.5 : 1,
+                  }}
+                >
+                  {currentStep === steps.length
+                    ? 'Completed <Icon name="Check" />'
+                    : 'Next <Icon name="ArrowRight" />'}
+                </button>
+              </div>
             </div>
-
-            {/* Navigation Buttons */}
-            <div className="u-flex u-justify-between u-gap-3">
-              <button
-                onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
-                disabled={currentStep === 1}
-                style={{
-                  padding: '16px 32px',
-                  borderRadius: '12px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'rgba(255,255,255,0.1)',
-                  color: 'inherit',
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  cursor: currentStep === 1 ? 'not-allowed' : 'pointer',
-                  opacity: currentStep === 1 ? 0.5 : 1,
-                }}
-              >
-                <Icon name="ArrowLeft" /> Previous
-              </button>
-              <button
-                onClick={() => setCurrentStep(Math.min(steps.length, currentStep + 1))}
-                disabled={currentStep === steps.length}
-                style={{
-                  padding: '16px 32px',
-                  borderRadius: '12px',
-                  border: 'none',
-                  background:
-                    currentStep === steps.length
-                      ? 'rgba(255,255,255,0.2)'
-                      : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  color: 'white',
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  cursor: currentStep === steps.length ? 'not-allowed' : 'pointer',
-                  opacity: currentStep === steps.length ? 0.5 : 1,
-                }}
-              >
-                {currentStep === steps.length
-                  ? 'Completed <Icon name="Check" />'
-                  : 'Next <Icon name="ArrowRight" />'}
-              </button>
-            </div>
-          </div>
           </AtomixGlass>
         </div>
       </BackgroundWrapper>
