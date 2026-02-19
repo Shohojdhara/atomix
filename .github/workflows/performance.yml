@@ -105,7 +105,7 @@ jobs:
           uploadArtifacts: false
           temporaryPublicStorage: true
           configPath: ./.lighthouserc.json
-          artifactName: lighthouse-results
+          artifactName: lighthouse-results-ci
 
       - name: Performance Budget Report
         if: always()
