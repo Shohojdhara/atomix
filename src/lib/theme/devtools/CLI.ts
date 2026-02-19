@@ -11,16 +11,8 @@ import { Command } from 'commander';
 import chalk from 'chalk';
 import * as fs from 'fs';
 import * as path from 'path';
-// import { ThemeValidator } from './ThemeValidator.js';
+import { ThemeValidator } from './ThemeValidator.js';
 import boxen from 'boxen';
-
-// Stub validator for now to avoid ESM resolution issues in CLI
-// TODO: Fix ESM module resolution for ThemeValidator in CLI context
-class ThemeValidator {
-    validate() {
-        return { valid: true, errors: [], warnings: [], a11yIssues: [] };
-    }
-}
 
 const program = new Command();
 
