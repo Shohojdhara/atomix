@@ -1,9 +1,9 @@
 import { forwardRef, memo, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import {
   useChart,
-  useChartAccessibility,
-  useChartData,
-  useChartPerformance,
+  useChartA11y,
+  useChartProcessing,
+  useChartOptimization,
 } from '../../lib/composables/useChart';
 import { CHART } from '../../lib/constants/components';
 import { ChartProps } from '../../lib/types/components';
@@ -58,17 +58,17 @@ const ChartRenderer = memo(
 
       // Chart composition hooks
       const { calculateScales, getChartColors } = useChart();
-      const { processedData, isProcessing } = useChartData(datasets, {
+      const { processedData, isProcessing } = useChartProcessing(datasets, {
         enableRealTime,
         enableDecimation: enablePerformanceOptimization,
         maxDataPoints: 1000,
       });
-      const { isOptimizing, memoizedScales } = useChartPerformance(processedData, {
+      const { isOptimizing, memoizedScales } = useChartOptimization(processedData, {
         enableVirtualization: false,
         enableMemoization: enablePerformanceOptimization,
         debounceMs: 100,
       });
-      const { announcement, focusedPoint } = useChartAccessibility(processedData, {
+      const { announcement, focusedPoint } = useChartA11y(processedData, {
         enableScreenReader: enableAccessibility,
         enableKeyboardNavigation: enableAccessibility,
         announceDataChanges: enableAccessibility,

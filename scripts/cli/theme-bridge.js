@@ -29,12 +29,13 @@ export async function executeThemeCommand(command, args = [], options = {}) {
     // Path to the theme CLI
     const themeCliPath = join(__dirname, '../../src/lib/theme/devtools/CLI.ts');
 
-    // Use ts-node to execute TypeScript CLI
-    const tsNodePath = join(__dirname, '../../node_modules/.bin/ts-node');
+    // Use node with ts-node loader to execute TypeScript CLI
+    // This approach is more robust for ESM environments than invoking ts-node binary directly
 
     return new Promise((resolve, reject) => {
-      const child = spawn(tsNodePath, [
-        '--esm',
+      const child = spawn(process.execPath, [
+        '--loader',
+        'ts-node/esm',
         '--experimental-specifier-resolution=node',
         themeCliPath,
         command,
