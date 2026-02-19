@@ -28,28 +28,7 @@ export function useAmbientMode({
 
     if (!ctx) return undefined;
 
-    const updateSize = () => {
-      const rect = video.getBoundingClientRect();
-      const newWidth = rect.width * scale;
-      const newHeight = rect.height * scale;
-
-      // Only update if dimensions actually changed to avoid clearing canvas
-      if (canvas.width !== newWidth || canvas.height !== newHeight) {
-        canvas.width = newWidth;
-        canvas.height = newHeight;
-      }
-    };
-
-    // Initial size update
-    updateSize();
-
-    // Watch for video resize
-    const resizeObserver = new ResizeObserver(() => {
-      updateSize();
-    });
-    resizeObserver.observe(video);
-
-    const updateAmbientEffect = () => {
+    const drawFrame = () => {
       if (!video || !canvas || !ctx) return;
 
       // Draw video frame to canvas
@@ -61,6 +40,28 @@ export function useAmbientMode({
       } catch (e) {
         // Handle CORS or other drawing errors silently
       }
+    };
+
+    // Use ResizeObserver to update canvas size only when video size changes
+    const updateCanvasSize = () => {
+      const rect = video.getBoundingClientRect();
+      canvas.width = rect.width * scale;
+      canvas.height = rect.height * scale;
+      // Redraw immediately after resize to prevent blank canvas if video is paused
+      drawFrame();
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateCanvasSize();
+    });
+
+    resizeObserver.observe(video);
+
+    // Initial size update
+    updateCanvasSize();
+
+    const updateAmbientEffect = () => {
+      drawFrame();
 
       if (enabled) {
         animationFrameRef.current = requestAnimationFrame(updateAmbientEffect);
@@ -90,6 +91,7 @@ export function useAmbientMode({
     }
 
     return () => {
+      resizeObserver.disconnect();
       video.removeEventListener('play', handlePlay);
       video.removeEventListener('pause', handlePause);
       video.removeEventListener('ended', handlePause);

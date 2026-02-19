@@ -1,121 +1,134 @@
-import { renderHook, act } from '@testing-library/react';
+import { renderHook } from '@testing-library/react';
 import { useAmbientMode } from '../useAmbientMode';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 describe('useAmbientMode Performance', () => {
-  let callbacks: FrameRequestCallback[] = [];
-  let resizeObserverCallback: ResizeObserverCallback | null = null;
-  let observeSpy: any;
-  let disconnectSpy: any;
+  let videoElement: HTMLVideoElement;
+  let canvasElement: HTMLCanvasElement;
+  let getBoundingClientRectSpy: any;
+  let resizeCallback: any;
+  let drawImageSpy: any;
 
   beforeEach(() => {
-    callbacks = [];
-    resizeObserverCallback = null;
-
-    // Mock requestAnimationFrame
-    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
-      callbacks.push(cb);
-      return callbacks.length;
-    });
-
-    vi.stubGlobal('cancelAnimationFrame', () => {});
+    resizeCallback = null;
+    drawImageSpy = vi.fn();
 
     // Mock ResizeObserver
-    observeSpy = vi.fn();
-    disconnectSpy = vi.fn();
-
-    vi.stubGlobal('ResizeObserver', class {
-      constructor(cb: ResizeObserverCallback) {
-        resizeObserverCallback = cb;
+    global.ResizeObserver = class ResizeObserver {
+      constructor(cb: any) {
+        resizeCallback = cb;
       }
-      observe = observeSpy;
-      unobserve = vi.fn();
-      disconnect = disconnectSpy;
-    });
-  });
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    } as any;
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-    vi.unstubAllGlobals();
-  });
+    videoElement = document.createElement('video');
+    canvasElement = document.createElement('canvas');
 
-  it('should only resize canvas when dimensions change', () => {
-    const video = document.createElement('video');
-    const canvas = document.createElement('canvas');
+    // Mock getContext
+    vi.spyOn(canvasElement, 'getContext').mockReturnValue({
+      drawImage: drawImageSpy,
+      filter: '',
+      globalAlpha: 1,
+    } as unknown as CanvasRenderingContext2D);
 
-    // Mock getBoundingClientRect
-    video.getBoundingClientRect = vi.fn(() => ({
+    getBoundingClientRectSpy = vi.spyOn(videoElement, 'getBoundingClientRect');
+    getBoundingClientRectSpy.mockReturnValue({
       width: 100,
       height: 100,
       top: 0,
       left: 0,
-      bottom: 100,
       right: 100,
+      bottom: 100,
       x: 0,
       y: 0,
-      toJSON: () => {},
-    }));
-
-    // Spy on canvas width setter
-    let widthSetCount = 0;
-    Object.defineProperty(canvas, 'width', {
-      set: (val) => { widthSetCount++; },
-      get: () => 100,
-      configurable: true
+      toJSON: () => {}
     });
 
-    // Mock getContext
-    const ctx = {
-        drawImage: vi.fn(),
-        filter: '',
-        globalAlpha: 1,
-    };
-    canvas.getContext = vi.fn().mockReturnValue(ctx);
+    vi.useFakeTimers();
+  });
 
-    // Mock video play state
-    Object.defineProperty(video, 'paused', { value: false });
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.useRealTimers();
+  });
 
-    const { unmount } = renderHook(() => useAmbientMode({
-      videoRef: { current: video },
-      canvasRef: { current: canvas },
+  it('should call getBoundingClientRect only on init and resize, but continue drawing frames', () => {
+    const videoRef = { current: videoElement };
+    const canvasRef = { current: canvasElement };
+    const requestAnimationFrameSpy = vi.spyOn(window, 'requestAnimationFrame');
+
+    // Simulate playing state
+    Object.defineProperty(videoElement, 'paused', {
+      value: false,
+      writable: true
+    });
+
+    renderHook(() => useAmbientMode({
+      videoRef,
+      canvasRef,
       enabled: true,
-      scale: 1,
+      scale: 1.2,
     }));
 
-    // Helper to simulate rAF loop
-    const runFrames = (count: number) => {
-        for(let i=0; i<count; i++) {
-            const currentCallbacks = [...callbacks];
-            callbacks = []; // clear queue
-            currentCallbacks.forEach(cb => cb(performance.now()));
-        }
-    }
+    // Trigger play event to start the loop
+    videoElement.dispatchEvent(new Event('play'));
 
-    // Trigger initial resize via observer callback mock if available
-    // (Simulating that ResizeObserver fires initially)
-    if (resizeObserverCallback) {
-        act(() => {
-            resizeObserverCallback!([], {} as ResizeObserver);
-        });
-    }
+    // Advance time by 100ms (approx 6 frames at 60fps)
+    vi.advanceTimersByTime(100);
 
-    const initialCount = widthSetCount;
-    // With current implementation, it sets width on every frame, so initialCount might be 0 or 1 depending on rAF calls so far.
-    // Actually current implementation calls updateAmbientEffect() once on mount if playing.
-    // So initialCount should be >= 1.
+    // Ensure loop is running
+    expect(requestAnimationFrameSpy).toHaveBeenCalled();
+    expect(requestAnimationFrameSpy.mock.calls.length).toBeGreaterThan(1);
 
-    // Run frames
-    act(() => {
-        runFrames(5);
+    // Ensure drawImage is called repeatedly (once per frame)
+    expect(drawImageSpy).toHaveBeenCalled();
+    expect(drawImageSpy.mock.calls.length).toBeGreaterThan(1);
+
+    // Should be called initially (1 time) for sizing
+    expect(getBoundingClientRectSpy).toHaveBeenCalledTimes(1);
+
+    // Ensure resizeCallback was captured
+    expect(resizeCallback).toBeDefined();
+
+    // Now trigger resize
+    // Update mock return value for resize so getBoundingClientRect returns new size
+    getBoundingClientRectSpy.mockReturnValue({
+      width: 200,
+      height: 200,
+      top: 0,
+      left: 0,
+      right: 200,
+      bottom: 200,
+      x: 0,
+      y: 0,
+      toJSON: () => {}
     });
 
-    // In current implementation, count increases on every frame
-    // We expect this test to FAIL if we asserted count == initialCount
-    // But for verification purpose, we assert failure or improvement.
+    // Trigger callback
+    resizeCallback([{ contentRect: { width: 200, height: 200 } }]);
 
-    // If we want to assert the fix works, we expect:
-    expect(widthSetCount).toBe(initialCount);
+    // Should be called again (2 times total)
+    expect(getBoundingClientRectSpy).toHaveBeenCalledTimes(2);
 
-    unmount();
+    // Canvas size should be updated
+    expect(canvasElement.width).toBe(200 * 1.2);
+    expect(canvasElement.height).toBe(200 * 1.2);
+
+    // Capture call count before advancing time
+    const drawCallsBefore = drawImageSpy.mock.calls.length;
+
+    // Advance time again to ensure drawing continues with new size
+    vi.advanceTimersByTime(100);
+
+    // drawImage should continue being called
+    expect(drawImageSpy.mock.calls.length).toBeGreaterThan(drawCallsBefore);
+
+    // The arguments are (video, 0, 0, width, height).
+    // The last call should have the new width/height.
+    const lastCall = drawImageSpy.mock.calls[drawImageSpy.mock.calls.length - 1];
+    expect(lastCall[3]).toBe(200 * 1.2); // width
+    expect(lastCall[4]).toBe(200 * 1.2); // height
   });
 });
