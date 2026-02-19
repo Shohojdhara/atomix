@@ -210,7 +210,7 @@
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "build": "npm run prebuild && npm run build:parallel",
+    "build": "npm run prebuild && npm run build:parallel && npm run postbuild",
     "build:sequential": "rollup -c",
     "build:js": "rollup -c rollup.config.build.js",
     "build:types": "rollup -c rollup.config.types.js",
@@ -240,6 +240,7 @@
     "prebuild:with-tokens": "npm run sync:tokens && npm run validate:config",
     "verify:build": "node scripts/verify-build.js",
     "test:build": "node scripts/test-build.js",
+    "postbuild": "mkdir -p dist/build-tools && cp -r build-tools/* dist/build-tools/",
     "prepublishOnly": "npm run clean && npm run build && npm run attw",
     "prepack": "echo 'Preparing package for publishing...'"
   },
