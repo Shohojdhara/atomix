@@ -141,18 +141,9 @@ export function useChartExport() {
   const exportAsPDF = useCallback(
     async (svgElement: SVGSVGElement, options: ExportOptions): Promise<void> => {
       // Note: This requires a PDF library like jsPDF
-      // For now, we'll convert to canvas and then to PDF
-      const canvas = await svgToCanvas(svgElement, options);
-
-      // This would require jsPDF library
-      // const pdf = new jsPDF();
-      // const imgData = canvas.toDataURL('image/png');
-      // pdf.addImage(imgData, 'PNG', 0, 0);
-      // pdf.save(options.filename || 'chart.pdf');
-
       console.warn('PDF export requires jsPDF library to be installed');
     },
-    [svgToCanvas]
+    []
   );
 
   // Export data as CSV
