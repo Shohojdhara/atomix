@@ -425,11 +425,14 @@ export function useDataTable({
     return Math.max(1, Math.ceil(sortedData.length / pageSize));
   }, [sortedData.length, paginated, pageSize]);
 
+  // Optimized selection check
+  const selectedRowIdsSet = useMemo(() => new Set(selectedRowIds), [selectedRowIds]);
+
   // Selected rows data
   const selectedRows = useMemo(() => {
     if (selectionMode === 'none' || selectedRowIds.length === 0) return [];
-    return sortedData.filter(row => selectedRowIds.includes(getRowId(row, rowKey)));
-  }, [sortedData, selectedRowIds, selectionMode, rowKey]);
+    return sortedData.filter(row => selectedRowIdsSet.has(getRowId(row, rowKey)));
+  }, [sortedData, selectedRowIdsSet, selectionMode, rowKey]);
 
   // Handle row selection
   const handleRowSelect = useCallback(
@@ -454,7 +457,8 @@ export function useDataTable({
       }
 
       if (onSelectionChange) {
-        const selectedRowsData = sortedData.filter(row => newSelectedIds.includes(getRowId(row, rowKey)));
+        const newSelectedIdsSet = new Set(newSelectedIds);
+        const selectedRowsData = sortedData.filter(row => newSelectedIdsSet.has(getRowId(row, rowKey)));
         onSelectionChange(selectedRowsData, newSelectedIds);
       }
     },
@@ -475,7 +479,8 @@ export function useDataTable({
       }
 
       if (onSelectionChange) {
-        const selectedRowsData = sortedData.filter(row => newSelectedIds.includes(getRowId(row, rowKey)));
+        const newSelectedIdsSet = new Set(newSelectedIds);
+        const selectedRowsData = sortedData.filter(row => newSelectedIdsSet.has(getRowId(row, rowKey)));
         onSelectionChange(selectedRowsData, newSelectedIds);
       }
     },
@@ -485,15 +490,15 @@ export function useDataTable({
   // Check if all rows are selected
   const isAllSelected = useMemo(() => {
     if (selectionMode !== 'multiple' || paginatedData.length === 0) return false;
-    return paginatedData.every(row => selectedRowIds.includes(getRowId(row, rowKey)));
-  }, [selectionMode, paginatedData, selectedRowIds, rowKey]);
+    return paginatedData.every(row => selectedRowIdsSet.has(getRowId(row, rowKey)));
+  }, [selectionMode, paginatedData, selectedRowIdsSet, rowKey]);
 
   // Check if some rows are selected (indeterminate)
   const isIndeterminate = useMemo(() => {
     if (selectionMode !== 'multiple' || paginatedData.length === 0) return false;
-    const selectedCount = paginatedData.filter(row => selectedRowIds.includes(getRowId(row, rowKey))).length;
+    const selectedCount = paginatedData.filter(row => selectedRowIdsSet.has(getRowId(row, rowKey))).length;
     return selectedCount > 0 && selectedCount < paginatedData.length;
-  }, [selectionMode, paginatedData, selectedRowIds, rowKey]);
+  }, [selectionMode, paginatedData, selectedRowIdsSet, rowKey]);
 
   // Handle column visibility toggle
   const handleColumnVisibilityToggle = useCallback(

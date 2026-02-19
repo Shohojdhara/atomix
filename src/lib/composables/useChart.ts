@@ -1,6 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { CHART } from '../constants/components';
 import { ChartDataset, ChartProps } from '../types/components';
+
+export { useChartProcessing } from './useChartProcessing';
+export { useChartOptimization } from './useChartOptimization';
+export { useChartA11y } from './useChartA11y';
 
 /**
  * Chart interaction state interface
@@ -527,12 +531,24 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     ): ChartScales | null => {
       if (!datasets || datasets.length === 0) return null;
 
-      // Flatten all data points to find min/max values
-      const allDataPoints = datasets.flatMap(dataset => dataset.data);
-      if (allDataPoints.length === 0) return null;
+      // Calculate min/max and total points in a single pass
+      let minValue = Infinity;
+      let maxValue = -Infinity;
+      let totalPoints = 0;
+      let hasData = false;
 
-      const minValue = Math.min(...allDataPoints.map(point => point.value));
-      const maxValue = Math.max(...allDataPoints.map(point => point.value));
+      for (const dataset of datasets) {
+        if (!dataset.data) continue;
+        for (const point of dataset.data) {
+          if (point.value < minValue) minValue = point.value;
+          if (point.value > maxValue) maxValue = point.value;
+          totalPoints++;
+          hasData = true;
+        }
+      }
+
+      if (!hasData) return null;
+
       const valueRange = maxValue - minValue || 1; // Avoid division by zero
 
       // Apply padding
@@ -540,7 +556,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
       const innerHeight = height - padding.top - padding.bottom;
 
       // Create scale functions
-      const xScale = (index: number, dataLength: number = allDataPoints.length) => {
+      const xScale = (index: number, dataLength: number = totalPoints) => {
         if (dataLength <= 1) return padding.left + innerWidth / 2;
         return padding.left + (index / (dataLength - 1)) * innerWidth;
       };
@@ -616,324 +632,5 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     calculateScales,
     getChartColors,
     svgRef,
-  };
-}
-
-/**
- * Hook for chart data processing and transformation
- */
-export function useChartData(
-  datasets: ChartDataset[],
-  options?: {
-    enableDecimation?: boolean;
-    maxDataPoints?: number;
-    enableRealTime?: boolean;
-    realTimeInterval?: number;
-  }
-) {
-  const [processedData, setProcessedData] = useState(datasets);
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  const {
-    enableDecimation = false,
-    maxDataPoints = 1000,
-    enableRealTime = false,
-    realTimeInterval = 1000,
-  } = options || {};
-
-  // Data decimation for performance
-  const decimateData = useCallback(
-    (data: ChartDataset[], maxPoints: number) => {
-      if (!enableDecimation || !data.length) return data;
-
-      const dataLength = data[0]?.data?.length || 0;
-      if (dataLength <= maxPoints) return data;
-
-      const step = Math.ceil(dataLength / maxPoints);
-      return data.map(dataset => ({
-        ...dataset,
-        data: dataset.data?.filter((_, index) => index % step === 0) || [],
-      }));
-    },
-    [enableDecimation]
-  );
-
-  // Moving average calculation
-  const calculateMovingAverage = useCallback((values: number[], period: number) => {
-    const result: (number | null)[] = [];
-    for (let i = 0; i < values.length; i++) {
-      if (i < period - 1) {
-        result.push(null);
-      } else {
-        const sum = values.slice(i - period + 1, i + 1).reduce((a, b) => a + b, 0);
-        result.push(sum / period);
-      }
-    }
-    return result;
-  }, []);
-
-  // Trend line calculation (linear regression)
-  const calculateTrendLine = useCallback((values: number[]): (number | null)[] => {
-    const n = values.length;
-    if (n < 2) return values.map((): null => null);
-
-    const xSum = values.reduce((sum, _, i) => sum + i, 0);
-    const ySum = values.reduce((sum, val) => sum + val, 0);
-    const xySum = values.reduce((sum, val, i) => sum + i * val, 0);
-    const x2Sum = values.reduce((sum, _, i) => sum + i * i, 0);
-
-    const slope = (n * xySum - xSum * ySum) / (n * x2Sum - xSum * xSum);
-    const intercept = (ySum - slope * xSum) / n;
-
-    return values.map((_, i) => slope * i + intercept);
-  }, []);
-
-  // Process data when datasets change
-  useEffect(() => {
-    setIsProcessing(true);
-
-    const processData = async () => {
-      let processed = [...datasets];
-
-      if (enableDecimation && maxDataPoints) {
-        processed = decimateData(processed, maxDataPoints);
-      }
-
-      setProcessedData(processed);
-      setIsProcessing(false);
-    };
-
-    processData();
-  }, [datasets, decimateData, enableDecimation, maxDataPoints]);
-
-  // Real-time data updates
-  useEffect(() => {
-    if (!enableRealTime) return undefined;
-
-    const interval = setInterval(() => {
-      setProcessedData(prev => [...prev]); // Trigger re-render for real-time updates
-    }, realTimeInterval);
-
-    return () => clearInterval(interval);
-  }, [enableRealTime, realTimeInterval]);
-
-  return {
-    processedData,
-    isProcessing,
-    decimateData,
-    calculateMovingAverage,
-    calculateTrendLine,
-    setProcessedData,
-  };
-}
-
-/**
- * Hook for chart accessibility features
- */
-export function useChartAccessibility(
-  datasets: ChartDataset[],
-  options?: {
-    enableKeyboardNavigation?: boolean;
-    enableScreenReader?: boolean;
-    announceDataChanges?: boolean;
-  }
-) {
-  const {
-    enableKeyboardNavigation = true,
-    enableScreenReader = true,
-    announceDataChanges = true,
-  } = options || {};
-
-  const [focusedPoint, setFocusedPoint] = useState({ datasetIndex: 0, pointIndex: 0 });
-  const [announcement, setAnnouncement] = useState('');
-
-  // Keyboard navigation
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent, onPointSelect?: (datasetIndex: number, pointIndex: number) => void) => {
-      if (!enableKeyboardNavigation || !datasets.length) return;
-
-      const maxDatasetIndex = datasets.length - 1;
-      const maxPointIndex = (datasets[focusedPoint.datasetIndex]?.data?.length || 1) - 1;
-
-      switch (event.key) {
-        case 'ArrowLeft':
-          event.preventDefault();
-          setFocusedPoint(prev => ({
-            ...prev,
-            pointIndex: Math.max(0, prev.pointIndex - 1),
-          }));
-          break;
-        case 'ArrowRight':
-          event.preventDefault();
-          setFocusedPoint(prev => ({
-            ...prev,
-            pointIndex: Math.min(maxPointIndex, prev.pointIndex + 1),
-          }));
-          break;
-        case 'ArrowUp':
-          event.preventDefault();
-          setFocusedPoint(prev => ({
-            ...prev,
-            datasetIndex: Math.max(0, prev.datasetIndex - 1),
-          }));
-          break;
-        case 'ArrowDown':
-          event.preventDefault();
-          setFocusedPoint(prev => ({
-            ...prev,
-            datasetIndex: Math.min(maxDatasetIndex, prev.datasetIndex + 1),
-          }));
-          break;
-        case 'Home':
-          event.preventDefault();
-          setFocusedPoint(prev => ({ ...prev, pointIndex: 0 }));
-          break;
-        case 'End':
-          event.preventDefault();
-          setFocusedPoint(prev => ({ ...prev, pointIndex: maxPointIndex }));
-          break;
-        case 'Enter':
-        case ' ':
-          event.preventDefault();
-          onPointSelect?.(focusedPoint.datasetIndex, focusedPoint.pointIndex);
-          break;
-      }
-    },
-    [enableKeyboardNavigation, datasets, focusedPoint]
-  );
-
-  // Screen reader announcements
-  const announceData = useCallback(
-    (message: string) => {
-      if (!enableScreenReader) return;
-
-      setAnnouncement(message);
-      // Clear announcement after a delay to allow screen readers to read it
-      setTimeout(() => setAnnouncement(''), 1000);
-    },
-    [enableScreenReader]
-  );
-
-  // Announce data changes
-  useEffect(() => {
-    if (!announceDataChanges || !datasets.length) return;
-
-    const totalDataPoints = datasets.reduce((sum, dataset) => sum + (dataset.data?.length || 0), 0);
-    announceData(
-      `Chart updated with ${datasets.length} datasets and ${totalDataPoints} data points`
-    );
-  }, [datasets, announceDataChanges, announceData]);
-
-  // Generate accessible description
-  const getAccessibleDescription = useCallback(() => {
-    if (!datasets.length) return 'Empty chart';
-
-    const datasetDescriptions = datasets
-      .map((dataset, i) => {
-        const dataCount = dataset.data?.length || 0;
-        const values = dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [];
-        const min = values.length > 0 ? Math.min(...values) : 0;
-        const max = values.length > 0 ? Math.max(...values) : 0;
-
-        return `Dataset ${i + 1}: ${dataset.label}, ${dataCount} points, range ${min} to ${max}`;
-      })
-      .join('. ');
-
-    return `Chart with ${datasets.length} datasets. ${datasetDescriptions}`;
-  }, [datasets]);
-
-  return {
-    focusedPoint,
-    announcement,
-    handleKeyDown,
-    announceData,
-    getAccessibleDescription,
-    setFocusedPoint,
-  };
-}
-
-/**
- * Hook for chart performance optimization
- */
-export function useChartPerformance(
-  datasets: ChartDataset[],
-  options?: {
-    enableVirtualization?: boolean;
-    enableMemoization?: boolean;
-    debounceMs?: number;
-  }
-) {
-  const {
-    enableVirtualization = false,
-    enableMemoization = true,
-    debounceMs = 100,
-  } = options || {};
-
-  const [isOptimizing, setIsOptimizing] = useState(false);
-  const debounceRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Memoized calculations
-  const memoizedScales = useMemo(() => {
-    if (!enableMemoization) return null;
-
-    // Cache expensive scale calculations
-    return datasets.map(dataset => {
-      const values = dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [];
-      const validValues = values.length > 0 ? values : [0];
-
-      return {
-        label: dataset.label,
-        dataLength: dataset.data?.length || 0,
-        minValue: Math.min(...validValues),
-        maxValue: Math.max(...validValues),
-      };
-    });
-  }, [datasets, enableMemoization]);
-
-  // Debounced updates
-  const debouncedUpdate = useCallback(
-    (callback: () => void) => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-      }
-
-      debounceRef.current = setTimeout(() => {
-        callback();
-        setIsOptimizing(false);
-      }, debounceMs);
-
-      setIsOptimizing(true);
-    },
-    [debounceMs]
-  );
-
-  // Virtualization helpers
-  const getVisibleRange = useCallback(
-    (scrollTop: number, itemHeight: number, containerHeight: number) => {
-      if (!enableVirtualization) return { start: 0, end: datasets[0]?.data?.length || 0 };
-
-      const start = Math.floor(scrollTop / itemHeight);
-      const visibleCount = Math.ceil(containerHeight / itemHeight);
-      const end = Math.min(start + visibleCount + 1, datasets[0]?.data?.length || 0);
-
-      return { start: Math.max(0, start - 1), end };
-    },
-    [enableVirtualization, datasets]
-  );
-
-  // Cleanup
-  useEffect(() => {
-    return () => {
-      if (debounceRef.current) {
-        clearTimeout(debounceRef.current);
-      }
-    };
-  }, []);
-
-  return {
-    isOptimizing,
-    memoizedScales,
-    debouncedUpdate,
-    getVisibleRange,
   };
 }
