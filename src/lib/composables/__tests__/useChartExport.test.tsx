@@ -27,7 +27,11 @@ describe('useChartExport', () => {
         return '<svg></svg>';
       }
     } as any;
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
     // Mock Image
     // @ts-ignore
     global.Image = class MockImage {

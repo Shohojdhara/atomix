@@ -1,4 +1,5 @@
 import { useCallback, useRef } from 'react';
+import { sanitizeCSVCell } from '../utils/csv';
 
 export interface ExportOptions {
   /**
@@ -171,13 +172,7 @@ export function useChartExport() {
 
     // Convert to CSV string with sanitization
     const csvContent = rows
-      .map(row => row.map(cell => {
-        // Sanitize cell content to prevent CSV injection
-        const sanitized = String(cell).replace(/[\r\n\t]/g, ' ').replace(/"/g, '""');
-        // Prevent formula injection by prefixing dangerous characters
-        const dangerous = /^[=+\-@]/;
-        return `"${dangerous.test(sanitized) ? `'${sanitized}` : sanitized}"`;
-      }).join(','))
+      .map(row => row.map(cell => `"${sanitizeCSVCell(cell)}"`).join(','))
       .join('\n');
 
     // Download
