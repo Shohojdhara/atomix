@@ -28,13 +28,8 @@ export function useAmbientMode({
 
     if (!ctx) return undefined;
 
-    const updateAmbientEffect = () => {
+    const drawFrame = () => {
       if (!video || !canvas || !ctx) return;
-
-      // Set canvas size to match container
-      const rect = video.getBoundingClientRect();
-      canvas.width = rect.width * scale;
-      canvas.height = rect.height * scale;
 
       // Draw video frame to canvas
       ctx.filter = `blur(${blur}px)`;
@@ -45,6 +40,28 @@ export function useAmbientMode({
       } catch (e) {
         // Handle CORS or other drawing errors silently
       }
+    };
+
+    // Use ResizeObserver to update canvas size only when video size changes
+    const updateCanvasSize = () => {
+      const rect = video.getBoundingClientRect();
+      canvas.width = rect.width * scale;
+      canvas.height = rect.height * scale;
+      // Redraw immediately after resize to prevent blank canvas if video is paused
+      drawFrame();
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateCanvasSize();
+    });
+
+    resizeObserver.observe(video);
+
+    // Initial size update
+    updateCanvasSize();
+
+    const updateAmbientEffect = () => {
+      drawFrame();
 
       if (enabled) {
         animationFrameRef.current = requestAnimationFrame(updateAmbientEffect);
@@ -74,9 +91,11 @@ export function useAmbientMode({
     }
 
     return () => {
+      resizeObserver.disconnect();
       video.removeEventListener('play', handlePlay);
       video.removeEventListener('pause', handlePause);
       video.removeEventListener('ended', handlePause);
+      resizeObserver.disconnect();
 
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);

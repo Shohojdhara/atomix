@@ -4,7 +4,7 @@ export interface ExportOptions {
   /**
    * Export format
    */
-  format: 'png' | 'svg' | 'pdf' | 'csv' | 'json' | 'xlsx';
+  format: 'png' | 'svg' | 'pdf' | 'csv' | 'json';
 
   /**
    * Export quality (for raster formats)
@@ -215,12 +215,6 @@ export function useChartExport() {
     URL.revokeObjectURL(url);
   }, []);
 
-  // Export data as Excel
-  const exportAsXLSX = useCallback((datasets: any[], options: ExportOptions): void => {
-    // Note: This requires a library like xlsx or exceljs
-    console.warn('XLSX export requires xlsx library to be installed');
-  }, []);
-
   // Main export function
   const exportChart = useCallback(
     async (
@@ -228,7 +222,7 @@ export function useChartExport() {
       datasets: any[],
       options: ExportOptions
     ): Promise<void> => {
-      if (!svgElement && !['csv', 'json', 'xlsx'].includes(options.format)) {
+      if (!svgElement && !['csv', 'json'].includes(options.format)) {
         throw new Error('SVG element is required for image exports');
       }
 
@@ -249,9 +243,6 @@ export function useChartExport() {
           case 'json':
             exportAsJSON(datasets, options);
             break;
-          case 'xlsx':
-            exportAsXLSX(datasets, options);
-            break;
           default:
             throw new Error(`Unsupported export format: ${options.format}`);
         }
@@ -260,7 +251,7 @@ export function useChartExport() {
         throw error;
       }
     },
-    [exportAsPNG, exportAsSVG, exportAsPDF, exportAsCSV, exportAsJSON, exportAsXLSX]
+    [exportAsPNG, exportAsSVG, exportAsPDF, exportAsCSV, exportAsJSON]
   );
 
   // Share functionality
