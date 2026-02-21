@@ -1,6 +1,6 @@
 {
   "name": "@shohojdhara/atomix",
-  "version": "0.3.14",
+  "version": "0.3.15",
   "description": "Atomix Design System - A modern component library for web applications",
   "type": "module",
   "sideEffects": [
@@ -112,6 +112,7 @@
       "default": "./dist/heavy.js"
     },
     "./build-tools": {
+      "types": "./build-tools/index.d.ts",
       "import": "./build-tools/index.js",
       "require": "./build-tools/index.js",
       "default": "./build-tools/index.js"
@@ -209,7 +210,7 @@
   },
   "scripts": {
     "dev": "storybook dev -p 6006",
-    "build": "npm run prebuild && npm run build:parallel",
+    "build": "npm run prebuild && npm run build:parallel && npm run postbuild",
     "build:sequential": "rollup -c",
     "build:js": "rollup -c rollup.config.build.js",
     "build:types": "rollup -c rollup.config.types.js",
@@ -239,6 +240,7 @@
     "prebuild:with-tokens": "npm run sync:tokens && npm run validate:config",
     "verify:build": "node scripts/verify-build.js",
     "test:build": "node scripts/test-build.js",
+    "postbuild": "mkdir -p dist/build-tools && cp -r build-tools/* dist/build-tools/",
     "prepublishOnly": "npm run clean && npm run build && npm run attw",
     "prepack": "echo 'Preparing package for publishing...'"
   },
@@ -251,6 +253,8 @@
     "scripts/atomix-cli.js",
     "scripts/cli/**/*",
     "build-tools/**/*",
+    "build-tools/**/*.d.ts",
+    "themes/**/*",
     "atomix.config.ts",
     "README.md",
     "LICENSE",

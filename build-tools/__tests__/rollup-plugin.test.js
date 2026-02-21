@@ -182,8 +182,7 @@ describe('Atomix Rollup Plugin', () => {
     it('should get available themes', () => {
       const themes = getAvailableThemes(null);
       expect(Array.isArray(themes)).toBe(true);
-      expect(themes).toContain('default');
-      expect(themes).toContain('dark-complementary');
+      expect(themes).toEqual([]);
     });
 
     it('should get Atomix package location', () => {

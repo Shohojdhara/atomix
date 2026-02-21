@@ -1,14 +1,33 @@
 # Changelog
 
+## [0.3.15] - 2026-02-20
+
+### Added
+
+- Standardize component import paths, update build tool plugin import examples, and include themes in package distribution (fda94bac)
+- Add TypeScript declaration files to package for build-tools (fc288744)
+- Update type definitions and improve export documentation for build-tools (13a6dd2c)
+
+### Changed
+
+- Centralize build tool utilities for theme handling, component filtering, and logging (6acdcbfe)
+
+### Fixed
+
+- Add `.js` extension to type import path in build tools definition (e0479944)
+- Resolve duplicate identifiers in `AtomixGlass` (51d82d99)
+
 ## [2.0.0] - 2026-01-20
 
 ### Added
+
 - **Spinner**: Added `aria-label` (default "Loading") and `role` (default "status") props for improved accessibility.
 - **Badge**: Added `onRemove` callback and `aria-label` support. Providing `onRemove` automatically renders a close button.
 - **Input/Textarea**: Added `defaultValue` prop for uncontrolled component support.
 - **JSDoc**: Added `@default` tags to many component props for better developer experience and documentation.
 
 ### Changed (Breaking)
+
 - **Standardized ARIA Props**: All ARIA-related props have been renamed from camelCase to kebab-case (e.g., `ariaLabel` -> `aria-label`) to align with native React/HTML standards.
 - **Toggle Component**: Refactored API to follow standard React form patterns. Removed `initialOn`, `onToggleOn`, and `onToggleOff`. Added `checked`, `defaultChecked`, and `onChange`.
 - **Rating Component**: Renamed `color` prop to `variant` for consistency with other components.
@@ -16,6 +35,7 @@
 - **Callout Component**: Renamed `oneLine` to `compact` and `toast` to `isToast`.
 
 ### Fixed
+
 - Fixed several accessibility issues across navigation components.
 - Improved focus management in `Modal` component.
 

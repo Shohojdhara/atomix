@@ -2,49 +2,49 @@
  * Type definitions for Atomix Build Tool Integrations
  */
 
-// Vite Plugin Types
+// ─── Plugin Option Interfaces ────────────────────────────────────────────────
+
+/** Options for the Vite plugin */
 export interface AtomixVitePluginOptions {
-  /** Theme to use */
+  /** Theme to use (default: 'default') */
   theme?: string;
-  /** Specific components to include */
+  /** Specific components to include (default: all) */
   components?: string[];
-  /** Whether to optimize CSS */
+  /** Whether to optimize CSS (default: true) */
   optimizeCss?: boolean;
-  /** Whether to include atomic styles */
+  /** Whether to include atomic styles (default: false) */
   includeAtoms?: boolean;
-  /** Enable verbose logging */
+  /** Enable verbose logging (default: false) */
   verbose?: boolean;
 }
 
-// Webpack Loader Types
+/** Options for the Webpack loader */
 export interface AtomixLoaderOptions {
-  /** Whether to include atomic styles */
+  /** Whether to include atomic styles (default: false) */
   includeAtoms?: boolean;
-  /** Specific components to include */
+  /** Specific components to include (default: all) */
   components?: string[];
-  /** Remove unused styles */
-  excludeUnnecessaryStyles?: boolean;
-  /** Enable verbose logging */
+  /** Enable verbose logging (default: false) */
   verbose?: boolean;
-  /** Theme to use */
+  /** Theme to use (default: 'default') */
   theme?: string;
 }
 
-// Rollup Plugin Types
+/** Options for the Rollup plugin */
 export interface AtomixRollupPluginOptions {
-  /** Theme to use */
+  /** Theme to use (default: 'default') */
   theme?: string;
-  /** Specific components to include */
+  /** Specific components to include (default: all) */
   components?: string[];
-  /** Whether to optimize imports */
+  /** Whether to optimize imports (default: true) */
   optimize?: boolean;
-  /** Whether to include atoms */
+  /** Whether to include atoms (default: false) */
   includeAtoms?: boolean;
-  /** Enable verbose logging */
+  /** Enable verbose logging (default: false) */
   verbose?: boolean;
 }
 
-// Generic Types
+/** Generic options accepted by `getIntegration` / `initAutoIntegration` */
 export interface AtomixBuildToolOptions {
   /** Theme to use */
   theme?: string;
@@ -58,24 +58,41 @@ export interface AtomixBuildToolOptions {
   verbose?: boolean;
 }
 
-// Theme-related types
+// ─── Plugin Return Types ─────────────────────────────────────────────────────
+
+/** Shape of the object returned by the Vite plugin factory */
+export interface VitePluginResult {
+  name: string;
+  configResolved?(config: unknown): void;
+  transform?(code: string, id: string): Promise<TransformResult | null>;
+  configureServer?(server: unknown): void;
+  generateBundle?(options: unknown, bundle: Record<string, unknown>): void;
+  buildStart?(): void;
+}
+
+/** Shape of the object returned by the Rollup plugin factory */
+export interface RollupPluginResult {
+  name: string;
+  buildStart?(): void;
+  transform?(code: string, id: string): TransformResult | null;
+  resolveId?(importee: string, importer?: string): string | null;
+  load?(id: string): string | null;
+  generateBundle?(options: unknown, bundle: Record<string, unknown>): void;
+}
+
+// ─── Theme Types ─────────────────────────────────────────────────────────────
+
 export interface ThemeConfig {
   /** Theme name */
   name: string;
-  /** Theme variables */
+  /** Theme CSS custom properties */
   variables: Record<string, string>;
   /** Theme CSS content */
   css: string;
 }
 
-export interface AvailableThemes {
-  /** List of available theme names */
-  themes: string[];
-  /** Default theme name */
-  default: string;
-}
+// ─── Component Types ─────────────────────────────────────────────────────────
 
-// Component-related types
 export interface ComponentInfo {
   /** Component name */
   name: string;
@@ -85,16 +102,8 @@ export interface ComponentInfo {
   available: boolean;
 }
 
-export interface ComponentsList {
-  /** Available components */
-  available: ComponentInfo[];
-  /** Requested components */
-  requested: string[];
-  /** Missing components */
-  missing: string[];
-}
+// ─── Build Tool Detection ────────────────────────────────────────────────────
 
-// Build tool detection types
 export type BuildTool = 'vite' | 'webpack' | 'rollup' | null;
 
 export interface BuildToolDetectionResult {
@@ -106,22 +115,36 @@ export interface BuildToolDetectionResult {
   method: string;
 }
 
-// Plugin return types
+// ─── Transform Result ────────────────────────────────────────────────────────
+
 export interface TransformResult {
   /** Transformed code */
   code: string;
-  /** Source map */
+  /** Source map (null when not generated) */
   map: null | object;
 }
 
-export interface ResolveIdResult {
-  /** Resolved ID */
-  id: string | null;
-  /** External flag */
-  external?: boolean;
+// ─── Error Types ─────────────────────────────────────────────────────────────
+
+export interface AtomixBuildError extends Error {
+  /** Error code */
+  code: string;
+  /** Additional error details */
+  details?: Record<string, unknown>;
+  /** Suggested solutions */
+  suggestions?: string[];
 }
 
-// Configuration types
+// ─── Utility Types ───────────────────────────────────────────────────────────
+
+export interface Logger {
+  log(message: string): void;
+  warn(message: string): void;
+  error(message: string, err?: unknown): void;
+}
+
+// ─── Configuration ───────────────────────────────────────────────────────────
+
 export interface AtomixConfig {
   /** Theme configuration */
   theme: string;
@@ -138,77 +161,3 @@ export interface AtomixConfig {
     rollup?: Partial<AtomixRollupPluginOptions>;
   };
 }
-
-// Utility types
-export interface Logger {
-  log(message: string): void;
-  warn(message: string): void;
-  error(message: string): void;
-  debug(message: string): void;
-}
-
-export interface FileProcessor {
-  /** Process file content */
-  process(content: string, filePath: string): string;
-  /** Validate file */
-  validate(filePath: string): boolean;
-}
-
-// Error types
-export interface AtomixBuildError extends Error {
-  /** Error code */
-  code: string;
-  /** Error details */
-  details?: Record<string, any>;
-  /** Suggested solutions */
-  suggestions?: string[];
-}
-
-// Module augmentation for build tools
-declare module 'vite' {
-  interface Plugin {
-    atomix?: {
-      processImports?(code: string, id: string): string;
-      getThemeCss?(theme: string): string;
-    };
-  }
-}
-
-declare module 'webpack' {
-  interface LoaderContext {
-    atomix?: {
-      filterComponents?(source: string, options: AtomixLoaderOptions): string;
-      getAvailableThemes?(): string[];
-    };
-  }
-}
-
-declare module 'rollup' {
-  interface PluginContext {
-    atomix?: {
-      validateComponents?(components: string[]): void;
-      applyTheme?(css: string, theme: string): string;
-    };
-  }
-}
-
-// Global augmentation
-declare global {
-  namespace AtomixBuildTools {
-    /** Get available themes */
-    function getAvailableThemes(atomixPath?: string): string[];
-    
-    /** Get Atomix package location */
-    function getAtomixPackageLocation(): string | null;
-    
-    /** Detect build tool */
-    function detectBuildTool(): BuildTool;
-    
-    /** Initialize auto integration */
-    function initAutoIntegration(options?: AtomixBuildToolOptions): any;
-    
-    /** Get integration for specific build tool */
-    function getIntegration(buildTool: BuildTool, options?: AtomixBuildToolOptions): any;
-  }
-}
-
