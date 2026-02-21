@@ -1,0 +1,39 @@
+---
+import { Button, Card, Badge } from '@shohojdhara/atomix';
+import '@shohojdhara/atomix/css';
+import InteractiveWidget from '../components/InteractiveWidget';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Astro + Atomix</title>
+  </head>
+  <body>
+    <main class="container p-8">
+      <h1 class="text-4xl font-bold mb-4">Welcome to Astro with Atomix</h1>
+
+      <Card>
+        <h2 class="text-2xl mb-2">Design System Test</h2>
+        <Badge variant="success" className="mb-4">Setup Complete</Badge>
+
+        <p class="mb-4">Here is a static button (no JS):</p>
+        <Button>Static Button</Button>
+      </Card>
+
+      <div class="mt-8">
+        <h2 class="text-2xl font-bold mb-4">Interactive Component</h2>
+        <InteractiveWidget client:load />
+      </div>
+    </main>
+  </body>
+</html>
+
+<style>
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: system-ui, sans-serif;
+  }
+</style>
