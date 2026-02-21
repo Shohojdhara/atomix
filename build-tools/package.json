@@ -2,32 +2,15 @@
   "name": "@shohojdhara/atomix-build-tools",
   "version": "1.0.0",
   "description": "Build tool integrations for the Atomix design system",
+  "main": "index.js",
+  "types": "index.d.ts",
   "type": "module",
-  "main": "./index.js",
-  "types": "./index.d.ts",
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "import": "./index.js"
-    },
-    "./vite-plugin": {
-      "types": "./index.d.ts",
-      "import": "./vite-plugin.js"
-    },
-    "./rollup-plugin": {
-      "types": "./index.d.ts",
-      "import": "./rollup-plugin.js"
-    },
-    "./webpack-loader": {
-      "types": "./index.d.ts",
-      "import": "./webpack-loader.js"
-    },
-    "./types": {
-      "types": "./types.d.ts"
+      "import": "./index.js",
+      "default": "./index.js"
     }
-  },
-  "engines": {
-    "node": ">=18"
   },
   "scripts": {
     "test": "vitest run __tests__/"

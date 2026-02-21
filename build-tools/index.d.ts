@@ -1,43 +1,44 @@
-// Import types
-import type {
-  AtomixBuildToolOptions,
-  BuildTool,
+import {
   AtomixVitePluginOptions,
-  AtomixLoaderOptions,
   AtomixRollupPluginOptions,
-  VitePluginResult,
-  RollupPluginResult,
-} from './types.js';
+  AtomixLoaderOptions,
+  AtomixBuildToolOptions,
+  BuildTool
+} from './types';
 
-// ─── Plugin Exports ──────────────────────────────────────────────────────────
-
-/** Vite plugin for Atomix integration */
-export declare function vitePlugin(options?: AtomixVitePluginOptions): VitePluginResult;
-
-/** Webpack loader for Atomix integration (exported as the loader function itself) */
-export declare const webpackLoader: (source: string) => string;
-
-/** Rollup plugin for Atomix integration */
-export declare function rollupPlugin(options?: AtomixRollupPluginOptions): RollupPluginResult;
-
-// ─── Utility Exports ─────────────────────────────────────────────────────────
+export * from './types';
 
 /**
- * Gets the appropriate plugin/loader based on the detected build tool.
- * Returns the instantiated plugin for Vite/Rollup, or the loader function for Webpack.
+ * Atomix Vite Plugin
  */
-export declare function getIntegration(
-  buildTool: BuildTool,
-  options?: AtomixBuildToolOptions
-): VitePluginResult | RollupPluginResult | typeof webpackLoader | null;
+export function vitePlugin(options?: AtomixVitePluginOptions): any;
 
-/** Detects the build tool used in the current project by reading package.json */
-export declare function detectBuildTool(): BuildTool;
+/**
+ * Atomix Webpack Loader
+ */
+export function webpackLoader(source: string): string;
 
-/** Initialize the appropriate integration based on detected build tool */
-export declare function initAutoIntegration(
-  options?: AtomixBuildToolOptions
-): VitePluginResult | RollupPluginResult | typeof webpackLoader | null;
+/**
+ * Atomix Rollup Plugin
+ */
+export function rollupPlugin(options?: AtomixRollupPluginOptions): any;
 
-/** Get available themes from Atomix installation */
-export declare function getAvailableThemes(atomixPath?: string | null): string[];
+/**
+ * Gets the appropriate plugin/loader based on the detected build tool
+ */
+export function getIntegration(buildTool: BuildTool, options?: AtomixBuildToolOptions): any;
+
+/**
+ * Detects the build tool used in the current project
+ */
+export function detectBuildTool(): BuildTool;
+
+/**
+ * Initialize the appropriate integration based on detected build tool
+ */
+export function initAutoIntegration(options?: AtomixBuildToolOptions): any;
+
+/**
+ * Get available themes
+ */
+export function getAvailableThemes(atomixRoot?: string): string[];
