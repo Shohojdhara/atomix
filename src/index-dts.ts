@@ -4,6 +4,9 @@ export * from './components';
 // Export lib utilities
 export * from './lib';
 
+// Export theme tools for developer-friendly usage
+export * from './lib/theme-tools';
+
 // Export layouts
 export * from './layouts';
 
