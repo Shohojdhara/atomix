@@ -3,10 +3,10 @@ import {
   AtomixRollupPluginOptions,
   AtomixLoaderOptions,
   AtomixBuildToolOptions,
-  BuildTool
-} from './types';
+  BuildTool,
+} from './types.js';
 
-export * from './types';
+export * from './types.js';
 
 /**
  * Atomix Vite Plugin
