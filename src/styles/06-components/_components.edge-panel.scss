@@ -36,7 +36,6 @@
     position: absolute;
     inset: 0;
     @include dynamic-background(var(--#{$prefix}edge-panel-backdrop-bg));
-    backdrop-filter: blur(var(--#{$prefix}edge-panel-backdrop-blur));
     opacity: 0;
     z-index: map.get($z-layers, 1);
     transition: opacity var(--#{$prefix}edge-panel-animation-duration) ease;
@@ -378,6 +377,7 @@
     padding: 0;
     border-radius: inherit;
     transition: opacity 0.3s ease;
+    @include dynamic-background(var(--#{$prefix}edge-panel-bg), $background-transparency-enable: true);
   }
 
   .c-edge-panel__header {
@@ -407,6 +407,7 @@
   }
 
   .c-edge-panel__backdrop {
+    @include dynamic-background(var(--#{$prefix}edge-panel-backdrop-bg), $background-transparency-enable: true);
     animation: fadeIn 0.3s ease forwards;
     z-index: 0;
 
