@@ -73,7 +73,7 @@ export const LiquidGlass: Story = {
             margin: '0 0 16px 0',
             fontSize: '38px',
             fontWeight: 700,
-            background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
+            background: 'url(https://images.unsplash.com/photo-1579546929518-9e396f3cc809)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',

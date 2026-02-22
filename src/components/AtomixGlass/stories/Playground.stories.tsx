@@ -494,7 +494,7 @@ export const Playground: Story = {
     };
 
     const backgrounds = [
-      'https://images.unsplash.com/photo-1651483554034-8defec113cf2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2074',
+      'https://images.unsplash.com/photo-1579546929518-9e396f3cc809',
       'https://images.unsplash.com/photo-1734760858517-ff3e30c4a420?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987',
       'https://images.unsplash.com/photo-1590634875052-89c137f8df21?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2072',
       'https://images.unsplash.com/photo-1592880476174-2932b3061c30?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070',
