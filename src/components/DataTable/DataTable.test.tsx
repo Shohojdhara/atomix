@@ -20,7 +20,9 @@ vi.mock('../Pagination/Pagination', () => ({
   Pagination: ({ currentPage, totalPages, onPageChange }: any) => (
     <div data-testid="pagination">
       <button onClick={() => onPageChange(currentPage - 1)}>Prev</button>
-      <span>{currentPage} / {totalPages}</span>
+      <span>
+        {currentPage} / {totalPages}
+      </span>
       <button onClick={() => onPageChange(currentPage + 1)}>Next</button>
     </div>
   ),
@@ -100,25 +102,13 @@ describe('DataTable Component', () => {
     });
 
     it('displays empty message when no data', () => {
-      render(
-        <DataTable
-          data={[]}
-          columns={sampleColumns}
-          emptyMessage="No records found"
-        />
-      );
+      render(<DataTable data={[]} columns={sampleColumns} emptyMessage="No records found" />);
 
       expect(screen.getByText('No records found')).toBeInTheDocument();
     });
 
     it('displays loading state', () => {
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          loading={true}
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} loading={true} />);
 
       expect(screen.getByTestId('spinner')).toBeInTheDocument();
     });
@@ -126,13 +116,7 @@ describe('DataTable Component', () => {
 
   describe('Sorting', () => {
     it('renders sortable columns when sortable is enabled', () => {
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          sortable={true}
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} sortable={true} />);
 
       const nameHeader = screen.getByText('Name').closest('th');
       expect(nameHeader).toHaveClass('c-data-table__header-cell--sortable');
@@ -141,12 +125,7 @@ describe('DataTable Component', () => {
     it('calls onSort when column header is clicked', () => {
       const handleSort = vi.fn();
       render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          sortable={true}
-          onSort={handleSort}
-        />
+        <DataTable data={sampleData} columns={sampleColumns} sortable={true} onSort={handleSort} />
       );
 
       const nameHeader = screen.getByText('Name').closest('th');
@@ -163,26 +142,14 @@ describe('DataTable Component', () => {
 
   describe('Filtering', () => {
     it('renders search input when filterable is enabled', () => {
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          filterable={true}
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} filterable={true} />);
 
       const searchInput = screen.getByPlaceholderText('Search...');
       expect(searchInput).toBeInTheDocument();
     });
 
     it('filters data when search query is entered', async () => {
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          filterable={true}
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} filterable={true} />);
 
       const searchInput = screen.getByPlaceholderText('Search...');
       fireEvent.change(searchInput, { target: { value: 'John' } });
@@ -194,13 +161,7 @@ describe('DataTable Component', () => {
     });
 
     it('renders column filters when columnFilters is enabled', () => {
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          columnFilters={true}
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} columnFilters={true} />);
 
       const columnFilters = screen.getAllByPlaceholderText('Filter...');
       expect(columnFilters.length).toBeGreaterThan(0);
@@ -209,26 +170,13 @@ describe('DataTable Component', () => {
 
   describe('Pagination', () => {
     it('renders pagination when paginated is enabled', () => {
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          paginated={true}
-          pageSize={2}
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} paginated={true} pageSize={2} />);
 
       expect(screen.getByTestId('pagination')).toBeInTheDocument();
     });
 
     it('does not render pagination when paginated is false', () => {
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          paginated={false}
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} paginated={false} />);
 
       expect(screen.queryByTestId('pagination')).not.toBeInTheDocument();
     });
@@ -236,26 +184,14 @@ describe('DataTable Component', () => {
 
   describe('Row Selection', () => {
     it('renders selection checkboxes when selectionMode is multiple', () => {
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          selectionMode="multiple"
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} selectionMode="multiple" />);
 
       const checkboxes = screen.getAllByTestId('checkbox');
       expect(checkboxes.length).toBeGreaterThan(0);
     });
 
     it('renders select all checkbox in header for multiple selection', () => {
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          selectionMode="multiple"
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} selectionMode="multiple" />);
 
       const checkboxes = screen.getAllByTestId('checkbox');
       // Should have at least one checkbox (select all)
@@ -285,13 +221,7 @@ describe('DataTable Component', () => {
   describe('Row Click', () => {
     it('calls onRowClick when row is clicked', () => {
       const handleRowClick = vi.fn();
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          onRowClick={handleRowClick}
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} onRowClick={handleRowClick} />);
 
       const row = screen.getByText('John Doe').closest('tr');
       fireEvent.click(row!);
@@ -302,26 +232,14 @@ describe('DataTable Component', () => {
 
   describe('Export Functionality', () => {
     it('renders export dropdown when exportable is enabled', () => {
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          exportable={true}
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} exportable={true} />);
 
       const exportButton = screen.getByText('Export');
       expect(exportButton).toBeInTheDocument();
     });
 
     it('does not render export when exportable is false', () => {
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          exportable={false}
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} exportable={false} />);
 
       expect(screen.queryByText('Export')).not.toBeInTheDocument();
     });
@@ -329,13 +247,7 @@ describe('DataTable Component', () => {
 
   describe('Column Visibility', () => {
     it('renders column visibility dropdown when showColumnVisibility is enabled', () => {
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          showColumnVisibility={true}
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} showColumnVisibility={true} />);
 
       const columnsButton = screen.getByText('Columns');
       expect(columnsButton).toBeInTheDocument();
@@ -345,11 +257,7 @@ describe('DataTable Component', () => {
   describe('Styling Variants', () => {
     it('applies striped class when striped is enabled', () => {
       const { container } = render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          striped={true}
-        />
+        <DataTable data={sampleData} columns={sampleColumns} striped={true} />
       );
 
       const table = container.querySelector('.c-data-table');
@@ -358,11 +266,7 @@ describe('DataTable Component', () => {
 
     it('applies bordered class when bordered is enabled', () => {
       const { container } = render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          bordered={true}
-        />
+        <DataTable data={sampleData} columns={sampleColumns} bordered={true} />
       );
 
       const table = container.querySelector('.c-data-table');
@@ -371,11 +275,7 @@ describe('DataTable Component', () => {
 
     it('applies dense class when dense is enabled', () => {
       const { container } = render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          dense={true}
-        />
+        <DataTable data={sampleData} columns={sampleColumns} dense={true} />
       );
 
       const table = container.querySelector('.c-data-table');
@@ -384,11 +284,7 @@ describe('DataTable Component', () => {
 
     it('applies sticky header class when stickyHeader is enabled', () => {
       const { container } = render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          stickyHeader={true}
-        />
+        <DataTable data={sampleData} columns={sampleColumns} stickyHeader={true} />
       );
 
       const table = container.querySelector('.c-data-table');
@@ -402,16 +298,11 @@ describe('DataTable Component', () => {
         {
           key: 'name',
           title: 'Name',
-          render: (value) => <strong>{value}</strong>,
+          render: value => <strong>{value}</strong>,
         },
       ];
 
-      render(
-        <DataTable
-          data={[{ name: 'John Doe' }]}
-          columns={columnsWithRender}
-        />
-      );
+      render(<DataTable data={[{ name: 'John Doe' }]} columns={columnsWithRender} />);
 
       const strongElement = screen.getByText('John Doe').closest('strong');
       expect(strongElement).toBeInTheDocument();
@@ -420,13 +311,7 @@ describe('DataTable Component', () => {
 
   describe('Accessibility', () => {
     it('applies correct ARIA attributes for sortable columns', () => {
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          sortable={true}
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} sortable={true} />);
 
       const nameHeader = screen.getByText('Name').closest('th');
       expect(nameHeader).toHaveAttribute('aria-sort');
@@ -434,17 +319,10 @@ describe('DataTable Component', () => {
 
     it('applies role="button" to clickable rows', () => {
       const handleRowClick = vi.fn();
-      render(
-        <DataTable
-          data={sampleData}
-          columns={sampleColumns}
-          onRowClick={handleRowClick}
-        />
-      );
+      render(<DataTable data={sampleData} columns={sampleColumns} onRowClick={handleRowClick} />);
 
       const row = screen.getByText('John Doe').closest('tr');
       expect(row).toHaveAttribute('role', 'button');
     });
   });
 });
-

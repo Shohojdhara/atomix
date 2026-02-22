@@ -69,67 +69,69 @@ export interface BreadcrumbProps {
    */
   style?: React.CSSProperties;
 }
-export const Breadcrumb: React.FC<BreadcrumbProps> = memo(({
-  items,
-  divider,
-  className = '',
-  'aria-label': ariaLabel = 'Breadcrumb',
-  LinkComponent,
-  style,
-}) => {
-  const breadcrumbClasses = [BREADCRUMB.CLASSES.BASE, className].filter(Boolean).join(' ');
+export const Breadcrumb: React.FC<BreadcrumbProps> = memo(
+  ({
+    items,
+    divider,
+    className = '',
+    'aria-label': ariaLabel = 'Breadcrumb',
+    LinkComponent,
+    style,
+  }) => {
+    const breadcrumbClasses = [BREADCRUMB.CLASSES.BASE, className].filter(Boolean).join(' ');
 
-  return (
-    <nav aria-label={ariaLabel} style={style}>
-      <ol className={breadcrumbClasses}>
-        {items.map((item, index) => {
-          const isLast = index === items.length - 1;
-          const itemClasses = [
-            BREADCRUMB.CLASSES.ITEM,
-            item.active || isLast ? BREADCRUMB.CLASSES.ACTIVE : '',
-          ]
-            .filter(Boolean)
-            .join(' ');
+    return (
+      <nav aria-label={ariaLabel} style={style}>
+        <ol className={breadcrumbClasses}>
+          {items.map((item, index) => {
+            const isLast = index === items.length - 1;
+            const itemClasses = [
+              BREADCRUMB.CLASSES.ITEM,
+              item.active || isLast ? BREADCRUMB.CLASSES.ACTIVE : '',
+            ]
+              .filter(Boolean)
+              .join(' ');
 
-          const linkContent = (
-            <>
-              {item.icon && <span className="c-breadcrumb__icon">{item.icon}</span>}
-              {item.label}
-            </>
-          );
+            const linkContent = (
+              <>
+                {item.icon && <span className="c-breadcrumb__icon">{item.icon}</span>}
+                {item.label}
+              </>
+            );
 
-          const linkProps = {
-            href: item.href,
-            className: BREADCRUMB.CLASSES.LINK,
-            onClick: item.onClick,
-            style: item.style,
-          };
+            const linkProps = {
+              href: item.href,
+              className: BREADCRUMB.CLASSES.LINK,
+              onClick: item.onClick,
+              style: item.style,
+            };
 
-          return (
-            <li key={index} className={itemClasses} style={item.style}>
-              {item.href && !item.active ? (
-                LinkComponent ? (
-                  (() => {
-                    const Component = LinkComponent as React.ComponentType<any>;
-                    return (
-                      <Component {...(linkProps as React.ComponentProps<React.ElementType>)}>
-                        {linkContent}
-                      </Component>
-                    );
-                  })()
+            return (
+              <li key={index} className={itemClasses} style={item.style}>
+                {item.href && !item.active ? (
+                  LinkComponent ? (
+                    (() => {
+                      const Component = LinkComponent as React.ComponentType<any>;
+                      return (
+                        <Component {...(linkProps as React.ComponentProps<React.ElementType>)}>
+                          {linkContent}
+                        </Component>
+                      );
+                    })()
+                  ) : (
+                    <a {...(linkProps as React.ComponentProps<'a'>)}>{linkContent}</a>
+                  )
                 ) : (
-                  <a {...(linkProps as React.ComponentProps<'a'>)}>{linkContent}</a>
-                )
-              ) : (
-                <span className={BREADCRUMB.CLASSES.LINK}>{linkContent}</span>
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
-  );
-});
+                  <span className={BREADCRUMB.CLASSES.LINK}>{linkContent}</span>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+    );
+  }
+);
 
 Breadcrumb.displayName = 'Breadcrumb';
 

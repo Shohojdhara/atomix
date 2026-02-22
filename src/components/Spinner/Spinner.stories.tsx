@@ -149,7 +149,9 @@ export const AllVariants: Story = {
 
 export const Fullscreen: Story = {
   render: () => (
-    <div style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div
+      style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
       <Spinner fullscreen={true} variant="primary" size="lg" />
     </div>
   ),

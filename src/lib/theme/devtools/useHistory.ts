@@ -1,6 +1,6 @@
 /**
  * useHistory Hook
- * 
+ *
  * React hook for managing undo/redo history
  */
 
@@ -34,9 +34,9 @@ export interface UseHistoryReturn<T> {
 
 /**
  * useHistory hook
- * 
+ *
  * Provides undo/redo functionality for state management
- * 
+ *
  * @example
  * ```tsx
  * const { state, setState, undo, redo, canUndo, canRedo } = useHistory({
@@ -47,7 +47,7 @@ export interface UseHistoryReturn<T> {
  */
 export function useHistory<T>(options: UseHistoryOptions = {}): UseHistoryReturn<T> {
   const { maxHistorySize = 50, initialState } = options;
-  
+
   const [state, setStateInternal] = useState<T>(initialState as T);
   const historyRef = useRef<T[]>([initialState as T]);
   const currentIndexRef = useRef<number>(0);
@@ -59,25 +59,28 @@ export function useHistory<T>(options: UseHistoryOptions = {}): UseHistoryReturn
     setCanRedo(currentIndexRef.current < historyRef.current.length - 1);
   }, []);
 
-  const setState = useCallback((newState: T) => {
-    // Remove any future history if we're not at the end
-    if (currentIndexRef.current < historyRef.current.length - 1) {
-      historyRef.current = historyRef.current.slice(0, currentIndexRef.current + 1);
-    }
+  const setState = useCallback(
+    (newState: T) => {
+      // Remove any future history if we're not at the end
+      if (currentIndexRef.current < historyRef.current.length - 1) {
+        historyRef.current = historyRef.current.slice(0, currentIndexRef.current + 1);
+      }
 
-    // Add new state to history
-    historyRef.current.push(newState);
-    currentIndexRef.current = historyRef.current.length - 1;
+      // Add new state to history
+      historyRef.current.push(newState);
+      currentIndexRef.current = historyRef.current.length - 1;
 
-    // Limit history size
-    if (historyRef.current.length > maxHistorySize) {
-      historyRef.current.shift();
-      currentIndexRef.current--;
-    }
+      // Limit history size
+      if (historyRef.current.length > maxHistorySize) {
+        historyRef.current.shift();
+        currentIndexRef.current--;
+      }
 
-    setStateInternal(newState);
-    updateHistoryState();
-  }, [maxHistorySize, updateHistoryState]);
+      setStateInternal(newState);
+      updateHistoryState();
+    },
+    [maxHistorySize, updateHistoryState]
+  );
 
   const undo = useCallback(() => {
     if (currentIndexRef.current > 0) {
@@ -127,4 +130,3 @@ export function useHistory<T>(options: UseHistoryOptions = {}): UseHistoryReturn
     getHistoryStats,
   };
 }
-

@@ -18,29 +18,29 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    title: { 
-      control: 'text', 
-      description: 'Main title text (supports ReactNode)', 
+    title: {
+      control: 'text',
+      description: 'Main title text (supports ReactNode)',
       table: {
         type: { summary: 'ReactNode' },
         defaultValue: { summary: 'undefined' },
-      }
+      },
     },
-    label: { 
-      control: 'text', 
-      description: 'Label text displayed above the title (supports ReactNode)', 
+    label: {
+      control: 'text',
+      description: 'Label text displayed above the title (supports ReactNode)',
       table: {
         type: { summary: 'ReactNode' },
         defaultValue: { summary: 'undefined' },
-      }
+      },
     },
-    text: { 
-      control: 'text', 
-      description: 'Description text content (supports ReactNode)', 
+    text: {
+      control: 'text',
+      description: 'Description text content (supports ReactNode)',
       table: {
         type: { summary: 'ReactNode' },
         defaultValue: { summary: 'undefined' },
-      }
+      },
     },
     alignment: {
       control: { type: 'radio', options: ['left', 'center', 'right'] },
@@ -49,7 +49,7 @@ const meta = {
       table: {
         type: { summary: '"left" | "center" | "right"' },
         defaultValue: { summary: 'left' },
-      }
+      },
     },
     size: {
       control: { type: 'radio', options: SIZES },
@@ -58,55 +58,55 @@ const meta = {
       table: {
         type: { summary: '"sm" | "md" | "lg"' },
         defaultValue: { summary: 'md' },
-      }
+      },
     },
-    skeleton: { 
+    skeleton: {
       control: 'boolean',
       description: 'Show skeleton loading state',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
-      }
+      },
     },
-    showOverlay: { 
+    showOverlay: {
       control: 'boolean',
       description: 'Whether to show an overlay on the background',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
-      }
+      },
     },
-    actions: { 
+    actions: {
       control: { type: 'text' },
       description: 'Call to action elements (supports ReactNode)',
       table: {
         type: { summary: 'ReactNode' },
         defaultValue: { summary: 'undefined' },
-      }
+      },
     },
-    backgroundImageSrc: { 
+    backgroundImageSrc: {
       control: 'text',
       description: 'URL for the background image',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'undefined' },
-      }
+      },
     },
-    imageSrc: { 
+    imageSrc: {
       control: 'text',
       description: 'URL for the foreground image',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'undefined' },
-      }
+      },
     },
-    imageAlt: { 
-      control: 'text', 
-      description: 'Alt text for the image', 
+    imageAlt: {
+      control: 'text',
+      description: 'Alt text for the image',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'Section image' },
-      }
+      },
     },
     className: {
       control: 'text',
@@ -114,7 +114,7 @@ const meta = {
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: '' },
-      }
+      },
     },
     style: {
       control: 'object',
@@ -122,7 +122,7 @@ const meta = {
       table: {
         type: { summary: 'CSSProperties' },
         defaultValue: { summary: '{}' },
-      }
+      },
     },
   },
   args: {
@@ -151,10 +151,10 @@ export const BasicUsage: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Basic usage of the SectionIntro component with title, label, and text.'
-      }
-    }
-  }
+        story: 'Basic usage of the SectionIntro component with title, label, and text.',
+      },
+    },
+  },
 };
 
 // With actions example
@@ -175,10 +175,10 @@ export const WithActions: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'SectionIntro with call-to-action buttons.'
-      }
-    }
-  }
+        story: 'SectionIntro with call-to-action buttons.',
+      },
+    },
+  },
 };
 
 // Center-aligned example
@@ -193,10 +193,10 @@ export const CenterAligned: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Center-aligned SectionIntro content.'
-      }
-    }
-  }
+        story: 'Center-aligned SectionIntro content.',
+      },
+    },
+  },
 };
 
 // Right-aligned example
@@ -211,10 +211,10 @@ export const RightAligned: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Right-aligned SectionIntro content.'
-      }
-    }
-  }
+        story: 'Right-aligned SectionIntro content.',
+      },
+    },
+  },
 };
 
 // With background image example
@@ -232,10 +232,10 @@ export const WithBackgroundImage: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'SectionIntro with a background image and overlay.'
-      }
-    }
-  }
+        story: 'SectionIntro with a background image and overlay.',
+      },
+    },
+  },
 };
 
 // With foreground image example
@@ -253,10 +253,10 @@ export const WithForegroundImage: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'SectionIntro with a foreground image.'
-      }
-    }
-  }
+        story: 'SectionIntro with a foreground image.',
+      },
+    },
+  },
 };
 
 // Small size example
@@ -271,10 +271,10 @@ export const SmallSize: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Small-sized SectionIntro for compact layouts.'
-      }
-    }
-  }
+        story: 'Small-sized SectionIntro for compact layouts.',
+      },
+    },
+  },
 };
 
 // Large size example
@@ -289,10 +289,10 @@ export const LargeSize: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Large-sized SectionIntro for prominent displays.'
-      }
-    }
-  }
+        story: 'Large-sized SectionIntro for prominent displays.',
+      },
+    },
+  },
 };
 
 // Skeleton loading state example
@@ -308,10 +308,10 @@ export const SkeletonLoading: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Skeleton loading state of the SectionIntro component.'
-      }
-    }
-  }
+        story: 'Skeleton loading state of the SectionIntro component.',
+      },
+    },
+  },
 };
 
 // Full featured example
@@ -338,8 +338,8 @@ export const FullFeaturedExample: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Full featured SectionIntro with all options enabled.'
-      }
-    }
-  }
+        story: 'Full featured SectionIntro with all options enabled.',
+      },
+    },
+  },
 };

@@ -1,6 +1,6 @@
 /**
  * Theme Configuration Module
- * 
+ *
  * Exports for theme configuration loading and validation
  */
 

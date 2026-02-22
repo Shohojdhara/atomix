@@ -1,6 +1,6 @@
 /**
  * Theme Adapter
- * 
+ *
  * Converts between Theme objects and DesignTokens.
  */
 
@@ -11,12 +11,12 @@ import { hexToRgb } from '../utils/themeUtils';
 
 /**
  * Convert Theme object to DesignTokens
- * 
+ *
  * Extracts values from a Theme object and converts them to flat DesignTokens format.
- * 
+ *
  * @param theme - Theme object to convert
  * @returns Partial DesignTokens object
- * 
+ *
  * @example
  * ```typescript
  * const theme = createTheme({ palette: { primary: { main: '#7c3aed' } } });
@@ -150,14 +150,14 @@ export function themeToDesignTokens(theme: Theme): Partial<DesignTokens> {
     tokens['font-sans-serif'] = theme.typography.fontFamily;
     tokens['body-font-size'] = `${theme.typography.fontSize}px`;
     tokens['body-font-weight'] = String(theme.typography.fontWeightRegular);
-    
+
     // Font weights
     tokens['font-weight-light'] = String(theme.typography.fontWeightLight);
     tokens['font-weight-normal'] = String(theme.typography.fontWeightRegular);
     tokens['font-weight-medium'] = String(theme.typography.fontWeightMedium);
     tokens['font-weight-semibold'] = String(theme.typography.fontWeightSemiBold);
     tokens['font-weight-bold'] = String(theme.typography.fontWeightBold);
-    
+
     // Line heights
     if (theme.typography.h1?.lineHeight) {
       tokens['line-height-base'] = String(theme.typography.h1.lineHeight);
@@ -165,7 +165,11 @@ export function themeToDesignTokens(theme: Theme): Partial<DesignTokens> {
   }
 
   // Convert spacing (if available as object)
-  if (theme.spacing && typeof theme.spacing === 'object' && !('__isSpacingFunction' in theme.spacing)) {
+  if (
+    theme.spacing &&
+    typeof theme.spacing === 'object' &&
+    !('__isSpacingFunction' in theme.spacing)
+  ) {
     const spacing = theme.spacing as Record<string, string | number>;
     Object.entries(spacing).forEach(([key, value]) => {
       tokens[`spacing-${key}` as keyof DesignTokens] = String(value);
@@ -175,12 +179,18 @@ export function themeToDesignTokens(theme: Theme): Partial<DesignTokens> {
   // Convert border radius
   if (theme.borderRadius) {
     Object.entries(theme.borderRadius).forEach(([key, value]) => {
-      const tokenKey = key === 'sm' ? 'border-radius-sm' :
-                      key === 'md' ? 'border-radius' :
-                      key === 'lg' ? 'border-radius-lg' :
-                      key === 'xl' ? 'border-radius-xl' :
-                      key === 'xxl' ? 'border-radius-xxl' :
-                      `border-radius-${key}`;
+      const tokenKey =
+        key === 'sm'
+          ? 'border-radius-sm'
+          : key === 'md'
+            ? 'border-radius'
+            : key === 'lg'
+              ? 'border-radius-lg'
+              : key === 'xl'
+                ? 'border-radius-xl'
+                : key === 'xxl'
+                  ? 'border-radius-xxl'
+                  : `border-radius-${key}`;
       tokens[tokenKey as keyof DesignTokens] = String(value);
     });
   }
@@ -188,12 +198,18 @@ export function themeToDesignTokens(theme: Theme): Partial<DesignTokens> {
   // Convert shadows
   if (theme.shadows) {
     Object.entries(theme.shadows).forEach(([key, value]) => {
-      const tokenKey = key === 'xs' ? 'box-shadow-xs' :
-                      key === 'sm' ? 'box-shadow-sm' :
-                      key === 'md' ? 'box-shadow' :
-                      key === 'lg' ? 'box-shadow-lg' :
-                      key === 'xl' ? 'box-shadow-xl' :
-                      `box-shadow-${key}`;
+      const tokenKey =
+        key === 'xs'
+          ? 'box-shadow-xs'
+          : key === 'sm'
+            ? 'box-shadow-sm'
+            : key === 'md'
+              ? 'box-shadow'
+              : key === 'lg'
+                ? 'box-shadow-lg'
+                : key === 'xl'
+                  ? 'box-shadow-xl'
+                  : `box-shadow-${key}`;
       tokens[tokenKey as keyof DesignTokens] = String(value);
     });
   }
@@ -240,13 +256,13 @@ export function themeToDesignTokens(theme: Theme): Partial<DesignTokens> {
 
 /**
  * Convert DesignTokens to Theme-compatible CSS variables
- * 
+ *
  * @param tokens - DesignTokens object
  * @returns CSS variables object compatible with Theme.cssVars
  */
 export function designTokensToCSSVars(tokens: Partial<DesignTokens>): Record<string, string> {
   const cssVars: Record<string, string> = {};
-  
+
   Object.entries(tokens).forEach(([key, value]) => {
     if (value !== undefined) {
       cssVars[`--atomix-${key}`] = String(value);
@@ -258,9 +274,9 @@ export function designTokensToCSSVars(tokens: Partial<DesignTokens>): Record<str
 
 /**
  * Create DesignTokens from Theme with defaults
- * 
+ *
  * Converts a Theme to DesignTokens and merges with default tokens.
- * 
+ *
  * @param theme - Theme object to convert
  * @returns Complete DesignTokens object
  */
@@ -271,17 +287,16 @@ export function createDesignTokensFromTheme(theme: Theme): DesignTokens {
 
 /**
  * Create a minimal Theme object from DesignTokens
- * 
+ *
  * @param tokens - DesignTokens to convert
  * @returns Minimal Theme object with cssVars populated
  */
 export function designTokensToTheme(tokens: Partial<DesignTokens>): Partial<Theme> {
   const cssVars = designTokensToCSSVars(tokens);
-  
+
   return {
     name: 'Design Tokens Theme',
     cssVars,
     __isJSTheme: true,
   } as Partial<Theme>;
 }
-

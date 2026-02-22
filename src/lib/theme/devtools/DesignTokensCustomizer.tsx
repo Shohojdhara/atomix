@@ -35,7 +35,15 @@ type ColorFormat = 'hex' | 'rgb' | 'rgba' | 'hsl' | 'hsla';
 /**
  * Token category for organization
  */
-type TokenCategory = 'colors' | 'typography' | 'spacing' | 'shadows' | 'borders' | 'transitions' | 'zindex' | 'breakpoints';
+type TokenCategory =
+  | 'colors'
+  | 'typography'
+  | 'spacing'
+  | 'shadows'
+  | 'borders'
+  | 'transitions'
+  | 'zindex'
+  | 'breakpoints';
 
 /**
  * Design Tokens Customizer Component
@@ -120,13 +128,12 @@ export const DesignTokensCustomizer: React.FC<DesignTokensCustomizerProps> = ({
       case 'rgba':
         return `rgba(${r}, ${g}, ${b}, ${a})`;
       case 'hsl':
-      case 'hsla':
-        {
+      case 'hsla': {
         const hsl = rgbToHsl(r, g, b);
         return format === 'hsl'
           ? `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`
           : `hsla(${hsl.h}, ${hsl.s}%, ${hsl.l}%, ${a})`;
-        }
+      }
       default:
         return color;
     }
@@ -149,9 +156,15 @@ export const DesignTokensCustomizer: React.FC<DesignTokensCustomizerProps> = ({
       s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
 
       switch (max) {
-        case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
-        case g: h = ((b - r) / d + 2) / 6; break;
-        case b: h = ((r - g) / d + 4) / 6; break;
+        case r:
+          h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+          break;
+        case g:
+          h = ((b - r) / d + 2) / 6;
+          break;
+        case b:
+          h = ((r - g) / d + 4) / 6;
+          break;
       }
     }
 
@@ -200,7 +213,7 @@ export const DesignTokensCustomizer: React.FC<DesignTokensCustomizerProps> = ({
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = e => {
       try {
         const content = e.target?.result as string;
         const parsedTokens = JSON.parse(content);
@@ -220,92 +233,264 @@ export const DesignTokensCustomizer: React.FC<DesignTokensCustomizerProps> = ({
       label: 'Colors',
       tokens: [
         // Base colors
-        'primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark',
+        'primary',
+        'secondary',
+        'success',
+        'info',
+        'warning',
+        'error',
+        'light',
+        'dark',
         // RGB versions
-        'primary-rgb', 'secondary-rgb', 'success-rgb', 'info-rgb', 'warning-rgb', 'error-rgb', 'light-rgb', 'dark-rgb',
+        'primary-rgb',
+        'secondary-rgb',
+        'success-rgb',
+        'info-rgb',
+        'warning-rgb',
+        'error-rgb',
+        'light-rgb',
+        'dark-rgb',
         // Gray scale
-        'gray-1', 'gray-2', 'gray-3', 'gray-4', 'gray-5', 'gray-6', 'gray-7', 'gray-8', 'gray-9', 'gray-10',
+        'gray-1',
+        'gray-2',
+        'gray-3',
+        'gray-4',
+        'gray-5',
+        'gray-6',
+        'gray-7',
+        'gray-8',
+        'gray-9',
+        'gray-10',
         // Primary scale
-        'primary-1', 'primary-2', 'primary-3', 'primary-4', 'primary-5', 'primary-6', 'primary-7', 'primary-8', 'primary-9', 'primary-10',
+        'primary-1',
+        'primary-2',
+        'primary-3',
+        'primary-4',
+        'primary-5',
+        'primary-6',
+        'primary-7',
+        'primary-8',
+        'primary-9',
+        'primary-10',
         // Text emphasis
-        'primary-text-emphasis', 'secondary-text-emphasis', 'tertiary-text-emphasis', 'disabled-text-emphasis',
-        'invert-text-emphasis', 'brand-text-emphasis', 'error-text-emphasis', 'success-text-emphasis',
-        'warning-text-emphasis', 'info-text-emphasis', 'light-text-emphasis', 'dark-text-emphasis',
+        'primary-text-emphasis',
+        'secondary-text-emphasis',
+        'tertiary-text-emphasis',
+        'disabled-text-emphasis',
+        'invert-text-emphasis',
+        'brand-text-emphasis',
+        'error-text-emphasis',
+        'success-text-emphasis',
+        'warning-text-emphasis',
+        'info-text-emphasis',
+        'light-text-emphasis',
+        'dark-text-emphasis',
         // Background subtle
-        'primary-bg-subtle', 'secondary-bg-subtle', 'tertiary-bg-subtle', 'invert-bg-subtle',
-        'brand-bg-subtle', 'error-bg-subtle', 'success-bg-subtle', 'warning-bg-subtle', 'info-bg-subtle',
-        'light-bg-subtle', 'dark-bg-subtle',
+        'primary-bg-subtle',
+        'secondary-bg-subtle',
+        'tertiary-bg-subtle',
+        'invert-bg-subtle',
+        'brand-bg-subtle',
+        'error-bg-subtle',
+        'success-bg-subtle',
+        'warning-bg-subtle',
+        'info-bg-subtle',
+        'light-bg-subtle',
+        'dark-bg-subtle',
         // Border subtle
-        'primary-border-subtle', 'secondary-border-subtle', 'success-border-subtle', 'error-border-subtle',
-        'warning-border-subtle', 'info-border-subtle', 'brand-border-subtle', 'light-border-subtle', 'dark-border-subtle',
+        'primary-border-subtle',
+        'secondary-border-subtle',
+        'success-border-subtle',
+        'error-border-subtle',
+        'warning-border-subtle',
+        'info-border-subtle',
+        'brand-border-subtle',
+        'light-border-subtle',
+        'dark-border-subtle',
         // Hover states
-        'primary-hover', 'secondary-hover', 'light-hover', 'dark-hover', 'error-hover', 'success-hover',
-        'warning-hover', 'info-hover',
+        'primary-hover',
+        'secondary-hover',
+        'light-hover',
+        'dark-hover',
+        'error-hover',
+        'success-hover',
+        'warning-hover',
+        'info-hover',
         // Gradients
-        'primary-gradient', 'secondary-gradient', 'light-gradient', 'dark-gradient', 'success-gradient',
-        'info-gradient', 'warning-gradient', 'error-gradient', 'gradient',
+        'primary-gradient',
+        'secondary-gradient',
+        'light-gradient',
+        'dark-gradient',
+        'success-gradient',
+        'info-gradient',
+        'warning-gradient',
+        'error-gradient',
+        'gradient',
       ],
     },
     typography: {
       label: 'Typography',
       tokens: [
-        'font-sans-serif', 'font-monospace', 'body-font-family', 'body-font-size', 'body-font-weight',
-        'body-line-height', 'body-color', 'body-bg', 'heading-color',
-        'font-size-xl', 'font-size-2xl', 'display-1',
-        'font-weight-light', 'font-weight-normal', 'font-weight-medium', 'font-weight-semibold',
-        'font-weight-bold', 'font-weight-heavy', 'font-weight-black',
-        'line-height-base', 'line-height-sm', 'line-height-lg',
-        'letter-spacing-h1', 'letter-spacing-h2', 'letter-spacing-h3', 'letter-spacing-h4',
-        'letter-spacing-h5', 'letter-spacing-h6',
-        'link-color', 'link-color-rgb', 'link-decoration', 'link-hover-color', 'link-hover-color-rgb',
-        'highlight-bg', 'code-color',
+        'font-sans-serif',
+        'font-monospace',
+        'body-font-family',
+        'body-font-size',
+        'body-font-weight',
+        'body-line-height',
+        'body-color',
+        'body-bg',
+        'heading-color',
+        'font-size-xl',
+        'font-size-2xl',
+        'display-1',
+        'font-weight-light',
+        'font-weight-normal',
+        'font-weight-medium',
+        'font-weight-semibold',
+        'font-weight-bold',
+        'font-weight-heavy',
+        'font-weight-black',
+        'line-height-base',
+        'line-height-sm',
+        'line-height-lg',
+        'letter-spacing-h1',
+        'letter-spacing-h2',
+        'letter-spacing-h3',
+        'letter-spacing-h4',
+        'letter-spacing-h5',
+        'letter-spacing-h6',
+        'link-color',
+        'link-color-rgb',
+        'link-decoration',
+        'link-hover-color',
+        'link-hover-color-rgb',
+        'highlight-bg',
+        'code-color',
       ],
     },
     spacing: {
       label: 'Spacing',
       tokens: [
-        'spacing-0', 'spacing-1', 'spacing-px-6', 'spacing-2', 'spacing-px-10', 'spacing-3', 'spacing-px-14',
-        'spacing-4', 'spacing-5', 'spacing-px-22', 'spacing-6', 'spacing-7', 'spacing-px-30', 'spacing-8',
-        'spacing-9', 'spacing-10', 'spacing-11', 'spacing-12', 'spacing-14', 'spacing-16', 'spacing-20',
-        'spacing-24', 'spacing-28', 'spacing-32', 'spacing-36', 'spacing-40', 'spacing-44', 'spacing-48',
-        'spacing-52', 'spacing-56', 'spacing-60', 'spacing-64', 'spacing-72', 'spacing-80', 'spacing-90', 'spacing-200',
+        'spacing-0',
+        'spacing-1',
+        'spacing-px-6',
+        'spacing-2',
+        'spacing-px-10',
+        'spacing-3',
+        'spacing-px-14',
+        'spacing-4',
+        'spacing-5',
+        'spacing-px-22',
+        'spacing-6',
+        'spacing-7',
+        'spacing-px-30',
+        'spacing-8',
+        'spacing-9',
+        'spacing-10',
+        'spacing-11',
+        'spacing-12',
+        'spacing-14',
+        'spacing-16',
+        'spacing-20',
+        'spacing-24',
+        'spacing-28',
+        'spacing-32',
+        'spacing-36',
+        'spacing-40',
+        'spacing-44',
+        'spacing-48',
+        'spacing-52',
+        'spacing-56',
+        'spacing-60',
+        'spacing-64',
+        'spacing-72',
+        'spacing-80',
+        'spacing-90',
+        'spacing-200',
       ],
     },
     shadows: {
       label: 'Shadows',
       tokens: [
-        'box-shadow', 'box-shadow-xs', 'box-shadow-sm', 'box-shadow-lg', 'box-shadow-xl', 'box-shadow-inset',
+        'box-shadow',
+        'box-shadow-xs',
+        'box-shadow-sm',
+        'box-shadow-lg',
+        'box-shadow-xl',
+        'box-shadow-inset',
       ],
     },
     borders: {
       label: 'Borders',
       tokens: [
-        'border-width', 'border-style', 'border-color', 'border-color-translucent',
-        'border-radius', 'border-radius-sm', 'border-radius-lg', 'border-radius-xl', 'border-radius-xxl',
-        'border-radius-2xl', 'border-radius-3xl', 'border-radius-4xl', 'border-radius-pill',
-        'focus-border-color', 'focus-ring-width', 'focus-ring-offset', 'focus-ring-opacity',
-        'form-valid-color', 'form-valid-border-color', 'form-invalid-color', 'form-invalid-border-color',
+        'border-width',
+        'border-style',
+        'border-color',
+        'border-color-translucent',
+        'border-radius',
+        'border-radius-sm',
+        'border-radius-lg',
+        'border-radius-xl',
+        'border-radius-xxl',
+        'border-radius-2xl',
+        'border-radius-3xl',
+        'border-radius-4xl',
+        'border-radius-pill',
+        'focus-border-color',
+        'focus-ring-width',
+        'focus-ring-offset',
+        'focus-ring-opacity',
+        'form-valid-color',
+        'form-valid-border-color',
+        'form-invalid-color',
+        'form-invalid-border-color',
       ],
     },
     transitions: {
       label: 'Transitions',
       tokens: [
-        'transition-duration-fast', 'transition-duration-base', 'transition-duration-slow', 'transition-duration-slower',
-        'easing-base', 'easing-ease-in-out', 'easing-ease-out', 'easing-ease-in', 'easing-ease-linear',
-        'transition-fast', 'transition-base', 'transition-slow',
+        'transition-duration-fast',
+        'transition-duration-base',
+        'transition-duration-slow',
+        'transition-duration-slower',
+        'easing-base',
+        'easing-ease-in-out',
+        'easing-ease-out',
+        'easing-ease-in',
+        'easing-ease-linear',
+        'transition-fast',
+        'transition-base',
+        'transition-slow',
       ],
     },
     zindex: {
       label: 'Z-Index',
       tokens: [
-        'z-n1', 'z-0', 'z-1', 'z-2', 'z-3', 'z-4', 'z-5', 'z-dropdown', 'z-sticky', 'z-fixed',
-        'z-modal', 'z-popover', 'z-tooltip', 'z-drawer',
+        'z-n1',
+        'z-0',
+        'z-1',
+        'z-2',
+        'z-3',
+        'z-4',
+        'z-5',
+        'z-dropdown',
+        'z-sticky',
+        'z-fixed',
+        'z-modal',
+        'z-popover',
+        'z-tooltip',
+        'z-drawer',
       ],
     },
     breakpoints: {
       label: 'Breakpoints',
       tokens: [
-        'breakpoint-xs', 'breakpoint-sm', 'breakpoint-md', 'breakpoint-lg', 'breakpoint-xl', 'breakpoint-xxl',
+        'breakpoint-xs',
+        'breakpoint-sm',
+        'breakpoint-md',
+        'breakpoint-lg',
+        'breakpoint-xl',
+        'breakpoint-xxl',
       ],
     },
   };
@@ -315,10 +500,7 @@ export const DesignTokensCustomizer: React.FC<DesignTokensCustomizerProps> = ({
       <div className="customizer-header">
         <h2>Interactive Theme Customizer</h2>
         <div className="customizer-controls">
-          <select
-            value={colorFormat}
-            onChange={(e) => setColorFormat(e.target.value as ColorFormat)}
-          >
+          <select value={colorFormat} onChange={e => setColorFormat(e.target.value as ColorFormat)}>
             <option value="hex">HEX</option>
             <option value="rgb">RGB</option>
             <option value="rgba">RGBA</option>
@@ -357,11 +539,23 @@ export const DesignTokensCustomizer: React.FC<DesignTokensCustomizerProps> = ({
         <div className="customizer-editor">
           <h3>{tokenCategories[activeCategory].label}</h3>
           <div className="tokens-grid">
-            {tokenCategories[activeCategory].tokens.map((tokenKey) => {
+            {tokenCategories[activeCategory].tokens.map(tokenKey => {
               const value = tokens[tokenKey as keyof DesignTokens] || '';
-              const isColor = tokenKey.includes('color') || tokenKey.includes('bg') || tokenKey.includes('gradient') ||
-                             ['primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark'].includes(tokenKey) ||
-                             tokenKey.match(/^(gray|primary|red|green|blue|yellow)-\d+$/);
+              const isColor =
+                tokenKey.includes('color') ||
+                tokenKey.includes('bg') ||
+                tokenKey.includes('gradient') ||
+                [
+                  'primary',
+                  'secondary',
+                  'success',
+                  'info',
+                  'warning',
+                  'error',
+                  'light',
+                  'dark',
+                ].includes(tokenKey) ||
+                tokenKey.match(/^(gray|primary|red|green|blue|yellow)-\d+$/);
 
               return (
                 <div key={tokenKey} className="token-item">
@@ -371,12 +565,12 @@ export const DesignTokensCustomizer: React.FC<DesignTokensCustomizerProps> = ({
                       <input
                         type="color"
                         value={value.startsWith('#') ? value : convertColorFormat(value, 'hex')}
-                        onChange={(e) => updateToken(tokenKey as keyof DesignTokens, e.target.value)}
+                        onChange={e => updateToken(tokenKey as keyof DesignTokens, e.target.value)}
                       />
                       <input
                         type="text"
                         value={convertColorFormat(value, colorFormat)}
-                        onChange={(e) => {
+                        onChange={e => {
                           const converted = convertColorFormat(e.target.value, 'hex');
                           updateToken(tokenKey as keyof DesignTokens, converted);
                         }}
@@ -386,7 +580,7 @@ export const DesignTokensCustomizer: React.FC<DesignTokensCustomizerProps> = ({
                     <input
                       type="text"
                       value={value}
-                      onChange={(e) => updateToken(tokenKey as keyof DesignTokens, e.target.value)}
+                      onChange={e => updateToken(tokenKey as keyof DesignTokens, e.target.value)}
                     />
                   )}
                 </div>

@@ -84,11 +84,7 @@ export const NavDropdown: React.FC<NavDropdownProps> = forwardRef<HTMLLIElement,
 
     const MenuTag = megaMenu ? 'div' : 'ul';
     const menuContent = (
-      <MenuTag
-        className={dropdownMenuClass}
-        ref={dropdownRef as any}
-        aria-hidden={!isActive}
-      >
+      <MenuTag className={dropdownMenuClass} ref={dropdownRef as any} aria-hidden={!isActive}>
         {children}
       </MenuTag>
     );

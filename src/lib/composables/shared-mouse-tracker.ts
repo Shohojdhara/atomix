@@ -19,15 +19,15 @@ class GlobalMouseTracker {
    */
   subscribe(callback: (pos: MousePosition) => void): () => void {
     this.listeners.add(callback);
-    
+
     // Start tracking if this is the first subscriber
     if (this.listeners.size === 1) {
       this.startTracking();
     }
-    
+
     // Immediately notify with current position
     callback(this.position);
-    
+
     // Return unsubscribe function
     return () => {
       this.unsubscribe(callback);
@@ -39,7 +39,7 @@ class GlobalMouseTracker {
    */
   private unsubscribe(callback: (pos: MousePosition) => void): void {
     this.listeners.delete(callback);
-    
+
     // Stop tracking if no more subscribers
     if (this.listeners.size === 0) {
       this.stopTracking();
@@ -53,9 +53,9 @@ class GlobalMouseTracker {
     if (this.isTracking) {
       return;
     }
-    
+
     this.isTracking = true;
-    
+
     // Use document-level listener for global tracking
     document.addEventListener('mousemove', this.handleMouseMove, { passive: true });
   }
@@ -67,16 +67,16 @@ class GlobalMouseTracker {
     if (!this.isTracking) {
       return;
     }
-    
+
     this.isTracking = false;
     document.removeEventListener('mousemove', this.handleMouseMove);
-    
+
     // Cancel any pending RAF
     if (this.rafId !== null) {
       cancelAnimationFrame(this.rafId);
       this.rafId = null;
     }
-    
+
     this.lastEvent = null;
   }
 
@@ -85,7 +85,7 @@ class GlobalMouseTracker {
    */
   private handleMouseMove = (e: MouseEvent): void => {
     this.lastEvent = e;
-    
+
     // Use requestAnimationFrame to throttle updates
     if (this.rafId === null) {
       this.rafId = requestAnimationFrame(() => {
@@ -94,9 +94,9 @@ class GlobalMouseTracker {
             x: this.lastEvent.clientX,
             y: this.lastEvent.clientY,
           };
-          
+
           // Notify all subscribers
-          this.listeners.forEach((callback) => {
+          this.listeners.forEach(callback => {
             try {
               callback(this.position);
             } catch (error) {
@@ -104,7 +104,7 @@ class GlobalMouseTracker {
             }
           });
         }
-        
+
         this.rafId = null;
       });
     }
@@ -130,4 +130,3 @@ const globalMouseTracker = new GlobalMouseTracker();
 
 export { globalMouseTracker };
 export type { GlobalMouseTracker };
-

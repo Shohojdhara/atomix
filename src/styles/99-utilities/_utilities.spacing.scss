@@ -3,146 +3,191 @@
 
 // Define utilities for spacing
 $utilities-spacing: (
-  'margin': (responsive: true,
+  'margin': (
+    responsive: true,
     property: margin,
     class: u-m,
-    values: map.merge($spacing-sizes,
-      (auto: auto,
-      )),
+    values: map.merge(
+        $spacing-sizes,
+        (
+          auto: auto,
+        )
+      ),
   ),
-  'margin-x': (responsive: true,
+  'margin-x': (
+    responsive: true,
     property: margin-inline,
     class: u-mx,
-    values: map.merge($spacing-sizes,
-      (auto: auto,
-      )),
+    values: map.merge(
+        $spacing-sizes,
+        (
+          auto: auto,
+        )
+      ),
   ),
-  'margin-y': (responsive: true,
+  'margin-y': (
+    responsive: true,
     property: margin-block,
     class: u-my,
-    values: map.merge($spacing-sizes,
-      (auto: auto,
-      )),
+    values: map.merge(
+        $spacing-sizes,
+        (
+          auto: auto,
+        )
+      ),
   ),
-  'margin-top': (responsive: true,
+  'margin-top': (
+    responsive: true,
     property: margin-top,
     class: u-mt,
-    values: map.merge($spacing-sizes,
-      (auto: auto,
-      )),
+    values: map.merge(
+        $spacing-sizes,
+        (
+          auto: auto,
+        )
+      ),
   ),
-  'margin-end': (responsive: true,
+  'margin-end': (
+    responsive: true,
     property: margin-inline-end,
     class: u-me,
-    values: map.merge($spacing-sizes,
-      (auto: auto,
-      )),
+    values: map.merge(
+        $spacing-sizes,
+        (
+          auto: auto,
+        )
+      ),
   ),
-  'margin-bottom': (responsive: true,
+  'margin-bottom': (
+    responsive: true,
     property: margin-bottom,
     class: u-mb,
-    values: map.merge($spacing-sizes,
-      (auto: auto,
-      )),
+    values: map.merge(
+        $spacing-sizes,
+        (
+          auto: auto,
+        )
+      ),
   ),
-  'margin-start': (responsive: true,
+  'margin-start': (
+    responsive: true,
     property: margin-inline-start,
     class: u-ms,
-    values: map.merge($spacing-sizes,
-      (auto: auto,
-      )),
+    values: map.merge(
+        $spacing-sizes,
+        (
+          auto: auto,
+        )
+      ),
   ),
   // Negative margin utilities — only generated when $enable-negative-margins is true
-  'negative-margin': (responsive: true,
-    property: margin,
-    class: u-m,
-    values: $negative-spacers,
-    generated: $enable-negative-margins,
-  ),
-  'negative-margin-x': (responsive: true,
+  'negative-margin': (
+      responsive: true,
+      property: margin,
+      class: u-m,
+      values: $negative-spacers,
+      generated: $enable-negative-margins,
+    ),
+  'negative-margin-x': (
+    responsive: true,
     property: margin-inline,
     class: u-mx,
     values: $negative-spacers,
     generated: $enable-negative-margins,
   ),
-  'negative-margin-y': (responsive: true,
+  'negative-margin-y': (
+    responsive: true,
     property: margin-block,
     class: u-my,
     values: $negative-spacers,
     generated: $enable-negative-margins,
   ),
-  'negative-margin-top': (responsive: true,
+  'negative-margin-top': (
+    responsive: true,
     property: margin-top,
     class: u-mt,
     values: $negative-spacers,
     generated: $enable-negative-margins,
   ),
-  'negative-margin-end': (responsive: true,
+  'negative-margin-end': (
+    responsive: true,
     property: margin-inline-end,
     class: u-me,
     values: $negative-spacers,
     generated: $enable-negative-margins,
   ),
-  'negative-margin-bottom': (responsive: true,
+  'negative-margin-bottom': (
+    responsive: true,
     property: margin-bottom,
     class: u-mb,
     values: $negative-spacers,
     generated: $enable-negative-margins,
   ),
-  'negative-margin-start': (responsive: true,
+  'negative-margin-start': (
+    responsive: true,
     property: margin-inline-start,
     class: u-ms,
     values: $negative-spacers,
     generated: $enable-negative-margins,
   ),
   // Padding utilities
-  'padding': (responsive: true,
-    property: padding,
-    class: u-p,
-    values: $spacing-sizes,
-  ),
-  'padding-x': (responsive: true,
+  'padding': (
+      responsive: true,
+      property: padding,
+      class: u-p,
+      values: $spacing-sizes,
+    ),
+  'padding-x': (
+    responsive: true,
     property: padding-inline,
     class: u-px,
     values: $spacing-sizes,
   ),
-  'padding-y': (responsive: true,
+  'padding-y': (
+    responsive: true,
     property: padding-block,
     class: u-py,
     values: $spacing-sizes,
   ),
-  'padding-top': (responsive: true,
+  'padding-top': (
+    responsive: true,
     property: padding-top,
     class: u-pt,
     values: $spacing-sizes,
   ),
-  'padding-end': (responsive: true,
+  'padding-end': (
+    responsive: true,
     property: padding-inline-end,
     class: u-pe,
     values: $spacing-sizes,
   ),
-  'padding-bottom': (responsive: true,
+  'padding-bottom': (
+    responsive: true,
     property: padding-bottom,
     class: u-pb,
     values: $spacing-sizes,
   ),
-  'padding-start': (responsive: true,
+  'padding-start': (
+    responsive: true,
     property: padding-inline-start,
     class: u-ps,
     values: $spacing-sizes,
   ),
   // Gap utility
-  'gap': (responsive: true,
-    property: gap,
-    class: u-gap,
-    values: $spacing-sizes,
-  ),
-  'row-gap': (responsive: true,
+  'gap': (
+      responsive: true,
+      property: gap,
+      class: u-gap,
+      values: $spacing-sizes,
+    ),
+  'row-gap': (
+    responsive: true,
     property: row-gap,
     class: u-row-gap,
     values: $spacing-sizes,
   ),
-  'column-gap': (responsive: true,
+  'column-gap': (
+    responsive: true,
     property: column-gap,
     class: u-column-gap,
     values: $spacing-sizes,

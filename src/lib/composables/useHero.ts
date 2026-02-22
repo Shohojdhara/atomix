@@ -102,17 +102,16 @@ export function useHero(initialProps?: HeroProps): UseHeroResult {
    * Initialize background slider hook - always call hook, conditionally use result
    */
   const backgroundSliderResult = useHeroBackgroundSlider(
-    defaultProps.backgroundSlider || { 
-      slides: [], 
+    defaultProps.backgroundSlider || {
+      slides: [],
       autoplay: { delay: 5000, pauseOnHover: true },
       transition: 'fade',
-      transitionDuration: 1000
+      transitionDuration: 1000,
     }
   );
-  
-  const backgroundSlider = hasBackgroundSlider && defaultProps.backgroundSlider
-    ? backgroundSliderResult
-    : undefined;
+
+  const backgroundSlider =
+    hasBackgroundSlider && defaultProps.backgroundSlider ? backgroundSliderResult : undefined;
 
   /**
    * Check if the hero has a background image
@@ -202,7 +201,12 @@ export function useHero(initialProps?: HeroProps): UseHeroResult {
         removeParallaxEffect(heroElement);
       }
     };
-  }, [defaultProps.parallax, defaultProps.parallaxIntensity, hasBackgroundImage, hasBackgroundSlider]);
+  }, [
+    defaultProps.parallax,
+    defaultProps.parallaxIntensity,
+    hasBackgroundImage,
+    hasBackgroundSlider,
+  ]);
 
   /**
    * Generate hero class names based on props
@@ -254,7 +258,10 @@ export function useHero(initialProps?: HeroProps): UseHeroResult {
    * @param customClass - Optional custom class name
    * @returns Column class
    */
-  const generateImageColClass = (size: number = defaultProps.imageColSize || 7, customClass?: string): string => {
+  const generateImageColClass = (
+    size: number = defaultProps.imageColSize || 7,
+    customClass?: string
+  ): string => {
     const classes = [`o-grid__col o-grid__col--md-${size}`];
 
     // Add responsive margin if needed for mobile view
@@ -284,7 +291,10 @@ export function useHero(initialProps?: HeroProps): UseHeroResult {
    * @param customClass - Optional custom class name
    * @returns Column class
    */
-  const generateContentColClass = (size: number = defaultProps.contentColSize || 5, customClass?: string): string => {
+  const generateContentColClass = (
+    size: number = defaultProps.contentColSize || 5,
+    customClass?: string
+  ): string => {
     const classes = [`o-grid__col o-grid__col--md-${size}`];
 
     // Handle mobile stacking order

@@ -230,18 +230,13 @@ const DemoPanelContent = ({
 );
 
 export const BasicUsage: Story = {
-  render: (args) => {
+  render: args => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
       <>
         <Button onClick={() => setIsOpen(true)}>Open Edge Panel</Button>
-        <EdgePanel
-          {...args}
-          isOpen={isOpen}
-          onOpenChange={setIsOpen}
-          title="Basic Edge Panel"
-        >
+        <EdgePanel {...args} isOpen={isOpen} onOpenChange={setIsOpen} title="Basic Edge Panel">
           <DemoPanelContent {...args} />
         </EdgePanel>
       </>
@@ -271,7 +266,7 @@ export const AllPositions: Story = {
     return (
       <>
         <div className="u-flex u-gap-2 u-flex-wrap">
-          {(['start', 'end', 'top', 'bottom'] as const).map((pos) => (
+          {(['start', 'end', 'top', 'bottom'] as const).map(pos => (
             <Button
               key={pos}
               variant={position === pos ? 'primary' : 'secondary'}
@@ -306,18 +301,13 @@ export const AllPositions: Story = {
 };
 
 export const WithSlideMode: Story = {
-  render: (args) => {
+  render: args => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
       <>
         <Button onClick={() => setIsOpen(true)}>Open Slide Mode Panel</Button>
-        <EdgePanel
-          {...args}
-          isOpen={isOpen}
-          onOpenChange={setIsOpen}
-          title="Slide Mode Panel"
-        >
+        <EdgePanel {...args} isOpen={isOpen} onOpenChange={setIsOpen} title="Slide Mode Panel">
           <DemoPanelContent {...args} />
         </EdgePanel>
       </>
@@ -834,10 +824,7 @@ export const GlassShowcase: Story = {
               <p className="u-mb-4">
                 Enhanced polar distortion creates unique radial patterns from center.
               </p>
-              <Card
-                title="Radial Distortion"
-                text="Creates circular displacement patterns."
-              />
+              <Card title="Radial Distortion" text="Creates circular displacement patterns." />
             </div>
           </EdgePanel>
 

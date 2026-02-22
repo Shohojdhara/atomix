@@ -1,6 +1,6 @@
 /**
  * Component Customization Hook
- * 
+ *
  * Merges theme-level component overrides with component-level props
  * for comprehensive customization support.
  */
@@ -23,7 +23,7 @@ export type ComponentName = keyof ComponentPartsMap;
  */
 export interface CustomizableComponentProps<T extends ComponentName> {
   /** CSS variable overrides */
-  cssVars?: T extends keyof ComponentCSSVariables 
+  cssVars?: T extends keyof ComponentCSSVariables
     ? Partial<Record<ComponentCSSVariables[T], string | number>>
     : Record<string, string | number>;
   /** Part-based styling */
@@ -52,13 +52,13 @@ export interface ComponentCustomization<T extends ComponentName> {
 
 /**
  * Hook to merge theme overrides with component props
- * 
+ *
  * @example
  * function Button(props: ButtonProps) {
  *   const customization = useComponentCustomization('Button', props);
- *   
+ *
  *   return (
- *     <button 
+ *     <button
  *       className={customization.className}
  *       style={customization.style}
  *     >
@@ -84,18 +84,12 @@ export function useComponentCustomization<T extends ComponentName>(
   const parts = useMemo(() => {
     const themeParts = (theme as any)?.components?.[component]?.parts || {};
     const propParts = (props.parts || {}) as Record<string, any>;
-    
-    const merged: Record<string, any> = {};
-    const allPartNames = new Set([
-      ...Object.keys(themeParts),
-      ...Object.keys(propParts),
-    ]);
 
-    allPartNames.forEach((partName) => {
-      merged[partName] = mergePartStyles(
-        themeParts[partName] as any,
-        propParts[partName] as any
-      );
+    const merged: Record<string, any> = {};
+    const allPartNames = new Set([...Object.keys(themeParts), ...Object.keys(propParts)]);
+
+    allPartNames.forEach(partName => {
+      merged[partName] = mergePartStyles(themeParts[partName] as any, propParts[partName] as any);
     });
 
     return merged as ComponentPartsMap[T];
@@ -137,7 +131,7 @@ export function useComponentDefaultProps<T extends ComponentName>(
   component: T
 ): Record<string, any> {
   const { theme } = useTheme();
-  
+
   return useMemo(() => {
     return (theme as any)?.components?.[component]?.defaultProps || {};
   }, [theme, component]);

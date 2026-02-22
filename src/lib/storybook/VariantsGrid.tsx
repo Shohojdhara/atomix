@@ -12,10 +12,6 @@ export const VariantsGrid: React.FC<VariantsGridProps> = ({
   gap = 'gap-4',
 }) => {
   const gridClass = `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${columns} ${gap}`;
-  
-  return (
-    <div className={gridClass}>
-      {children}
-    </div>
-  );
+
+  return <div className={gridClass}>{children}</div>;
 };

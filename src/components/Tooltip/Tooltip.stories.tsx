@@ -193,15 +193,17 @@ export const ClickTrigger: Story = {
 
 export const AllPositions: Story = {
   render: () => (
-    <div style={{ 
-      display: 'grid', 
-      gridTemplateColumns: 'repeat(3, 1fr)', 
-      gap: '20px', 
-      padding: '50px',
-      alignItems: 'center',
-      justifyItems: 'center',
-      height: '500px'
-    }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '20px',
+        padding: '50px',
+        alignItems: 'center',
+        justifyItems: 'center',
+        height: '500px',
+      }}
+    >
       <div>
         <Tooltip content="Top Left Tooltip">
           <button className="c-btn c-btn--primary">Top Left</button>
@@ -217,23 +219,23 @@ export const AllPositions: Story = {
           <button className="c-btn c-btn--primary">Top Right</button>
         </Tooltip>
       </div>
-      
+
       <div>
         <Tooltip content="Left Tooltip" position="left">
           <button className="c-btn c-btn--primary">Left</button>
         </Tooltip>
       </div>
-      
+
       <div style={{ textAlign: 'center' }}>
         <p>All tooltip positions</p>
       </div>
-      
+
       <div>
         <Tooltip content="Right Tooltip" position="right">
           <button className="c-btn c-btn--primary">Right</button>
         </Tooltip>
       </div>
-      
+
       <div>
         <Tooltip content="Bottom Left Tooltip" position="bottom-left">
           <button className="c-btn c-btn--primary">Bottom Left</button>
@@ -262,13 +264,15 @@ export const AllPositions: Story = {
 
 export const WithGlassEffect: Story = {
   render: args => (
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      padding: '100px',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      minHeight: '300px'
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '100px',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        minHeight: '300px',
+      }}
+    >
       <Tooltip {...args}>
         <button className="c-btn c-btn--primary">Hover me</button>
       </Tooltip>

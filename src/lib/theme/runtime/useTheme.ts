@@ -1,6 +1,6 @@
 /**
  * useTheme Hook
- * 
+ *
  * React hook for accessing theme context
  */
 
@@ -10,14 +10,14 @@ import type { UseThemeReturn } from '../types';
 
 /**
  * useTheme hook
- * 
+ *
  * Access theme context and theme management functions
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {
  *   const { theme, setTheme, availableThemes } = useTheme();
- *   
+ *
  *   return (
  *     <div>
  *       <p>Current theme: {theme}</p>
@@ -30,22 +30,22 @@ import type { UseThemeReturn } from '../types';
  * ```
  */
 export function useTheme(): UseThemeReturn {
-    const context = useContext(ThemeContext);
+  const context = useContext(ThemeContext);
 
-    if (!context) {
-        throw new Error('useTheme must be used within a ThemeProvider');
-    }
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
 
-    return {
-        theme: context.theme,
-        activeTokens: context.activeTokens,
-        setTheme: context.setTheme,
-        availableThemes: context.availableThemes,
-        isLoading: context.isLoading,
-        error: context.error,
-        isThemeLoaded: context.isThemeLoaded,
-        preloadTheme: context.preloadTheme,
-    };
+  return {
+    theme: context.theme,
+    activeTokens: context.activeTokens,
+    setTheme: context.setTheme,
+    availableThemes: context.availableThemes,
+    isLoading: context.isLoading,
+    error: context.error,
+    isThemeLoaded: context.isThemeLoaded,
+    preloadTheme: context.preloadTheme,
+  };
 }
 
 export default useTheme;

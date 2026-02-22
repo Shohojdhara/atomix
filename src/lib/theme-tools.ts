@@ -1,6 +1,6 @@
 /**
  * Theme Tools for Library Users
- * 
+ *
  * Developer-friendly utilities for working with Atomix themes
  */
 
@@ -49,7 +49,7 @@ export function createDarkVariant(lightTheme: Theme): Theme {
       },
     },
   };
-  
+
   // Create a new theme by extending the light theme with the dark variant
   const extendedTheme: Theme = {
     ...lightTheme,
@@ -67,7 +67,7 @@ export function createDarkVariant(lightTheme: Theme): Theme {
       },
     },
   };
-  
+
   return extendedTheme;
 }
 
@@ -125,9 +125,11 @@ export function getThemeMetadata(theme: Theme): ThemeMetadata {
  * Check if theme supports dark mode
  */
 export function supportsDarkMode(theme: Theme): boolean {
-  return theme.palette?.mode === 'dark' ||
+  return (
+    theme.palette?.mode === 'dark' ||
     theme.supportsDarkMode === true ||
-    Boolean(theme.a11y?.modes?.includes('dark'));
+    Boolean(theme.a11y?.modes?.includes('dark'))
+  );
 }
 
 /**

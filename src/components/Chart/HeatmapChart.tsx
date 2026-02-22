@@ -288,21 +288,28 @@ const HeatmapChart = memo(
             <g>
               {/* Gradient definitions */}
               <defs>
-                {showColorLegend && (() => {
-                  const schemeColors = colorSchemes[colorScale.scheme] || colorSchemes.viridis;
-                  if (!schemeColors || schemeColors.length === 0) return null;
-                  return (
-                    <linearGradient id="heatmap-legend-gradient" x1="0%" y1="100%" x2="0%" y2="0%">
-                      {schemeColors.map((color, i) => (
-                        <stop
-                          key={i}
-                          offset={`${(i / (schemeColors.length - 1)) * 100}%`}
-                          stopColor={color}
-                        />
-                      ))}
-                    </linearGradient>
-                  );
-                })()}
+                {showColorLegend &&
+                  (() => {
+                    const schemeColors = colorSchemes[colorScale.scheme] || colorSchemes.viridis;
+                    if (!schemeColors || schemeColors.length === 0) return null;
+                    return (
+                      <linearGradient
+                        id="heatmap-legend-gradient"
+                        x1="0%"
+                        y1="100%"
+                        x2="0%"
+                        y2="0%"
+                      >
+                        {schemeColors.map((color, i) => (
+                          <stop
+                            key={i}
+                            offset={`${(i / (schemeColors.length - 1)) * 100}%`}
+                            stopColor={color}
+                          />
+                        ))}
+                      </linearGradient>
+                    );
+                  })()}
               </defs>
 
               {/* Grid cells */}
@@ -333,11 +340,15 @@ const HeatmapChart = memo(
                         }}
                         onClick={() => {
                           if (cell) {
-                            handlers.onDataPointClick?.({
-                              ...cell,
-                              label: cell.label || `${cell.x}, ${cell.y}`,
-                              value: cell.value,
-                            } as any, rowIndex, colIndex);
+                            handlers.onDataPointClick?.(
+                              {
+                                ...cell,
+                                label: cell.label || `${cell.x}, ${cell.y}`,
+                                value: cell.value,
+                              } as any,
+                              rowIndex,
+                              colIndex
+                            );
                           }
                         }}
                         onMouseEnter={e => {
@@ -422,23 +433,25 @@ const HeatmapChart = memo(
                 </g>
               )}
             </g>
-            {showTooltips && hoveredPoint && renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
-              <ChartTooltip
-                dataPoint={
-                  renderedDatasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!
-                }
-                datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
-                datasetColor={
-                  renderedDatasets[hoveredPoint.datasetIndex]?.color ||
-                  colors[hoveredPoint.datasetIndex % colors.length]
-                }
-                position={{
-                  x: hoveredPoint.clientX,
-                  y: hoveredPoint.clientY,
-                }}
-                visible={true}
-              />
-            )}
+            {showTooltips &&
+              hoveredPoint &&
+              renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
+                <ChartTooltip
+                  dataPoint={
+                    renderedDatasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!
+                  }
+                  datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
+                  datasetColor={
+                    renderedDatasets[hoveredPoint.datasetIndex]?.color ||
+                    colors[hoveredPoint.datasetIndex % colors.length]
+                  }
+                  position={{
+                    x: hoveredPoint.clientX,
+                    y: hoveredPoint.clientY,
+                  }}
+                  visible={true}
+                />
+              )}
           </>
         );
       };

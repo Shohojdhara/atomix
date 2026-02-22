@@ -5,10 +5,10 @@ import { Button } from './Button';
 
 /**
  * ButtonGroup - A component for grouping buttons together
- * 
+ *
  * Groups buttons together with proper border radius handling and spacing.
  * The buttons will be visually connected with shared borders.
- * 
+ *
  * @example
  * ```tsx
  * <ButtonGroup>
@@ -26,12 +26,7 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
   role = 'group',
 }) => {
   // Generate CSS classes
-  const buttonGroupClasses = [
-    BUTTON_GROUP.CLASSES.BASE,
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
+  const buttonGroupClasses = [BUTTON_GROUP.CLASSES.BASE, className].filter(Boolean).join(' ');
 
   // Get valid Button children
   const buttonChildren = Children.toArray(children).filter(
@@ -39,12 +34,7 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
   );
 
   return (
-    <div
-      className={buttonGroupClasses}
-      style={style}
-      role={role}
-      aria-label={ariaLabel}
-    >
+    <div className={buttonGroupClasses} style={style} role={role} aria-label={ariaLabel}>
       {buttonChildren.map((child, index) => {
         if (isValidElement<ButtonProps>(child)) {
           // Clone the Button element to ensure proper styling
@@ -64,4 +54,3 @@ export type { ButtonGroupProps };
 ButtonGroup.displayName = 'ButtonGroup';
 
 export default ButtonGroup;
-

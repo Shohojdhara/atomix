@@ -81,7 +81,8 @@ const LineChart = memo(
         if (!renderedDatasets.length) return null;
 
         const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
-        const shouldAnimate = toolbarState?.animationsEnabled ?? renderConfig?.animate ?? mergedLineOptions.smooth;
+        const shouldAnimate =
+          toolbarState?.animationsEnabled ?? renderConfig?.animate ?? mergedLineOptions.smooth;
 
         return (
           <>
@@ -101,7 +102,7 @@ const LineChart = memo(
               // Generate line path - ensure proper SVG path format
               const path = mergedLineOptions.smooth
                 ? generateSmoothPath(points)
-                : `M ${points.map((p) => `${p.x},${p.y}`).join(' L ')}`;
+                : `M ${points.map(p => `${p.x},${p.y}`).join(' L ')}`;
 
               return (
                 <g key={`dataset-${datasetIndex}`}>

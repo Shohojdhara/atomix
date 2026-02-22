@@ -1,6 +1,6 @@
 /**
  * Theme Configuration Validator
- * 
+ *
  * Validates theme configuration structure and values
  */
 
@@ -8,7 +8,7 @@ import type { ConfigValidationResult } from './types';
 
 /**
  * Validate theme configuration
- * 
+ *
  * @param config - Configuration to validate
  * @returns Validation result with errors and warnings
  */
@@ -117,8 +117,14 @@ function validateThemes(themes: Record<string, any>): ConfigValidationResult {
 
     // Validate accessibility (only critical checks)
     if (theme.a11y?.contrastTarget) {
-      if (typeof theme.a11y.contrastTarget !== 'number' || theme.a11y.contrastTarget < 1 || theme.a11y.contrastTarget > 21) {
-        warnings.push(`Theme "${themeId}" has invalid contrast target: ${theme.a11y.contrastTarget}`);
+      if (
+        typeof theme.a11y.contrastTarget !== 'number' ||
+        theme.a11y.contrastTarget < 1 ||
+        theme.a11y.contrastTarget > 21
+      ) {
+        warnings.push(
+          `Theme "${themeId}" has invalid contrast target: ${theme.a11y.contrastTarget}`
+        );
       }
     }
   }
@@ -247,4 +253,3 @@ function validateDependencies(
 
   return { valid: errors.length === 0, errors, warnings };
 }
-

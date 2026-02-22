@@ -7,16 +7,19 @@ $utilities-sizes: (
     responsive: true,
     property: width,
     class: u-w,
-    values: map.merge($spacing-sizes, (
-      5: 5%,
-      10: 10%,
-      25: 25%,
-      50: 50%,
-      75: 75%,
-      100: 100%,
-      full: 100%,
-      auto: auto,
-    )),
+    values: map.merge(
+        $spacing-sizes,
+        (
+          5: 5%,
+          10: 10%,
+          25: 25%,
+          50: 50%,
+          75: 75%,
+          100: 100%,
+          full: 100%,
+          auto: auto,
+        )
+      ),
   ),
   'max-width': (
     responsive: true,
@@ -57,16 +60,19 @@ $utilities-sizes: (
     responsive: true,
     property: height,
     class: u-h,
-    values: map.merge($spacing-sizes, (
-      5: 5%,
-      10: 10%,
-      25: 25%,
-      50: 50%,
-      75: 75%,
-      100: 100%,
-      full: 100%,
-      auto: auto,
-    )),
+    values: map.merge(
+        $spacing-sizes,
+        (
+          5: 5%,
+          10: 10%,
+          25: 25%,
+          50: 50%,
+          75: 75%,
+          100: 100%,
+          full: 100%,
+          auto: auto,
+        )
+      ),
   ),
   'max-height': (
     responsive: true,

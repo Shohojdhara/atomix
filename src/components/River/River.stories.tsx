@@ -172,7 +172,8 @@ export const ContentColumns: Story = {
           <div>
             <p className="c-river__text">
               Use content columns to create custom layouts with different types of content. This
-              approach gives you more control over the structure and presentation of your information.
+              approach gives you more control over the structure and presentation of your
+              information.
             </p>
             <p className="c-river__text">
               Perfect for featuring important statistics, quotes, or highlighting key information

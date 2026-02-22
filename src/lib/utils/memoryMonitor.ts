@@ -1,6 +1,6 @@
 /**
  * Memory Monitoring Utilities
- * 
+ *
  * Detects memory leaks and tracks component lifecycle memory usage
  * Only available in development mode
  */
@@ -40,7 +40,7 @@ export function isMemoryMonitoringAvailable(): boolean {
 
 /**
  * Get current memory usage snapshot
- * 
+ *
  * @returns Memory snapshot or null if not available
  */
 export function getMemorySnapshot(): MemorySnapshot | null {
@@ -60,7 +60,7 @@ export function getMemorySnapshot(): MemorySnapshot | null {
 
 /**
  * Format bytes to human-readable string
- * 
+ *
  * @param bytes - Number of bytes
  * @returns Formatted string (e.g., "1.5 MB")
  */
@@ -76,7 +76,7 @@ export function formatBytes(bytes: number): string {
 
 /**
  * Compare two memory snapshots and detect potential leaks
- * 
+ *
  * @param before - Snapshot before operation
  * @param after - Snapshot after operation
  * @param threshold - Threshold in bytes to consider a leak (default: 5MB)
@@ -114,7 +114,7 @@ export function detectMemoryLeak(
 
 /**
  * Monitor memory usage over time
- * 
+ *
  * @param interval - Interval in milliseconds to check memory
  * @param callback - Callback function called with each snapshot
  * @returns Function to stop monitoring
@@ -156,7 +156,7 @@ export function monitorMemoryUsage(
 
 /**
  * Track component lifecycle memory usage
- * 
+ *
  * @param componentName - Name of the component
  * @returns Object with start and end tracking functions
  */
@@ -175,7 +175,10 @@ export function trackComponentMemory(componentName: string) {
       const after = getMemorySnapshot();
       if (before && after) {
         const leakInfo = detectMemoryLeak(before, after);
-        if (leakInfo.hasLeak && (typeof process === 'undefined' || process.env?.NODE_ENV === 'development')) {
+        if (
+          leakInfo.hasLeak &&
+          (typeof process === 'undefined' || process.env?.NODE_ENV === 'development')
+        ) {
           console.warn(
             `[Memory Monitor] Potential memory leak detected in ${componentName}:`,
             leakInfo
@@ -186,4 +189,3 @@ export function trackComponentMemory(componentName: string) {
     },
   };
 }
-

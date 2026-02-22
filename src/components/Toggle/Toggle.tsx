@@ -92,7 +92,9 @@ export const Toggle: React.FC<ToggleProps> = ({
     isChecked && TOGGLE.CLASSES.IS_ON,
     disabled && 'is-disabled',
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const toggleContent = (
     <div

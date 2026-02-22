@@ -2354,7 +2354,6 @@ $chart-gradients: (
     font-size: $font-size-xs;
   }
 
-
   .pie-slice:hover,
   .donut-slice:hover {
     transform: scale(1.02);
@@ -2723,7 +2722,6 @@ $chart-gradients: (
     opacity: 0.7;
   }
 }
-
 
 // CSS Grid support for complex layouts
 .c-chart--grid {

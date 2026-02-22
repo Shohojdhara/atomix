@@ -10,7 +10,7 @@ vi.mock('./shader-utils', () => ({
     updateShader() {
       return 'data:image/png;base64,mockBase64String';
     }
-    destroy() { }
+    destroy() {}
   },
   fragmentShaders: {
     liquidGlass: vi.fn(),

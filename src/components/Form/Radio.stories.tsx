@@ -256,20 +256,14 @@ export const States: Story = {
           checked={selectedValue === 'checked'}
           onChange={() => setSelectedValue('checked')}
         />
-        <Radio
-          label="Disabled radio"
-          name="states"
-          value="disabled"
-          disabled
-          onChange={() => { }}
-        />
+        <Radio label="Disabled radio" name="states" value="disabled" disabled onChange={() => {}} />
         <Radio
           label="Disabled and checked radio"
           name="states"
           value="disabledChecked"
           disabled
           checked
-          onChange={() => { }}
+          onChange={() => {}}
         />
         <Radio
           label="Valid radio"
@@ -298,7 +292,7 @@ export const WithoutLabel: Story = {
     name: 'noLabel',
     value: 'noLabel',
     'aria-label': 'Radio button without visible label',
-    onChange: () => { },
+    onChange: () => {},
   },
 };
 
@@ -309,7 +303,7 @@ export const Glass: Story = {
     name: 'glass',
     value: 'glass',
     glass: true,
-    onChange: () => { },
+    onChange: () => {},
   },
   render: (args: any) => (
     <div
@@ -341,7 +335,7 @@ export const GlassCustom: Story = {
       aberrationIntensity: 0.8,
       cornerRadius: 12,
     } as any,
-    onChange: () => { },
+    onChange: () => {},
   },
   render: (args: any) => (
     <div

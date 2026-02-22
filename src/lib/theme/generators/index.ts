@@ -1,6 +1,6 @@
 /**
  * CSS Generators
- * 
+ *
  * Generators for creating CSS from themes and tokens
  */
 
@@ -17,6 +17,3 @@ export {
 } from './generateCSSNested';
 
 export { generateCSSVariables as generateCSSVariablesFromTheme } from './generateCSSVariables';
-
-
-

@@ -1,16 +1,12 @@
 /**
  * Theme System Stories
- * 
+ *
  * Comprehensive Storybook stories demonstrating the Atomix Theme System
  */
 
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
-import {
-  ThemeProvider,
-  useTheme,
-  createTheme,
-} from '../lib/theme';
+import { ThemeProvider, useTheme, createTheme } from '../lib/theme';
 
 // Example theme metadata
 const exampleThemes = {};
@@ -28,16 +24,18 @@ const ThemeSwitcher: React.FC = () => {
   };
 
   return (
-    <div style={{
-      padding: '1rem',
-      border: '1px solid #e0e0e0',
-      borderRadius: '8px',
-      marginBottom: '1rem',
-    }}>
+    <div
+      style={{
+        padding: '1rem',
+        border: '1px solid #e0e0e0',
+        borderRadius: '8px',
+        marginBottom: '1rem',
+      }}
+    >
       <h3 style={{ marginTop: 0 }}>Theme Switcher</h3>
       <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
         {availableThemes.length > 0 ? (
-          availableThemes.map((themeMetadata) => (
+          availableThemes.map(themeMetadata => (
             <button
               key={themeMetadata.class || themeMetadata.name}
               onClick={() => handleThemeChange(themeMetadata.class || themeMetadata.name)}
@@ -46,7 +44,8 @@ const ThemeSwitcher: React.FC = () => {
                 padding: '0.5rem 1rem',
                 border: '1px solid #ccc',
                 borderRadius: '4px',
-                backgroundColor: theme === (themeMetadata.class || themeMetadata.name) ? '#007bff' : 'white',
+                backgroundColor:
+                  theme === (themeMetadata.class || themeMetadata.name) ? '#007bff' : 'white',
                 color: theme === (themeMetadata.class || themeMetadata.name) ? 'white' : 'black',
                 cursor: isLoading ? 'not-allowed' : 'pointer',
                 opacity: isLoading ? 0.6 : 1,
@@ -70,12 +69,14 @@ const ThemeSwitcher: React.FC = () => {
 // Component Preview
 const ComponentPreview: React.FC = () => {
   return (
-    <div style={{
-      padding: '1rem',
-      border: '1px solid #e0e0e0',
-      borderRadius: '8px',
-      marginBottom: '1rem',
-    }}>
+    <div
+      style={{
+        padding: '1rem',
+        border: '1px solid #e0e0e0',
+        borderRadius: '8px',
+        marginBottom: '1rem',
+      }}
+    >
       <h3 style={{ marginTop: 0 }}>Component Preview</h3>
 
       {/* Buttons */}
@@ -125,11 +126,13 @@ const ComponentPreview: React.FC = () => {
           <h5 style={{ margin: '0 0 0.5rem 0', color: 'var(--atomix-text-primary, #000)' }}>
             Card Title
           </h5>
-          <p style={{
-            margin: 0,
-            color: 'var(--atomix-text-secondary, #666)',
-            fontSize: 'var(--atomix-font-size-sm, 14px)',
-          }}>
+          <p
+            style={{
+              margin: 0,
+              color: 'var(--atomix-text-secondary, #666)',
+              fontSize: 'var(--atomix-font-size-sm, 14px)',
+            }}
+          >
             This card demonstrates theme variables in action.
           </p>
         </div>
@@ -138,27 +141,33 @@ const ComponentPreview: React.FC = () => {
       {/* Typography */}
       <div>
         <h4>Typography</h4>
-        <h1 style={{
-          fontSize: 'var(--atomix-typography-h1-font-size, 2rem)',
-          fontWeight: 'var(--atomix-typography-h1-font-weight, 700)',
-          color: 'var(--atomix-text-primary, #000)',
-          margin: '0.5rem 0',
-        }}>
+        <h1
+          style={{
+            fontSize: 'var(--atomix-typography-h1-font-size, 2rem)',
+            fontWeight: 'var(--atomix-typography-h1-font-weight, 700)',
+            color: 'var(--atomix-text-primary, #000)',
+            margin: '0.5rem 0',
+          }}
+        >
           Heading 1
         </h1>
-        <h2 style={{
-          fontSize: 'var(--atomix-typography-h2-font-size, 1.5rem)',
-          fontWeight: 'var(--atomix-typography-h2-font-weight, 600)',
-          color: 'var(--atomix-text-primary, #000)',
-          margin: '0.5rem 0',
-        }}>
+        <h2
+          style={{
+            fontSize: 'var(--atomix-typography-h2-font-size, 1.5rem)',
+            fontWeight: 'var(--atomix-typography-h2-font-weight, 600)',
+            color: 'var(--atomix-text-primary, #000)',
+            margin: '0.5rem 0',
+          }}
+        >
           Heading 2
         </h2>
-        <p style={{
-          fontSize: 'var(--atomix-typography-body1-font-size, 1rem)',
-          color: 'var(--atomix-text-primary, #000)',
-          lineHeight: 'var(--atomix-typography-body1-line-height, 1.5)',
-        }}>
+        <p
+          style={{
+            fontSize: 'var(--atomix-typography-body1-font-size, 1rem)',
+            color: 'var(--atomix-text-primary, #000)',
+            lineHeight: 'var(--atomix-typography-body1-line-height, 1.5)',
+          }}
+        >
           Body text with theme typography styles applied.
         </p>
       </div>
@@ -191,7 +200,7 @@ const RTLDemo: React.FC = () => {
       rtlManagerRef.current.setDirection(newDirection);
     }
     // Update local state only if different
-    setDirection(prev => prev !== newDirection ? newDirection : prev);
+    setDirection(prev => (prev !== newDirection ? newDirection : prev));
   }, [rtlEnabled]); // Only depend on rtlEnabled
 
   // Cleanup on unmount
@@ -205,12 +214,14 @@ const RTLDemo: React.FC = () => {
   }, []);
 
   return (
-    <div style={{
-      padding: '1rem',
-      border: '1px solid #e0e0e0',
-      borderRadius: '8px',
-      marginBottom: '1rem',
-    }}>
+    <div
+      style={{
+        padding: '1rem',
+        border: '1px solid #e0e0e0',
+        borderRadius: '8px',
+        marginBottom: '1rem',
+      }}
+    >
       <h3 style={{ marginTop: 0 }}>RTL Support</h3>
       <button
         onClick={() => {
@@ -228,17 +239,25 @@ const RTLDemo: React.FC = () => {
       >
         {rtlEnabled ? 'Disable RTL' : 'Enable RTL'}
       </button>
-      <div style={{
-        padding: '1rem',
-        backgroundColor: '#f5f5f5',
-        borderRadius: '4px',
-        direction: direction,
-      }}>
+      <div
+        style={{
+          padding: '1rem',
+          backgroundColor: '#f5f5f5',
+          borderRadius: '4px',
+          direction: direction,
+        }}
+      >
         <p style={{ textAlign: direction === 'rtl' ? 'right' : 'left' }}>
           This text will align based on the current direction setting.
           {direction === 'rtl' && ' (RTL Mode Active)'}
         </p>
-        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: direction === 'rtl' ? 'flex-end' : 'flex-start' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: '0.5rem',
+            justifyContent: direction === 'rtl' ? 'flex-end' : 'flex-start',
+          }}
+        >
           <span>←</span>
           <span>Direction: {direction.toUpperCase()}</span>
           <span>→</span>
@@ -256,13 +275,15 @@ const ThemeSystemDemo: React.FC = () => {
   const { theme } = useTheme();
 
   return (
-    <div style={{
-      padding: '2rem',
-      fontFamily: 'var(--atomix-font-family, Inter, sans-serif)',
-      backgroundColor: 'var(--atomix-background-default, #fff)',
-      color: 'var(--atomix-text-primary, #000)',
-      minHeight: '100vh',
-    }}>
+    <div
+      style={{
+        padding: '2rem',
+        fontFamily: 'var(--atomix-font-family, Inter, sans-serif)',
+        backgroundColor: 'var(--atomix-background-default, #fff)',
+        color: 'var(--atomix-text-primary, #000)',
+        minHeight: '100vh',
+      }}
+    >
       <h1 style={{ marginTop: 0 }}>Atomix Theme System</h1>
       <p>Comprehensive theme management system with CSS and JavaScript theme support.</p>
 
@@ -270,20 +291,24 @@ const ThemeSystemDemo: React.FC = () => {
       <ComponentPreview />
       <RTLDemo />
 
-      <div style={{
-        padding: '1rem',
-        border: '1px solid #e0e0e0',
-        borderRadius: '8px',
-        backgroundColor: '#f8f9fa',
-      }}>
-        <h3 style={{ marginTop: 0 }}>Current Theme Info</h3>
-        <pre style={{
-          backgroundColor: '#fff',
+      <div
+        style={{
           padding: '1rem',
-          borderRadius: '4px',
-          overflow: 'auto',
-          fontSize: '0.875rem',
-        }}>
+          border: '1px solid #e0e0e0',
+          borderRadius: '8px',
+          backgroundColor: '#f8f9fa',
+        }}
+      >
+        <h3 style={{ marginTop: 0 }}>Current Theme Info</h3>
+        <pre
+          style={{
+            backgroundColor: '#fff',
+            padding: '1rem',
+            borderRadius: '4px',
+            overflow: 'auto',
+            fontSize: '0.875rem',
+          }}
+        >
           {JSON.stringify({ currentTheme: String(theme || 'Unknown') }, null, 2)}
         </pre>
       </div>
@@ -350,11 +375,8 @@ const customTheme = createTheme({
     },
   },
   decorators: [
-    (Story) => (
-      <ThemeProvider
-        themes={exampleThemes}
-        basePath="/themes"
-      >
+    Story => (
+      <ThemeProvider themes={exampleThemes} basePath="/themes">
         <Story />
       </ThemeProvider>
     ),
@@ -372,7 +394,7 @@ export const Default: Story = {
 export const WithRTL: Story = {
   name: 'With RTL Support',
   decorators: [
-    (Story) => {
+    Story => {
       const [rtlEnabled, setRTLEnabled] = useState(false);
       const [direction, setDirection] = useState<'ltr' | 'rtl'>('ltr');
 
@@ -396,7 +418,7 @@ export const WithRTL: Story = {
           rtlManagerRef.current.setDirection(newDirection);
         }
         // Update local state only if different
-        setDirection(prev => prev !== newDirection ? newDirection : prev);
+        setDirection(prev => (prev !== newDirection ? newDirection : prev));
       }, [rtlEnabled]); // Only depend on rtlEnabled
 
       // Cleanup on unmount
@@ -410,16 +432,21 @@ export const WithRTL: Story = {
       }, []);
 
       return (
-        <ThemeProvider
-          themes={exampleThemes}
-        >
+        <ThemeProvider themes={exampleThemes}>
           <div>
-            <div style={{ marginBottom: '1rem', padding: '1rem', backgroundColor: '#f0f0f0', borderRadius: '4px' }}>
+            <div
+              style={{
+                marginBottom: '1rem',
+                padding: '1rem',
+                backgroundColor: '#f0f0f0',
+                borderRadius: '4px',
+              }}
+            >
               <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <input
                   type="checkbox"
                   checked={rtlEnabled}
-                  onChange={(e) => setRTLEnabled(e.target.checked)}
+                  onChange={e => setRTLEnabled(e.target.checked)}
                 />
                 <span>Enable RTL Mode</span>
               </label>

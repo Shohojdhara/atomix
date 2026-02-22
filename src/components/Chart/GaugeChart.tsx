@@ -335,7 +335,9 @@ const GaugeChart = memo(
               d={createArcPath(centerX, centerY, radius, startAngleRad, valueAngle, thickness)}
               fill="var(--atomix-brand-bg-subtle)"
               style={{
-                transition: shouldAnimate ? `all ${animationDuration}ms ${animationEasing}` : 'none',
+                transition: shouldAnimate
+                  ? `all ${animationDuration}ms ${animationEasing}`
+                  : 'none',
               }}
             />
 

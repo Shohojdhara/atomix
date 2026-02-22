@@ -1,6 +1,6 @@
 /**
  * Internationalization (i18n) Module
- * 
+ *
  * Provides internationalization utilities for the theme system
  */
 

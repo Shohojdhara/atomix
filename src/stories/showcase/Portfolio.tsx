@@ -289,10 +289,7 @@ const Portfolio: React.FC = () => {
                           </div>
 
                           <div className="u-mb-3">
-                            <Toggle
-                              checked={isToggled}
-                              onChange={setIsToggled}
-                            />
+                            <Toggle checked={isToggled} onChange={setIsToggled} />
                             <span className="u-ml-2">Toggle Component</span>
                           </div>
 
@@ -511,9 +508,9 @@ const Portfolio: React.FC = () => {
                       <Dropdown
                         menu={
                           <div>
-                            <Button variant="link" label="Option 1" onClick={() => { }} />
-                            <Button variant="link" label="Option 2" onClick={() => { }} />
-                            <Button variant="link" label="Option 3" onClick={() => { }} />
+                            <Button variant="link" label="Option 1" onClick={() => {}} />
+                            <Button variant="link" label="Option 2" onClick={() => {}} />
+                            <Button variant="link" label="Option 3" onClick={() => {}} />
                           </div>
                         }
                       >

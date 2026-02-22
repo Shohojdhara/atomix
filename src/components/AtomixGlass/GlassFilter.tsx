@@ -35,12 +35,7 @@ const GlassFilterComponent: React.FC<GlassFilterProps> = ({
     aria-hidden="true"
   >
     <defs>
-      <radialGradient
-        id={`${id}-edge-mask`}
-        cx="50%"
-        cy="50%"
-        r="50%"
-      >
+      <radialGradient id={`${id}-edge-mask`} cx="50%" cy="50%" r="50%">
         <stop offset="0%" stopColor="black" stopOpacity="0" />
         <stop
           offset={`${Math.max(30, 80 - aberrationIntensity * 2)}%`}
@@ -49,14 +44,7 @@ const GlassFilterComponent: React.FC<GlassFilterProps> = ({
         />
         <stop offset="100%" stopColor="white" stopOpacity="1" />
       </radialGradient>
-      <filter
-        id={id}
-        x="-35%"
-        y="-35%"
-        width="170%"
-        height="170%"
-        colorInterpolationFilters="sRGB"
-      >
+      <filter id={id} x="-35%" y="-35%" width="170%" height="170%" colorInterpolationFilters="sRGB">
         <feImage
           id={`${id}-image`}
           x="0"
@@ -64,7 +52,13 @@ const GlassFilterComponent: React.FC<GlassFilterProps> = ({
           width="100%"
           height="100%"
           result="DISPLACEMENT_MAP"
-          href={getDisplacementMap(mode, displacementMap, polarDisplacementMap, prominentDisplacementMap, shaderMapUrl)}
+          href={getDisplacementMap(
+            mode,
+            displacementMap,
+            polarDisplacementMap,
+            prominentDisplacementMap,
+            shaderMapUrl
+          )}
           preserveAspectRatio="xMidYMid slice"
         />
 
@@ -178,4 +172,3 @@ export const GlassFilter = memo(GlassFilterComponent, (prevProps, nextProps) => 
     prevProps.blurAmount === nextProps.blurAmount
   );
 });
-

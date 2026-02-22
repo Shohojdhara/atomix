@@ -149,15 +149,27 @@
   }
 
   &--active {
-    --#{config.$prefix}btn-bg: var(--#{config.$prefix}btn-active-bg, var(--#{config.$prefix}btn-hover-bg));
-    --#{config.$prefix}btn-color: var(--#{config.$prefix}btn-active-color, var(--#{config.$prefix}btn-hover-color));
-    --#{config.$prefix}btn-border-color: var(--#{config.$prefix}btn-active-border-color, var(--#{config.$prefix}btn-hover-border-color));
+    --#{config.$prefix}btn-bg: var(
+      --#{config.$prefix}btn-active-bg,
+      var(--#{config.$prefix}btn-hover-bg)
+    );
+    --#{config.$prefix}btn-color: var(
+      --#{config.$prefix}btn-active-color,
+      var(--#{config.$prefix}btn-hover-color)
+    );
+    --#{config.$prefix}btn-border-color: var(
+      --#{config.$prefix}btn-active-border-color,
+      var(--#{config.$prefix}btn-hover-border-color)
+    );
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   &--selected {
     --#{config.$prefix}btn-border-width: 2px;
-    --#{config.$prefix}btn-border-color: var(--#{config.$prefix}brand-border-subtle, var(--#{config.$prefix}primary));
+    --#{config.$prefix}btn-border-color: var(
+      --#{config.$prefix}brand-border-subtle,
+      var(--#{config.$prefix}primary)
+    );
     box-shadow: 0 0 0 2px rgba(var(--#{config.$prefix}primary-rgb, 124, 58, 237), 0.2);
   }
 

@@ -16,9 +16,7 @@ export {
   extractYouTubeId,
 } from './componentUtils';
 
-export type {
-  MergePropsOptions,
-} from './componentUtils';
+export type { MergePropsOptions } from './componentUtils';
 
 export {
   createFontPreloadLink,
@@ -27,6 +25,4 @@ export {
   DEFAULT_ATOMIX_FONTS,
 } from './fontPreloader';
 
-export type {
-  FontPreloadConfig,
-} from './fontPreloader';
+export type { FontPreloadConfig } from './fontPreloader';

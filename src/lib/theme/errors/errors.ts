@@ -1,6 +1,6 @@
 /**
  * Theme System Error Handling
- * 
+ *
  * Centralized error handling for the Atomix theme system.
  * Provides custom error classes and logging utilities.
  */
@@ -114,7 +114,7 @@ export interface LoggerConfig {
 
 /**
  * Theme Logger
- * 
+ *
  * Centralized logging for the theme system.
  * Replaces console statements with structured logging.
  */
@@ -128,7 +128,11 @@ export class ThemeLogger {
 
   constructor(config: LoggerConfig = {}) {
     this.config = {
-      level: config.level ?? (typeof process !== 'undefined' && process.env?.NODE_ENV === 'production' ? LogLevel.WARN : LogLevel.INFO),
+      level:
+        config.level ??
+        (typeof process !== 'undefined' && process.env?.NODE_ENV === 'production'
+          ? LogLevel.WARN
+          : LogLevel.INFO),
       enableConsole: config.enableConsole ?? true,
       onError: config.onError,
       onWarn: config.onWarn,
@@ -140,19 +144,16 @@ export class ThemeLogger {
   /**
    * Log an error
    */
-  error(
-    message: string,
-    error?: Error | ThemeError,
-    context?: Record<string, unknown>
-  ): void {
+  error(message: string, error?: Error | ThemeError, context?: Record<string, unknown>): void {
     if (this.config.level < LogLevel.ERROR) {
       return;
     }
 
     const errorObj = error instanceof Error ? error : new Error(message);
-    const themeError = error instanceof ThemeError 
-      ? error 
-      : new ThemeError(message, ThemeErrorCode.UNKNOWN_ERROR, context);
+    const themeError =
+      error instanceof ThemeError
+        ? error
+        : new ThemeError(message, ThemeErrorCode.UNKNOWN_ERROR, context);
 
     if (this.config.enableConsole) {
       console.error(`[ThemeError] ${message}`, {

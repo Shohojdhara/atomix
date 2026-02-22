@@ -2,32 +2,28 @@ import React, { memo } from 'react';
 import { ListProps } from '../../lib/types/components';
 import { LIST } from '../../lib/constants/components';
 
-export const List: React.FC<ListProps> = memo(({
-  children,
-  variant = 'default',
-  className = '',
-  style,
-  ...props
-}) => {
-  // Generate CSS classes
-  const listClasses = [LIST.BASE_CLASS, variant !== 'default' && `c-list--${variant}`, className]
-    .filter(Boolean)
-    .join(' ');
+export const List: React.FC<ListProps> = memo(
+  ({ children, variant = 'default', className = '', style, ...props }) => {
+    // Generate CSS classes
+    const listClasses = [LIST.BASE_CLASS, variant !== 'default' && `c-list--${variant}`, className]
+      .filter(Boolean)
+      .join(' ');
 
-  // Determine the HTML element based on variant
-  const ListElement = ['number', 'text'].includes(variant) ? 'ol' : 'ul';
+    // Determine the HTML element based on variant
+    const ListElement = ['number', 'text'].includes(variant) ? 'ol' : 'ul';
 
-  return (
-    <ListElement className={listClasses} style={style} {...props}>
-      {React.Children.map(children, child => {
-        if (React.isValidElement(child)) {
+    return (
+      <ListElement className={listClasses} style={style} {...props}>
+        {React.Children.map(children, child => {
+          if (React.isValidElement(child)) {
+            return <li className="c-list__item">{child}</li>;
+          }
           return <li className="c-list__item">{child}</li>;
-        }
-        return <li className="c-list__item">{child}</li>;
-      })}
-    </ListElement>
-  );
-});
+        })}
+      </ListElement>
+    );
+  }
+);
 
 export type { ListProps };
 

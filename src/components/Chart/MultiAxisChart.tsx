@@ -164,7 +164,8 @@ const MultiAxisChart = memo(
       }: ChartRenderContentParams) => {
         if (!datasets.length) return null;
 
-        const effectiveShowTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? showTooltips ?? true;
+        const effectiveShowTooltips =
+          toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? showTooltips ?? true;
         const effectiveShowGrid = toolbarState?.showGrid ?? true; // Grid visibility from toolbar
 
         const padding = 60;
@@ -221,19 +222,19 @@ const MultiAxisChart = memo(
 
         // Draw grid lines
         if (effectiveShowGrid) {
-        for (let i = 0; i <= 5; i++) {
-          const y = padding + (i / 5) * chartHeight;
-          elements.push(
-            <line
-              key={`grid-${i}`}
-              x1={padding}
-              y1={y}
-              x2={padding + chartWidth}
-              y2={y}
-              className="c-chart__grid"
-            />
-          );
-        }
+          for (let i = 0; i <= 5; i++) {
+            const y = padding + (i / 5) * chartHeight;
+            elements.push(
+              <line
+                key={`grid-${i}`}
+                x1={padding}
+                y1={y}
+                x2={padding + chartWidth}
+                y2={y}
+                className="c-chart__grid"
+              />
+            );
+          }
         }
 
         // Draw datasets
@@ -253,7 +254,7 @@ const MultiAxisChart = memo(
           // Generate line path
           let linePath = '';
           if (points.length > 0) {
-            linePath = `M ${points.map((p) => `${p.x},${p.y}`).join(' L ')}`;
+            linePath = `M ${points.map(p => `${p.x},${p.y}`).join(' L ')}`;
           }
 
           // Draw area under line
@@ -338,7 +339,14 @@ const MultiAxisChart = memo(
 
             elements.push(
               <g key={`legend-${index}`}>
-                <rect x={legendX} y={legendY} width="12" height="12" fill={color} className="c-chart__legend-item-color" />
+                <rect
+                  x={legendX}
+                  y={legendY}
+                  width="12"
+                  height="12"
+                  fill={color}
+                  className="c-chart__legend-item-color"
+                />
                 <text x={legendX + 16} y={legendY + 10} className="c-chart__legend-item-text">
                   {dataset.label}
                 </text>

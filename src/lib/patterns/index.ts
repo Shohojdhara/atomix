@@ -1,6 +1,6 @@
 /**
  * Pattern System Exports
- * 
+ *
  * Slot and render prop patterns for advanced component customization
  */
 

@@ -979,7 +979,9 @@ export interface HeroParts {
 /**
  * Hero component properties
  */
-export interface HeroProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'content'>, BaseComponentProps {
+export interface HeroProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'content'>,
+    BaseComponentProps {
   /**
    * Hero title
    */

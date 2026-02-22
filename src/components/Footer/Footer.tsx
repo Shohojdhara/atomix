@@ -149,141 +149,143 @@ export const Footer = forwardRef<HTMLElement, FooterProps>(
 
     const footerContent = (
       <div className={containerClass}>
-          {/* Main Footer Content */}
-          <Grid
-            className={sectionsClass}
-            alignItems="start"
-            justifyContent={layout === 'centered' ? 'center' : undefined}
-          >
-            {/* Brand Section */}
-            {(brand || brandLogo || brandDescription) && (
-              <GridCol {...(getResponsiveColumnProps('brand') as any)} className={brandClass}>
-                {brandLogo && (
-                  <div className="c-footer__brand-logo">
-                    {typeof brandLogo === 'string' ? (
-                      <img src={brandLogo} alt={'Brand Logo'} />
-                    ) : (
-                      brandLogo
-                    )}
-                  </div>
-                )}
-                {brand && (
-                  <div className="c-footer__brand-name">
-                    {typeof brand === 'string' ? <h3>{brand}</h3> : brand}
-                  </div>
-                )}
-                {brandDescription && (
-                  <div className="c-footer__brand-description">{brandDescription}</div>
-                )}
-                {socialLinks.length > 0 && (
-                  <div className="c-footer__social" data-testid="footer-social-links">
-                    {socialLinks.map((link, index) => (
-                      <FooterSocialLink
-                        key={`${link.platform}-${index}`}
-                        platform={link.platform}
-                        url={link.url}
-                        icon={link.icon}
-                        label={link.label}
-                        size={size}
-                      />
-                    ))}
-                  </div>
-                )}
-              </GridCol>
-            )}
-
-            {/* Footer Sections */}
-            {children && (
-              <GridCol
-                {...(getResponsiveColumnProps('content') as any)}
-                className="c-footer__content"
-              >
-                <Grid
-                  className="c-footer__sections"
-                  alignItems={layout === 'centered' || layout === 'stacked' ? 'center' : undefined}
-                >
-                  {React.Children.map(children, child => {
-                    // Check if the child is a valid React element
-                    if (React.isValidElement(child)) {
-                      // Clone the element and pass the showNewsletter prop
-                      return React.cloneElement(child, { showNewsletter } as any);
-                    }
-                    return child;
-                  })}
-                </Grid>
-              </GridCol>
-            )}
-
-            {/* Newsletter Section */}
-            {showNewsletter && (
-              <GridCol
-                {...(getResponsiveColumnProps('newsletter') as any)}
-                className="c-footer__newsletter"
-              >
-                <h4 className="c-footer__newsletter-title">{newsletterTitle}</h4>
-                {newsletterDescription && (
-                  <p className="c-footer__newsletter-description">{newsletterDescription}</p>
-                )}
-                <Form
-                  className="c-footer__newsletter-form"
-                  onSubmit={e => {
-                    e.preventDefault();
-                    const formData = new FormData(e.currentTarget);
-                    const email = formData.get('email') as string;
-                    if (email) handleNewsletterSubmit(email);
-                  }}
-                >
-                  <div className="c-footer__newsletter-input-group">
-                    <Input
-                      type="email"
-                      name="email"
-                      className="c-footer__newsletter-input"
-                      placeholder={newsletterPlaceholder}
-                      required
-                    />
-                    <Button type="submit" className="c-footer__newsletter-button">
-                      {newsletterButtonText}
-                    </Button>
-                  </div>
-                </Form>
-              </GridCol>
-            )}
-          </Grid>
-
-          {(copyright || showBackToTop) && (
-            <div className={bottomClass}>
-              {copyright && <div className="c-footer__copyright">{copyright}</div>}
-              {showBackToTop && (
-                <Button
-                  variant="ghost"
-                  className="c-footer__back-to-top"
-                  onClick={handleBackToTop}
-                  disabled={disabled}
-                  aria-label={backToTopText}
-                >
-                  <span className="c-footer__back-to-top-icon">↑</span>
-                  <span className="c-footer__back-to-top-text">{backToTopText}</span>
-                </Button>
+        {/* Main Footer Content */}
+        <Grid
+          className={sectionsClass}
+          alignItems="start"
+          justifyContent={layout === 'centered' ? 'center' : undefined}
+        >
+          {/* Brand Section */}
+          {(brand || brandLogo || brandDescription) && (
+            <GridCol {...(getResponsiveColumnProps('brand') as any)} className={brandClass}>
+              {brandLogo && (
+                <div className="c-footer__brand-logo">
+                  {typeof brandLogo === 'string' ? (
+                    <img src={brandLogo} alt={'Brand Logo'} />
+                  ) : (
+                    brandLogo
+                  )}
+                </div>
               )}
-            </div>
+              {brand && (
+                <div className="c-footer__brand-name">
+                  {typeof brand === 'string' ? <h3>{brand}</h3> : brand}
+                </div>
+              )}
+              {brandDescription && (
+                <div className="c-footer__brand-description">{brandDescription}</div>
+              )}
+              {socialLinks.length > 0 && (
+                <div className="c-footer__social" data-testid="footer-social-links">
+                  {socialLinks.map((link, index) => (
+                    <FooterSocialLink
+                      key={`${link.platform}-${index}`}
+                      platform={link.platform}
+                      url={link.url}
+                      icon={link.icon}
+                      label={link.label}
+                      size={size}
+                    />
+                  ))}
+                </div>
+              )}
+            </GridCol>
           )}
-        </div>
+
+          {/* Footer Sections */}
+          {children && (
+            <GridCol
+              {...(getResponsiveColumnProps('content') as any)}
+              className="c-footer__content"
+            >
+              <Grid
+                className="c-footer__sections"
+                alignItems={layout === 'centered' || layout === 'stacked' ? 'center' : undefined}
+              >
+                {React.Children.map(children, child => {
+                  // Check if the child is a valid React element
+                  if (React.isValidElement(child)) {
+                    // Clone the element and pass the showNewsletter prop
+                    return React.cloneElement(child, { showNewsletter } as any);
+                  }
+                  return child;
+                })}
+              </Grid>
+            </GridCol>
+          )}
+
+          {/* Newsletter Section */}
+          {showNewsletter && (
+            <GridCol
+              {...(getResponsiveColumnProps('newsletter') as any)}
+              className="c-footer__newsletter"
+            >
+              <h4 className="c-footer__newsletter-title">{newsletterTitle}</h4>
+              {newsletterDescription && (
+                <p className="c-footer__newsletter-description">{newsletterDescription}</p>
+              )}
+              <Form
+                className="c-footer__newsletter-form"
+                onSubmit={e => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  const email = formData.get('email') as string;
+                  if (email) handleNewsletterSubmit(email);
+                }}
+              >
+                <div className="c-footer__newsletter-input-group">
+                  <Input
+                    type="email"
+                    name="email"
+                    className="c-footer__newsletter-input"
+                    placeholder={newsletterPlaceholder}
+                    required
+                  />
+                  <Button type="submit" className="c-footer__newsletter-button">
+                    {newsletterButtonText}
+                  </Button>
+                </div>
+              </Form>
+            </GridCol>
+          )}
+        </Grid>
+
+        {(copyright || showBackToTop) && (
+          <div className={bottomClass}>
+            {copyright && <div className="c-footer__copyright">{copyright}</div>}
+            {showBackToTop && (
+              <Button
+                variant="ghost"
+                className="c-footer__back-to-top"
+                onClick={handleBackToTop}
+                disabled={disabled}
+                aria-label={backToTopText}
+              >
+                <span className="c-footer__back-to-top-icon">↑</span>
+                <span className="c-footer__back-to-top-text">{backToTopText}</span>
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
     );
 
     return (
-      <footer ref={ref} className={footerClass + ` c-footer ${glass ? 'c-footer--glass' : ''}`} {...props}>
-    {glass ? (
-      <AtomixGlass {...(glass as unknown as AtomixGlassProps)} elasticity={0}>
-        <div className="c-footer__glass">
-          {footerContent}
-        </div>
-      </AtomixGlass>
-    ) : (
-      footerContent
-    )}
-  </footer>
-);
-}
+      <footer
+        ref={ref}
+        className={footerClass + ` c-footer ${glass ? 'c-footer--glass' : ''}`}
+        {...props}
+      >
+        {glass ? (
+          <AtomixGlass {...(glass as unknown as AtomixGlassProps)} elasticity={0}>
+            <div className="c-footer__glass">{footerContent}</div>
+          </AtomixGlass>
+        ) : (
+          footerContent
+        )}
+      </footer>
+    );
+  }
 );
 
 Footer.displayName = 'Footer';

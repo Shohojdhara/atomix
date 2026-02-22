@@ -40,6 +40,6 @@ describe('sanitizeCSVCell', () => {
 
   it('should handle mixed cases', () => {
     // Dangerous character + quotes + newlines
-    expect(sanitizeCSVCell('=cmd|\' /C calc\'!A0\n')).toBe("'=cmd|' /C calc'!A0 ");
+    expect(sanitizeCSVCell("=cmd|' /C calc'!A0\n")).toBe("'=cmd|' /C calc'!A0 ");
   });
 });

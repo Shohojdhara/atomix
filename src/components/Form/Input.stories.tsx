@@ -167,25 +167,14 @@ export const States: Story = {
 export const WithIcons: Story = {
   render: () => (
     <div className="u-flex u-flex-column u-gap-3" style={{ width: '300px' }}>
-      <Input
-        placeholder="Search..."
-        prefixIcon={<MagnifyingGlass size={18} />}
-      />
-      <Input
-        placeholder="Email address"
-        type="email"
-        prefixIcon={<Envelope size={18} />}
-      />
+      <Input placeholder="Search..." prefixIcon={<MagnifyingGlass size={18} />} />
+      <Input placeholder="Email address" type="email" prefixIcon={<Envelope size={18} />} />
       <Input
         placeholder="Username"
         prefixIcon={<User size={18} />}
         suffixIcon={<span style={{ color: 'green' }}>✓</span>}
       />
-      <Input
-        placeholder="Phone number"
-        type="tel"
-        prefixIcon={<Phone size={18} />}
-      />
+      <Input placeholder="Phone number" type="tel" prefixIcon={<Phone size={18} />} />
     </div>
   ),
 };
@@ -201,14 +190,14 @@ export const Clearable: Story = {
         <Input
           placeholder="Type to see clear button"
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={e => setValue(e.target.value)}
           clearable
         />
         <Input
           placeholder="With prefix icon"
           prefixIcon={<MagnifyingGlass size={18} />}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={e => setValue(e.target.value)}
           clearable
         />
       </div>
@@ -227,14 +216,14 @@ export const WithCounter: Story = {
         <Input
           placeholder="Type here (max 50 characters)"
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={e => setValue(e.target.value)}
           maxLength={50}
           showCounter
         />
         <Input
           placeholder="With custom max count"
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={e => setValue(e.target.value)}
           maxCount={100}
           showCounter
         />
@@ -255,7 +244,7 @@ export const PasswordToggle: Story = {
           type="password"
           placeholder="Enter password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           showPasswordToggle
         />
         <Input
@@ -263,7 +252,7 @@ export const PasswordToggle: Story = {
           placeholder="Password with prefix icon"
           prefixIcon={<Lock size={18} />}
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
           showPasswordToggle
         />
       </div>
@@ -287,22 +276,18 @@ export const WithMessages: Story = {
           type="email"
           placeholder="Email address"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           invalid={isInvalidEmail}
           errorMessage={isInvalidEmail ? 'Please enter a valid email address' : undefined}
-          helperText={!isInvalidEmail ? 'We\'ll never share your email' : undefined}
+          helperText={!isInvalidEmail ? "We'll never share your email" : undefined}
         />
         <Input
           placeholder="Username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={e => setUsername(e.target.value)}
           helperText="Choose a unique username"
         />
-        <Input
-          placeholder="Required field"
-          required
-          helperText="This field is required"
-        />
+        <Input placeholder="Required field" required helperText="This field is required" />
       </div>
     );
   },
@@ -331,7 +316,8 @@ export const Comprehensive: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'A comprehensive example demonstrating multiple input features including icons, clearable functionality, password toggle, character counter, and helper text in a form-like layout.',
+        story:
+          'A comprehensive example demonstrating multiple input features including icons, clearable functionality, password toggle, character counter, and helper text in a form-like layout.',
       },
     },
   },
@@ -343,13 +329,11 @@ export const Comprehensive: Story = {
     return (
       <div className="u-flex u-flex-column u-gap-4" style={{ width: '400px' }}>
         <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
-            Search
-          </label>
+          <label style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>Search</label>
           <Input
             placeholder="Search products..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={e => setSearch(e.target.value)}
             prefixIcon={<MagnifyingGlass size={18} />}
             clearable
             fullWidth
@@ -364,7 +348,7 @@ export const Comprehensive: Story = {
             type="password"
             placeholder="Enter your password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             prefixIcon={<Lock size={18} />}
             showPasswordToggle
             fullWidth
@@ -373,13 +357,11 @@ export const Comprehensive: Story = {
         </div>
 
         <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>
-            Bio
-          </label>
+          <label style={{ display: 'block', marginBottom: '0.5rem', color: 'white' }}>Bio</label>
           <Input
             placeholder="Tell us about yourself"
             value={bio}
-            onChange={(e) => setBio(e.target.value)}
+            onChange={e => setBio(e.target.value)}
             maxLength={200}
             showCounter
             fullWidth
@@ -465,7 +447,8 @@ export const GlassShowcase: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates glass morphism effects on inputs with different modes and configurations, showing how inputs look over colorful backgrounds.',
+        story:
+          'Demonstrates glass morphism effects on inputs with different modes and configurations, showing how inputs look over colorful backgrounds.',
       },
     },
   },

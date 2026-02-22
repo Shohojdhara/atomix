@@ -456,7 +456,13 @@ export const ComplexNavigation: Story = {
 export const ResponsiveDemo: Story = {
   render: args => (
     <div style={{ maxWidth: '300px', margin: '0 auto' }}>
-      <p style={{ marginBottom: '1rem', fontSize: '0.875rem', color: 'var(--atomix-secondary-text-emphasis, #666)' }}>
+      <p
+        style={{
+          marginBottom: '1rem',
+          fontSize: '0.875rem',
+          color: 'var(--atomix-secondary-text-emphasis, #666)',
+        }}
+      >
         Resize your browser window to see the responsive behavior. On mobile (less than 768px), the
         menu becomes collapsible.
       </p>
@@ -548,9 +554,15 @@ export const DesktopCollapsible: Story = {
 
     return (
       <div style={{ maxWidth: '300px', padding: '2rem', margin: '0 auto' }}>
-        <p style={{ marginBottom: '1rem', fontSize: '0.875rem', color: 'var(--atomix-secondary-text-emphasis, #666)' }}>
-          Desktop vertical collapse - click the toggle button to expand/collapse the menu vertically.
-          Each section can also be toggled independently.
+        <p
+          style={{
+            marginBottom: '1rem',
+            fontSize: '0.875rem',
+            color: 'var(--atomix-secondary-text-emphasis, #666)',
+          }}
+        >
+          Desktop vertical collapse - click the toggle button to expand/collapse the menu
+          vertically. Each section can also be toggled independently.
         </p>
         <SideMenu
           {...args}
@@ -564,7 +576,11 @@ export const DesktopCollapsible: Story = {
               title: 'Navigation',
               items: [
                 { title: 'Home', href: '/', icon: <Icon name="House" size="sm" />, active: true },
-                { title: 'Dashboard', href: '/dashboard', icon: <Icon name="ChartBar" size="sm" /> },
+                {
+                  title: 'Dashboard',
+                  href: '/dashboard',
+                  icon: <Icon name="ChartBar" size="sm" />,
+                },
                 { title: 'Analytics', href: '/analytics', icon: <Icon name="TrendUp" size="sm" /> },
                 { title: 'Users', href: '/users', icon: <Icon name="Users" size="sm" /> },
                 { title: 'Settings', href: '/settings', icon: <Icon name="Gear" size="sm" /> },
@@ -573,16 +589,32 @@ export const DesktopCollapsible: Story = {
             {
               title: 'Products',
               items: [
-                { title: 'All Products', href: '/products', icon: <Icon name="Package" size="sm" /> },
-                { title: 'Categories', href: '/products/categories', icon: <Icon name="Tag" size="sm" /> },
-                { title: 'Inventory', href: '/products/inventory', icon: <Icon name="Warehouse" size="sm" /> },
+                {
+                  title: 'All Products',
+                  href: '/products',
+                  icon: <Icon name="Package" size="sm" />,
+                },
+                {
+                  title: 'Categories',
+                  href: '/products/categories',
+                  icon: <Icon name="Tag" size="sm" />,
+                },
+                {
+                  title: 'Inventory',
+                  href: '/products/inventory',
+                  icon: <Icon name="Warehouse" size="sm" />,
+                },
               ],
             },
             {
               title: 'Services',
               items: [
                 { title: 'Service List', href: '/services', icon: <Icon name="Gear" size="sm" /> },
-                { title: 'Service Requests', href: '/services/requests', icon: <Icon name="Clipboard" size="sm" /> },
+                {
+                  title: 'Service Requests',
+                  href: '/services/requests',
+                  icon: <Icon name="Clipboard" size="sm" />,
+                },
               ],
             },
             {
@@ -594,7 +626,15 @@ export const DesktopCollapsible: Story = {
             },
           ]}
         />
-        <div style={{ marginTop: '1rem', padding: '0.75rem', backgroundColor: 'var(--atomix-secondary-bg-subtle, rgba(0,0,0,0.05))', borderRadius: '6px', fontSize: '0.875rem' }}>
+        <div
+          style={{
+            marginTop: '1rem',
+            padding: '0.75rem',
+            backgroundColor: 'var(--atomix-secondary-bg-subtle, rgba(0,0,0,0.05))',
+            borderRadius: '6px',
+            fontSize: '0.875rem',
+          }}
+        >
           <strong>Current state:</strong> {isOpen ? 'Expanded' : 'Collapsed'}
         </div>
       </div>
@@ -621,9 +661,22 @@ export const NestedMenuItems: Story = {
       {
         title: 'Dashboard',
         items: [
-          { title: 'Overview', href: '/dashboard', icon: <Icon name="ChartBar" size="sm" />, active: true },
-          { title: 'Analytics', href: '/dashboard/analytics', icon: <Icon name="TrendUp" size="sm" /> },
-          { title: 'Reports', href: '/dashboard/reports', icon: <Icon name="FileText" size="sm" /> },
+          {
+            title: 'Overview',
+            href: '/dashboard',
+            icon: <Icon name="ChartBar" size="sm" />,
+            active: true,
+          },
+          {
+            title: 'Analytics',
+            href: '/dashboard/analytics',
+            icon: <Icon name="TrendUp" size="sm" />,
+          },
+          {
+            title: 'Reports',
+            href: '/dashboard/reports',
+            icon: <Icon name="FileText" size="sm" />,
+          },
         ],
       },
       {
@@ -631,7 +684,11 @@ export const NestedMenuItems: Story = {
         items: [
           { title: 'Users', href: '/users', icon: <Icon name="Users" size="sm" /> },
           { title: 'Roles', href: '/users/roles', icon: <Icon name="Shield" size="sm" /> },
-          { title: 'Permissions', href: '/users/permissions', icon: <Icon name="Lock" size="sm" /> },
+          {
+            title: 'Permissions',
+            href: '/users/permissions',
+            icon: <Icon name="Lock" size="sm" />,
+          },
         ],
       },
       {
@@ -646,8 +703,17 @@ export const NestedMenuItems: Story = {
         title: 'Settings',
         items: [
           { title: 'General', href: '/settings/general', icon: <Icon name="Gear" size="sm" /> },
-          { title: 'Notifications', href: '/settings/notifications', icon: <Icon name="Bell" size="sm" /> },
-          { title: 'Security', href: '/settings/security', icon: <Icon name="Lock" size="sm" />, disabled: true },
+          {
+            title: 'Notifications',
+            href: '/settings/notifications',
+            icon: <Icon name="Bell" size="sm" />,
+          },
+          {
+            title: 'Security',
+            href: '/settings/security',
+            icon: <Icon name="Lock" size="sm" />,
+            disabled: true,
+          },
         ],
       },
     ],
@@ -684,15 +750,27 @@ export const NestedMenuItemsWithChildren: Story = {
         title: 'Products',
         items: [
           { title: 'All Products', href: '/products', icon: <Icon name="Package" size="sm" /> },
-          { title: 'Categories', href: '/products/categories', icon: <Icon name="Tag" size="sm" /> },
-          { title: 'Inventory', href: '/products/inventory', icon: <Icon name="Warehouse" size="sm" /> },
+          {
+            title: 'Categories',
+            href: '/products/categories',
+            icon: <Icon name="Tag" size="sm" />,
+          },
+          {
+            title: 'Inventory',
+            href: '/products/inventory',
+            icon: <Icon name="Warehouse" size="sm" />,
+          },
         ],
       },
       {
         title: 'Services',
         items: [
           { title: 'Service List', href: '/services', icon: <Icon name="Gear" size="sm" /> },
-          { title: 'Service Requests', href: '/services/requests', icon: <Icon name="Clipboard" size="sm" /> },
+          {
+            title: 'Service Requests',
+            href: '/services/requests',
+            icon: <Icon name="Clipboard" size="sm" />,
+          },
         ],
       },
     ],
@@ -728,8 +806,16 @@ export const NestedMenuItemsCustomIcons: Story = {
         title: 'Preferences',
         toggleIcon: <Icon name="CaretDown" size="xs" />,
         items: [
-          { title: 'Notifications', href: '/settings/notifications', icon: <Icon name="Bell" size="sm" /> },
-          { title: 'Appearance', href: '/settings/appearance', icon: <Icon name="PaintBrush" size="sm" /> },
+          {
+            title: 'Notifications',
+            href: '/settings/notifications',
+            icon: <Icon name="Bell" size="sm" />,
+          },
+          {
+            title: 'Appearance',
+            href: '/settings/appearance',
+            icon: <Icon name="PaintBrush" size="sm" />,
+          },
           { title: 'Language', href: '/settings/language', icon: <Icon name="Globe" size="sm" /> },
         ],
       },
@@ -737,8 +823,16 @@ export const NestedMenuItemsCustomIcons: Story = {
         title: 'Billing',
         toggleIcon: <Icon name="CaretDown" size="xs" />,
         items: [
-          { title: 'Subscription', href: '/settings/billing', icon: <Icon name="CreditCard" size="sm" /> },
-          { title: 'Invoices', href: '/settings/invoices', icon: <Icon name="Receipt" size="sm" /> },
+          {
+            title: 'Subscription',
+            href: '/settings/billing',
+            icon: <Icon name="CreditCard" size="sm" />,
+          },
+          {
+            title: 'Invoices',
+            href: '/settings/invoices',
+            icon: <Icon name="Receipt" size="sm" />,
+          },
         ],
       },
     ],
@@ -763,7 +857,13 @@ export const DesktopCollapsibleStartCollapsed: Story = {
 
     return (
       <div style={{ maxWidth: '300px', padding: '2rem', margin: '0 auto' }}>
-        <p style={{ marginBottom: '1rem', fontSize: '0.875rem', color: 'var(--atomix-secondary-text-emphasis, #666)' }}>
+        <p
+          style={{
+            marginBottom: '1rem',
+            fontSize: '0.875rem',
+            color: 'var(--atomix-secondary-text-emphasis, #666)',
+          }}
+        >
           Sidebar starts collapsed on desktop.
         </p>
         <SideMenu
@@ -1034,7 +1134,7 @@ export const GlassCustom: Story = {
       backgroundImage="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2940&auto=format&fit=crop"
       overlay
     >
-      <div style={{ position: 'relative', width: '320px',}}>
+      <div style={{ position: 'relative', width: '320px' }}>
         <SideMenu
           title="Nature Explorer"
           glass={{
@@ -1119,7 +1219,7 @@ export const GlassThemeShowcase: Story = {
         backgroundImage="https://images.unsplash.com/photo-1505142468610-359e7d316be0?q=80&w=2940&auto=format&fit=crop"
         height="70vh"
       >
-        <div style={{ position: 'relative', width: '300px',}}>
+        <div style={{ position: 'relative', width: '300px' }}>
           <SideMenu title="Ocean Explorer" glass>
             <SideMenuList>
               <SideMenuItem href="/" icon={<Icon name="House" size="sm" />} active>
@@ -1153,7 +1253,7 @@ export const GlassThemeShowcase: Story = {
         backgroundImage="https://images.unsplash.com/photo-1514565131-fce0801e5785?q=80&w=2940&auto=format&fit=crop"
         height="70vh"
       >
-        <div style={{ position: 'relative', width: '300px',}}>
+        <div style={{ position: 'relative', width: '300px' }}>
           <SideMenu glass>
             <SideMenuList>
               <SideMenuItem href="/dashboard" icon={<Icon name="ChartBar" size="sm" />} active>
@@ -1187,7 +1287,7 @@ export const GlassThemeShowcase: Story = {
         backgroundImage="https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?q=80&w=2940&auto=format&fit=crop"
         height="70vh"
       >
-        <div style={{ position: 'relative', width: '320px',}}>
+        <div style={{ position: 'relative', width: '320px' }}>
           <SideMenu
             title="Travel Hub"
             glass={{

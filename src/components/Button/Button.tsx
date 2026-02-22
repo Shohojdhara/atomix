@@ -65,13 +65,19 @@ export const Button = React.memo(
       const shouldRenderAsLink = Boolean(href && !isDisabled);
 
       // Resolve icon element - support both icon (ReactNode) and iconName (string)
-      const iconElement = iconName ? <Icon name={iconName as PhosphorIconsType} size={iconSize} /> : icon;
+      const iconElement = iconName ? (
+        <Icon name={iconName as PhosphorIconsType} size={iconSize} />
+      ) : (
+        icon
+      );
 
       const buttonClass = [
         BUTTON.BASE_CLASS,
         ThemeNaming.variantClass(THEME_NAMING.BUTTON_PREFIX, variant),
         size !== 'md' ? ThemeNaming.sizeClass(THEME_NAMING.BUTTON_PREFIX, size) : '',
-        iconOnly ? ThemeNaming.stateClass(THEME_NAMING.BUTTON_PREFIX, THEME_NAMING.ICON_ELEMENT) : '',
+        iconOnly
+          ? ThemeNaming.stateClass(THEME_NAMING.BUTTON_PREFIX, THEME_NAMING.ICON_ELEMENT)
+          : '',
         rounded ? ThemeNaming.stateClass(THEME_NAMING.BUTTON_PREFIX, 'rounded') : '',
         isDisabled ? ThemeNaming.stateClass(THEME_NAMING.BUTTON_PREFIX, 'disabled') : '',
         glass ? ThemeNaming.stateClass(THEME_NAMING.BUTTON_PREFIX, 'glass') : '',
@@ -134,30 +140,60 @@ export const Button = React.memo(
       const spinnerSize = size === 'sm' ? 'sm' : size === 'lg' ? 'md' : 'sm';
 
       // Safe Aria Label
-      const safeAriaLabel = ariaLabel || (iconOnly ? (typeof label === 'string' ? label : (typeof children === 'string' ? children : undefined)) : undefined);
+      const safeAriaLabel =
+        ariaLabel ||
+        (iconOnly
+          ? typeof label === 'string'
+            ? label
+            : typeof children === 'string'
+              ? children
+              : undefined
+          : undefined);
 
       // Button content with icon positioning
       const buttonContent = (
         <>
           {loading && (
-            <span className={ThemeNaming.bemClass(THEME_NAMING.BUTTON_PREFIX, THEME_NAMING.SPINNER_ELEMENT)} aria-hidden="true">
+            <span
+              className={ThemeNaming.bemClass(
+                THEME_NAMING.BUTTON_PREFIX,
+                THEME_NAMING.SPINNER_ELEMENT
+              )}
+              aria-hidden="true"
+            >
               <Spinner
                 size={spinnerSize}
                 variant={
-                  variant === 'link' || (typeof variant === 'string' && variant.startsWith('outline-'))
+                  variant === 'link' ||
+                  (typeof variant === 'string' && variant.startsWith('outline-'))
                     ? 'primary'
-                    : (variant === 'danger' ? 'error' : (variant as any))
+                    : variant === 'danger'
+                      ? 'error'
+                      : (variant as any)
                 }
               />
             </span>
           )}
           {iconElement && !loading && (
-            <span className={ThemeNaming.bemClass(THEME_NAMING.BUTTON_PREFIX, THEME_NAMING.ICON_ELEMENT)} aria-hidden="true">
+            <span
+              className={ThemeNaming.bemClass(
+                THEME_NAMING.BUTTON_PREFIX,
+                THEME_NAMING.ICON_ELEMENT
+              )}
+              aria-hidden="true"
+            >
               {iconElement}
             </span>
           )}
           {!iconOnly && buttonText && (
-            <span className={ThemeNaming.bemClass(THEME_NAMING.BUTTON_PREFIX, THEME_NAMING.LABEL_ELEMENT)}>{buttonText}</span>
+            <span
+              className={ThemeNaming.bemClass(
+                THEME_NAMING.BUTTON_PREFIX,
+                THEME_NAMING.LABEL_ELEMENT
+              )}
+            >
+              {buttonText}
+            </span>
           )}
         </>
       );
@@ -175,7 +211,7 @@ export const Button = React.memo(
         'aria-describedby': ariaDescribedBy,
         'aria-expanded': ariaExpanded,
         'aria-controls': ariaControls,
-        tabIndex: tabIndex !== undefined ? tabIndex : (isDisabled ? -1 : 0),
+        tabIndex: tabIndex !== undefined ? tabIndex : isDisabled ? -1 : 0,
         style,
         ...props,
       };
@@ -195,11 +231,7 @@ export const Button = React.memo(
             rel: target === '_blank' ? 'noopener noreferrer' : undefined,
           };
 
-          content = (
-            <LinkComp {...linkProps}>
-              {buttonContent}
-            </LinkComp>
-          );
+          content = <LinkComp {...linkProps}>{buttonContent}</LinkComp>;
         } else {
           // Fallback to regular anchor tag
           content = (

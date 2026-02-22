@@ -1,6 +1,6 @@
 /**
  * Theme Configuration Types
- * 
+ *
  * Type definitions for the theme configuration system
  */
 

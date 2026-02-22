@@ -130,64 +130,64 @@ Cards are flexible containers for displaying content with optional headers, imag
         defaultValue: { summary: 'none' },
       },
     },
-    row: { 
-      control: 'boolean', 
+    row: {
+      control: 'boolean',
       description: 'Whether to arrange content horizontally',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
       },
     },
-    flat: { 
-      control: 'boolean', 
+    flat: {
+      control: 'boolean',
       description: 'Whether to remove border radius',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
       },
     },
-    active: { 
-      control: 'boolean', 
+    active: {
+      control: 'boolean',
       description: 'Whether the card is in active state',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
       },
     },
-    disabled: { 
-      control: 'boolean', 
+    disabled: {
+      control: 'boolean',
       description: 'Whether the card is disabled',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
       },
     },
-    loading: { 
-      control: 'boolean', 
+    loading: {
+      control: 'boolean',
       description: 'Whether the card is in loading state',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
       },
     },
-    selected: { 
-      control: 'boolean', 
+    selected: {
+      control: 'boolean',
       description: 'Whether the card is selected',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
       },
     },
-    interactive: { 
-      control: 'boolean', 
+    interactive: {
+      control: 'boolean',
       description: 'Whether the card responds to interactions',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
       },
     },
-    className: { 
-      control: 'text', 
+    className: {
+      control: 'text',
       description: 'Additional CSS class names',
       table: {
         type: { summary: 'string' },
@@ -381,12 +381,14 @@ export const WithGlassEffect: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates a card with glass morphism effect applied, creating a translucent, frosted appearance that works well over colorful backgrounds.',
+        story:
+          'Demonstrates a card with glass morphism effect applied, creating a translucent, frosted appearance that works well over colorful backgrounds.',
       },
     },
   },
   render: args => (
-    <div className="u-bg-cover u-h-80vh u-w-90vw u-grid u-rounded-xl u-overflow-hidden"
+    <div
+      className="u-bg-cover u-h-80vh u-w-90vw u-grid u-rounded-xl u-overflow-hidden"
       style={{
         backgroundImage: `url(https://picsum.photos/id/128/1920/1024)`,
       }}
@@ -720,7 +722,8 @@ export const AllGlassModesComparison: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Side-by-side comparison of all available glass morphism modes (standard, polar, prominent, shader) to help you choose the right effect for your design.',
+        story:
+          'Side-by-side comparison of all available glass morphism modes (standard, polar, prominent, shader) to help you choose the right effect for your design.',
       },
     },
   },
@@ -966,7 +969,8 @@ export const GlassCardGallery: Story = {
 // Glass Card Layouts
 export const GlassCardLayouts: Story = {
   render: () => (
-    <div className="u-bg-cover u-bg-center u-p-12 u-rounded-xl u-min-h-95vh u-min-w-95vw u-overflow-auto"
+    <div
+      className="u-bg-cover u-bg-center u-p-12 u-rounded-xl u-min-h-95vh u-min-w-95vw u-overflow-auto"
       style={{
         backgroundImage: 'url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920)',
       }}
@@ -979,9 +983,7 @@ export const GlassCardLayouts: Story = {
         <div className="u-flex u-gap-8">
           {/* Standard Layout */}
           <div className="u-w-50">
-            <h3 className="u-text-white u-mb-4 u-text-shadow">
-              Standard Layout
-            </h3>
+            <h3 className="u-text-white u-mb-4 u-text-shadow">Standard Layout</h3>
             <Card
               title="Standard Glass Card"
               text="This is a standard glass card with vertical layout."
@@ -999,9 +1001,7 @@ export const GlassCardLayouts: Story = {
 
           {/* Row Layout */}
           <div className="u-w-50">
-            <h3 className="u-text-white u-mb-4 u-text-shadow">
-              Row Layout
-            </h3>
+            <h3 className="u-text-white u-mb-4 u-text-shadow">Row Layout</h3>
             <Card
               title="Row Glass Card"
               text="This is a row glass card with horizontal layout."
@@ -1024,9 +1024,7 @@ export const GlassCardLayouts: Story = {
 
           {/* Flat Layout */}
           <div className="u-w-50">
-            <h3 className="u-text-white u-mb-4 u-text-shadow">
-              Flat Layout
-            </h3>
+            <h3 className="u-text-white u-mb-4 u-text-shadow">Flat Layout</h3>
             <Card
               title="Flat Glass Card"
               text="This is a flat glass card with edge-to-edge image."
@@ -1081,7 +1079,13 @@ export const SizeVariants: Story = {
 // Color Variants
 export const ColorVariants: Story = {
   render: () => (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+        gap: '1rem',
+      }}
+    >
       <Card variant="primary" title="Primary Card" text="Primary variant card." />
       <Card variant="secondary" title="Secondary Card" text="Secondary variant card." />
       <Card variant="success" title="Success Card" text="Success variant card." />
@@ -1097,11 +1101,37 @@ export const ColorVariants: Story = {
 // Appearance Variants
 export const AppearanceVariants: Story = {
   render: () => (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-      <Card appearance="filled" variant="primary" title="Filled Card" text="Filled appearance with solid background." />
-      <Card appearance="outlined" variant="primary" title="Outlined Card" text="Outlined appearance with border only." />
-      <Card appearance="ghost" variant="primary" title="Ghost Card" text="Ghost appearance with minimal styling." />
-      <Card appearance="elevated" variant="primary" title="Elevated Card" text="Elevated appearance with shadow." />
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+        gap: '1rem',
+      }}
+    >
+      <Card
+        appearance="filled"
+        variant="primary"
+        title="Filled Card"
+        text="Filled appearance with solid background."
+      />
+      <Card
+        appearance="outlined"
+        variant="primary"
+        title="Outlined Card"
+        text="Outlined appearance with border only."
+      />
+      <Card
+        appearance="ghost"
+        variant="primary"
+        title="Ghost Card"
+        text="Ghost appearance with minimal styling."
+      />
+      <Card
+        appearance="elevated"
+        variant="primary"
+        title="Elevated Card"
+        text="Elevated appearance with shadow."
+      />
     </div>
   ),
 };
@@ -1188,7 +1218,8 @@ export const Comprehensive: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'A comprehensive example demonstrating various card features including sizes, variants, appearances, elevations, and states in a grid layout.',
+        story:
+          'A comprehensive example demonstrating various card features including sizes, variants, appearances, elevations, and states in a grid layout.',
       },
     },
   },

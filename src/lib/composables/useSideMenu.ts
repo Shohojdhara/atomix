@@ -19,9 +19,9 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
 
   // Local open state for when not controlled externally
   const [isOpenState, setIsOpenState] = useState(
-    defaultProps.defaultCollapsedDesktop !== undefined 
-      ? !defaultProps.defaultCollapsedDesktop 
-      : (defaultProps.isOpen || false)
+    defaultProps.defaultCollapsedDesktop !== undefined
+      ? !defaultProps.defaultCollapsedDesktop
+      : defaultProps.isOpen || false
   );
 
   // Refs for managing responsive behavior
@@ -42,7 +42,8 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
     const shouldCollapse = isMobile ? defaultProps.collapsible : defaultProps.collapsibleDesktop;
-    const currentOpen = typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
+    const currentOpen =
+      typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
 
     if (shouldCollapse && wrapperRef.current && innerRef.current) {
       // Use setTimeout to ensure DOM is fully rendered
@@ -78,7 +79,7 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
         // Set proper height for vertical animation (both mobile and desktop)
         const currentOpen =
           typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
-        
+
         // Use requestAnimationFrame to ensure DOM is ready
         requestAnimationFrame(() => {
           if (wrapperRef.current && innerRef.current) {

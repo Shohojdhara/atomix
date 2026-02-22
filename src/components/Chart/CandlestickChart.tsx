@@ -125,7 +125,10 @@ const CandlestickChart = memo(
         borderColor = 'var(--atomix-primary-border-subtle)',
         showMovingAverages = false,
         movingAveragePeriods = [7, 21],
-        movingAverageColors = ['var(--atomix-warning-bg-subtle)', 'var(--atomix-warning-border-subtle)'],
+        movingAverageColors = [
+          'var(--atomix-warning-bg-subtle)',
+          'var(--atomix-warning-border-subtle)',
+        ],
         dateFormat = 'short',
         dateFormatter,
         showGrid = true,
@@ -189,7 +192,11 @@ const CandlestickChart = memo(
       }: ChartRenderContentParams) => {
         if (!candlestickData.length) return null;
 
-        const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? candlestickOptions.showTooltips ?? true;
+        const showTooltips =
+          toolbarState?.showTooltips ??
+          renderConfig?.showTooltips ??
+          candlestickOptions.showTooltips ??
+          true;
 
         const padding = 40;
         const chartWidth = scales.width - padding * 2;
@@ -298,7 +305,9 @@ const CandlestickChart = memo(
                   );
                 }}
                 onMouseLeave={handlers.onPointLeave}
-                onClick={() => handlers.onDataPointClick?.(candle as unknown as ChartDataPoint, 0, index)}
+                onClick={() =>
+                  handlers.onDataPointClick?.(candle as unknown as ChartDataPoint, 0, index)
+                }
               />
             </g>
           );
@@ -372,19 +381,17 @@ const CandlestickChart = memo(
             {candles}
             {volumeBars}
             {movingAverages}
-            {showTooltips &&
-              hoveredPoint &&
-              candlestickData[hoveredPoint.pointIndex] && (
-                <ChartTooltip
-                  dataPoint={candlestickData[hoveredPoint.pointIndex] as unknown as ChartDataPoint}
-                  datasetLabel="Candlestick"
-                  position={{
-                    x: hoveredPoint.clientX,
-                    y: hoveredPoint.clientY,
-                  }}
-                  visible={true}
-                />
-              )}
+            {showTooltips && hoveredPoint && candlestickData[hoveredPoint.pointIndex] && (
+              <ChartTooltip
+                dataPoint={candlestickData[hoveredPoint.pointIndex] as unknown as ChartDataPoint}
+                datasetLabel="Candlestick"
+                position={{
+                  x: hoveredPoint.clientX,
+                  y: hoveredPoint.clientY,
+                }}
+                visible={true}
+              />
+            )}
           </>
         );
       };

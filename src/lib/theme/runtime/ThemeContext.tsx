@@ -1,6 +1,6 @@
 /**
  * Theme Context
- * 
+ *
  * React context for theme management
  */
 

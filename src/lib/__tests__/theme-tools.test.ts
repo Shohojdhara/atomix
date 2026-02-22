@@ -7,7 +7,7 @@ import {
   validateTheme,
   themeToCSS,
   getThemeMetadata,
-  supportsDarkMode
+  supportsDarkMode,
 } from '../theme-tools';
 import { Theme } from '../theme/types';
 
@@ -59,13 +59,39 @@ describe('theme-tools', () => {
     },
     shadows: { xs: 'none', sm: 'none', md: 'none', lg: 'none', xl: 'none' },
     transitions: {
-      duration: { shortest: 150, shorter: 200, short: 250, standard: 300, complex: 375, enteringScreen: 225, leavingScreen: 195 },
-      easing: { easeInOut: 'ease', easeOut: 'ease', easeIn: 'ease', sharp: 'ease' }
+      duration: {
+        shortest: 150,
+        shorter: 200,
+        short: 250,
+        standard: 300,
+        complex: 375,
+        enteringScreen: 225,
+        leavingScreen: 195,
+      },
+      easing: { easeInOut: 'ease', easeOut: 'ease', easeIn: 'ease', sharp: 'ease' },
     },
-    zIndex: { mobileStepper: 1000, speedDial: 1050, appBar: 1100, drawer: 1200, modal: 1300, snackbar: 1400, tooltip: 1500 },
-    borderRadius: { base: 4, sm: 2, md: 4, lg: 8, xl: 12, xxl: 16, '3xl': 24, '4xl': 32, pill: 9999 },
+    zIndex: {
+      mobileStepper: 1000,
+      speedDial: 1050,
+      appBar: 1100,
+      drawer: 1200,
+      modal: 1300,
+      snackbar: 1400,
+      tooltip: 1500,
+    },
+    borderRadius: {
+      base: 4,
+      sm: 2,
+      md: 4,
+      lg: 8,
+      xl: 12,
+      xxl: 16,
+      '3xl': 24,
+      '4xl': 32,
+      pill: 9999,
+    },
     custom: {},
-    __isJSTheme: true
+    __isJSTheme: true,
   };
 
   describe('quickTheme', () => {

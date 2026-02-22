@@ -1,6 +1,6 @@
 /**
  * Theme DevTools Module
- * 
+ *
  * Developer tools for theme management and debugging
  */
 
@@ -22,14 +22,8 @@ export type { DesignTokensCustomizerProps } from './DesignTokensCustomizer';
 
 // Validator (devtools only)
 export { ThemeValidator } from './ThemeValidator';
-export type {
-  ValidationResult,
-  A11yIssue,
-} from './ThemeValidator';
+export type { ValidationResult, A11yIssue } from './ThemeValidator';
 
 // Hooks
 export { useHistory } from './useHistory';
-export type {
-  UseHistoryOptions,
-  UseHistoryReturn,
-} from './useHistory';
+export type { UseHistoryOptions, UseHistoryReturn } from './useHistory';

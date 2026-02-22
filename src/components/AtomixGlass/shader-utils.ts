@@ -39,7 +39,7 @@ const smoothStep = (a: number, b: number, t: number): number => {
   if (typeof a !== 'number' || typeof b !== 'number' || typeof t !== 'number') {
     return 0;
   }
-  
+
   const clamped = Math.max(0, Math.min(1, (t - a) / (b - a)));
   return clamped * clamped * (3 - 2 * clamped);
 };
@@ -49,11 +49,11 @@ const calculateLength = (x: number, y: number): number => {
   if (typeof x !== 'number' || typeof y !== 'number' || isNaN(x) || isNaN(y)) {
     return 0;
   }
-  
+
   // Prevent potential overflow
   const maxX = Math.max(Math.abs(x), Math.abs(y));
   if (maxX === 0) return 0;
-  
+
   const scaledX = x / maxX;
   const scaledY = y / maxX;
   return maxX * Math.sqrt(scaledX * scaledX + scaledY * scaledY);
@@ -67,12 +67,16 @@ const roundedRectSDF = (
   radius: number
 ): number => {
   // Add input validation
-  if (typeof x !== 'number' || typeof y !== 'number' || 
-      typeof width !== 'number' || typeof height !== 'number' || 
-      typeof radius !== 'number') {
+  if (
+    typeof x !== 'number' ||
+    typeof y !== 'number' ||
+    typeof width !== 'number' ||
+    typeof height !== 'number' ||
+    typeof radius !== 'number'
+  ) {
     return 0;
   }
-  
+
   const qx = Math.abs(x) - width + radius;
   const qy = Math.abs(y) - height + radius;
   return Math.min(Math.max(qx, qy), 0) + calculateLength(Math.max(qx, 0), Math.max(qy, 0)) - radius;
@@ -97,11 +101,11 @@ const clampValue = (value: number, min: number, max: number): number => {
   if (typeof value !== 'number' || typeof min !== 'number' || typeof max !== 'number') {
     return min;
   }
-  
+
   if (isNaN(value)) return min;
   if (isNaN(min)) return 0;
   if (isNaN(max)) return 1;
-  
+
   return Math.max(min, Math.min(max, value));
 };
 
@@ -111,9 +115,11 @@ const easeInOutCubic = (t: number): number => {
   if (typeof t !== 'number' || isNaN(t)) {
     return 0;
   }
-  
+
   const clampedT = Math.max(0, Math.min(1, t));
-  return clampedT < 0.5 ? 4 * clampedT * clampedT * clampedT : 1 - Math.pow(-2 * clampedT + 2, 3) / 2;
+  return clampedT < 0.5
+    ? 4 * clampedT * clampedT * clampedT
+    : 1 - Math.pow(-2 * clampedT + 2, 3) / 2;
 };
 
 const easeOutQuart = (t: number): number => {
@@ -121,7 +127,7 @@ const easeOutQuart = (t: number): number => {
   if (typeof t !== 'number' || isNaN(t)) {
     return 0;
   }
-  
+
   const clampedT = Math.max(0, Math.min(1, t));
   return 1 - Math.pow(1 - clampedT, 4);
 };
@@ -132,7 +138,7 @@ const noise2D = (x: number, y: number): number => {
   if (typeof x !== 'number' || typeof y !== 'number' || isNaN(x) || isNaN(y)) {
     return 0;
   }
-  
+
   const X = Math.floor(x) & 255;
   const Y = Math.floor(y) & 255;
 
@@ -148,7 +154,7 @@ const noise2D = (x: number, y: number): number => {
     if (typeof i !== 'number' || typeof j !== 'number') {
       return 0;
     }
-    
+
     const n = i + j * 57;
     // Use a more stable hash function
     const hashed = Math.sin(n * 12.9898 + 78.233) * 43758.5453;
@@ -172,10 +178,10 @@ const fbm = (x: number, y: number, octaves: number = 4): number => {
   if (typeof x !== 'number' || typeof y !== 'number' || isNaN(x) || isNaN(y)) {
     return 0;
   }
-  
+
   // Clamp octaves to prevent performance issues
   const clampedOctaves = Math.max(1, Math.min(8, Math.floor(octaves)));
-  
+
   let value = 0;
   let amplitude = 0.5;
   let frequency = 1;
@@ -192,11 +198,17 @@ const fbm = (x: number, y: number, octaves: number = 4): number => {
 // Radial distortion for glass-like refraction
 const calculateRadialDistortion = (x: number, y: number, strength: number): Vec2 => {
   // Add input validation
-  if (typeof x !== 'number' || typeof y !== 'number' || typeof strength !== 'number' || 
-      isNaN(x) || isNaN(y) || isNaN(strength)) {
+  if (
+    typeof x !== 'number' ||
+    typeof y !== 'number' ||
+    typeof strength !== 'number' ||
+    isNaN(x) ||
+    isNaN(y) ||
+    isNaN(strength)
+  ) {
     return { x: 0, y: 0 };
   }
-  
+
   const distance = calculateLength(x, y);
   const distortion = Math.pow(Math.min(distance, 10), 2) * strength; // Limit distance to prevent extreme values
 
@@ -209,17 +221,23 @@ const calculateRadialDistortion = (x: number, y: number, strength: number): Vec2
 // Chromatic aberration calculation
 const calculateChromaticOffset = (x: number, y: number, intensity: number): Vec2 => {
   // Add input validation
-  if (typeof x !== 'number' || typeof y !== 'number' || typeof intensity !== 'number' || 
-      isNaN(x) || isNaN(y) || isNaN(intensity)) {
+  if (
+    typeof x !== 'number' ||
+    typeof y !== 'number' ||
+    typeof intensity !== 'number' ||
+    isNaN(x) ||
+    isNaN(y) ||
+    isNaN(intensity)
+  ) {
     return { x: 0, y: 0 };
   }
-  
+
   const distance = calculateLength(x, y);
   // Prevent division by zero and extreme values
   if (distance === 0) {
     return { x: 0, y: 0 };
   }
-  
+
   const angle = Math.atan2(y, x);
 
   return {
@@ -231,11 +249,19 @@ const calculateChromaticOffset = (x: number, y: number, intensity: number): Vec2
 // Advanced caustic pattern generator for glass refraction
 const calculateCaustics = (x: number, y: number, time: number, intensity: number = 1): number => {
   // Add input validation
-  if (typeof x !== 'number' || typeof y !== 'number' || typeof time !== 'number' || 
-      typeof intensity !== 'number' || isNaN(x) || isNaN(y) || isNaN(time) || isNaN(intensity)) {
+  if (
+    typeof x !== 'number' ||
+    typeof y !== 'number' ||
+    typeof time !== 'number' ||
+    typeof intensity !== 'number' ||
+    isNaN(x) ||
+    isNaN(y) ||
+    isNaN(time) ||
+    isNaN(intensity)
+  ) {
     return 0.5; // Return middle value on error
   }
-  
+
   const scale = 8;
   const speed = 2;
 
@@ -263,15 +289,23 @@ const calculateSpectralDispersion = (
   intensity: number
 ): { r: Vec2; g: Vec2; b: Vec2 } => {
   // Add input validation
-  if (typeof x !== 'number' || typeof y !== 'number' || typeof angle !== 'number' || 
-      typeof intensity !== 'number' || isNaN(x) || isNaN(y) || isNaN(angle) || isNaN(intensity)) {
+  if (
+    typeof x !== 'number' ||
+    typeof y !== 'number' ||
+    typeof angle !== 'number' ||
+    typeof intensity !== 'number' ||
+    isNaN(x) ||
+    isNaN(y) ||
+    isNaN(angle) ||
+    isNaN(intensity)
+  ) {
     return {
       r: { x: 0, y: 0 },
       g: { x: 0, y: 0 },
-      b: { x: 0, y: 0 }
+      b: { x: 0, y: 0 },
     };
   }
-  
+
   const distance = calculateLength(x, y);
   const dispersionStrength = Math.min(distance * intensity, 1); // Limit strength to prevent extreme values
 
@@ -305,12 +339,21 @@ const calculateParallaxOffset = (
   mouseY: number = 0
 ): Vec2 => {
   // Add input validation
-  if (typeof x !== 'number' || typeof y !== 'number' || typeof depth !== 'number' || 
-      typeof mouseX !== 'number' || typeof mouseY !== 'number' || 
-      isNaN(x) || isNaN(y) || isNaN(depth) || isNaN(mouseX) || isNaN(mouseY)) {
+  if (
+    typeof x !== 'number' ||
+    typeof y !== 'number' ||
+    typeof depth !== 'number' ||
+    typeof mouseX !== 'number' ||
+    typeof mouseY !== 'number' ||
+    isNaN(x) ||
+    isNaN(y) ||
+    isNaN(depth) ||
+    isNaN(mouseX) ||
+    isNaN(mouseY)
+  ) {
     return { x: 0, y: 0 };
   }
-  
+
   const parallaxStrength = Math.min(0.02 * depth, 0.1); // Limit strength to prevent extreme values
 
   // Calculate offset based on view angle (simulated by mouse position)
@@ -323,11 +366,19 @@ const calculateParallaxOffset = (
 // Volumetric density for depth perception and scattering
 const calculateVolumetricDensity = (x: number, y: number, depth: number, time: number): number => {
   // Add input validation
-  if (typeof x !== 'number' || typeof y !== 'number' || typeof depth !== 'number' || 
-      typeof time !== 'number' || isNaN(x) || isNaN(y) || isNaN(depth) || isNaN(time)) {
+  if (
+    typeof x !== 'number' ||
+    typeof y !== 'number' ||
+    typeof depth !== 'number' ||
+    typeof time !== 'number' ||
+    isNaN(x) ||
+    isNaN(y) ||
+    isNaN(depth) ||
+    isNaN(time)
+  ) {
     return 0.5; // Return middle value on error
   }
-  
+
   const noiseValue = fbm(x * 5 + time * 0.5, y * 5 - time * 0.5, 3);
   const depthFalloff = Math.exp(-Math.max(0, depth) * 2); // Ensure depth is not negative
 
@@ -337,14 +388,22 @@ const calculateVolumetricDensity = (x: number, y: number, depth: number, time: n
 // Advanced turbulence for organic glass distortion
 const calculateTurbulence = (x: number, y: number, time: number, octaves: number = 5): number => {
   // Add input validation
-  if (typeof x !== 'number' || typeof y !== 'number' || typeof time !== 'number' || 
-      typeof octaves !== 'number' || isNaN(x) || isNaN(y) || isNaN(time) || isNaN(octaves)) {
+  if (
+    typeof x !== 'number' ||
+    typeof y !== 'number' ||
+    typeof time !== 'number' ||
+    typeof octaves !== 'number' ||
+    isNaN(x) ||
+    isNaN(y) ||
+    isNaN(time) ||
+    isNaN(octaves)
+  ) {
     return 0;
   }
-  
+
   // Clamp octaves to prevent performance issues
   const clampedOctaves = Math.max(1, Math.min(8, Math.floor(octaves)));
-  
+
   let turbulence = 0;
   let amplitude = 1;
   let frequency = 1;
@@ -362,11 +421,17 @@ const calculateTurbulence = (x: number, y: number, time: number, octaves: number
 // Micro-surface detail for high-quality glass texture
 const calculateMicroSurface = (x: number, y: number, time: number): number => {
   // Add input validation
-  if (typeof x !== 'number' || typeof y !== 'number' || typeof time !== 'number' || 
-      isNaN(x) || isNaN(y) || isNaN(time)) {
+  if (
+    typeof x !== 'number' ||
+    typeof y !== 'number' ||
+    typeof time !== 'number' ||
+    isNaN(x) ||
+    isNaN(y) ||
+    isNaN(time)
+  ) {
     return 0.5; // Return middle value on error
   }
-  
+
   const highFreqNoise = fbm(x * 40 + time * 0.3, y * 40 - time * 0.3, 6);
   const microDetail = fbm(x * 80, y * 80, 4);
 
@@ -742,12 +807,20 @@ export class ShaderDisplacementGenerator {
 
     this.canvas = document.createElement('canvas');
     // Enhanced validation for canvas dimensions
-    this.canvas.width = Math.max(MIN_CANVAS_DIMENSION, 
-                               Math.min(MAX_CANVAS_DIMENSION, 
-                                       Math.round(options.width * this.canvasDPI || DEFAULT_CANVAS_WIDTH)));
-    this.canvas.height = Math.max(MIN_CANVAS_DIMENSION, 
-                                 Math.min(MAX_CANVAS_DIMENSION, 
-                                         Math.round(options.height * this.canvasDPI || DEFAULT_CANVAS_HEIGHT)));
+    this.canvas.width = Math.max(
+      MIN_CANVAS_DIMENSION,
+      Math.min(
+        MAX_CANVAS_DIMENSION,
+        Math.round(options.width * this.canvasDPI || DEFAULT_CANVAS_WIDTH)
+      )
+    );
+    this.canvas.height = Math.max(
+      MIN_CANVAS_DIMENSION,
+      Math.min(
+        MAX_CANVAS_DIMENSION,
+        Math.round(options.height * this.canvasDPI || DEFAULT_CANVAS_HEIGHT)
+      )
+    );
     this.canvas.style.display = 'none';
 
     const context = this.canvas.getContext('2d');
@@ -849,7 +922,10 @@ export class ShaderDisplacementGenerator {
       return this.canvas.toDataURL();
     } catch (error) {
       // Graceful fallback on error
-      console.warn('ShaderDisplacementGenerator: Error generating shader map, using fallback', error);
+      console.warn(
+        'ShaderDisplacementGenerator: Error generating shader map, using fallback',
+        error
+      );
       return ''; // Return empty string as fallback
     }
   }

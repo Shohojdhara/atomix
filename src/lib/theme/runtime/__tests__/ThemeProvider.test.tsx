@@ -29,10 +29,7 @@ const TestComponent = ({ onThemeChange }: { onThemeChange?: (theme: string) => v
       >
         Update Typography
       </button>
-      <button
-        data-testid="reset-theme"
-        onClick={() => setTheme(defaultTheme)}
-      >
+      <button data-testid="reset-theme" onClick={() => setTheme(defaultTheme)}>
         Reset Theme
       </button>
     </div>
@@ -40,14 +37,14 @@ const TestComponent = ({ onThemeChange }: { onThemeChange?: (theme: string) => v
 };
 
 const defaultTheme = {
-  'primary': '#7c3aed',
-  'secondary': '#6b7280',
-  'success': '#22c55e',
-  'error': '#ef4444',
-  'warning': '#eab308',
-  'info': '#3b82f6',
-  'light': '#f9fafb',
-  'dark': '#1f2937',
+  primary: '#7c3aed',
+  secondary: '#6b7280',
+  success: '#22c55e',
+  error: '#ef4444',
+  warning: '#eab308',
+  info: '#3b82f6',
+  light: '#f9fafb',
+  dark: '#1f2937',
   'primary-rgb': '124, 58, 237',
   'secondary-rgb': '107, 114, 128',
   'success-rgb': '34, 197, 94',
@@ -164,9 +161,10 @@ const defaultTheme = {
   'info-gradient': 'linear-gradient(135deg, #eff6ff, #dbeafe, #bfdbfe)',
   'warning-gradient': 'linear-gradient(135deg, #fefce8, #fef9c3, #fef08a)',
   'error-gradient': 'linear-gradient(135deg, #fef2f2, #fee2e2, #fecaca)',
-  'gradient': 'linear-gradient(135deg, #f9fafb, #f3f4f6, #e5e7eb)',
+  gradient: 'linear-gradient(135deg, #f9fafb, #f3f4f6, #e5e7eb)',
   'font-sans-serif': '"Roboto", sans-serif',
-  'font-monospace': 'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+  'font-monospace':
+    'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
   'body-font-family': '"Roboto", sans-serif',
   'body-font-size': '1rem',
   'body-font-weight': '400',
@@ -299,7 +297,7 @@ const defaultTheme = {
 
 const customTheme = {
   ...defaultTheme,
-  'primary': '#8b5cf6',
+  primary: '#8b5cf6',
   'error-text-emphasis': '#7f1d1d',
   'success-text-emphasis': '#14532d',
 };
@@ -406,7 +404,7 @@ describe('ThemeProvider', () => {
 
   it('should handle theme change callbacks', () => {
     const onThemeChange = vi.fn();
-    
+
     render(
       <ThemeProvider theme={defaultTheme}>
         <TestComponent onThemeChange={onThemeChange} />
@@ -421,8 +419,8 @@ describe('ThemeProvider', () => {
     expect(onThemeChange).toHaveBeenCalledWith(
       expect.objectContaining({
         colors: expect.objectContaining({
-          primary: '#8b5cf6'
-        })
+          primary: '#8b5cf6',
+        }),
       })
     );
   });
@@ -442,10 +440,7 @@ describe('ThemeProvider', () => {
       fireEvent.click(screen.getByTestId('update-primary'));
     });
 
-    expect(setItemSpy).toHaveBeenCalledWith(
-      'atomix-theme',
-      expect.stringContaining('#8b5cf6')
-    );
+    expect(setItemSpy).toHaveBeenCalledWith('atomix-theme', expect.stringContaining('#8b5cf6'));
 
     setItemSpy.mockRestore();
   });
@@ -514,10 +509,10 @@ describe('ThemeProvider', () => {
     // Update only part of the colors section
     const TestPartialUpdate = () => {
       const { updateTheme } = useTheme();
-      
+
       return (
-        <button 
-          data-testid="partial-update" 
+        <button
+          data-testid="partial-update"
           onClick={() => updateTheme('colors', { secondary: '#ec4899' })}
         >
           Partial Update
@@ -556,10 +551,10 @@ describe('useTheme Hook Error Handling', () => {
   it('should handle invalid theme sections gracefully', () => {
     const TestInvalidUpdate = () => {
       const { updateTheme } = useTheme();
-      
+
       return (
-        <button 
-          data-testid="invalid-update" 
+        <button
+          data-testid="invalid-update"
           onClick={() => updateTheme('invalid-section' as ThemeSection, { test: 'value' })}
         >
           Invalid Update

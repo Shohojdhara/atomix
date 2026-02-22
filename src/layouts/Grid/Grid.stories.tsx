@@ -549,7 +549,9 @@ export const AlignmentAndSpacing: Story = {
         </p>
 
         <div className="u-mb-6">
-          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">justify-content="start"</h3>
+          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">
+            justify-content="start"
+          </h3>
           <Row justifyContent="start" className="u-mb-4 u-p-3 u-bg-brand-subtle u-rounded">
             <GridCol xs={3}>
               <DemoCard variant="secondary">Col 1</DemoCard>
@@ -561,7 +563,9 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-6">
-          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">justify-content="center"</h3>
+          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">
+            justify-content="center"
+          </h3>
           <Row justifyContent="center" className="u-mb-4 u-p-3 u-bg-brand-subtle u-rounded">
             <GridCol xs={3}>
               <DemoCard variant="secondary">Col 1</DemoCard>
@@ -587,7 +591,9 @@ export const AlignmentAndSpacing: Story = {
         </div>
 
         <div className="u-mb-6">
-          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">justify-content="around"</h3>
+          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">
+            justify-content="around"
+          </h3>
           <Row justifyContent="around" className="u-mb-4 u-p-3 u-bg-brand-subtle u-rounded">
             <GridCol xs={3}>
               <DemoCard variant="secondary">Col 1</DemoCard>

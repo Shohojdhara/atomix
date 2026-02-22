@@ -129,7 +129,7 @@ export const BasicHorizontal: Story = {
     activeIndex: 1,
     vertical: false,
   },
-  render: (args) => (
+  render: args => (
     <div style={{ padding: '30px' }}>
       <Steps {...args} />
     </div>
@@ -156,7 +156,7 @@ export const BasicVertical: Story = {
     activeIndex: 1,
     vertical: true,
   },
-  render: (args) => (
+  render: args => (
     <div style={{ padding: '30px' }}>
       <Steps {...args} />
     </div>
@@ -243,7 +243,9 @@ export const WithIcons: Story = {
 };
 
 // Interactive steps with buttons for navigation
-const InteractiveStepsTemplate: React.FC<{ onStepChange?: (index: number) => void }> = ({ onStepChange }) => {
+const InteractiveStepsTemplate: React.FC<{ onStepChange?: (index: number) => void }> = ({
+  onStepChange,
+}) => {
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleStepChange = (stepIndex: number) => {
@@ -316,7 +318,7 @@ export const GlassHorizontal: Story = {
     vertical: false,
     glass: true,
   },
-  render: (args) => (
+  render: args => (
     <div
       style={{
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -356,7 +358,7 @@ export const GlassVertical: Story = {
     vertical: true,
     glass: true,
   },
-  render: (args) => (
+  render: args => (
     <div
       style={{
         background:
@@ -405,7 +407,7 @@ export const GlassCustom: Story = {
       cornerRadius: 12,
     },
   },
-  render: (args) => (
+  render: args => (
     <div
       style={{
         background: 'linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57)',

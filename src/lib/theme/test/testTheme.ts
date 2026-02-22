@@ -1,6 +1,6 @@
 /**
  * Test Theme
- * 
+ *
  * Comprehensive test theme demonstrating both DesignTokens and Theme object approaches.
  * This file can be used for testing the theme system, adapters, and generators.
  */
@@ -17,30 +17,30 @@ import { themeToDesignTokens, createDesignTokensFromTheme } from '../adapters/th
 
 /**
  * Test theme using DesignTokens (flat structure)
- * 
+ *
  * This is the recommended approach for most use cases.
  * DesignTokens directly map to CSS variables.
  */
 export const testThemeTokens: Partial<DesignTokens> = {
   // Primary colors
-  'primary': '#7AFFD7',
+  primary: '#7AFFD7',
   'primary-3': '#B3FFE9',
   'primary-6': '#7AFFD7',
   'primary-9': '#00E6C3',
   'primary-rgb': '122, 255, 215',
 
   // Secondary colors
-  'secondary': '#FF6B9D',
+  secondary: '#FF6B9D',
   'secondary-rgb': '255, 107, 157',
 
   // Semantic colors
-  'success': '#1AFF85',
+  success: '#1AFF85',
   'success-rgb': '26, 255, 133',
-  'error': '#FF1A1A',
+  error: '#FF1A1A',
   'error-rgb': '255, 26, 26',
-  'warning': '#FFB800',
+  warning: '#FFB800',
   'warning-rgb': '255, 184, 0',
-  'info': '#1A9FFF',
+  info: '#1A9FFF',
   'info-rgb': '26, 159, 255',
 
   // Background colors
@@ -129,7 +129,7 @@ export function generateTestThemeCSS(): string {
 
 /**
  * Test theme using Theme object (nested structure)
- * 
+ *
  * This approach provides more structure and computed values.
  * Useful for advanced use cases that need theme composition.
  */
@@ -282,7 +282,7 @@ export function generateTestThemeCSSFromObject(): string {
  * Minimal test theme for quick testing
  */
 export const minimalTestTheme: Partial<DesignTokens> = {
-  'primary': '#7AFFD7',
+  primary: '#7AFFD7',
   'body-bg': '#000000',
   'body-color': '#FFFFFF',
   'body-font-family': '"Inter", sans-serif',
@@ -301,7 +301,7 @@ export function generateMinimalTestThemeCSS(): string {
 
 /**
  * Test theme adapter conversion
- * 
+ *
  * Converts Theme object to DesignTokens and back to verify adapter works correctly.
  */
 export function testThemeAdapter(): {
@@ -322,7 +322,7 @@ export function testThemeAdapter(): {
 
 /**
  * Compare CSS output from both approaches
- * 
+ *
  * Verifies that DesignTokens and Theme object produce similar CSS output.
  */
 export function compareThemeOutputs(): {
@@ -333,7 +333,7 @@ export function compareThemeOutputs(): {
 } {
   const fromTokens = generateTestThemeCSS();
   const fromTheme = generateTestThemeCSSFromObject();
-  
+
   const theme = createTestThemeObject();
   const themeTokens = themeToDesignTokens(theme);
 
@@ -347,12 +347,12 @@ export function compareThemeOutputs(): {
 
 /**
  * Test theme composition
- * 
+ *
  * Tests extending a base theme with customizations.
  */
 export function testThemeComposition(): Theme {
   const baseTheme = createTestThemeObject();
-  
+
   // Extend with custom options
   const extendedTheme = createThemeObject(
     {
@@ -383,4 +383,3 @@ export const testThemes = {
   compareOutputs: compareThemeOutputs,
   testComposition: testThemeComposition,
 };
-

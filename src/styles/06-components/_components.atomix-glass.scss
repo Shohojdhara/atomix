@@ -121,20 +121,24 @@
     mix-blend-mode: screen;
     z-index: var(--atomix-z-index-5, 5);
     background: var(--atomix-glass-border-gradient-1, none);
-    box-shadow: var(--atomix-glass-border-shadow,
-        0 0 0 0.03125rem rgba(255, 255, 255, 0.5) inset,
-        0 0.25rem 0.75rem rgba(255, 255, 255, 0.25) inset,
-        0 0.25rem 1rem rgba(0, 0, 0, 0.35));
+    box-shadow: var(
+      --atomix-glass-border-shadow,
+      0 0 0 0.03125rem rgba(255, 255, 255, 0.5) inset,
+      0 0.25rem 0.75rem rgba(255, 255, 255, 0.25) inset,
+      0 0.25rem 1rem rgba(0, 0, 0, 0.35)
+    );
   }
 
   &__border-2 {
     mix-blend-mode: overlay;
     z-index: var(--atomix-z-index-6, 6);
     background: var(--atomix-glass-border-gradient-2, none);
-    box-shadow: var(--atomix-glass-border-shadow,
-        0 0 0 0.03125rem rgba(255, 255, 255, 0.5) inset,
-        0 0.25rem 0.75rem rgba(255, 255, 255, 0.25) inset,
-        0 0.25rem 1rem rgba(0, 0, 0, 0.35));
+    box-shadow: var(
+      --atomix-glass-border-shadow,
+      0 0 0 0.03125rem rgba(255, 255, 255, 0.5) inset,
+      0 0.25rem 0.75rem rgba(255, 255, 255, 0.25) inset,
+      0 0.25rem 1rem rgba(0, 0, 0, 0.35)
+    );
   }
 
   // Container styles

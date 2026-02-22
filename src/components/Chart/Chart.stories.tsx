@@ -179,7 +179,7 @@ type Story = StoryObj<typeof meta>;
 
 // Glass Variant Story
 export const GlassVariant: Story = {
-  render: (args) => {
+  render: args => {
     const sampleData = [
       { label: 'Jan', value: 65 },
       { label: 'Feb', value: 78 },
@@ -240,12 +240,7 @@ export const GlassVariant: Story = {
               />
             </GridCol>
             <GridCol col={12} md={6}>
-              <PieChart
-                title="Market Share"
-                data={sampleData}
-                glass={true}
-                showToolbar={true}
-              />
+              <PieChart title="Market Share" data={sampleData} glass={true} showToolbar={true} />
             </GridCol>
             <GridCol col={12} md={6}>
               <AreaChart
@@ -356,7 +351,7 @@ const generateTreemapData = (count = 12) => {
     'Agriculture',
     'Construction',
   ];
-  
+
   return Array.from({ length: count }, (_, i) => ({
     id: `category-${i}`,
     label: categories[i % categories.length] || `Category ${i + 1}`,
@@ -377,7 +372,7 @@ const generateFunnelData = () => {
     { label: 'Evaluation', value: 600 },
     { label: 'Purchase', value: 300 },
   ];
-  
+
   return stages.map(stage => ({
     ...stage,
     percentage: ((stage.value / stages[0].value) * 100).toFixed(1),

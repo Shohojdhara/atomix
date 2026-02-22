@@ -55,7 +55,7 @@ export const FooterLink = forwardRef<HTMLAnchorElement, FooterLinkProps>(
         ...(href && !disabled ? { to: href } : {}),
         ...linkProps,
       };
-      
+
       return (
         <Component {...componentProps}>
           {icon && <span className="c-footer__link-icon">{icon}</span>}

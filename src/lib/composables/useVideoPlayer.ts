@@ -170,7 +170,13 @@ export function useVideoPlayer({
 
         // Validate and sanitize the source URL
         const sanitizedSrc = String(newQuality.src).replace(/[<>"']/g, '');
-        if (sanitizedSrc && (sanitizedSrc.startsWith('http://') || sanitizedSrc.startsWith('https://') || sanitizedSrc.startsWith('blob:') || sanitizedSrc.startsWith('data:'))) {
+        if (
+          sanitizedSrc &&
+          (sanitizedSrc.startsWith('http://') ||
+            sanitizedSrc.startsWith('https://') ||
+            sanitizedSrc.startsWith('blob:') ||
+            sanitizedSrc.startsWith('data:'))
+        ) {
           videoRef.current.src = sanitizedSrc;
           videoRef.current.currentTime = currentTime;
 
@@ -299,40 +305,43 @@ export function useVideoPlayer({
   }, [onFullscreenChange]);
 
   // Keyboard shortcuts
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (!containerRef.current?.contains(document.activeElement)) return;
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (!containerRef.current?.contains(document.activeElement)) return;
 
-    switch (e.code) {
-      case 'Space':
-        e.preventDefault();
-        togglePlay();
-        break;
-      case 'ArrowLeft':
-        e.preventDefault();
-        seek(currentTime - 10);
-        break;
-      case 'ArrowRight':
-        e.preventDefault();
-        seek(currentTime + 10);
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        setVolume(Math.min(1, volume + 0.1));
-        break;
-      case 'ArrowDown':
-        e.preventDefault();
-        setVolume(Math.max(0, volume - 0.1));
-        break;
-      case 'KeyM':
-        e.preventDefault();
-        toggleMute();
-        break;
-      case 'KeyF':
-        e.preventDefault();
-        toggleFullscreen();
-        break;
-    }
-  }, [togglePlay, seek, currentTime, setVolume, volume, toggleMute, toggleFullscreen, containerRef]);
+      switch (e.code) {
+        case 'Space':
+          e.preventDefault();
+          togglePlay();
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          seek(currentTime - 10);
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          seek(currentTime + 10);
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          setVolume(Math.min(1, volume + 0.1));
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          setVolume(Math.max(0, volume - 0.1));
+          break;
+        case 'KeyM':
+          e.preventDefault();
+          toggleMute();
+          break;
+        case 'KeyF':
+          e.preventDefault();
+          toggleFullscreen();
+          break;
+      }
+    },
+    [togglePlay, seek, currentTime, setVolume, volume, toggleMute, toggleFullscreen, containerRef]
+  );
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);

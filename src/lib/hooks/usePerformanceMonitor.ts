@@ -1,6 +1,6 @@
 /**
  * Performance Monitoring Hook
- * 
+ *
  * Tracks component render times and re-render counts
  * for performance analysis and optimization
  */
@@ -58,10 +58,10 @@ export interface UsePerformanceMonitorOptions {
 
 /**
  * Hook to monitor component performance
- * 
+ *
  * @param options - Performance monitoring options
  * @returns Performance metrics
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {
@@ -69,7 +69,7 @@ export interface UsePerformanceMonitorOptions {
  *     componentName: 'MyComponent',
  *     warnThreshold: 16, // Warn if render takes > 16ms (1 frame)
  *   });
- *   
+ *
  *   return <div>Content</div>;
  * }
  * ```
@@ -77,7 +77,7 @@ export interface UsePerformanceMonitorOptions {
 export function usePerformanceMonitor(options: UsePerformanceMonitorOptions) {
   const {
     componentName,
-    logToConsole = (typeof process === 'undefined' || process.env?.NODE_ENV === 'development'),
+    logToConsole = typeof process === 'undefined' || process.env?.NODE_ENV === 'development',
     warnThreshold = 16,
     onMetrics,
   } = options;
@@ -114,7 +114,7 @@ export function usePerformanceMonitor(options: UsePerformanceMonitorOptions) {
     if (renderTime > warnThreshold && logToConsole) {
       console.warn(
         `[Performance] ${componentName} render took ${renderTime.toFixed(2)}ms ` +
-        `(threshold: ${warnThreshold}ms)`
+          `(threshold: ${warnThreshold}ms)`
       );
     }
 
@@ -146,4 +146,3 @@ export function getPerformanceMetrics(): PerformanceMetrics[] {
   // For now, this is a placeholder
   return [];
 }
-

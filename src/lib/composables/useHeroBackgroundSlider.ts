@@ -49,13 +49,7 @@ export interface UseHeroBackgroundSliderResult {
 export function useHeroBackgroundSlider(
   config: HeroBackgroundSliderConfig
 ): UseHeroBackgroundSliderResult {
-  const {
-    slides,
-    autoplay,
-    loop = true,
-    transition = 'fade',
-    transitionDuration = 1000,
-  } = config;
+  const { slides, autoplay, loop = true, transition = 'fade', transitionDuration = 1000 } = config;
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -148,7 +142,7 @@ export function useHeroBackgroundSlider(
     if (isPausedRef.current && autoplay && slides.length > 1) {
       isPausedRef.current = false;
       const delay = typeof autoplay === 'object' ? autoplay.delay : 3000;
-      
+
       // Restart autoplay
       if (!autoplayRef.current) {
         autoplayRef.current = setInterval(() => {
@@ -227,4 +221,3 @@ export function useHeroBackgroundSlider(
     resumeAutoplay,
   };
 }
-

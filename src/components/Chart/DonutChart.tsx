@@ -125,7 +125,7 @@ const DonutChart = memo(
         // Calculate angles for each slice
         const padAngleRad = ((pieOptions.padAngle || 1) * Math.PI) / 180;
         let currentAngle = ((pieOptions.startAngle || 0) * Math.PI) / 180;
-        
+
         const slices = chartData.validDataPoints.map((point, index) => {
           const percentage = point.value / total;
           const sliceAngle = percentage * (2 * Math.PI) - padAngleRad;

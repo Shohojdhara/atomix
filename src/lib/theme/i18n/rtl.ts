@@ -1,6 +1,6 @@
 /**
  * RTL (Right-to-Left) Support Utilities
- * 
+ *
  * Provides utilities for managing RTL text direction in themes
  */
 
@@ -39,7 +39,6 @@ const RTL_LOCALES = new Set([
   'sd', // Sindhi
 ]);
 
-
 /**
  * Default RTL configuration (extends base config with locale)
  */
@@ -50,7 +49,7 @@ const DEFAULT_RTL_CONFIG: Required<Omit<RTLConfig, 'locale'>> & { locale?: strin
 
 /**
  * RTL Manager
- * 
+ *
  * Manages RTL text direction for the theme system
  */
 export class RTLManager {
@@ -91,7 +90,8 @@ export class RTLManager {
     }
 
     // Try navigator.language first
-    const lang: string = navigator.language || (navigator.languages && navigator.languages[0]) || 'en';
+    const lang: string =
+      navigator.language || (navigator.languages && navigator.languages[0]) || 'en';
     const langParts = String(lang).split('-');
     return langParts[0] ? langParts[0].toLowerCase() : 'en';
   }
@@ -168,7 +168,7 @@ export class RTLManager {
    */
   setLocale(locale: string): void {
     this.config.locale = locale.toLowerCase();
-    
+
     if (this.config.autoDetect) {
       const isRTL = this.isRTLLocale(locale);
       this.setDirection(isRTL ? 'rtl' : 'ltr');
@@ -213,7 +213,7 @@ export class RTLManager {
    */
   onDirectionChange(callback: (direction: 'ltr' | 'rtl') => void): () => void {
     this.listeners.add(callback);
-    
+
     // Return unsubscribe function
     return () => {
       this.listeners.delete(callback);
@@ -240,7 +240,7 @@ export class RTLManager {
 
   /**
    * Get RTL-aware value
-   * 
+   *
    * Returns different values based on direction
    */
   getValue<T>(ltrValue: T, rtlValue: T): T {
@@ -249,15 +249,15 @@ export class RTLManager {
 
   /**
    * Get RTL-aware CSS property
-   * 
+   *
    * Returns appropriate CSS property based on direction
    */
   getCSSProperty(property: string): string {
     if (this.config.direction === 'rtl') {
       // Map common LTR properties to RTL equivalents
       const rtlMap: Record<string, string> = {
-        'left': 'right',
-        'right': 'left',
+        left: 'right',
+        right: 'left',
         'margin-left': 'margin-right',
         'margin-right': 'margin-left',
         'padding-left': 'padding-right',
@@ -281,11 +281,11 @@ export class RTLManager {
    */
   destroy(): void {
     this.listeners.clear();
-    
+
     if (typeof document !== 'undefined') {
       const html = document.documentElement;
       const body = document.body;
-      
+
       html.removeAttribute('dir');
       html.removeAttribute(this.config.dataAttribute);
       body?.removeAttribute('dir');
@@ -317,7 +317,7 @@ export function getDirectionFromLocale(locale: string): 'ltr' | 'rtl' {
 
 /**
  * RTL-aware CSS helper
- * 
+ *
  * Returns appropriate CSS based on direction
  */
 export function rtlCSS(ltrCSS: string, rtlCSS: string, direction: 'ltr' | 'rtl' = 'ltr'): string {

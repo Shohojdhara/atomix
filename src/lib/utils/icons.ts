@@ -35,7 +35,10 @@ export function createPhosphorIcon(name: string, size: number = 16): string {
   const path = ICON_PATHS[name] || '';
 
   if (!path) {
-    console.warn('Icon not found in icon library:', typeof name === 'string' ? name.replace(/[^a-zA-Z0-9_-]/g, '_') : 'invalid_name');
+    console.warn(
+      'Icon not found in icon library:',
+      typeof name === 'string' ? name.replace(/[^a-zA-Z0-9_-]/g, '_') : 'invalid_name'
+    );
   }
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" fill="currentColor" viewBox="0 0 256 256">

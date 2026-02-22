@@ -25,9 +25,7 @@ describe('useComponentCustomization', () => {
     });
 
     it('should handle empty cssVars', () => {
-      const { result } = renderHook(() =>
-        useComponentCustomization('Button', {})
-      );
+      const { result } = renderHook(() => useComponentCustomization('Button', {}));
 
       expect(result.current.cssVars).toEqual({});
     });
@@ -77,9 +75,7 @@ describe('useComponentCustomization', () => {
     });
 
     it('should handle empty parts', () => {
-      const { result } = renderHook(() =>
-        useComponentCustomization('Button', {})
-      );
+      const { result } = renderHook(() => useComponentCustomization('Button', {}));
 
       expect(result.current.parts).toEqual({});
     });

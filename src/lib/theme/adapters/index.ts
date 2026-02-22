@@ -1,12 +1,10 @@
 /**
  * Theme Adapters
- * 
+ *
  * Adapters for working with DesignTokens and CSS variables
  */
 
-export {
-  designTokensToCSSVars,
-} from './themeAdapter';
+export { designTokensToCSSVars } from './themeAdapter';
 
 export {
   generateCSSVariableName,
@@ -21,8 +19,4 @@ export {
   extractComponentName,
 } from './cssVariableMapper';
 
-export type {
-  CSSVariableConfig,
-  CSSVariableNamingOptions,
-} from './cssVariableMapper';
-
+export type { CSSVariableConfig, CSSVariableNamingOptions } from './cssVariableMapper';

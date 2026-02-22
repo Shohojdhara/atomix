@@ -66,8 +66,8 @@ The Countdown component displays a countdown timer to a specified target date. I
   },
   tags: ['autodocs'],
   argTypes: {
-    target: { 
-      control: 'date', 
+    target: {
+      control: 'date',
       description: 'Target date/time for the countdown',
       table: {
         type: { summary: 'Date | number | string' },
@@ -82,16 +82,16 @@ The Countdown component displays a countdown timer to a specified target date. I
         defaultValue: { summary: "['days', 'hours', 'minutes', 'seconds']" },
       },
     },
-    separator: { 
-      control: 'text', 
+    separator: {
+      control: 'text',
       description: 'Separator string',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: ':' },
       },
     },
-    focused: { 
-      control: 'boolean', 
+    focused: {
+      control: 'boolean',
       description: 'Focused style',
       table: {
         type: { summary: 'boolean' },

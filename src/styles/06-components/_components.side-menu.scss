@@ -81,7 +81,7 @@
     font-weight: var(--#{config.$prefix}side-menu-title-font-weight);
     margin: 0;
     margin-bottom: var(--#{config.$prefix}side-menu-title-spacer-y);
-    
+
     // When title is inside toggler, remove bottom margin
     #{$root}__toggler & {
       margin-bottom: 0;
@@ -256,7 +256,7 @@
       transform: rotate(90deg);
     }
   }
-  
+
   // Nested wrapper open state (when nested toggler is open)
   &__toggler--nested.is-open + #{$root}__nested-wrapper {
     height: auto;
@@ -281,16 +281,16 @@
     #{$root}__toggler-icon {
       transition: none;
     }
-    
+
     #{$root}__toggler:active {
       transform: none;
     }
-    
+
     #{$root}__link:active {
       transform: none;
     }
   }
-  
+
   // High contrast mode support
   @media (prefers-contrast: high) {
     #{$root}__toggler:focus-visible,

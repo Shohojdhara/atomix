@@ -1,6 +1,6 @@
 /**
  * Design Tokens
- * 
+ *
  * Simple flat structure for design tokens.
  * All tokens match the actual CSS variables used in Atomix.
  * Based on docs/tokes-list.md
@@ -8,7 +8,7 @@
 
 /**
  * Design tokens interface
- * 
+ *
  * Flat structure - no nesting complexity.
  * Keys use kebab-case format matching CSS variable names (without --atomix- prefix).
  */
@@ -16,14 +16,14 @@ export interface DesignTokens {
   // ============================================================================
   // Colors - Base
   // ============================================================================
-  'primary': string;
-  'secondary': string;
-  'success': string;
-  'info': string;
-  'warning': string;
-  'error': string;
-  'light': string;
-  'dark': string;
+  primary: string;
+  secondary: string;
+  success: string;
+  info: string;
+  warning: string;
+  error: string;
+  light: string;
+  dark: string;
 
   // RGB versions
   'primary-rgb': string;
@@ -186,7 +186,7 @@ export interface DesignTokens {
   'info-gradient': string;
   'warning-gradient': string;
   'error-gradient': string;
-  'gradient': string;
+  gradient: string;
 
   // ============================================================================
   // Typography - Fonts
@@ -386,19 +386,19 @@ export interface DesignTokens {
 
 /**
  * Default design tokens
- * 
+ *
  * Based on Atomix default theme values from docs/tokes-list.md (light mode)
  */
 export const defaultTokens: DesignTokens = {
   // Colors - Base
-  'primary': '#7c3aed',
-  'secondary': '#f3f4f6',
-  'success': '#22c55e',
-  'info': '#3b82f6',
-  'warning': '#eab308',
-  'error': '#ef4444',
-  'light': '#f9fafb',
-  'dark': '#1f2937',
+  primary: '#7c3aed',
+  secondary: '#f3f4f6',
+  success: '#22c55e',
+  info: '#3b82f6',
+  warning: '#eab308',
+  error: '#ef4444',
+  light: '#f9fafb',
+  dark: '#1f2937',
 
   // RGB versions
   'primary-rgb': '124, 58, 237',
@@ -539,11 +539,12 @@ export const defaultTokens: DesignTokens = {
   'info-gradient': 'linear-gradient(135deg, #dbeafe, #bfdbfe, #60a5fa)',
   'warning-gradient': 'linear-gradient(135deg, #fef9c3, #fef08a, #facc15)',
   'error-gradient': 'linear-gradient(135deg, #fef2f2, #fee2e2, #fecaca)',
-  'gradient': 'linear-gradient(135deg, #f9fafb, #f3f4f6, #e5e7eb)',
+  gradient: 'linear-gradient(135deg, #f9fafb, #f3f4f6, #e5e7eb)',
 
   // Typography - Fonts
   'font-sans-serif': '"Roboto", sans-serif',
-  'font-monospace': 'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+  'font-monospace':
+    'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
   'body-font-family': '"Roboto", sans-serif',
   'body-font-size': '1rem',
   'body-font-weight': '400',
@@ -704,10 +705,10 @@ export const defaultTokens: DesignTokens = {
 
 /**
  * Create tokens from defaults and overrides
- * 
+ *
  * @param overrides - Partial tokens to override defaults
  * @returns Complete DesignTokens object
- * 
+ *
  * @example
  * ```typescript
  * const tokens = createTokens({

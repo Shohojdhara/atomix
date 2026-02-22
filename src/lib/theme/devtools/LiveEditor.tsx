@@ -1,6 +1,6 @@
 /**
  * Theme Live Editor Component
- * 
+ *
  * React component for live editing themes in development
  * Enhanced with undo/redo, keyboard shortcuts, resizable layout, and better color pickers
  */
@@ -36,7 +36,7 @@ type ColorFormat = 'hex' | 'rgb' | 'rgba' | 'hsl' | 'hsla';
 function convertColorFormat(color: string, format: ColorFormat): string {
   // Remove whitespace
   color = color.trim();
-  
+
   // If already in target format, return as is
   if (format === 'hex' && color.startsWith('#')) return color;
   if (format === 'rgb' && color.startsWith('rgb(')) return color;
@@ -71,7 +71,7 @@ function convertColorFormat(color: string, format: ColorFormat): string {
     case 'hsla': {
       // Convert RGB to HSL (simplified)
       const hsl = rgbToHsl(r, g, b);
-      return format === 'hsl' 
+      return format === 'hsl'
         ? `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`
         : `hsla(${hsl.h}, ${hsl.s}%, ${hsl.l}%, ${a})`;
     }
@@ -97,11 +97,17 @@ function rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: n
   if (max !== min) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    
+
     switch (max) {
-      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
-      case g: h = ((b - r) / d + 2) / 6; break;
-      case b: h = ((r - g) / d + 4) / 6; break;
+      case r:
+        h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+        break;
+      case g:
+        h = ((b - r) / d + 2) / 6;
+        break;
+      case b:
+        h = ((r - g) / d + 4) / 6;
+        break;
     }
   }
 
@@ -114,7 +120,7 @@ function rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: n
 
 /**
  * Theme Live Editor Component
- * 
+ *
  * Allows live editing of theme properties with instant preview
  */
 export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
@@ -160,47 +166,53 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
     localStorage.setItem('atomix-editor-layout', resizerPosition.toString());
   }, [resizerPosition]);
 
-  const updateTheme = useCallback((newTheme: Theme, addToHistory = true) => {
-    if (addToHistory) {
-      setThemeHistory(newTheme);
-    } else {
-      // Direct update without history (for JSON editor typing)
-      setJsonInput(JSON.stringify(newTheme, null, 2));
-    }
-    onChange?.(newTheme);
-    setError(null);
-  }, [onChange, setThemeHistory]);
+  const updateTheme = useCallback(
+    (newTheme: Theme, addToHistory = true) => {
+      if (addToHistory) {
+        setThemeHistory(newTheme);
+      } else {
+        // Direct update without history (for JSON editor typing)
+        setJsonInput(JSON.stringify(newTheme, null, 2));
+      }
+      onChange?.(newTheme);
+      setError(null);
+    },
+    [onChange, setThemeHistory]
+  );
 
   // Sync JSON input with theme history
   useEffect(() => {
     setJsonInput(JSON.stringify(theme, null, 2));
   }, [theme]);
 
-  const handleJsonChange = useCallback((value: string) => {
-    setJsonInput(value);
-    try {
-      const parsed = JSON.parse(value);
-      const newTheme = createThemeObject(parsed);
-      updateTheme(newTheme, false); // Don't add to history on every keystroke
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Invalid JSON');
-    }
-  }, [updateTheme]);
+  const handleJsonChange = useCallback(
+    (value: string) => {
+      setJsonInput(value);
+      try {
+        const parsed = JSON.parse(value);
+        const newTheme = createThemeObject(parsed);
+        updateTheme(newTheme, false); // Don't add to history on every keystroke
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Invalid JSON');
+      }
+    },
+    [updateTheme]
+  );
 
   // Debounced JSON update to history
   const jsonUpdateTimeoutRef = useRef<NodeJS.Timeout>();
   useEffect(() => {
     if (error) return;
-    
+
     try {
       const parsed = JSON.parse(jsonInput);
       const newTheme = createThemeObject(parsed);
-      
+
       // Clear existing timeout
       if (jsonUpdateTimeoutRef.current) {
         clearTimeout(jsonUpdateTimeoutRef.current);
       }
-      
+
       // Add to history after 1 second of no typing
       jsonUpdateTimeoutRef.current = setTimeout(() => {
         setThemeHistory(newTheme);
@@ -216,27 +228,30 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
     };
   }, [jsonInput, error, setThemeHistory]);
 
-  const handleColorChange = useCallback((path: string, value: string | number) => {
-    const newTheme = { ...theme };
-    const keys = path.split('.');
-    let current: any = newTheme;
-    
-    for (let i = 0; i < keys.length - 1; i++) {
-      const key = keys[i];
-      if (key && !current[key]) {
-        current[key] = {};
+  const handleColorChange = useCallback(
+    (path: string, value: string | number) => {
+      const newTheme = { ...theme };
+      const keys = path.split('.');
+      let current: any = newTheme;
+
+      for (let i = 0; i < keys.length - 1; i++) {
+        const key = keys[i];
+        if (key && !current[key]) {
+          current[key] = {};
+        }
+        if (key) {
+          current = current[key];
+        }
       }
-      if (key) {
-        current = current[key];
+
+      const lastKey = keys[keys.length - 1];
+      if (lastKey) {
+        current[lastKey] = value;
       }
-    }
-    
-    const lastKey = keys[keys.length - 1];
-    if (lastKey) {
-      current[lastKey] = value;
-    }
-    updateTheme(createThemeObject(newTheme));
-  }, [theme, updateTheme]);
+      updateTheme(createThemeObject(newTheme));
+    },
+    [theme, updateTheme]
+  );
 
   const exportTheme = useCallback(() => {
     const dataStr = JSON.stringify(theme, null, 2);
@@ -270,7 +285,7 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
         exportTheme();
       } else if (ctrlKey && e.key === '/') {
         e.preventDefault();
-        setEditMode(prev => prev === 'visual' ? 'json' : 'visual');
+        setEditMode(prev => (prev === 'visual' ? 'json' : 'visual'));
       } else if (e.key === 'Escape') {
         setError(null);
       }
@@ -291,13 +306,13 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
 
     const handleMouseMove = (e: MouseEvent) => {
       if (!editorRef.current || !previewRef.current) return;
-      
+
       const container = editorRef.current.parentElement;
       if (!container) return;
 
       const containerRect = container.getBoundingClientRect();
       const newPosition = ((e.clientX - containerRect.left) / containerRect.width) * 100;
-      
+
       // Constrain between 20% and 80%
       const constrainedPosition = Math.max(20, Math.min(80, newPosition));
       setResizerPosition(constrainedPosition);
@@ -316,9 +331,12 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
     };
   }, [isResizing]);
 
-  const getColorValue = useCallback((color: string): string => {
-    return convertColorFormat(color, colorFormat);
-  }, [colorFormat]);
+  const getColorValue = useCallback(
+    (color: string): string => {
+      return convertColorFormat(color, colorFormat);
+    },
+    [colorFormat]
+  );
 
   return (
     <div className={`atomix-theme-live-editor ${className || ''}`} style={style}>
@@ -371,19 +389,16 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
       </div>
 
       <div className="editor-content" ref={editorRef}>
-        <div 
-          className="editor-panel"
-          style={{ width: `${resizerPosition}%` }}
-        >
+        <div className="editor-panel" style={{ width: `${resizerPosition}%` }}>
           {editMode === 'visual' ? (
             <div className="visual-editor">
               <div className="editor-section">
                 <h3>Colors</h3>
                 <div className="color-format-selector">
                   <label>Color Format:</label>
-                  <select 
-                    value={colorFormat} 
-                    onChange={(e) => setColorFormat(e.target.value as ColorFormat)}
+                  <select
+                    value={colorFormat}
+                    onChange={e => setColorFormat(e.target.value as ColorFormat)}
                   >
                     <option value="hex">HEX</option>
                     <option value="rgb">RGB</option>
@@ -392,7 +407,7 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
                     <option value="hsla">HSLA</option>
                   </select>
                 </div>
-                
+
                 {/* Primary Color */}
                 <div className="editor-field">
                   <label>Primary Color</label>
@@ -400,12 +415,12 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
                     <input
                       type="color"
                       value={theme.palette.primary.main}
-                      onChange={(e) => handleColorChange('palette.primary.main', e.target.value)}
+                      onChange={e => handleColorChange('palette.primary.main', e.target.value)}
                     />
                     <input
                       type="text"
                       value={getColorValue(theme.palette.primary.main)}
-                      onChange={(e) => {
+                      onChange={e => {
                         const converted = convertColorFormat(e.target.value, 'hex');
                         handleColorChange('palette.primary.main', converted);
                       }}
@@ -421,12 +436,12 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
                     <input
                       type="color"
                       value={theme.palette.secondary.main}
-                      onChange={(e) => handleColorChange('palette.secondary.main', e.target.value)}
+                      onChange={e => handleColorChange('palette.secondary.main', e.target.value)}
                     />
                     <input
                       type="text"
                       value={getColorValue(theme.palette.secondary.main)}
-                      onChange={(e) => {
+                      onChange={e => {
                         const converted = convertColorFormat(e.target.value, 'hex');
                         handleColorChange('palette.secondary.main', converted);
                       }}
@@ -443,12 +458,14 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
                     <input
                       type="color"
                       value={theme.palette.background.default}
-                      onChange={(e) => handleColorChange('palette.background.default', e.target.value)}
+                      onChange={e =>
+                        handleColorChange('palette.background.default', e.target.value)
+                      }
                     />
                     <input
                       type="text"
                       value={getColorValue(theme.palette.background.default)}
-                      onChange={(e) => {
+                      onChange={e => {
                         const converted = convertColorFormat(e.target.value, 'hex');
                         handleColorChange('palette.background.default', converted);
                       }}
@@ -465,7 +482,7 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
                   <input
                     type="text"
                     value={theme.typography.fontFamily}
-                    onChange={(e) => handleColorChange('typography.fontFamily', e.target.value)}
+                    onChange={e => handleColorChange('typography.fontFamily', e.target.value)}
                     placeholder="Inter, sans-serif"
                   />
                 </div>
@@ -475,7 +492,9 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
                   <input
                     type="number"
                     value={theme.typography.fontSize}
-                    onChange={(e) => handleColorChange('typography.fontSize', parseInt(e.target.value))}
+                    onChange={e =>
+                      handleColorChange('typography.fontSize', parseInt(e.target.value))
+                    }
                     min="10"
                     max="24"
                   />
@@ -486,25 +505,27 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
             <div className="json-editor">
               <textarea
                 value={jsonInput}
-                onChange={(e) => handleJsonChange(e.target.value)}
+                onChange={e => handleJsonChange(e.target.value)}
                 spellCheck={false}
               />
               {error && (
                 <div className="error-message">
                   ❌ {error}
-                  <button className="error-dismiss" onClick={() => setError(null)}>×</button>
+                  <button className="error-dismiss" onClick={() => setError(null)}>
+                    ×
+                  </button>
                 </div>
               )}
             </div>
           )}
         </div>
 
-        <div 
+        <div
           className={`resizer ${isResizing ? 'resizing' : ''}`}
           onMouseDown={handleResizeStart}
         />
 
-        <div 
+        <div
           className="preview-panel"
           ref={previewRef}
           style={{ width: `${100 - resizerPosition}%` }}

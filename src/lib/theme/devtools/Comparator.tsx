@@ -1,6 +1,6 @@
 /**
  * Theme Comparator Component
- * 
+ *
  * React component for comparing two themes side-by-side
  * Enhanced with search/filter and improved visual diff styling
  */
@@ -34,7 +34,7 @@ interface Difference {
 
 /**
  * Theme Comparator Component
- * 
+ *
  * Compares two themes and highlights differences
  */
 export const ThemeComparator: React.FC<ThemeComparatorProps> = ({
@@ -69,12 +69,12 @@ export const ThemeComparator: React.FC<ThemeComparatorProps> = ({
 
   const differences = useMemo(() => {
     const diffs: Difference[] = [];
-    
+
     const getCategory = (path: string): string => {
       const firstSegment = path.split('.')[0];
       return firstSegment || 'other';
     };
-    
+
     const compareObjects = (objA: any, objB: any, path: string = '') => {
       const keysA = Object.keys(objA || {});
       const keysB = Object.keys(objB || {});
@@ -82,7 +82,7 @@ export const ThemeComparator: React.FC<ThemeComparatorProps> = ({
 
       for (const key of allKeys) {
         if (key === '__isJSTheme') continue;
-        
+
         const currentPath = path ? `${path}.${key}` : key;
         const valueA = objA?.[key];
         const valueB = objB?.[key];
@@ -103,7 +103,12 @@ export const ThemeComparator: React.FC<ThemeComparatorProps> = ({
             type: 'removed',
             category: getCategory(currentPath),
           });
-        } else if (typeof valueA === 'object' && typeof valueB === 'object' && !Array.isArray(valueA) && !Array.isArray(valueB)) {
+        } else if (
+          typeof valueA === 'object' &&
+          typeof valueB === 'object' &&
+          !Array.isArray(valueA) &&
+          !Array.isArray(valueB)
+        ) {
           compareObjects(valueA, valueB, currentPath);
         } else if (JSON.stringify(valueA) !== JSON.stringify(valueB)) {
           diffs.push({
@@ -138,10 +143,11 @@ export const ThemeComparator: React.FC<ThemeComparatorProps> = ({
     // Filter by search query
     if (debouncedSearchQuery) {
       const queryLower = debouncedSearchQuery.toLowerCase();
-      filtered = filtered.filter(d => 
-        d.path.toLowerCase().includes(queryLower) ||
-        String(d.valueA).toLowerCase().includes(queryLower) ||
-        String(d.valueB).toLowerCase().includes(queryLower)
+      filtered = filtered.filter(
+        d =>
+          d.path.toLowerCase().includes(queryLower) ||
+          String(d.valueA).toLowerCase().includes(queryLower) ||
+          String(d.valueB).toLowerCase().includes(queryLower)
       );
     }
 
@@ -164,29 +170,39 @@ export const ThemeComparator: React.FC<ThemeComparatorProps> = ({
 
   const getTypeColor = (type: Difference['type']): string => {
     switch (type) {
-      case 'added': return '#4caf50';
-      case 'removed': return '#f44336';
-      case 'changed': return '#ff9800';
-      default: return '#666';
+      case 'added':
+        return '#4caf50';
+      case 'removed':
+        return '#f44336';
+      case 'changed':
+        return '#ff9800';
+      default:
+        return '#666';
     }
   };
 
   const getTypeBackground = (type: Difference['type']): string => {
     switch (type) {
-      case 'added': return 'rgba(76, 175, 80, 0.1)';
-      case 'removed': return 'rgba(244, 67, 54, 0.1)';
-      case 'changed': return 'rgba(255, 152, 0, 0.1)';
-      default: return 'transparent';
+      case 'added':
+        return 'rgba(76, 175, 80, 0.1)';
+      case 'removed':
+        return 'rgba(244, 67, 54, 0.1)';
+      case 'changed':
+        return 'rgba(255, 152, 0, 0.1)';
+      default:
+        return 'transparent';
     }
   };
 
   const highlightText = (text: string, query: string): React.ReactNode => {
     if (!query) return text;
-    
+
     const parts = text.split(new RegExp(`(${query})`, 'gi'));
-    return parts.map((part, index) => 
+    return parts.map((part, index) =>
       part.toLowerCase() === query.toLowerCase() ? (
-        <mark key={index} className="search-highlight">{part}</mark>
+        <mark key={index} className="search-highlight">
+          {part}
+        </mark>
       ) : (
         part
       )
@@ -225,7 +241,7 @@ export const ThemeComparator: React.FC<ThemeComparatorProps> = ({
             type="text"
             placeholder="Search differences..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
             className="search-input"
           />
           {searchQuery && (
@@ -243,7 +259,7 @@ export const ThemeComparator: React.FC<ThemeComparatorProps> = ({
           <label>Type:</label>
           <select
             value={filterType}
-            onChange={(e) => setFilterType(e.target.value as any)}
+            onChange={e => setFilterType(e.target.value as any)}
             className="filter-select"
           >
             <option value="all">All Types</option>
@@ -258,12 +274,14 @@ export const ThemeComparator: React.FC<ThemeComparatorProps> = ({
             <label>Category:</label>
             <select
               value={filterCategory}
-              onChange={(e) => setFilterCategory(e.target.value)}
+              onChange={e => setFilterCategory(e.target.value)}
               className="filter-select"
             >
               <option value="all">All Categories</option>
               {categories.map(cat => (
-                <option key={cat} value={cat}>{cat}</option>
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
               ))}
             </select>
           </div>
@@ -328,13 +346,13 @@ export const ThemeComparator: React.FC<ThemeComparatorProps> = ({
         <div className="differences-list">
           <h4>Differences ({filteredDifferences.length})</h4>
           {filteredDifferences.map((diff, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={`difference-item difference-${diff.type}`}
               style={{ backgroundColor: getTypeBackground(diff.type) }}
             >
               <div className="difference-header">
-                <span 
+                <span
                   className="difference-type"
                   style={{ backgroundColor: getTypeColor(diff.type) }}
                 >
@@ -343,9 +361,7 @@ export const ThemeComparator: React.FC<ThemeComparatorProps> = ({
                 <code className="difference-path">
                   {highlightText(diff.path, debouncedSearchQuery)}
                 </code>
-                {diff.category && (
-                  <span className="difference-category">{diff.category}</span>
-                )}
+                {diff.category && <span className="difference-category">{diff.category}</span>}
               </div>
               <div className="difference-values">
                 <div className={`value-column value-${diff.type === 'added' ? 'empty' : 'filled'}`}>
@@ -359,7 +375,9 @@ export const ThemeComparator: React.FC<ThemeComparatorProps> = ({
                   </pre>
                 </div>
                 <div className="value-divider">→</div>
-                <div className={`value-column value-${diff.type === 'removed' ? 'empty' : 'filled'}`}>
+                <div
+                  className={`value-column value-${diff.type === 'removed' ? 'empty' : 'filled'}`}
+                >
                   <div className="value-label">{themeB.name}</div>
                   <pre className="value-content">
                     {diff.type === 'removed' ? (

@@ -1,6 +1,6 @@
 /**
  * Theme Runtime Module
- * 
+ *
  * Runtime components for theme management
  */
 
@@ -11,7 +11,4 @@ export { useThemeTokens } from './useThemeTokens';
 export { ThemeApplicator, getThemeApplicator, applyTheme } from './ThemeApplicator';
 export type { ThemeErrorBoundaryProps } from './ThemeErrorBoundary';
 
-export type {
-  ThemeChangeEvent,
-  ThemeLoadOptions,
-} from '../types';
+export type { ThemeChangeEvent, ThemeLoadOptions } from '../types';

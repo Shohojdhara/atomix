@@ -649,7 +649,8 @@ export const GlassModalSizes: Story = {
             The glass effect adapts to different modal sizes while maintaining its visual appeal.
           </p>
           <p>
-            The glass effect enhances the modal's appearance, making it visually appealing and  easier to read.
+            The glass effect enhances the modal's appearance, making it visually appealing and
+            easier to read.
           </p>
         </Modal>
       </div>

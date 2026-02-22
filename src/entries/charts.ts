@@ -1,6 +1,6 @@
 /**
  * Charts Entry Point
- * 
+ *
  * Exports all chart-related components for code splitting
  */
 
@@ -49,4 +49,3 @@ export {
 } from '../components/Chart';
 
 export type { ChartProps } from '../lib/types/components';
-

@@ -12,7 +12,9 @@
   cursor: pointer;
   padding: rem(8px);
   border-radius: 50%;
-  transition: background-color 0.2s ease, opacity 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    opacity 0.2s ease;
   color: var(--#{$prefix}body-color);
 
   &:hover:not(:disabled) {

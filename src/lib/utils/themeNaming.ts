@@ -1,6 +1,6 @@
 /**
  * Theme Naming Utility
- * 
+ *
  * Provides consistent naming conventions for CSS classes, CSS variables,
  * and JavaScript properties throughout the theme system.
  */
@@ -36,7 +36,7 @@ export class ThemeNaming {
    * @param str - String to convert
    */
   static kebabToCamel(str: string): string {
-    return str.replace(/-([a-z])/g, (g) => g[1]?.toUpperCase() ?? '');
+    return str.replace(/-([a-z])/g, g => g[1]?.toUpperCase() ?? '');
   }
 
   /**

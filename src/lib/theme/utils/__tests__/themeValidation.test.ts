@@ -7,7 +7,7 @@ import {
   validateColorFormat,
   getContrastRatioBetweenColors,
   validateContrastRatio,
-  validateAndMergeTokens
+  validateAndMergeTokens,
 } from '../themeValidation';
 import { defaultTokens } from '../../tokens/tokens';
 
@@ -226,7 +226,7 @@ describe('Theme Validation', () => {
       const result = validateDesignTokens(invalidTokens, {
         skipColorValidation: true,
         skipRequiredTokens: true,
-        skipAccessibility: true
+        skipAccessibility: true,
       });
 
       expect(result.valid).toBe(true);

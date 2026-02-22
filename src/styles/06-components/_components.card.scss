@@ -199,8 +199,6 @@
     }
   }
 
-
-
   &--sm {
     --#{$prefix}card-spacer-y: #{rem(map.get(spacing.$spacing-sizes, 2))}; // 8px
     --#{$prefix}card-spacer-x: #{rem(map.get(spacing.$spacing-sizes, 2))}; // 8px
@@ -221,7 +219,6 @@
     // Default appearance - solid background
     @include dynamic-background(var(--#{$prefix}card-bg));
   }
-
 
   &--glass {
     max-width: none;
@@ -350,16 +347,14 @@
 
   @each $color, $value in maps.$theme-colors {
     &--#{$color} {
-      @if ($color =='primary') {
+      @if ($color == 'primary') {
         --#{$prefix}card-bg: var(--#{$prefix}brand-bg-subtle);
         --#{$prefix}card-bg-hover: var(--#{$prefix}brand-bg-subtle);
         --#{$prefix}card-border-color: var(--#{$prefix}brand-border-subtle);
         --#{$prefix}card-title-color: var(--#{$prefix}brand-text-emphasis);
         --#{$prefix}card-icon-bg: var(--#{$prefix}brand-text-emphasis);
         --#{$prefix}card-icon-color: var(--#{$prefix}brand-bg-subtle);
-      }
-
-      @else if ($color =='dark') {
+      } @else if ($color == 'dark') {
         --#{$prefix}card-bg: var(--#{$prefix}dark);
         --#{$prefix}card-bg-hover: var(--#{$prefix}dark-hover);
         --#{$prefix}card-border-color: var(--#{$prefix}dark);
@@ -367,9 +362,7 @@
         --#{$prefix}card-text-color: var(--#{$prefix}light);
         --#{$prefix}card-icon-bg: var(--#{$prefix}light);
         --#{$prefix}card-icon-color: var(--#{$prefix}dark);
-      }
-
-      @else if ($color =='light') {
+      } @else if ($color == 'light') {
         --#{$prefix}card-bg: var(--#{$prefix}light);
         --#{$prefix}card-bg-hover: var(--#{$prefix}light-hover);
         --#{$prefix}card-border-color: var(--#{$prefix}light);
@@ -377,9 +370,7 @@
         --#{$prefix}card-text-color: var(--#{$prefix}dark);
         --#{$prefix}card-icon-bg: var(--#{$prefix}dark);
         --#{$prefix}card-icon-color: var(--#{$prefix}light);
-      }
-
-      @else {
+      } @else {
         --#{$prefix}card-bg: var(--#{$prefix}#{$color}-bg-subtle);
         --#{$prefix}card-bg-hover: var(--#{$prefix}#{$color}-bg-subtle);
         --#{$prefix}card-border-color: var(--#{$prefix}#{$color}-border-subtle);

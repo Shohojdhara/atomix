@@ -203,10 +203,7 @@ const ISP: React.FC = () => {
 
                   <ul className="u-list-unstyled u-mb-6">
                     {plan.features.map((feature, featureIndex) => (
-                      <li
-                        key={featureIndex}
-                        className="u-flex u-items-center u-gap-2 u-mb-3"
-                      >
+                      <li key={featureIndex} className="u-flex u-items-center u-gap-2 u-mb-3">
                         <Icon name="Check" size={16} className="u-text-success" />
                         <span>{feature}</span>
                       </li>

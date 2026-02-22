@@ -267,32 +267,37 @@ export const DatePicker = forwardRef<DatePickerRef, DatePickerProps>(
             </>
           )}
 
-          {viewMode === 'years' && (() => {
-            const years = generateYears();
-            return (
-              <>
-                <button
-                  type="button"
-                  className="c-datepicker__nav-button c-datepicker__nav-button--prev-decade"
-                  onClick={handlePrevDecade}
-                  aria-label="Previous decade"
-                >
-                  <Icon name="CaretDoubleLeft" size="sm" />
-                </button>
-                <button type="button" className="c-datepicker__view-switch" onClick={switchToDayView}>
-                  {years[0]} - {years[years.length - 1]}
-                </button>
-                <button
-                  type="button"
-                  className="c-datepicker__nav-button c-datepicker__nav-button--next-decade"
-                  onClick={handleNextDecade}
-                  aria-label="Next decade"
-                >
-                  <Icon name="CaretDoubleRight" size="sm" />
-                </button>
-              </>
-            );
-          })()}
+          {viewMode === 'years' &&
+            (() => {
+              const years = generateYears();
+              return (
+                <>
+                  <button
+                    type="button"
+                    className="c-datepicker__nav-button c-datepicker__nav-button--prev-decade"
+                    onClick={handlePrevDecade}
+                    aria-label="Previous decade"
+                  >
+                    <Icon name="CaretDoubleLeft" size="sm" />
+                  </button>
+                  <button
+                    type="button"
+                    className="c-datepicker__view-switch"
+                    onClick={switchToDayView}
+                  >
+                    {years[0]} - {years[years.length - 1]}
+                  </button>
+                  <button
+                    type="button"
+                    className="c-datepicker__nav-button c-datepicker__nav-button--next-decade"
+                    onClick={handleNextDecade}
+                    aria-label="Next decade"
+                  >
+                    <Icon name="CaretDoubleRight" size="sm" />
+                  </button>
+                </>
+              );
+            })()}
         </div>
 
         <div className="c-datepicker__body">

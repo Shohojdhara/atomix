@@ -3,17 +3,19 @@ import { DesignTokensCustomizer } from './DesignTokensCustomizer';
 import { useState } from 'react';
 
 // Enhanced preview components
-const PreviewContainer = ({ title, description, children }: { 
-  title?: string; 
-  description?: string; 
+const PreviewContainer = ({
+  title,
+  description,
+  children,
+}: {
+  title?: string;
+  description?: string;
   children: React.ReactNode;
 }) => (
   <div className="story-preview-container">
     {title && <h3 className="story-preview-title">{title}</h3>}
     {description && <p className="story-preview-description">{description}</p>}
-    <div className="story-preview-content">
-      {children}
-    </div>
+    <div className="story-preview-content">{children}</div>
   </div>
 );
 
@@ -24,10 +26,10 @@ const meta: Meta<typeof DesignTokensCustomizer> = {
     layout: 'fullscreen',
     docs: {
       description: {
-        component: 'Interactive design tokens customization tool for real-time theme adjustments.'
-      }
-    }
-  }
+        component: 'Interactive design tokens customization tool for real-time theme adjustments.',
+      },
+    },
+  },
 };
 
 export default meta;
@@ -36,8 +38,8 @@ type Story = StoryObj<typeof DesignTokensCustomizer>;
 // Basic Usage
 export const Default: Story = {
   render: () => (
-    <PreviewContainer 
-      title="Design Tokens Customizer" 
+    <PreviewContainer
+      title="Design Tokens Customizer"
       description="Interactive tool for customizing design tokens in real-time"
     >
       <DesignTokensCustomizer />
@@ -46,10 +48,10 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'The default design tokens customizer with all standard controls and features.'
-      }
-    }
-  }
+        story: 'The default design tokens customizer with all standard controls and features.',
+      },
+    },
+  },
 };
 
 // With Custom Configuration
@@ -59,36 +61,36 @@ export const WithCustomConfig: Story = {
       colors: {
         primary: '#667eea',
         secondary: '#764ba2',
-        accent: '#f093fb'
+        accent: '#f093fb',
       },
       spacing: {
         small: '8px',
         medium: '16px',
-        large: '24px'
+        large: '24px',
       },
       typography: {
         fontFamily: 'Inter, sans-serif',
         fontSize: '16px',
-        fontWeight: '400'
-      }
+        fontWeight: '400',
+      },
     };
-    
+
     return (
-      <PreviewContainer 
-        title="Custom Configuration" 
+      <PreviewContainer
+        title="Custom Configuration"
         description="Design tokens customizer with predefined custom configuration"
       >
         <DesignTokensCustomizer initialConfig={customConfig} />
       </PreviewContainer>
     );
-  }
+  },
 };
 
 // Theme Preview Mode
 export const ThemePreview: Story = {
   render: () => (
-    <PreviewContainer 
-      title="Theme Preview Mode" 
+    <PreviewContainer
+      title="Theme Preview Mode"
       description="Customizer with live theme preview components"
     >
       <div className="theme-preview-layout">
@@ -119,19 +121,19 @@ export const ThemePreview: Story = {
       viewports: {
         desktop: {
           name: 'Desktop',
-          styles: { width: '1200px', height: '800px' }
-        }
+          styles: { width: '1200px', height: '800px' },
+        },
       },
-      defaultViewport: 'desktop'
-    }
-  }
+      defaultViewport: 'desktop',
+    },
+  },
 };
 
 // Compact Mode
 export const Compact: Story = {
   render: () => (
-    <PreviewContainer 
-      title="Compact Mode" 
+    <PreviewContainer
+      title="Compact Mode"
       description="Space-efficient customizer for smaller screens"
     >
       <DesignTokensCustomizer compact={true} />
@@ -142,26 +144,26 @@ export const Compact: Story = {
       viewports: {
         mobile: {
           name: 'Mobile',
-          styles: { width: '375px', height: '667px' }
-        }
+          styles: { width: '375px', height: '667px' },
+        },
       },
-      defaultViewport: 'mobile'
-    }
-  }
+      defaultViewport: 'mobile',
+    },
+  },
 };
 
 // With Export Options
 export const WithExport: Story = {
   render: () => {
     const [exportData, setExportData] = useState('');
-    
+
     const handleExport = (tokens: any) => {
       setExportData(JSON.stringify(tokens, null, 2));
     };
-    
+
     return (
-      <PreviewContainer 
-        title="With Export Options" 
+      <PreviewContainer
+        title="With Export Options"
         description="Customizer with export functionality for sharing themes"
       >
         <div className="export-workflow">
@@ -170,7 +172,7 @@ export const WithExport: Story = {
             <div className="export-output">
               <h4>Exported Theme Data:</h4>
               <pre>{exportData}</pre>
-              <button 
+              <button
                 onClick={() => navigator.clipboard.writeText(exportData)}
                 className="copy-button"
               >
@@ -181,14 +183,14 @@ export const WithExport: Story = {
         </div>
       </PreviewContainer>
     );
-  }
+  },
 };
 
 // Interactive Tutorial
 export const InteractiveTutorial: Story = {
   render: () => (
-    <PreviewContainer 
-      title="Interactive Tutorial" 
+    <PreviewContainer
+      title="Interactive Tutorial"
       description="Guided tour of the design tokens customizer features"
     >
       <div className="tutorial-container">
@@ -209,5 +211,5 @@ export const InteractiveTutorial: Story = {
         <DesignTokensCustomizer />
       </div>
     </PreviewContainer>
-  )
+  ),
 };

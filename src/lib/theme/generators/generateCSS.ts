@@ -1,6 +1,6 @@
 /**
  * CSS Variable Generator
- * 
+ *
  * Generates CSS custom properties from design tokens.
  */
 
@@ -18,20 +18,20 @@ export interface GenerateCSSVariablesOptions {
 
 /**
  * Generate CSS variables from tokens
- * 
+ *
  * Converts flat token object to CSS custom properties.
- * 
+ *
  * @param tokens - Design tokens object
  * @param options - Generation options
  * @returns CSS string with custom properties
- * 
+ *
  * @example
  * ```typescript
  * const tokens = {
  *   'primary': '#7c3aed',
  *   'spacing-4': '1rem',
  * };
- * 
+ *
  * const css = generateCSSVariables(tokens);
  * // Returns: ":root {\n  --atomix-primary: #7c3aed;\n  --atomix-spacing-4: 1rem;\n}"
  * ```
@@ -40,10 +40,7 @@ export function generateCSSVariables(
   tokens: DesignTokens,
   options: GenerateCSSVariablesOptions = {}
 ): string {
-  const {
-    selector = ':root',
-    prefix = 'atomix',
-  } = options;
+  const { selector = ':root', prefix = 'atomix' } = options;
 
   // Filter out undefined values and generate CSS variables
   const variables = Object.entries(tokens)
@@ -62,14 +59,14 @@ export function generateCSSVariables(
 
 /**
  * Generate CSS variables with custom selector
- * 
+ *
  * Useful for theme-specific selectors like `[data-theme="dark"]`
- * 
+ *
  * @param tokens - Design tokens object
  * @param selector - CSS selector (e.g., '[data-theme="dark"]')
  * @param prefix - CSS variable prefix
  * @returns CSS string
- * 
+ *
  * @example
  * ```typescript
  * const css = generateCSSVariablesForSelector(
@@ -86,4 +83,3 @@ export function generateCSSVariablesForSelector(
 ): string {
   return generateCSSVariables(tokens, { selector, prefix });
 }
-

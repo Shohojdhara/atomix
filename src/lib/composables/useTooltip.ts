@@ -160,7 +160,7 @@ export const useTooltip = ({
   const [isPositioned, setIsPositioned] = useState(false);
   const [tooltipStyle, setTooltipStyle] = useState<React.CSSProperties>({});
   const [arrowStyle, setArrowStyle] = useState<React.CSSProperties>({});
-  
+
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -282,4 +282,3 @@ export const useTooltip = ({
 };
 
 export default useTooltip;
-

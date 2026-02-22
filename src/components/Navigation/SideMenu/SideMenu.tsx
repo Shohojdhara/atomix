@@ -7,8 +7,6 @@ import useForkRef from '../../../lib/utils/useForkRef';
 import SideMenuList from './SideMenuList';
 import SideMenuItem from './SideMenuItem';
 
-
-
 /**
  * SideMenu component provides a collapsible navigation menu with title and menu items.
  * Automatically collapses on mobile devices and can be toggled via a header button.
@@ -99,9 +97,9 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       const currentLength = menuItems?.length ?? 0;
       // Only update if the length actually changed to prevent infinite loops
       if (menuItemsLengthRef.current === currentLength) return;
-      
+
       menuItemsLengthRef.current = currentLength;
-      
+
       setNestedItemStates(prevStates => {
         const newStates: Record<number, boolean> = {};
         menuItems?.forEach((_, index) => {
@@ -217,8 +215,8 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
           id={id ? `${id}-content` : undefined}
           aria-hidden={shouldShowToggler ? !isOpenState : false}
         >
-            <div ref={innerRef} className="c-side-menu__inner">
-              {children}
+          <div ref={innerRef} className="c-side-menu__inner">
+            {children}
             {menuItems?.map((item, index) => {
               const isNestedItemOpen = nestedItemStates[index] ?? true;
               const hasItems = item.items && item.items.length > 0;
@@ -301,7 +299,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
                 </div>
               );
             })}
-            </div>
+          </div>
         </div>
       </>
     );

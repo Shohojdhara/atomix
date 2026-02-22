@@ -81,7 +81,10 @@ const ScatterChart = memo(
                   onClick={() => handlers.onDataPointClick?.(point, datasetIndex, pointIndex)}
                   onMouseEnter={e => {
                     if (scatterOptions.enableHoverEffects) {
-                      const newRadius = Math.max(0, (point.size || scatterOptions.pointRadius || 4) * 1.5);
+                      const newRadius = Math.max(
+                        0,
+                        (point.size || scatterOptions.pointRadius || 4) * 1.5
+                      );
                       e.currentTarget.setAttribute('r', String(newRadius));
                     }
                     const rect = e.currentTarget.getBoundingClientRect();
@@ -96,7 +99,10 @@ const ScatterChart = memo(
                   }}
                   onMouseLeave={e => {
                     if (scatterOptions.enableHoverEffects) {
-                      const originalRadius = Math.max(0, point.size || scatterOptions.pointRadius || 4);
+                      const originalRadius = Math.max(
+                        0,
+                        point.size || scatterOptions.pointRadius || 4
+                      );
                       e.currentTarget.setAttribute('r', String(originalRadius));
                     }
                     handlers.onPointLeave();
@@ -104,13 +110,13 @@ const ScatterChart = memo(
                 />
                 {scatterOptions.showLabels && point.label && (
                   <text x={x} y={y - 10} textAnchor="middle" className="c-chart__scatter-label">
-                    {String(point.label).replace(/[<>&"']/g, (char) => {
+                    {String(point.label).replace(/[<>&"']/g, char => {
                       const entities: Record<string, string> = {
                         '<': '&lt;',
                         '>': '&gt;',
                         '&': '&amp;',
                         '"': '&quot;',
-                        "'": '&#x27;'
+                        "'": '&#x27;',
                       };
                       return entities[char] || char;
                     })}
@@ -124,23 +130,25 @@ const ScatterChart = memo(
         return (
           <>
             {points}
-            {showTooltips && hoveredPoint && renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
-              <ChartTooltip
-                dataPoint={
-                  renderedDatasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!
-                }
-                datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
-                datasetColor={
-                  renderedDatasets[hoveredPoint.datasetIndex]?.color ||
-                  colors[hoveredPoint.datasetIndex]
-                }
-                position={{
-                  x: hoveredPoint.clientX,
-                  y: hoveredPoint.clientY,
-                }}
-                visible={true}
-              />
-            )}
+            {showTooltips &&
+              hoveredPoint &&
+              renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
+                <ChartTooltip
+                  dataPoint={
+                    renderedDatasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!
+                  }
+                  datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
+                  datasetColor={
+                    renderedDatasets[hoveredPoint.datasetIndex]?.color ||
+                    colors[hoveredPoint.datasetIndex]
+                  }
+                  position={{
+                    x: hoveredPoint.clientX,
+                    y: hoveredPoint.clientY,
+                  }}
+                  visible={true}
+                />
+              )}
           </>
         );
       };

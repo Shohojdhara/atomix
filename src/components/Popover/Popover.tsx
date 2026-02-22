@@ -106,7 +106,10 @@ export const Popover: React.FC<PopoverProps> = ({
                 <div className="c-popover__content-inner">{content}</div>
               </div>
             )}
-            <div ref={arrowRef as React.RefObject<HTMLDivElement>} className="c-popover__arrow"></div>
+            <div
+              ref={arrowRef as React.RefObject<HTMLDivElement>}
+              className="c-popover__arrow"
+            ></div>
           </div>,
           document.body
         )}
@@ -119,43 +122,44 @@ export const Popover: React.FC<PopoverProps> = ({
  */
 export const PopoverTrigger = forwardRef<HTMLElement, PopoverTriggerProps>(
   ({ children, trigger: triggerProp }, ref) => {
-  const { isOpen, setIsOpen, triggerRef, popoverId, triggerType } =
-    React.useContext(PopoverContext);
+    const { isOpen, setIsOpen, triggerRef, popoverId, triggerType } =
+      React.useContext(PopoverContext);
 
-  // Determine which trigger type to use - prop from PopoverTrigger or from context
-  const effectiveTrigger = triggerProp || triggerType;
+    // Determine which trigger type to use - prop from PopoverTrigger or from context
+    const effectiveTrigger = triggerProp || triggerType;
 
-  // Handle trigger events
-  const handleClick = () => {
-    setIsOpen(!isOpen);
-  };
+    // Handle trigger events
+    const handleClick = () => {
+      setIsOpen(!isOpen);
+    };
 
-  const handleMouseEnter = () => {
-    setIsOpen(true);
-  };
+    const handleMouseEnter = () => {
+      setIsOpen(true);
+    };
 
-  const handleMouseLeave = () => {
-    setIsOpen(false);
-  };
+    const handleMouseLeave = () => {
+      setIsOpen(false);
+    };
 
-  // Clone the children element with additional props
-  const child = React.Children.only(children) as React.ReactElement;
+    // Clone the children element with additional props
+    const child = React.Children.only(children) as React.ReactElement;
 
-  const triggerProps: any = {
-    ref: ref || triggerRef,
-    'aria-describedby': popoverId,
-    'aria-expanded': isOpen,
-  };
+    const triggerProps: any = {
+      ref: ref || triggerRef,
+      'aria-describedby': popoverId,
+      'aria-expanded': isOpen,
+    };
 
-  if (effectiveTrigger === 'click') {
-    triggerProps.onClick = handleClick;
-  } else if (effectiveTrigger === 'hover') {
-    triggerProps.onMouseEnter = handleMouseEnter;
-    triggerProps.onMouseLeave = handleMouseLeave;
+    if (effectiveTrigger === 'click') {
+      triggerProps.onClick = handleClick;
+    } else if (effectiveTrigger === 'hover') {
+      triggerProps.onMouseEnter = handleMouseEnter;
+      triggerProps.onMouseLeave = handleMouseLeave;
+    }
+
+    return React.cloneElement(child, triggerProps);
   }
-
-  return React.cloneElement(child, triggerProps);
-});
+);
 
 PopoverTrigger.displayName = 'PopoverTrigger';
 

@@ -225,7 +225,9 @@ const basicSlides: SliderSlide[] = [
       >
         <div className="u-text-center">
           <h2 className="u-text-3 u-c-white u-mb-3">Developer Friendly</h2>
-          <p className="u-text-base u-c-white u-mb-4">Well documented with clear APIs and examples</p>
+          <p className="u-text-base u-c-white u-mb-4">
+            Well documented with clear APIs and examples
+          </p>
           <Button variant="primary">View Docs</Button>
         </div>
       </div>
@@ -295,7 +297,9 @@ const basicSlides: SliderSlide[] = [
       >
         <div className="u-text-center">
           <h2 className="u-text-3 u-c-white u-mb-3">RTL Support</h2>
-          <p className="u-text-base u-c-white u-mb-4">Full right-to-left language support built-in</p>
+          <p className="u-text-base u-c-white u-mb-4">
+            Full right-to-left language support built-in
+          </p>
           <Button variant="info">Learn More</Button>
         </div>
       </div>
@@ -317,7 +321,9 @@ const basicSlides: SliderSlide[] = [
       >
         <div className="u-text-center">
           <h2 className="u-text-3 u-c-white u-mb-3">Open Source</h2>
-          <p className="u-text-base u-c-white u-mb-4">Free to use and contribute to the community</p>
+          <p className="u-text-base u-c-white u-mb-4">
+            Free to use and contribute to the community
+          </p>
           <Button variant="success">View on GitHub</Button>
         </div>
       </div>
@@ -342,7 +348,9 @@ const productSlides: SliderSlide[] = [
             }}
           />
           <h3 className="u-text-4 u-font-bold u-mb-2">Premium Plan</h3>
-          <p className="u-text-sm u-c-muted u-mb-3">Perfect for small teams and growing businesses</p>
+          <p className="u-text-sm u-c-muted u-mb-3">
+            Perfect for small teams and growing businesses
+          </p>
           <div className="u-mb-4">
             <span className="u-text-1 u-font-bold">$29</span>
             <span className="u-text-sm u-c-muted">/month</span>

@@ -1,6 +1,6 @@
 /**
  * Naming Utilities
- * 
+ *
  * Provides consistent naming conventions across the theme system
  */
 
@@ -14,13 +14,17 @@ export interface NamingOptions {
 /**
  * Generate consistent CSS class names following BEM methodology
  */
-export function generateClassName(block: string, element?: string, modifiers?: Record<string, boolean | string>): string {
+export function generateClassName(
+  block: string,
+  element?: string,
+  modifiers?: Record<string, boolean | string>
+): string {
   let className = block;
-  
+
   if (element) {
     className += `__${element}`;
   }
-  
+
   if (modifiers) {
     Object.entries(modifiers).forEach(([key, value]) => {
       if (value) {
@@ -31,7 +35,7 @@ export function generateClassName(block: string, element?: string, modifiers?: R
       }
     });
   }
-  
+
   return className;
 }
 
@@ -40,23 +44,23 @@ export function generateClassName(block: string, element?: string, modifiers?: R
  */
 export function generateCSSVariableName(property: string, options: NamingOptions = {}): string {
   const { prefix = 'atomix', component, variant, state } = options;
-  
+
   const parts = [prefix];
-  
+
   if (component) {
     parts.push(component);
   }
-  
+
   if (variant) {
     parts.push(variant);
   }
-  
+
   if (state) {
     parts.push(state);
   }
-  
+
   parts.push(property);
-  
+
   return `--${parts.join('-')}`;
 }
 
@@ -65,7 +69,7 @@ export function generateCSSVariableName(property: string, options: NamingOptions
  */
 export function normalizeThemeTokens(tokens: Record<string, any>): Record<string, any> {
   const normalized: Record<string, any> = {};
-  
+
   for (const [key, value] of Object.entries(tokens)) {
     if (typeof value === 'object' && value !== null) {
       // Recursively normalize nested objects
@@ -75,7 +79,7 @@ export function normalizeThemeTokens(tokens: Record<string, any>): Record<string
       normalized[key] = value;
     }
   }
-  
+
   return normalized;
 }
 
@@ -83,7 +87,7 @@ export function normalizeThemeTokens(tokens: Record<string, any>): Record<string
  * Convert camelCase to kebab-case for CSS custom properties
  */
 export function camelToKebab(str: string): string {
-  return str.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
+  return str.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
 }
 
 /**
@@ -95,6 +99,6 @@ export function themePropertyToCSSVar(propertyPath: string, prefix: string = 'at
     .split('.')
     .map(part => camelToKebab(part))
     .join('-');
-  
+
   return `--${prefix}-${path}`;
 }

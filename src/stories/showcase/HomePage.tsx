@@ -567,10 +567,7 @@ const HomePage: React.FC = () => {
                   <div className=" u-pt-0">
                     <ul className="u-list-unstyled u-mb-6">
                       {plan.features.map((feature, featureIndex) => (
-                        <li
-                          key={featureIndex}
-                          className="u-flex u-items-center u-gap-3 u-mb-3"
-                        >
+                        <li key={featureIndex} className="u-flex u-items-center u-gap-3 u-mb-3">
                           <Icon
                             name="CheckCircle"
                             size={16}

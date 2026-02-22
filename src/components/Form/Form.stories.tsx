@@ -211,19 +211,11 @@ export const CompleteForm: Story = {
         </FormGroup>
 
         <FormGroup label="Bio" htmlFor="bio">
-          <Textarea
-            id="bio"
-            name="bio"
-            placeholder="Tell us about yourself"
-            rows={4}
-          />
+          <Textarea id="bio" name="bio" placeholder="Tell us about yourself" rows={4} />
         </FormGroup>
 
         <FormGroup label="Subscribe to newsletter">
-          <Checkbox
-            name="newsletter"
-            label="Yes, I would like to receive updates"
-          />
+          <Checkbox name="newsletter" label="Yes, I would like to receive updates" />
         </FormGroup>
 
         <div className="u-flex u-gap-3 u-mt-4">

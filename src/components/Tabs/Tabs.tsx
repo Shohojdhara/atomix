@@ -61,83 +61,85 @@ export interface TabsProps {
 /**
  * Tabs component for switching between different content panels
  */
-export const Tabs: React.FC<TabsProps> = memo(({
-  items,
-  activeIndex = TAB.DEFAULTS.ACTIVE_INDEX,
-  onTabChange,
-  className = '',
-  style,
-  glass,
-}) => {
-  const [currentTab, setCurrentTab] = useState(activeIndex);
+export const Tabs: React.FC<TabsProps> = memo(
+  ({
+    items,
+    activeIndex = TAB.DEFAULTS.ACTIVE_INDEX,
+    onTabChange,
+    className = '',
+    style,
+    glass,
+  }) => {
+    const [currentTab, setCurrentTab] = useState(activeIndex);
 
-  // Handle tab change
-  const handleTabClick = (index: number) => {
-    setCurrentTab(index);
-    if (onTabChange) {
-      onTabChange(index);
-    }
-  };
-
-  const tabContent = (
-    <div className={`c-tabs js-atomix-tab ${className}`} style={style}>
-      <ul className="c-tabs__nav">
-        {items.map((item, index) => (
-          <li className="c-tabs__nav-item" key={`tab-nav-${index}`}>
-            <button
-              className={`c-tabs__nav-btn ${index === currentTab ? TAB.CLASSES.ACTIVE : ''}`}
-              onClick={() => handleTabClick(index)}
-              data-tabindex={index}
-              role="tab"
-              aria-selected={index === currentTab}
-              aria-controls={`tab-panel-${index}`}
-            >
-              {item.label}
-            </button>
-          </li>
-        ))}
-      </ul>
-      <div className="c-tabs__panels">
-        {items.map((item, index) => (
-          <div
-            className={`c-tabs__panel ${index === currentTab ? TAB.CLASSES.ACTIVE : ''}`}
-            key={`tab-panel-${index}`}
-            data-tabindex={index}
-            id={`tab-panel-${index}`}
-            role="tabpanel"
-            aria-labelledby={`tab-nav-${index}`}
-            style={{
-              height: index === currentTab ? 'auto' : '0px',
-              opacity: index === currentTab ? 1 : 0,
-              overflow: 'hidden',
-              transition: 'height 0.3s ease, opacity 0.3s ease',
-            }}
-          >
-            <div className="c-tabs__panel-body">{item.content}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  if (glass) {
-    // Default glass settings for tabs
-    const defaultGlassProps = {
-      displacementScale: 60,
-      blurAmount: 1,
-      saturation: 160,
-      aberrationIntensity: 0.5,
-      cornerRadius: 8,
-      mode: 'shader' as const,
+    // Handle tab change
+    const handleTabClick = (index: number) => {
+      setCurrentTab(index);
+      if (onTabChange) {
+        onTabChange(index);
+      }
     };
 
-    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+    const tabContent = (
+      <div className={`c-tabs js-atomix-tab ${className}`} style={style}>
+        <ul className="c-tabs__nav">
+          {items.map((item, index) => (
+            <li className="c-tabs__nav-item" key={`tab-nav-${index}`}>
+              <button
+                className={`c-tabs__nav-btn ${index === currentTab ? TAB.CLASSES.ACTIVE : ''}`}
+                onClick={() => handleTabClick(index)}
+                data-tabindex={index}
+                role="tab"
+                aria-selected={index === currentTab}
+                aria-controls={`tab-panel-${index}`}
+              >
+                {item.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <div className="c-tabs__panels">
+          {items.map((item, index) => (
+            <div
+              className={`c-tabs__panel ${index === currentTab ? TAB.CLASSES.ACTIVE : ''}`}
+              key={`tab-panel-${index}`}
+              data-tabindex={index}
+              id={`tab-panel-${index}`}
+              role="tabpanel"
+              aria-labelledby={`tab-nav-${index}`}
+              style={{
+                height: index === currentTab ? 'auto' : '0px',
+                opacity: index === currentTab ? 1 : 0,
+                overflow: 'hidden',
+                transition: 'height 0.3s ease, opacity 0.3s ease',
+              }}
+            >
+              <div className="c-tabs__panel-body">{item.content}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
 
-    return <AtomixGlass {...glassProps}>{tabContent}</AtomixGlass>;
+    if (glass) {
+      // Default glass settings for tabs
+      const defaultGlassProps = {
+        displacementScale: 60,
+        blurAmount: 1,
+        saturation: 160,
+        aberrationIntensity: 0.5,
+        cornerRadius: 8,
+        mode: 'shader' as const,
+      };
+
+      const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+      return <AtomixGlass {...glassProps}>{tabContent}</AtomixGlass>;
+    }
+
+    return tabContent;
   }
-
-  return tabContent;
-});
+);
 
 Tabs.displayName = 'Tabs';
 

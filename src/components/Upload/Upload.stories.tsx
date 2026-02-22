@@ -179,48 +179,48 @@ export const BasicUsage: Story = {
 // Size Variants
 export const SizeVariants: Story = {
   render: () => (
-  <div style={{ padding: '30px' }}>
-    <div style={{ marginBottom: '40px' }}>
-      <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>Small Size</h3>
-      <div style={{ maxWidth: '400px' }}>
-        <Upload
-          size="sm"
-          title="Small Upload Area"
-          supportedFilesText="PDF, JPEG, PNG"
-          buttonText="Choose File"
-          helperText="Max: 2MB"
-        />
+    <div style={{ padding: '30px' }}>
+      <div style={{ marginBottom: '40px' }}>
+        <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>Small Size</h3>
+        <div style={{ maxWidth: '400px' }}>
+          <Upload
+            size="sm"
+            title="Small Upload Area"
+            supportedFilesText="PDF, JPEG, PNG"
+            buttonText="Choose File"
+            helperText="Max: 2MB"
+          />
+        </div>
       </div>
-    </div>
 
-    <div style={{ marginBottom: '40px' }}>
-      <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>
-        Medium Size (Default)
-      </h3>
-      <div style={{ maxWidth: '500px' }}>
-        <Upload
-          size="md"
-          title="Drag and Drop files here"
-          supportedFilesText="Files supported: PDF, XSLS, JPEG, PNG, Scanner"
-          buttonText="Choose File"
-          helperText="Maximum size: 5MB"
-        />
+      <div style={{ marginBottom: '40px' }}>
+        <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>
+          Medium Size (Default)
+        </h3>
+        <div style={{ maxWidth: '500px' }}>
+          <Upload
+            size="md"
+            title="Drag and Drop files here"
+            supportedFilesText="Files supported: PDF, XSLS, JPEG, PNG, Scanner"
+            buttonText="Choose File"
+            helperText="Maximum size: 5MB"
+          />
+        </div>
       </div>
-    </div>
 
-    <div>
-      <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>Large Size</h3>
-      <div style={{ maxWidth: '700px' }}>
-        <Upload
-          size="lg"
-          title="Drop your files here for upload"
-          supportedFilesText="Supported formats: PDF, Excel, Word, Images, and more"
-          buttonText="Browse Files"
-          helperText="Maximum file size: 10MB per file"
-        />
+      <div>
+        <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>Large Size</h3>
+        <div style={{ maxWidth: '700px' }}>
+          <Upload
+            size="lg"
+            title="Drop your files here for upload"
+            supportedFilesText="Supported formats: PDF, Excel, Word, Images, and more"
+            buttonText="Browse Files"
+            helperText="Maximum file size: 10MB per file"
+          />
+        </div>
       </div>
     </div>
-  </div>
   ),
   parameters: {
     docs: {
@@ -472,73 +472,73 @@ export const DragDropDemo: Story = {
     const [dragState, setDragState] = useState<'idle' | 'dragging'>('idle');
     const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
 
-  const handleFileSelect = (files: File[]) => {
-    const fileNames = files.map(file => file.name);
-    setUploadedFiles(prev => [...prev, ...fileNames]);
-  };
+    const handleFileSelect = (files: File[]) => {
+      const fileNames = files.map(file => file.name);
+      setUploadedFiles(prev => [...prev, ...fileNames]);
+    };
 
-  return (
-    <div style={{ padding: '30px' }}>
-      <div style={{ marginBottom: '20px' }}>
-        <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '10px' }}>
-          Interactive Drag & Drop Demo
-        </h3>
-        <p style={{ color: '#666', fontSize: '14px', marginBottom: '20px' }}>
-          Try dragging files over the upload area to see the hover effects, or click to select
-          files.
-        </p>
-      </div>
+    return (
+      <div style={{ padding: '30px' }}>
+        <div style={{ marginBottom: '20px' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '10px' }}>
+            Interactive Drag & Drop Demo
+          </h3>
+          <p style={{ color: '#666', fontSize: '14px', marginBottom: '20px' }}>
+            Try dragging files over the upload area to see the hover effects, or click to select
+            files.
+          </p>
+        </div>
 
-      <div style={{ maxWidth: '600px', marginBottom: '20px' }}>
-        <Upload
-          title="Drag files here to see the magic ✨"
-          supportedFilesText="PDF, Images, Documents - All welcome!"
-          buttonText="Or click to browse"
-          helperText="Watch the upload area respond to your interactions"
-          onFileSelect={handleFileSelect}
-          multiple={true}
-        />
-      </div>
+        <div style={{ maxWidth: '600px', marginBottom: '20px' }}>
+          <Upload
+            title="Drag files here to see the magic ✨"
+            supportedFilesText="PDF, Images, Documents - All welcome!"
+            buttonText="Or click to browse"
+            helperText="Watch the upload area respond to your interactions"
+            onFileSelect={handleFileSelect}
+            multiple={true}
+          />
+        </div>
 
-      {uploadedFiles.length > 0 && (
-        <div
-          style={{
-            padding: '16px',
-            backgroundColor: '#f8f9fa',
-            borderRadius: '8px',
-            border: '1px solid #e9ecef',
-          }}
-        >
-          <h4
-            style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#495057' }}
-          >
-            Selected Files:
-          </h4>
-          <ul style={{ margin: 0, paddingLeft: '20px' }}>
-            {uploadedFiles.map((fileName, index) => (
-              <li key={index} style={{ fontSize: '14px', color: '#6c757d', marginBottom: '4px' }}>
-                {fileName}
-              </li>
-            ))}
-          </ul>
-          <button
-            onClick={() => setUploadedFiles([])}
+        {uploadedFiles.length > 0 && (
+          <div
             style={{
-              marginTop: '12px',
-              padding: '6px 12px',
-              fontSize: '12px',
-              backgroundColor: '#6c757d',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
+              padding: '16px',
+              backgroundColor: '#f8f9fa',
+              borderRadius: '8px',
+              border: '1px solid #e9ecef',
             }}
           >
-            Clear List
-          </button>
-        </div>
-      )}
-    </div>
+            <h4
+              style={{ fontSize: '14px', fontWeight: '600', marginBottom: '8px', color: '#495057' }}
+            >
+              Selected Files:
+            </h4>
+            <ul style={{ margin: 0, paddingLeft: '20px' }}>
+              {uploadedFiles.map((fileName, index) => (
+                <li key={index} style={{ fontSize: '14px', color: '#6c757d', marginBottom: '4px' }}>
+                  {fileName}
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={() => setUploadedFiles([])}
+              style={{
+                marginTop: '12px',
+                padding: '6px 12px',
+                fontSize: '12px',
+                backgroundColor: '#6c757d',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+              }}
+            >
+              Clear List
+            </button>
+          </div>
+        )}
+      </div>
     );
   },
   parameters: {
@@ -555,39 +555,41 @@ export const DragDropDemo: Story = {
 export const FileTypeRestrictions: Story = {
   render: () => (
     <div style={{ padding: '30px' }}>
-    <div style={{ marginBottom: '40px' }}>
-      <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>Images Only</h3>
-      <div style={{ maxWidth: '500px' }}>
-        <Upload
-          title="Upload Images"
-          supportedFilesText="JPEG, PNG, GIF, WebP"
-          buttonText="Choose Images"
-          helperText="Maximum size: 10MB"
-          acceptedFileTypes={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}
-          multiple={true}
-        />
+      <div style={{ marginBottom: '40px' }}>
+        <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>Images Only</h3>
+        <div style={{ maxWidth: '500px' }}>
+          <Upload
+            title="Upload Images"
+            supportedFilesText="JPEG, PNG, GIF, WebP"
+            buttonText="Choose Images"
+            helperText="Maximum size: 10MB"
+            acceptedFileTypes={['image/jpeg', 'image/png', 'image/gif', 'image/webp']}
+            multiple={true}
+          />
+        </div>
       </div>
-    </div>
 
-    <div style={{ marginBottom: '40px' }}>
-      <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>Documents Only</h3>
-      <div style={{ maxWidth: '500px' }}>
-        <Upload
-          title="Upload Documents"
-          supportedFilesText="PDF, Word, Excel, PowerPoint"
-          buttonText="Choose Documents"
-          helperText="Maximum size: 25MB"
-          acceptedFileTypes={[
-            'application/pdf',
-            'application/msword',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'application/vnd.ms-excel',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          ]}
-        />
+      <div style={{ marginBottom: '40px' }}>
+        <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: '600' }}>
+          Documents Only
+        </h3>
+        <div style={{ maxWidth: '500px' }}>
+          <Upload
+            title="Upload Documents"
+            supportedFilesText="PDF, Word, Excel, PowerPoint"
+            buttonText="Choose Documents"
+            helperText="Maximum size: 25MB"
+            acceptedFileTypes={[
+              'application/pdf',
+              'application/msword',
+              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+              'application/vnd.ms-excel',
+              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            ]}
+          />
+        </div>
       </div>
     </div>
-  </div>
   ),
   parameters: {
     docs: {

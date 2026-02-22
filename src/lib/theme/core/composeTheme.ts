@@ -12,7 +12,7 @@
  * Check if value is an object
  */
 function isObject(item: any): item is Record<string, any> {
-    return item && typeof item === 'object' && !Array.isArray(item) && typeof item !== 'function';
+  return item && typeof item === 'object' && !Array.isArray(item) && typeof item !== 'function';
 }
 
 /**
@@ -20,32 +20,35 @@ function isObject(item: any): item is Record<string, any> {
  * Later objects override earlier ones
  */
 export function deepMerge<T extends Record<string, unknown>>(...objects: Partial<T>[]): T {
-    if (objects.length === 0) return {} as T;
-    if (objects.length === 1) return objects[0] as T;
+  if (objects.length === 0) return {} as T;
+  if (objects.length === 1) return objects[0] as T;
 
-    const [target, ...sources] = objects;
-    const result = { ...target } as T;
+  const [target, ...sources] = objects;
+  const result = { ...target } as T;
 
-    for (const source of sources) {
-        if (!source) continue;
+  for (const source of sources) {
+    if (!source) continue;
 
-        for (const key in source) {
-            if (!Object.prototype.hasOwnProperty.call(source, key)) continue;
+    for (const key in source) {
+      if (!Object.prototype.hasOwnProperty.call(source, key)) continue;
 
-            const targetValue = result[key];
-            const sourceValue = source[key];
+      const targetValue = result[key];
+      const sourceValue = source[key];
 
-            if (isObject(targetValue) && isObject(sourceValue)) {
-                // Recursively merge objects
-                result[key] = deepMerge(targetValue as Record<string, unknown>, sourceValue as Record<string, unknown>) as T[Extract<keyof T, string>];
-            } else {
-                // Override with source value
-                result[key] = sourceValue as T[Extract<keyof T, string>];
-            }
-        }
+      if (isObject(targetValue) && isObject(sourceValue)) {
+        // Recursively merge objects
+        result[key] = deepMerge(
+          targetValue as Record<string, unknown>,
+          sourceValue as Record<string, unknown>
+        ) as T[Extract<keyof T, string>];
+      } else {
+        // Override with source value
+        result[key] = sourceValue as T[Extract<keyof T, string>];
+      }
     }
+  }
 
-    return result;
+  return result;
 }
 
 // ============================================================================
@@ -69,7 +72,7 @@ import type { DesignTokens } from '../tokens/tokens';
  * ```
  */
 export function mergeTheme(...tokens: Partial<DesignTokens>[]): Partial<DesignTokens> {
-    return deepMerge({}, ...tokens);
+  return deepMerge({}, ...tokens);
 }
 
 /**
@@ -86,12 +89,15 @@ export function mergeTheme(...tokens: Partial<DesignTokens>[]): Partial<DesignTo
  * // Returns: { 'primary': '#000', 'secondary': '#fff' }
  * ```
  */
-export function extendTheme(baseTokens: Partial<DesignTokens>, extension: Partial<DesignTokens>): Partial<DesignTokens> {
-    return mergeTheme(baseTokens, extension);
+export function extendTheme(
+  baseTokens: Partial<DesignTokens>,
+  extension: Partial<DesignTokens>
+): Partial<DesignTokens> {
+  return mergeTheme(baseTokens, extension);
 }
 
 export default {
-    deepMerge,
-    mergeTheme,
-    extendTheme,
+  deepMerge,
+  mergeTheme,
+  extendTheme,
 };

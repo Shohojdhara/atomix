@@ -1,6 +1,6 @@
 /**
  * Theme Provider
- * 
+ *
  * React context provider for theme management with separated concerns
  * Updated to use the new simplified theme system
  */
@@ -89,8 +89,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
       return defaultTheme;
     }
 
-
-
     // Default fallback
     return 'default';
   }, [defaultTheme, enablePersistence, storageKey]);
@@ -176,235 +174,230 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   }, []);
 
   // Function to set theme with proper type handling
-  const setTheme = useCallback(async (
-    theme: string | DesignTokens | Partial<DesignTokens>,
-    options?: ThemeLoadOptions
-  ) => {
-    // Cancel previous theme load if in progress
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-
-    // Create new AbortController for this theme load
-    const abortController = new AbortController();
-    abortControllerRef.current = abortController;
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      let themeName: string;
-
-      if (typeof theme === 'string') {
-        themeName = theme;
-      } else {
-        // Check if aborted before processing
-        if (abortController.signal.aborted) {
-          return;
-        }
-
-        // Validate and merge DesignTokens
-        const { tokens: validatedTokens, validation } = validateAndMergeTokens(theme);
-
-        if (!validation.valid) {
-          const errorMsg = `Invalid DesignTokens provided: ${validation.errors.join(', ')}`;
-          const validationError = new Error(errorMsg);
-          logger.error('Theme validation failed', validationError, {
-            errors: validation.errors,
-            warnings: validation.warnings,
-          });
-
-          // Check if we should fallback to default theme
-          const shouldFallback = options?.fallbackOnError !== false; // Default to true
-          if (shouldFallback) {
-            logger.warn('Falling back to default theme due to validation errors');
-            // Use default tokens instead
-            const { tokens: defaultTokens } = validateAndMergeTokens({});
-            const css = createTheme(defaultTokens);
-            const themeId = 'tokens-theme-fallback';
-
-            // Check if aborted before state update
-            if (abortController.signal.aborted) {
-              return;
-            }
-
-            // Remove any previously loaded theme CSS
-            removeCSS(`theme-${currentTheme}`);
-
-            // Inject new theme CSS
-            injectCSS(css, `theme-${themeId}`);
-
-            // Store default tokens
-            setActiveTokens(defaultTokens);
-            setCurrentTheme(themeId);
-            handleThemeChange(defaultTokens);
-            handleError(validationError, themeId);
-            setIsLoading(false);
-            return;
-          } else {
-            // No fallback, throw the error
-            throw validationError;
-          }
-        }
-
-        // For valid DesignTokens, create CSS and inject it
-        const css = createTheme(validatedTokens);
-        const themeId = 'tokens-theme';
-
-        // Check if aborted after async operation
-        if (abortController.signal.aborted) {
-          return;
-        }
-
-        // Remove any previously loaded theme CSS
-        removeCSS(`theme-${currentTheme}`);
-
-        // Inject new theme CSS
-        injectCSS(css, `theme-${themeId}`);
-
-        // Store validated tokens for reference
-
-        // Check if aborted before state update
-        if (abortController.signal.aborted) {
-          return;
-        }
-
-        setActiveTokens(validatedTokens);
-        setCurrentTheme(themeId);
-        handleThemeChange(validatedTokens);
-        setIsLoading(false);
-        return;
+  const setTheme = useCallback(
+    async (theme: string | DesignTokens | Partial<DesignTokens>, options?: ThemeLoadOptions) => {
+      // Cancel previous theme load if in progress
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
       }
 
-      // If it's a string theme name, load the associated CSS
-      if (typeof theme === 'string' && themes[theme]) {
-        // Check if theme is already loading
-        if (themePromisesRef.current[theme]) {
-          try {
-            await themePromisesRef.current[theme];
-            // Check if aborted
-            if (abortController.signal.aborted) {
-              return;
-            }
-            setCurrentTheme(theme);
-            setActiveTokens(null);
-            handleThemeChange(theme);
-            setIsLoading(false);
-            return;
-          } catch {
-            // If previous load failed, continue with new load
-          }
-        }
+      // Create new AbortController for this theme load
+      const abortController = new AbortController();
+      abortControllerRef.current = abortController;
 
-        // Load CSS theme
-        const themeLoadPromise = new Promise<void>((resolve, reject) => {
-          // Handle the async operations inside the promise without making the executor async
-          const loadTheme = async () => {
-            try {
-              // Check if aborted
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        let themeName: string;
+
+        if (typeof theme === 'string') {
+          themeName = theme;
+        } else {
+          // Check if aborted before processing
+          if (abortController.signal.aborted) {
+            return;
+          }
+
+          // Validate and merge DesignTokens
+          const { tokens: validatedTokens, validation } = validateAndMergeTokens(theme);
+
+          if (!validation.valid) {
+            const errorMsg = `Invalid DesignTokens provided: ${validation.errors.join(', ')}`;
+            const validationError = new Error(errorMsg);
+            logger.error('Theme validation failed', validationError, {
+              errors: validation.errors,
+              warnings: validation.warnings,
+            });
+
+            // Check if we should fallback to default theme
+            const shouldFallback = options?.fallbackOnError !== false; // Default to true
+            if (shouldFallback) {
+              logger.warn('Falling back to default theme due to validation errors');
+              // Use default tokens instead
+              const { tokens: defaultTokens } = validateAndMergeTokens({});
+              const css = createTheme(defaultTokens);
+              const themeId = 'tokens-theme-fallback';
+
+              // Check if aborted before state update
               if (abortController.signal.aborted) {
-                resolve();
                 return;
               }
 
-              const themeMetadata = themes[theme];
+              // Remove any previously loaded theme CSS
+              removeCSS(`theme-${currentTheme}`);
 
-              if (themeMetadata) {
-                // Build CSS path using utility function
-                const cssPath = buildThemePath(
-                  theme,
-                  basePath,
-                  useMinified,
-                  cdnPath
-                );
+              // Inject new theme CSS
+              injectCSS(css, `theme-${themeId}`);
 
+              // Store default tokens
+              setActiveTokens(defaultTokens);
+              setCurrentTheme(themeId);
+              handleThemeChange(defaultTokens);
+              handleError(validationError, themeId);
+              setIsLoading(false);
+              return;
+            } else {
+              // No fallback, throw the error
+              throw validationError;
+            }
+          }
+
+          // For valid DesignTokens, create CSS and inject it
+          const css = createTheme(validatedTokens);
+          const themeId = 'tokens-theme';
+
+          // Check if aborted after async operation
+          if (abortController.signal.aborted) {
+            return;
+          }
+
+          // Remove any previously loaded theme CSS
+          removeCSS(`theme-${currentTheme}`);
+
+          // Inject new theme CSS
+          injectCSS(css, `theme-${themeId}`);
+
+          // Store validated tokens for reference
+
+          // Check if aborted before state update
+          if (abortController.signal.aborted) {
+            return;
+          }
+
+          setActiveTokens(validatedTokens);
+          setCurrentTheme(themeId);
+          handleThemeChange(validatedTokens);
+          setIsLoading(false);
+          return;
+        }
+
+        // If it's a string theme name, load the associated CSS
+        if (typeof theme === 'string' && themes[theme]) {
+          // Check if theme is already loading
+          if (themePromisesRef.current[theme]) {
+            try {
+              await themePromisesRef.current[theme];
+              // Check if aborted
+              if (abortController.signal.aborted) {
+                return;
+              }
+              setCurrentTheme(theme);
+              setActiveTokens(null);
+              handleThemeChange(theme);
+              setIsLoading(false);
+              return;
+            } catch {
+              // If previous load failed, continue with new load
+            }
+          }
+
+          // Load CSS theme
+          const themeLoadPromise = new Promise<void>((resolve, reject) => {
+            // Handle the async operations inside the promise without making the executor async
+            const loadTheme = async () => {
+              try {
                 // Check if aborted
                 if (abortController.signal.aborted) {
                   resolve();
                   return;
                 }
 
-                // Load CSS file (using loadThemeCSS from domUtils)
-                const { loadThemeCSS } = await import('../utils/domUtils');
-                await loadThemeCSS(cssPath, `theme-${theme}`);
+                const themeMetadata = themes[theme];
 
-                // Check if aborted after async operation
+                if (themeMetadata) {
+                  // Build CSS path using utility function
+                  const cssPath = buildThemePath(theme, basePath, useMinified, cdnPath);
+
+                  // Check if aborted
+                  if (abortController.signal.aborted) {
+                    resolve();
+                    return;
+                  }
+
+                  // Load CSS file (using loadThemeCSS from domUtils)
+                  const { loadThemeCSS } = await import('../utils/domUtils');
+                  await loadThemeCSS(cssPath, `theme-${theme}`);
+
+                  // Check if aborted after async operation
+                  if (abortController.signal.aborted) {
+                    resolve();
+                    return;
+                  }
+
+                  // Remove any previously loaded theme CSS
+                  removeCSS(`theme-${String(currentTheme)}`);
+
+                  loadedThemesRef.current.add(theme);
+
+                  setCurrentTheme(theme);
+                  setActiveTokens(null);
+                  handleThemeChange(theme);
+                  resolve();
+                } else {
+                  throw new Error(`Theme metadata not found for theme: ${theme}`);
+                }
+              } catch (err) {
+                // Don't reject if aborted
                 if (abortController.signal.aborted) {
                   resolve();
                   return;
                 }
 
-                // Remove any previously loaded theme CSS
-                removeCSS(`theme-${String(currentTheme)}`);
-
-                loadedThemesRef.current.add(theme);
-
-                setCurrentTheme(theme);
-                setActiveTokens(null);
-                handleThemeChange(theme);
-                resolve();
-              } else {
-                throw new Error(`Theme metadata not found for theme: ${theme}`);
+                const error = err instanceof Error ? err : new Error(String(err));
+                setError(error);
+                handleError(error, String(theme));
+                reject(error);
               }
-            } catch (err) {
-              // Don't reject if aborted
-              if (abortController.signal.aborted) {
-                resolve();
-                return;
-              }
+            };
 
-              const error = err instanceof Error ? err : new Error(String(err));
-              setError(error);
-              handleError(error, String(theme));
-              reject(error);
-            }
-          };
+            // Start the async operation
+            loadTheme();
+          });
 
-          // Start the async operation
-          loadTheme();
-        });
+          themePromisesRef.current[theme] = themeLoadPromise;
 
-        themePromisesRef.current[theme] = themeLoadPromise;
-
-        try {
-          await themeLoadPromise;
-        } catch {
-          // Error already handled in promise
-        }
-
-        // Clean up completed promise after a delay to prevent memory leak
-        setTimeout(() => {
-          if (themePromisesRef.current[theme] === themeLoadPromise) {
-            delete themePromisesRef.current[theme];
+          try {
+            await themeLoadPromise;
+          } catch {
+            // Error already handled in promise
           }
-        }, 1000);
-      } else {
-        // Check if aborted
+
+          // Clean up completed promise after a delay to prevent memory leak
+          setTimeout(() => {
+            if (themePromisesRef.current[theme] === themeLoadPromise) {
+              delete themePromisesRef.current[theme];
+            }
+          }, 1000);
+        } else {
+          // Check if aborted
+          if (abortController.signal.aborted) {
+            return;
+          }
+
+          // For string theme that isn't in our themes record, just set the name
+          setCurrentTheme(themeName);
+          setActiveTokens(null);
+          handleThemeChange(themeName);
+        }
+      } catch (err) {
+        // Don't set error if aborted
         if (abortController.signal.aborted) {
           return;
         }
 
-        // For string theme that isn't in our themes record, just set the name
-        setCurrentTheme(themeName);
-        setActiveTokens(null);
-        handleThemeChange(themeName);
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        handleError(error, String(theme));
+      } finally {
+        // Only update loading state if not aborted
+        if (!abortController.signal.aborted) {
+          setIsLoading(false);
+        }
       }
-    } catch (err) {
-      // Don't set error if aborted
-      if (abortController.signal.aborted) {
-        return;
-      }
-
-      const error = err instanceof Error ? err : new Error(String(err));
-      setError(error);
-      handleError(error, String(theme));
-    } finally {
-      // Only update loading state if not aborted
-      if (!abortController.signal.aborted) {
-        setIsLoading(false);
-      }
-    }
-  }, [themes, currentTheme, handleThemeChange, handleError, basePath, useMinified, cdnPath]);
+    },
+    [themes, currentTheme, handleThemeChange, handleError, basePath, useMinified, cdnPath]
+  );
 
   // Check if theme is loaded
   const isThemeLoaded = useCallback((themeName: string) => {
@@ -412,32 +405,30 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   }, []);
 
   // Preload theme function
-  const preloadTheme = useCallback(async (themeName: string) => {
-    if (!themes[themeName] || isThemeLoaded(themeName)) {
-      return;
-    }
+  const preloadTheme = useCallback(
+    async (themeName: string) => {
+      if (!themes[themeName] || isThemeLoaded(themeName)) {
+        return;
+      }
 
-    setIsLoading(true);
-    try {
-      // Build CSS path using utility function
-      const cssPath = buildThemePath(
-        themeName,
-        basePath,
-        useMinified,
-        cdnPath
-      );
+      setIsLoading(true);
+      try {
+        // Build CSS path using utility function
+        const cssPath = buildThemePath(themeName, basePath, useMinified, cdnPath);
 
-      // Preload CSS by fetching it
-      await fetch(cssPath);
-      loadedThemesRef.current.add(themeName);
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error(String(err));
-      setError(error);
-      handleError(error, themeName);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [themes, isThemeLoaded, handleError, basePath, useMinified, cdnPath]);
+        // Preload CSS by fetching it
+        await fetch(cssPath);
+        loadedThemesRef.current.add(themeName);
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        setError(error);
+        handleError(error, themeName);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [themes, isThemeLoaded, handleError, basePath, useMinified, cdnPath]
+  );
 
   // Create a mock theme manager instance for the context
   const themeManager = useMemo(() => {
@@ -449,40 +440,40 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   }, []);
 
   // Memoize available themes to prevent unnecessary recalculations
-  const availableThemes = useMemo(() =>
-    Object.entries(themes).map(([name, metadata]) => ({
-      ...metadata,
-      name: name, // Ensure name is set from the key
-    })),
+  const availableThemes = useMemo(
+    () =>
+      Object.entries(themes).map(([name, metadata]) => ({
+        ...metadata,
+        name: name, // Ensure name is set from the key
+      })),
     [themes]
   );
 
   // Theme context value
-  const contextValue = useMemo(() => ({
-    theme: currentTheme,
-    activeTokens,
-    setTheme,
-    availableThemes,
-    isLoading,
-    error,
-    isThemeLoaded,
-    preloadTheme,
-    themeManager,
-  }), [
-    currentTheme,
-    activeTokens,
-    setTheme,
-    availableThemes, // Use memoized value
-    isLoading,
-    error,
-    isThemeLoaded,
-    preloadTheme,
-    themeManager
-  ]);
-
-  return (
-    <ThemeContext.Provider value={contextValue}>
-      {children}
-    </ThemeContext.Provider>
+  const contextValue = useMemo(
+    () => ({
+      theme: currentTheme,
+      activeTokens,
+      setTheme,
+      availableThemes,
+      isLoading,
+      error,
+      isThemeLoaded,
+      preloadTheme,
+      themeManager,
+    }),
+    [
+      currentTheme,
+      activeTokens,
+      setTheme,
+      availableThemes, // Use memoized value
+      isLoading,
+      error,
+      isThemeLoaded,
+      preloadTheme,
+      themeManager,
+    ]
   );
+
+  return <ThemeContext.Provider value={contextValue}>{children}</ThemeContext.Provider>;
 };

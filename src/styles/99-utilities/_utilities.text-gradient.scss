@@ -9,36 +9,37 @@
 $utilities-text-gradient: (
   // Base text gradient utility - applies the core text gradient properties
   'text-gradient': (
-    property: null,  // No specific CSS property, we're only using local-vars
-    class: u-text-gradient,
-    values: (
-      null: null
+      property: null,
+      // No specific CSS property, we're only using local-vars
+      class: u-text-gradient,
+      values: (
+        null: null,
+      ),
+      local-vars: (
+        'background-clip': text,
+        '-webkit-background-clip': text,
+        '-webkit-text-fill-color': transparent,
+      ),
     ),
-    local-vars: (
-      'background-clip': text,
-      '-webkit-background-clip': text,
-      '-webkit-text-fill-color': transparent
-    )
-  ),
-  
+
   // Text gradient color variations using existing CSS gradient tokens
   'text-gradient-colors': (
-    property: background-image,
-    class: u-text-gradient,
-    values: (
-      primary: var(--atomix-primary-gradient),
-      secondary: var(--atomix-secondary-gradient),
-      success: var(--atomix-success-gradient),
-      warning: var(--atomix-warning-gradient),
-      error: var(--atomix-error-gradient),
-      info: var(--atomix-info-gradient),
-      light: var(--atomix-light-gradient),
-      dark: var(--atomix-dark-gradient)
-    ),
-    local-vars: (
-      'background-clip': text,
-      '-webkit-background-clip': text,
-      '-webkit-text-fill-color': transparent
+      property: background-image,
+      class: u-text-gradient,
+      values: (
+        primary: var(--atomix-primary-gradient),
+        secondary: var(--atomix-secondary-gradient),
+        success: var(--atomix-success-gradient),
+        warning: var(--atomix-warning-gradient),
+        error: var(--atomix-error-gradient),
+        info: var(--atomix-info-gradient),
+        light: var(--atomix-light-gradient),
+        dark: var(--atomix-dark-gradient),
+      ),
+      local-vars: (
+        'background-clip': text,
+        '-webkit-background-clip': text,
+        '-webkit-text-fill-color': transparent,
+      ),
     )
-  )
 );

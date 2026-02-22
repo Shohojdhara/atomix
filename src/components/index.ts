@@ -110,9 +110,20 @@ export {
   type SideMenuListProps,
 } from './Navigation/SideMenu/SideMenuList';
 // Menu components
-export { Menu, MenuItem, MenuDivider, type MenuProps, type MenuItemProps, type MenuDividerProps } from './Navigation/Menu/Menu';
+export {
+  Menu,
+  MenuItem,
+  MenuDivider,
+  type MenuProps,
+  type MenuItemProps,
+  type MenuDividerProps,
+} from './Navigation/Menu/Menu';
 export { MegaMenu, MegaMenuColumn, MegaMenuLink } from './Navigation/Menu/MegaMenu';
-export type { MegaMenuProps, MegaMenuColumnProps, MegaMenuLinkProps } from '../lib/types/components';
+export type {
+  MegaMenuProps,
+  MegaMenuColumnProps,
+  MegaMenuLinkProps,
+} from '../lib/types/components';
 // Navigation sub-components
 export { NavDropdown, type NavDropdownProps } from './Navigation/Nav/NavDropdown';
 export { default as Pagination, type PaginationProps } from './Pagination/Pagination';

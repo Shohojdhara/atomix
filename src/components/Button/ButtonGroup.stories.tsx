@@ -38,7 +38,6 @@ const sampleButtonTitles = {
   filters: ['All', 'Active', 'Completed'],
 };
 
-
 // ============================================================================
 // META CONFIGURATION
 // ============================================================================
@@ -198,7 +197,7 @@ export const GroupWithIcons: Story = {
         <path d="M12 8v4M12 16h.01" />
       </svg>
     );
-    
+
     return (
       <ButtonGroup>
         <Button label="First" icon={<Icon />} variant="primary" />
@@ -216,15 +215,15 @@ export const GroupWithIcons: Story = {
 export const InFormIntegration: Story = {
   render: () => (
     <form className="u-flex u-flex-col u-gap-4">
-      <input 
-        type="text" 
-        placeholder="Username" 
-        className="u-p-2 u-mb-2 u-border u-border-gray-300 u-rounded u-w-full" 
+      <input
+        type="text"
+        placeholder="Username"
+        className="u-p-2 u-mb-2 u-border u-border-gray-300 u-rounded u-w-full"
       />
-      <input 
-        type="password" 
-        placeholder="Password" 
-        className="u-p-2 u-mb-2 u-border u-border-gray-300 u-rounded u-w-full" 
+      <input
+        type="password"
+        placeholder="Password"
+        className="u-p-2 u-mb-2 u-border u-border-gray-300 u-rounded u-w-full"
       />
       <ButtonGroup className="u-justify-end">
         <Button label="Cancel" variant="secondary" />
@@ -258,7 +257,7 @@ export const WithOtherComponents: Story = {
           <Button label="Inactive" variant="outline-primary" />
         </ButtonGroup>
       </div>
-      
+
       <div className="u-flex u-justify-between u-items-center">
         <div className="u-text-sm u-text-gray-600">Showing 1-10 of 42 results</div>
         <ButtonGroup>
@@ -278,24 +277,24 @@ export const ResponsiveButtonGroup: Story = {
   render: () => (
     <div className="u-w-full">
       <ButtonGroup className="u-flex-col md:u-flex-row u-gap-0">
-        <Button 
-          label="Home" 
-          variant="outline-primary" 
+        <Button
+          label="Home"
+          variant="outline-primary"
           className="u-w-full md:u-w-auto u-rounded-none md:u-rounded-l md:u-rounded-r-none"
         />
-        <Button 
-          label="About" 
-          variant="outline-primary" 
+        <Button
+          label="About"
+          variant="outline-primary"
           className="u-w-full md:u-w-auto u-rounded-none"
         />
-        <Button 
-          label="Services" 
-          variant="outline-primary" 
+        <Button
+          label="Services"
+          variant="outline-primary"
           className="u-w-full md:u-w-auto u-rounded-none"
         />
-        <Button 
-          label="Contact" 
-          variant="outline-primary" 
+        <Button
+          label="Contact"
+          variant="outline-primary"
           className="u-w-full md:u-w-auto u-rounded-none md:u-rounded-r md:u-rounded-l-none"
         />
       </ButtonGroup>
@@ -410,17 +409,17 @@ export const VerticalLayout: Story = {
 export const WithKeyboardNavigation: Story = {
   render: () => {
     const [activeIndex, setActiveIndex] = useState(0);
-    
+
     const buttons = [
-      { label: "Button 1", variant: "primary" },
-      { label: "Button 2", variant: "secondary" },
-      { label: "Button 3", variant: "outline-primary" },
-      { label: "Button 4", variant: "success" },
+      { label: 'Button 1', variant: 'primary' },
+      { label: 'Button 2', variant: 'secondary' },
+      { label: 'Button 3', variant: 'outline-primary' },
+      { label: 'Button 4', variant: 'success' },
     ];
 
     const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
       let newIndex = index;
-      
+
       switch (e.key) {
         case 'ArrowRight':
         case 'ArrowDown':
@@ -439,7 +438,7 @@ export const WithKeyboardNavigation: Story = {
         default:
           return;
       }
-      
+
       e.preventDefault();
       setActiveIndex(newIndex);
     };
@@ -454,7 +453,13 @@ export const WithKeyboardNavigation: Story = {
               variant={btn.variant}
               active={activeIndex === idx}
               onKeyDown={(e: React.KeyboardEvent) => handleKeyDown(idx, e)}
-              className={idx === 0 ? 'u-rounded-r-none' : idx === buttons.length - 1 ? 'u-rounded-l-none' : 'u-rounded-none'}
+              className={
+                idx === 0
+                  ? 'u-rounded-r-none'
+                  : idx === buttons.length - 1
+                    ? 'u-rounded-l-none'
+                    : 'u-rounded-none'
+              }
             />
           ))}
         </div>

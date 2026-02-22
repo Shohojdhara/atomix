@@ -1,9 +1,9 @@
 /**
  * Theme Applicator
- * 
+ *
  * Applies theme configurations to the DOM, including CSS variables,
  * component overrides, typography, spacing, and color palettes.
- * 
+ *
  * Uses the unified theme system for CSS generation and injection.
  */
 
@@ -13,7 +13,7 @@ import { injectCSS, removeCSS } from '../utils/injectCSS';
 
 /**
  * Theme applicator class for runtime theme application
- * 
+ *
  * Uses the unified theme system for efficient CSS variable generation and injection.
  */
 export class ThemeApplicator {
@@ -26,7 +26,7 @@ export class ThemeApplicator {
 
   /**
    * Apply a complete theme configuration using DesignTokens
-   * 
+   *
    * Uses the unified theme system to generate and inject CSS.
    * Automatically respects atomix.config.ts when using DesignTokens.
    */

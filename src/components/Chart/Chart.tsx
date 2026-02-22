@@ -351,57 +351,53 @@ const Chart = memo(
           tabIndex={0}
           {...props}
         >
-            {(title || subtitle || showToolbar) && (
-              <div
-                className={`${CHART.HEADER_CLASS} u-flex u-justify-between u-items-start u-gap-4`}
-              >
-                <div className={`${CHART.HEADER_CONTENT_CLASS} u-flex-1`}>
-                  {title && <h3 className={`${CHART.TITLE_CLASS} u-mb-1`}>{title}</h3>}
-                  {subtitle && <p className={`${CHART.SUBTITLE_CLASS} u-mb-0`}>{subtitle}</p>}
-                </div>
-                {renderToolbar()}
+          {(title || subtitle || showToolbar) && (
+            <div className={`${CHART.HEADER_CLASS} u-flex u-justify-between u-items-start u-gap-4`}>
+              <div className={`${CHART.HEADER_CONTENT_CLASS} u-flex-1`}>
+                {title && <h3 className={`${CHART.TITLE_CLASS} u-mb-1`}>{title}</h3>}
+                {subtitle && <p className={`${CHART.SUBTITLE_CLASS} u-mb-0`}>{subtitle}</p>}
+              </div>
+              {renderToolbar()}
+            </div>
+          )}
+
+          <div className={CHART.CONTENT_CLASS}>
+            {loading && (
+              <div className={CHART.LOADING_CLASS}>
+                <div className={CHART.LOADING_SPINNER_CLASS}></div>
+                <span className={CHART.LOADING_TEXT_CLASS}>
+                  {toolbarState.isExporting
+                    ? 'Exporting chart...'
+                    : toolbarState.isRefreshing
+                      ? 'Refreshing chart...'
+                      : 'Loading chart...'}
+                </span>
               </div>
             )}
 
-            <div className={CHART.CONTENT_CLASS}>
-              {loading && (
-                <div className={CHART.LOADING_CLASS}>
-                  <div className={CHART.LOADING_SPINNER_CLASS}></div>
-                  <span className={CHART.LOADING_TEXT_CLASS}>
-                    {toolbarState.isExporting
-                      ? 'Exporting chart...'
-                      : toolbarState.isRefreshing
-                        ? 'Refreshing chart...'
-                        : 'Loading chart...'}
-                  </span>
+            {error && (
+              <div className={CHART.ERROR_CLASS}>
+                <div className={CHART.ERROR_ICON_CLASS}>⚠</div>
+                <div className={CHART.ERROR_CONTENT_CLASS}>
+                  <div className={CHART.ERROR_MESSAGE_CLASS}>Chart Error</div>
+                  <div className={CHART.ERROR_DETAILS_CLASS}>{error}</div>
                 </div>
-              )}
+              </div>
+            )}
 
-              {error && (
-                <div className={CHART.ERROR_CLASS}>
-                  <div className={CHART.ERROR_ICON_CLASS}>⚠</div>
-                  <div className={CHART.ERROR_CONTENT_CLASS}>
-                    <div className={CHART.ERROR_MESSAGE_CLASS}>Chart Error</div>
-                    <div className={CHART.ERROR_DETAILS_CLASS}>{error}</div>
-                  </div>
+            {!loading && !error && !children && (
+              <div className={CHART.EMPTY_CLASS}>
+                <div className={CHART.EMPTY_ICON_CLASS}>📊</div>
+                <div className={CHART.EMPTY_MESSAGE_CLASS}>No data available</div>
+                <div className={CHART.EMPTY_DETAILS_CLASS}>
+                  Add data to your chart to see visualizations
                 </div>
-              )}
+              </div>
+            )}
 
-              {!loading && !error && !children && (
-                <div className={CHART.EMPTY_CLASS}>
-                  <div className={CHART.EMPTY_ICON_CLASS}>📊</div>
-                  <div className={CHART.EMPTY_MESSAGE_CLASS}>No data available</div>
-                  <div className={CHART.EMPTY_DETAILS_CLASS}>
-                    Add data to your chart to see visualizations
-                  </div>
-                </div>
-              )}
-
-              {!loading && !error && children && (
-                <div className={CHART.CANVAS_CLASS}>{children}</div>
-              )}
-            </div>
+            {!loading && !error && children && <div className={CHART.CANVAS_CLASS}>{children}</div>}
           </div>
+        </div>
       );
 
       // Wrap with AtomixGlass if glass is enabled

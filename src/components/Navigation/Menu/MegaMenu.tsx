@@ -33,83 +33,83 @@ export const MegaMenu = forwardRef<HTMLDivElement, MegaMenuProps>(
 
 MegaMenu.displayName = 'MegaMenu';
 
-export const MegaMenuColumn = forwardRef<
-  HTMLDivElement,
-  MegaMenuColumnProps
->(({ title, icon, children, width = 'auto', className = '', disabled = false }, ref) => {
-  const columnClass = `o-grid__col o-grid__col--${width} ${className}`;
+export const MegaMenuColumn = forwardRef<HTMLDivElement, MegaMenuColumnProps>(
+  ({ title, icon, children, width = 'auto', className = '', disabled = false }, ref) => {
+    const columnClass = `o-grid__col o-grid__col--${width} ${className}`;
 
-  return (
-    <div ref={ref} className={columnClass}>
-      {(title || icon) && (
-        <div className="c-menu__header">
-          {icon &&
-            (typeof icon === 'string' ? (
-              icon.startsWith('c-icon-') ? (
-                <Icon
-                  name={mapIconName(icon.replace('c-icon-', ''))}
-                  size="sm"
-                  className="c-menu__header-icon"
-                />
+    return (
+      <div ref={ref} className={columnClass}>
+        {(title || icon) && (
+          <div className="c-menu__header">
+            {icon &&
+              (typeof icon === 'string' ? (
+                icon.startsWith('c-icon-') ? (
+                  <Icon
+                    name={mapIconName(icon.replace('c-icon-', ''))}
+                    size="sm"
+                    className="c-menu__header-icon"
+                  />
+                ) : (
+                  <i className={`c-menu__header-icon ${icon}`}>
+                    {typeof icon !== 'string' && icon}
+                  </i>
+                )
               ) : (
-                <i className={`c-menu__header-icon ${icon}`}>{typeof icon !== 'string' && icon}</i>
-              )
-            ) : (
-              <span className="c-menu__header-icon">{icon}</span>
-            ))}
-          {title && <div className="c-menu__header-title">{title}</div>}
-        </div>
-      )}
+                <span className="c-menu__header-icon">{icon}</span>
+              ))}
+            {title && <div className="c-menu__header-title">{title}</div>}
+          </div>
+        )}
 
-      <ul className="c-menu__subitems-list" role="menu">
-        {React.Children.map(children, child => {
-          if (React.isValidElement(child)) {
-            // Pass disabled prop down to all children if column is disabled
-            const childProps = child.props as any;
-            return (
-              <li className="c-menu__subitem" role="menuitem">
-                {React.cloneElement(child as React.ReactElement<any>, {
-                  ...childProps,
-                  disabled: disabled ? true : childProps?.disabled,
-                })}
-              </li>
-            );
-          }
-          return null;
-        })}
-      </ul>
-    </div>
-  );
-});
+        <ul className="c-menu__subitems-list" role="menu">
+          {React.Children.map(children, child => {
+            if (React.isValidElement(child)) {
+              // Pass disabled prop down to all children if column is disabled
+              const childProps = child.props as any;
+              return (
+                <li className="c-menu__subitem" role="menuitem">
+                  {React.cloneElement(child as React.ReactElement<any>, {
+                    ...childProps,
+                    disabled: disabled ? true : childProps?.disabled,
+                  })}
+                </li>
+              );
+            }
+            return null;
+          })}
+        </ul>
+      </div>
+    );
+  }
+);
 
 MegaMenuColumn.displayName = 'MegaMenuColumn';
 
-export const MegaMenuLink = forwardRef<
-  HTMLAnchorElement,
-  MegaMenuLinkProps
->(({ href, children, className = '', disabled = false, onClick }, ref) => {
-  const handleClick = (e: React.MouseEvent) => {
-    if (disabled) {
-      e.preventDefault();
-      return;
-    }
+export const MegaMenuLink = forwardRef<HTMLAnchorElement, MegaMenuLinkProps>(
+  ({ href, children, className = '', disabled = false, onClick }, ref) => {
+    const handleClick = (e: React.MouseEvent) => {
+      if (disabled) {
+        e.preventDefault();
+        return;
+      }
 
-    if (onClick) {
-      onClick();
-    }
-  };
+      if (onClick) {
+        onClick();
+      }
+    };
 
-  return (
-    <a
-      ref={ref}
-      href={href}
-      className={`c-menu__subitem-link ${disabled ? 'is-disabled' : ''} ${className}`}
-      onClick={handleClick}
-      aria-disabled={disabled}
-    >
-      {children}
-    </a>
-  );
-});
+    return (
+      <a
+        ref={ref}
+        href={href}
+        className={`c-menu__subitem-link ${disabled ? 'is-disabled' : ''} ${className}`}
+        onClick={handleClick}
+        aria-disabled={disabled}
+      >
+        {children}
+      </a>
+    );
+  }
+);
 
 MegaMenuLink.displayName = 'MegaMenuLink';

@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { Accordion } from './Accordion'; 
+import { Accordion } from './Accordion';
 import { ACCORDION } from '../../lib/constants/components';
 import type { AtomixGlassProps } from '../../lib/types/components';
 
@@ -29,9 +29,7 @@ const mockHandlers = {
 // Sample content for stories
 const sampleContent = (
   <div>
-    <p>
-      This accordion contains rich HTML content including headings, paragraphs, and lists.
-    </p>
+    <p>This accordion contains rich HTML content including headings, paragraphs, and lists.</p>
     <ul>
       <li>
         List item with <a href="#">link</a>
@@ -396,28 +394,22 @@ export const ControlledState: Story = {
     title: 'Controlled Accordion',
     children: <p>This accordion is controlled by external state.</p>,
   },
-  render: (args) => {
+  render: args => {
     const [open, setOpen] = React.useState(false);
     return (
       <div>
-        <button 
-          className="c-btn c-btn--primary u-mb-3" 
-          onClick={() => setOpen(prev => !prev)}
-        >
+        <button className="c-btn c-btn--primary u-mb-3" onClick={() => setOpen(prev => !prev)}>
           Toggle Accordion (Controlled)
         </button>
-        <Accordion 
-          {...args} 
-          isOpen={open} 
-          onOpenChange={setOpen}
-        />
+        <Accordion {...args} isOpen={open} onOpenChange={setOpen} />
       </div>
     );
   },
   parameters: {
     docs: {
       description: {
-        story: 'This story demonstrates a controlled Accordion using the `isOpen` and `onOpenChange` props.',
+        story:
+          'This story demonstrates a controlled Accordion using the `isOpen` and `onOpenChange` props.',
       },
     },
   },
@@ -489,8 +481,14 @@ export const GlassEffect: Story = {
     children: <p>This accordion has a glass morphism effect applied.</p>,
     glass: true,
   },
-  render: (args) => (
-    <div className="u-bg-cover u-bg-center u-p-8 u-rounded-xl u-min-h-97vh u-flex u-items-center u-justify-center" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1759915995309-404c743bfbf9?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'}}>
+  render: args => (
+    <div
+      className="u-bg-cover u-bg-center u-p-8 u-rounded-xl u-min-h-97vh u-flex u-items-center u-justify-center"
+      style={{
+        backgroundImage:
+          'url(https://images.unsplash.com/photo-1759915995309-404c743bfbf9?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+      }}
+    >
       <div className="u-w-full u-max-w-md">
         <Accordion {...args} />
       </div>
@@ -499,7 +497,8 @@ export const GlassEffect: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'This story demonstrates an Accordion with glass morphism effect enabled against a gradient background.',
+        story:
+          'This story demonstrates an Accordion with glass morphism effect enabled against a gradient background.',
       },
     },
   },
@@ -516,8 +515,16 @@ export const GlassCustom: Story = {
       mode: 'polar',
     } as GlassProps,
   },
-  render: (args) => (
-    <div className="u-bg-cover u-bg-center u-p-8 u-rounded-xl u-min-h-97vh u-flex u-items-center u-justify-center" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1754147965582-edcb63324a81?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)', backgroundSize: '120%', animation: 'gradient 15s ease infinite'}}>
+  render: args => (
+    <div
+      className="u-bg-cover u-bg-center u-p-8 u-rounded-xl u-min-h-97vh u-flex u-items-center u-justify-center"
+      style={{
+        backgroundImage:
+          'url(https://images.unsplash.com/photo-1754147965582-edcb63324a81?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+        backgroundSize: '120%',
+        animation: 'gradient 15s ease infinite',
+      }}
+    >
       <style>
         {`
           @keyframes gradient {
@@ -538,7 +545,8 @@ export const GlassCustom: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'This story demonstrates an Accordion with custom glass morphism settings against a scenic background image.',
+        story:
+          'This story demonstrates an Accordion with custom glass morphism settings against a scenic background image.',
       },
     },
   },
@@ -567,7 +575,8 @@ export const KeyboardNavigation: Story = {
     title: 'Keyboard Accessible',
     children: (
       <p>
-        This accordion is fully operable via keyboard navigation. Press Tab to focus and Enter/Space to toggle.
+        This accordion is fully operable via keyboard navigation. Press Tab to focus and Enter/Space
+        to toggle.
       </p>
     ),
   },

@@ -33,11 +33,23 @@
   --#{config.$prefix}btn-bg: var(--#{config.$prefix}#{$color}, #{$background});
   --#{config.$prefix}btn-border-color: var(--#{config.$prefix}#{$color}, #{$border});
   --#{config.$prefix}btn-hover-color: #{$btn-text-hover-color};
-  --#{config.$prefix}btn-hover-bg: var(--#{config.$prefix}#{$color}-hover, #{color.scale($background, $lightness: -15%)});
-  --#{config.$prefix}btn-hover-border-color: var(--#{config.$prefix}#{$color}-hover, #{color.scale($border, $lightness: -10%)});
+  --#{config.$prefix}btn-hover-bg: var(
+    --#{config.$prefix}#{$color}-hover,
+    #{color.scale($background, $lightness: -15%)}
+  );
+  --#{config.$prefix}btn-hover-border-color: var(
+    --#{config.$prefix}#{$color}-hover,
+    #{color.scale($border, $lightness: -10%)}
+  );
   --#{config.$prefix}btn-active-color: var(--#{config.$prefix}white, #{colors.$white});
-  --#{config.$prefix}btn-active-bg: var(--#{config.$prefix}#{$color}-hover, #{color.scale($background, $lightness: -20%)});
-  --#{config.$prefix}btn-active-border-color: var(--#{config.$prefix}#{$color}-hover, #{color.scale($border, $lightness: -25%)});
+  --#{config.$prefix}btn-active-bg: var(
+    --#{config.$prefix}#{$color}-hover,
+    #{color.scale($background, $lightness: -20%)}
+  );
+  --#{config.$prefix}btn-active-border-color: var(
+    --#{config.$prefix}#{$color}-hover,
+    #{color.scale($border, $lightness: -25%)}
+  );
   --#{config.$prefix}btn-disabled-color: var(--#{config.$prefix}white, #{colors.$white});
   --#{config.$prefix}btn-disabled-bg: var(--#{config.$prefix}#{$color}, #{$background});
   --#{config.$prefix}btn-disabled-border-color: var(--#{config.$prefix}#{$color}, #{$border});
@@ -54,34 +66,52 @@
 ) {
   $btn-color: var(--#{config.$prefix}#{$color}, #{map.get(tokens.$theme-colors, $color)});
   $btn-hover-color: if(
-    $color-hover, 
-    var(--#{config.$prefix}#{$color-hover}, #{map.get(tokens.$theme-colors, $color-hover)}), 
+    $color-hover,
+    var(--#{config.$prefix}#{$color-hover}, #{map.get(tokens.$theme-colors, $color-hover)}),
     var(--#{config.$prefix}white, #{colors.$white})
   );
   $btn-hover-bg: if(
-    $hover-background, 
-    var(--#{config.$prefix}#{$hover-background}, #{map.get(tokens.$theme-colors, $hover-background)}), 
-    var(--#{config.$prefix}#{$color}-hover, #{color.scale(map.get(tokens.$theme-colors, $color), $lightness: -15%)})
+    $hover-background,
+    var(
+      --#{config.$prefix}#{$hover-background},
+      #{map.get(tokens.$theme-colors, $hover-background)}
+    ),
+    var(
+      --#{config.$prefix}#{$color}-hover,
+      #{color.scale(map.get(tokens.$theme-colors, $color), $lightness: -15%)}
+    )
   );
   $btn-hover-border: if(
-    $hover-border, 
-    var(--#{config.$prefix}#{$hover-border}, #{map.get(tokens.$theme-colors, $hover-border)}), 
-    var(--#{config.$prefix}#{$color}-hover, #{color.scale(map.get(tokens.$theme-colors, $color), $lightness: -10%)})
+    $hover-border,
+    var(--#{config.$prefix}#{$hover-border}, #{map.get(tokens.$theme-colors, $hover-border)}),
+    var(
+      --#{config.$prefix}#{$color}-hover,
+      #{color.scale(map.get(tokens.$theme-colors, $color), $lightness: -10%)}
+    )
   );
   $btn-active-color: if(
-    $color-hover, 
-    var(--#{config.$prefix}#{$color-hover}, #{map.get(tokens.$theme-colors, $color-hover)}), 
+    $color-hover,
+    var(--#{config.$prefix}#{$color-hover}, #{map.get(tokens.$theme-colors, $color-hover)}),
     var(--#{config.$prefix}white, #{colors.$white})
   );
   $btn-active-bg: if(
-    $active-background, 
-    var(--#{config.$prefix}#{$active-background}, #{map.get(tokens.$theme-colors, $active-background)}), 
-    var(--#{config.$prefix}#{$color}-hover, #{color.scale(map.get(tokens.$theme-colors, $color), $lightness: -20%)})
+    $active-background,
+    var(
+      --#{config.$prefix}#{$active-background},
+      #{map.get(tokens.$theme-colors, $active-background)}
+    ),
+    var(
+      --#{config.$prefix}#{$color}-hover,
+      #{color.scale(map.get(tokens.$theme-colors, $color), $lightness: -20%)}
+    )
   );
   $btn-active-border: if(
-    $active-border, 
-    var(--#{config.$prefix}#{$active-border}, #{map.get(tokens.$theme-colors, $active-border)}), 
-    var(--#{config.$prefix}#{$color}-hover, #{color.scale(map.get(tokens.$theme-colors, $color), $lightness: -25%)})
+    $active-border,
+    var(--#{config.$prefix}#{$active-border}, #{map.get(tokens.$theme-colors, $active-border)}),
+    var(
+      --#{config.$prefix}#{$color}-hover,
+      #{color.scale(map.get(tokens.$theme-colors, $color), $lightness: -25%)}
+    )
   );
 
   --#{config.$prefix}btn-color: #{$btn-color};

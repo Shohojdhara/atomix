@@ -9,29 +9,29 @@ import type { DesignTokens } from '../tokens/tokens';
  * and DesignTokens.
  */
 type ThemeTokens = {
-    theme: string;
-    activeTokens: DesignTokens | null;
-    getToken: (tokenName: string, fallback?: string) => string;
-    colors: {
-      primary: string;
-      secondary: string;
-      error: string;
-      success: string;
-      warning: string;
-      info: string;
-      light: string;
-      dark: string;
-    };
-    spacing: Record<string, string>;
-    borderRadius: Record<string, string>;
-    typography: {
-      fontFamily: Record<string, string>;
-      fontSize: Record<string, string>;
-      fontWeight: Record<string, string>;
-    };
-    shadows: Record<string, string>;
-    transitions: Record<string, string>;
+  theme: string;
+  activeTokens: DesignTokens | null;
+  getToken: (tokenName: string, fallback?: string) => string;
+  colors: {
+    primary: string;
+    secondary: string;
+    error: string;
+    success: string;
+    warning: string;
+    info: string;
+    light: string;
+    dark: string;
   };
+  spacing: Record<string, string>;
+  borderRadius: Record<string, string>;
+  typography: {
+    fontFamily: Record<string, string>;
+    fontSize: Record<string, string>;
+    fontWeight: Record<string, string>;
+  };
+  shadows: Record<string, string>;
+  transitions: Record<string, string>;
+};
 
 export function useThemeTokens(): ThemeTokens {
   const { theme, activeTokens } = useTheme();

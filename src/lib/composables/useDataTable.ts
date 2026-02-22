@@ -274,7 +274,9 @@ export function useDataTable({
   const visibleColumns = useMemo(() => {
     return columnOrder
       .map(key => columns.find(col => col.key === key))
-      .filter((col): col is DataTableColumn => col !== undefined && columnVisibility[col.key] !== false);
+      .filter(
+        (col): col is DataTableColumn => col !== undefined && columnVisibility[col.key] !== false
+      );
   }, [columns, columnOrder, columnVisibility]);
 
   // Handle sorting
@@ -299,13 +301,10 @@ export function useDataTable({
   );
 
   // Handle page change
-  const handlePageChange = useCallback(
-    (page: number) => {
-      if (page < 1) return;
-      setCurrentPage(page);
-    },
-    []
-  );
+  const handlePageChange = useCallback((page: number) => {
+    if (page < 1) return;
+    setCurrentPage(page);
+  }, []);
 
   // Handle search
   const handleSearch = useCallback((query: string) => {
@@ -330,7 +329,13 @@ export function useDataTable({
 
   // Pre-process column filters to avoid redundant lookups and transformations
   const activeColumnFilters = useMemo(() => {
-    if (!columnFilters) return [] as Array<{ key: string; value: string; lowercaseValue: string; column: DataTableColumn }>;
+    if (!columnFilters)
+      return [] as Array<{
+        key: string;
+        value: string;
+        lowercaseValue: string;
+        column: DataTableColumn;
+      }>;
 
     return Object.entries(columnFilterValues)
       .filter(([, value]) => value !== undefined && value !== null && value !== '')
@@ -341,7 +346,8 @@ export function useDataTable({
         return {
           key: columnKey,
           value,
-          lowercaseValue: typeof value === 'string' ? value.toLowerCase() : String(value).toLowerCase(),
+          lowercaseValue:
+            typeof value === 'string' ? value.toLowerCase() : String(value).toLowerCase(),
           column,
         };
       })
@@ -453,7 +459,9 @@ export function useDataTable({
       }
 
       if (onSelectionChange) {
-        const selectedRowsData = sortedData.filter(row => newSelectedIds.includes(getRowId(row, rowKey)));
+        const selectedRowsData = sortedData.filter(row =>
+          newSelectedIds.includes(getRowId(row, rowKey))
+        );
         onSelectionChange(selectedRowsData, newSelectedIds);
       }
     },
@@ -465,16 +473,16 @@ export function useDataTable({
     (selected: boolean) => {
       if (selectionMode !== 'multiple') return;
 
-      const newSelectedIds = selected
-        ? paginatedData.map(row => getRowId(row, rowKey))
-        : [];
+      const newSelectedIds = selected ? paginatedData.map(row => getRowId(row, rowKey)) : [];
 
       if (!controlledSelectedRowIds) {
         setInternalSelectedRowIds(newSelectedIds);
       }
 
       if (onSelectionChange) {
-        const selectedRowsData = sortedData.filter(row => newSelectedIds.includes(getRowId(row, rowKey)));
+        const selectedRowsData = sortedData.filter(row =>
+          newSelectedIds.includes(getRowId(row, rowKey))
+        );
         onSelectionChange(selectedRowsData, newSelectedIds);
       }
     },
@@ -490,7 +498,9 @@ export function useDataTable({
   // Check if some rows are selected (indeterminate)
   const isIndeterminate = useMemo(() => {
     if (selectionMode !== 'multiple' || paginatedData.length === 0) return false;
-    const selectedCount = paginatedData.filter(row => selectedRowIds.includes(getRowId(row, rowKey))).length;
+    const selectedCount = paginatedData.filter(row =>
+      selectedRowIds.includes(getRowId(row, rowKey))
+    ).length;
     return selectedCount > 0 && selectedCount < paginatedData.length;
   }, [selectionMode, paginatedData, selectedRowIds, rowKey]);
 

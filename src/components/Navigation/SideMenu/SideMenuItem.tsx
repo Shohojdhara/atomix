@@ -49,7 +49,6 @@ export const SideMenuItem = forwardRef<HTMLAnchorElement | HTMLButtonElement, Si
     },
     ref
   ) => {
-    
     const { generateSideMenuItemClass, handleClick } = useSideMenuItem({
       active,
       disabled,
@@ -88,15 +87,15 @@ export const SideMenuItem = forwardRef<HTMLAnchorElement | HTMLButtonElement, Si
           tabIndex: disabled ? -1 : 0,
           ...(disabled ? {} : { href, to: href }),
         };
-        
+
         return (
-            <LinkComp {...linkProps}>
+          <LinkComp {...linkProps}>
             {icon && <span className="c-side-menu__link-icon">{icon}</span>}
             <span className="c-side-menu__link-text">{children}</span>
           </LinkComp>
         );
       }
-      
+
       // Regular anchor tag
       const linkProps = {
         ref: ref as React.Ref<HTMLAnchorElement>,
@@ -109,7 +108,7 @@ export const SideMenuItem = forwardRef<HTMLAnchorElement | HTMLButtonElement, Si
         rel: rel,
         tabIndex: disabled ? -1 : 0,
       };
-      
+
       return (
         <a {...linkProps}>
           {icon && <span className="c-side-menu__link-icon">{icon}</span>}

@@ -569,14 +569,20 @@ const ChartToolbar = memo(
                   onRefresh?.();
                   break;
                 default:
-                  console.warn(`No handler found for action: ${String(action.id).replace(/[\r\n\t]/g, '')}`);
+                  console.warn(
+                    `No handler found for action: ${String(action.id).replace(/[\r\n\t]/g, '')}`
+                  );
               }
             }
           }
         };
 
         const buttonRef =
-          action.id === 'export' ? exportButtonRef : action.id === 'settings' ? settingsButtonRef : null;
+          action.id === 'export'
+            ? exportButtonRef
+            : action.id === 'settings'
+              ? settingsButtonRef
+              : null;
 
         return (
           <button
@@ -589,7 +595,13 @@ const ChartToolbar = memo(
             type="button"
             aria-label={action.label}
             aria-pressed={action.active ? 'true' : 'false'}
-            aria-expanded={action.id === 'export' ? showExportMenu : action.id === 'settings' ? showSettingsMenu : undefined}
+            aria-expanded={
+              action.id === 'export'
+                ? showExportMenu
+                : action.id === 'settings'
+                  ? showSettingsMenu
+                  : undefined
+            }
           >
             <Icon name={action.icon} size="sm" />
             {size === 'lg' && <span className={`${CHART.ACTION_CLASS}-label`}>{action.label}</span>}
@@ -698,14 +710,18 @@ const ChartToolbar = memo(
 
               {/* Info items */}
               {state.zoomLevel !== undefined && (
-                <div className={`${CHART.SETTINGS_MENU_CLASS}-item ${CHART.SETTINGS_MENU_CLASS}-item--info`}>
+                <div
+                  className={`${CHART.SETTINGS_MENU_CLASS}-item ${CHART.SETTINGS_MENU_CLASS}-item--info`}
+                >
                   <span className={`${CHART.SETTINGS_MENU_CLASS}-label`}>Zoom Level</span>
                   <span className={`${CHART.SETTINGS_MENU_CLASS}-value`}>
                     {Math.round((state.zoomLevel || 1) * 100)}%
                   </span>
                 </div>
               )}
-              <div className={`${CHART.SETTINGS_MENU_CLASS}-item ${CHART.SETTINGS_MENU_CLASS}-item--info`}>
+              <div
+                className={`${CHART.SETTINGS_MENU_CLASS}-item ${CHART.SETTINGS_MENU_CLASS}-item--info`}
+              >
                 <span className={`${CHART.SETTINGS_MENU_CLASS}-label`}>Chart Type</span>
                 <span className={`${CHART.SETTINGS_MENU_CLASS}-value`}>{chartType}</span>
               </div>

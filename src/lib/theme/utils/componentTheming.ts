@@ -1,6 +1,6 @@
 /**
  * Component Theming Utilities
- * 
+ *
  * Provides consistent patterns for applying theme values to components
  * using DesignTokens and CSS variables
  */
@@ -26,20 +26,20 @@ export function getComponentThemeValue(
 ): string {
   // Build CSS variable name following consistent pattern
   const parts = ['atomix', component];
-  
+
   if (variant) {
     parts.push(variant);
   }
-  
+
   if (size) {
     parts.push(size);
   }
-  
+
   parts.push(property);
-  
+
   const cssVarName = `--${parts.join('-')}`;
   const fallbackVarName = `--atomix-${property}`;
-  
+
   // Return CSS variable reference with fallback
   return `var(${cssVarName}, var(${fallbackVarName}, initial))`;
 }
@@ -54,21 +54,21 @@ export function generateComponentCSSVars(
   size?: string
 ): Record<string, string> {
   const vars: Record<string, string> = {};
-  
+
   if (!tokens) return vars;
-  
+
   const prefixParts = ['atomix', component];
-  
+
   if (variant) {
     prefixParts.push(variant);
   }
-  
+
   if (size) {
     prefixParts.push(size);
   }
-  
+
   const prefix = prefixParts.join('-');
-  
+
   // Map common DesignTokens to component-specific CSS variables
   if (tokens.primary) {
     vars[`--${prefix}-color`] = tokens.primary;
@@ -79,14 +79,14 @@ export function generateComponentCSSVars(
   if (tokens['body-color']) {
     vars[`--${prefix}-color-disabled`] = tokens['body-color'];
   }
-  
+
   if (tokens['body-font-family']) {
     vars[`--${prefix}-font-family`] = tokens['body-font-family'];
   }
   if (tokens['body-font-size']) {
     vars[`--${prefix}-font-size`] = tokens['body-font-size'];
   }
-  
+
   if (tokens['spacing-1']) {
     vars[`--${prefix}-spacing-sm`] = tokens['spacing-1'];
   }
@@ -96,7 +96,7 @@ export function generateComponentCSSVars(
   if (tokens['spacing-4']) {
     vars[`--${prefix}-spacing-lg`] = tokens['spacing-4'];
   }
-  
+
   return vars;
 }
 
@@ -114,10 +114,10 @@ export function applyComponentTheme(
   if (!tokens) {
     return style;
   }
-  
+
   // Generate component-specific CSS variables
   const componentVars = generateComponentCSSVars(component, tokens, variant, size);
-  
+
   // Merge with existing style
   return {
     ...componentVars,

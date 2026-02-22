@@ -178,7 +178,9 @@ export const ArticleLayout: Story = {
       <Block spacing="md" container={{ type: 'sm' }} background="secondary">
         <h3>Ready to get started?</h3>
         <p>Join thousands of developers building with our design system.</p>
-        <Button variant="primary" onClick={fn()}>Start Building</Button>
+        <Button variant="primary" onClick={fn()}>
+          Start Building
+        </Button>
       </Block>
     </div>
   ),
@@ -334,14 +336,22 @@ export const ContentPreview: Story = {
             <Card
               title="Cards"
               text="Flexible content containers with multiple options"
-              actions={<Button variant="primary" onClick={fn()}>View Details</Button>}
+              actions={
+                <Button variant="primary" onClick={fn()}>
+                  View Details
+                </Button>
+              }
             />
           </GridCol>
           <GridCol xs={12} md={6} lg={4}>
             <Card
               title="Blocks"
               text="Layout containers with consistent spacing and backgrounds"
-              actions={<Button variant="primary" onClick={fn()}>Learn More</Button>}
+              actions={
+                <Button variant="primary" onClick={fn()}>
+                  Learn More
+                </Button>
+              }
             />
           </GridCol>
         </Grid>

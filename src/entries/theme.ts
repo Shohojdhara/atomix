@@ -1,6 +1,6 @@
 /**
  * Theme System Entry Point
- * 
+ *
  * Provides access to the complete theme system including:
  * - Theme creation and composition
  * - Theme runtime (Provider, Manager, Applicator)
@@ -11,4 +11,3 @@
  */
 
 export * from '../lib/theme';
-

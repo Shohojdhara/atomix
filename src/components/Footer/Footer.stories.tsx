@@ -97,7 +97,10 @@ Footer provides a comprehensive footer section for websites with multiple layout
       options: ['columns', 'centered', 'minimal', 'stacked', 'flexible', 'sidebar', 'wide'],
       description: 'Footer layout variant',
       table: {
-        type: { summary: '"columns" | "centered" | "minimal" | "stacked" | "flexible" | "sidebar" | "wide"' },
+        type: {
+          summary:
+            '"columns" | "centered" | "minimal" | "stacked" | "flexible" | "sidebar" | "wide"',
+        },
         defaultValue: { summary: 'columns' },
       },
     },
@@ -289,7 +292,7 @@ export const BasicUsage: Story = {
     copyright: '© 2024 Atomix. All rights reserved.',
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: args => (
     <Footer {...args}>
       <SampleFooterContent />
     </Footer>
@@ -316,7 +319,7 @@ export const WithNewsletter: Story = {
     onNewsletterSubmit: fn(),
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: args => (
     <Footer {...args}>
       <SampleFooterContent />
     </Footer>
@@ -340,7 +343,7 @@ export const WithBackToTop: Story = {
     onBackToTop: fn(),
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: args => (
     <Footer {...args}>
       <SampleFooterContent />
     </Footer>
@@ -362,7 +365,7 @@ export const CenteredLayout: Story = {
     copyright: '© 2024 Atomix. All rights reserved.',
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: args => (
     <Footer {...args}>
       <SampleFooterContent />
     </Footer>
@@ -384,7 +387,7 @@ export const MinimalLayout: Story = {
     copyright: '© 2024 Atomix. All rights reserved.',
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: args => (
     <Footer {...args}>
       <SampleFooterContent />
     </Footer>
@@ -406,7 +409,7 @@ export const StackedLayout: Story = {
     copyright: '© 2024 Atomix. All rights reserved.',
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: args => (
     <Footer {...args}>
       <SampleFooterContent />
     </Footer>
@@ -428,7 +431,7 @@ export const FlexibleLayout: Story = {
     copyright: '© 2024 Atomix. All rights reserved.',
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: args => (
     <Footer {...args}>
       <SampleFooterContent />
     </Footer>
@@ -450,7 +453,7 @@ export const SidebarLayout: Story = {
     copyright: '© 2024 Atomix. All rights reserved.',
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: args => (
     <Footer {...args}>
       <SampleFooterContent />
     </Footer>
@@ -472,7 +475,7 @@ export const WideLayout: Story = {
     copyright: '© 2024 Atomix. All rights reserved.',
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: args => (
     <Footer {...args}>
       <SampleFooterContent />
     </Footer>
@@ -494,7 +497,7 @@ export const DarkVariant: Story = {
     copyright: '© 2024 Atomix. All rights reserved.',
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: args => (
     <Footer {...args}>
       <SampleFooterContent />
     </Footer>
@@ -516,7 +519,7 @@ export const LargeSize: Story = {
     copyright: '© 2024 Atomix. All rights reserved.',
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: args => (
     <Footer {...args}>
       <SampleFooterContent />
     </Footer>
@@ -538,7 +541,7 @@ export const WithGlassEffect: Story = {
     socialLinks: sampleSocialLinks,
     glass: true,
   },
-  render: (args) => (
+  render: args => (
     <Footer {...args}>
       <SampleFooterContent />
     </Footer>
@@ -560,9 +563,11 @@ export const StickyFooter: Story = {
     copyright: '© 2024 Atomix. All rights reserved.',
     socialLinks: sampleSocialLinks,
   },
-  render: (args) => (
+  render: args => (
     <div style={{ minHeight: '200vh' }}>
-      <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div
+        style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
         <p>Scroll down to see the sticky footer</p>
       </div>
       <Footer {...args}>

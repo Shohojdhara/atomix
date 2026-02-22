@@ -6,14 +6,16 @@ import { INPUT } from '../constants/components';
  * @param initialProps - Initial input properties
  * @returns Input state and methods
  */
-export function useInput(initialProps?: Partial<InputProps> & {
-  prefixIcon?: boolean;
-  suffixIcon?: boolean;
-  clearable?: boolean;
-  showCounter?: boolean;
-  showPasswordToggle?: boolean;
-  fullWidth?: boolean;
-}) {
+export function useInput(
+  initialProps?: Partial<InputProps> & {
+    prefixIcon?: boolean;
+    suffixIcon?: boolean;
+    clearable?: boolean;
+    showCounter?: boolean;
+    showPasswordToggle?: boolean;
+    fullWidth?: boolean;
+  }
+) {
   // Default input properties
   const defaultProps: Partial<InputProps> = {
     size: 'md',

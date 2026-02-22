@@ -41,7 +41,6 @@ const sampleData = {
   longText: 'Lorem ipsum dolor sit amet...'.repeat(20),
 };
 
-
 // ============================================================================
 // META CONFIGURATION
 // ============================================================================
@@ -508,13 +507,13 @@ export const CustomStyling: Story = {
     variant: 'primary',
     size: 'md',
   },
-  render: (args) => (
-    <Button 
-      {...args} 
-      style={{ 
-        background: 'linear-gradient(45deg, #667eea, #764ba2)', 
+  render: args => (
+    <Button
+      {...args}
+      style={{
+        background: 'linear-gradient(45deg, #667eea, #764ba2)',
         border: 'none',
-        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)'
+        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
       }}
     />
   ),
@@ -579,21 +578,16 @@ export const NoIconFallback: Story = {
 export const WithAsyncAction: Story = {
   render: () => {
     const [isLoading, setIsLoading] = useState(false);
-    
+
     const handleClick = useCallback(async () => {
       setIsLoading(true);
       // Simulate async operation
       await new Promise(resolve => setTimeout(resolve, 2000));
       setIsLoading(false);
     }, []);
-    
+
     return (
-      <Button 
-        label="Async Action" 
-        variant="primary" 
-        loading={isLoading}
-        onClick={handleClick}
-      />
+      <Button label="Async Action" variant="primary" loading={isLoading} onClick={handleClick} />
     );
   },
 };
@@ -695,11 +689,7 @@ export const WithKeyboardNavigation: Story = {
 export const WithScreenReader: Story = {
   render: () => (
     <div className="u-flex u-gap-2">
-      <Button 
-        label="Announcement" 
-        variant="primary" 
-        aria-describedby="announcement-description"
-      />
+      <Button label="Announcement" variant="primary" aria-describedby="announcement-description" />
       <div id="announcement-description" className="u-sr-only">
         This button triggers an announcement
       </div>
@@ -758,7 +748,8 @@ export const WithGlassEffect: Story = {
     <div
       className="u-bg-cover u-bg-center u-p-10 u-rounded-xl"
       style={{
-        backgroundImage: 'url(https://cdn.pixabay.com/photo/2022/10/02/17/23/mushroom-7494046_1280.jpg)',
+        backgroundImage:
+          'url(https://cdn.pixabay.com/photo/2022/10/02/17/23/mushroom-7494046_1280.jpg)',
       }}
     >
       <div className="u-flex u-flex-wrap u-gap-2">
@@ -788,6 +779,6 @@ export const WithCustomGlassSettings: Story = {
     },
   },
   decorators: [
-    withBackground('https://cdn.pixabay.com/photo/2021/06/14/22/46/milky-way-6337038_1280.jpg')
+    withBackground('https://cdn.pixabay.com/photo/2021/06/14/22/46/milky-way-6337038_1280.jpg'),
   ],
 };

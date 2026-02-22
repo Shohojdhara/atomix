@@ -1,6 +1,6 @@
 /**
  * Theme Error Boundary
- * 
+ *
  * React error boundary for catching and handling theme-related errors.
  * Prevents the entire app from crashing when theme errors occur.
  */
@@ -39,7 +39,10 @@ export interface ThemeErrorBoundaryProps {
 /**
  * Default fallback UI
  */
-const DefaultFallback: React.FC<{ error: Error; errorInfo: ErrorInfo }> = ({ error, errorInfo }) => {
+const DefaultFallback: React.FC<{ error: Error; errorInfo: ErrorInfo }> = ({
+  error,
+  errorInfo,
+}) => {
   const isThemeError = error instanceof ThemeError;
   const errorCode = isThemeError ? error.code : ThemeErrorCode.UNKNOWN_ERROR;
   const context = isThemeError ? error.context : undefined;
@@ -67,9 +70,7 @@ const DefaultFallback: React.FC<{ error: Error; errorInfo: ErrorInfo }> = ({ err
       )}
       {context && Object.keys(context).length > 0 && (
         <details style={{ marginTop: '1rem' }}>
-          <summary style={{ cursor: 'pointer', fontWeight: 'bold' }}>
-            Error Context
-          </summary>
+          <summary style={{ cursor: 'pointer', fontWeight: 'bold' }}>Error Context</summary>
           <pre
             style={{
               marginTop: '0.5rem',
@@ -122,7 +123,7 @@ const DefaultFallback: React.FC<{ error: Error; errorInfo: ErrorInfo }> = ({ err
 
 /**
  * Theme Error Boundary Component
- * 
+ *
  * Catches errors in the theme system and displays a fallback UI
  * instead of crashing the entire application.
  */
@@ -150,22 +151,17 @@ export class ThemeErrorBoundary extends Component<
 
   override componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // Log error
-    const themeError = error instanceof ThemeError
-      ? error
-      : new ThemeError(
-          error.message,
-          ThemeErrorCode.UNKNOWN_ERROR,
-          { componentStack: errorInfo.componentStack }
-        );
+    const themeError =
+      error instanceof ThemeError
+        ? error
+        : new ThemeError(error.message, ThemeErrorCode.UNKNOWN_ERROR, {
+            componentStack: errorInfo.componentStack,
+          });
 
-    this.logger.error(
-      'Theme error boundary caught an error',
-      themeError,
-      {
-        componentStack: errorInfo.componentStack,
-        errorBoundary: 'ThemeErrorBoundary',
-      }
-    );
+    this.logger.error('Theme error boundary caught an error', themeError, {
+      componentStack: errorInfo.componentStack,
+      errorBoundary: 'ThemeErrorBoundary',
+    });
 
     // Update state with error info
     this.setState({
@@ -219,7 +215,7 @@ export class ThemeErrorBoundary extends Component<
 
 /**
  * Hook to reset error boundary
- * 
+ *
  * @param reset - Function to reset the error boundary
  */
 export function useThemeErrorReset(): () => void {

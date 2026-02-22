@@ -1,6 +1,6 @@
 /**
  * Theme Validator
- * 
+ *
  * Runtime theme validation including color contrast and accessibility checks
  */
 
@@ -41,7 +41,7 @@ export interface A11yIssue {
 
 /**
  * Theme Validator
- * 
+ *
  * Validates themes for correctness and accessibility
  */
 export class ThemeValidator {
@@ -105,10 +105,7 @@ export class ThemeValidator {
   /**
    * Validate palette
    */
-  private validatePalette(
-    palette: Theme['palette'],
-    metadata?: ThemeMetadata
-  ): ValidationResult {
+  private validatePalette(palette: Theme['palette'], metadata?: ThemeMetadata): ValidationResult {
     const errors: string[] = [];
     const warnings: string[] = [];
     const a11yIssues: A11yIssue[] = [];
@@ -142,10 +139,7 @@ export class ThemeValidator {
 
     // Validate text colors on background
     if (palette.text && palette.background) {
-      const textContrast = this.checkContrast(
-        palette.background.default,
-        palette.text.primary
-      );
+      const textContrast = this.checkContrast(palette.background.default, palette.text.primary);
 
       if (textContrast < contrastTarget) {
         const issue: A11yIssue = {
@@ -191,7 +185,11 @@ export class ThemeValidator {
       errors.push('Typography must have a fontFamily');
     }
 
-    if (!typography.fontSize || typeof typography.fontSize !== 'number' || typography.fontSize <= 0) {
+    if (
+      !typography.fontSize ||
+      typeof typography.fontSize !== 'number' ||
+      typography.fontSize <= 0
+    ) {
       errors.push('Typography must have a valid fontSize');
     }
 
@@ -221,7 +219,9 @@ export class ThemeValidator {
           errors.push('Spacing function must return a string');
         }
       } catch (error) {
-        errors.push(`Spacing function error: ${error instanceof Error ? error.message : String(error)}`);
+        errors.push(
+          `Spacing function error: ${error instanceof Error ? error.message : String(error)}`
+        );
       }
     }
 
@@ -328,7 +328,9 @@ export class ThemeValidator {
           if (typeof duration !== 'number' || duration < 0) {
             errors.push(`Transition duration ${key} must be a non-negative number`);
           } else if (duration > 10000) {
-            warnings.push(`Transition duration ${key} (${duration}ms) exceeds recommended maximum (10000ms)`);
+            warnings.push(
+              `Transition duration ${key} (${duration}ms) exceeds recommended maximum (10000ms)`
+            );
           }
         }
       }
@@ -343,7 +345,8 @@ export class ThemeValidator {
         'sharp',
       ];
 
-      const validEasingPattern = /^(linear|ease|ease-in|ease-out|ease-in-out|cubic-bezier\([^)]+\)|steps\([^)]+\))$/i;
+      const validEasingPattern =
+        /^(linear|ease|ease-in|ease-out|ease-in-out|cubic-bezier\([^)]+\)|steps\([^)]+\))$/i;
 
       for (const key of easingKeys) {
         const easing = transitions.easing[key];
@@ -351,7 +354,9 @@ export class ThemeValidator {
           if (typeof easing !== 'string') {
             errors.push(`Transition easing ${key} must be a string`);
           } else if (!validEasingPattern.test(easing)) {
-            warnings.push(`Transition easing ${key} may not be a valid CSS easing function: ${easing}`);
+            warnings.push(
+              `Transition easing ${key} may not be a valid CSS easing function: ${easing}`
+            );
           }
         }
       }
@@ -373,10 +378,9 @@ export class ThemeValidator {
       return { valid: false, errors, warnings, a11yIssues };
     }
 
-    const numericEntries = Object.entries(zIndex).filter(([, value]) => typeof value === 'number') as Array<[
-      string,
-      number
-    ]>;
+    const numericEntries = Object.entries(zIndex).filter(
+      ([, value]) => typeof value === 'number'
+    ) as Array<[string, number]>;
 
     for (const [key, value] of Object.entries(zIndex)) {
       if (value !== undefined) {
@@ -490,7 +494,9 @@ export class ThemeValidator {
 
     const validateObject = (obj: any, path: string = 'custom'): void => {
       if (currentDepth > maxDepth) {
-        warnings.push(`Custom property path ${path} exceeds maximum depth (${maxDepth}), potential circular reference`);
+        warnings.push(
+          `Custom property path ${path} exceeds maximum depth (${maxDepth}), potential circular reference`
+        );
         return;
       }
 
@@ -512,7 +518,9 @@ export class ThemeValidator {
 
           // Validate property name
           if (!/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(key)) {
-            warnings.push(`Custom property name "${key}" in ${path} does not follow naming conventions (should be valid identifier)`);
+            warnings.push(
+              `Custom property name "${key}" in ${path} does not follow naming conventions (should be valid identifier)`
+            );
           }
 
           // Validate value type

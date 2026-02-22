@@ -254,7 +254,8 @@ export const UsageExamples: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Practical examples demonstrating how badges can be used in real-world scenarios such as navigation menus, product cards, and task lists.',
+        story:
+          'Practical examples demonstrating how badges can be used in real-world scenarios such as navigation menus, product cards, and task lists.',
       },
     },
   },
@@ -325,7 +326,8 @@ export const AccessibilityFeatures: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Examples of accessible badge implementations with proper ARIA labels and keyboard navigation support.',
+        story:
+          'Examples of accessible badge implementations with proper ARIA labels and keyboard navigation support.',
       },
     },
   },
@@ -338,14 +340,11 @@ export const AccessibilityFeatures: Story = {
           <Badge label="Alert" variant="error" aria-label="Critical notification" />
         </div>
       </div>
-      
+
       <div>
         <h3 className="u-mt-0 u-mb-2">Interactive Badges</h3>
         <div className="u-flex u-gap-2">
-          <Badge 
-            label="Closable Tag" 
-            variant="info" 
-          />
+          <Badge label="Closable Tag" variant="info" />
         </div>
       </div>
     </div>
@@ -361,7 +360,13 @@ export const WithGlassEffect: Story = {
     variant: 'primary',
   },
   render: () => (
-    <div className="u-bg-cover u-bg-center u-rounded-xl u-p-24" style={{backgroundImage: 'url(https://cdn.pixabay.com/photo/2023/07/07/20/42/grasshopper-8113345_1280.jpg)'}}>
+    <div
+      className="u-bg-cover u-bg-center u-rounded-xl u-p-24"
+      style={{
+        backgroundImage:
+          'url(https://cdn.pixabay.com/photo/2023/07/07/20/42/grasshopper-8113345_1280.jpg)',
+      }}
+    >
       <div className="u-flex u-flex-wrap u-gap-2">
         {THEME_COLORS.map(color => (
           <Badge key={color} label={color} variant={color} glass={true} />
@@ -390,7 +395,13 @@ export const WithCustomGlassSettings: Story = {
   },
   decorators: [
     Story => (
-      <div className="u-bg-cover u-bg-center u-rounded-xl u-p-24" style={{backgroundImage: 'url(https://cdn.pixabay.com/photo/2021/06/14/22/46/milky-way-6337038_1280.jpg)'}}>
+      <div
+        className="u-bg-cover u-bg-center u-rounded-xl u-p-24"
+        style={{
+          backgroundImage:
+            'url(https://cdn.pixabay.com/photo/2021/06/14/22/46/milky-way-6337038_1280.jpg)',
+        }}
+      >
         <Story />
       </div>
     ),

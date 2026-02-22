@@ -282,23 +282,25 @@ const RadarChart = memo(
               {dataPaths}
               {axisLabels}
             </g>
-            {showTooltips && hoveredPoint && renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
-              <ChartTooltip
-                dataPoint={
-                  renderedDatasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!
-                }
-                datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
-                datasetColor={
-                  renderedDatasets[hoveredPoint.datasetIndex]?.color ||
-                  colors[hoveredPoint.datasetIndex]
-                }
-                position={{
-                  x: hoveredPoint.clientX,
-                  y: hoveredPoint.clientY,
-                }}
-                visible={true}
-              />
-            )}
+            {showTooltips &&
+              hoveredPoint &&
+              renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
+                <ChartTooltip
+                  dataPoint={
+                    renderedDatasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!
+                  }
+                  datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
+                  datasetColor={
+                    renderedDatasets[hoveredPoint.datasetIndex]?.color ||
+                    colors[hoveredPoint.datasetIndex]
+                  }
+                  position={{
+                    x: hoveredPoint.clientX,
+                    y: hoveredPoint.clientY,
+                  }}
+                  visible={true}
+                />
+              )}
           </>
         );
       };

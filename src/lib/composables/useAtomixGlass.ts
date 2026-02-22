@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type {
   AtomixGlassProps,
   DisplacementMode,
@@ -41,10 +35,7 @@ const backgroundDetectionCache = new WeakMap<HTMLElement, BackgroundDetectionCac
  * Compare two OverLightConfig values for equality
  * Handles primitives (boolean, 'auto') and objects with deep comparison
  */
-const compareOverLightConfig = (
-  config1: OverLightConfig,
-  config2: OverLightConfig
-): boolean => {
+const compareOverLightConfig = (config1: OverLightConfig, config2: OverLightConfig): boolean => {
   // Primitive comparison for boolean and 'auto'
   if (typeof config1 !== 'object' || config1 === null) {
     return config1 === config2;
@@ -294,7 +285,10 @@ export function useAtomixGlass({
           setDynamicCornerRadius(extractedRadius);
         }
       } catch (error) {
-        if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && debugCornerRadius) {
+        if (
+          (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
+          debugCornerRadius
+        ) {
           console.error('[AtomixGlass] Error extracting corner radius:', error);
         }
       }
@@ -308,7 +302,8 @@ export function useAtomixGlass({
   // Media query handlers and background detection
   useEffect(() => {
     // Only run auto-detection for 'auto' mode or object config (which uses auto-detection)
-    const shouldDetect = (overLight === 'auto' || (typeof overLight === 'object' && overLight !== null));
+    const shouldDetect =
+      overLight === 'auto' || (typeof overLight === 'object' && overLight !== null);
 
     if (shouldDetect && glassRef.current) {
       const element = glassRef.current;
@@ -357,7 +352,13 @@ export function useAtomixGlass({
               const bgImage = computedStyle.backgroundImage;
 
               // Check for solid color backgrounds
-              if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent' && bgColor !== 'initial' && bgColor !== 'none') {
+              if (
+                bgColor &&
+                bgColor !== 'rgba(0, 0, 0, 0)' &&
+                bgColor !== 'transparent' &&
+                bgColor !== 'initial' &&
+                bgColor !== 'none'
+              ) {
                 const rgb = bgColor.match(/\d+/g);
                 if (rgb && rgb.length >= 3) {
                   const r = Number(rgb[0]);
@@ -365,9 +366,20 @@ export function useAtomixGlass({
                   const b = Number(rgb[2]);
 
                   // Validate RGB values are valid numbers
-                  if (!isNaN(r) && !isNaN(g) && !isNaN(b) &&
-                    isFinite(r) && isFinite(g) && isFinite(b) &&
-                    r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255) {
+                  if (
+                    !isNaN(r) &&
+                    !isNaN(g) &&
+                    !isNaN(b) &&
+                    isFinite(r) &&
+                    isFinite(g) &&
+                    isFinite(b) &&
+                    r >= 0 &&
+                    r <= 255 &&
+                    g >= 0 &&
+                    g <= 255 &&
+                    b >= 0 &&
+                    b <= 255
+                  ) {
                     // Only consider if it's not pure black or very dark
                     if (r > 10 || g > 10 || b > 10) {
                       const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
@@ -414,11 +426,12 @@ export function useAtomixGlass({
               if (typeof overLight === 'object' && overLight !== null) {
                 const objConfig = overLight as OverLightObjectConfig;
                 if (objConfig.threshold !== undefined) {
-                  const configThreshold = typeof objConfig.threshold === 'number' &&
+                  const configThreshold =
+                    typeof objConfig.threshold === 'number' &&
                     !isNaN(objConfig.threshold) &&
                     isFinite(objConfig.threshold)
-                    ? objConfig.threshold
-                    : 0.7;
+                      ? objConfig.threshold
+                      : 0.7;
                   threshold = Math.min(0.9, Math.max(0.1, configThreshold));
                 }
               }
@@ -426,24 +439,31 @@ export function useAtomixGlass({
               const isOverLightDetected = avgLuminance > threshold;
 
               // Cache the result in shared cache
-              setCachedBackgroundDetection(element.parentElement, overLight, isOverLightDetected, threshold);
+              setCachedBackgroundDetection(
+                element.parentElement,
+                overLight,
+                isOverLightDetected,
+                threshold
+              );
 
               setDetectedOverLight(isOverLightDetected);
             } else {
               // Invalid luminance calculation, default to false
               const result = false;
-              const threshold = typeof overLight === 'object' && overLight !== null
-                ? (overLight as OverLightObjectConfig).threshold || 0.7
-                : 0.7;
+              const threshold =
+                typeof overLight === 'object' && overLight !== null
+                  ? (overLight as OverLightObjectConfig).threshold || 0.7
+                  : 0.7;
               setCachedBackgroundDetection(element.parentElement, overLight, result, threshold);
               setDetectedOverLight(result);
             }
           } else {
             // Default to false if no valid background found
             const result = false;
-            const threshold = typeof overLight === 'object' && overLight !== null
-              ? (overLight as OverLightObjectConfig).threshold || 0.7
-              : 0.7;
+            const threshold =
+              typeof overLight === 'object' && overLight !== null
+                ? (overLight as OverLightObjectConfig).threshold || 0.7
+                : 0.7;
             setCachedBackgroundDetection(element.parentElement, overLight, result, threshold);
             setDetectedOverLight(result);
           }
@@ -454,9 +474,10 @@ export function useAtomixGlass({
           }
           const result = false;
           if (element && element.parentElement) {
-            const threshold = typeof overLight === 'object' && overLight !== null
-              ? (overLight as OverLightObjectConfig).threshold || 0.7
-              : 0.7;
+            const threshold =
+              typeof overLight === 'object' && overLight !== null
+                ? (overLight as OverLightObjectConfig).threshold || 0.7
+                : 0.7;
             setCachedBackgroundDetection(element.parentElement, overLight, result, threshold);
           }
           setDetectedOverLight(result);
@@ -562,7 +583,10 @@ export function useAtomixGlass({
       setInternalMouseOffset(newOffset);
       setInternalGlobalMousePosition(globalPos);
 
-      if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && enablePerformanceMonitoring) {
+      if (
+        (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
+        enablePerformanceMonitoring
+      ) {
         const endTime = performance.now();
         // const duration = endTime - startTime;
         // if (duration > 5) {
@@ -692,14 +716,7 @@ export function useAtomixGlass({
       Math.abs(normalizedX) * stretchIntensity * 0.15;
 
     return `scaleX(${Math.max(0.8, scaleX)}) scaleY(${Math.max(0.8, scaleY)})`;
-  }, [
-    globalMousePosition,
-    elasticity,
-    glassSize,
-    glassRef,
-    overLight,
-    detectedOverLight,
-  ]);
+  }, [globalMousePosition, elasticity, glassSize, glassRef, overLight, detectedOverLight]);
 
   const calculateFadeInFactor = useCallback(() => {
     if (
@@ -724,7 +741,9 @@ export function useAtomixGlass({
     );
     const edgeDistance = calculateDistance({ x: edgeDistanceX, y: edgeDistanceY }, { x: 0, y: 0 });
 
-    return edgeDistance > CONSTANTS.ACTIVATION_ZONE ? 0 : 1 - edgeDistance / CONSTANTS.ACTIVATION_ZONE;
+    return edgeDistance > CONSTANTS.ACTIVATION_ZONE
+      ? 0
+      : 1 - edgeDistance / CONSTANTS.ACTIVATION_ZONE;
   }, [globalMousePosition, glassSize, glassRef]);
 
   const calculateElasticTranslation = useCallback(() => {
@@ -769,7 +788,9 @@ export function useAtomixGlass({
       element !== null && element instanceof HTMLElement && element.isConnected;
 
     const validateSize = (size: GlassSize): boolean =>
-      validateGlassSize(size) && size.width <= CONSTANTS.MAX_SIZE && size.height <= CONSTANTS.MAX_SIZE;
+      validateGlassSize(size) &&
+      size.width <= CONSTANTS.MAX_SIZE &&
+      size.height <= CONSTANTS.MAX_SIZE;
 
     let rafId: number | null = null;
     let lastSize = { width: 0, height: 0 };
@@ -903,7 +924,9 @@ export function useAtomixGlass({
     const activeIntensity = isActive ? 1.6 : 1;
 
     // More robust overlight configuration with better defaults and clamping
-    const baseOpacity = isOverLight ? Math.min(0.6, Math.max(0.2, 0.5 * hoverIntensity * activeIntensity)) : 0;
+    const baseOpacity = isOverLight
+      ? Math.min(0.6, Math.max(0.2, 0.5 * hoverIntensity * activeIntensity))
+      : 0;
 
     const baseConfig = {
       isOverLight,
@@ -920,11 +943,31 @@ export function useAtomixGlass({
       const objConfig = overLight as OverLightObjectConfig;
 
       // Validate and apply object config values with proper clamping
-      const validatedThreshold = validateConfigValue(objConfig.threshold, 0.1, 1.0, baseConfig.threshold);
+      const validatedThreshold = validateConfigValue(
+        objConfig.threshold,
+        0.1,
+        1.0,
+        baseConfig.threshold
+      );
       const validatedOpacity = validateConfigValue(objConfig.opacity, 0.1, 1.0, baseConfig.opacity);
-      const validatedContrast = validateConfigValue(objConfig.contrast, 0.5, 2.5, baseConfig.contrast);
-      const validatedBrightness = validateConfigValue(objConfig.brightness, 0.5, 2.0, baseConfig.brightness);
-      const validatedSaturationBoost = validateConfigValue(objConfig.saturationBoost, 0.5, 3.0, baseConfig.saturationBoost);
+      const validatedContrast = validateConfigValue(
+        objConfig.contrast,
+        0.5,
+        2.5,
+        baseConfig.contrast
+      );
+      const validatedBrightness = validateConfigValue(
+        objConfig.brightness,
+        0.5,
+        2.0,
+        baseConfig.brightness
+      );
+      const validatedSaturationBoost = validateConfigValue(
+        objConfig.saturationBoost,
+        0.5,
+        3.0,
+        baseConfig.saturationBoost
+      );
 
       const finalConfig = {
         ...baseConfig,
@@ -936,7 +979,10 @@ export function useAtomixGlass({
       };
 
       // Debug logging
-      if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && debugOverLight) {
+      if (
+        (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
+        debugOverLight
+      ) {
         console.log('[AtomixGlass] OverLight Config:', {
           isOverLight,
           config: {
@@ -968,7 +1014,10 @@ export function useAtomixGlass({
     }
 
     // Debug logging for non-object configs
-    if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && debugOverLight) {
+    if (
+      (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
+      debugOverLight
+    ) {
       console.log('[AtomixGlass] OverLight Config:', {
         isOverLight,
         configType: typeof overLight === 'boolean' ? (overLight ? 'true' : 'false') : overLight,
@@ -991,7 +1040,15 @@ export function useAtomixGlass({
     }
 
     return baseConfig;
-  }, [overLight, getEffectiveOverLight, mouseOffset, isHovered, isActive, validateConfigValue, debugOverLight]);
+  }, [
+    overLight,
+    getEffectiveOverLight,
+    mouseOffset,
+    isHovered,
+    isActive,
+    validateConfigValue,
+    debugOverLight,
+  ]);
 
   // Event handlers
   const handleMouseEnter = useCallback(() => setIsHovered(true), []);

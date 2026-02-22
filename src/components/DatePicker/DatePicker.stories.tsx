@@ -90,8 +90,8 @@ DatePicker provides a user-friendly interface for selecting dates or date ranges
   },
   tags: ['autodocs'],
   argTypes: {
-    value: { 
-      control: 'date', 
+    value: {
+      control: 'date',
       description: 'Selected date value',
       table: {
         type: { summary: 'Date | DateRange | null' },
@@ -107,80 +107,80 @@ DatePicker provides a user-friendly interface for selecting dates or date ranges
         defaultValue: { summary: 'single' },
       },
     },
-    minDate: { 
-      control: 'date', 
+    minDate: {
+      control: 'date',
       description: 'Minimum selectable date',
       table: {
         type: { summary: 'Date' },
         defaultValue: { summary: '-' },
       },
     },
-    maxDate: { 
-      control: 'date', 
+    maxDate: {
+      control: 'date',
       description: 'Maximum selectable date',
       table: {
         type: { summary: 'Date' },
         defaultValue: { summary: '-' },
       },
     },
-    format: { 
-      control: 'text', 
+    format: {
+      control: 'text',
       description: 'Date format string',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'MM/dd/yyyy' },
       },
     },
-    placeholder: { 
-      control: 'text', 
+    placeholder: {
+      control: 'text',
       description: 'Placeholder text',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'Select date...' },
       },
     },
-    disabled: { 
-      control: 'boolean', 
+    disabled: {
+      control: 'boolean',
       description: 'Whether the date picker is disabled',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
       },
     },
-    readOnly: { 
-      control: 'boolean', 
+    readOnly: {
+      control: 'boolean',
       description: 'Whether the date picker is read-only',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
       },
     },
-    clearable: { 
-      control: 'boolean', 
+    clearable: {
+      control: 'boolean',
       description: 'Whether the date can be cleared',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
       },
     },
-    showTodayButton: { 
-      control: 'boolean', 
+    showTodayButton: {
+      control: 'boolean',
       description: 'Whether to show a "Today" button',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
       },
     },
-    showWeekNumbers: { 
-      control: 'boolean', 
+    showWeekNumbers: {
+      control: 'boolean',
       description: 'Whether to show week numbers',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: false },
       },
     },
-    inline: { 
-      control: 'boolean', 
+    inline: {
+      control: 'boolean',
       description: 'Whether to display inline (always visible)',
       table: {
         type: { summary: 'boolean' },
@@ -397,30 +397,15 @@ export const DifferentSizes: Story = {
       <div className="u-mt-20 u-mx-auto u-flex u-flex-col u-gap-4">
         <div className="u-w-xs">
           <label className="u-block u-mb-2 u-text-sm u-font-medium">Small</label>
-          <DatePicker 
-            value={date} 
-            onChange={setDate} 
-            size="sm"
-            placeholder="Select date..."
-          />
+          <DatePicker value={date} onChange={setDate} size="sm" placeholder="Select date..." />
         </div>
         <div className="u-w-xs">
           <label className="u-block u-mb-2 u-text-sm u-font-medium">Medium</label>
-          <DatePicker 
-            value={date} 
-            onChange={setDate} 
-            size="md"
-            placeholder="Select date..."
-          />
+          <DatePicker value={date} onChange={setDate} size="md" placeholder="Select date..." />
         </div>
         <div className="u-w-xs">
           <label className="u-block u-mb-2 u-text-sm u-font-medium">Large</label>
-          <DatePicker 
-            value={date} 
-            onChange={setDate} 
-            size="lg"
-            placeholder="Select date..."
-          />
+          <DatePicker value={date} onChange={setDate} size="lg" placeholder="Select date..." />
         </div>
       </div>
     );
@@ -441,18 +426,18 @@ export const DisabledAndReadOnly: Story = {
       <div className="u-mt-20 u-mx-auto u-flex u-flex-col u-gap-4">
         <div className="u-w-xs">
           <label className="u-block u-mb-2 u-text-sm u-font-medium">Disabled</label>
-          <DatePicker 
-            value={date} 
-            onChange={setDate} 
+          <DatePicker
+            value={date}
+            onChange={setDate}
             disabled={true}
             placeholder="Select date..."
           />
         </div>
         <div className="u-w-xs">
           <label className="u-block u-mb-2 u-text-sm u-font-medium">Read Only</label>
-          <DatePicker 
-            value={date} 
-            onChange={setDate} 
+          <DatePicker
+            value={date}
+            onChange={setDate}
             readOnly={true}
             placeholder="Select date..."
           />

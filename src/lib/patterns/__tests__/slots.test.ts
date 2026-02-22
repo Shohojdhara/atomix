@@ -24,7 +24,7 @@ describe('slots', () => {
     it('should render with component', () => {
       const CustomComponent = ({ text }: { text: string }) =>
         React.createElement('span', null, `Component: ${text}`);
-      
+
       const slot = {
         component: CustomComponent,
       };

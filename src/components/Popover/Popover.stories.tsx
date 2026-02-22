@@ -5,7 +5,7 @@ import { Popover, PopoverTrigger } from './Popover';
 import { Toggle } from '../Toggle/Toggle';
 import { Button } from '../Button/Button';
 
-const meta = {
+const meta: Meta<typeof Popover> = {
   title: 'Components/Popover',
   component: Popover,
   parameters: {
@@ -113,7 +113,7 @@ Popover displays floating content relative to a trigger element. It provides a f
       description: 'Delay in milliseconds before showing the popover',
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 0 },
+        defaultValue: { summary: '0' },
       },
     },
     offset: {
@@ -121,7 +121,7 @@ Popover displays floating content relative to a trigger element. It provides a f
       description: 'Offset distance from the trigger element',
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 12 },
+        defaultValue: { summary: '12' },
       },
     },
     defaultOpen: {
@@ -129,7 +129,7 @@ Popover displays floating content relative to a trigger element. It provides a f
       description: 'Whether the popover is initially open',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     closeOnClickOutside: {
@@ -137,7 +137,7 @@ Popover displays floating content relative to a trigger element. It provides a f
       description: 'Whether to close the popover when clicking outside',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: true },
+        defaultValue: { summary: 'true' },
       },
     },
     closeOnEscape: {
@@ -145,7 +145,7 @@ Popover displays floating content relative to a trigger element. It provides a f
       description: 'Whether to close the popover when pressing Escape key',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: true },
+        defaultValue: { summary: 'true' },
       },
     },
     className: {
@@ -161,11 +161,11 @@ Popover displays floating content relative to a trigger element. It provides a f
       description: 'Enable glass morphism effect',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
   },
-} satisfies Meta<typeof Popover>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -213,18 +213,17 @@ const InteractivePopover = (args: React.ComponentProps<typeof Popover>) => {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
-      <Popover {...args}>
+      <Popover {...args} content={content}>
         <PopoverTrigger>
           <Button variant="primary">Open Popover</Button>
         </PopoverTrigger>
-        {content}
       </Popover>
     </div>
   );
 };
 
 export const BasicUsage: Story = {
-  render: (args) => <InteractivePopover {...args} />,
+  render: args => <InteractivePopover {...args} content={undefined} />,
   args: {
     position: 'top',
     trigger: 'click',
@@ -243,88 +242,41 @@ export const BasicUsage: Story = {
 export const AllPositions: Story = {
   render: () => {
     const content = <div style={{ padding: '20px' }}>Popover Content</div>;
-    
+
     return (
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(3, 1fr)', 
-        gap: '20px', 
-        padding: '50px',
-        alignItems: 'center',
-        justifyItems: 'center',
-        height: '500px'
-      }}>
-        <div>
-          <Popover position="top-start">
-            <PopoverTrigger>
-              <Button variant="primary">Top Start</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        <div>
-          <Popover position="top">
-            <PopoverTrigger>
-              <Button variant="primary">Top</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        <div>
-          <Popover position="top-end">
-            <PopoverTrigger>
-              <Button variant="primary">Top End</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        
-        <div>
-          <Popover position="left">
-            <PopoverTrigger>
-              <Button variant="primary">Left</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        
-        <div style={{ textAlign: 'center' }}>
-          <p>All popover positions</p>
-        </div>
-        
-        <div>
-          <Popover position="right">
-            <PopoverTrigger>
-              <Button variant="primary">Right</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        
-        <div>
-          <Popover position="bottom-start">
-            <PopoverTrigger>
-              <Button variant="primary">Bottom Start</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        <div>
-          <Popover position="bottom">
-            <PopoverTrigger>
-              <Button variant="primary">Bottom</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        <div>
-          <Popover position="bottom-end">
-            <PopoverTrigger>
-              <Button variant="primary">Bottom End</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '20px',
+          padding: '50px',
+          alignItems: 'center',
+          height: '300px',
+        }}
+      >
+        <Popover position="left" content={content}>
+          <PopoverTrigger>
+            <Button variant="primary">Left</Button>
+          </PopoverTrigger>
+        </Popover>
+
+        <Popover position="top" content={content}>
+          <PopoverTrigger>
+            <Button variant="primary">Top</Button>
+          </PopoverTrigger>
+        </Popover>
+
+        <Popover position="bottom" content={content}>
+          <PopoverTrigger>
+            <Button variant="primary">Bottom</Button>
+          </PopoverTrigger>
+        </Popover>
+
+        <Popover position="right" content={content}>
+          <PopoverTrigger>
+            <Button variant="primary">Right</Button>
+          </PopoverTrigger>
+        </Popover>
       </div>
     );
   },
@@ -338,19 +290,23 @@ export const AllPositions: Story = {
 };
 
 export const WithGlassEffect: Story = {
-  render: (args) => (
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      padding: '100px',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      minHeight: '300px'
-    }}>
-      <Popover {...args}>
+  render: args => (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '100px',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        minHeight: '300px',
+      }}
+    >
+      <Popover
+        {...args}
+        content={<div style={{ padding: '20px' }}>Glass Effect Popover Content</div>}
+      >
         <PopoverTrigger>
           <Button variant="primary">Open Glass Popover</Button>
         </PopoverTrigger>
-        <div style={{ padding: '20px' }}>Glass Effect Popover Content</div>
       </Popover>
     </div>
   ),
@@ -374,7 +330,7 @@ export const WithGlassEffect: Story = {
  * Glass morphism popover example.
  */
 export const GlassPopover: Story = {
-  render: args => <InteractivePopover {...args} />,
+  render: args => <InteractivePopover {...args} content={undefined} />,
   args: {
     position: 'top',
     trigger: 'click',
@@ -404,7 +360,7 @@ export const GlassPopover: Story = {
  * Glass popover with custom settings.
  */
 export const GlassPopoverCustom: Story = {
-  render: (args) => {
+  render: args => {
     const selectOptions = [
       { value: '1', label: 'Option 1' },
       { value: '2', label: 'Option 2' },
@@ -446,11 +402,10 @@ export const GlassPopoverCustom: Story = {
 
     return (
       <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
-        <Popover {...args}>
+        <Popover {...args} content={content}>
           <PopoverTrigger>
             <Button variant="primary">Open Popover</Button>
           </PopoverTrigger>
-          {content}
         </Popover>
       </div>
     );
@@ -491,7 +446,7 @@ export const GlassPopoverCustom: Story = {
  * Glass popover with hover trigger.
  */
 export const GlassPopoverHover: Story = {
-  render: (args) => {
+  render: args => {
     const selectOptions = [
       { value: '1', label: 'Option 1' },
       { value: '2', label: 'Option 2' },
@@ -533,11 +488,10 @@ export const GlassPopoverHover: Story = {
 
     return (
       <div style={{ display: 'flex', justifyContent: 'center', padding: '100px' }}>
-        <Popover {...args}>
+        <Popover {...args} content={content}>
           <PopoverTrigger>
             <Button variant="primary">Open Popover</Button>
           </PopoverTrigger>
-          {content}
         </Popover>
       </div>
     );
@@ -571,91 +525,44 @@ export const GlassPopoverHover: Story = {
  * Glass popover with different positions.
  */
 export const GlassPopoverPositions: Story = {
-  render: (args) => {
+  render: args => {
     const content = <div style={{ padding: '20px' }}>Popover Content</div>;
-    
+
     return (
-      <div style={{
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(3, 1fr)', 
-        gap: '20px', 
-        padding: '50px',
-        alignItems: 'center',
-        justifyItems: 'center',
-        height: '500px',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-      }}>
-        <div>
-          <Popover {...args} position="top-start">
-            <PopoverTrigger>
-              <Button variant="primary">Top Start</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        <div>
-          <Popover {...args} position="top">
-            <PopoverTrigger>
-              <Button variant="primary">Top</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        <div>
-          <Popover {...args} position="top-end">
-            <PopoverTrigger>
-              <Button variant="primary">Top End</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        
-        <div>
-          <Popover {...args} position="left">
-            <PopoverTrigger>
-              <Button variant="primary">Left</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        
-        <div style={{ textAlign: 'center' }}>
-          <p>All popover positions</p>
-        </div>
-        
-        <div>
-          <Popover {...args} position="right">
-            <PopoverTrigger>
-              <Button variant="primary">Right</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        
-        <div>
-          <Popover {...args} position="bottom-start">
-            <PopoverTrigger>
-              <Button variant="primary">Bottom Start</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        <div>
-          <Popover {...args} position="bottom">
-            <PopoverTrigger>
-              <Button variant="primary">Bottom</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
-        <div>
-          <Popover {...args} position="bottom-end">
-            <PopoverTrigger>
-              <Button variant="primary">Bottom End</Button>
-            </PopoverTrigger>
-            {content}
-          </Popover>
-        </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '20px',
+          padding: '50px',
+          alignItems: 'center',
+          height: '300px',
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        }}
+      >
+        <Popover {...args} position="left" content={content}>
+          <PopoverTrigger>
+            <Button variant="primary">Left</Button>
+          </PopoverTrigger>
+        </Popover>
+
+        <Popover {...args} position="top" content={content}>
+          <PopoverTrigger>
+            <Button variant="primary">Top</Button>
+          </PopoverTrigger>
+        </Popover>
+
+        <Popover {...args} position="bottom" content={content}>
+          <PopoverTrigger>
+            <Button variant="primary">Bottom</Button>
+          </PopoverTrigger>
+        </Popover>
+
+        <Popover {...args} position="right" content={content}>
+          <PopoverTrigger>
+            <Button variant="primary">Right</Button>
+          </PopoverTrigger>
+        </Popover>
       </div>
     );
   },

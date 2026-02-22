@@ -154,9 +154,9 @@ function hslToRgb(hsl: string): { r: number; g: number; b: number } | null {
   const hue2rgb = (p: number, q: number, t: number): number => {
     if (t < 0) t += 1;
     if (t > 1) t -= 1;
-    if (t < 1/6) return p + (q - p) * 6 * t;
-    if (t < 1/2) return q;
-    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
     return p;
   };
 
@@ -167,15 +167,15 @@ function hslToRgb(hsl: string): { r: number; g: number; b: number } | null {
   } else {
     const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
     const p = 2 * l - q;
-    r = hue2rgb(p, q, h + 1/3);
+    r = hue2rgb(p, q, h + 1 / 3);
     g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1/3);
+    b = hue2rgb(p, q, h - 1 / 3);
   }
 
   return {
     r: Math.round(r * 255),
     g: Math.round(g * 255),
-    b: Math.round(b * 255)
+    b: Math.round(b * 255),
   };
 }
 
@@ -298,42 +298,87 @@ export function validateColorFormats(tokens: Partial<DesignTokens>): {
   // Only validate tokens that are intended to be actual colors, not gradients, font weights, etc.
   const colorTokenKeys = new Set([
     // Base colors
-    'primary', 'secondary', 'success', 'info', 'warning', 'error', 'light', 'dark',
+    'primary',
+    'secondary',
+    'success',
+    'info',
+    'warning',
+    'error',
+    'light',
+    'dark',
     // Text emphasis
-    'primary-text-emphasis', 'secondary-text-emphasis', 'tertiary-text-emphasis',
-    'disabled-text-emphasis', 'invert-text-emphasis', 'brand-text-emphasis',
-    'error-text-emphasis', 'success-text-emphasis', 'warning-text-emphasis',
-    'info-text-emphasis', 'light-text-emphasis', 'dark-text-emphasis',
+    'primary-text-emphasis',
+    'secondary-text-emphasis',
+    'tertiary-text-emphasis',
+    'disabled-text-emphasis',
+    'invert-text-emphasis',
+    'brand-text-emphasis',
+    'error-text-emphasis',
+    'success-text-emphasis',
+    'warning-text-emphasis',
+    'info-text-emphasis',
+    'light-text-emphasis',
+    'dark-text-emphasis',
     // Background subtle
-    'primary-bg-subtle', 'secondary-bg-subtle', 'tertiary-bg-subtle', 'invert-bg-subtle',
-    'brand-bg-subtle', 'error-bg-subtle', 'success-bg-subtle', 'warning-bg-subtle',
-    'info-bg-subtle', 'light-bg-subtle', 'dark-bg-subtle',
+    'primary-bg-subtle',
+    'secondary-bg-subtle',
+    'tertiary-bg-subtle',
+    'invert-bg-subtle',
+    'brand-bg-subtle',
+    'error-bg-subtle',
+    'success-bg-subtle',
+    'warning-bg-subtle',
+    'info-bg-subtle',
+    'light-bg-subtle',
+    'dark-bg-subtle',
     // Border subtle
-    'primary-border-subtle', 'secondary-border-subtle', 'success-border-subtle',
-    'error-border-subtle', 'warning-border-subtle', 'info-border-subtle',
-    'brand-border-subtle', 'light-border-subtle', 'dark-border-subtle',
+    'primary-border-subtle',
+    'secondary-border-subtle',
+    'success-border-subtle',
+    'error-border-subtle',
+    'warning-border-subtle',
+    'info-border-subtle',
+    'brand-border-subtle',
+    'light-border-subtle',
+    'dark-border-subtle',
     // Hover states
-    'primary-hover', 'secondary-hover', 'light-hover', 'dark-hover',
-    'error-hover', 'success-hover', 'warning-hover', 'info-hover',
+    'primary-hover',
+    'secondary-hover',
+    'light-hover',
+    'dark-hover',
+    'error-hover',
+    'success-hover',
+    'warning-hover',
+    'info-hover',
     // Colors from scales (primary, red, green, blue, yellow)
     ...Array.from({ length: 10 }, (_, i) => [
-      `primary-${i + 1}`, `red-${i + 1}`, `green-${i + 1}`, `blue-${i + 1}`, `yellow-${i + 1}`
+      `primary-${i + 1}`,
+      `red-${i + 1}`,
+      `green-${i + 1}`,
+      `blue-${i + 1}`,
+      `yellow-${i + 1}`,
     ]).flat(),
     // Gray scale
     ...Array.from({ length: 10 }, (_, i) => `gray-${i + 1}`),
     // Body colors
-    'body-color', 'heading-color',
+    'body-color',
+    'heading-color',
     // Link colors
-    'link-color', 'link-hover-color',
+    'link-color',
+    'link-hover-color',
     // Highlight & code
-    'highlight-bg', 'code-color',
+    'highlight-bg',
+    'code-color',
     // Border colors
-    'border-color', 'border-color-translucent',
+    'border-color',
+    'border-color-translucent',
     // Focus ring
     'focus-border-color',
     // Form validation
-    'form-valid-color', 'form-valid-border-color',
-    'form-invalid-color', 'form-invalid-border-color',
+    'form-valid-color',
+    'form-valid-border-color',
+    'form-invalid-color',
+    'form-invalid-border-color',
   ]);
 
   for (const key of colorTokenKeys) {
@@ -437,7 +482,10 @@ export interface ValidationOptions {
 /**
  * Comprehensive validation of DesignTokens
  */
-export function validateDesignTokens(tokens: Partial<DesignTokens>, options: ValidationOptions = {}): ThemeValidationResult {
+export function validateDesignTokens(
+  tokens: Partial<DesignTokens>,
+  options: ValidationOptions = {}
+): ThemeValidationResult {
   const results = [];
 
   if (!options.skipRequiredTokens) {
@@ -461,7 +509,9 @@ export function validateDesignTokens(tokens: Partial<DesignTokens>, options: Val
   if (!valid) {
     logger.error(
       'DesignTokens validation failed',
-      new Error(`Validation failed with ${allErrors.length} errors and ${allWarnings.length} warnings`),
+      new Error(
+        `Validation failed with ${allErrors.length} errors and ${allWarnings.length} warnings`
+      ),
       {
         errors: allErrors,
         warnings: allWarnings,
@@ -469,10 +519,9 @@ export function validateDesignTokens(tokens: Partial<DesignTokens>, options: Val
       }
     );
   } else if (allWarnings.length > 0) {
-    logger.warn(
-      `DesignTokens validation passed with ${allWarnings.length} warnings`,
-      { warnings: allWarnings }
-    );
+    logger.warn(`DesignTokens validation passed with ${allWarnings.length} warnings`, {
+      warnings: allWarnings,
+    });
   } else {
     logger.debug('DesignTokens validation passed');
   }

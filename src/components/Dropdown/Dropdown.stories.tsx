@@ -379,10 +379,7 @@ export const AllPlacements: Story = {
           }}
         >
           {placements.map(placement => (
-            <div
-              key={placement.value}
-              className="u-flex u-items-center u-justify-center"
-            >
+            <div key={placement.value} className="u-flex u-items-center u-justify-center">
               <Dropdown
                 trigger="click"
                 placement={placement.value as any}

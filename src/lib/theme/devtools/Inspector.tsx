@@ -1,6 +1,6 @@
 /**
  * Theme Inspector Component
- * 
+ *
  * React component for inspecting and debugging themes
  * Enhanced with search/filter and copy path functionality
  */
@@ -39,7 +39,7 @@ interface PropertyPath {
 
 /**
  * Theme Inspector Component
- * 
+ *
  * Provides detailed inspection and debugging information for themes
  */
 export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
@@ -50,7 +50,9 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
   className,
   style,
 }) => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'validation' | 'css' | 'structure'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'validation' | 'css' | 'structure'>(
+    'overview'
+  );
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['palette']));
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('');
@@ -84,7 +86,9 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
       console.error('Theme validation error:', error);
       return {
         valid: false,
-        errors: ['Failed to validate theme: ' + (error instanceof Error ? error.message : String(error))],
+        errors: [
+          'Failed to validate theme: ' + (error instanceof Error ? error.message : String(error)),
+        ],
         warnings: [],
         a11yIssues: [],
       };
@@ -108,10 +112,10 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
   // Generate all property paths for search
   const allPropertyPaths = useMemo(() => {
     const paths: PropertyPath[] = [];
-    
+
     const traverse = (obj: any, path: string = '', depth: number = 0): void => {
       if (depth > 10) return; // Prevent infinite recursion
-      
+
       if (obj === null || obj === undefined) {
         paths.push({ path, value: obj, matches: false });
         return;
@@ -120,22 +124,23 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
       if (typeof obj === 'object' && !Array.isArray(obj)) {
         Object.entries(obj).forEach(([key, value]) => {
           if (key === '__isJSTheme') return;
-          
+
           const currentPath = path ? `${path}.${key}` : key;
           const pathLower = currentPath.toLowerCase();
           const queryLower = debouncedSearchQuery.toLowerCase();
           const matches = debouncedSearchQuery ? pathLower.includes(queryLower) : true;
-          
+
           if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
             paths.push({ path: currentPath, value: null, matches });
             traverse(value, currentPath, depth + 1);
           } else {
-            const valueStr = typeof value === 'string' ? value.toLowerCase() : String(value).toLowerCase();
+            const valueStr =
+              typeof value === 'string' ? value.toLowerCase() : String(value).toLowerCase();
             const valueMatches = debouncedSearchQuery ? valueStr.includes(queryLower) : true;
-            paths.push({ 
-              path: currentPath, 
-              value, 
-              matches: matches || valueMatches 
+            paths.push({
+              path: currentPath,
+              value,
+              matches: matches || valueMatches,
             });
           }
         });
@@ -187,11 +192,13 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
 
   const highlightText = (text: string, query: string): React.ReactNode => {
     if (!query) return text;
-    
+
     const parts = text.split(new RegExp(`(${query})`, 'gi'));
-    return parts.map((part, index) => 
+    return parts.map((part, index) =>
       part.toLowerCase() === query.toLowerCase() ? (
-        <mark key={index} className="search-highlight">{part}</mark>
+        <mark key={index} className="search-highlight">
+          {part}
+        </mark>
       ) : (
         part
       )
@@ -204,7 +211,11 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
     }
 
     if (typeof value === 'string') {
-      return <span className="value-string">&quot;{highlightText(value, debouncedSearchQuery)}&quot;</span>;
+      return (
+        <span className="value-string">
+          &quot;{highlightText(value, debouncedSearchQuery)}&quot;
+        </span>
+      );
     }
 
     if (typeof value === 'number') {
@@ -222,12 +233,14 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
     if (Array.isArray(value)) {
       return (
         <div className="value-array">
-          [{value.map((item, index) => (
+          [
+          {value.map((item, index) => (
             <div key={index} className="array-item">
               {renderValue(item, depth + 1, `${path}[${index}]`)}
               {index < value.length - 1 && ','}
             </div>
-          ))}]
+          ))}
+          ]
         </div>
       );
     }
@@ -240,7 +253,7 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
             const currentPath = path ? `${path}.${key}` : key;
             return (
               <div key={key} className="object-property">
-                <span 
+                <span
                   className="property-key clickable"
                   onClick={() => copyPath(currentPath)}
                   title={`Click to copy: ${currentPath}`}
@@ -248,9 +261,7 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
                   {highlightText(key, debouncedSearchQuery)}:
                 </span>{' '}
                 {renderValue(val, depth + 1, currentPath)}
-                {copiedPath === currentPath && (
-                  <span className="copy-feedback">✓ Copied!</span>
-                )}
+                {copiedPath === currentPath && <span className="copy-feedback">✓ Copied!</span>}
               </div>
             );
           })}
@@ -269,47 +280,61 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
         <table>
           <tbody>
             <tr>
-              <td><strong>Name:</strong></td>
+              <td>
+                <strong>Name:</strong>
+              </td>
               <td>{theme.name}</td>
             </tr>
             {theme.description && (
               <tr>
-                <td><strong>Description:</strong></td>
+                <td>
+                  <strong>Description:</strong>
+                </td>
                 <td>{theme.description}</td>
               </tr>
             )}
             {theme.author && (
               <tr>
-                <td><strong>Author:</strong></td>
+                <td>
+                  <strong>Author:</strong>
+                </td>
                 <td>{theme.author}</td>
               </tr>
             )}
             {theme.version && (
               <tr>
-                <td><strong>Version:</strong></td>
+                <td>
+                  <strong>Version:</strong>
+                </td>
                 <td>{theme.version}</td>
               </tr>
             )}
             {theme.status && (
               <tr>
-                <td><strong>Status:</strong></td>
                 <td>
-                  <span className={`status-badge status-${theme.status}`}>
-                    {theme.status}
-                  </span>
+                  <strong>Status:</strong>
+                </td>
+                <td>
+                  <span className={`status-badge status-${theme.status}`}>{theme.status}</span>
                 </td>
               </tr>
             )}
             <tr>
-              <td><strong>Dark Mode:</strong></td>
+              <td>
+                <strong>Dark Mode:</strong>
+              </td>
               <td>{theme.supportsDarkMode ? 'Yes' : 'No'}</td>
             </tr>
             {theme.tags && theme.tags.length > 0 && (
               <tr>
-                <td><strong>Tags:</strong></td>
+                <td>
+                  <strong>Tags:</strong>
+                </td>
                 <td>
                   {theme.tags.map(tag => (
-                    <span key={tag} className="tag">{tag}</span>
+                    <span key={tag} className="tag">
+                      {tag}
+                    </span>
                   ))}
                 </td>
               </tr>
@@ -395,7 +420,7 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
     <div className="inspector-css">
       <div className="css-header">
         <h3>Generated CSS Variables</h3>
-        <button 
+        <button
           onClick={() => navigator.clipboard?.writeText(cssVariables)}
           className="copy-button"
         >
@@ -422,7 +447,7 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
               type="text"
               placeholder="Search properties..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               className="search-input"
             />
             {searchQuery && (
@@ -451,9 +476,10 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
         <div className="structure-tree">
           {Object.entries(theme).map(([key, value]) => {
             if (key === '__isJSTheme') return null;
-            
+
             const isExpanded = expandedSections.has(key);
-            const hasChildren = typeof value === 'object' && value !== null && !Array.isArray(value);
+            const hasChildren =
+              typeof value === 'object' && value !== null && !Array.isArray(value);
             const pathMatches = debouncedSearchQuery
               ? allPropertyPaths.some(p => p.path.startsWith(key) && p.matches)
               : true;
@@ -462,18 +488,13 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
 
             return (
               <div key={key} className="structure-node">
-                <div 
-                  className="structure-header"
-                  onClick={() => hasChildren && toggleSection(key)}
-                >
+                <div className="structure-header" onClick={() => hasChildren && toggleSection(key)}>
                   {hasChildren && (
-                    <span className={`expand-icon ${isExpanded ? 'expanded' : ''}`}>
-                      ▶
-                    </span>
+                    <span className={`expand-icon ${isExpanded ? 'expanded' : ''}`}>▶</span>
                   )}
-                  <span 
+                  <span
                     className="property-name clickable"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       copyPath(key);
                     }}
@@ -481,22 +502,16 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
                   >
                     {highlightText(key, debouncedSearchQuery)}
                   </span>
-                  {copiedPath === key && (
-                    <span className="copy-feedback">✓ Copied!</span>
-                  )}
+                  {copiedPath === key && <span className="copy-feedback">✓ Copied!</span>}
                   <span className="property-type">
                     {Array.isArray(value) ? 'array' : typeof value}
                   </span>
                 </div>
                 {hasChildren && isExpanded && (
-                  <div className="structure-children">
-                    {renderValue(value, 0, key)}
-                  </div>
+                  <div className="structure-children">{renderValue(value, 0, key)}</div>
                 )}
                 {!hasChildren && (
-                  <div className="structure-value">
-                    {renderValue(value, 0, key)}
-                  </div>
+                  <div className="structure-value">{renderValue(value, 0, key)}</div>
                 )}
               </div>
             );
@@ -510,14 +525,14 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
     <div className={`atomix-theme-inspector ${className || ''}`} style={style}>
       {/* Tab Navigation */}
       <div className="inspector-tabs">
-        <button 
+        <button
           className={`tab ${activeTab === 'overview' ? 'active' : ''}`}
           onClick={() => setActiveTab('overview')}
         >
           Overview
         </button>
         {showValidation && (
-          <button 
+          <button
             className={`tab ${activeTab === 'validation' ? 'active' : ''}`}
             onClick={() => setActiveTab('validation')}
           >
@@ -528,7 +543,7 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
           </button>
         )}
         {showCSSVariables && (
-          <button 
+          <button
             className={`tab ${activeTab === 'css' ? 'active' : ''}`}
             onClick={() => setActiveTab('css')}
           >
@@ -536,7 +551,7 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
           </button>
         )}
         {showStructure && (
-          <button 
+          <button
             className={`tab ${activeTab === 'structure' ? 'active' : ''}`}
             onClick={() => setActiveTab('structure')}
           >

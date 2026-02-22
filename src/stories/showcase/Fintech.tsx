@@ -461,7 +461,9 @@ const Fintech: React.FC = () => {
         <Container>
           <Callout
             variant="info"
-            glass={{ blurAmount: 4, displacementScale: 100, elasticity: 0, cornerRadius: 32 } as any}
+            glass={
+              { blurAmount: 4, displacementScale: 100, elasticity: 0, cornerRadius: 32 } as any
+            }
             className="u-mb-4"
           >
             <div className="u-flex u-flex-column u-items-center u-gap-3">
@@ -1185,53 +1187,58 @@ const Fintech: React.FC = () => {
       </section>
 
       {/* River Component Section */}
-      <section className="u-pt-8 u-pb-16" style={{
-        backgroundImage: `url(https://images.unsplash.com/photo-1614471108981-7afbd3dd4a4f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1286)`,
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundAttachment: 'fixed',
-      }}>
+      <section
+        className="u-pt-8 u-pb-16"
+        style={{
+          backgroundImage: `url(https://images.unsplash.com/photo-1614471108981-7afbd3dd4a4f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1286)`,
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundAttachment: 'fixed',
+        }}
+      >
         <Container>
           <SectionIntro
             title="Why choose FinPay?"
             text="Discover the advantages that make us the preferred choice for millions of users."
             alignment="center"
           />
-         <Grid>
-          <GridCol xs={12} md={6}>
-            <AtomixGlass
-              blurAmount={2}
-              displacementScale={100}
-              cornerRadius={32}
-              elasticity={0}
-              padding="1rem"
-            >
-              <div className="u-p-4">
-                <h2 className="u-text-2 u-font-bold u-mb-3">Trusted by industry leaders</h2>
-                <p className="u-text-5 u-mb-4 u-text-primary-emphasis">
-                  Join thousands of businesses that rely on FinPay for their financial operations. Our platform is trusted by Fortune 500 companies and startups alike.
-                </p>
-              </div>
-            </AtomixGlass>
-          </GridCol>
-          <GridCol xs={12} md={6}>
-            <AtomixGlass
-              blurAmount={2}
-              displacementScale={100}
-              cornerRadius={32}
-              elasticity={0}
-              padding="1rem"
-            >
-              <div className="u-p-4">
-                <h2 className="u-text-2 u-font-bold u-mb-3">Trusted by industry leaders</h2>
-                <p className="u-text-5 u-mb-4 u-text-primary-emphasis">
-                  Join thousands of businesses that rely on FinPay for their financial operations. Our platform is trusted by Fortune 500 companies and startups alike.
-                </p>
-              </div>
-            </AtomixGlass>
-          </GridCol>
-         </Grid>
+          <Grid>
+            <GridCol xs={12} md={6}>
+              <AtomixGlass
+                blurAmount={2}
+                displacementScale={100}
+                cornerRadius={32}
+                elasticity={0}
+                padding="1rem"
+              >
+                <div className="u-p-4">
+                  <h2 className="u-text-2 u-font-bold u-mb-3">Trusted by industry leaders</h2>
+                  <p className="u-text-5 u-mb-4 u-text-primary-emphasis">
+                    Join thousands of businesses that rely on FinPay for their financial operations.
+                    Our platform is trusted by Fortune 500 companies and startups alike.
+                  </p>
+                </div>
+              </AtomixGlass>
+            </GridCol>
+            <GridCol xs={12} md={6}>
+              <AtomixGlass
+                blurAmount={2}
+                displacementScale={100}
+                cornerRadius={32}
+                elasticity={0}
+                padding="1rem"
+              >
+                <div className="u-p-4">
+                  <h2 className="u-text-2 u-font-bold u-mb-3">Trusted by industry leaders</h2>
+                  <p className="u-text-5 u-mb-4 u-text-primary-emphasis">
+                    Join thousands of businesses that rely on FinPay for their financial operations.
+                    Our platform is trusted by Fortune 500 companies and startups alike.
+                  </p>
+                </div>
+              </AtomixGlass>
+            </GridCol>
+          </Grid>
         </Container>
       </section>
 

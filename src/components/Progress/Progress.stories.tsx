@@ -4,7 +4,7 @@ import { fn } from '@storybook/test';
 import { Progress } from './Progress';
 import { THEME_COLORS, SIZES } from '../../lib/constants/components';
 
-const meta = {
+const meta: Meta<typeof Progress> = {
   title: 'Components/Progress',
   component: Progress,
   parameters: {
@@ -83,7 +83,7 @@ Progress displays the completion status of a task or process. It provides visual
       description: 'The progress value as a percentage (0-100)',
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 0 },
+        defaultValue: { summary: '0' },
       },
     },
     variant: {
@@ -104,40 +104,8 @@ Progress displays the completion status of a task or process. It provides visual
         defaultValue: { summary: 'md' },
       },
     },
-    animated: {
-      control: 'boolean',
-      description: 'Whether to animate the progress bar',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
-    striped: {
-      control: 'boolean',
-      description: 'Whether to apply striped styling',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
-    label: {
-      control: 'text',
-      description: 'Optional label to display with the progress',
-      table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: '-' },
-      },
-    },
-    max: {
-      control: 'number',
-      description: 'The maximum value for the progress bar',
-      table: {
-        type: { summary: 'number' },
-        defaultValue: { summary: 100 },
-      },
-    },
   },
-} satisfies Meta<typeof Progress>;
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -158,13 +126,24 @@ export const BasicUsage: Story = {
 };
 
 export const AllVariants: Story = {
+  args: { value: 0 },
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
-      <div><strong>Primary:</strong> <Progress value={75} variant="primary" /></div>
-      <div><strong>Secondary:</strong> <Progress value={60} variant="secondary" /></div>
-      <div><strong>Success:</strong> <Progress value={100} variant="success" /></div>
-      <div><strong>Warning:</strong> <Progress value={45} variant="warning" /></div>
-      <div><strong>Error:</strong> <Progress value={30} variant="error" /></div>
+      <div>
+        <strong>Primary:</strong> <Progress value={75} variant="primary" />
+      </div>
+      <div>
+        <strong>Secondary:</strong> <Progress value={60} variant="secondary" />
+      </div>
+      <div>
+        <strong>Success:</strong> <Progress value={100} variant="success" />
+      </div>
+      <div>
+        <strong>Warning:</strong> <Progress value={45} variant="warning" />
+      </div>
+      <div>
+        <strong>Error:</strong> <Progress value={30} variant="error" />
+      </div>
     </div>
   ),
   parameters: {
@@ -177,11 +156,18 @@ export const AllVariants: Story = {
 };
 
 export const AllSizes: Story = {
+  args: { value: 0 },
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
-      <div><strong>Small:</strong> <Progress value={60} size="sm" /></div>
-      <div><strong>Medium:</strong> <Progress value={70} size="md" /></div>
-      <div><strong>Large:</strong> <Progress value={80} size="lg" /></div>
+      <div>
+        <strong>Small:</strong> <Progress value={60} size="sm" />
+      </div>
+      <div>
+        <strong>Medium:</strong> <Progress value={70} size="md" />
+      </div>
+      <div>
+        <strong>Large:</strong> <Progress value={80} size="lg" />
+      </div>
     </div>
   ),
   parameters: {
@@ -198,8 +184,13 @@ export const WithLabel: Story = {
     value: 75,
     variant: 'primary',
     size: 'md',
-    label: 'Processing files: 75%',
   },
+  render: args => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <label>Processing files: 75%</label>
+      <Progress {...args} />
+    </div>
+  ),
   parameters: {
     docs: {
       description: {

@@ -5,51 +5,71 @@
 
 // Define utilities for borders
 $utilities-border: (
-  'border': (property: border,
+  'border': (
+    property: border,
     class: u-border,
-    values: (null: var(--#{config.$prefix}border-width) var(--#{config.$prefix}border-style) var(--#{config.$prefix}border-color),
+    values: (
+      null: var(--#{config.$prefix}border-width) var(--#{config.$prefix}border-style)
+        var(--#{config.$prefix}border-color),
       0: 0,
     ),
   ),
-  'border-top': (property: border-top,
+  'border-top': (
+    property: border-top,
     class: u-border-t,
-    values: (null: var(--#{config.$prefix}border-width) var(--#{config.$prefix}border-style) var(--#{config.$prefix}border-color),
+    values: (
+      null: var(--#{config.$prefix}border-width) var(--#{config.$prefix}border-style)
+        var(--#{config.$prefix}border-color),
       0: 0,
     ),
   ),
-  'border-end': (property: border-inline-end,
+  'border-end': (
+    property: border-inline-end,
     class: u-border-e,
-    values: (null: var(--#{config.$prefix}border-width) var(--#{config.$prefix}border-style) var(--#{config.$prefix}border-color),
+    values: (
+      null: var(--#{config.$prefix}border-width) var(--#{config.$prefix}border-style)
+        var(--#{config.$prefix}border-color),
       0: 0,
     ),
   ),
-  'border-bottom': (property: border-bottom,
+  'border-bottom': (
+    property: border-bottom,
     class: u-border-b,
-    values: (null: var(--#{config.$prefix}border-width) var(--#{config.$prefix}border-style) var(--#{config.$prefix}border-color),
+    values: (
+      null: var(--#{config.$prefix}border-width) var(--#{config.$prefix}border-style)
+        var(--#{config.$prefix}border-color),
       0: 0,
     ),
   ),
-  'border-start': (property: border-inline-start,
+  'border-start': (
+    property: border-inline-start,
     class: u-border-s,
-    values: (null: var(--#{config.$prefix}border-width) var(--#{config.$prefix}border-style) var(--#{config.$prefix}border-color),
+    values: (
+      null: var(--#{config.$prefix}border-width) var(--#{config.$prefix}border-style)
+        var(--#{config.$prefix}border-color),
       0: 0,
     ),
   ),
-  'border-color': (property: border-color,
+  'border-color': (
+    property: border-color,
     class: u-border,
-    local-vars: ('border-opacity': 1,
+    local-vars: (
+      'border-opacity': 1,
     ),
     values: color-maps.$utilities-border-colors,
   ),
-  'subtle-border-color': (property: border-color,
+  'subtle-border-color': (
+    property: border-color,
     class: u-border,
     values: color-maps.$utilities-border-subtle,
   ),
-  'border-width': (property: border-width,
+  'border-width': (
+    property: border-width,
     class: u-border,
     values: border.$border-widths,
   ),
-  'border-style': (property: border-style,
+  'border-style': (
+    property: border-style,
     class: u-border,
     values: (
       solid: solid,
@@ -59,18 +79,22 @@ $utilities-border: (
       none: none,
     ),
   ),
-  'border-opacity': (css-var: true,
+  'border-opacity': (
+    css-var: true,
     class: u-border-opacity,
-    values: (10: 0.1,
+    values: (
+      10: 0.1,
       25: 0.25,
       50: 0.5,
       75: 0.75,
       100: 1,
     ),
   ),
-  'rounded': (property: border-radius,
+  'rounded': (
+    property: border-radius,
     class: u-rounded,
-    values: (null: var(--#{config.$prefix}border-radius),
+    values: (
+      null: var(--#{config.$prefix}border-radius),
       0: 0,
       sm: var(--#{config.$prefix}border-radius-sm),
       md: var(--#{config.$prefix}border-radius),
@@ -81,9 +105,11 @@ $utilities-border: (
       pill: var(--#{config.$prefix}border-radius-pill),
     ),
   ),
-  'rounded-top': (property: border-start-start-radius border-start-end-radius,
+  'rounded-top': (
+    property: border-start-start-radius border-start-end-radius,
     class: u-rounded-top,
-    values: (null: var(--#{config.$prefix}border-radius),
+    values: (
+      null: var(--#{config.$prefix}border-radius),
       0: 0,
       sm: var(--#{config.$prefix}border-radius-sm),
       md: var(--#{config.$prefix}border-radius),
@@ -94,9 +120,11 @@ $utilities-border: (
       pill: var(--#{config.$prefix}border-radius-pill),
     ),
   ),
-  'rounded-end': (property: border-start-end-radius border-end-end-radius,
+  'rounded-end': (
+    property: border-start-end-radius border-end-end-radius,
     class: u-rounded-end,
-    values: (null: var(--#{config.$prefix}border-radius),
+    values: (
+      null: var(--#{config.$prefix}border-radius),
       0: 0,
       sm: var(--#{config.$prefix}border-radius-sm),
       md: var(--#{config.$prefix}border-radius),
@@ -107,9 +135,11 @@ $utilities-border: (
       pill: var(--#{config.$prefix}border-radius-pill),
     ),
   ),
-  'rounded-bottom': (property: border-end-end-radius border-end-start-radius,
+  'rounded-bottom': (
+    property: border-end-end-radius border-end-start-radius,
     class: u-rounded-bottom,
-    values: (null: var(--#{config.$prefix}border-radius),
+    values: (
+      null: var(--#{config.$prefix}border-radius),
       0: 0,
       sm: var(--#{config.$prefix}border-radius-sm),
       md: var(--#{config.$prefix}border-radius),
@@ -120,9 +150,11 @@ $utilities-border: (
       pill: var(--#{config.$prefix}border-radius-pill),
     ),
   ),
-  'rounded-start': (property: border-end-start-radius border-start-start-radius,
+  'rounded-start': (
+    property: border-end-start-radius border-start-start-radius,
     class: u-rounded-start,
-    values: (null: var(--#{config.$prefix}border-radius),
+    values: (
+      null: var(--#{config.$prefix}border-radius),
       0: 0,
       sm: var(--#{config.$prefix}border-radius-sm),
       md: var(--#{config.$prefix}border-radius),

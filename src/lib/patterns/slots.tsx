@@ -1,6 +1,6 @@
 /**
  * Slot Pattern System
- * 
+ *
  * Provides render props and slot-based customization for components.
  * Allows complete control over component rendering and structure.
  */
@@ -21,13 +21,13 @@ export interface SlotProps<T = any> {
 
 /**
  * Render a slot with the given props
- * 
+ *
  * Priority order:
  * 1. render function
  * 2. component
  * 3. children
  * 4. fallback
- * 
+ *
  * @example
  * renderSlot(
  *   { render: (props) => <CustomButton {...props} /> },
@@ -87,11 +87,9 @@ export function isSlot<T>(value: any): value is SlotProps<T> {
  * Merge multiple slot configurations
  * Later slots override earlier ones
  */
-export function mergeSlots<T>(
-  ...slots: Array<SlotProps<T> | undefined>
-): SlotProps<T> | undefined {
+export function mergeSlots<T>(...slots: Array<SlotProps<T> | undefined>): SlotProps<T> | undefined {
   const filtered = slots.filter((s): s is SlotProps<T> => s !== undefined);
-  
+
   if (filtered.length === 0) return undefined;
   if (filtered.length === 1) return filtered[0];
 
@@ -103,10 +101,10 @@ export function mergeSlots<T>(
 
 /**
  * Create a slot wrapper component
- * 
+ *
  * @example
  * const ButtonSlot = createSlotComponent<ButtonSlotProps>('button')
- * 
+ *
  * <ButtonSlot slot={customSlot} {...props}>
  *   Default content
  * </ButtonSlot>
@@ -414,8 +412,5 @@ export function useSlot<T>(
   props: T,
   fallback?: React.ReactNode
 ): React.ReactNode {
-  return React.useMemo(
-    () => renderSlot(slot, props, fallback),
-    [slot, props, fallback]
-  );
+  return React.useMemo(() => renderSlot(slot, props, fallback), [slot, props, fallback]);
 }

@@ -1,6 +1,6 @@
 /**
  * CSS Injection Utilities
- * 
+ *
  * Inject CSS into HTML head via <style> element.
  */
 
@@ -13,26 +13,23 @@ function isBrowser(): boolean {
 
 /**
  * Inject CSS into HTML head via <style> element
- * 
+ *
  * Creates or updates a style element in the document head.
  * If an element with the same ID exists, it will be updated.
- * 
+ *
  * @param css - CSS string to inject
  * @param id - Style element ID (default: 'atomix-theme')
- * 
+ *
  * @example
  * ```typescript
  * const css = ':root { --atomix-color-primary: #7AFFD7; }';
  * injectCSS(css);
- * 
+ *
  * // With custom ID
  * injectCSS(css, 'my-custom-theme');
  * ```
  */
-export function injectCSS(
-  css: string,
-  id: string = 'atomix-theme'
-): void {
+export function injectCSS(css: string, id: string = 'atomix-theme'): void {
   if (!isBrowser()) {
     return;
   }
@@ -51,11 +48,11 @@ export function injectCSS(
 
 /**
  * Remove injected CSS from DOM
- * 
+ *
  * Removes the style element with the given ID from the document head.
- * 
+ *
  * @param id - Style element ID to remove (default: 'atomix-theme')
- * 
+ *
  * @example
  * ```typescript
  * removeCSS(); // Removes default 'atomix-theme'
@@ -75,7 +72,7 @@ export function removeCSS(id: string = 'atomix-theme'): void {
 
 /**
  * Check if CSS is already injected
- * 
+ *
  * @param id - Style element ID to check (default: 'atomix-theme')
  * @returns True if style element exists
  */
@@ -86,4 +83,3 @@ export function isCSSInjected(id: string = 'atomix-theme'): boolean {
 
   return document.getElementById(id) !== null;
 }
-

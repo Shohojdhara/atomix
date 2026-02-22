@@ -1,6 +1,6 @@
 /**
  * Font Preloading Utilities
- * 
+ *
  * Provides utilities for preloading fonts to improve performance
  * and prevent Flash of Invisible Text (FOIT).
  */
@@ -34,10 +34,10 @@ export interface FontPreloadConfig {
 
 /**
  * Creates a preload link element for a font
- * 
+ *
  * @param config - Font preload configuration
  * @returns HTML link element for preloading
- * 
+ *
  * @example
  * ```tsx
  * const preloadLink = createFontPreloadLink({
@@ -49,11 +49,7 @@ export interface FontPreloadConfig {
  * ```
  */
 export function createFontPreloadLink(config: FontPreloadConfig): HTMLLinkElement {
-  const {
-    path,
-    format = 'woff2',
-    crossorigin = 'anonymous',
-  } = config;
+  const { path, format = 'woff2', crossorigin = 'anonymous' } = config;
 
   const link = document.createElement('link');
   link.rel = 'preload';
@@ -67,10 +63,10 @@ export function createFontPreloadLink(config: FontPreloadConfig): HTMLLinkElemen
 
 /**
  * Preloads multiple fonts
- * 
+ *
  * @param fonts - Array of font configurations to preload
  * @returns Array of created link elements
- * 
+ *
  * @example
  * ```tsx
  * const links = preloadFonts([
@@ -87,10 +83,10 @@ export function preloadFonts(fonts: FontPreloadConfig[]): HTMLLinkElement[] {
 /**
  * Generates preload link HTML tags as strings
  * Useful for server-side rendering or static HTML generation
- * 
+ *
  * @param fonts - Array of font configurations
  * @returns Array of HTML string representations
- * 
+ *
  * @example
  * ```tsx
  * const htmlTags = generateFontPreloadTags([
@@ -100,12 +96,8 @@ export function preloadFonts(fonts: FontPreloadConfig[]): HTMLLinkElement[] {
  * ```
  */
 export function generateFontPreloadTags(fonts: FontPreloadConfig[]): string[] {
-  return fonts.map((config) => {
-    const {
-      path,
-      format = 'woff2',
-      crossorigin = 'anonymous',
-    } = config;
+  return fonts.map(config => {
+    const { path, format = 'woff2', crossorigin = 'anonymous' } = config;
 
     return `<link rel="preload" as="font" href="${path}" type="font/${format}" crossorigin="${crossorigin}">`;
   });
@@ -145,4 +137,3 @@ export const DEFAULT_ATOMIX_FONTS: FontPreloadConfig[] = [
     format: 'woff2',
   },
 ];
-

@@ -181,18 +181,18 @@ export const WithMixedInteractions: Story = {
   args: {
     items: [
       { label: 'Home', href: '/' },
-      { 
-        label: 'Products', 
+      {
+        label: 'Products',
         onClick: fn(),
         // Simulating client-side navigation
       },
-      { 
-        label: 'Category', 
+      {
+        label: 'Category',
         href: '/products/category',
         icon: <Icon name="Folder" size="sm" />,
       },
-      { 
-        label: 'Product Name', 
+      {
+        label: 'Product Name',
         active: true,
         icon: <Icon name="Tag" size="sm" />,
       },
@@ -202,7 +202,8 @@ export const WithMixedInteractions: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Breadcrumb combining both traditional link navigation and client-side interactions.',
+        story:
+          'Breadcrumb combining both traditional link navigation and client-side interactions.',
       },
     },
   },

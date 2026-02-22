@@ -49,7 +49,7 @@ const AreaChart = memo(
                 y: scales.yScale(point.value),
               }));
 
-              const areaPath = `M ${areaPoints.map((p) => `${p.x},${p.y}`).join(' L ')} L ${areaPoints[areaPoints.length - 1]?.x},${scales.height} L ${areaPoints[0]?.x},${scales.height} Z`;
+              const areaPath = `M ${areaPoints.map(p => `${p.x},${p.y}`).join(' L ')} L ${areaPoints[areaPoints.length - 1]?.x},${scales.height} L ${areaPoints[0]?.x},${scales.height} Z`;
 
               return (
                 <g key={`dataset-${datasetIndex}`}>

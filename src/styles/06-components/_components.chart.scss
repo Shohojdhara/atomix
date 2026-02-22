@@ -31,7 +31,7 @@
   border: var(--#{$prefix}chart-border-width) solid var(--#{$prefix}chart-border-color);
   border-radius: var(--#{$prefix}chart-border-radius);
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.12),
     0 1px 2px rgba(0, 0, 0, 0.24),
     0 0 0 1px rgba(var(--#{$prefix}primary-rgb), 0.05);
@@ -48,7 +48,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: 
+    background:
       linear-gradient(
         135deg,
         rgba(var(--#{$prefix}primary-rgb), 0.08) 0%,
@@ -85,9 +85,13 @@
       rgba(var(--#{$prefix}secondary-rgb), 0.05),
       transparent
     );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     mask-composite: exclude;
     pointer-events: none;
     z-index: 2;
@@ -96,7 +100,7 @@
   }
 
   &:hover {
-    box-shadow: 
+    box-shadow:
       0 8px 24px rgba(0, 0, 0, 0.12),
       0 4px 8px rgba(0, 0, 0, 0.16),
       0 0 0 1px rgba(var(--#{$prefix}primary-rgb), 0.1),
@@ -143,14 +147,14 @@
     background: var(--#{$prefix}body-bg);
   }
   &--elevated {
-    box-shadow: 
+    box-shadow:
       0 12px 32px rgba(0, 0, 0, 0.15),
       0 6px 12px rgba(0, 0, 0, 0.2),
       0 0 0 1px rgba(var(--#{$prefix}primary-rgb), 0.1),
       0 0 60px rgba(var(--#{$prefix}primary-rgb), 0.12);
 
     &:hover {
-      box-shadow: 
+      box-shadow:
         0 16px 40px rgba(0, 0, 0, 0.18),
         0 8px 16px rgba(0, 0, 0, 0.24),
         0 0 0 1px rgba(var(--#{$prefix}primary-rgb), 0.15),
@@ -190,12 +194,12 @@
 
   &--selected {
     border-color: rgba(var(--#{$prefix}primary-rgb), 0.3);
-    box-shadow: 
+    box-shadow:
       0 4px 16px rgba(0, 0, 0, 0.1),
       0 2px 4px rgba(0, 0, 0, 0.12),
       0 0 0 2px rgba(var(--#{$prefix}primary-rgb), 0.2),
       0 0 30px rgba(var(--#{$prefix}primary-rgb), 0.15);
-    background: 
+    background:
       linear-gradient(
         135deg,
         rgba(var(--#{$prefix}primary-rgb), 0.08) 0%,
@@ -213,7 +217,7 @@
     cursor: pointer;
 
     &:hover {
-      box-shadow: 
+      box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.12),
         0 4px 8px rgba(0, 0, 0, 0.16),
         0 0 0 1px rgba(var(--#{$prefix}primary-rgb), 0.1),
@@ -222,7 +226,7 @@
     }
 
     &:active {
-      box-shadow: 
+      box-shadow:
         0 2px 8px rgba(0, 0, 0, 0.1),
         0 1px 2px rgba(0, 0, 0, 0.12);
     }
@@ -601,14 +605,13 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: 
-        linear-gradient(
-          180deg,
-          rgba(var(--#{$prefix}primary-rgb), 0.03) 0%,
-          transparent 30%,
-          transparent 70%,
-          rgba(var(--#{$prefix}secondary-rgb), 0.02) 100%
-        );
+      background: linear-gradient(
+        180deg,
+        rgba(var(--#{$prefix}primary-rgb), 0.03) 0%,
+        transparent 30%,
+        transparent 70%,
+        rgba(var(--#{$prefix}secondary-rgb), 0.02) 100%
+      );
       pointer-events: none;
       z-index: 1;
     }

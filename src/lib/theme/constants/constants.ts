@@ -1,6 +1,6 @@
 /**
  * Theme System Constants
- * 
+ *
  * Centralized constants for the theme system to avoid magic numbers and strings.
  */
 
@@ -121,7 +121,7 @@ export const DEFAULT_ANALYTICS_CONFIG = {
  * Logger default configuration
  */
 export const DEFAULT_LOGGER_CONFIG = {
-  level: (typeof process !== 'undefined' && process.env?.NODE_ENV === 'production') ? 1 : 2, // WARN in prod, INFO in dev
+  level: typeof process !== 'undefined' && process.env?.NODE_ENV === 'production' ? 1 : 2, // WARN in prod, INFO in dev
   enableConsole: true,
 } as const;
 

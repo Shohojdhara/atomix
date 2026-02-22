@@ -1,6 +1,6 @@
 /**
  * Theme Preview Component
- * 
+ *
  * React component for previewing themes in development
  * Enhanced with interactive components, viewport controls, and dark mode toggle
  */
@@ -54,7 +54,7 @@ const VIEWPORT_PRESETS: Record<ViewportPreset, ViewportConfig> = {
 
 /**
  * Theme Preview Component
- * 
+ *
  * Renders a preview of a theme with sample components
  */
 export const ThemePreview: React.FC<ThemePreviewProps> = ({
@@ -85,7 +85,7 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
   // Generate theme with dark mode override if needed
   const previewTheme = useMemo(() => {
     if (!darkMode) return theme;
-    
+
     // Create a dark mode variant (simplified - you might want more sophisticated logic)
     return {
       ...theme,
@@ -138,9 +138,9 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
       <div className="preview-controls">
         <div className="control-group">
           <label>Viewport:</label>
-          <select 
-            value={viewportPreset} 
-            onChange={(e) => setViewportPreset(e.target.value as ViewportPreset)}
+          <select
+            value={viewportPreset}
+            onChange={e => setViewportPreset(e.target.value as ViewportPreset)}
           >
             <option value="mobile">Mobile (375px)</option>
             <option value="tablet">Tablet (768px)</option>
@@ -156,7 +156,7 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
               <input
                 type="number"
                 value={customWidth}
-                onChange={(e) => setCustomWidth(parseInt(e.target.value) || 1280)}
+                onChange={e => setCustomWidth(parseInt(e.target.value) || 1280)}
                 min="320"
                 max="3840"
               />
@@ -166,7 +166,7 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
               <input
                 type="number"
                 value={customHeight}
-                onChange={(e) => setCustomHeight(parseInt(e.target.value) || 720)}
+                onChange={e => setCustomHeight(parseInt(e.target.value) || 720)}
                 min="240"
                 max="2160"
               />
@@ -179,7 +179,7 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
             <input
               type="checkbox"
               checked={darkMode}
-              onChange={(e) => setDarkMode(e.target.checked)}
+              onChange={e => setDarkMode(e.target.checked)}
             />
             Dark Mode
           </label>
@@ -187,7 +187,7 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
       </div>
 
       {/* Viewport Wrapper */}
-      <div 
+      <div
         className="viewport-wrapper"
         style={{
           width: `${viewport.width}px`,
@@ -197,17 +197,31 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
       >
         {/* Inject theme CSS variables */}
         <style>{cssVariables}</style>
-        
+
         {/* Theme Details */}
         {showDetails && (
           <div className="theme-details">
             <h2>{previewTheme.name}</h2>
             {previewTheme.description && <p>{previewTheme.description}</p>}
-            {previewTheme.author && <p><strong>Author:</strong> {previewTheme.author}</p>}
-            {previewTheme.version && <p><strong>Version:</strong> {previewTheme.version}</p>}
-            {previewTheme.status && <p><strong>Status:</strong> {previewTheme.status}</p>}
+            {previewTheme.author && (
+              <p>
+                <strong>Author:</strong> {previewTheme.author}
+              </p>
+            )}
+            {previewTheme.version && (
+              <p>
+                <strong>Version:</strong> {previewTheme.version}
+              </p>
+            )}
+            {previewTheme.status && (
+              <p>
+                <strong>Status:</strong> {previewTheme.status}
+              </p>
+            )}
             {previewTheme.tags && previewTheme.tags.length > 0 && (
-              <p><strong>Tags:</strong> {previewTheme.tags.join(', ')}</p>
+              <p>
+                <strong>Tags:</strong> {previewTheme.tags.join(', ')}
+              </p>
             )}
           </div>
         )}
@@ -217,16 +231,13 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
           <div className="theme-palette">
             <h3>Color Palette</h3>
             <div className="color-grid">
-              {['primary', 'secondary', 'error', 'warning', 'info', 'success'].map((colorName) => {
+              {['primary', 'secondary', 'error', 'warning', 'info', 'success'].map(colorName => {
                 const color = previewTheme.palette[colorName as keyof typeof previewTheme.palette];
                 if (!color || typeof color !== 'object' || !('main' in color)) return null;
-                
+
                 return (
                   <div key={colorName} className="color-item">
-                    <div 
-                      className="color-swatch"
-                      style={{ backgroundColor: color.main }}
-                    />
+                    <div className="color-swatch" style={{ backgroundColor: color.main }} />
                     <div className="color-info">
                       <strong>{colorName}</strong>
                       <code>{color.main}</code>
@@ -235,16 +246,13 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
                 );
               })}
             </div>
-            
+
             {/* Background Colors */}
             <h4>Background</h4>
             <div className="color-grid">
               {Object.entries(previewTheme.palette.background).map(([name, value]) => (
                 <div key={name} className="color-item">
-                  <div 
-                    className="color-swatch"
-                    style={{ backgroundColor: value }}
-                  />
+                  <div className="color-swatch" style={{ backgroundColor: value }} />
                   <div className="color-info">
                     <strong>{name}</strong>
                     <code>{value}</code>
@@ -258,10 +266,7 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
             <div className="color-grid">
               {Object.entries(previewTheme.palette.text).map(([name, value]) => (
                 <div key={name} className="color-item">
-                  <div 
-                    className="color-swatch"
-                    style={{ backgroundColor: value }}
-                  />
+                  <div className="color-swatch" style={{ backgroundColor: value }} />
                   <div className="color-info">
                     <strong>{name}</strong>
                     <code>{value}</code>
@@ -277,44 +282,58 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
           <div className="theme-typography">
             <h3>Typography</h3>
             <div className="typography-info">
-              <p><strong>Font Family:</strong> <code>{previewTheme.typography.fontFamily}</code></p>
-              <p><strong>Base Font Size:</strong> <code>{previewTheme.typography.fontSize}px</code></p>
+              <p>
+                <strong>Font Family:</strong> <code>{previewTheme.typography.fontFamily}</code>
+              </p>
+              <p>
+                <strong>Base Font Size:</strong> <code>{previewTheme.typography.fontSize}px</code>
+              </p>
             </div>
-            
+
             <div className="typography-samples">
-              <h1 style={{ 
-                fontSize: previewTheme.typography.h1.fontSize,
-                fontWeight: previewTheme.typography.h1.fontWeight,
-                lineHeight: previewTheme.typography.h1.lineHeight,
-              }}>
+              <h1
+                style={{
+                  fontSize: previewTheme.typography.h1.fontSize,
+                  fontWeight: previewTheme.typography.h1.fontWeight,
+                  lineHeight: previewTheme.typography.h1.lineHeight,
+                }}
+              >
                 Heading 1
               </h1>
-              <h2 style={{ 
-                fontSize: previewTheme.typography.h2.fontSize,
-                fontWeight: previewTheme.typography.h2.fontWeight,
-                lineHeight: previewTheme.typography.h2.lineHeight,
-              }}>
+              <h2
+                style={{
+                  fontSize: previewTheme.typography.h2.fontSize,
+                  fontWeight: previewTheme.typography.h2.fontWeight,
+                  lineHeight: previewTheme.typography.h2.lineHeight,
+                }}
+              >
                 Heading 2
               </h2>
-              <h3 style={{ 
-                fontSize: previewTheme.typography.h3.fontSize,
-                fontWeight: previewTheme.typography.h3.fontWeight,
-                lineHeight: previewTheme.typography.h3.lineHeight,
-              }}>
+              <h3
+                style={{
+                  fontSize: previewTheme.typography.h3.fontSize,
+                  fontWeight: previewTheme.typography.h3.fontWeight,
+                  lineHeight: previewTheme.typography.h3.lineHeight,
+                }}
+              >
                 Heading 3
               </h3>
-              <p style={{ 
-                fontSize: previewTheme.typography.body1.fontSize,
-                fontWeight: previewTheme.typography.body1.fontWeight,
-                lineHeight: previewTheme.typography.body1.lineHeight,
-              }}>
+              <p
+                style={{
+                  fontSize: previewTheme.typography.body1.fontSize,
+                  fontWeight: previewTheme.typography.body1.fontWeight,
+                  lineHeight: previewTheme.typography.body1.lineHeight,
+                }}
+              >
                 Body 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
               </p>
-              <p style={{ 
-                fontSize: previewTheme.typography.body2.fontSize,
-                fontWeight: previewTheme.typography.body2.fontWeight,
-                lineHeight: previewTheme.typography.body2.lineHeight,
-              }}>
+              <p
+                style={{
+                  fontSize: previewTheme.typography.body2.fontSize,
+                  fontWeight: previewTheme.typography.body2.fontWeight,
+                  lineHeight: previewTheme.typography.body2.lineHeight,
+                }}
+              >
                 Body 2: Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
             </div>
@@ -326,17 +345,19 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
           <div className="theme-spacing">
             <h3>Spacing</h3>
             <div className="spacing-samples">
-              {[1, 2, 3, 4, 6, 8, 12].map((multiplier) => (
+              {[1, 2, 3, 4, 6, 8, 12].map(multiplier => (
                 <div key={multiplier} className="spacing-item">
-                  <div 
+                  <div
                     className="spacing-box"
-                    style={{ 
+                    style={{
                       width: previewTheme.spacing(multiplier),
                       height: previewTheme.spacing(multiplier),
                       backgroundColor: previewTheme.palette.primary.main,
                     }}
                   />
-                  <code>{multiplier} = {previewTheme.spacing(multiplier)}</code>
+                  <code>
+                    {multiplier} = {previewTheme.spacing(multiplier)}
+                  </code>
                 </div>
               ))}
             </div>
@@ -346,22 +367,26 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
         {/* Sample Components */}
         <div className="theme-components">
           <h3>Sample Components</h3>
-          
+
           {/* Buttons */}
           <div className="component-group">
             <h4>Buttons</h4>
             <div className="button-group">
-              <button 
+              <button
                 className={`interactive-button ${interactiveStates['btn-primary'] ? 'active' : ''}`}
                 onClick={() => handleButtonClick('btn-primary')}
-                onMouseEnter={() => setInteractiveStates(prev => ({ ...prev, 'btn-primary-hover': true }))}
-                onMouseLeave={() => setInteractiveStates(prev => {
-                  const next = { ...prev };
-                  delete next['btn-primary-hover'];
-                  return next;
-                })}
+                onMouseEnter={() =>
+                  setInteractiveStates(prev => ({ ...prev, 'btn-primary-hover': true }))
+                }
+                onMouseLeave={() =>
+                  setInteractiveStates(prev => {
+                    const next = { ...prev };
+                    delete next['btn-primary-hover'];
+                    return next;
+                  })
+                }
                 style={{
-                  backgroundColor: interactiveStates['btn-primary-hover'] 
+                  backgroundColor: interactiveStates['btn-primary-hover']
                     ? previewTheme.palette.primary.dark || previewTheme.palette.primary.main
                     : previewTheme.palette.primary.main,
                   color: previewTheme.palette.primary.contrastText,
@@ -375,15 +400,19 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
               >
                 Primary Button
               </button>
-              <button 
+              <button
                 className={`interactive-button ${interactiveStates['btn-secondary'] ? 'active' : ''}`}
                 onClick={() => handleButtonClick('btn-secondary')}
-                onMouseEnter={() => setInteractiveStates(prev => ({ ...prev, 'btn-secondary-hover': true }))}
-                onMouseLeave={() => setInteractiveStates(prev => {
-                  const next = { ...prev };
-                  delete next['btn-secondary-hover'];
-                  return next;
-                })}
+                onMouseEnter={() =>
+                  setInteractiveStates(prev => ({ ...prev, 'btn-secondary-hover': true }))
+                }
+                onMouseLeave={() =>
+                  setInteractiveStates(prev => {
+                    const next = { ...prev };
+                    delete next['btn-secondary-hover'];
+                    return next;
+                  })
+                }
                 style={{
                   backgroundColor: interactiveStates['btn-secondary-hover']
                     ? previewTheme.palette.secondary.dark || previewTheme.palette.secondary.main
@@ -399,21 +428,29 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
               >
                 Secondary Button
               </button>
-              <button 
+              <button
                 className={`interactive-button ${interactiveStates['btn-outline'] ? 'active' : ''}`}
                 onClick={() => handleButtonClick('btn-outline')}
-                onMouseEnter={() => setInteractiveStates(prev => ({ ...prev, 'btn-outline-hover': true }))}
-                onMouseLeave={() => setInteractiveStates(prev => {
-                  const next = { ...prev };
-                  delete next['btn-outline-hover'];
-                  return next;
-                })}
-                onFocus={() => setInteractiveStates(prev => ({ ...prev, 'btn-outline-focus': true }))}
-                onBlur={() => setInteractiveStates(prev => {
-                  const next = { ...prev };
-                  delete next['btn-outline-focus'];
-                  return next;
-                })}
+                onMouseEnter={() =>
+                  setInteractiveStates(prev => ({ ...prev, 'btn-outline-hover': true }))
+                }
+                onMouseLeave={() =>
+                  setInteractiveStates(prev => {
+                    const next = { ...prev };
+                    delete next['btn-outline-hover'];
+                    return next;
+                  })
+                }
+                onFocus={() =>
+                  setInteractiveStates(prev => ({ ...prev, 'btn-outline-focus': true }))
+                }
+                onBlur={() =>
+                  setInteractiveStates(prev => {
+                    const next = { ...prev };
+                    delete next['btn-outline-focus'];
+                    return next;
+                  })
+                }
                 style={{
                   backgroundColor: 'transparent',
                   color: previewTheme.palette.primary.main,
@@ -423,7 +460,9 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
                   cursor: 'pointer',
                   transform: interactiveStates['btn-outline'] ? 'scale(0.95)' : 'scale(1)',
                   transition: 'all 0.2s ease',
-                  outline: interactiveStates['btn-outline-focus'] ? `2px solid ${previewTheme.palette.primary.main}` : 'none',
+                  outline: interactiveStates['btn-outline-focus']
+                    ? `2px solid ${previewTheme.palette.primary.main}`
+                    : 'none',
                   outlineOffset: '2px',
                 }}
               >
@@ -435,21 +474,23 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
           {/* Cards */}
           <div className="component-group">
             <h4>Card</h4>
-            <div 
+            <div
               className="interactive-card"
               onMouseEnter={() => setInteractiveStates(prev => ({ ...prev, 'card-hover': true }))}
-              onMouseLeave={() => setInteractiveStates(prev => {
-                const next = { ...prev };
-                delete next['card-hover'];
-                return next;
-              })}
+              onMouseLeave={() =>
+                setInteractiveStates(prev => {
+                  const next = { ...prev };
+                  delete next['card-hover'];
+                  return next;
+                })
+              }
               style={{
                 backgroundColor: previewTheme.palette.background.subtle,
                 border: `1px solid ${previewTheme.palette.text.disabled}`,
                 borderRadius: previewTheme.borderRadius.lg,
                 padding: previewTheme.spacing(3),
-                boxShadow: interactiveStates['card-hover'] 
-                  ? previewTheme.shadows.lg 
+                boxShadow: interactiveStates['card-hover']
+                  ? previewTheme.shadows.lg
                   : previewTheme.shadows.md,
                 maxWidth: '300px',
                 transition: 'all 0.2s ease',
@@ -457,12 +498,15 @@ export const ThemePreview: React.FC<ThemePreviewProps> = ({
               }}
             >
               <h5 style={{ margin: 0, marginBottom: previewTheme.spacing(1) }}>Card Title</h5>
-              <p style={{ 
-                margin: 0, 
-                color: previewTheme.palette.text.secondary,
-                fontSize: previewTheme.typography.body2.fontSize,
-              }}>
-                This is a sample card component showing how the theme colors and spacing work together.
+              <p
+                style={{
+                  margin: 0,
+                  color: previewTheme.palette.text.secondary,
+                  fontSize: previewTheme.typography.body2.fontSize,
+                }}
+              >
+                This is a sample card component showing how the theme colors and spacing work
+                together.
               </p>
             </div>
           </div>

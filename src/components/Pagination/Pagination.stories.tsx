@@ -72,7 +72,7 @@ const meta = {
     },
   },
   args: {
-    onPageChange: () => { },
+    onPageChange: () => {},
   },
 } satisfies Meta<typeof Pagination>;
 
@@ -105,7 +105,8 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Default pagination with first/last and previous/next navigation buttons using icons.',
+        story:
+          'Default pagination with first/last and previous/next navigation buttons using icons.',
       },
     },
   },
@@ -348,7 +349,8 @@ export const WithSearch: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Pagination with search functionality to quickly jump to a specific page. Users can type a page number and submit to navigate directly.',
+        story:
+          'Pagination with search functionality to quickly jump to a specific page. Users can type a page number and submit to navigate directly.',
       },
     },
   },
@@ -369,7 +371,8 @@ export const WithSearchLargeDataset: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Pagination with search functionality for large datasets. The search feature is especially useful when dealing with many pages.',
+        story:
+          'Pagination with search functionality for large datasets. The search feature is especially useful when dealing with many pages.',
       },
     },
   },

@@ -96,7 +96,24 @@ export const Card = React.memo(
           ]
             .filter(Boolean)
             .join(' '),
-        [size, variant, appearance, elevation, hoverable, hoverElevation, row, flat, active, disabled, loading, selected, interactive, isClickable, glass, className]
+        [
+          size,
+          variant,
+          appearance,
+          elevation,
+          hoverable,
+          hoverElevation,
+          row,
+          flat,
+          active,
+          disabled,
+          loading,
+          selected,
+          interactive,
+          isClickable,
+          glass,
+          className,
+        ]
       );
 
       // Determine ARIA role
@@ -239,11 +256,7 @@ export const Card = React.memo(
 
         if (glass) {
           const glassProps = glass === true ? {} : glass;
-          return (
-            <AtomixGlass {...{ ...glassProps, elasticity: 0 }}>
-              {anchorElement}
-            </AtomixGlass>
-          );
+          return <AtomixGlass {...{ ...glassProps, elasticity: 0 }}>{anchorElement}</AtomixGlass>;
         }
 
         return anchorElement;
@@ -258,11 +271,7 @@ export const Card = React.memo(
 
       if (glass) {
         const glassProps = glass === true ? {} : glass;
-        return (
-          <AtomixGlass {...{ ...glassProps, elasticity: 0 }}>
-            {divElement}
-          </AtomixGlass>
-        );
+        return <AtomixGlass {...{ ...glassProps, elasticity: 0 }}>{divElement}</AtomixGlass>;
       }
 
       return divElement;
@@ -327,10 +336,16 @@ export interface CardBodyProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const CardBody = forwardRef<HTMLDivElement, CardBodyProps>(
   ({ scrollable = false, maxHeight, children, className = '', style, ...props }, ref) => {
-    const bodyClasses = `${CARD.SELECTORS.BODY.substring(1)} ${scrollable ? 'c-card__body--scrollable' : ''} ${className}`.trim();
+    const bodyClasses =
+      `${CARD.SELECTORS.BODY.substring(1)} ${scrollable ? 'c-card__body--scrollable' : ''} ${className}`.trim();
     const bodyStyle: React.CSSProperties = {
       ...style,
-      ...(scrollable && maxHeight ? { maxHeight: typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight, overflowY: 'auto' } : {}),
+      ...(scrollable && maxHeight
+        ? {
+            maxHeight: typeof maxHeight === 'number' ? `${maxHeight}px` : maxHeight,
+            overflowY: 'auto',
+          }
+        : {}),
     };
 
     return (
@@ -352,7 +367,8 @@ export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
   ({ align, children, className = '', style, ...props }, ref) => {
-    const footerClasses = `${CARD.SELECTORS.FOOTER.substring(1)} ${align ? `c-card__footer--align-${align}` : ''} ${className}`.trim();
+    const footerClasses =
+      `${CARD.SELECTORS.FOOTER.substring(1)} ${align ? `c-card__footer--align-${align}` : ''} ${className}`.trim();
 
     return (
       <div ref={ref} className={footerClasses} style={style} {...props}>

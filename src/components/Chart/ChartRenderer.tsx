@@ -1,4 +1,13 @@
-import { forwardRef, memo, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  forwardRef,
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   useChart,
   useChartAccessibility,
@@ -88,7 +97,7 @@ const ChartRenderer = memo(
       const svgRef = useRef<SVGSVGElement>(null);
       const containerRef = useRef<HTMLDivElement>(null);
       const [isInitialized, setIsInitialized] = useState(false);
-      
+
       // Responsive dimensions state - initialize with 0 to prevent layout shifts
       const [dimensions, setDimensions] = useState({
         width: 0,
@@ -121,7 +130,7 @@ const ChartRenderer = memo(
         });
 
         // Use ResizeObserver to track container size changes
-        const resizeObserver = new ResizeObserver((entries) => {
+        const resizeObserver = new ResizeObserver(entries => {
           for (const entry of entries) {
             const { width: containerWidth, height: containerHeight } = entry.contentRect;
             if (containerWidth > 0 && containerHeight > 0) {
@@ -274,7 +283,13 @@ const ChartRenderer = memo(
           return null;
         }
 
-        const scales = calculateScales(processedData, dimensions.width, dimensions.height, undefined, config);
+        const scales = calculateScales(
+          processedData,
+          dimensions.width,
+          dimensions.height,
+          undefined,
+          config
+        );
         if (!scales) return null;
 
         const colors = getChartColors(processedData.length).filter(
@@ -289,7 +304,15 @@ const ChartRenderer = memo(
             color: dataset.color || colors[i],
           })),
         };
-      }, [processedData, config, dimensions.width, dimensions.height, isInitialized, calculateScales, getChartColors]);
+      }, [
+        processedData,
+        config,
+        dimensions.width,
+        dimensions.height,
+        isInitialized,
+        calculateScales,
+        getChartColors,
+      ]);
 
       useEffect(() => {
         return () => {
@@ -335,12 +358,12 @@ const ChartRenderer = memo(
       // Don't render until dimensions are initialized to prevent layout shifts
       if (!isInitialized || dimensions.width === 0 || dimensions.height === 0) {
         return (
-          <div 
-            ref={containerRef} 
-            className={CHART.CANVAS_CLASS} 
-            style={{ 
-              width: '100%', 
-              height: '100%', 
+          <div
+            ref={containerRef}
+            className={CHART.CANVAS_CLASS}
+            style={{
+              width: '100%',
+              height: '100%',
               minHeight: '200px',
               display: 'flex',
               alignItems: 'center',
@@ -359,7 +382,11 @@ const ChartRenderer = memo(
 
       return (
         <>
-          <div ref={containerRef} className={CHART.CANVAS_CLASS} style={{ width: '100%', height: '100%' }}>
+          <div
+            ref={containerRef}
+            className={CHART.CANVAS_CLASS}
+            style={{ width: '100%', height: '100%' }}
+          >
             <svg
               ref={svgRef}
               width={svgWidth}

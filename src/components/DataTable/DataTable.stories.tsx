@@ -83,88 +83,88 @@ DataTable provides a powerful and flexible way to display structured data in row
   },
   tags: ['autodocs'],
   argTypes: {
-    data: { 
-      control: 'object', 
+    data: {
+      control: 'object',
       description: 'Array of data objects to display',
       table: {
         type: { summary: 'T[]' },
         defaultValue: { summary: '[]' },
       },
     },
-    columns: { 
-      control: 'object', 
+    columns: {
+      control: 'object',
       description: 'Column definitions for the table',
       table: {
         type: { summary: 'DataTableColumn[]' },
         defaultValue: { summary: '[]' },
       },
     },
-    sortable: { 
-      control: 'boolean', 
+    sortable: {
+      control: 'boolean',
       description: 'Whether columns are sortable',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
     },
-    filterable: { 
-      control: 'boolean', 
+    filterable: {
+      control: 'boolean',
       description: 'Whether the table is filterable',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
     },
-    paginated: { 
-      control: 'boolean', 
+    paginated: {
+      control: 'boolean',
       description: 'Whether to enable pagination',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
     },
-    pageSize: { 
-      control: 'number', 
+    pageSize: {
+      control: 'number',
       description: 'Number of rows per page',
       table: {
         type: { summary: 'number' },
         defaultValue: { summary: '10' },
       },
     },
-    striped: { 
-      control: 'boolean', 
+    striped: {
+      control: 'boolean',
       description: 'Whether to apply striped row styling',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
     },
-    bordered: { 
-      control: 'boolean', 
+    bordered: {
+      control: 'boolean',
       description: 'Whether to show table borders',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
     },
-    dense: { 
-      control: 'boolean', 
+    dense: {
+      control: 'boolean',
       description: 'Whether to use dense row spacing',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
     },
-    loading: { 
-      control: 'boolean', 
+    loading: {
+      control: 'boolean',
       description: 'Whether the table is in loading state',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
     },
-    emptyMessage: { 
-      control: 'text', 
+    emptyMessage: {
+      control: 'text',
       description: 'Message to display when table is empty',
       table: {
         type: { summary: 'string' },
@@ -361,7 +361,8 @@ export const WithColumnFilters: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'DataTable with column-specific filters. Each filterable column has its own filter input.',
+        story:
+          'DataTable with column-specific filters. Each filterable column has its own filter input.',
       },
     },
   },
@@ -372,7 +373,7 @@ export const WithColumnFilters: Story = {
 // ========================================
 
 export const WithRowSelectionSingle: Story = {
-  render: (args) => {
+  render: args => {
     const [selectedRow, setSelectedRow] = useState<any>(null);
 
     return (
@@ -382,14 +383,12 @@ export const WithRowSelectionSingle: Story = {
           data={args.data || users}
           columns={args.columns || columns}
           selectionMode="single"
-          onSelectionChange={(rows) => setSelectedRow(rows[0] || null)}
+          onSelectionChange={rows => setSelectedRow(rows[0] || null)}
         />
         {selectedRow && (
           <div className="u-mt-4 u-p-4 u-bg-gray-100 u-rounded u-text-sm">
             <strong>Selected:</strong>
-            <pre className="u-mt-2 u-text-xs">
-              {JSON.stringify(selectedRow, null, 2)}
-            </pre>
+            <pre className="u-mt-2 u-text-xs">{JSON.stringify(selectedRow, null, 2)}</pre>
           </div>
         )}
       </div>
@@ -410,7 +409,7 @@ export const WithRowSelectionSingle: Story = {
 };
 
 export const WithRowSelectionMultiple: Story = {
-  render: (args) => {
+  render: args => {
     const [selectedRows, setSelectedRows] = useState<any[]>([]);
 
     return (
@@ -426,7 +425,11 @@ export const WithRowSelectionMultiple: Story = {
           <div className="u-mt-4 u-p-4 u-bg-gray-100 u-rounded u-text-sm">
             <strong>Selected: {selectedRows.length} row(s)</strong>
             <pre className="u-mt-2 u-text-xs">
-              {JSON.stringify(selectedRows.map(r => r.name), null, 2)}
+              {JSON.stringify(
+                selectedRows.map(r => r.name),
+                null,
+                2
+              )}
             </pre>
           </div>
         )}
@@ -452,7 +455,7 @@ export const WithRowSelectionMultiple: Story = {
 // ========================================
 
 export const WithInteractiveRows: Story = {
-  render: (args) => {
+  render: args => {
     const [selectedUser, setSelectedUser] = useState<any>(null);
 
     const handleRowClick = (row: any) => {
@@ -461,11 +464,11 @@ export const WithInteractiveRows: Story = {
 
     return (
       <div>
-        <DataTable 
-          {...args} 
+        <DataTable
+          {...args}
           data={args.data || users}
           columns={args.columns || columns}
-          onRowClick={handleRowClick} 
+          onRowClick={handleRowClick}
         />
         {selectedUser && (
           <div className="u-mt-4 u-p-4 u-border u-border-gray-300 u-rounded u-bg-white">
@@ -570,7 +573,8 @@ export const WithColumnVisibilityToggle: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'DataTable with column visibility toggle. Use the Columns button to show/hide columns.',
+        story:
+          'DataTable with column visibility toggle. Use the Columns button to show/hide columns.',
       },
     },
   },
@@ -642,7 +646,7 @@ export const CompleteFeatures: Story = {
 };
 
 export const AllAdvancedFeatures: Story = {
-  render: (args) => {
+  render: args => {
     const [selectedRows, setSelectedRows] = useState<any[]>([]);
 
     return (
@@ -652,7 +656,7 @@ export const AllAdvancedFeatures: Story = {
           data={args.data || largeDataSet}
           columns={args.columns || columns}
           selectionMode="multiple"
-          onSelectionChange={(rows) => setSelectedRows(rows)}
+          onSelectionChange={rows => setSelectedRows(rows)}
         />
         {selectedRows.length > 0 && (
           <div className="u-mt-4 u-p-4 u-bg-gray-100 u-rounded">
@@ -686,7 +690,8 @@ export const AllAdvancedFeatures: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'DataTable with all advanced features enabled: selection, filtering, resizing, reordering, visibility toggle, export, and sticky headers.',
+        story:
+          'DataTable with all advanced features enabled: selection, filtering, resizing, reordering, visibility toggle, export, and sticky headers.',
       },
     },
   },

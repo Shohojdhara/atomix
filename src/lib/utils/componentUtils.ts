@@ -1,6 +1,6 @@
 /**
  * Component Utilities
- * 
+ *
  * Helper functions for component development with the new customization system
  */
 
@@ -39,7 +39,7 @@ export function createCSSVarStyle(
   baseStyle?: React.CSSProperties
 ): React.CSSProperties {
   if (!cssVars) return baseStyle || {};
-  
+
   const varStyle = cssVarsToStyle(cssVars);
   return { ...varStyle, ...baseStyle };
 }
@@ -102,11 +102,7 @@ export function createPartProps<T extends { className?: string; style?: React.CS
 /**
  * Check if component has customization
  */
-export function hasCustomization(props: {
-  parts?: any;
-  cssVars?: any;
-  slots?: any;
-}): boolean {
+export function hasCustomization(props: { parts?: any; cssVars?: any; slots?: any }): boolean {
   return Boolean(props.parts || props.cssVars || props.slots);
 }
 
@@ -115,7 +111,7 @@ export function hasCustomization(props: {
  */
 export function createDebugAttrs(componentName: string, variant?: string): Record<string, string> {
   if (typeof process === 'undefined' || process.env?.NODE_ENV !== 'development') return {};
-  
+
   return {
     'data-component': componentName,
     ...(variant && { 'data-variant': variant }),
@@ -126,7 +122,7 @@ export function createDebugAttrs(componentName: string, variant?: string): Recor
  * Generate a UUID v4
  */
 export function generateUUID(): string {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     const r = (Math.random() * 16) | 0;
     const v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
@@ -146,18 +142,18 @@ export function isYouTubeUrl(url: string): boolean {
  */
 export function extractYouTubeId(url: string): string | null {
   if (!isYouTubeUrl(url)) return null;
-  
+
   const patterns = [
     /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
     /youtube\.com\/.*[?&]v=([^&\n?#]+)/,
   ];
-  
+
   for (const pattern of patterns) {
     const match = url.match(pattern);
     if (match && match[1]) {
       return match[1];
     }
   }
-  
+
   return null;
 }

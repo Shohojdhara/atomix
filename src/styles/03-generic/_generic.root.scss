@@ -117,7 +117,9 @@
   --#{config.$prefix}border-radius-lg: #{border-radius.$border-radius-lg};
   --#{config.$prefix}border-radius-xl: #{border-radius.$border-radius-xl};
   --#{config.$prefix}border-radius-xxl: #{border-radius.$border-radius-xxl};
-  --#{config.$prefix}border-radius-2xl: var(--#{config.$prefix}border-radius-xxl); // Deprecated in v5.3.0 for consistency
+  --#{config.$prefix}border-radius-2xl: var(
+    --#{config.$prefix}border-radius-xxl
+  ); // Deprecated in v5.3.0 for consistency
   --#{config.$prefix}border-radius-3xl: #{border-radius.$border-radius-3xl};
   --#{config.$prefix}border-radius-4xl: #{border-radius.$border-radius-4xl};
   --#{config.$prefix}border-radius-pill: #{border-radius.$border-radius-pill};
@@ -212,7 +214,6 @@
   @each $property, $value in color-maps.$focus-ring {
     --#{config.$prefix}focus-ring-#{$property}: #{$value};
   }
-
 }
 
 // Dark mode overrides

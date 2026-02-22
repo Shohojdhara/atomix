@@ -180,13 +180,15 @@ export const WithDifferentActiveTab: Story = {
 
 export const WithGlassEffect: Story = {
   render: args => (
-    <div style={{ 
-      maxWidth: '600px', 
-      margin: '0 auto', 
-      padding: '30px',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      minHeight: '300px'
-    }}>
+    <div
+      style={{
+        maxWidth: '600px',
+        margin: '0 auto',
+        padding: '30px',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        minHeight: '300px',
+      }}
+    >
       <Tabs {...args} />
     </div>
   ),
@@ -224,7 +226,8 @@ export const WithRichContent: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Demonstrates tabs containing rich HTML content including headings, lists, and tables, showing the flexibility of the tabs component.',
+        story:
+          'Demonstrates tabs containing rich HTML content including headings, lists, and tables, showing the flexibility of the tabs component.',
       },
     },
   },

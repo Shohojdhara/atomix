@@ -1,6 +1,6 @@
 /**
  * Part-Based Styling Props
- * 
+ *
  * Type definitions for styling individual component parts with className and style props.
  * This enables granular customization of component internals.
  */

@@ -45,7 +45,9 @@ export const calculateMouseInfluence = (mouseOffset: MousePosition): number => {
     return 0;
   }
   // Bounded calculation — keeps the glass effect subtle and stable
-  const influence = Math.sqrt(mouseOffset.x * mouseOffset.x + mouseOffset.y * mouseOffset.y) / CONSTANTS.MOUSE_INFLUENCE_DIVISOR;
+  const influence =
+    Math.sqrt(mouseOffset.x * mouseOffset.x + mouseOffset.y * mouseOffset.y) /
+    CONSTANTS.MOUSE_INFLUENCE_DIVISOR;
   return Math.min(0.8, influence); // Tighter cap to prevent blur/filter blow-out
 };
 
@@ -59,7 +61,7 @@ export const calculateOverLightIntensity = (
   if (!mouseOffset || typeof mouseOffset.x !== 'number' || typeof mouseOffset.y !== 'number') {
     return baseIntensity;
   }
-  
+
   // Calculate additional intensity based on mouse position
   const mouseInfluence = calculateMouseInfluence(mouseOffset);
   return Math.min(1.0, baseIntensity * (1 + mouseInfluence * 0.3));
@@ -260,4 +262,3 @@ export const getDisplacementMap = (
       return displacementMap;
   }
 };
-

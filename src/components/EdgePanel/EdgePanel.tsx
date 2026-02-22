@@ -125,9 +125,7 @@ export const EdgePanel: React.FC<EdgePanelProps> = ({
       )}
       <div ref={containerRef} className="c-edge-panel__container">
         {glass ? (
-          <AtomixGlass
-            {...glassProps}
-          >
+          <AtomixGlass {...glassProps}>
             <div
               ref={glassContentRef}
               className="c-edge-panel__glass-content"

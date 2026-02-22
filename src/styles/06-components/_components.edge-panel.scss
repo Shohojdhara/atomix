@@ -377,7 +377,10 @@
     padding: 0;
     border-radius: inherit;
     transition: opacity 0.3s ease;
-    @include dynamic-background(var(--#{$prefix}edge-panel-bg), $background-transparency-enable: true);
+    @include dynamic-background(
+      var(--#{$prefix}edge-panel-bg),
+      $background-transparency-enable: true
+    );
   }
 
   .c-edge-panel__header {
@@ -407,7 +410,10 @@
   }
 
   .c-edge-panel__backdrop {
-    @include dynamic-background(var(--#{$prefix}edge-panel-backdrop-bg), $background-transparency-enable: true);
+    @include dynamic-background(
+      var(--#{$prefix}edge-panel-backdrop-bg),
+      $background-transparency-enable: true
+    );
     animation: fadeIn 0.3s ease forwards;
     z-index: 0;
 
@@ -433,7 +439,7 @@
     }
   }
 
-  &.c-edge-panel--top .c-edge-panel__glass-content{
+  &.c-edge-panel--top .c-edge-panel__glass-content {
     animation: slideInTop 0.3s ease forwards;
   }
 

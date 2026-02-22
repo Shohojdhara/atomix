@@ -499,7 +499,9 @@ export const AdminDashboard: React.FC = () => {
           <div className="u-flex u-justify-between u-items-center u-p-3 u-border-b">
             <div>
               <h4 className="u-font-medium u-mb-1">Traffic Overview</h4>
-              <p className="u-text-secondary-emphasis u-text-6 u-mb-0">User visits and page views</p>
+              <p className="u-text-secondary-emphasis u-text-6 u-mb-0">
+                User visits and page views
+              </p>
             </div>
             <div className="u-flex u-gap-2">
               <Button
@@ -642,7 +644,9 @@ export const AdminDashboard: React.FC = () => {
               </div>
               <div className="u-flex-fill">
                 <div className="u-font-medium u-mb-1">New user registered</div>
-                <div className="u-text-secondary-emphasis u-text-6">John Doe joined the platform</div>
+                <div className="u-text-secondary-emphasis u-text-6">
+                  John Doe joined the platform
+                </div>
                 <div className="u-text-secondary-emphasis u-text-6">2 minutes ago</div>
               </div>
               <Badge variant="success" size="sm" label="New" glass={true} />
@@ -666,7 +670,9 @@ export const AdminDashboard: React.FC = () => {
               </div>
               <div className="u-flex-fill">
                 <div className="u-font-medium u-mb-1">System alert resolved</div>
-                <div className="u-text-secondary-emphasis u-text-6">Database connection restored</div>
+                <div className="u-text-secondary-emphasis u-text-6">
+                  Database connection restored
+                </div>
                 <div className="u-text-secondary-emphasis u-text-6">10 minutes ago</div>
               </div>
               <Badge variant="info" size="sm" label="Fixed" glass={true} />
@@ -1629,7 +1635,9 @@ export const AdminDashboard: React.FC = () => {
             <div className="u-flex u-justify-between u-items-center u-mb-2">
               <div>
                 <div className="u-font-medium">Login Notifications</div>
-                <div className="u-text-secondary-emphasis u-text-6">Notify on new login attempts</div>
+                <div className="u-text-secondary-emphasis u-text-6">
+                  Notify on new login attempts
+                </div>
               </div>
               <Toggle />
             </div>

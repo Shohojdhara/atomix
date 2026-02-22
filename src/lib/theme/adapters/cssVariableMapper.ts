@@ -1,6 +1,6 @@
 /**
  * CSS Variable Mapper
- * 
+ *
  * Utilities for generating and managing CSS custom properties from SCSS tokens
  * and component configurations.
  */
@@ -35,7 +35,7 @@ export interface CSSVariableNamingOptions {
 
 /**
  * Generate CSS variable name from parts
- * 
+ *
  * @example
  * generateCSSVariableName('button', 'bg', { prefix: 'atomix' })
  * // Returns: '--atomix-button-bg'
@@ -45,26 +45,22 @@ export function generateCSSVariableName(
   property: string,
   options: CSSVariableNamingOptions = {}
 ): string {
-  const {
-    prefix = 'atomix',
-    separator = '-',
-    includeComponent = true,
-  } = options;
+  const { prefix = 'atomix', separator = '-', includeComponent = true } = options;
 
   const parts = [prefix];
-  
+
   if (includeComponent) {
     parts.push(component);
   }
-  
+
   parts.push(property);
-  
+
   return `--${parts.join(separator)}`;
 }
 
 /**
  * Generate CSS variables object from configuration
- * 
+ *
  * @example
  * const vars = generateComponentCSSVars({
  *   component: 'button',
@@ -89,11 +85,7 @@ export function generateComponentCSSVars(
   if (parts) {
     Object.entries(parts).forEach(([partName, partProps]) => {
       Object.entries(partProps).forEach(([key, value]) => {
-        const varName = generateCSSVariableName(
-          component,
-          `${partName}-${key}`,
-          options
-        );
+        const varName = generateCSSVariableName(component, `${partName}-${key}`, options);
         vars[varName] = String(value);
       });
     });
@@ -103,11 +95,7 @@ export function generateComponentCSSVars(
   if (states) {
     Object.entries(states).forEach(([stateName, stateProps]) => {
       Object.entries(stateProps).forEach(([key, value]) => {
-        const varName = generateCSSVariableName(
-          component,
-          `${stateName}-${key}`,
-          options
-        );
+        const varName = generateCSSVariableName(component, `${stateName}-${key}`, options);
         vars[varName] = String(value);
       });
     });
@@ -117,11 +105,7 @@ export function generateComponentCSSVars(
   if (variants) {
     Object.entries(variants).forEach(([variantName, variantProps]) => {
       Object.entries(variantProps).forEach(([key, value]) => {
-        const varName = generateCSSVariableName(
-          component,
-          `${variantName}-${key}`,
-          options
-        );
+        const varName = generateCSSVariableName(component, `${variantName}-${key}`, options);
         vars[varName] = String(value);
       });
     });
@@ -132,7 +116,7 @@ export function generateComponentCSSVars(
 
 /**
  * Map SCSS tokens to CSS custom properties
- * 
+ *
  * @example
  * const tokens = { '$primary-color': '#7AFFD7', '$spacing-md': '16px' }
  * const vars = mapSCSSTokensToCSSVars(tokens)
@@ -148,13 +132,13 @@ export function mapSCSSTokensToCSSVars(
   Object.entries(tokens).forEach(([key, value]) => {
     // Remove $ prefix from SCSS variables
     const cleanKey = key.startsWith('$') ? key.slice(1) : key;
-    
+
     // Convert underscores to separators
     const normalizedKey = cleanKey.replace(/_/g, separator);
-    
+
     // Generate variable name
     const varName = `--${prefix}${separator}${normalizedKey}`;
-    
+
     vars[varName] = String(value);
   });
 
@@ -163,74 +147,66 @@ export function mapSCSSTokensToCSSVars(
 
 /**
  * Apply CSS variables to an element
- * 
+ *
  * @param vars - CSS variables to apply
  * @param element - Target element (defaults to document.documentElement)
  */
 export function applyCSSVariables(
-    vars: Record<string, string | number>,
-    element?: HTMLElement
+  vars: Record<string, string | number>,
+  element?: HTMLElement
 ): void {
-    if (typeof window === 'undefined') {
-        return; // SSR safety
-    }
-    
-    const target = element || document.documentElement;
-    Object.entries(vars).forEach(([key, value]) => {
-        target.style.setProperty(key, String(value));
-    });
+  if (typeof window === 'undefined') {
+    return; // SSR safety
+  }
+
+  const target = element || document.documentElement;
+  Object.entries(vars).forEach(([key, value]) => {
+    target.style.setProperty(key, String(value));
+  });
 }
 
 /**
  * Remove CSS variables from an element
- * 
+ *
  * @param varNames - Variable names to remove
  * @param element - Target element (defaults to document.documentElement)
  */
-export function removeCSSVariables(
-    varNames: string[],
-    element?: HTMLElement
-): void {
-    if (typeof window === 'undefined') {
-        return; // SSR safety
-    }
-    
-    const target = element || document.documentElement;
-    varNames.forEach((varName) => {
-        target.style.removeProperty(varName);
-    });
+export function removeCSSVariables(varNames: string[], element?: HTMLElement): void {
+  if (typeof window === 'undefined') {
+    return; // SSR safety
+  }
+
+  const target = element || document.documentElement;
+  varNames.forEach(varName => {
+    target.style.removeProperty(varName);
+  });
 }
 
 /**
  * Get CSS variable value from an element
- * 
+ *
  * @param varName - Variable name to get
  * @param element - Target element (defaults to document.documentElement)
  * @returns Variable value or null if not found
  */
-export function getCSSVariable(
-    varName: string,
-    element?: HTMLElement
-): string | null {
-    if (typeof window === 'undefined') {
-        return null; // SSR safety
-    }
-    
-    const target = element || document.documentElement;
-    return getComputedStyle(target).getPropertyValue(varName).trim() || null;
+export function getCSSVariable(varName: string, element?: HTMLElement): string | null {
+  if (typeof window === 'undefined') {
+    return null; // SSR safety
+  }
+
+  const target = element || document.documentElement;
+  return getComputedStyle(target).getPropertyValue(varName).trim() || null;
 }
 
 /**
  * Convert CSS variable object to inline style object
- * 
+ *
  * @example
  * const vars = { '--atomix-button-bg': '#000' }
  * const style = cssVarsToStyle(vars)
  * // Returns: { '--atomix-button-bg': '#000' } as React.CSSProperties
  */
-export function cssVarsToStyle(
-  vars: Record<string, string | number>
-): React.CSSProperties {
+export function cssVarsToStyle(vars: Record<string, string | number>): React.CSSProperties {
   return Object.entries(vars).reduce((acc, [key, value]) => {
     (acc as any)[key] = typeof value === 'number' ? `${value}px` : value;
     return acc;
@@ -261,15 +237,12 @@ export function isValidCSSVariableName(name: string): boolean {
 
 /**
  * Extract component name from CSS variable name
- * 
+ *
  * @example
  * extractComponentName('--atomix-button-bg')
  * // Returns: 'button'
  */
-export function extractComponentName(
-  varName: string,
-  prefix: string = 'atomix'
-): string | null {
+export function extractComponentName(varName: string, prefix: string = 'atomix'): string | null {
   const regex = new RegExp(`^--${prefix}-([a-z0-9]+)-`);
   const match = varName.match(regex);
   return match ? (match[1] ?? null) : null;

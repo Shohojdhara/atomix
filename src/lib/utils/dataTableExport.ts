@@ -46,10 +46,7 @@ export function exportToCSV(
 /**
  * Export data as JSON
  */
-export function exportToJSON(
-  data: any[],
-  filename: string = 'data-table.json'
-): void {
+export function exportToJSON(data: any[], filename: string = 'data-table.json'): void {
   if (!data.length) return;
 
   const jsonContent = JSON.stringify(data, null, 2);
@@ -131,4 +128,3 @@ export function exportData(
       console.warn(`Unsupported export format: ${format}`);
   }
 }
-

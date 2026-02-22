@@ -1,16 +1,16 @@
 /**
  * Theme System Exports
- * 
+ *
  * Simplified theme system using DesignTokens only.
- * 
+ *
  * @example
  * ```typescript
  * import { createTheme, injectTheme } from '@shohojdhara/atomix/theme';
- * 
+ *
  * // Using DesignTokens
  * const css = createTheme({ 'primary': '#7AFFD7', 'spacing-4': '1rem' });
  * injectTheme(css);
- * 
+ *
  * // Or use with ThemeProvider
  * import { ThemeProvider } from '@shohojdhara/atomix/theme';
  * const tokens = { 'primary': '#7c3aed' };
@@ -62,8 +62,6 @@ export function removeTheme(id: string = 'atomix-theme'): void {
   removeCSS(id);
 }
 
-
-
 // ============================================================================
 // Token Utilities
 // ============================================================================
@@ -107,7 +105,6 @@ export {
 
 export { injectCSS, removeCSS, isCSSInjected } from './utils/injectCSS';
 
-
 // Config loader removed to prevent bundling Node.js modules in browser
 
 // ============================================================================
@@ -131,9 +128,7 @@ export * from './devtools';
 export { designTokensToCSSVars } from './adapters';
 
 // Theme helpers (utilities for working with DesignTokens)
-export {
-  isDesignTokens,
-} from './utils/themeHelpers';
+export { isDesignTokens } from './utils/themeHelpers';
 
 // CSS variable utilities
 export {
@@ -149,7 +144,6 @@ export {
 
 // RTL Support
 export { RTLManager } from './i18n/rtl';
-
 
 // Types
 export type {
@@ -169,9 +163,6 @@ export type { Theme } from './types';
 
 export type { ThemeErrorBoundaryProps } from './runtime/ThemeErrorBoundary';
 
-export type {
-  CSSVariableConfig,
-  CSSVariableNamingOptions,
-} from './adapters/cssVariableMapper';
+export type { CSSVariableConfig, CSSVariableNamingOptions } from './adapters/cssVariableMapper';
 
 export type { RTLConfig } from './i18n/rtl';

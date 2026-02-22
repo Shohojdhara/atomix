@@ -58,12 +58,7 @@ export function generateNestedCSSVariables(
   tokens: DesignTokens,
   options: GenerateNestedCSSVariablesOptions = {}
 ): string {
-  const {
-    selector = ':root',
-    prefix = 'atomix',
-    separator = '-',
-    flatten = true,
-  } = options;
+  const { selector = ':root', prefix = 'atomix', separator = '-', flatten = true } = options;
 
   // Flatten nested token structure
   const flattened = flatten ? flattenTokens(tokens, separator) : tokens;

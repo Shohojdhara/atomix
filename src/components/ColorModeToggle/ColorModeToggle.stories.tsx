@@ -228,7 +228,11 @@ export const WithCallback: Story = {
     const [lastChanged, setLastChanged] = useState<string>('');
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
-        <ColorModeToggle onChange={(mode) => setLastChanged(`Mode changed to ${mode} at ${new Date().toLocaleTimeString()}`)} />
+        <ColorModeToggle
+          onChange={mode =>
+            setLastChanged(`Mode changed to ${mode} at ${new Date().toLocaleTimeString()}`)
+          }
+        />
         {lastChanged && <p>Last changed: {lastChanged}</p>}
       </div>
     );
