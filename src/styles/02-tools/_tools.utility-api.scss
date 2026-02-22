@@ -11,6 +11,7 @@
 @use 'sass:meta';
 @use '../01-settings/settings.config' as *;
 @use '../01-settings/settings.breakpoints' as *;
+@use 'tools.breakpoints' as *;
 
 // Default config for utilities
 $utility-defaults: (
@@ -62,9 +63,10 @@ $utility-defaults: (
 
     @if map.get($utility, class) == null {
       // Generate class with property name as class
+      // Responsive infix goes between prefix and value: .u-prefix-{bp}-{value}
       $class-name: if(
         $key,
-        '#{$property-class}-#{$escaped-key}#{$local-infix}',
+        '#{$property-class}#{$local-infix}-#{$escaped-key}',
         '#{$property-class}#{$local-infix}'
       );
 
@@ -77,13 +79,15 @@ $utility-defaults: (
           @each $property in $properties {
             #{$property}: $value if(map.get($utility, rtl), null, !important);
           }
-        } @else {
+        } @else if $value != null {
+          // Guard: only emit property declaration if value is not null
           #{$property-class}: $value if(map.get($utility, rtl), null, !important);
         }
-        
+
         // Add local CSS variables if specified
-        @if map.get($utility, local-vars) {
-          @each $local-var-name, $local-var-value in map.get($utility, local-vars) {
+        $local-vars: map.get($utility, local-vars);
+        @if $local-vars and list.length($local-vars) > 0 {
+          @each $local-var-name, $local-var-value in $local-vars {
             --#{$local-var-name}: #{$local-var-value};
           }
         }
@@ -93,6 +97,7 @@ $utility-defaults: (
       $base-class: map.get($utility, class);
       $modifier: if($key, '-#{$escaped-key}', '');
 
+      // Responsive infix goes between class and modifier: .u-class-{bp}-{value}
       .#{$base-class}#{$local-infix}#{$modifier} {
         @if $css-var and $properties {
           // Handle CSS variable generation with properties
@@ -108,13 +113,15 @@ $utility-defaults: (
           @each $property in $properties {
             #{$property}: $value if(map.get($utility, rtl), null, !important);
           }
-        } @else {
+        } @else if $value != null {
+          // Guard: only emit property declaration if value is not null
           #{$base-class}: $value if(map.get($utility, rtl), null, !important);
         }
-        
+
         // Add local CSS variables if specified
-        @if map.get($utility, local-vars) {
-          @each $local-var-name, $local-var-value in map.get($utility, local-vars) {
+        $local-vars: map.get($utility, local-vars);
+        @if $local-vars and list.length($local-vars) > 0 {
+          @each $local-var-name, $local-var-value in $local-vars {
             --#{$local-var-name}: #{$local-var-value};
           }
         }
@@ -129,7 +136,7 @@ $utility-defaults: (
 
   @if $responsive {
     @each $breakpoint in map.keys($breakpoints) {
-      $infix: call($breakpoint-infix-generator, $breakpoint);
+      $infix: meta.call($breakpoint-infix-generator, $breakpoint);
 
       @include media-breakpoint-up($breakpoint) {
         @include generate-utility($utility, $infix);
@@ -147,11 +154,9 @@ $utility-defaults: (
   $breakpoint-infix-generator: null
 ) {
   // Set default breakpoint infix generator if not provided
-  $breakpoint-infix-generator: if(
-    $breakpoint-infix-generator,
-    $breakpoint-infix-generator,
-    get-breakpoint-infix
-  );
+  @if not $breakpoint-infix-generator {
+    $breakpoint-infix-generator: meta.get-function('breakpoint-infix');
+  }
 
   @each $utility, $config in $utilities {
     // Merge default config
@@ -167,6 +172,7 @@ $utility-defaults: (
         rtl: map.get($config, rtl),
         css-var: map.get($config, css-var),
         local-vars: map.get($config, local-vars),
+        responsive: map.get($config, responsive),
       );
 
       @include generate-responsive-utilities(
@@ -174,14 +180,20 @@ $utility-defaults: (
         $breakpoints,
         $breakpoint-infix-generator
       );
+
+      // Generate print utilities if requested
+      @if map.get($config, print) == true {
+        @media print {
+          @include generate-utility($utility-map);
+        }
+      }
     }
   }
 }
 
 // Helper function to get breakpoint infix
-@function get-breakpoint-infix($breakpoint) {
-  @return if($breakpoint == null, '', '-#{$breakpoint}');
-}
+// Uses breakpoint-infix from _tools.breakpoints.scss
+// Returns '' for the smallest breakpoint (xs), '-sm', '-md', etc. for others
 
 // Helper function to escape keys for safe CSS class names
 @function _escape-key($key) {

@@ -4,7 +4,7 @@
 // Define utilities for position
 $utilities-position: (
   'position': (property: position,
-    class: u-position,
+    class: u,
     values: static relative absolute fixed sticky,
   ),
   'top': (property: top,

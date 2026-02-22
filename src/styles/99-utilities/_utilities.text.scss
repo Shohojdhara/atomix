@@ -8,7 +8,7 @@
 $utilities-text: (
   'font-size': (rfs: true,
     property: font-size,
-    class: u-text,
+    class: u-fs,
     values: map.merge(color-maps.$font-sizes-extended,
       (xs: map.get(color-maps.$font-sizes-extended, 'xs'),
         sm: map.get(color-maps.$font-sizes-extended, 'sm'),
@@ -29,9 +29,10 @@ $utilities-text: (
       )),
   ),
   'font-style': (property: font-style,
-    class: u-fst,
-    values: (italic: italic,
-      normal: normal,
+    class: u,
+    values: (
+      italic: italic,
+      not-italic: normal,
     ),
   ),
   'font-weight': (property: font-weight,

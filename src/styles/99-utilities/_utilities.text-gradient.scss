@@ -12,8 +12,7 @@ $utilities-text-gradient: (
     property: null,  // No specific CSS property, we're only using local-vars
     class: u-text-gradient,
     values: (
-      // Base class with no modifier applies the core text gradient styles
-      'base': null
+      null: null
     ),
     local-vars: (
       'background-clip': text,

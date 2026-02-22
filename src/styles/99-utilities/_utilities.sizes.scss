@@ -19,8 +19,17 @@ $utilities-sizes: (
   'max-width': (
     responsive: true,
     property: max-width,
-    class: u-mw,
+    class: u-max-w,
     values: (
+      100: 100%,
+    ),
+  ),
+  'min-width': (
+    responsive: true,
+    property: min-width,
+    class: u-min-w,
+    values: (
+      0: 0,
       100: 100%,
     ),
   ),
@@ -57,8 +66,17 @@ $utilities-sizes: (
   'max-height': (
     responsive: true,
     property: max-height,
-    class: u-mh,
+    class: u-max-h,
     values: (
+      100: 100%,
+    ),
+  ),
+  'min-height': (
+    responsive: true,
+    property: min-height,
+    class: u-min-h,
+    values: (
+      0: 0,
       100: 100%,
     ),
   ),
