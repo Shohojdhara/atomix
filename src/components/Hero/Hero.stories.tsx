@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { HERO } from '../../lib/constants/components';
 import { Button } from '../Button/Button';
-import { Hero } from './Hero';
+import { Hero, HeroProps } from './Hero';
 
 // Extract class names without the leading dots
 const HERO_CLASS = HERO.SELECTORS.HERO.replace('.', '');
@@ -52,7 +52,7 @@ const showcaseActionButtons = (
   </>
 );
 
-const meta = {
+const meta: Meta<HeroProps> = {
   title: 'Components/Hero',
   component: Hero,
   parameters: {
@@ -257,10 +257,10 @@ Hero creates prominent banner sections typically used at the top of pages. It pr
       },
     },
   },
-} satisfies Meta<typeof Hero>;
+} satisfies Meta<HeroProps>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<HeroProps>;
 
 export const BasicUsage: Story = {
   args: {

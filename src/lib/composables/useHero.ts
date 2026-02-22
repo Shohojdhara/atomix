@@ -73,7 +73,7 @@ interface UseHeroResult {
  * @param initialProps - Initial hero props
  * @returns Hero methods
  */
-export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
+export function useHero(initialProps?: HeroProps): UseHeroResult {
   const heroRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const parallaxHandlerRef = useRef<((event: Event) => void) | null>(null);
@@ -88,6 +88,8 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
     contentWidth: undefined,
     parallax: false,
     parallaxIntensity: 0.5,
+    headingLevel: 'h1',
+    reverseOnMobile: false,
     ...initialProps,
   };
 
@@ -102,7 +104,9 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
   const backgroundSliderResult = useHeroBackgroundSlider(
     defaultProps.backgroundSlider || { 
       slides: [], 
-      autoplay: { delay: 5000, pauseOnHover: true } 
+      autoplay: { delay: 5000, pauseOnHover: true },
+      transition: 'fade',
+      transitionDuration: 1000
     }
   );
   
@@ -258,6 +262,15 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
       classes.push('u-mt-5 u-mt-md-0');
     }
 
+    // Handle mobile stacking order
+    if (defaultProps.reverseOnMobile) {
+      if (defaultProps.alignment === 'right' || defaultProps.alignment === 'center') {
+        classes.push('u-order-first u-order-md-last');
+      } else {
+        classes.push('u-order-last u-order-md-first');
+      }
+    }
+
     if (customClass) {
       classes.push(customClass);
     }
@@ -273,6 +286,15 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
    */
   const generateContentColClass = (size: number = defaultProps.contentColSize || 5, customClass?: string): string => {
     const classes = [`o-grid__col o-grid__col--md-${size}`];
+
+    // Handle mobile stacking order
+    if (defaultProps.reverseOnMobile) {
+      if (defaultProps.alignment === 'right' || defaultProps.alignment === 'center') {
+        classes.push('u-order-last u-order-md-first');
+      } else {
+        classes.push('u-order-first u-order-md-last');
+      }
+    }
 
     if (customClass) {
       classes.push(customClass);

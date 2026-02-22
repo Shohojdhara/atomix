@@ -959,13 +959,37 @@ export interface HeroBackgroundSliderConfig {
 }
 
 /**
+ * Hero component parts for granular styling
+ */
+export interface HeroParts {
+  root?: { className?: string; style?: React.CSSProperties };
+  container?: { className?: string; style?: React.CSSProperties };
+  grid?: { className?: string; style?: React.CSSProperties };
+  content?: { className?: string; style?: React.CSSProperties };
+  title?: { className?: string; style?: React.CSSProperties };
+  subtitle?: { className?: string; style?: React.CSSProperties };
+  text?: { className?: string; style?: React.CSSProperties };
+  actions?: { className?: string; style?: React.CSSProperties };
+  imageWrapper?: { className?: string; style?: React.CSSProperties };
+  image?: { className?: string; style?: React.CSSProperties };
+  background?: { className?: string; style?: React.CSSProperties };
+  overlay?: { className?: string; style?: React.CSSProperties };
+}
+
+/**
  * Hero component properties
  */
-export interface HeroProps extends BaseComponentProps {
+export interface HeroProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'content'>, BaseComponentProps {
   /**
    * Hero title
    */
-  title: string;
+  title: ReactNode;
+
+  /**
+   * HTML Heading level for the title
+   * @default 'h1'
+   */
+  headingLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div';
 
   /**
    * Hero subtitle
@@ -1103,6 +1127,17 @@ export interface HeroProps extends BaseComponentProps {
    * Takes precedence over backgroundImageSrc and videoBackground props
    */
   backgroundSlider?: HeroBackgroundSliderConfig;
+
+  /**
+   * Reverse the stacking order of content and image on mobile devices
+   * @default false
+   */
+  reverseOnMobile?: boolean;
+
+  /**
+   * Granular part-based styling
+   */
+  parts?: HeroParts;
 }
 
 /**

@@ -35,7 +35,13 @@ export const Hero: React.FC<HeroProps> = ({
     muted: true,
   },
   backgroundSlider,
-}) => {
+  headingLevel = 'h1',
+  reverseOnMobile = false,
+  parts,
+  ...rest
+}: HeroProps) => {
+  // Define dynamic heading tag
+  const HeadingTag = headingLevel;
   const {
     generateHeroClassNames,
     generateImageColClass,
@@ -48,6 +54,7 @@ export const Hero: React.FC<HeroProps> = ({
     backgroundSlider: sliderHook,
     hasBackgroundSlider,
   } = useHero({
+    title,
     alignment,
     imageColSize,
     contentColSize,
@@ -60,6 +67,7 @@ export const Hero: React.FC<HeroProps> = ({
     parallaxIntensity,
     videoBackground,
     backgroundSlider,
+    reverseOnMobile,
   });
 
   // Create custom style for hero element with content width if provided
@@ -99,8 +107,6 @@ export const Hero: React.FC<HeroProps> = ({
       let transitionClass = HERO.CLASSES.SLIDER_FADE;
       if (transition === 'slide') {
         transitionClass = HERO.CLASSES.SLIDER_SLIDE;
-      } else if (transition === 'custom') {
-        transitionClass = HERO.CLASSES.SLIDER_CUSTOM;
       }
 
       return (
@@ -122,7 +128,7 @@ export const Hero: React.FC<HeroProps> = ({
             }
           }}
         >
-          {slides.map((slide, index) => {
+          {slides.map((slide, index: number) => {
             const isActive = index === currentIndex;
             const slideRef = slideRefs[index];
             const videoRef = videoRefs[index];
@@ -131,34 +137,40 @@ export const Hero: React.FC<HeroProps> = ({
               <div
                 key={index}
                 ref={slideRef}
-                className={`${HERO.SELECTORS.SLIDER_ITEM.replace('.', '')} ${
-                  isActive ? HERO.CLASSES.SLIDER_ITEM_ACTIVE : ''
-                }`}
+                className={`${HERO.SELECTORS.SLIDER_ITEM.replace('.', '')} ${isActive ? HERO.CLASSES.SLIDER_ITEM_ACTIVE : ''}`}
+                aria-hidden={!isActive}
               >
-                {slide.type === 'image' ? (
+                {slide.type === 'video' ? (
+                  <video
+                    ref={videoRef as React.LegacyRef<HTMLVideoElement>}
+                    className={'c-hero__bg-video'}
+                    src={slide.src}
+                    poster={slide.videoOptions?.posterUrl || slide.alt}
+                    muted={slide.videoOptions?.muted ?? true}
+                    loop={slide.videoOptions?.loop ?? true}
+                    playsInline
+                    aria-hidden="true"
+                    autoPlay={slide.videoOptions?.autoplay !== false}
+                  >
+                    <source src={slide.src} type={`video/${slide.src.split('.').pop() || 'mp4'}`} />
+                    Your browser does not support the video tag.
+                  </video>
+                ) : (
                   <img
                     src={slide.src}
                     alt={slide.alt || 'Background slide'}
                     className={HERO.SELECTORS.BG_IMAGE.replace('.', '')}
                   />
-                ) : (
-                  <video
-                    ref={videoRef as React.LegacyRef<HTMLVideoElement>}
-                    className="c-hero__video"
-                    autoPlay={slide.videoOptions?.autoplay !== false}
-                    loop={slide.videoOptions?.loop !== false}
-                    muted={slide.videoOptions?.muted !== false}
-                    playsInline
-                    poster={slide.videoOptions?.posterUrl}
-                  >
-                    <source src={slide.src} type={`video/${slide.src.split('.').pop() || 'mp4'}`} />
-                    Your browser does not support the video tag.
-                  </video>
                 )}
               </div>
             );
           })}
-          {showOverlay && <div className={HERO.SELECTORS.OVERLAY.replace('.', '')}></div>}
+          {showOverlay && (
+            <div
+              className={`${HERO.SELECTORS.OVERLAY.replace('.', '')} ${parts?.overlay?.className || ''}`.trim()}
+              style={parts?.overlay?.style}
+            ></div>
+          )}
         </div>
       );
     }
@@ -167,7 +179,10 @@ export const Hero: React.FC<HeroProps> = ({
     if (!hasBackgroundImage && !videoBackground) return null;
 
     return (
-      <div className={HERO.SELECTORS.BG.replace('.', '')}>
+      <div
+        className={`${HERO.SELECTORS.BG.replace('.', '')} ${parts?.background?.className || ''}`.trim()}
+        style={parts?.background?.style}
+      >
         {backgroundImageSrc && (
           <img
             src={backgroundImageSrc}
@@ -176,18 +191,52 @@ export const Hero: React.FC<HeroProps> = ({
           />
         )}
         {renderVideoBackground()}
-        {showOverlay && <div className={HERO.SELECTORS.OVERLAY.replace('.', '')}></div>}
+        {showOverlay && (
+          <div
+            className={`${HERO.SELECTORS.OVERLAY.replace('.', '')} ${parts?.overlay?.className || ''}`.trim()}
+            style={parts?.overlay?.style}
+          ></div>
+        )}
       </div>
     );
   };
 
   const renderContent = () => {
     const content = (
-      <div className={HERO.SELECTORS.CONTENT.replace('.', '')}>
-        {subtitle && <p className={HERO.SELECTORS.SUBTITLE.replace('.', '')}>{subtitle}</p>}
-        <h1 className={HERO.SELECTORS.TITLE.replace('.', '')}>{title}</h1>
-        {text && <p className={HERO.SELECTORS.TEXT.replace('.', '')}>{text}</p>}
-        {actions && <div className={HERO.SELECTORS.ACTIONS.replace('.', '')}>{actions}</div>}
+      <div
+        className={`${HERO.SELECTORS.CONTENT.replace('.', '')} ${parts?.content?.className || ''}`.trim()}
+        style={parts?.content?.style}
+      >
+        {subtitle && (
+          <p
+            className={`${HERO.SELECTORS.SUBTITLE.replace('.', '')} ${parts?.subtitle?.className || ''}`.trim()}
+            style={parts?.subtitle?.style}
+          >
+            {subtitle}
+          </p>
+        )}
+        <HeadingTag
+          className={`${HERO.SELECTORS.TITLE.replace('.', '')} ${parts?.title?.className || ''}`.trim()}
+          style={parts?.title?.style}
+        >
+          {title}
+        </HeadingTag>
+        {text && (
+          <p
+            className={`${HERO.SELECTORS.TEXT.replace('.', '')} ${parts?.text?.className || ''}`.trim()}
+            style={parts?.text?.style}
+          >
+            {text}
+          </p>
+        )}
+        {actions && (
+          <div
+            className={`${HERO.SELECTORS.ACTIONS.replace('.', '')} ${parts?.actions?.className || ''}`.trim()}
+            style={parts?.actions?.style}
+          >
+            {actions}
+          </div>
+        )}
       </div>
     );
 
@@ -201,7 +250,10 @@ export const Hero: React.FC<HeroProps> = ({
       // If glass is true, use default glass props
       if (glass === true) {
         return (
-          <div className={HERO.SELECTORS.CONTENT.replace('.', '')}>
+          <div
+            className={`${HERO.SELECTORS.CONTENT.replace('.', '')} ${parts?.content?.className || ''}`.trim()}
+            style={parts?.content?.style}
+          >
             <AtomixGlass
               displacementScale={60}
               blurAmount={3}
@@ -212,11 +264,35 @@ export const Hero: React.FC<HeroProps> = ({
               mode="standard"
             >
               <div className="u-p-4">
-                {subtitle && <p className={HERO.SELECTORS.SUBTITLE.replace('.', '')}>{subtitle}</p>}
-                <h1 className={HERO.SELECTORS.TITLE.replace('.', '')}>{title}</h1>
-                {text && <p className={HERO.SELECTORS.TEXT.replace('.', '')}>{text}</p>}
+                {subtitle && (
+                  <p
+                    className={`${HERO.SELECTORS.SUBTITLE.replace('.', '')} ${parts?.subtitle?.className || ''}`.trim()}
+                    style={parts?.subtitle?.style}
+                  >
+                    {subtitle}
+                  </p>
+                )}
+                <HeadingTag
+                  className={`${HERO.SELECTORS.TITLE.replace('.', '')} ${parts?.title?.className || ''}`.trim()}
+                  style={parts?.title?.style}
+                >
+                  {title}
+                </HeadingTag>
+                {text && (
+                  <p
+                    className={`${HERO.SELECTORS.TEXT.replace('.', '')} ${parts?.text?.className || ''}`.trim()}
+                    style={parts?.text?.style}
+                  >
+                    {text}
+                  </p>
+                )}
                 {actions && (
-                  <div className={HERO.SELECTORS.ACTIONS.replace('.', '')}>{actions}</div>
+                  <div
+                    className={`${HERO.SELECTORS.ACTIONS.replace('.', '')} ${parts?.actions?.className || ''}`.trim()}
+                    style={parts?.actions?.style}
+                  >
+                    {actions}
+                  </div>
                 )}
               </div>
             </AtomixGlass>
@@ -226,13 +302,42 @@ export const Hero: React.FC<HeroProps> = ({
 
       // If glass is an object, use provided glass props
       return (
-        <div className={HERO.SELECTORS.CONTENT.replace('.', '')}>
+        <div
+          className={`${HERO.SELECTORS.CONTENT.replace('.', '')} ${parts?.content?.className || ''}`.trim()}
+          style={parts?.content?.style}
+        >
           <AtomixGlass {...glass}>
             <div className="u-p-4">
-              {subtitle && <p className={HERO.SELECTORS.SUBTITLE.replace('.', '')}>{subtitle}</p>}
-              <h1 className={HERO.SELECTORS.TITLE.replace('.', '')}>{title}</h1>
-              {text && <p className={HERO.SELECTORS.TEXT.replace('.', '')}>{text}</p>}
-              {actions && <div className={HERO.SELECTORS.ACTIONS.replace('.', '')}>{actions}</div>}
+              {subtitle && (
+                <p
+                  className={`${HERO.SELECTORS.SUBTITLE.replace('.', '')} ${parts?.subtitle?.className || ''}`.trim()}
+                  style={parts?.subtitle?.style}
+                >
+                  {subtitle}
+                </p>
+              )}
+              <HeadingTag
+                className={`${HERO.SELECTORS.TITLE.replace('.', '')} ${parts?.title?.className || ''}`.trim()}
+                style={parts?.title?.style}
+              >
+                {title}
+              </HeadingTag>
+              {text && (
+                <p
+                  className={`${HERO.SELECTORS.TEXT.replace('.', '')} ${parts?.text?.className || ''}`.trim()}
+                  style={parts?.text?.style}
+                >
+                  {text}
+                </p>
+              )}
+              {actions && (
+                <div
+                  className={`${HERO.SELECTORS.ACTIONS.replace('.', '')} ${parts?.actions?.className || ''}`.trim()}
+                  style={parts?.actions?.style}
+                >
+                  {actions}
+                </div>
+              )}
             </div>
           </AtomixGlass>
         </div>
@@ -249,17 +354,30 @@ export const Hero: React.FC<HeroProps> = ({
     if (alignment === 'center') {
       return (
         <div
-          className={`${HERO.SELECTORS.IMAGE_WRAPPER.replace('.', '')} ${imageColClassName || ''}`.trim()}
-          style={imageColStyle}
+          className={`${HERO.SELECTORS.IMAGE_WRAPPER.replace('.', '')} ${imageColClassName || ''} ${parts?.imageWrapper?.className || ''}`.trim()}
+          style={{ ...imageColStyle, ...parts?.imageWrapper?.style }}
         >
-          <img src={imageSrc} alt={imageAlt} className={HERO.SELECTORS.IMAGE.replace('.', '')} />
+          <img
+            src={imageSrc}
+            alt={imageAlt}
+            className={`${HERO.SELECTORS.IMAGE.replace('.', '')} ${parts?.image?.className || ''}`.trim()}
+            style={parts?.image?.style}
+          />
         </div>
       );
     }
 
     return (
-      <div className={generateImageColClass(imageColSize, imageColClassName)} style={imageColStyle}>
-        <img src={imageSrc} alt={imageAlt} className={HERO.SELECTORS.IMAGE.replace('.', '')} />
+      <div
+        className={`${generateImageColClass(imageColSize, imageColClassName)} ${parts?.imageWrapper?.className || ''}`.trim()}
+        style={{ ...imageColStyle, ...parts?.imageWrapper?.style }}
+      >
+        <img
+          src={imageSrc}
+          alt={imageAlt}
+          className={`${HERO.SELECTORS.IMAGE.replace('.', '')} ${parts?.image?.className || ''}`.trim()}
+          style={parts?.image?.style}
+        />
       </div>
     );
   };
@@ -297,17 +415,29 @@ export const Hero: React.FC<HeroProps> = ({
   return (
     <div
       ref={heroRef as React.LegacyRef<HTMLDivElement>}
-      className={generateHeroClassNames(className)}
-      style={heroStyle}
+      className={`${generateHeroClassNames(className)} ${parts?.root?.className || ''}`.trim()}
+      style={{ ...heroStyle, ...parts?.root?.style }}
       data-parallax={parallax ? 'true' : undefined}
       data-parallax-intensity={parallax ? parallaxIntensity : undefined}
+      {...rest}
     >
       {renderBackground()}
-      <div className={`${HERO.SELECTORS.CONTAINER.replace('.', '')} o-container`}>
+      <div
+        className={`${HERO.SELECTORS.CONTAINER.replace('.', '')} o-container ${parts?.container?.className || ''}`.trim()}
+        style={parts?.container?.style}
+      >
         {children ? (
-          <div className={HERO.SELECTORS.GRID.replace('.', '')}>{children}</div>
+          <div
+            className={`${HERO.SELECTORS.GRID.replace('.', '')} ${parts?.grid?.className || ''}`.trim()}
+            style={parts?.grid?.style}
+          >
+            {children}
+          </div>
         ) : useGridLayout ? (
-          <div className={`${HERO.SELECTORS.GRID.replace('.', '')} o-grid`}>
+          <div
+            className={`${HERO.SELECTORS.GRID.replace('.', '')} o-grid ${parts?.grid?.className || ''}`.trim()}
+            style={parts?.grid?.style}
+          >
             {renderGridContent()}
           </div>
         ) : (
