@@ -98,4 +98,22 @@
       }
     }
   }
+
+  // Glass morphism effect styles
+  &--glass {
+    --#{$prefix}toggle-switch-bg: transparent;
+
+    #{$root}__switch {
+      @include dynamic-background(
+        var(--#{$prefix}toggle-switch-bg),
+        $background-transparency-enable: true
+      );
+
+      &::before {
+        opacity: 0.5;
+        backdrop-filter: var(--#{$prefix}-glass-container-backdrop);
+      }
+    }
+  }
 }
+

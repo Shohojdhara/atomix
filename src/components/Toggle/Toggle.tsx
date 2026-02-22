@@ -91,6 +91,7 @@ export const Toggle: React.FC<ToggleProps> = ({
     'c-toggle',
     isChecked && TOGGLE.CLASSES.IS_ON,
     disabled && 'is-disabled',
+    glass && 'c-toggle--glass',
     className,
   ]
     .filter(Boolean)

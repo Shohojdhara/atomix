@@ -203,11 +203,15 @@ export const WithGlassEffect: Story = {
   render: args => (
     <div
       style={{
-        display: 'flex',
-        justifyContent: 'center',
-        padding: '30px',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        background: 'url(https://images.unsplash.com/photo-1579546929518-9e396f3cc809)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        padding: '3rem',
+        borderRadius: '12px',
         minHeight: '200px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <Toggle {...args} />
