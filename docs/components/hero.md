@@ -10,36 +10,44 @@ The Hero component is designed to make a strong first impression on your users. 
 
 ### HeroProps
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `title` | `string` | **required** | Main hero title text |
-| `subtitle` | `string` | `undefined` | Optional subtitle text |
-| `text` | `string` | `undefined` | Additional descriptive text |
-| `imageSrc` | `string` | `undefined` | Foreground image source URL |
-| `imageAlt` | `string` | `'Hero image'` | Alt text for the hero image |
-| `alignment` | `HeroAlignment` | `'left'` | Content alignment (`'left'`, `'center'`, `'right'`) |
-| `backgroundImageSrc` | `string` | `undefined` | Background image source URL |
-| `showOverlay` | `boolean` | `true` | Whether to show background overlay |
-| `fullViewportHeight` | `boolean` | `false` | Whether hero should take full viewport height |
-| `actions` | `ReactNode` | `undefined` | Action buttons or elements |
-| `imageColSize` | `number` | `7` | Grid column size for image (1-12) |
-| `contentColSize` | `number` | `5` | Grid column size for content (1-12) |
-| `contentWidth` | `string` | `undefined` | Custom width for hero content |
-| `parallax` | `boolean` | `false` | Enable parallax effect on background |
-| `parallaxIntensity` | `number` | `0.5` | Parallax effect intensity (0-1) |
-| `videoBackground` | `string` | `undefined` | Video background source URL |
-| `videoOptions` | `VideoOptions` | `{}` | Video playback options |
-| `backgroundSlider` | `HeroBackgroundSliderConfig` | `undefined` | Background slider configuration with multiple images/videos |
-| `className` | `string` | `''` | Additional CSS classes |
+| Prop                  | Type                            | Default        | Description                                                       |
+| --------------------- | ------------------------------- | -------------- | ----------------------------------------------------------------- |
+| `title`               | `string`                        | **required**   | Main hero title text                                              |
+| `headingLevel`        | `'h1'`-`'h6'`, `'div'`          | `'h1'`         | HTML Heading level for the title                                  |
+| `subtitle`            | `string`                        | `undefined`    | Optional subtitle text                                            |
+| `text`                | `string`                        | `undefined`    | Additional descriptive text                                       |
+| `imageSrc`            | `string`                        | `undefined`    | Foreground image source URL                                       |
+| `imageAlt`            | `string`                        | `'Hero image'` | Alt text for the hero image                                       |
+| `alignment`           | `HeroAlignment`                 | `'left'`       | Content alignment (`'left'`, `'center'`, `'right'`)               |
+| `backgroundImageSrc`  | `string`                        | `undefined`    | Background image source URL                                       |
+| `showOverlay`         | `boolean`                       | `true`         | Whether to show background overlay                                |
+| `fullViewportHeight`  | `boolean`                       | `false`        | Whether hero should take full viewport height                     |
+| `actions`             | `ReactNode`                     | `undefined`    | Action buttons or elements                                        |
+| `imageColSize`        | `number`                        | `7`            | Grid column size for image (1-12)                                 |
+| `imageColClassName`   | `string`                        | `undefined`    | Custom grid column class name for image                           |
+| `imageColStyle`       | `CSSProperties`                 | `undefined`    | Custom inline style for image column                              |
+| `contentColSize`      | `number`                        | `5`            | Grid column size for content (1-12)                               |
+| `contentColClassName` | `string`                        | `undefined`    | Custom grid column class name for content                         |
+| `contentColStyle`     | `CSSProperties`                 | `undefined`    | Custom inline style for content column                            |
+| `contentWidth`        | `string`                        | `undefined`    | Custom width for hero content                                     |
+| `parallax`            | `boolean`                       | `false`        | Enable parallax effect on background                              |
+| `parallaxIntensity`   | `number`                        | `0.5`          | Parallax effect intensity (0-1)                                   |
+| `videoBackground`     | `string`                        | `undefined`    | Video background source URL                                       |
+| `videoOptions`        | `VideoOptions`                  | `{}`           | Video playback options                                            |
+| `backgroundSlider`    | `HeroBackgroundSliderConfig`    | `undefined`    | Background slider configuration with multiple images/videos       |
+| `glass`               | `boolean` \| `AtomixGlassProps` | `undefined`    | Glass effect properties for content container                     |
+| `reverseOnMobile`     | `boolean`                       | `false`        | Reverse the stacking order of content and image on mobile devices |
+| `parts`               | `HeroParts`                     | `undefined`    | Granular part-based styling                                       |
+| `className`           | `string`                        | `''`           | Additional CSS classes                                            |
 
 ### VideoOptions Interface
 
 ```typescript
 interface VideoOptions {
-  autoplay?: boolean;    // Default: true
-  loop?: boolean;        // Default: true
-  muted?: boolean;       // Default: true
-  posterUrl?: string;    // Video poster image
+  autoplay?: boolean; // Default: true
+  loop?: boolean; // Default: true
+  muted?: boolean; // Default: true
+  posterUrl?: string; // Video poster image
 }
 ```
 
@@ -51,22 +59,22 @@ The background slider allows you to create dynamic hero sections with multiple i
 interface HeroBackgroundSliderConfig {
   // Array of slides (mixed images and videos)
   slides: HeroBackgroundSlide[];
-  
+
   // Autoplay configuration
   autoplay?: {
-    delay: number;              // Delay between transitions in milliseconds (default: 3000)
-    pauseOnHover?: boolean;     // Whether to pause autoplay on hover (default: false)
+    delay: number; // Delay between transitions in milliseconds (default: 3000)
+    pauseOnHover?: boolean; // Whether to pause autoplay on hover (default: false)
   };
-  
+
   // Whether to loop the slider infinitely (default: true)
   loop?: boolean;
-  
+
   // Transition effect type (default: 'fade')
   transition?: 'fade' | 'slide' | 'custom';
-  
+
   // Transition duration in milliseconds (default: 1000)
   transitionDuration?: number;
-  
+
   // Custom transition function (for custom transition type)
   customTransition?: (currentIndex: number, nextIndex: number) => string | React.CSSProperties;
 }
@@ -78,20 +86,42 @@ interface HeroBackgroundSliderConfig {
 interface HeroBackgroundSlide {
   // Type of slide - image or video
   type: 'image' | 'video';
-  
+
   // Source URL for the image or video
   src: string;
-  
+
   // Alt text for images (optional)
   alt?: string;
-  
+
   // Video options (only used when type is 'video')
   videoOptions?: {
-    autoplay?: boolean;    // Default: true
-    loop?: boolean;        // Default: true
-    muted?: boolean;       // Default: true
-    posterUrl?: string;    // Video poster image
+    autoplay?: boolean; // Default: true
+    loop?: boolean; // Default: true
+    muted?: boolean; // Default: true
+    posterUrl?: string; // Video poster image
   };
+}
+```
+
+### HeroParts Interface
+
+The `parts` prop provides granular styling control over individual DOM nodes in the Hero component, bypassing the need for complex global CSS overrides.
+
+```typescript
+interface HeroParts {
+  root?: string | { className?: string; style?: React.CSSProperties };
+  container?: string | { className?: string; style?: React.CSSProperties };
+  grid?: string | { className?: string; style?: React.CSSProperties };
+  content?: string | { className?: string; style?: React.CSSProperties };
+  subtitle?: string | { className?: string; style?: React.CSSProperties };
+  title?: string | { className?: string; style?: React.CSSProperties };
+  text?: string | { className?: string; style?: React.CSSProperties };
+  actions?: string | { className?: string; style?: React.CSSProperties };
+  imageWrapper?: string | { className?: string; style?: React.CSSProperties };
+  image?: string | { className?: string; style?: React.CSSProperties };
+  bg?: string | { className?: string; style?: React.CSSProperties };
+  overlay?: string | { className?: string; style?: React.CSSProperties };
+  slider?: string | { className?: string; style?: React.CSSProperties };
 }
 ```
 
@@ -140,9 +170,7 @@ function ProductHero() {
       imageSrc="/images/product-showcase.png"
       imageAlt="Product interface screenshot"
       alignment="left"
-      actions={
-        <Button variant="primary" size="lg" label="Start Free Trial" />
-      }
+      actions={<Button variant="primary" size="lg" label="Start Free Trial" />}
     />
   );
 }
@@ -186,14 +214,12 @@ function VideoHero() {
         autoplay: true,
         loop: true,
         muted: true,
-        posterUrl: "/images/video-poster.jpg"
+        posterUrl: '/images/video-poster.jpg',
       }}
       showOverlay={true}
       alignment="center"
       fullViewportHeight={true}
-      actions={
-        <Button variant="primary" size="lg" label="Learn More" />
-      }
+      actions={<Button variant="primary" size="lg" label="Learn More" />}
     />
   );
 }
@@ -213,9 +239,7 @@ function ParallaxHero() {
       parallaxIntensity={0.3}
       showOverlay={true}
       alignment="center"
-      actions={
-        <Button variant="outline-primary" label="Explore Features" />
-      }
+      actions={<Button variant="outline-primary" label="Explore Features" />}
     />
   );
 }
@@ -232,9 +256,7 @@ function SliderHero() {
       text="Showcase multiple products, features, or stories with an automatic background slider."
       alignment="center"
       showOverlay={true}
-      actions={
-        <Button variant="primary" label="Explore Now" />
-      }
+      actions={<Button variant="primary" label="Explore Now" />}
       backgroundSlider={{
         slides: [
           {
@@ -277,9 +299,7 @@ function MixedMediaSliderHero() {
       text="Create dynamic backgrounds by mixing images and videos in a seamless slider."
       alignment="center"
       showOverlay={true}
-      actions={
-        <Button variant="primary" label="Get Started" />
-      }
+      actions={<Button variant="primary" label="Get Started" />}
       backgroundSlider={{
         slides: [
           {
@@ -328,9 +348,7 @@ function SliderWithGlassHero() {
       alignment="center"
       showOverlay={true}
       glass={true}
-      actions={
-        <Button variant="primary" label="Learn More" />
-      }
+      actions={<Button variant="primary" label="Learn More" />}
       backgroundSlider={{
         slides: [
           {
@@ -364,14 +382,23 @@ function CustomLayoutHero() {
   return (
     <Hero
       title="Flexible Grid Layout"
+      headingLevel="h2"
       subtitle="Customizable Columns"
-      text="Adjust the grid layout to fit your design needs with custom column sizes."
+      text="Adjust the grid layout to fit your design needs with custom column sizes, override styles with specific class names, and target granular parts."
       imageSrc="/images/layout-example.png"
       imageAlt="Layout configuration example"
       alignment="right"
       imageColSize={6}
+      imageColClassName="custom-image-animation"
       contentColSize={6}
+      contentColClassName="custom-content-padding"
       contentWidth="800px"
+      reverseOnMobile={true}
+      parts={{
+        title: 'text-brand-primary font-bold',
+        subtitle: { style: { letterSpacing: '2px', textTransform: 'uppercase' } },
+        image: 'rounded-xl shadow-2xl transition-transform hover:scale-105',
+      }}
       actions={
         <div className="flex gap-4">
           <Button variant="primary" label="Try It Now" />
@@ -396,13 +423,13 @@ const hero = new Atomix.Hero(heroContainer, {
   backgroundImageSrc: '/images/hero-bg.jpg',
   showOverlay: true,
   alignment: 'center',
-  fullViewportHeight: true
+  fullViewportHeight: true,
 });
 
 // Update hero content dynamically
 hero.updateContent({
   title: 'Updated Hero Title',
-  text: 'New description text'
+  text: 'New description text',
 });
 ```
 
@@ -410,14 +437,14 @@ hero.updateContent({
 
 ```html
 <!-- Basic hero -->
-<div 
-  class="c-hero c-hero--center" 
+<div
+  class="c-hero c-hero--center"
   data-atomix="hero"
   data-title="Welcome to Atomix"
   data-subtitle="Design System"
   data-text="Build beautiful interfaces with ease"
-  data-alignment="center">
-  
+  data-alignment="center"
+>
   <div class="c-hero__container o-container">
     <div class="c-hero__content">
       <p class="c-hero__subtitle">Design System</p>
@@ -431,16 +458,16 @@ hero.updateContent({
 </div>
 
 <!-- Hero with background image -->
-<div 
-  class="c-hero c-hero--center c-hero--full-height" 
+<div
+  class="c-hero c-hero--center c-hero--full-height"
   data-atomix="hero"
-  style="background-image: url('/images/hero-bg.jpg');">
-  
+  style="background-image: url('/images/hero-bg.jpg');"
+>
   <div class="c-hero__bg">
     <img src="/images/hero-bg.jpg" alt="Background" class="c-hero__bg-image" />
     <div class="c-hero__overlay"></div>
   </div>
-  
+
   <div class="c-hero__container o-container">
     <div class="c-hero__content">
       <h1 class="c-hero__title">Hero Title</h1>
@@ -463,41 +490,91 @@ The Hero component uses the following CSS class structure:
 }
 
 /* Layout modifiers */
-.c-hero--left { /* Left-aligned content */ }
-.c-hero--center { /* Center-aligned content */ }
-.c-hero--right { /* Right-aligned content */ }
-.c-hero--full-height { /* Full viewport height */ }
-.c-hero--grid { /* Grid layout enabled */ }
+.c-hero--left {
+  /* Left-aligned content */
+}
+.c-hero--center {
+  /* Center-aligned content */
+}
+.c-hero--right {
+  /* Right-aligned content */
+}
+.c-hero--full-height {
+  /* Full viewport height */
+}
+.c-hero--grid {
+  /* Grid layout enabled */
+}
 
 /* Background elements */
-.c-hero__bg { /* Background container */ }
-.c-hero__bg-image { /* Background image */ }
-.c-hero__video { /* Background video */ }
-.c-hero__overlay { /* Background overlay */ }
+.c-hero__bg {
+  /* Background container */
+}
+.c-hero__bg-image {
+  /* Background image */
+}
+.c-hero__video {
+  /* Background video */
+}
+.c-hero__overlay {
+  /* Background overlay */
+}
 
 /* Background slider elements */
-.c-hero__slider { /* Slider container */ }
-.c-hero__slider-item { /* Individual slide item */ }
-.c-hero__slider-item--active { /* Active slide */ }
-.c-hero__slider--fade { /* Fade transition */ }
-.c-hero__slider--slide { /* Slide transition */ }
-.c-hero__slider--custom { /* Custom transition */ }
+.c-hero__slider {
+  /* Slider container */
+}
+.c-hero__slider-item {
+  /* Individual slide item */
+}
+.c-hero__slider-item--active {
+  /* Active slide */
+}
+.c-hero__slider--fade {
+  /* Fade transition */
+}
+.c-hero__slider--slide {
+  /* Slide transition */
+}
+.c-hero__slider--custom {
+  /* Custom transition */
+}
 
 /* Content elements */
-.c-hero__container { /* Content container */ }
-.c-hero__grid { /* Grid wrapper */ }
-.c-hero__content { /* Content wrapper */ }
-.c-hero__subtitle { /* Subtitle text */ }
-.c-hero__title { /* Main title */ }
-.c-hero__text { /* Description text */ }
-.c-hero__actions { /* Action buttons */ }
+.c-hero__container {
+  /* Content container */
+}
+.c-hero__grid {
+  /* Grid wrapper */
+}
+.c-hero__content {
+  /* Content wrapper */
+}
+.c-hero__subtitle {
+  /* Subtitle text */
+}
+.c-hero__title {
+  /* Main title */
+}
+.c-hero__text {
+  /* Description text */
+}
+.c-hero__actions {
+  /* Action buttons */
+}
 
 /* Image elements */
-.c-hero__image-wrapper { /* Image container */ }
-.c-hero__image { /* Foreground image */ }
+.c-hero__image-wrapper {
+  /* Image container */
+}
+.c-hero__image {
+  /* Foreground image */
+}
 
 /* State modifiers */
-.has-parallax { /* Parallax enabled */ }
+.has-parallax {
+  /* Parallax enabled */
+}
 ```
 
 ### Custom Styling
@@ -510,7 +587,7 @@ The Hero component uses the following CSS class structure:
 
 .c-hero--gradient .c-hero__title {
   color: white;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Custom spacing */
@@ -543,7 +620,7 @@ The Hero component uses the following CSS class structure:
   .c-hero--grid {
     display: block;
   }
-  
+
   .c-hero__image {
     margin-top: 2rem;
   }
@@ -681,7 +758,7 @@ function EventHero() {
       videoOptions={{
         autoplay: true,
         loop: true,
-        muted: true
+        muted: true,
       }}
       showOverlay={true}
       alignment="center"
@@ -781,12 +858,14 @@ function AppDownloadHero() {
 ## Browser Support
 
 The Hero component supports all modern browsers:
+
 - Chrome 60+
 - Firefox 60+
 - Safari 12+
 - Edge 79+
 
 Video backgrounds require additional support:
+
 - Chrome 60+
 - Firefox 60+
 - Safari 10+
@@ -798,7 +877,7 @@ Video backgrounds require additional support:
 
 ```jsx
 // v1.x
-<Hero 
+<Hero
   heading="Hero Title"
   subheading="Hero Subtitle"
   description="Hero description"
@@ -807,7 +886,7 @@ Video backgrounds require additional support:
 />
 
 // v2.x
-<Hero 
+<Hero
   title="Hero Title"
   subtitle="Hero Subtitle"
   text="Hero description"
@@ -817,6 +896,7 @@ Video backgrounds require additional support:
 ```
 
 The main changes:
+
 - `heading` prop renamed to `title`
 - `subheading` prop renamed to `subtitle`
 - `description` prop renamed to `text`
@@ -838,7 +918,11 @@ The background slider feature allows you to create dynamic hero sections with mu
     slides: [
       { type: 'image', src: '/img1.jpg', alt: 'Image 1' },
       { type: 'image', src: '/img2.jpg', alt: 'Image 2' },
-      { type: 'video', src: '/video.mp4', videoOptions: { autoplay: true, loop: true, muted: true } },
+      {
+        type: 'video',
+        src: '/video.mp4',
+        videoOptions: { autoplay: true, loop: true, muted: true },
+      },
     ],
     autoplay: { delay: 3000, pauseOnHover: true },
     loop: true,
@@ -849,6 +933,7 @@ The background slider feature allows you to create dynamic hero sections with mu
 ```
 
 **Key Features:**
+
 - Automatic transitions between slides
 - Support for mixed images and videos
 - Configurable autoplay with pause on hover
