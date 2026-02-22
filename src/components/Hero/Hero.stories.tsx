@@ -24,9 +24,11 @@ const LEFT_CLASS = HERO.CLASSES.LEFT;
 const FULL_VH_CLASS = HERO.CLASSES.FULL_VH;
 
 // Define missing variables
-const demoText = 'Our design system helps you build beautiful, consistent, and accessible user interfaces faster than ever before. With a carefully crafted collection of components and guidelines, you can easily create stunning UIs that stand out.';
+const demoText =
+  'Our design system helps you build beautiful, consistent, and accessible user interfaces faster than ever before. With a carefully crafted collection of components and guidelines, you can easily create stunning UIs that stand out.';
 
-const showcaseText = 'This is an example of showcase text demonstrating the capabilities of the Atomix design system. Create beautiful interfaces with ease and consistency.';
+const showcaseText =
+  'This is an example of showcase text demonstrating the capabilities of the Atomix design system. Create beautiful interfaces with ease and consistency.';
 
 const primaryActionButtons = (
   <>
@@ -195,7 +197,7 @@ Hero creates prominent banner sections typically used at the top of pages. It pr
       description: 'Show background overlay',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     fullViewportHeight: {
@@ -203,7 +205,7 @@ Hero creates prominent banner sections typically used at the top of pages. It pr
       description: 'Make hero full viewport height',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     imageColSize: {
@@ -211,7 +213,7 @@ Hero creates prominent banner sections typically used at the top of pages. It pr
       description: 'Image column size (1-12)',
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 6 },
+        defaultValue: { summary: '6' },
       },
     },
     contentColSize: {
@@ -219,7 +221,7 @@ Hero creates prominent banner sections typically used at the top of pages. It pr
       description: 'Content column size (1-12)',
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 6 },
+        defaultValue: { summary: '6' },
       },
     },
     contentWidth: {
@@ -235,7 +237,7 @@ Hero creates prominent banner sections typically used at the top of pages. It pr
       description: 'Enable parallax effect on background image',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     parallaxIntensity: {
@@ -243,7 +245,7 @@ Hero creates prominent banner sections typically used at the top of pages. It pr
       description: 'Parallax effect intensity (0-1)',
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 0.5 },
+        defaultValue: { summary: '0.5' },
       },
     },
     videoBackground: {
@@ -282,7 +284,8 @@ export const WithImage: Story = {
     title: 'Beautiful Interfaces',
     subtitle: 'Crafted with Atomix',
     text: 'Create stunning user experiences with our carefully designed components and guidelines.',
-    imageSrc: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+    imageSrc:
+      'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
     imageAlt: 'Laptop with design interface',
     alignment: 'left',
     fullViewportHeight: false,
@@ -301,7 +304,8 @@ export const WithBackgroundImage: Story = {
     title: 'Adventure Awaits',
     subtitle: 'Begin Your Journey',
     text: 'Explore new possibilities and create amazing products with our design system.',
-    backgroundImageSrc: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+    backgroundImageSrc:
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
     showOverlay: true,
     alignment: 'center',
     fullViewportHeight: true,
@@ -316,11 +320,15 @@ export const WithBackgroundImage: Story = {
 };
 
 export const WithActions: Story = {
-  render: (args) => (
+  render: args => (
     <Hero {...args}>
       <div className={ACTIONS_CLASS}>
-        <Button variant="primary" size="lg" className="u-mr-3">Get Started</Button>
-        <Button variant="secondary" size="lg">Learn More</Button>
+        <Button variant="primary" size="lg" className="u-mr-3">
+          Get Started
+        </Button>
+        <Button variant="secondary" size="lg">
+          Learn More
+        </Button>
       </div>
     </Hero>
   ),
@@ -391,8 +399,6 @@ export const WithCustomGlassEffect: Story = {
       cornerRadius: 45,
       mode: 'standard',
       elasticity: 0.2,
-      showBorderEffects: true,
-      showHoverEffects: true,
       onClick: () => {
         console.log('Clicked!');
       },
@@ -870,7 +876,7 @@ export const PremiumShowcase: Story = {
       aberrationIntensity: 0.5,
       cornerRadius: 20,
       overLight: true,
-      mode: 'advanced',
+      mode: 'standard',
     },
     actions: (
       <>
@@ -923,7 +929,8 @@ export const PremiumShowcase: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Premium showcase combining multiple advanced features: glass effect, background slider with videos, full viewport height, and interactive elements.',
+        story:
+          'Premium showcase combining multiple advanced features: glass effect, background slider with videos, full viewport height, and interactive elements.',
       },
     },
   },
@@ -945,7 +952,33 @@ export const MinimalistDesign: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Minimalist design focusing on typography and content, with subtle animations and refined aesthetics.',
+        story:
+          'Minimalist design focusing on typography and content, with subtle animations and refined aesthetics.',
+      },
+    },
+  },
+};
+
+/**
+ * Hero with custom column styles
+ */
+export const WithCustomColumnStyles: Story = {
+  args: {
+    ...Default.args,
+    title: 'Customized Columns',
+    text: 'This hero uses custom classes and inline styles on its layout columns. The content column has a custom background and padding, while the image column has a custom rotation effect.',
+    imageSrc: 'https://picsum.photos/id/20/712/500',
+    contentColClassName: 'u-bg-primary-50 u-p-6 u-rounded-lg',
+    contentColStyle: { border: '2px solid var(--atomix-color-primary-500)' },
+    imageColClassName: 'u-shadow-lg',
+    imageColStyle: { transform: 'rotate(-2deg)', transition: 'transform 0.3s ease' },
+    alignment: 'left',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Demonstrates the use of imageColClassName, imageColStyle, contentColClassName, and contentColStyle to individually style the layout columns.',
       },
     },
   },

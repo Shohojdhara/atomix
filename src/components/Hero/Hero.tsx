@@ -16,7 +16,11 @@ export const Hero: React.FC<HeroProps> = ({
   fullViewportHeight = false,
   actions,
   imageColSize = 7,
+  imageColClassName,
+  imageColStyle,
   contentColSize = 5,
+  contentColClassName,
+  contentColStyle,
   contentWidth,
   className = '',
   style,
@@ -102,9 +106,11 @@ export const Hero: React.FC<HeroProps> = ({
       return (
         <div
           className={`${HERO.SELECTORS.SLIDER.replace('.', '')} ${transitionClass}`}
-          style={{
-            '--slider-transition-duration': `${transitionDuration}ms`,
-          } as React.CSSProperties}
+          style={
+            {
+              '--slider-transition-duration': `${transitionDuration}ms`,
+            } as React.CSSProperties
+          }
           onMouseEnter={() => {
             if (backgroundSlider.autoplay?.pauseOnHover) {
               sliderHook.pauseAutoplay();
@@ -145,10 +151,7 @@ export const Hero: React.FC<HeroProps> = ({
                     playsInline
                     poster={slide.videoOptions?.posterUrl}
                   >
-                    <source
-                      src={slide.src}
-                      type={`video/${slide.src.split('.').pop() || 'mp4'}`}
-                    />
+                    <source src={slide.src} type={`video/${slide.src.split('.').pop() || 'mp4'}`} />
                     Your browser does not support the video tag.
                   </video>
                 )}
@@ -245,14 +248,17 @@ export const Hero: React.FC<HeroProps> = ({
 
     if (alignment === 'center') {
       return (
-        <div className={HERO.SELECTORS.IMAGE_WRAPPER.replace('.', '')}>
+        <div
+          className={`${HERO.SELECTORS.IMAGE_WRAPPER.replace('.', '')} ${imageColClassName || ''}`.trim()}
+          style={imageColStyle}
+        >
           <img src={imageSrc} alt={imageAlt} className={HERO.SELECTORS.IMAGE.replace('.', '')} />
         </div>
       );
     }
 
     return (
-      <div className={generateImageColClass()}>
+      <div className={generateImageColClass(imageColSize, imageColClassName)} style={imageColStyle}>
         <img src={imageSrc} alt={imageAlt} className={HERO.SELECTORS.IMAGE.replace('.', '')} />
       </div>
     );
@@ -263,7 +269,12 @@ export const Hero: React.FC<HeroProps> = ({
     if (alignment === 'left') {
       return (
         <>
-          <div className={generateContentColClass()}>{renderContent()}</div>
+          <div
+            className={generateContentColClass(contentColSize, contentColClassName)}
+            style={contentColStyle}
+          >
+            {renderContent()}
+          </div>
           {renderForegroundImage()}
         </>
       );
@@ -273,7 +284,12 @@ export const Hero: React.FC<HeroProps> = ({
     return (
       <>
         {renderForegroundImage()}
-        <div className={generateContentColClass()}>{renderContent()}</div>
+        <div
+          className={generateContentColClass(contentColSize, contentColClassName)}
+          style={contentColStyle}
+        >
+          {renderContent()}
+        </div>
       </>
     );
   };

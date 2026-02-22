@@ -330,7 +330,7 @@ export function useDataTable({
 
   // Pre-process column filters to avoid redundant lookups and transformations
   const activeColumnFilters = useMemo(() => {
-    if (!columnFilters) return [];
+    if (!columnFilters) return [] as Array<{ key: string; value: string; lowercaseValue: string; column: DataTableColumn }>;
 
     return Object.entries(columnFilterValues)
       .filter(([, value]) => value !== undefined && value !== null && value !== '')
@@ -369,7 +369,9 @@ export function useDataTable({
 
       // Apply column-specific filters
       for (let i = 0; i < activeColumnFilters.length; i++) {
-        const { key, value, lowercaseValue, column } = activeColumnFilters[i];
+        const filter = activeColumnFilters[i];
+        if (!filter) continue;
+        const { key, value, lowercaseValue, column } = filter;
         const cellValue = row[key];
 
         if (cellValue == null) return false;

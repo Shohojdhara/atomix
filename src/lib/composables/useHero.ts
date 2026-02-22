@@ -15,12 +15,12 @@ interface UseHeroResult {
   /**
    * Generate image column class based on size
    */
-  generateImageColClass: (size?: number) => string;
+  generateImageColClass: (size?: number, customClass?: string) => string;
 
   /**
    * Generate content column class based on size
    */
-  generateContentColClass: (size?: number) => string;
+  generateContentColClass: (size?: number, customClass?: string) => string;
 
   /**
    * Determine if the hero has a background image
@@ -247,14 +247,19 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
   /**
    * Generate image column class based on size
    * @param size - Column size (1-12)
+   * @param customClass - Optional custom class name
    * @returns Column class
    */
-  const generateImageColClass = (size: number = defaultProps.imageColSize || 7): string => {
+  const generateImageColClass = (size: number = defaultProps.imageColSize || 7, customClass?: string): string => {
     const classes = [`o-grid__col o-grid__col--md-${size}`];
 
     // Add responsive margin if needed for mobile view
     if (defaultProps.alignment === 'left') {
       classes.push('u-mt-5 u-mt-md-0');
+    }
+
+    if (customClass) {
+      classes.push(customClass);
     }
 
     return classes.join(' ');
@@ -263,10 +268,17 @@ export function useHero(initialProps?: Partial<HeroProps>): UseHeroResult {
   /**
    * Generate content column class based on size
    * @param size - Column size (1-12)
+   * @param customClass - Optional custom class name
    * @returns Column class
    */
-  const generateContentColClass = (size: number = defaultProps.contentColSize || 5): string => {
-    return `o-grid__col o-grid__col--md-${size}`;
+  const generateContentColClass = (size: number = defaultProps.contentColSize || 5, customClass?: string): string => {
+    const classes = [`o-grid__col o-grid__col--md-${size}`];
+
+    if (customClass) {
+      classes.push(customClass);
+    }
+
+    return classes.join(' ');
   };
 
   return {

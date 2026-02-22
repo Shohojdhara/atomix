@@ -1,7 +1,44 @@
 import { ReactNode } from 'react';
-import type { ButtonParts, CardParts, InputParts, ModalParts, DropdownParts, BadgeParts, ProgressParts, CheckboxParts, RadioParts } from './partProps';
-import type { SlotProps, ButtonRootSlotProps, ButtonIconSlotProps, ButtonLabelSlotProps, ButtonSpinnerSlotProps, BadgeRootSlotProps, BadgeIconSlotProps, BadgeLabelSlotProps, ProgressRootSlotProps, ProgressBarSlotProps, CheckboxRootSlotProps, CheckboxInputSlotProps, CheckboxLabelSlotProps, RadioRootSlotProps, RadioInputSlotProps, RadioLabelSlotProps } from '../patterns/slots';
-import type { ButtonCSSVariable, CardCSSVariable, InputCSSVariable, ModalCSSVariable, DropdownCSSVariable, BadgeCSSVariable, ProgressCSSVariable, CheckboxCSSVariable, RadioCSSVariable } from '../constants/cssVariables';
+import type {
+  ButtonParts,
+  CardParts,
+  InputParts,
+  ModalParts,
+  DropdownParts,
+  BadgeParts,
+  ProgressParts,
+  CheckboxParts,
+  RadioParts,
+} from './partProps';
+import type {
+  SlotProps,
+  ButtonRootSlotProps,
+  ButtonIconSlotProps,
+  ButtonLabelSlotProps,
+  ButtonSpinnerSlotProps,
+  BadgeRootSlotProps,
+  BadgeIconSlotProps,
+  BadgeLabelSlotProps,
+  ProgressRootSlotProps,
+  ProgressBarSlotProps,
+  CheckboxRootSlotProps,
+  CheckboxInputSlotProps,
+  CheckboxLabelSlotProps,
+  RadioRootSlotProps,
+  RadioInputSlotProps,
+  RadioLabelSlotProps,
+} from '../patterns/slots';
+import type {
+  ButtonCSSVariable,
+  CardCSSVariable,
+  InputCSSVariable,
+  ModalCSSVariable,
+  DropdownCSSVariable,
+  BadgeCSSVariable,
+  ProgressCSSVariable,
+  CheckboxCSSVariable,
+  RadioCSSVariable,
+} from '../constants/cssVariables';
 
 // ============================================================================
 // AtomixGlass Types
@@ -199,7 +236,14 @@ export interface AtomixGlassProps {
   /**
    * Shader variant for shader mode
    */
-  shaderVariant?: 'liquidGlass' | 'premiumGlass' | 'appleFluid' | 'liquidMetal' | 'plasma' | 'waves' | 'noise';
+  shaderVariant?:
+    | 'liquidGlass'
+    | 'premiumGlass'
+    | 'appleFluid'
+    | 'liquidMetal'
+    | 'plasma'
+    | 'waves'
+    | 'noise';
 
   /**
    * Accessibility props
@@ -974,9 +1018,29 @@ export interface HeroProps extends BaseComponentProps {
   imageColSize?: number;
 
   /**
+   * Custom grid column class name for image
+   */
+  imageColClassName?: string;
+
+  /**
+   * Custom inline style for image column
+   */
+  imageColStyle?: React.CSSProperties;
+
+  /**
    * Custom grid column size for content (default is 5)
    */
   contentColSize?: number;
+
+  /**
+   * Custom grid column class name for content
+   */
+  contentColClassName?: string;
+
+  /**
+   * Custom inline style for content column
+   */
+  contentColStyle?: React.CSSProperties;
 
   /**
    * Custom width for the hero content (overrides the default CSS variable)
@@ -1468,16 +1532,16 @@ export interface SideMenuProps extends BaseComponentProps {
       active?: boolean | undefined;
       disabled?: boolean | undefined;
       as?:
-      | React.ComponentType<{
-        href?: string;
-        to?: string;
-        children: React.ReactNode;
-        className?: string;
-        onClick?: (event: React.MouseEvent) => void;
-        target?: string;
-        rel?: string;
-      }>
-      | undefined;
+        | React.ComponentType<{
+            href?: string;
+            to?: string;
+            children: React.ReactNode;
+            className?: string;
+            onClick?: (event: React.MouseEvent) => void;
+            target?: string;
+            rel?: string;
+          }>
+        | undefined;
     }>;
   }>;
 }
@@ -3677,17 +3741,17 @@ export interface VideoPlayerProps extends BaseComponentProps {
    * - object: Custom glass configuration
    */
   glass?:
-  | boolean
-  | {
-    displacementScale?: number;
-    blurAmount?: number;
-    saturation?: number;
-    aberrationIntensity?: number;
-    elasticity?: number;
-    cornerRadius?: number;
-    mode?: 'standard' | 'polar' | 'prominent' | 'shader';
-    overLight?: boolean;
-  };
+    | boolean
+    | {
+        displacementScale?: number;
+        blurAmount?: number;
+        saturation?: number;
+        aberrationIntensity?: number;
+        elasticity?: number;
+        cornerRadius?: number;
+        mode?: 'standard' | 'polar' | 'prominent' | 'shader';
+        overLight?: boolean;
+      };
 
   /**
    * Glass overlay opacity (0-1) when glass variant is enabled
@@ -5075,23 +5139,23 @@ export interface SliderProps extends BaseComponentProps {
    * Whether to enable mouse wheel control
    */
   mousewheel?:
-  | boolean
-  | {
-    forceToAxis?: boolean;
-    sensitivity?: number;
-    releaseOnEdges?: boolean;
-  };
+    | boolean
+    | {
+        forceToAxis?: boolean;
+        sensitivity?: number;
+        releaseOnEdges?: boolean;
+      };
 
   /**
    * Whether to enable keyboard control
    */
   keyboard?:
-  | boolean
-  | {
-    enabled?: boolean;
-    onlyInViewport?: boolean;
-    pageUpDown?: boolean;
-  };
+    | boolean
+    | {
+        enabled?: boolean;
+        onlyInViewport?: boolean;
+        pageUpDown?: boolean;
+      };
 
   /**
    * Whether to grab cursor on hover (default: true)
@@ -5154,16 +5218,16 @@ export interface SliderProps extends BaseComponentProps {
    * Whether to free mode (no snap to slides)
    */
   freeMode?:
-  | boolean
-  | {
-    enabled?: boolean;
-    sticky?: boolean;
-    momentumRatio?: number;
-    momentumVelocityRatio?: number;
-    momentumBounce?: boolean;
-    momentumBounceRatio?: number;
-    minimumVelocity?: number;
-  };
+    | boolean
+    | {
+        enabled?: boolean;
+        sticky?: boolean;
+        momentumRatio?: number;
+        momentumVelocityRatio?: number;
+        momentumBounce?: boolean;
+        momentumBounceRatio?: number;
+        minimumVelocity?: number;
+      };
 
   /**
    * Whether to watch for slides and wrapper size changes
@@ -5199,23 +5263,23 @@ export interface SliderProps extends BaseComponentProps {
    * Hash navigation
    */
   hashNavigation?:
-  | boolean
-  | {
-    watchState?: boolean;
-    replaceState?: boolean;
-  };
+    | boolean
+    | {
+        watchState?: boolean;
+        replaceState?: boolean;
+      };
 
   /**
    * History navigation
    */
   history?:
-  | boolean
-  | {
-    enabled?: boolean;
-    root?: string;
-    replaceState?: boolean;
-    key?: string;
-  };
+    | boolean
+    | {
+        enabled?: boolean;
+        root?: string;
+        replaceState?: boolean;
+        key?: string;
+      };
 
   /**
    * Controller configuration
@@ -5230,16 +5294,16 @@ export interface SliderProps extends BaseComponentProps {
    * A11y configuration
    */
   a11y?:
-  | boolean
-  | {
-    enabled?: boolean;
-    prevSlideMessage?: string;
-    nextSlideMessage?: string;
-    firstSlideMessage?: string;
-    lastSlideMessage?: string;
-    paginationBulletMessage?: string;
-    notificationClass?: string;
-  };
+    | boolean
+    | {
+        enabled?: boolean;
+        prevSlideMessage?: string;
+        nextSlideMessage?: string;
+        firstSlideMessage?: string;
+        lastSlideMessage?: string;
+        paginationBulletMessage?: string;
+        notificationClass?: string;
+      };
 
   /**
    * Slide change callback
