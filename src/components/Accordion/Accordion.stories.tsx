@@ -63,6 +63,7 @@ The Accordion component provides an expandable/collapsible container for content
 - Glass morphism effect support
 - Keyboard navigation support
 - Disabled state handling
+- **Compound Component Pattern** (new)
 
 ## Accessibility
 
@@ -78,6 +79,19 @@ The Accordion component provides an expandable/collapsible container for content
 \`\`\`tsx
 <Accordion title="Section Title">
   <p>Content goes here</p>
+</Accordion>
+\`\`\`
+
+### Compound Component Usage
+
+\`\`\`tsx
+<Accordion>
+  <Accordion.Header>
+    <span>Custom Header Content</span>
+  </Accordion.Header>
+  <Accordion.Body>
+    <p>Content goes here</p>
+  </Accordion.Body>
 </Accordion>
 \`\`\`
 
@@ -261,6 +275,32 @@ export const WithAllProps: Story = {
     docs: {
       description: {
         story: 'Accordion with all major props configured.',
+      },
+    },
+  },
+};
+
+export const CompoundUsage: Story = {
+  render: args => (
+    <Accordion {...args}>
+      <Accordion.Header>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <strong>Custom Header Layout</strong>
+          <span style={{ fontSize: '0.8em', color: '#666' }}>(with subtitle)</span>
+        </div>
+      </Accordion.Header>
+      <Accordion.Body>
+        <p>
+          This accordion uses the Compound Component pattern (Accordion.Header and Accordion.Body).
+          This allows for complete control over the header layout and content structure.
+        </p>
+      </Accordion.Body>
+    </Accordion>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates the Compound Component usage pattern for custom header layouts.',
       },
     },
   },

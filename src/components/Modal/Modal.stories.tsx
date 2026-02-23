@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { useState } from 'react';
 import type { AtomixGlassProps } from '../../lib/types/components';
-import Modal from './Modal';
+import { Modal } from './Modal';
 
 // Helper type for glass props in stories (without children requirement)
 type GlassProps = boolean | Omit<AtomixGlassProps, 'children'>;
@@ -31,6 +31,7 @@ Modal displays content in a focused overlay dialog. It provides a way to present
 - Header and footer sections
 - Accessible design
 - Responsive behavior
+- **Compound Component Pattern** (new)
 
 ## Accessibility
 
@@ -50,6 +51,20 @@ Modal displays content in a focused overlay dialog. It provides a way to present
   title="Modal Title"
 >
   <p>Modal content goes here</p>
+</Modal>
+\`\`\`
+
+### Compound Component Usage
+
+\`\`\`tsx
+<Modal isOpen={isOpen} onOpenChange={setIsOpen}>
+  <Modal.Header closeButton title="Custom Header" />
+  <Modal.Body>
+    <p>Flexible body content</p>
+  </Modal.Body>
+  <Modal.Footer>
+    <button>Action</button>
+  </Modal.Footer>
 </Modal>
 \`\`\`
 
@@ -279,6 +294,55 @@ export const WithGlassEffect: Story = {
     docs: {
       description: {
         story: 'Modal with glass morphism effect applied.',
+      },
+    },
+  },
+};
+
+export const CompoundUsage: Story = {
+  render: args => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <>
+        <div
+          className="c-btn c-btn--primary"
+          onClick={() => setIsOpen(true)}
+          style={{ cursor: 'pointer', padding: '8px 16px', display: 'inline-block' }}
+        >
+          Open Compound Modal
+        </div>
+
+        <Modal
+          {...args}
+          isOpen={isOpen}
+          onOpenChange={setIsOpen}
+        >
+          <Modal.Header
+            title="Compound Component Pattern"
+            subtitle="Fully customizable header"
+            closeButton
+          />
+          <Modal.Body>
+            <p>
+              This modal uses the Compound Component pattern (Modal.Header, Modal.Body, Modal.Footer).
+              This allows for greater flexibility in content arrangement.
+            </p>
+            <div style={{ marginTop: '1rem', padding: '1rem', background: '#f5f5f5', borderRadius: '4px' }}>
+              Custom content structure inside Body
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+             <button className="c-btn c-btn--outline-secondary" onClick={() => setIsOpen(false)}>Custom Footer Button</button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates the Compound Component usage pattern.',
       },
     },
   },
