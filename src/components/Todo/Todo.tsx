@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { TodoProps } from '../../lib/types/components';
 import { useTodo } from '../../lib/composables/useTodo';
 import { Icon } from '../Icon/Icon';
-import { TODO } from '../../lib/constants/components';
 import { generateUUID } from '../../lib/utils';
 
 export const Todo: React.FC<TodoProps> = ({
