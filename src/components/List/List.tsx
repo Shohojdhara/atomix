@@ -28,7 +28,8 @@ export const List: ListComponent = memo(
             // Legacy behavior: wrap in li
             return <li className="c-list__item">{child}</li>;
           }
-          return <li className="c-list__item">{child}</li>;
+          // Wrap non-element children (text nodes etc)
+          return <ListItem>{child}</ListItem>;
         })}
       </ListElement>
     );
