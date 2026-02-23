@@ -6,6 +6,8 @@ import React, {
   useContext,
   useEffect,
   memo,
+  forwardRef,
+  ReactNode,
 } from 'react';
 import { DROPDOWN } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
@@ -31,6 +33,54 @@ const DropdownContext = createContext<DropdownContextType>({
   id: '',
   trigger: 'click',
 });
+
+// Compound Components
+
+export const DropdownMenu = forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement>>(
+  ({ children, className = '', ...props }, ref) => {
+    const { glass } = useContext(DropdownStyleContext); // We need to access glass prop here?
+    // Wait, the original code wrapped <ul> in Context Provider.
+    // And applied glass wrapper around <ul>.
+    // If we use Compound Component, DropdownMenu should be the list.
+
+    return (
+      <ul
+        ref={ref}
+        className={`c-dropdown__menu ${glass ? 'c-dropdown__menu--glass' : ''} ${className}`.trim()}
+        {...props}
+      >
+        {children}
+      </ul>
+    );
+  }
+);
+DropdownMenu.displayName = 'DropdownMenu';
+
+export const DropdownTrigger = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ children, className = '', onClick, onKeyDown, ...props }, ref) => {
+    // We need to inject the trigger logic here.
+    // But triggers are usually handled by the parent Dropdown in the original code.
+    // The original code wraps children in `c-dropdown__toggle` div.
+
+    // Ideally, DropdownTrigger allows user to customize the trigger element.
+    // For backward compat, Dropdown wraps `children` (legacy) in `c-dropdown__toggle`.
+
+    // If we use <Dropdown.Trigger><Button/></Dropdown.Trigger>, we want the Button to be the trigger.
+
+    return (
+       <div
+         ref={ref}
+         className={`c-dropdown__toggle ${className}`.trim()}
+         onClick={onClick}
+         onKeyDown={onKeyDown}
+         {...props}
+       >
+         {children}
+       </div>
+    );
+  }
+);
+DropdownTrigger.displayName = 'DropdownTrigger';
 
 /**
  * DropdownItem component for menu items
@@ -139,10 +189,21 @@ export const DropdownHeader: React.FC<DropdownHeaderProps> = memo(
   }
 );
 
+// Helper context to pass glass prop to DropdownMenu
+const DropdownStyleContext = createContext<{ glass?: any }>({});
+
 /**
  * Dropdown component for creating dropdown menus
  */
-export const Dropdown: React.FC<DropdownProps> = memo(
+type DropdownComponent = React.FC<DropdownProps> & {
+  Trigger: typeof DropdownTrigger;
+  Menu: typeof DropdownMenu;
+  Item: typeof DropdownItem;
+  Divider: typeof DropdownDivider;
+  Header: typeof DropdownHeader;
+};
+
+export const Dropdown: DropdownComponent = memo(
   ({
     children,
     menu,
@@ -160,7 +221,7 @@ export const Dropdown: React.FC<DropdownProps> = memo(
     style,
     glass,
     ...props
-  }) => {
+  }: DropdownProps) => {
     // Set up controlled vs uncontrolled state
     const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(false);
     const isControlled = controlledIsOpen !== undefined;
@@ -328,22 +389,46 @@ export const Dropdown: React.FC<DropdownProps> = memo(
       menuStyleProps.minWidth = typeof minWidth === 'number' ? `${minWidth}px` : minWidth;
     }
 
-    const menuContent = (
-      <div className="c-dropdown__menu-inner" style={menuStyleProps}>
-        <DropdownContext.Provider value={{ isOpen, close, id: dropdownId, trigger }}>
-          <ul className={`c-dropdown__menu ${glass ? 'c-dropdown__menu--glass' : ''}`}>{menu}</ul>
-        </DropdownContext.Provider>
-      </div>
+    // Determine content structure
+    // Legacy: menu prop + children as trigger
+    // Compound: children contains Trigger and Menu
+
+    const hasCompoundComponents = React.Children.toArray(children).some((child) =>
+      React.isValidElement(child) &&
+      ['DropdownTrigger', 'DropdownMenu'].includes((child.type as any).displayName)
     );
 
-    return (
-      <div
-        ref={dropdownRef}
-        className={dropdownClasses}
-        style={style}
-        onMouseEnter={trigger === 'hover' ? handleHoverOpen : undefined}
-        {...props}
-      >
+    let triggerContent: ReactNode;
+    let menuContentNode: ReactNode;
+
+    if (hasCompoundComponents) {
+      // Find Trigger and Menu in children
+      React.Children.forEach(children, (child) => {
+        if (React.isValidElement(child)) {
+          if ((child.type as any).displayName === 'DropdownTrigger') {
+            triggerContent = React.cloneElement(child, {
+              ref: toggleRef,
+              onClick: (e: React.MouseEvent) => {
+                handleToggleClick(e);
+                (child.props as any).onClick?.(e);
+              },
+              onKeyDown: (e: React.KeyboardEvent) => {
+                handleToggleKeyDown(e);
+                (child.props as any).onKeyDown?.(e);
+              },
+              'aria-haspopup': 'menu',
+              'aria-expanded': isOpen,
+              'aria-controls': dropdownId,
+              tabIndex: 0,
+            } as any);
+          } else if ((child.type as any).displayName === 'DropdownMenu') {
+            menuContentNode = child;
+          }
+        }
+      });
+    } else {
+      // Legacy mode
+      triggerContent = (
         <div
           ref={toggleRef}
           className="c-dropdown__toggle"
@@ -356,6 +441,31 @@ export const Dropdown: React.FC<DropdownProps> = memo(
         >
           {children}
         </div>
+      );
+      menuContentNode = (
+        <ul className={`c-dropdown__menu ${glass ? 'c-dropdown__menu--glass' : ''}`}>{menu}</ul>
+      );
+    }
+
+    const menuContent = (
+      <div className="c-dropdown__menu-inner" style={menuStyleProps}>
+        <DropdownStyleContext.Provider value={{ glass }}>
+          <DropdownContext.Provider value={{ isOpen, close, id: dropdownId, trigger }}>
+             {menuContentNode}
+          </DropdownContext.Provider>
+        </DropdownStyleContext.Provider>
+      </div>
+    );
+
+    return (
+      <div
+        ref={dropdownRef}
+        className={dropdownClasses}
+        style={style}
+        onMouseEnter={trigger === 'hover' ? handleHoverOpen : undefined}
+        {...props}
+      >
+        {triggerContent}
 
         <div
           ref={menuRef}
@@ -384,13 +494,15 @@ export const Dropdown: React.FC<DropdownProps> = memo(
       </div>
     );
   }
-);
+) as unknown as DropdownComponent;
 
 export type { DropdownProps, DropdownItemProps, DropdownDividerProps, DropdownHeaderProps };
 
 Dropdown.displayName = 'Dropdown';
-DropdownItem.displayName = 'DropdownItem';
-DropdownDivider.displayName = 'DropdownDivider';
-DropdownHeader.displayName = 'DropdownHeader';
+Dropdown.Trigger = DropdownTrigger;
+Dropdown.Menu = DropdownMenu;
+Dropdown.Item = DropdownItem;
+Dropdown.Divider = DropdownDivider;
+Dropdown.Header = DropdownHeader;
 
 export default Dropdown;
