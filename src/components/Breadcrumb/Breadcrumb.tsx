@@ -39,6 +39,9 @@ export interface BreadcrumbItemData {
   className?: string;
 }
 
+// Export legacy interface as type alias to preserve backward compatibility for type imports
+export type { BreadcrumbItemData as BreadcrumbItem };
+
 // Compound Component Props
 export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement> {
   /**
@@ -102,7 +105,7 @@ export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
     const commonLinkProps = {
       className: BREADCRUMB.CLASSES.LINK,
       onClick: onClick as any,
-      style,
+      style, // Apply style to the link as per legacy behavior
       ...linkProps,
     };
 
@@ -110,7 +113,14 @@ export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
       <li ref={ref} className={itemClasses} style={style} {...props}>
         {href && !active ? (
           LinkComponent ? (
-            React.createElement(LinkComponent as any, { href, ...commonLinkProps }, linkContent)
+            (() => {
+              const Component = LinkComponent;
+              return (
+                <Component href={href} {...commonLinkProps}>
+                  {linkContent}
+                </Component>
+              );
+            })()
           ) : (
             <a href={href} {...(commonLinkProps as React.HTMLAttributes<HTMLAnchorElement>)}>
               {linkContent}
@@ -167,7 +177,7 @@ type BreadcrumbComponent = React.FC<BreadcrumbProps> & {
   Item: typeof BreadcrumbItem;
 };
 
-const BreadcrumbComp: React.FC<BreadcrumbProps> = memo(
+export const Breadcrumb: BreadcrumbComponent = memo(
   ({
     items,
     divider,
@@ -192,7 +202,7 @@ const BreadcrumbComp: React.FC<BreadcrumbProps> = memo(
             href={item.href}
             active={item.active || isLast}
             icon={item.icon}
-            onClick={item.onClick as any}
+            onClick={item.onClick}
             className={item.className}
             style={item.style}
             linkAs={LinkComponent}
@@ -226,9 +236,7 @@ const BreadcrumbComp: React.FC<BreadcrumbProps> = memo(
       </nav>
     );
   }
-);
-
-export const Breadcrumb = BreadcrumbComp as BreadcrumbComponent;
+) as unknown as BreadcrumbComponent;
 
 Breadcrumb.displayName = 'Breadcrumb';
 Breadcrumb.Item = BreadcrumbItem;

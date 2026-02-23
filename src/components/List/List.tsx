@@ -3,12 +3,14 @@ import { ListProps } from '../../lib/types/components';
 import { LIST } from '../../lib/constants/components';
 import { ListItem } from './ListItem';
 
+export type { ListProps };
+
 export type ListComponent = React.FC<ListProps> & {
   Item: typeof ListItem;
 };
 
 export const List: ListComponent = memo(
-  ({ children, variant = 'default', className = '', style, ...props }) => {
+  ({ children, variant = 'default', className = '', style, ...props }: ListProps) => {
     // Generate CSS classes
     const listClasses = [LIST.BASE_CLASS, variant !== 'default' && `c-list--${variant}`, className]
       .filter(Boolean)
@@ -28,8 +30,7 @@ export const List: ListComponent = memo(
             // Legacy behavior: wrap in li
             return <li className="c-list__item">{child}</li>;
           }
-          // Wrap non-element children (text nodes etc)
-          return <ListItem>{child}</ListItem>;
+          return <li className="c-list__item">{child}</li>;
         })}
       </ListElement>
     );

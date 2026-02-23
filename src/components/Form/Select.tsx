@@ -9,22 +9,6 @@ export type SelectComponent = React.FC<SelectProps> & {
   Option: typeof SelectOption;
 };
 
-export interface SelectOptionProps {
-  value: string;
-  disabled?: boolean;
-  children: React.ReactNode;
-  className?: string;
-}
-
-export const SelectOption: React.FC<SelectOptionProps> = ({ children, value, disabled, className }) => {
-  return (
-    <option value={value} disabled={disabled} className={className}>
-      {children}
-    </option>
-  );
-};
-SelectOption.displayName = 'SelectOption';
-
 /**
  * Select - A component for dropdown selection
  */
@@ -273,8 +257,6 @@ export const Select: SelectComponent = memo(
     return selectContent;
   }
 ) as unknown as SelectComponent;
-
-export const Select = SelectComp as SelectComponent;
 
 export type { SelectProps };
 

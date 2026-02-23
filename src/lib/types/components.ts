@@ -375,7 +375,7 @@ export type StateModifier =
  */
 export type IconPosition = 'left' | 'right';
 
-export type listvariant = 'dash' | 'number' | 'text';
+export type listvariant = 'dash' | 'number' | 'text' | 'default';
 /**;
  * List component properties
  */
