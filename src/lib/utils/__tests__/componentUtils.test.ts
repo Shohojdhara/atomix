@@ -58,6 +58,7 @@ describe('componentUtils', () => {
         className: 'base custom',
         id: 'test',
         'data-test': 'value',
+        style: {},
       });
     });
   });
@@ -94,8 +95,8 @@ describe('componentUtils', () => {
       };
       const result = createCSSVarStyle(cssVars);
       expect(result).toEqual({
-        '--atomix-button-padding-x': 16,
-        '--atomix-button-padding-y': 8,
+        '--atomix-button-padding-x': '16px',
+        '--atomix-button-padding-y': '8px',
       });
     });
 
