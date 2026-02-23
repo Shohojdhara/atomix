@@ -684,9 +684,11 @@ export function useChartData(
 
     for (let i = 0; i < n; i++) {
       const val = values[i];
+      // Treat null/undefined as 0 to match original reduce behavior
+      const safeVal = typeof val === 'number' ? val : 0;
       xSum += i;
-      ySum += val;
-      xySum += i * val;
+      ySum += safeVal;
+      xySum += i * safeVal;
       x2Sum += i * i;
     }
 
