@@ -176,7 +176,7 @@ export function sanitizeInput(input) {
 
   // Remove any shell metacharacters that could be dangerous
   return input
-    .replace(/[;&|`$<>\\]/g, '')
+    .replace(/[;&|`$<>\\"']/g, '')
     .replace(/\0/g, '') // Remove null bytes
     .trim();
 }
