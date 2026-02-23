@@ -1,35 +1,20 @@
-import React, { useRef, useEffect, useState, memo, useMemo } from 'react';
+import React, { useRef, useEffect, useState, memo, useCallback } from 'react';
 import { SelectProps, SelectOption as SelectOptionType } from '../../lib/types/components';
 import { useSelect } from '../../lib/composables';
 import { SELECT } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import { SelectContext, SelectOption } from './SelectOption';
 
-export interface SelectOptionProps {
-  value: string;
-  disabled?: boolean;
-  children: React.ReactNode;
-  className?: string;
-}
-
-export const SelectOption: React.FC<SelectOptionProps> = ({ children, value, disabled, className }) => {
-  return (
-    <option value={value} disabled={disabled} className={className}>
-      {children}
-    </option>
-  );
+export type SelectComponent = React.FC<SelectProps> & {
+  Option: typeof SelectOption;
 };
-SelectOption.displayName = 'SelectOption';
 
 /**
  * Select - A component for dropdown selection
  */
-type SelectComponent = React.FC<SelectProps> & {
-  Option: typeof SelectOption;
-};
-
-const SelectComp: React.FC<SelectProps> = memo(
+export const Select: SelectComponent = memo(
   ({
-    options = [],
+    options,
     value,
     onChange,
     onBlur,
@@ -49,7 +34,7 @@ const SelectComp: React.FC<SelectProps> = memo(
     'aria-describedby': ariaDescribedBy,
     glass,
     children,
-  }) => {
+  }: SelectProps) => {
     const { generateSelectClass } = useSelect({
       size,
       disabled,
@@ -72,41 +57,35 @@ const SelectComp: React.FC<SelectProps> = memo(
     const bodyRef = useRef<HTMLDivElement>(null);
     const nativeSelectRef = useRef<HTMLSelectElement>(null);
 
-    // Process options: use prop options if available, otherwise parse children
-    const internalOptions = useMemo(() => {
-      if (options && options.length > 0) return options;
+    // State for registered options (Compound mode)
+    const [registeredOptions, setRegisteredOptions] = useState<SelectOptionType[]>([]);
 
-      const childOptions: SelectOptionType[] = [];
-      React.Children.forEach(children, (child) => {
-        if (React.isValidElement(child)) {
-          // Check for SelectOption component or native option
-          if (child.type === SelectOption || (child.type as any).displayName === 'SelectOption' || child.type === 'option') {
-            const { value, disabled, children: childLabel } = child.props as any;
-            // Ensure we have a value and label
-            if (value !== undefined || childLabel) {
-              childOptions.push({
-                value: value !== undefined ? String(value) : String(childLabel),
-                label: String(childLabel), // Convert node to string for label
-                disabled: !!disabled,
-              });
-            }
-          }
-        }
+    const registerOption = useCallback((option: SelectOptionType) => {
+      setRegisteredOptions((prev) => {
+        if (prev.some(o => o.value === option.value)) return prev;
+        return [...prev, option];
       });
-      return childOptions;
-    }, [options, children]);
+    }, []);
+
+    const unregisterOption = useCallback((value: string) => {
+      setRegisteredOptions((prev) => prev.filter(o => o.value !== value));
+    }, []);
+
+    // Determine active options
+    const hasOptionsProp = options && options.length > 0;
+    const activeOptions = hasOptionsProp ? options : registeredOptions;
 
     // Update selected label when value changes
     useEffect(() => {
       if (value) {
-        const selectedOption = internalOptions.find(opt => opt.value === value);
+        const selectedOption = activeOptions.find(opt => opt.value === value);
         if (selectedOption) {
           setSelectedLabel(selectedOption.label);
         }
       } else {
         setSelectedLabel(placeholder);
       }
-    }, [value, internalOptions, placeholder]);
+    }, [value, activeOptions, placeholder]);
 
     // Handle click outside to close dropdown
     useEffect(() => {
@@ -138,103 +117,125 @@ const SelectComp: React.FC<SelectProps> = memo(
     };
 
     // Handle item selection
-    const handleItemClick = (option: SelectOptionType) => {
-      setSelectedLabel(option.label);
-      setIsOpen(false);
-      if (bodyRef.current) {
-        bodyRef.current.style.height = '0px';
-      }
+    const handleItemClick = useCallback(
+      (option: { value: string; label: string }) => {
+        setSelectedLabel(option.label);
+        setIsOpen(false);
+        if (bodyRef.current) {
+          bodyRef.current.style.height = '0px';
+        }
 
-      if (nativeSelectRef.current) {
-        nativeSelectRef.current.value = option.value;
-      }
+        if (nativeSelectRef.current) {
+          nativeSelectRef.current.value = option.value;
+        }
 
-      if (onChange) {
-        // Create a synthetic event
-        const event = {
-          target: {
-            name,
-            value: option.value,
-          },
-          currentTarget: {
+        if (onChange) {
+          // Create a synthetic event
+          const event = {
+            target: {
               name,
-              value: option.value
-          }
-        } as unknown as React.ChangeEvent<HTMLSelectElement>;
-        onChange(event);
-      }
-    };
+              value: option.value,
+            },
+          } as React.ChangeEvent<HTMLSelectElement>;
+          onChange(event);
+        }
+      },
+      [onChange, name]
+    );
+
+    const onSelect = useCallback(
+      (val: string, label: string) => {
+        handleItemClick({ value: val, label });
+      },
+      [handleItemClick]
+    );
+
+    const contextValue = React.useMemo(
+      () => ({
+        registerOption,
+        unregisterOption,
+        selectedValue: value,
+        onSelect,
+      }),
+      [registerOption, unregisterOption, value, onSelect]
+    );
 
     const selectContent = (
-      <div
-        className={`${selectClass} ${isOpen ? SELECT.CLASSES.IS_OPEN : ''}`}
-        ref={dropdownRef}
-        style={style}
-        aria-expanded={isOpen}
-      >
-        {/* Native select for accessibility and form submission */}
-        <select
-          ref={nativeSelectRef}
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-          onFocus={onFocus}
-          disabled={disabled}
-          required={required}
-          id={id}
-          name={name}
-          multiple={multiple}
-          aria-label={ariaLabel}
-          aria-describedby={ariaDescribedBy}
-          aria-invalid={invalid}
-          style={{ display: 'none' }}
+      <SelectContext.Provider value={contextValue}>
+        <div
+          className={`${selectClass} ${isOpen ? SELECT.CLASSES.IS_OPEN : ''}`}
+          ref={dropdownRef}
+          style={style}
+          aria-expanded={isOpen}
         >
-          {placeholder && (
-            <option value="" disabled>
-              {placeholder}
-            </option>
-          )}
-          {internalOptions.map(option => (
-            <option key={option.value} value={option.value} disabled={option.disabled}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          {/* Native select for accessibility and form submission */}
+          <select
+            ref={nativeSelectRef}
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            disabled={disabled}
+            required={required}
+            id={id}
+            name={name}
+            multiple={multiple}
+            aria-label={ariaLabel}
+            aria-describedby={ariaDescribedBy}
+            aria-invalid={invalid}
+            style={{ display: 'none' }}
+          >
+            {placeholder && (
+              <option value="" disabled>
+                {placeholder}
+              </option>
+            )}
+            {activeOptions.map(option => (
+              <option key={option.value} value={option.value} disabled={option.disabled}>
+                {option.label}
+              </option>
+            ))}
+          </select>
 
-        {/* Custom Select UI */}
-        <div className={SELECT.CLASSES.SELECTED} onClick={handleToggle} aria-disabled={disabled}>
-          {selectedLabel}
-        </div>
+          {/* Custom Select UI */}
+          <div className={SELECT.CLASSES.SELECTED} onClick={handleToggle} aria-disabled={disabled}>
+            {selectedLabel}
+          </div>
 
-        <i className={`${SELECT.CLASSES.ICON_CARET} ${SELECT.CLASSES.TOGGLE_ICON}`} />
+          <i className={`${SELECT.CLASSES.ICON_CARET} ${SELECT.CLASSES.TOGGLE_ICON}`} />
 
-        <div className={SELECT.CLASSES.SELECT_BODY} ref={bodyRef} style={{ height: 0 }}>
-          <div className={SELECT.CLASSES.SELECT_PANEL} ref={panelRef}>
-            <ul className={SELECT.CLASSES.SELECT_ITEMS}>
-              {internalOptions.map((option, index) => (
-                <li
-                  key={option.value}
-                  className={SELECT.CLASSES.SELECT_ITEM}
-                  data-value={option.value}
-                  onClick={() => !option.disabled && handleItemClick(option)}
-                >
-                  <label htmlFor={`SelectItem${index}`} className="c-checkbox">
-                    <input
-                      type="checkbox"
-                      id={`SelectItem${index}`}
-                      className="c-checkbox__input c-select__item-input"
-                      checked={value === option.value}
-                      readOnly
-                      disabled={option.disabled}
-                    />
-                    <div className="c-select__item-label">{option.label}</div>
-                  </label>
-                </li>
-              ))}
-            </ul>
+          <div className={SELECT.CLASSES.SELECT_BODY} ref={bodyRef} style={{ height: 0 }}>
+            <div className={SELECT.CLASSES.SELECT_PANEL} ref={panelRef}>
+              <ul className={SELECT.CLASSES.SELECT_ITEMS}>
+                {hasOptionsProp ? (
+                  options.map((option, index) => (
+                    <li
+                      key={option.value}
+                      className={SELECT.CLASSES.SELECT_ITEM}
+                      data-value={option.value}
+                      onClick={() => !option.disabled && handleItemClick(option)}
+                    >
+                      <label htmlFor={`SelectItem${index}`} className="c-checkbox">
+                        <input
+                          type="checkbox"
+                          id={`SelectItem${index}`}
+                          className="c-checkbox__input c-select__item-input"
+                          checked={value === option.value}
+                          readOnly
+                          disabled={option.disabled}
+                        />
+                        <div className="c-select__item-label">{option.label}</div>
+                      </label>
+                    </li>
+                  ))
+                ) : (
+                  children
+                )}
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
+      </SelectContext.Provider>
     );
 
     if (glass) {
@@ -255,9 +256,7 @@ const SelectComp: React.FC<SelectProps> = memo(
 
     return selectContent;
   }
-);
-
-export const Select = SelectComp as SelectComponent;
+) as unknown as SelectComponent;
 
 export type { SelectProps };
 

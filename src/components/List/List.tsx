@@ -1,27 +1,16 @@
 import React, { memo } from 'react';
 import { ListProps } from '../../lib/types/components';
 import { LIST } from '../../lib/constants/components';
+import { ListItem } from './ListItem';
 
-export interface ListItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
-  children?: React.ReactNode;
-}
+export type { ListProps };
 
-export const ListItem: React.FC<ListItemProps> = memo(({ children, className = '', ...props }) => {
-  return (
-    <li className={`c-list__item ${className}`.trim()} {...props}>
-      {children}
-    </li>
-  );
-});
-
-ListItem.displayName = 'ListItem';
-
-type ListComponent = React.FC<ListProps> & {
+export type ListComponent = React.FC<ListProps> & {
   Item: typeof ListItem;
 };
 
-const ListComp: React.FC<ListProps> = memo(
-  ({ children, variant = 'default', className = '', style, ...props }) => {
+export const List: ListComponent = memo(
+  ({ children, variant = 'default', className = '', style, ...props }: ListProps) => {
     // Generate CSS classes
     const listClasses = [LIST.BASE_CLASS, variant !== 'default' && `c-list--${variant}`, className]
       .filter(Boolean)
@@ -34,25 +23,19 @@ const ListComp: React.FC<ListProps> = memo(
       <ListElement className={listClasses} style={style} {...props}>
         {React.Children.map(children, child => {
           if (React.isValidElement(child)) {
-             // Check if child is ListItem component
-             if (child.type === ListItem || (child.type as any).displayName === 'ListItem') {
-                return child;
-             }
-
-             // Legacy behavior: wrap content in ListItem
-             return <ListItem>{child}</ListItem>;
+            // Check if child is a ListItem
+            if (child.type === ListItem) {
+              return child;
+            }
+            // Legacy behavior: wrap in li
+            return <li className="c-list__item">{child}</li>;
           }
-          // Wrap non-element children (text nodes etc)
-          return <ListItem>{child}</ListItem>;
+          return <li className="c-list__item">{child}</li>;
         })}
       </ListElement>
     );
   }
-);
-
-export const List = ListComp as ListComponent;
-
-export type { ListProps };
+) as unknown as ListComponent;
 
 List.displayName = 'List';
 List.Item = ListItem;
