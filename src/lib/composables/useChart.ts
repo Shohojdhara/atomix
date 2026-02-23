@@ -677,10 +677,18 @@ export function useChartData(
     const n = values.length;
     if (n < 2) return values.map((): null => null);
 
-    const xSum = values.reduce((sum, _, i) => sum + i, 0);
-    const ySum = values.reduce((sum, val) => sum + val, 0);
-    const xySum = values.reduce((sum, val, i) => sum + i * val, 0);
-    const x2Sum = values.reduce((sum, _, i) => sum + i * i, 0);
+    let xSum = 0;
+    let ySum = 0;
+    let xySum = 0;
+    let x2Sum = 0;
+
+    for (let i = 0; i < n; i++) {
+      const val = values[i];
+      xSum += i;
+      ySum += val;
+      xySum += i * val;
+      x2Sum += i * i;
+    }
 
     const slope = (n * xySum - xSum * ySum) / (n * x2Sum - xSum * xSum);
     const intercept = (ySum - slope * xSum) / n;
