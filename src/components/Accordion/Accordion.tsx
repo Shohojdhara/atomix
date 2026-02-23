@@ -30,7 +30,7 @@ const DefaultIcon = () => (
   </i>
 );
 
-export interface AccordionHeaderProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface AccordionHeaderProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'title'> {
   title?: ReactNode;
   icon?: ReactNode;
   iconPosition?: 'left' | 'right';

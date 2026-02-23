@@ -198,7 +198,7 @@ export const Tabs: TabsComponent = memo(
     style,
     glass,
     children,
-  }) => {
+  }: TabsProps) => {
     const [currentTab, setCurrentTab] = useState(activeIndex);
 
     // Handle tab change

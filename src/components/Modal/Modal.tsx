@@ -75,7 +75,7 @@ function useModal({
 
 // Modal Subcomponents
 
-export interface ModalHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ModalHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   title?: ReactNode;
   subtitle?: ReactNode;
   closeButton?: boolean;

@@ -96,7 +96,7 @@ export const EdgePanel: EdgePanelComponent = memo(
     className = '',
     style,
     glass,
-  }) => {
+  }: EdgePanelProps) => {
     const {
       isOpen: isOpenState,
       containerRef,

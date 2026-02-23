@@ -103,7 +103,7 @@ export const Callout: CalloutComponent = memo(
     className,
     style,
     ...props
-  }) => {
+  }: CalloutProps) => {
     const { generateCalloutClass, handleClose } = useCallout({
       variant,
       compact,

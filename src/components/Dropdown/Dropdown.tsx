@@ -7,6 +7,7 @@ import React, {
   useEffect,
   memo,
   forwardRef,
+  ReactNode,
 } from 'react';
 import { DROPDOWN } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
@@ -220,7 +221,7 @@ export const Dropdown: DropdownComponent = memo(
     style,
     glass,
     ...props
-  }) => {
+  }: DropdownProps) => {
     // Set up controlled vs uncontrolled state
     const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(false);
     const isControlled = controlledIsOpen !== undefined;
