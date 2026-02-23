@@ -53,6 +53,21 @@ The Navbar component provides a responsive navigation header with brand, navigat
 </Navbar>
 \`\`\`
 
+### Compound Components (Recommended for flexibility)
+\`\`\`tsx
+<Navbar>
+  <Navbar.Container>
+    <Navbar.Brand>My App</Navbar.Brand>
+    <Navbar.Toggle />
+    <Navbar.Collapse>
+      <Nav>
+        <NavItem href="/">Home</NavItem>
+      </Nav>
+    </Navbar.Collapse>
+  </Navbar.Container>
+</Navbar>
+\`\`\`
+
 ### Vanilla JavaScript
 \`\`\`html
 <nav class="c-navbar" data-navbar data-collapsible="true">
@@ -977,6 +992,41 @@ export const GlassThemeShowcase: Story = {
       description: {
         story:
           'A comprehensive showcase demonstrating how glass navbar adapts to different themes, color palettes, and content types. Each example represents a distinct use case with appropriate styling.',
+      },
+    },
+  },
+};
+
+/**
+ * Compound Component Pattern
+ *
+ * Demonstrates the use of the Compound Component Pattern for the Navbar.
+ * This pattern provides greater flexibility in structure and layout.
+ */
+export const CompoundComponents: Story = {
+  render: () => (
+    <Navbar>
+      <Navbar.Container>
+        <Navbar.Brand>
+          <LogoBrand />
+        </Navbar.Brand>
+        <Navbar.Toggle />
+        <Navbar.Collapse>
+          <Nav alignment="end">
+            <NavItem href="/">Home</NavItem>
+            <NavItem href="/about">About</NavItem>
+            <NavItem href="/services">Services</NavItem>
+            <NavItem href="/contact">Contact</NavItem>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar.Container>
+    </Navbar>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Use `Navbar.Brand`, `Navbar.Toggle`, and `Navbar.Collapse` within `Navbar.Container` for full control over the layout.',
       },
     },
   },
