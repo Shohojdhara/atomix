@@ -1,6 +1,3 @@
-// Button composables
-// export * from './useButton';
-
 // Accordion composables
 export * from './useAccordion';
 
@@ -29,7 +26,6 @@ export * from './useEdgePanel';
 export * from './useTodo';
 
 // Form composables
-// export * from './useCheckbox';
 export * from './useForm';
 export * from './useFormGroup';
 
