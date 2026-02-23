@@ -79,13 +79,46 @@ const packageJson = JSON.parse(
 const DEBUG = process.env.ATOMIX_DEBUG === 'true' || process.argv.includes('--debug');
 
 /**
+ * Replacer function for JSON.stringify to sanitize sensitive data
+ */
+function sanitizeReplacer(key, value) {
+  // If no key (root object), return value
+  if (!key) return value;
+
+  const lowerKey = key.toLowerCase();
+
+  // Heuristic for sensitive keys
+  const isSensitive =
+    lowerKey.includes('password') ||
+    lowerKey.includes('secret') ||
+    lowerKey.includes('credential') ||
+    lowerKey.includes('bearer') ||
+    // Ends with 'token' (e.g. accessToken, authToken) or is 'token', avoid 'tokenizer'
+    /token$/i.test(key) ||
+    lowerKey === 'token' ||
+    // Ends with 'key' (e.g. apiKey, accessKey) or is 'key', avoid 'keyboard', 'keyword', exclude 'publickey'
+    ((/key$/i.test(key) || lowerKey === 'key') && !lowerKey.includes('public')) ||
+    // Auth
+    lowerKey === 'auth' ||
+    lowerKey.startsWith('auth_') ||
+    /^auth[A-Z]/.test(key) ||
+    lowerKey.includes('authorization');
+
+  if (isSensitive) {
+    return '[REDACTED]';
+  }
+
+  return value;
+}
+
+/**
  * Debug logger
  */
 function debug(message, data = null) {
   if (DEBUG) {
     console.log(chalk.gray(`[DEBUG] ${message}`));
     if (data) {
-      console.log(chalk.gray(JSON.stringify(data, null, 2),));
+      console.log(chalk.gray(JSON.stringify(data, sanitizeReplacer, 2)));
     }
   }
 }
