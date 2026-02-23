@@ -279,6 +279,43 @@ export const BasicUsage: Story = {
   },
 };
 
+/**
+ * Hero using Compound Component Pattern
+ */
+export const CompoundUsage: Story = {
+  render: (args) => (
+    <Hero {...args}>
+      <Hero.Content>
+        <Hero.Title level="h1">Compound Component Pattern</Hero.Title>
+        <Hero.Subtitle>Fully Customizable Structure</Hero.Subtitle>
+        <Hero.Text>
+          This example demonstrates the new Compound Component pattern, allowing full control over the internal structure of the Hero component.
+        </Hero.Text>
+        <Hero.Actions>
+          <Button variant="primary" className="u-mr-3">
+            Get Started
+          </Button>
+          <Button variant="outline">Learn More</Button>
+        </Hero.Actions>
+      </Hero.Content>
+    </Hero>
+  ),
+  args: {
+    fullViewportHeight: true,
+    alignment: 'center',
+    backgroundImageSrc: 'https://picsum.photos/id/1015/1920/1080',
+    title: '', // Ignored but kept for types
+    showOverlay: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Using the Compound Component pattern for maximum flexibility.',
+      },
+    },
+  },
+};
+
 export const WithImage: Story = {
   args: {
     title: 'Beautiful Interfaces',
