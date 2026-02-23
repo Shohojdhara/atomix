@@ -178,7 +178,6 @@ interface UseAtomixGlassReturn {
   handleMouseLeave: () => void;
   handleMouseDown: () => void;
   handleMouseUp: () => void;
-  handleMouseMove: (e: MouseEvent) => void;
   handleKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
@@ -1066,11 +1065,6 @@ export function useAtomixGlass({
     [onClick]
   );
 
-  // Mouse tracking is now handled by shared global tracker
-  const handleMouseMove = useCallback((_e: MouseEvent) => {
-    // Mouse tracking handled by shared global tracker
-  }, []);
-
   return {
     // State
     isHovered,
@@ -1098,7 +1092,6 @@ export function useAtomixGlass({
     handleMouseLeave,
     handleMouseDown,
     handleMouseUp,
-    handleMouseMove,
     handleKeyDown,
   };
 }
