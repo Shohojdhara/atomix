@@ -24,7 +24,7 @@ export interface StepItemData {
 export type { StepItemData as StepItem };
 
 // Compound Component Props
-export interface StepsItemProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface StepsItemProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /**
    * The number or icon for the step
    */
@@ -150,29 +150,6 @@ const StepsComp: React.FC<StepsProps> = ({
       setCurrentStep(activeIndex);
     }
   }, [activeIndex]);
-
-  // Method to go to next step (Internal helper)
-  const goToNextStep = () => {
-    const nextIndex = currentStep + 1;
-    const maxIndex = items ? items.length : Children.count(children);
-    if (nextIndex < maxIndex) {
-      setCurrentStep(nextIndex);
-      if (onStepChange) {
-        onStepChange(nextIndex);
-      }
-    }
-  };
-
-  // Method to go to previous step
-  const goToPreviousStep = () => {
-    const prevIndex = currentStep - 1;
-    if (prevIndex >= 0) {
-      setCurrentStep(prevIndex);
-      if (onStepChange) {
-        onStepChange(prevIndex);
-      }
-    }
-  };
 
   let content: ReactNode;
 

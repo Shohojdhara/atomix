@@ -1,13 +1,33 @@
-import React, { useRef, useEffect, useState, memo } from 'react';
-import { SelectProps } from '../../lib/types/components';
+import React, { useRef, useEffect, useState, memo, useMemo } from 'react';
+import { SelectProps, SelectOption as SelectOptionType } from '../../lib/types/components';
 import { useSelect } from '../../lib/composables';
 import { SELECT } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
+export interface SelectOptionProps {
+  value: string;
+  disabled?: boolean;
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const SelectOption: React.FC<SelectOptionProps> = ({ children, value, disabled, className }) => {
+  return (
+    <option value={value} disabled={disabled} className={className}>
+      {children}
+    </option>
+  );
+};
+SelectOption.displayName = 'SelectOption';
+
 /**
  * Select - A component for dropdown selection
  */
-export const Select: React.FC<SelectProps> = memo(
+type SelectComponent = React.FC<SelectProps> & {
+  Option: typeof SelectOption;
+};
+
+const SelectComp: React.FC<SelectProps> = memo(
   ({
     options = [],
     value,
@@ -28,6 +48,7 @@ export const Select: React.FC<SelectProps> = memo(
     'aria-label': ariaLabel,
     'aria-describedby': ariaDescribedBy,
     glass,
+    children,
   }) => {
     const { generateSelectClass } = useSelect({
       size,
@@ -51,17 +72,41 @@ export const Select: React.FC<SelectProps> = memo(
     const bodyRef = useRef<HTMLDivElement>(null);
     const nativeSelectRef = useRef<HTMLSelectElement>(null);
 
+    // Process options: use prop options if available, otherwise parse children
+    const internalOptions = useMemo(() => {
+      if (options && options.length > 0) return options;
+
+      const childOptions: SelectOptionType[] = [];
+      React.Children.forEach(children, (child) => {
+        if (React.isValidElement(child)) {
+          // Check for SelectOption component or native option
+          if (child.type === SelectOption || (child.type as any).displayName === 'SelectOption' || child.type === 'option') {
+            const { value, disabled, children: childLabel } = child.props as any;
+            // Ensure we have a value and label
+            if (value !== undefined || childLabel) {
+              childOptions.push({
+                value: value !== undefined ? String(value) : String(childLabel),
+                label: String(childLabel), // Convert node to string for label
+                disabled: !!disabled,
+              });
+            }
+          }
+        }
+      });
+      return childOptions;
+    }, [options, children]);
+
     // Update selected label when value changes
     useEffect(() => {
       if (value) {
-        const selectedOption = options.find(opt => opt.value === value);
+        const selectedOption = internalOptions.find(opt => opt.value === value);
         if (selectedOption) {
           setSelectedLabel(selectedOption.label);
         }
       } else {
         setSelectedLabel(placeholder);
       }
-    }, [value, options, placeholder]);
+    }, [value, internalOptions, placeholder]);
 
     // Handle click outside to close dropdown
     useEffect(() => {
@@ -93,7 +138,7 @@ export const Select: React.FC<SelectProps> = memo(
     };
 
     // Handle item selection
-    const handleItemClick = (option: { value: string; label: string }) => {
+    const handleItemClick = (option: SelectOptionType) => {
       setSelectedLabel(option.label);
       setIsOpen(false);
       if (bodyRef.current) {
@@ -111,7 +156,11 @@ export const Select: React.FC<SelectProps> = memo(
             name,
             value: option.value,
           },
-        } as React.ChangeEvent<HTMLSelectElement>;
+          currentTarget: {
+              name,
+              value: option.value
+          }
+        } as unknown as React.ChangeEvent<HTMLSelectElement>;
         onChange(event);
       }
     };
@@ -145,7 +194,7 @@ export const Select: React.FC<SelectProps> = memo(
               {placeholder}
             </option>
           )}
-          {options.map(option => (
+          {internalOptions.map(option => (
             <option key={option.value} value={option.value} disabled={option.disabled}>
               {option.label}
             </option>
@@ -162,7 +211,7 @@ export const Select: React.FC<SelectProps> = memo(
         <div className={SELECT.CLASSES.SELECT_BODY} ref={bodyRef} style={{ height: 0 }}>
           <div className={SELECT.CLASSES.SELECT_PANEL} ref={panelRef}>
             <ul className={SELECT.CLASSES.SELECT_ITEMS}>
-              {options.map((option, index) => (
+              {internalOptions.map((option, index) => (
                 <li
                   key={option.value}
                   className={SELECT.CLASSES.SELECT_ITEM}
@@ -208,8 +257,11 @@ export const Select: React.FC<SelectProps> = memo(
   }
 );
 
+export const Select = SelectComp as SelectComponent;
+
 export type { SelectProps };
 
 Select.displayName = 'Select';
+Select.Option = SelectOption;
 
 export default Select;
