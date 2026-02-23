@@ -1140,6 +1140,12 @@ export interface HeroProps
    * Granular part-based styling
    */
   parts?: HeroParts;
+
+  /**
+   * Custom background element to render behind the content
+   * @example <Hero.Background src="..." />
+   */
+  backgroundElement?: ReactNode;
 }
 
 /**

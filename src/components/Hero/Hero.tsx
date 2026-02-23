@@ -1,10 +1,139 @@
-import React, { CSSProperties, useEffect } from 'react';
-import { HeroProps, HeroAlignment } from '../../lib/types/components';
+import React, { CSSProperties, useEffect, ReactNode } from 'react';
+import { HeroProps, HeroAlignment, AtomixGlassProps } from '../../lib/types/components';
 import { useHero } from '../../lib/composables/useHero';
 import { HERO } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
-export const Hero: React.FC<HeroProps> = ({
+// Subcomponents
+export interface HeroTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
+  level?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'div';
+}
+
+const HeroTitle = ({ children, className, level = 'h1', ...props }: HeroTitleProps) => {
+  const Tag = level as any;
+  return (
+    <Tag className={`${HERO.SELECTORS.TITLE.replace('.', '')} ${className || ''}`.trim()} {...props}>
+      {children}
+    </Tag>
+  );
+};
+
+const HeroSubtitle = ({ children, className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => {
+  return (
+    <p className={`${HERO.SELECTORS.SUBTITLE.replace('.', '')} ${className || ''}`.trim()} {...props}>
+      {children}
+    </p>
+  );
+};
+
+const HeroText = ({ children, className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => {
+  return (
+    <p className={`${HERO.SELECTORS.TEXT.replace('.', '')} ${className || ''}`.trim()} {...props}>
+      {children}
+    </p>
+  );
+};
+
+const HeroActions = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
+  return (
+    <div className={`${HERO.SELECTORS.ACTIONS.replace('.', '')} ${className || ''}`.trim()} {...props}>
+      {children}
+    </div>
+  );
+};
+
+export interface HeroContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  glass?: AtomixGlassProps | boolean;
+}
+
+const HeroContent = ({ children, className, style, glass, ...props }: HeroContentProps) => {
+  const contentClass = `${HERO.SELECTORS.CONTENT.replace('.', '')} ${className || ''}`.trim();
+
+  if (glass) {
+    const glassProps = typeof glass === 'boolean' ? {
+      displacementScale: 60,
+      blurAmount: 3,
+      saturation: 180,
+      aberrationIntensity: 0,
+      cornerRadius: 8,
+      overLight: false,
+      mode: 'standard' as const,
+    } : glass;
+
+    return (
+      <div className={contentClass} style={style} {...props}>
+        <AtomixGlass {...glassProps}>
+          <div className="u-p-4">
+            {children}
+          </div>
+        </AtomixGlass>
+      </div>
+    );
+  }
+
+  return (
+    <div className={contentClass} style={style} {...props}>
+      {children}
+    </div>
+  );
+};
+
+export interface HeroImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  wrapperClassName?: string;
+  wrapperStyle?: React.CSSProperties;
+}
+
+const HeroImage = ({
+  src,
+  alt = '',
+  className,
+  wrapperClassName,
+  wrapperStyle,
+  ...props
+}: HeroImageProps) => {
+  return (
+    <div
+      className={`${HERO.SELECTORS.IMAGE_WRAPPER.replace('.', '')} ${wrapperClassName || ''}`.trim()}
+      style={wrapperStyle}
+    >
+      <img
+        src={src}
+        alt={alt}
+        className={`${HERO.SELECTORS.IMAGE.replace('.', '')} ${className || ''}`.trim()}
+        {...props}
+      />
+    </div>
+  );
+};
+
+const HeroBackground = ({ className, style, src, children, ...props }: React.HTMLAttributes<HTMLDivElement> & { src?: string }) => {
+  return (
+    <div
+      className={`${HERO.SELECTORS.BG.replace('.', '')} ${className || ''}`.trim()}
+      style={style}
+      {...props}
+    >
+      {src && (
+         <img
+            src={src}
+            alt="Background"
+            className={HERO.SELECTORS.BG_IMAGE.replace('.', '')}
+          />
+      )}
+      {children}
+    </div>
+  );
+};
+
+export const Hero: React.FC<HeroProps> & {
+  Title: typeof HeroTitle;
+  Subtitle: typeof HeroSubtitle;
+  Text: typeof HeroText;
+  Actions: typeof HeroActions;
+  Content: typeof HeroContent;
+  Image: typeof HeroImage;
+  Background: typeof HeroBackground;
+} = ({
   title,
   subtitle,
   text,
@@ -38,6 +167,7 @@ export const Hero: React.FC<HeroProps> = ({
   headingLevel = 'h1',
   reverseOnMobile = false,
   parts,
+  backgroundElement,
   ...rest
 }: HeroProps) => {
   // Define dynamic heading tag
@@ -421,6 +551,7 @@ export const Hero: React.FC<HeroProps> = ({
       data-parallax-intensity={parallax ? parallaxIntensity : undefined}
       {...rest}
     >
+      {backgroundElement}
       {renderBackground()}
       <div
         className={`${HERO.SELECTORS.CONTAINER.replace('.', '')} o-container ${parts?.container?.className || ''}`.trim()}
@@ -450,6 +581,14 @@ export const Hero: React.FC<HeroProps> = ({
     </div>
   );
 };
+
+Hero.Title = HeroTitle;
+Hero.Subtitle = HeroSubtitle;
+Hero.Text = HeroText;
+Hero.Actions = HeroActions;
+Hero.Content = HeroContent;
+Hero.Image = HeroImage;
+Hero.Background = HeroBackground;
 
 export type { HeroProps };
 
