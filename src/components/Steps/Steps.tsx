@@ -1,9 +1,10 @@
-import React, { useEffect, useState, ReactNode } from 'react';
+import React, { useEffect, useState, ReactNode, forwardRef, Children, cloneElement, isValidElement } from 'react';
 import { STEPS } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { AtomixGlassProps } from '../../lib/types/components';
 
-export interface StepItem {
+// Legacy Item Interface
+export interface StepItemData {
   /**
    * The number for the step
    */
@@ -20,11 +21,71 @@ export interface StepItem {
   content?: React.ReactNode;
 }
 
+export type { StepItemData as StepItem };
+
+// Compound Component Props
+export interface StepsItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  /**
+   * The number or icon for the step
+   */
+  number?: number | string | ReactNode;
+
+  /**
+   * The text label/title for the step
+   */
+  title?: ReactNode;
+
+  /**
+   * Whether the step is active
+   */
+  active?: boolean;
+
+  /**
+   * Whether the step is completed
+   */
+  completed?: boolean;
+
+  /**
+   * Index of the step (injected by parent)
+   */
+  index?: number;
+}
+
+export const StepsItem = forwardRef<HTMLDivElement, StepsItemProps>(
+  ({ children, className = '', number, title, active, completed, index, ...props }, ref) => {
+    const itemClasses = [
+      'c-steps__item',
+      active ? STEPS.CLASSES.ACTIVE : '',
+      completed ? STEPS.CLASSES.COMPLETED : '',
+      className
+    ].filter(Boolean).join(' ');
+
+    return (
+      <div
+        ref={ref}
+        className={itemClasses}
+        aria-current={active ? 'step' : undefined}
+        data-index={index}
+        {...props}
+      >
+        <div className="c-steps__line"></div>
+        <div className="c-steps__content">
+          {(number !== undefined && number !== null) && <div className="c-steps__number">{number}</div>}
+          {title && <div className="c-steps__text">{title}</div>}
+          {children && <div className="c-steps__custom-content">{children}</div>}
+        </div>
+      </div>
+    );
+  }
+);
+
+StepsItem.displayName = 'StepsItem';
+
 export interface StepsProps {
   /**
-   * Array of step items
+   * Array of step items (Legacy)
    */
-  items: StepItem[];
+  items?: StepItemData[];
 
   /**
    * Current active step index (0-based)
@@ -56,12 +117,22 @@ export interface StepsProps {
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;
+
+  /**
+   * Children (Compound)
+   */
+  children?: ReactNode;
 }
+
+type StepsComponent = React.FC<StepsProps> & {
+  Item: typeof StepsItem;
+  Step: typeof StepsItem; // Alias for convenience
+};
 
 /**
  * Steps component for displaying a sequence of steps
  */
-export const Steps: React.FC<StepsProps> = ({
+const StepsComp: React.FC<StepsProps> = ({
   items,
   activeIndex = 0,
   vertical = false,
@@ -69,6 +140,7 @@ export const Steps: React.FC<StepsProps> = ({
   className = '',
   style,
   glass,
+  children,
 }) => {
   const [currentStep, setCurrentStep] = useState(activeIndex);
 
@@ -79,10 +151,11 @@ export const Steps: React.FC<StepsProps> = ({
     }
   }, [activeIndex]);
 
-  // Method to go to next step
+  // Method to go to next step (Internal helper)
   const goToNextStep = () => {
     const nextIndex = currentStep + 1;
-    if (nextIndex < items.length) {
+    const maxIndex = items ? items.length : Children.count(children);
+    if (nextIndex < maxIndex) {
       setCurrentStep(nextIndex);
       if (onStepChange) {
         onStepChange(nextIndex);
@@ -101,6 +174,45 @@ export const Steps: React.FC<StepsProps> = ({
     }
   };
 
+  let content: ReactNode;
+
+  if (items && items.length > 0) {
+    // Legacy rendering
+    content = items.map((item, index) => (
+      <StepsItem
+        key={`step-${index}`}
+        index={index}
+        number={item.number}
+        title={item.text}
+        active={index <= currentStep}
+        completed={index < currentStep}
+      >
+        {item.content}
+      </StepsItem>
+    ));
+  } else {
+    // Compound rendering
+    content = Children.map(children, (child, index) => {
+      if (isValidElement(child)) {
+        const childProps = child.props as any;
+        // Inject active/completed based on index if not explicitly provided
+        const isActive = childProps.active ?? index <= currentStep;
+        const isCompleted = childProps.completed ?? index < currentStep;
+
+        // If number is not provided, default to index + 1
+        const number = childProps.number ?? (index + 1);
+
+        return cloneElement(child, {
+          index,
+          active: isActive,
+          completed: isCompleted,
+          number,
+        } as any);
+      }
+      return child;
+    });
+  }
+
   const stepsContent = (
     <div
       className={`c-steps ${vertical ? STEPS.CLASSES.VERTICAL : ''} ${className}`}
@@ -108,20 +220,7 @@ export const Steps: React.FC<StepsProps> = ({
       role="navigation"
       aria-label="Steps"
     >
-      {items.map((item, index) => (
-        <div
-          key={`step-${index}`}
-          className={`c-steps__item ${index <= currentStep ? STEPS.CLASSES.ACTIVE : ''} ${index < currentStep ? STEPS.CLASSES.COMPLETED : ''}`}
-          aria-current={index === currentStep ? 'step' : undefined}
-        >
-          <div className="c-steps__line"></div>
-          <div className="c-steps__content">
-            <div className="c-steps__number">{item.number}</div>
-            <div className="c-steps__text">{item.text}</div>
-            {item.content && <div className="c-steps__custom-content">{item.content}</div>}
-          </div>
-        </div>
-      ))}
+      {content}
     </div>
   );
 
@@ -144,6 +243,10 @@ export const Steps: React.FC<StepsProps> = ({
   return stepsContent;
 };
 
+export const Steps = StepsComp as StepsComponent;
+
 Steps.displayName = 'Steps';
+Steps.Item = StepsItem;
+Steps.Step = StepsItem;
 
 export default Steps;

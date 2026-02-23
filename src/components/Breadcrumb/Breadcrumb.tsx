@@ -1,7 +1,8 @@
-import React, { ReactNode, memo } from 'react';
+import React, { ReactNode, memo, forwardRef, Children, cloneElement, isValidElement } from 'react';
 import { BREADCRUMB } from '../../lib/constants/components';
 
-export interface BreadcrumbItem {
+// Legacy Item Interface
+export interface BreadcrumbItemData {
   /**
    * Text to display
    */
@@ -38,11 +39,108 @@ export interface BreadcrumbItem {
   className?: string;
 }
 
+// Export legacy interface as type alias to preserve backward compatibility for type imports
+export type { BreadcrumbItemData as BreadcrumbItem };
+
+// Compound Component Props
+export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement> {
+  /**
+   * URL for the breadcrumb item
+   */
+  href?: string;
+
+  /**
+   * Whether this item is active (current page)
+   */
+  active?: boolean;
+
+  /**
+   * Optional icon to display before the label
+   */
+  icon?: ReactNode;
+
+  /**
+   * Optional click handler for the link
+   */
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement | HTMLSpanElement>) => void;
+
+  /**
+   * Optional custom link component
+   */
+  linkAs?: React.ElementType;
+
+  /**
+   * Link props to pass to the underlying anchor or LinkComponent
+   */
+  linkProps?: Record<string, any>;
+}
+
+export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
+  (
+    {
+      children,
+      href,
+      active,
+      icon,
+      onClick,
+      className = '',
+      style,
+      linkAs: LinkComponent,
+      linkProps = {},
+      ...props
+    },
+    ref
+  ) => {
+    const itemClasses = [BREADCRUMB.CLASSES.ITEM, active ? BREADCRUMB.CLASSES.ACTIVE : '', className]
+      .filter(Boolean)
+      .join(' ');
+
+    const linkContent = (
+      <>
+        {icon && <span className="c-breadcrumb__icon">{icon}</span>}
+        {children}
+      </>
+    );
+
+    const commonLinkProps = {
+      className: BREADCRUMB.CLASSES.LINK,
+      onClick: onClick as any,
+      style, // Apply style to the link as per legacy behavior
+      ...linkProps,
+    };
+
+    return (
+      <li ref={ref} className={itemClasses} style={style} {...props}>
+        {href && !active ? (
+          LinkComponent ? (
+            (() => {
+              const Component = LinkComponent;
+              return (
+                <Component href={href} {...commonLinkProps}>
+                  {linkContent}
+                </Component>
+              );
+            })()
+          ) : (
+            <a href={href} {...(commonLinkProps as React.HTMLAttributes<HTMLAnchorElement>)}>
+              {linkContent}
+            </a>
+          )
+        ) : (
+          <span className={BREADCRUMB.CLASSES.LINK}>{linkContent}</span>
+        )}
+      </li>
+    );
+  }
+);
+
+BreadcrumbItem.displayName = 'BreadcrumbItem';
+
 export interface BreadcrumbProps {
   /**
-   * Array of breadcrumb items
+   * Array of breadcrumb items (Legacy)
    */
-  items: BreadcrumbItem[];
+  items?: BreadcrumbItemData[];
 
   /**
    * Custom divider character or element
@@ -68,8 +166,18 @@ export interface BreadcrumbProps {
    * Custom style for the breadcrumb
    */
   style?: React.CSSProperties;
+
+  /**
+   * Children (Compound)
+   */
+  children?: ReactNode;
 }
-export const Breadcrumb: React.FC<BreadcrumbProps> = memo(
+
+type BreadcrumbComponent = React.FC<BreadcrumbProps> & {
+  Item: typeof BreadcrumbItem;
+};
+
+export const Breadcrumb: BreadcrumbComponent = memo(
   ({
     items,
     divider,
@@ -77,62 +185,60 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = memo(
     'aria-label': ariaLabel = 'Breadcrumb',
     LinkComponent,
     style,
+    children,
   }) => {
     const breadcrumbClasses = [BREADCRUMB.CLASSES.BASE, className].filter(Boolean).join(' ');
+
+    let content: ReactNode;
+
+    if (items && items.length > 0) {
+      // Legacy rendering
+      content = items.map((item, index) => {
+        const isLast = index === items.length - 1;
+
+        return (
+          <BreadcrumbItem
+            key={index}
+            href={item.href}
+            active={item.active || isLast}
+            icon={item.icon}
+            onClick={item.onClick}
+            className={item.className}
+            style={item.style}
+            linkAs={LinkComponent}
+          >
+            {item.label}
+          </BreadcrumbItem>
+        );
+      });
+    } else {
+      // Compound rendering
+      const childrenCount = Children.count(children);
+      content = Children.map(children, (child, index) => {
+        if (isValidElement(child)) {
+          const isLast = index === childrenCount - 1;
+          const childProps = child.props as any;
+
+          return cloneElement(child, {
+            active: childProps.active ?? (isLast ? true : undefined),
+            linkAs: childProps.linkAs ?? LinkComponent,
+          } as any);
+        }
+        return child;
+      });
+    }
 
     return (
       <nav aria-label={ariaLabel} style={style}>
         <ol className={breadcrumbClasses}>
-          {items.map((item, index) => {
-            const isLast = index === items.length - 1;
-            const itemClasses = [
-              BREADCRUMB.CLASSES.ITEM,
-              item.active || isLast ? BREADCRUMB.CLASSES.ACTIVE : '',
-            ]
-              .filter(Boolean)
-              .join(' ');
-
-            const linkContent = (
-              <>
-                {item.icon && <span className="c-breadcrumb__icon">{item.icon}</span>}
-                {item.label}
-              </>
-            );
-
-            const linkProps = {
-              href: item.href,
-              className: BREADCRUMB.CLASSES.LINK,
-              onClick: item.onClick,
-              style: item.style,
-            };
-
-            return (
-              <li key={index} className={itemClasses} style={item.style}>
-                {item.href && !item.active ? (
-                  LinkComponent ? (
-                    (() => {
-                      const Component = LinkComponent as React.ComponentType<any>;
-                      return (
-                        <Component {...(linkProps as React.ComponentProps<React.ElementType>)}>
-                          {linkContent}
-                        </Component>
-                      );
-                    })()
-                  ) : (
-                    <a {...(linkProps as React.ComponentProps<'a'>)}>{linkContent}</a>
-                  )
-                ) : (
-                  <span className={BREADCRUMB.CLASSES.LINK}>{linkContent}</span>
-                )}
-              </li>
-            );
-          })}
+          {content}
         </ol>
       </nav>
     );
   }
-);
+) as unknown as BreadcrumbComponent;
 
 Breadcrumb.displayName = 'Breadcrumb';
+Breadcrumb.Item = BreadcrumbItem;
 
 export default Breadcrumb;
