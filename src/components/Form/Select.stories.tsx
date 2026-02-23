@@ -256,6 +256,29 @@ export const Sizes: Story = {
   ),
 };
 
+// Compound usage
+export const Compound: Story = {
+  render: () => (
+    <div style={{ width: '300px' }}>
+      <Select placeholder="Select a framework">
+        <Select.Option value="react">React</Select.Option>
+        <Select.Option value="vue">Vue</Select.Option>
+        <Select.Option value="angular">Angular</Select.Option>
+        <Select.Option value="svelte" disabled>
+          Svelte (Disabled)
+        </Select.Option>
+      </Select>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Select component using Compound Component Pattern.',
+      },
+    },
+  },
+};
+
 // Select states
 export const States: Story = {
   args: {

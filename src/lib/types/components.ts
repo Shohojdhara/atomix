@@ -2446,7 +2446,7 @@ export interface SelectProps extends BaseComponentProps {
   /**
    * Select options
    */
-  options: SelectOption[];
+  options?: SelectOption[];
 
   /**
    * Selected value(s)
