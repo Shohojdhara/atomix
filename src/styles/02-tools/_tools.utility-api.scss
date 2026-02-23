@@ -22,7 +22,7 @@ $utility-defaults: (
   class: null,
   state: null,
   local-vars: (),
-  rtl: true,
+  is-important: true,
 ) !default;
 
 // Core function to generate utility classes
@@ -77,11 +77,11 @@ $utility-defaults: (
           --atomix-u-#{$css-variable-name}: #{$value};
         } @else if $properties {
           @each $property in $properties {
-            #{$property}: $value if(map.get($utility, rtl), null, !important);
+            #{$property}: $value if(map.get($utility, is-important), !important, null);
           }
         } @else if $value != null {
           // Guard: only emit property declaration if value is not null
-          #{$property-class}: $value if(map.get($utility, rtl), null, !important);
+          #{$property-class}: $value if(map.get($utility, is-important), !important, null);
         }
 
         // Add local CSS variables if specified
@@ -111,11 +111,11 @@ $utility-defaults: (
           --atomix-u-#{$css-variable-name}#{$modifier}: #{$value};
         } @else if $properties {
           @each $property in $properties {
-            #{$property}: $value if(map.get($utility, rtl), null, !important);
+            #{$property}: $value if(map.get($utility, is-important), !important, null);
           }
         } @else if $value != null {
           // Guard: only emit property declaration if value is not null
-          #{$base-class}: $value if(map.get($utility, rtl), null, !important);
+          #{$base-class}: $value if(map.get($utility, is-important), !important, null);
         }
 
         // Add local CSS variables if specified
@@ -169,7 +169,7 @@ $utility-defaults: (
         values: map.get($config, values),
         class: map.get($config, class),
         state: map.get($config, state),
-        rtl: map.get($config, rtl),
+        is-important: map.get($config, is-important),
         css-var: map.get($config, css-var),
         local-vars: map.get($config, local-vars),
         responsive: map.get($config, responsive),
