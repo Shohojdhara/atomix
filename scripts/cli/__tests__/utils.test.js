@@ -116,14 +116,15 @@ describe('CLI Utils', () => {
         '`substitution`',
         '$(command)',
         'input > /dev/null',
-        '"quoted string"',
-        "'single quoted'",
-        'mixed "quotes\''
+        '"quoted"',
+        "'singlequoted'",
+        '" $(whoami) "',
+        "' ; rm -rf / '"
       ];
       
       dangerousInputs.forEach(input => {
         const sanitized = sanitizeInput(input);
-        expect(sanitized).not.toMatch(/[;&|`$<>\\'"]/);
+        expect(sanitized).not.toMatch(/[;&|`$<>\\"']/);
       });
     });
 
