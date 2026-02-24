@@ -45,6 +45,16 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
   const [autoplayRunning, setAutoplayRunning] = useState(false);
 
+  // Create a ref to store the latest state for the autoplay interval
+  const sliderStateRef = useRef({
+    isTransitioning: false,
+    loop,
+    slides,
+    slidesToShow,
+    speed,
+    onSlideChange,
+  });
+
   const [realIndex, setRealIndex] = useState(initialSlide);
   const [internalIndex, setInternalIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -76,6 +86,18 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     return -(internalIndex * slideWidth) + dragOffset;
   }, [slideWidth, internalIndex, dragOffset]);
 
+  // Update the ref whenever the relevant state/props change
+  useEffect(() => {
+    sliderStateRef.current = {
+      isTransitioning,
+      loop,
+      slides,
+      slidesToShow,
+      speed,
+      onSlideChange,
+    };
+  }, [isTransitioning, loop, slides, slidesToShow, speed, onSlideChange]);
+
   // Autoplay effect
   useEffect(() => {
     if (!autoplay) {
@@ -102,9 +124,19 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
 
     // Create new interval
     autoplayRef.current = setInterval(() => {
+      // Use ref to get the latest state without resetting the interval
+      const {
+        isTransitioning: currentIsTransitioning,
+        loop: currentLoop,
+        slides: currentSlides,
+        slidesToShow: currentSlidesToShow,
+        speed: currentSpeed,
+        onSlideChange: currentOnSlideChange,
+      } = sliderStateRef.current;
+
       // We need to use a functional update to get the latest values
       setRealIndex(prevRealIndex => {
-        if (isTransitioning) return prevRealIndex;
+        if (currentIsTransitioning) return prevRealIndex;
 
         // Stop autoplay on interaction if disableOnInteraction is true
         if (disableOnInteraction && autoplayRef.current) {
@@ -114,49 +146,49 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
         }
 
         let nextIndex;
-        if (loop) {
-          nextIndex = (prevRealIndex + 1) % slides.length;
+        if (currentLoop) {
+          nextIndex = (prevRealIndex + 1) % currentSlides.length;
         } else {
-          nextIndex = Math.min(prevRealIndex + 1, slides.length - slidesToShow);
+          nextIndex = Math.min(prevRealIndex + 1, currentSlides.length - currentSlidesToShow);
         }
 
         // Trigger the slide change
         if (reverseDirection) {
           // For reverse direction, we would go to previous slide
-          const prevIndex = loop
+          const prevIndex = currentLoop
             ? prevRealIndex === 0
-              ? slides.length - 1
+              ? currentSlides.length - 1
               : prevRealIndex - 1
             : Math.max(prevRealIndex - 1, 0);
-          setInternalIndex(loop ? slides.length + prevIndex : prevIndex);
+          setInternalIndex(currentLoop ? currentSlides.length + prevIndex : prevIndex);
           setIsTransitioning(true);
           setDragOffset(0);
 
           setTimeout(() => {
             setIsTransitioning(false);
-            onSlideChange?.(prevIndex);
-          }, speed);
+            currentOnSlideChange?.(prevIndex);
+          }, currentSpeed);
 
           return prevIndex;
         } else {
           // Normal direction
-          setInternalIndex(loop ? slides.length + nextIndex : nextIndex);
+          setInternalIndex(currentLoop ? currentSlides.length + nextIndex : nextIndex);
           setIsTransitioning(true);
           setDragOffset(0);
 
           setTimeout(() => {
             setIsTransitioning(false);
-            onSlideChange?.(nextIndex);
+            currentOnSlideChange?.(nextIndex);
 
             // Reposition after transition ends for looped sliders
-            if (loop && nextIndex >= slides.length * 2) {
+            if (currentLoop && nextIndex >= currentSlides.length * 2) {
               repositioningRef.current = true;
-              setInternalIndex(slides.length + nextIndex);
+              setInternalIndex(currentSlides.length + nextIndex);
               setTimeout(() => {
                 repositioningRef.current = false;
               }, 0);
             }
-          }, speed);
+          }, currentSpeed);
 
           return nextIndex;
         }
@@ -182,35 +214,44 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
       }
 
       autoplayRef.current = setInterval(() => {
+        const {
+          isTransitioning: currentIsTransitioning,
+          loop: currentLoop,
+          slides: currentSlides,
+          slidesToShow: currentSlidesToShow,
+          speed: currentSpeed,
+          onSlideChange: currentOnSlideChange,
+        } = sliderStateRef.current;
+
         setRealIndex(prevRealIndex => {
-          if (isTransitioning) return prevRealIndex;
+          if (currentIsTransitioning) return prevRealIndex;
 
           let nextIndex;
-          if (loop) {
-            nextIndex = (prevRealIndex + 1) % slides.length;
+          if (currentLoop) {
+            nextIndex = (prevRealIndex + 1) % currentSlides.length;
           } else {
-            nextIndex = Math.min(prevRealIndex + 1, slides.length - slidesToShow);
+            nextIndex = Math.min(prevRealIndex + 1, currentSlides.length - currentSlidesToShow);
           }
 
-          setInternalIndex(loop ? slides.length + nextIndex : nextIndex);
+          setInternalIndex(currentLoop ? currentSlides.length + nextIndex : nextIndex);
           setIsTransitioning(true);
           setDragOffset(0);
 
           setTimeout(() => {
             setIsTransitioning(false);
-            onSlideChange?.(nextIndex);
+            currentOnSlideChange?.(nextIndex);
 
-            if (loop) {
+            if (currentLoop) {
               // Reposition after transition ends
-              if (nextIndex >= slides.length * 2) {
+              if (nextIndex >= currentSlides.length * 2) {
                 repositioningRef.current = true;
-                setInternalIndex(slides.length + nextIndex);
+                setInternalIndex(currentSlides.length + nextIndex);
                 setTimeout(() => {
                   repositioningRef.current = false;
                 }, 0);
               }
             }
-          }, speed);
+          }, currentSpeed);
 
           return nextIndex;
         });
@@ -237,16 +278,7 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
       }
       setAutoplayRunning(false);
     };
-  }, [
-    autoplay,
-    slides.length,
-    loop,
-    slidesToShow,
-    isTransitioning,
-    speed,
-    onSlideChange,
-    repositioningRef,
-  ]);
+  }, [autoplay, repositioningRef]);
 
   // Initialize
   useEffect(() => {
