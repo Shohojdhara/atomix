@@ -55,6 +55,7 @@ export function useHeroBackgroundSlider(
   const [isTransitioning, setIsTransitioning] = useState(false);
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
   const isPausedRef = useRef(false);
+  const callbackRef = useRef<() => void>();
 
   // Create refs for slide containers
   const slideRefs = useMemo(
@@ -124,6 +125,15 @@ export function useHeroBackgroundSlider(
     handleSlideTransition(nextIndex);
   }, [currentIndex, slides.length, loop, handleSlideTransition]);
 
+  // Update callbackRef whenever nextSlide or isTransitioning changes
+  useEffect(() => {
+    callbackRef.current = () => {
+      if (!isPausedRef.current && !isTransitioning) {
+        nextSlide();
+      }
+    };
+  }, [nextSlide, isTransitioning]);
+
   /**
    * Pause autoplay
    */
@@ -146,13 +156,13 @@ export function useHeroBackgroundSlider(
       // Restart autoplay
       if (!autoplayRef.current) {
         autoplayRef.current = setInterval(() => {
-          if (!isPausedRef.current && !isTransitioning) {
-            nextSlide();
+          if (callbackRef.current) {
+            callbackRef.current();
           }
         }, delay);
       }
     }
-  }, [autoplay, slides.length, nextSlide, isTransitioning]);
+  }, [autoplay, slides.length]);
 
   // Autoplay effect
   useEffect(() => {
@@ -161,7 +171,6 @@ export function useHeroBackgroundSlider(
     }
 
     const delay = typeof autoplay === 'object' ? autoplay.delay : 3000;
-    const pauseOnHover = typeof autoplay === 'object' ? autoplay.pauseOnHover : false;
 
     // Clear any existing interval
     if (autoplayRef.current) {
@@ -172,8 +181,8 @@ export function useHeroBackgroundSlider(
     // Start autoplay if not paused
     if (!isPausedRef.current) {
       autoplayRef.current = setInterval(() => {
-        if (!isPausedRef.current && !isTransitioning) {
-          nextSlide();
+        if (callbackRef.current) {
+          callbackRef.current();
         }
       }, delay);
     }
@@ -184,7 +193,7 @@ export function useHeroBackgroundSlider(
         autoplayRef.current = null;
       }
     };
-  }, [autoplay, slides.length, nextSlide, isTransitioning]);
+  }, [autoplay, slides.length]);
 
   // Initialize first video if needed
   useEffect(() => {
