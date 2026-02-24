@@ -201,7 +201,6 @@ export function useAtomixGlass({
   onClick,
   debugCornerRadius = false,
   debugOverLight = false,
-  enablePerformanceMonitoring = false,
   children,
 }: UseAtomixGlassOptions): UseAtomixGlassReturn {
   // State
@@ -558,8 +557,6 @@ export function useAtomixGlass({
         return;
       }
 
-      const startTime = enablePerformanceMonitoring ? performance.now() : 0;
-
       // Use cached rect if available, otherwise get new one
       let rect = cachedRectRef.current;
       if (!rect || rect.width === 0 || rect.height === 0) {
@@ -582,17 +579,6 @@ export function useAtomixGlass({
       // React 18 automatically batches these updates
       setInternalMouseOffset(newOffset);
       setInternalGlobalMousePosition(globalPos);
-
-      if (
-        (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
-        enablePerformanceMonitoring
-      ) {
-        const endTime = performance.now();
-        // const duration = endTime - startTime;
-        // if (duration > 5) {
-        //   console.warn(`AtomixGlass: Mouse tracking took ${duration.toFixed(2)}ms`);
-        // }
-      }
     },
     [
       mouseContainer,
@@ -600,7 +586,6 @@ export function useAtomixGlass({
       externalGlobalMousePosition,
       externalMouseOffset,
       effectiveDisableEffects,
-      enablePerformanceMonitoring,
     ]
   );
 
