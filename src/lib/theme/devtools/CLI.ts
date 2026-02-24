@@ -11,7 +11,7 @@ import { Command } from 'commander';
 import chalk from 'chalk';
 import * as fs from 'fs';
 import * as path from 'path';
-import { ThemeValidator } from './ThemeValidator';
+import { ThemeValidator } from './ThemeValidator.js';
 import boxen from 'boxen';
 
 const program = new Command();
