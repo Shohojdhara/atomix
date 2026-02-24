@@ -78,6 +78,15 @@ const packageJson = JSON.parse(
 // CLI Configuration
 const DEBUG = process.env.ATOMIX_DEBUG === 'true' || process.argv.includes('--debug');
 
+const SENSITIVE_KEYS = /password|secret|token|api[-_]?key|access[-_]?key|auth[-_]?token|authorization|credential/i;
+
+function sensitiveDataReplacer(key, value) {
+  if (key && SENSITIVE_KEYS.test(key)) {
+    return '***REDACTED***';
+  }
+  return value;
+}
+
 /**
  * Debug logger
  */
@@ -85,7 +94,7 @@ function debug(message, data = null) {
   if (DEBUG) {
     console.log(chalk.gray(`[DEBUG] ${message}`));
     if (data) {
-      console.log(chalk.gray(JSON.stringify(data, null, 2),));
+      console.log(chalk.gray(JSON.stringify(data, sensitiveDataReplacer, 2)));
     }
   }
 }
