@@ -16,6 +16,7 @@ import type {
   DropdownItemProps,
   DropdownDividerProps,
   DropdownHeaderProps,
+  AtomixGlassProps,
 } from '../../lib/types/components';
 
 // Context type definition
@@ -190,7 +191,7 @@ export const DropdownHeader: React.FC<DropdownHeaderProps> = memo(
 );
 
 // Helper context to pass glass prop to DropdownMenu
-const DropdownStyleContext = createContext<{ glass?: any }>({});
+const DropdownStyleContext = createContext<{ glass?: AtomixGlassProps | boolean }>({});
 
 /**
  * Dropdown component for creating dropdown menus
