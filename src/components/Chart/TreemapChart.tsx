@@ -98,21 +98,25 @@ interface TreemapChartProps extends Omit<ChartProps, 'type' | 'datasets'> {
   };
 }
 
+const DEFAULT_COLOR_CONFIG: NonNullable<TreemapChartProps['colorConfig']> = { scheme: 'category' };
+const DEFAULT_LABEL_CONFIG = {
+  showLabels: true,
+  minSize: 1000,
+  fontSize: 12,
+  textColor: 'white',
+};
+const DEFAULT_CONFIG = {};
+
 const TreemapChart = memo(
   forwardRef<HTMLDivElement, TreemapChartProps>(
     (
       {
         data = [],
         algorithm = 'squarified',
-        colorConfig = { scheme: 'category' },
-        labelConfig = {
-          showLabels: true,
-          minSize: 1000,
-          fontSize: 12,
-          textColor: 'white',
-        },
+        colorConfig = DEFAULT_COLOR_CONFIG,
+        labelConfig = DEFAULT_LABEL_CONFIG,
         onDataPointClick,
-        config = {},
+        config = DEFAULT_CONFIG,
         ...props
       },
       ref
@@ -357,16 +361,17 @@ const TreemapChart = memo(
         []
       );
 
-      const renderContent = ({
-        scales,
-        colors,
-        datasets: renderedDatasets,
-        handlers,
-        hoveredPoint,
-      }: ChartRenderContentParams) => {
-        if (!data.length) return null;
+      const renderContent = useCallback(
+        ({
+          scales,
+          colors,
+          datasets: renderedDatasets,
+          handlers,
+          hoveredPoint,
+        }: ChartRenderContentParams) => {
+          if (!data.length) return null;
 
-        // Calculate available space with padding
+          // Calculate available space with padding
         const padding = 20;
         const availableWidth = scales.width - padding * 2;
         const availableHeight = scales.height - padding * 2;
@@ -467,17 +472,22 @@ const TreemapChart = memo(
                 </g>
               );
             })}
-          </>
-        );
-      };
+            </>
+          );
+        },
+        [data, algorithm, generateColor, squarify, labelConfig, hoveredNode, selectedNode]
+      );
 
       // Convert data to datasets format for BaseChart
-      const datasets = [
-        {
-          label: 'Treemap Data',
-          data: data,
-        },
-      ];
+      const datasets = useMemo(
+        () => [
+          {
+            label: 'Treemap Data',
+            data: data,
+          },
+        ],
+        [data]
+      );
 
       return (
         <BaseChart
