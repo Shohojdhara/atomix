@@ -35,6 +35,7 @@ export const SelectOption: React.FC<SelectOptionProps> = memo(
           context.unregisterOption(value);
         };
       }
+      return undefined;
     }, [context, value, label, disabled]);
 
     if (!context) {
