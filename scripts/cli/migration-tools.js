@@ -3,7 +3,7 @@
  * Helps migrate from other design systems and CSS frameworks
  */
 
-import { readFile, writeFile, readdir, stat } from 'fs/promises';
+import { readFile, writeFile, readdir, lstat } from 'fs/promises';
 import { join, extname, relative } from 'path';
 import chalk from 'chalk';
 import ora from 'ora';
@@ -329,7 +329,7 @@ async function getAllFiles(dir, extensions = []) {
 
     for (const entry of entries) {
       const fullPath = join(currentPath, entry);
-      const stats = await stat(fullPath);
+      const stats = await lstat(fullPath);
 
       if (stats.isDirectory()) {
         // Skip node_modules and hidden directories
