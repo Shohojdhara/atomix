@@ -17,6 +17,7 @@ import {
   extractBorderRadiusFromDOMElement,
   validateGlassSize,
 } from '../../components/AtomixGlass/glass-utils';
+import { calculateGlassVars, calculateContainerVars } from './glass-styles';
 
 const { CONSTANTS } = ATOMIX_GLASS;
 
@@ -140,6 +141,11 @@ interface UseAtomixGlassOptions extends Omit<AtomixGlassProps, 'children'> {
   glassRef: React.RefObject<HTMLDivElement>;
   contentRef: React.RefObject<HTMLDivElement>;
   children?: React.ReactNode;
+  blurAmount?: number;
+  saturation?: number;
+  enableLiquidBlur?: boolean;
+  padding?: string;
+  style?: React.CSSProperties;
 }
 
 interface UseAtomixGlassReturn {
@@ -201,16 +207,21 @@ export function useAtomixGlass({
   debugCornerRadius = false,
   debugOverLight = false,
   children,
+  blurAmount = ATOMIX_GLASS.DEFAULTS.BLUR_AMOUNT,
+  saturation = ATOMIX_GLASS.DEFAULTS.SATURATION,
+  enableLiquidBlur = false,
+  padding = ATOMIX_GLASS.DEFAULTS.PADDING,
+  style = {},
 }: UseAtomixGlassOptions): UseAtomixGlassReturn {
   // State
   const [isHovered, setIsHovered] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [glassSize, setGlassSize] = useState<GlassSize>({ width: 270, height: 69 });
-  const [internalGlobalMousePosition, setInternalGlobalMousePosition] = useState<MousePosition>({
-    x: 0,
-    y: 0,
-  });
-  const [internalMouseOffset, setInternalMouseOffset] = useState<MousePosition>({ x: 0, y: 0 });
+
+  // Use refs instead of state for high-frequency mouse updates
+  const globalMousePositionRef = useRef<MousePosition>({ x: 0, y: 0 });
+  const mouseOffsetRef = useRef<MousePosition>({ x: 0, y: 0 });
+
   const [dynamicCornerRadius, setDynamicCornerRadius] = useState<number>(
     CONSTANTS.DEFAULT_CORNER_RADIUS
   );
@@ -218,7 +229,13 @@ export function useAtomixGlass({
   const [userPrefersHighContrast, setUserPrefersHighContrast] = useState(false);
   const [detectedOverLight, setDetectedOverLight] = useState(false);
 
-  // Use shared module-level cache (no per-instance cache needed)
+  // Refs for callbacks
+  const isHoveredRef = useRef(isHovered);
+  const isActiveRef = useRef(isActive);
+  useEffect(() => {
+    isHoveredRef.current = isHovered;
+    isActiveRef.current = isActive;
+  }, [isHovered, isActive]);
 
   // Memoized derived values
   const effectiveCornerRadius = useMemo(() => {
@@ -246,15 +263,10 @@ export function useAtomixGlass({
     [disableEffects, effectiveReducedMotion]
   );
 
-  const globalMousePosition = useMemo(
-    () => externalGlobalMousePosition || internalGlobalMousePosition,
-    [externalGlobalMousePosition, internalGlobalMousePosition]
-  );
-
-  const mouseOffset = useMemo(
-    () => externalMouseOffset || internalMouseOffset,
-    [externalMouseOffset, internalMouseOffset]
-  );
+  // We return the ref value for initial render, but subsequent updates won't trigger re-render
+  // Consumers should rely on the imperative updates to the DOM
+  const globalMousePosition = externalGlobalMousePosition || globalMousePositionRef.current;
+  const mouseOffset = externalMouseOffset || mouseOffsetRef.current;
 
   // Extract border-radius from children
   useEffect(() => {
@@ -534,6 +546,105 @@ export function useAtomixGlass({
     }
   }, [overLight, glassRef, debugOverLight]);
 
+  // OverLight config helpers
+  const getEffectiveOverLight = useCallback(() => {
+    if (typeof overLight === 'boolean') {
+      return overLight;
+    }
+    if (overLight === 'auto') {
+      return detectedOverLight;
+    }
+    if (typeof overLight === 'object' && overLight !== null) {
+      return detectedOverLight;
+    }
+    return false;
+  }, [overLight, detectedOverLight]);
+
+  const validateConfigValue = useCallback(
+    (value: unknown, min: number, max: number, defaultValue: number): number => {
+      if (typeof value !== 'number' || isNaN(value) || !isFinite(value)) {
+        return defaultValue;
+      }
+      return Math.min(max, Math.max(min, value));
+    },
+    []
+  );
+
+  const calculateOverLightConfig = (currentMouseOffset: MousePosition) => {
+    const isOverLight = getEffectiveOverLight();
+    const mouseInfluence = calculateMouseInfluence(currentMouseOffset);
+    const hoverIntensity = isHoveredRef.current ? 1.4 : 1;
+    const activeIntensity = isActiveRef.current ? 1.6 : 1;
+
+    const baseOpacity = isOverLight
+      ? Math.min(0.6, Math.max(0.2, 0.5 * hoverIntensity * activeIntensity))
+      : 0;
+
+    const baseConfig = {
+      isOverLight,
+      threshold: 0.7,
+      opacity: baseOpacity,
+      contrast: Math.min(1.6, Math.max(1.0, 1.4 + mouseInfluence * 0.1)),
+      brightness: Math.min(1.1, Math.max(0.8, 0.9 + mouseInfluence * 0.05)),
+      saturationBoost: 1.3,
+      shadowIntensity: Math.min(1.2, Math.max(0.5, 0.9 + mouseInfluence * 0.2)),
+      borderOpacity: Math.min(1.0, Math.max(0.3, 0.7 + mouseInfluence * 0.1)),
+    };
+
+    if (typeof overLight === 'object' && overLight !== null) {
+      const objConfig = overLight as OverLightObjectConfig;
+
+      const validatedThreshold = validateConfigValue(
+        objConfig.threshold,
+        0.1,
+        1.0,
+        baseConfig.threshold
+      );
+      const validatedOpacity = validateConfigValue(objConfig.opacity, 0.1, 1.0, baseConfig.opacity);
+      const validatedContrast = validateConfigValue(
+        objConfig.contrast,
+        0.5,
+        2.5,
+        baseConfig.contrast
+      );
+      const validatedBrightness = validateConfigValue(
+        objConfig.brightness,
+        0.5,
+        2.0,
+        baseConfig.brightness
+      );
+      const validatedSaturationBoost = validateConfigValue(
+        objConfig.saturationBoost,
+        0.5,
+        3.0,
+        baseConfig.saturationBoost
+      );
+
+      return {
+        ...baseConfig,
+        threshold: validatedThreshold,
+        opacity: validatedOpacity * hoverIntensity * activeIntensity,
+        contrast: Math.min(1.6, validatedContrast + mouseInfluence * 0.1),
+        brightness: Math.min(1.1, validatedBrightness + mouseInfluence * 0.05),
+        saturationBoost: validatedSaturationBoost,
+      };
+    }
+
+    return baseConfig;
+  };
+
+  const overLightConfig = useMemo(() => {
+    return calculateOverLightConfig(mouseOffset);
+  }, [
+    overLight,
+    getEffectiveOverLight,
+    mouseOffset,
+    isHovered,
+    isActive,
+    validateConfigValue,
+    debugOverLight,
+  ]);
+
   // Mouse tracking using shared global tracker
   // Cache bounding rect to avoid repeated getBoundingClientRect calls
   const cachedRectRef = useRef<DOMRect | null>(null);
@@ -575,9 +686,168 @@ export function useAtomixGlass({
         y: ((globalPos.y - center.y) / rect.height) * 100,
       };
 
-      // React 18 automatically batches these updates
-      setInternalMouseOffset(newOffset);
-      setInternalGlobalMousePosition(globalPos);
+      // Direct DOM manipulation instead of state updates to improve performance
+      globalMousePositionRef.current = globalPos;
+      mouseOffsetRef.current = newOffset;
+
+      // Calculate derived values for styles
+      const currentOverLightConfig = calculateOverLightConfig(newOffset);
+      const isOverLight = currentOverLightConfig.isOverLight;
+
+      // Helper for transform
+      const calculateDirectionalScale = (): string => {
+        const isOverLightActive =
+          overLight === true ||
+          (overLight === 'auto' && detectedOverLight) ||
+          (typeof overLight === 'object' && overLight !== null && detectedOverLight);
+
+        if (isOverLightActive) {
+          return 'scale(1)';
+        }
+
+        if (!globalPos.x || !globalPos.y || !glassRef.current || !validateGlassSize(glassSize)) {
+          return 'scale(1)';
+        }
+
+        const deltaX = globalPos.x - center.x;
+        const deltaY = globalPos.y - center.y;
+        const edgeDistanceX = Math.max(0, Math.abs(deltaX) - glassSize.width / 2);
+        const edgeDistanceY = Math.max(0, Math.abs(deltaY) - glassSize.height / 2);
+        const edgeDistance = calculateDistance(
+          { x: edgeDistanceX, y: edgeDistanceY },
+          { x: 0, y: 0 }
+        );
+
+        if (edgeDistance > CONSTANTS.ACTIVATION_ZONE) {
+          return 'scale(1)';
+        }
+
+        const fadeInFactor = 1 - edgeDistance / CONSTANTS.ACTIVATION_ZONE;
+        const centerDistance = calculateDistance(globalPos, center);
+
+        if (centerDistance === 0) {
+          return 'scale(1)';
+        }
+
+        const normalizedX = deltaX / centerDistance;
+        const normalizedY = deltaY / centerDistance;
+        const stretchIntensity = Math.min(centerDistance / 300, 1) * elasticity * fadeInFactor;
+
+        const scaleX =
+          1 +
+          Math.abs(normalizedX) * stretchIntensity * 0.3 -
+          Math.abs(normalizedY) * stretchIntensity * 0.15;
+        const scaleY =
+          1 +
+          Math.abs(normalizedY) * stretchIntensity * 0.3 -
+          Math.abs(normalizedX) * stretchIntensity * 0.15;
+
+        return `scaleX(${Math.max(0.8, scaleX)}) scaleY(${Math.max(0.8, scaleY)})`;
+      };
+
+      const calculateElasticTranslation = () => {
+        const fadeInFactor = (() => {
+          const deltaX = globalPos.x - center.x;
+          const deltaY = globalPos.y - center.y;
+          const edgeDistanceX = Math.max(0, Math.abs(deltaX) - glassSize.width / 2);
+          const edgeDistanceY = Math.max(0, Math.abs(deltaY) - glassSize.height / 2);
+          const edgeDistance = calculateDistance(
+            { x: edgeDistanceX, y: edgeDistanceY },
+            { x: 0, y: 0 }
+          );
+
+          return edgeDistance > CONSTANTS.ACTIVATION_ZONE
+            ? 0
+            : 1 - edgeDistance / CONSTANTS.ACTIVATION_ZONE;
+        })();
+
+        return {
+          x: (globalPos.x - center.x) * elasticity * 0.1 * fadeInFactor,
+          y: (globalPos.y - center.y) * elasticity * 0.1 * fadeInFactor,
+        };
+      };
+
+      const elasticTranslation = calculateElasticTranslation();
+      const directionalScale = calculateDirectionalScale();
+
+      const transformStyle = effectiveDisableEffects
+        ? isActiveRef.current && Boolean(onClick)
+          ? 'scale(0.98)'
+          : 'scale(1)'
+        : `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) ${isActiveRef.current && Boolean(onClick) ? 'scale(0.96)' : directionalScale}`;
+
+      // Update positionStyles (static part mostly)
+      const positionStyles = {
+        position: (style.position || 'absolute') as React.CSSProperties['position'],
+        top: style.top || 0,
+        left: style.left || 0,
+      };
+
+      const adjustedSize = {
+        width:
+          style.position !== 'fixed'
+            ? '100%'
+            : style.width
+              ? style.width
+              : Math.max(glassSize.width, 0),
+        height:
+          style.position !== 'fixed'
+            ? '100%'
+            : style.height
+              ? style.height
+              : Math.max(glassSize.height, 0),
+      };
+
+      const glassVars = calculateGlassVars({
+        mouseOffset: newOffset,
+        overLightConfig: currentOverLightConfig,
+        effectiveCornerRadius,
+        transformStyle,
+        adjustedSize,
+        positionStyles,
+        style,
+        isOverLight,
+        isActive: isActiveRef.current,
+        isHovered: isHoveredRef.current,
+      });
+
+      const containerVars = calculateContainerVars({
+        mouseOffset: newOffset,
+        glassSize,
+        padding,
+        cornerRadius: effectiveCornerRadius,
+        overLightConfig: currentOverLightConfig,
+        isOverLight,
+        effectiveDisableEffects,
+        effectiveReducedMotion,
+        enableLiquidBlur,
+        blurAmount,
+        saturation,
+      });
+
+      // Apply styles to elements
+      if (glassRef.current) {
+        // Apply transform to container (since it's the one receiving the transform in AtomixGlass)
+        // Actually, AtomixGlassContainer receives baseStyle which includes transform.
+        glassRef.current.style.transform = transformStyle;
+
+        // Apply container vars to container
+        Object.entries(containerVars).forEach(([key, value]) => {
+          if (value !== undefined) {
+            glassRef.current!.style.setProperty(key, String(value));
+          }
+        });
+
+        // Apply glass vars to wrapper (parent)
+        const wrapper = glassRef.current.parentElement;
+        if (wrapper) {
+          Object.entries(glassVars).forEach(([key, value]) => {
+            if (value !== undefined) {
+              wrapper.style.setProperty(key, String(value));
+            }
+          });
+        }
+      }
     },
     [
       mouseContainer,
@@ -585,6 +855,21 @@ export function useAtomixGlass({
       externalGlobalMousePosition,
       externalMouseOffset,
       effectiveDisableEffects,
+      glassSize,
+      overLight,
+      detectedOverLight,
+      elasticity,
+      validateConfigValue,
+      getEffectiveOverLight,
+      effectiveCornerRadius,
+      style,
+      padding,
+      effectiveReducedMotion,
+      enableLiquidBlur,
+      blurAmount,
+      saturation,
+      isActive, // Re-bind if isActive changes, but isActiveRef is used inside.
+      isHovered, // Same
     ]
   );
 
@@ -861,178 +1146,6 @@ export function useAtomixGlass({
       resizeObserver?.disconnect();
     };
   }, [effectiveCornerRadius, glassRef]);
-
-  // OverLight config
-  /**
-   * Get effective overLight value based on configuration
-   * - boolean: returns the boolean value directly
-   * - 'auto': returns detectedOverLight (auto-detected from background)
-   * - object: returns detectedOverLight (auto-detected, but config object provides customization)
-   */
-  const getEffectiveOverLight = useCallback(() => {
-    if (typeof overLight === 'boolean') {
-      return overLight;
-    }
-    if (overLight === 'auto') {
-      return detectedOverLight;
-    }
-    if (typeof overLight === 'object' && overLight !== null) {
-      return detectedOverLight;
-    }
-    // Default to false for safety when overLight is undefined or invalid
-    return false;
-  }, [overLight, detectedOverLight]);
-
-  /**
-   * Validate and clamp a numeric config value
-   * @param value - The value to validate
-   * @param min - Minimum allowed value
-   * @param max - Maximum allowed value
-   * @param defaultValue - Default value if validation fails
-   * @returns Validated and clamped value
-   */
-  const validateConfigValue = useCallback(
-    (value: unknown, min: number, max: number, defaultValue: number): number => {
-      if (typeof value !== 'number' || isNaN(value) || !isFinite(value)) {
-        return defaultValue;
-      }
-      return Math.min(max, Math.max(min, value));
-    },
-    []
-  );
-
-  const overLightConfig = useMemo(() => {
-    const isOverLight = getEffectiveOverLight();
-    const mouseInfluence = calculateMouseInfluence(mouseOffset);
-    const hoverIntensity = isHovered ? 1.4 : 1;
-    const activeIntensity = isActive ? 1.6 : 1;
-
-    // More robust overlight configuration with better defaults and clamping
-    const baseOpacity = isOverLight
-      ? Math.min(0.6, Math.max(0.2, 0.5 * hoverIntensity * activeIntensity))
-      : 0;
-
-    const baseConfig = {
-      isOverLight,
-      threshold: 0.7,
-      opacity: baseOpacity,
-      contrast: Math.min(1.6, Math.max(1.0, 1.4 + mouseInfluence * 0.1)),
-      brightness: Math.min(1.1, Math.max(0.8, 0.9 + mouseInfluence * 0.05)),
-      saturationBoost: 1.3, // Fixed value — dynamic saturation amplifies perceived displacement
-      shadowIntensity: Math.min(1.2, Math.max(0.5, 0.9 + mouseInfluence * 0.2)),
-      borderOpacity: Math.min(1.0, Math.max(0.3, 0.7 + mouseInfluence * 0.1)),
-    };
-
-    if (typeof overLight === 'object' && overLight !== null) {
-      const objConfig = overLight as OverLightObjectConfig;
-
-      // Validate and apply object config values with proper clamping
-      const validatedThreshold = validateConfigValue(
-        objConfig.threshold,
-        0.1,
-        1.0,
-        baseConfig.threshold
-      );
-      const validatedOpacity = validateConfigValue(objConfig.opacity, 0.1, 1.0, baseConfig.opacity);
-      const validatedContrast = validateConfigValue(
-        objConfig.contrast,
-        0.5,
-        2.5,
-        baseConfig.contrast
-      );
-      const validatedBrightness = validateConfigValue(
-        objConfig.brightness,
-        0.5,
-        2.0,
-        baseConfig.brightness
-      );
-      const validatedSaturationBoost = validateConfigValue(
-        objConfig.saturationBoost,
-        0.5,
-        3.0,
-        baseConfig.saturationBoost
-      );
-
-      const finalConfig = {
-        ...baseConfig,
-        threshold: validatedThreshold,
-        opacity: validatedOpacity * hoverIntensity * activeIntensity,
-        contrast: Math.min(1.6, validatedContrast + mouseInfluence * 0.1),
-        brightness: Math.min(1.1, validatedBrightness + mouseInfluence * 0.05),
-        saturationBoost: validatedSaturationBoost, // Use validated value directly, no mouse influence
-      };
-
-      // Debug logging
-      if (
-        (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
-        debugOverLight
-      ) {
-        console.log('[AtomixGlass] OverLight Config:', {
-          isOverLight,
-          config: {
-            threshold: finalConfig.threshold.toFixed(3),
-            opacity: finalConfig.opacity.toFixed(3),
-            contrast: finalConfig.contrast.toFixed(3),
-            brightness: finalConfig.brightness.toFixed(3),
-            saturationBoost: finalConfig.saturationBoost.toFixed(3),
-            shadowIntensity: finalConfig.shadowIntensity.toFixed(3),
-            borderOpacity: finalConfig.borderOpacity.toFixed(3),
-          },
-          input: {
-            threshold: objConfig.threshold,
-            opacity: objConfig.opacity,
-            contrast: objConfig.contrast,
-            brightness: objConfig.brightness,
-            saturationBoost: objConfig.saturationBoost,
-          },
-          dynamic: {
-            mouseInfluence: mouseInfluence.toFixed(3),
-            hoverIntensity: hoverIntensity.toFixed(3),
-            activeIntensity: activeIntensity.toFixed(3),
-          },
-          timestamp: new Date().toISOString(),
-        });
-      }
-
-      return finalConfig;
-    }
-
-    // Debug logging for non-object configs
-    if (
-      (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
-      debugOverLight
-    ) {
-      console.log('[AtomixGlass] OverLight Config:', {
-        isOverLight,
-        configType: typeof overLight === 'boolean' ? (overLight ? 'true' : 'false') : overLight,
-        config: {
-          threshold: baseConfig.threshold.toFixed(3),
-          opacity: baseConfig.opacity.toFixed(3),
-          contrast: baseConfig.contrast.toFixed(3),
-          brightness: baseConfig.brightness.toFixed(3),
-          saturationBoost: baseConfig.saturationBoost.toFixed(3),
-          shadowIntensity: baseConfig.shadowIntensity.toFixed(3),
-          borderOpacity: baseConfig.borderOpacity.toFixed(3),
-        },
-        dynamic: {
-          mouseInfluence: mouseInfluence.toFixed(3),
-          hoverIntensity: hoverIntensity.toFixed(3),
-          activeIntensity: activeIntensity.toFixed(3),
-        },
-        timestamp: new Date().toISOString(),
-      });
-    }
-
-    return baseConfig;
-  }, [
-    overLight,
-    getEffectiveOverLight,
-    mouseOffset,
-    isHovered,
-    isActive,
-    validateConfigValue,
-    debugOverLight,
-  ]);
 
   // Event handlers
   const handleMouseEnter = useCallback(() => setIsHovered(true), []);
