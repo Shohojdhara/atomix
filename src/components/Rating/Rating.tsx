@@ -5,6 +5,27 @@ import type { RatingProps } from '../../lib/types/components';
 import useForkRef from '../../lib/utils/useForkRef';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
+// Helper function to calculate star value based on mouse position
+const calculateStarValue = (
+  e: React.MouseEvent,
+  starValue: number,
+  allowHalf: boolean
+): number => {
+  if (!allowHalf) {
+    return starValue;
+  }
+
+  // Get the star element's bounding rectangle
+  const starRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+  // Calculate the x position within the star
+  const starCenterX = starRect.left + starRect.width / 2;
+  // If mouse is on the left half of the star, use half value
+  const isHalfStar = e.clientX < starCenterX;
+  const adjustedValue = isHalfStar ? starValue - 0.5 : starValue;
+
+  return Math.max(0.5, adjustedValue); // Ensure minimum of 0.5
+};
+
 /**
  * Rating component for displaying and collecting star ratings
  *
@@ -61,19 +82,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
     const handleMouseEnter = useCallback(
       (e: React.MouseEvent, starValue: number) => {
         if (readOnly) return;
-
-        if (allowHalf) {
-          // Get the star element's bounding rectangle
-          const starRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-          // Calculate the x position within the star
-          const starCenterX = starRect.left + starRect.width / 2;
-          // If mouse is on the left half of the star, use half value
-          const isHalfStar = e.clientX < starCenterX;
-          const adjustedValue = isHalfStar ? starValue - 0.5 : starValue;
-          setHoverValue(Math.max(0.5, adjustedValue)); // Ensure minimum of 0.5
-        } else {
-          setHoverValue(starValue);
-        }
+        setHoverValue(calculateStarValue(e, starValue, !!allowHalf));
       },
       [readOnly, allowHalf, setHoverValue]
     );
@@ -82,15 +91,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
     const handleMouseMove = useCallback(
       (e: React.MouseEvent, starValue: number) => {
         if (readOnly || !allowHalf) return;
-
-        // Get the star element's bounding rectangle
-        const starRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-        // Calculate the x position within the star
-        const starCenterX = starRect.left + starRect.width / 2;
-        // If mouse is on the left half of the star, use half value
-        const isHalfStar = e.clientX < starCenterX;
-        const adjustedValue = isHalfStar ? starValue - 0.5 : starValue;
-        setHoverValue(Math.max(0.5, adjustedValue)); // Ensure minimum of 0.5
+        setHoverValue(calculateStarValue(e, starValue, !!allowHalf));
       },
       [readOnly, allowHalf, setHoverValue]
     );
@@ -105,20 +106,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
     const handleClick = useCallback(
       (e: React.MouseEvent, starValue: number) => {
         if (readOnly) return;
-
-        let newValue = starValue;
-
-        if (allowHalf) {
-          // Get the star element's bounding rectangle
-          const starRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-          // Calculate the x position within the star
-          const starCenterX = starRect.left + starRect.width / 2;
-          // If click is on the left half of the star, use half value
-          const isHalfStar = e.clientX < starCenterX;
-          newValue = isHalfStar ? starValue - 0.5 : starValue;
-          newValue = Math.max(0.5, newValue); // Ensure minimum of 0.5
-        }
-
+        const newValue = calculateStarValue(e, starValue, !!allowHalf);
         onChange?.(newValue);
       },
       [readOnly, onChange, allowHalf]
