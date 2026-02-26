@@ -78,7 +78,7 @@ jobs:
           fi
           
           CSS_SIZE=$(stat -f%z dist/atomix.min.css 2>/dev/null || stat -c%s dist/atomix.min.css 2>/dev/null)
-          CSS_BUDGET=716800 # 700KB (relaxed budget for full design system CSS)
+          CSS_BUDGET=675840 # 660KB (updated budget to accommodate current size of ~646KB)
           
           if [ "$CSS_SIZE" -eq 0 ]; then
             echo "❌ CSS bundle has zero size - build may have failed"
