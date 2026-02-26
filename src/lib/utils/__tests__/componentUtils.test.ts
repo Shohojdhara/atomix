@@ -4,6 +4,8 @@ import {
   applyPartStyles,
   createCSSVarStyle,
   mergeComponentProps,
+  isYouTubeUrl,
+  extractYouTubeId,
 } from '../componentUtils';
 
 describe('componentUtils', () => {
@@ -140,6 +142,58 @@ describe('componentUtils', () => {
       const baseProps = { className: 'base', style: { color: 'red' } };
       const result = mergeComponentProps(baseProps, {});
       expect(result).toEqual(baseProps);
+    });
+  });
+
+  describe('isYouTubeUrl', () => {
+    it('should return true for standard YouTube URLs', () => {
+      expect(isYouTubeUrl('https://www.youtube.com/watch?v=dQw4w9WgXcQ')).toBe(true);
+      expect(isYouTubeUrl('http://www.youtube.com/watch?v=dQw4w9WgXcQ')).toBe(true);
+      expect(isYouTubeUrl('www.youtube.com/watch?v=dQw4w9WgXcQ')).toBe(true);
+      expect(isYouTubeUrl('youtube.com/watch?v=dQw4w9WgXcQ')).toBe(true);
+    });
+
+    it('should return true for shortened YouTube URLs', () => {
+      expect(isYouTubeUrl('https://youtu.be/dQw4w9WgXcQ')).toBe(true);
+      expect(isYouTubeUrl('http://youtu.be/dQw4w9WgXcQ')).toBe(true);
+      expect(isYouTubeUrl('youtu.be/dQw4w9WgXcQ')).toBe(true);
+    });
+
+    it('should return true for embed YouTube URLs', () => {
+      expect(isYouTubeUrl('https://www.youtube.com/embed/dQw4w9WgXcQ')).toBe(true);
+    });
+
+    it('should return false for non-YouTube URLs', () => {
+      expect(isYouTubeUrl('https://vimeo.com/12345')).toBe(false);
+      expect(isYouTubeUrl('https://google.com')).toBe(false);
+      expect(isYouTubeUrl('random string')).toBe(false);
+      expect(isYouTubeUrl('')).toBe(false);
+    });
+  });
+
+  describe('extractYouTubeId', () => {
+    it('should extract ID from standard YouTube URLs', () => {
+      expect(extractYouTubeId('https://www.youtube.com/watch?v=dQw4w9WgXcQ')).toBe('dQw4w9WgXcQ');
+    });
+
+    it('should extract ID from shortened YouTube URLs', () => {
+      expect(extractYouTubeId('https://youtu.be/dQw4w9WgXcQ')).toBe('dQw4w9WgXcQ');
+    });
+
+    it('should extract ID from embed YouTube URLs', () => {
+      expect(extractYouTubeId('https://www.youtube.com/embed/dQw4w9WgXcQ')).toBe('dQw4w9WgXcQ');
+    });
+
+    it('should extract ID with additional query parameters', () => {
+      expect(extractYouTubeId('https://www.youtube.com/watch?v=dQw4w9WgXcQ&feature=youtu.be')).toBe(
+        'dQw4w9WgXcQ'
+      );
+    });
+
+    it('should return null for non-YouTube URLs', () => {
+      expect(extractYouTubeId('https://vimeo.com/12345')).toBe(null);
+      expect(extractYouTubeId('https://google.com')).toBe(null);
+      expect(extractYouTubeId('')).toBe(null);
     });
   });
 });
