@@ -115,12 +115,16 @@ describe('CLI Utils', () => {
         'command | pipe',
         '`substitution`',
         '$(command)',
-        'input > /dev/null'
+        'input > /dev/null',
+        '"quoted"',
+        "'singlequoted'",
+        '" $(whoami) "',
+        "' ; rm -rf / '"
       ];
       
       dangerousInputs.forEach(input => {
         const sanitized = sanitizeInput(input);
-        expect(sanitized).not.toMatch(/[;&|`$<>]/);
+        expect(sanitized).not.toMatch(/[;&|`$<>\\"']/);
       });
     });
 

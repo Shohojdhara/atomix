@@ -178,7 +178,6 @@ interface UseAtomixGlassReturn {
   handleMouseLeave: () => void;
   handleMouseDown: () => void;
   handleMouseUp: () => void;
-  handleMouseMove: (e: MouseEvent) => void;
   handleKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
@@ -201,7 +200,6 @@ export function useAtomixGlass({
   onClick,
   debugCornerRadius = false,
   debugOverLight = false,
-  enablePerformanceMonitoring = false,
   children,
 }: UseAtomixGlassOptions): UseAtomixGlassReturn {
   // State
@@ -558,8 +556,6 @@ export function useAtomixGlass({
         return;
       }
 
-      const startTime = enablePerformanceMonitoring ? performance.now() : 0;
-
       // Use cached rect if available, otherwise get new one
       let rect = cachedRectRef.current;
       if (!rect || rect.width === 0 || rect.height === 0) {
@@ -582,17 +578,6 @@ export function useAtomixGlass({
       // React 18 automatically batches these updates
       setInternalMouseOffset(newOffset);
       setInternalGlobalMousePosition(globalPos);
-
-      if (
-        (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
-        enablePerformanceMonitoring
-      ) {
-        const endTime = performance.now();
-        // const duration = endTime - startTime;
-        // if (duration > 5) {
-        //   console.warn(`AtomixGlass: Mouse tracking took ${duration.toFixed(2)}ms`);
-        // }
-      }
     },
     [
       mouseContainer,
@@ -600,7 +585,6 @@ export function useAtomixGlass({
       externalGlobalMousePosition,
       externalMouseOffset,
       effectiveDisableEffects,
-      enablePerformanceMonitoring,
     ]
   );
 
@@ -978,65 +962,7 @@ export function useAtomixGlass({
         saturationBoost: validatedSaturationBoost, // Use validated value directly, no mouse influence
       };
 
-      // Debug logging
-      if (
-        (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
-        debugOverLight
-      ) {
-        console.log('[AtomixGlass] OverLight Config:', {
-          isOverLight,
-          config: {
-            threshold: finalConfig.threshold.toFixed(3),
-            opacity: finalConfig.opacity.toFixed(3),
-            contrast: finalConfig.contrast.toFixed(3),
-            brightness: finalConfig.brightness.toFixed(3),
-            saturationBoost: finalConfig.saturationBoost.toFixed(3),
-            shadowIntensity: finalConfig.shadowIntensity.toFixed(3),
-            borderOpacity: finalConfig.borderOpacity.toFixed(3),
-          },
-          input: {
-            threshold: objConfig.threshold,
-            opacity: objConfig.opacity,
-            contrast: objConfig.contrast,
-            brightness: objConfig.brightness,
-            saturationBoost: objConfig.saturationBoost,
-          },
-          dynamic: {
-            mouseInfluence: mouseInfluence.toFixed(3),
-            hoverIntensity: hoverIntensity.toFixed(3),
-            activeIntensity: activeIntensity.toFixed(3),
-          },
-          timestamp: new Date().toISOString(),
-        });
-      }
-
       return finalConfig;
-    }
-
-    // Debug logging for non-object configs
-    if (
-      (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
-      debugOverLight
-    ) {
-      console.log('[AtomixGlass] OverLight Config:', {
-        isOverLight,
-        configType: typeof overLight === 'boolean' ? (overLight ? 'true' : 'false') : overLight,
-        config: {
-          threshold: baseConfig.threshold.toFixed(3),
-          opacity: baseConfig.opacity.toFixed(3),
-          contrast: baseConfig.contrast.toFixed(3),
-          brightness: baseConfig.brightness.toFixed(3),
-          saturationBoost: baseConfig.saturationBoost.toFixed(3),
-          shadowIntensity: baseConfig.shadowIntensity.toFixed(3),
-          borderOpacity: baseConfig.borderOpacity.toFixed(3),
-        },
-        dynamic: {
-          mouseInfluence: mouseInfluence.toFixed(3),
-          hoverIntensity: hoverIntensity.toFixed(3),
-          activeIntensity: activeIntensity.toFixed(3),
-        },
-        timestamp: new Date().toISOString(),
-      });
     }
 
     return baseConfig;
@@ -1047,7 +973,6 @@ export function useAtomixGlass({
     isHovered,
     isActive,
     validateConfigValue,
-    debugOverLight,
   ]);
 
   // Event handlers
@@ -1065,11 +990,6 @@ export function useAtomixGlass({
     },
     [onClick]
   );
-
-  // Mouse tracking is now handled by shared global tracker
-  const handleMouseMove = useCallback((_e: MouseEvent) => {
-    // Mouse tracking handled by shared global tracker
-  }, []);
 
   return {
     // State
@@ -1098,7 +1018,6 @@ export function useAtomixGlass({
     handleMouseLeave,
     handleMouseDown,
     handleMouseUp,
-    handleMouseMove,
     handleKeyDown,
   };
 }
