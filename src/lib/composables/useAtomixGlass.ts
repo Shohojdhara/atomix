@@ -962,65 +962,7 @@ export function useAtomixGlass({
         saturationBoost: validatedSaturationBoost, // Use validated value directly, no mouse influence
       };
 
-      // Debug logging
-      if (
-        (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
-        debugOverLight
-      ) {
-        console.log('[AtomixGlass] OverLight Config:', {
-          isOverLight,
-          config: {
-            threshold: finalConfig.threshold.toFixed(3),
-            opacity: finalConfig.opacity.toFixed(3),
-            contrast: finalConfig.contrast.toFixed(3),
-            brightness: finalConfig.brightness.toFixed(3),
-            saturationBoost: finalConfig.saturationBoost.toFixed(3),
-            shadowIntensity: finalConfig.shadowIntensity.toFixed(3),
-            borderOpacity: finalConfig.borderOpacity.toFixed(3),
-          },
-          input: {
-            threshold: objConfig.threshold,
-            opacity: objConfig.opacity,
-            contrast: objConfig.contrast,
-            brightness: objConfig.brightness,
-            saturationBoost: objConfig.saturationBoost,
-          },
-          dynamic: {
-            mouseInfluence: mouseInfluence.toFixed(3),
-            hoverIntensity: hoverIntensity.toFixed(3),
-            activeIntensity: activeIntensity.toFixed(3),
-          },
-          timestamp: new Date().toISOString(),
-        });
-      }
-
       return finalConfig;
-    }
-
-    // Debug logging for non-object configs
-    if (
-      (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
-      debugOverLight
-    ) {
-      console.log('[AtomixGlass] OverLight Config:', {
-        isOverLight,
-        configType: typeof overLight === 'boolean' ? (overLight ? 'true' : 'false') : overLight,
-        config: {
-          threshold: baseConfig.threshold.toFixed(3),
-          opacity: baseConfig.opacity.toFixed(3),
-          contrast: baseConfig.contrast.toFixed(3),
-          brightness: baseConfig.brightness.toFixed(3),
-          saturationBoost: baseConfig.saturationBoost.toFixed(3),
-          shadowIntensity: baseConfig.shadowIntensity.toFixed(3),
-          borderOpacity: baseConfig.borderOpacity.toFixed(3),
-        },
-        dynamic: {
-          mouseInfluence: mouseInfluence.toFixed(3),
-          hoverIntensity: hoverIntensity.toFixed(3),
-          activeIntensity: activeIntensity.toFixed(3),
-        },
-        timestamp: new Date().toISOString(),
-      });
     }
 
     return baseConfig;
@@ -1031,7 +973,6 @@ export function useAtomixGlass({
     isHovered,
     isActive,
     validateConfigValue,
-    debugOverLight,
   ]);
 
   // Event handlers
