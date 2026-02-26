@@ -4,14 +4,14 @@ import type { AtomixGlassProps } from '../../types/components';
 interface UseGlassStateProps {
   reducedMotion?: boolean;
   highContrast?: boolean;
-  disableEffects?: boolean;
+  withoutEffects?: boolean;
   onClick?: () => void;
 }
 
 export function useGlassState({
   reducedMotion = false,
   highContrast = false,
-  disableEffects = false,
+  withoutEffects = false,
   onClick,
 }: UseGlassStateProps) {
   const [isHovered, setIsHovered] = useState(false);
@@ -77,9 +77,9 @@ export function useGlassState({
     [highContrast, userPrefersHighContrast]
   );
 
-  const effectiveDisableEffects = useMemo(
-    () => disableEffects || effectiveReducedMotion,
-    [disableEffects, effectiveReducedMotion]
+  const effectiveWithoutEffects = useMemo(
+    () => withoutEffects || effectiveReducedMotion,
+    [withoutEffects, effectiveReducedMotion]
   );
 
   const handleMouseEnter = useCallback(() => setIsHovered(true), []);
@@ -102,7 +102,7 @@ export function useGlassState({
     isActive,
     effectiveReducedMotion,
     effectiveHighContrast,
-    effectiveDisableEffects,
+    effectiveWithoutEffects,
     handleMouseEnter,
     handleMouseLeave,
     handleMouseDown,

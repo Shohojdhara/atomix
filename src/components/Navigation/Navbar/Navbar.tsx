@@ -146,7 +146,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
       const defaultGlassProps = {
         displacementScale: 30,
         blurAmount: 2,
-        cornerRadius: 0,
+        borderRadius: 0,
         elasticity: 0,
         mode: 'shader' as const,
         shaderVariant: 'premiumGlass' as const,

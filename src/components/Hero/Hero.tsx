@@ -55,7 +55,7 @@ const HeroContent = ({ children, className, style, glass, ...props }: HeroConten
       blurAmount: 3,
       saturation: 180,
       aberrationIntensity: 0,
-      cornerRadius: 8,
+      borderRadius: 8,
       overLight: false,
       mode: 'standard' as const,
     } : glass;
@@ -389,7 +389,7 @@ export const Hero: React.FC<HeroProps> & {
               blurAmount={3}
               saturation={180}
               aberrationIntensity={0}
-              cornerRadius={8}
+              borderRadius={8}
               overLight={false}
               mode="standard"
             >

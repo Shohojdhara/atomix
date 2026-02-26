@@ -439,7 +439,7 @@ const Fintech: React.FC = () => {
         alignment="center"
         contentWidth="wide"
         backgroundImageSrc="https://images.unsplash.com/photo-1516475368726-dc5d1c2ad7e0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3873"
-        glass={{ padding: '5rem 2rem', cornerRadius: 32, elasticity: 0, blurAmount: 4 } as any}
+        glass={{ padding: '5rem 2rem', borderRadius: 32, elasticity: 0, blurAmount: 4 } as any}
         parallax={true}
       />
 
@@ -462,7 +462,7 @@ const Fintech: React.FC = () => {
           <Callout
             variant="info"
             glass={
-              { blurAmount: 4, displacementScale: 100, elasticity: 0, cornerRadius: 32 } as any
+              { blurAmount: 4, displacementScale: 100, elasticity: 0, borderRadius: 32 } as any
             }
             className="u-mb-4"
           >
@@ -512,7 +512,7 @@ const Fintech: React.FC = () => {
                 <AtomixGlass
                   blurAmount={4}
                   displacementScale={100}
-                  cornerRadius={32}
+                  borderRadius={32}
                   elasticity={0}
                   className="u-h-100"
                 >
@@ -542,7 +542,7 @@ const Fintech: React.FC = () => {
                 <AtomixGlass
                   blurAmount={4}
                   displacementScale={100}
-                  cornerRadius={32}
+                  borderRadius={32}
                   elasticity={0}
                 >
                   <div className="u-p-4 u-text-center">
@@ -581,7 +581,7 @@ const Fintech: React.FC = () => {
                 <AtomixGlass
                   blurAmount={4}
                   displacementScale={100}
-                  cornerRadius={32}
+                  borderRadius={32}
                   elasticity={0}
                   className="u-h-100"
                 >
@@ -640,7 +640,7 @@ const Fintech: React.FC = () => {
                 <AtomixGlass
                   blurAmount={4}
                   displacementScale={100}
-                  cornerRadius={32}
+                  borderRadius={32}
                   elasticity={0}
                 >
                   <div className="u-p-4">
@@ -773,7 +773,7 @@ const Fintech: React.FC = () => {
                 elasticity: 0,
                 blurAmount: 4,
                 displacementScale: 100,
-                cornerRadius: 32,
+                borderRadius: 32,
                 padding: '4rem',
               } as any
             }
@@ -876,7 +876,7 @@ const Fintech: React.FC = () => {
                 elasticity: 0,
                 blurAmount: 2,
                 displacementScale: 100,
-                cornerRadius: 32,
+                borderRadius: 32,
                 padding: '4rem',
               } as any
             }
@@ -964,7 +964,7 @@ const Fintech: React.FC = () => {
           <AtomixGlass
             blurAmount={2}
             displacementScale={100}
-            cornerRadius={32}
+            borderRadius={32}
             elasticity={0}
             mode="shader"
           >
@@ -1030,7 +1030,7 @@ const Fintech: React.FC = () => {
                 <AtomixGlass
                   blurAmount={2}
                   displacementScale={100}
-                  cornerRadius={32}
+                  borderRadius={32}
                   elasticity={0}
                   padding="1rem"
                 >
@@ -1076,7 +1076,7 @@ const Fintech: React.FC = () => {
                 <AtomixGlass
                   blurAmount={2}
                   displacementScale={100}
-                  cornerRadius={32}
+                  borderRadius={32}
                   elasticity={0}
                   padding="1rem"
                   className="u-h-100"
@@ -1117,7 +1117,7 @@ const Fintech: React.FC = () => {
             blurAmount={2}
             displacementScale={18}
             saturation={160}
-            cornerRadius={16}
+            borderRadius={16}
             elasticity={0}
             mode="standard"
           >
@@ -1135,7 +1135,7 @@ const Fintech: React.FC = () => {
                   blurAmount={2}
                   displacementScale={18}
                   saturation={160}
-                  cornerRadius={16}
+                  borderRadius={16}
                   elasticity={0}
                   mode="standard"
                   className="u-h-100"
@@ -1165,7 +1165,7 @@ const Fintech: React.FC = () => {
               blurAmount={2}
               displacementScale={20}
               saturation={160}
-              cornerRadius={16}
+              borderRadius={16}
               elasticity={0}
               mode="standard"
             >
@@ -1208,7 +1208,7 @@ const Fintech: React.FC = () => {
               <AtomixGlass
                 blurAmount={2}
                 displacementScale={100}
-                cornerRadius={32}
+                borderRadius={32}
                 elasticity={0}
                 padding="1rem"
               >
@@ -1225,7 +1225,7 @@ const Fintech: React.FC = () => {
               <AtomixGlass
                 blurAmount={2}
                 displacementScale={100}
-                cornerRadius={32}
+                borderRadius={32}
                 elasticity={0}
                 padding="1rem"
               >
@@ -1251,7 +1251,7 @@ const Fintech: React.FC = () => {
                 blurAmount={2}
                 displacementScale={100}
                 saturation={170}
-                cornerRadius={32}
+                borderRadius={32}
                 elasticity={0}
               >
                 <div className="u-p-6">

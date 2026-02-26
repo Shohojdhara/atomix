@@ -279,7 +279,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
         blurAmount: 1,
         saturation: 160,
         aberrationIntensity: 0.5,
-        cornerRadius: 8,
+        borderRadius: 8,
         mode: 'shader' as const,
       };
 

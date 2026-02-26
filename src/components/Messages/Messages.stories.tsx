@@ -192,7 +192,7 @@ export const GlassCustom: Story = {
     glass: {
       displacementScale: 30,
       blurAmount: 0,
-      cornerRadius: 16,
+      borderRadius: 16,
       elasticity: 0,
     },
   },

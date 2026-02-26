@@ -9,30 +9,30 @@ const { CONSTANTS } = ATOMIX_GLASS;
 
 interface UseGlassCornerRadiusProps {
   contentRef: React.RefObject<HTMLDivElement>;
-  cornerRadius?: number;
+  borderRadius?: number;
   children?: React.ReactNode;
-  debugCornerRadius?: boolean;
+  debugBorderRadius?: boolean;
 }
 
 export function useGlassCornerRadius({
   contentRef,
-  cornerRadius,
+  borderRadius,
   children,
-  debugCornerRadius = false,
+  debugBorderRadius = false,
 }: UseGlassCornerRadiusProps) {
-  const [dynamicCornerRadius, setDynamicCornerRadius] = useState<number>(
+  const [dynamicBorderRadius, setDynamicCornerRadius] = useState<number>(
     CONSTANTS.DEFAULT_CORNER_RADIUS
   );
 
-  const effectiveCornerRadius = useMemo(() => {
-    if (cornerRadius !== undefined) {
-      const result = Math.max(0, cornerRadius);
+  const effectiveBorderRadius = useMemo(() => {
+    if (borderRadius !== undefined) {
+      const result = Math.max(0, borderRadius);
       return result;
     }
 
-    const result = Math.max(0, dynamicCornerRadius);
+    const result = Math.max(0, dynamicBorderRadius);
     return result;
-  }, [cornerRadius, dynamicCornerRadius]);
+  }, [borderRadius, dynamicBorderRadius]);
 
   // Extract border-radius from children
   useEffect(() => {
@@ -63,7 +63,7 @@ export function useGlassCornerRadius({
       } catch (error) {
         if (
           (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
-          debugCornerRadius
+          debugBorderRadius
         ) {
           console.error('[AtomixGlass] Error extracting corner radius:', error);
         }
@@ -73,10 +73,10 @@ export function useGlassCornerRadius({
     extractRadius();
     const timeoutId = setTimeout(extractRadius, 100);
     return () => clearTimeout(timeoutId);
-  }, [children, debugCornerRadius, contentRef]);
+  }, [children, debugBorderRadius, contentRef]);
 
   return {
-    dynamicCornerRadius,
-    effectiveCornerRadius,
+    dynamicBorderRadius,
+    effectiveBorderRadius,
   };
 }

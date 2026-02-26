@@ -7,13 +7,13 @@ const { CONSTANTS } = ATOMIX_GLASS;
 
 interface UseGlassSizeProps {
   glassRef: React.RefObject<HTMLDivElement>;
-  effectiveCornerRadius: number;
+  effectiveBorderRadius: number;
   cachedRectRef?: React.MutableRefObject<DOMRect | null>;
 }
 
 export function useGlassSize({
   glassRef,
-  effectiveCornerRadius,
+  effectiveBorderRadius,
   cachedRectRef,
 }: UseGlassSizeProps) {
   const [glassSize, setGlassSize] = useState<GlassSize>({ width: 270, height: 69 });
@@ -29,7 +29,7 @@ export function useGlassSize({
 
     let rafId: number | null = null;
     let lastSize = { width: 0, height: 0 };
-    let lastCornerRadius = effectiveCornerRadius;
+    let lastCornerRadius = effectiveBorderRadius;
 
     const updateGlassSize = (forceUpdate = false): void => {
       if (rafId !== null) cancelAnimationFrame(rafId);
@@ -52,14 +52,14 @@ export function useGlassSize({
           height: Math.round(rect.height),
         };
 
-        const cornerRadiusChanged = lastCornerRadius !== effectiveCornerRadius;
+        const cornerRadiusChanged = lastCornerRadius !== effectiveBorderRadius;
         const dimensionsChanged =
           Math.abs(newSize.width - lastSize.width) > 1 ||
           Math.abs(newSize.height - lastSize.height) > 1;
 
         if ((forceUpdate || cornerRadiusChanged || dimensionsChanged) && validateSize(newSize)) {
           lastSize = newSize;
-          lastCornerRadius = effectiveCornerRadius;
+          lastCornerRadius = effectiveBorderRadius;
           setGlassSize(newSize);
         }
 
@@ -111,7 +111,7 @@ export function useGlassSize({
       window.removeEventListener('resize', debouncedResizeHandler);
       resizeObserver?.disconnect();
     };
-  }, [effectiveCornerRadius, glassRef, cachedRectRef]);
+  }, [effectiveBorderRadius, glassRef, cachedRectRef]);
 
   return { glassSize };
 }

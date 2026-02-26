@@ -51,7 +51,7 @@ export const Nav = forwardRef<HTMLUListElement, NavProps>(
       const defaultGlassProps = {
         displacementScale: 60,
         blurAmount: 1.5,
-        cornerRadius: 8,
+        borderRadius: 8,
         mode: 'shader' as const,
       };
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };

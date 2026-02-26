@@ -308,7 +308,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       const defaultGlassProps = {
         displacementScale: 70,
         blurAmount: 2,
-        cornerRadius: 12,
+        borderRadius: 12,
         mode: 'shader' as const,
       };
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };

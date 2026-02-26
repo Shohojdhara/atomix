@@ -27,7 +27,7 @@ function MyComponent() {
     <AtomixGlass
       displacementScale={20}
       blurAmount={10}
-      cornerRadius={15}
+      borderRadius={15}
     >
       <div>Your content here</div>
     </AtomixGlass>
@@ -45,14 +45,14 @@ function MyComponent() {
 | `saturation` | number | 150 | Controls the color saturation (100 is normal) |
 | `aberrationIntensity` | number | 1.5 | Controls the chromatic aberration effect intensity |
 | `elasticity` | number | 0.5 | Controls how responsive the glass is to mouse movement |
-| `cornerRadius` | number | 15 | Border radius of the glass container |
+| `borderRadius` | number | 15 | Border radius of the glass container |
 | `globalMousePos` | boolean | false | Whether to use global mouse position instead of local |
 | `mouseOffset` | { x: number, y: number } | { x: 0, y: 0 } | Offset for mouse position calculation |
 | `mouseContainer` | RefObject<HTMLElement> | null | Container to use for mouse position calculation |
 | `padding` | number | 0 | Additional padding around the content |
 | `style` | CSSProperties | {} | Additional CSS styles |
 | `overLight` | boolean \| 'auto' \| OverLightObjectConfig | 'auto' | OverLight configuration. See [OverLight Configuration](#overlight-configuration) section for details |
-| `enableOverLightLayers` | boolean | true | Whether to render additional overlay layers for overLight mode |
+| `withOverLightLayers` | boolean | true | Whether to render additional overlay layers for overLight mode |
 | `debugOverLight` | boolean | false | Enable debug logging for overLight detection and configuration |
 | `mode` | 'standard' \| 'polar' \| 'prominent' \| 'shader' | 'standard' | The glass effect mode |
 | `onClick` | function | undefined | Click handler |
@@ -218,8 +218,8 @@ This logs to console:
 - Use object config to fine-tune detection sensitivity and visual effects
 - Enable `debugOverLight` when troubleshooting auto-detection issues
 - Test glass effects across different devices and screen sizes
-- Use appropriate `cornerRadius` values to match your design language
-- Consider disabling `enableOverLightLayers` for performance optimization
+- Use appropriate `borderRadius` values to match your design language
+- Consider disabling `withOverLightLayers` for performance optimization
 
 ## Customization
 

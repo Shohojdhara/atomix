@@ -142,7 +142,7 @@ const Ecommerce: React.FC = () => {
         blurAmount={2}
         displacementScale={60}
         aberrationIntensity={0}
-        cornerRadius={10}
+        borderRadius={10}
         elasticity={0.01}
         mode="standard"
         style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 1 }}

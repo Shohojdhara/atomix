@@ -55,7 +55,7 @@ export const HeroExample: Story = {
           <AtomixGlass
             displacementScale={100}
             blurAmount={1}
-            cornerRadius={30}
+            borderRadius={30}
             mode="shader"
             shaderVariant="premiumGlass"
             onClick={() => {}}
@@ -144,7 +144,7 @@ export const VideoBackground: Story = {
       blurAmount: 0,
       saturation: 150,
       aberrationIntensity: 0,
-      cornerRadius: 24,
+      borderRadius: 24,
       mode: 'standard' as const,
     });
 
@@ -196,7 +196,7 @@ export const VideoBackground: Story = {
             blurAmount={glassSettings.blurAmount}
             saturation={glassSettings.saturation}
             aberrationIntensity={glassSettings.aberrationIntensity}
-            cornerRadius={glassSettings.cornerRadius}
+            borderRadius={glassSettings.borderRadius}
             mode={glassSettings.mode}
             style={{ width: '400px', maxWidth: '100%' }}
           >
@@ -229,7 +229,7 @@ export const VideoBackground: Story = {
             blurAmount={0.06}
             saturation={120}
             aberrationIntensity={1.5}
-            cornerRadius={16}
+            borderRadius={16}
             mode="standard"
             style={{ width: '300px', maxWidth: '100%' }}
           >
@@ -298,14 +298,14 @@ export const VideoBackground: Story = {
 
               <div style={{ marginBottom: '16px' }}>
                 <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
-                  Corner Radius: {glassSettings.cornerRadius}px
+                  Corner Radius: {glassSettings.borderRadius}px
                 </label>
                 <input
                   type="range"
                   min="0"
                   max="100"
-                  value={glassSettings.cornerRadius}
-                  onChange={e => updateSettings('cornerRadius', parseInt(e.target.value))}
+                  value={glassSettings.borderRadius}
+                  onChange={e => updateSettings('borderRadius', parseInt(e.target.value))}
                   style={{ width: '100%', accentColor: '#6366f1' }}
                 />
               </div>
@@ -319,7 +319,7 @@ export const VideoBackground: Story = {
                     blurAmount: 0.08,
                     saturation: 150,
                     aberrationIntensity: 2.5,
-                    cornerRadius: 24,
+                    borderRadius: 24,
                     mode: 'standard',
                   });
                 }}
@@ -398,7 +398,7 @@ export const DashboardCards: Story = {
             displacementScale={30}
             blurAmount={5}
             saturation={140}
-            cornerRadius={20}
+            borderRadius={20}
             mode="standard"
             padding="24px 32px"
           >
@@ -461,7 +461,7 @@ export const DashboardCards: Story = {
                     blurAmount={selectedCard === index ? 1.5 : 1}
                     saturation={selectedCard === index ? 132 : 130}
                     aberrationIntensity={selectedCard === index ? 2 : 1}
-                    cornerRadius={16}
+                    borderRadius={16}
                     mode="standard"
                   >
                     <div className="u-p-4">
@@ -654,7 +654,7 @@ export const ProductCard: Story = {
               <Button
                 onClick={handleAddToCart}
                 variant="primary"
-                glass={{ cornerRadius: 8 }}
+                glass={{ borderRadius: 8 }}
                 size="sm"
                 style={{ width: '100%' }}
                 icon={addedToCart ? <Icon name="Check" /> : <Icon name="ShoppingCart" />}
@@ -935,7 +935,7 @@ export const LoginForm: Story = {
               blurAmount={1}
               saturation={130}
               aberrationIntensity={2}
-              cornerRadius={24}
+              borderRadius={24}
               mode="standard"
             >
               <div className="u-p-4">
@@ -1214,13 +1214,13 @@ export const MusicPlayer: Story = {
           <AtomixGlass
             displacementScale={55}
             blurAmount={3}
-            cornerRadius={28}
+            borderRadius={28}
             elasticity={0.01}
             mode="standard"
           >
             <div className="u-p-3">
               {/* Album Art */}
-              <AtomixGlass displacementScale={0} blurAmount={0} cornerRadius={20} mode="standard">
+              <AtomixGlass displacementScale={0} blurAmount={0} borderRadius={20} mode="standard">
                 <div
                   style={{
                     aspectRatio: '1:2',
@@ -1568,7 +1568,7 @@ export const PricingTable: Story = {
 
             {/* Billing Toggle */}
             <div style={{ width: '100%', maxWidth: '200px', margin: '0 auto' }}>
-              <AtomixGlass blurAmount={1} saturation={120} cornerRadius={50} mode="standard">
+              <AtomixGlass blurAmount={1} saturation={120} borderRadius={50} mode="standard">
                 <button
                   onClick={() => setBillingCycle('monthly')}
                   style={{
@@ -1632,7 +1632,7 @@ export const PricingTable: Story = {
                   blurAmount={1}
                   saturation={plan.popular ? 180 : 130}
                   aberrationIntensity={plan.popular ? 2 : 1.5}
-                  cornerRadius={24}
+                  borderRadius={24}
                   elasticity={0.01}
                   mode="standard"
                 >
@@ -1865,7 +1865,7 @@ export const ChatInterface: Story = {
           <AtomixGlass
             displacementScale={100}
             blurAmount={1}
-            cornerRadius={24}
+            borderRadius={24}
             elasticity={0.1}
             mode="prominent"
           >
@@ -2137,7 +2137,7 @@ export const ChatInterface: Story = {
                   size="md"
                   iconOnly
                   glass={{
-                    cornerRadius: 100,
+                    borderRadius: 100,
                   }}
                   rounded
                   icon={<Icon name="PaperPlaneTilt" />}
@@ -2221,7 +2221,7 @@ export const ProfileCard: Story = {
           <AtomixGlass
             displacementScale={45}
             blurAmount={5}
-            cornerRadius={24}
+            borderRadius={24}
             mode="standard"
             elasticity={0.05}
             onClick={() => {}}
@@ -2452,7 +2452,7 @@ export const ProfileCard: Story = {
                 >
                   <AtomixGlass
                     blurAmount={0.8}
-                    cornerRadius={16}
+                    borderRadius={16}
                     elasticity={0}
                     mode="standard"
                     style={{
@@ -2530,7 +2530,7 @@ export const SettingsPanel: Story = {
         height="90vh"
       >
         <div className="u-mx-auto u-py-6" style={{ maxWidth: '550px' }}>
-          <AtomixGlass displacementScale={45} blurAmount={1} cornerRadius={24} mode="standard">
+          <AtomixGlass displacementScale={45} blurAmount={1} borderRadius={24} mode="standard">
             <div style={{ padding: '32px' }}>
               {/* Header */}
               <div className="u-mb-5">
@@ -2939,7 +2939,7 @@ export const EventCard: Story = {
         height="90vh"
       >
         <div className="u-mx-auto u-py-6" style={{ maxWidth: '480px' }}>
-          <AtomixGlass displacementScale={45} blurAmount={4} cornerRadius={24} mode="standard">
+          <AtomixGlass displacementScale={45} blurAmount={4} borderRadius={24} mode="standard">
             {/* Event Image */}
             <div
               style={{
@@ -3317,7 +3317,7 @@ export const SocialMediaPost: Story = {
           <AtomixGlass
             displacementScale={200}
             blurAmount={5}
-            cornerRadius={24}
+            borderRadius={24}
             mode="standard"
             elasticity={0}
           >
@@ -3374,7 +3374,7 @@ export const SocialMediaPost: Story = {
               </div>
               <Button
                 glass={{
-                  cornerRadius: 8,
+                  borderRadius: 8,
                 }}
                 size="sm"
                 icon={<Icon name="DotsThree" />}
@@ -3680,7 +3680,7 @@ export const WeatherWidget: Story = {
             displacementScale={60}
             blurAmount={1.1}
             saturation={190}
-            cornerRadius={32}
+            borderRadius={32}
             mode="standard"
             elasticity={0}
           >
@@ -3958,7 +3958,7 @@ export const SearchResults: Story = {
           <AtomixGlass
             displacementScale={30}
             blurAmount={2}
-            cornerRadius={30}
+            borderRadius={30}
             mode="standard"
             onClick={() => {}}
             elasticity={0}
@@ -4202,7 +4202,7 @@ export const PaymentForm: Story = {
             displacementScale={120}
             blurAmount={2}
             saturation={180}
-            cornerRadius={28}
+            borderRadius={28}
             mode="standard"
             shaderVariant="premiumGlass"
             elasticity={0}
@@ -4586,7 +4586,7 @@ export const NewsletterSubscription: Story = {
           <AtomixGlass
             displacementScale={100}
             blurAmount={3}
-            cornerRadius={32}
+            borderRadius={32}
             mode="standard"
             elasticity={0}
           >
@@ -4855,7 +4855,7 @@ export const ProgressTracker: Story = {
             displacementScale={28}
             blurAmount={18}
             saturation={1.15}
-            cornerRadius={30}
+            borderRadius={30}
             mode="standard"
           >
             <div className="u-p-5" style={{ minWidth: '550px', maxWidth: '700px' }}>
@@ -5210,7 +5210,7 @@ export const MobileUIExample: Story = {
               <AtomixGlass
                 displacementScale={60}
                 blurAmount={0}
-                cornerRadius={24}
+                borderRadius={24}
                 mode="prominent"
                 onClick={() => null}
               >
@@ -5275,7 +5275,7 @@ export const MobileUIExample: Story = {
                 blurAmount={0}
                 saturation={185}
                 elasticity={0.2}
-                cornerRadius={30}
+                borderRadius={30}
                 mode="standard"
                 onClick={() => null}
               >
@@ -5352,7 +5352,7 @@ export const MobileUIExample: Story = {
               <AtomixGlass
                 displacementScale={220}
                 blurAmount={0}
-                cornerRadius={15}
+                borderRadius={15}
                 mode="shader"
                 onClick={() => null}
               >
@@ -5398,7 +5398,7 @@ export const MobileUIExample: Story = {
               <AtomixGlass
                 displacementScale={60}
                 blurAmount={0}
-                cornerRadius={15}
+                borderRadius={15}
                 onClick={() => null}
               >
                 <div
@@ -5445,7 +5445,7 @@ export const MobileUIExample: Story = {
               <AtomixGlass
                 displacementScale={60}
                 blurAmount={0}
-                cornerRadius={15}
+                borderRadius={15}
                 mode="standard"
                 onClick={() => null}
               >
@@ -5566,7 +5566,7 @@ export const MobileUIExample: Story = {
                 blurAmount={0}
                 saturation={180}
                 elasticity={0.16}
-                cornerRadius={15}
+                borderRadius={15}
                 mode="standard"
                 onClick={() => null}
               >
@@ -5635,7 +5635,7 @@ export const MobileUIExample: Story = {
                 displacementScale={60}
                 blurAmount={1}
                 saturation={130}
-                cornerRadius={24}
+                borderRadius={24}
                 elasticity={0.1}
                 style={{ marginBottom: '24px', display: 'inline-block' }}
               >
@@ -5698,7 +5698,7 @@ export const MobileUIExample: Story = {
                   blurAmount={1}
                   saturation={180}
                   elasticity={0}
-                  cornerRadius={26}
+                  borderRadius={26}
                   mode="shader"
                   shaderVariant="premiumGlass"
                   onClick={() => null}
@@ -5730,7 +5730,7 @@ export const MobileUIExample: Story = {
                 <AtomixGlass
                   displacementScale={25}
                   elasticity={0}
-                  cornerRadius={18}
+                  borderRadius={18}
                   mode="shader"
                   shaderVariant="premiumGlass"
                   onClick={() => null}
@@ -5938,7 +5938,7 @@ export const AppleInspiredUI: Story = {
             displacementScale={70}
             blurAmount={0}
             saturation={150}
-            cornerRadius={8}
+            borderRadius={8}
             mode="shader"
             shaderVariant="premiumGlass"
             elasticity={0}
@@ -6058,7 +6058,7 @@ export const AppleInspiredUI: Story = {
             displacementScale={50}
             blurAmount={2}
             shaderVariant="premiumGlass"
-            cornerRadius={24}
+            borderRadius={24}
             mode="shader"
             elasticity={0}
           >
@@ -6144,7 +6144,7 @@ export const AppleInspiredUI: Story = {
                 blurAmount={5}
                 saturation={130}
                 aberrationIntensity={1}
-                cornerRadius={16}
+                borderRadius={16}
                 elasticity={0}
                 mode="shader"
               >
@@ -6253,7 +6253,7 @@ export const AppleInspiredUI: Story = {
             blurAmount={2}
             saturation={140}
             aberrationIntensity={1.2}
-            cornerRadius={24}
+            borderRadius={24}
             mode="polar"
             style={{ maxWidth: '600px' }}
           >

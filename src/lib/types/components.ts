@@ -215,20 +215,20 @@ export interface OverLightObjectConfig {
 /**
  * AtomixGlass component props interface
  */
-export interface AtomixGlassProps {
+export interface AtomixGlassProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   displacementScale?: number;
   blurAmount?: number;
   saturation?: number;
   aberrationIntensity?: number;
   elasticity?: number;
-  cornerRadius?: number;
+  borderRadius?: number;
   globalMousePosition?: MousePosition;
   mouseOffset?: MousePosition;
   mouseContainer?: React.RefObject<HTMLElement | null> | null;
-  className?: string;
   padding?: string;
-  style?: React.CSSProperties;
+  height?: string | number;
+  width?: string | number;
   overLight?: OverLightConfig;
   mode?: DisplacementMode;
   onClick?: () => void;
@@ -246,32 +246,24 @@ export interface AtomixGlassProps {
     | 'noise';
 
   /**
-   * Accessibility props
-   */
-  'aria-label'?: string;
-  'aria-describedby'?: string;
-  role?: string;
-  tabIndex?: number;
-
-  /**
    * Performance and accessibility options
    */
   reducedMotion?: boolean;
   highContrast?: boolean;
-  disableEffects?: boolean;
-  enableLiquidBlur?: boolean;
-  enableBorderEffect?: boolean;
-  enableOverLightLayers?: boolean;
+  withoutEffects?: boolean;
+  withLiquidBlur?: boolean;
+  withBorder?: boolean;
+  withOverLightLayers?: boolean;
 
   /**
    * Performance monitoring
    */
-  enablePerformanceMonitoring?: boolean;
+  debugPerformance?: boolean;
 
   /**
-   * Debug mode for cornerRadius extraction
+   * Debug mode for borderRadius extraction
    */
-  debugCornerRadius?: boolean;
+  debugBorderRadius?: boolean;
 
   /**
    * Debug mode for overLight detection and configuration
@@ -3791,7 +3783,7 @@ export interface VideoPlayerProps extends BaseComponentProps {
         saturation?: number;
         aberrationIntensity?: number;
         elasticity?: number;
-        cornerRadius?: number;
+        borderRadius?: number;
         mode?: 'standard' | 'polar' | 'prominent' | 'shader';
         overLight?: boolean;
       };
@@ -6642,7 +6634,7 @@ export interface GlassContainerProps extends BaseComponentProps {
    * Border radius of the glass container
    * @default 999
    */
-  cornerRadius?: number;
+  borderRadius?: number;
 
   /**
    * Padding inside the glass container

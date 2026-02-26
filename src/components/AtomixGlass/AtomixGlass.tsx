@@ -33,7 +33,7 @@ import { useAtomixGlass } from '../../lib/composables/useAtomixGlass';
  *
  * @example
  * // Manual border-radius override
- * <AtomixGlass cornerRadius={20}>
+ * <AtomixGlass borderRadius={20}>
  *   <div>Content with 20px glass radius</div>
  * </AtomixGlass>
  *
@@ -82,7 +82,7 @@ export function AtomixGlass({
   saturation = ATOMIX_GLASS.DEFAULTS.SATURATION,
   aberrationIntensity = ATOMIX_GLASS.DEFAULTS.ABERRATION_INTENSITY,
   elasticity = ATOMIX_GLASS.DEFAULTS.ELASTICITY,
-  cornerRadius,
+  borderRadius,
   globalMousePosition: externalGlobalMousePosition,
   mouseOffset: externalMouseOffset,
   mouseContainer = null,
@@ -99,13 +99,16 @@ export function AtomixGlass({
   tabIndex,
   reducedMotion = false,
   highContrast = false,
-  disableEffects = false,
-  enableLiquidBlur = false,
-  enableBorderEffect = true,
-  enableOverLightLayers = ATOMIX_GLASS.DEFAULTS.ENABLE_OVER_LIGHT_LAYERS,
-  enablePerformanceMonitoring = false,
-  debugCornerRadius = false,
+  withoutEffects = false,
+  withLiquidBlur = false,
+  withBorder = true,
+  withOverLightLayers = ATOMIX_GLASS.DEFAULTS.ENABLE_OVER_LIGHT_LAYERS,
+  debugPerformance = false,
+  debugBorderRadius = false,
   debugOverLight = false,
+  height,
+  width,
+  ...rest
 }: AtomixGlassProps) {
   const glassRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -115,10 +118,10 @@ export function AtomixGlass({
     isHovered,
     isActive,
     glassSize,
-    effectiveCornerRadius,
+    effectiveBorderRadius,
     effectiveReducedMotion,
     effectiveHighContrast,
-    effectiveDisableEffects,
+    effectiveWithoutEffects,
     overLightConfig,
     globalMousePosition,
     mouseOffset,
@@ -131,23 +134,23 @@ export function AtomixGlass({
   } = useAtomixGlass({
     glassRef,
     contentRef,
-    cornerRadius,
+    borderRadius,
     globalMousePosition: externalGlobalMousePosition,
     mouseOffset: externalMouseOffset,
     mouseContainer,
     overLight,
     reducedMotion,
     highContrast,
-    disableEffects,
+    withoutEffects,
     elasticity,
     onClick,
-    debugCornerRadius,
+    debugBorderRadius,
     debugOverLight,
-    enablePerformanceMonitoring,
+    debugPerformance,
     children,
     blurAmount,
     saturation,
-    enableLiquidBlur,
+    withLiquidBlur,
     padding,
     style,
   });
@@ -156,12 +159,12 @@ export function AtomixGlass({
   // overLightConfig recalculates with hover/active states, but displacement should remain stable
   const isOverLight = useMemo(() => overLightConfig?.isOverLight, [overLight]);
 
-  const shouldRenderOverLightLayers = enableOverLightLayers && isOverLight;
+  const shouldRenderOverLightLayers = withOverLightLayers && isOverLight;
 
   // Calculate base style with transforms
   const baseStyle = {
     ...style,
-    ...(!effectiveDisableEffects && {
+    ...(!effectiveWithoutEffects && {
       transform: transformStyle,
     }),
   };
@@ -171,7 +174,7 @@ export function AtomixGlass({
     ATOMIX_GLASS.BASE_CLASS,
     effectiveReducedMotion && `${ATOMIX_GLASS.BASE_CLASS}--reduced-motion`,
     effectiveHighContrast && `${ATOMIX_GLASS.BASE_CLASS}--high-contrast`,
-    effectiveDisableEffects && `${ATOMIX_GLASS.BASE_CLASS}--disabled-effects`,
+    effectiveWithoutEffects && `${ATOMIX_GLASS.BASE_CLASS}--disabled-effects`,
     className,
   ]
     .filter(Boolean)
@@ -291,7 +294,7 @@ export function AtomixGlass({
     const configBorderOpacity = overLightConfig?.borderOpacity ?? 1;
 
     return {
-      '--atomix-glass-radius': `${effectiveCornerRadius}px`,
+      '--atomix-glass-radius': `${effectiveBorderRadius}px`,
       '--atomix-glass-transform': transformStyle || 'none',
       '--atomix-glass-position': positionStyles.position,
       '--atomix-glass-top': positionStyles.top !== 'fixed' ? `${positionStyles.top}px` : '0',
@@ -328,7 +331,7 @@ export function AtomixGlass({
   }, [
     gradientValues,
     opacityValues,
-    effectiveCornerRadius,
+    effectiveBorderRadius,
     transformStyle,
     positionStyles,
     adjustedSize,
@@ -355,7 +358,7 @@ export function AtomixGlass({
         ...positionStyles,
         height: adjustedSize.height,
         width: adjustedSize.width,
-        borderRadius: `${effectiveCornerRadius}px`,
+        borderRadius: `${effectiveBorderRadius}px`,
         transform: baseStyle.transform,
       }}
     />
@@ -363,13 +366,14 @@ export function AtomixGlass({
 
   return (
     <div
+      {...rest}
       className={componentClassName}
       style={glassVars}
       role={role || (onClick ? 'button' : undefined)}
       tabIndex={onClick ? (tabIndex ?? 0) : tabIndex}
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedBy}
-      aria-disabled={onClick && effectiveDisableEffects ? true : onClick ? false : undefined}
+      aria-disabled={onClick && effectiveWithoutEffects ? true : onClick ? false : undefined}
       aria-pressed={onClick && isActive ? true : onClick ? false : undefined}
       onKeyDown={onClick ? handleKeyDown : undefined} // Dynamic CSS variables cause hydration mismatch due to mouse position calculations
     >
@@ -378,9 +382,9 @@ export function AtomixGlass({
         contentRef={contentRef}
         className={className}
         style={baseStyle}
-        cornerRadius={effectiveCornerRadius}
+        borderRadius={effectiveBorderRadius}
         displacementScale={
-          effectiveDisableEffects
+          effectiveWithoutEffects
             ? 0
             : mode === 'shader'
               ? displacementScale * ATOMIX_GLASS.CONSTANTS.MULTIPLIERS.SHADER_DISPLACEMENT
@@ -388,7 +392,7 @@ export function AtomixGlass({
                 ? displacementScale * ATOMIX_GLASS.CONSTANTS.MULTIPLIERS.OVER_LIGHT_DISPLACEMENT
                 : displacementScale
         }
-        blurAmount={effectiveDisableEffects ? 0 : blurAmount}
+        blurAmount={effectiveWithoutEffects ? 0 : blurAmount}
         saturation={
           effectiveHighContrast
             ? ATOMIX_GLASS.CONSTANTS.SATURATION.HIGH_CONTRAST
@@ -397,7 +401,7 @@ export function AtomixGlass({
               : saturation
         }
         aberrationIntensity={
-          effectiveDisableEffects
+          effectiveWithoutEffects
             ? 0
             : mode === 'shader'
               ? aberrationIntensity * ATOMIX_GLASS.CONSTANTS.MULTIPLIERS.SHADER_ABERRATION
@@ -405,8 +409,8 @@ export function AtomixGlass({
         }
         glassSize={glassSize}
         padding={padding}
-        mouseOffset={effectiveDisableEffects ? { x: 0, y: 0 } : mouseOffset}
-        globalMousePosition={effectiveDisableEffects ? { x: 0, y: 0 } : globalMousePosition}
+        mouseOffset={effectiveWithoutEffects ? { x: 0, y: 0 } : mouseOffset}
+        globalMousePosition={effectiveWithoutEffects ? { x: 0, y: 0 } : globalMousePosition}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseDown={handleMouseDown}
@@ -423,11 +427,11 @@ export function AtomixGlass({
         onClick={onClick}
         mode={mode}
         transform={baseStyle.transform}
-        effectiveDisableEffects={effectiveDisableEffects}
+        effectiveWithoutEffects={effectiveWithoutEffects}
         effectiveReducedMotion={effectiveReducedMotion}
         shaderVariant={shaderVariant}
         elasticity={elasticity}
-        enableLiquidBlur={enableLiquidBlur}
+        withLiquidBlur={withLiquidBlur}
       >
         {children}
       </AtomixGlassContainer>
@@ -460,7 +464,7 @@ export function AtomixGlass({
           />
         </>
       )}
-      {enableBorderEffect && (
+      {withBorder && (
         <>
           {/* Border elements - all styles (static and dynamic via CSS variables) are in SCSS */}
           {/* Position, size, transform, transition, border-radius all use CSS variables set in glassVars */}

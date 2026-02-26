@@ -38,7 +38,7 @@ export const Spinner: React.FC<SpinnerProps> = memo(
       const defaultGlassProps = {
         displacementScale: 20,
         blurAmount: 1,
-        cornerRadius: 999,
+        borderRadius: 999,
         mode: 'shader' as const,
       };
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };

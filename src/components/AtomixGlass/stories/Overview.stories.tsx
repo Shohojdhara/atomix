@@ -107,7 +107,7 @@ AtomixGlass is a premium glass morphism component with realistic light refractio
 | saturation | number | 140 | Saturation percentage for the backdrop |
 | aberrationIntensity | number | 2 | Chromatic aberration intensity |
 | elasticity | number | 0.15 | Elasticity factor for mouse interactions |
-| cornerRadius | number | 20 | Corner radius in pixels |
+| borderRadius | number | 20 | Corner radius in pixels |
 | overLight | boolean/object | "auto" | OverLight configuration mode |
 | mode | "standard/polar/prominent/shader" | "standard" | Glass effect mode |
 | onClick | function | undefined | Click event handler |
@@ -178,7 +178,7 @@ This component is performance-intensive. Use sparingly and consider performance 
         defaultValue: { summary: '0.15' },
       },
     },
-    cornerRadius: {
+    borderRadius: {
       control: { type: 'range', min: 0, max: 50, step: 1 },
       description: 'Corner radius in pixels (default: 20)',
       table: {
@@ -325,7 +325,7 @@ export const WithAllProps: Story = {
     saturation: 150,
     aberrationIntensity: 2.5,
     elasticity: 0.2,
-    cornerRadius: 24,
+    borderRadius: 24,
     mode: 'standard',
     overLight: true,
     padding: '32px', // Increased padding for better visual appearance

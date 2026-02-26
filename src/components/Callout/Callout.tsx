@@ -177,7 +177,7 @@ export const Callout: CalloutComponent = memo(
       // Default glass settings for callouts
       const defaultGlassProps = {
         displacementScale: 30,
-        cornerRadius: 8,
+        borderRadius: 8,
         elasticity: 0,
       };
 
@@ -193,7 +193,7 @@ export const Callout: CalloutComponent = memo(
           <AtomixGlass {...glassProps}>
             <div
               className="c-callout__glass-content"
-              style={{ borderRadius: glassProps.cornerRadius }}
+              style={{ borderRadius: glassProps.borderRadius }}
             >
               {calloutContent}
             </div>

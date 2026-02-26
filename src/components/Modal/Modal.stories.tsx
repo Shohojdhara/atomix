@@ -589,7 +589,7 @@ export const GlassModalCustom: Story = {
               blurAmount: 3,
               saturation: 200,
               aberrationIntensity: 2,
-              cornerRadius: 20,
+              borderRadius: 20,
               mode: 'polar',
             } as GlassProps
           }

@@ -22,7 +22,7 @@ export interface ResolvedOverLightConfig {
 interface CalculateGlassVarsOptions {
   mouseOffset: MousePosition;
   overLightConfig: ResolvedOverLightConfig;
-  effectiveCornerRadius: number;
+  effectiveBorderRadius: number;
   transformStyle: string;
   adjustedSize: { width: string | number; height: string | number };
   positionStyles: { position: any; top: any; left: any };
@@ -35,7 +35,7 @@ interface CalculateGlassVarsOptions {
 export const calculateGlassVars = ({
   mouseOffset,
   overLightConfig,
-  effectiveCornerRadius,
+  effectiveBorderRadius,
   transformStyle,
   adjustedSize,
   positionStyles,
@@ -107,7 +107,7 @@ export const calculateGlassVars = ({
   const configBorderOpacity = overLightConfig?.borderOpacity ?? 1;
 
   return {
-    '--atomix-glass-radius': `${effectiveCornerRadius}px`,
+    '--atomix-glass-radius': `${effectiveBorderRadius}px`,
     '--atomix-glass-transform': transformStyle || 'none',
     '--atomix-glass-position': positionStyles.position,
     '--atomix-glass-top': positionStyles.top !== 'fixed' ? `${positionStyles.top}px` : '0',
@@ -147,12 +147,12 @@ interface CalculateContainerVarsOptions {
   mouseOffset: MousePosition;
   glassSize: GlassSize;
   padding: string;
-  cornerRadius: number;
+  borderRadius: number;
   overLightConfig: ResolvedOverLightConfig;
   isOverLight: boolean;
-  effectiveDisableEffects: boolean;
+  effectiveWithoutEffects: boolean;
   effectiveReducedMotion: boolean;
-  enableLiquidBlur: boolean;
+  withLiquidBlur: boolean;
   blurAmount: number;
   saturation: number;
 }
@@ -161,12 +161,12 @@ export const calculateContainerVars = ({
   mouseOffset,
   glassSize,
   padding,
-  cornerRadius,
+  borderRadius,
   overLightConfig,
   isOverLight,
-  effectiveDisableEffects,
+  effectiveWithoutEffects,
   effectiveReducedMotion,
-  enableLiquidBlur,
+  withLiquidBlur,
   blurAmount,
   saturation,
 }: CalculateContainerVarsOptions): CSSProperties => {
@@ -190,7 +190,7 @@ export const calculateContainerVars = ({
   let liquidBlur = defaultBlur;
 
   if (
-    enableLiquidBlur &&
+    withLiquidBlur &&
     mouseOffset &&
     typeof mouseOffset.x === 'number' &&
     typeof mouseOffset.y === 'number' &&
@@ -241,8 +241,8 @@ export const calculateContainerVars = ({
   // Adaptive strategy: prefer single-pass blur for large areas or when effects are reduced
   const area = glassSize ? glassSize.width * glassSize.height : 0;
   const areaIsLarge = area > 180000; // ~600x300 threshold; tune as needed
-  const devicePrefersPerformance = effectiveReducedMotion || effectiveDisableEffects;
-  const useMultiPass = enableLiquidBlur && !devicePrefersPerformance && !areaIsLarge;
+  const devicePrefersPerformance = effectiveReducedMotion || effectiveWithoutEffects;
+  const useMultiPass = withLiquidBlur && !devicePrefersPerformance && !areaIsLarge;
 
   let backdropFilter = `blur(${blurAmount}px) saturate(${saturation}%) contrast(1.05) brightness(1.05)`;
 
@@ -278,7 +278,7 @@ export const calculateContainerVars = ({
     '--atomix-glass-container-width': `${glassSize?.width}`,
     '--atomix-glass-container-height': `${glassSize?.height}`,
     '--atomix-glass-container-padding': padding || '0 0',
-    '--atomix-glass-container-radius': `${typeof cornerRadius === 'number' && !isNaN(cornerRadius) ? cornerRadius : 0}px`,
+    '--atomix-glass-container-radius': `${typeof borderRadius === 'number' && !isNaN(borderRadius) ? borderRadius : 0}px`,
     '--atomix-glass-container-backdrop': backdropFilter,
     '--atomix-glass-container-shadow': isOverLight
       ? [
@@ -288,7 +288,7 @@ export const calculateContainerVars = ({
           `0 2px 12px rgba(0, 0, 0, ${(0.12 + Math.abs(my) * 0.002) * (overLightConfig?.shadowIntensity || 1)})`,
         ].join(', ')
       : '0 0 20px rgba(0, 0, 0, 0.15) inset, 0 4px 8px rgba(0, 0, 0, 0.08) inset',
-    '--atomix-glass-container-shadow-opacity': effectiveDisableEffects ? 0 : 1,
+    '--atomix-glass-container-shadow-opacity': effectiveWithoutEffects ? 0 : 1,
     '--atomix-glass-container-bg': isOverLight
       ? `linear-gradient(${180 + mx * 0.5}deg, rgba(255, 255, 255, 0.1) 0%, transparent 20%, transparent 80%, rgba(0, 0, 0, 0.05) 100%)`
       : 'none',

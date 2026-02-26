@@ -343,7 +343,7 @@ export const GlassVariants: Story = {
             blurAmount: 2,
             saturation: 200,
             aberrationIntensity: 2,
-            cornerRadius: 12,
+            borderRadius: 12,
           }}
         />
       </div>

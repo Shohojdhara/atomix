@@ -1140,7 +1140,7 @@ export const GlassCustom: Story = {
           glass={{
             displacementScale: 70,
             blurAmount: 2,
-            cornerRadius: 12,
+            borderRadius: 12,
             mode: 'shader',
           }}
         >
@@ -1293,7 +1293,7 @@ export const GlassThemeShowcase: Story = {
             glass={{
               displacementScale: 60,
               blurAmount: 1.8,
-              cornerRadius: 16,
+              borderRadius: 16,
               mode: 'shader',
             }}
           >

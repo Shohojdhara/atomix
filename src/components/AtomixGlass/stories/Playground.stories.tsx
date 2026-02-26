@@ -66,7 +66,7 @@ const meta: Meta<typeof AtomixGlass> = {
       description: 'Elasticity factor for mouse interactions (default: 0.15)',
       table: { defaultValue: { summary: '0.15' } },
     },
-    cornerRadius: {
+    borderRadius: {
       control: { type: 'range', min: 0, max: 50, step: 1 },
       description: 'Corner radius in pixels (default: 20)',
       table: { defaultValue: { summary: '20' } },
@@ -137,12 +137,12 @@ const meta: Meta<typeof AtomixGlass> = {
       description: 'Override for high contrast preference (default: false)',
       table: { defaultValue: { summary: 'false' } },
     },
-    disableEffects: {
+    withoutEffects: {
       control: 'boolean',
       description: 'Disable all visual effects (default: false)',
       table: { defaultValue: { summary: 'false' } },
     },
-    enablePerformanceMonitoring: {
+    debugPerformance: {
       control: 'boolean',
       description: 'Enable performance monitoring (default: false)',
       table: { defaultValue: { summary: 'false' } },
@@ -299,13 +299,13 @@ export const Playground: Story = {
       saturation: 140,
       aberrationIntensity: 2,
       elasticity: 0.15,
-      cornerRadius: 20,
+      borderRadius: 20,
       overLight: false,
       reducedMotion: false,
       highContrast: false,
-      disableEffects: false,
-      enableLiquidBlur: false,
-      enableBorderEffect: true,
+      withoutEffects: false,
+      withLiquidBlur: false,
+      withBorder: true,
     });
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -333,13 +333,13 @@ export const Playground: Story = {
           saturation: 110,
           aberrationIntensity: 0.5,
           elasticity: 0.05,
-          cornerRadius: 12,
+          borderRadius: 12,
           overLight: false,
           reducedMotion: false,
           highContrast: false,
-          disableEffects: false,
-          enableLiquidBlur: false,
-          enableBorderEffect: true,
+          withoutEffects: false,
+          withLiquidBlur: false,
+          withBorder: true,
         },
         mode: 'standard' as const,
         shader: 'liquidGlass' as const,
@@ -353,13 +353,13 @@ export const Playground: Story = {
           saturation: 140,
           aberrationIntensity: 2,
           elasticity: 0.15,
-          cornerRadius: 20,
+          borderRadius: 20,
           overLight: false,
           reducedMotion: false,
           highContrast: false,
-          disableEffects: false,
-          enableLiquidBlur: false,
-          enableBorderEffect: true,
+          withoutEffects: false,
+          withLiquidBlur: false,
+          withBorder: true,
         },
         mode: 'standard' as const,
         shader: 'liquidGlass' as const,
@@ -373,13 +373,13 @@ export const Playground: Story = {
           saturation: 170,
           aberrationIntensity: 3.5,
           elasticity: 0.25,
-          cornerRadius: 28,
+          borderRadius: 28,
           overLight: false,
           reducedMotion: false,
           highContrast: false,
-          disableEffects: false,
-          enableLiquidBlur: true,
-          enableBorderEffect: true,
+          withoutEffects: false,
+          withLiquidBlur: true,
+          withBorder: true,
         },
         mode: 'prominent' as const,
         shader: 'plasma' as const,
@@ -393,13 +393,13 @@ export const Playground: Story = {
           saturation: 200,
           aberrationIntensity: 5,
           elasticity: 0.35,
-          cornerRadius: 32,
+          borderRadius: 32,
           overLight: false,
           reducedMotion: false,
           highContrast: false,
-          disableEffects: false,
-          enableLiquidBlur: true,
-          enableBorderEffect: true,
+          withoutEffects: false,
+          withLiquidBlur: true,
+          withBorder: true,
         },
         mode: 'shader' as const,
         shader: 'waves' as const,
@@ -420,15 +420,15 @@ export const Playground: Story = {
   saturation={${settings.saturation}}
   aberrationIntensity={${settings.aberrationIntensity}}
   elasticity={${settings.elasticity}}
-  cornerRadius={${settings.cornerRadius}}
+  borderRadius={${settings.borderRadius}}
   overLight={${settings.overLight}}
   mode="${selectedMode}"
   shaderVariant="${selectedShader}"
   reducedMotion={${settings.reducedMotion}}
   highContrast={${settings.highContrast}}
-  disableEffects={${settings.disableEffects}}
-  enableLiquidBlur={${settings.enableLiquidBlur}}
-  enableBorderEffect={${settings.enableBorderEffect}}
+  withoutEffects={${settings.withoutEffects}}
+  withLiquidBlur={${settings.withLiquidBlur}}
+  withBorder={${settings.withBorder}}
 >
   <div className="your-content">
     {/* Your content here */}
@@ -729,7 +729,7 @@ export const Playground: Story = {
                                 ? 300
                                 : key === 'aberrationIntensity'
                                   ? 10
-                                  : key === 'cornerRadius'
+                                  : key === 'borderRadius'
                                     ? 100
                                     : key === 'blurAmount'
                                       ? 10
@@ -872,13 +872,13 @@ export const Playground: Story = {
                           saturation: 140,
                           aberrationIntensity: 2,
                           elasticity: 0.15,
-                          cornerRadius: 20,
+                          borderRadius: 20,
                           overLight: false,
                           reducedMotion: false,
                           highContrast: false,
-                          disableEffects: false,
-                          enableLiquidBlur: false,
-                          enableBorderEffect: true,
+                          withoutEffects: false,
+                          withLiquidBlur: false,
+                          withBorder: true,
                         });
                         setSelectedMode('standard');
                         setSelectedShader('liquidGlass');
@@ -906,7 +906,7 @@ export const Playground: Story = {
                     <AtomixGlass
                       displacementScale={80}
                       aberrationIntensity={1}
-                      cornerRadius={16}
+                      borderRadius={16}
                       saturation={120}
                     >
                       <div style={{ padding: '2.5rem' }}>
@@ -980,15 +980,15 @@ export const Playground: Story = {
                     saturation={settings.saturation}
                     aberrationIntensity={settings.aberrationIntensity}
                     elasticity={settings.elasticity}
-                    cornerRadius={settings.cornerRadius}
+                    borderRadius={settings.borderRadius}
                     overLight={settings.overLight}
                     mode={selectedMode}
                     shaderVariant={selectedShader as any}
                     reducedMotion={settings.reducedMotion}
                     highContrast={settings.highContrast}
-                    disableEffects={settings.disableEffects}
-                    enableLiquidBlur={settings.enableLiquidBlur}
-                    enableBorderEffect={settings.enableBorderEffect}
+                    withoutEffects={settings.withoutEffects}
+                    withLiquidBlur={settings.withLiquidBlur}
+                    withBorder={settings.withBorder}
                     style={{ width: '100%' }}
                   >
                     <div style={{ padding: '2.5rem', textAlign: 'center' }}>
@@ -1150,31 +1150,31 @@ export const Playground: Story = {
                               style={{
                                 padding: '4px 12px',
                                 borderRadius: '12px',
-                                background: settings.enableLiquidBlur
+                                background: settings.withLiquidBlur
                                   ? 'rgba(122, 255, 215, 0.2)'
                                   : 'rgba(255,255,255,0.1)',
                                 fontSize: '0.75rem',
-                                border: settings.enableLiquidBlur
+                                border: settings.withLiquidBlur
                                   ? '1px solid #7AFFD7'
                                   : '1px solid transparent',
                               }}
                             >
-                              {settings.enableLiquidBlur ? '✓' : '○'} Liquid Blur
+                              {settings.withLiquidBlur ? '✓' : '○'} Liquid Blur
                             </div>
                             <div
                               style={{
                                 padding: '4px 12px',
                                 borderRadius: '12px',
-                                background: settings.enableBorderEffect
+                                background: settings.withBorder
                                   ? 'rgba(122, 255, 215, 0.2)'
                                   : 'rgba(255,255,255,0.1)',
                                 fontSize: '0.75rem',
-                                border: settings.enableBorderEffect
+                                border: settings.withBorder
                                   ? '1px solid #7AFFD7'
                                   : '1px solid transparent',
                               }}
                             >
-                              {settings.enableBorderEffect ? '✓' : '○'} Border Effect
+                              {settings.withBorder ? '✓' : '○'} Border Effect
                             </div>
                             <div
                               style={{
@@ -1238,7 +1238,7 @@ export const Playground: Story = {
                             <div>
                               <span className="u-opacity-70">Radius:</span>
                               <span className="u-font-semibold u-ml-2">
-                                {settings.cornerRadius}px
+                                {settings.borderRadius}px
                               </span>
                             </div>
                             <div>
@@ -1250,7 +1250,7 @@ export const Playground: Story = {
                             <div>
                               <span className="u-opacity-70">Effects:</span>
                               <span className="u-font-semibold u-ml-2">
-                                {settings.disableEffects ? 'Disabled' : 'Enabled'}
+                                {settings.withoutEffects ? 'Disabled' : 'Enabled'}
                               </span>
                             </div>
                           </div>

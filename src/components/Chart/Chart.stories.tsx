@@ -250,7 +250,7 @@ export const GlassVariant: Story = {
                 glass={{
                   blurAmount: 0,
                   saturation: 180,
-                  enableBorderEffect: true,
+                  withBorder: true,
                 }}
                 showToolbar={true}
               />

@@ -81,16 +81,16 @@ interface AtomixGlassContainerProps {
     shadowIntensity?: number;
     borderOpacity?: number;
   };
-  cornerRadius?: number;
+  borderRadius?: number;
   padding?: string;
   glassSize?: GlassSize;
   onClick?: () => void;
   mode?: DisplacementMode;
   transform?: string;
-  effectiveDisableEffects?: boolean;
+  effectiveWithoutEffects?: boolean;
   effectiveReducedMotion?: boolean;
   shaderVariant?: FragmentShaderType;
-  enableLiquidBlur?: boolean;
+  withLiquidBlur?: boolean;
   elasticity?: number;
   contentRef?: React.RefObject<HTMLDivElement>;
   children?: React.ReactNode;
@@ -120,15 +120,15 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       isActive = false,
       overLight = false,
       overLightConfig = {},
-      cornerRadius = 0,
+      borderRadius = 0,
       padding = '0 0',
       glassSize = { width: 0, height: 0 },
       onClick,
       mode = 'standard',
-      effectiveDisableEffects = false,
+      effectiveWithoutEffects = false,
       effectiveReducedMotion = false,
       shaderVariant = 'liquidGlass',
-      enableLiquidBlur = false,
+      withLiquidBlur = false,
       elasticity = 0,
       contentRef,
     },
@@ -291,7 +291,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
 
       // Enhanced validation for liquid blur
       if (
-        !enableLiquidBlur ||
+        !withLiquidBlur ||
         !rectCache ||
         !mouseOffset ||
         typeof mouseOffset.x !== 'number' ||
@@ -328,7 +328,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         console.warn('AtomixGlassContainer: Error calculating liquid blur', error);
         return defaultBlur;
       }
-    }, [enableLiquidBlur, blurAmount, mouseOffset, rectCache]);
+    }, [withLiquidBlur, blurAmount, mouseOffset, rectCache]);
 
     const backdropStyle = useMemo(() => {
       try {
@@ -355,8 +355,8 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         // Adaptive strategy: prefer single-pass blur for large areas or when effects are reduced
         const area = rectCache ? rectCache.width * rectCache.height : 0;
         const areaIsLarge = area > 180000; // ~600x300 threshold; tune as needed
-        const devicePrefersPerformance = effectiveReducedMotion || effectiveDisableEffects;
-        const useMultiPass = enableLiquidBlur && !devicePrefersPerformance && !areaIsLarge;
+        const devicePrefersPerformance = effectiveReducedMotion || effectiveWithoutEffects;
+        const useMultiPass = withLiquidBlur && !devicePrefersPerformance && !areaIsLarge;
 
         if (useMultiPass) {
           // Use a single weighted-average blur instead of stacking multiple
@@ -399,8 +399,8 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       blurAmount,
       rectCache,
       effectiveReducedMotion,
-      effectiveDisableEffects,
-      enableLiquidBlur,
+      effectiveWithoutEffects,
+      withLiquidBlur,
     ]);
 
     const containerVars = useMemo(() => {
@@ -418,7 +418,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
           '--atomix-glass-container-width': `${glassSize?.width}`,
           '--atomix-glass-container-height': `${glassSize?.height}`,
           '--atomix-glass-container-padding': padding || '0 0',
-          '--atomix-glass-container-radius': `${typeof cornerRadius === 'number' && !isNaN(cornerRadius) ? cornerRadius : 0}px`,
+          '--atomix-glass-container-radius': `${typeof borderRadius === 'number' && !isNaN(borderRadius) ? borderRadius : 0}px`,
           '--atomix-glass-container-backdrop': backdropStyle?.backdropFilter || 'none',
           '--atomix-glass-container-shadow': overLight
             ? [
@@ -428,7 +428,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
                 `0 2px 12px rgba(0, 0, 0, ${(0.12 + Math.abs(my) * 0.002) * (overLightConfig?.shadowIntensity || 1)})`,
               ].join(', ')
             : '0 0 20px rgba(0, 0, 0, 0.15) inset, 0 4px 8px rgba(0, 0, 0, 0.08) inset',
-          '--atomix-glass-container-shadow-opacity': effectiveDisableEffects ? 0 : 1,
+          '--atomix-glass-container-shadow-opacity': effectiveWithoutEffects ? 0 : 1,
           // Background and shadow values use design token-aligned RGB values
           '--atomix-glass-container-bg': overLight
             ? `linear-gradient(${180 + mx * 0.5}deg, rgba(255, 255, 255, 0.1) 0%, transparent 20%, transparent 80%, rgba(0, 0, 0, 0.05) 100%)`
@@ -455,11 +455,11 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     }, [
       glassSize,
       padding,
-      cornerRadius,
+      borderRadius,
       backdropStyle,
       mouseOffset,
       overLight,
-      effectiveDisableEffects,
+      effectiveWithoutEffects,
     ]);
 
     // Helper to force no transition/animation overrides with !important

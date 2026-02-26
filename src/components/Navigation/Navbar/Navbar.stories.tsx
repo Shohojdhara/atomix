@@ -715,7 +715,7 @@ export const GlassCustom: Story = {
           glass={{
             displacementScale: 100,
             blurAmount: 2.5,
-            cornerRadius: 0,
+            borderRadius: 0,
             mode: 'shader',
           }}
         >
@@ -773,7 +773,7 @@ export const GlassCustom: Story = {
     docs: {
       description: {
         story:
-          'Customized glass effect with increased displacement and blur for a more pronounced visual impact. The sharp corners (cornerRadius: 0) create a modern, edge-to-edge aesthetic.',
+          'Customized glass effect with increased displacement and blur for a more pronounced visual impact. The sharp corners (borderRadius: 0) create a modern, edge-to-edge aesthetic.',
       },
     },
   },
@@ -942,7 +942,7 @@ export const GlassThemeShowcase: Story = {
             glass={{
               displacementScale: 60,
               blurAmount: 2,
-              cornerRadius: 0,
+              borderRadius: 0,
               mode: 'shader',
             }}
           >

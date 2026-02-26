@@ -60,7 +60,7 @@ export const Badge: React.FC<BadgeProps> = memo(
       // Default glass settings for badges
       const defaultGlassProps = {
         displacementScale: 20,
-        cornerRadius: ref.current?.getBoundingClientRect().width
+        borderRadius: ref.current?.getBoundingClientRect().width
           ? ref.current?.getBoundingClientRect().width / 2
           : 16,
         className: 'c-badge--glass',

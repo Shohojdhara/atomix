@@ -252,7 +252,7 @@ export const GlassCustom: Story = {
       blurAmount: 2,
       saturation: 200,
       aberrationIntensity: 0.8,
-      cornerRadius: 12,
+      borderRadius: 12,
     },
   },
   render: (args: any) => (

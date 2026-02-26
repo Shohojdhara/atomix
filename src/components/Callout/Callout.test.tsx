@@ -152,7 +152,7 @@ describe('Callout Component', () => {
 
       expect(glassProps).toMatchObject({
         displacementScale: 30,
-        cornerRadius: 8,
+        borderRadius: 8,
         elasticity: 0,
       });
     });
@@ -162,7 +162,7 @@ describe('Callout Component', () => {
         displacementScale: 60,
         blurAmount: 2,
         saturation: 180,
-        cornerRadius: 12,
+        borderRadius: 12,
       };
 
       render(
@@ -179,7 +179,7 @@ describe('Callout Component', () => {
         displacementScale: 60,
         blurAmount: 2,
         saturation: 180,
-        cornerRadius: 12,
+        borderRadius: 12,
         // Default values from Callout
         elasticity: 0,
       });

@@ -35,7 +35,7 @@ export const Messages: React.FC<MessagesProps> = ({
   // Default glass settings for messages
   const defaultGlassProps = {
     displacementScale: 150,
-    cornerRadius: 12,
+    borderRadius: 12,
     elasticity: 0,
     aberrationIntensity: 2,
   };
@@ -185,7 +185,7 @@ export const Messages: React.FC<MessagesProps> = ({
         <AtomixGlass {...glassProps}>
           <div
             className="c-messages__glass-content"
-            style={{ borderRadius: glassProps.cornerRadius }}
+            style={{ borderRadius: glassProps.borderRadius }}
           >
             {messagesContent}
           </div>

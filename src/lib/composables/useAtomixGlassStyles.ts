@@ -24,13 +24,13 @@ export const updateAtomixGlassStyles = (
       shadowIntensity: number;
       saturationBoost: number;
     };
-    effectiveCornerRadius: number;
-    effectiveDisableEffects: boolean;
+    effectiveBorderRadius: number;
+    effectiveWithoutEffects: boolean;
     effectiveReducedMotion: boolean;
     elasticity: number;
     directionalScale: string;
     onClick?: () => void;
-    enableLiquidBlur?: boolean;
+    withLiquidBlur?: boolean;
     blurAmount?: number;
     saturation?: number;
     padding?: string;
@@ -46,13 +46,13 @@ export const updateAtomixGlassStyles = (
     isActive,
     isOverLight,
     baseOverLightConfig,
-    effectiveCornerRadius,
-    effectiveDisableEffects,
+    effectiveBorderRadius,
+    effectiveWithoutEffects,
     effectiveReducedMotion,
     elasticity,
     directionalScale,
     onClick,
-    enableLiquidBlur,
+    withLiquidBlur,
     blurAmount = ATOMIX_GLASS.DEFAULTS.BLUR_AMOUNT,
     saturation = ATOMIX_GLASS.DEFAULTS.SATURATION,
     padding = ATOMIX_GLASS.DEFAULTS.PADDING,
@@ -75,7 +75,7 @@ export const updateAtomixGlassStyles = (
 
   // Calculate elastic translation
   let elasticTranslation = { x: 0, y: 0 };
-  if (!effectiveDisableEffects && wrapperElement) {
+  if (!effectiveWithoutEffects && wrapperElement) {
     const rect = wrapperElement.getBoundingClientRect();
     const center = calculateElementCenter(rect);
 
@@ -94,7 +94,7 @@ export const updateAtomixGlassStyles = (
     };
   }
 
-  const transformStyle = effectiveDisableEffects
+  const transformStyle = effectiveWithoutEffects
       ? isActive && Boolean(onClick) ? 'scale(0.98)' : 'scale(1)'
       : `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) ${isActive && Boolean(onClick) ? 'scale(0.96)' : directionalScale}`;
 
@@ -193,7 +193,7 @@ export const updateAtomixGlassStyles = (
 
     // Other
     style.setProperty('--atomix-glass-blend-mode', isOverLight ? 'multiply' : 'overlay');
-    style.setProperty('--atomix-glass-radius', `${effectiveCornerRadius}px`);
+    style.setProperty('--atomix-glass-radius', `${effectiveBorderRadius}px`);
   }
 
   // Update Container Styles (containerVars)
@@ -219,7 +219,7 @@ export const updateAtomixGlassStyles = (
         flowBlur: blurAmount * FLOW_BLUR_MULTIPLIER,
     };
 
-    if (enableLiquidBlur && rect) {
+    if (withLiquidBlur && rect) {
         const mouseInfluence = calculateMouseInfluence(mouseOffset);
         const maxBlur = blurAmount * MAX_BLUR_RELATIVE;
 
@@ -247,8 +247,8 @@ export const updateAtomixGlassStyles = (
     const dynamicSaturation = saturation + (liquidBlur.baseBlur || 0) * 20;
     const area = rect ? rect.width * rect.height : 0;
     const areaIsLarge = area > 180000;
-    const devicePrefersPerformance = effectiveReducedMotion || effectiveDisableEffects;
-    const useMultiPass = enableLiquidBlur && !devicePrefersPerformance && !areaIsLarge;
+    const devicePrefersPerformance = effectiveReducedMotion || effectiveWithoutEffects;
+    const useMultiPass = withLiquidBlur && !devicePrefersPerformance && !areaIsLarge;
 
     if (useMultiPass) {
         const weightedBlur = clampBlur(
@@ -276,7 +276,7 @@ export const updateAtomixGlassStyles = (
     style.setProperty('--atomix-glass-container-width', `${glassSize.width}`);
     style.setProperty('--atomix-glass-container-height', `${glassSize.height}`);
     style.setProperty('--atomix-glass-container-padding', padding);
-    style.setProperty('--atomix-glass-container-radius', `${effectiveCornerRadius}px`);
+    style.setProperty('--atomix-glass-container-radius', `${effectiveBorderRadius}px`);
 
     style.setProperty('--atomix-glass-container-backdrop', backdropFilterString);
 
@@ -290,7 +290,7 @@ export const updateAtomixGlassStyles = (
           ].join(', ')
         : '0 0 20px rgba(0, 0, 0, 0.15) inset, 0 4px 8px rgba(0, 0, 0, 0.08) inset');
 
-    style.setProperty('--atomix-glass-container-shadow-opacity', effectiveDisableEffects ? '0' : '1');
+    style.setProperty('--atomix-glass-container-shadow-opacity', effectiveWithoutEffects ? '0' : '1');
 
     style.setProperty('--atomix-glass-container-bg', isOverLight
         ? `linear-gradient(${180 + mx * 0.5}deg, rgba(255, 255, 255, 0.1) 0%, transparent 20%, transparent 80%, rgba(0, 0, 0, 0.05) 100%)`

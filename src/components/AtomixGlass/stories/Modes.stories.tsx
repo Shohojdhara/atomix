@@ -150,7 +150,7 @@ export const ModeGallery: Story = {
               displacementScale={80}
               blurAmount={1}
               saturation={130}
-              cornerRadius={24}
+              borderRadius={24}
               elasticity={0.12}
               style={{ marginBottom: '24px', display: 'inline-block' }}
             >
@@ -217,7 +217,7 @@ export const ModeGallery: Story = {
                       aberrationIntensity={mode.settings.aberrationIntensity}
                       shaderVariant={mode.id === 'shader' ? 'premiumGlass' : undefined}
                       elasticity={0}
-                      cornerRadius={24}
+                      borderRadius={24}
                       onClick={() => setSelectedMode(isSelected ? null : mode.id)}
                       style={{
                         cursor: 'pointer',
@@ -380,7 +380,7 @@ export const ModeGallery: Story = {
             displacementScale={80}
             blurAmount={1}
             saturation={130}
-            cornerRadius={20}
+            borderRadius={20}
             elasticity={0.12}
             className="u-mt-8"
           >
@@ -536,7 +536,7 @@ export const Shader: Story = {
     saturation: 160,
     aberrationIntensity: 2.8,
     elasticity: 0.2,
-    cornerRadius: 28,
+    borderRadius: 28,
     mode: 'shader',
     shaderVariant: 'premiumGlass',
   },
@@ -753,7 +753,7 @@ export const ShaderVariants: Story = {
                   displacementScale={variant.displacementScale}
                   blurAmount={1.5}
                   elasticity={0}
-                  cornerRadius={28}
+                  borderRadius={28}
                   onClick={() => setActiveVariant(isActive ? null : variant.id)}
                   style={{
                     cursor: 'pointer',

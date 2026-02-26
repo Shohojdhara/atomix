@@ -94,7 +94,7 @@ Glass morphism adds a modern, translucent appearance with backdrop blur effects:
     blurAmount: 2,
     saturation: 180,
     aberrationIntensity: 1.5,
-    cornerRadius: 12
+    borderRadius: 12
   }}
   title="Custom Glass"
   variant="success"
@@ -113,7 +113,7 @@ When `glass={true}`, these default settings are used:
   blurAmount: 0,
   saturation: 160,
   aberrationIntensity: 1,
-  cornerRadius: 8,
+  borderRadius: 8,
   overLight: false,
   mode: 'standard'
 }

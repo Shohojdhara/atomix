@@ -53,7 +53,7 @@ export const WithCustomStyling: Story = {
     blurAmount: 0.4,
     saturation: 160,
     aberrationIntensity: 1.8,
-    cornerRadius: 30,
+    borderRadius: 30,
     padding: '40px',
     style: {
       width: '100%',
@@ -99,7 +99,7 @@ export const WithOtherComponents: Story = {
             saturation={170}
             aberrationIntensity={2.2}
             elasticity={0.18}
-            cornerRadius={28}
+            borderRadius={28}
             padding="36px"
             className="u-w-11/12 u-max-w-2xl"
           >

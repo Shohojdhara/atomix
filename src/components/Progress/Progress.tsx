@@ -46,7 +46,7 @@ export const Progress = memo(
         const defaultGlassProps = {
           displacementScale: 30,
           blurAmount: 0.5,
-          cornerRadius: 8,
+          borderRadius: 8,
           mode: 'shader' as const,
         };
         const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };

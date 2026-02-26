@@ -59,7 +59,7 @@ const CustomGlassExample = () => (
         blurAmount: 2,
         saturation: 180,
         aberrationIntensity: 2,
-        cornerRadius: 16,
+        borderRadius: 16,
         overLight: false,
         mode: 'polar'
       }}
@@ -113,7 +113,7 @@ When `glass` is an object, it accepts the same props as the `AtomixGlass` compon
 | `blurAmount` | `number` | `0` | Blur amount for the backdrop |
 | `saturation` | `number` | `160` | Saturation percentage for the backdrop |
 | `aberrationIntensity` | `number` | `1` | Chromatic aberration intensity |
-| `cornerRadius` | `number` | `8` | Corner radius in pixels |
+| `borderRadius` | `number` | `8` | Corner radius in pixels |
 | `overLight` | `boolean` | `false` | Whether the glass is over a light background |
 | `mode` | `'standard' \| 'polar' \| 'prominent' \| 'shader'` | `'standard'` | Glass effect mode |
 

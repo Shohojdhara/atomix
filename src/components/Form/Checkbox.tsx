@@ -117,7 +117,7 @@ export const Checkbox = React.memo(
           blurAmount: 1,
           saturation: 160,
           aberrationIntensity: 0.3,
-          cornerRadius: 6,
+          borderRadius: 6,
           mode: 'shader' as const,
         };
         const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };

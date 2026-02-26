@@ -68,7 +68,7 @@ export const Radio: React.FC<RadioProps> = memo(
         blurAmount: 1,
         saturation: 160,
         aberrationIntensity: 0.3,
-        cornerRadius: 6,
+        borderRadius: 6,
         mode: 'shader' as const,
       };
 

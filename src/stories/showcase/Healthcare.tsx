@@ -201,7 +201,7 @@ const Healthcare: React.FC = () => {
         blurAmount={10}
         displacementScale={200}
         aberrationIntensity={0.1}
-        cornerRadius={10}
+        borderRadius={10}
         elasticity={0.0}
         saturation={300}
         style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 1 }}

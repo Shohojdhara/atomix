@@ -138,7 +138,7 @@ const HomePage: React.FC = () => {
         blurAmount={0.01}
         displacementScale={60}
         aberrationIntensity={0}
-        cornerRadius={30}
+        borderRadius={30}
         elasticity={0.01}
         mode="standard"
         onClick={() => {}}
@@ -975,7 +975,7 @@ const HomePage: React.FC = () => {
                   config={{ showLegend: false }}
                   barOptions={{
                     showValues: true,
-                    cornerRadius: 4,
+                    borderRadius: 4,
                   }}
                 />
               </Card>

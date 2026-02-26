@@ -349,7 +349,7 @@ export const GlassTooltipCustom: Story = {
       blurAmount: 2,
       saturation: 200,
       aberrationIntensity: 1,
-      cornerRadius: 12,
+      borderRadius: 12,
       mode: 'polar',
     } as GlassProps,
   } as any,

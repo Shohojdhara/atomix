@@ -16,7 +16,7 @@ interface UseGlassTransformsProps {
   overLight: OverLightConfig;
   detectedOverLight: boolean;
   elasticity?: number;
-  effectiveDisableEffects?: boolean;
+  effectiveWithoutEffects?: boolean;
   isActive?: boolean;
   onClick?: () => void;
 }
@@ -28,7 +28,7 @@ export function useGlassTransforms({
   overLight,
   detectedOverLight,
   elasticity = 0.05,
-  effectiveDisableEffects = false,
+  effectiveWithoutEffects = false,
   isActive = false,
   onClick,
 }: UseGlassTransformsProps) {
@@ -132,25 +132,25 @@ export function useGlassTransforms({
   }, [globalMousePosition, elasticity, calculateFadeInFactor, glassRef]);
 
   const elasticTranslation = useMemo(() => {
-    if (effectiveDisableEffects) {
+    if (effectiveWithoutEffects) {
       return { x: 0, y: 0 };
     }
     return calculateElasticTranslation();
-  }, [calculateElasticTranslation, effectiveDisableEffects]);
+  }, [calculateElasticTranslation, effectiveWithoutEffects]);
 
   const directionalScale = useMemo(() => {
-    if (effectiveDisableEffects) {
+    if (effectiveWithoutEffects) {
       return 'scale(1)';
     }
     return calculateDirectionalScale();
-  }, [calculateDirectionalScale, effectiveDisableEffects]);
+  }, [calculateDirectionalScale, effectiveWithoutEffects]);
 
   const transformStyle = useMemo(() => {
-    if (effectiveDisableEffects) {
+    if (effectiveWithoutEffects) {
       return isActive && Boolean(onClick) ? 'scale(0.98)' : 'scale(1)';
     }
     return `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) ${isActive && Boolean(onClick) ? 'scale(0.96)' : directionalScale}`;
-  }, [elasticTranslation, isActive, onClick, directionalScale, effectiveDisableEffects]);
+  }, [elasticTranslation, isActive, onClick, directionalScale, effectiveWithoutEffects]);
 
   return {
     elasticTranslation,

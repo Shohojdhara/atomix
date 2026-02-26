@@ -92,7 +92,7 @@ export const Textarea = memo(
           blurAmount: 1,
           saturation: 180,
           aberrationIntensity: 1,
-          cornerRadius: 8,
+          borderRadius: 8,
           mode: 'shader' as const,
         };
 

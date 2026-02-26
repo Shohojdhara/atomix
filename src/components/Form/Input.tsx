@@ -101,7 +101,7 @@ export const Input = memo(
           blurAmount: 1,
           saturation: 180,
           aberrationIntensity: 0.2,
-          cornerRadius: 12,
+          borderRadius: 12,
           mode: 'shader' as const,
         };
 

@@ -44,7 +44,7 @@ export const OptimizedForMobile: Story = {
     saturation: 120,
     aberrationIntensity: 1.0,
     elasticity: 0.1,
-    cornerRadius: 16,
+    borderRadius: 16,
     padding: '28px',
   },
   render: args => (
@@ -86,7 +86,7 @@ export const WithManyInstances: Story = {
               saturation={130}
               aberrationIntensity={1.2}
               elasticity={0.1}
-              cornerRadius={16}
+              borderRadius={16}
               padding="28px"
               className="u-text-center"
             >

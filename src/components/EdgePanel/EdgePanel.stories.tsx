@@ -627,7 +627,7 @@ export const GlassCustom: Story = {
               displacementScale: 70,
               blurAmount: 1.8,
               saturation: 170,
-              cornerRadius: 0,
+              borderRadius: 0,
             } as any
           }
         >
@@ -693,7 +693,7 @@ export const GlassPremium: Story = {
               displacementScale: 180,
               blurAmount: 1,
               saturation: 60,
-              cornerRadius: 0,
+              borderRadius: 0,
             } as any
           }
         >
@@ -786,7 +786,7 @@ export const GlassShowcase: Story = {
                 displacementScale: 25,
                 blurAmount: 1.2,
                 saturation: 140,
-                cornerRadius: 0,
+                borderRadius: 0,
               } as any
             }
           >
@@ -815,7 +815,7 @@ export const GlassShowcase: Story = {
                 displacementScale: 35,
                 blurAmount: 1.5,
                 saturation: 160,
-                cornerRadius: 0,
+                borderRadius: 0,
               } as any
             }
           >
@@ -844,7 +844,7 @@ export const GlassShowcase: Story = {
                 displacementScale: 50,
                 blurAmount: 2,
                 saturation: 180,
-                cornerRadius: 0,
+                borderRadius: 0,
               } as any
             }
           >
@@ -874,7 +874,7 @@ export const GlassShowcase: Story = {
                 displacementScale: 70,
                 blurAmount: 1.8,
                 saturation: 170,
-                cornerRadius: 0,
+                borderRadius: 0,
               } as any
             }
           >
@@ -907,7 +907,7 @@ export const GlassShowcase: Story = {
                 displacementScale: 180,
                 blurAmount: 1,
                 saturation: 60,
-                cornerRadius: 0,
+                borderRadius: 0,
               } as any
             }
           >

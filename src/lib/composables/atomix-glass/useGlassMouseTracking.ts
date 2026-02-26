@@ -8,7 +8,7 @@ interface UseGlassMouseTrackingProps {
   mouseContainer?: React.RefObject<HTMLElement | null> | null;
   externalGlobalMousePosition?: MousePosition;
   externalMouseOffset?: MousePosition;
-  effectiveDisableEffects?: boolean;
+  effectiveWithoutEffects?: boolean;
 }
 
 export function useGlassMouseTracking({
@@ -16,7 +16,7 @@ export function useGlassMouseTracking({
   mouseContainer,
   externalGlobalMousePosition,
   externalMouseOffset,
-  effectiveDisableEffects = false,
+  effectiveWithoutEffects = false,
 }: UseGlassMouseTrackingProps) {
   const [internalGlobalMousePosition, setInternalGlobalMousePosition] = useState<MousePosition>({
     x: 0,
@@ -47,7 +47,7 @@ export function useGlassMouseTracking({
         return;
       }
 
-      if (effectiveDisableEffects) {
+      if (effectiveWithoutEffects) {
         return;
       }
 
@@ -84,7 +84,7 @@ export function useGlassMouseTracking({
       glassRef,
       externalGlobalMousePosition,
       externalMouseOffset,
-      effectiveDisableEffects,
+      effectiveWithoutEffects,
     ]
   );
 
@@ -95,7 +95,7 @@ export function useGlassMouseTracking({
       return undefined;
     }
 
-    if (effectiveDisableEffects) {
+    if (effectiveWithoutEffects) {
       // Effects disabled, don't subscribe
       return undefined;
     }
@@ -142,7 +142,7 @@ export function useGlassMouseTracking({
     glassRef,
     externalGlobalMousePosition,
     externalMouseOffset,
-    effectiveDisableEffects,
+    effectiveWithoutEffects,
   ]);
 
   return {

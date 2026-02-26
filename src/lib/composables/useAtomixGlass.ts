@@ -157,11 +157,11 @@ interface UseAtomixGlassReturn {
   isHovered: boolean;
   isActive: boolean;
   glassSize: GlassSize;
-  dynamicCornerRadius: number;
-  effectiveCornerRadius: number;
+  dynamicBorderRadius: number;
+  effectiveBorderRadius: number;
   effectiveReducedMotion: boolean;
   effectiveHighContrast: boolean;
-  effectiveDisableEffects: boolean;
+  effectiveWithoutEffects: boolean;
   detectedOverLight: boolean;
   globalMousePosition: MousePosition;
   mouseOffset: MousePosition;
@@ -200,24 +200,24 @@ export function useAtomixGlass({
   glassRef,
   contentRef,
   wrapperRef,
-  cornerRadius,
+  borderRadius,
   globalMousePosition: externalGlobalMousePosition,
   mouseOffset: externalMouseOffset,
   mouseContainer,
   overLight = ATOMIX_GLASS.DEFAULTS.OVER_LIGHT,
   reducedMotion = false,
   highContrast = false,
-  disableEffects = false,
+  withoutEffects = false,
   elasticity = 0.05,
   onClick,
-  debugCornerRadius = false,
+  debugBorderRadius = false,
   debugOverLight = false,
-  enablePerformanceMonitoring = false,
+  debugPerformance = false,
   children,
   blurAmount,
   saturation,
   padding,
-  enableLiquidBlur,
+  withLiquidBlur,
 }: UseAtomixGlassOptions): UseAtomixGlassReturn {
   // State
   const [isHovered, setIsHovered] = useState(false);
@@ -228,7 +228,7 @@ export function useAtomixGlass({
   const internalGlobalMousePositionRef = useRef<MousePosition>({ x: 0, y: 0 });
   const internalMouseOffsetRef = useRef<MousePosition>({ x: 0, y: 0 });
 
-  const [dynamicCornerRadius, setDynamicCornerRadius] = useState<number>(
+  const [dynamicBorderRadius, setDynamicCornerRadius] = useState<number>(
     CONSTANTS.DEFAULT_CORNER_RADIUS
   );
   const [userPrefersReducedMotion, setUserPrefersReducedMotion] = useState(false);
@@ -236,14 +236,14 @@ export function useAtomixGlass({
   const [detectedOverLight, setDetectedOverLight] = useState(false);
 
   // Memoized derived values
-  const effectiveCornerRadius = useMemo(() => {
-    if (cornerRadius !== undefined) {
-      const result = Math.max(0, cornerRadius);
+  const effectiveBorderRadius = useMemo(() => {
+    if (borderRadius !== undefined) {
+      const result = Math.max(0, borderRadius);
       return result;
     }
-    const result = Math.max(0, dynamicCornerRadius);
+    const result = Math.max(0, dynamicBorderRadius);
     return result;
-  }, [cornerRadius, dynamicCornerRadius]);
+  }, [borderRadius, dynamicBorderRadius]);
 
   const effectiveReducedMotion = useMemo(
     () => reducedMotion || userPrefersReducedMotion,
@@ -255,9 +255,9 @@ export function useAtomixGlass({
     [highContrast, userPrefersHighContrast]
   );
 
-  const effectiveDisableEffects = useMemo(
-    () => disableEffects || effectiveReducedMotion,
-    [disableEffects, effectiveReducedMotion]
+  const effectiveWithoutEffects = useMemo(
+    () => withoutEffects || effectiveReducedMotion,
+    [withoutEffects, effectiveReducedMotion]
   );
 
   // Return static/initial values for rendering, but internal updates use refs
@@ -291,7 +291,7 @@ export function useAtomixGlass({
           setDynamicCornerRadius(extractedRadius);
         }
       } catch (error) {
-        if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && debugCornerRadius) {
+        if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && debugBorderRadius) {
           console.error('[AtomixGlass] Error extracting corner radius:', error);
         }
       }
@@ -300,7 +300,7 @@ export function useAtomixGlass({
     extractRadius();
     const timeoutId = setTimeout(extractRadius, 100);
     return () => clearTimeout(timeoutId);
-  }, [children, debugCornerRadius, contentRef]);
+  }, [children, debugBorderRadius, contentRef]);
 
   // Media query handlers and background detection
   useEffect(() => {
@@ -641,25 +641,25 @@ export function useAtomixGlass({
   }, [globalMousePosition, elasticity, calculateFadeInFactor, glassRef]);
 
   const elasticTranslation = useMemo(() => {
-    if (effectiveDisableEffects) {
+    if (effectiveWithoutEffects) {
       return { x: 0, y: 0 };
     }
     return calculateElasticTranslation();
-  }, [calculateElasticTranslation, effectiveDisableEffects]);
+  }, [calculateElasticTranslation, effectiveWithoutEffects]);
 
   const directionalScale = useMemo(() => {
-    if (effectiveDisableEffects) {
+    if (effectiveWithoutEffects) {
       return 'scale(1)';
     }
     return calculateDirectionalScale();
-  }, [calculateDirectionalScale, effectiveDisableEffects]);
+  }, [calculateDirectionalScale, effectiveWithoutEffects]);
 
   const transformStyle = useMemo(() => {
-    if (effectiveDisableEffects) {
+    if (effectiveWithoutEffects) {
       return isActive && Boolean(onClick) ? 'scale(0.98)' : 'scale(1)';
     }
     return `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) ${isActive && Boolean(onClick) ? 'scale(0.96)' : directionalScale}`;
-  }, [elasticTranslation, isActive, onClick, directionalScale, effectiveDisableEffects]);
+  }, [elasticTranslation, isActive, onClick, directionalScale, effectiveWithoutEffects]);
 
   // Handle mouse position updates
   const handleGlobalMousePosition = useCallback(
@@ -668,7 +668,7 @@ export function useAtomixGlass({
         return;
       }
 
-      if (effectiveDisableEffects) {
+      if (effectiveWithoutEffects) {
         return;
       }
 
@@ -712,13 +712,13 @@ export function useAtomixGlass({
             isActive,
             isOverLight: baseOverLightConfig.isOverLight,
             baseOverLightConfig,
-            effectiveCornerRadius,
-            effectiveDisableEffects,
+            effectiveBorderRadius,
+            effectiveWithoutEffects,
             effectiveReducedMotion,
             elasticity,
             directionalScale: isActive && Boolean(onClick) ? 'scale(0.96)' : 'scale(1)', // Simplified directional scale for fast path
             onClick,
-            enableLiquidBlur,
+            withLiquidBlur,
             blurAmount,
             saturation,
             padding,
@@ -731,16 +731,16 @@ export function useAtomixGlass({
       wrapperRef,
       externalGlobalMousePosition,
       externalMouseOffset,
-      effectiveDisableEffects,
+      effectiveWithoutEffects,
       glassSize,
       isHovered,
       isActive,
       baseOverLightConfig,
-      effectiveCornerRadius,
+      effectiveBorderRadius,
       effectiveReducedMotion,
       elasticity,
       onClick,
-      enableLiquidBlur,
+      withLiquidBlur,
       blurAmount,
       saturation,
       padding
@@ -753,7 +753,7 @@ export function useAtomixGlass({
       return undefined;
     }
 
-    if (effectiveDisableEffects) {
+    if (effectiveWithoutEffects) {
       return undefined;
     }
 
@@ -796,7 +796,7 @@ export function useAtomixGlass({
     glassRef,
     externalGlobalMousePosition,
     externalMouseOffset,
-    effectiveDisableEffects,
+    effectiveWithoutEffects,
   ]);
 
   // Also call updateStyles on other state changes (hover, active, etc)
@@ -812,13 +812,13 @@ export function useAtomixGlass({
             isActive,
             isOverLight: baseOverLightConfig.isOverLight,
             baseOverLightConfig,
-            effectiveCornerRadius,
-            effectiveDisableEffects,
+            effectiveBorderRadius,
+            effectiveWithoutEffects,
             effectiveReducedMotion,
             elasticity,
             directionalScale,
             onClick,
-            enableLiquidBlur,
+            withLiquidBlur,
             blurAmount,
             saturation,
             padding,
@@ -829,8 +829,8 @@ export function useAtomixGlass({
     isActive,
     glassSize,
     baseOverLightConfig,
-    effectiveCornerRadius,
-    effectiveDisableEffects,
+    effectiveBorderRadius,
+    effectiveWithoutEffects,
     effectiveReducedMotion,
     elasticity,
     directionalScale,
@@ -838,7 +838,7 @@ export function useAtomixGlass({
     glassRef,
     externalMouseOffset,
     externalGlobalMousePosition,
-    enableLiquidBlur,
+    withLiquidBlur,
     blurAmount,
     saturation,
     padding,
@@ -869,11 +869,11 @@ export function useAtomixGlass({
     isHovered,
     isActive,
     glassSize,
-    dynamicCornerRadius,
-    effectiveCornerRadius,
+    dynamicBorderRadius,
+    effectiveBorderRadius,
     effectiveReducedMotion,
     effectiveHighContrast,
-    effectiveDisableEffects,
+    effectiveWithoutEffects,
     detectedOverLight,
     globalMousePosition, // This is now static (refs or props) unless prop changes
     mouseOffset,         // This is now static (refs or props) unless prop changes

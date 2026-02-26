@@ -774,7 +774,7 @@ export const WithCustomGlassSettings: Story = {
       blurAmount: 2,
       saturation: 200,
       aberrationIntensity: 1,
-      cornerRadius: 16,
+      borderRadius: 16,
       mode: 'polar',
     },
   },

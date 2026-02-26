@@ -18,7 +18,7 @@ export interface BarChartOptions {
   /**
    * Corner radius for bars
    */
-  cornerRadius?: number;
+  borderRadius?: number;
 
   /**
    * Padding between bar groups

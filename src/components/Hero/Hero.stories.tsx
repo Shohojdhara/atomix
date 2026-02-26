@@ -433,7 +433,7 @@ export const WithCustomGlassEffect: Story = {
       blurAmount: -0.1,
       saturation: 130,
       aberrationIntensity: 0,
-      cornerRadius: 45,
+      borderRadius: 45,
       mode: 'standard',
       elasticity: 0.2,
       onClick: () => {
@@ -911,7 +911,7 @@ export const PremiumShowcase: Story = {
       blurAmount: 2,
       saturation: 150,
       aberrationIntensity: 0.5,
-      cornerRadius: 20,
+      borderRadius: 20,
       overLight: true,
       mode: 'standard',
     },

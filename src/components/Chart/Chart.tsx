@@ -278,8 +278,8 @@ const Chart = memo(
           saturation: 180,
           aberrationIntensity: 1.5,
           elasticity: 0, // No elastic effect for charts
-          enableLiquidBlur: false, // Keep it simple
-          enableBorderEffect: true,
+          withLiquidBlur: false, // Keep it simple
+          withBorder: true,
           mode: 'standard' as const,
           mouseContainer: chartContainerRef,
           reducedMotion: false,
@@ -300,8 +300,8 @@ const Chart = memo(
       const chartBorderRadius = useMemo(() => {
         // Use chart border-radius design token (typically 12px from $border-radius-lg)
         // AtomixGlass will extract from children if not provided
-        return glassProps?.cornerRadius || undefined;
-      }, [glassProps?.cornerRadius]);
+        return glassProps?.borderRadius || undefined;
+      }, [glassProps?.borderRadius]);
 
       // Create context value
       const chartContextValue = useMemo<ChartContextValue>(
@@ -404,7 +404,7 @@ const Chart = memo(
       const wrappedChart = glassProps ? (
         <AtomixGlass
           {...glassProps}
-          cornerRadius={chartBorderRadius}
+          borderRadius={chartBorderRadius}
           style={{
             width: '100%',
             height: '100%',
