@@ -661,6 +661,23 @@ export function useChartData(
     realTimeInterval = 1000,
   } = options || {};
 
+  const lastDataSignature = useRef<string>('');
+
+  // Helper to generate a signature for the dataset to detect changes
+  const getDatasetSignature = useCallback((data: ChartDataset[]) => {
+    return data
+      .map(d => {
+        // Use JSON stringify for robustness to detect any value change, including historical data
+        return `${d.label}:${JSON.stringify(d.data)}`;
+      })
+      .join('|');
+  }, []);
+
+  // Update signature when processedData changes (e.g. via props)
+  useEffect(() => {
+    lastDataSignature.current = getDatasetSignature(processedData);
+  }, [processedData, getDatasetSignature]);
+
   // Data decimation for performance
   const decimateData = useCallback(
     (data: ChartDataset[], maxPoints: number) => {
@@ -731,11 +748,20 @@ export function useChartData(
     if (!enableRealTime) return undefined;
 
     const interval = setInterval(() => {
-      setProcessedData(prev => [...prev]); // Trigger re-render for real-time updates
+      setProcessedData(prev => {
+        const currentSignature = getDatasetSignature(prev);
+        // Only trigger update if signature changed
+        if (currentSignature === lastDataSignature.current) {
+          return prev;
+        }
+        // Note: We do not update lastDataSignature.current here to avoid side effects in updater.
+        // It will be updated by the useEffect([processedData]) when the state update completes.
+        return [...prev];
+      });
     }, realTimeInterval);
 
     return () => clearInterval(interval);
-  }, [enableRealTime, realTimeInterval]);
+  }, [enableRealTime, realTimeInterval, getDatasetSignature]);
 
   return {
     processedData,

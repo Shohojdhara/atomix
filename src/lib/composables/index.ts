@@ -37,8 +37,6 @@ export * from './useRadio';
 export * from './useSelect';
 export * from './useTextarea';
 
-// Export other composables as needed
-
 // New composables
 export * from './useBreadcrumb';
 export * from './useCard';
@@ -56,8 +54,6 @@ export * from './useChartInteraction';
 export * from './useLineChart';
 export * from './useBarChart';
 export * from './usePieChart';
-
-// Theme composables
 
 // Block composables
 export * from './useBlock';
