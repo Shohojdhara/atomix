@@ -514,8 +514,8 @@ export function useAtomixGlass({
       isOverLight,
       threshold: 0.7,
       opacity: baseOpacity,
-      contrast: 1.4, // Base contrast
-      brightness: 0.9, // Base brightness
+      contrast: 1, // Base contrast
+      brightness: 1, // Base brightness
       saturationBoost: 1.3,
       shadowIntensity: 0.9,
       borderOpacity: 0.7,

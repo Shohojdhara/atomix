@@ -370,7 +370,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
           );
 
           return {
-            backdropFilter: `blur(${weightedBlur}px) saturate(${Math.min(dynamicSaturation, 200)}%) contrast(${overLightConfig?.contrast || 1.05}) brightness(${overLightConfig?.brightness || 1.05})`,
+            backdropFilter: `blur(${weightedBlur}px) saturate(${Math.min(dynamicSaturation, 200)}%) contrast(${overLightConfig?.contrast || 1}) brightness(${overLightConfig?.brightness || 1})`,
           };
         }
 
@@ -475,7 +475,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       <div
         ref={el => {
           // Apply force no-transition
-          setForceNoTransition(el);
 
           // Handle forwarded ref
           if (typeof ref === 'function') {
