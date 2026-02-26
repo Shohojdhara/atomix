@@ -192,6 +192,8 @@ interface UseAtomixGlassReturn {
   handleKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
+import { useGlassSize } from './atomix-glass/useGlassSize';
+
 /**
  * Composable hook for AtomixGlass component logic
  * Manages all state, calculations, and event handlers
@@ -222,9 +224,9 @@ export function useAtomixGlass({
   // State
   const [isHovered, setIsHovered] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [glassSize, setGlassSize] = useState<GlassSize>({ width: 270, height: 69 });
 
-  // Use refs for mouse position to avoid re-renders
+  // Mouse tracking refs
+  const cachedRectRef = useRef<DOMRect | null>(null);
   const internalGlobalMousePositionRef = useRef<MousePosition>({ x: 0, y: 0 });
   const internalMouseOffsetRef = useRef<MousePosition>({ x: 0, y: 0 });
 
@@ -244,6 +246,12 @@ export function useAtomixGlass({
     const result = Math.max(0, dynamicBorderRadius);
     return result;
   }, [borderRadius, dynamicBorderRadius]);
+
+  const { glassSize } = useGlassSize({ 
+    glassRef, 
+    effectiveBorderRadius, 
+    cachedRectRef 
+  });
 
   const effectiveReducedMotion = useMemo(
     () => reducedMotion || userPrefersReducedMotion,
@@ -562,7 +570,6 @@ export function useAtomixGlass({
   }, [baseOverLightConfig, mouseOffset, isHovered, isActive]);
 
   // Mouse tracking
-  const cachedRectRef = useRef<DOMRect | null>(null);
   const updateRectRef = useRef<number | null>(null);
 
   // Derived values for imperative updates (we can use memoized ones or re-calculate)

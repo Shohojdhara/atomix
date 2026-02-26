@@ -157,6 +157,7 @@ export function AtomixGlass({
 
   // Calculate isOverLight independently from overLightConfig to prevent displacement changes on hover
   // overLightConfig recalculates with hover/active states, but displacement should remain stable
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const isOverLight = useMemo(() => overLightConfig?.isOverLight, [overLight]);
 
   const shouldRenderOverLightLayers = withOverLightLayers && isOverLight;
@@ -190,23 +191,32 @@ export function AtomixGlass({
     [style.position, style.top, style.left]
   );
 
-  const adjustedSize = useMemo(
-    () => ({
-      width:
-        style.position !== 'fixed'
-          ? '100%'
-          : style.width
-            ? style.width
-            : Math.max(glassSize.width, 0),
-      height:
-        style.position !== 'fixed'
-          ? '100%'
-          : style.height
-            ? style.height
-            : Math.max(glassSize.height, 0),
-    }),
-    [style.position, style.width, style.height, glassSize.width, glassSize.height]
-  );
+  const adjustedSize = useMemo(() => {
+    const resolveSize = (
+      propValue: string | number | undefined,
+      styleValue: string | number | undefined,
+      measuredSize: number
+    ) => {
+      const explicitSize = propValue ?? styleValue;
+      if (explicitSize !== undefined) {
+        return typeof explicitSize === 'number' ? `${explicitSize}px` : explicitSize;
+      }
+      return positionStyles.position === 'fixed' ? `${Math.max(measuredSize, 0)}px` : '100%';
+    };
+
+    return {
+      width: resolveSize(width, style.width, glassSize.width),
+      height: resolveSize(height, style.height, glassSize.height),
+    };
+  }, [
+    width,
+    height,
+    style.width,
+    style.height,
+    positionStyles.position,
+    glassSize.width,
+    glassSize.height,
+  ]);
 
   // Memoize expensive gradient calculations
   const gradientValues = useMemo(() => {
@@ -299,10 +309,8 @@ export function AtomixGlass({
       '--atomix-glass-position': positionStyles.position,
       '--atomix-glass-top': positionStyles.top !== 'fixed' ? `${positionStyles.top}px` : '0',
       '--atomix-glass-left': positionStyles.left !== 'fixed' ? `${positionStyles.left}px` : '0',
-      '--atomix-glass-width':
-        style.position !== 'fixed' ? adjustedSize.width : `${adjustedSize.width}px`,
-      '--atomix-glass-height':
-        style.position !== 'fixed' ? adjustedSize.height : `${adjustedSize.height}px`,
+      '--atomix-glass-width': adjustedSize.width,
+      '--atomix-glass-height': adjustedSize.height,
       '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.09375rem)',
       '--atomix-glass-blend-mode': isOverLight ? 'multiply' : 'overlay',
       '--atomix-glass-border-gradient-1': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[0] ?? 1) * configBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[1] ?? 1) * configBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
@@ -335,7 +343,6 @@ export function AtomixGlass({
     transformStyle,
     positionStyles,
     adjustedSize,
-    style.position,
     isOverLight,
     overLightConfig.borderOpacity,
   ]);
@@ -468,8 +475,20 @@ export function AtomixGlass({
         <>
           {/* Border elements - all styles (static and dynamic via CSS variables) are in SCSS */}
           {/* Position, size, transform, transition, border-radius all use CSS variables set in glassVars */}
-          <span className={ATOMIX_GLASS.BORDER_1_CLASS} />
-          <span className={ATOMIX_GLASS.BORDER_2_CLASS} />
+          <span
+            className={ATOMIX_GLASS.BORDER_1_CLASS}
+            style={{
+              width: glassSize.width,
+              height: glassSize.height,
+            }}
+          />
+          <span
+            className={ATOMIX_GLASS.BORDER_2_CLASS}
+            style={{
+              width: glassSize.width,
+              height: glassSize.height,
+            }}
+          />
         </>
       )}
     </div>
