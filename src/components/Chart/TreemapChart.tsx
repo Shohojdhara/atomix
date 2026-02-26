@@ -122,9 +122,7 @@ const TreemapChart = memo(
       const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
       const treeData = useMemo(() => {
-        console.log('TreemapChart data:', data);
         if (!data.length) {
-          console.log('No data provided to TreemapChart');
           return null;
         }
 
