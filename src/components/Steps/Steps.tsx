@@ -24,7 +24,7 @@ export interface StepItemData {
 export type { StepItemData as StepItem };
 
 // Compound Component Props
-export interface StepsItemProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface StepsItemProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /**
    * The number or icon for the step
    */

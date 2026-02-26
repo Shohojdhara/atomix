@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CHART } from '../constants/components';
-import { ChartDataset, ChartProps } from '../types/components';
+import { ChartDataset, ChartProps, ChartDataPoint } from '../types/components';
 
 /**
  * Chart interaction state interface
@@ -527,12 +527,32 @@ export function useChart(initialProps?: Partial<ChartProps>) {
     ): ChartScales | null => {
       if (!datasets || datasets.length === 0) return null;
 
-      // Flatten all data points to find min/max values
-      const allDataPoints = datasets.flatMap(dataset => dataset.data);
-      if (allDataPoints.length === 0) return null;
+      // Calculate total points and min/max values efficiently avoiding spread operator
+      let totalPoints = 0;
+      let minValue = Infinity;
+      let maxValue = -Infinity;
+      let hasValidData = false;
 
-      const minValue = Math.min(...allDataPoints.map(point => point.value));
-      const maxValue = Math.max(...allDataPoints.map(point => point.value));
+      for (const dataset of datasets) {
+        if (dataset.data) {
+          totalPoints += dataset.data.length;
+          const { min, max, hasValid } = getDatasetBounds(dataset.data);
+          if (hasValid) {
+            if (min < minValue) minValue = min;
+            if (max > maxValue) maxValue = max;
+            hasValidData = true;
+          }
+        }
+      }
+
+      if (totalPoints === 0) return null;
+
+      // Handle case with no valid numeric data
+      if (!hasValidData) {
+        minValue = 0;
+        maxValue = 0;
+      }
+
       const valueRange = maxValue - minValue || 1; // Avoid division by zero
 
       // Apply padding
@@ -540,7 +560,7 @@ export function useChart(initialProps?: Partial<ChartProps>) {
       const innerHeight = height - padding.top - padding.bottom;
 
       // Create scale functions
-      const xScale = (index: number, dataLength: number = allDataPoints.length) => {
+      const xScale = (index: number, dataLength: number = totalPoints) => {
         if (dataLength <= 1) return padding.left + innerWidth / 2;
         return padding.left + (index / (dataLength - 1)) * innerWidth;
       };
@@ -641,6 +661,23 @@ export function useChartData(
     realTimeInterval = 1000,
   } = options || {};
 
+  const lastDataSignature = useRef<string>('');
+
+  // Helper to generate a signature for the dataset to detect changes
+  const getDatasetSignature = useCallback((data: ChartDataset[]) => {
+    return data
+      .map(d => {
+        // Use JSON stringify for robustness to detect any value change, including historical data
+        return `${d.label}:${JSON.stringify(d.data)}`;
+      })
+      .join('|');
+  }, []);
+
+  // Update signature when processedData changes (e.g. via props)
+  useEffect(() => {
+    lastDataSignature.current = getDatasetSignature(processedData);
+  }, [processedData, getDatasetSignature]);
+
   // Data decimation for performance
   const decimateData = useCallback(
     (data: ChartDataset[], maxPoints: number) => {
@@ -721,11 +758,20 @@ export function useChartData(
     if (!enableRealTime) return undefined;
 
     const interval = setInterval(() => {
-      setProcessedData(prev => [...prev]); // Trigger re-render for real-time updates
+      setProcessedData(prev => {
+        const currentSignature = getDatasetSignature(prev);
+        // Only trigger update if signature changed
+        if (currentSignature === lastDataSignature.current) {
+          return prev;
+        }
+        // Note: We do not update lastDataSignature.current here to avoid side effects in updater.
+        // It will be updated by the useEffect([processedData]) when the state update completes.
+        return [...prev];
+      });
     }, realTimeInterval);
 
     return () => clearInterval(interval);
-  }, [enableRealTime, realTimeInterval]);
+  }, [enableRealTime, realTimeInterval, getDatasetSignature]);
 
   return {
     processedData,
@@ -841,11 +887,11 @@ export function useChartAccessibility(
     const datasetDescriptions = datasets
       .map((dataset, i) => {
         const dataCount = dataset.data?.length || 0;
-        const values = dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [];
-        const min = values.length > 0 ? Math.min(...values) : 0;
-        const max = values.length > 0 ? Math.max(...values) : 0;
+        const { min, max, hasValid } = getDatasetBounds(dataset.data);
+        const minVal = hasValid ? min : 0;
+        const maxVal = hasValid ? max : 0;
 
-        return `Dataset ${i + 1}: ${dataset.label}, ${dataCount} points, range ${min} to ${max}`;
+        return `Dataset ${i + 1}: ${dataset.label}, ${dataCount} points, range ${minVal} to ${maxVal}`;
       })
       .join('. ');
 
@@ -888,14 +934,13 @@ export function useChartPerformance(
 
     // Cache expensive scale calculations
     return datasets.map(dataset => {
-      const values = dataset.data?.map(d => d.value).filter(v => typeof v === 'number') || [];
-      const validValues = values.length > 0 ? values : [0];
+      const { min, max, hasValid } = getDatasetBounds(dataset.data);
 
       return {
         label: dataset.label,
         dataLength: dataset.data?.length || 0,
-        minValue: Math.min(...validValues),
-        maxValue: Math.max(...validValues),
+        minValue: hasValid ? min : 0,
+        maxValue: hasValid ? max : 0,
       };
     });
   }, [datasets, enableMemoization]);
@@ -946,4 +991,32 @@ export function useChartPerformance(
     debouncedUpdate,
     getVisibleRange,
   };
+}
+
+/**
+ * Helper to calculate min/max values from a dataset efficiently
+ * avoiding spread operator which can cause stack overflow on large arrays
+ */
+export function getDatasetBounds(data: ChartDataPoint[] | undefined): {
+  min: number;
+  max: number;
+  hasValid: boolean;
+} {
+  let min = Infinity;
+  let max = -Infinity;
+  let hasValid = false;
+
+  if (data && data.length > 0) {
+    for (let i = 0; i < data.length; i++) {
+      const point = data[i];
+      if (point && typeof point.value === 'number') {
+        const val = point.value;
+        if (val < min) min = val;
+        if (val > max) max = val;
+        hasValid = true;
+      }
+    }
+  }
+
+  return { min, max, hasValid };
 }
