@@ -145,6 +145,11 @@ export function AtomixGlass({
     debugOverLight,
     enablePerformanceMonitoring,
     children,
+    blurAmount,
+    saturation,
+    enableLiquidBlur,
+    padding,
+    style,
   });
 
   // Calculate isOverLight independently from overLightConfig to prevent displacement changes on hover
