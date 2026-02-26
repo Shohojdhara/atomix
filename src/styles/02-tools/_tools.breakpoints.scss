@@ -8,7 +8,7 @@
 // Breakpoint viewport sizes and media queries.
 @mixin media-breakpoint-up($name, $breakpoints: breakpoints.$grid-breakpoints) {
   $min: map.get($breakpoints, $name);
-  @if $min and $min != 0 {
+  @if $min {
     @media (min-width: $min) {
       @content;
     }

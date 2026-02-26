@@ -3,11 +3,11 @@
  *
  * Bridges the TypeScript theme devtools CLI (src/lib/theme/devtools/CLI.ts) with the main JavaScript CLI.
  *
- * @dependency ts-node
+ * @dependency tsx
  * Theme subcommands (atomix theme validate|list|inspect|compare|export|create) run the TypeScript
- * theme CLI via ts-node. Ensure ts-node is installed in the project when using these commands:
- *   npm install --save-dev ts-node
- * If ts-node is missing, theme subcommands will fail; run `atomix doctor` to check availability.
+ * theme CLI via tsx. Ensure tsx is installed in the project when using these commands:
+ *   npm install --save-dev tsx
+ * If tsx is missing, theme subcommands will fail; run `atomix doctor` to check availability.
  */
 
 import { spawn } from 'child_process';
@@ -29,13 +29,11 @@ export async function executeThemeCommand(command, args = [], options = {}) {
     // Path to the theme CLI
     const themeCliPath = join(__dirname, '../../src/lib/theme/devtools/CLI.ts');
 
-    // Use ts-node to execute TypeScript CLI
-    const tsNodePath = join(__dirname, '../../node_modules/.bin/ts-node');
+    // Use tsx to execute TypeScript CLI
+    const tsxPath = join(__dirname, '../../node_modules/.bin/tsx');
 
     return new Promise((resolve, reject) => {
-      const child = spawn(tsNodePath, [
-        '--esm',
-        '--experimental-specifier-resolution=node',
+      const child = spawn(tsxPath, [
         themeCliPath,
         command,
         ...args
