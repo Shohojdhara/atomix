@@ -1,4 +1,12 @@
-import React, { ReactNode, memo, forwardRef, Children, cloneElement, isValidElement, ElementType } from 'react';
+import React, {
+  ReactNode,
+  memo,
+  forwardRef,
+  Children,
+  cloneElement,
+  isValidElement,
+  ElementType,
+} from 'react';
 import { BREADCRUMB } from '../../lib/constants/components';
 
 // Legacy Item Interface
@@ -91,7 +99,11 @@ export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
     },
     ref
   ) => {
-    const itemClasses = [BREADCRUMB.CLASSES.ITEM, active ? BREADCRUMB.CLASSES.ACTIVE : '', className]
+    const itemClasses = [
+      BREADCRUMB.CLASSES.ITEM,
+      active ? BREADCRUMB.CLASSES.ACTIVE : '',
+      className,
+    ]
       .filter(Boolean)
       .join(' ');
 
@@ -171,77 +183,73 @@ export interface BreadcrumbProps {
   children?: ReactNode;
 }
 
-const BreadcrumbComponent: React.FC<BreadcrumbProps> = memo(
-  ({
-        items,
-        divider,
-        className = '',
-        'aria-label': ariaLabel = 'Breadcrumb',
-        LinkComponent,
-        style,
-        children,
-      }: BreadcrumbProps) => {
-    const breadcrumbClasses = [BREADCRUMB.CLASSES.BASE, className].filter(Boolean).join(' ');
+const BreadcrumbComponent: React.FC<BreadcrumbProps> = memo(function BreadcrumbBase({
+  items,
+  divider,
+  className = '',
+  'aria-label': ariaLabel = 'Breadcrumb',
+  LinkComponent,
+  style,
+  children,
+}: BreadcrumbProps) {
+  const breadcrumbClasses = [BREADCRUMB.CLASSES.BASE, className].filter(Boolean).join(' ');
 
-    let content: ReactNode;
+  let content: ReactNode;
 
-    if (items && items.length > 0) {
-      // Legacy rendering
-      content = items.map((item: BreadcrumbItemData, index: number) => {
-        const isLast = index === items.length - 1;
+  if (items && items.length > 0) {
+    // Legacy rendering
+    content = items.map((item: BreadcrumbItemData, index: number) => {
+      const isLast = index === items.length - 1;
 
-        return (
-          <BreadcrumbItem
-            key={index}
-            href={item.href}
-            active={item.active || isLast}
-            icon={item.icon}
-            onClick={item.onClick as any}
-            className={item.className}
-            style={item.style}
-            linkAs={LinkComponent}
-          >
-            {item.label}
-          </BreadcrumbItem>
-        );
-      });
-    } else {
-      // Compound rendering
-      const childrenCount = Children.count(children);
-      content = Children.map(children, (child, index) => {
-        if (isValidElement(child)) {
-          const isLast = index === childrenCount - 1;
-          const childProps = child.props as any;
+      return (
+        <BreadcrumbItem
+          key={index}
+          href={item.href}
+          active={item.active || isLast}
+          icon={item.icon}
+          onClick={item.onClick as any}
+          className={item.className}
+          style={item.style}
+          linkAs={LinkComponent}
+        >
+          {item.label}
+        </BreadcrumbItem>
+      );
+    });
+  } else {
+    // Compound rendering
+    const childrenCount = Children.count(children);
+    content = Children.map(children, (child, index) => {
+      if (isValidElement(child)) {
+        const isLast = index === childrenCount - 1;
+        const childProps = child.props as any;
 
-          // Extract props from the child element
-          const { active, linkAs, ...otherProps } = childProps;
+        // Extract props from the child element
+        const { active, linkAs, ...otherProps } = childProps;
 
-          const newProps = {
-            active: active ?? (isLast ? true : undefined),
-            linkAs: linkAs ?? LinkComponent,
-          };
+        const newProps = {
+          active: active ?? (isLast ? true : undefined),
+          linkAs: linkAs ?? LinkComponent,
+        };
 
-          return cloneElement(child, newProps as any);
-        }
-        return child;
-      });
-    }
-
-    return (
-      <nav aria-label={ariaLabel} style={style}>
-        <ol className={breadcrumbClasses}>
-          {content}
-        </ol>
-      </nav>
-    );
+        return cloneElement(child, newProps as any);
+      }
+      return child;
+    });
   }
-);
 
-export type Breadcrumb = typeof BreadcrumbComponent & {
+  return (
+    <nav aria-label={ariaLabel} style={style}>
+      <ol className={breadcrumbClasses}>{content}</ol>
+    </nav>
+  );
+});
+
+export type BreadcrumbType = typeof BreadcrumbComponent & {
   Item: typeof BreadcrumbItem;
 };
 
-const Breadcrumb = BreadcrumbComponent as Breadcrumb;
+export const Breadcrumb = BreadcrumbComponent as BreadcrumbType;
 
 Breadcrumb.displayName = 'Breadcrumb';
 Breadcrumb.Item = BreadcrumbItem;
