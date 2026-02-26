@@ -43,8 +43,6 @@
     }
 
     .c-slider__wrapper {
-      will-change: transform;
-
       &.transitioning {
         transition: transform var(--#{config.$prefix}slider-speed)
           var(--#{config.$prefix}slider-easing);
@@ -85,7 +83,6 @@
   z-index: slider.$slider-z-index-base;
   display: flex;
   box-sizing: content-box;
-  will-change: transform;
 }
 
 .c-slider__slide {

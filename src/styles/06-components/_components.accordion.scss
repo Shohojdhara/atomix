@@ -83,7 +83,6 @@
   &__icon {
     color: var(--#{config.$prefix}accordion-icon-color);
     font-size: var(--#{config.$prefix}accordion-icon-size);
-    will-change: transform;
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
@@ -95,7 +94,6 @@
   &__panel {
     height: var(--panel-height);
     overflow: hidden;
-    will-change: height;
 
     @if accordion.$accordion-enable-smooth-scroll {
       scroll-behavior: smooth;

@@ -181,15 +181,15 @@
     padding: 1rem;
     margin-bottom: 1rem;
   }
-  
+
   .storybook-preview-content {
     gap: 0.75rem;
   }
-  
+
   .storybook-variants-grid {
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
   }
-  
+
   .storybook-demo-controls {
     flex-direction: column;
     gap: 0.5rem;
@@ -203,8 +203,14 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .storybook-slide-in {
@@ -212,8 +218,14 @@
 }
 
 @keyframes slideIn {
-  from { transform: translateX(-20px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 /* Focus indicators for accessibility */
@@ -241,7 +253,9 @@
 }
 
 @keyframes loading {
-  to { left: 100%; }
+  to {
+    left: 100%;
+  }
 }
 
 /* Enhanced tooltips and hints */
@@ -438,22 +452,52 @@
 }
 
 /* Better spacing utilities */
-.storybook-mt-0 { margin-top: 0; }
-.storybook-mb-0 { margin-bottom: 0; }
-.storybook-mt-1 { margin-top: 0.25rem; }
-.storybook-mb-1 { margin-bottom: 0.25rem; }
-.storybook-mt-2 { margin-top: 0.5rem; }
-.storybook-mb-2 { margin-bottom: 0.5rem; }
-.storybook-mt-3 { margin-top: 0.75rem; }
-.storybook-mb-3 { margin-bottom: 0.75rem; }
-.storybook-mt-4 { margin-top: 1rem; }
-.storybook-mb-4 { margin-bottom: 1rem; }
+.storybook-mt-0 {
+  margin-top: 0;
+}
+.storybook-mb-0 {
+  margin-bottom: 0;
+}
+.storybook-mt-1 {
+  margin-top: 0.25rem;
+}
+.storybook-mb-1 {
+  margin-bottom: 0.25rem;
+}
+.storybook-mt-2 {
+  margin-top: 0.5rem;
+}
+.storybook-mb-2 {
+  margin-bottom: 0.5rem;
+}
+.storybook-mt-3 {
+  margin-top: 0.75rem;
+}
+.storybook-mb-3 {
+  margin-bottom: 0.75rem;
+}
+.storybook-mt-4 {
+  margin-top: 1rem;
+}
+.storybook-mb-4 {
+  margin-bottom: 1rem;
+}
 
-.storybook-p-0 { padding: 0; }
-.storybook-p-1 { padding: 0.25rem; }
-.storybook-p-2 { padding: 0.5rem; }
-.storybook-p-3 { padding: 0.75rem; }
-.storybook-p-4 { padding: 1rem; }
+.storybook-p-0 {
+  padding: 0;
+}
+.storybook-p-1 {
+  padding: 0.25rem;
+}
+.storybook-p-2 {
+  padding: 0.5rem;
+}
+.storybook-p-3 {
+  padding: 0.75rem;
+}
+.storybook-p-4 {
+  padding: 1rem;
+}
 
 /* Responsive Demo Styles */
 .story-responsive-demo {
@@ -576,19 +620,20 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.6),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
   animation: loadingEnhanced 1.5s infinite ease-in-out;
 }
 
 @keyframes loadingEnhanced {
-  0% { left: -100%; }
-  50% { left: 0%; }
-  100% { left: 100%; }
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 0%;
+  }
+  100% {
+    left: 100%;
+  }
 }
 
 /* Interactive Highlight Effects */
@@ -680,8 +725,13 @@
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .story-animate-pulse {
@@ -689,14 +739,16 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 /* Performance Optimizations */
-.story-will-change {
-  will-change: transform, opacity;
-}
 
 .story-gpu-accelerated {
   transform: translateZ(0);
@@ -712,17 +764,17 @@
   .story-responsive-controls {
     justify-content: center;
   }
-  
+
   .story-responsive-btn {
     flex: 1;
     text-align: center;
   }
-  
+
   .story-component-group {
     padding: 0.75rem;
     gap: 1rem;
   }
-  
+
   .story-preview-container {
     padding: 1rem;
     margin-bottom: 1rem;
@@ -736,7 +788,7 @@
     box-shadow: none !important;
     border: 1px solid #000 !important;
   }
-  
+
   .story-demo-controls,
   .story-preview-resize-handle,
   .story-performance-indicator {
@@ -750,7 +802,7 @@
     border-width: 2px;
     border-color: #000;
   }
-  
+
   .story-reset-button {
     border: 2px solid #000;
   }

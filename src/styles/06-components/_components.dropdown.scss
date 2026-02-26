@@ -99,7 +99,6 @@
     pointer-events: none;
 
     &:not(.is-glass) {
-      will-change: transform, opacity, visibility;
       transform: translateY(-15px) scale(0.95);
       transform-origin: top center;
     }

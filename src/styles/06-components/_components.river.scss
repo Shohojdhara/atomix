@@ -149,7 +149,6 @@
     max-width: none;
     @include square(100%);
     @include object-fit(cover);
-    will-change: transform;
   }
 
   // When the river has a background image, we need to adjust text colors for readability

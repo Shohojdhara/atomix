@@ -39,7 +39,6 @@
     opacity: 0;
     z-index: map.get($z-layers, 1);
     transition: opacity var(--#{$prefix}edge-panel-animation-duration) ease;
-    will-change: opacity;
 
     &.is-animating {
       animation: fadeIn 0.3s ease forwards;
@@ -62,7 +61,6 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    will-change: transform, opacity;
 
     &.is-animating {
       animation: slideIn var(--#{$prefix}edge-panel-animation-duration)
