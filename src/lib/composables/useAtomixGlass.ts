@@ -1,12 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type {
-  AtomixGlassProps,
-  DisplacementMode,
-  GlassSize,
-  MousePosition,
-  OverLightConfig,
-  OverLightObjectConfig,
-} from '../types/components';
+import React from 'react';
+import type { AtomixGlassProps, GlassSize, MousePosition } from '../types/components';
 import { ATOMIX_GLASS } from '../constants/components';
 import { globalMouseTracker } from './shared-mouse-tracker';
 import {
@@ -190,6 +183,7 @@ interface UseAtomixGlassReturn {
 /**
  * Composable hook for AtomixGlass component logic
  * Manages all state, calculations, and event handlers
+ * Refactored to use smaller, focused hooks for better maintainability
  */
 export function useAtomixGlass({
   glassRef,
@@ -906,25 +900,17 @@ export function useAtomixGlass({
     const container = mouseContainer?.current || glassRef.current;
     let resizeObserver: ResizeObserver | null = null;
 
-    if (container && typeof ResizeObserver !== 'undefined') {
-      resizeObserver = new ResizeObserver(updateRect);
-      resizeObserver.observe(container);
-    }
-
-    return () => {
-      unsubscribe();
-      if (updateRectRef.current !== null) {
-        cancelAnimationFrame(updateRectRef.current);
-        updateRectRef.current = null;
-      }
-      if (resizeObserver) {
-        resizeObserver.disconnect();
-      }
-    };
-  }, [
-    handleGlobalMousePosition,
-    mouseContainer,
+  // 3. Background Detection
+  const { detectedOverLight } = useGlassBackgroundDetection({
     glassRef,
+    overLight,
+    debugOverLight,
+  });
+
+  // 4. Mouse Tracking
+  const { globalMousePosition, mouseOffset, cachedRectRef } = useGlassMouseTracking({
+    glassRef,
+    mouseContainer,
     externalGlobalMousePosition,
     externalMouseOffset,
     effectiveDisableEffects,
