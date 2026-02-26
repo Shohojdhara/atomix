@@ -39,9 +39,6 @@ export interface BreadcrumbItemData {
   className?: string;
 }
 
-// Export legacy interface as type alias to preserve backward compatibility for type imports
-export type { BreadcrumbItemData as BreadcrumbItem };
-
 // Compound Component Props
 export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement> {
   /**
@@ -67,7 +64,7 @@ export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement>
   /**
    * Optional custom link component
    */
-  linkAs?: React.ElementType;
+  linkAs?: React.ElementType<any>;
 
   /**
    * Link props to pass to the underlying anchor or LinkComponent
@@ -113,14 +110,8 @@ export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
       <li ref={ref} className={itemClasses} style={style} {...props}>
         {href && !active ? (
           LinkComponent ? (
-            (() => {
-              const Component = LinkComponent;
-              return (
-                <Component href={href} {...commonLinkProps}>
-                  {linkContent}
-                </Component>
-              );
-            })()
+            // Cast to any to avoid complex TS issues with dynamic components
+            React.createElement(LinkComponent as any, { href, ...commonLinkProps }, linkContent)
           ) : (
             <a href={href} {...(commonLinkProps as React.HTMLAttributes<HTMLAnchorElement>)}>
               {linkContent}
@@ -173,11 +164,7 @@ export interface BreadcrumbProps {
   children?: ReactNode;
 }
 
-type BreadcrumbComponent = React.FC<BreadcrumbProps> & {
-  Item: typeof BreadcrumbItem;
-};
-
-export const Breadcrumb: BreadcrumbComponent = memo(
+const BreadcrumbComponent: React.FC<BreadcrumbProps> = memo(
   ({
     items,
     divider,
@@ -202,7 +189,7 @@ export const Breadcrumb: BreadcrumbComponent = memo(
             href={item.href}
             active={item.active || isLast}
             icon={item.icon}
-            onClick={item.onClick}
+            onClick={item.onClick as any}
             className={item.className}
             style={item.style}
             linkAs={LinkComponent}
@@ -236,9 +223,16 @@ export const Breadcrumb: BreadcrumbComponent = memo(
       </nav>
     );
   }
-) as unknown as BreadcrumbComponent;
+);
+
+export type Breadcrumb = typeof BreadcrumbComponent & {
+  Item: typeof BreadcrumbItem;
+};
+
+const Breadcrumb = BreadcrumbComponent as Breadcrumb;
 
 Breadcrumb.displayName = 'Breadcrumb';
 Breadcrumb.Item = BreadcrumbItem;
 
 export default Breadcrumb;
+export type { BreadcrumbItemData as BreadcrumbItemLegacy };
