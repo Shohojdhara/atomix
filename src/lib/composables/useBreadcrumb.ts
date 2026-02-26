@@ -1,8 +1,8 @@
-import { BreadcrumbItemLegacy } from '../../components/Breadcrumb/Breadcrumb';
+import { BreadcrumbItemType } from '../../components/Breadcrumb/Breadcrumb';
 import { BREADCRUMB } from '../constants/components';
 
 interface BreadcrumbOptions {
-  items: BreadcrumbItemLegacy[];
+  items: BreadcrumbItemType[];
   divider?: React.ReactNode;
   className?: string;
   'aria-label'?: string;
@@ -40,7 +40,7 @@ export function useBreadcrumb(initialOptions?: Partial<BreadcrumbOptions>) {
    * @param isLast - Whether this is the last item
    * @returns Class string
    */
-  const generateItemClass = (item: BreadcrumbItemLegacy, isLast: boolean): string => {
+  const generateItemClass = (item: BreadcrumbItemType, isLast: boolean): string => {
     return [BREADCRUMB.CLASSES.ITEM, item.active || isLast ? BREADCRUMB.CLASSES.ACTIVE : '']
       .filter(Boolean)
       .join(' ')
@@ -53,7 +53,7 @@ export function useBreadcrumb(initialOptions?: Partial<BreadcrumbOptions>) {
    * @param isLast - Whether this is the last item
    * @returns Whether item should be a link
    */
-  const isItemLink = (item: BreadcrumbItemLegacy, isLast: boolean): boolean => {
+  const isItemLink = (item: BreadcrumbItemType, isLast: boolean): boolean => {
     return Boolean(item.href && !item.active && !isLast);
   };
 
@@ -62,9 +62,9 @@ export function useBreadcrumb(initialOptions?: Partial<BreadcrumbOptions>) {
    * @param jsonString - JSON string of items
    * @returns Array of breadcrumb items
    */
-  const parseItemsFromJson = (jsonString: string): BreadcrumbItemLegacy[] => {
+  const parseItemsFromJson = (jsonString: string): BreadcrumbItemType[] => {
     try {
-      return JSON.parse(jsonString) as BreadcrumbItemLegacy[];
+      return JSON.parse(jsonString) as BreadcrumbItemType[];
     } catch (error) {
       console.error('Error parsing breadcrumb items:', error);
       return [];

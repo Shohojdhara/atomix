@@ -1,4 +1,4 @@
-import React, { ReactNode, memo, forwardRef, Children, cloneElement, isValidElement } from 'react';
+import React, { ReactNode, memo, forwardRef, Children, cloneElement, isValidElement, ElementType } from 'react';
 import { BREADCRUMB } from '../../lib/constants/components';
 
 // Legacy Item Interface
@@ -39,6 +39,9 @@ export interface BreadcrumbItemData {
   className?: string;
 }
 
+// Rename exported type to avoid conflict with the component constant
+export type BreadcrumbItemType = BreadcrumbItemData;
+
 // Compound Component Props
 export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement> {
   /**
@@ -59,7 +62,7 @@ export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement>
   /**
    * Optional click handler for the link
    */
-  onClick?: (event: React.MouseEvent<HTMLAnchorElement | HTMLSpanElement>) => void;
+  onClick?: (event: React.MouseEvent<any>) => void;
 
   /**
    * Optional custom link component
@@ -82,7 +85,7 @@ export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
       onClick,
       className = '',
       style,
-      linkAs: LinkComponent,
+      linkAs,
       linkProps = {},
       ...props
     },
@@ -106,12 +109,16 @@ export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
       ...linkProps,
     };
 
+    const LinkComponent = linkAs;
+
     return (
       <li ref={ref} className={itemClasses} style={style} {...props}>
         {href && !active ? (
           LinkComponent ? (
-            // Cast to any to avoid complex TS issues with dynamic components
-            React.createElement(LinkComponent as any, { href, ...commonLinkProps }, linkContent)
+            // @ts-ignore - Dynamic components are tricky in TS without stricter types
+            <LinkComponent href={href} {...commonLinkProps}>
+              {linkContent}
+            </LinkComponent>
           ) : (
             <a href={href} {...(commonLinkProps as React.HTMLAttributes<HTMLAnchorElement>)}>
               {linkContent}
@@ -166,21 +173,21 @@ export interface BreadcrumbProps {
 
 const BreadcrumbComponent: React.FC<BreadcrumbProps> = memo(
   ({
-    items,
-    divider,
-    className = '',
-    'aria-label': ariaLabel = 'Breadcrumb',
-    LinkComponent,
-    style,
-    children,
-  }) => {
+        items,
+        divider,
+        className = '',
+        'aria-label': ariaLabel = 'Breadcrumb',
+        LinkComponent,
+        style,
+        children,
+      }: BreadcrumbProps) => {
     const breadcrumbClasses = [BREADCRUMB.CLASSES.BASE, className].filter(Boolean).join(' ');
 
     let content: ReactNode;
 
     if (items && items.length > 0) {
       // Legacy rendering
-      content = items.map((item, index) => {
+      content = items.map((item: BreadcrumbItemData, index: number) => {
         const isLast = index === items.length - 1;
 
         return (
@@ -206,10 +213,15 @@ const BreadcrumbComponent: React.FC<BreadcrumbProps> = memo(
           const isLast = index === childrenCount - 1;
           const childProps = child.props as any;
 
-          return cloneElement(child, {
-            active: childProps.active ?? (isLast ? true : undefined),
-            linkAs: childProps.linkAs ?? LinkComponent,
-          } as any);
+          // Extract props from the child element
+          const { active, linkAs, ...otherProps } = childProps;
+
+          const newProps = {
+            active: active ?? (isLast ? true : undefined),
+            linkAs: linkAs ?? LinkComponent,
+          };
+
+          return cloneElement(child, newProps as any);
         }
         return child;
       });
