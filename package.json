@@ -1,6 +1,6 @@
 {
   "name": "@shohojdhara/atomix",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Atomix Design System - A modern component library for web applications",
   "type": "module",
   "sideEffects": [
