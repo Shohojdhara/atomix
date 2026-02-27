@@ -9,7 +9,7 @@
   // CSS custom property defaults
   --atomix-glass-radius: var(--atomix-radius-md, 16px);
   --atomix-glass-transform: none;
-  --atomix-glass-transition: all var(--atomix-transition-duration, 0.15s) ease-out;
+  --atomix-glass-transition: transform var(--atomix-transition-duration, 0.15s) ease-out;
   --atomix-glass-position: absolute;
   --atomix-glass-container-width: 100%;
   --atomix-glass-container-height: 100%;
@@ -114,6 +114,7 @@
     border-radius: var(--atomix-glass-radius);
     transform: var(--atomix-glass-transform);
     transition: var(--atomix-glass-transition);
+    z-index: var(--atomix-z-index-5);
   }
 
   &__border-1 {
