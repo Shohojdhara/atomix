@@ -39,6 +39,8 @@ export const Card = React.memo(
         onFocus,
         href,
         target,
+        // Custom Link
+        LinkComponent,
         // Glass
         glass,
         // Accessibility
@@ -242,17 +244,35 @@ export const Card = React.memo(
 
       // Render as anchor if href is provided
       if (href && !isDisabled) {
-        const anchorElement = (
-          <a
-            {...commonProps}
-            ref={ref as React.Ref<HTMLAnchorElement>}
-            href={href}
-            target={target}
-            rel={target === '_blank' ? 'noopener noreferrer' : undefined}
-          >
-            {cardContent}
-          </a>
-        );
+        let anchorElement: React.ReactElement;
+
+        if (LinkComponent) {
+          const LinkComp = LinkComponent as React.ComponentType<any>;
+          anchorElement = (
+            <LinkComp
+              {...commonProps}
+              ref={ref as React.Ref<HTMLAnchorElement>}
+              href={href}
+              to={href}
+              target={target}
+              rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+            >
+              {cardContent}
+            </LinkComp>
+          );
+        } else {
+          anchorElement = (
+            <a
+              {...commonProps}
+              ref={ref as React.Ref<HTMLAnchorElement>}
+              href={href}
+              target={target}
+              rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+            >
+              {cardContent}
+            </a>
+          );
+        }
 
         if (glass) {
           const glassProps = glass === true ? {} : glass;

@@ -4042,6 +4042,11 @@ export interface CardProps extends BaseComponentProps {
   className?: string;
 
   /**
+   * Optional custom link component (e.g., Next.js Link, React Router Link)
+   */
+  LinkComponent?: React.ElementType;
+
+  /**
    * Optional click handler
    */
   onClick?: (event: React.MouseEvent<HTMLDivElement | HTMLAnchorElement>) => void;

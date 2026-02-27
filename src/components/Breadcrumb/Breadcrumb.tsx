@@ -121,14 +121,13 @@ export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
       ...linkProps,
     };
 
-    const LinkComponent = linkAs;
+    const LinkComponent = linkAs as React.ComponentType<any>;
 
     return (
       <li ref={ref} className={itemClasses} style={style} {...props}>
         {href && !active ? (
-          LinkComponent ? (
-            // @ts-ignore - Dynamic components are tricky in TS without stricter types
-            <LinkComponent href={href} {...commonLinkProps}>
+          linkAs && LinkComponent ? (
+            <LinkComponent href={href} to={href} {...commonLinkProps}>
               {linkContent}
             </LinkComponent>
           ) : (

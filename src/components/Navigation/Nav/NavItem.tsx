@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, ReactNode, forwardRef } from 'react';
 import { NavItemProps } from '../../../lib/types/components';
 import { useNavItem } from '../../../lib/composables/useNavbar';
+import useForkRef from '../../../lib/utils/useForkRef';
 
 /**
  * NavItem component represents a single navigation item that can be a link, dropdown trigger, or mega menu trigger.
@@ -57,7 +58,8 @@ export const NavItem = forwardRef<HTMLLIElement, NavItemProps>(
     const [isActive, setIsActive] = useState(false);
 
     // Ref for detecting outside clicks
-    const itemRef = useRef<HTMLAnchorElement>(null);
+    const itemRef = useRef<any>(null);
+    const combinedRef = useForkRef(ref as any, itemRef);
 
     // Toggle dropdown
     const handleDropdownToggle = (e: React.MouseEvent) => {
@@ -134,8 +136,9 @@ export const NavItem = forwardRef<HTMLLIElement, NavItemProps>(
     const expanded = typeof ariaExpanded !== 'undefined' ? ariaExpanded : isActive;
 
     const linkProps = {
-      ref: itemRef,
+      ref: combinedRef,
       href: href || '#',
+      to: href || '#',
       className: navLinkClass,
       onClick: dropdown || megaMenu ? handleDropdownToggle : handleClick(onClick),
       'aria-disabled': disabled,
@@ -146,7 +149,7 @@ export const NavItem = forwardRef<HTMLLIElement, NavItemProps>(
     };
 
     return (
-      <li ref={ref} className={navItemClass} role="menuitem" aria-haspopup={dropdown || megaMenu}>
+      <li className={navItemClass} role="menuitem" aria-haspopup={dropdown || megaMenu}>
         {LinkComponent ? (
           (() => {
             const Component = LinkComponent as React.ComponentType<any>;

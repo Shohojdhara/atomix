@@ -10,7 +10,7 @@ export type ButtonAsProp = {
   as?: ElementType;
   to?: string;
   href?: string;
-  LinkComponent?: React.ComponentType<any>;
+  LinkComponent?: React.ElementType;
   [key: string]: any;
 };
 
@@ -227,6 +227,7 @@ export const Button = React.memo(
             ...buttonProps,
             ref: ref as any, // LinkComponent usually forwards ref to anchor
             href,
+            to: href,
             target,
             rel: target === '_blank' ? 'noopener noreferrer' : undefined,
           };
