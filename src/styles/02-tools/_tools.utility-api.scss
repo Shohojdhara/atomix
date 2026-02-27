@@ -77,11 +77,11 @@ $utility-defaults: (
           --atomix-u-#{$css-variable-name}: #{$value};
         } @else if $properties {
           @each $property in $properties {
-            #{$property}: $value if(map.get($utility, rtl), null, !important);
+            #{$property}: $value;
           }
         } @else if $value != null {
           // Guard: only emit property declaration if value is not null
-          #{$property-class}: $value if(map.get($utility, rtl), null, !important);
+          #{$property-class}: $value;
         }
 
         // Add local CSS variables if specified
@@ -111,11 +111,11 @@ $utility-defaults: (
           --atomix-u-#{$css-variable-name}#{$modifier}: #{$value};
         } @else if $properties {
           @each $property in $properties {
-            #{$property}: $value if(map.get($utility, rtl), null, !important);
+            #{$property}: $value;
           }
         } @else if $value != null {
           // Guard: only emit property declaration if value is not null
-          #{$base-class}: $value if(map.get($utility, rtl), null, !important);
+          #{$base-class}: $value;
         }
 
         // Add local CSS variables if specified
