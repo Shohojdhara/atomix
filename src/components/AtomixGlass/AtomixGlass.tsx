@@ -475,20 +475,8 @@ export function AtomixGlass({
         <>
           {/* Border elements - all styles (static and dynamic via CSS variables) are in SCSS */}
           {/* Position, size, transform, transition, border-radius all use CSS variables set in glassVars */}
-          <span
-            className={ATOMIX_GLASS.BORDER_1_CLASS}
-            style={{
-              width: glassSize.width,
-              height: glassSize.height,
-            }}
-          />
-          <span
-            className={ATOMIX_GLASS.BORDER_2_CLASS}
-            style={{
-              width: glassSize.width,
-              height: glassSize.height,
-            }}
-          />
+          <span className={ATOMIX_GLASS.BORDER_1_CLASS} />
+          <span className={ATOMIX_GLASS.BORDER_2_CLASS} />
         </>
       )}
     </div>
