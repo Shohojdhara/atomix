@@ -39,7 +39,17 @@ interface MenuDividerProps {
 
 export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>(
   (
-    { children, href = '#', icon, active = false, disabled = false, onClick, className = '' },
+    {
+      children,
+      href = '#',
+      target,
+      linkComponent,
+      icon,
+      active = false,
+      disabled = false,
+      onClick,
+      className = '',
+    },
     ref
   ) => {
     const handleClick = (e: React.MouseEvent) => {
@@ -55,31 +65,46 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>(
 
     const itemClass = `c-menu__item ${active ? 'is-active' : ''} ${disabled ? 'is-disabled' : ''} ${className}`;
 
+    const linkProps = {
+      href,
+      to: href,
+      target,
+      className: 'c-menu__link',
+      onClick: handleClick,
+      'aria-disabled': disabled,
+      'aria-current': (active ? 'page' : undefined) as React.AriaAttributes['aria-current'],
+    };
+
+    const content = (
+      <>
+        {icon &&
+          (typeof icon === 'string' ? (
+            icon.startsWith('c-icon-') ? (
+              <Icon
+                name={mapIconName(icon.replace('c-icon-', ''))}
+                size="sm"
+                className="c-menu__icon"
+              />
+            ) : (
+              <i className={`c-menu__icon ${icon}`}>{typeof icon !== 'string' && icon}</i>
+            )
+          ) : (
+            <span className="c-menu__icon">{icon}</span>
+          ))}
+        {children}
+      </>
+    );
+
     return (
       <li ref={ref} className={itemClass} role="menuitem">
-        <a
-          href={href}
-          className="c-menu__link"
-          onClick={handleClick}
-          aria-disabled={disabled}
-          aria-current={active ? 'page' : undefined}
-        >
-          {icon &&
-            (typeof icon === 'string' ? (
-              icon.startsWith('c-icon-') ? (
-                <Icon
-                  name={mapIconName(icon.replace('c-icon-', ''))}
-                  size="sm"
-                  className="c-menu__icon"
-                />
-              ) : (
-                <i className={`c-menu__icon ${icon}`}>{typeof icon !== 'string' && icon}</i>
-              )
-            ) : (
-              <span className="c-menu__icon">{icon}</span>
-            ))}
-          {children}
-        </a>
+        {linkComponent ? (
+          (() => {
+            const Component = linkComponent as React.ComponentType<any>;
+            return <Component {...linkProps}>{content}</Component>;
+          })()
+        ) : (
+          <a {...linkProps}>{content}</a>
+        )}
       </li>
     );
   }

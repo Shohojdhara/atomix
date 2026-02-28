@@ -1345,6 +1345,11 @@ export interface NavItemProps extends BaseComponentProps {
   href?: string;
 
   /**
+   * Link target attribute (used with href)
+   */
+  target?: '_blank' | '_self' | '_parent' | '_top';
+
+  /**
    * Optional click handler
    */
   onClick?: () => void;
@@ -1410,6 +1415,16 @@ export interface MenuItemProps extends BaseComponentProps {
   href?: string;
 
   /**
+   * Link target attribute (used with href)
+   */
+  target?: '_blank' | '_self' | '_parent' | '_top';
+
+  /**
+   * Optional custom link component
+   */
+  linkComponent?: React.ElementType;
+
+  /**
    * Item icon
    */
   icon?: ReactNode;
@@ -1468,6 +1483,18 @@ export interface MegaMenuLinkProps extends BaseComponentProps {
    * Link href
    */
   href: string;
+
+  /**
+   * Link target attribute (used with href)
+   */
+  target?: '_blank' | '_self' | '_parent' | '_top';
+
+  /**
+   * Optional custom link component
+   */
+  linkComponent?: React.ElementType;
+
+
 
   /**
    * Link content
@@ -1623,7 +1650,7 @@ export interface SideMenuItemProps extends BaseComponentProps {
   /**
    * Link target attribute
    */
-  target?: string;
+  target?: '_blank' | '_self' | '_parent' | '_top';
 
   /**
    * Link rel attribute
@@ -3459,6 +3486,11 @@ export interface DropdownItemProps extends BaseComponentProps {
    * Item href
    */
   href?: string;
+
+  /**
+   * Link target attribute (used with href)
+   */
+  target?: '_blank' | '_self' | '_parent' | '_top';
 
   /**
    * Whether item is active

@@ -90,6 +90,7 @@ export const DropdownItem: React.FC<DropdownItemProps> = memo(
   ({
     children,
     href,
+    target,
     active = false,
     disabled = false,
     icon,
@@ -126,6 +127,7 @@ export const DropdownItem: React.FC<DropdownItemProps> = memo(
     const linkProps = {
       href,
       to: href,
+      target,
       className: itemClasses,
       onClick: handleClick,
       role: 'menuitem',

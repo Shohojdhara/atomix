@@ -10,7 +10,7 @@ import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 export default [
   js.configs.recommended,
   {
-    files: ['**/*.{js,jsx}'],
+    files: ['**/*.{js,jsx,cjs,mjs}'],
     languageOptions: {
       ecmaVersion: 2022, // Support top-level await
       sourceType: 'module',

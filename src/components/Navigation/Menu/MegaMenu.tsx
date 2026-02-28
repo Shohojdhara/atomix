@@ -86,7 +86,7 @@ export const MegaMenuColumn = forwardRef<HTMLDivElement, MegaMenuColumnProps>(
 MegaMenuColumn.displayName = 'MegaMenuColumn';
 
 export const MegaMenuLink = forwardRef<HTMLAnchorElement, MegaMenuLinkProps>(
-  ({ href, children, className = '', disabled = false, onClick }, ref) => {
+  ({ href, target, linkComponent, children, className = '', disabled = false, onClick }, ref) => {
     const handleClick = (e: React.MouseEvent) => {
       if (disabled) {
         e.preventDefault();
@@ -98,17 +98,22 @@ export const MegaMenuLink = forwardRef<HTMLAnchorElement, MegaMenuLinkProps>(
       }
     };
 
-    return (
-      <a
-        ref={ref}
-        href={href}
-        className={`c-menu__subitem-link ${disabled ? 'is-disabled' : ''} ${className}`}
-        onClick={handleClick}
-        aria-disabled={disabled}
-      >
-        {children}
-      </a>
-    );
+    const linkProps = {
+      ref,
+      href,
+      to: href,
+      target,
+      className: `c-menu__subitem-link ${disabled ? 'is-disabled' : ''} ${className}`,
+      onClick: handleClick,
+      'aria-disabled': disabled,
+    };
+
+    if (linkComponent) {
+      const Component = linkComponent as React.ComponentType<any>;
+      return <Component {...linkProps}>{children}</Component>;
+    }
+
+    return <a {...linkProps}>{children}</a>;
   }
 );
 
