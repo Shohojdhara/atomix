@@ -69,6 +69,7 @@ export default [
           jsx: true,
         },
         project: './tsconfig.eslint.json', // Use eslint-specific tsconfig for linting
+        tsconfigRootDir: import.meta.dirname,
       },
       globals: {
         window: 'readonly',

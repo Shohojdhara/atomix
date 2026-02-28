@@ -25,9 +25,12 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
     ...rest
   } = props;
 
+  // Ensure slides is an array to prevent .map errors
+  const validSlides = Array.isArray(slides) ? slides : [];
+
   // Hooks must be called unconditionally - before early return
   const slider = useSlider({
-    slides: slides || [],
+    slides: validSlides,
     slidesToShow,
     spaceBetween,
     loop,
@@ -65,7 +68,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
     return allSlides.length * (slideWidth + spaceBetween) - spaceBetween;
   }, [allSlides.length, slideWidth, spaceBetween]);
 
-  if (!slides || slides.length === 0) {
+  if (validSlides.length === 0) {
     return (
       <div className="c-slider c-slider--empty" style={{ height, width, ...style }}>
         <div className="c-slider__empty-message">No slides available</div>
@@ -131,7 +134,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
               (() => {
                 if (!loop) return index === realIndex;
                 // For triple array: check if this slide index matches current real index
-                return index % slides.length === realIndex;
+                return index % validSlides.length === realIndex;
               })() && 'c-slider__slide--active',
               (slide as any).isClone && 'c-slider__slide--duplicate',
             ]
@@ -211,7 +214,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
 
       {pagination && (
         <div className="c-slider__pagination">
-          {slides.map((_, index) => (
+          {validSlides.map((_, index) => (
             <button
               key={index}
               type="button"

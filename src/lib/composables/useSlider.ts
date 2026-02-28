@@ -26,7 +26,7 @@ export interface UseSliderReturn extends SliderState {
 
 export function useSlider(options: UseSliderOptions): UseSliderReturn {
   const {
-    slides,
+    slides: rawSlides,
     slidesToShow = 1,
     spaceBetween = 0,
     loop = false,
@@ -38,6 +38,8 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     autoplay,
     onSlideChange,
   } = options;
+
+  const slides = Array.isArray(rawSlides) ? rawSlides : [];
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
