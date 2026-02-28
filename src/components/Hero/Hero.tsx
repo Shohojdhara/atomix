@@ -12,21 +12,35 @@ export interface HeroTitleProps extends React.HTMLAttributes<HTMLHeadingElement>
 const HeroTitle = ({ children, className, level = 'h1', ...props }: HeroTitleProps) => {
   const Tag = level as any;
   return (
-    <Tag className={`${HERO.SELECTORS.TITLE.replace('.', '')} ${className || ''}`.trim()} {...props}>
+    <Tag
+      className={`${HERO.SELECTORS.TITLE.replace('.', '')} ${className || ''}`.trim()}
+      {...props}
+    >
       {children}
     </Tag>
   );
 };
 
-const HeroSubtitle = ({ children, className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => {
+const HeroSubtitle = ({
+  children,
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLParagraphElement>) => {
   return (
-    <p className={`${HERO.SELECTORS.SUBTITLE.replace('.', '')} ${className || ''}`.trim()} {...props}>
+    <p
+      className={`${HERO.SELECTORS.SUBTITLE.replace('.', '')} ${className || ''}`.trim()}
+      {...props}
+    >
       {children}
     </p>
   );
 };
 
-const HeroText = ({ children, className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => {
+const HeroText = ({
+  children,
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLParagraphElement>) => {
   return (
     <p className={`${HERO.SELECTORS.TEXT.replace('.', '')} ${className || ''}`.trim()} {...props}>
       {children}
@@ -36,7 +50,10 @@ const HeroText = ({ children, className, ...props }: React.HTMLAttributes<HTMLPa
 
 const HeroActions = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className={`${HERO.SELECTORS.ACTIONS.replace('.', '')} ${className || ''}`.trim()} {...props}>
+    <div
+      className={`${HERO.SELECTORS.ACTIONS.replace('.', '')} ${className || ''}`.trim()}
+      {...props}
+    >
       {children}
     </div>
   );
@@ -46,34 +63,32 @@ export interface HeroContentProps extends React.HTMLAttributes<HTMLDivElement> {
   glass?: AtomixGlassProps | boolean;
 }
 
+const HERO_DEFAULT_GLASS_PROPS = {
+  displacementScale: 60,
+  blurAmount: 3,
+  saturation: 180,
+  aberrationIntensity: 0,
+  borderRadius: 8,
+  overLight: false as const,
+  mode: 'standard' as const,
+};
+
 const HeroContent = ({ children, className, style, glass, ...props }: HeroContentProps) => {
   const contentClass = `${HERO.SELECTORS.CONTENT.replace('.', '')} ${className || ''}`.trim();
 
-  if (glass) {
-    const glassProps = typeof glass === 'boolean' ? {
-      displacementScale: 60,
-      blurAmount: 3,
-      saturation: 180,
-      aberrationIntensity: 0,
-      borderRadius: 8,
-      overLight: false,
-      mode: 'standard' as const,
-    } : glass;
+  const innerContent = glass ? <div className="u-p-4">{children}</div> : children;
 
-    return (
-      <div className={contentClass} style={style} {...props}>
-        <AtomixGlass {...glassProps}>
-          <div className="u-p-4">
-            {children}
-          </div>
-        </AtomixGlass>
-      </div>
-    );
-  }
+  const wrappedContent = glass
+    ? (() => {
+        const glassProps =
+          glass === true ? HERO_DEFAULT_GLASS_PROPS : { ...HERO_DEFAULT_GLASS_PROPS, ...glass };
+        return <AtomixGlass {...glassProps}>{innerContent}</AtomixGlass>;
+      })()
+    : innerContent;
 
   return (
     <div className={contentClass} style={style} {...props}>
-      {children}
+      {wrappedContent}
     </div>
   );
 };
@@ -106,7 +121,13 @@ const HeroImage = ({
   );
 };
 
-const HeroBackground = ({ className, style, src, children, ...props }: React.HTMLAttributes<HTMLDivElement> & { src?: string }) => {
+const HeroBackground = ({
+  className,
+  style,
+  src,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & { src?: string }) => {
   return (
     <div
       className={`${HERO.SELECTORS.BG.replace('.', '')} ${className || ''}`.trim()}
@@ -114,11 +135,7 @@ const HeroBackground = ({ className, style, src, children, ...props }: React.HTM
       {...props}
     >
       {src && (
-         <img
-            src={src}
-            alt="Background"
-            className={HERO.SELECTORS.BG_IMAGE.replace('.', '')}
-          />
+        <img src={src} alt="Background" className={HERO.SELECTORS.BG_IMAGE.replace('.', '')} />
       )}
       {children}
     </div>
@@ -332,11 +349,9 @@ export const Hero: React.FC<HeroProps> & {
   };
 
   const renderContent = () => {
-    const content = (
-      <div
-        className={`${HERO.SELECTORS.CONTENT.replace('.', '')} ${parts?.content?.className || ''}`.trim()}
-        style={parts?.content?.style}
-      >
+    // Build inner content elements ONCE — no duplication
+    const innerElements = (
+      <>
         {subtitle && (
           <p
             className={`${HERO.SELECTORS.SUBTITLE.replace('.', '')} ${parts?.subtitle?.className || ''}`.trim()}
@@ -367,115 +382,30 @@ export const Hero: React.FC<HeroProps> & {
             {actions}
           </div>
         )}
-      </div>
+      </>
     );
 
-    // If glass is explicitly set to false, don't apply glass effect
-    if (glass === false) {
-      return content;
-    }
-
-    // If glass is true or an object, apply glass effect
-    if (glass) {
-      // If glass is true, use default glass props
-      if (glass === true) {
-        return (
-          <div
-            className={`${HERO.SELECTORS.CONTENT.replace('.', '')} ${parts?.content?.className || ''}`.trim()}
-            style={parts?.content?.style}
-          >
-            <AtomixGlass
-              displacementScale={60}
-              blurAmount={3}
-              saturation={180}
-              aberrationIntensity={0}
-              borderRadius={8}
-              overLight={false}
-              mode="standard"
-            >
-              <div className="u-p-4">
-                {subtitle && (
-                  <p
-                    className={`${HERO.SELECTORS.SUBTITLE.replace('.', '')} ${parts?.subtitle?.className || ''}`.trim()}
-                    style={parts?.subtitle?.style}
-                  >
-                    {subtitle}
-                  </p>
-                )}
-                <HeadingTag
-                  className={`${HERO.SELECTORS.TITLE.replace('.', '')} ${parts?.title?.className || ''}`.trim()}
-                  style={parts?.title?.style}
-                >
-                  {title}
-                </HeadingTag>
-                {text && (
-                  <p
-                    className={`${HERO.SELECTORS.TEXT.replace('.', '')} ${parts?.text?.className || ''}`.trim()}
-                    style={parts?.text?.style}
-                  >
-                    {text}
-                  </p>
-                )}
-                {actions && (
-                  <div
-                    className={`${HERO.SELECTORS.ACTIONS.replace('.', '')} ${parts?.actions?.className || ''}`.trim()}
-                    style={parts?.actions?.style}
-                  >
-                    {actions}
-                  </div>
-                )}
-              </div>
+    // Conditionally wrap with AtomixGlass using the standard glass prop pattern
+    const contentBody = glass
+      ? (() => {
+          const glassProps =
+            glass === true ? HERO_DEFAULT_GLASS_PROPS : { ...HERO_DEFAULT_GLASS_PROPS, ...glass };
+          return (
+            <AtomixGlass {...glassProps}>
+              <div className="u-p-4">{innerElements}</div>
             </AtomixGlass>
-          </div>
-        );
-      }
+          );
+        })()
+      : innerElements;
 
-      // If glass is an object, use provided glass props
-      return (
-        <div
-          className={`${HERO.SELECTORS.CONTENT.replace('.', '')} ${parts?.content?.className || ''}`.trim()}
-          style={parts?.content?.style}
-        >
-          <AtomixGlass {...glass}>
-            <div className="u-p-4">
-              {subtitle && (
-                <p
-                  className={`${HERO.SELECTORS.SUBTITLE.replace('.', '')} ${parts?.subtitle?.className || ''}`.trim()}
-                  style={parts?.subtitle?.style}
-                >
-                  {subtitle}
-                </p>
-              )}
-              <HeadingTag
-                className={`${HERO.SELECTORS.TITLE.replace('.', '')} ${parts?.title?.className || ''}`.trim()}
-                style={parts?.title?.style}
-              >
-                {title}
-              </HeadingTag>
-              {text && (
-                <p
-                  className={`${HERO.SELECTORS.TEXT.replace('.', '')} ${parts?.text?.className || ''}`.trim()}
-                  style={parts?.text?.style}
-                >
-                  {text}
-                </p>
-              )}
-              {actions && (
-                <div
-                  className={`${HERO.SELECTORS.ACTIONS.replace('.', '')} ${parts?.actions?.className || ''}`.trim()}
-                  style={parts?.actions?.style}
-                >
-                  {actions}
-                </div>
-              )}
-            </div>
-          </AtomixGlass>
-        </div>
-      );
-    }
-
-    // Default behavior - no glass effect
-    return content;
+    return (
+      <div
+        className={`${HERO.SELECTORS.CONTENT.replace('.', '')} ${parts?.content?.className || ''}`.trim()}
+        style={parts?.content?.style}
+      >
+        {contentBody}
+      </div>
+    );
   };
 
   const renderForegroundImage = () => {
