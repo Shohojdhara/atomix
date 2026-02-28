@@ -46,7 +46,7 @@ describe('Breadcrumb Component', () => {
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-  it('supports custom LinkComponent in compound components', () => {
+  it('supports custom linkComponent in compound components', () => {
     const CustomLink = ({ href, children, ...props }: any) => (
       <a href={href} data-testid="custom-link" {...props}>
         {children} (Custom)
@@ -54,7 +54,7 @@ describe('Breadcrumb Component', () => {
     );
 
     render(
-      <Breadcrumb LinkComponent={CustomLink}>
+      <Breadcrumb linkComponent={CustomLink}>
         <Breadcrumb.Item href="/custom">Link</Breadcrumb.Item>
         <Breadcrumb.Item>Current</Breadcrumb.Item>
       </Breadcrumb>

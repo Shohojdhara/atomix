@@ -95,7 +95,7 @@ export const DropdownItem: React.FC<DropdownItemProps> = memo(
     icon,
     onClick,
     className = '',
-    LinkComponent,
+    linkComponent,
     ...props
   }) => {
     const { close } = useContext(DropdownContext);
@@ -136,9 +136,9 @@ export const DropdownItem: React.FC<DropdownItemProps> = memo(
     if (href && !disabled) {
       return (
         <li>
-          {LinkComponent ? (
+          {linkComponent ? (
             (() => {
-              const Component = LinkComponent as React.ComponentType<any>;
+              const Component = linkComponent as React.ComponentType<any>;
               return (
                 <Component {...linkProps}>
                   {icon && <span className="c-dropdown__menu-item-icon">{icon}</span>}

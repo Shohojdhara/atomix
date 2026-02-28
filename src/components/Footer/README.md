@@ -110,7 +110,7 @@ import { Footer, FooterSection, FooterLink } from '@shohojdhara/atomix';
 | `active` | `boolean` | `false` | Whether link is active |
 | `disabled` | `boolean` | `false` | Whether link is disabled |
 | `onClick` | `(event: MouseEvent) => void` | - | Link click handler |
-| `LinkComponent` | `React.ElementType` | - | Custom link component (e.g., React Router Link) |
+| `linkComponent` | `React.ElementType` | - | Custom link component (e.g., React Router Link) |
 
 ### Social Link Configuration
 

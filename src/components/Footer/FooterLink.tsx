@@ -22,7 +22,7 @@ export const FooterLink = forwardRef<HTMLAnchorElement, FooterLinkProps>(
       onClick,
       children,
       className = '',
-      LinkComponent,
+      linkComponent,
       ...props
     },
     ref
@@ -47,8 +47,8 @@ export const FooterLink = forwardRef<HTMLAnchorElement, FooterLinkProps>(
       ...props,
     };
 
-    if (LinkComponent) {
-      const Component = LinkComponent as React.ComponentType<any>;
+    if (linkComponent) {
+      const Component = linkComponent as React.ComponentType<any>;
       // Only pass href/to if the link is not disabled and href exists
       const componentProps = {
         ref,

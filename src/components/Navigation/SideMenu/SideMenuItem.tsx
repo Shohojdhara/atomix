@@ -18,7 +18,7 @@ import { useSideMenuItem } from '../../../lib/composables/useSideMenu';
  *
  * // With icon and custom link component
  * import Link from 'next/link';
- * <SideMenuItem href="/settings" icon={<Icon name="Settings" />} LinkComponent={Link}>
+ * <SideMenuItem href="/settings" icon={<Icon name="Settings" />} linkComponent={Link}>
  *   Settings
  * </SideMenuItem>
  *
@@ -45,7 +45,7 @@ export const SideMenuItem = forwardRef<HTMLAnchorElement | HTMLButtonElement, Si
       className = '',
       target,
       rel,
-      LinkComponent: LinkComponentProp,
+      linkComponent: linkComponentProp,
     },
     ref
   ) => {
@@ -59,8 +59,8 @@ export const SideMenuItem = forwardRef<HTMLAnchorElement | HTMLButtonElement, Si
 
     // Render as link if href is provided
     if (href) {
-      if (LinkComponentProp) {
-        const LinkComp = LinkComponentProp as React.ComponentType<any>;
+      if (linkComponentProp) {
+        const LinkComp = linkComponentProp as React.ComponentType<any>;
         const linkProps: {
           ref?: React.Ref<HTMLAnchorElement>;
           className?: string;

@@ -78,7 +78,7 @@ export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement>
   linkAs?: React.ElementType<any>;
 
   /**
-   * Link props to pass to the underlying anchor or LinkComponent
+   * Link props to pass to the underlying anchor or linkComponent
    */
   linkProps?: Record<string, any>;
 }
@@ -169,7 +169,7 @@ export interface BreadcrumbProps {
   /**
    * Optional custom link component
    */
-  LinkComponent?: React.ElementType;
+  linkComponent?: React.ElementType;
 
   /**
    * Custom style for the breadcrumb
@@ -187,7 +187,7 @@ const BreadcrumbComponent: React.FC<BreadcrumbProps> = memo(function BreadcrumbB
   divider,
   className = '',
   'aria-label': ariaLabel = 'Breadcrumb',
-  LinkComponent,
+  linkComponent,
   style,
   children,
 }: BreadcrumbProps) {
@@ -209,7 +209,7 @@ const BreadcrumbComponent: React.FC<BreadcrumbProps> = memo(function BreadcrumbB
           onClick={item.onClick as any}
           className={item.className}
           style={item.style}
-          linkAs={LinkComponent}
+          linkAs={linkComponent}
         >
           {item.label}
         </BreadcrumbItem>
@@ -228,7 +228,7 @@ const BreadcrumbComponent: React.FC<BreadcrumbProps> = memo(function BreadcrumbB
 
         const newProps = {
           active: active ?? (isLast ? true : undefined),
-          linkAs: linkAs ?? LinkComponent,
+          linkAs: linkAs ?? linkComponent,
         };
 
         return cloneElement(child, newProps as any);

@@ -1357,7 +1357,7 @@ export interface NavItemProps extends BaseComponentProps {
   /**
    * Optional custom link component
    */
-  LinkComponent?: React.ElementType;
+  linkComponent?: React.ElementType;
 }
 
 /**
@@ -1544,14 +1544,14 @@ export interface SideMenuProps extends BaseComponentProps {
    * ```tsx
    * // Next.js
    * import Link from 'next/link';
-   * <SideMenu LinkComponent={Link} />
+   * <SideMenu linkComponent={Link} />
    *
    * // React Router
    * import { Link } from 'react-router-dom';
-   * <SideMenu LinkComponent={Link} />
+   * <SideMenu linkComponent={Link} />
    * ```
    */
-  LinkComponent?: React.ElementType;
+  linkComponent?: React.ElementType;
 
   /**
    * Menu items
@@ -1632,20 +1632,20 @@ export interface SideMenuItemProps extends BaseComponentProps {
 
   /**
    * Optional custom link component (e.g., Next.js Link, React Router Link)
-   * If not provided, will use LinkComponent from parent SideMenu context
+   * If not provided, will use linkComponent from parent SideMenu context
    *
    * @example
    * ```tsx
    * // Next.js
    * import Link from 'next/link';
-   * <SideMenuItem href="/about" LinkComponent={Link}>About</SideMenuItem>
+   * <SideMenuItem href="/about" linkComponent={Link}>About</SideMenuItem>
    *
    * // React Router
    * import { Link } from 'react-router-dom';
-   * <SideMenuItem href="/about" LinkComponent={Link}>About</SideMenuItem>
+   * <SideMenuItem href="/about" linkComponent={Link}>About</SideMenuItem>
    * ```
    */
-  LinkComponent?: React.ElementType;
+  linkComponent?: React.ElementType;
 }
 
 /**
@@ -3483,7 +3483,7 @@ export interface DropdownItemProps extends BaseComponentProps {
   /**
    * Optional custom link component
    */
-  LinkComponent?: React.ElementType;
+  linkComponent?: React.ElementType;
 }
 
 /**
@@ -4044,7 +4044,7 @@ export interface CardProps extends BaseComponentProps {
   /**
    * Optional custom link component (e.g., Next.js Link, React Router Link)
    */
-  LinkComponent?: React.ElementType;
+  linkComponent?: React.ElementType;
 
   /**
    * Optional click handler
@@ -6549,7 +6549,7 @@ export interface FooterLinkProps extends BaseComponentProps {
   /**
    * Custom link component (e.g., React Router Link)
    */
-  LinkComponent?: React.ElementType;
+  linkComponent?: React.ElementType;
 }
 
 /**

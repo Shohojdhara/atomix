@@ -10,7 +10,7 @@ export type ButtonAsProp = {
   as?: ElementType;
   to?: string;
   href?: string;
-  LinkComponent?: React.ElementType;
+  linkComponent?: React.ElementType;
   [key: string]: any;
 };
 
@@ -51,7 +51,7 @@ export const Button = React.memo(
         'aria-controls': ariaControls,
         tabIndex,
         style,
-        LinkComponent,
+        linkComponent,
         ...props
       },
       ref
@@ -220,12 +220,12 @@ export const Button = React.memo(
 
       // Render as anchor if href is provided
       if (shouldRenderAsLink) {
-        // Use custom LinkComponent if provided (e.g., Next.js Link)
-        if (LinkComponent) {
-          const LinkComp = LinkComponent as React.ComponentType<any>;
+        // Use custom linkComponent if provided (e.g., Next.js Link)
+        if (linkComponent) {
+          const LinkComp = linkComponent as React.ComponentType<any>;
           const linkProps = {
             ...buttonProps,
-            ref: ref as any, // LinkComponent usually forwards ref to anchor
+            ref: ref as any, // linkComponent usually forwards ref to anchor
             href,
             to: href,
             target,

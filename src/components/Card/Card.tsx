@@ -40,7 +40,7 @@ export const Card = React.memo(
         href,
         target,
         // Custom Link
-        LinkComponent,
+        linkComponent,
         // Glass
         glass,
         // Accessibility
@@ -246,8 +246,8 @@ export const Card = React.memo(
       if (href && !isDisabled) {
         let anchorElement: React.ReactElement;
 
-        if (LinkComponent) {
-          const LinkComp = LinkComponent as React.ComponentType<any>;
+        if (linkComponent) {
+          const LinkComp = linkComponent as React.ComponentType<any>;
           anchorElement = (
             <LinkComp
               {...commonProps}

@@ -39,7 +39,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       toggleIcon,
       id,
       glass,
-      LinkComponent,
+      linkComponent,
     },
     ref
   ) => {
@@ -287,7 +287,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
                               active={subItem.active}
                               disabled={subItem.disabled}
                               icon={subItem.icon}
-                              LinkComponent={LinkComponent}
+                              linkComponent={linkComponent}
                             >
                               {subItem.title}
                             </SideMenuItem>
