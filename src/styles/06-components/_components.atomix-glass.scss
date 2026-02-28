@@ -15,10 +15,40 @@
   --atomix-glass-container-height: 100%;
   --atomix-glass-border-width: var(--atomix-spacing-0-5, 0.09375rem);
 
+  // =========================================================================
+  // Z-INDEX STACKING ORDER (local scale, scoped to this component)
+  // =========================================================================
+  // 0: background layers
+  // 1: filter (SVG filter + backdrop)
+  // 2: base / overlay effect layers
+  // 3: hover effect layers
+  // 4: content (user-facing children)
+  // 5: border-1
+  // 6: border-2
+  // 7: overlay-highlight
+  // =========================================================================
+  --_glass-z-background: 0;
+  --_glass-z-filter: 1;
+  --_glass-z-effect: 2;
+  --_glass-z-hover: 3;
+  --_glass-z-overlay-highlight: 4;
+  --_glass-z-border-1: 5;
+  --_glass-z-border-2: 6;
+  --_glass-z-content: 7;
+
   // Base layer styles for all effect layers (hover, border, overlay)
   &__hover-1,
   &__hover-2,
-  &__hover-3,
+  &__hover-3 {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: var(--atomix-glass-radius);
+    transform: var(--atomix-glass-transform);
+    transition: var(--atomix-glass-transition);
+    z-index: var(--_glass-z-hover);
+  }
+
   &__base,
   &__overlay {
     position: absolute;
@@ -27,6 +57,7 @@
     border-radius: var(--atomix-glass-radius);
     transform: var(--atomix-glass-transform);
     transition: var(--atomix-glass-transition);
+    z-index: var(--_glass-z-effect);
   }
 
   // Interactive hover effects
@@ -80,6 +111,7 @@
     transform: var(--atomix-glass-transform);
     transition: var(--atomix-glass-transition);
     mix-blend-mode: screen;
+    z-index: var(--_glass-z-overlay-highlight);
     // Dynamic opacity and background are set via inline styles
     // Opacity is calculated: opacityValues.over * OVERLAY_HIGHLIGHT.OPACITY_MULTIPLIER
     // Background gradient uses constants for positioning
@@ -114,13 +146,12 @@
     border-radius: var(--atomix-glass-radius);
     transform: var(--atomix-glass-transform);
     transition: var(--atomix-glass-transition);
-    z-index: var(--atomix-z-index-5);
   }
 
   &__border-1 {
     opacity: var(--atomix-opacity-20, 0.2);
     mix-blend-mode: screen;
-    z-index: var(--atomix-z-index-5, 5);
+    z-index: var(--_glass-z-border-1);
     background: var(--atomix-glass-border-gradient-1, none);
     box-shadow: var(
       --atomix-glass-border-shadow,
@@ -132,7 +163,7 @@
 
   &__border-2 {
     mix-blend-mode: overlay;
-    z-index: var(--atomix-z-index-6, 6);
+    z-index: var(--_glass-z-border-2);
     background: var(--atomix-glass-border-gradient-2, none);
     box-shadow: var(
       --atomix-glass-border-shadow,
@@ -165,6 +196,7 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
+    z-index: var(--_glass-z-filter);
 
     svg {
       border-radius: var(--atomix-glass-radius);
@@ -189,6 +221,7 @@
     width: var(--atomix-glass-container-width);
     height: var(--atomix-glass-container-height);
     border-radius: var(--atomix-glass-radius);
+    z-index: var(--_glass-z-content);
   }
 
   // Background layers for over-light mode
@@ -198,6 +231,7 @@
     border-radius: var(--atomix-glass-radius);
     transform: var(--atomix-glass-transform);
     transition: var(--atomix-glass-transition);
+    z-index: var(--_glass-z-background);
 
     &--dark {
       background-color: var(--atomix-gray-9, #1f2937);
@@ -210,7 +244,6 @@
 
     &--dark#{&}--over-light {
       opacity: var(--atomix-opacity-50, 0.5);
-      z-index: -1;
     }
 
     &--black#{&}--over-light {

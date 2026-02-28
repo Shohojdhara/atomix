@@ -91,7 +91,7 @@ interface AtomixGlassContainerProps {
   effectiveReducedMotion?: boolean;
   shaderVariant?: FragmentShaderType;
   withLiquidBlur?: boolean;
-  elasticity?: number;
+
   contentRef?: React.RefObject<HTMLDivElement>;
   children?: React.ReactNode;
 }
@@ -129,7 +129,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       effectiveReducedMotion = false,
       shaderVariant = 'liquidGlass',
       withLiquidBlur = false,
-      elasticity = 0,
+
       contentRef,
     },
     ref
@@ -500,10 +500,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
         >
-          <div
-            className={ATOMIX_GLASS.FILTER_CLASS}
-            style={{ zIndex: 1, position: 'absolute', inset: 0 }}
-          >
+          <div className={ATOMIX_GLASS.FILTER_CLASS} style={{ position: 'absolute', inset: 0 }}>
             <GlassFilter
               blurAmount={blurAmount}
               mode={mode}
@@ -552,8 +549,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
               {
                 position: 'relative',
                 textShadow: `var(--atomix-glass-container-text-shadow)`,
-                // Ensure content is always above the filter layer (zIndex 1)
-                zIndex: elasticity > 0 ? 100 : 2,
               } as CSSProperties
             }
           >

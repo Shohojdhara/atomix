@@ -437,7 +437,6 @@ export function AtomixGlass({
         effectiveWithoutEffects={effectiveWithoutEffects}
         effectiveReducedMotion={effectiveReducedMotion}
         shaderVariant={shaderVariant}
-        elasticity={elasticity}
         withLiquidBlur={withLiquidBlur}
       >
         {children}
