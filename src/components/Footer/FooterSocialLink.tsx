@@ -2,6 +2,65 @@ import React, { forwardRef } from 'react';
 import { Icon } from '../Icon/Icon';
 import { FooterSocialLinkProps } from '../../lib/types/components';
 
+// ─── Platform Maps ───────────────────────────────────────────────
+
+const PLATFORM_ICON_MAP: Record<string, string> = {
+  facebook: 'FacebookLogo',
+  twitter: 'TwitterLogo',
+  instagram: 'InstagramLogo',
+  linkedin: 'LinkedinLogo',
+  youtube: 'YoutubeLogo',
+  github: 'GithubLogo',
+  discord: 'DiscordLogo',
+  tiktok: 'TiktokLogo',
+  pinterest: 'PinterestLogo',
+  snapchat: 'SnapchatLogo',
+  whatsapp: 'WhatsappLogo',
+  telegram: 'TelegramLogo',
+  reddit: 'RedditLogo',
+  twitch: 'TwitchLogo',
+  spotify: 'SpotifyLogo',
+  dribbble: 'DribbbleLogo',
+  behance: 'BehanceLogo',
+  medium: 'MediumLogo',
+  dev: 'DevToLogo',
+  codepen: 'CodepenLogo',
+};
+
+const PLATFORM_LABEL_MAP: Record<string, string> = {
+  facebook: 'Facebook',
+  twitter: 'Twitter',
+  instagram: 'Instagram',
+  linkedin: 'LinkedIn',
+  youtube: 'YouTube',
+  github: 'GitHub',
+  discord: 'Discord',
+  tiktok: 'TikTok',
+  pinterest: 'Pinterest',
+  snapchat: 'Snapchat',
+  whatsapp: 'WhatsApp',
+  telegram: 'Telegram',
+  reddit: 'Reddit',
+  twitch: 'Twitch',
+  spotify: 'Spotify',
+  dribbble: 'Dribbble',
+  behance: 'Behance',
+  medium: 'Medium',
+  dev: 'Dev.to',
+  codepen: 'CodePen',
+};
+
+// ─── Helpers ─────────────────────────────────────────────────────
+
+const getPlatformIcon = (platform: string) => {
+  const iconName = PLATFORM_ICON_MAP[platform];
+  return iconName ? <Icon name={iconName as any} /> : <Icon name="Link" />;
+};
+
+const getPlatformLabel = (platform: string): string => PLATFORM_LABEL_MAP[platform] || platform;
+
+// ─── Component ───────────────────────────────────────────────────
+
 /**
  * FooterSocialLink component provides styled social media links with platform-specific icons.
  *
@@ -26,64 +85,6 @@ export const FooterSocialLink = forwardRef<HTMLAnchorElement, FooterSocialLinkPr
     },
     ref
   ) => {
-    const getPlatformIcon = (platform: string) => {
-      const iconMap: Record<string, string> = {
-        facebook: 'FacebookLogo',
-        twitter: 'TwitterLogo',
-        instagram: 'InstagramLogo',
-        linkedin: 'LinkedinLogo',
-        youtube: 'YoutubeLogo',
-        github: 'GithubLogo',
-        discord: 'DiscordLogo',
-        tiktok: 'TiktokLogo',
-        pinterest: 'PinterestLogo',
-        snapchat: 'SnapchatLogo',
-        whatsapp: 'WhatsappLogo',
-        telegram: 'TelegramLogo',
-        reddit: 'RedditLogo',
-        twitch: 'TwitchLogo',
-        spotify: 'SpotifyLogo',
-        dribbble: 'DribbbleLogo',
-        behance: 'BehanceLogo',
-        medium: 'MediumLogo',
-        dev: 'DevToLogo',
-        codepen: 'CodepenLogo',
-      };
-
-      const iconName = iconMap[platform];
-      if (iconName) {
-        return <Icon name={iconName as any} />;
-      }
-
-      return <Icon name="Link" />;
-    };
-
-    const getPlatformLabel = (platform: string) => {
-      const labels: Record<string, string> = {
-        facebook: 'Facebook',
-        twitter: 'Twitter',
-        instagram: 'Instagram',
-        linkedin: 'LinkedIn',
-        youtube: 'YouTube',
-        github: 'GitHub',
-        discord: 'Discord',
-        tiktok: 'TikTok',
-        pinterest: 'Pinterest',
-        snapchat: 'Snapchat',
-        whatsapp: 'WhatsApp',
-        telegram: 'Telegram',
-        reddit: 'Reddit',
-        twitch: 'Twitch',
-        spotify: 'Spotify',
-        dribbble: 'Dribbble',
-        behance: 'Behance',
-        medium: 'Medium',
-        dev: 'Dev.to',
-        codepen: 'CodePen',
-      };
-      return labels[platform] || platform;
-    };
-
     const linkClass = [
       'c-footer__social-link',
       `c-footer__social-link--${platform}`,
