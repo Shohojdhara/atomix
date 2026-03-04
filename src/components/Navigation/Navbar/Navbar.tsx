@@ -152,15 +152,23 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
         shaderVariant: 'premiumGlass' as const,
       };
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+      // AtomixGlass hoists layout props (position/top/left/right/zIndex) to its
+      // root element, keeping all internal layers in the same stacking context.
+      const isFixed = position === 'fixed' || position === 'fixed-bottom';
+
       return (
         <AtomixGlass
           {...glassProps}
           style={{
-            ...(position === 'fixed' && { position: 'fixed' }),
-            left: 0,
-            right: 0,
-            top: 0,
-            zIndex: 1000,
+            ...(isFixed && {
+              position: 'fixed' as const,
+              top: position === 'fixed' ? 0 : undefined,
+              bottom: position === 'fixed-bottom' ? 0 : undefined,
+              left: 0,
+              right: 0,
+              zIndex: 1030, // matches --atomix-navbar-z-index from _components.navbar.scss
+            }),
           }}
         >
           <nav

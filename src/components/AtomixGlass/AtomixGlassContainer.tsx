@@ -489,18 +489,12 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       >
         <div
           className={ATOMIX_GLASS.INNER_CLASS}
-          style={
-            {
-              padding: `var(--atomix-glass-container-padding)`,
-              boxShadow: `var(--atomix-glass-container-box-shadow)`,
-            } as CSSProperties
-          }
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp}
         >
-          <div className={ATOMIX_GLASS.FILTER_CLASS} style={{ position: 'absolute', inset: 0 }}>
+          <div className={ATOMIX_GLASS.FILTER_CLASS}>
             <GlassFilter
               blurAmount={blurAmount}
               mode={mode}
@@ -521,37 +515,14 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             <div
               ref={setForceNoTransition}
               className={ATOMIX_GLASS.FILTER_OVERLAY_CLASS}
-              style={
-                {
-                  filter: `url(#${filterId})`,
-                  backdropFilter: `var(--atomix-glass-container-backdrop)`,
-                  borderRadius: `var(--atomix-glass-container-radius)`,
-                } as CSSProperties
-              }
+              style={{
+                filter: `url(#${filterId})`,
+              }}
             />
-            <div
-              className={ATOMIX_GLASS.FILTER_SHADOW_CLASS}
-              style={
-                {
-                  boxShadow: `var(--atomix-glass-container-shadow)`,
-                  opacity: `var(--atomix-glass-container-shadow-opacity)`,
-                  background: `var(--atomix-glass-container-bg)`,
-                  borderRadius: `var(--atomix-glass-container-radius)`,
-                } as CSSProperties
-              }
-            />
+            <div className={ATOMIX_GLASS.FILTER_SHADOW_CLASS} />
           </div>
 
-          <div
-            ref={contentRef}
-            className={ATOMIX_GLASS.CONTENT_CLASS}
-            style={
-              {
-                position: 'relative',
-                textShadow: `var(--atomix-glass-container-text-shadow)`,
-              } as CSSProperties
-            }
-          >
+          <div ref={contentRef} className={ATOMIX_GLASS.CONTENT_CLASS}>
             {children}
           </div>
         </div>

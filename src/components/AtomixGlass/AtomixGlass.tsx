@@ -162,13 +162,44 @@ export function AtomixGlass({
 
   const shouldRenderOverLightLayers = withOverLightLayers && isOverLight;
 
+  // ── Layout hoisting ──────────────────────────────────────────────────
+  // When position is fixed/sticky the layout props must live on the ROOT
+  // `.c-atomix-glass` element so that every decorative layer (borders,
+  // backgrounds, hover effects) stays in the same stacking context.
+
+  // Extract zIndex from style so it becomes the base for ALL internal
+  // layers via --atomix-glass-base-z-index.  It must NOT be applied as a
+  // real z-index on the root element — that would break the glass effect.
+  const { zIndex: customZIndex, ...restStyle } = style;
+  const isFixedOrSticky = restStyle.position === 'fixed' || restStyle.position === 'sticky';
+
+  const rootLayoutStyle = useMemo<React.CSSProperties>(() => {
+    if (!isFixedOrSticky) return {};
+    const { position: p, top: t, left: l, right: r, bottom: b } = restStyle;
+    return {
+      ...(p && { position: p }),
+      ...(t !== undefined && { top: t }),
+      ...(l !== undefined && { left: l }),
+      ...(r !== undefined && { right: r }),
+      ...(b !== undefined && { bottom: b }),
+    };
+  }, [isFixedOrSticky, restStyle]);
+
   // Calculate base style with transforms
-  const baseStyle = {
-    ...style,
-    ...(!effectiveWithoutEffects && {
-      transform: transformStyle,
-    }),
-  };
+  // When layout is hoisted to the root, strip those props from the container
+  const baseStyle = useMemo(() => {
+    if (isFixedOrSticky) {
+      const { position: _p, top: _t, left: _l, right: _r, bottom: _b, ...visualStyle } = restStyle;
+      return {
+        ...visualStyle,
+        ...(!effectiveWithoutEffects && { transform: transformStyle }),
+      };
+    }
+    return {
+      ...restStyle,
+      ...(!effectiveWithoutEffects && { transform: transformStyle }),
+    };
+  }, [isFixedOrSticky, restStyle, effectiveWithoutEffects, transformStyle]);
 
   // Build className with state modifiers
   const componentClassName = [
@@ -181,14 +212,17 @@ export function AtomixGlass({
     .filter(Boolean)
     .join(' ');
 
-  // Calculate position and size styles
+  // Calculate position and size styles for internal layers
+  // When root is fixed/sticky, internal layers use absolute (relative to root)
   const positionStyles = useMemo(
     () => ({
-      position: (style.position || 'absolute') as React.CSSProperties['position'],
-      top: style.top || 0,
-      left: style.left || 0,
+      position: (isFixedOrSticky
+        ? 'absolute'
+        : restStyle.position || 'absolute') as React.CSSProperties['position'],
+      top: isFixedOrSticky ? 0 : restStyle.top || 0,
+      left: isFixedOrSticky ? 0 : restStyle.left || 0,
     }),
-    [style.position, style.top, style.left]
+    [isFixedOrSticky, restStyle.position, restStyle.top, restStyle.left]
   );
 
   const adjustedSize = useMemo(() => {
@@ -205,14 +239,14 @@ export function AtomixGlass({
     };
 
     return {
-      width: resolveSize(width, style.width, glassSize.width),
-      height: resolveSize(height, style.height, glassSize.height),
+      width: resolveSize(width, restStyle.width, glassSize.width),
+      height: resolveSize(height, restStyle.height, glassSize.height),
     };
   }, [
     width,
     height,
-    style.width,
-    style.height,
+    restStyle.width,
+    restStyle.height,
     positionStyles.position,
     glassSize.width,
     glassSize.height,
@@ -304,6 +338,7 @@ export function AtomixGlass({
     const configBorderOpacity = overLightConfig?.borderOpacity ?? 1;
 
     return {
+      ...(customZIndex !== undefined && { '--atomix-glass-base-z-index': customZIndex }),
       '--atomix-glass-radius': `${effectiveBorderRadius}px`,
       '--atomix-glass-transform': transformStyle || 'none',
       '--atomix-glass-position': positionStyles.position,
@@ -335,6 +370,9 @@ export function AtomixGlass({
       '--atomix-glass-overlay-gradient': isOverLight
         ? `radial-gradient(circle at ${basePosition.x}% ${basePosition.y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_START_BASE + absMx * ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_START_MULTIPLIER}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_MID_STOP}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_END_BASE + absMy * ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_END_MULTIPLIER}) 100%)`
         : `rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.WHITE_OPACITY})`,
+      '--atomix-glass-overlay-highlight-opacity':
+        opacityValues.over * ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.OPACITY_MULTIPLIER,
+      '--atomix-glass-overlay-highlight-bg': `radial-gradient(circle at ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.POSITION_X}% ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.POSITION_Y}%, rgba(255, 255, 255, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.WHITE_OPACITY}) 0%, transparent ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.STOP}%)`,
     } as React.CSSProperties;
   }, [
     gradientValues,
@@ -345,6 +383,7 @@ export function AtomixGlass({
     adjustedSize,
     isOverLight,
     overLightConfig.borderOpacity,
+    customZIndex,
   ]);
 
   // Helper function to render background layers
@@ -361,13 +400,6 @@ export function AtomixGlass({
       ]
         .filter(Boolean)
         .join(' ')}
-      style={{
-        ...positionStyles,
-        height: adjustedSize.height,
-        width: adjustedSize.width,
-        borderRadius: `${effectiveBorderRadius}px`,
-        transform: baseStyle.transform,
-      }}
     />
   );
 
@@ -375,7 +407,7 @@ export function AtomixGlass({
     <div
       {...rest}
       className={componentClassName}
-      style={glassVars}
+      style={{ ...glassVars }}
       role={role || (onClick ? 'button' : undefined)}
       tabIndex={onClick ? (tabIndex ?? 0) : tabIndex}
       aria-label={ariaLabel}
@@ -388,7 +420,7 @@ export function AtomixGlass({
         ref={glassRef}
         contentRef={contentRef}
         className={className}
-        style={baseStyle}
+        style={rootLayoutStyle}
         borderRadius={effectiveBorderRadius}
         displacementScale={
           effectiveWithoutEffects
@@ -460,14 +492,7 @@ export function AtomixGlass({
           <div className={ATOMIX_GLASS.BASE_LAYER_CLASS} />
           <div className={ATOMIX_GLASS.OVERLAY_LAYER_CLASS} />
           {/* Overlay highlight - opacity and background are dynamic, calculated inline */}
-          <div
-            className={ATOMIX_GLASS.OVERLAY_HIGHLIGHT_CLASS}
-            style={{
-              opacity:
-                opacityValues.over * ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.OPACITY_MULTIPLIER,
-              background: `radial-gradient(circle at ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.POSITION_X}% ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.POSITION_Y}%, rgba(255, 255, 255, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.WHITE_OPACITY}) 0%, transparent ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.STOP}%)`,
-            }}
-          />
+          <div className={ATOMIX_GLASS.OVERLAY_HIGHLIGHT_CLASS} />
         </>
       )}
       {withBorder && (

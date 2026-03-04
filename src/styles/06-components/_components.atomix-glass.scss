@@ -19,22 +19,28 @@
   // Z-INDEX STACKING ORDER (local scale, scoped to this component)
   // =========================================================================
   // 0: background layers
-  // 1: filter (SVG filter + backdrop)
+  // 1: container (wraps filter + content)
   // 2: base / overlay effect layers
   // 3: hover effect layers
-  // 4: content (user-facing children)
+  // 4: overlay-highlight
   // 5: border-1
   // 6: border-2
-  // 7: overlay-highlight
   // =========================================================================
-  --_glass-z-background: 0;
-  --_glass-z-filter: 1;
-  --_glass-z-effect: 2;
-  --_glass-z-hover: 3;
-  --_glass-z-overlay-highlight: 4;
-  --_glass-z-border-1: 5;
-  --_glass-z-border-2: 6;
-  --_glass-z-content: 7;
+  // Internal layers within the container:
+  //   filter  = base + 1
+  //   content = base + 7
+  // =========================================================================
+  --atomix-glass-base-z-index: 0;
+
+  --_glass-z-background: calc(var(--atomix-glass-base-z-index) + 0);
+  --_glass-z-container: calc(var(--atomix-glass-base-z-index) + 1);
+  --_glass-z-filter: calc(var(--atomix-glass-base-z-index) + 1);
+  --_glass-z-effect: calc(var(--atomix-glass-base-z-index) + 2);
+  --_glass-z-hover: calc(var(--atomix-glass-base-z-index) + 3);
+  --_glass-z-overlay-highlight: calc(var(--atomix-glass-base-z-index) + 4);
+  --_glass-z-border-1: calc(var(--atomix-glass-base-z-index) + 5);
+  --_glass-z-border-2: calc(var(--atomix-glass-base-z-index) + 6);
+  --_glass-z-content: calc(var(--atomix-glass-base-z-index) + 7);
 
   // Base layer styles for all effect layers (hover, border, overlay)
   &__hover-1,
@@ -112,9 +118,8 @@
     transition: var(--atomix-glass-transition);
     mix-blend-mode: screen;
     z-index: var(--_glass-z-overlay-highlight);
-    // Dynamic opacity and background are set via inline styles
-    // Opacity is calculated: opacityValues.over * OVERLAY_HIGHLIGHT.OPACITY_MULTIPLIER
-    // Background gradient uses constants for positioning
+    opacity: var(--atomix-glass-overlay-highlight-opacity, 0);
+    background: var(--atomix-glass-overlay-highlight-bg, none);
   }
 
   // Border effect layers - matching old version exactly
@@ -180,6 +185,7 @@
     position: relative;
     border-radius: var(--atomix-glass-radius);
     transition: var(--atomix-glass-transition);
+    z-index: var(--_glass-z-container);
   }
 
   &__inner {
@@ -187,6 +193,8 @@
     height: var(--atomix-glass-container-height);
     position: relative;
     border-radius: var(--atomix-glass-radius);
+    padding: var(--atomix-glass-container-padding);
+    box-shadow: var(--atomix-glass-container-box-shadow);
   }
 
   &__filter {
@@ -207,13 +215,18 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    border-radius: var(--atomix-glass-radius);
+    border-radius: var(--atomix-glass-container-radius);
+    backdrop-filter: var(--atomix-glass-container-backdrop);
   }
 
   &__filter-shadow {
     position: absolute;
     inset: var(--atomix-glass-border-width);
     pointer-events: none;
+    border-radius: var(--atomix-glass-container-radius);
+    box-shadow: var(--atomix-glass-container-shadow);
+    opacity: var(--atomix-glass-container-shadow-opacity);
+    background: var(--atomix-glass-container-bg);
   }
 
   &__content {
@@ -222,11 +235,16 @@
     height: var(--atomix-glass-container-height);
     border-radius: var(--atomix-glass-radius);
     z-index: var(--_glass-z-content);
+    text-shadow: var(--atomix-glass-container-text-shadow);
   }
 
   // Background layers for over-light mode
   &__background-layer {
-    position: absolute;
+    position: var(--atomix-glass-position);
+    top: var(--atomix-glass-top);
+    left: var(--atomix-glass-left);
+    width: var(--atomix-glass-width);
+    height: var(--atomix-glass-height);
     pointer-events: none;
     border-radius: var(--atomix-glass-radius);
     transform: var(--atomix-glass-transform);

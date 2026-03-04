@@ -204,7 +204,7 @@ const Healthcare: React.FC = () => {
         borderRadius={10}
         elasticity={0.0}
         saturation={300}
-        style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 1 }}
+        style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 1100000 }}
       >
         <Container>
           <div className="u-flex u-items-center u-justify-between u-py-4">
