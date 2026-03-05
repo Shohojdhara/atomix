@@ -12,8 +12,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import AtomixGlass from '../AtomixGlass';
 import Button from '../../Button/Button';
-import { Toggle } from '../../Toggle/Toggle';
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import React from 'react';
 import type { RefObject } from 'react';
 
@@ -162,19 +161,19 @@ type Story = StoryObj<typeof AtomixGlass>;
  *
  * @component BackgroundWrapper
  */
+interface BgItem {
+  url: string;
+  label: string;
+  tag: 'dark' | 'colorful' | 'light' | 'nature';
+}
+
 interface BackgroundWrapperProps {
   /** Child elements to render inside the wrapper */
   children: React.ReactNode;
-  /** Array of background images */
-  backgrounds?: string[];
+  /** Array of background image objects */
+  backgrounds?: BgItem[];
   /** Active background index */
   activeIndex?: number;
-  /** Optional overlay flag for quick overlay application */
-  overlay?: boolean;
-  /** Custom overlay color in CSS format */
-  overlayColor?: string;
-  /** Overlay opacity (0-1) */
-  overlayOpacity?: number;
   /** Container height */
   height?: string;
   /** Container width */
@@ -187,8 +186,6 @@ interface BackgroundWrapperProps {
   className?: string;
   /** Additional inline styles */
   style?: React.CSSProperties;
-  /** Enable interactive background movement */
-  interactive?: boolean;
 }
 
 /**
@@ -254,16 +251,15 @@ const BackgroundWrapper = ({
     >
       {backgrounds.map((bg, i) => (
         <div
-          key={bg}
+          key={bg.url}
           style={{
             position: 'absolute',
             inset: 0,
-            backgroundImage: `url(${bg})`,
+            backgroundImage: `url(${bg.url})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             opacity: i === activeIndex ? 1 : 0,
-            visibility: i === activeIndex ? 'visible' : 'hidden',
-            transition: 'opacity 800ms ease-in-out',
+            transition: 'opacity 900ms cubic-bezier(0.4, 0, 0.2, 1)',
           }}
         />
       ))}
@@ -311,6 +307,12 @@ export const Playground: Story = {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [backgroundIndex, setBackgroundIndex] = useState(0);
     // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [autoPlay, setAutoPlay] = useState(false);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [activeTag, setActiveTag] = useState<'all' | 'dark' | 'colorful' | 'light' | 'nature'>(
+      'all'
+    );
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [selectedMode, setSelectedMode] = useState<'standard' | 'polar' | 'prominent' | 'shader'>(
       'standard'
     );
@@ -322,6 +324,10 @@ export const Playground: Story = {
     const [showCode, setShowCode] = useState(false);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [copiedCode, setCopiedCode] = useState(false);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [controlTab, setControlTab] = useState<'optics' | 'physics' | 'flags'>('optics');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const backgroundsArrayRef = useRef<typeof backgrounds | null>(null);
 
     const presets = {
       minimal: {
@@ -438,6 +444,31 @@ export const Playground: Story = {
 
     // ... rest of the component
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      if (!autoPlay) return;
+      const interval = setInterval(() => {
+        setBackgroundIndex(prev => (prev + 1) % (backgroundsArrayRef.current?.length ?? 20));
+      }, 4000);
+      return () => clearInterval(interval);
+    }, [autoPlay]);
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      const handler = (e: KeyboardEvent) => {
+        if (e.key === 'ArrowRight')
+          setBackgroundIndex(prev => (prev + 1) % (backgroundsArrayRef.current?.length ?? 20));
+        if (e.key === 'ArrowLeft')
+          setBackgroundIndex(
+            prev =>
+              (prev - 1 + (backgroundsArrayRef.current?.length ?? 20)) %
+              (backgroundsArrayRef.current?.length ?? 20)
+          );
+      };
+      window.addEventListener('keydown', handler);
+      return () => window.removeEventListener('keydown', handler);
+    }, []);
+
     const options = [
       { value: 'liquidGlass', label: 'Liquid Glass (Standard)' },
       { value: 'premiumGlass', label: 'Premium Glass' },
@@ -493,127 +524,261 @@ export const Playground: Story = {
       return 'Heavy';
     };
 
-    const backgrounds = [
-      'https://images.unsplash.com/photo-1579546929518-9e396f3cc809',
-      'https://images.unsplash.com/photo-1734760858517-ff3e30c4a420?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987',
-      'https://images.unsplash.com/photo-1590634875052-89c137f8df21?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2072',
-      'https://images.unsplash.com/photo-1592880476174-2932b3061c30?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070',
-      'https://images.unsplash.com/photo-1591241902480-6cf22542003c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070',
-      'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80&w=2013',
-      'https://images.unsplash.com/photo-1706983677486-3ac9ecbad2e5?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132',
-      'https://images.unsplash.com/photo-1591322874022-2f5daab8d3d5?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070',
-      'https://images.unsplash.com/photo-1709653600438-08b8088fe0c3?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2670',
-      'https://images.unsplash.com/photo-1670758144077-b655e19c75e9?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1974',
-      'https://images.unsplash.com/photo-1719583225873-ea5993eb4fcd?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070',
-      'https://images.unsplash.com/photo-1639135650365-516c5bdb40fc?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2073',
-      'https://images.unsplash.com/photo-1760592150404-adacb88548e2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1035',
-      'https://images.unsplash.com/photo-1638403338703-672ec4b3c19e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1974',
-      'https://images.unsplash.com/photo-1639680774410-ced42af91b80?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987',
-      'https://images.unsplash.com/photo-1636757577341-5c135250786d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987',
-      'https://images.unsplash.com/photo-1653443688877-ff1d74f1e4a0?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=987',
-      'https://images.unsplash.com/photo-1495164678535-ecbd76d9fa7d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2669',
-      'https://images.unsplash.com/photo-1742502575383-b908da0fb3ba?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2673',
-      'https://images.unsplash.com/photo-1627057075078-26c7caf11dc2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2674',
+    // Backgrounds curated for glass testing: vivid colors, high contrast, varied light conditions
+    const backgrounds: {
+      url: string;
+      label: string;
+      tag: 'dark' | 'colorful' | 'light' | 'nature';
+    }[] = [
+      {
+        url: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&q=80&w=1600',
+        label: 'Rainbow Gradient',
+        tag: 'colorful',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=1600',
+        label: 'Mountain Peaks',
+        tag: 'nature',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&q=80&w=1600',
+        label: 'Aurora Borealis',
+        tag: 'dark',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=1600',
+        label: 'Neon City',
+        tag: 'dark',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&q=80&w=1600',
+        label: 'Purple Nebula',
+        tag: 'dark',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?auto=format&fit=crop&q=80&w=1600',
+        label: 'Liquid Ink',
+        tag: 'colorful',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1519608425089-7f3bfa6f6bb8?auto=format&fit=crop&q=80&w=1600',
+        label: 'Ocean Waves',
+        tag: 'nature',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1536514498073-50e69d39c6cf?auto=format&fit=crop&q=80&w=1600',
+        label: 'Pink Sunset',
+        tag: 'colorful',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80&w=1600',
+        label: 'Starfield',
+        tag: 'dark',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1498036882173-b41c28a8ba34?auto=format&fit=crop&q=80&w=1600',
+        label: 'Flower Bloom',
+        tag: 'colorful',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1600',
+        label: 'Alpine Lake',
+        tag: 'nature',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&q=80&w=1600',
+        label: 'Coral Reef',
+        tag: 'colorful',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1483347756197-71ef80e95f73?auto=format&fit=crop&q=80&w=1600',
+        label: 'Storm Clouds',
+        tag: 'dark',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&q=80&w=1600',
+        label: 'Green Forest',
+        tag: 'nature',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=1600',
+        label: 'Tropical Beach',
+        tag: 'light',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1544553543-ad91a1373103?auto=format&fit=crop&q=80&w=1600',
+        label: 'Abstract Prism',
+        tag: 'colorful',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1517816630506-a8c5ccf61608?auto=format&fit=crop&q=80&w=1600',
+        label: 'Desert Dunes',
+        tag: 'light',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1553984840-b8cbc34f5215?auto=format&fit=crop&q=80&w=1600',
+        label: 'Neon Lights',
+        tag: 'dark',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&q=80&w=1600',
+        label: 'Sunrise Mist',
+        tag: 'light',
+      },
+      {
+        url: 'https://images.unsplash.com/photo-1604871000636-074fa5117945?auto=format&fit=crop&q=80&w=1600',
+        label: 'Vivid Abstract',
+        tag: 'colorful',
+      },
     ];
 
     return (
-      <BackgroundWrapper backgrounds={backgrounds} activeIndex={backgroundIndex}>
-        <div className="o-container">
-          <div className="o-grid">
-            <div className="o-grid__col o-grid__col--4">
-              {/* Control Panel */}
-
-              <AtomixGlass blurAmount={10} elasticity={0} displacementScale={20} padding="20px">
+      <BackgroundWrapper backgrounds={backgrounds} activeIndex={backgroundIndex} padding="0">
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+          .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+          }
+          .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+          }
+          .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+          }
+          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+          }
+          .premium-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            border: 2px solid #7AFFD7;
+            margin-top: -6px;
+            transition: transform 0.2s;
+          }
+          .premium-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+          }
+          .premium-slider::-webkit-slider-runnable-track {
+            -webkit-appearance: none;
+            height: 4px;
+            background: transparent;
+          }
+        `,
+          }}
+        />
+        <div className="u-w-100 u-p-3 u-p-lg-4" style={{ boxSizing: 'border-box' }}>
+          <div
+            className="u-grid u-gap-3 u-mx-auto"
+            style={{
+              gridTemplateColumns: 'minmax(300px, 340px) 1fr',
+              maxWidth: '1600px',
+              height: '100%',
+              maxHeight: '100%',
+            }}
+          >
+            {/* Control Panel Sidebar */}
+            <div className="u-h-100 u-relative">
+              <AtomixGlass blurAmount={3} elasticity={0} displacementScale={100} borderRadius={20}>
                 <div
+                  className="u-h-100 u-p-3 custom-scrollbar"
                   style={{
-                    height: '90vh',
                     overflowY: 'auto',
-                    borderRight: '1px solid rgba(255,255,255,0.1)',
-                    padding: '20px',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    borderRadius: '20px',
                   }}
                 >
-                  <div className="u-mb-8">
+                  {/* === HEADER === */}
+                  <div className="u-mb-4">
                     <div
+                      className="u-p-2 u-rounded u-mb-3"
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '12px',
-                        marginBottom: '16px',
+                        background:
+                          'linear-gradient(135deg, rgba(102,126,234,0.2) 0%, rgba(118,75,162,0.2) 100%)',
+                        border: '1px solid rgba(102,126,234,0.3)',
                       }}
                     >
-                      <div
-                        style={{
-                          width: '48px',
-                          height: '48px',
-                          borderRadius: '14px',
-                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '24px',
-                          boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
-                        }}
-                      >
-                        🎮
-                      </div>
-                      <div>
-                        <h2
-                          className="u-m-0 u-text-white u-font-bold"
+                      <div className="u-flex u-items-center u-gap-3">
+                        <div
                           style={{
-                            fontSize: '1.75rem',
-                            background:
-                              'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text',
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '10px',
+                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '16px',
+                            flexShrink: 0,
+                            boxShadow: '0 4px 16px rgba(102, 126, 234, 0.5)',
                           }}
                         >
-                          Advanced Playground
-                        </h2>
-                        <p
-                          className="u-m-0 u-text-white u-opacity-80"
-                          style={{ fontSize: '13px', marginTop: '4px' }}
-                        >
-                          Fine-tune every parameter with live preview
-                        </p>
+                          ✦
+                        </div>
+                        <div>
+                          <div
+                            className="u-font-bold u-fs-sm"
+                            style={{
+                              background:
+                                'linear-gradient(90deg, #fff 0%, rgba(122,255,215,0.9) 100%)',
+                              WebkitBackgroundClip: 'text',
+                              WebkitTextFillColor: 'transparent',
+                              backgroundClip: 'text',
+                              letterSpacing: '-0.3px',
+                            }}
+                          >
+                            AtomixGlass Playground
+                          </div>
+                          <div className="u-fs-xs u-opacity-60 u-mt-1">Live parameter editor</div>
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Performance Indicator */}
                   <div
-                    className="u-mb-6 u-p-4 u-rounded"
+                    className="u-mb-4 u-p-2 u-rounded"
                     style={{
                       background: 'rgba(255,255,255,0.05)',
-                      border: `2px solid ${getPerformanceColor()}`,
+                      border: `1px solid ${getPerformanceColor()}`,
                     }}
                   >
                     <div className="u-flex u-justify-between u-items-center u-mb-2">
-                      <span className="u-text-white u-font-semibold">Performance Score</span>
-                      <span className="u-font-bold" style={{ color: getPerformanceColor() }}>
+                      <span className="u-text-white u-font-semibold u-fs-xs">
+                        Performance Score
+                      </span>
+                      <span
+                        className="u-font-bold u-fs-sm"
+                        style={{ color: getPerformanceColor() }}
+                      >
                         {Math.round(performanceScore)}/100
                       </span>
                     </div>
                     <div
+                      className="u-w-100 u-rounded u-overflow-hidden"
                       style={{
-                        height: '8px',
+                        height: '4px',
                         background: 'rgba(255,255,255,0.1)',
-                        borderRadius: '4px',
-                        overflow: 'hidden',
                       }}
                     >
                       <div
+                        className="u-h-100"
                         style={{
-                          height: '100%',
                           width: `${performanceScore}%`,
                           background: getPerformanceColor(),
-                          transition: 'all 0.3s',
+                          transition: 'all 0.3s ease-out',
                         }}
                       />
                     </div>
                     <div
-                      className="u-mt-2 u-text-center u-text-xs"
-                      style={{ color: getPerformanceColor() }}
+                      className="u-mt-1 u-text-center u-font-medium"
+                      style={{ color: getPerformanceColor(), fontSize: '10px' }}
                     >
                       {getPerformanceLabel()} -{' '}
                       {performanceScore >= 80
@@ -625,60 +790,51 @@ export const Playground: Story = {
                   </div>
 
                   {/* Quick Presets */}
-                  <div className="u-mb-6">
+                  <div className="u-mb-4">
                     <label
-                      className="u-block u-mb-3 u-text-white u-font-semibold"
-                      style={{ fontSize: '14px', letterSpacing: '0.5px' }}
+                      className="u-block u-mb-2 u-text-white u-font-semibold u-fs-xs"
+                      style={{ letterSpacing: '0.5px' }}
                     >
                       ⚡ Quick Presets
                     </label>
                     <div
-                      style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}
+                      className="u-grid u-gap-2"
+                      style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}
                     >
                       {Object.entries(presets).map(([key, preset]) => (
                         <button
                           key={key}
                           onClick={() => applyPreset(key as keyof typeof presets)}
+                          className="u-px-1 u-py-1 u-rounded u-text-white u-text-center u-relative u-overflow-hidden u-flex u-flex-column u-items-center u-justify-center"
                           style={{
-                            padding: '16px 12px',
                             background: 'rgba(255,255,255,0.08)',
-                            border: '2px solid rgba(255,255,255,0.15)',
-                            borderRadius: '16px',
-                            color: 'white',
+                            border: '1px solid rgba(255,255,255,0.15)',
                             cursor: 'pointer',
-                            transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                            textAlign: 'center',
-                            position: 'relative',
-                            overflow: 'hidden',
+                            transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
                           }}
                           onMouseEnter={e => {
                             e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
                             e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
-                            e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                            e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.2)';
+                            e.currentTarget.style.transform = 'translateY(-1px) scale(1.02)';
                           }}
                           onMouseLeave={e => {
                             e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
                             e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)';
                             e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                            e.currentTarget.style.boxShadow = 'none';
                           }}
                         >
                           <div
+                            className="u-mb-1"
                             style={{
-                              fontSize: '2rem',
-                              marginBottom: '8px',
-                              filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
+                              fontSize: '1.25rem',
+                              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
                             }}
                           >
                             {preset.icon}
                           </div>
                           <div
-                            style={{
-                              fontSize: '0.875rem',
-                              fontWeight: 700,
-                              letterSpacing: '0.3px',
-                            }}
+                            className="u-font-bold"
+                            style={{ fontSize: '9px', letterSpacing: '0.3px' }}
                           >
                             {preset.name}
                           </div>
@@ -687,184 +843,665 @@ export const Playground: Story = {
                     </div>
                   </div>
 
-                  {/* Controls */}
-                  {Object.entries(settings).map(([key, value]) => (
-                    <div key={key} className="u-mb-5">
-                      <div className="u-flex u-justify-between u-items-center u-mb-2">
-                        <label
-                          className="u-text-white u-text-sm u-font-medium"
-                          style={{ textTransform: 'capitalize' }}
-                        >
-                          {key.replace(/([A-Z])/g, ' $1').trim()}
-                        </label>
-                        <span className="u-text-white u-opacity-80 u-text-sm u-font-semibold">
-                          {typeof value === 'boolean'
-                            ? value
-                              ? 'On'
-                              : 'Off'
-                            : typeof value === 'number'
-                              ? value.toFixed(
-                                  key.includes('Amount') ||
-                                    key.includes('elasticity') ||
-                                    key.includes('aberration')
-                                    ? 2
-                                    : 0
-                                )
-                              : value}
-                        </span>
-                      </div>
-                      {typeof value === 'boolean' ? (
-                        <Toggle
-                          checked={value as boolean}
-                          onChange={checked => setSettings(prev => ({ ...prev, [key]: checked }))}
-                        />
-                      ) : (
-                        <input
-                          type="range"
-                          min={0}
-                          max={
+                  {/* === TAB NAVIGATION === */}
+                  <div
+                    className="u-flex u-gap-2 u-mb-4 u-p-1 u-rounded-pill"
+                    style={{
+                      background: 'rgba(255,255,255,0.05)',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                    }}
+                  >
+                    {(['optics', 'physics', 'flags'] as const).map(tab => (
+                      <button
+                        key={tab}
+                        onClick={() => setControlTab(tab)}
+                        className="u-flex-grow-1 u-py-2 u-fs-xs u-font-bold u-rounded-pill u-cursor-pointer"
+                        style={{
+                          background: controlTab === tab ? 'rgba(255,255,255,0.1)' : 'transparent',
+                          color: controlTab === tab ? '#fff' : 'rgba(255,255,255,0.5)',
+                          border: 'none',
+                          textTransform: 'capitalize',
+                          transition: 'all 0.2s',
+                          boxShadow: controlTab === tab ? '0 2px 8px rgba(0,0,0,0.2)' : 'none',
+                        }}
+                      >
+                        {tab}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div style={{ minHeight: '300px' }}>
+                    {/* === CONTROLS: OPTICS === */}
+                    {controlTab === 'optics' && (
+                      <div className="u-mb-4 u-animation-fade-in">
+                        <div className="u-flex u-items-center u-gap-2 u-mb-3">
+                          <div
+                            style={{
+                              width: '3px',
+                              height: '14px',
+                              background: 'linear-gradient(180deg, #7AFFD7 0%, #667eea 100%)',
+                              borderRadius: '2px',
+                              flexShrink: 0,
+                            }}
+                          />
+                          <span
+                            className="u-fs-xs u-font-bold u-opacity-60"
+                            style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
+                          >
+                            Optics
+                          </span>
+                        </div>
+                        {(
+                          [
+                            'displacementScale',
+                            'blurAmount',
+                            'saturation',
+                            'aberrationIntensity',
+                          ] as const
+                        ).map(key => {
+                          const value = settings[key];
+                          const max =
                             key === 'displacementScale'
                               ? 200
                               : key === 'saturation'
                                 ? 300
                                 : key === 'aberrationIntensity'
                                   ? 10
-                                  : key === 'borderRadius'
-                                    ? 100
-                                    : key === 'blurAmount'
-                                      ? 10
-                                      : 1
-                          }
-                          step={
-                            key === 'aberrationIntensity' ||
-                            key === 'elasticity' ||
-                            key === 'blurAmount'
-                              ? 0.01
-                              : 1
-                          }
-                          value={value as number}
-                          onChange={e =>
-                            setSettings(prev => ({ ...prev, [key]: parseFloat(e.target.value) }))
-                          }
-                          style={{ width: '100%', height: '6px', accentColor: '#7AFFD7' }}
-                        />
-                      )}
-                    </div>
-                  ))}
+                                  : key === 'blurAmount'
+                                    ? 10
+                                    : 1;
+                          const step =
+                            key === 'aberrationIntensity' || key === 'blurAmount' ? 0.01 : 1;
+                          const label = key
+                            .replace(/([A-Z])/g, ' $1')
+                            .replace(/^./, s => s.toUpperCase());
+                          return (
+                            <div key={key} className="u-mb-4">
+                              <div className="u-flex u-justify-between u-items-baseline u-mb-1">
+                                <label className="u-fs-xs u-font-medium u-opacity-80">
+                                  {label}
+                                </label>
+                                <span
+                                  className="u-fs-xs u-font-bold u-px-2 u-py-1 u-rounded"
+                                  style={{
+                                    background: 'rgba(122,255,215,0.12)',
+                                    color: '#7AFFD7',
+                                    fontVariantNumeric: 'tabular-nums',
+                                    minWidth: '40px',
+                                    textAlign: 'center',
+                                  }}
+                                >
+                                  {(value as number).toFixed(
+                                    key === 'aberrationIntensity' || key === 'blurAmount' ? 2 : 0
+                                  )}
+                                </span>
+                              </div>
+                              <div className="u-relative" style={{ height: '20px' }}>
+                                <input
+                                  type="range"
+                                  min={0}
+                                  max={max}
+                                  step={step}
+                                  value={value as number}
+                                  onChange={e =>
+                                    setSettings(prev => ({
+                                      ...prev,
+                                      [key]: parseFloat(e.target.value),
+                                    }))
+                                  }
+                                  className="premium-slider u-absolute u-w-100 u-m-0"
+                                  style={{
+                                    height: '2px',
+                                    background: `linear-gradient(to right, #7AFFD7 ${((value as number) / max) * 100}%, rgba(255,255,255,0.15) ${((value as number) / max) * 100}%)`,
+                                    borderRadius: '2px',
+                                    outline: 'none',
+                                    appearance: 'none',
+                                    WebkitAppearance: 'none',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
 
-                  {/* Mode Selector */}
-                  <div className="u-mb-5">
-                    <label className="u-block u-mb-2 u-text-white u-font-semibold">
-                      Glass Mode
-                    </label>
-                    <select
-                      value={selectedMode}
-                      onChange={e => setSelectedMode(e.target.value as any)}
-                      style={{
-                        width: '100%',
-                        padding: '12px',
-                        background: 'rgba(255,255,255,0.1)',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        borderRadius: '8px',
-                        color: 'white',
-                        fontSize: '1rem',
-                      }}
-                    >
-                      <option value="standard" style={{ background: '#1a1a1a' }}>
-                        Standard
-                      </option>
-                      <option value="polar" style={{ background: '#1a1a1a' }}>
-                        Polar
-                      </option>
-                      <option value="prominent" style={{ background: '#1a1a1a' }}>
-                        Prominent
-                      </option>
-                      <option value="shader" style={{ background: '#1a1a1a' }}>
-                        Shader
-                      </option>
-                    </select>
+                    {/* === CONTROLS: PHYSICS === */}
+                    {controlTab === 'physics' && (
+                      <div className="u-mb-4 u-animation-fade-in">
+                        <div className="u-flex u-items-center u-gap-2 u-mb-3">
+                          <div
+                            style={{
+                              width: '3px',
+                              height: '14px',
+                              background: 'linear-gradient(180deg, #a78bfa 0%, #ec4899 100%)',
+                              borderRadius: '2px',
+                              flexShrink: 0,
+                            }}
+                          />
+                          <span
+                            className="u-fs-xs u-font-bold u-opacity-60"
+                            style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
+                          >
+                            Physics
+                          </span>
+                        </div>
+                        {(['elasticity', 'borderRadius'] as const).map(key => {
+                          const value = settings[key];
+                          const max = key === 'borderRadius' ? 100 : 1;
+                          const step = key === 'elasticity' ? 0.01 : 1;
+                          const label = key
+                            .replace(/([A-Z])/g, ' $1')
+                            .replace(/^./, s => s.toUpperCase());
+                          return (
+                            <div key={key} className="u-mb-4">
+                              <div className="u-flex u-justify-between u-items-baseline u-mb-1">
+                                <label className="u-fs-xs u-font-medium u-opacity-80">
+                                  {label}
+                                </label>
+                                <span
+                                  className="u-fs-xs u-font-bold u-px-2 u-py-1 u-rounded"
+                                  style={{
+                                    background: 'rgba(167,139,250,0.12)',
+                                    color: '#a78bfa',
+                                    fontVariantNumeric: 'tabular-nums',
+                                    minWidth: '40px',
+                                    textAlign: 'center',
+                                  }}
+                                >
+                                  {(value as number).toFixed(key === 'elasticity' ? 2 : 0)}
+                                </span>
+                              </div>
+                              <div className="u-relative" style={{ height: '20px' }}>
+                                <input
+                                  type="range"
+                                  min={0}
+                                  max={max}
+                                  step={step}
+                                  value={value as number}
+                                  onChange={e =>
+                                    setSettings(prev => ({
+                                      ...prev,
+                                      [key]: parseFloat(e.target.value),
+                                    }))
+                                  }
+                                  className="premium-slider u-absolute u-w-100 u-m-0"
+                                  style={{
+                                    height: '2px',
+                                    background: `linear-gradient(to right, #a78bfa ${((value as number) / max) * 100}%, rgba(255,255,255,0.15) ${((value as number) / max) * 100}%)`,
+                                    borderRadius: '2px',
+                                    outline: 'none',
+                                    appearance: 'none',
+                                    WebkitAppearance: 'none',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* === CONTROLS: ACCESSIBILITY FLAGS === */}
+                    {controlTab === 'flags' && (
+                      <div className="u-mb-4 u-animation-fade-in">
+                        <div className="u-flex u-items-center u-gap-2 u-mb-3">
+                          <div
+                            style={{
+                              width: '3px',
+                              height: '14px',
+                              background: 'linear-gradient(180deg, #f59e0b 0%, #ef4444 100%)',
+                              borderRadius: '2px',
+                              flexShrink: 0,
+                            }}
+                          />
+                          <span
+                            className="u-fs-xs u-font-bold u-opacity-60"
+                            style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
+                          >
+                            Flags
+                          </span>
+                        </div>
+                        <div className="u-grid u-gap-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
+                          {(
+                            [
+                              'overLight',
+                              'reducedMotion',
+                              'highContrast',
+                              'withoutEffects',
+                              'withLiquidBlur',
+                              'withBorder',
+                            ] as const
+                          ).map(key => {
+                            const isOn = settings[key] as boolean;
+                            const label = key
+                              .replace(/([A-Z])/g, ' $1')
+                              .replace(/^./, s => s.toUpperCase());
+                            return (
+                              <button
+                                key={key}
+                                onClick={() => setSettings(prev => ({ ...prev, [key]: !isOn }))}
+                                className="u-flex u-items-center u-gap-2 u-px-3 u-py-2 u-rounded u-text-start"
+                                style={{
+                                  background: isOn
+                                    ? 'rgba(122,255,215,0.1)'
+                                    : 'rgba(255,255,255,0.04)',
+                                  border: isOn
+                                    ? '1px solid rgba(122,255,215,0.35)'
+                                    : '1px solid rgba(255,255,255,0.1)',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s',
+                                  outline: 'none',
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    width: '10px',
+                                    height: '10px',
+                                    borderRadius: '50%',
+                                    background: isOn ? '#7AFFD7' : 'rgba(255,255,255,0.2)',
+                                    flexShrink: 0,
+                                    boxShadow: isOn ? '0 0 8px rgba(122,255,215,0.6)' : 'none',
+                                    transition: 'all 0.2s',
+                                  }}
+                                />
+                                <span
+                                  className="u-fs-xs u-font-medium"
+                                  style={{ color: isOn ? '#7AFFD7' : 'rgba(255,255,255,0.6)' }}
+                                >
+                                  {label}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Shader Variant Selector */}
-                  {selectedMode === 'shader' && (
-                    <div className="u-mb-5">
-                      <label className="u-block u-mb-2 u-text-white u-font-semibold">
-                        Shader Variant
-                      </label>
-                      <select
-                        value={selectedShader}
-                        onChange={e => setSelectedShader(e.target.value as any)}
+                  {/* === GLASS MODE === */}
+                  <div className="u-mb-4">
+                    <div className="u-flex u-items-center u-gap-2 u-mb-2">
+                      <div
                         style={{
-                          width: '100%',
-                          padding: '12px',
-                          background: 'rgba(255,255,255,0.1)',
-                          border: '1px solid rgba(255,255,255,0.2)',
-                          borderRadius: '8px',
-                          color: 'white',
-                          fontSize: '1rem',
+                          width: '3px',
+                          height: '14px',
+                          background: 'linear-gradient(180deg, #60a5fa 0%, #7AFFD7 100%)',
+                          borderRadius: '2px',
+                          flexShrink: 0,
                         }}
+                      />
+                      <span
+                        className="u-fs-xs u-font-bold u-opacity-60"
+                        style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
                       >
+                        Glass Mode
+                      </span>
+                    </div>
+                    <div
+                      className="u-grid u-gap-2"
+                      style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}
+                    >
+                      {(['standard', 'polar', 'prominent', 'shader'] as const).map(mode => (
+                        <button
+                          key={mode}
+                          onClick={() => setSelectedMode(mode)}
+                          className="u-py-2 u-rounded u-text-center u-fs-xs u-font-bold"
+                          style={{
+                            background:
+                              selectedMode === mode
+                                ? 'linear-gradient(135deg, rgba(96,165,250,0.3) 0%, rgba(122,255,215,0.2) 100%)'
+                                : 'rgba(255,255,255,0.05)',
+                            border:
+                              selectedMode === mode
+                                ? '1px solid rgba(122,255,215,0.5)'
+                                : '1px solid rgba(255,255,255,0.1)',
+                            color: selectedMode === mode ? '#7AFFD7' : 'rgba(255,255,255,0.55)',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s',
+                            outline: 'none',
+                            textTransform: 'capitalize',
+                            boxShadow:
+                              selectedMode === mode ? '0 2px 12px rgba(122,255,215,0.15)' : 'none',
+                          }}
+                        >
+                          {mode}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* === SHADER VARIANT === */}
+                  {selectedMode === 'shader' && (
+                    <div className="u-mb-4">
+                      <div className="u-flex u-items-center u-gap-2 u-mb-2">
+                        <div
+                          style={{
+                            width: '3px',
+                            height: '14px',
+                            background: 'linear-gradient(180deg, #f472b6 0%, #a78bfa 100%)',
+                            borderRadius: '2px',
+                            flexShrink: 0,
+                          }}
+                        />
+                        <span
+                          className="u-fs-xs u-font-bold u-opacity-60"
+                          style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
+                        >
+                          Shader Variant
+                        </span>
+                      </div>
+                      <div className="u-grid u-gap-2" style={{ gridTemplateColumns: '1fr 1fr' }}>
                         {options.map(opt => (
-                          <option
+                          <button
                             key={opt.value}
-                            value={opt.value}
-                            style={{ background: '#1a1a1a' }}
+                            onClick={() => setSelectedShader(opt.value as any)}
+                            className="u-py-2 u-px-3 u-rounded u-text-start u-fs-xs u-font-medium"
+                            style={{
+                              background:
+                                selectedShader === opt.value
+                                  ? 'rgba(167,139,250,0.15)'
+                                  : 'rgba(255,255,255,0.04)',
+                              border:
+                                selectedShader === opt.value
+                                  ? '1px solid rgba(167,139,250,0.45)'
+                                  : '1px solid rgba(255,255,255,0.08)',
+                              color:
+                                selectedShader === opt.value ? '#a78bfa' : 'rgba(255,255,255,0.5)',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s',
+                              outline: 'none',
+                            }}
                           >
-                            {opt.label}
-                          </option>
+                            {opt.label.split(' ')[0]}
+                          </button>
                         ))}
-                      </select>
+                      </div>
                     </div>
                   )}
 
                   {/* Background Control */}
-                  <div className="u-mb-6">
-                    <label className="u-block u-mb-2 u-text-white u-font-semibold">
-                      Background Image
-                    </label>
-                    <input
-                      type="range"
-                      min={0}
-                      max={backgrounds.length}
-                      step={1}
-                      value={backgroundIndex}
-                      onChange={e => setBackgroundIndex(parseInt(e.target.value))}
-                      style={{ width: '100%', height: '6px', accentColor: '#7AFFD7' }}
-                    />
-                    <div className="u-mt-2 u-text-center u-text-white u-opacity-70 u-text-xs">
-                      Background {backgroundIndex + 1} of {backgrounds.length}
+                  <div className="u-mb-4">
+                    {/* Header row: label + nav controls */}
+                    <div className="u-flex u-items-center u-justify-between u-mb-2">
+                      <label className="u-block u-text-white u-font-semibold u-fs-sm">
+                        🌄 Background
+                      </label>
+                      <div className="u-flex u-items-center u-gap-2">
+                        {/* Prev / Next */}
+                        <button
+                          onClick={() =>
+                            setBackgroundIndex(
+                              prev => (prev - 1 + backgrounds.length) % backgrounds.length
+                            )
+                          }
+                          title="Previous background (←)"
+                          style={{
+                            background: 'rgba(255,255,255,0.1)',
+                            border: '1px solid rgba(255,255,255,0.15)',
+                            borderRadius: '6px',
+                            color: '#fff',
+                            cursor: 'pointer',
+                            width: '28px',
+                            height: '28px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '14px',
+                            transition: 'all 0.2s',
+                          }}
+                          onMouseEnter={e => {
+                            e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
+                          }}
+                          onMouseLeave={e => {
+                            e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                          }}
+                        >
+                          ‹
+                        </button>
+                        <span
+                          className="u-fs-xs u-opacity-60"
+                          style={{
+                            minWidth: '36px',
+                            textAlign: 'center',
+                            fontVariantNumeric: 'tabular-nums',
+                          }}
+                        >
+                          {backgroundIndex + 1}/{backgrounds.length}
+                        </span>
+                        <button
+                          onClick={() =>
+                            setBackgroundIndex(prev => (prev + 1) % backgrounds.length)
+                          }
+                          title="Next background (→)"
+                          style={{
+                            background: 'rgba(255,255,255,0.1)',
+                            border: '1px solid rgba(255,255,255,0.15)',
+                            borderRadius: '6px',
+                            color: '#fff',
+                            cursor: 'pointer',
+                            width: '28px',
+                            height: '28px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '14px',
+                            transition: 'all 0.2s',
+                          }}
+                          onMouseEnter={e => {
+                            e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
+                          }}
+                          onMouseLeave={e => {
+                            e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                          }}
+                        >
+                          ›
+                        </button>
+                        {/* Auto-play */}
+                        <button
+                          onClick={() => setAutoPlay(p => !p)}
+                          title={autoPlay ? 'Pause slideshow' : 'Start slideshow'}
+                          style={{
+                            background: autoPlay
+                              ? 'rgba(122,255,215,0.15)'
+                              : 'rgba(255,255,255,0.08)',
+                            border: autoPlay
+                              ? '1px solid rgba(122,255,215,0.4)'
+                              : '1px solid rgba(255,255,255,0.15)',
+                            borderRadius: '6px',
+                            color: autoPlay ? '#7AFFD7' : 'rgba(255,255,255,0.7)',
+                            cursor: 'pointer',
+                            width: '28px',
+                            height: '28px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '13px',
+                            transition: 'all 0.2s',
+                          }}
+                        >
+                          {autoPlay ? '⏸' : '▶'}
+                        </button>
+                      </div>
+                    </div>
+                    {/* Tag filter row */}
+                    <div className="u-flex u-gap-2 u-mb-3" style={{ flexWrap: 'wrap' }}>
+                      {(['all', 'dark', 'colorful', 'light', 'nature'] as const).map(tag => (
+                        <button
+                          key={tag}
+                          onClick={() => setActiveTag(tag)}
+                          style={{
+                            padding: '2px 10px',
+                            borderRadius: '20px',
+                            fontSize: '10px',
+                            fontWeight: 700,
+                            textTransform: 'capitalize',
+                            letterSpacing: '0.5px',
+                            cursor: 'pointer',
+                            border:
+                              activeTag === tag
+                                ? '1px solid rgba(122,255,215,0.5)'
+                                : '1px solid rgba(255,255,255,0.15)',
+                            background:
+                              activeTag === tag
+                                ? 'rgba(122,255,215,0.15)'
+                                : 'rgba(255,255,255,0.06)',
+                            color: activeTag === tag ? '#7AFFD7' : 'rgba(255,255,255,0.55)',
+                            transition: 'all 0.18s',
+                          }}
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
+                    {/* Thumbnail grid */}
+                    <div
+                      className="u-grid u-gap-2"
+                      style={{
+                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        maxHeight: '200px',
+                        overflowY: 'auto',
+                        paddingRight: '4px',
+                      }}
+                    >
+                      {backgrounds
+                        .map((bg, idx) => ({ bg, idx }))
+                        .filter(({ bg }) => activeTag === 'all' || bg.tag === activeTag)
+                        .map(({ bg, idx }) => (
+                          <button
+                            key={idx}
+                            onClick={() => setBackgroundIndex(idx)}
+                            className="u-relative u-rounded u-overflow-hidden u-cursor-pointer"
+                            title={bg.label}
+                            style={{
+                              aspectRatio: '1.4',
+                              border:
+                                backgroundIndex === idx
+                                  ? '2px solid #7AFFD7'
+                                  : '2px solid rgba(255,255,255,0.1)',
+                              padding: 0,
+                              background: 'transparent',
+                              transition: 'all 0.2s',
+                              transform: backgroundIndex === idx ? 'scale(0.95)' : 'scale(1)',
+                              opacity: backgroundIndex === idx ? 1 : 0.7,
+                              boxShadow:
+                                backgroundIndex === idx
+                                  ? '0 0 0 1px rgba(122,255,215,0.3), 0 4px 12px rgba(0,0,0,0.3)'
+                                  : 'none',
+                            }}
+                            onMouseEnter={e => {
+                              if (backgroundIndex !== idx) {
+                                e.currentTarget.style.opacity = '1';
+                                e.currentTarget.style.transform = 'scale(1.06)';
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)';
+                              }
+                            }}
+                            onMouseLeave={e => {
+                              if (backgroundIndex !== idx) {
+                                e.currentTarget.style.opacity = '0.7';
+                                e.currentTarget.style.transform = 'scale(1)';
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+                              }
+                            }}
+                          >
+                            <img
+                              src={bg.url}
+                              alt={bg.label}
+                              className="u-w-100 u-h-100"
+                              style={{ objectFit: 'cover', display: 'block' }}
+                            />
+                            {backgroundIndex === idx && (
+                              <div
+                                style={{
+                                  position: 'absolute',
+                                  inset: 0,
+                                  background: 'rgba(122,255,215,0.12)',
+                                  display: 'flex',
+                                  alignItems: 'flex-end',
+                                  padding: '3px 4px',
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    fontSize: '8px',
+                                    fontWeight: 700,
+                                    color: '#7AFFD7',
+                                    letterSpacing: '0.3px',
+                                    lineHeight: 1,
+                                    textShadow: '0 1px 3px rgba(0,0,0,0.8)',
+                                  }}
+                                >
+                                  ✓ Active
+                                </span>
+                              </div>
+                            )}
+                          </button>
+                        ))}
+                    </div>
+                    {/* Current bg label */}
+                    <div className="u-mt-2 u-flex u-items-center u-gap-2">
+                      <div
+                        style={{
+                          width: '8px',
+                          height: '8px',
+                          borderRadius: '50%',
+                          background: '#7AFFD7',
+                          boxShadow: '0 0 6px rgba(122,255,215,0.6)',
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span className="u-fs-xs u-opacity-70" style={{ fontWeight: 600 }}>
+                        {backgrounds[backgroundIndex]?.label}
+                      </span>
+                      <span
+                        className="u-fs-xs u-opacity-40"
+                        style={{ textTransform: 'capitalize', marginLeft: 'auto' }}
+                      >
+                        {backgrounds[backgroundIndex]?.tag}
+                      </span>
+                    </div>
+                    <div className="u-mt-1 u-fs-xs u-opacity-35" style={{ letterSpacing: '0.3px' }}>
+                      Use ← → arrow keys to navigate
                     </div>
                   </div>
 
                   {/* Action Buttons */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  <div className="u-grid u-gap-2" style={{ gridTemplateColumns: '1fr 1fr' }}>
                     <Button
                       variant="primary"
-                      size="md"
+                      size="sm"
                       onClick={() => setShowCode(!showCode)}
-                      style={{ width: '100%' }}
+                      className="u-w-100"
                     >
-                      {showCode ? '👁️ Hide Code' : '💻 Show Code'}
+                      {showCode ? '👁️ Hide' : '💻 Code'}
                     </Button>
                     <Button
                       variant="outline-light"
-                      size="md"
+                      size="sm"
                       onClick={copyCode}
-                      style={{ width: '100%' }}
+                      className="u-w-100 u-relative u-overflow-hidden"
                     >
-                      {copiedCode ? '✓ Copied!' : '📋 Copy Code'}
+                      {copiedCode ? (
+                        <span className="u-text-success u-font-bold">✓ Copied!</span>
+                      ) : (
+                        '📋 Copy'
+                      )}
                     </Button>
                     <Button
                       variant="outline-light"
-                      size="md"
+                      size="sm"
                       onClick={exportConfig}
-                      style={{ width: '100%' }}
+                      className="u-w-100"
                     >
-                      💾 Export Config
+                      💾 Export
                     </Button>
                     <Button
                       variant="ghost"
-                      size="md"
+                      size="sm"
                       onClick={() => {
                         setSettings({
                           displacementScale: 120,
@@ -883,7 +1520,7 @@ export const Playground: Story = {
                         setSelectedMode('standard');
                         setSelectedShader('liquidGlass');
                       }}
-                      style={{ width: '100%' }}
+                      className="u-w-100"
                     >
                       🔄 Reset
                     </Button>
@@ -892,50 +1529,32 @@ export const Playground: Story = {
               </AtomixGlass>
             </div>
             {/* Preview Area */}
-            <div className="o-grid__col o-grid__col--8">
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '3rem',
-                }}
-              >
+            <div className="u-h-100 u-flex u-items-center u-justify-center u-relative u-overflow-hidden">
+              <div className="u-w-100 u-h-100 u-flex u-items-center u-justify-center u-p-2 u-p-lg-4">
                 {showCode ? (
-                  <div style={{ width: '100%' }}>
+                  <div className="u-w-100 u-h-100 u-flex u-items-center">
                     <AtomixGlass
                       displacementScale={80}
                       aberrationIntensity={1}
-                      borderRadius={16}
+                      borderRadius={20}
                       saturation={120}
                     >
-                      <div style={{ padding: '2.5rem' }}>
-                        <div
-                          className="u-flex u-justify-between u-items-center u-mb-4"
-                          style={{ marginBottom: '24px' }}
-                        >
+                      <div className="u-p-6">
+                        <div className="u-flex u-justify-between u-items-center u-mb-6">
                           <div>
                             <h3
-                              className="u-m-0 u-font-bold"
+                              className="u-m-0 u-font-bold u-fs-xl"
                               style={{
-                                fontSize: '1.75rem',
                                 background:
                                   'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',
                                 backgroundClip: 'text',
-                                marginBottom: '8px',
                               }}
                             >
                               💻 Generated Code
                             </h3>
-                            <p
-                              className="u-m-0"
-                              style={{
-                                fontSize: '13px',
-                                color: 'rgba(255, 255, 255, 0.7)',
-                              }}
-                            >
+                            <p className="u-m-0 u-fs-sm u-text-white u-opacity-70 u-mt-1">
                               Copy this code to use in your project
                             </p>
                           </div>
@@ -954,14 +1573,14 @@ export const Playground: Story = {
                           </Button>
                         </div>
                         <pre
+                          className="custom-scrollbar u-rounded u-fs-sm"
                           style={{
+                            overflowX: 'auto',
+                            overflowY: 'auto',
                             background: 'rgba(0,0,0,0.6)',
                             padding: '1.75rem',
-                            borderRadius: '12px',
-                            overflow: 'auto',
-                            maxHeight: '500px',
+                            maxHeight: '400px',
                             color: '#7AFFD7',
-                            fontSize: '0.875rem',
                             lineHeight: 1.7,
                             border: '1px solid rgba(122, 255, 215, 0.2)',
                             fontFamily: 'Monaco, "Courier New", monospace',
@@ -989,269 +1608,297 @@ export const Playground: Story = {
                     withoutEffects={settings.withoutEffects}
                     withLiquidBlur={settings.withLiquidBlur}
                     withBorder={settings.withBorder}
-                    style={{ width: '100%' }}
                   >
-                    <div style={{ padding: '2.5rem', textAlign: 'center' }}>
-                      <div
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '8px',
-                          padding: '10px 24px',
-                          borderRadius: '28px',
-                          background:
-                            'linear-gradient(135deg, rgba(122, 255, 215, 0.25) 0%, rgba(102, 126, 234, 0.25) 100%)',
-                          border: '1px solid rgba(122, 255, 215, 0.3)',
-                          color: '#7AFFD7',
-                          fontSize: '0.875rem',
-                          fontWeight: 700,
-                          letterSpacing: '0.5px',
-                          marginBottom: '2rem',
-                          boxShadow: '0 4px 16px rgba(122, 255, 215, 0.2)',
-                        }}
-                      >
-                        <span style={{ fontSize: '18px' }}>✨</span>
-                        <span>LIVE PREVIEW</span>
-                      </div>
-                      <div
-                        style={{
-                          width: '96px',
-                          height: '96px',
-                          margin: '0 auto 24px',
-                          borderRadius: '24px',
-                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '48px',
-                          boxShadow: '0 12px 32px rgba(102, 126, 234, 0.4)',
-                        }}
-                      >
-                        ✨
-                      </div>
-                      <h2
-                        className="u-mb-4 u-font-bold"
-                        style={{
-                          fontSize: '2.75rem',
-                          background:
-                            'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
-                          WebkitBackgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-                          backgroundClip: 'text',
-                          letterSpacing: '-1px',
-                        }}
-                      >
-                        AtomixGlass
-                      </h2>
-                      <p
-                        className="u-mb-6"
-                        style={{
-                          fontSize: '1.125rem',
-                          lineHeight: 1.7,
-                          color: 'rgba(255, 255, 255, 0.9)',
-                          maxWidth: '600px',
-                          margin: '0 auto 2rem',
-                        }}
-                      >
-                        Adjust the controls on the left to see real-time changes. Each parameter
-                        affects the visual appearance and performance characteristics of the glass
-                        effect.
-                      </p>
-                      <div className="u-flex u-justify-center u-flex-wrap" style={{ gap: '1rem' }}>
-                        <Button variant="primary" size="lg">
-                          Primary Action
-                        </Button>
-                        <Button variant="outline-light" size="lg">
-                          Secondary
-                        </Button>
-                      </div>
-                      {/* Dynamic Info Panel */}
-                      <div className="u-mt-8" style={{ display: 'grid', gap: '1rem' }}>
-                        {/* Current Configuration */}
+                    <div className="u-h-100 u-w-100 custom-scrollbar" style={{ overflowY: 'auto' }}>
+                      <div className="u-p-4 u-p-lg-5 u-text-center">
                         <div
-                          className="u-p-4 u-rounded"
+                          className="u-inline-flex u-items-center u-gap-2 u-px-3 u-py-1 u-rounded-pill u-mb-4 u-fs-xs u-font-bold"
                           style={{
-                            background: 'rgba(255,255,255,0.08)',
-                            border: '1px solid rgba(255,255,255,0.15)',
+                            background:
+                              'linear-gradient(135deg, rgba(122, 255, 215, 0.2) 0%, rgba(102, 126, 234, 0.2) 100%)',
+                            border: '1px solid rgba(122, 255, 215, 0.3)',
+                            color: '#7AFFD7',
+                            letterSpacing: '0.5px',
+                            boxShadow: '0 4px 16px rgba(122, 255, 215, 0.1)',
+                            backdropFilter: 'blur(8px)',
                           }}
                         >
+                          <span className="u-fs-base">✨</span>
+                          <span>LIVE PREVIEW</span>
+                        </div>
+
+                        <div className="u-w-100 u-flex u-justify-center u-mb-6">
                           <div
-                            className="u-mb-3 u-font-semibold u-text-sm"
-                            style={{ color: '#7AFFD7' }}
-                          >
-                            📊 Current Configuration
-                          </div>
-                          <div
+                            className="u-flex u-items-center u-justify-center u-rounded-circle"
                             style={{
-                              display: 'grid',
-                              gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr',
-                              gap: '0.75rem',
+                              width: '80px',
+                              height: '80px',
+                              background:
+                                'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%)',
+                              border: '1px solid rgba(255,255,255,0.3)',
+                              fontSize: '48px',
+                              boxShadow:
+                                '0 12px 32px rgba(0, 0, 0, 0.2), inset 0 2px 0 rgba(255,255,255,0.4)',
+                              backdropFilter: 'blur(12px)',
+                              animation: 'float 6s ease-in-out infinite',
                             }}
                           >
-                            <div>
-                              <div className="u-text-xs u-opacity-70">Mode</div>
-                              <div
-                                className="u-font-semibold"
-                                style={{ textTransform: 'capitalize' }}
-                              >
-                                {selectedMode}
-                              </div>
-                            </div>
-                            <div>
-                              <div className="u-text-xs u-opacity-70">Shader</div>
-                              <div
-                                className="u-font-semibold"
-                                style={{ textTransform: 'capitalize' }}
-                              >
-                                {selectedShader}
-                              </div>
-                            </div>
-                            <div>
-                              <div className="u-text-xs u-opacity-70">Displacement</div>
-                              <div className="u-font-semibold">{settings.displacementScale}px</div>
-                            </div>
-                            <div>
-                              <div className="u-text-xs u-opacity-70">Aberration</div>
-                              <div className="u-font-semibold">
-                                {settings.aberrationIntensity.toFixed(1)}
-                              </div>
-                            </div>
-                            <div>
-                              <div className="u-text-xs u-opacity-70">Blur</div>
-                              <div className="u-font-semibold">
-                                {settings.blurAmount.toFixed(2)}
-                              </div>
-                            </div>
-                            <div>
-                              <div className="u-text-xs u-opacity-70">Elasticity</div>
-                              <div className="u-font-semibold">
-                                {settings.elasticity.toFixed(2)}
-                              </div>
-                            </div>
+                            <style>{`
+                            @keyframes float {
+                              0% { transform: translateY(0px) rotate(0deg); }
+                              50% { transform: translateY(-10px) rotate(5deg); }
+                              100% { transform: translateY(0px) rotate(0deg); }
+                            }
+                          `}</style>
+                            💎
                           </div>
                         </div>
 
-                        {/* Visual Characteristics */}
-                        <div
-                          className="u-p-4 u-rounded"
+                        <h2
+                          className="u-mb-2 u-font-bold"
                           style={{
-                            background: 'rgba(255,255,255,0.08)',
-                            border: '1px solid rgba(255,255,255,0.15)',
+                            fontSize: '2.5rem',
+                            lineHeight: '1.1',
+                            background:
+                              'linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0.6) 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                            letterSpacing: '-1.5px',
+                            textShadow: '0 4px 24px rgba(255,255,255,0.2)',
                           }}
                         >
-                          <div
-                            className="u-mb-3 u-font-semibold u-text-sm"
-                            style={{ color: '#7AFFD7' }}
-                          >
-                            🎨 Visual Characteristics
-                          </div>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                            <div
-                              style={{
-                                padding: '4px 12px',
-                                borderRadius: '12px',
-                                background: settings.withLiquidBlur
-                                  ? 'rgba(122, 255, 215, 0.2)'
-                                  : 'rgba(255,255,255,0.1)',
-                                fontSize: '0.75rem',
-                                border: settings.withLiquidBlur
-                                  ? '1px solid #7AFFD7'
-                                  : '1px solid transparent',
-                              }}
-                            >
-                              {settings.withLiquidBlur ? '✓' : '○'} Liquid Blur
-                            </div>
-                            <div
-                              style={{
-                                padding: '4px 12px',
-                                borderRadius: '12px',
-                                background: settings.withBorder
-                                  ? 'rgba(122, 255, 215, 0.2)'
-                                  : 'rgba(255,255,255,0.1)',
-                                fontSize: '0.75rem',
-                                border: settings.withBorder
-                                  ? '1px solid #7AFFD7'
-                                  : '1px solid transparent',
-                              }}
-                            >
-                              {settings.withBorder ? '✓' : '○'} Border Effect
-                            </div>
-                            <div
-                              style={{
-                                padding: '4px 12px',
-                                borderRadius: '12px',
-                                background: settings.reducedMotion
-                                  ? 'rgba(239, 68, 68, 0.2)'
-                                  : 'rgba(255,255,255,0.1)',
-                                fontSize: '0.75rem',
-                                border: settings.reducedMotion
-                                  ? '1px solid #EF4444'
-                                  : '1px solid transparent',
-                              }}
-                            >
-                              {settings.reducedMotion ? '✓' : '○'} Reduced Motion
-                            </div>
-                            <div
-                              style={{
-                                padding: '4px 12px',
-                                borderRadius: '12px',
-                                background: settings.highContrast
-                                  ? 'rgba(245, 158, 11, 0.2)'
-                                  : 'rgba(255,255,255,0.1)',
-                                fontSize: '0.75rem',
-                                border: settings.highContrast
-                                  ? '1px solid #F59E0B'
-                                  : '1px solid transparent',
-                              }}
-                            >
-                              {settings.highContrast ? '✓' : '○'} High Contrast
-                            </div>
-                          </div>
-                        </div>
+                          Atomix Glass
+                        </h2>
+                        <p
+                          className="u-mb-6 u-mx-auto u-opacity-90"
+                          style={{
+                            fontSize: '1rem',
+                            lineHeight: 1.5,
+                            maxWidth: '540px',
+                            textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+                          }}
+                        >
+                          A meticulously crafted, highly performant WebGL displacement system for
+                          creating stunning frosted glass effects in modern web applications.
+                        </p>
 
-                        {/* Quick Stats */}
-                        <div
-                          className="u-p-4 u-rounded"
-                          style={{
-                            background: 'rgba(255,255,255,0.08)',
-                            border: '1px solid rgba(255,255,255,0.15)',
-                          }}
-                        >
-                          <div
-                            className="u-mb-3 u-font-semibold u-text-sm"
-                            style={{ color: '#7AFFD7' }}
+                        <div className="u-flex u-justify-center u-gap-3 u-flex-wrap">
+                          <Button
+                            variant="primary"
+                            size="md"
+                            className="u-px-5 u-font-bold"
+                            style={{ borderRadius: '12px' }}
                           >
-                            📈 Quick Stats
-                          </div>
+                            Get Started Today
+                          </Button>
+                          <Button
+                            variant="outline-light"
+                            size="md"
+                            className="u-px-5 u-font-bold"
+                            style={{ borderRadius: '12px', background: 'rgba(255,255,255,0.05)' }}
+                          >
+                            View Documentation
+                          </Button>
+                        </div>
+                        {/* Dynamic Info Panel */}
+                        <div className="u-mt-6 u-grid u-gap-3">
+                          {/* Current Configuration */}
                           <div
+                            className="u-p-4 u-rounded u-text-start"
                             style={{
-                              display: 'grid',
-                              gridTemplateColumns: '1fr 1fr 1fr 1fr',
-                              gap: '0.75rem',
-                              fontSize: '0.875rem',
+                              background: 'rgba(255,255,255,0.06)',
+                              border: '1px solid rgba(255,255,255,0.12)',
+                              backdropFilter: 'blur(8px)',
                             }}
                           >
-                            <div>
-                              <span className="u-opacity-70">Saturation:</span>
-                              <span className="u-font-semibold u-ml-2">{settings.saturation}%</span>
+                            <div
+                              className="u-mb-3 u-font-bold u-fs-sm"
+                              style={{ color: '#7AFFD7', letterSpacing: '0.5px' }}
+                            >
+                              📊 Current Configuration Stack
                             </div>
-                            <div>
-                              <span className="u-opacity-70">Radius:</span>
-                              <span className="u-font-semibold u-ml-2">
-                                {settings.borderRadius}px
-                              </span>
+                            <div
+                              className="u-grid u-gap-3"
+                              style={{ gridTemplateColumns: 'repeat(6, 1fr)' }}
+                            >
+                              <div className="u-flex u-flex-column u-gap-1">
+                                <span className="u-fs-xs u-opacity-60 u-font-medium">Mode</span>
+                                <span
+                                  className="u-fs-sm u-font-bold u-text-white"
+                                  style={{ textTransform: 'capitalize' }}
+                                >
+                                  {selectedMode}
+                                </span>
+                              </div>
+                              <div className="u-flex u-flex-column u-gap-1">
+                                <span className="u-fs-xs u-opacity-60 u-font-medium">Shader</span>
+                                <span
+                                  className="u-fs-sm u-font-bold u-text-white"
+                                  style={{ textTransform: 'capitalize' }}
+                                >
+                                  {selectedShader}
+                                </span>
+                              </div>
+                              <div className="u-flex u-flex-column u-gap-1">
+                                <span className="u-fs-xs u-opacity-60 u-font-medium">
+                                  Displacement
+                                </span>
+                                <span className="u-fs-sm u-font-bold u-text-white">
+                                  {settings.displacementScale}px
+                                </span>
+                              </div>
+                              <div className="u-flex u-flex-column u-gap-1">
+                                <span className="u-fs-xs u-opacity-60 u-font-medium">
+                                  Aberration
+                                </span>
+                                <span className="u-fs-sm u-font-bold u-text-white">
+                                  {settings.aberrationIntensity.toFixed(1)}
+                                </span>
+                              </div>
+                              <div className="u-flex u-flex-column u-gap-1">
+                                <span className="u-fs-xs u-opacity-60 u-font-medium">Blur</span>
+                                <span className="u-fs-sm u-font-bold u-text-white">
+                                  {settings.blurAmount.toFixed(2)}
+                                </span>
+                              </div>
+                              <div className="u-flex u-flex-column u-gap-1">
+                                <span className="u-fs-xs u-opacity-60 u-font-medium">
+                                  Elasticity
+                                </span>
+                                <span className="u-fs-sm u-font-bold u-text-white">
+                                  {settings.elasticity.toFixed(2)}
+                                </span>
+                              </div>
                             </div>
-                            <div>
-                              <span className="u-opacity-70">Background:</span>
-                              <span className="u-font-semibold u-ml-2">
-                                {backgroundIndex + 1}/{backgrounds.length}
-                              </span>
+                          </div>
+
+                          {/* Visual Characteristics */}
+                          <div
+                            className="u-p-4 u-rounded u-text-start"
+                            style={{
+                              background: 'rgba(255,255,255,0.06)',
+                              border: '1px solid rgba(255,255,255,0.12)',
+                              backdropFilter: 'blur(8px)',
+                            }}
+                          >
+                            <div
+                              className="u-mb-3 u-font-bold u-fs-sm"
+                              style={{ color: '#7AFFD7', letterSpacing: '0.5px' }}
+                            >
+                              🎨 Visual Characteristics
                             </div>
-                            <div>
-                              <span className="u-opacity-70">Effects:</span>
-                              <span className="u-font-semibold u-ml-2">
-                                {settings.withoutEffects ? 'Disabled' : 'Enabled'}
-                              </span>
+                            <div className="u-flex u-flex-wrap u-gap-2">
+                              <div
+                                className="u-px-3 u-py-1 u-rounded-pill u-fs-xs u-font-bold"
+                                style={{
+                                  background: settings.withLiquidBlur
+                                    ? 'rgba(122, 255, 215, 0.15)'
+                                    : 'rgba(255,255,255,0.05)',
+                                  border: settings.withLiquidBlur
+                                    ? '1px solid rgba(122, 255, 215, 0.4)'
+                                    : '1px solid transparent',
+                                  color: settings.withLiquidBlur
+                                    ? '#7AFFD7'
+                                    : 'rgba(255,255,255,0.6)',
+                                  transition: 'all 0.2s',
+                                }}
+                              >
+                                {settings.withLiquidBlur ? '✓' : '○'} Liquid Blur
+                              </div>
+                              <div
+                                className="u-px-3 u-py-1 u-rounded-pill u-fs-xs u-font-bold"
+                                style={{
+                                  background: settings.withBorder
+                                    ? 'rgba(122, 255, 215, 0.15)'
+                                    : 'rgba(255,255,255,0.05)',
+                                  border: settings.withBorder
+                                    ? '1px solid rgba(122, 255, 215, 0.4)'
+                                    : '1px solid transparent',
+                                  color: settings.withBorder ? '#7AFFD7' : 'rgba(255,255,255,0.6)',
+                                  transition: 'all 0.2s',
+                                }}
+                              >
+                                {settings.withBorder ? '✓' : '○'} Border Effect
+                              </div>
+                              <div
+                                className="u-px-3 u-py-1 u-rounded-pill u-fs-xs u-font-bold"
+                                style={{
+                                  background: settings.reducedMotion
+                                    ? 'rgba(239, 68, 68, 0.15)'
+                                    : 'rgba(255,255,255,0.05)',
+                                  border: settings.reducedMotion
+                                    ? '1px solid rgba(239, 68, 68, 0.4)'
+                                    : '1px solid transparent',
+                                  color: settings.reducedMotion
+                                    ? '#EF4444'
+                                    : 'rgba(255,255,255,0.6)',
+                                  transition: 'all 0.2s',
+                                }}
+                              >
+                                {settings.reducedMotion ? '✓' : '○'} Reduced Motion
+                              </div>
+                              <div
+                                className="u-px-3 u-py-1 u-rounded-pill u-fs-xs u-font-bold"
+                                style={{
+                                  background: settings.highContrast
+                                    ? 'rgba(245, 158, 11, 0.15)'
+                                    : 'rgba(255,255,255,0.05)',
+                                  border: settings.highContrast
+                                    ? '1px solid rgba(245, 158, 11, 0.4)'
+                                    : '1px solid transparent',
+                                  color: settings.highContrast
+                                    ? '#F59E0B'
+                                    : 'rgba(255,255,255,0.6)',
+                                  transition: 'all 0.2s',
+                                }}
+                              >
+                                {settings.highContrast ? '✓' : '○'} High Contrast
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Quick Stats */}
+                          <div
+                            className="u-p-4 u-rounded u-text-start"
+                            style={{
+                              background: 'rgba(255,255,255,0.06)',
+                              border: '1px solid rgba(255,255,255,0.12)',
+                              backdropFilter: 'blur(8px)',
+                            }}
+                          >
+                            <div
+                              className="u-mb-3 u-font-bold u-fs-sm"
+                              style={{ color: '#7AFFD7', letterSpacing: '0.5px' }}
+                            >
+                              📈 Quick Stats
+                            </div>
+                            <div
+                              className="u-grid u-gap-3"
+                              style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}
+                            >
+                              <div className="u-flex u-items-center u-fs-sm">
+                                <span className="u-opacity-60 u-font-medium">Saturation:</span>
+                                <span className="u-font-bold u-ml-2">{settings.saturation}%</span>
+                              </div>
+                              <div className="u-flex u-items-center u-fs-sm">
+                                <span className="u-opacity-60 u-font-medium">Radius:</span>
+                                <span className="u-font-bold u-ml-2">
+                                  {settings.borderRadius}px
+                                </span>
+                              </div>
+                              <div className="u-flex u-items-center u-fs-sm">
+                                <span className="u-opacity-60 u-font-medium">Bg:</span>
+                                <span className="u-font-bold u-ml-2">
+                                  {backgroundIndex + 1}/{backgrounds.length}
+                                </span>
+                              </div>
+                              <div className="u-flex u-items-center u-fs-sm">
+                                <span className="u-opacity-60 u-font-medium">Effects:</span>
+                                <span className="u-font-bold u-ml-2">
+                                  {settings.withoutEffects ? 'Off' : 'On'}
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>

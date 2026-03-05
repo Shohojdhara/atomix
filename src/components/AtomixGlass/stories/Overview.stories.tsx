@@ -272,9 +272,9 @@ type Story = StoryObj<typeof meta>;
 export const BasicUsage: Story = {
   args: {
     children: (
-      <div className="u-text-center">
-        <h2 className="u-mb-4 u-mt-0 u-text-white u-text-28">Basic Glass Effect</h2>
-        <p className="u-mb-6 u-mt-0 u-text-white u-opacity-90">
+      <div className="u-text-center u-flex u-flex-column u-items-center u-justify-center">
+        <h2 className="u-mb-4 u-mt-0 u-text-white u-fs-2xl u-font-bold">Basic Glass Effect</h2>
+        <p className="u-mb-6 u-mt-0 u-text-white u-opacity-90 u-fs-base">
           This is a basic AtomixGlass component with default settings.
         </p>
         <Button variant="primary" glass>
@@ -284,15 +284,13 @@ export const BasicUsage: Story = {
     ),
     padding: '32px', // Increased padding for better visual appearance
   },
-  render: args => (
-    <div className="u-bg-gradient-to-br u-from-indigo-500 u-via-purple-500 u-to-blue-500 u-min-h-screen u-w-full u-flex u-items-center u-justify-center">
-      <div className="u-w-full u-h-full">
-        <div className="u-flex u-justify-center u-items-center u-h-full">
-          <AtomixGlass {...args} />
-        </div>
-      </div>
-    </div>
-  ),
+  decorators: [
+    Story => (
+      <BackgroundWrapper backgroundImage={backgroundImages[2]} overlay overlayOpacity={0.2}>
+        <Story />
+      </BackgroundWrapper>
+    ),
+  ],
   parameters: {
     docs: {
       description: {
@@ -306,8 +304,8 @@ export const WithAllProps: Story = {
   args: {
     children: (
       <div className="u-text-center">
-        <h2 className="u-mb-4 u-mt-0 u-text-white u-text-24">Fully Configured Glass</h2>
-        <p className="u-mb-6 u-mt-0 u-text-white u-opacity-90 u-text-16">
+        <h2 className="u-mb-4 u-mt-0 u-text-white u-fs-2xl u-font-bold">Fully Configured Glass</h2>
+        <p className="u-mb-6 u-mt-0 u-text-white u-opacity-90 u-fs-base">
           This glass component uses all configurable properties.
         </p>
         <div className="u-flex u-gap-4 u-justify-center">
@@ -331,13 +329,13 @@ export const WithAllProps: Story = {
     padding: '32px', // Increased padding for better visual appearance
     onClick: mockHandlers.onClick,
   },
-  render: args => (
-    <BackgroundWrapper backgroundImage={backgroundImages[0]}>
-      <div className="u-flex u-justify-center u-items-center u-h-full">
-        <AtomixGlass {...args} />
-      </div>
-    </BackgroundWrapper>
-  ),
+  decorators: [
+    Story => (
+      <BackgroundWrapper backgroundImage={backgroundImages[0]} overlay overlayOpacity={0.3}>
+        <Story />
+      </BackgroundWrapper>
+    ),
+  ],
   parameters: {
     docs: {
       description: {
