@@ -51,21 +51,8 @@ export const calculateMouseInfluence = (mouseOffset: MousePosition): number => {
   return Math.min(0.8, influence); // Tighter cap to prevent blur/filter blow-out
 };
 
-/**
- * Calculate overlight intensity based on background and mouse position
- */
-export const calculateOverLightIntensity = (
-  mouseOffset: MousePosition,
-  baseIntensity: number
-): number => {
-  if (!mouseOffset || typeof mouseOffset.x !== 'number' || typeof mouseOffset.y !== 'number') {
-    return baseIntensity;
-  }
 
-  // Calculate additional intensity based on mouse position
-  const mouseInfluence = calculateMouseInfluence(mouseOffset);
-  return Math.min(1.0, baseIntensity * (1 + mouseInfluence * 0.3));
-};
+
 
 /**
  * Clamp blur value to minimum and maximum with overlight consideration
@@ -236,6 +223,32 @@ export const extractBorderRadiusFromChildren = (children: React.ReactNode): numb
   }
 
   return CONSTANTS.DEFAULT_CORNER_RADIUS;
+};
+
+/**
+ * Smoothstep interpolation — hermite S-curve
+ * Creates a smooth ease-in / ease-out transition from 0 to 1.
+ * `t` is clamped to [0, 1] before evaluation.
+ */
+export const smoothstep = (t: number): number => {
+  const clamped = Math.max(0, Math.min(1, t));
+  return clamped * clamped * (3 - 2 * clamped);
+};
+
+/**
+ * Linear interpolation between `a` and `b` by factor `t` ∈ [0, 1]
+ */
+export const lerp = (a: number, b: number, t: number): number => {
+  return a + (b - a) * t;
+};
+
+/**
+ * Soft clamp — exponentially approaches `max` without a hard cutoff.
+ * Gives a natural deceleration curve near the limit.
+ */
+export const softClamp = (value: number, max: number): number => {
+  if (max <= 0) return 0;
+  return max * (1 - Math.exp(-value / max));
 };
 
 /**

@@ -15,12 +15,12 @@ import type {
 import { ATOMIX_GLASS } from '../constants/components';
 import { globalMouseTracker } from './shared-mouse-tracker';
 import {
-  calculateDistance,
   calculateElementCenter,
   calculateMouseInfluence,
   extractBorderRadiusFromChildren,
   extractBorderRadiusFromDOMElement,
   validateGlassSize,
+  lerp,
 } from '../../components/AtomixGlass/glass-utils';
 import { updateAtomixGlassStyles } from './useAtomixGlassStyles';
 
@@ -179,8 +179,6 @@ interface UseAtomixGlassReturn {
   };
 
   // Transform calculations
-  elasticTranslation: { x: number; y: number };
-  directionalScale: string;
   transformStyle: string;
 
   // Event handlers
@@ -188,7 +186,6 @@ interface UseAtomixGlassReturn {
   handleMouseLeave: () => void;
   handleMouseDown: () => void;
   handleMouseUp: () => void;
-  handleMouseMove: (e: MouseEvent) => void;
   handleKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
@@ -229,6 +226,14 @@ export function useAtomixGlass({
   const cachedRectRef = useRef<DOMRect | null>(null);
   const internalGlobalMousePositionRef = useRef<MousePosition>({ x: 0, y: 0 });
   const internalMouseOffsetRef = useRef<MousePosition>({ x: 0, y: 0 });
+
+  // ── Lerp smoothing refs ───────────────────────────────────────────────
+  // Target positions that raw mouse events write to;
+  // the lerp loop continuously interpolates the "current" refs toward these.
+  const targetMouseOffsetRef = useRef<MousePosition>({ x: 0, y: 0 });
+  const targetGlobalMousePositionRef = useRef<MousePosition>({ x: 0, y: 0 });
+  const lerpRafRef = useRef<number | null>(null);
+  const lerpActiveRef = useRef(false);
 
   const [dynamicBorderRadius, setDynamicCornerRadius] = useState<number>(
     CONSTANTS.DEFAULT_CORNER_RADIUS
@@ -310,7 +315,36 @@ export function useAtomixGlass({
     return () => clearTimeout(timeoutId);
   }, [children, debugBorderRadius, contentRef]);
 
-  // Media query handlers and background detection
+  // Media query detection for reduced motion and high contrast
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+      return undefined;
+    }
+
+    const mediaQueryReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const mediaQueryHighContrast = window.matchMedia('(prefers-contrast: high)');
+
+    setUserPrefersReducedMotion(mediaQueryReducedMotion.matches);
+    setUserPrefersHighContrast(mediaQueryHighContrast.matches);
+
+    const handleReducedMotionChange = (e: MediaQueryListEvent) => {
+      setUserPrefersReducedMotion(e.matches);
+    };
+
+    const handleHighContrastChange = (e: MediaQueryListEvent) => {
+      setUserPrefersHighContrast(e.matches);
+    };
+
+    mediaQueryReducedMotion.addEventListener('change', handleReducedMotionChange);
+    mediaQueryHighContrast.addEventListener('change', handleHighContrastChange);
+
+    return () => {
+      mediaQueryReducedMotion.removeEventListener('change', handleReducedMotionChange);
+      mediaQueryHighContrast.removeEventListener('change', handleHighContrastChange);
+    };
+  }, []);
+
+  // Background detection for overLight auto-detect
   useEffect(() => {
     // Only run auto-detection for 'auto' mode or object config (which uses auto-detection)
     const shouldDetect = (overLight === 'auto' || (typeof overLight === 'object' && overLight !== null));
@@ -442,44 +476,8 @@ export function useAtomixGlass({
       setDetectedOverLight(false);
     }
 
-    if (typeof window.matchMedia !== 'function') {
-      return undefined;
-    }
-
-    try {
-      const mediaQueryReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const mediaQueryHighContrast = window.matchMedia('(prefers-contrast: high)');
-
-      setUserPrefersReducedMotion(mediaQueryReducedMotion.matches);
-      setUserPrefersHighContrast(mediaQueryHighContrast.matches);
-
-      const handleReducedMotionChange = (e: MediaQueryListEvent) => {
-        setUserPrefersReducedMotion(e.matches);
-      };
-
-      const handleHighContrastChange = (e: MediaQueryListEvent) => {
-        setUserPrefersHighContrast(e.matches);
-      };
-
-      if (mediaQueryReducedMotion.addEventListener) {
-        mediaQueryReducedMotion.addEventListener('change', handleReducedMotionChange);
-        mediaQueryHighContrast.addEventListener('change', handleHighContrastChange);
-      } else if (mediaQueryReducedMotion.addListener) {
-        mediaQueryReducedMotion.addListener(handleReducedMotionChange);
-        mediaQueryHighContrast.addListener(handleHighContrastChange);
-      }
-
-      return () => {
-        try {
-            // cleanup
-        } catch (cleanupError) {
-          // ignore
-        }
-      };
-    } catch (error) {
-      return undefined;
-    }
-  }, [overLight, glassRef, debugOverLight]);
+    return undefined;
+  }, [overLight, glassRef]);
 
   /**
    * Get effective overLight value based on configuration
@@ -510,21 +508,23 @@ export function useAtomixGlass({
     []
   );
 
-  // Calculate Base OverLight Config (without mouse influence)
-  const baseOverLightConfig = useMemo(() => {
+  const overLightConfig = useMemo(() => {
     const isOverLight = getEffectiveOverLight();
-    // Use static mouse influence for base config
-    const mouseInfluence = 0;
+    const hoverIntensity = isHovered ? 1.4 : 1;
+    const activeIntensity = isActive ? 1.6 : 1;
 
-    const baseOpacity = isOverLight ? Math.min(0.6, Math.max(0.2, 0.5)) : 0;
+    // More robust overlight configuration with better defaults and clamping
+    const baseOpacity = isOverLight
+      ? Math.min(0.6, Math.max(0.2, 0.5 * hoverIntensity * activeIntensity))
+      : 0;
 
     const baseConfig = {
       isOverLight,
       threshold: 0.7,
       opacity: baseOpacity,
-      contrast: 1, // Base contrast
-      brightness: 1, // Base brightness
-      saturationBoost: 1.3,
+      contrast: 1.4,
+      brightness: 0.9,
+      saturationBoost: 1.3, // Fixed value — dynamic saturation amplifies perceived displacement
       shadowIntensity: 0.9,
       borderOpacity: 0.7,
     };
@@ -532,42 +532,105 @@ export function useAtomixGlass({
     if (typeof overLight === 'object' && overLight !== null) {
       const objConfig = overLight as OverLightObjectConfig;
 
-      const validatedThreshold = validateConfigValue(objConfig.threshold, 0.1, 1.0, baseConfig.threshold);
+      const validatedThreshold = validateConfigValue(
+        objConfig.threshold,
+        0.1,
+        1.0,
+        baseConfig.threshold
+      );
       const validatedOpacity = validateConfigValue(objConfig.opacity, 0.1, 1.0, baseConfig.opacity);
-      const validatedContrast = validateConfigValue(objConfig.contrast, 0.5, 2.5, baseConfig.contrast);
-      const validatedBrightness = validateConfigValue(objConfig.brightness, 0.5, 2.0, baseConfig.brightness);
-      const validatedSaturationBoost = validateConfigValue(objConfig.saturationBoost, 0.5, 3.0, baseConfig.saturationBoost);
+      const validatedContrast = validateConfigValue(
+        objConfig.contrast,
+        0.5,
+        2.5,
+        baseConfig.contrast
+      );
+      const validatedBrightness = validateConfigValue(
+        objConfig.brightness,
+        0.5,
+        2.0,
+        baseConfig.brightness
+      );
+      const validatedSaturationBoost = validateConfigValue(
+        objConfig.saturationBoost,
+        0.5,
+        3.0,
+        baseConfig.saturationBoost
+      );
 
-      return {
+      const finalConfig = {
         ...baseConfig,
         threshold: validatedThreshold,
-        opacity: validatedOpacity,
+        opacity: validatedOpacity * hoverIntensity * activeIntensity,
         contrast: validatedContrast,
         brightness: validatedBrightness,
         saturationBoost: validatedSaturationBoost,
       };
+
+      if (
+        (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
+        debugOverLight
+      ) {
+        console.log('[AtomixGlass] OverLight Config:', {
+          isOverLight,
+          config: {
+            threshold: finalConfig.threshold.toFixed(3),
+            opacity: finalConfig.opacity.toFixed(3),
+            contrast: finalConfig.contrast.toFixed(3),
+            brightness: finalConfig.brightness.toFixed(3),
+            saturationBoost: finalConfig.saturationBoost.toFixed(3),
+            shadowIntensity: finalConfig.shadowIntensity.toFixed(3),
+            borderOpacity: finalConfig.borderOpacity.toFixed(3),
+          },
+          input: {
+            threshold: objConfig.threshold,
+            opacity: objConfig.opacity,
+            contrast: objConfig.contrast,
+            brightness: objConfig.brightness,
+            saturationBoost: objConfig.saturationBoost,
+          },
+          timestamp: new Date().toISOString(),
+        });
+      }
+
+      return finalConfig;
+    }
+
+    if (
+      (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
+      debugOverLight
+    ) {
+      console.log('[AtomixGlass] OverLight Config:', {
+        isOverLight,
+        configType: typeof overLight === 'boolean' ? (overLight ? 'true' : 'false') : overLight,
+        config: {
+          threshold: baseConfig.threshold.toFixed(3),
+          opacity: baseConfig.opacity.toFixed(3),
+          contrast: baseConfig.contrast.toFixed(3),
+          brightness: baseConfig.brightness.toFixed(3),
+          saturationBoost: baseConfig.saturationBoost.toFixed(3),
+          shadowIntensity: baseConfig.shadowIntensity.toFixed(3),
+          borderOpacity: baseConfig.borderOpacity.toFixed(3),
+        },
+        timestamp: new Date().toISOString(),
+      });
     }
 
     return baseConfig;
-  }, [overLight, getEffectiveOverLight, validateConfigValue]);
+  }, [
+    overLight,
+    getEffectiveOverLight,
+    isHovered,
+    isActive,
+    validateConfigValue,
+    debugOverLight,
+  ]);
 
-  // Calculate Effective OverLight Config (for component return value, static mouse influence for initial render)
-  const overLightConfig = useMemo(() => {
-    const mouseInfluence = calculateMouseInfluence(mouseOffset);
-    const hoverIntensity = isHovered ? 1.4 : 1;
-    const activeIntensity = isActive ? 1.6 : 1;
-
-    return {
-        isOverLight: baseOverLightConfig.isOverLight,
-        threshold: baseOverLightConfig.threshold,
-        opacity: baseOverLightConfig.opacity * hoverIntensity * activeIntensity,
-        contrast: Math.min(1.6, baseOverLightConfig.contrast + mouseInfluence * 0.1),
-        brightness: Math.min(1.1, baseOverLightConfig.brightness + mouseInfluence * 0.05),
-        saturationBoost: baseOverLightConfig.saturationBoost,
-        shadowIntensity: Math.min(1.2, Math.max(0.5, baseOverLightConfig.shadowIntensity + mouseInfluence * 0.2)),
-        borderOpacity: Math.min(1.0, Math.max(0.3, baseOverLightConfig.borderOpacity + mouseInfluence * 0.1)),
-    };
-  }, [baseOverLightConfig, mouseOffset, isHovered, isActive]);
+  // Transform calculation (static base for React render)
+  // Mouse interactions are purely handled by imperative updates in the RAF lerp loop to prevent re-renders
+  const transformStyle = useMemo(() => {
+    return effectiveWithoutEffects || (isActive && Boolean(onClick)) ? 'scale(0.98)' : 'scale(1)';
+  }, [effectiveWithoutEffects, isActive, onClick]);
 
   // Mouse tracking
   const updateRectRef = useRef<number | null>(null);
@@ -575,100 +638,11 @@ export function useAtomixGlass({
   // Derived values for imperative updates (we can use memoized ones or re-calculate)
   // Since updateAtomixGlassStyles is called imperatively, we pass current refs and state
 
-  // Transform calculations for initial render
-  const calculateDirectionalScale = useCallback(() => {
-    const isOverLightActive = baseOverLightConfig.isOverLight;
-
-    if (isOverLightActive) {
-      return 'scale(1)';
-    }
-
-    if (!globalMousePosition.x || !globalMousePosition.y || !glassRef.current || !validateGlassSize(glassSize)) {
-      return 'scale(1)';
-    }
-
-    const rect = glassRef.current.getBoundingClientRect();
-    const center = calculateElementCenter(rect);
-    const deltaX = globalMousePosition.x - center.x;
-    const deltaY = globalMousePosition.y - center.y;
-
-    const edgeDistanceX = Math.max(0, Math.abs(deltaX) - glassSize.width / 2);
-    const edgeDistanceY = Math.max(0, Math.abs(deltaY) - glassSize.height / 2);
-    const edgeDistance = calculateDistance({ x: edgeDistanceX, y: edgeDistanceY }, { x: 0, y: 0 });
-
-    if (edgeDistance > CONSTANTS.ACTIVATION_ZONE) {
-      return 'scale(1)';
-    }
-
-    const fadeInFactor = 1 - edgeDistance / CONSTANTS.ACTIVATION_ZONE;
-    const centerDistance = calculateDistance(globalMousePosition, center);
-
-    if (centerDistance === 0) {
-      return 'scale(1)';
-    }
-
-    const normalizedX = deltaX / centerDistance;
-    const normalizedY = deltaY / centerDistance;
-    const stretchIntensity = Math.min(centerDistance / 300, 1) * elasticity * fadeInFactor;
-
-    const scaleX = 1 + Math.abs(normalizedX) * stretchIntensity * 0.3 - Math.abs(normalizedY) * stretchIntensity * 0.15;
-    const scaleY = 1 + Math.abs(normalizedY) * stretchIntensity * 0.3 - Math.abs(normalizedX) * stretchIntensity * 0.15;
-
-    return `scaleX(${Math.max(0.8, scaleX)}) scaleY(${Math.max(0.8, scaleY)})`;
-  }, [globalMousePosition, elasticity, glassSize, glassRef, baseOverLightConfig]);
-
-  const calculateFadeInFactor = useCallback(() => {
-    if (!globalMousePosition.x || !globalMousePosition.y || !glassRef.current || !validateGlassSize(glassSize)) {
-      return 0;
-    }
-
-    const rect = glassRef.current.getBoundingClientRect();
-    const center = calculateElementCenter(rect);
-
-    const edgeDistanceX = Math.max(0, Math.abs(globalMousePosition.x - center.x) - glassSize.width / 2);
-    const edgeDistanceY = Math.max(0, Math.abs(globalMousePosition.y - center.y) - glassSize.height / 2);
-    const edgeDistance = calculateDistance({ x: edgeDistanceX, y: edgeDistanceY }, { x: 0, y: 0 });
-
-    return edgeDistance > CONSTANTS.ACTIVATION_ZONE ? 0 : 1 - edgeDistance / CONSTANTS.ACTIVATION_ZONE;
-  }, [globalMousePosition, glassSize, glassRef]);
-
-  const calculateElasticTranslation = useCallback(() => {
-    if (!glassRef.current) {
-      return { x: 0, y: 0 };
-    }
-
-    const fadeInFactor = calculateFadeInFactor();
-    const rect = glassRef.current.getBoundingClientRect();
-    const center = calculateElementCenter(rect);
-
-    return {
-      x: (globalMousePosition.x - center.x) * elasticity * 0.1 * fadeInFactor,
-      y: (globalMousePosition.y - center.y) * elasticity * 0.1 * fadeInFactor,
-    };
-  }, [globalMousePosition, elasticity, calculateFadeInFactor, glassRef]);
-
-  const elasticTranslation = useMemo(() => {
-    if (effectiveWithoutEffects) {
-      return { x: 0, y: 0 };
-    }
-    return calculateElasticTranslation();
-  }, [calculateElasticTranslation, effectiveWithoutEffects]);
-
-  const directionalScale = useMemo(() => {
-    if (effectiveWithoutEffects) {
-      return 'scale(1)';
-    }
-    return calculateDirectionalScale();
-  }, [calculateDirectionalScale, effectiveWithoutEffects]);
-
-  const transformStyle = useMemo(() => {
-    if (effectiveWithoutEffects) {
-      return isActive && Boolean(onClick) ? 'scale(0.98)' : 'scale(1)';
-    }
-    return `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) ${isActive && Boolean(onClick) ? 'scale(0.96)' : directionalScale}`;
-  }, [elasticTranslation, isActive, onClick, directionalScale, effectiveWithoutEffects]);
 
   // Handle mouse position updates
+  // ── Raw mouse handler — writes to TARGET refs only ──────────────────
+  // The lerp loop (below) reads the targets and incrementally
+  // moves the "current" refs toward them for liquid smoothing.
   const handleGlobalMousePosition = useCallback(
     (globalPos: MousePosition) => {
       if (externalGlobalMousePosition && externalMouseOffset) {
@@ -697,62 +671,112 @@ export function useAtomixGlass({
 
       const center = calculateElementCenter(rect);
 
-      // Calculate offset relative to this container
-      const newOffset = {
+      // Write raw target — the lerp loop will smoothly pursue it
+      targetMouseOffsetRef.current = {
         x: ((globalPos.x - center.x) / rect.width) * 100,
         y: ((globalPos.y - center.y) / rect.height) * 100,
       };
-
-      // Store in refs instead of state
-      internalMouseOffsetRef.current = newOffset;
-      internalGlobalMousePositionRef.current = globalPos;
-
-      // Imperative style update
-      updateAtomixGlassStyles(
-        wrapperRef?.current || null,
-        glassRef.current,
-        {
-            mouseOffset: newOffset,
-            globalMousePosition: globalPos,
-            glassSize,
-            isHovered,
-            isActive,
-            isOverLight: baseOverLightConfig.isOverLight,
-            baseOverLightConfig,
-            effectiveBorderRadius,
-            effectiveWithoutEffects,
-            effectiveReducedMotion,
-            elasticity,
-            directionalScale: isActive && Boolean(onClick) ? 'scale(0.96)' : 'scale(1)', // Simplified directional scale for fast path
-            onClick,
-            withLiquidBlur,
-            blurAmount,
-            saturation,
-            padding,
-        }
-      );
+      targetGlobalMousePositionRef.current = globalPos;
     },
     [
       mouseContainer,
       glassRef,
-      wrapperRef,
       externalGlobalMousePosition,
       externalMouseOffset,
       effectiveWithoutEffects,
-      glassSize,
-      isHovered,
-      isActive,
-      baseOverLightConfig,
-      effectiveBorderRadius,
-      effectiveReducedMotion,
-      elasticity,
-      onClick,
-      withLiquidBlur,
-      blurAmount,
-      saturation,
-      padding
     ]
   );
+
+  // ── Lerp animation loop ─────────────────────────────────────────────
+  // Continuously interpolates the current offset toward the target.
+  // Produces the signature liquid / viscous feel.
+  const startLerpLoop = useCallback(() => {
+    if (lerpActiveRef.current) return;
+    lerpActiveRef.current = true;
+
+    const LERP_T = CONSTANTS.LERP_FACTOR; // 0.08 – lower = more viscous
+    const EPSILON = 0.05; // Stop iterating when close enough
+
+    const tick = () => {
+      if (!lerpActiveRef.current) return;
+
+      const cur = internalMouseOffsetRef.current;
+      const tgt = targetMouseOffsetRef.current;
+
+      const dx = tgt.x - cur.x;
+      const dy = tgt.y - cur.y;
+
+      // If we're close enough, snap and park
+      if (Math.abs(dx) < EPSILON && Math.abs(dy) < EPSILON) {
+        internalMouseOffsetRef.current = { ...tgt };
+        internalGlobalMousePositionRef.current = { ...targetGlobalMousePositionRef.current };
+      } else {
+        internalMouseOffsetRef.current = {
+          x: lerp(cur.x, tgt.x, LERP_T),
+          y: lerp(cur.y, tgt.y, LERP_T),
+        };
+        const curG = internalGlobalMousePositionRef.current;
+        const tgtG = targetGlobalMousePositionRef.current;
+        internalGlobalMousePositionRef.current = {
+          x: lerp(curG.x, tgtG.x, LERP_T),
+          y: lerp(curG.y, tgtG.y, LERP_T),
+        };
+      }
+
+      // Imperative style update with the smoothed values
+      updateAtomixGlassStyles(
+        wrapperRef?.current || null,
+        glassRef.current,
+        {
+          mouseOffset: internalMouseOffsetRef.current,
+          globalMousePosition: internalGlobalMousePositionRef.current,
+          glassSize,
+          isHovered,
+          isActive,
+          isOverLight: overLightConfig.isOverLight,
+          baseOverLightConfig: overLightConfig,
+          effectiveBorderRadius,
+          effectiveWithoutEffects,
+          effectiveReducedMotion,
+          elasticity,
+          directionalScale: isActive && Boolean(onClick) ? 'scale(0.96)' : 'scale(1)',
+          onClick,
+          withLiquidBlur,
+          blurAmount,
+          saturation,
+          padding,
+        }
+      );
+
+      lerpRafRef.current = requestAnimationFrame(tick);
+    };
+
+    lerpRafRef.current = requestAnimationFrame(tick);
+  }, [
+    glassRef,
+    wrapperRef,
+    glassSize,
+    isHovered,
+    isActive,
+    overLightConfig,
+    effectiveBorderRadius,
+    effectiveWithoutEffects,
+    effectiveReducedMotion,
+    elasticity,
+    onClick,
+    withLiquidBlur,
+    blurAmount,
+    saturation,
+    padding,
+  ]);
+
+  const stopLerpLoop = useCallback(() => {
+    lerpActiveRef.current = false;
+    if (lerpRafRef.current !== null) {
+      cancelAnimationFrame(lerpRafRef.current);
+      lerpRafRef.current = null;
+    }
+  }, []);
 
   // Subscribe to shared mouse tracker
   useEffect(() => {
@@ -765,6 +789,9 @@ export function useAtomixGlass({
     }
 
     const unsubscribe = globalMouseTracker.subscribe(handleGlobalMousePosition);
+
+    // Start the lerp loop — it will smoothly chase the target
+    startLerpLoop();
 
     const updateRect = () => {
       if (updateRectRef.current !== null) {
@@ -789,6 +816,7 @@ export function useAtomixGlass({
 
     return () => {
       unsubscribe();
+      stopLerpLoop();
       if (updateRectRef.current !== null) {
         cancelAnimationFrame(updateRectRef.current);
         updateRectRef.current = null;
@@ -799,6 +827,8 @@ export function useAtomixGlass({
     };
   }, [
     handleGlobalMousePosition,
+    startLerpLoop,
+    stopLerpLoop,
     mouseContainer,
     glassRef,
     externalGlobalMousePosition,
@@ -817,13 +847,13 @@ export function useAtomixGlass({
             glassSize,
             isHovered,
             isActive,
-            isOverLight: baseOverLightConfig.isOverLight,
-            baseOverLightConfig,
+            isOverLight: overLightConfig.isOverLight,
+            baseOverLightConfig: overLightConfig,
             effectiveBorderRadius,
             effectiveWithoutEffects,
             effectiveReducedMotion,
             elasticity,
-            directionalScale,
+            directionalScale: isActive && Boolean(onClick) ? 'scale(0.96)' : 'scale(1)',
             onClick,
             withLiquidBlur,
             blurAmount,
@@ -835,12 +865,11 @@ export function useAtomixGlass({
     isHovered,
     isActive,
     glassSize,
-    baseOverLightConfig,
+    overLightConfig,
     effectiveBorderRadius,
     effectiveWithoutEffects,
     effectiveReducedMotion,
     elasticity,
-    directionalScale,
     wrapperRef,
     glassRef,
     externalMouseOffset,
@@ -858,9 +887,7 @@ export function useAtomixGlass({
   const handleMouseDown = useCallback(() => setIsActive(true), []);
   const handleMouseUp = useCallback(() => setIsActive(false), []);
 
-  const handleMouseMove = useCallback((_e: MouseEvent) => {
-    // Mouse tracking handled by shared global tracker
-  }, []);
+
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -885,14 +912,11 @@ export function useAtomixGlass({
     globalMousePosition, // This is now static (refs or props) unless prop changes
     mouseOffset,         // This is now static (refs or props) unless prop changes
     overLightConfig,
-    elasticTranslation,
-    directionalScale,
     transformStyle,
     handleMouseEnter,
     handleMouseLeave,
     handleMouseDown,
     handleMouseUp,
-    handleMouseMove,
     handleKeyDown,
   };
 }

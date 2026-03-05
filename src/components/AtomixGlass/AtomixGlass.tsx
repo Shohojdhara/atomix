@@ -1,5 +1,5 @@
-import React, { useMemo, useRef, useEffect } from 'react';
-import type { AtomixGlassProps, GlassSize } from '../../lib/types/components';
+import React, { useMemo, useRef } from 'react';
+import type { AtomixGlassProps } from '../../lib/types/components';
 import { ATOMIX_GLASS } from '../../lib/constants/components';
 import { AtomixGlassContainer } from './AtomixGlassContainer';
 import { useAtomixGlass } from '../../lib/composables/useAtomixGlass';
@@ -155,10 +155,7 @@ export function AtomixGlass({
     style,
   });
 
-  // Calculate isOverLight independently from overLightConfig to prevent displacement changes on hover
-  // overLightConfig recalculates with hover/active states, but displacement should remain stable
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const isOverLight = useMemo(() => overLightConfig?.isOverLight, [overLight]);
+  const isOverLight = useMemo(() => overLightConfig.isOverLight, [overLightConfig.isOverLight]);
 
   const shouldRenderOverLightLayers = withOverLightLayers && isOverLight;
 

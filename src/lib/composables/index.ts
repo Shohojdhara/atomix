@@ -29,8 +29,7 @@ export * from './useTodo';
 export * from './useForm';
 export * from './useFormGroup';
 
-// GlassContainer composables
-export * from './useGlassContainer';
+// AtomixGlass composables
 export * from './useAtomixGlass';
 export * from './useInput';
 export * from './useRadio';

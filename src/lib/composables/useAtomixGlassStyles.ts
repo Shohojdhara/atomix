@@ -1,5 +1,5 @@
 import { ATOMIX_GLASS } from '../constants/components';
-import { calculateDistance, calculateElementCenter, calculateMouseInfluence, validateGlassSize, clampBlur } from '../../components/AtomixGlass/glass-utils';
+import { calculateDistance, calculateElementCenter, calculateMouseInfluence, validateGlassSize, clampBlur, smoothstep, softClamp } from '../../components/AtomixGlass/glass-utils';
 import type { GlassSize, MousePosition, OverLightObjectConfig } from '../types/components';
 
 /**
@@ -73,30 +73,53 @@ export const updateAtomixGlassStyles = (
       saturationBoost: baseOverLightConfig.saturationBoost
   };
 
-  // Calculate elastic translation
-  let elasticTranslation = { x: 0, y: 0 };
-  if (!effectiveWithoutEffects && wrapperElement) {
-    const rect = wrapperElement.getBoundingClientRect();
-    const center = calculateElementCenter(rect);
+    let computedDirectionalScale = directionalScale;
 
-    // Calculate fade in factor
-    let fadeInFactor = 0;
-    if (globalMousePosition.x && globalMousePosition.y && validateGlassSize(glassSize)) {
-      const edgeDistanceX = Math.max(0, Math.abs(globalMousePosition.x - center.x) - glassSize.width / 2);
-      const edgeDistanceY = Math.max(0, Math.abs(globalMousePosition.y - center.y) - glassSize.height / 2);
-      const edgeDistance = calculateDistance({ x: edgeDistanceX, y: edgeDistanceY }, { x: 0, y: 0 });
-      fadeInFactor = edgeDistance > ATOMIX_GLASS.CONSTANTS.ACTIVATION_ZONE ? 0 : 1 - edgeDistance / ATOMIX_GLASS.CONSTANTS.ACTIVATION_ZONE;
+    // Calculate elastic translation and directional scale
+    let elasticTranslation = { x: 0, y: 0 };
+    if (!effectiveWithoutEffects && wrapperElement) {
+      const rect = wrapperElement.getBoundingClientRect();
+      const center = calculateElementCenter(rect);
+
+      // Mouse presence and edge distance logic
+      if (globalMousePosition.x && globalMousePosition.y && validateGlassSize(glassSize)) {
+        const deltaX = globalMousePosition.x - center.x;
+        const deltaY = globalMousePosition.y - center.y;
+        const edgeDistanceX = Math.max(0, Math.abs(deltaX) - glassSize.width / 2);
+        const edgeDistanceY = Math.max(0, Math.abs(deltaY) - glassSize.height / 2);
+        const edgeDistance = calculateDistance({ x: edgeDistanceX, y: edgeDistanceY }, { x: 0, y: 0 });
+        
+        // Elastic translation
+        const rawT = edgeDistance > ATOMIX_GLASS.CONSTANTS.ACTIVATION_ZONE ? 0 : 1 - edgeDistance / ATOMIX_GLASS.CONSTANTS.ACTIVATION_ZONE;
+        const fadeInFactor = smoothstep(rawT);
+        elasticTranslation = {
+            x: deltaX * elasticity * 0.1 * fadeInFactor,
+            y: deltaY * elasticity * 0.1 * fadeInFactor,
+        };
+
+        // Directional scale
+        if (!isOverLight && edgeDistance <= ATOMIX_GLASS.CONSTANTS.ACTIVATION_ZONE) {
+          const centerDistance = calculateDistance(globalMousePosition, center);
+          if (centerDistance > 0) {
+            const normalizedX = deltaX / centerDistance;
+            const normalizedY = deltaY / centerDistance;
+            const stretchIntensity = Math.min(centerDistance / 300, 1) * elasticity * rawT;
+            
+            const scaleX = 1 + Math.abs(normalizedX) * stretchIntensity * 0.3 - Math.abs(normalizedY) * stretchIntensity * 0.15;
+            const scaleY = 1 + Math.abs(normalizedY) * stretchIntensity * 0.3 - Math.abs(normalizedX) * stretchIntensity * 0.15;
+            
+            const softScaleX = 1 - softClamp(Math.max(0, 1 - scaleX), 0.2);
+            const softScaleY = 1 - softClamp(Math.max(0, 1 - scaleY), 0.2);
+            
+            computedDirectionalScale = `scaleX(${Math.max(0.85, softScaleX)}) scaleY(${Math.max(0.85, softScaleY)})`;
+          }
+        }
+      }
     }
 
-    elasticTranslation = {
-        x: (globalMousePosition.x - center.x) * elasticity * 0.1 * fadeInFactor,
-        y: (globalMousePosition.y - center.y) * elasticity * 0.1 * fadeInFactor,
-    };
-  }
-
-  const transformStyle = effectiveWithoutEffects
-      ? isActive && Boolean(onClick) ? 'scale(0.98)' : 'scale(1)'
-      : `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) ${isActive && Boolean(onClick) ? 'scale(0.96)' : directionalScale}`;
+    const transformStyle = effectiveWithoutEffects
+        ? isActive && Boolean(onClick) ? 'scale(0.98)' : 'scale(1)'
+        : `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) ${isActive && Boolean(onClick) ? 'scale(0.96)' : computedDirectionalScale}`;
 
   // Update Wrapper Styles (glassVars)
   if (wrapperElement) {
