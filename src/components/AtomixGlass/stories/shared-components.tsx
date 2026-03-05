@@ -75,16 +75,18 @@ export const BackgroundWrapper: React.FC<BackgroundWrapperProps> = ({
 
   const bgStyle = {
     backgroundImage: bgImage ? `url(${bgImage})` : undefined,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
     height,
     width,
     borderRadius,
-    padding,
     ...style,
   };
 
   return (
     <div
-      className={`u-relative u-overflow-hidden ${className}`}
+      className={`u-relative u-overflow-hidden u-flex u-items-center u-justify-center ${className}`}
       style={bgStyle}
       aria-hidden={ariaHidden}
     >
@@ -94,10 +96,16 @@ export const BackgroundWrapper: React.FC<BackgroundWrapperProps> = ({
           style={{
             backgroundColor: overlayColor,
             opacity: overlayOpacity,
+            padding,
           }}
         />
       )}
-      <div className="u-relative u-z-10">{children}</div>
+      <div
+        className="u-relative u-z-10 u-w-100 u-h-100 u-flex u-items-center u-justify-center"
+        style={{ padding }}
+      >
+        {children}
+      </div>
     </div>
   );
 };
