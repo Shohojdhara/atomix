@@ -35,34 +35,6 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
-    glassMode: {
-      description: 'Glass morphism effect toggle',
-      defaultValue: false,
-      toolbar: {
-        title: 'Glass Mode',
-        icon: 'mirror',
-        items: [
-          { value: false, title: 'Standard' },
-          { value: true, title: 'Glass Effect' },
-        ],
-        dynamicTitle: true,
-      },
-    },
-    animationSpeed: {
-      description: 'Animation speed for component transitions',
-      defaultValue: 'normal',
-      toolbar: {
-        title: 'Animation',
-        icon: 'autoplay',
-        items: [
-          { value: 'none', title: 'No Animation' },
-          { value: 'slow', title: 'Slow' },
-          { value: 'normal', title: 'Normal' },
-          { value: 'fast', title: 'Fast' },
-        ],
-        dynamicTitle: true,
-      },
-    },
   },
   parameters: {
     // Layout configuration - default to centered, but allow fullscreen overrides
@@ -194,8 +166,6 @@ const preview: Preview = {
     (Story, context) => {
       const colorMode = context.globals?.colorMode || 'light';
       const previewSize = context.globals?.previewSize || 'auto';
-      const glassMode = context.globals?.glassMode || false;
-      const animationSpeed = context.globals?.animationSpeed || 'normal';
 
       useEffect(() => {
         // Set default theme
@@ -216,17 +186,6 @@ const preview: Preview = {
           }
         }
 
-        // Apply glass mode
-        document.body.classList.toggle('glass-mode-enabled', glassMode);
-        
-        // Apply animation speed
-        const root = document.documentElement;
-        root.style.setProperty('--animation-speed-multiplier', 
-          animationSpeed === 'none' ? '0' : 
-          animationSpeed === 'slow' ? '2' : 
-          animationSpeed === 'fast' ? '0.5' : '1'
-        );
-
         // Apply color mode to the theme
         const themeStyle = document.getElementById('storybook-theme-vars');
         if (themeStyle) {
@@ -240,8 +199,6 @@ const preview: Preview = {
           :root {
             --storybook-color-mode: ${colorMode};
             --storybook-preview-size: ${previewSize};
-            --storybook-glass-mode: ${glassMode};
-            --storybook-animation-speed: ${animationSpeed};
           }
           
           /* Enhanced fullscreen story support */
@@ -288,59 +245,6 @@ const preview: Preview = {
             margin: 0 auto !important;
           }
           
-          /* Glass mode enhancements */
-          .glass-mode-enabled .story-preview-container {
-            background: rgba(255, 255, 255, 0.1) !important;
-            backdrop-filter: blur(10px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
-          }
-          
-          .glass-mode-enabled.dark .story-preview-container {
-            background: rgba(0, 0, 0, 0.3) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-          }
-          
-          /* Animation speed control */
-          *, *::before, *::after {
-            animation-duration: calc(var(--animation-duration, 0.3s) * var(--animation-speed-multiplier, 1)) !important;
-            transition-duration: calc(var(--transition-duration, 0.2s) * var(--animation-speed-multiplier, 1)) !important;
-          }
-          
-          /* Enhanced transitions for interactive demos */
-          .story-interactive-demo * {
-            transition: all 0.3s ease !important;
-          }
-          
-          .story-variants-grid > div {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-          }
-          
-          /* Better background handling for glass components */
-          .c-atomix-glass-background {
-            position: relative;
-            overflow: hidden;
-          }
-          
-          /* Smooth state transitions */
-          .story-preview-container {
-            transition: all 0.3s ease;
-          }
-          
-          /* Enhanced focus indicators */
-          .storybook-focus-indicator:focus {
-            outline: 2px solid #007bff;
-            outline-offset: 3px;
-            border-radius: 6px;
-            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.1);
-            transition: all 0.2s ease;
-          }
-          
-          /* Loading state animations */
-          .storybook-loading::after {
-            animation: loading calc(1.5s * var(--animation-speed-multiplier, 1)) infinite;
-          }
-          
           /* Responsive preview enhancements */
           @media (max-width: 768px) {
             .preview-size-small .sb-story,
@@ -375,7 +279,7 @@ const preview: Preview = {
         return () => {
           window.removeEventListener('resize', handleResize);
         };
-      }, [colorMode, previewSize, glassMode, animationSpeed]);
+      }, [colorMode, previewSize]);
 
       return Story();
     },
