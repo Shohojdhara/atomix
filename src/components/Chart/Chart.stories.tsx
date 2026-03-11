@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import React from 'react';
-import { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Container, Grid, GridCol } from '../../layouts/Grid';
 import { Badge } from '../Badge';
 import { Button } from '../Button';
@@ -191,7 +190,7 @@ export const GlassVariant: Story = {
             <GridCol xs={12}>
               <h2 style={{ color: 'white', marginBottom: '2rem' }}>Chart Glass Variant</h2>
             </GridCol>
-            <GridCol xs={12} md={6}>
+            <GridCol xs={12} md={6} className="u-mb-4">
               <LineChart
                 {...args}
                 title="Sales Performance"
@@ -354,7 +353,7 @@ const generateFunnelData = () => {
 
   return stages.map(stage => ({
     ...stage,
-    percentage: ((stage.value / stages[0].value) * 100).toFixed(1),
+    percentage: Number(((stage.value / stages[0].value) * 100).toFixed(1)),
   }));
 };
 
@@ -370,7 +369,9 @@ export const ChartGallery: Story = {
     const [selectedType, setSelectedType] = useState('line');
     const [animated, setAnimated] = useState(true);
     const [showLegend, setShowLegend] = useState(true);
+    const [glassEffect, setGlassEffect] = useState(false);
     const [dataPoints, setDataPoints] = useState(12);
+    const [dataSeed, setDataSeed] = useState(0);
 
     const chartTypes = [
       { key: 'line', icon: 'TrendUp', label: 'Line', desc: 'Trends over time' },
@@ -395,22 +396,52 @@ export const ChartGallery: Story = {
       { key: 'multiaxis', icon: 'ChartLineUp', label: 'Multi-axis', desc: 'Multiple scales' },
     ];
 
-    // Generate dynamic data based on dataPoints
-    const dynamicDatasets = [
-      { label: 'Sales', data: generateData(dataPoints), color: 'var(--atomix-primary)' },
-      { label: 'Revenue', data: generateData(dataPoints), color: 'var(--atomix-success)' },
-      { label: 'Profit', data: generateData(dataPoints), color: 'var(--atomix-warning)' },
-    ];
+    // Generate dynamic data based on dataPoints and dataSeed
+    const dynamicDatasets = useMemo(
+      () => [
+        { label: 'Sales', data: generateData(dataPoints), color: 'var(--atomix-primary)' },
+        { label: 'Revenue', data: generateData(dataPoints), color: 'var(--atomix-success)' },
+        { label: 'Profit', data: generateData(dataPoints), color: 'var(--atomix-warning)' },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      ],
+      [dataPoints, dataSeed]
+    );
+
+    const pieDatasets = useMemo(
+      () => [
+        { label: 'Distribution', data: generateData(Math.min(dataPoints, 8)) },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      ],
+      [dataPoints, dataSeed]
+    );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const bubbleData = useMemo(() => generateBubbleData(dataPoints), [dataPoints, dataSeed]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const heatmapData = useMemo(() => generateHeatmapData(), [dataSeed]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const candlestickData = useMemo(
+      () => generateCandlestickData(dataPoints),
+      [dataPoints, dataSeed]
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const funnelData = useMemo(() => generateFunnelData(), [dataSeed]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const treemapData = useMemo(
+      () => generateTreemapData(Math.min(dataPoints, 20)),
+      [dataPoints, dataSeed]
+    );
 
     const renderChart = () => {
       const commonProps = {
         title: `${chartTypes.find(t => t.key === selectedType)?.label} Chart`,
         config: { showLegend, animate: animated },
         showToolbar: true,
+        glass: glassEffect,
         enableFullscreen: true,
         enableExport: true,
         enableRefresh: true,
-        onRefresh: () => console.log('Story: Refresh clicked'),
+        onRefresh: () => setDataSeed(s => s + 1), // Regenerate on refresh button click
         onExport: (format: string) => console.log('Story: Export clicked', format),
         onFullscreen: (isFullscreen: boolean) =>
           console.log('Story: Fullscreen toggled', isFullscreen),
@@ -418,39 +449,58 @@ export const ChartGallery: Story = {
 
       // Custom toolbar with chart controls
       const customToolbar = (
-        <div className="u-flex u-gap-2 u-items-center u-flex-wrap u-mb-5">
-          <div className="u-border-start u-ps-2 u-flex u-gap-2 u-items-center">
-            {/* Data Points Control */}
-            <div className="u-flex u-items-center u-gap-1">
-              <Icon name="Database" size="sm" />
+        <div className="u-flex u-gap-4 u-items-center u-flex-wrap u-mb-5 u-p-3">
+          {/* Data Control Group */}
+          <div className="u-flex u-items-center u-gap-3">
+            <div className="u-flex u-items-center u-gap-2">
+              <Icon name="Database" size="sm" className="u-text-muted" />
               <input
                 type="range"
                 min="4"
                 max="20"
                 value={dataPoints}
                 onChange={e => setDataPoints(Number(e.target.value))}
-                className="u-w-16"
+                className="u-w-25"
                 title="Adjust data points"
               />
               <Badge label={dataPoints.toString()} variant="info" size="sm" />
             </div>
 
-            {/* Legend Toggle */}
             <Button
               size="sm"
-              variant={showLegend ? 'info' : 'secondary'}
+              variant="secondary"
+              onClick={() => setDataSeed(s => s + 1)}
+              iconName="ArrowsClockwise"
+              label="Regenerate"
+            />
+          </div>
+
+          <div className="u-flex-1" />
+
+          {/* View Toggles Group */}
+          <div className="u-flex u-gap-2">
+            <Button
+              size="sm"
+              variant={showLegend ? 'primary' : 'secondary'}
               onClick={() => setShowLegend(!showLegend)}
-              icon={<Icon name="List" />}
-              label={`${showLegend ? 'Hide' : 'Show'} legend`}
+              iconName="List"
+              label="Legend"
             />
 
-            {/* Animation Toggle */}
             <Button
               size="sm"
-              variant={animated ? 'success' : 'secondary'}
+              variant={animated ? 'primary' : 'secondary'}
               onClick={() => setAnimated(!animated)}
-              icon={<Icon name="Sparkle" />}
-              label={`${animated ? 'Disable' : 'Enable'} animations`}
+              iconName="Sparkle"
+              label="Animations"
+            />
+
+            <Button
+              size="sm"
+              variant={glassEffect ? 'primary' : 'secondary'}
+              onClick={() => setGlassEffect(!glassEffect)}
+              iconName="Drop"
+              label="Glass"
             />
           </div>
         </div>
@@ -459,93 +509,84 @@ export const ChartGallery: Story = {
       switch (selectedType) {
         case 'line':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
               <LineChart datasets={dynamicDatasets} {...commonProps} />
             </div>
           );
         case 'area':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
               <AreaChart datasets={dynamicDatasets} {...commonProps} />
             </div>
           );
         case 'bar':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
               <BarChart datasets={dynamicDatasets} {...commonProps} />
             </div>
           );
         case 'pie':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
-              <PieChart
-                datasets={[{ label: 'Distribution', data: generateData(Math.min(dataPoints, 8)) }]}
-                {...commonProps}
-              />
+              <PieChart datasets={pieDatasets} {...commonProps} />
             </div>
           );
         case 'donut':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
-              <DonutChart
-                datasets={[{ label: 'Distribution', data: generateData(Math.min(dataPoints, 8)) }]}
-                {...commonProps}
-              />
+              <DonutChart datasets={pieDatasets} {...commonProps} />
             </div>
           );
         case 'scatter':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
               <ScatterChart datasets={dynamicDatasets} {...commonProps} />
             </div>
           );
         case 'radar':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
               <RadarChart datasets={dynamicDatasets} {...commonProps} />
             </div>
           );
         case 'bubble':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
-              <BubbleChart bubbleData={generateBubbleData(dataPoints)} {...commonProps} />
+              <BubbleChart bubbleData={bubbleData} {...commonProps} />
             </div>
           );
         case 'gauge':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
               <GaugeChart value={75} max={100} {...commonProps} />
             </div>
           );
         case 'heatmap':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
-              <HeatmapChart data={generateHeatmapData()} {...commonProps} />
+              <HeatmapChart data={heatmapData} {...commonProps} />
             </div>
           );
         case 'candlestick':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
-              <CandlestickChart
-                candlestickData={generateCandlestickData(dataPoints)}
-                {...commonProps}
-              />
+              <CandlestickChart candlestickData={candlestickData} {...commonProps} />
             </div>
           );
         case 'waterfall':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
               <WaterfallChart
                 waterfallData={[
@@ -561,10 +602,10 @@ export const ChartGallery: Story = {
           );
         case 'funnel':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
               <FunnelChart
-                funnelData={generateFunnelData()}
+                funnelData={funnelData}
                 funnelOptions={{
                   showLabels: true,
                   showValues: true,
@@ -579,10 +620,10 @@ export const ChartGallery: Story = {
           );
         case 'treemap':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
               <TreemapChart
-                data={generateTreemapData(Math.min(dataPoints, 20))}
+                data={treemapData}
                 algorithm="squarified"
                 colorConfig={{ scheme: 'category' }}
                 labelConfig={{
@@ -597,7 +638,7 @@ export const ChartGallery: Story = {
           );
         case 'multiaxis':
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
               <MultiAxisChart
                 datasets={dynamicDatasets.map((d, i) => ({ ...d, yAxisId: `axis${i}` }))}
@@ -612,7 +653,7 @@ export const ChartGallery: Story = {
           );
         default:
           return (
-            <div>
+            <div className="u-h-100 u-flex u-flex-column">
               {customToolbar}
               <LineChart datasets={dynamicDatasets} {...commonProps} />
             </div>

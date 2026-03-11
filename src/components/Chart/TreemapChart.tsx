@@ -1,5 +1,6 @@
 import { forwardRef, memo, useCallback, useMemo, useState } from 'react';
 import BaseChart from './BaseChart';
+import ChartTooltip from './ChartTooltip';
 import { ChartProps } from '../../lib/types/components';
 import { ChartRenderContentParams } from './types';
 
@@ -103,7 +104,6 @@ const DEFAULT_LABEL_CONFIG = {
   showLabels: true,
   minSize: 1000,
   fontSize: 12,
-  textColor: 'white',
 };
 const DEFAULT_CONFIG = {};
 
@@ -254,6 +254,7 @@ const TreemapChart = memo(
           let currentY = y;
           let remainingWidth = width;
           let remainingHeight = height;
+          let remainingValue = totalValue;
 
           while (remainingNodes.length > 0) {
             const node = remainingNodes.shift();
@@ -262,7 +263,7 @@ const TreemapChart = memo(
 
             // Calculate dimensions for current row
             const rowValue = currentRow.reduce((sum, n) => sum + n.value, 0);
-            const rowRatio = rowValue / totalValue;
+            const rowRatio = remainingValue > 0 ? rowValue / remainingValue : 0;
 
             let rowWidth, rowHeight;
             if (remainingWidth >= remainingHeight) {
@@ -280,7 +281,7 @@ const TreemapChart = memo(
               if (!nextNode) break;
               const testRow = [...currentRow, nextNode];
               const testRowValue = testRow.reduce((sum, n) => sum + n.value, 0);
-              const testRowRatio = testRowValue / totalValue;
+              const testRowRatio = remainingValue > 0 ? testRowValue / remainingValue : 0;
 
               let testRowWidth, testRowHeight;
               if (remainingWidth >= remainingHeight) {
@@ -352,6 +353,7 @@ const TreemapChart = memo(
                 remainingHeight -= rowHeight;
               }
 
+              remainingValue -= rowValue;
               currentRow = [];
             }
           }
@@ -366,15 +368,19 @@ const TreemapChart = memo(
           datasets: renderedDatasets,
           handlers,
           hoveredPoint,
+          toolbarState,
+          config: renderConfig,
         }: ChartRenderContentParams) => {
           if (!data.length) return null;
 
-          // Calculate available space with padding
-        const padding = 20;
-        const availableWidth = scales.width - padding * 2;
-        const availableHeight = scales.height - padding * 2;
-        const startX = padding;
-        const startY = padding;
+          const showTooltips = toolbarState?.showTooltips ?? renderConfig?.showTooltips ?? true;
+
+          // Calculate available space
+        const gap = 2; // Gap size matched to the one added to rects
+        const availableWidth = Math.max(0, scales.width);
+        const availableHeight = Math.max(0, scales.height);
+        const startX = 0;
+        const startY = 0;
 
         // Get leaf nodes for treemap layout
         const leafNodes = data.filter(item => !item.children || item.children.length === 0);
@@ -428,10 +434,12 @@ const TreemapChart = memo(
               return (
                 <g key={node.id}>
                   <rect
-                    x={node.x}
-                    y={node.y}
-                    width={node.width}
-                    height={node.height}
+                    x={node.x + gap}
+                    y={node.y + gap}
+                    width={Math.max(0, node.width - gap * 2)}
+                    height={Math.max(0, node.height - gap * 2)}
+                    rx={6}
+                    ry={6}
                     fill={node.color}
                     className={`c-chart__treemap-node ${isHovered ? 'c-chart__treemap-node--hovered' : ''} ${isSelected ? 'c-chart__treemap-node--selected' : ''}`}
                     onClick={() => {
@@ -441,9 +449,10 @@ const TreemapChart = memo(
                     onMouseEnter={e => {
                       setHoveredNode(node);
                       const rect = e.currentTarget.getBoundingClientRect();
+                      const pointIndex = data.indexOf(node.originalData);
                       handlers.onPointHover(
                         0,
-                        0,
+                        pointIndex >= 0 ? pointIndex : 0,
                         node.x,
                         node.y,
                         rect.left + rect.width / 2,
@@ -462,7 +471,7 @@ const TreemapChart = memo(
                       textAnchor="middle"
                       dominantBaseline="middle"
                       className="c-chart__treemap-label"
-                      style={{ fontSize: labelConfig.fontSize, fill: labelConfig.textColor }}
+                      style={{ fontSize: labelConfig.fontSize }}
                     >
                       {node.label}
                     </text>
@@ -470,6 +479,26 @@ const TreemapChart = memo(
                 </g>
               );
             })}
+            
+            {showTooltips &&
+              hoveredPoint &&
+              renderedDatasets[hoveredPoint.datasetIndex]?.data?.[hoveredPoint.pointIndex] && (
+                <ChartTooltip
+                  dataPoint={
+                    renderedDatasets[hoveredPoint.datasetIndex]!.data![hoveredPoint.pointIndex]!
+                  }
+                  datasetLabel={renderedDatasets[hoveredPoint.datasetIndex]?.label}
+                  datasetColor={
+                    renderedDatasets[hoveredPoint.datasetIndex]?.color ||
+                    colors[hoveredPoint.datasetIndex % colors.length]
+                  }
+                  position={{
+                    x: hoveredPoint.clientX,
+                    y: hoveredPoint.clientY,
+                  }}
+                  visible={true}
+                />
+              )}
             </>
           );
         },

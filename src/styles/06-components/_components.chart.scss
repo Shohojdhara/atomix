@@ -911,10 +911,11 @@
     transition: all $chart-funnel-segment-transition-duration $chart-transition-timing;
     cursor: pointer;
     shape-rendering: geometricPrecision;
+    transform-origin: center;
 
     &:hover {
       opacity: $chart-funnel-segment-hover-opacity;
-      filter: drop-shadow($chart-funnel-segment-hover-shadow);
+      filter: drop-shadow($chart-funnel-segment-hover-shadow) brightness(1.1);
       stroke-width: calc($chart-funnel-segment-border-width * 1.5);
     }
 
@@ -929,7 +930,7 @@
     dominant-baseline: middle;
     pointer-events: none;
     user-select: none;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   }
 
   &__funnel-conversion {
@@ -940,7 +941,9 @@
     dominant-baseline: middle;
     pointer-events: none;
     user-select: none;
-    opacity: 0.8;
+    opacity: 0.9;
+    letter-spacing: 0.05em;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
   }
 
   // Heatmap Chart Elements

@@ -208,11 +208,13 @@ const GaugeChart = memo(
         // Create ticks
         const ticks = [];
         if (showTicks) {
+          const innerRadius = radius * (1 - thickness);
+          
           // Major ticks
           for (let i = 0; i <= majorTicks; i++) {
             const tickValue = min + (max - min) * (i / majorTicks);
             const tickAngle = startAngleRad + (i / majorTicks) * angleRange;
-            const tickRadius = radius * 0.95;
+            const tickRadius = innerRadius - 2;
             const tickLength = radius * 0.05;
             const x1 = centerX + tickRadius * Math.cos(tickAngle);
             const y1 = centerY + tickRadius * Math.sin(tickAngle);
@@ -233,8 +235,9 @@ const GaugeChart = memo(
 
             // Labels for major ticks
             if (showMinMaxLabels) {
-              const labelX = centerX + (tickRadius - tickLength - 10) * Math.cos(tickAngle);
-              const labelY = centerY + (tickRadius - tickLength - 10) * Math.sin(tickAngle);
+              const labelRadius = tickRadius - tickLength - 15;
+              const labelX = centerX + labelRadius * Math.cos(tickAngle);
+              const labelY = centerY + labelRadius * Math.sin(tickAngle);
 
               ticks.push(
                 <text
@@ -242,7 +245,7 @@ const GaugeChart = memo(
                   x={labelX}
                   y={labelY}
                   textAnchor="middle"
-                  dominantBaseline="middle"
+                  dominantBaseline="central"
                   fontSize="12"
                   fill="var(--atomix-brand-text-emphasis)"
                 >
@@ -253,9 +256,11 @@ const GaugeChart = memo(
           }
 
           // Minor ticks
-          for (let i = 0; i < majorTicks * minorTicks; i++) {
+          for (let i = 0; i <= majorTicks * minorTicks; i++) {
+            if (i % minorTicks === 0) continue;
+            
             const tickAngle = startAngleRad + (i / (majorTicks * minorTicks)) * angleRange;
-            const tickRadius = radius * 0.95;
+            const tickRadius = innerRadius - 2;
             const tickLength = radius * 0.025;
             const x1 = centerX + tickRadius * Math.cos(tickAngle);
             const y1 = centerY + tickRadius * Math.sin(tickAngle);
@@ -276,19 +281,22 @@ const GaugeChart = memo(
           }
         }
 
+        const innerRadius = radius * (1 - thickness);
+
         // Create needle
         const needle = showNeedle ? (
           <g>
             <line
               x1={centerX}
               y1={centerY}
-              x2={centerX + radius * 0.8 * Math.cos(valueAngle)}
-              y2={centerY + radius * 0.8 * Math.sin(valueAngle)}
+              x2={centerX + (innerRadius - 15) * Math.cos(valueAngle)}
+              y2={centerY + (innerRadius - 15) * Math.sin(valueAngle)}
               stroke={needleColor}
-              strokeWidth="3"
+              strokeWidth="4"
               strokeLinecap="round"
             />
             <circle cx={centerX} cy={centerY} r="8" fill={needleColor} />
+            <circle cx={centerX} cy={centerY} r="3" fill="var(--atomix-primary-bg, #fff)" />
           </g>
         ) : null;
 
@@ -296,9 +304,9 @@ const GaugeChart = memo(
         const valueText = showValue ? (
           <text
             x={centerX}
-            y={centerY + 10}
+            y={centerY + 35}
             textAnchor="middle"
-            fontSize="24"
+            fontSize="32"
             fontWeight="bold"
             fill="var(--atomix-primary-text-emphasis)"
           >
@@ -310,7 +318,7 @@ const GaugeChart = memo(
         const labelText = label ? (
           <text
             x={centerX}
-            y={labelPosition === 'top' ? centerY - radius * 0.7 : centerY + radius * 0.7}
+            y={labelPosition === 'top' ? centerY - radius * 0.7 : centerY + radius * 0.7 + 10}
             textAnchor="middle"
             fontSize="16"
             fill="var(--atomix-brand-text-emphasis)"

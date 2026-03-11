@@ -126,8 +126,12 @@ const BubbleChart = memo(
             minBubbleSize + ((bubble.size - minSize) / sizeRange) * (maxBubbleSize - minBubbleSize);
 
           // Calculate position
-          const x = scales.padding.left + (bubble.x / 100) * scales.innerWidth;
-          const y = scales.padding.top + scales.innerHeight - (bubble.y / 100) * scales.innerHeight;
+          // Ensure bubbles don't get cut off by adding padding equal to maxBubbleSize
+          const effectiveWidth = scales.innerWidth - maxBubbleSize * 2;
+          const effectiveHeight = scales.innerHeight - maxBubbleSize * 2;
+          
+          const x = scales.padding.left + maxBubbleSize + (bubble.x / 100) * effectiveWidth;
+          const y = scales.padding.top + maxBubbleSize + effectiveHeight - (bubble.y / 100) * effectiveHeight;
 
           // Determine color
           let bubbleColor = bubble.color;

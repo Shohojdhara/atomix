@@ -174,12 +174,10 @@ const HeatmapChart = memo(
         data = [],
         config = {},
         colorScale = {
-          scheme: 'viridis',
+          scheme: 'blues',
           steps: 9,
         },
         cellConfig = {
-          width: 40,
-          height: 40,
           spacing: 2,
           borderRadius: 4,
           showLabels: false,
@@ -272,16 +270,38 @@ const HeatmapChart = memo(
           return null;
         }
 
-        const cellWidth = cellConfig.width || 40;
-        const cellHeight = cellConfig.height || 40;
-        const spacing = cellConfig.spacing || 2;
-        const borderRadius = cellConfig.borderRadius || 4;
+        const spacing = cellConfig.spacing ?? 2;
+        const borderRadius = cellConfig.borderRadius ?? 4;
 
-        const totalWidth = xLabels.length * (cellWidth + spacing) - spacing;
-        const totalHeight = yLabels.length * (cellHeight + spacing) - spacing;
+        // Container dimensions
+        const { width, height } = scales;
 
-        const startX = 100; // Leave space for y-axis labels
-        const startY = 50; // Leave space for x-axis labels
+        // Layout padding and spacing
+        const paddingLeft = 60; // Space for Y-axis labels
+        const paddingBottom = 40; // Space for X-axis labels
+        const legendWidth = showColorLegend ? 60 : 0;
+        const paddingRight = legendWidth + 20; 
+        const paddingTop = 20;
+
+        const availableWidth = Math.max(0, width - paddingLeft - paddingRight);
+        const availableHeight = Math.max(0, height - paddingTop - paddingBottom);
+
+        const cols = Math.max(1, xLabels.length);
+        const rows = Math.max(1, yLabels.length);
+
+        // Dynamically compute max cell dimensions that fit the available space
+        const maxCellWidth = Math.max(2, Math.floor((availableWidth - (cols - 1) * spacing) / cols));
+        const maxCellHeight = Math.max(2, Math.floor((availableHeight - (rows - 1) * spacing) / rows));
+
+        const cellWidth = cellConfig.width || maxCellWidth;
+        const cellHeight = cellConfig.height || maxCellHeight;
+
+        const totalWidth = cols * cellWidth + (cols - 1) * spacing;
+        const totalHeight = rows * cellHeight + (rows - 1) * spacing;
+
+        // Center the heatmap chart within the available area
+        const startX = paddingLeft + Math.max(0, (availableWidth - totalWidth) / 2);
+        const startY = paddingTop + Math.max(0, (availableHeight - totalHeight) / 2);
 
         return (
           <>
@@ -333,11 +353,6 @@ const HeatmapChart = memo(
                         ry={borderRadius}
                         fill={color}
                         className={`c-chart__heatmap-cell ${isHovered ? 'c-chart__heatmap-cell--hovered' : ''}`}
-                        style={{
-                          transition: 'all 0.2s ease',
-                          transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-                          transformOrigin: 'center',
-                        }}
                         onClick={() => {
                           if (cell) {
                             handlers.onDataPointClick?.(
@@ -353,8 +368,21 @@ const HeatmapChart = memo(
                         }}
                         onMouseEnter={e => {
                           setHoveredCell(cell);
+                          const pointIndex = data.findIndex(d => d.x === cell.x && d.y === cell.y);
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          handlers.onPointHover(
+                            0, // datasetIndex is always 0 for Heatmap
+                            pointIndex >= 0 ? pointIndex : 0,
+                            x,
+                            y,
+                            rect.left + rect.width / 2,
+                            rect.top + rect.height / 2
+                          );
                         }}
-                        onMouseLeave={() => setHoveredCell(null)}
+                        onMouseLeave={() => {
+                          setHoveredCell(null);
+                          handlers.onPointLeave();
+                        }}
                       />
                       {cellConfig.showLabels && cell.label && (
                         <text
@@ -411,23 +439,25 @@ const HeatmapChart = memo(
 
               {/* Color legend */}
               {showColorLegend && (
-                <g transform="translate(600, 100)">
+                <g transform={`translate(${startX + totalWidth + 20}, ${startY})`}>
                   <rect
                     x="0"
                     y="0"
-                    width="20"
-                    height="200"
+                    width="12"
+                    height={totalHeight}
                     fill="url(#heatmap-legend-gradient)"
                     stroke="var(--atomix-border-color)"
                     className="c-chart__grid"
+                    rx={borderRadius}
+                    ry={borderRadius}
                   />
-                  <text x="-10" y="-10" className="c-chart__heatmap-legend-title">
+                  <text x="-5" y="-10" className="c-chart__heatmap-legend-title">
                     Values
                   </text>
-                  <text x="25" y="5" textAnchor="start" className="c-chart__heatmap-legend-label">
+                  <text x="20" y="8" textAnchor="start" className="c-chart__heatmap-legend-label">
                     High
                   </text>
-                  <text x="25" y="200" textAnchor="start" className="c-chart__heatmap-legend-label">
+                  <text x="20" y={totalHeight} textAnchor="start" className="c-chart__heatmap-legend-label">
                     Low
                   </text>
                 </g>
