@@ -1,8 +1,9 @@
-import { forwardRef, memo, useCallback, useEffect, useRef, useState } from 'react';
+import { forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CHART } from '../../lib/constants/components';
 import { Icon } from '../Icon';
 import type { PhosphorIconsType } from '../Icon/Icon';
 import { ChartType } from './types';
+import { Variant } from '../../lib/types/components';
 
 export interface ChartToolbarAction {
   id: string;
@@ -11,7 +12,7 @@ export interface ChartToolbarAction {
   onClick: () => void;
   disabled?: boolean;
   active?: boolean;
-  variant?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'error';
+  variant?: Variant;
   tooltip?: string;
   shortcut?: string;
 }
@@ -155,7 +156,7 @@ const ChartToolbar = memo(
       const settingsButtonRef = useRef<HTMLButtonElement>(null);
 
       // Compute effective defaults based on provided groups
-      const effectiveDefaults =
+      const effectiveDefaults = useMemo(() => (
         groups && groups.length > 0
           ? {
               refresh: defaults.refresh ?? true,
@@ -172,7 +173,8 @@ const ChartToolbar = memo(
               tooltips: defaults.tooltips ?? true,
               animations: defaults.animations ?? true,
             }
-          : defaults;
+          : defaults
+      ), [groups, defaults]);
 
       // Close menus when clicking outside
       useEffect(() => {

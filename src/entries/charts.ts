@@ -5,7 +5,6 @@
  */
 
 export {
-  AnimatedChart,
   AreaChart,
   BarChart,
   BubbleChart,

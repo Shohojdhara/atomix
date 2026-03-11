@@ -263,7 +263,7 @@ export interface ChartProps extends BaseComponentProps {
     onClick: () => void;
     disabled?: boolean;
     active?: boolean;
-    variant?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'error';
+    variant?: Variant;
     tooltip?: string;
   }>;
 
@@ -280,7 +280,7 @@ export interface ChartProps extends BaseComponentProps {
       onClick: () => void;
       disabled?: boolean;
       active?: boolean;
-      variant?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'error';
+      variant?: Variant;
       tooltip?: string;
     }>;
     separator?: boolean;
@@ -403,7 +403,7 @@ export interface ChartToolbarConfig {
     onClick: () => void;
     disabled?: boolean;
     active?: boolean;
-    variant?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'error';
+    variant?: Variant;
     tooltip?: string;
   }>;
   customGroups?: Array<{
@@ -416,7 +416,7 @@ export interface ChartToolbarConfig {
       onClick: () => void;
       disabled?: boolean;
       active?: boolean;
-      variant?: 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'error';
+      variant?: Variant;
       tooltip?: string;
     }>;
     separator?: boolean;

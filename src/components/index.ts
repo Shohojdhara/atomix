@@ -15,7 +15,6 @@ export { default as Card, type CardProps } from './Card/Card';
 // Card sub-components
 export { default as ElevationCard, type ElevationCardProps } from './Card/ElevationCard';
 export {
-  AnimatedChart,
   AreaChart,
   BarChart,
   BubbleChart,

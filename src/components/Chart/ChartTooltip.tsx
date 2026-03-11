@@ -63,15 +63,16 @@ const ChartTooltip = memo<ChartTooltipProps>(
         ref={tooltipRef}
         className="c-chart__tooltip"
         style={{
-          left: `${adjustedPosition.x}px`,
-          top: `${adjustedPosition.y}px`,
+          transform: `translate3d(${adjustedPosition.x}px, ${adjustedPosition.y}px, 0)`,
           opacity: visible ? 1 : 0,
           visibility: visible ? 'visible' : 'hidden',
-          transition: 'opacity 0.2s ease, transform 0.2s ease',
-          transform: 'translateZ(0)',
+          transition: 'opacity 0.2s ease',
           position: 'fixed',
+          left: 0,
+          top: 0,
           zIndex: 1000,
           pointerEvents: 'none',
+          willChange: 'transform',
         }}
       >
         {customRenderer ? (

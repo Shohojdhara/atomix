@@ -798,6 +798,8 @@
   &__data-point {
     cursor: pointer;
     transition: all $chart-transition-duration $chart-transition-timing;
+    transform-origin: center;
+    transform-box: fill-box;
 
     &:hover {
       opacity: 0.8;
@@ -866,6 +868,8 @@
     transition: all $chart-treemap-node-transition-duration $chart-transition-timing;
     cursor: pointer;
     shape-rendering: geometricPrecision;
+    transform-origin: center;
+    transform-box: fill-box;
 
     &:hover {
       transform: scale($chart-treemap-node-hover-scale);
@@ -949,10 +953,11 @@
     transition: all $chart-heatmap-cell-transition-duration $chart-transition-timing;
     cursor: pointer;
     shape-rendering: geometricPrecision;
+    transform-origin: center;
+    transform-box: fill-box;
 
     &:hover {
       transform: scale($chart-heatmap-cell-hover-scale);
-      transform-origin: center;
       filter: drop-shadow($chart-heatmap-cell-hover-shadow);
       stroke-width: $chart-heatmap-cell-hover-border-width;
       z-index: 10;
@@ -960,7 +965,6 @@
 
     &--hovered {
       transform: scale($chart-heatmap-cell-hover-scale);
-      transform-origin: center;
       filter: drop-shadow($chart-heatmap-cell-hover-shadow);
       stroke-width: $chart-heatmap-cell-hover-border-width;
       z-index: 10;
@@ -1107,6 +1111,8 @@
     transition: all $chart-transition-duration $chart-transition-timing;
     cursor: pointer;
     shape-rendering: geometricPrecision;
+    transform-origin: center;
+    transform-box: fill-box;
 
     &:hover {
       transform: scale(1.2);
@@ -1165,6 +1171,7 @@
     cursor: pointer;
     shape-rendering: geometricPrecision;
     transform-origin: center;
+    transform-box: fill-box;
 
     &:hover {
       transform: scale(1.02);
@@ -1226,6 +1233,8 @@
     transition: all $chart-transition-duration $chart-transition-timing;
     cursor: pointer;
     shape-rendering: geometricPrecision;
+    transform-origin: center;
+    transform-box: fill-box;
 
     &:hover {
       transform: scale(1.2);
@@ -1250,6 +1259,8 @@
     transition: all $chart-transition-duration $chart-transition-timing;
     cursor: pointer;
     shape-rendering: geometricPrecision;
+    transform-origin: center;
+    transform-box: fill-box;
 
     &:hover {
       transform: scale(1.1);
@@ -1310,6 +1321,8 @@
     transition: all $chart-transition-duration $chart-transition-timing;
     cursor: pointer;
     shape-rendering: geometricPrecision;
+    transform-origin: center;
+    transform-box: fill-box;
 
     &:hover {
       transform: scale(1.3);
@@ -1382,6 +1395,8 @@
     transition: all $chart-transition-duration $chart-transition-timing;
     cursor: pointer;
     shape-rendering: geometricPrecision;
+    transform-origin: center;
+    transform-box: fill-box;
 
     &:hover {
       transform: scale(1.3);

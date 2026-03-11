@@ -1,4 +1,3 @@
-import AnimatedChart from './AnimatedChart';
 import AreaChart from './AreaChart';
 import BarChart from './BarChart';
 import BaseChart from './BaseChart';
@@ -24,7 +23,6 @@ import * as ChartUtils from './utils';
 
 // Export all chart components
 export {
-  AnimatedChart,
   AreaChart,
   BarChart,
   BaseChart,

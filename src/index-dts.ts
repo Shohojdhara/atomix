@@ -11,7 +11,6 @@ export * from './lib/theme-tools';
 export * from './layouts';
 
 // Export specific types that need to be named
-export type { AnimatedChartProps } from './components/Chart/AnimatedChart';
 export type { MultiAxisChartProps } from './components/Chart/MultiAxisChart';
 
 // Create a properly typed default export

@@ -12,7 +12,6 @@ import { SideMenuItem } from '../Navigation/SideMenu/SideMenuItem';
 import { SideMenuList } from '../Navigation/SideMenu/SideMenuList';
 
 import {
-  AnimatedChart,
   AreaChart,
   BarChart,
   BubbleChart,
@@ -123,28 +122,13 @@ Charts provide a comprehensive charting library with 20+ chart types including l
         defaultValue: { summary: '-' },
       },
     },
-    width: {
-      control: 'text',
-      description: 'Width of the chart',
-      table: {
-        type: { summary: 'string | number' },
-        defaultValue: { summary: '100%' },
-      },
-    },
-    height: {
-      control: 'text',
-      description: 'Height of the chart',
-      table: {
-        type: { summary: 'string | number' },
-        defaultValue: { summary: '400px' },
-      },
-    },
+
     glass: {
       control: 'boolean',
       description: 'Whether to apply glass effect',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     showToolbar: {
@@ -152,7 +136,7 @@ Charts provide a comprehensive charting library with 20+ chart types including l
       description: 'Whether to show the toolbar',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     config: {
@@ -163,13 +147,9 @@ Charts provide a comprehensive charting library with 20+ chart types including l
         defaultValue: { summary: '{}' },
       },
     },
-    onPointClick: {
-      action: 'point clicked',
+    onDataPointClick: {
+      action: 'data point clicked',
       description: 'Callback when a data point is clicked',
-    },
-    onPointHover: {
-      action: 'point hovered',
-      description: 'Callback when hovering over a data point',
     },
   },
 } satisfies Meta<typeof Chart>;
@@ -208,10 +188,10 @@ export const GlassVariant: Story = {
       >
         <Container>
           <Grid>
-            <GridCol col={12}>
+            <GridCol xs={12}>
               <h2 style={{ color: 'white', marginBottom: '2rem' }}>Chart Glass Variant</h2>
             </GridCol>
-            <GridCol col={12} md={6}>
+            <GridCol xs={12} md={6}>
               <LineChart
                 {...args}
                 title="Sales Performance"
@@ -225,7 +205,7 @@ export const GlassVariant: Story = {
                 }}
               />
             </GridCol>
-            <GridCol col={12} md={6}>
+            <GridCol xs={12} md={6}>
               <BarChart
                 {...args}
                 title="Revenue by Month"
@@ -239,10 +219,10 @@ export const GlassVariant: Story = {
                 }}
               />
             </GridCol>
-            <GridCol col={12} md={6}>
+            <GridCol xs={12} md={6}>
               <PieChart title="Market Share" data={sampleData} glass={true} showToolbar={true} />
             </GridCol>
-            <GridCol col={12} md={6}>
+            <GridCol xs={12} md={6}>
               <AreaChart
                 title="Growth Trend"
                 subtitle="Year over year"
@@ -261,8 +241,7 @@ export const GlassVariant: Story = {
     );
   },
   args: {
-    onPointClick: fn(),
-    onPointHover: fn(),
+    onDataPointClick: fn(),
   },
   parameters: {
     docs: {
@@ -413,7 +392,6 @@ export const ChartGallery: Story = {
       { key: 'waterfall', icon: 'Drop', label: 'Waterfall', desc: 'Cumulative flow' },
       { key: 'funnel', icon: 'Funnel', label: 'Funnel', desc: 'Process stages' },
       { key: 'treemap', icon: 'Tree', label: 'Treemap', desc: 'Hierarchical data' },
-      { key: 'animated', icon: 'Sparkle', label: 'Animated', desc: 'Motion graphics' },
       { key: 'multiaxis', icon: 'ChartLineUp', label: 'Multi-axis', desc: 'Multiple scales' },
     ];
 
@@ -505,7 +483,7 @@ export const ChartGallery: Story = {
             <div>
               {customToolbar}
               <PieChart
-                datasets={[{ label: 'Distribution', data: generateData(6) }]}
+                datasets={[{ label: 'Distribution', data: generateData(Math.min(dataPoints, 8)) }]}
                 {...commonProps}
               />
             </div>
@@ -515,7 +493,7 @@ export const ChartGallery: Story = {
             <div>
               {customToolbar}
               <DonutChart
-                datasets={[{ label: 'Distribution', data: generateData(6) }]}
+                datasets={[{ label: 'Distribution', data: generateData(Math.min(dataPoints, 8)) }]}
                 {...commonProps}
               />
             </div>
@@ -615,13 +593,6 @@ export const ChartGallery: Story = {
                 }}
                 {...commonProps}
               />
-            </div>
-          );
-        case 'animated':
-          return (
-            <div>
-              {customToolbar}
-              <AnimatedChart datasets={dynamicDatasets} {...commonProps} />
             </div>
           );
         case 'multiaxis':
