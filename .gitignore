@@ -41,6 +41,7 @@ Thumbs.db
 .trae/
 .qodo/
 .amazonq/
+.antigravity/
 
 # Cursor AI specific files (keep configuration files)
 .cursorignore
