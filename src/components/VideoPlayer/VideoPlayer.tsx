@@ -146,10 +146,17 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
     const handleDownload = useCallback(() => {
       if (src) {
-        const a = document.createElement('a');
-        a.href = src;
-        a.download = 'video';
-        a.click();
+        try {
+          const url = new URL(src, window.location.origin);
+          if (['http:', 'https:', 'blob:', 'data:'].includes(url.protocol)) {
+            const a = document.createElement('a');
+            a.href = url.href;
+            a.download = 'video';
+            a.click();
+          }
+        } catch (e) {
+          // Ignore invalid URLs
+        }
       }
     }, [src]);
 
