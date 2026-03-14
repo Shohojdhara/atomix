@@ -32,7 +32,7 @@ const ICON_PATHS: Record<string, string> = {
  * @returns SVG element as HTML string
  */
 export function createPhosphorIcon(name: string, size: number = 16): string {
-  const path = ICON_PATHS[name] || '';
+  const path = Object.prototype.hasOwnProperty.call(ICON_PATHS, name) ? ICON_PATHS[name] : '';
 
   if (!path) {
     console.warn(
@@ -41,7 +41,10 @@ export function createPhosphorIcon(name: string, size: number = 16): string {
     );
   }
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" fill="currentColor" viewBox="0 0 256 256">
+  const safeSize = Number(size);
+  const finalSize = isNaN(safeSize) ? 16 : safeSize;
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${finalSize}" height="${finalSize}" fill="currentColor" viewBox="0 0 256 256">
     <path d="${path}"></path>
   </svg>`;
 }
@@ -63,7 +66,31 @@ export function createIconElement(
   iconElement.style.display = 'inline-flex';
   iconElement.style.alignItems = 'center';
   iconElement.style.justifyContent = 'center';
-  iconElement.innerHTML = createPhosphorIcon(name, size);
+
+  const pathData = Object.prototype.hasOwnProperty.call(ICON_PATHS, name) ? ICON_PATHS[name] : '';
+
+  if (!pathData) {
+    console.warn(
+      'Icon not found in icon library:',
+      typeof name === 'string' ? name.replace(/[^a-zA-Z0-9_-]/g, '_') : 'invalid_name'
+    );
+  }
+
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  const safeSize = Number(size);
+  const finalSize = isNaN(safeSize) ? 16 : safeSize;
+
+  svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  svg.setAttribute('width', String(finalSize));
+  svg.setAttribute('height', String(finalSize));
+  svg.setAttribute('fill', 'currentColor');
+  svg.setAttribute('viewBox', '0 0 256 256');
+
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', pathData || '');
+  svg.appendChild(path);
+
+  iconElement.appendChild(svg);
 
   return iconElement;
 }
