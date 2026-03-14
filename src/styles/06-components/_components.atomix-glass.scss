@@ -7,10 +7,7 @@
   position: relative;
 
   // CSS custom property defaults
-  --atomix-glass-radius: var(--atomix-radius-md, 16px);
-  --atomix-glass-transform: none;
-  --atomix-glass-transition: transform var(--atomix-transition-duration, 0.45s)
-    cubic-bezier(0.22, 1, 0.36, 1);
+  --atomix-glass-transition: transform 0.15s ease;
   --atomix-glass-position: absolute;
   --atomix-glass-container-width: 100%;
   --atomix-glass-container-height: 100%;
@@ -42,13 +39,15 @@
   --_glass-z-border-1: calc(var(--atomix-glass-base-z-index) + 5);
   --_glass-z-border-2: calc(var(--atomix-glass-base-z-index) + 6);
   --_glass-z-content: calc(var(--atomix-glass-base-z-index) + 7);
+  position: relative;
 
   // Base layer styles for all effect layers (hover, border, overlay)
   &__hover-1,
   &__hover-2,
   &__hover-3 {
-    position: absolute;
-    inset: 0;
+    position: var(--atomix-glass-position);
+    top: var(--atomix-glass-top);
+    left: var(--atomix-glass-left);
     pointer-events: none;
     border-radius: var(--atomix-glass-radius);
     transform: var(--atomix-glass-transform);
@@ -58,8 +57,6 @@
 
   &__base,
   &__overlay {
-    position: absolute;
-    inset: 0;
     pointer-events: none;
     border-radius: var(--atomix-glass-radius);
     transform: var(--atomix-glass-transform);
@@ -189,15 +186,18 @@
   &__container {
     width: var(--atomix-glass-container-width);
     height: var(--atomix-glass-container-height);
-    position: relative;
+    position: var(--atomix-glass-position);
+    top: var(--atomix-glass-top);
+    left: var(--atomix-glass-left);
     border-radius: var(--atomix-glass-radius);
     transition: var(--atomix-glass-transition);
+    transform: var(--atomix-glass-transform);
     z-index: var(--_glass-z-container);
   }
 
   &__inner {
-    width: var(--atomix-glass-container-width);
-    height: var(--atomix-glass-container-height);
+    width: 100%;
+    height: 100%;
     position: relative;
     border-radius: var(--atomix-glass-radius);
     padding: var(--atomix-glass-container-padding);

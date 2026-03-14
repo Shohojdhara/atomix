@@ -158,15 +158,17 @@ describe('AtomixGlass Component', () => {
     expect(container.querySelector('.c-atomix-glass__container')).toBeInTheDocument();
   });
 
-  test('applies custom style', () => {
-    const customStyle = { backgroundColor: 'red' };
+  test('applies custom style to root/container layout', () => {
+    const customStyle = { backgroundColor: 'red', position: 'fixed', top: 0, left: 0 };
     const { container } = render(
       <AtomixGlass style={customStyle}>
         <div>Content</div>
       </AtomixGlass>
     );
 
+    const root = container.querySelector('.c-atomix-glass');
     const glassContainer = container.querySelector('.c-atomix-glass__container');
+    expect(root).toHaveStyle('position: fixed');
     expect(glassContainer).toHaveStyle('background-color: rgb(255, 0, 0)');
   });
 

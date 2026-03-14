@@ -84,22 +84,26 @@
   }
 
   &--glass {
-    z-index: unset;
     #{$root}__content {
       @include dynamic-background(
         var(--#{$prefix}tooltip-bg),
         $background-transparency-enable: true,
-        $transparency: 0.4
+        $transparency: 0.3
       );
     }
     #{$root}__arrow {
       @include dynamic-background(
         var(--#{$prefix}tooltip-bg),
         $background-transparency-enable: true,
-        $transparency: 0.4
+        $transparency: 0.3
       );
-      clip-path: polygon(0 100%, 100% 100%, 100% 0);
-      backdrop-filter: var(--atomix-glass-container-backdrop);
+    }
+    #{$root}__arrow {
+      @include dynamic-background(
+        var(--#{$prefix}tooltip-bg),
+        $background-transparency-enable: true,
+        $transparency: 0.3
+      );
     }
   }
 }

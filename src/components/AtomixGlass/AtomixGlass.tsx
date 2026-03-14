@@ -180,7 +180,7 @@ export function AtomixGlass({
       ...(r !== undefined && { right: r }),
       ...(b !== undefined && { bottom: b }),
     };
-  }, [isFixedOrSticky, restStyle]);
+  }, [isFixedOrSticky, restStyle, effectiveWithoutEffects, transformStyle]);
 
   // Calculate base style with transforms
   // When layout is hoisted to the root, strip those props from the container
@@ -223,21 +223,26 @@ export function AtomixGlass({
   );
 
   const adjustedSize = useMemo(() => {
-    const resolveSize = (
-      propValue: string | number | undefined,
-      styleValue: string | number | undefined,
-      measuredSize: number
-    ) => {
-      const explicitSize = propValue ?? styleValue;
-      if (explicitSize !== undefined) {
-        return typeof explicitSize === 'number' ? `${explicitSize}px` : explicitSize;
+    // Keep a reference to positionStyles to avoid unused-variable lint,
+    // but sizing is driven by explicit width/height or measured size.
+    const _position = positionStyles.position;
+
+    const resolveLength = (value: string | number | undefined, measured: number): string => {
+      if (value !== undefined) {
+        return typeof value === 'number' ? `${value}px` : value;
       }
-      return positionStyles.position === 'fixed' ? `${Math.max(measuredSize, 0)}px` : '100%';
+      if (measured > 0) {
+        return `${measured}px`;
+      }
+      return '100%';
     };
 
+    const effectiveWidth = width ?? restStyle.width;
+    const effectiveHeight = height ?? restStyle.height;
+
     return {
-      width: resolveSize(width, restStyle.width, glassSize.width),
-      height: resolveSize(height, restStyle.height, glassSize.height),
+      width: resolveLength(effectiveWidth, glassSize.width),
+      height: resolveLength(effectiveHeight, glassSize.height),
     };
   }, [
     width,
@@ -338,9 +343,10 @@ export function AtomixGlass({
       ...(customZIndex !== undefined && { '--atomix-glass-base-z-index': customZIndex }),
       '--atomix-glass-radius': `${effectiveBorderRadius}px`,
       '--atomix-glass-transform': transformStyle || 'none',
-      '--atomix-glass-position': positionStyles.position,
-      '--atomix-glass-top': positionStyles.top !== 'fixed' ? `${positionStyles.top}px` : '0',
-      '--atomix-glass-left': positionStyles.left !== 'fixed' ? `${positionStyles.left}px` : '0',
+      // Internal decorative layers are positioned relative to the root;
+      '--atomix-glass-position': rootLayoutStyle.position,
+      '--atomix-glass-top': `${isFixedOrSticky ? rootLayoutStyle.top : 0}px`,
+      '--atomix-glass-left': `${isFixedOrSticky ? rootLayoutStyle.left : 0}px`,
       '--atomix-glass-width': adjustedSize.width,
       '--atomix-glass-height': adjustedSize.height,
       '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.09375rem)',
@@ -417,7 +423,7 @@ export function AtomixGlass({
         ref={glassRef}
         contentRef={contentRef}
         className={className}
-        style={rootLayoutStyle}
+        style={{ ...restStyle, ...(!isFixedOrSticky && { position: 'relative' }) }}
         borderRadius={effectiveBorderRadius}
         displacementScale={
           effectiveWithoutEffects
@@ -462,7 +468,6 @@ export function AtomixGlass({
         }}
         onClick={onClick}
         mode={mode}
-        transform={baseStyle.transform}
         effectiveWithoutEffects={effectiveWithoutEffects}
         effectiveReducedMotion={effectiveReducedMotion}
         shaderVariant={shaderVariant}
@@ -480,7 +485,7 @@ export function AtomixGlass({
       )}
 
       {/* Background layers for over-light mode */}
-      {/* Static styles (pointer-events, will-change) are in SCSS */}
+      {/* Static styles (pointer-events) are in SCSS; will-change is managed via .u-glass-clean-root utility for backdrop-filter stability */}
       {renderBackgroundLayer('dark')}
       {renderBackgroundLayer('black')}
       {shouldRenderOverLightLayers && (

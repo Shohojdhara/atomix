@@ -211,7 +211,6 @@ export function useAtomixGlass({
   onClick,
   debugBorderRadius = false,
   debugOverLight = false,
-  debugPerformance = false,
   children,
   blurAmount,
   saturation,

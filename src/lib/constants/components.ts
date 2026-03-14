@@ -1657,7 +1657,7 @@ export const ATOMIX_GLASS = {
     ABERRATION_INTENSITY: 2.5,
     ELASTICITY: 0.05,
     CORNER_RADIUS: 16, // Default border-radius matching design system
-    PADDING: '0 0',
+    PADDING: '0',
     MODE: 'standard' as const,
     OVER_LIGHT: false as const,
     ENABLE_OVER_LIGHT_LAYERS: true,

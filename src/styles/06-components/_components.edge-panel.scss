@@ -349,16 +349,12 @@
 
 // Glass Variant Styles
 .c-edge-panel--glass {
-  position: absolute;
-  z-index: unset;
-
   .c-edge-panel__container {
     background: transparent;
     box-shadow: none;
     overflow: hidden;
     border: none;
     padding: 0;
-    z-index: unset;
     will-change: initial;
     transform: none !important;
     border-radius: inherit;
@@ -413,7 +409,7 @@
       $background-transparency-enable: true
     );
     animation: fadeIn 0.3s ease forwards;
-    z-index: 0;
+    z-index: map.get($z-layers, 1);
 
     &.is-animating-out {
       animation: fadeOut 0.3s ease forwards;

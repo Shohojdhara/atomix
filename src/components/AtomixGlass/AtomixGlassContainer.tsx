@@ -111,12 +111,10 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       saturation = 180,
       aberrationIntensity = 2,
       mouseOffset = { x: 0, y: 0 },
-      globalMousePosition = { x: 0, y: 0 },
       onMouseEnter,
       onMouseLeave,
       onMouseDown,
       onMouseUp,
-      isHovered = false,
       isActive = false,
       overLight = false,
       overLightConfig = {},
@@ -434,7 +432,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             ? `linear-gradient(${180 + mx * 0.5}deg, rgba(255, 255, 255, 0.1) 0%, transparent 20%, transparent 80%, rgba(0, 0, 0, 0.05) 100%)`
             : 'none',
           '--atomix-glass-container-text-shadow': overLight
-            ? '0px 2px 12px rgba(0, 0, 0, 0)'
+            ? '0px 1px 2px rgba(255, 255, 255, 0.15)'
             : '0px 2px 12px rgba(0, 0, 0, 0.4)',
           '--atomix-glass-container-box-shadow': overLight
             ? '0px 16px 70px rgba(0, 0, 0, 0.75)'
@@ -461,15 +459,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       overLight,
       effectiveWithoutEffects,
     ]);
-
-    // Helper to force no transition/animation overrides with !important
-    const setForceNoTransition = (el: HTMLElement | null) => {
-      if (el) {
-        el.style.setProperty('transition-duration', '0s', 'important');
-        el.style.setProperty('animation-duration', '0s', 'important');
-        el.style.setProperty('transition-delay', '0s', 'important');
-      }
-    };
 
     return (
       <div
@@ -513,7 +502,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             />
             {/* Enhanced Apple Liquid Glass Inner Shadow Layer */}
             <div
-              ref={setForceNoTransition}
               className={ATOMIX_GLASS.FILTER_OVERLAY_CLASS}
               style={{
                 filter: `url(#${filterId})`,

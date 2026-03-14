@@ -44,10 +44,7 @@
   inset: 0;
   @include square(100%);
   display: none;
-
-  &:not(.c-modal--glass) {
-    z-index: map.get($z-layers, modal);
-  }
+  z-index: map.get($z-layers, modal);
 
   &__backdrop {
     position: absolute;
