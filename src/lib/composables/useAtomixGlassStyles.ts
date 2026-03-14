@@ -225,10 +225,10 @@ export const updateAtomixGlassStyles = (
     const my = mouseOffset.y;
 
     // Constants for blur calculation
-    const EDGE_BLUR_MULTIPLIER = 1.25;
-    const CENTER_BLUR_MULTIPLIER = 1.1;
-    const FLOW_BLUR_MULTIPLIER = 1.2;
-    const MOUSE_INFLUENCE_BLUR_FACTOR = 0.15;
+    const EDGE_BLUR_MULTIPLIER = 0.5;
+    const CENTER_BLUR_MULTIPLIER = 0.2;
+    const FLOW_BLUR_MULTIPLIER = 0.3;
+    const MOUSE_INFLUENCE_BLUR_FACTOR = 0.4;
     const EDGE_INTENSITY_MOUSE_FACTOR = 0.15;
     const CENTER_INTENSITY_MOUSE_FACTOR = 0.1;
     const MAX_BLUR_RELATIVE = 2;

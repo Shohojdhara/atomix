@@ -1651,19 +1651,19 @@ export const ATOMIX_GLASS = {
     SHADER: 'c-atomix-glass--shader',
   },
   DEFAULTS: {
-    DISPLACEMENT_SCALE: 20,
-    BLUR_AMOUNT: 1,
+    DISPLACEMENT_SCALE: 70,
+    BLUR_AMOUNT: 0,
     SATURATION: 140,
-    ABERRATION_INTENSITY: 2.5,
-    ELASTICITY: 0.05,
-    CORNER_RADIUS: 16, // Default border-radius matching design system
+    ABERRATION_INTENSITY: 2,
+    ELASTICITY: 0.15,
+    CORNER_RADIUS: 20, // Default border-radius matching design system
     PADDING: '0',
     MODE: 'standard' as const,
     OVER_LIGHT: false as const,
     ENABLE_OVER_LIGHT_LAYERS: true,
   },
   CONSTANTS: {
-    ACTIVATION_ZONE: 350,
+    ACTIVATION_ZONE: 200,
     LERP_FACTOR: 0.08,
     SMOOTHSTEP_POWER: 2.5,
     MIN_BLUR: 0.1,

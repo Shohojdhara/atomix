@@ -180,7 +180,7 @@ export function AtomixGlass({
       ...(r !== undefined && { right: r }),
       ...(b !== undefined && { bottom: b }),
     };
-  }, [isFixedOrSticky, restStyle, effectiveWithoutEffects, transformStyle]);
+  }, [isFixedOrSticky, restStyle]);
 
   // Calculate base style with transforms
   // When layout is hoisted to the root, strip those props from the container
@@ -382,11 +382,12 @@ export function AtomixGlass({
     opacityValues,
     effectiveBorderRadius,
     transformStyle,
-    positionStyles,
     adjustedSize,
     isOverLight,
     overLightConfig.borderOpacity,
     customZIndex,
+    rootLayoutStyle,
+    isFixedOrSticky,
   ]);
 
   // Helper function to render background layers
