@@ -22,8 +22,6 @@ const IS_DISABLED_CLASS = ACCORDION.CLASSES.IS_DISABLED;
 
 const mockHandlers = {
   onOpenChange: fn(() => {}),
-  onOpen: fn(() => {}),
-  onClose: fn(() => {}),
 };
 
 // Sample content for stories
@@ -222,20 +220,6 @@ const meta = {
         type: { summary: '(open: boolean) => void' },
       },
     },
-    onOpen: {
-      action: 'onOpen',
-      description: 'Callback when accordion opens',
-      table: {
-        type: { summary: '() => void' },
-      },
-    },
-    onClose: {
-      action: 'onClose',
-      description: 'Callback when accordion closes',
-      table: {
-        type: { summary: '() => void' },
-      },
-    },
   },
 } satisfies Meta<typeof Accordion>;
 
@@ -268,8 +252,6 @@ export const WithAllProps: Story = {
     iconPosition: 'left',
     disabled: false,
     onOpenChange: mockHandlers.onOpenChange,
-    onOpen: mockHandlers.onOpen,
-    onClose: mockHandlers.onClose,
   },
   parameters: {
     docs: {

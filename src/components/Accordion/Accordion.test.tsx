@@ -28,23 +28,6 @@ describe('Accordion Component', () => {
     expect(button).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('calls legacy onOpen/onClose handlers', () => {
-    const onOpen = vi.fn();
-    const onClose = vi.fn();
-    render(
-      <Accordion title="Test" onOpen={onOpen} onClose={onClose}>
-        Content
-      </Accordion>
-    );
-    const button = screen.getByRole('button');
-
-    fireEvent.click(button);
-    expect(onOpen).toHaveBeenCalled();
-
-    fireEvent.click(button);
-    expect(onClose).toHaveBeenCalled();
-  });
-
   it('handles controlled state', () => {
     const onOpenChange = vi.fn();
     const { rerender } = render(
