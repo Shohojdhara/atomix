@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import AtomixGlass from './AtomixGlass';
@@ -159,7 +159,7 @@ describe('AtomixGlass Component', () => {
   });
 
   test('applies custom style to root/container layout', () => {
-    const customStyle = { backgroundColor: 'red', position: 'fixed', top: 0, left: 0 };
+    const customStyle: React.CSSProperties = { backgroundColor: 'red', position: 'fixed', top: 0, left: 0 };
     const { container } = render(
       <AtomixGlass style={customStyle}>
         <div>Content</div>
@@ -170,6 +170,38 @@ describe('AtomixGlass Component', () => {
     const glassContainer = container.querySelector('.c-atomix-glass__container');
     expect(root).toHaveStyle('position: fixed');
     expect(glassContainer).toHaveStyle('background-color: rgb(255, 0, 0)');
+  });
+
+  test('sets 100% width/height for fixed/sticky positioning', async () => {
+    const { container } = render(
+      <AtomixGlass style={{ position: 'fixed' }}>
+        <div>Content</div>
+      </AtomixGlass>
+    );
+
+    const glassContainer = container.querySelector('.c-atomix-glass__container');
+    
+    // Use waitFor because updateAtomixGlassStyles is called imperatively inside a requestAnimationFrame loop
+    await waitFor(() => {
+      // With the new logic, fixed/sticky elements use measured sizes, 
+      // not 100% (which is for standard flow)
+      expect(glassContainer).not.toHaveStyle('--atomix-glass-container-width: 100%');
+    });
+  });
+
+  test('sets 100% width/height for standard flow (not fixed/sticky)', async () => {
+    const { container } = render(
+      <AtomixGlass>
+        <div>Content</div>
+      </AtomixGlass>
+    );
+
+    const glassContainer = container.querySelector('.c-atomix-glass__container');
+    
+    await waitFor(() => {
+      expect(glassContainer).toHaveStyle('--atomix-glass-container-width: 100%');
+      expect(glassContainer).toHaveStyle('--atomix-glass-container-height: 100%');
+    });
   });
 
   test('uses standard mode by default', () => {

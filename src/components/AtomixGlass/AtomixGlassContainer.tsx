@@ -399,6 +399,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       effectiveReducedMotion,
       effectiveWithoutEffects,
       withLiquidBlur,
+      overLightConfig,
     ]);
 
     const containerVars = useMemo(() => {
@@ -413,9 +414,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             ? mouseOffset.y
             : 0;
         return {
-          '--atomix-glass-container-width': `${glassSize?.width}`,
-          '--atomix-glass-container-height': `${glassSize?.height}`,
-          '--atomix-glass-container-padding': padding || '0 0',
           '--atomix-glass-container-radius': `${typeof borderRadius === 'number' && !isNaN(borderRadius) ? borderRadius : 0}px`,
           '--atomix-glass-container-backdrop': backdropStyle?.backdropFilter || 'none',
           '--atomix-glass-container-shadow': overLight
@@ -451,13 +449,12 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         } as React.CSSProperties;
       }
     }, [
-      glassSize,
-      padding,
-      borderRadius,
+    borderRadius,
       backdropStyle,
       mouseOffset,
       overLight,
       effectiveWithoutEffects,
+      overLightConfig,
     ]);
 
     return (

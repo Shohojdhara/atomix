@@ -113,6 +113,17 @@ export function AtomixGlass({
   const glassRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  // ── Layout hoisting ──────────────────────────────────────────────────
+  // When position is fixed/sticky the layout props must live on the ROOT
+  // `.c-atomix-glass` element so that every decorative layer (borders,
+  // backgrounds, hover effects) stays in the same stacking context.
+
+  // Extract zIndex from style so it becomes the base for ALL internal
+  // layers via --atomix-glass-base-z-index.  It must NOT be applied as a
+  // real z-index on the root element — that would break the glass effect.
+  const { zIndex: customZIndex, ...restStyle } = style;
+  const isFixedOrSticky = restStyle.position === 'fixed' || restStyle.position === 'sticky';
+
   // Use composable hook for all state and logic
   const {
     isHovered,
@@ -153,22 +164,12 @@ export function AtomixGlass({
     withLiquidBlur,
     padding,
     style,
+    isFixedOrSticky,
   });
 
   const isOverLight = useMemo(() => overLightConfig.isOverLight, [overLightConfig.isOverLight]);
 
   const shouldRenderOverLightLayers = withOverLightLayers && isOverLight;
-
-  // ── Layout hoisting ──────────────────────────────────────────────────
-  // When position is fixed/sticky the layout props must live on the ROOT
-  // `.c-atomix-glass` element so that every decorative layer (borders,
-  // backgrounds, hover effects) stays in the same stacking context.
-
-  // Extract zIndex from style so it becomes the base for ALL internal
-  // layers via --atomix-glass-base-z-index.  It must NOT be applied as a
-  // real z-index on the root element — that would break the glass effect.
-  const { zIndex: customZIndex, ...restStyle } = style;
-  const isFixedOrSticky = restStyle.position === 'fixed' || restStyle.position === 'sticky';
 
   const rootLayoutStyle = useMemo<React.CSSProperties>(() => {
     if (!isFixedOrSticky) return {};
@@ -424,7 +425,12 @@ export function AtomixGlass({
         ref={glassRef}
         contentRef={contentRef}
         className={className}
-        style={{ ...restStyle, ...(!isFixedOrSticky && { position: 'relative' }) }}
+        style={{
+          ...restStyle,
+          ...(!isFixedOrSticky && {
+            position: 'relative',
+          }),
+        }}
         borderRadius={effectiveBorderRadius}
         displacementScale={
           effectiveWithoutEffects

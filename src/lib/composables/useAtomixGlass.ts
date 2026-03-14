@@ -150,6 +150,7 @@ interface UseAtomixGlassOptions extends Omit<AtomixGlassProps, 'children'> {
   contentRef: React.RefObject<HTMLDivElement>;
   wrapperRef?: React.RefObject<HTMLDivElement>;
   children?: React.ReactNode;
+  isFixedOrSticky?: boolean;
 }
 
 interface UseAtomixGlassReturn {
@@ -216,6 +217,7 @@ export function useAtomixGlass({
   saturation,
   padding,
   withLiquidBlur,
+  isFixedOrSticky = false,
 }: UseAtomixGlassOptions): UseAtomixGlassReturn {
   // State
   const [isHovered, setIsHovered] = useState(false);
@@ -744,6 +746,7 @@ export function useAtomixGlass({
           blurAmount,
           saturation,
           padding,
+          isFixedOrSticky,
         }
       );
 
@@ -767,6 +770,7 @@ export function useAtomixGlass({
     blurAmount,
     saturation,
     padding,
+    isFixedOrSticky,
   ]);
 
   const stopLerpLoop = useCallback(() => {

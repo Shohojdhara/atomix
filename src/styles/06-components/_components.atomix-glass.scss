@@ -7,10 +7,8 @@
   position: relative;
 
   // CSS custom property defaults
-  --atomix-glass-transition: transform 0.15s ease;
+  --atomix-glass-transition: all 0.15s ease;
   --atomix-glass-position: absolute;
-  --atomix-glass-container-width: 100%;
-  --atomix-glass-container-height: 100%;
   --atomix-glass-border-width: var(--atomix-spacing-0-5, 0.09375rem);
 
   // =========================================================================
@@ -184,8 +182,6 @@
 
   // Container styles
   &__container {
-    width: var(--atomix-glass-container-width);
-    height: var(--atomix-glass-container-height);
     position: var(--atomix-glass-position);
     top: var(--atomix-glass-top);
     left: var(--atomix-glass-left);

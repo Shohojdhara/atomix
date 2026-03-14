@@ -34,6 +34,7 @@ export const updateAtomixGlassStyles = (
     blurAmount?: number;
     saturation?: number;
     padding?: string;
+    isFixedOrSticky?: boolean;
   }
 ) => {
   if (!wrapperElement && !containerElement) return;
@@ -56,6 +57,7 @@ export const updateAtomixGlassStyles = (
     blurAmount = ATOMIX_GLASS.DEFAULTS.BLUR_AMOUNT,
     saturation = ATOMIX_GLASS.DEFAULTS.SATURATION,
     padding = ATOMIX_GLASS.DEFAULTS.PADDING,
+    isFixedOrSticky = false,
   } = params;
 
   // Calculate mouse influence
@@ -296,8 +298,8 @@ export const updateAtomixGlassStyles = (
     // Container variables
     const style = containerElement.style;
 
-    style.setProperty('--atomix-glass-container-width', `${glassSize.width}`);
-    style.setProperty('--atomix-glass-container-height', `${glassSize.height}`);
+    style.setProperty('--atomix-glass-container-width', !isFixedOrSticky ? '100%' : `${glassSize.width}`);
+    style.setProperty('--atomix-glass-container-height', !isFixedOrSticky ? '100%' : `${glassSize.height}`);
     style.setProperty('--atomix-glass-container-padding', padding);
     style.setProperty('--atomix-glass-container-radius', `${effectiveBorderRadius}px`);
 
