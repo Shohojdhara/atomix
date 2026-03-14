@@ -41,13 +41,17 @@ export async function migrateTailwind(sourcePath, options = {}) {
   try {
     const files = await getAllFiles(safeSource, ['.jsx', '.tsx', '.js', '.ts', '.html']);
 
-    for (const file of files) {
-      spinner.text = `Processing ${relative(process.cwd(), file)}...`;
+    let processedCount = 0;
 
-      try {
-        let content = await readFile(file, 'utf8');
-        const originalContent = content;
-        let replacementCount = 0;
+    // Process files in batches to prevent "too many open files" errors
+    const batchSize = 50;
+    for (let i = 0; i < files.length; i += batchSize) {
+      const batch = files.slice(i, i + batchSize);
+      await Promise.all(batch.map(async (file) => {
+        try {
+          let content = await readFile(file, 'utf8');
+          const originalContent = content;
+          let replacementCount = 0;
 
         // Replace className attributes
         content = content.replace(/className=["']([^"']+)["']/g, (match, classes) => {
@@ -110,12 +114,16 @@ export async function migrateTailwind(sourcePath, options = {}) {
           }
         }
 
-      } catch (error) {
-        report.errors.push({
-          file: relative(process.cwd(), file),
-          error: error.message
-        });
-      }
+          processedCount++;
+          spinner.text = `Processing files (${processedCount}/${files.length})...`;
+
+        } catch (error) {
+          report.errors.push({
+            file: relative(process.cwd(), file),
+            error: error.message
+          });
+        }
+      }));
     }
 
     spinner.succeed(chalk.green('Tailwind migration complete!'));
@@ -153,13 +161,16 @@ export async function migrateBootstrap(sourcePath, options = {}) {
   try {
     const files = await getAllFiles(safeSource, ['.jsx', '.tsx', '.js', '.ts', '.html']);
 
-    for (const file of files) {
-      spinner.text = `Processing ${relative(process.cwd(), file)}...`;
+    let processedCount = 0;
 
-      try {
-        let content = await readFile(file, 'utf8');
-        const originalContent = content;
-        let replacementCount = 0;
+    const batchSize = 50;
+    for (let i = 0; i < files.length; i += batchSize) {
+      const batch = files.slice(i, i + batchSize);
+      await Promise.all(batch.map(async (file) => {
+        try {
+          let content = await readFile(file, 'utf8');
+          const originalContent = content;
+          let replacementCount = 0;
 
         // Replace className/class attributes
         const classPattern = /(className|class)=["']([^"']+)["']/g;
@@ -215,12 +226,16 @@ export async function migrateBootstrap(sourcePath, options = {}) {
           }
         }
 
-      } catch (error) {
-        report.errors.push({
-          file: relative(process.cwd(), file),
-          error: error.message
-        });
-      }
+          processedCount++;
+          spinner.text = `Processing files (${processedCount}/${files.length})...`;
+
+        } catch (error) {
+          report.errors.push({
+            file: relative(process.cwd(), file),
+            error: error.message
+          });
+        }
+      }));
     }
 
     spinner.succeed(chalk.green('Bootstrap migration complete!'));
@@ -258,13 +273,16 @@ export async function migrateSCSSVariables(sourcePath, options = {}) {
   try {
     const files = await getAllFiles(safeSource, ['.scss', '.sass', '.css']);
 
-    for (const file of files) {
-      spinner.text = `Processing ${relative(process.cwd(), file)}...`;
+    let processedCount = 0;
 
-      try {
-        let content = await readFile(file, 'utf8');
-        const originalContent = content;
-        let replacementCount = 0;
+    const batchSize = 50;
+    for (let i = 0; i < files.length; i += batchSize) {
+      const batch = files.slice(i, i + batchSize);
+      await Promise.all(batch.map(async (file) => {
+        try {
+          let content = await readFile(file, 'utf8');
+          const originalContent = content;
+          let replacementCount = 0;
 
         // Replace SCSS variables with CSS custom properties
         for (const [scssVar, cssVar] of Object.entries(scssVariableMigration)) {
@@ -300,12 +318,16 @@ export async function migrateSCSSVariables(sourcePath, options = {}) {
           }
         }
 
-      } catch (error) {
-        report.errors.push({
-          file: relative(process.cwd(), file),
-          error: error.message
-        });
-      }
+          processedCount++;
+          spinner.text = `Processing files (${processedCount}/${files.length})...`;
+
+        } catch (error) {
+          report.errors.push({
+            file: relative(process.cwd(), file),
+            error: error.message
+          });
+        }
+      }));
     }
 
     spinner.succeed(chalk.green('SCSS variable migration complete!'));
