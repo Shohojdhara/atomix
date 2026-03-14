@@ -193,8 +193,8 @@ const StepsComp: React.FC<StepsProps> = ({
   } else {
     // Compound rendering
     content = Children.map(children, (child, index) => {
-      if (isValidElement(child)) {
-        const childProps = child.props as any;
+      if (isValidElement<StepsItemProps>(child)) {
+        const childProps = child.props;
         // Inject active/completed based on index if not explicitly provided
         const isActive = childProps.active ?? index <= currentStep;
         const isCompleted = childProps.completed ?? index < currentStep;
@@ -207,7 +207,7 @@ const StepsComp: React.FC<StepsProps> = ({
           active: isActive,
           completed: isCompleted,
           number,
-        } as any);
+        });
       }
       return child;
     });
