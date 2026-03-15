@@ -71,7 +71,7 @@ export const BorderColors: Story = {
       {THEME_COLORS.map(color => (
         <div key={`border-${color}`} className="u-flex u-flex-column u-items-center u-gap-2">
           <div className={`u-border u-border-${color} u-w-24 u-h-24 u-rounded-md u-bg-gray-50`} />
-          <code className="u-fs-sm">.u-border-{color}</code>
+          <code className="u-text-sm">.u-border-{color}</code>
         </div>
       ))}
     </div>
@@ -89,7 +89,7 @@ export const SubtleBorderColors: Story = {
           <div
             className={`u-border u-border-${color}-subtle u-w-24 u-h-24 u-rounded-md u-bg-gray-50`}
           />
-          <code className="u-fs-sm">.u-border-{color}-subtle</code>
+          <code className="u-text-sm">.u-border-{color}-subtle</code>
         </div>
       ))}
     </div>
@@ -118,7 +118,7 @@ export const BorderRadius: Story = {
           >
             {label}
           </div>
-          <code className="u-fs-sm">.u-rounded-{size}</code>
+          <code className="u-text-sm">.u-rounded-{size}</code>
         </div>
       ))}
     </div>
@@ -146,7 +146,7 @@ export const Shadows: Story = {
           >
             {label}
           </div>
-          <code className="u-fs-sm">{size === 'null' ? '.u-shadow' : `.u-shadow-${size}`}</code>
+          <code className="u-text-sm">{size === 'null' ? '.u-shadow' : `.u-shadow-${size}`}</code>
         </div>
       ))}
     </div>

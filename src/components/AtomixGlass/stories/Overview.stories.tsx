@@ -273,8 +273,8 @@ export const BasicUsage: Story = {
   args: {
     children: (
       <div className="u-text-center u-flex u-flex-column u-items-center u-justify-center">
-        <h2 className="u-mb-4 u-mt-0 u-text-white u-fs-2xl u-font-bold">Basic Glass Effect</h2>
-        <p className="u-mb-6 u-mt-0 u-text-white u-opacity-90 u-fs-base">
+        <h2 className="u-mb-4 u-mt-0 u-text-white u-text-2xl u-font-bold">Basic Glass Effect</h2>
+        <p className="u-mb-6 u-mt-0 u-text-white u-opacity-90 u-text-base">
           This is a basic AtomixGlass component with default settings.
         </p>
         <Button variant="primary" glass>
@@ -304,8 +304,8 @@ export const WithAllProps: Story = {
   args: {
     children: (
       <div className="u-text-center">
-        <h2 className="u-mb-4 u-mt-0 u-text-white u-fs-2xl u-font-bold">Fully Configured Glass</h2>
-        <p className="u-mb-6 u-mt-0 u-text-white u-opacity-90 u-fs-base">
+        <h2 className="u-mb-4 u-mt-0 u-text-white u-text-2xl u-font-bold">Fully Configured Glass</h2>
+        <p className="u-mb-6 u-mt-0 u-text-white u-opacity-90 u-text-base">
           This glass component uses all configurable properties.
         </p>
         <div className="u-flex u-gap-4 u-justify-center">

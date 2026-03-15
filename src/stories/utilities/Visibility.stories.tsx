@@ -35,7 +35,7 @@ export const Opacity: Story = {
               {value}%
             </div>
           </div>
-          <code className="u-fs-sm">.u-opacity-{value}</code>
+          <code className="u-text-sm">.u-opacity-{value}</code>
         </div>
       ))}
     </div>
@@ -55,7 +55,7 @@ export const Visibility: Story = {
             <code>.u-visible</code> (Default behavior)
           </div>
           <div className="u-invisible u-bg-primary u-text-white u-p-4 u-rounded">(Invisible)</div>
-          <span className="u-fs-sm u-text-gray-500 u-self-center">
+          <span className="u-text-sm u-text-gray-500 u-self-center">
             &larr; Hidden element still takes up space in layout
           </span>
         </div>

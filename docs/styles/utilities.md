@@ -278,8 +278,8 @@ Examples:
 ### Font Style
 
 ```css
-.u-fst-normal    /* normal */
-.u-fst-italic    /* italic */
+.u-textt-normal    /* normal */
+.u-textt-italic    /* italic */
 ```
 
 ### Font Size
@@ -1093,7 +1093,7 @@ All utilities can be applied at specific breakpoints:
 | Display | `u-d-` | `u-flex`, `u-none`, `u-block` |
 | Flexbox | `u-flex-`, `u-justify-content-`, `u-align-items-` | `u-flex-column`, `u-justify-center` |
 | Gap | `u-gap-`, `u-row-gap-`, `u-column-gap-` | `u-gap-4`, `u-row-gap-2` |
-| Text | `u-text-`, `u-fs-`, `u-fw-` | `u-text-center`, `u-text-lg`, `u-font-bold` |
+| Text | `u-text-`, `u-text-`, `u-fw-` | `u-text-center`, `u-text-lg`, `u-font-bold` |
 | Colors | `u-text-`, `u-bg-`, `u-border-` | `u-text-primary`, `u-bg-white`, `u-border-success` |
 | Borders | `u-border-`, `u-rounded-` | `u-border-2`, `u-rounded-lg` |
 | Sizing | `u-w-`, `u-h-` | `u-w-100`, `u-h-50`, `u-mw-100` |

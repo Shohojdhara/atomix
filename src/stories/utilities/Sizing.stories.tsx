@@ -30,7 +30,7 @@ const ABSOLUTE_SIZES = ['16', '32', '64'];
 export const Widths: Story = {
   render: () => (
     <div className="u-flex u-flex-column u-gap-4 u-w-full u-bg-gray-100 u-p-4 u-rounded">
-      <h4 className="u-fs-md u-mb-2">Percentage Widths</h4>
+      <h4 className="u-text-md u-mb-2">Percentage Widths</h4>
       {PERCENTAGES.map(size => (
         <div key={`w-${size}`} className="u-flex u-items-center u-gap-4">
           <div className="u-w-24">
@@ -42,7 +42,7 @@ export const Widths: Story = {
         </div>
       ))}
 
-      <h4 className="u-fs-md u-mb-2 u-mt-4">Absolute Widths</h4>
+      <h4 className="u-text-md u-mb-2 u-mt-4">Absolute Widths</h4>
       {ABSOLUTE_SIZES.map(size => (
         <div key={`w-abs-${size}`} className="u-flex u-items-center u-gap-4">
           <div className="u-w-24">
@@ -97,11 +97,11 @@ export const Heights: Story = {
       {PERCENTAGES.map(size => (
         <div key={`h-${size}`} className="u-flex u-flex-column u-items-center u-gap-2">
           <div
-            className={`u-bg-primary u-text-white u-rounded u-w-16 u-h-${size} u-flex u-items-center u-justify-center u-fs-sm`}
+            className={`u-bg-primary u-text-white u-rounded u-w-16 u-h-${size} u-flex u-items-center u-justify-center u-text-sm`}
           >
             {size}%
           </div>
-          <code className="u-fs-sm">.u-h-{size}</code>
+          <code className="u-text-sm">.u-h-{size}</code>
         </div>
       ))}
     </div>

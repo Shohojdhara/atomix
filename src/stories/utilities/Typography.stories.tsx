@@ -51,7 +51,7 @@ export const TextColors: Story = {
       <div className="u-flex u-flex-wrap u-gap-4">
         {THEME_COLORS.map(color => (
           <div key={color} className="u-p-4 u-border u-border-gray-200 u-rounded-md u-min-w-32">
-            <div className={`u-text-${color} u-font-bold u-fs-lg u-mb-2`}>{color} text</div>
+            <div className={`u-text-${color} u-font-bold u-text-lg u-mb-2`}>{color} text</div>
             <code className="u-text-sm">.u-text-{color}</code>
           </div>
         ))}
@@ -62,7 +62,7 @@ export const TextColors: Story = {
             key={color}
             className={`u-p-4 u-rounded-md u-min-w-32 ${color === 'white' ? 'u-bg-gray-800' : 'u-border u-border-gray-200'}`}
           >
-            <div className={`u-text-${color} u-font-bold u-fs-lg u-mb-2`}>{color} text</div>
+            <div className={`u-text-${color} u-font-bold u-text-lg u-mb-2`}>{color} text</div>
             <code className={`u-text-sm ${color === 'white' ? 'u-text-gray-300' : ''}`}>
               .u-text-{color}
             </code>
@@ -81,7 +81,7 @@ export const TextEmphasisColors: Story = {
     <div className="u-flex u-flex-wrap u-gap-4">
       {THEME_COLORS.map(color => (
         <div key={color} className={`u-bg-${color}-subtle u-p-4 u-rounded-md u-min-w-48`}>
-          <div className={`u-text-${color}-emphasis u-font-bold u-fs-lg u-mb-2`}>
+          <div className={`u-text-${color}-emphasis u-font-bold u-text-lg u-mb-2`}>
             {color} emphasis
           </div>
           <code className="u-text-xs">.u-text-{color}-emphasis</code>
@@ -92,7 +92,7 @@ export const TextEmphasisColors: Story = {
 };
 
 /**
- * Font sizes using `.u-fs-{size}`
+ * Font sizes using `.u-text-{size}`
  */
 export const FontSizes: Story = {
   render: () => (
@@ -100,9 +100,9 @@ export const FontSizes: Story = {
       {SIZES.map(size => (
         <div key={size} className="u-flex u-items-center u-border-b u-border-gray-100 u-pb-4">
           <div className="u-w-32">
-            <code>.u-fs-{size}</code>
+            <code>.u-text-{size}</code>
           </div>
-          <div className={`u-fs-${size} u-truncate`}>
+          <div className={`u-text-${size} u-truncate`}>
             The quick brown fox jumps over the lazy dog
           </div>
         </div>
@@ -144,7 +144,7 @@ export const FontWeights: Story = {
           <div className="u-w-48">
             <code>.u-font-{weight}</code>
           </div>
-          <div className={`u-font-${weight} u-fs-lg`}>
+          <div className={`u-font-${weight} u-text-lg`}>
             {weight.charAt(0).toUpperCase() + weight.slice(1)} Weight
           </div>
         </div>
@@ -183,7 +183,7 @@ export const TextGradients: Story = {
     <div className="u-flex u-flex-wrap u-gap-8">
       {THEME_COLORS.map(color => (
         <div key={`gradient-${color}`}>
-          <div className={`u-text-gradient-${color} u-fs-3xl u-font-bold u-mb-2`}>
+          <div className={`u-text-gradient-${color} u-text-3xl u-font-bold u-mb-2`}>
             Gradient {color}
           </div>
           <code className="u-text-sm">.u-text-gradient-{color}</code>

@@ -461,7 +461,7 @@ const HomePage: React.FC = () => {
                   </div>
                   <Rating value={testimonial.rating} readOnly size="sm" className="u-mb-3" />
                   <blockquote className="u-mb-0">
-                    <p className="u-fst-italic">"{testimonial.content}"</p>
+                    <p className="u-textt-italic">"{testimonial.content}"</p>
                   </blockquote>
                 </Card>
               </GridCol>

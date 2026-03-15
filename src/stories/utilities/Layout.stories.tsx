@@ -44,7 +44,7 @@ export const Display: Story = {
           <div className="u-bg-primary u-text-white u-p-2 u-rounded">Visible</div>
           <div className="u-none u-bg-error u-text-white u-p-2 u-rounded">Hidden</div>
           <div className="u-bg-primary u-text-white u-p-2 u-rounded">Visible</div>
-          <span className="u-text-gray-500 u-fs-sm">
+          <span className="u-text-gray-500 u-text-sm">
             (The hidden element is removed from layout)
           </span>
         </div>
@@ -330,7 +330,7 @@ export const ObjectFit: Story = {
             alt="Placeholder"
             className={`u-object-fit-${fit} u-w-32 u-h-32 u-rounded-md u-bg-gray-200`}
           />
-          <code className="u-fs-sm">.u-object-fit-{fit}</code>
+          <code className="u-text-sm">.u-object-fit-{fit}</code>
         </div>
       ))}
     </div>

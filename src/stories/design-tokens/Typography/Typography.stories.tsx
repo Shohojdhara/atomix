@@ -131,7 +131,7 @@ const TypographyPreview = () => {
         <h2>Text Styles</h2>
         <div className="text-styles-preview">
           <TypographyScale name="Normal">{sampleTextLong}</TypographyScale>
-          <TypographyScale name="Italic" className="u-fst-italic">
+          <TypographyScale name="Italic" className="u-textt-italic">
             {sampleTextLong}
           </TypographyScale>
           <TypographyScale name="Uppercase" className="u-text-uppercase">

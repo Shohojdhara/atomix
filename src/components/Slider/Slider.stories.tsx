@@ -461,7 +461,7 @@ const testimonialSlides: SliderSlide[] = [
               }}
             />
           </div>
-          <p className="u-text-base u-fst-italic u-mb-4">
+          <p className="u-text-base u-textt-italic u-mb-4">
             "Atomix has completely transformed how we build our user interfaces. The components are
             intuitive and the design system is consistent across all our products."
           </p>
@@ -486,7 +486,7 @@ const testimonialSlides: SliderSlide[] = [
               }}
             />
           </div>
-          <p className="u-text-base u-fst-italic u-mb-4">
+          <p className="u-text-base u-textt-italic u-mb-4">
             "Implementing Atomix reduced our development time by 40%. The documentation is excellent
             and the components are highly customizable."
           </p>
@@ -511,7 +511,7 @@ const testimonialSlides: SliderSlide[] = [
               }}
             />
           </div>
-          <p className="u-text-base u-fst-italic u-mb-4">
+          <p className="u-text-base u-textt-italic u-mb-4">
             "The accessibility features in Atomix are impressive. Our products now meet WCAG 2.1 AA
             standards with minimal effort."
           </p>

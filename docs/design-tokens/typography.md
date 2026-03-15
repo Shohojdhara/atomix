@@ -429,7 +429,7 @@ $line-height-none through $line-height-loose
 
 ```css
 /* Font sizes */
-.u-fs-{xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl}
+.u-text-{xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl}
 
 /* Font weights */
 .u-fw-{light|normal|medium|semibold|bold|extrabold}
@@ -438,7 +438,7 @@ $line-height-none through $line-height-loose
 .u-lh-{none|tight|snug|normal|relaxed|loose}
 
 /* Responsive variants */
-.u-fs-{breakpoint}-{size}
+.u-text-{breakpoint}-{size}
 .u-fw-{breakpoint}-{weight}
 .u-lh-{breakpoint}-{height}
 ```

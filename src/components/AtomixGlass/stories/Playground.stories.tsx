@@ -723,7 +723,7 @@ export const Playground: Story = {
                         </div>
                         <div>
                           <div
-                            className="u-font-bold u-fs-sm"
+                            className="u-font-bold u-text-sm"
                             style={{
                               background:
                                 'linear-gradient(90deg, #fff 0%, rgba(122,255,215,0.9) 100%)',
@@ -735,7 +735,7 @@ export const Playground: Story = {
                           >
                             AtomixGlass Playground
                           </div>
-                          <div className="u-fs-xs u-opacity-60 u-mt-1">Live parameter editor</div>
+                          <div className="u-text-xs u-opacity-60 u-mt-1">Live parameter editor</div>
                         </div>
                       </div>
                     </div>
@@ -750,11 +750,11 @@ export const Playground: Story = {
                     }}
                   >
                     <div className="u-flex u-justify-between u-items-center u-mb-2">
-                      <span className="u-text-white u-font-semibold u-fs-xs">
+                      <span className="u-text-white u-font-semibold u-text-xs">
                         Performance Score
                       </span>
                       <span
-                        className="u-font-bold u-fs-sm"
+                        className="u-font-bold u-text-sm"
                         style={{ color: getPerformanceColor() }}
                       >
                         {Math.round(performanceScore)}/100
@@ -792,7 +792,7 @@ export const Playground: Story = {
                   {/* Quick Presets */}
                   <div className="u-mb-4">
                     <label
-                      className="u-block u-mb-2 u-text-white u-font-semibold u-fs-xs"
+                      className="u-block u-mb-2 u-text-white u-font-semibold u-text-xs"
                       style={{ letterSpacing: '0.5px' }}
                     >
                       ⚡ Quick Presets
@@ -855,7 +855,7 @@ export const Playground: Story = {
                       <button
                         key={tab}
                         onClick={() => setControlTab(tab)}
-                        className="u-flex-grow-1 u-py-2 u-fs-xs u-font-bold u-rounded-pill u-cursor-pointer"
+                        className="u-flex-grow-1 u-py-2 u-text-xs u-font-bold u-rounded-pill u-cursor-pointer"
                         style={{
                           background: controlTab === tab ? 'rgba(255,255,255,0.1)' : 'transparent',
                           color: controlTab === tab ? '#fff' : 'rgba(255,255,255,0.5)',
@@ -885,7 +885,7 @@ export const Playground: Story = {
                             }}
                           />
                           <span
-                            className="u-fs-xs u-font-bold u-opacity-60"
+                            className="u-text-xs u-font-bold u-opacity-60"
                             style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
                           >
                             Optics
@@ -918,11 +918,11 @@ export const Playground: Story = {
                           return (
                             <div key={key} className="u-mb-4">
                               <div className="u-flex u-justify-between u-items-baseline u-mb-1">
-                                <label className="u-fs-xs u-font-medium u-opacity-80">
+                                <label className="u-text-xs u-font-medium u-opacity-80">
                                   {label}
                                 </label>
                                 <span
-                                  className="u-fs-xs u-font-bold u-px-2 u-py-1 u-rounded"
+                                  className="u-text-xs u-font-bold u-px-2 u-py-1 u-rounded"
                                   style={{
                                     background: 'rgba(122,255,215,0.12)',
                                     color: '#7AFFD7',
@@ -982,7 +982,7 @@ export const Playground: Story = {
                             }}
                           />
                           <span
-                            className="u-fs-xs u-font-bold u-opacity-60"
+                            className="u-text-xs u-font-bold u-opacity-60"
                             style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
                           >
                             Physics
@@ -998,11 +998,11 @@ export const Playground: Story = {
                           return (
                             <div key={key} className="u-mb-4">
                               <div className="u-flex u-justify-between u-items-baseline u-mb-1">
-                                <label className="u-fs-xs u-font-medium u-opacity-80">
+                                <label className="u-text-xs u-font-medium u-opacity-80">
                                   {label}
                                 </label>
                                 <span
-                                  className="u-fs-xs u-font-bold u-px-2 u-py-1 u-rounded"
+                                  className="u-text-xs u-font-bold u-px-2 u-py-1 u-rounded"
                                   style={{
                                     background: 'rgba(167,139,250,0.12)',
                                     color: '#a78bfa',
@@ -1060,7 +1060,7 @@ export const Playground: Story = {
                             }}
                           />
                           <span
-                            className="u-fs-xs u-font-bold u-opacity-60"
+                            className="u-text-xs u-font-bold u-opacity-60"
                             style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
                           >
                             Flags
@@ -1110,7 +1110,7 @@ export const Playground: Story = {
                                   }}
                                 />
                                 <span
-                                  className="u-fs-xs u-font-medium"
+                                  className="u-text-xs u-font-medium"
                                   style={{ color: isOn ? '#7AFFD7' : 'rgba(255,255,255,0.6)' }}
                                 >
                                   {label}
@@ -1136,7 +1136,7 @@ export const Playground: Story = {
                         }}
                       />
                       <span
-                        className="u-fs-xs u-font-bold u-opacity-60"
+                        className="u-text-xs u-font-bold u-opacity-60"
                         style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
                       >
                         Glass Mode
@@ -1150,7 +1150,7 @@ export const Playground: Story = {
                         <button
                           key={mode}
                           onClick={() => setSelectedMode(mode)}
-                          className="u-py-2 u-rounded u-text-center u-fs-xs u-font-bold"
+                          className="u-py-2 u-rounded u-text-center u-text-xs u-font-bold"
                           style={{
                             background:
                               selectedMode === mode
@@ -1189,7 +1189,7 @@ export const Playground: Story = {
                           }}
                         />
                         <span
-                          className="u-fs-xs u-font-bold u-opacity-60"
+                          className="u-text-xs u-font-bold u-opacity-60"
                           style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
                         >
                           Shader Variant
@@ -1200,7 +1200,7 @@ export const Playground: Story = {
                           <button
                             key={opt.value}
                             onClick={() => setSelectedShader(opt.value as any)}
-                            className="u-py-2 u-px-3 u-rounded u-text-start u-fs-xs u-font-medium"
+                            className="u-py-2 u-px-3 u-rounded u-text-start u-text-xs u-font-medium"
                             style={{
                               background:
                                 selectedShader === opt.value
@@ -1228,7 +1228,7 @@ export const Playground: Story = {
                   <div className="u-mb-4">
                     {/* Header row: label + nav controls */}
                     <div className="u-flex u-items-center u-justify-between u-mb-2">
-                      <label className="u-block u-text-white u-font-semibold u-fs-sm">
+                      <label className="u-block u-text-white u-font-semibold u-text-sm">
                         🌄 Background
                       </label>
                       <div className="u-flex u-items-center u-gap-2">
@@ -1264,7 +1264,7 @@ export const Playground: Story = {
                           ‹
                         </button>
                         <span
-                          className="u-fs-xs u-opacity-60"
+                          className="u-text-xs u-opacity-60"
                           style={{
                             minWidth: '36px',
                             textAlign: 'center',
@@ -1454,17 +1454,17 @@ export const Playground: Story = {
                           flexShrink: 0,
                         }}
                       />
-                      <span className="u-fs-xs u-opacity-70" style={{ fontWeight: 600 }}>
+                      <span className="u-text-xs u-opacity-70" style={{ fontWeight: 600 }}>
                         {backgrounds[backgroundIndex]?.label}
                       </span>
                       <span
-                        className="u-fs-xs u-opacity-40"
+                        className="u-text-xs u-opacity-40"
                         style={{ textTransform: 'capitalize', marginLeft: 'auto' }}
                       >
                         {backgrounds[backgroundIndex]?.tag}
                       </span>
                     </div>
-                    <div className="u-mt-1 u-fs-xs u-opacity-35" style={{ letterSpacing: '0.3px' }}>
+                    <div className="u-mt-1 u-text-xs u-opacity-35" style={{ letterSpacing: '0.3px' }}>
                       Use ← → arrow keys to navigate
                     </div>
                   </div>
@@ -1543,7 +1543,7 @@ export const Playground: Story = {
                         <div className="u-flex u-justify-between u-items-center u-mb-6">
                           <div>
                             <h3
-                              className="u-m-0 u-font-bold u-fs-xl"
+                              className="u-m-0 u-font-bold u-text-xl"
                               style={{
                                 background:
                                   'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
@@ -1554,7 +1554,7 @@ export const Playground: Story = {
                             >
                               💻 Generated Code
                             </h3>
-                            <p className="u-m-0 u-fs-sm u-text-white u-opacity-70 u-mt-1">
+                            <p className="u-m-0 u-text-sm u-text-white u-opacity-70 u-mt-1">
                               Copy this code to use in your project
                             </p>
                           </div>
@@ -1573,7 +1573,7 @@ export const Playground: Story = {
                           </Button>
                         </div>
                         <pre
-                          className="custom-scrollbar u-rounded u-fs-sm"
+                          className="custom-scrollbar u-rounded u-text-sm"
                           style={{
                             overflowX: 'auto',
                             overflowY: 'auto',
@@ -1612,7 +1612,7 @@ export const Playground: Story = {
                     <div className="u-h-100 u-w-100 custom-scrollbar" style={{ overflowY: 'auto' }}>
                       <div className="u-p-4 u-p-lg-5 u-text-center">
                         <div
-                          className="u-inline-flex u-items-center u-gap-2 u-px-3 u-py-1 u-rounded-pill u-mb-4 u-fs-xs u-font-bold"
+                          className="u-inline-flex u-items-center u-gap-2 u-px-3 u-py-1 u-rounded-pill u-mb-4 u-text-xs u-font-bold"
                           style={{
                             background:
                               'linear-gradient(135deg, rgba(122, 255, 215, 0.2) 0%, rgba(102, 126, 234, 0.2) 100%)',
@@ -1623,7 +1623,7 @@ export const Playground: Story = {
                             backdropFilter: 'blur(8px)',
                           }}
                         >
-                          <span className="u-fs-base">✨</span>
+                          <span className="u-text-base">✨</span>
                           <span>LIVE PREVIEW</span>
                         </div>
 
@@ -1713,7 +1713,7 @@ export const Playground: Story = {
                             }}
                           >
                             <div
-                              className="u-mb-3 u-font-bold u-fs-sm"
+                              className="u-mb-3 u-font-bold u-text-sm"
                               style={{ color: '#7AFFD7', letterSpacing: '0.5px' }}
                             >
                               📊 Current Configuration Stack
@@ -1723,50 +1723,50 @@ export const Playground: Story = {
                               style={{ gridTemplateColumns: 'repeat(6, 1fr)' }}
                             >
                               <div className="u-flex u-flex-column u-gap-1">
-                                <span className="u-fs-xs u-opacity-60 u-font-medium">Mode</span>
+                                <span className="u-text-xs u-opacity-60 u-font-medium">Mode</span>
                                 <span
-                                  className="u-fs-sm u-font-bold u-text-white"
+                                  className="u-text-sm u-font-bold u-text-white"
                                   style={{ textTransform: 'capitalize' }}
                                 >
                                   {selectedMode}
                                 </span>
                               </div>
                               <div className="u-flex u-flex-column u-gap-1">
-                                <span className="u-fs-xs u-opacity-60 u-font-medium">Shader</span>
+                                <span className="u-text-xs u-opacity-60 u-font-medium">Shader</span>
                                 <span
-                                  className="u-fs-sm u-font-bold u-text-white"
+                                  className="u-text-sm u-font-bold u-text-white"
                                   style={{ textTransform: 'capitalize' }}
                                 >
                                   {selectedShader}
                                 </span>
                               </div>
                               <div className="u-flex u-flex-column u-gap-1">
-                                <span className="u-fs-xs u-opacity-60 u-font-medium">
+                                <span className="u-text-xs u-opacity-60 u-font-medium">
                                   Displacement
                                 </span>
-                                <span className="u-fs-sm u-font-bold u-text-white">
+                                <span className="u-text-sm u-font-bold u-text-white">
                                   {settings.displacementScale}px
                                 </span>
                               </div>
                               <div className="u-flex u-flex-column u-gap-1">
-                                <span className="u-fs-xs u-opacity-60 u-font-medium">
+                                <span className="u-text-xs u-opacity-60 u-font-medium">
                                   Aberration
                                 </span>
-                                <span className="u-fs-sm u-font-bold u-text-white">
+                                <span className="u-text-sm u-font-bold u-text-white">
                                   {settings.aberrationIntensity.toFixed(1)}
                                 </span>
                               </div>
                               <div className="u-flex u-flex-column u-gap-1">
-                                <span className="u-fs-xs u-opacity-60 u-font-medium">Blur</span>
-                                <span className="u-fs-sm u-font-bold u-text-white">
+                                <span className="u-text-xs u-opacity-60 u-font-medium">Blur</span>
+                                <span className="u-text-sm u-font-bold u-text-white">
                                   {settings.blurAmount.toFixed(2)}
                                 </span>
                               </div>
                               <div className="u-flex u-flex-column u-gap-1">
-                                <span className="u-fs-xs u-opacity-60 u-font-medium">
+                                <span className="u-text-xs u-opacity-60 u-font-medium">
                                   Elasticity
                                 </span>
-                                <span className="u-fs-sm u-font-bold u-text-white">
+                                <span className="u-text-sm u-font-bold u-text-white">
                                   {settings.elasticity.toFixed(2)}
                                 </span>
                               </div>
@@ -1783,14 +1783,14 @@ export const Playground: Story = {
                             }}
                           >
                             <div
-                              className="u-mb-3 u-font-bold u-fs-sm"
+                              className="u-mb-3 u-font-bold u-text-sm"
                               style={{ color: '#7AFFD7', letterSpacing: '0.5px' }}
                             >
                               🎨 Visual Characteristics
                             </div>
                             <div className="u-flex u-flex-wrap u-gap-2">
                               <div
-                                className="u-px-3 u-py-1 u-rounded-pill u-fs-xs u-font-bold"
+                                className="u-px-3 u-py-1 u-rounded-pill u-text-xs u-font-bold"
                                 style={{
                                   background: settings.withLiquidBlur
                                     ? 'rgba(122, 255, 215, 0.15)'
@@ -1807,7 +1807,7 @@ export const Playground: Story = {
                                 {settings.withLiquidBlur ? '✓' : '○'} Liquid Blur
                               </div>
                               <div
-                                className="u-px-3 u-py-1 u-rounded-pill u-fs-xs u-font-bold"
+                                className="u-px-3 u-py-1 u-rounded-pill u-text-xs u-font-bold"
                                 style={{
                                   background: settings.withBorder
                                     ? 'rgba(122, 255, 215, 0.15)'
@@ -1822,7 +1822,7 @@ export const Playground: Story = {
                                 {settings.withBorder ? '✓' : '○'} Border Effect
                               </div>
                               <div
-                                className="u-px-3 u-py-1 u-rounded-pill u-fs-xs u-font-bold"
+                                className="u-px-3 u-py-1 u-rounded-pill u-text-xs u-font-bold"
                                 style={{
                                   background: settings.reducedMotion
                                     ? 'rgba(239, 68, 68, 0.15)'
@@ -1839,7 +1839,7 @@ export const Playground: Story = {
                                 {settings.reducedMotion ? '✓' : '○'} Reduced Motion
                               </div>
                               <div
-                                className="u-px-3 u-py-1 u-rounded-pill u-fs-xs u-font-bold"
+                                className="u-px-3 u-py-1 u-rounded-pill u-text-xs u-font-bold"
                                 style={{
                                   background: settings.highContrast
                                     ? 'rgba(245, 158, 11, 0.15)'
@@ -1868,7 +1868,7 @@ export const Playground: Story = {
                             }}
                           >
                             <div
-                              className="u-mb-3 u-font-bold u-fs-sm"
+                              className="u-mb-3 u-font-bold u-text-sm"
                               style={{ color: '#7AFFD7', letterSpacing: '0.5px' }}
                             >
                               📈 Quick Stats
@@ -1877,23 +1877,23 @@ export const Playground: Story = {
                               className="u-grid u-gap-3"
                               style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}
                             >
-                              <div className="u-flex u-items-center u-fs-sm">
+                              <div className="u-flex u-items-center u-text-sm">
                                 <span className="u-opacity-60 u-font-medium">Saturation:</span>
                                 <span className="u-font-bold u-ml-2">{settings.saturation}%</span>
                               </div>
-                              <div className="u-flex u-items-center u-fs-sm">
+                              <div className="u-flex u-items-center u-text-sm">
                                 <span className="u-opacity-60 u-font-medium">Radius:</span>
                                 <span className="u-font-bold u-ml-2">
                                   {settings.borderRadius}px
                                 </span>
                               </div>
-                              <div className="u-flex u-items-center u-fs-sm">
+                              <div className="u-flex u-items-center u-text-sm">
                                 <span className="u-opacity-60 u-font-medium">Bg:</span>
                                 <span className="u-font-bold u-ml-2">
                                   {backgroundIndex + 1}/{backgrounds.length}
                                 </span>
                               </div>
-                              <div className="u-flex u-items-center u-fs-sm">
+                              <div className="u-flex u-items-center u-text-sm">
                                 <span className="u-opacity-60 u-font-medium">Effects:</span>
                                 <span className="u-font-bold u-ml-2">
                                   {settings.withoutEffects ? 'Off' : 'On'}

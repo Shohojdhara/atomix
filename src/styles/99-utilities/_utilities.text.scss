@@ -9,7 +9,7 @@ $utilities-text: (
   'font-size': (
     rfs: true,
     property: font-size,
-    class: u-fs,
+    class: u-text,
     values: map.merge(
         color-maps.$font-sizes-extended,
         (

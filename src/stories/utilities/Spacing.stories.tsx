@@ -47,7 +47,7 @@ export const Padding: Story = {
   render: () => (
     <div className="u-flex u-flex-column u-gap-8">
       <div>
-        <h3 className="u-fs-lg u-mb-4">Uniform Padding (.u-p-*)</h3>
+        <h3 className="u-text-lg u-mb-4">Uniform Padding (.u-p-*)</h3>
         <div className="u-flex u-flex-wrap u-gap-4">
           {['2', '4', '8'].map(size => (
             <div key={size} className="u-flex u-flex-column u-items-center u-gap-2">
@@ -61,7 +61,7 @@ export const Padding: Story = {
       </div>
 
       <div>
-        <h3 className="u-fs-lg u-mb-4">Directional Padding</h3>
+        <h3 className="u-text-lg u-mb-4">Directional Padding</h3>
         <div className="u-flex u-flex-wrap u-gap-8">
           <div className="u-flex u-flex-column u-items-center u-gap-2">
             <div className="u-bg-primary-subtle u-pt-6 u-rounded">
@@ -91,7 +91,7 @@ export const Padding: Story = {
       </div>
 
       <div>
-        <h3 className="u-fs-lg u-mb-4">Axis Padding (X and Y)</h3>
+        <h3 className="u-text-lg u-mb-4">Axis Padding (X and Y)</h3>
         <div className="u-flex u-flex-wrap u-gap-8">
           <div className="u-flex u-flex-column u-items-center u-gap-2">
             <div className="u-bg-primary-subtle u-px-6 u-rounded">
@@ -119,7 +119,7 @@ export const Margin: Story = {
   render: () => (
     <div className="u-flex u-flex-column u-gap-8">
       <div>
-        <h3 className="u-fs-lg u-mb-4">Uniform Margin (.u-m-*)</h3>
+        <h3 className="u-text-lg u-mb-4">Uniform Margin (.u-m-*)</h3>
         <div className="u-flex u-flex-wrap u-gap-4">
           {['2', '4', '8'].map(size => (
             <div key={size} className="u-flex u-flex-column u-items-center u-gap-2">
@@ -136,7 +136,7 @@ export const Margin: Story = {
       </div>
 
       <div>
-        <h3 className="u-fs-lg u-mb-4">Directional Margin</h3>
+        <h3 className="u-text-lg u-mb-4">Directional Margin</h3>
         <div className="u-flex u-flex-wrap u-gap-4">
           <div className="u-flex u-flex-column u-items-center u-gap-2">
             <div
@@ -178,7 +178,7 @@ export const Margin: Story = {
       </div>
 
       <div>
-        <h3 className="u-fs-lg u-mb-4">Auto Margin</h3>
+        <h3 className="u-text-lg u-mb-4">Auto Margin</h3>
         <div className="u-bg-gray-200 u-p-4 u-rounded">
           <div className="u-bg-primary u-w-32 u-h-16 u-rounded u-m-auto u-flex u-items-center u-justify-center u-text-white">
             .u-m-auto

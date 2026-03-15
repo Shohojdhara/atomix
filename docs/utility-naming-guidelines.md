@@ -77,7 +77,7 @@ This document establishes consistent naming conventions for CSS utility classes 
 
 | Property        | Class Prefix | Examples                                                       |
 | --------------- | ------------ | -------------------------------------------------------------- |
-| Font Size       | `u-fs`       | `.u-fs-xs`, `.u-fs-sm`, `.u-fs-lg`, `.u-fs-2xl`                |
+| Font Size       | `u-text`       | `.u-text-xs`, `.u-text-sm`, `.u-text-lg`, `.u-text-2xl`                |
 | Font Weight     | `u-font`     | `.u-font-light`, `.u-font-normal`, `.u-font-bold`              |
 | Font Style      | (direct)     | `.u-italic`, `.u-not-italic`                                   |
 | Line Height     | `u-leading`  | `.u-leading-none`, `.u-leading-tight`, `.u-leading-normal`     |
@@ -242,11 +242,11 @@ When a utility definition has `print: true`, classes are also generated inside `
 | `.u-position-fixed`      | `.u-fixed`      | Shorter, matches Display pattern           |
 | `.u-position-sticky`     | `.u-sticky`     | Shorter, matches Display pattern           |
 | `.u-position-static`     | `.u-static`     | Shorter, matches Display pattern           |
-| `.u-fst-italic`          | `.u-italic`     | More intuitive                             |
-| `.u-fst-normal`          | `.u-not-italic` | More intuitive                             |
-| `.u-text-xs` (font-size) | `.u-fs-xs`      | Avoid collision with text-color/text-align |
-| `.u-text-sm` (font-size) | `.u-fs-sm`      | Avoid collision                            |
-| `.u-text-lg` (font-size) | `.u-fs-lg`      | Avoid collision                            |
+| `.u-textt-italic`          | `.u-italic`     | More intuitive                             |
+| `.u-textt-normal`          | `.u-not-italic` | More intuitive                             |
+| `.u-text-xs` (font-size) | `.u-text-xs`      | Avoid collision with text-color/text-align |
+| `.u-text-sm` (font-size) | `.u-text-sm`      | Avoid collision                            |
+| `.u-text-lg` (font-size) | `.u-text-lg`      | Avoid collision                            |
 | `.u-mw-100`              | `.u-max-w-100`  | Clarity, avoid margin confusion            |
 | `.u-mh-100`              | `.u-max-h-100`  | Clarity, avoid margin confusion            |
 | `.u-m-4-md`              | `.u-m-md-4`     | Responsive infix before value              |
