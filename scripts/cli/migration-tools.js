@@ -8,13 +8,7 @@ import { join, extname, relative } from 'path';
 import chalk from 'chalk';
 import ora from 'ora';
 import { validatePath, sanitizeInput, AtomixCLIError } from './utils.js';
-import {
-  tailwindToAtomix,
-  bootstrapToAtomix,
-  scssVariableMigration
-} from './mappings.js';
-
-
+import { tailwindToAtomix, bootstrapToAtomix, scssVariableMigration } from './mappings.js';
 
 /**
  * Migrate Tailwind classes to Atomix
@@ -23,11 +17,10 @@ export async function migrateTailwind(sourcePath, options = {}) {
   const sanitizedSource = sanitizeInput(sourcePath);
   const sourceValidation = validatePath(sanitizedSource);
   if (!sourceValidation.isValid) {
-    throw new AtomixCLIError(
-      sourceValidation.error,
-      'INVALID_PATH',
-      ['Provide a valid path within the project', 'Check for typos']
-    );
+    throw new AtomixCLIError(sourceValidation.error, 'INVALID_PATH', [
+      'Provide a valid path within the project',
+      'Check for typos',
+    ]);
   }
   const safeSource = sourceValidation.safePath;
   const spinner = ora('Migrating from Tailwind CSS...').start();
@@ -35,7 +28,7 @@ export async function migrateTailwind(sourcePath, options = {}) {
     filesProcessed: 0,
     classesReplaced: 0,
     warnings: [],
-    errors: []
+    errors: [],
   };
 
   try {
@@ -71,11 +64,16 @@ export async function migrateTailwind(sourcePath, options = {}) {
             }
 
             // If no mapping found, keep original
-            if (trimmed && !trimmed.startsWith('c-') && !trimmed.startsWith('u-') && !trimmed.startsWith('o-')) {
+            if (
+              trimmed &&
+              !trimmed.startsWith('c-') &&
+              !trimmed.startsWith('u-') &&
+              !trimmed.startsWith('o-')
+            ) {
               report.warnings.push({
                 file: relative(process.cwd(), file),
                 class: trimmed,
-                message: 'No Atomix equivalent found'
+                message: 'No Atomix equivalent found',
               });
             }
 
@@ -109,11 +107,10 @@ export async function migrateTailwind(sourcePath, options = {}) {
             report.classesReplaced += replacementCount;
           }
         }
-
       } catch (error) {
         report.errors.push({
           file: relative(process.cwd(), file),
-          error: error.message
+          error: error.message,
         });
       }
     }
@@ -121,7 +118,6 @@ export async function migrateTailwind(sourcePath, options = {}) {
     spinner.succeed(chalk.green('Tailwind migration complete!'));
 
     return report;
-
   } catch (error) {
     spinner.fail(chalk.red('Migration failed'));
     throw error;
@@ -135,11 +131,10 @@ export async function migrateBootstrap(sourcePath, options = {}) {
   const sanitizedSource = sanitizeInput(sourcePath);
   const sourceValidation = validatePath(sanitizedSource);
   if (!sourceValidation.isValid) {
-    throw new AtomixCLIError(
-      sourceValidation.error,
-      'INVALID_PATH',
-      ['Provide a valid path within the project', 'Check for typos']
-    );
+    throw new AtomixCLIError(sourceValidation.error, 'INVALID_PATH', [
+      'Provide a valid path within the project',
+      'Check for typos',
+    ]);
   }
   const safeSource = sourceValidation.safePath;
   const spinner = ora('Migrating from Bootstrap...').start();
@@ -147,7 +142,7 @@ export async function migrateBootstrap(sourcePath, options = {}) {
     filesProcessed: 0,
     classesReplaced: 0,
     warnings: [],
-    errors: []
+    errors: [],
   };
 
   try {
@@ -191,11 +186,16 @@ export async function migrateBootstrap(sourcePath, options = {}) {
             }
 
             // If no mapping found, keep original
-            if (trimmed && !trimmed.startsWith('c-') && !trimmed.startsWith('u-') && !trimmed.startsWith('o-')) {
+            if (
+              trimmed &&
+              !trimmed.startsWith('c-') &&
+              !trimmed.startsWith('u-') &&
+              !trimmed.startsWith('o-')
+            ) {
               report.warnings.push({
                 file: relative(process.cwd(), file),
                 class: trimmed,
-                message: 'No Atomix equivalent found'
+                message: 'No Atomix equivalent found',
               });
             }
 
@@ -214,11 +214,10 @@ export async function migrateBootstrap(sourcePath, options = {}) {
             report.classesReplaced += replacementCount;
           }
         }
-
       } catch (error) {
         report.errors.push({
           file: relative(process.cwd(), file),
-          error: error.message
+          error: error.message,
         });
       }
     }
@@ -226,7 +225,6 @@ export async function migrateBootstrap(sourcePath, options = {}) {
     spinner.succeed(chalk.green('Bootstrap migration complete!'));
 
     return report;
-
   } catch (error) {
     spinner.fail(chalk.red('Migration failed'));
     throw error;
@@ -240,11 +238,10 @@ export async function migrateSCSSVariables(sourcePath, options = {}) {
   const sanitizedSource = sanitizeInput(sourcePath);
   const sourceValidation = validatePath(sanitizedSource);
   if (!sourceValidation.isValid) {
-    throw new AtomixCLIError(
-      sourceValidation.error,
-      'INVALID_PATH',
-      ['Provide a valid path within the project', 'Check for typos']
-    );
+    throw new AtomixCLIError(sourceValidation.error, 'INVALID_PATH', [
+      'Provide a valid path within the project',
+      'Check for typos',
+    ]);
   }
   const safeSource = sourceValidation.safePath;
   const spinner = ora('Migrating SCSS variables to design tokens...').start();
@@ -252,7 +249,7 @@ export async function migrateSCSSVariables(sourcePath, options = {}) {
     filesProcessed: 0,
     variablesReplaced: 0,
     warnings: [],
-    errors: []
+    errors: [],
   };
 
   try {
@@ -284,7 +281,7 @@ export async function migrateSCSSVariables(sourcePath, options = {}) {
               report.warnings.push({
                 file: relative(process.cwd(), file),
                 variable: varName,
-                message: 'No design token equivalent found'
+                message: 'No design token equivalent found',
               });
             }
           });
@@ -299,11 +296,10 @@ export async function migrateSCSSVariables(sourcePath, options = {}) {
             report.variablesReplaced += replacementCount;
           }
         }
-
       } catch (error) {
         report.errors.push({
           file: relative(process.cwd(), file),
-          error: error.message
+          error: error.message,
         });
       }
     }
@@ -311,7 +307,6 @@ export async function migrateSCSSVariables(sourcePath, options = {}) {
     spinner.succeed(chalk.green('SCSS variable migration complete!'));
 
     return report;
-
   } catch (error) {
     spinner.fail(chalk.red('Migration failed'));
     throw error;
@@ -327,22 +322,24 @@ async function getAllFiles(dir, extensions = []) {
   async function walk(currentPath) {
     const entries = await readdir(currentPath);
 
-    for (const entry of entries) {
-      const fullPath = join(currentPath, entry);
-      const stats = await lstat(fullPath);
+    await Promise.all(
+      entries.map(async entry => {
+        const fullPath = join(currentPath, entry);
+        const stats = await lstat(fullPath);
 
-      if (stats.isDirectory()) {
-        // Skip node_modules and hidden directories
-        if (!entry.startsWith('.') && entry !== 'node_modules') {
-          await walk(fullPath);
+        if (stats.isDirectory()) {
+          // Skip node_modules and hidden directories
+          if (!entry.startsWith('.') && entry !== 'node_modules') {
+            await walk(fullPath);
+          }
+        } else if (stats.isFile()) {
+          const ext = extname(fullPath);
+          if (extensions.length === 0 || extensions.includes(ext)) {
+            files.push(fullPath);
+          }
         }
-      } else if (stats.isFile()) {
-        const ext = extname(fullPath);
-        if (extensions.length === 0 || extensions.includes(ext)) {
-          files.push(fullPath);
-        }
-      }
-    }
+      })
+    );
   }
 
   await walk(dir);
@@ -357,7 +354,9 @@ export function displayMigrationReport(report) {
   console.log(chalk.gray('='.repeat(50)));
 
   console.log(chalk.cyan(`Files processed: ${report.filesProcessed}`));
-  console.log(chalk.cyan(`Classes/Variables replaced: ${report.classesReplaced || report.variablesReplaced}`));
+  console.log(
+    chalk.cyan(`Classes/Variables replaced: ${report.classesReplaced || report.variablesReplaced}`)
+  );
 
   if (report.warnings.length > 0) {
     console.log(chalk.yellow(`\n⚠️  Warnings (${report.warnings.length}):\n`));
@@ -406,5 +405,5 @@ export default {
   migrateTailwind,
   migrateBootstrap,
   migrateSCSSVariables,
-  displayMigrationReport
+  displayMigrationReport,
 };
