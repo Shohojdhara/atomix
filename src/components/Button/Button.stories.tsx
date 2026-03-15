@@ -406,6 +406,16 @@ export const DisabledState: Story = {
   },
 };
 
+export const DisabledLinkState: Story = {
+  args: {
+    label: 'Disabled Link Button',
+    variant: 'primary',
+    size: 'md',
+    disabled: true,
+    href: '/home',
+  },
+};
+
 /**
  * Shows button in active state
  */

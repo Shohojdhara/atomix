@@ -62,7 +62,7 @@ export const Button = React.memo(
       // If disabled, we still check href, but we might want to render as button or anchor with aria-disabled
       // The previous logic was Boolean(href && !isDisabled). This meant if disabled, it renders as <button>.
       // This is a safe fallback for disabled links.
-      const shouldRenderAsLink = Boolean(href && !isDisabled);
+      const shouldRenderAsLink = Boolean(href);
 
       // Resolve icon element - support both icon (ReactNode) and iconName (string)
       const iconElement = iconName ? (
@@ -226,8 +226,8 @@ export const Button = React.memo(
           const linkProps = {
             ...buttonProps,
             ref: ref as any, // linkComponent usually forwards ref to anchor
-            href,
-            to: href,
+            href: isDisabled ? undefined : href,
+            to: isDisabled ? undefined : href,
             target,
             rel: target === '_blank' ? 'noopener noreferrer' : undefined,
           };
@@ -239,7 +239,7 @@ export const Button = React.memo(
             <a
               {...buttonProps}
               ref={ref as React.Ref<HTMLAnchorElement>}
-              href={href}
+              href={isDisabled ? undefined : href}
               target={target}
               rel={target === '_blank' ? 'noopener noreferrer' : undefined}
             >
