@@ -20,6 +20,7 @@ import { buildThemeAction } from './cli/commands/build-theme.js';
 import { doctorAction } from './cli/commands/doctor.js';
 import { validateAction } from './cli/commands/validate.js';
 import { tokensAction } from './cli/commands/tokens.js';
+import { configLoader } from './cli/internal/config-loader.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -35,7 +36,10 @@ program
   .version(packageJson.version)
   .option('-d, --debug', 'Enable debug mode', false)
   .option('--dry-run', 'Preview changes without modifying files', false)
-  .hook('preAction', (thisCommand) => {
+  .hook('preAction', async (thisCommand) => {
+    // Load config
+    await configLoader.load();
+
     if (thisCommand.opts().debug) {
       process.env.ATOMIX_DEBUG = 'true';
       logger.debug('Debug mode enabled');
@@ -79,9 +83,10 @@ program
  */
 program
   .command('tokens <subcommand>')
-  .description('Manage design tokens (list, export)')
+  .description('Manage design tokens (list, export, pull, push)')
   .option('-f, --format <format>', 'Export format (css|scss|json)', 'css')
   .option('-o, --output <path>', 'Output directory', './tokens')
+  .option('-p, --provider <provider>', 'Token provider to use')
   .action(async (subcommand, options) => {
     try {
       await tokensAction(subcommand, options);

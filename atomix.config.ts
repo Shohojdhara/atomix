@@ -39,7 +39,7 @@
 
 // For library development, use local import
 // For external developers, use: import { defineConfig } from '@shohojdhara/atomix/config';
-import { defineConfig } from './src/lib/config';
+import { defineConfig } from './src/lib/config/index.ts';
 
 export default defineConfig({
     /**
@@ -51,6 +51,42 @@ export default defineConfig({
      * This prefix is automatically used by createTheme() when loading from config.
      */
     prefix: 'atomix',
+
+    /**
+     * CLI Plugins (Phase 2)
+     * 
+     * Register external or local plugins to extend CLI functionality.
+     */
+    plugins: [
+        // {
+        //     name: './scripts/cli/plugins/style-dictionary.js',
+        //     options: {
+        //         strictMode: true,
+        //         version: '3.0.0'
+        //     }
+        // }
+    ],
+
+    /**
+     * Universal Token Engine (Phase 2)
+     * 
+     * Configure design token providers for bi-directional sync.
+     */
+    tokenEngine: {
+        providers: {
+            // figma: {
+            //     type: 'figma',
+            //     options: {
+            //         fileId: 'MY_FIGMA_FILE_ID',
+            //         apiKey: process.env.FIGMA_API_KEY
+            //     }
+            // },
+        },
+        sync: {
+            pull: true,
+            push: false
+        }
+    },
 
     /**
      * Theme Customization

@@ -8,6 +8,7 @@ import { AtomixCLIError } from '../utils/error.js';
 import { generator, COMPLEXITY_LEVELS, COMPONENT_FEATURES } from '../internal/generator.js';
 import { filesystem } from '../internal/filesystem.js';
 import { validateComponentName } from '../utils/validation.js';
+import { hookManager } from '../internal/hooks.js';
 
 /**
  * Action logic for generating components
@@ -24,6 +25,9 @@ export async function generateAction(type, name, options) {
     config = await promptInteractive();
     if (!config) return;
   }
+
+  // Pre-generation hook
+  config = await hookManager.trigger('preGenerate', config);
 
   const spinner = logger.spinner(`Generating ${type}: ${config.name}...`).start();
 
@@ -48,12 +52,19 @@ export async function generateAction(type, name, options) {
     spinner.succeed(`Generated component ${config.name} at ${path}`);
 
     if (options.validate) {
-      const report = await generator.validate(config.name, path);
+      let report = await generator.validate(config.name, path);
+      
+      // Validation hook
+      report = await hookManager.trigger('onValidate', report);
+
       if (!report.valid) {
-        logger.warn('Validation found minor issues:');
+        logger.warn('Validation found issues:');
         report.issues.forEach(i => logger.info(`  - ${i}`));
       }
     }
+
+    // Post-build hook (using generated path as asset)
+    await hookManager.trigger('postBuild', [path]);
 
     logger.box(`🎉 Component ${config.name} ready!\nRun: atomix validate component ${config.name}`);
 

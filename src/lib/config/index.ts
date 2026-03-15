@@ -179,6 +179,34 @@ export interface IntegrationConfig {
 }
 
 /**
+ * Plugin Configuration
+ */
+export interface PluginConfig {
+  name: string;
+  options?: Record<string, any>;
+}
+
+/**
+ * Token Provider Configuration
+ */
+export interface TokenProviderConfig {
+  type: 'figma' | 'style-dictionary' | 'w3c' | string;
+  options?: Record<string, any>;
+}
+
+/**
+ * Token Engine Configuration
+ */
+export interface TokenEngineConfig {
+  providers?: Record<string, TokenProviderConfig>;
+  sync?: {
+    pull?: boolean;
+    push?: boolean;
+    onBuild?: boolean;
+  };
+}
+
+/**
  * Atomix Configuration Interface
  *
  * Tailwind-like configuration for external developers.
@@ -192,6 +220,16 @@ export interface AtomixConfig {
    * Example: prefix: 'myapp' → --myapp-primary instead of --atomix-primary
    */
   prefix?: string;
+
+  /**
+   * Plugins to extend CLI functionality
+   */
+  plugins?: (string | PluginConfig)[];
+
+  /**
+   * Universal Token Engine configuration
+   */
+  tokenEngine?: TokenEngineConfig;
 
   /**
    * Theme customization (Tailwind-like)
@@ -268,8 +306,3 @@ export interface AtomixConfig {
 export function defineConfig(config: AtomixConfig): AtomixConfig {
   return config;
 }
-
-// Export loader functions
-// Loader functions removed to prevent bundling Node.js modules in browser
-
-export default AtomixConfig;
