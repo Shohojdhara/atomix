@@ -114,8 +114,6 @@ const AccordionImpl = memo(
     defaultOpen = false,
     isOpen: controlledOpen,
     onOpenChange,
-    onOpen,
-    onClose,
     disabled = false,
     iconPosition = 'right',
     icon,
@@ -143,8 +141,6 @@ const AccordionImpl = memo(
       iconPosition,
       isOpen: controlledOpen,
       onOpenChange,
-      onOpen,
-      onClose,
     });
 
     const headerClassNames = generateHeaderClassNames();
