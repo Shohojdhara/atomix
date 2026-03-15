@@ -75,22 +75,27 @@ describe('Button Component', () => {
   });
 
   it('renders as disabled link when disabled and href provided', () => {
-    // Current implementation might be buggy here, let's see
     render(
       <Button href="/home" disabled>
         Home
       </Button>
     );
-    const link = screen.queryByRole('link');
-    const button = screen.queryByRole('button');
 
-    // If it renders as button when disabled (which logic suggested), then:
-    if (button) {
-      expect(button).toBeDisabled();
-    } else if (link) {
-      expect(link).toHaveAttribute('aria-disabled', 'true');
-      // Should not navigate
-    }
+    // An anchor tag without an href attribute is not considered a 'link' role.
+    // It's considered a generic text element, but in our component it has role='link' implicitly? No.
+    // Actually, an anchor without href is generic. But it might have button styles.
+    // Let's get it by text and assert it's an anchor without href.
+    const element = screen.getByText('Home').closest('a');
+    expect(element).toBeInTheDocument();
+
+    // It shouldn't have an href attribute because it's disabled.
+    expect(element).not.toHaveAttribute('href');
+
+    // It should have aria-disabled true
+    expect(element).toHaveAttribute('aria-disabled', 'true');
+
+    // It should have disabled class
+    expect(element).toHaveClass('c-btn--disabled');
   });
 
   it('forwards ref', () => {

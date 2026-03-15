@@ -813,17 +813,6 @@ export interface AccordionProps extends BaseComponentProps {
   onOpenChange?: (open: boolean) => void;
 
   /**
-   * @deprecated Use onOpenChange instead
-   * Optional open handler
-   */
-  onOpen?: () => void;
-
-  /**
-   * @deprecated Use onOpenChange instead
-   * Optional close handler
-   */
-  onClose?: () => void;
-  /**
    * Glass morphism effect for the accordion
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */

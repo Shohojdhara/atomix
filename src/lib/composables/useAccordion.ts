@@ -66,13 +66,6 @@ export function useAccordion(
       }
 
       defaultProps.onOpenChange?.(nextOpen);
-
-      // Call legacy handlers
-      if (nextOpen) {
-        defaultProps.onOpen?.();
-      } else {
-        defaultProps.onClose?.();
-      }
     }
   };
 
