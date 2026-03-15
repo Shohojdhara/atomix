@@ -22,5 +22,25 @@
     "duration": 1.14,
     "timestamp": "2026-03-15T20:36:56.773Z",
     "success": true
+  },
+  {
+    "command": "generate",
+    "duration": 1.09,
+    "timestamp": "2026-03-15T21:31:11.128Z",
+    "success": false,
+    "error": "",
+    "code": "INVALID_NAME"
+  },
+  {
+    "command": "generate",
+    "duration": 16.5,
+    "timestamp": "2026-03-15T21:31:28.636Z",
+    "success": true
+  },
+  {
+    "command": "generate",
+    "duration": 37.81,
+    "timestamp": "2026-03-15T21:32:14.364Z",
+    "success": true
   }
 ]

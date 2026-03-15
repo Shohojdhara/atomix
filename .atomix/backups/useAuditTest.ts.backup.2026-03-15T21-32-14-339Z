@@ -1,0 +1,66 @@
+import { AuditTestProps } from '../types/components';
+import { AUDITTEST } from '../constants/components';
+
+/**
+ * AuditTest state and functionality
+ * @param initialProps - Initial audittest properties
+ * @returns AuditTest state and methods
+ */
+export function useAuditTest(initialProps?: Partial<AuditTestProps>) {
+  // Default audittest properties
+  const defaultProps: Partial<AuditTestProps> = {
+    variant: 'primary',
+    size: 'md',
+    disabled: false,
+    ...initialProps,
+  };
+
+  /**
+   * Generate audittest class based on properties
+   * @param props - AuditTest properties
+   * @returns Class string
+   */
+  const generateClassNames = (props: Partial<AuditTestProps> = {}): string => {
+    const {
+      variant = defaultProps.variant,
+      size = defaultProps.size,
+      disabled = defaultProps.disabled,
+      glass = defaultProps.glass,
+      className = '',
+    } = props;
+
+    const sizeClass = size === 'md' ? '' : `c-audittest--${size}`;
+    const disabledClass = disabled ? 'c-audittest--disabled' : '';
+    const glassClass = glass ? 'c-audittest--glass' : '';
+
+    return [
+      AUDITTEST.BASE_CLASS,
+      `c-audittest--${variant}`,
+      sizeClass,
+      disabledClass,
+      glassClass,
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ');
+  };
+
+  /**
+   * Handle audittest click with disabled check
+   * @param handler - Click handler function
+   * @returns Function that respects disabled state
+   */
+  const handleClick = (handler?: (event: React.MouseEvent<HTMLDivElement>) => void) => {
+    return (event: React.MouseEvent<HTMLDivElement>) => {
+      if (!defaultProps.disabled && handler) {
+        handler(event);
+      }
+    };
+  };
+
+  return {
+    defaultProps,
+    generateClassNames,
+    handleClick,
+  };
+}

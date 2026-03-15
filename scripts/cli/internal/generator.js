@@ -129,7 +129,7 @@ export const generator = {
 
     // Sanitize inputs
     const sanitizedName = sanitizeInput(name, 'componentName');
-    const sanitizedPrompt = sanitizeInput(prompt, 'prompt');
+    sanitizeInput(prompt, 'prompt'); // Sanitize but use original or sanitized if needed (currently aiEngine takes name/prompt)
     
     const validation = validateComponentNameSecure(sanitizedName);
     if (!validation.isValid) {
@@ -181,8 +181,44 @@ export const generator = {
     }
 
     const content = await readFile(componentFile, 'utf8');
-    if (!content.includes('displayName')) issues.push('Missing displayName');
-    if (!content.includes('aria-')) issues.push('Missing accessibility attributes');
+    
+    // 1. Check for displayName
+    if (!content.includes(`${name}.displayName = '${name}';`)) {
+      issues.push('Missing or incorrect displayName assignment');
+    }
+
+    // 2. Check for JSDoc documentation
+    if (!/\/\*\*[\s\S]*?\*\//.test(content)) {
+      issues.push('Missing JSDoc documentation for component');
+    }
+
+    // 3. Check for TypeScript type definitions (allows import or local definition)
+    if (!content.includes(`interface ${name}Props`) && 
+        !content.includes(`type ${name}Props`) &&
+        !new RegExp(`import.*{.*${name}Props.*}`).test(content)) {
+      issues.push(`Missing ${name}Props type/interface definition or import`);
+    }
+
+    // 4. Check for forwardRef usage (Rule: React templates MUST use forwardRef)
+    if (!content.includes('forwardRef<')) {
+      issues.push('Component should use forwardRef for accessibility and consistency');
+    }
+
+    // 5. Check for Accessibility attributes
+    if (!content.includes('aria-')) {
+      issues.push('Missing accessibility attributes (aria-*)');
+    }
+
+    // 6. Check for hardcoded colors
+    const hardcodedColorMatch = content.match(/#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})\b/g);
+    if (hardcodedColorMatch) {
+      issues.push(`Hardcoded hex colors found: ${hardcodedColorMatch.join(', ')}. Use design tokens instead.`);
+    }
+
+    const rgbMatch = content.match(/rgb\((\d{1,3},\s*){2}\d{1,3}\)|rgba\((\d{1,3},\s*){3}(0|1|0\.\d+)\)/g);
+    if (rgbMatch) {
+      issues.push(`Hardcoded RGB(A) colors found: ${rgbMatch.join(', ')}. Use design tokens instead.`);
+    }
 
     return {
       valid: issues.length === 0,

@@ -33,7 +33,7 @@ export async function generateAction(type, name, options) {
 
   try {
     // Validation
-    const nameValidation = validateComponentName(config.name);
+    const nameValidation = await validateComponentName(config.name);
     if (!nameValidation.isValid) {
       throw new AtomixCLIError(nameValidation.error, 'INVALID_NAME', ['Use PascalCase (e.g., MyComponent)']);
     }

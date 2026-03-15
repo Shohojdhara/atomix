@@ -146,20 +146,26 @@ export default ${name};`;
  * Simple component template
  */
 export const simpleTemplate = (name) => `import React, { forwardRef } from 'react';
-import type { ${name}Props } from './${name}.types';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import type { ${name}Props } from '../../lib/types/components';
 
 /**
  * ${name} - Simple Presentational Component
  * 
- * A basic component for rendering content with minimal overhead.
+ * @param {${name}Props} props - Component properties
+ * @returns {JSX.Element} The rendered component
  */
 export const ${name} = forwardRef<HTMLDivElement, ${name}Props>(
-  ({ children, className, ...props }, ref) => {
-    return (
-      <div ref={ref} className={\`c-${name.toLowerCase()} \${className || ''}\`} {...props}>
+  ({ children, className = '', glass, 'aria-label': ariaLabel, ...props }, ref) => {
+    const componentClass = [\`c-${name.toLowerCase()}\`, className].filter(Boolean).join(' ');
+
+    const content = (
+      <div ref={ref} className={componentClass} aria-label={ariaLabel} {...props}>
         {children}
       </div>
     );
+
+    return glass ? <AtomixGlass {...(glass === true ? {} : glass)}>{content}</AtomixGlass> : content;
   }
 );
 
@@ -172,58 +178,38 @@ ${name}.displayName = '${name}';
 export const mediumTemplate = (name) => `import React, { forwardRef, useId, memo } from 'react';
 import { ${name.toUpperCase()} } from '../../lib/constants/components';
 import { use${name} } from '../../lib/composables/use${name}';
-import type { ${name}Props, ${name}State } from '../../lib/types/components';
+import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import type { ${name}Props } from '../../lib/types/components';
 
-export interface ${name}Props {
-  /**
-   * Content to be rendered
-   */
-  children?: React.ReactNode;
-  
-  /**
-   * Additional CSS classes
-   */
-  className?: string;
-  
-  /**
-   * Disabled state
-   */
-  disabled?: boolean;
+/**
+ * ${name} - Medium Presentational Component
+ * 
+ * @param {${name}Props} props - Component properties
+ * @returns {JSX.Element} The rendered component
+ */
+export const ${name} = memo(
+  forwardRef<HTMLDivElement, ${name}Props>(
+    ({ children, className = '', disabled = false, glass, style, 'aria-label': ariaLabel, ...props }, ref) => {
+      const instanceId = useId();
+      const { generateClassNames } = use${name}({ disabled });
+      
+      const content = (
+        <div
+          ref={ref}
+          className={generateClassNames(className)}
+          style={style}
+          aria-label={ariaLabel}
+          aria-disabled={disabled}
+          {...props}
+        >
+          {children}
+        </div>
+      );
 
-  /**
-   * Inline styles
-   */
-  style?: React.CSSProperties;
-  
-  /**
-   * Other component-specific props would go here
-   */
-}
-
-export interface ${name}State {
-  // Define state interface for the component
-}
-
-export const ${name}: React.FC<${name}Props> = memo(({
-  children,
-  className = '',
-  disabled = false,
-  style,
-  ...props
-}) => {
-  const instanceId = useId();
-  const { generateClassNames } = use${name}({ disabled });
-  
-  return (
-    <div
-      className={generateClassNames(className)}
-      style={style}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-});
+      return glass ? <AtomixGlass {...(glass === true ? {} : glass)}>{content}</AtomixGlass> : content;
+    }
+  )
+);
 
 ${name}.displayName = '${name}';
 
@@ -236,80 +222,38 @@ export default ${name};
 export const complexTemplate = (name) => `import React, { forwardRef, useId, memo } from 'react';
 import { ${name.toUpperCase()} } from '../../lib/constants/components';
 import { use${name} } from '../../lib/composables/use${name}';
-import type { ${name}Props, ${name}State } from '../../lib/types/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
-import type { AtomixGlassProps } from '../AtomixGlass/AtomixGlass';
+import type { ${name}Props, ${name}State } from '../../lib/types/components';
 
-export interface ${name}Props {
-  /**
-   * Content to be rendered
-   */
-  children?: React.ReactNode;
-  
-  /**
-   * Additional CSS classes
-   */
-  className?: string;
-  
-  /**
-   * Disabled state
-   */
-  disabled?: boolean;
+/**
+ * ${name} - Complex Functional Component
+ * 
+ * @param {${name}Props} props - Component properties
+ * @returns {JSX.Element} The rendered component
+ */
+export const ${name} = memo(
+  forwardRef<HTMLDivElement, ${name}Props>(
+    ({ children, className = '', disabled = false, glass, style, onStateChange, 'aria-label': ariaLabel, ...props }, ref) => {
+      const instanceId = useId();
+      const { generateClassNames } = use${name}({ disabled, onStateChange });
+      
+      const content = (
+        <div
+          ref={ref}
+          className={generateClassNames(className)}
+          style={style}
+          aria-label={ariaLabel}
+          aria-disabled={disabled}
+          {...props}
+        >
+          {children}
+        </div>
+      );
 
-  /**
-   * Glass effect options
-   */
-  glass?: boolean | AtomixGlassProps;
-
-  /**
-   * Inline styles
-   */
-  style?: React.CSSProperties;
-  
-  /**
-   * Callback when component state changes
-   */
-  onStateChange?: (state: ${name}State) => void;
-}
-
-export interface ${name}State {
-  // Define state interface for the component
-}
-
-export const ${name}: React.FC<${name}Props> = memo(({
-  children,
-  className = '',
-  disabled = false,
-  glass,
-  style,
-  onStateChange,
-  ...props
-}) => {
-  const instanceId = useId();
-  const { generateClassNames } = use${name}({ disabled, onStateChange });
-  
-  const componentContent = (
-    <div
-      className={generateClassNames(className)}
-      style={style}
-      {...props}
-    >
-      {children}
-    </div>
-  );
-
-  if (glass) {
-    const defaultGlassProps = {
-      // Default glass settings specific to this component
-    };
-
-    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
-
-    return <AtomixGlass {...glassProps}>{componentContent}</AtomixGlass>;
-  }
-
-  return componentContent;
-});
+      return glass ? <AtomixGlass {...(glass === true ? {} : glass)}>{content}</AtomixGlass> : content;
+    }
+  )
+);
 
 ${name}.displayName = '${name}';
 

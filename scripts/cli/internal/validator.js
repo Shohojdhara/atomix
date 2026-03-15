@@ -48,8 +48,8 @@ export async function validateA11y(projectRoot = process.cwd()) {
  */
 export async function validateTokens(projectRoot = process.cwd()) {
   const issues = [];
-  // For now, just check if the theme directory exists and contains files
   const themeDir = join(projectRoot, 'src/styles/01-settings');
+  
   if (!existsSync(themeDir)) {
     issues.push({
       file: 'src/styles/01-settings',
@@ -57,6 +57,24 @@ export async function validateTokens(projectRoot = process.cwd()) {
       message: 'Design token settings directory missing',
       severity: 'error'
     });
+    return issues;
+  }
+
+  // Check for hardcoded colors in SCSS files
+  const scssFiles = await glob('src/**/*.scss', { cwd: projectRoot });
+  for (const file of scssFiles) {
+    const content = await readFile(join(projectRoot, file), 'utf8');
+    
+    // Regex for hex colors not being part of a variable definition or comment
+    const hexMatch = content.match(new RegExp('(?<![$/\\*])#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})\\b', 'g'));
+    if (hexMatch) {
+      issues.push({
+        file,
+        type: 'Tokens',
+        message: `Hardcoded hex color(s) found: ${hexMatch.join(', ')}. Use variables or tokens.`,
+        severity: 'warn'
+      });
+    }
   }
 
   return issues;
