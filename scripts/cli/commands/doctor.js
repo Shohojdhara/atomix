@@ -4,7 +4,7 @@
  */
 
 import { logger } from '../utils/logger.js';
-import { checkRuntimes, checkProjectStructure, checkConfig, checkPermissions } from '../utils/diagnostics.js';
+import { checkRuntimes, checkProjectStructure, checkConfig, checkPermissions, checkPlugins } from '../utils/diagnostics.js';
 import chalk from 'chalk';
 
 /**
@@ -19,6 +19,7 @@ export async function doctorAction(options = {}) {
     const structure = await checkProjectStructure();
     const config = await checkConfig();
     const permissions = await checkPermissions();
+    const plugins = await checkPlugins();
 
     spinner.stop();
 
@@ -28,7 +29,7 @@ export async function doctorAction(options = {}) {
       margin: 1
     });
 
-    const allResults = [...runtimes, ...structure, ...config, ...permissions];
+    const allResults = [...runtimes, ...structure, ...config, ...permissions, ...plugins];
     let issuesFound = false;
 
     for (const result of allResults) {

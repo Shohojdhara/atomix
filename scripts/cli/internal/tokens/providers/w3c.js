@@ -24,18 +24,18 @@ export class W3CProvider extends TokenProvider {
 
     logger.debug(`Loading W3C tokens file: ${this.tokenPath}`);
     
-    // In a real implementation, we'd use the W3C spec here.
-    // For now, return a placeholder to demonstrate the architecture.
-    return {
-      source: 'w3c',
-      tokenPath: this.tokenPath,
-      tokens: {
-        colors: {
-          brand: '#3b82f6',
-          accent: '#10b981'
-        }
-      }
-    };
+    try {
+      const content = readFileSync(fullPath, 'utf8');
+      const tokens = JSON.parse(content);
+      
+      return {
+        source: 'w3c',
+        tokenPath: this.tokenPath,
+        tokens
+      };
+    } catch (error) {
+      throw new Error(`Failed to parse W3C tokens file: ${error.message}`);
+    }
   }
 
   /**

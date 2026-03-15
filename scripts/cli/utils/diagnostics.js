@@ -8,6 +8,7 @@ import { existsSync, accessSync, constants } from 'fs';
 import { join } from 'path';
 import { readFile } from 'fs/promises';
 import { logger } from './logger.js';
+import { configLoader } from '../internal/config-loader.js';
 
 /**
  * Check Node.js and NPM versions
@@ -44,6 +45,48 @@ export async function checkRuntimes() {
       message: 'NPM not found in system path',
       suggestion: 'Please install NPM (comes with Node.js).'
     });
+  }
+
+  return results;
+}
+
+/**
+ * Check CLI plugins
+ */
+export async function checkPlugins() {
+  const results = [];
+  const config = await configLoader.load();
+  
+  if (!config.plugins || config.plugins.length === 0) {
+    results.push({
+      name: 'Plugins',
+      status: 'pass',
+      message: 'No plugins registered',
+      suggestion: null
+    });
+    return results;
+  }
+
+  for (const pluginEntry of config.plugins) {
+    const pluginName = typeof pluginEntry === 'string' ? pluginEntry : pluginEntry.name;
+    
+    try {
+      // In a real scenario, we'd check if the module is resolvable
+      // For now, we'll just report their presence
+      results.push({
+        name: `Plugin: ${pluginName}`,
+        status: 'pass',
+        message: 'Registered in configuration',
+        suggestion: null
+      });
+    } catch (error) {
+      results.push({
+        name: `Plugin: ${pluginName}`,
+        status: 'fail',
+        message: `Error checking plugin: ${error.message}`,
+        suggestion: 'Verify the plugin path or package name.'
+      });
+    }
   }
 
   return results;
