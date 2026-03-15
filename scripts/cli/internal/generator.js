@@ -10,6 +10,11 @@ import { componentTemplates } from '../templates.js';
 import { detectFramework } from '../utils/detector.js';
 import { filesystem } from './filesystem.js';
 import { aiEngine } from './ai-engine.js';
+import { 
+  sanitizeInput, 
+  validateComponentNameSecure, 
+  RateLimiter 
+} from '../utils/security.js';
 
 export const COMPLEXITY_LEVELS = {
   SIMPLE: { name: 'simple', template: 'simple' },
@@ -26,6 +31,9 @@ export const COMPONENT_FEATURES = {
   ACCESSIBILITY: { name: 'accessibility', default: true }
 };
 
+// Global rate limiter for AI operations
+const aiRateLimiter = new RateLimiter(5, 60000); // 5 requests per minute
+
 export const generator = {
   /**
    * Generates component files based on options
@@ -37,6 +45,13 @@ export const generator = {
       features = [],
       logger
     } = options;
+
+    // Sanitize and validate component name
+    const sanitizedName = sanitizeInput(name, 'componentName');
+    const validation = validateComponentNameSecure(sanitizedName);
+    if (!validation.isValid) {
+      throw new Error(`Component name validation failed: ${validation.error}`);
+    }
 
     const framework = await detectFramework();
     if (logger) logger.debug(`Detected framework: ${framework}`);
@@ -105,7 +120,23 @@ export const generator = {
    */
   async generateAIComponent(name, prompt, options = {}) {
     const { outputPath, logger } = options;
-    const componentPath = join(outputPath, name);
+    
+    // Apply rate limiting for AI operations
+    const userId = process.env.USER || 'anonymous';
+    if (!aiRateLimiter.checkLimit(userId)) {
+      throw new Error(`Rate limit exceeded. Please wait before generating more AI components. Remaining: ${aiRateLimiter.getRemaining(userId)}`);
+    }
+
+    // Sanitize inputs
+    const sanitizedName = sanitizeInput(name, 'componentName');
+    const sanitizedPrompt = sanitizeInput(prompt, 'prompt');
+    
+    const validation = validateComponentNameSecure(sanitizedName);
+    if (!validation.isValid) {
+      throw new Error(`Component name validation failed: ${validation.error}`);
+    }
+
+    const componentPath = join(outputPath, sanitizedName);
 
     // Call AI Engine
     const generated = await aiEngine.generateComponent(name, prompt);

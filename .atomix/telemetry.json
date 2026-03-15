@@ -1,0 +1,26 @@
+[
+  {
+    "command": "atomix",
+    "duration": 129,
+    "timestamp": "2026-03-15T20:36:31.545Z",
+    "success": true
+  },
+  {
+    "command": "atomix",
+    "duration": 18.38,
+    "timestamp": "2026-03-15T20:36:36.392Z",
+    "success": true
+  },
+  {
+    "command": "doctor",
+    "duration": 79.78,
+    "timestamp": "2026-03-15T20:36:50.794Z",
+    "success": true
+  },
+  {
+    "command": "benchmark",
+    "duration": 1.14,
+    "timestamp": "2026-03-15T20:36:56.773Z",
+    "success": true
+  }
+]
