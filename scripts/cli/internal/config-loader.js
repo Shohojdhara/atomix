@@ -149,6 +149,14 @@ export class ConfigLoader {
   getConfig() {
     return this.config || { prefix: 'atomix' };
   }
+
+  /**
+   * Returns a specific configuration value
+   */
+  get(key) {
+    if (!this.config) return null;
+    return this.config[key];
+  }
 }
 
 export const configLoader = new ConfigLoader();

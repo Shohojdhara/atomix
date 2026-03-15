@@ -11,6 +11,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { logger } from './cli/utils/logger.js';
 import { handleCLIError } from './cli/utils/error.js';
+import { telemetry } from './cli/utils/telemetry.js';
 import chalk from 'chalk';
 
 // Action Modules
@@ -20,6 +21,8 @@ import { buildThemeAction } from './cli/commands/build-theme.js';
 import { doctorAction } from './cli/commands/doctor.js';
 import { validateAction } from './cli/commands/validate.js';
 import { tokensAction } from './cli/commands/tokens.js';
+import { migrateAction } from './cli/commands/migrate.js';
+import { benchmarkAction } from './cli/commands/benchmark.js';
 import { configLoader } from './cli/internal/config-loader.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -48,6 +51,16 @@ program
       process.env.ATOMIX_DRY_RUN = 'true';
       logger.info(chalk.yellow('⚠️ Dry-run mode enabled. No files will be modified.'));
     }
+
+    // Start telemetry
+    const fullCommand = thisCommand.name() === 'atomix' 
+      ? thisCommand.args[0] || 'atomix' 
+      : thisCommand.name();
+    telemetry.start(fullCommand);
+  })
+  .hook('postAction', async (thisCommand) => {
+    // Stop telemetry
+    await telemetry.stop(true);
   });
 
 /**
@@ -118,11 +131,41 @@ program
   .description('Generate components, tokens, or themes')
   .option('-i, --interactive', 'Interactive mode', false)
   .option('-p, --path <path>', 'Output path', './src/components')
+  .option('--prompt <prompt>', 'AI prompt for generating component')
   .option('--complexity <level>', 'Complexity (simple|medium|complex)', 'medium')
   .option('--validate', 'Validate after generation', true)
   .action(async (type, name, options) => {
     try {
       await generateAction(type, name, options);
+    } catch (error) {
+      await handleCLIError(error);
+    }
+  });
+
+/**
+ * Migration Tools
+ */
+program
+  .command('migrate <type> <source>')
+  .description('Migrate from other frameworks (tailwind|bootstrap)')
+  .option('-p, --preview', 'Preview side-by-side diff before applying', false)
+  .action(async (type, source, options) => {
+    try {
+      await migrateAction(type, source, options);
+    } catch (error) {
+      await handleCLIError(error);
+    }
+  });
+
+/**
+ * Performance & Benchmarking
+ */
+program
+  .command('benchmark')
+  .description('Profile CLI performance and show metrics')
+  .action(async (options) => {
+    try {
+      await benchmarkAction(options);
     } catch (error) {
       await handleCLIError(error);
     }

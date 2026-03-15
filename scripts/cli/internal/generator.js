@@ -9,6 +9,7 @@ import { join } from 'path';
 import { componentTemplates } from '../templates.js';
 import { detectFramework } from '../utils/detector.js';
 import { filesystem } from './filesystem.js';
+import { aiEngine } from './ai-engine.js';
 
 export const COMPLEXITY_LEVELS = {
   SIMPLE: { name: 'simple', template: 'simple' },
@@ -94,6 +95,43 @@ export const generator = {
 
       const compStylesPath = join(stylesDir, '06-components');
       await filesystem.writeFile(join(compStylesPath, `_components.${name.toLowerCase()}.scss`), componentTemplates.scss.component(name), 'utf8');
+    }
+
+    return componentPath;
+  },
+
+  /**
+   * Generates component files using AI based on a prompt
+   */
+  async generateAIComponent(name, prompt, options = {}) {
+    const { outputPath, logger } = options;
+    const componentPath = join(outputPath, name);
+
+    // Call AI Engine
+    const generated = await aiEngine.generateComponent(name, prompt);
+
+    // Write component file
+    await filesystem.writeFile(join(componentPath, `${name}.tsx`), generated.component, 'utf8');
+    if (logger) logger.debug(`Created ${name}.tsx (AI)`);
+
+    // Index file
+    await filesystem.writeFile(join(componentPath, 'index.ts'), componentTemplates.react.index(name), 'utf8');
+
+    // Optional files from AI
+    if (generated.styles) {
+      await filesystem.writeFile(join(componentPath, `${name}.scss`), generated.styles, 'utf8');
+    }
+
+    if (generated.tests) {
+      await filesystem.writeFile(join(componentPath, `${name}.test.tsx`), generated.tests, 'utf8');
+    }
+
+    if (generated.stories) {
+      await filesystem.writeFile(join(componentPath, `${name}.stories.tsx`), generated.stories, 'utf8');
+    }
+
+    if (generated.readme) {
+      await filesystem.writeFile(join(componentPath, 'README.md'), generated.readme, 'utf8');
     }
 
     return componentPath;

@@ -50,16 +50,20 @@ export class AtomixCLIError extends Error {
 }
 
 import chalk from 'chalk';
+import { telemetry } from './telemetry.js';
 
 /**
  * Global CLI error handler
  * @param {Error} error - The error object to handle
  * @param {object} spinner - Optional ora spinner to stop
  */
-export function handleCLIError(error, spinner = null) {
+export async function handleCLIError(error, spinner = null) {
   if (spinner) {
     spinner.fail('Operation failed');
   }
+
+  // Log failure to telemetry
+  await telemetry.stop(false, { error: error.message, code: error.code });
 
   console.error(chalk.bold.red(`\n❌ ${error.message}`));
 

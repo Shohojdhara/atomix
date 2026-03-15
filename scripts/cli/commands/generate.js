@@ -44,10 +44,18 @@ export async function generateAction(type, name, options) {
     }
 
     // Execution
-    const path = await generator.generateComponent(config.name, {
-      ...config,
-      logger: { debug: (msg) => logger.debug(msg) }
-    });
+    let path;
+    if (options.prompt) {
+      path = await generator.generateAIComponent(config.name, options.prompt, {
+        ...config,
+        logger: { debug: (msg) => logger.debug(msg) }
+      });
+    } else {
+      path = await generator.generateComponent(config.name, {
+        ...config,
+        logger: { debug: (msg) => logger.debug(msg) }
+      });
+    }
 
     spinner.succeed(`Generated component ${config.name} at ${path}`);
 

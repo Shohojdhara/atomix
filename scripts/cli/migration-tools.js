@@ -4,18 +4,52 @@
  */
 
 import { readFile, writeFile, readdir, lstat } from 'fs/promises';
-import { join, extname, relative } from 'path';
+import { join, extname, relative, basename } from 'path';
 import chalk from 'chalk';
 import ora from 'ora';
-import { validatePath, sanitizeInput, AtomixCLIError } from './utils.js';
+import { filesystem } from './internal/filesystem.js';
+import { AtomixCLIError } from './utils/error.js';
 import { tailwindToAtomix, bootstrapToAtomix, scssVariableMigration } from './mappings.js';
+import { logger } from './utils/logger.js';
+
+const sanitizeInput = (input) => input.trim(); // Simple mock if sanitizeInput is missing
+
+/**
+ * Show a simple side-by-side diff for migration preview
+ */
+function showPreviewDiff(file, original, modified) {
+  const originalLines = original.split('\n');
+  const modifiedLines = modified.split('\n');
+  const diffs = [];
+
+  for (let i = 0; i < originalLines.length; i++) {
+    if (originalLines[i] !== modifiedLines[i]) {
+      diffs.push({
+        line: i + 1,
+        old: originalLines[i].trim(),
+        new: modifiedLines[i].trim()
+      });
+    }
+  }
+
+  if (diffs.length > 0) {
+    console.log(`\n${chalk.bold.blue('Preview for:')} ${chalk.cyan(relative(process.cwd(), file))}`);
+    diffs.slice(0, 5).forEach(d => {
+      console.log(`${chalk.gray(d.line + ':')} ${chalk.red('- ' + d.old)}`);
+      console.log(`${chalk.gray('  ')} ${chalk.green('+ ' + d.new)}`);
+    });
+    if (diffs.length > 5) {
+      console.log(chalk.gray(`  ... and ${diffs.length - 5} more changes`));
+    }
+  }
+}
 
 /**
  * Migrate Tailwind classes to Atomix
  */
 export async function migrateTailwind(sourcePath, options = {}) {
   const sanitizedSource = sanitizeInput(sourcePath);
-  const sourceValidation = validatePath(sanitizedSource);
+  const sourceValidation = filesystem.validatePath(sanitizedSource);
   if (!sourceValidation.isValid) {
     throw new AtomixCLIError(sourceValidation.error, 'INVALID_PATH', [
       'Provide a valid path within the project',
@@ -103,8 +137,12 @@ export async function migrateTailwind(sourcePath, options = {}) {
         });
 
         if (content !== originalContent) {
-          if (options.dryRun) {
-            console.log(chalk.yellow(`  Would update: ${file}`));
+          if (options.dryRun || options.preview) {
+            if (options.preview) {
+              showPreviewDiff(file, originalContent, content);
+            } else {
+              console.log(chalk.yellow(`  Would update: ${file}`));
+            }
           } else {
             await writeFile(file, content, 'utf8');
             report.filesProcessed++;
@@ -138,7 +176,7 @@ export async function migrateTailwind(sourcePath, options = {}) {
  */
 export async function migrateBootstrap(sourcePath, options = {}) {
   const sanitizedSource = sanitizeInput(sourcePath);
-  const sourceValidation = validatePath(sanitizedSource);
+  const sourceValidation = filesystem.validatePath(sanitizedSource);
   if (!sourceValidation.isValid) {
     throw new AtomixCLIError(sourceValidation.error, 'INVALID_PATH', [
       'Provide a valid path within the project',
@@ -218,8 +256,12 @@ export async function migrateBootstrap(sourcePath, options = {}) {
         });
 
         if (content !== originalContent) {
-          if (options.dryRun) {
-            console.log(chalk.yellow(`  Would update: ${file}`));
+          if (options.dryRun || options.preview) {
+            if (options.preview) {
+              showPreviewDiff(file, originalContent, content);
+            } else {
+              console.log(chalk.yellow(`  Would update: ${file}`));
+            }
           } else {
             await writeFile(file, content, 'utf8');
             report.filesProcessed++;
@@ -253,7 +295,7 @@ export async function migrateBootstrap(sourcePath, options = {}) {
  */
 export async function migrateSCSSVariables(sourcePath, options = {}) {
   const sanitizedSource = sanitizeInput(sourcePath);
-  const sourceValidation = validatePath(sanitizedSource);
+  const sourceValidation = filesystem.validatePath(sanitizedSource);
   if (!sourceValidation.isValid) {
     throw new AtomixCLIError(sourceValidation.error, 'INVALID_PATH', [
       'Provide a valid path within the project',
@@ -308,8 +350,12 @@ export async function migrateSCSSVariables(sourcePath, options = {}) {
         }
 
         if (content !== originalContent) {
-          if (options.dryRun) {
-            console.log(chalk.yellow(`  Would update: ${file}`));
+          if (options.dryRun || options.preview) {
+            if (options.preview) {
+              showPreviewDiff(file, originalContent, content);
+            } else {
+              console.log(chalk.yellow(`  Would update: ${file}`));
+            }
           } else {
             await writeFile(file, content, 'utf8');
             report.filesProcessed++;

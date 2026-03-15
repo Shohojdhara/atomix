@@ -65,6 +65,29 @@ export const tailwindToAtomix = {
     'rounded-md': 'u-radius-md',
     'rounded-lg': 'u-radius-lg',
     'rounded-full': 'u-radius-full',
+    // Shadow
+    'shadow-sm': 'u-shadow-sm',
+    'shadow': 'u-shadow-md',
+    'shadow-md': 'u-shadow-md',
+    'shadow-lg': 'u-shadow-lg',
+    'shadow-xl': 'u-shadow-xl',
+    'shadow-2xl': 'u-shadow-2xl',
+    'shadow-inner': 'u-shadow-inner',
+    'shadow-none': 'u-shadow-none',
+    // Opacity
+    'opacity-0': 'u-opacity-0',
+    'opacity-25': 'u-opacity-25',
+    'opacity-50': 'u-opacity-50',
+    'opacity-75': 'u-opacity-75',
+    'opacity-100': 'u-opacity-100',
+    // Z-index
+    'z-0': 'u-z-0',
+    'z-10': 'u-z-10',
+    'z-20': 'u-z-20',
+    'z-30': 'u-z-30',
+    'z-40': 'u-z-40',
+    'z-50': 'u-z-50',
+    'z-auto': 'u-z-auto',
 };
 
 /**

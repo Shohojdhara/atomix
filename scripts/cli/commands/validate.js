@@ -6,6 +6,7 @@
 import { logger } from '../utils/logger.js';
 import { validateA11y, validateTokens, validatePerformance } from '../internal/validator.js';
 import { hookManager } from '../internal/hooks.js';
+import { telemetry } from '../utils/telemetry.js';
 import chalk from 'chalk';
 
 /**
@@ -19,6 +20,10 @@ export async function validateAction(options = {}) {
     const a11yResults = await validateA11y();
     const tokenResults = await validateTokens();
     const performanceResults = await validatePerformance();
+    
+    // Phase 4: CLI Performance Budget check
+    const telemetryLogs = await telemetry.getLogs();
+    const cliPerformanceIssues = validateCLIPerformance(telemetryLogs);
 
     spinner.stop();
 
@@ -29,12 +34,13 @@ export async function validateAction(options = {}) {
       rawResults: {
         a11y: a11yResults,
         tokens: tokenResults,
-        performance: performanceResults
+        performance: performanceResults,
+        cli: cliPerformanceIssues
       }
     };
 
     // Populate initial issues from standard validators
-    const allResults = [...a11yResults, ...tokenResults, ...performanceResults];
+    const allResults = [...a11yResults, ...tokenResults, ...performanceResults, ...cliPerformanceIssues];
     for (const res of allResults) {
       report.issues.push({
         type: res.type,
@@ -86,4 +92,39 @@ export async function validateAction(options = {}) {
     spinner.fail('Validation failed');
     throw error;
   }
+}
+
+/**
+ * Validate CLI performance against a budget
+ */
+function validateCLIPerformance(logs) {
+  if (logs.length === 0) return [];
+  
+  const issues = [];
+  const BUDGET_MS = 2000;
+  const byCommand = {};
+
+  logs.forEach(log => {
+    if (!byCommand[log.command]) {
+      byCommand[log.command] = { durations: [] };
+    }
+    byCommand[log.command].durations.push(log.duration);
+  });
+
+  for (const [name, data] of Object.entries(byCommand)) {
+    data.durations.sort((a, b) => a - b);
+    const p95Index = Math.floor(data.durations.length * 0.95);
+    const p95 = data.durations[p95Index];
+
+    if (p95 > BUDGET_MS) {
+      issues.push({
+        type: 'performance',
+        severity: 'warning',
+        file: `cli:${name}`,
+        message: `CLI Performance budget exceeded (P95: ${p95}ms, Budget: ${BUDGET_MS}ms)`
+      });
+    }
+  }
+
+  return issues;
 }

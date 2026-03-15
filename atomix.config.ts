@@ -89,6 +89,27 @@ export default defineConfig({
     },
 
     /**
+     * AI-Assisted Scaffolding (Phase 3)
+     * 
+     * Configure LLM providers for natural language component generation.
+     */
+    ai: {
+        provider: 'openai', // 'openai' | 'anthropic'
+        model: 'gpt-4',
+        apiKey: process.env.ATOMIX_AI_API_KEY
+    },
+
+    /**
+     * Performance & Telemetry (Phase 4)
+     * 
+     * Track command execution times and identify bottlenecks.
+     */
+    telemetry: {
+        enabled: true,
+        anonymize: true
+    },
+
+    /**
      * Theme Customization
      * 
      * Tailwind-like configuration for customizing design tokens.

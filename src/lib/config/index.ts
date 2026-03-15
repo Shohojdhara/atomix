@@ -232,6 +232,30 @@ export interface AtomixConfig {
   tokenEngine?: TokenEngineConfig;
 
   /**
+   * AI-Assisted Scaffolding configuration
+   */
+  ai?: {
+    /** AI provider (default: 'openai') */
+    provider?: 'openai' | 'anthropic';
+    /** LLM model to use */
+    model?: string;
+    /** API key for the provider */
+    apiKey?: string;
+  };
+
+  /**
+   * Performance & Telemetry (Phase 4)
+   */
+  telemetry?: {
+    /** Enable local telemetry logging (default: false) */
+    enabled?: boolean;
+    /** Output path for telemetry logs (default: '.atomix/telemetry.json') */
+    path?: string;
+    /** Anonymize telemetry data (default: true) */
+    anonymize?: boolean;
+  };
+
+  /**
    * Theme customization (Tailwind-like)
    *
    * Use `extend` to add or override design tokens.
