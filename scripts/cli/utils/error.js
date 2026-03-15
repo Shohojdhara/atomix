@@ -3,17 +3,49 @@
  * Standardized error handling with actionable suggestions
  */
 
+/**
+ * Common CLI Error Categories
+ */
+export const ErrorCategory = {
+  CONFIG: 'CONFIG_ERROR',
+  VALIDATION: 'VALIDATION_ERROR',
+  GENERATION: 'GENERATION_ERROR',
+  ENVIRONMENT: 'ENVIRONMENT_ERROR',
+  FILESYSTEM: 'FILESYSTEM_ERROR'
+};
+
+/**
+ * Suggestions for common error codes
+ */
+const COMMON_SUGGESTIONS = {
+  [ErrorCategory.CONFIG]: [
+    'Run `atomix init` to create a new configuration file.',
+    'Check if `atomix.config.ts` has syntax errors.',
+    'Ensure you have exported the configuration correctly.'
+  ],
+  [ErrorCategory.ENVIRONMENT]: [
+    'Run `atomix doctor` to check your environment health.',
+    'Ensure Node.js version is >=18.0.0.',
+    'Check if all peer dependencies are installed.'
+  ],
+  [ErrorCategory.FILESYSTEM]: [
+    'Check if you have write permissions for the target directory.',
+    'Ensure the path provided is valid and within the project root.',
+    'Verify if the file exists and is not locked by another process.'
+  ]
+};
+
 export class AtomixCLIError extends Error {
   /**
    * @param {string} message - Human-readable error message
-   * @param {string} code - Unique error code (e.g., 'INVALID_PATH')
+   * @param {string} code - Unique error code (e.g., ErrorCategory.CONFIG)
    * @param {string[]} suggestions - Specific steps to resolve the issue
    */
   constructor(message, code, suggestions = []) {
     super(message);
     this.name = 'AtomixCLIError';
     this.code = code;
-    this.suggestions = suggestions;
+    this.suggestions = suggestions.length > 0 ? suggestions : (COMMON_SUGGESTIONS[code] || []);
   }
 }
 

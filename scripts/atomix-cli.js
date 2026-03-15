@@ -11,11 +11,15 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { logger } from './cli/utils/logger.js';
 import { handleCLIError } from './cli/utils/error.js';
+import chalk from 'chalk';
 
 // Action Modules
 import { initAction } from './cli/commands/init.js';
 import { generateAction } from './cli/commands/generate.js';
 import { buildThemeAction } from './cli/commands/build-theme.js';
+import { doctorAction } from './cli/commands/doctor.js';
+import { validateAction } from './cli/commands/validate.js';
+import { tokensAction } from './cli/commands/tokens.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -30,10 +34,59 @@ program
   .description('Atomix Design System CLI - Modular Edition')
   .version(packageJson.version)
   .option('-d, --debug', 'Enable debug mode', false)
+  .option('--dry-run', 'Preview changes without modifying files', false)
   .hook('preAction', (thisCommand) => {
     if (thisCommand.opts().debug) {
       process.env.ATOMIX_DEBUG = 'true';
       logger.debug('Debug mode enabled');
+    }
+    if (thisCommand.opts().dryRun) {
+      process.env.ATOMIX_DRY_RUN = 'true';
+      logger.info(chalk.yellow('⚠️ Dry-run mode enabled. No files will be modified.'));
+    }
+  });
+
+/**
+ * Environment Diagnostics
+ */
+program
+  .command('doctor')
+  .description('Verify the environment and project health')
+  .action(async (options) => {
+    try {
+      await doctorAction(options);
+    } catch (error) {
+      await handleCLIError(error);
+    }
+  });
+
+/**
+ * Code & Config Validation
+ */
+program
+  .command('validate')
+  .description('Audit project quality (A11y, Tokens, Performance)')
+  .action(async (options) => {
+    try {
+      await validateAction(options);
+    } catch (error) {
+      await handleCLIError(error);
+    }
+  });
+
+/**
+ * Design Token Management
+ */
+program
+  .command('tokens <subcommand>')
+  .description('Manage design tokens (list, export)')
+  .option('-f, --format <format>', 'Export format (css|scss|json)', 'css')
+  .option('-o, --output <path>', 'Output directory', './tokens')
+  .action(async (subcommand, options) => {
+    try {
+      await tokensAction(subcommand, options);
+    } catch (error) {
+      await handleCLIError(error);
     }
   });
 

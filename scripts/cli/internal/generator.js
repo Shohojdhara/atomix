@@ -3,10 +3,12 @@
  * Core logic for scaffolding components and assets
  */
 
-import { writeFile, mkdir, readFile } from 'fs/promises';
+import { readFile } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { componentTemplates } from '../templates.js';
+import { detectFramework } from '../utils/detector.js';
+import { filesystem } from './filesystem.js';
 
 export const COMPLEXITY_LEVELS = {
   SIMPLE: { name: 'simple', template: 'simple' },
@@ -35,39 +37,52 @@ export const generator = {
       logger
     } = options;
 
+    const framework = await detectFramework();
+    if (logger) logger.debug(`Detected framework: ${framework}`);
+
     const componentPath = join(outputPath, name);
-    await mkdir(componentPath, { recursive: true });
+    // await mkdir(componentPath, { recursive: true }); // filesystem.writeFile handles this
 
     // 1. Generate Component File
     const templateName = COMPLEXITY_LEVELS[complexity.toUpperCase()]?.template || 'medium';
     let content = '';
-    
-    switch (templateName) {
-      case 'simple': content = componentTemplates.react.simple(name); break;
-      case 'medium': content = componentTemplates.react.medium(name); break;
-      case 'complex': content = componentTemplates.react.complex(name); break;
-      default: content = componentTemplates.react.component(name);
+    let ext = '.tsx';
+
+    if (framework === 'vanilla') {
+      content = componentTemplates.vanilla.component(name);
+      ext = '.html';
+    } else if (framework === 'next') {
+      content = componentTemplates.next[templateName] ? componentTemplates.next[templateName](name) : componentTemplates.next.simple(name);
+    } else {
+      // Default to React
+      switch (templateName) {
+        case 'simple': content = componentTemplates.react.simple(name); break;
+        case 'medium': content = componentTemplates.react.medium(name); break;
+        case 'complex': content = componentTemplates.react.complex(name); break;
+        default: content = componentTemplates.react.component(name);
+      }
     }
 
-    await writeFile(join(componentPath, `${name}.tsx`), content, 'utf8');
-    if (logger) logger.debug(`Created ${name}.tsx`);
+    await filesystem.writeFile(join(componentPath, `${name}${ext}`), content, 'utf8');
+    if (logger) logger.debug(`Created ${name}${ext}`);
 
-    // 2. Index File
-    await writeFile(join(componentPath, 'index.ts'), componentTemplates.react.index(name), 'utf8');
+    // 2. Index File (only for React/Next)
+    if (framework !== 'vanilla') {
+      await filesystem.writeFile(join(componentPath, 'index.ts'), componentTemplates.react.index(name), 'utf8');
+    }
 
     // 3. Optional Features
     if (features.includes('storybook')) {
-      await writeFile(join(componentPath, `${name}.stories.tsx`), componentTemplates.react.story(name), 'utf8');
+      await filesystem.writeFile(join(componentPath, `${name}.stories.tsx`), componentTemplates.react.story(name), 'utf8');
     }
 
     if (features.includes('tests')) {
-      await writeFile(join(componentPath, `${name}.test.tsx`), componentTemplates.react.test(name), 'utf8');
+      await filesystem.writeFile(join(componentPath, `${name}.test.tsx`), componentTemplates.react.test(name), 'utf8');
     }
 
-    if (features.includes('hook')) {
+    if (features.includes('hook') && framework !== 'vanilla') {
       const hookDir = join(outputPath, '..', 'lib', 'composables');
-      await mkdir(hookDir, { recursive: true });
-      await writeFile(join(hookDir, `use${name}.ts`), componentTemplates.composable.useHook(name), 'utf8');
+      await filesystem.writeFile(join(hookDir, `use${name}.ts`), componentTemplates.composable.useHook(name), 'utf8');
     }
 
     // 4. Styles (ITCSS)
@@ -75,12 +90,10 @@ export const generator = {
       const stylesDir = join(outputPath, '..', 'styles');
       
       const settingsPath = join(stylesDir, '01-settings');
-      await mkdir(settingsPath, { recursive: true });
-      await writeFile(join(settingsPath, `_settings.${name.toLowerCase()}.scss`), componentTemplates.scss.settings(name), 'utf8');
+      await filesystem.writeFile(join(settingsPath, `_settings.${name.toLowerCase()}.scss`), componentTemplates.scss.settings(name), 'utf8');
 
       const compStylesPath = join(stylesDir, '06-components');
-      await mkdir(compStylesPath, { recursive: true });
-      await writeFile(join(compStylesPath, `_components.${name.toLowerCase()}.scss`), componentTemplates.scss.component(name), 'utf8');
+      await filesystem.writeFile(join(compStylesPath, `_components.${name.toLowerCase()}.scss`), componentTemplates.scss.component(name), 'utf8');
     }
 
     return componentPath;

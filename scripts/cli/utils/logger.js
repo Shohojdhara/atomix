@@ -26,7 +26,7 @@ export const logger = {
    * Log an info message
    */
   info: (message) => {
-    console.log(chalk.white(message));
+    console.log(chalk.blue(message));
   },
 
   /**

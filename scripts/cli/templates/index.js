@@ -5,6 +5,8 @@
 
 // Import template modules
 import { reactTemplates } from './react-templates.js';
+import { nextTemplates } from './next-templates.js';
+import { vanillaTemplates } from './vanilla-templates.js';
 import { storybookTemplates } from './storybook-templates.js';
 import { testingTemplates } from './testing-templates.js';
 import { scssTemplates } from './scss-templates.js';
@@ -34,6 +36,8 @@ export const componentTemplates = {
     types: typesTemplates.types,
     constants: typesTemplates.constants,
   },
+  next: nextTemplates,
+  vanilla: vanillaTemplates,
   composable: composableTemplates,
   storybook: storybookTemplates,
   testing: testingTemplates,

@@ -3,10 +3,37 @@
  * Utilities for safe file and path operations
  */
 
-import { resolve, normalize, isAbsolute, relative } from 'path';
-import { access } from 'fs/promises';
+import { resolve, normalize, isAbsolute, relative, dirname } from 'path';
+import { access, writeFile, mkdir } from 'fs/promises';
+import { logger } from '../utils/logger.js';
+import chalk from 'chalk';
 
 export const filesystem = {
+  /**
+   * Safe file write with dry-run support
+   * @param {string} path - Path to write to
+   * @param {string} content - Content to write
+   * @param {object} options - Options
+   */
+  async writeFile(path, content, options = {}) {
+    if (process.env.ATOMIX_DRY_RUN === 'true') {
+      logger.info(`${chalk.cyan('[DRY RUN]')} Would write file: ${chalk.bold(path)}`);
+      if (options.debug) {
+        logger.debug('Content:', content);
+      }
+      return true;
+    }
+
+    try {
+      const dir = dirname(path);
+      await mkdir(dir, { recursive: true });
+      await writeFile(path, content, options);
+      return true;
+    } catch (error) {
+      throw new Error(`Failed to write file ${path}: ${error.message}`);
+    }
+  },
+
   /**
    * Validates and resolves a path within the project directory
    * @param {string} inputPath - The path to validate
