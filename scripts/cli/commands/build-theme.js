@@ -33,7 +33,9 @@ export async function buildThemeAction(themePath, options) {
       );
     }
 
-    const sanitizedOutput = sanitizeInput(options.output || './dist');
+    // Default output directory; may overwrite app build—use -o dist-theme for custom themes.
+    const outputDir = options.output ?? './dist';
+    const sanitizedOutput = sanitizeInput(outputDir);
     const outputValidation = filesystem.validatePath(sanitizedOutput);
 
     if (!outputValidation.isValid) {
@@ -99,6 +101,7 @@ export async function buildThemeAction(themePath, options) {
         await performBuild();
       });
 
+      // Only allowed direct success exit: clean shutdown in watch mode.
       process.on('SIGINT', () => {
         watcher.close();
         process.exit(0);

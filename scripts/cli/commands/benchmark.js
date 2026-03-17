@@ -16,6 +16,7 @@ export async function benchmarkAction(options) {
   const logs = await telemetry.getLogs();
   
   if (logs.length === 0) {
+    logger.info('Benchmark collects metrics from previous CLI runs.');
     logger.warn('No performance data found. Run some commands first!');
     return;
   }

@@ -26,7 +26,7 @@ export const Card = React.memo(
         // Content
         header,
         image,
-        imageAlt = '',
+        imageAlt = 'Card image',
         title,
         text,
         actions,

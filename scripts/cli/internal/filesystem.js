@@ -109,5 +109,50 @@ export const filesystem = {
     } catch {
       return false;
     }
+  },
+
+  /**
+   * Create directory recursively with dry-run support
+   * @param {string} path - Directory path to create
+   * @param {object} options - Options
+   * @returns {Promise<boolean>} Success status
+   */
+  async createDirectory(path, options = {}) {
+    if (process.env.ATOMIX_DRY_RUN === 'true') {
+      logger.info(`${chalk.cyan('[DRY RUN]')} Would create directory: ${chalk.bold(path)}`);
+      return true;
+    }
+
+    const pathValidation = validateSecurePath(path);
+    if (!pathValidation.isValid) {
+      throw new Error(`Security validation failed for path ${path}: ${pathValidation.error}`);
+    }
+
+    const safePath = pathValidation.safePath;
+
+    try {
+      await mkdir(safePath, { recursive: true });
+      logger.debug(`Created directory: ${safePath}`);
+      return true;
+    } catch (error) {
+      throw new Error(`Failed to create directory ${safePath}: ${error.message}`);
+    }
+  },
+
+  /**
+   * Read file content with encoding
+   * @param {string} path - File path
+   * @param {string} encoding - File encoding (default: utf8)
+   * @returns {Promise<string>} File content
+   */
+  async readFile(path, encoding = 'utf8') {
+    try {
+      const content = await readFile(path, encoding);
+      return content;
+    } catch (error) {
+      throw new Error(`Failed to read file ${path}: ${error.message}`);
+    }
   }
 };
+
+export default filesystem;

@@ -280,7 +280,7 @@ export async function listTokens(categories = Object.keys(tokenCategories)) {
     // Show summary
     if (categoryCount === 0) {
       console.log(safeChalkCall(chalk, 'yellow', '\n⚠️  No design tokens found'));
-      console.log(safeChalkCall(chalk, 'gray', 'Make sure you are in an Atomix project directory'));
+      console.log(safeChalkCall(chalk, 'gray', 'Create a theme or add token files in src/styles/01-settings (e.g. _settings.colors.scss). See Atomix token docs.'));
     } else {
       console.log(safeChalkCall(chalk, 'bold.cyan', '\n📐 Design Tokens\n'));
 
@@ -430,6 +430,13 @@ export async function exportTokens(format = 'json', outputPath = null) {
       }
     }
 
+    const categoryCount = Object.keys(allTokens).length;
+    if (categoryCount === 0) {
+      safeSpinnerCall(spinner, 'warn', safeChalkCall(chalk, 'yellow', 'No design tokens found'));
+      console.log(safeChalkCall(chalk, 'gray', 'Create a theme or add token files in src/styles/01-settings. See Atomix token docs.'));
+      return { path: null, tokens: allTokens };
+    }
+
     let output;
     let filename;
 
@@ -501,7 +508,6 @@ export async function exportTokens(format = 'json', outputPath = null) {
     safeSpinnerCall(spinner, 'succeed', safeChalkCall(chalk, 'green', `✓ Exported tokens to ${finalPath}`));
 
     // Show summary
-    const categoryCount = Object.keys(allTokens).length;
     const tokenCount = Object.values(allTokens).reduce(
       (sum, cat) => sum + Object.keys(cat).length,
       0

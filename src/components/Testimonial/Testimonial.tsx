@@ -125,7 +125,7 @@ export const Testimonial: React.FC<TestimonialProps> = ({
           {author.avatarSrc && (
             <img
               src={author.avatarSrc}
-              alt={author.avatarAlt || ''}
+              alt={author.avatarAlt || `${author.name}'s avatar`}
               className="c-testimonial__author-avatar c-avatar c-avatar--xxl c-avatar--circle"
             />
           )}

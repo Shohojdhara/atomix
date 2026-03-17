@@ -4,18 +4,26 @@
  */
 
 import { logger } from '../utils/logger.js';
-import { validateA11y, validateTokens, validatePerformance } from '../internal/validator.js';
+import { validateA11y, validateTokens, validatePerformance, validateComponent } from '../internal/validator.js';
+import { validateComponentName } from '../utils/validation.js';
 import { hookManager } from '../internal/hooks.js';
 import { telemetry } from '../utils/telemetry.js';
+import { AtomixCLIError, ErrorCategory } from '../utils/error.js';
 import chalk from 'chalk';
 
 /**
  * Action for the `atomix validate` command
  * @param {object} options - Command options
+ * @param {string} [subcommand] - When 'component', run component-scoped validation
+ * @param {string} [name] - Component name for validate component <name>
  */
-export async function validateAction(options = {}) {
+export async function validateAction(options = {}, subcommand, name) {
+  if (subcommand === 'component' && name) {
+    return runComponentValidation(name);
+  }
+
   const spinner = logger.spinner('Starting validation audit...').start();
-  
+
   try {
     const a11yResults = await validateA11y();
     const tokenResults = await validateTokens();
@@ -86,7 +94,11 @@ export async function validateAction(options = {}) {
     console.log(chalk.bold(`\nSummary: ${errors} errors, ${warnings} warnings.`));
 
     if (errors > 0) {
-      process.exit(1);
+      throw new AtomixCLIError(
+        `Validation failed with ${errors} error(s) and ${warnings} warning(s).`,
+        ErrorCategory.VALIDATION,
+        ['Fix the reported issues and run atomix validate again.']
+      );
     }
   } catch (error) {
     spinner.fail('Validation failed');
@@ -127,4 +139,56 @@ function validateCLIPerformance(logs) {
   }
 
   return issues;
+}
+
+/**
+ * Run validation for a single component and print component-scoped report
+ * @param {string} name - Component name (PascalCase)
+ */
+async function runComponentValidation(name) {
+  const nameValidation = await validateComponentName(name);
+  if (!nameValidation.isValid) {
+    throw new AtomixCLIError(
+      nameValidation.error || `Invalid component name: ${name}`,
+      ErrorCategory.VALIDATION,
+      ['Use PascalCase (e.g. Button, Card). See atomix validate --help.']
+    );
+  }
+
+  const spinner = logger.spinner(`Validating component ${name}...`).start();
+  try {
+    const report = await validateComponent(name);
+    spinner.stop();
+
+    logger.box(`Component: ${report.component}`, {
+      borderColor: 'magenta',
+      padding: 1,
+      margin: 1
+    });
+
+    if (report.issues.length === 0) {
+      console.log(chalk.bold.green(`✨ No issues found for ${report.component}.`));
+      return;
+    }
+
+    let errors = 0;
+    let warnings = 0;
+    for (const r of report.issues) {
+      const icon = r.severity === 'error' ? chalk.red('❌') : chalk.yellow('⚠️');
+      if (r.severity === 'error') errors++;
+      else warnings++;
+      console.log(`${icon} [${r.type}] ${chalk.bold(r.file)}: ${r.message}`);
+    }
+    console.log(chalk.bold(`\nSummary: ${errors} errors, ${warnings} warnings.`));
+    if (!report.valid) {
+      throw new AtomixCLIError(
+        `Component validation failed with ${errors} error(s) and ${warnings} warning(s).`,
+        ErrorCategory.VALIDATION,
+        ['Fix the reported issues and run atomix validate component <Name> again.']
+      );
+    }
+  } catch (error) {
+    spinner.fail('Validation failed');
+    throw error;
+  }
 }

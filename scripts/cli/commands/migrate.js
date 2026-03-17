@@ -3,14 +3,47 @@
  * Handles migrations from Tailwind, Bootstrap, and other frameworks
  */
 
+import { resolve } from 'path';
+import { stat } from 'fs/promises';
 import chalk from 'chalk';
 import { logger } from '../utils/logger.js';
 import { migrateTailwind, migrateBootstrap } from '../migration-tools.js';
+import { AtomixCLIError, ErrorCategory } from '../utils/error.js';
+
+/**
+ * Ensure source is a directory; throw AtomixCLIError otherwise
+ */
+async function ensureSourceIsDirectory(source) {
+  const absolute = resolve(process.cwd(), source);
+  let st;
+  try {
+    st = await stat(absolute);
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      throw new AtomixCLIError(
+        `Source not found: ${source}`,
+        ErrorCategory.INVALID_PATH,
+        ['Source must be a directory. Pass the project root (e.g. . or ./my-app).', 'Check that the path exists.']
+      );
+    }
+    throw err;
+  }
+  if (!st.isDirectory()) {
+    throw new AtomixCLIError(
+      `Source is not a directory: ${source}`,
+      ErrorCategory.INVALID_PATH,
+      ['Source must be the project root directory (e.g. . or ./my-tailwind-app).', 'Do not pass a file path (e.g. package.json).']
+    );
+  }
+  return absolute;
+}
 
 /**
  * Migrate action handler
  */
 export async function migrateAction(type, source, options) {
+  await ensureSourceIsDirectory(source);
+
   logger.info(chalk.blue(`🚀 Starting migration: ${type} from ${source}...`));
 
   try {
@@ -24,19 +57,23 @@ export async function migrateAction(type, source, options) {
         report = await migrateBootstrap(source, options);
         break;
       default:
-        logger.error(`Unsupported migration type: ${type}`);
-        process.exit(1);
+        throw new AtomixCLIError(
+          `Unsupported migration type: ${type}. Use tailwind or bootstrap.`,
+          ErrorCategory.VALIDATION,
+          ['Example: atomix migrate tailwind .']
+        );
     }
 
     // Display Migration Report
     displayMigrationReport(report);
 
   } catch (error) {
-    logger.error(`Migration failed: ${error.message}`);
-    if (process.env.ATOMIX_DEBUG) {
-      console.error(error);
-    }
-    process.exit(1);
+    if (error instanceof AtomixCLIError) throw error;
+    throw new AtomixCLIError(
+      error.message || 'Migration failed',
+      ErrorCategory.FILESYSTEM,
+      ['Check source path and permissions. Run with --dry-run to preview.']
+    );
   }
 }
 

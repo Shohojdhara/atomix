@@ -1,9 +1,20 @@
 /**
- * Templates Index
- * Aggregates all template modules for the Atomix CLI
+ * Templates Index - Backward Compatibility Layer
+ * 
+ * This file maintains backward compatibility with existing code.
+ * The new organized TypeScript templates are available in:
+ * - components/react-component.ts
+ * - styles/scss-component.ts
+ * - stories/storybook-story.ts
+ * - tests/vitest-test.ts
+ * - types/component-types.ts
+ * - config/project-config.ts
+ * - utils/testing-utils.ts
+ * 
+ * For new code, use the TypeScript modules directly or build the project.
  */
 
-// Import template modules
+// Import legacy template modules for backward compatibility
 import { reactTemplates } from './react-templates.js';
 import { nextTemplates } from './next-templates.js';
 import { vanillaTemplates } from './vanilla-templates.js';
@@ -54,7 +65,7 @@ export {
 };
 
 /**
- * Get template by name and type
+ * Get template by name and type (legacy API)
  * @param {string} type - Template type (react, composable, etc.)
  * @param {string} name - Template name (simple, medium, complex, etc.)
  * @returns {Function|null} Template function or null if not found

@@ -2,7 +2,7 @@ import { defineConfig } from 'rollup';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import { terser } from '@rollup/plugin-terser';
+import terser from '@rollup/plugin-terser';
 import { babel } from '@rollup/plugin-babel';
 import shebang from 'rollup-plugin-preserve-shebangs';
 
@@ -35,7 +35,7 @@ const basePlugins = [
   }),
   // Transpile with Babel
   babel({
-    babelHelpers: 'bundled',
+    babelHelpers: 'runtime',
     exclude: 'node_modules/core-js/**',
     presets: [
       ['@babel/preset-env', {

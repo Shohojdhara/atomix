@@ -2,6 +2,8 @@
  * Atomix CLI Helper Utilities
  */
 
+import { access } from 'fs/promises';
+
 /**
  * Sanitizes user input to prevent injection attacks
  */
@@ -40,4 +42,26 @@ export function formatFileSize(bytes) {
  */
 export function isCI() {
   return !!(process.env.CI || process.env.GITHUB_ACTIONS || process.env.JENKINS_URL);
+}
+
+/**
+ * Checks if CLI should run in non-interactive mode (no prompts)
+ * Use for CI/scripts: set ATOMIX_NON_INTERACTIVE=1 or run in CI
+ */
+export function isNonInteractive() {
+  return !!(process.env.ATOMIX_NON_INTERACTIVE === '1' || process.env.ATOMIX_NON_INTERACTIVE === 'true' || isCI());
+}
+
+/**
+ * Check if a file exists at the given path
+ * @param {string} path - File path to check
+ * @returns {Promise<boolean>}
+ */
+export async function fileExists(path) {
+  try {
+    await access(path);
+    return true;
+  } catch {
+    return false;
+  }
 }

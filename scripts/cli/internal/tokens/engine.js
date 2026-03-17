@@ -60,6 +60,14 @@ export class TokenEngine {
   }
 
   /**
+   * Returns the list of configured provider names (for help and prompts)
+   * @returns {string[]}
+   */
+  getProviderNames() {
+    return [...this.providers.keys()];
+  }
+
+  /**
    * Pulls tokens from a specific provider
    * @param {string} providerName - Name of the provider to pull from
    */

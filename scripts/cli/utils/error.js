@@ -11,7 +11,8 @@ export const ErrorCategory = {
   VALIDATION: 'VALIDATION_ERROR',
   GENERATION: 'GENERATION_ERROR',
   ENVIRONMENT: 'ENVIRONMENT_ERROR',
-  FILESYSTEM: 'FILESYSTEM_ERROR'
+  FILESYSTEM: 'FILESYSTEM_ERROR',
+  INVALID_PATH: 'INVALID_PATH'
 };
 
 /**
@@ -32,6 +33,10 @@ const COMMON_SUGGESTIONS = {
     'Check if you have write permissions for the target directory.',
     'Ensure the path provided is valid and within the project root.',
     'Verify if the file exists and is not locked by another process.'
+  ],
+  [ErrorCategory.INVALID_PATH]: [
+    'Source must be a directory. Pass the project root (e.g. . or ./my-app).',
+    'Do not pass a file path (e.g. package.json).'
   ]
 };
 
@@ -79,5 +84,6 @@ export async function handleCLIError(error, spinner = null) {
     console.error(chalk.gray(error.stack));
   }
 
+  // Single exit point for CLI failure; commands should throw, not call process.exit(1).
   process.exit(1);
 }

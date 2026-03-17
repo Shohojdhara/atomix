@@ -9,6 +9,7 @@ node_modules/
 build/
 dist/
 storybook-static/
+test/
 
 # Environment files
 .env
@@ -42,6 +43,8 @@ Thumbs.db
 .qodo/
 .amazonq/
 .antigravity/
+.lingma/
+.lingmaignore
 
 # Cursor AI specific files (keep configuration files)
 .cursorignore

@@ -1,46 +1,152 @@
 [
   {
-    "command": "atomix",
-    "duration": 129,
-    "timestamp": "2026-03-15T20:36:31.545Z",
-    "success": true
-  },
-  {
-    "command": "atomix",
-    "duration": 18.38,
-    "timestamp": "2026-03-15T20:36:36.392Z",
+    "command": "clean",
+    "duration": 2.21,
+    "timestamp": "2026-03-16T00:01:05.351Z",
     "success": true
   },
   {
     "command": "doctor",
-    "duration": 79.78,
-    "timestamp": "2026-03-15T20:36:50.794Z",
+    "duration": 101.52,
+    "timestamp": "2026-03-16T04:02:23.123Z",
     "success": true
   },
   {
-    "command": "benchmark",
-    "duration": 1.14,
-    "timestamp": "2026-03-15T20:36:56.773Z",
+    "command": "doctor",
+    "duration": 72.78,
+    "timestamp": "2026-03-16T04:02:48.983Z",
     "success": true
   },
   {
-    "command": "generate",
-    "duration": 1.09,
-    "timestamp": "2026-03-15T21:31:11.128Z",
+    "command": "doctor",
+    "duration": 74.86,
+    "timestamp": "2026-03-16T04:02:51.944Z",
+    "success": true
+  },
+  {
+    "command": "doctor",
+    "duration": 74.51,
+    "timestamp": "2026-03-16T04:02:55.015Z",
+    "success": true
+  },
+  {
+    "command": "doctor",
+    "duration": 73.37,
+    "timestamp": "2026-03-16T04:03:19.200Z",
+    "success": true
+  },
+  {
+    "command": "doctor",
+    "duration": 0.66,
+    "timestamp": "2026-03-16T04:03:26.083Z",
+    "success": true
+  },
+  {
+    "command": "validate",
+    "duration": 97.59,
+    "timestamp": "2026-03-16T16:09:19.390Z",
     "success": false,
-    "error": "",
-    "code": "INVALID_NAME"
+    "error": "Validation failed with 24 error(s) and 12 warning(s).",
+    "code": "VALIDATION_ERROR"
   },
   {
-    "command": "generate",
-    "duration": 16.5,
-    "timestamp": "2026-03-15T21:31:28.636Z",
+    "command": "doctor",
+    "duration": 78.49,
+    "timestamp": "2026-03-16T16:09:19.898Z",
+    "success": true
+  },
+  {
+    "command": "validate",
+    "duration": 8.98,
+    "timestamp": "2026-03-16T16:09:55.918Z",
+    "success": true
+  },
+  {
+    "command": "validate",
+    "duration": 9.73,
+    "timestamp": "2026-03-16T16:09:56.324Z",
+    "success": false,
+    "error": "Component validation failed with 1 error(s) and 0 warning(s).",
+    "code": "VALIDATION_ERROR"
+  },
+  {
+    "command": "validate",
+    "duration": 8.43,
+    "timestamp": "2026-03-16T16:09:56.718Z",
+    "success": false,
+    "error": "Component validation failed with 1 error(s) and 0 warning(s).",
+    "code": "VALIDATION_ERROR"
+  },
+  {
+    "command": "validate",
+    "duration": 8.46,
+    "timestamp": "2026-03-16T16:09:57.115Z",
+    "success": true
+  },
+  {
+    "command": "validate",
+    "duration": 10.63,
+    "timestamp": "2026-03-16T16:09:57.515Z",
+    "success": false,
+    "error": "Component validation failed with 1 error(s) and 0 warning(s).",
+    "code": "VALIDATION_ERROR"
+  },
+  {
+    "command": "doctor",
+    "duration": 108.07,
+    "timestamp": "2026-03-16T16:11:52.627Z",
+    "success": true
+  },
+  {
+    "command": "validate",
+    "duration": 9.14,
+    "timestamp": "2026-03-16T16:16:35.076Z",
+    "success": false,
+    "error": "Component validation failed with 1 error(s) and 0 warning(s).",
+    "code": "VALIDATION_ERROR"
+  },
+  {
+    "command": "validate",
+    "duration": 9.04,
+    "timestamp": "2026-03-16T16:16:35.548Z",
+    "success": false,
+    "error": "Component validation failed with 1 error(s) and 0 warning(s).",
+    "code": "VALIDATION_ERROR"
+  },
+  {
+    "command": "validate",
+    "duration": 9.77,
+    "timestamp": "2026-03-16T16:17:34.989Z",
+    "success": true
+  },
+  {
+    "command": "validate",
+    "duration": 8.89,
+    "timestamp": "2026-03-16T16:17:35.434Z",
+    "success": true
+  },
+  {
+    "command": "validate",
+    "duration": 101.48,
+    "timestamp": "2026-03-16T16:17:40.437Z",
+    "success": true
+  },
+  {
+    "command": "validate",
+    "duration": 97.77,
+    "timestamp": "2026-03-16T16:18:08.314Z",
     "success": true
   },
   {
     "command": "generate",
-    "duration": 37.81,
-    "timestamp": "2026-03-15T21:32:14.364Z",
+    "duration": 19.48,
+    "timestamp": "2026-03-16T17:40:23.212Z",
+    "success": true
+  },
+  {
+    "command": "generate",
+    "duration": 17.08,
+    "timestamp": "2026-03-16T17:43:06.058Z",
     "success": true
   }
 ]

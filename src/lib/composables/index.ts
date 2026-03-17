@@ -56,3 +56,7 @@ export * from './usePieChart';
 
 // Block composables
 export * from './useBlock';
+
+export { useTestTypeCheck } from './useTestTypeCheck';
+export { useTypedButton } from './useTypedButton';
+export { useTestButton } from './useTestButton';

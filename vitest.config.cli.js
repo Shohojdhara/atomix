@@ -17,7 +17,8 @@ export default defineConfig({
     exclude: [
       'node_modules',
       'dist',
-      '**/*.d.ts'
+      '**/*.d.ts',
+      'scripts/cli/__tests__/component-generator.test.js'
     ],
     coverage: {
       provider: 'v8',

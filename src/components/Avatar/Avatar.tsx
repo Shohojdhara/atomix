@@ -6,7 +6,7 @@ import { Icon } from '../Icon/Icon';
 export const Avatar: React.FC<AvatarProps> = memo(
   ({
     src,
-    alt = 'Avatar',
+    alt = 'User avatar',
     initials,
     icon,
     size = 'md',

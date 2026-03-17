@@ -4,7 +4,7 @@
  */
 
 import { execSync } from 'child_process';
-import { existsSync, accessSync, constants } from 'fs';
+import { existsSync, accessSync, constants, readdirSync } from 'fs';
 import { join } from 'path';
 import { readFile } from 'fs/promises';
 import { logger } from './logger.js';
@@ -93,13 +93,39 @@ export async function checkPlugins() {
 }
 
 /**
+ * Check if running in the Atomix monorepo (internal development)
+ */
+async function isAtomixMonorepo(projectRoot) {
+  try {
+    const packageJsonPath = join(projectRoot, 'package.json');
+    if (!existsSync(packageJsonPath)) return false;
+    
+    const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf8'));
+    // Check if this is the Atomix monorepo by package name or structure
+    const packageName = packageJson.name || '';
+    const isAtomixPackage = packageName.includes('atomix') && 
+                           (packageName.startsWith('@shohojdhara/') || 
+                            packageName.startsWith('@atomix/') ||
+                            packageName === 'atomix');
+    
+    return isAtomixPackage || existsSync(join(projectRoot, 'packages'));
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Check project structure
  */
 export async function checkProjectStructure(projectRoot = process.cwd()) {
   const results = [];
-  const requiredDirs = ['src', 'scripts/cli'];
+  const requiredDirs = ['src'];
   const recommendedDirs = ['themes', 'docs'];
+  const internalDirs = ['scripts/cli']; // Only required for Atomix monorepo development
+  
+  const isMonorepo = await isAtomixMonorepo(projectRoot);
 
+  // Check required directories (always checked)
   for (const dir of requiredDirs) {
     const dirPath = join(projectRoot, dir);
     const exists = existsSync(dirPath);
@@ -111,6 +137,26 @@ export async function checkProjectStructure(projectRoot = process.cwd()) {
     });
   }
 
+  // Check internal directories (only for Atomix monorepo)
+  for (const dir of internalDirs) {
+    const dirPath = join(projectRoot, dir);
+    const exists = existsSync(dirPath);
+    
+    if (isMonorepo) {
+      // In monorepo, this is required
+      results.push({
+        name: `Directory: ${dir}`,
+        status: exists ? 'pass' : 'fail',
+        message: exists ? 'Exists' : 'Missing',
+        suggestion: exists ? null : `Create the '${dir}' directory in your project root.`
+      });
+    } else {
+      // In external projects, skip this check entirely (don't show as fail/warn/pass)
+      // This directory is only needed for internal Atomix development
+    }
+  }
+
+  // Check recommended directories
   for (const dir of recommendedDirs) {
     const dirPath = join(projectRoot, dir);
     const exists = existsSync(dirPath);
@@ -141,16 +187,16 @@ export async function checkConfig(projectRoot = process.cwd()) {
         // Simple syntax check by reading it
         await readFile(configPath, 'utf8');
         results.push({
-          name: `Config: ${file}`,
+          name: 'Configuration',
           status: 'pass',
-          message: 'Found and readable',
+          message: `Found ${file} and readable`,
           suggestion: null
         });
       } catch (error) {
         results.push({
-          name: `Config: ${file}`,
+          name: 'Configuration',
           status: 'fail',
-          message: `Error reading config: ${error.message}`,
+          message: `Error reading ${file}: ${error.message}`,
           suggestion: 'Check file permissions and syntax.'
         });
       }
@@ -164,6 +210,46 @@ export async function checkConfig(projectRoot = process.cwd()) {
       status: 'warn',
       message: 'No atomix.config.ts or atomix.config.js found',
       suggestion: 'Run `atomix init` to create a default configuration.'
+    });
+  }
+
+  return results;
+}
+
+/**
+ * Check design tokens (01-settings). CLI discovers tokens from src/styles/01-settings/_settings.*.scss
+ * and optionally from atomix.config tokenEngine / tokens entry.
+ */
+export async function checkTokens(projectRoot = process.cwd()) {
+  const results = [];
+  const settingsDir = join(projectRoot, 'src/styles/01-settings');
+
+  if (!existsSync(settingsDir)) {
+    results.push({
+      name: 'Tokens',
+      status: 'warn',
+      message: 'None configured (optional)',
+      suggestion: 'Add token files or a theme for design token support. Token discovery: src/styles/01-settings/_settings.*.scss. See Atomix token docs.'
+    });
+    return results;
+  }
+
+  try {
+    const files = readdirSync(settingsDir);
+    const tokenFiles = files.filter((f) => f.startsWith('_settings.') && f.endsWith('.scss'));
+    const count = tokenFiles.length;
+    results.push({
+      name: 'Tokens',
+      status: 'pass',
+      message: count ? `Found ${count} token categor${count === 1 ? 'y' : 'ies'}` : 'None configured (optional)',
+      suggestion: count ? null : 'Add _settings.*.scss in src/styles/01-settings for design tokens.'
+    });
+  } catch (error) {
+    results.push({
+      name: 'Tokens',
+      status: 'warn',
+      message: `Could not read 01-settings: ${error.message}`,
+      suggestion: null
     });
   }
 

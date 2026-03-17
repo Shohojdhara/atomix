@@ -508,51 +508,77 @@ export const envTemplate = `# Environment Variables
 export const itcssIndexTemplates = {
   settings: `// Settings Layer
 // Global variables, config switches, and brand colors
+// 
+// This layer imports design tokens and configuration from Atomix.
+// Override variables here before importing tools and other layers.
 
-// Import Atomix settings or define your own
-// @use '@shohojdhara/atomix/scss/settings' as *;
+// Import core design tokens from Atomix
+@use '@shohojdhara/atomix/scss/settings' as *;
+
+// Optional: Override specific tokens for your brand
+// Example:
+// $primary-6: #your-brand-color;
+// $font-family-base: 'Your Font', sans-serif;
 `,
 
   tools: `// Tools Layer
 // Globally used mixins and functions
+// 
+// This layer imports utility mixins and functions from Atomix.
+// Use these tools to generate consistent CSS across your project.
 
-// Import Atomix tools or define your own
-// @use '@shohojdhara/atomix/scss/tools' as *;
+// Import Atomix tools (mixins, functions)
+@use '@shohojdhara/atomix/scss/tools' as *;
 `,
 
   generic: `// Generic Layer
 // Ground-zero styles (normalize.css, resets, box-sizing)
+// 
+// This layer imports base reset and normalization styles.
+// These are far-reaching, low-specificity foundational styles.
 
-// Import Atomix generic styles or define your own
-// @use '@shohojdhara/atomix/scss/generic' as *;
+// Import Atomix generic styles
+@use '@shohojdhara/atomix/scss/generic' as *;
 `,
 
   elements: `// Elements Layer
 // Unclassed HTML elements (type selectors)
+// 
+// This layer imports base element styling from Atomix.
+// Styles for bare HTML elements without classes.
 
-// Import Atomix element styles or define your own
-// @use '@shohojdhara/atomix/scss/elements' as *;
+// Import Atomix element styles
+@use '@shohojdhara/atomix/scss/elements' as *;
 `,
 
   objects: `// Objects Layer
 // Cosmetic-free design patterns (layouts, grids)
+// 
+// This layer imports structural layout patterns from Atomix.
+// Object classes are functional, not cosmetic.
 
-// Import Atomix object styles or define your own
-// @use '@shohojdhara/atomix/scss/objects' as *;
+// Import Atomix object styles
+@use '@shohojdhara/atomix/scss/objects' as *;
 `,
 
   components: `// Components Layer
 // Designed components, chunks of UI
+// 
+// This layer imports UI component styles from Atomix.
+// Components are specific, designed pieces of interface.
 
-// Import Atomix components or define your own
-// @use '@shohojdhara/atomix/scss/components' as *;
+// Import Atomix component styles
+@use '@shohojdhara/atomix/scss/components' as *;
 `,
 
   utilities: `// Utilities Layer
 // Helper classes with ability to override anything
+// 
+// This layer imports utility helper classes from Atomix.
+// Utilities use !important to override previous layers.
 
-// Import Atomix utilities or define your own
-// @use '@shohojdhara/atomix/scss/utilities' as *;
+// Import Atomix utilities
+@use '@shohojdhara/atomix/scss/utilities' as *;
 `,
 
   main: `// Main Stylesheet
