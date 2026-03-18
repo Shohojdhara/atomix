@@ -36,13 +36,10 @@ export * from './useRadio';
 export * from './useSelect';
 export * from './useTextarea';
 
-// New composables
-export * from './useBreadcrumb';
-export * from './useCard';
-export * from './useDataTable';
-export * from './useModal';
-export * from './usePagination';
-export * from './useSlider';
+// Phase 3: Optimization & Adaptation - New composables
+export * from './useResponsiveGlass';
+export * from './usePerformanceMonitor';
+export * from './useResponsiveGlass.presets';
 
 // Chart composables - simplified
 export * from './useChartData';

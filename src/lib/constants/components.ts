@@ -1661,6 +1661,15 @@ export const ATOMIX_GLASS = {
     MODE: 'standard' as const,
     OVER_LIGHT: false as const,
     ENABLE_OVER_LIGHT_LAYERS: true,
+    // Phase 1: Time-Based Animation System defaults
+    WITH_TIME_ANIMATION: true as const,
+    ANIMATION_SPEED: 1.0,
+    // Phase 1: Multi-Layer Distortion System defaults
+    WITH_MULTI_LAYER_DISTORTION: false as const,
+    DISTORTION_OCTAVES: 5,
+    DISTORTION_LACUNARITY: 2.0,
+    DISTORTION_GAIN: 0.5,
+    DISTORTION_QUALITY: 'high' as const,
   },
   CONSTANTS: {
     ACTIVATION_ZONE: 200,
@@ -1782,5 +1791,41 @@ export const ATOMIX_GLASS = {
     SATURATION: {
       HIGH_CONTRAST: 200, // Saturation value for high contrast mode
     },
+
+    // Phase 1: Animation System Constants
+    ANIMATION: {
+      // Breathing effect timing (in milliseconds)
+      BREATHING_CYCLE: 2000, // 2-second breathing cycle
+      // Flow animation speed
+      FLOW_SPEED_X: 0.1, // Horizontal flow speed
+      FLOW_SPEED_Y: 0.15, // Vertical flow speed
+      // Wave propagation
+      WAVE_SPEED: 0.05, // Radial wave speed
+      WAVE_AMPLITUDE: 0.02, // Wave amplitude
+    },
+
+    // Phase 1: Multi-Layer Distortion Quality Presets
+    DISTORTION_QUALITY_PRESETS: {
+      low: {
+        octaves: 2,
+        lacunarity: 2.0,
+        gain: 0.5,
+      },
+      medium: {
+        octaves: 4,
+        lacunarity: 2.0,
+        gain: 0.5,
+      },
+      high: {
+        octaves: 5,
+        lacunarity: 2.0,
+        gain: 0.5,
+      },
+      ultra: {
+        octaves: 7,
+        lacunarity: 2.0,
+        gain: 0.5,
+      },
+    } as const,
   },
 };

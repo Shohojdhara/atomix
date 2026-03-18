@@ -23,6 +23,13 @@ import {
   lerp,
 } from '../../components/AtomixGlass/glass-utils';
 import { updateAtomixGlassStyles } from './useAtomixGlassStyles';
+// Phase 1: Time-Based Animation System
+import {
+  createAnimationLoop,
+  createFBMEngine,
+  getFBMConfigForQuality,
+  liquidGlassWithTime,
+} from '../../components/AtomixGlass/animation-system';
 
 const { CONSTANTS } = ATOMIX_GLASS;
 
@@ -151,6 +158,13 @@ interface UseAtomixGlassOptions extends Omit<AtomixGlassProps, 'children'> {
   wrapperRef?: React.RefObject<HTMLDivElement>;
   children?: React.ReactNode;
   isFixedOrSticky?: boolean;
+  // Phase 1: Time-Based Animation System
+  withLiquidBlur?: boolean;
+  animationQuality?: 'low' | 'medium' | 'high';
+  timeSpeed?: number;
+  noiseAmplitude?: number;
+  noiseFrequency?: number;
+  displacementStrength?: number;
 }
 
 interface UseAtomixGlassReturn {
@@ -218,6 +232,14 @@ export function useAtomixGlass({
   padding,
   withLiquidBlur,
   isFixedOrSticky = false,
+  // Phase 1: Animation System Props
+  withTimeAnimation = ATOMIX_GLASS.DEFAULTS.WITH_TIME_ANIMATION,
+  animationSpeed = ATOMIX_GLASS.DEFAULTS.ANIMATION_SPEED,
+  withMultiLayerDistortion = ATOMIX_GLASS.DEFAULTS.WITH_MULTI_LAYER_DISTORTION,
+  distortionOctaves = ATOMIX_GLASS.DEFAULTS.DISTORTION_OCTAVES,
+  distortionLacunarity = ATOMIX_GLASS.DEFAULTS.DISTORTION_LACUNARITY,
+  distortionGain = ATOMIX_GLASS.DEFAULTS.DISTORTION_GAIN,
+  distortionQuality = ATOMIX_GLASS.DEFAULTS.DISTORTION_QUALITY,
 }: UseAtomixGlassOptions): UseAtomixGlassReturn {
   // State
   const [isHovered, setIsHovered] = useState(false);
@@ -243,6 +265,115 @@ export function useAtomixGlass({
   const [userPrefersHighContrast, setUserPrefersHighContrast] = useState(false);
   const [detectedOverLight, setDetectedOverLight] = useState(false);
 
+  // ============================================================================
+  // Phase 1: Time-Based Animation System (Feature 1.1)
+  // ============================================================================
+
+  // Animation state refs
+  const animationFrameIdRef = useRef<number | null>(null);
+  const animationStartTimeRef = useRef<number>(0);
+  const elapsedTimeRef = useRef<number>(0);
+  const shaderTimeRef = useRef<number>(0);
+
+  /**
+   * Get FBM configuration based on quality preset or custom values
+   */
+  const fbmConfig = useMemo(() => {
+    // If quality preset is provided, use it as base
+    const preset = getFBMConfigForQuality(distortionQuality);
+    
+    // Override with custom values if provided
+    return {
+      octaves: distortionOctaves ?? preset.octaves,
+      lacunarity: distortionLacunarity ?? preset.lacunarity,
+      gain: distortionGain ?? preset.gain,
+    };
+  }, [distortionQuality, distortionOctaves, distortionLacunarity, distortionGain]);
+
+  /**
+   * Create FBM engine for multi-layer distortion
+   */
+  const fbmEngine = useMemo(() => {
+    if (!withMultiLayerDistortion) return null;
+    return createFBMEngine(fbmConfig);
+  }, [withMultiLayerDistortion, fbmConfig]);
+
+  /**
+   * Determine effective animation settings
+   */
+  const effectiveReducedMotion = useMemo(
+    () => reducedMotion || userPrefersReducedMotion,
+    [reducedMotion, userPrefersReducedMotion]
+  );
+
+  const effectiveWithTimeAnimation = useMemo(() => {
+    return withTimeAnimation && !effectiveReducedMotion;
+  }, [withTimeAnimation, effectiveReducedMotion]);
+
+  /**
+   * Animation loop for time-based effects
+   */
+  useEffect(() => {
+    if (!effectiveWithTimeAnimation || typeof window === 'undefined') {
+      return undefined;
+    }
+
+    let lastFrameTime = performance.now();
+
+    /**
+     * Animation frame handler
+     */
+    const animate = (currentTime: number) => {
+      // Calculate delta time
+      const deltaTime = currentTime - lastFrameTime;
+      lastFrameTime = currentTime;
+
+      // Apply animation speed multiplier
+      const scaledDelta = deltaTime * animationSpeed;
+      elapsedTimeRef.current += scaledDelta;
+      shaderTimeRef.current = elapsedTimeRef.current;
+
+      // Continue animation loop
+      animationFrameIdRef.current = requestAnimationFrame(animate);
+    };
+
+    // Start animation
+    animationStartTimeRef.current = performance.now();
+    animationFrameIdRef.current = requestAnimationFrame(animate);
+
+    // Cleanup
+    return () => {
+      if (animationFrameIdRef.current !== null) {
+        cancelAnimationFrame(animationFrameIdRef.current);
+        animationFrameIdRef.current = null;
+      }
+    };
+  }, [effectiveWithTimeAnimation, animationSpeed]);
+
+  /**
+   * Get current shader time for animations
+   */
+  const getShaderTime = useCallback(() => {
+    return shaderTimeRef.current;
+  }, []);
+
+  /**
+   * Apply time-based distortion to UV coordinates
+   */
+  const applyTimeBasedDistortion = useCallback(
+    (uv: { x: number; y: number }): { x: number; y: number } => {
+      if (!effectiveWithTimeAnimation || !fbmEngine) {
+        return uv;
+      }
+
+      const time = shaderTimeRef.current;
+      
+      // Apply liquid glass distortion with time
+      return liquidGlassWithTime(uv, time, fbmConfig);
+    },
+    [effectiveWithTimeAnimation, fbmEngine, fbmConfig]
+  );
+
   // Memoized derived values
   const effectiveBorderRadius = useMemo(() => {
     if (borderRadius !== undefined) {
@@ -259,10 +390,6 @@ export function useAtomixGlass({
     cachedRectRef 
   });
 
-  const effectiveReducedMotion = useMemo(
-    () => reducedMotion || userPrefersReducedMotion,
-    [reducedMotion, userPrefersReducedMotion]
-  );
 
   const effectiveHighContrast = useMemo(
     () => highContrast || userPrefersHighContrast,

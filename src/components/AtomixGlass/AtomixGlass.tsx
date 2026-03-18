@@ -3,6 +3,11 @@ import type { AtomixGlassProps } from '../../lib/types/components';
 import { ATOMIX_GLASS } from '../../lib/constants/components';
 import { AtomixGlassContainer } from './AtomixGlassContainer';
 import { useAtomixGlass } from '../../lib/composables/useAtomixGlass';
+// Phase 3: Optimization & Adaptation
+import { useResponsiveGlass } from '../../lib/composables/useResponsiveGlass';
+import { usePerformanceMonitor } from '../../lib/composables/usePerformanceMonitor';
+import { PerformanceDashboard } from './PerformanceDashboard';
+import { getDevicePreset, MOBILE_OPTIMIZED_BREAKPOINTS } from '../../lib/composables/useResponsiveGlass.presets';
 
 /**
  * AtomixGlass - A high-performance glass morphism component with liquid distortion effects
@@ -104,7 +109,6 @@ export function AtomixGlass({
   withBorder = true,
   withOverLightLayers = ATOMIX_GLASS.DEFAULTS.ENABLE_OVER_LIGHT_LAYERS,
   debugPerformance = false,
-  debugBorderRadius = false,
   debugOverLight = false,
   height,
   width,
@@ -155,7 +159,6 @@ export function AtomixGlass({
     withoutEffects,
     elasticity,
     onClick,
-    debugBorderRadius,
     debugOverLight,
     debugPerformance,
     children,
@@ -166,6 +169,60 @@ export function AtomixGlass({
     style,
     isFixedOrSticky,
   });
+
+  // ============================================================================
+  // Phase 3: Optimization & Adaptation Systems
+  // ============================================================================
+
+  // Get device preset parameters - memoized to prevent recalculation
+  const devicePresetParams = useMemo(() => {
+    // In a real implementation, this would come from the devicePreset prop
+    const presetName = 'balanced';
+    return getDevicePreset(presetName);
+  }, []); // Empty deps - only calculated once on mount
+
+  // Responsive breakpoint system - automatically adjusts parameters based on viewport
+  const { 
+    responsiveParams, 
+    currentBreakpoint,
+    performanceTier,
+    isActive: isResponsiveActive
+  } = useResponsiveGlass({
+    baseParams: {
+      ...devicePresetParams,
+      distortionOctaves: Math.round((displacementScale || ATOMIX_GLASS.DEFAULTS.DISPLACEMENT_SCALE) / 25),
+      displacementScale: displacementScale || ATOMIX_GLASS.DEFAULTS.DISPLACEMENT_SCALE,
+      blurAmount: blurAmount || ATOMIX_GLASS.DEFAULTS.BLUR_AMOUNT,
+      saturation: saturation || ATOMIX_GLASS.DEFAULTS.SATURATION,
+      aberrationIntensity: aberrationIntensity || ATOMIX_GLASS.DEFAULTS.ABERRATION_INTENSITY,
+      animationSpeed: 1.0,
+      chromaticIntensity: aberrationIntensity || ATOMIX_GLASS.DEFAULTS.ABERRATION_INTENSITY,
+    },
+    breakpoints: MOBILE_OPTIMIZED_BREAKPOINTS,
+    enabled: typeof window !== 'undefined', // Only enable on client-side
+    debug: false
+  });
+
+  // Performance monitoring - tracks FPS, frame time, memory usage
+  const {
+    metrics: performanceMetrics,
+    recommendedQuality,
+    isUnderperforming,
+    setQualityLevel,
+    toggleMonitoring
+  } = usePerformanceMonitor({
+    enabled: false, // We'll toggle manually based on prop
+    debug: false,
+    showOverlay: false
+  });
+
+  // Auto-start performance monitoring if enabled (only in development)
+  React.useEffect(() => {
+    if (process.env.NODE_ENV === 'development' && (window as any)?.enablePerformanceMonitoring) {
+      toggleMonitoring();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount
 
   const isOverLight = useMemo(() => overLightConfig.isOverLight, [overLightConfig.isOverLight]);
 
@@ -511,6 +568,15 @@ export function AtomixGlass({
           <span className={ATOMIX_GLASS.BORDER_1_CLASS} />
           <span className={ATOMIX_GLASS.BORDER_2_CLASS} />
         </>
+      )}
+      
+      {/* Phase 3: Performance Monitoring Dashboard - Only in development with debugPerformance enabled */}
+      {debugPerformance && performanceMetrics && (
+        <PerformanceDashboard 
+          metrics={performanceMetrics}
+          isVisible={true}
+          onClose={() => {}} // No-op, dashboard always visible when debugPerformance is true
+        />
       )}
     </div>
   );
