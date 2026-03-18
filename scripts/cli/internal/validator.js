@@ -182,6 +182,18 @@ export async function validateComponent(componentName, projectRoot = process.cwd
         severity: 'warn'
       });
     }
+
+    // Check for hardcoded colors in TSX/JSX component files
+    const hexColorRegex = /(?<!['"`])#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})\b(?!['"`])/g;
+    const hexMatches = content.match(hexColorRegex);
+    if (hexMatches) {
+      issues.push({
+        file: relativeFile,
+        type: 'Tokens',
+        message: `Hardcoded hex color(s) found in TSX: ${hexMatches.join(', ')}. Use design tokens or CSS variables.`,
+        severity: 'error'
+      });
+    }
   }
 
   // Token usage: component settings and component SCSS

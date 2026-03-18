@@ -19,6 +19,7 @@
 @forward 'utilities.visibility';
 @forward 'utilities.visually-hidden';
 @forward 'utilities.z-index';
+@forward 'utilities.touch-target';
 
 // Forward the main utilities generator
 @forward 'utilities';

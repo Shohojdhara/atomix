@@ -1,0 +1,36 @@
+@use '../02-tools/tools.breakpoints' as *;
+@use '../01-settings/settings.config' as config;
+
+/**
+ * Touch Target Optimization
+ * Ensures interactive elements have a minimum touch target size of 44px
+ * as per WCAG 2.1 Success Criterion 2.5.5 (Target Size).
+ */
+
+.u-touch-target {
+  @include media-breakpoint-down(md) {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// Apply to common interactive elements automatically on mobile
+@include media-breakpoint-down(md) {
+  .c-btn--sm,
+  .c-form-check-input,
+  .c-form-select-sm,
+  .c-form-control-sm {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  // Checkbox/Radio labels should also be part of the touch target
+  .c-form-check {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+}

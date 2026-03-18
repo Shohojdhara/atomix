@@ -97,6 +97,58 @@ For projects without a module bundler, include the CSS and JS files in your HTML
 </html>
 ```
 
+### Next.js Integration
+
+To use Atomix with Next.js (App Router), import the styles in your root `layout.tsx`:
+
+```tsx
+// app/layout.tsx
+import '@shohojdhara/atomix/css';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My Next.js App',
+  description: 'Built with Atomix Design System',
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+### Astro Integration
+
+To use Atomix with Astro, import the styles in your main layout or component:
+
+```astro
+---
+// src/layouts/Layout.astro
+import '@shohojdhara/atomix/css';
+import { Button } from '@shohojdhara/atomix';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Astro + Atomix</title>
+  </head>
+  <body>
+    <slot />
+    <Button variant="primary">Astro Button</Button>
+  </body>
+</html>
+```
+
 ## CSS Architecture
 
 Atomix follows the ITCSS (Inverted Triangle CSS) methodology combined with BEM (Block Element Modifier) naming conventions.

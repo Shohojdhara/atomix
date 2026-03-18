@@ -246,6 +246,17 @@ export interface AtomixGlassProps extends React.HTMLAttributes<HTMLDivElement> {
     | 'noise';
 
   /**
+   * Phase 1: Animation System props
+   */
+  withTimeAnimation?: boolean;
+  animationSpeed?: number;
+  withMultiLayerDistortion?: boolean;
+  distortionOctaves?: number;
+  distortionLacunarity?: number;
+  distortionGain?: number;
+  distortionQuality?: 'low' | 'medium' | 'high' | 'ultra';
+
+  /**
    * Performance and accessibility options
    */
   reducedMotion?: boolean;

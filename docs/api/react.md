@@ -296,6 +296,191 @@ interface DropdownItemProps {
 </Dropdown>
 ```
 
+#### Accordion
+Collapsible content panel for organizing information.
+
+```tsx
+interface AccordionProps {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+  iconPosition?: 'left' | 'right';
+  icon?: React.ReactNode;
+  isOpen?: boolean;
+  disabled?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  glass?: boolean | AtomixGlassProps;
+}
+
+// Usage
+<Accordion title="What is Atomix?">
+  <p>Atomix is a comprehensive design system for building modern user interfaces.</p>
+</Accordion>
+```
+
+#### AtomixGlass
+Premium glassmorphism effect component with advanced shader-based rendering.
+
+```tsx
+interface AtomixGlassProps {
+  displacementScale?: number;
+  blurAmount?: number;
+  saturation?: number;
+  aberrationIntensity?: number;
+  elasticity?: number;
+  borderRadius?: number;
+  mode?: 'standard' | 'polar' | 'prominent' | 'shader';
+  shaderVariant?: 'liquidGlass' | 'premiumGlass' | 'appleFluid' | 'liquidMetal' | 'plasma' | 'waves' | 'noise';
+  overLight?: boolean | 'auto' | OverLightConfig;
+  reducedMotion?: boolean;
+  highContrast?: boolean;
+  children?: React.ReactNode;
+}
+
+// Usage
+<AtomixGlass mode="premiumGlass" blurAmount={20}>
+  <div style={{ padding: '2rem' }}>
+    <h3>Glass Effect</h3>
+    <p>Premium glassmorphism with advanced shaders.</p>
+  </div>
+</AtomixGlass>
+```
+
+#### Avatar
+User profile picture or placeholder.
+
+```tsx
+interface AvatarProps {
+  src?: string;
+  alt?: string;
+  name?: string;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  variant?: 'circle' | 'square' | 'rounded';
+  status?: 'online' | 'offline' | 'away' | 'busy';
+  className?: string;
+}
+
+interface AvatarGroupProps {
+  children: React.ReactNode;
+  max?: number;
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+}
+
+// Usage
+<Avatar src="/user.jpg" name="John Doe" status="online" />
+<AvatarGroup max={3}>
+  <Avatar name="A" />
+  <Avatar name="B" />
+  <Avatar name="C" />
+  <Avatar name="D" />
+</AvatarGroup>
+```
+
+#### Callout
+Prominent message or alert with optional actions.
+
+```tsx
+interface CalloutProps {
+  title?: React.ReactNode;
+  children: React.ReactNode;
+  variant?: 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info';
+  icon?: React.ReactNode;
+  onClose?: () => void;
+  actions?: React.ReactNode;
+  compact?: boolean;
+  isToast?: boolean;
+  glass?: boolean | AtomixGlassProps;
+}
+
+// Usage
+<Callout variant="success" title="Success!">
+  Your changes have been saved successfully.
+</Callout>
+```
+
+#### Hero
+Prominent landing section for marketing and introductory content.
+
+```tsx
+interface HeroProps {
+  title: React.ReactNode;
+  subtitle?: string;
+  text?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  alignment?: 'left' | 'center' | 'right';
+  headingLevel?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  children?: React.ReactNode;
+}
+
+// Usage
+<Hero
+  title="Build Amazing Interfaces"
+  subtitle="The ultimate design system for modern web applications"
+  imageSrc="/hero-image.png"
+  alignment="center"
+>
+  <Button variant="primary" size="lg">Get Started</Button>
+</Hero>
+```
+
+#### DataTable
+Powerful data grid with sorting, filtering, and pagination support.
+
+```tsx
+interface Column<T> {
+  key: keyof T | string;
+  header: React.ReactNode;
+  width?: string | number;
+  sortable?: boolean;
+  render?: (item: T) => React.ReactNode;
+}
+
+interface DataTableProps<T> {
+  data: T[];
+  columns: Column<T>[];
+  loading?: boolean;
+  pagination?: boolean;
+  pageSize?: number;
+  selectable?: boolean;
+  onRowClick?: (item: T) => void;
+  className?: string;
+}
+
+// Usage
+<DataTable
+  data={users}
+  columns={[
+    { key: 'name', header: 'Name', sortable: true },
+    { key: 'email', header: 'Email' },
+    { key: 'role', header: 'Role' }
+  ]}
+  pagination
+  pageSize={10}
+/>
+```
+
+#### Chart
+Comprehensive data visualization system with multiple chart types.
+
+```tsx
+interface ChartProps {
+  type: 'line' | 'bar' | 'area' | 'pie' | 'donut' | 'radar' | 'scatter';
+  data: any[];
+  options?: ChartOptions;
+  height?: string | number;
+  width?: string | number;
+  loading?: boolean;
+}
+
+// Usage
+<Chart
+  type="line"
+  data={revenueData}
+  height={300}
+/>
+```
+
 ## 🎯 Common Patterns
 
 ### Event Handling

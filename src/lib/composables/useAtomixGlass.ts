@@ -165,14 +165,6 @@ interface UseAtomixGlassOptions extends Omit<AtomixGlassProps, 'children'> {
   noiseAmplitude?: number;
   noiseFrequency?: number;
   displacementStrength?: number;
-  // Phase 1: Animation props (from AtomixGlassProps)
-  withTimeAnimation?: boolean;
-  animationSpeed?: number;
-  withMultiLayerDistortion?: boolean;
-  distortionOctaves?: number;
-  distortionLacunarity?: number;
-  distortionGain?: number;
-  distortionQuality?: 'low' | 'medium' | 'high' | 'ultra';
 }
 
 interface UseAtomixGlassReturn {

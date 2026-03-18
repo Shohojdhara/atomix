@@ -1,6 +1,6 @@
 import React, { forwardRef, useRef, useState, useEffect, useMemo } from 'react';
 import type { CSSProperties } from 'react';
-import type { DisplacementMode, MousePosition, GlassSize } from '../../lib/types/components';
+import type { DisplacementMode, MousePosition, GlassSize, AtomixGlassProps } from '../../lib/types/components';
 import type { FragmentShaderType } from './shader-utils';
 import { GlassFilter } from './GlassFilter';
 import { calculateMouseInfluence, clampBlur, validateGlassSize } from './glass-utils';
@@ -59,7 +59,17 @@ const setCachedShader = (key: string, url: string): void => {
   }
 };
 
-interface AtomixGlassContainerProps {
+interface AtomixGlassContainerProps
+  extends Pick<
+    AtomixGlassProps,
+    | 'withTimeAnimation'
+    | 'animationSpeed'
+    | 'withMultiLayerDistortion'
+    | 'distortionOctaves'
+    | 'distortionLacunarity'
+    | 'distortionGain'
+    | 'distortionQuality'
+  > {
   className?: string;
   style?: React.CSSProperties;
   displacementScale?: number;
@@ -94,13 +104,6 @@ interface AtomixGlassContainerProps {
 
   // Phase 1: Animation System props
   shaderTime?: number;
-  withTimeAnimation?: boolean;
-  animationSpeed?: number;
-  withMultiLayerDistortion?: boolean;
-  distortionOctaves?: number;
-  distortionLacunarity?: number;
-  distortionGain?: number;
-  distortionQuality?: 'low' | 'medium' | 'high' | 'ultra';
 
   contentRef?: React.RefObject<HTMLDivElement>;
   children?: React.ReactNode;

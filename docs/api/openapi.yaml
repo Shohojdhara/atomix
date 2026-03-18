@@ -1,0 +1,123 @@
+openapi: 3.0.0
+info:
+  title: Atomix Design System Component API
+  description: |
+    Comprehensive API reference for Atomix components. This specification describes components as "endpoints" 
+    and their props as "parameters" to follow industry standards for API documentation.
+  version: 1.0.0
+  contact:
+    name: Atomix Team
+    url: https://github.com/shohojdhara/atomix
+
+paths:
+  /components/Button:
+    post:
+      summary: Button Component
+      description: Interactive button component with multiple variants and states.
+      requestBody:
+        description: Button Props
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ButtonProps'
+      responses:
+        '200':
+          description: Rendered Button Component
+          content:
+            text/html:
+              schema:
+                type: string
+
+  /components/Card:
+    post:
+      summary: Card Component
+      description: Flexible content container with header, body, and footer sections.
+      requestBody:
+        description: Card Props
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardProps'
+      responses:
+        '200':
+          description: Rendered Card Component
+
+  /components/Modal:
+    post:
+      summary: Modal Component
+      description: Dialog overlay component for critical interactions.
+      requestBody:
+        description: Modal Props
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModalProps'
+      responses:
+        '200':
+          description: Rendered Modal Component
+
+components:
+  schemas:
+    ButtonProps:
+      type: object
+      properties:
+        variant:
+          type: string
+          enum: [primary, secondary, success, error, warning, info, ghost, outline-primary, outline-secondary]
+          default: primary
+        size:
+          type: string
+          enum: [sm, md, lg]
+          default: md
+        disabled:
+          type: boolean
+          default: false
+        loading:
+          type: boolean
+          default: false
+        label:
+          type: string
+        iconName:
+          type: string
+        fullWidth:
+          type: boolean
+          default: false
+
+    CardProps:
+      type: object
+      properties:
+        variant:
+          type: string
+          enum: [default, bordered, elevated]
+          default: default
+        className:
+          type: string
+
+    ModalProps:
+      type: object
+      required: [isOpen]
+      properties:
+        isOpen:
+          type: boolean
+        size:
+          type: string
+          enum: [sm, md, lg, xl, fullscreen]
+          default: md
+        centered:
+          type: boolean
+          default: false
+        backdrop:
+          oneOf:
+            - type: boolean
+            - type: string
+              enum: [static]
+          default: true
+
+    ThemeColor:
+      type: string
+      enum: [primary, secondary, success, error, warning, info, light, dark]
+
+security: []
