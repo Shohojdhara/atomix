@@ -39,15 +39,16 @@ const DropdownContext = createContext<DropdownContextType>({
 
 export const DropdownMenu = forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement>>(
   ({ children, className = '', ...props }, ref) => {
-    const { glass } = useContext(DropdownStyleContext); // We need to access glass prop here?
-    // Wait, the original code wrapped <ul> in Context Provider.
-    // And applied glass wrapper around <ul>.
-    // If we use Compound Component, DropdownMenu should be the list.
+    const { glass } = useContext(DropdownStyleContext);
+    const { id } = useContext(DropdownContext);
 
     return (
       <ul
         ref={ref}
+        id={`${id}-menu`}
         className={`c-dropdown__menu ${glass ? 'c-dropdown__menu--glass' : ''} ${className}`.trim()}
+        role="menu"
+        aria-labelledby={`${id}-trigger`}
         {...props}
       >
         {children}
@@ -59,21 +60,20 @@ DropdownMenu.displayName = 'DropdownMenu';
 
 export const DropdownTrigger = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ children, className = '', onClick, onKeyDown, ...props }, ref) => {
-    // We need to inject the trigger logic here.
-    // But triggers are usually handled by the parent Dropdown in the original code.
-    // The original code wraps children in `c-dropdown__toggle` div.
-
-    // Ideally, DropdownTrigger allows user to customize the trigger element.
-    // For backward compat, Dropdown wraps `children` (legacy) in `c-dropdown__toggle`.
-
-    // If we use <Dropdown.Trigger><Button/></Dropdown.Trigger>, we want the Button to be the trigger.
+    const { isOpen, id } = useContext(DropdownContext);
 
     return (
       <div
         ref={ref}
+        id={`${id}-trigger`}
         className={`c-dropdown__toggle ${className}`.trim()}
         onClick={onClick}
         onKeyDown={onKeyDown}
+        aria-haspopup="true"
+        aria-expanded={isOpen}
+        aria-controls={`${id}-menu`}
+        tabIndex={0}
+        role="button"
         {...props}
       >
         {children}

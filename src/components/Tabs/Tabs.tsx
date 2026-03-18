@@ -67,20 +67,36 @@ export interface TabsProps {
 const TabsContext = createContext<{
   currentTab: number;
   handleTabClick: (index: number) => void;
+  handleKeyDown: (event: React.KeyboardEvent, totalTabs: number) => void;
+  totalTabs: number;
 }>({
   currentTab: 0,
   handleTabClick: () => {},
+  handleKeyDown: () => {},
+  totalTabs: 0,
 });
 
 // Compound components
 export const TabsList = forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement>>(
-  ({ children, className = '', ...props }, ref) => {
+  ({ children, className = '', onKeyDown, ...props }, ref) => {
+    const { handleKeyDown: contextHandleKeyDown } = useContext(TabsContext);
+    const totalTabs = React.Children.count(children);
+
     return (
-      <ul ref={ref} className={`c-tabs__nav ${className}`.trim()} {...props}>
+      <ul
+        ref={ref}
+        className={`c-tabs__nav ${className}`.trim()}
+        role="tablist"
+        onKeyDown={(e) => {
+          contextHandleKeyDown(e, totalTabs);
+          onKeyDown?.(e);
+        }}
+        {...props}
+      >
         {React.Children.map(children, (child, index) => {
           if (React.isValidElement(child)) {
-             // Inject index into TabsTrigger
-             return React.cloneElement(child, { index } as any);
+            // Inject index into TabsTrigger
+            return React.cloneElement(child, { index } as any);
           }
           return child;
         })}
@@ -106,9 +122,10 @@ export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
     const isActive = index !== undefined && currentTab === index;
 
     return (
-      <li className="c-tabs__nav-item">
+      <li className="c-tabs__nav-item" role="presentation">
         <button
           ref={ref}
+          id={`tab-nav-${index}`}
           className={`c-tabs__nav-btn ${isActive ? TAB.CLASSES.ACTIVE : ''} ${className}`.trim()}
           onClick={(e) => {
             if (index !== undefined) handleTabClick(index);
@@ -118,6 +135,7 @@ export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
           role="tab"
           aria-selected={isActive}
           aria-controls={`tab-panel-${index}`}
+          tabIndex={isActive ? 0 : -1}
           type="button"
           {...props}
         >
@@ -209,6 +227,37 @@ export const Tabs: TabsComponent = memo(
       }
     };
 
+    // Keyboard navigation
+    const handleKeyDown = (event: React.KeyboardEvent, totalTabs: number) => {
+      let newIndex = currentTab;
+      switch (event.key) {
+        case 'ArrowRight':
+          newIndex = (currentTab + 1) % totalTabs;
+          break;
+        case 'ArrowLeft':
+          newIndex = (currentTab - 1 + totalTabs) % totalTabs;
+          break;
+        case 'Home':
+          newIndex = 0;
+          break;
+        case 'End':
+          newIndex = totalTabs - 1;
+          break;
+        default:
+          return;
+      }
+      event.preventDefault();
+      handleTabClick(newIndex);
+
+      // Focus the newly active tab after it renders
+      setTimeout(() => {
+        const tabElement = document.getElementById(`tab-nav-${newIndex}`);
+        if (tabElement) {
+          tabElement.focus();
+        }
+      }, 0);
+    };
+
     // Determine content based on mode (legacy items vs compound children)
     let content: ReactNode;
 
@@ -217,16 +266,23 @@ export const Tabs: TabsComponent = memo(
       // Legacy mode
       content = (
         <>
-          <ul className="c-tabs__nav">
+          <ul
+            className="c-tabs__nav"
+            role="tablist"
+            onKeyDown={(e) => handleKeyDown(e, items.length)}
+          >
             {items.map((item, index) => (
-              <li className="c-tabs__nav-item" key={`tab-nav-${index}`}>
+              <li className="c-tabs__nav-item" key={`tab-nav-${index}`} role="presentation">
                 <button
+                  id={`tab-nav-${index}`}
                   className={`c-tabs__nav-btn ${index === currentTab ? TAB.CLASSES.ACTIVE : ''}`}
                   onClick={() => handleTabClick(index)}
                   data-tabindex={index}
                   role="tab"
                   aria-selected={index === currentTab}
                   aria-controls={`tab-panel-${index}`}
+                  tabIndex={index === currentTab ? 0 : -1}
+                  type="button"
                 >
                   {item.label}
                 </button>
@@ -257,8 +313,21 @@ export const Tabs: TabsComponent = memo(
       );
     } else {
       // Compound mode
+      const tabsList = React.Children.toArray(children).find(
+        (child): child is React.ReactElement =>
+          React.isValidElement(child) && (child.type as any).displayName === 'TabsList'
+      );
+      const totalTabsCount = tabsList ? React.Children.count(tabsList.props.children) : 0;
+
       content = (
-        <TabsContext.Provider value={{ currentTab, handleTabClick }}>
+        <TabsContext.Provider
+          value={{
+            currentTab,
+            handleTabClick,
+            handleKeyDown,
+            totalTabs: totalTabsCount,
+          }}
+        >
           {children}
         </TabsContext.Provider>
       );

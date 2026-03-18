@@ -87,6 +87,38 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
     .filter(Boolean)
     .join(' ');
 
+  // Keyboard navigation
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    switch (event.key) {
+      case 'ArrowLeft':
+        if (direction === 'horizontal') {
+          event.preventDefault();
+          slidePrev();
+        }
+        break;
+      case 'ArrowRight':
+        if (direction === 'horizontal') {
+          event.preventDefault();
+          slideNext();
+        }
+        break;
+      case 'ArrowUp':
+        if (direction === 'vertical') {
+          event.preventDefault();
+          slidePrev();
+        }
+        break;
+      case 'ArrowDown':
+        if (direction === 'vertical') {
+          event.preventDefault();
+          slideNext();
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div
       ref={ref || (containerRef as React.RefObject<HTMLDivElement>)}
@@ -106,10 +138,16 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
       onMouseMove={handleTouchMove}
       onMouseUp={handleTouchEnd}
       onMouseLeave={handleTouchEnd}
+      onKeyDown={handleKeyDown}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={(rest as any)['aria-label'] || 'Image slider'}
+      tabIndex={0}
     >
       <div
         ref={wrapperRef as React.RefObject<HTMLDivElement>}
         className="c-slider__wrapper"
+        aria-live={autoplay ? 'off' : 'polite'}
         style={{
           display: 'flex',
           flexDirection: direction === 'vertical' ? 'column' : 'row',

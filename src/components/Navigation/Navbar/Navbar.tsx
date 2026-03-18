@@ -82,6 +82,50 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
       };
     }, [collapsible, expanded, onToggle]);
 
+    // Handle Escape key to close mobile menu
+    useEffect(() => {
+      if (!navbarExpanded || !closeOnEscape) return undefined;
+
+      const handleEscapeKey = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          if (typeof onToggle === 'function') {
+            onToggle(false);
+          } else {
+            setNavbarExpanded(false);
+          }
+        }
+      };
+
+      document.addEventListener('keydown', handleEscapeKey);
+      return () => {
+        document.removeEventListener('keydown', handleEscapeKey);
+      };
+    }, [navbarExpanded, closeOnEscape, onToggle]);
+
+    // Handle outside click to close mobile menu
+    useEffect(() => {
+      if (!navbarExpanded || !closeOnOutsideClick) return undefined;
+
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          collapseRef.current &&
+          !collapseRef.current.contains(event.target as Node) &&
+          !(event.target as HTMLElement).closest('.c-navbar__toggler')
+        ) {
+          if (typeof onToggle === 'function') {
+            onToggle(false);
+          } else {
+            setNavbarExpanded(false);
+          }
+        }
+      };
+
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [navbarExpanded, closeOnOutsideClick, onToggle]);
+
     // Generate the navbar class
     const navbarClass = generateNavbarClass({
       position,

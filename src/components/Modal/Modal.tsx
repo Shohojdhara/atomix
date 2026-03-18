@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState, useCallback, memo, forwardRef, ReactNode } from 'react';
+import React, { useEffect, useRef, useState, useCallback, memo, forwardRef, ReactNode, useId } from 'react';
 import { ModalProps } from '../../lib/types/components';
 import { MODAL } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import { useFocusTrap } from '../../lib/composables/useFocusTrap';
 
 /**
  * Hook for managing modal state
@@ -183,6 +184,12 @@ const ModalImpl = memo(
       onOpen,
     });
 
+    // Use focus trap hook
+    const contentRef = useFocusTrap(isOpenState);
+    const instanceId = useId();
+    const titleId = `modal-title-${instanceId}`;
+    const descId = `modal-desc-${instanceId}`;
+
     // Handle keyboard events for Escape key
     useEffect(() => {
       if (!keyboard) return undefined;
@@ -224,7 +231,7 @@ const ModalImpl = memo(
     );
 
     const modalContent = (
-      <div className="c-modal__content">
+      <div className="c-modal__content" ref={contentRef}>
         {hasCompoundComponents ? (
           React.Children.map(children, child => {
             if (
@@ -233,6 +240,7 @@ const ModalImpl = memo(
             ) {
               return React.cloneElement(child, {
                 onClose: (child.props as any).onClose || close,
+                id: titleId,
               } as any);
             }
             return child;
@@ -241,13 +249,14 @@ const ModalImpl = memo(
           <>
             {(title || closeButton) && (
               <ModalHeader
+                id={titleId}
                 title={title}
                 subtitle={subtitle}
                 closeButton={closeButton}
                 onClose={close}
               />
             )}
-            <ModalBody>{children}</ModalBody>
+            <ModalBody id={descId}>{children}</ModalBody>
             {footer && <ModalFooter>{footer}</ModalFooter>}
           </>
         )}
@@ -262,6 +271,8 @@ const ModalImpl = memo(
         role="dialog"
         aria-modal="true"
         aria-hidden={!isOpenState}
+        aria-labelledby={titleId}
+        aria-describedby={descId}
         {...props}
       >
         <div ref={backdropRef} className="c-modal__backdrop" onClick={handleBackdropClick} />

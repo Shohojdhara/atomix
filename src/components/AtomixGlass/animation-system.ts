@@ -407,6 +407,8 @@ export function getFBMConfigForQuality(quality: 'low' | 'medium' | 'high' | 'ult
   return presets[quality];
 }
 
+const fbmEngineCache = new Map<string, ReturnType<typeof createFBMEngine>>();
+
 // ============================================================================
 // Shader Utility Functions for Time-Based Effects
 // ============================================================================
@@ -421,7 +423,12 @@ export function getFBMConfigForQuality(quality: 'low' | 'medium' | 'high' | 'ult
  * @returns Distorted UV coordinates
  */
 export function liquidGlassWithTime(uv: Vec2, time: number, config: FBMConfig): Vec2 {
-  const fbmEngine = createFBMEngine(config);
+  const configKey = `${config.octaves}-${config.lacunarity}-${config.gain}`;
+  let fbmEngine = fbmEngineCache.get(configKey);
+  if (!fbmEngine) {
+    fbmEngine = createFBMEngine(config);
+    fbmEngineCache.set(configKey, fbmEngine);
+  }
   
   // Animate noise with time
   const animatedNoise = fbmEngine.fbmWithTime(

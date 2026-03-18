@@ -107,6 +107,72 @@ export const useDropdown = ({
     };
   }, [isOpen, closeOnEscape, setIsOpen]);
 
+  // Handle arrow key navigation
+  useEffect(() => {
+    if (!isOpen || !menuRef.current) return undefined;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const menu = menuRef.current;
+      if (!menu) return;
+
+      const items = Array.from(
+        menu.querySelectorAll<HTMLElement>('[role="menuitem"]:not([disabled])')
+      );
+      if (items.length === 0) return;
+
+      const currentIndex = items.indexOf(document.activeElement as HTMLElement);
+
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault();
+          const nextIndex = (currentIndex + 1) % items.length;
+          const nextItem = items[nextIndex];
+          if (nextItem) nextItem.focus();
+          break;
+        case 'ArrowUp':
+          event.preventDefault();
+          const prevIndex = (currentIndex - 1 + items.length) % items.length;
+          const prevItem = items[prevIndex];
+          if (prevItem) prevItem.focus();
+          break;
+        case 'Home':
+          event.preventDefault();
+          const firstItem = items[0];
+          if (firstItem) firstItem.focus();
+          break;
+        case 'End':
+          event.preventDefault();
+          const lastItem = items[items.length - 1];
+          if (lastItem) lastItem.focus();
+          break;
+        case 'Tab':
+          // Close dropdown on tab
+          setIsOpen(false);
+          break;
+        default:
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, setIsOpen]);
+
+  // Focus management when dropdown opens
+  useEffect(() => {
+    if (isOpen && menuRef.current) {
+      const firstItem = menuRef.current.querySelector<HTMLElement>(
+        '[role="menuitem"]:not([disabled])'
+      );
+      if (firstItem) {
+        setTimeout(() => firstItem.focus(), 0);
+      }
+    }
+  }, [isOpen]);
+
   // Helper function to get the flipped placement if needed
   const getFlippedPlacement = useCallback(
     (

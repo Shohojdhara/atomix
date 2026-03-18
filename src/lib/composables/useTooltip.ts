@@ -249,6 +249,22 @@ export const useTooltip = ({
     };
   }, [isVisible, updatePosition]);
 
+  // Handle Escape key to close tooltip
+  useEffect(() => {
+    if (!isVisible) return undefined;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        hideTooltip();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isVisible, hideTooltip]);
+
   // Setup trigger props
   const triggerProps: React.HTMLAttributes<HTMLDivElement> = {
     'aria-describedby': isVisible ? tooltipId : undefined,

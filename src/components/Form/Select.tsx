@@ -143,6 +143,37 @@ export const Select: SelectComponent = memo(
       [onChange, name]
     );
 
+    // Keyboard navigation
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+      if (disabled) return;
+
+      switch (event.key) {
+        case 'Enter':
+        case ' ':
+          event.preventDefault();
+          handleToggle();
+          break;
+        case 'Escape':
+          if (isOpen) {
+            event.preventDefault();
+            setIsOpen(false);
+            if (bodyRef.current) {
+              bodyRef.current.style.height = '0px';
+            }
+          }
+          break;
+        case 'ArrowDown':
+        case 'ArrowUp':
+          if (!isOpen) {
+            event.preventDefault();
+            handleToggle();
+          }
+          break;
+        default:
+          break;
+      }
+    };
+
     const onSelect = useCallback(
       (val: string, label: string) => {
         handleItemClick({ value: val, label });
@@ -183,7 +214,17 @@ export const Select: SelectComponent = memo(
             aria-label={ariaLabel}
             aria-describedby={ariaDescribedBy}
             aria-invalid={invalid}
-            style={{ display: 'none' }}
+            style={{
+              position: 'absolute',
+              width: '1px',
+              height: '1px',
+              padding: '0',
+              margin: '-1px',
+              overflow: 'hidden',
+              clip: 'rect(0, 0, 0, 0)',
+              whiteSpace: 'nowrap',
+              border: '0',
+            }}
           >
             {placeholder && (
               <option value="" disabled>
@@ -198,7 +239,17 @@ export const Select: SelectComponent = memo(
           </select>
 
           {/* Custom Select UI */}
-          <div className={SELECT.CLASSES.SELECTED} onClick={handleToggle} aria-disabled={disabled}>
+          <div
+            className={SELECT.CLASSES.SELECTED}
+            onClick={handleToggle}
+            onKeyDown={handleKeyDown}
+            aria-disabled={disabled}
+            tabIndex={disabled ? -1 : 0}
+            role="combobox"
+            aria-haspopup="listbox"
+            aria-expanded={isOpen}
+            aria-controls={id ? `${id}-listbox` : undefined}
+          >
             {selectedLabel}
           </div>
 
@@ -206,7 +257,12 @@ export const Select: SelectComponent = memo(
 
           <div className={SELECT.CLASSES.SELECT_BODY} ref={bodyRef} style={{ height: 0 }}>
             <div className={SELECT.CLASSES.SELECT_PANEL} ref={panelRef}>
-              <ul className={SELECT.CLASSES.SELECT_ITEMS}>
+              <ul
+                className={SELECT.CLASSES.SELECT_ITEMS}
+                role="listbox"
+                id={id ? `${id}-listbox` : undefined}
+                aria-labelledby={id}
+              >
                 {hasOptionsProp ? (
                   options.map((option, index) => (
                     <li
@@ -214,6 +270,9 @@ export const Select: SelectComponent = memo(
                       className={SELECT.CLASSES.SELECT_ITEM}
                       data-value={option.value}
                       onClick={() => !option.disabled && handleItemClick(option)}
+                      role="option"
+                      aria-selected={value === option.value}
+                      aria-disabled={option.disabled}
                     >
                       <label htmlFor={`SelectItem${index}`} className="c-checkbox">
                         <input
