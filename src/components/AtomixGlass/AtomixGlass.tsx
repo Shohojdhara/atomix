@@ -112,6 +112,13 @@ export function AtomixGlass({
   debugOverLight = false,
   height,
   width,
+  withTimeAnimation = false,
+  animationSpeed = 1.0,
+  withMultiLayerDistortion = false,
+  distortionOctaves = 3,
+  distortionLacunarity = 2.0,
+  distortionGain = 0.5,
+  distortionQuality = 'medium',
   ...rest
 }: AtomixGlassProps) {
   const glassRef = useRef<HTMLDivElement>(null);
@@ -141,6 +148,8 @@ export function AtomixGlass({
     globalMousePosition,
     mouseOffset,
     transformStyle,
+    getShaderTime,
+    applyTimeBasedDistortion,
     handleMouseEnter,
     handleMouseLeave,
     handleMouseDown,
@@ -168,6 +177,14 @@ export function AtomixGlass({
     padding,
     style,
     isFixedOrSticky,
+    // Phase 1: Animation System props
+    withTimeAnimation,
+    animationSpeed,
+    withMultiLayerDistortion,
+    distortionOctaves,
+    distortionLacunarity,
+    distortionGain,
+    distortionQuality,
   });
 
   // ============================================================================
@@ -536,6 +553,15 @@ export function AtomixGlass({
         effectiveReducedMotion={effectiveReducedMotion}
         shaderVariant={shaderVariant}
         withLiquidBlur={withLiquidBlur}
+        // Phase 1: Animation System props
+        shaderTime={getShaderTime()}
+        withTimeAnimation={withTimeAnimation}
+        animationSpeed={animationSpeed}
+        withMultiLayerDistortion={withMultiLayerDistortion}
+        distortionOctaves={distortionOctaves}
+        distortionLacunarity={distortionLacunarity}
+        distortionGain={distortionGain}
+        distortionQuality={distortionQuality}
       >
         {children}
       </AtomixGlassContainer>

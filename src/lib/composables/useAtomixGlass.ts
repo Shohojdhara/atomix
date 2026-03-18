@@ -165,6 +165,14 @@ interface UseAtomixGlassOptions extends Omit<AtomixGlassProps, 'children'> {
   noiseAmplitude?: number;
   noiseFrequency?: number;
   displacementStrength?: number;
+  // Phase 1: Animation props (from AtomixGlassProps)
+  withTimeAnimation?: boolean;
+  animationSpeed?: number;
+  withMultiLayerDistortion?: boolean;
+  distortionOctaves?: number;
+  distortionLacunarity?: number;
+  distortionGain?: number;
+  distortionQuality?: 'low' | 'medium' | 'high' | 'ultra';
 }
 
 interface UseAtomixGlassReturn {
@@ -195,6 +203,10 @@ interface UseAtomixGlassReturn {
 
   // Transform calculations
   transformStyle: string;
+
+  // Phase 1: Animation System - Shader time control
+  getShaderTime: () => number;
+  applyTimeBasedDistortion: (uv: { x: number; y: number }) => { x: number; y: number };
 
   // Event handlers
   handleMouseEnter: () => void;
@@ -1043,6 +1055,8 @@ export function useAtomixGlass({
     mouseOffset,         // This is now static (refs or props) unless prop changes
     overLightConfig,
     transformStyle,
+    getShaderTime,
+    applyTimeBasedDistortion,
     handleMouseEnter,
     handleMouseLeave,
     handleMouseDown,

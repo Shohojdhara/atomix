@@ -951,3 +951,6 @@ export class ShaderDisplacementGenerator {
     return this.canvasDPI;
   }
 }
+
+// Re-export animation system functions for convenience
+export { createFBMEngine, liquidGlassWithTime } from './animation-system';

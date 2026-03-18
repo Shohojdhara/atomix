@@ -92,6 +92,16 @@ interface AtomixGlassContainerProps {
   shaderVariant?: FragmentShaderType;
   withLiquidBlur?: boolean;
 
+  // Phase 1: Animation System props
+  shaderTime?: number;
+  withTimeAnimation?: boolean;
+  animationSpeed?: number;
+  withMultiLayerDistortion?: boolean;
+  distortionOctaves?: number;
+  distortionLacunarity?: number;
+  distortionGain?: number;
+  distortionQuality?: 'low' | 'medium' | 'high' | 'ultra';
+
   contentRef?: React.RefObject<HTMLDivElement>;
   children?: React.ReactNode;
 }
@@ -128,6 +138,16 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       shaderVariant = 'liquidGlass',
       withLiquidBlur = false,
 
+      // Phase 1: Animation System props
+      shaderTime,
+      withTimeAnimation = false,
+      animationSpeed = 1.0,
+      withMultiLayerDistortion = false,
+      distortionOctaves = 3,
+      distortionLacunarity = 2.0,
+      distortionGain = 0.5,
+      distortionQuality = 'medium',
+
       contentRef,
     },
     ref
@@ -143,20 +163,27 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     const shaderUtilsRef = useRef<{
       ShaderDisplacementGenerator: any;
       fragmentShaders: any;
+      createFBMEngine: any;
+      liquidGlassWithTime: any;
     } | null>(null);
 
     // Use shared module-level cache (no per-instance cache needed)
     const shaderDebounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    
+    // Phase 1: Animation frame ref for continuous shader updates
+    const animationFrameRef = useRef<number | null>(null);
 
     // Lazy load shader utilities only when shader mode is needed
     useEffect(() => {
       if (mode === 'shader') {
-        // Dynamic import shader utilities
+        // Dynamic import shader utilities with animation support
         import('./shader-utils')
           .then(shaderUtils => {
             shaderUtilsRef.current = {
               ShaderDisplacementGenerator: shaderUtils.ShaderDisplacementGenerator,
               fragmentShaders: shaderUtils.fragmentShaders,
+              createFBMEngine: shaderUtils.createFBMEngine,
+              liquidGlassWithTime: shaderUtils.liquidGlassWithTime,
             };
           })
           .catch(error => {
@@ -247,6 +274,124 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         }
       };
     }, [mode, glassSize, shaderVariant]);
+
+    // Phase 1: Time-Based Animation Loop - Continuous shader regeneration
+    useEffect(() => {
+      // Only run animations in shader mode with time animation enabled
+      if (
+        mode !== 'shader' ||
+        !withTimeAnimation ||
+        effectiveReducedMotion ||
+        effectiveWithoutEffects
+      ) {
+        // Cancel any existing animation frame
+        if (animationFrameRef.current !== null) {
+          cancelAnimationFrame(animationFrameRef.current);
+          animationFrameRef.current = null;
+        }
+        return;
+      }
+
+      const startTime = performance.now();
+      
+      const animate = (currentTime: number) => {
+        const elapsedTime = (currentTime - startTime) / 1000; // Convert to seconds
+        const adjustedTime = elapsedTime * (animationSpeed || 1.0);
+
+        // Build FBM config from props
+        const fbmConfig = {
+          octaves: distortionOctaves || ATOMIX_GLASS.DEFAULTS.DISTORTION_OCTAVES,
+          lacunarity: distortionLacunarity || ATOMIX_GLASS.DEFAULTS.DISTORTION_LACUNARITY,
+          gain: distortionGain || ATOMIX_GLASS.DEFAULTS.DISTORTION_GAIN,
+          amplitude: displacementScale || ATOMIX_GLASS.DEFAULTS.DISPLACEMENT_SCALE,
+          frequency: 1.0,
+        };
+
+        // Generate time-varying displacement using FBM
+        if (shaderUtilsRef.current && shaderGeneratorRef.current && glassSize) {
+          try {
+            const { createFBMEngine, liquidGlassWithTime } = shaderUtilsRef.current;
+            const fbmEngine = createFBMEngine(fbmConfig);
+            
+            // Update shader with time-based distortion
+            // This creates a new displacement map each frame
+            const w = glassSize.width;
+            const h = glassSize.height;
+            
+            // For performance, we'll update at a lower framerate for complex animations
+            const targetFps = distortionQuality === 'ultra' ? 60 : 
+                             distortionQuality === 'high' ? 30 :
+                             distortionQuality === 'medium' ? 24 : 20;
+            const frameInterval = 1000 / targetFps;
+            
+            let lastUpdate = 0;
+            if (currentTime - lastUpdate >= frameInterval) {
+              lastUpdate = currentTime;
+              
+              // Create animated displacement map
+              const canvas = document.createElement('canvas');
+              canvas.width = w;
+              canvas.height = h;
+              const ctx = canvas.getContext('2d');
+              
+              if (ctx) {
+                const imageData = ctx.createImageData(w, h);
+                const data = imageData.data;
+                
+                // Generate FBM-based displacement for each pixel
+                for (let y = 0; y < h; y++) {
+                  for (let x = 0; x < w; x++) {
+                    const uv = { x: x / w, y: y / h };
+                    const distorted = liquidGlassWithTime(uv, adjustedTime, fbmConfig);
+                    
+                    const index = (y * w + x) * 4;
+                    // Encode displacement in RGB channels
+                    data[index] = Math.floor(distorted.x * 255);     // R
+                    data[index + 1] = Math.floor(distorted.y * 255); // G
+                    data[index + 2] = 128;                           // B (neutral)
+                    data[index + 3] = 255;                           // A
+                  }
+                }
+                
+                ctx.putImageData(imageData, 0, 0);
+                const animatedShaderUrl = canvas.toDataURL();
+                setShaderMapUrl(animatedShaderUrl);
+              }
+            }
+            
+            // Continue animation loop
+            animationFrameRef.current = requestAnimationFrame(animate);
+          } catch (error) {
+            console.warn('AtomixGlassContainer: Error in animation loop', error);
+          }
+        } else {
+          animationFrameRef.current = requestAnimationFrame(animate);
+        }
+      };
+
+      // Start animation loop
+      animationFrameRef.current = requestAnimationFrame(animate);
+
+      // Cleanup animation on unmount or dependency change
+      return () => {
+        if (animationFrameRef.current !== null) {
+          cancelAnimationFrame(animationFrameRef.current);
+          animationFrameRef.current = null;
+        }
+      };
+    }, [
+      mode,
+      withTimeAnimation,
+      animationSpeed,
+      displacementScale,
+      distortionOctaves,
+      distortionLacunarity,
+      distortionGain,
+      distortionQuality,
+      effectiveReducedMotion,
+      effectiveWithoutEffects,
+      glassSize,
+    ]);
 
     // Removed forced reflow to avoid layout thrash and potential feedback sizing loops
 
