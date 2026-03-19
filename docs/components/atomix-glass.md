@@ -14,12 +14,12 @@ import { AtomixGlass } from 'atomix';
 function MyComponent() {
   return (
     <AtomixGlass
-      displacementScale={20}
-      blurAmount={1}
+      displacementScale={70}
+      blurAmount={0}
       saturation={140}
-      aberrationIntensity={2.5}
-      cornerRadius={16}
-      enableBorderEffect={true}
+      aberrationIntensity={2}
+      borderRadius={16}
+      withBorder={true}
       overLight="auto"
     >
       <div style={{ padding: '20px' }}>
@@ -35,29 +35,38 @@ function MyComponent() {
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | ReactNode | Required | Content to display inside the glass effect |
-| `displacementScale` | number | 20 | Displacement scale for the glass effect |
-| `blurAmount` | number | 1 | Blur amount for the backdrop |
+| `displacementScale` | number | 70 | Displacement scale for the glass effect |
+| `blurAmount` | number | 0 | Blur amount for the backdrop |
 | `saturation` | number | 140 | Saturation percentage for the backdrop |
-| `aberrationIntensity` | number | 2.5 | Chromatic aberration intensity |
-| `elasticity` | number | 0.05 | Elasticity factor for mouse interactions |
-| `cornerRadius` | number | undefined | Corner radius in pixels (auto-extracted from children if not provided) |
+| `aberrationIntensity` | number | 2 | Chromatic aberration intensity |
+| `elasticity` | number | 0.15 | Elasticity factor for mouse interactions |
+| `borderRadius` | number | undefined | Corner radius in pixels (auto-extracted from children if not provided) |
 | `globalMousePosition` | { x: number; y: number } | undefined | External global mouse position |
 | `mouseOffset` | { x: number; y: number } | undefined | External mouse offset |
 | `mouseContainer` | React.RefObject<HTMLElement \| null> | null | Reference to mouse container element |
-| `padding` | string | '0 0' | Padding for the glass container |
+| `padding` | string | '0' | Padding for the glass container |
+| `height` | string \| number | undefined | Height of the glass component |
+| `width` | string \| number | undefined | Width of the glass component |
 | `style` | React.CSSProperties | {} | CSS style object |
 | `overLight` | boolean \| 'auto' \| OverLightObjectConfig | false | Whether the glass is over a light background. Can be boolean, 'auto' for detection, or object config |
 | `mode` | 'standard' \| 'polar' \| 'prominent' \| 'shader' | 'standard' | Glass effect mode |
 | `onClick` | () => void | undefined | Optional click handler (makes component interactive) |
-| `shaderVariant` | 'liquidGlass' \| 'premiumGlass' | 'liquidGlass' | Shader variant for shader mode |
-| `enableBorderEffect` | boolean | true | Show border effects (outer border, overlay) |
-| `enableLiquidBlur` | boolean | false | Enable liquid blur effects |
-| `enableOverLightLayers` | boolean | true | Enable over-light background layers |
+| `shaderVariant` | 'liquidGlass' \| 'premiumGlass' \| 'appleFluid' \| 'liquidMetal' \| 'plasma' \| 'waves' \| 'noise' | 'liquidGlass' | Shader variant for shader mode |
+| `withBorder` | boolean | true | Show border effects |
+| `withLiquidBlur` | boolean | false | Enable liquid blur effects |
+| `withOverLightLayers` | boolean | true | Enable over-light background layers |
+| `withoutEffects` | boolean | false | Disable all visual effects |
 | `reducedMotion` | boolean | false | Force reduced motion (overrides system preference) |
 | `highContrast` | boolean | false | Force high contrast mode (overrides system preference) |
-| `disableEffects` | boolean | false | Disable all visual effects |
-| `enablePerformanceMonitoring` | boolean | false | Enable performance monitoring (development only) |
-| `debugCornerRadius` | boolean | false | Debug mode for corner radius extraction |
+| `withTimeAnimation` | boolean | true | Enable time-based animation (Phase 1) |
+| `animationSpeed` | number | 1.0 | Animation speed multiplier (Phase 1) |
+| `withMultiLayerDistortion` | boolean | false | Enable multi-layer distortion using FBM (Phase 1) |
+| `distortionOctaves` | number | 5 | Number of octaves for FBM distortion (Phase 1) |
+| `distortionLacunarity` | number | 2.0 | Lacunarity for FBM distortion (Phase 1) |
+| `distortionGain` | number | 0.5 | Gain for FBM distortion (Phase 1) |
+| `distortionQuality` | 'low' \| 'medium' \| 'high' \| 'ultra' | 'high' | Quality preset for FBM distortion (Phase 1) |
+| `debugPerformance` | boolean | false | Enable performance monitoring dashboard (development only) |
+| `debugBorderRadius` | boolean | false | Debug mode for corner radius extraction |
 | `debugOverLight` | boolean | false | Debug mode for overLight detection |
 | `className` | string | '' | Additional CSS class names |
 | `aria-label` | string | undefined | ARIA label for accessibility |
@@ -106,12 +115,12 @@ When using AtomixGlass for interactive elements:
 
 ```jsx
 <AtomixGlass
-  displacementScale={20}
-  blurAmount={1}
+  displacementScale={70}
+  blurAmount={0}
   saturation={140}
-  aberrationIntensity={2.5}
-  cornerRadius={20}
-  enableBorderEffect={true}
+  aberrationIntensity={2}
+  borderRadius={20}
+  withBorder={true}
   overLight="auto"
   onClick={() => console.log('Card clicked')}
   aria-label="Glass card"
@@ -128,12 +137,12 @@ When using AtomixGlass for interactive elements:
 
 ```jsx
 <AtomixGlass
-  displacementScale={15}
-  blurAmount={1}
+  displacementScale={70}
+  blurAmount={0}
   saturation={140}
-  aberrationIntensity={2.5}
-  cornerRadius={15}
-  enableBorderEffect={true}
+  aberrationIntensity={2}
+  borderRadius={15}
+  withBorder={true}
   style={{ maxWidth: '500px', margin: '0 auto' }}
   overLight={false}
 >
@@ -152,14 +161,14 @@ When using AtomixGlass for interactive elements:
 
 ```jsx
 <AtomixGlass
-  displacementScale={25}
-  blurAmount={1}
+  displacementScale={70}
+  blurAmount={0}
   saturation={140}
-  aberrationIntensity={2.5}
-  cornerRadius={30}
-  enableBorderEffect={true}
+  aberrationIntensity={2}
+  borderRadius={30}
+  withBorder={true}
   overLight="auto"
-  enableLiquidBlur={true}
+  withLiquidBlur={true}
 >
   <div style={{ padding: '40px', textAlign: 'center' }}>
     <h1>Welcome to Our Site</h1>

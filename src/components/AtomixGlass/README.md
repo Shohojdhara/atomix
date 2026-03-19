@@ -40,25 +40,38 @@ function MyComponent() {
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `children` | ReactNode | - | Content to be rendered inside the glass container |
-| `displacementScale` | number | 20 | Controls the intensity of the displacement effect |
-| `blurAmount` | number | 10 | Controls the intensity of the blur effect |
-| `saturation` | number | 150 | Controls the color saturation (100 is normal) |
-| `aberrationIntensity` | number | 1.5 | Controls the chromatic aberration effect intensity |
-| `elasticity` | number | 0.5 | Controls how responsive the glass is to mouse movement |
+| `displacementScale` | number | 70 | Controls the intensity of the displacement effect |
+| `blurAmount` | number | 0 | Controls the intensity of the blur effect |
+| `saturation` | number | 140 | Controls the color saturation (100 is normal) |
+| `aberrationIntensity` | number | 2 | Controls the chromatic aberration effect intensity |
+| `elasticity` | number | 0.15 | Controls how responsive the glass is to mouse movement |
 | `borderRadius` | number | 15 | Border radius of the glass container |
 | `globalMousePos` | boolean | false | Whether to use global mouse position instead of local |
 | `mouseOffset` | { x: number, y: number } | { x: 0, y: 0 } | Offset for mouse position calculation |
 | `mouseContainer` | RefObject<HTMLElement> | null | Container to use for mouse position calculation |
-| `padding` | number | 0 | Additional padding around the content |
+| `padding` | string | '0' | Additional padding around the content |
+| `height` | string \| number | undefined | Height of the glass component |
+| `width` | string \| number | undefined | Width of the glass component |
 | `style` | CSSProperties | {} | Additional CSS styles |
 | `overLight` | boolean \| 'auto' \| OverLightObjectConfig | 'auto' | OverLight configuration. See [OverLight Configuration](#overlight-configuration) section for details |
 | `withOverLightLayers` | boolean | true | Whether to render additional overlay layers for overLight mode |
 | `debugOverLight` | boolean | false | Enable debug logging for overLight detection and configuration |
 | `mode` | 'standard' \| 'polar' \| 'prominent' \| 'shader' | 'standard' | The glass effect mode |
 | `onClick` | function | undefined | Click handler |
-| `showBorderEffects` | boolean | true | Whether to show border effects |
-| `showHoverEffects` | boolean | true | Whether to show hover effects |
-| `active` | boolean | false | Whether the glass is in active state |
+| `withBorder` | boolean | true | Whether to show border effects |
+| `withLiquidBlur` | boolean | false | Whether to enable liquid blur effects |
+| `withoutEffects` | boolean | false | Whether to disable all visual effects |
+| `reducedMotion` | boolean | false | Force reduced motion preference |
+| `highContrast` | boolean | false | Force high contrast mode |
+| `withTimeAnimation` | boolean | true | Enable time-based animation (Phase 1) |
+| `animationSpeed` | number | 1.0 | Animation speed multiplier (Phase 1) |
+| `withMultiLayerDistortion` | boolean | false | Enable multi-layer distortion using FBM (Phase 1) |
+| `distortionOctaves` | number | 5 | Number of octaves for FBM (Phase 1) |
+| `distortionLacunarity` | number | 2.0 | Lacunarity for FBM (Phase 1) |
+| `distortionGain` | number | 0.5 | Gain for FBM (Phase 1) |
+| `distortionQuality` | 'low' \| 'medium' \| 'high' \| 'ultra' | 'high' | Quality preset for FBM (Phase 1) |
+| `debugPerformance` | boolean | false | Enable performance monitoring dashboard (development only) |
+| `debugBorderRadius` | boolean | false | Debug mode for corner radius extraction |
 
 ## Glass Effect Modes
 
@@ -80,8 +93,10 @@ The AtomixGlass component uses several advanced CSS features and SVG filters tha
 
 1. Use sparingly on pages with many instances
 2. Consider disabling effects on lower-end devices
-3. Use the `showBorderEffects` and `showHoverEffects` props to disable non-essential effects when needed
+3. Use the `withoutEffects` prop to disable non-essential effects when needed
 4. Avoid using very high values for `displacementScale` and `blurAmount`
+5. Use `reducedMotion` for users with vestibular disorders
+6. Consider using lower `distortionQuality` presets on mobile devices
 
 ## Accessibility
 

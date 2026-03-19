@@ -23,6 +23,8 @@ import { getDevicePreset, MOBILE_OPTIMIZED_BREAKPOINTS } from '../../lib/composa
  * - Focus ring support for keyboard navigation
  * - Responsive breakpoints for mobile optimization
  * - Enhanced ARIA attributes for screen readers
+ * - Time-based animation system with FBM distortion
+ * - Device preset optimization for performance/quality balance
  *
  * Design System Compliance:
  * - Uses design tokens for opacity, spacing, and colors
@@ -79,6 +81,12 @@ import { getDevicePreset, MOBILE_OPTIMIZED_BREAKPOINTS } from '../../lib/composa
  * <AtomixGlass overLight="auto" debugOverLight={true}>
  *   <div>Content with debug logging enabled</div>
  * </AtomixGlass>
+ *
+ * @example
+ * // Performance-optimized for mobile devices
+ * <AtomixGlass devicePreset="performance" disableResponsiveBreakpoints={false}>
+ *   <div>Mobile-optimized glass effect</div>
+ * </AtomixGlass>
  */
 export function AtomixGlass({
   children,
@@ -119,6 +127,8 @@ export function AtomixGlass({
   distortionLacunarity = 2.0,
   distortionGain = 0.5,
   distortionQuality = 'medium',
+  devicePreset = 'balanced',
+  disableResponsiveBreakpoints = false,
   ...rest
 }: AtomixGlassProps) {
   const glassRef = useRef<HTMLDivElement>(null);
@@ -193,10 +203,8 @@ export function AtomixGlass({
 
   // Get device preset parameters - memoized to prevent recalculation
   const devicePresetParams = useMemo(() => {
-    // In a real implementation, this would come from the devicePreset prop
-    const presetName = 'balanced';
-    return getDevicePreset(presetName);
-  }, []); // Empty deps - only calculated once on mount
+    return getDevicePreset(devicePreset);
+  }, [devicePreset]); // Re-calculate only when devicePreset changes
 
   // Responsive breakpoint system - automatically adjusts parameters based on viewport
   const { 
@@ -216,7 +224,7 @@ export function AtomixGlass({
       chromaticIntensity: aberrationIntensity || ATOMIX_GLASS.DEFAULTS.ABERRATION_INTENSITY,
     },
     breakpoints: MOBILE_OPTIMIZED_BREAKPOINTS,
-    enabled: typeof window !== 'undefined', // Only enable on client-side
+    enabled: !disableResponsiveBreakpoints && typeof window !== 'undefined', // Enable unless disabled
     debug: false
   });
 

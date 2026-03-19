@@ -832,6 +832,12 @@ export function useAtomixGlass({
     const tick = () => {
       if (!lerpActiveRef.current) return;
 
+      // Add ref validity check to prevent memory leaks
+      if (!glassRef.current || !wrapperRef?.current) {
+        lerpActiveRef.current = false;
+        return;
+      }
+
       const cur = internalMouseOffsetRef.current;
       const tgt = targetMouseOffsetRef.current;
 
@@ -857,7 +863,7 @@ export function useAtomixGlass({
 
       // Imperative style update with the smoothed values
       updateAtomixGlassStyles(
-        wrapperRef?.current || null,
+        wrapperRef.current,
         glassRef.current,
         {
           mouseOffset: internalMouseOffsetRef.current,

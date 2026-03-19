@@ -40,7 +40,7 @@ const smoothStep = (a: number, b: number, t: number): number => {
     return 0;
   }
 
-  const clamped = Math.max(0, Math.min(1, (t - a) / (b - a)));
+  const clamped = Math.max(0, Math.min(1, (t - a) / (b - a));
   return clamped * clamped * (3 - 2 * clamped);
 };
 

@@ -39,6 +39,16 @@ export const THEME_NAMING = {
   SPINNER_ELEMENT: 'spinner',
 };
 
+export const TYPEDBUTTON = {
+  BASE_CLASS: 'c-typedbutton',
+  VARIANT_PREFIX: 'c-typedbutton--',
+  CLASSES: {
+    BASE: 'c-typedbutton',
+    DISABLED: 'c-typedbutton--disabled',
+    GLASS: 'c-typedbutton--glass',
+  },
+};
+
 export const BUTTON = {
   BASE_CLASS: 'c-btn',
   ICON_CLASS: 'c-btn__icon',

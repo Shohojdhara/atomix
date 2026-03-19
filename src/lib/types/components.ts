@@ -294,6 +294,32 @@ export interface AtomixGlassProps extends React.HTMLAttributes<HTMLDivElement> {
    * </AtomixGlass>
    */
   debugOverLight?: boolean;
+
+  /**
+   * Phase 3: Responsive & Performance Optimization props
+   */
+  
+  /**
+   * Device preset for responsive optimization
+   * 
+   * Pre-configured presets that adjust glass parameters based on device capabilities
+   * - 'performance': Optimized for low-end devices (reduced octaves, lower quality)
+   * - 'balanced': Balanced quality and performance (default)
+   * - 'quality': Maximum visual quality (high octaves, ultra quality)
+   * 
+   * @default 'balanced'
+   */
+  devicePreset?: 'performance' | 'balanced' | 'quality';
+  
+  /**
+   * Disable responsive breakpoint system
+   * 
+   * When true, disables automatic parameter adjustment based on viewport size
+   * Use this when you want full manual control over all parameters
+   * 
+   * @default false
+   */
+  disableResponsiveBreakpoints?: boolean;
 }
 
 /**
