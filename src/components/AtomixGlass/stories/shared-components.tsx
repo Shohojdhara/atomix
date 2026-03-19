@@ -10,7 +10,8 @@
  */
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import type { RefObject } from 'react';
+import type { RefObject, ErrorInfo } from 'react';
+import type { StoryErrorBoundaryProps } from './types';
 
 /**
  * Enhanced BackgroundWrapper Component
@@ -204,3 +205,86 @@ export const backgroundImages = [
   'https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2670',
   'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 ];
+
+/**
+ * StoryErrorBoundary Component
+ *
+ * Error boundary wrapper for stories to gracefully handle rendering errors.
+ * Provides a fallback UI and error logging for better developer experience.
+ */
+export class StoryErrorBoundary extends React.Component<
+  StoryErrorBoundaryProps,
+  { hasError: boolean; error?: Error }
+> {
+  constructor(props: StoryErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Story rendering error:', error, errorInfo);
+    if (this.props.onError) {
+      this.props.onError(error, errorInfo);
+    }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
+      return (
+        <div
+          className="u-flex u-items-center u-justify-center u-p-5"
+          style={{
+            minHeight: '400px',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            borderRadius: '12px',
+            border: '2px solid rgba(239, 68, 68, 0.3)',
+          }}
+        >
+          <div className="u-text-center">
+            <h3
+              className="u-mb-2 u-text-xl u-font-bold"
+              style={{ color: '#dc2626' }}
+            >
+              Story Rendering Error
+            </h3>
+            <p className="u-mb-4 u-text-sm" style={{ color: '#7f1d1d' }}>
+              {this.state.error?.message || 'An unexpected error occurred'}
+            </p>
+            <button
+              onClick={() => this.setState({ hasError: false })}
+              className="u-px-4 u-py-2 u-bg-red-600 u-text-white u-rounded u-cursor-pointer u-border-none u-transition-color u-hover-bg-red-700"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+/**
+ * FallbackBackground Component
+ *
+ * Provides a gradient fallback when background images fail to load.
+ * Used as a safety net for broken external image URLs.
+ */
+export const FallbackBackground: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <div
+    className={`u-absolute u-inset-0 ${className}`}
+    style={{
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      zIndex: -1,
+    }}
+  />
+);

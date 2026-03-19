@@ -289,7 +289,31 @@ const BackgroundWrapper = ({
 export const Playground: Story = {
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [settings, setSettings] = useState({
+    const [settings, setSettings] = useState<{
+      displacementScale: number;
+      blurAmount: number;
+      saturation: number;
+      aberrationIntensity: number;
+      elasticity: number;
+      borderRadius: number;
+      overLight: boolean;
+      reducedMotion: boolean;
+      highContrast: boolean;
+      withoutEffects: boolean;
+      withLiquidBlur: boolean;
+      withBorder: boolean;
+      withTimeAnimation: boolean;
+      animationSpeed: number;
+      withMultiLayerDistortion: boolean;
+      distortionOctaves: number;
+      distortionLacunarity: number;
+      distortionGain: number;
+      distortionQuality: 'low' | 'medium' | 'high' | 'ultra';
+      devicePreset: 'performance' | 'balanced' | 'quality';
+      disableResponsiveBreakpoints: boolean;
+      debugPerformance: boolean;
+      debugOverLight: boolean;
+    }>({
       displacementScale: 40,
       blurAmount: 1,
       saturation: 140,
@@ -308,8 +332,8 @@ export const Playground: Story = {
       distortionOctaves: 3,
       distortionLacunarity: 2.0,
       distortionGain: 0.5,
-      distortionQuality: 'medium' as const,
-      devicePreset: 'balanced' as const,
+      distortionQuality: 'medium',
+      devicePreset: 'balanced',
       disableResponsiveBreakpoints: false,
       debugPerformance: false,
       debugOverLight: false,
@@ -336,7 +360,7 @@ export const Playground: Story = {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [copiedCode, setCopiedCode] = useState(false);
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [controlTab, setControlTab] = useState<'optics' | 'physics' | 'flags'>('optics');
+    const [controlTab, setControlTab] = useState<'optics' | 'animation' | 'responsive' | 'flags'>('optics');
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const backgroundsArrayRef = useRef<typeof backgrounds | null>(null);
 
@@ -357,6 +381,17 @@ export const Playground: Story = {
           withoutEffects: false,
           withLiquidBlur: false,
           withBorder: true,
+          withTimeAnimation: false,
+          animationSpeed: 1.0,
+          withMultiLayerDistortion: false,
+          distortionOctaves: 3,
+          distortionLacunarity: 2.0,
+          distortionGain: 0.5,
+          distortionQuality: 'medium' as const,
+          devicePreset: 'balanced' as const,
+          disableResponsiveBreakpoints: false,
+          debugPerformance: false,
+          debugOverLight: false,
         },
         mode: 'standard' as const,
         shader: 'liquidGlass' as const,
@@ -377,6 +412,17 @@ export const Playground: Story = {
           withoutEffects: false,
           withLiquidBlur: false,
           withBorder: true,
+          withTimeAnimation: true,
+          animationSpeed: 1.0,
+          withMultiLayerDistortion: false,
+          distortionOctaves: 3,
+          distortionLacunarity: 2.0,
+          distortionGain: 0.5,
+          distortionQuality: 'medium' as const,
+          devicePreset: 'balanced' as const,
+          disableResponsiveBreakpoints: false,
+          debugPerformance: false,
+          debugOverLight: false,
         },
         mode: 'standard' as const,
         shader: 'liquidGlass' as const,
@@ -397,6 +443,17 @@ export const Playground: Story = {
           withoutEffects: false,
           withLiquidBlur: true,
           withBorder: true,
+          withTimeAnimation: true,
+          animationSpeed: 1.2,
+          withMultiLayerDistortion: true,
+          distortionOctaves: 5,
+          distortionLacunarity: 2.5,
+          distortionGain: 0.6,
+          distortionQuality: 'high' as const,
+          devicePreset: 'quality' as const,
+          disableResponsiveBreakpoints: false,
+          debugPerformance: false,
+          debugOverLight: false,
         },
         mode: 'prominent' as const,
         shader: 'plasma' as const,
@@ -417,6 +474,17 @@ export const Playground: Story = {
           withoutEffects: false,
           withLiquidBlur: true,
           withBorder: true,
+          withTimeAnimation: true,
+          animationSpeed: 1.5,
+          withMultiLayerDistortion: true,
+          distortionOctaves: 6,
+          distortionLacunarity: 3.0,
+          distortionGain: 0.7,
+          distortionQuality: 'ultra' as const,
+          devicePreset: 'quality' as const,
+          disableResponsiveBreakpoints: false,
+          debugPerformance: false,
+          debugOverLight: false,
         },
         mode: 'shader' as const,
         shader: 'waves' as const,
@@ -871,7 +939,7 @@ export const Playground: Story = {
                       border: '1px solid rgba(255,255,255,0.1)',
                     }}
                   >
-                    {(['optics', 'physics', 'flags'] as const).map(tab => (
+                    {(['optics', 'animation', 'responsive', 'flags'] as const).map(tab => (
                       <button
                         key={tab}
                         onClick={() => setControlTab(tab)}
@@ -989,7 +1057,7 @@ export const Playground: Story = {
                     )}
 
                     {/* === CONTROLS: ANIMATION (PHASE 1) === */}
-                    {controlTab === 'physics' && (
+                    {controlTab === 'animation' && (
                       <>
                         <div className="u-mb-4 u-animation-fade-in">
                           <div className="u-flex u-items-center u-gap-2 u-mb-3">
@@ -1359,7 +1427,169 @@ export const Playground: Story = {
                         </div>
                       </>
                     )}
-
+                    
+                    {/* === CONTROLS: RESPONSIVE & PERFORMANCE === */}
+                    {controlTab === 'responsive' && (
+                      <div className="u-mb-4 u-animation-fade-in">
+                        <div className="u-flex u-items-center u-gap-2 u-mb-3">
+                          <div
+                            style={{
+                              width: '3px',
+                              height: '14px',
+                              background: 'linear-gradient(180deg, #10b981 0%, #3b82f6 100%)',
+                              borderRadius: '2px',
+                              flexShrink: 0,
+                            }}
+                          />
+                          <span
+                            className="u-text-xs u-font-bold u-opacity-60"
+                            style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
+                          >
+                            Responsive & Performance
+                          </span>
+                        </div>
+                    
+                        {/* Device Preset Selector */}
+                        <div className="u-mb-4">
+                          <label className="u-block u-mb-2 u-text-white u-font-semibold u-text-xs">
+                            Device Preset
+                          </label>
+                          <div
+                            className="u-grid u-gap-2"
+                            style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}
+                          >
+                            {(['performance', 'balanced', 'quality'] as const).map(preset => (
+                              <button
+                                key={preset}
+                                onClick={() => setSettings(prev => ({ ...prev, devicePreset: preset }))}
+                                className="u-py-2 u-rounded u-text-center u-text-xs u-font-bold"
+                                style={{
+                                  background:
+                                    settings.devicePreset === preset
+                                      ? 'linear-gradient(135deg, rgba(16,185,129,0.3) 0%, rgba(59,130,246,0.2) 100%)'
+                                      : 'rgba(255,255,255,0.05)',
+                                  border:
+                                    settings.devicePreset === preset
+                                      ? '1px solid rgba(16,185,129,0.5)'
+                                      : '1px solid rgba(255,255,255,0.1)',
+                                  color: settings.devicePreset === preset ? '#10b981' : 'rgba(255,255,255,0.55)',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s',
+                                  outline: 'none',
+                                  textTransform: 'capitalize',
+                                  boxShadow:
+                                    settings.devicePreset === preset ? '0 2px 12px rgba(16,185,129,0.15)' : 'none',
+                                }}
+                              >
+                                {preset}
+                              </button>
+                            ))}
+                          </div>
+                          <p className="u-mt-2 u-text-xs u-opacity-60">
+                            {settings.devicePreset === 'performance' && '⚡ Optimized for low-end devices with reduced quality'}
+                            {settings.devicePreset === 'balanced' && '⚖️ Balanced quality and performance (recommended)'}
+                            {settings.devicePreset === 'quality' && '💎 Maximum visual quality for high-end devices'}
+                          </p>
+                        </div>
+                    
+                        {/* Disable Responsive Breakpoints Toggle */}
+                        <div className="u-mb-4">
+                          <button
+                            onClick={() => setSettings(prev => ({ ...prev, disableResponsiveBreakpoints: !prev.disableResponsiveBreakpoints }))}
+                            className="u-flex u-items-center u-gap-2 u-px-3 u-py-2 u-rounded u-text-start u-w-100"
+                            style={{
+                              background: settings.disableResponsiveBreakpoints
+                                ? 'rgba(239,68,68,0.15)'
+                                : 'rgba(255,255,255,0.04)',
+                              border: settings.disableResponsiveBreakpoints
+                                ? '1px solid rgba(239,68,68,0.45)'
+                                : '1px solid rgba(255,255,255,0.1)',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s',
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: '10px',
+                                height: '10px',
+                                borderRadius: '50%',
+                                background: settings.disableResponsiveBreakpoints ? '#ef4444' : 'rgba(255,255,255,0.2)',
+                                flexShrink: 0,
+                                boxShadow: settings.disableResponsiveBreakpoints ? '0 0 8px rgba(239,68,68,0.6)' : 'none',
+                              }}
+                            />
+                            <span
+                              className="u-text-xs u-font-medium"
+                              style={{ 
+                                color: settings.disableResponsiveBreakpoints ? '#ef4444' : 'rgba(255,255,255,0.6)',
+                                flex: 1 
+                              }}
+                            >
+                              Disable Responsive Breakpoints
+                            </span>
+                          </button>
+                          <p className="u-mt-1 u-text-xs u-opacity-50">
+                            When enabled, prevents automatic parameter adjustment based on viewport size
+                          </p>
+                        </div>
+                    
+                        {/* Debug Options */}
+                        <div className="u-mb-3">
+                          <label className="u-block u-mb-2 u-text-white u-font-semibold u-text-xs">
+                            🔍 Debug Options
+                          </label>
+                          <div className="u-grid u-gap-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
+                            {(
+                              [
+                                'debugPerformance',
+                                'debugOverLight',
+                              ] as const
+                            ).map(key => {
+                              const isOn = settings[key] as boolean;
+                              const label = key
+                                .replace(/([A-Z])/g, ' $1')
+                                .replace(/^./, s => s.toUpperCase());
+                              return (
+                                <button
+                                  key={key}
+                                  onClick={() => setSettings(prev => ({ ...prev, [key]: !isOn }))}
+                                  className="u-flex u-items-center u-gap-2 u-px-3 u-py-2 u-rounded u-text-start"
+                                  style={{
+                                    background: isOn
+                                      ? 'rgba(59,130,246,0.15)'
+                                      : 'rgba(255,255,255,0.04)',
+                                    border: isOn
+                                      ? '1px solid rgba(59,130,246,0.45)'
+                                      : '1px solid rgba(255,255,255,0.1)',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      width: '10px',
+                                      height: '10px',
+                                      borderRadius: '50%',
+                                      background: isOn ? '#3b82f6' : 'rgba(255,255,255,0.2)',
+                                      flexShrink: 0,
+                                      boxShadow: isOn ? '0 0 8px rgba(59,130,246,0.6)' : 'none',
+                                      transition: 'all 0.2s',
+                                    }}
+                                  />
+                                  <span
+                                    className="u-text-xs u-font-medium"
+                                    style={{ color: isOn ? '#3b82f6' : 'rgba(255,255,255,0.6)' }}
+                                  >
+                                    {label}
+                                  </span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
                     {/* === CONTROLS: ACCESSIBILITY FLAGS === */}
                     {controlTab === 'flags' && (
                       <div className="u-mb-4 u-animation-fade-in">

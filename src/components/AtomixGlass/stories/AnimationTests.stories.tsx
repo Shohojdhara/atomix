@@ -13,7 +13,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  tags: ['!autodocs'], // Exclude from production docs - test stories only
   argTypes: {
     withTimeAnimation: { control: 'boolean' },
     animationSpeed: { control: { type: 'range', min: 0.1, max: 5.0, step: 0.1 } },

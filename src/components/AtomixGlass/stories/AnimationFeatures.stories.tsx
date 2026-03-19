@@ -16,7 +16,7 @@ import { AtomixGlass } from '../AtomixGlass';
 import { BackgroundWrapper, backgroundImages } from './shared-components';
 
 const meta = {
-  title: 'Components/AtomixGlass/Phase 1 - Animation Features',
+  title: 'Components/AtomixGlass/Features/Animation Features',
   component: AtomixGlass,
   parameters: {
     layout: 'centered',
