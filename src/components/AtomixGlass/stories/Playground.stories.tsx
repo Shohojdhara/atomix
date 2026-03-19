@@ -302,6 +302,17 @@ export const Playground: Story = {
       withoutEffects: false,
       withLiquidBlur: false,
       withBorder: true,
+      withTimeAnimation: true,
+      animationSpeed: 1.0,
+      withMultiLayerDistortion: false,
+      distortionOctaves: 3,
+      distortionLacunarity: 2.0,
+      distortionGain: 0.5,
+      distortionQuality: 'medium' as const,
+      devicePreset: 'balanced' as const,
+      disableResponsiveBreakpoints: false,
+      debugPerformance: false,
+      debugOverLight: false,
     });
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -435,6 +446,15 @@ export const Playground: Story = {
   withoutEffects={${settings.withoutEffects}}
   withLiquidBlur={${settings.withLiquidBlur}}
   withBorder={${settings.withBorder}}
+  withTimeAnimation={${settings.withTimeAnimation}}
+  animationSpeed={${settings.animationSpeed}}
+  withMultiLayerDistortion={${settings.withMultiLayerDistortion}}
+  distortionOctaves={${settings.distortionOctaves}}
+  distortionLacunarity={${settings.distortionLacunarity}}
+  distortionGain={${settings.distortionGain}}
+  distortionQuality="${settings.distortionQuality}"
+  devicePreset="${settings.devicePreset}"
+  disableResponsiveBreakpoints={${settings.disableResponsiveBreakpoints}}
 >
   <div className="your-content">
     {/* Your content here */}
@@ -968,69 +988,179 @@ export const Playground: Story = {
                       </div>
                     )}
 
-                    {/* === CONTROLS: PHYSICS === */}
+                    {/* === CONTROLS: ANIMATION (PHASE 1) === */}
                     {controlTab === 'physics' && (
-                      <div className="u-mb-4 u-animation-fade-in">
-                        <div className="u-flex u-items-center u-gap-2 u-mb-3">
-                          <div
-                            style={{
-                              width: '3px',
-                              height: '14px',
-                              background: 'linear-gradient(180deg, #a78bfa 0%, #ec4899 100%)',
-                              borderRadius: '2px',
-                              flexShrink: 0,
-                            }}
-                          />
-                          <span
-                            className="u-text-xs u-font-bold u-opacity-60"
-                            style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
-                          >
-                            Physics
-                          </span>
+                      <>
+                        <div className="u-mb-4 u-animation-fade-in">
+                          <div className="u-flex u-items-center u-gap-2 u-mb-3">
+                            <div
+                              style={{
+                                width: '3px',
+                                height: '14px',
+                                background: 'linear-gradient(180deg, #a78bfa 0%, #ec4899 100%)',
+                                borderRadius: '2px',
+                                flexShrink: 0,
+                              }}
+                            />
+                            <span
+                              className="u-text-xs u-font-bold u-opacity-60"
+                              style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
+                            >
+                              Physics
+                            </span>
+                          </div>
+                          {(['elasticity', 'borderRadius'] as const).map(key => {
+                            const value = settings[key];
+                            const max = key === 'borderRadius' ? 100 : 1;
+                            const step = key === 'elasticity' ? 0.01 : 1;
+                            const label = key
+                              .replace(/([A-Z])/g, ' $1')
+                              .replace(/^./, s => s.toUpperCase());
+                            return (
+                              <div key={key} className="u-mb-4">
+                                <div className="u-flex u-justify-between u-items-baseline u-mb-1">
+                                  <label className="u-text-xs u-font-medium u-opacity-80">
+                                    {label}
+                                  </label>
+                                  <span
+                                    className="u-text-xs u-font-bold u-px-2 u-py-1 u-rounded"
+                                    style={{
+                                      background: 'rgba(167,139,250,0.12)',
+                                      color: '#a78bfa',
+                                      fontVariantNumeric: 'tabular-nums',
+                                      minWidth: '40px',
+                                      textAlign: 'center',
+                                    }}
+                                  >
+                                    {(value as number).toFixed(key === 'elasticity' ? 2 : 0)}
+                                  </span>
+                                </div>
+                                <div className="u-relative" style={{ height: '20px' }}>
+                                  <input
+                                    type="range"
+                                    min={0}
+                                    max={max}
+                                    step={step}
+                                    value={value as number}
+                                    onChange={e =>
+                                      setSettings(prev => ({
+                                        ...prev,
+                                        [key]: parseFloat(e.target.value),
+                                      }))
+                                    }
+                                    className="premium-slider u-absolute u-w-100 u-m-0"
+                                    style={{
+                                      height: '2px',
+                                      background: `linear-gradient(to right, #a78bfa ${((value as number) / max) * 100}%, rgba(255,255,255,0.15) ${((value as number) / max) * 100}%)`,
+                                      borderRadius: '2px',
+                                      outline: 'none',
+                                      appearance: 'none',
+                                      WebkitAppearance: 'none',
+                                      top: '50%',
+                                      transform: 'translateY(-50%)',
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
-                        {(['elasticity', 'borderRadius'] as const).map(key => {
-                          const value = settings[key];
-                          const max = key === 'borderRadius' ? 100 : 1;
-                          const step = key === 'elasticity' ? 0.01 : 1;
-                          const label = key
-                            .replace(/([A-Z])/g, ' $1')
-                            .replace(/^./, s => s.toUpperCase());
-                          return (
-                            <div key={key} className="u-mb-4">
+
+                        {/* Animation System Controls */}
+                        <div className="u-mb-4 u-animation-fade-in">
+                          <div className="u-flex u-items-center u-gap-2 u-mb-3">
+                            <div
+                              style={{
+                                width: '3px',
+                                height: '14px',
+                                background: 'linear-gradient(180deg, #f472b6 0%, #a78bfa 100%)',
+                                borderRadius: '2px',
+                                flexShrink: 0,
+                              }}
+                            />
+                            <span
+                              className="u-text-xs u-font-bold u-opacity-60"
+                              style={{ letterSpacing: '1px', textTransform: 'uppercase' }}
+                            >
+                              Animation System
+                            </span>
+                          </div>
+
+                          {/* Time Animation Toggle */}
+                          <div className="u-mb-3">
+                            <button
+                              onClick={() => setSettings(prev => ({ ...prev, withTimeAnimation: !prev.withTimeAnimation }))}
+                              className="u-flex u-items-center u-gap-2 u-px-3 u-py-2 u-rounded u-text-start u-w-100"
+                              style={{
+                                background: settings.withTimeAnimation
+                                  ? 'rgba(244,114,182,0.15)'
+                                  : 'rgba(255,255,255,0.04)',
+                                border: settings.withTimeAnimation
+                                  ? '1px solid rgba(244,114,182,0.45)'
+                                  : '1px solid rgba(255,255,255,0.1)',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s',
+                              }}
+                            >
+                              <div
+                                style={{
+                                  width: '10px',
+                                  height: '10px',
+                                  borderRadius: '50%',
+                                  background: settings.withTimeAnimation ? '#f472b6' : 'rgba(255,255,255,0.2)',
+                                  flexShrink: 0,
+                                  boxShadow: settings.withTimeAnimation ? '0 0 8px rgba(244,114,182,0.6)' : 'none',
+                                }}
+                              />
+                              <span
+                                className="u-text-xs u-font-medium"
+                                style={{ 
+                                  color: settings.withTimeAnimation ? '#f472b6' : 'rgba(255,255,255,0.6)',
+                                  flex: 1 
+                                }}
+                              >
+                                Time Animation
+                              </span>
+                            </button>
+                          </div>
+
+                          {/* Animation Speed */}
+                          {settings.withTimeAnimation && (
+                            <div className="u-mb-4">
                               <div className="u-flex u-justify-between u-items-baseline u-mb-1">
                                 <label className="u-text-xs u-font-medium u-opacity-80">
-                                  {label}
+                                  Animation Speed
                                 </label>
                                 <span
                                   className="u-text-xs u-font-bold u-px-2 u-py-1 u-rounded"
                                   style={{
-                                    background: 'rgba(167,139,250,0.12)',
-                                    color: '#a78bfa',
+                                    background: 'rgba(244,114,182,0.12)',
+                                    color: '#f472b6',
                                     fontVariantNumeric: 'tabular-nums',
                                     minWidth: '40px',
                                     textAlign: 'center',
                                   }}
                                 >
-                                  {(value as number).toFixed(key === 'elasticity' ? 2 : 0)}
+                                  {settings.animationSpeed.toFixed(1)}x
                                 </span>
                               </div>
                               <div className="u-relative" style={{ height: '20px' }}>
                                 <input
                                   type="range"
                                   min={0}
-                                  max={max}
-                                  step={step}
-                                  value={value as number}
+                                  max={3}
+                                  step={0.1}
+                                  value={settings.animationSpeed}
                                   onChange={e =>
                                     setSettings(prev => ({
                                       ...prev,
-                                      [key]: parseFloat(e.target.value),
+                                      animationSpeed: parseFloat(e.target.value),
                                     }))
                                   }
                                   className="premium-slider u-absolute u-w-100 u-m-0"
                                   style={{
                                     height: '2px',
-                                    background: `linear-gradient(to right, #a78bfa ${((value as number) / max) * 100}%, rgba(255,255,255,0.15) ${((value as number) / max) * 100}%)`,
+                                    background: `linear-gradient(to right, #f472b6 ${((settings.animationSpeed / 3) * 100)}%, rgba(255,255,255,0.15) ${((settings.animationSpeed / 3) * 100)}%)`,
                                     borderRadius: '2px',
                                     outline: 'none',
                                     appearance: 'none',
@@ -1041,9 +1171,193 @@ export const Playground: Story = {
                                 />
                               </div>
                             </div>
-                          );
-                        })}
-                      </div>
+                          )}
+
+                          {/* Multi-Layer Distortion Toggle */}
+                          <div className="u-mb-3">
+                            <button
+                              onClick={() => setSettings(prev => ({ ...prev, withMultiLayerDistortion: !prev.withMultiLayerDistortion }))}
+                              className="u-flex u-items-center u-gap-2 u-px-3 u-py-2 u-rounded u-text-start u-w-100"
+                              style={{
+                                background: settings.withMultiLayerDistortion
+                                  ? 'rgba(167,139,250,0.15)'
+                                  : 'rgba(255,255,255,0.04)',
+                                border: settings.withMultiLayerDistortion
+                                  ? '1px solid rgba(167,139,250,0.45)'
+                                  : '1px solid rgba(255,255,255,0.1)',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s',
+                              }}
+                            >
+                              <div
+                                style={{
+                                  width: '10px',
+                                  height: '10px',
+                                  borderRadius: '50%',
+                                  background: settings.withMultiLayerDistortion ? '#a78bfa' : 'rgba(255,255,255,0.2)',
+                                  flexShrink: 0,
+                                  boxShadow: settings.withMultiLayerDistortion ? '0 0 8px rgba(167,139,250,0.6)' : 'none',
+                                }}
+                              />
+                              <span
+                                className="u-text-xs u-font-medium"
+                                style={{ 
+                                  color: settings.withMultiLayerDistortion ? '#a78bfa' : 'rgba(255,255,255,0.6)',
+                                  flex: 1 
+                                }}
+                              >
+                                Multi-Layer Distortion
+                              </span>
+                            </button>
+                          </div>
+
+                          {/* FBM Parameters */}
+                          {settings.withMultiLayerDistortion && (
+                            <>
+                              {/* Octaves */}
+                              <div className="u-mb-3">
+                                <div className="u-flex u-justify-between u-items-baseline u-mb-1">
+                                  <label className="u-text-xs u-font-medium u-opacity-80">
+                                    Octaves
+                                  </label>
+                                  <span
+                                    className="u-text-xs u-font-bold u-px-2 u-py-1 u-rounded"
+                                    style={{
+                                      background: 'rgba(167,139,250,0.12)',
+                                      color: '#a78bfa',
+                                      fontVariantNumeric: 'tabular-nums',
+                                      minWidth: '40px',
+                                      textAlign: 'center',
+                                    }}
+                                  >
+                                    {settings.distortionOctaves}
+                                  </span>
+                                </div>
+                                <div className="u-relative" style={{ height: '20px' }}>
+                                  <input
+                                    type="range"
+                                    min={1}
+                                    max={8}
+                                    step={1}
+                                    value={settings.distortionOctaves}
+                                    onChange={e =>
+                                      setSettings(prev => ({
+                                        ...prev,
+                                        distortionOctaves: parseInt(e.target.value),
+                                      }))
+                                    }
+                                    className="premium-slider u-absolute u-w-100 u-m-0"
+                                    style={{
+                                      height: '2px',
+                                      background: `linear-gradient(to right, #a78bfa ${(settings.distortionOctaves / 8) * 100}%, rgba(255,255,255,0.15) ${(settings.distortionOctaves / 8) * 100}%)`,
+                                      borderRadius: '2px',
+                                      outline: 'none',
+                                      appearance: 'none',
+                                      WebkitAppearance: 'none',
+                                      top: '50%',
+                                      transform: 'translateY(-50%)',
+                                    }}
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Lacunarity */}
+                              <div className="u-mb-3">
+                                <div className="u-flex u-justify-between u-items-baseline u-mb-1">
+                                  <label className="u-text-xs u-font-medium u-opacity-80">
+                                    Lacunarity
+                                  </label>
+                                  <span
+                                    className="u-text-xs u-font-bold u-px-2 u-py-1 u-rounded"
+                                    style={{
+                                      background: 'rgba(167,139,250,0.12)',
+                                      color: '#a78bfa',
+                                      fontVariantNumeric: 'tabular-nums',
+                                      minWidth: '40px',
+                                      textAlign: 'center',
+                                    }}
+                                  >
+                                    {settings.distortionLacunarity.toFixed(1)}
+                                  </span>
+                                </div>
+                                <div className="u-relative" style={{ height: '20px' }}>
+                                  <input
+                                    type="range"
+                                    min={1}
+                                    max={4}
+                                    step={0.1}
+                                    value={settings.distortionLacunarity}
+                                    onChange={e =>
+                                      setSettings(prev => ({
+                                        ...prev,
+                                        distortionLacunarity: parseFloat(e.target.value),
+                                      }))
+                                    }
+                                    className="premium-slider u-absolute u-w-100 u-m-0"
+                                    style={{
+                                      height: '2px',
+                                      background: `linear-gradient(to right, #a78bfa ${((settings.distortionLacunarity - 1) / 3) * 100}%, rgba(255,255,255,0.15) ${((settings.distortionLacunarity - 1) / 3) * 100}%)`,
+                                      borderRadius: '2px',
+                                      outline: 'none',
+                                      appearance: 'none',
+                                      WebkitAppearance: 'none',
+                                      top: '50%',
+                                      transform: 'translateY(-50%)',
+                                    }}
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Gain */}
+                              <div className="u-mb-3">
+                                <div className="u-flex u-justify-between u-items-baseline u-mb-1">
+                                  <label className="u-text-xs u-font-medium u-opacity-80">
+                                    Gain
+                                  </label>
+                                  <span
+                                    className="u-text-xs u-font-bold u-px-2 u-py-1 u-rounded"
+                                    style={{
+                                      background: 'rgba(167,139,250,0.12)',
+                                      color: '#a78bfa',
+                                      fontVariantNumeric: 'tabular-nums',
+                                      minWidth: '40px',
+                                      textAlign: 'center',
+                                    }}
+                                  >
+                                    {settings.distortionGain.toFixed(2)}
+                                  </span>
+                                </div>
+                                <div className="u-relative" style={{ height: '20px' }}>
+                                  <input
+                                    type="range"
+                                    min={0.1}
+                                    max={1}
+                                    step={0.01}
+                                    value={settings.distortionGain}
+                                    onChange={e =>
+                                      setSettings(prev => ({
+                                        ...prev,
+                                        distortionGain: parseFloat(e.target.value),
+                                      }))
+                                    }
+                                    className="premium-slider u-absolute u-w-100 u-m-0"
+                                    style={{
+                                      height: '2px',
+                                      background: `linear-gradient(to right, #a78bfa ${((settings.distortionGain - 0.1) / 0.9) * 100}%, rgba(255,255,255,0.15) ${((settings.distortionGain - 0.1) / 0.9) * 100}%)`,
+                                      borderRadius: '2px',
+                                      outline: 'none',
+                                      appearance: 'none',
+                                      WebkitAppearance: 'none',
+                                      top: '50%',
+                                      transform: 'translateY(-50%)',
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </>
                     )}
 
                     {/* === CONTROLS: ACCESSIBILITY FLAGS === */}
@@ -1516,6 +1830,17 @@ export const Playground: Story = {
                           withoutEffects: false,
                           withLiquidBlur: false,
                           withBorder: true,
+                          withTimeAnimation: true,
+                          animationSpeed: 1.0,
+                          withMultiLayerDistortion: false,
+                          distortionOctaves: 3,
+                          distortionLacunarity: 2.0,
+                          distortionGain: 0.5,
+                          distortionQuality: 'medium',
+                          devicePreset: 'balanced',
+                          disableResponsiveBreakpoints: false,
+                          debugPerformance: false,
+                          debugOverLight: false,
                         });
                         setSelectedMode('standard');
                         setSelectedShader('liquidGlass');
@@ -1608,6 +1933,16 @@ export const Playground: Story = {
                     withoutEffects={settings.withoutEffects}
                     withLiquidBlur={settings.withLiquidBlur}
                     withBorder={settings.withBorder}
+                    withTimeAnimation={settings.withTimeAnimation}
+                    animationSpeed={settings.animationSpeed}
+                    withMultiLayerDistortion={settings.withMultiLayerDistortion}
+                    distortionOctaves={settings.distortionOctaves}
+                    distortionLacunarity={settings.distortionLacunarity}
+                    distortionGain={settings.distortionGain}
+                    distortionQuality={settings.distortionQuality}
+                    devicePreset={settings.devicePreset}
+                    disableResponsiveBreakpoints={settings.disableResponsiveBreakpoints}
+                    debugPerformance={settings.debugPerformance}
                   >
                     <div className="u-h-100 u-w-100 custom-scrollbar" style={{ overflowY: 'auto' }}>
                       <div className="u-p-4 u-p-lg-5 u-text-center">
