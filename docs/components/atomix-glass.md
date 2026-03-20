@@ -6,6 +6,8 @@ The AtomixGlass component provides a modern, frosted glass aesthetic with intera
 
 AtomixGlass creates a visually appealing glass-like effect that can be used for cards, modals, hero sections, and other UI elements. It features customizable displacement, blur, saturation, and chromatic aberration effects. The component automatically detects light backgrounds and adjusts its appearance accordingly.
 
+**New in Phase 3**: Automatic responsive optimization and performance monitoring for production-ready glass effects across all devices.
+
 ## Usage
 
 ```jsx
@@ -68,6 +70,8 @@ function MyComponent() {
 | `debugPerformance` | boolean | false | Enable performance monitoring dashboard (development only) |
 | `debugBorderRadius` | boolean | false | Debug mode for corner radius extraction |
 | `debugOverLight` | boolean | false | Debug mode for overLight detection |
+| `devicePreset` | 'performance' \| 'balanced' \| 'quality' | 'balanced' | Device optimization preset (Phase 3) |
+| `disableResponsiveBreakpoints` | boolean | false | Disable automatic responsive optimization (Phase 3) |
 | `className` | string | '' | Additional CSS class names |
 | `aria-label` | string | undefined | ARIA label for accessibility |
 | `aria-describedby` | string | undefined | ARIA describedby for accessibility |
@@ -82,6 +86,47 @@ The AtomixGlass component offers four different effect modes:
 2. **Polar**: A radial displacement effect that creates a circular distortion pattern.
 3. **Prominent**: Enhanced displacement with stronger edge effects.
 4. **Shader**: Advanced WebGL-based shader displacement for more dynamic effects.
+
+## Device Optimization Presets (Phase 3)
+
+AtomixGlass includes three device optimization presets that automatically adjust quality parameters:
+
+### Performance Preset
+Optimized for low-end devices and mobile:
+- Distortion Octaves: 2
+- Displacement Scale: 0.6x
+- Blur Amount: 0.7x
+- Animation Speed: 0.8x
+- Chromatic Intensity: 0.5x
+
+### Balanced Preset (Default)
+Balanced quality and performance:
+- Distortion Octaves: 4
+- Displacement Scale: 0.85x
+- Blur Amount: 0.9x
+- Animation Speed: 0.95x
+- Chromatic Intensity: 0.75x
+
+### Quality Preset
+Maximum quality for high-end devices:
+- Distortion Octaves: 5
+- Displacement Scale: 1.0x
+- Blur Amount: 1.0x
+- Animation Speed: 1.0x
+- Chromatic Intensity: 1.0x
+
+## Responsive Breakpoints (Phase 3)
+
+AtomixGlass automatically adjusts parameters based on screen size:
+
+- **Mobile** (≤640px): Reduced complexity for 60 FPS target
+- **Tablet** (641-1024px): Balanced quality and performance
+- **Desktop** (≥1025px): Full fidelity effects
+
+The responsive system also detects device performance tier using Device Memory API and Hardware Concurrency API:
+- **Low-end**: ≤2GB RAM or ≤2 CPU cores
+- **Medium**: 2-4GB RAM or 2-4 CPU cores
+- **High-end**: ≥4GB RAM and ≥4 CPU cores
 
 ## Accessibility
 
@@ -108,6 +153,8 @@ When using AtomixGlass for interactive elements:
 - Set `overLight` appropriately based on your background to ensure proper shadow effects
 - For text-heavy content, reduce blur and aberration effects to maintain readability
 - Use the `shader` mode only when advanced visual effects are necessary, as it has higher performance requirements
+- **Phase 3**: Let the responsive system handle optimization automatically - only use `devicePreset` for specific use cases
+- **Phase 3**: Enable `debugPerformance` during development to monitor FPS and frame time
 
 ## Examples
 
@@ -197,6 +244,50 @@ When using AtomixGlass for interactive elements:
 </AtomixGlass>
 ```
 
+### Performance-Optimized for Mobile (Phase 3)
+
+```jsx
+<AtomixGlass
+  devicePreset="performance"
+  displacementScale={50}
+  aberrationIntensity={1.5}
+>
+  <div style={{ padding: '20px' }}>
+    Mobile-optimized glass effect
+  </div>
+</AtomixGlass>
+```
+
+### High-Quality for Desktop (Phase 3)
+
+```jsx
+<AtomixGlass
+  devicePreset="quality"
+  displacementScale={100}
+  aberrationIntensity={3}
+  withTimeAnimation={true}
+  withMultiLayerDistortion={true}
+>
+  <div style={{ padding: '30px' }}>
+    Premium desktop glass effect
+  </div>
+</AtomixGlass>
+```
+
+### With Performance Monitoring (Phase 3)
+
+```jsx
+<AtomixGlass
+  debugPerformance={true}
+  displacementScale={70}
+  aberrationIntensity={2}
+>
+  <div style={{ padding: '20px' }}>
+    Glass with real-time performance metrics
+  </div>
+</AtomixGlass>
+```
+
 ## Performance Considerations
 
 The AtomixGlass component uses SVG filters and CSS backdrop filters which can be performance-intensive. Consider the following tips:
@@ -205,6 +296,50 @@ The AtomixGlass component uses SVG filters and CSS backdrop filters which can be
 - Use simpler modes (standard, polar) for better performance on lower-end devices
 - Consider providing a reduced-motion alternative for users with older devices
 - The `shader` mode requires WebGL support and may not work on all browsers
+
+### Phase 3: Automatic Performance Optimization
+
+AtomixGlass now includes built-in performance optimization:
+
+**Responsive Breakpoints**:
+- Automatically scales effect parameters based on screen size
+- Detects device performance tier (low/medium/high)
+- Applies appropriate quality multipliers
+- Debounced resize handling (200ms) to prevent excessive recalculations
+
+**Performance Monitoring**:
+- Real-time FPS tracking (target: 60 FPS)
+- Frame time measurement (target: <16ms)
+- GPU memory estimation (when available)
+- Automatic quality scaling based on performance
+- Debug dashboard for development
+
+**Device Presets**:
+- `performance`: Optimized for low-end devices (2 octaves, 0.6x scale)
+- `balanced`: Default preset for most devices (4 octaves, 0.85x scale)
+- `quality`: Maximum quality for high-end devices (5 octaves, 1.0x scale)
+
+**Usage Example**:
+```jsx
+import { usePerformanceMonitor } from '@shohojdhara/atomix/lib/composables/usePerformanceMonitor';
+
+function MyComponent() {
+  const { metrics, recommendedQuality, isUnderperforming } = usePerformanceMonitor({
+    targetFps: 60,
+    minFps: 45,
+    debug: true,
+  });
+
+  return (
+    <AtomixGlass
+      devicePreset={recommendedQuality === 'low' ? 'performance' : 'balanced'}
+      debugPerformance={true}
+    >
+      <div>Content</div>
+    </AtomixGlass>
+  );
+}
+```
 
 ## Browser Compatibility
 
