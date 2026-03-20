@@ -275,3 +275,53 @@ export const getDisplacementMap = (
       return displacementMap;
   }
 };
+
+// ─── Shader LRU Cache ──────────────────────────────────────────────────────
+// Shared across all AtomixGlassContainer instances so identical shader
+// configurations (same size + variant) are only generated once.
+
+export const MAX_CACHE_SIZE = 15;
+
+export interface ShaderCacheEntry {
+  url: string;
+  timestamp: number;
+}
+
+/** Module-level LRU cache shared by all container instances. */
+export const sharedShaderCache = new Map<string, ShaderCacheEntry>();
+
+/**
+ * Retrieve a cached shader URL, updating its LRU timestamp.
+ * Returns `null` on a cache miss.
+ */
+export const getCachedShader = (key: string): string | null => {
+  const entry = sharedShaderCache.get(key);
+  if (entry) {
+    entry.timestamp = Date.now();
+    return entry.url;
+  }
+  return null;
+};
+
+/**
+ * Store a shader URL in the LRU cache, evicting the oldest entry when full.
+ */
+export const setCachedShader = (key: string, url: string): void => {
+  if (sharedShaderCache.size >= MAX_CACHE_SIZE) {
+    const entries = Array.from(sharedShaderCache.entries());
+    entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
+    const oldest = entries[0];
+    if (oldest) {
+      sharedShaderCache.delete(oldest[0]);
+    }
+  }
+  sharedShaderCache.set(key, { url, timestamp: Date.now() });
+
+  if (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') {
+    if (sharedShaderCache.size >= MAX_CACHE_SIZE * 0.8) {
+      console.log(
+        `AtomixGlass: Shader cache size: ${String(sharedShaderCache.size).replace(/[\r\n]/g, '')}/${String(MAX_CACHE_SIZE).replace(/[\r\n]/g, '')}`
+      );
+    }
+  }
+};

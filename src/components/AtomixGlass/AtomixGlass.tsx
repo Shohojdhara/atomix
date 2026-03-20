@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { forwardRef, memo, useMemo, useRef } from 'react';
 import type { AtomixGlassProps } from '../../lib/types/components';
 import { ATOMIX_GLASS } from '../../lib/constants/components';
 import { AtomixGlassContainer } from './AtomixGlassContainer';
@@ -88,53 +88,65 @@ import { getDevicePreset, MOBILE_OPTIMIZED_BREAKPOINTS } from '../../lib/composa
  *   <div>Mobile-optimized glass effect</div>
  * </AtomixGlass>
  */
-export function AtomixGlass({
-  children,
-  displacementScale = ATOMIX_GLASS.DEFAULTS.DISPLACEMENT_SCALE,
-  blurAmount = ATOMIX_GLASS.DEFAULTS.BLUR_AMOUNT,
-  saturation = ATOMIX_GLASS.DEFAULTS.SATURATION,
-  aberrationIntensity = ATOMIX_GLASS.DEFAULTS.ABERRATION_INTENSITY,
-  elasticity = ATOMIX_GLASS.DEFAULTS.ELASTICITY,
-  borderRadius,
-  globalMousePosition: externalGlobalMousePosition,
-  mouseOffset: externalMouseOffset,
-  mouseContainer = null,
-  className = '',
-  padding = ATOMIX_GLASS.DEFAULTS.PADDING,
-  overLight = ATOMIX_GLASS.DEFAULTS.OVER_LIGHT,
-  style = {},
-  mode = ATOMIX_GLASS.DEFAULTS.MODE,
-  onClick,
-  shaderVariant = 'liquidGlass',
-  'aria-label': ariaLabel,
-  'aria-describedby': ariaDescribedBy,
-  role,
-  tabIndex,
-  reducedMotion = false,
-  highContrast = false,
-  withoutEffects = false,
-  withLiquidBlur = false,
-  withBorder = true,
-  withOverLightLayers = ATOMIX_GLASS.DEFAULTS.ENABLE_OVER_LIGHT_LAYERS,
-  debugPerformance = false,
-  debugOverLight = false,
-  height,
-  width,
-  withTimeAnimation = false,
-  animationSpeed = 1.0,
-  withMultiLayerDistortion = false,
-  distortionOctaves = 3,
-  distortionLacunarity = 2.0,
-  distortionGain = 0.5,
-  distortionQuality = 'medium',
-  devicePreset = 'balanced',
-  disableResponsiveBreakpoints = false,
-  ...rest
-}: AtomixGlassProps) {
+
+// ─── Type guard for the dev-only performance flag ────────────────────────────
+declare global {
+  interface Window {
+    enablePerformanceMonitoring?: boolean;
+  }
+}
+
+// Internal implementation with forwardRef
+const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function AtomixGlass(
+  {
+    children,
+    displacementScale = ATOMIX_GLASS.DEFAULTS.DISPLACEMENT_SCALE,
+    blurAmount = ATOMIX_GLASS.DEFAULTS.BLUR_AMOUNT,
+    saturation = ATOMIX_GLASS.DEFAULTS.SATURATION,
+    aberrationIntensity = ATOMIX_GLASS.DEFAULTS.ABERRATION_INTENSITY,
+    elasticity = ATOMIX_GLASS.DEFAULTS.ELASTICITY,
+    borderRadius,
+    globalMousePosition: externalGlobalMousePosition,
+    mouseOffset: externalMouseOffset,
+    mouseContainer = null,
+    className = '',
+    padding = ATOMIX_GLASS.DEFAULTS.PADDING,
+    overLight = ATOMIX_GLASS.DEFAULTS.OVER_LIGHT,
+    style = {},
+    mode = ATOMIX_GLASS.DEFAULTS.MODE,
+    onClick,
+    shaderVariant = 'liquidGlass',
+    'aria-label': ariaLabel,
+    'aria-describedby': ariaDescribedBy,
+    role,
+    tabIndex,
+    reducedMotion = false,
+    highContrast = false,
+    withoutEffects = false,
+    withLiquidBlur = false,
+    withBorder = true,
+    withOverLightLayers = ATOMIX_GLASS.DEFAULTS.ENABLE_OVER_LIGHT_LAYERS,
+    debugPerformance = false,
+    debugOverLight = false,
+    height,
+    width,
+    withTimeAnimation = false,
+    animationSpeed = 1.0,
+    withMultiLayerDistortion = false,
+    distortionOctaves = 3,
+    distortionLacunarity = 2.0,
+    distortionGain = 0.5,
+    distortionQuality = 'medium',
+    devicePreset = 'balanced',
+    disableResponsiveBreakpoints = false,
+    ...rest
+  },
+  ref
+) {
   const glassRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // ── Layout hoisting ──────────────────────────────────────────────────
+  // ── Layout hoisting ──────────────────────────────────────────────────────
   // When position is fixed/sticky the layout props must live on the ROOT
   // `.c-atomix-glass` element so that every decorative layer (borders,
   // backgrounds, hover effects) stays in the same stacking context.
@@ -159,7 +171,6 @@ export function AtomixGlass({
     mouseOffset,
     transformStyle,
     getShaderTime,
-    applyTimeBasedDistortion,
     handleMouseEnter,
     handleMouseLeave,
     handleMouseDown,
@@ -204,15 +215,10 @@ export function AtomixGlass({
   // Get device preset parameters - memoized to prevent recalculation
   const devicePresetParams = useMemo(() => {
     return getDevicePreset(devicePreset);
-  }, [devicePreset]); // Re-calculate only when devicePreset changes
+  }, [devicePreset]);
 
   // Responsive breakpoint system - automatically adjusts parameters based on viewport
-  const { 
-    responsiveParams, 
-    currentBreakpoint,
-    performanceTier,
-    isActive: isResponsiveActive
-  } = useResponsiveGlass({
+  useResponsiveGlass({
     baseParams: {
       ...devicePresetParams,
       distortionOctaves: Math.round((displacementScale || ATOMIX_GLASS.DEFAULTS.DISPLACEMENT_SCALE) / 25),
@@ -224,26 +230,20 @@ export function AtomixGlass({
       chromaticIntensity: aberrationIntensity || ATOMIX_GLASS.DEFAULTS.ABERRATION_INTENSITY,
     },
     breakpoints: MOBILE_OPTIMIZED_BREAKPOINTS,
-    enabled: !disableResponsiveBreakpoints && typeof window !== 'undefined', // Enable unless disabled
-    debug: false
+    enabled: !disableResponsiveBreakpoints && typeof window !== 'undefined',
+    debug: false,
   });
 
   // Performance monitoring - tracks FPS, frame time, memory usage
-  const {
-    metrics: performanceMetrics,
-    recommendedQuality,
-    isUnderperforming,
-    setQualityLevel,
-    toggleMonitoring
-  } = usePerformanceMonitor({
-    enabled: false, // We'll toggle manually based on prop
+  const { metrics: performanceMetrics, toggleMonitoring } = usePerformanceMonitor({
+    enabled: false, // Toggled manually below
     debug: false,
-    showOverlay: false
+    showOverlay: false,
   });
 
-  // Auto-start performance monitoring if enabled (only in development)
+  // Auto-start performance monitoring only in development when flag is set
   React.useEffect(() => {
-    if (process.env.NODE_ENV === 'development' && (window as any)?.enablePerformanceMonitoring) {
+    if (process.env.NODE_ENV === 'development' && window.enablePerformanceMonitoring) {
       toggleMonitoring();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -473,7 +473,17 @@ export function AtomixGlass({
     isFixedOrSticky,
   ]);
 
-  // Helper function to render background layers
+  // ─── Render helpers ──────────────────────────────────────────────────────
+
+  const renderHoverLayers = () => (
+    <>
+      {/* Hover layers - opacity and background set via CSS variables in SCSS */}
+      <div className={ATOMIX_GLASS.HOVER_1_CLASS} />
+      <div className={ATOMIX_GLASS.HOVER_2_CLASS} />
+      <div className={ATOMIX_GLASS.HOVER_3_CLASS} />
+    </>
+  );
+
   const renderBackgroundLayer = (layerType: 'dark' | 'black') => (
     <div
       className={[
@@ -490,9 +500,29 @@ export function AtomixGlass({
     />
   );
 
+  const renderOverLightLayers = () => (
+    <>
+      {/* Base and overlay layers - opacity and background set via CSS variables in SCSS */}
+      <div className={ATOMIX_GLASS.BASE_LAYER_CLASS} />
+      <div className={ATOMIX_GLASS.OVERLAY_LAYER_CLASS} />
+      {/* Overlay highlight - opacity and background are dynamic, calculated inline */}
+      <div className={ATOMIX_GLASS.OVERLAY_HIGHLIGHT_CLASS} />
+    </>
+  );
+
+  const renderBorderElements = () => (
+    <>
+      {/* Border elements - all styles (static and dynamic via CSS variables) are in SCSS */}
+      {/* Position, size, transform, transition, border-radius all use CSS variables set in glassVars */}
+      <span className={ATOMIX_GLASS.BORDER_1_CLASS} />
+      <span className={ATOMIX_GLASS.BORDER_2_CLASS} />
+    </>
+  );
+
   return (
     <div
       {...rest}
+      ref={ref}
       className={componentClassName}
       style={{ ...glassVars }}
       role={role || (onClick ? 'button' : undefined)}
@@ -501,7 +531,7 @@ export function AtomixGlass({
       aria-describedby={ariaDescribedBy}
       aria-disabled={onClick && effectiveWithoutEffects ? true : onClick ? false : undefined}
       aria-pressed={onClick && isActive ? true : onClick ? false : undefined}
-      onKeyDown={onClick ? handleKeyDown : undefined} // Dynamic CSS variables cause hydration mismatch due to mouse position calculations
+      onKeyDown={onClick ? handleKeyDown : undefined}
     >
       <AtomixGlassContainer
         ref={glassRef}
@@ -573,40 +603,20 @@ export function AtomixGlass({
       >
         {children}
       </AtomixGlassContainer>
-      {Boolean(onClick) && (
-        <>
-          {/* Hover layers - opacity and background set via CSS variables in SCSS */}
-          <div className={ATOMIX_GLASS.HOVER_1_CLASS} />
-          <div className={ATOMIX_GLASS.HOVER_2_CLASS} />
-          <div className={ATOMIX_GLASS.HOVER_3_CLASS} />
-        </>
-      )}
+
+      {Boolean(onClick) && renderHoverLayers()}
 
       {/* Background layers for over-light mode */}
       {/* Static styles (pointer-events) are in SCSS; will-change is managed via .u-glass-clean-root utility for backdrop-filter stability */}
       {renderBackgroundLayer('dark')}
       {renderBackgroundLayer('black')}
-      {shouldRenderOverLightLayers && (
-        <>
-          {/* Base and overlay layers - opacity and background set via CSS variables in SCSS */}
-          <div className={ATOMIX_GLASS.BASE_LAYER_CLASS} />
-          <div className={ATOMIX_GLASS.OVERLAY_LAYER_CLASS} />
-          {/* Overlay highlight - opacity and background are dynamic, calculated inline */}
-          <div className={ATOMIX_GLASS.OVERLAY_HIGHLIGHT_CLASS} />
-        </>
-      )}
-      {withBorder && (
-        <>
-          {/* Border elements - all styles (static and dynamic via CSS variables) are in SCSS */}
-          {/* Position, size, transform, transition, border-radius all use CSS variables set in glassVars */}
-          <span className={ATOMIX_GLASS.BORDER_1_CLASS} />
-          <span className={ATOMIX_GLASS.BORDER_2_CLASS} />
-        </>
-      )}
-      
+      {shouldRenderOverLightLayers && renderOverLightLayers()}
+
+      {withBorder && renderBorderElements()}
+
       {/* Phase 3: Performance Monitoring Dashboard - Only in development with debugPerformance enabled */}
       {debugPerformance && performanceMetrics && (
-        <PerformanceDashboard 
+        <PerformanceDashboard
           metrics={performanceMetrics}
           isVisible={true}
           onClose={() => {}} // No-op, dashboard always visible when debugPerformance is true
@@ -614,6 +624,14 @@ export function AtomixGlass({
       )}
     </div>
   );
-}
+});
+
+AtomixGlassInner.displayName = 'AtomixGlass';
+
+/**
+ * AtomixGlass - wrapped with React.memo to prevent unnecessary re-renders.
+ * Ref is forwarded to the root `<div>` element.
+ */
+export const AtomixGlass = memo(AtomixGlassInner);
 
 export default AtomixGlass;

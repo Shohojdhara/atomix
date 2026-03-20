@@ -1,63 +1,39 @@
-import React, { forwardRef, useRef, useState, useEffect, useMemo } from 'react';
+import React, { forwardRef, useId, useRef, useState, useEffect, useMemo } from 'react';
 import type { CSSProperties } from 'react';
 import type { DisplacementMode, MousePosition, GlassSize, AtomixGlassProps } from '../../lib/types/components';
-import type { FragmentShaderType } from './shader-utils';
+import type { FragmentShaderType, ShaderOptions, Vec2 } from './shader-utils';
 import { GlassFilter } from './GlassFilter';
-import { calculateMouseInfluence, clampBlur, validateGlassSize } from './glass-utils';
+import { calculateMouseInfluence, clampBlur, validateGlassSize, getCachedShader, setCachedShader } from './glass-utils';
 import { ATOMIX_GLASS } from '../../lib/constants/components';
 
 const { CONSTANTS } = ATOMIX_GLASS;
 
-// Module-level counter for deterministic ID generation
-let idCounter = 0;
+// ─── Blur multiplier constants (module-level, never change at runtime) ────────
+const EDGE_BLUR_MULTIPLIER = 1.25;
+const CENTER_BLUR_MULTIPLIER = 1.1;
+const FLOW_BLUR_MULTIPLIER = 1.2;
+const MOUSE_INFLUENCE_BLUR_FACTOR = 0.15;
+const EDGE_INTENSITY_MULTIPLIER = 1.5;
+const EDGE_INTENSITY_MOUSE_FACTOR = 0.15;
+const CENTER_INTENSITY_DISTANCE_FACTOR = 0.3;
+const CENTER_INTENSITY_MOUSE_FACTOR = 0.1;
+/** Maximum blur multiplier relative to base — prevents runaway blur. */
+const MAX_BLUR_RELATIVE = 2;
 
-// Module-level shared shader cache with LRU eviction
-const MAX_CACHE_SIZE = 15;
-interface ShaderCacheEntry {
-  url: string;
-  timestamp: number;
+// ─── Shader utility types ─────────────────────────────────────────────────────
+
+interface ShaderGenerator {
+  updateShader(): string;
+  destroy(): void;
 }
-const sharedShaderCache = new Map<string, ShaderCacheEntry>();
 
-/**
- * Get cached shader URL, updating access timestamp
- */
-const getCachedShader = (key: string): string | null => {
-  const entry = sharedShaderCache.get(key);
-  if (entry) {
-    // Update access timestamp for LRU
-    entry.timestamp = Date.now();
-    return entry.url;
-  }
-  return null;
-};
+/** Fragment shader function — signature matches shader-utils.ts */
+type FragmentShaderFn = (uv: Vec2, mousePosition?: Vec2) => Vec2;
 
-/**
- * Set cached shader URL with LRU eviction
- */
-const setCachedShader = (key: string, url: string): void => {
-  // Evict oldest entries if at capacity
-  if (sharedShaderCache.size >= MAX_CACHE_SIZE) {
-    const entries = Array.from(sharedShaderCache.entries());
-    // Sort by timestamp (oldest first)
-    entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
-    // Remove oldest entry
-    const oldestEntry = entries[0];
-    if (oldestEntry) {
-      sharedShaderCache.delete(oldestEntry[0]);
-    }
-  }
-  sharedShaderCache.set(key, { url, timestamp: Date.now() });
-
-  // Development mode: log cache size
-  if (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') {
-    if (sharedShaderCache.size >= MAX_CACHE_SIZE * 0.8) {
-      console.log(
-        `AtomixGlass: Shader cache size: ${String(sharedShaderCache.size).replace(/[\r\n]/g, '')}/${String(MAX_CACHE_SIZE).replace(/[\r\n]/g, '')}`
-      );
-    }
-  }
-};
+interface ShaderUtilsModule {
+  ShaderDisplacementGenerator: new (opts: ShaderOptions) => ShaderGenerator;
+  fragmentShaders: Record<string, FragmentShaderFn>;
+}
 
 interface AtomixGlassContainerProps
   extends Pick<
@@ -155,23 +131,17 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     },
     ref
   ) => {
-    // Generate a stable, deterministic ID for SSR compatibility
-    // Use a module-level counter that's consistent across server and client
-    const filterId = useMemo(() => {
-      return `atomix-glass-filter-${++idCounter}`;
-    }, []);
+    // React 18 useId — stable, unique, and SSR-safe (no module-level counter)
+    const rawId = useId();
+    const filterId = useMemo(() => `atomix-glass-filter-${rawId.replace(/:/g, '')}`, [rawId]);
 
     const [shaderMapUrl, setShaderMapUrl] = useState<string>('');
-    const shaderGeneratorRef = useRef<any>(null);
-    const shaderUtilsRef = useRef<{
-      ShaderDisplacementGenerator: any;
-      fragmentShaders: any;
-    } | null>(null);
+    const shaderGeneratorRef = useRef<ShaderGenerator | null>(null);
+    const shaderUtilsRef = useRef<ShaderUtilsModule | null>(null);
 
-    // Use shared module-level cache (no per-instance cache needed)
     const shaderDebounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const shaderUpdateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    
+
     // Phase 1: Animation frame ref for continuous shader updates
     const animationFrameRef = useRef<number | null>(null);
 
@@ -228,7 +198,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
           try {
             const { ShaderDisplacementGenerator, fragmentShaders } = shaderUtilsRef.current;
             shaderGeneratorRef.current?.destroy();
-            const selectedShader = fragmentShaders[shaderVariant] || fragmentShaders.liquidGlass;
+            const selectedShader = (fragmentShaders[shaderVariant] ?? fragmentShaders.liquidGlass) as FragmentShaderFn;
             shaderGeneratorRef.current = new ShaderDisplacementGenerator({
               width: glassSize.width,
               height: glassSize.height,
@@ -236,7 +206,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             });
 
             shaderUpdateTimeoutRef.current = setTimeout(() => {
-              const url = shaderGeneratorRef.current?.updateShader() || '';
+              const url = shaderGeneratorRef.current?.updateShader() ?? '';
               if (url) {
                 setCachedShader(cacheKey, url);
               }
@@ -379,18 +349,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
 
       return undefined;
     }, [ref, glassSize]);
-
-    // Pre-calculate static multipliers outside useMemo
-    const EDGE_BLUR_MULTIPLIER = 1.25;
-    const CENTER_BLUR_MULTIPLIER = 1.1;
-    const FLOW_BLUR_MULTIPLIER = 1.2;
-    const MOUSE_INFLUENCE_BLUR_FACTOR = 0.15;
-    const EDGE_INTENSITY_MULTIPLIER = 1.5;
-    const EDGE_INTENSITY_MOUSE_FACTOR = 0.15;
-    const CENTER_INTENSITY_DISTANCE_FACTOR = 0.3;
-    const CENTER_INTENSITY_MOUSE_FACTOR = 0.1;
-    // Maximum blur multiplier relative to base — prevents runaway blur
-    const MAX_BLUR_RELATIVE = 2;
 
     const liquidBlur = useMemo(() => {
       const defaultBlur = {
@@ -573,8 +531,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     return (
       <div
         ref={el => {
-          // Apply force no-transition
-
           // Handle forwarded ref
           if (typeof ref === 'function') {
             ref(el);
