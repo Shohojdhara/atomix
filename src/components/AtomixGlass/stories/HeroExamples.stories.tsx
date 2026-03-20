@@ -15,6 +15,8 @@ import { baseArgTypes } from './argTypes';
 import type { AtomixGlassStoryProps } from './types';
 
 import { Button } from '../../Button';
+import { Badge } from '../../Badge';
+import { Container } from '../../../layouts/Grid';
 
 const meta: Meta<typeof AtomixGlass> = {
   title: 'Components/AtomixGlass/Examples/Hero Examples',
@@ -30,7 +32,7 @@ const meta: Meta<typeof AtomixGlass> = {
   },
   tags: ['!autodocs'],
   argTypes: {
-    ...baseArgTypes,
+    ...(baseArgTypes as any),
     children: { control: false },
   },
 };
@@ -144,9 +146,7 @@ export const FeatureAnnouncement: Story = {
             padding="40px"
           >
             <div className="u-flex u-flex-column u-items-center u-text-center">
-              <Badge variant="primary" size="lg" className="u-mb-4">
-                New Release
-              </Badge>
+              <Badge variant="primary" size="lg" className="u-mb-4" label="New Release" />
               <h2
                 className="u-mt-0 u-text-1 u-font-bold u-text-white"
                 style={{ fontSize: '42px', marginBottom: '16px' }}
