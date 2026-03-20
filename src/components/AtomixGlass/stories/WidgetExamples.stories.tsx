@@ -16,7 +16,7 @@ import { baseArgTypes } from './argTypes';
 
 import { Button } from '../../Button';
 import { Badge } from '../../Badge';
-import { Input } from '../../../Form/Input';
+import { Input } from '../../Form/Input';
 
 const meta: Meta<typeof AtomixGlass> = {
   title: 'Components/AtomixGlass/Examples/Widget Examples',
@@ -32,7 +32,7 @@ const meta: Meta<typeof AtomixGlass> = {
   },
   tags: ['!autodocs'],
   argTypes: {
-    ...baseArgTypes,
+    ...(baseArgTypes as any),
     children: { control: false },
   },
 };
@@ -316,15 +316,16 @@ export const ChatInterface: Story = {
                     gap: '12px',
                   }}
                 >
-                  <Input
-                    type="text"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Type a message..."
-                    onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                    glass={{ elasticity: 0 }}
-                    className="u-flex-1"
-                  />
+                  <div className="u-flex-1" onKeyDown={(e) => e.key === 'Enter' && handleSend()}>
+                    <Input
+                      type="text"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="Type a message..."
+                      glass={{ elasticity: 0 }}
+                      className="u-w-100"
+                    />
+                  </div>
                   <Button
                     variant="primary"
                     glass={{ elasticity: 0 }}
@@ -387,7 +388,7 @@ export const NotificationCenter: Story = {
               <div className="u-text-white" style={{ padding: '24px' }}>
                 <div className="u-flex u-items-center u-justify-between u-mb-4">
                   <h2 className="u-m-0 u-text-xl u-font-bold">Notifications</h2>
-                  <Badge variant="primary">{notifications.length}</Badge>
+                  <Badge variant="primary" label={notifications.length.toString()} />
                 </div>
 
                 <div className="u-divide-y" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
