@@ -1631,6 +1631,7 @@ export const ATOMIX_GLASS = {
   FILTER_OVERLAY_CLASS: 'c-atomix-glass__filter-overlay',
   FILTER_SHADOW_CLASS: 'c-atomix-glass__filter-shadow',
   CONTENT_CLASS: 'c-atomix-glass__content',
+  BORDER_BACKDROP_CLASS: 'c-atomix-glass__border-backdrop',
   BORDER_1_CLASS: 'c-atomix-glass__border-1',
   BORDER_2_CLASS: 'c-atomix-glass__border-2',
   HOVER_1_CLASS: 'c-atomix-glass__hover-1',

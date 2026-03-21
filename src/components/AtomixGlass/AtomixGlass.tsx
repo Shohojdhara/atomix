@@ -530,6 +530,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     <>
       {/* Border elements - all styles (static and dynamic via CSS variables) are in SCSS */}
       {/* Position, size, transform, transition, border-radius all use CSS variables set in glassVars */}
+      <span className={ATOMIX_GLASS.BORDER_BACKDROP_CLASS} />
       <span className={ATOMIX_GLASS.BORDER_1_CLASS} />
       <span className={ATOMIX_GLASS.BORDER_2_CLASS} />
     </>
