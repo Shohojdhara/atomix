@@ -16,7 +16,7 @@ import type { ArgTypeDefinition, ArgTypeCategory } from './types';
 export const baseArgTypes = {
   // Content category
   children: {
-    control: 'text',
+    control: { type: 'text' },
     description: 'Content to display inside the glass effect',
     table: {
       category: 'Content' as ArgTypeCategory,
@@ -125,7 +125,7 @@ export const baseArgTypes = {
     },
   },
   className: {
-    control: 'text',
+    control: { type: 'text' },
     description: 'Additional CSS class names',
     table: {
       category: 'Style' as ArgTypeCategory,
@@ -133,7 +133,7 @@ export const baseArgTypes = {
     },
   },
   style: {
-    control: 'object',
+    control: { type: 'object' },
     description: 'CSS style object',
     table: {
       category: 'Style' as ArgTypeCategory,
@@ -161,7 +161,7 @@ export const baseArgTypes = {
     },
   },
   disableResponsiveBreakpoints: {
-    control: 'boolean',
+    control: { type: 'boolean' },
     description: 'Disable responsive breakpoint system (default: false)',
     table: {
       category: 'Performance' as ArgTypeCategory,
@@ -171,7 +171,7 @@ export const baseArgTypes = {
 
   // Animation category (Phase 1)
   withTimeAnimation: {
-    control: 'boolean',
+    control: { type: 'boolean' },
     description: 'Enable time-based animation (Phase 1, default: true)',
     table: {
       category: 'Animation' as ArgTypeCategory,
@@ -187,7 +187,7 @@ export const baseArgTypes = {
     },
   },
   withMultiLayerDistortion: {
-    control: 'boolean',
+    control: { type: 'boolean' },
     description: 'Enable multi-layer distortion using FBM (Phase 1, default: false)',
     table: {
       category: 'Animation' as ArgTypeCategory,
@@ -229,7 +229,7 @@ export const baseArgTypes = {
 
   // Debug category
   debugPerformance: {
-    control: 'boolean',
+    control: { type: 'boolean' },
     description: 'Enable performance monitoring dashboard (development only)',
     table: {
       category: 'Debug' as ArgTypeCategory,
@@ -237,7 +237,7 @@ export const baseArgTypes = {
     },
   },
   debugBorderRadius: {
-    control: 'boolean',
+    control: { type: 'boolean' },
     description: 'Debug mode for corner radius extraction',
     table: {
       category: 'Debug' as ArgTypeCategory,
@@ -247,7 +247,7 @@ export const baseArgTypes = {
 
   // Accessibility category
   'aria-label': {
-    control: 'text',
+    control: { type: 'text' },
     description: 'ARIA label for accessibility',
     table: {
       category: 'Accessibility' as ArgTypeCategory,
@@ -255,7 +255,7 @@ export const baseArgTypes = {
     },
   },
   'aria-describedby': {
-    control: 'text',
+    control: { type: 'text' },
     description: 'ARIA describedby attribute for additional description',
     table: {
       category: 'Accessibility' as ArgTypeCategory,
@@ -263,7 +263,7 @@ export const baseArgTypes = {
     },
   },
   role: {
-    control: 'text',
+    control: { type: 'text' },
     description: 'ARIA role attribute',
     table: {
       category: 'Accessibility' as ArgTypeCategory,
@@ -271,7 +271,7 @@ export const baseArgTypes = {
     },
   },
   tabIndex: {
-    control: 'number',
+    control: { type: 'number' },
     description: 'Tab index for keyboard navigation',
     table: {
       category: 'Accessibility' as ArgTypeCategory,
@@ -279,7 +279,7 @@ export const baseArgTypes = {
     },
   },
   reducedMotion: {
-    control: 'boolean',
+    control: { type: 'boolean' },
     description: 'Override for reduced motion preference (default: false)',
     table: {
       category: 'Accessibility' as ArgTypeCategory,
@@ -287,7 +287,7 @@ export const baseArgTypes = {
     },
   },
   highContrast: {
-    control: 'boolean',
+    control: { type: 'boolean' },
     description: 'Override for high contrast preference (default: false)',
     table: {
       category: 'Accessibility' as ArgTypeCategory,
@@ -295,7 +295,7 @@ export const baseArgTypes = {
     },
   },
   withoutEffects: {
-    control: 'boolean',
+    control: { type: 'boolean' },
     description: 'Disable all visual effects (default: false)',
     table: {
       category: 'Accessibility' as ArgTypeCategory,
@@ -326,7 +326,7 @@ export const minimalArgTypes = {
 export const advancedArgTypes = {
   ...baseArgTypes,
   globalMousePosition: {
-    control: 'object',
+    control: { type: 'object' },
     description: 'External global mouse position { x: number; y: number }',
     table: {
       category: 'Interaction' as ArgTypeCategory,
@@ -334,7 +334,7 @@ export const advancedArgTypes = {
     },
   },
   mouseOffset: {
-    control: 'object',
+    control: { type: 'object' },
     description: 'External mouse offset { x: number; y: number }',
     table: {
       category: 'Interaction' as ArgTypeCategory,
@@ -361,7 +361,7 @@ export function pickArgTypeCategories<T extends Record<string, ArgTypeDefinition
   const result: Partial<T> = {};
   Object.entries(argTypes).forEach(([key, value]) => {
     if (value.table?.category && categories.includes(value.table.category)) {
-      result[key as keyof T] = value;
+      result[key as keyof T] = value as any;
     }
   });
   return result;
@@ -377,7 +377,7 @@ export function excludeArgTypeCategories<T extends Record<string, ArgTypeDefinit
   const result: Partial<T> = {};
   Object.entries(argTypes).forEach(([key, value]) => {
     if (value.table?.category && !categories.includes(value.table.category)) {
-      result[key as keyof T] = value;
+      result[key as keyof T] = value as any;
     }
   });
   return result;

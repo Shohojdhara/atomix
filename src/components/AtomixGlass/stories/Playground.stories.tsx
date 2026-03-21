@@ -253,7 +253,7 @@ const BackgroundWrapper = ({
         <div
           key={bg.url}
           style={{
-            position: 'absolute',
+            position: 'fixed',
             inset: 0,
             backgroundImage: `url(${bg.url})`,
             backgroundSize: 'cover',
@@ -360,7 +360,9 @@ export const Playground: Story = {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [copiedCode, setCopiedCode] = useState(false);
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [controlTab, setControlTab] = useState<'optics' | 'animation' | 'responsive' | 'flags'>('optics');
+    const [controlTab, setControlTab] = useState<'optics' | 'animation' | 'responsive' | 'flags'>(
+      'optics'
+    );
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const backgroundsArrayRef = useRef<typeof backgrounds | null>(null);
 
@@ -1157,7 +1159,12 @@ export const Playground: Story = {
                           {/* Time Animation Toggle */}
                           <div className="u-mb-3">
                             <button
-                              onClick={() => setSettings(prev => ({ ...prev, withTimeAnimation: !prev.withTimeAnimation }))}
+                              onClick={() =>
+                                setSettings(prev => ({
+                                  ...prev,
+                                  withTimeAnimation: !prev.withTimeAnimation,
+                                }))
+                              }
                               className="u-flex u-items-center u-gap-2 u-px-3 u-py-2 u-rounded u-text-start u-w-100"
                               style={{
                                 background: settings.withTimeAnimation
@@ -1175,16 +1182,22 @@ export const Playground: Story = {
                                   width: '10px',
                                   height: '10px',
                                   borderRadius: '50%',
-                                  background: settings.withTimeAnimation ? '#f472b6' : 'rgba(255,255,255,0.2)',
+                                  background: settings.withTimeAnimation
+                                    ? '#f472b6'
+                                    : 'rgba(255,255,255,0.2)',
                                   flexShrink: 0,
-                                  boxShadow: settings.withTimeAnimation ? '0 0 8px rgba(244,114,182,0.6)' : 'none',
+                                  boxShadow: settings.withTimeAnimation
+                                    ? '0 0 8px rgba(244,114,182,0.6)'
+                                    : 'none',
                                 }}
                               />
                               <span
                                 className="u-text-xs u-font-medium"
-                                style={{ 
-                                  color: settings.withTimeAnimation ? '#f472b6' : 'rgba(255,255,255,0.6)',
-                                  flex: 1 
+                                style={{
+                                  color: settings.withTimeAnimation
+                                    ? '#f472b6'
+                                    : 'rgba(255,255,255,0.6)',
+                                  flex: 1,
                                 }}
                               >
                                 Time Animation
@@ -1228,7 +1241,7 @@ export const Playground: Story = {
                                   className="premium-slider u-absolute u-w-100 u-m-0"
                                   style={{
                                     height: '2px',
-                                    background: `linear-gradient(to right, #f472b6 ${((settings.animationSpeed / 3) * 100)}%, rgba(255,255,255,0.15) ${((settings.animationSpeed / 3) * 100)}%)`,
+                                    background: `linear-gradient(to right, #f472b6 ${(settings.animationSpeed / 3) * 100}%, rgba(255,255,255,0.15) ${(settings.animationSpeed / 3) * 100}%)`,
                                     borderRadius: '2px',
                                     outline: 'none',
                                     appearance: 'none',
@@ -1244,7 +1257,12 @@ export const Playground: Story = {
                           {/* Multi-Layer Distortion Toggle */}
                           <div className="u-mb-3">
                             <button
-                              onClick={() => setSettings(prev => ({ ...prev, withMultiLayerDistortion: !prev.withMultiLayerDistortion }))}
+                              onClick={() =>
+                                setSettings(prev => ({
+                                  ...prev,
+                                  withMultiLayerDistortion: !prev.withMultiLayerDistortion,
+                                }))
+                              }
                               className="u-flex u-items-center u-gap-2 u-px-3 u-py-2 u-rounded u-text-start u-w-100"
                               style={{
                                 background: settings.withMultiLayerDistortion
@@ -1262,16 +1280,22 @@ export const Playground: Story = {
                                   width: '10px',
                                   height: '10px',
                                   borderRadius: '50%',
-                                  background: settings.withMultiLayerDistortion ? '#a78bfa' : 'rgba(255,255,255,0.2)',
+                                  background: settings.withMultiLayerDistortion
+                                    ? '#a78bfa'
+                                    : 'rgba(255,255,255,0.2)',
                                   flexShrink: 0,
-                                  boxShadow: settings.withMultiLayerDistortion ? '0 0 8px rgba(167,139,250,0.6)' : 'none',
+                                  boxShadow: settings.withMultiLayerDistortion
+                                    ? '0 0 8px rgba(167,139,250,0.6)'
+                                    : 'none',
                                 }}
                               />
                               <span
                                 className="u-text-xs u-font-medium"
-                                style={{ 
-                                  color: settings.withMultiLayerDistortion ? '#a78bfa' : 'rgba(255,255,255,0.6)',
-                                  flex: 1 
+                                style={{
+                                  color: settings.withMultiLayerDistortion
+                                    ? '#a78bfa'
+                                    : 'rgba(255,255,255,0.6)',
+                                  flex: 1,
                                 }}
                               >
                                 Multi-Layer Distortion
@@ -1427,7 +1451,7 @@ export const Playground: Story = {
                         </div>
                       </>
                     )}
-                    
+
                     {/* === CONTROLS: RESPONSIVE & PERFORMANCE === */}
                     {controlTab === 'responsive' && (
                       <div className="u-mb-4 u-animation-fade-in">
@@ -1448,7 +1472,7 @@ export const Playground: Story = {
                             Responsive & Performance
                           </span>
                         </div>
-                    
+
                         {/* Device Preset Selector */}
                         <div className="u-mb-4">
                           <label className="u-block u-mb-2 u-text-white u-font-semibold u-text-xs">
@@ -1461,7 +1485,9 @@ export const Playground: Story = {
                             {(['performance', 'balanced', 'quality'] as const).map(preset => (
                               <button
                                 key={preset}
-                                onClick={() => setSettings(prev => ({ ...prev, devicePreset: preset }))}
+                                onClick={() =>
+                                  setSettings(prev => ({ ...prev, devicePreset: preset }))
+                                }
                                 className="u-py-2 u-rounded u-text-center u-text-xs u-font-bold"
                                 style={{
                                   background:
@@ -1472,13 +1498,18 @@ export const Playground: Story = {
                                     settings.devicePreset === preset
                                       ? '1px solid rgba(16,185,129,0.5)'
                                       : '1px solid rgba(255,255,255,0.1)',
-                                  color: settings.devicePreset === preset ? '#10b981' : 'rgba(255,255,255,0.55)',
+                                  color:
+                                    settings.devicePreset === preset
+                                      ? '#10b981'
+                                      : 'rgba(255,255,255,0.55)',
                                   cursor: 'pointer',
                                   transition: 'all 0.2s',
                                   outline: 'none',
                                   textTransform: 'capitalize',
                                   boxShadow:
-                                    settings.devicePreset === preset ? '0 2px 12px rgba(16,185,129,0.15)' : 'none',
+                                    settings.devicePreset === preset
+                                      ? '0 2px 12px rgba(16,185,129,0.15)'
+                                      : 'none',
                                 }}
                               >
                                 {preset}
@@ -1486,16 +1517,24 @@ export const Playground: Story = {
                             ))}
                           </div>
                           <p className="u-mt-2 u-text-xs u-opacity-60">
-                            {settings.devicePreset === 'performance' && '⚡ Optimized for low-end devices with reduced quality'}
-                            {settings.devicePreset === 'balanced' && '⚖️ Balanced quality and performance (recommended)'}
-                            {settings.devicePreset === 'quality' && '💎 Maximum visual quality for high-end devices'}
+                            {settings.devicePreset === 'performance' &&
+                              '⚡ Optimized for low-end devices with reduced quality'}
+                            {settings.devicePreset === 'balanced' &&
+                              '⚖️ Balanced quality and performance (recommended)'}
+                            {settings.devicePreset === 'quality' &&
+                              '💎 Maximum visual quality for high-end devices'}
                           </p>
                         </div>
-                    
+
                         {/* Disable Responsive Breakpoints Toggle */}
                         <div className="u-mb-4">
                           <button
-                            onClick={() => setSettings(prev => ({ ...prev, disableResponsiveBreakpoints: !prev.disableResponsiveBreakpoints }))}
+                            onClick={() =>
+                              setSettings(prev => ({
+                                ...prev,
+                                disableResponsiveBreakpoints: !prev.disableResponsiveBreakpoints,
+                              }))
+                            }
                             className="u-flex u-items-center u-gap-2 u-px-3 u-py-2 u-rounded u-text-start u-w-100"
                             style={{
                               background: settings.disableResponsiveBreakpoints
@@ -1513,38 +1552,43 @@ export const Playground: Story = {
                                 width: '10px',
                                 height: '10px',
                                 borderRadius: '50%',
-                                background: settings.disableResponsiveBreakpoints ? '#ef4444' : 'rgba(255,255,255,0.2)',
+                                background: settings.disableResponsiveBreakpoints
+                                  ? '#ef4444'
+                                  : 'rgba(255,255,255,0.2)',
                                 flexShrink: 0,
-                                boxShadow: settings.disableResponsiveBreakpoints ? '0 0 8px rgba(239,68,68,0.6)' : 'none',
+                                boxShadow: settings.disableResponsiveBreakpoints
+                                  ? '0 0 8px rgba(239,68,68,0.6)'
+                                  : 'none',
                               }}
                             />
                             <span
                               className="u-text-xs u-font-medium"
-                              style={{ 
-                                color: settings.disableResponsiveBreakpoints ? '#ef4444' : 'rgba(255,255,255,0.6)',
-                                flex: 1 
+                              style={{
+                                color: settings.disableResponsiveBreakpoints
+                                  ? '#ef4444'
+                                  : 'rgba(255,255,255,0.6)',
+                                flex: 1,
                               }}
                             >
                               Disable Responsive Breakpoints
                             </span>
                           </button>
                           <p className="u-mt-1 u-text-xs u-opacity-50">
-                            When enabled, prevents automatic parameter adjustment based on viewport size
+                            When enabled, prevents automatic parameter adjustment based on viewport
+                            size
                           </p>
                         </div>
-                    
+
                         {/* Debug Options */}
                         <div className="u-mb-3">
                           <label className="u-block u-mb-2 u-text-white u-font-semibold u-text-xs">
                             🔍 Debug Options
                           </label>
-                          <div className="u-grid u-gap-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
-                            {(
-                              [
-                                'debugPerformance',
-                                'debugOverLight',
-                              ] as const
-                            ).map(key => {
+                          <div
+                            className="u-grid u-gap-3"
+                            style={{ gridTemplateColumns: '1fr 1fr' }}
+                          >
+                            {(['debugPerformance', 'debugOverLight'] as const).map(key => {
                               const isOn = settings[key] as boolean;
                               const label = key
                                 .replace(/([A-Z])/g, ' $1')
@@ -1589,7 +1633,7 @@ export const Playground: Story = {
                         </div>
                       </div>
                     )}
-                    
+
                     {/* === CONTROLS: ACCESSIBILITY FLAGS === */}
                     {controlTab === 'flags' && (
                       <div className="u-mb-4 u-animation-fade-in">
@@ -2008,7 +2052,10 @@ export const Playground: Story = {
                         {backgrounds[backgroundIndex]?.tag}
                       </span>
                     </div>
-                    <div className="u-mt-1 u-text-xs u-opacity-35" style={{ letterSpacing: '0.3px' }}>
+                    <div
+                      className="u-mt-1 u-text-xs u-opacity-35"
+                      style={{ letterSpacing: '0.3px' }}
+                    >
                       Use ← → arrow keys to navigate
                     </div>
                   </div>

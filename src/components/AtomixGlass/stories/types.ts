@@ -56,14 +56,14 @@ export type ArgTypeCategory =
  * Enhanced argType definition with category support
  */
 export interface ArgTypeDefinition {
-  control: Record<string, unknown>;
-  description: string;
+  control?: { type: 'text' | 'boolean' | 'object' | 'range' | 'number' | 'color' | 'select' | 'radio' | 'inline-radio' | 'check' | 'inline-check' | 'multi-select' | 'date' | 'file'; [key: string]: unknown } | boolean;
+  description?: string;
   table: {
     category?: ArgTypeCategory;
     defaultValue?: { summary: string };
     type?: { summary: string };
   };
-  options?: string[];
+  options?: unknown[];
   action?: string;
 }
 

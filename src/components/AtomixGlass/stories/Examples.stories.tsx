@@ -53,11 +53,15 @@ export const HeroExample: Story = {
       <div>
         <div style={{ maxWidth: '900px' }} className="u-mx-auto">
           <AtomixGlass
-            displacementScale={100}
-            blurAmount={1}
+            displacementScale={150}
+            blurAmount={2.5}
+            saturation={160}
+            aberrationIntensity={4}
             borderRadius={30}
-            mode="shader"
-            shaderVariant="premiumGlass"
+            mode="prominent"
+            withLiquidBlur={true}
+            withTimeAnimation={true}
+            withMultiLayerDistortion={true}
             onClick={() => {}}
           >
             <div
@@ -395,11 +399,15 @@ export const DashboardCards: Story = {
       >
         <div style={{ maxWidth: '1200px', margin: '0 auto', color: 'white' }}>
           <AtomixGlass
-            displacementScale={30}
-            blurAmount={5}
-            saturation={140}
-            borderRadius={20}
-            mode="standard"
+            displacementScale={80}
+            blurAmount={2.5}
+            saturation={160}
+            aberrationIntensity={3}
+            borderRadius={24}
+            mode="prominent"
+            withLiquidBlur={true}
+            withTimeAnimation={true}
+            withMultiLayerDistortion={true}
             padding="24px 32px"
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -457,12 +465,15 @@ export const DashboardCards: Story = {
                   onMouseLeave={() => setSelectedCard(null)}
                 >
                   <AtomixGlass
-                    displacementScale={selectedCard === index ? 50 : 35}
-                    blurAmount={selectedCard === index ? 1.5 : 1}
-                    saturation={selectedCard === index ? 132 : 130}
-                    aberrationIntensity={selectedCard === index ? 2 : 1}
+                    displacementScale={selectedCard === index ? 120 : 60}
+                    blurAmount={selectedCard === index ? 3 : 1.5}
+                    saturation={selectedCard === index ? 180 : 140}
+                    aberrationIntensity={selectedCard === index ? 4 : 2}
                     borderRadius={16}
-                    mode="standard"
+                    mode="polar"
+                    withLiquidBlur={true}
+                    withTimeAnimation={selectedCard === index}
+                    withMultiLayerDistortion={selectedCard === index}
                   >
                     <div className="u-p-4">
                       <div

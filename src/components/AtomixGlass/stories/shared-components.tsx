@@ -79,6 +79,7 @@ export const BackgroundWrapper: React.FC<BackgroundWrapperProps> = ({
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'fixed',
     height,
     width,
     borderRadius,
