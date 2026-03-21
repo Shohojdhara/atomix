@@ -96,6 +96,19 @@ declare global {
   }
 }
 
+// Helper to merge refs
+function mergeRefs<T = any>(...refs: (React.MutableRefObject<T> | React.LegacyRef<T> | undefined | null)[]) {
+  return (node: T) => {
+    refs.forEach((ref) => {
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref != null) {
+        (ref as React.MutableRefObject<T | null>).current = node;
+      }
+    });
+  };
+}
+
 // Internal implementation with forwardRef
 const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function AtomixGlass(
   {
@@ -145,6 +158,8 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
 ) {
   const glassRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const internalWrapperRef = useRef<HTMLDivElement>(null);
+  const mergedRef = useMemo(() => mergeRefs(ref, internalWrapperRef), [ref]);
 
   // ── Layout hoisting ──────────────────────────────────────────────────────
   // When position is fixed/sticky the layout props must live on the ROOT
@@ -179,6 +194,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
   } = useAtomixGlass({
     glassRef,
     contentRef,
+    wrapperRef: internalWrapperRef,
     borderRadius,
     globalMousePosition: externalGlobalMousePosition,
     mouseOffset: externalMouseOffset,
@@ -522,7 +538,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
   return (
     <div
       {...rest}
-      ref={ref}
+      ref={mergedRef}
       className={componentClassName}
       style={{ ...glassVars }}
       role={role || (onClick ? 'button' : undefined)}
