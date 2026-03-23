@@ -775,49 +775,14 @@ export function useAtomixGlass({
   // ── Raw mouse handler — writes to TARGET refs only ──────────────────
   // The lerp loop (below) reads the targets and incrementally
   // moves the "current" refs toward them for liquid smoothing.
-  const handleGlobalMousePosition = useCallback(
-    (globalPos: MousePosition) => {
-      if (externalGlobalMousePosition && externalMouseOffset) {
-        return;
-      }
 
-      if (effectiveWithoutEffects) {
-        return;
-      }
-
-      const container = mouseContainer?.current || glassRef.current;
-      if (!container) {
-        return;
-      }
-
-      // Use cached rect if available, otherwise get new one
-      let rect = cachedRectRef.current;
-      if (!rect || rect.width === 0 || rect.height === 0) {
-        rect = container.getBoundingClientRect();
-        cachedRectRef.current = rect;
-      }
-
-      if (rect.width === 0 || rect.height === 0) {
-        return;
-      }
-
-      const center = calculateElementCenter(rect);
-
-      // Write raw target — the lerp loop will smoothly pursue it
-      targetMouseOffsetRef.current = {
-        x: ((globalPos.x - center.x) / rect.width) * 100,
-        y: ((globalPos.y - center.y) / rect.height) * 100,
-      };
-      targetGlobalMousePositionRef.current = globalPos;
-    },
-    [
-      mouseContainer,
-      glassRef,
-      externalGlobalMousePosition,
-      externalMouseOffset,
-      effectiveWithoutEffects,
-    ]
-  );
+  const stopLerpLoop = useCallback(() => {
+    lerpActiveRef.current = false;
+    if (lerpRafRef.current !== null) {
+      cancelAnimationFrame(lerpRafRef.current);
+      lerpRafRef.current = null;
+    }
+  }, []);
 
   // ── Lerp animation loop ─────────────────────────────────────────────
   // Continuously interpolates the current offset toward the target.
@@ -827,20 +792,18 @@ export function useAtomixGlass({
     lerpActiveRef.current = true;
 
     const LERP_T = CONSTANTS.LERP_FACTOR; // 0.08 – lower = more viscous
-    const EPSILON = 0.05; // Stop iterating when close enough
+    const EPSILON = 0.01; // Snap when close enough
 
     const tick = () => {
       if (!lerpActiveRef.current) return;
 
-      // Add ref validity check to prevent memory leaks
-      if (!glassRef.current || !wrapperRef?.current) {
+      if (!glassRef.current) {
         lerpActiveRef.current = false;
         return;
       }
 
       const cur = internalMouseOffsetRef.current;
       const tgt = targetMouseOffsetRef.current;
-
       const dx = tgt.x - cur.x;
       const dy = tgt.y - cur.y;
 
@@ -848,22 +811,53 @@ export function useAtomixGlass({
       if (Math.abs(dx) < EPSILON && Math.abs(dy) < EPSILON) {
         internalMouseOffsetRef.current = { ...tgt };
         internalGlobalMousePositionRef.current = { ...targetGlobalMousePositionRef.current };
-      } else {
-        internalMouseOffsetRef.current = {
-          x: lerp(cur.x, tgt.x, LERP_T),
-          y: lerp(cur.y, tgt.y, LERP_T),
-        };
-        const curG = internalGlobalMousePositionRef.current;
-        const tgtG = targetGlobalMousePositionRef.current;
-        internalGlobalMousePositionRef.current = {
-          x: lerp(curG.x, tgtG.x, LERP_T),
-          y: lerp(curG.y, tgtG.y, LERP_T),
-        };
+        
+        // Final update and stop
+        updateAtomixGlassStyles(
+          wrapperRef?.current || null,
+          glassRef.current,
+          {
+            mouseOffset: internalMouseOffsetRef.current,
+            globalMousePosition: internalGlobalMousePositionRef.current,
+            glassSize,
+            isHovered,
+            isActive,
+            isOverLight: overLightConfig.isOverLight,
+            baseOverLightConfig: overLightConfig,
+            effectiveBorderRadius,
+            effectiveWithoutEffects,
+            effectiveReducedMotion,
+            elasticity,
+            directionalScale: isActive && Boolean(onClick) ? 'scale(0.96)' : 'scale(1)',
+            onClick,
+            withLiquidBlur,
+            blurAmount,
+            saturation,
+            padding,
+            isFixedOrSticky,
+          }
+        );
+        
+        stopLerpLoop();
+        return;
       }
 
-      // Imperative style update with the smoothed values
+      // Smooth step
+      internalMouseOffsetRef.current = {
+        x: lerp(cur.x, tgt.x, LERP_T),
+        y: lerp(cur.y, tgt.y, LERP_T),
+      };
+      
+      const curG = internalGlobalMousePositionRef.current;
+      const tgtG = targetGlobalMousePositionRef.current;
+      internalGlobalMousePositionRef.current = {
+        x: lerp(curG.x, tgtG.x, LERP_T),
+        y: lerp(curG.y, tgtG.y, LERP_T),
+      };
+
+      // Imperative style update
       updateAtomixGlassStyles(
-        wrapperRef.current,
+        wrapperRef?.current || null,
         glassRef.current,
         {
           mouseOffset: internalMouseOffsetRef.current,
@@ -908,15 +902,58 @@ export function useAtomixGlass({
     saturation,
     padding,
     isFixedOrSticky,
+    stopLerpLoop,
   ]);
 
-  const stopLerpLoop = useCallback(() => {
-    lerpActiveRef.current = false;
-    if (lerpRafRef.current !== null) {
-      cancelAnimationFrame(lerpRafRef.current);
-      lerpRafRef.current = null;
-    }
-  }, []);
+  const handleGlobalMousePosition = useCallback(
+    (globalPos: MousePosition) => {
+      if (externalGlobalMousePosition && externalMouseOffset) {
+        return;
+      }
+
+      if (effectiveWithoutEffects) {
+        return;
+      }
+
+      const container = mouseContainer?.current || glassRef.current;
+      if (!container) {
+        return;
+      }
+
+      // Use cached rect if available, otherwise get new one
+      let rect = cachedRectRef.current;
+      if (!rect || rect.width === 0 || rect.height === 0) {
+        rect = container.getBoundingClientRect();
+        cachedRectRef.current = rect;
+      }
+
+      if (rect.width === 0 || rect.height === 0) {
+        return;
+      }
+
+      const center = calculateElementCenter(rect);
+
+      // Write raw target — the lerp loop will smoothly pursue it
+      targetMouseOffsetRef.current = {
+        x: ((globalPos.x - center.x) / rect.width) * 100,
+        y: ((globalPos.y - center.y) / rect.height) * 100,
+      };
+      targetGlobalMousePositionRef.current = globalPos;
+
+      // Ensure the lerp loop is running to smoothly chase the new target
+      if (!lerpActiveRef.current) {
+        startLerpLoop();
+      }
+    },
+    [
+      mouseContainer,
+      glassRef,
+      externalGlobalMousePosition,
+      externalMouseOffset,
+      effectiveWithoutEffects,
+      startLerpLoop,
+    ]
+  );
 
   // Subscribe to shared mouse tracker
   useEffect(() => {
@@ -929,8 +966,8 @@ export function useAtomixGlass({
     }
 
     const unsubscribe = globalMouseTracker.subscribe(handleGlobalMousePosition);
-
-    // Start the lerp loop — it will smoothly chase the target
+    
+    // Initial start
     startLerpLoop();
 
     const updateRect = () => {
@@ -966,14 +1003,14 @@ export function useAtomixGlass({
       }
     };
   }, [
+    externalGlobalMousePosition,
+    externalMouseOffset,
+    effectiveWithoutEffects,
     handleGlobalMousePosition,
     startLerpLoop,
     stopLerpLoop,
     mouseContainer,
     glassRef,
-    externalGlobalMousePosition,
-    externalMouseOffset,
-    effectiveWithoutEffects,
   ]);
 
   // Also call updateStyles on other state changes (hover, active, etc)

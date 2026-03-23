@@ -1,9 +1,20 @@
 import React, { forwardRef, useId, useRef, useState, useEffect, useMemo } from 'react';
 import type { CSSProperties } from 'react';
-import type { DisplacementMode, MousePosition, GlassSize, AtomixGlassProps } from '../../lib/types/components';
+import type {
+  DisplacementMode,
+  MousePosition,
+  GlassSize,
+  AtomixGlassProps,
+} from '../../lib/types/components';
 import type { FragmentShaderType, ShaderOptions, Vec2 } from './shader-utils';
 import { GlassFilter } from './GlassFilter';
-import { calculateMouseInfluence, clampBlur, validateGlassSize, getCachedShader, setCachedShader } from './glass-utils';
+import {
+  calculateMouseInfluence,
+  clampBlur,
+  validateGlassSize,
+  getCachedShader,
+  setCachedShader,
+} from './glass-utils';
 import { ATOMIX_GLASS } from '../../lib/constants/components';
 
 const { CONSTANTS } = ATOMIX_GLASS;
@@ -77,6 +88,7 @@ interface AtomixGlassContainerProps
   effectiveReducedMotion?: boolean;
   shaderVariant?: FragmentShaderType;
   withLiquidBlur?: boolean;
+  isFixedOrSticky?: boolean;
 
   // Phase 1: Animation System props
   shaderTime?: number;
@@ -116,6 +128,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       effectiveReducedMotion = false,
       shaderVariant = 'liquidGlass',
       withLiquidBlur = false,
+      isFixedOrSticky = false,
 
       // Phase 1: Animation System props
       shaderTime,
@@ -198,7 +211,8 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
           try {
             const { ShaderDisplacementGenerator, fragmentShaders } = shaderUtilsRef.current;
             shaderGeneratorRef.current?.destroy();
-            const selectedShader = (fragmentShaders[shaderVariant] ?? fragmentShaders.liquidGlass) as FragmentShaderFn;
+            const selectedShader = (fragmentShaders[shaderVariant] ??
+              fragmentShaders.liquidGlass) as FragmentShaderFn;
             shaderGeneratorRef.current = new ShaderDisplacementGenerator({
               width: glassSize.width,
               height: glassSize.height,
@@ -271,16 +285,18 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
               ? 24
               : 20;
       const effectiveSpeed = Math.max(0.5, Math.min(2, animationSpeed || 1));
-      const complexity =
-        withMultiLayerDistortion
-          ? Math.max(
-              1,
-              (distortionOctaves || 3) / 3 +
-                Math.max(0, (distortionLacunarity || 2) - 2) * 0.25 +
-                Math.max(0, (distortionGain || 0.5) - 0.5)
-            )
-          : 1;
-      const targetFps = Math.max(12, Math.min(60, Math.round((baseFps * effectiveSpeed) / complexity)));
+      const complexity = withMultiLayerDistortion
+        ? Math.max(
+            1,
+            (distortionOctaves || 3) / 3 +
+              Math.max(0, (distortionLacunarity || 2) - 2) * 0.25 +
+              Math.max(0, (distortionGain || 0.5) - 0.5)
+          )
+        : 1;
+      const targetFps = Math.max(
+        12,
+        Math.min(60, Math.round((baseFps * effectiveSpeed) / complexity))
+      );
       const frameInterval = 1000 / targetFps;
       let lastUpdate = 0;
       let isCancelled = false;
@@ -520,7 +536,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         } as React.CSSProperties;
       }
     }, [
-    borderRadius,
+      borderRadius,
       backdropStyle,
       mouseOffset,
       overLight,

@@ -298,8 +298,6 @@ export const updateAtomixGlassStyles = (
     // Container variables
     const style = containerElement.style;
 
-    style.setProperty('--atomix-glass-container-width', !isFixedOrSticky ? '100%' : `${glassSize.width}`);
-    style.setProperty('--atomix-glass-container-height', !isFixedOrSticky ? '100%' : `${glassSize.height}`);
     style.setProperty('--atomix-glass-container-padding', padding);
     style.setProperty('--atomix-glass-container-radius', `${effectiveBorderRadius}px`);
 

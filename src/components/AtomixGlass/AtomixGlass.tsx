@@ -7,7 +7,10 @@ import { useAtomixGlass } from '../../lib/composables/useAtomixGlass';
 import { useResponsiveGlass } from '../../lib/composables/useResponsiveGlass';
 import { usePerformanceMonitor } from '../../lib/composables/usePerformanceMonitor';
 import { PerformanceDashboard } from './PerformanceDashboard';
-import { getDevicePreset, MOBILE_OPTIMIZED_BREAKPOINTS } from '../../lib/composables/useResponsiveGlass.presets';
+import {
+  getDevicePreset,
+  MOBILE_OPTIMIZED_BREAKPOINTS,
+} from '../../lib/composables/useResponsiveGlass.presets';
 
 /**
  * AtomixGlass - A high-performance glass morphism component with liquid distortion effects
@@ -97,9 +100,11 @@ declare global {
 }
 
 // Helper to merge refs
-function mergeRefs<T = any>(...refs: (React.MutableRefObject<T> | React.LegacyRef<T> | undefined | null)[]) {
+function mergeRefs<T = any>(
+  ...refs: (React.MutableRefObject<T> | React.LegacyRef<T> | undefined | null)[]
+) {
   return (node: T) => {
-    refs.forEach((ref) => {
+    refs.forEach(ref => {
       if (typeof ref === 'function') {
         ref(node);
       } else if (ref != null) {
@@ -152,6 +157,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     distortionQuality = 'medium',
     devicePreset = 'balanced',
     disableResponsiveBreakpoints = false,
+    isFixedOrSticky: propsIsFixedOrSticky,
     ...rest
   },
   ref
@@ -170,7 +176,8 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
   // layers via --atomix-glass-base-z-index.  It must NOT be applied as a
   // real z-index on the root element — that would break the glass effect.
   const { zIndex: customZIndex, ...restStyle } = style;
-  const isFixedOrSticky = restStyle.position === 'fixed' || restStyle.position === 'sticky';
+  const isFixedOrSticky =
+    propsIsFixedOrSticky || restStyle.position === 'fixed' || restStyle.position === 'sticky';
 
   // Use composable hook for all state and logic
   const {
@@ -237,7 +244,9 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
   useResponsiveGlass({
     baseParams: {
       ...devicePresetParams,
-      distortionOctaves: Math.round((displacementScale || ATOMIX_GLASS.DEFAULTS.DISPLACEMENT_SCALE) / 25),
+      distortionOctaves: Math.round(
+        (displacementScale || ATOMIX_GLASS.DEFAULTS.DISPLACEMENT_SCALE) / 25
+      ),
       displacementScale: displacementScale || ATOMIX_GLASS.DEFAULTS.DISPLACEMENT_SCALE,
       blurAmount: blurAmount || ATOMIX_GLASS.DEFAULTS.BLUR_AMOUNT,
       saturation: saturation || ATOMIX_GLASS.DEFAULTS.SATURATION,
@@ -288,14 +297,12 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       const { position: _p, top: _t, left: _l, right: _r, bottom: _b, ...visualStyle } = restStyle;
       return {
         ...visualStyle,
-        ...(!effectiveWithoutEffects && { transform: transformStyle }),
       };
     }
     return {
       ...restStyle,
-      ...(!effectiveWithoutEffects && { transform: transformStyle }),
     };
-  }, [isFixedOrSticky, restStyle, effectiveWithoutEffects, transformStyle]);
+  }, [isFixedOrSticky, restStyle]);
 
   // Build className with state modifiers
   const componentClassName = [
@@ -330,6 +337,9 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       if (value !== undefined) {
         return typeof value === 'number' ? `${value}px` : value;
       }
+
+      
+
       if (measured > 0) {
         return `${measured}px`;
       }
@@ -351,6 +361,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     positionStyles.position,
     glassSize.width,
     glassSize.height,
+    isFixedOrSticky,
   ]);
 
   // Memoize expensive gradient calculations
@@ -442,8 +453,8 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       ...(customZIndex !== undefined && { '--atomix-glass-base-z-index': customZIndex }),
       '--atomix-glass-radius': `${effectiveBorderRadius}px`,
       '--atomix-glass-transform': transformStyle || 'none',
-      // Internal decorative layers are positioned relative to the root;
-      '--atomix-glass-position': rootLayoutStyle.position,
+      '--atomix-glass-container-position': `${!isFixedOrSticky ? positionStyles.position : rootLayoutStyle.position}`,
+      '--atomix-glass-position': `${!isFixedOrSticky ? positionStyles.position : rootLayoutStyle.position}`,
       '--atomix-glass-top': `${isFixedOrSticky ? rootLayoutStyle.top : 0}px`,
       '--atomix-glass-left': `${isFixedOrSticky ? rootLayoutStyle.left : 0}px`,
       '--atomix-glass-width': adjustedSize.width,
@@ -487,6 +498,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     customZIndex,
     rootLayoutStyle,
     isFixedOrSticky,
+    positionStyles,
   ]);
 
   // ─── Render helpers ──────────────────────────────────────────────────────
@@ -554,12 +566,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
         ref={glassRef}
         contentRef={contentRef}
         className={className}
-        style={{
-          ...restStyle,
-          ...(!isFixedOrSticky && {
-            position: 'relative',
-          }),
-        }}
+        style={{ ...baseStyle, ...restStyle } as React.CSSProperties}
         borderRadius={effectiveBorderRadius}
         displacementScale={
           effectiveWithoutEffects
@@ -608,6 +615,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
         effectiveReducedMotion={effectiveReducedMotion}
         shaderVariant={shaderVariant}
         withLiquidBlur={withLiquidBlur}
+        isFixedOrSticky={isFixedOrSticky}
         // Phase 1: Animation System props
         shaderTime={getShaderTime()}
         withTimeAnimation={withTimeAnimation}

@@ -191,7 +191,7 @@
   }
 
   &__container {
-    position: var(--atomix-glass-position);
+    position: relative;
     top: var(--atomix-glass-top);
     left: var(--atomix-glass-left);
     border-radius: var(--atomix-glass-radius);

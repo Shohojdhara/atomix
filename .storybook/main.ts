@@ -23,10 +23,14 @@ const config: StorybookConfig = {
     '../src/**/*.stories.@(js|jsx|ts|tsx)'
   ],
   addons: [
+    '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     '@storybook/addon-backgrounds',
     '@storybook/addon-viewport',
+    '@storybook/addon-a11y',
+    '@storybook/addon-outline',
+    '@storybook/addon-measure',
   ],
   docs: {
     autodocs: 'tag',
@@ -66,7 +70,12 @@ const config: StorybookConfig = {
     config.optimizeDeps.include = [
       ...(config.optimizeDeps.include || []),
       '@phosphor-icons/react',
+      '@storybook/react',
+      '@storybook/react-vite',
     ];
+    
+    // Force optimization to avoid dynamic import issues
+    config.optimizeDeps.force = true;
 
     // Configure Sass to use modern API and silence deprecation warnings
     config.css = config.css || {};

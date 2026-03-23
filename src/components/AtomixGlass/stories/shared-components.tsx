@@ -101,7 +101,7 @@ export const BackgroundWrapper: React.FC<BackgroundWrapperProps> = ({
             padding,
             objectPosition: 'center',
             objectFit: 'cover',
-            backgroundPosition: 'fixed'
+            backgroundPosition: 'fixed',
           }}
         />
       )}
@@ -198,7 +198,6 @@ export const StoryContainer: React.FC<StoryContainerProps> = ({
  * Collection of high-quality background images for different moods and scenarios
  */
 export const backgroundImages = [
-  'https://images.unsplash.com/photo-1773609108583-4f0040c75e7f?q=80&w=2532&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   'https://images.unsplash.com/photo-1593433073755-4233a78ee359?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   'https://images.unsplash.com/photo-1637825891028-564f672aa42c?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2670',
   'https://images.unsplash.com/photo-1773062278803-0643c4782445?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -226,14 +225,12 @@ export class StoryErrorBoundary extends React.Component<
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Story rendering error:', error, errorInfo);
-    if (this.props.onError) {
-      this.props.onError(error, errorInfo);
-    }
+  override componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Story Error:', error, errorInfo);
+    this.setState({ hasError: true, error });
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       if (this.props.fallback) {
         return this.props.fallback;
@@ -250,10 +247,7 @@ export class StoryErrorBoundary extends React.Component<
           }}
         >
           <div className="u-text-center">
-            <h3
-              className="u-mb-2 u-text-xl u-font-bold"
-              style={{ color: '#dc2626' }}
-            >
+            <h3 className="u-mb-2 u-text-xl u-font-bold" style={{ color: '#dc2626' }}>
               Story Rendering Error
             </h3>
             <p className="u-mb-4 u-text-sm" style={{ color: '#7f1d1d' }}>
