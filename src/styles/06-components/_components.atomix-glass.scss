@@ -163,11 +163,6 @@
     height: var(--atomix-glass-height);
     border-radius: var(--atomix-glass-radius);
     transform: var(--atomix-glass-transform);
-
-    transition:
-      var(--atomix-glass-transition),
-      background 0.5s ease,
-      backdrop-filter 0.5s ease;
   }
 
   &__border-backdrop {

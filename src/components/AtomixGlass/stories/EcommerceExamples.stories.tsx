@@ -78,7 +78,7 @@ export const PricingTable: Story = {
     return (
       <StoryErrorBoundary>
         <BackgroundWrapper backgroundImage={backgroundImages[0]} overlay overlayOpacity={0.4}>
-          <div style={{ padding: '60px 24px', minHeight: '100vh' }}>
+          <div className="u-min-h-screen" style={{ padding: '60px 24px', minHeight: '100vh' }}>
             {/* Header */}
             <div className="u-text-center u-text-white u-mb-5">
               <Badge variant="outline-light" size="lg" className="u-mb-3">

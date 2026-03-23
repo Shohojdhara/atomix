@@ -51,7 +51,7 @@ export const HeroExample: Story = {
       }
     >
       <div>
-        <div style={{ maxWidth: '900px' }} className="u-mx-auto">
+        <div className="u-max-w-4xl u-mx-auto">
           <AtomixGlass
             displacementScale={150}
             blurAmount={2.5}
@@ -65,10 +65,11 @@ export const HeroExample: Story = {
             onClick={() => {}}
           >
             <div
-              className="u-p-6 u-text-white"
+              className="u-p-12 u-text-white u-text-center"
               style={{ padding: '48px 40px', textAlign: 'center' }}
             >
               <div
+                className="u-w-24 u-h-24 u-mx-auto u-mb-8 u-flex u-items-center u-justify-center u-rounded-xl"
                 style={{
                   width: '96px',
                   height: '96px',
@@ -85,7 +86,7 @@ export const HeroExample: Story = {
                 ✨
               </div>
               <h1
-                className="u-mt-0 u-text-1 u-font-bold"
+                className="u-mt-0 u-mb-5 u-text-6xl u-font-bold u-text-gradient-primary"
                 style={{
                   fontSize: '48px',
                   marginBottom: '20px',
@@ -99,7 +100,7 @@ export const HeroExample: Story = {
                 Modern Glass UI
               </h1>
               <p
-                className="u-text-4 u-mb-4"
+                className="u-text-lg u-mb-8 u-opacity-90"
                 style={{
                   fontSize: '18px',
                   lineHeight: 1.7,
@@ -111,7 +112,7 @@ export const HeroExample: Story = {
                 Create stunning interfaces with the AtomixGlass component. Perfect for modern, sleek
                 designs that stand out.
               </p>
-              <div className="u-flex u-gap-3 u-justify-center u-flex-wrap" style={{ gap: '16px' }}>
+              <div className="u-flex u-gap-6 u-justify-center u-flex-wrap" style={{ gap: '16px' }}>
                 <Button glass size="lg">
                   Get Started
                 </Button>
@@ -160,13 +161,14 @@ export const VideoBackground: Story = {
     };
 
     return (
-      <div style={{ position: 'relative', height: '100vh', width: '100vw', overflow: 'hidden' }}>
+      <div className="u-relative u-h-screen u-w-screen u-overflow-hidden" style={{ position: 'relative', height: '100vh', width: '100vw', overflow: 'hidden' }}>
         {/* Video Background */}
         <video
           autoPlay
           loop
           muted
           playsInline
+          className="u-absolute u-inset-0 u-object-cover"
           style={{
             position: 'absolute',
             top: 0,
@@ -184,6 +186,7 @@ export const VideoBackground: Story = {
         </video>
 
         <div
+          className="u-flex u-items-center u-justify-center u-h-full u-p-10 u-gap-10 u-flex-wrap"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -202,18 +205,20 @@ export const VideoBackground: Story = {
             aberrationIntensity={glassSettings.aberrationIntensity}
             borderRadius={glassSettings.borderRadius}
             mode={glassSettings.mode}
+            className="u-w-80 u-max-w-full"
             style={{ width: '400px', maxWidth: '100%' }}
           >
-            <div style={{ padding: '32px', textAlign: 'center' }}>
-              <h2 style={{ marginTop: 0, fontSize: '28px', fontWeight: 600, marginBottom: '16px' }}>
+            <div className="u-p-8 u-text-center" style={{ padding: '32px', textAlign: 'center' }}>
+              <h2 className="u-mt-0 u-text-2xl u-font-bold u-mb-4" style={{ marginTop: 0, fontSize: '28px', fontWeight: 600, marginBottom: '16px' }}>
                 Glass Over Video
               </h2>
-              <p style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '24px', opacity: 0.9 }}>
+              <p className="u-text-base u-leading-6 u-mb-6 u-opacity-90" style={{ fontSize: '16px', lineHeight: 1.6, marginBottom: '24px', opacity: 0.9 }}>
                 Experience the stunning glass morphism effect overlaid on dynamic video content. The
                 glass element creates a sophisticated focal point while maintaining visual harmony
                 with the moving background.
               </p>
               <div
+                className="u-flex u-justify-center u-gap-3 u-flex-wrap"
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
@@ -221,8 +226,8 @@ export const VideoBackground: Story = {
                   flexWrap: 'wrap',
                 }}
               >
-                <button className="c-btn c-btn--primary">Get Started</button>
-                <button className="c-btn c-btn--outline">Learn More</button>
+                <Button glass>Get Started</Button>
+                <Button glass variant={'light'}>Learn More</Button>
               </div>
             </div>
           </AtomixGlass>
@@ -235,15 +240,16 @@ export const VideoBackground: Story = {
             aberrationIntensity={1.5}
             borderRadius={16}
             mode="standard"
+            className="u-w-60 u-max-w-full"
             style={{ width: '300px', maxWidth: '100%' }}
           >
-            <div style={{ padding: '24px' }}>
-              <h3 style={{ marginTop: 0, fontSize: '18px', marginBottom: '20px' }}>
+            <div className="u-p-6" style={{ padding: '24px' }}>
+              <h3 className="u-mt-0 u-text-base u-mb-5" style={{ marginTop: 0, fontSize: '18px', marginBottom: '20px' }}>
                 Live Controls
               </h3>
 
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
+              <div className="u-mb-4" style={{ marginBottom: '16px' }}>
+                <label className="u-block u-text-xs u-mb-1" style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
                   Displacement: {glassSettings.displacementScale}
                 </label>
                 <input
@@ -252,12 +258,13 @@ export const VideoBackground: Story = {
                   max="150"
                   value={glassSettings.displacementScale}
                   onChange={e => updateSettings('displacementScale', parseInt(e.target.value))}
+                  className="u-w-full u-accent-indigo-500"
                   style={{ width: '100%', accentColor: '#6366f1' }}
                 />
               </div>
 
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
+              <div className="u-mb-4" style={{ marginBottom: '16px' }}>
+                <label className="u-block u-text-xs u-mb-1" style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
                   Blur: {glassSettings.blurAmount}
                 </label>
                 <input
@@ -267,12 +274,13 @@ export const VideoBackground: Story = {
                   step="0.5"
                   value={glassSettings.blurAmount}
                   onChange={e => updateSettings('blurAmount', parseFloat(e.target.value))}
+                  className="u-w-full u-accent-indigo-500"
                   style={{ width: '100%', accentColor: '#6366f1' }}
                 />
               </div>
 
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
+              <div className="u-mb-4" style={{ marginBottom: '16px' }}>
+                <label className="u-block u-text-xs u-mb-1" style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
                   Saturation: {glassSettings.saturation}%
                 </label>
                 <input
@@ -281,12 +289,13 @@ export const VideoBackground: Story = {
                   max="300"
                   value={glassSettings.saturation}
                   onChange={e => updateSettings('saturation', parseInt(e.target.value))}
+                  className="u-w-full u-accent-indigo-500"
                   style={{ width: '100%', accentColor: '#6366f1' }}
                 />
               </div>
 
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
+              <div className="u-mb-4" style={{ marginBottom: '16px' }}>
+                <label className="u-block u-text-xs u-mb-1" style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
                   Aberration: {glassSettings.aberrationIntensity}
                 </label>
                 <input
@@ -296,12 +305,13 @@ export const VideoBackground: Story = {
                   step="0.1"
                   value={glassSettings.aberrationIntensity}
                   onChange={e => updateSettings('aberrationIntensity', parseFloat(e.target.value))}
+                  className="u-w-full u-accent-indigo-500"
                   style={{ width: '100%', accentColor: '#6366f1' }}
                 />
               </div>
 
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
+              <div className="u-mb-4" style={{ marginBottom: '16px' }}>
+                <label className="u-block u-text-xs u-mb-1" style={{ display: 'block', fontSize: '14px', marginBottom: '6px' }}>
                   Corner Radius: {glassSettings.borderRadius}px
                 </label>
                 <input
@@ -310,12 +320,13 @@ export const VideoBackground: Story = {
                   max="100"
                   value={glassSettings.borderRadius}
                   onChange={e => updateSettings('borderRadius', parseInt(e.target.value))}
+                  className="u-w-full u-accent-indigo-500"
                   style={{ width: '100%', accentColor: '#6366f1' }}
                 />
               </div>
 
-              <button
-                className="c-btn c-btn--secondary"
+              <Button
+                className="u-w-full"
                 style={{ width: '100%' }}
                 onClick={() => {
                   setGlassSettings({
@@ -329,7 +340,7 @@ export const VideoBackground: Story = {
                 }}
               >
                 Reset Defaults
-              </button>
+              </Button>
             </div>
           </AtomixGlass>
         </div>
@@ -395,9 +406,10 @@ export const DashboardCards: Story = {
         backgroundImage={
           'https://images.unsplash.com/photo-1614188973043-4ed7d383de37?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1470'
         }
+        className="u-p-10"
         style={{ padding: '40px' }}
       >
-        <div style={{ maxWidth: '1200px', margin: '0 auto', color: 'white' }}>
+        <div className="u-max-w-6xl u-mx-auto u-text-white" style={{ maxWidth: '1200px', margin: '0 auto', color: 'white' }}>
           <AtomixGlass
             displacementScale={80}
             blurAmount={2.5}
@@ -410,8 +422,9 @@ export const DashboardCards: Story = {
             withMultiLayerDistortion={true}
             padding="24px 32px"
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div className="u-flex u-items-center u-gap-4" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
               <div
+                className="u-w-14 u-h-14 u-rounded-xl u-flex u-items-center u-justify-center u-text-3xl"
                 style={{
                   width: '56px',
                   height: '56px',
@@ -428,7 +441,7 @@ export const DashboardCards: Story = {
               </div>
               <div>
                 <h1
-                  className="u-m-0 u-text-2 u-font-bold"
+                  className="u-m-0 u-text-3xl u-font-bold u-mb-1"
                   style={{
                     fontSize: '28px',
                     marginBottom: '6px',
@@ -441,7 +454,7 @@ export const DashboardCards: Story = {
                   Analytics Dashboard
                 </h1>
                 <p
-                  className="u-m-0 u-opacity-80 u-text-6"
+                  className="u-m-0 u-opacity-80 u-text-base"
                   style={{
                     fontSize: '15px',
                     color: 'rgba(255, 255, 255, 0.85)',
@@ -458,6 +471,7 @@ export const DashboardCards: Story = {
               <GridCol md={6} className="u-mb-4">
                 <div
                   key={index}
+                  className="u-cursor-pointer"
                   style={{
                     cursor: 'pointer',
                   }}
@@ -477,6 +491,7 @@ export const DashboardCards: Story = {
                   >
                     <div className="u-p-4">
                       <div
+                        className="u-flex u-items-center u-justify-between u-mb-4"
                         style={{
                           display: 'flex',
                           alignItems: 'center',
@@ -485,6 +500,7 @@ export const DashboardCards: Story = {
                         }}
                       >
                         <div
+                          className="u-w-12 u-h-12 u-rounded-lg u-flex u-items-center u-justify-center u-text-2xl"
                           style={{
                             width: '48px',
                             height: '48px',
@@ -499,6 +515,7 @@ export const DashboardCards: Story = {
                           {stat.icon}
                         </div>
                         <div
+                          className={`u-p-1 u-rounded-full u-text-xs u-font-semibold ${stat.trend === 'up' ? 'u-bg-green-500/20 u-text-green-400' : 'u-bg-red-500/20 u-text-red-400'}`}
                           style={{
                             padding: '4px 12px',
                             borderRadius: '20px',
@@ -515,10 +532,10 @@ export const DashboardCards: Story = {
                         </div>
                       </div>
 
-                      <div style={{ fontSize: '14px', opacity: 0.7, marginBottom: '8px' }}>
+                      <div className="u-text-xs u-opacity-70 u-mb-2" style={{ fontSize: '14px', opacity: 0.7, marginBottom: '8px' }}>
                         {stat.title}
                       </div>
-                      <div style={{ fontSize: '28px', fontWeight: 700 }}>{stat.value}</div>
+                      <div className="u-text-3xl u-font-bold" style={{ fontSize: '28px', fontWeight: 700 }}>{stat.value}</div>
                     </div>
                   </AtomixGlass>
                 </div>
@@ -567,12 +584,12 @@ export const ProductCard: Story = {
           'https://images.unsplash.com/photo-1711779321812-59cdf38ab31f?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132'
         }
       >
-        <div style={{ width: '300px' }} className="u-mx-auto">
+        <div className="u-w-75 u-mx-auto" style={{ width: '300px' }}>
           <AtomixGlass displacementScale={50} blurAmount={1.5} mode="standard" elasticity={0}>
             <div className="u-p-3">
               {/* Product Image */}
               <div
-                className="u-w-100 u-rounded-3"
+                className="u-w-full u-h-50 u-rounded-3 u-mb-6 u-backdrop-blur-md u-relative u-overflow-hidden u-opacity-85 u-flex u-items-center u-justify-center u-text-5xl"
                 style={{
                   height: '200px',
                   background:
@@ -590,6 +607,7 @@ export const ProductCard: Story = {
               >
                 👕
                 <div
+                  className="u-absolute u-top-4 u-right-4 u-bg-red-500/85 u-text-white u-p-1.5 u-rounded-2 u-text-xs u-font-bold"
                   style={{
                     position: 'absolute',
                     top: '16px',
@@ -607,20 +625,20 @@ export const ProductCard: Story = {
               </div>
 
               {/* Product Info */}
-              <h2 className="u-m-0 u-mb-1 u-text-6 u-font-bold">Premium Cotton T-Shirt</h2>
-              <p className="u-m-0 u-mb-2 u-opacity-70 u-text-7">
+              <h2 className="u-m-0 u-mb-1 u-text-2xl u-font-bold">Premium Cotton T-Shirt</h2>
+              <p className="u-m-0 u-mb-2 u-opacity-70 u-text-lg">
                 Ultra-soft fabric with a modern fit. Perfect for everyday wear.
               </p>
 
               {/* Price */}
               <div className="u-flex u-items-center u-gap-2 u-mb-2">
-                <span className="u-text-4 u-font-bold u-text-success">$49.99</span>
-                <span className="u-text-4 u-text-decoration-line-through u-opacity-50">$71.99</span>
+                <span className="u-text-lg u-font-bold u-text-success">$49.99</span>
+                <span className="u-text-lg u-line-through u-opacity-50">$71.99</span>
               </div>
 
               {/* Size Selection */}
               <div className="u-mb-2">
-                <label className="u-block u-text-7 u-font-semibold u-mb-2">Select Size</label>
+                <label className="u-block u-text-lg u-font-semibold u-mb-2">Select Size</label>
                 <div className="u-flex u-gap-2">
                   {sizes.map(size => (
                     <Button
@@ -638,7 +656,7 @@ export const ProductCard: Story = {
 
               {/* Quantity */}
               <div className="u-mb-2">
-                <label className="u-block u-text-7 u-font-semibold u-mb-1 u-text-white">
+                <label className="u-block u-text-lg u-font-semibold u-mb-1 u-text-white">
                   Quantity
                 </label>
                 <div className="u-flex u-items-center u-gap-2">
@@ -646,6 +664,7 @@ export const ProductCard: Story = {
                     −
                   </Button>
                   <span
+                    className="u-text-xl u-font-bold u-min-w-10 u-text-center"
                     style={{
                       fontSize: '18px',
                       fontWeight: 600,
@@ -667,6 +686,7 @@ export const ProductCard: Story = {
                 variant="primary"
                 glass={{ borderRadius: 8 }}
                 size="sm"
+                className="u-w-full"
                 style={{ width: '100%' }}
                 icon={addedToCart ? <Icon name="Check" /> : <Icon name="ShoppingCart" />}
               >
@@ -737,161 +757,122 @@ export const NotificationCenter: Story = {
 
     const markAsRead = (id: number) => {
       setNotifications(prev =>
-        prev.map(notif => (notif.id === id ? { ...notif, read: true } : notif))
+        prev.map(notification =>
+          notification.id === id ? { ...notification, read: true } : notification
+        )
       );
     };
 
-    const clearAll = () => {
-      setNotifications([]);
+    const clearNotification = (id: number) => {
+      setNotifications(prev => prev.filter(notification => notification.id !== id));
     };
-
-    const unreadCount = notifications.filter(n => !n.read).length;
 
     return (
       <BackgroundWrapper
+        overlay={true}
         backgroundImage={
-          'https://images.unsplash.com/photo-1712230983973-6bf75ad1476e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=3132'
+          'https://images.unsplash.com/photo-1516996020930-4ce772760821?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070'
         }
       >
-        <div style={{ maxWidth: '400px', width: '100%' }} className="u-mx-auto">
-          <AtomixGlass displacementScale={70} blurAmount={1} elasticity={0} mode="prominent">
-            <div
-              className="u-rounded-4 u-overflow-hidden u-text-success-emphasis"
-              style={{ background: 'color-mix(in srgb, var(--atomix-success) 10%, transparent)' }}
-            >
-              {/* Header */}
-              <div
-                className="u-p-4 u-flex u-justify-between u-items-center"
-                style={{
-                  borderBottom:
-                    '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)',
-                }}
-              >
-                <div className="u-flex u-items-center u-gap-2">
-                  <h2 className="u-m-0 u-text-4 u-font-bold">Notifications</h2>
-                  {unreadCount > 0 && (
-                    <span
-                      style={{
-                        background: 'var(--atomix-error)',
-                        color: 'white',
-                        padding: '2px 8px',
-                        borderRadius: '10px',
-                        fontSize: '12px',
-                        fontWeight: 600,
-                      }}
-                    >
-                      {unreadCount}
-                    </span>
-                  )}
-                </div>
-                {notifications.length > 0 && (
-                  <button
-                    onClick={clearAll}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--atomix-error-color-text-emphasis)',
-                      fontSize: '13px',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      padding: '4px 8px',
-                    }}
-                  >
-                    Clear All
-                  </button>
-                )}
+        <div className="u-w-90 u-max-w-md u-mx-auto" style={{ width: '360px', maxWidth: 'none', margin: '0 auto' }}>
+          <AtomixGlass
+            displacementScale={100}
+            blurAmount={2}
+            saturation={150}
+            aberrationIntensity={2.5}
+            borderRadius={20}
+            mode="polar"
+            withLiquidBlur={true}
+            withTimeAnimation={true}
+            withMultiLayerDistortion={true}
+          >
+            <div className="u-p-5">
+              <div className="u-flex u-items-center u-justify-between u-mb-5 u-pb-3 u-border-b u-border-white/10" style={{ marginBottom: '24px', paddingBottom: '20px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                <h2 className="u-m-0 u-text-xl u-font-bold u-text-white">Notifications</h2>
+                <Button variant="ghost" glass size="sm">
+                  Clear All
+                </Button>
               </div>
 
-              {/* Notifications List */}
-              <div className="u-overflow-y-auto" style={{ maxHeight: '500px' }}>
-                {notifications.length === 0 ? (
+              <div className="u-space-y-3">
+                {notifications.map(notification => (
                   <div
+                    key={notification.id}
+                    className={`u-p-3 u-rounded-lg ${notification.read ? 'u-bg-white/5' : 'u-bg-white/10'}`}
                     style={{
-                      padding: '60px 24px',
-                      textAlign: 'center',
-                      opacity: 0.6,
+                      padding: '16px',
+                      borderRadius: '8px',
+                      background: notification.read
+                        ? 'rgba(255, 255, 255, 0.05)'
+                        : 'rgba(255, 255, 255, 0.1)',
+                      backdropFilter: 'blur(10px)',
                     }}
                   >
-                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>
-                      <Icon name="Bell" />
-                    </div>
-                    <div style={{ fontSize: '16px' }}>No notifications</div>
-                  </div>
-                ) : (
-                  notifications.map(notification => (
-                    <div
-                      key={notification.id}
-                      onClick={() => markAsRead(notification.id)}
-                      style={{
-                        padding: '16px 24px',
-                        borderBottom:
-                          '1px solid color-mix(in srgb, var(--atomix-success) 10%, transparent)',
-                        cursor: 'pointer',
-                        background: notification.read
-                          ? 'transparent'
-                          : 'color-mix(in srgb, var(--atomix-success) 10%, transparent)',
-                        transition: 'background 0.2s ease',
-                      }}
-                      onMouseEnter={e => {
-                        e.currentTarget.style.background =
-                          'color-mix(in srgb, var(--atomix-success) 10%, transparent)';
-                      }}
-                      onMouseLeave={e => {
-                        e.currentTarget.style.background = notification.read
-                          ? 'transparent'
-                          : 'color-mix(in srgb, var(--atomix-success) 10%, transparent)';
-                      }}
-                    >
-                      <div style={{ display: 'flex', gap: '12px' }}>
-                        <div style={{ fontSize: '24px', flexShrink: 0 }}>{notification.icon}</div>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div
-                            style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'flex-start',
-                              marginBottom: '4px',
-                            }}
-                          >
-                            <span
-                              style={{
-                                fontSize: '15px',
-                                fontWeight: notification.read ? 500 : 700,
-                              }}
-                            >
+                    <div className="u-flex u-gap-3">
+                      <div
+                        className={`u-w-10 u-h-10 u-rounded-lg u-flex u-items-center u-justify-center ${
+                          notification.type === 'success'
+                            ? 'u-bg-green-500/20'
+                            : notification.type === 'warning'
+                            ? 'u-bg-yellow-500/20'
+                            : notification.type === 'info'
+                            ? 'u-bg-blue-500/20'
+                            : 'u-bg-purple-500/20'
+                        }`}
+                        style={{
+                          width: '40px',
+                          height: '40px',
+                          borderRadius: '8px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          background:
+                            notification.type === 'success'
+                              ? 'rgba(16, 185, 129, 0.2)'
+                              : notification.type === 'warning'
+                              ? 'rgba(234, 179, 8, 0.2)'
+                              : notification.type === 'info'
+                              ? 'rgba(59, 130, 246, 0.2)'
+                              : 'rgba(139, 92, 246, 0.2)',
+                        }}
+                      >
+                        {notification.icon}
+                      </div>
+                      <div className="u-flex-1 u-min-w-0">
+                        <div className="u-flex u-items-start u-justify-between">
+                          <div>
+                            <h3 className={`u-m-0 u-text-sm u-font-semibold ${notification.read ? 'u-text-white/80' : 'u-text-white'}`}>
                               {notification.title}
-                            </span>
-                            {!notification.read && (
-                              <div
-                                style={{
-                                  width: '8px',
-                                  height: '8px',
-                                  borderRadius: '50%',
-                                  background: 'var(--atomix-success)',
-                                  flexShrink: 0,
-                                  marginTop: '4px',
-                                }}
-                              />
-                            )}
+                            </h3>
+                            <p className="u-m-0 u-text-xs u-opacity-70 u-mt-1">{notification.message}</p>
                           </div>
-                          <p
-                            style={{
-                              margin: '0 0 6px 0',
-                              fontSize: '13px',
-                              opacity: 0.7,
-                              lineHeight: 1.4,
-                            }}
-                          >
-                            {notification.message}
-                          </p>
-                          <span style={{ fontSize: '12px', opacity: 0.5 }}>
-                            {notification.time}
-                          </span>
+                          <span className="u-text-xs u-opacity-50 u-whitespace-nowrap u-ml-2">{notification.time}</span>
                         </div>
                       </div>
+                      {!notification.read && (
+                        <Button
+                          variant="ghost"
+                          size="xs"
+                          glass
+                          onClick={() => markAsRead(notification.id)}
+                          className="u-ml-2"
+                        >
+                          <Icon name="X" />
+                        </Button>
+                      )}
                     </div>
-                  ))
-                )}
+                    <div className="u-flex u-justify-end u-mt-2">
+                      <Button
+                        variant="ghost"
+                        size="xs"
+                        glass
+                        onClick={() => clearNotification(notification.id)}
+                      >
+                        Clear
+                      </Button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </AtomixGlass>
@@ -903,7 +884,7 @@ export const NotificationCenter: Story = {
     docs: {
       description: {
         story:
-          'A notification center example showing how to build modern notification panels with AtomixGlass. Features read/unread states, different notification types, and interactive clearing functionality.',
+          'A notification center example demonstrating how to use AtomixGlass for modern app interfaces. Features categorized notifications, status indicators, and interactive controls for managing alerts.',
       },
     },
   },
@@ -937,10 +918,11 @@ export const LoginForm: Story = {
           'https://images.unsplash.com/photo-1585937318604-b1f6c789a877?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1548'
         }
         overlayOpacity={0.3}
+        className="u-overflow-auto"
         style={{ overflow: 'auto' }}
       >
-        <div className="u-py-6 u-text-white">
-          <div style={{ maxWidth: '380px' }} className="u-mx-auto">
+        <div className="u-py-16 u-text-white">
+          <div className="u-max-w-md u-mx-auto" style={{ maxWidth: '380px' }}>
             <AtomixGlass
               displacementScale={50}
               blurAmount={1}
@@ -949,10 +931,11 @@ export const LoginForm: Story = {
               borderRadius={24}
               mode="standard"
             >
-              <div className="u-p-4">
+              <div className="u-p-6">
                 {/* Logo/Header */}
                 <div className="u-text-center u-mb-5">
                   <div
+                    className="u-w-18 u-h-18 u-mx-auto u-mb-6 u-rounded-xl u-flex u-items-center u-justify-center u-text-4xl u-relative"
                     style={{
                       width: '72px',
                       height: '72px',
@@ -968,6 +951,7 @@ export const LoginForm: Story = {
                     }}
                   >
                     <div
+                      className="u-absolute u-inset--1 u-rounded-xl"
                       style={{
                         position: 'absolute',
                         inset: '-4px',
@@ -977,10 +961,10 @@ export const LoginForm: Story = {
                         filter: 'blur(16px)',
                       }}
                     />
-                    <Icon name="Lock" style={{ position: 'relative', zIndex: 1 }} />
+                    <Icon name="Lock" className="u-relative u-z-10" style={{ position: 'relative', zIndex: 1 }} />
                   </div>
                   <h2
-                    className="u-m-0 u-mb-2 u-text-3 u-font-bold"
+                    className="u-m-0 u-mb-3 u-text-3xl u-font-bold u-text-gradient-primary"
                     style={{
                       fontSize: '32px',
                       marginBottom: '12px',
@@ -993,7 +977,7 @@ export const LoginForm: Story = {
                     Welcome Back
                   </h2>
                   <p
-                    className="u-m-0 u-opacity-70 u-text-7"
+                    className="u-m-0 u-opacity-70 u-text-lg"
                     style={{
                       fontSize: '15px',
                       color: 'rgba(255, 255, 255, 0.85)',
@@ -1005,8 +989,8 @@ export const LoginForm: Story = {
 
                 {/* Form */}
                 <form onSubmit={handleSubmit}>
-                  <div className="u-mb-3">
-                    <label className="u-block u-text-7 u-font-semibold u-mb-2">Email Address</label>
+                  <div className="u-mb-4">
+                    <label className="u-block u-text-lg u-font-semibold u-mb-2">Email Address</label>
                     <Input
                       type="email"
                       value={email}
@@ -1019,8 +1003,8 @@ export const LoginForm: Story = {
                     />
                   </div>
 
-                  <div className="u-mb-3">
-                    <label className="u-block u-text-7 u-font-semibold u-mb-2">Password</label>
+                  <div className="u-mb-4">
+                    <label className="u-block u-text-lg u-font-semibold u-mb-2">Password</label>
                     <Input
                       type="password"
                       value={password}
@@ -1034,6 +1018,7 @@ export const LoginForm: Story = {
                   </div>
 
                   <div
+                    className="u-flex u-justify-between u-items-center u-mb-5"
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -1042,6 +1027,7 @@ export const LoginForm: Story = {
                     }}
                   >
                     <label
+                      className="u-flex u-items-center u-gap-2 u-text-xs u-cursor-pointer"
                       style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -1054,12 +1040,14 @@ export const LoginForm: Story = {
                         type="checkbox"
                         checked={rememberMe}
                         onChange={e => setRememberMe(e.target.checked)}
+                        className="u-accent-indigo-500"
                         style={{ accentColor: '#667eea' }}
                       />
                       Remember me
                     </label>
                     <a
                       href="#"
+                      className="u-text-xs u-text-indigo-500 u-no-underline u-font-bold"
                       style={{
                         fontSize: '12px',
                         color: '#667eea',
@@ -1078,15 +1066,16 @@ export const LoginForm: Story = {
                     glass={{
                       elasticity: 0,
                     }}
-                    className="u-block u-w-100"
+                    className="u-block u-w-full"
                   >
                     {isLoading ? 'Signing in...' : 'Sign In'}
                   </Button>
                 </form>
 
                 {/* Social Login */}
-                <div style={{ marginTop: '20px' }}>
+                <div className="u-mt-5">
                   <div
+                    className="u-relative u-text-center u-mb-5"
                     style={{
                       position: 'relative',
                       textAlign: 'center',
@@ -1094,6 +1083,7 @@ export const LoginForm: Story = {
                     }}
                   >
                     <div
+                      className="u-absolute u-top-1/2 u-left-0 u-right-0 u-h-px u-bg-white/10"
                       style={{
                         position: 'absolute',
                         top: '50%',
@@ -1104,6 +1094,7 @@ export const LoginForm: Story = {
                       }}
                     />
                     <span
+                      className="u-relative u-px-4 u-bg-inherit u-text-xs u-opacity-60"
                       style={{
                         position: 'relative',
                         padding: '0 16px',
@@ -1116,8 +1107,9 @@ export const LoginForm: Story = {
                     </span>
                   </div>
 
-                  <div style={{ display: 'flex', gap: '12px' }}>
+                  <div className="u-flex u-gap-3">
                     <button
+                      className="u-flex-1 u-p-2.5 u-rounded-lg u-border u-border-white/20 u-bg-white/5 u-text-inherit u-cursor-pointer u-text-xs u-font-bold u-flex u-items-center u-justify-center u-gap-2"
                       style={{
                         flex: 1,
                         padding: '10px',
@@ -1137,6 +1129,7 @@ export const LoginForm: Story = {
                       <span>🔵</span> Google
                     </button>
                     <button
+                      className="u-flex-1 u-p-2.5 u-rounded-lg u-border u-border-white/20 u-bg-white/5 u-text-inherit u-cursor-pointer u-text-xs u-font-bold u-flex u-items-center u-justify-center u-gap-2"
                       style={{
                         flex: 1,
                         padding: '10px',
@@ -1159,10 +1152,11 @@ export const LoginForm: Story = {
                 </div>
 
                 {/* Sign Up Link */}
-                <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '12px' }}>
+                <div className="u-mt-5 u-text-center u-text-xs">
                   Don't have an account?{' '}
                   <a
                     href="#"
+                    className="u-text-indigo-500 u-no-underline u-font-bold"
                     style={{
                       color: '#667eea',
                       textDecoration: 'none',
@@ -1194,7 +1188,7 @@ export const LoginForm: Story = {
  *
  * Demonstrates a media player interface using AtomixGlass for a premium look.
  */
-export const MusicPlayer: Story = {
+export const SimpleMusicPlayer: Story = {
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [isPlaying, setIsPlaying] = useState(false);
@@ -1427,29 +1421,355 @@ export const MusicPlayer: Story = {
               </div>
 
               {/* Volume Control */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <span style={{ fontSize: '18px', opacity: 0.7 }}>
-                  {volume === 0 ? (
-                    <Icon name="SpeakerLow" />
-                  ) : volume < 50 ? (
-                    <Icon name="SpeakerX" />
-                  ) : (
-                    <Icon name="SpeakerHigh" />
-                  )}
-                </span>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={volume}
-                  onChange={e => setVolume(parseInt(e.target.value))}
+              <div className="u-flex u-justify-between u-items-center">
+                <Icon name="Volume" />
+                <div
                   style={{
-                    flex: 1,
-                    accentColor: '#667eea',
+                    width: '100px',
+                    height: '6px',
+                    background: 'rgba(255,255,255,0.1)',
+                    borderRadius: '3px',
+                    overflow: 'hidden',
                     cursor: 'pointer',
                   }}
+                  onClick={e => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const percentage = x / rect.width;
+                    setVolume(Math.floor(100 * percentage));
+                  }}
+                >
+                  <div
+                    style={{
+                      height: '100%',
+                      width: `${volume}%`,
+                      background:
+                        'linear-gradient(90deg, rgba(var(--atomix-primary-rgb),0.5) 0%, rgba(var(--atomix-secondary-rgb),0.5) 100%)',
+                      transition: 'width 0.1s ease',
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </AtomixGlass>
+        </div>
+      </BackgroundWrapper>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A media player example demonstrating a premium look using AtomixGlass. Features album art, track information, progress bar, playback controls, and volume control.',
+      },
+    },
+  },
+};
+
+/**
+ * Music Player Example
+ *
+ * This story demonstrates a modern music player interface using AtomixGlass,
+ * featuring album art, track information, progress bar, and playback controls.
+ */
+export const MusicPlayer: Story = {
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [isPlaying, setIsPlaying] = useState(false);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [currentTime, setCurrentTime] = useState(125); // seconds
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [duration, setDuration] = useState(240); // seconds
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [volume, setVolume] = useState(80);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [shuffle, setShuffle] = useState(false);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [repeatMode, setRepeatMode] = useState<'off' | 'all' | 'one'>('all');
+
+    const formatTime = (seconds: number) => {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };
+
+    const togglePlayPause = () => setIsPlaying(!isPlaying);
+
+    const skipForward = () => setCurrentTime(prev => Math.min(duration, prev + 10));
+    const skipBackward = () => setCurrentTime(prev => Math.max(0, prev - 10));
+
+    const modes = ['off', 'all', 'one'] as const;
+
+    return (
+      <BackgroundWrapper
+        backgroundImage={
+          'https://images.unsplash.com/photo-1614188973043-4ed7d383de37?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1470'
+        }
+        className="u-p-10"
+      >
+        <div className="u-max-w-lg u-mx-auto" style={{ maxWidth: '500px', margin: '0 auto' }}>
+          <AtomixGlass
+            displacementScale={100}
+            blurAmount={3}
+            saturation={170}
+            aberrationIntensity={3}
+            borderRadius={30}
+            mode="polar"
+            withLiquidBlur={true}
+            withTimeAnimation={true}
+            withMultiLayerDistortion={true}
+          >
+            <div className="u-p-6" style={{ padding: '24px' }}>
+              {/* Album Art */}
+              <div
+                className="u-mx-auto u-mb-6 u-relative"
+                style={{
+                  width: '220px',
+                  height: '220px',
+                  margin: '0 auto 24px',
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  boxShadow: '0 20px 50px rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+                  alt="Album cover"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
                 />
-                <span style={{ fontSize: '14px', opacity: 0.6, minWidth: '35px' }}>{volume}%</span>
+                <div
+                  className="u-absolute u-inset-0"
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background:
+                      'linear-gradient(135deg, rgba(102,126,234,0.3) 0%, rgba(140,185,60,0.3) 100%)',
+                  }}
+                />
+              </div>
+
+              {/* Track Info */}
+              <div className="u-text-center u-mb-6" style={{ marginBottom: '24px' }}>
+                <h3
+                  className="u-mt-0 u-mb-1 u-text-xl u-font-bold"
+                  style={{ margin: '0 0 4px', fontSize: '20px', fontWeight: 700 }}
+                >
+                  Midnight City
+                </h3>
+                <p
+                  className="u-m-0 u-opacity-70 u-text-base"
+                  style={{ margin: 0, fontSize: '16px', opacity: 0.7 }}
+                >
+                  M83
+                </p>
+                <p
+                  className="u-mt-2 u-mb-0 u-opacity-50 u-text-sm"
+                  style={{ margin: '8px 0 0', fontSize: '14px', opacity: 0.5 }}
+                >
+                  Digital Single • 2011
+                </p>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="u-mb-6" style={{ marginBottom: '24px' }}>
+                <div
+                  className="u-w-full u-h-1 u-bg-white u-opacity-20 u-rounded-full u-overflow-hidden u-mb-2"
+                  style={{
+                    width: '100%',
+                    height: '4px',
+                    background: 'rgba(255,255,255,0.2)',
+                    borderRadius: '2px',
+                    overflow: 'hidden',
+                    marginBottom: '8px',
+                  }}
+                  onClick={e => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const percent = (e.clientX - rect.left) / rect.width;
+                    setCurrentTime(Math.floor(duration * percent));
+                  }}
+                >
+                  <div
+                    className="u-h-full u-bg-white u-rounded-full"
+                    style={{
+                      height: '100%',
+                      width: `${(currentTime / duration) * 100}%`,
+                      background: 'rgba(255,255,255,0.8)',
+                      borderRadius: '2px',
+                      transition: 'width 0.1s ease',
+                    }}
+                  />
+                </div>
+                <div
+                  className="u-flex u-justify-between u-text-xs u-opacity-70"
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontSize: '12px',
+                    opacity: 0.7,
+                  }}
+                >
+                  <span>{formatTime(currentTime)}</span>
+                  <span>{formatTime(duration)}</span>
+                </div>
+              </div>
+
+              {/* Controls */}
+              <div
+                className="u-flex u-items-center u-justify-center u-mb-6"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '24px',
+                }}
+              >
+                <button
+                  onClick={() => setShuffle(!shuffle)}
+                  className="u-w-10 u-h-10 u-flex u-items-center u-justify-center u-rounded-full u-bg-transparent u-border-none u-text-white u-opacity-70 u-mr-4"
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background: shuffle ? 'rgba(102, 126, 234, 0.3)' : 'transparent',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: '16px',
+                  }}
+                >
+                  <Icon name="Shuffle" />
+                </button>
+
+                <button
+                  onClick={skipBackward}
+                  className="u-w-12 u-h-12 u-flex u-items-center u-justify-center u-rounded-full u-bg-white u-bg-opacity-10 u-border-none u-text-white u-mr-4"
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background: 'rgba(255,255,255,0.1)',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    fontSize: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: '16px',
+                  }}
+                >
+                  <Icon name="SkipBack" />
+                </button>
+
+                <button
+                  onClick={togglePlayPause}
+                  className="u-w-16 u-h-16 u-flex u-items-center u-justify-center u-rounded-full u-bg-white u-text-black u-mr-4"
+                  style={{
+                    width: '64px',
+                    height: '64px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background: 'white',
+                    color: 'black',
+                    cursor: 'pointer',
+                    fontSize: '24px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: '16px',
+                    boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
+                  }}
+                >
+                  {isPlaying ? <Icon name="Pause" /> : <Icon name="Play" />}
+                </button>
+
+                <button
+                  onClick={skipForward}
+                  className="u-w-12 u-h-12 u-flex u-items-center u-justify-center u-rounded-full u-bg-white u-bg-opacity-10 u-border-none u-text-white u-mr-4"
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background: 'rgba(255,255,255,0.1)',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    fontSize: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: '16px',
+                  }}
+                >
+                  <Icon name="SkipForward" />
+                </button>
+
+                <button
+                  onClick={() => {
+                    const currentIndex = modes.indexOf(repeatMode);
+                    setRepeatMode(modes[(currentIndex + 1) % modes.length]);
+                  }}
+                  className={`u-w-10 u-h-10 u-flex u-items-center u-justify-center u-rounded-full u-border-none u-text-white u-opacity-70 ${
+                    repeatMode !== 'off' ? 'u-bg-blue-500 u-bg-opacity-30' : 'u-bg-transparent'
+                  }`}
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background:
+                      repeatMode !== 'off' ? 'rgba(102, 126, 234, 0.3)' : 'rgba(255,255,255,0.1)',
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {repeatMode === 'one' ? <Icon name="RepeatOnce" /> : <Icon name="Repeat" />}
+                </button>
+              </div>
+
+              {/* Volume Control */}
+              <div className="u-flex u-justify-between u-items-center">
+                <Icon name="Volume" />
+                <div
+                  className="u-w-24 u-h-1.5 u-bg-white u-bg-opacity-20 u-rounded-full u-overflow-hidden u-cursor-pointer"
+                  style={{
+                    width: '100px',
+                    height: '6px',
+                    background: 'rgba(255,255,255,0.1)',
+                    borderRadius: '3px',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                  }}
+                  onClick={e => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const percentage = x / rect.width;
+                    setVolume(Math.floor(100 * percentage));
+                  }}
+                >
+                  <div
+                    className="u-h-full u-bg-white u-bg-opacity-80"
+                    style={{
+                      height: '100%',
+                      width: `${volume}%`,
+                      background:
+                        'linear-gradient(90deg, rgba(var(--atomix-primary-rgb),0.5) 0%, rgba(var(--atomix-secondary-rgb),0.5) 100%)',
+                      transition: 'width 0.1s ease',
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </AtomixGlass>
@@ -1477,7 +1797,7 @@ export const PricingTable: Story = {
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
-
+    
     const plans = [
       {
         name: 'Starter',
@@ -1538,7 +1858,7 @@ export const PricingTable: Story = {
           backgroundAttachment: 'fixed',
         }}
       >
-        <Container className="u-py-6 u-text-white">
+        <Container className="u-pb-6">
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
             <div
@@ -1610,24 +1930,30 @@ export const PricingTable: Story = {
                     fontSize: '16px',
                     fontWeight: billingCycle === 'yearly' ? 600 : 400,
                     transition: 'all 0.3s ease',
-                    position: 'relative',
                   }}
                 >
                   Yearly
                   <span
                     style={{
-                      position: 'absolute',
-                      top: '-8px',
-                      right: '-8px',
-                      background: '#10b981',
-                      color: 'white',
-                      fontSize: '11px',
-                      padding: '2px 6px',
-                      borderRadius: '8px',
-                      fontWeight: 700,
+                      position: 'relative',
                     }}
                   >
-                    Save {savings}%
+                    Yearly
+                    <span
+                      style={{
+                        position: 'absolute',
+                        top: '-8px',
+                        right: '-8px',
+                        background: '#10b981',
+                        color: 'white',
+                        fontSize: '11px',
+                        padding: '2px 6px',
+                        borderRadius: '8px',
+                        fontWeight: 700,
+                      }}
+                    >
+                      Save {savings}%
+                    </span>
                   </span>
                 </button>
               </AtomixGlass>

@@ -261,18 +261,18 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
 
   // Performance monitoring - tracks FPS, frame time, memory usage
   const { metrics: performanceMetrics, toggleMonitoring } = usePerformanceMonitor({
-    enabled: false, // Toggled manually below
+    enabled: debugPerformance, // Enable when debugPerformance is true
     debug: false,
     showOverlay: false,
   });
 
-  // Auto-start performance monitoring only in development when flag is set
+  // Auto-start performance monitoring when debugPerformance is enabled
   React.useEffect(() => {
-    if (process.env.NODE_ENV === 'development' && window.enablePerformanceMonitoring) {
+    if (debugPerformance) {
       toggleMonitoring();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run once on mount
+  }, [debugPerformance]); // Re-run when debugPerformance changes
 
   const isOverLight = useMemo(() => overLightConfig.isOverLight, [overLightConfig.isOverLight]);
 
@@ -337,8 +337,6 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       if (value !== undefined) {
         return typeof value === 'number' ? `${value}px` : value;
       }
-
-      
 
       if (measured > 0) {
         return `${measured}px`;
@@ -413,9 +411,14 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     };
   }, [mouseOffset.x, mouseOffset.y]);
 
+  // Clamp overLight opacities to [0,1]
+  const clampedOverLightOpacity = Math.max(0, Math.min(1, overLightConfig?.opacity ?? 0.4));
+  const clampedBorderOpacity = Math.max(0, Math.min(1, overLightConfig?.borderOpacity ?? 1));
+
   // Memoize opacity calculations
   const opacityValues = useMemo(() => {
-    const overLightOpacity = overLightConfig.opacity;
+    // Use clamped opacity value here
+    const overLightOpacity = clampedOverLightOpacity;
     const BASE_OVER_LIGHT_OPACITY = 0.4;
     const OVER_OPACITY_MULTIPLIER = 1.1;
 
@@ -428,7 +431,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
         ? (overLightOpacity || BASE_OVER_LIGHT_OPACITY) * OVER_OPACITY_MULTIPLIER
         : 0,
     };
-  }, [isHovered, isActive, isOverLight, overLightConfig.opacity]);
+  }, [isHovered, isActive, isOverLight, clampedOverLightOpacity]);
 
   // Memoize CSS variables object
   const glassVars = useMemo(() => {
@@ -447,8 +450,6 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       absMy,
     } = gradientValues;
 
-    const configBorderOpacity = overLightConfig?.borderOpacity ?? 1;
-
     return {
       ...(customZIndex !== undefined && { '--atomix-glass-base-z-index': customZIndex }),
       '--atomix-glass-radius': `${effectiveBorderRadius}px`,
@@ -461,8 +462,8 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       '--atomix-glass-height': adjustedSize.height,
       '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.09375rem)',
       '--atomix-glass-blend-mode': isOverLight ? 'multiply' : 'overlay',
-      '--atomix-glass-border-gradient-1': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[0] ?? 1) * configBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[1] ?? 1) * configBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
-      '--atomix-glass-border-gradient-2': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[2] ?? 1) * configBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[3] ?? 1) * configBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
+      '--atomix-glass-border-gradient-1': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[0] ?? 1) * clampedBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[1] ?? 1) * clampedBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
+      '--atomix-glass-border-gradient-2': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[2] ?? 1) * clampedBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[3] ?? 1) * clampedBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
       '--atomix-glass-hover-1-opacity': opacityValues.hover1,
       '--atomix-glass-hover-1-gradient': isOverLight
         ? `radial-gradient(circle at ${hoverPositions.hover1.x}% ${hoverPositions.hover1.y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_END}%)`
@@ -494,7 +495,8 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     transformStyle,
     adjustedSize,
     isOverLight,
-    overLightConfig.borderOpacity,
+    clampedBorderOpacity,
+    clampedOverLightOpacity,
     customZIndex,
     rootLayoutStyle,
     isFixedOrSticky,
@@ -559,7 +561,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedBy}
       aria-disabled={onClick && effectiveWithoutEffects ? true : onClick ? false : undefined}
-      aria-pressed={onClick && isActive ? true : onClick ? false : undefined}
+      aria-pressed={undefined}
       onKeyDown={onClick ? handleKeyDown : undefined}
     >
       <AtomixGlassContainer

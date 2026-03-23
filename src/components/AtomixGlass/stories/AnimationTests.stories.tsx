@@ -32,7 +32,7 @@ type Story = StoryObj<typeof meta>;
 export const Animated: Story = {
   args: {
     children: (
-      <div style={{ padding: '40px', color: 'white', textAlign: 'center' }}>
+      <div className="u-p-10 u-text-white u-text-center" style={{ padding: '40px', color: 'white', textAlign: 'center' }}>
         <h2>Phase 1 Animation Test</h2>
         <p>If you see flowing liquid glass effects, it's working!</p>
       </div>

@@ -67,9 +67,7 @@ export const ProfileCard: Story = {
               />
               <h3 className="u-mt-0 u-text-xl u-font-bold u-mb-2">Sarah Johnson</h3>
               <p className="u-text-sm u-opacity-90 u-mb-4">Senior Product Designer</p>
-              <Badge variant="secondary" className="u-mb-4">
-                Available for hire
-              </Badge>
+              <Badge variant="secondary" label="Available for hire" className="u-mb-4" />
               <div className="u-flex u-gap-2 u-justify-center u-flex-wrap" style={{ gap: '12px' }}>
                 <Button glass size="sm" variant="primary">
                   Follow
@@ -127,7 +125,7 @@ export const StatsCard: Story = {
                 >
                   📊
                 </div>
-                <Badge variant="success">+12.5%</Badge>
+                <Badge variant="success" label="+12.5%" />
               </div>
               <p className="u-text-sm u-opacity-80 u-mb-1">Total Revenue</p>
               <h3 className="u-mt-0 u-text-3xl u-font-bold u-mb-2">$48,295</h3>
@@ -180,9 +178,9 @@ export const ContentCard: Story = {
               >
                 🎨
               </div>
-              <div style={{ padding: '24px' }}>
+              <div className="u-p-6" style={{ padding: '24px' }}>
                 <div className="u-flex u-items-center u-gap-2 u-mb-3">
-                  <Badge variant="primary">Design</Badge>
+                  <Badge variant="primary" label="Design" />
                   <span className="u-text-xs u-opacity-70">5 min read</span>
                 </div>
                 <h3 className="u-mt-0 u-text-xl u-font-bold u-mb-2">

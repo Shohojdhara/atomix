@@ -2,7 +2,7 @@
  * Phase 1 Animation Features Stories
  * 
  * Demonstrates the new time-based animation system and multi-layer distortion effects
- * implemented in Phase 1 of the AtomixGlass Feature Implementation Roadmap.
+ * implemented in Phase 1 of the AtomixGlass Feature Implementation roadMap.
  * 
  * Features:
  * - Feature 1.1: Time-Based Animation System
@@ -138,8 +138,9 @@ type Story = StoryObj<typeof meta>;
 export const DefaultAnimation: Story = {
   args: {
     children: (
-      <div style={{ padding: '60px 40px', textAlign: 'center', color: 'white' }}>
+      <div className="u-text-center u-text-white" style={{ padding: '60px 40px' }}>
         <div
+          className="u-mb-6"
           style={{
             fontSize: '64px',
             marginBottom: '24px',
@@ -149,6 +150,7 @@ export const DefaultAnimation: Story = {
           ✨
         </div>
         <h2
+          className="u-mt-0 u-mb-3 u-text-5xl u-font-bold u-text-gradient-primary"
           style={{
             margin: '0 0 12px 0',
             fontSize: '32px',
@@ -160,7 +162,7 @@ export const DefaultAnimation: Story = {
         >
           Time-Based Animation
         </h2>
-        <p style={{ margin: 0, fontSize: '16px', opacity: 0.9 }}>
+        <p className="u-m-0 u-text-base u-opacity-90">
           Organic liquid glass effect with continuous flow
         </p>
       </div>
@@ -193,11 +195,11 @@ export const DefaultAnimation: Story = {
 export const BreathingEffect: Story = {
   args: {
     children: (
-      <div style={{ padding: '40px', textAlign: 'center', color: 'white' }}>
-        <h2 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 600 }}>
+      <div className="u-text-center u-text-white" style={{ padding: '40px' }}>
+        <h2 className="u-mt-0 u-mb-2 u-text-xl u-font-semibold">
           Breathing Glass
         </h2>
-        <p style={{ margin: 0, fontSize: '14px', opacity: 0.8 }}>
+        <p className="u-m-0 u-text-sm u-opacity-80">
           Subtle pulse animation
         </p>
       </div>
@@ -229,8 +231,9 @@ export const BreathingEffect: Story = {
 export const UltraDistortion: Story = {
   args: {
     children: (
-      <div style={{ padding: '60px 40px', textAlign: 'center', color: 'white' }}>
+      <div className="u-text-center u-text-white" style={{ padding: '60px 40px' }}>
         <div
+          className="u-mx-auto u-mb-6 u-flex u-items-center u-justify-center u-rounded-lg"
           style={{
             width: '80px',
             height: '80px',
@@ -246,10 +249,10 @@ export const UltraDistortion: Story = {
         >
           🌊
         </div>
-        <h2 style={{ margin: '0 0 8px 0', fontSize: '28px', fontWeight: 700 }}>
+        <h2 className="u-mt-0 u-mb-2 u-text-2xl u-font-bold">
           Ultra Distortion
         </h2>
-        <p style={{ margin: 0, fontSize: '14px', opacity: 0.8 }}>
+        <p className="u-m-0 u-text-xs u-opacity-80">
           7 octaves of FBM complexity
         </p>
       </div>
@@ -285,14 +288,15 @@ export const UltraDistortion: Story = {
 export const MobileOptimized: Story = {
   args: {
     children: (
-      <div style={{ padding: '40px 32px', color: 'white' }}>
-        <h3 style={{ margin: '0 0 8px 0', fontSize: '20px', fontWeight: 600 }}>
+      <div className="u-text-white" style={{ padding: '40px 32px' }}>
+        <h3 className="u-mt-0 u-mb-2 u-text-lg u-font-semibold">
           Mobile Optimized
         </h3>
-        <p style={{ margin: 0, fontSize: '13px', opacity: 0.85 }}>
+        <p className="u-m-0 u-text-xs u-opacity-85">
           2 octaves • Low power
         </p>
         <div
+          className="u-mt-4 u-p-3 u-bg-white/10 u-rounded-md u-text-xs"
           style={{
             marginTop: '16px',
             padding: '12px',
@@ -334,8 +338,9 @@ export const MobileOptimized: Story = {
 export const SlowMotion: Story = {
   args: {
     children: (
-      <div style={{ padding: '60px 40px', textAlign: 'center', color: 'white' }}>
+      <div className="u-text-center u-text-white" style={{ padding: '60px 40px' }}>
         <div
+          className="u-text-6xl u-mb-5"
           style={{
             fontSize: '56px',
             marginBottom: '20px',
@@ -343,10 +348,10 @@ export const SlowMotion: Story = {
         >
           🧘
         </div>
-        <h2 style={{ margin: '0 0 12px 0', fontSize: '28px', fontWeight: 600 }}>
+        <h2 className="u-mt-0 u-mb-3 u-text-2xl u-font-semibold">
           Slow Motion
         </h2>
-        <p style={{ margin: 0, fontSize: '15px', opacity: 0.9 }}>
+        <p className="u-m-0 u-text-base u-opacity-90">
           Calming 0.3x speed
         </p>
       </div>
@@ -379,8 +384,9 @@ export const SlowMotion: Story = {
 export const FastFlow: Story = {
   args: {
     children: (
-      <div style={{ padding: '60px 40px', textAlign: 'center', color: 'white' }}>
+      <div className="u-text-center u-text-white" style={{ padding: '60px 40px' }}>
         <div
+          className="u-text-6xl u-mb-5"
           style={{
             fontSize: '56px',
             marginBottom: '20px',
@@ -388,10 +394,10 @@ export const FastFlow: Story = {
         >
           ⚡
         </div>
-        <h2 style={{ margin: '0 0 12px 0', fontSize: '28px', fontWeight: 700 }}>
+        <h2 className="u-mt-0 u-mb-3 u-text-2xl u-font-bold">
           Fast Flow
         </h2>
-        <p style={{ margin: 0, fontSize: '15px', opacity: 0.9 }}>
+        <p className="u-m-0 u-text-base u-opacity-90">
           Energetic 2.5x speed
         </p>
       </div>
@@ -424,11 +430,11 @@ export const FastFlow: Story = {
 export const NoAnimation: Story = {
   args: {
     children: (
-      <div style={{ padding: '40px', textAlign: 'center', color: 'white' }}>
-        <h2 style={{ margin: '0 0 8px 0', fontSize: '24px', fontWeight: 600 }}>
+      <div className="u-text-center u-text-white" style={{ padding: '40px' }}>
+        <h2 className="u-mt-0 u-mb-2 u-text-xl u-font-semibold">
           Static Glass
         </h2>
-        <p style={{ margin: 0, fontSize: '14px', opacity: 0.8 }}>
+        <p className="u-m-0 u-text-sm u-opacity-80">
           Time animations disabled
         </p>
       </div>
@@ -436,7 +442,7 @@ export const NoAnimation: Story = {
     withTimeAnimation: false,
     withMultiLayerDistortion: false,
     mode: 'standard',
-    displacementScale: 50,
+    displacementScale: 40,
     blurAmount: 2,
     saturation: 140,
     borderRadius: 20,
@@ -459,11 +465,11 @@ export const NoAnimation: Story = {
 export const CustomFBMParameters: Story = {
   args: {
     children: (
-      <div style={{ padding: '60px 40px', color: 'white' }}>
-        <h2 style={{ margin: '0 0 12px 0', fontSize: '26px', fontWeight: 700 }}>
+      <div className="u-text-white" style={{ padding: '60px 40px' }}>
+        <h2 className="u-mt-0 u-mb-3 u-text-2xl u-font-bold">
           Custom FBM
         </h2>
-        <div style={{ fontSize: '13px', opacity: 0.85, lineHeight: 1.8 }}>
+        <div className="u-text-sm u-opacity-85 u-leading-relaxed">
           <div>Octaves: 6</div>
           <div>Lacunarity: 2.5</div>
           <div>Gain: 0.65</div>
@@ -501,12 +507,12 @@ export const CustomFBMParameters: Story = {
 export const AccessibilityReducedMotion: Story = {
   args: {
     children: (
-      <div style={{ padding: '40px', textAlign: 'center', color: 'white' }}>
-        <div style={{ fontSize: '48px', marginBottom: '16px' }}>♿</div>
-        <h2 style={{ margin: '0 0 8px 0', fontSize: '22px', fontWeight: 600 }}>
+      <div className="u-text-center u-text-white" style={{ padding: '40px' }}>
+        <div className="u-text-5xl u-mb-4">♿</div>
+        <h2 className="u-mt-0 u-mb-2 u-text-lg u-font-semibold">
           Reduced Motion
         </h2>
-        <p style={{ margin: 0, fontSize: '14px', opacity: 0.8 }}>
+        <p className="u-m-0 u-text-sm u-opacity-80">
           Respects accessibility preferences
         </p>
       </div>
@@ -537,7 +543,7 @@ export const AccessibilityReducedMotion: Story = {
  */
 export const PerformanceComparison: Story = {
   render: () => (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', maxWidth: '900px' }}>
+    <div className="u-grid u-gap-6" style={{  gridTemplateColumns: 'repeat(2, 1fr)' }}>
       {/* Low Quality */}
       <div>
         <AtomixGlass
@@ -552,12 +558,12 @@ export const PerformanceComparison: Story = {
           borderRadius={20}
           height={200}
         >
-          <div style={{ padding: '24px', color: 'white', textAlign: 'center' }}>
-            <div style={{ fontSize: '32px', marginBottom: '12px' }}>📱</div>
-            <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: 600 }}>
+          <div className="u-p-6 u-text-center u-text-white" style={{ padding: '24px', color: 'white', textAlign: 'center' }}>
+            <div className="u-text-4xl u-mb-3">📱</div>
+            <h3 className="u-mt-0 u-mb-1 u-text-sm u-font-semibold">
               Low
             </h3>
-            <p style={{ margin: 0, fontSize: '11px', opacity: 0.8 }}>
+            <p className="u-m-0 u-text-xs u-opacity-80">
               2 octaves • Mobile
             </p>
           </div>
@@ -578,12 +584,12 @@ export const PerformanceComparison: Story = {
           borderRadius={20}
           height={200}
         >
-          <div style={{ padding: '24px', color: 'white', textAlign: 'center' }}>
-            <div style={{ fontSize: '32px', marginBottom: '12px' }}>💻</div>
-            <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: 600 }}>
+          <div className="u-p-6 u-text-center u-text-white" style={{ padding: '24px', color: 'white', textAlign: 'center' }}>
+            <div className="u-text-4xl u-mb-3">💻</div>
+            <h3 className="u-mt-0 u-mb-1 u-text-sm u-font-semibold">
               Medium
             </h3>
-            <p style={{ margin: 0, fontSize: '11px', opacity: 0.8 }}>
+            <p className="u-m-0 u-text-xs u-opacity-80">
               4 octaves • Tablet
             </p>
           </div>
@@ -604,12 +610,12 @@ export const PerformanceComparison: Story = {
           borderRadius={20}
           height={200}
         >
-          <div style={{ padding: '24px', color: 'white', textAlign: 'center' }}>
-            <div style={{ fontSize: '32px', marginBottom: '12px' }}>🖥️</div>
-            <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: 600 }}>
+          <div className="u-p-6 u-text-center u-text-white" style={{ padding: '24px', color: 'white', textAlign: 'center' }}>
+            <div className="u-text-4xl u-mb-3">🖥️</div>
+            <h3 className="u-mt-0 u-mb-1 u-text-sm u-font-semibold">
               High
             </h3>
-            <p style={{ margin: 0, fontSize: '11px', opacity: 0.8 }}>
+            <p className="u-m-0 u-text-xs u-opacity-80">
               5 octaves • Desktop
             </p>
           </div>
@@ -630,12 +636,12 @@ export const PerformanceComparison: Story = {
           borderRadius={20}
           height={200}
         >
-          <div style={{ padding: '24px', color: 'white', textAlign: 'center' }}>
-            <div style={{ fontSize: '32px', marginBottom: '12px' }}>🚀</div>
-            <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: 600 }}>
+          <div className="u-p-6 u-text-center u-text-white" style={{ padding: '24px', color: 'white', textAlign: 'center' }}>
+            <div className="u-text-4xl u-mb-3">🚀</div>
+            <h3 className="u-mt-0 u-mb-1 u-text-sm u-font-semibold">
               Ultra
             </h3>
-            <p style={{ margin: 0, fontSize: '11px', opacity: 0.8 }}>
+            <p className="u-m-0 u-text-xs u-opacity-80">
               7 octaves • High-end
             </p>
           </div>

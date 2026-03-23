@@ -47,7 +47,7 @@ export const AnalyticsDashboard: Story = {
   render: () => (
     <StoryErrorBoundary>
       <BackgroundWrapper backgroundImage={backgroundImages[5]} overlay overlayOpacity={0.4}>
-        <div style={{ padding: '40px 24px', minHeight: '100vh' }}>
+        <div className="u-p-10 u-px-6 u-min-h-screen" style={{ padding: '40px 24px', minHeight: '100vh' }}>
           <div className="u-mb-5 u-text-white">
             <h1 className="u-m-0 u-text-3xl u-font-bold">Analytics Overview</h1>
             <p className="u-mt-1 u-opacity-80">Track your performance metrics</p>
@@ -207,7 +207,7 @@ export const AnalyticsDashboard: Story = {
             borderRadius={20}
             mode="standard"
           >
-            <div className="u-text-white" style={{ padding: '28px' }}>
+            <div className="u-p-7 u-text-white" style={{ padding: '28px' }}>
               <h2 className="u-mt-0 u-text-xl u-font-bold u-mb-4">Recent Activity</h2>
               
               <div className="u-divide-y" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
