@@ -359,7 +359,6 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     positionStyles.position,
     glassSize.width,
     glassSize.height,
-    isFixedOrSticky,
   ]);
 
   // Memoize expensive gradient calculations
@@ -496,7 +495,6 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     adjustedSize,
     isOverLight,
     clampedBorderOpacity,
-    clampedOverLightOpacity,
     customZIndex,
     rootLayoutStyle,
     isFixedOrSticky,
