@@ -6,11 +6,20 @@
 .c-atomix-glass {
   position: relative;
 
+  // Local, sane defaults (kept minimal)
+  --_glass-radius: var(--atomix-glass-radius, var(--atomix-radius-md, 0.75rem));
+  --_glass-transform: var(--atomix-glass-transform, translateZ(0));
+  --_glass-transition: var(--atomix-glass-transition, all 0.2s ease);
+  --_glass-backdrop: var(
+    --atomix-glass-border-backdrop,
+    blur(14px) saturate(140%)
+  );
+
   // CSS custom property defaults
-  --atomix-glass-transition: all 0.15s ease;
+  --atomix-glass-transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
   --atomix-glass-position: absolute;
-  --atomix-glass-border-width: var(--atomix-spacing-0-5, 0.09375rem);
-  --atomix-glass-border-backdrop: blur(12px) saturate(150%);
+  --atomix-glass-border-width: var(--atomix-spacing-0-5, 0.125rem);
+  --atomix-glass-border-backdrop: blur(14px) saturate(140%);
 
   // =========================================================================
   // Z-INDEX STACKING ORDER (local scale, scoped to this component)
@@ -41,97 +50,80 @@
   --_glass-z-content: calc(var(--atomix-glass-base-z-index) + 8);
 
   --atomix-glass-border-shadow:
-    0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset,
-    0 1px 4px rgba(0, 0, 0, 0.35);
+    0 0 0 0.5px rgba(255, 255, 255, 0.45) inset,
+    0 1px 2px rgba(255, 255, 255, 0.18) inset,
+    0 2px 6px rgba(0, 0, 0, 0.28);
 
-  position: relative;
-
-  // Base layer styles for all effect layers (hover, border, overlay)
+  // Base layer styles for effect layers
   &__hover-1,
   &__hover-2,
-  &__hover-3 {
+  &__hover-3,
+  &__base,
+  &__overlay {
     position: var(--atomix-glass-position);
     top: var(--atomix-glass-top);
     left: var(--atomix-glass-left);
     pointer-events: none;
-    border-radius: var(--atomix-glass-radius);
-    transform: var(--atomix-glass-transform);
-    transition: var(--atomix-glass-transition);
-    z-index: var(--_glass-z-hover);
+    border-radius: var(--_glass-radius);
+    transform: var(--_glass-transform);
+    transition: var(--_glass-transition);
   }
 
+  &__hover-1,
+  &__hover-2,
+  &__hover-3 { z-index: var(--_glass-z-hover); }
+
   &__base,
-  &__overlay {
-    pointer-events: none;
-    border-radius: var(--atomix-glass-radius);
-    transform: var(--atomix-glass-transform);
-    transition: var(--atomix-glass-transition);
-    z-index: var(--_glass-z-effect);
-  }
+  &__overlay { z-index: var(--_glass-z-effect); }
 
   // Interactive hover effects
   &__hover-1,
   &__hover-2,
   &__hover-3 {
     mix-blend-mode: overlay;
-    // Dynamic opacity and background are set via inline styles using CSS variables
-    opacity: var(--atomix-glass-hover-1-opacity, 0);
-    background: var(--atomix-glass-hover-1-gradient, none);
   }
 
   &__hover-1 {
-    transition:
-      var(--atomix-glass-transition),
-      opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-      background 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: var(--_glass-transition), opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     opacity: var(--atomix-glass-hover-1-opacity, 0);
-    background: var(--atomix-glass-hover-1-gradient, none);
+    background: var(--atomix-glass-hover-1-gradient, radial-gradient(60% 60% at 50% 0%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.0) 60%));
   }
 
   &__hover-2 {
-    transition:
-      var(--atomix-glass-transition),
-      opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-      background 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: var(--_glass-transition), opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     opacity: var(--atomix-glass-hover-2-opacity, 0);
-    background: var(--atomix-glass-hover-2-gradient, none);
+    background: var(--atomix-glass-hover-2-gradient, radial-gradient(80% 80% at 50% 100%, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.0) 60%));
   }
 
   &__hover-3 {
-    transition:
-      var(--atomix-glass-transition),
-      opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-      background 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: var(--_glass-transition), opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), background 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     opacity: var(--atomix-glass-hover-3-opacity, 0);
-    background: var(--atomix-glass-hover-3-gradient, none);
+    background: var(--atomix-glass-hover-3-gradient, linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.0) 100%));
   }
 
-  // Base and overlay layers for over-light mode
   &__base {
     mix-blend-mode: soft-light;
-    // Dynamic opacity and background are set via inline styles using CSS variables
-    opacity: var(--atomix-glass-base-opacity, 0);
-    background: var(--atomix-glass-base-gradient, none);
+    opacity: var(--atomix-glass-base-opacity, 0.6);
+    background: var(--atomix-glass-base-gradient, linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%));
   }
 
   &__overlay {
     mix-blend-mode: overlay;
-    // Dynamic opacity and background are set via inline styles using CSS variables
-    opacity: var(--atomix-glass-overlay-opacity, 0);
-    background: var(--atomix-glass-overlay-gradient, none);
+    opacity: var(--atomix-glass-overlay-opacity, 0.35);
+    background: var(--atomix-glass-overlay-gradient, radial-gradient(120% 120% at 50% -10%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.0) 40%));
   }
 
   &__overlay-highlight {
     position: absolute;
     inset: var(--atomix-spacing-0-5, 0.125rem);
     pointer-events: none;
-    border-radius: var(--atomix-glass-radius);
-    transform: var(--atomix-glass-transform);
-    transition: var(--atomix-glass-transition);
+    border-radius: var(--_glass-radius);
+    transform: var(--_glass-transform);
+    transition: var(--_glass-transition);
     mix-blend-mode: screen;
     z-index: var(--_glass-z-overlay-highlight);
-    opacity: var(--atomix-glass-overlay-highlight-opacity, 0);
-    background: var(--atomix-glass-overlay-highlight-bg, none);
+    opacity: var(--atomix-glass-overlay-highlight-opacity, 0.25);
+    background: var(--atomix-glass-overlay-highlight-bg, linear-gradient(180deg, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0.0) 60%));
   }
 
   // Border effect layers - matching old version exactly
@@ -161,19 +153,19 @@
     left: var(--atomix-glass-left);
     width: var(--atomix-glass-width);
     height: var(--atomix-glass-height);
-    border-radius: var(--atomix-glass-radius);
-    transform: var(--atomix-glass-transform);
+    border-radius: var(--_glass-radius);
+    transform: var(--_glass-transform);
   }
 
   &__border-backdrop {
     mix-blend-mode: overlay;
     z-index: var(--_glass-z-border-1);
-    backdrop-filter: var(--atomix-glass-border-backdrop);
+    backdrop-filter: var(--_glass-backdrop);
     box-shadow: var(--atomix-glass-border-shadow);
   }
 
   &__border-1 {
-    opacity: var(--atomix-opacity-20, 0.2);
+    opacity: var(--atomix-opacity-18, 0.18);
     mix-blend-mode: screen;
     z-index: var(--_glass-z-border-2);
     background: var(--atomix-glass-border-gradient-1, none);
@@ -189,9 +181,9 @@
     position: relative;
     top: var(--atomix-glass-top);
     left: var(--atomix-glass-left);
-    border-radius: var(--atomix-glass-radius);
-    transition: var(--atomix-glass-transition);
-    transform: var(--atomix-glass-transform);
+    border-radius: var(--_glass-radius);
+    transition: var(--_glass-transition);
+    transform: var(--_glass-transform);
     z-index: var(--_glass-z-container);
   }
 
@@ -199,7 +191,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    border-radius: var(--atomix-glass-radius);
+    border-radius: var(--_glass-radius);
   }
 
   &__filter {
@@ -212,7 +204,7 @@
     z-index: var(--_glass-z-filter);
 
     svg {
-      border-radius: var(--atomix-glass-radius);
+      border-radius: var(--_glass-radius);
     }
   }
 
@@ -238,7 +230,7 @@
     position: relative;
     width: var(--atomix-glass-container-width);
     height: var(--atomix-glass-container-height);
-    border-radius: var(--atomix-glass-radius);
+    border-radius: var(--_glass-radius);
     z-index: var(--_glass-z-content);
     text-shadow: var(--atomix-glass-container-text-shadow);
     box-shadow: var(--atomix-glass-container-box-shadow);
@@ -252,9 +244,9 @@
     width: var(--atomix-glass-width);
     height: var(--atomix-glass-height);
     pointer-events: none;
-    border-radius: var(--atomix-glass-radius);
-    transform: var(--atomix-glass-transform);
-    transition: var(--atomix-glass-transition);
+    border-radius: var(--_glass-radius);
+    transform: var(--_glass-transform);
+    transition: var(--_glass-transition);
     z-index: var(--_glass-z-background);
 
     &--dark {
@@ -281,6 +273,7 @@
 
   &--reduced-motion {
     --atomix-glass-transition: none;
+    --_glass-transition: none;
 
     * {
       transition: none !important;
