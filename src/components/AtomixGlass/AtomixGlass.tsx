@@ -322,10 +322,19 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       position: (isFixedOrSticky
         ? 'absolute'
         : restStyle.position || 'absolute') as React.CSSProperties['position'],
-      top: isFixedOrSticky ? 0 : restStyle.top || 0,
-      left: isFixedOrSticky ? 0 : restStyle.left || 0,
+      top: isFixedOrSticky ? 0 : restStyle.top ?? 0,
+      left: isFixedOrSticky ? 0 : restStyle.left ?? 0,
+      right: isFixedOrSticky ? 'auto' : restStyle.right ?? 'auto',
+      bottom: isFixedOrSticky ? 'auto' : restStyle.bottom ?? 'auto',
     }),
-    [isFixedOrSticky, restStyle.position, restStyle.top, restStyle.left]
+    [
+      isFixedOrSticky,
+      restStyle.position,
+      restStyle.top,
+      restStyle.left,
+      restStyle.right,
+      restStyle.bottom,
+    ]
   );
 
   const adjustedSize = useMemo(() => {
@@ -455,11 +464,13 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       '--atomix-glass-transform': transformStyle || 'none',
       '--atomix-glass-container-position': `${!isFixedOrSticky ? positionStyles.position : rootLayoutStyle.position}`,
       '--atomix-glass-position': `${!isFixedOrSticky ? positionStyles.position : rootLayoutStyle.position}`,
-      '--atomix-glass-top': `${isFixedOrSticky ? rootLayoutStyle.top : 0}px`,
-      '--atomix-glass-left': `${isFixedOrSticky ? rootLayoutStyle.left : 0}px`,
+      '--atomix-glass-top': isFixedOrSticky ? 0 : (restStyle.top ?? 0),
+      '--atomix-glass-left': isFixedOrSticky ? 0 : (restStyle.left ?? 0),
+      '--atomix-glass-right': isFixedOrSticky ? 'auto' : (restStyle.right ?? 'auto'),
+      '--atomix-glass-bottom': isFixedOrSticky ? 'auto' : (restStyle.bottom ?? 'auto'),
       '--atomix-glass-width': adjustedSize.width,
       '--atomix-glass-height': adjustedSize.height,
-      '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.09375rem)',
+      '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.125rem)',
       '--atomix-glass-blend-mode': isOverLight ? 'multiply' : 'overlay',
       '--atomix-glass-border-gradient-1': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[0] ?? 1) * clampedBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[1] ?? 1) * clampedBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
       '--atomix-glass-border-gradient-2': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[2] ?? 1) * clampedBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[3] ?? 1) * clampedBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
@@ -496,9 +507,13 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     isOverLight,
     clampedBorderOpacity,
     customZIndex,
-    rootLayoutStyle,
     isFixedOrSticky,
-    positionStyles,
+    positionStyles.position,
+    rootLayoutStyle.position,
+    restStyle.top,
+    restStyle.left,
+    restStyle.right,
+    restStyle.bottom,
   ]);
 
   // ─── Render helpers ──────────────────────────────────────────────────────
