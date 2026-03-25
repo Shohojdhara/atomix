@@ -142,6 +142,7 @@ const HomePage: React.FC = () => {
         elasticity={0.01}
         mode="standard"
         onClick={() => {}}
+        isFixedOrSticky = {true}
         style={{ position: 'fixed', top: 10, left: 60, right: 60, zIndex: 100000 }}
       >
         <Container>

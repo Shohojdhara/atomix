@@ -232,7 +232,7 @@ export interface AtomixGlassProps extends React.HTMLAttributes<HTMLDivElement> {
   overLight?: OverLightConfig;
   mode?: DisplacementMode;
   onClick?: () => void;
-  isFixedOrSticky?: false,
+  isFixedOrSticky?: Boolean,
 
   /**
    * Shader variant for shader mode
