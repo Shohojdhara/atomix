@@ -66,11 +66,12 @@
     left: var(--atomix-glass-left);
     right: var(--atomix-glass-right);
     bottom: var(--atomix-glass-bottom);
+    width: var(--atomix-glass-width);
+    height: var(--atomix-glass-height);
     pointer-events: none;
     border-radius: var(--_glass-radius);
     transform: var(--_glass-transform);
     transition: var(--_glass-transition);
-    will-change: opacity, transform;
   }
 
   &__hover-1,
@@ -165,6 +166,7 @@
   &__overlay-highlight {
     position: absolute;
     inset: var(--atomix-spacing-0-5, 0.125rem);
+    
     pointer-events: none;
     border-radius: var(--_glass-radius);
     transform: var(--_glass-transform);
@@ -180,7 +182,6 @@
         var(--atomix-glass-highlight-end-color, rgba(255, 255, 255, 0)) 60%
       )
     );
-    will-change: opacity, transform;
   }
 
   // Border effect layers - matching old version exactly
@@ -222,7 +223,6 @@
     z-index: var(--_glass-z-border-1);
     backdrop-filter: var(--_glass-backdrop);
     box-shadow: var(--atomix-glass-border-shadow);
-    will-change: backdrop-filter;
   }
 
   &__border-1 {
@@ -248,7 +248,6 @@
     transition: var(--_glass-transition);
     transform: var(--_glass-transform);
     z-index: var(--_glass-z-container);
-    will-change: transform;
   }
 
   &__inner {
