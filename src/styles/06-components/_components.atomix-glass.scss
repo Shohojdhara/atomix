@@ -9,7 +9,6 @@
   // Local, sane defaults (kept minimal)
   --_glass-radius: var(--atomix-glass-radius, var(--atomix-radius-md, 0.75rem));
   --_glass-transform: var(--atomix-glass-transform, translateZ(0));
-  --_glass-backdrop: var(--atomix-glass-border-backdrop, blur(14px) saturate(140%));
 
   --atomix-glass-position: absolute;
   --atomix-glass-border-width: var(--atomix-spacing-0-5, 0.125rem);
@@ -221,7 +220,7 @@
   &__border-backdrop {
     mix-blend-mode: overlay;
     z-index: var(--_glass-z-border-1);
-    backdrop-filter: var(--_glass-backdrop);
+    backdrop-filter: blur(30px) saturate(140%) brightness(110%);
     box-shadow: var(--atomix-glass-border-shadow);
   }
 
@@ -291,8 +290,8 @@
 
   &__content {
     position: relative;
-    width: var(--atomix-glass-container-width);
-    height: var(--atomix-glass-container-height);
+    width: var(--atomix-glass-width);
+    height: var(--atomix-glass-height);
     border-radius: var(--_glass-radius);
     z-index: var(--_glass-z-content);
     text-shadow: var(--atomix-glass-container-text-shadow);
