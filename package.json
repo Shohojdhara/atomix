@@ -1,6 +1,6 @@
 {
   "name": "@shohojdhara/atomix",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Atomix Design System - A modern component library for web applications",
   "type": "module",
   "sideEffects": [
@@ -15,6 +15,9 @@
   "types": "dist/index.d.ts",
   "style": "dist/atomix.css",
   "sass": "src/styles/index.scss",
+  "unpkg": "dist/atomix.umd.min.js",
+  "jsdelivr": "dist/atomix.umd.min.js",
+  "browser": "dist/atomix.umd.min.js",
   "bin": {
     "atomix": "./scripts/atomix-cli.js"
   },
@@ -110,6 +113,11 @@
       "types": "./dist/heavy.d.ts",
       "import": "./dist/heavy.js",
       "default": "./dist/heavy.js"
+    },
+    "./cdn": {
+      "import": "./dist/atomix.umd.min.js",
+      "require": "./dist/atomix.umd.min.js",
+      "default": "./dist/atomix.umd.min.js"
     },
     "./build-tools": {
       "types": "./build-tools/index.d.ts",
@@ -221,6 +229,7 @@
     "build:styles": "rollup -c rollup.config.styles.js",
     "build:themes": "rollup -c rollup/config/themes.js",
     "build:parallel": "concurrently \"npm:build:js\" \"npm:build:types\" \"npm:build:styles\"",
+    "build:umd": "rollup -c rollup.config.umd.js",
     "build:cli": "rollup -c rollup.config.cli.js",
     "build:cli:dev": "rollup -c rollup.config.cli.js --environment NODE_ENV:development",
     "build:analyze": "ANALYZE=true rollup -c",

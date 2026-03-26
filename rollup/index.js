@@ -15,4 +15,4 @@ export {
 } from './config/builds.js';
 export { esmBuild, cjsBuild, minifiedBuild, typesBuild, esmBuildChunked } from './config/builds.js';
 export { stylesBuild, stylesMinifiedBuild } from './config/builds.js';
-
+export { umdBuild, umdMinBuild } from './config/builds.js';

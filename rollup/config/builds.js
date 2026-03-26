@@ -334,6 +334,64 @@ export const allBuilds = [...jsBuilds, ...stylesBuilds];
 export const themeBuilds = generateThemeBuilds();
 
 /**
+ * UMD build for CDN distribution
+ */
+export const umdBuild = {
+  input: INPUT_FILES.main,
+  output: {
+    file: 'dist/atomix.umd.js',
+    format: 'umd',
+    name: 'Atomix', // Global variable name
+    sourcemap: true,
+    inlineDynamicImports: true, // Required for UMD format
+    globals: {
+      react: 'React',
+      'react-dom': 'ReactDOM',
+      'react/jsx-runtime': 'jsxRuntime',
+      '@phosphor-icons/react': 'PhosphorIconsReact'
+    },
+    exports: 'named'
+  },
+  external: ['react', 'react-dom', '@phosphor-icons/react'],
+  plugins: [
+    ...commonPlugins,
+    postcss(jsPostcssConfig),
+    createTypeScriptPlugin(),
+    createBabelPlugin('production'),
+    terser(terserConfigMinified),
+  ],
+};
+
+/**
+ * Minified UMD build for production CDN
+ */
+export const umdMinBuild = {
+  input: INPUT_FILES.main,
+  output: {
+    file: 'dist/atomix.umd.min.js',
+    format: 'umd',
+    name: 'Atomix',
+    sourcemap: false,
+    inlineDynamicImports: true, // Required for UMD format
+    globals: {
+      react: 'React',
+      'react-dom': 'ReactDOM',
+      'react/jsx-runtime': 'jsxRuntime',
+      '@phosphor-icons/react': 'PhosphorIconsReact'
+    },
+    exports: 'named'
+  },
+  external: ['react', 'react-dom', '@phosphor-icons/react'],
+  plugins: [
+    ...commonPlugins,
+    postcss(jsPostcssConfig),
+    createTypeScriptPlugin(),
+    createBabelPlugin('production'),
+    terser(terserConfigMinified),
+  ],
+};
+
+/**
  * All builds with hybrid strategy (recommended for production)
  * 
  * Hybrid Build Strategy:
@@ -341,6 +399,7 @@ export const themeBuilds = generateThemeBuilds();
  * - Separate entry point builds for code organization (theme.js, charts.js, forms.js, etc.)
  * - Theme builds removed
  * - No automatic chunking to avoid duplicate chunks
+ * - UMD builds for CDN distribution (atomix.umd.js, atomix.umd.min.js)
  * 
  * This approach:
  * - Maintains stable import paths via entry points
@@ -348,9 +407,9 @@ export const themeBuilds = generateThemeBuilds();
  * - Reduces bundle size while keeping build output clean
  * - Follows performance audit recommendations for bundle size optimization
  * - Enables individual theme CSS imports
+ * - Supports direct browser usage via CDN (unpkg/jsDelivr)
  * 
  * Note: esmBuildChunked is available but not included by default to prevent duplicates.
  * If you need automatic code splitting, use it separately.
  */
-export const allBuildsWithChunks = [...jsBuilds, ...stylesBuilds, ...entryBuilds, ...themeBuilds];
-
+export const allBuildsWithChunks = [...jsBuilds, ...stylesBuilds, ...entryBuilds, ...themeBuilds, umdBuild, umdMinBuild];

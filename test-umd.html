@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atomix CDN Test</title>
+  <link rel="stylesheet" href="./dist/atomix.min.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 2rem;
+      background: #f5f5f5;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+    .status {
+      padding: 1rem;
+      background: #e8f5e9;
+      border-radius: 4px;
+      margin: 1rem 0;
+      border-left: 4px solid #4caf50;
+    }
+    .error {
+      background: #ffebee;
+      border-left-color: #f44336;
+    }
+    pre {
+      background: #f5f5f5;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 Atomix UMD Build Test</h1>
+    
+    <div id="status"></div>
+    
+    <h2>Test Results:</h2>
+    <pre id="results"></pre>
+    
+    <h2>Available Components:</h2>
+    <div id="components"></div>
+  </div>
+
+  <!-- Load React and ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  
+  <!-- Load Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/react@2.1.10/umd/index.js"></script>
+  
+  <!-- Load Atomix UMD -->
+  <script src="./dist/atomix.umd.js"></script>
+  
+  <script>
+    // Test results
+    const results = {
+      atomixLoaded: typeof Atomix !== 'undefined',
+      reactLoaded: typeof React !== 'undefined',
+      reactDOMLoaded: typeof ReactDOM !== 'undefined',
+      phosphorLoaded: typeof PhosphorIconsReact !== 'undefined',
+    };
+    
+    // Display status
+    const statusEl = document.getElementById('status');
+    if (results.atomixLoaded) {
+      statusEl.className = 'status';
+      statusEl.innerHTML = '✅ <strong>Success!</strong> Atomix loaded successfully via UMD bundle';
+    } else {
+      statusEl.className = 'status error';
+      statusEl.innerHTML = '❌ <strong>Error!</strong> Failed to load Atomix';
+    }
+    
+    // Display detailed results
+    const resultsEl = document.getElementById('results');
+    resultsEl.textContent = JSON.stringify({
+      ...results,
+      atomixType: typeof Atomix,
+      atomixKeys: results.atomixLoaded ? Object.keys(Atomix).length : 0,
+    }, null, 2);
+    
+    // List available components
+    const componentsEl = document.getElementById('components');
+    if (results.atomixLoaded) {
+      const components = Object.keys(Atomix).sort();
+      const componentList = document.createElement('ul');
+      componentList.style.cssText = 'columns: 3; list-style: none; padding: 0;';
+      
+      components.forEach(component => {
+        const li = document.createElement('li');
+        li.textContent = component;
+        li.style.cssText = 'padding: 0.25rem 0.5rem; background: #e3f2fd; margin: 0.25rem; border-radius: 4px; display: inline-block;';
+        componentList.appendChild(li);
+      });
+      
+      componentsEl.appendChild(componentList);
+      
+      // Try to access a component
+      console.log('Button component:', Atomix.Button);
+      console.log('ThemeProvider:', Atomix.ThemeProvider);
+    }
+    
+    // Log to console for debugging
+    console.log('Test Results:', results);
+    console.log('Atomix object:', Atomix);
+  </script>
+</body>
+</html>
