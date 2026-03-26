@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import type { PerformanceMetrics } from '../../lib/composables/usePerformanceMonitor';
-import './PerformanceDashboard.scss';
 
 interface PerformanceDashboardProps {
   metrics: PerformanceMetrics;
@@ -31,6 +30,25 @@ const getFpsLabel = (fps: number): string => {
   return 'Critical';
 };
 
+// Keyframes for pulse animation (injected via style tag)
+const keyframesStyle = `
+@keyframes perf-dashboard-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+`;
+
+// Inject keyframes once
+if (typeof document !== 'undefined') {
+  const styleId = 'perf-dashboard-keyframes';
+  if (!document.getElementById(styleId)) {
+    const styleEl = document.createElement('style');
+    styleEl.id = styleId;
+    styleEl.textContent = keyframesStyle;
+    document.head.appendChild(styleEl);
+  }
+}
+
 /**
  * PerformanceDashboard - Real-time performance monitoring overlay.
  *
@@ -45,15 +63,25 @@ export const PerformanceDashboard: React.FC<PerformanceDashboardProps> = memo(
     const isCritical = metrics.fps < 45;
 
     return (
-      <div className="c-perf-dashboard">
+      <div
+        className="c-perf-dashboard u-position-fixed u-top-4 u-end-4 u-p-3 u-px-4 u-text-xs u-font-mono u-text-white u-rounded-md u-border u-border-white-alpha-10 u-shadow-lg"
+        style={{
+          zIndex: 9999,
+          minWidth: '12.5rem', // 200px
+          backgroundColor: 'rgba(17, 24, 39, 0.95)',
+          backdropFilter: 'blur(8px)',
+          transition: 'opacity 0.3s ease',
+        }}
+      >
         {/* Header */}
-        <div className="c-perf-dashboard__header">
-          <span className="c-perf-dashboard__title">Performance Monitor</span>
+        <div className="u-flex u-items-center u-justify-between u-mb-2 u-pb-2 u-border-b u-border-white-alpha-10">
+          <span className="u-text-sm u-font-bold u-text-white">Performance Monitor</span>
           {onClose && (
             <button
-              className="c-perf-dashboard__close-btn"
+              className="u-bg-transparent u-border-none u-p-0 u-line-height-1 u-text-base u-text-gray-400 u-cursor-pointer hover:u-text-white"
               onClick={onClose}
               aria-label="Close performance dashboard"
+              style={{ transition: 'color 0.2s ease' }}
             >
               ×
             </button>
@@ -61,27 +89,30 @@ export const PerformanceDashboard: React.FC<PerformanceDashboardProps> = memo(
         </div>
 
         {/* FPS */}
-        <div className="c-perf-dashboard__metric">
-          <span className="c-perf-dashboard__metric-label">FPS</span>
-          <span className="c-perf-dashboard__metric-value" style={{ color: fpsColor }}>
+        <div className="u-flex u-items-center u-justify-between u-mb-1-5">
+          <span className="u-text-gray-400 u-me-3">FPS</span>
+          <span className="u-font-bold" style={{ color: fpsColor }}>
             {Math.round(metrics.fps)}
           </span>
         </div>
 
         {/* Frame Time */}
-        <div className="c-perf-dashboard__metric">
-          <span className="c-perf-dashboard__metric-label">Frame Time</span>
-          <span className="c-perf-dashboard__metric-value">
+        <div className="u-flex u-items-center u-justify-between u-mb-1-5">
+          <span className="u-text-gray-400 u-me-3">Frame Time</span>
+          <span className="u-font-bold">
             {metrics.frameTime.toFixed(2)}ms
           </span>
         </div>
 
         {/* Quality Level */}
-        <div className="c-perf-dashboard__metric">
-          <span className="c-perf-dashboard__metric-label">Quality</span>
+        <div className="u-flex u-items-center u-justify-between u-mb-1-5">
+          <span className="u-text-gray-400 u-me-3">Quality</span>
           <span
-            className="c-perf-dashboard__metric-value c-perf-dashboard__metric-value--quality"
-            style={{ color: getQualityColor(metrics.qualityLevel) }}
+            className="u-font-bold u-text-uppercase"
+            style={{ 
+              fontSize: '0.6875rem', // 11px
+              color: getQualityColor(metrics.qualityLevel) 
+            }}
           >
             {metrics.qualityLevel}
           </span>
@@ -89,9 +120,9 @@ export const PerformanceDashboard: React.FC<PerformanceDashboardProps> = memo(
 
         {/* GPU Memory (if available) */}
         {metrics.gpuMemory && (
-          <div className="c-perf-dashboard__metric">
-            <span className="c-perf-dashboard__metric-label">GPU Memory</span>
-            <span className="c-perf-dashboard__metric-value">
+          <div className="u-flex u-items-center u-justify-between u-mb-1-5">
+            <span className="u-text-gray-400 u-me-3">GPU Memory</span>
+            <span className="u-font-bold">
               ~{Math.round(metrics.gpuMemory / 1024)}MB
             </span>
           </div>
@@ -99,23 +130,36 @@ export const PerformanceDashboard: React.FC<PerformanceDashboardProps> = memo(
 
         {/* Auto-scaling notice */}
         {metrics.isAutoScaling && (
-          <div className="c-perf-dashboard__section c-perf-dashboard__auto-scale">
+          <div
+            className="u-mt-2 u-pt-2 u-border-t u-border-white-alpha-10 u-text-center"
+            style={{ 
+              fontSize: '0.625rem', // 10px
+              color: '#6b7280',
+            }}
+          >
             Auto-scaling active
           </div>
         )}
 
         {/* Status indicator */}
-        <div className="c-perf-dashboard__section c-perf-dashboard__status">
+        <div className="u-flex u-items-center u-gap-2 u-mt-2 u-pt-2 u-border-t u-border-white-alpha-10">
           <div
-            className={[
-              'c-perf-dashboard__status-dot',
-              isCritical && 'c-perf-dashboard__status-dot--pulse',
-            ]
-              .filter(Boolean)
-              .join(' ')}
-            style={{ backgroundColor: fpsColor }}
+            className="u-rounded-full"
+            style={{
+              width: '0.5rem',
+              height: '0.5rem',
+              flexShrink: 0,
+              backgroundColor: fpsColor,
+              ...(isCritical && { animation: 'perf-dashboard-pulse 1s infinite' }),
+            }}
           />
-          <span className="c-perf-dashboard__status-label" style={{ color: fpsColor }}>
+          <span
+            className="u-text-xs"
+            style={{ 
+              fontSize: '0.625rem', // 10px
+              color: fpsColor 
+            }}
+          >
             {getFpsLabel(metrics.fps)}
           </span>
         </div>
