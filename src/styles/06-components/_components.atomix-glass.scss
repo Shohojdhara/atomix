@@ -9,23 +9,8 @@
   // Local, sane defaults (kept minimal)
   --_glass-radius: var(--atomix-glass-radius, var(--atomix-radius-md, 0.75rem));
   --_glass-transform: var(--atomix-glass-transform, translateZ(0));
-  --_glass-transition: var(
-    --atomix-glass-transition,
-    opacity var(--atomix-transition-duration-base, 0.3s) var(--atomix-easing-base, cubic-bezier(0.23, 1, 0.32, 1)),
-    transform var(--atomix-transition-duration-base, 0.3s) var(--atomix-easing-base, cubic-bezier(0.23, 1, 0.32, 1)),
-    backdrop-filter var(--atomix-transition-duration-base, 0.3s) var(--atomix-easing-base, cubic-bezier(0.23, 1, 0.32, 1))
-  );
-  --_glass-backdrop: var(
-    --atomix-glass-border-backdrop,
-    blur(14px) saturate(140%)
-  );
+  --_glass-backdrop: var(--atomix-glass-border-backdrop, blur(14px) saturate(140%));
 
-  // CSS custom property defaults
-  --atomix-glass-transition:
-    opacity var(--atomix-transition-duration-base, 0.3s) var(--atomix-easing-base, cubic-bezier(0.23, 1, 0.32, 1)),
-    transform var(--atomix-transition-duration-base, 0.3s) var(--atomix-easing-base, cubic-bezier(0.23, 1, 0.32, 1)),
-    backdrop-filter var(--atomix-transition-duration-base, 0.3s) var(--atomix-easing-base, cubic-bezier(0.23, 1, 0.32, 1)),
-    background var(--atomix-transition-duration-base, 0.3s) var(--atomix-easing-base, cubic-bezier(0.23, 1, 0.32, 1));
   --atomix-glass-position: absolute;
   --atomix-glass-border-width: var(--atomix-spacing-0-5, 0.125rem);
   --atomix-glass-top: 0;
@@ -33,12 +18,14 @@
   --atomix-glass-right: auto;
   --atomix-glass-bottom: auto;
 
+  --_glass-transition: var(--atomix-transition-base);
+
   // =========================================================================
   // Z-INDEX STACKING ORDER (based on design token system)
   // =========================================================================
   // Using the z-index layers mapping defined in the theme system
   // Background: 0
-  // Overlay: 1  
+  // Overlay: 1
   // Content: 2
   // Floating: 10+
   // =========================================================================
@@ -48,12 +35,16 @@
   // =========================================================================
   --atomix-glass-base-z-index: var(--atomix-z-index-base, 0);
 
-  --_glass-z-background: calc(var(--atomix-glass-base-z-index) + var(--atomix-z-index-background, 0));
+  --_glass-z-background: calc(
+    var(--atomix-glass-base-z-index) + var(--atomix-z-index-background, 0)
+  );
   --_glass-z-container: calc(var(--atomix-glass-base-z-index) + var(--atomix-z-index-overlay, 1));
   --_glass-z-filter: calc(var(--atomix-glass-base-z-index) + var(--atomix-z-index-overlay, 1));
   --_glass-z-effect: calc(var(--atomix-glass-base-z-index) + var(--atomix-z-index-overlay, 1));
   --_glass-z-hover: calc(var(--atomix-glass-base-z-index) + var(--atomix-z-index-overlay, 1));
-  --_glass-z-overlay-highlight: calc(var(--atomix-glass-base-z-index) + var(--atomix-z-index-overlay, 1));
+  --_glass-z-overlay-highlight: calc(
+    var(--atomix-glass-base-z-index) + var(--atomix-z-index-overlay, 1)
+  );
   --_glass-z-border-1: calc(var(--atomix-glass-base-z-index) + var(--atomix-z-index-overlay, 1));
   --_glass-z-border-2: calc(var(--atomix-glass-base-z-index) + var(--atomix-z-index-overlay, 1));
   --_glass-z-border-3: calc(var(--atomix-glass-base-z-index) + var(--atomix-z-index-content, 2));
@@ -84,13 +75,13 @@
 
   &__hover-1,
   &__hover-2,
-  &__hover-3 { 
-    z-index: var(--_glass-z-hover); 
+  &__hover-3 {
+    z-index: var(--_glass-z-hover);
   }
 
   &__base,
-  &__overlay { 
-    z-index: var(--_glass-z-effect); 
+  &__overlay {
+    z-index: var(--_glass-z-effect);
   }
 
   // Interactive hover effects
@@ -101,33 +92,74 @@
   }
 
   &__hover-1 {
-    transition: var(--_glass-transition), background var(--atomix-transition-duration-base, 0.3s) var(--atomix-easing-base, cubic-bezier(0.23, 1, 0.32, 1));
+    transition:
+      var(--_glass-transition),
+      background var(--atomix-transition-duration-base, 0.3s)
+        var(--atomix-easing-base, cubic-bezier(0.23, 1, 0.32, 1));
     opacity: var(--atomix-glass-hover-1-opacity, 0);
-    background: var(--atomix-glass-hover-1-gradient, radial-gradient(60% 60% at 50% 0%, var(--atomix-glass-hover-1-start-color, rgba(255,255,255,0.18)) 0%, var(--atomix-glass-hover-1-end-color, rgba(255,255,255,0.0)) 60%));
+    background: var(
+      --atomix-glass-hover-1-gradient,
+      radial-gradient(
+        60% 60% at 50% 0%,
+        var(--atomix-glass-hover-1-start-color, rgba(255, 255, 255, 0.18)) 0%,
+        var(--atomix-glass-hover-1-end-color, rgba(255, 255, 255, 0)) 60%
+      )
+    );
   }
 
   &__hover-2 {
-    transition: var(--_glass-transition), background var(--atomix-transition-duration-base, 0.3s) var(--atomix-easing-base, cubic-bezier(0.23, 1, 0.32, 1));
+    transition:
+      var(--_glass-transition),
+      background var(--atomix-transition-duration-base, 0.3s)
+        var(--atomix-easing-base, cubic-bezier(0.23, 1, 0.32, 1));
     opacity: var(--atomix-glass-hover-2-opacity, 0);
-    background: var(--atomix-glass-hover-2-gradient, radial-gradient(80% 80% at 50% 100%, var(--atomix-glass-hover-2-start-color, rgba(0,0,0,0.12)) 0%, var(--atomix-glass-hover-2-end-color, rgba(0,0,0,0.0)) 60%));
+    background: var(
+      --atomix-glass-hover-2-gradient,
+      radial-gradient(
+        80% 80% at 50% 100%,
+        var(--atomix-glass-hover-2-start-color, rgba(0, 0, 0, 0.12)) 0%,
+        var(--atomix-glass-hover-2-end-color, rgba(0, 0, 0, 0)) 60%
+      )
+    );
   }
 
   &__hover-3 {
-    transition: var(--_glass-transition), background var(--atomix-transition-duration-base, 0.3s) var(--atomix-easing-base, cubic-bezier(0.23, 1, 0.32, 1));
+    transition: var(--_glass-transition);
     opacity: var(--atomix-glass-hover-3-opacity, 0);
-    background: var(--atomix-glass-hover-3-gradient, linear-gradient(180deg, var(--atomix-glass-hover-3-start-color, rgba(255,255,255,0.06)) 0%, var(--atomix-glass-hover-3-end-color, rgba(255,255,255,0.0)) 100%));
+    background: var(
+      --atomix-glass-hover-3-gradient,
+      linear-gradient(
+        180deg,
+        var(--atomix-glass-hover-3-start-color, rgba(255, 255, 255, 0.06)) 0%,
+        var(--atomix-glass-hover-3-end-color, rgba(255, 255, 255, 0)) 100%
+      )
+    );
   }
 
   &__base {
     mix-blend-mode: soft-light;
     opacity: var(--atomix-glass-base-opacity, 0.6);
-    background: var(--atomix-glass-base-gradient, linear-gradient(180deg, var(--atomix-glass-base-start-color, rgba(255,255,255,0.08)) 0%, var(--atomix-glass-base-end-color, rgba(255,255,255,0.02)) 100%));
+    background: var(
+      --atomix-glass-base-gradient,
+      linear-gradient(
+        180deg,
+        var(--atomix-glass-base-start-color, rgba(255, 255, 255, 0.08)) 0%,
+        var(--atomix-glass-base-end-color, rgba(255, 255, 255, 0.02)) 100%
+      )
+    );
   }
 
   &__overlay {
     mix-blend-mode: overlay;
     opacity: var(--atomix-glass-overlay-opacity, 0.35);
-    background: var(--atomix-glass-overlay-gradient, radial-gradient(120% 120% at 50% -10%, var(--atomix-glass-overlay-start-color, rgba(255,255,255,0.12)) 0%, var(--atomix-glass-overlay-end-color, rgba(255,255,255,0.0)) 40%));
+    background: var(
+      --atomix-glass-overlay-gradient,
+      radial-gradient(
+        120% 120% at 50% -10%,
+        var(--atomix-glass-overlay-start-color, rgba(255, 255, 255, 0.12)) 0%,
+        var(--atomix-glass-overlay-end-color, rgba(255, 255, 255, 0)) 40%
+      )
+    );
   }
 
   &__overlay-highlight {
@@ -140,7 +172,14 @@
     mix-blend-mode: screen;
     z-index: var(--_glass-z-overlay-highlight);
     opacity: var(--atomix-glass-overlay-highlight-opacity, 0.25);
-    background: var(--atomix-glass-overlay-highlight-bg, linear-gradient(180deg, var(--atomix-glass-highlight-start-color, rgba(255,255,255,0.24)) 0%, var(--atomix-glass-highlight-end-color, rgba(255,255,255,0.0)) 60%));
+    background: var(
+      --atomix-glass-overlay-highlight-bg,
+      linear-gradient(
+        180deg,
+        var(--atomix-glass-highlight-start-color, rgba(255, 255, 255, 0.24)) 0%,
+        var(--atomix-glass-highlight-end-color, rgba(255, 255, 255, 0)) 60%
+      )
+    );
     will-change: opacity, transform;
   }
 
@@ -175,6 +214,7 @@
     height: var(--atomix-glass-height);
     border-radius: var(--_glass-radius);
     transform: var(--_glass-transform);
+    transition: var(--_glass-transition);
   }
 
   &__border-backdrop {

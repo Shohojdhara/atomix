@@ -583,7 +583,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
         ref={glassRef}
         contentRef={contentRef}
         className={className}
-        style={{ ...baseStyle, ...restStyle } as React.CSSProperties}
+        style={{ ...restStyle } as React.CSSProperties}
         borderRadius={effectiveBorderRadius}
         displacementScale={
           effectiveWithoutEffects
