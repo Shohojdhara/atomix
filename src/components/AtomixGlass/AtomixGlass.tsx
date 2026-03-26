@@ -322,10 +322,10 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       position: (isFixedOrSticky
         ? 'absolute'
         : restStyle.position || 'absolute') as React.CSSProperties['position'],
-      top: isFixedOrSticky ? 0 : restStyle.top ?? 0,
-      left: isFixedOrSticky ? 0 : restStyle.left ?? 0,
-      right: isFixedOrSticky ? 'auto' : restStyle.right ?? 'auto',
-      bottom: isFixedOrSticky ? 'auto' : restStyle.bottom ?? 'auto',
+      top: !isFixedOrSticky ? 0 : (restStyle.top ?? 0),
+      left: !isFixedOrSticky ? 0 : (restStyle.left ?? 0),
+      right: !isFixedOrSticky ? 'auto' : (restStyle.right ?? 'auto'),
+      bottom: !isFixedOrSticky ? 'auto' : (restStyle.bottom ?? 'auto'),
     }),
     [
       isFixedOrSticky,
@@ -343,13 +343,14 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     const _position = positionStyles.position;
 
     const resolveLength = (value: string | number | undefined, measured: number): string => {
-      if (value !== undefined) {
+      if (value !== undefined && isFixedOrSticky) {
         return typeof value === 'number' ? `${value}px` : value;
       }
 
-      if (measured > 0) {
+      if (measured > 0 && isFixedOrSticky) {
         return `${measured}px`;
       }
+
       return '100%';
     };
 
@@ -368,6 +369,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     positionStyles.position,
     glassSize.width,
     glassSize.height,
+    isFixedOrSticky,
   ]);
 
   // Memoize expensive gradient calculations
@@ -464,10 +466,10 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       '--atomix-glass-transform': transformStyle || 'none',
       '--atomix-glass-container-position': `${!isFixedOrSticky ? positionStyles.position : rootLayoutStyle.position}`,
       '--atomix-glass-position': `${!isFixedOrSticky ? positionStyles.position : rootLayoutStyle.position}`,
-      '--atomix-glass-top': isFixedOrSticky ? 0 : (restStyle.top ?? 0),
-      '--atomix-glass-left': isFixedOrSticky ? 0 : (restStyle.left ?? 0),
-      '--atomix-glass-right': isFixedOrSticky ? 'auto' : (restStyle.right ?? 'auto'),
-      '--atomix-glass-bottom': isFixedOrSticky ? 'auto' : (restStyle.bottom ?? 'auto'),
+      '--atomix-glass-top': `${!isFixedOrSticky ? 0 : (restStyle.top ?? 0)}px`,
+      '--atomix-glass-left': `${!isFixedOrSticky ? 0 : (restStyle.left ?? 0)}px`,
+      '--atomix-glass-right': !isFixedOrSticky ? 'auto' : (restStyle.right ?? 'auto'),
+      '--atomix-glass-bottom': !isFixedOrSticky ? 'auto' : (restStyle.bottom ?? 'auto'),
       '--atomix-glass-width': adjustedSize.width,
       '--atomix-glass-height': adjustedSize.height,
       '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.125rem)',
