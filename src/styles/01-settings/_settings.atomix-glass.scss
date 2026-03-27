@@ -1,0 +1,174 @@
+// AtomixGlass Settings
+// =============================================================================
+// Default values for glass component styling
+// These can be overridden at any level via CSS custom properties
+
+@use 'sass:map';
+@use 'settings.spacing' as *;
+@use 'settings.config' as config;
+@use 'settings.border-radius' as *;
+
+// ============================================================================
+// Border Radius
+// ============================================================================
+$glass-radius: var(#{config.$prefix}radius-md, 0.75rem) !default;
+
+// ============================================================================
+// Position
+// ============================================================================
+$glass-position: absolute !default;
+
+// ============================================================================
+// Border Width
+// ============================================================================
+$glass-border-width: var(#{config.$prefix}spacing-0-5, 0.125rem) !default;
+
+// ============================================================================
+// Z-Index Layers
+// ============================================================================
+$glass-base-z-index: 0 !default;
+$glass-z-index-background: 0 !default;
+$glass-z-index-overlay: 1 !default;
+$glass-z-index-content: 2 !default;
+
+// ============================================================================
+// Opacity Values
+// ============================================================================
+$glass-hover-1-opacity: 0 !default;
+$glass-hover-2-opacity: 0 !default;
+$glass-hover-3-opacity: 0 !default;
+$glass-base-opacity: 0.6 !default;
+$glass-overlay-opacity: 0.35 !default;
+$glass-overlay-highlight-opacity: 0.25 !default;
+
+// ============================================================================
+// Border Opacity
+// ============================================================================
+$glass-border-1-opacity: 0.18 !default;
+
+// ============================================================================
+// Over-Light Mode Opacity
+// ============================================================================
+$glass-over-light-dark-opacity: 0.5 !default;
+$glass-over-light-black-opacity: 0.25 !default;
+
+// ============================================================================
+// Gradient Colors - Hover 1 (White mode)
+// ============================================================================
+$glass-hover-1-start-color: rgba(255, 255, 255, 0.18) !default;
+$glass-hover-1-end-color: rgba(255, 255, 255, 0) !default;
+
+// ============================================================================
+// Gradient Colors - Hover 1 (Dark/Over-light mode)
+// ============================================================================
+$glass-hover-1-black-start: 0.12 !default;
+$glass-hover-1-black-mid: 0.06 !default;
+$glass-hover-1-black-stop: 60% !default;
+$glass-hover-1-black-end: 100% !default;
+
+// ============================================================================
+// Gradient Colors - Hover 2 (White mode)
+// ============================================================================
+$glass-hover-2-start-color: rgba(0, 0, 0, 0.12) !default;
+$glass-hover-2-end-color: rgba(0, 0, 0, 0) !default;
+
+// ============================================================================
+// Gradient Colors - Hover 2 (Dark/Over-light mode)
+// ============================================================================
+$glass-hover-2-black-start: 0.08 !default;
+$glass-hover-2-black-mid: 0.04 !default;
+$glass-hover-2-black-stop: 60% !default;
+$glass-hover-2-black-end: 100% !default;
+
+// ============================================================================
+// Gradient Colors - Hover 3 (White mode)
+// ============================================================================
+$glass-hover-3-start-color: rgba(255, 255, 255, 0.06) !default;
+$glass-hover-3-end-color: rgba(255, 255, 255, 0) !default;
+
+// ============================================================================
+// Gradient Colors - Hover 3 (Dark/Over-light mode)
+// ============================================================================
+$glass-hover-3-black-start: 0.06 !default;
+$glass-hover-3-black-mid: 0.03 !default;
+$glass-hover-3-black-stop: 60% !default;
+$glass-hover-3-black-end: 100% !default;
+
+// ============================================================================
+// Base Layer (White mode)
+// ============================================================================
+$glass-base-start-color: rgba(255, 255, 255, 0.08) !default;
+$glass-base-end-color: rgba(255, 255, 255, 0.02) !default;
+$glass-base-white-opacity: 0.08 !default;
+
+// ============================================================================
+// Base Layer (Dark/Over-light mode)
+// ============================================================================
+$glass-base-black-start: 0.08 !default;
+$glass-base-black-mid: 0.06 !default;
+$glass-base-black-end: 0.02 !default;
+
+// ============================================================================
+// Overlay Layer (White mode)
+// ============================================================================
+$glass-overlay-start-color: rgba(255, 255, 255, 0.12) !default;
+$glass-overlay-end-color: rgba(255, 255, 255, 0) !default;
+$glass-overlay-white-opacity: 0.12 !default;
+
+// ============================================================================
+// Overlay Layer (Dark/Over-light mode)
+// ============================================================================
+$glass-overlay-black-start: 0.1 !default;
+$glass-overlay-black-mid: 0.05 !default;
+$glass-overlay-black-stop: 40% !default;
+$glass-overlay-black-end: 0 !default;
+
+// ============================================================================
+// Overlay Highlight
+// ============================================================================
+$glass-highlight-start-color: rgba(255, 255, 255, 0.24) !default;
+$glass-highlight-end-color: rgba(255, 255, 255, 0) !default;
+$glass-highlight-opacity-multiplier: 1.1 !default;
+
+// ============================================================================
+// Border Shadow
+// ============================================================================
+$glass-border-color: rgba(255, 255, 255, 0.45) !default;
+$glass-inner-shadow-color: rgba(255, 255, 255, 0.18) !default;
+$glass-outer-shadow-color: rgba(0, 0, 0, 0.28) !default;
+
+// ============================================================================
+// Backdrop Filter
+// ============================================================================
+$glass-backdrop-filter: blur(30px) saturate(140%) brightness(110%) !default;
+
+// ============================================================================
+// Transition
+// ============================================================================
+$glass-transition: var(#{config.$prefix}transition-base) !default;
+$glass-transition-duration: 0.3s !default;
+$glass-easing: cubic-bezier(0.23, 1, 0.32, 1) !default;
+
+// ============================================================================
+// Blend Modes
+// ============================================================================
+$glass-hover-blend-mode: overlay !default;
+$glass-base-blend-mode: soft-light !default;
+$glass-overlay-blend-mode: overlay !default;
+$glass-overlay-highlight-blend-mode: screen !default;
+$glass-border-backdrop-blend-mode: overlay !default;
+$glass-border-1-blend-mode: screen !default;
+$glass-border-2-blend-mode: overlay !default;
+
+// ============================================================================
+// Background Layer Colors
+// ============================================================================
+$glass-background-dark-color: var(#{config.$prefix}gray-9, #1f2937) !default;
+$glass-background-black-color: var(#{config.$prefix}black, #000000) !default;
+
+// ============================================================================
+// Border Backdrop
+// ============================================================================
+$glass-border-backdrop-blur: 30px !default;
+$glass-border-backdrop-saturate: 140% !default;
+$glass-border-backdrop-brightness: 110% !default;

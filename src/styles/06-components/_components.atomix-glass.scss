@@ -1,6 +1,7 @@
 // Component: AtomixGlass
 // =============================================================================
 
+@use '../01-settings/settings.atomix-glass' as *;
 @use '../02-tools/tools.component' as *;
 
 .c-atomix-glass {
