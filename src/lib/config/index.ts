@@ -207,6 +207,29 @@ export interface TokenEngineConfig {
 }
 
 /**
+ * CLI component generator defaults (merged before CLI flags; flags win).
+ */
+export interface GeneratorConfig {
+  /** Default output directory for generated components */
+  outputPath?: string;
+  /** Override detected framework */
+  framework?: 'react' | 'next' | 'vanilla';
+  /** Per-feature defaults (CLI --no-* flags override) */
+  features?: {
+    storybook?: boolean;
+    hook?: boolean;
+    styles?: boolean;
+    tests?: boolean;
+  };
+  /** Composable hooks directory relative to project root */
+  hookOutputDir?: string;
+  /** Story file: side-effect import for global Atomix styles */
+  storybookCssImport?: string;
+  /** Barrel file strategy for new components */
+  barrel?: 'index' | 'none';
+}
+
+/**
  * Atomix Configuration Interface
  *
  * Tailwind-like configuration for external developers.
@@ -254,6 +277,11 @@ export interface AtomixConfig {
     /** Anonymize telemetry data (default: true) */
     anonymize?: boolean;
   };
+
+  /**
+   * `atomix generate` defaults (CLI overrides these)
+   */
+  generator?: GeneratorConfig;
 
   /**
    * Theme customization (Tailwind-like)

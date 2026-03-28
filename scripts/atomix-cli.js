@@ -137,8 +137,17 @@ program
   .option('-i, --interactive', 'Interactive mode', false)
   .option('-p, --path <path>', 'Output path', './src/components')
   .option('--prompt <prompt>', 'AI prompt for generating component')
-  .option('--complexity <level>', 'Complexity (simple|medium|complex)', 'medium')
+  .option(
+    '--complexity <level>',
+    'Template complexity (React: simple|medium|complex; Next: simple|client|complex). Default is framework-specific.'
+  )
+  .option('--framework <name>', 'Force framework: react, next, or vanilla (skips detection)')
+  .option('--storybook', 'Generate Storybook story', true)
+  .option('--hook', 'Generate composable hook', true)
+  .option('--styles', 'Generate ITCSS styles', true)
+  .option('--tests', 'Generate unit test file', false)
   .option('--validate', 'Validate after generation', true)
+  .option('--skip-validate', 'Skip validation after generation', false)
   .action(async (type, name, options) => {
     try {
       await generateAction(type, name, options);

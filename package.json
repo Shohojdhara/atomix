@@ -1,6 +1,6 @@
 {
   "name": "@shohojdhara/atomix",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Atomix Design System - A modern component library for web applications",
   "type": "module",
   "sideEffects": [
@@ -19,7 +19,7 @@
   "jsdelivr": "dist/atomix.umd.min.js",
   "browser": "dist/atomix.umd.min.js",
   "bin": {
-    "atomix": "./scripts/atomix-cli.js"
+    "atomix": "scripts/atomix-cli.js"
   },
   "exports": {
     ".": {

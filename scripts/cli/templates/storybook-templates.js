@@ -5,8 +5,13 @@
 
 /**
  * Basic Storybook story template
+ * @param {string} name - Component name
+ * @param {{ storybookCssImport?: string }} [opts]
  */
-export const basicStoryTemplate = (name) => `import type { Meta, StoryObj } from '@storybook/react';
+export const basicStoryTemplate = (name, opts = {}) => {
+  const cssImport = opts.storybookCssImport || '@shohojdhara/atomix/scss';
+  return `import '${cssImport}';
+import type { Meta, StoryObj } from '@storybook/react';
 import { ${name} } from './${name}';
 
 const meta: Meta<typeof ${name}> = {
@@ -66,11 +71,15 @@ export const Glass: Story = {
   },
 };
 `;
+};
 
 /**
  * Enhanced Storybook story template with detailed documentation
  */
-export const enhancedStoryTemplate = (name) => `import type { Meta, StoryObj } from '@storybook/react';
+export const enhancedStoryTemplate = (name, opts = {}) => {
+  const cssImport = opts.storybookCssImport || '@shohojdhara/atomix/scss';
+  return `import '${cssImport}';
+import type { Meta, StoryObj } from '@storybook/react';
 import { ${name} } from './${name}';
 
 const meta: Meta<typeof ${name}> = {
@@ -226,6 +235,7 @@ export const CustomContent: Story = {
   },
 };
 `;
+};
 
 /**
  * Storybook templates object

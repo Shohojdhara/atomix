@@ -9,6 +9,7 @@ import { join } from 'path';
 import { readFile } from 'fs/promises';
 import { logger } from './logger.js';
 import { configLoader } from '../internal/config-loader.js';
+import { templateEngine } from '../internal/template-engine.js';
 
 /**
  * Check Node.js and NPM versions
@@ -250,6 +251,83 @@ export async function checkTokens(projectRoot = process.cwd()) {
       status: 'warn',
       message: `Could not read 01-settings: ${error.message}`,
       suggestion: null
+    });
+  }
+
+  return results;
+}
+
+/**
+ * Generator: writable output path, optional Storybook, template registry
+ */
+export async function checkGenerator(projectRoot = process.cwd()) {
+  const results = [];
+
+  const config = await configLoader.load(projectRoot);
+  const gen = config.generator || {};
+  const out = gen.outputPath || './src/components';
+  const outPath = join(projectRoot, out);
+
+  if (existsSync(outPath)) {
+    try {
+      accessSync(outPath, constants.W_OK);
+      results.push({
+        name: 'Generator: output path',
+        status: 'pass',
+        message: `Writable: ${out}`,
+        suggestion: null
+      });
+    } catch {
+      results.push({
+        name: 'Generator: output path',
+        status: 'fail',
+        message: `Not writable: ${out}`,
+        suggestion: 'Fix permissions or set generator.outputPath in atomix.config.'
+      });
+    }
+  } else {
+    results.push({
+      name: 'Generator: output path',
+      status: 'warn',
+      message: `Missing (will be created): ${out}`,
+      suggestion: 'Create the directory or run generate to scaffold components.'
+    });
+  }
+
+  const storybookHints = ['@storybook/react', '@storybook/react-vite', '@storybook/nextjs', 'storybook'];
+  let hasStorybook = false;
+  const pkgPath = join(projectRoot, 'package.json');
+  if (existsSync(pkgPath)) {
+    try {
+      const pkg = JSON.parse(await readFile(pkgPath, 'utf8'));
+      const deps = { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) };
+      hasStorybook = storybookHints.some((d) => Boolean(deps[d]));
+    } catch {
+      /* ignore */
+    }
+  }
+
+  results.push({
+    name: 'Storybook (optional)',
+    status: hasStorybook ? 'pass' : 'warn',
+    message: hasStorybook ? 'Storybook-related dependency found' : 'No Storybook in package.json',
+    suggestion: hasStorybook ? null : 'Add Storybook if you rely on generated .stories.tsx files.'
+  });
+
+  try {
+    const frameworks = templateEngine.getSupportedFrameworks();
+    results.push({
+      name: 'Generator: template registry',
+      status: frameworks.length ? 'pass' : 'fail',
+      message: frameworks.length ? `Frameworks: ${frameworks.join(', ')}` : 'Empty registry',
+      suggestion: frameworks.length ? null : 'CLI template registry failed to load.'
+    });
+  } catch (error) {
+    results.push({
+      name: 'Generator: template registry',
+      status: 'fail',
+      message: error.message,
+      suggestion: 'Reinstall the Atomix package or check scripts/cli installation.'
     });
   }
 

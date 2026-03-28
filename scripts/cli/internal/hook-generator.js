@@ -334,8 +334,11 @@ export async function generateHookFile(componentName, projectRoot, options = {})
         await filesystem.writeFile(indexFile, updatedContent, 'utf8');
       }
     } else {
-      // Create new index
-      const indexContent = generateComposablesIndex();
+      const indexContent = `/**
+ * Composable hooks (Atomix CLI)
+ */
+export { ${hookName} } from './${hookName}';
+`;
       await filesystem.writeFile(indexFile, indexContent, 'utf8');
       created.push(`${outputDir}/index.ts`);
     }

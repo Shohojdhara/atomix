@@ -11,6 +11,45 @@ import { filesystem } from '../internal/filesystem.js';
 import { validateComponentName } from '../utils/validation.js';
 import { hookManager } from '../internal/hooks.js';
 import { validateComponent } from '../internal/validator.js';
+import { configLoader } from '../internal/config-loader.js';
+import { detectFramework } from '../utils/detector.js';
+import { resolveDefaultComplexity } from '../internal/complexity-utils.js';
+import { telemetry } from '../utils/telemetry.js';
+
+/**
+ * Merge CLI options with atomix.config generator section (CLI wins).
+ * @param {Object} options - Commander options
+ * @returns {Promise<Object>}
+ */
+async function buildGenerateConfig(name, options) {
+  const cwd = process.cwd();
+  const loaded = await configLoader.load(cwd);
+  const gen = loaded.generator || {};
+
+  const outputPath = options.path ?? gen.outputPath ?? './src/components';
+  const framework = options.framework ?? gen.framework;
+  const prefix = loaded.prefix ?? 'atomix';
+  const storybookCssImport = gen.storybookCssImport;
+  const hookOutputDir = gen.hookOutputDir;
+
+  const complexity =
+    options.complexity !== undefined && options.complexity !== null && options.complexity !== ''
+      ? options.complexity
+      : undefined;
+
+  const features = determineFeatures(options, gen.features || {});
+
+  return {
+    name,
+    complexity,
+    features,
+    outputPath,
+    framework,
+    prefix,
+    storybookCssImport,
+    hookOutputDir
+  };
+}
 
 /**
  * Action logic for generating components
@@ -19,16 +58,18 @@ import { validateComponent } from '../internal/validator.js';
  * @param {Object} options - CLI options
  */
 export async function generateAction(type, name, options) {
-  let config = {
-    name,
-    complexity: options.complexity || 'medium',
-    features: determineFeatures(options),
-    outputPath: options.path || './src/components'
-  };
+  let config = await buildGenerateConfig(name, options);
 
   if (options.interactive) {
-    config = await promptInteractive();
-    if (!config) return;
+    const interactive = await promptInteractive();
+    if (!interactive) return;
+    config = {
+      ...config,
+      ...interactive,
+      name: interactive.name,
+      complexity: interactive.complexity,
+      features: interactive.features
+    };
   }
 
   // Pre-generation hook
@@ -49,7 +90,6 @@ export async function generateAction(type, name, options) {
   const spinner = logger.spinner(`Generating ${type}: ${config.name}...`).start();
 
   try {
-    // Validation
     const nameValidation = await validateComponentName(config.name);
     if (!nameValidation.isValid) {
       throw new AtomixCLIError(
@@ -76,7 +116,13 @@ export async function generateAction(type, name, options) {
       );
     }
 
-    // Execution
+    const detectedFw = await detectFramework(process.cwd(), { framework: config.framework });
+    telemetry.recordExtra({
+      generateType: type,
+      framework: detectedFw,
+      componentName: config.name
+    });
+
     let path;
     if (options.prompt) {
       path = await generator.generateAIComponent(config.name, options.prompt, {
@@ -92,9 +138,8 @@ export async function generateAction(type, name, options) {
 
     spinner.succeed(`Generated component ${config.name} at ${path}`);
 
-    if (options.validate) {
+    if (!options.skipValidate && options.validate !== false) {
       let report = await generator.validate(config.name, path);
-      // Component-scoped A11y and token validation (Phase 2: design system creator)
       if (type === 'component') {
         const componentReport = await validateComponent(config.name, process.cwd());
         const componentIssues = componentReport.issues.map(
@@ -104,7 +149,6 @@ export async function generateAction(type, name, options) {
         report.valid = report.valid && componentReport.valid;
       }
 
-      // Validation hook
       try {
         report = await hookManager.trigger('onValidate', report);
       } catch (error) {
@@ -117,7 +161,6 @@ export async function generateAction(type, name, options) {
       }
     }
 
-    // Post-build hook (using generated path as asset)
     try {
       await hookManager.trigger('postBuild', [path]);
     } catch (error) {
@@ -125,11 +168,9 @@ export async function generateAction(type, name, options) {
     }
 
     logger.box(`🎉 Component ${config.name} ready!\nRun: atomix validate component ${config.name}`);
-
   } catch (error) {
     spinner.fail('Generation failed');
-    
-    // Enhance error context for known error types
+
     if (error.code === 'TEMPLATE_NOT_FOUND') {
       error.suggestions.push('Run `atomix doctor` to check template availability');
     } else if (error.code === 'FRAMEWORK_DETECTION_FAILED') {
@@ -137,48 +178,62 @@ export async function generateAction(type, name, options) {
     } else if (error.code === 'FILE_WRITE_FAILED') {
       error.suggestions.push('Check disk space and file permissions');
     }
-    
+
     throw error;
   }
 }
 
 /**
- * Determine which features to enable based on CLI options
  * @param {Object} options - CLI options
- * @returns {string[]} Array of feature names
+ * @param {Object} genFeatures - config.generator.features
  */
-function determineFeatures(options) {
+function determineFeatures(options, genFeatures = {}) {
+  let storybook = genFeatures.storybook !== false;
+  let hook = genFeatures.hook !== false;
+  let styles = genFeatures.styles !== false;
+  let tests = genFeatures.tests === true;
+
+  if (options.storybook === false) storybook = false;
+  if (options.hook === false) hook = false;
+  if (options.styles === false) styles = false;
+  if (options.tests) tests = true;
+
   const features = [];
-  
-  // Default features (always enabled unless explicitly disabled)
-  if (options.storybook !== false) {
-    features.push('storybook');
-  }
-  
-  if (options.hook !== false) {
-    features.push('hook');
-  }
-  
-  if (options.styles !== false) {
-    features.push('styles');
-  }
-  
-  // Optional features (enabled by flag)
-  if (options.tests === true) {
-    features.push('tests');
-  }
-  
+  if (storybook) features.push('storybook');
+  if (hook) features.push('hook');
+  if (styles) features.push('styles');
+  if (tests) features.push('tests');
+
   return features;
 }
 
 /**
  * Interactive mode handler
- * Prompts user for component configuration
  * @returns {Promise<Object>} Configuration object
  */
 async function promptInteractive() {
   logger.info('🎨 Interactive Component Generator');
-  
+
+  const cwd = process.cwd();
+  const loaded = await configLoader.load(cwd);
+  const gen = loaded.generator || {};
+
+  const framework = await detectFramework(cwd, {});
+  const defaultComplexity = resolveDefaultComplexity(framework);
+  const complexityChoices =
+    framework === 'next'
+      ? [
+          { name: 'simple', value: 'simple' },
+          { name: 'client', value: 'client' },
+          { name: 'complex', value: 'complex' }
+        ]
+      : framework === 'vanilla'
+        ? [{ name: 'default', value: 'medium' }]
+        : Object.keys(COMPLEXITY_LEVELS).map((k) => ({
+            name: k.toLowerCase(),
+            value: k.toLowerCase()
+          }));
+
   const answers = await inquirer.prompt([
     {
       type: 'input',
@@ -192,18 +247,15 @@ async function promptInteractive() {
     {
       type: 'list',
       name: 'complexity',
-      message: 'Complexity level:',
-      choices: Object.keys(COMPLEXITY_LEVELS).map(k => ({
-        name: k.toLowerCase(),
-        value: k.toLowerCase()
-      })),
-      default: 'medium'
+      message: `Complexity level (detected: ${framework}):`,
+      choices: complexityChoices,
+      default: defaultComplexity
     },
     {
       type: 'checkbox',
       name: 'features',
       message: 'Select features:',
-      choices: Object.keys(COMPONENT_FEATURES).map(k => ({
+      choices: Object.keys(COMPONENT_FEATURES).map((k) => ({
         name: `${k.toLowerCase()}${COMPONENT_FEATURES[k].default ? ' (default)' : ''}`,
         value: COMPONENT_FEATURES[k].name,
         checked: COMPONENT_FEATURES[k].default
@@ -213,6 +265,11 @@ async function promptInteractive() {
 
   return {
     ...answers,
-    outputPath: './src/components'
+    outputPath: gen.outputPath || './src/components',
+    framework: undefined,
+    complexity: answers.complexity,
+    prefix: loaded.prefix || 'atomix',
+    storybookCssImport: gen.storybookCssImport,
+    hookOutputDir: gen.hookOutputDir
   };
 }

@@ -4,7 +4,15 @@
  */
 
 import { logger } from '../utils/logger.js';
-import { checkRuntimes, checkProjectStructure, checkConfig, checkPermissions, checkPlugins, checkTokens } from '../utils/diagnostics.js';
+import {
+  checkRuntimes,
+  checkProjectStructure,
+  checkConfig,
+  checkPermissions,
+  checkPlugins,
+  checkTokens,
+  checkGenerator
+} from '../utils/diagnostics.js';
 import chalk from 'chalk';
 
 /** Short descriptions for each doctor check (for --explain) */
@@ -19,7 +27,10 @@ const DOCTOR_CHECK_DESCRIPTIONS = {
   'Permissions: .': 'Read/write access to project root.',
   'Permissions: src': 'Read/write access to src directory.',
   'Plugins': 'Reports plugins registered in atomix.config.',
-  'Tokens': 'Design token discovery: src/styles/01-settings/_settings.*.scss (optional).'
+  'Tokens': 'Design token discovery: src/styles/01-settings/_settings.*.scss (optional).',
+  'Generator: output path': 'Writable directory for atomix generate (from config or ./src/components).',
+  'Storybook (optional)': 'Detects Storybook-related dependencies for generated stories.',
+  'Generator: template registry': 'Ensures CLI template engine exposes react, next, and vanilla.'
 };
 
 /**
@@ -46,6 +57,7 @@ export async function doctorAction(options = {}) {
     const permissions = await checkPermissions();
     const plugins = await checkPlugins();
     const tokens = await checkTokens();
+    const generator = await checkGenerator();
 
     spinner.stop();
 
@@ -55,7 +67,7 @@ export async function doctorAction(options = {}) {
       margin: 1
     });
 
-    const allResults = [...runtimes, ...structure, ...config, ...permissions, ...plugins, ...tokens];
+    const allResults = [...runtimes, ...structure, ...config, ...permissions, ...plugins, ...tokens, ...generator];
     let issuesFound = false;
 
     for (const result of allResults) {

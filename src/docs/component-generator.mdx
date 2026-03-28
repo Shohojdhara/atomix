@@ -1,0 +1,65 @@
+{/* Component generator — Atomix CLI */}
+
+# Component generator
+
+Use `atomix generate` to scaffold components that follow Atomix conventions (ITCSS, composables, Storybook, TypeScript).
+
+## Prerequisites
+
+Run **`atomix doctor`** first. It checks Node/npm, `atomix.config`, writable generator output paths, optional Storybook, and the CLI template registry.
+
+## Command
+
+```bash
+atomix generate component <Name> [options]
+```
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `-i, --interactive` | Prompt for name, complexity, and features |
+| `-p, --path <path>` | Output directory (default `./src/components`, or `generator.outputPath` in config) |
+| `--complexity <level>` | **React:** `simple` \| `medium` \| `complex`. **Next.js:** `simple` \| `client` \| `complex`. If omitted, defaults are **medium** for React and **simple** for Next (App Router–friendly server component). |
+| `--framework <react\|next\|vanilla>` | Skip detection (useful in monorepos / CI) |
+| `--storybook` / `--no-storybook` | Generate `.stories.tsx` (default: on) |
+| `--hook` / `--no-hook` | Generate `src/lib/composables/use<Name>.ts` (default: on) |
+| `--styles` / `--no-styles` | Generate ITCSS SCSS under `src/styles` (default: on) |
+| `--tests` | Add a Vitest test file |
+| `--prompt <text>` | AI-assisted generation (requires AI config) |
+| `--validate` | Run validation after generate (default: true) |
+| `--skip-validate` | Do not run `atomix validate` after generation |
+
+### Configuration (`atomix.config.ts`)
+
+CLI flags override **`generator`** settings from `defineConfig`:
+
+- `generator.outputPath` — default output directory  
+- `generator.framework` — default framework override  
+- `generator.features` — default storybook / hook / styles / tests  
+- `generator.hookOutputDir` — composables directory (default `src/lib/composables`)  
+- `generator.storybookCssImport` — side-effect import in generated stories (default `@shohojdhara/atomix/scss`)  
+- `prefix` — design token / CSS variable prefix for generated SCSS  
+
+### Non-interactive CI example
+
+```bash
+atomix generate component DataTable \
+  --path ./src/components \
+  --framework react \
+  --complexity medium \
+  --no-storybook \
+  --skip-validate
+```
+
+### Validate after generate
+
+```bash
+atomix validate component <Name>
+```
+
+### Troubleshooting
+
+- **Invalid complexity for Next** — Next does not use `medium`; omit `--complexity` or use `simple`, `client`, or `complex`.  
+- **Wrong framework** — Use `--framework` or set `generator.framework` in `atomix.config.ts`.  
+- **Vite + `src/pages`** — Detection prefers `next` when `next` or `next.config.*` is present; otherwise Vite + React resolves to `react`.

@@ -7,6 +7,7 @@ import { readFile } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { templateEngine, COMPLEXITY_LEVELS } from './template-engine.js';
+import { resolveEffectiveComplexity } from './complexity-utils.js';
 import { detectFramework } from '../utils/detector.js';
 import { filesystem } from './filesystem.js';
 import { aiEngine } from './ai-engine.js';
@@ -47,9 +48,13 @@ export const generator = {
   async generateComponent(name, options = {}) {
     const {
       outputPath,
-      complexity = 'medium',
+      complexity: complexityInput,
       features = [],
-      logger
+      logger,
+      framework: frameworkOverride,
+      prefix: designTokenPrefix = 'atomix',
+      storybookCssImport,
+      hookOutputDir
     } = options;
 
     // Sanitize and validate component name
@@ -67,10 +72,12 @@ export const generator = {
       );
     }
 
+    const projectRoot = process.cwd();
+
     // Detect framework
     let framework;
     try {
-      framework = await detectFramework();
+      framework = await detectFramework(projectRoot, { framework: frameworkOverride });
       if (logger) logger.debug(`Detected framework: ${framework}`);
     } catch (error) {
       throw new AtomixCLIError(
@@ -84,6 +91,8 @@ export const generator = {
       );
     }
 
+    const complexity = resolveEffectiveComplexity(framework, complexityInput);
+
     // Load design tokens if available
     let availableTokens = {};
     try {
@@ -94,7 +103,7 @@ export const generator = {
       ];
       
       for (const tokenPath of tokenPaths) {
-        if (existsSync(join(process.cwd(), tokenPath))) {
+        if (existsSync(join(projectRoot, tokenPath))) {
           availableTokens = await tokenProvider.loadTokens(tokenPath);
           if (logger) logger.debug(`Loaded design tokens from ${tokenPath}`);
           break;
@@ -171,7 +180,9 @@ export const generator = {
     if (features.includes('storybook')) {
       try {
         const storyTemplateFn = templateEngine.selectTemplate(framework, complexity, 'story');
-        const storyContent = templateEngine.render(storyTemplateFn, sanitizedName);
+        const storyContent = templateEngine.render(storyTemplateFn, sanitizedName, {
+          storybookCssImport
+        });
         await filesystem.writeFile(join(componentPath, `${sanitizedName}.stories.tsx`), storyContent, 'utf8');
         if (logger) logger.debug(`Created ${sanitizedName}.stories.tsx`);
       } catch (error) {
@@ -206,31 +217,12 @@ export const generator = {
       }
     }
 
-    if (features.includes('hook') && framework !== 'vanilla') {
-      try {
-        const hookDir = join(outputPath, '..', 'lib', 'composables');
-        const hookTemplateFn = templateEngine.selectTemplate(framework, complexity, 'hook');
-        const hookContent = templateEngine.render(hookTemplateFn, sanitizedName);
-        await filesystem.writeFile(join(hookDir, `use${sanitizedName}.ts`), hookContent, 'utf8');
-        if (logger) logger.debug(`Created use${sanitizedName}.ts`);
-      } catch (error) {
-        throw new AtomixCLIError(
-          `Failed to generate composable hook: ${error.message}`,
-          'HOOK_GENERATION_FAILED',
-          [
-            'Check hook template exists',
-            'Verify hook feature is supported for this framework',
-            'Try generating without --hook flag'
-          ]
-        );
-      }
-    }
-
     // 4. Styles (ITCSS) - Enhanced with auto-generation
     if (features.includes('styles')) {
       try {
-        const stylesResult = await generateComponentStylesPackage(sanitizedName, process.cwd(), {
-          force: options.force || false
+        const stylesResult = await generateComponentStylesPackage(sanitizedName, projectRoot, {
+          force: options.force || false,
+          prefix: designTokenPrefix
         });
         
         if (logger && stylesResult.created.length > 0) {
@@ -249,11 +241,12 @@ export const generator = {
       }
     }
 
-    // 5. Composable Hook - Enhanced generation
+    // 5. Composable hook (single path: lib/composables + barrel updates)
     if (features.includes('hook') && framework !== 'vanilla') {
       try {
-        const hookResult = await generateHookFile(sanitizedName, process.cwd(), {
-          force: options.force || false
+        const hookResult = await generateHookFile(sanitizedName, projectRoot, {
+          force: options.force || false,
+          outputDir: hookOutputDir || 'src/lib/composables'
         });
         
         if (logger && hookResult.created.length > 0) {

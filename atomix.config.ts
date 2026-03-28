@@ -110,6 +110,18 @@ export default defineConfig({
     },
 
     /**
+     * CLI component generator defaults (`atomix generate component`).
+     * CLI flags override these values.
+     */
+    // generator: {
+    //     outputPath: './src/components',
+    //     framework: 'react',
+    //     features: { storybook: true, hook: true, styles: true, tests: false },
+    //     hookOutputDir: 'src/lib/composables',
+    //     storybookCssImport: '@shohojdhara/atomix/scss',
+    // },
+
+    /**
      * Theme Customization
      * 
      * Tailwind-like configuration for customizing design tokens.

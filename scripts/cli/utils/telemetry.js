@@ -14,6 +14,16 @@ class Telemetry {
     this.logs = [];
     this.startTime = null;
     this.currentCommand = null;
+    /** @type {Record<string, unknown>} */
+    this.pendingExtra = {};
+  }
+
+  /**
+   * Merge fields into the next stop() log entry (e.g. generate framework).
+   * @param {Record<string, unknown>} extra
+   */
+  recordExtra(extra) {
+    this.pendingExtra = { ...this.pendingExtra, ...extra };
   }
 
   /**
@@ -43,8 +53,11 @@ class Telemetry {
       duration: parseFloat(duration.toFixed(2)),
       timestamp: new Date().toISOString(),
       success,
+      ...this.pendingExtra,
       ...extra
     };
+
+    this.pendingExtra = {};
 
     // Anonymize if needed
     if (config.anonymize !== false) {

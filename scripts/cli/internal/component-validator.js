@@ -10,6 +10,26 @@ import { logger } from '../utils/logger.js';
 import { AtomixCLIError } from '../utils/error.js';
 
 /**
+ * Next.js server components (no "use client") do not use forwardRef / client hooks.
+ * @param {string} content
+ */
+function isNextServerOnlyComponent(content) {
+  if (content.includes("'use client'") || content.includes('"use client"')) {
+    return false;
+  }
+  if (content.includes('forwardRef')) {
+    return false;
+  }
+  if (/export\s+default\s+async\s+function/.test(content) || /export\s+default\s+function/.test(content)) {
+    return true;
+  }
+  if (/async\s+function\s+\w+/.test(content) && /export\s+default\s+\w+/.test(content)) {
+    return true;
+  }
+  return false;
+}
+
+/**
  * Component validation rule severity levels
  */
 export const COMPONENT_SEVERITY = {
@@ -31,7 +51,11 @@ export const COMPONENT_RULES = {
     severity: COMPONENT_SEVERITY.ERROR,
     validate: (content) => {
       const issues = [];
-      
+
+      if (isNextServerOnlyComponent(content)) {
+        return issues;
+      }
+
       if (!content.includes('forwardRef')) {
         issues.push({
           rule: 'forward-ref-required',
@@ -40,7 +64,7 @@ export const COMPONENT_RULES = {
           severity: COMPONENT_SEVERITY.ERROR
         });
       }
-      
+
       return issues;
     }
   },
@@ -200,7 +224,11 @@ export const COMPONENT_RULES = {
     severity: COMPONENT_SEVERITY.INFO,
     validate: (content) => {
       const issues = [];
-      
+
+      if (isNextServerOnlyComponent(content)) {
+        return issues;
+      }
+
       if (!content.includes('memo') && !content.includes('React.memo')) {
         issues.push({
           rule: 'memo-usage',
@@ -209,7 +237,7 @@ export const COMPONENT_RULES = {
           severity: COMPONENT_SEVERITY.INFO
         });
       }
-      
+
       return issues;
     }
   },
@@ -223,9 +251,13 @@ export const COMPONENT_RULES = {
     severity: COMPONENT_SEVERITY.INFO,
     validate: (content, componentName) => {
       const issues = [];
-      
+
+      if (isNextServerOnlyComponent(content)) {
+        return issues;
+      }
+
       const hookPattern = new RegExp(`use${componentName}`);
-      
+
       if (!hookPattern.test(content)) {
         issues.push({
           rule: 'composable-hook-pattern',
@@ -234,7 +266,7 @@ export const COMPONENT_RULES = {
           severity: COMPONENT_SEVERITY.INFO
         });
       }
-      
+
       return issues;
     }
   },
@@ -248,13 +280,14 @@ export const COMPONENT_RULES = {
     severity: COMPONENT_SEVERITY.INFO,
     validate: (content) => {
       const issues = [];
-      
-      // Check for ThemeNaming import or usage
+
+      if (isNextServerOnlyComponent(content)) {
+        return issues;
+      }
+
       const hasThemeNaming = /ThemeNaming\./.test(content) || /themeNaming\./.test(content);
-      
-      // Check for variantClass, sizeClass, stateClass patterns
       const hasVariantPattern = /(variant|size|state)Class/.test(content);
-      
+
       if (!hasThemeNaming && !hasVariantPattern) {
         issues.push({
           rule: 'theme-naming-usage',
@@ -263,7 +296,7 @@ export const COMPONENT_RULES = {
           severity: COMPONENT_SEVERITY.INFO
         });
       }
-      
+
       return issues;
     }
   }
@@ -339,10 +372,8 @@ export class ComponentValidator {
         const issues = rule.validate(content, componentName);
         
         if (issues.length > 0) {
-          results.valid = false;
           results.issues.push(...issues);
-          
-          // Update summary
+
           for (const issue of issues) {
             if (issue.severity === COMPONENT_SEVERITY.ERROR) {
               results.summary.errors++;
@@ -362,6 +393,8 @@ export class ComponentValidator {
         });
       }
     }
+
+    results.valid = results.summary.errors === 0;
 
     return results;
   }
